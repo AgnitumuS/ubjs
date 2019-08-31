@@ -186,7 +186,69 @@ module.exports.default ={
 ### Validation
   На основе данных в instance модуле и entitySchema создает объект валидации `$v` - [vuelidate](https://github.com/vuelidate/vuelidate)
   полученый объект через provide прокидывается в компонент.
-  Можно получить в любом дочернем компоненте формы с помощью `inject: ['$v']`
+  Можно получить в любом дочернем компоненте формы с помощью `inject: ['$v']`.
+  Можно передать функцию в качестве параметра в которой можно будет на основе стора построить кастомную валидацию.
+  
+#### Пример кастомной валидации
+  dynamicField будет обязательным если someNumber будет больше 25
+    
+```javascript
+const Vue = require('vue')
+const { validationMixin } = require('vuelidate/lib/index')
+const { required, between } = require('vuelidate/lib/validators/index')
+
+function createValidator (store) {
+  const validatorInstance = new Vue({
+    store,
+    mixins: [ validationMixin ],
+
+    computed: {
+      name () {
+        return this.$store.state.data.name
+      },
+      
+      someNumber () {
+        return this.$store.state.data.someNumber
+      },
+      
+      dynamicField () {
+        return this.$store.state.data.dynamicField
+      }
+    },
+
+    validations () {
+      return {
+        name: { required },
+        someNumber: {
+          required, 
+          between: between(20, 30)
+        },
+        ...(this.someNumber > 25 ? {
+          dynamicField: { required }
+        } : {})
+      }
+    }
+  })
+
+  return validatorInstance.$v
+}
+
+module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
+  Form({
+    component: rootComponent,
+    entity,
+    instanceID,
+    title,
+    formCode
+  })
+  .instance()
+  .processing()
+  .validation(createValidator)
+  .mount()
+}
+
+```
+
 
 ## Рекомендации к написанию шаблона формы
 
