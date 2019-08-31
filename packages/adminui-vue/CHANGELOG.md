@@ -18,7 +18,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.6.25]
 ### Fixed
  - In case vue form is mounted directly into another component it will be destroyed during destroying parent Ext or Vue component
- 
+
+### Added
+ - `UToolbar` added prop `hideDefaultButton` which hide's default buttons
+
 ## [1.6.24]
 ### Changed
  - use new method `$App.generateTabId()` for tabId generation instead of hardcoded expression
