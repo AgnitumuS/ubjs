@@ -4,16 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.6.25]
-### Fixed
- - In case vue form is mounted directly into another component it will be destroyed during destroying parent Ext or Vue component
- 
+## [1.6.27]
+### Added
+ - `Form.validation()` added param `validator` for creating custom validation. [Example](https://git-pub.intecracy.com/unitybase/ubjs/blob/87874ab1ce37e27240965d3fa998a40ebd3f8303/packages/adminui-vue/utils/Form/README.md#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-%D0%BA%D0%B0%D1%81%D1%82%D0%BE%D0%BC%D0%BD%D0%BE%D0%B9-%D0%B2%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%86%D0%B8%D0%B8)
+
+## [1.6.26]
 ### Added
  - `UDetailGrid` component - shows data collection as a table view 
 
 ### Changed
  - update package `element-ui` **2.8.2 -> 2.11.1**
 
+## [1.6.25]
+### Fixed
+ - In case vue form is mounted directly into another component it will be destroyed during destroying parent Ext or Vue component
+ 
 ## [1.6.24]
 ### Changed
  - use new method `$App.generateTabId()` for tabId generation instead of hardcoded expression
