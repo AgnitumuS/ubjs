@@ -84,7 +84,7 @@ function doCheckIntegrity (conn, { entity, attribute, start, limit, transLen, er
   let files = []
   do {
     files = conn.Repository(entity).attrs(['ID', attribute])
-      .where('[' + attribute + ']', 'isNotNull')
+      // x100 speed up .where('[' + attribute + ']', 'isNotNull')
       .orderBy('ID').start(start).limit(transLen)
       .selectAsObject()
     files.forEach(function (file) {

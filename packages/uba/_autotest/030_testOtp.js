@@ -5,6 +5,7 @@ const ok = assert.ok
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 
+/* global sleep */
 module.exports = function runOTPTest (options) {
   let session, conn
 
@@ -29,17 +30,21 @@ module.exports = function runOTPTest (options) {
   }
   function testOtpEmail () {
     let userID, otp
-    let otpKind = 'EMail'
+    const EMAIL = 'EMail'
     let inst = conn.Repository('uba_user').attrs([ 'ID' ]).where('[name]', '=', 'otp_testuser1').select()
 
-    function genOtp (obj, lifeTime) {
+    function genOtp (obj, lifeTime, otpKind) {
+      otpKind = otpKind || EMAIL
+      lifeTime = lifeTime || 'null'
       otp = conn.post('evaluateScript',
         'return {otp: uba_otp.generateOtp("' + otpKind + '", ' + userID + ', ' +
-        JSON.stringify(obj) + ', ' + (lifeTime ? lifeTime : 'null') + ')};').otp
+        JSON.stringify(obj) + ', ' + lifeTime + ')};').otp
+      return otp
     }
 
-    function checkAuth (fun) {
+    function checkAuth (fun, otpKind) {
       let funStr, auth
+      otpKind = otpKind || EMAIL
 
       if (fun) {
         funStr = fun.toSource()
@@ -47,7 +52,7 @@ module.exports = function runOTPTest (options) {
       } else { funStr = '' }
       auth = conn.post('evaluateScript',
         'return {res: uba_otp.auth("' + otp + '", "' + otpKind + '"' + funStr + '), userID: Session.userID};')
-      if (auth.res) { assert.equal(auth.userID, userID, 'invalid userID after successful otp.auth') }
+      if (auth.res) { assert.strictEqual(auth.userID, userID, 'invalid userID after successful otp.auth') }
       return auth.res
     }
 
@@ -102,6 +107,34 @@ module.exports = function runOTPTest (options) {
     console.debug('4. Generate otp 4 (incorrect check)')
     genOtp()
     ok(!checkAuth(function () { return false }), 'otp.auth incorrect check otp successful')
+
+    console.debug('5. Generate TOTP')
+    let totpSecret = genOtp(null, 100, 'TOTP')
+    console.log('TOTP secret=', totpSecret)
+    const totp = require('../modules/totp')
+    let mustBe = totp.getTotp(totpSecret)
+    console.log('TOTP value=', mustBe)
+
+    console.debug('6. Validate TOTP')
+    let valid = conn.post('evaluateScript',
+      `return Session.runAsUser(${userID}, function(){
+        return {validationResult: uba_otp.verifyTotp("${mustBe}")}
+       })`)
+    valid = valid.validationResult
+    console.log('TOTP res=', valid)
+    assert.strictEqual(valid, true, 'TOTP is valid')
+
+    console.debug('6. Generate TOTP again')
+    let totpSecret2 = genOtp(null, 100, 'TOTP')
+    assert.strictEqual(totpSecret, totpSecret2, 'second call to generateOtp must return the same secret')
+
+    console.debug('8. Validate TOTP -30 sec')
+    mustBe = totp.getTotp(totpSecret, -30)
+    valid = conn.post('evaluateScript',
+      `return Session.runAsUser(${userID}, function(){
+        return {validationResult: uba_otp.verifyTotp("${mustBe}")}
+       })`).validationResult
+    assert.strictEqual(valid, true, 'TOTP -30 sec is also valid')
 
     console.debug('test complete')
   }

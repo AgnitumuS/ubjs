@@ -190,13 +190,24 @@ class UForm {
     return this
   }
 
-  validation () {
+  /**
+   * if $v passed will be used it for validation before save or close
+   * else will used automatically generates validation
+   * @param {function} [validator] custom validator
+   * @return {UForm}
+   */
+  validation (validator) {
     if (!this.canValidationInit) {
       throw new Error(`You can use ".validation()" only after ".processing()" and before ".mount()". Or ".validation()" is already initialized`)
     }
     this.canValidationInit = false
 
-    this.isValidationUsed = true
+    if (validator) {
+      this.validator = validator(this.$store)
+    } else {
+      this.isValidationUsed = true
+    }
+
     return this
   }
 
