@@ -157,7 +157,7 @@ Session context for method execution. This mode can be used in several cases:
 Also developer can turn on "authentication not used" mode by comment `"authMethods"` section in application config.
 
 ### One Time Passwords (OTP)
-`uba_opt` entity adds support for One Time Passwords into `UBA` model.
+`uba_otp` entity adds support for One Time Passwords into `UBA` model.
 
 Currently implemented methods is EMail, SMS and TOTP (google authenticator). OTP can be generated using `uba_otp.generateOtp`
 method and verified using `uba_otp.authAndExecute` for EMail/SMS or `uba_otp.verifyTotp` for TOTP   
