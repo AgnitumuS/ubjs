@@ -118,7 +118,7 @@
 				"userID": "ub5_autotest_win",
 				"password": "ub5_autotest_win",
 				"supportLang": ["en", "uk"],
-				"advSettings": "LibLocation=C:/Prog/PGClient/libpq.dll"
+				"advSettings": "LibLocation=D:/PostgreClient/10/x64/bin/libpq.dll"
 			},
 			{
 				"name": "ftsDefault",
