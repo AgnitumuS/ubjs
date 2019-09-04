@@ -17,37 +17,30 @@ Ext.define('UB.ux.PDFComponent', {
   },
 
   getElConfig: function () {
-    var
-      config = this.callParent()
-
-    var obj
-
-    config.cn = [obj = {
-      tag: 'div'
+    let config = this.callParent()
+    config.cn = [{
+      tag: 'div',
+      width: this.width,
+      height: this.height
     }]
-
-    obj.width = this.width
-    obj.height = this.height
 
     return config
   },
 
   afterRender: function () {
-    var me = this
-    me.callParent(arguments)
-    if (me.data) {
-      me.afterSetUrl()
+    this.callParent(arguments)
+    if (this.data) {
+      this.afterSetUrl()
     }
   },
 
   useBlobForData: true,
 
   getDataBlob: function () {
-    var me = this
-    if (!me.useBlobForData) {
+    if (!this.useBlobForData) {
       Ext.Error.raise('object does not use Blob')
     }
-    return me.dataBlob
+    return this.dataBlob
   },
 
   updateDataBlob: function (inBlob) {
@@ -116,14 +109,7 @@ Ext.define('UB.ux.PDFComponent', {
     var blobData = cfg.blobData
 
     me.dataUrl = data
-    /*
-        if (me.forceMIME){ // insert parameter in the middle of url to keep session_signature in the end
-            urlArr = me.dataUrl.split('&');
-            elm = urlArr.pop();
-            urlArr.push('forceMIME=' + encodeURIComponent(me.forceMIME), elm);
-            me.dataUrl = urlArr.join('&');
-        }
-        */
+
     if (me.useBlobForData) {
       if (blobData) {
         me.updateDataBlob(blobData)
