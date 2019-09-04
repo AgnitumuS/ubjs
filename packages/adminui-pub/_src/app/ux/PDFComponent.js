@@ -54,7 +54,14 @@ Ext.define('UB.ux.PDFComponent', {
     this.dataBlob = inBlob
     this.objUrl = window.URL.createObjectURL(inBlob)
     let viewerCfg = UB.connection.appConfig.uiSettings.adminUI.pdfViewer
-    let urlSuffix = (viewerCfg && viewerCfg.uriSuffix) || '#view=Fit'
+    let urlSuffix
+    if (viewerCfg) {
+      if (viewerCfg.uriSuffix === undefined) {
+        urlSuffix = '#view=Fit'
+      } else {
+        urlSuffix = viewerCfg.uriSuffix
+      }
+    }
     this.data = this.objUrl + urlSuffix
   },
 
@@ -76,30 +83,36 @@ Ext.define('UB.ux.PDFComponent', {
   },
 
   afterSetUrl: function () {
-    var el; var me = this
-
-    var obj = {
+    const viewerCfg = UB.connection.appConfig.uiSettings.adminUI.pdfViewer
+    let src
+    if (viewerCfg && viewerCfg.customURI) {
+      let f = this.up('form')
+      src = UB.format(viewerCfg.customURI, encodeURIComponent(this.data), $App.connection.userData('lang'), (f && f.instanceID))
+    } else {
+      src = this.data
+    }
+    let obj = {
       tag: 'iframe',
-      type: me.type,
-      src: me.data,
-      width: me.width,
-      height: me.height
+      type: this.type,
+      src: src,
+      width: this.width,
+      height: this.height
     }
 
-    el = me.getEl()
+    let el = this.getEl()
     if (el) {
       el.setHTML('').appendChild(obj)
     }
   },
 
   /**
-     *
-     * @param {Object} cfg
-     * @param {String} cfg.url
-     * @param {String} cfg.contentType
-     * @param {Blob} [cfg.blobData] (Optional) for loading data from exists blob
-     * @return {Promise}
-     */
+   *
+   * @param {Object} cfg
+   * @param {String} cfg.url
+   * @param {String} cfg.contentType
+   * @param {Blob} [cfg.blobData] (Optional) for loading data from exists blob
+   * @return {Promise}
+   */
   setSrc: function (cfg) {
     var
       me = this
