@@ -1,0 +1,26 @@
+﻿{
+    "caption": "Таъиноти дохили ташкилот",
+    "description": "",
+    "attributes": [
+        {
+            "name": "caption",
+            "caption": "Сарлавҳа"
+        },
+        {
+            "name": "description",
+            "caption": "Тасвир"
+        },
+        {
+            "name": "employeeID",
+            "caption": "Корманд"
+        },
+        {
+            "name": "tabNo",
+            "caption": "Рақами табелӣ"
+        },
+        {
+            "name": "employeeOnStaffType",
+            "caption": "Намуди таъинот"
+        }
+    ]
+}

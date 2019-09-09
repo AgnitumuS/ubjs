@@ -1,0 +1,14 @@
+﻿{
+    "caption": "Вазъи иҷтимоӣ",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        }
+    ]
+}

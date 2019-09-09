@@ -1,0 +1,18 @@
+﻿{
+    "caption": "Филтрҳои ҳифзшуда",
+    "description": "",
+    "attributes": [
+        {
+            "name": "owner",
+            "caption": "Соҳиб"
+        },
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуи филтр"
+        }
+    ]
+}

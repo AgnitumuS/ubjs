@@ -1,0 +1,14 @@
+﻿{
+    "caption": "Роли гурӯҳҳо",
+    "description": "",
+    "attributes": [
+        {
+            "name": "groupID",
+            "caption": "Гурӯҳ"
+        },
+        {
+            "name": "roleID",
+            "caption": "Рол"
+        }
+    ]
+}

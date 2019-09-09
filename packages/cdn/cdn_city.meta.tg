@@ -1,0 +1,38 @@
+﻿{
+    "caption": "Маҳаллаҳои аҳолинишин ",
+    "description": "",
+    "attributes": [
+        {
+            "name": "caption",
+            "caption": "Сарлавҳа"
+        },
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "description",
+            "caption": "Тавсир"
+        },
+        {
+            "name": "postalCode",
+            "caption": "Рамзи почта "
+        },
+        {
+            "name": "parentAdminUnitID",
+            "caption": "Аҷдод"
+        },
+        {
+            "name": "phoneCode",
+            "caption": "Рамзи телефон"
+        },
+        {
+            "name": "cityTypeID",
+            "caption": "Навъи маҳалли аҳолинишин *"
+        }
+    ]
+}

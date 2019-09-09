@@ -1,0 +1,26 @@
+﻿{
+    "caption": "Воҳидҳои берунӣ",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамзи дохилӣ"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуи воҳидҳо"
+        },
+        {
+            "name": "description",
+            "caption": "Воҳидҳои тавсифи "
+        },
+        {
+            "name": "fullName",
+            "caption": "Номи пурра"
+        },
+        {
+            "name": "depTypeID",
+            "caption": "Намуди воҳиди"
+        }
+    ]
+}

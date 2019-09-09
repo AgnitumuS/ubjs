@@ -1,0 +1,38 @@
+﻿{
+    "caption": "Ноҳияҳо",
+    "description": "",
+    "attributes": [
+        {
+            "name": "caption",
+            "caption": "Сарлавҳа"
+        },
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "description",
+            "caption": "Тасвир"
+        },
+        {
+            "name": "fullName",
+            "caption": "Номи пурра"
+        },
+        {
+            "name": "phoneCode",
+            "caption": "Рамзи телефон "
+        },
+        {
+            "name": "regionTypeID",
+            "caption": "Намуди ноҳия"
+        },
+        {
+            "name": "centerID",
+            "caption": "Марказ"
+        }
+    ]
+}

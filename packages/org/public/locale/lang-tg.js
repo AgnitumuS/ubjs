@@ -1,13 +1,13 @@
 /**
- * UnityBase Common Dictionaries (ORG) model RU localization
+ * UnityBase Common Dictionaries (ORG) model TG localization
  */
 UB.i18nExtend({
-    orgEmployee: 'Сотрудники внутренней организации',
-    orgUnit: 'Внутренние орг. единицы',
+    orgEmployee: 'Кормандони ташкилотҳои дохилӣ',
+    orgUnit: 'Воҳидҳои ташкилии дохилӣ',
     orgStaffUnit: 'Внутренние штатные единицы',
-    orgProfession: 'Профессии',
-    orgOrganization: 'Внутренние организации',
-    orgEmployeeOnStaff: 'Назначение работников',
+    orgProfession: 'Касбҳо',
+    orgOrganization: 'Ташкилотҳои дохили ',
+    orgEmployeeOnStaff: 'Таъин намудани кормандон',
     orgTreeCanNotBeCyclical: 'Дерево не может быть цикличным',
     orgDepartment: 'Подразделение',
     // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.

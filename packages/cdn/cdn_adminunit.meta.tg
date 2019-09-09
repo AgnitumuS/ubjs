@@ -1,0 +1,30 @@
+﻿{
+    "caption": "",
+    "description": "",
+    "attributes": [
+        {
+            "name": "caption",
+            "caption": "Сарлавҳа"
+        },
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "parentAdminUnitID",
+            "caption": "Тобеъ"
+        },
+        {
+            "name": "fullName",
+            "caption": "Номи пурра"
+        },
+        {
+            "name": "adminUnitType",
+            "caption": "Намуди воҳиди маъмурӣ"
+        }
+    ]
+}

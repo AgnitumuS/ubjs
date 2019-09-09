@@ -3,7 +3,7 @@
 		//"externalURL": "http://localhost",
 		//"serverType": "Socket",
 		//"reverseProxy": { "kind": "nginx" },
-		"host": "+",
+		"host": "*",
 		"port": "8881",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
@@ -33,14 +33,14 @@
 	},
 	"security": {
 		"authenticationMethods": [
-			"UB", "UBLDAP"//, "Negotiate"
-		],
+			"UB"//, "UBLDAP"//, "Negotiate"
+		]/*,
 		"ldapCatalogs": [{
 			"name": "SOFTLINE",
 			"URL":  "ldaps://softline.main:636/OU=Softline,DC=softline,DC=main?cn?sub?(sAMAccountName=%)",
 			"CAPath": "",
 			"ignoreSSLCertificateErrors": true
-		}]
+		}]*/
 	},
 	"uiSettings": {
 		"adminUI": {
@@ -130,7 +130,7 @@
 				"isDefault": true,
 				"dialect": "SQLite3",
 				"databaseName": "./autotestDB.sqlite3",
-				"supportLang": ["en", "uk"],
+				"supportLang": ["az", "en", "id", "ka", "ky", "ru", "tg", "uk"],
 				"advSettings": "Synchronous=Off"
 			},
 			{

@@ -1,0 +1,42 @@
+﻿{
+    "caption": "Ташкилотҳои дохили ",
+    "description": "",
+    "attributes": [
+        {
+            "name": "vatCode",
+            "caption": "Рақами далели андоз аз арзиши иловашуда"
+        },
+        {
+            "name": "code",
+            "caption": "Рамзи дохилӣ"
+        },
+        {
+            "name": "name",
+            "caption": "Номи ташкилот"
+        },
+        {
+            "name": "taxCode",
+            "caption": "Рақами андоз"
+        },
+        {
+            "name": "description",
+            "caption": "Тавсифи ташкилот"
+        },
+        {
+            "name": "fullName",
+            "caption": "Номи пурраи ташкилот"
+        },
+        {
+            "name": "parentID",
+            "caption": "Унсури волидайн"
+        },
+        {
+            "name": "orgBusinessTypeID",
+            "caption": "Намуди ташкилот"
+        },
+        {
+            "name": "orgOwnershipTypeID",
+            "caption": "Намуди моликият "
+        }
+    ]
+}

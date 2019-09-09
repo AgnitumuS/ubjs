@@ -1,7 +1,7 @@
 ﻿const loader = require('@unitybase/base').dataLoader
 /**
  * @author pavel.mash
- * Navigation shortcuts localization to English for UBS model
+ * Navigation shortcuts localization to Georgian for UBS model
  * Used by `ubcli initialize` command
  * @param {ServerSession} session
  */
@@ -17,6 +17,7 @@ module.exports = function (session) {
       { keyValue: 'ubs_numcounterreserv', execParams: { caption: 'ნუმერატორები (რეზერვი)' } },
       { keyValue: 'ubs_softLock', execParams: { caption: 'დაბლოკვა (რბილი)' } },
       { keyValue: 'ubs_report', execParams: { caption: 'ანგარიშები' } },
+      { keyValue: 'ubs_globalCache', execParams: { caption: 'სერვერის ქეში' } },
       { keyValue: 'ubs_message', execParams: { caption: 'შეტყობინებები' } }
     ]
   }

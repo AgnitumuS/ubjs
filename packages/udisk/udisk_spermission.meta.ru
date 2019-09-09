@@ -13,6 +13,10 @@
         "accessType": {
             "caption": "Тип доступа",
             "description": "Тип доступа ( owner, read, write, delegate)"
+        },
+        "parentID": {
+            "caption": "ИД родителя",
+            "description": "ИД родителя"
         }
     }
 }

@@ -1,0 +1,26 @@
+﻿{
+    "caption": "Рӯйхати кӯчаҳо",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "cityID",
+            "caption": "Маҳаллаи аҳолинишин "
+        },
+        {
+            "name": "fullName",
+            "caption": "Номи пурра"
+        },
+        {
+            "name": "streetType",
+            "caption": "Намуд"
+        }
+    ]
+}

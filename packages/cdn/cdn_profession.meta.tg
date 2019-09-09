@@ -1,0 +1,18 @@
+﻿{
+    "caption": "Касбҳои стандартӣ",
+    "description": "",
+    "attributes": [
+        {
+            "name": "description",
+            "caption": "Сарлавҳа"
+        },
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        }
+    ]
+}

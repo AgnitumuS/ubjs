@@ -1,7 +1,7 @@
 const loader = require('@unitybase/base').dataLoader
 /**
  * @author pavel.mash
- * Enumeration localization to Ukrainian for CDN model
+ * cdn_contacttype dicionary localization to Ukrainian for CDN model
  * Used by `ubcli initialize` command
  * @param {ServerSession} session
  */

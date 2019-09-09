@@ -1,0 +1,18 @@
+﻿{
+    "caption": "Диаграммаҳо",
+    "description": "",
+    "attributes": [
+        {
+            "name": "document",
+            "caption": "Диаграмма"
+        },
+        {
+            "name": "model",
+            "caption": "Модел"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        }
+    ]
+}

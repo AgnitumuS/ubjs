@@ -1,0 +1,22 @@
+﻿{
+    "caption": "Шакли моликият",
+    "description": "",
+    "attributes": [
+        {
+            "name": "shortName",
+            "caption": "Ихтисорот"
+        },
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "fullName",
+            "caption": "Номи пурра "
+        }
+    ]
+}
