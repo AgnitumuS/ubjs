@@ -51,7 +51,7 @@
     "systemjs": "^0.20.18",
     "systemjs-hmr": "^2.0.9",
     "systemjs-plugin-css": "^0.1.32",
-    "tinymce": "^4.7.13"
+    "tinymce": "4.9.5"
   },
   "keywords": [
     "UnityBase",

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.10.19]
+### Fixed
+ - tinymce version fixed to 4.9.5. In version 4.9.6 there is a problem `tinymce detected as amd but didn't execute correctly`
+ 
 ## [5.10.18]
 ### Added
  - new configuration parameter `adminUI.pdfViewer.customURI`. If defined then specified URL expected to be an html page URL

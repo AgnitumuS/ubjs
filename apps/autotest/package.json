@@ -60,7 +60,7 @@
     "systemjs-hmr": "^2.0.9",
     "systemjs-plugin-css": "^0.1.32",
     "throttle-debounce": "^2.1.0",
-    "tinymce": "^4.5.1",
+    "tinymce": "4.9.5",
     "vue": "^2.6.6",
     "vue-template-compiler": "^2.6.6",
     "vuelidate": "^0.7.4",
