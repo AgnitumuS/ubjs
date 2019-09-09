@@ -130,7 +130,7 @@
 				"isDefault": true,
 				"dialect": "SQLite3",
 				"databaseName": "./autotestDB.sqlite3",
-				"supportLang": ["az", "en", "id", "ka", "ky", "ru", "tg", "uk"],
+				"supportLang": ["en", "uk"],
 				"advSettings": "Synchronous=Off"
 			},
 			{
