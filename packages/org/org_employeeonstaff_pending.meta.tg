@@ -1,0 +1,14 @@
+﻿{
+    "caption": "",
+    "description": "",
+    "attributes": [
+        {
+            "name": "startDate",
+            "caption": "Оғоз"
+        },
+        {
+            "name": "endDate",
+            "caption": "Анҷом"
+        }
+    ]
+}

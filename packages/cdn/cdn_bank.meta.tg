@@ -1,0 +1,42 @@
+﻿{
+    "caption": "Филиалҳои бонк",
+    "description": "",
+    "attributes": [
+        {
+            "name": "address",
+            "caption": "Суроға"
+        },
+        {
+            "name": "cityID",
+            "caption": "Шаҳр"
+        },
+        {
+            "name": "MFO",
+            "caption": "Рамзи бонк"
+        },
+        {
+            "name": "code",
+            "caption": "Рамзи ташкилот"
+        },
+        {
+            "name": "description",
+            "caption": "Тавсир"
+        },
+        {
+            "name": "fullName",
+            "caption": "Номи пурра"
+        },
+        {
+            "name": "name",
+            "caption": "Номи кори "
+        },
+        {
+            "name": "countryID",
+            "caption": "Мамлакат"
+        },
+        {
+            "name": "phones",
+            "caption": "Телефон"
+        }
+    ]
+}

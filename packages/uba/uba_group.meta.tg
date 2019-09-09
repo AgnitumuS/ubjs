@@ -1,0 +1,14 @@
+﻿{
+    "caption": "Гурӯҳи истифодабарандагон",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "description",
+            "caption": "Тасвир"
+        }
+    ]
+}

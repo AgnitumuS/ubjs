@@ -1,0 +1,14 @@
+﻿{
+    "caption": "Гурӯҳи кормандон",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        }
+    ]
+}

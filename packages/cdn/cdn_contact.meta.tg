@@ -1,0 +1,14 @@
+﻿{
+    "caption": "Маълумот барои тамос",
+    "description": "",
+    "attributes": [
+        {
+            "name": "value",
+            "caption": "Тамос *"
+        },
+        {
+            "name": "contactTypeID",
+            "caption": "Намуди тамос"
+        }
+    ]
+}

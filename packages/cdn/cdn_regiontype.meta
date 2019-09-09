@@ -1,6 +1,6 @@
 {
-  "caption": "Типы регионов",
-  "description": "Справочник типов регионов",
+  "caption": "Region types",
+  "description": "Region types dictionary",
   "connectionName": "",
   "sqlAlias": "regnt",
   "cacheType": "SessionEntity",

@@ -1,0 +1,34 @@
+﻿{
+    "caption": "Истифодабарандагон",
+    "description": "",
+    "attributes": [
+        {
+            "name": "lastPasswordChangeDate",
+            "caption": "Санаи охирини тағйир додани рамз"
+        },
+        {
+            "name": "uData",
+            "caption": "Маълумотҳои иловагӣ"
+        },
+        {
+            "name": "firstName",
+            "caption": "Ном"
+        },
+        {
+            "name": "name",
+            "caption": "Логин"
+        },
+        {
+            "name": "description",
+            "caption": "Тасвир"
+        },
+        {
+            "name": "gender",
+            "caption": "ҷинс"
+        },
+        {
+            "name": "lastName",
+            "caption": "Насаб"
+        }
+    ]
+}

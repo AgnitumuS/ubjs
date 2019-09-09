@@ -1,0 +1,26 @@
+﻿{
+    "caption": "Аудит",
+    "description": "",
+    "attributes": [
+        {
+            "name": "actionTime",
+            "caption": "Вақти амали"
+        },
+        {
+            "name": "actionType",
+            "caption": "Таъсир"
+        },
+        {
+            "name": "actionUser",
+            "caption": "Истифодабаранда"
+        },
+        {
+            "name": "entity",
+            "caption": "Моҳият"
+        },
+        {
+            "name": "targetGroup",
+            "caption": "Гурӯҳи мақсадноки"
+        }
+    ]
+}

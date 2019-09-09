@@ -25,7 +25,7 @@
       "dataType": "String",
       "size": 20,
       "caption": "#",
-      "description": "Код",
+      "description": "Code",
       "allowNull": false
     },
     {

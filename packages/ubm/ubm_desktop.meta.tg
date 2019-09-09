@@ -1,0 +1,14 @@
+﻿{
+    "caption": "Мизи кори ",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "isDefault",
+            "caption": "Бо нобаенӣ"
+        }
+    ]
+}

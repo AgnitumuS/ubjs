@@ -1,0 +1,54 @@
+﻿{
+    "caption": "Кормандони ташкилотҳои дохилӣ",
+    "description": "",
+    "attributes": [
+        {
+            "name": "birthDate",
+            "caption": "Санаи таваллуд"
+        },
+        {
+            "name": "firstName",
+            "caption": "Ном"
+        },
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "description",
+            "caption": "Тавзеҳ"
+        },
+        {
+            "name": "shortFIO",
+            "caption": "Ному насаби кӯтоҳ"
+        },
+        {
+            "name": "apply",
+            "caption": "Муроҷиат"
+        },
+        {
+            "name": "middleName",
+            "caption": "Номи падар"
+        },
+        {
+            "name": "sexType",
+            "caption": "ҷинс"
+        },
+        {
+            "name": "fullFIO",
+            "caption": "Ному насаби пурра"
+        },
+        {
+            "name": "userID",
+            "caption": "Истифодабаранда"
+        },
+        {
+            "name": "facsimile",
+            "caption": "Имзо ***"
+        },
+        {
+            "name": "lastName",
+            "caption": "Насаб"
+        }
+    ]
+}

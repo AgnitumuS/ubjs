@@ -1,0 +1,18 @@
+﻿{
+    "caption": "",
+    "description": "",
+    "attributes": [
+        {
+            "name": "lockTime",
+            "caption": "Вақти блок"
+        },
+        {
+            "name": "lockUser",
+            "caption": "Истифодабаранда"
+        },
+        {
+            "name": "entity",
+            "caption": "Моҳият"
+        }
+    ]
+}

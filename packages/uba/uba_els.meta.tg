@@ -1,0 +1,34 @@
+﻿{
+    "caption": "",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамзи қоидаҳо"
+        },
+        {
+            "name": "methodMask",
+            "caption": "Ниқоби усулҳо"
+        },
+        {
+            "name": "entityMask",
+            "caption": "Ниқоби моҳияти"
+        },
+        {
+            "name": "description",
+            "caption": "Тасвир"
+        },
+        {
+            "name": "disabled",
+            "caption": "Хомуш"
+        },
+        {
+            "name": "ruleRole",
+            "caption": "Рол"
+        },
+        {
+            "name": "ruleType",
+            "caption": "Навъи қоида"
+        }
+    ]
+}

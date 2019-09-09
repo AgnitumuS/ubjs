@@ -1,0 +1,9 @@
+﻿code;name
+smallcity;Город (до 50тыс.)
+middlecity;Город (50-100 тыс.)
+bigcity;Город (100—250 тыс.)
+verybigcity;Город (250—500 тыс.)
+extrabigcity;Город (500 тыс.—1 млн.)
+millioncity;Город (свыше 1 млн.)
+townlikevillage;Поселок городского типа (от 2 тыс.)
+village;Деревня (до 2 тыс.)

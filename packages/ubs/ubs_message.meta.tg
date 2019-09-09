@@ -1,0 +1,26 @@
+﻿{
+    "caption": "Паёмак",
+    "description": "",
+    "attributes": [
+        {
+            "name": "expireDate",
+            "caption": "Эътибор то"
+        },
+        {
+            "name": "startDate",
+            "caption": "Эътибор аз"
+        },
+        {
+            "name": "complete",
+            "caption": "Расонидани паём"
+        },
+        {
+            "name": "messageBody",
+            "caption": "Паёмак"
+        },
+        {
+            "name": "messageType",
+            "caption": "Намуд"
+        }
+    ]
+}

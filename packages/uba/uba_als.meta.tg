@@ -1,0 +1,22 @@
+﻿{
+    "caption": "",
+    "description": "",
+    "attributes": [
+        {
+            "name": "attribute",
+            "caption": "Махсусият"
+        },
+        {
+            "name": "state",
+            "caption": "Рамзи ҳолати"
+        },
+        {
+            "name": "roleName",
+            "caption": "Номгуи рол"
+        },
+        {
+            "name": "actions",
+            "caption": "Амалҳои иҷозатдодашуда"
+        }
+    ]
+}

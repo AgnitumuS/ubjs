@@ -40,4 +40,20 @@ module.exports = function (session) {
   }
 
   loader.localizeEntity(session, localizationConfig, __filename)
+
+  localizationConfig = {
+    entity: 'uba_role',
+    keyAttribute: 'name',
+    localization: [
+      { keyValue: 'Everyone', execParams: { description: 'ნებისმიერ მსურველს (ჩაშენებული როლი)' } },
+      { keyValue: 'Admin', execParams: { description: 'ადმინისტრატორი (ჩაშენებული როლი)' } },
+      { keyValue: 'Anonymous', execParams: { description: 'უნებართვო მომხმარებელი (ჩაშენებული როლი)' } },
+      { keyValue: 'User', execParams: { description: 'ავტორიზებული მომხმარებელი (ჩაშენებული როლი)' } },
+      { keyValue: 'Supervisor', execParams: { description: 'უსაფრთხოების ადმინისტრატორი (ჩაშენებული როლი)' } },
+      { keyValue: 'Developer', execParams: { description: 'დეველოპერი (ჩაშენებული როლი)' } },
+      { keyValue: 'Monitor', execParams: { description: 'მონიტორინგი (ჩაშენებული როლი)' } }
+    ]
+  }
+
+  loader.localizeEntity(session, localizationConfig, __filename)
 }

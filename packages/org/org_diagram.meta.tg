@@ -1,0 +1,14 @@
+﻿{
+    "caption": "Диаграммаҳо",
+    "description": "",
+    "attributes": [
+        {
+            "name": "caption",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "isdefault",
+            "caption": "Бо нобаенӣ"
+        }
+    ]
+}

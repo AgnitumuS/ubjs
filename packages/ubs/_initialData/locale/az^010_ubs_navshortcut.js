@@ -17,6 +17,7 @@ module.exports = function (session) {
       { keyValue: 'ubs_numcounterreserv', execParams: { caption: 'Numeratorlar (Rezerv)' } },
       { keyValue: 'ubs_softLock', execParams: { caption: 'Bloklamalar (SoftLocks)' } },
       { keyValue: 'ubs_report', execParams: { caption: 'Hesabatlar' } },
+      { keyValue: 'ubs_globalCache', execParams: { caption: 'Server-side cache' } },
       { keyValue: 'ubs_message', execParams: { caption: 'İsmarışlar' } }
     ]
   }

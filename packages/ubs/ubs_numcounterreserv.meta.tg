@@ -1,0 +1,18 @@
+﻿{
+    "caption": "",
+    "description": "",
+    "attributes": [
+        {
+            "name": "reservedDate",
+            "caption": "Санаи ҳифзшуда"
+        },
+        {
+            "name": "regKey",
+            "caption": "Калиди бақайдгирӣ"
+        },
+        {
+            "name": "counter",
+            "caption": "Ҳисобкунак"
+        }
+    ]
+}

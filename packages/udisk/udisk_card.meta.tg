@@ -1,0 +1,24 @@
+﻿{
+    "caption": "Файлҳо",
+    "description": "",
+    "attributes": {
+        "ownerID": {
+            "caption": "Соҳиб"
+        },
+        "isTemporary": {
+            "caption": "Муваққатӣ"
+        },
+        "fcomment": {
+            "caption": "Тавзеҳ"
+        },
+        "name": {
+            "caption": "Номгуй"
+        },
+        "fsize": {
+            "caption": "Андоза"
+        },
+        "contentType": {
+            "caption": "Намуд"
+        }
+    }
+}
