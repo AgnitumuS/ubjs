@@ -201,7 +201,8 @@ function mergeStore (target, source) {
   function assignWith (key) {
     if (source[key]) {
       if (target[key]) {
-        Object.assign(target[key], source[key], target[key])
+        const targetCopy = Object.assign({}, target[key])
+        Object.assign(target[key], source[key], targetCopy)
       } else {
         target[key] = source[key]
       }
