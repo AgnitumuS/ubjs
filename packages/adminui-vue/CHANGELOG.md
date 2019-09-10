@@ -4,8 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+<<<<<<< packages/adminui-vue/CHANGELOG.md
+
 ## [1.6.29]
 ### Fixed
+ - prevent browser autocomplete in fields inside `UFormContainer` by adding `autocomplete = 'off'`
  - `Form` the problem when store config didn't override instance and processing methods 
 
 ## [1.6.28]
