@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.31]
+### Changed
+ - **BREAKING** - `UDetailGrid` rewritten, now only works on readonly
+
 ## [1.6.30]
 ### Added
  - in case `props.parentContext` is passed to Form() values of `parentContext` will became a default values for a new row
