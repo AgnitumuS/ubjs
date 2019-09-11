@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.12]
 ### Changed
- - cdn_currency.name size increased from 32 to 64
+ - cdn_currency.name size to 65 and cdn_currency.description size to 128
 
 ## [5.2.5]
 ### Changed
