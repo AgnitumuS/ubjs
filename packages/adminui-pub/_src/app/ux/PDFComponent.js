@@ -61,6 +61,8 @@ Ext.define('UB.ux.PDFComponent', {
       } else {
         urlSuffix = viewerCfg.uriSuffix
       }
+    } else {
+      urlSuffix = '#view=Fit'
     }
     this.data = this.objUrl + urlSuffix
   },

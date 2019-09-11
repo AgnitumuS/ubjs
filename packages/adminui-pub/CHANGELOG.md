@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.10.20]
+### Fixed
+ - in case `uiSettings.adminUI.pdfViewer` is not defined do not add a `undefined` to the end of PDF viewer URL
+   
 ## [5.10.19]
 ### Fixed
  - tinymce version fixed to 4.9.5. In version 4.9.6 there is a problem `tinymce detected as amd but didn't execute correctly`
