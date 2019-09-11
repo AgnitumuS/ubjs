@@ -474,7 +474,6 @@ export default {
     },
 
     toggleDropdown () {
-      console.log(this.dropdownVisible)
       this.dropdownVisible = !this.dropdownVisible
       if (this.dropdownVisible) {
         this.fetchPage()
