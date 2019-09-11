@@ -1,0 +1,18 @@
+﻿{
+    "caption": "Субъектҳои идоракуни",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Логин"
+        },
+        {
+            "name": "sType",
+            "caption": "Намуди субъект "
+        }
+    ]
+}

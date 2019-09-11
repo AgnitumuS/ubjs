@@ -12,7 +12,7 @@
     entity: 'tst_IDMapping',
     method: 'addnew',
     fieldList: ['ID', 'code']
-  }).done(function(result){
+  }).then(function(result){
     // here result in array-of-array format
     // [{"entity":"tst_IDMapping","method":"addnew","fieldList":["ID","code"],
     //   "__fieldListExternal":["ID","code"],

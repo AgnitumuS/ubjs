@@ -1,7 +1,7 @@
 ﻿const loader = require('@unitybase/base').dataLoader
 /**
  * @author pavel.mash
- * Navigation shortcuts localization to English for UBS model
+ * Settings localization to English for UBS model
  * Used by `ubcli initialize` command
  * @param {ServerSession} session
  */

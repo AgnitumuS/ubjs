@@ -27,13 +27,13 @@ module.exports = function (session) {
       { keyValue: 'uba_advSecurity', execParams: { caption: 'Расширенная безопасность' } },
       { keyValue: 'uba_group', execParams: { caption: 'Список групп' } },
       { keyValue: 'uba_usergroup', execParams: { caption: 'Группа пользователей' } },
-      { keyValue: 'uba_usercertificate', execParams: { caption: 'Сертификати' } },
+      { keyValue: 'uba_usercertificate', execParams: { caption: 'Сертификаты' } },
       { keyValue: 'adm_folder_security', execParams: { caption: 'Безопасность' } },
       { keyValue: 'uba_role', execParams: { caption: 'Системные роли' } },
-      { keyValue: 'uba_els', execParams: { caption: 'Права на методи (ELS)' } },
+      { keyValue: 'uba_els', execParams: { caption: 'Права на методы (ELS)' } },
       { keyValue: 'uba_audit', execParams: { caption: 'Аудит безопасности' } },
       { keyValue: 'uba_audit-securityDashboard', execParams: { caption: 'Консоль безопасности' } },
-      { keyValue: 'uba_als', execParams: { caption: 'Права на атрибути (ALS)' } },
+      { keyValue: 'uba_als', execParams: { caption: 'Права на атрибуты (ALS)' } },
       { keyValue: 'uba_otp', execParams: { caption: 'Одноразовые пароли (OTP)' } }
     ]
   }

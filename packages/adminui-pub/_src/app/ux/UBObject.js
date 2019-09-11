@@ -37,13 +37,8 @@ Ext.define('UB.ux.UBObject', {
   },
 
   onRender: function () {
-    var
-      el
-
     this.callParent(arguments)
-
-    el = this.el
-    this.objEl = (this.autoEl === 'object') ? el : el.getById(this.id + '-object')
+    this.objEl = (this.autoEl === 'object') ? this.el : this.el.getById(this.id + '-object')
   },
 
   onDestroy: function () {
@@ -53,23 +48,20 @@ Ext.define('UB.ux.UBObject', {
   },
 
   /**
-      * @param cfg
-     * @returns {Promise}
-     */
+   * @param cfg
+   * @returns {Promise}
+   */
   setSrc: function (cfg) {
-    var
-      objEl = this.objEl
-
     this.type = cfg.contentType
     this.data = cfg.url + (this.forceMIME ? '&forceMIME=' + encodeURIComponent(this.forceMIME) : '')
 
-    if (objEl) {
-      objEl.dom.type = this.type
-      objEl.dom.data = this.data
+    if (this.objEl) {
+      this.objEl.dom.type = this.type
+      this.objEl.dom.data = this.data
     }
     return Promise.resolve(true)
   },
-  // {width: "100%", height: "100%"}
+
   setXSize: function (prm) {
     this.width = prm.width
     this.height = prm.height

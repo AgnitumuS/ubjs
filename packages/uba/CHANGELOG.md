@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.0]
+### Added
+ - TOTP (Google Authenticator) One Time Password generation and verification methods added into uba_otp
+ 
+### Changed
+ - HTTP request headers logged into `uba_audit` during user logon now truncated to 512 characters   
+
 ## [5.2.6]
 ### Added
  - Auditing rights provided to Supervisor role

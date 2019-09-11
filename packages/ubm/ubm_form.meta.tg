@@ -1,0 +1,34 @@
+﻿{
+    "caption": "Шакл",
+    "description": "",
+    "attributes": [
+        {
+            "name": "caption",
+            "caption": "Сарлавҳаи шакли"
+        },
+        {
+            "name": "code",
+            "caption": "Рамзи шакли"
+        },
+        {
+            "name": "model",
+            "caption": "Модел"
+        },
+        {
+            "name": "description",
+            "caption": "Тасвир"
+        },
+        {
+            "name": "isDefault",
+            "caption": "Бо нобаенӣ"
+        },
+        {
+            "name": "entity",
+            "caption": "Моҳият"
+        },
+        {
+            "name": "formType",
+            "caption": "Тип формы"
+        }
+    ]
+}

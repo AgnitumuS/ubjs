@@ -42,22 +42,43 @@ function isEqual (arg1, arg2) {
     if (arg2 === undefined) {
       arg2 = []
     }
-    return arg1.filter(i => !arg2.includes(i))
-      .concat(arg2.filter(i => !arg1.includes(i))).length === 0
+    if (arg1.find(i => !arg2.includes(i))) {
+      return false
+    }
+    if (arg2.find(i => !arg1.includes(i))) {
+      return false
+    }
+    return true
   } else if (isDate(arg1) || isDate(arg2)) {
     return moment(arg1).isSame(arg2)
+  } else if (isObject(arg1) || isObject(arg2)) {
+    if (arg1 === undefined) {
+      arg1 = {}
+    }
+    if (arg2 === undefined) {
+      arg2 = {}
+    }
+    return _.isEqual(arg1, arg2)
   } else {
     return arg1 === arg2
   }
 }
 
 /**
- * Check value is Date
- * @param  {Date}    date
- * @return {Boolean}
+ * Check if value is a Date
+ * @param  {*} value
+ * @return {boolean}
  */
-function isDate (date) {
-  return date instanceof Date && !isNaN(date)
+function isDate (value) {
+  return value instanceof Date && !isNaN(value)
+}
+
+/**
+ * Check if value is an object
+ * @param value
+ */
+function isObject (value) {
+  return typeof value === 'object' && value !== null
 }
 
 /**
@@ -75,18 +96,43 @@ function isEmpty (obj) {
  * @param {VuexTrackedObject} state
  * @param {string} key
  * @param {*} value
+ * @param {string} [path]
  */
-function change (state, key, value) {
-  if (!isEqual(state.data[key], value)) {
-    if (!(key in state.originalData)) {
-      // No value in "originalData" - edited for the first time, so save old value to "originalData"
-      Vue.set(state.originalData, key, state.data[key])
-    } else if (isEqual(state.originalData[key], value)) {
-      // If set value to its original value, means reverting any changes made, so delete it from "originalData"
-      Vue.delete(state.originalData, key)
+function change (state, key, value, path) {
+  let currentValue = state.data[key]
+  if (path !== undefined) {
+    currentValue = _.get(currentValue, path)
+  }
+  if (isEqual(currentValue, value)) {
+    return
+  }
+
+  if (!(key in state.originalData)) {
+    // No value in "originalData" - edited for the first time, so save old value to "originalData"
+    // TODO: for object types, need to create clone
+    Vue.set(state.originalData, key, _.clone(state.data[key]))
+  }
+
+  if (path === undefined) {
+    Vue.set(state.data, key, value)
+  } else {
+    if (!(key in state.data)) {
+      // Create an object, if it is not there yet
+      Vue.set(state.data, key, {})
     }
 
-    Vue.set(state.data, key, value)
+    const jsonAttr = state.data[key]
+    if (value !== undefined) {
+      Vue.set(jsonAttr, path, value)
+    } else {
+      Vue.delete(jsonAttr, path)
+    }
+  }
+
+  if (isEqual(state.originalData[key], state.data[key])) {
+    // After and only after setting value, check if we got the same value as in originalData
+    // If set value to its original value, means reverting any changes made, so delete it from "originalData"
+    Vue.delete(state.originalData, key)
   }
 }
 
@@ -203,13 +249,14 @@ function createInstanceModule () {
        * @param {object} payload
        * @param {string} [payload.collection]  Name of collection, optional
        * @param {number} [payload.index]       Index of item, optional, shall only be specified, if collection is specified.
-       * @param {string} payload.key         Key of changed attribute
-       * @param {*}      payload.value       Value attribute is changed to.
+       * @param {string} payload.key           Key of changed attribute
+       * @param {string} [payload.path]        Path (for JSON attributes) of the value
+       * @param {*}      payload.value         Value attribute is changed to.
        */
-      SET_DATA (state, { collection, index, key, value }) {
+      SET_DATA (state, { collection, index, key, value, path }) {
         if (typeof collection !== 'string') {
           // Change the Master record
-          change(state, key, value)
+          change(state, key, value, path)
           return
         }
 
@@ -221,7 +268,7 @@ function createInstanceModule () {
         if (!(index in collectionInstance.items)) {
           throw new Error(`Collection "${collection}" does not have index: ${index}!`)
         }
-        change(collectionInstance.items[index], key, value)
+        change(collectionInstance.items[index], key, value, path)
       },
 
       /**

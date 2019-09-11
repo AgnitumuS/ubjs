@@ -78,6 +78,9 @@ export default {
   name: 'UToolbar',
 
   components: { UToolbarButton },
+  props: {
+    hideDefaultButtons: Boolean
+  },
   inject: ['$formServices', 'formCode', 'entitySchema', 'fieldList', 'entity'],
 
   computed: {
@@ -88,6 +91,9 @@ export default {
     ...mapInstanceFields(['mi_createDate', 'mi_modifyDate']),
 
     mainPanelButtons () {
+      if (this.hideDefaultButtons) {
+        return []
+      }
       return [{
         caption: this.$ut('save') + ' (Ctrl + S)',
         iconCls: 'fa fa-save',
@@ -110,6 +116,9 @@ export default {
     },
 
     dropdownButtons () {
+      if (this.hideDefaultButtons) {
+        return []
+      }
       const buttons = [{
         caption: this.$ut('refresh') + ' (Ctrl + R)',
         iconCls: 'fa fa-refresh',
@@ -193,11 +202,15 @@ export default {
   },
 
   mounted () {
-    this.$root.$el.addEventListener('keydown', this.onKeydownActions)
+    if (!this.hideDefaultButtons) {
+      this.$root.$el.addEventListener('keydown', this.onKeydownActions)
+    }
   },
 
   beforeDestroy () {
-    this.$root.$el.removeEventListener('keydown', this.onKeydownActions)
+    if (!this.hideDefaultButtons) {
+      this.$root.$el.removeEventListener('keydown', this.onKeydownActions)
+    }
   },
 
   methods: {

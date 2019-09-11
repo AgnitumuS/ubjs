@@ -1,0 +1,26 @@
+﻿{
+    "caption": "Аудит",
+    "description": "",
+    "attributes": [
+        {
+            "name": "remoteIP",
+            "caption": "Суроғаи IP"
+        },
+        {
+            "name": "actionTime",
+            "caption": "Вақти амали"
+        },
+        {
+            "name": "actionType",
+            "caption": "Таъсир"
+        },
+        {
+            "name": "actionUser",
+            "caption": "Истифодабаранда"
+        },
+        {
+            "name": "entity",
+            "caption": "Моҳият"
+        }
+    ]
+}

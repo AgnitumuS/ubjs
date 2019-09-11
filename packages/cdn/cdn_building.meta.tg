@@ -1,0 +1,18 @@
+﻿{
+    "caption": "Рӯйхати хонаҳо",
+    "description": "",
+    "attributes": [
+        {
+            "name": "description",
+            "caption": "Тавсир"
+        },
+        {
+            "name": "buildingType",
+            "caption": "Намуд"
+        },
+        {
+            "name": "streetID",
+            "caption": "Кӯча"
+        }
+    ]
+}

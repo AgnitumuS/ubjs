@@ -1,0 +1,14 @@
+﻿{
+    "caption": "Арзишҳои номбаршуда",
+    "description": "",
+    "attributes": [
+        {
+            "name": "eGroup",
+            "caption": "Гурӯҳ"
+        },
+        {
+            "name": "code",
+            "caption": "Рамз"
+        }
+    ]
+}

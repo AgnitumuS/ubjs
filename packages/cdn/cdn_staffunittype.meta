@@ -1,6 +1,6 @@
 {
-  "caption": "Типы штатных единиц",
-  "description": "Справочник типов штатных единиц",
+  "caption": "Staffunit types",
+  "description": "Staffunit types dictionary",
   "connectionName": "",
   "sqlAlias": "stunt",
   "cacheType": "SessionEntity",

@@ -94,6 +94,8 @@ authentication algorithm.
 
 Some schemas have it own authorization some are only for a authentication - the last column it the table above note a
  authorization method.
+ 
+UnityBase supports One-Time-Passwords (see `uba_otp`) using SMS, EMail and TOTP (Google Authenticator)  
 
 ### UB authorization
 If future client requests are authorized using UB method, the task of authentication is to elaborate two parameters
@@ -129,7 +131,6 @@ Authorization signature calculation (JavaScript):
         return  hexa(clientSessionID) + hexaTime + hexa8(crc32(sessionPrivateKey + secretWord + hexaTime));
      }
 
-
 ## UnityBase Administration (UBA) model
 
 The basis of all security mechanism is UnityBase Administration (UBA) model. To enable build-in security developer must
@@ -154,6 +155,26 @@ Session context for method execution. This mode can be used in several cases:
 *   for test or developing purpose
 
 Also developer can turn on "authentication not used" mode by comment `"authMethods"` section in application config.
+
+### One Time Passwords (OTP)
+`uba_otp` entity adds support for One Time Passwords into `UBA` model.
+
+Currently implemented methods is EMail, SMS and TOTP (google authenticator). OTP can be generated using `uba_otp.generateOtp`
+method and verified using `uba_otp.authAndExecute` for EMail/SMS or `uba_otp.verifyTotp` for TOTP   
+
+TOTP sample
+```
+  // generate TOTP secret and store it for currently logged in user
+  uba_otp.generateOtp('TOTP') 
+
+  // validate TOTP (6 digits passed from user)
+  let valid = uba_otp.verifyTotp('012345') // true/false
+
+  // generate QR code for Google Authenticator for user with ID=userID
+  const totpLib = require('@unitybase/uba/modules/totp')
+  let secret = uba_otp.generateOtp('TOTP', userID)
+  let qrContent = totpLib.getTotpQRCodeData('My SuperApp', secret, 'My company name')
+```
 
 ### Password policy
 

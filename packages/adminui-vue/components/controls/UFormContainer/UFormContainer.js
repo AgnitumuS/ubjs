@@ -32,7 +32,8 @@ module.exports = {
   render (h) {
     return h('form', {
       attrs: {
-        tabindex: 1 // need to catch focus on form for handle keydown events on form
+        tabindex: 1, // need to catch focus on form for handle keydown events on form
+        autocomplete: 'off'
       },
       style: {
         overflow: 'auto',

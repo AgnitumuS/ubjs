@@ -1,0 +1,26 @@
+﻿{
+    "caption": "Шаҳодатномаҳо",
+    "description": "",
+    "attributes": [
+        {
+            "name": "description",
+            "caption": "Тасвир"
+        },
+        {
+            "name": "disabled",
+            "caption": "Хомуш"
+        },
+        {
+            "name": "userID",
+            "caption": "Истифодабаранда"
+        },
+        {
+            "name": "serial",
+            "caption": "Рақами силсилавӣ"
+        },
+        {
+            "name": "certificate",
+            "caption": "Шаҳодатнома"
+        }
+    ]
+}

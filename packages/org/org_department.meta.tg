@@ -1,0 +1,30 @@
+﻿{
+    "caption": "Воҳидҳои дохили",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамзи дохилӣ"
+        },
+        {
+            "name": "caption",
+            "caption": "Сарлавҳа"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуи воҳидҳо"
+        },
+        {
+            "name": "description",
+            "caption": "Воҳидҳои тавсифи "
+        },
+        {
+            "name": "fullName",
+            "caption": "Номи пурраи воҳидҳо"
+        },
+        {
+            "name": "depTypeID",
+            "caption": "Намуди воҳиди"
+        }
+    ]
+}

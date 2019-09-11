@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.38]
+### Changed
+ - speed up command `ubcli checkStoreIntegrity` by removing `attribute not null` expression from SQL and 
+ check attachment is exist in JS
+
 ## [5.3.37]
 ### Added
  - `ubcli generateDoc` will add's API methods available for entities; HTML output is formatted using bootstrap  

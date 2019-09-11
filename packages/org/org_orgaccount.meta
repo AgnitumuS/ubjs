@@ -16,7 +16,7 @@
     },
     {
       "name": "currencyID",
-      "caption": "Валюта",
+      "caption": "Currency",
       "dataType": "Entity",
       "associatedEntity": "cdn_currency",
       "description": "Currency of the account",

@@ -1,0 +1,14 @@
+﻿{
+    "caption": "Ҳисобкунаки калиди бақайдгирӣ",
+    "description": "",
+    "attributes": [
+        {
+            "name": "regKey",
+            "caption": "Калиди бақайдгирӣ"
+        },
+        {
+            "name": "counter",
+            "caption": "Ҳисобкунак"
+        }
+    ]
+}

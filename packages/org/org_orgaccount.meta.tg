@@ -1,0 +1,30 @@
+﻿{
+    "caption": "Суратҳисобҳо",
+    "description": "",
+    "attributes": [
+        {
+            "name": "bankID",
+            "caption": "Бонк"
+        },
+        {
+            "name": "currencyID",
+            "caption": "Асъор"
+        },
+        {
+            "name": "code",
+            "caption": "Рамзи суратҳисоб"
+        },
+        {
+            "name": "description",
+            "caption": "Тасвир"
+        },
+        {
+            "name": "organizationID",
+            "caption": "Ташкилот "
+        },
+        {
+            "name": "acctype",
+            "caption": "Намуди суратҳисоб"
+        }
+    ]
+}

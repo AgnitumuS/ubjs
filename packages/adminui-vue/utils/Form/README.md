@@ -87,6 +87,28 @@ module.exports.default ={
 }
 ```
 
+## Проброс значений по умолчанию в форму для новой записи
+Forms принимает на вход опциональный параметр `props.parentContext` - object со значениями атрибутов по умолчанию для
+метода `addNew`. 
+
+Таким образом можно, например, передать дочерней форме значение идентификатора записи текущей формы (мастер-деталь).
+`$App.doCommand` пробрасывает props транзотом в конструктор Form.
+
+В примере ниже мы вызывает форму в режиме добавления записи (не передаем instanceID), при этом значение атрибута `docID`
+новой формы будет 123 (еси его не изменет серверная реализация метода `addNew`) 
+
+```javascript
+  $App.doCommand({
+    cmdType: 'showForm',
+    entity: 'doc_controltask',
+    formCode: 'doc_controltask_form',
+    isModal: true,
+    props: {
+      parentContext: { docID: 123 }
+    }
+  })
+```  
+
 ## Предупреждение
 > instance -> processing -> validation должны использоватся последовательно.
 > Tо есть можно использовать instance отдельно, но processing без instance нельзя, то же касается и validation
@@ -186,7 +208,69 @@ module.exports.default ={
 ### Validation
   На основе данных в instance модуле и entitySchema создает объект валидации `$v` - [vuelidate](https://github.com/vuelidate/vuelidate)
   полученый объект через provide прокидывается в компонент.
-  Можно получить в любом дочернем компоненте формы с помощью `inject: ['$v']`
+  Можно получить в любом дочернем компоненте формы с помощью `inject: ['$v']`.
+  Можно передать функцию в качестве параметра в которой можно будет на основе стора построить кастомную валидацию.
+  
+#### Пример кастомной валидации
+  dynamicField будет обязательным если someNumber будет больше 25
+    
+```javascript
+const Vue = require('vue')
+const { validationMixin } = require('vuelidate/lib/index')
+const { required, between } = require('vuelidate/lib/validators/index')
+
+function createValidator (store) {
+  const validatorInstance = new Vue({
+    store,
+    mixins: [ validationMixin ],
+
+    computed: {
+      name () {
+        return this.$store.state.data.name
+      },
+      
+      someNumber () {
+        return this.$store.state.data.someNumber
+      },
+      
+      dynamicField () {
+        return this.$store.state.data.dynamicField
+      }
+    },
+
+    validations () {
+      return {
+        name: { required },
+        someNumber: {
+          required, 
+          between: between(20, 30)
+        },
+        ...(this.someNumber > 25 ? {
+          dynamicField: { required }
+        } : {})
+      }
+    }
+  })
+
+  return validatorInstance.$v
+}
+
+module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
+  Form({
+    component: rootComponent,
+    entity,
+    instanceID,
+    title,
+    formCode
+  })
+  .instance()
+  .processing()
+  .validation(createValidator)
+  .mount()
+}
+
+```
+
 
 ## Рекомендации к написанию шаблона формы
 

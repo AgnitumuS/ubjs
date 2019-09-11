@@ -1,0 +1,18 @@
+﻿{
+    "caption": "Индекси хабарнигорон",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "fullName",
+            "caption": "Номи пурра"
+        }
+    ]
+}

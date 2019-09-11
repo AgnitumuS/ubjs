@@ -1,0 +1,22 @@
+﻿{
+    "caption": "",
+    "description": "",
+    "attributes": [
+        {
+            "name": "sessionTimeout",
+            "caption": "Вақти амали ҷаласа"
+        },
+        {
+            "name": "allowedAppMethods",
+            "caption": "Нуқтаҳои вориди дастрас"
+        },
+        {
+            "name": "description",
+            "caption": "Тасвир"
+        },
+        {
+            "name": "name",
+            "caption": "Рол"
+        }
+    ]
+}

@@ -471,7 +471,7 @@ $App.connection.userLang()
           secretWord = pwdForAuth // :( medium unsecured
         } else {
           pwdForAuth = window.btoa(authParams.password)
-          secretWord = pwdForAuth // todo -  very unsecured!!
+          secretWord = pwdForAuth // unsecured - to be used only with HTTPS!!
         }
       } else {
         serverNonce = resp.data.result

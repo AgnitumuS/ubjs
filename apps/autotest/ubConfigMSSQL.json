@@ -37,16 +37,6 @@
 	"security": {
 		"authenticationMethods": [
 			"UB", "Negotiate"
-		],
-		"ldapCatalogs": [
-			{
-				"name": "MYDOMAIN",
-				"host": "softline.main",
-				"port": "3268",
-				"useTLS": false,
-				"useSSL": false,
-				"useSasl": true
-			}
 		]
 	},
 	"uiSettings": {

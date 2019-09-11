@@ -1,0 +1,22 @@
+﻿{
+    "caption": "Вазифаҳо",
+    "description": "",
+    "attributes": [
+        {
+            "name": "description",
+            "caption": "Сарлавҳа"
+        },
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "fullName",
+            "caption": "Номи пурра "
+        }
+    ]
+}

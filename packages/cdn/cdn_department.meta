@@ -1,6 +1,6 @@
 {
-  "caption": "Внешние подразделения",
-  "description": "Справочник внешних подразделений",
+  "caption": "External departments",
+  "description": "External departments dictionary",
   "connectionName": "",
   "sqlAlias": "dep",
   "cacheType": "None",

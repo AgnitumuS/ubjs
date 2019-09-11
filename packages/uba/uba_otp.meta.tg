@@ -1,0 +1,22 @@
+﻿{
+    "caption": "",
+    "description": "",
+    "attributes": [
+        {
+            "name": "otpKind",
+            "caption": "Намуди рамз"
+        },
+        {
+            "name": "uData",
+            "caption": "Маълумотҳои иловагӣ"
+        },
+        {
+            "name": "userID",
+            "caption": "Истифодабаранда"
+        },
+        {
+            "name": "expiredDate",
+            "caption": "Мӯҳлати истифода"
+        }
+    ]
+}

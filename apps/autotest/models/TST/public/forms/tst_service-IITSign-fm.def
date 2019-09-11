@@ -87,7 +87,7 @@ Ext.define('TST.IITSign', {
 
           onFileSelect = function (evt) {
             var file = evt.target.files[0]
-            UB.base64fromAny(file).done(function (b64) {
+            UB.base64fromAny(file).then(function (b64) {
               me.down('component[ubID="signature"]').setValue(b64)
             })
           }
@@ -170,7 +170,7 @@ Ext.define('TST.IITSign', {
       $App.connection.post('echoToFile', buf).fail(function () {
         return null
       }).done()
-      $App.dialog('File is saved on server', 'You can find it in folder of your TST model by path <b>\\_autotest\\fixtures\\req</b>', { buttons: 1 }).done()
+      $App.dialog('File is saved on server', 'You can find it in folder of your TST model by path <b>\\_autotest\\fixtures\\req</b>', { buttons: 1 })
     }
   }
 })

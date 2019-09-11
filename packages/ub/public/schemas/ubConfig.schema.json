@@ -461,7 +461,7 @@
         },
         "ldapCatalogs": {
           "type": "array",
-          "description": "If `userName` passed to `auth` in form `DOMAIN\\domainUser` and `UBLDAP` is present in `authenticationMethods` user credentials will be checked by request to LDAP catalog",
+          "description": "If `userName` passed to `auth` in form `DOMAIN\\domainUser` and `UBLDAP` is present in `authenticationMethods` user credentials will be checked by request to LDAP catalog using curl. **WARNING** - ldap password is passed in plain text other network, so server should accept only HTTPS connection to be secure",
           "items": {
             "type": "object",
             "properties": {
@@ -469,35 +469,17 @@
                 "type": "string",
                 "description": "Name of domain"
               },
-              "catalogType": {
-                "enum": [
-                  "Internal",
-                  "LDAP"
-                ],
-                "default": "LDAP",
-                "description": "Type of LDAP catalog. `Internal` is reserved for future use"
-              },
-              "host": {
+              "URL": {
                 "type": "string",
-                "description": "LDAP server host"
+                "description": "LDAP query; % placeholder will be replaced by user name. UB will send this query directly to LDAP server with username/password passed from client using curl; Example: \"ldaps://myldap.server:636/OU=MyCompany,DC=myldap,DC=server?cn?sub?(sAMAccountName=%)\""
               },
-              "port": {
+              "CAPath": {
                 "type": "string",
-                "description": "LDAP server port"
+                "description": "Unix only: optional path to folder with CA certificates. See https://curl.haxx.se/docs/sslcerts.html"
               },
-              "useTLS": {
+              "ignoreSSLCertificateErrors": {
                 "type": "boolean",
-                "description": "Use TLS for accessing LDAP server",
-                "default": false
-              },
-              "useSSL": {
-                "type": "boolean",
-                "description": "Use SSL for accessing LDAP server",
-                "default": false
-              },
-              "useSasl": {
-                "type": "boolean",
-                "description": "Use Sasl for accessing LDAP server",
+                "description": "Ignore SSL certificates errors (sets SSLVerifyPeer and SSLVerifyHost to false); **NOT RECOMMENDED**",
                 "default": false
               }
             }
@@ -928,6 +910,11 @@
               "type": "object",
               "description": "Configuration options for pdf viewer",
               "properties": {
+                "customURI": {
+                  "type": "string",
+                  "description": "Custom PDF viewer to use instead of browser default. Loaded inside iframe - see PDFComponent.js\n Placeholders: {0}-will be replaced by encodeURIComponent(blobUrl); {1} - user language; {2} - instanceID. Examples: 1) PDFJs viewer '/clientRequire/@docflow/doc/public/node_modules/pdfjs/web/viewer.html?file={0}#locale={1}' 2) Pdf with annotations: '/clientRequire/@docflow/pdf-annotate/dist/index.html?file={0}&docID={2}#locale={1}'",
+                  "default": ""
+                },
                 "uriSuffix": {
                   "type": "string",
                   "description": "Additional parameters passed to PDF viewer ULR. See https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/pdf_open_parameters.pdf for details",

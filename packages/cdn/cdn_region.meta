@@ -1,6 +1,6 @@
 {
-  "caption": "Регионы",
-  "description": "Справочник регионов",
+  "caption": "Regions",
+  "description": "Regions dictionary",
   "connectionName": "",
   "sqlAlias": "regn",
   "descriptionAttribute": "name",

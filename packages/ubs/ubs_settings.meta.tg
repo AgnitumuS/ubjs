@@ -1,0 +1,22 @@
+﻿{
+    "caption": "Танзимот",
+    "description": "",
+    "attributes": [
+        {
+            "name": "settingKey",
+            "caption": "Калид"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "description",
+            "caption": "Тасвир"
+        },
+        {
+            "name": "type",
+            "caption": "Намуд"
+        }
+    ]
+}

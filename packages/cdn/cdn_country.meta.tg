@@ -1,0 +1,42 @@
+﻿{
+    "caption": "Мамлакатҳо",
+    "description": "",
+    "attributes": [
+        {
+            "name": "symbol2",
+            "caption": "Рамзи ISO"
+        },
+        {
+            "name": "currencyID",
+            "caption": "Асъор"
+        },
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "description",
+            "caption": "Тавсир"
+        },
+        {
+            "name": "fullName",
+            "caption": "Номи пурра"
+        },
+        {
+            "name": "capitalID",
+            "caption": "Пойтахт"
+        },
+        {
+            "name": "phoneCode",
+            "caption": "Рамзи телефон"
+        },
+        {
+            "name": "intCode",
+            "caption": "Рамзи рақамӣ"
+        }
+    ]
+}

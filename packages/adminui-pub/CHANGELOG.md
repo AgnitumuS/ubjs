@@ -4,11 +4,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.10.20]
+### Fixed
+ - in case `uiSettings.adminUI.pdfViewer` is not defined do not add a `undefined` to the end of PDF viewer URL
+   
+## [5.10.19]
+### Fixed
+ - tinymce version fixed to 4.9.5. In version 4.9.6 there is a problem `tinymce detected as amd but didn't execute correctly`
+ 
+## [5.10.18]
+### Added
+ - new configuration parameter `adminUI.pdfViewer.customURI`. If defined then specified URL expected to be an html page URL
+ what can be loaded inside iframe and display a PDF. Inside URL following placeholders can be used:
+   - {0}: will be replaced by encodeURIComponent(blobUrl);
+   - {1} - user language;
+   - {2} - instanceID
+   
+ Examples:
+   - PDFJs viewer: `/clientRequire/@docflow/doc/public/node_modules/pdfjs/web/viewer.html?file={0}#locale={1}`
+   - PDF with annotations: `/clientRequire/@docflow/pdf-annotate/dist/index.html?file={0}&docID={2}#locale={1}`
+
 ## [5.10.16]
 ### Fixed
-- silenceKerberosLogin now handled by adminui-pub instead of AsyncConnection. This fix [UBDF-9903] && #64
-- allow to call `EntityGridPanel.doShowDetail` for instances of EntityGridPanel with stateId and title `undefined` 
-- if `formCode` passed to `$App.doCommand` is a function then tabId algorithm will use word 'func', instead of function source code
+ - silenceKerberosLogin now handled by adminui-pub instead of AsyncConnection. This fix [UBDF-9903] && #64
+ - allow to call `EntityGridPanel.doShowDetail` for instances of EntityGridPanel with stateId and title `undefined` 
+ - if `formCode` passed to `$App.doCommand` is a function then tabId algorithm will use word 'func', instead of function source code
 
 ## [5.10.15]
 ### Changed

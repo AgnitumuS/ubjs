@@ -1,0 +1,14 @@
+﻿{
+    "caption": "Гурӯҳбандии шахсони воқеӣ",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        }
+    ]
+}
