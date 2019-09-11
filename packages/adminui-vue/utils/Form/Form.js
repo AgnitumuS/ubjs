@@ -34,6 +34,8 @@ class UForm {
    * @param {object} cfg
    * @param {VueComponent} cfg.component Form component
    * @param {object} [cfg.props] Form component props
+   * @param {object} [cfg.props.parentContext] Attributes values what will be passed to addNew method
+   *   in case instanceID is empty. Think of it as default values for attributes of a new record
    * @param {string} [cfg.title] Form title
    * @param {string} cfg.entity Entity name for master record
    * @param {number} [cfg.instanceID] Instance ID
@@ -117,17 +119,17 @@ class UForm {
   /**
    * @param {Object} cfg
    * @param {Array<string>} cfg.masterFieldList
-   * @param cfg.collections
-   * @param {function} cfg.beforeInit
-   * @param {function} cfg.inited
-   * @param {function} cfg.beforeSave
-   * @param {function} cfg.saved
-   * @param {function} cfg.beforeCreate
-   * @param {function} cfg.created
-   * @param {function} cfg.beforeLoad
-   * @param {function} cfg.loaded
-   * @param {function} cfg.beforeDelete
-   * @param {function} cfg.deleted
+   * @param {Object} [cfg.collections]
+   * @param {function} [cfg.beforeInit]
+   * @param {function} [cfg.inited]
+   * @param {function} [cfg.beforeSave]
+   * @param {function} [cfg.saved]
+   * @param {function} [cfg.beforeCreate]
+   * @param {function} [cfg.created]
+   * @param {function} [cfg.beforeLoad]
+   * @param {function} [cfg.loaded]
+   * @param {function} [cfg.beforeDelete]
+   * @param {function} [cfg.deleted]
    * @returns {UForm}
    */
   processing ({
@@ -172,18 +174,19 @@ class UForm {
       entitySchema: this.entitySchema,
       fieldList: this.fieldList,
       instanceID: this.instanceID,
+      parentContext: (this.props && this.props.parentContext) ? this.props.parentContext : undefined,
       collections,
       validator: () => this.validator,
-      beforeInit: () => hookWrap(beforeInit, this.$store),
-      inited: () => hookWrap(inited, this.$store),
-      beforeSave: () => hookWrap(beforeSave, this.$store),
-      saved: () => hookWrap(saved, this.$store),
-      beforeCreate: () => hookWrap(beforeCreate, this.$store),
-      created: () => hookWrap(created, this.$store),
-      beforeLoad: () => hookWrap(beforeLoad, this.$store),
-      loaded: () => hookWrap(loaded, this.$store),
-      beforeDelete: () => hookWrap(beforeDelete, this.$store),
-      deleted: () => hookWrap(deleted, this.$store)
+      beforeInit: beforeInit ? () => hookWrap(beforeInit, this.$store) : null,
+      inited: inited ? () => hookWrap(inited, this.$store) : null,
+      beforeSave: beforeSave ? () => hookWrap(beforeSave, this.$store) : null,
+      saved: saved ? () => hookWrap(saved, this.$store) : null,
+      beforeCreate: beforeCreate ? () => hookWrap(beforeCreate, this.$store) : null,
+      created: created ? () => hookWrap(created, this.$store) : null,
+      beforeLoad: beforeLoad ? () => hookWrap(beforeLoad, this.$store) : null,
+      loaded: loaded ? () => hookWrap(loaded, this.$store) : null,
+      beforeDelete: beforeDelete ? () => hookWrap(beforeDelete, this.$store) : null,
+      deleted: deleted ? () => hookWrap(deleted, this.$store) : null
     })
     mergeStore(this.storeConfig, processingModule)
 
@@ -191,8 +194,8 @@ class UForm {
   }
 
   /**
-   * if $v passed will be used it for validation before save or close
-   * else will used automatically generates validation
+   * Custom validator function. In case `validation` not called or called without argument then validator function
+   *  is generated automatically based on entitySchema
    * @param {function} [validator] custom validator
    * @return {UForm}
    */
@@ -295,7 +298,8 @@ class UForm {
    * @param {boolean} dirty
    */
   lockUnlockOnDirtyChanged (dirty) {
-    console.log('DIRTY', dirty)
+    // console.log('DIRTY', dirty)
+    if (this.$store && this.$store.state.isNew) return
     if (dirty) {
       if (!this.$store.getters.isLockedByMe) {
         this.$store.dispatch('lockEntity')

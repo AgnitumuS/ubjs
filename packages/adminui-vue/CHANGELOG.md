@@ -4,7 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-<<<<<<< packages/adminui-vue/CHANGELOG.md
+## [1.6.30]
+### Added
+ - in case `props.parentContext` is passed to Form() values of `parentContext` will became a default values for a new row
+ (passed to addNew method). Sample below calls a Vue form in NEW mode (instanceID not defined) and sets value of `docID`
+ attribute to 123 
+                            
+```javascript
+  $App.doCommand({
+    cmdType: 'showForm',
+    entity: 'doc_controltask',
+    formCode: 'doc_controltask_form',
+    isModal: true,
+    props: {
+      parentContext: { docID: 123 }
+    }
+  })
+```   
+   
+### Fixed
+ - prevent creation of empty Form life-circle hook functions (optimization)  
+ - prevent call 'lock' method for new entity instances with softLock mixin (should be called only for existed instances) 
 
 ## [1.6.29]
 ### Fixed

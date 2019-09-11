@@ -100,13 +100,7 @@ function replaceAutoForms () {
     modalClass: 'ub-dialog__reset-padding'
   })
     .instance()
-    .processing({
-      inited (store) {
-        if (parentContext) {
-          store.commit('LOAD_DATA_PARTIAL', parentContext)
-        }
-      }
-    })
+    .processing()
     .validation()
     .mount()
 }
