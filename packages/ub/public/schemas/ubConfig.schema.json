@@ -910,6 +910,11 @@
               "type": "object",
               "description": "Configuration options for pdf viewer",
               "properties": {
+                "customURI": {
+                  "type": "string",
+                  "description": "Custom PDF viewer to use instead of browser default. Loaded inside iframe - see PDFComponent.js\n Placeholders: {0}-will be replaced by encodeURIComponent(blobUrl); {1} - user language; {2} - instanceID. Examples: 1) PDFJs viewer '/clientRequire/@docflow/doc/public/node_modules/pdfjs/web/viewer.html?file={0}#locale={1}' 2) Pdf with annotations: '/clientRequire/@docflow/pdf-annotate/dist/index.html?file={0}&docID={2}#locale={1}'",
+                  "default": ""
+                },
                 "uriSuffix": {
                   "type": "string",
                   "description": "Additional parameters passed to PDF viewer ULR. See https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/pdf_open_parameters.pdf for details",

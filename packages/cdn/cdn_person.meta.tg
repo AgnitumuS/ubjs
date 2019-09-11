@@ -1,0 +1,74 @@
+﻿{
+    "caption": "Рӯйхати шахсони воқеӣ",
+    "description": "",
+    "attributes": [
+        {
+            "name": "apply",
+            "caption": "Муроҷиат"
+        },
+        {
+            "name": "birthDate",
+            "caption": "Санаи таваллуд"
+        },
+        {
+            "name": "firstName",
+            "caption": "Ном"
+        },
+        {
+            "name": "categoryID",
+            "caption": "Гурӯҳ"
+        },
+        {
+            "name": "classID",
+            "caption": "Гурӯҳбандӣ"
+        },
+        {
+            "name": "shortFIO",
+            "caption": "Ному насаби кӯтоҳ"
+        },
+        {
+            "name": "workPlacePos",
+            "caption": "Ҷои кор, вазифа"
+        },
+        {
+            "name": "nationality",
+            "caption": "Миллат"
+        },
+        {
+            "name": "description",
+            "caption": "Тасвир"
+        },
+        {
+            "name": "middleName",
+            "caption": "Номи падар"
+        },
+        {
+            "name": "sexType",
+            "caption": "ҷинс"
+        },
+        {
+            "name": "fullFIO",
+            "caption": "Ному насаби пурра"
+        },
+        {
+            "name": "regionID",
+            "caption": "Ноҳия"
+        },
+        {
+            "name": "socialstatusID",
+            "caption": "Вазъи иҷтимоӣ"
+        },
+        {
+            "name": "identCard",
+            "caption": "Ҳуҷҷати тасдиқкунандаи шахсият"
+        },
+        {
+            "name": "lastName",
+            "caption": "Насаб"
+        },
+        {
+            "name": "photo",
+            "caption": "Сурат"
+        }
+    ]
+}

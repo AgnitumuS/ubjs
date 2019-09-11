@@ -1,0 +1,14 @@
+﻿{
+    "caption": "Намудҳои маҳалҳои аҳолинишин",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        }
+    ]
+}

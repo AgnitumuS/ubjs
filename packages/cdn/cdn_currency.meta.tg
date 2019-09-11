@@ -1,0 +1,22 @@
+﻿{
+    "caption": "Асъор",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code3",
+            "caption": "Рамзи 3-аломата"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "description",
+            "caption": "Тасвир"
+        },
+        {
+            "name": "intCode",
+            "caption": "Рамзи рақамӣ"
+        }
+    ]
+}

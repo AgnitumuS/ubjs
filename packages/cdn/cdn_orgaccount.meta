@@ -1,65 +1,65 @@
 {
-	"caption": "Расчётные счета",
-	"description": "Справочник расчётных счетов организаций",
-	"connectionName": "",
-	"sqlAlias": "orgacc",
-	"cacheType": "Entity",
-	"descriptionAttribute": "description",
-	"attributes": [
-		{
-			"name": "organizationID",
-			"dataType": "Entity",
-			"associatedEntity": "cdn_organization",
-			"caption": "Organization",
-			"description": "Organization",
-			"allowNull": false
-		},
-		{
-			"name": "currencyID",
-			"dataType": "Entity",
-			"associatedEntity": "cdn_currency",
-			"caption": "Currency",
-			"description": "Currency of the account",
-			"allowNull": false
-		},
-		{
-			"name": "bankID",
-			"dataType": "Entity",
-			"associatedEntity": "cdn_bank",
-			"caption": "Bank",
-			"description": "Bank of the account",
-			"allowNull": false
-		},
-		{
-			"name": "code",
-			"dataType": "String",
-			"size": 29,
-			"caption": "Code",
-			"description": "Code of the account",
-			"allowNull": false
-		},
-		{
-			"name": "acctype",
-			"dataType": "Enum",
-			"enumGroup": "CDN_ACCOUNTTYPE",
-			"caption": "Type",
-			"description": "Type of the account",
-			"allowNull": false
-		},
-		{
-			"name": "description",
-			"dataType": "String",
-			"size": 512,
-			"caption": "Description",
-			"description": "Description",
-			"defaultView": false,
-			"allowNull": false
-		}
-	],
-	"mixins": {
-		"mStorage": {
-			"simpleAudit":true,
-			"safeDelete":true
-		}
-	}
+  "caption": "Current accounts",
+  "description": "Organization's current accounts dictionary",
+  "connectionName": "",
+  "sqlAlias": "orgacc",
+  "cacheType": "Entity",
+  "descriptionAttribute": "description",
+  "attributes": [
+    {
+      "name": "organizationID",
+      "dataType": "Entity",
+      "associatedEntity": "cdn_organization",
+      "caption": "Organization",
+      "description": "Organization",
+      "allowNull": false
+    },
+    {
+      "name": "currencyID",
+      "dataType": "Entity",
+      "associatedEntity": "cdn_currency",
+      "caption": "Currency",
+      "description": "Currency of the account",
+      "allowNull": false
+    },
+    {
+      "name": "bankID",
+      "dataType": "Entity",
+      "associatedEntity": "cdn_bank",
+      "caption": "Bank",
+      "description": "Bank of the account",
+      "allowNull": false
+    },
+    {
+      "name": "code",
+      "dataType": "String",
+      "size": 29,
+      "caption": "Code",
+      "description": "Code of the account",
+      "allowNull": false
+    },
+    {
+      "name": "acctype",
+      "dataType": "Enum",
+      "enumGroup": "CDN_ACCOUNTTYPE",
+      "caption": "Type",
+      "description": "Type of the account",
+      "allowNull": false
+    },
+    {
+      "name": "description",
+      "dataType": "String",
+      "size": 512,
+      "caption": "Description",
+      "description": "Description",
+      "defaultView": false,
+      "allowNull": false
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit":true,
+      "safeDelete":true
+    }
+  }
 }

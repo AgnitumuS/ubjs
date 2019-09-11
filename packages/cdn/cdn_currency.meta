@@ -1,6 +1,6 @@
 {
     "caption": "Currencies",
-    "description": "Currencies dictionary",
+    "description": "Currencies dictionary according to ISO 4217",
     "connectionName": "",
     "sqlAlias": "curr",
     "cacheType": "SessionEntity",
@@ -25,7 +25,7 @@
         {
             "name": "name",
             "dataType": "String",
-            "size": 32,
+            "size": 65,
             "caption": "Name",
             "description": "Name of currency",
             "allowNull": false,
@@ -42,7 +42,7 @@
         {
             "name": "description",
             "dataType": "String",
-            "size": 40,
+            "size": 128,
             "caption": "Description",
             "description": "Description",
             "documentation": "Description",

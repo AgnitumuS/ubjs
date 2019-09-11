@@ -1,0 +1,12 @@
+﻿{
+    "caption": "Ҳуқуқи дастрасӣ",
+    "description": "",
+    "attributes": {
+        "userID": {
+            "caption": "Истифодабаранда"
+        },
+        "cardID": {
+            "caption": "Файл"
+        }
+    }
+}

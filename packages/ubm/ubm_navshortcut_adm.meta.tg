@@ -1,0 +1,10 @@
+﻿{
+    "caption": "Идоракунии панели навигатсиони",
+    "description": "",
+    "attributes": [
+        {
+            "name": "admSubjID",
+            "caption": "Субъектҳои идоракуни"
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+﻿{
+    "caption": "",
+    "description": "",
+    "attributes": [
+        {
+            "name": "inWindow",
+            "caption": "Дар тирезаи алоҳида"
+        },
+        {
+            "name": "desktopID",
+            "caption": "Мизи корӣ"
+        },
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "cmdCode",
+            "caption": "Матни фармон"
+        }
+    ]
+}

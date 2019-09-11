@@ -1,0 +1,42 @@
+﻿{
+    "caption": "Кормандони ташкилотҳои беруна ",
+    "description": "",
+    "attributes": [
+        {
+            "name": "shortFIO",
+            "caption": "Ному насаби кӯтоҳ"
+        },
+        {
+            "name": "apply",
+            "caption": "Муроҷиат"
+        },
+        {
+            "name": "description",
+            "caption": "Тасвир"
+        },
+        {
+            "name": "organizationID",
+            "caption": "Ташкилот"
+        },
+        {
+            "name": "sexType",
+            "caption": "ҷинс"
+        },
+        {
+            "name": "fullFIO",
+            "caption": "Ному насаби пурра"
+        },
+        {
+            "name": "uniqNum",
+            "caption": "Рақами табелӣ"
+        },
+        {
+            "name": "lastName",
+            "caption": "Насаб"
+        },
+        {
+            "name": "addrText",
+            "caption": "Таҳили суроға"
+        }
+    ]
+}

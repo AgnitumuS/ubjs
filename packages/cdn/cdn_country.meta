@@ -1,6 +1,6 @@
 {
   "caption": "Countries",
-  "description": "Countries directory",
+  "description": "Countries directory according to ISO-3166-1",
   "connectionName": "",
   "sqlAlias": "cntr",
   "descriptionAttribute": "name",

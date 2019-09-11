@@ -1,0 +1,30 @@
+﻿{
+    "caption": "",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамзи дохилӣ"
+        },
+        {
+            "name": "professionID",
+            "caption": "Вазифа "
+        },
+        {
+            "name": "caption",
+            "caption": "Сарлавҳа"
+        },
+        {
+            "name": "fullName",
+            "caption": "Номи пурра "
+        },
+        {
+            "name": "professionExtID",
+            "caption": "Касб"
+        },
+        {
+            "name": "isBoss",
+            "caption": "Роҳбар"
+        }
+    ]
+}

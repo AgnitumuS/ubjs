@@ -30,7 +30,7 @@ function checkAdvancedSecurity (req) {
   } catch (e) {
     // nothing to do - table uba_advSecurity not exists
     console.warn('Advanced security is disabled because table uba_advSecurity does not exists')
-    doCheckAdvancedSecurity = function () { return {enabled: false} }
+    doCheckAdvancedSecurity = function () { return { enabled: false } }
   }
   let fp = ''
   let urlParams = queryString.parse(req.decodedParameters)
@@ -103,7 +103,7 @@ function onUserLogin (req) {
   if (!doCheckAdvancedSecurity) {
     doCheckAdvancedSecurity = App.domainInfo.has('uba_advSecurity')
       ? checkAdvancedSecurity
-      : function () { return {enabled: false} }
+      : function () { return { enabled: false } }
   }
   let advCheckData = doCheckAdvancedSecurity(req)
 
@@ -119,7 +119,7 @@ function onUserLogin (req) {
           remoteIP: Session.callerIP,
           targetUser: (advCheckData.enabled && advCheckData.kmn) ? advCheckData.kmn : Session.uData.login,
           targetRole: (advCheckData.enabled && advCheckData.fpa) ? advCheckData.fpa.slice(0, 127) : '',
-          fromValue: req.headers
+          fromValue: (req.headers.length > 512) ? req.headers.slice(0, 509) + '...' : req.headers
         }
       })
       App.dbCommit(auditStore.entity.connectionName)

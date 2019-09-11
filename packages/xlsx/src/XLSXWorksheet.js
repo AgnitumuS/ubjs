@@ -271,7 +271,7 @@ class XLSXWorksheet {
     this.dataRows.push('> ') // + '" x14ac:dyDescent="0.25">';
 
     // let cellCount = 0
-    const hasTemplate = (typeof template !== 'undefined') && (template.length === config.length)
+    const hasTemplate = (typeof template !== 'undefined') && Array.isArray(template) && (template.length === config.length)
     const hasCellTemplate = (typeof rowConfig.cellTemplate !== 'undefined' && Array.isArray(rowConfig.cellTemplate) &&
       rowConfig.cellTemplate.length === config.length)
     const existCell = {}

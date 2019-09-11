@@ -1,0 +1,18 @@
+﻿{
+    "caption": "Индекси почта",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Индекс"
+        },
+        {
+            "name": "description",
+            "caption": "Тасвир"
+        },
+        {
+            "name": "streetID",
+            "caption": "Кӯча"
+        }
+    ]
+}

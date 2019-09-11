@@ -1,0 +1,26 @@
+﻿{
+    "caption": "Намудҳои ташкилотҳо",
+    "description": "",
+    "attributes": [
+        {
+            "name": "shortName",
+            "caption": "Ихтисорот"
+        },
+        {
+            "name": "isGovAuthority",
+            "caption": "Мақомоти давлатӣ"
+        },
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номуй"
+        },
+        {
+            "name": "fullName",
+            "caption": "Тасвир"
+        }
+    ]
+}

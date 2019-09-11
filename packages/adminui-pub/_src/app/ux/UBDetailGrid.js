@@ -6,14 +6,14 @@ require('../view/EntityGridPanel')
  * Configuration sample:
  *
     {
-        xtype: "ubdetailgrid",
-        entityConfig: {
-                entity: "uba_userrole",
-                method: "select",
-                fieldList: ["roleID"]
-        },
-        masterFields: ["ID"],
-        detailFields: ["userID"]
+      xtype: "ubdetailgrid",
+      entityConfig: {
+        entity: "uba_userrole",
+        method: "select",
+        fieldList: ["roleID"]
+      },
+      masterFields: ["ID"],
+      detailFields: ["userID"]
     }
  *
  * @author UnityBase core team

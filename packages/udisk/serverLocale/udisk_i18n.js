@@ -25,8 +25,8 @@ UB.i18nExtend({
     udiskUserMustHaveAccessToParent: 'User or role must have access to folder'
   },
   'tg': {
-    accessDeny: '<<<Недостаточно прав для выполнения операции>>>',
-    udiskUserMustHaveAccessToParent: '<<<Пользователь или роль должны иметь доступ к папке>>>'
+    accessDeny: '<<<Барои ба охир расонидани амал имтиёз кофӣ нест>>>',
+    udiskUserMustHaveAccessToParent: '<<<Истифодабаранда ё рол бояд ба папка дастрасӣ дошта бошад>>>'
   },
   'ky': {
     accessDeny: '<<<Недостаточно прав для выполнения операции>>>',

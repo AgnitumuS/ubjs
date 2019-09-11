@@ -1,0 +1,10 @@
+﻿{
+    "caption": "Суроғаҳо",
+    "description": "",
+    "attributes": [
+        {
+            "name": "addressType",
+            "caption": "Намуди суроға"
+        }
+    ]
+}

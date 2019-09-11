@@ -1,0 +1,14 @@
+﻿{
+    "caption": "Роли истифодабарандагон",
+    "description": "",
+    "attributes": [
+        {
+            "name": "userID",
+            "caption": "Истифодабаранда"
+        },
+        {
+            "name": "roleID",
+            "caption": "Рол"
+        }
+    ]
+}

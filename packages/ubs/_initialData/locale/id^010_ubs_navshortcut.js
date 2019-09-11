@@ -1,7 +1,7 @@
 ﻿const loader = require('@unitybase/base').dataLoader
 /**
  * @author pavel.mash
- * Navigation shortcuts localization to English for UBS model
+ * Navigation shortcuts localization to Indonesian for UBS model
  * Used by `ubcli initialize` command
  * @param {ServerSession} session
  */
@@ -17,6 +17,7 @@ module.exports = function (session) {
       { keyValue: 'ubs_numcounterreserv', execParams: { caption: 'Numerators (reserve)' } },
       { keyValue: 'ubs_softLock', execParams: { caption: 'Blocking (SoftLocks)' } },
       { keyValue: 'ubs_report', execParams: { caption: 'Reports' } },
+      { keyValue: 'ubs_globalCache', execParams: { caption: 'Server-side cache' } },
       { keyValue: 'ubs_message', execParams: { caption: 'Messages' } }
     ]
   }

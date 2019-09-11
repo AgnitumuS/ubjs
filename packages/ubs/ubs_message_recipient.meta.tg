@@ -1,0 +1,18 @@
+﻿{
+    "caption": "Гирандагони паёмак",
+    "description": "",
+    "attributes": [
+        {
+            "name": "acceptDate",
+            "caption": "Санаи тасдиқ"
+        },
+        {
+            "name": "userID",
+            "caption": "Истифодабаранда"
+        },
+        {
+            "name": "messageID",
+            "caption": "Паёмак"
+        }
+    ]
+}

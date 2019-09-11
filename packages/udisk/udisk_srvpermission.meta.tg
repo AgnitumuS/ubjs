@@ -1,0 +1,15 @@
+﻿{
+    "caption": "Ҳуқуқи дастрасӣ",
+    "description": "",
+    "attributes": {
+        "userID": {
+            "caption": "Истифодабаранда"
+        },
+        "accessType": {
+            "caption": "Намуди дастраси"
+        },
+        "cardID": {
+            "caption": "Файл"
+        }
+    }
+}
