@@ -218,7 +218,7 @@ report.done(function (result) {
 
 На клиенте(WEB):
 ```js
-UBS.UBReport.makeReport('test', 'pdf', {}).done(function (report) {
+UBS.UBReport.makeReport('test', 'pdf', {}).then(function (report) {
   var outputBlob = new Blob(
     [report.reportData],
     {type: 'application/pdf'}

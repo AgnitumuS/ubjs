@@ -429,7 +429,7 @@ UB.Repository('my_entity').attrs('id')
 UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
  .where('[caregory.ubUser]', '=', 10, 'wantInJoin')
  .join('wantInJoin')
- .selectAsObject().done(UB.logDebug)
+ .selectAsObject().then(UB.logDebug)
 
    * @param {string} whereItemName name of where item to use in join.
    * @return {CustomRepository}
