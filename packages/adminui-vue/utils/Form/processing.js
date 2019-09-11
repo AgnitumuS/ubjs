@@ -20,6 +20,7 @@ const { buildExecParams, buildCollectionRequests } = require('./helpers')
  * @param {object<string, ClientRepository>} initCollectionsRequests Collections requests map
  * @param {function} validator Function what returns Vuelidate validation object
  * @param {number} instanceID instanceID
+ * @param {Object} [parentContext] Optional values for main instance attributes passed to addNew method
  * @param {UBEntity} entitySchema Entity schema
  * @param {function} [beforeInit] Callback which will be emit before init
  * @param {function} [inited] Callback which will be emit when data is inited
@@ -35,6 +36,7 @@ function createProcessingModule ({
   collections: initCollectionsRequests,
   validator,
   instanceID,
+  parentContext,
   entitySchema,
   beforeInit,
   inited,
@@ -194,7 +196,8 @@ function createProcessingModule ({
         try {
           const data = await UB.connection.addNewAsObject({
             entity: masterEntityName,
-            fieldList
+            fieldList,
+            execParams: parentContext
           })
           commit('LOAD_DATA', data)
           if (created) {

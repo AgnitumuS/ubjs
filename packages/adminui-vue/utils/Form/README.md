@@ -87,6 +87,28 @@ module.exports.default ={
 }
 ```
 
+## Проброс значений по умолчанию в форму для новой записи
+Forms принимает на вход опциональный параметр `props.parentContext` - object со значениями атрибутов по умолчанию для
+метода `addNew`. 
+
+Таким образом можно, например, передать дочерней форме значение идентификатора записи текущей формы (мастер-деталь).
+`$App.doCommand` пробрасывает props транзотом в конструктор Form.
+
+В примере ниже мы вызывает форму в режиме добавления записи (не передаем instanceID), при этом значение атрибута `docID`
+новой формы будет 123 (еси его не изменет серверная реализация метода `addNew`) 
+
+```javascript
+  $App.doCommand({
+    cmdType: 'showForm',
+    entity: 'doc_controltask',
+    formCode: 'doc_controltask_form',
+    isModal: true,
+    props: {
+      parentContext: { docID: 123 }
+    }
+  })
+```  
+
 ## Предупреждение
 > instance -> processing -> validation должны использоватся последовательно.
 > Tо есть можно использовать instance отдельно, но processing без instance нельзя, то же касается и validation
