@@ -137,10 +137,13 @@
 
 <script>
 const { debounce } = require('throttle-debounce')
-const clickOutsideDropdown = require('../../utils/mixins/clickOutsideDropdown')
+const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
 
 export default {
   name: 'USelectEntity',
+
+  mixins: [clickOutsideDropdown],
+
   props: {
     /**
        * Selected entity ID
@@ -216,8 +219,6 @@ export default {
       default: true
     }
   },
-
-  mixins: [clickOutsideDropdown],
 
   data () {
     return {

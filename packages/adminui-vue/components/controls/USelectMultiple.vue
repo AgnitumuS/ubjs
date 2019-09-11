@@ -138,13 +138,16 @@
 
 <script>
 const { debounce } = require('throttle-debounce')
-const clickOutsideDropdown = require('../../utils/mixins/clickOutsideDropdown')
+const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
 
 /**
  * When you need to select few values from entity use multiple select.
  */
 export default {
   name: 'USelectMultiple',
+
+  mixins: [clickOutsideDropdown],
+
   props: {
     /**
      * Selected entity ID
@@ -191,8 +194,6 @@ export default {
      */
     clearable: Boolean
   },
-
-  mixins: [clickOutsideDropdown],
 
   data () {
     return {
