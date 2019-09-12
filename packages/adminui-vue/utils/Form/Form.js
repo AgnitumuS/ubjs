@@ -94,7 +94,7 @@ class UForm {
     }
     this.storeInitialized = true
 
-    this.storeConfig = storeConfig
+    this.storeConfig = Object.assign({}, storeConfig)
     return this
   }
 
