@@ -20,6 +20,7 @@
 
 <script>
 export default {
+  name: 'UDetailGrid',
   props: {
     /**
        * Name of key what you set in collectionRequests object
