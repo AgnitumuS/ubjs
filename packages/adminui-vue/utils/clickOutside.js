@@ -3,15 +3,15 @@ module.exports = {
   removeClickOutsideListener
 }
 
-document.body.addEventListener('click', clickOutside)
+function addBodyListener () {
+  document.body.addEventListener('click', (e) => {
+    for (const listener of listeners) {
+      listener.handler(e)
+    }
+  })
+}
 
 const listeners = []
-
-function clickOutside (e) {
-  for (const listener of listeners) {
-    listener.handler(e)
-  }
-}
 
 let id = 0
 
@@ -23,6 +23,10 @@ let id = 0
  * @return {number} Id of current listener. Use id for remove listener
  */
 function addClickOutsideListener (refs, hide) {
+  if (id === 0) {
+    addBodyListener()
+  }
+
   id++
   const listener = {
     id,
