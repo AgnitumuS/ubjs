@@ -15,7 +15,7 @@ module.exports = {
     const USelectMultiple = require('../components/controls/USelectMultiple.vue').default
     const USelectCollection = require('../components/controls/USelectCollection.vue').default
     const UBaseInput = require('../components/controls/UBaseInput.vue').default
-    const UDetailGrid = require('../components/controls/UDetailGrid/UDetailGrid.vue').default
+    const UDetailGrid = require('../components/controls/UDetailGrid.vue').default
     Vue.component(UFormContainer.name, UFormContainer)
     Vue.component(USelectEntity.name, USelectEntity)
     Vue.component(USelectMany.name, USelectMany)

@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `USelectEntity`, `USelectMultiple` click outside dropdown
  - `clickOutside` util which listen click not one but several dom elements and call's hide callback only when click target is not equal any passed dom element 
 
+### Changed
+ - **BREAKING** - `UDetailGrid` rewritten, now only works on readonly
+
 ## [1.6.30]
 ### Added
  - in case `props.parentContext` is passed to Form() values of `parentContext` will became a default values for a new row
