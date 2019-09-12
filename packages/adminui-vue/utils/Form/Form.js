@@ -61,7 +61,7 @@ class UForm {
   }) {
     this.component = component
     this.props = props
-    this.storeConfig = undefined
+    this.storeConfig = {}
     this.$store = undefined
     this.title = title
     this.entity = entity
@@ -78,6 +78,7 @@ class UForm {
     this.modalWidth = modalWidth
 
     this.validator = undefined
+    this.createValidator = createValidator
 
     this.isProcessingUsed = false
     this.isValidationUsed = false
@@ -199,33 +200,33 @@ class UForm {
    * @param {function} [validator] custom validator
    * @return {UForm}
    */
-  validation (validator) {
+  validation (customCreateValidator) {
     if (!this.canValidationInit) {
       throw new Error(`You can use ".validation()" only after ".processing()" and before ".mount()". Or ".validation()" is already initialized`)
     }
     this.canValidationInit = false
+    this.isValidationUsed = true
 
-    if (validator) {
-      this.validator = validator(this.$store)
-    } else {
-      this.isValidationUsed = true
+    if (customCreateValidator) {
+      this.createValidator = customCreateValidator
     }
 
     return this
   }
 
   mount () {
-    if (this.storeConfig) {
+    if (this.storeInitialized) {
       this.$store = new Vuex.Store(this.storeConfig)
-      if (this.entitySchema.hasMixin('softLock')) {
-        this.$store.watch(
-          (state, getters) => getters.isDirty,
-          (dirty) => this.lockUnlockOnDirtyChanged(dirty)
-        )
-      }
     }
+    if (this.isProcessingUsed && this.entitySchema.hasMixin('softLock')) {
+      this.$store.watch(
+        (state, getters) => getters.isDirty,
+        (dirty) => this.lockUnlockOnDirtyChanged(dirty)
+      )
+    }
+
     if (this.isValidationUsed) {
-      this.validator = createValidator(this.$store, this.entitySchema, this.fieldList)
+      this.validator = this.createValidator(this.$store, this.entitySchema, this.fieldList)
     }
 
     if (this.isProcessingUsed) {

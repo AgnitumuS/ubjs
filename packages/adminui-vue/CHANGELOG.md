@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.6.31]
 ### Fixed
  - duplication of store data in tabs in case store config is provided as object to `Form` with state as a function
+ - `Form/validation` undefined store when custom validation is used
 
 ### Added
  - `SET` mutation is exposed by adminui-vue. It need when you use `computedVuex` in store module 
