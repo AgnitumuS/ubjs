@@ -78,6 +78,7 @@ class UForm {
     this.modalWidth = modalWidth
 
     this.validator = undefined
+    this.createValidator = createValidator
 
     this.isProcessingUsed = false
     this.isValidationUsed = false
@@ -204,11 +205,10 @@ class UForm {
       throw new Error(`You can use ".validation()" only after ".processing()" and before ".mount()". Or ".validation()" is already initialized`)
     }
     this.canValidationInit = false
+    this.isValidationUsed = true
 
     if (validator) {
-      this.validator = validator(this.$store)
-    } else {
-      this.isValidationUsed = true
+      this.createValidator = validator
     }
 
     return this
@@ -225,7 +225,7 @@ class UForm {
       }
     }
     if (this.isValidationUsed) {
-      this.validator = createValidator(this.$store, this.entitySchema, this.fieldList)
+      this.createValidator(this.$store, this.entitySchema, this.fieldList)
     }
 
     if (this.isProcessingUsed) {
