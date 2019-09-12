@@ -61,7 +61,7 @@ class UForm {
   }) {
     this.component = component
     this.props = props
-    this.storeConfig = undefined
+    this.storeConfig = {}
     this.$store = undefined
     this.title = title
     this.entity = entity
@@ -215,17 +215,18 @@ class UForm {
   }
 
   mount () {
-    if (this.storeConfig) {
+    if (this.storeInitialized) {
       this.$store = new Vuex.Store(this.storeConfig)
-      if (this.entitySchema.hasMixin('softLock')) {
-        this.$store.watch(
-          (state, getters) => getters.isDirty,
-          (dirty) => this.lockUnlockOnDirtyChanged(dirty)
-        )
-      }
     }
+    if (this.isProcessingUsed && this.entitySchema.hasMixin('softLock')) {
+      this.$store.watch(
+        (state, getters) => getters.isDirty,
+        (dirty) => this.lockUnlockOnDirtyChanged(dirty)
+      )
+    }
+
     if (this.isValidationUsed) {
-      this.createValidator(this.$store, this.entitySchema, this.fieldList)
+      this.validator = this.createValidator(this.$store, this.entitySchema, this.fieldList)
     }
 
     if (this.isProcessingUsed) {
