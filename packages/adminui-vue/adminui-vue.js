@@ -38,9 +38,10 @@ const Form = require('./utils/Form/Form')
  * @returns {UForm}
  */
 module.exports.Form = Form
-const { mapInstanceFields, computedVuex } = require('./utils/Form/helpers')
+const { mapInstanceFields, computedVuex, SET } = require('./utils/Form/helpers')
 module.exports.mapInstanceFields = mapInstanceFields
 module.exports.computedVuex = computedVuex
+module.exports.SET = SET
 module.exports.mountUtils = require('./utils/Form/mount')
 
 const dialogs = require('./components/dialog/UDialog')

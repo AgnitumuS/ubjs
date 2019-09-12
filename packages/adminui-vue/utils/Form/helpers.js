@@ -7,7 +7,8 @@ module.exports = {
   required,
   transformCollections,
   hookWrap,
-  initCollections
+  initCollections,
+  SET
 }
 
 const UB = require('@unitybase/ub-pub')
@@ -148,7 +149,9 @@ function mapInstanceFields (moduleOrArr, arr) {
 }
 
 /**
- * Making dynamic set(), get() method for state of vuex
+ * Making dynamic set(), get() method for state of vuex.
+ * Vuex store or module which you want to use this function
+ * need to includes SET mutation (from helpers).
  * @param {string|string[]} arg1
  * @param {string[]} [arg2]
  */
@@ -281,4 +284,17 @@ function initCollections (commit, collections) {
       items: []
     })
   }
+}
+
+/**
+ * This mutation is needed in order to reuse it in the store modules,
+ * since computedVuex will not work in the store module without such a mutation
+ * Set base state values
+ * @param {VuexTrackedInstance} state
+ * @param {object} payload
+ * @param {String} payload.key state key
+ * @param {*} payload.value value
+ */
+function SET (state, { key, value }) {
+  state[key] = value
 }
