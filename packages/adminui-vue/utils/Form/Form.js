@@ -200,15 +200,15 @@ class UForm {
    * @param {function} [validator] custom validator
    * @return {UForm}
    */
-  validation (validator) {
+  validation (customCreateValidator) {
     if (!this.canValidationInit) {
       throw new Error(`You can use ".validation()" only after ".processing()" and before ".mount()". Or ".validation()" is already initialized`)
     }
     this.canValidationInit = false
     this.isValidationUsed = true
 
-    if (validator) {
-      this.createValidator = validator
+    if (customCreateValidator) {
+      this.createValidator = customCreateValidator
     }
 
     return this
