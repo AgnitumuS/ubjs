@@ -2,6 +2,8 @@ module.exports = createInstanceModule
 
 const Vue = require('vue')
 const moment = require('moment')
+const { SET } = require('./helpers')
+
 /**
  * @typedef {object} VuexTrackedInstance
  * @property {boolean} isNew        Whether master instance was loaded or it is newly created
@@ -208,16 +210,7 @@ function createInstanceModule () {
     },
 
     mutations: {
-      /**
-       * Set base state values
-       * @param {VuexTrackedInstance} state
-       * @param {object} payload
-       * @param {String} payload.key state key
-       * @param {*} payload.value value
-       */
-      SET (state, { key, value }) {
-        state[key] = value
-      },
+      SET,
 
       /**
        * Load initial state of tracked master entity, all at once.
