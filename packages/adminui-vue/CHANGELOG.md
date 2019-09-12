@@ -10,14 +10,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
  - `SET` mutation is exposed by adminui-vue. It need when you use `computedVuex` in store module 
-
+ - `USelectEntity`, `USelectMultiple` click outside dropdown
+ - `clickOutside` util which listen click not one but several dom elements and call's hide callback only when click target is not equal any passed dom element 
 
 ## [1.6.30]
 ### Added
  - in case `props.parentContext` is passed to Form() values of `parentContext` will became a default values for a new row
  (passed to addNew method). Sample below calls a Vue form in NEW mode (instanceID not defined) and sets value of `docID`
  attribute to 123 
-                            
+
 ```javascript
   $App.doCommand({
     cmdType: 'showForm',
@@ -28,8 +29,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
       parentContext: { docID: 123 }
     }
   })
-```   
-   
+```
+
 ### Fixed
  - prevent creation of empty Form life-circle hook functions (optimization)  
  - prevent call 'lock' method for new entity instances with softLock mixin (should be called only for existed instances) 

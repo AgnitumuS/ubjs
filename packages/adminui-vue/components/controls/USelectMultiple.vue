@@ -72,7 +72,6 @@
       <div
         v-if="options.length > 0"
         ref="options"
-        v-clickoutside="hideDropdown"
         class="ub-select__list-options"
       >
         <div
@@ -139,12 +138,16 @@
 
 <script>
 const { debounce } = require('throttle-debounce')
+const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
 
 /**
  * When you need to select few values from entity use multiple select.
  */
 export default {
   name: 'USelectMultiple',
+
+  mixins: [clickOutsideDropdown],
+
   props: {
     /**
      * Selected entity ID
@@ -420,10 +423,6 @@ export default {
 
     afterHide () {
       this.query = ''
-    },
-
-    hideDropdown () {
-      this.dropdownVisible = false
     },
 
     // emits when user click on option or click enter when option is focused
