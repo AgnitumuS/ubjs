@@ -180,38 +180,15 @@ function computedVuex (arg1, arg2) {
  * @param {object} source Source store
  */
 function mergeStore (target, source) {
-  if (source.state) {
-    if (target.state) {
-      if (typeof target.state === 'function') {
-        const targetState = target.state()
-        target.state = () => ({
-          ...source.state,
-          ...targetState
-        })
-      } else {
-        target.state = () => ({
-          ...source.state,
-          ...target.state
-        })
-      }
-    } else {
-      target.state = () => ({
-        ...source.state
-      })
-    }
-  }
+  const sourceState = typeof source.state === 'function'
+    ? source.state()
+    : source.state
 
   function assignWith (key) {
-    if (source[key]) {
-      if (target[key]) {
-        const targetCopy = Object.assign({}, target[key])
-        Object.assign(target[key], source[key], targetCopy)
-      } else {
-        target[key] = source[key]
-      }
-    }
+    target[key] = Object.assign({}, source[key], target[key])
   }
 
+  target.state = Object.assign({}, sourceState, target.state)
   assignWith('getters')
   assignWith('mutations')
   assignWith('actions')

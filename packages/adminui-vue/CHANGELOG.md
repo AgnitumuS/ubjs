@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.32]
+### Fixed
+ - duplication of store data in tabs in case store config with actions is provided as object to `Form` with state as a function
+
 ## [1.6.31]
 ### Fixed
  - duplication of store data in tabs in case store config is provided as object to `Form` with state as a function

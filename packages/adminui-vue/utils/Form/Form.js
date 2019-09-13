@@ -94,8 +94,8 @@ class UForm {
       throw new Error(`Store is already initialized. TIP: ".store()" should be called before ".instance()"`)
     }
     this.storeInitialized = true
+    mergeStore(this.storeConfig, storeConfig)
 
-    this.storeConfig = Object.assign({}, storeConfig)
     return this
   }
 
@@ -106,10 +106,6 @@ class UForm {
     this.storeInitialized = true
     this.instanceInitilized = false
     this.canProcessingInit = true
-
-    if (!this.storeConfig) {
-      this.storeConfig = {}
-    }
 
     const instanceModule = createInstanceModule()
     mergeStore(this.storeConfig, instanceModule)
@@ -218,6 +214,7 @@ class UForm {
     if (this.storeInitialized) {
       this.$store = new Vuex.Store(this.storeConfig)
     }
+
     if (this.isProcessingUsed && this.entitySchema.hasMixin('softLock')) {
       this.$store.watch(
         (state, getters) => getters.isDirty,
