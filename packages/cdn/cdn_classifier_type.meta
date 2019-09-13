@@ -1,0 +1,35 @@
+{
+  "sqlAlias": "clstp",
+  "caption": "Сlassification type",
+  "descriptionAttribute": "title",
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    }
+  },
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code",
+      "dataType": "String",
+      "size": 255,
+      "allowNull": false,
+      "isUnique": true
+    },
+    {
+      "name": "title",
+      "caption": "Title",
+      "dataType": "String",
+      "size": 255,
+      "allowNull": false
+    },
+    {
+      "name": "description",
+      "caption": "Description",
+      "dataType": "String",
+      "size": 255,
+      "allowNull": true
+    }
+  ]
+}

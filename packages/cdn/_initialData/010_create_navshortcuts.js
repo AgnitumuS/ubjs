@@ -296,4 +296,43 @@ var
     console.info('\t\tprovide rights for `Currency` shortcut to users role');
     conn.insert({ entity: 'ubm_navshortcut_adm', execParams: {instanceID: lastID, admSubjID: usersRoleID } });
 
+
+    console.log('\t\t\tcreate `Language list` shortcut');
+    lastID = conn.insert({
+        fieldList: ['ID'],
+        entity: 'ubm_navshortcut',
+        execParams: {
+            desktopID:  desktopID,
+            parentID:   folderID,
+            code:       'cdn_language',
+            caption:    'Language list',
+            iconCls:    'fa fa-language',
+            displayOrder: 20,
+            cmdCode : JSON.stringify({cmdType: 'showList', cmdData: {params:[{ entity: 'cdn_language', method: 'select',
+                fieldList: "*"
+            }]}}, null, '\t')
+        }
+    });
+    console.info('\t\tprovide rights for `Language list` shortcut to users role');
+    conn.insert({ entity: 'ubm_navshortcut_adm', execParams: {instanceID: lastID, admSubjID: usersRoleID } });
+
+
+    console.log('\t\t\tcreate `Classifier list` shortcut');
+    lastID = conn.insert({
+        fieldList: ['ID'],
+        entity: 'ubm_navshortcut',
+        execParams: {
+            desktopID:  desktopID,
+            parentID:   folderID,
+            code:       'cdn_classifier',
+            caption:    'Classifier list',
+            iconCls:    'fa fa-indent',
+            displayOrder: 30,
+            cmdCode : JSON.stringify({cmdType: 'showList', cmdData: {params:[{ entity: 'cdn_classifier', method: 'select',
+                fieldList: "*"
+            }]}}, null, '\t')
+        }
+    });
+    console.info('\t\tprovide rights for `Classifier list` shortcut to users role');
+    conn.insert({ entity: 'ubm_navshortcut_adm', execParams: {instanceID: lastID, admSubjID: usersRoleID } });
 };

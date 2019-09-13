@@ -1,0 +1,60 @@
+{
+  "sqlAlias": "clss",
+  "caption": "Сlassifier",
+  "descriptionAttribute": "title",
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    },
+    "tree": {
+      "parentAttr": "parentID"
+    }
+  },
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "System code",
+      "dataType": "String",
+      "size": 255,
+      "allowNull": false,
+      "isUnique": true
+    },
+    {
+      "name": "parentID",
+      "caption": "Parent",
+      "dataType": "Entity",
+      "associatedEntity": "cdn_classifier",
+      "allowNull": true
+    },
+    {
+      "name": "classifierTypeID",
+      "caption": "Classifier type",
+      "dataType": "Entity",
+      "associatedEntity": "cdn_classifier_type",
+      "allowNull": false
+    },
+    {
+      "name": "level",
+      "caption": "Level",
+      "dataType": "Int",
+      "readOnly": true,
+      "defaultView": false
+    },
+    {
+      "name": "title",
+      "caption": "Title",
+      "dataType": "String",
+      "size": 255,
+      "allowNull": false,
+      "isMultiLang": true
+    },
+    {
+      "name": "stateCode",
+      "caption": "State code",
+      "dataType": "String",
+      "size": 255,
+      "allowNull": true
+    }
+  ]
+}

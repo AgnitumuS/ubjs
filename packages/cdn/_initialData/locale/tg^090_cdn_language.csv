@@ -1,0 +1,187 @@
+code;languageName;nativeName;isRTL
+aa;Афарский;Qafaraf;false
+ab;Абхазский;Аҧсуа;false
+ae;Авестийский;avesta;false
+af;Африкаанс;Afrikaans;false
+ak;Акан;Akan;false
+am;Амхарский;አማርኛ;false
+an;Арагонский;Aragonés;false
+ar;Арабский;العربية;true
+as;Ассамский;অসমীয়া;false
+sq;Албанский;Shqip;false
+av;Аварский;авар мацӀ / магӀарул мацӀ;false
+ay;Аймара;aymar aru;false
+az;Азербайджанский;azərbaycan dili;false
+ba;Башкирский;башҡорт теле;false
+be;Белорусский;Беларуская;false
+bg;Болгарский;български език;false
+bh;Бихарский;भोजपुरी;false
+bi;Бислама;Bislama;false
+bm;Бамбара;bamanankan;false
+bn;Бенгальский;বাংলা;false
+bo;Тибетский;བོད་ཡིག;false
+br;Бретонский;brezhoneg;false
+bs;Боснийский;bosanski jezik;false
+ca;Каталонский;Català;false
+ce;Чеченский;нохчийн мотт;false
+ch;Чаморро;Chamoru;false
+co;Корсиканский;corsu / lingua corsa;false
+cr;Кри;ᓀᐦᐃᔭᐍᐏᐣ;false
+cs;Чешский;česky / čeština;false
+cv;Чувашский;чӑваш чӗлхи;false
+cy;Валлийский;Cymraeg;false
+da;Датский;dansk;false
+de;Немецкий;Deutsch;false
+dv;Дивехи (Мальдивский);ދިވެހިބަސް /dhivehi;false
+dz;Дзонг-кэ;རྫོང་ཁ;false
+ee;Эве;Ɛʋɛgbɛ;false
+el;Греческий (новогреческий);Ελληνικά;false
+en;Английский;English;false
+eo;Эсперанто;Esperanto;false
+es;Испанский;español / castellano;false
+et;Эстонский;Eesti keel;false
+eu;Баскский;euskara;false
+fa;Персидский;فارسی;true
+ff;Фулах;Fulfulde;false
+fi;Финский;suomen kieli;false
+fj;Фиджи;vosa Vakaviti;false
+fo;Фарерский;Føroyskt;false
+fr;Французский;français / langue française;false
+fy;Фризский;Frysk;false
+ga;Ирландский;Gaeilge;false
+gd;Гальский;Gàidhlig;false
+gl;Галисийский;Galego;false
+gn;Гуарани;Avañe'ẽ;false
+gu;Гуджарати;ગુજરાતી;false
+gv;Мэнский;Ghaelg;false
+ha;Хауса;‫هَوُسَ;true
+he;Иврит (современный);‫עברית;true
+hi;Хинди;हिन्दी / हिंदी;false
+ho;Хиримоту;Hiri Motu;false
+hr;Хорватский;Hrvatski;false
+ht;Гаитянский креольский;Kreyòl ayisyen;false
+hu;Венгерский;Magyar;false
+hy;Армянский;Հայերեն;false
+hz;Гереро;Otjiherero;false
+ia;Интерлингва;Interlingua;false
+id;Индонезийский;Bahasa Indonesia;false
+ie;Интерлингве;Interlingue;false
+ig;Игбо;Igbo;false
+ii;Носу;ꆇꉙ;false
+ik;Инупиак;Iñupiaq / Iñupiatun;false
+io;Идо;Ido;false
+is;Исландский;Íslenska;false
+it;Итальянский;Italiano;false
+iu;Инуктитут;ᐃᓄᒃᑎᑐᑦ;false
+ja;Японский;日本語 (にほんご／にっぽんご);false
+jv;Яванский;basa Jawa;false
+ka;Грузинский;ქართული;false
+kg;Конго;KiKongo;false
+ki;Кикуйю;Gĩkũyũ;false
+kj;Киньяма;Kuanyama;false
+kk;Казахский;Қазақ тілі;false
+kl;Гренландский;kalaallisut / kalaallit oqaasii;false
+km;Кхмерский;ភាសាខ្មែរ;false
+kn;Каннада;ಕನ್ನಡ;false
+ko;Корейский;한국어 (韓國語) / 조선말 (朝鮮語);false
+kr;Канури;Kanuri;false
+ks;Кашмири;कश्मीरी كشميري;false
+ku;Курдский;Kurdî / كوردی;false
+kv;Коми;коми кыв;false
+kw;Корнский;Kernewek;false
+ky;Киргизский;кыргыз тили;false
+la;Латинский;latine / lingua latina;false
+lb;Люксембургский;Lëtzebuergesch;false
+lg;Ганда;Luganda;false
+li;Лимбургский;Limburgs;false
+ln;Лингала;Lingála;false
+lo;Лаосский;ພາສາລາວ;false
+lt;Литовский;lietuvių kalba;false
+lu;Луба-катанга;Kiluba;false
+lv;Латвийский;latviešu valoda;false
+mg;Малагасийский;Malagasy fiteny;false
+mh;Маршалльский;Kajin M̧ajeļ;false
+mi;Маори;te reo Māori;false
+mk;Македонский;македонски јазик;false
+ml;Малаялам;മലയാളം;false
+mn;Монгольский;Монгол;false
+mr;Маратхи;मराठी;false
+ms;Малайский;bahasa Melayu / بهاس ملايو;false
+mt;Мальтийский;Malti;false
+my;Бирманский;ဗမာစာ;false
+na;Науру;Ekakairũ Naoero;false
+nb;Норвежский (букмол);Norsk bokmål;false
+nd;Ндебеле северный;isiNdebele;false
+ne;Непальский;नेपाली;false
+ng;Ндунга;Owambo;false
+nl;Голландский;Nederlands;false
+nn;Норвежский (нюнорск);Norsk nynorsk;false
+no;Норвежский;Norsk;false
+nr;Ндебеле южный;Ndébélé;false
+nv;Навахо;Diné bizaad / Dinékʼehǰí;false
+ny;Ньянджа;chiCheŵa / chinyanja;false
+oc;Окситанский;Occitan;false
+oj;Оджибве;ᐊᓂᔑᓈᐯᒧᐎᓐ;false
+om;Оромо;Afaan Oromoo;false
+or;Ория;ଓଡ଼ିଆ;false
+os;Осетинский;Ирон æвзаг;false
+pa;Пенджабский;ਪੰਜਾਬੀ / پنجابی;false
+pi;Пали;पाऴि;false
+pl;Польский;polski;false
+ps;Пушту;‫پښتو;true
+pt;Португальский;Português;false
+qu;Кечуа;Runa Simi / Kichwa;false
+rm;Ретороманский;rumantsch grischun;false
+rn;Рунди;kiRundi;false
+ro;Румынский;română / limba moldoveneasca;false
+ru;Английский;русский язык;false
+rw;Руанда;Kinyarwanda;false
+ry;Русинский язык;русинськый язык;false
+sa;Санскрит;संस्कृतम्;false
+sc;Сардинский;sardu;false
+sd;Синдхи;सिन्धी / ‫سنڌي، سندھی;false
+se;Северносаамский;Davvisámegiella;false
+sg;Санго;yângâ tî sängö;false
+sh;Сербохорватский язык;Srpskohrvatski / Српскохрватски;false
+si;Сингальский;සිංහල;false
+sk;Словацкий;slovenčina;false
+sl;Словенский;slovenščina;false
+sm;Самоанский;gagana fa'a Samoa;false
+sn;Шона;chiShona;false
+so;Сомали;Soomaaliga / af Soomaali;false
+sq;Албанский;Shqip;false
+sr;Сербский;српски језик;false
+ss;Свати;SiSwati;false
+st;Сото южный;seSotho;false
+su;Сунданский;Basa Sunda;false
+sv;Шведский;Svenska;false
+sw;Суахили;Kiswahili;false
+ta;Тамильский;தமிழ்;false
+te;Телугу;తెలుగు;false
+tg;Таджикский;тоҷикӣ / toğikī / ‫تاجیکی;false
+th;Тайский;ไทย;false
+ti;Тигринья;ትግርኛ;false
+tk;Туркменский;Türkmen  / Түркмен;false
+tl;Тагальский;Tagalog;false
+tn;Тсвана;seTswana;false
+to;Тонганский;faka Tonga;false
+tr;Турецкий;Türkçe;false
+ts;Тсонга;xiTsonga;false
+tt;Татарский;татарча / tatarça / ‫تاتارچا;false
+tw;Тви;Twi;false
+ty;Таитянский;Reo Mā`ohi;false
+ug;Уйгурский;Uyƣurqə / ‫ئۇيغۇرچ;false
+uk;Украинский;Українська;false
+ur;Урду;‫اردو;true
+uz;Узбекский;O'zbek / Ўзбек / أۇزبېك;false
+ve;Венда;tshiVenḓa;false
+vi;Вьетнамский;Tiếng Việt;false
+vo;Волапюк;Volapük;false
+wa;Валлонский;Walon;false
+wo;Волоф;Wollof;false
+xh;Коса;isiXhosa;false
+yi;Идиш;‫ייִדיש;true
+yo;Йоруба;Yorùbá;false
+za;Чжуанский;Saɯ cueŋƅ / Saw cuengh;false
+zh;Китайский;中文 / 汉语 / 漢語;false
+zu;Зулу;isiZulu;false

@@ -1,0 +1,17 @@
+{
+  "caption": "Сlassification type",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code"
+    },
+    {
+      "name": "title",
+      "caption": "Title"
+    },
+    {
+      "name": "description",
+      "caption": "Description"
+    }
+  ]
+}

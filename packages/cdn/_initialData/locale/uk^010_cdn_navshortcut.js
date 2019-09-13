@@ -33,7 +33,9 @@ module.exports = function (session) {
       { keyValue: 'cdn_department', execParams: { caption: 'Підрозділи' } },
       { keyValue: 'cdn_person', execParams: { caption: 'Фізичні особи' } },
       { keyValue: 'cdn_folder_misc', execParams: { caption: 'Різне' } },
-      { keyValue: 'cdn_currency', execParams: { caption: 'Валюти' } }
+      { keyValue: 'cdn_currency', execParams: { caption: 'Валюти' } },
+      { keyValue: 'cdn_language', execParams: { caption: 'Перелік мов' } },
+      { keyValue: 'cdn_classifier', execParams: { caption: 'Класифікатори' } }
     ]
   }
 

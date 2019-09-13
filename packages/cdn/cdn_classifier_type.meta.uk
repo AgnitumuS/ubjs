@@ -1,0 +1,17 @@
+{
+  "caption": "Вид класифікації",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Код"
+    },
+    {
+      "name": "title",
+      "caption": "Назва"
+    },
+    {
+      "name": "description",
+      "caption": "Опис"
+    }
+  ]
+}
