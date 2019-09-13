@@ -3,7 +3,7 @@
 		//"externalURL": "http://localhost",
 		//"serverType": "Socket",
 		//"reverseProxy": { "kind": "nginx" },
-		"host": "*",
+		"host": "+",
 		"port": "8881",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
