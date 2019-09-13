@@ -104,7 +104,7 @@ var
         }
     });
 
-	
+
 	console.log('\t\t\tcreate `Org staff units` shortcut');
     conn.insert({
         fieldList: ['ID'],
@@ -118,7 +118,7 @@ var
             cmdCode : JSON.stringify({cmdType: 'showList', cmdData: {params:[{ entity: 'org_staffunit', method: 'select', fieldList: '*'}]}}, null, '\t')
         }
     });
-	
+
 	console.log('\t\t\tcreate `Org units` shortcut');
     conn.insert({
         fieldList: ['ID'],
@@ -132,7 +132,7 @@ var
             cmdCode : JSON.stringify({cmdType: 'showList', cmdData: {params:[{ entity: 'org_unit', method: 'select', fieldList: '*'}]}}, null, '\t')
         }
     });
-	
+
 	console.log('\t\t\tcreate `Employees` shortcut');
     conn.insert({
         fieldList: ['ID'],
@@ -145,6 +145,21 @@ var
 		iconCls:    'fa fa-male',
             displayOrder: 110,
             cmdCode : JSON.stringify({cmdType: 'showList', cmdData: {params:[{ entity: 'org_employee', method: 'select', fieldList: '*'}]}}, null, '\t')
+        }
+    });
+
+    console.log('\t\t\tcreate `Execution groups` shortcut');
+    conn.insert({
+        fieldList: ['ID'],
+        entity: 'ubm_navshortcut',
+        execParams: {
+            desktopID:  desktopID,
+            parentID:   folderID,
+            code:       'org_execgroup',
+            caption:    'Execution Groups',
+            iconCls:    'fa fa-group',
+            displayOrder: 200,
+            cmdCode : JSON.stringify({cmdType: 'showList', cmdData: {params:[{ entity: 'org_execgroup', method: 'select', fieldList: '*'}]}}, null, '\t')
         }
     });
 

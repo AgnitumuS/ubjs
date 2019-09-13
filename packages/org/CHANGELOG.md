@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.9]
+### Added
+ - add `org_execgroup` and `org_execgroupmember` entities to manage execution groups as part of org structure
 ## [5.2.8]
 ### Fixed
  - allow to update org_employeeonstaff when parent org unit is not visible on the current date (for example department is closed)  
