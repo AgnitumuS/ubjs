@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.6.32]
 ### Fixed
  - duplication of store data in tabs in case store config with actions is provided as object to `Form` with state as a function
+ - **async function** declaration removed from code - it's not transpiled to ES5 & do not work on Chrome under Windows XP
+ - `async function helpers.hookWrap` is removed (replaced by function.prototype.call where used)  
 
 ## [1.6.31]
 ### Fixed

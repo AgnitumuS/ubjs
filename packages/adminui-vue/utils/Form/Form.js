@@ -13,7 +13,6 @@ const {
   mergeStore,
   required,
   transformCollections,
-  hookWrap,
   initCollections
 } = require('./helpers')
 const createValidator = require('./validation')
@@ -174,16 +173,16 @@ class UForm {
       parentContext: (this.props && this.props.parentContext) ? this.props.parentContext : undefined,
       collections,
       validator: () => this.validator,
-      beforeInit: beforeInit ? () => hookWrap(beforeInit, this.$store) : null,
-      inited: inited ? () => hookWrap(inited, this.$store) : null,
-      beforeSave: beforeSave ? () => hookWrap(beforeSave, this.$store) : null,
-      saved: saved ? () => hookWrap(saved, this.$store) : null,
-      beforeCreate: beforeCreate ? () => hookWrap(beforeCreate, this.$store) : null,
-      created: created ? () => hookWrap(created, this.$store) : null,
-      beforeLoad: beforeLoad ? () => hookWrap(beforeLoad, this.$store) : null,
-      loaded: loaded ? () => hookWrap(loaded, this.$store) : null,
-      beforeDelete: beforeDelete ? () => hookWrap(beforeDelete, this.$store) : null,
-      deleted: deleted ? () => hookWrap(deleted, this.$store) : null
+      beforeInit: beforeInit ? () => beforeInit.call(this, this.$store) : null,
+      inited: inited ? () => inited.call(this, this.$store) : null,
+      beforeSave: beforeSave ? () => beforeSave.call(this, this.$store) : null,
+      saved: saved ? () => saved.call(this, this.$store) : null,
+      beforeCreate: beforeCreate ? () => beforeCreate.call(this, this.$store) : null,
+      created: created ? () => created.call(this, this.$store) : null,
+      beforeLoad: beforeLoad ? () => beforeLoad.call(this, this.$store) : null,
+      loaded: loaded ? () => loaded.call(this, this.$store) : null,
+      beforeDelete: beforeDelete ? () => beforeDelete.call(this, this.$store) : null,
+      deleted: deleted ? () => deleted.call(this, this.$store) : null
     })
     mergeStore(this.storeConfig, processingModule)
 
@@ -193,7 +192,7 @@ class UForm {
   /**
    * Custom validator function. In case `validation` not called or called without argument then validator function
    *  is generated automatically based on entitySchema
-   * @param {function} [validator] custom validator
+   * @param {function} [customCreateValidator] custom validator
    * @return {UForm}
    */
   validation (customCreateValidator) {

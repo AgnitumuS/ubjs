@@ -8,13 +8,14 @@ if (IS_SYSTEM_JS && !SystemJS.has('moment')) {
 
 const UB = require('@unitybase/ub-pub')
 
-async function setLocale (lang) {
+function setLocale (lang) {
   window.moment = moment
   if (lang === 'en') return
   // moment locales are in BROKEN UMD format and require ('../moment') inside
   // to prevent loading of moment.js twice fallback to global + UB.inject
-  await UB.inject(`clientRequire/moment/locale/${lang}.js`)
-  moment.locale(lang)
+  return UB.inject(`clientRequire/moment/locale/${lang}.js`).then(
+    () => { moment.locale(lang) }
+  )
 }
 
 module.exports = {

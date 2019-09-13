@@ -6,7 +6,6 @@ module.exports = {
   mergeStore,
   required,
   transformCollections,
-  hookWrap,
   initCollections,
   SET
 }
@@ -230,21 +229,6 @@ function transformCollections (collections) {
 
 function isRepository (obj) {
   return obj instanceof UB.ClientRepository
-}
-
-/**
- * create wrap for store hooks for passing store as param
- * @param {function} hook
- * @param {Vuex} store
- */
-async function hookWrap (hook = () => {}, store) {
-  const result = hook(store)
-  if (result instanceof Promise) {
-    await result
-    return result
-  } else {
-    return result
-  }
 }
 
 /**

@@ -149,7 +149,12 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
     formCode
   })
     .instance()
-    .processing()
+    .processing({
+      beforeDelete: (store) => {
+        console.log(this, store, arguments)
+        return $App.dialogYesNo('Confirm', 'Really?')
+      }
+    })
     .validation()
     .mount()
 }
