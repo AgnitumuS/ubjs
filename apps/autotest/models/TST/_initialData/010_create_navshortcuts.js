@@ -175,7 +175,7 @@ module.exports = function (session) {
     [
       ['tst_document', 'User'],
       ['tst_document-vue', 'User'],
-      ['tst_dictionary', 'User'],
+      ['tst_dictionary', 'User']
     ],
     'ubm_navshortcut_adm',
     'instanceID;admSubjID'.split(';'),
