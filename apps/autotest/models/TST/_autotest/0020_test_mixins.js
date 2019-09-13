@@ -66,10 +66,10 @@ function testClobTruncate (conn) {
   })
 
   let inserted = conn.Repository('tst_clob').attrs(['code', 'mi_tr_text100', 'mi_tr_text2']).orderBy('code').selectAsObject()
-//    console.log('actual:', inserted);
-//    console.log('expect:', mustBe);
+  // console.log('actual:', inserted);
+  // console.log('expect:', mustBe);
 
-  assert.deepEqual(inserted, mustBe)
+  assert.deepStrictEqual(inserted, mustBe)
 
   let html2strip = fs.readFileSync(path.join(__dirname, 'fixtures/html2strip.html'), 'utf8')
   let LINE_DELIMITER = html2strip.indexOf('\r\n') > -1 ? '\r\n' : '\n'
@@ -82,7 +82,7 @@ function testClobTruncate (conn) {
       text2000: html2strip
     }
   })
-  assert.equal(updated.resultData.data[0][0], `1${LINE_DELIMITER}3`)
+  assert.strictEqual(updated.resultData.data[0][0], `1${LINE_DELIMITER}3`)
 
   html2strip = fs.readFileSync(path.join(__dirname, 'fixtures/html2stripHuge.html'), 'utf8')
   updated = conn.query({
@@ -95,18 +95,18 @@ function testClobTruncate (conn) {
     }
   })
   let truncatedHuge = fs.readFileSync(path.join(__dirname, 'fixtures/html2stripHuge.txt'), 'utf8')
-  assert.equal(updated.resultData.data[0][0], truncatedHuge)
+  assert.strictEqual(updated.resultData.data[0][0], truncatedHuge)
 
-  let mResult = conn.query({entity: 'tst_service', method: 'multiply', a: 2, b: 3})
-  assert.equal(mResult.multiplyResult, 2 * 3)
-    // test listeners removed - not work!! must me removed in ALL threads
-//    conn.post('evaluateScript', 'tst_service.removeAllListeners("multiply:before"); return {res: true}');
-//    mResult = conn.run({entity: 'tst_service', method: 'multiply', a: 200, b: 300});
-//    assert.equal(mResult.multiplyResult, 200*300);
+  let mResult = conn.query({ entity: 'tst_service', method: 'multiply', a: 2, b: 3 })
+  assert.strictEqual(mResult.multiplyResult, 2 * 3)
+  // test listeners removed - not work!! must me removed in ALL threads
+  // conn.post('evaluateScript', 'tst_service.removeAllListeners("multiply:before"); return {res: true}');
+  // mResult = conn.run({entity: 'tst_service', method: 'multiply', a: 200, b: 300});
+  // assert.equal(mResult.multiplyResult, 200*300);
 
   let emitterLog = conn.post('evaluateScript', 'return {res: App.globalCacheGet("eventEmitterLog")}')
   mustBe = 'insert:before;insert:after;'.repeat(values2insert.length) + 'multiply:before;multiply:after;'
-  assert.equal(emitterLog.res, mustBe)
+  assert.strictEqual(emitterLog.res, mustBe)
 }
 
 /**
@@ -128,9 +128,9 @@ function testDateTime (conn) {
     fieldList: ['code', 'docDate', 'docDateTime'],
     execParams: row2Insert
   })
-  assert.equal(row2Insert.code, inserted[0], 'time-like string value should not be converted into the time')
-  assert.equal(row2Insert.docDate.getTime(), Date.parse(inserted[1]), 'date field w/o time')
-  assert.equal(row2Insert.docDateTime.getTime(), Date.parse(inserted[2]), 'date0-time field')
+  assert.strictEqual(row2Insert.code, inserted[0], 'time-like string value should not be converted into the time')
+  assert.strictEqual(row2Insert.docDate.getTime(), Date.parse(inserted[1]), 'date field w/o time')
+  assert.strictEqual(row2Insert.docDateTime.getTime(), Date.parse(inserted[2]), 'date0-time field')
 }
 
 /**
@@ -139,8 +139,8 @@ function testDateTime (conn) {
  */
 function testFloatAndCurrency (conn) {
   let firstDictRow = conn.Repository('tst_dictionary').attrs(['ID', 'code', 'caption', 'filterValue', 'booleanColumn', 'currencyValue', 'floatValue']).selectById(1)
-  assert.equal(firstDictRow.currencyValue, 1.11, 'Expect currency value to be 1.11')
-  assert.equal(firstDictRow.floatValue, 1.1111, 'Expect float value to be 1.1111')
+  assert.strictEqual(firstDictRow.currencyValue, 1.11, 'Expect currency value to be 1.11')
+  assert.strictEqual(firstDictRow.floatValue, 1.1111, 'Expect float value to be 1.1111')
 }
 
 /**
@@ -158,11 +158,11 @@ function testParamMacros (conn) {
       w1: {
         expression: '[code]',
         condition: 'like',
-        values: {v1: '#Код'}
+        values: { v1: '#Код' }
       }
     }
   })
-  assert.equal(selected.resultData.rowCount, 2, 'Must be 2 rew what start with #')
+  assert.strictEqual(selected.resultData.rowCount, 2, 'Must be 2 rew what start with #')
 
   console.debug('Check MAX date DDL macros "#maxdate" is valid')
   selected = conn.query({
@@ -173,12 +173,12 @@ function testParamMacros (conn) {
       w1: {
         expression: '[dateTimeValue]',
         condition: '=',
-        values: {v1: '#maxdate'}
+        values: { v1: '#maxdate' }
       }
     }
   })
   // Must be 1 record
-  assert.equal(selected.resultData.rowCount, 1)
+  assert.strictEqual(selected.resultData.rowCount, 1)
 
   console.debug('Checking the number of records in the table that have the value of "date" in the "dateTimeValue" attribute defined by the "#maxdate" macro and the "#currentdate"')
   selected = conn.query({
@@ -193,5 +193,5 @@ function testParamMacros (conn) {
     }
   })
   // Must be 2 record
-  assert.equal(selected.resultData.rowCount, 2)
+  assert.strictEqual(selected.resultData.rowCount, 2)
 }
