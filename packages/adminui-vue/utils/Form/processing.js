@@ -358,7 +358,7 @@ function createProcessingModule ({
         })
         const masterExecParams = buildExecParams(state, masterEntityName)
         const collectionsRequests = Object.values(state.collections)
-          .flatMap(collection => buildCollectionRequests(collection, initCollectionsRequests[collection.key].repository.fieldList))
+          .flatMap(collection => buildCollectionRequests(state, collection, initCollectionsRequests[collection.key]))
 
         try {
           /**
@@ -499,13 +499,15 @@ function createProcessingModule ({
 
           const collection = response.collection
           const loadedState = response.resultData
-          const index = state.collections[collection].items.findIndex(i => i.data.ID === loadedState.ID)
+          if (loadedState && Number.isInteger(loadedState.ID) && typeof collection === 'string') {
+            const index = state.collections[collection].items.findIndex(i => i.data.ID === loadedState.ID)
 
-          commit('LOAD_COLLECTION_PARTIAL', {
-            collection,
-            index,
-            loadedState
-          })
+            commit('LOAD_COLLECTION_PARTIAL', {
+              collection,
+              index,
+              loadedState
+            })
+          }
         }
 
         commit('CLEAR_ALL_DELETED_ITEMS')

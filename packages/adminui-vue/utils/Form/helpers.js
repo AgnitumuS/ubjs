@@ -77,28 +77,35 @@ function buildDeleteRequest (entity, ID) {
 
 /**
  * @param {VuexTrackedCollection} collection
- * @param {array<string>} fieldList
+ * @param {object} state
+ * @param {object} collectionInfo
  * @return {Array<object>}
  */
-function buildCollectionRequests (collection, fieldList) {
+function buildCollectionRequests (state, collection, collectionInfo) {
+  const fieldList = collectionInfo.repository.fieldList
   const requests = []
   if (collection) {
     if (collection.deleted) {
       for (const deletedItem of collection.deleted) {
-        requests.push(buildDeleteRequest(collection.entity, deletedItem.data.ID))
+        requests.push(typeof collectionInfo.buildDeleteRequest === 'function'
+          ? collectionInfo.buildDeleteRequest({state, collection, item: deletedItem})
+          : buildDeleteRequest(collection.entity, deletedItem.data.ID))
       }
     }
     if (collection.items) {
       for (const item of collection.items) {
         const execParams = buildExecParams(item, collection.entity)
         if (execParams) {
-          requests.push({
-            entity: collection.entity,
-            method: item.isNew ? 'insert' : 'update',
-            execParams,
-            fieldList,
-            collection: collection.key
-          })
+          const request = typeof collectionInfo.buildRequest === 'function'
+            ? collectionInfo.buildRequest({state, collection, execParams, fieldList, item})
+            : {
+              entity: collection.entity,
+              method: item.isNew ? 'insert' : 'update',
+              execParams,
+              fieldList,
+              collection: collection.key
+            }
+          requests.push(request)
         }
       }
     }
