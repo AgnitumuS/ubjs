@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `Form/helpers/mergeStore` merge modules, plugins and strict in store config
  - Full Text Search widget will wrap text to search into "" in case it starts from **№** - fix [UBDF-9971]
+ - `Refresh` action for new record: pass a new row ID to load method instead of instanceID what undefined.
+ This fix error on refresh `Where item with condition "equal" must contains "value" or "values"` [UBDF-10109] 
 
 ## [1.6.32]
 ### Fixed

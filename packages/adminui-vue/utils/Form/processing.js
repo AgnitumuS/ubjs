@@ -215,9 +215,10 @@ function createProcessingModule ({
       },
 
       /**
-       * Load instance data by record ID
+       * Load instance data by record ID or newInstanceID in case this record is just created
+       * @param {number} [newInstanceID] optional row id to load. If omitted instanceID will be used
        */
-      async load ({ commit, dispatch }) {
+      async load ({ commit, dispatch }, newInstanceID) {
         if (beforeLoad) {
           await beforeLoad()
         }
@@ -231,7 +232,7 @@ function createProcessingModule ({
             .Repository(masterEntityName)
             .attrs(fieldList)
             .miscIf(isLockable(), { lockType: 'None' }) // get lock info
-          const data = await repo.selectById(instanceID)
+          const data = await repo.selectById(instanceID || newInstanceID)
 
           commit('LOAD_DATA', data)
 
