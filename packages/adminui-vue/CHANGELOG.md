@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.6.33]
 ### Fixed
  - `Form/helpers/mergeStore` merge modules, plugins and strict in store config
+ - Full Text Search widget will wrap text to search into "" in case it starts from **№** - fix [UBDF-9971]
 
 ## [1.6.32]
 ### Fixed
