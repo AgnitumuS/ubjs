@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.33]
+### Fixed
+ - `Form/helpers/mergeStore` merge modules, plugins and strict in store config
+
 ## [1.6.32]
 ### Fixed
  - duplication of store data in tabs in case store config with actions is provided as object to `Form` with state as a function
