@@ -51,4 +51,12 @@ module.exports = function (session) {
 
   console.info('\t\tCurrency (cdn_currency)')
   csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_currency.csv', 'cdn_currency', 'name;intCode;code3;curMult'.split(';'), [0, 1, 2, 3], 1)
+
+  console.info('\t\tLanguage list (cdn_language)')
+  csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_language.csv', 'cdn_language',
+    'code;languageName;nativeName;isRTL'.split(';'),
+    [
+      0, 1, 2, 3
+    ],
+    1)
 }

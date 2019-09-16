@@ -1,0 +1,29 @@
+﻿{
+  "caption": "Класифікатор",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Системний код"
+    },
+    {
+      "name": "parentID",
+      "caption": "Батьківський елемент"
+    },
+    {
+      "name": "classifierTypeID",
+      "caption": "Вид класифікатора"
+    },
+    {
+      "name": "level",
+      "caption": "Рівень"
+    },
+    {
+      "name": "title",
+      "caption": "Назва"
+    },
+    {
+      "name": "stateCode",
+      "caption": "Державний код"
+    }
+  ]
+}

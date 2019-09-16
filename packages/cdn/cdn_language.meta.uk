@@ -1,0 +1,21 @@
+{
+  "caption": "Перелік",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Код ISO 639-1"
+    },
+    {
+      "name": "languageName",
+      "caption": "Назва мови"
+    },
+    {
+      "name": "nativeName",
+      "caption": "Оригінальна назва (ендонім)"
+    },
+    {
+      "name": "isRTL",
+      "caption": "Написання справа наліво"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "caption": "Language",
+  "description": "Languages directory according to ISO-639-1",
+  "connectionName": "",
+  "sqlAlias": "cdnLng",
+  "descriptionAttribute": "languageName",
+  "cacheType": "SessionEntity",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "ISO 693-1 language code",
+      "dataType": "String",
+      "size": 255,
+      "allowNull": false
+    },
+    {
+      "name": "languageName",
+      "isMultiLang": true,
+      "caption": "Language name",
+      "dataType": "String",
+      "size": 255,
+      "allowNull": false
+    },
+    {
+      "name": "nativeName",
+      "caption": "Native name",
+      "dataType": "String",
+      "size": 255,
+      "allowNull": false
+    },
+    {
+      "name": "isRTL",
+      "caption": "Is right-to-left",
+      "dataType": "Boolean",
+      "allowNull": false,
+      "defaultValue": "0"
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    }
+  }
+}

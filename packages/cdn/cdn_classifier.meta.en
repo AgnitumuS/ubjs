@@ -1,0 +1,29 @@
+﻿{
+  "caption": "Сlassifier",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "System code"
+    },
+    {
+      "name": "parentID",
+      "caption": "Parent"
+    },
+    {
+      "name": "classifierTypeID",
+      "caption": "Classifier type"
+    },
+    {
+      "name": "level",
+      "caption": "Level"
+    },
+    {
+      "name": "title",
+      "caption": "Title"
+    },
+    {
+      "name": "stateCode",
+      "caption": "State code"
+    }
+  ]
+}

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.15]
+### Added
+ - cdn_classifier & cdn_classifierType - entities that provide ability to user to classify some entity in many ways, this is like user defined expandable dictionaries
+ - cdn_language - list of languages according to ISO-639-1
+
 ## [5.2.12]
 ### Changed
  - cdn_currency.name size to 65 and cdn_currency.description size to 128

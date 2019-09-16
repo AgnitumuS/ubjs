@@ -1,0 +1,21 @@
+{
+  "caption": "Language list",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "ISO 639-1 code"
+    },
+    {
+      "name": "languageName",
+      "caption": "Language name"
+    },
+    {
+      "name": "nativeName",
+      "caption": "Native name (Endonym)"
+    },
+    {
+      "name": "isRTL",
+      "caption": "Is right-to-left"
+    }
+  ]
+}

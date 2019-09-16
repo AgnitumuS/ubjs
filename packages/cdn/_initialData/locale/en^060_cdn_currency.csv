@@ -1,0 +1,180 @@
+name;intCode;code3;curMult
+Albanian Lek;8;ALL;100
+Ukrainian Hryvnia;980;UAH;100
+Australian Dollar;36;AUD;100
+Bahamian Dollar;44;BSD;100
+Bahraini Dinar;48;BHD;1000
+Thai Baht;764;THB;100
+Tongan Pa’anga;776;TOP;100
+Trinidad and Tobago Dollar;780;TTD;100
+Belarusian Ruble;933;BYN;100
+Bulgarian Lev;975;BGN;100
+Congolese Franc;976;CDF;100
+Bosnia and Herzegovina Convertible Mark;977;BAM;100
+South Korean Won;410;KRW;1
+Kuwaiti Dinar;414;KWD;1000
+Hong Kong Dollar;344;HKD;100
+Danish Krone;208;DKK;100
+Dominican Peso;214;DOP;100
+El Salvador Colon;222;SVC;100
+Ethiopian Birr;230;ETB;100
+Eritrean Nakfa;232;ERN;100
+Falkland Islands Pound;238;FKP;100
+Fiji Dollar;242;FJD;100
+Djiboutian Franc;262;DJF;1
+Gambian Dalasi;270;GMD;100
+Gibraltar Pound;292;GIP;100
+Guatemalan Quetzal;320;GTQ;100
+Guinean Franc;324;GNF;1
+Guyanese Dollar;328;GYD;100
+Haitian Gourde;332;HTG;100
+Honduran Lempira;340;HNL;100
+US Dollar;840;USD;100
+Uruguayan Peso;858;UYU;100
+Euro;978;EUR;100
+Mexican Unidad de Inversion (UDI) (funds code);979;MXV;100
+Egyptian Pound;818;EGP;100
+Japanese Yen;392;JPY;1
+Polish Zloty;985;PLN;100
+Indian Rupee;356;INR;100
+Iranian Rial;364;IRR;100
+Canadian Dollar;124;CAD;100
+Cabo Verdian Escudo;132;CVE;100
+Cayman Islands Dollar;136;KYD;100
+Sri Lankan Rupee;144;LKR;100
+Chilean Peso;152;CLP;1
+Croatian Kuna;191;HRK;100
+Cuban Peso;192;CUP;100
+Mexican Nuevo Peso;484;MXN;100
+Mongolian Tugrik;496;MNT;100
+Moldovan Leu;498;MDL;100
+Israeli new Shekel;376;ILS;100
+Jamaican Dollar;388;JMD;100
+New Zealand Dollar;554;NZD;100
+Nicaraguan Cordoba Oro;558;NIO;100
+Nigerian Naira;566;NGN;100
+Norwegian Krone;578;NOK;100
+Russian Ruble;643;RUB;100
+Rwandan Franc;646;RWF;1
+Saint Helena Pound;654;SHP;100
+Romanian Leu;946;RON;100
+WIR Euro (complementary currency);947;CHE;100
+WIR Franc (complementary currency);948;CHW;100
+Indonesian Rupiah;360;IDR;100
+Singapore Dollar;702;SGD;100
+Kazakhstani Tenge;398;KZT;100
+Jordanian Dinar;400;JOD;1000
+Kenyan Shilling;404;KES;100
+North Korean Won;408;KPW;100
+Turkish Lira;949;TRY;100
+CFA Franc BEAC;950;XAF;1
+East Caribbean Dollar;951;XCD;100
+CFA Franc BCEAO;952;XOF;1
+CFP Franc (franc Pacifique);953;XPF;1
+Bond Markets Unit European Composite Unit (EURCO);955;XBA;0
+Bond Markets Unit European Monetary Unit (E.M.U.-6);956;XBB;0
+Bond Markets Unit European Unit of Account 9 (E.U.A.-9);957;XBC;0
+Bond Markets Unit European Unit of Account 17 (E.U.A.-17);958;XBD;0
+Gold;959;XAU;0
+SDR (Special Drawing Right);960;XDR;0
+Silver;961;XAG;0
+Platinum;962;XPT;0
+Codes specifically reserved for testing purposes;963;XTS;0
+Palladium;964;XPD;0
+ADB Unit of Account;965;XUA;0
+Zambian Kwacha;967;ZMW;100
+Surinamese Dollar;968;SRD;100
+Malagasy Ariary;969;MGA;100
+Unidad de Valor Real (UVR) (funds code);970;COU;100
+Afghan Afghani;971;AFN;100
+Hungarian Forint;348;HUF;100
+Icelandic Krуna;352;ISK;1
+Pound Sterling;826;GBP;100
+Tanzanian Shilling;834;TZS;100
+Czech Koruna;203;CZK;100
+Swedish Krona;752;SEK;100
+Swiss Franc;756;CHF;100
+Syrian Pound;760;SYP;100
+Renminbi (Chinese) Yuan;156;CNY;100
+Colombian Peso;170;COP;100
+Comorian Franc;174;KMF;1
+Costa Rican Colon;188;CRC;100
+Azerbaijani Manat;944;AZN;100
+Algerian Dinar;12;DZD;100
+Argentine Peso;32;ARS;100
+Brazilian Real;986;BRL;100
+Unidad de Fomento (funds code);990;CLF;10000
+Sucre;994;XSU;0
+US Dollar (Next day);997;USN;100
+The codes assigned for transactions where no currency is involved;999;XXX;0
+Armenian Dram;51;AMD;100
+Barbados Dollar;52;BBD;100
+Bermudian Dollar;60;BMD;100
+Bhutanese Ngultrum;64;BTN;100
+Boliviano;68;BOB;100
+Botswana Pula;72;BWP;100
+Belize Dollar;84;BZD;100
+Solomon Islands Dollar;90;SBD;100
+Brunei Dollar;96;BND;100
+Myanmar Kyat;104;MMK;100
+Burundian Franc;108;BIF;1
+Cambodian Riel;116;KHR;100
+UAE Dirham;784;AED;100
+Vietnamese Dong;704;VND;1
+Somali Shilling;706;SOS;100
+Iraqi Dinar;368;IQD;1000
+Georgian Lari;981;GEL;100
+Bolivian Mvdol (funds code);984;BOV;100
+Lebanese Pound;422;LBP;100
+Lesotho Loti;426;LSL;100
+Liberian Dollar;430;LRD;100
+Libyan Dinar;434;LYD;1000
+Macanese Pataca;446;MOP;100
+Malawian Kwacha;454;MWK;100
+Malaysian Ringgit;458;MYR;100
+Maldivian Rufiyaa;462;MVR;100
+Mauritian Rupee;480;MUR;100
+Moroccan Dirham;504;MAD;100
+Omani Rial;512;OMR;1000
+Namibian Dollar;516;NAD;100
+Nepalese Rupee;524;NPR;100
+Netherlands Antillean Guilder;532;ANG;100
+Aruban Florin;533;AWG;100
+Vanuatu Vatu;548;VUV;1
+New Taiwan Dollar;901;TWD;100
+Uruguaian Unidad Previsional;927;UYW;10000
+Venezuelan Bolivar Soberano;928;VES;100
+Mauritanian Ouguiya;929;MRU;100
+Sгo Tomй and Prнncipe Dobra;930;STN;100
+Cuban Peso Convertible;931;CUC;100
+Zimbabwean Dollar;932;ZWL;100
+Pakistani Rupee;586;PKR;100
+Panamanian Balboa;590;PAB;100
+Papua New Guinean Kina;598;PGK;100
+Paraguayan Guarani;600;PYG;1
+Peruvian Sol;604;PEN;100
+Philippine Peso;608;PHP;100
+Qatari Rial;634;QAR;100
+South African Rand;710;ZAR;100
+South Sudanese Pound;728;SSP;100
+Swazi Lilangeni;748;SZL;100
+Saudi Riyal;682;SAR;100
+Seychelles Rupee;690;SCR;100
+Sierra Leonean Leone;694;SLL;100
+Serbian Dinar;941;RSD;100
+Mozambican Metical;943;MZN;100
+Kyrgyzstani Som;417;KGS;100
+Lao Kip;418;LAK;100
+Tajikistani Somoni;972;TJS;100
+Angolan Kwanza;973;AOA;100
+Bangladeshi Taka;50;BDT;100
+Tunisian Dinar;788;TND;1000
+Ugandan Shilling;800;UGX;1
+Macedonian Denar;807;MKD;100
+Turkmenistan New Manat;934;TMT;100
+Ghanaian Cedi;936;GHS;100
+Sudanese Pound;938;SDG;100
+Uruguaian Peso en Unidades Indexadas (UI) (funds code);940;UYI;1
+Uzbekistan Sum;860;UZS;100
+Samoan Tala;882;WST;100
+Yemeni Rial;886;YER;100
