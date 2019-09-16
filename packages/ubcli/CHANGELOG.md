@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.41]
+### Fixed
+ - Oracle DDl generator - do not wrap enum group into quotes when update a value for enum column with `not null`
+   
 ## [5.3.38]
 ### Changed
  - speed up command `ubcli checkStoreIntegrity` by removing `attribute not null` expression from SQL and 

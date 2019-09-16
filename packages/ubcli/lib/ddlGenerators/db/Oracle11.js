@@ -287,6 +287,7 @@ where
    */
   genCodeUpdate (table, column, updateType, value) {
     function quoteIfNeed (v) {
+      if (column.enumGroup && !column.defaultValue) return v // do not quoter enums
       return column.isString
         ? (!column.defaultValue && (column.refTable || column.enumGroup)
           ? v.replace(/'/g, "''")
