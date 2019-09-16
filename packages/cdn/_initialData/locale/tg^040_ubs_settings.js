@@ -12,8 +12,8 @@ module.exports = function (session) {
     localization: [
       { keyValue: 'cdn.organization.accessAddGovByRoles',
         execParams: {
-          name: 'Список ролей через запятую',
-          description: 'Список ролей через запятую которые могут добавлять записи в `cdn_organigation` с типом `cdn_orgbusinesstype.isGovAuthority`' }
+          name: 'Рӯйхати ролҳоро бо вергул ҷудо кунед',
+          description: ' Рӯйхати ролҳо бо вергул ҷудо карда шудаанд, ки ба онҳо сабтҳо илова карда метавонанд `cdn_organigation` с типом `cdn_orgbusinesstype.isGovAuthority`' }
 	    },
       { keyValue: 'cdn.organization.allowAutoGenerateOKPO',
         execParams: {

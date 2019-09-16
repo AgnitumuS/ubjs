@@ -42,7 +42,7 @@ UB.i18nExtend({
   Entity: 'Сущность',
   Copy: 'Нусхабардоштан',
   Edit: 'Вироштан',
-  Delete: 'Удалить',
+  Delete: 'Ҳавз кардан',
   vseDeystviya: 'Ҳама амалҳо',
   saveAndClose: 'Захира кардан ва пӯшиданд',
   storedData: 'Маълумоти захирашуда',

@@ -10,12 +10,12 @@ module.exports = function (session) {
     entity: 'cdn_contacttype',
     keyAttribute: 'code',
     localization: [
-      { keyValue: 'email', execParams: { name: 'Электронный адрес' } },
+      { keyValue: 'email', execParams: { name: 'Суроғаи почтаи электронӣ' } },
       { keyValue: 'legalAddr', execParams: { name: 'Юридический адрес' } },
-      { keyValue: 'actualAddr', execParams: { name: 'Фактический адрес' } },
+      { keyValue: 'actualAddr', execParams: { name: 'Суроғаи воқеӣ' } },
       { keyValue: 'phone', execParams: { name: 'Телефон' } },
-      { keyValue: 'mobPhone', execParams: { name: 'Мобильный телефон' } },
-      { keyValue: 'filName', execParams: { name: 'Номер Филиала' } }
+      { keyValue: 'mobPhone', execParams: { name: 'Телефони мобилӣ' } },
+      { keyValue: 'filName', execParams: { name: 'Рақами шӯъба' } }
     ]
   }
   loader.localizeEntity(session, localizationConfig, __filename)

@@ -12,9 +12,9 @@ module.exports = function (session) {
     keyAttribute: 'code',
     localization: [
       { keyValue: 'owner', execParams: { name: 'Владелец' } },
-      { keyValue: 'read', execParams: { name: 'Чтение' } },
-      { keyValue: 'write', execParams: { name: 'Изменение' } },
-      { keyValue: 'delegate', execParams: { name: 'Настройка прав' } }
+      { keyValue: 'read', execParams: { name: 'Хондан' } },
+      { keyValue: 'write', execParams: { name: 'Тағйир додан' } },
+      { keyValue: 'delegate', execParams: { name: 'Муқаррар кардани ҳуқуқҳо' } }
     ]
   }
   loader.localizeEntity(session, localizationConfig, __filename)

@@ -3,13 +3,13 @@ UB.i18nExtend({
   el: {
     colorpicker: {
       confirm: 'OK',
-      clear: 'Тоза кардан'
+      clear: 'Ҳавз кардан'
     },
     datepicker: {
       now: 'Хозир',
       today: 'Имрӯз',
       cancel: 'Отмена',
-      clear: 'Тоза кардан',
+      clear: 'Ҳавз кардан',
       confirm: 'OK',
       selectDate: 'Интихоби сана',
       selectTime: 'Вақтро интихоб кунед',
@@ -61,12 +61,12 @@ UB.i18nExtend({
     },
     select: {
       loading: 'Загрузка',
-      noMatch: 'Совпадений не найдено',
+      noMatch: 'Ҳеҷ мувофиқат пайдо нашуд',
       noData: 'Маълумот нест',
       placeholder: 'Интихоб кунед'
     },
     cascader: {
-      noMatch: 'Совпадений не найдено',
+      noMatch: 'Ҳеҷ мувофиқат пайдо нашуд',
       loading: 'Загрузка',
       placeholder: 'Интихоб кунед'
     },
@@ -84,7 +84,7 @@ UB.i18nExtend({
     },
     upload: {
       deleteTip: 'Нажмите [Удалить] для удаления',
-      delete: 'Удалить',
+      delete: 'Ҳавз кардан',
       preview: 'Пешнамоиш',
       continue: 'Идома додан'
     },
@@ -92,7 +92,7 @@ UB.i18nExtend({
       emptyText: 'Маълумот нетс',
       confirmFilter: 'Тасдиқ кардан',
       resetFilter: 'Сбросить',
-      clearFilter: 'Все',
+      clearFilter: 'Ҳама',
       sumText: 'Маблағ'
     },
     tree: {
@@ -107,9 +107,9 @@ UB.i18nExtend({
       hasCheckedFormat: '{checked}/{total} выбрано'
     }
   },
-  isRequiredFieldFmt: '{0} обязательно для заполнения',
+  isRequiredFieldFmt: '{0} барои пур карданд ҳатмист ',
   linkCopiedText: 'Ссылка скопирована в буфер обмена',
-  createdEntityCaption: 'Создано',
+  createdEntityCaption: 'Офирида шудааст',
   updatedEntityCaption: 'Обновлено',
 
   searchByDateRange: 'За период',
@@ -119,7 +119,7 @@ UB.i18nExtend({
   last6Month: 'Дар давоми 6 моҳи охир',
   thisYear: 'Имсола',
 
-  successfullySaved: 'Сохранено',
+  successfullySaved: 'Захира шуд',
   formWasRefreshed: 'Шакл нав карда шуд.',
   recordDeletedSuccessfully: 'Сабт бомуваффақият нест карда шуд',
   selectedValueWasDeleted: 'Выбраное значение удалено',

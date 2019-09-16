@@ -21,20 +21,20 @@ module.exports = function (session) {
     keyAttribute: 'code',
     localization: [
       { keyValue: 'uba_auditTrail', execParams: { caption: 'Аудит' } },
-      { keyValue: 'adm_folder_users', execParams: { caption: 'Пользователи' } },
-      { keyValue: 'uba_user', execParams: { caption: 'Список пользователей' } },
-      { keyValue: 'uba_userrole', execParams: { caption: 'Роли пользователей' } },
-      { keyValue: 'uba_advSecurity', execParams: { caption: 'Расширенная безопасность' } },
-      { keyValue: 'uba_group', execParams: { caption: 'Список групп' } },
-      { keyValue: 'uba_usergroup', execParams: { caption: 'Группа пользователей' } },
-      { keyValue: 'uba_usercertificate', execParams: { caption: 'Сертификаты' } },
-      { keyValue: 'adm_folder_security', execParams: { caption: 'Безопасность' } },
+      { keyValue: 'adm_folder_users', execParams: { caption: 'Истифодабарандагон' } },
+      { keyValue: 'uba_user', execParams: { caption: 'Рӯйхати истифодабарандагон' } },
+      { keyValue: 'uba_userrole', execParams: { caption: 'Ролҳои истифодабарандагон' } },
+      { keyValue: 'uba_advSecurity', execParams: { caption: 'Амнияти васеъ' } },
+      { keyValue: 'uba_group', execParams: { caption: 'Рӯйхати гурӯҳҳо' } },
+      { keyValue: 'uba_usergroup', execParams: { caption: 'Гурӯҳи истифодабарандагон' } },
+      { keyValue: 'uba_usercertificate', execParams: { caption: 'Сертификатҳо' } },
+      { keyValue: 'adm_folder_security', execParams: { caption: 'Бехатарӣ' } },
       { keyValue: 'uba_role', execParams: { caption: 'Системные роли' } },
       { keyValue: 'uba_els', execParams: { caption: 'Права на методы (ELS)' } },
-      { keyValue: 'uba_audit', execParams: { caption: 'Аудит безопасности' } },
+      { keyValue: 'uba_audit', execParams: { caption: 'Аудити бехатарӣ' } },
       { keyValue: 'uba_audit-securityDashboard', execParams: { caption: 'Консоль безопасности' } },
-      { keyValue: 'uba_als', execParams: { caption: 'Права на атрибуты (ALS)' } },
-      { keyValue: 'uba_otp', execParams: { caption: 'Одноразовые пароли (OTP)' } }
+      { keyValue: 'uba_als', execParams: { caption: 'Ҳуқуқ ба хусусиятҳо(ALS)' } },
+      { keyValue: 'uba_otp', execParams: { caption: 'Якдафъаина гузарвожаҳо (OTP)' } }
     ]
   }
 
@@ -44,10 +44,10 @@ module.exports = function (session) {
     entity: 'uba_role',
     keyAttribute: 'name',
     localization: [
-      { keyValue: 'Everyone', execParams: { description: 'Кто угодно (встроенная роль)' } },
-      { keyValue: 'Admin', execParams: { description: 'Администратор (встроенная роль)' } },
-      { keyValue: 'Anonymous', execParams: { description: 'Неавторизированный пользователь (встроенная роль)' } },
-      { keyValue: 'User', execParams: { description: 'Авторизированный пользователь (встроенная роль)' } },
+      { keyValue: 'Everyone', execParams: { description: 'Кто угодно (роли дарунсохташуда)' } },
+      { keyValue: 'Admin', execParams: { description: 'Администратор (роли дарунсохташуда)' } },
+      { keyValue: 'Anonymous', execParams: { description: 'Истифодабарандаи беиҷозат (роли дарунсохташуда)' } },
+      { keyValue: 'User', execParams: { description: 'Истифодабарандаи ваколатдор (роли дарунсохташуда)' } },
       { keyValue: 'Supervisor', execParams: { description: 'Администратор безопасности (встроенная роль)' } },
       { keyValue: 'Developer', execParams: { description: 'Разработчик (встроенная роль)' } },
       { keyValue: 'Monitor', execParams: { description: 'Мониторинг (встроенная роль)' } }

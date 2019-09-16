@@ -10,9 +10,9 @@ module.exports = function (session) {
     entity: 'ubm_enum',
     keyAttribute: 'code',
     localization: [
-      { keyValue: 'PERMANENT', execParams: { name: 'Постоянный' } },
-      { keyValue: 'TEMPORARY', execParams: { name: 'вр.и.о.' } },
-      { keyValue: 'ASSISTANT', execParams: { name: 'Ассистент' } }
+      { keyValue: 'PERMANENT', execParams: { name: 'Доимӣ' } },
+      { keyValue: 'TEMPORARY', execParams: { name: 'м. и. в.' } },
+      { keyValue: 'ASSISTANT', execParams: { name: 'Ёрдамчи' } }
     ]
   }
   loader.localizeEntity(session, localizationConfig, __filename)
