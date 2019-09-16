@@ -62,6 +62,9 @@ module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
       * }
       * В этом случае данные будут загружены только после вызова экшена loadCollections, 
       * который принимает в себя массив ключей коллекций, пример: loadCollections(['todo'])
+      *
+      * Для коллекции "participants" указаны функции, которые строят запрос на создание записей и удаление записей,
+      * вместо логики по-умолчанию.
       */
       collections: {
         todo: {
@@ -75,7 +78,42 @@ module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
         dueDate: UB.connection
           .Repository('tst_due_date')
           .attrs('ID', 'dateFrom', 'dateTo', 'status')
-          .where('dateTo', '<', Date.now())
+          .where('dateTo', '<', Date.now()),
+
+        participants: {
+          repository: Repository('ldoc_Document_ppt')
+            .attrs(
+              'ID',
+              'objectID',
+              'subjectID',
+              'role'
+            )
+            .where('objectID', '=', instanceID)
+            .where('role', 'notIn', inAttrRoles),
+          buildRequest({state, collection, fieldList, item}) {
+            return {
+              entity: 'ldoc_Document',
+              method: 'addParticipant',
+              fieldList,
+              execParams: {
+                ID: state.data.ID,
+                subjectID: item.data.subjectID,
+                role: item.data.role
+              },
+              collection: collection.key
+            }
+          },
+          buildDeleteRequest({state, item}) {
+            return {
+              entity: 'ldoc_Document',
+              method: 'removeParticipant',
+              execParams: {
+                ID: state.data.ID,
+                subjectID: item.data.subjectID
+              }
+            }
+          }
+        }
       }
     })
     .validation()
