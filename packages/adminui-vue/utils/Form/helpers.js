@@ -198,6 +198,20 @@ function mergeStore (target, source) {
   assignWith('getters')
   assignWith('mutations')
   assignWith('actions')
+  assignWith('modules')
+
+  // merge plugins
+  if (source.plugins) {
+    if (!target.plugins) {
+      target.plugins = []
+    }
+    target.plugins.push(...source.plugins)
+  }
+
+  // merge strict mode
+  if (source.strict !== undefined) {
+    target.strict = source.strict
+  }
 }
 
 /**
