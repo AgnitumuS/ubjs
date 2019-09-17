@@ -45,6 +45,12 @@ function buildExecParams (trackedObj, entity) {
         execParams[key] = value
       }
     }
+    if (schema.hasMixin('dataHistory')) {
+      // let's server fill historical attributes
+      ['mi_data_id', 'mi_dateFrom', 'mi_dateTo'].forEach(f => {
+        if (!execParams[f]) delete execParams[f]
+      })
+    }
     return execParams
   }
 
