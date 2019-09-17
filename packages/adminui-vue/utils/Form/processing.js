@@ -5,7 +5,7 @@ const UB = require('@unitybase/ub-pub')
 const dialogs = require('../../components/dialog/UDialog')
 const moment = require('moment')
 const { Notification: $notify } = require('element-ui')
-const { buildExecParams, buildDeleteRequest } = require('./helpers')
+const { buildExecParams, buildDeleteRequest, enrichFieldList } = require('./helpers')
 
 /**
  * @typedef {object} UbVuexStoreCollectionInfo
