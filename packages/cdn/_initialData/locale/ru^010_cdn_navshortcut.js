@@ -34,7 +34,7 @@ module.exports = function (session) {
       { keyValue: 'cdn_person', execParams: { caption: 'Физические лица' } },
       { keyValue: 'cdn_folder_misc', execParams: { caption: 'Разное' } },
       { keyValue: 'cdn_currency', execParams: { caption: 'Валюты' } },
-      { keyValue: 'cdn_language', execParams: { caption: 'Список языков' } },
+      { keyValue: 'cdn_language', execParams: { caption: 'Языки' } },
       { keyValue: 'cdn_classifier', execParams: { caption: 'Классификаторы' } }
     ]
   }

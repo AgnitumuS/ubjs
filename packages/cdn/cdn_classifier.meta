@@ -31,11 +31,11 @@
       "name": "classifierTypeID",
       "caption": "Classifier type",
       "dataType": "Entity",
-      "associatedEntity": "cdn_classifier_type",
+      "associatedEntity": "cdn_classifiertype",
       "allowNull": false
     },
     {
-      "name": "level",
+      "name": "hierarchyLevel",
       "caption": "Level",
       "dataType": "Int",
       "readOnly": true,

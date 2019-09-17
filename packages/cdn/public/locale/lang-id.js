@@ -11,6 +11,8 @@ UB.i18nExtend({
   profession_title: "Profession",
   region_title: "Region",
 
+  'ClassifTypePanelClassifiersTitle': 'Classification values',
+
   // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF'
 });

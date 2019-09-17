@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.1]
+### Fixed
+ - Field 'level' renamed to 'hierarchyLevel' because 'level' is a reserved word in Oracle - so this field breaks ddl generation for Oracle database
+ - Forms for entering classifiers were missing
+
 ## [5.3.0]
 ### Added
  - cdn_classifier & cdn_classifierType - entities that provide ability to user to classify some entity in many ways, this is like user defined expandable dictionaries
