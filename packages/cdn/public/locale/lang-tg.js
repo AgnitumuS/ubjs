@@ -11,6 +11,8 @@ UB.i18nExtend({
   profession_title: "Касб",
   region_title: "Ноҳия",
 
-    // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
-    EOF: 'EOF'
+  'ClassifTypePanelClassifiersTitle': 'Значения классификации',
+
+  // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
+  EOF: 'EOF'
 });

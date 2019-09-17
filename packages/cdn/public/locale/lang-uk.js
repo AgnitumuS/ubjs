@@ -10,8 +10,9 @@ UB.i18nExtend({
   employee_title: "Співробітник зовнішньої організації",
   profession_title: "Професія",
   region_title: "Регіон",
-  
-  
+
+  'ClassifTypePanelClassifiersTitle': 'Значення класифікації',
+
   // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF'
 });

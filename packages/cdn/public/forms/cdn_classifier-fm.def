@@ -1,0 +1,32 @@
+// @! "do not remove comments below unless you know what you do!"
+// @mi_modifyDate "Tue Sep 17 2019 01:22:06 GMT+0300 (FLE Standard Time)"
+// @isDefault "false"
+// @entity "cdn_classifier"
+// @model "CDN"
+// @formType "auto"
+// @caption "Classifier editor"
+// @description "Classifier editor"
+exports.formDef = {
+  parentConfig: {
+    layout: {
+      type: "vbox",
+      align: "stretch"
+    }
+  },
+  items: [{
+    layout: {
+      type: 'vbox',
+      align: 'stretch'
+    },
+    defaults: {
+      labelWidth: 210
+    },
+    items: [
+      { attributeName: "code" },
+      { attributeName: "parentID" },
+      { attributeName: "classifierTypeID" },
+      { attributeName: "title" },
+      { attributeName: "stateCode" }
+    ]
+  }]
+};

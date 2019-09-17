@@ -14,7 +14,7 @@
       "caption": "Вид класифікатора"
     },
     {
-      "name": "level",
+      "name": "hierarchyLevel",
       "caption": "Рівень"
     },
     {

@@ -33,7 +33,9 @@ module.exports = function (session) {
       { keyValue: 'cdn_department', execParams: { caption: 'დეპარტამენტები' } },
       { keyValue: 'cdn_person', execParams: { caption: 'პირები' } },
       { keyValue: 'cdn_folder_misc', execParams: { caption: 'სხვადასხვა' } },
-      { keyValue: 'cdn_currency', execParams: { caption: 'ვალუტა' } }
+      { keyValue: 'cdn_currency', execParams: { caption: 'ვალუტა' } },
+      { keyValue: 'cdn_language', execParams: { caption: 'ენები' } },
+      { keyValue: 'cdn_classifier', execParams: { caption: 'კლასიფიკატორები' } }
     ]
   }
 
