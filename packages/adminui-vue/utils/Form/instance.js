@@ -297,15 +297,14 @@ function createInstanceModule () {
        * @param {VuexTrackedInstance} state
        * @param {object} payload
        * @param {string} payload.collection
-       * @param {array} payload.items
-       * @param {string} payload.entity
+       * @param {VuexTrackedObject[]} payload.items
        */
-      LOAD_COLLECTION (state, { collection, items: itemStates, entity }) {
+      LOAD_COLLECTION (state, { collection, items: itemStates }) {
         const items = itemStates.map(item => ({
           data: item,
           originalData: {}
         }))
-        const collectionObj = { items, deleted: [], entity, key: collection }
+        const collectionObj = { items, deleted: [], key: collection }
         Vue.set(state.collections, collection, collectionObj)
       },
 

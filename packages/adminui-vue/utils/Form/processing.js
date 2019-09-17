@@ -5,7 +5,20 @@ const UB = require('@unitybase/ub-pub')
 const dialogs = require('../../components/dialog/UDialog')
 const moment = require('moment')
 const { Notification: $notify } = require('element-ui')
-const { buildExecParams, buildCollectionRequests } = require('./helpers')
+const { buildExecParams, buildDeleteRequest } = require('./helpers')
+
+/**
+ * @typedef {object} UbVuexStoreCollectionInfo
+ *
+ * Metadata describing a detail collection edited on a form.
+ *
+ * @property {function(store: Store): ClientRepository} repository
+ * @property {boolean} [lazy]
+ *   An optional flag, indicating that collection shall not be loaded right away, but on demand
+ * @property {function(state: object, collection: UbVuexStoreCollectionInfo, execParams: object, fieldList: string[], item: VuexTrackedObject): object} buildRequest
+ * @property {function(state: object, collection: UbVuexStoreCollectionInfo, item: VuexTrackedObject): object} buildDeleteRequest
+ */
+
 
 /**
  * Creates Vuex store object with basic processing actions:
@@ -17,7 +30,7 @@ const { buildExecParams, buildCollectionRequests } = require('./helpers')
  *
  * @param {string} masterEntityName Name of entity for master record
  * @param {array<string>} masterFieldList Master request fieldList. If unset will set all fields in an entity
- * @param {object<string, ClientRepository>} initCollectionsRequests Collections requests map
+ * @param {object<string, UbVuexStoreCollectionInfo|function(store: Store): ClientRepository>} initCollectionsRequests Collections requests map
  * @param {function} validator Function what returns Vuelidate validation object
  * @param {number} instanceID instanceID
  * @param {Object} [parentContext] Optional values for main instance attributes passed to addNew method
@@ -270,13 +283,16 @@ function createProcessingModule ({
        * Check if record not new
        * then check if collections inited when processing module is created
        * then fetch data from server for each collection
-       * @param {Array} collections Collections keys
+       * @param {object} store
+       * @param {string[]} collectionKeys Collections keys
        */
-      async loadCollections ({ state, commit }, collections) {
+      async loadCollections (store, collectionKeys) {
+        const { state, commit } = store
+
         if (state.isNew) {
           return
         }
-        for (const key of collections) {
+        for (const key of collectionKeys) {
           const inCollection = key in initCollectionsRequests
           if (!inCollection) {
             console.error(`${key} not included in the collections, please check initCollectionsRequests param`)
@@ -290,30 +306,20 @@ function createProcessingModule ({
 
         try {
           const results = await Promise.all(
-            collections.map(key => {
-              const req = initCollectionsRequests[key].repository
-
-              req.fieldList.push('ID')
-
-              const schema = UB.connection.domain.get(req.entityName)
-              if (schema.attributes['mi_modifyDate']) {
-                req.fieldList.push('mi_modifyDate')
-              }
-              if (schema.attributes['mi_createDate']) {
-                req.fieldList.push('mi_createDate')
-              }
-
-              req.fieldList = [...new Set(req.fieldList)]
-
+            collectionKeys.map(key => {
+              const req = initCollectionsRequests[key].repository(store)
+              req.fieldList = enrichFieldList(
+                UB.connection.domain.get(req.entityName),
+                req.fieldList,
+                ['ID', 'mi_modifyDate', 'mi_createDate']
+              )
               return req.select()
             })
           )
           results.forEach((collectionData, index) => {
-            const collection = collections[index]
-            const entity = initCollectionsRequests[collection].repository.entityName
+            const collection = collectionKeys[index]
             commit('LOAD_COLLECTION', {
               collection,
-              entity,
               items: collectionData
             })
           })
@@ -332,7 +338,9 @@ function createProcessingModule ({
        * Check validation then
        * build requests for master and collections records
        */
-      async save ({ state, commit, dispatch }) {
+      async save (store) {
+        const { state, commit } = store
+
         if (beforeSave) {
           const answer = await beforeSave()
           if (answer === false) {
@@ -357,34 +365,83 @@ function createProcessingModule ({
           isLoading: true,
           target: 'save'
         })
+
+        const requests = []
+        const responseHandlers = []
+
         const masterExecParams = buildExecParams(state, masterEntityName)
-        const collectionsRequests = Object.values(state.collections)
-          .flatMap(collection => buildCollectionRequests(state, collection, initCollectionsRequests[collection.key]))
+        if (masterExecParams) {
+          requests.push({
+            entity: masterEntityName,
+            method: state.isNew ? 'insert' : 'update',
+            execParams: masterExecParams,
+            fieldList
+          })
+          responseHandlers.push(response => commit('LOAD_DATA', response.resultData))
+        }
+
+        for (const [collectionKey, collectionInfo] of Object.entries(initCollectionsRequests)) {
+          const collection = state.collections[collectionKey]
+          if (!collection) continue
+
+          const req = collectionInfo.repository(store)
+          const collectionEntityName = req.entityName
+
+          for (const deletedItem of collection.deleted || []) {
+            const request = typeof collectionInfo.buildDeleteRequest === 'function'
+              ? collectionInfo.buildDeleteRequest({state, collection, item: deletedItem})
+              : buildDeleteRequest(collectionEntityName, deletedItem.data.ID)
+            requests.push(request)
+
+            // Deleted items are cleared all at once using CLEAR_ALL_DELETED_ITEMS mutation
+            responseHandlers.push(() => {})
+          }
+
+          const collectionFieldList = enrichFieldList(
+            UB.connection.domain.get(collectionEntityName),
+            req.fieldList,
+            ['ID', 'mi_modifyDate', 'mi_createDate']
+          )
+
+          for (const item of collection.items || []) {
+            const execParams = buildExecParams(item, collectionEntityName)
+            if (execParams) {
+              const request = typeof collectionInfo.buildRequest === 'function'
+                ? collectionInfo.buildRequest({state, collection, execParams, fieldList: collectionFieldList, item})
+                : {
+                  entity: collectionEntityName,
+                  method: item.isNew ? 'insert' : 'update',
+                  execParams,
+                  fieldList: collectionFieldList
+                }
+              requests.push(request)
+
+              responseHandlers.push(response => {
+                const loadedState = response.resultData
+                if (loadedState && Number.isInteger(loadedState.ID)) {
+                  const index = collection.items.findIndex(i => i.data.ID === loadedState.ID)
+                  commit('LOAD_COLLECTION_PARTIAL', {
+                    collection: collectionKey,
+                    index,
+                    loadedState
+                  })
+                }
+              })
+            }
+          }
+        }
 
         try {
-          /**
-           * if changed collection record
-           * but master record did not touched need to ignore master request
-           */
-          if (masterExecParams) {
-            const masterRequest = {
-              entity: masterEntityName,
-              method: state.isNew ? 'insert' : 'update',
-              execParams: masterExecParams,
-              fieldList
-            }
-
-            const [masterResponse, ...collectionsResponse] = await UB.connection
-              .runTransAsObject([masterRequest, ...collectionsRequests])
-
-            commit('LOAD_DATA', masterResponse.resultData)
-            await dispatch('updateCollectionsRecords', collectionsResponse)
-          } else {
-            const collectionsResponse = await UB.connection
-              .runTransAsObject(collectionsRequests)
-
-            await dispatch('updateCollectionsRecords', collectionsResponse)
+          const responses = await UB.connection.runTransAsObject(requests)
+          for (let i = 0, count = Math.min(responses.length, responseHandlers.length);
+               i < count;
+               i++) {
+            const response = responses[i]
+            const responseHandler = responseHandlers[i]
+            responseHandler(response)
           }
+
+          commit('CLEAR_ALL_DELETED_ITEMS')
 
           UB.connection.emit(`${masterEntityName}:changed`)
 
@@ -485,33 +542,6 @@ function createProcessingModule ({
             })
           }
         }
-      },
-
-      /**
-       * Write new data to collections records clear all deleted arrays
-       * @param {object} context
-       * @param {object} context.state
-       * @param {function} context.commit
-       * @param  {Array<Object>} collectionsResponse
-       */
-      updateCollectionsRecords ({ state, commit }, collectionsResponse) {
-        for (const response of collectionsResponse) {
-          if (response.method === 'delete') continue
-
-          const collection = response.collection
-          const loadedState = response.resultData
-          if (loadedState && Number.isInteger(loadedState.ID) && typeof collection === 'string') {
-            const index = state.collections[collection].items.findIndex(i => i.data.ID === loadedState.ID)
-
-            commit('LOAD_COLLECTION_PARTIAL', {
-              collection,
-              index,
-              loadedState
-            })
-          }
-        }
-
-        commit('CLEAR_ALL_DELETED_ITEMS')
       },
 
       /**
