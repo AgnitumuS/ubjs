@@ -114,7 +114,7 @@ class UForm {
 
   /**
    * @param {Object} cfg
-   * @param {Array<string>} cfg.masterFieldList
+   * @param {string[]} cfg.masterFieldList
    * @param {Object} [cfg.collections]
    * @param {function} [cfg.beforeInit]
    * @param {function} [cfg.inited]
@@ -151,15 +151,7 @@ class UForm {
     this.isProcessingUsed = true
 
     if (masterFieldList) {
-      const fieldList = new Set(masterFieldList)
-      fieldList.add('ID')
-      if (this.entitySchema.attributes['mi_modifyDate']) {
-        fieldList.add('mi_modifyDate')
-      }
-      if (this.entitySchema.attributes['mi_createDate']) {
-        fieldList.add('mi_createDate')
-      }
-      this.fieldList = [...fieldList]
+      this.fieldList = enrichFieldList(this.entitySchema, fieldList, ['ID', 'mi_modifyDate', 'mi_createDate'])
     }
 
     this.collections = collections
@@ -226,7 +218,12 @@ class UForm {
     }
 
     if (this.isProcessingUsed) {
-      initCollections(this.$store.commit, this.collections)
+      for (const key of Object.keys(this.collections)) {
+        this.$store.commit('LOAD_COLLECTION', {
+          collection: key,
+          items: []
+        })
+      }
       this.$store.dispatch('init')
     }
 

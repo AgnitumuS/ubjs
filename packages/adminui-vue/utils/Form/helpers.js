@@ -1,12 +1,12 @@
 module.exports = {
   buildExecParams,
-  buildCollectionRequests,
   mapInstanceFields,
   computedVuex,
   mergeStore,
   required,
   transformCollections,
-  initCollections,
+  buildDeleteRequest,
+  enrichFieldList,
   SET
 }
 
@@ -73,44 +73,6 @@ function buildDeleteRequest (entity, ID) {
       ID
     }
   }
-}
-
-/**
- * @param {VuexTrackedCollection} collection
- * @param {object} state
- * @param {object} collectionInfo
- * @return {Array<object>}
- */
-function buildCollectionRequests (state, collection, collectionInfo) {
-  const fieldList = collectionInfo.repository.fieldList
-  const requests = []
-  if (collection) {
-    if (collection.deleted) {
-      for (const deletedItem of collection.deleted) {
-        requests.push(typeof collectionInfo.buildDeleteRequest === 'function'
-          ? collectionInfo.buildDeleteRequest({state, collection, item: deletedItem})
-          : buildDeleteRequest(collection.entity, deletedItem.data.ID))
-      }
-    }
-    if (collection.items) {
-      for (const item of collection.items) {
-        const execParams = buildExecParams(item, collection.entity)
-        if (execParams) {
-          const request = typeof collectionInfo.buildRequest === 'function'
-            ? collectionInfo.buildRequest({state, collection, execParams, fieldList, item})
-            : {
-              entity: collection.entity,
-              method: item.isNew ? 'insert' : 'update',
-              execParams,
-              fieldList,
-              collection: collection.key
-            }
-          requests.push(request)
-        }
-      }
-    }
-  }
-  return requests
 }
 
 /**
@@ -225,7 +187,7 @@ function required (param) {
 /**
  * Transform's each collection object to
  * `key: {
- *   repository: UB.Repository(),
+ *   repository: store => UB.Repository(),
  *   lazy: true/false
  * }`
  *
@@ -233,39 +195,37 @@ function required (param) {
  * @return {void}
  */
 function transformCollections (collections) {
-  const entries = Object.entries(collections)
-  for (const [coll, collData] of entries) {
-    if (isRepository(collData)) {
-      collections[coll] = {
-        repository: collData,
+  for (let [key, collectionInfo] of Object.entries(collections)) {
+    // Replace shorthand syntax, when collection is defined by repository to full collection info object
+    if (isRepository(collectionInfo) || typeof collectionInfo === 'function') {
+      collectionInfo = collections[key] = {
+        repository: collectionInfo,
         lazy: false
       }
-    } else if (collData.repository && isRepository(collData.repository)) {
-      collData.lazy = collData.lazy === true
-    } else {
-      throw new UB.UBError(`Can't find ClientRepository in "${coll}" collection`)
     }
+
+    // Replace ClientRepository with a factory function, and output a warning for developers
+    if (isRepository(collectionInfo.repository)) {
+      if (window.isDeveloperMode) {
+        console.warn(
+          'Use factory function for building collection requests, not ready Repository objects!  collection: %s, entity',
+          key, collectionInfo.repository.entityName
+        )
+      }
+      const repositoryInstance = collectionInfo.repository
+      collectionInfo.repository = () => repositoryInstance
+    }
+
+    if (typeof collectionInfo.repository !== 'function') {
+      throw new UB.UBError(`Can't find ClientRepository in "${key}" collection`)
+    }
+
+    collectionInfo.lazy = collectionInfo.lazy === true
   }
 }
 
 function isRepository (obj) {
   return obj instanceof UB.ClientRepository
-}
-
-/**
- * for each collection init empty data in store
- * @param {function} commit Vuex store.commit
- * @param {object} collections Collections
- */
-function initCollections (commit, collections) {
-  for (const [key, collData] of Object.entries(collections)) {
-    commit('LOAD_COLLECTION', {
-      collection: key,
-      entity: collData.repository.entityName,
-      lazy: collData.lazy,
-      items: []
-    })
-  }
 }
 
 /**
@@ -279,4 +239,15 @@ function initCollections (commit, collections) {
  */
 function SET (state, { key, value }) {
   state[key] = value
+}
+
+/**
+ * @param {UBEntity} entitySchema
+ * @param {string[]} fieldList
+ * @param {string[]} requiredAttrs
+ * @return {string[]}
+ */
+function enrichFieldList (entitySchema, fieldList, requiredAttrs) {
+  const fieldsToAppend = requiredAttrs.filter(attr => fieldList.indexOf(attr) === -1 && entitySchema.attributes[attr])
+  return fieldList.concat(fieldsToAppend)
 }

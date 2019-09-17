@@ -68,27 +68,27 @@ module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
       */
       collections: {
         todo: {
-          repository:  UB.connection
+          repository: ({state}) => UB.connection
             .Repository('tst_dictionary_todo')
             .attrs('ID', 'objectID', 'name', 'status', 'link')
-            .where('objectID', '=', instanceID),
+            .where('objectID', '=', state.data.ID),
           lazy: true
         },
           
-        dueDate: UB.connection
+        dueDate: () => UB.connection
           .Repository('tst_due_date')
           .attrs('ID', 'dateFrom', 'dateTo', 'status')
           .where('dateTo', '<', Date.now()),
 
         participants: {
-          repository: Repository('ldoc_Document_ppt')
+          repository: ({state}) => Repository('ldoc_Document_ppt')
             .attrs(
               'ID',
               'objectID',
               'subjectID',
               'role'
             )
-            .where('objectID', '=', instanceID)
+            .where('objectID', '=', state.data.ID)
             .where('role', 'notIn', inAttrRoles),
           buildRequest({state, collection, fieldList, item}) {
             return {

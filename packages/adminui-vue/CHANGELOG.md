@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.34]
+### Changed
+ - changes in how `collections` state item is handled in vuex store:
+   - do NOT pass unneeded parameter "collection" from client to server - the parameter is not needed by server,
+     but is passed only to help client to match response with request
+   - assume `repository` is a factory function, and not the ready repository object, change all over processing module
+       to reflect that. For backward compatibility, support the old way of supplying repository object,
+       but output a warning to console:
+      ```javascript
+      collections: {
+        todo: {
+          repository: ({state}) => UB.connection
+            .Repository('tst_dictionary_todo')
+            .attrs('ID', 'objectID', 'name', 'status', 'link')
+            .where('objectID', '=', state.data.ID),
+          lazy: true
+        }
+      }
+      ```
+   - refactorings to simplify code: inline `initCollections` helper method, no need for it
+     to be in `helpers`, add `enrichFieldList`, because in some places we need to make sure
+     some system attributes are added to requests, such as `ID` or `mi_modifyDate`;
+     inline `buildCollectionRequests` straight into `save`.
+   - improve jsdocs
+   - expose `buildDeleteRequest` in `helpers` and remove `buildCollectionRequests` from helpers.
+   - when iterate collections, use `initCollectionsRequests` - metadata about which collections are there, 
+     instead of using `store.collection` - state info; this shall be more reliable.
+
 ## [1.6.33]
 ### Fixed
  - `Form/helpers/mergeStore` merge modules, plugins and strict in store config
