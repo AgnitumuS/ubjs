@@ -303,7 +303,7 @@ export default {
         isModal: true,
         cmdData: {
           params: [{
-            entity: this.$store.state.entity,
+            entity: this.entitySchema.name,
             method: 'select',
             fieldList: [...fieldList]
           }]

@@ -19,7 +19,6 @@ const { buildExecParams, buildDeleteRequest, enrichFieldList } = require('./help
  * @property {function(state: object, collection: UbVuexStoreCollectionInfo, item: VuexTrackedObject): object} buildDeleteRequest
  */
 
-
 /**
  * Creates Vuex store object with basic processing actions:
  *  - isNew status for master record
@@ -389,7 +388,7 @@ function createProcessingModule ({
 
           for (const deletedItem of collection.deleted || []) {
             const request = typeof collectionInfo.buildDeleteRequest === 'function'
-              ? collectionInfo.buildDeleteRequest({state, collection, item: deletedItem})
+              ? collectionInfo.buildDeleteRequest({ state, collection, item: deletedItem })
               : buildDeleteRequest(collectionEntityName, deletedItem.data.ID)
             requests.push(request)
 
@@ -407,7 +406,7 @@ function createProcessingModule ({
             const execParams = buildExecParams(item, collectionEntityName)
             if (execParams) {
               const request = typeof collectionInfo.buildRequest === 'function'
-                ? collectionInfo.buildRequest({state, collection, execParams, fieldList: collectionFieldList, item})
+                ? collectionInfo.buildRequest({ state, collection, execParams, fieldList: collectionFieldList, item })
                 : {
                   entity: collectionEntityName,
                   method: item.isNew ? 'insert' : 'update',
@@ -433,9 +432,7 @@ function createProcessingModule ({
 
         try {
           const responses = await UB.connection.runTransAsObject(requests)
-          for (let i = 0, count = Math.min(responses.length, responseHandlers.length);
-               i < count;
-               i++) {
+          for (let i = 0, count = Math.min(responses.length, responseHandlers.length); i < count; i++) {
             const response = responses[i]
             const responseHandler = responseHandlers[i]
             responseHandler(response)
