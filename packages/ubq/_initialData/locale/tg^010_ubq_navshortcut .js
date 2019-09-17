@@ -10,10 +10,10 @@ module.exports = function (session) {
     entity: 'ubm_navshortcut',
     keyAttribute: 'code',
     localization: [
-      { keyValue: 'adm_folder_UBQ', execParams: { caption: 'Очереди сообщений' } },
-      { keyValue: 'ubq_messages', execParams: { caption: 'Очередь' } },
+      { keyValue: 'adm_folder_UBQ', execParams: { caption: 'Навбати паёмҳо' } },
+      { keyValue: 'ubq_messages', execParams: { caption: 'Навбат' } },
       { keyValue: 'ubq_runstat', execParams: { caption: 'Статистика' } },
-      { keyValue: 'ubq_scheduler', execParams: { caption: 'Планировщики задач' } }
+      { keyValue: 'ubq_scheduler', execParams: { caption: 'Планировщики задач  Нақшакашҳо вазифаҳо' } }
     ]
   }
 

@@ -12,15 +12,15 @@ module.exports = function (session) {
     localization: [
       // CDN_ACCOUNTTYPE
       { keyValue: 'CHECK', execParams: { name: 'Расчетный' } },
-      { keyValue: 'CURR', execParams: { name: 'Текущий' } },
-      { keyValue: 'BUDGET', execParams: { name: 'Бюджетный' } },
-      { keyValue: 'SAVE', execParams: { name: 'Депозитный' } },
+      { keyValue: 'CURR', execParams: { name: 'Ҷорӣ' } },
+      { keyValue: 'BUDGET', execParams: { name: 'Буҷети' } },
+      { keyValue: 'SAVE', execParams: { name: 'Амонати' } },
       { keyValue: 'CORR', execParams: { name: 'Корреспондентский' } },
       // CDN_ADMINUNITTYPE
-      { keyValue: 'COUNTRY', execParams: { name: 'Страна' } },
+      { keyValue: 'COUNTRY', execParams: { name: 'Кишвар' } },
       { keyValue: 'DISTRICT', execParams: { name: 'Регион' } },
-      { keyValue: 'CITY', execParams: { name: 'Город' } },
-      { keyValue: 'F', execParams: { name: 'Ж' } },
+      { keyValue: 'CITY', execParams: { name: 'Шаҳр' } },
+      { keyValue: 'F', execParams: { name: 'З' } },
       { keyValue: 'M', execParams: { name: 'М' } }
     ]
   }

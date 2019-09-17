@@ -11,14 +11,14 @@ module.exports = function (session) {
     keyAttribute: 'code',
     localization: [
       { keyValue: 'adm_folder_misc', execParams: { caption: 'Разное' } },
-      { keyValue: 'ubs_settings', execParams: { caption: 'Настройки' } },
-      { keyValue: 'ubs_filter', execParams: { caption: 'Сохраненные фильтры' } },
+      { keyValue: 'ubs_settings', execParams: { caption: 'Танзимот' } },
+      { keyValue: 'ubs_filter', execParams: { caption: 'Филтрҳои ҳифзшуда' } },
       { keyValue: 'ubs_numcounter', execParams: { caption: 'Нумераторы' } },
       { keyValue: 'ubs_numcounterreserv', execParams: { caption: 'Нумераторы (резерв)' } },
       { keyValue: 'ubs_softLock', execParams: { caption: 'Блокировки (SoftLocks)' } },
-      { keyValue: 'ubs_report', execParams: { caption: 'Отчеты' } },
+      { keyValue: 'ubs_report', execParams: { caption: 'Ҳисоботҳо' } },
       { keyValue: 'ubs_globalCache', execParams: { caption: 'Серверний кэш' } },
-      { keyValue: 'ubs_message', execParams: { caption: 'Сообщения' } }
+      { keyValue: 'ubs_message', execParams: { caption: 'Паёмҳо' } }
     ]
   }
 

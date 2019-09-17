@@ -13,8 +13,8 @@ module.exports = function (session) {
       // UBS_MESSAGE_TYPE
       { keyValue: 'UBS_MESSAGE_TYPE;user', execParams: { name: 'Пользовательское' } },
       { keyValue: 'UBS_MESSAGE_TYPE;system', execParams: { name: 'Система' } },
-      { keyValue: 'UBS_MESSAGE_TYPE;warning', execParams: { name: 'Предупреждение' } },
-      { keyValue: 'UBS_MESSAGE_TYPE;information', execParams: { name: 'Информация' } }
+      { keyValue: 'UBS_MESSAGE_TYPE;warning', execParams: { name: 'Огоҳӣ' } },
+      { keyValue: 'UBS_MESSAGE_TYPE;information', execParams: { name: 'Маълумот' } }
     ]
   }
   loader.localizeEntity(session, localizationConfig, __filename)
