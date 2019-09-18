@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.17]
+### Fixed
+  - logon event handler will not add a staff units ID for deleted employee;
+  Situation is possible when one userID assigned to different employee and one of employee is deleted
+  
 ## [5.2.8]
 ### Fixed
  - allow to update org_employeeonstaff when parent org unit is not visible on the current date (for example department is closed)  

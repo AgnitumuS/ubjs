@@ -28,7 +28,7 @@ function orgOnUserLogin () {
   let orgUnitIDs = []
   let tmpArr = []
   let lastError = ''
-    // Initializing with empty values
+  // Initializing with empty values
   data.staffUnitID = 0
   data.employeeOnStaffID = 0
   data.parentID = 0
@@ -48,11 +48,16 @@ function orgOnUserLogin () {
       .attrs(['ID', 'employeeOnStaffType', 'description', 'employeeID.userID', 'employeeID.shortFIO',
         'employeeID.fullFIO', 'staffUnitID.ID.mi_treePath', 'staffUnitID.parentID',
         'staffUnitID.parentID.mi_unityEntity', 'staffUnitID', 'staffUnitID.fullName',
-        'staffUnitID.name', 'employeeID'])
+        'staffUnitID.name', 'employeeID', 'employeeID.mi_deleteDate'])
       .where('[employeeID.userID]', '=', Session.userID)
       .selectAsObject()
+    // remove staffs for deleted org_employee,
+    // because situation when org_employee for userID is deleted but org_employeeonstaff not is possible
+    let delDate = new Date(2100, 1, 1)
+    staffs = staffs.filter(s => new Date(s['employeeID.mi_deleteDate']) > delDate)
   } catch (ex) {
     // this possible if we connect to empty database without org_* tables
+    staffs = []
     lastError = ex.toString()
     console.error('error getting org_employee', lastError)
   }
@@ -91,7 +96,7 @@ function orgOnUserLogin () {
     for (let i = 0, L = staffs.length; i < L; i++) {
       let staff = staffs[i]
       // treePath is something like this: "/2100002161511/2100002322780/" remove empty ""
-      tmpArr = _.without(staff['staffUnitID.ID.mi_treePath'].split('/'), '')
+      tmpArr = staff['staffUnitID.ID.mi_treePath'].split('/').filter(v => !!v).map(v => parseInt(v, 10))
       // drop STAFF type org units from orgUnitIDs array (see [UB-1571] for details)
       let myOU = tmpArr.pop() // last entry in treePath is my staff, so memorise it
       // select orgUnit types
@@ -162,7 +167,7 @@ function orgOnUserLogin () {
     data.tempPositions = JSON.stringify(tempPositionsArray) // stringified array of temporary position objects: {staffUnitID, employeeOnStaffID}
     data.assistantPositions = JSON.stringify(assistantPositionsArray) // stringified array of assistant position objects: {staffUnitID, employeeOnStaffID}
     tempPositionsArray = _.union(tempPositionsArray, assistantPositionsArray)
-    tempPositionsArray.push({staffUnitID: staffUnitID, employeeOnStaffID: employeeOnStaffID})
+    tempPositionsArray.push({ staffUnitID: staffUnitID, employeeOnStaffID: employeeOnStaffID })
     data.allPositions = JSON.stringify(tempPositionsArray) // stringified array of permanent + temporary + assistant position objects: {staffUnitID, employeeOnStaffID}
   }
 }
