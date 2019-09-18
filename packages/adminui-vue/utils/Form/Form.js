@@ -13,7 +13,8 @@ const {
   mergeStore,
   required,
   transformCollections,
-  initCollections
+  initCollections,
+  enrichFieldList
 } = require('./helpers')
 const createValidator = require('./validation')
 const UB = require('@unitybase/ub-pub')
@@ -151,7 +152,7 @@ class UForm {
     this.isProcessingUsed = true
 
     if (masterFieldList) {
-      this.fieldList = enrichFieldList(this.entitySchema, fieldList, ['ID', 'mi_modifyDate', 'mi_createDate'])
+      this.fieldList = enrichFieldList(this.entitySchema, masterFieldList, ['ID', 'mi_modifyDate', 'mi_createDate'])
     }
 
     this.collections = collections
