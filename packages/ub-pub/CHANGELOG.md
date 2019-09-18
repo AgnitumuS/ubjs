@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.21]
+### Added
+- AsyncConnection method `queryAsObject`, which acts as `query` but returns array of objects
+
 ## [5.3.15]
 ### Changed
  - silenceKerberosLogin support is removed from AsyncConnection and moved into @unitybase/adminui-pub;
