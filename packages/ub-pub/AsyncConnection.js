@@ -1012,6 +1012,54 @@ UBConnection.prototype.query = function query (ubq, allowBuffer) {
 UBConnection.prototype.run = UBConnection.prototype.query
 
 /**
+ * Promise of running UBQL command(s) (asynchronously).
+ *
+ * Result is array of objects or null.
+ *
+ * The difference from {@link UBConnection.post} is:
+ *
+ * - ability to buffer request: can merge several `query` in the 20ms period into one ubql call
+ *
+ * For well known UnityBase methods use aliases (addNew, select, insert, update, doDelete)
+ * @param {Object} ubq    Request to execute
+ * @param {String} ubq.entity Entity to execute the method
+ * @param {String} ubq.method Method of entity to executed
+ * @param {Array.<String>} [ubq.fieldList]
+ * @param {Object} [ubq.whereList]
+ * @param {Object} [ubq.execParams]
+ * @param {Number} [ubq.ID]
+ * @param {Object} [ubq.options]
+ * @param {String} [ubq.lockType]
+ * @param {Boolean} [ubq.__skipOptimisticLock] In case this parameter true and in the buffered
+ * @param {Boolean} [ubq.__nativeDatasetFormat]
+ * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
+ * @param {Boolean} [allowBuffer] Allow buffer this request to single runList. False by default
+ * @method
+ * @returns {Promise<Array|null>}
+ *
+ * Example:
+ *
+ *      //this two execution is passed to single ubql server execution
+ *      $App.connection.queryAsObject({entity: 'uba_user', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
+ *      $App.connection.queryAsObject({entity: 'ubm_navshortcut', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
+ *
+ *      //but this request is passed in separate ubql (because allowBuffer false in first request
+ *      $App.connection.queryAsObject({entity: 'uba_user', method: 'select', fieldList: ['*']}).then(UB.logDebug);
+ *      $App.connection.queryAsObject({entity: 'ubm_desktop', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
+ */
+UBConnection.prototype.queryAsObject = function queryAsObject (ubq, fieldAliases, allowBuffer) {
+  if (ubq.execParams && (ubq.method === 'insert' || ubq.method === 'update')) {
+    let newEp = stringifyExecParamsValues(ubq.execParams)
+    if (newEp) ubq.execParams = newEp
+  }
+  return this.query(ubq, allowBuffer).then(function (res) {
+    return (res.resultData && res.resultData.data && res.resultData.data.length)
+      ? LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)
+      : null
+  })
+}
+
+/**
  * Convert raw server response data to javaScript data according to attribute types.
  * Called by {@link UBConnection#select}
  * Currently only Data/DateTime & boolean conversion done
