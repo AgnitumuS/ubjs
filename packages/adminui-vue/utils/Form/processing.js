@@ -550,7 +550,7 @@ function createProcessingModule ({
        * @param {Object} payload.execParams if we need to create new item with specified params
        */
       async addCollectionItem ({ commit }, { collection, execParams }) {
-        const repo = initCollectionsRequests[collection].repository
+        const repo = initCollectionsRequests[collection].repository()
         const entity = repo.entityName
         const fieldList = repo.fieldList
         const item = await UB.connection.addNewAsObject({

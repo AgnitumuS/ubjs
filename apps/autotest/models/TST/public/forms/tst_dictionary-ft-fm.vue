@@ -61,7 +61,8 @@
 
           <u-form-row label="Participants">
             <u-select-collection
-              subject-attr="subjectID"
+              associated-attr="subjectID"
+              entity-name="tst_dictionary_ppt"
               collection-name="participants"
               clearable
             />

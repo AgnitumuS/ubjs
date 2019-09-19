@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.38]
+### Changed
+ - **BREAKING** `USelectCollection` added required prop `entityName` it pass the entity name of the collection
+ - **BREAKING** `USelectCollection` prop `subjectAttr` renamed to `associatedAttr`
+ 
+### Fixed
+ - `instance/addCollectionItem` missed call of repository function
+
 ## [1.6.35]
 ### Added
  - basic support for `dataHistory` mixin: only creation of new rows. TODO - implement adding of a new row version
