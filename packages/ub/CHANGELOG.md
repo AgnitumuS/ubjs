@@ -5,8 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.35]
+### Added
+ - documented ability to set log file path (`logging.path`) to the specified file and disable log rotation by setting 
+ `logging.rotationSizeInMB` to 0
+ - `logging.threadingModel` is marked as deprecated
+  
 ### Fixed
- - added documentation for `aclRls.model` mixin configuration parameter 
+ - added documentation for `model` configuration parameter for `aclRls` mixin 
 
 ## [5.2.32]
 ### Changed

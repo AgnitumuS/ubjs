@@ -349,18 +349,18 @@
         "path": {
           "type": "string",
           "default": "",
-          "description": "Path to folder where server place log files (including rotated logs). Keep it empty to disable output of logs logs to the files"
+          "description": "Path to folder where server place log files (including rotated logs). Keep it empty to disable output of logs logs to the files. If build-in log rotation is disabled by setting rotationSizeInMB to 0 then path is a path to the FILE (example: \"./logs/my-app.log\")",
         },
         "rotationSizeInMB": {
           "type": "number",
           "default": 100,
           "minimum": 0,
           "maximum": 2048,
-          "description": "If log file reaches this size, it will be rotated. 0 mean no rotation. If !==0 then `threadingModel` will switch to `IdentifiedInOnFile`"
+          "description": "If log file reaches this size, it will be rotated. If 0 then rotation is disabled and path must be either empty string or path to a FILE"
         },
         "threadingModel": {
           "default": "IdentifiedInOnFile",
-          "description": "How threads write information to log\n\n |Value  |Description\n|-\n| `OneFilePerThread`|will create one .log file per thread(fastest)\n| `MergedInOneFile`| will indicate that all threads are logged in the same file, in occurence order\n| `IdentifiedInOnFile` | like MergedInOneFile, but a new column will be added for each log row, with the corresponding ThreadID",
+          "description": "DEPRECATED (always IdentifiedInOnFile)",
           "enum": [
             "OneFilePerThread",
             "MergedInOneFile",

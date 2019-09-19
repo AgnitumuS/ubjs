@@ -16,12 +16,11 @@
 		"threadPoolSize": 4
 	},
 	"logging": {
-		"path": "./logs",
+		"path": "./logs/autotest.log",
 		"levels": ["*"],
 		//"levels": [],
-		"threadingModel": "IdentifiedInOnFile",
 		"stackTrackDepth": 20,
-		"rotationSizeInMB": 100,
+		"rotationSizeInMB": 10,
 		"performanceCounters": false
 	},
 	"javascript": {

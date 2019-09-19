@@ -23,7 +23,6 @@
 		"levels": [
 			"*"
 		],
-		"threadingModel": "IdentifiedInOnFile",
 		"stackTrackDepth": 20,
 		"rotationSizeInMB": 100,
 		"performanceCounters": true
