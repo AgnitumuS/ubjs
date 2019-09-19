@@ -326,7 +326,7 @@
                         },
                         "model": {
                             "type": "string",
-                            "description": "model name where to place the entity for storing aclRLS. If empty will be calculated. TODO - explain or remove!"
+                            "description": "model name where to place the entity for storing aclRLS. If entity expected to be override in other models then placing here name of original model will help to keep acl entity in the model of origin"
                         }
                     }
                 },
