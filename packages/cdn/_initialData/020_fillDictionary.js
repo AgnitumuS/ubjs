@@ -1,27 +1,26 @@
+const csvLoader = require('@unitybase/base').dataLoader
+const path = require('path')
 /**
  * Fill CDN dictionaries from csv files
  * Used by `ubcli initialize` command
  * @param {ServerSession} session
  */
 module.exports = function (session) {
-  'use strict'
-  var
-    csvLoader = require('@unitybase/base').dataLoader,
-    conn = session.connection
+  let conn = session.connection
 
   console.info('\tFill common dictionaries data (CDN model)')
 
   console.info('\t\tFill enumeration for CDN model')
-  csvLoader.loadSimpleCSVData(conn, __dirname + '/ubm_enum-CDN.csv', 'ubm_enum', 'eGroup;code;name;sortOrder'.split(';'), [0, 1, 2, 3])
+  csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'ubm_enum-CDN.csv'), 'ubm_enum', 'eGroup;code;name;sortOrder'.split(';'), [0, 1, 2, 3])
 
   console.info('\t\tCity types (cdn_citytype)')
-  csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_citytype.csv', 'cdn_citytype', 'code;name'.split(';'), [0, 1], 1)
+  csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'cdn_citytype.csv'), 'cdn_citytype', 'code;name'.split(';'), [0, 1], 1)
 
   console.info('\t\tRegion types (cdn_regiontype)')
-  csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_regiontype.csv', 'cdn_regiontype', 'code;name'.split(';'), [0, 1], 1)
+  csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'cdn_regiontype.csv'), 'cdn_regiontype', 'code;name'.split(';'), [0, 1], 1)
 
   console.info('\t\tCountries (cdn_country)')
-  csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_country.csv', 'cdn_country', 'code;name;fullName;intCode;symbol2;symbol3'.split(';'), [4, 0, 1, 2, 3, 4], 1)
+  csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'cdn_country.csv'), 'cdn_country', 'code;name;fullName;intCode;symbol2;symbol3'.split(';'), [4, 0, 1, 2, 3, 4], 1)
 
   console.info('\t\tRegions of Ukraine (cdn_region)')
   var ukraineID = conn.lookup('cdn_country', 'ID', {expression: 'code', condition: 'equal', value: 'UKR'})
@@ -30,7 +29,7 @@ module.exports = function (session) {
   }
 
   // CSV columns: code,regionType,name,fullName
-  csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_region_ukraine.csv', 'cdn_region',
+  csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'cdn_region_ukraine.csv'), 'cdn_region',
     ['parentAdminUnitID', 'code', 'regionTypeID', 'name', 'caption', 'fullName'],
     [
       function () { return ukraineID },
@@ -47,13 +46,13 @@ module.exports = function (session) {
   )
 
   console.info('\t\tContact types (cdn_contacttype)')
-  csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_contacttype.csv', 'cdn_contacttype', 'code;name'.split(';'), [0, 1], 1)
+  csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'cdn_contacttype.csv'), 'cdn_contacttype', 'code;name'.split(';'), [0, 1], 1)
 
   console.info('\t\tCurrency (cdn_currency)')
-  csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_currency.csv', 'cdn_currency', 'name;intCode;code3;curMult'.split(';'), [0, 1, 2, 3], 1)
+  csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'cdn_currency.csv'), 'cdn_currency', 'name;intCode;code3;curMult'.split(';'), [0, 1, 2, 3], 1)
 
   console.info('\t\tLanguage list (cdn_language)')
-  csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_language.csv', 'cdn_language',
+  csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'cdn_language.csv'), 'cdn_language',
     'code;languageName;nativeName;isRTL'.split(';'),
     [
       0, 1, 2, 3

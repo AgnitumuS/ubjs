@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.3]
+### Fixed
+ - explicitly specified fieldList for cdn_employee & cdn_person shortcuts to prevent lookup on potentially huge cdn_organization 
+
 ## [5.3.1]
 ### Fixed
  - Field 'level' renamed to 'hierarchyLevel' because 'level' is a reserved word in Oracle - so this field breaks ddl generation for Oracle database

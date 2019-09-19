@@ -85,6 +85,6 @@ function updateCaption (ctxt, mode) {
 function makeCaption (name, parentCaption) {
   let caption = name + ', ' + (parentCaption || '?')
   return (caption.length >= 1024)
-   ? caption.substr(0, 1023)
-   : caption
+    ? caption.substr(0, 1023)
+    : caption
 }

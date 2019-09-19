@@ -12,8 +12,8 @@ function setDescriptionAttribute (ctx) {
   const execParams = ctx.mParams.execParams
   let cityName = execParams.cityID || instanceData.cityID
     ? (UB.Repository('cdn_city').attrs('name')
-    .misc({ __allowSelectSafeDeleted: true })
-    .selectById(execParams.cityID || instanceData.cityID)).name || ''
+      .misc({ __allowSelectSafeDeleted: true })
+      .selectById(execParams.cityID || instanceData.cityID)).name || ''
     : ''
 
   execParams.description =
