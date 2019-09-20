@@ -108,7 +108,7 @@ export default {
       },
 
       set (value) {
-        if (this.$v) {
+        if (this.$v && this.attributeName in this.$v) {
           this.$v[this.attributeName].$touch()
         }
         this.$store.commit(`SET_DATA`, { key: this.attributeName, value })
