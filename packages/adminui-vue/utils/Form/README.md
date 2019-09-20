@@ -247,21 +247,25 @@ Forms принимает на вход опциональный параметр
   На основе данных в instance модуле и entitySchema создает объект валидации `$v` - [vuelidate](https://github.com/vuelidate/vuelidate)
   полученый объект через provide прокидывается в компонент.
   Можно получить в любом дочернем компоненте формы с помощью `inject: ['$v']`.
-  Можно передать функцию в качестве параметра в которой можно будет на основе стора построить кастомную валидацию.
+  Можно передать Vue mixin в качестве параметра в котором можно будет перетереть стандартную валидацию.
   
 #### Пример кастомной валидации
   dynamicField будет обязательным если someNumber будет больше 25
     
 ```javascript
-const Vue = require('vue')
-const { validationMixin } = require('vuelidate/lib/index')
 const { required, between } = require('vuelidate/lib/validators/index')
 
-function createValidator (store) {
-  const validatorInstance = new Vue({
-    store,
-    mixins: [ validationMixin ],
-
+module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
+  Form({
+    component: rootComponent,
+    entity,
+    instanceID,
+    title,
+    formCode
+  })
+  .instance()
+  .processing()
+  .validation({
     computed: {
       name () {
         return this.$store.state.data.name
@@ -275,7 +279,7 @@ function createValidator (store) {
         return this.$store.state.data.dynamicField
       }
     },
-
+  
     validations () {
       return {
         name: { required },
@@ -289,21 +293,6 @@ function createValidator (store) {
       }
     }
   })
-
-  return validatorInstance.$v
-}
-
-module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
-  Form({
-    component: rootComponent,
-    entity,
-    instanceID,
-    title,
-    formCode
-  })
-  .instance()
-  .processing()
-  .validation(createValidator)
   .mount()
 }
 

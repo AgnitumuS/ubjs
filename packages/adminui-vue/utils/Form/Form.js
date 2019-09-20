@@ -78,7 +78,7 @@ class UForm {
     this.modalWidth = modalWidth
 
     this.validator = undefined
-    this.createValidator = createValidator
+    this.customValidationMixin = undefined
 
     this.isProcessingUsed = false
     this.isValidationUsed = false
@@ -127,6 +127,7 @@ class UForm {
    * @param {function} [cfg.loaded]
    * @param {function} [cfg.beforeDelete]
    * @param {function} [cfg.deleted]
+   * @param {function} [saveNotification] Callback which will be override default save notification
    * @returns {UForm}
    */
   processing ({
@@ -141,7 +142,8 @@ class UForm {
     beforeLoad,
     loaded,
     beforeDelete,
-    deleted
+    deleted,
+    saveNotification
   } = {}) {
     if (!this.canProcessingInit) {
       throw new Error(`You can use ".processing()" only after ".instance()" and before ".mount()". Or ".processing()" is already initialized`)
@@ -175,7 +177,8 @@ class UForm {
       beforeLoad: beforeLoad ? () => beforeLoad.call(this, this.$store) : null,
       loaded: loaded ? () => loaded.call(this, this.$store) : null,
       beforeDelete: beforeDelete ? () => beforeDelete.call(this, this.$store) : null,
-      deleted: deleted ? () => deleted.call(this, this.$store) : null
+      deleted: deleted ? () => deleted.call(this, this.$store) : null,
+      saveNotification
     })
     mergeStore(this.storeConfig, processingModule)
 
@@ -185,18 +188,23 @@ class UForm {
   /**
    * Custom validator function. In case `validation` not called or called without argument then validator function
    *  is generated automatically based on entitySchema
-   * @param {function} [customCreateValidator] custom validator
+   * @param {object} [validationMixin] Custom validation mixin in case we need to override default validation
+   * @param {object} [validationMixin.computed] Vue instance computed properties configuration
+   * @param {object} [validationMixin.validations] [vuelidate](https://vuelidate.netlify.com/#sub-basic-usage) mixin validations config
    * @return {UForm}
    */
-  validation (customCreateValidator) {
+  validation (validationMixin) {
+    if (validationMixin && (typeof validationMixin === 'function')) {
+      throw new Error(`Invalid parameter type for UForm.validation - must be object with at last computed or validation props`)
+    }
     if (!this.canValidationInit) {
       throw new Error(`You can use ".validation()" only after ".processing()" and before ".mount()". Or ".validation()" is already initialized`)
     }
     this.canValidationInit = false
     this.isValidationUsed = true
 
-    if (customCreateValidator) {
-      this.createValidator = customCreateValidator
+    if (validationMixin) {
+      this.customValidationMixin = validationMixin
     }
 
     return this
@@ -215,7 +223,7 @@ class UForm {
     }
 
     if (this.isValidationUsed) {
-      this.validator = this.createValidator(this.$store, this.entitySchema, this.fieldList)
+      this.validator = createValidator(this.$store, this.entitySchema, this.customValidationMixin)
     }
 
     if (this.isProcessingUsed) {

@@ -40,6 +40,7 @@ const { buildExecParams, buildDeleteRequest, enrichFieldList } = require('./help
  * @param {function} [saved] Callback which will be emit when data was saved
  * @param {function} [beforeDelete] Callback which will be emit before delete
  * @param {function} [deleted] Callback which will be emit when data was deleted
+ * @param {function} [saveNotification] Callback which will be override default save notification
  * @return {object} Vue store cfg
  */
 function createProcessingModule ({
@@ -59,7 +60,8 @@ function createProcessingModule ({
   beforeSave,
   saved,
   beforeDelete,
-  deleted
+  deleted,
+  saveNotification
 }) {
   const autoLoadedCollections = Object.entries(initCollectionsRequests)
     .filter(([coll, collData]) => !collData.lazy)
@@ -445,10 +447,14 @@ function createProcessingModule ({
           if (state.isNew) {
             commit('IS_NEW', false)
           }
-          $notify({
-            type: 'success',
-            message: UB.i18n('successfullySaved')
-          })
+          if (typeof saveNotification === 'function') {
+            saveNotification()
+          } else {
+            $notify({
+              type: 'success',
+              message: UB.i18n('successfullySaved')
+            })
+          }
           if (saved) {
             await saved()
           }

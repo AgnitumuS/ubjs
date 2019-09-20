@@ -5,12 +5,30 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.6.38]
+### Added
+ - Callback `saveNotification` is added to `UForm.processing` parameters - will override default save notification
+
 ### Changed
+ - **BREAKING** `UForm.validation` now accept config for [vuelidate](https://vuelidate.netlify.com/#sub-basic-usage) mixin
+ __instead of function__ what returns $v 
+```javascript
+.validation({
+ computed: {
+   code () {
+     return this.$store.state.data.code
+   }
+ },
+ validations: {
+   code: { required }
+ }
+})
+```
  - **BREAKING** `USelectCollection` added required prop `entityName` it pass the entity name of the collection
  - **BREAKING** `USelectCollection` prop `subjectAttr` renamed to `associatedAttr`
  
 ### Fixed
  - `instance/addCollectionItem` missed call of repository function
+
 
 ## [1.6.35]
 ### Added
