@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ### Fixed
  - `instance/addCollectionItem` missed call of repository function
-
+ - `UContextMenu` do not closed just after opening in Firefox
 
 ## [1.6.35]
 ### Added

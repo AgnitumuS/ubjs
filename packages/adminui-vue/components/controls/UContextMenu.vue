@@ -59,8 +59,6 @@ export default {
   data () {
     return {
       visible: false,
-      /** is context menu in process of showing */
-      showing: false,
       x: 0,
       y: 0,
       targetData: null
@@ -76,14 +74,13 @@ export default {
     },
 
     hideOnClickOutside () {
-      if (!this.showing) this.visible = false
+      this.visible = false
     },
 
     show ({ x, y }, targetData) {
-      this.showing = true
       this.visible = true
-      this.x = x
-      this.y = y
+      this.x = x - 1
+      this.y = y - 1
       this.targetData = targetData
 
       this.$nextTick(() => {
@@ -92,7 +89,6 @@ export default {
         if (underBottom) {
           this.y = window.innerHeight - contextHeight
         }
-        this.showing = false
       })
     }
   }
