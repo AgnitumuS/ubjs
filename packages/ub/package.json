@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub",
-  "version": "5.2.34",
+  "version": "5.2.35",
   "description": "Build-in UnityBase model",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ub",
   "config": {
