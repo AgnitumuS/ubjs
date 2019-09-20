@@ -51,7 +51,8 @@
 
       <u-form-row label="navShortcutRights">
         <u-select-collection
-          subject-attr="admSubjID"
+          associated-attr="admSubjID"
+          entity-name="ubm_navshortcut_adm"
           collection-name="rightsSubjects"
           clearable
         />

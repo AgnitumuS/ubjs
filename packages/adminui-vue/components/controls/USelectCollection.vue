@@ -1,7 +1,7 @@
 <template>
   <u-select-multiple
     :value="selectedRecords"
-    :entity-name="subjectEntityName"
+    :entity-name="associatedEntity"
     :disabled="disabled"
     :clearable="clearable"
     @input="changeCollection"
@@ -23,10 +23,10 @@ export default {
 
   props: {
     /**
-     * Subject attribute.
+     * Associated attribute.
      * Attribute in the target entity for which the collection record is associated with the master record
      */
-    subjectAttr: {
+    associatedAttr: {
       type: String,
       required: true
     },
@@ -35,6 +35,14 @@ export default {
      * Name of key what you set in collectionRequests object
      */
     collectionName: {
+      type: String,
+      required: true
+    },
+
+    /**
+     * Entity name of collection
+     */
+    entityName: {
       type: String,
       required: true
     },
@@ -61,25 +69,21 @@ export default {
       return this.$store.state.collections[this.collectionName]
     },
 
-    entityName () {
-      return this.collectionData.entity
-    },
-
     entitySchema () {
       return this.$UB.connection.domain.get(this.entityName)
     },
 
     selectedRecords () {
       return this.collectionData.items
-        .map(i => i.data[this.subjectAttr])
+        .map(i => i.data[this.associatedAttr])
     },
 
     objectIDName () {
       return this.entitySchema.filterAttribute(a => a.associatedEntity === this.masterEntityName)[0].name
     },
 
-    subjectEntityName () {
-      return this.entitySchema.attributes[this.subjectAttr].associatedEntity
+    associatedEntity () {
+      return this.entitySchema.attributes[this.associatedAttr].associatedEntity
     }
   },
 
@@ -98,7 +102,7 @@ export default {
             return this.addCollectionItem({
               collection: this.collectionName,
               execParams: {
-                [this.subjectAttr]: option,
+                [this.associatedAttr]: option,
                 [this.objectIDName]: this.$store.state.data.ID
               }
             })
@@ -127,7 +131,8 @@ export default {
 ```vue
 <template>
   <u-select-collection
-    subject-attr="admSubjID"
+    associated-attr="admSubjID"
+    entity-name="ubm_navshortcut_adm"
     collection-name="rightsSubjects"
   />
 </template>
