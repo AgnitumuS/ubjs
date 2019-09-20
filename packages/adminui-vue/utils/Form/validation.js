@@ -20,7 +20,7 @@ function createValidator (store, entitySchema, customValidationMixin = {}) {
     .map(a => a.name)
 
   const defaultValidationMixin = {
-    computed: mapInstanceFields(requiredFields),
+    computed: mapInstanceFields(entitySchema.getAttributeNames()),
 
     validations () {
       return requiredFields.reduce((obj, field) => {
