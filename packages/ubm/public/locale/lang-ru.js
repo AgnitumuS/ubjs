@@ -92,6 +92,7 @@ UB.i18nExtend({
   'desktopService.BottomCenter': 'Внизу по центру',
   'desktopService.BottomRight': 'Внизу справа',
   monkeyRequestsDetected: 'Ваш запрос отработан, но мы обнаружили, что он повторён несколько раз. Возможно, у Вас запала клавиша?',
+  'Shortcut editor': 'Редактор ярлыка',
   // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF',
   chooseShortcutFolder: 'Выберите папку ярлыка'

@@ -92,6 +92,7 @@ UB.i18nExtend({
   'desktopService.BottomCenter': 'Дар поен дар байн',
   'desktopService.BottomRight': 'Дар поени дар тарафи рост',
   monkeyRequestsDetected: 'Дархости шумо коркард шудааст, аммо мо дарёфтем, ки он якчанд маротиба такрор карда шудааст. Возможно, у Вас запала клавиша?',
+  'Shortcut editor': 'Муҳаррири миёнабур',
   // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF',
   chooseShortcutFolder: 'Choose shortcut folder'
