@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.6.38]
+### Fixed
+ - `UForm.validation` computed.mapInstanceFields maps all entity fields. Previously only required fields
+
 ### Added
  - Callback `saveNotification` is added to `UForm.processing` parameters - will override default save notification
 
