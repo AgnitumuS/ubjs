@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.36]
+### Fixed
+- `getDomainInfo` endpoint optimization: starting from UB 5.15.4 nativeGetDomainInfo can wrote domain
+ directly into HTTP response instead of serializing it to/from JS engine. This save up to 70ms on huge domains
+
 ## [5.2.35]
 ### Added
  - documented ability to set log file path (`logging.path`) to the specified file and disable log rotation by setting 

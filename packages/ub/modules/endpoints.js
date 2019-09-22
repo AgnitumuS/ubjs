@@ -323,10 +323,13 @@ function getDomainInfoEp (req, resp) {
     return resp.badRequest('userName=login parameter is required')
   }
 
-  let res = nativeGetDomainInfo(isExtended)
-  // let res = nativeGetDomainInfo(false)
-
-  resp.writeEnd(res)
+  let res = nativeGetDomainInfo(isExtended, true /* write to resp */)
+  if (res) {
+    // before UB 5.15.4 nativeGetDomainInfo returns domain string and ignore 2-nd parameter writeToResp
+    // for huge domain serializing/de-serializing string is expensive operation, so new implementation
+    // can wrote domain directly into response body
+    resp.writeEnd(res)
+  }
   resp.statusCode = 200
   resp.validateETag()
 }
