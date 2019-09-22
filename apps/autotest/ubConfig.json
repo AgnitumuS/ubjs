@@ -20,7 +20,7 @@
 		"levels": ["*"],
 		//"levels": [],
 		"stackTrackDepth": 20,
-		"rotationSizeInMB": 10,
+		"rotationSizeInMB": 0,
 		"performanceCounters": false
 	},
 	"javascript": {
