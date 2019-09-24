@@ -451,7 +451,9 @@ $App.connection.userLang()
           password: ''
         }
       }
-      let clientNonce = SHA256(new Date().toISOString().substr(0, 16)).toString()
+      let clientNonce = me.authMock
+        ? SHA256('1234567890abcdef').toString()
+        : SHA256(new Date().toISOString().substr(0, 16)).toString()
       request.params.clientNonce = clientNonce
       if (resp.data.connectionID) {
         request.params.connectionID = resp.data.connectionID
@@ -810,7 +812,7 @@ UBConnection.prototype.xhr = function (config) {
     promise = promise.then(function () {
       // we must repeat authorize to obtain new session key ( because key exchange may happens before)
       return me.authorize().then(/** @param {UBSession} session */ function (session) {
-        let head = session.authHeader()
+        let head = session.authHeader(me.authMock)
         if (head) cfg.headers.Authorization = head // do not add header for anonymous session
         return transport.xhr(cfg)
       })
@@ -912,6 +914,7 @@ UBConnection.prototype.getAppInfo = function () {
        * @readonly */
       Object.defineProperty(me, 'UBQLv2', { enumerable: true, writable: false, value: isUBQLv2 })
       ClientRepository.prototype.UBQLv2 = isUBQLv2
+      Object.defineProperty(me, 'authMock', { enumerable: false, writable: false, value: appInfo.authMock || false })
       return appInfo
     })
 }

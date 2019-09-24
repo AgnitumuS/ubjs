@@ -6,8 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.36]
 ### Fixed
-- `getDomainInfo` endpoint optimization: starting from UB 5.15.4 nativeGetDomainInfo can wrote domain
- directly into HTTP response instead of serializing it to/from JS engine. This save up to 70ms on huge domains
+ - `getDomainInfo` endpoint optimization: starting from UB 5.15.4 nativeGetDomainInfo can wrote domain
+  directly into HTTP response instead of serializing it to/from JS engine. This save up to 70ms on huge domains
+ - `authMock` property added (if server started with --authMock switch) to getAppInfo endpoint response 
 
 ## [5.2.35]
 ### Added

@@ -25,6 +25,8 @@ const ubErrors = require('./ubErrors')
 const { uba_common, GC_KEYS } = require('@unitybase/base')
 const queryString = require('querystring')
 const appBinding = process.binding('ub_app')
+const options = require('@unitybase/base').options
+const AUTH_MOCK = options.switchIndex('-authMock') >= 0
 /**
  *
  * @param {string} reqPath
@@ -266,7 +268,8 @@ function getAppInfoEp (req, resp) {
 
     supportedWSProtocols: process.isWebSocketEnabled ? WebSockets.registeredProtocols() : [],
 
-    uiSettings: serverConfig.uiSettings || {}
+    uiSettings: serverConfig.uiSettings || {},
+    authMock: AUTH_MOCK || undefined
   }
   resp.writeEnd(appInfo)
   resp.statusCode = 200

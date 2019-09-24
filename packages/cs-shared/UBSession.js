@@ -71,10 +71,10 @@ function UBSession (authResponse, secretWord, authSchema) {
    *    //for header
    *    return {Authorization: session.authSchema + ' ' + session.signature()}
    *});
-   *
+   * @param {boolean} authMock
    * @returns {string}
    */
-  this.signature = function () {
+  this.signature = function (authMock) {
     switch (this.authSchema) {
       case 'None':
         return ''
@@ -83,9 +83,11 @@ function UBSession (authResponse, secretWord, authSchema) {
       case 'ROOT':
         return process.rootOTP()
       default:
-        let timeStampI = Math.floor((new Date()).getTime() / 1000)
+        let timeStampI = authMock ? 1 : Math.floor((new Date()).getTime() / 1000)
         let hexaTime = hexa8(timeStampI)
-        return hexa8ID + hexaTime + hexa8((typeof ncrc32 !== 'undefined') ? ncrc32(sessionSaltCRC, hexaTime) : crc32(sessionWord + sessionPwdHash + hexaTime)) // + url?
+        return authMock
+          ? hexa8ID + hexaTime + hexa8(1)
+          : hexa8ID + hexaTime + hexa8((typeof ncrc32 !== 'undefined') ? ncrc32(sessionSaltCRC, hexaTime) : crc32(sessionWord + sessionPwdHash + hexaTime)) // + url?
     }
   }
 
@@ -104,11 +106,11 @@ function UBSession (authResponse, secretWord, authSchema) {
    * $App.connection.authorize().then(function(session){
    *     return {Authorization: session.authHeader()}
    * });
-   *
+   * @param {boolean} [authMock=false]
    * @returns {string}
    */
-  this.authHeader = function () {
-    return this.isAnonymous() ? '' : ((this.authSchema === 'Negotiate' ? 'UB' : this.authSchema) + ' ' + this.signature())
+  this.authHeader = function (authMock) {
+    return this.isAnonymous() ? '' : ((this.authSchema === 'Negotiate' ? 'UB' : this.authSchema) + ' ' + this.signature(authMock))
   }
 }
 
