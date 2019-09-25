@@ -1,7 +1,5 @@
 {
 	"httpServer": {
-		//"serverType": "Socket",
-		"#include(%UB_RP_CONFIG%)"
 		"host": "+",
 		"port": "8881",
 		"requestQueueLength": 1000,
@@ -14,11 +12,6 @@
 		},
 		"threadPoolSize": 2
 	},
-	/*"wsServer": {
-		"host": "+",
-		"port": "888",
-		"path": "ws"
-	},*/
 	"logging": {
 		"path": "./logs",
 		"levels": [
@@ -43,7 +36,7 @@
 		"dstu": {
 			"findCertificateBySerial": true,
 			"iit": {
-				"libraryPath": "D:/dev/ub-all/ub-d/packages/iit-libbin/bin/x86_64_win",
+				"libraryPath": "./node_modules/@ub-d/iit-libbin/bin/x86_64_nix",
 				"librarySettings": "./key",
 				"keyPath": "./key/Key-6.dat",
 				"password": "%KEY_PWD%"
@@ -64,10 +57,7 @@
 				"enabled": true,
 				"checkInterval": 30
 			},
-			"linter": { "asi": true, "sub": true },
-			"onlyOffice": {
-				"serverIP": "10.8.17.6:32771"
-			}
+			"linter": { "asi": true, "sub": true }
 		},
 		"portalUI": {
 			"applicationName": "UBCore usage"
