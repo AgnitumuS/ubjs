@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.39]
+### Fixed
+ - `instance` module `SET_DATA` mutation, fix bug when assign a value to JSON attribute, and there is `null` instead
+   of a regular object value.  Assign an empty object in any scenario, when value is not already an object or when
+   value is `null`.
+ - `instance` module, comparison array to null or object to null now works without exceptions
+
 ## [1.6.38]
 ### Fixed
  - `UForm.validation` computed.mapInstanceFields maps all entity fields. Previously only required fields
