@@ -44,6 +44,9 @@ function isEqual (arg1, arg2) {
     if (arg2 === undefined) {
       arg2 = []
     }
+    if (!Array.isArray(arg1) || !Array.isArray(arg2)) {
+      return false
+    }
     if (arg1.find(i => !arg2.includes(i))) {
       return false
     }
@@ -109,6 +112,7 @@ function change (state, key, value, path) {
     return
   }
 
+
   if (!(key in state.originalData)) {
     // No value in "originalData" - edited for the first time, so save old value to "originalData"
     // TODO: for object types, need to create clone
@@ -118,8 +122,8 @@ function change (state, key, value, path) {
   if (path === undefined) {
     Vue.set(state.data, key, value)
   } else {
-    if (!(key in state.data)) {
-      // Create an object, if it is not there yet
+    if (typeof state.data[key] !== 'object' || state.data[key] === null) {
+      // Create an object, if current value is not a valid object
       Vue.set(state.data, key, {})
     }
 
