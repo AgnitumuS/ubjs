@@ -1,6 +1,5 @@
 {
   "plugins": [
-    "@babel/plugin-proposal-object-rest-spread",
-    "async-to-promises"
+    "@babel/plugin-proposal-object-rest-spread"
   ]
 }

@@ -67,7 +67,6 @@
   "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
   "devDependencies": {
     "@babel/plugin-proposal-object-rest-spread": "^7.4.3",
-    "babel-plugin-async-to-promises": "^1.0.5",
     "clean-css-cli": "^4.2.1",
     "cross-env": "^5",
     "css-loader": "^2.1.0",
@@ -76,7 +75,6 @@
     "file-loader": "^3.0.1",
     "install": "^0.13.0",
     "mini-css-extract-plugin": "^0.5.0",
-    "npm": "^6.11.3",
     "shx": "^0.3.2",
     "vue-loader": "^15.7.0",
     "vue-styleguidist": "^3.10.2",
