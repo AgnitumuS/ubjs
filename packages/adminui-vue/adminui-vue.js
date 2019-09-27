@@ -1,4 +1,3 @@
-//require('core-js')
 /* global SystemJS, Ext, $App */
 const UB = require('@unitybase/ub-pub')
 // vue internally use process.env.NODE_ENV !== 'production'

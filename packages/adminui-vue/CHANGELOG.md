@@ -4,13 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.0]
+### Changed
+ - production build now works on browsers for WinXP (Chrome 48/ FireFox 52). It's done by:
+    - adding a core-js polyfills for missing things (+122 Kb boundle size) - see `.babelrc`
+    - replacing DOMElement.append -> DOMElement.appendChild
+    - remove object rest spread where possible
+ - WinXP support **WILL BE REMOVED IN 1.8.0**  
+
 ## [1.6.41]
 ### Fixed
- - removed `async-to-promises` babel plugun - buggy
+ - removed `async-to-promises` babel plugin - buggy
 
 ## [1.6.40]
 ### Fixed
- - added support for old Chrome browser what can run on WindowsXP by using `async-to-promises` babel plugun
+ - added support for old Chrome browser what can run on WindowsXP by using `async-to-promises` babel plugin
 
 ## [1.6.39]
 ### Fixed
