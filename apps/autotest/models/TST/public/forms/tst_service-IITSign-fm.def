@@ -141,7 +141,7 @@ Ext.define('TST.IITSign', {
         return data.pki.signData(data.data)
       }).then(function (signature) {
         me.down('component[ubID="signature"]').setValue(signature)
-      }).fin(function () {
+      }).finally(function () {
         me.unmask()
       }).finally(() => {
         me.unmask('Signing')
@@ -160,7 +160,7 @@ Ext.define('TST.IITSign', {
         me.down('component[ubID="resultData"]').setValue(verificationResult)
       }).fail(function (verificationError) {
         throw new UB.UBError(verificationError.detail)
-      }).fin(function () {
+      }).finally(function () {
         me.unmask()
       }).done()
     }

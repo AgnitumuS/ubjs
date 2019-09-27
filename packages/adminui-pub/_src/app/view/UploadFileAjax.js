@@ -155,7 +155,7 @@ Ext.define('UB.view.UploadFileAjax', {
 
     UB.connection.setDocument(ffile, params, doOnProgress).then(function (result) {
       Ext.callback(w.callback, w.scope, [{errMsg: '', result: result, success: true}])
-    }).fin(function () {
+    }).finally(function () {
       w.close()
     })
   }

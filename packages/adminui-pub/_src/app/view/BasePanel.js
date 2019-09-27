@@ -850,7 +850,7 @@ Ext.define('UB.view.BasePanel', {
         me.updateLockButton()
         me.updateActions('entityRequiredLock', false)
         return true
-      }).fin(function () {
+      }).finally(function () {
         me.lockingProcessStarted = false
       })
     })
@@ -2341,7 +2341,7 @@ Ext.define('UB.view.BasePanel', {
       id: id,
       origName: file.name,
       filename: file.name
-    }, doOnProgress).fin(function () {
+    }, doOnProgress).finally(function () {
       clearInterval(waitIntervalID)
       waitBox.close()
     }).then(function (result) {
@@ -2853,12 +2853,12 @@ Ext.define('UB.view.BasePanel', {
         me.fireEvent('afterdelete')
         // TODO remove this call
         Ext.callback(me.eventHandler, me, [me, 'afterdelete'])
-      }).fin(function () {
+      }).finally(function () {
         me.unmaskForm()
       }).then(function () {
         me.closeWindow(true)
       })
-    }).fin(function () {
+    }).finally(function () {
       me.unmaskForm()
     })
   },
@@ -2953,7 +2953,7 @@ Ext.define('UB.view.BasePanel', {
 
     let close = (action && action.actionId === UB.view.BasePanel.actionId.saveAndClose) || false
     me.lockInterface()
-    me.saveForm().fin(function () {
+    me.saveForm().finally(function () {
       me.unmaskForm()
     }).then(function (saveStatus) {
       if (close && (saveStatus >= 0)) {
@@ -3238,7 +3238,7 @@ Ext.define('UB.view.BasePanel', {
             })
           }
           return 1
-        }).fin(function () {
+        }).finally(function () {
           me.unmaskForm()
           me.isSaveProcess = false
           // me.unmaskForm(); UBDF-1073

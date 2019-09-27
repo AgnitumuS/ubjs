@@ -817,7 +817,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
         scanner.lastScanedFormat = scanSettings.UBScan.OutputFormat
         return scanner.startScan(scanSettings)
       }).then(onScan, null, onNotify)
-        .fin(function () {
+        .finally(function () {
           statusWindow.close()
         }).catch(function (error) {
           return scanner.cancelScan().then(function () {
