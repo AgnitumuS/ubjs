@@ -129,7 +129,7 @@ Ext.define('UDISK.AdminEditShare', {
         UB.Repository(me.entityName).attrs(['ID', "userID.name", "accessType"])
             .where('cardID', '=', me.itemId)
             .where('accessType', '=', 'owner') // name like '%homer%'
-            .select().done(function(response){
+            .select().then(function(response){
                 me.ownerTb.setValue(response[0]["userID.name"]);
             });
         */
@@ -203,7 +203,7 @@ Ext.define('UDISK.AdminEditShare', {
             method: 'copyParentRight',
             fieldList: ['ID'],
             ID: me.itemId
-        }).done(function(){
+        }).then(function(){
             me.grid.store.reload();
         });
 
@@ -301,7 +301,7 @@ Ext.define('UDISK.AdminEditShare', {
                                 cardID: me.itemId,
                                 action: action
                             }
-                        }).done(function(){
+                        }).then(function(){
                             win.close();
                         });
 
@@ -318,7 +318,7 @@ Ext.define('UDISK.AdminEditShare', {
                                 cardID: me.itemId,
                                 action: 'remove'
                             }
-                        }).done(function(){
+                        }).then(function(){
                             win.close();
                         });
 
@@ -527,7 +527,7 @@ Ext.define('UDISK.AdminEditShare', {
                                         fieldList: ["cardID", "userID", "accessType"],
                                         execParams: params
                                     })
-                                        .done(function () {
+                                        .then(function () {
                                             store.reload();
                                             //grid.store.reload();
                                         });
@@ -552,7 +552,7 @@ Ext.define('UDISK.AdminEditShare', {
         var store = UB.Repository(me.entityName).attrs(['ID', "userID", "accessType"])
                .where('cardID', '=', 1)
                .where('name', 'contains', 'Homer') // name like '%homer%'
-               .select().done(function(response){
+               .select().then(function(response){
 
         });
         */
@@ -598,7 +598,7 @@ Ext.define('UDISK.AdminEditShare', {
                     .select();
 
             }
-            countCtore.done(function(data){
+            countCtore.then(function(data){
                 me.allChildCount = data[0]["count(1)"];
                 store.ubRequest = {
                     entity: me.entityName,

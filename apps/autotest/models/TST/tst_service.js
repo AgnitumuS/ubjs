@@ -102,7 +102,7 @@ me.testServerReportPDF = function (ctx) {
   const UBReport = require('models/UBS/public/UBReport.js')
 
   let report = UBReport.makeReport('test', 'pdf', {})
-  report.done(function (result) {
+  report.then(function (result) {
     if (result.reportType === 'pdf') {
       console.log('Generate PDF of', result.reportData.byteLength)
       // fs.writeFileSync('d:\\result.pdf', result.reportData );

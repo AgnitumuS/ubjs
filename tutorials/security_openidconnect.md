@@ -223,7 +223,7 @@ AdminUI реализует механизм поддержки множеств�
 						return deferred.promise;
 					}
 				});
-				conn.run({entity: 'uba_user', method: 'select', fieldList: ['ID', 'name']}).done(function(result){
+				conn.run({entity: 'uba_user', method: 'select', fieldList: ['ID', 'name']}).then(function(result){
 					var htmlTpl = '<table cellspacing = "0" border ="1">'+
 								  '<tr><td style = "text-align: center; padding: 2px;"><b>id</b></td>'+
 								  '<td style = "text-align: center; padding: 2px;"><b>login</b></td></tr>'+

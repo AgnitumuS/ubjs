@@ -5,7 +5,7 @@ function showPasswordChangeDialog () {
     formCode: 'uba_user-changeUserPassword',
     description: UB.i18n('changePassword'),
     customParams: 'admin'
-  }).done(function (result) {
+  }).then(function (result) {
     if (result.action === 'ok') {
       $App.connection.query({
         fieldList: [],
@@ -16,8 +16,8 @@ function showPasswordChangeDialog () {
           needChangePassword: result.needChangePassword,
           forUser: form.getField('name').getValue()
         }
-      }).done(function () {
-        $App.dialogInfo('passwordChangedSuccessfully').done()
+      }).then(function () {
+        $App.dialogInfo('passwordChangedSuccessfully')
       })
     }
   })

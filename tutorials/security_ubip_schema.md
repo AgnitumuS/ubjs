@@ -44,7 +44,7 @@ to your HTTP requests.
 			} 
         }
     });
-    conn.run({entity: 'uba_user', method: 'select', fieldList: ['ID', 'name']}).done(UB.logDebug)
+    conn.run({entity: 'uba_user', method: 'select', fieldList: ['ID', 'name']}).then(UB.logDebug)
 
 ### Using low-level UB http client (server side)
 

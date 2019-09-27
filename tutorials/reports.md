@@ -204,7 +204,7 @@ onParamPanelConfig: function () {
 ```js
 var UBReport = require('models/UBS/public/UBReport.js')
 var report = UBReport.makeReport('test', 'pdf', {})
-report.done(function (result) {
+report.then(function (result) {
   var fs = require('fs')
   if (result.reportType === 'pdf') {
     toLog(result.reportData.byteLength)

@@ -90,7 +90,7 @@ Ext.define('UDISK.AdminView', {
 
     /* $App.connection.query({
             entity: me.entityName, method: 'getDiskType'
-        }).done(function(result){
+        }).then(function(result){
             me.diskType = result.diskType;
         }); */
     if (!me.WebdavProviderName) {
@@ -100,7 +100,7 @@ Ext.define('UDISK.AdminView', {
       root: me.dataMainDisk(),
       sortOnLoad: false
     })
-    me.reloadFolders().done()
+    me.reloadFolders()
 
     me.mainTree = Ext.create('Ext.tree.Panel', { //
       rootVisible: false,
@@ -310,7 +310,7 @@ Ext.define('UDISK.AdminView', {
                 parentID: me.selectedFolderID < 3 ? null : me.selectedFolderID,
                 entityName: me.entityName
               })
-              frm.upLoadFiles(files).done(function (response) {
+              frm.upLoadFiles(files).then(function (response) {
                 if (response !== 0) {
                   me.refreshCurrent()
                 }
@@ -470,7 +470,7 @@ Ext.define('UDISK.AdminView', {
           {type: docSrc.ct}
         )
         saveAs(blobData, name || docSrc.origName || docSrc.filename || me.getInstanceID() + '_' + docSrc.ct)
-      }).done()
+      })
   },
 
   updateAction: function () {
@@ -509,7 +509,7 @@ Ext.define('UDISK.AdminView', {
       if (!me.mainTreeStore.getNodeById(record.get('ID'))) {
         promise = me.reloadFolders().then()
       }
-      promise.done(function () {
+      promise.then(function () {
         me.selectedFolderID = record.get('ID')
         me.mainTree.getSelectionModel().deselectAll(true)
         me.fileGrid.getSelectionModel().deselectAll(true)
@@ -898,7 +898,7 @@ Ext.define('UDISK.AdminView', {
         }).then(function () {
           me.refreshCurrent([entityID])
         })
-      }).done()
+      })
   },
 
   initFileTemplates: function () {
@@ -909,7 +909,7 @@ Ext.define('UDISK.AdminView', {
       UB.xhr({
         url: 'models/UDISK/fileTemplates/' + me.entityName + '.JSON'
         //                url: UB.appConfig.udiscFileTemplates + '/' + me.entityName + '.JSON'
-      }).done(function (result) {
+      }).then(function (result) {
         _.forEach(result.data, function (item, index) {
           var code = item.code || 'fileTemplateItem' + index
           me.templateActions[code] = new Ext.Action({
@@ -1164,11 +1164,11 @@ Ext.define('UDISK.AdminView', {
                 mi_modifyDate: mi_modifyDate
               }
             })
-          }).done()
+          })
         }
         throw fileError
       })
-      .done(function () {
+      .then(function () {
         me.refreshCurrent([newID])
       })
   },
@@ -1186,10 +1186,10 @@ Ext.define('UDISK.AdminView', {
         method: 'copy',
         fieldList: ['ID'],
         execParams: me.copyContext
-      }).done()
+      })
       me.copyContext = null
       me.refreshCurrent()
-      me.reloadFolders().done()
+      me.reloadFolders()
       me.buildMenuPath()
       me.updateAction()
     }
@@ -1198,7 +1198,7 @@ Ext.define('UDISK.AdminView', {
       UB.Repository(me.entityName).attrs(['ID', 'name'])
         .where('parentID', '=', me.selectedFolderID)
         .where('name', 'in', me.copyContext.fileNames)
-        .select().done(function (response) {
+        .select().then(function (response) {
           if (response.lenght === 0) {
             doPasteInner()
           } else {
@@ -1256,7 +1256,7 @@ Ext.define('UDISK.AdminView', {
       action: action
     }
     me.updateAction()
-    me.reloadFolders().done()
+    me.reloadFolders()
   },
 
   doCopyAction: function (button) {
@@ -1283,7 +1283,7 @@ Ext.define('UDISK.AdminView', {
       method: 'isLocked',
       entity: me.entityName,
       ID: rec.get('ID')
-    }).done(function (result) {
+    }).then(function (result) {
       // result.lockInfo.lockExists
       if (result.lockInfo.lockExists && result.lockInfo.lockType !== 'None'
       // && result.lockInfo.lockUser !== $App.connection.userLogin()
@@ -1301,7 +1301,7 @@ Ext.define('UDISK.AdminView', {
           }
           return hasAccess
         })
-        .done(function (hasAccess) {
+        .then(function (hasAccess) {
           if (hasAccess) {
             host = $App.connection.serverUrl.split('/')[2] // host:port
             host = host.split(':')
@@ -1314,7 +1314,7 @@ Ext.define('UDISK.AdminView', {
               return plugin.editDocument(
                 ['\\', host + '@' + (port || '80'), me.WebdavProviderName, me.entityName, rec.get('ID'), rec.get('name')].join('\\')
               )
-            }).done()
+            })
           }
         })
     })
@@ -1383,10 +1383,10 @@ Ext.define('UDISK.AdminView', {
                 execParams: params
               })
             })
-            .done(function (respIns) {
+            .then(function (respIns) {
               win.close()
               me.refreshCurrent()
-              me.reloadFolders().done()
+              me.reloadFolders()
             })
         }
       }, {
@@ -1456,7 +1456,7 @@ Ext.define('UDISK.AdminView', {
   doUpload: function () {
     var me = this, frm, parentID = me.selectedFolderID < 3 ? null : me.selectedFolderID
     // UDISK.AdminView.checkAccess(parentID, 'write' )
-    // .done(function() {
+    // .then(function() {
 
     frm = Ext.create('UDISK.AdminUploadForm', {
       scope: this,
@@ -1466,7 +1466,7 @@ Ext.define('UDISK.AdminView', {
         me.refreshCurrent()
       }
     })
-    frm.upLoad().done(function (response) {
+    frm.upLoad().then(function (response) {
       if (response !== 0) {
         me.refreshCurrent()
       }
@@ -1570,7 +1570,7 @@ Ext.define('UDISK.AdminView', {
       UB.Repository(me.entityName).attrs(['ID', 'parentID', 'mi_treePath'])
         .where('ID', '=', me.lastSelectedFolderId)
         .using(me.adminMode ? 'adminSelect' : 'select')
-        .select().done(function (response) {
+        .select().then(function (response) {
           me.doSearchInternal(response[0].mi_treePath, textField)
           // here response is in [{ID: 10, code: 'value1'}, .... {}] format
         })
@@ -1704,7 +1704,7 @@ Ext.define('UDISK.AdminView', {
 
   doRefresh: function () {
     var me = this
-    me.reloadFolders().done(function () {
+    me.reloadFolders().then(function () {
       me.refreshCurrent()
     })
   },
@@ -1757,11 +1757,11 @@ Ext.define('UDISK.AdminView', {
             return delFile(record.get('ID'))
           }))
         }
-      }).done(function () {
+      }).then(function () {
         if (parentID) {
           me.selectedFolderID = parentID
         }
-        me.reloadFolders().done(function () {
+        me.reloadFolders().then(function () {
           me.refreshCurrent()
         })
       })

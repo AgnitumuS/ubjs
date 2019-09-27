@@ -64,5 +64,5 @@ $(function () {
     })
   }).catch(function (err) {
     $('#gridContainer').text('Error:' + err)
-  }).done()
+  })
 })

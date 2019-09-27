@@ -71,7 +71,7 @@ Ext.define('PDF.cstestReport', {
   pdfDoc2: function () {
     if (!this.requireChecked) {
       this.requireChecked = true
-      PDF.init().done(function () {
+      PDF.init().then(function () {
         PDF.csPrintToPdf.requireFonts(
           { fonts: [
             { fontName: 'CalibriImp', fontStyle: 'Normal' },
@@ -249,7 +249,7 @@ Ext.define('PDF.cstestReport', {
 
     if (!this.requireChecked) {
       this.requireChecked = true
-      PDF.init().done(function () {
+      PDF.init().then(function () {
         PDF.csPrintToPdf.requireFonts(
           { fonts: [
             { fontName: 'CalibriImp', fontStyle: 'Normal' },

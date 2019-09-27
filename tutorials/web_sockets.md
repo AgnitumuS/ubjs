@@ -165,7 +165,7 @@ of `getAppInfo` response.
         $ws.onclose = function(e){
     		console.log('Connection closed from server. Code:', e.code, 'Reason:', e.reason);
         }
-    }).done();
+    })
 
 Now you can send a messages
 

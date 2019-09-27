@@ -95,7 +95,7 @@ $(document).ready(function () {
                     utmSource: $(this).find('#utm_source').val(),
                     recaptca: window.norecapcha ? '': grecaptcha.getResponse()
                 })
-            }).done(function(data){
+            }).then(function(data){
                 console.log(data);
                 var alertBox = '<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
                     data.message + '</div>';

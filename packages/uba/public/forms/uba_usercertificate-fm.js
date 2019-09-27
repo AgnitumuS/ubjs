@@ -121,11 +121,11 @@ exports.formCode = {
         entity: 'uba_usercertificate',
         method: 'getCertificate',
         ID: me.record.get('ID')
-      }).done(function (res) {
+      }).then(function (res) {
         var data = UB.LocalDataStore.selectResultToArrayOfObjects(res)
         var blobData = new Blob(
           [UB.base64toArrayBuffer(data[0].certificate)],
-          {type: 'application/x-x509-ca-cert'}
+          { type: 'application/x-x509-ca-cert' }
         )
         saveAs(blobData, me.record.get('serial') + '.cer')
       })

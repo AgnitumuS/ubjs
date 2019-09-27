@@ -162,14 +162,14 @@ Ext.define('TST.IITSign', {
         throw new UB.UBError(verificationError.detail)
       }).finally(function () {
         me.unmask()
-      }).done()
+      })
     }
 
     me.down('component[ubID="doSaveSign"]').handler = function () {
       var buf = UB.base64toArrayBuffer(me.down('component[ubID="signature"]').value)
       $App.connection.post('echoToFile', buf).fail(function () {
         return null
-      }).done()
+      })
       $App.dialog('File is saved on server', 'You can find it in folder of your TST model by path <b>\\_autotest\\fixtures\\req</b>', { buttons: 1 })
     }
   }

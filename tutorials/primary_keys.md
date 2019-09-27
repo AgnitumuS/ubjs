@@ -130,7 +130,7 @@
             entity: 'tst_IDMapping', 
             method: 'addnew', 
             fieldList: ['ID', 'code']
-       }).done(function(result){ 
+       }).then(function(result){ 
             var objArray = UB.LocalDataStore.selectResultToArrayOfObjects(result); // transform array-of-array result representation to array-of-object 
             console.log(objArray); // [{ID: newID: int64, code: null}]   
        });
@@ -142,7 +142,7 @@
           method: 'insert', 
           fieldList: ['ID', 'code'],
           execParams: {ID: idFromPrevRequest, code: 'codeToInsert'} 
-       }).done();
+       }).then();
   
   либо вызовом метода insert без передачи параметра ID, в таком случае сервер сам сгенерит идентификатор:
   
@@ -151,7 +151,7 @@
            method: 'insert', 
            fieldList: ['ID', 'code'],
            execParams: {code: 'codeToInsert'} 
-       }).done(function(result){ 
+       }).then(function(result){ 
            var objArray = UB.LocalDataStore.selectResultToArrayOfObjects(result);
            console.log(objArray); // [{ID: newID: int64, code: 'codeToInsert'}]
        }); 

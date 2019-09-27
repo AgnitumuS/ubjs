@@ -227,7 +227,7 @@ SQLite БД полнотекстового поиска, т.к. токенайз
     UB.Repository('myEntity').attrs(["ID", "code"])
         .where('', 'match', 'республіка')
         .selectAsObject()
-        .done(UB.logDebug);
+        .then(UB.logDebug);
 
 С добавлением условий на другие атрибуті сущности (в нанном примере - docDate):
 
@@ -235,7 +235,7 @@ SQLite БД полнотекстового поиска, т.к. токенайз
         .where('', 'match', 'Україна')
         .where('docDate', '<', new Date(2015, 02, 13))
         .selectAsArray()
-        .done(UB.logDebug);
+        .then(UB.logDebug);
 
 Оба примера выше выполняются в 2 этапа:
 
@@ -261,7 +261,7 @@ SQLite БД полнотекстового поиска, т.к. токенайз
         whereList: {match: {condition: "match", values: {"any": "Україна"}}},
         options: {limit: 100, start: 0}
     })
-    .done(function(result){...});
+    .then(function(result){...});
 
 Но также можно указывать конкретную сущность `tst_incDocument`, используя метод `fts`
 
@@ -342,7 +342,7 @@ SQLite БД полнотекстового поиска, т.к. токенайз
                 whereList: {match: {condition: "match", values: {"any": "Україна"}}},
                 options: {limit: 100, start: 0}
             })
-            .done(function(result){...});
+            .then(function(result){...});
             ...
         }
 	

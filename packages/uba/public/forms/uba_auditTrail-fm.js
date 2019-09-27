@@ -25,7 +25,7 @@ exports.formCode = {
     var actionUserField = form.findField('actionUserField')
     actionUserField.setValue(me.record.data.actionUser)
     actionUserField.resetOriginalValue()
-    me.getEntityValueEntityById(me.record.data.actionUser, $App.domainInfo.get('uba_auditTrail').attr('actionUser').associatedEntity).done(function (result) {
+    me.getEntityValueEntityById(me.record.data.actionUser, $App.domainInfo.get('uba_auditTrail').attr('actionUser').associatedEntity).then(function (result) {
       actionUserField.setValue(result)
       actionUserField.resetOriginalValue()
     })
@@ -153,7 +153,7 @@ exports.formCode = {
         return Promise.all(promises)
       }).finally(function () {
         me.unmaskForm()
-      }).done()
+      })
   },
 
   initStoreDocumentImage: function (panel, diffAttr) {
@@ -692,7 +692,7 @@ exports.formCode = {
         } else {
           return entityInfo.caption + ' - ' + me.record.data.actionType
         }
-      }).done(function (result) {
+      }).then(function (result) {
         me.setTitle(result)
       })
   },
