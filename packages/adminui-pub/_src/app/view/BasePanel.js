@@ -248,6 +248,13 @@ Ext.define('UB.view.BasePanel', {
    */
   formWasSaved: false,
 
+  /**
+   * By default ("false"), a temporary lock is set when the form is in the "isNewInstance" state or edited in the "isEditMode" state.
+   * In the case of `true`, the lock will be set inside the `saveInstance` method and killed after saving
+   * @property {boolean} lockOnSave
+   */
+  lockOnSave: false,
+
   initComponent: function () {
     let me = this
     if (me.dfm && me.dfm.parentConfig) {
@@ -628,7 +635,7 @@ Ext.define('UB.view.BasePanel', {
 
   controlChanged: function (field, newValue, oldValue) {
     var me = this
-    if (!me.entityLocked && !me.isNewInstance && me.formDataReady && !me.isSaveProcess && !me.hasPersistLock) {
+    if (!me.lockOnSave && !me.entityLocked && !me.isNewInstance && me.formDataReady && !me.isSaveProcess && !me.hasPersistLock) {
       me.setEntityLocked()
     }
     me.fireEvent('controlChanged', field, newValue, oldValue)
@@ -850,7 +857,7 @@ Ext.define('UB.view.BasePanel', {
         me.updateLockButton()
         me.updateActions('entityRequiredLock', false)
         return true
-      }).fin(function () {
+      }).finally(function () {
         me.lockingProcessStarted = false
       })
     })
@@ -1844,7 +1851,7 @@ Ext.define('UB.view.BasePanel', {
       }
     }
 
-    if (me.record && me.isEntityLockable && me.isNewInstance &&
+    if (me.record && me.isEntityLockable && me.isNewInstance && !me.lockOnSave &&
        (me.domainEntity.mixins.softLock.lockIdentifier !== 'ID')
     ) {
       me.setEntityLocked()
@@ -2341,7 +2348,7 @@ Ext.define('UB.view.BasePanel', {
       id: id,
       origName: file.name,
       filename: file.name
-    }, doOnProgress).fin(function () {
+    }, doOnProgress).finally(function () {
       clearInterval(waitIntervalID)
       waitBox.close()
     }).then(function (result) {
@@ -2853,12 +2860,12 @@ Ext.define('UB.view.BasePanel', {
         me.fireEvent('afterdelete')
         // TODO remove this call
         Ext.callback(me.eventHandler, me, [me, 'afterdelete'])
-      }).fin(function () {
+      }).finally(function () {
         me.unmaskForm()
       }).then(function () {
         me.closeWindow(true)
       })
-    }).fin(function () {
+    }).finally(function () {
       me.unmaskForm()
     })
   },
@@ -2953,7 +2960,7 @@ Ext.define('UB.view.BasePanel', {
 
     let close = (action && action.actionId === UB.view.BasePanel.actionId.saveAndClose) || false
     me.lockInterface()
-    me.saveForm().fin(function () {
+    me.saveForm().finally(function () {
       me.unmaskForm()
     }).then(function (saveStatus) {
       if (close && (saveStatus >= 0)) {
@@ -3083,11 +3090,14 @@ Ext.define('UB.view.BasePanel', {
       return Promise.resolve(0)
     }
     me.maskForm(UB.appConfig.formSaveMaskDelay)
-
+    let needLockOnSave = Promise.resolve(true)
+    if (me.isEntityLockable && me.lockOnSave && !me.entityLocked) {
+      needLockOnSave = me.setEntityLocked()
+    }
     // save form documents
-    return Promise.all(editedDocuments.map(function (cmp) {
-      return cmp.save(!!me.__mip_ondate)
-    })).then(function () {
+    return needLockOnSave.then(() => {
+      return Promise.all(editedDocuments.map(cmp => cmp.save(!!me.__mip_ondate)))
+    }).then(() => {
       // add document type attributes
       me.binder.suspendAutoBind()
       me.disableBinder()
@@ -3238,7 +3248,7 @@ Ext.define('UB.view.BasePanel', {
             })
           }
           return 1
-        }).fin(function () {
+        }).finally(function () {
           me.unmaskForm()
           me.isSaveProcess = false
           // me.unmaskForm(); UBDF-1073

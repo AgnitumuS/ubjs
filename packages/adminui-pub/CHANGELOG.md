@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.10.25]
+### Added
+ - new property `BasePanel.lockOnSave`. If set its value to `true`, then record will be locked 
+ immediately before saving and unlock after save. By default (`false`). Temporary blocking is set 
+ when the form is in the "isNewInstance" mode or edited in the "isEditMode" mode.
+
 ## [5.10.20]
 ### Fixed
  - in case `uiSettings.adminUI.pdfViewer` is not defined do not add a `undefined` to the end of PDF viewer URL
