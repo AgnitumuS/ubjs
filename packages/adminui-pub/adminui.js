@@ -28,7 +28,7 @@ window.UB.LocalDataStore = LocalDataStore
 window.Q = Q
 window.UBDomain = UBDomain // used as UBDomain.getPhysicalDataType && UBDomain.ubDataTypes
 
-if (!Promise.prototype.fin) {
+if (!Promise.prototype.fin) { // Q Promises hack
   // eslint-disable-next-line no-extend-native
   Promise.prototype.fin = function (cb) {
     const res = () => this
@@ -37,7 +37,16 @@ if (!Promise.prototype.fin) {
   }
 }
 
-if (!Promise.prototype.done) {
+if (!Promise.prototype.finally) { // winXP hack
+  // eslint-disable-next-line no-extend-native
+  Promise.prototype.finally = function (cb) {
+    const res = () => this
+    const fin = () => Promise.resolve(cb()).then(res)
+    return this.then(fin, fin)
+  }
+}
+
+if (!Promise.prototype.done) { // Q Promises hack
   // eslint-disable-next-line no-extend-native
   Promise.prototype.done = Promise.prototype.then
 }
