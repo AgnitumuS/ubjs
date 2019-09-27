@@ -133,7 +133,7 @@ function mountModal ({
     }
   })
   instance.$mount()
-  document.body.append(instance.$el)
+  document.body.appendChild(instance.$el)
   instance.dialogVisible = true
 }
 

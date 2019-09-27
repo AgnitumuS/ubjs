@@ -55,7 +55,7 @@ Ext.Loader.setConfig({
   }
 })
 
-let {launchApp, $App} = require('./_src/app.js')
+let { launchApp, $App } = require('./_src/app.js')
 launchApp()
 
 module.exports = $App

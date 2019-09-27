@@ -607,11 +607,10 @@ Ext.define('UB.core.UBCommand', {
             if (!$App.connection.domain.models['adminui-vue']) {
               Error('To show a Vue forms @unitybase/adminui-vue model should be in application domain')
             }
-            formDefinition.formController.mount({
-              ...me.commandConfig,
+            formDefinition.formController.mount(Object.assign({}, me.commandConfig, {
               title: me.formParam.caption,
               rootComponent: formDefinition.formController.default
-            })
+            }))
           } else if (formDefinition.formType === 'module') {
             formDefinition.formController.mount(me.commandConfig)
           } else {

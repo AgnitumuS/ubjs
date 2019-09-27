@@ -137,15 +137,16 @@ module.exports = {
       }
     },
 
-    async doBeautify () {
+    doBeautify () {
       if (this.value) {
-        const beautify = await SystemJS.import('js-beautify/js/lib/beautify')
-        const text = this._codeMirror.getValue()
-        const formatted = beautify.js_beautify(text, {
-          'indent_size': 2,
-          'indent_char': ' '
+        return SystemJS.import('js-beautify/js/lib/beautify').then(function (beautify) {
+          const text = this._codeMirror.getValue()
+          const formatted = beautify.js_beautify(text, {
+            'indent_size': 2,
+            'indent_char': ' '
+          })
+          this._codeMirror.setValue(formatted)
         })
-        this._codeMirror.setValue(formatted)
       }
     },
 

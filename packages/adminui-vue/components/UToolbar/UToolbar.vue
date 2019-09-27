@@ -271,7 +271,7 @@ export default {
       input.style.position = 'absolute'
       input.style.top = '100%'
       input.style.left = '100%'
-      document.body.append(input)
+      document.body.appendChild(input)
       input.select()
       if (document.execCommand('copy')) {
         document.body.removeChild(input)
