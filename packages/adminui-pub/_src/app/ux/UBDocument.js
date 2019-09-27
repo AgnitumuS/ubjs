@@ -417,162 +417,162 @@ Ext.define('UB.ux.UBDocument', {
    */
   setValue: function (valueStr, instanceID, suspendEvents, blobValue) {
     const me = this
-    const defer = Q.defer()
-    let xtype, ct, url, params
-    let val = {}
-    let hasError = false
-    let isString = (typeof valueStr === 'string')
-    let isObject = valueStr && (typeof valueStr === 'object')
+    return new Promise((resolve, reject) => {
+      let xtype, ct, url, params
+      let val = {}
+      let hasError = false
+      let isString = (typeof valueStr === 'string')
+      let isObject = valueStr && (typeof valueStr === 'object')
 
-    me.lastNotEmptyValue = valueStr || me.lastNotEmptyValue
-    me.lastOriginalValue = valueStr
-    me.instanceID = instanceID
+      me.lastNotEmptyValue = valueStr || me.lastNotEmptyValue
+      me.lastOriginalValue = valueStr
+      me.instanceID = instanceID
 
-    val = isString ? JSON.parse(valueStr) : valueStr
+      val = isString ? JSON.parse(valueStr) : valueStr
 
-    if ((!isString && !isObject) ||
-        (isString && valueStr.length === 0) ||
-        (isObject && (!valueStr.ct || !valueStr.origName || valueStr.deleting))) {
-      hasError = true
-      if (me.documentMIME) {
-        xtype = me.documentMIME
+      if ((!isString && !isObject) ||
+          (isString && valueStr.length === 0) ||
+          (isObject && (!valueStr.ct || !valueStr.origName || valueStr.deleting))) {
+        hasError = true
+        if (me.documentMIME) {
+          xtype = me.documentMIME
+        } else {
+          xtype = 'UB.ux.UBLabel'
+          url = UB.i18n('emptyContent')
+        }
       } else {
-        xtype = 'UB.ux.UBLabel'
-        url = UB.i18n('emptyContent')
+        xtype = me.expanded ? val.ct : 'UB.ux.UBLink'
+        params = {
+          entity: me.entityName,
+          attribute: me.attributeName,
+          ID: me.instanceID
+        }
+
+        if (val.store) {
+          params.store = val.store
+        }
+
+        if (val.filename) {
+          params.filename = val.filename
+        }
+        if (val.origName) {
+          params.origName = val.origName
+        }
+        if (val.isDirty) {
+          params.isDirty = val.isDirty
+        }
+        if (me.useRevision && !Ext.isEmpty(val.revision)) {
+          params.revision = val.revision
+        }
+        if (!params.filename) {
+          params.filename = me.entityName + me.instanceID + me.attributeName
+        }
+
+        url = Ext.String.urlAppend(
+          $App.connection.baseURL + 'getDocument',
+          Ext.Object.toQueryString(params)
+        )
       }
-    } else {
-      xtype = me.expanded ? val.ct : 'UB.ux.UBLink'
-      params = {
-        entity: me.entityName,
-        attribute: me.attributeName,
-        ID: me.instanceID
+      me.originalMIME = me.originalMIME || xtype
+      xtype = me.documentMIME || xtype
+
+      me.value = Ext.Object.getSize(val) > 0 ? JSON.stringify(val) : undefined
+
+      me.checkChange()
+
+      function onContentLoad (blob, baseUrl, baseCt) {
+        me.sourceBlob = blob
+        me.loadUrl = baseUrl
+
+        if (me.ubCmp.isHidden()) {
+          me.ubCmp.show()
+        }
+        if (me.errorLabel) {
+          me.errorLabel.hide()
+        }
+
+        let src = {
+          url: baseUrl,
+          contentType: baseCt,
+          html: !val || val.deleting ? url : val.origName || url,
+          blobData: blob
+        }
+        // Возможно стоит сравнить md5. Пока не везде честный md5.
+        if (me.forceReload || !me.editorInited || !me.isEditor()) {
+          me.ubCmp.setSrc(src).then(function (r) {
+            resolve(r)
+          }, function (r) {
+            reject(r)
+          })
+          me.editorInited = me.isEditor()
+        } else {
+          resolve(null)
+        }
       }
 
-      if (val.store) {
-        params.store = val.store
-      }
-
-      if (val.filename) {
-        params.filename = val.filename
-      }
-      if (val.origName) {
-        params.origName = val.origName
-      }
-      if (val.isDirty) {
-        params.isDirty = val.isDirty
-      }
-      if (me.useRevision && !Ext.isEmpty(val.revision)) {
-        params.revision = val.revision
-      }
-      if (!params.filename) {
-        params.filename = me.entityName + me.instanceID + me.attributeName
-      }
-
-      url = Ext.String.urlAppend(
-        $App.connection.baseURL + 'getDocument',
-        Ext.Object.toQueryString(params)
-      )
-    }
-    me.originalMIME = me.originalMIME || xtype
-    xtype = me.documentMIME || xtype
-
-    me.value = Ext.Object.getSize(val) > 0 ? JSON.stringify(val) : undefined
-
-    me.checkChange()
-
-    function onContentLoad (blob, baseUrl, baseCt) {
-      me.sourceBlob = blob
-      me.loadUrl = baseUrl
-
-      if (me.ubCmp.isHidden()) {
-        me.ubCmp.show()
-      }
-      if (me.errorLabel) {
-        me.errorLabel.hide()
-      }
-
-      let src = {
-        url: baseUrl,
-        contentType: baseCt,
-        html: !val || val.deleting ? url : val.origName || url,
-        blobData: blob
-      }
-      // Возможно стоит сравнить md5. Пока не везде честный md5.
-      if (me.forceReload || !me.editorInited || !me.isEditor()) {
-        me.ubCmp.setSrc(src).then(function (r) {
-          defer.resolve(r)
-        }, function (r) {
-          defer.reject(r)
+      if (xtype === 'application/word' || xtype === 'application/excel') {
+        // <-- onlyOffice
+        // to prevent double loading of document from store
+        // onlyOffice has it's own block
+        me.createComponent(xtype)
+        me.ubCmp.setSrc({
+          url: url,
+          contentType: xtype,
+          html: !val || val.deleting ? url : val.origName || url,
+          blobData: null
+        }).then(function () {
+          resolve(null)
+        }, function (reason) {
+          if (reason && !(reason instanceof UB.UBAbortError)) {
+            reject(reason)
+          } else {
+            resolve(null)
+          }
+        }).finally(function () {
+          if (me.getEl()) {
+            me.getEl().unmask()
+          }
         })
-        me.editorInited = me.isEditor()
+        return
+      } // --> /onlyOffice
+
+      if (xtype === 'UB.ux.UBLink' || (hasError && Ext.Object.getSize(val) !== 0)) {
+        me.createComponent(xtype)
+        onContentLoad(null, url, xtype)
+      } else if (Ext.Object.getSize(val) === 0) {
+        me.createComponent(xtype)
+        // xmax событие для инициализации нового документа где такое необходимо
+        if (me.ubCmp.initNewSrc) {
+          me.value = me.ubCmp.initNewSrc()
+        }
+        resolve(null)
+      } else if (blobValue && !val.deleting) {
+        me.createComponent(blobValue.type)
+        onContentLoad(blobValue, url, xtype)
       } else {
-        defer.resolve(null)
-      }
-    }
-
-    if (xtype === 'application/word' || xtype === 'application/excel') {
-      // <-- onlyOffice
-      // to prevent double loading of document from store
-      // onlyOffice has it's own block
-      me.createComponent(xtype)
-      me.ubCmp.setSrc({
-        url: url,
-        contentType: xtype,
-        html: !val || val.deleting ? url : val.origName || url,
-        blobData: null
-      }).then(function () {
-        defer.resolve(null)
-      }, function (reason) {
-        if (reason && !(reason instanceof UB.UBAbortError)) {
-          defer.reject(reason)
-        } else {
-          defer.resolve(null)
-        }
-      }).finally(function () {
         if (me.getEl()) {
-          me.getEl().unmask()
+          me.getEl().mask(UB.i18n('loadingData'))
         }
-      })
-      return
-    } // --> /onlyOffice
 
-    if (xtype === 'UB.ux.UBLink' || (hasError && Ext.Object.getSize(val) !== 0)) {
-      me.createComponent(xtype)
-      onContentLoad(null, url, xtype)
-    } else if (Ext.Object.getSize(val) === 0) {
-      me.createComponent(xtype)
-      // xmax событие для инициализации нового документа где такое необходимо
-      if (me.ubCmp.initNewSrc) {
-        me.value = me.ubCmp.initNewSrc()
+        me.loadContent(url, xtype).then(function (blob) {
+          ct = blob.type
+          me.createComponent(ct)
+          onContentLoad(blob, url, ct)
+          if (me.getEl()) {
+            me.getEl().unmask()
+          }
+        }, function (reason) {
+          if (me.getEl()) {
+            me.getEl().unmask()
+          }
+          if (reason && !(reason instanceof UB.UBAbortError)) {
+            reject(reason)
+          } else {
+            resolve(null)
+          }
+        })
       }
-      defer.resolve(null)
-    } else if (blobValue && !val.deleting) {
-      me.createComponent(blobValue.type)
-      onContentLoad(blobValue, url, xtype)
-    } else {
-      if (me.getEl()) {
-        me.getEl().mask(UB.i18n('loadingData'))
-      }
-
-      me.loadContent(url, xtype).then(function (blob) {
-        ct = blob.type
-        me.createComponent(ct)
-        onContentLoad(blob, url, ct)
-        if (me.getEl()) {
-          me.getEl().unmask()
-        }
-      }, function (reason) {
-        if (me.getEl()) {
-          me.getEl().unmask()
-        }
-        if (reason && !(reason instanceof UB.UBAbortError)) {
-          defer.reject(reason)
-        } else {
-          defer.resolve(null)
-        }
-      })
-    }
-    return defer.promise
+    })
   },
 
   /**

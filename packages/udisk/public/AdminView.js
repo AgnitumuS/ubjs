@@ -1753,7 +1753,7 @@ Ext.define('UDISK.AdminView', {
           parentID = parentID ? parentID.get('id') : null
           return delFile(me.selectedFolderID)
         } else {
-          return Q.all(selection.map(function (record) {
+          return Promise.all(selection.map(function (record) {
             return delFile(record.get('ID'))
           }))
         }

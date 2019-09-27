@@ -129,7 +129,7 @@ exports.formCode = {
       .then(function (diffObj) {
         var promises = []; var p
 
-        for (var key in diffObj) {
+        for (let key in diffObj) {
           if (diffObj.hasOwnProperty(key)) {
             var diffAttr = diffObj[key]
 
@@ -142,7 +142,7 @@ exports.formCode = {
         }
 
         if (me.checkDiffObjDiff(diffObj)) {
-          p = Q.resolve(diffObj).then(function (obj) {
+          p = Promise.resolve(diffObj).then(function (obj) {
             var gridAttrs = me.createGrid(panel, UB.i18n('changedAttributes'))
             return me.fillDiffObjToStore(gridAttrs, obj)
           })
@@ -150,8 +150,8 @@ exports.formCode = {
           promises.splice(0, 0, p)
         }
 
-        return Q.all(promises)
-      }).fin(function () {
+        return Promise.all(promises)
+      }).finally(function () {
         me.unmaskForm()
       }).done()
   },
@@ -159,7 +159,7 @@ exports.formCode = {
   initStoreDocumentImage: function (panel, diffAttr) {
     var me = this
 
-    return Q.resolve(diffAttr).then(function (diffAttrDoc) {
+    return Promise.resolve(diffAttr).then(function (diffAttrDoc) {
       var fromValueDoc = diffAttrDoc.fromValue ? JSON.parse(diffAttrDoc.fromValue) : {}
       var toValueDoc = diffAttrDoc.toValue ? JSON.parse(diffAttrDoc.toValue) : {}
       for (var key in fromValueDoc) {
@@ -232,14 +232,14 @@ exports.formCode = {
           var diffAttr = diffObj[key]
           promises.push(me.resolveDiffObjEntity(diffAttr))
         })
-        return Q.all(promises)
+        return Promise.all(promises)
       }).then(function () {
         var promises = []
         _.forEach(_.keys(diffObj), function (key) {
           var diffAttr = diffObj[key]
           promises.push(me.resolveDiffObjTexts(diffAttr))
         })
-        return Q.all(promises)
+        return Promise.all(promises)
       }).then(function () {
         var count = 0
         _.forEach(_.keys(diffObj), function (key) {
@@ -288,7 +288,7 @@ exports.formCode = {
     delete diffObj.mi_modifyDate
     delete diffObj.mi_createDate
 
-    return Q.resolve(diffObj)
+    return Promise.resolve(diffObj)
   },
 
   /**
@@ -335,7 +335,7 @@ exports.formCode = {
       diffAttr.toValueText = diffAttr.toValue ? diffAttr.toValue.toString() : ''
     })
 
-    return Q.resolve(diffObj)
+    return Promise.resolve(diffObj)
   },
 
   /**
@@ -378,7 +378,7 @@ exports.formCode = {
       }
     })
 
-    return Q.resolve(diffObj)
+    return Promise.resolve(diffObj)
   },
 
   /** if the field "Entity" gets the value of this */
@@ -409,7 +409,7 @@ exports.formCode = {
         promises.push(promise)
       }
 
-      return Q.all(promises).then(function () { return Q.resolve(diffAttr) })
+      return Promise.all(promises).then(function () { return diffAttr })
     } else if (diffAttr.dataType === 'Enum') {
       if (diffAttr.fromValue) {
         promise = me.getEntityValueEnumByCode(diffAttr.fromValue, diffAttr.attrInfo.enumGroup)
@@ -427,7 +427,7 @@ exports.formCode = {
         promises.push(promise)
       }
 
-      return Q.all(promises).then(function () { return Q.resolve(diffAttr) })
+      return Promise.all(promises).then(function () { return diffAttr })
     } else if (diffAttr.dataType === 'Boolean') {
       if (diffAttr.fromValue == true) {
         diffAttr.fromValueText = 'true'
@@ -461,7 +461,7 @@ exports.formCode = {
       }
     }
 
-    return Q.resolve(diffAttr)
+    return Promise.resolve(diffAttr)
   },
 
   getEntityValueEntityById: function (value, associatedEntity) {
@@ -470,7 +470,7 @@ exports.formCode = {
     if (associatedEntity === 'uba_user') {
       promises.push(me.getEntityValueUserById(value))
     } else {
-      promises.push(Q.resolve(null))
+      promises.push(Promise.resolve(null))
     }
 
     promises.push(me.getEntityValueById(value, associatedEntity)
@@ -478,7 +478,7 @@ exports.formCode = {
         return value ? result + ' (' + value + ')' : ''
       }))
 
-    var promise = Q.all(promises).then(function (pp) {
+    var promise = Promise.all(promises).then(function (pp) {
       return pp[0] ? pp[0] + ' ' + pp[1] : pp[1]
     }).then(function (result) {
       return result || ''
@@ -504,16 +504,16 @@ exports.formCode = {
         })
     }
 
-    return Q.resolve('')
+    return Promise.resolve('')
   },
 
   getEntityValueById: function (id, associatedEntity, descriptionAttribute) {
     if (!id) {
-      return Q.resolve(null)
+      return Promise.resolve(null)
     }
 
     if (!$App.domainInfo.isEntityMethodsAccessible(associatedEntity, 'select')) {
-      return Q.resolve('')
+      return Promise.resolve('')
     }
     var fieldDesc = descriptionAttribute || window.$App.domainInfo.get(associatedEntity).descriptionAttribute || 'ID'
 
@@ -536,14 +536,14 @@ exports.formCode = {
     if ($App.domainInfo.isEntityMethodsAccessible('org_employee', 'select')) {
       return me.getEntityOrgInfoByUserId(value)
     } else {
-      return Q.resolve(null)
+      return Promise.resolve(null)
     }
   },
 
   getEntityOrgInfoByUserId: function (userID) {
     var entityInfo
     if (!window.$App.domainInfo.isEntityMethodsAccessible('org_employee', 'select')) {
-      return Q.resolve(null)
+      return Promise.resolve(null)
     }
     entityInfo = window.$App.domainInfo.get('org_employee')
     if (entityInfo && entityInfo.entityMethods.select) {
@@ -637,7 +637,7 @@ exports.formCode = {
     diffAttr.fromValueText = diffTextFromValue
     diffAttr.toValueText = diffTextToValue
 
-    return Q.resolve(diffAttr)
+    return Promise.resolve(diffAttr)
   },
 
   splitByWords: function (text) {
