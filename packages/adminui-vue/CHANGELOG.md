@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.42]
+### Changed
+ - update package `element-ui@2.12.0` and `element-theme-chalk@2.12.0`
+
 ## [1.6.41]
 ### Fixed
  - removed `async-to-promises` babel plugun - buggy
