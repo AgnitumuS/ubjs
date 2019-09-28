@@ -248,6 +248,15 @@ Ext.define('UB.view.BasePanel', {
    */
   formWasSaved: false,
 
+  /**
+   * Change a default softLock mixin behavior:
+   *   - if `true` then `lock()` is called JUST BEFORE save operation and `unlock()` is called just after save operation
+   *   - if `false|undefined` `lock()` is called when user starts to edit form or creates a new record.
+   *     While user edit a form lock renewed until form is opened and while the form is in edit mode
+   * @property {boolean} lockOnSave
+   */
+  lockOnSave: false,
+
   initComponent: function () {
     let me = this
     if (me.dfm && me.dfm.parentConfig) {
@@ -628,7 +637,7 @@ Ext.define('UB.view.BasePanel', {
 
   controlChanged: function (field, newValue, oldValue) {
     var me = this
-    if (!me.entityLocked && !me.isNewInstance && me.formDataReady && !me.isSaveProcess && !me.hasPersistLock) {
+    if (!me.lockOnSave && !me.entityLocked && !me.isNewInstance && me.formDataReady && !me.isSaveProcess && !me.hasPersistLock) {
       me.setEntityLocked()
     }
     me.fireEvent('controlChanged', field, newValue, oldValue)
@@ -1844,7 +1853,7 @@ Ext.define('UB.view.BasePanel', {
       }
     }
 
-    if (me.record && me.isEntityLockable && me.isNewInstance &&
+    if (me.record && me.isEntityLockable && me.isNewInstance && !me.lockOnSave &&
        (me.domainEntity.mixins.softLock.lockIdentifier !== 'ID')
     ) {
       me.setEntityLocked()
@@ -3083,11 +3092,14 @@ Ext.define('UB.view.BasePanel', {
       return Promise.resolve(0)
     }
     me.maskForm(UB.appConfig.formSaveMaskDelay)
-
+    let needLockOnSave = Promise.resolve(true)
+    if (me.isEntityLockable && me.lockOnSave && !me.entityLocked) {
+      needLockOnSave = me.setEntityLocked()
+    }
     // save form documents
-    return Promise.all(editedDocuments.map(function (cmp) {
-      return cmp.save(!!me.__mip_ondate)
-    })).then(function () {
+    return needLockOnSave.then(() => {
+      return Promise.all(editedDocuments.map(cmp => cmp.save(!!me.__mip_ondate)))
+    }).then(() => {
       // add document type attributes
       me.binder.suspendAutoBind()
       me.disableBinder()

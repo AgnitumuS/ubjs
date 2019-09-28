@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - **5.11.x is the LAST version what supports WinXP**. `Q`, `bluebird`, `Promise.fin`, `Promise.done`
   and `unhandledpromiserejection` polyfills will be removed in `@unitybase/adminui-pub` versions what > 5.11.x   
 
+### Added
+ - new property `BasePanel.lockOnSave` to change a default `softLock` mixin behavior:
+   - if `true` then `lock()` is called JUST BEFORE save operation and `unlock()` is called just after save operation
+   - if `false|undefined` `lock()` is called when user starts to edit form or creates a new record.
+     While user edit a form lock renewed until form is opened and while the form is in edit mode
+
 ## [5.10.20]
 ### Fixed
  - in case `uiSettings.adminUI.pdfViewer` is not defined do not add a `undefined` to the end of PDF viewer URL
