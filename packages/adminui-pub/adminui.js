@@ -12,7 +12,7 @@ const fileSaver = require('file-saver')
 // System.import('lodash') somewhere in code exists
 // Important to use SystemJS instead of System to prevent webpack to optimize calls to System
 if (!SystemJS.has('lodash')) SystemJS.set('lodash', SystemJS.newModule(_))
-if (!SystemJS.has('bluebird-q')) SystemJS.set('bluebird-q', SystemJS.newModule(Q))
+if (!SystemJS.has('bluebird-q')) SystemJS.set('bluebird-q', SystemJS.newModule(Q)) // Q Promises hack
 if (!SystemJS.has('@unitybase/cs-shared')) SystemJS.set('@unitybase/cs-shared', SystemJS.newModule(csShared))
 if (!SystemJS.has('file-saver')) SystemJS.set('file-saver', SystemJS.newModule(fileSaver))
 

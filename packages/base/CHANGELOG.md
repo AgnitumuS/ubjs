@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.28]
+### Added
+  -  `@unitybase/base.ubVersionNum` property - a Numeric representation of process.version.
+  For example if process.version === 'v5.14.1' then ubVersionNum === 5014001; Useful for feature check
+  
 ## [5.1.23]
 ### Changed
  - `csv` module: reformatting & fix ESLint warnings  

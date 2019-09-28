@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - adding a core-js polyfills for missing things (+122 Kb boundle size) - see `.babelrc`
     - replacing DOMElement.append -> DOMElement.appendChild
     - remove object rest spread where possible
- - WinXP support **WILL BE REMOVED IN 1.8.0**  
+ - 1.7.x is the LAST version what supports WinXP. Polyfills **WILL BE REMOVED IN 1.8.0**  
 
 ## [1.6.41]
 ### Fixed

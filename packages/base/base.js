@@ -15,6 +15,11 @@ const uba_common = require('./uba_common')
  */
 module.exports = {
   /**
+   * Numeric representation of process.version. For example 'v5.14.1' -> 5014001
+   * @type {number}
+   */
+  ubVersionNum: process.version.slice(1).split('.').map(v => parseInt(v, 10)).reduce((acum, v) => acum*1000 + v),
+  /**
    * Command-line utils for connecting to a UnityBase server
    * @type {module:argv}
    * @type {argv}
