@@ -31,7 +31,7 @@ Ext.define("UDISK.AdminEditForm", {
             action.hide();
         }
 
-        me.hasAccessPromise.done(function(hasAccess){
+        me.hasAccessPromise.then(function(hasAccess){
             if (!hasAccess && !(me.adminMode && me.record.get('isFolder')) ){
                 me.disableEdit();
                 lockAction(me.actions[UB.view.BasePanel.actionId.fDelete]);
@@ -74,9 +74,9 @@ Ext.define("UDISK.AdminEditForm", {
         var me = this;
         if (this.hasPersistLock) {
             $App.dialogYesNo('udiskUnlockCheckDavTitle','udiskUnlockCheckDav')
-            .done(function(res){
+            .then(function(res){
                 if (res){
-                    me.removePersistLock().done();
+                    me.removePersistLock()
                 }
             });
 

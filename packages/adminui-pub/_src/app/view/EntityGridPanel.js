@@ -2567,11 +2567,11 @@ Ext.define('UB.view.EntityGridPanel', {
     // })
     // Promise.all(cmdRefresh).then(function () {
     //   return mainStore.reload()
-    // }).fin(function () {
+    // }).finally(function () {
     //   me._inRefresh = false //       actionRefresh.enable()
     //   me.down(me.viewType).focus() // 'gridview'
     // })
-    return me.store.reload().fin(function () {
+    return me.store.reload().finally(function () {
       me._inRefresh = false
       me.down(me.viewType).focus()
     })

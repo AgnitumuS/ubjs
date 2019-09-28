@@ -12,7 +12,7 @@ const fileSaver = require('file-saver')
 // System.import('lodash') somewhere in code exists
 // Important to use SystemJS instead of System to prevent webpack to optimize calls to System
 if (!SystemJS.has('lodash')) SystemJS.set('lodash', SystemJS.newModule(_))
-if (!SystemJS.has('bluebird-q')) SystemJS.set('bluebird-q', SystemJS.newModule(Q))
+if (!SystemJS.has('bluebird-q')) SystemJS.set('bluebird-q', SystemJS.newModule(Q)) // Q Promises hack
 if (!SystemJS.has('@unitybase/cs-shared')) SystemJS.set('@unitybase/cs-shared', SystemJS.newModule(csShared))
 if (!SystemJS.has('file-saver')) SystemJS.set('file-saver', SystemJS.newModule(fileSaver))
 
@@ -28,7 +28,7 @@ window.UB.LocalDataStore = LocalDataStore
 window.Q = Q
 window.UBDomain = UBDomain // used as UBDomain.getPhysicalDataType && UBDomain.ubDataTypes
 
-if (!Promise.prototype.fin) {
+if (!Promise.prototype.fin) { // Q Promises hack
   // eslint-disable-next-line no-extend-native
   Promise.prototype.fin = function (cb) {
     const res = () => this
@@ -37,7 +37,16 @@ if (!Promise.prototype.fin) {
   }
 }
 
-if (!Promise.prototype.done) {
+if (!Promise.prototype.finally) { // winXP hack
+  // eslint-disable-next-line no-extend-native
+  Promise.prototype.finally = function (cb) {
+    const res = () => this
+    const fin = () => Promise.resolve(cb()).then(res)
+    return this.then(fin, fin)
+  }
+}
+
+if (!Promise.prototype.done) { // Q Promises hack
   // eslint-disable-next-line no-extend-native
   Promise.prototype.done = Promise.prototype.then
 }
@@ -55,7 +64,7 @@ Ext.Loader.setConfig({
   }
 })
 
-let {launchApp, $App} = require('./_src/app.js')
+let { launchApp, $App } = require('./_src/app.js')
 launchApp()
 
 module.exports = $App

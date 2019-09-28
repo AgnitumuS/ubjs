@@ -190,7 +190,7 @@ Ext.define('UDISK.AdminUploadForm', {
           fieldList: ['ID', 'fileData', 'mi_modifyDate'],
           execParams: params
         })
-      }).fin(function (res) {
+      }).finally(function (res) {
         if (lockExist) {
           return $App.connection.run({
             entity: me.entityName,

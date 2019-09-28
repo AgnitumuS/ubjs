@@ -89,7 +89,7 @@ Ext.define('UBA.securityDashboard', {
     var me = this
     $App.connection.get('stat').then(function (statResult) {
       me.statElm.innerHTML = '<b>Server statistics:</b> ' + JSON.stringify(statResult.data)
-    }).done()
+    })
   },
 
   initializeAfterBoxReady: function () {
@@ -101,7 +101,7 @@ Ext.define('UBA.securityDashboard', {
     if (notifier.supported) {
       UB.Repository('ubs_settings').attrs(['settingKey', 'settingValue'])
                 .where('settingKey', '=', 'UBA.securityDashboard.supervisorUser').selectAsObject()
-                .done(function (res) {
+                .then(function (res) {
                   me.getStat()
                   me.supervisorUser = (res.length === 1 ? res[0].settingValue : 'admin')
                   if ($App.connection.userLogin() === me.supervisorUser) {

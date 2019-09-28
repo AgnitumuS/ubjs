@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.11.0]
+### Changed
+ - several patches for winXP (Chrome 48 / FireFox 52) compatibility:
+   - replacing DOMElement.append -> DOMElement.appendChild
+   - Promise.fin -> Promise.finally + Promise.finally polyfill for old browsers
+   - Promise.done(..) -> Promise.then(..); Promise.done() -> nothing to do - just removed such calls  
+   - object rest spread ( {...obj} ) -> Object.assign({}, obj)
+ - **5.11.x is the LAST version what supports WinXP**. `Q`, `bluebird`, `Promise.fin`, `Promise.done`
+  and `unhandledpromiserejection` polyfills will be removed in `@unitybase/adminui-pub` versions what > 5.11.x   
+
 ## [5.10.20]
 ### Fixed
  - in case `uiSettings.adminUI.pdfViewer` is not defined do not add a `undefined` to the end of PDF viewer URL

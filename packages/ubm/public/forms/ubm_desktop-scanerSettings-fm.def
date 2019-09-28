@@ -984,7 +984,7 @@ Ext.define('UBM.scanerSettings', {
                     code: printerName
                 });
             });
-        }).done();
+        });
     },
 
     doLocalize: function() {

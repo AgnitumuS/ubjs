@@ -249,7 +249,7 @@ PrintToPdf.requireFonts = function (config) {
   //     scriptsToLoad++
   //     $App.connection.get((font.path || this.baseFontPath) + '/' + font.fontName + font.fontStyle + '.json', null,
   //                   {responseType: 'json'})
-  //                   .done(fontLoaded)
+  //                   .then(fontLoaded)
   //   }
   //   if (scriptsToLoad === 0) {
   //     defer.resolve()

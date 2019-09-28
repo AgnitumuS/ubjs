@@ -517,7 +517,7 @@ function launchApp () {
 
     Ext.state.Manager.setProvider(Ext.create('Ext.state.LocalStorageProvider'))
     // Ext.FocusManager.enable({focusFrame: true});
-    $App.launch().fin(function () {
+    $App.launch().finally(function () {
       Ext.get(Ext.query('html.loading')).removeCls('loading')
     })
 

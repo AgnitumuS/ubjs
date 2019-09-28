@@ -19,9 +19,11 @@ function setLocale (lang) {
 }
 
 module.exports = {
-  async install (Vue) {
+  install (Vue) {
     // connection may not exists on login form
-    if (UB.connection) await setLocale(UB.connection.userLang())
-    Vue.prototype.$moment = moment
+    return Promise.resolve().then(() => {
+      if (UB.connection) return setLocale(UB.connection.userLang())
+      return true
+    }).then(() => { Vue.prototype.$moment = moment })
   }
 }

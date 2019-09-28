@@ -9,7 +9,7 @@
 //     str = ((new Date() - 1) % 2 === 0) ? s1 : s2;
 //     $App.connection.channelEncryptor.encryptToArray(str, false, false).then(function (arr) {
 //         return $App.connection.channelEncryptor.decryptArr(arr, false, false);
-//     }).done(function (res) {
+//     }).then(function (res) {
 //         if (res !== str) {console.error('Wrong result') }else{ console.log('ok')};
 //     })
 // }

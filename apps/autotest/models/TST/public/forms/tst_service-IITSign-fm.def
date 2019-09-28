@@ -141,7 +141,7 @@ Ext.define('TST.IITSign', {
         return data.pki.signData(data.data)
       }).then(function (signature) {
         me.down('component[ubID="signature"]').setValue(signature)
-      }).fin(function () {
+      }).finally(function () {
         me.unmask()
       }).finally(() => {
         me.unmask('Signing')
@@ -160,16 +160,16 @@ Ext.define('TST.IITSign', {
         me.down('component[ubID="resultData"]').setValue(verificationResult)
       }).fail(function (verificationError) {
         throw new UB.UBError(verificationError.detail)
-      }).fin(function () {
+      }).finally(function () {
         me.unmask()
-      }).done()
+      })
     }
 
     me.down('component[ubID="doSaveSign"]').handler = function () {
       var buf = UB.base64toArrayBuffer(me.down('component[ubID="signature"]').value)
       $App.connection.post('echoToFile', buf).fail(function () {
         return null
-      }).done()
+      })
       $App.dialog('File is saved on server', 'You can find it in folder of your TST model by path <b>\\_autotest\\fixtures\\req</b>', { buttons: 1 })
     }
   }

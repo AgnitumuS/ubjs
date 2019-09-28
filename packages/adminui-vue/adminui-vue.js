@@ -129,7 +129,7 @@ function replaceDefaultRelogin () {
   const ReloginConstructor = Vue.extend(Relogin)
   const instance = new ReloginConstructor()
   const vm = instance.$mount()
-  document.body.append(vm.$el)
+  document.body.appendChild(vm.$el)
 }
 
 const magicLink = require('./utils/magicLinks')

@@ -182,7 +182,7 @@ Ext.define('UBS.ReportViewer', {
       }
 
       return me.report.makeReport(me.report.incomeParams)
-    }).done(function (data) {
+    }).then(function (data) {
       if (data && data.reportData) {
         me.showReport(data.reportData)
       }
@@ -249,7 +249,7 @@ Ext.define('UBS.ReportViewer', {
     me.insert(0, paramForm)
     paramForm.on('buildReport', function (param, form) {
       me.getEl().mask(UB.i18n('pleaseWait'))
-      me.report.makeReport(param).done(function (data) {
+      me.report.makeReport(param).then(function (data) {
         me.showReport(data.reportData)
       })
     })

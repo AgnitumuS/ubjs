@@ -106,18 +106,18 @@ function replaceAutoForms () {
 }
 
 function replaceExtJSMessageBarDialog () {
-  $App.on('portal:notify:markAsReaded', async (mess) => {
-    const resp = await UB.connection.query({
+  $App.on('portal:notify:markAsReaded', (mess) => {
+    UB.connection.query({
       entity: 'ubs_message_recipient',
       method: 'accept',
       execParams: {
         ID: mess['recipients.ID']
       }
+    }).then(resp => {
+      if (resp.resultData) {
+        $App.fireEvent('portal:notify:readed', mess.ID, new Date())
+      }
     })
-
-    if (resp.resultData) {
-      $App.fireEvent('portal:notify:readed', mess.ID, new Date())
-    }
   })
 
   // TODO doOnMessageRetrieved

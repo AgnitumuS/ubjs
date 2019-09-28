@@ -22,11 +22,12 @@ const Session = require('./Session')
 const { PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT } = require('./httpUtils')
 const ubErrors = require('./ubErrors')
 // eslint-disable-next-line camelcase
-const { uba_common, GC_KEYS } = require('@unitybase/base')
+const { uba_common, GC_KEYS, ubVersionNum } = require('@unitybase/base')
 const queryString = require('querystring')
 const appBinding = process.binding('ub_app')
 const options = require('@unitybase/base').options
 const AUTH_MOCK = options.switchIndex('-authMock') >= 0
+const FEATURE_DOMAIN_INFO_DIRECT_WRITE = ubVersionNum >= 5015004
 /**
  *
  * @param {string} reqPath
@@ -326,11 +327,13 @@ function getDomainInfoEp (req, resp) {
     return resp.badRequest('userName=login parameter is required')
   }
 
-  let res = nativeGetDomainInfo(isExtended, true /* write to resp */)
-  if (res) {
-    // before UB 5.15.4 nativeGetDomainInfo returns domain string and ignore 2-nd parameter writeToResp
-    // for huge domain serializing/de-serializing string is expensive operation, so new implementation
-    // can wrote domain directly into response body
+  // before UB 5.15.4 nativeGetDomainInfo returns domain string and ignore 2-nd parameter writeToResp
+  // for huge domain serializing/de-serializing string is expensive operation, so new implementation
+  // can wrote domain directly into response body
+  if (FEATURE_DOMAIN_INFO_DIRECT_WRITE) {
+    nativeGetDomainInfo(isExtended, true /* write to resp */)
+  } else {
+    let res = nativeGetDomainInfo(isExtended)
     resp.writeEnd(res)
   }
   resp.statusCode = 200
