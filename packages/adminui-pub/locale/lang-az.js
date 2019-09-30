@@ -377,6 +377,7 @@ UB.i18nExtend({
   scan: 'Skan',
   doScanPages: '{0} səhifə skan edilmişdir',
   doRecognizePages: 'Səhifə № {0} tanınır',
+  doRecognizeDocument: 'Recognizing document ...',
   ScannerNotConfigured: 'Kompüterinizdə sazlanmış skayner aşkar edilməmişdir, yaxud da onlar sistemdə qeydiyyata alınmamışdır',
   doStartScan: 'Skaynerə sorğu ...',
   doFinishScan: 'Skan nəticəsinin alınması',
@@ -510,7 +511,7 @@ UB.i18nExtend({
   'enabled': 'enabled',
 
   dateIsTooEarly: 'The date must be greater than {0}',
-  
+
   quickAccessButtons: 'Quick access buttons', // TO DO: locale
 
   showFullScreen: 'Show full screen',

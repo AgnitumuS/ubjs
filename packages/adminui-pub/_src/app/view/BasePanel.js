@@ -3366,8 +3366,9 @@ Ext.define('UB.view.BasePanel', {
     $App.scan(
       title, {}, this.documents[action.attribute].documentMIME
     ).then(function (result) {
-      var fName = prepareFileName()
-      return $App.connection.setDocument(UB.base64toArrayBuffer(result), {
+      const fName = prepareFileName()
+      const scanResult = (typeof result === 'string') ? UB.base64toArrayBuffer(result) : result
+      return $App.connection.setDocument(scanResult, {
         entity: entityName,
         attribute: attribute,
         id: id,

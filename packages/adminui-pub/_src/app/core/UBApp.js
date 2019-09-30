@@ -825,6 +825,54 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
             throw error
           })
         })
+    }).then(function (scannedResult) {
+      const recognitionEndpoint = $App.connection.appConfig.uiSettings.adminUI['recognitionEndpoint']
+
+      /**
+       * Converts scanned images to PDF and recognizes it.
+       * @param {string} scannedResult - scanned file, received from `nm-scanner` as base64 string
+       * @return {Promise<ArrayBuffer>} - PDF-file recognized by tesseract server, defined in ubConfig
+       * (`uiSettings.adminUI['recognitionServer']`)
+       */
+      function transformToPdf (scannedResult) {
+        let uploadItemID = null
+        const scannedArrayB = UB.base64toArrayBuffer(scannedResult)
+        const statusWindow = Ext.create('UB.view.StatusWindow', {
+          title: header
+        })
+        statusWindow.setStatus(UB.i18n('doRecognizeDocument'))
+        return $App.connection.post(`${recognitionEndpoint}upload`, scannedArrayB, {
+          // headers: {'Content-Type': 'application/octet-stream'}
+        }).then(response => {
+          uploadItemID = response && response.data && response.data.item
+          if (uploadItemID) {
+            return $App.connection.post(`${recognitionEndpoint}transform`, {
+              item: uploadItemID,
+              to: 'pdf',
+              blobInResponse: true
+            }, {
+              responseType: 'arraybuffer',
+              headers: {'Content-Type': 'application/json'}
+            })
+          } else {
+            throw new UB.UBError('Error upload data to recognition server.')
+          }
+        }).then(transformResult => {
+          $App.__scanService.lastScanedFormat = 'PDF'
+          return $App.connection.post(`${recognitionEndpoint}clean`, {
+            item: uploadItemID
+          }).then(() => {
+            return transformResult.data
+          })
+        }).finally(()  => {
+          statusWindow.close()
+        })
+      }
+
+      if (recognitionEndpoint && $App.__scanService.lastScanedFormat === 'TIFF') {
+        return transformToPdf(scannedResult)
+      } else return scannedResult
+
     })
   },
 

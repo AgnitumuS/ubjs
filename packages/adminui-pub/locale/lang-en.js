@@ -364,6 +364,7 @@ UB.i18nExtend({
 
   doScanPages: 'Scanned page {0}',
   doRecognizePages: 'Recognizing page num. {0}',
+  doRecognizeDocument: 'Recognizing document ...',
   ScannerNotConfigured: 'Scanner is not found on your computer or not properly configured in your system',
   doStartScan: 'Request to the scanner ...',
   doFinishScan: 'Obtaining scanning results',
@@ -506,7 +507,7 @@ UB.i18nExtend({
   'enabled': 'enabled',
 
   dateIsTooEarly: 'The date must be greater than {0}',
-  
+
   quickAccessButtons: 'Quick access buttons',
 
   showFullScreen: 'Show full screen',
