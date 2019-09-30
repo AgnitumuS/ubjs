@@ -380,6 +380,7 @@ UB.i18nExtend({
 
   doScanPages: 'Отсканировано {0} страницу(ы)',
   doRecognizePages: 'Распознается страница № {0}',
+  doRecognizeDocument: 'Recognizing document ...',
   ScannerNotConfigured: 'На вашем компьютере не найдено настроенных сканеров или они не зарегистрированы в системе',
   doStartScan: 'Запрос к сканеру ...',
   doFinishScan: 'Получение результата сканирования',
@@ -508,7 +509,7 @@ UB.i18nExtend({
   'enabled': 'enabled',
 
   dateIsTooEarly: 'Дата должна быть больше {0}',
-  
+
   quickAccessButtons: 'Quick access buttons', // TO DO: locale
 
   showFullScreen: 'Show full screen',

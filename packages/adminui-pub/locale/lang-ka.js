@@ -364,6 +364,7 @@ UB.i18nExtend({
 
   doScanPages: 'დასკანერებული გვერდი {0}',
   doRecognizePages: 'ურცლის ნუმერაციის ამოცნობა. {0}',
+  doRecognizeDocument: 'Recognizing document ...',
   ScannerNotConfigured: 'სკანერი არ არის ნაპოვნი თქვენს კომპიუტერში ან არ არის სწორად კონფიგურირებული თქვენს სისტემაში',
   doStartScan: 'მოთხოვნა სკანირებაზე ...',
   doFinishScan: 'სკანირების შედეგების მიღება',
@@ -506,7 +507,7 @@ UB.i18nExtend({
   'enabled': 'ჩართულია',
 
   dateIsTooEarly: 'თარიღი უნდა იყოს მეტი {0}',
-  
+
   quickAccessButtons: 'Quick access buttons', // TO DO: locale
 
   showFullScreen: 'Show full screen',

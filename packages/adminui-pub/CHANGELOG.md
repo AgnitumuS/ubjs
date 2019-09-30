@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.11.1]
+### Added
+ - new configuration parameter `adminUI.recognitionEndpoint`, used for recognize scanned documents. 
+ An example of valid name is `ocr/` - this is for **Tesseract** recognition implemented by `@ub-e/ocr` package.
+
 ## [5.11.0]
 ### Changed
  - several patches for winXP (Chrome 48 / FireFox 52) compatibility:
