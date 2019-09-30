@@ -481,7 +481,7 @@ function createProcessingModule ({
           if (!result) return
         }
         commit('LOADING', {
-          isLoading: false,
+          isLoading: true,
           target: 'master'
         })
         await dispatch('load', state.data.ID)

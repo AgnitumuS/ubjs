@@ -39,6 +39,7 @@ const SYSTEM_FIELDS = new Set([
 function buildExecParams (trackedObj, entity) {
   const execParams = {}
   const schema = UB.connection.domain.get(entity)
+
   if (trackedObj.isNew) {
     for (const [key, value] of Object.entries(trackedObj.data)) {
       if (!SYSTEM_FIELDS.has(key) && !key.includes('.')) {
@@ -51,6 +52,7 @@ function buildExecParams (trackedObj, entity) {
         if (!execParams[f]) delete execParams[f]
       })
     }
+    replaceMultilangParams(execParams)
     return execParams
   }
 
@@ -68,6 +70,7 @@ function buildExecParams (trackedObj, entity) {
       execParams[key] = trackedObj.data[key]
     }
   }
+  replaceMultilangParams(execParams)
   return execParams
 }
 
@@ -256,4 +259,32 @@ function SET (state, { key, value }) {
 function enrichFieldList (entitySchema, fieldList, requiredAttrs) {
   const fieldsToAppend = requiredAttrs.filter(attr => fieldList.indexOf(attr) === -1 && entitySchema.attributes[attr])
   return fieldList.concat(fieldsToAppend)
+}
+
+const langParamRegex = /(\S+)_\S+\^/
+
+/**
+ * If execParams includes locale params
+ * will replace the locale param with base param.
+ *
+ * For example in case userLang === 'en'
+ * and execParams includes key 'name_uk^'
+ * will replace key name to 'name_en^'
+ *
+ * @param {object} execParams
+ */
+function replaceMultilangParams (execParams) {
+  const langParams = Object.keys(execParams)
+    .filter(a => a.includes('^'))
+  const userLang = UB.connection.userLang()
+
+  langParams.forEach(p => {
+    const res = p.match(langParamRegex)
+    if (res && res[1] in execParams) {
+      const key = res[1]
+      const localeKey = key + '_' + userLang + '^'
+      execParams[localeKey] = execParams[key]
+      delete execParams[key]
+    }
+  })
 }
