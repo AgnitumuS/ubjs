@@ -102,17 +102,17 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
     .processing({
       collections: {
         todo: {
-          repository: UB.connection
+          repository: ({ state }) => UB.connection
             .Repository('tst_dictionary_todo')
             .attrs('ID', 'objectID', 'name', 'status', 'link')
-            .where('objectID', '=', instanceID),
+            .where('objectID', '=', state.data.ID),
           lazy: true
         },
 
-        participants: UB.connection
+        participants: ({ state }) => UB.connection
           .Repository('tst_dictionary_ppt')
           .attrs('ID', 'objectID', 'subjectID')
-          .where('objectID', '=', instanceID)
+          .where('objectID', '=', state.data.ID)
       }
     })
     .validation()

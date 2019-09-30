@@ -112,7 +112,6 @@ function change (state, key, value, path) {
     return
   }
 
-
   if (!(key in state.originalData)) {
     // No value in "originalData" - edited for the first time, so save old value to "originalData"
     // TODO: for object types, need to create clone
