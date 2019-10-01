@@ -83,9 +83,7 @@ const POST_RECORD = 4
  * @return {Array} An array records, each of which is an array of scalar values.
  */
 CSV.parse = function (str, comma) {
-  if (comma) {
-    CSV.COMMA = comma
-  }
+  CSV.COMMA = comma || ';'
   var result = CSV.result = []
   CSV.offset = 0
   CSV.str = str

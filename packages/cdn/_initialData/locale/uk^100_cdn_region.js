@@ -16,7 +16,7 @@ module.exports = function (session) {
     ]
   }
   let rawData = fs.readFileSync(__filename.replace(/\.js$/, '_ukraine.csv'), 'utf8')
-  let rows = CSV.parse(rawData, ',')
+  let rows = CSV.parse(rawData)
   if (!rows.length) {
     console.error('CSV file with region localisation is empty')
     return

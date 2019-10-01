@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.29]
+### Fixed
+ - csv parser: in case parse called with one argument, force default comma to be `;`;
+ This fix a case if previous call to parse(text, ',') overrides default separator globally
+ 
 ## [5.1.28]
 ### Added
   -  `@unitybase/base.ubVersionNum` property - a Numeric representation of process.version.

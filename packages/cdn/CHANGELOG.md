@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.6]
+### Changed
+  - colon separator for cdn_region uk locale csv data to ';' as in all other files  
+
 ## [5.3.3]
 ### Fixed
  - explicitly specified fieldList for cdn_employee & cdn_person shortcuts to prevent lookup on potentially huge cdn_organization 
