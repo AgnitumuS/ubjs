@@ -3250,11 +3250,11 @@ Ext.define('UB.view.BasePanel', {
             })
           }
           return 1
-        }).finally(function () {
-          me.unmaskForm()
-          me.isSaveProcess = false
-          // me.unmaskForm(); UBDF-1073
         })
+    }).finally(function () {
+      me.unmaskForm()
+      me.isSaveProcess = false
+      // me.unmaskForm(); UBDF-1073
     })
   },
 

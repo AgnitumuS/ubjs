@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.11.1]
+###Fixed
+ - prevent an error with `BasePanel.maskForm` in case of saving detail record, when master record is locked.
+
 ### Added
  - new configuration parameter `adminUI.recognitionEndpoint`, used for recognize scanned documents. 
  An example of valid name is `ocr/` - this is for **Tesseract** recognition implemented by `@ub-e/ocr` package.

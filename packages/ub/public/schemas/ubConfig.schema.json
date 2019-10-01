@@ -349,7 +349,7 @@
         "path": {
           "type": "string",
           "default": "",
-          "description": "Path to folder where server place log files (including rotated logs). Keep it empty to disable output of logs logs to the files. If build-in log rotation is disabled by setting rotationSizeInMB to 0 then path is a path to the FILE (example: \"./logs/my-app.log\")",
+          "description": "Path to folder where server place log files (including rotated logs). Keep it empty to disable output of logs logs to the files. If build-in log rotation is disabled by setting rotationSizeInMB to 0 then path is a path to the FILE (example: \"./logs/my-app.log\")"
         },
         "rotationSizeInMB": {
           "type": "number",
@@ -905,6 +905,10 @@
             "amqpNotificationUrl": {
               "type": "string",
               "description": "A url for UBClientNotifier to connect to message broker using stomp protocol over web sockets. The special value, '*', means connecting to ws[s]://<host>/ws which is useful when nginx is used to proxify requests. An example of valid url is 'ws://127.0.0.1:15674/ws' - this is for RabiitMQ with web stomp extension default configuration. For server part - set application.customSettings.amqpNotificationUrl"
+            },
+            "recognitionEndpoint": {
+              "type": "string",
+              "description": "An endpoint name used for recognize scanned documents. An example of valid name is 'ocr/' - this is for **Tesseract** recognition implemented by `@ub-e/ocr` package."
             },
             "pdfViewer": {
               "type": "object",
