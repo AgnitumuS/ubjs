@@ -4,6 +4,14 @@ const App = UB.App
 // eslint-disable-next-line camelcase
 const me = ubs_numcounter
 me.entity.addMethod('getRegnumCounter')
+let AUTO_REG_WITH_DELETED_NUMBER_SETTING
+
+function getAutoRegWithDeletedNumberSetting () {
+  if (AUTO_REG_WITH_DELETED_NUMBER_SETTING === undefined) {
+    AUTO_REG_WITH_DELETED_NUMBER_SETTING = ubs_settings.loadKey('ubs.numcounter.autoRegWithDeletedNumber', true)
+  }
+  return AUTO_REG_WITH_DELETED_NUMBER_SETTING
+}
 
 /**
  * Return counter number by mask
@@ -21,7 +29,7 @@ me.getRegnum = function (regKeyValue, startNum, skipReservedNumber) {
 
   if (startNum !== 0) startNum = startNum || 1
   // Get autoRegWithDeletedNumber from settings if skipReservedNumber is not true
-  let autoRegWithDeletedNumber = !skipReservedNumber ? ubs_settings.loadKey('ubs.numcounter.autoRegWithDeletedNumber', true) : false
+  let autoRegWithDeletedNumber = !skipReservedNumber ? getAutoRegWithDeletedNumberSetting() : false
   // Get counter from reserved if autoRegWithDeletedNumber set to true in settings
   let reservedCounter = (autoRegWithDeletedNumber === true) ? ubs_numcounterreserv.getReservedRegnum(regKeyValue) : -1
 
@@ -51,12 +59,12 @@ me.getRegnum = function (regKeyValue, startNum, skipReservedNumber) {
       store.run('update', {
         execParams: {
           ID: IDInData,
-          regKey: regKeyValue
+          fakeLock: 1
         }
       })
       // retrieve current number
       store = UB.Repository('ubs_numcounter')
-        .attrs(['ID', 'regKey', 'counter'])
+        .attrs(['ID', 'counter'])
         .where('ID', '=', IDInData)
         .select()
       // increment it
@@ -65,7 +73,6 @@ me.getRegnum = function (regKeyValue, startNum, skipReservedNumber) {
       res = store.run('update', {
         execParams: {
           ID: IDInData,
-          regKey: regKeyValue,
           counter: counterInData
         }
       })

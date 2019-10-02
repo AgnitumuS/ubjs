@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.45]
+### Changed
+ - `ubs_numcounter.getRegnum` optimization
+   - new attribute ubs_numcounter.fakeLock added for select for update emulatin
+   - settings key `ubs.numcounter.autoRegWithDeletedNumber` reads once 
+
 ## [5.2.25]
 ### Changed
  - all meta files and they localization transformed to array-of-attributes format

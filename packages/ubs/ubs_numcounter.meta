@@ -22,6 +22,15 @@
       "caption": "Counter",
       "description": "Counter",
       "allowNull": false
+    },
+    {
+      "name": "fakeLock",
+      "dataType": "Int",
+      "caption": "doNotUse",
+      "defaultView": false,
+      "description": "Used internally",
+      "documentation": "This attribute is used to lock row on the DB level by sending fake updated to emulate select for update instruction",
+      "allowNull": true
     }
   ],
   "mixins": {
