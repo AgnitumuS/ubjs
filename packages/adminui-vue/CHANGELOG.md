@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.2]
+### Added
+ - New option for `UFormRow` label-position prop, example:
+```vue
+<u-form-row
+  required
+  label-position="top"
+  :label="`${entity}.filterValue`"
+  :error="$v.filterValue.$error"
+>
+  <u-input attribute-name="filterValue" />
+</u-form-row>
+``` 
+
 ## [1.7.1]
 ### Fixed
  - `UForm/processing` in case execParams includes locale params will replace the locale param with base param. For example in case userLang === 'en' and execParams includes key 'fullName_uk^' will replace key 'fullName' to 'fullName_en^'

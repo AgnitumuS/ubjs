@@ -1,11 +1,16 @@
 <template>
-  <label class="ub-form-row">
+  <label
+    class="ub-form-row"
+    :class="{
+      'ub-form-row__stacked': labelPositionComputed === 'top'
+    }"
+  >
     <div
       class="ub-form-row__label"
-      :class="{
-        'ub-form-row__label__right': labelPositionComputed === 'right',
+      :class="[
+        `ub-form-row__label__${labelPositionComputed}`, {
         required
-      }"
+      }]"
       :style="labelWidthCss"
       :title="$ut(label)"
     >
@@ -23,6 +28,10 @@
           <div
             v-show="error"
             class="ub-error-wrap__text"
+            :class="{
+              'ub-error-wrap__text__top': labelPositionComputed === 'top'
+            }"
+            :style="errorMessageMarginCss"
           >
             {{ errorText }}
           </div>
@@ -38,6 +47,7 @@
  */
 export default {
   name: 'UFormRow',
+
   props: {
     /**
      * If is set String param will be show error text
@@ -48,14 +58,17 @@ export default {
       type: [String, Boolean],
       default: false
     },
+
     label: String,
+
     /**
-     * Show * red symbol after label
+     * Show * red symbol after label.
      */
     required: Boolean,
+
     /**
      * Set label width. If set in wrap `<u-form-container>` component
-     * will override be this prop
+     * will override be this prop.
      */
     labelWidth: {
       type: Number,
@@ -63,17 +76,18 @@ export default {
         return this.formLabelWidth || 120
       }
     },
+
     /**
      * Set label position. If set in wrap `<u-form-container>` component
-     * will override be this prop
-     * `left/right`
+     * will override by this prop.
+     * Available options: left | right | top
      */
     labelPosition: {
       type: String,
       default () {
         return this.formLabelPosition || 'left'
       }
-    }
+    },
   },
 
   inject: {
@@ -99,6 +113,12 @@ export default {
       return this.labelPosition
     },
 
+    errorMessageMarginCss () {
+      return this.labelPositionComputed === 'top'
+      ? ` margin-left: ${this.labelWidth + 6}px`
+      : ''
+    },
+
     errorText () {
       if (this.error) {
         if (typeof this.error === 'boolean') {
@@ -114,15 +134,19 @@ export default {
 </script>
 
 <style>
-.ub-form-row{
+.ub-form-row {
   display: flex;
 }
 
-.ub-form-row + .ub-form-row{
+.ub-form-row__stacked {
+  display: block;
+}
+
+.ub-form-row + .ub-form-row {
   margin-top: 10px;
 }
 
-.ub-form-row__label{
+.ub-form-row__label {
   color: rgb(var(--info));
   white-space: nowrap;
   padding-right: 8px;
@@ -130,11 +154,15 @@ export default {
   display: flex;
 }
 
-.ub-form-row__label__right{
+.ub-form-row__label__right {
   justify-content: flex-end;
 }
 
-.ub-form-row__label span{
+.ub-form-row__label__top {
+  padding-bottom: 5px;
+}
+
+.ub-form-row__label span {
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -150,28 +178,34 @@ export default {
   order: 1;
 }
 
-.ub-form-row__label__right.required:before{
+.ub-form-row__label__right.required:before {
   order: 2;
 }
 
-.ub-form-row__content{
+.ub-form-row__content {
   flex-grow: 1;
 }
 
-.ub-error-wrap{
+.ub-error-wrap {
   padding-bottom: 16px;
   position: relative;
 }
 
-.ub-error-wrap__text{
+.ub-error-wrap__text {
   color: rgb(var(--danger));
   position: absolute;
   bottom: 0;
   left: 0;
 }
 
+.ub-error-wrap__text__top {
+  bottom: calc(100% + 5px);
+  left: auto;
+  right: 0;
+}
+
 .ub-error-wrap.is-error .el-input__inner,
-.ub-error-wrap.is-error .el-textarea__inner{
+.ub-error-wrap.is-error .el-textarea__inner {
   border-color: rgb(var(--danger));
 }
 </style>
@@ -184,6 +218,7 @@ export default {
   <div>
     <u-form-row
       required
+      label-position="top"
       :error="showError"
       label="temp label"
     >
