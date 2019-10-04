@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ``` 
  - `USelect*` components, prop placeholder
  - css variable `--info-light`
+ - `UForm/mount` i18n to title
 
 ## [1.7.1]
 ### Fixed
