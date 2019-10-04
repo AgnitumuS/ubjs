@@ -70,7 +70,7 @@ function mountModal ({
       title () {
         const prefix = this.isDirty ? '* ' : ''
         const suffix = this.isNew ? ` (${UB.i18n('dobavlenie')})` : ''
-        return prefix + this.titleText + suffix
+        return prefix + this.$ut(this.titleText) + suffix
       }
     },
     methods: {
@@ -189,7 +189,7 @@ function mountTab ({
       title () {
         const prefix = this.isDirty ? '* ' : ''
         const suffix = this.isNew ? ` (${UB.i18n('dobavlenie')})` : ''
-        return prefix + this.titleText + suffix
+        return prefix + this.$ut(this.titleText) + suffix
       }
     },
     watch: {
