@@ -50,7 +50,7 @@
           <input
             v-model="queryDisplayValue"
             class="ub-select-multiple__input"
-            :placeholder="placeholder"
+            :placeholder="$ut(placeholder)"
             @focus="isFocused = true"
             @blur="isFocused = false"
             @keydown.exact.down.alt="onKeydownAltDown"
