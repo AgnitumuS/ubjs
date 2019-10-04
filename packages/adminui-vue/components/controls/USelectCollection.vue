@@ -4,6 +4,7 @@
     :entity-name="associatedEntity"
     :disabled="disabled"
     :clearable="clearable"
+    :placeholder="placeholder"
     @input="changeCollection"
   />
 </template>
@@ -55,7 +56,14 @@ export default {
     /**
      * Add clear icon
      */
-    clearable: Boolean
+    clearable: Boolean,
+    /**
+     * Input placeholder.
+     */
+    placeholder: {
+      type: String,
+      default: ''
+    }
   },
 
   data () {

@@ -50,6 +50,7 @@
           <input
             v-model="queryDisplayValue"
             class="ub-select-multiple__input"
+            :placeholder="placeholder"
             @focus="isFocused = true"
             @blur="isFocused = false"
             @keydown.exact.down.alt="onKeydownAltDown"
@@ -192,7 +193,14 @@ export default {
     /**
      * Add clear icon
      */
-    clearable: Boolean
+    clearable: Boolean,
+    /**
+     * Input placeholder.
+     */
+    placeholder: {
+      type: String,
+      default: ''
+    }
   },
 
   data () {
@@ -541,13 +549,17 @@ export default {
   height: 20px;
 }
 
+.ub-select-multiple__input::placeholder{
+  color: rgb(var(--info-light));
+}
+
 .ub-select-multiple__icon{
   min-height: 100%;
   min-width: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #C0C4CC;
+  color: rgb(var(--info-light));
   cursor: pointer;
 }
 </style>

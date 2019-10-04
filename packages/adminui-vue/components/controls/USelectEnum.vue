@@ -5,8 +5,9 @@
     :value-attribute="valueAttribute"
     :disabled="disabled"
     remove-default-actions
-    @input="$emit('input', $event)"
     :editable="editable"
+    :placeholder="placeholder"
+    @input="$emit('input', $event)"
   />
 </template>
 
@@ -47,6 +48,13 @@ export default {
     editable: {
       type: Boolean,
       default: false
+    },
+    /**
+     * Input placeholder.
+     */
+    placeholder: {
+      type: String,
+      default: ''
     }
   },
 
