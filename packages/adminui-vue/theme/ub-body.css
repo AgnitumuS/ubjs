@@ -5,6 +5,7 @@
   --primary: 66, 183, 115;
   --danger: 245, 108, 108;
   --info: 144, 147, 153;
+  --info-light: 192, 196, 204;
   --warning: 230, 162, 60;
   --success: 103, 194, 58;
   --text: 48, 49, 51;
@@ -61,17 +62,10 @@ html, body {
   position: absolute;
   -webkit-transition: all .3s;
   height: 100%;
-  color: #c0c4cc;
+  color: rgb(var(--info-light));
   text-align: center;
   align-items: center;
 }
-
-/*.ub-select-entity__menu-button {*/
-  /*cursor: pointer;*/
-  /*height: 100%;*/
-  /*color: #c0c4cc;*/
-  /*text-align: center;*/
-/*}*/
 
 .ub-entity-edit__slot {
   padding: 10px 20px 44px 20px;

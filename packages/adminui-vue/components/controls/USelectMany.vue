@@ -17,7 +17,8 @@ export default {
      * @model
      */
     value: {
-      type: String
+      type: String,
+      required: true
     }
   },
 

@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   <u-input attribute-name="filterValue" />
 </u-form-row>
 ``` 
+ - `USelect*` components, prop placeholder
+ - css variable `--info-light`
 
 ## [1.7.1]
 ### Fixed
