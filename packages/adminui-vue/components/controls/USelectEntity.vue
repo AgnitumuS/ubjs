@@ -30,7 +30,7 @@
             'ub-select__deleted-value': isSafeDeletedValue && !isFocused
           }"
           :readonly="!editable"
-          :placeholder="placeholder"
+          :placeholder="$ut(placeholder)"
           @click.native="editable || toggleDropdown()"
           @focus="isFocused = true"
           @blur="isFocused = false"
