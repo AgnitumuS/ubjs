@@ -758,7 +758,7 @@ Ext.define('UB.core.UBCommand', {
 
         if (!options.isGrid /* && me.instanceID && !me.addByCurrent */) {
           let entity = me.entity
-          let last = me.instanceID || 'new-' + (new Date()).getTime()
+          let last = me.instanceID || 'new-' + Date.now()
           let wndId = UB.format('ub-wnd-{0}-{1}', me.entity, last)
           let wnd = Ext.WindowManager.get(wndId)
 

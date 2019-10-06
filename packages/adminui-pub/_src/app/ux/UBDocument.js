@@ -230,7 +230,7 @@ Ext.define('UB.ux.UBDocument', {
       if (isContentChanged) {
         me.lastCmpValue = newVal
         let nValue = cValue ? JSON.parse(cValue) : {}
-        nValue.md5 = 'changedAt' + (new Date()).getTime()
+        nValue.md5 = 'changedAt' + Date.now()
         me.value = nValue = JSON.stringify(nValue)
         me.fireEvent('change', me, nValue, cValue)
         me.onChange(newVal, oldVal)
@@ -346,7 +346,7 @@ Ext.define('UB.ux.UBDocument', {
   loadContent: function (url, defaultContentType, asArrayBuffer) {
     let me = this
     if (me.bypassCache) {
-      url += '&_dc=' + (new Date()).getTime()
+      url += '&_dc=' + Date.now()
     }
     return $App.connection.get(url, { responseType: 'arraybuffer' })
       .then(function (response) {

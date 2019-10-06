@@ -927,7 +927,7 @@ Ext.define('UB.ux.designer.VisualDesigner', {
     var me = this, itmConf, start,
       config = Ext.clone(configIn)
 
-    start = new Date().getTime()
+    start = Date.now()
     el = el || me.builderPanel
 
     if (el === me.builderPanel && config.items && config.items.length === 1) {
@@ -958,7 +958,7 @@ Ext.define('UB.ux.designer.VisualDesigner', {
     }
     el.doLayout()
 
-    var time = new Date().getTime() - start
+    var time = Date.now() - start
     return time
   },
 

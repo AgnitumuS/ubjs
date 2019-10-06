@@ -72,9 +72,9 @@ Worker.prototype.getMessage = function () {
  */
 Worker.prototype.waitMessage = function (timeout, checkEveryMS) {
   let mes
-  let start = new Date().getTime()
+  let start = Date.now()
   if (!checkEveryMS) checkEveryMS = 10
-  while ((!(mes = this.getMessage())) && (new Date().getTime() - start < timeout)) {
+  while ((!(mes = this.getMessage())) && (Date.now() - start < timeout)) {
     sleep(checkEveryMS)
   }
   return mes

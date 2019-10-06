@@ -42,7 +42,7 @@ me.getCached = function (ctx) {
  * @return {boolean}
  */
 function addUserFilters (ctx) {
-  let nm = (new Date()).getTime()
+  let nm = Date.now()
   if (!ctx.mParams.whereList) {
     ctx.mParams.whereList = {}
   }

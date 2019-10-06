@@ -125,7 +125,7 @@ Authorization signature calculation (JavaScript):
 
      function getSignature() {
      var
-        timeStampI = Math.floor((new Date()).getTime() /  1000),
+        timeStampI = Math.floor(Date.now() /  1000),
         hexaTime = hexa8(timeStampI);
 
         return  hexa(clientSessionID) + hexaTime + hexa8(crc32(sessionPrivateKey + secretWord + hexaTime));

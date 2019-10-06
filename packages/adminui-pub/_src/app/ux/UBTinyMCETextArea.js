@@ -63,7 +63,7 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
           let reader = new window.FileReader()
           let blob = new window.Blob([file], {type: file.type})
           reader.addEventListener('loadend', function () {
-            let id = 'blobid' + (new Date()).getTime()
+            let id = 'blobid' + Date.now()
             let blobCache = tinymce.activeEditor.editorUpload.blobCache
             // MPV - we need a base64 representation to embed image to document
             let b64 = reader.result.split(',', 2)[1]

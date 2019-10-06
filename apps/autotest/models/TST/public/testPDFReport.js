@@ -268,7 +268,7 @@ Ext.define('PDF.cstestReport', {
       return
     }
 
-    var stTime = (new Date()).getTime()
+    var stTime = Date.now()
 
     pdf = Ext.create('PDF.csPrintToPdf', {
       font: { name: 'TimesNewRoman', size: 14, type: 'Normal' },

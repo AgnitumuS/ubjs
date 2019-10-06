@@ -277,7 +277,7 @@ UBNativeMessage.prototype.invoke = function (methodName, methodParams, timeout) 
       timerID: setTimeout(function () { me.onMsgTimeOut(msgID) }, timeout),
       partials: null,
       timeoutValue: timeout || me.callTimeOut,
-      stTime: (new Date()).getTime()
+      stTime: Date.now()
     }
     // if (UB.isSecureBrowser) {
     //     if (methodName === '__extensionVersion') {

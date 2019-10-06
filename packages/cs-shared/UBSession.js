@@ -83,7 +83,7 @@ function UBSession (authResponse, secretWord, authSchema) {
       case 'ROOT':
         return process.rootOTP()
       default:
-        let timeStampI = authMock ? 1 : Math.floor((new Date()).getTime() / 1000)
+        let timeStampI = authMock ? 1 : Math.floor(Date.now() / 1000)
         let hexaTime = hexa8(timeStampI)
         return authMock
           ? hexa8ID + hexaTime + hexa8(1)

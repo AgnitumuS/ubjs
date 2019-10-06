@@ -185,7 +185,7 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
         request.whereList = request.whereList || {}
         var valuesExpr = {}
         valuesExpr[me.valueField] = val
-        request.whereList['selectedItems' + (new Date()).getTime()] = {
+        request.whereList['selectedItems' + Date.now()] = {
           condition: 'in',
           expression: '[' + me.valueField + ']',
           values: valuesExpr
