@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.8.0]
+### Changed
+ - winXP (Chrome 48 / FireFox 52 / IE) support is removed, as a result
+ boundle size reduced by 120Kb + code became faster  
+
 ## [1.7.2]
 ### Added
  - New option for `UFormRow` label-position prop, example:

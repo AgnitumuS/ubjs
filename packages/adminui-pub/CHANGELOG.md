@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[5.12.0]
+### Changed
+ - winXP (Chrome 48 / FireFox 52 / IE ) support is removed, including following polyfills:
+   - `bluebird-q` - was exposed as `window.Q` 
+   - `es6-promise`- was adds Promises support for IE  
+   - `Promise.prototype.fin` (used previously in Q promises) polyfill is removed. 
+     Native `finally` should be used instead
+   - `Promise.prototype.done` (used previously in Q promises) polyfill is removed.
+     Native `then` or `catch` should be used instead
+   Boundle size reduced by 100Kb  
+ - Q promises usage is removed from UBOrgChart
+ 
 ## [5.11.1]
 ###Fixed
  - prevent an error with `BasePanel.maskForm` in case of saving detail record, when master record is locked.

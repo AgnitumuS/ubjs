@@ -451,13 +451,7 @@ Ext.define('UB.ux.UBOrgChart', {
     graph.getPreferredSizeForCell = Ext.bind(me.getPreferredSizeForCell, graph)
 
     if (me.graph && me.dataUrl && !me.isActulData) {
-      me.startLoadData().then(function (result) {
-        if (me.loadDataDefer) {
-          me.loadDataDefer.resolve(result)
-        }
-      }, function (reason) {
-        me.loadDataDefer.reject(reason)
-      })
+      return me.startLoadData()
     }
   },
 
@@ -1361,26 +1355,23 @@ Ext.define('UB.ux.UBOrgChart', {
     if (me.graph) {
       result = me.startLoadData()
     } else {
-      // возможно гдето понадобиться знать о завершении загрузки
-      me.loadDataDefer = Q.defer()
-      result = me.loadDataDefer.promise
-      me.loadDataDefer.resolve(true)
+      result = Promise.resolve(me.graph)
     }
     me.changeFired = false
     return result
   },
 
   startLoadData: function () {
-    var me = this; var dec; var xml; var err; var defer = Q.defer()
+    var me = this; var dec; var err
     if (!me.dataUrl || !me.graph) {
       return
     }
     me.isLoadComlete = false
     me.getEl().mask(UB.i18n('loadingData'))
-    $App.connection.get(me.dataUrl).then(function (response) {
-      xml = response.data
+    return $App.connection.get(me.dataUrl).then(function (response) {
+      let xml = response.data
       if (typeof (xml) === 'string') {
-        var parser = new DOMParser()
+        let parser = new DOMParser()
         xml = parser.parseFromString(xml, 'application/xml')
         err = xml.getElementsByTagName('parsererror')
         if (err.length > 0) {
@@ -1397,26 +1388,11 @@ Ext.define('UB.ux.UBOrgChart', {
       me.undoManager.clear()
       me.isActulData = true
       return true
-    }).then(function () {
-      try {
-        me.loadData().then(() => {
-          try {
-            me.validateDiagram()
-            defer.resolve()
-          } finally {
-            me.getEl().unmask()
-          }
-        })
-      } catch (e) {
-        me.getEl().unmask()
-        defer.reject(e)
-        throw e
-      }
-    }, function (reason) {
-      defer.reject(reason)
+    }).then(() => {
+      return me.loadData()
+    }).finally(() => {
       me.getEl().unmask()
     })
-    return defer.promise
   },
 
   // инициация нового документа
