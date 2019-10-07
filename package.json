@@ -9,7 +9,6 @@
     "clean-css-cli": "^4.2.1",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
-    "es6-promise": "^4.2.6",
     "eslint": "^5.15.3",
     "eslint-plugin-vue": "^5.2.2",
     "exports-loader": "^0.6.3",
@@ -42,7 +41,6 @@
     "npm": "^5"
   },
   "dependencies": {
-    "core-js": "^3.2.1",
     "ub-jsdoc": "^2.1.11"
   }
 }

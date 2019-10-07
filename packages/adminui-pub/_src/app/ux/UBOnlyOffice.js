@@ -143,8 +143,8 @@ Ext.define('UB.ux.UBOnlyOffice', {
    * @private
    */
   _loadScript: function (url) {
-    return Q.Promise((resolve, reject) => {
-      Ext.Loader.loadScript({url: url, onLoad: resolve, onError: reject})
+    return new Promise((resolve, reject) => {
+      Ext.Loader.loadScript({ url: url, onLoad: resolve, onError: reject })
     })
   },
 

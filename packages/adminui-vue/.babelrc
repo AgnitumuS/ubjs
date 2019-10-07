@@ -1,14 +1,4 @@
 {
-  "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "useBuiltIns": "usage",
-	    "corejs": {"version": 3},
-	    "modules": "cjs"
-      }
-    ]
-  ],
   "plugins": [
     "@babel/plugin-proposal-object-rest-spread"
   ]
