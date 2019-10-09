@@ -41,7 +41,9 @@
       {{/modelVersions}}
     }
     window.__modelInit = []
-        {{#modelInitialization}}window.__modelInit.push('{{{prod}}}'){{/modelInitialization}}
+    {{#modelInitialization}}
+    window.__modelInit.push('{{{prod}}}');
+    {{/modelInitialization}}
     window.isDeveloperMode = false
     window.IMAGE_PATH = 'res/mxGraph/images'
     window.mxLoadResources = false

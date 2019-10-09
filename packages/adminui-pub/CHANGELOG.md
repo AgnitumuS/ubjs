@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[5.12.2]
+### Fixed
+ - `adminUI is not defined` during initial page load (missed semicolon in index.html)
+ 
 [5.12.1]
 ### Changed
  - green spinner on startup - symbolizes only evergreen browser are supported by adminUI :)
