@@ -76,20 +76,6 @@ module.exports.iso8601Parse = function (value) {
 /**
  * see docs in ub-pub main module
  * @private
- * @param value
- * @returns {Date}
- */
-module.exports.iso8601ParseAsDate = function (value) {
-  let res = value ? new Date(value) : null
-  if (res) {
-    res.setTime(res.getTime() + res.getTimezoneOffset() * 60 * 1000)
-  }
-  return res
-}
-
-/**
- * see docs in ub-pub main module
- * @private
  * @param v Value to convert
  * @returns {Boolean|null}
  */

@@ -1,4 +1,6 @@
-/* global Ext, UB, UBDomain */
+/* global Ext, UBDomain */
+const UB = require('@unitybase/ub-pub')
+
 /**
  * UnityBase ext-based Date picker
  * @author Nozhenko I.
@@ -49,9 +51,8 @@ Ext.define('UB.ux.form.field.UBDate', {
     var dateValue = this.callParent(arguments)
 
     if (this.fieldType === UBDomain.ubDataTypes.Date && Ext.isDate(dateValue)) {
-      dateValue = UB.core.UBUtil.truncTimeToUtcNull(dateValue)
+      dateValue = UB.truncTimeToUtcNull(dateValue)
     }
     return dateValue
   }
-
 })

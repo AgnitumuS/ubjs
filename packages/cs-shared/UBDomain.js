@@ -1,6 +1,7 @@
 /* documentation verified by mpv on 2018-03-18 */
 /* global UB, App */
 const _ = require('lodash')
+const iso8601ParseAsDate = require('./LocalDataStore').iso8601ParseAsDate
 
 /**
  * @module UBDomain
@@ -970,21 +971,6 @@ UBEntity.prototype.addMethod = function (methodName) {
  */
 function iso8601Parse (value) {
   return value ? new Date(value) : null
-}
-
-/**
- * Convert UnityBase server date response to Date object.
- * date response is a day with 00 time (2015-07-17T00:00Z), to get a real date we must add current timezone shift
- * @private
- * @param value
- * @returns {Date}
- */
-function iso8601ParseAsDate (value) {
-  let res = value ? new Date(value) : null
-  if (res) {
-    res.setTime(res.getTime() + res.getTimezoneOffset() * 60 * 1000)
-  }
-  return res
 }
 
 /**

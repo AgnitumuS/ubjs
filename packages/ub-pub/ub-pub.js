@@ -7,6 +7,8 @@ const injection = require('./injection')
 const ClientRepository = require('./ClientRepository')
 const UBCache = require('./UBCache')
 const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
+const iso8601ParseAsDate = LocalDataStore.iso8601ParseAsDate
+const truncTimeToUtcNull = LocalDataStore.truncTimeToUtcNull
 const CryptoJS = require('@unitybase/cryptojs')
 // const CryptoJSCore = require('@unitybase/cryptojs/core')
 const SHA256 = require('@unitybase/cryptojs/sha256')
@@ -119,7 +121,13 @@ let UB = module.exports = {
    * @param value
    * @returns {Date}
    */
-  iso8601ParseAsDate: function (value) { return utils.iso8601ParseAsDate(value) },
+  iso8601ParseAsDate: iso8601ParseAsDate,
+  /**
+   * Convert a local DateTime to Date with zero time in UTC0 timezone as expected by UB server for Date attributes
+   * @param {Date} v
+   * @returns {Date}
+   */
+  truncTimeToUtcNull: truncTimeToUtcNull,
   /**
    * Fast async transformation of data to base64 string
    * @param {File|ArrayBuffer|String|Blob|Array} data
