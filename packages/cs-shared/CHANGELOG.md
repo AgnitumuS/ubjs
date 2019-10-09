@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.11]
+### Added
+  - remove code duplication for `Date` parsing functions (truncTimeToUtcNull & iso8601ParseAsDate are moved to LocalDataStorage) 
+
 ## [5.1.9]
 ### Added
  - `UBSession.signature` can return a fake signature if `authMock` parameter is true

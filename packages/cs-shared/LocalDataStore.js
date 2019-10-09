@@ -411,3 +411,37 @@ module.exports.arrayOfObjectsToSelectResult = function (arrayOfObject, attribute
   })
   return result
 }
+
+/**
+ * Convert a local DateTime to Date with zero time in UTC0 timezone as expected by UB server for Date attributes
+ * @param {Date} v
+ * @returns {Date}
+ */
+module.exports.truncTimeToUtcNull = function (v) {
+  if (!v) return v
+  let m = v.getMonth() + 1
+  m = m < 10 ? '0' + m : '' + m
+  let d = v.getDate()
+  d = d < 10 ? '0' + d : '' + d
+  return new Date(`${v.getFullYear()}-${m}-${d}T00:00:00Z`)
+  // code below fails for 1988-03-27
+  // var result = new Date(v.getFullYear(), v.getMonth(), v.getDate())
+  // result.setMinutes(-v.getTimezoneOffset())
+  // return result
+}
+
+/**
+ * Convert UnityBase server date response to Date object.
+ * Date response is a day with 00 time (2015-07-17T00:00Z), to get a real date we must add current timezone shift
+ * @param value
+ * @returns {Date}
+ */
+module.exports.iso8601ParseAsDate = function (value) {
+  let res = value ? new Date(value) : null
+  if (res) {
+    return new Date(res.getFullYear(), res.getMonth(), res.getDate())
+    // code below fails for 1988-03-27T00:00Z
+    // res.setTime(res.getTime() + res.getTimezoneOffset() * 60 * 1000)
+  }
+  return res
+}

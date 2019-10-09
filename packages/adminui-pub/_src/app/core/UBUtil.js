@@ -1,7 +1,8 @@
-/* global Ext, UB, $App */
+/* global Ext, $App */
 const _ = require('lodash')
 require('./UBAppConfig')
 const UBDomain = require('@unitybase/cs-shared').UBDomain
+const UB = require('@unitybase/ub-pub')
 
 const ALLOWED_MISC = [
   '__mip_ondate ',
@@ -359,16 +360,10 @@ Ext.define('UB.core.UBUtil', {
   },
 
   /**
-   * @param {Date} value
+   * @param {Date} v
    * @returns {Date}
    */
-  truncTimeToUtcNull: function (value) {
-    if (!value) return value
-
-    var result = new Date(value.getFullYear(), value.getMonth(), value.getDate())
-    result.setMinutes(-value.getTimezoneOffset())
-    return result
-  },
+  truncTimeToUtcNull: function (v) { return UB.truncTimeToUtcNull(v) },
 
   truncTime: function (value) {
     if (!value) return value
@@ -402,7 +397,7 @@ Ext.define('UB.core.UBUtil', {
       return value
     }
     if (dataType === UBDomain.ubDataTypes.Date) {
-      return UB.core.UBUtil.truncTimeToUtcNull(value)
+      return UB.truncTimeToUtcNull(value)
     }
     return value
   },

@@ -11,6 +11,8 @@ module.exports = {
 }
 
 const UB = require('@unitybase/ub-pub')
+const truncTimeToUTCNull = UB.truncTimeToUtcNull
+const UB_DATA_TYPES = require('@unitybase/cs-shared').UBDomain.ubDataTypes
 
 const SYSTEM_FIELDS = new Set([
   'mi_createDate',
@@ -67,7 +69,12 @@ function buildExecParams (trackedObj, entity) {
 
   for (const key of Object.keys(trackedObj.originalData)) {
     if (!key.includes('.')) {
-      execParams[key] = trackedObj.data[key]
+      let attr = schema.attributes[key]
+      if (trackedObj.data[key] && attr && attr.dataType === UB_DATA_TYPES.Date) {
+        execParams[key] = truncTimeToUTCNull(trackedObj.data[key])
+      } else {
+        execParams[key] = trackedObj.data[key]
+      }
     }
   }
   replaceMultilangParams(execParams)

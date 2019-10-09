@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.24]
+### Fixed
+ - transformation to / from UB Date format (time 00:00 in UTC0) works correctly for dates in which
+  there was a switch to winter / summer time (1988-03-27 for example)  
+
+### Added
+ - new functions `UB.iso8601ParseAsDate` (convert UnityBase server date response to Date object)
+  and `UB.truncTimeToUtcNull` (convert a local DateTime to Date with zero time in UTC0 timezone
+  as expected by UB server for Date attributes) 
+
 ## [5.3.22]
 ### Added
  - AsyncConnection now support `authMock` mode (if server started with --authMock switch)
