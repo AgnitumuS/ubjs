@@ -320,13 +320,19 @@ export default {
       if (this.repository) {
         return this.repository()
       } else {
-        let displayAttribute = this.getDisplayAttribute
-        let repo = this.$UB.Repository(this.entityName)
+        const displayAttribute = this.getDisplayAttribute
+        const valueAttribute = this.valueAttribute
+        const repo = this.$UB.Repository(this.entityName)
           .attrs(this.valueAttribute)
           .attrsIf(displayAttribute !== this.valueAttribute, displayAttribute)
-        if (displayAttribute) {
-          repo = repo.orderBy(displayAttribute)
+
+        if (displayAttribute !== valueAttribute) {
+          repo.attrs(displayAttribute)
         }
+        if (displayAttribute) {
+          repo.orderBy(displayAttribute)
+        }
+
         return repo
       }
     },
