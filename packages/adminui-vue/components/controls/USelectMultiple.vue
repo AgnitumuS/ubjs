@@ -200,7 +200,11 @@ export default {
     placeholder: {
       type: String,
       default: ''
-    }
+    },
+    /**
+     * Set readonly status
+     */
+    readonly: Boolean
   },
 
   data () {
