@@ -163,6 +163,7 @@ export default {
         this.isCollapsed = !this.isCollapsed
       }
     })
+    UB.connection.on(`ubm_navshortcut:changed`, this.initMenu)
     Object.defineProperty(this.$refs.menu, 'hoverBackground', {
       get () {
         return 'rgb(var(--bg-hover))'
