@@ -322,7 +322,8 @@ export default {
       } else {
         let displayAttribute = this.getDisplayAttribute
         let repo = this.$UB.Repository(this.entityName)
-          .attrs(this.valueAttribute, displayAttribute)
+          .attrs(this.valueAttribute)
+          .attrsIf(displayAttribute !== this.valueAttribute, displayAttribute)
         if (displayAttribute) {
           repo = repo.orderBy(displayAttribute)
         }
@@ -368,7 +369,9 @@ export default {
 
     async fetchDisplayValues (IDs) {
       this.loading = true
-      const data = await this.getRepository()
+      const repository = this.getRepository()
+      const data = await this.$UB.Repository(repository.entityName)
+        .attrs(repository.fieldList)
         .where(this.valueAttribute, 'in', IDs)
         .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
         .misc({

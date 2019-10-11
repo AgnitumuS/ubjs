@@ -364,7 +364,8 @@ export default {
       } else {
         let displayAttribute = this.getDisplayAttribute
         let repo = this.$UB.Repository(this.entityName)
-          .attrs(this.valueAttribute, displayAttribute)
+          .attrs(this.valueAttribute)
+          .attrsIf(displayAttribute !== this.valueAttribute, displayAttribute)
         if (displayAttribute) {
           repo = repo.orderBy(displayAttribute)
         }
