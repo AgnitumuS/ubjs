@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.8.2]
+### Added
+ - `UFormContainer` prop autofocus. Boolean. Is true by default.
+ Example usage `<u-form-container :autofocus="false">`
+
 [1.8.1]
 ### Fixed
  - transformation of attributes of type `Date` (not DateTime) to format expected by server (time must be 00:00 in UTC0) inside `buildExecParams`

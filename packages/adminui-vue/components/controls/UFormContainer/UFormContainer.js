@@ -21,6 +21,13 @@ module.exports = {
     labelPosition: {
       type: String,
       default: 'left'
+    },
+    /**
+     * If set 'false' disable autofocus on mounted. 'true' by default
+     */
+    autofocus: {
+      type: Boolean,
+      default: true
     }
   },
   provide () {
@@ -49,7 +56,9 @@ module.exports = {
   },
 
   mounted () {
-    this.setFocus()
+    if (this.autofocus) {
+      this.setFocus()
+    }
   },
 
   methods: {
