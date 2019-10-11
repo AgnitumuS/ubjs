@@ -322,9 +322,7 @@ export default {
       } else {
         const displayAttribute = this.getDisplayAttribute
         const valueAttribute = this.valueAttribute
-        const repo = this.$UB.Repository(this.entityName)
-          .attrs(this.valueAttribute)
-          .attrsIf(displayAttribute !== this.valueAttribute, displayAttribute)
+        const repo = this.$UB.Repository(this.entityName).attrs(valueAttribute)
 
         if (displayAttribute !== valueAttribute) {
           repo.attrs(displayAttribute)
