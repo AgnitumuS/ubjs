@@ -129,5 +129,11 @@ UB.i18nExtend({
   formCrashBody: 'Xəta baş vermişdir, fomranı yeniləyin və yaxud sistem administratorla əlaqə saxlayın',
 
   selectDate: 'Tarixi seçin',
-  selectDateAndTime: 'Tarix və vaxtı seçin'
+  selectDateAndTime: 'Tarix və vaxtı seçin',
+
+  sidebar: {
+    desktopSelector: {
+      title: 'Desktop selection'
+    }
+  }
 })

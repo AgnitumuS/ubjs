@@ -1,10 +1,12 @@
 <template>
   <div class="u-navbar">
-    <i
+    <div
       v-if="withHamburger"
-      class="fa fa-bars u-navbar__collapse-button"
+      class="u-navbar__collapse-button"
       @click="$UB.core.UBApp.fireEvent('portal:sidebar:collapse')"
-    />
+    >
+      <i :class="isCollapsed ? 'el-icon-arrow-right' : 'el-icon-arrow-left'" />
+    </div>
 
     <div
       ref="tabWrap"
@@ -145,7 +147,9 @@ export default {
       }, {
         label: 'closeAll',
         action: 'closeAll'
-      }]
+      }],
+
+      isCollapsed: this.getCollapsed()
     }
   },
 
@@ -195,6 +199,12 @@ export default {
       'portal:navbar:defineSlot': (Component, bindings) => {
         this.$slots.default = this.$createElement(Component, bindings)
         this.$forceUpdate()
+      },
+
+      'portal:sidebar:collapse': (Component, bindings) => {
+        setTimeout(() => {
+          this.isCollapsed = this.getCollapsed()
+        }, 0)
       }
     })
   },
@@ -464,6 +474,10 @@ export default {
 
         scope: this
       })
+    },
+
+    getCollapsed () {
+      return window.localStorage.getItem('portal:sidebar:isCollapsed') === 'true'
     }
   }
 }
@@ -472,10 +486,12 @@ export default {
 <style>
 .u-navbar{
   padding: 8px;
+  padding-left: 30px;
   display:flex;
   justify-content: space-between;
   background: #fff;
   border-bottom: 1px solid rgba(var(--bg), 0.12);
+  position: relative;
 }
 
 .u-navbar-tab-slider__ctrl{
@@ -574,17 +590,22 @@ export default {
 }
 
 .u-navbar__collapse-button{
-  margin-right: 12px;
-  font-size: 24px;
-  width: 24px;
-  color: rgba(var(--info), 0.8);
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 20px;
+  height: 32px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  font-size: 16px;
+  color: rgb(var(--text-contrast));
+  background: rgb(var(--bg));
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   cursor: pointer;
 }
 
 .u-navbar__collapse-button:hover{
-  color: rgb(var(--info));
+  background: rgb(var(--bg-hover));
 }
 </style>

@@ -59,7 +59,7 @@ export default {
 }
 
 .u-navbar__tab:hover{
-  background-color: rgba(var(--primary), 0.16);
+  background-color: rgba(var(--bg-hover), 0.05);
   border-color: rgba(var(--bg-hover), 0.54);
 }
 

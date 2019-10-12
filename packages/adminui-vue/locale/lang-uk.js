@@ -129,5 +129,11 @@ UB.i18nExtend({
   formCrashBody: 'Щось пішло не так, перезавантажте форму або зверніться до системного адміністратора',
 
   selectDate: 'Оберіть дату',
-  selectDateAndTime: 'Оберіть дату та час'
+  selectDateAndTime: 'Оберіть дату та час',
+
+  sidebar: {
+    desktopSelector: {
+      title: 'Вибір робочого стола'
+    }
+  }
 })

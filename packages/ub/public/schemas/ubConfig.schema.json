@@ -925,6 +925,16 @@
                   "default": "#view=Fit"
                 }
               }
+            },
+            "sidebarLogoURL": {
+              "type": "string",
+              "description": "Optional URL for a small logo to display on the top of the sidebar. The recommended size for this logo is 40x40 px. It will be shown when the sidebar is collapsed. In a case when this prop is set and sidebarLogoBigURL is unset will show this logo in expanded too",
+              "default": ""
+            },
+            "sidebarLogoBigURL": {
+              "type": "string",
+              "description": "Optional URL for a big logo to display on the top of sidebar. Recommended size 160x40 px. It will be show when sidebar is not collapsed",
+              "default": ""
             }
           }
         },

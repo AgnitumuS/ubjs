@@ -1,39 +1,27 @@
 <template>
   <div class="ub-sidebar">
     <div
-      class="ub-sidebar__desktop-select"
-      :class="[isCollapsed && 'collapsed']"
+      v-if="logo !== null"
+      class="ub-sidebar__logo"
     >
-      <el-tooltip
-        v-show="isCollapsed"
-        :content="$ut('Desktop')"
-        placement="right"
-        :enterable="false"
-      >
-        <el-button
-          icon="fa fa-desktop"
-          class="ub-sidebar__desktop-select__button"
-          @click="$refs.select.$el.click()"
-        />
-      </el-tooltip>
-
-      <el-select
-        ref="select"
-        v-model="selectedDesktop"
-        style="width: 100%"
-        placeholder="Desktop"
-      >
-        <el-option
-          v-for="item in desktops"
-          :key="item.ID"
-          :label="item.caption"
-          :value="item.ID"
-        />
-      </el-select>
+      <img :src="isCollapsed ? logo : logoBig">
     </div>
 
     <slot />
 
+    <desktop-selector
+      :desktops="desktops"
+      :is-collapsed="isCollapsed"
+      :selected-desktop-id="selectedDesktop"
+      @change-desktop="changeDesktop"
+    />
+
+    <div
+      class="ub-sidebar__nav-label"
+      :class="isCollapsed && 'collapsed'"
+    >
+      {{ $ut('menu') }}
+    </div>
     <el-menu
       ref="menu"
       background-color="rgb(var(--bg))"
@@ -69,17 +57,24 @@
 const UB = require('@unitybase/ub-pub')
 const USidebarItem = require('./USidebarItem.vue').default
 const UContextMenu = require('../controls/UContextMenu.vue').default
+const DesktopSelector = require('./DesktopSelector.vue').default
 
 export default {
   name: 'USidebar',
-  components: { USidebarItem, UContextMenu },
+  components: {
+    USidebarItem,
+    UContextMenu,
+    DesktopSelector
+  },
 
   data () {
     return {
       menu: [],
       desktops: [],
       selectedDesktop: null,
-      isCollapsed: null
+      isCollapsed: null,
+      logo: null,
+      logoBig: null
     }
   },
 
@@ -141,6 +136,10 @@ export default {
     }
   },
 
+  created () {
+    this.setLogo()
+  },
+
   mounted () {
     this.initMenu()
     this.initCollapseState()
@@ -173,7 +172,7 @@ export default {
   methods: {
     async loadDesktops () {
       const desktops = await this.$UB.connection.Repository('ubm_desktop')
-        .attrs('ID', 'caption', 'isDefault')
+        .attrs('ID', 'caption', 'isDefault', 'description', 'iconCls')
         .orderBy('caption')
         .select()
 
@@ -273,6 +272,20 @@ export default {
 
     setActiveFolder (ID, arr) {
       localStorage.setItem('portal:sidebar:activeShortcutFolder', JSON.stringify(arr))
+    },
+
+    changeDesktop (ID) {
+      this.selectedDesktop = ID
+    },
+
+    setLogo () {
+      const logo = this.$UB.connection.appConfig.uiSettings.adminUI.sidebarLogoURL
+      const logoBig = this.$UB.connection.appConfig.uiSettings.adminUI.sidebarLogoBigURL
+
+      if (logo) {
+        this.logo = logo
+        this.logoBig = logoBig || logo
+      }
     }
   }
 }
@@ -285,6 +298,7 @@ export default {
   display: flex;
   flex-direction: column;
   z-index: 300000;
+  position: relative;
 }
 
 .ub-sidebar .el-menu::-webkit-scrollbar {
@@ -328,7 +342,6 @@ export default {
   height: auto;
   line-height: 1.5;
   padding: 8px 0;
-  display: flex;
   align-items: center;
   white-space: pre-wrap;
   min-height: 32px;
@@ -356,33 +369,26 @@ export default {
   transform: rotateZ(0deg);
 }
 
-.ub-sidebar__desktop-select{
-  padding: 12px;
+.ub-sidebar__logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid rgba(var(--text-contrast), 0.1);
+  padding: 5px 15px;
 }
 
-.ub-sidebar__desktop-select.collapsed{
-  padding: 12px 0;
-}
-
-.ub-sidebar__main-menu{
-  border-right: 0;
-  margin: 12px auto;
+.ub-sidebar__logo img {
   width: 100%;
-  flex-grow: 1;
-  overflow-y: auto;
+  max-height: 40px;
 }
 
-.ub-sidebar__desktop-select.collapsed .el-input__suffix,
-.ub-sidebar__desktop-select.collapsed .el-input__inner{
-  display: none;
+.ub-sidebar__nav-label {
+  color: rgba(255, 255, 255, 0.54);
+  font-size: 12px;
+  margin: 12px;
 }
 
-.ub-sidebar__desktop-select.collapsed .el-select{
-  display: block;
-}
-
-.ub-sidebar__desktop-select__button{
-  margin: 0 auto;
-  display: block;
+.ub-sidebar__nav-label.collapsed {
+  text-align: center;
 }
 </style>

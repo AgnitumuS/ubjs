@@ -129,5 +129,11 @@ UB.i18nExtend({
   formCrashBody: 'Something going wrong please reload form or contact system administrator',
 
   selectDate: 'Select date',
-  selectDateAndTime: 'Select date and time'
+  selectDateAndTime: 'Select date and time',
+
+  sidebar: {
+    desktopSelector: {
+      title: 'Desktop selection'
+    }
+  }
 })

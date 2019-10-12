@@ -82,8 +82,23 @@
       "dataType": "String",
       "size": 50,
       "caption": "icon css class name",
+      "allowNull": true
+    },
+    {
+      "name": "description",
+      "dataType": "String",
+      "size": 256,
+      "caption": "Shortcut description",
       "allowNull": true,
-      "isMultiLang": false
+      "isMultiLang": true
+    },
+    {
+      "name": "keywords",
+      "dataType": "String",
+      "size": 512,
+      "caption": "Search keywords",
+      "allowNull": true,
+      "isMultiLang": true
     }
   ],
   "mixins": {
