@@ -32,7 +32,7 @@
             v-for="option in displayedOptions"
             :key="option.ID"
             :type="option.isDeleted ? 'danger' : 'info'"
-            closable
+            :closable="!readonly"
             size="mini"
             class="ub-select-multiple__tag"
             @close="removeOption(option.ID)"
@@ -49,21 +49,23 @@
 
           <input
             v-model="queryDisplayValue"
+            :readonly="readonly"
             class="ub-select-multiple__input"
             :placeholder="$ut(placeholder)"
             @focus="isFocused = true"
             @blur="isFocused = false"
-            @keydown.exact.down.alt="onKeydownAltDown"
+            @keydown.exact.down.alt="readonly || onKeydownAltDown()"
             @keydown.exact.up.prevent
             @keydown.exact.down.prevent
           >
         </div>
         <i
-          v-if="clearable && value.length > 0"
+          v-if="clearable && value.length > 0 && !readonly"
           class="ub-select-multiple__icon el-icon-close"
           @click="$emit('input', [])"
         />
         <i
+          v-if="!readonly"
           class="ub-select-multiple__icon"
           :class="inputIconCls"
           @click="toggleDropdown"
@@ -71,7 +73,7 @@
       </div>
 
       <div
-        v-if="options.length > 0"
+        v-if="options.length > 0 && !readonly"
         ref="options"
         class="ub-select__list-options"
       >
@@ -200,7 +202,11 @@ export default {
     placeholder: {
       type: String,
       default: ''
-    }
+    },
+    /**
+     * Set readonly status
+     */
+    readonly: Boolean
   },
 
   data () {
@@ -314,12 +320,17 @@ export default {
       if (this.repository) {
         return this.repository()
       } else {
-        let displayAttribute = this.getDisplayAttribute
-        let repo = this.$UB.Repository(this.entityName)
-          .attrs(this.valueAttribute, displayAttribute)
-        if (displayAttribute) {
-          repo = repo.orderBy(displayAttribute)
+        const displayAttribute = this.getDisplayAttribute
+        const valueAttribute = this.valueAttribute
+        const repo = this.$UB.Repository(this.entityName).attrs(valueAttribute)
+
+        if (displayAttribute !== valueAttribute) {
+          repo.attrs(displayAttribute)
         }
+        if (displayAttribute) {
+          repo.orderBy(displayAttribute)
+        }
+
         return repo
       }
     },
@@ -362,7 +373,9 @@ export default {
 
     async fetchDisplayValues (IDs) {
       this.loading = true
-      const data = await this.getRepository()
+      const repository = this.getRepository()
+      const data = await this.$UB.Repository(repository.entityName)
+        .attrs(repository.fieldList)
         .where(this.valueAttribute, 'in', IDs)
         .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
         .misc({
@@ -519,8 +532,11 @@ export default {
 }
 
 .ub-select-multiple__container.disabled{
-  background: rgba(var(--info), 0.1);
+  background-color: #F5F7FA;
+  border-color: #E4E7ED;
+  color: #C0C4CC;
   cursor: not-allowed;
+  min-height: 32px;
 }
 
 .ub-select-multiple__container.is-focused{

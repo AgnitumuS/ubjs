@@ -5,6 +5,7 @@
     :disabled="disabled"
     :clearable="clearable"
     :placeholder="placeholder"
+    :readonly="readonly"
     @input="changeCollection"
   />
 </template>
@@ -63,7 +64,11 @@ export default {
     placeholder: {
       type: String,
       default: ''
-    }
+    },
+    /**
+     * Set readonly status
+     */
+    readonly: Boolean
   },
 
   data () {

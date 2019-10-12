@@ -16,10 +16,7 @@ export default {
      * Array of selected IDs as string joined by ,
      * @model
      */
-    value: {
-      type: String,
-      required: true
-    }
+    value: {}
   },
 
   computed: {

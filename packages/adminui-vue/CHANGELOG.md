@@ -18,6 +18,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   }
 }
 ```
+### Fixed
+ - dynamically update shortcut in sidebar on change in `ubm_navshortcut` form
+ - case field is collapsed if setting for `USelectMultiple` and `USelectMany` field is disabled
+ - `USelect* components` error when value is exist in dictionary but not exist in current `:repository` request
+ - `USelect* components` duplicate field in the query in case `valueAttribute` is set same value which in `descriptionAttribute`
+
+### Added
+ - `USelect* components` prop readonly
 
 [1.8.1]
 ### Fixed

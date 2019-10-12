@@ -29,15 +29,15 @@
           :class="{
             'ub-select__deleted-value': isSafeDeletedValue && !isFocused
           }"
-          :readonly="!editable"
+          :readonly="!editable || readonly"
           :placeholder="$ut(placeholder)"
           @click.native="editable || toggleDropdown()"
           @focus="isFocused = true"
           @blur="isFocused = false"
-          @keydown.native.exact.e.ctrl.prevent="handleEditItem"
-          @keydown.native.exact.f9="handleShowDictionary"
-          @keydown.native.exact.delete.ctrl="handleClearClick"
-          @keydown.native.exact.down.alt="onKeydownAltDown"
+          @keydown.native.exact.e.ctrl.prevent="readonly || handleEditItem()"
+          @keydown.native.exact.f9="readonly || handleShowDictionary()"
+          @keydown.native.exact.delete.ctrl="readonly || handleClearClick()"
+          @keydown.native.exact.down.alt="readonly || onKeydownAltDown()"
           @keydown.native.exact.up.prevent
           @keydown.native.exact.down.prevent
         >
@@ -50,13 +50,14 @@
             <i class="el-input__icon el-icon-delete" />
           </el-tooltip>
           <i
-            v-if="clearable && value !== null && value !== '' && value !== undefined"
+            v-if="clearable && value !== null && value !== '' && value !== undefined && !readonly"
             slot="suffix"
             style="cursor: pointer;"
             class="el-input__icon el-icon-close"
             @click="$emit('input', null)"
           />
           <i
+            v-if="!readonly"
             slot="suffix"
             class="el-input__icon"
             style="cursor: pointer;"
@@ -64,7 +65,7 @@
             @click.stop.prevent="toggleDropdown"
           />
           <el-dropdown
-            v-if="actions.length > 0"
+            v-if="actions.length > 0 && !readonly"
             slot="suffix"
             trigger="click"
             :tabindex="-1"
@@ -225,7 +226,11 @@ export default {
     placeholder: {
       type: String,
       default: ''
-    }
+    },
+    /**
+     * Set readonly status
+     */
+    readonly: Boolean
   },
 
   data () {
@@ -357,12 +362,17 @@ export default {
       if (this.repository) {
         return this.repository()
       } else {
-        let displayAttribute = this.getDisplayAttribute
-        let repo = this.$UB.Repository(this.entityName)
-          .attrs(this.valueAttribute, displayAttribute)
-        if (displayAttribute) {
-          repo = repo.orderBy(displayAttribute)
+        const displayAttribute = this.getDisplayAttribute
+        const valueAttribute = this.valueAttribute
+        const repo = this.$UB.Repository(this.entityName).attrs(valueAttribute)
+
+        if (displayAttribute !== valueAttribute) {
+          repo.attrs(displayAttribute)
         }
+        if (displayAttribute) {
+          repo.orderBy(displayAttribute)
+        }
+
         return repo
       }
     },
@@ -405,7 +415,9 @@ export default {
 
     async fetchDisplayValue (value) {
       this.loading = true
-      const data = await this.getRepository()
+      const repository = this.getRepository()
+      const data = await this.$UB.Repository(repository.entityName)
+        .attrs(repository.fieldList)
         .where(this.valueAttribute, '=', value)
         .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
         .misc({
@@ -496,6 +508,7 @@ export default {
 
     // shows all search result when click on dropdown arrow
     toggleDropdown () {
+      if (this.readonly) return
       this.dropdownVisible = !this.dropdownVisible
       if (this.dropdownVisible) {
         this.fetchPage()

@@ -4,6 +4,7 @@
     :value="value"
     :value-attribute="valueAttribute"
     :disabled="disabled"
+    :readonly="readonly"
     remove-default-actions
     :editable="editable"
     :placeholder="placeholder"
@@ -55,7 +56,11 @@ export default {
     placeholder: {
       type: String,
       default: ''
-    }
+    },
+    /**
+     * Set readonly status
+     */
+    readonly: Boolean
   },
 
   data () {
