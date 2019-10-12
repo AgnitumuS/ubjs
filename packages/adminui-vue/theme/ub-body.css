@@ -1,14 +1,15 @@
 /* Use rgb code for use rgba colors. Example color: rgba(var(--bg), 0.5);*/
 :root{
-  --bg: 59, 63, 74;
-  --bg-hover: 45, 49, 60;
+  --bg: 55, 63, 81;
+  --bg-hover: 47, 53, 68;
   --primary: 66, 183, 115;
+  --secondary: 97, 132, 216;
   --danger: 245, 108, 108;
   --info: 144, 147, 153;
   --info-light: 192, 196, 204;
   --warning: 230, 162, 60;
   --success: 103, 194, 58;
-  --text: 48, 49, 51;
+  --text: 50, 59, 69;
   --text-contrast: 255, 255, 255;
 }
 

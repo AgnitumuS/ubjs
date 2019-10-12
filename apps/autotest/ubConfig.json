@@ -32,7 +32,7 @@
 	},
 	"security": {
 		"authenticationMethods": [
-			"UB"//, "UBLDAP"//, "Negotiate"
+			"UB"//, "Negotiate"//, "UBLDAP"
 		]/*,
 		"ldapCatalogs": [{
 			"name": "SOFTLINE",
@@ -47,6 +47,8 @@
 			"applicationTitle": "AdminUI",
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
+			"sidebarLogoURL": "/models/ub-pub/img/sidebar-logo.svg",
+			"sidebarLogoBigURL": "/models/ub-pub/img/sidebar-logo-big.svg",
 			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
 			"registrationURL": "/models/adminui-vue/views/registration-stub.html",
 			"endpoint": "ubadminui",

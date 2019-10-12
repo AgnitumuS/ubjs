@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.8.2]
+### Changed
+ - redesign desktop selector in sidebar
+ - added optional props `sidebarLogoURL` and `sidebarLogoBigURL` to `UB.connection.appConfig.uiSettings.adminUI` in ubConfig.json.
+ `sidebarLogoBigURL` will be ignored if unset `sidebarLogoURL`. 
+ Example usage: 
+```json
+"uiSettings": {
+  "adminUI": {
+    "sidebarLogoURL": "/models/ub-pub/img/sidebar-logo.svg",
+    "sidebarLogoBigURL": "/models/ub-pub/img/sidebar-logo-big.svg"
+  }
+}
+```
+
 [1.8.1]
 ### Fixed
  - transformation of attributes of type `Date` (not DateTime) to format expected by server (time must be 00:00 in UTC0) inside `buildExecParams`

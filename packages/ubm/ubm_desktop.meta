@@ -26,6 +26,24 @@
       "isUnique": true
     },
     {
+      "name": "description",
+      "dataType": "String",
+      "size": 255,
+      "caption": "Desktop description",
+      "description": "",
+      "isMultiLang": true,
+      "allowNull": true
+    },
+    {
+      "name": "iconCls",
+      "dataType": "String",
+      "size": 255,
+      "caption": "Desktop icon",
+      "description": "",
+      "allowNull": false,
+      "defaultValue": "fa fa-desktop"
+    },
+    {
       "name": "url",
       "dataType": "String",
       "size": 255,

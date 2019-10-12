@@ -129,5 +129,11 @@ UB.i18nExtend({
   formCrashBody: 'Чизе нодуруст шуд, шаклро аз нав бор кунед ё бо мудири системаи худ дар тамос шавед',
 
   selectDate: 'Санаро интихоб кунед',
-  selectDateAndTime: 'Сана ва вақтро интихоб кунед'
+  selectDateAndTime: 'Сана ва вақтро интихоб кунед',
+
+  sidebar: {
+    desktopSelector: {
+      title: 'Desktop selection'
+    }
+  }
 })

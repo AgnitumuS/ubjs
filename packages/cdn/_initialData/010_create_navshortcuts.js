@@ -23,7 +23,8 @@ module.exports = function (session) {
       fieldList: ['ID'],
       execParams: {
         code: 'cdn_desktop',
-        caption: 'Common dictionaries'
+        caption: 'Common dictionaries',
+        iconCls: 'el-icon-notebook-1'
       }
     })
     console.info('\t\tprovide rights for `Common dictionaries` to users role')

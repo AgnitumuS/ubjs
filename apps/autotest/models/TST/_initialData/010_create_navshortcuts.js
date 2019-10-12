@@ -22,7 +22,8 @@ module.exports = function (session) {
       fieldList: ['ID'],
       execParams: {
         code: 'tst_desktop',
-        caption: 'Test'
+        caption: 'Test',
+        iconCls: 'el-icon-lollipop'
       }
     })
   } else {
