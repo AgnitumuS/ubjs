@@ -18,7 +18,7 @@
       v-model="selectedState"
       filterable
       clearable
-      :placeholder="(Object.values(alsEntity.attributes).find(item => {return item.name === 'state'}) || {}).caption"
+      :placeholder="$ut('uba_als.state')"
     >
       <el-option
         v-for="entity in stateList"
@@ -73,10 +73,11 @@
       <el-col :span="18">
         <el-table
           :data="[...usedAttributes].sort()"
-          width="100"
+          height="750"
         >
           <el-table-column
-            :label="(Object.values(alsEntity.attributes).find(item => {return item.name === 'attribute'}) || {}).caption"
+            :label="$ut('uba_als.attribute')"
+            fixed="left"
           >
             <template slot-scope="scope">
               {{ scope.row }}
@@ -91,6 +92,7 @@
               <action-component
                 v-model="(currentRights.find(right => right.attribute === scope.row && right.roleName === role) || {}).actions"
                 class="als__actions"
+                @input="doOnDataChanged"
               />
             </template>
             <template
@@ -111,7 +113,6 @@
             </template>
           </el-table-column>
           <el-table-column
-            fixed="right"
             width="50"
           >
             <template slot-scope="scope">
@@ -130,33 +131,41 @@
         style="padding-left: 30px"
       >
         <h4>{{ $ut('roles') }}:</h4>
-        <el-checkbox
-          v-model="checkAll"
-          :indeterminate="isIndeterminate"
-          @change="handleCheckAllChange"
+        <el-button
+          @click="doCheckAllRoles"
         >
-          <strong>{{ $ut('checkAll') }}</strong>
-        </el-checkbox>
-        <el-checkbox-group
-          v-model="checkedRoles"
-          style="margin-top: 10px"
-          @change="handleCheckedRolesChange"
+          {{ $ut('checkAll') }}
+        </el-button>
+        <el-button
+          @click="doUnCheckAllRoles"
         >
-          <div
-            v-for="role in roleList"
-            :key="role"
-            style="margin-top: 5px"
+          {{ $ut('uncheckAll') }}
+        </el-button>
+        <el-button
+          @click="doCheckAllUsedRoles"
+        >
+          {{ $ut('checkAllUsedRoles') }}
+        </el-button>
+        <el-scrollbar>
+          <el-checkbox-group
+            v-model="checkedRoles"
+            style="margin-top: 10px"
           >
-            `
-            <el-checkbox
+            <div
+              v-for="role in roleList"
               :key="role"
-              :label="role"
-              @change="checkBoxChange(role)"
+              style="margin-top: 5px"
             >
-              {{ role }}
-            </el-checkbox>
-          </div>
-        </el-checkbox-group>
+              <el-checkbox
+                :key="role"
+                :label="role"
+                @change="checkBoxChange(role)"
+              >
+                {{ role }}
+              </el-checkbox>
+            </div>
+          </el-checkbox-group>
+        </el-scrollbar>
       </el-col>
     </el-row>
   </div>
@@ -167,10 +176,13 @@
 const actionComponent = require('../components/RoleActionsComponent.vue').default
 const adminUiVue = require('@unitybase/adminui-vue')
 
-module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, rootComponent }) {
+module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, rootComponent, parentContext }) {
   adminUiVue.mountUtils.mountTab({
     component: rootComponent,
     tabId: tabId,
+    props: {
+      initialInstanceID: instanceID
+    },
     entity,
     instanceID,
     formCode,
@@ -178,8 +190,13 @@ module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, r
   })
 }
 
+const ALS_FIELD_LIST = ['ID', 'attribute', 'state', 'roleName', 'actions']
+
 module.exports.default = {
   name: 'AlsComponent',
+  props: {
+    initialInstanceID: Number
+  },
   data () {
     return {
       popoverVisible: false,
@@ -190,14 +207,11 @@ module.exports.default = {
       selectedEntity: null,
       selectedState: null,
       checkedRoles: [],
-      isIndeterminate: false,
-      rightsFromDb: [],
-      oldRights: [],
+      // do not make huge array reactive rightsFromDb: [],
+      rightsFromDbCounter: 1,
       createdRights: [],
       deletedRights: [],
-      checkAll: false,
       generateDiffFileCaption: 'Save diff in file',
-      fieldList: ['ID', 'attribute', 'state', 'roleName', 'actions'],
       usedAttributes: [],
       actions: [{
         name: 'Select',
@@ -211,25 +225,51 @@ module.exports.default = {
       }]
     }
   },
+  mounted () {
+    if (this.initialInstanceID) {
+      return UB.Repository('uba_als').attrs('entity', 'state').where('ID', '=', this.initialInstanceID)
+        .selectSingle()
+        .then(row => {
+          if (row) {
+            this.selectedEntity = row.entity
+            this.selectedState = row.state
+          }
+        })
+    }
+  },
   computed: {
     attributeList () {
       return this.selectedEntity ? Object.keys(this.$UB.connection.domain.get(this.selectedEntity).attributes) : []
     },
     changedRights () {
+      // return [] // MPV temporarty
+      let fake = this.rightsFromDbCounter
       let rows = []
+      if (!this.rightsFromDb) return rows
       this.rightsFromDb.forEach((right) => {
-        let oldRight = this.oldRights.find((oldR) => { return oldR.ID === right.ID })
-        if (oldRight && JSON.stringify(oldRight) !== JSON.stringify(right)) {
+        // let oldRight = this.oldRights.find((oldR) => { return oldR.ID === right.ID })
+        let oldActions = this.oldActions.get(right.ID)
+        if (oldActions && (oldActions !== right.actions)) { // oldRight.attribute roleName state do not changed
           rows.push(right)
         }
       })
       return rows
     },
+    dbRights () {
+      // touch a reactive variable to made this computed reactive when rightsFromDb retrieved from server
+      // without observing a huge rightsFromDb array
+      let fake = this.rightsFromDbCounter
+      return this.rightsFromDb
+        ? this.rightsFromDb.filter(right => right.state === this.selectedState)
+        : []
+    },
     currentRights () {
-      return [...this.rightsFromDb, ...this.createdRights].filter(right => right.state === this.selectedState)
+      let newR = this.createdRights.filter(right => right.state === this.selectedState)
+      return [...this.dbRights, ...newR]
     },
     emptyAttributes () {
-      return Object.values(this.alsEntity.attributes).filter(attr => !this.usedAttributes.includes(attr.name)).map(_ => { return { name: _.name } })
+      let allAttrs = this.selectedEntity ? Object.values(this.$UB.connection.domain.get(this.selectedEntity).attributes) : []
+      return allAttrs.filter(attr => !this.usedAttributes.includes(attr.name))
     },
     needSave () {
       return this.changedRights.length > 0 || this.createdRights.some(cr => cr.actions !== 0)
@@ -242,17 +282,20 @@ module.exports.default = {
     selectedEntity () {
       this.loadRightsFromDB()
       this.createdRights = []
-      this.selectedState = null
       if (this.selectedEntity) {
-        this.$UB.connection.run({ entity: this.selectedEntity, method: 'getallroles' }).then(response => {
-          this.roleList = response.alsRoleAllValues
+        this.$UB.connection.query({ entity: this.selectedEntity, method: 'getallroles' }).then(response => {
+          this.roleList = response.alsRoleAllValues.sort()
         })
-        this.$UB.connection.run({ entity: this.selectedEntity, method: 'getallstates' }).then(response => {
+        this.$UB.connection.query({ entity: this.selectedEntity, method: 'getallstates' }).then(response => {
           this.stateList = response.alsStateAllValues
+          if (!this.stateList.includes(this.selectedState)) {
+            this.selectedState = null
+          }
         })
       } else {
         this.roleList = []
         this.stateList = []
+        this.selectedState = null
       }
     }
   },
@@ -264,13 +307,16 @@ module.exports.default = {
         }
       })
     },
+    doOnDataChanged () {
+      this.rightsFromDbCounter += 1
+    },
     createRightForRole (role) {
       this.usedAttributes.forEach(attr => this.createRightByRoleAttr(role, attr))
     },
     createRightByRoleAttr (role, attr) {
       if (!this.currentRights.some(right =>
         right.attribute === attr &&
-          right.roleName === role)) {
+        right.roleName === role)) {
         this.createdRights.push({
           state: this.selectedState,
           entity: this.selectedEntity,
@@ -285,32 +331,41 @@ module.exports.default = {
         this.createRightForRole(role)
       }
     },
-    handleCheckAllChange (val) {
-      if (val) {
-        let unchecked = this.roleList.filter(role => this.checkedRoles.indexOf(role) === -1)
-        unchecked.forEach(role => this.createRightForRole(role))
-        this.checkedRoles = this.roleList
-      } else {
-        this.checkedRoles = []
-      }
-      this.isIndeterminate = false
+    doCheckAllUsedRoles () {
+      let dbRights = this.dbRights
+      let usedRoles = this.roleList.filter(roleName => { // at last one rule for this role + state exists in uba_als
+        return dbRights.findIndex(r => r.roleName === roleName) !== -1
+      })
+      let unchecked = usedRoles.filter(role => this.checkedRoles.indexOf(role) === -1)
+      unchecked.forEach(role => this.createRightForRole(role))
+      this.checkedRoles = usedRoles
     },
-    handleCheckedRolesChange (value) {
-      let checkedCount = value.length
-      this.checkAll = checkedCount === this.roleList.length
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.roleList.length
+    doCheckAllRoles () {
+      let unchecked = this.roleList.filter(role => this.checkedRoles.indexOf(role) === -1)
+      unchecked.forEach(role => this.createRightForRole(role))
+      this.checkedRoles = this.roleList
+    },
+    doUnCheckAllRoles () {
+      this.checkedRoles = []
     },
     onEmptyAttributesClick (item) {
       this.addRow(item.name)
       this.popoverVisible = this.emptyAttributes.length !== 0
     },
     setUsedAttributes () {
+      // this.usedAttributes = this.currentRights.map(right => right.attribute).filter((value, index, self) => self.indexOf(value) === index)
       this.usedAttributes = this.currentRights.map(right => right.attribute).filter((value, index, self) => self.indexOf(value) === index)
     },
     loadRightsFromDB () {
-      UB.Repository('uba_als').attrs(this.fieldList).where('[entity]', '=', this.selectedEntity).selectAsObject().then((rights) => {
+      if (!this.selectedEntity) return
+      UB.Repository('uba_als').attrs(ALS_FIELD_LIST).where('entity', '=', this.selectedEntity).selectAsObject().then((rights) => {
         this.rightsFromDb = rights
-        this.oldRights = rights.map((right) => { return { ...right } })
+        this.oldActions = new Map()
+        // this.oldRights = rights.map((right) => { return { ...right } })
+        rights.forEach(r => {
+          this.oldActions.set(r.ID, r.actions)
+        })
+        this.rightsFromDbCounter += 1 // force calculated props to recalc
       })
     },
     generateDiffFile () {
@@ -318,16 +373,16 @@ module.exports.default = {
       let allRigts = [...this.changedRights.map(row => JSON.stringify({
         entity: 'uba_als',
         method: row.actions !== 0 ? 'update' : 'delete',
-        execParams: row
+        execParams: row.actions === 0 ? { ID: row.ID } : { ID: row.ID, actions: row.actions }
       }, null, '\t')),
       ...this.createdRights.filter(cr => cr.actions !== 0).map(row => JSON.stringify({
         entity: 'uba_als',
         method: 'insert',
         execParams: row
       }, null, '\t'))]
-      output = allRigts.join(']);\n\nconn.runList([')
+      output = allRigts.join(');\n\nconn.run(')
       saveAs(
-        new Blob([`conn.runList([${output}]);`], { type: 'text/plain;charset=utf-8' }),
+        new Blob([`conn.run(${output});`], { type: 'text/plain;charset=utf-8' }),
         `uba_als__${this.selectedEntity}__${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}.txt`
       )
     },
