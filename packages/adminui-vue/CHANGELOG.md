@@ -26,6 +26,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
  - `USelect* components` prop readonly
+ - `UFormContainer` prop autofocus. Boolean. Is true by default.
+ Example usage `<u-form-container :autofocus="false">`
 
 [1.8.1]
 ### Fixed
