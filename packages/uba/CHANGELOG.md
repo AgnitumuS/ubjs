@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.9]
+### Fixed
+ - prevent hangs of ALS form for huge ALS rules sets 
+
 ## [5.3.3]
 ### Added
  - Azery localization for uba_usergroup.meta
