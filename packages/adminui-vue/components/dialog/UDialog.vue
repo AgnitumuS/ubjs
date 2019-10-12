@@ -136,6 +136,12 @@ export default {
   color: rgb(var(--danger));
 }
 
+.el-icon-error:before {
+  /* change element error icon to ! because original very similar to close button
+  content: "\e79d";*/
+  content: "\e7a3" !important
+}
+
 .ub-dialog__info-icon.el-icon-question{
   color: rgb(var(--warning));
 }
