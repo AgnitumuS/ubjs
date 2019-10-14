@@ -5,8 +5,9 @@ const Repository = require('@unitybase/base').ServerRepository.fabric
 const App = require('./App')
 
 // cache for lazy session props
-let _id, _userID
+let _userID
 let _sessionCached = {
+  sessionID: undefined,
   uData: undefined,
   callerIP: undefined,
   userRoles: undefined,
@@ -30,19 +31,26 @@ EventEmitter.call(Session)
 Object.assign(Session, EventEmitter.prototype)
 
 /**
- * Current session identifier. === 0 if session not started, ===1 in case authentication not used, >1 in case user authorized
- * @member {number} id
+ * Current session identifier
+ * @member {string} id
  * @memberOf Session
  * @readonly
  */
 Object.defineProperty(Session, 'id', {
   enumerable: true,
   get: function () {
-    return _id
+    if (_sessionCached.sessionID === undefined) {
+      if (sessionBinding.sessionID) {
+        _sessionCached.sessionID = sessionBinding.sessionID()
+      } else {
+        _sessionCached.sessionID = '12345678' // compatibility with UB w/o redis
+      }
+    }
+    return _sessionCached.sessionID
   }
 })
 /**
- * Logged-in user identifier (from uba_user.ID). Undefined if Session.id is 0 or 1 (no authentication running)
+ * Logged-in user identifier (from uba_user.ID)
  * @member {number} userID
  * @memberOf Session
  * @readonly
@@ -348,7 +356,6 @@ Session.runAsUser = function (userID, func) {
  * @param userID
  */
 Session.reset = function (sessionID, userID) {
-  _id = sessionID
   _userID = userID
   _sessionCached.uData = undefined
   _sessionCached.callerIP = undefined

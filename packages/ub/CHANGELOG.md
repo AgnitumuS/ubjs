@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.42]
+### Changed
+ - data type of Session.id is changed form Number to String and retrieved lazy.
+ In general this property should not be used in app code
+
 ## [5.2.37]
 ### Fixed
  - `getDomainInfo` endpoint now compatible with UB server <= 5.16 (compatibility broken by @unitybase/ub@5.2.36) 
