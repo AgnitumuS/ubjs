@@ -310,7 +310,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     if (!blobItem.v) { // UB <5
       let ext = path.extname(fn)
       let fileFolder = path.basename(fn, ext) // file name without ext
-      fn = `${blobItem.revision || 1}${ext}` // actual file name is `revision number + ext`
+      fn = `${blobItem.revision || 0}${ext}` // actual file name is `revision number + ext`
       relPath = path.join(relPath, fileFolder)
     }
     if (process.platform === 'nix') {

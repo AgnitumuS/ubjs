@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.0]
+### Fixed
+ - BlobStores regression: for stores filled by UB < 5 (without {v: 1,..} attribute in blobStore content JSON)
+ default revision should be 0 instead of 1. The content below 
+ ```
+{"store":"simple","fName":"my file 3000006327362","origName":"","relPath":"","ct":"application/pdf","size":170326,"md5":".."}
+ ```
+resolved to `pathToSimpleStore/my file 3000006327362/0.pdf` instead of `.../1.pdf`
+  
+   
+
 ## [5.0.39]
 ### Fixed
  - on `nix` replace possible Windows separator inside blob store info `relPath`
