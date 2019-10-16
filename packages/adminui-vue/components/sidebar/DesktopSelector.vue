@@ -5,7 +5,7 @@
       :class="{
         collapsed: isCollapsed
       }"
-      @click="drawer = true"
+      @click="drawer = !drawer"
     >
       <i
         class="desktop-select-button__icon-before"

@@ -4,9 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.8.4]
+### Fixed
+ - `DesktopSelector` close desktop drawer after click again on button
+ - sidebar doesn't overlap text popups
+
 [1.8.3]
 ### Changed
-  - change icon inside error popup to "!" because original element error icon is very similar to close button
+ - change icon inside error popup to "!" because original element error icon is very similar to close button
   
 [1.8.2]
 ### Changed
