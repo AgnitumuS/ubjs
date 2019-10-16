@@ -298,7 +298,6 @@ export default {
   background: rgb(var(--bg));
   display: flex;
   flex-direction: column;
-  z-index: 300000;
   position: relative;
 }
 
