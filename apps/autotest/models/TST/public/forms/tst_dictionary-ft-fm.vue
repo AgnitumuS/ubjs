@@ -14,72 +14,9 @@
       v-loading="loading || formCrashed"
       :label-width="160"
     >
-      <el-tabs>
-        <el-tab-pane label="Main">
-          <el-row :gutter="20">
-            <el-col :lg="12">
-              <u-auto-field attribute-name="code" />
-
-              <u-form-row :label="`${entity}.caption`">
-                <u-input attribute-name="caption" />
-              </u-form-row>
-
-              <u-form-row
-                required
-                :label="`${entity}.filterValue`"
-                :error="$v.filterValue.$error"
-              >
-                <u-input attribute-name="filterValue" />
-              </u-form-row>
-
-              <u-form-row :label="`${entity}.currencyValue`">
-                <u-input attribute-name="currencyValue" />
-              </u-form-row>
-            </el-col>
-
-            <el-col :lg="12">
-              <u-form-row :label="`${entity}.floatValue`">
-                <u-input attribute-name="floatValue" />
-              </u-form-row>
-
-              <u-form-row :label="`${entity}.intValue`">
-                <u-input attribute-name="intValue" />
-              </u-form-row>
-
-              <u-form-row :label="`${entity}.calculated`">
-                <el-input
-                  :value="calculated"
-                  disabled
-                />
-              </u-form-row>
-
-              <u-form-row :label="`${entity}.booleanColumn`">
-                <el-checkbox v-model="booleanColumn" />
-              </u-form-row>
-            </el-col>
-          </el-row>
-
-          <u-form-row label="Participants">
-            <u-select-collection
-              associated-attr="subjectID"
-              entity-name="tst_dictionary_ppt"
-              collection-name="participants"
-              clearable
-            />
-          </u-form-row>
-
-          <u-form-row :label="`${entity}.jsonColumn`">
-            <u-code-mirror v-model="jsonColumn" />
-          </u-form-row>
-
-        </el-tab-pane>
-        <el-tab-pane
-          label="Lazy collection example"
-          lazy
-        >
-          <lazy-collection />
-        </el-tab-pane>
-      </el-tabs>
+      <u-grid
+        :repository="rep"
+      />
     </u-form-container>
   </div>
 </template>
@@ -90,7 +27,7 @@ const { mapState, mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 const LazyCollection = require('../components/LazyCollection.vue').default
 
-module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent, isModal, customType }) {
+module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent, isModal }) {
   Form({
     component: rootComponent,
     entity,
@@ -125,6 +62,17 @@ module.exports.default = {
   components: { LazyCollection },
 
   inject: ['$v', 'entity'],
+
+  methods: {
+    rep () {
+      return this.$UB.Repository('tst_maindata')
+        .attrs(
+          this.$UB.connection.domain.get('tst_maindata')
+            .filterAttribute(a => a.defaultView)
+            .map(a => a.code)
+        )
+    }
+  },
 
   computed: {
     ...mapInstanceFields([

@@ -399,7 +399,8 @@ Ext.define('UB.core.UBCommand', {
 
     switch (me.commandType) {
       case 'showList':
-        me.showList()
+        // me.showList()
+        window.test(me.commandConfig)
         break
       case 'showForm':
         me.showForm()

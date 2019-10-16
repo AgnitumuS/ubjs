@@ -114,6 +114,36 @@ if (isExt) {
     if ((v[0] >= 'v5') && (v[1] < 14)) throw new Error('This version of adminui-vue require UB server to be >= 5.14')
   })
 }
+const UGrid = require('./components/grid/UGrid.vue').default
+
+window.test = function (cfg) {
+  const tab = $App.viewport.centralPanel.add({
+    title: cfg.entity,
+    id: cfg.tabId,
+    closable: true
+  })
+
+  const ShowList = Vue.extend(UGrid)
+  const fieldList = cfg.cmdData.params[0].fieldList[0] === '*'
+    ? UB.connection.domain.get(cfg.entity)
+      .filterAttribute(a => a.defaultView)
+      .map(a => a.code)
+    : cfg.cmdData.params[0].fieldList
+  const instance = new ShowList({
+    propsData: {
+      repository: () => {
+        return UB.Repository(cfg.cmdData.params[0].entity)
+          .attrs(
+            fieldList
+          )
+      }
+    }
+  })
+
+  instance.$mount(`#${tab.getId()}-outerCt`)
+
+  $App.viewport.centralPanel.setActiveTab(tab)
+}
 
 const Sidebar = require('./components/sidebar/USidebar.vue').default
 function addVueSidebar () {
