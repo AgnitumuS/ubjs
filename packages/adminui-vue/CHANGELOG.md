@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 [1.8.4]
+### Added
+ - Navbar tab: middle mouse button click (mouse wheel click) on tab will close it
+   
 ### Fixed
  - `DesktopSelector` close desktop drawer after click again on button
  - sidebar doesn't overlap text popups
