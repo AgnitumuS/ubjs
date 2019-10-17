@@ -399,8 +399,7 @@ Ext.define('UB.core.UBCommand', {
 
     switch (me.commandType) {
       case 'showList':
-        // me.showList()
-        window.test(me.commandConfig)
+        me.showList()
         break
       case 'showForm':
         me.showForm()
@@ -469,97 +468,151 @@ Ext.define('UB.core.UBCommand', {
 
   showList: function () {
     let me = this
-    let showListParam = _.find(me.commandData.params, ['entity', me.entity])
-
-    me.showListParam = showListParam
-
-    if (!showListParam) {
-      let errMsg = UB.format(UB.i18n('unknownEntityInCommand'), 'showList', me.entity)
-      throw new UB.UBError(errMsg)
-    }
-    if ((showListParam.fieldList === '*') ||
-      (Array.isArray(showListParam.fieldList) && (showListParam.fieldList.length === 1) && (showListParam.fieldList[0] === '*'))
-    ) {
-      showListParam.fieldList = $App.domainInfo.get(me.entity).getAttributeNames({ defaultView: true })
-    }
-
-    me.windowCommandCode = me.commandCode || UB.core.UBUtil.getNameMd5(me.entity + Ext.String.capitalize(me.commandType), showListParam.fieldList)
-
-    if (this.detailAttribute && this.parentID && showListParam.fieldList.indexOf(this.detailAttribute) === -1) {
-      showListParam.fieldList.push(this.detailAttribute)
-    }
-    if (me.instanceID) {
-      showListParam.ID = me.instanceID
-      showListParam.whereList = showListParam.whereList || {}
-      UB.core.UBCommand.addWhereListItemSelect(showListParam.whereList, 'ID', me.instanceID, UB.core.UBCommand.whereListInstanceID)
-    }
-
-    showListParam.__mip_recordhistory = me.__mip_recordhistory
-
-    let config = me.cmpInitConfig || {}
-
-    Ext.applyIf(config, {
-      entityConfig: showListParam,
-      loadStoreImmediately: true,
-      filters: me.filters,
-      store: me.requestStore,
-      summary: me.summary,
-      commandContext: me.commandContext,
-      commandConfig: me.commandConfig,
-      commandCode: me.commandCode,
-      commandData: me.commandData,
-      openInBackgroundTab: me.openInBackgroundTab,
-      autoFilter: me.autoFilter,
-      details: me.details,
-      target: me.target,
-      parentContext: me.parentContext,
-      detailAttribute: me.detailAttribute,
-      parentID: me.parentID,
-      stateful: true,
-      stateId: me.stateId || UB.core.UBLocalStorageManager.getKeyUI(UB.core.UBUtil.gatherStr(me.windowCommandCode, '_', 'grid')),
-      columns: me.columns,
-      hideHeaders: me.hideHeaders,
-      isModal: me.isModal,
-      isModalDialog: me.isModalDialog,
-      onClose: me.onClose,
-      onItemSelected: me.onItemSelected,
-      isDetail: me.isDetail,
-      customActions: me.customActions,
-      selectedRecordID: me.selectedInstanceID,
-      focusOnUpdate: me.focusOnUpdate
-    })
-    if (me.hideActions && !config.hideActions) {
-      // do not put undefined info config - it overrides default [] value in EntityGrindPanel
-      config.hideActions = me.hideActions
-    }
-    if (me.isDetail) {
-      config.height = UB.appConfig.gridDefaultDetailViewHeight
-    }
-
-    if (me.tabId) {
-      let tab = Ext.getCmp(me.tabId)
-      if (tab && tab.activateByCommand) {
-        tab.activateByCommand(config)
+    if ($App.connection.domain.models['adminui-vue']) {
+      const cfg = me.commandConfig
+      if (!cfg.tabId) {
+        cfg.tabId = $App.generateTabId({
+          entity: cfg.entity,
+          instanceID: cfg.instanceID,
+          formCode: me.formCode
+        })
       }
-      tab = tab && tab.getMainContainer ? tab.getMainContainer() : tab
-      if (tab) {
-        tab.ownerCt.setActiveTab(tab)
-        return
-      }
-      config.id = me.tabId
-      config.closable = true
-    }
-    let grid = Ext.create('UB.view.EntityGridPanel', config)
-    me.bindFocus(grid)
+      const existedTab = Ext.getCmp(cfg.tabId) || $App.viewport.centralPanel.down(`panel[tabID=${cfg.tabId}]`)
+      if (existedTab) {
+        $App.viewport.centralPanel.setActiveTab(existedTab)
+      } else {
+        const tab = $App.viewport.centralPanel.add({
+          title: me.title || UB.i18n(me.entity),
+          id: cfg.tabId,
+          closable: true
+        })
 
-    if (typeof grid.customInit === 'function') {
-      console.error('Function customInit is deprecated. You should use callback function initComponentStart in script file')
-      grid.customInit()
+        const req = cfg.cmdData.params[0]
+        const entity = req.entity
+        const fieldList = []
+        const customColumns = []
+        for (const field of req.fieldList) {
+          if (typeof field === 'object') {
+            customColumns.push({
+              code: field.name,
+              label: field.description
+            })
+            fieldList.push(field.name)
+          } else {
+            if (field === '*') {
+              const defaultFieldList = UB.connection.domain.get(req.entity)
+                .filterAttribute(a => a.defaultView)
+                .map(a => a.code)
+
+              fieldList.push(...defaultFieldList)
+            } else {
+              fieldList.push(field)
+            }
+          }
+        }
+        const mountUtils = require('@unitybase/adminui-vue')
+        mountUtils.mountGrid({
+          renderTarget: `#${tab.getId()}-outerCt`,
+          entity,
+          fieldList,
+          customColumns
+        })
+
+        $App.viewport.centralPanel.setActiveTab(tab)
+      }
+    } else {
+      let showListParam = _.find(me.commandData.params, ['entity', me.entity])
+
+      me.showListParam = showListParam
+
+      if (!showListParam) {
+        let errMsg = UB.format(UB.i18n('unknownEntityInCommand'), 'showList', me.entity)
+        throw new UB.UBError(errMsg)
+      }
+      if ((showListParam.fieldList === '*') ||
+        (Array.isArray(showListParam.fieldList) && (showListParam.fieldList.length === 1) && (showListParam.fieldList[0] === '*'))
+      ) {
+        showListParam.fieldList = $App.domainInfo.get(me.entity).getAttributeNames({ defaultView: true })
+      }
+
+      me.windowCommandCode = me.commandCode || UB.core.UBUtil.getNameMd5(me.entity + Ext.String.capitalize(me.commandType), showListParam.fieldList)
+
+      if (this.detailAttribute && this.parentID && showListParam.fieldList.indexOf(this.detailAttribute) === -1) {
+        showListParam.fieldList.push(this.detailAttribute)
+      }
+      if (me.instanceID) {
+        showListParam.ID = me.instanceID
+        showListParam.whereList = showListParam.whereList || {}
+        UB.core.UBCommand.addWhereListItemSelect(showListParam.whereList, 'ID', me.instanceID, UB.core.UBCommand.whereListInstanceID)
+      }
+
+      showListParam.__mip_recordhistory = me.__mip_recordhistory
+
+      let config = me.cmpInitConfig || {}
+
+      Ext.applyIf(config, {
+        entityConfig: showListParam,
+        loadStoreImmediately: true,
+        filters: me.filters,
+        store: me.requestStore,
+        summary: me.summary,
+        commandContext: me.commandContext,
+        commandConfig: me.commandConfig,
+        commandCode: me.commandCode,
+        commandData: me.commandData,
+        openInBackgroundTab: me.openInBackgroundTab,
+        autoFilter: me.autoFilter,
+        details: me.details,
+        target: me.target,
+        parentContext: me.parentContext,
+        detailAttribute: me.detailAttribute,
+        parentID: me.parentID,
+        stateful: true,
+        stateId: me.stateId || UB.core.UBLocalStorageManager.getKeyUI(UB.core.UBUtil.gatherStr(me.windowCommandCode, '_', 'grid')),
+        columns: me.columns,
+        hideHeaders: me.hideHeaders,
+        isModal: me.isModal,
+        isModalDialog: me.isModalDialog,
+        onClose: me.onClose,
+        onItemSelected: me.onItemSelected,
+        isDetail: me.isDetail,
+        customActions: me.customActions,
+        selectedRecordID: me.selectedInstanceID,
+        focusOnUpdate: me.focusOnUpdate
+      })
+      if (me.hideActions && !config.hideActions) {
+        // do not put undefined info config - it overrides default [] value in EntityGrindPanel
+        config.hideActions = me.hideActions
+      }
+      if (me.isDetail) {
+        config.height = UB.appConfig.gridDefaultDetailViewHeight
+      }
+
+      if (me.tabId) {
+        let tab = Ext.getCmp(me.tabId)
+        if (tab && tab.activateByCommand) {
+          tab.activateByCommand(config)
+        }
+        tab = tab && tab.getMainContainer ? tab.getMainContainer() : tab
+        if (tab) {
+          tab.ownerCt.setActiveTab(tab)
+          return
+        }
+        config.id = me.tabId
+        config.closable = true
+      }
+      let grid = Ext.create('UB.view.EntityGridPanel', config)
+      me.bindFocus(grid)
+
+      if (typeof grid.customInit === 'function') {
+        console.error('Function customInit is deprecated. You should use callback function initComponentStart in script file')
+        grid.customInit()
+      }
+      me.showCommandResult(grid, {
+        isGrid: true,
+        title: me.description
+      })
     }
-    me.showCommandResult(grid, {
-      isGrid: true,
-      title: me.description
-    })
   },
 
   showForm: function () {

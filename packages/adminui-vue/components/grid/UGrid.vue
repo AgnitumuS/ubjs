@@ -2,7 +2,7 @@
   <el-table
     :data="items"
     height="100%"
-    style="padding: 10px;"
+    class="u-grid-panel__table"
   >
     <el-table-column
       v-for="col in columns"
@@ -18,10 +18,138 @@
 </template>
 
 <script>
+/**
+ * example hard shortcut cfg
+ *
+ * const test = {
+    'cmdType': 'showList',
+    'cmdData': {
+      'params': [{
+        'entity': 'doc_incdoc',
+        'method': 'select',
+        'fieldList': ['favorites.code', 'caption', {
+          'name': 'docKindID.name',
+          'description': 'Document kind'
+        }, 'docThemeID', 'regNumber', 'regDate', {
+          'name': 'mi_tr_shortText',
+          'description': 'Short content'
+        }, 'outNumber', 'outDate', {
+          'name': 'correspID.name',
+          'description': 'Correspondent'
+        }, {
+          'name': 'correspSignerID.shortFIO',
+          'description': 'Signer'
+        }, 'executionTerm', 'executionDate', {
+          'name': 'respExecutorID.caption',
+          'description': 'Resp. executor'
+        }, 'mi_wfState', {'name': 'createdID.caption', 'description': 'Created'}, {
+          'name': 'mi_createDate',
+          'visibility': true,
+          'description': 'Created date'
+        }, {'name': 'regCounterValue'}, {
+          'name': 'docJournalVolumeID.journalID.name',
+          'description': 'Journal'
+        }, {'name': 'ID', 'visibility': false}],
+        'whereList': {
+          'byRegDateMoreEqual': {
+            'expression': '[regDate]',
+            'condition': 'moreEqual',
+            'values': {'regDate': '2019-10-16T21:00:00.000Z'}
+          }
+        }
+      }]
+    },
+    'cmpInitConfig': {},
+    'description': 'Inc: Today',
+    'hideActions': ['addNewByCurrent', 'showDetail']
+    }
+
+ const test2 = {
+  "cmdType": "showList",
+  "cmdData": {
+    "params": [
+      {
+        "entity": "docreport_report",
+        "method": "select",
+        "whereList": {
+          "isNotReady": {
+            "expression": "executionDate",
+            "condition": "isNull"
+          }
+        },
+        "fieldList": [
+          "reportName",
+          "mi_createDate",
+          "description",
+          "mi_owner.name",
+          "executionTerm",
+          "executionDate",
+          "executionResult"
+        ],
+        "orderList": {
+          "byCreateDateDesc": {
+            "expression": "mi_createDate",
+            "order": "desc"
+          }
+        }
+      }
+    ]
+  },
+  "cmpInitConfig": {
+    "toolbarActionList": [
+      "refresh"
+    ]
+  },
+  "customActions": [
+    {
+      "actionText": "Add",
+      "glyph": 61525,
+      "text": "Add",
+      "disabled": false,
+      "showText": false,
+      "menu": [
+        {
+          "text": "Typical",
+          "iconCls": "fa fa-list",
+          "align": "right",
+          "ubID": "typical"
+        },
+        {
+          "text": "Statistical",
+          "iconCls": "fa fa-bar-chart",
+          "align": "right",
+          "ubID": "static"
+        }
+      ]
+    },
+    {
+      "actionText": "Show",
+      "iconCls": "fa fa-search",
+      "text": "Show",
+      "disabled": false,
+      "showText": true
+    }
+  ],
+  "hideActions": [
+    "addNewByCurrent",
+    "showPreview",
+    "addNew"
+  ],
+  "description": "On building"
+}
+ */
+
 export default {
   name: 'UGrid',
   props: {
-    repository: Function
+    repository: {
+      type: Function,
+      required: true
+    },
+    customColumns: {
+      type: Array,
+      default: () => []
+    }
   },
 
   data () {
@@ -57,13 +185,23 @@ export default {
     columns () {
       return this.fieldList.map(fieldName => {
         const schema = this.getSchema(this.entityName)
-        const { attribute } = schema.getEntityAttributeInfo(fieldName, 0)
-        const { dataType, entity, code } = attribute
+        const field = schema.getEntityAttributeInfo(fieldName, 0)
+        const customColumn = this.customColumns.find(c => c.name === fieldName)
+        if (customColumn) {
+          return customColumn
+        } else if (field) {
+          const { dataType, entity, code } = field.attribute || field.parentAttribute
 
-        return {
-          code: fieldName,
-          dataType,
-          label: entity.code + '.' + code
+          return {
+            code: fieldName,
+            dataType,
+            label: entity.code + '.' + code
+          }
+        } else {
+          return {
+            code: fieldName,
+            label: fieldName
+          }
         }
       })
     },
@@ -136,3 +274,14 @@ export default {
   }
 }
 </script>
+
+<style>
+.u-grid-panel__table{
+  padding: 10px;
+
+}
+
+.u-grid-panel__table th > .cell {
+  word-break: normal;
+}
+</style>

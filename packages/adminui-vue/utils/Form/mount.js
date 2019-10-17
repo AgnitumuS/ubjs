@@ -5,7 +5,8 @@
 module.exports = {
   mountTab,
   mountModal,
-  mountContainer
+  mountContainer,
+  mountGrid
 }
 
 /* global $App */
@@ -13,6 +14,7 @@ const Vue = require('vue')
 const UB = require('@unitybase/ub-pub')
 const Dialog = require('element-ui').Dialog
 const { dialog: $dialog } = require('../../components/dialog/UDialog')
+const UGrid = require('../../components/grid/UGrid.vue').default
 
 // TODO: describe typdef for VueComponent and VuexStore
 /**
@@ -343,4 +345,20 @@ function mountContainer ({
       instance.$destroy()
     })
   }
+}
+
+function mountGrid ({ renderTarget, entity, fieldList, customColumns }) {
+  const ShowList = Vue.extend(UGrid)
+  const instance = new ShowList({
+    propsData: {
+      repository: () => {
+        return UB.Repository(entity)
+          .attrs(fieldList)
+      },
+
+      customColumns
+    }
+  })
+
+  instance.$mount(renderTarget)
 }
