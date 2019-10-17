@@ -1,8 +1,10 @@
 const sessionBinding = process.binding('ub_session')
 const EventEmitter = require('events').EventEmitter
+const base = require('@unitybase/base')
 const UBA_COMMON = require('@unitybase/base').uba_common
 const Repository = require('@unitybase/base').ServerRepository.fabric
 const App = require('./App')
+const FEATURE_TEMPORARY_SESSIONS = (base.ubVersionNum >= 5016001)
 
 // cache for lazy session props
 let _userID
@@ -207,7 +209,11 @@ Session.runAsAdmin = function (func) {
 Session.runAsUser = function (userID, func) {
   let result
   try {
-    sessionBinding.switchUser(userID)
+    if (FEATURE_TEMPORARY_SESSIONS) {
+      sessionBinding.switchUser(userID, '', false) // do not persist this session into sessionManager
+    } else {
+      sessionBinding.switchUser(userID)
+    }
     result = func()
   } finally {
     sessionBinding.switchToOriginal()
