@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.0]
+### Added
+ - new server config parameter `security.limitGroupsTo: ["group1", ...]`
+  Groups codes (uba_group.code) to limit available user groups during user logon.
+  Useful in case a same DB is used by several server instances, and one of instance
+  (public portal for example) should limit roles available to user.
+  **WARNING** - roles what assigned directly to user (in uba_userroles) **NOT** filtered and remains available   
+
 ## [5.2.37]
 ### Fixed
  - `getDomainInfo` endpoint now compatible with UB server <= 5.16 (compatibility broken by @unitybase/ub@5.2.36) 

@@ -12,6 +12,7 @@
       :class="[inTray ? 'u-navbar__tab-tray' : 'u-navbar__tab']"
       @click="$emit('open', tabData, inTray)"
       @click.right="$emit('right-click', $event, tabData)"
+      @click.middle="$emit('close', [tabData], inTray)"
     >
       <div
         class="u-navbar__tab__title"

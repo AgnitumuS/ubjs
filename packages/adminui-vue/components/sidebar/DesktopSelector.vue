@@ -238,7 +238,7 @@ export default {
 
 .u-desktop-drawer {
   position: absolute;
-  z-index: 1;
+  z-index: 100;
   top: 0;
   left: 100%;
   width: 300px;
