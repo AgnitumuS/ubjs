@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.8.5]
+### Fixed
+ - desktop selector Z index increased to 100 to prevent displaying behind Ext form toolbar / grid captions  
+
 [1.8.4]
 ### Added
  - Navbar tab: middle mouse button click (mouse wheel click) on tab will close it
