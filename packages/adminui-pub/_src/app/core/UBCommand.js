@@ -468,7 +468,7 @@ Ext.define('UB.core.UBCommand', {
 
   showList: function () {
     let me = this
-    if ($App.connection.domain.models['adminui-vue']) {
+    if (!$App.connection.domain.models['adminui-vue']) {
       const cfg = me.commandConfig
       if (!cfg.tabId) {
         cfg.tabId = $App.generateTabId({
@@ -510,7 +510,8 @@ Ext.define('UB.core.UBCommand', {
             }
           }
         }
-        const mountUtils = require('@unitybase/adminui-vue')
+        const { mountUtils } = require('@unitybase/adminui-vue')
+
         mountUtils.mountGrid({
           renderTarget: `#${tab.getId()}-outerCt`,
           entity,

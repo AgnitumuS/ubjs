@@ -187,6 +187,7 @@ export default {
         const schema = this.getSchema(this.entityName)
         const field = schema.getEntityAttributeInfo(fieldName, 0)
         const customColumn = this.customColumns.find(c => c.name === fieldName)
+
         if (customColumn) {
           return customColumn
         } else if (field) {
@@ -195,7 +196,7 @@ export default {
           return {
             code: fieldName,
             dataType,
-            label: entity.code + '.' + code
+            label: fieldName === 'ID' ? 'ID' : entity.code + '.' + code
           }
         } else {
           return {
