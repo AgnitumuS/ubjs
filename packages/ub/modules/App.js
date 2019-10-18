@@ -181,6 +181,17 @@ App.registerEndpoint = function (endpointName, handler, authorizationRequired, i
 }
 
 /**
+ * Grant endpoint to role
+ * @param {String} endpointName
+ * @param {String} roleCode
+ * @return {boolean} true if endpoint exists and role not already granted, false otherwise
+ * @memberOf App
+ */
+App.grantEndpointToRole = function (endpointName, roleCode) {
+  return appBinding.grantEndpointToRole(endpointName, roleCode)
+}
+
+/**
  * @method addAppLevelMethod
  * @deprecated Use {@link class:App.registerEndpoint App.registerEndpoint} instead
  * @memberOf App
@@ -188,6 +199,7 @@ App.registerEndpoint = function (endpointName, handler, authorizationRequired, i
 App.addAppLevelMethod = function () {
   throw new Error('App.addAppLevelMethod is obsolete. Use App.registerEndpoint instead')
 }
+
 /**
  * @method serviceMethodByPassAuthentication
  * @deprecated Use {@link class:App.registerEndpoint App.registerEndpoint} instead

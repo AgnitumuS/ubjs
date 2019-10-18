@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.42]
+### Added
+ - `App.grantEndpointToRole(endpointName, roleCode)` - programmatically grant endpoint permission to specified role
+ 
 ### Changed
  - data type of Session.id is changed form Number to String and retrieved lazy.
  In general this property should not be used in app code
