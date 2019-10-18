@@ -3,6 +3,9 @@ const EventEmitter = require('events').EventEmitter
 const UBA_COMMON = require('@unitybase/base').uba_common
 const Repository = require('@unitybase/base').ServerRepository.fabric
 const App = require('./App')
+const GROUP_CODES_LIMIT = App.serverConfig.security.limitGroupsTo
+/** ID of groups from GROUP_CODES_LIMIT if any */
+let GROUP_IDS_LIMIT
 
 // cache for lazy session props
 let _id, _userID
@@ -356,6 +359,23 @@ Session.reset = function (sessionID, userID) {
   _sessionCached.userLang = undefined
 }
 
+function fillGroupIDsLimit() {
+  if (GROUP_IDS_LIMIT !== undefined) return
+  GROUP_IDS_LIMIT = []
+  if (GROUP_CODES_LIMIT && GROUP_CODES_LIMIT.length) {
+    let allGroups = Repository('uba_group')
+      .attrs(['ID', 'code'])
+      .selectAsObject()
+    GROUP_CODES_LIMIT.forEach(groupCode => {
+      let group = allGroups.find(g => g.code === groupCode)
+      if (group) {
+        GROUP_IDS_LIMIT.push(group.ID)
+      } else {
+        console.warn(`Group with code "${groupCode}" listed in appConfig.security.limitGroupsTo but not found in uba_group`)
+      }
+    })
+  }
+}
 /**
  * Private method called by server during authorization process just after user credentials is verified
  * but before session is actually created
@@ -398,6 +418,7 @@ Session._getRBACInfo = function (userID) {
     roleNamesArr.push(UBA_COMMON.ROLES.USER.NAME)
     uData.roleIDs.push(UBA_COMMON.ROLES.USER.ID)
   }
+  fillGroupIDsLimit()
   let roles = Repository('uba_role')
     .attrs('ID', 'name')
     .exists(
@@ -414,6 +435,7 @@ Session._getRBACInfo = function (userID) {
           Repository('uba_usergroup')
             .attrs('ID')
             .where('userID', '=', userID)
+            .whereIf(GROUP_IDS_LIMIT.length, 'groupID', 'in', GROUP_IDS_LIMIT)
             .correlation('groupID', 'groupID')
         )
         .correlation('roleID', 'ID'),
@@ -434,6 +456,7 @@ Session._getRBACInfo = function (userID) {
   uData.groupIDs = Repository('uba_usergroup')
     .attrs('groupID')
     .where('userID', '=', userID)
+    .whereIf(GROUP_IDS_LIMIT.length, 'groupID', 'in', GROUP_IDS_LIMIT)
     .selectAsArray()
     .resultData.data
     .map(r => r[0])

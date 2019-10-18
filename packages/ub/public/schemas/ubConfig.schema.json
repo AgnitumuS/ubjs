@@ -568,6 +568,11 @@
           "type": "boolean",
           "default": false,
           "description": "In case some middleware intercepts Authorization requests and redirect it to UB Session IP (IP address from which session is created) may differ from CallerIP (IP address of middleware). To allow such a requests set this parameter to `true`. **WARNING** vulnerability to token interception attacks"
+        },
+        "limitGroupsTo": {
+          "type": "array",
+          "default": [],
+          "description": "Groups codes (uba_group.code) to limit available user groups during user logon. Useful in case a same DB is used by several server instances, and one of instance (public portal for example) should limit roles available to user\r\n**WARNING**: roles what assigned directly to user (in uba_userroles) **NOT** filtered and remains available"
         }
       }
     },
