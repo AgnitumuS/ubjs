@@ -84,9 +84,9 @@ authentication algorithm.
 |Authentication schema | Description | Authorization method |
 |----------------------|-------------|----------------------|
 | Basic                | HTTP Basic. Not recommended for a production| Basic |
-| UB                   | Modified DIGEST |  UB |
+| [UB](tutorial-security_ub_schema.html)                   | Modified DIGEST |  UB |
 | UBLDAP               | Based on a LDAP catalog | UB |
-| UBIP                 | Based on a caller IP. For a server <-> server communication | UBIP |
+| [UBIP](tutorial-security_ubip_schema.html)                 | Based on a caller IP. For a server <-> server communication | UBIP |
 | Negotiate            | SSO using MS Windows domain. Enterprise edition only | UB |
 | CERT                 | Based on a private/public keys. Defence edition only | UB |
 | [OpenIDConnect](https://en.wikipedia.org/wiki/OpenID_Connect) | Authentication layer on top of OAuth 2.0 | UB |
