@@ -41,6 +41,7 @@ function db (req, resp) {
 App.registerEndpoint('db', db, false)
 
 const dml = require('@unitybase/dml-generator')
+const DEFAULT_DB = App.dbConnections[App.domainInfo.defaultConnection.name]
 /**
  * TechemPower Test type 2: Single database query (ORM)
  * @param {THTTPRequest} req
@@ -50,7 +51,7 @@ function dbUbql (req, resp) {
   let query = UB.Repository('World').attrs(['ID', 'randomNumber']).where('ID', '=', rnd10000()).ubql()
   let {sql, params} = dml.mssql.biuldSelectSql('World', query)
 
-  let data = JSON.parse(App.defaultDatabase_.run(sql, params))[0]
+  let data = JSON.parse(DEFAULT_DB.run(sql, params))[0]
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
   resp.writeEnd({ID: data['F0'], randomNumber: data['F1']})

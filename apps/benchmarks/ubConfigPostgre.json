@@ -26,11 +26,9 @@
 		"domain": {
 			"models": [
 				{
-					"name": "UB",
 					"path": "./node_modules/@unitybase/ub"
 				},
 				{
-					"name": "TPW",
 					"path": "./models/tpw"
 				}
 			]
