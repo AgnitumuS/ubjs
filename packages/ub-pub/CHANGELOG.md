@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.26]
+### Fixed
+ - global exception interceptor will ignore all exceptions what starts with `ResizeObserver`. Known are:
+   - ResizeObserver loop completed with undelivered notifications
+   - ResizeObserver loop limit exceeded
+  
 ## [5.3.24]
 ### Fixed
  - transformation to / from UB Date format (time 00:00 in UTC0) works correctly for dates in which

@@ -593,7 +593,10 @@ function ubGlobalErrorHandler (msg, file, line, column, errorObj) {
   }
 
   if (!isHandled) {
-    if (message === 'ResizeObserver loop limit exceeded') { // see https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
+    // see https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
+    // ResizeObserver loop completed with undelivered notifications
+    // ResizeObserver loop limit exceeded
+    if (typeof message === 'string' && message.startsWith('ResizeObserver')) {
       console.warn(message)
       return
     }
