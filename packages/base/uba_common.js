@@ -38,7 +38,7 @@ const ROLES = {
   USER: {
     ID: 3,
     NAME: 'User',
-    ENDPOINTS: 'logout,changePassword,setDocument,getDocument',
+    ENDPOINTS: 'logout,changePassword,setDocument,getDocument,checkDocument',
     DESCR: 'User build-in role',
     TIMEOUT: 30
   },
