@@ -256,8 +256,9 @@ function getRequestedBLOBInfo (parsedRequest) {
  * @param {BlobStoreRequest} requestParams
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
+ * @param {boolean} withBody Set to false to check whether the document is available without sending it's body.
  */
-function writeDocumentToResp (requestParams, req, resp) {
+function writeDocumentToResp (requestParams, req, resp, withBody = true) {
   let parsed = parseBlobRequestParams(requestParams)
   if (!parsed.success) return resp.badRequest(parsed.reason)
   // check user have access to entity select method
@@ -272,15 +273,18 @@ function writeDocumentToResp (requestParams, req, resp) {
   if (!requested.success) {
     return resp.badRequest(requested.reason)
   }
+
+  if (!withBody) {
+    resp.statusCode = 200
+    return
+  }
+
   // call store implementation method
   return requested.store.fillResponse(parsed.bsReq, requested.blobInfo, req, resp)
 }
 
 /**
  * Obtains document content from blobStore and send it to response.
- *
- * Accept 3 mandatory parameter: entity,attribute,ID
- * and 3 optional parameter: isDirty, fileName, revision.
  *
  * HTTP method can be either GET - in this case parameters passed in the URL
  * or POST - in this case parameters as JSON in body
@@ -290,6 +294,29 @@ function writeDocumentToResp (requestParams, req, resp) {
  * @private
  */
 function getDocumentEndpoint (req, resp) {
+  return getDocumentEndpointInternal(req, resp, true)
+}
+
+/**
+ * Checks whether the document is available to be obtained with getDocumentEndpoint.
+ *
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ * @private
+ */
+function checkDocumentEndpoint (req, resp) {
+  return getDocumentEndpointInternal(req, resp, false)
+}
+
+/**
+ * Internal endpoint function which accepts additional boolean flag after req, resp arguments.
+ * Checks an access to the document, obtains it's content from blobStore and by default sends it to response.
+ *
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ * @param {boolean} withBody Set to false to check whether the document is available without sending it's body.
+ */
+function getDocumentEndpointInternal (req, resp, withBody = true) {
   /** @type BlobStoreRequest */
   let params
   if (req.method === 'GET') { // TODO - should we handle 'HEAD' here?
@@ -306,7 +333,7 @@ function getDocumentEndpoint (req, resp) {
     return resp.badRequest('invalid HTTP verb' + req.method)
   }
 
-  return writeDocumentToResp(params, req, resp)
+  return writeDocumentToResp(params, req, resp, withBody)
 }
 
 /**
@@ -556,6 +583,7 @@ function markRevisionAsPermanent (request) {
 
 module.exports = {
   getDocumentEndpoint,
+  checkDocumentEndpoint,
   writeDocumentToResp,
   setDocumentEndpoint,
   markRevisionAsPermanent,

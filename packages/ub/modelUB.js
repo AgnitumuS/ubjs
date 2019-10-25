@@ -202,6 +202,7 @@ function start () {
   App.registerEndpoint('getDomainInfo', getDomainInfoEp, true)
   App.registerEndpoint('getDocument', blobStores.getDocumentEndpoint, true)
   App.registerEndpoint('setDocument', blobStores.setDocumentEndpoint, true)
+  App.registerEndpoint('checkDocument', blobStores.checkDocumentEndpoint, true)
   App.registerEndpoint('runSQL', runSQLEp, true)
   App.registerEndpoint('rest', restEp, true)
   App.registerEndpoint('allLocales', allLocalesEp, false)
