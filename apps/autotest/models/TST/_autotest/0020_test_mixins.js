@@ -30,6 +30,8 @@ module.exports = function runMixinsTests (options) {
   testFloatAndCurrency(conn)
   console.debug('test Tree mixin')
   testTreeMixin(conn)
+  console.debug('test asterisk in UBQL')
+  testAsterisk(conn)
 }
 
 /**
@@ -230,4 +232,24 @@ function testTreeMixin (conn) {
       ID: insertedID
     }
   })
+}
+
+/**
+ * @param {SyncConnection} conn
+ */
+function testAsterisk (conn) {
+  console.debug('Allow server-side asterisk only in first fieldList position')
+  assert.throws(
+    () => conn.post('evaluateScript', "UB.Repository('uba_userrole').attrs(['userID.name', '*']).select()"),
+    /(Internal Server Error|Got 1 columnus from DB but 2 specified in fieldList)/,
+    'Allow server-side asterisk only in first fieldList position'
+  )
+  console.debug('Allow asterisk in first position of server-side UBQL')
+  conn.post('evaluateScript', "UB.Repository('uba_userrole').attrs('*', 'userID.name').select()")
+  console.debug(`For client side UBQL mixing of '*' and attribute names in fieldList is not allowed`)
+  assert.throws(
+    () => conn.Repository('uba_userrole').attrs(['*', 'userID.name']).select(),
+    /(Internal Server Error|For client side UBQL mixing of)/,
+    `For client side UBQL mixing of '*' and attribute names in fieldList is not allowed`
+  )
 }
