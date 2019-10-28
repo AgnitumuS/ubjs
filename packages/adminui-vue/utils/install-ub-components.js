@@ -16,6 +16,7 @@ module.exports = {
     const USelectCollection = require('../components/controls/USelectCollection.vue').default
     const UBaseInput = require('../components/controls/UBaseInput.vue').default
     const UDetailGrid = require('../components/controls/UDetailGrid.vue').default
+    const UIconPicker = require('../components/controls/UIconPicker.vue').default
     Vue.component(UFormContainer.name, UFormContainer)
     Vue.component(USelectEntity.name, USelectEntity)
     Vue.component(USelectMany.name, USelectMany)
@@ -31,11 +32,12 @@ module.exports = {
     Vue.component(USelectCollection.name, USelectCollection)
     Vue.component(UBaseInput.name, UBaseInput)
     Vue.component(UDetailGrid.name, UDetailGrid)
+    Vue.component(UIconPicker.name, UIconPicker)
 
     const HoldFocus = require('../directives/HoldFocus')
     Vue.directive(HoldFocus.name, HoldFocus)
 
-    // dirty hack to retrieve a Clicoutside directive not exposed by Elements
+    // dirty hack to retrieve a Clickoutside directive not exposed by Elements
     const Clickoutside = Vue.options.components.ElDropdown.options.directives.Clickoutside
     Vue.directive('Clickoutside', Clickoutside)
   }
