@@ -45,7 +45,11 @@
 
       <shortcut-tree />
 
-      <shortcut-icon-select @select="iconCls = $event" />
+      <u-icon-picker
+        :label="entitySchema.attributes.iconCls.caption"
+        :value="iconCls"
+        @select="iconCls = $event"
+      />
 
       <u-auto-field attribute-name="displayOrder" />
 
@@ -64,7 +68,6 @@
 
 <script>
 const ShortcutTree = require('./components/ShortcutTree.vue').default
-const ShortcutIconSelect = require('./components/ShortcutIconSelect.vue').default
 const ShortcutCmdCode = require('./components/ShortcutCmdCode.vue').default
 
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
@@ -107,7 +110,6 @@ module.exports.default = {
   name: 'UbmNavshortcut',
   components: {
     ShortcutTree,
-    ShortcutIconSelect,
     ShortcutCmdCode
   },
   inject: ['entitySchema'],

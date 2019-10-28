@@ -1,12 +1,12 @@
 <template>
-  <u-form-row :label="entitySchema.attributes.iconCls.caption">
+  <u-form-row :label="label">
     <el-row
       :gutter="10"
       type="flex"
       align="middle"
     >
       <el-col :span="14">
-        <el-input v-model="iconCls">
+        <el-input v-model="value">
           <el-button
             slot="append"
             icon="el-icon-menu"
@@ -19,7 +19,7 @@
         style="text-align: center"
       >
         <i
-          :class="iconCls"
+          :class="value"
           style="font-size: 32px;"
         />
       </el-col>
@@ -79,7 +79,7 @@
       </div>
 
       <template slot="footer">
-        <u-form-row :label="entitySchema.attributes.iconCls.caption">
+        <u-form-row :label="label">
           <el-input
             readonly
             :value="selectedIcon"
@@ -99,12 +99,19 @@
 </template>
 
 <script>
-const { mapGetters } = require('vuex')
-const { mapInstanceFields } = require('@unitybase/adminui-vue')
-
 export default {
-  name: 'ShortcutIconSelect',
-  inject: ['entitySchema'],
+  name: 'UIconPicker',
+
+  props: {
+    label: {
+      type: String,
+      default: ''
+    },
+    value: {
+      type: String,
+      default: ''
+    }
+  },
 
   data () {
     return {
@@ -118,9 +125,6 @@ export default {
   },
 
   computed: {
-    ...mapInstanceFields(['iconCls']),
-    ...mapGetters(['loading']),
-
     getElIcons () {
       return this.elIcons.filter(this.iconFilter)
     },
@@ -163,7 +167,7 @@ export default {
     },
 
     onOpenDialog () {
-      this.selectedIcon = null
+      this.selectedIcon = this.value ? this.value : null
       this.searchQuery = ''
       if (!this.isInited) {
         this.initIcons()
