@@ -9,9 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `App.grantEndpointToRole(endpointName, roleCode)` - programmatically grant endpoint permission to specified role
  
 ### Changed
- - data type of Session.id is changed form Number to String and retrieved lazy.
- In general this property should not be used in app code
- - `Session.runAsUser` will create a temporary session what live until the end of request (not persisted to sessionManager)
+ - changes for UB server >= 5.17 (backward compatible):
+   - data type of Session.id is changed form Number to String and retrieved lazy.
+     In general this property should not be used in app code
+   - `Session.runAsUser` will create a temporary session what live until the end of request (not persisted to sessionManager)
+   
   
 ## [5.2.37]
 ### Fixed
