@@ -256,7 +256,7 @@ begin
     Result.asJSString := cx.NewJSString(PI.GetUnicodeStrValue(Instance^.instance));
   end else
   {$endif}
-  if (PI^.PropType^.Kind in [tkLString{$IFDEF FPC}, tkAString{$ENDIF}]) then begin
+  if (PI^.PropType^.Kind in [tkLString]) then begin
     // value is already in UTF-8
     //PI.GetLongStrValue(Instance^.instance, uStr);
     PI.GetRawByteStringValue(Instance^.instance, str);
@@ -273,7 +273,7 @@ begin
       Result.asJSString := cx.NewJSString(str);
     end;
   end else if (PI^.PropType^.Kind = tkFloat) then begin
-    e := PI.GetExtendedValue(Instance^.instance);
+    e := PI.GetFloatProp(Instance^.instance);
     if (PI^.PropType = TypeInfo(TDateTime)) then begin
       d := DateToUTC(e);
       str := DateTimeToStr(d);

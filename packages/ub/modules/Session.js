@@ -1,15 +1,18 @@
 const sessionBinding = process.binding('ub_session')
 const EventEmitter = require('events').EventEmitter
+const base = require('@unitybase/base')
 const UBA_COMMON = require('@unitybase/base').uba_common
 const Repository = require('@unitybase/base').ServerRepository.fabric
 const App = require('./App')
 const GROUP_CODES_LIMIT = App.serverConfig.security.limitGroupsTo
 /** ID of groups from GROUP_CODES_LIMIT if any */
 let GROUP_IDS_LIMIT
+const FEATURE_NEW_SESSION_MANAGER = (base.ubVersionNum >= 5017000)
 
 // cache for lazy session props
-let _id, _userID
+let _userID, _id
 let _sessionCached = {
+  sessionID: undefined,
   uData: undefined,
   callerIP: undefined,
   userRoles: undefined,
@@ -33,19 +36,30 @@ EventEmitter.call(Session)
 Object.assign(Session, EventEmitter.prototype)
 
 /**
- * Current session identifier. === 0 if session not started, ===1 in case authentication not used, >1 in case user authorized
- * @member {number} id
+ * Current session identifier
+ * @member {string} id
  * @memberOf Session
  * @readonly
  */
 Object.defineProperty(Session, 'id', {
   enumerable: true,
   get: function () {
-    return _id
+    if (FEATURE_NEW_SESSION_MANAGER) {
+      return _id
+    } else {
+      if (_sessionCached.sessionID === undefined) {
+        if (sessionBinding.sessionID) {
+          _sessionCached.sessionID = sessionBinding.sessionID()
+        } else {
+          _sessionCached.sessionID = '12345678' // compatibility with UB w/o redis
+        }
+      }
+      return _sessionCached.sessionID
+    }
   }
 })
 /**
- * Logged-in user identifier (from uba_user.ID). Undefined if Session.id is 0 or 1 (no authentication running)
+ * Logged-in user identifier (from uba_user.ID)
  * @member {number} userID
  * @memberOf Session
  * @readonly
@@ -202,7 +216,11 @@ Session.runAsAdmin = function (func) {
 Session.runAsUser = function (userID, func) {
   let result
   try {
-    sessionBinding.switchUser(userID)
+    if (FEATURE_NEW_SESSION_MANAGER) {
+      sessionBinding.switchUser(userID, '', false) // do not persist this session into sessionManager
+    } else {
+      sessionBinding.switchUser(userID)
+    }
     result = func()
   } finally {
     sessionBinding.switchToOriginal()
@@ -351,7 +369,9 @@ Session.runAsUser = function (userID, func) {
  * @param userID
  */
 Session.reset = function (sessionID, userID) {
-  _id = sessionID
+  if (FEATURE_NEW_SESSION_MANAGER) {
+    _id = sessionID
+  }
   _userID = userID
   _sessionCached.uData = undefined
   _sessionCached.callerIP = undefined
