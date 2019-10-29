@@ -12,7 +12,7 @@ class WhereItem extends CustomItem {
   constructor (ubqlWhereItem, dataSource, params) {
     super(ubqlWhereItem.expression, dataSource)
     this.condition = ubqlWhereItem.condition
-    this.values = ubqlWhereItem.values
+    this.value = ubqlWhereItem.value
     this.params = params
     // todo replace {master} macros
   }
@@ -53,9 +53,11 @@ const conditionsCompare = {
 }
 class WhereItemCompare extends WhereItem {
   _sqlInternal () {
-    const valuesNames = Object.keys(this.values)
-    if (valuesNames.length > 0) {
-      this.value = this.values[valuesNames[0]]
+    if (!this.value) {
+      const valuesNames = Object.keys(this.values)
+      if (valuesNames.length > 0) {
+        this.value = this.values[valuesNames[0]]
+      }
     }
     if (this.isMany) {
       const column = `[destID${this.manySubPart.length === 0 ? '' : '.' + this.manySubPart.join('.')}]`
@@ -70,7 +72,7 @@ class WhereItemCompare extends WhereItem {
           c2: {
             expression: column,
             condition: this.condition,
-            values: this.values
+            value: this.value
           }
         }
       }, this.dataSource)
@@ -84,8 +86,9 @@ class WhereItemEqual extends WhereItemCompare {
 }
 class WhereItemIn extends WhereItem {
   _sqlInternal () {
-    const valuesNames = Object.keys(this.values)
-    const val = (valuesNames.length > 0) && this.values[valuesNames[0]]
+    const val = this.value
+    // const valuesNames = Object.keys(this.values)
+    // const val = (valuesNames.length > 0) && this.values[valuesNames[0]]
     if (!val) {
       throw new Error('in or notIn condition must contain at least one value')
     }
