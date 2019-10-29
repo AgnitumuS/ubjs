@@ -56,6 +56,12 @@ module.exports = {
       type: String,
       default: 'application/x-javascript'
     },
+
+    /**  Allows to run CodeMirror in readOnly mode*/
+    readOnly: {
+      type: Boolean,
+      default: false
+    },
     /**
      * Optional function what return a hints. See hint/show-hint.js section in https://codemirror.net/doc/manual.html#addons
      * Called with one parameter - codeMirror instance
@@ -80,7 +86,7 @@ module.exports = {
         mode: this.editorMode,
         lineNumbers: true,
         lint: Object.assign({ asi: true, esversion: 6 }, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
-        readOnly: false,
+        readOnly: this.readOnly,
         tabSize: 2,
         highlightSelectionMatches: { annotateScrollbar: true },
         matchBrackets: true,
