@@ -14,15 +14,6 @@ const UB = require('@unitybase/ub-pub')
 const truncTimeToUTCNull = UB.truncTimeToUtcNull
 const UB_DATA_TYPES = require('@unitybase/cs-shared').UBDomain.ubDataTypes
 
-const SYSTEM_FIELDS = new Set([
-  'mi_createDate',
-  'mi_createUser',
-  'mi_deleteDate',
-  'mi_deleteUser',
-  'mi_modifyUser',
-  'mi_owner'
-])
-
 /**
  * "execParams" and "fieldList"
  *
@@ -44,12 +35,13 @@ function buildExecParams (trackedObj, entity) {
 
   if (trackedObj.isNew) {
     for (const [key, value] of Object.entries(trackedObj.data)) {
-      if (!SYSTEM_FIELDS.has(key) && !key.includes('.')) {
+      const attr = schema.attributes[key]
+      if (!(attr && attr.readOnly) && !key.includes('.')) {
         execParams[key] = value
       }
     }
     if (schema.hasMixin('dataHistory')) {
-      // let's server fill historical attributes
+      // Let server fill historical attributes
       ['mi_data_id', 'mi_dateFrom', 'mi_dateTo'].forEach(f => {
         if (!execParams[f]) delete execParams[f]
       })
