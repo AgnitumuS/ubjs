@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [1.8.7]
 ### Changed
  - renamed `ShortcutIconSelect` control to `UIconPicker` and allow to use it in other UB projects
+### Fixed
+ - `processing` module now does not pass readonly attributes in execParams
 
 [1.8.6]
 ### Fixed
