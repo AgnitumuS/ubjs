@@ -1,6 +1,8 @@
 const UB = require('@unitybase/ub')
 UB.loadLegacyModules(__dirname)
 
+let shouldNotThrowOnSecondThreadInitialize = UB.Repository('uba_user').attrs('ID', 'name').select()
+
 return
 // const WebDav = require('@ub-e/web-dav')
 // const WebDavBlobStoreProvider = require('@ub-e/web-dav/providers/webDavBlobStoreProvider')

@@ -10,7 +10,8 @@ let GROUP_IDS_LIMIT
 const FEATURE_NEW_SESSION_MANAGER = (base.ubVersionNum >= 5017000)
 
 // cache for lazy session props
-let _userID, _id
+let _userID = UBA_COMMON.USERS.ANONYMOUS.ID
+let _id
 let _sessionCached = {
   sessionID: undefined,
   uData: undefined,
@@ -44,7 +45,7 @@ Object.assign(Session, EventEmitter.prototype)
 Object.defineProperty(Session, 'id', {
   enumerable: true,
   get: function () {
-    if (FEATURE_NEW_SESSION_MANAGER) {
+    if (!FEATURE_NEW_SESSION_MANAGER) {
       return _id
     } else {
       if (_sessionCached.sessionID === undefined) {
@@ -369,7 +370,7 @@ Session.runAsUser = function (userID, func) {
  * @param userID
  */
 Session.reset = function (sessionID, userID) {
-  if (FEATURE_NEW_SESSION_MANAGER) {
+  if (!FEATURE_NEW_SESSION_MANAGER) {
     _id = sessionID
   }
   _userID = userID
