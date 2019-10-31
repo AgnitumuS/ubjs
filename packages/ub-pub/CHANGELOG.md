@@ -9,7 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - global exception interceptor will ignore all exceptions what starts with `ResizeObserver`. Known are:
    - ResizeObserver loop completed with undelivered notifications
    - ResizeObserver loop limit exceeded
-  
+
+### Changed
+ - for nodeJS environment monkey request detection is disabled
+ 
 ## [5.3.24]
 ### Fixed
  - transformation to / from UB Date format (time 00:00 in UTC0) works correctly for dates in which

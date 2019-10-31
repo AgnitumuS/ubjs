@@ -213,17 +213,19 @@ function xhr (requestConfig) {
         }
       })
     } else {
-      // prevent reiteration sending of the same request
-      // for example if HTML button on the form got a focus, user press `space` and button is not
-      // disabled inside `onclick` handler then quite the same requests the same we got a many-many same requests
-      let prevReqTime = __lastRequestTime
-      __lastRequestTime = Date.now()
-      if ((__lastRequestURL === config.url) && (typeof reqData === 'string') && (__lastRequestData === reqData) && (__lastRequestTime - prevReqTime < 100)) {
-        ubUtils.logError('Quite the same request repeated 2 or more times in the last 100ms (so called monkey request). The request is', reqData)
-        throw new ubUtils.UBError('monkeyRequestsDetected')
-      } else {
-        __lastRequestData = reqData
-        __lastRequestURL = config.url
+      if (!ubUtils.isNodeJS) {
+        // prevent reiteration sending of the same request
+        // for example if HTML button on the form got a focus, user press `space` and button is not
+        // disabled inside `onclick` handler then quite the same requests the same we got a many-many same requests
+        let prevReqTime = __lastRequestTime
+        __lastRequestTime = Date.now()
+        if ((__lastRequestURL === config.url) && (typeof reqData === 'string') && (__lastRequestData === reqData) && (__lastRequestTime - prevReqTime < 100)) {
+          ubUtils.logError('Quite the same request repeated 2 or more times in the last 100ms (so called monkey request). The request is', reqData)
+          throw new ubUtils.UBError('monkeyRequestsDetected')
+        } else {
+          __lastRequestData = reqData
+          __lastRequestURL = config.url
+        }
       }
     }
 

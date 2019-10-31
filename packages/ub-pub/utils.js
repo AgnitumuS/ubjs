@@ -303,6 +303,8 @@ module.exports.isMac = /macintosh|mac os x/.test(userAgent)
 module.exports.isSecureBrowser = /\belectron\b/.test(userAgent)
 /** @type {Boolean} */
 module.exports.isReactNative = (typeof navigator !== 'undefined' && navigator.product === 'ReactNative')
+/** @type {Boolean} */
+module.exports.isNodeJS = /nodeJS/.test(userAgent)
 
 /**
  * localDataStorage keys used by @unitybase-ub-pub (in case of browser environment)
