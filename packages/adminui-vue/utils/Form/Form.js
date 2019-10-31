@@ -63,9 +63,9 @@ class UForm {
     this.props = props
     this.storeConfig = {}
     this.$store = undefined
-    this.title = title
     this.entity = entity
     this.entitySchema = UB.connection.domain.get(this.entity)
+    this.title = title || this.entitySchema.getEntityCaption()
     this.fieldList = this.entitySchema.getAttributeNames()
     this.instanceID = instanceID
     this.formCode = formCode
