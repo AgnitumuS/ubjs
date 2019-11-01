@@ -1,51 +1,8 @@
 <template>
   <el-form @submit.native.prevent>
-    <p
-      class="auth-page__cert-info"
-      v-html="$ut('useCertificateInfoSimple')"
-    />
 
-    <el-form-item>
-      <el-button
-        type="secondary"
-        plain
-        style="width: 100%"
-        @click.prevent="$refs.keyFileInput.click()"
-      >
-        {{ keyFile ? $ut('Selected key file') + ' ' + keyFile.name : $ut('Select private key file') }}
-      </el-button>
-      <input
-        ref="keyFileInput"
-        type="file"
-        accept=".dat,.pfx,.cnt,.pk8,Key-6.dat,.jks"
-        @change="keyFileChange"
-      >
-    </el-form-item>
+    <cert2-param-form :load-pk="doCert2Login" class="auth-inject-panel"></cert2-param-form>
 
-    <el-form-item>
-      <el-input
-        v-model="password"
-        :placeholder="$ut('Password')"
-        type="password"
-        autocomplete="off"
-        @keyup.enter.native="doLogin"
-      >
-        <template slot="prepend">
-          <i class="fa fa-fw fa-key" />
-        </template>
-      </el-input>
-    </el-form-item>
-
-    <el-form-item>
-      <el-button
-        type="primary"
-        plain
-        style="min-width: 8rem"
-        @click="doLogin"
-      >
-        {{ $ut('Enter') }}
-      </el-button>
-    </el-form-item>
   </el-form>
 </template>
 
@@ -55,37 +12,18 @@ export default {
 
   data () {
     return {
-      keyFile: null,
-      password: ''
     }
   },
 
-  methods: {
-    keyFileChange (e) {
-      this.keyFile = e.target.files[0]
-    },
+  props: {
+    resolveAuth: Function
+  },
 
-    doLogin () {
-      if (!this.keyFile) {
-        this.$message.error({
-          message: this.$ut('Select private key file'),
-          customClass: 'auth-error-notify',
-          duration: 7000
-        })
-      } else if (!this.password.length) {
-        this.$message.error({
-          message: this.$ut('EnterOldPassword'),
-          customClass: 'auth-error-notify',
-          duration: 7000
-        })
-      } else {
-        this.resolveAuth({
-          authSchema: 'CERT2',
-          keyFile: this.keyFile,
-          password: this.password
-        })
-        this.$emit('close')
-      }
+  methods: {
+
+    doCert2Login: function (pkParams) {
+      this.resolveAuth(pkParams)
+      this.$emit('close')
     }
   }
 }

@@ -332,6 +332,7 @@ Ext.define('UB.core.UBApp', {
         }
         window.localStorage.setItem(UB.LDS_KEYS.USER_DID_LOGOUT, 'false')
       },
+
       onAuthorizationFail: function (reason, conn) {
         if (isExternalLogin) {
           var storedSession = window.localStorage.getItem(conn.__sessionPersistKey)
@@ -344,6 +345,7 @@ Ext.define('UB.core.UBApp', {
           UB.showErrorWindow(reason)
         }
       },
+
       onNeedChangePassword: $App.onPasswordChange.bind($App),
       onGotApplicationConfig: function (/** @type {UBConnection} */connection) {
         _.defaultsDeep(connection.appConfig, {
@@ -377,15 +379,36 @@ Ext.define('UB.core.UBApp', {
         return UB.inject('models/ub-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
           if (connection.trafficEncryption || (connection.authMethods.indexOf('CERT') !== -1) ||
             (connection.authMethods.indexOf('CERT2') !== -1)) {
-            const pkiForAuth = connection.appConfig.uiSettings.adminUI.encryptionImplementation || '@ub-d/nm-dstu/injectEncription.js'
+            let pkiForAuth = connection.appConfig.uiSettings.adminUI.encryptionImplementation || '@ub-d/nm-dstu/injectEncription.js'
+            let pkiModule = connection.appConfig.uiSettings.adminUI.encryptionModule || 'UA_CRYPT'
+            if (!/clientRequire/.test(pkiForAuth)) {
+              pkiForAuth = '/clientRequire/' + pkiForAuth
+            }
+
             var advParam = {
               getPkParam: UB.view.cryptoUI.ReadPK.getPkParam,
               getCertificates: UB.view.cryptoUI.SelectCert.getCertificates
             }
 
+            UB.inject(pkiForAuth).then(function () {
+              window[pkiModule].addEncryptionToConnection(connection, advParam)
+              if (advParam.getReadPkForm) {
+                advParam.getReadPkForm()
+                  .then((pkFormInfo) => {
+                    me.on('appInitialize', f => {
+                      window.Vue.component('cert2-param-form', pkFormInfo)
+                    })
+                    // Vue.component('cert2-param-form', pkFormInfo)
+                    // cert2FormDefer.resolve(pkFormInfo)
+                  })
+              }
+              return true
+            })
+            /*
             return SystemJS.import(pkiForAuth).then((module) => {
               module.addEncryptionToConnection(connection, advParam)
             })
+             */
           } else {
             return true
           }
@@ -852,7 +875,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
               blobInResponse: true
             }, {
               responseType: 'arraybuffer',
-              headers: {'Content-Type': 'application/json'}
+              headers: { 'Content-Type': 'application/json' }
             })
           } else {
             throw new UB.UBError('Error upload data to recognition server.')
@@ -864,7 +887,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
           }).then(() => {
             return transformResult.data
           })
-        }).finally(()  => {
+        }).finally(() => {
           statusWindow.close()
         })
       }
@@ -872,7 +895,6 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       if (recognitionEndpoint && $App.__scanService.lastScanedFormat === 'TIFF') {
         return transformToPdf(scannedResult)
       } else return scannedResult
-
     })
   },
 

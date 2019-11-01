@@ -58,6 +58,10 @@
     max-height: 3rem;
     max-width: fit-content;
   }
+
+  .auth-inject-panel {
+    padding: 15px 1px;
+  }
 </style>
 
 
@@ -187,6 +191,8 @@
         <div v-else>
           <el-form :model="authData" size="medium" @submit.native.prevent ref="authForm" :rules="authRules">
             <div v-if="hasCERT2">
+              <cert2-param-form :load-pk="doCert2Login" class="auth-inject-panel"></cert2-param-form>
+              <!--
               <p class="auth-page__cert-info" v-html="$ut('useCertificateInfoSimple')"></p>
               <el-form-item>
                 <el-button type="secondary" plain style="width: 100%" @click.prevent="fileSelectClick">
@@ -205,6 +211,7 @@
                 <el-button type="primary" plain style="min-width: 8rem" @click="doCert2Login">{{ $ut('Enter') }}
                 </el-button>
               </el-form-item>
+              -->
             </div>
 
             <div v-if="hasNegotiate">
@@ -257,7 +264,7 @@
               </div>
             </div>
             <div v-if="!hasNegotiate">
-              <div><a href="#">{{ $ut('UBAuthForgotPassword') }}</a></div>
+              <div v-if="!hasCERT2"><a href="#">{{ $ut('UBAuthForgotPassword') }}</a></div>
               <div v-if="registrationURL"><a :href="registrationURL">{{ $ut('UBAuthRegistration') }}</a></div>
             </div>
           </el-form>
@@ -270,6 +277,14 @@
 <div id="app"></div>
 
 <script>
+
+  var cert2FormDefer = {}
+  var promiseFrm = new Promise((resolve, reject) => {
+    cert2FormDefer.resolve = resolve
+    cert2FormDefer.reject = reject
+  })
+  Vue.component('cert2-param-form', () => promiseFrm)
+
   var vm = new Vue({
     template: '#ULoginPageTpl',
 
@@ -351,7 +366,9 @@
           }
         })
       },
-      doCert2Login: function () {
+      doCert2Login: function (pkParams) {
+        window.deferred.resolve(pkParams)
+        /*
         var me = this
         if (!me.keyFile) {
           UB.showErrorWindow('Select private key file')
@@ -364,6 +381,7 @@
             })
           })
         }
+         */
       }
     }
   })
@@ -396,6 +414,7 @@
       if (lastLogin) vm.authData.user = lastLogin
       if (conn.authMethods.indexOf('CERT2') !== -1) {
         let pkiForAuth = conn.appConfig.uiSettings.adminUI.encryptionImplementation
+        let pkiModule = conn.appConfig.uiSettings.adminUI.encryptionModule || 'UA_CRYPT'
         if (!/clientRequire/.test(pkiForAuth)) {
           pkiForAuth = '/clientRequire/' + pkiForAuth
         }
@@ -404,7 +423,14 @@
         }
 
         vm.injectionPromise = UB.inject(pkiForAuth).then(function () {
-          UA_CRYPT.addEncryptionToConnection(conn, advParam)
+          window[pkiModule].addEncryptionToConnection(conn, advParam)
+          if (advParam.getReadPkForm) {
+            advParam.getReadPkForm()
+              .then((pkFormInfo) => {
+                cert2FormDefer.resolve(pkFormInfo)
+              })
+
+          }
           return true
         })
       }
