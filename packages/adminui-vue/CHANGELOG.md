@@ -12,7 +12,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - renamed `ShortcutIconSelect` control to `UIconPicker` and allow to use it in other UB projects
  - `UCodeMirror` control now can be set readOnly (disable user input) with passing readOnly prop
- - `UForm` formCode params set's to required. To eliminate duplication of tabs when the form has formCode, but it is not passed to the form
  
 ### Fixed
  - added missing `store` parameter in processing=>addCollectionItem method

@@ -41,7 +41,7 @@ class UForm {
    * @param {boolean} [cfg.isModal=false] If true form will be displayed inside modal dialog. Otherwise - in tab (default)
    * @param {string} [cfg.modalClass] Modal class
    * @param {string} [cfg.modalWidth] Modal width
-   * @param {string} cfg.formCode Required to provide form code for form constructor button in toolbar
+   * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar and for correct tabID generation
    * @param {string} [cfg.tabId] Optional tabId. If omitted will be calculated using entity code and instanceID
    * @param {object} [cfg.target] Optional target. Used for render form into form
    */
@@ -54,7 +54,7 @@ class UForm {
     isModal,
     modalClass,
     modalWidth,
-    formCode = required('formCode'),
+    formCode,
     tabId,
     target
   }) {
