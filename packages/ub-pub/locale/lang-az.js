@@ -34,6 +34,14 @@ UB.i18nExtend({
   '</li> Yoxlama qurğusuna açar məlumatın daşıyıcısını <li> quraşdırın ' +
   '"Daxil ol"</li> sıxın<li>' +
   '<li>Dialoq pəncərəsində açarın yerləşmə yerini seçin,<br> parol göstərin və "ОK" sıxın</li></ol>',
+  keyDeviseType: 'Тип носія',
+  keyFile: 'Особистий ключ',
+  keyDevise: 'Назва носія',
+  'Selected certificate': 'Выбранный сертификат',
+  'Select certificate file': 'Выберите файлы сертификатов',
+  'Load certificates': 'К сожалению, не удалось найти сертификат. Выберите и загрузите ваш сертификат, который соответствует личному ключу.',
+  'Load': 'Загрузить',
+  'Cancel': 'Отменить',
 
   IITCertCanceledByUser: 'Canceled by user',
   msgInvalidPlugin: 'Plaginin versiyası köhnəlib. Quraşdırılmış versiya {0}, tələb olnur {1}. Avtomatik yenilənmə 2 saatdan bir baş verir.' +

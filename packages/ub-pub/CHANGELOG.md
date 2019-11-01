@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - global exception interceptor will ignore all exceptions what starts with `ResizeObserver`. Known are:
    - ResizeObserver loop completed with undelivered notifications
    - ResizeObserver loop limit exceeded
+### Added
+ - Add translation for authentication form
+  
 
 ### Changed
  - for nodeJS environment monkey request detection is disabled

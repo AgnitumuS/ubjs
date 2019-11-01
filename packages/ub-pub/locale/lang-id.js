@@ -31,12 +31,20 @@ UB.i18nExtend({
   msgInvalidPlugin: 'Plugin version is out of date. You have version {0}, but version {1} is required. Automatically update occurs every 2 hours.' +
   ' For manual updating use <a href="update_plugin.html" target="_blank">instruction</a>. ' +
   ' If after updating message remains, please, contact your system administrator.',
+  'Selected certificate': 'Выбранный сертификат',
+  'Select certificate file': 'Выберите файлы сертификатов',
+  'Load certificates': 'К сожалению, не удалось найти сертификат. Выберите и загрузите ваш сертификат, который соответствует личному ключу.',
+  'Load': 'Загрузить',
+  'Cancel': 'Отменить',
 
   unknownError: 'Unknown error. Please, contact your system administrator.',
   recordNotExistsOrDontHaveRights: 'Record not exists or you don\'t have access rights',
   msgInvalidCertAuth: 'Invalid certificate or private key',
   msgInvalidUBAuth: 'Access denied. Invalid user name or password',
   ubErrElsInvalidUserOrPwd: 'Access deny. Check login name and password.',
+  keyDeviseType: 'Тип носія',
+  keyFile: 'Особистий ключ',
+  keyDevise: 'Назва носія',
 
   'Access deny': 'Anda tidak memiliki hak untuk melakukan operasi ini',
   ERR_REFERENCE_ERROR: 'Tidak dapat melakukan operasi - elemen yang digunakan dalam entitas lainnya',

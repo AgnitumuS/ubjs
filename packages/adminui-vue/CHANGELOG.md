@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [1.8.6]
 ### Added 
  - set `entity.caption` as default form title if title is not defined at `*-fm.def`
-
+ - Registration component for authentication form
+ 
 ### Changed
  - renamed `ShortcutIconSelect` control to `UIconPicker` and allow to use it in other UB projects
  - `UCodeMirror` control now can be set readOnly (disable user input) with passing readOnly prop
@@ -15,7 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - added missing `store` parameter in processing=>addCollectionItem method
  - `processing` module now does not pass readonly attributes in execParams
-  
+
+    
 [1.8.5]
 ### Fixed
  - desktop selector Z index increased to 100 to prevent displaying behind Ext form toolbar / grid captions  
