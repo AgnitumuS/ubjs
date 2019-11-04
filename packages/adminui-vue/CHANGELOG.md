@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.8.7]
+### Added
+ - property `disabled` in `UUploadDocument`
+
 [1.8.6]
 ### Added 
  - set `entity.caption` as default form title if title is not defined at `*-fm.def`

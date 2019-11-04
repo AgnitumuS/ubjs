@@ -26,6 +26,7 @@
         :enterable="false"
       >
         <el-button
+          v-if="disabled"
           size="mini"
           circle
           icon="el-icon-close"
@@ -38,11 +39,13 @@
       class="ub-upload-document__file-input"
     >
       <el-button
+        :disabled="disabled"
         class="el-icon-plus"
         size="mini"
         circle
       />
       <input
+        :disabled="disabled"
         type="file"
         tabindex="-1"
         @change="processFile"
@@ -103,7 +106,11 @@ export default {
     iFrameWidth: {
       type: String,
       default: '100%'
-    }
+    },
+    /**
+     * Set disable status
+     */
+    disabled: Boolean
   },
 
   data () {
