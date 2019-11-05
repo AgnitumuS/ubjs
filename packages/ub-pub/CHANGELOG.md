@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.3.26]
 ### Fixed
+ - `AsyncConnection` converted `null` to `"null"` in execParams in some cases
+
+## [5.3.26]
+### Fixed
  - global exception interceptor will ignore all exceptions what starts with `ResizeObserver`. Known are:
    - ResizeObserver loop completed with undelivered notifications
    - ResizeObserver loop limit exceeded
