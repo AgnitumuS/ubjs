@@ -1209,7 +1209,7 @@ function stringifyExecParamsValues (execParams) {
   let newParams = {}
   for (let i = 0; i < L; i++) {
     let v = execParams[keys[i]]
-    newParams[keys[i]] = ((typeof v === 'object') && !(v instanceof Date))
+    newParams[keys[i]] = (v && (typeof v === 'object') && !(v instanceof Date))
       ? JSON.stringify(v)
       : v
   }
