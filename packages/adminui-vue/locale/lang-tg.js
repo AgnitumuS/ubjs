@@ -133,7 +133,7 @@ UB.i18nExtend({
 
   sidebar: {
     desktopSelector: {
-      title: 'Desktop selection'
+      title: 'Выбор десктопа'
     }
   }
 })
