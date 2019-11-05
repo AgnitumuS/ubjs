@@ -380,7 +380,7 @@ UB.i18nExtend({
 
   doScanPages: 'Отсканировано {0} страницу(ы)',
   doRecognizePages: 'Распознается страница № {0}',
-  doRecognizeDocument: 'Recognizing document ...',
+  doRecognizeDocument: 'Разпознается документ ...',
   ScannerNotConfigured: 'На вашем компьютере не найдено настроенных сканеров или они не зарегистрированы в системе',
   doStartScan: 'Запрос к сканеру ...',
   doFinishScan: 'Получение результата сканирования',

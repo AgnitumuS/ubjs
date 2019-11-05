@@ -29,7 +29,7 @@ UB.i18nExtend({
   reportType: 'Тип отчета',
   actionAdd: 'Добавить',
   actionDelete: 'Удалить',
-  reportParametersHeader: 'Параметри отчета',
+  reportParametersHeader: 'Параметры отчета',
   reportParamsRequired: 'Сначала заполните обязательные параметры',
 
   newMessages: '{0} новых сообщений',
