@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.13]
+### Fixed
+ - prevent bug when inserting a new role at the multilingual instance
+ - increased the size of `uba_subject.name` attribute to 256 characters, for compatibility with a `uba_role.description`
+
 ## [5.3.9]
 ### Fixed
  - prevent hangs of ALS form for huge ALS rules sets 
