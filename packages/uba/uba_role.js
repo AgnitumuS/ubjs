@@ -42,7 +42,8 @@ function ubaAuditNewRole (ctx) {
  */
 function fillRoleDescriptionIfMissing (ctxt) {
   let params = ctxt.mParams.execParams
-  if (!params.description) {
+  const descriptionIndex = Object.keys(params).findIndex(item => item.includes('description'))
+  if (descriptionIndex < 0) {
     params.description = params.name
   }
 }
