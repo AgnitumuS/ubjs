@@ -227,6 +227,7 @@ function localizeEntity (session, config, locale) {
         entity: config.entity,
         method: 'update',
         __skipOptimisticLock: true,
+        lockType: 'ltTemp',
         execParams: execParams
       })
     } else {
