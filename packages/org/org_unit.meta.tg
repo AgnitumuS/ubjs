@@ -9,6 +9,10 @@
         {
             "name": "caption",
             "caption": "Сарлавҳа"
+        },
+        {
+            "name": "parentID",
+            "caption": "Аҷдод"
         }
     ]
 }

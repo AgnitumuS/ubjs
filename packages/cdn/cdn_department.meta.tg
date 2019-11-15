@@ -21,6 +21,10 @@
         {
             "name": "depTypeID",
             "caption": "Намуди воҳиди"
+        },
+        {
+            "name": "organizationID",
+            "caption": "Ташкилот"
         }
     ]
 }

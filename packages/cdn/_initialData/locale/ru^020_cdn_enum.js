@@ -20,8 +20,12 @@ module.exports = function (session) {
       { keyValue: 'COUNTRY', execParams: { name: 'Страна' } },
       { keyValue: 'DISTRICT', execParams: { name: 'Регион' } },
       { keyValue: 'CITY', execParams: { name: 'Город' } },
+      // CDN_SEXTYPE
       { keyValue: 'F', execParams: { name: 'Ж' } },
-      { keyValue: 'M', execParams: { name: 'М' } }
+      { keyValue: 'M', execParams: { name: 'М' } },
+      // CDN_ADDRESS
+      { keyValue: 'YUR', execParams: { name: 'Юридический адрес' } },
+      { keyValue: 'PHYS', execParams: { name: 'Физический адрес' } }
     ]
   }
   loader.localizeEntity(session, localizationConfig, __filename)

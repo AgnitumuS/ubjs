@@ -11,7 +11,7 @@ module.exports = function (session) {
     entity: 'ubm_enum',
     keyAttribute: 'code',
     localization: [
-      { keyValue: 'owner', execParams: { name: 'Владелец' } },
+      { keyValue: 'owner', execParams: { name: 'Соҳиб' } },
       { keyValue: 'read', execParams: { name: 'Хондан' } },
       { keyValue: 'write', execParams: { name: 'Тағйир додан' } },
       { keyValue: 'delegate', execParams: { name: 'Муқаррар кардани ҳуқуқҳо' } }

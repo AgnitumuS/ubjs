@@ -29,6 +29,10 @@
         {
             "name": "lastName",
             "caption": "Насаб"
+        },
+        {
+            "name": "trustedIP",
+            "caption": "IP боэътимод"
         }
     ]
 }

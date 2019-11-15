@@ -37,6 +37,18 @@
         {
             "name": "addrText",
             "caption": "Таҳили суроға"
+        },
+        {
+            "name": "departmentID",
+            "caption": "Шуъба"
+        },
+        {
+            "name": "firstName",
+            "caption": "Ном"
+        },
+        {
+            "name": "middleName",
+            "caption": "Номи падар"
         }
     ]
 }

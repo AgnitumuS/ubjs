@@ -15,8 +15,8 @@ module.exports = function (session) {
       { keyValue: 'UBA.passwordPolicy.checkPrevPwdNum', execParams: { name: 'Такрор накунед ... гузарвожаҳои охиринро', description: 'Шумораи гузарвожаҳои қаблӣ, ки истифодаи онҳо ҳамчун гузарвожаи нав манъ карда шудааст' } },
       { keyValue: 'UBA.passwordPolicy.minLength', execParams: { name: 'Ҳадди ақали дарозии гузарвожа', description: 'Ҳадди ақали аломатҳои гузарвожа' } },
       { keyValue: 'UBA.passwordPolicy.checkCmplexity', execParams: { name: 'Гузарвожаи мураккаб', description: 'Гузарвожа бояд ҳуруфи калон, хурд, рақам ва аломатҳои махсусро дошта бошад' } },
-      { keyValue: 'UBA.passwordPolicy.checkDictionary', execParams: { name: 'Гузарвожаҳои луғатро иҷозат надиҳед', description: 'Запретить слабые пароли со словаря' } },
-      { keyValue: 'UBA.passwordPolicy.allowMatchWithLogin', execParams: { name: 'Разрешить совпадение с логином', description: 'Разрешить установку пароля, совпадающего с логином' } },
+      { keyValue: 'UBA.passwordPolicy.checkDictionary', execParams: { name: 'Гузарвожаҳои луғатро иҷозат надиҳед', description: 'Гузарвожаҳои сусти луғатро рад кунед' } },
+      { keyValue: 'UBA.passwordPolicy.allowMatchWithLogin', execParams: { name: 'Барои мувофиқати рамз иҷозат диҳед', description: 'Иҷозат додани насби гузарвожае, ки бо рамз мутобиқ аст' } },
       { keyValue: 'UBA.passwordPolicy.maxInvalidAttempts', execParams: { name: 'Шумораи кӯшишҳои вуруд', description: 'Миқдори кӯшиши вуруд, ки пас аз он истифодабаранда масдуд мешавад' } }
     ]
   }

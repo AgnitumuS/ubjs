@@ -93,7 +93,8 @@ UB.i18nExtend({
   'desktopService.BottomRight': 'Внизу праворуч',
   monkeyRequestsDetected: 'Ваш запит оброблено, але ми виявили що його повторено кілька разів. Можливо, у Вас запала клавіша?',
   'Shortcut editor': 'Редактор ярлика',
+  chooseShortcutFolder: 'Оберiть папку ярлика',
+
   // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
-  EOF: 'EOF',
-  chooseShortcutFolder: 'Оберiть папку ярлика'
+  EOF: 'EOF'
 })

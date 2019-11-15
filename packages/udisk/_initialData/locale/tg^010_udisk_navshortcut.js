@@ -22,9 +22,9 @@ module.exports = function (session) {
     localization: [
       { keyValue: 'UDISK_CARD', execParams: { caption: 'UDISK' } },
       { keyValue: 'UDISK_CARD_ADM', execParams: { caption: 'Идоракунии UDISK' } },
-      { keyValue: 'UDISK_SERVICECARD', execParams: { caption: 'Сервисный UDISK' } },
+      { keyValue: 'UDISK_SERVICECARD', execParams: { caption: 'Хизматгузории UDISK' } },
       { keyValue: 'UDISK_SERVICECARD_ADM', execParams: { caption: 'Идоракунии хизматрасонии UDISK' } },
-      { keyValue: 'UDISK_SECRETECARD', execParams: { caption: 'Секретный UDISK' } },
+      { keyValue: 'UDISK_SECRETECARD', execParams: { caption: 'UDISK сиррӣ' } },
       { keyValue: 'UDISK_SECRETCARD_ADM', execParams: { caption: 'Идоракунии махфӣ UDISK' } }
     ]
   }

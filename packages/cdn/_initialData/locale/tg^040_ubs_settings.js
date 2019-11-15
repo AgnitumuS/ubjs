@@ -17,8 +17,8 @@ module.exports = function (session) {
 	    },
       { keyValue: 'cdn.organization.allowAutoGenerateOKPO',
         execParams: {
-          name: 'Автоматическая генерация ОКПО если он не указан',
-          description: 'Автоматическая генерация ОКПО если он не указан пользователем' }
+          name: 'Насли худкори РУКТ (OKPO), агар муайян нашуда бошад',
+          description: 'Насли худкори РУКТ (OKPO), агар онро корбар муқаррар накарда бошад' }
 	    }
     ]
   }

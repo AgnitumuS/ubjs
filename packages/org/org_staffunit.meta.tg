@@ -25,6 +25,10 @@
         {
             "name": "isBoss",
             "caption": "Роҳбар"
+        },
+        {
+            "name": "parentID",
+            "caption": "Аҷдод"
         }
     ]
 }

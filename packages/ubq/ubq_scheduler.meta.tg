@@ -1,0 +1,14 @@
+﻿{
+    "caption": "",
+    "description": "",
+    "attributes": [
+        {
+            "name": "actualModel",
+            "caption": "Модели ҷорӣ"
+        },
+        {
+            "name": "runAs",
+            "caption": "Иҷронамудан аз номи"
+        }
+    ]
+}

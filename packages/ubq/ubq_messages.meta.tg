@@ -1,0 +1,14 @@
+﻿{
+    "caption": "",
+    "description": "",
+    "attributes": [
+        {
+            "name": "msgData",
+            "caption": "Маълумоти паём"
+        },
+        {
+            "name": "completeDate",
+            "caption": "Санаи ба охир расидан"
+        }
+    ]
+}

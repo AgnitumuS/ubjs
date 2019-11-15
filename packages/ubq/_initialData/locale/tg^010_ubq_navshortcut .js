@@ -12,8 +12,8 @@ module.exports = function (session) {
     localization: [
       { keyValue: 'adm_folder_UBQ', execParams: { caption: 'Навбати паёмҳо' } },
       { keyValue: 'ubq_messages', execParams: { caption: 'Навбат' } },
-      { keyValue: 'ubq_runstat', execParams: { caption: 'Статистика' } },
-      { keyValue: 'ubq_scheduler', execParams: { caption: 'Нақшакашҳо вазифаҳо' } }
+      { keyValue: 'ubq_runstat', execParams: { caption: 'Омор' } },
+      { keyValue: 'ubq_scheduler', execParams: { caption: 'Нақшакашҳои вазифаҳо' } }
     ]
   }
 

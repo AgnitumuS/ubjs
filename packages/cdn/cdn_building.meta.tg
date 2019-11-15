@@ -13,6 +13,14 @@
         {
             "name": "streetID",
             "caption": "Кӯча"
+        },
+        {
+            "name": "code",
+            "caption": "№"
+        },
+        {
+            "name": "postIndexID",
+            "caption": "Индекс"
         }
     ]
 }

@@ -33,6 +33,10 @@
         {
             "name": "centerID",
             "caption": "Марказ"
+        },
+        {
+            "name": "parentAdminUnitID",
+            "caption": "Аҷдод"
         }
     ]
 }

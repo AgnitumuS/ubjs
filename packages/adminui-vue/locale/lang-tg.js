@@ -8,7 +8,7 @@ UB.i18nExtend({
     datepicker: {
       now: 'Хозир',
       today: 'Имрӯз',
-      cancel: 'Отмена',
+      cancel: 'Бекор кардан',
       clear: 'Ҳавз кардан',
       confirm: 'OK',
       selectDate: 'Интихоби сана',
@@ -60,18 +60,18 @@ UB.i18nExtend({
       }
     },
     select: {
-      loading: 'Загрузка',
+      loading: 'Боргирӣ ',
       noMatch: 'Ҳеҷ мувофиқат пайдо нашуд',
       noData: 'Маълумот нест',
       placeholder: 'Интихоб кунед'
     },
     cascader: {
       noMatch: 'Ҳеҷ мувофиқат пайдо нашуд',
-      loading: 'Загрузка',
+      loading: 'Боргирӣ ',
       placeholder: 'Интихоб кунед'
     },
     pagination: {
-      goto: 'Перейти',
+      goto: 'Гузаштан',
       pagesize: ' дар саҳифа',
       total: 'Всего {total}',
       pageClassifier: ''
@@ -79,11 +79,11 @@ UB.i18nExtend({
     messagebox: {
       title: 'Паём',
       confirm: 'OK',
-      cancel: 'Отмена',
+      cancel: 'Бекор кардан',
       error: 'Вуруди нодурусти маълумот'
     },
     upload: {
-      deleteTip: 'Нажмите [Удалить] для удаления',
+      deleteTip: 'Барои нест кардан [Нест кардан] -ро клик кунед',
       delete: 'Ҳавз кардан',
       preview: 'Пешнамоиш',
       continue: 'Идома додан'
@@ -93,7 +93,7 @@ UB.i18nExtend({
       confirmFilter: 'Тасдиқ кардан',
       resetFilter: 'Сбросить',
       clearFilter: 'Ҳама',
-      sumText: 'Маблағ'
+      sumText: 'Миқдор'
     },
     tree: {
       emptyText: 'Маълумот нест'
@@ -103,17 +103,17 @@ UB.i18nExtend({
       noData: 'Маълумот нест',
       titles: ['Рӯйхат 1', 'Рӯйхат 2'],
       filterPlaceholder: 'Калимаи калидиро ворид намоед',
-      noCheckedFormat: '{total} пунктов',
-      hasCheckedFormat: '{checked}/{total} выбрано'
+      noCheckedFormat: '{total} нуқтаҳо',
+      hasCheckedFormat: '{checked}/{total} интихоб карда шуд'
     }
   },
   isRequiredFieldFmt: '{0} барои пур карданд ҳатмист ',
-  linkCopiedText: 'Ссылка скопирована в буфер обмена',
+  linkCopiedText: 'Истинод нусхабардорӣ карда шуд ба буфери мубодила',
   createdEntityCaption: 'Офирида шудааст',
-  updatedEntityCaption: 'Обновлено',
+  updatedEntityCaption: 'Навсозӣ',
 
-  searchByDateRange: 'За период',
-  forAllTime: 'За все время',
+  searchByDateRange: 'Дар тӯли давра',
+  forAllTime: 'Дар ҳама вақт',
   lastMonth: 'Моҳи гузашта',
   lastQuarter: 'Барои семоҳаи охир',
   last6Month: 'Дар давоми 6 моҳи охир',
@@ -122,7 +122,7 @@ UB.i18nExtend({
   successfullySaved: 'Захира шуд',
   formWasRefreshed: 'Шакл нав карда шуд.',
   recordDeletedSuccessfully: 'Сабт бомуваффақият нест карда шуд',
-  selectedValueWasDeleted: 'Выбраное значение удалено',
+  selectedValueWasDeleted: 'Қимати интихобшуда нест карда мешавад',
   recordWasDeleted: 'Маълумот нест карда шуд',
   validationError: 'Нигоҳ доштан ғайриимкон аст, маъмулот хатогӣ дорад - {0}',
   formCrashTitle: 'Шакл шикастааст',

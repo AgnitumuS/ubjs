@@ -1,10 +1,10 @@
 ﻿{
-    "caption": "",
+    "caption": "Дараҷаи ҳимояи сатҳ (ALS)",
     "description": "",
     "attributes": [
         {
             "name": "attribute",
-            "caption": "Махсусият"
+            "caption": "Хусусият"
         },
         {
             "name": "state",
