@@ -50,5 +50,10 @@ UB.i18nExtend({
   messageType: 'Тип',
   messageHistoryTitle: 'Історія',
   messageSendTitle: 'Відправка повідомлення',
-  messageSentSuccessfully: 'Повідомлення успішно відправлено'
+  messageSentSuccessfully: 'Повідомлення успішно відправлено',
+
+  rep_clickSample: 'Приклад реакції на клік',
+
+  // !!!  Do not change this last item.
+  EOF: 'EOF'
 })

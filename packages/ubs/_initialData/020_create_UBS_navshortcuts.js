@@ -202,16 +202,25 @@ module.exports = function (session) {
       caption: 'Reports',
       displayOrder: 60,
       iconCls: 'fa fa-book',
-      cmdCode: JSON.stringify({
-        cmdType: 'showList',
-        cmdData: {
-          params: [{
-            entity: 'ubs_report',
-            method: 'select',
-            fieldList: ['ID', 'model', 'report_code', 'name']
-          }]
-        }
-      }, null, '\t')
+      cmdCode: "{\n" +
+      "  cmdType: 'showList',\n" +
+      "  cmdData: {\n" +
+      "    params: [{\n" +
+      "      entity: 'ubs_report',\n" +
+      "      method: 'select',\n" +
+      "      fieldList: [\n" +
+      "        'ID', 'model', 'report_code',\n" +
+      "        {\n" +
+      "          name: 'name',\n" +
+      "          format: function (fieldValue, cellValues, record, recordIndex, fullIndex, store, table) {\n" +
+      "            var v = UB.i18n(fieldValue)\n" +
+      "            return v\n" +
+      "          }\n" +
+      "        }\n" +
+      "      ]\n" +
+      "    }]\n" +
+      "  }\n" +
+      "}"
     }
   })
 

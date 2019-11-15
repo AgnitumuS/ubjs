@@ -50,5 +50,10 @@ UB.i18nExtend({
   messageType: 'Намуд',
   messageHistoryTitle: 'Таърих',
   messageSendTitle: 'Ирсоли паём',
-  messageSentSuccessfully: 'Паём бо муваффақият фиристода шуд'
+  messageSentSuccessfully: 'Паём бо муваффақият фиристода шуд',
+
+  rep_clickSample: 'Пример реакции на клик',
+
+  // !!!  Do not change this last item.
+  EOF: 'EOF'
 })
