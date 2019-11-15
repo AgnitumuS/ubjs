@@ -21,6 +21,14 @@
         {
             "name": "targetGroup",
             "caption": "Гурӯҳи мақсадноки"
+        },
+        {
+            "name": "remoteIP",
+            "caption": "Суроғаи IP"
+        },
+        {
+            "name": "fromValue",
+            "caption": "Маъно _________ буд"
         }
     ]
 }

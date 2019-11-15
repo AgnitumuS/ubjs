@@ -9,6 +9,10 @@
         {
             "name": "name",
             "caption": "Номгуй"
+        },
+        {
+            "name": "mi_modifyDate",
+            "caption": "Санаи тағир "
         }
     ]
 }

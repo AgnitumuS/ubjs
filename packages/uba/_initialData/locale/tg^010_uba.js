@@ -10,7 +10,7 @@ module.exports = function (session) {
     entity: 'ubm_desktop',
     keyAttribute: 'code',
     localization: [
-      { keyValue: 'adm_desktop', execParams: { caption: 'Администратор' } }
+      { keyValue: 'adm_desktop', execParams: { caption: 'Маъмур' } }
     ]
   }
 
@@ -29,11 +29,11 @@ module.exports = function (session) {
       { keyValue: 'uba_usergroup', execParams: { caption: 'Гурӯҳи истифодабарандагон' } },
       { keyValue: 'uba_usercertificate', execParams: { caption: 'Сертификатҳо' } },
       { keyValue: 'adm_folder_security', execParams: { caption: 'Бехатарӣ' } },
-      { keyValue: 'uba_role', execParams: { caption: 'Системные роли' } },
-      { keyValue: 'uba_els', execParams: { caption: 'Права на методы (ELS)' } },
+      { keyValue: 'uba_role', execParams: { caption: 'Ролҳои системавӣ' } },
+      { keyValue: 'uba_els', execParams: { caption: 'Дастрасӣ ба амалкардҳо  (ELS)' } },
       { keyValue: 'uba_audit', execParams: { caption: 'Аудити бехатарӣ' } },
-      { keyValue: 'uba_audit-securityDashboard', execParams: { caption: 'Консоль безопасности' } },
-      { keyValue: 'uba_als', execParams: { caption: 'Ҳуқуқ ба хусусиятҳо(ALS)' } },
+      { keyValue: 'uba_audit-securityDashboard', execParams: { caption: 'Консоли амният' } },
+      { keyValue: 'uba_als', execParams: { caption: 'Дастрасӣ ба хусусиятҳо (ALS)' } },
       { keyValue: 'uba_otp', execParams: { caption: 'Якдафъаина гузарвожаҳо (OTP)' } }
     ]
   }
@@ -44,13 +44,13 @@ module.exports = function (session) {
     entity: 'uba_role',
     keyAttribute: 'name',
     localization: [
-      { keyValue: 'Everyone', execParams: { description: 'Кто угодно (роли дарунсохташуда)' } },
-      { keyValue: 'Admin', execParams: { description: 'Администратор (роли дарунсохташуда)' } },
+      { keyValue: 'Everyone', execParams: { description: 'Ҳама (роли дарунсохташуда)' } },
+      { keyValue: 'Admin', execParams: { description: 'Маъмурӣ (роли дарунсохташуда)' } },
       { keyValue: 'Anonymous', execParams: { description: 'Истифодабарандаи беиҷозат (роли дарунсохташуда)' } },
       { keyValue: 'User', execParams: { description: 'Истифодабарандаи ваколатдор (роли дарунсохташуда)' } },
-      { keyValue: 'Supervisor', execParams: { description: 'Администратор безопасности (встроенная роль)' } },
-      { keyValue: 'Developer', execParams: { description: 'Разработчик (встроенная роль)' } },
-      { keyValue: 'Monitor', execParams: { description: 'Мониторинг (встроенная роль)' } }
+      { keyValue: 'Supervisor', execParams: { description: 'Маъмур оид ба амният (роли дарунсохт)' } },
+      { keyValue: 'Developer', execParams: { description: 'Таҳиякунанда  (роли дарунсохт)' } },
+      { keyValue: 'Monitor', execParams: { description: 'Мониторинг (роли дарунсохт)' } }
     ]
   }
 

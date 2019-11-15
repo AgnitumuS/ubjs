@@ -11,11 +11,11 @@ module.exports = function (session) {
     keyAttribute: 'code',
     localization: [
       { keyValue: 'adm_folder_UI', execParams: { caption: 'Интерфейс' } },
-      { keyValue: 'ubm_enum', execParams: { caption: 'Перечисления' } },
-      { keyValue: 'ubm_desktop', execParams: { caption: 'Рабочие столы' } },
-      { keyValue: 'ubm_navshortcut', execParams: { caption: 'Ярлыки' } },
-      { keyValue: 'ubm_diagram', execParams: { caption: 'ER диаграммы' } },
-      { keyValue: 'ubm_form', execParams: { caption: 'Формы' } }
+      { keyValue: 'ubm_enum', execParams: { caption: 'Номгӯҳо' } },
+      { keyValue: 'ubm_desktop', execParams: { caption: 'Мизҳои корӣ' } },
+      { keyValue: 'ubm_navshortcut', execParams: { caption: 'Тамға' } },
+      { keyValue: 'ubm_diagram', execParams: { caption: 'ER диаграммаҳо' } },
+      { keyValue: 'ubm_form', execParams: { caption: 'Шаклҳо' } }
     ]
   }
 

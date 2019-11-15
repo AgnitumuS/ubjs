@@ -11,7 +11,7 @@ module.exports = function (session) {
     keyAttribute: 'code',
     localization: [
       { keyValue: 'email', execParams: { name: 'Суроғаи почтаи электронӣ' } },
-      { keyValue: 'legalAddr', execParams: { name: 'Юридический адрес' } },
+      { keyValue: 'legalAddr', execParams: { name: 'Суроғаи ҳуқуқӣ' } },
       { keyValue: 'actualAddr', execParams: { name: 'Суроғаи воқеӣ' } },
       { keyValue: 'phone', execParams: { name: 'Телефон' } },
       { keyValue: 'mobPhone', execParams: { name: 'Телефони мобилӣ' } },

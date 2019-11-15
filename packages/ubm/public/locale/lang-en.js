@@ -93,7 +93,8 @@ UB.i18nExtend({
   'desktopService.BottomRight': 'Bottom right',
   monkeyRequestsDetected: 'Your request has been processed, but we found that it is repeated several times. Maybe you key fuse?',
   'Shortcut editor': 'Shortcut editor',
+  chooseShortcutFolder: 'Choose shortcut folder',
+
   // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
-  EOF: 'EOF',
-  chooseShortcutFolder: 'Choose shortcut folder'
+  EOF: 'EOF'
 })

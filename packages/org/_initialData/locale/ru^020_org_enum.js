@@ -10,9 +10,14 @@ module.exports = function (session) {
     entity: 'ubm_enum',
     keyAttribute: 'code',
     localization: [
+      // CDN_EMPLOYEEONSTAFFTYPE
       { keyValue: 'PERMANENT', execParams: { name: 'Постоянный' } },
       { keyValue: 'TEMPORARY', execParams: { name: 'вр.и.о.' } },
-      { keyValue: 'ASSISTANT', execParams: { name: 'Ассистент' } }
+      { keyValue: 'ASSISTANT', execParams: { name: 'Ассистент' } },
+      // ORG_UNITTYPE
+      { keyValue: 'STAFF', execParams: { name: 'Персонал' } },
+      { keyValue: 'ORG', execParams: { name: 'Организация' } },
+      { keyValue: 'DEP', execParams: { name: 'Подразделение' } }
     ]
   }
   loader.localizeEntity(session, localizationConfig, __filename)

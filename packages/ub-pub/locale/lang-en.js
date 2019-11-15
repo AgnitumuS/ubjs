@@ -29,6 +29,9 @@ UB.i18nExtend({
   msgInvalidPlugin: 'Plugin version is out of date. You have version {0}, but version {1} is required. Automatically update occurs every 2 hours.' +
   ' For manual updating use <a href="update_plugin.html" target="_blank">instruction</a>. ' +
   ' If after updating message remains, please, contact your system administrator.',
+  keyDeviseType: 'Device type',
+  keyFile: 'Private key',
+  keyDevise: 'Device name',
   'Selected certificate': 'Selected Certificate',
   'Select certificate file': 'Select certificate file',
   'Load certificates': 'Sorry, the certificate could not be found. Select and upload your certificate that matches the private key.',
@@ -40,9 +43,6 @@ UB.i18nExtend({
   msgInvalidCertAuth: 'Invalid certificate or private key',
   msgInvalidUBAuth: 'Access denied. Invalid user name or password',
   ubErrElsInvalidUserOrPwd: 'Access deny. Check login name and password.',
-  keyDeviseType: 'Device type',
-  keyFile: 'Key file',
-  keyDevise: 'Devise name',
 
   'Access deny': 'You do not have rights to perform this operation',
   ERR_REFERENCE_ERROR: 'Unable to perform the operation - element is being used in other entities',

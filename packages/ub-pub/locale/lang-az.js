@@ -34,9 +34,9 @@ UB.i18nExtend({
   '</li> Yoxlama qurğusuna açar məlumatın daşıyıcısını <li> quraşdırın ' +
   '"Daxil ol"</li> sıxın<li>' +
   '<li>Dialoq pəncərəsində açarın yerləşmə yerini seçin,<br> parol göstərin və "ОK" sıxın</li></ol>',
-  keyDeviseType: 'Тип носія',
-  keyFile: 'Особистий ключ',
-  keyDevise: 'Назва носія',
+  keyDeviseType: 'Тип носителя',
+  keyFile: 'Личный ключ',
+  keyDevise: 'Название носителя',
   'Selected certificate': 'Выбранный сертификат',
   'Select certificate file': 'Выберите файлы сертификатов',
   'Load certificates': 'К сожалению, не удалось найти сертификат. Выберите и загрузите ваш сертификат, который соответствует личному ключу.',

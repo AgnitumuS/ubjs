@@ -29,6 +29,10 @@
         {
             "name": "formType",
             "caption": "Тип формы"
+        },
+        {
+            "name": "mi_modifyDate",
+            "caption": "Санаи тағир "
         }
     ]
 }

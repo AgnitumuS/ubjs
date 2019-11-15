@@ -31,6 +31,9 @@ UB.i18nExtend({
   msgInvalidPlugin: 'Plugin version is out of date. You have version {0}, but version {1} is required. Automatically update occurs every 2 hours.' +
   ' For manual updating use <a href="update_plugin.html" target="_blank">instruction</a>. ' +
   ' If after updating message remains, please, contact your system administrator.',
+  keyDeviseType: 'Device type',
+  keyFile: 'Private key',
+  keyDevise: 'Device name',
   'Selected certificate': 'Выбранный сертификат',
   'Select certificate file': 'Выберите файлы сертификатов',
   'Load certificates': 'К сожалению, не удалось найти сертификат. Выберите и загрузите ваш сертификат, который соответствует личному ключу.',

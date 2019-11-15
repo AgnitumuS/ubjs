@@ -9,6 +9,10 @@
         {
             "name": "isDefault",
             "caption": "Бо нобаенӣ"
+        },
+        {
+            "name": "url",
+            "caption": "URL"
         }
     ]
 }

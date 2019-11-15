@@ -11,17 +11,21 @@ module.exports = function (session) {
     keyAttribute: 'code',
     localization: [
       // CDN_ACCOUNTTYPE
-      { keyValue: 'CHECK', execParams: { name: 'Расчетный' } },
+      { keyValue: 'CHECK', execParams: { name: 'Ҳособӣ' } },
       { keyValue: 'CURR', execParams: { name: 'Ҷорӣ' } },
-      { keyValue: 'BUDGET', execParams: { name: 'Буҷети' } },
-      { keyValue: 'SAVE', execParams: { name: 'Амонати' } },
-      { keyValue: 'CORR', execParams: { name: 'Корреспондентский' } },
+      { keyValue: 'BUDGET', execParams: { name: 'Буҷавӣ' } },
+      { keyValue: 'SAVE', execParams: { name: 'Амонатӣ' } },
+      { keyValue: 'CORR', execParams: { name: 'Мухбирӣ' } },
       // CDN_ADMINUNITTYPE
       { keyValue: 'COUNTRY', execParams: { name: 'Кишвар' } },
-      { keyValue: 'DISTRICT', execParams: { name: 'Регион' } },
+      { keyValue: 'DISTRICT', execParams: { name: 'Минтақа' } },
       { keyValue: 'CITY', execParams: { name: 'Шаҳр' } },
+      // CDN_SEXTYPE
       { keyValue: 'F', execParams: { name: 'З' } },
-      { keyValue: 'M', execParams: { name: 'М' } }
+      { keyValue: 'M', execParams: { name: 'М' } },
+      // CDN_ADDRESS
+      { keyValue: 'YUR', execParams: { name: 'Юридический адрес' } },
+      { keyValue: 'PHYS', execParams: { name: 'Физический адрес' } }
     ]
   }
   loader.localizeEntity(session, localizationConfig, __filename)

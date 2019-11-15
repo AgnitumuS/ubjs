@@ -1,25 +1,25 @@
 /* global UB */
 UB.i18nExtend({
   ok: 'ОК',
-  cancel: 'Отмена',
+  cancel: 'Бекор кардан',
   Yes: 'Ҳа',
   No: 'Не',
   Enter: 'Даромад',
   Password: 'Гузарвожа',
   User: 'Истифодабаранда', // login
-  UBAuthTip: 'Номи истифодабарандаро, гузарвожаро ворид кунед ва тугмачаи "Даромад" -ро пахш кунед.', // useUBAuthenticatinInfo
+  UBAuthTip: 'Номи истифодабарандаро, гузарвожаро ворид кунед ва тугмачаи "Даромад" -ро пахш кунед.',
   UBAuthHeader: 'Ба Утоқи шахсӣ худ <br/> {0} ворид шавед',
   UBAuthForgotPassword: 'Гузарвожаро фаромӯш кардаед?',
-  UBAuthRegistration: 'Registration',
+  UBAuthRegistration: 'Бақайдгирӣ',
   UBAuthContinue: 'Идомадодан',
   KerberosRemember: 'Ин усули воридшавиро фаромӯш накунед',
   KerberosRememberUserMenu: 'Ҳамеша бо истифодаи домен ворид шавед',
-  KerberosHeader: 'Вуруд бо истифода аз аккаунти <br/> системаи амалиетӣ', // useOSCredentialInfo
+  KerberosHeader: 'Вуруд бо истифода аз аккаунти <br/> системаи амалиетӣ',
   KerberosTip: 'Воридшавӣ бо ҳуқуқи истифодабарандае, ки ба системаи амалиёти ворид шудааст. Компютер бояд ба домен дохил карда шавад',
   Authentication: 'Аттестатсия',
   RegistrationMode: 'Низоми бақайдгири',
   AdditionalLoginOptions: 'Вариантҳои иловагии вурудӣ',
-  useOSCredentialTitle: 'Доменная',
+  useOSCredentialTitle: 'Доменнӣ',
   useUBAuthenticationTitle: 'Бо гузарвожа',
   useCertificateTitle: 'Бо калид',
   useCertificateInfo: 'Вуруд бо истифода бурдани <b> калиди шахсии:</b><ol>' +
@@ -40,9 +40,9 @@ UB.i18nExtend({
   msgInvalidPlugin: 'Нусхаи плагин кухна шудааст. Версия насб карда шуд {0}, талаб карда мешавад {1}. Навсозии автомати 1 бор дар 2 соат  ба амал меояд.' +
   ' Барои оғози дастӣ бо дастурамал <a href="models/adminui-pub/ub-extension/pluginUpdateInstruction_ru.html" target="_blank">истифода баред</a>. ' +
   ' Агар пас аз навсозӣ паём боқӣ монад, муроҷиат кунед ба маъмур.',
-  keyDeviseType: 'Тип носія',
-  keyFile: 'Особистий ключ',
-  keyDevise: 'Назва носія',
+  keyDeviseType: 'Тип носителя',
+  keyFile: 'Личный ключ',
+  keyDevise: 'Название носителя',
   'Selected certificate': 'Выбранный сертификат',
   'Select certificate file': 'Выберите файлы сертификатов',
   'Load certificates': 'К сожалению, не удалось найти сертификат. Выберите и загрузите ваш сертификат, который соответствует личному ключу.',
@@ -59,12 +59,15 @@ UB.i18nExtend({
   ERR_REFERENCE_ERROR: 'Иҷрои амалиет имконнопазир аст - унсури истифода бурда мешавад дар дигар сабтҳо',
   VALUE_MUST_BE_UNIQUE: 'Ягонагӣ вайрон карда шуд - арзиши нишондодашуда аллакай дар дигар сабтҳо истифода мешавад',
   SelectPKAndPassMsg: 'Файлро интихоб кунед ва рамзро пур кунед',
-  ReadPkTitle: 'Считывание личного ключа',
+  ReadPkTitle: 'Хонандаи калиди шухси',
   'Select private key file': 'Интихоб кардани калиди хусуси',
   'Selected key file': 'Файли калиди интихобшуда',
   selectSigningCertificate: 'Интихоб кунед файлро бо сертификат барои имзо',
   certificate: 'Сертификат',
   certificates: 'Сертификатҳо',
+  'UacException BAD_PASSWORD : 1016': 'Неверный пароль или ключ повредежден',
+  'uac_certStatusError': 'Невозможно определить статус сертификата',
+  'uac_certificateRevoked': 'Сертификат был отозван центром сертификации. Возможно завершился срок действия ключа',
   MAX_TREEPATH_DEPTH_EXCEED: 'Шумо як унсурро ба ин волид тобеъ карда наметавонед  - это приведет к зацикливанию',
   'Request Entity Too Large': 'Миқдори иттилооте, ки шумо ба сервер бор кардан мехоҳед, аз маҳдудияти муқарраршуда зиёд аст',
 

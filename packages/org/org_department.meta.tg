@@ -25,6 +25,10 @@
         {
             "name": "depTypeID",
             "caption": "Намуди воҳиди"
+        },
+        {
+            "name": "parentID",
+            "caption": "Аҷдод"
         }
     ]
 }

@@ -5,6 +5,14 @@
         {
             "name": "addressType",
             "caption": "Намуди суроға"
+        },
+        {
+            "name": "value",
+            "caption": "Суроға"
+        },
+        {
+            "name": "subjectID",
+            "caption": "Субъект"
         }
     ]
 }
