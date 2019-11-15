@@ -647,7 +647,7 @@ Ext.define('UB.core.UBCommand', {
 
       me.showCommandResult(viewer, {
         stateId: reportParams.code + (reportParams.params ? JSON.stringify(reportParams.params) : ''),
-        title: report.reportRW.name
+        title: UB.i18n(report.reportRW.name)
       })
     })
   },

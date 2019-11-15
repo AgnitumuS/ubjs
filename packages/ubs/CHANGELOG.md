@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.52]
+### Changed
+ - Report names are localizable now - "Click sample" report is an example
+
 ## [5.2.45]
 ### Changed
  - `ubs_numcounter.getRegnum` optimization

@@ -50,5 +50,10 @@
   messageType: 'Type',
   messageHistoryTitle: 'History',
   messageSendTitle: 'Send message',
-  messageSentSuccessfully: 'Message has been sent successfully'
+  messageSentSuccessfully: 'Message has been sent successfully',
+
+  rep_clickSample: 'Click sample',
+
+  // !!!  Do not change this last item.
+  EOF: 'EOF'
 })
