@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - An ability to translate report name added: a key from localization file should be provided
    in @name field of report definition in order to have localizable report form title
+ - Add translation for mi_createDate term, just like there is for mi_modifyDate
 
 [5.12.5]
 ### Added

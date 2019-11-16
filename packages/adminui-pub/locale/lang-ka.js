@@ -438,6 +438,7 @@ UB.i18nExtend({
   'mi_dateFrom': 'თარიღიდან',
   'mi_dateTo': 'თარიღამდე',
   'mi_modifyDate': 'ბოლოს განახლდა',
+  'mi_createDate': 'შექმნა',
   'countST': 'ჩანაწერების რაოდენობა',
   'sumST': 'თანხა',
   'maxST': 'მაქსიმალური მნიშვნელობა',

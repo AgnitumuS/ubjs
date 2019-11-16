@@ -333,6 +333,7 @@ UB.i18nExtend({
   mi_dateFrom: 'Tarixdən',
   mi_dateTo: 'Tarixə',
   mi_modifyDate: 'Last modified',
+  mi_createDate: 'Created',
   ubErrLockedbyanotheruser: 'Yazı digər istifadəçi tərəfindən bloka salınıb. Bütün dəyişiklikləri yadda saxlamaq mümkün olmayacaq. Təkrar cəhd edin.',
   showFilterPanel: 'Filtr',
 

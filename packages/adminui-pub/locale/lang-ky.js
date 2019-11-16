@@ -352,6 +352,7 @@ UB.i18nExtend({
   mi_dateFrom: 'Дата с',
   mi_dateTo: 'Дата по',
   mi_modifyDate: 'Отредактировано',
+  mi_createDate: 'Создано',
 
   ubErrLockedbyanotheruser: 'Запись заблокирована другим пользователем. Все внесенные изменения не будут сохранены. Попробуйте позднее.',
   showFilterPanel: 'Фильтр',
