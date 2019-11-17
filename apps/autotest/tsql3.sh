@@ -10,8 +10,7 @@ if [ -z "$UB_HOST" ]; then
   export UB_HOST=http://localhost:8881
 fi
 
-err()
-{
+err() {
   echo Testcase $TESTCASE failed
   exit 1
 }
@@ -24,11 +23,9 @@ TESTCASE='hello'
 ub -e "console.log('Start autotest')"
 
 TESTCASE='drop database'
-rm -f ./*.sqlite3*
-if [ ! $? = 0 ]; then err; fi
+rm -f ./*.sqlite3* || err
 
-rm -rf ./documents/simple
-if [ ! $? = 0 ]; then err; fi
+rm -rf ./documents/simple || err
 
 TESTCASE='init database'
 # Check whether UB_CFG set and contains a value, not spaces
@@ -45,21 +42,16 @@ if [ -z ${UB_DBAPWD+x} ] || [ -z "${UB_DBAPWD// }" ]; then
 fi
 # export UB_DEV=true
 
-npx ubcli createStore -cfg $UB_CFG -noLogo
-if [ ! $? = 0 ]; then err; fi
+npx ubcli createStore -cfg $UB_CFG -noLogo || err
 
 PASSWORD_FOR_ADMIN=admin
-
-npx ubcli initDB -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -p $PASSWORD_FOR_ADMIN -drop -create
-if [ ! $? = 0 ]; then err; fi
+npx ubcli initDB -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -p $PASSWORD_FOR_ADMIN -drop -create || err
 
 TESTCASE=generateDDL
-npx ubcli generateDDL -cfg $UB_CFG -autorun
-if [ ! $? = 0 ]; then err; fi
+npx ubcli generateDDL -cfg $UB_CFG -autorun || err
 
 TESTCASE=initialize
-npx ubcli initialize -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN
-if [ ! $? = 0 ]; then err; fi
+npx ubcli initialize -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN || err
 
 TESTCASE=autotest
 /usr/bin/time -v npx ubcli autotest -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -noLogo -skipModules
