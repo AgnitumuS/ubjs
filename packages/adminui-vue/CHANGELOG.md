@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.8.8]
+### Added
+- New optional props `fixedItems` to `USelectMultiple` and `USelectCollection`, example:
+```vue
+<template>
+  <u-select-multiple
+    v-model="model"
+    entity-name="tst_dictionary"
+    :fixed-items="fixedItems"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: [1,2,3],
+        fixedItems: [2]
+      }
+    }
+  }
+</script>
+```
+- New events `focus` and `blur` to `USelectMultiple`, `USelectCollection` and `USelectEntity`
+
+### Fixed
+- Styles in `UFormRow`, `USelectMultiple`, and `USelectEntity`
+- `clickOutsideDropdown` directive in `USelectEntity` now works properly
+
 [1.8.7]
 ### Added
  - property `disabled` in `UUploadDocument`
