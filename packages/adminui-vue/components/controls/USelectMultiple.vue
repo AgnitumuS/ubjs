@@ -30,12 +30,15 @@
         <div class="ub-select-multiple__input-wrap">
           <el-tag
             v-for="option in displayedOptions"
-            :key="option.ID"
+            :key="option[valueAttribute]"
             :type="option.isDeleted ? 'danger' : 'info'"
-            :closable="!readonly"
+            :closable="isOptionClosable(option[valueAttribute])"
             size="mini"
             class="ub-select-multiple__tag"
-            @close="removeOption(option.ID)"
+            :class="{
+              'fixed': isOptionFixed(option[valueAttribute])
+            }"
+            @close="removeOption(option[valueAttribute])"
           >
             <el-tooltip
               v-if="option.isDeleted"
@@ -52,24 +55,29 @@
             :readonly="readonly"
             class="ub-select-multiple__input"
             :placeholder="$ut(placeholder)"
-            @focus="isFocused = true"
-            @blur="isFocused = false"
+            @focus="onFocus"
+            @blur="onBlur"
             @keydown.exact.down.alt="readonly || onKeydownAltDown()"
             @keydown.exact.up.prevent
             @keydown.exact.down.prevent
           >
         </div>
-        <i
-          v-if="clearable && value.length > 0 && !readonly"
-          class="ub-select-multiple__icon el-icon-close"
-          @click="$emit('input', [])"
-        />
-        <i
-          v-if="!readonly"
-          class="ub-select-multiple__icon"
-          :class="inputIconCls"
-          @click="toggleDropdown"
-        />
+        <div
+          ref="icon-wrap"
+          class="ub-select-multiple__icon-wrap"
+        >
+          <i
+            v-if="clearable && value.length > 0 && !readonly"
+            class="ub-select-multiple__icon el-icon-close"
+            @click="clearSelected"
+          />
+          <i
+            v-if="!readonly"
+            class="ub-select-multiple__icon"
+            :class="inputIconCls"
+            @click="toggleDropdown"
+          />
+        </div>
       </div>
 
       <div
@@ -84,12 +92,15 @@
           class="ub-select__option"
           :class="{
             'active': option[valueAttribute] === value,
-            'selected': option[valueAttribute] === selectedOption
+            'selected': option[valueAttribute] === selectedOption,
+            'fixed': isOptionFixed(option[valueAttribute])
           }"
           @click.prevent="chooseOption"
           @mouseenter="selectedOption = option[valueAttribute]"
         >
-          <el-checkbox :value="value.includes(option[valueAttribute])" />
+          <el-checkbox
+            :value="value.includes(option[valueAttribute])"
+          />
           {{ option[getDisplayAttribute] }}
         </div>
         <el-row
@@ -124,6 +135,9 @@
           :type="option.isDeleted ? 'danger' : 'info'"
           size="mini"
           class="ub-select-multiple__tag"
+          :class="{
+            'fixed': isOptionFixed(option[valueAttribute])
+          }"
         >
           <el-tooltip
             v-if="option.isDeleted"
@@ -206,7 +220,14 @@ export default {
     /**
      * Set readonly status
      */
-    readonly: Boolean
+    readonly: Boolean,
+    /**
+     * An array with IDs of elements that unable to remove
+     */
+    fixedItems: {
+      type: Array,
+      default: () => []
+    }
   },
 
   data () {
@@ -301,6 +322,10 @@ export default {
       async handler (newVal, oldVal = []) {
         const isAdded = newVal.length > oldVal.length
         if (isAdded) {
+          if (!this.fixedItems.every(i => this.value.includes(i))) {
+            console.error('You should provide an initial value if you want items to be fixed')
+          }
+
           const addedItems = newVal.filter(a => !oldVal.includes(a))
           const formattedItems = await this.getFormattedOptions(addedItems) // temp
           this.displayedOptions.push(...formattedItems)
@@ -448,7 +473,7 @@ export default {
 
     // emits when user click on option or click enter when option is focused
     chooseOption () {
-      if (this.selectedOption === null) return
+      if (this.selectedOption === null || this.isOptionFixed(this.selectedOption)) return
       const isChecked = this.value.includes(this.selectedOption)
       if (isChecked) {
         this.removeOption(this.selectedOption)
@@ -518,6 +543,29 @@ export default {
         const el = this.$refs[`option_${this.selectedOption}`][0]
         el.scrollIntoView({ block: 'nearest' })
       }
+    },
+
+    clearSelected () {
+      const filterFixed = this.value.filter(i => i === this.isOptionFixed(i))
+      this.$emit('input', filterFixed)
+    },
+
+    isOptionClosable (option) {
+      return !(this.readonly || !!this.isOptionFixed(option))
+    },
+
+    isOptionFixed (option) {
+      return this.fixedItems.find(fi => fi === option) && this.value.find(v => v === option)
+    },
+
+    onFocus () {
+      this.isFocused = true
+      this.$emit('focus')
+    },
+
+    onBlur () {
+      this.isFocused = false
+      this.$emit('blur')
     }
   }
 }
@@ -525,10 +573,11 @@ export default {
 
 <style>
 .ub-select-multiple__container{
-  display: flex;
   border: 1px solid #DCDFE6;
   border-radius: 4px;
   padding-left: 5px;
+  background-color: #FFF;
+  display: flex;
 }
 
 .ub-select-multiple__container.disabled{
@@ -540,7 +589,8 @@ export default {
 }
 
 .ub-select-multiple__container.is-focused{
-  border-color: rgb(var(--primary))
+  position: relative;
+  border-color: rgb(var(--primary));
 }
 
 .ub-select-multiple__tag {
@@ -551,8 +601,9 @@ export default {
 .ub-select-multiple__input-wrap{
   display: flex;
   flex-wrap: wrap;
-  flex-grow: 1;
   margin-top: 5px;
+  flex-grow: 1;
+  overflow: hidden;
 }
 
 .ub-select-multiple__input{
@@ -569,14 +620,39 @@ export default {
   color: rgb(var(--info-light));
 }
 
+.ub-select-multiple__icon-wrap {
+  display: flex;
+  align-items: center;
+}
+
 .ub-select-multiple__icon{
-  min-height: 100%;
-  min-width: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
+  min-width: 34px;
   color: rgb(var(--info-light));
   cursor: pointer;
+}
+
+.ub-select-multiple__tag {
+  position: relative;
+  padding-right: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ub-select-multiple__tag.fixed {
+  padding-right: 10px;
+  background-color: rgba(var(--bg), 0.15);
+  border-color: rgba(var(--bg), 0.15);
+}
+
+.ub-select-multiple__tag .el-icon-close {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%) scale(0.7);
 }
 </style>
 
@@ -666,7 +742,7 @@ For example when you need instead `ID` like `code`.
     v-model="model"
     entity-name="tst_dictionary"
     clearable
-  />>
+  />
 </template>
 <script>
   export default {
@@ -687,13 +763,35 @@ For example when you need instead `ID` like `code`.
     v-model="model"
     entity-name="tst_dictionary"
     disabled
-  />>
+  />
 </template>
 <script>
   export default {
     data () {
       return {
         value: [1,2,3]
+      }
+    }
+  }
+</script>
+```
+
+### filteredItems
+
+```vue
+<template>
+  <u-select-multiple
+    v-model="model"
+    entity-name="tst_dictionary"
+    :fixed-items="fixedItems"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: [1,2,3],
+        fixedItems: [2]
       }
     }
   }

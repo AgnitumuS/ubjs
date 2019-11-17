@@ -32,8 +32,8 @@
           :readonly="!editable || readonly"
           :placeholder="$ut(placeholder)"
           @click.native="editable || toggleDropdown()"
-          @focus="isFocused = true"
-          @blur="isFocused = false"
+          @focus="onFocus"
+          @blur="onBlur"
           @keydown.native.exact.e.ctrl.prevent="readonly || handleEditItem()"
           @keydown.native.exact.f9="readonly || handleShowDictionary()"
           @keydown.native.exact.delete.ctrl="readonly || handleClearClick()"
@@ -62,7 +62,7 @@
             class="el-input__icon"
             style="cursor: pointer;"
             :class="inputIconCls"
-            @click.stop.prevent="toggleDropdown"
+            @click.stop="toggleDropdown"
           />
           <el-dropdown
             v-if="actions.length > 0 && !readonly"
@@ -593,6 +593,16 @@ export default {
           this.fetchPage()
         }
       }
+    },
+
+    onFocus () {
+      this.isFocused = true
+      this.$emit('focus')
+    },
+
+    onBlur () {
+      this.isFocused = false
+      this.$emit('blur')
     }
   }
 }
@@ -619,6 +629,15 @@ export default {
   color: rgb(var(--primary));
 }
 
+.ub-select__option.selected.fixed {
+  background-color: rgba(var(--bg), 0.1);
+}
+
+.ub-select__option.fixed .el-checkbox__inner {
+  background-color: rgba(var(--bg), 0.08);
+  border-color: rgba(var(--bg), 0.08);
+}
+
 .ub-select__container{
   position: relative;
 }
@@ -640,6 +659,10 @@ export default {
 
 .ub-select__container input[readonly=readonly] {
   cursor: pointer;
+}
+
+.ub-select__container .el-input__inner {
+  padding-right: 64px;
 }
 </style>
 

@@ -6,7 +6,10 @@
     :clearable="clearable"
     :placeholder="placeholder"
     :readonly="readonly"
+    :fixed-items="fixedItems"
     @input="changeCollection"
+    @focus="onFocus"
+    @blur="onBlur"
   />
 </template>
 
@@ -68,7 +71,14 @@ export default {
     /**
      * Set readonly status
      */
-    readonly: Boolean
+    readonly: Boolean,
+    /**
+     * An array with IDs of elements that unable to remove
+     */
+    fixedItems: {
+      type: Array,
+      default: () => []
+    }
   },
 
   data () {
@@ -135,6 +145,14 @@ export default {
           }
         }
       }
+    },
+
+    onFocus () {
+      this.$emit('focus')
+    },
+
+    onBlur () {
+      this.$emit('blur')
     }
   }
 }

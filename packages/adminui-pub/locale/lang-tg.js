@@ -350,6 +350,7 @@ UB.i18nExtend({
   mi_dateFrom: 'Сана аз',
   mi_dateTo: 'Сана то',
   mi_modifyDate: 'Таҳрир карда шудааст',
+  mi_createDate: 'Офаридааст',
   ubErrLockedbyanotheruser: 'Сабтро истифодабарандаи дигар қулф задааст. Ҳама тағиротҳои воридшуда захира намешаванд.  Попробуйте позднее.',
   showFilterPanel: 'Филтр',
 

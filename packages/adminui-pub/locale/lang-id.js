@@ -436,6 +436,7 @@ UB.i18nExtend({
   'mi_dateFrom': 'Date from',
   'mi_dateTo': 'Date to',
   'mi_modifyDate': 'Last modified',
+  'mi_createDate': 'Created',
   'countST': 'Record count',
   'sumST': 'Sum',
   'maxST': 'Max value',

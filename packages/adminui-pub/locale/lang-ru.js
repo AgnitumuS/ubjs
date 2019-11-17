@@ -374,6 +374,7 @@ UB.i18nExtend({
   mi_dateFrom: 'Дата с',
   mi_dateTo: 'Дата по',
   mi_modifyDate: 'Отредактировано',
+  mi_createDate: 'Создано',
   showAudit: 'Аудит',
   isRequiredTip: 'Обязательное для заполнения',
   isMultilangTip: 'Значения на других языках',
