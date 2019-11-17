@@ -16,7 +16,10 @@
     >
       <span>{{ $ut(label) }}</span>
     </div>
-    <div class="ub-form-row__content">
+    <div
+      class="ub-form-row__content"
+      :style="contentWidthCss"
+    >
       <div
         class="ub-error-wrap"
         :class="{
@@ -87,7 +90,7 @@ export default {
       default () {
         return this.formLabelPosition || 'left'
       }
-    },
+    }
   },
 
   inject: {
@@ -115,8 +118,8 @@ export default {
 
     errorMessageMarginCss () {
       return this.labelPositionComputed === 'top'
-      ? ` margin-left: ${this.labelWidth + 6}px`
-      : ''
+        ? ` margin-left: ${this.labelWidth + 6}px`
+        : ''
     },
 
     errorText () {
@@ -128,6 +131,12 @@ export default {
         }
       }
       return ''
+    },
+
+    contentWidthCss () {
+      return this.labelPositionComputed !== 'top'
+        ? `width: calc(100% - ${this.labelWidth}px);`
+        : ''
     }
   }
 }
