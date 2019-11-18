@@ -37,6 +37,18 @@ UB.i18nExtend({
   'Load certificates': 'Sorry, the certificate could not be found. Select and upload your certificate that matches the private key.',
   'Load': 'Upload',
   'Cancel': 'Cancel',
+  'ByKeyFile': 'File',
+  'Use proxy server': 'Use proxy server',
+  'Proxy host': 'Host',
+  'Proxy port': 'Port',
+  'Authenticate on proxy': 'Authenticate on proxy',
+  'User name': 'User name',
+  'Save password': 'Save password',
+  'Save': 'Save',
+  'Select acsk': 'Select АЦСК',
+  'acsk': 'АЦСК',
+  'Crypto library settings': 'Crypto library settings',
+
 
   unknownError: 'Unknown error. Please, contact your system administrator.',
   recordNotExistsOrDontHaveRights: 'Record not exists or you don\'t have access rights',

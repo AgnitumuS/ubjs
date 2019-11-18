@@ -39,6 +39,7 @@ UB.i18nExtend({
   'Load certificates': 'К сожалению, не удалось найти сертификат. Выберите и загрузите ваш сертификат, который соответствует личному ключу.',
   'Load': 'Загрузить',
   'Cancel': 'Отменить',
+  'ByKeyFile': 'Файл',
 
   unknownError: 'Unknown error. Please, contact your system administrator.',
   recordNotExistsOrDontHaveRights: 'Record not exists or you don\'t have access rights',

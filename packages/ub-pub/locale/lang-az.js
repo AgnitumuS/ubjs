@@ -42,6 +42,7 @@ UB.i18nExtend({
   'Load certificates': 'К сожалению, не удалось найти сертификат. Выберите и загрузите ваш сертификат, который соответствует личному ключу.',
   'Load': 'Загрузить',
   'Cancel': 'Отменить',
+  'ByKeyFile': 'Файл',
 
   IITCertCanceledByUser: 'Canceled by user',
   msgInvalidPlugin: 'Plaginin versiyası köhnəlib. Quraşdırılmış versiya {0}, tələb olnur {1}. Avtomatik yenilənmə 2 saatdan bir baş verir.' +

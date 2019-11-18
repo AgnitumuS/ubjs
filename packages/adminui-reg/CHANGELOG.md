@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.6]
+### Fixed
+ - CSP for IIT sign agent
+
 ## [5.2.2]
 ### Added
  - more details will be shown to user in case server works in production mode but user use a `-dev` endpoint 
