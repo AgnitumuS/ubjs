@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; object-src 'none'; base-uri 'none'; style-src 'self' 'unsafe-inline' data:; font-src 'self' data:; frame-src 'none'; img-src 'self' https://unitybase.info data:;">
+        content="default-src 'self' https://localhost:8083 http://localhost:8081; script-src 'self' https://localhost:8083 http://localhost:8081 'unsafe-inline' 'unsafe-eval'; object-src 'none' https://localhost:8083 http://localhost:8081; base-uri 'none'; style-src 'self' 'unsafe-inline' data:; font-src 'self' data:; frame-src 'none'; img-src 'self' https://unitybase.info data:;">
   <!-- import CSS -->
   <!-- normalize browser CSS i.e. button should have the same font-family as body -->
   <link rel="stylesheet" href="/clientRequire/font-awesome/css/font-awesome.min.css"/>
@@ -191,7 +191,7 @@
         <div v-else>
           <el-form :model="authData" size="medium" @submit.native.prevent ref="authForm" :rules="authRules">
             <div v-if="hasCERT2">
-              <cert2-param-form :load-pk="doCert2Login" class="auth-inject-panel"></cert2-param-form>
+              <cert2-param-form :load-pk="doCert2Login" :auth-was-started="authWasStarted" class="auth-inject-panel"></cert2-param-form>
               <!--
               <p class="auth-page__cert-info" v-html="$ut('useCertificateInfoSimple')"></p>
               <el-form-item>
@@ -302,6 +302,7 @@
         keyFile: null,
         injectionPromise: Promise.resolve(true),
         changePwdActive: false,
+        authWasStarted: false,
         authRules: {
           user: [
             {required: true, message: this.$ut('blankText'), trigger: 'blur'}
@@ -367,6 +368,7 @@
         })
       },
       doCert2Login: function (pkParams) {
+        this.authWasStarted = true
         window.deferred.resolve(pkParams)
         /*
         var me = this
@@ -441,6 +443,7 @@
       })
     },
     onCredentialRequired: function (conn, isRepeat) {
+      vm.authWasStarted = false
       return new Promise(function (resolve, reject) {
         window.deferred.resolve = resolve
         window.deferred.reject = reject

@@ -8,6 +8,17 @@ const { GC_KEYS } = require('@unitybase/base')
 const mustache = require('mustache')
 const fs = require('fs')
 const path = require('path')
+
+function initCspAllow (cspAllow, cspAllowP, name, init) {
+  if (!cspAllow[name]) {
+    cspAllow[name] = {}
+  }
+  if (init) {
+    cspAllow[name].initValues = init
+  }
+  cspAllowP[name] = Object.keys(cspAllow[name]).map(f => cspAllow[name][f]).join(' ')
+}
+
 /**
  *
  * @param {THTTPRequest} req
@@ -21,10 +32,12 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
     return m ? `?ver=${m.version}` : '?ver=0'
   }
 
+  let uiSettings = App.serverConfig.uiSettings || {}
+  let cspAllow = uiSettings.cspAllow || {}
+  let cspAllowP = {}
   let compiledIndexKey = GC_KEYS.COMPILED_INDEX_ + indexName
   let compiledIndex = App.globalCacheGet(compiledIndexKey)
   if (!compiledIndex) {
-    let uiSettings = App.serverConfig.uiSettings
     if (!uiSettings.adminUI) {
       uiSettings.adminUI = { themeName: 'UBGrayTheme' }
     } else if (!uiSettings.adminUI.themeName) {
@@ -107,21 +120,35 @@ but "browser" section in package.json is not defined. Will fallback to "browser"
       // let wsSrc = 'ws' + App.externalURL.slice(4)
       // let uiSettings = App.serverConfig.uiSettings
       // let onlyOfficeServer = (uiSettings.adminUI.onlyOffice && uiSettings.adminUI.onlyOffice.serverIP) || ''
+
+      if (!uiSettings.cspAllow) {
+        cspAllow = uiSettings.cspAllow = {}
+      }
+      initCspAllow(cspAllow, cspAllowP, 'defaultSrc', 'https://localhost:8083 http://localhost:8081')
+      initCspAllow(cspAllow, cspAllowP, 'scriptSrc', 'https://localhost:8083 http://localhost:8081')
+      initCspAllow(cspAllow, cspAllowP, 'connectSrc', 'https://localhost:8083 http://localhost:8081')
+      initCspAllow(cspAllow, cspAllowP, 'objectSrc', 'https://localhost:8083 http://localhost:8081')
+      initCspAllow(cspAllow, cspAllowP, 'styleSrc')
+      initCspAllow(cspAllow, cspAllowP, 'imgSrc')
+      initCspAllow(cspAllow, cspAllowP, 'frameSrc')
+      initCspAllow(cspAllow, cspAllowP, 'fontSrc')
+
       let wsNotifier = App.serverConfig.uiSettings.adminUI.amqpNotificationUrl || ''
       let cspHeaders =
-        "default-src 'self'; " +
-        "connect-src 'self' blob: " + wsNotifier + '; ' + // we need blob: for UBDocument (ER diagrams, org chart etc.)
+        `default-src 'self' ${cspAllowP.defaultSrc}; ` +
+        `connect-src 'self' ${wsNotifier} ${cspAllowP.connectSrc} blob:; ` + // we need blob: for UBDocument (ER diagrams, org chart etc.)
         // 'unsafe-inline' is removed in flavor of 'nonce-...'
         // TODO - remove 'unsafe-eval' after removing all `eval(` from Ext
-        `script-src 'self' 'nonce-${cspNonce}' 'unsafe-eval';` +
-        'object-src blob:; ' +
-        "base-uri 'none'; " +
-        "style-src 'self' 'unsafe-inline' data:; " +
-        "font-src 'self' data:; " +
-        `frame-src 'self' blob:;` + // blob src required for chrome PDF viewer. Self - for JS PDF viewer
-        "img-src 'self' https://unitybase.info data: blob:; " + // blob: is for pictures inside tinyMCE
-        'plugin-types application/pdf'
+        `script-src 'self' 'nonce-${cspNonce}' 'unsafe-eval' ${cspAllowP.scriptSrc}; ` +
+        `object-src blob: ${cspAllowP.objectSrc}; ` +
+        `base-uri 'none' ; ` +
+        `style-src 'self' 'unsafe-inline' data: ${cspAllowP.styleSrc}; ` +
+        `font-src 'self' data: ${cspAllowP.fontSrc}; ` +
+        `frame-src 'self' ${cspAllowP.frameSrc} blob:; ` + // blob src required for chrome PDF viewer. Self - for JS PDF viewer
+        `img-src 'self' https://unitybase.info ${cspAllowP.imgSrc} data: blob:; ` + // blob: is for pictures inside tinyMCE
+        `plugin-types application/pdf`
       cspHeader = '\r\nContent-Security-Policy: ' + cspHeaders
+      console.log(cspHeaders)
     }
     resp.writeHead('X-Frame-Options: sameorigin\r\nX-Content-Type-Options: nosniff\r\nX-XSS-Protection: 1; mode=block\r\nContent-Type: text/html\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache\r\nExpires: Fri, 01 Jan 1990 00:00:00 GMT' + cspHeader)
   } else {

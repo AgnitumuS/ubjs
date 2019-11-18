@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.28]
+### Add
+ - translates for iit-sign-web forms
+
+
+## [5.3.27]
+### Fixed
+ - Correct translation crypto
+
 ## [5.3.26]
 ### Fixed
  - `AsyncConnection` converted `null` to `"null"` in execParams in some cases
