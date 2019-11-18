@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.8.9]
+### Fixed
+ - added CSP for IIT sign agent (localhost:8081 & 8083)
+ - error unlock auth cert2 form on error
+
 [1.8.7]
 ### Added
  - property `disabled` in `UUploadDocument`
@@ -34,8 +39,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - Styles in `UFormRow`, `USelectMultiple`, and `USelectEntity`
  - `clickOutsideDropdown` directive in `USelectEntity` now works properly
- - added CSP for IIT sign agent (localhost:8081 & 8083)
- - error unlock auth cert2 form on error
 
 [1.8.6]
 ### Added 
