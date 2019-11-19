@@ -385,6 +385,9 @@ function getServerConfiguration (forFutureSave = false) {
   }
   if (!result.security) result.security = {}
   if (!result.httpServer) result.httpServer = { serverType: 'None' }
+  if (result.httpServer.inetPub) {
+    result.httpServer.inetPub = path.resolve(process.configPath, result.httpServer.inetPub)
+  }
   if (result.httpServer.serverType !== 'None') {
     if (!result.httpServer.externalURL) result.httpServer.externalURL = serverURLFromConfig(result)
     if (!result.httpServer.reverseProxy) result.httpServer.reverseProxy = {}
@@ -395,6 +398,9 @@ function getServerConfiguration (forFutureSave = false) {
       if (!rp.sendFileHeader) rp.sendFileHeader = 'X-Accel-Redirect'
       if (!rp.sendFileLocationRoot) {
         rp.sendFileLocationRoot = url.parse(result.httpServer.externalURL).hostname.replace(/\./g, '-')
+      }
+      if (!rp.hasOwnProperty('serveStatic')) {
+        rp.serveStatic = true
       }
     }
   }

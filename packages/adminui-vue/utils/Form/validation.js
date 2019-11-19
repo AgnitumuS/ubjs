@@ -1,7 +1,7 @@
 module.exports = createValidator
 
 const Vue = require('vue')
-const { validationMixin } = require('vuelidate/lib/index')
+const { validationMixin } = require('vuelidate')
 const { required } = require('vuelidate/lib/validators/index')
 const { mapInstanceFields } = require('./helpers')
 

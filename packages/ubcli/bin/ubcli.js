@@ -39,7 +39,7 @@ function ubcli () {
   } else {
     try {
       const resolved = require.resolve(`../lib/${command}`)
-      console.log('RESOLVED TO', resolved)
+      //console.log('RESOLVED TO', resolved)
     } catch (e) {
       showUsage()
       console.error(`Invalid command "${command}". See above for possible commands`)

@@ -3,6 +3,9 @@
   "version": "5.1.15",
   "description": "UnityBase SMTP/POP3",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/mailer",
+  "config": {
+    "ubmodel": {}
+  },
   "scripts": {
     "build": "npm run build:native",
     "build:native": "node ./bin/compile.js"

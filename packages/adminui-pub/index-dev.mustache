@@ -101,9 +101,9 @@
     baseURL: '/clientRequire',
     defaultJSExtensions: false,
     map: {
-      css: 'systemjs-plugin-css/css.js',
-      vue: 'vue/dist/vue.common.dev.js', // should be the same as in adminui-vue webpack config
-      'element-ui': 'element-ui/lib/index.js'
+      {{#modulesMap}}
+      '{{{moduleName}}}': '{{{entryPoint}}}',
+      {{/modulesMap}}
     },
     meta: {
       'tinymce*': {format: 'global'},
@@ -116,7 +116,7 @@
         'loader': '@unitybase/systemjs-plugin-vue-ub'
       }
     },
-    packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
+    packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json', 'vuelidate/package.json']
   })
 
   //System.import('systemjs-hmr').then(function () {
