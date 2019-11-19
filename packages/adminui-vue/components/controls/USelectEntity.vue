@@ -415,7 +415,7 @@ export default {
                 this.query = option[this.displayAttribute]
                 this.setSafeDeleteValue(option)
               } else {
-                throw new Error(`Missing value '${value}' in entity '${this.entity}'`)
+                throw new Error(`Missing value '${value}' in entity '${this.entityName}'`)
               }
             })
         }
@@ -511,7 +511,8 @@ export default {
     handleShowDictionary () {
       if (!this.removeDefaultActions) {
         this.$UB.core.UBApp.doCommand({
-          entity: this.entity,
+          renderer: 'ext',
+          entity: this.entityName,
           cmdType: 'showList',
           isModal: true,
           sender: this,
@@ -521,7 +522,7 @@ export default {
           },
           cmdData: {
             params: [{
-              entity: this.entity,
+              entity: this.entityName,
               method: 'select',
               fieldList: '*'
             }]
@@ -534,7 +535,7 @@ export default {
       if (!this.removeDefaultActions) {
         this.$UB.core.UBApp.doCommand({
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
-          entity: this.entity,
+          entity: this.entityName,
           isModal: true,
           instanceID: this.value
         })
@@ -545,7 +546,7 @@ export default {
       if (!this.removeDefaultActions) {
         this.$UB.core.UBApp.doCommand({
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
-          entity: this.entity,
+          entity: this.entityName,
           isModal: true
         })
       }
