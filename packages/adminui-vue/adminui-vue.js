@@ -95,7 +95,7 @@ Vue.use(UB)
 const UbComponents = require('./utils/install-ub-components')
 Vue.use(UbComponents)
 
-const Vuelidate = require('vuelidate/lib/index').default
+const Vuelidate = require('vuelidate').default
 if (IS_SYSTEM_JS && !SystemJS.has('vuelidate')) SystemJS.set('vuelidate', SystemJS.newModule(Vuelidate))
 Vue.use(Vuelidate)
 

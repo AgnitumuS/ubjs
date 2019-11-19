@@ -118,6 +118,17 @@ server {
         proxy_pass          http://{{{sendFileLocationRoot}}};
         client_max_body_size    {{maxDocBodySize}};
     }
+{{#serveStatic}}
+    # intercept static asserts prepared by "npx ubcli linkStatic"
+    location /clientRequire {
+      root {{{staticRoot}}};
+      index .entryPoint.js;
+      try_files $uri $uri/ $uri.js;
+    }
+    location /models {
+      root {{{staticRoot}}}/clientRequire;
+    }
+{{/serveStatic}}
 {{#sendFileHeader}}
     # application internal location for endpoints clientRequire, mdb, models, static
     # warning - mtime for files inside ./node_modules should be modified to current date instead of 1985-10-26T08:15:00Z

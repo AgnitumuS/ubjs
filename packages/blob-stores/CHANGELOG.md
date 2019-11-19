@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.2]
+### Fixed
+ - prevent expose a package to client by adding `"config": {"ubmodel": {} }` into package.json
+ 
 ## [5.1.0]
 ### Fixed
  - BlobStores regression: for stores filled by UB < 5 (without {v: 1,..} attribute in blobStore content JSON)

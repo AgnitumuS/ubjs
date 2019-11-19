@@ -99,7 +99,9 @@
   System.config({
     baseURL: '/clientRequire',
     map: {
-      css: 'systemjs-plugin-css/css.js'
+      {{#modulesMap}}
+      '{{{moduleName}}}': '{{{entryPoint}}}',
+      {{/modulesMap}}
     },
     meta: {
       // '*': {nonce: 'cspNonce'}  if this line is added (cspNonce is a mustache variable) SystemJS override window.onerror

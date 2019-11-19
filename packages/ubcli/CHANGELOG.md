@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.5.0]
+### Added
+ - new command `ubcli linkStatic`: creating folder with all static assets (models, modules) what should be available
+   for client using `/clientRequire` and `/models` endpoints. Such folder can be served by nginx as a static folder.
+   See tutorial [Serving static assets by nginx](https://unitybase.info/api/server-v5/tutorial-reverse_proxy_nginx.html#serving-static-assets-by-nginx)
+   for details
+ - `npx ubcli generateNginxCfg` will add a locations `/clientRequire` and `/models` to nginx config
+   in case reverseProxy.serveStatic is true (default)  
+   
+### Fixed
+ - prevent expose a package to client by adding `"config": {"ubmodel": {} }` into package.json
+ 
 ## [5.3.42]
 ### Fixed
  - Oracle DDl generator - do not wrap enum group into quotes when update a value for enum column from `null` to `not null`

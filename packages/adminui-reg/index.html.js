@@ -9,6 +9,36 @@ const mustache = require('mustache')
 const fs = require('fs')
 const path = require('path')
 
+const MODULES_ROOT = path.join(process.configPath, 'node_modules')
+
+/**
+ * Resolve a path to module entry point by module name
+ * @param {string} moduleName
+ * @param {Array<{moduleName: string, entryPoint: string}>} modulesMap
+ * @return {undefined|string}
+ */
+function resolveModuleEntryPoint (moduleName, modulesMap, modelsConfig) {
+  if (modulesMap.find(m => m.moduleName === moduleName)) return // already added
+  if (modelsConfig.find(m => m.moduleName === moduleName)) return // models injected separately
+  let resolvedPath = path.resolve(MODULES_ROOT, moduleName)
+  if (!fs.existsSync(resolvedPath)) { // try js file
+    resolvedPath = resolvedPath + '.js'
+  }
+  let stat = fs.statSync(resolvedPath)
+  if (stat.isDirectory()) {
+    let pkgName = path.join(resolvedPath, 'package.json')
+    if (fs.existsSync(pkgName)) {
+      let pkgMain = JSON.parse(fs.readFileSync(pkgName, 'utf8')).main || './index.js'
+      resolvedPath = path.join(resolvedPath, pkgMain)
+    } else {
+      resolvedPath = path.join(resolvedPath, 'index.js')
+    }
+  }
+  if (resolvedPath) {
+    return path.relative(MODULES_ROOT, resolvedPath)
+  }
+}
+
 function initCspAllow (cspAllow, cspAllowP, name, init) {
   if (!cspAllow[name]) {
     cspAllow[name] = {}
@@ -59,6 +89,12 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
     // noinspection JSUnusedGlobalSymbols
     let view = {
       uiSettings: uiSettings,
+      modulesMap: [ // modules with entry point path differ from specified in package.json main section. In futur ewill be used for ESM module import configuration
+        { moduleName: 'css', entryPoint: 'systemjs-plugin-css/css.js' },
+        { moduleName: 'vue', entryPoint: 'vue/dist/vue.common.dev.js' }, // should be the same as in adminui-vue webpack config
+        { moduleName: 'element-ui', entryPoint: 'element-ui/lib/index.js' },
+        { moduleName: 'systemjs-hmr', entryPoint: 'systemjs-hmr/dist/systemjs-hmr.js' }
+      ],
       modelVersions: [],
       modelInitialization: [],
       adminUIModel: '',
@@ -70,7 +106,7 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
       }
     }
 
-    // add admin-ui
+    // add admin-ui and models what require initialisation
     let modelsConfig = App.serverConfig.application.domain.models
     const ADMINUI_MODEL = '@unitybase/adminui-pub'
     let modelCfg = modelsConfig.find(m => m.moduleName === ADMINUI_MODEL)
@@ -100,6 +136,31 @@ but "browser" section in package.json is not defined. Will fallback to "browser"
         }
       }
     })
+
+    // prepare a modules entry points map
+    // if (!fs.existsSync(MODULES_ROOT)) {
+    //   throw new Error(`node_modules folder not found in the folder with app config. Expected "${MODULES_ROOT}". May be you miss "npm i" command?`)
+    // }
+    // let tm = fs.readdirSync(MODULES_ROOT)
+    // tm.forEach(m => {
+    //   if (m.startsWith('.')) return
+    //   if (m.startsWith('@')) { // namespace
+    //     let ttm = fs.readdirSync(path.join(MODULES_ROOT, m))
+    //     ttm.forEach(sm => {
+    //       if (sm.startsWith('.')) return
+    //       let moduleName = m + '/' + sm
+    //       let resolved = resolveModuleEntryPoint(moduleName, view.modulesMap, modelsConfig)
+    //       if (resolved) {
+    //         view.modulesMap.push({ moduleName: moduleName, entryPoint: resolved })
+    //       }
+    //     })
+    //   } else {
+    //     let resolved = resolveModuleEntryPoint(m, view.modulesMap, modelsConfig)
+    //     if (resolved) {
+    //       view.modulesMap.push({ moduleName: m, entryPoint: resolved })
+    //     }
+    //   }
+    // })
 
     compiledIndex = mustache.render(indexTpl, view)
     if (compiledIndex) {

@@ -1,7 +1,7 @@
 {
 	"caption": "Test FB",
 	"description": "Test firebird",
-	"connectionName": "FB",
+	"connectionName": "",
 	"attributes": {
 		"name": {
 		 	"dataType": "String",

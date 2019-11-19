@@ -19,24 +19,24 @@
 const fs = require('fs')
 const path = require('path')
 const url = require('url')
-const {options, argv} = require('@unitybase/base')
+const { options, argv } = require('@unitybase/base')
 const mustache = require('mustache')
 
 module.exports = function generateNginxCfg (cfg) {
   if (!cfg) {
     let opts = options.describe('generateNginxCfg',
-`Generate include for NGINX config based on reverseProxy section of application config.
+      `Generate include for NGINX config based on reverseProxy section of application config.
  host for nginx is taken from httpServer.externalURL parameter`,
       'ubcli'
     )
-      .add({short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config'})
-      .add({short: 'l', long: 'lb', param: 'enableLoadBalancing', defaultValue: false, searchInEnv: false, help: 'Add this key to add upstream config for load balancing'})
-      .add({short: 'r', long: 'sslRedirect', param: 'sslRedirect', defaultValue: false, help: `In case externalURL is https adds permanent redirect from http to https`})
-      .add({short: 'sslkey', long: 'sslkey', param: 'pathToSSLKey', defaultValue: '', help: `For https - full path to ssl private key *.key file`})
-      .add({short: 'sslcert', long: 'sslcert', param: 'pathToSSLCert', defaultValue: '', help: `For https - full path to ssl public certificate key *.pem file`})
-      .add({short: 'ipv6', long: 'ipv6', defaultValue: false, help: `Bind to IPv6 address`})
-      .add({short: 'maxDocBody', long: 'maxDocBody', param: 'maxDocBodySize', defaultValue: '5m', help: 'Max body size for setDocument endpoint. See http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size'})
-      .add({short: 'out', long: 'out', param: 'outputPath', defaultValue: path.join(process.cwd(), 'ub-proxy.conf'), help: 'Full path to output file'})
+      .add({ short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config' })
+      .add({ short: 'l', long: 'lb', param: 'enableLoadBalancing', defaultValue: false, searchInEnv: false, help: 'Add this key to add upstream config for load balancing' })
+      .add({ short: 'r', long: 'sslRedirect', param: 'sslRedirect', defaultValue: false, help: `In case externalURL is https adds permanent redirect from http to https` })
+      .add({ short: 'sslkey', long: 'sslkey', param: 'pathToSSLKey', defaultValue: '', help: `For https - full path to ssl private key *.key file` })
+      .add({ short: 'sslcert', long: 'sslcert', param: 'pathToSSLCert', defaultValue: '', help: `For https - full path to ssl public certificate key *.pem file` })
+      .add({ short: 'ipv6', long: 'ipv6', defaultValue: false, help: `Bind to IPv6 address` })
+      .add({ short: 'maxDocBody', long: 'maxDocBody', param: 'maxDocBodySize', defaultValue: '5m', help: 'Max body size for setDocument endpoint. See http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size' })
+      .add({ short: 'out', long: 'out', param: 'outputPath', defaultValue: path.join(process.cwd(), 'ub-proxy.conf'), help: 'Full path to output file' })
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
@@ -76,7 +76,15 @@ module.exports = function generateNginxCfg (cfg) {
     maxDocBodySize: cfg.maxDocBody,
     sendFileHeader: reverseProxyCfg.sendFileHeader,
     sendFileLocationRoot: reverseProxyCfg.sendFileLocationRoot,
+    serveStatic: reverseProxyCfg.serveStatic,
+    staticRoot: '',
     blobStores: []
+  }
+  if (reverseProxyCfg.serveStatic) {
+    if (!serverConfig.httpServer.inetPub) {
+      throw new Error('"httpServer.inetPub" should be defined in app config in case "httpServer.reverseProxy.serveStatic" is true')
+    }
+    vars.staticRoot = serverConfig.httpServer.inetPub
   }
   let configuredStores = serverConfig.application.blobStores
   if (configuredStores) {

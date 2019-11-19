@@ -19,7 +19,7 @@ Reverse proxy can be used to:
  
 Below we describe how to configure nginx as a reverse proxy for ub 
 
-## Configuring UnityBase
+## Configuring UnityBase application
 
 In the application config (ubConfig.json) add `externalURL` and `reverseProxy` keys:    
 
@@ -29,11 +29,56 @@ In the application config (ubConfig.json) add `externalURL` and `reverseProxy` k
     "externalURL": "https://myapp.mydomain.com",
     "reverseProxy": {"kind": "nginx"}
   }
+,
 }
 ```
 
 `externalURL` is address of your application for the end-user (address they type in browser)
  
+## Serving static assets by nginx
+UnityBase itself can server a static assets - files placed in
+ - models public folders (available using `/models` endpoint)
+ - application node_modules folder (available using `/clientRequire` endpoint on server and calls to `require()` and `System.import()` on client)   
+
+This is useful on development stage, but on production stage we highly recommend to allow nginx to server a static assets. 
+
+Serving static by nginx improves:
+ - user experience during application loads: while UB servers a API requests nginx can serve static 
+ - decrease a UB logs size
+ - decrease a overall load for UB server (approximately 0.5ms for each static file)
+
+### Prepare application for serving static by nginx
+
+  - define `httpServer.inetPub` parameter in config. This is a folder where static files will be stored. Usually = `./itetpub`
+  - run a command `npx ubcli linkStatic`. This command creates a `.linkStatic.sh` script for sym-linking a static assets into `inetPub` folder
+  - execute a `.linkStatic.sh`     
+
+Step 2) and 3) must be performed every time application is updated. Recommended steps for update app
+
+```bash
+cd /your/app/folder
+# checkout a new package-lock.json
+npm ci
+npm ddp
+npx ubcli linkStatic -u .. -p ... - cfg ...
+chmod +x ./.linkStatic.sh
+./.linkStatic.sh
+``` 
+
+Last command in script will set a modification time for all files downloaded from package registry (files with modify date === 1986-01-01)
+to the current time. This allow nginx to generate a correct ETag for such files.
+       
+### How to prevent server-side logic to be exposed for client
+Some of modules placed into `node_modules` folder can contains a server-side logic what should be hidden from clients.
+  
+First let's explain what modules are exposed:
+   - modules without `config.ubmodel` section and modules with `config.ubmodel.isPublic: true` inside package.json
+     are exposed as is (sym-linked into ${httpServer.inetPub}/clientRequire)
+   - for modules with `config.ubmodel && !config.ubmodel.isPublic` only `public` folder content and package.json itself
+     is sym-linked into ${httpServer.inetPub}/clientRequire. All other model folders are hidden from client
+
+So, **to hide all package files from client add a "config" : {"ubmodel": {} } section into package.json**
+    
 ## Configuring nginx
 `ubcli` tool have a command `generateNginxCfg` for creating a include for nginx based on application configuration.
 

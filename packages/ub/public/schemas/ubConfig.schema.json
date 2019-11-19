@@ -243,6 +243,11 @@
               "type": "string",
               "default": "externalURL hostname with '.' replaced by '-' (http://test.com -> test-con)" ,
               "description": "Prefix added to the beginning of sendFileHeader location"
+            },
+            "serveStatic": {
+              "type": "boolean",
+              "default": true,
+              "description": "If true then generateNginxCfg command will add /clientRequire & /models interception by nginx. Folder with static asserts can be prepared by `npx ubcli linkStatic` command"
             }
           }
         }

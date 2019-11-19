@@ -115,6 +115,9 @@
 				{
 					//"name": "TST",
 					"path": "./models/TST"
+				},
+				{
+					"path": "./models/FB"
 				}
 			],
 			"implicitlyAddedMixins": [

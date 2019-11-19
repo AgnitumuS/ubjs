@@ -17,3 +17,6 @@ doc-html/
 
 #webpack boundle analyser
 wp_stats.json
+# linkStatic artifact
+.entryPoint.js
+.linkStatic*
