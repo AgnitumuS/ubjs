@@ -422,7 +422,7 @@ export default {
             const includesInResponse = responseData.findIndex(i => i[this.valueAttribute] === ID) !== -1
             return !includesInResponse
           })
-          throw new Error(`Missing values '${missingValues}' in entity '${this.entity}'`)
+          throw new Error(`Missing values '${missingValues}' in entity '${this.entityName}'`)
         }
       }
       return result
