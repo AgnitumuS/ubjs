@@ -594,7 +594,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .x-tab-bar-body {
-  background-color: white; 
+  background-color: white;
 }
 
 .ub-login-window .x-window-body-default{
@@ -1417,14 +1417,15 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 }
 
 /*Change all scroll bar for webkit */
-::-webkit-scrollbar {
+/*temporary removed because now adminui-vue set scroll styles*/
+/*::-webkit-scrollbar {
     width: 12px;
     height: 12px;
 }
 
 ::-webkit-scrollbar-thumb {
     background: hsl(0, 0%, 83%);
-}
+}*/
 
 .ub-btn-rounded {
     border-image-repeat: stretch;

@@ -6,6 +6,25 @@
 	"cacheType": "None",
 	"descriptionAttribute": "caption",
 	"attributes": [
+	{
+    "name": "Currency",
+    "dataType": "Currency",
+    "size": 255,
+    "caption": "Currency",
+    "allowNull": true
+  },{
+    "name": "Float",
+    "dataType": "Float",
+    "size": 255,
+    "caption": "Float",
+    "allowNull": true
+  },{
+    "name": "Int",
+    "dataType": "Int",
+    "size": 255,
+    "caption": "Int",
+    "allowNull": true
+  },
 		{
 			"name": "code",
 			"dataType": "String",
@@ -133,15 +152,15 @@
 			"safeDelete": true
 		},
 		"dataHistory": {},
-		"unity": { 
+		"unity": {
 			"entity": "tst_mainunity",
 			"attributeList": ["code", "caption"],
-			"defaults": {} 
+			"defaults": {}
 		},
 		"rls": {
 			//"expression": "'([ID] > 100) AND ' + tst_maindata.maindataRLS() + ' AND ' + tst_service.serviceRLS()"
 			"expression": "'([mi_owner] = :(' + Session.userID + '):)'"
-		}	
+		}
 	},
 	"dbExtensions": {
 		"CIDX_TMD_CAPTION2": {

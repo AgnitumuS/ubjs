@@ -5,10 +5,11 @@
 module.exports = {
   mountTab,
   mountModal,
-  mountContainer
+  mountContainer,
+  mountTableEntity
 }
 
-/* global $App */
+/* global $App, Ext */
 const Vue = require('vue')
 const UB = require('@unitybase/ub-pub')
 const Dialog = require('element-ui').Dialog
@@ -339,8 +340,50 @@ function mountContainer ({
     if (!basePanel.vueChilds) basePanel.vueChilds = []
     basePanel.vueChilds.push(instance)
 
-    target.on('destroy', () => {
-      instance.$destroy()
+    target.on('destroy', () => instance.$destroy())
+  }
+}
+
+const UTableEntity = require('../../components/UTableEntity/components/UTableEntity.vue').default
+
+/**
+ * Mount UTableEntity.
+ *
+ * @param {object} cfg Command config
+ * @param {object} cfg.props Props data
+ * @param {object} cfg.tabId Tab id
+ * @param {object} [cfg.title] Tab title
+ * @param {function:ClientRepository} cfg.props.repository Function which returns ClientRepository
+ * @param {Array<string|UTableColumn>} [cfg.props.columns] Column list configs
+ */
+function mountTableEntity (cfg) {
+  const existedTab = Ext.getCmp(cfg.tabId) || $App.viewport.centralPanel.down(`panel[tabID=${cfg.tabId}]`)
+  if (existedTab) {
+    $App.viewport.centralPanel.setActiveTab(existedTab)
+  } else {
+    if (!cfg.props.entityName && !cfg.props.repository) {
+      throw new Error(`One of these options is required: "props.entityName" or "props.repository"`)
+    }
+    const entityName = cfg.props.entityName || cfg.props.repository().entityName
+    const title = cfg.title || entityName
+    const tab = $App.viewport.centralPanel.add({
+      title: UB.i18n(title),
+      id: cfg.tabId,
+      closable: true
     })
+
+    const instance = new Vue({
+      render: (h) => h(UTableEntity, {
+        props: {
+          ...cfg.props,
+          height: '100%'
+        },
+        style: { height: '100%' }
+      })
+    })
+
+    tab.on('destroy', () => instance.$destroy())
+    instance.$mount(`#${tab.getId()}-outerCt`)
+    $App.viewport.centralPanel.setActiveTab(tab)
   }
 }

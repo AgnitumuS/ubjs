@@ -1,0 +1,5 @@
+/**
+ * @type {UTableColumnSettings}
+ */
+module.exports = {
+}

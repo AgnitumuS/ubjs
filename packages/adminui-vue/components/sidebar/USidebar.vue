@@ -106,12 +106,12 @@ export default {
         label: 'addShortcut',
         action: 'addShortcut',
         disabled: !canAdd,
-        iconCls: 'el-icon-circle-plus'
+        iconCls: 'el-icon-plus'
       }, {
         label: 'addFolder',
         action: 'addFolder',
         disabled: !canAdd,
-        iconCls: 'fa fa-folder'
+        iconCls: 'el-icon-folder-add'
       }, {
         label: '-'
       }, {

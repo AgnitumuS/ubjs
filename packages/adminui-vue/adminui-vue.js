@@ -43,13 +43,15 @@ module.exports.mapInstanceFields = mapInstanceFields
 module.exports.computedVuex = computedVuex
 module.exports.SET = SET
 module.exports.mountUtils = require('./utils/Form/mount')
+module.exports.lookups = require('./utils/lookups')
 
 const dialogs = require('./components/dialog/UDialog')
-const { dialog, dialogError, dialogInfo, dialogYesNo } = dialogs // destructive assignment for WebStorm parameter parsing
+const { dialog, dialogError, dialogInfo, dialogYesNo, errorReporter } = dialogs // destructive assignment for WebStorm parameter parsing
 module.exports.dialog = dialog
 module.exports.dialogError = dialogError
 module.exports.dialogInfo = dialogInfo
 module.exports.dialogYesNo = dialogYesNo
+module.exports.errorReporter = errorReporter
 
 if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
 
@@ -66,6 +68,7 @@ window.Vuex = Vuex
 Vuex.__useDefault = Vuex
 Vuex.default = Vuex
 if (IS_SYSTEM_JS && !SystemJS.has('vuex')) SystemJS.set('vuex', SystemJS.newModule(Vuex))
+Vue.use(Vuex)
 
 const ElementUI = require('element-ui') // adminui-pub maps element-ui -> element-ui/lib/index.js for SystemJS
 window.ElementUI = ElementUI
@@ -159,12 +162,16 @@ function magicLinkFocusCommand (params, target) {
     if (domElm && domElm.focus) domElm.focus()
   }
 }
+const Lookups = require('./utils/lookups.js')
 
 if (window.$App) {
   magicLink.addCommand('showForm', magicLinkAdminUiCommand)
   magicLink.addCommand('showList', magicLinkAdminUiCommand)
   magicLink.addCommand('showReport', magicLinkAdminUiCommand)
 
+  window.$App.on('applicationReady', () => {
+    Lookups.loadEnum()
+  })
   window.$App.on('applicationReady', replaceDefaultRelogin)
   window.$App.on('applicationReady', addVueSidebar)
   $App.on('buildMainMenu', items => {

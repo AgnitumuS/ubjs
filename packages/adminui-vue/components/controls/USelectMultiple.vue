@@ -101,7 +101,7 @@
           <el-checkbox
             :value="value.includes(option[valueAttribute])"
           />
-          {{ option[getDisplayAttribute] }}
+          {{ option[displayAttribute] }}
         </div>
         <el-row
           type="flex"
@@ -131,7 +131,7 @@
       <div class="ub-select-multiple__input-wrap">
         <el-tag
           v-for="option in displayedOptions"
-          :key="option.ID"
+          :key="option[valueAttribute]"
           :type="option.isDeleted ? 'danger' : 'info'"
           size="mini"
           class="ub-select-multiple__tag"
@@ -182,25 +182,33 @@ export default {
       default: 'ID'
     },
     /**
-     * attribute which is display value of options
+     * Function which return UBRepository
      */
-    displayAttribute: {
-      type: String,
-      default: undefined
+    repository: {
+      type: Function,
+      default () {
+        return this.$UB.Repository(this.entityName)
+          .attrs(this.valueAttribute, this.displayAttribute)
+          .orderBy(this.displayAttribute)
+      }
     },
     /**
      * Name of entity. If repository is set entityName will be ignored
      */
     entityName: {
       type: String,
-      default: ''
+      default () {
+        return this.repository().entityName
+      }
     },
     /**
-     * Function which return UBRepository
+     * attribute which is display value of options
      */
-    repository: {
-      type: Function,
-      default: undefined
+    displayAttribute: {
+      type: String,
+      default () {
+        return this.$UB.connection.domain.get(this.entityName).descriptionAttribute
+      }
     },
     /**
      * Set disable status
@@ -248,31 +256,9 @@ export default {
   },
 
   computed: {
-    /**
-     * @returns {String} Entity name
-     */
-    entity () {
-      if (this.repository) {
-        return this.repository().entityName
-      } else {
-        return this.entityName
-      }
-    },
-
-    entitySchema () {
-      return this.$UB.connection.domain.get(this.entity)
-    },
-
-    // display value attribute definition
-    getDisplayAttribute () {
-      if (this.displayAttribute !== undefined) {
-        return this.displayAttribute
-      }
-      return this.entitySchema.descriptionAttribute
-    },
-
     isExistDeleteDate () {
-      return 'mi_deleteDate' in this.entitySchema.attributes
+      const schema = this.$UB.connection.domain.get(this.entityName)
+      return 'mi_deleteDate' in schema.attributes
     },
 
     inputIconCls () {
@@ -332,7 +318,7 @@ export default {
         } else {
           const removedItems = oldVal.filter(a => !newVal.includes(a))
           for (const item of removedItems) {
-            const index = this.displayedOptions.findIndex(o => o.ID === item)
+            const index = this.displayedOptions.findIndex(o => o[this.valueAttribute] === item)
             this.displayedOptions.splice(index, 1)
           }
         }
@@ -341,32 +327,13 @@ export default {
   },
 
   methods: {
-    getRepository () {
-      if (this.repository) {
-        return this.repository()
-      } else {
-        const displayAttribute = this.getDisplayAttribute
-        const valueAttribute = this.valueAttribute
-        const repo = this.$UB.Repository(this.entityName).attrs(valueAttribute)
-
-        if (displayAttribute !== valueAttribute) {
-          repo.attrs(displayAttribute)
-        }
-        if (displayAttribute) {
-          repo.orderBy(displayAttribute)
-        }
-
-        return repo
-      }
-    },
-
     async fetchPage (query, pageNum = 0) {
       this.loading = true
       this.prevQuery = query
       this.pageNum = pageNum
 
-      const data = await this.getRepository()
-        .whereIf(query, this.getDisplayAttribute, 'like', query)
+      const data = await this.repository()
+        .whereIf(query, this.displayAttribute, 'like', query)
         .start(pageNum * this.pageSize)
         .limit(this.pageSize + 1)
         .select()
@@ -398,9 +365,7 @@ export default {
 
     async fetchDisplayValues (IDs) {
       this.loading = true
-      const repository = this.getRepository()
-      const data = await this.$UB.Repository(repository.entityName)
-        .attrs(repository.fieldList)
+      const data = await this.repository()
         .where(this.valueAttribute, 'in', IDs)
         .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
         .misc({
@@ -426,7 +391,7 @@ export default {
         if (option) {
           result.push({
             ID,
-            label: option[this.getDisplayAttribute]
+            label: option[this.displayAttribute]
           })
         } else {
           result.push({
@@ -436,13 +401,13 @@ export default {
       }
       const willFetched = result
         .filter(o => !o.hasOwnProperty('label'))
-        .map(o => o.ID)
+        .map(o => o[this.valueAttribute])
 
       if (willFetched.length > 0) {
         const responseData = await this.fetchDisplayValues(willFetched)
         for (const responseItem of responseData) {
-          const option = result.find(i => i.ID === responseItem[this.valueAttribute])
-          option.label = responseItem[this.getDisplayAttribute]
+          const option = result.find(i => i[this.valueAttribute] === responseItem[this.valueAttribute])
+          option.label = responseItem[this.displayAttribute]
           if (this.isExistDeleteDate) {
             const isDeleted = responseItem.mi_deleteDate.getTime() < Date.now()
             if (isDeleted) {

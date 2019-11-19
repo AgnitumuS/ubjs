@@ -135,5 +135,23 @@ UB.i18nExtend({
     desktopSelector: {
       title: 'Выбор десктопа'
     }
+  },
+
+  table: {
+    filter: {
+      list: {
+        title: 'Filters'
+      },
+      conditionPlaceholder: 'Condition',
+      valuePlaceholder: 'Value',
+      date: {
+        from: 'from',
+        to: 'to',
+        valuePlaceholder: 'Select date'
+      }
+    },
+    pagination: {
+      outOf: 'out of'
+    }
   }
 })
