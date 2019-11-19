@@ -940,6 +940,10 @@
               "type": "string",
               "description": "Optional URL for a big logo to display on the top of sidebar. Recommended size 160x40 px. It will be show when sidebar is not collapsed",
               "default": ""
+            },
+            "useVueTables": {
+              "type": "boolean",
+              "description": "Replace Ext.GridEntityPanel by vue UTableEntity"
             }
           }
         },

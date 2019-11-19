@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.9.0]
+### Fixed
+ - `USelectEnum` wrong display value on open form
+
+### Added
+ - property `disabled` in `UUploadDocument`
+ - `UTable` component. Build's table with sticky header. Accepts `data` and columns config
+ - `UTableEntity` component. Extends UTable and add pagination, filters, sorts, by `entityName` or `repository`
+ - `UDropdown` and `UDropdownItem` component. Wrap element which passed as default slot and shows dropdown on click of this element
+ - `Lookups` util. Can load any entity and get it lookup value 
+ - `UBConfig` property `uiSettings.adminUI.useVueTables` which replace all ext grids showList by UTableEntity component.
+ 
+### Changed 
+ - **BREAKING** removed `UDetailGrid`
+ - `UDialog` now exports `errorReporter` and it available in vue instance as `$errorReporter`
+ - `UContextMenu` - registered globally
+ 
 [1.8.9]
 ### Fixed
  - added CSP for IIT sign agent (localhost:8081 & 8083)

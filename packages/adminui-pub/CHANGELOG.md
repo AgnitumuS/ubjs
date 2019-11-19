@@ -10,9 +10,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    in @name field of report definition in order to have localizable report form title
  - Add translation for mi_createDate term, just like there is for mi_modifyDate
 
+### Added
+ - `UBConfig` property `uiSettings.adminUI.useVueTables` which replace all ext grids showList by UTableEntity component
+ - `$App.doCommand({ cmdType: 'showList' })` new parameter `renderer` which override `uiSettings.adminUI.useVueTables` option for current grid. 
+   For a case when you need replace all grids to new, but want to set some grids renderer as ext  
+
 [5.12.5]
 ### Added
  - Registration component for authentication form
+
 
 [5.12.2]
 ### Fixed

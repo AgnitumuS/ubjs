@@ -135,5 +135,23 @@ UB.i18nExtend({
     desktopSelector: {
       title: 'Вибор рабочего стола'
     }
+  },
+
+  table: {
+    filter: {
+      list: {
+        title: 'Фильтры'
+      },
+      conditionPlaceholder: 'Виражение',
+      valuePlaceholder: 'Значение',
+      date: {
+        from: 'от',
+        to: 'до',
+        valuePlaceholder: 'Выберите дату'
+      }
+    },
+    pagination: {
+      outOf: 'из'
+    }
   }
 })

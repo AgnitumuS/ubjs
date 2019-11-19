@@ -143,6 +143,7 @@ function install (Vue) {
   Vue.prototype.$dialogError = dialogError
   Vue.prototype.$dialogInfo = dialogInfo
   Vue.prototype.$dialogYesNo = dialogYesNo
+  Vue.prototype.$errorReporter = errorReporter
 }
 
 module.exports = {

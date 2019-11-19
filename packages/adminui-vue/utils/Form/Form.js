@@ -3,6 +3,7 @@
  * @memberOf module:@unitybase/adminui-vue
  * @author dmytro.rudnyk 31.05.2019
  */
+/* global $App */
 module.exports = Form
 
 const Vuex = require('vuex')
@@ -31,7 +32,7 @@ function Form (cfg) {
 class UForm {
   /**
    * @param {object} cfg
-   * @param {VueComponent} cfg.component Form component
+   * @param {Vue} cfg.component Form component
    * @param {object} [cfg.props] Form component props
    * @param {object} [cfg.props.parentContext] Attributes values what will be passed to addNew method
    *   in case instanceID is empty. Think of it as default values for attributes of a new record

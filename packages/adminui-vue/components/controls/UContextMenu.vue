@@ -17,7 +17,10 @@
         :class="[item.disabled && 'disabled']"
         @click="itemSelected(item)"
       >
-        <i :class="item.iconCls" />
+        <i
+          :class="item.iconCls"
+          class="u-context-menu__item__icon"
+        />
         <span>{{ $ut(item.label) }}</span>
       </div>
       <div
@@ -34,21 +37,21 @@
  * Show popup on mouse position
  *
  * @example
-   <div>
-     <u-navbar-tab @right-click="$refs.context.show">
-     <u-context
-       ref="context"
-       :items="contextItems"
-       @select="selectContext"
-     />
-    </div>
+ * <div>
+ *   <u-navbar-tab @right-click="$refs.context.show">
+ *   <u-context-menu
+ *     ref="context"
+ *     :items="contextItems"
+ *     @select="selectContext"
+ *   />
+ *  </div>
  */
 export default {
   name: 'UContextMenu',
   props: {
     /**
      * Popup menu items
-     * @type {Array<{label: string, action: string, disabled?: boolean}>}
+     * @type {Array<{label: string, action: string, disabled?: boolean, iconCls?: string}>}
      */
     items: {
       type: Array,
@@ -98,10 +101,11 @@ export default {
 <style>
 .u-context-menu {
   background-color: #fff;
-  width: 200px;
+  width: 180px;
   padding: 8px 0;
-  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ccc;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(var(--info), 0.2);
+  border-radius: 4px;
   top: 0;
   left: 0;
   position: fixed;
@@ -114,15 +118,22 @@ export default {
 }
 
 .u-context-menu__item:hover {
-  background-color: #f8f8f8;
+  background-color: rgba(var(--info), 0.13);
 }
 
 .u-context-menu__item.disabled {
   color: rgb(var(--info));
+  cursor: not-allowed;
+  background-color: #fff;
+}
+
+.u-context-menu__item__icon {
+  color: rgba(var(--table-text), 0.8);
+  margin-right: 8px;
 }
 
 .u-context-menu__divider {
-  border-bottom: 1px solid #eee;
+  background: rgba(var(--info), 0.2);
   margin: 8px 0;
 }
 </style>

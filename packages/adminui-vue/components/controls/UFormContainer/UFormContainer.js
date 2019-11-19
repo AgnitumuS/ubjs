@@ -3,6 +3,7 @@
  * can provide labelWidth and labelPosition to all
  * child `u-form-row` components
  */
+/* TODO: refactor as .vue component */
 module.exports = {
   name: 'UFormContainer',
   props: {
@@ -37,6 +38,7 @@ module.exports = {
     }
   },
   render (h) {
+    const slot = this.$slots.default
     return h('form', {
       attrs: {
         tabindex: 1, // need to catch focus on form for handle keydown events on form
@@ -44,7 +46,6 @@ module.exports = {
       },
       style: {
         overflow: 'auto',
-        padding: '1em',
         flexGrow: '1'
       },
       on: {
@@ -52,7 +53,14 @@ module.exports = {
           event.preventDefault()
         }
       }
-    }, this.$slots.default)
+    }, [
+      h(
+        'div', {
+          style: { padding: '1em' }
+        },
+        [slot]
+      )
+    ])
   },
 
   mounted () {
