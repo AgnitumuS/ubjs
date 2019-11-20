@@ -29,10 +29,12 @@ module.exports = function runMixinsTests (options) {
   testParamMacros(conn)
   console.debug('test float & currency attributes')
   testFloatAndCurrency(conn)
-  console.debug('test Tree mixin')
-  testTreeMixin(conn)
-  console.debug('test asterisk in UBQL')
-  testAsterisk(conn)
+  if (base.ubVersionNum > 5017000) {
+    console.debug('test Tree mixin')
+    testTreeMixin(conn)
+    console.debug('test asterisk in UBQL')
+    testAsterisk(conn)
+  }
 }
 
 /**
@@ -213,28 +215,26 @@ function testTreeMixin (conn) {
   })
   console.info('\t\tuse existed desktop with code `tst_desktop`', desktopID)
 
-  if (base.ubVersionNum > 5017000) {
-    console.log('\t\t\tcreate `tree_deletion_test` shortcut')
-    let insertedID = conn.insert({
-      fieldList: ['ID'],
-      entity: 'ubm_navshortcut',
-      execParams: {
-        desktopID: desktopID,
-        code: 'tree_deletion_test',
-        caption: 'Shortcut deletion',
-        displayOrder: 10,
-        cmdCode: '{}'
-      }
-    })
-    console.log('\t\t\tremove `tree_deletion_test` shortcut')
-    conn.query({
-      entity: 'ubm_navshortcut',
-      method: 'delete',
-      execParams: {
-        ID: insertedID
-      }
-    })
-  }
+  console.log('\t\t\tcreate `tree_deletion_test` shortcut')
+  let insertedID = conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'tree_deletion_test',
+      caption: 'Shortcut deletion',
+      displayOrder: 10,
+      cmdCode: '{}'
+    }
+  })
+  console.log('\t\t\tremove `tree_deletion_test` shortcut')
+  conn.query({
+    entity: 'ubm_navshortcut',
+    method: 'delete',
+    execParams: {
+      ID: insertedID
+    }
+  })
 }
 
 /**
