@@ -2940,6 +2940,7 @@ Ext.define('UB.view.EntityGridPanel', {
       value: parentID
     }))
     UB.core.UBApp.doCommand(_.assign({
+      renderer: 'ext',
       cmdType: UB.core.UBCommand.commandType.showList,
       cmdData: cmd,
       entity: config.entityName,

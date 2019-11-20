@@ -3,7 +3,7 @@
     v-loading="loading"
     class="u-table-entity"
     tabindex="1"
-    @keydown="tryFocusFilter"
+    @keydown.exact="tryFocusFilter"
     @keydown.up.exact="moveUp"
     @keydown.down.exact="moveDown"
     @keydown.left.exact="moveLeft"
@@ -351,7 +351,7 @@ export default {
     },
 
     tryFocusFilter ({ key }) {
-      if (regExpLetterOrNumber.test(key)) {
+      if (key.length === 1 && regExpLetterOrNumber.test(key)) {
         const inputs = this.$refs.filterContainer.$el.querySelectorAll('input')
         if (inputs.length > 0) {
           inputs[inputs.length - 1].focus()

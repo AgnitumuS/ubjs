@@ -17,6 +17,52 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UDropdown` and `UDropdownItem` component. Wrap element which passed as default slot and shows dropdown on click of this element
  - `Lookups` util. Can load any entity and get it lookup value 
  - `UBConfig` property `uiSettings.adminUI.useVueTables` which replace all ext grids showList by UTableEntity component.
+ - override `UB.core.UBCommand.prototype.showList` showList accepts new prop `renderer`
+    for render Ext showList use old doCommand config
+    ```javascript
+    $App.doCommand({
+      renderer: 'vue',
+      param: [{
+        entity: 'uba_user',
+        fieldList: ['*']
+      }]
+    })
+    ```
+    
+    You can use the old config with vue renderer, but be careful, it may not take into account all the parameters that the old renderer took into account
+    ```javascript
+    $App.doCommand({
+      renderer: 'vue',
+      cmdType: 'showList',
+      cmdData: {
+        params: [{
+          entity: 'uba_user',
+          fieldList: ['*']
+        }]
+      }
+    })
+    ```
+    
+    Also you can use new config of vue renderer
+    ```javascript
+    $App.doCommand({
+      renderer: 'vue',
+      cmdType: 'showList',
+      cmdData: {
+        entityName: 'uba_user',
+        columns: [
+          'name',
+          {
+            id: 'fullName',
+            minWidth: 200,
+            align: 'right'
+          },
+          'disabled'
+        ],
+        pageSize: 5
+      }
+    })
+    ```
  
 ### Changed 
  - **BREAKING** removed `UDetailGrid`
