@@ -6,7 +6,8 @@
 const assert = require('assert')
 const fs = require('fs')
 const cmdLineOpt = require('@unitybase/base').options
-const argv = require('@unitybase/base').argv
+const base = require('@unitybase/base')
+const argv = base.argv
 const path = require('path')
 
 module.exports = function runMixinsTests (options) {
@@ -212,26 +213,28 @@ function testTreeMixin (conn) {
   })
   console.info('\t\tuse existed desktop with code `tst_desktop`', desktopID)
 
-  console.log('\t\t\tcreate `tree_deletion_test` shortcut')
-  let insertedID = conn.insert({
-    fieldList: ['ID'],
-    entity: 'ubm_navshortcut',
-    execParams: {
-      desktopID: desktopID,
-      code: 'tree_deletion_test',
-      caption: 'Shortcut deletion',
-      displayOrder: 10,
-      cmdCode: '{}'
-    }
-  })
-  console.log('\t\t\tremove `tree_deletion_test` shortcut')
-  conn.query({
-    entity: 'ubm_navshortcut',
-    method: 'delete',
-    execParams: {
-      ID: insertedID
-    }
-  })
+  if (base.ubVersionNum > 5017000) {
+    console.log('\t\t\tcreate `tree_deletion_test` shortcut')
+    let insertedID = conn.insert({
+      fieldList: ['ID'],
+      entity: 'ubm_navshortcut',
+      execParams: {
+        desktopID: desktopID,
+        code: 'tree_deletion_test',
+        caption: 'Shortcut deletion',
+        displayOrder: 10,
+        cmdCode: '{}'
+      }
+    })
+    console.log('\t\t\tremove `tree_deletion_test` shortcut')
+    conn.query({
+      entity: 'ubm_navshortcut',
+      method: 'delete',
+      execParams: {
+        ID: insertedID
+      }
+    })
+  }
 }
 
 /**
