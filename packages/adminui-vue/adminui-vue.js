@@ -107,11 +107,13 @@ if (isExt) {
   const {
     replaceExtJSDialogs,
     replaceExtJSNavbar,
-    replaceExtJSMessageBarDialog
+    replaceExtJSMessageBarDialog,
+    replaceShowList
   } = require('./utils/replaceExtJSWidgets')
   $App.on('applicationReady', replaceExtJSDialogs)
   $App.on('applicationReady', replaceExtJSNavbar)
   $App.on('applicationReady', replaceExtJSMessageBarDialog)
+  $App.on('applicationReady', replaceShowList)
   $App.on('applicationReady', function () {
     let v = UB.connection.appConfig.serverVersion.split('.')
     if ((v[0] >= 'v5') && (v[1] < 14)) throw new Error('This version of adminui-vue require UB server to be >= 5.14')

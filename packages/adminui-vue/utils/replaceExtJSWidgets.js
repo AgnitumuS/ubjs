@@ -2,7 +2,8 @@ module.exports = {
   replaceExtJSDialogs,
   replaceExtJSNavbar,
   replaceAutoForms,
-  replaceExtJSMessageBarDialog
+  replaceExtJSMessageBarDialog,
+  replaceShowList
 }
 
 /* global $App, Ext */
@@ -16,6 +17,7 @@ const UNavbar = require('../components/navbar/UNavbar.vue').default
 const autoForm = require('../components/AutoForm.vue').default
 const { dialog, dialogInfo, dialogYesNo, dialogError } = dialogs
 const Form = require('./Form/Form')
+const { mountTableEntity } = require('./Form/mount')
 
 function replaceExtJSDialogs () {
   // rename buttonText - > buttons, fn -> callback and call `dialog`
@@ -137,4 +139,75 @@ function replaceExtJSMessageBarDialog () {
   //     }
   //   }
   // })
+}
+
+// replace showList method
+function replaceShowList () {
+  Ext.override(UB.core.UBCommand, {
+    showList () {
+      const me = this
+      const useVueTables = UB.connection.appConfig.uiSettings.adminUI.useVueTables
+      const defaultRenderer = useVueTables ? 'vue' : 'ext'
+      const renderer = me.commandConfig.renderer || defaultRenderer
+      if (renderer === 'vue') {
+        const cfg = me.commandConfig
+        const tabId = cfg.tabId
+        const title = me.title || me.entity
+        /**
+         * Test if command cfg use old construction with cfg.params as array.
+         * In new construction we use 'repository' or 'entityName' params
+         */
+        const vueCfgType = cfg.cmdData.hasOwnProperty('repository') || cfg.cmdData.hasOwnProperty('entityName')
+        if (vueCfgType) {
+          mountTableEntity({
+            tabId,
+            title,
+            props: cfg.cmdData
+          })
+        } else {
+          const req = cfg.cmdData.params[0]
+          const fieldList = []
+          const columns = []
+          for (const field of req.fieldList) {
+            if (field === '*') {
+              fieldList.push(
+                ...UB.connection.domain.get(req.entity)
+                  .getAttributeNames()
+              )
+              columns.push(
+                ...UB.connection.domain.get(req.entity)
+                  .filterAttribute(a => a.defaultView)
+                  .map(a => a.code)
+              )
+              break
+            }
+            if (typeof field === 'object') {
+              columns.push({
+                id: field.name,
+                label: field.description
+              })
+              fieldList.push(field.name)
+            } else {
+              columns.push(field)
+              fieldList.push(field)
+            }
+          }
+
+          mountTableEntity({
+            tabId: cfg.tabId,
+            title: me.title || me.entity,
+            props: {
+              repository () {
+                return UB.Repository(req.entity)
+                  .attrs(fieldList)
+              },
+              columns
+            }
+          })
+        }
+      } else {
+        this.callParent()
+      }
+    }
+  })
 }
