@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [1.9.0]
 ### Fixed
  - `USelectEnum` wrong display value on open form
+ - loader (spinner) added to auth form - turned on after user press "Login" button. This help to indicate
+  user what something is happens in case server response is slow  
 
 ### Added
  - property `disabled` in `UUploadDocument`

@@ -189,7 +189,7 @@
           <ub-change-password :old-pwd="authData.pwd"></ub-change-password>
         </div>
         <div v-else>
-          <el-form :model="authData" size="medium" @submit.native.prevent ref="authForm" :rules="authRules">
+          <el-form v-loading="processing" :model="authData" size="medium" @submit.native.prevent ref="authForm" :rules="authRules">
             <div v-if="hasCERT2">
               <cert2-param-form :load-pk="doCert2Login" :auth-was-started="authWasStarted" class="auth-inject-panel"></cert2-param-form>
               <!--
@@ -291,6 +291,7 @@
     data: function () {
       return {
         loading: true,
+        processing: false,
         appName: 'UnityBase',
         topLogoURL: '/models/ub-pub/img/ub-login-logo.png',
         registrationURL: '',
@@ -352,6 +353,7 @@
         this.keyFile = e.target.files[0]
       },
       doNegotiateLogin: function () {
+        this.processing = true
         window.deferred.resolve({
           authSchema: 'Negotiate',
           registration: 0
@@ -361,6 +363,7 @@
         var me = this
         this.$refs['authForm'].validate(function (valid) {
           if (valid) {
+            me.processing = true
             window.deferred.resolve({authSchema: 'UB', login: me.authData.user, password: me.authData.pwd})
           } else {
             return false
@@ -369,6 +372,7 @@
       },
       doCert2Login: function (pkParams) {
         this.authWasStarted = true
+        this.processing = true
         window.deferred.resolve(pkParams)
         /*
         var me = this
@@ -453,6 +457,7 @@
       vm.changePwdActive = true
     },
     onAuthorizationFail: function (reason) {
+      vm.processing = false
       UB.showErrorWindow(reason)
     }
   }).then(function authOK (conn) {
