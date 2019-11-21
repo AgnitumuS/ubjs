@@ -1,10 +1,11 @@
 /**
  * Created by pavel.mash on 04.09.2016.
  */
+const path = require('path')
 module.exports = {
   entry: './app.js',
   output: {
-    filename: 'app.min.js'
+    filename: () => 'app.min.js'
   },
   module: {
     rules: [{
