@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.3]
+### Changed
+ - in case nginx is used as a reverse proxy (http.reverseProxy.kind === 'nginx' in app config)
+ `/statics` endpoint on the UB level simply redirect to `/statics` nginx location.
+ `ub-proxy.cfg` nginx config should be upgraded by `npx ubcli generateNginxCfg` (or rule for `location /statics` should be added manually)  
+
 ## [5.3.0]
 ### Added
  - new server config parameter `security.limitGroupsTo: ["group1", ...]`

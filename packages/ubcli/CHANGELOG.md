@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [5.5.0]
+## [5.4.0]
 ### Added
  - new command `ubcli linkStatic`: creating folder with all static assets (models, modules) what should be available
    for client using `/clientRequire` and `/models` endpoints. Such folder can be served by nginx as a static folder.
    See tutorial [Serving static assets by nginx](https://unitybase.info/api/server-v5/tutorial-reverse_proxy_nginx.html#serving-static-assets-by-nginx)
    for details
+ - `npx ubcli generateNginxCfg` will add a location `/statics` what points to `httpServer.inetPub` folder
  - `npx ubcli generateNginxCfg` will add a locations `/clientRequire` and `/models` to nginx config
    in case reverseProxy.serveStatic is true (default)  
    

@@ -128,6 +128,10 @@ server {
     location /models {
       root {{{staticRoot}}}/clientRequire;
     }
+    location ~ /statics(.*) {
+      root {{{staticRoot}}};
+      try_files $1 $1/index.html =404;
+    }
 {{/serveStatic}}
 {{#sendFileHeader}}
     # application internal location for endpoints clientRequire, mdb, models, static

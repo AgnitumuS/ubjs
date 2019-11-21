@@ -349,32 +349,35 @@ function getDomainInfoEp (req, resp) {
  */
 function staticEp (req, resp) {
   if (!App.staticPath) return resp.notFound('httpServer.inetPub is empty')
-  if ((req.method !== 'GET') && (req.method !== 'HEAD')) {
-    return resp.badRequest('invalid request method ' + req.method)
-  }
-  let reqPath = req.decodedUri
-  if (!reqPath || !reqPath.length || (reqPath.length > 250)) {
-    return resp.badRequest('path too long (max is 250) ' + reqPath.length)
-  }
-  let normalized = path.normalize(path.join(App.staticPath, reqPath))
-  if (!normalized.startsWith(App.staticPath)) {
-    return resp.badRequest(`statics: resolved path "${normalized}" is not inside inetPub folder ${App.staticPath}`)
-  }
-  if (!fs.existsSync(normalized)) {
-    return resp.notFound(`"${normalized}"`)
-  }
-  let stat = fs.statSync(normalized)
-  if (stat.isDirectory()) {
-    return resp.badRequest(`Prevent access to folder "${normalized}"`)
-  }
-  if (PROXY_SEND_FILE_HEADER) {
-    let relative = path.relative(process.configPath, normalized)
-    let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/app/${relative}`
+  if (PROXY_SEND_FILE_HEADER) { // redirect to statics endpoint handled by nginx
+    let head = req.url.startsWith('statics/')
+      ? `${PROXY_SEND_FILE_HEADER}: /${req.url}`
+      : `${PROXY_SEND_FILE_HEADER}: /statics/${req.url}`
     console.debug(`<- `, head)
     resp.writeHead(head)
     resp.writeEnd('')
     resp.statusCode = 200
   } else {
+    if ((req.method !== 'GET') && (req.method !== 'HEAD')) {
+      return resp.badRequest('invalid request method ' + req.method)
+    }
+    let reqPath = req.decodedUri
+    console.log('reqPath', reqPath)
+    if (!reqPath || !reqPath.length || (reqPath.length > 250)) {
+      return resp.badRequest('path too long (max is 250) ' + reqPath.length)
+    }
+    let normalized = path.normalize(path.join(App.staticPath, reqPath))
+    if (!normalized.startsWith(App.staticPath)) {
+      return resp.badRequest(`statics: resolved path "${normalized}" is not inside inetPub folder ${App.staticPath}`)
+    }
+    if (!fs.existsSync(normalized)) {
+      return resp.notFound(`"${normalized}"`)
+    }
+    let stat = fs.statSync(normalized)
+    if (stat.isDirectory()) {
+      return resp.badRequest(`Prevent access to folder "${normalized}"`)
+    }
+
     let ext = path.extname(normalized)
     let ct = mime.contentType(ext)
     resp.writeEnd(normalized)
