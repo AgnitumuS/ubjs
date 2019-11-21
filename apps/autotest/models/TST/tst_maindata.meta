@@ -6,25 +6,25 @@
 	"cacheType": "None",
 	"descriptionAttribute": "caption",
 	"attributes": [
-	{
-    "name": "Currency",
-    "dataType": "Currency",
-    "size": 255,
-    "caption": "Currency",
-    "allowNull": true
-  },{
-    "name": "Float",
-    "dataType": "Float",
-    "size": 255,
-    "caption": "Float",
-    "allowNull": true
-  },{
-    "name": "Int",
-    "dataType": "Int",
-    "size": 255,
-    "caption": "Int",
-    "allowNull": true
-  },
+		{
+			"name": "f_currency",
+			"dataType": "Currency",
+			"size": 255,
+			"caption": "Currency",
+			"allowNull": true
+		}, {
+			"name": "f_float",
+			"dataType": "Float",
+			"size": 255,
+			"caption": "Float",
+			"allowNull": true
+		}, {
+			"name": "f_int",
+			"dataType": "Int",
+			"size": 255,
+			"caption": "Int",
+			"allowNull": true
+		},
 		{
 			"name": "code",
 			"dataType": "String",
