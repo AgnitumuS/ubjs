@@ -7,6 +7,9 @@ const App = require('./App')
 const GROUP_CODES_LIMIT = App.serverConfig.security.limitGroupsTo
 /** ID of groups from GROUP_CODES_LIMIT if any */
 let GROUP_IDS_LIMIT
+const GROUP_CODES_EXCLUDE = App.serverConfig.security.excludeGroups
+/** ID of groups from GROUP_CODES_EXCLUDE if any */
+let GROUP_IDS_EXCLUDE
 const FEATURE_NEW_SESSION_MANAGER = (base.ubVersionNum >= 5017000)
 
 // cache for lazy session props
@@ -380,19 +383,35 @@ Session.reset = function (sessionID, userID) {
   _sessionCached.userLang = undefined
 }
 
-function fillGroupIDsLimit() {
+function fillGroupIDsLimit () {
   if (GROUP_IDS_LIMIT !== undefined) return
   GROUP_IDS_LIMIT = []
-  if (GROUP_CODES_LIMIT && GROUP_CODES_LIMIT.length) {
-    let allGroups = Repository('uba_group')
+  let allGroups
+  if ((GROUP_CODES_LIMIT && GROUP_CODES_LIMIT.length) ||
+      (GROUP_CODES_EXCLUDE && GROUP_CODES_EXCLUDE.length)) {
+    allGroups = Repository('uba_group')
       .attrs(['ID', 'code'])
       .selectAsObject()
+  }
+  if (GROUP_CODES_LIMIT && GROUP_CODES_LIMIT.length) {
     GROUP_CODES_LIMIT.forEach(groupCode => {
       let group = allGroups.find(g => g.code === groupCode)
       if (group) {
         GROUP_IDS_LIMIT.push(group.ID)
       } else {
         console.warn(`Group with code "${groupCode}" listed in appConfig.security.limitGroupsTo but not found in uba_group`)
+      }
+    })
+  }
+
+  GROUP_IDS_EXCLUDE = []
+  if (GROUP_CODES_EXCLUDE && GROUP_CODES_EXCLUDE.length) {
+    GROUP_CODES_EXCLUDE.forEach(groupCode => {
+      let group = allGroups.find(g => g.code === groupCode)
+      if (group) {
+        GROUP_IDS_EXCLUDE.push(group.ID)
+      } else {
+        console.warn(`Group with code "${groupCode}" listed in appConfig.security.excludeGroups but not found in uba_group`)
       }
     })
   }
@@ -457,6 +476,7 @@ Session._getRBACInfo = function (userID) {
             .attrs('ID')
             .where('userID', '=', userID)
             .whereIf(GROUP_IDS_LIMIT.length, 'groupID', 'in', GROUP_IDS_LIMIT)
+            .whereIf(GROUP_IDS_EXCLUDE.length, 'groupID', 'notIn', GROUP_IDS_EXCLUDE)
             .correlation('groupID', 'groupID')
         )
         .correlation('roleID', 'ID'),
@@ -478,6 +498,7 @@ Session._getRBACInfo = function (userID) {
     .attrs('groupID')
     .where('userID', '=', userID)
     .whereIf(GROUP_IDS_LIMIT.length, 'groupID', 'in', GROUP_IDS_LIMIT)
+    .whereIf(GROUP_IDS_EXCLUDE.length, 'groupID', 'notIn', GROUP_IDS_EXCLUDE)
     .selectAsArray()
     .resultData.data
     .map(r => r[0])

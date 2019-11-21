@@ -577,7 +577,12 @@
         "limitGroupsTo": {
           "type": "array",
           "default": [],
-          "description": "Groups codes (uba_group.code) to limit available user groups during user logon. Useful in case a same DB is used by several server instances, and one of instance (public portal for example) should limit roles available to user\r\n**WARNING**: roles what assigned directly to user (in uba_userroles) **NOT** filtered and remains available"
+          "description": "Groups codes (uba_group.code) to limit available user groups during user logon. Useful in case a same DB is used by several server instances, and one of instance (public portal for example) should limit roles available to user\r\n**WARNING**: roles what assigned directly to user (in uba_userroles) are **NOT** filtered and remains available"
+        },
+        "excludeGroups": {
+          "type": "array",
+          "default": [],
+          "description": "Groups codes (uba_group.code) to exclude from user groups during user logon. Useful in case a same DB is used by several server instances, and one of instance (internal portal for example) should exclude  roles available to user\r\n**WARNING**: roles what assigned directly to user (in uba_userroles) are **NOT** filtered and remains available"
         }
       }
     },

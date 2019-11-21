@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.3.3]
+### Added
+  - new server config parameter `security.excludeGroups: ["group1", ...]`
+   Groups codes (uba_group.code) to EXCLUDE from available user groups during user logon.
+   Useful in case a same DB is used by several server instances, and one of instance
+   (private portal for example) should limit roles available to user.
+   **WARNING** - roles what assigned directly to user (in uba_userroles) **NOT** filtered and remains available
+   
 ### Changed
  - in case nginx is used as a reverse proxy (http.reverseProxy.kind === 'nginx' in app config)
  `/statics` endpoint on the UB level simply redirect to `/statics` nginx location.
