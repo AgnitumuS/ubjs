@@ -38,7 +38,7 @@ module.exports = function runOTPTest (options) {
       let fullPath = path.join(folder, 'serverSide', test).replace(/\\/g, '/')
       let content = `return require('${fullPath}')`
       console.debug('Eval a ' + test)
-      let result = {success: false}
+      let result = { success: false }
       try {
         result = conn.post('evaluateScript', content)
       } catch (e) {

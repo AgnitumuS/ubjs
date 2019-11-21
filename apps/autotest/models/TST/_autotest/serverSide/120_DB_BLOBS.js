@@ -5,9 +5,11 @@ const UB = require('@unitybase/ub')
 const App = require('@unitybase/ub').App
 const fs = require('fs')
 const path = require('path')
+const base = require('@unitybase/base')
 // let res
 
 function testBLOB () {
+  if (base.ubVersionNum < 5017000) return // skip Oracle BLOB truncation test for Ub < 5.17 (not fixed where)
   let buf = new ArrayBuffer(5000)
   let v = new Uint8Array(buf)
   for (let i = 0; i < 5000; i++) {
@@ -41,7 +43,7 @@ function insertion (ID, descr, buf, expectedLength) {
   if (!store.eof) {
     let blbBuf = store.getAsBuffer('blb')
     if (blbBuf.byteLength !== expectedLength) {
-      throw new Error(`ID blob with ID ${ID} expect to be ${expectedLength} but got ${blbBuf.byteLength}`)
+      throw new Error(`BLOB truncation error: Blob with ID ${ID} expect to be ${expectedLength} but got ${blbBuf.byteLength}`)
     }
   } else {
     throw new Error('can not get blob with ID ' + ID)
