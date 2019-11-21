@@ -26,7 +26,7 @@
         :enterable="false"
       >
         <el-button
-          v-if="disabled"
+          v-if="!disabled"
           size="mini"
           circle
           icon="el-icon-close"

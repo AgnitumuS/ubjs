@@ -9,9 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `USelectEnum` wrong display value on open form
  - loader (spinner) added to auth form - turned on after user press "Login" button. This help to indicate
   user what something is happens in case server response is slow  
+ - `UUploadDocument` show delete button when `disabled` true
+
 
 ### Added
- - property `disabled` in `UUploadDocument`
  - `UTable` component. Build's table with sticky header. Accepts `data` and columns config
  - `UTableEntity` component. Extends UTable and add pagination, filters, sorts, by `entityName` or `repository`
  - `UDropdown` and `UDropdownItem` component. Wrap element which passed as default slot and shows dropdown on click of this element
