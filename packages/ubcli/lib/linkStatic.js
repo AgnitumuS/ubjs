@@ -150,6 +150,12 @@ as drop-in replacement to /clientRequire and /models endpoints`,
       }
     })
 
+    let favIconTarget = path.join(target, 'favicon.ico')
+    if (!fs.existsSync(favIconTarget)) {
+      let favIconSrc = path.join(domainModels['UB'].realPublicPath, 'img', 'UBLogo16.ico')
+      script.push(`# no favicon.ico found in target folder - use default favicon`)
+      script.push(`ln -s ${favIconSrc} ${favIconTarget}`)
+    }
     script.push(`# update modification time for files in modules updated by npm`)
     script.push(`find -L $CRT -type f -not -path "*/node_modules/*" -not -newermt '1986-01-01' -exec touch -m {} +`)
     // win

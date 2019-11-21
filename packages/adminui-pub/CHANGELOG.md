@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[5.12.7]
+### Changed
+  - index.html template will expect `favicon.ico` is placed in the root of `httpServer.inetPub` folder. 
+  In case `${httpServer.inetPub}/favicon.ico` not exists `npx ubcli linkStatic` will sym-lynk it from 
+  `@unitybase/ub/public/img/UBLogo16.ico`
+
 [5.12.6]
 ### Changed
  - An ability to translate report name added: a key from localization file should be provided
