@@ -301,13 +301,14 @@ function createInstanceModule () {
        * @param {object} payload
        * @param {string} payload.collection
        * @param {VuexTrackedObject[]} payload.items
+       * @param {string} payload.entity
        */
-      LOAD_COLLECTION (state, { collection, items: itemStates }) {
+      LOAD_COLLECTION (state, { collection, items: itemStates, entity }) {
         const items = itemStates.map(item => ({
           data: item,
           originalData: {}
         }))
-        const collectionObj = { items, deleted: [], key: collection }
+        const collectionObj = { items, deleted: [], key: collection, entity }
         Vue.set(state.collections, collection, collectionObj)
       },
 

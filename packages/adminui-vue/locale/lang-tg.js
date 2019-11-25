@@ -153,5 +153,23 @@ UB.i18nExtend({
     pagination: {
       outOf: 'out of'
     }
+  },
+
+  sizeUnits: {
+    b: 'Bytes',
+    kb: 'KB',
+    mb: 'MB',
+    gb: 'GB',
+    tb: 'TB'
+  },
+
+  fileInput: {
+    manyFilesTable: {
+      label: 'Label',
+      size: 'Size',
+      type: 'Type',
+      uploadDate: 'Upload date'
+    },
+    dropZoneCaption: 'or drop files here'
   }
 })

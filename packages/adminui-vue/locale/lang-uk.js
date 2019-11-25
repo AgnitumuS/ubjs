@@ -153,5 +153,23 @@ UB.i18nExtend({
     pagination: {
       outOf: 'з'
     }
+  },
+
+  sizeUnits: {
+    b: 'Байт',
+    kb: 'КБ',
+    mb: 'МБ',
+    gb: 'ГБ',
+    tb: 'ТБ'
+  },
+
+  fileInput: {
+    manyFilesTable: {
+      label: 'Назва',
+      size: 'Размір',
+      type: 'Тип',
+      uploadDate: 'Дата завантаження'
+    },
+    dropZoneCaption: 'або перетягніть файли сюди'
   }
 })

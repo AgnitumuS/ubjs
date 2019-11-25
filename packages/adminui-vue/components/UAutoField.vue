@@ -41,13 +41,11 @@
       type="textarea"
       :autosize="{ minRows: 3, maxRows: 4 }"
     />
-    <u-upload-document
+    <u-file
       v-else-if="dataType === 'Document'"
       v-model="model"
       v-bind="$attrs"
-      :entity-name="entity"
-      :file-store="attributeName"
-      :doc-id="$store.state.data.ID"
+      :attribute-name="attributeName"
     />
     <u-code-mirror
       v-else-if="dataType === 'Json'"

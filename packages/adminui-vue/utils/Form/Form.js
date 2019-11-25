@@ -227,12 +227,6 @@ class UForm {
     }
 
     if (this.isProcessingUsed) {
-      for (const key of Object.keys(this.collections)) {
-        this.$store.commit('LOAD_COLLECTION', {
-          collection: key,
-          items: []
-        })
-      }
       this.$store.dispatch('init')
     }
 

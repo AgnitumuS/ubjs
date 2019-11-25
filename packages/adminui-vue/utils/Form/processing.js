@@ -177,7 +177,15 @@ function createProcessingModule ({
        *  - creates empty collections which passed on init processing module
        *  - dispatch `create` or `load` action
        */
-      async init ({ state, commit, dispatch }) {
+      async init (store) {
+        const { state, commit, dispatch } = store
+        for (const [key, collection] of Object.entries(initCollectionsRequests)) {
+          commit('LOAD_COLLECTION', {
+            collection: key,
+            items: [],
+            entity: collection.repository(store).entityName
+          })
+        }
         if (beforeInit) {
           await beforeInit()
         }
@@ -321,7 +329,8 @@ function createProcessingModule ({
             const collection = collectionKeys[index]
             commit('LOAD_COLLECTION', {
               collection,
-              items: collectionData
+              items: collectionData,
+              entity: initCollectionsRequests[collection].repository(store).entityName
             })
           })
         } catch (err) {
@@ -550,10 +559,9 @@ function createProcessingModule ({
       /**
        * Sends addNew request then fetch default params and push it in collection
        * @param {object} context
-       * @param {function} context.commit
        * @param {object} payload
-       * @param {String} payload.collection Collection name
-       * @param {Object} payload.execParams if we need to create new item with specified params
+       * @param {string} payload.collection Collection name
+       * @param {object} payload.execParams if we need to create new item with specified params
        */
       async addCollectionItem (store, { collection, execParams }) {
         const { commit } = store
