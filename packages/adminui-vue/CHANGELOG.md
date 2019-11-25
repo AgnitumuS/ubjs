@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - **BREAKING** `UUploadDocument` removed, added analog `UFile`
  - `UFormRow` increased default label width from 120 to 150
  - `UFormRow` - Previously margin-top was added only if one `UFormRow` element follows another in DOM, instead now margin-bottom always 10px
+ - Extract element theme styles into external file
 
 ### Added
  - `UTable` component. Build's table with sticky header. Accepts `data` and columns config
