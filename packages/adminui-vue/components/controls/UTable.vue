@@ -214,6 +214,7 @@ export default {
   padding: 16px;
   font-size: 14px;
   font-weight: 600;
+  position: relative;
 }
 
 .u-table__cell-container{
@@ -251,10 +252,9 @@ export default {
   left: 0;
   position: sticky;
   z-index: 2;
-  border-right: 1px solid rgb(var(--table-border));
 }
 
-.u-table th:first-child{
+.u-table th.u-table__fixed-column{
   z-index: 3;
 }
 

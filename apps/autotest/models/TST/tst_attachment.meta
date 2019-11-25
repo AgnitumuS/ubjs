@@ -1,0 +1,27 @@
+{
+  "caption": "tst_attachment",
+  "description": "ub test attachments",
+  "attributes": [
+    {
+      "name": "dictID",
+      "dataType": "Entity",
+      "associatedEntity": "tst_dictionary",
+      "cascadeDelete": false,
+      "caption": "Object"
+    },
+    {
+      "name": "file",
+      "dataType": "Document",
+      "caption": "File"
+    }
+  ],
+   "mixins": {
+     "mStorage": {
+       "simpleAudit": true
+     }
+   },
+   "dbKeys": {
+   },
+   "dbExtensions": {
+   }
+}

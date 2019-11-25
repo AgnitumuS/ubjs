@@ -71,7 +71,44 @@
           <u-form-row :label="`${entity}.jsonColumn`">
             <u-code-mirror v-model="jsonColumn" />
           </u-form-row>
+        </el-tab-pane>
+        <el-tab-pane label="File upload">
+          <u-form-row label="file collection">
+            <u-file-collection
+              collection-name="attachments"
+              file-attribute="file"
+              subject-attribute="dictID"
+            />
+          </u-form-row>
 
+          <u-form-row label="Base file">
+            <u-file
+              v-model="file"
+              attribute-name="file"
+            />
+          </u-form-row>
+
+          <u-form-row label="Base file disabled">
+            <u-file
+              v-model="file"
+              disabled
+              attribute-name="file"
+            />
+          </u-form-row>
+
+          <u-form-row label="Preview mode">
+            <u-file
+              v-model="file"
+              attribute-name="file"
+              preview-mode
+            />
+          </u-form-row>
+
+          <u-auto-field
+            v-model="file"
+            label="Auto field"
+            attribute-name="file"
+          />
         </el-tab-pane>
         <el-tab-pane
           label="Lazy collection example"
@@ -90,7 +127,7 @@ const { mapState, mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 const LazyCollection = require('../components/LazyCollection.vue').default
 
-module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent, isModal, customType }) {
+module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent, isModal }) {
   Form({
     component: rootComponent,
     entity,
@@ -103,17 +140,19 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
     .processing({
       collections: {
         todo: {
-          repository: ({ state }) => UB.connection
-            .Repository('tst_dictionary_todo')
+          repository: ({ state }) => UB.Repository('tst_dictionary_todo')
             .attrs('ID', 'objectID', 'name', 'status', 'link')
             .where('objectID', '=', state.data.ID),
           lazy: true
         },
 
-        participants: ({ state }) => UB.connection
-          .Repository('tst_dictionary_ppt')
+        participants: ({ state }) => UB.Repository('tst_dictionary_ppt')
           .attrs('ID', 'objectID', 'subjectID')
-          .where('objectID', '=', state.data.ID)
+          .where('objectID', '=', state.data.ID),
+
+        attachments: ({ state }) => UB.Repository('tst_attachment')
+          .attrs('ID', 'file', 'dictID')
+          .where('dictID', '=', state.data.ID)
       }
     })
     .validation()
@@ -136,7 +175,8 @@ module.exports.default = {
       'intValue',
       'calculated',
       'booleanColumn',
-      'jsonColumn'
+      'jsonColumn',
+      'file'
     ]),
 
     ...mapGetters(['loading']),

@@ -9,8 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `USelectEnum` wrong display value on open form
  - loader (spinner) added to auth form - turned on after user press "Login" button. This help to indicate
   user what something is happens in case server response is slow  
- - `UUploadDocument` show delete button when `disabled` true
 
+### Changed
+ - **BREAKING** `UUploadDocument` removed, added analog `UFile`
+ - `UFormRow` increased default label width from 120 to 150
+ - `UFormRow` - Previously margin-top was added only if one `UFormRow` element follows another in DOM, instead now margin-bottom always 10px
 
 ### Added
  - `UTable` component. Build's table with sticky header. Accepts `data` and columns config
@@ -64,6 +67,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
       }
     })
     ```
+ - `UFile` Component for fields with type Document. 
+ Can download file or if extension is pdf or image - can show content in dialog. 
+ In preview mode will be shows preview immediately.
+ - `UFileInput` Input file with drag and drop, but without display value - just upload.
+ - `UFileCollection` Multi file upload to UB entity. It maps to collection in UB.Form constructor.
+ - `Form/processing|instance` added param `entity` to collection instance. 
+ It need to get entity name by collection key. 
+ For example when you need to get entity name for `setDocument` method from collection.
  
 ### Changed 
  - **BREAKING** removed `UDetailGrid`

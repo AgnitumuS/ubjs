@@ -76,7 +76,7 @@ export default {
     labelWidth: {
       type: Number,
       default () {
-        return this.formLabelWidth || 120
+        return this.formLabelWidth || 150
       }
     },
 
@@ -145,14 +145,11 @@ export default {
 <style>
 .ub-form-row {
   display: flex;
+  margin-bottom: 10px;
 }
 
 .ub-form-row__stacked {
   display: block;
-}
-
-.ub-form-row + .ub-form-row {
-  margin-top: 10px;
 }
 
 .ub-form-row__label {

@@ -89,6 +89,11 @@
       "dataType": "Json",
       "caption": "Test JSON column",
       "allowNull": true
+    },
+    {
+      "name": "file",
+      "dataType": "Document",
+      "caption": "Attachment example"
     }
   ],
   "mixins": {

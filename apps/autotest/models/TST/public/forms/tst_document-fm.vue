@@ -107,11 +107,9 @@
       </u-form-row>
 
       <u-form-row :label="getLabel('fileStoreSimple')">
-        <u-upload-document
+        <u-file
           v-model="fileStoreSimple"
-          :entity-name="entity"
-          file-store="fileStoreSimple"
-          :doc-id="ID"
+          attribute-name="fileStoreSimple"
         />
       </u-form-row>
 

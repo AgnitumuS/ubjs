@@ -5,7 +5,6 @@ module.exports = {
     const USelectEntity = require('../components/controls/USelectEntity.vue').default
     const USelectMany = require('../components/controls/USelectMany.vue').default
     const UFormRow = require('../components/controls/UFormRow.vue').default
-    const UUploadDocument = require('../components/controls/UUploadDocument.vue').default
     const UCodeMirror = require('../components/controls/UCodeMirror.vue').default
     const USelectEnum = require('../components/controls/USelectEnum.vue').default
     const UInput = require('../components/controls/UInput/UInput.vue').default
@@ -21,11 +20,13 @@ module.exports = {
     const UIconPicker = require('../components/controls/UIconPicker.vue').default
     const UDropdown = require('../components/controls/UDropdown/UDropdown.vue').default
     const UDropdownItem = require('../components/controls/UDropdown/UDropdownItem.vue').default
+    const UFile = require('../components/controls/UFile/UFile.vue').default
+    const UFileCollection = require('../components/controls/UFile/UFileCollection.vue').default
+    const UFileInput = require('../components/controls/UFile/UFileInput.vue').default
     Vue.component(UFormContainer.name, UFormContainer)
     Vue.component(USelectEntity.name, USelectEntity)
     Vue.component(USelectMany.name, USelectMany)
     Vue.component(UFormRow.name, UFormRow)
-    Vue.component(UUploadDocument.name, UUploadDocument)
     Vue.component(UCodeMirror.name, UCodeMirror)
     Vue.component(USelectEnum.name, USelectEnum)
     Vue.component(UInput.name, UInput)
@@ -41,6 +42,9 @@ module.exports = {
     Vue.component(UContextMenu.name, UContextMenu)
     Vue.component(UDropdown.name, UDropdown)
     Vue.component(UDropdownItem.name, UDropdownItem)
+    Vue.component(UFile.name, UFile)
+    Vue.component(UFileCollection.name, UFileCollection)
+    Vue.component(UFileInput.name, UFileInput)
 
     const HoldFocus = require('../directives/HoldFocus')
     Vue.directive(HoldFocus.name, HoldFocus)
