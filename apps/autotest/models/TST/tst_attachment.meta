@@ -10,7 +10,7 @@
       "caption": "Object"
     },
     {
-      "name": "file",
+      "name": "doc_file",
       "dataType": "Document",
       "caption": "File"
     }
