@@ -19,7 +19,7 @@
     "prepare": "npm run build",
     "gen-el-vars": "et -i theme/ub-el.scss",
     "build:theme": "npm run build:el",
-    "build:el": "et -c theme/ub-el.scss -o _el-theme && shx cp ./_el-theme/index.css ./theme/el-theme-compiled.css && shx mkdir -p ./theme/fonts && shx cp ./_el-theme/fonts/* ./theme/fonts",
+    "build:el": "et -c theme/ub-el.scss -o _el-theme && shx cp ./_el-theme/index.css ./theme/el-theme-compiled.css && shx mkdir -p ./theme/fonts && shx cp ./_el-theme/fonts/* ./theme/fonts && cleancss -O2 -o ./theme/el-theme-compiled.min.css ./theme/el-theme-compiled.css",
     "build:js": "webpack --mode production && cleancss -O2 -o ./dist/adminui-vue.min.css ./dist/adminui-vue.css",
     "analyse-boundle": "webpack --mode production --profile --json > /tmp/wp_stats.json && webpack-bundle-analyzer /tmp/wp_stats.json",
     "styleguide:server": "vue-styleguidist server",
