@@ -76,38 +76,38 @@
           <u-form-row label="file collection">
             <u-file-collection
               collection-name="attachments"
-              file-attribute="file"
+              file-attribute="doc_file"
               subject-attribute="dictID"
             />
           </u-form-row>
 
           <u-form-row label="Base file">
             <u-file
-              v-model="file"
-              attribute-name="file"
+              v-model="doc_file"
+              attribute-name="doc_file"
             />
           </u-form-row>
 
           <u-form-row label="Base file disabled">
             <u-file
-              v-model="file"
+              v-model="doc_file"
               disabled
-              attribute-name="file"
+              attribute-name="doc_file"
             />
           </u-form-row>
 
           <u-form-row label="Preview mode">
             <u-file
-              v-model="file"
-              attribute-name="file"
+              v-model="doc_file"
+              attribute-name="doc_file"
               preview-mode
             />
           </u-form-row>
 
           <u-auto-field
-            v-model="file"
+            v-model="doc_file"
             label="Auto field"
-            attribute-name="file"
+            attribute-name="doc_file"
           />
         </el-tab-pane>
         <el-tab-pane
@@ -151,7 +151,7 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
           .where('objectID', '=', state.data.ID),
 
         attachments: ({ state }) => UB.Repository('tst_attachment')
-          .attrs('ID', 'file', 'dictID')
+          .attrs('ID', 'doc_file', 'dictID')
           .where('dictID', '=', state.data.ID)
       }
     })
@@ -176,7 +176,7 @@ module.exports.default = {
       'calculated',
       'booleanColumn',
       'jsonColumn',
-      'file'
+      'doc_file'
     ]),
 
     ...mapGetters(['loading']),

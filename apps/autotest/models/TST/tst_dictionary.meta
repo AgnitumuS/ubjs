@@ -91,7 +91,7 @@
       "allowNull": true
     },
     {
-      "name": "file",
+      "name": "doc_file",
       "dataType": "Document",
       "caption": "Attachment example"
     }
