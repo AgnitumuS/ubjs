@@ -11,19 +11,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   user what something is happens in case server response is slow  
 
 ### Changed
- - **BREAKING** `UUploadDocument` removed, added analog `UFile`
+ - **BREAKING** `UUploadDocument` removed, use `UFile` instead
  - `UFormRow` increased default label width from 120 to 150
- - `UFormRow` - Previously margin-top was added only if one `UFormRow` element follows another in DOM, instead now margin-bottom always 10px
- - Extract element theme styles into external file
+ - `UFormRow` previously margin-top was added only if one `UFormRow` element follows another in DOM,
+  instead now margin-bottom always 10px
+ - element theme css extracted into separate. Thois allow to override element styles in our vue components
 
 ### Added
  - `UTable` component. Build's table with sticky header. Accepts `data` and columns config
- - `UTableEntity` component. Extends UTable and add pagination, filters, sorts, by `entityName` or `repository`
- - `UDropdown` and `UDropdownItem` component. Wrap element which passed as default slot and shows dropdown on click of this element
- - `Lookups` util. Can load any entity and get it lookup value 
- - `UBConfig` property `uiSettings.adminUI.useVueTables` which replace all ext grids showList by UTableEntity component.
- - override `UB.core.UBCommand.prototype.showList` showList accepts new prop `renderer`
-    for render Ext showList use old doCommand config
+ - `UTableEntity` component able to display data either using entity name or repository.
+   Extends UTable and adds pagination, filters, sorts
+ - `UDropdown` and `UDropdownItem` component. Wrap element which passed as default slot and 
+  shows dropdown on click in this element
+ - `Lookups` util. Can load any entity and get it lookup value. Lookuped values are cached GLOBALY
+ - new property `uiSettings.adminUI.useVueTables` in app config. If true - replace all
+   ext grids `showList` by UTableEntity component.
+ - `UB.core.UBCommand.prototype.showList` showList accepts new prop `renderer`. To render Ext showList use old doCommand config
     ```javascript
     $App.doCommand({
       renderer: 'vue',
@@ -34,7 +37,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     })
     ```
     
-    You can use the old config with vue renderer, but be careful, it may not take into account all the parameters that the old renderer took into account
+    Old config can be used with vue renderer, but be careful, it may not take into account all the parameters that the old renderer took into account
     ```javascript
     $App.doCommand({
       renderer: 'vue',
@@ -68,19 +71,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
       }
     })
     ```
- - `UFile` Component for fields with type Document. 
- Can download file or if extension is pdf or image - can show content in dialog. 
- In preview mode will be shows preview immediately.
- - `UFileInput` Input file with drag and drop, but without display value - just upload.
- - `UFileCollection` Multi file upload to UB entity. It maps to collection in UB.Form constructor.
- - `Form/processing|instance` added param `entity` to collection instance. 
- It need to get entity name by collection key. 
- For example when you need to get entity name for `setDocument` method from collection.
+ - `UFile` Component for fields of type Document. Features:
+   - download file or (in case mime type is application/pdf or one on supported images) - show content in dialog
+   - in case prop `previewMode: true` will show document content instead of link
+ - `UFileInput` file input with drag and drop, but without preview - just for upload
+ - `UFileCollection` Multi file upload to UB entity. Maps to collection in UB.Form constructor
+ - `Form/processing|instance`: added param `entity` to collection instance.
+    Can be used for example to get entity name for `setDocument` method from collection.
  
 ### Changed 
  - **BREAKING** removed `UDetailGrid`
  - `UDialog` now exports `errorReporter` and it available in vue instance as `$errorReporter`
- - `UContextMenu` - registered globally
+ - `UContextMenu` - registered globally, can be used in template as `<u-context-menu>...` tag.
  
 [1.8.9]
 ### Fixed
