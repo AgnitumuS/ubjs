@@ -195,6 +195,31 @@ export default {
     dateTimeFormat: {
       type: String,
       default: 'lll'
+    },
+
+    /**
+     * Overrides showDictionary action config.
+     * Function accepts current config and must return new config
+     */
+    buildCopyConfig: {
+      type: Function,
+      default: config => config
+    },
+    /**
+     * Overrides edit action config.
+     * Function accepts current config and must return new config
+     */
+    buildEditConfig: {
+      type: Function,
+      default: config => config
+    },
+    /**
+     * Overrides addNew action config.
+     * Function accepts current config and must return new config
+     */
+    buildAddNewConfig: {
+      type: Function,
+      default: config => config
     }
   },
 
@@ -542,6 +567,35 @@ Custom column always required to have slot, because entity dont have data for th
           },
           'disabled'
         ]
+      }
+    }
+  }
+</script>
+```
+
+### Actions overrides
+```vue
+<template>
+  <u-table-entity
+    entity-name="tst_dictionary"
+    :build-edit-config="actionEditOverride"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: 1
+      }
+    },
+
+    methods: {
+      actionEditOverride (cfg) {
+        return {
+          ...cfg,
+          isModal: false,
+          docID: 12345
+        }
       }
     }
   }

@@ -8,7 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `USelectEntity` added props `buildShowDictionaryConfig`, `buildEditConfig`, `buildAddNewConfig`. 
  This props can overrides doCommand configs for base actions (edit, addNew, showDictionary). 
- Functions get current config as argument and must return new config
+ Functions get current config as argument and must return new config.
+ Example in component docs.
+ - `UTableEntity` added props `buildEditConfig`, `buildAddNewConfig`, `buildCopyConfig`. 
+  This props can overrides doCommand configs for base actions (edit, addNew, сopy). 
+  Functions get current config as argument and must return new config.
+  Example in component docs.
 
 [1.9.0]
 ### Fixed
