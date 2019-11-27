@@ -14,6 +14,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   This props can overrides doCommand configs for base actions (edit, addNew, сopy). 
   Functions get current config as argument and must return new config.
   Example in component docs.
+ - `UTableEntity` toolbar slots:
+   - `toolbar-buttons-prepend` - Prepend new buttons to toolbar 
+   - `toolbar-button-add-new` - Replace add-new button in toolbar panel 
+   - `toolbar-buttons-append` - Prepend new buttons to toolbar before filter 
+   - `toolbar-dropdown` - Replace whole toolbar dropdown 
+   - `toolbar-dropdown-prepend` - Prepend new buttons to toolbar 
+   - `toolbar-dropdown-add-new` - Replace add-new button in toolbar dropdown 
+   - `toolbar-dropdown-edit` - Replace edit button in toolbar dropdown 
+   - `toolbar-dropdown-copy` - Replace copy button in toolbar dropdown 
+   - `toolbar-dropdown-delete` - Replace delete button in toolbar dropdown 
+   - `toolbar-dropdown-append ` - Append new buttons to toolbar 
 
 [1.9.0]
 ### Fixed
