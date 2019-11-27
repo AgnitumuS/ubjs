@@ -8,9 +8,10 @@ const { Notification: $notify } = require('element-ui')
  *
  * @param {function:ClientRepository} repository Function returns ClientRepository
  * @param {CustomRepository.entityName} entityName Entity name
- * @param {array<UTableColumn>} columns
- * @param {number} pageSize
- *
+ * @param {array<UTableColumn>} columns Columns config
+ * @param {number} pageSize Page size
+ * @param {string} dateFormat Date format
+ * @param {string} dateTimeFormat DateTime format
  * @returns {Vuex} Store config
  */
 module.exports = ({

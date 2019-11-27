@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.9.1]
+### Added
+ - `USelectEntity` added props `buildShowDictionaryConfig`, `buildEditConfig`, `buildAddNewConfig`. 
+ This props can overrides doCommand configs for base actions (edit, addNew, showDictionary). 
+ Functions get current config as argument and must return new config
+
 [1.9.0]
 ### Fixed
  - `USelectEnum` wrong display value on open form
