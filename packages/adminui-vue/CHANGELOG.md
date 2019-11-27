@@ -15,9 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   Functions get current config as argument and must return new config.
   Example in component docs.
  - `UTableEntity` toolbar slots:
-   - `toolbar-buttons-prepend` - Prepend new buttons to toolbar 
+   - `toolbar` - Replace whole toolbar 
+   - `toolbar-prepend` - Prepend new buttons to toolbar 
    - `toolbar-button-add-new` - Replace add-new button in toolbar panel 
-   - `toolbar-buttons-append` - Prepend new buttons to toolbar before filter 
+   - `toolbar-append` - Prepend new buttons to toolbar before filter 
    - `toolbar-dropdown` - Replace whole toolbar dropdown 
    - `toolbar-dropdown-prepend` - Prepend new buttons to toolbar 
    - `toolbar-dropdown-add-new` - Replace add-new button in toolbar dropdown 

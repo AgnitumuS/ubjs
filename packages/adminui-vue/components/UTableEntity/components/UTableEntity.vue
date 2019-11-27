@@ -15,71 +15,74 @@
     @keydown.ctrl.delete.exact="deleteRecord(selectedRowId)"
   >
     <div class="u-table-entity__head">
-      <!-- @slot Prepend new buttons to toolbar -->
-      <slot name="toolbar-buttons-prepend" />
+      <!-- @slot Replace whole toolbar -->
+      <slot name="toolbar">
+        <!-- @slot Prepend new buttons to toolbar -->
+        <slot name="toolbar-prepend" />
 
-      <toolbar-button
-        is-blue
-        icon="el-icon-refresh"
-        @click="refresh"
-      >
-        {{ $ut('refresh') }}
-      </toolbar-button>
-
-      <!-- @slot Replace add-new button in toolbar panel -->
-      <slot name="toolbar-button-add-new">
         <toolbar-button
-          icon="el-icon-plus"
-          :disabled="!canAddNew"
-          @click="addNew"
+          is-blue
+          icon="el-icon-refresh"
+          @click="refresh"
         >
-          {{ $ut('actionAdd') }}
+          {{ $ut('refresh') }}
         </toolbar-button>
-      </slot>
 
-      <!-- @slot Prepend new buttons to toolbar before filter -->
-      <slot name="toolbar-buttons-append" />
+        <!-- @slot Replace add-new button in toolbar panel -->
+        <slot name="toolbar-button-add-new">
+          <toolbar-button
+            icon="el-icon-plus"
+            :disabled="!canAddNew"
+            @click="addNew"
+          >
+            {{ $ut('actionAdd') }}
+          </toolbar-button>
+        </slot>
 
-      <filter-container ref="filterContainer" />
+        <!-- @slot Prepend new buttons to toolbar before filter -->
+        <slot name="toolbar-append" />
 
-      <pagination />
+        <filter-container ref="filterContainer" />
 
-      <!-- @slot Replace whole toolbar dropdown -->
-      <slot name="toolbar-dropdown">
-        <toolbar-dropdown>
-          <!-- @slot Prepend new buttons to toolbar -->
-          <slot
-            slot="prepend"
-            name="toolbar-dropdown-prepend"
-          />
+        <pagination />
 
-          <!-- @slot Replace add-new button in toolbar dropdown -->
-          <slot
-            slot="add-new"
-            name="toolbar-dropdown-add-new"
-          />
-          <!-- @slot Replace edit button in toolbar dropdown -->
-          <slot
-            slot="edit"
-            name="toolbar-dropdown-edit"
-          />
-          <!-- @slot Replace copy button in toolbar dropdown -->
-          <slot
-            slot="copy"
-            name="toolbar-dropdown-copy"
-          />
-          <!-- @slot Replace delete button in toolbar dropdown -->
-          <slot
-            slot="delete"
-            name="toolbar-dropdown-delete"
-          />
+        <!-- @slot Replace whole toolbar dropdown -->
+        <slot name="toolbar-dropdown">
+          <toolbar-dropdown>
+            <!-- @slot Prepend new buttons to toolbar -->
+            <slot
+              slot="prepend"
+              name="toolbar-dropdown-prepend"
+            />
 
-          <!-- @slot Append new buttons to toolbar -->
-          <slot
-            slot="append"
-            name="toolbar-dropdown-append"
-          />
-        </toolbar-dropdown>
+            <!-- @slot Replace add-new button in toolbar dropdown -->
+            <slot
+              slot="add-new"
+              name="toolbar-dropdown-add-new"
+            />
+            <!-- @slot Replace edit button in toolbar dropdown -->
+            <slot
+              slot="edit"
+              name="toolbar-dropdown-edit"
+            />
+            <!-- @slot Replace copy button in toolbar dropdown -->
+            <slot
+              slot="copy"
+              name="toolbar-dropdown-copy"
+            />
+            <!-- @slot Replace delete button in toolbar dropdown -->
+            <slot
+              slot="delete"
+              name="toolbar-dropdown-delete"
+            />
+
+            <!-- @slot Append new buttons to toolbar -->
+            <slot
+              slot="append"
+              name="toolbar-dropdown-append"
+            />
+          </toolbar-dropdown>
+        </slot>
       </slot>
     </div>
 
