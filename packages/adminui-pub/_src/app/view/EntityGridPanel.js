@@ -2377,7 +2377,12 @@ Ext.define('UB.view.EntityGridPanel', {
     if (gridSelection.length === 1) {
       if (me.entity.descriptionAttribute) {
         try {
-          entityCaptionsToDelete = gridSelection[0].get(me.entity.descriptionAttribute)
+          if (me.entity.attr(me.entity.descriptionAttribute).dataType !== 'String') {
+            // in case description attribute not a string - return value of the first column
+            entityCaptionsToDelete = gridSelection[0].get(me.columns[0].fieldName)
+          } else {
+            entityCaptionsToDelete = gridSelection[0].get(me.entity.descriptionAttribute)
+          }
         } catch (e) {}
         entityCaptionsToDelete = (entityCaptionsToDelete ? '[' + entityCaptionsToDelete + ']' : '')
       }

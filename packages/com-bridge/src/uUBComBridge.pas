@@ -80,7 +80,7 @@ const
     );
 
   jsCOM_class: JSClass = (name: 'COM';
-    flags: JSCLASS_HAS_PRIVATE;
+    flags: JSCLASS_HAS_PRIVATE or JSCLASS_FOREGROUND_FINALIZE;
     cOps: @jsCOM_classOps
   );
 {$ELSE}

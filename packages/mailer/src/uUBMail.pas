@@ -463,7 +463,7 @@ const
     finalize: MimePartSubPartsDestroy; // call then JS object GC
   );
   jsMimePartSubParts_class: JSClass = (name: 'MimePartSubParts';
-    flags: JSCLASS_HAS_PRIVATE or (255 shl JSCLASS_RESERVED_SLOTS_SHIFT);
+    flags: JSCLASS_HAS_PRIVATE or JSCLASS_FOREGROUND_FINALIZE or  (255 shl JSCLASS_RESERVED_SLOTS_SHIFT);
     cOps: @jsMimePartSubParts_classOps
     );
 {$ELSE}
@@ -544,7 +544,7 @@ begin
   l := Length(FJSProps);
   SetLength(FJSProps, l+1);
   FJSProps[l].name := 'subPart';
-  FJSProps[l].flags := JSPROP_ENUMERATE or JSPROP_PERMANENT or JSPROP_READONLY or JSPROP_SHARED;
+  FJSProps[l].flags := JSPROP_ENUMERATE or JSPROP_PERMANENT or JSPROP_SHARED;
   FJSProps[l].getter.native.info := nil;
   FJSProps[l].getter.native.op := MimePartGetSubParts;
   FJSProps[l].setter.native.info := nil;
@@ -847,7 +847,7 @@ begin
   l := Length(FJSProps);
   SetLength(FJSProps, l+1);
   FJSProps[l].name := 'lastError';
-  FJSProps[l].flags := JSPROP_ENUMERATE or JSPROP_PERMANENT or JSPROP_READONLY or JSPROP_SHARED;
+  FJSProps[l].flags := JSPROP_ENUMERATE or JSPROP_PERMANENT or JSPROP_SHARED;
   FJSProps[l].getter.native.info := nil;
   FJSProps[l].getter.native.op := SenderLastError;
   FJSProps[l].setter.native.info := nil;

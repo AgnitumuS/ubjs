@@ -2,6 +2,7 @@ const Vue = require('vue')
 const UB = require('@unitybase/ub-pub')
 const UDialog = require('./UDialog.vue').default
 const { Notification } = require('element-ui')
+const UDialogConstructor = Vue.extend(UDialog)
 
 /**
  * Show modal dialog with 3 optional button
@@ -18,12 +19,9 @@ const { Notification } = require('element-ui')
  *   If dialog is closed using Esc key or by pressing window "close" button result is `cancel`
  */
 function dialog (options) {
-  const UDialogConstructor = Vue.extend(UDialog)
   return new Promise(resolve => {
-    let props = Object.assign({ resolver: resolve }, options)
-    const instance = new UDialogConstructor({ data: props })
-    const vm = instance.$mount()
-    vm.visible = true
+    const instance = new UDialogConstructor({ data: options, resolver: resolve })
+    instance.$mount().visible = true
   })
 }
 

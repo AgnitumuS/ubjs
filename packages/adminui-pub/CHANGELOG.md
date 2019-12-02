@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[5.12.8]
+### Fixed
+ - EntityGridPanel: in case entity descriptionAttribute type <> string use value of first column for deletion confirmation message [UBDF-8061]
+
 [5.12.7]
 ### Changed
   - index.html template will expect `favicon.ico` is placed in the root of `httpServer.inetPub` folder. 

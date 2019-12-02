@@ -62,24 +62,23 @@ export default {
       buttons: {},
       type: 'info',
       isDevInfo: false,
-      resolver: null,
       visible: false
     }
   },
 
   methods: {
     decline () {
-      this.resolver('no')
+      this.$options.resolver('no')
       this.$destroy()
     },
 
     accept () {
-      this.resolver('yes')
+      this.$options.resolver('yes')
       this.$destroy()
     },
 
     cancel () {
-      this.resolver('cancel')
+      this.$options.resolver('cancel')
       this.$destroy()
     },
 
