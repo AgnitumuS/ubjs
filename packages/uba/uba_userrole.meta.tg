@@ -1,6 +1,6 @@
 ﻿{
-    "caption": "Роли истифодабарандагон",
-    "description": "",
+    "caption": "Вазифаҳои истифодабарандагон",
+    "description": "Вазифаҳо, ки ба истифодабаранда бахшидааст",
     "attributes": [
         {
             "name": "userID",
@@ -8,7 +8,7 @@
         },
         {
             "name": "roleID",
-            "caption": "Рол"
+            "caption": "Вазифа"
         }
     ]
 }

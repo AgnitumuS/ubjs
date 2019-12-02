@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Аудит",
-    "description": "",
+    "description": "Аудити тағйиротҳо",
     "attributes": [
         {
             "name": "actionTime",
@@ -12,7 +12,8 @@
         },
         {
             "name": "actionUser",
-            "caption": "Истифодабаранда"
+            "caption": "Истифодабаранда",
+            "description": "Истифодабаранда"
         },
         {
             "name": "entity",
@@ -20,15 +21,35 @@
         },
         {
             "name": "targetGroup",
-            "caption": "Гурӯҳи мақсадноки"
+            "caption": "Гурӯҳи мақсаднокӣ",
+            "description": "Гурӯҳе, ки барои он маълумот тағир ёфтааст"
         },
         {
             "name": "remoteIP",
-            "caption": "Суроғаи IP"
+            "caption": "Суроғаи IP",
+            "description": "Суроғаи IP-и тарафи дархосткунанда"
         },
         {
             "name": "fromValue",
             "caption": "Маъно _________ буд"
+        },
+        {
+            "name": "entityinfo_id",
+            "caption": "моҳият"
+        },
+        {
+            "name": "targetUser",
+            "description": "Номи истифодабар, ки барои он маълумотҳо иваз шудааст",
+            "caption": "Истифоадабари мақсаднокӣ"
+        },
+        {
+            "name": "targetRole",
+            "description": "Вазифаи истифодабар, ки барои он маълумотҳо иваз шуданд",
+            "caption": "Вазифаи мақсаднокӣ"
+        },
+        {
+            "name": "toValue",
+            "caption": "Маъно _________ шуд"
         }
     ]
 }

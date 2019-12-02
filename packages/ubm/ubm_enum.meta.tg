@@ -1,14 +1,28 @@
 ﻿{
     "caption": "Арзишҳои номбаршуда",
-    "description": "",
+    "description": "Арзишҳои номбаршуда",
     "attributes": [
         {
             "name": "eGroup",
-            "caption": "Гурӯҳ"
+            "caption": "Гурӯҳ",
+            "description": "Гурӯҳи номбаршавӣ"
         },
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамзи маъно"
+        },
+        {
+            "name": "sortOrder",
+            "caption": "№ б/т"
+        },
+        {
+            "name": "shortName",
+            "caption": "Номи кӯтоҳ"
+        },
+        {
+            "name": "name",
+            "caption": "Номгӯи маъно"
         }
     ]
 }

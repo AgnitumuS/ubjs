@@ -1,14 +1,20 @@
 ﻿{
     "caption": "Гурӯҳи истифодабарандагон",
-    "description": "",
+    "description": "Гурӯҳи истифодабарандагон",
     "attributes": [
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамзи гурӯҳӣ",
+            "documentation": "Рамзи беназири гурӯҳ. Истифода мешавад барои API ва скриптҳо"
         },
         {
             "name": "description",
-            "caption": "Тасвир"
+            "caption": "Тавсиф"
+        },
+        {
+            "name": "name",
+            "caption": "Номгӯй"
         }
     ]
 }

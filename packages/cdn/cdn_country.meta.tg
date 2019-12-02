@@ -1,42 +1,56 @@
 ﻿{
     "caption": "Мамлакатҳо",
-    "description": "",
+    "description": "Маълумотномаи кишварҳо",
     "attributes": [
         {
             "name": "symbol2",
-            "caption": "Рамзи ISO"
+            "caption": "Рамзи ISO",
+            "description": "символи 2-рақамаи кишвар бо классификатсияи ISO"
         },
         {
             "name": "currencyID",
-            "caption": "Асъор"
+            "caption": "Асъор",
+            "description": "Асъоре, ки дар ин кишвар ҳамчун асоси истифода мешавад"
         },
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамзи дохилӣ"
         },
         {
             "name": "name",
-            "caption": "Номгуй"
+            "caption": "Номгуй",
+            "description": "Номгӯи кишвар"
         },
         {
             "name": "description",
-            "caption": "Тавсир"
+            "caption": "Тавсиф",
+            "description": "Тавсифи кишвар"
         },
         {
             "name": "fullName",
-            "caption": "Номи пурра"
+            "caption": "Номи пурра",
+            "description": "Номи пурраи расмии кишвар"
         },
         {
             "name": "capitalID",
-            "caption": "Пойтахт"
+            "caption": "Пойтахт",
+            "description": "Пойтахти кишвар"
         },
         {
             "name": "phoneCode",
-            "caption": "Рамзи телефон"
+            "caption": "Рамзи телефон",
+            "description": "Рамзи телефони кишвар"
         },
         {
             "name": "intCode",
-            "caption": "Рамзи рақамӣ"
+            "caption": "Рамзи рақамӣ",
+            "description": "Рамзи рақамии кишвар"
+        },
+        {
+            "name": "symbol3",
+            "description": "символи 3-рақамаи кишвар бо классификатсияи КБО",
+            "caption": "Рамзи КБО"
         }
     ]
 }

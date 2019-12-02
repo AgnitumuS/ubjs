@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Маҳаллаҳои аҳолинишин ",
-    "description": "",
+    "description": "Маълумотномаи маҳалҳои аҳолинишин ",
     "attributes": [
         {
             "name": "caption",
@@ -8,19 +8,23 @@
         },
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамзи маҳалҳои аҳолинишин"
         },
         {
             "name": "name",
-            "caption": "Номгуй"
+            "caption": "Номгуй",
+            "description": "Номи маҳалаи аҳолинишин"
         },
         {
             "name": "description",
-            "caption": "Тавсир"
+            "caption": "Тавсиф",
+            "description": "Тавсифи маҳалаи  аҳолинишин"
         },
         {
             "name": "postalCode",
-            "caption": "Рамзи почта "
+            "caption": "Рамзи почта ",
+            "description": "Рамзи почта маҳалли аҳолинишин"
         },
         {
             "name": "parentAdminUnitID",
@@ -28,11 +32,13 @@
         },
         {
             "name": "phoneCode",
-            "caption": "Рамзи телефон"
+            "caption": "Рамзи телефон",
+            "description": "Рамзи телефони маҳалаи аҳолинишин"
         },
         {
             "name": "cityTypeID",
-            "caption": "Навъи маҳалли аҳолинишин *"
+            "caption": "Навъи маҳалаҳои аҳолинишин",
+            "description": "Навъи маҳалаҳои аҳолинишин"
         }
     ]
 }

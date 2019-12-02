@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Паёмак",
-    "description": "",
+    "description": "Паёмҳои системавӣ",
     "attributes": [
         {
             "name": "expireDate",
@@ -21,6 +21,10 @@
         {
             "name": "messageType",
             "caption": "Намуд"
+        },
+        {
+            "name": "recipients",
+            "caption": "Қабулкунандаҳои паём"
         }
     ]
 }

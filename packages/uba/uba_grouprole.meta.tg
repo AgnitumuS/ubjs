@@ -1,6 +1,6 @@
 ﻿{
-    "caption": "Роли гурӯҳҳо",
-    "description": "",
+    "caption": "Вазифаҳои гурӯҳҳо",
+    "description": "Вазифаҳо, ки ба гуруҳи истифодабарандагон бахшидааст",
     "attributes": [
         {
             "name": "groupID",
@@ -8,7 +8,7 @@
         },
         {
             "name": "roleID",
-            "caption": "Рол"
+            "caption": "Вазифа"
         }
     ]
 }

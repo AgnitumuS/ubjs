@@ -11,7 +11,7 @@ UB.i18nExtend({
   profession_title: "Касб",
   region_title: "Ноҳия",
 
-  'ClassifTypePanelClassifiersTitle': 'Значения классификации',
+  'ClassifTypePanelClassifiersTitle': 'Арзишҳои таснифшуда',
 
   // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF'

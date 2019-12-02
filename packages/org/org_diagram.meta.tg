@@ -1,14 +1,25 @@
 ﻿{
     "caption": "Диаграммаҳо",
-    "description": "",
+    "description": "Диаграммаҳо",
     "attributes": [
         {
             "name": "caption",
-            "caption": "Номгуй"
+            "caption": "Номгуй",
+            "description": "Номгуй"
         },
         {
             "name": "isdefault",
-            "caption": "Бо нобаенӣ"
+            "caption": "Бо нобаенӣ",
+            "description": "Бо нобаенӣ"
+        },
+        {
+            "name": "orgunitID",
+            "caption": "Реша"
+        },
+        {
+            "name": "document",
+            "caption": "Органограмма",
+            "description": "Органограмма"
         }
     ]
 }

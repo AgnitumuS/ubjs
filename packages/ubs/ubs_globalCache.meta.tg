@@ -1,4 +1,18 @@
 ﻿{
     "caption": "Кэши глобалӣ",
-    "description": ""
+    "description": "Кэши глобалии сервер",
+    "attributes": [
+        {
+            "name": "value",
+            "caption": "Маъно"
+        },
+        {
+            "name": "ID",
+            "caption": "ИД"
+        },
+        {
+            "name": "key",
+            "caption": "Калид"
+        }
+    ]
 }

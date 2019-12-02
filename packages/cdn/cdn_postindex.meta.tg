@@ -1,14 +1,16 @@
 ﻿{
     "caption": "Индекси почта",
-    "description": "",
+    "description": "Индекси почта",
     "attributes": [
         {
             "name": "code",
-            "caption": "Индекс"
+            "caption": "Индекс",
+            "description": "Индекс"
         },
         {
             "name": "description",
-            "caption": "Тасвир"
+            "caption": "Тавсиф",
+            "description": "Тавсиф"
         },
         {
             "name": "streetID",

@@ -1,30 +1,36 @@
 ﻿{
     "caption": "Суратҳисобҳо",
-    "description": "",
+    "description": "Маълумотномаи суратҳисобҳои ҳисоббаробаркунӣ ташкилотҳо",
     "attributes": [
         {
             "name": "bankID",
-            "caption": "Бонк"
+            "caption": "Бонк",
+            "description": "Бонк, ки дар он суратҳисоб кушода аст"
         },
         {
             "name": "currencyID",
-            "caption": "Асъор"
+            "caption": "Асъор",
+            "description": "Асъори суратҳисоб"
         },
         {
             "name": "code",
-            "caption": "Рамзи суратҳисоб"
+            "caption": "Рамзи суратҳисоб",
+            "description": "Рамзи суратҳисоб (рақами сарҳисоб)"
         },
         {
             "name": "description",
-            "caption": "Тасвир"
+            "caption": "Тавсиф",
+            "description": "Тавсиф"
         },
         {
             "name": "organizationID",
-            "caption": "Ташкилот "
+            "caption": "Ташкилот",
+            "description": "Ташкилот"
         },
         {
             "name": "acctype",
-            "caption": "Намуди суратҳисоб"
+            "caption": "Намуди суратҳисоб",
+            "description": "Намуди суратҳисоб"
         }
     ]
 }

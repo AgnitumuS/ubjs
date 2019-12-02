@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Воҳиди маъмурӣ",
-    "description": "",
+    "description": "Воҳиди маъмурӣ (кишвар, вилоят, минтақаи ахолинишин)",
     "attributes": [
         {
             "name": "caption",
@@ -8,7 +8,8 @@
         },
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамзи дохилӣ"
         },
         {
             "name": "name",
@@ -16,7 +17,8 @@
         },
         {
             "name": "parentAdminUnitID",
-            "caption": "Тобеъ"
+            "caption": "Тобеъ",
+            "description": "Тобеъ"
         },
         {
             "name": "fullName",
@@ -24,7 +26,8 @@
         },
         {
             "name": "adminUnitType",
-            "caption": "Намуди воҳиди маъмурӣ"
+            "caption": "Намуди воҳиди маъмурӣ",
+            "documentation": "Намуди матнии тасвироти намуди юнит барои интихоби тез ва мантиқи сервер"
         }
     ]
 }

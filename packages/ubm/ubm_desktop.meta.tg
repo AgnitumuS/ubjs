@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Мизи кори ",
-    "description": "",
+    "description": "Мизи кории барнома",
     "attributes": [
         {
             "name": "code",
@@ -12,7 +12,12 @@
         },
         {
             "name": "url",
-            "caption": "URL"
+            "caption": "URL",
+            "description": "URL саҳифаи сервери статикӣ, ҳангоми интихоби миз, дар маркази экран нишон дода мешавад"
+        },
+        {
+            "name": "caption",
+            "caption": "Номгӯи десктоп"
         }
     ]
 }

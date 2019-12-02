@@ -1,10 +1,26 @@
 ﻿{
     "caption": "Миллат",
-    "description": "",
+    "description": "Миллат",
     "attributes": [
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгӯй",
+            "description": "Номгӯи миллат"
+        },
+        {
+            "name": "nameF",
+            "description": "Номгӯй барои занон",
+            "caption": "Номгӯй (з)"
+        },
+        {
+            "name": "nameM",
+            "description": "Номгӯй барои мардон",
+            "caption": "Номгӯй (м)"
         }
     ]
 }

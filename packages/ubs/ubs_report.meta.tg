@@ -1,10 +1,11 @@
 ﻿{
-    "caption": "",
-    "description": "",
+    "caption": "Қолибҳои ҳисоботҳо",
+    "description": "Қолибҳои ҳисоботҳо",
     "attributes": [
         {
             "name": "model",
-            "caption": "Модел"
+            "caption": "Модел",
+            "description": "Модел, дар куҷо ҳисобот нигоҳ дошта шудааст"
         },
         {
             "name": "name",
@@ -13,6 +14,24 @@
         {
             "name": "mi_modifyDate",
             "caption": "Санаи тағир "
+        },
+        {
+            "name": "ID",
+            "caption": "ИД"
+        },
+        {
+            "name": "code",
+            "caption": "Рамзи Javascript",
+            "description": "Рамзи Javascript"
+        },
+        {
+            "name": "report_code",
+            "caption": "Рамзи ҳисобот"
+        },
+        {
+            "name": "template",
+            "caption": "Қолиб",
+            "description": "Қолиби ҳисобот"
         }
     ]
 }

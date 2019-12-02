@@ -1,30 +1,56 @@
 ﻿{
     "caption": "Воҳидҳои берунӣ",
-    "description": "",
+    "description": "Маълумотномаи воҳидҳои  беруна",
     "attributes": [
         {
             "name": "code",
-            "caption": "Рамзи дохилӣ"
+            "caption": "Рамзи дохилӣ",
+            "description": "Рамзи дохилии шӯъба"
         },
         {
             "name": "name",
-            "caption": "Номгуи воҳидҳо"
+            "caption": "Номгуи воҳидҳо",
+            "description": "Номгӯй бе нохунак ва ихтисорот"
         },
         {
             "name": "description",
-            "caption": "Воҳидҳои тавсифи "
+            "caption": "Тавсифи шӯъба",
+            "description": "Тавсиф"
         },
         {
             "name": "fullName",
-            "caption": "Номи пурра"
+            "caption": "Номи пурра",
+            "description": "Номи пурраи шӯъба"
         },
         {
             "name": "depTypeID",
-            "caption": "Намуди воҳиди"
+            "caption": "Намуди шӯъба",
+            "description": "Намуди шӯъба"
         },
         {
             "name": "organizationID",
-            "caption": "Ташкилот"
+            "caption": "Ташкилот",
+            "description": "Ташкилот, ки ба он шӯъба дахл дорад"
+        },
+        {
+            "name": "nameDat",
+            "description": "Номгӯй бе нохунак ва ихтисорот",
+            "caption": "Номгуи воҳидҳо"
+        },
+        {
+            "name": "nameGen",
+            "description": "Номгӯй бе нохунак ва ихтисорот",
+            "caption": "Номгуи воҳидҳо"
+        },
+        {
+            "name": "fullNameDat",
+            "caption": "Номи пурраи шӯъба",
+            "description": "Номи пурраи шӯъба"
+        },
+        {
+            "name": "fullNameGen",
+            "caption": "Номи пурраи шӯъба",
+            "description": "Номи пурраи шӯъба"
         }
     ]
 }

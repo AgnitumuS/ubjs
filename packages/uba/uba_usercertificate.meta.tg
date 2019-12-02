@@ -1,14 +1,15 @@
 ﻿{
     "caption": "Шаҳодатномаҳо",
-    "description": "",
+    "description": "Шаҳодатномаҳои истифодабар",
     "attributes": [
         {
             "name": "description",
-            "caption": "Тасвир"
+            "caption": "Тавсиф"
         },
         {
             "name": "disabled",
-            "caption": "Хомуш"
+            "caption": "Хомуш",
+            "description": "Манъ аст"
         },
         {
             "name": "userID",
@@ -20,7 +21,26 @@
         },
         {
             "name": "certificate",
-            "caption": "Шаҳодатнома"
+            "caption": "Шаҳодатнома",
+            "description": "Додаҳои дуии шаҳодатнома"
+        },
+        {
+            "name": "revocationDate",
+            "caption": "Санаи баррасӣ",
+            "description": "Санаи баррасӣ"
+        },
+        {
+            "name": "issuer_cn",
+            "caption": "Сарлавҳаи эмитент"
+        },
+        {
+            "name": "revoked",
+            "caption": "Боргашташуда",
+            "description": "Боргашташуда"
+        },
+        {
+            "name": "issuer_serial",
+            "caption": "Калиди силсилавии эмитент"
         }
     ]
 }

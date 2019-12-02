@@ -1,34 +1,81 @@
 ﻿{
-    "caption": "",
-    "description": "",
+    "caption": "Воҳидҳои корӣ",
+    "description": "Маълумотномаи воҳиди корӣ",
     "attributes": [
         {
             "name": "code",
-            "caption": "Рамзи дохилӣ"
+            "caption": "Рамзи дохилӣ",
+            "description": "Рамзи дохилии кормандон"
         },
         {
             "name": "professionID",
-            "caption": "Вазифа "
+            "caption": "Вазифа ",
+            "description": "Вазифа "
         },
         {
             "name": "caption",
-            "caption": "Сарлавҳа"
+            "caption": "Сарлавҳа",
+            "description": "Сарлавҳа"
         },
         {
             "name": "fullName",
-            "caption": "Номи пурра "
+            "caption": "Номи пурра",
+            "description": "Номи пурраи воҳиди корӣ"
         },
         {
             "name": "professionExtID",
-            "caption": "Касб"
+            "caption": "Касб",
+            "description": "Касб"
         },
         {
             "name": "isBoss",
-            "caption": "Роҳбар"
+            "caption": "Роҳбар",
+            "description": "Роҳбар"
         },
         {
             "name": "parentID",
-            "caption": "Аҷдод"
+            "caption": "Аҷдод",
+            "description": "Аҷдод"
+        },
+        {
+            "name": "name",
+            "description": "Номгӯй бе нохунак ва ихтисорот",
+            "caption": "Номи воҳиди корӣ"
+        },
+        {
+            "name": "nameDat",
+            "description": "Номгӯй бе нохунак ва ихтисорот",
+            "caption": "Номи воҳиди корӣ"
+        },
+        {
+            "name": "nameGen",
+            "description": "Номгӯй бе нохунак ва ихтисорот",
+            "caption": "Номи воҳиди корӣ"
+        },
+        {
+            "name": "description",
+            "caption": "Тавсифи воҳиди корӣ",
+            "description": "Тавсифи воҳиди корӣ"
+        },
+        {
+            "name": "fullNameDat",
+            "caption": "Номи пурра",
+            "description": "Номи пурраи воҳиди корӣ"
+        },
+        {
+            "name": "fullNameGen",
+            "caption": "Номи пурра",
+            "description": "Номи пурраи воҳиди корӣ"
+        },
+        {
+            "name": "staffUnitTypeID",
+            "caption": "Намуди воҳиди корӣ",
+            "description": "Намуди воҳиди корӣ"
+        },
+        {
+            "name": "subordinationLevel",
+            "caption": "Сатҳи тобеият",
+            "description": "Сатҳи тобеият - чанд қадар кам, он қадар воҳиди корӣ муҳимтар дар сохтори ташкилотӣ ҳисобида мешавад"
         }
     ]
 }

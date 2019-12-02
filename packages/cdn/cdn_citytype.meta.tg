@@ -1,14 +1,16 @@
 ﻿{
     "caption": "Намудҳои маҳалҳои аҳолинишин",
-    "description": "",
+    "description": "Маълумотномаи намудҳои маҳалҳои аҳолинишин",
     "attributes": [
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамзи намуди  маҳалаи аҳолинишин"
         },
         {
             "name": "name",
-            "caption": "Номгуй"
+            "caption": "Номгуй",
+            "description": "Номи навъи маҳалаи аҳолинишин"
         }
     ]
 }

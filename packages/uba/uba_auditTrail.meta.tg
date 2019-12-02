@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Аудит",
-    "description": "",
+    "description": "Аудити тағйиротҳо",
     "attributes": [
         {
             "name": "remoteIP",
@@ -29,6 +29,22 @@
         {
             "name": "fromValue",
             "caption": "Маъно _________ буд"
+        },
+        {
+            "name": "entityinfo_id",
+            "caption": "ID (мушаххаскунанда)-и навиштаи моҳият"
+        },
+        {
+            "name": "request_id",
+            "caption": "ИД-и дархост"
+        },
+        {
+            "name": "parentEntity",
+            "caption": "Моҳияти волидайнӣ"
+        },
+        {
+            "name": "toValue",
+            "caption": "Маъно _________ шуд"
         }
     ]
 }

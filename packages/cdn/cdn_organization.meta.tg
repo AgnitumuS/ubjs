@@ -1,42 +1,86 @@
 ﻿{
     "caption": "Ташкилотҳои беруна",
-    "description": "",
+    "description": "Маълумотномаи ташкилотҳои беруна",
     "attributes": [
         {
             "name": "vatCode",
-            "caption": "Рақами далели андоз аз арзиши иловашуда"
+            "caption": "Рақами далели андоз аз арзиши иловашуда",
+            "description": "Рақами шаҳодатномаи ААИ"
         },
         {
             "name": "code",
-            "caption": "Рамзи дохилӣ"
+            "caption": "Рамзи дохилӣ",
+            "description": "Рамзи дохилии ташкилот"
         },
         {
             "name": "caption",
-            "caption": "Сарлавҳа"
+            "caption": "Сарлавҳа",
+            "description": "Сарлавҳа"
         },
         {
             "name": "corrIndexID",
-            "caption": "Индекси хабарнигори"
+            "caption": "Индекси хабарнигори",
+            "description": "Индекси хабарнигори"
         },
         {
             "name": "name",
-            "caption": "Номи ташкилот"
+            "caption": "Номи ташкилот",
+            "description": "Номгӯй бе нохунак ва ихтисорот"
         },
         {
             "name": "description",
-            "caption": "Тавсифи ташкилот"
+            "caption": "Тавсифи ташкилот",
+            "description": "Тавсиф"
         },
         {
             "name": "fullName",
-            "caption": "Номи пурраи ташкилот"
+            "caption": "Номи пурраи ташкилот",
+            "description": "Номи пурра тавре, ки дар шаҳодатномаи бақайдгирӣ зикр шудааст."
         },
         {
             "name": "orgOwnershipTypeID",
-            "caption": "Намуди моликият "
+            "caption": "Намуди моликият ",
+            "description": "Намуди моликият "
         },
         {
             "name": "addrText",
-            "caption": "Таҳили суроға"
+            "caption": "Таҳили суроға",
+            "description": "Намуди суроға, ки барои сохтани PDF-и намуди ҳуҷҷати беруна нишон дода мешавад"
+        },
+        {
+            "name": "nameDat",
+            "description": "Номгӯй бе нохунак ва ихтисорот",
+            "caption": "Номи ташкилот"
+        },
+        {
+            "name": "nameGen",
+            "description": "Номгӯй бе нохунак ва ихтисорот",
+            "caption": "Номи ташкилот"
+        },
+        {
+            "name": "taxCode",
+            "caption": "Рақами андоз",
+            "description": "Рақами андоз"
+        },
+        {
+            "name": "OKPOCode",
+            "description": "Таснифоти умумии корхонаҳо ва ташкилотҳо (ТУКТ)",
+            "caption": "Рамзи ташкилот"
+        },
+        {
+            "name": "fullNameDat",
+            "caption": "Номи пурраи ташкилот",
+            "description": "Номи пурра тавре, ки дар шаҳодатномаи бақайдгирӣ зикр шудааст."
+        },
+        {
+            "name": "fullNameGen",
+            "caption": "Номи пурраи ташкилот",
+            "description": "Номи пурра тавре, ки дар шаҳодатномаи бақайдгирӣ зикр шудааст."
+        },
+        {
+            "name": "orgBusinessTypeID",
+            "caption": "Намуди ташкилот",
+            "description": "Намуди ташкилот"
         }
     ]
 }

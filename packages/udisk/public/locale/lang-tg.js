@@ -38,7 +38,7 @@ UB.i18nExtend({
   accessDeny: 'Дастрасӣ манъ аст',
   udiscAllChild: 'Барои ҳамаи сатҳҳо',
   udiskAddAccessForChilds: 'Илова кардани ҳуқуқ барои файлҳо',
-  udiskRemoveAccessForChilds: 'Удалить права для подчиненных файлов',
+  udiskRemoveAccessForChilds: 'Нест кардани ҳуқуқҳои файлҳои тобеӣ',
   udiskForAllItems: 'Барои ҳама',
   editFileByWebDaw: 'Кушодани файл барои таҳрир',
   sizeByte: 'б',

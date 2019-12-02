@@ -1,42 +1,51 @@
 ﻿{
     "caption": "Ноҳияҳо",
-    "description": "",
+    "description": "Маълумотномаи вилоятҳо",
     "attributes": [
         {
             "name": "caption",
-            "caption": "Сарлавҳа"
+            "caption": "Сарлавҳа",
+            "description": "Сарлавҳа"
         },
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамзи дохилӣ"
         },
         {
             "name": "name",
-            "caption": "Номгуй"
+            "caption": "Номгуй",
+            "description": "Номгӯи вилоят"
         },
         {
             "name": "description",
-            "caption": "Тасвир"
+            "caption": "Тавсиф",
+            "description": "Тавсифи вилоят"
         },
         {
             "name": "fullName",
-            "caption": "Номи пурра"
+            "caption": "Номи пурра",
+            "description": "Номи пурраи расмии вилоят"
         },
         {
             "name": "phoneCode",
-            "caption": "Рамзи телефон "
+            "caption": "Рамзи телефон ",
+            "description": "Рамзи телефони вилоят"
         },
         {
             "name": "regionTypeID",
-            "caption": "Намуди ноҳия"
+            "caption": "Намуди ноҳия",
+            "description": "Намуди ноҳия"
         },
         {
             "name": "centerID",
-            "caption": "Марказ"
+            "caption": "Марказ",
+            "description": "Маркази вилоят"
         },
         {
             "name": "parentAdminUnitID",
-            "caption": "Аҷдод"
+            "caption": "Аҷдод",
+            "description": "Аҷдод"
         }
     ]
 }
