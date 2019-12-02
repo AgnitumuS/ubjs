@@ -237,7 +237,32 @@ export default {
     /**
      * Set readonly status
      */
-    readonly: Boolean
+    readonly: Boolean,
+
+    /**
+     * Overrides showDictionary action config.
+     * Function accepts current config and must return new config
+     */
+    buildShowDictionaryConfig: {
+      type: Function,
+      default: config => config
+    },
+    /**
+     * Overrides edit action config.
+     * Function accepts current config and must return new config
+     */
+    buildEditConfig: {
+      type: Function,
+      default: config => config
+    },
+    /**
+     * Overrides addNew action config.
+     * Function accepts current config and must return new config
+     */
+    buildAddNewConfig: {
+      type: Function,
+      default: config => config
+    }
   },
 
   data () {
@@ -510,7 +535,7 @@ export default {
 
     handleShowDictionary () {
       if (!this.removeDefaultActions) {
-        this.$UB.core.UBApp.doCommand({
+        const config = this.buildShowDictionaryConfig({
           renderer: 'ext',
           entity: this.entityName,
           cmdType: 'showList',
@@ -520,35 +545,32 @@ export default {
           onItemSelected: ({ data }) => {
             this.$emit('input', data[this.valueAttribute])
           },
-          cmdData: {
-            params: [{
-              entity: this.entityName,
-              method: 'select',
-              fieldList: '*'
-            }]
-          }
+          cmdData: { params: [this.repository().ubql()] }
         })
+        this.$UB.core.UBApp.doCommand(config)
       }
     },
 
     handleEditItem () {
       if (!this.removeDefaultActions) {
-        this.$UB.core.UBApp.doCommand({
+        const config = this.buildEditConfig({
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
           entity: this.entityName,
           isModal: true,
           instanceID: this.value
         })
+        this.$UB.core.UBApp.doCommand(config)
       }
     },
 
     handleAddNewItem () {
       if (!this.removeDefaultActions) {
-        this.$UB.core.UBApp.doCommand({
+        const config = this.buildAddNewConfig({
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
           entity: this.entityName,
           isModal: true
         })
+        this.$UB.core.UBApp.doCommand(config)
       }
     },
 
@@ -836,4 +858,33 @@ For example when you need instead `ID` like `code`.
 </script>
 ```
 
+### Actions overrides
+```vue
+<template>
+  <u-select-entity
+    v-model="value"
+    entity-name="tst_dictionary"
+    :build-edit-config="actionEditOverride"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: 1
+      }
+    },
+
+    methods: {
+      actionEditOverride (cfg) {
+        return {
+          ...cfg,
+          isModal: false,
+          docID: 12345
+        }
+      }
+    }
+  }
+</script>
+```
 </docs>

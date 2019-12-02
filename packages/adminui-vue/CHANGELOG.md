@@ -11,7 +11,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ### Added
  - Styles which adds `padding: 1em` to `<form>` inside `ub-form-container` class. 
- So `UFormContainer` will have padding just only if it is a direct descendant of the `ub-form-container`  
+   So `UFormContainer` will have padding just only if it is a direct descendant of the `ub-form-container`  
+ - `USelectEntity` added props `buildShowDictionaryConfig`, `buildEditConfig`, `buildAddNewConfig`. 
+   This props can overrides doCommand configs for base actions (edit, addNew, showDictionary). 
+   Functions get current config as argument and must return new config.
+   Example in component docs.
+ - `UTableEntity` added props `buildEditConfig`, `buildAddNewConfig`, `buildCopyConfig`. 
+   This props can overrides doCommand configs for base actions (edit, addNew, сopy). 
+   Functions get current config as argument and must return new config.
+   Example in component docs.
+ - `UTableEntity` toolbar slots:
+   - `toolbar` - Replace whole toolbar 
+   - `toolbar-prepend` - Prepend new buttons to toolbar 
+   - `toolbar-button-add-new` - Replace add-new button in toolbar panel 
+   - `toolbar-append` - Prepend new buttons to toolbar before filter 
+   - `toolbar-dropdown` - Replace whole toolbar dropdown 
+   - `toolbar-dropdown-prepend` - Prepend new buttons to toolbar 
+   - `toolbar-dropdown-add-new` - Replace add-new button in toolbar dropdown 
+   - `toolbar-dropdown-edit` - Replace edit button in toolbar dropdown 
+   - `toolbar-dropdown-copy` - Replace copy button in toolbar dropdown 
+   - `toolbar-dropdown-delete` - Replace delete button in toolbar dropdown 
+   - `toolbar-dropdown-append ` - Append new buttons to toolbar 
 
 [1.9.0]
 ### Fixed

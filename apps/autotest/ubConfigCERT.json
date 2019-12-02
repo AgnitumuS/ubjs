@@ -30,7 +30,7 @@
 	},
 	"security": {
 		"authenticationMethods": [
-			"CERT2", "UB", "Negotiate"
+			"UB", "Negotiate","CERT2"
 		],
 		"simpleCertAuth": true,
 		"dstu": {
@@ -51,7 +51,9 @@
 			"themeName": "UBGrayTheme",
 			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
 			"endpoint": "ubadminui",
-			"encryptionImplementation": "@ub-d/uac-crypto/dist/uac-crypto.min.js", //prod
+			//"encryptionImplementation": "@ub-d/uac-crypto/dist/uac-crypto.min.js", //prod
+			"encryptionImplementation": "/clientRequire/@ub-d/iit-sign-web/dist/iit-sign-web.min.js",
+			"allowCertificateProlongation": true,
 			//"encryptionImplementation": "@ub-d/uac-crypto", // adminui dev
 			"messenger": {
 				"enabled": true,
@@ -105,9 +107,9 @@
 				{
 					//"name": "TST",
 					"path": "./models/TST"
-				}, {
+				}/*, {
 					"path": "./models/CRT"
-				}
+				}*/
 			],
 			"implicitlyAddedMixins": [
 				"audit"
@@ -175,7 +177,7 @@
 			}
 		],
 		"customSettings": {
-			"cryptoService": {
+			/*"cryptoService": {
  			  "trustedCACertificatesPath": "./trustedCerts",
 			  "tspServers": ["http://acsk.privatbank.ua/services/tsp/", "http://ca.informjust.ua/services/tsp/"],
 			  "cmpServers": ["http://acsk.privatbank.ua/services/cmp","http://uakey.com.ua/services/cmp", "http://ca.informjust.ua/services/cmp/", "http://ca.mvs.gov.ua/services/cmp", "http://ca.ksystems.com.ua/services/cmp", "http://acskidd.gov.ua/services/cmp/"],
@@ -184,7 +186,7 @@
 			  //"cmpServers": ["http://acskidd.gov.ua/services/cmp/","http://ca.informjust.ua/services/cmp/"],
 			  //"cmpServers": ["http://uakey.com.ua/services/cmp/","http://ca.informjust.ua/services/cmp/","http://acskidd.gov.ua/services/cmp/"],
 			  "useIITCMP": true
-			},
+			},*/
 			"mailerConfig": {
 				"targetHost": "mail.softline.main",
 				"targetPort": "25",

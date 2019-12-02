@@ -79,6 +79,11 @@ function buildProps (propsData) {
   props.dateFormat = propsData.dateFormat || 'll'
   props.dateTimeFormat = propsData.dateTimeFormat || 'lll'
 
+  const buildConfigDefault = config => config
+  props.buildCopyConfig = propsData.buildCopyConfig || buildConfigDefault
+  props.buildEditConfig = propsData.buildEditConfig || buildConfigDefault
+  props.buildAddNewConfig = propsData.buildAddNewConfig || buildConfigDefault
+
   return props
 }
 

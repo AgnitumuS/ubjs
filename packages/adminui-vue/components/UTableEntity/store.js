@@ -8,9 +8,13 @@ const { Notification: $notify } = require('element-ui')
  *
  * @param {function:ClientRepository} repository Function returns ClientRepository
  * @param {CustomRepository.entityName} entityName Entity name
- * @param {array<UTableColumn>} columns
- * @param {number} pageSize
- *
+ * @param {array<UTableColumn>} columns Columns config
+ * @param {number} pageSize Page size
+ * @param {string} dateFormat Date format
+ * @param {string} dateTimeFormat DateTime format
+ * @param {function(object):object} buildCopyConfig Function must return config for action "copy"
+ * @param {function(object):object} buildEditConfig Function must return config for action "edit"
+ * @param {function(object):object} buildAddNewConfig Function must return config for action "addNew"
  * @returns {Vuex} Store config
  */
 module.exports = ({
@@ -19,7 +23,10 @@ module.exports = ({
   columns,
   pageSize,
   dateFormat,
-  dateTimeFormat
+  dateTimeFormat,
+  buildCopyConfig,
+  buildEditConfig,
+  buildAddNewConfig
 }) => ({
   state () {
     return {
@@ -253,14 +260,14 @@ module.exports = ({
         entity: getters.entityName,
         formCode: getters.formCode
       })
-
-      $App.doCommand({
+      const config = buildAddNewConfig({
         cmdType: 'showForm',
         entity: getters.entityName,
         formCode: getters.formCode,
         target: $App.viewport.centralPanel,
         tabId
       })
+      $App.doCommand(config)
     },
 
     editRecord ({ getters }, ID) {
@@ -269,8 +276,7 @@ module.exports = ({
         instanceID: ID,
         formCode: getters.formCode
       })
-
-      $App.doCommand({
+      const config = buildEditConfig({
         cmdType: 'showForm',
         entity: getters.entityName,
         formCode: getters.formCode,
@@ -278,6 +284,7 @@ module.exports = ({
         target: $App.viewport.centralPanel,
         tabId
       })
+      $App.doCommand(config)
     },
 
     async deleteRecord ({ getters }, ID) {
@@ -303,8 +310,7 @@ module.exports = ({
         instanceID: ID,
         formCode: getters.formCode
       })
-
-      $App.doCommand({
+      const config = buildCopyConfig({
         cmdType: 'showForm',
         addByCurrent: true,
         entity: getters.entityName,
@@ -313,6 +319,7 @@ module.exports = ({
         target: $App.viewport.centralPanel,
         tabId
       })
+      $App.doCommand(config)
     },
 
     createLink ({ getters }, ID) {

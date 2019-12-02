@@ -15,26 +15,75 @@
     @keydown.ctrl.delete.exact="deleteRecord(selectedRowId)"
   >
     <div class="u-table-entity__head">
-      <toolbar-button
-        is-blue
-        icon="el-icon-refresh"
-        @click="refresh"
-      >
-        {{ $ut('refresh') }}
-      </toolbar-button>
-      <toolbar-button
-        icon="el-icon-plus"
-        :disabled="!canAddNew"
-        @click="addNew"
-      >
-        {{ $ut('actionAdd') }}
-      </toolbar-button>
+      <!-- @slot Replace whole toolbar -->
+      <slot name="toolbar">
+        <!-- @slot Prepend new buttons to toolbar -->
+        <slot name="toolbar-prepend" />
 
-      <filter-container ref="filterContainer" />
+        <toolbar-button
+          is-blue
+          icon="el-icon-refresh"
+          @click="refresh"
+        >
+          {{ $ut('refresh') }}
+        </toolbar-button>
 
-      <pagination />
+        <!-- @slot Replace add-new button in toolbar panel -->
+        <slot name="toolbar-button-add-new">
+          <toolbar-button
+            icon="el-icon-plus"
+            :disabled="!canAddNew"
+            @click="addNew"
+          >
+            {{ $ut('actionAdd') }}
+          </toolbar-button>
+        </slot>
 
-      <toolbar-dropdown />
+        <!-- @slot Prepend new buttons to toolbar before filter -->
+        <slot name="toolbar-append" />
+
+        <filter-container ref="filterContainer" />
+
+        <pagination />
+
+        <!-- @slot Replace whole toolbar dropdown -->
+        <slot name="toolbar-dropdown">
+          <toolbar-dropdown>
+            <!-- @slot Prepend new buttons to toolbar -->
+            <slot
+              slot="prepend"
+              name="toolbar-dropdown-prepend"
+            />
+
+            <!-- @slot Replace add-new button in toolbar dropdown -->
+            <slot
+              slot="add-new"
+              name="toolbar-dropdown-add-new"
+            />
+            <!-- @slot Replace edit button in toolbar dropdown -->
+            <slot
+              slot="edit"
+              name="toolbar-dropdown-edit"
+            />
+            <!-- @slot Replace copy button in toolbar dropdown -->
+            <slot
+              slot="copy"
+              name="toolbar-dropdown-copy"
+            />
+            <!-- @slot Replace delete button in toolbar dropdown -->
+            <slot
+              slot="delete"
+              name="toolbar-dropdown-delete"
+            />
+
+            <!-- @slot Append new buttons to toolbar -->
+            <slot
+              slot="append"
+              name="toolbar-dropdown-append"
+            />
+          </toolbar-dropdown>
+        </slot>
+      </slot>
     </div>
 
     <filter-list />
@@ -195,6 +244,31 @@ export default {
     dateTimeFormat: {
       type: String,
       default: 'lll'
+    },
+
+    /**
+     * Overrides showDictionary action config.
+     * Function accepts current config and must return new config
+     */
+    buildCopyConfig: {
+      type: Function,
+      default: config => config
+    },
+    /**
+     * Overrides edit action config.
+     * Function accepts current config and must return new config
+     */
+    buildEditConfig: {
+      type: Function,
+      default: config => config
+    },
+    /**
+     * Overrides addNew action config.
+     * Function accepts current config and must return new config
+     */
+    buildAddNewConfig: {
+      type: Function,
+      default: config => config
     }
   },
 
@@ -542,6 +616,35 @@ Custom column always required to have slot, because entity dont have data for th
           },
           'disabled'
         ]
+      }
+    }
+  }
+</script>
+```
+
+### Actions overrides
+```vue
+<template>
+  <u-table-entity
+    entity-name="tst_dictionary"
+    :build-edit-config="actionEditOverride"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: 1
+      }
+    },
+
+    methods: {
+      actionEditOverride (cfg) {
+        return {
+          ...cfg,
+          isModal: false,
+          docID: 12345
+        }
       }
     }
   }
