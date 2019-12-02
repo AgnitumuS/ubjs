@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 [1.9.1]
 ### Fixed
+ - `USelectEntity` close opened dropdown's if clicked **arrow** of another select. Previously it didn't closed if click on arrow
  - `UFile` prevent opening preview dialog on press enter button in another input in same form
  
 ### Changed

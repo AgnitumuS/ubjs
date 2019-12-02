@@ -62,7 +62,7 @@
             class="el-input__icon"
             style="cursor: pointer;"
             :class="inputIconCls"
-            @click.stop.prevent="toggleDropdown"
+            @click.prevent="editable && toggleDropdown()"
           />
           <el-dropdown
             v-if="actions.length > 0 && !readonly"
