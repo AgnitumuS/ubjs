@@ -1,7 +1,7 @@
 module.exports = {
   install (Vue) {
-    // below we export and register each component separately to allow WebStorm IDE correctly recognige registered U* components
-    const UFormContainer = require('../components/controls/UFormContainer/UFormContainer') // exports a commonJS
+    // below we export and register each component separately to allow WebStorm IDE correctly recognize registered U* components
+    const UFormContainer = require('../components/controls/UFormContainer.vue').default
     const USelectEntity = require('../components/controls/USelectEntity.vue').default
     const USelectMany = require('../components/controls/USelectMany.vue').default
     const UFormRow = require('../components/controls/UFormRow.vue').default

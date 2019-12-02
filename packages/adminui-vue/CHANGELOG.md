@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.9.1]
+### Changed
+ - `UFormContainer` refactor from commonjs to vue component 
+ - `UFormContainer` removed padding and inner div
+ 
+### Added
+ - Styles which adds `padding: 1em` to `<form>` inside `ub-form-container` class. 
+ So `UFormContainer` will have padding just only if it is a direct descendant of the `ub-form-container`  
+
 [1.9.0]
 ### Fixed
  - `USelectEnum` wrong display value on open form
