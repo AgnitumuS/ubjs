@@ -1,4 +1,4 @@
-﻿const loader = require('@unitybase/base').dataLoader
+const loader = require('@unitybase/base').dataLoader
 /**
  * @author pavel.mash
  * Enumeration localization to Tajik for ORG model
@@ -17,7 +17,8 @@ module.exports = function (session) {
       // ORG_UNITTYPE
       { keyValue: 'STAFF', execParams: { name: 'Кормандон' } },
       { keyValue: 'ORG', execParams: { name: 'Ташкилот' } },
-      { keyValue: 'DEP', execParams: { name: 'Шӯъба' } }
+      { keyValue: 'DEP', execParams: { name: 'Шӯъба' } },
+      { keyValue: 'EXECGROUP', execParams: { name: 'Гурӯҳҳои рассомон' } }
     ]
   }
   loader.localizeEntity(session, localizationConfig, __filename)

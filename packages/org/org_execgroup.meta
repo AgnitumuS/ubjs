@@ -1,0 +1,74 @@
+﻿{
+  "caption": "",
+  "description": "Справочник типовых групп исполнителей для заданий",
+  "connectionName": "",
+  "sqlAlias": "orgExGr",
+  "cacheType": "Session",
+  "descriptionAttribute": "name",
+  "attributes": [
+    {
+      "name": "parentID",
+      "dataType": "Entity",
+      "associatedEntity": "org_organization",
+      "caption": "Родительский узел",
+      "description": "Родительский узел",
+      "allowNull": false
+    },
+    {
+      "name": "code",
+      "dataType": "String",
+      "size": 16,
+      "caption": "Внутренний код",
+      "description": "Внутренний код группы",
+      "allowNull": false
+    },
+    {
+      "name": "name",
+      "dataType": "String",
+      "size": 254,
+      "caption": "Название группы",
+      "description": "Название без кавычек и абревиатур",
+      "allowNull": false,
+      "isMultiLang": true
+    },
+    {
+      "name": "nameGen",
+      "dataType": "String",
+      "size": 254,
+      "caption": "Название в родит. падеже",
+      "description": "Название без кавычек и аббревиатур в родительном падеже",
+      "allowNull": true,
+      "isMultiLang": true
+    },
+    {
+      "name": "nameDat",
+      "dataType": "String",
+      "size": 254,
+      "caption": "Название в дат. падеже",
+      "description": "Название без кавычек и аббревиатур в дательном падеже",
+      "allowNull": true,
+      "isMultiLang": true
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    },
+    "dataHistory": {},
+    "unity": {
+      "entity": "org_unit",
+      "attributeList": [
+        "parentID",
+        "code",
+        "caption"
+      ],
+      "defaults": {
+        "unitType": "EXECGROUP"
+      },
+      "mapping": {
+        "name": "caption"
+      }
+    }
+  }
+}

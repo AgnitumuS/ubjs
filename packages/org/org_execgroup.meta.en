@@ -1,0 +1,31 @@
+{
+  "caption": "Executors groups",
+  "description": "List of typical executors groups for tasks executors",
+  "attributes": [
+    {
+      "name": "parentID",
+      "caption": "Parent unit",
+      "description": "Parent unit of group"
+    },
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Code of the group"
+    },
+    {
+      "name": "name",
+      "caption": "Name of the group",
+      "description": "Name of the group"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Name in genitive case",
+      "description": "Department name in genitive case"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Name in dative case",
+      "description": "Department name in dative case"
+    }
+  ]
+}
