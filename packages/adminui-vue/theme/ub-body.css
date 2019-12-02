@@ -153,6 +153,12 @@ html, body {
   height: 100%;
 }
 
+.ub-form-container > form {
+  overflow: auto;
+  flex-grow: 1;
+  padding: 1em;
+}
+
 .ub-dialog__reset-padding .el-dialog__body{
   padding: 0;
 }
