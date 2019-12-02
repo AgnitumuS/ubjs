@@ -18,6 +18,7 @@
       type="file"
       :disabled="disabled"
       :multiple="multiple"
+      v-bind="$attrs"
       @change="fileChanged"
     >
   </label>

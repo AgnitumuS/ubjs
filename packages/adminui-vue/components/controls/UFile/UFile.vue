@@ -3,6 +3,7 @@
     <u-file-input
       v-if="!value"
       :disabled="disabled"
+      :accept="accept"
       :layout="previewMode ? 'horizontal' : 'vertical'"
       @upload="upload"
     />
@@ -154,7 +155,11 @@ export default {
     /**
      * Disable to remove or upload file
      */
-    disabled: Boolean
+    disabled: Boolean,
+    /**
+     * File extensions to bind into `accept` input property
+     */
+    accept: String
   },
 
   data () {

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+[unpublished]
+### Added
+ - UFileInput binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
+ - new property UFile.accept - optional comma-separated unique “content type specifiers”
+   
 [1.9.1]
 ### Fixed
  - `USelectEntity` close opened dropdown's if clicked **arrow** of another select. Previously it didn't closed if click on arrow
