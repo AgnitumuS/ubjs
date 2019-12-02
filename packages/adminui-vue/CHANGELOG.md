@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 [1.9.1]
+### Fixed
+ - `UFile` prevent opening preview dialog on press enter button in another input in same form
+ 
 ### Changed
  - `UFormContainer` refactor from commonjs to vue component 
  - `UFormContainer` removed padding and inner div

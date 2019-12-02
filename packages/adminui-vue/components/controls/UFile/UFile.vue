@@ -44,15 +44,18 @@
         @click.prevent
       >
         <button
+          type="button"
           class="u-file__button el-icon-view"
           :disabled="!previewFormats.includes(file.ct)"
           @click="previewDialog"
         />
         <button
+          type="button"
           class="u-file__button el-icon-download"
           @click="saveAs"
         />
         <button
+          type="button"
           class="u-file__button el-icon-delete"
           :disabled="disabled"
           @click="remove"
