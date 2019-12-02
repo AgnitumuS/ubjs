@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.16]
+### Fixed
+ - ALS edit form: fix broken layout for table with pinned header/column by replacing render component from `ElTable` to `UTable`
+
 ## [5.3.13]
 ### Fixed
  - prevent bug when inserting a new role at the multilingual instance

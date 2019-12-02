@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="uba_als__container">
     <el-select
       v-model="selectedEntity"
       filterable
@@ -71,60 +71,33 @@
     </el-button>
     <el-row v-if="selectedState">
       <el-col :span="18">
-        <el-table
-          :data="[...usedAttributes].sort()"
-          height="750"
+        <u-table
+          height="100%"
+          :items="tableData"
+          :columns="tableColumns"
+          fixed-column-id="code"
         >
-          <el-table-column
-            :label="$ut('uba_als.attribute')"
-            fixed="left"
+          <template
+            v-for="role of checkedRoles"
+            #[roleColumnPrefix+role]="{row}"
           >
-            <template slot-scope="scope">
-              {{ scope.row }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            v-for="role in checkedRoles"
-            :key="role"
-            header-align="center"
-          >
-            <template slot-scope="scope">
-              <action-component
-                v-model="(currentRights.find(right => right.attribute === scope.row && right.roleName === role) || {}).actions"
-                class="als__actions"
-                @input="doOnDataChanged"
-              />
-            </template>
-            <template
-              slot="header"
-              slot-scope="scope"
-            >
-              <el-popover
-                placement="bottom"
-                trigger="click"
-              >
-                <span slot="reference">{{ role }}</span>
-                <action-component
-                  class="als__actions"
-                  :value="0"
-                  @input="setForAllAttributes(...arguments, role)"
-                />
-              </el-popover>
-            </template>
-          </el-table-column>
-          <el-table-column
-            width="50"
-          >
-            <template slot-scope="scope">
-              <el-button
-                size="small"
-                icon="el-icon-delete"
-                circle
-                @click.native.prevent="deleteRow(scope.row)"
-              />
-            </template>
-          </el-table-column>
-        </el-table>
+            <action-component
+              :key="role"
+              :value="(currentRights.find(right => right.attribute === row.code && right.roleName === role) || {}).actions"
+              class="als__actions"
+              @input="doOnDataChanged"
+            />
+          </template>
+
+          <template #removeAction="{row}">
+            <el-button
+              size="small"
+              icon="el-icon-delete"
+              circle
+              @click.native.prevent="deleteRow(row.code)"
+            />
+          </template>
+        </u-table>
       </el-col>
       <el-col
         :span="6"
@@ -173,7 +146,7 @@
 
 <script>
 /* global saveAs */
-const actionComponent = require('../components/RoleActionsComponent.vue').default
+const ActionComponent = require('../components/RoleActionsComponent.vue').default
 const adminUiVue = require('@unitybase/adminui-vue')
 
 module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, rootComponent, parentContext }) {
@@ -222,7 +195,8 @@ module.exports.default = {
       }, {
         name: 'Mandatory',
         value: 7
-      }]
+      }],
+      roleColumnPrefix: 'roleId'
     }
   },
   mounted () {
@@ -237,47 +211,9 @@ module.exports.default = {
         })
     }
   },
-  computed: {
-    attributeList () {
-      return this.selectedEntity ? Object.keys(this.$UB.connection.domain.get(this.selectedEntity).attributes) : []
-    },
-    changedRights () {
-      // return [] // MPV temporarty
-      let fake = this.rightsFromDbCounter
-      let rows = []
-      if (!this.rightsFromDb) return rows
-      this.rightsFromDb.forEach((right) => {
-        // let oldRight = this.oldRights.find((oldR) => { return oldR.ID === right.ID })
-        let oldActions = this.oldActions.get(right.ID)
-        if (oldActions && (oldActions !== right.actions)) { // oldRight.attribute roleName state do not changed
-          rows.push(right)
-        }
-      })
-      return rows
-    },
-    dbRights () {
-      // touch a reactive variable to made this computed reactive when rightsFromDb retrieved from server
-      // without observing a huge rightsFromDb array
-      let fake = this.rightsFromDbCounter
-      return this.rightsFromDb
-        ? this.rightsFromDb.filter(right => right.state === this.selectedState)
-        : []
-    },
-    currentRights () {
-      let newR = this.createdRights.filter(right => right.state === this.selectedState)
-      return [...this.dbRights, ...newR]
-    },
-    emptyAttributes () {
-      let allAttrs = this.selectedEntity ? Object.values(this.$UB.connection.domain.get(this.selectedEntity).attributes) : []
-      return allAttrs.filter(attr => !this.usedAttributes.includes(attr.name))
-    },
-    needSave () {
-      return this.changedRights.length > 0 || this.createdRights.some(cr => cr.actions !== 0)
-    }
-  },
   watch: {
     currentRights () {
-      this.setUsedAttributes(this)
+      this.setUsedAttributes()
     },
     selectedEntity () {
       this.loadRightsFromDB()
@@ -297,6 +233,68 @@ module.exports.default = {
         this.stateList = []
         this.selectedState = null
       }
+    }
+  },
+  computed: {
+    attributeList () {
+      return this.selectedEntity ? Object.keys(this.$UB.connection.domain.get(this.selectedEntity).attributes) : []
+    },
+    changedRights () {
+      // return [] // MPV temporarty
+      let rows = []
+      if (!this.rightsFromDb) return rows
+      this.rightsFromDb.forEach((right) => {
+        // let oldRight = this.oldRights.find((oldR) => { return oldR.ID === right.ID })
+        let oldActions = this.oldActions.get(right.ID)
+        if (oldActions && (oldActions !== right.actions)) { // oldRight.attribute roleName state do not changed
+          rows.push(right)
+        }
+      })
+      return rows
+    },
+    dbRights () {
+      // touch a reactive variable to made this computed reactive when rightsFromDb retrieved from server
+      // without observing a huge rightsFromDb array
+      return this.rightsFromDb
+        ? this.rightsFromDb.filter(right => right.state === this.selectedState)
+        : []
+    },
+    currentRights () {
+      let newR = this.createdRights.filter(right => right.state === this.selectedState)
+      return [...this.dbRights, ...newR]
+    },
+    emptyAttributes () {
+      let allAttrs = this.selectedEntity ? Object.values(this.$UB.connection.domain.get(this.selectedEntity).attributes) : []
+      return allAttrs.filter(attr => !this.usedAttributes.includes(attr.name))
+    },
+    needSave () {
+      return this.changedRights.length > 0 || this.createdRights.some(cr => cr.actions !== 0)
+    },
+
+    tableData () {
+      return [...this.usedAttributes].sort().map(code => ({ code }))
+    },
+
+    tableColumns () {
+      const columns = []
+      const attributeColumn = {
+        id: 'code',
+        label: 'uba_als.attribute'
+      }
+      const removeActionColumn = {
+        id: 'removeAction',
+        width: 60
+      }
+      columns.push(attributeColumn)
+      for (const role of this.checkedRoles) {
+        columns.push({
+          id: this.roleColumnPrefix + role,
+          label: role,
+          headerAlign: 'center'
+        })
+      }
+      columns.push(removeActionColumn)
+      return columns
     }
   },
   methods: {
@@ -411,16 +409,23 @@ module.exports.default = {
       if (index !== -1) {
         this.usedAttributes.splice(index, 1)
       }
-      this.currentRights.filter(cr => cr.attribute === attr && cr.state === this.selectedState).forEach(right => right.actions = 0)
+      this.currentRights
+        .filter(cr => cr.attribute === attr && cr.state === this.selectedState)
+        .forEach(right => { right.actions = 0 })
     }
   },
   components: {
-    'action-component': actionComponent
+    ActionComponent
   }
 }
 </script>
 
 <style>
+  .uba_als__container{
+    overflow: auto;
+    height: 100%;
+  }
+
   .als__actions {
     display: flex;
     justify-content: center;
