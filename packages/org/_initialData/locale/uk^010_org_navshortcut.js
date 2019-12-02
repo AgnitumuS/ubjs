@@ -27,6 +27,7 @@ module.exports = function (session) {
       {keyValue: 'org_employeeonstaff', execParams: {caption: 'Внутрішні призначення'}},
       {keyValue: 'org_employeeonstaff_all', execParams: {caption: 'Внутрішні призначення (всі)'}},
       {keyValue: 'org_staffunit', execParams: {caption: 'Штатні одиниці'}},
+      {keyValue: 'org_execgroup', execParams: {caption: 'Групи виконавців'}},
       {keyValue: 'org_unit', execParams: {caption: 'Внутрішні орг.одиниці'}},
       {keyValue: 'org_employee', execParams: {caption: 'Внутрішні працівники'}},
       {keyValue: 'org_folder_dict', execParams: {caption: 'Додатково'}},

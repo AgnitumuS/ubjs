@@ -26,6 +26,7 @@ module.exports = function (session) {
       { keyValue: 'org_employeeonstaff', execParams: { caption: 'თანამშრომელი პერსონალზე' } },
       { keyValue: 'org_employeeonstaff_all', execParams: { caption: 'თანამშრომელი პერსონალზე (სულ)' } },
       { keyValue: 'org_staffunit', execParams: { caption: 'პერსონალის ერთეული' } },
+      { keyValue: 'org_execgroup', execParams: {caption: 'მხატვრული ჯგუფები'} },
       { keyValue: 'org_unit', execParams: { caption: 'ორგანიზების ერთეული' } },
       { keyValue: 'org_employee', execParams: { caption: 'თანამშრომლები' } },
       { keyValue: 'org_folder_dict', execParams: { caption: 'დამატებითი' } },

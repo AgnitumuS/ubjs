@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.30]
+### Added
+  - Entity `org_execgroup`, which is a part of organizational structure, is `unitType` is `EXECGROUP`.
+    The detail entity `org_execgroupmember` contains its members, which are `org_staffunit`.
+    Business value of this entity is ability to use a group of staff units at once, for example for task assignment,
+    like parallel approvals.
+    Added a navigational menu item for this dictionary in `org_desktop`.
+
 ## [5.2.17]
 ### Fixed
   - logon event handler will not add a staff units ID for deleted employee;

@@ -1,0 +1,47 @@
+{
+  "caption": "Исполнители для групп исполнителей",
+  "description": "Исполнители, которые привязываются к группе и используются для автозаполнения исполнителей в резолюциях при добавлении группы",
+  "connectionName": "",
+  "sqlAlias": "orgExGrM",
+  "descriptionAttribute": "ID",
+  "cacheType": "None",
+  "attributes": [
+    {
+      "name": "execGroupID",
+      "dataType": "Entity",
+      "associatedEntity": "org_execgroup",
+      "cascadeDelete": true,
+      "caption": "Группа исполнителей",
+      "allowNull": false
+    },
+    {
+      "name": "orgUnitID",
+      "dataType": "Entity",
+      "associatedEntity": "org_staffunit",
+      "caption": "Исполнитель",
+      "allowNull": false
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": false
+    }
+  },
+  "dbExtensions": {
+    "IDX_ORGEXECGRPM_GRID_UID": {
+      "type": "INDEX",
+      "definition": {
+        "keys": {
+          "execGroupID": {
+            "sort": "ASC"
+          },
+          "orgUnitID": {
+            "sort": "ASC"
+          }
+        },
+        "isUnique": true
+      }
+    }
+  }
+}

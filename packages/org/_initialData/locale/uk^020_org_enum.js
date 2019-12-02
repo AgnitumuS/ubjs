@@ -17,7 +17,8 @@ module.exports = function (session) {
       // ORG_UNITTYPE
       { keyValue: 'STAFF', execParams: { name: 'Персонал' } },
       { keyValue: 'ORG', execParams: { name: 'Організація' } },
-      { keyValue: 'DEP', execParams: { name: 'Підрозділ' } }
+      { keyValue: 'DEP', execParams: { name: 'Підрозділ' } },
+      { keyValue: 'EXECGROUP', execParams: { name: 'Група виконавців' } }
     ]
   }
   loader.localizeEntity(session, localizationConfig, __filename)
