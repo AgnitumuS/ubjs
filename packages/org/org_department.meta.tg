@@ -1,34 +1,66 @@
 ﻿{
     "caption": "Воҳидҳои дохили",
-    "description": "",
+    "description": "Маълумотномаи воҳидҳои дохилӣ ",
     "attributes": [
         {
             "name": "code",
-            "caption": "Рамзи дохилӣ"
+            "caption": "Рамзи дохилӣ",
+            "description": "Рамзи дохилии шӯъба"
         },
         {
             "name": "caption",
-            "caption": "Сарлавҳа"
+            "caption": "Сарлавҳа",
+            "description": "Сарлавҳа"
         },
         {
             "name": "name",
-            "caption": "Номгуи воҳидҳо"
+            "caption": "Номгуи воҳидҳо",
+            "description": "Номгӯй бе нохунак ва ихтисорот"
         },
         {
             "name": "description",
-            "caption": "Воҳидҳои тавсифи "
+            "caption": "Тавсифи шӯъба",
+            "description": "Тавсиф"
         },
         {
             "name": "fullName",
-            "caption": "Номи пурраи воҳидҳо"
+            "caption": "Номи пурраи шӯъба",
+            "description": "Номи пурраи шӯъба"
         },
         {
             "name": "depTypeID",
-            "caption": "Намуди воҳиди"
+            "caption": "Намуди шӯъба",
+            "description": "Намуди шӯъба"
         },
         {
             "name": "parentID",
-            "caption": "Аҷдод"
+            "caption": "Аҷдод",
+            "description": "Аҷдод"
+        },
+        {
+            "name": "isClerical",
+            "caption": "Рӯҳонӣ?",
+            "description": "Оё ин шӯъба кордон мебошад"
+        },
+        {
+            "name": "nameDat",
+            "description": "Номгӯй бе нохунак ва ихтисорот",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "nameGen",
+            "caption": "Номгуй",
+            "description": "Номгуи воҳидҳо"
+        },
+        {
+            "name": "fullNameDat",
+            "caption": "Номи пурра",
+            "description": "Номи пурраи шӯъба"
+        },
+        {
+            "name": "fullNameGen",
+            "caption": "Номи пурра",
+            "description": "Номи пурраи шӯъба"
         }
     ]
 }

@@ -1,26 +1,31 @@
 ﻿{
     "caption": "Рӯйхати кӯчаҳо",
-    "description": "",
+    "description": "Рӯйхати кӯчаҳо",
     "attributes": [
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамз"
         },
         {
             "name": "name",
-            "caption": "Номгуй"
+            "caption": "Номгуй",
+            "description": "Номи кӯча"
         },
         {
             "name": "cityID",
-            "caption": "Маҳаллаи аҳолинишин "
+            "caption": "Маҳаллаи аҳолинишин ",
+            "description": "Маҳаллаҳои аҳолинишин "
         },
         {
             "name": "fullName",
-            "caption": "Номи пурра"
+            "caption": "Номи пурра",
+            "description": "Номи пурра"
         },
         {
             "name": "streetType",
-            "caption": "Намуд"
+            "caption": "Намуд",
+            "description": "Намуд"
         }
     ]
 }

@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Касбҳои стандартӣ",
-    "description": "",
+    "description": "Маълумотномаи касбҳои стандартӣ ",
     "attributes": [
         {
             "name": "description",
@@ -8,11 +8,13 @@
         },
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамзи касб"
         },
         {
             "name": "name",
-            "caption": "Номгуй"
+            "caption": "Номгуй",
+            "description": "Номгӯи вазифа"
         }
     ]
 }

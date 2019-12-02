@@ -1,14 +1,18 @@
 ﻿{
     "caption": "Маълумот барои тамос",
-    "description": "",
+    "description": " Маълумотнома барои тамос",
     "attributes": [
         {
             "name": "value",
-            "caption": "Тамос *"
+            "caption": "Тамос"
         },
         {
             "name": "contactTypeID",
             "caption": "Намуди тамос"
+        },
+        {
+            "name": "subjectID",
+            "caption": "Субъект"
         }
     ]
 }

@@ -1,0 +1,30 @@
+﻿{
+    "caption": "Таснифгар",
+    "description": "",
+    "attributes": [
+        {
+            "name": "classifierTypeID",
+            "caption": "Навъи таснифгар"
+        },
+        {
+            "name": "stateCode",
+            "caption": "Рамзи давлатӣ"
+        },
+        {
+            "name": "title",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "parentID",
+            "caption": "Волидайн"
+        },
+        {
+            "name": "code",
+            "caption": "Рамзи системавӣ"
+        },
+        {
+            "name": "hierarchyLevel",
+            "caption": "Сатҳ"
+        }
+    ]
+}

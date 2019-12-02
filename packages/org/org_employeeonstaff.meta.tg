@@ -1,26 +1,36 @@
 ﻿{
     "caption": "Таъиноти дохили ташкилот",
-    "description": "",
+    "description": "Маълумотномаи самтҳо дохили ташкилот ",
     "attributes": [
         {
             "name": "caption",
-            "caption": "Сарлавҳа"
+            "caption": "Сарлавҳа",
+            "description": "Сарлавҳа"
         },
         {
             "name": "description",
-            "caption": "Тасвир"
+            "caption": "Тавсиф",
+            "description": "Тавсифи таъинот"
         },
         {
             "name": "employeeID",
-            "caption": "Корманд"
+            "caption": "Корманд",
+            "description": "Корманд"
         },
         {
             "name": "tabNo",
-            "caption": "Рақами табелӣ"
+            "caption": "Рақами табели",
+            "description": "Рақами табели"
         },
         {
             "name": "employeeOnStaffType",
-            "caption": "Намуди таъинот"
+            "caption": "Намуди таъинот",
+            "description": "Намуди таъинот"
+        },
+        {
+            "name": "staffUnitID",
+            "caption": "Воҳиди корӣ",
+            "description": "Воҳиди кории ташкилоти дарунӣ"
         }
     ]
 }

@@ -1,18 +1,26 @@
 ﻿{
-    "caption": "",
-    "description": "",
+    "caption": "Ҳисобкунакҳои калидии бақайдгирифташуда",
+    "description": "Ҳисобкунакҳои калидии бақайдгирифташуда",
     "attributes": [
         {
             "name": "reservedDate",
-            "caption": "Санаи ҳифзшуда"
+            "caption": "Санаи ҳифзшуда",
+            "description": "Санаи ҳифзшудаи ҳуҷҷат"
         },
         {
             "name": "regKey",
-            "caption": "Калиди бақайдгирӣ"
+            "caption": "Калиди бақайдгирӣ",
+            "description": "Калиди бақайдгирӣ"
         },
         {
             "name": "counter",
-            "caption": "Ҳисобкунак"
+            "caption": "Ҳисобкунак",
+            "description": "Ҳисобкунак"
+        },
+        {
+            "name": "note",
+            "caption": "Эзоҳ",
+            "description": "Тавсифи рақами ҷудошуда (номи шӯъба ва ғ.)"
         }
     ]
 }

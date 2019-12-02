@@ -1,18 +1,26 @@
 ﻿{
-    "caption": "",
-    "description": "",
+    "caption": "Воҳидҳои ташкилотӣ",
+    "description": "Маълумотномаи воҳидҳои ташкилӣ",
     "attributes": [
         {
             "name": "code",
-            "caption": "Рамзи дохилӣ"
+            "caption": "Рамзи дохилӣ",
+            "description": "Рамзи дохилии сохтори созмонӣ"
         },
         {
             "name": "caption",
-            "caption": "Сарлавҳа"
+            "caption": "Сарлавҳа",
+            "description": "Сарлавҳа"
         },
         {
             "name": "parentID",
-            "caption": "Аҷдод"
+            "caption": "Аҷдод",
+            "description": "Аҷдод"
+        },
+        {
+            "name": "unitType",
+            "caption": "Намуди воҳиди ташкилотӣ",
+            "description": "Намуди воҳиди ташкилотӣ"
         }
     ]
 }

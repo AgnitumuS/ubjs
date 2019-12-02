@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Намудҳои тамос",
-    "description": "",
+    "description": "Маълумотномаи навъҳои тамос",
     "attributes": [
         {
             "name": "code",
@@ -8,7 +8,8 @@
         },
         {
             "name": "name",
-            "caption": "Номгуй"
+            "caption": "Номгуй",
+            "description": "Номгӯи намуди тамос"
         }
     ]
 }

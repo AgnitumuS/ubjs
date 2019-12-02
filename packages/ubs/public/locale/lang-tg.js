@@ -15,7 +15,7 @@ UB.i18nExtend({
   mi_createUser: 'Офаридааст',
   mi_owner: 'Соҳиб',
   mainPanelTitle: 'Умумӣ',
-  templatePanelTitle: 'Шаблон',
+  templatePanelTitle: 'Намуна',
   codePanelTitle: 'Рамз',
   checkSyntaxReport: 'Санҷиши синтаксис',
   beautifyReport: 'Формати худкор',

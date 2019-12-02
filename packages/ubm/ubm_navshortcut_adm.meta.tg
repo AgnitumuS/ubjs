@@ -5,6 +5,10 @@
         {
             "name": "admSubjID",
             "caption": "Субъектҳои идоракуни"
+        },
+        {
+            "name": "instanceID",
+            "caption": "Барчасб"
         }
     ]
 }

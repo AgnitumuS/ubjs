@@ -9,7 +9,7 @@ UB.i18nExtend({
   actionUser: 'Истифодабаранда',
   actionTime: 'Вақт',
   remoteIP: 'IP суроға',
-  entityinfo_id: 'ID записи сущности',
+  entityinfo_id: 'ID (мушаххаскунанда)-и навиштаи моҳият',
   targetUser: 'Истифодабарандаи мавриди ҳадаф',
   targetRole: 'Роли мавриди ҳадаф',
   nameAttr: 'Номгуи аттрибут',

@@ -1,14 +1,21 @@
 ﻿{
-    "caption": "",
-    "description": "",
+    "caption": "Таъинот бо санаи таъхиршуда",
+    "description": "Таъинот бо санаи таъхиршуда",
     "attributes": [
         {
             "name": "startDate",
-            "caption": "Оғоз"
+            "caption": "Оғоз",
+            "description": "Оғози амали таъин"
         },
         {
             "name": "endDate",
-            "caption": "Анҷом"
+            "caption": "Анҷом",
+            "description": "Анҷоми амали таъин"
+        },
+        {
+            "name": "emponstaffID",
+            "caption": "Таъинот",
+            "description": "Таъинот"
         }
     ]
 }

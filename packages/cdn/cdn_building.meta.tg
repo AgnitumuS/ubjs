@@ -1,10 +1,10 @@
 ﻿{
     "caption": "Рӯйхати хонаҳо",
-    "description": "",
+    "description": "Рӯйхати хонаҳо",
     "attributes": [
         {
             "name": "description",
-            "caption": "Тавсир"
+            "caption": "Тавсиф"
         },
         {
             "name": "buildingType",
@@ -16,7 +16,8 @@
         },
         {
             "name": "code",
-            "caption": "№"
+            "caption": "№",
+            "description": "Рамз"
         },
         {
             "name": "postIndexID",

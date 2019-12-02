@@ -1,26 +1,31 @@
 ﻿{
     "caption": "Намудҳои ташкилотҳо",
-    "description": "",
+    "description": "Маълумотномаи намудҳои ташкилотҳо",
     "attributes": [
         {
             "name": "shortName",
-            "caption": "Ихтисорот"
+            "caption": "Ихтисорот",
+            "description": "Ихтисороти намуди ташкилот"
         },
         {
             "name": "isGovAuthority",
-            "caption": "Мақомоти давлатӣ"
+            "caption": "Мақомоти давлатӣ",
+            "description": "Нишонак, ки ташкилоти намуди интихобшуда муассисаи давлатӣ мебошад"
         },
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамзи дохилии намуди ташкилот"
         },
         {
             "name": "name",
-            "caption": "Номгуй"
+            "caption": "Номгуй",
+            "description": "Номгӯи намуди ташкилот"
         },
         {
             "name": "fullName",
-            "caption": "Тасвир"
+            "caption": "Тавсиф",
+            "description": "Тавсифи намуди корхона"
         }
     ]
 }

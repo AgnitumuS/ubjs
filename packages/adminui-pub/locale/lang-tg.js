@@ -215,7 +215,7 @@ UB.i18nExtend({
   addresses: 'Суроғаҳо',
   recStage: 'Марҳилаи тасдиқ',
   route: 'Масир',
-  executorTemplateFormTitle: 'Шаблон исполнителей',
+  executorTemplateFormTitle: 'Қолаби иҷрокунандагон',
   amount: 'Миқдор',
   documentStatus: 'Ҳолати ҳуҷҷат',
   tasks: 'Вазифаҳо',
@@ -232,7 +232,7 @@ UB.i18nExtend({
   comment: 'Эзоҳ',
   respDepartment: 'Раёсати масъул',
   respExecutor: 'Пудратчии масъул',
-  itemdot: 'П.',
+  itemdot: 'Б.',
   byTemplate: 'Аз рӯи намуна',
   register: 'Сабт шудан',
   signsInDocument: 'Имзоҳо',
@@ -315,7 +315,7 @@ UB.i18nExtend({
 
   actionDelete: 'Ҳавз кардан',
   actionAdd: 'Илова кардан',
-  captionCert: 'Cертификат',
+  captionCert: 'Шаҳодатнома',
   actionSelect: 'Интихоб кардан',
   actionCancel: 'Бекор карда шавад',
   entityLockedOwn: 'Масдудсозӣ гузошта шудааст',
@@ -343,7 +343,7 @@ UB.i18nExtend({
   isLastDocRevision: '(версияи ҷорӣ)',
   formShowDocRevisions: 'Версияҳои ҳуҷҷат',
   onlyCurrentVersionExists: 'Версияҳои пештари хуччат ёфт нашуд',
-  revisionNum: 'Версияи №',
+  revisionNum: 'Тафсири №',
 
   menu: 'Меню',
   documentNotFound: 'Дар сервер ягон маълумоте ёфт нашуд. Лутфан бо мудири системаи худ тамос гиред.',
@@ -381,7 +381,7 @@ UB.i18nExtend({
 
   doScanPages: 'О{0} саҳифа скан карда шуд',
   doRecognizePages: 'Саҳифаи № {0} шиносоӣ мешавад',
-  doRecognizeDocument: 'Разпознается документ ...',
+  doRecognizeDocument: 'Ҳуҷҷат эътироф шуда истодааст ...',
   ScannerNotConfigured: 'Дар компютери Шумо сканерҳои танзимшуда пайдо нашуд ё ин, ки онҳо дар система ба қайд гирифта нашудаанд',
   doStartScan: 'Дархост ба сканери ...',
   doFinishScan: 'Дарёфти натиҷаи сканкунӣ',
@@ -441,7 +441,7 @@ UB.i18nExtend({
   preViewInPDF: 'Пешнамоиш дар формати PDF',
 
   ubErrTheServerHasExceededMaximumNumberOfConnections: 'Сервер миқдори имконпазири пайвастшавиҳоро гузашт.',
-  ubErrFtsForAppDisabled: 'fts для текущего приложения отключен',
+  ubErrFtsForAppDisabled: 'fts барои ин барнома кушта шудааст',
   Transformation: 'Конвертатсия',
 
   showPlanAndFact: 'Нишон додани нақша ва далел',
@@ -686,7 +686,7 @@ if (typeof Ext !== 'undefined') {
     if (Ext.toolbar.Paging) {
       Ext.apply(Ext.PagingToolbar.prototype, {
         beforePageText: 'Саҳифа',
-        afterPageText: 'из {0}',
+        afterPageText: 'аз {0}',
         firstText: 'Саҳифаи аввал',
         prevText: 'Саҳифаи гузашта',
         nextText: 'Саҳифаи навбатӣ',

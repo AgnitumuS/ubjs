@@ -1,22 +1,31 @@
 ﻿{
     "caption": "Асъор",
-    "description": "",
+    "description": "Маълумотномаи асъор",
     "attributes": [
         {
             "name": "code3",
-            "caption": "Рамзи 3-аломата"
+            "caption": "Рамзи 3-аломата",
+            "description": "символи 3-рақамаи асъор"
         },
         {
             "name": "name",
-            "caption": "Номгуй"
+            "caption": "Номгуй",
+            "description": "Номгӯи асъор"
         },
         {
             "name": "description",
-            "caption": "Тасвир"
+            "caption": "Тавсиф",
+            "description": "Тавсиф"
         },
         {
             "name": "intCode",
-            "caption": "Рамзи рақамӣ"
+            "caption": "Рамзи рақамӣ",
+            "description": "Рамзи рақамӣ"
+        },
+        {
+            "name": "curMult",
+            "caption": "Каратӣ",
+            "description": "Каратӣ"
         }
     ]
 }

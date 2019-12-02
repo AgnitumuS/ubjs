@@ -73,7 +73,7 @@ UB.i18nExtend({
     pagination: {
       goto: 'Гузаштан',
       pagesize: ' дар саҳифа',
-      total: 'Всего {total}',
+      total: 'Ҳамагӣ {total}',
       pageClassifier: ''
     },
     messagebox: {
@@ -91,7 +91,7 @@ UB.i18nExtend({
     table: {
       emptyText: 'Маълумот нетс',
       confirmFilter: 'Тасдиқ кардан',
-      resetFilter: 'Сбросить',
+      resetFilter: 'Партофтан',
       clearFilter: 'Ҳама',
       sumText: 'Миқдор'
     },
@@ -133,7 +133,7 @@ UB.i18nExtend({
 
   sidebar: {
     desktopSelector: {
-      title: 'Выбор десктопа'
+      title: 'Интихоби десктопа'
     }
   },
 

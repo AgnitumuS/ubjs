@@ -24,8 +24,8 @@ module.exports = function (session) {
       { keyValue: 'showForm', execParams: { name: 'Show form' } },
       { keyValue: 'runCode', execParams: { name: 'Code execution' } },
       // UBA_USER_GENDER
-      { keyValue: 'male', execParams: { name: 'Мужчина' } },
-      { keyValue: 'female', execParams: { name: 'Женщина' } }
+      { keyValue: 'male', execParams: { name: 'Мард' } },
+      { keyValue: 'female', execParams: { name: 'Зан' } }
     ]
   }
   loader.localizeEntity(session, localizationConfig, __filename)

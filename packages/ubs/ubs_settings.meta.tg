@@ -1,22 +1,36 @@
 ﻿{
     "caption": "Танзимот",
-    "description": "",
+    "description": "Моҳият, ки дар он маълумот дар бораи танзимоти система сабт мешавад",
     "attributes": [
         {
             "name": "settingKey",
-            "caption": "Калид"
+            "caption": "Калид",
+            "description": "Калиди сабтҳо"
         },
         {
             "name": "name",
-            "caption": "Номгуй"
+            "caption": "Номгуй",
+            "description": "Номгӯи сабтҳо"
         },
         {
             "name": "description",
-            "caption": "Тасвир"
+            "caption": "Тавсиф",
+            "description": "Тавсиф"
         },
         {
             "name": "type",
-            "caption": "Намуд"
+            "caption": "Намуд",
+            "description": "Намуди маъно"
+        },
+        {
+            "name": "settingValue",
+            "caption": "Маъно",
+            "description": "Маъно"
+        },
+        {
+            "name": "defaultValue",
+            "caption": "Маъно бо нобаёнӣ",
+            "description": "Маъно бо нобаёнӣ"
         }
     ]
 }

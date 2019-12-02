@@ -1,54 +1,161 @@
 ﻿{
     "caption": "Кормандони ташкилотҳои дохилӣ",
-    "description": "",
+    "description": "Маълумотномаи кормандони ташкилотҳои дохилӣ",
     "attributes": [
         {
             "name": "birthDate",
-            "caption": "Санаи таваллуд"
+            "caption": "Санаи таваллуд",
+            "description": "Санаи таваллуд"
         },
         {
             "name": "firstName",
-            "caption": "Ном"
+            "caption": "Ном",
+            "description": "Номи корманд"
         },
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамзи дохилии корманд"
         },
         {
             "name": "description",
-            "caption": "Тавзеҳ"
+            "caption": "Тавзеҳ",
+            "description": "Тавзеҳ оиди корманд"
         },
         {
             "name": "shortFIO",
-            "caption": "Ному насаби кӯтоҳ"
+            "caption": "Ному насаби кӯтоҳ",
+            "description": "Мисол: Насаб Н.НП."
         },
         {
             "name": "apply",
-            "caption": "Муроҷиат"
+            "caption": "Муроҷиат",
+            "description": "Чӣ тавр ба ин шахс муроҷият кардан"
         },
         {
             "name": "middleName",
-            "caption": "Номи падар"
+            "caption": "Номи падар",
+            "description": "Номи падари корманд"
         },
         {
             "name": "sexType",
-            "caption": "ҷинс"
+            "caption": "Ҷинс",
+            "description": "Ҷинси корманди ташкилоти дохилӣ"
         },
         {
             "name": "fullFIO",
-            "caption": "Ному насаби пурра"
+            "caption": "Ному насаби пурра",
+            "description": "Мисол: Насаб Ном Номи Падар"
         },
         {
             "name": "userID",
-            "caption": "Истифодабаранда"
+            "caption": "Истифодабаранда",
+            "description": "Логини истифодабар"
         },
         {
             "name": "facsimile",
-            "caption": "Имзо ***"
+            "caption": "Имзо ",
+            "description": "Сурати имзои корманд"
         },
         {
             "name": "lastName",
-            "caption": "Насаб"
+            "caption": "Насаб",
+            "description": "Насаби корманд"
+        },
+        {
+            "name": "firstNameObj",
+            "caption": "Нет падежей в таджикском языке",
+            "description": "Номи корманд"
+        },
+        {
+            "name": "firstNameDat",
+            "caption": "Нет падежей в таджикском языке",
+            "description": "Номи корманд"
+        },
+        {
+            "name": "firstNameGen",
+            "caption": "Нет падежей в таджикском языке",
+            "description": "Номи корманд"
+        },
+        {
+            "name": "applyObj",
+            "description": "Чӣ тавр ба ин шахс муроҷият кардан",
+            "caption": "Муроҷиат"
+        },
+        {
+            "name": "applyDat",
+            "description": "Чӣ тавр ба ин шахс муроҷият кардан",
+            "caption": "Муроҷиат"
+        },
+        {
+            "name": "applyGen",
+            "description": "Чӣ тавр ба ин шахс муроҷият кардан",
+            "caption": "Муроҷиат"
+        },
+        {
+            "name": "shortFIOObj",
+            "caption": "Ному насаби кӯтоҳ",
+            "description": "Ному насаби кӯтоҳ"
+        },
+        {
+            "name": "shortFIODat",
+            "caption": "Ному насаби кӯтоҳ",
+            "description": "Ному насаби кӯтоҳ"
+        },
+        {
+            "name": "shortFIOGen",
+            "caption": "Ному насаби кӯтоҳ",
+            "description": "Ному насаби кӯтоҳ"
+        },
+        {
+            "name": "middleNameObj",
+            "caption": "Номи падар",
+            "description": "Номи падари корманд"
+        },
+        {
+            "name": "middleNameDat",
+            "caption": "Номи падар",
+            "description": "Номи падари корманд"
+        },
+        {
+            "name": "middleNameGen",
+            "caption": "Номи падар",
+            "description": "Номи падари корманд"
+        },
+        {
+            "name": "fullFIOObj",
+            "caption": "Ному насаби пурра",
+            "description": "Ному насаби пурра"
+        },
+        {
+            "name": "fullFIODat",
+            "caption": "Ному насаби пурра",
+            "description": "Ному насаби пурра"
+        },
+        {
+            "name": "fullFIOGen",
+            "caption": "Ному насаби пурра",
+            "description": "Ному насаби пурра"
+        },
+        {
+            "name": "suffix",
+            "caption": "Пасванд",
+            "description": "Пасванд"
+        },
+        {
+            "name": "lastNameObj",
+            "caption": "Насаб",
+            "description": "Насаби корманд"
+        },
+        {
+            "name": "lastNameDat",
+            "caption": "Насаб",
+            "description": "Насаби корманд"
+        },
+        {
+            "name": "lastNameGen",
+            "caption": "Насаб",
+            "description": "Насаби корманд"
         }
     ]
 }

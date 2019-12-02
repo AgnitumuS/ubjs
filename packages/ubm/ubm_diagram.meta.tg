@@ -1,14 +1,16 @@
 ﻿{
     "caption": "Диаграммаҳо",
-    "description": "",
+    "description": "Моҳияти диаграмма",
     "attributes": [
         {
             "name": "document",
-            "caption": "Диаграмма"
+            "caption": "Диаграмма",
+            "description": "Моҳияти диаграмма"
         },
         {
             "name": "model",
-            "caption": "Модел"
+            "caption": "Модел",
+            "description": "Модел"
         },
         {
             "name": "name",
@@ -17,6 +19,10 @@
         {
             "name": "mi_modifyDate",
             "caption": "Санаи тағир "
+        },
+        {
+            "name": "ID",
+            "caption": "ИД"
         }
     ]
 }

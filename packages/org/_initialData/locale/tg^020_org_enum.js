@@ -15,9 +15,9 @@ module.exports = function (session) {
       { keyValue: 'TEMPORARY', execParams: { name: 'м. и. в.' } },
       { keyValue: 'ASSISTANT', execParams: { name: 'Ёрдамчи' } },
       // ORG_UNITTYPE
-      { keyValue: 'STAFF', execParams: { name: 'Персонал' } },
-      { keyValue: 'ORG', execParams: { name: 'Организация' } },
-      { keyValue: 'DEP', execParams: { name: 'Подразделение' } }
+      { keyValue: 'STAFF', execParams: { name: 'Кормандон' } },
+      { keyValue: 'ORG', execParams: { name: 'Ташкилот' } },
+      { keyValue: 'DEP', execParams: { name: 'Шӯъба' } }
     ]
   }
   loader.localizeEntity(session, localizationConfig, __filename)

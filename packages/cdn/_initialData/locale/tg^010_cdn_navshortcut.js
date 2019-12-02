@@ -10,7 +10,7 @@ module.exports = function (session) {
     entity: 'ubm_desktop',
     keyAttribute: 'code',
     localization: [
-      { keyValue: 'cdn_desktop', execParams: { caption: 'Общие справочники' } }
+      { keyValue: 'cdn_desktop', execParams: { caption: 'Маълумотномаҳои умумӣ' } }
     ]
   }
 
@@ -34,8 +34,8 @@ module.exports = function (session) {
       { keyValue: 'cdn_person', execParams: { caption: 'Шахси воқъеи' } },
       { keyValue: 'cdn_folder_misc', execParams: { caption: 'Гуногун' } },
       { keyValue: 'cdn_currency', execParams: { caption: 'Асъорҳо' } },
-      { keyValue: 'cdn_language', execParams: { caption: 'Языки' } },
-      { keyValue: 'cdn_classifier', execParams: { caption: 'Классификаторы' } }
+      { keyValue: 'cdn_language', execParams: { caption: 'Забонҳо' } },
+      { keyValue: 'cdn_classifier', execParams: { caption: 'Таснифотгарҳо' } }
     ]
   }
 

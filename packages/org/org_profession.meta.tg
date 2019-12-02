@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Вазифаҳо",
-    "description": "",
+    "description": "Маълумотномаи вазифаҳо",
     "attributes": [
         {
             "name": "description",
@@ -8,15 +8,38 @@
         },
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамзи вазифа"
         },
         {
             "name": "name",
-            "caption": "Номгуй"
+            "caption": "Номгуй",
+            "description": "Номгӯи вазифа"
         },
         {
             "name": "fullName",
-            "caption": "Номи пурра "
+            "caption": "Номи пурра",
+            "description": "Номи пурраи вазифа"
+        },
+        {
+            "name": "nameDat",
+            "caption": "Номгуй",
+            "description": "Номгӯи вазифа"
+        },
+        {
+            "name": "nameGen",
+            "caption": "Номгуй",
+            "description": "Номи пурраи вазифа"
+        },
+        {
+            "name": "fullNameDat",
+            "caption": "Номи пурраи вазифа",
+            "description": "Номи пурраи вазифа"
+        },
+        {
+            "name": "fullNameGen",
+            "caption": "Номи пурраи вазифа",
+            "description": "Номи пурраи вазифа"
         }
     ]
 }

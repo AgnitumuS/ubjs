@@ -1,74 +1,161 @@
 ﻿{
     "caption": "Рӯйхати шахсони воқеӣ",
-    "description": "",
+    "description": "Маълумотномаи шахсони воқеӣ ",
     "attributes": [
         {
             "name": "apply",
-            "caption": "Муроҷиат"
+            "caption": "Муроҷиат",
+            "description": "Чӣ тавр ба ин шахс муроҷият кардан"
         },
         {
             "name": "birthDate",
-            "caption": "Санаи таваллуд"
+            "caption": "Санаи таваллуд",
+            "description": "Санаи таваллуд"
         },
         {
             "name": "firstName",
-            "caption": "Ном"
+            "caption": "Ном",
+            "description": "Номи шахс"
         },
         {
             "name": "categoryID",
-            "caption": "Гурӯҳ"
+            "caption": "Гурӯҳ",
+            "description": "Гурӯҳ"
         },
         {
             "name": "classID",
-            "caption": "Гурӯҳбандӣ"
+            "caption": "Гурӯҳбандӣ",
+            "description": "Гурӯҳбандӣ"
         },
         {
             "name": "shortFIO",
-            "caption": "Ному насаби кӯтоҳ"
+            "caption": "Ному насаби кӯтоҳ",
+            "description": "Мисол: Насаб Н.НП."
         },
         {
             "name": "workPlacePos",
-            "caption": "Ҷои кор, вазифа"
+            "caption": "Ҷои кор, вазифа",
+            "description": "Ҷои кор, вазифа"
         },
         {
             "name": "nationality",
-            "caption": "Миллат"
+            "caption": "Миллат",
+            "description": "Миллат"
         },
         {
             "name": "description",
-            "caption": "Тасвир"
+            "caption": "Тавсиф",
+            "description": "Тавсифи шахс"
         },
         {
             "name": "middleName",
-            "caption": "Номи падар"
+            "caption": "Номи падар",
+            "description": "Номи падари шахс"
         },
         {
             "name": "sexType",
-            "caption": "ҷинс"
+            "caption": "Ҷинс",
+            "description": "Ҷинси шахс"
         },
         {
             "name": "fullFIO",
-            "caption": "Ному насаби пурра"
+            "caption": "Ному насаби пурра",
+            "description": "Мисол: Насаб Ном Номи Падар"
         },
         {
             "name": "regionID",
-            "caption": "Ноҳия"
+            "caption": "Ноҳия",
+            "description": "Ноҳияи зиндагонии шахс"
         },
         {
             "name": "socialstatusID",
-            "caption": "Вазъи иҷтимоӣ"
+            "caption": "Вазъи иҷтимоӣ",
+            "description": "Вазъи иҷтимоӣ"
         },
         {
             "name": "identCard",
-            "caption": "Ҳуҷҷати тасдиқкунандаи шахсият"
+            "caption": "Ҳуҷҷати тасдиқкунанда",
+            "description": "Ҳуҷҷати тасдиқкунандаи шахсият"
         },
         {
             "name": "lastName",
-            "caption": "Насаб"
+            "caption": "Насаб",
+            "description": "Насаби шахс"
         },
         {
             "name": "photo",
-            "caption": "Сурат"
+            "caption": "Сурат",
+            "description": "Сурати шахс"
+        },
+        {
+            "name": "firstNameDat",
+            "caption": "Нет падежей в таджикском языке",
+            "description": "Номи шахс"
+        },
+        {
+            "name": "firstNameGen",
+            "caption": "Нет падежей в таджикском языке",
+            "description": "Номи шахс"
+        },
+        {
+            "name": "applyDat",
+            "description": "Чӣ тавр ба ин шахс муроҷият кардан",
+            "caption": "Муроҷиат"
+        },
+        {
+            "name": "applyGen",
+            "description": "Чӣ тавр ба ин шахс муроҷият кардан",
+            "caption": "Муроҷиат"
+        },
+        {
+            "name": "shortFIODat",
+            "caption": "Ному насаби кӯтоҳ",
+            "description": "Ному насаби кӯтоҳ"
+        },
+        {
+            "name": "shortFIOGen",
+            "caption": "Ному насаби кӯтоҳ",
+            "description": "Ному насаби кӯтоҳ"
+        },
+        {
+            "name": "middleNameDat",
+            "caption": "Номи падар",
+            "description": "Номи падари шахс"
+        },
+        {
+            "name": "middleNameGen",
+            "caption": "Номи падар",
+            "description": "Номи падари шахс"
+        },
+        {
+            "name": "fullFIODat",
+            "caption": "Ному насаби пурра",
+            "description": "Ному насаби пурра"
+        },
+        {
+            "name": "fullFIOGen",
+            "caption": "Ному насаби пурра",
+            "description": "Ному насаби пурра"
+        },
+        {
+            "name": "resident",
+            "caption": "Сокин?",
+            "description": "Шахс-сокини кишвари мост"
+        },
+        {
+            "name": "suffix",
+            "caption": "Пасванд",
+            "description": "Пасванд"
+        },
+        {
+            "name": "lastNameDat",
+            "caption": "Насаб",
+            "description": "Насаби шахс"
+        },
+        {
+            "name": "lastNameGen",
+            "caption": "Насаб",
+            "description": "Насаби шахс"
         }
     ]
 }

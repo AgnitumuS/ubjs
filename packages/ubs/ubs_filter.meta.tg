@@ -1,18 +1,31 @@
 ﻿{
     "caption": "Филтрҳои ҳифзшуда",
-    "description": "",
+    "description": "Филтрҳои ҳифзшуда",
     "attributes": [
         {
             "name": "owner",
-            "caption": "Соҳиб"
+            "caption": "Соҳиб",
+            "description": "Соҳиби филтр"
         },
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамзи гурӯҳи филтр"
         },
         {
             "name": "name",
-            "caption": "Номгуи филтр"
+            "caption": "Номгуи филтр",
+            "description": "Номгуи филтр"
+        },
+        {
+            "name": "isGlobal",
+            "description": "Глобалӣ?",
+            "caption": "Умумӣ?"
+        },
+        {
+            "name": "filter",
+            "caption": "Матни филтр",
+            "description": "Филтр"
         }
     ]
 }

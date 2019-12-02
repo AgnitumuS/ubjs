@@ -1,10 +1,11 @@
 ﻿{
     "caption": "Амнияти сатҳи субъектҳо (ELS)",
-    "description": "",
+    "description": "Кадом нақшҳоро ҳуқуқи дастрасиро методҳои метабаза дорад",
     "attributes": [
         {
             "name": "code",
-            "caption": "Рамзи қоидаҳо"
+            "caption": "Рамзи қоидаҳо",
+            "description": "Рамзи ELS қоидаҳо"
         },
         {
             "name": "methodMask",
@@ -16,19 +17,23 @@
         },
         {
             "name": "description",
-            "caption": "Тасвир"
+            "caption": "Тавсиф",
+            "description": "Тавсифи қоида"
         },
         {
             "name": "disabled",
-            "caption": "Хомуш"
+            "caption": "Хомуш",
+            "description": "Ҳуқуқ куша шудааст"
         },
         {
             "name": "ruleRole",
-            "caption": "Рол"
+            "caption": "Вазифа",
+            "description": "Вазифа, ки барои он қоида бахшида шудааст"
         },
         {
             "name": "ruleType",
-            "caption": "Навъи қоида"
+            "caption": "Навъи қоида",
+            "description": "Навъи қоида"
         }
     ]
 }

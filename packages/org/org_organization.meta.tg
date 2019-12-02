@@ -1,42 +1,76 @@
 ﻿{
     "caption": "Ташкилотҳои дохили ",
-    "description": "",
+    "description": "Маълумотномаи ташкилотҳои  дохилӣ ",
     "attributes": [
         {
             "name": "vatCode",
-            "caption": "Рақами далели андоз аз арзиши иловашуда"
+            "caption": "Рақами далели андоз аз арзиши иловашуда",
+            "description": "Рақами шаҳодатномаи ААИ"
         },
         {
             "name": "code",
-            "caption": "Рамзи дохилӣ"
+            "caption": "Рамзи дохилӣ",
+            "description": "Рамзи дохилии ташкилот"
         },
         {
             "name": "name",
-            "caption": "Номи ташкилот"
+            "caption": "Номи ташкилот",
+            "description": "Номгӯй бе нохунак ва ихтисорот"
         },
         {
             "name": "taxCode",
-            "caption": "Рақами андоз"
+            "caption": "Рақами андоз",
+            "description": "Рақами андоз"
         },
         {
             "name": "description",
-            "caption": "Тавсифи ташкилот"
+            "caption": "Тавсифи ташкилот",
+            "description": "Тавсиф"
         },
         {
             "name": "fullName",
-            "caption": "Номи пурраи ташкилот"
+            "caption": "Номи пурраи ташкилот",
+            "description": "Номи пурра тавре, ки дар шаҳодатномаи бақайдгирӣ зикр шудааст."
         },
         {
             "name": "parentID",
-            "caption": "Унсури волидайн"
+            "caption": "Унсури волидайн",
+            "description": "Унсури волидайн"
         },
         {
             "name": "orgBusinessTypeID",
-            "caption": "Намуди ташкилот"
+            "caption": "Намуди ташкилот",
+            "description": "Намуди ташкилот"
         },
         {
             "name": "orgOwnershipTypeID",
-            "caption": "Намуди моликият "
+            "caption": "Намуди моликият ",
+            "description": "Намуди моликият "
+        },
+        {
+            "name": "nameDat",
+            "description": "Номгӯй бе нохунак ва ихтисорот",
+            "caption": "Номи ташкилот"
+        },
+        {
+            "name": "nameGen",
+            "description": "Номгӯй бе нохунак ва ихтисорот",
+            "caption": "Номи ташкилот"
+        },
+        {
+            "name": "OKPOCode",
+            "description": "Таснифоти умумии корхонаҳо ва ташкилотҳо (ТУКТ)",
+            "caption": "Рамзи ташкилот"
+        },
+        {
+            "name": "fullNameDat",
+            "caption": "Номи пурраи ташкилот",
+            "description": "Номи пурра тавре, ки дар шаҳодатномаи бақайдгирӣ зикр шудааст."
+        },
+        {
+            "name": "fullNameGen",
+            "caption": "Номи пурраи ташкилот",
+            "description": "Номи пурра тавре, ки дар шаҳодатномаи бақайдгирӣ зикр шудааст."
         }
     ]
 }

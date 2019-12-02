@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Дараҷаи ҳимояи сатҳ (ALS)",
-    "description": "",
+    "description": "Сатҳи амнияти аттрибутӣ",
     "attributes": [
         {
             "name": "attribute",
@@ -17,6 +17,10 @@
         {
             "name": "actions",
             "caption": "Амалҳои иҷозатдодашуда"
+        },
+        {
+            "name": "entity",
+            "caption": "Моҳият"
         }
     ]
 }

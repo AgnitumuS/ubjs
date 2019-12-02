@@ -1,14 +1,16 @@
 ﻿{
     "caption": "\nНамудҳои кормандони пурравақт",
-    "description": "",
+    "description": "Маълумотномаи намудҳои воҳиди корӣ",
     "attributes": [
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамз"
         },
         {
             "name": "name",
-            "caption": "Номгуй"
+            "caption": "Номгуй",
+            "description": "Номгӯи намуди воҳиди кадрӣ"
         }
     ]
 }

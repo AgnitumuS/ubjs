@@ -1,0 +1,18 @@
+﻿{
+    "caption": "Намуди таснифот",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "title",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "description",
+            "caption": "Тавсиф"
+        }
+    ]
+}

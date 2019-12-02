@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Марказхои хизматрасонии бонки (МХБ)",
-    "description": "",
+    "description": "Маълумотномаи  шӯъбаҳои бонкӣ",
     "attributes": [
         {
             "name": "address",
@@ -8,31 +8,39 @@
         },
         {
             "name": "cityID",
-            "caption": "Шаҳр"
+            "caption": "Шаҳр",
+            "description": "Шаҳри бақайдгирӣ"
         },
         {
             "name": "MFO",
-            "caption": "Рамзи бонк"
+            "caption": "Рамзи бонк",
+            "description": "Рамзи шӯъбаи бонк"
         },
         {
             "name": "code",
-            "caption": "Рамзи ташкилот"
+            "caption": "Рамзи ташкилот",
+            "description": "Рамзи ташкилоти бонкӣ"
         },
         {
             "name": "description",
-            "caption": "Тавсир"
+            "caption": "Тавсиф",
+            "description": "Тавсиф (барои интихоб аз рӯйхат)",
+            "documentation": "Тавсиф (барои интихоб аз рӯйхат)"
         },
         {
             "name": "fullName",
-            "caption": "Номи пурра"
+            "caption": "Номи пурра",
+            "description": "Номи пурра тавре, ки дар шаҳодатномаи бақайдгирӣ зикр шудааст. Ин майдон ба ҳисоботҳо равон мешавад."
         },
         {
             "name": "name",
-            "caption": "Номи кори "
+            "caption": "Номи кори ",
+            "description": "Ном бидуни нохунак ва шакли моликият. Барои осонии кор."
         },
         {
             "name": "countryID",
-            "caption": "Мамлакат"
+            "caption": "Мамлакат",
+            "description": "Кишвари бақайдгирӣ"
         },
         {
             "name": "phones",

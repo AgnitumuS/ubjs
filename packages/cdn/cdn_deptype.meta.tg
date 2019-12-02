@@ -1,14 +1,16 @@
 ﻿{
     "caption": "Намудҳои шӯъбаҳо",
-    "description": "",
+    "description": "Маълумотномаи навъҳои шӯъба",
     "attributes": [
         {
             "name": "code",
-            "caption": "Рамз"
+            "caption": "Рамз",
+            "description": "Рамзи дохилии намуди департамент"
         },
         {
             "name": "name",
-            "caption": "Номгуй"
+            "caption": "Номгуй",
+            "description": "Номгӯи намуди шӯъба"
         }
     ]
 }

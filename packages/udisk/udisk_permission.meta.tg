@@ -1,12 +1,22 @@
 ﻿{
     "caption": "Ҳуқуқи дастрасӣ",
-    "description": "",
+    "description": "Ҳуқуқи дастрасӣ",
     "attributes": {
         "userID": {
-            "caption": "Истифодабаранда"
+            "caption": "Истифодабаранда",
+            "description": "Истифодабаранда"
         },
         "cardID": {
-            "caption": "Файл"
+            "caption": "Файл",
+            "description": "Файл"
+        },
+        "parentID": {
+            "caption": "ИД-и волидайн",
+            "description": "ИД-и волидайн"
+        },
+        "accessType": {
+            "caption": "Намуди дастрасӣ",
+            "description": "Намуди дастрасӣ ( owner, read, write, delegate)"
         }
     }
 }
