@@ -162,19 +162,6 @@ module.exports = function (session) {
     }
   })
 
-  console.log('\t\t\tcreate `tst_aclrls` shortcut')
-  conn.insert({
-    fieldList: ['ID'],
-    entity: 'ubm_navshortcut',
-    execParams: {
-      desktopID: desktopID,
-      code: 'org_execgroup',
-      caption: 'org_execgroup',
-      displayOrder: displayOrder,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'org_execgroup', method: 'select', fieldList: ['*'] }] } }, null, '\t')
-    }
-  })
-
   console.log('\t\t\tSetting up default TST navigation shortcuts access rights')
   dataLoader.loadArrayData(conn,
     [['tst_desktop', 'User']],
