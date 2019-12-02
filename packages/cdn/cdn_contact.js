@@ -4,6 +4,55 @@ const UB = require('@unitybase/ub')
 // eslint-disable-next-line camelcase
 const me = cdn_contact
 
+me.on('insert:after', afterInsertContact)
+me.on('update:after', afterUpdateContact)
+
+/**
+ * @private
+ * @param {ubMethodParams} ctx
+ */
+function afterInsertContact (ctx) {
+  const { contactTypeID, subjectID, value } = ctx.mParams.execParams
+  updateUserMail (contactTypeID, subjectID, value)
+}
+
+/**
+ * @private
+ * @param {ubMethodParams} ctx
+ */
+function afterUpdateContact (ctx) {
+  const { ID } = ctx.mParams.execParams
+  let contact = UB.Repository('cdn_contact').attrs('contactTypeID', 'subjectID', 'value').selectById(ID)
+  updateUserMail (contact.contactTypeID, contact.subjectID, contact.value)
+}
+
+
+/**
+ * Update uba_user.email for all employee contact
+ * @private
+ * @param {Number} contactTypeID
+ * @param {Number} subjectID
+ * @param {String} value
+ */
+function updateUserMail (contactTypeID, subjectID, value) {
+  let contactType = UB.Repository('cdn_contacttype').attrs('code').selectById(contactTypeID)
+  if(!contactType.code == 'email') return
+    let empUserID = UB.Repository('org_employee').attrs('userID').where('ID', '=', subjectID).selectScalar()
+    if(! empUserID) return
+    let uba_user = UB.DataStore('uba_user')
+      uba_user.run('update',
+        {
+          execParams:
+            {
+              ID: empUserID,
+              email: value
+            },
+          __skipOptimisticLock: true
+        }
+      )
+}
+
+
 /**
  * Search for subjects contact values.
  * @method getSubjectsContacts

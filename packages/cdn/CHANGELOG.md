@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.7]
+### Added
+  - synchronization of the user's email with the employee's contact
+
 ## [5.3.6]
 ### Changed
   - colon separator for cdn_region uk locale csv data to ';' as in all other files  

@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.30]
 ### Added
+  - synchronization of the org_employee's fullFIO attribute into uba_user fullName (in case employee is assigned to some user)
   - Entity `org_execgroup`, which is a part of organizational structure, is `unitType` is `EXECGROUP`.
     The detail entity `org_execgroupmember` contains its members, which are `org_staffunit`.
     Business value of this entity is ability to use a group of staff units at once, for example for task assignment,

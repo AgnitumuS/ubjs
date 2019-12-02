@@ -23,6 +23,34 @@ me.on('delete:after', ubaAuditLinkUserDelete)
 function updateCaptionAndLogToAudit (ctx) {
   updateStaffUnitCaption(ctx)
   ubaAuditLinkUserModify(ctx)
+  updateUserFullName(ctx)
+
+}
+
+
+/**
+ * Update uba_user.fullName for all users of current employee
+ * @private
+ * @param {ubMethodParams} ctxt
+ */
+function updateUserFullName(ctxt) {
+  const { userID, fullFIO } = ctxt.mParams.execParams
+  let fullName
+  if(!fullFIO) {
+    let employee = UB.Repository('org_employee').attrs('fullFIO').selectById(ID)
+    fullName = employee.fullFIO
+  } else fullName = fullFIO
+  let uba_user = UB.DataStore('uba_user')
+  uba_user.run('update',
+    {
+      execParams:
+        {
+          ID: userID,
+          fullName: fullName
+        },
+      __skipOptimisticLock: true
+    }
+  )
 }
 
 /**
@@ -90,6 +118,8 @@ function ubaAuditLinkUser (ctx) {
       toValue: JSON.stringify(execParams)
     }
   })
+  updateUserFullName(ctx)
+
 }
 
 /**
