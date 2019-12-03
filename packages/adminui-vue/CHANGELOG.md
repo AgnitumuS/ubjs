@@ -6,10 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 [unpublished]
 ### Added
- - UFileInput binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
- - new property UFile.accept - optional comma-separated unique “content type specifiers”
-
+ - `UFileInput` binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
+ - `UFile` new property `accept` - optional comma-separated unique “content type specifiers”
+ - `UContextMenu` - added prop width
+ 
 ### Changed
+ - `UContextMenu` - hide icon div when `iconCls` is unset
  - `UToolbarButton` added slot for add text to button 
  - `UToolbarButton` prop `icon-cls` renamed to `icon` 
  - `UToolbarButton` prop `icon-color` renamed to `color`. Colors list - `primary | secondary | info | danger | warning`
