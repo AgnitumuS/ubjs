@@ -117,9 +117,9 @@ Ext.define('UB.core.UBApp', {
     this.addEvents(
       /**
        * Fires then user change active desktop
-       * @event desktopChanged
+       * @event portal:sidebar:desktopChanged
        */
-      'desktopChanged',
+      'portal:sidebar:desktopChanged',
       /**
        * Fires then application start initialization.
        * @event appInitialize
@@ -449,16 +449,8 @@ Ext.define('UB.core.UBApp', {
       me.fireEvent('appInitialize', me)
     }).then(function () {
       return UB.core.UBDataLoader.loadStores({
-        ubRequests: ['ubm_desktop', 'ubm_form', 'ubm_enum'].map(function (item) {
+        ubRequests: ['ubm_form', 'ubm_enum'].map(function (item) {
           let res = { entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames() }
-          if (item === 'ubm_desktop') {
-            res.orderList = {
-              ord: {
-                expression: 'caption',
-                order: 'asc'
-              }
-            }
-          }
           return res
         }),
         setStoreId: true
@@ -478,7 +470,6 @@ Ext.define('UB.core.UBApp', {
       me.setLocalStorageProviderPrefix(me.connection.userLogin())
       me.viewport = Ext.create('UB.view.Viewport')
       me.viewport.show()
-      me.fireEvent('desktopChanged', UB.core.UBAppConfig.desktop) // keep UB.core.UBAppConfig
       me.fireEvent('applicationReady')
       me.locationHashChanged()
       me.hideLogo()
@@ -914,28 +905,6 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
   getLogin: function () {
     UB.logDebug('UB.core.UBApp.getLogin is deprecated. Use $App.connection.userLogin() instead)')
     return this.connection.userLogin()
-  },
-
-  getDesktop: function () {
-    var ubAppConfig = UB.core.UBAppConfig
-    var tmpDesktop = UB.core.UBLocalStorageManager.getItem('desktop', true)
-
-    if (!ubAppConfig.desktop) {
-      ubAppConfig.desktop = UB.core.UBStoreManager.getDesktopStore().getById(tmpDesktop) ? tmpDesktop : this.getDefaultDesktop()
-    }
-
-    return ubAppConfig.desktop
-  },
-
-  getDefaultDesktop: function () {
-    var store = UB.core.UBStoreManager.getDesktopStore()
-    var record = store.findRecord('isDefault', true) || store.getAt(0)
-    return record ? record.get('ID') : null
-  },
-
-  setDesktop: function (desktop) {
-    UB.core.UBLocalStorageManager.setItem('desktop', UB.core.UBAppConfig.desktop = desktop)
-    this.fireEvent('desktopChanged', desktop)
   },
 
   checkQueryString: function () {

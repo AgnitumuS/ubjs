@@ -39,15 +39,6 @@ Ext.define('UB.core.UBStoreManager', {
   },
 
   /**
-   *
-   * @return {Ext.data.Store}
-   */
-  getDesktopStore: function () {
-    var desktopName = 'ubm_desktop'
-    return this.getStore(desktopName, $App.domainInfo.get(desktopName).getAttributeNames())
-  },
-
-  /**
    * in-memory cache of ubm_navshortcut cmdData values. Key is shortcut ID
    */
   shortcutCommandCache: {},

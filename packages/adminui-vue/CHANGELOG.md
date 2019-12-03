@@ -13,7 +13,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - updated dependency **vue**@2.6.8 -> 2.6.10
  - updated dependency **vuex**@3.1.0 -> 3.1.2
  - updated dependency **element-ui**@2.12.0 -> 2.13.0
-
+ 
+### Removed
+ - deprecated event `desktopChanged` for UB.core.UBApp ($App in global)  is removed.
+   Instead adminui-vue fires `$App.fireEvent('portal:sidebar:desktopChanged', desktopId)`
+ - deprecated `$App.getDefaultDesktop` `$App.getDesktop` `$App.setDesktop` are removed 
+ - deprecated `UB.core.UBStoreManager.getDesktopStore` is removed
+ - `ubm_desktop` no longer loaded by Ext UB.core.UBStoreManager (only by adminui-vue)
+  
 ## [1.9.1] - 2019-12-02
 ### Fixed
  - mountContainer will provide fake `$formServices` to allow use UToolbar inside vue form mounted by mountContainer
