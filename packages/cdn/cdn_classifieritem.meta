@@ -1,0 +1,54 @@
+{
+  "sqlAlias": "cdnclsi",
+  "caption": "Сlassifier Item",
+  "descriptionAttribute": "name",
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    },
+    "tree": {
+      "parentAttr": "parentID"
+    }
+  },
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "System code",
+      "dataType": "String",
+      "size": 255,
+      "allowNull": false,
+      "isUnique": true
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "dataType": "String",
+      "size": 255,
+      "allowNull": false,
+      "isMultiLang": true
+    },
+    {
+      "name": "classifierID",
+      "caption": "Classifier type",
+      "dataType": "Entity",
+      "associatedEntity": "cdn_classifier",
+      "allowNull": false
+    },
+    {
+      "name": "parentID",
+      "caption": "Parent",
+      "dataType": "Entity",
+      "associatedEntity": "cdn_classifieritem",
+      "allowNull": true
+    },
+    {
+      "name": "hierarchyLevel",
+      "caption": "Level",
+      "dataType": "Int",
+      "readOnly": true,
+      "defaultView": false
+    }
+
+  ]
+}

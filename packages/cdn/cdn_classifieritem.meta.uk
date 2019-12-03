@@ -1,0 +1,25 @@
+﻿{
+  "caption": "Запис класифікатора",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Системний код"
+    },
+    {
+      "name": "parentID",
+      "caption": "Батьківський елемент"
+    },
+    {
+      "name": "classifierID",
+      "caption": "Класифікатор"
+    },
+    {
+      "name": "hierarchyLevel",
+      "caption": "Рівень"
+    },
+    {
+      "name": "name",
+      "caption": "Назва"
+    }
+  ]
+}

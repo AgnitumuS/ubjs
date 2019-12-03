@@ -1,60 +1,37 @@
 {
-  "sqlAlias": "clss",
+  "sqlAlias": "cdncls",
   "caption": "Сlassifier",
-  "descriptionAttribute": "title",
+  "descriptionAttribute": "name",
   "mixins": {
     "mStorage": {
       "simpleAudit": true,
       "safeDelete": true
-    },
-    "tree": {
-      "parentAttr": "parentID"
     }
   },
   "attributes": [
     {
       "name": "code",
-      "caption": "System code",
+      "caption": "Code",
       "dataType": "String",
       "size": 255,
       "allowNull": false,
       "isUnique": true
     },
     {
-      "name": "parentID",
-      "caption": "Parent",
-      "dataType": "Entity",
-      "associatedEntity": "cdn_classifier",
-      "allowNull": true
-    },
-    {
-      "name": "classifierTypeID",
-      "caption": "Classifier type",
-      "dataType": "Entity",
-      "associatedEntity": "cdn_classifiertype",
-      "allowNull": false
-    },
-    {
-      "name": "hierarchyLevel",
-      "caption": "Level",
-      "dataType": "Int",
-      "readOnly": true,
-      "defaultView": false
-    },
-    {
-      "name": "title",
-      "caption": "Title",
+      "name": "name",
+      "caption": "Name",
       "dataType": "String",
       "size": 255,
       "allowNull": false,
       "isMultiLang": true
     },
     {
-      "name": "stateCode",
-      "caption": "State code",
+      "name": "description",
+      "caption": "Description",
       "dataType": "String",
       "size": 255,
-      "allowNull": true
+      "allowNull": true,
+      "isMultiLang": true
     }
   ]
 }
