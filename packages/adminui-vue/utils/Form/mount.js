@@ -309,6 +309,10 @@ function mountContainer ({
     provide () {
       return {
         $v: validator,
+        // for UToolbar
+        $formServices: {
+          forceClose () { }
+        },
         ...provide
       }
     },
