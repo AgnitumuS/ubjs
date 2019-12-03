@@ -8,11 +8,13 @@
   >
     <button
       class="ub-toolbar__button"
-      :class="iconColor"
+      :class="color"
+      type="button"
       v-bind="$attrs"
       v-on="$listeners"
     >
-      <i :class="iconCls" />
+      <i :class="icon" />
+      <slot/>
     </button>
   </el-tooltip>
 </template>
@@ -22,58 +24,70 @@ export default {
   name: 'UToolbarButton',
 
   props: {
+    /**
+     * Icon class
+     */
+    icon: String,
+    /**
+     * Tooltip text
+     */
     tooltip: String,
-    iconCls: {
+    /**
+     * Icon and text color.
+     * enum = primary | secondary | info | danger | warning
+     */
+    color: {
       type: String,
-      required: true
-    },
-    iconColor: {
-      type: String,
-      default: 'blue'
+      default: 'primary'
     }
   }
 }
 </script>
 
 <style>
-.ub-toolbar__button{
-  border: none;
-  cursor: pointer;
-  background: none;
-  font-size: 18px;
-  line-height: 1;
-  width: 30px;
-  height: 30px;
-  display: block;
-  padding: 0;
-}
+  .ub-toolbar__button{
+    background: none;
+    border: none;
+    padding: 0 8px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: transform 0.1s;
+    height: 100%;
+  }
 
-.ub-toolbar__button:hover{
-  background: rgba(var(--info), 0.1);
-}
+  .ub-toolbar__button:disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 
-.ub-toolbar__button + .ub-toolbar__button {
-  margin-left: 0.5em;
-}
+  .ub-toolbar__button:hover{
+    opacity: 0.7;
+  }
 
-.ub-toolbar__button.blue {
-  color: rgb(var(--primary));
-}
+  .ub-toolbar__button.primary {
+    color: rgb(var(--primary));
+  }
 
-.ub-toolbar__button.green {
-  color: rgb(var(--success));
-}
+  .ub-toolbar__button.secondary {
+    color: rgb(var(--secondary));
+  }
 
-.ub-toolbar__button.info {
-  color: rgb(var(--info));
-}
+  .ub-toolbar__button.info {
+    color: rgb(var(--info));
+  }
 
-.ub-toolbar__button.danger {
-  color: rgb(var(--danger));
-}
+  .ub-toolbar__button.danger {
+    color: rgb(var(--danger));
+  }
 
-.ub-toolbar__button:disabled{
-  color: rgb(var(--info));
-  cursor: not-allowed;
-}
+  .ub-toolbar__button.warning {
+    color: rgb(var(--warning));
+  }
+
+  .ub-toolbar__button i {
+    font-size: 18px;
+    margin-right: 4px;
+  }
 </style>

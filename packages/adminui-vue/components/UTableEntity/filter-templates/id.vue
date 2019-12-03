@@ -34,7 +34,7 @@
 </template>
 
 <script>
-const FilterSubmitButton = require('../components/filter-submit-button.vue').default
+const FilterSubmitButton = require('../components/FilterSubmitButton.vue').default
 const { mapActions } = require('vuex')
 
 export default {

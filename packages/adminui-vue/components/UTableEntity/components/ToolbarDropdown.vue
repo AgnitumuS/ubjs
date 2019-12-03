@@ -3,7 +3,7 @@
     class="u-table-entity__head__dropdown"
     :width="210"
   >
-    <toolbar-button icon="el-icon-more-outline" />
+    <u-toolbar-button icon="el-icon-more-outline" />
 
     <template slot="dropdown">
       <slot name="prepend"/>
