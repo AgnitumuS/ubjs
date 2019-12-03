@@ -8,29 +8,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `UFileInput` binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
  - new property UFile.accept - optional comma-separated unique “content type specifiers”
- - `UFileInput` binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
- - `UFile` new property `accept` - optional comma-separated unique “content type specifiers”
- - `UContextMenu` - added prop width
 
+### Changed
+ - updated dependency **vue**@2.6.8 -> 2.6.10
+ - updated dependency **vuex**@3.1.0 -> 3.1.2
+ - updated dependency **element-ui**@2.12.0 -> 2.13.0
+
+## [1.9.1] - 2019-12-02
 ### Fixed
  - mountContainer will provide fake `$formServices` to allow use UToolbar inside vue form mounted by mountContainer
+ - `USelectEntity` close opened dropdown's if clicked **arrow** of another select. Previously it didn't closed if click on arrow
+ - `UFile` prevent opening preview dialog on press enter button in another input in same form
  
 ### Changed
  - `UContextMenu` - hide icon div when `iconCls` is unset
  - `UToolbarButton` added slot for add text to button 
  - `UToolbarButton` prop `icon-cls` renamed to `icon` 
  - `UToolbarButton` prop `icon-color` renamed to `color`. Colors list - `primary | secondary | info | danger | warning`
- 
-## [1.9.1] - 2019-12-02
-### Fixed
- - `USelectEntity` close opened dropdown's if clicked **arrow** of another select. Previously it didn't closed if click on arrow
- - `UFile` prevent opening preview dialog on press enter button in another input in same form
- 
-### Changed
  - `UFormContainer` refactor from commonjs to vue component 
  - `UFormContainer` removed padding and inner div
  
 ### Added
+ - `UFileInput` binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
+ - `UFile` new property `accept` - optional comma-separated unique “content type specifiers”
+ - `UContextMenu` - added prop width
  - Styles which adds `padding: 1em` to `<form>` inside `ub-form-container` class. 
    So `UFormContainer` will have padding just only if it is a direct descendant of the `ub-form-container`  
  - `USelectEntity` added props `buildShowDictionaryConfig`, `buildEditConfig`, `buildAddNewConfig`. 

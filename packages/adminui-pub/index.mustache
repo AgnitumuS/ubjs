@@ -97,9 +97,8 @@
   System.config({
     baseURL: '/clientRequire',
     map: {
-      {{#modulesMap}}
-      '{{{moduleName}}}': '{{{entryPoint}}}',
-      {{/modulesMap}}
+      css: 'systemjs-plugin-css/css.js'
+      // placing modulesMap (defined in adminui-reg) here split Vue into 2 instances: one from SystemJS & one from adminui-vue
     },
     meta: {
       // '*': {nonce: 'cspNonce'}  if this line is added (cspNonce is a mustache variable) SystemJS override window.onerror
