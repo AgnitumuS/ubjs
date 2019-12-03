@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UToolbarButton` prop `icon-cls` renamed to `icon` 
  - `UToolbarButton` prop `icon-color` renamed to `color`. Colors list - `primary | secondary | info | danger | warning`
  
-[1.9.1]
+## [1.9.1] - 2019-12-02
 ### Fixed
  - `USelectEntity` close opened dropdown's if clicked **arrow** of another select. Previously it didn't closed if click on arrow
  - `UFile` prevent opening preview dialog on press enter button in another input in same form
@@ -54,7 +54,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - `toolbar-dropdown-delete` - Replace delete button in toolbar dropdown 
    - `toolbar-dropdown-append ` - Append new buttons to toolbar 
 
-[1.9.0]
+## [1.9.0] - 2019-11-19
 ### Fixed
  - `USelectEnum` wrong display value on open form
  - loader (spinner) added to auth form - turned on after user press "Login" button. This help to indicate
@@ -134,12 +134,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UDialog` now exports `errorReporter` and it available in vue instance as `$errorReporter`
  - `UContextMenu` - registered globally, can be used in template as `<u-context-menu>...` tag.
  
-[1.8.9]
+## [1.8.9] - 2019-11-18
 ### Fixed
  - added CSP for IIT sign agent (localhost:8081 & 8083)
  - error unlock auth cert2 form on error
 
-[1.8.7]
+## [1.8.7] - 2019-11-18
 ### Added
  - property `disabled` in `UUploadDocument`
 
@@ -170,7 +170,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Styles in `UFormRow`, `USelectMultiple`, and `USelectEntity`
  - `clickOutsideDropdown` directive in `USelectEntity` now works properly
 
-[1.8.6]
+## [1.8.6] - 2019-10-31
 ### Added 
  - set `entity.caption` as default form title if title is not defined at `*-fm.def`
  - Registration component for authentication form
@@ -184,11 +184,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `processing` module now does not pass readonly attributes in execParams
 
     
-[1.8.5]
+## [1.8.5] - 2019-10-18
 ### Fixed
  - desktop selector Z index increased to 100 to prevent displaying behind Ext form toolbar / grid captions  
 
-[1.8.4]
+## [1.8.4] - 2019-10-16
 ### Added
  - Navbar tab: middle mouse button click (mouse wheel click) on tab will close it
    
@@ -196,11 +196,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `DesktopSelector` close desktop drawer after click again on button
  - sidebar doesn't overlap text popups
 
-[1.8.3]
+## [1.8.3] - 2019-10-12
 ### Changed
  - change icon inside error popup to "!" because original element error icon is very similar to close button
   
-[1.8.2]
+## [1.8.2] - 2019-10-12
 ### Changed
  - redesign desktop selector in sidebar
  - added optional props `sidebarLogoURL` and `sidebarLogoBigURL` to `UB.connection.appConfig.uiSettings.adminUI` in ubConfig.json.
@@ -225,16 +225,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UFormContainer` prop autofocus. Boolean. Is true by default.
  Example usage `<u-form-container :autofocus="false">`
 
-[1.8.1]
+## [1.8.1] - 2019-10-09
 ### Fixed
  - transformation of attributes of type `Date` (not DateTime) to format expected by server (time must be 00:00 in UTC0) inside `buildExecParams`
 
-[1.8.0]
+## [1.8.0] - 2019-10-07
 ### Changed
  - winXP (Chrome 48 / FireFox 52 / IE) support is removed, as a result
  boundle size reduced by 120Kb + code became faster  
 
-## [1.7.2]
+## [1.7.2] - 2019-10-03
 ### Added
  - New option for `UFormRow` label-position prop, example:
 ```vue
@@ -251,11 +251,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - css variable `--info-light`
  - `UForm/mount` i18n to title
 
-## [1.7.1]
+## [1.7.1] - 2019-09-30
 ### Fixed
  - `UForm/processing` in case execParams includes locale params will replace the locale param with base param. For example in case userLang === 'en' and execParams includes key 'fullName_uk^' will replace key 'fullName' to 'fullName_en^'
 
-## [1.7.0]
+## [1.7.0] - 2019-09-27
 ### Changed
  - update package `element-ui@2.12.0` and `element-theme-chalk@2.12.0`
  - production build now works on browsers for WinXP (Chrome 48/ FireFox 52). It's done by:
@@ -264,22 +264,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - remove object rest spread where possible
  - 1.7.x is the LAST version what supports WinXP. Polyfills **WILL BE REMOVED IN 1.8.0**  
 
-## [1.6.41]
+## [1.6.41] - 2019-09-26
 ### Fixed
  - removed `async-to-promises` babel plugin - buggy
 
-## [1.6.40]
+## [1.6.40] - 2019-09-26
 ### Fixed
  - added support for old Chrome browser what can run on WindowsXP by using `async-to-promises` babel plugin
 
-## [1.6.39]
+## [1.6.39] - 2019-09-25
 ### Fixed
  - `instance` module `SET_DATA` mutation, fix bug when assign a value to JSON attribute, and there is `null` instead
    of a regular object value.  Assign an empty object in any scenario, when value is not already an object or when
    value is `null`.
  - `instance` module, comparison array to null or object to null now works without exceptions
 
-## [1.6.38]
+## [1.6.38] - 2019-09-19
 ### Fixed
  - `UForm.validation` computed.mapInstanceFields maps all entity fields. Previously only required fields
 
@@ -308,11 +308,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `instance/addCollectionItem` missed call of repository function
  - `UContextMenu` do not closed just after opening in Firefox
 
-## [1.6.35]
+## [1.6.35] - 2019-09-17
 ### Added
  - basic support for `dataHistory` mixin: only creation of new rows. TODO - implement adding of a new row version
 
-## [1.6.34]
+## [1.6.34] - 2019-09-17
 ### Changed
  - changes in how `collections` state item is handled in vuex store:
    - do NOT pass unneeded parameter "collection" from client to server - the parameter is not needed by server,
@@ -340,20 +340,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - when iterate collections, use `initCollectionsRequests` - metadata about which collections are there, 
      instead of using `store.collection` - state info; this shall be more reliable.
 
-## [1.6.33]
+## [1.6.33] - 2019-09-16
 ### Fixed
  - `Form/helpers/mergeStore` merge modules, plugins and strict in store config
  - Full Text Search widget will wrap text to search into "" in case it starts from **№** - fix [UBDF-9971]
  - `Refresh` action for new record: pass a new row ID to load method instead of instanceID what undefined.
  This fix error on refresh `Where item with condition "equal" must contains "value" or "values"` [UBDF-10109] 
 
-## [1.6.32]
+## [1.6.32] - 2019-09-13
 ### Fixed
  - duplication of store data in tabs in case store config with actions is provided as object to `Form` with state as a function
  - **async function** declaration removed from code - it's not transpiled to ES5 & do not work on Chrome under Windows XP
  - `async function helpers.hookWrap` is removed (replaced by function.prototype.call where used)  
 
-## [1.6.31]
+## [1.6.31] - 2019-09-12
 ### Fixed
  - duplication of store data in tabs in case store config is provided as object to `Form` with state as a function
  - `Form/validation` undefined store when custom validation is used
@@ -366,7 +366,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - **BREAKING** - `UDetailGrid` rewritten, now only works on readonly
 
-## [1.6.30]
+## [1.6.30] - 2019-09-11
 ### Added
  - in case `props.parentContext` is passed to Form() values of `parentContext` will became a default values for a new row
  (passed to addNew method). Sample below calls a Vue form in NEW mode (instanceID not defined) and sets value of `docID`
@@ -388,12 +388,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - prevent creation of empty Form life-circle hook functions (optimization)  
  - prevent call 'lock' method for new entity instances with softLock mixin (should be called only for existed instances) 
 
-## [1.6.29]
+## [1.6.29] - 2019-09-10
 ### Fixed
  - prevent browser autocomplete in fields inside `UFormContainer` by adding `autocomplete = 'off'`
  - `Form` the problem when store config didn't override instance and processing methods 
 
-## [1.6.28]
+## [1.6.28] - 2019-09-09
 ### Added
  - `SET_DATA` mutation of the "instance" module supports now the `path` argument, which shall be used for JSON attributes, example:
  ```js
@@ -410,29 +410,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - update "instance" module, the recognize if JSON attribute was changed or not
  - optimize work of isEqual function of the "instance" module for array values
 
-## [1.6.27]
+## [1.6.27] - 2019-08-31
 ### Added
  - `Form.validation()` added param `validator` for creating custom validation. [Example](https://git-pub.intecracy.com/unitybase/ubjs/blob/87874ab1ce37e27240965d3fa998a40ebd3f8303/packages/adminui-vue/utils/Form/README.md#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-%D0%BA%D0%B0%D1%81%D1%82%D0%BE%D0%BC%D0%BD%D0%BE%D0%B9-%D0%B2%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%86%D0%B8%D0%B8)
 
-## [1.6.26]
+## [1.6.26] - 2019-08-31
 ### Added
  - `UDetailGrid` component - shows data collection as a table view 
 
 ### Changed
  - update package `element-ui` **2.8.2 -> 2.11.1**
 
-## [1.6.25]
+## [1.6.25] - 2019-08-31
 ### Fixed
  - In case vue form is mounted directly into another component it will be destroyed during destroying parent Ext or Vue component
 
 ### Added
  - `UToolbar` added prop `hideDefaultButton` which hide's default buttons
 
-## [1.6.24]
+## [1.6.24] - 2019-08-19
 ### Changed
  - use new method `$App.generateTabId()` for tabId generation instead of hardcoded expression
    
-## [1.6.23]
+## [1.6.23] - 2019-08-13
 ### Changed
  - element-ui & element-theme-chalk versions are frozen to 2.8.2 because of bugs (again) in element theme builder
  - **BREAKING** one-line function helpers.isExistAttr() is removed. Use `const schema = UB.connection.domain.get(entity); schema.attributes[attr]` instead 
@@ -445,13 +445,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - VueJS based form now accept `target` in UForm constructor, and render form directly into this target. 
 Target can be either id of html element or Ext component
 
-## [1.6.21]
+## [1.6.21] - 2019-08-13
 ### Added
  - default authentication form (ub-auth.html) handle a `uiSettings.adminUI.registrationURL` parameter from config.
  In case parameter is empty or not exists (default) then registration link do not displayed on the authentication form. 
  Otherwise a link to the specified URL is displayed 
  
-## [1.6.20]
+## [1.6.20] - 2019-08-10
 ### Added
  - expose `clickoutside` directive from ElementUI. `hideDropdown` in code below will be called
  in case user click outside the div: 
@@ -465,12 +465,12 @@ Target can be either id of html element or Ext component
  - `Save` button in multi language dialog for input renamed to `apply` + localization added
  - the form with multi lang fields still remains dirty after saving ( fix #67 )
     
-## [1.6.19]
+## [1.6.19] - 2019-08-09
 ### Fixed
  - disable sidebar shortcut "Edit" popup menu item in case user don't have access to `ubm_navshortcut.update` [UBDF-9664]
  - sidebar item deletion fixed [UBDF-9652]
 
-## [1.6.18]
+## [1.6.18] - 2019-07-31
 ### Fixed
  - VueJS based form now accept `tabId` in UForm constructor.
  If passed it will be used to identity tab and prevent opening tab with the same tabId twice. 
@@ -489,7 +489,7 @@ module.exports.mount = function ({ ..., tabId }) {
 ```
  - locking for Vue forms based on entity without softLock mixin is remove (fix)
 
-## [1.6.17]
+## [1.6.17] - 2019-07-30
 ### Added
  - support for `softLock` (Pessimistic locks) mixin
  - new icon-color classes for UToolbarButton: `info`, `danger`. Example:
@@ -502,7 +502,7 @@ module.exports.mount = function ({ ..., tabId }) {
 />
 ```
  
-## [1.6.16]
+## [1.6.16] - 2019-07-24
 ### Fixed
  - placeholder translation for u-auto-field of Date/DateTime type ( #63 )
  - put moment in global even in case user language is `en`
@@ -510,7 +510,7 @@ module.exports.mount = function ({ ..., tabId }) {
 ### Changed
  - method `showValidationErrors` in `UB.view.BasePanel`. Now returns `entityCode.fieldCode` when fieldLabel is empty.  
  
-## [1.6.14]
+## [1.6.14] - 2019-07-15
 ### Added
  - exports `dialog`, `dialogError`, `dialogInfo`, `dialogYesNo` functions from `adminui-vue`. To be used outside Vue instance:
 ```javascript
@@ -530,39 +530,39 @@ adminUiVue.dialogInfo('Hello')
  - `USelectEnum` is sorted by `ubm_enum.sortOrder`
  - `processing` - excluded fields mi_createDate, mi_createUser, mi_deleteDate, mi_deleteUser, mi_modifyUser, mi_owner from insert request
 
-## [1.6.12]
+## [1.6.12] - 2019-07-02
 ### Fixed
  - translation of attributes inside Full Text Search widget snippets (FTS return attributes in lower case)
  - ub-auth login form: add more space between password field and "Login" button in case of http: to prevent overlap of
  login button by browser "not secure connection" warning  
  - Vue based user messages notification widget do not throw `ELS - access deny` error for non-privileged users
 
-## [1.6.11]
+## [1.6.11] - 2019-07-02
 ### Fixed
  - fix exception `"UForm.instance()" should be called once` - occurred during opening of vue form (introduced in 1.6.10)
 
-## [1.6.10]
+## [1.6.10] - 2019-06-27
 ### Fixed
  - moment usage fix: now `const moment = require('moment')` in underline models works as expected and 
  use `moment` instance already injected by adminui-vue
  - fix `can not read property style of undefined` in `Vue.prototype.$zIndex`  
 
-## [1.6.8]
+## [1.6.8] - 2019-06-25
 ### Added
  - `Form->processing` added hooks:
    - beforeDelete
    - deleted
  - `Form->processing` if beforeDelete hook returns false, deleting will be canceled
 
-## [1.6.7]
+## [1.6.7] - 2019-06-24
 ### Fixed
  - UBSelect* - set cursor to `pointer` in case `editable` prop is `false`
  
-## [1.6.6]
+## [1.6.6] - 2019-06-24
 ### Fixed
  - limit error dialog width to 250px to prevent text output outside viewport for errors what appears on the right border
 
-## [1.6.5]
+## [1.6.5] - 2019-06-20
 ### Changed
  - **Breaking** `u-input` v-model support is removed, now gets and sets value from store automatically
  - **Breaking** `u-auto-field` removed v-model, now gets and sets value from store automatically
@@ -580,7 +580,7 @@ adminUiVue.dialogInfo('Hello')
 ### Fixed
  - UCodeMirror now handle `editorMode` prop and perform a syntax highlight for content depending on mode (default is javascript)   
 
-## [1.6.4]
+## [1.6.4] - 2019-06-18
 ### Fixed
  - "Always use domain for login" checkbox should be visible in navbar User menu in case "Negotiate" auth is enabled for app [UBDF-9586]
  - `class UForm` fixed the problem when two identical forms have a common store state and replace each other's data
@@ -590,11 +590,11 @@ adminUiVue.dialogInfo('Hello')
 ### Changed
  - `u-sidebar` changed sidebar item height to auto, paddings reduced
 
-## [1.6.3]
+## [1.6.3] - 2019-06-14
 ### Fixed
  - fix UFormContainer registration issue introduced in 1.6.2
  
-## [1.6.2]
+## [1.6.2] - 2019-06-14
 ### Fixed
  - do not break words in the $App.dialog* messages (word-break should be break-word instead of break-all) [UBDF-9571]
  - WebStorm IDE now recognize U* components inside templates instead of error "unknown HTML tag"
@@ -611,7 +611,7 @@ adminUiVue.dialogInfo('Hello')
    - beforeLoad
    - loaded 
 
-## [1.6.1]
+## [1.6.1] - 2019-06-12
 ### Fixed
  - `USidebar` - item text is now hidden if overflow exceeds 3 lines
  - `USidebar` - prevent work break inside menu
@@ -620,12 +620,12 @@ adminUiVue.dialogInfo('Hello')
  - VueJS form mount () will be called with additional config `rootComponent: exports.default`  
 
 
-## [1.6.0]
+## [1.6.0] - 2019-06-12
 ### Changed
  - **BREAKING** refactor `formBoilerplate` to constructor `Form` [docs and examples](https://git-pub.intecracy.com/unitybase/ubjs/blob/11e529331f78313c4fd483e660ccad9a4e65a73f/packages/adminui-vue/utils/Form/README.md)
  - **BREAKING** `u-form` component renamed to `u-form-container`
 
-## [1.5.6]
+## [1.5.6] - 2019-06-05
 ### Fixed
  - `USidebar` - if parent folder is not accessible due to RLS - skip shortcut
   
@@ -635,12 +635,12 @@ adminUiVue.dialogInfo('Hello')
  - `UNavbar` will handle new event `portal:navbar:userButton:appendSlot` - insert some elements into user menu
  - Version item is added to the UNavbar user button menu. Application can define custom version number in uData `appVersion` key 
 
-## [1.5.5]
+## [1.5.5] - 2019-05-29
 ### Changed
  - `u-code-mirror` - added shortcuts tooltip
  - `u-code-mirror` - added key bindings according old codeMirror 
 
-## [1.5.3]
+## [1.5.3] - 2019-05-24
 ### Fixed
  - `processing` emit update grid and add loading status when dispatch 'deleteInstance'
  
@@ -652,11 +652,11 @@ adminUiVue.dialogInfo('Hello')
  - `u-select-entity` added 'clearable' option
  - rewritten `u-select-many`. Now this component inherited from `u-select-multiple` 
 
-## [1.5.2]
+## [1.5.2] - 2019-05-21
 ### Changed
  - `optionalDependencies` are moved to `devDependencies` to prevent install it even when `NODE_ENV=production`
  
-## [1.5.1]
+## [1.5.1] - 2019-05-17
 ### Fixed
  - changed before close function in mount module, can except empty store or store without save action
  - `UInput` - fixed bug when user open popup then will send empty locale after form saved 
@@ -673,7 +673,7 @@ adminUiVue.dialogInfo('Hello')
 ### Added
  - `UAutoField` - component renders form field according to the attribute type
 
-## [1.5.0]
+## [1.5.0] - 2019-05-15
 ### Fixed
  - `UDialog` fixed autofocus on accept button
  - `adminui-vue` will increase zIndex of Ext.WindowManager every time vue form opened on modal   
@@ -697,7 +697,7 @@ adminUiVue.dialogInfo('Hello')
  - `UToolbar` component. That is related with processing module in form boilerplate
  - `v-hold-focus` directive. Intercepts the tab keydown event on this element and does not allow the focus to leave it
 
-## [1.4.1]
+## [1.4.1] - 2019-03-30
 ### Added
  - `Vuex` now imported inside `@unitybase/adminui-vue`. In other models:
    - for **dev** mode can be required directly ``` Vuex = require('vuex') ```
@@ -751,7 +751,7 @@ adminUiVue.dialogInfo('Hello')
 ### Fixed
  - set correct zIndex when open UB dialogs from magicLinks
 
-## [1.4.0]
+## [1.4.0] - 2019-03-21
 ### Changed
  - UbContext -> UContextMenu
  - UbCodeMirror -> UCodeMirror
@@ -763,7 +763,7 @@ adminUiVue.dialogInfo('Hello')
  - added `UFormRow` component. When you need to add label in right side of form item
  - added `UErrorWrap` component. Wrap any element and show error from prop under element 
   
-## [1.3.3]
+## [1.3.3] - 2019-03-10
 ### Changed
  - UbEntityEdit `value` property renamed to `instance` 
  - UbInput now use HOC pattern over ElInput
@@ -793,7 +793,7 @@ adminUiVue.dialogInfo('Hello')
  - links for set focus on attribute with invalid value and for execution of command
  now work in production mode (inline JS is removed in flavor of magic link)
   
-## [1.3.2]
+## [1.3.2] - 2019-03-05
 ### Added
  - new Vue base `sidebar` component (left menu). Enabling by setting
  `UB.connection.appConfig.uiSettings.adminUI.customSidebar` to `true` in app config
@@ -814,7 +814,7 @@ adminUiVue.dialogInfo('Hello')
     - "blink" area around popup actions button is removed
  - UBToolbarComponent.vue - "Save" and "Save and close" color changed to btn-primary (green)
  
-## [1.3.1]
+## [1.3.1] - 2019-03-03
 ### Changed
  - update vue@2.6.7 -> 2.6.8
  - set fixed version of element-ui@2.5.4 because of theme bug in 2.6.x
@@ -824,7 +824,7 @@ adminUiVue.dialogInfo('Hello')
  even if modules are installed with `NODE_ENV=production`
  - `dialogInfo` return false in case user close dialog without pressing "ok" button (regression)
 
-## [1.3.0]
+## [1.3.0] - 2019-03-01
 ### Fixed
  - relogon form should not close on Esc
 
@@ -835,7 +835,7 @@ adminUiVue.dialogInfo('Hello')
  - updated vue@2.6.6 -> vue@2.6.7
  - upgraded vue-loader@14.2.4 -> vue-loader@15.6.4
 
-## [1.2.2]
+## [1.2.2] - 2019-02-24
 ### Fixed
  - relogon form: default focused element should be password
  - relogon form: password should be cleaned after submit
@@ -848,7 +848,7 @@ adminUiVue.dialogInfo('Hello')
     - `window.onerror`
     - `Ext.override` -> `UB.view.BasePanel` -> `showValidationErrors`
 
-## [1.2.0]
+## [1.2.0] - 2019-02-21
 ### Changed
  - `adminui-vue` model replace a top Ext-JS based navbar with navbar implemented using VueJS.
   See `components/navbar`
@@ -858,25 +858,25 @@ adminUiVue.dialogInfo('Hello')
 ### Fixed
  - authorization form validation message localisation
 
-## [1.1.0]
+## [1.1.0] - 2019-02-13
 ### Changed
  - vue updated 2.5.17 -> 2.6.6
  - element-ui updated 2.4.9 -> 2.5.4
 
-## [1.0.44]
+## [1.0.44] - 2019-02-12
 ### Added
 - watch for prop value changed in all controls
 - open dialog with iFrame for pdf files in `UbUploadDocument`
 
-## [1.0.43]
+## [1.0.43] - 2019-01-31
 ### Fixed
  - add missing "css" folder to the published package
 
-## [1.0.40]
+## [1.0.40] - 2019-01-25
 ### Added
  - components folder is added to tarball for debugging purpose
 
-## [1.0.34]
+## [1.0.34] - 2019-01-10
 ### Changed
  - hide `Forgot password?` and `Registration` on auth form when `Negotiate` enabled
  - add title to Localizable Dialog in `UbInput`
@@ -885,72 +885,72 @@ adminUiVue.dialogInfo('Hello')
  - fix popovers collapse on `UbSelectEntity` control
  - add styles for low resolution screens in `UbInput` Localizable Dialog
 
-## [1.0.33]
+## [1.0.33] - 2018-12-04
 ### Changed
  - vue loader registration is moved form `adminui-vue` to `adminui-pub`
 
 ### Fixed
  - set `ub-auth` page title to the `uiSettings.adminUI.applicationTitle` just after got an application info
 
-## [1.0.32]
+## [1.0.32] - 2018-11-29
 ### Fixed
  - error with hidden UB auth in case this is only one possible auth method
 
-## [1.0.31]
+## [1.0.31] - 2018-11-19
 ### Changed
  - adminui-vue auth form will hide ub auth under `options` if Kerberos or CERT2 is enabled
 
-## [1.0.27]
+## [1.0.27] - 2018-11-03
 ### Fixed
  - let's ElementUI popups be above all Ext popups by setting initial ElementUI.zIndex to 300000
 
 ### Changed
  - change webpack configuration to decrease boundle for production build (from 847Kb to 630Kb)
  
-## [1.0.26]
+## [1.0.26] - 2018-10-29
 ### Added
  - vue based login now support `onNeedChangePassword` connection event and display the password change form to the user
  
 ### Changed
  - `element-ui` is upgraded to `2.4.9`   
  
-## [1.0.16]
+## [1.0.16] - 2018-09-21
 ### Added
  - vue based login now support `CERT2` authentication (available in UB DE)
 
-## [1.0.11]
+## [1.0.11] - 2018-08-26
 ### Changed
  - update element-ui to 2.4.5 (2.4.6 not theme is compiled)
 
-## [1.0.9]
+## [1.0.9] - 2018-08-14
 ### Fixed
 - theme will set ExtJS fieldset border radius to 4px
 
-## [1.0.8]
+## [1.0.8] - 2018-08-01
 ### Fixed
 - ub-auth.html: hide password on password input (type="password")
 
-## [1.0.6]
+## [1.0.6] - 2018-07-28
 ### Added
 - css for round ExtJS form fields border radius (as in ElementUI)
 
-## [1.0.6]
+## [1.0.6] - 2018-07-28
 ### Added
 - ability to load Vue single file components (*.vue) - see ``@unitybase/systemjs-plugin-vue-ub` readme for restrictions
 
 ### Changed
 - default size of ElementUI components is set to to `small`
 
-## [1.0.5]
+## [1.0.5] - 2018-07-23
 ### Fixed
 - login window logo css fixed in way logo looks the same on adminui-vue and adminui login windhw
 - add missing `views/ub-auth.html` to the package
 
-## [1.0.3]
+## [1.0.3] - 2018-07-18
 ### Fixed
 - use Vue version with compiler (vue/dist/vue.common.js) for both dev/prod build
 
-## [1.0.2]
+## [1.0.2] - 2018-07-17
 ### Changed
 - theme css `/dist/adminui-vue.css` will loaded by adminui-vue automatically (using require)
 - theme CSS will not override a body font-size, so other modules can set his own (we recommend 14px)
