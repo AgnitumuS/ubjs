@@ -34,7 +34,7 @@ UB.i18nExtend({
       month10: 'Жовтень',
       month11: 'Листопад',
       month12: 'Грудень',
-      // week: 'week',
+      week: 'тиждень',
       weeks: {
         sun: 'Нд',
         mon: 'Пн',
@@ -68,7 +68,8 @@ UB.i18nExtend({
     cascader: {
       noMatch: 'Співпадінь не знайдено',
       loading: 'Завантаження',
-      placeholder: 'Обрати'
+      placeholder: 'Обрати',
+      noData: 'Немає даних'
     },
     pagination: {
       goto: 'Перейти',
@@ -105,6 +106,12 @@ UB.i18nExtend({
       filterPlaceholder: 'Введіть ключове слово',
       noCheckedFormat: '{total} пунктів',
       hasCheckedFormat: '{checked}/{total} вибрано'
+    },
+    image: {
+      error: 'FAILED' // to be translated
+    },
+    pageHeader: {
+      title: 'Back' // to be translated
     }
   },
   isRequiredFieldFmt: '{0} обов\'язкове для заповнення',

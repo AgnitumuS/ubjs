@@ -34,7 +34,7 @@ UB.i18nExtend({
       month10: 'October',
       month11: 'November',
       month12: 'December',
-      // week: 'week',
+      week: 'week',
       weeks: {
         sun: 'Sun',
         mon: 'Mon',
@@ -68,7 +68,8 @@ UB.i18nExtend({
     cascader: {
       noMatch: 'No matching data',
       loading: 'Loading',
-      placeholder: 'Select'
+      placeholder: 'Select',
+      noData: 'No data'
     },
     pagination: {
       goto: 'Go to',
@@ -105,6 +106,12 @@ UB.i18nExtend({
       filterPlaceholder: 'Enter keyword', // to be translated
       noCheckedFormat: '{total} items', // to be translated
       hasCheckedFormat: '{checked}/{total} checked' // to be translated
+    },
+    image: {
+      error: 'FAILED'
+    },
+    pageHeader: {
+      title: 'Back' // to be translated
     }
   },
   isRequiredFieldFmt: '{0} is required',

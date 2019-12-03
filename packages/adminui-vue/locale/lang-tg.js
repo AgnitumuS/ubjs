@@ -34,7 +34,7 @@ UB.i18nExtend({
       month10: 'Октябр',
       month11: 'Ноябр',
       month12: 'Декабр',
-      // week: 'week',
+      week: 'ҳафта',
       weeks: {
         sun: 'Яш',
         mon: 'Дш',
@@ -68,7 +68,8 @@ UB.i18nExtend({
     cascader: {
       noMatch: 'Ҳеҷ мувофиқат пайдо нашуд',
       loading: 'Боргирӣ ',
-      placeholder: 'Интихоб кунед'
+      placeholder: 'Интихоб кунед',
+      noData: 'Маълумот нест'
     },
     pagination: {
       goto: 'Гузаштан',
@@ -105,6 +106,12 @@ UB.i18nExtend({
       filterPlaceholder: 'Калимаи калидиро ворид намоед',
       noCheckedFormat: '{total} нуқтаҳо',
       hasCheckedFormat: '{checked}/{total} интихоб карда шуд'
+    },
+    image: {
+      error: 'ФИЛИАЛ'
+    },
+    pageHeader: {
+      title: 'Бозгашт' // to be translated
     }
   },
   isRequiredFieldFmt: '{0} барои пур карданд ҳатмист ',

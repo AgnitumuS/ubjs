@@ -34,7 +34,7 @@ UB.i18nExtend({
       month10: 'Октябрь',
       month11: 'Ноябрь',
       month12: 'Декабрь',
-      // week: 'week',
+      week: 'жума',
       weeks: {
         sun: 'Вс',
         mon: 'Пн',
@@ -68,7 +68,8 @@ UB.i18nExtend({
     cascader: {
       noMatch: 'Совпадений не найдено',
       loading: 'Загрузка',
-      placeholder: 'Выбрать'
+      placeholder: 'Выбрать',
+      noData: 'Маалымат жок'
     },
     pagination: {
       goto: 'Перейти',
@@ -105,6 +106,12 @@ UB.i18nExtend({
       filterPlaceholder: 'Введите ключевое слово',
       noCheckedFormat: '{total} пунктов',
       hasCheckedFormat: '{checked}/{total} выбрано'
+    },
+    image: {
+      error: 'ЖОК'
+    },
+    pageHeader: {
+      title: 'кайра' // to be translated
     }
   },
   isRequiredFieldFmt: '{0} обязательно для заполнения',

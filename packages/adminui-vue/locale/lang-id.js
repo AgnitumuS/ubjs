@@ -34,7 +34,7 @@ UB.i18nExtend({
       month10: 'Oktober',
       month11: 'November',
       month12: 'Desember',
-      // week: 'minggu',
+      week: 'minggu',
       weeks: {
         sun: 'Min',
         mon: 'Sen',
@@ -68,7 +68,8 @@ UB.i18nExtend({
     cascader: {
       noMatch: 'Tidak ada data yg cocok',
       loading: 'Memuat',
-      placeholder: 'Pilih'
+      placeholder: 'Pilih',
+      noData: 'Tidak ada data'
     },
     pagination: {
       goto: 'Pergi ke',
@@ -83,7 +84,7 @@ UB.i18nExtend({
       error: 'Masukan ilegal'
     },
     upload: {
-      deleteTip: 'press delete to remove', // to be translated
+      deleteTip: 'tekan delete untuk menghapus', // to be translated
       delete: 'Hapus',
       preview: 'Pratinjau',
       continue: 'Lanjutkan'
@@ -105,6 +106,12 @@ UB.i18nExtend({
       filterPlaceholder: 'Masukan kata kunci',
       noCheckedFormat: '{total} butir',
       hasCheckedFormat: '{checked}/{total} terpilih'
+    },
+    image: {
+      error: 'GAGAL'
+    },
+    pageHeader: {
+      title: 'Kembali' // to be translated
     }
   },
   isRequiredFieldFmt: '{0} wajib diisi',

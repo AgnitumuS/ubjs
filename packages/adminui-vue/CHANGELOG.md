@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - UFileInput binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
  - new property UFile.accept - optional comma-separated unique “content type specifiers”
+ - update `element-ui` locales
    
 [1.9.1]
 ### Fixed

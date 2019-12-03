@@ -34,7 +34,7 @@ UB.i18nExtend({
       month10: 'Oktyabr',
       month11: 'Noyabr',
       month12: 'Dekabr',
-      // week: 'week',
+      week: 'həftə',
       weeks: {
         sun: 'B.',
         mon: 'B.E.',
@@ -68,7 +68,8 @@ UB.i18nExtend({
     cascader: {
       noMatch: 'Uyğunluq tapılmadı',
       loading: 'Yüklənmə',
-      placeholder: 'Seçmək'
+      placeholder: 'Seçmək',
+      noData: 'Məlumat yoxdur'
     },
     pagination: {
       goto: 'Keçmək',
@@ -105,6 +106,12 @@ UB.i18nExtend({
       filterPlaceholder: 'Açar sözü daxil edin',
       noCheckedFormat: '{total} bəndlər',
       hasCheckedFormat: '{checked}/{total} seçilmişdir'
+    },
+    image: {
+      error: 'TƏCİLİ'
+    },
+    pageHeader: {
+      title: 'Geri' // to be translated
     }
   },
   isRequiredFieldFmt: '{0} mütləq doldurulmalı',
