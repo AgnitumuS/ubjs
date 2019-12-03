@@ -1,29 +1,17 @@
-﻿{
-  "caption": "Классификатор",
+{
+  "caption": "Вид классификации",
   "attributes": [
     {
       "name": "code",
-      "caption": "Системный код"
+      "caption": "Код"
     },
     {
-      "name": "parentID",
-      "caption": "Родитель"
-    },
-    {
-      "name": "classifierTypeID",
-      "caption": "Вид классификатора"
-    },
-    {
-      "name": "hierarchyLevel",
-      "caption": "Уровень"
-    },
-    {
-      "name": "title",
+      "name": "name",
       "caption": "Название"
     },
     {
-      "name": "stateCode",
-      "caption": "Государственный код"
+      "name": "description",
+      "caption": "Описание"
     }
   ]
 }

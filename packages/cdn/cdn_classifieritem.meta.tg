@@ -1,0 +1,26 @@
+﻿{
+    "caption": "Таснифгар",
+    "description": "",
+    "attributes": [
+        {
+            "name": "classifierID",
+            "caption": "Навъи таснифгар"
+        },
+        {
+            "name": "name",
+            "caption": "Номгуй"
+        },
+        {
+            "name": "parentID",
+            "caption": "Волидайн"
+        },
+        {
+            "name": "code",
+            "caption": "Рамзи системавӣ"
+        },
+        {
+            "name": "hierarchyLevel",
+            "caption": "Сатҳ"
+        }
+    ]
+}

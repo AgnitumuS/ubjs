@@ -1,0 +1,25 @@
+﻿{
+  "caption": "Сlassifier Item",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "System code"
+    },
+    {
+      "name": "parentID",
+      "caption": "Parent"
+    },
+    {
+      "name": "classifierID",
+      "caption": "Classifier"
+    },
+    {
+      "name": "hierarchyLevel",
+      "caption": "Level"
+    },
+    {
+      "name": "name",
+      "caption": "Name"
+    }
+  ]
+}

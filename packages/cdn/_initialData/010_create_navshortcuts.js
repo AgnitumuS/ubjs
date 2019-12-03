@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @author pavel.mash
  * Fill navigation shortcuts for CDN model
  */
@@ -337,7 +337,7 @@ module.exports = function (session) {
       iconCls: 'fa fa-tags',
       displayOrder: 30,
       cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [{ entity: 'cdn_classifiertype',
+        cmdData: { params: [{ entity: 'cdn_classifier',
           method: 'select',
           fieldList: '*'
         }] } }, null, '\t')

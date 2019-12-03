@@ -1,6 +1,6 @@
 /* global cdn_classifier */
 // eslint-disable-next-line camelcase
-const me = cdn_classifier
+const me = global[require('path').basename(__filename).split('.')[0]]
 const UB = require('@unitybase/ub')
 
 me.on('insert:before', setLevelAttribute)

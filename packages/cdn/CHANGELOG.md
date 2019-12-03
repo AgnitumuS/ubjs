@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+## Changed
+  - **BREAKING!!!** Classifiers entities renamed, all over the code (navigation, etc)
+    - `cdn_classifiertype` => `cdn_classifier`
+    - `cdn_classifier` => `cdn_classifieritem`
+  - Renamed `title` to `name` for both entities
+  - Made `cdn_classifier.name` and `cdn_classifier.description` attributes multi-language
+  - Remove `stateCode` from `cdn_classifier` as a bit too specific to be in generic dictionary. 
+    If you need this (or any other) attribute, either request a JSON attribute in this dictionary or use entity override
+    feature for your project.
+  - Add format description for classifiers for ub-migrate (the _date/formats.js).
+
 ## [5.3.7] - 2019-12-02
 ### Added
   - synchronization of the user's email with the employee's contact

@@ -1,32 +1,76 @@
 // @! "do not remove comments below unless you know what you do!"
-// @mi_modifyDate "Tue Sep 17 2019 01:22:06 GMT+0300 (FLE Standard Time)"
+// @mi_modifyDate "Tue Sep 17 2019 01:24:34 GMT+0300 (FLE Standard Time)"
 // @isDefault "false"
 // @entity "cdn_classifier"
 // @model "CDN"
 // @formType "auto"
-// @caption "Classifier editor"
-// @description "Classifier editor"
+// @caption "Сlassifiers"
+// @description "Сlassifiers Edit"
 exports.formDef = {
-  parentConfig: {
-    layout: {
-      type: "vbox",
-      align: "stretch"
-    }
+  size: {
+    width: 800,
+    height: 1000
   },
-  items: [{
+  parentConfig: {
     layout: {
       type: 'vbox',
       align: 'stretch'
+    }
+  },
+  layout: {
+    type: 'vbox',
+    align: 'stretch'
+  },
+  items: [{
+      layout: {
+        type: 'vbox',
+        align: 'stretch'
+      },
+      items: [{
+          layout: {
+            type: 'hbox',
+            align: 'stretch'
+          },
+          defaults: {
+            labelAlign: 'top'
+          },
+          items: [{
+              flex: 1,
+              attributeName: "code"
+            },
+            {
+              flex: 4,
+              attributeName: "name"
+            },
+          ]
+        },
+        {
+          attributeName: "description",
+          labelAlign: 'top'
+        }
+      ]
     },
-    defaults: {
-      labelWidth: 210
-    },
-    items: [
-      { attributeName: "code" },
-      { attributeName: "parentID" },
-      { attributeName: "classifierTypeID" },
-      { attributeName: "title" },
-      { attributeName: "stateCode" }
-    ]
-  }]
+    {
+      flex: 1,
+      title: UB.i18n('ClassifTypePanelClassifiersTitle'),
+      items: [{
+        xtype: "ubdetailgrid",
+        flex: 1,
+        itemId: "ubdetailgrid-cdn_classifier",
+        stateId: "ubdetailgrid-cdn_classifier_grid_UI",
+        entityConfig: {
+          "entity": "cdn_classifieritem",
+          "method": "select",
+          "fieldList": [
+            "code",
+            "hierarchyLevel",
+            "parentID",
+            "name"
+          ]
+        },
+        masterFields: ["ID"],
+        detailFields: ["classifierID"]
+      }]
+    }
+  ]
 };
