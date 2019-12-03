@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [5.3.3]
+## [5.3.3] - 2019-11-21
 ### Added
   - new server config parameter `security.excludeGroups: ["group1", ...]`
    Groups codes (uba_group.code) to EXCLUDE from available user groups during user logon.
@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  `/statics` endpoint on the UB level simply redirect to `/statics` nginx location.
  `ub-proxy.cfg` nginx config should be upgraded by `npx ubcli generateNginxCfg` (or rule for `location /statics` should be added manually)  
 
-## [5.3.0]
+## [5.3.0] - 2019-10-18
 ### Added
  - new server config parameter `security.limitGroupsTo: ["group1", ...]`
   Groups codes (uba_group.code) to limit available user groups during user logon.
@@ -34,17 +34,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - `Session.runAsUser` will create a temporary session what live until the end of request (not persisted to sessionManager)
    
  
-## [5.2.37]
+## [5.2.37] - 2019-09-28
 ### Fixed
  - `getDomainInfo` endpoint now compatible with UB server <= 5.16 (compatibility broken by @unitybase/ub@5.2.36) 
 
-## [5.2.36]
+## [5.2.36] - 2019-09-22
 ### Fixed
  - `getDomainInfo` endpoint optimization: starting from UB 5.15.4 nativeGetDomainInfo can wrote domain
   directly into HTTP response instead of serializing it to/from JS engine. This save up to 70ms on huge domains
  - `authMock` property added (if server started with --authMock switch) to getAppInfo endpoint response 
 
-## [5.2.35]
+## [5.2.35] - 2019-09-19
 ### Added
  - documented ability to set log file path (`logging.path`) to the specified file and disable log rotation by setting 
  `logging.rotationSizeInMB` to 0
@@ -53,7 +53,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - added documentation for `model` configuration parameter for `aclRls` mixin 
 
-## [5.2.32]
+## [5.2.32] - 2019-08-28
 ### Changed
  - for UB server >= 5.15 UBLDAP auth schema use [libcurl](https://curl.haxx.se/) for LDAP query;
  ubConfig `ldapCatalogs` configuration parameters is changed - see ubConfig schema for details. Example config:
@@ -72,13 +72,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 },
 ```  
 
-## [5.2.29]
+## [5.2.29] - 2019-08-13
 ### Added
  - `uiSettings.adminUI.registrationURL` parameter.
  In case parameter is empty or not exists (default) then registration link do not displayed on the default
  authentication form (@unitybase/adminui-vue/views/ub-auth.html). Otherwise a link to the specified URL is displayed
  
-## [5.2.24]
+## [5.2.24] - 2019-07-10
 ### Fixed
  - `Session.runAsUser` & `Session.runAsAdmin` should restore original session even if one of `login` handler fails for passed user
  
@@ -110,16 +110,16 @@ UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "П
 ```    
  In this case Negotiated user name will be  `MYCOMPANY.COM\\user`
 
-## [5.2.22]
+## [5.2.22] - 2019-07-04
 ### Added
  - update ubConfig JSON schema about new key `uiSettings.adminUI.pdfViewer.uriSuffix`
 
-## [5.2.18]
+## [5.2.18] - 2019-06-19
 ### Added
  - `App.dbConnection['..'].savepointWrap` function: rollback a part of transaction for PostgreSQL.
  This fix [unitybase/ub-server#26] - see issue discussion for details
 
-## [5.2.12]
+## [5.2.12] - 2019-04-28
 ### Added
  - new method `THTTPRequest.writeToFile(fullFilePath)` - write request body content (as binary) to a file.
  Return `true` on success. Can be used to bypass moving body content between native<->JS
@@ -130,31 +130,31 @@ UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "П
  file name is absolute path starts with drive letter. Prev. implementation puts drive letter instead of fileName 
 
 
-## [5.2.11]
+## [5.2.11] - 2019-04-07
 ### Added
  - Entity metadata merging: in case descendant model contains entity with the same name as
  original model they `*.meta` files will be **MERGED** (before this patch descendant overrides parent).
  This allow to **override only part of meta-file attributes/properties in descendants**.
  
-## [5.2.5]
+## [5.2.5] - 2019-02-24
 ### Fixed
  - removed extra files from bundle
 
-## [5.2.4]
+## [5.2.4] - 2019-02-14
 ### Changed
   - DocFlow specific server-side i18n are removed from @unitybase/ub
   
-## [5.2.0]
+## [5.2.0] - 2019-01-13
 ### Added
  - extended `App.authFromRequest` - added optional Cookies for Negotiate authentication (UB server should be updated to 5.7.7+)
  - `THTTPResponse.getBodyForDebug` function
  - `App.globalCachePut` will accept `null` as 2nd parameter. In this case key will be removed from globalCache (UBserver@5.7.7+)  
 
-## [5.1.1]
+## [5.1.1] - 2018-12-17
 ### Fixed
  - `DataStore.initialize` will correctly init store from a flatten format in case rowCount = 0 [unitybase/ubjs#31]
 
-## [5.1.0]
+## [5.1.0] - 2018-12-12
 ### Changed
  - initial values of `Session.uData` now filled inside JS `Session._getRBACInfo` (`@unitybase/ub`)
  instead of duplication of code inside UB server and `@unitybase/uba` model
@@ -167,7 +167,7 @@ UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "П
 ### Added
  - `Session.uData.groupIDs` property - an array of group IDs user id assigned to
  
-## [5.0.45]
+## [5.0.45] - 2018-10-09
 ### Fixed
  - **CRITICAL** endpoints `models`, `clientRequire` & `static` will return `Bad Request` in case
  of access folder (not a file). 
@@ -184,39 +184,39 @@ UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "П
  `https://localhost/ubstatic-unitybase-info/app/node_modules/@unitybase/ub/public/schemas/` with 404 and
  expose to caller our internal folders structure. 
 
-## [5.2.30]
+## [5.2.30] - 2019-08-14
 ### Changed
  - explicitly disable audit for system entity ub_blobHistory 
 
-## [5.0.44]
+## [5.0.44] - 2018-10-06
 ### Changed
  - `$.currentUserOrUserGroupInAdmSubtable` RLS macros will add all user roles including pseudo-roles `Everyone` `User` & `Anonymous`
  Previous implementation did not check pseudo-roles
 
-## [5.0.43]
+## [5.0.43] - 2018-10-05
 ### Changed
 - `docflow` related legacy code is removed from `RLS.js` (known as $ in "rls" mixin expression)
  
-## [5.0.38]
+## [5.0.38] - 2018-09-25
 ### Fixed
 - domain documentation generator fixed `ubcli generateDoc -u admin -p admin` 
 
-## [5.0.37]
+## [5.0.37] - 2018-09-23
 ### Added
 - `getAppInfo` endpoint return a application version in `appVersion` key.
  Version taken from application package.json version attribute.
  Client side can read it from `connection.appConfig.appVersion`.
 
-## [5.0.23]
+## [5.0.23] - 2018-07-15
 ### Changed
 - `allLocales` endpoint will join locales from all models (since login form localization moved to ub-pub
  we do not need to skip a adminui-pub localization anymore)
 
-## [5.0.19]
+## [5.0.19] - 2018-06-27
 ### Changed
 - values from locale folder merged to the ub-pub model localization
 
-## [5.0.19]
+## [5.0.19] - 2018-06-27
 ### Added
 - the `adminui.loginURL` setting described in `ubConfig.schema.json`
 - the `httpServer.externalURL` configuration parameter is added to ubConfig.
@@ -224,18 +224,18 @@ UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "П
  To be used in case server is behind a reverse proxy
 - `App.externalURL` property added - either `httpServer.externalURL` of `App.serverURL` if external URL not configured
 
-## [5.0.18]
+## [5.0.18] - 2018-06-21
 ### Fixed
 - **CRITICAL** prevent transferring of application files to client in case `httpServer.inetPub` is empty in config
 - THTTPResponse methods `badRequest`, `notFound` and `notImplemented` will return charset in
  Content-Type header as required by HTTP 1.0
 
-## [5.0.16]
+## [5.0.16] - 2018-06-03
 ### Added
 - new endpoind `allLocales` - return a single localization script bundled from all models public/locale/lang-${Session.userLang} scripts
  excluding adminui-pub what injected before login window
 
-## [5.0.12]
+## [5.0.12] - 2018-05-18
 ### Added
 - new function `App.blobStores.markRevisionAsPermanent` allow to prevent
 specified revision of historical store from deletion during history rotation
@@ -248,14 +248,14 @@ specified revision of historical store from deletion during history rotation
 - `mdb` BLOB stores will automatically crate a folder in case
 it's not exists(for example user create a ER diagram etc.)
 
-## [5.0.8]
+## [5.0.8] - 2018-05-07
 ### Fixed
 - fileSystemBlobStore will add a entropy to the persistent file name to prevent
  possible file name duplication for historical data
 - fileSystemBlobStore rotateHistory will delete only revisions older when `store.historyDepth`
 - fix UB4 store compatibility - automatic detection of store implementation in case blobStore.implementedBy not defined
 
-## [5.0.0]
+## [5.0.0] - 2018-02-13
 ### Added
 - `UB.blobStores` interface for working with BLOBs content
 - new entity `ub_blobHistory` for storing BLOB store revisions information instead of *.fti files
@@ -263,7 +263,7 @@ it's not exists(for example user create a ER diagram etc.)
 - automatically creation of BLOB store structure - no need to call `ubcli createStore` anymore. 
   In case of DFS folders should be created/mounted manually
   
-## [4.0.30]
+## [4.0.30] - 2017-05-17
 ### Added
 
 ### Fixed

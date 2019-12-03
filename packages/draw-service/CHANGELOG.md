@@ -1,4 +1,4 @@
-## [5.0.4]
+## [5.0.4] - 2018-11-28
 ### Changed
  - allow to configure custom font
 ```bash
