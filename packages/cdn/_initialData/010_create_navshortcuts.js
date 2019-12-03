@@ -345,4 +345,25 @@ module.exports = function (session) {
   })
   console.info('\t\tprovide rights for `Classifiers` shortcut to users role')
   conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+
+  console.log('\t\t\tcreate `Queries` shortcut')
+  lastID = conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      parentID: folderID,
+      code: 'cdn_query',
+      caption: 'Queries',
+      iconCls: 'fa fa-tags',
+      displayOrder: 30,
+      cmdCode: JSON.stringify({ cmdType: 'showList',
+        cmdData: { params: [{ entity: 'cdn_query',
+            method: 'select',
+            fieldList: '*'
+          }] } }, null, '\t')
+    }
+  })
+  console.info('\t\tprovide rights for `Queries` shortcut to users role')
+  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
 }

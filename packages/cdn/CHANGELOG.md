@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.17]
+### Added
+  - added entity `cdn_query`, which might be used in different ways, for example, for allowing customizable attributes,
+    which need to refer system dictionaries.
+
 ## [5.3.7]
 ### Added
   - synchronization of the user's email with the employee's contact
