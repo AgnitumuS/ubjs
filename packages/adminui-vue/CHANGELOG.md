@@ -8,7 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - UFileInput binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
  - new property UFile.accept - optional comma-separated unique “content type specifiers”
-   
+
+### Changed
+ - `UToolbarButton` added slot for add text to button 
+ - `UToolbarButton` prop `icon-cls` renamed to `icon` 
+ - `UToolbarButton` prop `icon-color` renamed to `color`. Colors list - `primary | secondary | info | danger | warning`
+ 
 [1.9.1]
 ### Fixed
  - `USelectEntity` close opened dropdown's if clicked **arrow** of another select. Previously it didn't closed if click on arrow

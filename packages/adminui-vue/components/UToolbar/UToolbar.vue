@@ -3,10 +3,10 @@
     <u-toolbar-button
       v-for="button in mainPanelButtons"
       :key="button.caption + '0'"
-      :icon-cls="button.iconCls"
+      :icon="button.iconCls"
       :disabled="button.disabled"
       :tooltip="button.caption"
-      :icon-color="button.iconColor"
+      :color="button.iconColor"
       @click="button.handler"
     />
     <!-- @slot left side toolbar (after default buttons) -->
@@ -17,8 +17,8 @@
 
     <u-toolbar-button
       v-if="entitySchema.hasMixin('softLock')"
-      :icon-cls="isLocked ? 'fa fa-lock' : 'fa fa-unlock'"
-      :icon-color="isLocked ? (isLockedByMe ? 'green' : 'danger') : 'info'"
+      :icon="isLocked ? 'fa fa-lock' : 'fa fa-unlock'"
+      :color="isLocked ? (isLockedByMe ? 'primary' : 'danger') : 'info'"
       :tooltip="lockInfoMessage"
     />
 
@@ -29,7 +29,7 @@
       :hide-on-click="false"
       @command="dropdownHandler"
     >
-      <u-toolbar-button icon-cls="fa fa-cog" />
+      <u-toolbar-button icon="fa fa-cog" />
 
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item
@@ -68,7 +68,6 @@
 /* global $App */
 const { mapState, mapGetters, mapActions } = require('vuex')
 const { mapInstanceFields } = require('../../utils/Form/helpers')
-const UToolbarButton = require('./UToolbarButton.vue').default
 
 /**
  * Form toolbar with default actions.
@@ -77,10 +76,10 @@ const UToolbarButton = require('./UToolbarButton.vue').default
 export default {
   name: 'UToolbar',
 
-  components: { UToolbarButton },
   props: {
     hideDefaultButtons: Boolean
   },
+
   inject: ['$formServices', 'formCode', 'entitySchema', 'fieldList', 'entity'],
 
   computed: {

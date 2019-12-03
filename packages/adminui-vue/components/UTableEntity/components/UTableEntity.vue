@@ -20,23 +20,23 @@
         <!-- @slot Prepend new buttons to toolbar -->
         <slot name="toolbar-prepend" />
 
-        <toolbar-button
-          is-blue
+        <u-toolbar-button
+          color="secondary"
           icon="el-icon-refresh"
           @click="refresh"
         >
           {{ $ut('refresh') }}
-        </toolbar-button>
+        </u-toolbar-button>
 
         <!-- @slot Replace add-new button in toolbar panel -->
         <slot name="toolbar-button-add-new">
-          <toolbar-button
+          <u-toolbar-button
             icon="el-icon-plus"
             :disabled="!canAddNew"
             @click="addNew"
           >
             {{ $ut('actionAdd') }}
-          </toolbar-button>
+          </u-toolbar-button>
         </slot>
 
         <!-- @slot Prepend new buttons to toolbar before filter -->
@@ -131,16 +131,15 @@
 </template>
 
 <script>
-const ToolbarButton = require('./toolbar-button.vue').default
-const ContextMenu = require('./context-menu.vue').default
-const FilterContainer = require('./filter-container.vue').default
-const Pagination = require('./pagination.vue').default
+const ContextMenu = require('./ContextMenu.vue').default
+const FilterContainer = require('./FilterContainer.vue').default
+const Pagination = require('./Pagination.vue').default
 const createStore = require('../store.js')
 const Vuex = require('vuex')
 const { mapState, mapGetters, mapMutations, mapActions } = Vuex
 const { buildProps } = require('../helpers.js')
-const FilterList = require('./filter-list.vue').default
-const ToolbarDropdown = require('./toolbar-dropdown.vue').default
+const FilterList = require('./FilterList.vue').default
+const ToolbarDropdown = require('./ToolbarDropdown.vue').default
 
 /**
  * Replaced from function to global scope in case not to create a regular expression every function call.
@@ -158,7 +157,6 @@ export default {
   name: 'UTableEntity',
 
   components: {
-    ToolbarButton,
     ContextMenu,
     FilterContainer,
     Pagination,

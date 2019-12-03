@@ -62,7 +62,7 @@
 
 <script>
 
-const FilterSubmitButton = require('../components/filter-submit-button.vue').default
+const FilterSubmitButton = require('../components/FilterSubmitButton.vue').default
 const { mapGetters, mapActions } = require('vuex')
 
 export default {
