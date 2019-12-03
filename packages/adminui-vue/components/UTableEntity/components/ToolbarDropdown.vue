@@ -61,11 +61,8 @@
 
 <script>
 const { mapState, mapGetters, mapActions } = require('vuex')
-const ToolbarButton = require('./toolbar-button.vue').default
 
 export default {
-  components: { ToolbarButton },
-
   computed: {
     ...mapGetters([
       'canAddNew',
