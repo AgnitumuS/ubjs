@@ -4,11 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-[unpublished]
+[Unreleased]
 ### Added
+ - `UFileInput` binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
+ - new property UFile.accept - optional comma-separated unique “content type specifiers”
  - `UFileInput` binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
  - `UFile` new property `accept` - optional comma-separated unique “content type specifiers”
  - `UContextMenu` - added prop width
+
+### Fixed
+ - mountContainer will provide fake `$formServices` to allow use UToolbar inside vue form mounted by mountContainer
  
 ### Changed
  - `UContextMenu` - hide icon div when `iconCls` is unset
