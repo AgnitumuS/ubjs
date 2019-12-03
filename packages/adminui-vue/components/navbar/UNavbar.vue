@@ -81,6 +81,7 @@
     <u-context-menu
       ref="context"
       :items="contextItems"
+      :width="200"
       @select="selectContext"
     />
   </div>

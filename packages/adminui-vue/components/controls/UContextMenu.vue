@@ -6,7 +6,8 @@
     class="u-context-menu"
     :style="{
       top: y + 'px',
-      left: x + 'px'
+      left: x + 'px',
+      width: width + 'px'
     }"
   >
     <template v-for="item in items">
@@ -18,6 +19,7 @@
         @click="itemSelected(item)"
       >
         <i
+          v-if="item.iconCls"
           :class="item.iconCls"
           class="u-context-menu__item__icon"
         />
@@ -56,6 +58,14 @@ export default {
     items: {
       type: Array,
       required: true
+    },
+
+    /**
+     * Context menu width
+     */
+    width: {
+      type: Number,
+      default: 180
     }
   },
 
@@ -101,7 +111,6 @@ export default {
 <style>
 .u-context-menu {
   background-color: #fff;
-  width: 180px;
   padding: 8px 0;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   border: 1px solid rgba(var(--info), 0.2);
@@ -133,7 +142,8 @@ export default {
 }
 
 .u-context-menu__divider {
-  background: rgba(var(--info), 0.2);
-  margin: 8px 0;
+  background: rgba(var(--info), 0.1);
+  margin: 4px 0;
+  height: 1px;
 }
 </style>
