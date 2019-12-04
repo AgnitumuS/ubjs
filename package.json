@@ -35,7 +35,8 @@
     "build:doc-ubpub": "jsdoc -c ./jsdoc-conf-ubpub.json",
     "build:adminuidoc": "jsdoc -c ./jsdoc-adminui-conf.json",
     "build": "lerna run build",
-    "build:for-ci": "lerna run build:native"
+    "build:for-ci": "lerna run build:native",
+    "prepublishOnly": "./tools/prepublishScript.sh"
   },
   "engines": {
     "npm": "^5"
