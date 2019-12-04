@@ -4,13 +4,15 @@ const types = require('./type-provider.js')
 /**
  * @typedef {object} UTableColumnSettings
  *
- * @property {boolean} [sortable=false] Adds
- * @property {boolean} [isLookup=false]
- * @property {'left'|'right'|'center'} [align='left']
- * @property {'left'|'right'|'center'} [headerAlign='left']
- * @property {number} [maxWidth]
- * @property {number} [minWidth]
- * @property {number} [width]
+ * @property {boolean} [sortable=false] Adds sortable icon which emits sort action on click
+ * @property {boolean} [isLookup=false] If is set true will check attribute associatedEntity and loads description attribute for displayed value
+ * @property {'left'|'right'|'center'} [align='left'] Align text in column
+ * @property {'left'|'right'|'center'} [headerAlign='left'] Align text in column header
+ * @property {number} [maxWidth] Maximum width
+ * @property {number} [minWidth] Minimum width
+ * @property {number} [width] Width
+ * @property {boolean} [isHtml=false] If set true will render content as v-html directive
+ * @property {function} [format] Format displayed value in cell. Will ignored if is set custom slot.
  */
 
 /**
@@ -28,12 +30,24 @@ const types = require('./type-provider.js')
  * @property {string} entityName Entity name
  * @property {number} pageSize Page size
  * @property {array<UTableColumn>} columns Columns definitions
- * @property {string} dateFormat
- * @property {string} dateTimeFormat
+ * @property {string} dateFormat Moment.js date format for columns with type "Date"
+ * @property {string} dateTimeFormat Moment.js date format for columns with type "DateTime"
  */
 
+const formatValueMixin = {
+  methods: {
+    formatValue ({ value, column, row }) {
+      if (typeof column.format === 'function') {
+        return column.format({ value, column, row })
+      } else {
+        return value
+      }
+    }
+  }
+}
 module.exports = {
-  buildProps
+  buildProps,
+  formatValueMixin
 }
 
 /**

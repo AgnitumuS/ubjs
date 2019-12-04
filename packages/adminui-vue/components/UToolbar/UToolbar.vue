@@ -29,7 +29,10 @@
       :hide-on-click="false"
       @command="dropdownHandler"
     >
-      <u-toolbar-button icon="fa fa-cog" />
+      <u-toolbar-button
+        icon="fa fa-cog"
+        color="secondary"
+      />
 
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item
@@ -98,19 +101,20 @@ export default {
         iconCls: 'fa fa-save',
         handler: () => this.save(),
         disabled: !this.canSave,
-        iconColor: 'green'
+        iconColor: 'primary'
       }, {
         caption: this.$ut('saveAndClose') + ' (Ctrl + Enter)',
         iconCls: 'fa fa-share-square-o',
         handler: this.saveAndClose,
         disabled: !this.canSave,
-        iconColor: 'green'
+        iconColor: 'primary'
       }, {
         caption: this.$ut('Delete') + ' (Ctrl + Delete)',
         iconCls: 'fa fa-trash-o',
         handler: () => this.deleteInstance(this.$formServices.forceClose),
         disabled: !this.canDelete,
-        divided: true
+        divided: true,
+        iconColor: 'secondary'
       }]
     },
 

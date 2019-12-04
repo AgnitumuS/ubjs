@@ -15,6 +15,7 @@ const { Notification: $notify } = require('element-ui')
  * @param {function(object):object} buildCopyConfig Function must return config for action "copy"
  * @param {function(object):object} buildEditConfig Function must return config for action "edit"
  * @param {function(object):object} buildAddNewConfig Function must return config for action "addNew"
+ *
  * @returns {Vuex} Store config
  */
 module.exports = ({
@@ -184,7 +185,6 @@ module.exports = ({
       if (state.withTotal) {
         repo.withTotal()
       }
-
       const response = await repo.selectAsArray()
       const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
 

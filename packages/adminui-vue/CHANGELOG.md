@@ -5,14 +5,31 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+### Fixed
+ - `UNavbar` search widget
+ 
 ### Added
  - `UFileInput` binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
  - new property UFile.accept - optional comma-separated unique “content type specifiers”
+ - UFileInput binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
+  - new property UFile.accept - optional comma-separated unique “content type specifiers”
+  - `UTable` - Added column param `isHtml`. If set true will render content as v-html directive 
+  - `UTable` - Added column format. Format displayed value in cell. Will ignored if is set custom slot. Example:
+  ```javascript
+   {
+     id: 'attributeCode',
+     label: 'Example',
+     format ({value, row, column}) {
+       return value + 1
+     }  
+   }
+  ``` 
 
 ### Changed
  - updated dependency **vue**@2.6.8 -> 2.6.10
  - updated dependency **vuex**@3.1.0 -> 3.1.2
  - updated dependency **element-ui**@2.12.0 -> 2.13.0
+ - `UTableEntity` table cell value formats value as html. In case when full text search result returns `<b>` tag as string.
  
 ### Removed
  - deprecated event `desktopChanged` for UB.core.UBApp ($App in global)  is removed.

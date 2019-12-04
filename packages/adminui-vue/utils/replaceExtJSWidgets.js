@@ -182,10 +182,21 @@ function replaceShowList () {
               break
             }
             if (typeof field === 'object') {
-              columns.push({
-                id: field.name,
-                label: field.description
-              })
+              if (field.visibility !== false) {
+                columns.push({
+                  id: field.name,
+                  label: field.description,
+                  format: field.format,
+                  isHtml: field.isHtml,
+                  sortable: field.sortable,
+                  isLookup: field.isLookup,
+                  align: field.align,
+                  headerAlign: field.headerAlign,
+                  maxWidth: field.maxWidth,
+                  minWidth: field.minWidth,
+                  width: field.width
+                })
+              }
               fieldList.push(field.name)
             } else {
               columns.push(field)
@@ -195,11 +206,14 @@ function replaceShowList () {
 
           mountTableEntity({
             tabId: cfg.tabId,
-            title: me.title || me.entity,
+            title: me.title || me.description || me.entity,
             props: {
               repository () {
-                return UB.Repository(req.entity)
-                  .attrs(fieldList)
+                return Object.assign(
+                  UB.Repository(req.entity),
+                  req,
+                  { fieldList }
+                )
               },
               columns
             }
