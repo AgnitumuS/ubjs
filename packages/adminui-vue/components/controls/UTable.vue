@@ -58,7 +58,7 @@
               :row="row"
               :column="col"
             >
-              {{ row[col.id] }}
+              {{ formatValue({ value: row[col.id], column: col, row }) }}
             </slot>
           </div>
         </td>
@@ -68,8 +68,12 @@
 </template>
 
 <script>
+const { formatValueMixin } = require('../UTableEntity/helpers')
+
 export default {
   name: 'UTable',
+
+  mixins: [formatValueMixin],
 
   props: {
     /**

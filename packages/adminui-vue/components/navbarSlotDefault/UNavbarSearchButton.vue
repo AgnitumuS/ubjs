@@ -151,97 +151,63 @@ export default {
         return
       }
 
-      const fieldList = [{
-        name: 'ID',
-        visibility: false
-      }, {
-        name: 'entity',
-        visibility: false
-      }, {
-        name: 'entitydescr',
-        visibility: true,
-        description: this.$ut('ftsFieldCaption')
-      }, {
-        name: 'snippet',
-        visibility: true,
-        description: this.$ut('ftsFieldSnippet'),
-        format: (value, metadata, record) => {
-          const entitySn = record.get('entity')
-          value = this.updateSnippet(value, this.$UB.connection.domain.get(entitySn))
-          if (metadata && typeof value === 'string' && (value.length > 15)) {
-            metadata.tdAttr = `data-qtip="${Ext.String.htmlEncode(value)}"`
-          }
-          return value
-        }
-      }]
-
-      let qText = this.query
-      if (qText[0] === '№') qText = '"' + qText + '"' // do not split № on lexemas - search as is
-
-      let repo = this.$UB.Repository('fts_' + this.currentMode)
+      const ftsTabId = 'FullTextSearchWidgetResult'
+      const repo = this.$UB.Repository('fts_' + this.currentMode)
+        .attrs('ID', 'entity', 'entitydescr', 'snippet')
         .using('fts')
-        .where('', 'match', qText)
+        .where('', 'match', this.query)
       if (this.isPeriod && this.period) {
-        repo = repo.where('ftsDate', '>=', this.period[0])
+        repo.where('ftsDate', '>=', this.period[0])
           .where('ftsDate', '<=', this.period[1])
       }
-      let ubql = repo.ubql()
-      ubql.fieldList = fieldList
 
-      const tab = Ext.getCmp('FullTextSearchWidgetResult')
+      const tab = Ext.getCmp(ftsTabId)
       if (tab) {
         tab.close()
       }
-
+      // TODO: hide all actions of UTableEntity toolbar
       $App.doCommand({
         cmdType: 'showList',
-        tabId: 'FullTextSearchWidgetResult',
+        renderer: 'vue',
+        tabId: ftsTabId,
         target: $App.viewport.centralPanel,
-        hideActions: ['addNewByCurrent', 'addNew', 'prefilter', 'edit', 'del', 'newVersion', 'history', 'accessRight', 'audit', 'itemSelect', 'showPreview', 'commandLink', 'itemLink', 'optimizeWidth'],
-        description: this.$ut('fullTextSearchWidgetResultTitle', this.query),
-        cmpInitConfig: {
-          disableSearchBar: true,
-          onDeterminateForm: (grid) => {
-            const selection = grid.getSelectionModel().getSelection()
-
-            if (selection.length) {
-              const entityCode = selection[0].get('entity').toString()
-              const form = this.$UB.core.UBFormLoader.getFormByEntity(entityCode)
-
-              if (form) {
-                return {
-                  formCode: form.get('code'),
-                  description: form.get('description') ? this.$ut(form.get('description').toString()) : '',
-                  entityName: entityCode,
-                  instanceID: selection[0].get('ID')
-                }
-              }
-            }
-          }
-        },
+        title: this.$ut('fullTextSearchWidgetResultTitle', this.query),
         cmdData: {
-          params: [ubql]
+          repository () {
+            return repo
+          },
+          columns: [{
+            id: 'entitydescr',
+            label: 'ftsFieldCaption'
+          }, {
+            id: 'snippet',
+            label: 'ftsFieldSnippet',
+            isHtml: true,
+            /**
+             * Replace attribute codes wrapped in Z..Z (lower cased in snipped) by their captions
+             */
+            format: ({ value, row }) => {
+              if (!value) return
+
+              const schema = this.$UB.connection.domain.get(row.entity)
+
+              // UB-1255 - complex attributes in snippet. LowerCase, multiline
+              return value
+                .replace(SNIPED_RE, (matched, attrCode, matchIndex) => {
+                  attrCode = attrCode.split('.')[0]
+                  // FTS returns attributes in lower case. First try to get as is. If not fount - search with lower case
+                  const attr = schema.attributes[attrCode] || schema.filterAttribute(a => a.code.toLowerCase() === attrCode)[0]
+                  return `${matchIndex === 0 ? '' : '<br>'}
+                  <span class="fts__result-attribute-code">
+                    ${attr ? (attr.caption || attr.description) : attrCode}
+                  :</span>&nbsp
+                `
+                })
+            }
+          }]
         }
       })
       this.doClose()
-    },
-
-    /**
-     * Replace attribute codes wrapped in Z..Z (lower cased in snipped) by their captions
-     * @param {string} value
-     * @param {UBEntity} metaObject
-     * @return {*}
-     */
-    updateSnippet (value, metaObject) {
-      if (!value) return
-
-      // UB-1255 - complex attributes in snippet. LowerCase, multiline
-      return value.replace(SNIPED_RE, (matched, attrCode) => {
-        attrCode = attrCode.split('.')[0]
-        // FTS returns attributes in lower case. First try to get as is. If not fount - search with lower case
-        const attr = metaObject.attributes[attrCode] || metaObject.filterAttribute(a => a.code.toLowerCase() === attrCode)[0]
-        return '<br/><span style="color: blue">' + (attr ? (attr.caption || attr.description) : attrCode) + '</span>&nbsp'
-      })
     },
 
     initSearchModes () {
@@ -286,5 +252,9 @@ export default {
   width: 250px !important;
   margin-top: 10px;
   float: right;
+}
+
+.fts__result-attribute-code {
+  color: rgba(var(--info), 0.9);
 }
 </style>

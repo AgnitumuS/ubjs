@@ -120,7 +120,14 @@
             :column="col"
           />
           <template v-else>
-            {{ row[col.id] }}
+            <div
+              v-if="col.isHtml"
+              :key="col.id"
+              v-html="formatValue({ value: row[col.id], column: col, row })"
+            />
+            <template v-else>
+              {{ formatValue({ value: row[col.id], column: col, row }) }}
+            </template>
           </template>
         </slot>
       </template>
@@ -134,13 +141,13 @@
 const ContextMenu = require('./ContextMenu.vue').default
 const FilterContainer = require('./FilterContainer.vue').default
 const Pagination = require('./Pagination.vue').default
-const createStore = require('../store.js')
+const createStore = require('../store')
 const Vuex = require('vuex')
 const { mapState, mapGetters, mapMutations, mapActions } = Vuex
 const { buildProps } = require('../helpers.js')
 const FilterList = require('./FilterList.vue').default
 const ToolbarDropdown = require('./ToolbarDropdown.vue').default
-
+const { formatValueMixin } = require('../helpers')
 /**
  * Replaced from function to global scope in case not to create a regular expression every function call.
  * Creating of regular expression is slow operation
@@ -163,6 +170,8 @@ export default {
     FilterList,
     ToolbarDropdown
   },
+
+  mixins: [formatValueMixin],
 
   props: {
     /**
