@@ -4,6 +4,7 @@
     :width="isDevInfo ? '90%' : '500px'"
     :visible.sync="visible"
     :append-to-body="true"
+    :close-on-click-modal="false"
     @close="cancel"
     @open="setFocus"
   >
