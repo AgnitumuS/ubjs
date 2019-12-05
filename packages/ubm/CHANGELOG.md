@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [5.3.0] - 2019-10-12
+## [5.2.30] - 2019-10-12
 ### Added
  - `ubm_desktop` props `description` and `iconCls`. Now can set description and icon for desktop which will show in sidebar desktop selector
  - `ubm_navshortcut` optional prop `description` not used yet, but will later be displayed in the sidebar
