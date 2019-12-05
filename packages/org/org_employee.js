@@ -1,5 +1,4 @@
-﻿const _ = require('lodash')
-const UB = require('@unitybase/ub')
+﻿const UB = require('@unitybase/ub')
 const App = UB.App
 const Session = UB.Session
 /* global org_employee */
@@ -31,30 +30,49 @@ function updateCaptionAndLogToAudit (ctx) {
 /**
  * Update uba_user.fullName for all users of current employee
  * @private
- * @param {ubMethodParams} ctxt
+ * @param {ubMethodParams} ctx
  */
-function updateUserFullName(ctxt) {
-  const { userID, fullFIO } = ctxt.mParams.execParams
-  let fullName
-  if(!fullFIO) {
-    let employee = UB.Repository('org_employee').attrs('fullFIO').selectById(ID)
-    fullName = employee.fullFIO
-  } else fullName = fullFIO
-  let uba_user = UB.DataStore('uba_user')
-  uba_user.run('update',
-    {
-      execParams:
-        {
-          ID: userID,
-          fullName: fullName
-        },
-      __skipOptimisticLock: true
-    }
-  )
+function updateUserFullName (ctx) {
+  let { fullFIO, firstName, lastName } = ctx.mParams.execParams
+  if (fullFIO === undefined && firstName === undefined && lastName === undefined && !ctx.mParams.syncUser ) {
+    // No name-related attributes updated, do not touch user in such a case
+  }
+
+  let userID
+
+  // If any of "fullFIO", "firstName" or "lastName" attributes not provided in execParams, get previous values from
+  // "selectBeforeUpdate" dataset
+  const oldCurrentDataName = ctx.dataStore.currentDataName
+  ctx.dataStore.currentDataName = 'selectBeforeUpdate'
+  try {
+    userID = ctx.dataStore.get('userID')
+    if (fullFIO === undefined) fullFIO = ctx.dataStore.get('fullFIO')
+    if (firstName === undefined) firstName = ctx.dataStore.get('firstName')
+    if (lastName === undefined) lastName = ctx.dataStore.get('lastName')
+  } finally {
+    ctx.dataStore.currentDataName = oldCurrentDataName
+  }
+
+  if (userID === undefined) {
+    // No userID, this is not an ordinary situation, but in any case, cannot sync, if no userID
+    return
+  }
+
+  const userStore = UB.DataStore('uba_user')
+  userStore.run('update', {
+    execParams: {
+      ID: userID,
+      fullName: fullFIO,
+      firstName,
+      lastName
+    },
+    __skipOptimisticLock: true
+  })
 }
 
+
 /**
- * Update org_staffunit.caption for all staff utits of current employee
+ * Update org_staffunit.caption for all staff units of current employee
  * @private
  * @param {ubMethodParams} ctxt
  */
