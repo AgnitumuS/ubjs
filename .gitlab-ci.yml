@@ -6,6 +6,7 @@ build-doc:
     - if [ -d bpm ] && [ -d bpm/.git ]; then cd bpm; git reset --hard master; git checkout master; git pull; else git clone git@gitlab.intecracy.com:unitybase/bpm.git; cd bpm; git checkout master; fi
     - cd ../ubjs
     - NODE_ENV=production npm i
+    - npm ddp
     - cp -rf ./node_modules/ub-jsdoc/templateHelper.js-patched ./node_modules/jsdoc/lib/jsdoc/util/templateHelper.js
     - wget -O samples-master.zip https://git-pub.intecracy.com/unitybase/samples/-/archive/master/samples-master.zip
     - unzip -o samples-master.zip "samples-master/courses/tutorial-v5/*" -d getting-started
