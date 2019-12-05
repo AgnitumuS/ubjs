@@ -34,7 +34,7 @@ function testManyAttribute (conn) {
     method: 'select',
     fieldList: ['ID', 'manyValue']
   })
-  assert.equal(selected.resultData.rowCount, 23, 'Total row count in "tst_maindata" must be 23')
+  assert.strictEqual(selected.resultData.rowCount, 23, 'Total row count in "tst_maindata" must be 23')
 
   // console.debug('Проверка корректности агрегированного значения атрибута "manyValue"');
   selected = conn.run({
@@ -49,7 +49,7 @@ function testManyAttribute (conn) {
       }
     }
   })
-  assert.equal(selected.resultData.data[0][1], '1,2', 'For row with code="Код1" many must contain 2 value: 1 и 2')
+  assert.strictEqual(selected.resultData.data[0][1], '1,2', 'For row with code="Код1" many must contain 2 value: 1 и 2')
 
   // console.debug('Проверка корректности фильтрации по атрибуту "manyValue" условием "IN". Важно одновременно этот же атрибут иметь в fieldList');
   selected = conn.run({
@@ -64,7 +64,7 @@ function testManyAttribute (conn) {
       }
     }
   })
-  assert.equal(selected.resultData.rowCount, 3, '"manyValue IN (6)" condition must rerurn 3 row')
+  assert.strictEqual(selected.resultData.rowCount, 3, '"manyValue IN (6)" condition must rerurn 3 row')
 
   // console.debug('Проверка корректности фильтрации по атрибуту "manyValue" условием "NOT IN". Важно одновременно этот же атрибут иметь в fieldList');
   selected = conn.run({
@@ -80,7 +80,7 @@ function testManyAttribute (conn) {
     }
   })
   // Должно быть 14 записей
-  assert.equal(selected.resultData.rowCount, 20, '"manyValue NOT IN (6)" condition must returns 20 row')
+  assert.strictEqual(selected.resultData.rowCount, 20, '"manyValue NOT IN (6)" condition must returns 20 row')
 
   // console.debug('Проверка корректности фильтрации по атрибуту "manyValue" условием "IS NULL". Важно одновременно этот же атрибут иметь в fieldList');
   selected = conn.run({
@@ -94,7 +94,7 @@ function testManyAttribute (conn) {
       }
     }
   })
-  assert.equal(selected.resultData.rowCount, 0, '"manyValue IS NULL" condition with manyValue in fieldList must return 0 row')
+  assert.strictEqual(selected.resultData.rowCount, 0, '"manyValue IS NULL" condition with manyValue in fieldList must return 0 row')
 
   // console.debug('Проверка корректности фильтрации по атрибуту "manyValue" условием "IS NOT NULL". Важно одновременно этот же атрибут иметь в fieldList');
   selected = conn.run({
@@ -108,9 +108,9 @@ function testManyAttribute (conn) {
       }
     }
   })
-  assert.equal(selected.resultData.rowCount, 23, '"manyValue IS NOT NULL" condition with manyValue in fieldList must return 23 row')
+  assert.strictEqual(selected.resultData.rowCount, 23, '"manyValue IS NOT NULL" condition with manyValue in fieldList must return 23 row')
   selected = conn.Repository('tst_maindata').attrs('ID', 'manyValue.caption').where('code', '=', 'Код1').selectAsObject()
-  assert.equal(selected[0]['manyValue.caption'], 'caption 10,caption 20', 'select manyValue.caption')
+  assert.strictEqual(selected[0]['manyValue.caption'], 'caption 10,caption 20', 'select manyValue.caption')
   conn.insert({
     entity: 'tst_maindata',
     execParams: {
@@ -122,8 +122,8 @@ function testManyAttribute (conn) {
   })
   selected = conn.Repository('tst_maindata').attrs('ID', 'manyValue', 'manyValue2', 'mi_modifyDate').where('code', '=', 'test2Many')
     .selectSingle()
-  assert.equal(selected.manyValue, '1,2', 'For row with code="test2Many" many must contain 2 value: 1 & 2')
-  assert.equal(selected.manyValue2, '3,4', 'For row with code="test2Many" many2 must contain 2 value: 3 & 4')
+  assert.strictEqual(selected.manyValue, '1,2', 'For row with code="test2Many" many must contain 2 value: 1 & 2')
+  assert.strictEqual(selected.manyValue2, '3,4', 'For row with code="test2Many" many2 must contain 2 value: 3 & 4')
   conn.update({
     entity: 'tst_maindata',
     execParams: {
@@ -135,6 +135,6 @@ function testManyAttribute (conn) {
   })
   selected = conn.Repository('tst_maindata').attrs('ID', 'manyValue', 'manyValue2').where('code', '=', 'test2Many')
     .selectSingle()
-  assert.equal(selected.manyValue, '5,6', 'For row with code="test2Many" many must contain 2 value: 5 & 6')
-  assert.equal(selected.manyValue2, '7', 'For row with code="test2Many" many2 must contain 2 value: 7')
+  assert.strictEqual(selected.manyValue, '5,6', 'For row with code="test2Many" many must contain 2 value: 5 & 6')
+  assert.strictEqual('' + selected.manyValue2, '7', 'For row with code="test2Many" many2 must contain 1 value: 7')
 }
