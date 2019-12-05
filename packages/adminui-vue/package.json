@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-vue",
-  "version": "1.9.2",
+  "version": "1.9.3",
   "description": "UnityBase admin UI extended with Vue + ElementUI",
   "main": "adminui-vue.js",
   "browser": {
