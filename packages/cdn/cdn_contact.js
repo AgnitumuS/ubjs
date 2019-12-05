@@ -12,7 +12,7 @@ me.on('update:after', afterUpdateContact)
  * @param {ubMethodParams} ctx
  */
 function afterInsertContact (ctx) {
-  const { contactTypeID, subjectID, value } = ctx.mParams.execParams
+  const {contactTypeID, subjectID, value} = ctx.mParams.execParams
   updateUserMail (contactTypeID, subjectID, value)
 }
 
@@ -21,9 +21,24 @@ function afterInsertContact (ctx) {
  * @param {ubMethodParams} ctx
  */
 function afterUpdateContact (ctx) {
-  const { ID } = ctx.mParams.execParams
-  let contact = UB.Repository('cdn_contact').attrs('contactTypeID', 'subjectID', 'value').selectById(ID)
-  updateUserMail (contact.contactTypeID, contact.subjectID, contact.value)
+  let {contactTypeID, subjectID, value} = ctx.mParams.execParams
+  if (value === undefined) {
+    // Value is not updated
+    return
+  }
+
+  // If any of "contactTypeID" or "subjectID" attributes not provided in execParams, get previous values from
+  // "selectBeforeUpdate" dataset
+  const oldCurrentDataName = ctx.dataStore.currentDataName
+  ctx.dataStore.currentDataName = 'selectBeforeUpdate'
+  try {
+    if (contactTypeID === undefined) contactTypeID = ctx.dataStore.get('contactTypeID')
+    if (subjectID === undefined) subjectID = ctx.dataStore.get('subjectID')
+  } finally {
+    ctx.dataStore.currentDataName = oldCurrentDataName
+  }
+
+  updateUserMail(contactTypeID, subjectID, value)
 }
 
 
@@ -35,21 +50,25 @@ function afterUpdateContact (ctx) {
  * @param {String} value
  */
 function updateUserMail (contactTypeID, subjectID, value) {
-  let contactType = UB.Repository('cdn_contacttype').attrs('code').selectById(contactTypeID)
-  if(!contactType.code == 'email') return
-    let empUserID = UB.Repository('org_employee').attrs('userID').where('ID', '=', subjectID).selectScalar()
-    if(! empUserID) return
-    let uba_user = UB.DataStore('uba_user')
-      uba_user.run('update',
-        {
-          execParams:
-            {
-              ID: empUserID,
-              email: value
-            },
-          __skipOptimisticLock: true
-        }
-      )
+  const contactType = UB.Repository('cdn_contacttype')
+    .attrs('code')
+    .selectById(contactTypeID)
+  if (contactType.code !== 'email') return
+
+  const empUserID = UB.Repository('org_employee')
+    .attrs('userID')
+    .where('ID', '=', subjectID)
+    .selectScalar()
+  if (!empUserID) return
+
+  const userStore = UB.DataStore('uba_user')
+  userStore.run('update', {
+    execParams: {
+      ID: empUserID,
+      email: value
+    },
+    __skipOptimisticLock: true
+  })
 }
 
 

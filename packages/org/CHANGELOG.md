@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Fixed
+  - synchronization of the `org_employee` fullFIO attribute into `uba_user` fullName (in case employee is assigned to some user):
+    - actually checked if employee is assigned to some user to prevent bug
+    - sync not only fullFIO, but firstName and lastName
+    - do not load data not present in execParams, get it from `selectBefureUpdate` dataset
+    - do not do sync, if any of name attributes present in execParams
+  - synchronization of the `cdn_contact` to `uba_user` email, fixes:
+    - was incorrect check for contact type
+
+
 ## [5.2.30] - 2019-12-02
 ### Added
   - synchronization of the org_employee's fullFIO attribute into uba_user fullName (in case employee is assigned to some user)
