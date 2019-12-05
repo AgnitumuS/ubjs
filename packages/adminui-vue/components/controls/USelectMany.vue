@@ -13,7 +13,7 @@ export default {
   name: 'USelectMany',
   props: {
     /**
-     * Array of selected IDs as string joined by ,
+     * Array of selected IDs as string joined by , or can be number in case of one ID
      * @model
      */
     value: {}
@@ -25,7 +25,9 @@ export default {
         if (this.value === '' || this.value === null || this.value === undefined) {
           return []
         } else {
-          return this.value.split(',').map(i => +i)
+          return typeof this.value === 'number'
+            ? [this.value]
+            : this.value.split(',').map(i => +i)
         }
       },
       set (val) {

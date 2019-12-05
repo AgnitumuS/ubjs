@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Fixed
- - prevent UDialog to close on click outside dialog window 
+ - prevent `UDialog` to close on click outside dialog window
+ - `USelectMany` prevent `split is not defined` exception in case DB is SQLite3 and only one value is selected 
  
 ## [1.9.2] - 2019-12-04
 ### Fixed
