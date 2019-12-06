@@ -22,8 +22,7 @@ me.on('delete:after', ubaAuditLinkUserDelete)
 function updateCaptionAndLogToAudit (ctx) {
   updateStaffUnitCaption(ctx)
   ubaAuditLinkUserModify(ctx)
-  updateUserFullName(ctx)
-
+  updateUserFullName(ctx, true)
 }
 
 
@@ -31,26 +30,29 @@ function updateCaptionAndLogToAudit (ctx) {
  * Update uba_user.fullName for all users of current employee
  * @private
  * @param {ubMethodParams} ctx
+ * @param {boolean} allowSelectBeforeUpdate
+ *   Allow get properties missing in execParams from 'selectBeforeUpdate'
+ *   data store.  Pass "true" for update method and "false" for insert method.
  */
-function updateUserFullName (ctx) {
-  let { fullFIO, firstName, lastName } = ctx.mParams.execParams
+function updateUserFullName (ctx, allowSelectBeforeUpdate) {
+  let { fullFIO, firstName, lastName, userID } = ctx.mParams.execParams
   if (fullFIO === undefined && firstName === undefined && lastName === undefined && !ctx.mParams.syncUser ) {
     // No name-related attributes updated, do not touch user in such a case
   }
 
-  let userID
-
-  // If any of "fullFIO", "firstName" or "lastName" attributes not provided in execParams, get previous values from
-  // "selectBeforeUpdate" dataset
-  const oldCurrentDataName = ctx.dataStore.currentDataName
-  ctx.dataStore.currentDataName = 'selectBeforeUpdate'
-  try {
-    userID = ctx.dataStore.get('userID')
-    if (fullFIO === undefined) fullFIO = ctx.dataStore.get('fullFIO')
-    if (firstName === undefined) firstName = ctx.dataStore.get('firstName')
-    if (lastName === undefined) lastName = ctx.dataStore.get('lastName')
-  } finally {
-    ctx.dataStore.currentDataName = oldCurrentDataName
+  if (allowSelectBeforeUpdate) {
+    // If any of "userID", "fullFIO", "firstName" or "lastName" attributes not provided in execParams, get previous values from
+    // "selectBeforeUpdate" dataset
+    const oldCurrentDataName = ctx.dataStore.currentDataName
+    ctx.dataStore.currentDataName = 'selectBeforeUpdate'
+    try {
+      if (userID === undefined) userID = ctx.dataStore.get('userID')
+      if (fullFIO === undefined) fullFIO = ctx.dataStore.get('fullFIO')
+      if (firstName === undefined) firstName = ctx.dataStore.get('firstName')
+      if (lastName === undefined) lastName = ctx.dataStore.get('lastName')
+    } finally {
+      ctx.dataStore.currentDataName = oldCurrentDataName
+    }
   }
 
   if (userID === undefined) {
@@ -136,7 +138,7 @@ function ubaAuditLinkUser (ctx) {
       toValue: JSON.stringify(execParams)
     }
   })
-  updateUserFullName(ctx)
+  updateUserFullName(ctx, false)
 
 }
 

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+  - synchronization of the `org_employee` into `uba_user` on insert operation
+
 ## [5.2.33] - 2019-12-05
 ### Fixed
   - synchronization of the `org_employee` fullFIO attribute into `uba_user` fullName (in case employee is assigned to some user):
