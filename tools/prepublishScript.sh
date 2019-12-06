@@ -26,6 +26,7 @@ refreshLogs() {
                 current_version=`node -p "require('$path/package.json').version"`
                 local version_string="\[$current_version\]"
                 local line_with_date="## ${version_string} - ${current_date}"
+                line_with_date="## [Unreleased]\n\n${line_with_date}"
                 line=${line/\[/\\[}
                 line=${line/\]/\\]}
                 sed -i "s/^.*$line.*$/$line_with_date/g" $1 &&
