@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [5.2.35] - 2019-12-09
 ### Fixed
  - synchronization of the `org_employee` into `uba_user` in case org_employee.userID is null
 

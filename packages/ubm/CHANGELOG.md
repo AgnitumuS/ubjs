@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.2.33] - 2019-12-09
+
 ## [5.2.32] - 2019-12-09
 ### Added
  - `ubm_query` entity, navigation shortcut for the entity (autoform is used).  The entity is intended to be used as
