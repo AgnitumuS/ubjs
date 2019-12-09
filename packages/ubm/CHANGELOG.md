@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [5.2.32] - 2019-12-09
 ### Added
  - `ubm_query` entity, navigation shortcut for the entity (autoform is used).  The entity is intended to be used as
    as "dictionary of dictionaries" and contain actual UBQL (as a JSON attribute) to be executed.  Useful for any sort
