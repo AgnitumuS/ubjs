@@ -272,3 +272,52 @@ me.datesTest = function (ctx) {
     zDate, uDate
   }
 }
+
+/**
+ * Test entity method execution using `rest` pattern
+ * @param {ubMethodParams} ctxt
+ */
+me.mParamsTest = function (ctxt) {
+  let p
+  for (let i = 0; i < 1000000; i++) {
+    p = ctxt.mParams
+  }
+  ctxt.mParams.resp = 'YES'
+  App.globalCachePut('a', 'a')
+
+  console.time('globalCacheGet')
+  for (let i = 0; i < 1000000; i++) {
+    p = _App.globalCacheGet('a')
+  }
+  console.timeEnd('globalCacheGet')
+  console.log('globalCacheGet=', p)
+
+  console.time('globalCacheGetS')
+  for (let i = 0; i < 1000000; i++) {
+    p = _App.globalCacheGetS('a')
+  }
+  console.timeEnd('globalCacheGetS')
+  console.log('globalCacheGetS=', p)
+
+  console.time('globalCacheGetN')
+  for (let i = 0; i < 1000000; i++) {
+    p = _App.globalCacheGetN('a')
+  }
+  console.timeEnd('globalCacheGetN')
+  console.log('globalCacheGetN=', p)
+
+  _App.globalCacheGetS(1)
+  _App.globalCacheGetN(1)
+
+  console.time('App.els')
+  for (let i = 0; i < 1000000; i++) {
+    p = App.els('uba_user', 'select')
+  }
+  console.timeEnd('App.els')
+  console.time('_App.els')
+  for (let i = 0; i < 1000000; i++) {
+    p = _App.els('uba_user', 'select')
+  }
+  console.timeEnd('_App.els')
+}
+me.entity.addMethod('mParamsTest')
