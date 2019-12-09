@@ -25,7 +25,6 @@ function updateCaptionAndLogToAudit (ctx) {
   updateUserFullName(ctx, true)
 }
 
-
 /**
  * Update uba_user.fullName for all users of current employee
  * @private
@@ -55,8 +54,8 @@ function updateUserFullName (ctx, allowSelectBeforeUpdate) {
     }
   }
 
-  if (userID === undefined) {
-    // No userID, this is not an ordinary situation, but in any case, cannot sync, if no userID
+  if (!userID) { // can be undefined or null
+    // No userID, this possible if staff unit is not assigned to uba_user
     return
   }
 

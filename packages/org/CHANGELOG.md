@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+ - synchronization of the `org_employee` into `uba_user` in case org_employee.userID is null
 
 ## [5.2.34] - 2019-12-09
 ### Fixed
@@ -20,7 +22,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - do not do sync, if any of name attributes present in execParams
   - synchronization of the `cdn_contact` to `uba_user` email, fixes:
     - was incorrect check for contact type
-
 
 ## [5.2.30] - 2019-12-02
 ### Added
