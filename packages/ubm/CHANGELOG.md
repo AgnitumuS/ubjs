@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+ - `ubm_query` entity, navigation shortcut for the entity (autoform is used).  The entity is intended to be used as
+   as "dictionary of dictionaries" and contain actual UBQL (as a JSON attribute) to be executed.  Useful for any sort
+   of custom fields, which need to refer system dictionaries.
+
 ## [5.2.30] - 2019-10-12
 ### Added
  - `ubm_desktop` props `description` and `iconCls`. Now can set description and icon for desktop which will show in sidebar desktop selector

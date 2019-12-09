@@ -15,6 +15,7 @@ module.exports = function (session) {
       { keyValue: 'ubm_desktop', execParams: { caption: 'სამუშაო ეკრანი' } },
       { keyValue: 'ubm_navshortcut', execParams: { caption: 'მალხმობები' } },
       { keyValue: 'ubm_form', execParams: { caption: 'ფორმები' } },
+      { keyValue: 'ubm_query', execParams: { caption: 'შეკითხვები' } },
       { keyValue: 'ubm_diagram', execParams: { caption: 'პიროვნული ურთიერთობის დიაგრამები' } }
     ]
   }
