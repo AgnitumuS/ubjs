@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
   - synchronization of the `org_employee` into `uba_user` on insert operation
+  - a typo in English enum name: "Staffunit" => "Staff unit"
 
 ## [5.2.33] - 2019-12-05
 ### Fixed
