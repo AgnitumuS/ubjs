@@ -121,6 +121,23 @@ module.exports = function (session) {
     }
   })
 
+  console.log('\t\t\tcreate `Queries` shortcut')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      parentID: folderID,
+      code: 'ubm_query',
+      caption: 'Queries',
+      displayOrder: 50,
+      cmdCode: JSON.stringify({ cmdType: 'showList',
+        cmdData: { params: [
+          { entity: 'ubm_query', method: 'select', fieldList: ['code', 'name']  }
+        ] } }, null, '\t')
+    }
+  })
+
   console.log('\t\t\tcreate `ER diagrams` shortcut')
   conn.insert({
     fieldList: ['ID'],
@@ -130,7 +147,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'ubm_diagram',
       caption: 'ER diagrams',
-      displayOrder: 40,
+      displayOrder: 60,
       cmdCode: JSON.stringify({ cmdType: 'showList',
         cmdData: { params: [
           { entity: 'ubm_diagram', method: 'select', fieldList: '*' }

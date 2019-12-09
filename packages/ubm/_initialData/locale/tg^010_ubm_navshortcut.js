@@ -13,6 +13,7 @@ module.exports = function (session) {
       { keyValue: 'adm_folder_UI', execParams: { caption: 'Интерфейс' } },
       { keyValue: 'ubm_enum', execParams: { caption: 'Номгӯҳо' } },
       { keyValue: 'ubm_desktop', execParams: { caption: 'Мизҳои корӣ' } },
+      { keyValue: 'ubm_query', execParams: { caption: 'Саволҳо' } },
       { keyValue: 'ubm_navshortcut', execParams: { caption: 'Тамға' } },
       { keyValue: 'ubm_diagram', execParams: { caption: 'ER диаграммаҳо' } },
       { keyValue: 'ubm_form', execParams: { caption: 'Шаклҳо' } }

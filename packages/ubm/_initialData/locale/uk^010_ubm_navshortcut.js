@@ -15,6 +15,7 @@ module.exports = function (session) {
       { keyValue: 'ubm_desktop', execParams: { caption: 'Робочі столи' } },
       { keyValue: 'ubm_navshortcut', execParams: { caption: 'Ярлики' } },
       { keyValue: 'ubm_form', execParams: { caption: 'Форми' } },
+      { keyValue: 'ubm_query', execParams: { caption: 'Запити даних' } },
       { keyValue: 'ubm_diagram', execParams: { caption: 'ER діаграми' } }
     ]
   }
