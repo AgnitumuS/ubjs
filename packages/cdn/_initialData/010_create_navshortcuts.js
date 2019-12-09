@@ -122,11 +122,29 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'cdn_adminunit',
       caption: 'Admin units',
+      iconCls: 'fa fa-object-ungroup',
       displayOrder: 40,
       cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'cdn_adminunit', method: 'select', fieldList: '*' }] } }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `Admin units` shortcut to users role')
+  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+
+  console.log('\t\t\tcreate `Streets` shortcut')
+  lastID = conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      parentID: folderID,
+      code: 'cdn_street',
+      caption: 'Streets',
+      iconCls: 'fas fa-map-signs',
+      displayOrder: 50,
+      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'cdn_street', method: 'select', fieldList: '*' }] } }, null, '\t')
+    }
+  })
+  console.info('\t\tprovide rights for `Streets` shortcut to users role')
   conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
 
   console.log('\t\t\tcreate `Region types` shortcut')
@@ -261,6 +279,27 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `Persons` shortcut to users role')
+  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+
+  console.log('\t\t\tcreate `Banks` shortcut')
+  lastID = conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      parentID: folderID,
+      code: 'cdn_bank',
+      caption: 'Banks',
+      iconCls: 'fas fa-hand-holding-usd',
+      displayOrder: 40,
+      cmdCode: JSON.stringify({ cmdType: 'showList',
+        cmdData: { params: [{ entity: 'cdn_bank',
+          method: 'select',
+          fieldList: '*'
+        }] } }, null, '\t')
+    }
+  })
+  console.info('\t\tprovide rights for `Banks` shortcut to users role')
   conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
 
   console.log('\t\tcreate `Miscellaneous` folder')

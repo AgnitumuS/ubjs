@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+ - navigation shortcuts for Banks and Streets
+  
 ## [5.3.17] - 2019-12-04
 ## Changed
   - **BREAKING!!!** Classifiers entities renamed, all over the code (navigation, etc)
