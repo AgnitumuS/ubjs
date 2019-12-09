@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubm",
-  "version": "5.2.31",
+  "version": "5.2.32",
   "description": "Set of entities for constructing a dynamically generated UnityBase UI. Enumerations, navigation desktops & shortcuts, forms, ER diagrams",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubm",
   "config": {
