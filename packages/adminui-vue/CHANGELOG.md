@@ -6,11 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Fixed
+ - disable `UTable` header click for columnus with sortable: false
  - `UFormRow` with error adds red border to `USelectMultiple`
- - `USelectEntity`, `USelectMultiple` request which fetch display value executed with empty whereList. 
+ - `USelectEntity`, `USelectMultiple` fetching of display value ignore passed whereList.
+   This fix situation when value what already selected do not match filter conditions.
  
 ### Added
- - `USelectEntity`, `USelectMultiple` in case value is not found adds warning icon with message instead throw error 
+ - `USelectEntity`, `USelectMultiple` adds warning icon in case value is not found instead of throwing error 
 
 ## [1.9.3] - 2019-12-05
 ### Fixed
