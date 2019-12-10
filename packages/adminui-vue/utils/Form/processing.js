@@ -364,7 +364,14 @@ function createProcessingModule ({
             const fields = Object.keys($v.$params)
             const errors = fields
               .filter(f => $v[f].$invalid)
-              .map(f => UB.i18n(f))
+              .map(field => {
+                const localeString = `${masterEntityName}.${field}`
+                if (UB.i18n(localeString) === localeString) {
+                  return field
+                } else {
+                  return UB.i18n(localeString)
+                }
+              })
             const err = new UB.UBError(UB.i18n('validationError', errors.join(', ')))
             UB.showErrorWindow(err)
             throw err
