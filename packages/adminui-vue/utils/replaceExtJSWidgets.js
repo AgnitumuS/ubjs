@@ -10,7 +10,6 @@ module.exports = {
 
 const UB = require('@unitybase/ub-pub')
 const Vue = require('vue')
-const Vuex = require('vuex')
 const { Notification } = require('element-ui')
 const dialogs = require('../components/dialog/UDialog')
 const UNavbar = require('../components/navbar/UNavbar.vue').default
@@ -162,7 +161,8 @@ function replaceShowList () {
           mountTableEntity({
             tabId,
             title,
-            props: cfg.cmdData
+            props: cfg.cmdData,
+            slots: cfg.cmdData.slots
           })
         } else {
           const req = cfg.cmdData.params[0]

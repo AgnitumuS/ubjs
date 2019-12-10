@@ -5,15 +5,31 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `doCommand -> showList` param `cfg.cmdData.slots`. Array of functions which returns vue components.
+   Vue component can be created by render function which accept [createElement](https://vuejs.org/v2/guide/render-function.html#createElement-Arguments) function as argument.
+   See `UTableEntity` docsumentation for list ov available slots. Example:
+```javascript
+$App.doCommand({
+    renderer: 'vue',
+    cmdType: 'showList',
+    cmdData: {
+      entityName: 'uba_user',
+      slots: [
+        (createElement) => createElement('div', { slot: 'name' }, 'name replaced value'), // replace column name
+        (createElement) => createElement('div', { slot: 'toolbar' }, 'replaced whole toolbar'), // replace toolbar
+      ]
+    }
+  })
+```
+ - `USelectEntity`, `USelectMultiple` adds warning icon in case value is not found instead of throwing error 
+
 ### Fixed
  - disable `UTable` header click for columnus with sortable: false
  - `UFormRow` with error adds red border to `USelectMultiple`
  - `USelectEntity`, `USelectMultiple` fetching of display value ignore passed whereList.
    This fix situation when value what already selected do not match filter conditions.
  
-### Added
- - `USelectEntity`, `USelectMultiple` adds warning icon in case value is not found instead of throwing error 
-
 ## [1.9.3] - 2019-12-05
 ### Fixed
  - prevent `UDialog` to close on click outside dialog window

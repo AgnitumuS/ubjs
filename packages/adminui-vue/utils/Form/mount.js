@@ -359,6 +359,7 @@ const UTableEntity = require('../../components/UTableEntity/components/UTableEnt
  * @param {object} [cfg.title] Tab title
  * @param {function:ClientRepository} cfg.props.repository Function which returns ClientRepository
  * @param {Array<string|UTableColumn>} [cfg.props.columns] Column list configs
+ * @param {Array<function>} [cfg.slots] Array of functions which returns vue components. You can create vue component by render function which passed [createElement](https://vuejs.org/v2/guide/render-function.html#createElement-Arguments) function as argument. For all available slots discover UTableEntity docs
  */
 function mountTableEntity (cfg) {
   const existedTab = Ext.getCmp(cfg.tabId) || $App.viewport.centralPanel.down(`panel[tabID=${cfg.tabId}]`)
@@ -383,7 +384,7 @@ function mountTableEntity (cfg) {
           height: '100%'
         },
         style: { height: '100%' }
-      })
+      }, (cfg.slots || []).map(slot => slot(h)))
     })
 
     tab.on('destroy', () => instance.$destroy())
