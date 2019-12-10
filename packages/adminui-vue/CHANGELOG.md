@@ -30,6 +30,9 @@ $App.doCommand({
  - `USelectEntity`, `USelectMultiple` fetching of display value ignore passed whereList.
    This fix situation when value what already selected do not match filter conditions.
  
+### Changed
+ - `processing -> save validation` will try to localize entity attribute using UB.i18n
+
 ## [1.9.3] - 2019-12-05
 ### Fixed
  - prevent `UDialog` to close on click outside dialog window
