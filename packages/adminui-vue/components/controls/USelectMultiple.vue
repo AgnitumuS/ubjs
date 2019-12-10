@@ -31,7 +31,7 @@
           <el-tag
             v-for="option in displayedOptions"
             :key="option[valueAttribute]"
-            :type="option.isDeleted ? 'danger' : 'info'"
+            :type="getTagType(option)"
             :closable="isOptionClosable(option[valueAttribute])"
             size="mini"
             class="ub-select-multiple__tag"
@@ -47,6 +47,15 @@
             >
               <i class="el-icon-delete" />
             </el-tooltip>
+
+            <el-tooltip
+              v-if="option.isUndefined"
+              :content="$ut('select.valueIsUndefined', option[valueAttribute], entityName)"
+              :enterable="false"
+            >
+              <i class="el-icon-warning" />
+            </el-tooltip>
+
             {{ option.label }}
           </el-tag>
 
@@ -132,13 +141,21 @@
         <el-tag
           v-for="option in displayedOptions"
           :key="option[valueAttribute]"
-          :type="option.isDeleted ? 'danger' : 'info'"
+          :type="getTagType(option)"
           size="mini"
           class="ub-select-multiple__tag"
           :class="{
             'fixed': isOptionFixed(option[valueAttribute])
           }"
         >
+          <el-tooltip
+            v-if="option.isUndefined"
+            :content="$ut('select.valueIsUndefined', option[valueAttribute], entityName)"
+            :enterable="false"
+          >
+            <i class="el-icon-warning" />
+          </el-tooltip>
+
           <el-tooltip
             v-if="option.isDeleted"
             :content="$ut('recordWasDeleted')"
@@ -359,13 +376,15 @@ export default {
       this.loading = false
     },
 
-    debouncedFetch: debounce(120, async function (query) {
-      await this.fetchPage(query)
+    debouncedFetch: debounce(120, function (query) {
+      this.fetchPage(query)
     }),
 
     async fetchDisplayValues (IDs) {
       this.loading = true
-      const data = await this.repository()
+      const repositoryClone = this.repository().clone()
+      repositoryClone.whereList = {}
+      const data = await repositoryClone
         .where(this.valueAttribute, 'in', IDs)
         .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
         .misc({
@@ -405,24 +424,21 @@ export default {
 
       if (willFetched.length > 0) {
         const responseData = await this.fetchDisplayValues(willFetched)
-        for (const responseItem of responseData) {
-          const option = result.find(i => i[this.valueAttribute] === responseItem[this.valueAttribute])
-          option.label = responseItem[this.displayAttribute]
-          if (this.isExistDeleteDate) {
-            const isDeleted = responseItem.mi_deleteDate.getTime() < Date.now()
-            if (isDeleted) {
-              option.isDeleted = true
+        for (const fetchedID of willFetched) {
+          const responseItem = responseData.find(i => i[this.valueAttribute] === fetchedID)
+          const option = result.find(i => i[this.valueAttribute] === fetchedID)
+          if (responseItem) {
+            option.label = responseItem[this.displayAttribute]
+            if (this.isExistDeleteDate) {
+              const isDeleted = responseItem.mi_deleteDate.getTime() < Date.now()
+              if (isDeleted) {
+                option.isDeleted = true
+              }
             }
+          } else {
+            option.label = fetchedID
+            option.isUndefined = true
           }
-        }
-
-        // if requested data length and responsed is different need to show error with fields which are missing
-        if (responseData.length !== willFetched.length) {
-          const missingValues = willFetched.filter(ID => {
-            const includesInResponse = responseData.findIndex(i => i[this.valueAttribute] === ID) !== -1
-            return !includesInResponse
-          })
-          throw new Error(`Missing values '${missingValues}' in entity '${this.entityName}'`)
         }
       }
       return result
@@ -531,6 +547,16 @@ export default {
     onBlur () {
       this.isFocused = false
       this.$emit('blur')
+    },
+
+    getTagType ({ isUndefined, isDeleted }) {
+      if (isUndefined) {
+        return 'warning'
+      } else if (isDeleted) {
+        return 'danger'
+      } else {
+        return 'info'
+      }
     }
   }
 }
@@ -618,6 +644,10 @@ export default {
   top: 50%;
   right: 0;
   transform: translate(0, -50%) scale(0.7);
+}
+
+.ub-select-multiple__container.disabled .ub-select-multiple__tag{
+  padding-right: 5px;
 }
 </style>
 

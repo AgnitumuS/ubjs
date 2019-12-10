@@ -211,7 +211,8 @@ export default {
 }
 
 .ub-error-wrap.is-error .el-input__inner,
-.ub-error-wrap.is-error .el-textarea__inner {
+.ub-error-wrap.is-error .el-textarea__inner,
+.ub-error-wrap.is-error .ub-select-multiple__container {
   border-color: rgb(var(--danger));
 }
 </style>

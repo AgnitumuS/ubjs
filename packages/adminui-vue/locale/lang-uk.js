@@ -171,5 +171,9 @@ UB.i18nExtend({
       uploadDate: 'Дата завантаження'
     },
     dropZoneCaption: 'або перетягніть файли сюди'
+  },
+
+  select: {
+    valueIsUndefined: 'Занчення "{0}" не знайдено в сутності "{1}"'
   }
 })

@@ -27,7 +27,8 @@
           ref="input"
           v-model="queryDisplayValue"
           :class="{
-            'ub-select__deleted-value': isSafeDeletedValue && !isFocused
+            'ub-select__deleted-value': isSafeDeletedValue && !isFocused,
+            'ub-select__undefined-record': undefinedRecord
           }"
           :readonly="!editable || readonly"
           :placeholder="$ut(placeholder)"
@@ -49,6 +50,19 @@
           >
             <i class="el-input__icon el-icon-delete" />
           </el-tooltip>
+
+          <el-tooltip
+            v-if="undefinedRecord"
+            slot="prefix"
+            :content="$ut('select.valueIsUndefined', value, entityName)"
+            :enterable="false"
+          >
+            <i
+              class="el-input__icon el-icon-warning"
+              style="color:rgb(var(--warning))"
+            />
+          </el-tooltip>
+
           <i
             v-if="clearable && value !== null && value !== '' && value !== undefined && !readonly"
             slot="suffix"
@@ -278,7 +292,8 @@ export default {
       selectedOption: null, // ID of option which user hover or focused by arrows
       prevQuery: '', // when user click show more need to track prev query value for send same request to next page
       isSafeDeletedValue: false,
-      isFocused: false
+      isFocused: false,
+      undefinedRecord: false // show's warning icon when ID is undefined in entity
     }
   },
 
@@ -401,13 +416,15 @@ export default {
       this.loading = false
     },
 
-    debouncedFetch: debounce(120, async function (query) {
-      await this.fetchPage(query)
+    debouncedFetch: debounce(120, function (query) {
+      this.fetchPage(query)
     }),
 
     async fetchDisplayValue (value) {
       this.loading = true
-      const data = await this.repository()
+      const repositoryClone = this.repository().clone()
+      repositoryClone.whereList = {}
+      const data = await repositoryClone
         .where(this.valueAttribute, '=', value)
         .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
         .misc({
@@ -427,6 +444,7 @@ export default {
      * @param {number} value ID
      */
     setQueryByValue (value) {
+      this.undefinedRecord = false
       if (value !== undefined && value !== null) {
         const index = this.options.findIndex(o => o[this.valueAttribute] === value)
         if (index !== -1) {
@@ -440,7 +458,8 @@ export default {
                 this.query = option[this.displayAttribute]
                 this.setSafeDeleteValue(option)
               } else {
-                throw new Error(`Missing value '${value}' in entity '${this.entityName}'`)
+                this.query = value
+                this.undefinedRecord = true
               }
             })
         }
@@ -651,6 +670,10 @@ export default {
 
 .ub-select__container .el-input__inner {
   padding-right: 64px;
+}
+
+.ub-select__undefined-record .el-input__inner{
+  border-color: rgb(var(--warning));
 }
 </style>
 
