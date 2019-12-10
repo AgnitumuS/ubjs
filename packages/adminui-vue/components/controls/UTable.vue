@@ -21,7 +21,7 @@
             minWidth: col.minWidth && col.minWidth + 'px',
             width: col.width && col.width + 'px'
           }"
-          @click="changeSort(col.id)"
+          @click="col.sortable && changeSort(col.id)"
         >
           {{ $ut(col.label) }}
           <i
