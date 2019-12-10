@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Fixed
+ - `UFormRow` with error adds red border to `USelectMultiple`
+ - `USelectEntity`, `USelectMultiple` request which fetch display value executed with empty whereList. 
+ 
+### Added
+ - `USelectEntity`, `USelectMultiple` in case value is not found adds warning icon with message instead throw error 
+
 ## [1.9.3] - 2019-12-05
 ### Fixed
  - prevent `UDialog` to close on click outside dialog window

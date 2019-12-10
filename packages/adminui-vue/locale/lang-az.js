@@ -171,5 +171,9 @@ UB.i18nExtend({
       uploadDate: 'Upload date'
     },
     dropZoneCaption: 'or drop files here'
+  },
+
+  select: {
+    valueIsUndefined: 'Value "{0}" not found in entity "{1}"'
   }
 })

@@ -171,5 +171,9 @@ UB.i18nExtend({
       uploadDate: 'Дата загрузки'
     },
     dropZoneCaption: 'или перетащите файлы сюда'
+  },
+
+  select: {
+    valueIsUndefined: 'Занчение "{0}" не найдено в сущности "{1}"'
   }
 })
