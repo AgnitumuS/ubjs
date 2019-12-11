@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Fixed
+ - invalid size of text-indent attribute in htmlToPDF transformation 
+
 ## [5.0.22] - 2019-08-13
 ### Fixed
  - invalid PDF file format in case `ArialBoldItalic` font is used
