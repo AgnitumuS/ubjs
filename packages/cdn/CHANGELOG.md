@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [5.3.19] - 2019-12-11
 ### Added
  - navigation shortcuts for Banks and Streets
   

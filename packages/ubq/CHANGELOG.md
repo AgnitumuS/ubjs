@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [5.2.61] - 2019-12-11
 ### Fixed
   - optimized ubq_messages.addqueue:
     - remove `fieldList` form insertion to prevent select after insert
