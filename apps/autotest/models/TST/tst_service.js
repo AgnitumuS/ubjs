@@ -294,30 +294,23 @@ me.mParamsTest = function (ctxt) {
 
   console.time('globalCacheGetS')
   for (let i = 0; i < 1000000; i++) {
-    p = _App.globalCacheGetS('a')
+    p = _SApp.globalCacheGet('a')
   }
   console.timeEnd('globalCacheGetS')
   console.log('globalCacheGetS=', p)
 
-  console.time('globalCacheGetN')
-  for (let i = 0; i < 1000000; i++) {
-    p = _App.globalCacheGetN('a')
-  }
-  console.timeEnd('globalCacheGetN')
-  console.log('globalCacheGetN=', p)
+  // _SApp.globalCacheGet(1, 2)
 
-  _App.globalCacheGetS(1)
-  _App.globalCacheGetN(1)
-
-  console.time('App.els')
-  for (let i = 0; i < 1000000; i++) {
-    p = App.els('uba_user', 'select')
-  }
-  console.timeEnd('App.els')
   console.time('_App.els')
   for (let i = 0; i < 1000000; i++) {
-    p = _App.els('uba_user', 'select')
+    p = App.els('tst_clob', 'select')
   }
   console.timeEnd('_App.els')
+  console.time('_SApp.els')
+  for (let i = 0; i < 1000000; i++) {
+    p = _SApp.els('tst_clob', 'select')
+  }
+  console.timeEnd('_SApp.els')
+
 }
 me.entity.addMethod('mParamsTest')

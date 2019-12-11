@@ -5,6 +5,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.6.2",
+    "@unitybase/update-changelog": "^1.0.0",
     "babel-loader": "^8.0.5",
     "clean-css-cli": "^4.2.1",
     "cross-env": "^5.2.0",
