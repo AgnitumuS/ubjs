@@ -17,7 +17,8 @@
   },
   "scripts": {
     "test": "ubcli createStore -cfg ./test/testCfg.json",
-    "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json"
+    "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json",
+    "version": "update-changelog && git add CHANGELOG.md"
   },
   "dependencies": {
     "@unitybase/base": "^5.1.36",
@@ -28,7 +29,8 @@
     "mustache": "^3.0.1"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.25"
+    "@unitybase/stubs": "^5.0.25",
+    "@unitybase/update-changelog": "^1.0.0"
   },
   "keywords": [
     "UnityBase",

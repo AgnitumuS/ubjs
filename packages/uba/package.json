@@ -9,7 +9,8 @@
     }
   },
   "scripts": {
-    "test": "ubcli autotest -m UBA -skipModules"
+    "test": "ubcli autotest -m UBA -skipModules",
+    "version": "update-changelog && git add CHANGELOG.md"
   },
   "public": true,
   "publishConfig": {
@@ -23,7 +24,8 @@
     "pkijs": "^2.1.46"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.25"
+    "@unitybase/stubs": "^5.0.25",
+    "@unitybase/update-changelog": "^1.0.0"
   },
   "keywords": [
     "UnityBase",

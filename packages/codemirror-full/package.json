@@ -8,7 +8,8 @@
     "build": "webpack --mode production",
     "analyse-boundle": "webpack --profile --json > /tmp/wp_stats.json && webpack-bundle-analyzer /tmp/wp_stats.json",
     "test": "npm run test",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "version": "update-changelog && git add CHANGELOG.md"
   },
   "public": true,
   "publishConfig": {
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
+    "@unitybase/update-changelog": "^1.0.0",
     "babel-loader": "^8.0.5",
     "webpack": "^4.29.6",
     "webpack-bundle-analyzer": "^3",

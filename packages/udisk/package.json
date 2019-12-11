@@ -9,7 +9,8 @@
     }
   },
   "scripts": {
-    "test": "ubcli autotest -m UDISK -skipModules"
+    "test": "ubcli autotest -m UDISK -skipModules",
+    "version": "update-changelog && git add CHANGELOG.md"
   },
   "public": true,
   "publishConfig": {
@@ -21,6 +22,9 @@
     "@unitybase/base": "^5.1.36",
     "@unitybase/ub": "^5.3.5",
     "lodash": "^4"
+  },
+  "devDependencies": {
+    "@unitybase/update-changelog": "^1.0.0"
   },
   "peerDependencies": {
     "@unitybase/adminui-pub": "^5.8.16"

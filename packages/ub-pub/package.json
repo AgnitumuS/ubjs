@@ -16,7 +16,8 @@
     "analyse-boundle": "webpack --mode production --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
     "lint": "eslint source test",
     "prepare": "npm run build",
-    "test": "npm run test"
+    "test": "npm run test",
+    "version": "update-changelog && git add CHANGELOG.md"
   },
   "public": true,
   "publishConfig": {
@@ -26,6 +27,9 @@
     "@unitybase/cryptojs": "^1.0.14",
     "@unitybase/cs-shared": "^5.1.12",
     "lodash": "^4"
+  },
+  "devDependencies": {
+    "@unitybase/update-changelog": "^1.0.0"
   },
   "keywords": [
     "UnityBase",

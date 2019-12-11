@@ -28,7 +28,8 @@
     "analyse-boundle": "webpack --mode production --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
     "lint": "eslint source test",
     "prepare": "npm run build",
-    "test": "npm run test"
+    "test": "npm run test",
+    "version": "update-changelog && git add CHANGELOG.md"
   },
   "public": true,
   "publishConfig": {
@@ -62,6 +63,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
+    "@unitybase/update-changelog": "^1.0.0",
     "babel-loader": "^8.0.5",
     "clean-css-cli": "^4.2.1",
     "cross-env": "^5",

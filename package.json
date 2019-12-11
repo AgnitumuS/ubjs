@@ -5,7 +5,6 @@
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.6.2",
-    "@unitybase/update-changelog": "^1.0.0",
     "babel-loader": "^8.0.5",
     "clean-css-cli": "^4.2.1",
     "cross-env": "^5.2.0",
@@ -35,8 +34,7 @@
     "build:doc-ubpub": "jsdoc -c ./jsdoc-conf-ubpub.json",
     "build:adminuidoc": "jsdoc -c ./jsdoc-adminui-conf.json",
     "build": "lerna run build",
-    "build:for-ci": "lerna run build:native",
-    "prepublishOnly": "./tools/prepublishScript.sh"
+    "build:for-ci": "lerna run build:native"
   },
   "engines": {
     "npm": "^5"

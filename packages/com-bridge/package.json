@@ -6,7 +6,8 @@
   "scripts": {
     "build:native": "node ./bin/compile.js",
     "build": "npm run build:native",
-    "test": "ub ./_autotest/comBridgeTest.js"
+    "test": "ub ./_autotest/comBridgeTest.js",
+    "version": "update-changelog && git add CHANGELOG.md"
   },
   "public": true,
   "publishConfig": {
@@ -14,7 +15,8 @@
   },
   "devDependencies": {
     "@unitybase/fpc-utils": "^5.0.8",
-    "@unitybase/stubs": "^5.0.25"
+    "@unitybase/stubs": "^5.0.25",
+    "@unitybase/update-changelog": "^1.0.0"
   },
   "main": "./UBComBridge.js",
   "keywords": [

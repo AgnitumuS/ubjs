@@ -13,7 +13,8 @@
     "build": "cross-env-shell NODE_ENV=production \"cd ./public && webpack --mode production\"",
     "build:watch": "cd ./public && webpack --progress --colors --watch",
     "prepare": "npm run build",
-    "analyse-boundle": "cd ./public && webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json"
+    "analyse-boundle": "cd ./public && webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
+    "version": "update-changelog && git add CHANGELOG.md"
   },
   "public": true,
   "publishConfig": {
@@ -40,7 +41,8 @@
   "devDependencies": {
     "@unitybase/stubs": "^5.0.25",
     "cross-env": "^5",
-    "exports-loader": "^0.7.0"
+    "exports-loader": "^0.7.0",
+    "@unitybase/update-changelog": "^1.0.0"
   },
   "keywords": [
     "UnityBase",
