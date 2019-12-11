@@ -480,7 +480,7 @@ PdfTextBox.prototype.calcMetrics = function () {
             me.firstRowBreaked = true
             me.innerBox.height = 0
           } else {
-            deltaText = textInfo.getLineSource(stline, line - 1, me.isXml)
+            deltaText = textInfo.getLineSource(stline, line - 1, me.isXml, me.pdf)
             me.updateTextInfo(deltaText)
             me.height = me.context.getInnerPageBottomPos() - me.top
             me.recalcInnerBoxHeight()
