@@ -3,7 +3,9 @@
   "version": "1.0.73",
   "description": "Module for watching changes in the public part of UnityBase and send notifications for UB adminUI in dev mode using web sockets",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/hmr",
-  "scripts": {},
+  "scripts": {
+    "version": "update-changelog && git add CHANGELOG.md"
+  },
   "bin": {
     "ub-hmr": "cli.js"
   },
@@ -20,7 +22,8 @@
     "xhr2": "^0.1.4"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.25"
+    "@unitybase/stubs": "^5.0.25",
+    "@unitybase/update-changelog": "^1.0.0"
   },
   "keywords": [
     "UnityBase",

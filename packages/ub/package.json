@@ -11,7 +11,8 @@
   "scripts": {
     "test": "ubcli autotest -m UB -skipModules",
     "dev": "npm link lodash @unitybase/base @unitybase/ubcli",
-    "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json"
+    "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json",
+    "version": "update-changelog && git add CHANGELOG.md"
   },
   "public": true,
   "publishConfig": {
@@ -27,7 +28,8 @@
   },
   "devDependencies": {
     "@unitybase/cryptojs": "^1.0.14",
-    "@unitybase/stubs": "^5.0.25"
+    "@unitybase/stubs": "^5.0.25",
+    "@unitybase/update-changelog": "^1.0.0"
   },
   "keywords": [
     "UnityBase",

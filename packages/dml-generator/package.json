@@ -3,7 +3,8 @@
   "version": "5.0.68",
   "description": "UnityBase DML Generator",
   "scripts": {
-    "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json"
+    "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json",
+    "version": "update-changelog && git add CHANGELOG.md"
   },
   "public": true,
   "publishConfig": {
@@ -14,7 +15,8 @@
     "@unitybase/base": "^5.1.36"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.25"
+    "@unitybase/stubs": "^5.0.25",
+    "@unitybase/update-changelog": "^1.0.0"
   },
   "keywords": [
     "UnityBase",

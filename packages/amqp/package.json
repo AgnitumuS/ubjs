@@ -13,7 +13,8 @@
     "build:native": "node ./bin/compile.js",
     "test": "ub tests/main.js",
     "example:hello-pub": "ub ./examples/hello/hello-pub.js",
-    "example:hello-sub": "ub ./examples/hello/hello-sub.js"
+    "example:hello-sub": "ub ./examples/hello/hello-sub.js",
+    "version": "update-changelog && git add CHANGELOG.md"
   },
   "author": "UnityBase team",
   "license": "ISC",
@@ -23,7 +24,8 @@
   },
   "devDependencies": {
     "@unitybase/fpc-utils": "^5.0.8",
-    "@unitybase/stubs": "^5.0.25"
+    "@unitybase/stubs": "^5.0.25",
+    "@unitybase/update-changelog": "^1.0.0"
   },
   "engines": {
     "UnityBase": "^5.0"

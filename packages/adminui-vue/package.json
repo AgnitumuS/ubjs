@@ -23,7 +23,8 @@
     "build:js": "webpack --mode production && cleancss -O2 -o ./dist/adminui-vue.min.css ./dist/adminui-vue.css",
     "analyse-boundle": "webpack --mode production --profile --json > /tmp/wp_stats.json && webpack-bundle-analyzer /tmp/wp_stats.json",
     "styleguide:server": "vue-styleguidist server",
-    "styleguide": "vue-styleguidist build && npx http-server styleguide/"
+    "styleguide": "vue-styleguidist build && npx http-server styleguide/",
+    "version": "update-changelog && git add CHANGELOG.md"
   },
   "element-theme": {
     "browsers": [
@@ -70,6 +71,7 @@
   "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
   "devDependencies": {
     "@babel/plugin-proposal-object-rest-spread": "^7.4.3",
+    "@unitybase/update-changelog": "^1.0.0",
     "clean-css-cli": "^4.2.1",
     "cross-env": "^5",
     "css-loader": "^2.1.0",

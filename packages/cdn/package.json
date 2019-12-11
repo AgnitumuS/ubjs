@@ -9,7 +9,8 @@
     }
   },
   "scripts": {
-    "test": "ubcli autotest -m CDN -skipModules"
+    "test": "ubcli autotest -m CDN -skipModules",
+    "version": "update-changelog && git add CHANGELOG.md"
   },
   "public": true,
   "publishConfig": {
@@ -24,7 +25,8 @@
     "lodash": "^4"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.25"
+    "@unitybase/stubs": "^5.0.25",
+    "@unitybase/update-changelog": "^1.0.0"
   },
   "keywords": [
     "UnityBase",

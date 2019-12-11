@@ -12,7 +12,8 @@
   "scripts": {
     "dev": "npm link lodash @unitybase/CryptoJS @unitybase/base @unitybase/adminui",
     "lint": "eslint source test",
-    "test": "npm run test"
+    "test": "npm run test",
+    "version": "update-changelog && git add CHANGELOG.md"
   },
   "public": true,
   "publishConfig": {
@@ -25,7 +26,8 @@
     "mustache": "^3.0.1"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.25"
+    "@unitybase/stubs": "^5.0.25",
+    "@unitybase/update-changelog": "^1.0.0"
   },
   "keywords": [
     "UnityBase",
