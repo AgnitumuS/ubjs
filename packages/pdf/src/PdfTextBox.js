@@ -368,7 +368,7 @@ PdfTextBox.prototype.updateTextInfo = function (newText, textXml) {
   }
   this.sourceMinHeight = this.minHeight
   this.minHeight = null
-  this.textInfo = this.pdf.createTextInfo(this.textXml || this.text, {isXml: this.isXml, disableAutoIndent: true, font: this.font, textIndent: this.textIndent })
+  this.textInfo = this.pdf.createTextInfo(this.textXml || this.text, { isXml: this.isXml, disableAutoIndent: true, font: this.font, textIndent: this.textIndent })
 }
 
 /**

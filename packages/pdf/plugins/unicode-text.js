@@ -1053,8 +1053,17 @@ const _ = require('lodash')
  * }
    */
   jsPDFAPI.createTextInfo = function (text, options) {
-    var me = this; var defaultFont; var defaultFontSize; var defaultColor; var block; var paragraph; var paragraphs; var textInfo // = { paragraphs: [], isTextInfo: true},
-    var root; var parser
+    var me = this
+    var defaultFont
+    var defaultFontSize
+    var defaultColor
+    var block
+    var paragraph
+    var paragraphs
+    var textInfo // = { paragraphs: [], isTextInfo: true},
+    var root
+    var parser
+    var k = me.internal.scaleFactor
 
     defaultFont = me.internal.getFont()
     defaultFontSize = me.internal.getFontSize()
@@ -1069,7 +1078,8 @@ const _ = require('lodash')
     textInfo = me.newTextInfo()
     paragraph = textInfo.newParagraph()
     if (options.textIndent > 0) {
-      paragraph.textIndent = options.textIndent
+      paragraph.textIndent = Math.round(options.textIndent * k * 100) / 100 // * (k / 1.35)
+      // paragraph.textIndent = options.textIndent
     }
     paragraph.isAutoCreated = true
     block = paragraph.newBlock(me, '', options.font.name, options.font.type, options.font.size, options.font.color, options.align)
@@ -1157,7 +1167,7 @@ const _ = require('lodash')
       if (result['text-indent']) {
         tmp = parseInt(result['text-indent'], 10)
         if (tmp && !Number.isNaN(tmp)) {
-          res.textIndent = tmp
+          res.textIndent = Math.round(tmp * k * 100) / 100 // * (k / 1.35)
         }
       }
 
