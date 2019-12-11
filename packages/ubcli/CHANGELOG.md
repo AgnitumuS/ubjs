@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Fixed
+ - `ubcli generateNginxCfg` will always use `/` in staticRoot locations path independently of platform
+ 
 ## [5.4.0] - 2019-11-21
 ### Added
  - new command `ubcli linkStatic`: creating folder with all static assets (models, modules) what should be available

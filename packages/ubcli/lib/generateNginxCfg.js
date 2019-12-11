@@ -84,7 +84,7 @@ module.exports = function generateNginxCfg (cfg) {
     if (!serverConfig.httpServer.inetPub) {
       throw new Error('"httpServer.inetPub" should be defined in app config in case "httpServer.reverseProxy.serveStatic" is true')
     }
-    vars.staticRoot = serverConfig.httpServer.inetPub
+    vars.staticRoot = serverConfig.httpServer.inetPub.replace(/\\/g, '/')
   }
   let configuredStores = serverConfig.application.blobStores
   if (configuredStores) {
