@@ -146,7 +146,7 @@ HtmlToPdf.prototype.getStyleProp = function (style) {
         res.listStylePosition = tmpArr[1]
         break
     }
-      // list-style: square outside
+    // list-style: square outside
   }
 
   if (style['list-style-position']) {

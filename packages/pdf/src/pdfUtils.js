@@ -53,9 +53,9 @@ module.exports.convertToMeasure = function (value, measure, measureTo) {
         case 'pt':
           return value
         case 'mm':
-          return value * 25.4 / 72
+          return value * 25.4000508 / 96 // 25.4000508/72 * 72/96
         case 'cm':
-          return value * 2.54 / 72
+          return value * 2.54000508 / 96
         default:
           throw new Error('Unknown measure ' + measureTo)
       }
@@ -64,7 +64,7 @@ module.exports.convertToMeasure = function (value, measure, measureTo) {
       switch (measureTo) {
         case 'px':
         case 'pt':
-          return value * 72 / (measureTo === 'cm' ? 2.54 : 25.4)
+          return value * 96 / (measureTo === 'cm' ? 2.54000508 : 25.4000508)
         case 'mm':
         case 'cm':
           return value
