@@ -7,11 +7,9 @@
     "update-changelog": "bin/update-changelog.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "version": "update-changelog && git add CHANGELOG.md"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "@unitybase/update-changelog": "^1.0.0"
   },
   "publishConfig": {
     "registry": "https://registry.unitybase.info"
