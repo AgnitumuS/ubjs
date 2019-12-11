@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Fixed
+  - optimized ubq_messages.addqueue:
+    - remove `fieldList` form insertion to prevent select after insert
+    - use global DataStore('uba_messages') instance instead of call to UB.DataStore for each method call   
+  
 ## [5.2.36] - 2019-07-23
 ### Changed
  - audit trail is explicitly disabled for `ubq_messages` entity for performance reason  

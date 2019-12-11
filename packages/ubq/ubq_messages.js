@@ -29,6 +29,7 @@ me.success = function (ctxt) {
   return true
 }
 
+const UBQ_STORE = UB.DataStore('ubq_messages')
 /**
  * Add item to queue.
  *
@@ -45,16 +46,14 @@ me.success = function (ctxt) {
  * @return {Boolean}
  */
 me.addqueue = function (ctxt) {
-  console.debug('Call JS method: ubq_messages.addqueue')
+  console.debug('JS: ubq_messages.addqueue')
   let mParams = ctxt.mParams
   let fMethod = 'insert'
-  let inst = UB.DataStore('ubq_messages')
-  let fexecParams = {}
-
-  fexecParams.ID = inst.generateID()
-  fexecParams.queueCode = mParams.queueCode
-  fexecParams.msgCmd = mParams.msgCmd
-  fexecParams.msgData = mParams.msgData
+  let fexecParams = {
+    queueCode: mParams.queueCode,
+    msgCmd: mParams.msgCmd,
+    msgData: mParams.msgData
+  }
   if (!mParams.msgPriority) {
     fexecParams.msgPriority = 0
   }
@@ -62,10 +61,9 @@ me.addqueue = function (ctxt) {
   let runobj = {
     entity: 'ubq_messages',
     method: fMethod,
-    fieldList: ['*'],
     execParams: fexecParams
   }
-  inst.run(fMethod, runobj)
+  UBQ_STORE.run(fMethod, runobj)
   return true
 }
 
