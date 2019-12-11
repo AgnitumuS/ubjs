@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [5.4.4] - 2019-12-11
 ### Fixed
  - `ubcli generateNginxCfg` will always use `/` in staticRoot locations path independently of platform
  
