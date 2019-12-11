@@ -1,15 +1,40 @@
-Update [Unreleased] in CHANGELOG.md to current package version and add a new one unreleased section at the top
+Update [Unreleased] in CHANGELOG.md to current package version and add a new [Unreleased] section at the top
 
-1. Install as devDependency
+## Setup
+
+ - install as devDependency
 ```
-npm i -D @unitybase/update-changelog
+npm i --save-dev @unitybase/update-changelog
 ```
 
-2. Add script version to package.json:
+ - add "version" hook to the `package.json`:
 ```
 ...
 "scripts": {
     ...
     "version": "update-changelog && git add CHANGELOG.md"
 }
+```
+
+## Usage
+Chandelog before publishing package:
+
+```
+[Unreleased]
+## Added
+....
+
+```
+
+npm publish
+
+Changelod after publishing:
+
+```
+[Unreleased]
+
+[X.x.x] - YYYY-MM-DD
+## Added
+....
+
 ```

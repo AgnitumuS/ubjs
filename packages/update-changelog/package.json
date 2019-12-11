@@ -1,7 +1,7 @@
 {
   "name": "@unitybase/update-changelog",
   "version": "1.0.0",
-  "description": "Update [Unreleased] in CHANGELOG.md to current package version and add a new one unreleased section at the top",
+  "description": "Update [Unreleased] in CHANGELOG.md to current package version and add a new Unreleased section at the top",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/update-changelog",
   "bin": {
     "update-changelog": "bin/update-changelog.js"
