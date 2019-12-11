@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+ - PDFtextBox with textIndent incorrect split on page
 
 ## [5.0.25] - 2019-12-11
 ### Fixed

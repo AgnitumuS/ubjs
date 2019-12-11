@@ -824,9 +824,10 @@ const _ = require('lodash')
    * @param {Number} lineTo
    * @param {Boolean} isXml true - the result will be xml
    * @param {Boolean} [isNotFirst]
+   * @param {jsPDF} pdfCtx
    * @returns {string}
    */
-  PdfTextInfo.prototype.getLineSource = function (lineFrom, lineTo, isXml, isNotFirst) {
+  PdfTextInfo.prototype.getLineSource = function (lineFrom, lineTo, isXml, isNotFirst, pdfCtx) {
     var p; var b; var pN; var bN; var lKey; var lN; var styleText = ''
     var lNum; var result = []; var lText = []; var pText = []; var lastFont; var wasIndent = 0; var align
 
@@ -871,7 +872,7 @@ const _ = require('lodash')
       if (pText.length > 0) {
         pText = pText.join('')
         if (p.textIndent && !isNotFirst) {
-          styleText += 'text-indent: ' + p.textIndent + 'px; '
+          styleText += 'text-indent: ' + Math.round(p.textIndent / pdfCtx.internal.scaleFactor) + 'px; '
         }
         if (align) {
           styleText += 'text-align: ' + align + '; '
