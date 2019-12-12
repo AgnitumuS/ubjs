@@ -431,7 +431,7 @@ PdfTextBox.prototype.calcMetrics = function () {
     tbConfig.textXml = null
     tbConfig.text = ''
     if (!emptyBox) {
-      deltaText = textInfo.getLineSource(stline, line - 1, me.isXml, !isFirstLine)
+      deltaText = textInfo.getLineSource(stline, line - 1, me.isXml, !isFirstLine, me.pdf)
       tbConfig.text = deltaText
       tbConfig.isNotEndParagraph = line > 0 ? !getDetail(line - 1).isEndParagraph : false
     } else {
@@ -480,7 +480,7 @@ PdfTextBox.prototype.calcMetrics = function () {
             me.firstRowBreaked = true
             me.innerBox.height = 0
           } else {
-            deltaText = textInfo.getLineSource(stline, line - 1, me.isXml, me.pdf)
+            deltaText = textInfo.getLineSource(stline, line - 1, me.isXml, false, me.pdf)
             me.updateTextInfo(deltaText)
             me.height = me.context.getInnerPageBottomPos() - me.top
             me.recalcInnerBoxHeight()
