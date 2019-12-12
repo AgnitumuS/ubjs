@@ -1,6 +1,6 @@
 {
   "name": "example-amqp-notify",
-  "version": "1.0.134",
+  "version": "1.0.135",
   "description": "",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs",
   "private": true,
@@ -11,7 +11,7 @@
   "dependencies": {
     "@unitybase/adminui-pub": "^5.12.16",
     "@unitybase/adminui-reg": "^5.3.17",
-    "@unitybase/adminui-vue": "^1.9.5",
+    "@unitybase/adminui-vue": "^1.9.6",
     "@unitybase/amqp-notify": "^1.1.67",
     "@unitybase/amqp-notify-pub": "^1.0.68",
     "@unitybase/base": "^5.1.37",
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.0.25",
-    "@unitybase/ubcli": "^5.4.4"
+    "@unitybase/ubcli": "^5.4.5"
   },
   "engines": {
     "ub": "^5.0"

@@ -1,6 +1,6 @@
 {
   "name": "benchmarks",
-  "version": "5.0.132",
+  "version": "5.0.133",
   "description": "Benchmarks for UnityBase for a scenarios from the [TechEmpower Web Framework Benchmarks](https://www.techempower.com/benchmarks/).",
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,6 @@
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.0.25",
-    "@unitybase/ubcli": "^5.4.4"
+    "@unitybase/ubcli": "^5.4.5"
   }
 }
