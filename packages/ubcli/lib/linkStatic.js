@@ -16,6 +16,9 @@ const options = require('@unitybase/base').options
 const path = require('path')
 
 const DEBUG = false
+const WINDOWS = (process.platform === 'win32')
+const COMMENT = WINDOWS ? 'REM' : '#'
+
 module.exports = linkStatic
 module.exports.shortDoc = 'Create folder with static asserts'
 
@@ -56,8 +59,8 @@ as drop-in replacement to /clientRequire and /models endpoints`,
   }
   if (!path.isAbsolute(target)) target = path.join(process.cwd(), target)
 
-  let CLIENT_REQUIRE_TARGET_ALIAS = '$CRT'
-  let NODE_MODULES_SOURCES_ALIAS = '$NMS'
+  let CLIENT_REQUIRE_TARGET_ALIAS = WINDOWS ? '%CRT%' : '$CRT'
+  let NODE_MODULES_SOURCES_ALIAS = WINDOWS ? '%NMS%' : '$NMS'
   try {
     let domain = conn.getDomainInfo(true)
     let domainModels = domain.models
@@ -129,42 +132,89 @@ as drop-in replacement to /clientRequire and /models endpoints`,
         })
       }
     })
-    let script = [
-      'err() { echo "err"; exit $?; }',
-      `CRT=${clientRequireTarget}`,
-      `NMS=${modulesPath}`,
-      `rm -rf $CRT`, // prevent recursive symlinks
-      `mkdir -p $CRT`,
-      `mkdir -p $CRT/models`
-    ]
+
+    let script
+
+    if (WINDOWS) {
+      script = [
+        `@ECHO OFF`,
+        `SET CRT=${clientRequireTarget}`,
+        `SET NMS=${modulesPath}`,
+        `RMDIR %CRT% /s /q`, // prevent recursive symlinks
+        `MKDIR %CRT%\\models`
+      ]
+    } else {
+      script = [
+        'err() { echo "err"; exit $?; }',
+        `CRT=${clientRequireTarget}`,
+        `NMS=${modulesPath}`,
+        `rm -rf $CRT`, // prevent recursive symlinks
+        `mkdir -p $CRT`,
+        `mkdir -p $CRT/models`
+      ]
+    }
 
     commands.forEach(cmd => {
-      if (cmd.type === 'comment') {
-        script.push(`# ${cmd.text}`)
-      } else if (cmd.type === 'mkdir') {
-        script.push(`mkdir -p ${cmd.to} || err`)
-      } else if (cmd.type === 'folder') {
-        script.push(`ln -s ${cmd.from} ${cmd.to} || err`)
-      } else if (cmd.type === 'file') {
-        script.push(`ln -s -f ${cmd.from} ${cmd.to} || err`)
+      if (WINDOWS) {
+        if (cmd.type === 'comment') {
+          script.push(`REM ${cmd.text}`)
+        } else if (cmd.type === 'mkdir') {
+          script.push(`MKDIR ${cmd.to}`)
+        } else if (cmd.type === 'folder') {
+          script.push(`MKLINK /J /D ${cmd.to} ${cmd.from} || goto err`)
+        } else if (cmd.type === 'file') {
+          script.push(`if not exist ${cmd.to} MKLINK /H ${cmd.to} ${cmd.from} || goto err`)
+        }
+      } else {
+        if (cmd.type === 'comment') {
+          script.push(`# ${cmd.text}`)
+        } else if (cmd.type === 'mkdir') {
+          script.push(`mkdir -p ${cmd.to} || err`)
+        } else if (cmd.type === 'folder') {
+          script.push(`ln -s ${cmd.from} ${cmd.to} || err`)
+        } else if (cmd.type === 'file') {
+          script.push(`ln -s -f ${cmd.from} ${cmd.to} || err`)
+        }
       }
     })
 
     let favIconTarget = path.join(target, 'favicon.ico')
     if (!fs.existsSync(favIconTarget)) {
       let favIconSrc = path.join(domainModels['UB'].realPublicPath, 'img', 'UBLogo16.ico')
-      script.push(`# no favicon.ico found in target folder - use default favicon`)
-      script.push(`ln -s ${favIconSrc} ${favIconTarget}`)
+      script.push(`${COMMENT} no favicon.ico found in target folder - use default favicon`)
+      if (WINDOWS) {
+        script.push(`MKLINK /H ${favIconTarget} ${favIconSrc}`)
+      } else {
+        script.push(`ln -s ${favIconSrc} ${favIconTarget}`)
+      }
     }
-    script.push(`# update modification time for files in modules updated by npm`)
-    script.push(`find -L $CRT -type f -not -path "*/node_modules/*" -not -newermt '1986-01-01' -exec touch -m {} +`)
+    script.push(`${COMMENT} update modification time for files in modules updated by npm`)
+    if (WINDOWS) {
+      script.push(`
+if exist %NMS%\\@unitybase\\ub\\node_modules\\@unitybase (
+  echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  echo Updating date for files in node_modules folder is skipped because symbolic links is detected between packages
+  echo If you are on the development environment this is OK, if on PRODUCTION - REMOVE SYMBOLIC LINKS AND RERUN THIS SCRIPT
+  echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+) else (
+  forfiles /P %NMS% /S /D -01/01/1986 /C "cmd /c Copy /B @path+,,"
+)  
+goto :eof
+:err
+ EXIT 1
+:eof
+`)
+    } else {
+      script.push(`find -L $CRT -type f -not -path "*/node_modules/*" -not -newermt '1986-01-01' -exec touch -m {} +`)
+    }
+
     // win
     // forfiles /P .\node_modules /S /D -01.01.1986 /C "cmd /c Copy /B @path+,,"
-    let resFn = path.join(process.cwd(), '.linkStatic.sh')
+    let resFn = path.join(process.cwd(), `.linkStatic.${WINDOWS ? 'cmd' : 'sh'}`)
     fs.writeFileSync(resFn, script.join('\n'))
     console.log(`
 
-Bash script ${resFn} is created
+${WINDOWS ? 'CMD' : 'Bash'} script ${resFn} is created
 
 Review a script, take care about target folder and package list
 
@@ -173,7 +223,7 @@ In case some package should not be exposed to client add a section
 into corresponding package.json
   
 Use a command:
-  chmod +x ./.linkStatic.sh && ./.linkStatic.sh
+  ${WINDOWS ? '.\\.linkStatic.cmd' : 'chmod +x ./.linkStatic.sh && ./.linkStatic.sh'}
 to link a static`)
 
     // let pjsPath = path.join(cfgPath, 'package.json')
