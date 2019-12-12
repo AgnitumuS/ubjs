@@ -105,21 +105,21 @@ export default {
           text: this.$ut('lastMonth'),
           onClick: (picker) => {
             const end = new Date()
-            const start = this.$moment().subtract(1, 'month').valueOf()
+            const start = this.$moment().subtract(1, 'month').toDate()
             picker.$emit('pick', [start, end])
           }
         }, {
           text: this.$ut('lastQuarter'),
           onClick: (picker) => {
             const end = new Date()
-            const start = this.$moment().subtract(3, 'month').valueOf()
+            const start = this.$moment().subtract(3, 'month').toDate()
             picker.$emit('pick', [start, end])
           }
         }, {
           text: this.$ut('last6Month'),
           onClick: (picker) => {
             const end = new Date()
-            const start = this.$moment().subtract(6, 'month').valueOf()
+            const start = this.$moment().subtract(6, 'month').toDate()
             picker.$emit('pick', [start, end])
           }
         }]

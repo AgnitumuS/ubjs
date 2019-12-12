@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+Fixed error when filtering `Date` type columns in `USelectEntity` using range shortcuts
 
 ## [1.9.5] - 2019-12-11
 ### Added
