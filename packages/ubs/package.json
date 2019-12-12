@@ -36,7 +36,7 @@
     "when": "1.8.1",
     "xmldom": "^0.1.27"
   },
-  "optionalDependencies": {
+  "peerDependencies": {
     "@unitybase/pdf": "^5.0.27",
     "@unitybase/xlsx": "^5.1.11"
   },
