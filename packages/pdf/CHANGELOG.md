@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+ - long text box now correctly spilled onto more when 2 pages (PDFtextBox)
 
 ## [5.0.26] - 2019-12-11
 ### Fixed
