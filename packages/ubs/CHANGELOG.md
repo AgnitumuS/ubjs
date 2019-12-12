@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [5.2.59] - 2019-12-12
 ### Changed
  - `@unitybase/pdf` && `@unitybase/xslx` packages are moved into "peerDependencies" - "optionalDependencies" handled by 
   lerna in the same way as "dependencies"
