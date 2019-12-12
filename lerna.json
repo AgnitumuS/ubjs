@@ -3,5 +3,10 @@
   "packages": [
     "packages/*",
     "apps/*"
-  ]
+  ],
+  "command": {
+    "publish": {
+      "graphType": "dependencies"
+    }
+  }
 }

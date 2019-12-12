@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Changed
+ - `@unitybase/pdf` && `@unitybase/xslx` packages are moved into "optionalDependencies" package/.json section.
+ This prevent `lerna` from publishing `@unitybase/ubs` and all their dependencies each time pdf or xlsx changed
+ 
 ## [5.2.52] - 2019-11-15
 ### Changed
  - Report names are localizable now - "Click sample" report is an example
