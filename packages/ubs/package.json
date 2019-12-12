@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubs",
-  "version": "5.2.57",
+  "version": "5.2.58",
   "description": "Reports, User messages (notifications), Settings (aka about:config), Counters",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubs",
   "config": {
@@ -37,8 +37,8 @@
     "xmldom": "^0.1.27"
   },
   "optionalDependencies": {
-    "@unitybase/xlsx": "^5.1.11",
-    "@unitybase/pdf": "^5.0.26"
+    "@unitybase/pdf": "^5.0.27",
+    "@unitybase/xlsx": "^5.1.11"
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.0.25",
