@@ -29,10 +29,17 @@
     },
     {
       "name": "actionUser",
-      "dataType": "Entity",
-      "associatedEntity": "uba_user",
-      "caption": "User",
+      "dataType": "ID",
+      "documentation": "uba_user.ID. Data type entity is not used here because for huge audit table we want to move it to another DB and do not want to have a constraint",
+      "caption": "UserID",
       "allowNull": false
+    },
+    {
+      "name": "actionUserName",
+      "dataType": "String",
+      "size": 128,
+      "documentation": "User name from uba_user as it named on the moment of auditing",
+      "caption": "User"
     },
     {
       "name": "actionTime",

@@ -327,7 +327,7 @@ export default {
         cmdData: {
           params: [
             this.$UB.Repository('uba_auditTrail')
-              .attrs(['actionTime', 'actionType', 'actionUser', 'remoteIP'])
+              .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP'])
               .where('[entity]', '=', this.entity)
               .where('[entityinfo_id]', '=', this.$store.state.data.ID)
               .orderByDesc('actionTime')

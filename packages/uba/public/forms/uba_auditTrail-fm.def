@@ -6,7 +6,7 @@
 //@description "Audit"
 /*global UB, Ext */
 exports.formDef = {
-    requiredFields: ['entity','actionUser','actionTime','fromValue','toValue'],
+    requiredFields: ['entity','actionUser','actionUserName','actionTime','fromValue','toValue'],
     parentConfig: {
         // autoScroll: true,
         layout: {

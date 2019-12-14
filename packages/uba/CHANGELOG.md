@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+ - new attribute `uba_auditTrail.actionUserName`
+  
+### Changed
+  - `uba_auditTrail.actionUser` attribute data type is changed form `Entity->uba_user` to `ID`.
+  This prevents DDL generator from creating a check constraint to uba_user table and  allow to
+  move uba_auditTrail to other Database by overriding a `uba_auditTrail.connectionName` (applicable for huge audits) 
+  
 ## [5.3.16] - 2019-12-02
 ### Fixed
  - ALS edit form: fix broken layout for table with pinned header/column by replacing render component from `ElTable` to `UTable`
