@@ -14,7 +14,6 @@
       "./packages/ubcli/bin",
       "./packages/ubcli/lib",
       "./packages/http-proxy",
-      "./packages/com-bridge/UBComBridge.js",
       "./packages/mailer",
       "./packages/openid-connect/openIDConnect.js",
       "./packages/compressors/UBCompressors.js",
