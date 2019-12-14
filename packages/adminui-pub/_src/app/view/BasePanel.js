@@ -3664,7 +3664,7 @@ Ext.define('UB.view.BasePanel', {
       cmdData: {
         params: [
           UB.Repository('uba_auditTrail')
-            .attrs(['actionTime', 'actionType', 'actionUser', 'remoteIP'])
+            .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP'])
             .where('[entity]', '=', me.entityName)
             .where('[entityinfo_id]', '=', me.instanceID)
             .orderByDesc('actionTime')

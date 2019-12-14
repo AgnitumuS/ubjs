@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+ - support for new attribute `uba_auditTrail.actionUserName`
+
 ## [5.12.9] - 2019-12-04
 ### Fixed
  - prevent "brain split" of Vue global instance onto 2 part in production version

@@ -2683,7 +2683,8 @@ Ext.define('UB.view.EntityGridPanel', {
       hideActions: ['addNew', 'addNewByCurrent', 'edit', 'del', 'newVersion'],
       cmdData: {
         params: [
-          UB.Repository('uba_auditTrail').attrs(['actionTime', 'actionType', 'actionUser', 'remoteIP'])
+          UB.Repository('uba_auditTrail')
+            .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP'])
             .where('entity', '=', me.entityName)
             .where('entityinfo_id', '=', sel[0].get('ID'))
             .orderByDesc('actionTime')

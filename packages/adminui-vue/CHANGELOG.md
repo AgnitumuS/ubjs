@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+ - support for new attribute `uba_auditTrail.actionUserName`
 
 ## [1.9.6] - 2019-12-12
 ### Fixed

@@ -316,7 +316,11 @@ module.exports = function (session) {
       cmdCode: JSON.stringify({
         cmdType: 'showList',
         autoFilter: true,
-        cmdData: { params: [{ entity: 'uba_auditTrail', method: 'select', fieldList: '*' }] }
+        cmdData: { params: [{
+          entity: 'uba_auditTrail',
+          method: 'select',
+          fieldList: ['ID', 'entity', 'entityinfo_id', 'actionType', 'actionUserName', 'actionTime', 'remoteIP', 'request_id']
+        }] }
       }, null, '\t')
     }
   })

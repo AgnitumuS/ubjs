@@ -23,12 +23,15 @@ exports.formCode = {
     actionTimeField.resetOriginalValue()
 
     var actionUserField = form.findField('actionUserField')
-    actionUserField.setValue(me.record.data.actionUser)
-    actionUserField.resetOriginalValue()
-    me.getEntityValueEntityById(me.record.data.actionUser, $App.domainInfo.get('uba_auditTrail').attr('actionUser').associatedEntity).then(function (result) {
-      actionUserField.setValue(result)
+    if (!me.record.data.actionUserName) {
+      me.getEntityValueEntityById(me.record.data.actionUser, $App.domainInfo.get('uba_auditTrail').attr('actionUser').associatedEntity).then(function (result) {
+        actionUserField.setValue(result)
+        actionUserField.resetOriginalValue()
+      })
+    } else {
+      actionUserField.setValue(`${me.record.data.actionUserName} (${me.record.data.actionUser})`)
       actionUserField.resetOriginalValue()
-    })
+    }
 
     var panel = me.down('panel[name=panel]')
 
