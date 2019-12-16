@@ -43,7 +43,7 @@ $App.doCommand({
  - `USelectEntity`, `USelectMultiple` adds warning icon in case value is not found instead of throwing error 
 
 ### Fixed
- - disable `UTable` header click for columnus with sortable: false
+ - disable `UTable` header click for columns with sortable: false
  - `UFormRow` with error adds red border to `USelectMultiple`
  - `USelectEntity`, `USelectMultiple` fetching of display value ignore passed whereList.
    This fix situation when value what already selected do not match filter conditions.
@@ -142,7 +142,7 @@ $App.doCommand({
  - `UFormRow` increased default label width from 120 to 150
  - `UFormRow` previously margin-top was added only if one `UFormRow` element follows another in DOM,
   instead now margin-bottom always 10px
- - element theme css extracted into separate. Thois allow to override element styles in our vue components
+ - element theme css extracted into separate. This allow to override element styles in our vue components
 
 ### Added
  - `UTable` component. Build's table with sticky header. Accepts `data` and columns config
@@ -150,7 +150,7 @@ $App.doCommand({
    Extends UTable and adds pagination, filters, sorts
  - `UDropdown` and `UDropdownItem` component. Wrap element which passed as default slot and 
   shows dropdown on click in this element
- - `Lookups` util. Can load any entity and get it lookup value. Lookuped values are cached GLOBALY
+ - `Lookups` util. Can load any entity and get it lookup value. Lookups values are cached GLOBALLY
  - new property `uiSettings.adminUI.useVueTables` in app config. If true - replace all
    ext grids `showList` by UTableEntity component.
  - `UB.core.UBCommand.prototype.showList` showList accepts new prop `renderer`. To render Ext showList use old doCommand config
@@ -665,7 +665,7 @@ adminUiVue.dialogInfo('Hello')
  - `u-select-enum` fixed disabled prop
 
 ### Changed
- - `u-sidebar` changed sidebar item height to auto, paddings reduced
+ - `u-sidebar` changed sidebar item height to auto, reduce padding's
 
 ## [1.6.3] - 2019-06-14
 ### Fixed
@@ -833,7 +833,7 @@ adminUiVue.dialogInfo('Hello')
  - UbContext -> UContextMenu
  - UbCodeMirror -> UCodeMirror
  - UbInput -> UInput
- - All Vue components now will be inited in `packages/adminui-vue/ub-components.js`
+ - All Vue components now will be initialized in `packages/adminui-vue/ub-components.js`
 
 ### Added
  - `throttle-debounce` micro package added. Exported by adminui-vue as throttleDebounce  
@@ -929,7 +929,7 @@ adminUiVue.dialogInfo('Hello')
 ### Changed
  - `adminui-vue` model replace a top Ext-JS based navbar with navbar implemented using VueJS.
   See `components/navbar`
- - `adminui-vue` model replace Ext-JS based relogon window with VueJS implementation.
+ - `adminui-vue` model replace Ext-JS based re-logon window with VueJS implementation.
   See `components/UbRelogon`
 
 ### Fixed
@@ -956,7 +956,7 @@ adminUiVue.dialogInfo('Hello')
 ## [1.0.34] - 2019-01-10
 ### Changed
  - hide `Forgot password?` and `Registration` on auth form when `Negotiate` enabled
- - add title to Localizable Dialog in `UbInput`
+ - add title to Localize Dialog in `UbInput`
 
 ### Fixed
  - fix popovers collapse on `UbSelectEntity` control
@@ -982,7 +982,7 @@ adminUiVue.dialogInfo('Hello')
  - let's ElementUI popups be above all Ext popups by setting initial ElementUI.zIndex to 300000
 
 ### Changed
- - change webpack configuration to decrease boundle for production build (from 847Kb to 630Kb)
+ - change webpack configuration to decrease bundle for production build (from 847Kb to 630Kb)
  
 ## [1.0.26] - 2018-10-29
 ### Added
