@@ -149,7 +149,7 @@ export default {
 }
 
 .ub-form-row__stacked {
-  display: block;
+  flex-direction: column;
 }
 
 .ub-form-row__label {
