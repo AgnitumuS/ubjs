@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - support for new attribute `uba_auditTrail.actionUserName`
  
+### Changed
+ - `UFormRow` will use `flex-direction:column` instead of display:block` css rule. This allow to streach internal content to the full height
+
 ### Fixed
  - `USelectEntity`/`USelectMultiple`: prevent exception `Error in build SQL "where" expressions: item "XXX" not found ordinar item with name "YYY"`
  while fetching a display value 
