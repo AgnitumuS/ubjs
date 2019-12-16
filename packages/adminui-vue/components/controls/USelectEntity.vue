@@ -180,6 +180,7 @@ export default {
     },
     /**
      * Function which return UBRepository
+     * @returns {ClientRepository}
      */
     repository: {
       type: Function,
@@ -422,8 +423,7 @@ export default {
 
     async fetchDisplayValue (value) {
       this.loading = true
-      const repositoryClone = this.repository().clone()
-      repositoryClone.whereList = {}
+      const repositoryClone = this.repository().clone().clearWhereList()
       const data = await repositoryClone
         .where(this.valueAttribute, '=', value)
         .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')

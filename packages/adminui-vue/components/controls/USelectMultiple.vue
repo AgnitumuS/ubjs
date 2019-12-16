@@ -382,8 +382,7 @@ export default {
 
     async fetchDisplayValues (IDs) {
       this.loading = true
-      const repositoryClone = this.repository().clone()
-      repositoryClone.whereList = {}
+      const repositoryClone = this.repository().clone().clearWhereList()
       const data = await repositoryClone
         .where(this.valueAttribute, 'in', IDs)
         .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')

@@ -7,16 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - support for new attribute `uba_auditTrail.actionUserName`
+ 
+### Fixed
+ - `USelectEntity`/`USelectMultiple`: prevent exception `Error in build SQL "where" expressions: item "XXX" not found ordinar item with name "YYY"`
+ while fetching a display value 
 
 ## [1.9.6] - 2019-12-12
 ### Fixed
-Fixed error when filtering `Date` type columns in `USelectEntity` using range shortcuts
+ - Fixed error when filtering `Date` type columns in `USelectEntity` using range shortcuts
 
 ## [1.9.5] - 2019-12-11
 ### Added
-- `doCommand -> showList` param `cfg.cmdData.slots`. Array of functions which returns vue components.
+ - `doCommand -> showList` param `cfg.cmdData.slots`. Array of functions which returns vue components.
    Vue component can be created by render function which accept [createElement](https://vuejs.org/v2/guide/render-function.html#createElement-Arguments) function as argument.
-   See `UTableEntity` docsumentation for list ov available slots. Example:
+   See `UTableEntity` documentation for list ov available slots. Example:
 ```javascript
 $App.doCommand({
     renderer: 'vue',
