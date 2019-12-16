@@ -15,6 +15,7 @@
       v-bind="$attrs"
       :type="dataType.toLowerCase()"
       :placeholder="$ut(dataType === 'Date' ? 'selectDate' : 'selectDateAndTime')"
+      :picker-options="{ firstDayOfWeek }"
     />
     <u-select-enum
       v-else-if="dataType === 'Enum'"
@@ -120,6 +121,16 @@ export default {
       return this.$v &&
         this.$v[this.attributeName] &&
         this.$v[this.attributeName].$error
+    },
+
+    firstDayOfWeek () {
+      // moment days monday equals to 0, instead element-ui which monday equals to 1
+      const momentDay = this.$moment.localeData().firstDayOfWeek()
+      if (momentDay === 0) {
+        return 7
+      } else {
+        return momentDay
+      }
     }
   }
 }

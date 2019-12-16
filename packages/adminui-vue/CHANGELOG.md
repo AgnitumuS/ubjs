@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+ - `UAutoField -> date-picker` first day of the week is taken from the current locale of `moment.js`.
+   AdminUI take cares of swithing moment locale accoding to user language
+ 
 ### Added
  - support for new attribute `uba_auditTrail.actionUserName`
  
