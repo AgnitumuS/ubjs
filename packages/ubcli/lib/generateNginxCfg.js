@@ -57,6 +57,10 @@ module.exports = function generateNginxCfg (cfg) {
   if (externalURL.protocol === 'https:') {
     if (!cfg.sslkey) console.warn('external URL is configured to use https but sslkey parameter not passed - don\'t forgot to set it manually')
     if (!cfg.sslcert) console.warn('external URL is configured to use https but sslcert parameter not passed - don\'t forgot to set it manually')
+    if (!cfg.sslRedirect) {
+      console.warn('external URL is configured to use https - force adding a redirect 80 -> 443 for host\n')
+      cfg.sslRedirect = true
+    }
   }
   let ubURL = url.parse(argv.serverURLFromConfig(serverConfig))
   if (!ubURL.port) ubURL.port = (ubURL.protocol === 'https:') ? '443' : '80'
