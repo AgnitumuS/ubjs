@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+ - new method `CustomRepository.clearWhereList` - remove all where conditions from Repository.
+ Should be used instead of direct access to the private CustomRepository.whereList property   
+
 ## [5.1.11] - 2019-10-09
 ### Added
   - remove code duplication for `Date` parsing functions (truncTimeToUtcNull & iso8601ParseAsDate are moved to LocalDataStorage) 

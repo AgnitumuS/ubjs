@@ -43,7 +43,7 @@ class CustomRepository {
      */
     this.whereList = {}
     /**
-     * Used internaly to avoid Object.keys(whereList) call
+     * Used internally to avoid Object.keys(whereList) call
      * @type {number}
      * @private
      */
@@ -814,6 +814,29 @@ inst.run('select', repo.ubql())
     // prevent deep clone of connection property
     Object.defineProperty(cloned, 'connection', { enumerable: false, writable: false, value: this.connection })
     return cloned
+  }
+  /**
+   * Remove all where conditions (except ones using in joinAs). This function mutates current Repository
+   * @example
+
+   let repo1 = UB.Repository('uba_user').attrs('ID', 'code').where('ID', '>', 15, 'byID')
+   let repoWithoutWheres = repo1.clone().clearWhereList()
+
+   * @return {CustomRepository}
+   */
+  clearWhereList () {
+    this.logicalPredicates = []
+    if (this.joinAs.length) {
+      let wNames = Object.keys(this.whereList)
+      wNames.forEach(wName => {
+        if (this.joinAs.indexOf(wName) === -1) {
+          delete this.whereList[wName]
+        }
+      })
+    } else {
+      this.whereList = {}
+    }
+    return this
   }
 }
 
