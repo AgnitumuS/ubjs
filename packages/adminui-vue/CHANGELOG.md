@@ -7,13 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Changed
  - `UAutoField -> date-picker` first day of the week is taken from the current locale of `moment.js`.
-   AdminUI take cares of swithing moment locale accoding to user language
- 
+   AdminUI take cares of switching moment locale according to user language
+ - `UFormRow` will use `flex-direction:column` instead of display:block` css rule. This allow to stretch
+   internal content to the full height
+  
 ### Added
  - support for new attribute `uba_auditTrail.actionUserName`
- 
-### Changed
- - `UFormRow` will use `flex-direction:column` instead of display:block` css rule. This allow to streach internal content to the full height
 
 ### Fixed
  - `USelectEntity`/`USelectMultiple`: prevent exception `Error in build SQL "where" expressions: item "XXX" not found ordinar item with name "YYY"`
