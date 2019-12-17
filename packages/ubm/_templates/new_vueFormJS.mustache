@@ -28,6 +28,7 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
 }
 
 module.exports.default = {
+  name: '{{className}}',
   inject: ['$v', 'entitySchema'],
   computed: {
     ...mapInstanceFields(['ID'/* add fields here */]),

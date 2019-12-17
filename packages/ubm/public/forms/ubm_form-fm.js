@@ -102,7 +102,11 @@ exports.formCode = {
       if (aTab.isDefifnition) { // definition === this.codeTabs.items.getAt(1)
         textToInsert = '{ attributeName: "' + record.get('id') + '"}'
       } else { // module
-        textToInsert = "this.getField('" + record.get('id') + "')"
+        if (this.record.get('formType') === 'vue') {
+          textToInsert = `<u-auto-field attribute-name="${record.get('id')}" />`
+        } else {
+          textToInsert = "this.getField('" + record.get('id') + "')"
+        }
       }
       let aCodeMirror = aTab.down('ubcodemirror').codeMirrorInstance
       aCodeMirror.replaceSelection(textToInsert)

@@ -256,6 +256,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       formScriptBody = getFormBodyTpl('new_autoFormJS.mustache', 'exports.formCode = {\r\n}')
     } else if (storedValue.formType === 'vue') {
       formScriptBody = getFormBodyTpl('new_vueFormJS.mustache', 'exports.formCode = {\r\n\tinitUBComponent: function () {\r\n\r\n\t}\r\n}')
+      formScriptBody = formScriptBody.replace('{{className}}', storedValue.code)
     } else if (storedValue.formType === 'module') {
       formScriptBody = getFormBodyTpl('new_moduleFormJS.mustache', '')
     }

@@ -418,8 +418,9 @@ export default {
 <template>
   <div class="ub-form-container">
     <u-toolbar>
-      <button slot="left">left side btn</button>
-      <button slot="right">right side btn</button>
+      <u-toolbar-button slot="left">left side btn</u-toolbar-button>
+      <u-toolbar-button slot="right">right side btn</u-toolbar-button>
+      <!-- Or any component you need, button for example -->
       <button slot="dropdown">dropdown btn</button>
     </u-toolbar>
     <u-form-container>

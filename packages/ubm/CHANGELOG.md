@@ -5,9 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-
-## [5.2.33] - 2019-12-09
-
+### Added
+ - Vue form template now adds component name for form component (name: 'form-code'). This simplify debugging using VueDevTools
+ - double click on attribute in form editor will add `<u-auto-field>` to the form JS for Vue forms
+   
 ## [5.2.32] - 2019-12-09
 ### Added
  - `ubm_query` entity, navigation shortcut for the entity (autoform is used).  The entity is intended to be used as
