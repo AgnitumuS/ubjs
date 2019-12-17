@@ -9,8 +9,8 @@
       class="ub-form-row__label"
       :class="[
         `ub-form-row__label__${labelPositionComputed}`, {
-        required
-      }]"
+          required
+        }]"
       :style="labelWidthCss"
       :title="$ut(label)"
     >
@@ -46,10 +46,42 @@
 
 <script>
 /**
+ * The mixin fixes the problem when, when you click on the arrow in el-select, a dropdown opens and closes immediately
+ */
+const ElSelectHack = {
+  data () {
+    return {
+      elSelectRef: null
+    }
+  },
+
+  mounted () {
+    if (this.$slots.default && this.$slots.default[0].componentOptions.tag === 'el-select') {
+      this.elSelectRef = this.$slots.default[0].elm
+      this.elSelectRef.addEventListener('click', this.onClickSelect)
+    }
+  },
+
+  beforeDestroy () {
+    if (this.elSelectRef) {
+      this.elSelectRef.removeEventListener('click', this.onClickSelect)
+    }
+  },
+
+  methods: {
+    onClickSelect (e) {
+      e.preventDefault()
+    }
+  }
+}
+
+/**
  * Form row with a label
  */
 export default {
   name: 'UFormRow',
+
+  mixins: [ElSelectHack],
 
   props: {
     /**
