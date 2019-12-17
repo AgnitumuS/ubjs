@@ -269,7 +269,9 @@ export default {
 
     async loadPreview () {
       if (this.previewUrl) {
-        window.URL.revokeObjectURL(this.previewUrl)
+        const oldPreviewUrl = this.previewUrl
+        this.previewUrl = ''
+        window.URL.revokeObjectURL(oldPreviewUrl)
       }
       if (this.previewFormats.includes(this.file.ct)) {
         const binaryFile = await this.loadFile()
