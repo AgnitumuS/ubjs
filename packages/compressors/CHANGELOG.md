@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Fixed
+ - linux build: links to valid `libsynmozjs52.so`
+
 ## [5.1.19] - 2019-11-19
 ### Fixed
  - prevent expose a package to client by adding `"config": {"ubmodel": {} }` into package.json
