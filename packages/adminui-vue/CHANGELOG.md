@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `USelectEntity`/`USelectMultiple`: prevent exception `Error in build SQL "where" expressions: item "XXX" not found ordinar item with name "YYY"`
  while fetching a display value 
+ - `UFile` - more accurate work with previewURL inside control, to prevent situation, when `previewUrl` is still set,
+   but value is no longer valid due to `window.URL.revokeObjectURL` call. 
 
 ## [1.9.6] - 2019-12-12
 ### Fixed
