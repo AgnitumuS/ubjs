@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.3.19] - 2019-12-17
+### Added
  - new attribute `uba_auditTrail.actionUserName`
   
 ### Changed

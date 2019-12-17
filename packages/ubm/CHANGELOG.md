@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.2.38] - 2019-12-17
+### Added
  - Vue form template now adds component name for form component (name: 'form-code'). This simplify debugging using VueDevTools
  - double click on attribute in form editor will add `<u-auto-field>` to the form JS for Vue forms
    

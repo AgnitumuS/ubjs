@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.4.6] - 2019-12-17
 ### Changed
  - `ubcli generateNginxCfg` will force adding redirect 80 -> 443 in case external URL is https
 

@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/compressors",
-  "version": "5.1.21",
+  "version": "5.1.22",
   "description": "gzip/gunzip/bzip(m2) implementation",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/compressors",
   "config": {
@@ -20,7 +20,7 @@
   "devDependencies": {
     "@unitybase/fpc-utils": "^5.0.8",
     "@unitybase/stubs": "^5.0.25",
-    "@unitybase/update-changelog": "^1.0.1"
+    "@unitybase/update-changelog": "^1.0.2"
   },
   "keywords": [
     "UnityBase",

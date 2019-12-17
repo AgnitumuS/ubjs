@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.1.14] - 2019-12-17
+### Added
  - new method `CustomRepository.clearWhereList` - remove all where conditions from Repository.
  Should be used instead of direct access to the private CustomRepository.whereList property   
 

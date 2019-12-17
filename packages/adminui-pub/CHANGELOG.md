@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.12.17] - 2019-12-17
+### Added
  - support for new attribute `uba_auditTrail.actionUserName`
 
 ## [5.12.9] - 2019-12-04
@@ -895,8 +906,6 @@ and fetching all CLOBS from table is very slow (at last for Oracle)
   
 
 ## [4.2.33] - 2017-10-13
-### Added
-
 - UBBadge control, pulled and adopted code originally developed for "bpm" subsystem.
 
   Display an enum attribute as a badge on a form:
