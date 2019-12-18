@@ -3,7 +3,7 @@ const _ = require('lodash')
 const __i18n = {
   monkeyRequestsDetected: 'Your request has been processed, but we found that it is repeated several times. Maybe you key fuse?'
 }
-const FORMAT_RE = /{([0-9a-zA-Z_]+)}/g
+const FORMAT_RE = /{([0-9a-zA-Z_]+)(?::([^\}]+))?}/g
 const DOMAIN_RE = /^(\w+)(\.(\w+))?(#(documentation|description))?$/
 
 function domainBasedLocalization (localeString) {
@@ -57,7 +57,7 @@ function domainBasedLocalization (localeString) {
  */
 module.exports.i18n = function i18n (localeString, ...formatArgs) {
   if (localeString == null) return localeString
-  if (typeof localeString !== 'string') return 'i18n: await string but got ' + JSON.stringify(localeString)
+  if (typeof localeString !== 'string') return 'i18n: expect string but got ' + JSON.stringify(localeString)
   let res = __i18n[localeString]
   if (res === undefined) res = _.get(__i18n, localeString)
   if (res === undefined) res = domainBasedLocalization(localeString)
@@ -65,12 +65,20 @@ module.exports.i18n = function i18n (localeString, ...formatArgs) {
     // key-value object
     if ((formatArgs.length === 1) && (typeof formatArgs[0] === 'object')) {
       let first = formatArgs[0]
-      return res.replace(FORMAT_RE, function (m, k) {
-        return _.get(first, k)
+      return res.replace(FORMAT_RE, function (m, k, fmt) {
+        let val = _.get(first, k)
+        if (fmt && fmt === 'i18n') {
+          val = i18n(val)
+        }
+        return val
       })
     } else { // array of values
-      return res.replace(FORMAT_RE, function (m, i) {
-        return formatArgs[i]
+      return res.replace(FORMAT_RE, function (m, i, fmt) {
+        let val = formatArgs[i]
+        if (fmt && fmt === 'i18n') {
+          val = i18n(val)
+        }
+        return val
       })
     }
   } else {

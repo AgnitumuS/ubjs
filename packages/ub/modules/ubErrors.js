@@ -11,6 +11,11 @@
  *       // UB client will show message inside <<<>>> to user (and translate it using UB.i18n)
  *       const UB = require('@unitybase/ub')
  *       throw new UB.UBAbort('<<<textToDisplayForClient>>>')
+ *       // In case, client-side message shall be formatted:
+ *       throw new UB.UBAbort('<<<file_not_found>>>', 'bad_file.name')
+ *       // The "file_not_found" i18n string on client should be like `'File "{0}" is not found or not accessible'
+ *       // Format args can be translated by assing a :i18n modifier to template string: `'File "{0:i18n}" is not found or not accessible'
+ *
  *       // In case message should not be shown to the end used by ub-pub globalExceptionHandler `<<<>>>` can be omitted
  *       throw new UB.UBAbort('wrongParameters')
  *
@@ -18,11 +23,14 @@
  * @extends {Error}
  * @constructor
  */
-function UBAbort (message) {
+function UBAbort (message, ...args) {
   // For SM<=45 we use a "exception class" inherit pattern below, but it stop working in SM52, so fallback to Error
   this.name = 'UBAbort'
   this.code = 'UBAbort'
   this.message = message || 'UBAbortError'
+  if (args.length > 0) {
+    this.message += '|' + JSON.stringify(args)
+  }
   // FF, IE 10+ and Safari 6+. Fallback for others
   let tmpStack = (new Error()).stack.split('\n').slice(1)
   let realErr = tmpStack.find((str) => str.indexOf('@') > 0) // search for a first error outside of ub core modules
