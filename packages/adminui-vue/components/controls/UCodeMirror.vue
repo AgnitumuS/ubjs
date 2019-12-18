@@ -136,7 +136,9 @@ module.exports = {
   methods: {
     updateValue (newVal) {
       if (!this._codeMirror) return
-      let newValAsText = typeof newVal === 'object' ? JSON.stringify(newVal, null, 2) : newVal
+      let newValAsText = (newVal && (typeof newVal === 'object'))
+        ? JSON.stringify(newVal, null, 2)
+        : newVal
       if (newValAsText !== this.textValue) {
         this.textValue = newValAsText
         this._codeMirror.setValue(newValAsText)

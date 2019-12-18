@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- UCodeMirror: null values showing fixed
 
 ## [1.9.7] - 2019-12-17
 ### Changed
