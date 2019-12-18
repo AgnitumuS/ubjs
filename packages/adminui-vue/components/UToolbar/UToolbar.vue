@@ -156,7 +156,7 @@ export default {
 
       if (this.entitySchema.hasMixin('audit')) {
         buttons.push({
-          iconCls: 'fa fa-history',
+          iconCls: 'el-icon-data-analysis',
           caption: this.$ut('showAudit'),
           handler: this.showAudit,
           disabled: !this.$UB.connection.domain.isEntityMethodsAccessible('uba_auditTrail', 'select')
@@ -321,18 +321,19 @@ export default {
 
     showAudit () {
       $App.doCommand({
+        renderer: 'vue',
+        isModal: true,
+        title: `${this.$UB.i18n('Audit')} (${this.$UB.i18n(this.entity)})`,
         cmdType: 'showList',
-        isModalDialog: true,
-        hideActions: ['addNew', 'addNewByCurrent', 'edit', 'del', 'newVersion'],
         cmdData: {
-          params: [
-            this.$UB.Repository('uba_auditTrail')
+          repository: () => {
+            return this.$UB.Repository('uba_auditTrail')
               .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP'])
-              .where('[entity]', '=', this.entity)
-              .where('[entityinfo_id]', '=', this.$store.state.data.ID)
+              .where('entity', '=', this.entity)
+              .where('entityinfo_id', '=', this.$store.state.data.ID)
               .orderByDesc('actionTime')
-              .ubql()
-          ]
+          },
+          columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP']
         }
       })
     },

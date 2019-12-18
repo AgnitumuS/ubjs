@@ -104,6 +104,13 @@
               :store="$store"
               :close="close"
             />
+            <!-- @slot Replace audit button in toolbar dropdown -->
+            <slot
+              slot="audit"
+              name="toolbarDropdownAudit"
+              :store="$store"
+              :close="close"
+            />
 
             <!-- @slot Append new buttons to toolbar -->
             <slot

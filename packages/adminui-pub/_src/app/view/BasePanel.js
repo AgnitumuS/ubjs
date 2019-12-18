@@ -3652,31 +3652,26 @@ Ext.define('UB.view.BasePanel', {
     })
   },
 
-  onAudit: function () {
-    var me = this
-
-    if (!me.instanceID) return
-
-    $App.doCommand({
-      cmdType: 'showList',
-      isModalDialog: true,
-      hideActions: ['addNew', 'addNewByCurrent', 'edit', 'del', 'newVersion'],
-      cmdData: {
-        params: [
-          UB.Repository('uba_auditTrail')
-            .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP'])
-            .where('[entity]', '=', me.entityName)
-            .where('[entityinfo_id]', '=', me.instanceID)
-            .orderByDesc('actionTime')
-            .ubql()
-        ]
-      },
-      cmpInitConfig: {
-        onItemDblClick: function (grid, record, item, index, e, eOpts) {
-          this.doOnEdit(eOpts)
+  onAudit () {
+    const { instanceID: ID, entityName: entity } = this
+    if (ID) {
+      $App.doCommand({
+        renderer: 'vue',
+        isModal: true,
+        title: `${UB.i18n('Audit')} (${UB.i18n(entity)})`,
+        cmdType: 'showList',
+        cmdData: {
+          repository () {
+            return UB.Repository('uba_auditTrail')
+              .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP'])
+              .where('entity', '=', entity)
+              .where('entityinfo_id', '=', ID)
+              .orderByDesc('actionTime')
+          },
+          columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP']
         }
-      }
-    })
+      })
+    }
   }
 })
 
