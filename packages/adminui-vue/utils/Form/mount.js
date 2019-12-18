@@ -24,8 +24,8 @@ const { dialog: $dialog } = require('../../components/dialog/UDialog')
  * @param {Vuex} cfg.store Store
  * @param {object} cfg.validator Vuelidate validation object
  * @param {string} cfg.title Title
- * @param {string} cfg.modalClass Modal class
- * @param {string} cfg.modalWidth Modal width
+ * @param {string} [cfg.modalClass] Modal class
+ * @param {string} [cfg.modalWidth] Modal width
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  */
 function mountModal ({
@@ -34,7 +34,7 @@ function mountModal ({
   store,
   validator,
   title: titleText,
-  modalClass = '',
+  modalClass = 'ub-dialog__reset-padding',
   modalWidth,
   provide
 }) {
@@ -357,34 +357,132 @@ const UTableEntity = require('../../components/UTableEntity/components/UTableEnt
  * @param {object} cfg.props Props data
  * @param {object} cfg.tabId Tab id
  * @param {object} [cfg.title] Tab title
+ * @param {object} cfg.props UTableEntity props
  * @param {function:ClientRepository} cfg.props.repository Function which returns ClientRepository
- * @param {Array<string|UTableColumn>} [cfg.props.columns] Column list configs
- * @param {Array<function>} [cfg.slots] Array of functions which returns vue components. You can create vue component by render function which passed [createElement](https://vuejs.org/v2/guide/render-function.html#createElement-Arguments) function as argument. For all available slots discover UTableEntity docs
+ * @param {array<string|UTableColumn>} [cfg.props.columns] Column list configs
+ * @param {TableScopedSlotsBuilder} [cfg.scopedSlots] Scoped slots
+ * @param {boolean} [cfg.isModal] Is modal
  */
 function mountTableEntity (cfg) {
-  const existedTab = Ext.getCmp(cfg.tabId) || $App.viewport.centralPanel.down(`panel[tabID=${cfg.tabId}]`)
+  if (!cfg.props.entityName && !cfg.props.repository) {
+    throw new Error(`One of these options is required: "props.entityName" or "props.repository"`)
+  }
+  const entityName = cfg.props.entityName || cfg.props.repository().entityName
+  const title = cfg.title || entityName
+  const tableRender = h => {
+    const scopedSlots = cfg.scopedSlots && cfg.scopedSlots(h)
+    return h(UTableEntity, {
+      props: {
+        ...cfg.props,
+        height: '100%'
+      },
+      style: { height: '100%' },
+      scopedSlots
+    })
+  }
+
+  if (cfg.isModal) {
+    mountTableEntityAsModal({
+      title: UB.i18n(title),
+      tableRender
+    })
+  } else {
+    mountTableEntityAsTab({
+      title,
+      tabId: cfg.tabId,
+      tableRender
+    })
+  }
+}
+
+/**
+ * Run UTableEntity as modal
+ *
+ * @param {object} cfg
+ * @param {string} cfg.title Modal title
+ * @param {function} cfg.tableRender UTableEntity render function
+ * @param {string} [cfg.modalClass] Modal class
+ * @param {string} [cfg.modalWidth] Modal width
+ */
+function mountTableEntityAsModal ({
+  title,
+  tableRender,
+  modalClass = 'ub-dialog__reset-padding',
+  modalWidth
+}) {
+  modalClass += ' ub-dialog__min-width ub-dialog__table-entity'
+
+  if (!modalWidth) {
+    modalClass += ' ub-dialog__max-width'
+  }
+  const instance = new Vue({
+    data () {
+      return {
+        dialogVisible: false
+      }
+    },
+
+    provide () {
+      return {
+        close: () => { this.dialogVisible = false }
+      }
+    },
+
+    render (h) {
+      return h(Dialog, {
+        ref: 'dialog',
+        class: modalClass,
+        props: {
+          title,
+          visible: this.dialogVisible,
+          width: modalWidth,
+          closeOnClickModal: false
+        },
+        on: {
+          closed: () => { this.$destroy() },
+          'update:visible': (val) => {
+            this.dialogVisible = val
+          }
+        }
+      }, [tableRender(h)])
+    }
+  })
+  instance.$mount()
+  document.body.appendChild(instance.$el)
+  instance.dialogVisible = true
+}
+
+/**
+ * Run UTableEntity as tab
+ *
+ * @param {object} cfg
+ * @param {string} cfg.title Tab title
+ * @param {string} cfg.tabId Navbar tab ID
+ * @param {function} cfg.tableRender UTableEntity render function
+ */
+function mountTableEntityAsTab ({
+  title,
+  tabId,
+  tableRender
+}) {
+  const existedTab = Ext.getCmp(tabId) || $App.viewport.centralPanel.down(`panel[tabID=${tabId}]`)
   if (existedTab) {
     $App.viewport.centralPanel.setActiveTab(existedTab)
   } else {
-    if (!cfg.props.entityName && !cfg.props.repository) {
-      throw new Error(`One of these options is required: "props.entityName" or "props.repository"`)
-    }
-    const entityName = cfg.props.entityName || cfg.props.repository().entityName
-    const title = cfg.title || entityName
     const tab = $App.viewport.centralPanel.add({
       title: UB.i18n(title),
-      id: cfg.tabId,
+      id: tabId,
       closable: true
     })
 
     const instance = new Vue({
-      render: (h) => h(UTableEntity, {
-        props: {
-          ...cfg.props,
-          height: '100%'
-        },
-        style: { height: '100%' }
-      }, (cfg.slots || []).map(slot => slot(h)))
+      render: tableRender,
+      provide: {
+        close () {
+          tab.forceClose = true
+          tab.close()
+        }
+      }
     })
 
     tab.on('destroy', () => instance.$destroy())

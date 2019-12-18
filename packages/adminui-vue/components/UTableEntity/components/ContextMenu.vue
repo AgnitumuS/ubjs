@@ -7,12 +7,17 @@
 </template>
 
 <script>
-/* global $App */
 const { mapGetters, mapActions } = require('vuex')
 
 export default {
   computed: {
-    ...mapGetters(['entityName', 'canAddNew', 'canDelete']),
+    ...mapGetters([
+      'entityName',
+      'canAddNew',
+      'canDelete',
+      'canAudit'
+    ]),
+
     contextItems () {
       return [{
         label: 'Edit',
@@ -32,6 +37,11 @@ export default {
         label: 'link',
         action: 'createLink',
         iconCls: 'el-icon-link'
+      }, {
+        label: 'Audit',
+        action: 'audit',
+        iconCls: 'el-icon-data-analysis',
+        disabled: !this.canAudit
       }]
     }
   },
@@ -41,7 +51,8 @@ export default {
       'deleteRecord',
       'editRecord',
       'copyRecord',
-      'createLink'
+      'createLink',
+      'audit'
     ]),
 
     show (event, row) {

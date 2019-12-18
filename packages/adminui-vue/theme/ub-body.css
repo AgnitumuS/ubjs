@@ -170,3 +170,14 @@ html, body {
 .ub-dialog__min-width .el-dialog{
   min-width: 480px;
 }
+
+.ub-dialog__table-entity .el-dialog{
+  height: 70vh;
+  min-width: 80vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.ub-dialog__table-entity .el-dialog__body{
+  height: 100%;
+}

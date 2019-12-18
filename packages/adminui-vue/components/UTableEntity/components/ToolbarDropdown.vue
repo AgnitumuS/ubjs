@@ -34,7 +34,7 @@
         <u-dropdown-item
           icon="el-icon-copy-document"
           label="Copy"
-          :disabled="!selectedRowId"
+          :disabled="!selectedRowId || !canAddNew"
           @click="copyRecord(selectedRowId)"
         />
       </slot>

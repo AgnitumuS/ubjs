@@ -4,7 +4,7 @@
     :disabled="disabled || loading"
     v-on="$listeners"
   >
-    <i class="el-icon-check" />
+    <i class="el-icon-search" />
   </button>
 </template>
 

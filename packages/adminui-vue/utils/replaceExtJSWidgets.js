@@ -159,10 +159,11 @@ function replaceShowList () {
         const vueCfgType = cfg.cmdData.hasOwnProperty('repository') || cfg.cmdData.hasOwnProperty('entityName')
         if (vueCfgType) {
           mountTableEntity({
+            isModal: cfg.isModal,
             tabId,
             title,
             props: cfg.cmdData,
-            slots: cfg.cmdData.slots
+            scopedSlots: cfg.cmdData.scopedSlots
           })
         } else {
           const req = cfg.cmdData.params[0]
@@ -205,6 +206,7 @@ function replaceShowList () {
           }
 
           mountTableEntity({
+            isModal: cfg.isModal,
             tabId: cfg.tabId,
             title: me.title || me.description || me.entity,
             props: {
