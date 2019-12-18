@@ -554,17 +554,59 @@ export default {
 
     handleShowDictionary () {
       if (!this.removeDefaultActions) {
+        const columns = this.$UB.connection.domain.get(this.entityName)
+          .filterAttribute(a => a.defaultView)
+          .map(({ code }) => code)
+
         const config = this.buildShowDictionaryConfig({
-          renderer: 'ext',
-          entity: this.entityName,
+          renderer: 'vue',
           cmdType: 'showList',
           isModal: true,
-          sender: this,
-          selectedInstanceID: this.value,
-          onItemSelected: ({ data }) => {
-            this.$emit('input', data[this.valueAttribute])
-          },
-          cmdData: { params: [this.repository().ubql()] }
+          cmdData: {
+            repository: () => {
+              const repo = this.repository().clone()
+              for (const col of columns) {
+                const hasColumn = repo.fieldList.includes(col)
+                if (!hasColumn) {
+                  repo.fieldList.push(col)
+                }
+              }
+              return repo
+            },
+            columns,
+            onSelectRecord: ({ ID, close }) => {
+              this.$emit('input', ID)
+              close()
+            },
+            buildEditConfig (cfg) {
+              cfg.isModal = true
+              return cfg
+            },
+            buildCopyConfig (cfg) {
+              cfg.isModal = true
+              return cfg
+            },
+            buildAddNewConfig (cfg) {
+              cfg.isModal = true
+              return cfg
+            },
+            scopedSlots: createElement => ({
+              toolbarPrepend: ({ store, close }) => {
+                return createElement('u-toolbar-button', {
+                  props: {
+                    icon: 'el-icon-check',
+                    disabled: !store.state.selectedRowId
+                  },
+                  on: {
+                    click: () => {
+                      this.$emit('input', store.state.selectedRowId)
+                      close()
+                    }
+                  }
+                }, [this.$ut('actionSelect')])
+              }
+            })
+          }
         })
         this.$UB.core.UBApp.doCommand(config)
       }

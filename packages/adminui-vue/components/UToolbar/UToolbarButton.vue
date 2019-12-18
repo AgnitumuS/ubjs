@@ -11,10 +11,11 @@
       :class="color"
       type="button"
       v-bind="$attrs"
+      :disabled="disabled"
       v-on="$listeners"
     >
       <i :class="icon" />
-      <slot/>
+      <slot />
     </button>
   </el-tooltip>
 </template>
@@ -39,7 +40,11 @@ export default {
     color: {
       type: String,
       default: 'primary'
-    }
+    },
+    /**
+     * Weather disabled state
+     */
+    disabled: Boolean
   }
 }
 </script>

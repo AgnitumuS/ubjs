@@ -83,6 +83,10 @@ module.exports = ({
       return getters.schema.haveAccessToMethod('delete')
     },
 
+    canAudit (state, getters) {
+      return getters.schema.hasMixin('audit')
+    },
+
     columns () {
       return columns
     },
@@ -346,6 +350,29 @@ module.exports = ({
         })
       }
       window.getSelection().removeAllRanges()
+    },
+
+    audit ({ getters }, ID) {
+      const tabId = $App.generateTabId({
+        entity: getters.entityName,
+        instanceID: ID
+      })
+      $App.doCommand({
+        cmdType: 'showList',
+        tabId,
+        title: `${UB.i18n('Audit')} (${UB.i18n(getters.entityName)})`,
+        renderer: 'vue',
+        cmdData: {
+          repository () {
+            return UB.Repository('uba_auditTrail')
+              .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP'])
+              .where('entity', '=', getters.entityName)
+              .where('entityinfo_id', '=', ID)
+              .orderByDesc('actionTime')
+          },
+          columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP']
+        }
+      })
     }
   }
 })

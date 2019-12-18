@@ -6,8 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UForm/mount/mountTableEntity` prop `cfg.isModal`. For render grid in modal
+ - `UTableEntity` audit action
+ - `UTableEntity` prop `onSelectRecord`. Overrides the record selection event. That is, double click or enter
+ - `UTableEntity` all toolbar slots is scoped and provides `store` and `close` action.
+ `store` need for access table data from slot, for example "select record button".
+ `close` calls close action which provides from root component.
 
 ### Changed
+ - `USelectEntity` show dictionary action show's UTableEntity grid
+ - `UForm/mount/mountModal` by default removes paddings from dialog body of `ElDialog`
+ - **BREAKING** `UTableEntity` renamed all named slots from *kebab-case* to *camelCase*.
+ In case pass scopedSlots param in `UForm/mount/mountTableEntity`
+ - `UTableEntity` filter submit icon changed from `el-icon-check` to `el-icon-search`
 
 ### Deprecated
 

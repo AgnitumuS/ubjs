@@ -8,7 +8,7 @@
     @keydown.down.exact="moveDown"
     @keydown.left.exact="moveLeft"
     @keydown.right.exact="moveRight"
-    @keydown.enter.exact="editRecord(selectedRowId)"
+    @keydown.enter.exact="onSelect(selectedRowId)"
     @keydown.ctrl.e.prevent.exact="editRecord(selectedRowId)"
     @keydown.ctrl.insert.exact="addNew"
     @keydown.ctrl.r.prevent.exact="refresh"
@@ -16,9 +16,16 @@
   >
     <div class="u-table-entity__head">
       <!-- @slot Replace whole toolbar -->
-      <slot name="toolbar">
+      <slot
+        name="toolbar"
+        :store="$store"
+      >
         <!-- @slot Prepend new buttons to toolbar -->
-        <slot name="toolbar-prepend" />
+        <slot
+          name="toolbarPrepend"
+          :store="$store"
+          :close="close"
+        />
 
         <u-toolbar-button
           color="secondary"
@@ -29,7 +36,11 @@
         </u-toolbar-button>
 
         <!-- @slot Replace add-new button in toolbar panel -->
-        <slot name="toolbar-button-add-new">
+        <slot
+          name="toolbarButtonAddNew"
+          :store="$store"
+          :close="close"
+        >
           <u-toolbar-button
             icon="el-icon-plus"
             :disabled="!canAddNew"
@@ -40,46 +51,66 @@
         </slot>
 
         <!-- @slot Prepend new buttons to toolbar before filter -->
-        <slot name="toolbar-append" />
+        <slot
+          name="toolbarAppend"
+          :store="$store"
+          :close="close"
+        />
 
         <filter-container ref="filterContainer" />
 
         <pagination />
 
         <!-- @slot Replace whole toolbar dropdown -->
-        <slot name="toolbar-dropdown">
-          <toolbar-dropdown>
+        <slot
+          name="toolbarDropdown"
+          :store="$store"
+          :close="close"
+        >
+          <toolbar-dropdown :close="close">
             <!-- @slot Prepend new buttons to toolbar -->
             <slot
               slot="prepend"
-              name="toolbar-dropdown-prepend"
+              name="toolbarDropdownPrepend"
+              :store="$store"
+              :close="close"
             />
 
             <!-- @slot Replace add-new button in toolbar dropdown -->
             <slot
               slot="add-new"
-              name="toolbar-dropdown-add-new"
+              name="toolbarDropdownAddNew"
+              :store="$store"
+              :close="close"
             />
             <!-- @slot Replace edit button in toolbar dropdown -->
             <slot
               slot="edit"
-              name="toolbar-dropdown-edit"
+              name="toolbarDropdownEdit"
+              :store="$store"
+              :close="close"
             />
             <!-- @slot Replace copy button in toolbar dropdown -->
             <slot
               slot="copy"
-              name="toolbar-dropdown-copy"
+              name="toolbarDropdownCopy"
+              :store="$store"
+              :close="close"
             />
             <!-- @slot Replace delete button in toolbar dropdown -->
             <slot
               slot="delete"
-              name="toolbar-dropdown-delete"
+              name="toolbarDropdownDelete"
+              :store="$store"
+              :close="close"
             />
 
             <!-- @slot Append new buttons to toolbar -->
             <slot
               slot="append"
-              name="toolbar-dropdown-append"
+              name="toolbarDropdownAppend"
+              :store="$store"
+              :close="close"
             />
           </toolbar-dropdown>
         </slot>
@@ -97,7 +128,7 @@
       :height="height"
       :max-height="maxHeight"
       :fixed-column-id="fixedColumnId"
-      @dblclick-row="editRecord($event.row.ID)"
+      @dblclick-row="onSelect($event.row.ID)"
       @click-cell="selectCell"
       @sort="updateSort"
       @contextmenu="showContextMenu"
@@ -172,6 +203,12 @@ export default {
   },
 
   mixins: [formatValueMixin],
+
+  inject: {
+    close: {
+      default: () => () => console.warn('Injection close didn\'t provided')
+    }
+  },
 
   props: {
     /**
@@ -276,7 +313,11 @@ export default {
     buildAddNewConfig: {
       type: Function,
       default: config => config
-    }
+    },
+    /**
+     * Overrides the record selection event. That is, double click or enter
+     */
+    onSelectRecord: Function
   },
 
   /**
@@ -437,6 +478,14 @@ export default {
         if (inputs.length > 0) {
           inputs[inputs.length - 1].focus()
         }
+      }
+    },
+
+    onSelect (ID) {
+      if (this.onSelectRecord) {
+        this.onSelectRecord({ ID, close: this.close })
+      } else {
+        this.editRecord(ID)
       }
     }
   }

@@ -2677,91 +2677,27 @@ Ext.define('UB.view.EntityGridPanel', {
       return
     }
 
+    const ID = sel[0].get('ID')
+    const entity = me.entityName
+    const tabId = $App.generateTabId({
+      entity,
+      instanceID: ID
+    })
+
     $App.doCommand({
+      renderer: 'vue',
+      tabId,
+      title: `${UB.i18n('Audit')} (${UB.i18n(entity)})`,
       cmdType: 'showList',
-      isModalDialog: true,
-      hideActions: ['addNew', 'addNewByCurrent', 'edit', 'del', 'newVersion'],
       cmdData: {
-        params: [
-          UB.Repository('uba_auditTrail')
+        repository () {
+          return UB.Repository('uba_auditTrail')
             .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP'])
-            .where('entity', '=', me.entityName)
-            .where('entityinfo_id', '=', sel[0].get('ID'))
+            .where('entity', '=', entity)
+            .where('entityinfo_id', '=', ID)
             .orderByDesc('actionTime')
-            .ubql()
-        ]
-      },
-      cmpInitConfig: {
-        onItemDblClick: function (grid, record, item, index, e, eOpts) {
-          this.doOnEdit(eOpts)
         },
-        afterInit: function () {
-          let grid = this
-          let grouper
-          // prevent two request grid.store.sort('actionTime', 'DESC')
-          grid.store.oldGroup = grid.store.group
-          grid.store.group = function (groupers, direction, suppressEvent) {
-            let me = this
-            if (!me.groupOptions) {
-              me.oldGroup(groupers, direction, suppressEvent)
-            }
-
-            var newGroupers
-            if (Ext.isArray(groupers)) {
-              newGroupers = groupers
-            } else if (Ext.isObject(groupers)) {
-              newGroupers = [groupers]
-            } else if (Ext.isString(groupers)) {
-              grouper = me.groupers.get(groupers)
-
-              if (!grouper) {
-                grouper = {
-                  property: groupers,
-                  direction: direction || 'ASC'
-                }
-                newGroupers = [grouper]
-              } else if (direction === undefined) {
-                grouper.toggle()
-              } else {
-                grouper.setDirection(direction)
-              }
-            }
-
-            _.forEeach(newGroupers, function (item) {
-              var gc = me.groupOptions[item.property]
-              if (gc) {
-                item.getGroupString = gc.getGroupString
-              }
-            })
-            me.oldGroup(newGroupers, direction, suppressEvent)
-          }
-
-          var dateTimeColumnInGrid = function (grid, columnName, format, formatGroup) {
-            if (grid && grid.columns && columnName && format) {
-              _.forEach(grid.columns, function (col) {
-                if (col.dataIndex === columnName) {
-                  col.format = format
-                  col.renderer = Ext.util.Format.dateRenderer(format)
-
-                  var store = grid.store
-                  if (!store.groupOptions) {
-                    store.groupOptions = {}
-                  }
-
-                  if (!store.groupOptions[columnName]) {
-                    store.groupOptions[columnName] = {}
-                  }
-
-                  var gc = store.groupOptions[columnName]
-                  gc.getGroupString = function (instance) {
-                    return Ext.Date.format(instance.get(columnName), formatGroup)
-                  }
-                }
-              })
-            }
-          }
-          dateTimeColumnInGrid(grid, 'actionTime', 'd.m.Y H:i:s', 'd.m.Y')
-        }
+        columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP']
       }
     })
   },
