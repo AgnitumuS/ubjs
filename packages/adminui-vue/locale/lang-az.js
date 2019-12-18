@@ -1,4 +1,5 @@
 /** ElementUI for UB Azerbaijani */
+/* globals UB */
 UB.i18nExtend({
   el: {
     colorpicker: {
@@ -133,25 +134,25 @@ UB.i18nExtend({
 
   sidebar: {
     desktopSelector: {
-      title: 'Desktop selection'
+      title: 'İş masanı seçimi'
     }
   },
 
   table: {
     filter: {
       list: {
-        title: 'Filters'
+        title: 'Filtlər'
       },
-      conditionPlaceholder: 'Condition',
-      valuePlaceholder: 'Value',
+      conditionPlaceholder: 'Şərt',
+      valuePlaceholder: 'Qiymət',
       date: {
-        from: 'from',
-        to: 'to',
-        valuePlaceholder: 'Select date'
+        from: 'dən',
+        to: 'dək',
+        valuePlaceholder: 'Tarixi seçin'
       }
     },
     pagination: {
-      outOf: 'out of'
+      outOf: 'dan'
     }
   },
 
@@ -165,15 +166,15 @@ UB.i18nExtend({
 
   fileInput: {
     manyFilesTable: {
-      label: 'Label',
-      size: 'Size',
-      type: 'Type',
-      uploadDate: 'Upload date'
+      label: 'Başlıq',
+      size: 'Həcm',
+      type: 'Tip',
+      uploadDate: 'Yüklənmə tarixi'
     },
-    dropZoneCaption: 'or drop files here'
+    dropZoneCaption: 'və ya faylları buraya sürükləyin'
   },
 
   select: {
-    valueIsUndefined: 'Value "{0}" not found in entity "{1}"'
+    valueIsUndefined: 'Qiymət "{0}" obeyktdə tapılmadı "{1}"'
   }
 })
