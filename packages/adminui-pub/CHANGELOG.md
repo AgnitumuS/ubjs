@@ -5,10 +5,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### Fixed
- - `EntityGridPanel` audit action
- - `BasePanel` audit action
- 
 ### Added
 
 ### Changed
@@ -19,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.12.18] - 2019-12-18
+### Fixed
+ - `EntityGridPanel` audit action
+ - `BasePanel` audit action
+ 
 ## [5.12.17] - 2019-12-17
 ### Added
  - support for new attribute `uba_auditTrail.actionUserName`

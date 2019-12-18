@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.9.8] - 2019-12-18
+### Added
  - `UForm/mount/mountTableEntity` prop `cfg.isModal`. For render grid in modal
  - `UTableEntity` audit action
  - `UTableEntity` prop `onSelectRecord`. Overrides the record selection event. That is, double click or enter
@@ -21,10 +32,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - **BREAKING** `UTableEntity` renamed all named slots from *kebab-case* to *camelCase*.
  In case pass scopedSlots param in `UForm/mount/mountTableEntity`
  - `UTableEntity` filter submit icon changed from `el-icon-check` to `el-icon-search`
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - UCodeMirror: null values showing fixed

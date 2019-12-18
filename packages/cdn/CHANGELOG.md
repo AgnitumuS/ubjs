@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.3.24] - 2019-12-18
+### Fixed
  - Russian language name in initial data for "ru" and "tg"
 
 ## [5.3.23] - 2019-12-17
