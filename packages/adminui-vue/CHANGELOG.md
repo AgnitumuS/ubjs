@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `USidebarButton` - created button to use in sidebar slot
 
 ### Changed
 
