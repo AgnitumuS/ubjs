@@ -14,7 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+- `@unitybase/pdf` && `@unitybase/xslx` packages are moved back into "dependencies" - neither "peerDependencies" nor
+ "optionalDependencies" not works as expected for initial `lerna bootstrap` 
+  
 ## [5.2.60] - 2019-12-17
 
 ## [5.2.59] - 2019-12-12

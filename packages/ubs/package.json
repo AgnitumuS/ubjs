@@ -34,9 +34,7 @@
     "mime-types": "^2.1.14",
     "mustache": "^3.0.1",
     "when": "1.8.1",
-    "xmldom": "^0.1.27"
-  },
-  "peerDependencies": {
+    "xmldom": "^0.1.27",
     "@unitybase/pdf": "^5.0.27",
     "@unitybase/xlsx": "^5.1.11"
   },
