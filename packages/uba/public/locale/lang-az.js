@@ -29,13 +29,13 @@ UB.i18nExtend({
   auditImageSize: 'Faylın ölçüsü (Bayt)',
   auditImageMD5: 'Yoxlanış məbləği (MD5)',
   auditImageRevision: 'Yoxlamaq',
-  auditImageVersion: 'Version',
-  SecurityAudit: 'Secutity audit',
-  'Record modified by another user': 'Record modified by another user',
-  needChangePassword: 'User need to change password on next logon',
-  checkAll: 'Check all',
-  roles: 'Roles',
+  auditImageVersion: 'Versiya',
+  SecurityAudit: 'Təhlikəsizlik auditi',
+  'Record modified by another user': 'Yazı digər istifadəçi tərəfindən dəyişdirilmişdir. Məlumatları yenilək lazımdır',
+  needChangePassword: 'İstifadəçi növbəti girişdə şifrəni yeniləməlidir',
+  checkAll: 'Hamısını seç',
+  roles: 'Rollar',
 
-    // !!!  Jangan mengubah item terakhir ini. Masukan item baru Anda sebelum EOF untuk SVN alasan auto merge.
+  // !!!  Jangan mengubah item terakhir ini. Masukan item baru Anda sebelum EOF untuk SVN alasan auto merge.
   EOF: 'EOF'
 })
