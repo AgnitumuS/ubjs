@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UAutoField` provide all $attrs to `UFormRow` and inner element in slot.
+   This allow, for example, to overrite a label position for individual field:
+   ```
+   <u-form-container v-loading="loading" label-position="top">
+      <u-auto-field attribute-name="host" label-position="left"/>
+      ...
+   ```
 
 ## [1.9.8] - 2019-12-18
 ### Added
