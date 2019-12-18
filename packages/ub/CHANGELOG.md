@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Changed
+  - UBAbort constructor now accept optional additional arguments, which will be passed down to client.
+    Anticipated scenario of usage:
+    ```
+    throw new UB.UBAbort('<<<file_not_found>>>', 'bad_file.name')
+    ```
+    The "file_not_found" i18n string on client should be like `'File "{0}" is not found or not accessible'`.
+
 ## [5.3.3] - 2019-11-21
 ### Added
   - new server config parameter `security.excludeGroups: ["group1", ...]`

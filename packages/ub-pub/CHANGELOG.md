@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Add
+ - feature of i18n function to translate its arguments.  The syntax `{0:i18n}` or `{foo:i18n}` shall be used.
+   - Examples:
+     ```
+     const UB = require('@unitybase/ub-pub')
+
+     const result = UB.i18n('my_string_key', 'value')
+     // for my_string_key = 'Error value: {0}', will return 'Error value: value', just as before 
+     // for my_string_key = 'Error value: {0:i18n}', will return 'Error value: Value', the "value" itself will be i18n-ed 
+
+     const result2 = UB.i18n('my_string_key', {value: 'value'})
+     // for my_string_key = 'Error value: {value}', will return 'Error value: value', just as before 
+     // for my_string_key = 'Error value: {value:i18n}', will return 'Error value: Value', the "value" itself will be i18n-ed 
+
+     ```
+ - AsyncConnection already parses and translate encoded error messages from server.  For example `<<<Some error>>>`
+     string is converted to just `Some error`, moreover, if the string matches i18n resource key, it gets translated.
+   Now, this feature gets even more sophisticated, it support passing string formatting arguments.  For example,
+   the error returned by server `<<<file_not_found>>>|["bad_file_name"]` will be translated using call
+   `i18n('file_not_found', 'bad_file_name')` and if the i18n resource is `'The file "{0}" is not accessible or does not exist'`,
+   the actual message will be: "The file "bad_file_name" is not accessible or does not exist".
+
 ## [5.3.28] - 2019-11-18
 ### Add
  - translates for iit-sign-web forms

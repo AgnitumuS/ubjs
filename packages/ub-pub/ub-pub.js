@@ -34,9 +34,11 @@ let UB = module.exports = {
 
  //Localized string can be formatted either by position args:
  UB.i18nExtend({
-   greeting: 'Hello {0}, welcome to {1}'
+   greeting: 'Hello {0}, welcome to {1:i18n}',
+   Kiev: 'Kyiv city'
  })
- UB.i18n('greeting', 'Mark', 'Kiev') // Hello Mark, welcome to Kiev
+ UB.i18n('greeting', 'Mark', 'Kiev') // Hello Mark, welcome to Kyiv city
+ // in sample above :i18n modifier is added to the second format args, so `Kiev` is also translated
 
  //Or by named args:
  UB.i18nExtend({

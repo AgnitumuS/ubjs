@@ -31,9 +31,55 @@ const AUTH_METHOD_URL = 'auth'
 const ANONYMOUS_USER = 'anonymous'
 const AUTH_SCHEMA_FOR_ANONYMOUS = 'None'
 
+const TEST_ERROR_MESSAGE_RE = /<<<.*?>>>/
+const PARSE_ERROR_MESSAGE_RE = /"<<<(.*?)>>>(?:\|(\[[^\]]*\]))?"/
+const SIMPLE_PARSE_ERROR_MESSAGE_RE = /<<<(.*)>>>/
+
 function parseUBErrorMessage (errMsg) {
-  return JSON.parse('"' + errMsg.match(/<<<(.*)>>>/)[1] + '"')
+  return JSON.parse('"' + errMsg.match(SIMPLE_PARSE_ERROR_MESSAGE_RE)[1] + '"')
 }
+
+function parseAndTranslateUBErrorMessage (errMsg) {
+  // RegExp for fast detection of error message
+  if (!TEST_ERROR_MESSAGE_RE.test(errMsg)) {
+    return i18n(errMsg)
+  }
+
+  // RegExp for full detection of error message by patterns, using parts
+  const match = errMsg.match(PARSE_ERROR_MESSAGE_RE)
+  if (!match) {
+    // Shall never happen
+    return i18n(errMsg)
+  }
+
+  // Problem is that errMsg is JSON-encoded object, and we are looking for a string inside it.
+  const [msgUnparsed, msgPart, argsPart] = match
+  if (!argsPart) {
+    // No parameters passed, just JSON.parse content inside <<<>>>
+    return i18n(JSON.parse('"' + msgPart + '"'))
+  }
+
+  // JSON.parse the whole part
+  const msgStr = JSON.parse(msgUnparsed)
+
+  const index = msgStr.indexOf('|')
+  if (index === -1) {
+    // Shall never happen
+    return i18n(msgStr)
+  }
+
+  const msg = msgStr.substring(3, index - 3)    // Use "substring" to get part inside <<<>>>, knowing index of |
+  const argsStr = msgStr.substr(index + 1)      // Get all the part after |
+  const args = JSON.parse(argsStr)         // Parse it.  If it fails - it fails, we expect server to return correct JSON
+  if (Array.isArray(args)) {
+    args.unshift(msg)
+    return i18n.apply(null, args)
+  } else {
+    // Object or a single value
+    return i18n(msg, args)
+  }
+}
+
 const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.localStorage : false
 
 /**
@@ -589,7 +635,8 @@ $App.connection.userLang()
           if (rejectReason.status === 0) {
             errInfo.errDetails = 'network error'
           }
-          if (/<<<.*>>>/.test(errInfo.errMsg)) {
+
+          if (TEST_ERROR_MESSAGE_RE.test(errInfo.errMsg)) {
             errInfo.errMsg = parseUBErrorMessage(errInfo.errMsg)
           }
 
@@ -840,9 +887,8 @@ UBConnection.prototype.xhr = function (config) {
         let errCode = reason.data.errCode
         let errDetails = errMsg = reason.data.errMsg
 
-        if (/<<<.*>>>/.test(errMsg)) { // this is custom error
-          errMsg = i18n(parseUBErrorMessage(errMsg)) // extract rear message and translate
-        }
+        errMsg = parseAndTranslateUBErrorMessage(errMsg)
+
         /**
          * Fired for {@link UBConnection} instance in case user password is expired.
          * The only valid endpoint after this is `changePassword`
