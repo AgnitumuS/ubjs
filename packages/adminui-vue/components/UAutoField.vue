@@ -3,6 +3,7 @@
     :label="label"
     :required="isRequired"
     :error="isError"
+    v-bind="$attrs"
   >
     <el-checkbox
       v-if="dataType === 'Boolean'"
