@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity` all toolbar slots is scoped and provides `store` and `close` action.
  `store` need for access table data from slot, for example "select record button".
  `close` calls close action which provides from root component.
+ - `UTableEntity` added audit action to toolbar
+ - `UTableEntity` added slot for audit action in toolbar
 
 ### Changed
  - `USelectEntity` show dictionary action show's UTableEntity grid
@@ -25,7 +27,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- UCodeMirror: null values showing fixed
+ - UCodeMirror: null values showing fixed
+ - `UFormRow` added additional verification to el-select click hack
+ - `UToolbar` audit action
 
 ## [1.9.7] - 2019-12-17
 ### Changed

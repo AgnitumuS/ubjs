@@ -56,7 +56,11 @@ const ElSelectHack = {
   },
 
   mounted () {
-    if (this.$slots.default && this.$slots.default[0].componentOptions.tag === 'el-select') {
+    if (
+      this.$slots.default &&
+      this.$slots.default[0].componentOptions &&
+      this.$slots.default[0].componentOptions.tag === 'el-select'
+    ) {
       this.elSelectRef = this.$slots.default[0].elm
       this.elSelectRef.addEventListener('click', this.onClickSelect)
     }

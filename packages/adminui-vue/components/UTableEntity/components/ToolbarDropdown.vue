@@ -46,6 +46,14 @@
           @click="deleteRecord(selectedRowId)"
         />
       </slot>
+      <slot name="audit">
+        <u-dropdown-item
+          icon="el-icon-data-analysis"
+          label="showAudit"
+          :disabled="!selectedRowId || !canAudit"
+          @click="audit(selectedRowId)"
+        />
+      </slot>
 
       <!-- TODO: excel export -->
       <!--      <u-dropdown-item-->
@@ -66,7 +74,8 @@ export default {
   computed: {
     ...mapGetters([
       'canAddNew',
-      'canDelete'
+      'canDelete',
+      'canAudit'
     ]),
     ...mapState(['items', 'selectedRowId'])
   },
@@ -77,7 +86,8 @@ export default {
       'addNew',
       'deleteRecord',
       'editRecord',
-      'copyRecord'
+      'copyRecord',
+      'audit'
     ])
 
     // exportExcel () {
