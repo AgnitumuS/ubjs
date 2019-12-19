@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- DDL generation for PostgreSQL 12 and UP; DDL generator now use `pg_get_constraintdef(oid)` for getting check constraints instead of obsolette `pg_constraint.consrc`
 
 ## [5.4.8] - 2019-12-18
 ## [5.4.7] - 2019-12-17
@@ -44,11 +45,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [5.3.42] - 2019-09-17
 ### Fixed
- - Oracle DDl generator - do not wrap enum group into quotes when update a value for enum column from `null` to `not null`
+ - Oracle DDL generator - do not wrap enum group into quotes when update a value for enum column from `null` to `not null`
  
 ## [5.3.41] - 2019-09-16
 ### Fixed
- - Oracle DDl generator - do not wrap enum group into quotes when update a value for enum column with `not null`
+ - Oracle DDL generator - do not wrap enum group into quotes when update a value for enum column with `not null`
    
 ## [5.3.38] - 2019-08-28
 ### Changed
