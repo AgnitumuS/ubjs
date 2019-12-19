@@ -323,6 +323,7 @@ export default {
     },
     /**
      * Overrides the record selection event. That is, double click or enter
+     * @type {function({ID: Number, row: Object, close: function})}
      */
     onSelectRecord: Function
   },

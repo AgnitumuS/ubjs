@@ -6,9 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `USidebarButton` - created button to use in sidebar slot
+ - `USidebarButton` - component for use in sidebar slot
 
 ### Changed
+ - additional parameter `row` added to `UTableEntity.onSelectRecord` callback as `cfg.row` parameter
+   Full function signature is `function({ID: Number, row: Object, close: function})`  
 
 ### Deprecated
 
@@ -16,7 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UAutoField` provide all $attrs to `UFormRow` and inner element in slot.
-   This allow, for example, to overrite a label position for individual field:
+   This allow, for example, to override a label position for individual field:
    ```
    <u-form-container v-loading="loading" label-position="top">
       <u-auto-field attribute-name="host" label-position="left"/>
