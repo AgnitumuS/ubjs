@@ -135,7 +135,7 @@
       :height="height"
       :max-height="maxHeight"
       :fixed-column-id="fixedColumnId"
-      @dblclick-row="onSelect($event.row.ID)"
+      @dblclick-row="onSelect($event.row.ID, $event.row)"
       @click-cell="selectCell"
       @sort="updateSort"
       @contextmenu="showContextMenu"
@@ -488,9 +488,9 @@ export default {
       }
     },
 
-    onSelect (ID) {
+    onSelect (ID, row) {
       if (this.onSelectRecord) {
-        this.onSelectRecord({ ID, close: this.close })
+        this.onSelectRecord({ ID, row, close: this.close })
       } else {
         this.editRecord(ID)
       }
