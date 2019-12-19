@@ -176,6 +176,19 @@ export default {
           repository () {
             return repo
           },
+          onSelectRecord (cfg) {
+            const tabId = $App.generateTabId({
+              entity: cfg.row.entity,
+              instanceID: cfg.ID
+            })
+            $App.doCommand({
+              cmdType: 'showForm',
+              entity: cfg.row.entity,
+              instanceID: cfg.ID,
+              target: $App.viewport.centralPanel,
+              tabId
+            })
+          },
           columns: [{
             id: 'entitydescr',
             label: 'ftsFieldCaption'
