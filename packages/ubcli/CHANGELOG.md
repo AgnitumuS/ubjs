@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.9] - 2019-12-19
+### Fixed
 - DDL generation for PostgreSQL 12 and UP; DDL generator now use `pg_get_constraintdef(oid)` for getting check constraints instead of obsolette `pg_constraint.consrc`
 
 ## [5.4.8] - 2019-12-18

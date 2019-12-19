@@ -6,15 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.9.9] - 2019-12-19
+### Added
  - `USidebarButton` - component for use in sidebar slot
 
 ### Changed
  - additional parameter `row` added to `UTableEntity.onSelectRecord` callback as `cfg.row` parameter
    Full function signature is `function({ID: Number, row: Object, close: function})`  
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UAutoField` provide all $attrs to `UFormRow` and inner element in slot.
