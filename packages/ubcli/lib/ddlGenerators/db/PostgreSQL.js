@@ -211,7 +211,7 @@ ORDER BY index_id, column_position`
 
       // check constraints
       let checkConstraintsSQL = `SELECT c.conname AS name, 
-         c.consrc as definition 
+         pg_get_constraintdef(c.oid) as definition 
          FROM pg_constraint c 
          LEFT JOIN pg_class t ON c.conrelid  = t.oid 
          WHERE t.relname = LOWER(:('${asIsTable._upperName}'):) 
