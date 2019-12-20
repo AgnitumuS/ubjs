@@ -812,6 +812,75 @@
       "description": "Settings, passed to UI in getAppInfo method. We recommend to place here ONLY parameters, necessary for UI initialization. Client-side app can access this settings using UB.connection.appConfig.uiSettings",
       "additionalProperties": false,
       "properties": {
+        "cspAllow": {
+          "type": "object",
+          "description": "Extension of CSP header with custom rules",
+          "properties": {
+            "defaultSrc": {
+              "type": "array",
+              "description": "Additional rules for `default-src`",
+              "items": {
+                "type": "string"
+              }
+            },
+            "scriptSrc": {
+              "type": "array",
+              "description": "Additional rules for `script-src`",
+              "items": {
+                "type": "string"
+              }
+            },
+            "connectSrc": {
+              "type": "array",
+              "description": "Additional rules for `connect-src`",
+              "items": {
+                "type": "string"
+              }
+            },
+            "objectSrc": {
+              "type": "array",
+              "description": "Additional rules for `object-src`",
+              "items": {
+                "type": "string"
+              }
+            },
+            "styleSrc": {
+              "type": "array",
+              "description": "Additional rules for `style-src`",
+              "items": {
+                "type": "string"
+              }
+            },
+            "imgSrc": {
+              "type": "array",
+              "description": "Additional rules for `img-src`",
+              "items": {
+                "type": "string"
+              }
+            },
+            "frameSrc": {
+              "type": "array",
+              "description": "Additional rules for `frame-src`",
+              "items": {
+                "type": "string"
+              }
+            },
+            "fontSrc": {
+              "type": "array",
+              "description": "Additional rules for `font-src`",
+              "items": {
+                "type": "string"
+              }
+            },
+            "baseUri": {
+              "type": "array",
+              "description": "Additional rules for `base-uri`",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
         "adminUI": {
           "type": "object",
           "description": "Settings for admin UI",

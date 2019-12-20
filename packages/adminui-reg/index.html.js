@@ -186,13 +186,14 @@ but "browser" section in package.json is not defined. Will fallback to "browser"
         cspAllow = uiSettings.cspAllow = {}
       }
       initCspAllow(cspAllow, cspAllowP, 'defaultSrc', 'https://localhost:8083 http://localhost:8081')
-      initCspAllow(cspAllow, cspAllowP, 'scriptSrc', 'https://localhost:8083 http://localhost:8081')
+      initCspAllow(cspAllow, cspAllowP, 'scriptSrc', 'https://localhost:8083 http://localhost:8081 resource://pdf.js/build/ resource://pdf.js/web/')
       initCspAllow(cspAllow, cspAllowP, 'connectSrc', 'https://localhost:8083 http://localhost:8081')
       initCspAllow(cspAllow, cspAllowP, 'objectSrc', 'https://localhost:8083 http://localhost:8081')
       initCspAllow(cspAllow, cspAllowP, 'styleSrc')
       initCspAllow(cspAllow, cspAllowP, 'imgSrc')
       initCspAllow(cspAllow, cspAllowP, 'frameSrc')
       initCspAllow(cspAllow, cspAllowP, 'fontSrc')
+      initCspAllow(cspAllow, cspAllowP, 'baseUri', 'resource:')
 
       let wsNotifier = App.serverConfig.uiSettings.adminUI.amqpNotificationUrl || ''
       let cspHeaders =
@@ -202,7 +203,7 @@ but "browser" section in package.json is not defined. Will fallback to "browser"
         // TODO - remove 'unsafe-eval' after removing all `eval(` from Ext
         `script-src 'self' 'nonce-${cspNonce}' 'unsafe-eval' ${cspAllowP.scriptSrc}; ` +
         `object-src blob: ${cspAllowP.objectSrc}; ` +
-        `base-uri 'none' ; ` +
+        `base-uri ${cspAllowP.baseUri}; ` +
         `style-src 'self' 'unsafe-inline' data: ${cspAllowP.styleSrc}; ` +
         `font-src 'self' data: ${cspAllowP.fontSrc}; ` +
         `frame-src 'self' ${cspAllowP.frameSrc} blob:; ` + // blob src required for chrome PDF viewer. Self - for JS PDF viewer
