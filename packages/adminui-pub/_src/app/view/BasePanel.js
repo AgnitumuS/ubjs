@@ -3655,9 +3655,12 @@ Ext.define('UB.view.BasePanel', {
   onAudit () {
     const { instanceID: ID, entityName: entity } = this
     if (ID) {
+      let wnd = this.up('window')
+      let modal = wnd ? wnd.modal : false
       $App.doCommand({
         renderer: 'vue',
-        isModal: true,
+        isModal: modal,
+        tabId: modal ? undefined : 'uba_auditTrail',
         title: `${UB.i18n('Audit')} (${UB.i18n(entity)})`,
         cmdType: 'showList',
         cmdData: {
