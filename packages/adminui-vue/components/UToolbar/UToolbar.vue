@@ -339,28 +339,29 @@ export default {
     },
 
     onKeydownActions (e) {
-      if (e.key === 'r' && e.ctrlKey) {
+      if (!e.ctrlKey) return // return ASAP in case Ctrl not pressed
+      if (e.key === 'r') {
         e.preventDefault()
         if (this.canRefresh) {
           this.refresh()
         }
       }
 
-      if (e.key === 's' && e.ctrlKey) {
+      if (e.key === 's') {
         e.preventDefault()
         if (this.canSave) {
           this.save()
         }
       }
 
-      if (e.key === 'Enter' && e.ctrlKey) {
+      if (e.key === 'Enter') {
         e.preventDefault()
         if (this.canSave) {
           this.saveAndClose()
         }
       }
 
-      if (e.key === 'Delete' && e.ctrlKey) {
+      if (e.key === 'Delete') {
         e.preventDefault()
         if (this.canDelete) {
           this.deleteInstance(this.$formServices.forceClose)
