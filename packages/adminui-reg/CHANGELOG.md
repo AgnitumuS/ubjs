@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Fixed
+ - Add CSP rules for PDF.js Firefox extension
+
 ## [5.3.6] - 2019-11-18
 ### Fixed
  - CSP for IIT sign agent
