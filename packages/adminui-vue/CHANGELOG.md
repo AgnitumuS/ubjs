@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.9.10] - 2019-12-20
 ## [1.9.9] - 2019-12-19
 ### Added
  - `USidebarButton` - component for use in sidebar slot

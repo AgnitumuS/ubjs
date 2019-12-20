@@ -6,15 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- 
+
 ### Changed
- - Improved JSON schema for ubConfig.json: add support for `uiSetting.cspAllow`
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.3.9] - 2019-12-20
+### Changed
+ - Improved JSON schema for ubConfig.json: add support for `uiSetting.cspAllow`
 
 ## [5.3.8] - 2019-12-18
 ### Changed

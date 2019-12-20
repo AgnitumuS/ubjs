@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.12.19] - 2019-12-20
+### Fixed
  - `audit` action for Ext based forms (BasePanel descendants) will be shown in Tab in case form shown in tab
 
 ## [5.12.18] - 2019-12-18
