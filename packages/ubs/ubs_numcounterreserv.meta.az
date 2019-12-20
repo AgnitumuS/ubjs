@@ -16,6 +16,11 @@
       "name": "reservedDate",
       "caption": "Əvvəlcədən təyin edilmiş tarix",
       "description": "Sənədin əvvəlcədən təyin edilmiş tarixi"
+    },
+    {
+      "name": "note",
+      "caption": "Qeyd",
+      "description": "Qeyd"
     }
   ]
 }
