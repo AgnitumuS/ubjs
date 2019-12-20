@@ -1,3 +1,4 @@
+const http = require('http')
 const UB = require('@unitybase/ub')
 const App = UB.App
 /**
@@ -255,7 +256,6 @@ function notifyProviderError (resp, provider) {
 }
 
 function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orign) {
-  let http = require('http')
   let request
   let response
   let responseData
@@ -272,20 +272,22 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
   response = request.end()
 
   if (response.statusCode === 200) {
-    responseData = JSON.parse(response.read()) // response._http.responseText
-    if (provider.userInfoHTTPMethod === 'POST') {
-      request = http.request(provider.userInfoUrl)
-      request.options.method = 'POST'
-      request.write('access_token=' + responseData.access_token)
-      request.write('&client_id=' + provider.client_id)
-      request.write('&client_secret=' + provider.client_secret)
-      request.setHeader('Content-Type', 'application/x-www-form-urlencoded')
-    } else {
-      request = http.request(provider.userInfoUrl + '?access_token=' + responseData.access_token)
+    if (provider.userInfoUrl) {
+      responseData = JSON.parse(response.read()) // response._http.responseText
+      if (provider.userInfoHTTPMethod === 'POST') {
+        request = http.request(provider.userInfoUrl)
+        request.options.method = 'POST'
+        request.write('access_token=' + responseData.access_token)
+        request.write('&client_id=' + provider.client_id)
+        request.write('&client_secret=' + provider.client_secret)
+        request.setHeader('Content-Type', 'application/x-www-form-urlencoded')
+      } else {
+        request = http.request(provider.userInfoUrl + '?access_token=' + responseData.access_token)
+      }
+      response = request.end()
     }
-    response = request.end()
     if (response.statusCode === 200) {
-      responseData = JSON.parse(response._http.responseText)
+      responseData = JSON.parse(response.read()) // response._http.responseText
       userID = provider.getUserID(responseData, {resp: resp, code: code, state: state, provider: provider, redirectUrl: redirectUrl, orign: orign})
       if (userID === false) {
         return
