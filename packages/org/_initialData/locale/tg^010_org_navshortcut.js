@@ -11,7 +11,12 @@ module.exports = function (session) {
     entity: 'ubm_desktop',
     keyAttribute: 'code',
     localization: [
-      {keyValue: 'org_desktop', execParams: {caption: 'Сохтори корхона'}}
+      { keyValue: 'org_desktop',
+        execParams: {
+          caption: 'Сохтори корхона',
+          description: 'Раёсатҳо, вазифаҳо, кормандон, таъйинот, ...'
+        }
+      }
     ]
   }
 
@@ -21,18 +26,18 @@ module.exports = function (session) {
     entity: 'ubm_navshortcut',
     keyAttribute: 'code',
     localization: [
-      {keyValue: 'org_folder_internal', execParams: {caption: 'Сохтори корхона'}},
-      {keyValue: 'org_department', execParams: {caption: 'Шӯъбаҳои дохилӣ'}},
-      {keyValue: 'org_organization', execParams: {caption: 'Корхонаҳои дохилӣ'}},
-      {keyValue: 'org_employeeonstaff', execParams: {caption: 'Таъинҳои дохилӣ'}},
-      {keyValue: 'org_employeeonstaff_all', execParams: {caption: 'Таъинҳои дохилӣ (ҳама)'}},
-      {keyValue: 'org_staffunit', execParams: {caption: 'Воҳиди корӣ'}},
-      {keyValue: 'org_execgroup', execParams: {caption: 'Гурӯҳҳои рассомон'}},
-      {keyValue: 'org_unit', execParams: {caption: 'Сохтори созмонии дохилӣ'}},
-      {keyValue: 'org_employee', execParams: {caption: 'Кормандони дохилӣ'}},
-      {keyValue: 'org_folder_dict', execParams: {caption: 'Иловагӣ'}},
-      {keyValue: 'org_profession', execParams: {caption: 'Касбҳо'}},
-      {keyValue: 'org_diagram', execParams: {caption: 'Органиграмма'}}
+      { keyValue: 'org_folder_internal', execParams: { caption: 'Сохтори корхона' } },
+      { keyValue: 'org_department', execParams: { caption: 'Шӯъбаҳои дохилӣ' } },
+      { keyValue: 'org_organization', execParams: { caption: 'Корхонаҳои дохилӣ' } },
+      { keyValue: 'org_employeeonstaff', execParams: { caption: 'Таъинҳои дохилӣ' } },
+      { keyValue: 'org_employeeonstaff_all', execParams: { caption: 'Таъинҳои дохилӣ (ҳама)' } },
+      { keyValue: 'org_staffunit', execParams: { caption: 'Воҳиди корӣ' } },
+      { keyValue: 'org_execgroup', execParams: { caption: 'Гурӯҳҳои рассомон' } },
+      { keyValue: 'org_unit', execParams: { caption: 'Сохтори созмонии дохилӣ' } },
+      { keyValue: 'org_employee', execParams: { caption: 'Кормандони дохилӣ' } },
+      { keyValue: 'org_folder_dict', execParams: { caption: 'Иловагӣ' } },
+      { keyValue: 'org_profession', execParams: { caption: 'Касбҳо' } },
+      { keyValue: 'org_diagram', execParams: { caption: 'Органиграмма' } }
     ]
   }
 

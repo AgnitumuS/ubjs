@@ -9,11 +9,10 @@
  * @param {ServerSession} session
  */
 module.exports = function (session) {
-  var
-    desktopID; var folderID; var conn = session.connection
+  const conn = session.connection
+  let folderID
 
-  'use strict'
-  desktopID = conn.lookup('ubm_desktop', 'ID', { expression: 'code', condition: 'equal', values: { code: 'org_desktop' } })
+  let desktopID = conn.lookup('ubm_desktop', 'ID', { expression: 'code', condition: 'equal', values: { code: 'org_desktop' } })
   console.info('\tFill `Organizational Structure` desktop')
   if (!desktopID) {
     console.info('\t\tcreate new `Organizational Structure` desktop')
@@ -22,8 +21,9 @@ module.exports = function (session) {
       fieldList: ['ID'],
       execParams: {
         code: 'org_desktop',
-        caption: 'Organizational Structure',
-        iconCls: 'el-icon-office-building'
+        caption: 'Organizational structure',
+        iconCls: 'el-icon-office-building',
+        description: 'Departments, positions, employees, appointments,...'
       }
     })
   } else {
