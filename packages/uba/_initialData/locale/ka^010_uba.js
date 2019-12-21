@@ -7,17 +7,23 @@ const loader = require('@unitybase/base').dataLoader
  * @param {ServerSession} session
  */
 module.exports = function (session) {
-  let localizationConfig = {
-    entity: 'ubm_desktop',
-    keyAttribute: 'code',
-    localization: [
-      { keyValue: 'adm_desktop', execParams: { caption: 'ადმინისტრატორი' } }
-    ]
+  function localize (localizationConfig) {
+    loader.localizeEntity(session, localizationConfig, __filename)
   }
 
-  loader.localizeEntity(session, localizationConfig, __filename)
+  localize({
+    entity: 'ubm_desktop',
+    keyAttribute: 'code',
+    localization: [{
+      keyValue: 'adm_desktop',
+      execParams: {
+        caption: 'ადმინისტრატორი',
+        description: 'მომხმარებლის მენეჯმენტი, ინტერფეისის პარამეტრები, ჟურნალი (აუდიტის ბილიკი, დაცვა, რიგები)'
+      }
+    }]
+  })
 
-  localizationConfig = {
+  localize({
     entity: 'ubm_navshortcut',
     keyAttribute: 'code',
     localization: [
@@ -37,11 +43,9 @@ module.exports = function (session) {
       { keyValue: 'uba_als', execParams: { caption: 'ატრიბუტების დონის უსაფრთხოება' } },
       { keyValue: 'uba_otp', execParams: { caption: 'ერთჯერადი პაროლი' } }
     ]
-  }
+  })
 
-  loader.localizeEntity(session, localizationConfig, __filename)
-
-  localizationConfig = {
+  localize({
     entity: 'uba_role',
     keyAttribute: 'name',
     localization: [
@@ -53,7 +57,5 @@ module.exports = function (session) {
       { keyValue: 'Developer', execParams: { description: 'დეველოპერი (ჩაშენებული როლი)' } },
       { keyValue: 'Monitor', execParams: { description: 'მონიტორინგი (ჩაშენებული როლი)' } }
     ]
-  }
-
-  loader.localizeEntity(session, localizationConfig, __filename)
+  })
 }

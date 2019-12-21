@@ -11,7 +11,12 @@ module.exports = function (session) {
     entity: 'ubm_desktop',
     keyAttribute: 'code',
     localization: [
-      {keyValue: 'org_desktop', execParams: {caption: 'Орг. структура'}}
+      { keyValue: 'org_desktop',
+        execParams: {
+          caption: 'Орг. структура',
+          description: 'Департаменти, посади, службовці, призначення, ...'
+        }
+      }
     ]
   }
 
@@ -21,18 +26,18 @@ module.exports = function (session) {
     entity: 'ubm_navshortcut',
     keyAttribute: 'code',
     localization: [
-      {keyValue: 'org_folder_internal', execParams: {caption: 'Орг. структура'}},
-      {keyValue: 'org_department', execParams: {caption: 'Внутрішні підрозділи'}},
-      {keyValue: 'org_organization', execParams: {caption: 'Внутрішні організації'}},
-      {keyValue: 'org_employeeonstaff', execParams: {caption: 'Внутрішні призначення'}},
-      {keyValue: 'org_employeeonstaff_all', execParams: {caption: 'Внутрішні призначення (всі)'}},
-      {keyValue: 'org_staffunit', execParams: {caption: 'Штатні одиниці'}},
-      {keyValue: 'org_execgroup', execParams: {caption: 'Групи виконавців'}},
-      {keyValue: 'org_unit', execParams: {caption: 'Внутрішні орг.одиниці'}},
-      {keyValue: 'org_employee', execParams: {caption: 'Внутрішні працівники'}},
-      {keyValue: 'org_folder_dict', execParams: {caption: 'Додатково'}},
-      {keyValue: 'org_profession', execParams: {caption: 'Професії'}},
-      {keyValue: 'org_diagram', execParams: {caption: 'Органограми'}}
+      { keyValue: 'org_folder_internal', execParams: { caption: 'Орг. структура' } },
+      { keyValue: 'org_department', execParams: { caption: 'Внутрішні підрозділи' } },
+      { keyValue: 'org_organization', execParams: { caption: 'Внутрішні організації' } },
+      { keyValue: 'org_employeeonstaff', execParams: { caption: 'Внутрішні призначення' } },
+      { keyValue: 'org_employeeonstaff_all', execParams: { caption: 'Внутрішні призначення (всі)' } },
+      { keyValue: 'org_staffunit', execParams: { caption: 'Штатні одиниці' } },
+      { keyValue: 'org_execgroup', execParams: { caption: 'Групи виконавців' } },
+      { keyValue: 'org_unit', execParams: { caption: 'Внутрішні орг.одиниці' } },
+      { keyValue: 'org_employee', execParams: { caption: 'Внутрішні працівники' } },
+      { keyValue: 'org_folder_dict', execParams: { caption: 'Додатково' } },
+      { keyValue: 'org_profession', execParams: { caption: 'Професії' } },
+      { keyValue: 'org_diagram', execParams: { caption: 'Органограми' } }
     ]
   }
 

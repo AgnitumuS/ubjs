@@ -10,7 +10,12 @@ module.exports = function (session) {
     entity: 'ubm_desktop',
     keyAttribute: 'code',
     localization: [
-      { keyValue: 'org_desktop', execParams: { caption: 'ორგანიზაციული სტრუქტურა' } }
+      { keyValue: 'org_desktop',
+        execParams: {
+          caption: 'ორგანიზაციული სტრუქტურა',
+          description: 'განყოფილებები, თანამდებობები, თანამშრომლები, დანიშვნები, ...'
+        }
+      }
     ]
   }
 

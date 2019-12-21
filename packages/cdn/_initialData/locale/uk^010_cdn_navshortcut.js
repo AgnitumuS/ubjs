@@ -10,7 +10,12 @@ module.exports = function (session) {
     entity: 'ubm_desktop',
     keyAttribute: 'code',
     localization: [
-      { keyValue: 'cdn_desktop', execParams: { caption: 'Загальні довідники' } }
+      { keyValue: 'cdn_desktop',
+        execParams: {
+          caption: 'Загальні довідники',
+          description: 'Довідники суб\'єктів, адрес, інші класифікатори'
+        }
+      }
     ]
   }
 

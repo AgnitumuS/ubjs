@@ -10,7 +10,12 @@ module.exports = function (session) {
     entity: 'ubm_desktop',
     keyAttribute: 'code',
     localization: [
-      { keyValue: 'cdn_desktop', execParams: { caption: 'საერთო ლექსიკონო' } }
+      { keyValue: 'cdn_desktop',
+        execParams: {
+          caption: 'საერთო ლექსიკონო',
+          description: 'საგნების, მისამართების, სხვა კლასიფიკატორების დირექტორიები'
+        }
+      }
     ]
   }
 

@@ -24,7 +24,8 @@ module.exports = function (session) {
       execParams: {
         code: 'cdn_desktop',
         caption: 'Common dictionaries',
-        iconCls: 'el-icon-notebook-1'
+        iconCls: 'el-icon-notebook-1',
+        description: 'Directories of subjects, addresses, other classifiers'
       }
     })
     console.info('\t\tprovide rights for `Common dictionaries` to users role')

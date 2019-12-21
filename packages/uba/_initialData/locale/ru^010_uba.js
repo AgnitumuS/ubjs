@@ -6,17 +6,23 @@ const loader = require('@unitybase/base').dataLoader
  * @param {ServerSession} session
  */
 module.exports = function (session) {
-  let localizationConfig = {
-    entity: 'ubm_desktop',
-    keyAttribute: 'code',
-    localization: [
-      { keyValue: 'adm_desktop', execParams: { caption: 'Администратор' } }
-    ]
+  function localize (localizationConfig) {
+    loader.localizeEntity(session, localizationConfig, __filename)
   }
 
-  loader.localizeEntity(session, localizationConfig, __filename)
+  localize({
+    entity: 'ubm_desktop',
+    keyAttribute: 'code',
+    localization: [{
+      keyValue: 'adm_desktop',
+      execParams: {
+        caption: 'Администратор',
+        description: 'Управление пользователями, настройки интерфейса, журналы (аудит, безопасность, очередь)'
+      }
+    }]
+  })
 
-  localizationConfig = {
+  localize({
     entity: 'ubm_navshortcut',
     keyAttribute: 'code',
     localization: [
@@ -36,11 +42,9 @@ module.exports = function (session) {
       { keyValue: 'uba_als', execParams: { caption: 'Права на атрибуты (ALS)' } },
       { keyValue: 'uba_otp', execParams: { caption: 'Одноразовые пароли (OTP)' } }
     ]
-  }
+  })
 
-  loader.localizeEntity(session, localizationConfig, __filename)
-
-  localizationConfig = {
+  localize({
     entity: 'uba_role',
     keyAttribute: 'name',
     localization: [
@@ -52,7 +56,5 @@ module.exports = function (session) {
       { keyValue: 'Developer', execParams: { description: 'Разработчик (встроенная роль)' } },
       { keyValue: 'Monitor', execParams: { description: 'Мониторинг (встроенная роль)' } }
     ]
-  }
-
-  loader.localizeEntity(session, localizationConfig, __filename)
+  })
 }

@@ -13,8 +13,8 @@ const path = require('path')
  */
 module.exports = function (session) {
   let desktopID, folderID
-  let conn = session.connection
-  let domain = conn.getDomainInfo()
+  const conn = session.connection
+  const domain = conn.getDomainInfo()
   if (!domain.has('ubm_desktop') || !domain.has('ubm_navshortcut')) {
     console.info('\tSkip shortcut initialization - entity ubm_navshortcut not in domain')
     return
@@ -32,7 +32,9 @@ module.exports = function (session) {
       fieldList: ['ID'],
       execParams: {
         code: 'adm_desktop',
-        caption: 'Administrator'
+        caption: 'Administrator',
+        iconCls: 'el-icon-setting',
+        description: 'User management, UI settings, logs (audit trail, security, queue)'
       }
     })
   } else {
