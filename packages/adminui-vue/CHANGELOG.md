@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - show actual text instead of empty <<< >>> in error window in case unhandled rejection message contains <<<text>>>    
 
 ## [1.9.10] - 2019-12-20
 ## [1.9.9] - 2019-12-19

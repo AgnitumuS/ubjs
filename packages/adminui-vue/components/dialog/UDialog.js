@@ -4,6 +4,8 @@ const UDialog = require('./UDialog.vue').default
 const { Notification } = require('element-ui')
 const UDialogConstructor = Vue.extend(UDialog)
 
+const USER_MESSAGE_RE = /^<<<([\S|\s]+)>>>$/
+
 /**
  * Show modal dialog with 3 optional button
  * @param {Object} options
@@ -78,7 +80,6 @@ function dialogInfo (msg, title = 'info') {
  * @returns {Promise<boolean>} resolved to true then user click OK in other case - false
  */
 function dialogError (msg, title = 'error', isDevInfo = false) {
-  const USER_MESSAGE_RE = /^<<<([\S|\s]+)>>>$/
   msg = msg.replace(USER_MESSAGE_RE, '$1')
   return dialog({
     title,
@@ -105,8 +106,10 @@ function errorReporter ({ errMsg, errCode, entityCode, detail }) {
   const devBtn = `<i title="${UB.i18n('showDeveloperDetail')}" class="fa fa-wrench" data-id="${devBtnID}"></i>`
   const showMessBtn = `<i title="${UB.i18n('showFullScreen')}" class="fa fa-window-restore" data-id="${showMessBtnID}"></i>`
   const footer = `<div class="ub-notification__error__btn-group">${showMessBtn + devBtn}</div>`
-  const message = `<div class="ub-notification__error__content">${errMsg}</div>${footer}`
-
+  let msgToDisplay = USER_MESSAGE_RE.test(errMsg)
+    ? UB.i18n(errMsg.replace(USER_MESSAGE_RE, '$1'))
+    : errMsg
+  const message = `<div class="ub-notification__error__content">${msgToDisplay}</div>${footer}`
   const instance = Notification.error({
     title: UB.i18n('error'),
     message,
