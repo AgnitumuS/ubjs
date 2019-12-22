@@ -45,14 +45,6 @@ export default {
     },
 
     /**
-     * Entity name of collection
-     */
-    entityName: {
-      type: String,
-      required: true
-    },
-
-    /**
      * Set disable status
      */
     disabled: Boolean,
@@ -90,6 +82,10 @@ export default {
   computed: {
     collectionData () {
       return this.$store.state.collections[this.collectionName]
+    },
+
+    entityName () {
+      return this.collectionData.entity
     },
 
     entitySchema () {
