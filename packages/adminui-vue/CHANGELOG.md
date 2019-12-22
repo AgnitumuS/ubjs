@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - `USelectCollection` prop `entityName` removed in flavor of computed property `entityName`
 
 ### Fixed
  - show actual text instead of empty <<< >>> in error window in case unhandled rejection message contains <<<text>>>    
