@@ -276,7 +276,7 @@ Ext.define('UB.core.UBApp', {
       buttons: [{
         ubID: 'btnOK',
         text: UB.i18n('Change'),
-        glyph: UB.core.UBUtil.glyphs.faSave,
+        iconCls: 'fas fa-save',
         disabled: true
       }]
 

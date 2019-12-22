@@ -2,7 +2,7 @@ import Vue from 'vue'
 import UB from '@unitybase/ub-pub'
 import Vuex from 'vuex'
 import Element from 'element-ui'
-import 'font-awesome/css/font-awesome.css'
+// import 'font-awesome/css/font-awesome.css'
 import '../dist/adminui-vue.css'
 import locale from 'element-ui/lib/locale/lang/en'
 

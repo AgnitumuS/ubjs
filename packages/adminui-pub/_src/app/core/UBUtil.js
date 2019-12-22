@@ -23,66 +23,6 @@ Ext.define('UB.core.UBUtil', {
   singleton: true,
 
   /**
-   * Dictionary of system glyph for font icons. Values is a number or FontAwesome character
-   * @property glyphs
-   */
-  glyphs: {
-    faBars: 0xf0c9,
-    faFilter: 0xf0b0,
-    faRefresh: 0xf021,
-    faEdit: 0xf044,
-    faPlusCircle: 0xf055, // add
-    faTrashO: 0xf014, // delete
-    faEye: 0xf06e, // showPreview
-    faLink: 0xf0c1,
-    faSitemap: 0xf0e8, // details
-    faCheck: 0xf00c, // select
-    faShareSquare: 0xf045, // save and close
-    faFloppy: 0xf0c7, // save
-    faExternalLink: 0xf08e, // export
-    faUp: 0xf062,
-    faDown: 0xf063,
-    faEllipsish: 0xf141, // ...
-    faSearch: 0xf002,
-    faQuestionCircle: 0xf059,
-    faWrench: 0xf0ad,
-    faSave: 0xf0c7,
-    faOpen: 0xf115,
-    faSquare: 0xf096,
-    faBinoculars: 0xf002, // MPV - replace to search 0xf1e5,
-    faClose: 0xf00d,
-    faEraser: 0xf12d, // clear value
-    faDownload: 0xf019,
-    faUpload: 0xf093,
-    faCalculator: 0xf1ec,
-    faCaretSquareODown: 0xf150, // details
-    faLock: 0xf023,
-    faUnLock: 0xf09c,
-    faCog: 0xf013,
-    faCogs: 0xf085,
-    faShare: 0xf064,
-    faShareAlt: 0xf1e0,
-    faUsers: 0xf0c0,
-    faKey: 0xf084,
-    faLanguage: 0xf1ab,
-    faDatabase: 0xf1c0,
-    faSignOut: 0xf08b,
-    faPencil: 0xf040, // edit
-    faTable: 0xf0ce, // grid (table, dictionary)
-    faEnvelopeO: 0xf003,
-    faEnvelope: 0xf0e0,
-    faBell: 0xf0f3,
-    faCaretDown: 0xf0d7,
-    faFolder: 0xf07b,
-    faFileExcelO: 0xf1c3,
-    faHierarche: 0xf0e8,
-    faPencilSquareO: 0xf044,
-    faArrowLeft: 0xf060,
-    faTimes: 0xf00d, // CLOSE action
-    faClone: 0xf24d
-  },
-
-  /**
    * @return {String[]}
    */
   getLocalStorageKeys: function () {

@@ -603,7 +603,7 @@ Ext.define('UDISK.AdminView', {
     me.actions.download = new Ext.Action({
       actionId: 'download',
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faDownload,
+      iconCls: 'fa fa-download',
       tooltip: UB.i18n('download'), // + hotKeys[actions.saveAndClose].text,
       text: UB.i18n('download'),
       eventId: 'download',
@@ -616,7 +616,7 @@ Ext.define('UDISK.AdminView', {
     me.actions.upload = new Ext.Action({
       actionId: 'upload',
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faUpload,
+      iconCls: 'fa fa-upload',
       tooltip: UB.i18n('upload'), // + hotKeys[actions.saveAndClose].text,
       text: UB.i18n('upload'),
       eventId: 'upload',
@@ -628,7 +628,7 @@ Ext.define('UDISK.AdminView', {
     me.actions.del = new Ext.Action({
       actionId: 'del',
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faTrashO,
+      iconCls: 'fa fa-trash-o',
       tooltip: UB.i18n('delete'), // + hotKeys[actions.saveAndClose].text,
       text: UB.i18n('delete'),
       eventId: 'del',
@@ -640,7 +640,7 @@ Ext.define('UDISK.AdminView', {
     me.actions.share = new Ext.Action({
       actionId: 'share',
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faUsers,
+      iconCls: 'fa fa-users',
       tooltip: UB.i18n('share'), // + hotKeys[actions.saveAndClose].text,
       text: UB.i18n('share'),
       eventId: 'share',
@@ -653,7 +653,7 @@ Ext.define('UDISK.AdminView', {
     me.actions.refresh = new Ext.Action({
       actionId: 'refresh',
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faRefresh,
+      iconCls: 'fa fa-refresh',
       cls: 'refresh-action',
       tooltip: UB.i18n('refresh'),
       text: UB.i18n('refresh'),
@@ -675,7 +675,7 @@ Ext.define('UDISK.AdminView', {
     me.actions.showHideTree = new Ext.Action({
       actionId: 'showHideTree',
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faHierarche,
+      iconCls: 'fa fa-hierarche',
       tooltip: UB.i18n('showHideTree'), // + hotKeys[actions.saveAndClose].text,
       text: UB.i18n('showHideTree'),
       eventId: 'showHideTree',
@@ -698,7 +698,7 @@ Ext.define('UDISK.AdminView', {
     me.actions.editFileByWebDaw = new Ext.Action({
       actionId: 'editFileByWebDaw',
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faPencil,
+      iconCls: 'fa fa-pencil',
       tooltip: UB.i18n('editFileByWebDaw'), // + hotKeys[actions.saveAndClose].text,
       text: UB.i18n('editFileByWebDaw'),
       eventId: 'editFileByWebDaw',
@@ -793,7 +793,7 @@ Ext.define('UDISK.AdminView', {
     me.actions.add = new Ext.Action({
       actionId: 'makeFolder',
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faPlusCircle,
+      iconCls: 'fa fa-plus-circle',
       cls: 'add-new-action',
       text: UB.i18n('udiskAdd'),
       tooltip: UB.i18n('udiskAdd'),
@@ -1510,7 +1510,7 @@ Ext.define('UDISK.AdminView', {
         textField,
         {
           xtype: 'button',
-          glyph: UB.core.UBUtil.glyphs.faSearch,
+          iconCls: 'fa fa-search',
           tooltip: UB.i18n('search'),
           handler: function (button) {
             me.doSearch(textField, button)

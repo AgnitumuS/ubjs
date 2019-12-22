@@ -290,8 +290,7 @@ Ext.define('UB.core.UBPanelMixin', {
       actionId: 'commandLink',
       text: UB.i18n('link'),
       hideOnClick: false,
-      // iconCls: 'iconLink',
-      glyph: UB.core.UBUtil.glyphs.faShare,
+      iconCls: 'fas fa-share',
       menu: {
         showSeparator: false,
         items: [{
@@ -351,7 +350,7 @@ Ext.define('UB.core.UBPanelMixin', {
       entity = $App.domainInfo.get(detail.entityName)
       details.push(new Ext.Action({
         actionId: UB.core.UBPanelMixin.actionId.showDetail,
-        glyph: UB.core.UBUtil.glyphs.faCaretSquareODown,
+        iconCls: 'fa fa-caret-square-o-down',
         text: detail.caption ||
                   UB.format('{0} ({1})', entity.caption, entity.attr(detail.attribute).caption),
         entityName: detail.entityName,
@@ -365,7 +364,7 @@ Ext.define('UB.core.UBPanelMixin', {
     return Ext.create('Ext.menu.Item', {
       text: UB.i18n('Details'),
       hideOnClick: false,
-      glyph: UB.core.UBUtil.glyphs.faCaretSquareODown,
+      iconCls: 'fa fa-caret-square-o-down',
       actionId: UB.core.UBPanelMixin.actionId.showDetail,
       menu: {
         items: details

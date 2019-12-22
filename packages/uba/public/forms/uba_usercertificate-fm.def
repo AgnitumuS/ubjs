@@ -32,12 +32,12 @@ exports.formDef = {
         {
           itemId: 'uploadCertBtn',
           xtype: 'button',
-          glyph: UB.core.UBUtil.glyphs.faUpload,
+          iconCls: 'fa fa-upload',
           text: UB.i18n('Upload certificate')
         },{
           itemId: 'downloadCertBtn',
           xtype: 'button',
-          glyph: UB.core.UBUtil.glyphs.faDownload,
+          iconCls: 'fa fa-download',
           text: UB.i18n('Download certificate')
         }
      ]

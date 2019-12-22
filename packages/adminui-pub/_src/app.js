@@ -513,7 +513,7 @@ function launchApp () {
       window.onhashchange = UB.core.UBApp.locationHashChanged
     }
 
-    Ext.setGlyphFontFamily('FontAwesome')
+    // not need for FontAwesome5 Ext.setGlyphFontFamily('FontAwesome')
 
     Ext.state.Manager.setProvider(Ext.create('Ext.state.LocalStorageProvider'))
     // Ext.FocusManager.enable({focusFrame: true});

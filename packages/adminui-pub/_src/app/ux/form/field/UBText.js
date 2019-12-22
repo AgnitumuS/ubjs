@@ -180,13 +180,13 @@ Ext.define('UB.ux.form.field.UBText', {
       }],
       buttons: [{
         text: UB.i18n('Change'),
-        glyph: UB.core.UBUtil.glyphs.faSave,
+        iconCls: 'fa fa-save',
         hidden: me.readOnly || me.disabled,
         handler: saveForm,
         scope: me
       }, {
         text: UB.i18n('cancel'),
-        glyph: UB.core.UBUtil.glyphs.faTimes,
+        iconCls: 'fa fa-times',
         handler: function () {
           window.close()
         }
