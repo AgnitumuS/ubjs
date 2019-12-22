@@ -197,8 +197,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
     if ($App.domainInfo.has(entityName)) {
       menuItems.push({
         text: UB.i18n('editSelItem') + ' (Ctrl+E)',
-                // iconCls: 'ub-icon-table-edit',
-        glyph: UB.core.UBUtil.glyphs.faEdit,
+        iconCls: 'fa fa-edit',
         itemID: 'editItem',
         handler: me.editItem,
         hidden: !!me.hideEntityItemInContext || me.disableModifyEntity,
@@ -207,8 +206,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
       })
       menuItems.push({
         text: UB.i18n('selectFromDictionary') + ' (F9)',
-        glyph: UB.core.UBUtil.glyphs.faTable,
-                // iconCls: 'ub-icon-table',
+        iconCls: 'fa fa-table',
         itemID: 'showLookup',
         handler: me.showLookup,
         hidden: !!me.hideEntityItemInContext,
@@ -217,8 +215,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
       })
       menuItems.push({
         text: UB.i18n('addNewItem'),
-        glyph: UB.core.UBUtil.glyphs.faPlusCircle,
-                // iconCls: 'iconAdd',
+        iconCls: 'fa fa-plus-circle',
         itemID: 'addItem',
         handler: me.addItem,
         hidden: !!me.hideEntityItemInContext || me.disableModifyEntity,
@@ -228,8 +225,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
     }
     menuItems.push({
       text: UB.i18n('clearSelection') + ' (Ctrl+BackSpace)',
-      glyph: UB.core.UBUtil.glyphs.faEraser,
-            // iconCls: 'iconClear',
+      iconCls: 'fa fa-eraser',
       itemID: 'clearValue',
       handler: me.clearValue,
       disabled: me.disabled || me.readOnly,

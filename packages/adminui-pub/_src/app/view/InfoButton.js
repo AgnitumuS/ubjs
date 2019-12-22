@@ -35,7 +35,7 @@ Ext.define('UB.view.InfoButton', {
         me.margin = 3;
         me.padding = 1;
         //me.style = {color: me.glyphColor + ' !important;' || 'blue !important'};
-        me.glyph = UB.core.UBUtil.glyphs.faQuestionCircle;
+        me.iconCls = 'fa fa-question-circle';
         me.tooltip = UB.i18n('informationHeader');
         me.on('click', me.buttonQuestionClick, me);
         me.callParent(arguments);
@@ -48,7 +48,7 @@ Ext.define('UB.view.InfoButton', {
             header: {
                 items: [{
                     xtype: 'image',
-                    glyph: UB.core.UBUtil.glyphs.faQuestionCircle,
+                    iconCls: 'fa fa-question-circle',
                     style: {color: 'blue'}
                 }]
             },
@@ -62,7 +62,7 @@ Ext.define('UB.view.InfoButton', {
             html: UB.i18n(me.information),
             buttons: [{
                 text: UB.i18n('ok'),
-                glyph: UB.core.UBUtil.glyphs.faCheck,
+                iconCls: 'fa fa-check',
                 handler: function() {
                     win.close();
                 }

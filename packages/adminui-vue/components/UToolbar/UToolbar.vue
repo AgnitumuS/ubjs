@@ -156,7 +156,7 @@ export default {
 
       if (this.entitySchema.hasMixin('audit')) {
         buttons.push({
-          iconCls: 'el-icon-data-analysis',
+          iconCls: 'fas fa-history',
           caption: this.$ut('showAudit'),
           handler: this.showAudit,
           disabled: !this.$UB.connection.domain.isEntityMethodsAccessible('uba_auditTrail', 'select')

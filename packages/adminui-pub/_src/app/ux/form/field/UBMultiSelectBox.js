@@ -293,7 +293,7 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
       }],
       buttons: [{
         text: UB.i18n('clear'),
-        glyph: UB.core.UBUtil.glyphs.faEraser,
+        iconCls: 'fa fa-eraser',
         handler: function () {
           storeSel.removeAll()
           isInitialSelect = true
@@ -319,7 +319,7 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
         flex: 1
       }, {
         text: UB.i18n('ok'),
-        glyph: UB.core.UBUtil.glyphs.faCheck,
+        iconCls: 'fa fa-check',
         handler: function () {
           me.setValue(storeSel.getRange(0, storeSel.getCount() - 1))
           win.close()
@@ -327,7 +327,7 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
         }
       }, {
         text: UB.i18n('cancel'),
-        glyph: UB.core.UBUtil.glyphs.faTimes,
+        iconCls: 'fa fa-times',
         handler: function () {
           win.close()
         }

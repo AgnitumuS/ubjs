@@ -58,7 +58,7 @@
         </el-row>
         <div v-else>Not found</div>
 
-        <h3>Font-awesome icons</h3>
+        <h3>Font awesome 5 free icons</h3>
 
         <el-row v-if="getFaIcons.length > 0">
           <el-col
@@ -99,6 +99,44 @@
 </template>
 
 <script>
+const FA_HELPERS = {
+  '.el-icon--right': true,
+  '.el-icon--left': true,
+  '.fa-xs': true,
+  '.fa-sm': true,
+  '.fa-lg': true,
+  '.fa-1x': true,
+  '.fa-2x': true,
+  '.fa-3x': true,
+  '.fa-4x': true,
+  '.fa-5x': true,
+  '.fa-6x': true,
+  '.fa-7x': true,
+  '.fa-8x': true,
+  '.fa-9x': true,
+  '.fa-10x': true,
+  '.fa-fw': true,
+  '.fa-ul': true,
+  '.fa-ul > li': true,
+  '.fa-li': true,
+  '.fa-li.fa-lg': true,
+  '.fa-border': true,
+  '.fa-pull-left': true,
+  '.fa-pull-right': true,
+  '.fa-spin': true,
+  '.fa-pulse': true,
+  '.fa-rotate-90': true,
+  '.fa-rotate-180': true,
+  '.fa-rotate-270': true,
+  '.fa-flip-horizontal': true,
+  '.fa-flip-vertical': true,
+  '.fa-stack': true,
+  '.fa-stack-1x': true,
+  '.fa-stack-2x': true,
+  '.fa-stack-1x, .fa-stack-2x': true,
+  '.fa-inverse': true,
+  '.fa-space': true
+}
 export default {
   name: 'UIconPicker',
 
@@ -145,21 +183,18 @@ export default {
           if (r.selectorText) {
             if (r.selectorText.startsWith('.el-icon')) {
               const icon = r.selectorText.split(':')[0].substr(1)
-              const className = r.selectorText.split(':')[0]
+              const className = '.' + icon
               const isDuplicate = this.elIcons.includes(icon)
               const isHelper = this.isHelperCls(className)
               if (!isDuplicate && !isHelper) {
                 this.elIcons.push(icon)
               }
             }
-            if (r.selectorText.startsWith('.fa-')) {
-              const icon = 'fa ' + r.selectorText.split(':')[0].substr(1)
-              const className = r.selectorText.split(':')[0]
-              const isDuplicate = this.faIcons.includes(icon)
-              const isHelper = this.isHelperCls(className)
-              if (!isDuplicate && !isHelper) {
-                this.faIcons.push(icon)
-              }
+            let st = r.selectorText
+            if (st.startsWith('.fa-') && st.endsWith(':before')) {
+              let cls = st.split(':')[0].substr(1)
+              const icon = 'fas ' + cls
+              this.faIcons.push(icon)
             }
           }
         }
@@ -176,36 +211,7 @@ export default {
     },
 
     isHelperCls (cls) {
-      const helpers = ['.el-icon--right',
-        '.el-icon--left',
-        '.fa-lg',
-        '.fa-2x',
-        '.fa-3x',
-        '.fa-4x',
-        '.fa-5x',
-        '.fa-fw',
-        '.fa-ul',
-        '.fa-ul > li',
-        '.fa-li',
-        '.fa-li.fa-lg',
-        '.fa-border',
-        '.fa-pull-left',
-        '.fa-pull-right',
-        '.fa-spin',
-        '.fa-pulse',
-        '.fa-rotate-90',
-        '.fa-rotate-180',
-        '.fa-rotate-270',
-        '.fa-flip-horizontal',
-        '.fa-flip-vertical',
-        '.fa-stack',
-        '.fa-stack-1x',
-        '.fa-stack-2x',
-        '.fa-stack-1x, .fa-stack-2x',
-        '.fa-inverse',
-        '.fa-space'
-      ]
-      return helpers.includes(cls)
+      return FA_HELPERS[cls] === true
     },
 
     chooseIcon () {

@@ -1506,7 +1506,7 @@ Ext.define('UB.view.EntityGridPanel', {
     me.actions[actions.addNew] = new Ext.Action({
       actionId: actions.addNew,
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faPlusCircle,
+      iconCls: 'fa fa-plus-circle',
       cls: 'add-new-action',
 
       text: UB.i18n('actionAdd') + hotKeys[actions.addNew].text,
@@ -1519,7 +1519,7 @@ Ext.define('UB.view.EntityGridPanel', {
     me.actions[actions.addNewByCurrent] = new Ext.Action({
       actionId: actions.addNewByCurrent,
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faClone,
+      iconCls: 'fa fa-clone',
       cls: 'add-currect-action',
 
       text: UB.i18n('Copy'),
@@ -1532,7 +1532,7 @@ Ext.define('UB.view.EntityGridPanel', {
       me.actions[actions.edit] = new Ext.Action({
         actionId: actions.edit,
         scale: 'medium',
-        glyph: UB.core.UBUtil.glyphs.faEdit,
+        iconCls: 'fa fa-edit',
         cls: 'edit-action',
         text: UB.i18n('Edit') + hotKeys[actions.edit].text,
         eventId: events.edit,
@@ -1544,7 +1544,7 @@ Ext.define('UB.view.EntityGridPanel', {
     me.actions[actions.del] = new Ext.Action({
       actionId: actions.del,
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faTrashO,
+      iconCls: 'fa fa-trash-o',
       cls: 'delete-action',
 
       text: UB.i18n('Delete') + hotKeys[actions.del].text,
@@ -1557,7 +1557,7 @@ Ext.define('UB.view.EntityGridPanel', {
       actionId: actions.showPreview,
       // iconCls: 'iconView',
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faEye,
+      iconCls: 'fa fa-eye',
 
       text: UB.i18n('showPreview'),
       eventId: events.showPreview,
@@ -1612,7 +1612,7 @@ Ext.define('UB.view.EntityGridPanel', {
     me.actions[actions.refresh] = new Ext.Action({
       actionId: actions.refresh,
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faRefresh,
+      iconCls: 'fa fa-refresh',
       cls: 'refresh-action',
       text: UB.i18n('refresh') + hotKeys[actions.refresh].text,
       eventId: events.refresh,
@@ -1624,7 +1624,7 @@ Ext.define('UB.view.EntityGridPanel', {
       me.actions[actions.itemSelect] = new Ext.Action({
         actionId: actions.itemSelect,
         scale: 'medium',
-        glyph: UB.core.UBUtil.glyphs.faCheck,
+        iconCls: 'fa fa-check',
         text: UB.i18n('vybrat'),
         eventId: events.itemselect,
         handler: me.onAction,
@@ -1636,7 +1636,7 @@ Ext.define('UB.view.EntityGridPanel', {
       me.actions[actions.prefilter] = new Ext.Action({
         actionId: actions.prefilter,
         scale: 'medium',
-        glyph: UB.core.UBUtil.glyphs.faFilter,
+        iconCls: 'fas fa-filter',
         text: UB.i18n('showPreFilter') + hotKeys[actions.prefilter].text,
         eventId: events.prefilter,
         handler: me.onAction,
@@ -1647,7 +1647,7 @@ Ext.define('UB.view.EntityGridPanel', {
     me.actions[actions.lock] = new Ext.Action({
       actionId: actions.lock,
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faLock,
+      iconCls: 'fa fa-lock',
       text: UB.i18n('lockBtn'),
       eventId: events.lock,
       handler: me.onAction,
@@ -1657,7 +1657,7 @@ Ext.define('UB.view.EntityGridPanel', {
     me.actions[actions.unLock] = new Ext.Action({
       actionId: actions.unLock,
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faUnLock,
+      iconCls: 'fa fa-unlock',
       text: UB.i18n('unLockBtn'),
       eventId: events.unLock,
       handler: me.onAction,
@@ -1666,7 +1666,7 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.exportXls] = new Ext.Action({
       actionId: actions.exportXls,
-      glyph: UB.core.UBUtil.glyphs.faFileExcelO,
+      iconCls: 'fa fa-file-excel-o',
       text: UB.i18n('exportXls'),
       eventId: events.exportXls,
       handler: me.onAction,
@@ -1682,7 +1682,7 @@ Ext.define('UB.view.EntityGridPanel', {
     })
     me.actions[actions.exportHtml] = new Ext.Action({
       actionId: actions.exportHtml,
-      glyph: UB.core.UBUtil.glyphs.faTable,
+      iconCls: 'fa fa-table',
       text: UB.i18n('exportHtml'),
       eventId: events.exportHtml,
       handler: me.onAction,
@@ -1804,7 +1804,7 @@ Ext.define('UB.view.EntityGridPanel', {
     items.push('->', {
       menuId: 'AllActions',
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faCog,
+      iconCls: 'fa fa-cog',
       arrowCls: '',
       tooltip: UB.i18n('vseDeystviya'),
       menu: menuAllActions,
@@ -1834,7 +1834,7 @@ Ext.define('UB.view.EntityGridPanel', {
     return Ext.create('Ext.menu.Item', {
       text: UB.i18n('export'),
       hideOnClick: false,
-      glyph: UB.core.UBUtil.glyphs.faShareSquare,
+      iconCls: 'fa fa-share-square',
       menu: {
         items: items
       }

@@ -563,7 +563,7 @@ Ext.define('UB.ux.UBPreFilter', {
             xtype: 'button',
             tooltip: UB.i18n('load'),
             scale: 'medium',
-            glyph: UB.core.UBUtil.glyphs.faOpen,
+            iconCls: 'fa fa-open',
             // minWidth: 75,
             margin: '5 0 0 0',
             handler: function () {
@@ -573,7 +573,7 @@ Ext.define('UB.ux.UBPreFilter', {
             xtype: 'button',
             tooltip: UB.i18n('save'),
             scale: 'medium',
-            glyph: UB.core.UBUtil.glyphs.faSave,
+            iconCls: 'fa fa-save',
             margin: '5 0 0 0',
             handler: function () {
               me.saveConfig()
@@ -582,7 +582,7 @@ Ext.define('UB.ux.UBPreFilter', {
             xtype: 'button',
             tooltip: UB.i18n('fDelete'),
             scale: 'medium',
-            glyph: UB.core.UBUtil.glyphs.faTrashO,
+            iconCls: 'fa fa-trash-o',
             margin: '5 5 0 0',
             handler: function () {
               me.deleteConfig()
@@ -591,19 +591,19 @@ Ext.define('UB.ux.UBPreFilter', {
         ]
       }],
       buttons: [{
-        glyph: UB.core.UBUtil.glyphs.faBinoculars,
+        iconCls: 'fa fa-binoculars',
         text: UB.i18n('search'),
         handler: me.searchHandler,
         scope: me
       }, {
         text: UB.i18n('clear'),
-        glyph: UB.core.UBUtil.glyphs.faEraser,
+        iconCls: 'fa fa-eraser',
         handler: function () {
           me.clearAllFilter()
         }
       }, {
         text: UB.i18n('cancel'),
-        glyph: UB.core.UBUtil.glyphs.faClose,
+        iconCls: 'fa fa-close',
         handler: function () {
           window.close()
         }

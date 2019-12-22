@@ -2173,7 +2173,7 @@ Ext.define('UB.view.BasePanel', {
     var saveAndCloseAction = new Ext.Action({
         actionId: actions.saveAndClose,
         scale: 'medium',
-        glyph: UB.core.UBUtil.glyphs.faShareSquare,
+        iconCls: 'fa fa-share-square',
         text: UB.i18n('saveAndClose') + hotKeys[actions.saveAndClose].text,
         eventId: events.save,
         cls: 'save-and-close-action',
@@ -2185,7 +2185,7 @@ Ext.define('UB.view.BasePanel', {
       saveAction = new Ext.Action({
         actionId: actions.save,
         scale: 'medium',
-        glyph: UB.core.UBUtil.glyphs.faFloppy,
+        iconCls: 'fas fa-save',
         text: UB.i18n('save') + hotKeys[actions.save].text,
         cls: 'save-action',
         eventId: events.save,
@@ -2217,7 +2217,7 @@ Ext.define('UB.view.BasePanel', {
     if (me.hasAuditMixin) {
       me.actions[actions.audit] = new Ext.Action({
         actionId: actions.audit,
-        iconCls: 'iconAudit',
+        iconCls: 'fas fa-history',
         text: UB.i18n('showAudit'),
         eventId: events.audit,
         handler: me.onAction,
@@ -2246,7 +2246,7 @@ Ext.define('UB.view.BasePanel', {
     me.actions[actions.refresh] = new Ext.Action({
       actionId: actions.refresh,
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faRefresh,
+      iconCls: 'fa fa-refresh',
       text: UB.i18n('refresh') + hotKeys[actions.refresh].text,
       cls: 'refresh-action',
       eventId: events.refresh,
@@ -2257,7 +2257,7 @@ Ext.define('UB.view.BasePanel', {
     me.actions[actions.lock] = new Ext.Action({
       actionId: actions.lock,
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faLock,
+      iconCls: 'fa fa-lock',
       text: UB.i18n('lockBtn'),
       hidden: !me.isEntityLockable || me.isNewInstance,
       eventId: events.lock,
@@ -2268,7 +2268,7 @@ Ext.define('UB.view.BasePanel', {
     me.actions[actions.unLock] = new Ext.Action({
       actionId: actions.unLock,
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faUnLock,
+      iconCls: 'fa fa-unlock',
       hidden: !me.isEntityLockable || me.isNewInstance,
       text: UB.i18n('unLockBtn'),
       eventId: events.unLock,
@@ -2279,7 +2279,7 @@ Ext.define('UB.view.BasePanel', {
     me.actions[actions.fDelete] = new Ext.Action({
       actionId: actions.fDelete,
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faTrashO,
+      iconCls: 'fa fa-trash-o',
       text: UB.i18n('Delete') + hotKeys[actions.fDelete].text,
       cls: 'delete-action',
       eventId: events.fDelete,
@@ -2293,7 +2293,7 @@ Ext.define('UB.view.BasePanel', {
       me.actions[actions.formConstructor] = new Ext.Action({
         actionId: actions.formConstructor,
         scale: 'medium',
-        glyph: UB.core.UBUtil.glyphs.faWrench,
+        iconCls: 'fa fa-wrench',
         text: UB.i18n('formConstructor'),
         eventId: events.formConstructor,
         handler: me.onAction,
@@ -2403,13 +2403,13 @@ Ext.define('UB.view.BasePanel', {
     Ext.Object.each(me.documents, function (key, doc) {
       docActions.push(new Ext.Action({
         text: doc.caption,
-        iconCls: 'iconDocument',
+        iconCls: 'fas fa-paperclip',
         height: 32,
         key: key,
         menu: [{
           actionId: actions.scan + '_' + key,
           // disabled: UB.npDesktopServicePluginDownloadMessage(),
-          iconCls: 'iconScanner',
+          iconCls: 'fas fa-print',
           text: UB.i18n('skanirovat'),
           eventId: events.scan,
           handler: me.onAction,
@@ -2417,7 +2417,7 @@ Ext.define('UB.view.BasePanel', {
           scope: me
         }, {
           actionId: actions.attach + '_' + key,
-          iconCls: 'iconAttach', // 'fa fa-folder-open',
+          iconCls: 'fas fa-paperclip',
           text: UB.i18n('izFayla'), // '<i class="fa fa-folder-open"></i>&nbsp' +
           eventId: events.attach,
           handler: me.onAction,
@@ -2425,7 +2425,7 @@ Ext.define('UB.view.BasePanel', {
           scope: me
         }, {
           actionId: actions.deleteAttachment + '_' + key,
-          iconCls: 'iconClear',
+          iconCls: 'fas fa-unlink',
           text: UB.i18n('clear'),
           eventId: events.deleteattachment,
           handler: me.onAction,
@@ -2433,7 +2433,7 @@ Ext.define('UB.view.BasePanel', {
           scope: me
         }, {
           actionId: actions.showVersions + '_' + key,
-          iconCls: 'iconVersions',
+          iconCls: 'fas fa-code-branch',
           text: UB.i18n('showDocVersions'),
           eventId: events.showVersions,
           handler: me.onAction,
@@ -2441,8 +2441,7 @@ Ext.define('UB.view.BasePanel', {
           scope: me
         }, {
           actionId: actions.downloadAttach + '_' + key,
-          scale: 'medium',
-          glyph: UB.core.UBUtil.glyphs.faDownload,
+          iconCls: 'fa fa-download',
           text: UB.i18n('downloadAttach'),
           eventId: events.downloadAttach,
           handler: me.onAction,
@@ -2475,7 +2474,7 @@ Ext.define('UB.view.BasePanel', {
         {
           menuId: 'AllActions',
           scale: 'medium',
-          glyph: UB.core.UBUtil.glyphs.faCog,
+          iconCls: 'fa fa-cog',
           arrowCls: '', // remove dropdown arrow
           tooltip: UB.i18n('vseDeystviya'),
           menu: menuAllActions

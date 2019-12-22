@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- **BREAKING** `UB.core.UBUtil.glyphs` is removed. See below.
+ - **BREAKING** adminUI migrates from FontAwesome4 to "Font Awesome 5 free". For migrating Ext based forms please,
+ replace all `glyph` properties to `iconCls` (the simplest way is to search all `glyphs.` occurrences). Example:
+ ```
+   // OLD code
+   glyph: UB.core.UBUtil.glyphs.faFilter,
+   // should become 
+   iconCls: 'fa fa-filter',
+ ```   
+   - all occurrences of "font-awesome" in all package.json should be removed  
 
 ### Deprecated
 
@@ -915,6 +925,7 @@ and fetching all CLOBS from table is very slow (at last for Oracle)
   
 
 ## [4.2.33] - 2017-10-13
+### Added
 - UBBadge control, pulled and adopted code originally developed for "bpm" subsystem.
 
   Display an enum attribute as a badge on a form:

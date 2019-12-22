@@ -361,11 +361,9 @@ Ext.define('UBM.scanerSettings', {
                         queryMode: 'local'
                     },{
                         xtype: 'button',
-                        //width: 25,
                         ubID: 'FRScan.btnRefreshScaners',
                         tooltip: UB.i18n('refresh'), //'Перечитать сканеры',//localize+-
-                        //iconCls: 'iconRefresh'
-                        glyph: UB.core.UBUtil.glyphs.faRefresh
+                        iconCls: 'fa fa-refresh'
                     }]
                 }, {
                 xtype: 'radiogroup',
@@ -544,9 +542,8 @@ Ext.define('UBM.scanerSettings', {
                 }, {
                     xtype: 'button',
                     ubID: 'btnAddRecogLang',
-                    glyph: UB.core.UBUtil.glyphs.faPlusCircle,
-                    tooltip: UB.i18n('Add')//localize+-
-                    //width: 100
+                    iconCls: 'fa fa-plus-circle',
+                    tooltip: UB.i18n('Add')
                 }]
             }, {
                 xtype: 'container',
@@ -690,8 +687,7 @@ Ext.define('UBM.scanerSettings', {
                     //width: 25,
                     ubID: 'UBScan.btnRefreshScaners',
                     tooltip: UB.i18n('refresh'), //'Перечитать сканеры',
-                    //iconCls: 'iconRefresh'
-                    glyph: UB.core.UBUtil.glyphs.faRefresh
+                    iconCls: 'fa fa-refresh'
                 }]
             }, {
                 xtype: 'radiogroup',
@@ -780,12 +776,12 @@ Ext.define('UBM.scanerSettings', {
     buttons: [{
         ubID: 'btnOK',
         text: UB.i18n('Change'),
-        glyph: UB.core.UBUtil.glyphs.faSave,
+        iconCls: 'fa fa-save',
         formBind: true
     }, {
         ubID: 'btnCancel',
         text: UB.i18n('cancel'),
-        glyph: UB.core.UBUtil.glyphs.faTimes
+        iconCls: 'fa fa-times'
     }],
 
     addLanguage: function() {

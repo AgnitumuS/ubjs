@@ -140,7 +140,7 @@ Ext.define('UB.ux.UBDetailTree', {
 
     me.actions[actions.addNew] = new Ext.Action({
       actionId: actions.addNew,
-      glyph: UB.core.UBUtil.glyphs.faPlusCircle,
+      iconCls: 'fas fa-plus-circle',
       cls: 'add-new-action',
       tooltip: UB.i18n('actionAdd'), // + hotKeys[actions.addNew].text,
       eventId: events.addnew,
@@ -152,7 +152,7 @@ Ext.define('UB.ux.UBDetailTree', {
 
     me.actions[actions.refresh] = new Ext.Action({
       actionId: actions.refresh,
-      glyph: UB.core.UBUtil.glyphs.faRefresh,
+      iconCls: 'fas fa-refresh',
       cls: 'refresh-action',
       tooltip: UB.i18n('refresh'), // + hotKeys[actions.refresh].text,
       eventId: events.refresh,
@@ -162,7 +162,7 @@ Ext.define('UB.ux.UBDetailTree', {
 
     me.actions[actions.edit] = new Ext.Action({
       actionId: actions.edit,
-      glyph: UB.core.UBUtil.glyphs.faEdit,
+      iconCls: 'fas fa-edit',
       cls: 'edit-action',
       tooltip: UB.i18n('Edit'), // + hotKeys[actions.addNew].text,
       eventId: events.edit,
@@ -172,7 +172,7 @@ Ext.define('UB.ux.UBDetailTree', {
 
     me.actions[actions.deleteItem] = new Ext.Action({
       actionId: actions.deleteItem,
-      glyph: UB.core.UBUtil.glyphs.faTrashO,
+      iconCls: 'fas fa-trash',
       cls: 'delete-action',
       tooltip: UB.i18n('Delete'), // + hotKeys[actions.addNew].text,
       eventId: events.deleteItem,
@@ -182,7 +182,7 @@ Ext.define('UB.ux.UBDetailTree', {
 
     me.actions[actions.up] = new Ext.Action({
       actionId: actions.up,
-      glyph: UB.core.UBUtil.glyphs.faUp,
+      iconCls: 'fa fa-up',
       cls: 'up-action',
       hidden: true,
       eventId: events.up,
@@ -192,7 +192,7 @@ Ext.define('UB.ux.UBDetailTree', {
 
     me.actions[actions.down] = new Ext.Action({
       actionId: actions.down,
-      glyph: UB.core.UBUtil.glyphs.faDown,
+      iconCls: 'fa fa-down',
       cls: 'down-action',
       hidden: true,
       eventId: events.down,
