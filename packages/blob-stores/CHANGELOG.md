@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Changed
+  - `FileSystemBlobStore.saveContentToTempStore` will return a real file md5 instead of empty string.
+  This allow client to prevent downloading the same file several times
+
 ## [5.1.2] - 2019-11-19
 ### Fixed
  - prevent expose a package to client by adding `"config": {"ubmodel": {} }` into package.json

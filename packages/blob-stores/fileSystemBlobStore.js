@@ -86,13 +86,14 @@ class FileSystemBlobStore extends BlobStoreCustom {
     }
     let origFn = request.fileName
     let ct = mime.contentType(path.extname(origFn))
+    let newMD5 = nhashFile(fn, 'MD5')
     return {
       store: attribute.storeName,
       fName: origFn,
       origName: origFn,
       ct: ct,
       size: content.byteLength,
-      md5: '',
+      md5: newMD5,
       isDirty: true
     }
   }
