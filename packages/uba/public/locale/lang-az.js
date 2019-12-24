@@ -35,6 +35,13 @@ UB.i18nExtend({
   needChangePassword: 'İstifadəçi növbəti girişdə şifrəni yeniləməlidir',
   checkAll: 'Hamısını seç',
   roles: 'Rollar',
+  uba: {
+    changePassword: {
+      retypePassword: {
+        errorText: 'Passwords mismatch'
+      }
+    }
+  },
 
   // !!!  Jangan mengubah item terakhir ini. Masukan item baru Anda sebelum EOF untuk SVN alasan auto merge.
   EOF: 'EOF'

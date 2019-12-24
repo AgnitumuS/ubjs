@@ -182,24 +182,14 @@ export default {
       })
     },
 
-    async changePassword () {
-      const result = await $App.showModal({
+    changePassword () {
+      this.$UB.core.UBApp.doCommand({
+        cmdType: 'showForm',
         formCode: 'uba_user-changeUserPassword',
-        description: this.$ut('changePassword'),
-        customParams: 'self'
+        entity: 'uba_user',
+        title: 'changePassword',
+        isModal: true
       })
-      if (result.action === 'ok') {
-        await this.$UB.connection.xhr({
-          method: 'POST',
-          url: 'changePassword',
-          data: {
-            newPwd: result.newPwd,
-            pwd: result.pwd,
-            needChangePassword: result.needChangePassword
-          }
-        })
-        await this.$dialogInfo('passwordChangedSuccessfully')
-      }
     },
 
     doLogout () {

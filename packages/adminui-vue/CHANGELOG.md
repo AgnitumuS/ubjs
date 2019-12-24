@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Support openID Connect authorization in adminui-vue
+ - `uba_user-changeUserPassword-fm.vue` - changed form ExtJS to vue for changing user password
+ - OpenIDConnect authorization support for adminui-vue
 
 ### Changed
 

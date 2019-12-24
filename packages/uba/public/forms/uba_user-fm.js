@@ -1,24 +1,15 @@
 function showPasswordChangeDialog () {
-  var form = this
-
-  $App.showModal({
+  UB.core.UBApp.doCommand({
+    cmdType: 'showForm',
     formCode: 'uba_user-changeUserPassword',
-    description: UB.i18n('changePassword'),
-    customParams: 'admin'
-  }).then(function (result) {
-    if (result.action === 'ok') {
-      $App.connection.query({
-        fieldList: [],
-        entity: 'uba_user',
-        method: 'changeOtherUserPassword',
-        execParams: {
-          newPwd: result.newPwd,
-          needChangePassword: result.needChangePassword,
-          forUser: form.getField('name').getValue()
-        }
-      }).then(function () {
-        $App.dialogInfo('passwordChangedSuccessfully')
-      })
+    entity: 'uba_user',
+    title: 'changePassword',
+    isModal: true,
+    props: {
+      parentContext: {
+        userID: this.instanceID,
+        userLogin: this.getField('name').getValue()
+      }
     }
   })
 }
