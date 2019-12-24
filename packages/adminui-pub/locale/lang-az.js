@@ -3,6 +3,7 @@
  * Translation into Azerbaijani
  */
 UB.i18nExtend({
+  doYouWantLogoutFromExternalServer: 'Завершить сессию в удостоверяющем центре?',
   emptyBarcodeSettings: 'You must set barcode settings, before use it.',
   setScannerSettings: 'Skanerdən istifadə etmək üçün öncə, onu sazlama lazımdır. Sazlamaq mümkündür <a href="/" onclick="{0} return false;">burada</a>.',
   showResultConfig: 'Konfiqurasiyaya baxış',

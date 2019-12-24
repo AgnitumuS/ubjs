@@ -7,6 +7,7 @@ Copyright (c) 2014 InBase
  * Georgian translation
  */
 UB.i18nExtend({
+  doYouWantLogoutFromExternalServer: 'Завершить сессию в удостоверяющем центре?',
   emptyBarcodeSettings: 'თქვენ უნდა დააყენოთ შტრიხკოდების პარამეტრები, გამოყენებამდე.',
   setScannerSettings: 'თქვენ უნდა დააყენოთ სკანერის პარამეტრები, სანამ გამოიყენებთ მას. სკანერის პარამეტრებია <a href="/" onclick="{0} return false;">here</a>.',
   showResultConfig: 'კონფიგურაციების ჩვენება',

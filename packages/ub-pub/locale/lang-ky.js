@@ -16,6 +16,12 @@ UB.i18nExtend({
   KerberosRememberUserMenu: 'Всегда входить по домену',
   KerberosHeader: 'Вход через учетную запись <br/> операционной системы',
   KerberosTip: 'Вход с правами пользователя, который вошол в операционную систему. Компьютер должен быть в домене',
+
+  OpenIDHeader: 'Login using external authorization service',
+  OpenidTip: 'Login using external authorization service. After clicking "enter", enter authorization data in the authorization window.',
+  OpenIDConnect: 'OpenID',
+  authOpenIDConnectFail: "Provider can't authorize your request",
+
   Authentication: 'Аутентификация',
   RegistrationMode: 'Режим регистрации',
   AdditionalLoginOptions: 'Дополнительные параметры входа',

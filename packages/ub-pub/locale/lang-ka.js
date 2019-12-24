@@ -15,6 +15,12 @@
   KerberosRememberUserMenu: 'შესასვლელად, ყოველთვის გამოიყენეთ დომენი',
   KerberosHeader: 'შესვლა გამოყენებით <br/> ოპერაციული სისტემის ანგარიში', // useOSCredentialInfo
   KerberosTip: 'შესვლა ოპერაციულ სისტემაში დარეგისტრირებული მომხმარებლის უფლებების დაცვა. კომპიუტერი უნდა იყოს დომენში',
+
+  OpenIDHeader: 'Login using external authorization service',
+  OpenidTip: 'Login using external authorization service. After clicking "enter", enter authorization data in the authorization window.',
+  OpenIDConnect: 'OpenID',
+  authOpenIDConnectFail: "Provider can't authorize your request",
+
   Authentication: 'ავთენტიფიკაცია',
   RegistrationMode: 'რეგისტრაციის რეჟიმი',
   AdditionalLoginOptions: 'დამატებითი შესვლის პარამეტრები',

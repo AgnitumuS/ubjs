@@ -3,6 +3,7 @@
  * UnityBase Tajik translation.
  */
 UB.i18nExtend({
+  doYouWantLogoutFromExternalServer: 'Завершить сессию в удостоверяющем центре?',
   emptyBarcodeSettings: 'Пеш аз истифодаи штрих-код, шумо бояд онро танзим кунед.',
   setScannerSettings: 'Пеш аз истифодаи сканер бори аввал шумо бояд онро танзим кунед. Шумо метавонед <a href="/" onclick="{0} return false;">дар ин ҷой танзим кунед</a>.',
   showResultConfig: 'Намоиши танзимот',

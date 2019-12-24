@@ -20,9 +20,9 @@ const App = UB.App
           return 'opener.$App.onFinishOpenIDAuth(' + JSON.stringify(response) + '); close();'
         },
         getUserID: function(userInfo) {
-          let inst = UB.Repository('uba_user').attrs(['ID'])
-             .where('[name]', '=', userInfo.id).select()
-          return inst.eof ? null : inst.get('ID')
+          let uID = UB.Repository('uba_user').attrs(['ID'])
+             .where('[name]', '=', userInfo.id).selectScalar()
+          return uID || null
         }
       })
  *
@@ -31,14 +31,6 @@ const App = UB.App
  */
 
 const btoa = require('btoa')
-const customSettings = App.serverConfig.application.customSettings
-let externalUrl = App.externalURL
-/**
- *
- */
-if (customSettings && customSettings.externalServerUrl) {
-  externalUrl = customSettings.externalServerUrl
-}
 module.exports.registerEndpoint = registerOpenIDEndpoint
 
 let endpoints = {}
@@ -93,7 +85,18 @@ function registerOpenIDEndpoint (endpointName) {
         throw new Error('Provider already registered')
       }
       if (!providerConfig.getOnFinishAction) {
-        throw new Error('getOnFinishAction must me be a function')
+        // throw new Error('getOnFinishAction must me be a function')
+        providerConfig.getOnFinishAction = function (response) {
+          if (response && response.success === false) {
+            return `const url = '${App.externalURL}' + '/openIDConnect/${name}?logout=true'
+            document.location.assign(url)`
+          }
+          return `
+            var response = ${JSON.stringify(response)}; 
+            (opener || window).postMessage(response, "*");
+            window.close();
+          `
+        }
       }
       providers[name] = providerConfig
     },
@@ -140,12 +143,7 @@ function openIDConnect (req, resp) {
     return
   }
 
-  // TODO - check Refer (if any) is starts from  App.serverURL
-  // redirectUrl = getValueFromHeaders(req, 'Referer');
-  // if (redirectUrl) {
-  //    redirectUrl = redirectUrl.substr(0, redirectUrl.lastIndexOf('/')) + '/' + endpointName + '/' + providerName;
-  // }
-  let redirectUrl = externalUrl + (externalUrl[externalUrl.length - 1] === '/' ? '' : '/') + endpointName + '/' + providerName
+  let redirectUrl = App.externalURL + (App.externalURL[App.externalURL.length - 1] === '/' ? '' : '/') + endpointName + '/' + providerName
   let paramStr = (req.method === 'GET') ? req.parameters : req.read()
   let params = paramStr ? queryString.parse(paramStr) : null
 
@@ -221,7 +219,7 @@ function redirectToProviderAuth (req, resp, providerConfig, redirectUrl, request
   resp.statusCode = 302
   resp.writeEnd('')
   resp.writeHead('Location: ' + providerConfig.authUrl +
-    '?state=' + btoa('fakestate') +  // TODO - get it from global cache
+    '?state=' + btoa('fakestate') + // TODO - get it from global cache
     (providerConfig.scope ? '&scope=' + providerConfig.scope : '') +
     (providerConfig.nonce ? '&nonce=' + providerConfig.nonce : '') +
     '&redirect_uri=' + redirectUrl +
@@ -243,25 +241,22 @@ function notifyProviderError (resp, provider) {
   resp.write('<head><meta http-equiv="X-UA-Compatible" content="IE=edge" /></head>')
   resp.write('<body>')
   if (provider.getCustomFABody) {
-    let customFABody = provider.getCustomFABody({success: false})
+    let customFABody = provider.getCustomFABody({ success: false })
     if (customFABody) {
       resp.write(customFABody)
     }
   }
   resp.write('<script>')
-  resp.write(provider.getOnFinishAction({success: false}))
+  resp.write(provider.getOnFinishAction({ success: false }))
   resp.write('</script></body>')
   resp.writeEnd('</html>')
   resp.writeHead('Content-Type: text/html')
 }
 
 function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orign) {
-  let request
-  let response
   let responseData
-  let userID
 
-  request = http.request(provider.tokenUrl)
+  let request = http.request(provider.tokenUrl)
   request.options.method = 'POST'
   request.setHeader('Content-Type', 'application/x-www-form-urlencoded')
   request.write('grant_type=authorization_code')
@@ -269,7 +264,7 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
   request.write('&client_id=' + provider.client_id)
   request.write('&client_secret=' + provider.client_secret)
   request.write('&redirect_uri=' + redirectUrl)
-  response = request.end()
+  let response = request.end()
 
   if (response.statusCode === 200) {
     if (provider.userInfoUrl) {
@@ -288,7 +283,7 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
     }
     if (response.statusCode === 200) {
       responseData = JSON.parse(response.read()) // response._http.responseText
-      userID = provider.getUserID(responseData, {resp: resp, code: code, state: state, provider: provider, redirectUrl: redirectUrl, orign: orign})
+      let userID = provider.getUserID(responseData, { resp: resp, code: code, state: state, provider: provider, redirectUrl: redirectUrl, orign: orign })
       if (userID === false) {
         return
       }
@@ -297,7 +292,7 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
         notifyProviderError(resp, provider)
       } else {
         let loginResp = UB.Session.setUser(userID, code)
-        let objConnectParam = {success: true, data: JSON.parse(loginResp), secretWord: code}
+        let objConnectParam = { success: true, data: JSON.parse(loginResp), secretWord: code }
         resp.statusCode = 200
         resp.write('<!DOCTYPE html><html>')
         resp.write('<head><meta http-equiv="X-UA-Compatible" content="IE=edge" /></head>')
@@ -310,7 +305,7 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
         }
         resp.write('<div style="display: none;"  id="connectParam" >')
         resp.write(JSON.stringify(objConnectParam))
-        resp.write('</div><div id="mainElm" onClick="javascript: window.close();" style="width:100%; height:100vh" ></div><script>')
+        resp.write('</div><div id="mainElm" onClick="window.close();" style="width:100%; height:100vh" ></div><script>')
         resp.write(provider.getOnFinishAction(objConnectParam))
         resp.write('</script></body>')
         resp.writeEnd('</html>')
@@ -334,15 +329,4 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
 function returnInvalidRequest (resp, message) {
   resp.statusCode = 400
   resp.writeEnd(message)
-}
-
-function getValueFromHeaders (req, headerName) {
-  let result = null
-  req.headers.split('\r\n').forEach(function (value) {
-    let pair = value.split(': ')
-    if (pair[0].toLowerCase() === headerName.toLowerCase()) {
-      result = pair[1]
-    }
-  })
-  return result
 }
