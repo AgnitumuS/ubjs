@@ -35,6 +35,13 @@ UB.i18nExtend({
   needChangePassword: 'User need to change password on next logon',
   checkAll: 'Check all',
   roles: 'Roles',
+  uba: {
+    changePassword: {
+      retypePassword: {
+        errorText: 'Passwords mismatch'
+      }
+    }
+  },
 
   // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF'

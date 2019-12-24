@@ -35,7 +35,14 @@
   needChangePassword: 'სისტემაში ხელმეორედ შესვლისას, მომხმარებელმა უნდა შეცვალოს პაროლი',
   checkAll: 'Check all',
   roles: 'Roles',
+  uba: {
+    changePassword: {
+      retypePassword: {
+        errorText: 'Passwords mismatch'
+      }
+    }
+  },
 
-    // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
+  // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF'
 })

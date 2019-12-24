@@ -35,7 +35,14 @@ UB.i18nExtend({
   needChangePassword: 'Пользователь должен изменить пароль при следующем входе',
   checkAll: 'Выбрать все',
   roles: 'Роли',
+  uba: {
+    changePassword: {
+      retypePassword: {
+        errorText: 'Несоответствие паролей'
+      }
+    }
+  },
 
-    // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
+  // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF'
 })
