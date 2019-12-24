@@ -265,7 +265,9 @@ function beforeClose ({ store, close }) {
       }).then(answer => {
         if (answer === 'yes') {
           if ('save' in store._actions) {
-            store.dispatch('save').then(close)
+            store.dispatch('save')
+              .then(close)
+              .catch(e => {})
           } else {
             close()
           }
