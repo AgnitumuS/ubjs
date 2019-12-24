@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - show actual text instead of empty <<< >>> in error window in case unhandled rejection message contains <<<text>>>    
+ - `mount.js` - fixed double error (close unsaved tab -> save)
 
 ## [1.9.10] - 2019-12-20
 ## [1.9.9] - 2019-12-19
