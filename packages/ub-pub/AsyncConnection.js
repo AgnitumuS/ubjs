@@ -389,12 +389,13 @@ $App.connection.userLang()
     this.exchangeKeysPromise = null
     this._pendingAuthPromise = doOnCredentialsRequired(this, isRepeat)
       .then(function (authParams) {
+        let lastAuthType = authParams.authSchema
         return me.doAuth(authParams).then(function (session) {
           me._pendingAuthPromise = null // must be before event emit to clear pending even in case of error in event handler
           currentSession = session
           if (LDS) {
             LDS.setItem(ubUtils.LDS_KEYS.LAST_LOGIN, session.logonname)
-            LDS.setItem(ubUtils.LDS_KEYS.LAST_AUTH_SCHEMA, session.authSchema)
+            LDS.setItem(ubUtils.LDS_KEYS.LAST_AUTH_SCHEMA, lastAuthType) // session.authSchema
           }
 
           /**

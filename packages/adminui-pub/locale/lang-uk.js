@@ -3,6 +3,7 @@
  * UnityBase Ukrainian translation
  */
 UB.i18nExtend({
+  doYouWantLogoutFromExternalServer: 'Завершити сесію в засвідчувальному центрі',
   emptyBarcodeSettings: 'Перед першим використанням друку штрих-коду, необхідно його налаштувати.',
   setScannerSettings: 'Перед першим використанням сканера, необхідно його налаштувати. Налаштувати можна <a href="/" onclick="{0} return false;">тут</a>.',
   showResultConfig: 'Перегляд конфигураії',

@@ -35,6 +35,7 @@
 const UAuthCert2 = require('./UAuthCert2.vue').default
 const UAuthUb = require('./UAuthUb.vue').default
 const UAuthNegotiate = require('./UAuthNegotiate.vue').default
+const UAuthOpenidconnect = require('./UAuthOpenidconnect.vue').default
 
 export default {
   name: 'URelogin',
@@ -42,7 +43,8 @@ export default {
   components: {
     UAuthCert2,
     UAuthUb,
-    UAuthNegotiate
+    UAuthNegotiate,
+    UAuthOpenidconnect
   },
 
   data () {
@@ -55,6 +57,7 @@ export default {
 
   computed: {
     authSchema () {
+      console.log('authSchema ####', window.localStorage.getItem('lastAuthType').toLowerCase())
       return window.localStorage.getItem('lastAuthType').toLowerCase()
     },
 

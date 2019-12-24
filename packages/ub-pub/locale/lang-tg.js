@@ -16,6 +16,12 @@ UB.i18nExtend({
   KerberosRememberUserMenu: 'Ҳамеша бо истифодаи домен ворид шавед',
   KerberosHeader: 'Вуруд бо истифода аз аккаунти <br/> системаи амалиетӣ',
   KerberosTip: 'Воридшавӣ бо ҳуқуқи истифодабарандае, ки ба системаи амалиёти ворид шудааст. Компютер бояд ба домен дохил карда шавад',
+
+  OpenIDHeader: 'Login using external authorization service',
+  OpenidTip: 'Login using external authorization service. After clicking "enter", enter authorization data in the authorization window.',
+  OpenIDConnect: 'OpenID',
+  authOpenIDConnectFail: "Provider can't authorize your request",
+
   Authentication: 'Аттестатсия',
   RegistrationMode: 'Низоми бақайдгири',
   AdditionalLoginOptions: 'Вариантҳои иловагии вурудӣ',

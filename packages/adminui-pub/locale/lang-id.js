@@ -7,6 +7,7 @@ Copyright (c) 2014 InBase
  * English translation
  */
 UB.i18nExtend({
+  doYouWantLogoutFromExternalServer: 'Завершить сессию в удостоверяющем центре?',
   setScannerSettings: 'You must set scanner settings, before use it. Scanner settings are <a href="/" onclick="{0} return false;">here</a>.',
   showResultConfig: 'Show configuration',
   numberOfSignificantDigits: 'The number of significant digits exceeds the allowable',

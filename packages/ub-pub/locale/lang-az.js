@@ -16,6 +16,12 @@ UB.i18nExtend({
   KerberosRememberUserMenu: 'Domen üzrə daxil olmaq',
   KerberosHeader: 'Əməliyyat sistemi hesabından <br/> istifadə edərək daxil olun',
   KerberosTip: 'Əməliyyat sisteminin girişi zamanı göstərilən istifadəçi adı və paroldan istifadə etməklə giriş.Kompüter domeninə qoşulmuş olmalıdır',
+
+  OpenIDHeader: 'Login using external authorization service',
+  OpenidTip: 'Login using external authorization service. After clicking "enter", enter authorization data in the authorization window.',
+  OpenIDConnect: 'OpenID',
+  authOpenIDConnectFail: "Provider can't authorize your request",
+
   Authentication: 'Autentikasiya',
   RegistrationMode: 'Qeydiyyat rejimi',
   AdditionalLoginOptions: 'Əlavə giriş variantları',
