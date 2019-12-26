@@ -182,29 +182,35 @@ export default {
       })
     },
 
-    async changePassword () {
-      const result = await $App.showModal({
+    changePassword () {
+      this.$UB.core.UBApp.doCommand({
+        cmdType: 'showForm',
         formCode: 'uba_user-changeUserPassword',
-        description: this.$ut('changePassword'),
-        customParams: 'self'
+        entity: 'uba_user',
+        title: 'changePassword',
+        isModal: true
       })
-      if (result.action === 'ok') {
-        await this.$UB.connection.xhr({
-          method: 'POST',
-          url: 'changePassword',
-          data: {
-            newPwd: result.newPwd,
-            pwd: result.pwd,
-            needChangePassword: result.needChangePassword
-          }
-        })
-        await this.$dialogInfo('passwordChangedSuccessfully')
-      }
     },
 
     doLogout () {
       window.localStorage.setItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT, 'true')
-      $App.logout()
+
+      if (window.localStorage.getItem('lastAuthType').toLowerCase() !== 'openidconnect') {
+        $App.logout()
+        return
+      }
+      let selectedProvider = window.localStorage.getItem('openIDProvider')
+      if (!selectedProvider) {
+        $App.logout()
+        return
+      }
+      $App.dialogYesNo('', 'doYouWantLogoutFromExternalServer').then(choice => {
+        if (choice) {
+          let url = window.location.origin + '/openIDConnect/' + selectedProvider + '?logout=true'
+          window.open(url, window.location.origin + 'login', 'toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0')
+        }
+        $App.logout()
+      })
     },
 
     async clearLocalStore () {

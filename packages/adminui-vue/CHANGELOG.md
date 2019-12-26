@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `uba_user-changeUserPassword-fm.vue` - changed form ExtJS to vue for changing user password
+ - OpenIDConnect authorization support for adminui-vue
 
 ### Changed
 
@@ -15,7 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `USelectCollection` prop `entityName` removed in flavor of computed property `entityName`
 
 ### Fixed
- - show actual text instead of empty <<< >>> in error window in case unhandled rejection message contains <<<text>>>    
+ - show actual text instead of empty <<< >>> in error window in case unhandled rejection message contains <<<text>>>
+ - prevent multiple emitting of `input` event in case UInput is of type `number`    
  - `mount.js` - fixed double error (close unsaved tab -> save)
 
 ## [1.9.10] - 2019-12-20

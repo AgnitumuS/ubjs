@@ -187,6 +187,7 @@ Object.defineProperty(Session, 'callerIP', {
  * @method
  * @param {Number} userID ID of  user
  * @param {String} [secret] secret word. If defined then session secretWord is `JSON.parse(returns).result+secret`
+ * @param {Boolean} [persist=true] Create persisted session (memorise session in session manager, so in can be used in future requests)
  * @returns {String} JSON string like answer on auth request
  */
 Session.setUser = sessionBinding.switchUser

@@ -243,6 +243,7 @@ function changePasswordEp (req, resp) {
  * Call of this method should be restricted to a small number of roles/groups. By default can be called by supervisor role
  * @private
  * @param {ubMethodParams} ctxt
+ * @deprecated
  */
 function changeOtherUserPassword (ctxt) {
   let { newPwd, needChangePassword, forUser } = ctxt.mParams.execParams

@@ -5,7 +5,7 @@
     :type="type"
     :step="step"
     v-bind="$attrs"
-    v-on="listeners"
+    @[numberEvent]="rounding"
   >
     <slot
       slot="prefix"
@@ -89,15 +89,8 @@ export default {
       }
     },
 
-    listeners () {
-      if (this.type === 'number') {
-        return {
-          ...this.$listeners,
-          change: this.rounding
-        }
-      } else {
-        return this.$listeners
-      }
+    numberEvent () {
+      return (this.type === 'number') ? 'change' : null
     }
   },
 

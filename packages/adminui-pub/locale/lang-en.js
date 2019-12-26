@@ -7,6 +7,7 @@ Copyright (c) 2014 InBase
  * English translation
  */
 UB.i18nExtend({
+  doYouWantLogoutFromExternalServer: 'End the session at the authorization center?',
   emptyBarcodeSettings: 'You must set barcode settings, before use it.',
   setScannerSettings: 'You must set scanner settings, before use it. Scanner settings are <a href="/" onclick="{0} return false;">here</a>.',
   showResultConfig: 'Show configuration',

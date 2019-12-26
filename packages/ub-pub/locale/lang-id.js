@@ -16,6 +16,12 @@ UB.i18nExtend({
   KerberosRememberUserMenu: 'Always log in using domain',
   KerberosHeader: 'Sign in using the <br/> operating system account', // useOSCredentialInfo
   KerberosTip: 'Login with the user rights entered into the operating system. The computer must be included in the domain',
+
+  OpenIDHeader: 'Login using external authorization service',
+  OpenidTip: 'Login using external authorization service. After clicking "enter", enter authorization data in the authorization window.',
+  OpenIDConnect: 'OpenID',
+  authOpenIDConnectFail: "Provider can't authorize your request",
+
   Authentication: 'Authentication',
   RegistrationMode: 'Registration mode',
   AdditionalLoginOptions: 'Opsi masuk tambahan',

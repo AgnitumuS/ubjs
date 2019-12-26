@@ -3,6 +3,7 @@
  * UnityBase Kyrgyz translation
  */
 UB.i18nExtend({
+  doYouWantLogoutFromExternalServer: 'Завершить сессию в удостоверяющем центре?',
   emptyBarcodeSettings: 'Перед использованием печати штрих кода, необходимо его настроить.',
   setScannerSettings: 'Перед первым использованием сканера, необходимо его настроить. Настроить можно <a href="/" onclick="{0} return false;">тут</a>.',
   showResultConfig: 'Просмотр конфигурации',

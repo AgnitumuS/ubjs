@@ -189,18 +189,8 @@ AdminUI реализует механизм поддержки множеств�
 					requestAuthParams: function(conn, isRepeat){
 						var deferred = Q.defer();
 						var url = window.location.origin + '/autotest/openIDConnect/IdentityServer';
-						function getWindowConfig() {
-
-							var width = 600,
-								height = 525,
-								left = Math.floor(window.screenX + (window.outerWidth - width) / 2),
-								top = Math.floor(window.screenY + (window.outerHeight - height) / 2);
-
-							return "width=" + width + ",height=" + height + 
-								   ",left=" + left + ",top=" + top + 
-								   ",toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0";
-						}					 
-						var loginWindowOpenID = window.open(url, 'login', getWindowConfig());
+					 
+						var loginWindowOpenID = window.open(url, 'login', 'toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0');
 						 
 						function loginListener(event) {
 							if (event.source === loginWindowOpenID) {

@@ -35,7 +35,14 @@ UB.i18nExtend({
   needChangePassword: 'Истифодабаранда ҳангоми воридшавӣ бояд гузарвожаро иваз кунад',
   checkAll: 'Ҳамаашро интихоб кунед',
   roles: 'Ролҳо',
+  uba: {
+    changePassword: {
+      retypePassword: {
+        errorText: 'Passwords mismatch'
+      }
+    }
+  },
 
-    // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
+  // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF'
 })

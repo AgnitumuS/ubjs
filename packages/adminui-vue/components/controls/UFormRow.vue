@@ -251,6 +251,12 @@ export default {
 .ub-error-wrap.is-error .ub-select-multiple__container {
   border-color: rgb(var(--danger));
 }
+
+.ub-form-row__description {
+  font-size: 12px;
+  margin-top: 5px;
+  color: rgb(var(--info), 0.6);
+}
 </style>
 
 <docs>
