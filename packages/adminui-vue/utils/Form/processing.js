@@ -372,9 +372,10 @@ function createProcessingModule ({
                   return UB.i18n(localeString)
                 }
               })
-            const err = new UB.UBError(UB.i18n('validationError', errors.join(', ')))
+            const errMsg = UB.i18n('validationError', errors.join(', '))
+            const err = new UB.UBError(errMsg)
             UB.showErrorWindow(err)
-            throw err
+            throw new UB.UBAbortError(errMsg)
           }
         }
 
