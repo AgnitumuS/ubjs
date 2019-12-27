@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-  - description for 'Common dictionary' desktop (+localization)
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.3.26] - 2019-12-27
+### Added
+  - description for 'Common dictionary' desktop (+localization)
 
 ## [5.3.25] - 2019-12-20
 ## [5.3.24] - 2019-12-18

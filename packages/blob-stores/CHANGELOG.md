@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.1.7] - 2019-12-27
 ### Changed
   - `FileSystemBlobStore.saveContentToTempStore` will return a real file md5 instead of empty string.
   This allow client to prevent downloading the same file several times

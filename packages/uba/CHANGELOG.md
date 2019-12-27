@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - icon for administrator desktop
- - description for administrator desktop (+localization)
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.3.22] - 2019-12-27
+### Added
+ - icon for administrator desktop
+ - description for administrator desktop (+localization)
 
 ## [5.3.21] - 2019-12-20
 ## [5.3.20] - 2019-12-18

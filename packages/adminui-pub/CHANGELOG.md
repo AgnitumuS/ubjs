@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.12.20] - 2019-12-27
+### Changed
 - **BREAKING** `UB.core.UBUtil.glyphs` is removed. See below.
  - **BREAKING** adminUI migrates from FontAwesome4 to "Font Awesome 5 free". For migrating Ext based forms please,
  replace all `glyph` properties to `iconCls` (the simplest way is to search all `glyphs.` occurrences). Example:
@@ -18,12 +27,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    iconCls: 'fa fa-filter',
  ```   
    - all occurrences of "font-awesome" in all package.json should be removed  
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.12.19] - 2019-12-20
 ### Fixed

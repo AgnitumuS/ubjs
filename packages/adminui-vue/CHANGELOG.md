@@ -6,12 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `uba_user-changeUserPassword-fm.vue` - changed form ExtJS to vue for changing user password
- - OpenIDConnect authorization support for adminui-vue
 
 ### Changed
 
 ### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.9.11] - 2019-12-27
+### Added
+ - `uba_user-changeUserPassword-fm.vue` - changed form ExtJS to vue for changing user password
+ - OpenIDConnect authorization support for adminui-vue
 
 ### Removed
  - `USelectCollection` prop `entityName` removed in flavor of computed property `entityName`
