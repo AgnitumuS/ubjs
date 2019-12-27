@@ -26,7 +26,7 @@
         :disabled="value === null"
         @click="applyFilter({
           whereList: [{ condition, value }],
-          description: $ut(condition) + ' ' + value
+          description: $ut(condition) + ' ' + formattedValue
         })"
       />
     </template>
@@ -64,6 +64,7 @@
 
 const FilterSubmitButton = require('../components/FilterSubmitButton.vue').default
 const { mapGetters, mapActions } = require('vuex')
+const Lookups = require('../../../utils/lookups.js')
 
 export default {
   components: { FilterSubmitButton },
@@ -93,6 +94,10 @@ export default {
       } else {
         return []
       }
+    },
+
+    formattedValue () {
+      return Lookups.getEnumValue(this.eGroup, this.value)
     }
   },
 
