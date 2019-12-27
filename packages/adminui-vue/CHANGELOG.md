@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - show actual text instead of empty <<< >>> in error window in case unhandled rejection message contains <<<text>>>
  - prevent multiple emitting of `input` event in case UInput is of type `number`
+ - `enum` filter template of `UtableEntity` displays the correct locale in the filter list
 
 ## [1.9.10] - 2019-12-20
 ## [1.9.9] - 2019-12-19
