@@ -404,11 +404,11 @@ UBNativeMessage.prototype.connect = function (timeOut) {
       }).then(function (extensionVersion) {
         let versionNum = versionToNumber(extensionVersion)
         if (versionNum < versionToNumber(NM_EXTENSION_FEATURE.minVersion)) {
-          ubUtils.logDebug('browser extension version', extensionVersion, 'is smaller when required', NM_EXTENSION_FEATURE.minVersion)
+          ubUtils.logDebug('browser extension version', extensionVersion, 'smaller than required', NM_EXTENSION_FEATURE.minVersion)
           throw new ubUtils.UBError(createFeatureUpdateMsg('extension', extensionVersion, true))
         } else {
           if (versionNum !== versionToNumber(NM_EXTENSION_FEATURE.minVersion)) {
-            ubUtils.logDebug('Current version of extension', extensionVersion, 'is more than required', NM_EXTENSION_FEATURE.minVersion)
+            ubUtils.logDebug('Current extension version', extensionVersion, 'higher than required', NM_EXTENSION_FEATURE.minVersion)
           }
           return true
         }
@@ -420,7 +420,7 @@ UBNativeMessage.prototype.connect = function (timeOut) {
           if (versionToNumber(featureVersion) < versionToNumber(requiredVersion)) {
             throw new ubUtils.UBError(createFeatureUpdateMsg(me._cfg, featureVersion, true))
           } else if (featureVersion !== requiredVersion) {
-            ubUtils.logDebug('Current version of feature', me._cfg.host, featureVersion, 'greater than the required', requiredVersion)
+            ubUtils.logDebug('Current feature version', me._cfg.host, featureVersion, 'higher than required', requiredVersion)
           }
           return me
         }, function (reason) {
