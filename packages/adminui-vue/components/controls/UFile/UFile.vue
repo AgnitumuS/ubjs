@@ -36,7 +36,7 @@
           icon="el-icon-download"
           @click="saveAs"
         >
-          {{ file.fName | cropFileName }} ({{ file.size | formatBytes }})
+          {{ fileName | cropFileName }} ({{ file.size | formatBytes }})
         </el-button>
       </div>
       <div
@@ -63,7 +63,7 @@
         />
 
         <div class="u-file__label">
-          {{ file.fName }}
+          {{ fileName }}
         </div>
         <div class="u-file__size">
           ({{ file.size | formatBytes }})
@@ -182,6 +182,11 @@ export default {
       }
     },
 
+    fileName () {
+      const { origName, fName } = this.file
+      return origName || fName
+    },
+
     /**
      * Sets size values if unset in config
      */
@@ -264,7 +269,7 @@ export default {
 
     async saveAs () {
       const binaryFile = await this.loadFile()
-      window.saveAs(new Blob([binaryFile]), this.file.fName)
+      window.saveAs(new Blob([binaryFile]), this.fileName)
     },
 
     async loadPreview () {
