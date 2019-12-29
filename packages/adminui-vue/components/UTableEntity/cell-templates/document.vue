@@ -19,7 +19,7 @@ export default {
     },
 
     fileName () {
-      return this.document.fName
+      return this.document.origName || this.document.fName
     }
   },
 
