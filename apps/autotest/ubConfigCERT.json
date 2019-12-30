@@ -37,8 +37,8 @@
 			"findCertificateBySerial": true,
 			"iit": {
 				"libraryPath": "./node_modules/@ub-d/iit-libbin/bin/x86_64_nix",
-				"librarySettings": "./key",
-				"keyPath": "./key/Key-6.dat",
+				"librarySettings": "./.key",
+				"keyPath": "./.key/Key-6.dat",
 				"password": "%KEY_PWD%"
 			}
 		}

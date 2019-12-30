@@ -6,8 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - global Vue component `SignatureVerificationResult` - view for `pki().verify`
 
 ### Changed
+ - authentication form will show error in dialog window instead of floating notification 
 
 ### Deprecated
 
@@ -127,7 +129,6 @@ $App.doCommand({
  - prevent `UDialog` to close on click outside dialog window
  - `USelectMany` prevent `split is not defined` exception in case DB is SQLite3 and only one value is selected 
  
-## [1.9.2] - 2019-12-04
 ### Fixed
  - `UNavbar` search widget
  

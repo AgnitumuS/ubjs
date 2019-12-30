@@ -376,46 +376,7 @@ Ext.define('UB.core.UBApp', {
         // UB 1.12 compatibility
         UB.appConfig = connection.appConfig
         // TODO - remove because mutation of other objects is bad idea
-        return UB.inject('models/ub-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
-          if (connection.trafficEncryption || (connection.authMethods.indexOf('CERT') !== -1) ||
-            (connection.authMethods.indexOf('CERT2') !== -1)) {
-            let pkiForAuth = connection.appConfig.uiSettings.adminUI.encryptionImplementation || '@ub-d/nm-dstu/injectEncription.js'
-            let pkiModule = connection.appConfig.uiSettings.adminUI.encryptionModule || 'UA_CRYPT'
-            if (!/clientRequire/.test(pkiForAuth)) {
-              pkiForAuth = '/clientRequire/' + pkiForAuth
-            }
-
-            var advParam = {
-              getPkParam: UB.view.cryptoUI.ReadPK.getPkParam,
-              getCertificates: UB.view.cryptoUI.SelectCert.getCertificates
-            }
-
-            UB.inject(pkiForAuth).then(function () {
-              window[pkiModule].addEncryptionToConnection(connection, advParam)
-              if (advParam.getReadPkForm) {
-                advParam.getReadPkForm()
-                  .then((pkFormInfo) => {
-                    me.on('appInitialize', f => {
-                      window.Vue.component('cert2-param-form', pkFormInfo)
-                    })
-                    // Vue.component('cert2-param-form', pkFormInfo)
-                    // cert2FormDefer.resolve(pkFormInfo)
-                  })
-              }
-              return true
-            })
-            /*
-            return SystemJS.import(pkiForAuth).then((module) => {
-              module.addEncryptionToConnection(connection, advParam)
-            })
-             */
-          } else {
-            return true
-          }
-          // for debug purpose
-          // let nmDstu = require(@ub-d/nm-dstu)
-          // return nmDstu.addEncryptionToConnection(connection)
-        })
+        return UB.inject('models/ub-pub/locale/lang-' + connection.preferredLocale + '.js')
       }
     }).then(function (connection) {
       me.connection = connection

@@ -29,7 +29,7 @@ UB.i18nExtend({
   useUBAuthenticationTitle: 'User&password',
   useCertificateTitle: 'Using certificate',
   useCertificateInfo: 'Authorization using electronic signature',
-  useCertificateInfoSimple: 'Authorization using electronic signature. Select Key, input password and press "Enter"',
+  useCertificateInfoSimple: 'Authorization using electronic signature. Press "Continue" for key selection',
   useCertificateInfoSimpleUserName: 'Authorization using electronic signature',
   IITCertCanceledByUser: 'Canceled by user',
   msgInvalidPlugin: 'Plugin version is out of date. You have version {0}, but version {1} is required. Automatically update occurs every 2 hours.' +
@@ -40,7 +40,8 @@ UB.i18nExtend({
   keyDevise: 'Device name',
   'Selected certificate': 'Selected Certificate',
   'Select certificate file': 'Select certificate file',
-  'Load certificates': 'Sorry, the certificate could not be found. Select and upload your certificate that matches the private key.',
+  LoadCertificatesFails: 'Automatically certificates upload fails. Please, upload your certificate that matches the private key manually',
+  LoadCertificatesFailsCASelect: 'To use a private key, a certificate is required. <br> <br> Please select the CA in which you received a private key and we will try to download the certificate automatically',
   'Load': 'Upload',
   'Cancel': 'Cancel',
   'ByKeyFile': 'File',
@@ -51,10 +52,9 @@ UB.i18nExtend({
   'User name': 'User name',
   'Save password': 'Save password',
   'Save': 'Save',
-  'Select acsk': 'Select АЦСК',
-  'acsk': 'АЦСК',
+  'Select CA': 'Select CA',
+  'CA': 'CA',
   'Crypto library settings': 'Crypto library settings',
-
 
   unknownError: 'Unknown error. Please, contact your system administrator.',
   recordNotExistsOrDontHaveRights: 'Record not exists or you don\'t have access rights',
@@ -72,6 +72,57 @@ UB.i18nExtend({
   selectSigningCertificate: 'Select certificate for signing',
   certificate: 'Certificate',
   certificates: 'Certificates',
+  SignatureVerificationResultObj: {
+    _: 'Signature(s) verification result',
+    valid: {
+      yes: 'Signature valid',
+      no: 'Signature invalid'
+    },
+    tspValid: {
+      yes: 'Time stamp verification',
+      no: 'Time stamp NOT verified'
+    },
+    ocspVerified: {
+      yes: 'Certificate validated',
+      no: 'Certificate validation status is unknown'
+    },
+    hardwareKeyUsed: 'hardwareKeyUsed',
+    signingTime: 'Signing time',
+    signatureStatus: 'Signature status',
+    signatureAuthor: 'Signer',
+    certificate: {
+      _: 'Certificate',
+      keyUsage: 'Key usage',
+      serial: 'Serial #',
+      validFrom: 'Valid from',
+      validTo: 'Valid until',
+      issuedBy: {
+        _: 'Issued by',
+        orgName: 'Organization',
+        fullName: 'Authority',
+        country: 'Country',
+        locality: 'Locality',
+        issuerID: 'Issuer ID',
+        orgUnit: 'Org. unit'
+      },
+      subject: {
+        _: 'Subject',
+        DRFO: 'DRFO',
+        fullName: 'Full name',
+        country: 'Country',
+        locality: 'Locality',
+        eMail: 'E-Mail',
+        phone: 'Phone'
+      },
+      organization: {
+        _: 'Organization',
+        EDRPOU: 'EDRPOU',
+        orgName: 'Name',
+        position: 'Position',
+        orgUnit: 'Department'
+      }
+    }
+  },
   'UacException BAD_PASSWORD : 1016': 'Invalid password or key is broken',
   'uac_certStatusError': 'Certificate status is unknown',
   'uac_certificateRevoked': 'The certificate was abandoned by the certification authority or key is expire',
@@ -83,7 +134,7 @@ UB.i18nExtend({
   NewPassword: 'New password',
   RetypePassword: 'Retype password',
   HowToCreatePassword: 'How to create a good password?',
-  passwordRecommendation: 'Password length should be 6-20 charaters. <br > You can use digits, latin characters and symbols: <br >! @ # $ % ^ & * ( ) _ - + : ; , . ',
+  passwordRecommendation: 'Password length should be 6-20 characters. <br > You can use digits, latin characters and symbols: <br >! @ # $ % ^ & * ( ) _ - + : ; , . ',
   passwordsDoNotMatch: 'Passwords do not match',
   passwordChangedSuccessfully: 'Password changed successfully. Please logout to use new password',
 

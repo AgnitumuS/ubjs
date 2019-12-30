@@ -7,6 +7,12 @@
       >
         Show dialog
       </button>
+      <u-toolbar-button
+        slot="left"
+        @click="verifySignatures"
+      >
+        Verify PDF signatures
+      </u-toolbar-button>
     </u-toolbar>
 
     <u-form-container>
@@ -54,38 +60,38 @@
         </el-col>
       </el-row>
 
-<!--      <u-form-row-->
-<!--        required-->
-<!--        :label="getLabel('category')"-->
-<!--        :error="$v.category.$error"-->
-<!--      >-->
-<!--        <u-select-entity-->
-<!--          v-model="category"-->
-<!--          :entity-name="getEntity('category')"-->
-<!--        />-->
-<!--      </u-form-row>-->
+      <!--      <u-form-row-->
+      <!--        required-->
+      <!--        :label="getLabel('category')"-->
+      <!--        :error="$v.category.$error"-->
+      <!--      >-->
+      <!--        <u-select-entity-->
+      <!--          v-model="category"-->
+      <!--          :entity-name="getEntity('category')"-->
+      <!--        />-->
+      <!--      </u-form-row>-->
 
-<!--      <u-form-row-->
-<!--        required-->
-<!--        :label="getLabel('favorites')"-->
-<!--        :error="$v.favorites.$error"-->
-<!--      >-->
-<!--        <u-select-entity-->
-<!--          v-model="favorites"-->
-<!--          :entity-name="getEntity('favorites')"-->
-<!--        />-->
-<!--      </u-form-row>-->
+      <!--      <u-form-row-->
+      <!--        required-->
+      <!--        :label="getLabel('favorites')"-->
+      <!--        :error="$v.favorites.$error"-->
+      <!--      >-->
+      <!--        <u-select-entity-->
+      <!--          v-model="favorites"-->
+      <!--          :entity-name="getEntity('favorites')"-->
+      <!--        />-->
+      <!--      </u-form-row>-->
 
-<!--      <u-form-row-->
-<!--        required-->
-<!--        :label="getLabel('favorites2')"-->
-<!--        :error="$v.favorites2.$error"-->
-<!--      >-->
-<!--        <u-select-entity-->
-<!--          v-model="favorites2"-->
-<!--          :entity-name="getEntity('favorites2')"-->
-<!--        />-->
-<!--      </u-form-row>-->
+      <!--      <u-form-row-->
+      <!--        required-->
+      <!--        :label="getLabel('favorites2')"-->
+      <!--        :error="$v.favorites2.$error"-->
+      <!--      >-->
+      <!--        <u-select-entity-->
+      <!--          v-model="favorites2"-->
+      <!--          :entity-name="getEntity('favorites2')"-->
+      <!--        />-->
+      <!--      </u-form-row>-->
 
       <u-form-row :label="getLabel('description')">
         <el-input
@@ -187,7 +193,23 @@ module.exports.default = {
     getEntity (attr) {
       return this.entitySchema.attributes[attr].associatedEntity
     },
-
+    async verifySignatures () {
+      const docBin = await this.$UB.connection.getDocument({
+        entity: this.entitySchema.name,
+        attribute: 'fileStoreSimple',
+        id: this.ID
+      }, { resultIsBinary: true })
+      const docb64 = await this.$UB.base64FromAny(docBin)
+      const pdfSigner = await $App.pdfSigner()
+      await pdfSigner.signOperationStart(docb64)
+      try {
+        let r = await pdfSigner.validateAllSignatures()
+        let pki = await this.$UB.connection.pki()
+        await pki.verificationUI(r.validationResults, r.reasons)
+      } finally {
+        await pdfSigner.signOperationEnd()
+      }
+    },
     showDialog () {
       // line below is for testing purpose
       // better to use this.dialogInfo('uba_user') inside Vue instance

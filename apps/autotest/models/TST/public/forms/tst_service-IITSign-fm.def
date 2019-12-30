@@ -8,9 +8,6 @@
 // @ID "3000000004904"
 exports.formDef = 'TST.IITSign'
 
-const pkiImplementation = require('@ub-d/iit-sign-web') //require('@ub-d/nm-dstu')
-pkiImplementation.addEncryptionToConnection($App.connection)
-
 Ext.define('TST.IITSign', {
   extend: 'Ext.form.Panel',
 
@@ -52,6 +49,11 @@ Ext.define('TST.IITSign', {
       fieldLabel: 'Message',
       anchor: '100%'
     }]
+  }, {
+    xtype: 'button',
+    width: 150,
+    ubID: 'doValidate',
+    text: 'Verify signature'
   }, {
     xtype: 'container',
     layout: {
@@ -102,34 +104,10 @@ Ext.define('TST.IITSign', {
     }, {
       xtype: 'button',
       width: 150,
-      ubID: 'doClearSign',
-      text: 'Clear signature'
-    }, {
-      xtype: 'button',
-      width: 150,
       ubID: 'doSaveSign',
-      text: 'Save signature'
-    }, {
-      xtype: 'button',
-      width: 150,
-      ubID: 'doValidate',
-      text: 'Verify signature'
+      text: 'Save signature to server'
     }]
   }],
-
-  initPKIAndLoadFile: function () {
-    var me = this; var f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
-    return new Promise((resolve, reject) => {
-      if (!f) throw new UB.UBError('No file selected')
-      return $App.connection.pki().then(function (pki) {
-        return pki.readPK().then(function () {
-          return UB.base64fromAny(f)
-        }).then(function (b64) {
-          return { pki: pki, data: b64 }
-        })
-      })
-    })
-  },
 
   initComponent: function () {
     var me = this
@@ -137,32 +115,39 @@ Ext.define('TST.IITSign', {
     // debugger;
 
     me.down('component[ubID="doSign"]').handler = function () {
-      me.initPKIAndLoadFile().then(function (data) {
-        return data.pki.signData(data.data)
-      }).then(function (signature) {
+      let f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
+      me.mask('Signing')
+      return UB.file2Uint8Array(f).then(fArray => {
+        return $App.connection.pki().then(pki => {
+          return pki.sign(fArray)
+        })
+      }).then(signature => {
         me.down('component[ubID="signature"]').setValue(signature)
-      }).finally(function () {
-        me.unmask()
-      }).finally(() => {
-        me.unmask('Signing')
-      })
-    }
-
-    me.down('component[ubID="doClearSign"]').handler = function () {
-      me.down('component[ubID="signature"]').setValue('')
+      }).catch(e => {
+        throw new UB.UBError(e.message)
+      }).finally(() => me.unmask())
     }
 
     me.down('component[ubID="doValidate"]').handler = function () {
+      let f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
+      if (!f) throw new UB.UBError('Please, select file to validate')
       me.mask('Verifying')
-      me.initPKIAndLoadFile().then(function (data) {
-        return data.pki.verifySignature(data.data, me.down('component[ubID="signature"]').value)
-      }).then(function (verificationResult) {
-        me.down('component[ubID="resultData"]').setValue(verificationResult)
-      }).fail(function (verificationError) {
-        throw new UB.UBError(verificationError.detail)
-      }).finally(function () {
-        me.unmask()
-      })
+      return UB.file2Uint8Array(f).then(fArray => {
+        return $App.connection.pki().then(pki => {
+          return Promise.all([
+            pki.verify(me.down('component[ubID="signature"]').value, fArray),
+            pki.verify(me.down('component[ubID="signature"]').value, undefined)
+          ])
+        })
+      }).then(([verificationResult, onlySignatureResult]) => {
+        me.down('component[ubID="resultData"]').setValue(JSON.stringify(verificationResult, null, ' '))
+        $App.connection.pki().then(pki => {
+          pki.verificationUI(
+            [verificationResult, onlySignatureResult],
+            ['<strong>First signature</strong>', 'Signature w/o doc']
+          )
+        })
+      }).finally(() => me.unmask())
     }
 
     me.down('component[ubID="doSaveSign"]').handler = function () {

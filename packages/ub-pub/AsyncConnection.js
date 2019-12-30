@@ -68,9 +68,9 @@ function parseAndTranslateUBErrorMessage (errMsg) {
     return i18n(msgStr)
   }
 
-  const msg = msgStr.substring(3, index - 3)    // Use "substring" to get part inside <<<>>>, knowing index of |
-  const argsStr = msgStr.substr(index + 1)      // Get all the part after |
-  const args = JSON.parse(argsStr)         // Parse it.  If it fails - it fails, we expect server to return correct JSON
+  const msg = msgStr.substring(3, index - 3) // Use "substring" to get part inside <<<>>>, knowing index of |
+  const argsStr = msgStr.substr(index + 1) // Get all the part after |
+  const args = JSON.parse(argsStr) // Parse it.  If it fails - it fails, we expect server to return correct JSON
   if (Array.isArray(args)) {
     args.unshift(msg)
     return i18n.apply(null, args)
@@ -541,21 +541,6 @@ $App.connection.userLang()
   }
 
   /**
-   * CERT auth schema implementation
-   * @returns {Promise}
-   */
-  this.authHandshakeCERT = function () {
-    throw new Error('authHandshakeCERT should be injected first')
-  }
-
-  /**
-   * CERT2 auth schema implementation
-   * @returns {Promise}
-   */
-  this.authHandshakeCERT2 = function () {
-    throw new Error('authHandshakeCERT2 should be injected first')
-  }
-  /**
    * Do authentication in UnityBase server. Usually called from UBConnection #authorize method in case authorization expire or user not authorized.
    * Resolve to {@link UBSession} session object.
    *
@@ -582,10 +567,10 @@ $App.connection.userLang()
         promise = this.authHandshakeUB(authParams)
         break
       case 'CERT':
-        promise = this.authHandshakeCERT(authParams)
+        promise = this.pki().then(pkiInterface => pkiInterface.authHandshakeCERT(authParams))
         break
       case 'CERT2':
-        promise = this.authHandshakeCERT2(authParams)
+        promise = this.pki().then(pkiInterface => pkiInterface.authHandshakeCERT2(authParams))
         break
       case 'UBIP':
         promise = this.authHandshakeUBIP(authParams)
@@ -1734,7 +1719,9 @@ const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty
  *       }, {
  *          bypassCache: true, resultIsBinary: true
  *       }).then(function(result){
- *          console.log('Result is', typeof result, 'of length' , result.byteLength, 'bytes'); //output: Result is object of length 2741 bytes
+ *          console.log('Result is', typeof result, 'of length' , result.byteLength, 'bytes'); //output: Result is ArrayBuffer of length 2741 bytes
+ *          let uiArr = new Uint8Array(result) // view into ArrayButter as on the array of byte
+ *          console.log('First byte of result is ', uiArr[0])
  *       });
  *
  * @method
@@ -1751,7 +1738,7 @@ const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty
  * @param {String} [params.store] ????
  *
  * @param {Object} [options] Additional request options
- * @param {Boolean} [options.resultIsBinary=false] if true - return document content as arrayBuffer
+ * @param {Boolean} [options.resultIsBinary=false] if true - return document content as ArrayBuffer
  * @param {Boolean} [options.bypassCache] HTTP POST verb will be used instead of GET for bypass browser cache
  * @returns {Promise} Resolved to document content (either ArrayBuffer in case options.resultIsBinary===true or text/json)
  */
@@ -1840,6 +1827,127 @@ UBConnection.prototype.logout = function () {
     )
   }
   return logoutPromise
+}
+
+/**
+ * @class SignatureValidationResult
+ * @property {boolean} valid Is signature match document
+ * @property {string} errorMessage filled in case valid is false
+ * @property {number} errorCode Error code from library
+ * @property {boolean} tspValid Is timestamp retrieved from authorised source (not from local computer)
+ * @property {boolean} ocspVerified Is signer certificate status verified during signing
+ * @property {boolean} hardwareKeyUsed Is hardware token used to made signature
+ * @property {Date} signingTime Time of signing. In case tspValid this time is taken from authorised source using TSP protocol, in other case - this is **UNTRUSTED** time of local signer computer
+ *
+ * @property {Object} certificate Signer certificate information. In case valid===false certificate may not exists (or broken) and this property is empty object
+ * @property {String} certificate.keyUsage String with key usage information
+ * @property {String} certificate.serial Certificate serial number
+ * @property {Date} certificate.validFrom Certificate valid starting from this date
+ * @property {Date} certificate.validTo Certificate valid up to this date
+ * @property {Object} certificate.issuedBy Certificate issuer info
+ * @property {String} certificate.issuedBy.orgName Organization name what issue certificate
+ * @property {String} certificate.issuedBy.fullName Authority name what issue certificate
+ * @property {String} certificate.issuedBy.country Authority location country
+ * @property {String} certificate.issuedBy.locality Authority location locality
+ * @property {String} certificate.issuedBy.issuerID Authority ID
+ * @property {String} [certificate.issuedBy.orgUnit] Authority organization unit
+ *
+ * @property {Object} subject Individual who owns a certificate. In case valid===false certificate may not exists (or broken) and this property is empty object
+ * @property {Object} [subject.DRFO] Individual DRFO (of ID card number in some cases)
+ * @property {Object} subject.fullName Individual full name. Can be empty for stamps?
+ * @property {String} subject.country Individual location country
+ * @property {String} subject.locality Individual location locality
+ * @property {String} [subject.eMail] Individual e-mail
+ * @property {String} [subject.phone] Individual phone number
+ *
+ * @property {Object} organization Organization where individual who owns a certificate works. In case of self-employed individual all fields are empty
+ * @property {String} organization.EDRPOU Organization EDRPOU
+ * @property {String} organization.orgName Organization EDRPOU
+ * @property {String} organization.position Position of individual within the organization
+ * @property {String} [organization.orgUnit] Department within the organization where individual works
+ */
+
+/**
+ * PKI interface
+ * @interface
+ */
+function UbPkiInterface () {}
+/**
+ * Name of used library
+ * @type {string}
+ */
+UbPkiInterface.prototype.libName = ''
+/**
+ * Direct library interface
+ * @type {{}}
+ */
+UbPkiInterface.prototype.direct = {}
+/**
+ * Read private key
+ */
+UbPkiInterface.prototype.readPrivateKey = function () {}
+/**
+ * Close private key
+ */
+UbPkiInterface.prototype.closePrivateKey = function () {}
+
+/**
+ * Return parsed certificate for loaded private key
+ */
+UbPkiInterface.prototype.getPrivateKeyOwnerInfo = function () {}
+/**
+ * @param {Uint8Array|String} data
+ * @param {function} [ownerKeyValidationFunction] optional function what called with one parameter - certInfo before signing.
+ *   Should validate is owner of passed certificate allowed to perform signing,
+ *   for example by check equality of certInfo.serial with conn.userData('userCertificateSerial')
+ * @return {Promise<string>} base64 encoded signature
+ */
+UbPkiInterface.prototype.sign = function (data, ownerKeyValidationFunction) {}
+/**
+ * Verify signature for data
+ * @param {String} b64signature Base64 encoded signature
+ * @param {Uint8Array|String} data Binary content of file to verify
+ * @param {Boolean} [verifyTimestamp=true]
+ * @returns {Promise<SignatureValidationResult>}
+ */
+UbPkiInterface.prototype.verify = function (b64signature, data, verifyTimestamp) {}
+/**
+ * CERT2 auth implementation
+ * @param {object} authParams
+ */
+UbPkiInterface.prototype.authHandshakeCERT2 = function (authParams) {}
+/**
+ * Show UI for library settings
+ * @return {Promise<boolean>}
+ */
+UbPkiInterface.prototype.settingsUI = function () {}
+
+/**
+ * Show UI for signature verification result
+ * @param {Array<SignatureValidationResult>} validationResults Array of UbPkiInterface.verify() results
+ * @param {Array<string>} [sigCaptions] Array of type and name for each signature from validationResults
+ * @return {Promise<boolean>}
+ */
+UbPkiInterface.prototype.verificationUI = function (validationResults, sigCaptions) {}
+
+/**
+ * Inject encryption implementation and return a promise to object what implements a UbPkiInterface
+ * @return {Promise<UbPkiInterface>}
+ */
+UBConnection.prototype.pki = function () {
+  if (this._pki) return Promise.resolve(this._pki)
+  if (!this.appConfig.uiSettings) throw new Error('connection.pki() can be called either after connect() or inside connection.onGotApplicationConfig')
+  let pkiImplModule = this.appConfig.uiSettings.adminUI.encryptionImplementation
+  if (!pkiImplModule) {
+    throw new Error('"appConfig.uiSettings.adminUI.encryptionImplementation" is not defined in application config')
+  }
+  let me = this
+  // eslint-disable-next-line no-undef
+  return UB.inject(pkiImplModule).then(function () {
+    // eslint-disable-next-line no-undef
+    me._pki = UA_CRYPT.getPkiInterface(me)
+    return me._pki
+  })
 }
 
 /**

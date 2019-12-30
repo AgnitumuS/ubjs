@@ -45,7 +45,7 @@
   keyDevise: 'Название носителя',
   'Selected certificate': 'Выбранный сертификат',
   'Select certificate file': 'Выберите файлы сертификатов',
-  'Load certificates': 'К сожалению, не удалось найти сертификат. Выберите и загрузите ваш сертификат, который соответствует личному ключу.',
+  LoadCertificatesFails: 'LoadCertificatesFails',
   'Load': 'Загрузить',
   'Cancel': 'Отменить',
   'ByKeyFile': 'Файл',

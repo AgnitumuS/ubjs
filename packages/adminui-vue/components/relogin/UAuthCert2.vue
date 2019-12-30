@@ -1,28 +1,24 @@
 <template>
-  <el-form @submit.native.prevent>
-
-    <cert2-param-form :load-pk="doCert2Login" class="auth-inject-panel"></cert2-param-form>
-
-  </el-form>
+  <div>
+    <p class="auth-page__cert-info" v-html="$ut('useCertificateInfoSimple')"></p>
+    <el-button type="primary" style="min-width: 8rem" @click="doCert2Login">{{ $ut('UBAuthContinue') }}</el-button>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'UbAuthCert2',
-
-  data () {
-    return {
+  props: {
+    resolveAuth: {
+      type: Function,
+      default: null
     }
   },
-
-  props: {
-    resolveAuth: Function
-  },
-
   methods: {
-
     doCert2Login: function (pkParams) {
-      this.resolveAuth(pkParams)
+      this.resolveAuth({
+        authSchema: 'CERT2'
+      })
       this.$emit('close')
     }
   }

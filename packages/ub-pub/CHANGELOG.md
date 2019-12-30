@@ -6,9 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - service function `UB.file2Uint8Array`:
+ ```
+  let f = document.getElementById('inputOfTypeFile').files[0]
+  ui8Arr = await UB.file2Uint8Array(f)
+ ```
+ - definition for SignatureValidationResult
+ - definition for UbPkiInterface
 
 ### Changed
-
+ - `AsyncConnection.authHandshakeCERT` & `authHandshakeCERT2` are **REMOVED**.
+   Instead `AsyncConnection.pki()` will return `UbPkiInterface` universal interface for PKI operations
+   
 ### Deprecated
 
 ### Removed

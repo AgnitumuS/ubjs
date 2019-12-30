@@ -100,6 +100,7 @@ export default {
 .auth-page__cert-info {
   text-align: left;
   line-height: 1.25rem;
+  word-break: break-word;
 }
 
 .auth-page__container {
