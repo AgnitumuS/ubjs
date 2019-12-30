@@ -134,8 +134,6 @@ in the generated config adds additional servers inside `upstream` section
 
 # Tuning operation system for Hi Load HTTP(S)
 ## Linux
- - increase the ephermal port range (ports available for client sockets) and
- decrease the tcp_fin_timeout (timeout after which port can be used again after client disconnect)
 ```
 touch /etc/sysctl.d/60-tcp-hiload.conf
 echo "
