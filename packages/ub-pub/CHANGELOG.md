@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.4.0] - 2019-12-30
+### Added
  - service function `UB.file2Uint8Array`:
  ```
   let f = document.getElementById('inputOfTypeFile').files[0]
@@ -13,10 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  ```
  - definition for SignatureValidationResult
  - definition for UbPkiInterface
-
-### Changed
-   
-### Deprecated
 
 ### Removed
 - `AsyncConnection.authHandshakeCERT` & `authHandshakeCERT2` are **REMOVED**.

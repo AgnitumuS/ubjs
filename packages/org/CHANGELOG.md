@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.44] - 2019-12-30
 ## [5.2.43] - 2019-12-27
 ### Added
   - description for 'Org. structure' desktop (+localization)

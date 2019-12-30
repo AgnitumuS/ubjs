@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.12.21] - 2019-12-30
 ## [5.12.20] - 2019-12-27
 ### Changed
 - **BREAKING** `UB.core.UBUtil.glyphs` is removed. See below.
