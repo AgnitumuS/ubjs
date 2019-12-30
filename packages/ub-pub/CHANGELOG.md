@@ -24,7 +24,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - native messages warning texts english grammar
- 
+ - fix of feature of i18n function to translate its arguments for server running in production mode
+
 ## [5.3.36] - 2019-12-27
 ## [5.3.35] - 2019-12-18
 ### Add

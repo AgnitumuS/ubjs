@@ -32,7 +32,7 @@ const ANONYMOUS_USER = 'anonymous'
 const AUTH_SCHEMA_FOR_ANONYMOUS = 'None'
 
 const TEST_ERROR_MESSAGE_RE = /<<<.*?>>>/
-const PARSE_ERROR_MESSAGE_RE = /"<<<(.*?)>>>(?:\|(\[[^\]]*\]))?"/
+const PARSE_ERROR_MESSAGE_RE = /(?:^|")<<<(.*?)>>>(?:\|(\[[^\]]*\]))?(?:$|")/
 const SIMPLE_PARSE_ERROR_MESSAGE_RE = /<<<(.*)>>>/
 
 function parseUBErrorMessage (errMsg) {
@@ -59,8 +59,8 @@ function parseAndTranslateUBErrorMessage (errMsg) {
     return i18n(JSON.parse('"' + msgPart + '"'))
   }
 
-  // JSON.parse the whole part
-  const msgStr = JSON.parse(msgUnparsed)
+  // JSON.parse the whole part in quotes, to decode JSON as a string
+  const msgStr = JSON.parse(msgUnparsed[0] === '"' ? msgUnparsed : '"' + msgUnparsed + '"')
 
   const index = msgStr.indexOf('|')
   if (index === -1) {
