@@ -304,7 +304,7 @@ $App.connection.userLang()
   this.userData = function (key) {
     let uData = this.isAuthorized()
       ? currentSession.userData
-      : { lang: 'en', login: ANONYMOUS_USER }
+      : { lang: this.appConfig.defaultLang || 'en', login: ANONYMOUS_USER }
 
     return key ? uData[ key ] : uData
   }

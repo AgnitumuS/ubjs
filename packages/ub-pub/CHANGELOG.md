@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `AsyncConnection.userLang` will return application default language in case user is not authorised yet (anonymous)
+ but appInfo is obtained
 
 ## [5.4.0] - 2019-12-30
 ### Added
