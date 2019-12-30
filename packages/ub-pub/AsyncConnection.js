@@ -32,7 +32,7 @@ const ANONYMOUS_USER = 'anonymous'
 const AUTH_SCHEMA_FOR_ANONYMOUS = 'None'
 
 const TEST_ERROR_MESSAGE_RE = /<<<.*?>>>/
-const PARSE_ERROR_MESSAGE_RE = /"<<<(.*?)>>>(?:\|(\[[^\]]*\]))?"/
+const PARSE_ERROR_MESSAGE_RE = /(?:^|")<<<(.*?)>>>(?:\|(\[[^\]]*\]))?(?:$|")/
 const SIMPLE_PARSE_ERROR_MESSAGE_RE = /<<<(.*)>>>/
 
 function parseUBErrorMessage (errMsg) {
