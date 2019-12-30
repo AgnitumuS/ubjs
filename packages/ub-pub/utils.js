@@ -105,6 +105,25 @@ module.exports.base64FromAny = function (data) {
   })
 }
 
+/**
+ * see docs in ub-pub main module
+ * @private
+ * @param {File} file
+ * @returns {Promise<Uint8Array>} resolved to file content as Uint8Array
+ */
+module.exports.file2Uint8Array = function (file) {
+  return new Promise((resolve, reject) => {
+    let reader = new FileReader()
+    reader.onload = function () {
+      resolve(new Uint8Array(reader.result))
+    }
+    reader.onerror = function (reason) {
+      reject(reason)
+    }
+    reader.readAsArrayBuffer(file)
+  })
+}
+
 const BASE64STRING = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 const BASE64ARR = [];
 (function () {

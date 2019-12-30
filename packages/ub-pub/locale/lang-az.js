@@ -45,7 +45,7 @@ UB.i18nExtend({
   keyDevise: 'Daşıyıcının adı',
   'Selected certificate': 'Seçilmiş sertifikat',
   'Select certificate file': 'Sertifikat faylları seçin',
-  'Load certificates': 'Təəssüf ki, sertifikatı tapmaq mümkün olmadı. Zəhmət olmasa sizin şəxsi açarınıza uyğun olan sertifikatı seçib yükləyin.',
+  LoadCertificatesFails: 'Təəssüf ki, sertifikatı tapmaq mümkün olmadı. Zəhmət olmasa sizin şəxsi açarınıza uyğun olan sertifikatı seçib yükləyin.',
   'Load': 'Yükləmək',
   'Cancel': 'Ləğv etmək',
   'ByKeyFile': 'Fayl',

@@ -64,7 +64,6 @@
   }
 </style>
 
-
 <template id="pwdChangeTpl">
   <el-form :model="changePwd" size="mini" ref="changePwdForm"
            :rules="changePwdRules" @submit.native.prevent label-width="45%">
@@ -191,27 +190,8 @@
         <div v-else>
           <el-form v-loading="processing" :model="authData" size="medium" @submit.native.prevent ref="authForm" :rules="authRules">
             <div v-if="hasCERT2">
-              <cert2-param-form :load-pk="doCert2Login" :auth-was-started="authWasStarted" class="auth-inject-panel"></cert2-param-form>
-              <!--
               <p class="auth-page__cert-info" v-html="$ut('useCertificateInfoSimple')"></p>
-              <el-form-item>
-                <el-button type="secondary" plain style="width: 100%" @click.prevent="fileSelectClick">
-                  {{ keyFile ? $ut('Selected key file') + ' ' + keyFile.name : $ut('Select private key file') }}
-                </el-button>
-                <input ref="keyFileInput" type="file" accept=".dat,.pfx,.cnt,.pk8,Key-6.dat,.jks"
-                       @change="keyFileChange"/>
-              </el-form-item>
-              <el-form-item>
-                <el-input :placeholder="$ut('Password')" v-model="authData.pwd" @keyup.enter.native="doCert2Login"
-                          type="password" autocomplete="off">
-                  <template slot="prepend"><i class="fa fa-fw fa-key"></i></template>
-                </el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" plain style="min-width: 8rem" @click="doCert2Login">{{ $ut('Enter') }}
-                </el-button>
-              </el-form-item>
-              -->
+              <el-button type="primary" style="min-width: 8rem" @click="doCert2Login">{{ $ut('UBAuthContinue') }}</el-button>
             </div>
 
             <div v-if="hasNegotiate">
@@ -306,10 +286,11 @@
 <script>
 
   var cert2FormDefer = {}
-  var promiseFrm = new Promise((resolve, reject) => {
-    cert2FormDefer.resolve = resolve
-    cert2FormDefer.reject = reject
-  })
+  var promiseFrm = Promise.resolve({})
+  //   = new Promise((resolve, reject) => {
+  //   cert2FormDefer.resolve = resolve
+  //   cert2FormDefer.reject = reject
+  // })
   Vue.component('cert2-param-form', () => promiseFrm)
 
   var vm = new Vue({
@@ -327,10 +308,9 @@
         ubAuthVisible: true,
         userDidLogout: window.localStorage.getItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT) === 'true',
         authData: {user: '', pwd: ''},
-        keyFile: null,
-        injectionPromise: Promise.resolve(true),
+        // keyFile: null,
+        //injectionPromise: Promise.resolve(true),
         changePwdActive: false,
-        authWasStarted: false,
         authRules: {
           user: [
             {required: true, message: this.$ut('blankText'), trigger: 'blur'}
@@ -389,12 +369,6 @@
       }
     },
     methods: {
-      fileSelectClick: function () {
-        this.$refs['keyFileInput'].click()
-      },
-      keyFileChange: function (e) {
-        this.keyFile = e.target.files[0]
-      },
       doNegotiateLogin: function () {
         this.processing = true
         window.deferred.resolve({
@@ -444,23 +418,10 @@
         })
       },
       doCert2Login: function (pkParams) {
-        this.authWasStarted = true
         this.processing = true
-        window.deferred.resolve(pkParams)
-        /*
-        var me = this
-        if (!me.keyFile) {
-          UB.showErrorWindow('Select private key file')
-        } else {
-          this.injectionPromise.then(function () {
-            window.deferred.resolve({
-              authSchema: 'CERT2',
-              keyFile: me.keyFile,
-              password: me.authData.pwd
-            })
-          })
-        }
-         */
+        window.deferred.resolve({
+          authSchema: 'CERT2'
+        })
       }
     }
   })
@@ -469,12 +430,7 @@
 
   function errorReporter ({errMsg, errCode, entityCode, detail}) {
     if (detail) console.error(detail)
-    Vue.prototype.$message({
-      showClose: true,
-      message: errMsg,
-      duration: 10000,
-      type: 'error'
-    })
+    Vue.prototype.$dialogError(errMsg, ' ')
   }
 
   UB.setErrorReporter(errorReporter)
@@ -492,26 +448,7 @@
       let lastLogin = localStorage.getItem(UB.LDS_KEYS.LAST_LOGIN)
       if (lastLogin) vm.authData.user = lastLogin
       if (conn.authMethods.indexOf('CERT2') !== -1) {
-        let pkiForAuth = conn.appConfig.uiSettings.adminUI.encryptionImplementation
-        let pkiModule = conn.appConfig.uiSettings.adminUI.encryptionModule || 'UA_CRYPT'
-        if (!/clientRequire/.test(pkiForAuth)) {
-          pkiForAuth = '/clientRequire/' + pkiForAuth
-        }
-        let advParam = {
-          getCertificates: function () { UB.showErrorWindow('TODO - getCertificates should be implemented') }
-        }
-
-        vm.injectionPromise = UB.inject(pkiForAuth).then(function () {
-          window[pkiModule].addEncryptionToConnection(conn, advParam)
-          if (advParam.getReadPkForm) {
-            advParam.getReadPkForm()
-              .then((pkFormInfo) => {
-                cert2FormDefer.resolve(pkFormInfo)
-              })
-
-          }
-          return true
-        })
+        conn.pki() // inject PKI implementation ASAP
       }
       return UB.inject('/models/ub-pub/locale/lang-' + conn.preferredLocale + '.js').then(function () {
         if (vm.authRules.user) vm.authRules.user[0].message = vm.$ut('blankText')
@@ -520,7 +457,6 @@
       })
     },
     onCredentialRequired: function (conn, isRepeat) {
-      vm.authWasStarted = false
       return new Promise(function (resolve, reject) {
         window.deferred.resolve = resolve
         window.deferred.reject = reject
@@ -531,7 +467,9 @@
     },
     onAuthorizationFail: function (reason) {
       vm.processing = false
-      UB.showErrorWindow(reason)
+      if (reason && (reason.message !== 'canceled')) {
+        UB.showErrorWindow(reason)
+      }
     }
   }).then(function authOK (conn) {
     function getUrlVars () {
@@ -544,6 +482,8 @@
 
     var returnUrl = getUrlVars()['returnUrl']
     window.location.href = decodeURIComponent(returnUrl)
+  }).finally(function() {
+    vm.processing = false
   })
 </script>
 </body>

@@ -137,6 +137,17 @@ let UB = module.exports = {
    */
   base64FromAny: function (data) { return utils.base64FromAny(data) },
   /**
+   * Fast async transformation of file to Uint8Array
+   * @example
+
+   let f = document.getElementById('inputOfTypeFile').files[0]
+   ui8Arr = await UB.file2Uint8Array(f)
+
+   * @param {File} file
+   * @returns {Promise<Uint8Array>} resolved to file content as Uint8Array
+   */
+  file2Uint8Array: function (file) { return utils.file2Uint8Array(file) },
+  /**
    * Convert base64 encoded string to decoded array buffer
    * @param {String} base64
    * @returns {ArrayBuffer}

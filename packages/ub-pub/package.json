@@ -12,6 +12,7 @@
   },
   "scripts": {
     "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
     "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json",
     "analyse-boundle": "webpack --mode production --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
     "lint": "eslint source test",
