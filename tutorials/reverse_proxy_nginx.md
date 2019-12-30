@@ -131,3 +131,40 @@ npx ubcli generateNginxCfg -lb
 ```
 
 in the generated config adds additional servers inside `upstream` section 
+
+# Tuning operation system for Hi Load HTTP(S)
+## Linux
+ - increase the ephermal port range (ports available for client sockets) and
+ decrease the tcp_fin_timeout (timeout after which port can be used again after client disconnect)
+```
+touch /etc/sysctl.d/60-tcp-hiload.conf
+echo "
+# increase the ephermal port range
+net.ipv4.ip_local_port_range = 15000 65535
+# decrease fin timeout 
+net.ipv4.tcp_fin_timeout = 30
+# increase a number of socket waiting for accept
+net.core.somaxconn=1024
+# raise the nofile/max open files/file descriptors/file handles limit
+fs.file-max = 30000
+" > /etc/sysctl.d/60-tcp-hiload.conf
+```
+to apply settings without reboot
+```
+sysctl -p /etc/sysctl.d/60-tcp-hiload.conf
+``` 
+
+This allow to create ~1500 connections per second instead of default 470 and total
+concurrent browser sessions up to 10000.
+ 
+Explanation:
+ 
+ Each HTTP connection require a TCP session, each TCP session is a pair IP+port,
+ where port is dynamically taken from a range defined in `sysctl net.ipv4.ip_local_port_range`.
+ After client disconnection port is busy for `sysctl net.ipv4.tcp_fin_timeout`
+ 
+ Default port range values for Linux is 32768-60999 (28231 TCP connections).
+ Since modern browser can create 6 or even mode TCP session for one page this is
+ ~ 4700 concurrent users.
+ 
+ 
