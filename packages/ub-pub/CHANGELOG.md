@@ -15,13 +15,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - definition for UbPkiInterface
 
 ### Changed
- - `AsyncConnection.authHandshakeCERT` & `authHandshakeCERT2` are **REMOVED**.
-   Instead `AsyncConnection.pki()` will return `UbPkiInterface` universal interface for PKI operations
    
 ### Deprecated
 
 ### Removed
-
+- `AsyncConnection.authHandshakeCERT` & `authHandshakeCERT2` are **REMOVED**.
+   Instead `AsyncConnection.pki()` will return `UbPkiInterface` universal interface for PKI operations
+ 
 ### Fixed
  - native messages warning texts english grammar
  - fix of feature of i18n function to translate its arguments for server running in production mode
