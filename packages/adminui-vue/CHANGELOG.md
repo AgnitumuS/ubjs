@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `USelectEntity`: option's select emits two parameters - (value, option: Object)
+ - `uba_user-changeUserPassword-fm.vue` - changed form ExtJS to vue for changing user password
+ - OpenIDConnect authorization support for adminui-vue
  - `UFormRow`, `UFormContainer` prop `maxWidth`. Sets max width of row
 
 ### Changed
@@ -44,7 +47,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - show actual text instead of empty <<< >>> in error window in case unhandled rejection message contains <<<text>>>
  - prevent multiple emitting of `input` event in case UInput is of type `number`
  - prevent showing of form validation error twice in case user close tab on the unsaved form and validation error occures 
- - `enum` filter template of `UtableEntity` displays the correct locale in the filter list
+ - `enum` filter template of `UtableEntity` displays the correct locale in the filter list 
 
 ## [1.9.10] - 2019-12-20
 ## [1.9.9] - 2019-12-19

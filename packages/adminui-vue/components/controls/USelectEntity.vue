@@ -15,8 +15,8 @@
       @show="onShowDropdown"
       @keydown.native.exact.down="changeSelected(1)"
       @keydown.native.exact.up="changeSelected(-1)"
-      @keydown.native.enter="chooseOption"
-      @keydown.native.esc.capture="cancelInput"
+      @keydown.native.enter="chooseOption(selectedOption)"
+      @keydown.native.esc.capture="leaveInput"
       @keydown.native.tab="leaveInput"
     >
       <div
@@ -68,7 +68,7 @@
             slot="suffix"
             style="cursor: pointer;"
             class="el-input__icon el-icon-close"
-            @click="$emit('input', null)"
+            @click="$emit('input', null, null)"
           />
           <i
             v-if="!readonly"
@@ -93,10 +93,10 @@
           class="ub-select__option"
           :class="{
             'active': option[valueAttribute] === value,
-            'selected': option[valueAttribute] === selectedOption
+            'selected': option[valueAttribute] === selectedID
           }"
-          @click="chooseOption"
-          @mouseenter="selectedOption = option[valueAttribute]"
+          @click="chooseOption(option)"
+          @mouseenter="selectedID = option[valueAttribute]"
         >
           {{ option[displayAttribute] }}
         </div>
@@ -291,7 +291,8 @@ export default {
       moreVisible: false, // shows when the request has an answer what is the next page
       dropdownVisible: false,
       popperWidth: 300, // by default 300, will change after popper show
-      selectedOption: null, // ID of option which user hover or focused by arrows
+      selectedID: null, // ID of option which user hover or focused by arrows
+      selectedOption: null, // option which user hover or focused by arrows
       prevQuery: '', // when user click show more need to track prev query value for send same request to next page
       isSafeDeletedValue: false,
       isFocused: false,
@@ -382,6 +383,11 @@ export default {
     value: {
       immediate: true,
       handler: 'setQueryByValue'
+    },
+    queryDisplayValue (value) {
+      if (value.length < 1) {
+        this.handleClearClick()
+      }
     }
   },
 
@@ -410,9 +416,10 @@ export default {
       if (this.options.length) {
         const currentValueIndex = this.options.findIndex(i => i[this.valueAttribute] === this.value)
         const index = currentValueIndex === -1 ? 0 : currentValueIndex
-        this.selectedOption = this.options[index][this.valueAttribute]
+        this.selectedID = this.options[index][this.valueAttribute]
+        this.selectedOption = this.options[index]
       } else {
-        this.selectedOption = this.value
+        this.selectedID = this.value
       }
 
       this.loading = false
@@ -483,7 +490,7 @@ export default {
       this.popperWidth = this.$refs.input.$el.offsetWidth
     },
 
-    cancelInput (e) {
+    leaveInput (e) {
       if (this.dropdownVisible) {
         /*
          * need to stopPropagation only if this is necessary,
@@ -491,15 +498,9 @@ export default {
          * for example, closing dialog
          */
         e.stopPropagation()
-        this.selectedOption = this.value
+        this.selectedID = this.value
         this.dropdownVisible = false
         this.setQueryByValue(this.value)
-      }
-    },
-
-    leaveInput () {
-      if (this.dropdownVisible) {
-        this.chooseOption()
       }
     },
 
@@ -514,6 +515,7 @@ export default {
       await this.fetchPage(this.prevQuery, this.pageNum + 1)
       const { scrollHeight } = this.$refs.options
       this.$refs.options.scrollTop = scrollHeight
+      this.$refs.input.$el.click() // keep focus on input
     },
 
     // shows all search result when click on dropdown arrow
@@ -532,24 +534,27 @@ export default {
      * @param {number} direction available params -1/1 for up/down
      */
     changeSelected (direction) {
-      const index = this.options.findIndex(o => o[this.valueAttribute] === this.selectedOption)
+      const index = this.options.findIndex(o => o[this.valueAttribute] === this.selectedID)
       const nextIndex = index + direction
       const lessMin = nextIndex < 0
       const moreMax = nextIndex > this.options.length - 1
       const inRange = !lessMin && !moreMax
       if (inRange) {
-        this.selectedOption = this.options[nextIndex][this.valueAttribute]
+        this.selectedID = this.options[nextIndex][this.valueAttribute]
+        this.selectedOption = this.options[nextIndex]
       }
       if (this.dropdownVisible && this.options.length > 0) {
-        const el = this.$refs[`option_${this.selectedOption}`][0]
+        const el = this.$refs[`option_${this.selectedID}`][0]
         el.scrollIntoView({ block: 'nearest' })
       }
     },
 
     // emits when user click on option or click enter when option is focused
-    chooseOption () {
-      this.$emit('input', this.selectedOption)
-      this.setQueryByValue(this.selectedOption)
+    chooseOption (option) {
+      if (this.selectedID !== this.value) {
+        this.$emit('input', this.selectedID, JSON.parse(JSON.stringify(option)))
+      }
+      this.setQueryByValue(this.selectedID)
       this.dropdownVisible = false
     },
 
@@ -575,8 +580,8 @@ export default {
               return repo
             },
             columns,
-            onSelectRecord: ({ ID, close }) => {
-              this.$emit('input', ID)
+            onSelectRecord: ({ ID, row, close }) => {
+              this.$emit('input', ID, JSON.parse(JSON.stringify(row)))
               close()
             },
             buildEditConfig (cfg) {
@@ -600,7 +605,9 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.$emit('input', store.state.selectedRowId)
+                      const selectedRowId = store.state.selectedRowId
+                      const selectedRow = store.state.items.find(({ ID }) => ID === selectedRowId)
+                      this.$emit('input', selectedRowId, JSON.parse(JSON.stringify(selectedRow)))
                       close()
                     }
                   }
@@ -638,7 +645,7 @@ export default {
 
     handleClearClick () {
       if (!this.removeDefaultActions) {
-        this.$emit('input', null)
+        this.$emit('input', null, null)
         if (this.dropdownVisible) {
           this.fetchPage()
         }

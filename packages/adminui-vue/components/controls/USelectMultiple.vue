@@ -497,6 +497,7 @@ export default {
       await this.fetchPage(this.prevQuery, this.pageNum + 1)
       const { scrollHeight } = this.$refs.options
       this.$refs.options.scrollTop = scrollHeight
+      this.$refs.input.click()
     },
 
     toggleDropdown () {
