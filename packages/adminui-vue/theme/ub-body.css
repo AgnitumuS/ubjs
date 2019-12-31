@@ -6,7 +6,7 @@
   --primary: 66, 183, 115;
   --secondary: 128, 170, 226;
   --danger: 245, 108, 108;
-  --info: 144, 147, 153;
+  --info: 96, 98, 102;
   --info-light: 192, 196, 204;
   --warning: 230, 162, 60;
   --success: 103, 194, 58;
@@ -24,6 +24,8 @@
   --table-header-color: 125, 128, 135;
   --table-selected-row: 245, 252, 248;
   --table-selected-cell: 235, 248, 241;
+  --input-border: 173, 176, 184;
+  --input-placeholder: var(--bg);
 }
 
 ::-webkit-scrollbar {
@@ -147,13 +149,13 @@ html, body {
   display: none !important;
 }
 
-.ub-form-container {
+.u-form-layout {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.ub-form-container > form {
+.u-form-layout > form {
   overflow: auto;
   flex-grow: 1;
   padding: 1em;

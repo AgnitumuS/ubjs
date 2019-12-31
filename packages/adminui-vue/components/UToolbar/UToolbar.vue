@@ -401,7 +401,7 @@ export default {
 ### Usage
 ```vue
 <template>
-  <div class="ub-form-container">
+  <div class="u-form-layout">
     <u-toolbar/>
     <u-form-container>
       <!-- Your form -->
@@ -418,7 +418,7 @@ export default {
 ### Slots
 ```vue
 <template>
-  <div class="ub-form-container">
+  <div class="u-form-layout">
     <u-toolbar>
       <u-toolbar-button slot="left">left side btn</u-toolbar-button>
       <u-toolbar-button slot="right">right side btn</u-toolbar-button>

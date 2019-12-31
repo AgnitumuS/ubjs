@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button
-      class="fa fa-globe"
+      class="u-select__locale-button fa fa-globe"
       :disabled="$parent.disabled"
       tabindex="-1"
       @click="showModal = true"
@@ -11,6 +11,7 @@
       width="500px"
       append-to-body
       :close-on-click-modal="false"
+      class="u-locale-button__dialog"
       @open="initLangs"
     >
       <u-form-row
@@ -155,3 +156,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  .u-locale-button__dialog .el-dialog__body{
+    padding: 10px 20px;
+  }
+</style>

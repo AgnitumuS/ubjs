@@ -1,5 +1,5 @@
 <template>
-  <div class="ub-form-container">
+  <div class="u-form-layout">
     <u-toolbar />
 
     <el-alert

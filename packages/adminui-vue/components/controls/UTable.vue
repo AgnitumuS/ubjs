@@ -217,7 +217,6 @@ export default {
   color: rgb(var(--table-text));
   padding: 16px;
   font-size: 14px;
-  font-weight: 600;
   position: relative;
 }
 
@@ -232,8 +231,9 @@ export default {
   top: 0;
   z-index: 1;
   position: sticky;
-  color: rgb(var(--table-header-color));
+  color: rgba(var(--table-header-color), 0.76);
   white-space: nowrap;
+  font-weight: 600;
 }
 
 .u-table th:after{

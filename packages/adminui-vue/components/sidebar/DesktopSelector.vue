@@ -14,7 +14,7 @@
       <template v-if="!isCollapsed">
         {{ selectedDesktop.caption }}
       </template>
-      <i class="desktop-select-button__icon-after el-icon-more" />
+      <i class="desktop-select-button__icon-after el-icon-menu" />
     </div>
 
     <transition name="sidebar-animation">

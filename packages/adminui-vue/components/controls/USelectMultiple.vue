@@ -563,7 +563,7 @@ export default {
 
 <style>
 .ub-select-multiple__container{
-  border: 1px solid #DCDFE6;
+  border: 1px solid rgb(var(--input-border));
   border-radius: 4px;
   padding-left: 5px;
   background-color: #FFF;
@@ -607,7 +607,7 @@ export default {
 }
 
 .ub-select-multiple__input::placeholder{
-  color: rgb(var(--info-light));
+  color: rgba(var(--input-placeholder), 0.54);
 }
 
 .ub-select-multiple__icon-wrap {
@@ -621,7 +621,7 @@ export default {
   justify-content: center;
   height: 100%;
   min-width: 34px;
-  color: rgb(var(--info-light));
+  color: rgb(var(--input-border));
   cursor: pointer;
 }
 

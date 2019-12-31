@@ -26,7 +26,7 @@
           :placeholder="$ut('EnterNewPassword')"
           show-password
         />
-        <div class="ub-form-row__description">
+        <div class="u-form-row__description">
           {{ $ut('passwordRecommendation') }}
         </div>
       </u-form-row>
