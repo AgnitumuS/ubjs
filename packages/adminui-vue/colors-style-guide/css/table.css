@@ -1,0 +1,66 @@
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+td,
+th {
+    /* text */
+    --l-text: var(--l-text-default);
+    --text-color: hsl(var(--hs-text), var(--l-text));
+
+    /* background */
+    --hs-background-cell: var(--hs-background);
+    --l-background: 100%;
+    --background: hsl(var(--hs-background-cell), var(--l-background));
+
+    /* border */
+    --l-border: var(--l-border-default);
+    --border-color: hsl(var(--hs-border), var(--l-border));
+
+    border-bottom: 0.1rem solid var(--border-color);
+    background: var(--background);
+    color: var(--text-color);
+    padding: 1.6rem;
+    font-size: 1.4rem;
+    position: relative;
+    transition: .1s;
+}
+
+th {
+    --l-text: var(--l-text-light);
+
+    white-space: nowrap;
+    font-weight: 600;
+    text-align: left;
+}
+
+th:after {
+    content: '';
+    width: 0.1rem;
+    height: 2.8rem;
+    position: absolute;
+    top: calc(50% - 1.4rem);
+    right: 0;
+    background: var(--border-color);
+}
+
+th:last-child:after {
+    content: none;
+}
+
+tr:hover td,
+tr.active td {
+    --l-background: 97%;
+    --l-border: var(--l-border-hover);
+}
+
+tr td:hover,
+tr td.active {
+    --l-background: 92%;
+}
+
+tr.active td {
+    --hs-background-cell: var(--hs-primary);
+}

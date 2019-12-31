@@ -1,0 +1,39 @@
+.button {
+    --hs-button: var(--hs-primary);
+    --l-button: var(--l-default);
+    --color-button: hsl(var(--hs-button), var(--l-button));
+
+    font-size: 1.6rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--border-radius);
+    background: var(--color-button);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: .1s;
+}
+
+.button.success {
+    --hs-button: var(--hs-success);
+}
+
+.button.warning {
+    --hs-button: var(--hs-warning);
+}
+
+.button.danger {
+    --hs-button: var(--hs-danger);
+}
+
+.button:hover {
+    --l-button: var(--l-hover);
+}
+
+.button:disabled {
+    cursor: not-allowed;
+    --l-button: var(--l-disabled);
+}
+
+.button:active {
+    --l-button: var(--l-active);
+}

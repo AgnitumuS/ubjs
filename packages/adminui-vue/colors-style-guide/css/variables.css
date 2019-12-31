@@ -1,0 +1,41 @@
+:root {
+    --border-radius: 0.5rem;
+
+    /* COLOR PALLETE */
+
+    /* hue, saturation */
+    --hs-primary: 210, 100%;
+    --hs-success: 100, 50%;
+    --hs-warning: 36, 77%;
+    --hs-danger: 0, 87%;
+    /* lightness */
+    --l-default: 50%;
+    --l-hover: 60%;
+    --l-active: 40%;
+    --l-disabled: 80%;
+
+    /* TEXT COLORS */
+
+    /* hue, saturation */
+    --hs-text: 220, 3%;
+    /* lightness */
+    --l-text-default: 10%;
+    --l-text-light: 45%;
+
+    /* BORDER COLORS */
+
+    /* hue, saturation */
+    --hs-border: 222, 17%;
+    /* lightness */
+    --l-border-default: 70%;
+    --l-border-hover: 55%;
+    --l-border-disabled: 80%;
+
+    /* BACKGROUND COLORS */
+
+    /* hue, saturation */
+    --hs-background: 222, 19%;
+    /* lightness */
+    --l-background-default: 33%;
+    --l-background-disabled: 95%;
+}

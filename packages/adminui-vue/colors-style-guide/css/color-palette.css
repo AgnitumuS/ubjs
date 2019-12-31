@@ -1,0 +1,117 @@
+.palette-cell__inner {
+     --hs: var(--hs-primary);
+     --l: var(--l-default);
+     --color: hsl(var(--hs), var(--l));
+     background: var(--color);
+ }
+
+.palette-cell {
+    width: 40rem;
+    height: 25rem;
+    display: inline-flex;
+    flex-wrap: wrap;
+    vertical-align: top;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    margin: 1rem;
+}
+
+.palette-cell__inner:first-child {
+    width: 100%;
+    height: 65%;
+}
+
+.palette-cell__inner {
+    flex-grow: 1;
+    height: 35%;
+    min-width: 33%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.palette-cell.primary .palette-cell__inner {
+    --hs: var(--hs-primary);
+}
+
+.palette-cell.success .palette-cell__inner {
+    --hs: var(--hs-success);
+}
+
+.palette-cell.warning .palette-cell__inner {
+    --hs: var(--hs-warning);
+}
+
+.palette-cell.danger .palette-cell__inner {
+    --hs: var(--hs-danger);
+}
+
+.palette-cell.text .palette-cell__inner {
+    --hs: var(--hs-text);
+}
+
+.palette-cell.border .palette-cell__inner {
+    --hs: var(--hs-border);
+}
+
+.palette-cell.border .palette-cell__inner.default {
+    --l: var(--l-border-default);
+}
+
+.palette-cell.border .palette-cell__inner.hover {
+    --l: var(--l-border-hover);
+}
+
+.palette-cell.border .palette-cell__inner.disabled {
+    --l: var(--l-border-disabled);
+}
+
+.palette-cell.background .palette-cell__inner {
+    --hs: var(--hs-background);
+}
+
+.palette-cell__inner.default {
+    --l: var(--l-default);
+}
+
+.palette-cell__inner.hover {
+    --l: var(--l-hover);
+}
+
+.palette-cell__inner.active {
+    --l: var(--l-active);
+}
+
+.palette-cell__inner.disabled {
+    --l: var(--l-disabled);
+}
+
+.palette-cell.text .palette-cell__inner.default {
+    --l: var(--l-text-default);
+}
+
+.palette-cell.text .palette-cell__inner.light {
+    --l: var(--l-text-light);
+}
+
+.palette-cell.background .palette-cell__inner.default {
+    --l: var(--l-background-default);
+}
+
+.palette-cell.background .palette-cell__inner.disabled {
+    --l: var(--l-background-disabled);
+}
+
+.invert{
+    color: #000;
+}
+
+.palette-cell:hover .label,
+.palette-cell .code{
+    display: none;
+}
+
+.palette-cell:hover .code {
+    display: block;
+}

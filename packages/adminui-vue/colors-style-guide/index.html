@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>UB colors style guide</title>
+  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/color-palette.css">
+  <link rel="stylesheet" href="./css/button.css">
+  <link rel="stylesheet" href="./css/input.css">
+  <link rel="stylesheet" href="./css/table.css">
+</head>
+<body>
+<h2>Color palette</h2>
+<div>
+  Colors are based on the hsl format (hue, saturation, lightness).
+</div>
+<br>
+<img src="./hsl-color-wheel.png"><br><br><br>
+<div>
+  All color variables consist of hs + l combinations.
+</div>
+<div>hs - the basis of color</div>
+<div>l - indicates how much color will be closer to black or white</div>
+<br>
+<div>
+  Each color has its own modifiers. <br>
+  For example, to get the "success-hover" combination, you need to use them like this: <br>
+  <h3>hsl(var(--hs-success), var(--l-hover))</h3>
+</div>
+<div class="palette-cell primary">
+  <div class="palette-cell__inner default"><div class="label">Default (Primary)</div>
+    <div class="code">--hs-primary<br> --l-default</div></div>
+  <div class="palette-cell__inner hover"><div class="label">Hover</div>
+    <div class="code">--hs-primary<br> --l-hover</div></div>
+  <div class="palette-cell__inner active"><div class="label">Active</div>
+    <div class="code">--hs-primary<br> --l-active</div></div>
+  <div class="palette-cell__inner disabled"><div class="invert"><div class="label">Disabled</div><div class="code">--hs-primary<br> --l-disabled</div></div>
+    </div>
+</div>
+<div class="palette-cell success">
+  <div class="palette-cell__inner default"><div class="label">Default (Success)</div>
+    <div class="code">--hs-success<br> --l-default</div></div>
+  <div class="palette-cell__inner hover"><div class="label">Hover</div>
+    <div class="code">--hs-success<br> --l-hover</div></div>
+  <div class="palette-cell__inner active"><div class="label">Active</div>
+    <div class="code">--hs-success<br> --l-active</div></div>
+  <div class="palette-cell__inner disabled"><div class="invert"><div class="label">Disabled</div><div class="code">--hs-success<br> --l-disabled</div></div>
+    </div>
+</div>
+<div class="palette-cell warning">
+  <div class="palette-cell__inner default"><div class="label">Default (Warning)</div>
+    <div class="code">--hs-warning<br> --l-default</div></div>
+  <div class="palette-cell__inner hover">
+    <div class="label">Hover</div>
+    <div class="code">--hs-warning<br> --l-hover</div></div>
+  <div class="palette-cell__inner active">
+    <div class="label">Active</div>
+    <div class="code">--hs-warning<br> --l-active</div></div>
+  <div class="palette-cell__inner disabled"><div class="invert">
+    <div class="label">Disabled</div>
+    <div class="code">--hs-warning<br> --l-disabled</div></div></div>
+</div>
+<div class="palette-cell danger">
+  <div class="palette-cell__inner default">
+    <div class="label">Default (Danger)</div>
+    <div class="code">--hs-danger<br> --l-default</div></div>
+  <div class="palette-cell__inner hover"><div class="label">Hover</div>
+    <div class="code">--hs-danger<br> --l-hover</div></div>
+  <div class="palette-cell__inner active"><div class="label">Active</div>
+    <div class="code">--hs-danger<br> --l-active</div></div>
+  <div class="palette-cell__inner disabled"><div class="invert"><div class="label">Disabled</div>
+    <div class="code">--hs-danger<br> --l-disabled</div></div></div>
+</div>
+<br>
+<div class="palette-cell text">
+  <div class="palette-cell__inner default"><div class="label">Default (Text)</div>
+    <div class="code">--hs-text<br> --l-text-default</div></div>
+  <div class="palette-cell__inner light"><div class="label">Light</div>
+    <div class="code">--hs-text<br> --l-text-light</div></div>
+</div>
+<div class="palette-cell border">
+  <div class="palette-cell__inner default"><div class="label">Default (Border)</div>
+    <div class="code">--hs-border<br> --l-border-default</div></div>
+  <div class="palette-cell__inner hover"><div class="label">Hover</div>
+    <div class="code">--hs-border<br> --l-border-hover</div></div>
+  <div class="palette-cell__inner disabled"><div class="label">Disabled</div>
+    <div class="code">--hs-border<br> --l-border-disabled</div></div>
+</div>
+<div class="palette-cell background">
+  <div class="palette-cell__inner default"><div class="label">Default (Background)</div>
+    <div class="code">--hs-background<br> --l-background-default</div></div>
+  <div class="palette-cell__inner disabled"><div class="invert"><div class="label">Disabled</div>
+    <div class="code">--hs-background<br> --l-background-disabled</div></div></div>
+</div>
+
+<h2>Button</h2>
+
+<button class="button">Primary</button>
+<button class="button success">Success</button>
+<button class="button warning">Warning</button>
+<button class="button danger">Danger</button>
+
+<br><br>
+
+<button class="button" disabled>Primary disabled</button>
+<button class="button success" disabled>Success disabled</button>
+<button class="button warning" disabled>Warning disabled</button>
+<button class="button danger" disabled>Danger disabled</button>
+
+<h2>Input</h2>
+
+<input type="text" class="input" placeholder="Placeholder">
+<input type="text" class="input" placeholder="Placeholder" disabled>
+
+<input type="text" class="input" placeholder="Placeholder" value="Input value">
+<input type="text" class="input" placeholder="Placeholder" disabled value="Input value">
+
+<h2>Table</h2>
+<table>
+  <tr>
+    <th>head 1</th>
+    <th>head 2</th>
+    <th>head 3</th>
+    <th>head 4</th>
+    <th>head 5</th>
+  </tr>
+
+  <tr>
+    <td>cell 1</td>
+    <td>cell 2</td>
+    <td>cell 3</td>
+    <td>cell 4</td>
+    <td>cell 5</td>
+  </tr>
+  <tr>
+    <td>cell 1</td>
+    <td>cell 2</td>
+    <td>cell 3</td>
+    <td>cell 4</td>
+    <td>cell 5</td>
+  </tr>
+  <tr>
+    <td>cell 1</td>
+    <td>cell 2</td>
+    <td>cell 3</td>
+    <td>cell 4</td>
+    <td>cell 5</td>
+  </tr>
+  <tr>
+    <td>cell 1</td>
+    <td>cell 2</td>
+    <td>cell 3</td>
+    <td>cell 4</td>
+    <td>cell 5</td>
+  </tr>
+  <tr class="active">
+    <td>cell 1</td>
+    <td class="active">Selected cell</td>
+    <td>cell 3</td>
+    <td>cell 4</td>
+    <td>cell 5</td>
+  </tr>
+  <tr>
+    <td>cell 1</td>
+    <td>cell 2</td>
+    <td>cell 3</td>
+    <td>cell 4</td>
+    <td>cell 5</td>
+  </tr>
+  <tr>
+    <td>cell 1</td>
+    <td>cell 2</td>
+    <td>cell 3</td>
+    <td>cell 4</td>
+    <td>cell 5</td>
+  </tr>
+</table>
+
+<h1>TODO:</h1>
+<h2>Layout border</h2>
+<h2>Sidebar</h2>
+<h2>scrollbar (dark/light)</h2>
+<h2>input with button (locale for example)</h2>
+<h2>toolbar button</h2>
+<h2>UFile</h2>
+<h2>USelectMultiple items</h2>
+<h2>form toolbar dropdown</h2>
+<h2></h2>
+</body>
+</html>
