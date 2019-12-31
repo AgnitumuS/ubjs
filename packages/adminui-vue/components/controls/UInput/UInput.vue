@@ -118,6 +118,12 @@ export default {
 }
 </script>
 
+<style>
+  .ub-input.is-disabled .el-input-group__append{
+    border-color: rgba(var(--input-border), 0.3);
+  }
+</style>
+
 <docs>
 Component will automaticly check data type by attribute name in entitySchema
 

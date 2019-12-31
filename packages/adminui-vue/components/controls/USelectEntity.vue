@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="u-select">
     <el-popover
       v-if="!disabled"
       v-model="dropdownVisible"
@@ -78,27 +78,6 @@
             :class="inputIconCls"
             @click.prevent="editable && toggleDropdown()"
           />
-          <el-dropdown
-            v-if="actions.length > 0 && !readonly"
-            slot="suffix"
-            trigger="click"
-            :tabindex="-1"
-          >
-            <i
-              class="el-icon-menu ub-select__menu-icon"
-            />
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item
-                v-for="action in actions"
-                :key="action.name"
-                :icon="action.icon"
-                :disabled="action.disabled"
-                @click.native="action.handler"
-              >
-                {{ $ut(action.caption) }}
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
         </el-input>
       </div>
 
@@ -146,8 +125,30 @@
       v-else
       disabled
       :value="queryDisplayValue"
+      :placeholder="placeholder"
       suffix-icon="el-icon-arrow-down"
     />
+
+    <el-dropdown
+      v-if="actions.length > 0 && !readonly"
+      trigger="click"
+      :tabindex="-1"
+    >
+      <i
+        class="el-icon-more ub-select__more-icon"
+      />
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item
+          v-for="action in actions"
+          :key="action.name"
+          :icon="action.icon"
+          :disabled="action.disabled"
+          @click.native="action.handler"
+        >
+          {{ $ut(action.caption) }}
+        </el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
   </div>
 </template>
 
@@ -695,12 +696,6 @@ export default {
   padding: 0;
 }
 
-.ub-select__menu-icon {
-  padding: 0 10px;
-  color: rgb(var(--info));
-  cursor: pointer;
-}
-
 .ub-select__deleted-value input{
   color: rgb(var(--info));
   text-decoration: line-through;
@@ -716,6 +711,22 @@ export default {
 
 .ub-select__undefined-record .el-input__inner{
   border-color: rgb(var(--warning));
+}
+
+.u-select{
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
+.ub-select__more-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  transform: rotate(90deg);
+  color: rgba(var(--info), 0.76);
+  cursor: pointer;
 }
 </style>
 

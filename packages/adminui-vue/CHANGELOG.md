@@ -6,9 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UFormRow`, `UFormContainer` prop `maxWidth`. Sets max width of row
 
 ### Changed
-
+ - **BREAKING** renamed class from `ub-form-container` to `u-form-layout`. Because there is a component UFormContainer that has nothing to do with the class.
+ - `UFormRow` colors have become more contrast 
+ - `UFormRow` fully refactor component. In case `labelPosition === 'top'` label and error text divide free space
+ - `UAutoForm` by default sets `labelPosition` to `top` and `maxWidth` to `800px`
+ - `UTable` text style changed from bold to regular
+ 
 ### Deprecated
 
 ### Removed
@@ -187,8 +193,8 @@ $App.doCommand({
  - `UFileInput` binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
  - `UFile` new property `accept` - optional comma-separated unique “content type specifiers”
  - `UContextMenu` - added prop width
- - Styles which adds `padding: 1em` to `<form>` inside `ub-form-container` class. 
-   So `UFormContainer` will have padding just only if it is a direct descendant of the `ub-form-container`  
+ - Styles which adds `padding: 1em` to `<form>` inside `u-form-layout` class. 
+   So `UFormContainer` will have padding just only if it is a direct descendant of the `u-form-layout`  
  - `USelectEntity` added props `buildShowDictionaryConfig`, `buildEditConfig`, `buildAddNewConfig`. 
    This props can overrides doCommand configs for base actions (edit, addNew, showDictionary). 
    Functions get current config as argument and must return new config.

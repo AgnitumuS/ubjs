@@ -1,8 +1,12 @@
 <template>
-  <div class="ub-form-container">
+  <div class="u-form-layout">
     <u-toolbar />
 
-    <u-form-container v-loading.body="loading">
+    <u-form-container
+      v-loading.body="loading"
+      label-position="top"
+      :max-width="800"
+    >
       <u-auto-field
         v-for="attributeName in fields"
         :key="attributeName"

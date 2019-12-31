@@ -304,7 +304,7 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
 ```vue
 <template>
   <!-- класс который растягивает форму на высоту окна и делает правильную работу скрола -->
-  <div class="ub-form-container">
+  <div class="u-form-layout">
     <!-- тулбар-->
     <u-toolbar />
 

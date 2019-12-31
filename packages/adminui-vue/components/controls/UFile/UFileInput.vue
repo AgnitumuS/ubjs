@@ -102,7 +102,7 @@ export default {
 
 .u-file__dropzone{
   padding: 10px;
-  border: 1px dashed rgba(var(--info), 0.3);
+  border: 1px dashed rgb(var(--input-border));
   border-radius: 4px;
   color: rgb(var(--info));
   display: flex;
