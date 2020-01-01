@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - remove usage of lodash from inside `UB.format` && `UB.i18n`
 
 ### Deprecated
 

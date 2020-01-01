@@ -49,6 +49,22 @@ function domainBasedLocalization (localeString) {
 }
 
 /**
+ * Gets the value at `path` of `object` or `undefined`
+ * @param {object} obj The object to query
+ * @param {string} p The path of the property to get
+ */
+function getByPath (obj, p) {
+  if (obj[p]) return obj[p]
+  let pp = p.split('.')
+  let i = 0
+  let L = pp.length
+  do {
+    obj = obj[pp[i++]]
+  } while ((i < L) && (typeof obj === 'object'))
+  return (i === L) ? obj : undefined
+}
+
+/**
  * see docs in ub-pub main module
  * @private
  * @param {String} localeString
@@ -58,15 +74,14 @@ function domainBasedLocalization (localeString) {
 module.exports.i18n = function i18n (localeString, ...formatArgs) {
   if (localeString == null) return localeString
   if (typeof localeString !== 'string') return 'i18n: expect string but got ' + JSON.stringify(localeString)
-  let res = __i18n[localeString]
-  if (res === undefined) res = _.get(__i18n, localeString)
+  let res = getByPath(__i18n, localeString)
   if (res === undefined) res = domainBasedLocalization(localeString)
   if (formatArgs && formatArgs.length && (typeof res === 'string')) {
     // key-value object
     if ((formatArgs.length === 1) && (typeof formatArgs[0] === 'object')) {
       let first = formatArgs[0]
       return res.replace(FORMAT_RE, function (m, k, fmt) {
-        let val = _.get(first, k)
+        let val = getByPath(first, k)
         if (fmt && fmt === 'i18n') {
           val = i18n(val)
         }

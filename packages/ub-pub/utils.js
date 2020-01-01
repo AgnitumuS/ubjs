@@ -7,7 +7,6 @@
  */
 
 /* global FileReader, Blob */
-const _ = require('lodash')
 const i18n = require('./i18n')
 
 /**
@@ -36,10 +35,9 @@ const FORMAT_RE = /{(\d+)}/g
  * @param {...*} values The values to replace tokens `{0}`, `{1}`, etc in order.
  * @return {String} The formatted string.
  */
-module.exports.format = function (stringToFormat, values) {
-  let args = _.toArray(arguments).slice(1)
+module.exports.format = function (stringToFormat, ...values) {
   return stringToFormat.replace(FORMAT_RE, function (m, i) {
-    return args[i]
+    return values[i]
   })
 }
 
