@@ -80,6 +80,7 @@ UB.i18nExtend({
   SelectPKAndPassMsg: 'Виберіть файл та заповніть пароль',
   selectedFile: 'Обрано файл',
   ReadPkTitle: 'Зчитування особистого ключа КЕП',
+  readPKCanceled: 'Завантаження особистого ключа скасовано',
   'Select private key file': 'Оберіть файл особистого ключа',
   'Selected key file': 'Обрано файл ключа',
   selectSigningCertificate: 'Оберіть файл з сертифікатом, призначеним для підпису',

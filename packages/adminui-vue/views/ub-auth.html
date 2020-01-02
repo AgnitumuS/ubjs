@@ -467,9 +467,7 @@
     },
     onAuthorizationFail: function (reason) {
       vm.processing = false
-      if (reason && (reason.message !== 'canceled')) {
-        UB.showErrorWindow(reason)
-      }
+      UB.showErrorWindow(reason)
     }
   }).then(function authOK (conn) {
     function getUrlVars () {

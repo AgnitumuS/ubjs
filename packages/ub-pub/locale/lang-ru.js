@@ -78,6 +78,7 @@ UB.i18nExtend({
   VALUE_MUST_BE_UNIQUE: 'Нарушена уникальность - указанное значение уже используется в других записях',
   SelectPKAndPassMsg: 'Виберите файл и заполните пароль',
   ReadPkTitle: 'Считывание личного ключа КЕП',
+  readPKCanceled: 'Загрузка личного ключа отменена',
   'Select private key file': 'Виберіть файл приватного ключа',
   'Selected key file': 'Выбрано файл ключа',
   selectSigningCertificate: 'Выберите файл с сертификатом для подписи',

@@ -67,6 +67,7 @@ UB.i18nExtend({
   VALUE_MUST_BE_UNIQUE: 'Unable to perform the operation - specified value must be unique, but is being used in other entities',
   SelectPKAndPassMsg: 'Select a file and fill out the password',
   ReadPkTitle: 'Reading a private key',
+  readPKCanceled: 'Private key load canceled',
   'Select private key file': 'Select private key file',
   'Selected key file': 'Selected key file',
   selectSigningCertificate: 'Select certificate for signing',

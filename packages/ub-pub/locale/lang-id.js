@@ -61,6 +61,7 @@ UB.i18nExtend({
   VALUE_MUST_BE_UNIQUE: 'Tidak dapat melakukan operasi - nilai yang ditentukan harus unik, tapi sedang digunakan dalam entitas lainnya',
   SelectPKAndPassMsg: 'Select a file and fill out the password',
   ReadPkTitle: 'Зчитування приватного ключа',
+  readPKCanceled: 'Private key load canceled',
   'Select private key file': 'Виберіть файл приватного ключа',
   'Selected key file': 'Selected key file',
   selectSigningCertificate: 'Select certificate for signing',

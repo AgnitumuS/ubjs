@@ -66,6 +66,7 @@ UB.i18nExtend({
   VALUE_MUST_BE_UNIQUE: 'əməliyyat yerinə yetirmək üçün bilmir - unikal olmalıdır müəyyən dəyər, lakin digər şəxslərin istifadə olunur',
   SelectPKAndPassMsg: 'Faylı seçin və şifrəni əlavə edin',
   ReadPkTitle: 'Şəxsi açarın oxunması',
+  readPKCanceled: 'Şəxsi açar yükü ləğv edildi',
   'Select private key file': 'Şəxsi açarın faylını seçin',
   'Selected key file': 'Seçilmiş açar faylı',
   selectSigningCertificate: 'İmza üçün sertifikat faylını seçin',
