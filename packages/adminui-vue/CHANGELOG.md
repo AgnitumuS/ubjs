@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UFormRow` fully refactor component. In case `labelPosition === 'top'` label and error text divide free space
  - `UAutoForm` by default sets `labelPosition` to `top` and `maxWidth` to `800px`
  - `UTable` text style changed from bold to regular
+ - `SignatureVerificationResult` view shown in expanded mode in case validationResult array contains one result
  
 ### Deprecated
 

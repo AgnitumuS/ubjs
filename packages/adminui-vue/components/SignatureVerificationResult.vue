@@ -126,6 +126,7 @@ export default {
   },
   beforeMount () {
     this.VRi18n = this.$ut('SignatureVerificationResultObj')
+    if (this.verificationResults.length === 1) this.detailsOpened[0] = true
   },
   methods: {
     toggleRow (vIdx) {
