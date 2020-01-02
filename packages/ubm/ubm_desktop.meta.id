@@ -18,6 +18,11 @@
     {
       "name": "isDefault",
       "caption": "Secara default?"
+    },
+    {
+      "name": "displayOrder",
+      "caption": "№ rangka",
+      "description": "Agar tampilan"
     }
   ]
 }

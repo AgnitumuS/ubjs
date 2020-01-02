@@ -163,6 +163,7 @@ export default {
       }
     })
     UB.connection.on(`ubm_navshortcut:changed`, this.initMenu)
+    UB.connection.on(`ubm_desktop:changed`, this.initMenu)
     Object.defineProperty(this.$refs.menu, 'hoverBackground', {
       get () {
         return 'rgb(var(--bg-hover))'
@@ -173,8 +174,8 @@ export default {
   methods: {
     async loadDesktops () {
       const desktops = await this.$UB.connection.Repository('ubm_desktop')
-        .attrs('ID', 'caption', 'isDefault', 'description', 'iconCls')
-        .orderBy('caption')
+        .attrs('ID', 'caption', 'isDefault', 'description', 'iconCls', 'displayOrder')
+        .orderBy('displayOrder').orderBy('caption')
         .select()
 
       const userLogin = UB.connection.userData().login

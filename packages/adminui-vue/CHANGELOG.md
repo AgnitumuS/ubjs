@@ -10,8 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `uba_user-changeUserPassword-fm.vue` - changed form ExtJS to vue for changing user password
  - OpenIDConnect authorization support for adminui-vue
  - `UFormRow`, `UFormContainer` prop `maxWidth`. Sets max width of row
+ - `UToolbarButton`: added $ut to provide just string to tooltip prop
 
 ### Changed
+ - **BREAKING** `UIconPicker`: removed the <u-form-row> wrapper, renamed classes to more general ones,
+   changed the icon selection emitting event from 'select' to 'change'
  - **BREAKING** renamed class from `ub-form-container` to `u-form-layout`. Because there is a component UFormContainer that has nothing to do with the class.
  - `UFormRow` colors have become more contrast 
  - `UFormRow` fully refactor component. In case `labelPosition === 'top'` label and error text divide free space
@@ -47,6 +50,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - show actual text instead of empty <<< >>> in error window in case unhandled rejection message contains <<<text>>>
  - prevent multiple emitting of `input` event in case UInput is of type `number`
+ - `UIconPicker`: entering an icon class manually doesn't drop an error
+ - dynamically update desktops in sidebar on change in `ubm_desktop` form
  - prevent showing of form validation error twice in case user close tab on the unsaved form and validation error occures 
  - `enum` filter template of `UtableEntity` displays the correct locale in the filter list 
 

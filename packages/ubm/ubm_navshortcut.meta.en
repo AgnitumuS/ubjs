@@ -38,7 +38,7 @@
     },
     {
       "name": "displayOrder",
-      "caption": "№ order",
+      "caption": "Order #",
       "description": "Display order (in current node)"
     }
   ]

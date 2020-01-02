@@ -18,6 +18,11 @@
     {
       "name": "isDefault",
       "caption": "Susmaya görə?"
+    },
+    {
+      "name": "displayOrder",
+      "caption": "Sıra №si",
+      "description": "Göstərmə qaydası"
     }
   ]
 }

@@ -17,6 +17,10 @@
         {
             "name": "isDefault",
             "caption": "ნაგულისხმევი"
+        },
+        {
+            "name": "displayOrder",
+            "caption": "№ ბრძანება"
         }
     ]
 }
