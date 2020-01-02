@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.9.13] - 2020-01-02
+### Added
  - `USelectEntity`: option's select emits two parameters - (value, option: Object)
  - `uba_user-changeUserPassword-fm.vue` - changed form ExtJS to vue for changing user password
  - OpenIDConnect authorization support for adminui-vue
@@ -22,12 +33,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTable` text style changed from bold to regular
  - `SignatureVerificationResult` view shown in expanded mode in case validationResult array contains one result
  
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ## [1.9.12] - 2019-12-30
 ### Added
  - global Vue component `SignatureVerificationResult` - view for `pki().verify`

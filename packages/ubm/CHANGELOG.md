@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `ubm_desktop-fm` form rewritten to Vue
- - `ubm_desktop` new attribute `displayOrder` - desktop display order in the sidebar
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.2.43] - 2020-01-02
+### Added
+ - `ubm_desktop-fm` form rewritten to Vue
+ - `ubm_desktop` new attribute `displayOrder` - desktop display order in the sidebar
 
 ## [5.2.42] - 2019-12-30
 ## [5.2.41] - 2019-12-27

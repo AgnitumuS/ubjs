@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - remove usage of lodash from inside `UB.format` && `UB.i18n`
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.4.1] - 2020-01-02
+### Changed
+ - remove usage of lodash from inside `UB.format` && `UB.i18n`
 
 ### Fixed
  - `AsyncConnection.userLang` will return application default language in case user is not authorised yet (anonymous)
