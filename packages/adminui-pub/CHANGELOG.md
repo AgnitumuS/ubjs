@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - UDetailTree refresh icon (fas fa-refresh -> fas fa-sync)
 
 ## [5.12.22] - 2020-01-02
 ## [5.12.21] - 2019-12-30

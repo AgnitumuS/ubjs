@@ -152,7 +152,7 @@ Ext.define('UB.ux.UBDetailTree', {
 
     me.actions[actions.refresh] = new Ext.Action({
       actionId: actions.refresh,
-      iconCls: 'fas fa-refresh',
+      iconCls: 'fas fa-sync',
       cls: 'refresh-action',
       tooltip: UB.i18n('refresh'), // + hotKeys[actions.refresh].text,
       eventId: events.refresh,
