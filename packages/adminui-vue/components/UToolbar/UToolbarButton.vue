@@ -1,6 +1,6 @@
 <template>
   <el-tooltip
-    :content="tooltip"
+    :content="$ut(tooltip)"
     placement="bottom"
     :open-delay="300"
     :enterable="false"

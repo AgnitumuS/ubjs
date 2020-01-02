@@ -56,6 +56,14 @@
       "caption": "Dy default?",
       "allowNull": false,
       "defaultValue": "0"
+    },
+    {
+      "name": "displayOrder",
+      "dataType": "Int",
+      "caption": "Order #",
+      "description": "Display order",
+      "allowNull": false,
+      "defaultValue": "1000"
     }
   ],
   "mixins": {

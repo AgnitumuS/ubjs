@@ -18,6 +18,11 @@
     {
       "name": "isDefault",
       "caption": "По умолчанию?"
+    },
+    {
+      "name": "displayOrder",
+      "caption": "№ п/п",
+      "description": "Порядок отображения"
     }
   ]
 }

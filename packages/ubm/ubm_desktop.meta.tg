@@ -18,6 +18,11 @@
         {
             "name": "caption",
             "caption": "Номгӯи десктоп"
+        },
+        {
+            "name": "displayOrder",
+            "caption": "№ б/т",
+            "description": "Тартиботи нишондиҳӣ"
         }
     ]
 }
