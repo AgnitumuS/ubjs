@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.9.14] - 2020-01-02
 ## [1.9.13] - 2020-01-02
 ### Added
  - `USelectEntity`: option's select emits two parameters - (value, option: Object)
