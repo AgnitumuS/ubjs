@@ -59,6 +59,7 @@
       v-bind="$attrs"
       :attribute-name="attributeName"
     />
+    <slot />
   </u-form-row>
 </template>
 
@@ -140,11 +141,23 @@ export default {
 <docs>
   Create a form component and validators based on entity attribute type
 
-  ### Basic usage:
+  ### Basic usage
 
   ```vue
   <template>
     <u-auto-field attribute-name="code" />
   </template>
+  ```
+
+  ### Default slot
+  Anything you need to render inside u-form-row container can be added as a u-auto-field default slot content.
+  In sample below we output a description for SQL attribute:
+
+  ``` vue
+  <u-auto-field attribute-name="SQL">
+    <div class="u-form-row__description">
+      {{ this.entitySchema.attr('SQL').description }}
+    </div>
+  </u-auto-field>
   ```
 </docs>
