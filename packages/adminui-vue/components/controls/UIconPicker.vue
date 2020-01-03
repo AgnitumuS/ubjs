@@ -184,7 +184,14 @@ export default {
       return icon.toLowerCase().indexOf(this.searchQuery.toLowerCase()) !== -1
     },
 
-    initIcons () {
+    async initIcons () {
+      let allFaAvailable = true
+      try {
+        let allFaIcons = await this.$UB.get('/models/adminui-vue/dist/fonts/all-fa-icons.json')
+        this.faIcons = allFaIcons.data
+      } catch (e) { // fallback in case json not found
+        allFaAvailable = false
+      }
       for (const ss of document.styleSheets) {
         for (const r of ss.cssRules) {
           if (r.selectorText) {
@@ -197,22 +204,24 @@ export default {
                 this.elIcons.push(icon)
               }
             }
-            let st = r.selectorText
-            if (st.startsWith('.fa-') && st.endsWith(':before')) {
-              let cls = st.split(':')[0].substr(1)
-              const icon = 'fas ' + cls
-              this.faIcons.push(icon)
+            if (!allFaAvailable) {
+              let st = r.selectorText
+              if (st.startsWith('.fa-') && st.endsWith(':before')) {
+                let cls = st.split(':')[0].substr(1)
+                const icon = 'fas ' + cls
+                this.faIcons.push(icon)
+              }
             }
           }
         }
       }
     },
 
-    onOpenDialog () {
+    async onOpenDialog () {
       this.selectedIcon = this.value ? this.value : null
       this.searchQuery = ''
       if (!this.isInited) {
-        this.initIcons()
+        await this.initIcons()
         this.isInited = true
       }
     },
