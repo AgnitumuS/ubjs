@@ -1834,6 +1834,7 @@ UBConnection.prototype.logout = function () {
  * @property {boolean} valid Is signature match document
  * @property {string} errorMessage filled in case valid is false
  * @property {number} errorCode Error code from library
+ * @property {string} warnings Optional warnings about signatures (for example - annotations in PDF)
  * @property {boolean} tspValid Is timestamp retrieved from authorised source (not from local computer)
  * @property {boolean} ocspVerified Is signer certificate status verified during signing
  * @property {boolean} hardwareKeyUsed Is hardware token used to made signature

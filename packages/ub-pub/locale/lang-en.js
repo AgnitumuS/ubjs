@@ -77,7 +77,11 @@ UB.i18nExtend({
     _: 'Signature(s) verification result',
     valid: {
       yes: 'Signature valid',
-      no: 'Signature invalid'
+      no: 'Signature invalid',
+      warnings: {
+        annotations: 'Document contains annotations',
+        signatureNotCoversWholeDocument: 'Signature do not covers whole document'
+      }
     },
     tspValid: {
       yes: 'Time stamp verification',

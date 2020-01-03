@@ -135,7 +135,7 @@ export default {
     statusStyle (vIdx) {
       let r = this.verificationResults[vIdx]
       if (!r.valid) return 'color: rgba(var(--danger), 1);'
-      if (r.valid && r.tspValid && r.ocspVerified) return 'color: rgba(var(--success), 1);'
+      if (r.valid && r.tspValid && r.ocspVerified && !r.warnings) return 'color: rgba(var(--success), 1);'
       return 'color: rgba(var(--warning), 1);'
     },
     statusTip (vIdx, isHTML) {
@@ -143,7 +143,8 @@ export default {
       if (!r.valid) return `${r.errorMessage || this.VRi18n.valid.no} (${r.errorCode})`
       let s = this.VRi18n.valid.yes; s += isHTML ? '<br>' : '; '
       s += this.VRi18n.tspValid[r.tspValid ? 'yes' : 'no']; s += isHTML ? '<br>' : '; '
-      s += this.VRi18n.ocspVerified[r.ocspVerified ? 'yes' : 'no']
+      s += this.VRi18n.ocspVerified[r.ocspVerified ? 'yes' : 'no']; s += isHTML ? '<br>' : '; '
+      if (r.warnings) s += r.warnings
       return s
     }
   }
