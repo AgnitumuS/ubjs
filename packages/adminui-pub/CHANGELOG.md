@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.12.24] - 2020-01-03
 ## [5.12.23] - 2020-01-02
 ### Fixed
  - UDetailTree refresh icon (fas fa-refresh -> fas fa-sync)

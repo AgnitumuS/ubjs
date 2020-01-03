@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub-pub",
-  "version": "5.4.1",
+  "version": "5.4.2",
   "description": "Data layer for accessing UnityBase server from Browser or NodeJS",
   "main": "./ub-pub.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ub-pub",

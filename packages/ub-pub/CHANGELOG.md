@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.2] - 2020-01-03
 ## [5.4.1] - 2020-01-02
 ### Changed
  - remove usage of lodash from inside `UB.format` && `UB.i18n`

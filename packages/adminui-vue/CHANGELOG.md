@@ -6,17 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - SignatureValidationResult.warnings attribute added
- - FontAwesome5 Free regular icon set added (far prefix)
 
 ### Changed
- - UIconPicker will try to use a prepared list of available FontAwesome5 Free icons
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [1.9.16] - 2020-01-03
+### Added
+ - SignatureValidationResult.warnings attribute added
+ - FontAwesome5 Free regular icon set added (far prefix)
+
+### Changed
+ - UIconPicker will try to use a prepared list of available FontAwesome5 Free icons
 
 ## [1.9.15] - 2020-01-03
 ### Added
