@@ -1,6 +1,6 @@
 {
   "name": "autotest",
-  "version": "5.0.194",
+  "version": "5.0.195",
   "description": "Autotest for UnityBase",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/autotest",
   "private": true,
@@ -17,7 +17,7 @@
   "dependencies": {
     "@unitybase/adminui-pub": "^5.12.23",
     "@unitybase/adminui-reg": "^5.3.24",
-    "@unitybase/adminui-vue": "^1.9.14",
+    "@unitybase/adminui-vue": "^1.9.15",
     "@unitybase/base": "^5.1.38",
     "@unitybase/cdn": "^5.3.28",
     "@unitybase/codemirror-full": "^1.2.28",

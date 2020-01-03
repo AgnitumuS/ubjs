@@ -6,14 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - default slot for UAutoField. Can hold content what renders in the same u-form-row
- ``` vue
-   <u-auto-field attribute-name="SQL">
-     <div class="u-form-row__description">
-       {{ this.entitySchema.attr('SQL').description }}
-     </div>
-   </u-auto-field>
- ```
 
 ### Changed
 
@@ -22,6 +14,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [1.9.15] - 2020-01-03
+### Added
+ - default slot for UAutoField. Can hold content what renders in the same u-form-row
+ ``` vue
+   <u-auto-field attribute-name="SQL">
+     <div class="u-form-row__description">
+       {{ this.entitySchema.attr('SQL').description }}
+     </div>
+   </u-auto-field>
+ ```
 
 ## [1.9.14] - 2020-01-02
 ## [1.9.13] - 2020-01-02
