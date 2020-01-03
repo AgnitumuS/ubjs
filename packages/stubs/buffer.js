@@ -1,13 +1,20 @@
 /* eslint-disable require-buffer */
 /**
  * NodeJS compartible Buffer implemenattion.
- * See <a href="https://nodejs.org/docs/latest/api/buffer.html">original Buffer doumnetation</a>
+ * See <a href="https://nodejs.org/docs/latest/api/buffer.html">original Buffer doumentation</a>
  *
- * One additional method is adedd for converting buffer content to any codepage `Buffer.prototype.cpSlice`:
+ * Two additional methods are adedd for converting between any codepage 
+ *
+ * `Buffer.prototype.cpSlice`:
  * 
  * 	 let arr = fs.readFileSync(path.join(__dirname, 'win1251Encoded.XML'), {encoding: 'binary'})
  *	 let buffer = Buffer.from(arr)
  *	 let strData = buffer.cpSlice(0, buffer.length, 1251)
+ *
+ *
+ * `Buffer.cpFrom(string, encobingNum): Buffer`:
+ * 
+ * 	const buffer = Buffer.cpFrom('here text in cyrilic', 1251) // result is Win-1251 encoded string representation
  *
  * @module buffer
  * @memberOf module:buildin
@@ -26,14 +33,13 @@ function getBufferLength(size) {
 }
 
 class FastBuffer extends Uint8Array {
-  constructor(a1, a2, a3) {
+  constructor(...args){
     //Orel. Fixes for Spidermonkey
-    // if ((a2 === undefined) && (a3 === undefined) && (typeof a1 === 'number')) {
-    //     super(getBufferLength(a1))
-    // } else {
-    //     super(a1, a2, a3);
-    // }
-    super(a1, a2, a3); // stub for sonarCube. Actual implementation as above
+    if ((args.length === 1) && (typeof(args[0])==='number')) {
+        super(getBufferLength(args[0]))
+    } else {
+        super(...args);
+    }
   }
 }
 
@@ -88,7 +94,7 @@ function alignPool() {
   }
 }
 
-/**
+/*
  * The Buffer() construtor is "soft deprecated" ... that is, it is deprecated
  * in the documentation and should not be used moving forward. Rather,
  * developers should use one of the three new factory APIs: Buffer.from(),
@@ -97,7 +103,7 @@ function alignPool() {
  * is used in the ecosystem currently -- a hard deprecation would introduce too
  * much breakage at this time. It's not likely that the Buffer constructors
  * would ever actually be removed.
- **/
+ */
 var newBufferWarned = false;
 function Buffer(arg, encodingOrOffset, length) {
   if (!new.target && !newBufferWarned) {
@@ -1387,3 +1393,4 @@ Buffer.prototype.swap64 = function swap64() {
 };
 
 Buffer.prototype.toLocaleString = Buffer.prototype.toString;
+Buffer.cpFrom = binding.cpFrom
