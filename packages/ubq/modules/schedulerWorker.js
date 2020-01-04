@@ -17,18 +17,19 @@ function runSchedulersCircle (message) {
   const serverURL = message.serverURL + '/rest/ubq_messages/executeSchedulerTask?async=true'
   const config = message.config
   let jobs = []
+  let request = http.request({
+    URL: serverURL,
+    method: 'POST',
+    headers: {
+      'Authorization': 'ROOT ' + process.rootOTP(),
+      'Content-Type': 'application/json'
+    }
+  })
 
   function safeSendAsyncRequest (cfgIdx) {
     try {
       let cfg = config[cfgIdx]
-      let request = http.request({
-        URL: serverURL,
-        method: 'POST',
-        headers: {
-          'Authorization': 'ROOT ' + process.rootOTP(),
-          'Content-Type': 'application/json'
-        }
-      })
+      request.setHeader('Authorization', 'ROOT ' + process.rootOTP())
       request.end({
         schedulerName: cfg.name,
         command: cfg.command,
