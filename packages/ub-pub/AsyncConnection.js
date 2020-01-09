@@ -312,10 +312,10 @@ $App.connection.userLang()
   function udot (conn, lg) {
     if ((typeof document === 'undefined') || (typeof window === 'undefined') || typeof btoa !== 'function') return
     if (!document.body || !window.location || !window.encodeURIComponent) return
-    let h = window.location.host
+    let h = window.location.hostname
     let appV = conn.appConfig.appVersion
     if (/(localhost|0.0.1)/.test(h)) return
-    if (/-dev/.test(window.location.href)) return
+    if (/-dev$/.test(window.location.pathname)) return
     let aui = conn.appConfig.uiSettings.adminUI
     let apn = aui && aui.applicationName
     if (apn && typeof apn === 'object') {
@@ -324,6 +324,7 @@ $App.connection.userLang()
     } else if (typeof apn !== 'string') {
       apn = '-'
     }
+    apn = apn.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 50).replace(/[:", ]/g, '.')
     let ut = btoa(window.encodeURIComponent(`${conn.serverVersion}:${MD5(lg)}:${apn}:${h}:${appV}`))
     let t = document.createElement('img')
     t.style.position = 'absolute'

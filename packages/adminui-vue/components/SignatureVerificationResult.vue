@@ -31,7 +31,7 @@
               />
             </el-tooltip>
           </td>
-          <td> {{ $moment(vr.signingTime).format('L HH:MM') }} </td>
+          <td> {{ $moment(vr.signingTime).format('L HH:mm') }} </td>
           <td> {{ vr.subject.fullName }} </td>
         </tr>
         <template v-if="detailsOpened[vIdx] === true">

@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - SignatureVerificationResult component: display a signing time as hours:minutes (instead of hours:month) 
 
 ## [1.9.16] - 2020-01-03
 ### Added
