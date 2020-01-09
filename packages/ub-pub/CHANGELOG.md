@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+  - new connection function AsyncConnection.prototype.HMAC_SHA256(secret, data)
+  ```javascript
+  const shaHmacAsSting = UB.connection.HMAC_SHA256('secretKey', 'data for HMAC_SHA256 calculation').toString()
+  // shaHmacAsSting === 'aaa4c3a6d3a8c25cd32f366436af191ac83bc43d8655c15305877afd0975a2bc'
+  ```
 
 ### Changed
 

@@ -18,6 +18,7 @@ const UBDomain = csShared.UBDomain
 const UBCache = require('./UBCache')
 const CryptoJSCore = require('@unitybase/cryptojs/core')
 const SHA256 = require('@unitybase/cryptojs/sha256')
+const HMAC_SHA256 = require('@unitybase/cryptojs/hmac-sha256')
 const MD5 = require('@unitybase/cryptojs/md5')
 const UBNotifierWSProtocol = require('./UBNotifierWSProtocol')
 const ClientRepository = require('./ClientRepository')
@@ -2044,9 +2045,15 @@ UBConnection.prototype.Repository = function (entityName) {
 /**
  * Calc SHA256 from string
  *
- *    var shaAsSting = SHA256('something').toString()
+ *    var shaAsSting = UB.connection.SHA256('something').toString()
  */
 UBConnection.prototype.SHA256 = SHA256
+/**
+ * Calc HMAC_SHA256 from key and string
+ *
+ *    var shaAsSting = UB.connection.HMAC_SHA256('secretKey', 'something').toString()
+ */
+UBConnection.prototype.HMAC_SHA256 = HMAC_SHA256
 
 /**
  * see docs in ub-pub main module
