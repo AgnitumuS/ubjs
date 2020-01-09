@@ -325,7 +325,7 @@ $App.connection.userLang()
     } else if (typeof apn !== 'string') {
       apn = '-'
     }
-    apn = apn.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 50).replace(/[:", ]/g, '.')
+    apn = apn.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 50).replace(/[:", ]/g, '.')
     let ut = btoa(window.encodeURIComponent(`${conn.serverVersion}:${MD5(lg)}:${apn}:${h}:${appV}`))
     let t = document.createElement('img')
     t.style.position = 'absolute'
@@ -587,7 +587,8 @@ $App.connection.userLang()
             AUTHTYPE: authParams.authSchema
           }
         }).then(function (resp) {
-          resp.secretWord = resp.data.logonname
+          resp.secretWord = resp.headers('X-UB-Nonce')
+          if (!resp.secretWord) throw new Error('X-UB-Nonce header is required to complete Negotiate authentication. Please, upgrade UB to >= 5.17.9')
           return resp
         })
         break
