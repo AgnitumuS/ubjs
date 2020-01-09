@@ -19,7 +19,8 @@
           :style="{
             maxWidth: col.maxWidth && col.maxWidth + 'px',
             minWidth: col.minWidth && col.minWidth + 'px',
-            width: col.width && col.width + 'px'
+            width: col.width && col.width + 'px',
+            padding: col.padding && col.padding + 'px'
           }"
           @click="col.sortable && changeSort(col.id)"
         >
@@ -49,6 +50,9 @@
             getAlignClass(col.align),
             getColumnClass(col)
           ]"
+          :style="{
+            padding: col.padding && col.padding + 'px'
+          }"
           @click="$emit('click-cell', {row, column: col})"
         >
           <div class="u-table__cell-container">

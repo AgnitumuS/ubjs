@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UTable` new param padding for column settings. All cells by default have padding 16px 
+```
+<u-table 
+  :columns="[{ 
+    id: 'color', 
+    padding: 0, 
+    maxWidth: 4px
+  }, {
+    id: 'document'
+  }]" 
+/>
+``` 
 
 ### Changed
 

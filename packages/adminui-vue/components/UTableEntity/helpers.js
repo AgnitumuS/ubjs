@@ -13,6 +13,7 @@ const types = require('./type-provider.js')
  * @property {number} [width] Width
  * @property {boolean} [isHtml=false] If set true will render content as v-html directive
  * @property {function} [format] Format displayed value in cell. Will ignored if is set custom slot.
+ * @property {number} [padding=16] column cells padding.
  */
 
 /**
