@@ -98,19 +98,19 @@ export default {
       }
       return [{
         caption: this.$ut('save') + ' (Ctrl + S)',
-        iconCls: 'fa fa-save',
+        iconCls: 'fas fa-save',
         handler: () => this.save(),
         disabled: !this.canSave,
         iconColor: 'primary'
       }, {
         caption: this.$ut('saveAndClose') + ' (Ctrl + Enter)',
-        iconCls: 'fa fa-share-square-o',
+        iconCls: 'far fa-share-square',
         handler: this.saveAndClose,
         disabled: !this.canSave,
         iconColor: 'primary'
       }, {
         caption: this.$ut('Delete') + ' (Ctrl + Delete)',
-        iconCls: 'fa fa-trash-o',
+        iconCls: 'far fa-trash-alt',
         handler: () => this.deleteInstance(this.$formServices.forceClose),
         disabled: !this.canDelete,
         divided: true,

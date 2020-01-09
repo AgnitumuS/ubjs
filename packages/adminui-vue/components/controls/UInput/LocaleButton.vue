@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-button
-      class="u-select__locale-button fa fa-globe"
       :disabled="$parent.disabled"
       tabindex="-1"
+      icon="fas fa-globe"
       @click="showModal = true"
     />
     <el-dialog
