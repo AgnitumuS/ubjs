@@ -292,5 +292,7 @@ export default {
 
 .ub-icon-select__input-group .el-input__inner {
   padding-left: 45px;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
 }
 </style>

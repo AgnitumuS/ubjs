@@ -128,9 +128,9 @@ export default {
   },
 
   inject: {
-    formLabelWidth: { from: 'labelWidth' },
-    formLabelPosition: { from: 'labelPosition' },
-    formMaxWidth: { from: 'maxWidth' }
+    formLabelWidth: { from: 'labelWidth', default: null },
+    formLabelPosition: { from: 'labelPosition', default: null },
+    formMaxWidth: { from: 'maxWidth', default: null }
   },
 
   computed: {
@@ -209,7 +209,7 @@ export default {
   .u-form-row__left,
   .u-form-row__right {
     grid-template-columns: auto 1fr;
-    grid-template-areas: 'label content' 'error error';
+    grid-template-areas: 'label content' '... error';
   }
 
   .u-form-row__left .u-form-row__error,

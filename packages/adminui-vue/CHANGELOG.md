@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UTable` new param padding for column settings. All cells by default have padding 16px 
+```
+<u-table 
+  :columns="[{ 
+    id: 'color', 
+    padding: 0, 
+    maxWidth: 4px
+  }, {
+    id: 'document'
+  }]" 
+/>
+``` 
 
 ### Changed
 
@@ -14,6 +26,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UInput`: globe icon should be displayed instead of empty rectangle
+- `UFormRow`: in case `label-position` is left or right error text should be displayed under input instead of udder label 
+- `UFormRow` now can be used outside of `UFormContainer`
+- `UIconPicker`: added border radius
  - SignatureVerificationResult component: display a signing time as hours:minutes (instead of hours:month) 
 
 ## [1.9.16] - 2020-01-03
