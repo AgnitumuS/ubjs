@@ -13,7 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   ```
 
 ### Changed
-
+ - Negotiate auth schema security improved: use secret returned form `/auth` in `X-UB-Nonce` header to complete Negotiate authentication;
+  UB server must be upgraded to at last 5.17.9  
+ 
 ### Deprecated
 
 ### Removed
@@ -74,7 +76,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.3.28] - 2019-11-18
 ### Add
  - translates for iit-sign-web forms
-
 
 ## [5.3.27] - 2019-11-18
 ### Fixed
