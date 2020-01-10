@@ -115,8 +115,7 @@ App.preventDefault = function () {
 }
 
 /**
- * Called by native
- * TODO - remove when all App level method will be implemented in JS
+ * Called by native HTTP server worker
  * @param endpointName
  * @private
  * @returns {boolean}
@@ -125,10 +124,14 @@ App.launchEndpoint = function (endpointName) {
   __preventDefault = false
   let resp = new THTTPResponse()
   let req = new THTTPRequest()
-  this.emit(endpointName + ':before', req, resp)
-  if (!__preventDefault) {
-    appBinding.endpoints[endpointName](req, resp)
-    this.emit(endpointName + ':after', req, resp)
+  try {
+    this.emit(endpointName + ':before', req, resp)
+    if (!__preventDefault) {
+      appBinding.endpoints[endpointName](req, resp)
+      this.emit(endpointName + ':after', req, resp)
+    }
+  } finally {
+    App.endpointContext = {} // allow GC to release possible context data ASAP
   }
 }
 
@@ -521,5 +524,17 @@ App.blobStores = {
   putContent: blobStores.putContent,
   markRevisionAsPermanent: blobStores.markRevisionAsPermanent
 }
+
+/**
+ * Endpoint context. Application logic can store here some data what required during single HTTP method call;
+ * Starting from UB@5.17.9 server reset `App.endpointContext` to {} after endpoint implementation execution,
+ * so in the beginning of execution it's always empty
+ *
+ *    App.endpointContext.MYMODEL_mykey = 'some value we need to share between different methods during a single user request handling'
+ *
+ * @type {Object}
+ * @since UB@5.17.9
+ */
+App.endpointContext = {}
 
 module.exports = App

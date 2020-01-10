@@ -53,12 +53,15 @@ me.entity.addMethod('uDataTest')
  * @param {ubMethodParams} ctx
  */
 me.uDataTest = function (ctx) {
+  const endpointContextKeys = Object.keys(App.endpointContext)
+  assert.ok(endpointContextKeys.length === 0, 'App.endpointContext should be empty before each launchEndpoint')
   const sessionData = Session.uData
   assert.deepStrictEqual(sessionData.tstNumArray, [1, 2, 3])
   assert.deepStrictEqual(sessionData.tstStrArray, ['1', '2', '3'])
   assert.deepStrictEqual(sessionData.tstNested, { a: 1, b: '2' })
   assert.ok(!sessionData.hasOwnProperty('addedNotInOnLogin'), 'uData persisted only in Session.on("login")')
   Session.uData.addedNotInOnLogin = 'must not persis between calls'
+  App.endpointContext.TST_KEY = '12345' // add some key into endpointContext - should be rested after endpoint execution
 }
 
 me.entity.addMethod('ubAbortTest')

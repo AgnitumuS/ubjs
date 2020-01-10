@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `App.endpointContext` - an empty object what can be used to store data for a single endpoint execution.
+   Application logic can store here some data what required during single HTTP method call;
+   Starting from UB@5.17.9 server reset `App.endpointContext` to {} after endpoint implementation execution,
+   so in the beginning of execution it's always empty  
 
 ### Changed
 
