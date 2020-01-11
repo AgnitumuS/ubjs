@@ -26,7 +26,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
-
+- `UForm.instance()` method is removed (marked as deprecated). Please, remove all .instance() calls on your code
+- 
 ### Fixed
  - `saveAndClose` action should not close form in case of errors
  - `UInput`: globe icon should be displayed instead of empty rectangle
