@@ -23,6 +23,7 @@
       v-model="model"
       v-bind="$attrs"
       :e-group="entitySchema.attributes[attributeName].enumGroup"
+      :clearable="entitySchema.attributes[attributeName].allowNull"
     />
     <u-select-entity
       v-else-if="dataType === 'Entity'"

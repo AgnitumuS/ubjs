@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   }]" 
 />
 ``` 
+- `USelectEnum` prop `clearable`. Adds clear icon, false by default
 
 ### Changed
  - UTableEntity column of type `Document`: separate download button from file name
