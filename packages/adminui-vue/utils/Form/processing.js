@@ -4,9 +4,16 @@ module.exports = createProcessingModule
 const UB = require('@unitybase/ub-pub')
 const dialogs = require('../../components/dialog/UDialog')
 const moment = require('moment')
+const Vue = require('vue')
 const { Notification: $notify } = require('element-ui')
-const { buildExecParams, buildDeleteRequest, enrichFieldList } = require('./helpers')
-
+const {
+  buildExecParams,
+  buildDeleteRequest,
+  enrichFieldList,
+  SET,
+  isEmpty,
+  change
+} = require('./helpers')
 /**
  * @typedef {object} UbVuexStoreCollectionInfo
  *
@@ -20,7 +27,25 @@ const { buildExecParams, buildDeleteRequest, enrichFieldList } = require('./help
  */
 
 /**
- * Creates Vuex store object with basic processing actions:
+ * Create an unified object for tracking edited object state.
+ *
+ * The state consists of the following properties:
+ * - data: it is an object with actual (to be shown on UI) data values, regardless if values are untouched by user
+ *     or already edited.
+ * - originalData: this object is initially empty, but as user starts editing, it is filled by original values, as
+ *     they loaded from DB, so that it would be always possible to say if a certain attribute was changed or not.
+ *     If after some editing, value returned to its original state, value is deleted from this object.
+ *     When this object is has no attributes, we know there is nothing to save.
+ * - collections: this is a property for complex object, objects which consist of one master record and collection or
+ *     multiple collections of detail records.
+ *     Each collection tracks added, changed and deleted items, so that we know if there is any change to save
+ *     in the collection.
+ *     Collection item is tracked just like the master record, using the same technique -
+ *     "data" and "originalData" properties for item.  Item also has "isNew" property, indicating if item was added
+ *     after original loading of collection or not.
+ *     The "deleted"
+ *
+ * Also creates Vuex store object with basic processing actions:
  *  - isNew status for master record
  *  - list of pending loadings
  *  - master record entity information (name, fieldList, schema etc.)
@@ -64,14 +89,35 @@ function createProcessingModule ({
   saveNotification
 }) {
   const autoLoadedCollections = Object.entries(initCollectionsRequests)
-    .filter(([coll, collData]) => !collData.lazy)
+    .filter(([, collData]) => !collData.lazy)
     .map(([coll]) => coll)
 
   const isLockable = function () { return entitySchema.hasMixin('softLock') }
 
   return {
+    /**
+     * @type {VuexTrackedInstance}
+     */
     state: {
-      isNew: undefined,
+      /**
+       * Whether master instance was loaded or it is newly created
+       */
+      isNew: false,
+      /**
+       * Properties as they are in DB.
+       */
+      data: {},
+
+      /**
+       * This contains old (originally loaded) values of updated properties.
+       */
+      originalData: {},
+
+      /**
+       * Detailed collections (if any)
+       */
+      collections: {},
+
       /**
        * result of previous lock() operation (in case softLock mixin assigned to entity)
        */
@@ -83,6 +129,26 @@ function createProcessingModule ({
     },
 
     getters: {
+      /**
+       * @param {VuexTrackedInstance} state
+       * @return {boolean}
+       */
+      isDirty (state) {
+        if (!isEmpty(state.originalData)) {
+          return true
+        }
+        for (const collection of Object.values(state.collections)) {
+          if (collection.deleted.length) {
+            return true
+          }
+          for (const item of collection.items) {
+            if (item.isNew || !isEmpty(item.originalData)) {
+              return true
+            }
+          }
+        }
+        return false
+      },
       /**
        * loading status
        * @return {Boolean}
@@ -131,6 +197,187 @@ function createProcessingModule ({
     },
 
     mutations: {
+      SET,
+
+      /**
+       * Load initial state of tracked master entity, all at once.
+       * @param {VuexTrackedInstance} state
+       * @param {object} loadedState
+       */
+      LOAD_DATA (state, loadedState) {
+        state.data = loadedState
+        Vue.set(state, 'originalData', {})
+      },
+
+      /**
+       * After insert, update or other server calls, which update entity, need to inform module about new server state.
+       * @param {VuexTrackedInstance} state
+       * @param {object} loadedState
+       */
+      LOAD_DATA_PARTIAL (state, loadedState) {
+        for (const [key, value] of Object.entries(loadedState)) {
+          change(state, key, value)
+          Vue.delete(state.originalData, key)
+        }
+      },
+
+      /**
+       * Update value of attribute for master record or a record of a details collection item.
+       * The mutation uses "data" and "originalData" object to correctly track object state.
+       *
+       * @param {VuexTrackedInstance} state
+       * @param {object} payload
+       * @param {string} [payload.collection]  Name of collection, optional
+       * @param {number} [payload.index]       Index of item, optional, shall only be specified, if collection is specified.
+       * @param {string} payload.key           Key of changed attribute
+       * @param {string} [payload.path]        Path (for JSON attributes) of the value
+       * @param {*}      payload.value         Value attribute is changed to.
+       */
+      SET_DATA (state, { collection, index, key, value, path }) {
+        if (typeof collection !== 'string') {
+          // Change the Master record
+          change(state, key, value, path)
+          return
+        }
+
+        // Item of a detail collection
+        if (!(collection in state.collections)) {
+          throw new Error(`Collection "${collection}" was not loaded or created!`)
+        }
+        const collectionInstance = state.collections[collection]
+        if (!(index in collectionInstance.items)) {
+          throw new Error(`Collection "${collection}" does not have index: ${index}!`)
+        }
+        change(collectionInstance.items[index], key, value, path)
+      },
+
+      /**
+       * Just like "SET_DATA", but assign multiple values at once passed as an object.
+       * @param {VuexTrackedInstance} state
+       * @param {object} payload
+       * @param {object} [payload.collection] optional collection (if not passed update master store)
+       * @param {object} [payload.index] optional collection item index. required in case collection is passed
+       * @param {object} payload.loadedState
+       */
+      ASSIGN_DATA (state, { collection, index, loadedState }) {
+        let stateToChange
+        if (collection) {
+          if (!(collection in state.collections)) {
+            throw new Error(`Collection "${collection}" was not loaded or created!`)
+          }
+          const collectionInstance = state.collections[collection]
+          if (!(index in collectionInstance.items)) {
+            throw new Error(`Collection "${collection}" does not have index: ${index}!`)
+          }
+          stateToChange = collectionInstance.items[index]
+        } else {
+          stateToChange = state
+        }
+
+        for (const [key, value] of Object.entries(loadedState)) {
+          change(stateToChange, key, value)
+        }
+      },
+
+      /**
+       * Set original state of collection items
+       * @param {VuexTrackedInstance} state
+       * @param {object} payload
+       * @param {string} payload.collection
+       * @param {VuexTrackedObject[]} payload.items
+       * @param {string} payload.entity
+       */
+      LOAD_COLLECTION (state, { collection, items: itemStates, entity }) {
+        const items = itemStates.map(item => ({
+          data: item,
+          originalData: {}
+        }))
+        const collectionObj = { items, deleted: [], key: collection, entity }
+        Vue.set(state.collections, collection, collectionObj)
+      },
+
+      /**
+       * Update collection data.
+       * Removed originalData for props which updated
+       * Remove isNew status.
+       * @param {VuexTrackedInstance} state
+       * @param {object} payload
+       * @param {string} payload.collection  collection
+       * @param {number} payload.index       index in collection
+       * @param {object} payload.loadedState loaded state
+       */
+      LOAD_COLLECTION_PARTIAL (state, { collection, index, loadedState }) {
+        const collectionInstance = state.collections[collection]
+
+        for (const [key, value] of Object.entries(loadedState)) {
+          change(collectionInstance.items[index], key, value)
+          Vue.delete(collectionInstance.items[index].originalData, key)
+          collectionInstance.items[index].isNew = false
+        }
+      },
+
+      /**
+       * Add a new item to a collection.  Added item will be marked as "isNew".
+       * @param {VuexTrackedInstance} state
+       * @param {object} payload
+       * @param {string} payload.collection Collection name
+       * @param {object} payload.item       Item state (a regular JS object)
+       */
+      ADD_COLLECTION_ITEM (state, { collection, item: itemState }) {
+        if (!(collection in state.collections)) {
+          // Lazy create collection
+          Vue.set(state.collections, collection, { items: [], deleted: [] })
+        }
+        state.collections[collection].items.push({ data: itemState, originalData: {}, isNew: true })
+      },
+
+      /**
+       * Remove an item from a collection.
+       * If remove an added item, no need to track the deletion.
+       * If remove originally loaded record, remember the
+       * deletion to track it as a change.
+       * @param {VuexTrackedInstance} state
+       * @param {object} payload
+       * @param {string} payload.collection  Collection name
+       * @param {number} payload.index       Index of item inside a collection to remove
+       */
+      DELETE_COLLECTION_ITEM (state, { collection, index }) {
+        if (collection in state.collections) {
+          const removedItem = state.collections[collection].items.splice(index, 1)[0]
+          if (removedItem && !removedItem.isNew) {
+            state.collections[collection].deleted.push(removedItem)
+          }
+        }
+      },
+
+      /**
+       * Clear deleted items in all collections, after sending removal requests
+       * @param {VuexTrackedInstance} state
+       */
+      CLEAR_ALL_DELETED_ITEMS (state) {
+        for (const collection of Object.keys(state.collections)) {
+          Vue.set(state.collections[collection], 'deleted', [])
+        }
+      },
+
+      /**
+       * Remove all items from a collection.
+       * If remove an added item, no need to track the deletion.
+       * If remove originally loaded record, remember the
+       * deletion to track it as a change.
+       * @param state
+       * @param {string} collectionName Name of collection
+       */
+      DELETE_ALL_COLLECTION_ITEMS (state, collectionName) {
+        if (collectionName in state.collections) {
+          const collection = state.collections[collectionName]
+          const deleted = collection.items
+            .splice(0, collection.items.length)
+            .filter(i => !i.isNew)
+          collection.deleted.push(...deleted)
+        }
+      },
+
       /**
        * Set formCrashed status when some request was rejected or something going wrong
        * @param {VuexTrackedInstance} state
@@ -238,6 +485,8 @@ function createProcessingModule ({
 
       /**
        * Load instance data by record ID or newInstanceID in case this record is just created
+       *
+       * @param {Store} store
        * @param {number} [newInstanceID] optional row id to load. If omitted instanceID will be used
        */
       async load ({ commit, dispatch }, newInstanceID) {
@@ -292,7 +541,8 @@ function createProcessingModule ({
        * Check if record not new
        * then check if collections inited when processing module is created
        * then fetch data from server for each collection
-       * @param {object} store
+       *
+       * @param {Store} store
        * @param {string[]} collectionKeys Collections keys
        */
       async loadCollections (store, collectionKeys) {
@@ -467,10 +717,7 @@ function createProcessingModule ({
           if (typeof saveNotification === 'function') {
             saveNotification()
           } else {
-            $notify({
-              type: 'success',
-              message: UB.i18n('successfullySaved')
-            })
+            $notify.success(UB.i18n('successfullySaved'))
           }
           if (saved) {
             await saved()
@@ -513,14 +760,13 @@ function createProcessingModule ({
           validator().$reset()
         }
 
-        $notify({
-          type: 'success',
-          message: UB.i18n('formWasRefreshed')
-        })
+        $notify.success(UB.i18n('formWasRefreshed'))
       },
 
       /**
        * Asks for user confirmation and sends delete request for master record
+       *
+       * @param {Store} store
        * @param  {Function} closeForm Close form without confirmation
        */
       async deleteInstance ({ state, getters, commit }, closeForm = () => {}) {
@@ -546,10 +792,7 @@ function createProcessingModule ({
 
             closeForm()
 
-            $notify({
-              type: 'success',
-              message: UB.i18n('recordDeletedSuccessfully')
-            })
+            $notify.success(UB.i18n('recordDeletedSuccessfully'))
             if (deleted) {
               await deleted()
             }
@@ -567,7 +810,8 @@ function createProcessingModule ({
 
       /**
        * Sends addNew request then fetch default params and push it in collection
-       * @param {object} context
+       *
+       * @param {Store} store
        * @param {object} payload
        * @param {string} payload.collection Collection name
        * @param {object} payload.execParams if we need to create new item with specified params
@@ -607,10 +851,7 @@ function createProcessingModule ({
               key: 'lockInfo',
               value: { ...resultLock.lockInfo, ownLock: resultLock.ownLock }
             })
-            $notify({
-              type: 'success',
-              message: UB.i18n('lockSuccessCreated')
-            })
+            $notify.success(UB.i18n('lockSuccessCreated'))
           } else {
             return dialogs.dialogError(UB.i18n('softLockInfo', resultLock.lockUser, moment(resultLock.lockTime).format('lll')))
           }
@@ -638,10 +879,7 @@ function createProcessingModule ({
               key: 'lockInfo',
               value: {}
             })
-            $notify({
-              type: 'success',
-              message: UB.i18n('lockSuccessDeleted')
-            })
+            $notify.success(UB.i18n('lockSuccessDeleted'))
           }
         }).catch(e => {
           UB.showErrorWindow(e)

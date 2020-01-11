@@ -15,13 +15,13 @@ const UB = require('@unitybase/ub-pub')
 const Dialog = require('element-ui').Dialog
 const { dialog: $dialog } = require('../../components/dialog/UDialog')
 
-// TODO: describe typdef for VueComponent and VuexStore
 /**
  * Mount form in modal Dialog
+ *
  * @param {object} cfg
- * @param {VueComponent} cfg.component Form component
+ * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
- * @param {Vuex} cfg.store Store
+ * @param {Store} cfg.store Store
  * @param {object} cfg.validator Vuelidate validation object
  * @param {string} cfg.title Title
  * @param {string} [cfg.modalClass] Modal class
@@ -247,7 +247,7 @@ function mountTab ({
 
 /**
  * Check form isDirty then ask user what he want to do
- * @param {VuexStore} store Store
+ * @param {Store} store Store
  * @param {Function} close Callback for close
  */
 function beforeClose ({ store, close }) {
@@ -285,11 +285,10 @@ function beforeClose ({ store, close }) {
 /**
  * Mount form directly into html container
  * @param {object} cfg
- * @param {VueComponent} cfg.component Form component
+ * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
  * @param {Vuex} cfg.store Store
  * @param {object} cfg.validator Vuelidate validation object
- * @param {string} cfg.title Title
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  * @param {Ext.component|String} cfg.target Either id of html element or Ext component
  */

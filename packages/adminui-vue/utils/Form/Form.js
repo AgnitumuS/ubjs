@@ -7,7 +7,6 @@
 module.exports = Form
 
 const Vuex = require('vuex')
-const createInstanceModule = require('./instance')
 const { mountTab, mountModal, mountContainer } = require('./mount')
 const createProcessingModule = require('./processing')
 const {
@@ -32,7 +31,7 @@ function Form (cfg) {
 class UForm {
   /**
    * @param {object} cfg
-   * @param {Vue} cfg.component Form component
+   * @param {Vue.Component} cfg.component Form component
    * @param {object} [cfg.props] Form component props
    * @param {object} [cfg.props.parentContext] Attributes values what will be passed to addNew method
    *   in case instanceID is empty. Think of it as default values for attributes of a new record
@@ -84,8 +83,6 @@ class UForm {
     this.isValidationUsed = false
 
     this.storeInitialized = false
-    this.instanceInitilized = false
-    this.canProcessingInit = false
     this.canValidationInit = false
   }
 
@@ -99,17 +96,10 @@ class UForm {
     return this
   }
 
+  /**
+   * @deprecated replaced to processing
+   */
   instance () {
-    if (this.instanceInitilized) {
-      throw new Error(`"UForm.instance()" should be called once`)
-    }
-    this.storeInitialized = true
-    this.instanceInitilized = false
-    this.canProcessingInit = true
-
-    const instanceModule = createInstanceModule()
-    mergeStore(this.storeConfig, instanceModule)
-
     return this
   }
 
@@ -145,12 +135,8 @@ class UForm {
     deleted,
     saveNotification
   } = {}) {
-    if (!this.canProcessingInit) {
-      throw new Error(`You can use ".processing()" only after ".instance()" and before ".mount()". Or ".processing()" is already initialized`)
-    }
-    this.canProcessingInit = false
+    this.storeInitialized = true
     this.canValidationInit = true
-
     this.isProcessingUsed = true
 
     if (masterFieldList) {
