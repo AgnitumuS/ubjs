@@ -13,11 +13,12 @@
     @drop.stop.prevent="drop"
   >
     <i class="u-file__dropzone__plus-icon el-icon-plus" />
-    {{ $ut('fileInput.dropZoneCaption') }}
+    {{ $ut('fileInput.dropZone.caption') }}
     <input
       type="file"
       :disabled="disabled"
       :multiple="multiple"
+      :accept="accept"
       v-bind="$attrs"
       @change="fileChanged"
     >
@@ -49,7 +50,15 @@ export default {
     /**
      * Set's disabled state
      */
-    disabled: Boolean
+    disabled: Boolean,
+
+    /**
+     * File extensions to bind into `accept` input property
+     */
+    accept: {
+      type: String,
+      default: ''
+    }
   },
 
   data () {
@@ -70,15 +79,29 @@ export default {
     drop (e) {
       this.dragging = false
       if (this.disabled) return
-      const files = e.dataTransfer.files
-      if (files && files.length) {
-        if (this.multiple) {
-          this.$emit('upload', [...files])
-        } else {
-          this.$emit('upload', [files[0]])
-        }
 
-        e.target.value = null
+      const { valid, invalid } = [...e.dataTransfer.files].reduce((files, file) => {
+        const isValid = this.isAccept(file)
+        if (isValid) {
+          files.valid.push(file)
+        } else {
+          files.invalid.push(file)
+        }
+        return files
+      }, {
+        valid: [],
+        invalid: []
+      })
+
+      this.$emit('upload', valid)
+
+      if (invalid.length) {
+        const invalidFilesNames = invalid.map(f => f.name).join(', ')
+        this.$notify({
+          type: 'error',
+          message: `${this.$ut('fileInput.dropZone.acceptError')}: ${invalidFilesNames}`,
+          duration: 0
+        })
       }
     },
 
@@ -90,60 +113,78 @@ export default {
         e.stopPropagation()
         this.dragging = true
       }
+    },
+
+    isAccept (file) {
+      const accepts = this.accept.split(',')
+        .map(a => a.trim())
+      return accepts.some(accept => {
+        const [type, extension] = accept.split(/\/|\./)
+        if (type === '') {
+          const fileExtention = file.name.split('.').pop()
+          return fileExtention.includes(extension)
+        } else {
+          if (extension === '*') {
+            return file.type.includes(type)
+          } else {
+            return file.type === accept
+          }
+        }
+      })
     }
   }
 }
 </script>
 
 <style>
-.u-file__dropzone input{
-  display: none;
-}
+  .u-file__dropzone input{
+    display: none;
+  }
 
-.u-file__dropzone{
-  padding: 10px;
-  border: 1px dashed rgb(var(--input-border));
-  border-radius: 4px;
-  color: rgb(var(--info));
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  font-size: 12px;
-  line-height: 1;
-}
+  .u-file__dropzone{
+    padding: 10px;
+    border: 1px dashed rgb(var(--input-border));
+    border-radius: 4px;
+    color: rgb(var(--info));
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1;
+  }
 
-.u-file__dropzone:active:not(.disabled),
-.u-file__dropzone.hover:not(.disabled){
-  border-color: rgba(var(--primary), 0.3);
-  color: rgb(var(--primary));
-  background: rgba(var(--primary), 0.03);
-}
+  .u-file__dropzone:active:not(.disabled),
+  .u-file__dropzone.hover:not(.disabled){
+    border-color: rgba(var(--primary), 0.3);
+    color: rgb(var(--primary));
+    background: rgba(var(--primary), 0.03);
+  }
 
-.u-file__dropzone.disabled{
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+  .u-file__dropzone.disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 
-.u-file__dropzone__plus-icon{
-  font-size: 18px;
-  margin-right: 10px;
-  padding-right: 10px;
-  border-right: 1px solid rgba(var(--info), 0.3);
-}
+  .u-file__dropzone__plus-icon{
+    font-size: 18px;
+    margin-right: 10px;
+    padding-right: 10px;
+    border-right: 1px solid rgba(var(--info), 0.3);
+  }
 
-.u-file__dropzone__horizontal{
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-}
+  .u-file__dropzone__horizontal{
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
 
-.u-file__dropzone__horizontal .u-file__dropzone__plus-icon{
-  margin: 0;
-  padding: 0;
-  border: none;
-  margin-bottom: 10px;
-  font-size: 30px;
-}
+  .u-file__dropzone__horizontal .u-file__dropzone__plus-icon{
+    margin: 0;
+    padding: 0;
+    border: none;
+    margin-bottom: 10px;
+    font-size: 30px;
+  }
 </style>
 
 <docs>

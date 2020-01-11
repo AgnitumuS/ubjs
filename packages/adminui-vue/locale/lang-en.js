@@ -170,7 +170,10 @@ UB.i18nExtend({
       type: 'Type',
       uploadDate: 'Upload date'
     },
-    dropZoneCaption: 'or drop files here'
+    dropZone: {
+      caption: 'or drop files here',
+      acceptError: 'Invalid file extension'
+    }
   },
 
   select: {
