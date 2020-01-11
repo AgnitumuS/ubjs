@@ -18,6 +18,7 @@
     </el-select>
     <component
       :is="selectedColumnTemplate"
+      :key="selectedColumnId"
       class="u-table-entity__filter__section"
     />
   </div>
