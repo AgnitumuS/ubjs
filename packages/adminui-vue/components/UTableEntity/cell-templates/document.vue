@@ -1,12 +1,18 @@
 <template>
-  <el-link
+  <div
     v-if="value"
-    type="primary"
-    icon="el-icon-download"
-    @click="download"
+    class="u-table-entity__document-col"
   >
-    {{ fileName }}
-  </el-link>
+    <span>{{ fileName }}</span>
+    <el-button
+      type="primary"
+      icon="el-icon-download"
+      circle
+      plain
+      class="u-table-entity__document-button"
+      @click="download"
+    />
+  </div>
 </template>
 
 <script>
@@ -55,3 +61,21 @@ export default {
   }
 }
 </script>
+
+<style>
+  .u-table-entity__document-col {
+    display: flex;
+    align-items: center;
+  }
+
+  .u-table-entity__document-col span {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .u-table-entity__document-button {
+    margin-left: 10px;
+  }
+</style>

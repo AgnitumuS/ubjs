@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ``` 
 
 ### Changed
+ - UTableEntity column of type `Document`: separate download button from file name
+  to prevent unexpected downloads while user click on file name
 
 ### Deprecated
 
