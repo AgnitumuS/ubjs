@@ -171,7 +171,10 @@ UB.i18nExtend({
       type: 'Tip',
       uploadDate: 'Yüklənmə tarixi'
     },
-    dropZoneCaption: 'və ya faylları buraya sürükləyin'
+    dropZone: {
+      caption: 'və ya faylları buraya sürükləyin',
+      acceptError: 'Invalid file extension'
+    }
   },
 
   select: {

@@ -170,7 +170,10 @@ UB.i18nExtend({
       type: 'Тип',
       uploadDate: 'Дата загрузки'
     },
-    dropZoneCaption: 'или перетащите файлы сюда'
+    dropZone: {
+      caption: 'или перетащите файлы сюда',
+      acceptError: 'Неверное расширение файла'
+    }
   },
 
   select: {

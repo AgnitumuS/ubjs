@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   }]" 
 />
 ``` 
+ - `UFileInput` - format validation of dragging files
 - `USelectEnum` prop `clearable`. Adds clear icon, false by default
 
 ### Changed
