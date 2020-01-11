@@ -8,6 +8,7 @@
     remove-default-actions
     :editable="editable"
     :placeholder="placeholder"
+    :clearable="clearable"
     @input="$emit('input', $event)"
   />
 </template>
@@ -40,7 +41,6 @@ export default {
      * Set disabled status
      */
     disabled: Boolean,
-
     /**
      * False to prevent the user from typing text directly into the field;
      * the field can only have its value set via selecting a value from the picker.
@@ -60,7 +60,11 @@ export default {
     /**
      * Set readonly status
      */
-    readonly: Boolean
+    readonly: Boolean,
+    /**
+     * Add clear icon
+     */
+    clearable: Boolean
   },
 
   data () {
@@ -78,6 +82,7 @@ export default {
     displayAttribute () {
       return this.entitySchema.descriptionAttribute
     }
+
   },
 
   methods: {
