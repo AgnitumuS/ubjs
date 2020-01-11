@@ -478,6 +478,7 @@ function createProcessingModule ({
         } catch (err) {
           commit('ERROR', true)
           UB.showErrorWindow(err)
+          throw new UB.UBAbortError(err)
         } finally {
           commit('LOADING', {
             isLoading: false,
