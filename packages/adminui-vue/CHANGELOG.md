@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.9.17] - 2020-01-11
+### Added
 - `UTable` new param padding for column settings. All cells by default have padding 16px 
 ```
 <u-table 
@@ -24,8 +35,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - UTableEntity column of type `Document`: separate download button from file name
   to prevent unexpected downloads while user click on file name
-
-### Deprecated
 
 ### Removed
  - `UForm.instance()` method is removed (marked as deprecated). Please, remove all .instance() calls on your code

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.0.37] - 2020-01-11
 ## [1.0.36] - 2019-12-17
 ### Fixed
  - linux build: links to valid `libsynmozjs52.so`

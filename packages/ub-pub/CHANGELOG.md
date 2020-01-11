@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.4.3] - 2020-01-11
+### Added
   - new connection function AsyncConnection.prototype.HMAC_SHA256(secret, data)
   ```javascript
   const shaHmacAsSting = UB.connection.HMAC_SHA256('secretKey', 'data for HMAC_SHA256 calculation').toString()
@@ -16,12 +27,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Negotiate auth schema security improved: use secret returned form `/auth` in `X-UB-Nonce` header to complete Negotiate authentication;
   UB server must be upgraded to at last 5.17.9  
  
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ## [5.4.2] - 2020-01-03
 ## [5.4.1] - 2020-01-02
 ### Changed

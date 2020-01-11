@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.2.68] - 2020-01-11
+### Fixed
  - scheduler worker will reuse a single http.request object instead of creation new one for each task execution command;
  Under linux http.request creation can take up to 1ms
 
