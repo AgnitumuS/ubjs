@@ -27,8 +27,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
-- `UForm.instance()` method is removed (marked as deprecated). Please, remove all .instance() calls on your code
-- 
+ - `UForm.instance()` method is removed (marked as deprecated). Please, remove all .instance() calls on your code
+
 ### Fixed
  - `saveAndClose` action should not close form in case of errors
  - `UInput`: globe icon should be displayed instead of empty rectangle
@@ -36,6 +36,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UFormRow` now can be used outside of `UFormContainer`
  - `UIconPicker`: added border radius
  - SignatureVerificationResult component: display a signing time as hours:minutes (instead of hours:month) 
+ - `UTableEntity` resets the filter value when a column changes
+ - `UTableEntity` impossible to select a condition 'contains' in filter for column with type entity
 
 ## [1.9.16] - 2020-01-03
 ### Added

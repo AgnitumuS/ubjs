@@ -42,7 +42,7 @@
       />
 
       <filter-submit-button
-        :disabled="manyValue.length === 0"
+        :disabled="valueMany.length === 0"
         @click="applyFilter({
           whereList: [{condition: 'in', value: valueMany}],
           description: $ut('contains') + ' ' + manyOptions
