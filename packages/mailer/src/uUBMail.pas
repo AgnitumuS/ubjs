@@ -739,10 +739,11 @@ begin
             raise ESMException.CreateFmt('Attach file error. Attach %d, invalid atachName',[i]);
 
           attachContentID :='';
-          if propObj.GetProperty(cx, 'contentID', val) and val.isString then
-            attachContentID := val.AsJSString.ToUTF8(cx)
-          else
-            raise ESMException.CreateFmt('Attach file error. Attach %d, invalid contentID',[i]);
+          if propObj.GetProperty(cx, 'contentID', val) and not val.isVoid then
+            if val.isString then
+              attachContentID := val.AsJSString.ToUTF8(cx)
+            else
+              raise ESMException.CreateFmt('Attach file error. Attach %d, contentID should be a string, got %d',[i, integer(val.ValType(cx))]);
 
           if propObj.GetProperty(cx, 'isBase64', val) and val.isBoolean then
             isBase64 := val.asBoolean
