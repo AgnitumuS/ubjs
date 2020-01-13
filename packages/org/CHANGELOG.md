@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - all fullName* attributes sizes increased to 500 for `org_department`, `org_organization`
- - all name* attributes sizes increased to 256 for `org_department`, `org_organization`
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.2.48] - 2020-01-13
+### Changed
+ - all fullName* attributes sizes increased to 500 for `org_department`, `org_organization`
+ - all name* attributes sizes increased to 256 for `org_department`, `org_organization`
 
 ## [5.2.47] - 2020-01-11
 ## [5.2.46] - 2020-01-03

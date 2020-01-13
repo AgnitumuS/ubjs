@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.69] - 2020-01-13
 ## [5.2.68] - 2020-01-11
 ### Fixed
  - scheduler worker will reuse a single http.request object instead of creation new one for each task execution command;

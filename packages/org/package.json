@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/org",
-  "version": "5.2.47",
+  "version": "5.2.48",
   "description": "Organisation structure",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/org",
   "config": {
