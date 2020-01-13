@@ -51,7 +51,7 @@
     {
       "name": "name",
       "dataType": "String",
-      "size": 128,
+      "size": 256,
       "caption": "Organization name",
       "description": "Name of organization without the quotes and abbreviations",
       "allowNull": false,
@@ -60,7 +60,7 @@
     {
       "name": "fullName",
       "dataType": "String",
-      "size": 300,
+      "size": 500,
       "caption": "Organization full name",
       "description": "Full name of organization, as it's specified in the certificate of registration",
       "allowNull": false,
@@ -69,7 +69,7 @@
     {
       "name": "nameGen",
       "dataType": "String",
-      "size": 128,
+      "size": 256,
       "caption": "Name in genitive case",
       "description": "Organization name in genitive case",
       "allowNull": true,
@@ -78,7 +78,7 @@
     {
       "name": "nameDat",
       "dataType": "String",
-      "size": 128,
+      "size": 256,
       "caption": "Name in dative case",
       "description": "Organization name in dative case",
       "allowNull": true,
@@ -87,7 +87,7 @@
     {
       "name": "fullNameGen",
       "dataType": "String",
-      "size": 300,
+      "size": 500,
       "caption": "Full name in genitive case",
       "description": "Full name of organization, as it's specified in the certificate of registration, in genitive case",
       "allowNull": true,
@@ -96,7 +96,7 @@
     {
       "name": "fullNameDat",
       "dataType": "String",
-      "size": 300,
+      "size": 500,
       "caption": "Full name in dative case",
       "description": "Full name of organization, as it's specified in the certificate of registration, in dative case",
       "allowNull": true,
@@ -105,7 +105,7 @@
     {
       "name": "description",
       "dataType": "String",
-      "size": 255,
+      "size": 290,
       "caption": "Organization description",
       "description": "Organization description",
       "allowNull": true,
