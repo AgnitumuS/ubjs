@@ -1826,7 +1826,7 @@ UBConnection.prototype.logout = function () {
   if (this._pki) { // unload encryption private key
     let me = this
     logoutPromise = logoutPromise.then(
-      () => new Promise((resolve) => { setTimeout(() => { me._pki.closePK(); resolve(true) }, 20) })
+      () => new Promise((resolve) => { setTimeout(() => { me._pki.closePrivateKey(); resolve(true) }, 20) })
     )
   }
   return logoutPromise

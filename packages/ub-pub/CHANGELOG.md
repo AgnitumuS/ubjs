@@ -14,7 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+ - `AsyncConnection.logout` will close loaded private key if any
+  
 ## [5.4.3] - 2020-01-11
 ### Added
   - new connection function AsyncConnection.prototype.HMAC_SHA256(secret, data)
