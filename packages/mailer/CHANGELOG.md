@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - optional `contentID` attribute for e-mail attachment. If contentID is defined for attachment it can be used in mail body
+   for example to display embedded image as such:
+ 
+   ```javascript
+    const contentID = 'ub-generated-image-1'
+    //inside e-mail body
+    const eMailBody = `<img id="footer-logo" src="cid:${contentID}" alt="UB logo" title="UB logo" width="36" height="36" class="image_fix">`
+  ```  
 
 ### Changed
 
