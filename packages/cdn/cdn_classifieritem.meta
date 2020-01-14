@@ -17,8 +17,7 @@
       "caption": "System code",
       "dataType": "String",
       "size": 255,
-      "allowNull": false,
-      "isUnique": true
+      "allowNull": false
     },
     {
       "name": "name",
@@ -49,6 +48,17 @@
       "readOnly": true,
       "defaultView": false
     }
-
-  ]
+  ],
+  "dbExtensions": {
+    "idx_cdnclsi_uniq": {
+      "type": "INDEX",
+      "definition": {
+        "keys": {
+          "classifierID": {},
+          "code": {}
+        },
+        "isUnique": true
+      }
+    }
+  }
 }

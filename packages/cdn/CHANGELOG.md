@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - cdn_classifieritem - fix error about non-existed attribute usage inside insert/update
+ - cdn_classifieritem - fix uniqueness constraint for code attribute, not code is unique inside classifier, not globally
   
 ## [5.3.30] - 2020-01-11
 ## [5.3.29] - 2020-01-03
