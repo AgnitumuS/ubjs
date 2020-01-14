@@ -6,8 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-  - `SyncConnection.prototype.Reposiroty` fabric function can accept serialized UBQL as a parameter (instead of entity code)
-   In this case result will be a Repository de-serialized rom a given UBQL
+  - `SyncConnection.prototype.Reposiroty` fabric function can now accept a UBQL passed in parameter as object while
+  keeping an ability to pass entity code as string
    
     
 ## [5.1.34] - 2019-11-19
