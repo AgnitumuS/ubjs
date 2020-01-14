@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `locale/uk -> closeOther` added missing word "tabs" simplified in other languages
 
 ### Deprecated
 
