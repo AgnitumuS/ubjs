@@ -128,7 +128,7 @@
 
     <u-table
       ref="table"
-      :columns="columnsFormatted"
+      :columns="columns"
       :items="items"
       :get-column-class="getColumnClass"
       :get-row-class="getRowClass"
@@ -141,7 +141,7 @@
       @contextmenu="showContextMenu"
     >
       <template
-        v-for="col in columnsFormatted"
+        v-for="col in columns"
         #[col.id]="{name, value, row}"
       >
         <slot
@@ -179,27 +179,19 @@
 const ContextMenu = require('./ContextMenu.vue').default
 const FilterContainer = require('./FilterContainer.vue').default
 const Pagination = require('./Pagination.vue').default
-const createStore = require('../store')
-const Vuex = require('vuex')
-const { mapState, mapGetters, mapMutations, mapActions } = Vuex
-const { buildProps } = require('../helpers.js')
+const { mapState, mapGetters, mapMutations, mapActions } = require('vuex')
 const FilterList = require('./FilterList.vue').default
 const ToolbarDropdown = require('./ToolbarDropdown.vue').default
-const { formatValueMixin } = require('../helpers')
+const props = require('../props')
+const formatValueMixin = require('../../controls/UTable/formatValueMixin')
 /**
  * Replaced from function to global scope in case not to create a regular expression every function call.
  * Creating of regular expression is slow operation
  */
 const regExpLetterOrNumber = /[A-Za-zА-Яа-я0-9]/
 
-/**
- * Props repository, entityName, columns, pageSize have an unusual way of using.
- * 'store' option in this component watch this props and build same default values which is set in default(){} each of this prop.
- * It need for pass propsData to store.
- * Child components can get access for this props from store getters
- */
 export default {
-  name: 'UTableEntity',
+  name: 'UTableEntityRoot',
 
   components: {
     ContextMenu,
@@ -211,150 +203,27 @@ export default {
 
   mixins: [formatValueMixin],
 
+  props,
+
   inject: {
     close: {
       default: () => () => console.warn('Injection close didn\'t provided')
     }
   },
 
-  props: {
-    /**
-     * Function which return UB.ClientRepository
-     */
-    repository: {
-      type: Function,
-      default () {
-        return this.$UB.Repository(this.entityName)
-          .attrs(
-            this.$UB.connection.domain.get(this.entityName).getAttributeNames()
-          )
-      }
-    },
-
-    /**
-     * Name of entity. If repository is set entityName will be ignored
-     */
-    entityName: {
-      type: String,
-      default () {
-        return this.repository().entityName
-      }
-    },
-
-    /**
-     * Array of columns settings each item can be string or object.
-     * For detail info about column object look JSDoc type {UTableColumn}
-     */
-    columns: {
-      type: Array,
-      default () {
-        return this.$UB.connection.domain.get(this.entityName)
-          .filterAttribute(a => a.defaultView)
-          .map(({ code }) => code)
-      }
-    },
-
-    /**
-     * Page size for pagination
-     */
-    pageSize: {
-      type: Number,
-      default () {
-        return this.$UB.connection.appConfig.storeDefaultPageSize
-      }
-    },
-
-    /**
-     * If set table will be have static height.
-     * Table container will be have own scroll and fixed header.
-     */
-    height: [Number, String],
-
-    /**
-     * If set table will be have maxHeight.
-     * Table container will be have own scroll and fixed header.
-     */
-    maxHeight: [Number, String],
-
-    /**
-     * Id of column which will stack when we scroll table by horizontal.
-     */
-    fixedColumnId: String,
-
-    /**
-     * Date format for cell's with dataType 'Date'
-     */
-    dateFormat: {
-      type: String,
-      default: 'll'
-    },
-
-    /**
-     * Date format for cell's with dataType 'DateTime'
-     */
-    dateTimeFormat: {
-      type: String,
-      default: 'lll'
-    },
-
-    /**
-     * Overrides showDictionary action config.
-     * Function accepts current config and must return new config
-     */
-    buildCopyConfig: {
-      type: Function,
-      default: config => config
-    },
-    /**
-     * Overrides edit action config.
-     * Function accepts current config and must return new config
-     */
-    buildEditConfig: {
-      type: Function,
-      default: config => config
-    },
-    /**
-     * Overrides addNew action config.
-     * Function accepts current config and must return new config
-     */
-    buildAddNewConfig: {
-      type: Function,
-      default: config => config
-    },
-    /**
-     * Overrides the record selection event. That is, double click or enter
-     * @type {function({ID: Number, row: Object, close: function})}
-     */
-    onSelectRecord: Function
-  },
-
-  /**
-   * Create vuex store
-    */
-  store () {
-    const props = buildProps(this.propsData)
-    const storeConfig = createStore(props)
-    return new Vuex.Store(storeConfig)
-  },
-
-  created () {
-    this.fetchItems()
-  },
-
   computed: {
     ...mapState([
-      'selectedRowId',
       'selectedColumnId',
       'items',
       'loading',
       'withTotal'
     ]),
 
-    ...mapGetters(['canAddNew', 'formCode']),
-
-    columnsFormatted () {
-      return this.$store.getters.columns
-    },
+    ...mapGetters([
+      'canAddNew',
+      'formCode',
+      'columns'
+    ]),
 
     selectedRowId: {
       get () {
@@ -366,18 +235,8 @@ export default {
     }
   },
 
-  mounted () {
-    this.validateFieldList()
-    this.$UB.connection.on(`${this.entityName}:changed`, this.refresh)
-  },
-
-  beforeDestroy () {
-    this.$UB.connection.removeListener(`${this.entityName}:changed`, this.refresh)
-  },
-
   methods: {
     ...mapActions([
-      'fetchItems',
       'updateSort',
       'cellNavigate',
       'addNew',
@@ -394,17 +253,6 @@ export default {
      * In a case when you create component by repository prop
      * and forgot to set attribute in fieldList but this attribute includes in columns
      */
-    validateFieldList () {
-      const fieldsWithError = this.columnsFormatted
-        .filter(column => !this.repository().fieldList.includes(column.id)) // is custom
-        .filter(column => !this.$scopedSlots[column.id]) // dont have slot
-        .map(column => column.id)
-
-      if (fieldsWithError.length > 0) {
-        const errMsg = `Columns [${fieldsWithError.join(', ')}] did not present in fieldList and did not have slot for render`
-        throw new Error(errMsg)
-      }
-    },
 
     showContextMenu (event, row) {
       this.selectedRowId = row.ID
@@ -449,11 +297,11 @@ export default {
       this.scrollIntoView()
     },
     moveLeft () {
-      this.SELECT_COLUMN(this.getPrevArrayValue(this.columnsFormatted, 'id', this.selectedColumnId))
+      this.SELECT_COLUMN(this.getPrevArrayValue(this.columns, 'id', this.selectedColumnId))
       this.scrollIntoView()
     },
     moveRight () {
-      this.SELECT_COLUMN(this.getNextArrayValue(this.columnsFormatted, 'id', this.selectedColumnId))
+      this.SELECT_COLUMN(this.getNextArrayValue(this.columns, 'id', this.selectedColumnId))
       this.scrollIntoView()
     },
 

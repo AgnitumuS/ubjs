@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UTableEntity`: all props now reactive. For example changing `entityName` property will cause table to load
+  rerender data and columns using new entity name, e.t.c 
 
 ### Deprecated
 

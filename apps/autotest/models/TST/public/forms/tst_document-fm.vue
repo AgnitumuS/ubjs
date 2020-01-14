@@ -152,7 +152,6 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
     title,
     formCode
   })
-    .instance()
     .processing({
       beforeDelete: (store) => {
         console.log(this, store, arguments)

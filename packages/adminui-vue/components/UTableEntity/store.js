@@ -1,34 +1,21 @@
-/* global $App */
 const Lookups = require('../../utils/lookups.js')
 const UB = require('@unitybase/ub-pub')
 const { Notification: $notify } = require('element-ui')
 
 /**
- * Generetes store config by component props.
- *
- * @param {function:ClientRepository} repository Function returns ClientRepository
- * @param {CustomRepository.entityName} entityName Entity name
- * @param {array<UTableColumn>} columns Columns config
- * @param {number} pageSize Page size
- * @param {string} dateFormat Date format
- * @param {string} dateTimeFormat DateTime format
- * @param {function(object):object} buildCopyConfig Function must return config for action "copy"
- * @param {function(object):object} buildEditConfig Function must return config for action "edit"
- * @param {function(object):object} buildAddNewConfig Function must return config for action "addNew"
- *
- * @returns {Vuex} Store config
+ * Build store by UTableEntity props
+ * @param {Vue} instance UTableEntity instance
+ * @param {function} instance.getRepository ClientRepository
+ * @param {string} instance.getEntityName Entity name
+ * @param {array<UTableColumn>} instance.getColumns Columns
+ * @param {number} instance.pageSize Pagination page size
+ * @param {string} instance.dateFormat Date format
+ * @param {string} instance.dateTimeFormat Date time format
+ * @param {function} instance.buildAddNewConfig AddNew config builder
+ * @param {function} instance.buildEditConfig Edit config builder
+ * @param {function} instance.buildCopyConfig Copy config builder
  */
-module.exports = ({
-  repository,
-  entityName,
-  columns,
-  pageSize,
-  dateFormat,
-  dateTimeFormat,
-  buildCopyConfig,
-  buildEditConfig,
-  buildAddNewConfig
-}) => ({
+module.exports = (instance) => ({
   state () {
     return {
       items: [], /* table data */
@@ -54,11 +41,11 @@ module.exports = ({
 
   getters: {
     repository () {
-      return repository
+      return instance.getRepository
     },
 
     entityName () {
-      return entityName
+      return instance.getEntityName
     },
 
     /**
@@ -88,19 +75,19 @@ module.exports = ({
     },
 
     columns () {
-      return columns
+      return instance.getColumns
     },
 
     pageSize () {
-      return pageSize
+      return instance.pageSize
     },
 
     dateFormat () {
-      return dateFormat
+      return instance.dateFormat
     },
 
     dateTimeFormat () {
-      return dateTimeFormat
+      return instance.dateTimeFormat
     },
 
     selectedColumn (state, getters) {
@@ -260,39 +247,39 @@ module.exports = ({
     },
 
     addNew ({ getters }) {
-      const tabId = $App.generateTabId({
+      const tabId = UB.core.UBApp.generateTabId({
         entity: getters.entityName,
         formCode: getters.formCode
       })
-      const config = buildAddNewConfig({
+      const config = instance.buildAddNewConfig({
         cmdType: 'showForm',
         entity: getters.entityName,
         formCode: getters.formCode,
-        target: $App.viewport.centralPanel,
+        target: UB.core.UBApp.viewport.centralPanel,
         tabId
       })
-      $App.doCommand(config)
+      UB.core.UBApp.doCommand(config)
     },
 
     editRecord ({ getters }, ID) {
-      const tabId = $App.generateTabId({
+      const tabId = UB.core.UBApp.generateTabId({
         entity: getters.entityName,
         instanceID: ID,
         formCode: getters.formCode
       })
-      const config = buildEditConfig({
+      const config = instance.buildEditConfig({
         cmdType: 'showForm',
         entity: getters.entityName,
         formCode: getters.formCode,
         instanceID: ID,
-        target: $App.viewport.centralPanel,
+        target: UB.core.UBApp.viewport.centralPanel,
         tabId
       })
-      $App.doCommand(config)
+      UB.core.UBApp.doCommand(config)
     },
 
     async deleteRecord ({ getters }, ID) {
-      const answer = await $App.dialogYesNo('deletionDialogConfirmCaption', 'vyHotiteUdalitSoderzhimoeDocumenta')
+      const answer = await UB.core.UBApp.dialogYesNo('deletionDialogConfirmCaption', 'vyHotiteUdalitSoderzhimoeDocumenta')
 
       if (answer) {
         await UB.connection.doDelete({
@@ -301,29 +288,26 @@ module.exports = ({
         })
         UB.connection.emit(`${getters.entityName}:changed`)
 
-        $notify({
-          type: 'success',
-          message: UB.i18n('recordDeletedSuccessfully')
-        })
+        $notify.success(UB.i18n('recordDeletedSuccessfully'))
       }
     },
 
     copyRecord ({ getters }, ID) {
-      const tabId = $App.generateTabId({
+      const tabId = UB.core.UBApp.generateTabId({
         entity: getters.entityName,
         instanceID: ID,
         formCode: getters.formCode
       })
-      const config = buildCopyConfig({
+      const config = instance.buildCopyConfig({
         cmdType: 'showForm',
         addByCurrent: true,
         entity: getters.entityName,
         formCode: getters.formCode,
         instanceID: ID,
-        target: $App.viewport.centralPanel,
+        target: UB.core.UBApp.viewport.centralPanel,
         tabId
       })
-      $App.doCommand(config)
+      UB.core.UBApp.doCommand(config)
     },
 
     createLink ({ getters }, ID) {
@@ -353,11 +337,11 @@ module.exports = ({
     },
 
     audit ({ getters }, ID) {
-      const tabId = $App.generateTabId({
+      const tabId = UB.core.UBApp.generateTabId({
         entity: getters.entityName,
         instanceID: ID
       })
-      $App.doCommand({
+      UB.core.UBApp.doCommand({
         cmdType: 'showList',
         tabId,
         title: `${UB.i18n('Audit')} (${UB.i18n(getters.entityName)})`,

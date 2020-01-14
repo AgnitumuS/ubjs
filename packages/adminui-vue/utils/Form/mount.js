@@ -347,7 +347,7 @@ function mountContainer ({
   }
 }
 
-const UTableEntity = require('../../components/UTableEntity/components/UTableEntity.vue').default
+const UTableEntity = require('../../components/UTableEntity/UTableEntity.vue').default
 
 /**
  * Mount UTableEntity.

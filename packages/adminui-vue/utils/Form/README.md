@@ -43,7 +43,6 @@ module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
       mutations: {},
       //...
     })
-    .instance()
     .processing({
       // пример хука, список хуков описан ниже в processing
       async beforeSave (store) {
@@ -263,7 +262,6 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
     title,
     formCode
   })
-  .instance()
   .processing()
   .validation({
     computed: {

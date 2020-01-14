@@ -72,7 +72,7 @@
 </template>
 
 <script>
-const { formatValueMixin } = require('../UTableEntity/helpers')
+const formatValueMixin = require('./formatValueMixin')
 
 export default {
   name: 'UTable',
