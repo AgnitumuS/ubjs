@@ -93,7 +93,6 @@ module.exports.mount = function ({
     formCode,
     modalClass: 'ub-dialog__reset-padding'
   })
-    .instance()
     .processing({
       inited (store) {
         if (parentContext) store.commit('ASSIGN_DATA', { loadedState: parentContext })

@@ -71,7 +71,6 @@ module.exports.mount = function ({
     title,
     formCode
   })
-    .instance()
     .processing({
       collections: {
         rightsSubjects: UB.connection

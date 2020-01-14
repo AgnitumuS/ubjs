@@ -136,7 +136,6 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
     formCode,
     isModal
   })
-    .instance()
     .processing({
       collections: {
         todo: {

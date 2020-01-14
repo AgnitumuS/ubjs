@@ -283,7 +283,6 @@ export default {
       formCode,
       isModal
     })
-      .instance()
       .processing({
         collections: {
           attachments: ({ state }) => UB.Repository('tst_attachment')

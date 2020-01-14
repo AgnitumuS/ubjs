@@ -100,7 +100,6 @@ function replaceAutoForms () {
     isModal,
     modalClass: 'ub-dialog__reset-padding'
   })
-    .instance()
     .processing()
     .validation()
     .mount()
