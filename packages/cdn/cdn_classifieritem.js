@@ -1,6 +1,6 @@
 /* global cdn_classifier */
 // eslint-disable-next-line camelcase
-const me = global[require('path').basename(__filename).split('.')[0]]
+const me = cdn_classifieritem
 const UB = require('@unitybase/ub')
 
 me.on('insert:before', setLevelAttribute)
@@ -13,7 +13,7 @@ me.on('update:before', setLevelAttribute)
 function setLevelAttribute(ctx) {
   function calcLevelFromParent(parentID) {
     console.debug(`parentID=${parentID}`)
-    let { hierarchyLevel } = UB.Repository('cdn_classifier').attrs('hierarchyLevel').selectById(parentID)
+    let { hierarchyLevel } = UB.Repository('cdn_classifieritem').attrs('hierarchyLevel').selectById(parentID)
     return hierarchyLevel + 1
   }
 

@@ -14,7 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+ - cdn_classifieritem - fix error about non-existed attribute usage inside insert/update
+  
 ## [5.3.30] - 2020-01-11
 ## [5.3.29] - 2020-01-03
 ## [5.3.28] - 2020-01-02
