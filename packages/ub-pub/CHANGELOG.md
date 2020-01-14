@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UB.Reposiroty` fabric function can accept serialized UBQL as a parameter (instead of entity code).
+ In this case result will be a Repository de-serialized rom a given UBQL
+ 
+ ``` 
+   // serialize Repository into plain java script object (UBQL)
+   const ubql = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a').ubql()
+   // restore Repository from (UBQL)
+   let repo = UB.Repository(ubql)
+ ```
 
 ### Changed
 

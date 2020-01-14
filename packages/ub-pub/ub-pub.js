@@ -322,8 +322,12 @@ conn.then(function(conn){
       if (_globalVueInstance && _globalVueInstance.$i18n) {
         _globalVueInstance.$i18n.locale = conn.userLang()
       }
-      this.Repository = function (entityCode) {
-        return new ClientRepository(conn, entityCode)
+      this.Repository = function (entityCodeOrUBQL) {
+        if (typeof entityCodeOrUBQL == 'string') {
+          return new ClientRepository(conn, entityCodeOrUBQL)
+        } else {
+          return new ClientRepository(conn, '').fromUbql(entityCodeOrUBQL)
+        }
       }
       return conn
     })
@@ -341,10 +345,10 @@ conn.then(function(conn){
    * Create a new instance of repository for a current connection.
    * To be used after connection is created.
    *
-   * @param {String} entityCode The name of the Entity for which the Repository is being created
+   * @param {String|Object} entityCodeOrUBQL The name of the Entity for which the Repository is being created or UBQL
    * @returns {ClientRepository}
    */
-  Repository: function (entityCode) {
+  Repository: function (entityCodeOrUBQL) {
     throw new Error('function defined only after connect()')
   },
   /**

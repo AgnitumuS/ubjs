@@ -4,12 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+  - `SyncConnection.prototype.Reposiroty` fabric function can accept serialized UBQL as a parameter (instead of entity code)
+   In this case result will be a Repository de-serialized rom a given UBQL
+   
+    
 ## [5.1.34] - 2019-11-19
-#### Added
+### Added
  - argv.getServerConfiguration() will resolve a httpServer.inetPub location to absolute path
 
 ## [5.1.33] - 2019-11-07
-#### Fixed
+### Fixed
  - prevent an error in `dataLoader.localizeEntity` when running initialization scripts on entities with `softLock` mixin
 
 ## [5.1.29] - 2019-10-01

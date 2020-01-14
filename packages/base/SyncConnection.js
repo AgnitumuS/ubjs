@@ -676,11 +676,15 @@ SyncConnection.prototype.update = function (ubq) {
 
 /**
  * Create a new instance of repository
- * @param {String} entityName name of Entity we create for
+ * @param {String|Object} entityCodeOrUBQL The name of the Entity for which the Repository is being created or UBQL
  * @returns {ServerRepository}
  */
-SyncConnection.prototype.Repository = function (entityName) {
-  return new ServerRepository(this, entityName)
+SyncConnection.prototype.Repository = function (entityCodeOrUBQL) {
+  if (typeof entityCodeOrUBQL == 'string') {
+    return new ServerRepository(this, entityCodeOrUBQL)
+  } else {
+    return new ServerRepository(this, '').fromUbql(entityCodeOrUBQL)
+  }
 }
 
 module.exports = SyncConnection

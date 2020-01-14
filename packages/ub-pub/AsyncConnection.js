@@ -2036,11 +2036,16 @@ UBConnection.prototype.serverErrorByCode = function (errorNum) {
 
 /**
  * Create a new instance of repository
- * @param {String} entityName name of Entity we create for
+ * @param {String|Object} entityCodeOrUBQL The name of the Entity for which the Repository is being created or UBQL
  * @returns {ClientRepository}
  */
-UBConnection.prototype.Repository = function (entityName) {
-  return new ClientRepository(this, entityName)
+UBConnection.prototype.Repository = function (entityCodeOrUBQL) {
+  if (typeof entityCodeOrUBQL == 'string') {
+    return new ClientRepository(this, entityCodeOrUBQL)
+  } else {
+    return new ClientRepository(this, '').fromUbql(entityCodeOrUBQL)
+  }
+
 }
 
 /**

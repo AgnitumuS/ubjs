@@ -17,6 +17,10 @@ for (let i = 0; i < 100; i++) {
   cNames.push(`c${i}`)
 }
 
+const KNOWN_MISC_TAGS = new Set(['__mip_ondate', '__mip_recordhistory', '__mip_recordhistory_all',
+  '__mip_disablecache', '__skipOptimisticLock', '__allowSelectSafeDeleted', '__skipSelectAfterUpdate',
+  '__skipSelectAfterInsert', '__skipRls', '__skipAclRls', 'lockType'])
+
 /**
  * Ancestor for Browser/NodeJS ClientRepository and server side ServerRepository.
  *
@@ -184,18 +188,18 @@ class CustomRepository {
    *
    * @example
 
-UB.Repository('my_entity').attrs('id')
+UB.Repository('my_entity').attrs('ID')
   // code in ('1', '2', '3')
   .where('code', 'in', ['1', '2', '3'])
   // code in (select code from my_codes where id = 10)
-  .where('code', 'in', UB.Repository('my_codes').attr('code').where('ID', '<', 10)
+  .where('code', 'in', UB.Repository('my_codes').attrs('code').where('ID', '<', 10))
   // name like '%homer%'
-  .where('[name]', 'contains', 'Homer').
+  .where('[name]', 'contains', 'Homer')
   //(birtday >= '2012-01-01') AND (birtday <= '2012-01-02')
   .where('[birtday]', 'geq', new Date()).where('birtday', 'leq', new Date() + 10)
   // (age + 10 >= 15)
   .where('[age] -10', '>=', {age: 15}, 'byAge')
-  .where('LENGTH([code]), '<', 5)
+  .where('LENGTH([code])', '<', 5)
   // for condition match expression not need
   .where('', 'match', 'myvalue')
 
@@ -395,7 +399,7 @@ UB.Repository('uba_user').attrs(['ID', 'name']) //select users
    *
    * @example
 
-UB.Repository('my_entity').attrs('id')
+UB.Repository('my_entity').attrs('ID')
  // code in ('1', '2', '3')
  .where('code', 'in', ['1', '2', '3'], 'byCode')
  // name like '%homer%'
@@ -539,7 +543,7 @@ UB.Repository('uba_user').attrs(['disabled','uPassword','COUNT([ID])'])
    * Retrieve first `start` rows
    * @example
 
-let store = UB.Repository('my_entity').attrs('id')
+let store = UB.Repository('my_entity').attrs('ID')
  //will return ID's from 15 to 25
  .start(15).limit(10).select()
 
@@ -556,7 +560,7 @@ let store = UB.Repository('my_entity').attrs('id')
    * @example
 
 // will return first two ID's from my_entity
-let store = UB.Repository('my_entity').attrs('id').limit(2).selectAsObject()
+let store = UB.Repository('my_entity').attrs('ID').limit(2).selectAsObject()
 
    * @param {number} rowsLimit
    * @return {CustomRepository}
@@ -607,6 +611,43 @@ inst.run('select', repo.ubql())
     _.defaults(req, this.__misc) // apply misc
 
     return req
+  }
+
+  /**
+   * Private method for construct a Repository from UBQL. Please, use UB.Repository(ubqlJson) instead of call this private method
+   * @private
+   * @example
+
+   // serialize Repository into plain java script object (UBQL)
+   const ubql = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a').ubql()
+   // restore Repository from plain java script object (UBQL)
+   let repo = UB.Repository(ubql)
+
+   * @return {UBQL}
+   */
+  fromUbql(u) {
+    this.entityName = u.entity
+    this.method = u.method
+    this.fieldList = u.fieldList
+    this.groupList = u.groupList || []
+    this.whereList = u.whereList || {}
+    if (u.orderList) {
+      // orderList in UBQL is object with keys === order position
+      let orderKeys = Object.keys(u.orderList).map(v => parseInt(v, 10)).sort((v1, v2) => v1-v2)
+      this.orderList = []
+      orderKeys.forEach(k => {
+        this.orderList.push(u.orderList['' + k])
+      })
+    }
+    this.options = u.options || {}
+    this.logicalPredicates = u.logicalPredicates || {}
+    this.joinAs = u.joinAs || []
+    this.__misc = {}
+    let m = Object.keys(u)
+    m.forEach(mt => {
+      if ((u[mt] === true) && KNOWN_MISC_TAGS.has(mt)) this.__misc[mt] = true
+    })
+    return this
   }
 
   // noinspection JSMethodCanBeStatic

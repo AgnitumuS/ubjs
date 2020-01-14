@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - new private method `CustomRepository.fromUbql` - used in UB.Repository() constructor to create Repository from UBQL
+  
 ### Changed
 
 ### Deprecated
