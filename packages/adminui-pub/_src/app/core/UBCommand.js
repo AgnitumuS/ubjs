@@ -595,8 +595,8 @@ Ext.define('UB.core.UBCommand', {
       }
 
       me.formParam = me.getFormParam()
-      // me.description = me.description || (me.formParam ? me.formParam.description : undefined)
-      me.caption = me.caption || (me.formParam ? me.formParam.caption : undefined)
+      me.caption = (me.commandConfig && me.commandConfig.description) // me.commandConfig.description is a legacy for UB4
+        || me.caption || (me.formParam ? me.formParam.caption : undefined)
       if (!Ext.isDefined(me.formCode)) {
         UB.core.UBCommand.showAutoForm.call(me)
       } else {

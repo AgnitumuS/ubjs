@@ -15,7 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+ - `showForm` command will use `description` from command config (if defined) as a form caption. Compatibility fix for UB4  
+ 
 ## [5.12.25] - 2020-01-11
 ## [5.12.24] - 2020-01-03
 ## [5.12.23] - 2020-01-02
