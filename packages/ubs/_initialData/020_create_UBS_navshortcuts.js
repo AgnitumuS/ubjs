@@ -51,10 +51,13 @@ module.exports = function (session) {
       caption: 'Settings',
       iconCls: 'fa fa-cog',
       displayOrder: 10,
-      cmdCode: JSON.stringify({cmdType: 'showList',
-        cmdData: {params: [
-          {entity: 'ubs_settings', method: 'select', fieldList: '*'}
-        ]}}, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubs_settings'
+        }
+      }, null, '\t')
     }
   })
 
@@ -68,10 +71,13 @@ module.exports = function (session) {
       code: 'ubs_filter',
       caption: 'Stored UI filters',
       displayOrder: 20,
-      cmdCode: JSON.stringify({cmdType: 'showList',
-        cmdData: {params: [
-          {entity: 'ubs_filter', method: 'select', fieldList: '*'}
-        ]}}, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubs_filter'
+        }
+      }, null, '\t')
     }
   })
 
@@ -85,10 +91,13 @@ module.exports = function (session) {
       code: 'ubs_numcounter',
       caption: 'Counters',
       displayOrder: 30,
-      cmdCode: JSON.stringify({cmdType: 'showList',
-        cmdData: {params: [
-          {entity: 'ubs_numcounter', method: 'select', fieldList: '*'}
-        ]}}, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubs_numcounter'
+        }
+      }, null, '\t')
     }
   })
 
@@ -102,10 +111,13 @@ module.exports = function (session) {
       code: 'ubs_numcounterreserv',
       caption: 'Counters (reservation)',
       displayOrder: 40,
-      cmdCode: JSON.stringify({cmdType: 'showList',
-        cmdData: {params: [
-          {entity: 'ubs_numcounterreserv', method: 'select', fieldList: '*'}
-        ]}}, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubs_numcounterreserv'
+        }
+      }, null, '\t')
     }
   })
 
@@ -119,10 +131,14 @@ module.exports = function (session) {
       code: 'ubs_softLock',
       caption: 'Soft locks',
       displayOrder: 50,
-      cmdCode: JSON.stringify({cmdType: 'showList',
-        cmdData: {params: [
-          {entity: 'ubs_softLock', method: 'select', fieldList: ['lockUser', 'entity', 'lockID', 'lockType', 'lockTime']}
-        ]}}, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubs_softLock',
+          columns: ['lockUser', 'entity', 'lockID', 'lockType', 'lockTime']
+        }
+      }, null, '\t')
     }
   })
 
@@ -137,13 +153,12 @@ module.exports = function (session) {
       caption: 'Notifications',
       displayOrder: 60,
       iconCls: 'fa fa-bell',
-      cmdCode: JSON.stringify({'cmdType': 'showList',
-        'cmdData': {
-          'params': [{
-            'entity': 'ubs_message_edit',
-            'method': 'select',
-            'fieldList': ['messageBody', 'messageType', 'complete', 'startDate', 'expireDate']
-          }]
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubs_message_edit',
+          columns: ['messageBody', 'messageType', 'complete', 'startDate', 'expireDate']
         }
       }, null, '\t')
     }
@@ -160,13 +175,12 @@ module.exports = function (session) {
       caption: 'Server-side cache',
       displayOrder: 60,
       iconCls: 'fa fa-server',
-      cmdCode: JSON.stringify({'cmdType': 'showList',
-        'cmdData': {
-          'params': [{
-            'entity': 'ubs_globalCache',
-            'method': 'select',
-            'fieldList': ['ID', 'key', 'value']
-          }]
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubs_globalCache',
+          columns: ['ID', 'key', 'value']
         }
       }, null, '\t')
     }
@@ -202,25 +216,17 @@ module.exports = function (session) {
       caption: 'Reports',
       displayOrder: 60,
       iconCls: 'fa fa-book',
-      cmdCode: "{\n" +
-      "  cmdType: 'showList',\n" +
-      "  cmdData: {\n" +
-      "    params: [{\n" +
-      "      entity: 'ubs_report',\n" +
-      "      method: 'select',\n" +
-      "      fieldList: [\n" +
-      "        'ID', 'model', 'report_code',\n" +
-      "        {\n" +
-      "          name: 'name',\n" +
-      "          format: function (fieldValue, cellValues, record, recordIndex, fullIndex, store, table) {\n" +
-      "            var v = UB.i18n(fieldValue)\n" +
-      "            return v\n" +
-      "          }\n" +
-      "        }\n" +
-      "      ]\n" +
-      "    }]\n" +
-      "  }\n" +
-      "}"
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubs_report',
+          columns: ['ID', 'model', 'report_code', {
+            id: 'name',
+            format: ({ value }) => UB.i18n(value)
+          }]
+        }
+      }, null, '\t')
     }
   })
 

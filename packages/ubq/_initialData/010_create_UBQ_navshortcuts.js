@@ -29,7 +29,9 @@ module.exports = function (session) {
   if (!folderID) {
     console.log('\t\tcreate `Queue` folder')
     folderID = conn.insert({
-      entity: 'ubm_navshortcut', fieldList: ['ID'], execParams: {
+      entity: 'ubm_navshortcut',
+      fieldList: ['ID'],
+      execParams: {
         desktopID: desktopID,
         code: 'adm_folder_UBQ',
         caption: 'Queue',
@@ -44,17 +46,19 @@ module.exports = function (session) {
 
   console.log('\t\t\tcreate `Schedulers` shortcut')
   conn.insert({
-    fieldList: ['ID'], entity: 'ubm_navshortcut', execParams: {
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
       desktopID: desktopID,
       parentID: folderID,
       code: 'ubq_scheduler',
       caption: 'Schedulers',
       displayOrder: 10,
       cmdCode: JSON.stringify({
-        cmdType: 'showList', cmdData: {
-          params: [{
-            entity: 'ubq_scheduler', method: 'select', fieldList: '*'
-          }]
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubq_scheduler'
         }
       }, null, '\t')
     }
@@ -62,17 +66,19 @@ module.exports = function (session) {
 
   console.log('\t\t\tcreate `Queue items` shortcut')
   conn.insert({
-    fieldList: ['ID'], entity: 'ubm_navshortcut', execParams: {
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
       desktopID: desktopID,
       parentID: folderID,
       code: 'ubq_messages',
       caption: 'Queue',
       displayOrder: 10,
       cmdCode: JSON.stringify({
-        'cmdType': 'showList', 'cmdData': {
-          'params': [{
-            'entity': 'ubq_messages', 'method': 'select', 'fieldList': '*'
-          }]
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubq_messages'
         }
       }, null, '\t')
     }
@@ -80,17 +86,19 @@ module.exports = function (session) {
 
   console.log('\t\t\tcreate `Queue statistics` shortcut')
   conn.insert({
-    fieldList: ['ID'], entity: 'ubm_navshortcut', execParams: {
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
       desktopID: desktopID,
       parentID: folderID,
       code: 'ubq_runstat',
       caption: 'Statistics',
       displayOrder: 20,
       cmdCode: JSON.stringify({
-        'cmdType': 'showList', 'cmdData': {
-          'params': [{
-            'entity': 'ubq_runstat', 'method': 'select', 'fieldList': '*'
-          }]
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubq_runstat'
         }
       }, null, '\t')
     }

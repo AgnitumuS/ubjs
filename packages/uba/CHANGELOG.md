@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - rewrote `010_create_navshortcuts.js` config for rendering uba forms on vue
 
 ### Deprecated
 

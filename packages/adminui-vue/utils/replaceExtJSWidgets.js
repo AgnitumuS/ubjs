@@ -203,18 +203,13 @@ function replaceShowList () {
               fieldList.push(field)
             }
           }
-
           mountTableEntity({
             isModal: cfg.isModal,
             tabId: cfg.tabId,
             title: me.title || me.description || me.entity,
             props: {
               repository () {
-                return Object.assign(
-                  UB.Repository(req.entity),
-                  req,
-                  { fieldList }
-                )
+                return UB.Repository(req.entity).attrs(fieldList)
               },
               columns
             }

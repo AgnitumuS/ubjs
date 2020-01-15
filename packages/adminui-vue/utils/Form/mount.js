@@ -366,8 +366,18 @@ function mountTableEntity (cfg) {
   if (!cfg.props.entityName && !cfg.props.repository) {
     throw new Error(`One of these options is required: "props.entityName" or "props.repository"`)
   }
-  const entityName = cfg.props.entityName || cfg.props.repository().entityName
-  const title = cfg.title || entityName
+
+  function getEntityName () {
+    switch (typeof cfg.props.repository) {
+      case 'function':
+        return cfg.props.repository().entityName
+      case 'object':
+        return cfg.props.repository.entity
+      default:
+        return cfg.props.entityName
+    }
+  }
+  const title = cfg.title || getEntityName()
   const tableRender = h => {
     const scopedSlots = cfg.scopedSlots && cfg.scopedSlots(h)
     return h(UTableEntity, {
