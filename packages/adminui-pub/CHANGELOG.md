@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - fixed **tabId** generation in `BasePanel.onAudit` method
  - `showForm` command will use `description` from command config (if defined) as a form caption. Compatibility fix for UB4  
  
 ## [5.12.25] - 2020-01-11
