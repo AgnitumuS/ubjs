@@ -3659,7 +3659,7 @@ Ext.define('UB.view.BasePanel', {
       $App.doCommand({
         renderer: 'vue',
         isModal: modal,
-        tabId: modal ? undefined : 'uba_auditTrail',
+        tabId: modal ? undefined : `${entity}${ID}-auditTrail`,
         title: `${UB.i18n('Audit')} (${UB.i18n(entity)})`,
         cmdType: 'showList',
         cmdData: {
