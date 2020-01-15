@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - hide selected desctop icon in case sidebar is collapsed
  - signatureVerificationResult - prevent show `(undefined)` in signature status in case error code is unknown
 
 ## [1.9.17] - 2020-01-11
