@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - new private method `CustomRepository.fromUbql` - used in UB.Repository() constructor to create Repository from UBQL
   
 ### Changed
-
+ - in case expression passed to `Repository.orderBy` already exists in order list it direction will be changed;
+ Before this patch the same order expression was added that led to errors with duplicates in `order by`
+    
 ### Deprecated
 
 ### Removed

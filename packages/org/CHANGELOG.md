@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - all fullName* attributes sizes increased to 500 for `org_department`, `org_organization`
+ - all name* attributes sizes increased to 256 for `org_department`, `org_organization`
+ - rewrote `010_create_navshortcuts.js` config for rendering org forms on vue
 
 ### Deprecated
 

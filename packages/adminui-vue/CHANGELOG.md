@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `showList` command supports for cmdData.repository - an ubql object
 
 ### Changed
  - `UTableEntity`: all props now reactive. For example changing `entityName` property will cause table to load
@@ -16,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - signatureVerificationResult - prevent show `(undefined)` in signature status in case error code is unknown
 
 ## [1.9.17] - 2020-01-11
 ### Added
@@ -35,8 +37,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `USelectEnum` prop `clearable`. Adds clear icon, false by default
 
 ### Changed
- - UTableEntity column of type `Document`: separate download button from file name
+ - `UTableEntity` column of type `Document`: separate download button from file name
   to prevent unexpected downloads while user click on file name
+ - `UTableEntity` prop `repository` now can be `ubql` or function which returns `ClientRepository`
 
 ### Removed
  - `UForm.instance()` method is removed (marked as deprecated). Please, remove all .instance() calls on your code

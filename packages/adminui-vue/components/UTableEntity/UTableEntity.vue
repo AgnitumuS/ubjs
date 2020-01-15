@@ -31,9 +31,9 @@ export default {
   props: {
     ...props,
     /**
-     * Function which return UB.ClientRepository
+     * Function which return UB.ClientRepository or UBQL object
      */
-    repository: Function,
+    repository: [Function, Object],
 
     /**
      * Name of entity. If repository is set entityName will be ignored
@@ -100,7 +100,7 @@ export default {
 
   computed: {
     getEntityName () {
-      return this.entityName || this.repository().entityName
+      return this.entityName || this.getRepository().entityName
     },
 
     getColumns () {
@@ -146,13 +146,16 @@ export default {
     ...mapActions(['fetchItems', 'refresh']),
 
     getRepository () {
-      if (this.repository) {
-        return this.repository()
-      } else {
-        return this.$UB.Repository(this.entityName)
-          .attrs(
-            this.$UB.connection.domain.get(this.entityName).getAttributeNames()
-          )
+      switch (typeof this.repository) {
+        case 'function':
+          return this.repository()
+        case 'object':
+          return this.$UB.Repository(this.repository)
+        default:
+          return this.$UB.Repository(this.entityName)
+            .attrs(
+              this.$UB.connection.domain.get(this.entityName).getAttributeNames()
+            )
       }
     },
 

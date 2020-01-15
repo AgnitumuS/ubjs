@@ -40,6 +40,7 @@ module.exports = (instance) => ({
   },
 
   getters: {
+    // non reactive, returns function
     repository () {
       return instance.getRepository
     },

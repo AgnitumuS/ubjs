@@ -468,7 +468,8 @@ UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
   }
 
   /**
-   * Sorting
+   * Sorting. If expression already exists in order list it direction will be changed or, in case direction === null it will be removed
+   *
    * @example
 
    let repo = UB.Repository('my_entity').attrs('ID').orderBy('code')
@@ -481,15 +482,19 @@ UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
    * @return {CustomRepository}
    */
   orderBy (attr, direction) {
+    let i = this.orderList.findIndex(oi => oi.expression === attr)
     if (direction === null) {
-      let i = this.orderList.findIndex(oi => oi.expression === attr)
       if (i !== -1) this.orderList.splice(i, 1)
     } else {
       direction = direction || 'asc'
-      this.orderList.push({
-        expression: attr,
-        order: direction
-      })
+      if (i === -1) {
+        this.orderList.push({
+          expression: attr,
+          order: direction
+        })
+      } else { //
+        this.orderList[i].order = direction
+      }
     }
     return this
   }

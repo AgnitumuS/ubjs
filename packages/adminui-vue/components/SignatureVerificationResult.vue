@@ -140,7 +140,11 @@ export default {
     },
     statusTip (vIdx, isHTML) {
       let r = this.verificationResults[vIdx]
-      if (!r.valid) return `${r.errorMessage || this.VRi18n.valid.no} (${r.errorCode})`
+      if (!r.valid) {
+        let m = `${r.errorMessage || this.VRi18n.valid.no}`
+        if (r.errorCode) m = m + ` (${r.errorCode})`
+        return m
+      }
       let s = this.VRi18n.valid.yes; s += isHTML ? '<br>' : '; '
       s += this.VRi18n.tspValid[r.tspValid ? 'yes' : 'no']; s += isHTML ? '<br>' : '; '
       s += this.VRi18n.ocspVerified[r.ocspVerified ? 'yes' : 'no']; s += isHTML ? '<br>' : '; '
