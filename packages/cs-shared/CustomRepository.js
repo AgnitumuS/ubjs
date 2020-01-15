@@ -632,8 +632,8 @@ inst.run('select', repo.ubql())
     this.groupList = u.groupList || []
     this.whereList = u.whereList || {}
     if (u.orderList) {
-      // orderList in UBQL is object with keys === order position
-      let orderKeys = Object.keys(u.orderList).map(v => parseInt(v, 10)).sort((v1, v2) => v1-v2)
+      // orderList in UBQL is object with keys === order position. Keys can be strings
+      let orderKeys = Object.keys(u.orderList)
       this.orderList = []
       orderKeys.forEach(k => {
         this.orderList.push(u.orderList['' + k])
