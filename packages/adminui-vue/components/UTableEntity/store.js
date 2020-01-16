@@ -41,8 +41,40 @@ module.exports = (instance) => ({
 
   getters: {
     // non reactive, returns function
+    /**
+     * Returns a function what returns initial repository passed to UTableEntity
+     * @return {Function<ClientRepository>}
+     */
     repository () {
       return instance.getRepository
+    },
+
+    /**
+     * Returns repository with added filters, sorters, pagination and total requests from state
+     * @return {ClientRepository}
+     */
+    currentRepository (state, getters) {
+      const repo = getters.repository()
+        .start(state.pageIndex * getters.pageSize)
+        .limit(getters.pageSize + 1)
+
+      if (!repo.fieldList.includes('ID')) {
+        repo.attrs('ID')
+      }
+      if (state.sort) {
+        repo.orderBy(state.sort.column, state.sort.order)
+      }
+
+      for (const filter of state.filters) {
+        for (const { expression, condition, value } of filter.whereList) {
+          repo.where(expression, condition, value)
+        }
+      }
+
+      if (state.withTotal) {
+        repo.withTotal()
+      }
+      return repo
     },
 
     entityName () {
@@ -159,24 +191,7 @@ module.exports = (instance) => ({
   actions: {
     async fetchItems ({ state, getters, commit }) {
       commit('LOADING', true)
-      const repo = getters.repository()
-        .attrsIf(!getters.repository().fieldList.includes('ID'), 'ID')
-        .start(state.pageIndex * getters.pageSize)
-        .limit(getters.pageSize + 1)
-
-      if (state.sort) {
-        repo.orderBy(state.sort.column, state.sort.order)
-      }
-
-      for (const filter of state.filters) {
-        for (const { expression, condition, value } of filter.whereList) {
-          repo.where(expression, condition, value)
-        }
-      }
-
-      if (state.withTotal) {
-        repo.withTotal()
-      }
+      const repo = getters.currentRepository
       const response = await repo.selectAsArray()
       const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
 

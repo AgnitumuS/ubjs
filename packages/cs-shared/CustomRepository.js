@@ -561,7 +561,7 @@ let store = UB.Repository('my_entity').attrs('ID')
   }
 
   /**
-   * How many rows to select
+   * How many rows to select. If 0 - select all rows started from .start()
    * @example
 
 // will return first two ID's from my_entity
@@ -571,7 +571,11 @@ let store = UB.Repository('my_entity').attrs('ID').limit(2).selectAsObject()
    * @return {CustomRepository}
    */
   limit (rowsLimit) {
-    this.options.limit = rowsLimit
+    if (rowsLimit === 0) {
+      delete this.options.limit
+    } else {
+      this.options.limit = rowsLimit
+    }
     return this
   }
 
@@ -835,10 +839,15 @@ inst.run('select', repo.ubql())
            .withTotal().selectAsStore();
          console.log('Total count is:', store.totalRowCount);
    *
+   * @param {boolean} [value=true] If `false` will remove total requirements
    * @return {CustomRepository}
    */
-  withTotal () {
-    this.options.totalRequired = true
+  withTotal (value = true) {
+    if (value === false) {
+      delete this.options.totalRequired
+    } else {
+      this.options.totalRequired = true
+    }
     return this
   }
 

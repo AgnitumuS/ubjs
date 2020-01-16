@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - new private method `CustomRepository.fromUbql` - used in UB.Repository() constructor to create Repository from UBQL
+ - `Repository.withTotal` can accept optional boolean parameter. If `false` total requirements will be removed from repository
+ - `Repository.limit(rowsLimit)` will remove limit in case rowsLimit === 0   
   
 ### Changed
  - in case expression passed to `Repository.orderBy` already exists in order list it direction will be changed;

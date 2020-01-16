@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `showList` command supports for cmdData.repository - an ubql object
+ - `UTableEntity` store getter `currentRepository` - returns repository with added filters, sorters, pagination
+   and total requests from state
+ - new actions "export to Excel|HTML|CSV" added to `UTableEntity` toolbar "All actions" menu. Require UB server @5.17.10   
 
 ### Changed
  - `UTableEntity`: all props now reactive. For example changing `entityName` property will cause table to load

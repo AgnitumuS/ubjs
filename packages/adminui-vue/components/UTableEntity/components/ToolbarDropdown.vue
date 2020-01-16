@@ -54,14 +54,25 @@
           @click="audit(selectedRowId)"
         />
       </slot>
-
-      <!-- TODO: excel export -->
-      <!--      <u-dropdown-item-->
-      <!--        icon="fa fa-file-excel-o"-->
-      <!--        label="exportXls"-->
-      <!--        @click="exportExcel"-->
-      <!--      />-->
-
+      <slot name="exports">
+        <u-dropdown-item divider />
+        <!-- TODO - add submenu -->
+        <u-dropdown-item
+            icon="fas fa-file-excel"
+            label="exportXls"
+            @click="exportExcel"
+        />
+        <u-dropdown-item
+            icon="fas fa-table"
+            label="exportHtml"
+            @click="exportHtml"
+        />
+        <u-dropdown-item
+            icon="fas fa-file-csv"
+            label="exportCsv"
+            @click="exportCsv"
+        />
+      </slot>
       <slot name="append"/>
     </template>
   </u-dropdown>
@@ -75,7 +86,9 @@ export default {
     ...mapGetters([
       'canAddNew',
       'canDelete',
-      'canAudit'
+      'canAudit',
+      'entityName',
+      'currentRepository'
     ]),
     ...mapState(['items', 'selectedRowId'])
   },
@@ -88,8 +101,33 @@ export default {
       'editRecord',
       'copyRecord',
       'audit'
-    ])
-
+    ]),
+    /**
+     * Query server for content of current repository (without pagination) in specified contentType
+     * @param contentType
+     * @param resultFileExtension
+     */
+    exportTo(contentType, resultFileExtension) {
+      let repo = this.currentRepository.clone().withTotal(false).start(0).limit(0)
+      repo.connection.xhr({
+        method: 'POST',
+        url: 'ubql',
+        data: [repo.ubql()],
+        responseType: 'blob',
+        headers: { 'Content-Type': contentType }
+      }).then(res => {
+        window.saveAs(res.data, `${this.entityName}.${resultFileExtension}`)
+      })
+    },
+    exportExcel () {
+      this.exportTo('application/vnd.oasis.opendocument.spreadsheet', 'ods')
+    },
+    exportHtml () {
+      this.exportTo('text/html; charset=UTF-8', 'html')
+    },
+    exportCsv () {
+      this.exportTo('text/csv; charset=UTF-8', 'csv')
+    }
     // exportExcel () {
     //   const xlsx = require('@unitybase/xlsx')
     //   const workbook = new xlsx.XLSXWorkbook()
