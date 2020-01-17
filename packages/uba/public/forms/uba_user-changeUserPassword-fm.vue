@@ -1,9 +1,6 @@
 <template>
   <div class="uba-user__change-password-form">
-    <u-form-container
-      label-position="top"
-      :label-width="200"
-    >
+    <u-form-container label-position="top">
       <u-form-row
         v-if="isOwnRecord"
         label="OldPassword"
@@ -142,11 +139,24 @@ module.exports.default = {
           execParams.needChangePassword = this.isPasswordNeedChange
         }
 
-        await this.$UB.connection.xhr({
-          method: 'POST',
-          url: 'changePassword',
-          data: execParams
-        })
+        try {
+          if (this.isOwnRecord) {
+            await this.$UB.connection.xhr({
+              method: 'POST',
+              url: 'changePassword',
+              data: execParams
+            })
+          } else {
+            await this.$UB.connection.query({
+              fieldList: [],
+              entity: 'uba_user',
+              method: 'changeOtherUserPassword',
+              execParams
+            })
+          }
+        } catch (e) {
+          throw e
+        }
         await this.$dialogInfo('passwordChangedSuccessfully')
         this.$emit('close')
       }

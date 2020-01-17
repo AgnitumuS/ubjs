@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `uba_user-changeUserPassword`: added a separate method for changing own and someone else's password
 
 ## [5.3.24] - 2020-01-11
 ## [5.3.23] - 2020-01-02
