@@ -262,7 +262,13 @@ module.exports = (instance) => ({
       await dispatch('fetchItems')
     },
 
-    addNew ({ getters }) {
+    async addNew ({ getters }) {
+      if (instance.beforeAddNew) {
+        const answer = await instance.beforeAddNew()
+        if (answer === false) {
+          return
+        }
+      }
       const tabId = UB.core.UBApp.generateTabId({
         entity: getters.entityName,
         formCode: getters.formCode

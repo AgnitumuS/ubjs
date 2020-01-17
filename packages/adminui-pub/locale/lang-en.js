@@ -341,7 +341,7 @@ UB.i18nExtend({
 
   print: 'print',
   generalInfo: 'General info',
-  sexType: 'Sex',
+  sexType: 'Gender',
   lastName: 'Last name',
   firstName: 'First name',
   middleName: 'Middle name',

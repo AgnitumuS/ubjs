@@ -40,8 +40,8 @@
     },
     {
       "name": "sexType",
-      "caption": "Sex",
-      "description": "Employee sex"
+      "caption": "Gender",
+      "description": "Employee's gender"
     },
     {
       "name": "suffix",

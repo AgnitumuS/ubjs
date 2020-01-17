@@ -14,10 +14,11 @@ const props = require('./props')
 const createStore = require('./store')
 const RootComponent = require('./components/Root.vue').default
 const Root = {
-  // hack to pass all slots to child component
+  // hack to pass all slots and props to child component
   render (h) {
     return h(RootComponent, {
-      scopedSlots: this.$vnode.parent.data.scopedSlots
+      props: this.$parent.$props,
+      scopedSlots: this.$parent.$scopedSlots
     })
   }
 }
@@ -30,6 +31,7 @@ export default {
 
   props: {
     ...props,
+
     /**
      * Function which return UB.ClientRepository or UBQL object
      */
@@ -95,6 +97,13 @@ export default {
     buildAddNewConfig: {
       type: Function,
       default: config => config
+    },
+    /**
+     * Callback which will be emitted before addNew
+     */
+    beforeAddNew: {
+      type: Function,
+      default: null
     }
   },
 
@@ -166,7 +175,9 @@ export default {
      * @returns {UTableColumn}
      */
     buildColumn (columnId) {
-      const { penult, last } = this.metaAttributesList(columnId)
+      const attrInfo = this.$store.getters.schema.getEntityAttributeInfo(columnId, 0)
+      const last = attrInfo.attribute
+      const penult = attrInfo.parentAttribute || last
       const dataType = last && last.dataType
       const columnDef = types.get(dataType)
       let label
@@ -181,44 +192,6 @@ export default {
         label,
         attribute: last,
         ...columnDef
-      }
-    },
-
-    /**
-     * Get last and penult attribute of path.
-     * If path have just one attribute last and panult will be have same values.
-     * It need in case when path have nesting, and need to get dataType of penultimate attribute but label from last.
-     *
-     * @param {string} path Property
-     * @returns {{}|{last: UBEntityAttribute, penult: UBEntityAttribute}}
-     */
-    metaAttributesList (path) {
-      const { attributes } = path.split('.').reduce((accum, field) => {
-        const attr = this.$UB.connection.domain.get(accum.entity).attributes[field]
-        if (attr) {
-          accum.attributes.push(attr)
-          if (attr.dataType !== 'Json') {
-            accum.entity = attr.associatedEntity
-          }
-        }
-        return accum
-      }, {
-        entity: this.getEntityName,
-        attributes: []
-      })
-
-      if (attributes.length === 0) {
-        return {}
-      } else if (attributes.length === 1) {
-        return {
-          last: attributes[0],
-          penult: attributes[0]
-        }
-      } else {
-        return {
-          last: attributes[attributes.length - 1],
-          penult: attributes[attributes.length - 2]
-        }
       }
     },
 

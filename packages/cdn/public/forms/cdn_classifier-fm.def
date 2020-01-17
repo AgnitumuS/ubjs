@@ -1,76 +1,8 @@
 // @! "do not remove comments below unless you know what you do!"
 // @mi_modifyDate "Tue Sep 17 2019 01:24:34 GMT+0300 (FLE Standard Time)"
-// @isDefault "false"
+// @isDefault "true"
 // @entity "cdn_classifier"
 // @model "CDN"
-// @formType "auto"
+// @formType "vue"
 // @caption "Сlassifiers"
 // @description "Сlassifiers Edit"
-exports.formDef = {
-  size: {
-    width: 800,
-    height: 1000
-  },
-  parentConfig: {
-    layout: {
-      type: 'vbox',
-      align: 'stretch'
-    }
-  },
-  layout: {
-    type: 'vbox',
-    align: 'stretch'
-  },
-  items: [{
-      layout: {
-        type: 'vbox',
-        align: 'stretch'
-      },
-      items: [{
-          layout: {
-            type: 'hbox',
-            align: 'stretch'
-          },
-          defaults: {
-            labelAlign: 'top'
-          },
-          items: [{
-              flex: 1,
-              attributeName: "code"
-            },
-            {
-              flex: 4,
-              attributeName: "name"
-            },
-          ]
-        },
-        {
-          attributeName: "description",
-          labelAlign: 'top'
-        }
-      ]
-    },
-    {
-      flex: 1,
-      title: UB.i18n('ClassifTypePanelClassifiersTitle'),
-      items: [{
-        xtype: "ubdetailgrid",
-        flex: 1,
-        itemId: "ubdetailgrid-cdn_classifier",
-        stateId: "ubdetailgrid-cdn_classifier_grid_UI",
-        entityConfig: {
-          "entity": "cdn_classifieritem",
-          "method": "select",
-          "fieldList": [
-            "code",
-            "hierarchyLevel",
-            "parentID",
-            "name"
-          ]
-        },
-        masterFields: ["ID"],
-        detailFields: ["classifierID"]
-      }]
-    }
-  ]
-};

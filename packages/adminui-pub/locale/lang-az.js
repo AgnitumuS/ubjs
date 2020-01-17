@@ -340,7 +340,7 @@ UB.i18nExtend({
 
   print: 'çap',
   generalInfo: 'ümumi məlumat',
-  sexType: 'Cins',
+  sexType: 'Cinsi',
   lastName: 'Soyad',
   firstName: 'Ad',
   middleName: 'Ata adı',

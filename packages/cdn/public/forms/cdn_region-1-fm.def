@@ -1,33 +1,8 @@
 // @! "do not remove comments below unless you know what you do!"
 // @mi_modifyDate "Fri Oct 26 2018 14:35:20 GMT+0300 (EEST)"
-// @isDefault "false"
+// @isDefault "true"
 // @entity "cdn_region"
 // @model "CDN"
-// @formType "auto"
+// @formType "vue"
 // @caption "region_title"
 // @description "region_title"
-exports.formDef = {
-
-    size: {
-        width: 400,
-        height: 350
-    },
-    parentConfig: {
-        layout: {
-            type: "vbox",
-            align: "stretch" //max
-        }
-    },
-
-    items: [
-        { attributeName: "caption", disabled: true},
-        { attributeName: "parentAdminUnitID", fieldList: ["name","adminUnitType"]},
-        { attributeName: "code"},
-        { attributeName: "regionTypeID"},
-        { attributeName: "name"},
-        { attributeName: "fullName"},
-        { attributeName: "description"},
-        { attributeName: "phoneCode"},
-        { attributeName: "centerID"}
-    ]
-};

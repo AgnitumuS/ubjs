@@ -1,31 +1,8 @@
 // @! "do not remove comments below unless you know what you do!"
 // @mi_modifyDate "Tue Sep 17 2019 01:22:06 GMT+0300 (FLE Standard Time)"
-// @isDefault "false"
+// @isDefault "true"
 // @entity "cdn_classifieritem"
 // @model "CDN"
-// @formType "auto"
+// @formType "vue"
 // @caption "Classifier items editor"
 // @description "Classifier items editor"
-exports.formDef = {
-  parentConfig: {
-    layout: {
-      type: "vbox",
-      align: "stretch"
-    }
-  },
-  items: [{
-    layout: {
-      type: 'vbox',
-      align: 'stretch'
-    },
-    defaults: {
-      labelWidth: 210
-    },
-    items: [
-      { attributeName: "code" },
-      { attributeName: "parentID" },
-      { attributeName: "classifierID" },
-      { attributeName: "name" }
-    ]
-  }]
-};

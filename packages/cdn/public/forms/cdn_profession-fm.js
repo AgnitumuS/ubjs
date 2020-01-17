@@ -1,5 +1,0 @@
-exports.formCode = {
-    initUBComponent: function () {
-   	}
-
-};

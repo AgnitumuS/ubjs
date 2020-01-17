@@ -10,7 +10,11 @@
       </template>
     </u-toolbar>
 
-    <u-form-container v-loading="loading">
+    <u-form-container
+      v-loading.body="loading"
+      label-position="top"
+      :max-width="800"
+    >
       <u-auto-field attribute-name="caption" />
 
       <u-auto-field attribute-name="code" />

@@ -24,8 +24,8 @@
     },
     {
       "name": "sexType",
-      "caption": "Seks",
-      "description": "sex karyawan"
+      "caption": "Jenis kelamin",
+      "description": "Jenis kelamin karyawan"
     },
     {
       "name": "uniqNum",

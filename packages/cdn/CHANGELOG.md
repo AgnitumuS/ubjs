@@ -6,8 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `cdn_employee-fm` form rewritten to Vue
+ - `cdn_department-fm` form rewritten to Vue
+ - `cdn_organization-fm` form rewritten to Vue
+ - `cdn_person-fm` form rewritten to Vue
+ - `cdn_contact-fm` form rewritten to Vue
+ - `cdn_classifier-fm` form rewritten to Vue
+ - `cdn_classifieritem-fm` form rewritten to Vue
+ - `beforeAddNew`, `contactsRepository` mixins
 
 ### Changed
+ - renamed 'Sex' to 'Gender', added full gender name to 'CDN_SEXTYPE' enum
+ - renamed 'Sex' to 'Gender', added full gender name to 'CDN_SEXTYPE'
+ - `cdn_organization` 'OKPOcode' field is required
  - rewrote `010_create_navshortcuts.js` config for rendering cdn forms on vue
 
 ### Deprecated
