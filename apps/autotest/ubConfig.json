@@ -45,16 +45,17 @@
 				"includes": "#include(./zones_ukraine.json)"
 			}*/
 		],
-		"zonesAuthenticationMethods": [
-			{
-				"name": "intr",
-				"authenticationMethods": ["UB", "Negotiate"]
-			},
-			{
-				"name": "extr",
-				"authenticationMethods": ["UB", "OpenIDConnect"]
-			}
-		],
+//		// EE only
+//		"zonesAuthenticationMethods": [
+//			{
+//				"name": "intr",
+//				"authenticationMethods": ["UB", "Negotiate"]
+//			},
+//			{
+//				"name": "extr",
+//				"authenticationMethods": ["UB", "OpenIDConnect"]
+//			}
+//		],
 		"authenticationMethods": [
 			"UB", "Negotiate"//, "UBLDAP"
 		]/*,
