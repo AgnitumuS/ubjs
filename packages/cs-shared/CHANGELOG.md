@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.1.15] - 2020-01-17
+### Added
  - new private method `CustomRepository.fromUbql` - used in UB.Repository() constructor to create Repository from UBQL
  - `Repository.withTotal` can accept optional boolean parameter. If `false` total requirements will be removed from repository
  - `Repository.limit(rowsLimit)` will remove limit in case rowsLimit === 0   
@@ -14,12 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - in case expression passed to `Repository.orderBy` already exists in order list it direction will be changed;
  Before this patch the same order expression was added that led to errors with duplicates in `order by`
     
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ## [5.1.14] - 2019-12-17
 ### Added
  - new method `CustomRepository.clearWhereList` - remove all where conditions from Repository.

@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.9.18] - 2020-01-17
+### Added
  - `UTableEntity`: added `beforeAddNew`callback which will be emitted before addNew
  - `showList` command supports for cmdData.repository - an ubql object
  - `UTableEntity` store getter `currentRepository` - returns repository with added filters, sorters, pagination
@@ -17,10 +28,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `UTableEntity`: all props now reactive. For example changing `entityName` property will cause table to load
   rerender data and columns using new entity name, e.t.c 
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - hide selected desktop icon in case sidebar is collapsed

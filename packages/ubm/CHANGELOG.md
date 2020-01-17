@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - rewrote `010_create_navshortcuts.js` config for rendering ubm forms on vue
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.2.46] - 2020-01-17
+### Changed
+ - rewrote `010_create_navshortcuts.js` config for rendering ubm forms on vue
 
 ## [5.2.45] - 2020-01-11
 ## [5.2.44] - 2020-01-03

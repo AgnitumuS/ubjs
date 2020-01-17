@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.1.40] - 2020-01-17
+### Added
   - `SyncConnection.prototype.Reposiroty` fabric function can now accept a UBQL passed in parameter as object while
   keeping an ability to pass entity code as string
    

@@ -6,10 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - new property `Session.zone: string` - security zone. Always empty for SE
- - new server config parameters `security.zones` and `security.zonesAuthenticationMethods` (UB EE. Ignored in UB SE)
- - `getAppInfo` endpoint wil return `authMethods` restricted to `security.zonesAuthenticationMethods` (UB EE)  
- 
+
 ### Changed
 
 ### Deprecated
@@ -18,6 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.12] - 2020-01-17
+### Added
+ - new property `Session.zone: string` - security zone. Always empty for SE
+ - new server config parameters `security.zones` and `security.zonesAuthenticationMethods` (UB EE. Ignored in UB SE)
+ - `getAppInfo` endpoint wil return `authMethods` restricted to `security.zonesAuthenticationMethods` (UB EE)  
+ 
 ## [5.3.11] - 2020-01-11
 ### Added
  - `App.endpointContext` - an empty object what can be used to store data for a single endpoint execution.

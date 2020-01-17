@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `locale/uk -> closeOther` added missing word "tabs" simplified in other languages
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.12.26] - 2020-01-17
+### Changed
+ - `locale/uk -> closeOther` added missing word "tabs" simplified in other languages
 
 ### Fixed
  - `Audit` for different auditable instances should be opened in different tabs  (fixed **tabId** generation in `BasePanel.onAudit`)

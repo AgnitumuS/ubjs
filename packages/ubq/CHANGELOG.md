@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - rewrote `010_create_UBQ_navshortcuts.js` config for rendering ubq forms on vue
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.2.70] - 2020-01-17
+### Changed
+ - rewrote `010_create_UBQ_navshortcuts.js` config for rendering ubq forms on vue
 
 ## [5.2.69] - 2020-01-13
 ## [5.2.68] - 2020-01-11

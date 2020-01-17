@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.3.31] - 2020-01-17
+### Added
  - `cdn_employee-fm` form rewritten to Vue
  - `cdn_department-fm` form rewritten to Vue
  - `cdn_organization-fm` form rewritten to Vue
@@ -20,10 +31,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - renamed 'Sex' to 'Gender', added full gender name to 'CDN_SEXTYPE'
  - `cdn_organization` 'OKPOcode' field is required
  - rewrote `010_create_navshortcuts.js` config for rendering cdn forms on vue
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - cdn_classifieritem - fix error about non-existed attribute usage inside insert/update

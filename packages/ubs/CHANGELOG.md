@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - rewrote `020_create_UBS_navshortcuts.js` config for rendering ubs forms on vue
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.2.68] - 2020-01-17
+### Changed
+ - rewrote `020_create_UBS_navshortcuts.js` config for rendering ubs forms on vue
 
 ## [5.2.67] - 2020-01-11
 ## [5.2.66] - 2020-01-03

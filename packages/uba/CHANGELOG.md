@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - rewrote `010_create_navshortcuts.js` config for rendering uba forms on vue
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.3.25] - 2020-01-17
+### Changed
+ - rewrote `010_create_navshortcuts.js` config for rendering uba forms on vue
 
 ### Fixed
  - `uba_user-changeUserPassword`: added a separate method for changing own and someone else's password

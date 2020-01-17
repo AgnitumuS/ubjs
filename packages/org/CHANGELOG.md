@@ -8,16 +8,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - renamed caption of sextype from 'Sex' to 'Gender' 
- - all fullName* attributes sizes increased to 500 for `org_department`, `org_organization`
- - all name* attributes sizes increased to 256 for `org_department`, `org_organization`
- - rewrote `010_create_navshortcuts.js` config for rendering org forms on vue
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.2.49] - 2020-01-17
+### Changed
+ - renamed caption of sextype from 'Sex' to 'Gender' 
+ - all fullName* attributes sizes increased to 500 for `org_department`, `org_organization`
+ - all name* attributes sizes increased to 256 for `org_department`, `org_organization`
+ - rewrote `010_create_navshortcuts.js` config for rendering org forms on vue
 
 ## [5.2.48] - 2020-01-13
 ### Changed
