@@ -72,8 +72,8 @@
       "name": "sexType",
       "dataType": "Enum",
       "enumGroup": "CDN_SEXTYPE",
-      "caption": "Sex",
-      "description": "Sex of the person",
+      "caption": "Gender",
+      "description": "Person's gender",
       "allowNull": false,
       "defaultValue": "?"
     },

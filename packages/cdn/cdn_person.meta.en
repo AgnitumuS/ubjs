@@ -30,8 +30,8 @@
     },
     {
       "name": "sexType",
-      "caption": "Sex",
-      "description": "Sex of the person"
+      "caption": "Gender",
+      "description": "Person's gender"
     },
     {
       "name": "suffix",

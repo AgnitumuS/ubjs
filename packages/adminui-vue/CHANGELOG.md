@@ -6,10 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UTableEntity`: added `beforeAddNew`callback which will be emitted before addNew
  - `showList` command supports for cmdData.repository - an ubql object
  - `UTableEntity` store getter `currentRepository` - returns repository with added filters, sorters, pagination
    and total requests from state
  - new actions "export to Excel|HTML|CSV" added to `UTableEntity` toolbar "All actions" menu. Require UB server @5.17.10   
+ - new component `UGrid` container for align form elements into columns - a wrapper for [display: grid;](https://css-tricks.com/snippets/css/complete-guide-grid/).
+ Recommended to use instead of `<el-row> <el-col>`. Usage samples are added into UGrid.vue file
 
 ### Changed
  - `UTableEntity`: all props now reactive. For example changing `entityName` property will cause table to load
@@ -20,7 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - hide selected desctop icon in case sidebar is collapsed
+ - hide selected desktop icon in case sidebar is collapsed
  - signatureVerificationResult - prevent show `(undefined)` in signature status in case error code is unknown
 
 ## [1.9.17] - 2020-01-11

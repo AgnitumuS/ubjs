@@ -10,7 +10,6 @@ UB.i18nExtend({
   employee_title: "Сотрудник внешней организации",
   profession_title: "Профессия",
   region_title: "Регион",
-
   'ClassifTypePanelClassifiersTitle': 'Значения классификации',
 
   // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.

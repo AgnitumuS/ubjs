@@ -45,7 +45,8 @@ export default {
     },
 
     /**
-     * Max width in px
+     * Just provides max width in px to child UFormRow's.
+     * Do not confuse with the maximum width of the form itself
      */
     maxWidth: Number
   },

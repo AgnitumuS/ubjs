@@ -25,6 +25,7 @@ module.exports = {
     const UFileInput = require('../components/controls/UFile/UFileInput.vue').default
     const SignatureVerificationResult = require('../components/SignatureVerificationResult.vue').default
     const USidebarButton = require('../components/sidebar/USidebarButton.vue').default
+    const UGrid = require('../components/controls/UGrid.vue').default
     Vue.component(UFormContainer.name, UFormContainer)
     Vue.component(USelectEntity.name, USelectEntity)
     Vue.component(USelectMany.name, USelectMany)
@@ -49,6 +50,7 @@ module.exports = {
     Vue.component(UFileInput.name, UFileInput)
     Vue.component(SignatureVerificationResult.name, SignatureVerificationResult)
     Vue.component(USidebarButton.name, USidebarButton)
+    Vue.component(UGrid.name, UGrid)
 
     const HoldFocus = require('../directives/HoldFocus')
     Vue.directive(HoldFocus.name, HoldFocus)

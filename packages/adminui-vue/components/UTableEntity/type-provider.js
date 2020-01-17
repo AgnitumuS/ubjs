@@ -37,7 +37,7 @@ const Types = {
   /**
    * Get column definition
    *
-   * @param {string} type Type from UBDomain.ubDataTypes
+   * @param {UBDomain.ubDataTypes} type Type from UBDomain.ubDataTypes
    */
   get (type) {
     if (this._types[type]) {

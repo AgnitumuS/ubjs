@@ -31,7 +31,8 @@ function Form (cfg) {
 class UForm {
   /**
    * @param {object} cfg
-   * @param {Vue.Component} cfg.component Form component
+   * @param {Vue.Component} [cfg.component] Form component, same as cfg.rootComponent
+   * @param {Vue.Component} [cfg.rootComponent] Form component, same as cfg.component
    * @param {object} [cfg.props] Form component props
    * @param {object} [cfg.props.parentContext] Attributes values what will be passed to addNew method
    *   in case instanceID is empty. Think of it as default values for attributes of a new record
@@ -46,7 +47,8 @@ class UForm {
    * @param {object} [cfg.target] Optional target. Used for render form into form
    */
   constructor ({
-    component = required('component'),
+    component,
+    rootComponent,
     props,
     title,
     entity = required('entity'),
@@ -58,7 +60,7 @@ class UForm {
     tabId,
     target
   }) {
-    this.component = component
+    this.component = component || rootComponent
     this.props = props
     this.storeConfig = {}
     this.$store = undefined
@@ -88,7 +90,7 @@ class UForm {
 
   store (storeConfig = {}) {
     if (this.storeInitialized) {
-      throw new Error(`Store is already initialized. TIP: ".store()" should be called before ".instance()"`)
+      throw new Error(`Store is already initialized. TIP: ".store()" should be called before ".processing()"`)
     }
     this.storeInitialized = true
     mergeStore(this.storeConfig, storeConfig)

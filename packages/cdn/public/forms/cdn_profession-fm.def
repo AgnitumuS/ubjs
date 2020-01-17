@@ -12,7 +12,7 @@ size: {
 	height:350
 },
 parentConfig: {
-	layout: { 
+	layout: {
 		type: "vbox",
 		align: "stretch" //max
 	}

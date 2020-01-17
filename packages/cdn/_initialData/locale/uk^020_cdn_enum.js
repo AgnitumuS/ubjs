@@ -21,8 +21,8 @@ module.exports = function (session) {
       { keyValue: 'DISTRICT', execParams: { name: 'Регіон' } },
       { keyValue: 'CITY', execParams: { name: 'Місто' } },
       // CDN_SEXTYPE
-      { keyValue: 'F', execParams: { name: 'Ж' } },
-      { keyValue: 'M', execParams: { name: 'Ч' } },
+      { keyValue: 'F', execParams: { name: 'Жінка' } },
+      { keyValue: 'M', execParams: { name: 'Чоловік' } },
       // CDN_ADDRESS
       { keyValue: 'YUR', execParams: { name: 'Юридична адреса' } },
       { keyValue: 'PHYS', execParams: { name: 'Фізична адреса' } }
