@@ -275,7 +275,12 @@ function getAppInfoEp (req, resp) {
 
   let authMethods
   if (USE_ZONE_AUTH) {
-    authMethods = ZONES_AUTH_MAP[Session.zone]
+    if (!Session.zone) console.warn(`Security zone for IP ${Session.callerIP} is empty`)
+    if (!ZONES_AUTH_MAP.hasOwnProperty(Session.zone)) {
+      console.warn(`Authentication methods not configured for "${Session.zone}" security zone`)
+    } else {
+      authMethods = ZONES_AUTH_MAP[Session.zone]
+    }
   } else {
     authMethods = serverConfig.security.authenticationMethods
   }
