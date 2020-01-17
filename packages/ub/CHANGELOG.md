@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - new property `Session.callerIPv4Num` - an uint32 representation of caller IP
+ - new property `Session.zone: string` - security zone. Always empty for SE
+ - new server config parameters `security.zones` and `security.zonesAuthenticationMethods` (UB EE. Ignored in UB SE)
+ - `getAppInfo` endpoint wil return `authMethods` restricted to `security.zonesAuthenticationMethods` (UB EE)  
  
 ### Changed
 

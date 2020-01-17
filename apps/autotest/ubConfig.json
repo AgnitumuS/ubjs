@@ -2,7 +2,10 @@
 	"httpServer": {
 		//"externalURL": "http://localhost",
 		//"serverType": "Socket",
-		//"reverseProxy": { "kind": "nginx" },
+//		"reverseProxy": {
+//			"kind": "nginx",
+//			"securityZoneHeader": "X-Sec-Zone"
+//		},
 		"host": "+",
 		"port": "8881",
 		"requestQueueLength": 1000,
@@ -31,8 +34,29 @@
 		"maxRecursionDepth": 32
 	},
 	"security": {
+		"zones": [
+			{
+				"name":  "internal",
+			    "includes": ["10.0.0.1/8"]
+			}
+			/*,{
+				"name": "ukraine",
+				// country-specific subnet masks can be downloaded from https://www.ip2location.com/free/visitor-blocker (use CIDR format)
+				"includes": "#include(./zones_ukraine.json)"
+			}*/
+		],
+		"zonesAuthenticationMethods": [
+			{
+				"name": "intr",
+				"authenticationMethods": ["UB", "Negotiate"]
+			},
+			{
+				"name": "extr",
+				"authenticationMethods": ["UB", "OpenIDConnect"]
+			}
+		],
 		"authenticationMethods": [
-			"UB"//, "Negotiate"//, "UBLDAP"
+			"UB", "Negotiate"//, "UBLDAP"
 		]/*,
 		"ldapCatalogs": [{
 			"name": "SOFTLINE",

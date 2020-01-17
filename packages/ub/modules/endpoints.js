@@ -28,6 +28,25 @@ const appBinding = process.binding('ub_app')
 const options = require('@unitybase/base').options
 const AUTH_MOCK = options.switchIndex('-authMock') >= 0
 const FEATURE_DOMAIN_INFO_DIRECT_WRITE = ubVersionNum >= 5015004
+
+// init zonesAuthenticationMethods
+const ZONES_AUTH_MAP = {}
+let USE_ZONE_AUTH = false
+const zonesAuthenticationMethods = App.serverConfig.security.zonesAuthenticationMethods
+if (zonesAuthenticationMethods && zonesAuthenticationMethods.length) {
+  let availableAuthMethods = App.serverConfig.security.authenticationMethods
+  zonesAuthenticationMethods.forEach(z => {
+    let zam = ZONES_AUTH_MAP[z.name] = []
+    z.authenticationMethods.forEach(am => {
+      if (availableAuthMethods.indexOf(am) !== -1) {
+        zam.push(am)
+        USE_ZONE_AUTH = true
+      } else {
+        console.warn(`Authentication method ${am} for security zone ${z.name} ignored because it is not found in the security.authenticationMethods`)
+      }
+    })
+  })
+}
 /**
  *
  * @param {string} reqPath
@@ -251,7 +270,15 @@ function clientRequireEp (req, resp) {
  */
 function getAppInfoEp (req, resp) {
   const serverConfig = App.serverConfig
+
   let DSTU = serverConfig.security && serverConfig.security.dstu
+
+  let authMethods
+  if (USE_ZONE_AUTH) {
+    authMethods = ZONES_AUTH_MAP[Session.zone]
+  } else {
+    authMethods = serverConfig.security.authenticationMethods
+  }
 
   let appInfo = {
     appVersion: App.package.version,
@@ -263,7 +290,7 @@ function getAppInfoEp (req, resp) {
     serverCertificate: (DSTU && DSTU.trafficEncryption) ? App.serverPublicCert : '',
     encryptionKeyLifetime: (DSTU && DSTU.trafficEncryption) ? DSTU.encryptionKeyLifeTime : 0,
 
-    authMethods: serverConfig.security.authenticationMethods || [],
+    authMethods: authMethods || [],
 
     supportedLanguages: serverConfig.application.domain.supportedLanguages || ['en'],
 

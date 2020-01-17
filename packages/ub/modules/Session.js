@@ -20,7 +20,8 @@ let _sessionCached = {
   uData: undefined,
   callerIP: undefined,
   userRoles: undefined,
-  userLang: undefined
+  userLang: undefined,
+  zone: undefined
 }
 /**
  * Contains information about the logged in user.
@@ -183,15 +184,18 @@ Object.defineProperty(Session, 'callerIP', {
   }
 })
 /**
- * IP address of a user as Int32 number. 0 for IPv6
+ * Security zone for current session. In UB SE empty string
  * @member {string} callerIP
  * @memberOf Session
  * @readonly
  */
-Object.defineProperty(Session, 'callerIPv4Num', {
+Object.defineProperty(Session, 'zone', {
   enumerable: true,
   get: function () {
-    return sessionBinding.callerIPv4Num()
+    if (_sessionCached.zone === undefined) {
+      _sessionCached.zone = sessionBinding.zone()
+    }
+    return _sessionCached.zone
   }
 })
 
@@ -395,6 +399,7 @@ Session.reset = function (sessionID, userID) {
   _sessionCached.callerIP = undefined
   _sessionCached.userRoles = undefined
   _sessionCached.userLang = undefined
+  _sessionCached.zone = undefined
 }
 
 function fillGroupIDsLimit () {
