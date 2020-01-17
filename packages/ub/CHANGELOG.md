@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - new property `Session.callerIPv4Num` - an uint32 representation of caller IP
+ 
 ### Changed
 
 ### Deprecated

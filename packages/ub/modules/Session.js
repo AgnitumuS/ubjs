@@ -183,6 +183,19 @@ Object.defineProperty(Session, 'callerIP', {
   }
 })
 /**
+ * IP address of a user as Int32 number. 0 for IPv6
+ * @member {string} callerIP
+ * @memberOf Session
+ * @readonly
+ */
+Object.defineProperty(Session, 'callerIPv4Num', {
+  enumerable: true,
+  get: function () {
+    return sessionBinding.callerIPv4Num()
+  }
+})
+
+/**
  * Create new session for userID
  * @method
  * @param {Number} userID ID of  user
