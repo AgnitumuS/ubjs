@@ -248,6 +248,11 @@
               "type": "boolean",
               "default": true,
               "description": "If true then generateNginxCfg command will add /clientRequire & /models interception by nginx. Folder with static asserts can be prepared by `npx ubcli linkStatic` command"
+            },
+            "securityZoneHeader": {
+              "type": "string",
+              "default": "",
+              "description": "The value of a custom HTTP header containing the security zone identifier. Should be defined in case nginx is configured to calc a security zones. Recommended value is `X-Sec-Zone`. If empty UB EE will fallback to internal security zone calculation"
             }
           }
         }
@@ -453,6 +458,56 @@
               "UBIP",
               "OpenIDConnect"
             ]
+          }
+        },
+        "zones": {
+          "type": "array",
+          "description": "EE edition. Security zones definition. Used as fallback in case reverse proxy securityZoneHeader configuration is empty",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Security zone name"
+              },
+              "includes": {
+                "type": "array",
+                "description": "Subnet masks to include in this security zone. Country-specific subnet masks can be downloaded from https://www.ip2location.com/free/visitor-blocker (use CIDR format)",
+                "items": {
+                  "type": "string",
+                  "description": "Subnet mask in format x.x.x.x/y"
+                }
+              }
+            }
+          }
+        },
+        "zonesAuthenticationMethods": {
+          "type": "array",
+          "description": "EE edition. Authentication methods available for each security zone",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Security zone name"
+              },
+              "authenticationMethods": {
+                "type": "array",
+                "description": "List of authentication methods allowed for this security zone",
+                "items": {
+                  "enum": [
+                    "CERT",
+                    "CERT2",
+                    "Negotiate",
+                    "UBLDAP",
+                    "UB",
+                    "Basic",
+                    "UBIP",
+                    "OpenIDConnect"
+                  ]
+                }
+              }
+            }
           }
         },
         "forceNTLM": {
