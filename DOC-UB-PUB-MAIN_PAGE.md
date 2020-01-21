@@ -139,6 +139,6 @@ As a side effect @unitybase/ub-pub module contains "Promisified" API for HTTP re
 So you do not need axios etc. Just use a `UB.xhr`, `UB.get` or `UB.post`:
 
 ```javascript
-  conts UB = require('@unitybase/ub-pub')
+  const UB = require('@unitybase/ub-pub')
   UB.get('https://unitybase.info').then(resp => console.log(resp.data))
 ```
