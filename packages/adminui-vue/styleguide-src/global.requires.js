@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import Element from 'element-ui'
 // import 'font-awesome/css/font-awesome.css'
 import '../dist/adminui-vue.css'
+import '../theme/el-theme-compiled.css'
 import locale from 'element-ui/lib/locale/lang/en'
 
 Vue.use(Element, {
@@ -26,7 +27,7 @@ if ('serviceWorker' in navigator) {
 }
 
 UB.connect({
-  host: 'http://localhost:8080',
+  host: window.location.origin,
   path: '',
   onCredentialRequired: false,
   allowSessionPersistent: false,

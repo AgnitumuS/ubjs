@@ -782,7 +782,7 @@ Need to set function which returns UB Repository
 
     methods: {
       getRepo () {
-        return $UB.Repository('tst_maindata')
+        return this.$UB.Repository('tst_maindata')
           .attrs('ID', 'code', 'caption')
           .where('parent', '=', 31231221312312) // TODO: set valid ID
       }

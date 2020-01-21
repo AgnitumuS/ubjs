@@ -17,7 +17,7 @@ module.exports = {
      * but in USelectMultiple input is dom el
      * so need to check it
      */
-    const input = this.$refs.input instanceof Vue
+    const input = this.$refs.input instanceof Vue.default
       ? this.$refs.input.$el
       : this.$refs.input
 

@@ -2,8 +2,11 @@ const webpack = require('webpack')
 const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { InjectManifest } = require('workbox-webpack-plugin')
+
 module.exports = {
   components: [
+    // './components/**/[A-Z]*.vue',
     './components/controls/USelectEntity.vue',
     './components/controls/USelectEnum.vue',
     './components/controls/USelectMany.vue',
@@ -14,42 +17,44 @@ module.exports = {
     './components/controls/UFormRow.vue',
     './components/UToolbar/UToolbar.vue'
   ],
-  require: [path.join(__dirname, './styleguide/global.requires.js')],
-  renderRootJsx: path.join(__dirname, './styleguide/styleguide.root.js'),
+  ignore: ['./components/controls/UFile/UFile.vue', './components/controls/USelectCollection.vue'],
+  require: [path.join(__dirname, './styleguide-src/global.requires.js')],
+  renderRootJsx: path.join(__dirname, './styleguide-src/styleguide.root.js'),
   webpackConfig: {
     resolve: {
       extensions: ['.js', '.vue', '.json'],
       alias: {
-        'vue$': 'vue/dist/vue.common.js' // should be the same as in SystemJS dev config - see adminui-pub/index-dev.mustache
+        vue$: 'vue/dist/vue.common.js' // should be the same as in SystemJS dev config - see adminui-pub/index-dev.mustache
       }
     },
     module: {
-      rules: [{
-        test: /\.vue$/,
-        loader: 'vue-loader'
-      },
-      {
-        test: /\.js$/,
-        use: ['babel-loader'],
-        exclude: /node_modules/
-      },
-      {
-        test: /\.css$/, // results css are injected inside adminui-vue.js using UB.inject
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader'
-        ]
-      },
-      {
-        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [{
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-            outputPath: 'fonts/'
-          }
+      rules: [
+        {
+          test: /\.vue$/,
+          loader: 'vue-loader'
+        },
+        {
+          test: /\.js$/,
+          use: ['babel-loader'],
+          exclude: /node_modules/
+        },
+        {
+          test: /\.css$/, // results css are injected inside adminui-vue.js using UB.inject
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader'
+          ]
+        },
+        {
+          test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+          use: [{
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/'
+            }
+          }]
         }]
-      }]
     },
 
     plugins: [
@@ -60,7 +65,10 @@ module.exports = {
       new webpack.DefinePlugin({
         BOUNDLED_BY_WEBPACK: true,
         // VueJS use process.env.NODE_ENV to enable devtools
-        'process.env.NODE_ENV': JSON.stringify('production')
+        'process.env.NODE_ENV': JSON.stringify('develop')
+      }),
+      new InjectManifest({
+        swSrc: './styleguide-src/service-worker.js'
       })
     ],
     node: {

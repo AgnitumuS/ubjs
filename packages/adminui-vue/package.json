@@ -81,9 +81,10 @@
     "mini-css-extract-plugin": "^0.5.0",
     "shx": "^0.3.2",
     "vue-loader": "^15.7.0",
-    "vue-styleguidist": "^3.10.2",
+    "vue-styleguidist": "^4.6.1",
     "webpack": "^4.29.6",
     "webpack-bundle-analyzer": "^3",
-    "webpack-cli": "^3.2.3"
+    "webpack-cli": "^3.2.3",
+    "workbox-webpack-plugin": "^4.3.1"
   }
 }
