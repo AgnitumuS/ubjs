@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - Set 'utf-8' encoding for html-response of authorization [UBDF-11025]
 
 ## [5.0.109]
 ### Changed
