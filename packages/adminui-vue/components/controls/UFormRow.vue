@@ -173,6 +173,7 @@ export default {
   .u-form-row {
     display: grid;
     grid-template-areas: 'label error' 'content content';
+    grid-template-rows: auto 1fr;
     margin-bottom: 10px;
   }
 
