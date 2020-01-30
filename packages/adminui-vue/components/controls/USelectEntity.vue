@@ -1,7 +1,7 @@
 <template>
   <div class="u-select">
     <el-popover
-      v-if="!disabled"
+      v-show="!disabled"
       v-model="dropdownVisible"
       placement="bottom-start"
       :width="popperWidth"
@@ -122,7 +122,7 @@
     </el-popover>
 
     <el-input
-      v-else
+      v-show="disabled"
       disabled
       :value="queryDisplayValue"
       :placeholder="placeholder"
