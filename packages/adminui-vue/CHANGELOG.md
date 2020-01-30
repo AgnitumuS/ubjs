@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UFileInput`: prevent validation error in a case `accept` prop is empty
 
 ## [1.9.18] - 2020-01-17
 ### Added

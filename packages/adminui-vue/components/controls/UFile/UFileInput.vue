@@ -116,6 +116,9 @@ export default {
     },
 
     isAccept (file) {
+      if (this.accept === '') {
+        return true
+      }
       const accepts = this.accept.split(',')
         .map(a => a.trim())
       return accepts.some(accept => {
