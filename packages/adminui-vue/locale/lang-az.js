@@ -149,7 +149,8 @@ UB.i18nExtend({
         from: 'dən',
         to: 'dək',
         valuePlaceholder: 'Tarixi seçin'
-      }
+      },
+      columnPlaceholder: 'Column'
     },
     pagination: {
       outOf: 'dan'

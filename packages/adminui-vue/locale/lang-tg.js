@@ -148,7 +148,8 @@ UB.i18nExtend({
         from: 'from',
         to: 'to',
         valuePlaceholder: 'Select date'
-      }
+      },
+      columnPlaceholder: 'Column'
     },
     pagination: {
       outOf: 'out of'
