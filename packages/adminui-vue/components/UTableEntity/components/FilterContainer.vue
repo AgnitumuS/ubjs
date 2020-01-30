@@ -7,7 +7,7 @@
     <el-select
       v-model="selectedColumnId"
       class="u-table-entity__filter__input"
-      :placeholder="$ut('Колонка')"
+      :placeholder="$ut('table.filter.columnPlaceholder')"
     >
       <el-option
         v-for="col in columns"
