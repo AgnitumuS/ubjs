@@ -176,8 +176,8 @@ export default {
      */
     buildColumn (columnId) {
       const attrInfo = this.$store.getters.schema.getEntityAttributeInfo(columnId, 0)
-      const last = attrInfo.attribute
-      const penult = attrInfo.parentAttribute || last
+      const last = attrInfo && attrInfo.attribute
+      const penult = attrInfo && (attrInfo.parentAttribute || last)
       const dataType = last && last.dataType
       const columnDef = types.get(dataType)
       let label
