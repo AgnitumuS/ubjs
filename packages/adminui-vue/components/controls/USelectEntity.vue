@@ -134,7 +134,8 @@
       trigger="click"
       :tabindex="-1"
     >
-      <i
+      <button
+        :disabled="disabled"
         class="el-icon-more ub-select__more-icon"
       />
       <el-dropdown-menu slot="dropdown">
@@ -734,6 +735,12 @@ export default {
   transform: rotate(90deg);
   color: rgba(var(--info), 0.76);
   cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.ub-select__more-icon:disabled {
+  opacity: 0.5;
 }
 </style>
 
