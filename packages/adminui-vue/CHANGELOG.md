@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+<<<<<<< packages/adminui-vue/CHANGELOG.md
+ - `USelectEntity` clicking on the arrow now works correctly after enabling/dibasling control
 - `UTableEntity` added localization of "column" placeholder in filtration panel
 - `UFileInput`: prevent validation error in a case `accept` prop is empty
 
