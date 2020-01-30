@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - hide selected desktop icon in case sidebar is collapsed
  - signatureVerificationResult - prevent show `(undefined)` in signature status in case error code is unknown
+ - `UFormRow` - positioning label on top in case css `height !== auto`
 
 ## [1.9.17] - 2020-01-11
 ### Added
