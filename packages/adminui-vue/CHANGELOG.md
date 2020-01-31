@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - warning text about silence unhandled exception ignoring in production build is added to unhandled exception message
+   
 ### Changed
 
 ### Deprecated
