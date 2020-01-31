@@ -445,7 +445,7 @@ UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
 
   // noinspection JSUnusedGlobalSymbols
   /**
-   * Adds join condition. Fix some known issues
+   * Adds join condition
    *
    * @param {string} expression   Attribute name (with or without []) or valid expression with attributes in [].
    * @param {CustomRepository.WhereCondition} condition    Any value from WhereCondition list.
@@ -461,6 +461,9 @@ UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
       while (this.whereList[clauseName]) {
         clauseName += '_'
       }
+    }
+    if (this.joinAs.includes(clauseName)) {
+      throw new Error(`Join condition with clause name ${clauseName} already exists`)
     }
     this.where(expression, condition, values, clauseName)
     this.joinAs.push(clauseName)

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `Repository.joinCondition` will throw in case clause name already in jointAs
 
 ### Deprecated
 
