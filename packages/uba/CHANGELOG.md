@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- ALS form: allow to change newly added record by enabling Save & SaveDiffInFile
 
 ## [5.3.26] - 2020-01-31
 ## [5.3.25] - 2020-01-17
