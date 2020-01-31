@@ -148,7 +148,8 @@ UB.i18nExtend({
         from: 'від',
         to: 'до',
         valuePlaceholder: 'Оберіть дату'
-      }
+      },
+      columnPlaceholder: 'Колонка'
     },
     pagination: {
       outOf: 'з'

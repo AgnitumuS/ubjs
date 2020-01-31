@@ -295,7 +295,7 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
         let objConnectParam = { success: true, data: JSON.parse(loginResp), secretWord: code }
         resp.statusCode = 200
         resp.write('<!DOCTYPE html><html>')
-        resp.write('<head><meta http-equiv="X-UA-Compatible" content="IE=edge" /></head>')
+        resp.write('<head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge" /></head>')
         resp.write('<body>')
         if (provider.getCustomFABody) {
           let customFABody = provider.getCustomFABody(objConnectParam)

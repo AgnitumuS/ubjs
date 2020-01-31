@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `USelectEntity` clicking on the arrow now works correctly after enabling/dibasling control
+ - `UTableEntity` added localization of "column" placeholder in filtration panel
+ - `UFileInput`: prevent validation error in a case `accept` prop is empty
+ - `USelectEntity` disable `select more` button in case component is read only
+ - `UTableEntity` prevent error in case column attribute not exists in entity
 
 ## [1.9.18] - 2020-01-17
 ### Added
@@ -33,6 +38,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - hide selected desktop icon in case sidebar is collapsed
  - signatureVerificationResult - prevent show `(undefined)` in signature status in case error code is unknown
+ - `UFormRow` - positioning label on top in case css `height !== auto`
 
 ## [1.9.17] - 2020-01-11
 ### Added

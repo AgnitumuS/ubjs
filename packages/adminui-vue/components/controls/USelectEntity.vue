@@ -1,7 +1,7 @@
 <template>
   <div class="u-select">
     <el-popover
-      v-if="!disabled"
+      v-show="!disabled"
       v-model="dropdownVisible"
       placement="bottom-start"
       :width="popperWidth"
@@ -122,7 +122,7 @@
     </el-popover>
 
     <el-input
-      v-else
+      v-show="disabled"
       disabled
       :value="queryDisplayValue"
       :placeholder="placeholder"
@@ -134,7 +134,8 @@
       trigger="click"
       :tabindex="-1"
     >
-      <i
+      <button
+        :disabled="disabled"
         class="el-icon-more ub-select__more-icon"
       />
       <el-dropdown-menu slot="dropdown">
@@ -734,6 +735,12 @@ export default {
   transform: rotate(90deg);
   color: rgba(var(--info), 0.76);
   cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.ub-select__more-icon:disabled {
+  opacity: 0.5;
 }
 </style>
 

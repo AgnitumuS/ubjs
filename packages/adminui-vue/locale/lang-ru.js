@@ -148,7 +148,8 @@ UB.i18nExtend({
         from: 'от',
         to: 'до',
         valuePlaceholder: 'Выберите дату'
-      }
+      },
+      columnPlaceholder: 'Колонка'
     },
     pagination: {
       outOf: 'из'

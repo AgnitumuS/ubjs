@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     const contentID = 'ub-generated-image-1'
     //inside e-mail body
     const eMailBody = `<img id="footer-logo" src="cid:${contentID}" alt="UB logo" title="UB logo" width="36" height="36" class="image_fix">`
-  ```  
+   ```
 
 ## [5.1.22] - 2020-01-11
 ## [5.1.21] - 2019-12-17

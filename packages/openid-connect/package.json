@@ -19,13 +19,17 @@
   "publishConfig": {
     "registry": "https://registry.unitybase.info"
   },
+  "scripts": {
+    "version": "update-changelog && git add CHANGELOG.md"
+  },
   "dependencies": {
     "@unitybase/base": "^5.1.40",
     "@unitybase/ub": "^5.3.12",
     "btoa": "^1.1.2"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.26"
+    "@unitybase/stubs": "^5.0.26",
+    "@unitybase/update-changelog": "^1.0.2"
   },
   "eslintConfig": {
     "extends": [
