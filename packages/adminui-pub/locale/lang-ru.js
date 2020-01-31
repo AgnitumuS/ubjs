@@ -122,13 +122,19 @@ UB.i18nExtend({
   singOperationInProcess: 'Выполняется подписание другого документа. Повторите действие позже',
 
   // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
-  NMInstallExtensionChrome: '<p>Для продолжения работы необходима установка расширения <b>"UBExtension"</b> для браузера Google Chrome.</p> ' +
+  NMInstallExtensionFirefox: '<p>Для продолжения работы необходима установка дополнения <b>"UBExtension"</b> для браузера Firefox.</p> ' +
+    '<p>Нажмите на ссылку <a href="https://addons.mozilla.org/addon/ub-extension/" target="_blank">УСТАНОВИТЬ РАСШИРЕНИЕ</a> ' +
+    ' для перехода на страницу установки дополнений</p>' +
+    '<p> В открывшемся окне нажмите <b>+Add to Firefox</b></p>' +
+    '<p>Подтвердите ждобавление нового дополнения.</p>' +
+    '<p>После установки дополнения <b>перезапустите браузер!</b></p>',
+  NMInstallExtensionChrome: '<p>Для продолжения работы необходима установка дополнения <b>"UBExtension"</b> для браузера Google Chrome.</p> ' +
         '<p>Нажмите на ссылку <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">УСТАНОВИТЬ РАСШИРЕНИЕ</a> ' +
         ' для перехода в магазин Google</p>' +
         '<p> В окне магазина нажмите кнопку <img src="models/adminui-pub/ub-extension/ChromePlusFreeEn.png"/> (может быть <b>+БЕСПЛАТНО</b>)</p>' +
-        '<p>Появится окно с подтверждением установки расширения - нажмите "Добавить" (Add).</p>' +
+        '<p>Появится окно с подтверждением установки дополнений - нажмите "Добавить" (Add).</p>' +
         '<p>Расширение будет установлено и кнопка <b>+FREE</b> изменит свой цвет на зелёный: <img src="models/adminui-pub/ub-extension/ChromeAddedEn.png"/> ' +
-        '<p>После установки расширения <b>перезапустите браузер!</b></p>',
+        '<p>После установки дополнения <b>перезапустите браузер!</b></p>',
   NMInstallExtensionOpera: '<p>Для продолжения работы необходима установка расширения <b>"UBExtension"</b> для браузера Opera.</p> ' +
         '<p>Нажмите на ссылку <a href="models/adminui-pub/ub-extension/UBExtension.crx" target="_blank">УСТАНОВИТЬ РАСШИРЕНИЕ</a>.</p>' +
         '<p>Браузер загрузит расширение и выдаст Вам сообщение в верхней части єкрана. ' +

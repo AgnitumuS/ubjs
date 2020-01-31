@@ -471,7 +471,8 @@ UBNativeMessage.prototype.idCounter = 0
 
 function createFeatureUpdateMsg (featureConfig, currentVersion, isUpdate) {
   let installer = ubUtils.format(featureConfig.installer, featureConfig.minVersion /* .replace(/\./g, '_') */)
-
-  let msg = 'NM' + (isUpdate ? 'Update' : 'Install') + ((featureConfig.host === 'none') ? 'Extension' + (ubUtils.isOpera ? 'Opera' : 'Chrome') : 'Feature')
+  let browserName = ubUtils.isOpera ? 'Opera'
+    : ubUtils.isChrome ? 'Chrome' : 'Firefox'
+  let msg = 'NM' + (isUpdate ? 'Update' : 'Install') + ((featureConfig.host === 'none') ? 'Extension' + browserName : 'Feature')
   return ubUtils.format(i18n(msg), i18n(featureConfig.UIName), featureConfig.minVersion, currentVersion, installer)
 }

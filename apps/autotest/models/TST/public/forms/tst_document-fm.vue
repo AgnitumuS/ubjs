@@ -199,14 +199,19 @@ module.exports.default = {
         id: this.ID
       }, { resultIsBinary: true })
       const docb64 = await this.$UB.base64FromAny(docBin)
-      const pdfSigner = await $App.pdfSigner()
-      await pdfSigner.signOperationStart(docb64)
       try {
-        let r = await pdfSigner.validateAllSignatures()
-        let pki = await this.$UB.connection.pki()
-        await pki.verificationUI(r.validationResults, r.reasons)
-      } finally {
-        await pdfSigner.signOperationEnd()
+        const pdfSigner = await $App.pdfSigner()
+        await pdfSigner.signOperationStart(docb64)
+        try {
+          let r = await pdfSigner.validateAllSignatures()
+          let pki = await this.$UB.connection.pki()
+          await pki.verificationUI(r.validationResults, r.reasons)
+        } finally {
+          await pdfSigner.signOperationEnd()
+        }
+      } catch (e) {
+        this.$dialogError(e.message)
+        throw e
       }
     },
     showDialog () {

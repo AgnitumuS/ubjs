@@ -126,6 +126,12 @@ UB.i18nExtend({
   singOperationInProcess: 'Выполняется подписание другого документа. Повторите действие позже',
 
   // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
+  NMInstallExtensionFirefox: '<p>To use this application Firefox extension <b>"UBExtension"</b> must be installed.</p> ' +
+    '<p>Follow <a href="https://addons.mozilla.org/addon/ub-extension/" target="_blank">ADD EXTENSION</a> ' +
+    ' to go to the Firefox add-ons</p>' +
+    '<p> At the add-on window click button <b>+Add to Firefox</b></p>' +
+    '<p>Confirm adding a new extension.</p>' +
+    '<p>After installing the extension <b>restart your browser!</b></p>',
   NMInstallExtensionChrome: '<p>Для продолжения работы необходима установка расширения <b>"UBExtension"</b> для браузера Google Chrome.</p> ' +
         '<p>Нажмите на ссылку <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">УСТАНОВИТЬ РАСШИРЕНИЕ</a> ' +
         ' для перехода в магазин Google</p>' +
