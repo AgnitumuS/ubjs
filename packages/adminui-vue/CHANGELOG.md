@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UTableEntity` prop `useRequestFieldList` for replacing result keys with fieldList.
+ Sometimes, server returns result with altered fieldList, like entities with Entity-Attribute-Value mixin
+ (see `@unitybase/forms`).  This property tells UTableEntity control to stick with original fieldList from request,
+ rather than using fieldList from response.
 
 ### Changed
 

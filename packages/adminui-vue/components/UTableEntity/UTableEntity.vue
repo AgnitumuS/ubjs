@@ -75,6 +75,17 @@ export default {
     },
 
     /**
+     * Replace result keys with fieldlist
+     * Sometimes, server returns result with altered fieldList, like entities with Entity-Attribute-Value mixin
+     * (see `@unitybase/forms`).  This property tells UTableEntity control to stick with original fieldList from request,
+     * rather than using fieldList from response.
+     */
+    useRequestFieldList: {
+      type: Boolean,
+      default: false
+    },
+
+    /**
      * Overrides showDictionary action config.
      * Function accepts current config and must return new config
      */
