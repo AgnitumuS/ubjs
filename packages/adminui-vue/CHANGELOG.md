@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UFileInput`: prevent validation error in a case `accept` prop is empty
  - `USelectEntity` disable `select more` button in case component is read only
  - `UTableEntity` prevent error in case column attribute not exists in entity
+ - `UCodeMirror` prevent output of error "..split of undefined.." into console (or message in DEV mode )
+   in case value is `null` or `undefined` 
 
 ## [1.9.18] - 2020-01-17
 ### Added
