@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - translations for Firefox UBExtension setup 
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.12.27] - 2020-01-31
+### Added
+ - translations for Firefox UBExtension setup 
 
 ## [5.12.26] - 2020-01-17
 ### Changed

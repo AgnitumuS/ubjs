@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.26] - 2020-01-31
 ## [5.3.25] - 2020-01-17
 ### Changed
  - rewrote `010_create_navshortcuts.js` config for rendering uba forms on vue

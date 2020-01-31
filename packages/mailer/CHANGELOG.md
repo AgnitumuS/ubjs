@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.1.24] - 2020-01-31
 ## [5.1.23] - 2020-01-13
 ### Added
  - optional `contentID` attribute for e-mail attachment. If contentID is defined for attachment it can be used in mail body

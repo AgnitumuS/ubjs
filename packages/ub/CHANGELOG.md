@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.13] - 2020-01-31
 ## [5.3.12] - 2020-01-17
 ### Added
  - new property `Session.zone: string` - security zone. Always empty for SE

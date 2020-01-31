@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.9.19] - 2020-01-31
+### Added
  - warning text about silence unhandled exception ignoring in production build is added to unhandled exception message
    
 ### Changed
@@ -13,10 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  This can be done either by set `application.fts.enabled: false` in ubConfig of by removing the fts
  connections from connections array
  - `UNavbarNotificationsButton` navbar widget will hides itself in case `ubs_message.getCached` is not accessible to user 
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `USelectEntity` clicking on the arrow now works correctly after enabling/disabling control

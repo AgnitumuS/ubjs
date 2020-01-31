@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/org",
-  "version": "5.2.49",
+  "version": "5.2.50",
   "description": "Organisation structure",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/org",
   "config": {
@@ -18,16 +18,16 @@
   },
   "main": "org.js",
   "dependencies": {
-    "@unitybase/base": "^5.1.40",
-    "@unitybase/cdn": "^5.3.31",
-    "@unitybase/ub": "^5.3.12",
-    "@unitybase/uba": "^5.3.25",
-    "@unitybase/ubs": "^5.2.68",
+    "@unitybase/base": "^5.1.41",
+    "@unitybase/cdn": "^5.3.32",
+    "@unitybase/ub": "^5.3.13",
+    "@unitybase/uba": "^5.3.26",
+    "@unitybase/ubs": "^5.2.69",
     "lodash": "^4"
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.0.26",
-    "@unitybase/update-changelog": "^1.0.2"
+    "@unitybase/update-changelog": "^1.0.3"
   },
   "keywords": [
     "UnityBase",

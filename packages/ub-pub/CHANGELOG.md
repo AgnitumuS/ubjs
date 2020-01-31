@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - support for native messages extension in Firefox
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.5] - 2020-01-31
+### Added
+ - support for native messages extension in Firefox
 
 ## [5.4.4] - 2020-01-17
 ### Added

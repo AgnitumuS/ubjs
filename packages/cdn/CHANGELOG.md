@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.32] - 2020-01-31
 ## [5.3.31] - 2020-01-17
 ### Added
  - `cdn_employee-fm` form rewritten to Vue
