@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - warning text about silence unhandled exception ignoring in production build is added to unhandled exception message
    
 ### Changed
+ - `FullTextSearch` navbar widget will hide itself in case user do not have access to any of `fts` pseudo-entities.
+ This can be done either by set `application.fts.enabled: false` in ubConfig of by removing the fts
+ connections from connections array
+ - `UNavbarNotificationsButton` navbar widget will hides itself in case `ubs_message.getCached` is not accessible to user 
 
 ### Deprecated
 
