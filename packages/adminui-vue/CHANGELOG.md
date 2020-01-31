@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - `USelectEntity` clicking on the arrow now works correctly after enabling/dibasling control
+ - `USelectEntity` clicking on the arrow now works correctly after enabling/disabling control
  - `UTableEntity` added localization of "column" placeholder in filtration panel
  - `UFileInput`: prevent validation error in a case `accept` prop is empty
  - `USelectEntity` disable `select more` button in case component is read only
