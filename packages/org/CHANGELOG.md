@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+### Fixed
+ - fixed not found record error after execute 'setDescriptionAttributeByCurrency' method in org_orgaccount.js
+
 ## [5.2.50] - 2020-01-31
 ## [5.2.49] - 2020-01-17
 ### Changed
