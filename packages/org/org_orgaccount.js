@@ -33,7 +33,6 @@ function setDescriptionAttributeByCurrency (ctx) {
   let orgAccount = UB.Repository('org_orgaccount')
     .attrs(['ID', 'mi_modifyDate'])
     .where('currencyID', 'equal', ctx.mParams.execParams.ID)
-    .misc({ __allowSelectSafeDeleted: true })
     .selectAsObject()
 
   orgAccount.forEach((item) => {
