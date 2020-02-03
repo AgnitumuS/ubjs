@@ -223,7 +223,7 @@ module.exports = function (session) {
           entityName: 'ubs_report',
           columns: ['ID', 'model', 'report_code', {
             id: 'name',
-            format: ({ value }) => UB.i18n(value)
+            format: 'return UB.i18n(value)'
           }]
         }
       }, null, '\t')

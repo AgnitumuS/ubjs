@@ -65,14 +65,12 @@ module.exports = function (session) {
         cmdData: {
           repository: {
             entity: 'ubm_enum',
-            method: 'select',
             fieldList: ['eGroup', 'sortOrder', 'code', 'shortName', 'name'],
             orderList: {
               eGroup: { expression: 'eGroup', order: 'asc' },
               sortOrder: { expression: 'sortOrder', order: 'asc' }
             }
-          },
-          columns: ['eGroup', 'sortOrder', 'code', 'shortName', 'name']
+          }
         }
       }, null, '\t')
     }

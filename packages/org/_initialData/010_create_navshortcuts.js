@@ -261,11 +261,7 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          repository: {
-            entity: 'org_diagram',
-            method: 'select',
-            fieldList: ['ID', 'caption', 'orgunitID.caption']
-          },
+          entityName: 'org_diagram',
           columns: ['ID', 'caption', 'orgunitID.caption']
         }
       }, null, '\t')

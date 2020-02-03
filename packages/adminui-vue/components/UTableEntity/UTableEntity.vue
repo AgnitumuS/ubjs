@@ -9,7 +9,7 @@
 
 <script>
 const Vuex = require('vuex')
-const { mapActions } = Vuex
+const { mapGetters, mapActions } = Vuex
 const props = require('./props')
 const createStore = require('./store')
 const RootComponent = require('./components/Root.vue').default
@@ -119,6 +119,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['schema']),
+
     getEntityName () {
       return this.entityName || this.getRepository().entityName
     },
@@ -131,14 +133,22 @@ export default {
           } else {
             return {
               ...this.buildColumn(column.id),
-              ...column
+              ...column,
+              ...(
+                typeof column.format === 'string'
+                  ? { format: new Function('{value, column, row}', column.format) }
+                  : {}
+              )
             }
           }
         })
       } else {
-        return this.$UB.connection.domain.get(this.getEntityName)
-          .filterAttribute(a => a.defaultView)
-          .map(({ code }) => this.buildColumn(code))
+        return this.getRepository().fieldList
+          .filter(attrCode => {
+            const attr = this.schema.getEntityAttribute(attrCode, 0)
+            return attr.defaultView
+          })
+          .map(attrCode => this.buildColumn(attrCode))
       }
     }
   },
@@ -172,10 +182,19 @@ export default {
         case 'object':
           return this.$UB.Repository(this.repository)
         default:
-          return this.$UB.Repository(this.entityName)
-            .attrs(
+          const repo = this.$UB.Repository(this.entityName)
+          if (this.columns) {
+            repo.attrs(
+              this.getColumns
+                .filter(c => c.attribute !== undefined)
+                .map(c => c.id)
+            )
+          } else {
+            repo.attrs(
               this.$UB.connection.domain.get(this.entityName).getAttributeNames()
             )
+          }
+          return repo
       }
     },
 
@@ -213,7 +232,7 @@ export default {
         .map(column => column.id)
 
       if (fieldsWithError.length > 0) {
-        const errMsg = `Columns [${fieldsWithError.join(', ')}] did not present in fieldList and did not have slot for render`
+        const errMsg = `Columns [${fieldsWithError.join(', ')}] did not have slot for render`
         throw new Error(errMsg)
       }
     }
