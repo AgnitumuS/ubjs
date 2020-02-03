@@ -44,11 +44,7 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          repository: {
-            entity: 'tst_document',
-            method: 'select',
-            fieldList: ['favorites.code', 'docDate', 'code', 'description', 'fileStoreSimple']
-          },
+          entityName: 'tst_document',
           columns: ['favorites.code', 'docDate', 'code', 'description', 'fileStoreSimple']
         }
       }, null, '\t')
@@ -85,7 +81,6 @@ module.exports = function (session) {
       caption: 'test IIT Sign',
       displayOrder: 30,
       cmdCode: JSON.stringify({
-        renderer: 'vue',
         cmdType: 'showForm',
         formCode: 'tst_service-IITSign'
       }, null, '\t')
@@ -149,23 +144,7 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          repository: {
-            entity: 'tst_dictionary',
-            method: 'select',
-            fieldList: [
-              'ID',
-              'code',
-              'caption',
-              'filterValue',
-              'currencyValue',
-              'floatValue',
-              'calculated',
-              'booleanColumn',
-              'jsonColumn',
-              'jsonColumn.propI',
-              'jsonColumn.propS'
-            ]
-          },
+          entityName: 'tst_dictionary',
           columns: [
             'ID',
             'code',
@@ -194,7 +173,6 @@ module.exports = function (session) {
       caption: 'VueJS form test',
       displayOrder: displayOrder,
       cmdCode: JSON.stringify({
-        renderer: 'vue',
         cmdType: 'showForm',
         formCode: 'tst_document-vue'
       }, null, '\t')

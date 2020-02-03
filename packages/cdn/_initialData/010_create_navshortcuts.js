@@ -3,15 +3,18 @@
  * Fill navigation shortcuts for CDN model
  */
 
-var UBA_COMMON = require('@unitybase/uba/modules/uba_common')
+const UBA_COMMON = require('@unitybase/uba/modules/uba_common')
 /**
  * Initial script for create UnityBase Common Dictionaries desktop navigation short-cuts (CDN model)
  * Used by ubcli initialize command
  * @param {ServerSession} session
  */
 module.exports = function (session) {
-  var
-    desktopID; var usersRoleID; var folderID; var lastID; var conn = session.connection
+  let desktopID
+  let usersRoleID
+  let folderID
+  let lastID
+  let conn = session.connection
 
   desktopID = conn.lookup('ubm_desktop', 'ID', { expression: 'code', condition: 'equal', values: { code: 'cdn_desktop' } })
   usersRoleID = UBA_COMMON.ROLES.USER.ID
@@ -255,11 +258,7 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          repository: {
-            entity: 'cdn_organization',
-            method: 'select',
-            fieldList: ['OKPOCode', 'name', 'fullName', 'description', 'orgBusinessTypeID.name', 'orgOwnershipTypeID.name']
-          },
+          entityName: 'cdn_organization',
           columns: ['OKPOCode', 'name', 'fullName', 'description', 'orgBusinessTypeID.name', 'orgOwnershipTypeID.name']
         }
       }, null, '\t')
@@ -283,11 +282,7 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          repository: {
-            entity: 'cdn_employee',
-            method: 'select',
-            fieldList: ['ID', 'lastName', 'firstName', 'middleName', 'sexType', 'uniqNum', 'organizationID.name', 'departmentID.name']
-          },
+          entityName: 'cdn_employee',
           columns: ['ID', 'lastName', 'firstName', 'middleName', 'sexType', 'uniqNum', 'organizationID.name', 'departmentID.name']
         }
       }, null, '\t')
@@ -311,11 +306,7 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          repository: {
-            entity: 'cdn_department',
-            method: 'select',
-            fieldList: ['ID', 'code', 'name', 'fullName', 'depTypeID', 'organizationID.name']
-          },
+          entityName: 'cdn_department',
           columns: ['ID', 'code', 'name', 'fullName', 'depTypeID', 'organizationID.name']
         }
       }, null, '\t')
