@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.12.28] - 2020-02-03
 ## [5.12.27] - 2020-01-31
 ### Added
  - translations for Firefox UBExtension setup 

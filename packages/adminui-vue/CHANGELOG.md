@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.9.20] - 2020-02-03
+### Added
  - `UTableEntity` prop `useRequestFieldList` for replacing result keys with fieldList.
  Sometimes, server returns result with altered fieldList, like entities with Entity-Attribute-Value mixin
  (see `@unitybase/forms`).  This property tells UTableEntity control to stick with original fieldList from request,
@@ -19,12 +30,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity` in case is set `repository` without `columns` - `columns` will generated automatically by `fieldList` which filtered by defaultView param. 
   Previously `columns` was shows **all** attributes from entity with flag defaultView
  
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ## [1.9.19] - 2020-01-31
 ### Added
  - warning text about silence unhandled exception ignoring in production build is added to unhandled exception message

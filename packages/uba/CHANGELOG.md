@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `uba_user.trustedIP` attribute size increased to 2000
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.3.27] - 2020-02-03
+### Changed
+ - `uba_user.trustedIP` attribute size increased to 2000
 
 ### Fixed
 - ALS form: allow to change newly added record by enabling Save & SaveDiffInFile
