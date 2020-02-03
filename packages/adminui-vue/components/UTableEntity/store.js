@@ -193,6 +193,11 @@ module.exports = (instance) => ({
       commit('LOADING', true)
       const repo = getters.currentRepository
       const response = await repo.selectAsArray()
+
+      if (instance.useRequestFieldList) {
+        response.resultData.fields = response.fieldList
+      }
+
       const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
 
       const isLastPage = items.length < getters.pageSize
