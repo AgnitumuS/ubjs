@@ -328,7 +328,6 @@ module.exports = function (session) {
       displayOrder: 70,
       iconCls: 'fa fa-user-secret ',
       cmdCode: JSON.stringify({
-        renderer: 'vue',
         cmdType: 'showForm',
         formCode: 'uba_audit-securityDashboard'
       }, null, '\t')

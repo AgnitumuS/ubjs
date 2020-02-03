@@ -10,9 +10,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  Sometimes, server returns result with altered fieldList, like entities with Entity-Attribute-Value mixin
  (see `@unitybase/forms`).  This property tells UTableEntity control to stick with original fieldList from request,
  rather than using fieldList from response.
+ - `UTable`, `UTableEntity` possibility to use `column format` function as string 
+ which be called by `new Function` constructor
 
 ### Changed
-
+ - `UTableEntity` in case is set `columns` and `entityName` - `fieldList` will generated automatically by `columns`. 
+ Previously request sent `fieldList` with all available entity attributes.
+ - `UTableEntity` in case is set `repository` without `columns` - `columns` will generated automatically by `fieldList` which filtered by defaultView param. 
+  Previously `columns` was shows **all** attributes from entity with flag defaultView
+ 
 ### Deprecated
 
 ### Removed
