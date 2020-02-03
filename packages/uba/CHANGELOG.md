@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `uba_user.trustedIP` attribute size increased to 2000
 
 ### Deprecated
 
