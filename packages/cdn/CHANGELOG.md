@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - cdn_classifier form: prevent error with "undefined" classifierID in items parentEntity combobox  
 
 ## [5.3.33] - 2020-02-03
 ## [5.3.32] - 2020-01-31

@@ -19,7 +19,7 @@
       <u-auto-field attribute-name="code" :max-width="300"/>
 
       <u-grid :columns="3">
-        <u-auto-field attribute-name="docDate" />
+        <u-auto-field attribute-name="docDate" placeholder="overrides placeholder" label="My custom label"/>
         <u-auto-field attribute-name="incomeDate" />
         <u-auto-field attribute-name="regDate" />
       </u-grid>
