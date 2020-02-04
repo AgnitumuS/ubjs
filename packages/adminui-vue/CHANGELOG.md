@@ -8,7 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - UAutoField component will prefer props passed into component over internally defined props. This allow to override anything,
+  for example:
+  ```vue
+    // override default placeholder and label for Date control
+    <u-auto-field attribute-name="docDate" placeholder="overrides placeholder" label="My custom label"/>
+    // use custom repository for Entity attribute
+    <u-auto-field attribute-name="parentID" :repository="getRepo"/>
+  ```
+   
 ### Deprecated
 
 ### Removed

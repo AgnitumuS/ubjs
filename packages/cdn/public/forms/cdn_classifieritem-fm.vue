@@ -4,12 +4,7 @@
 
     <u-form-container label-position="top">
       <u-auto-field attribute-name="code" />
-      <u-form-row :label="`${entity}.parentID`">
-        <u-select-entity
-          v-model="parentID"
-          :repository="getRepo"
-        />
-      </u-form-row>
+      <u-auto-field attribute-name="parentID" :repository="getRepo"/>
       <u-auto-field attribute-name="name" />
     </u-form-container>
   </div>
@@ -31,14 +26,7 @@ module.exports.mount = cfg => {
         }
       }
     })
-    .validation({
-      validations () {
-        return {
-          code: { required },
-          name: { required }
-        }
-      }
-    })
+    .validation()
     .mount()
 }
 
@@ -46,7 +34,7 @@ module.exports.default = {
   name: 'CdnClassifierItem',
   inject: ['entity'],
 
-  computed: mapInstanceFields(['code', 'parentID']),
+  computed: mapInstanceFields(['code', 'parentID', 'classifierID']),
 
   methods: {
     getRepo () {
