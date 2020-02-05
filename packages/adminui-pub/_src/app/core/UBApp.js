@@ -61,6 +61,7 @@ Ext.define('UB.core.UBApp', {
 
   constructor: function () {
     this.requireEncription = false
+    this.credeltionalRequireCount = 0
     this.mixins.observable.constructor.call(this)
 
     /**
@@ -313,7 +314,17 @@ Ext.define('UB.core.UBApp', {
           throw new UB.UBAbortError('Invalid credential (isRepeat === true)')
         }
         let silenceKerberos = (window.localStorage.getItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true')
-        if (silenceKerberos && (conn.authMethods.indexOf('Negotiate') >= 0)) {
+        me.credeltionalRequireCount++
+        const HAS_NEGOTIATE = (conn.authMethods.indexOf('Negotiate') >= 0)
+        if (silenceKerberos && (me.credeltionalRequireCount > 16) && HAS_NEGOTIATE) {
+          // in case negotiate auth response is cached somewhere on network we can got invalid session number but auth is success
+          // then next request (getDomainInfo for example) got 401 and AsynConnection repeat auth. As a result we circling
+          // Here we remove SILENCE_KERBEROS_LOGIN after 16 kerberos auth repeats (16 is to allow normal relogons during 8 houts of work with 30min timeout for session)
+          window.localStorage.removeItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN)
+          me.credeltionalRequireCount = 0
+          throw new UB.UBError('To many Negotiate authentication attempts. Most likely this is invalid network configuration. Try to reload page')
+        }
+        if (silenceKerberos && HAS_NEGOTIATE) {
           return Promise.resolve({
             authSchema: 'Negotiate',
             login: '',

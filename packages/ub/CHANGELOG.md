@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - improved error message in case getDomainInfo called with invalid userName URL parameter
 
 ### Deprecated
 
