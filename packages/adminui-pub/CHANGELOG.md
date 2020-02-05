@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - prevent self-circling on Negotiate authentication in case silence kerberos logon is `true` and second auth response
+ contains invalid session number (error occurs at last with invalid Kerio Control proxy configuration)
 
 ## [5.12.28] - 2020-02-03
 ## [5.12.27] - 2020-01-31
