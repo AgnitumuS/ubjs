@@ -617,7 +617,11 @@ $App.connection.userLang()
             errDetails: errDescription.errMsg
           }
           if (rejectReason.status === 403) {
-            errInfo.errMsg = (authParams.authSchema === 'UB') ? 'msgInvalidUBAuth' : 'msgInvalidCertAuth'
+            // in case exception text is wrapped in <<<>>> - use it, else replace to default "access deny"
+            // for Access deny error on the auth stage transform it to Invalid user or pwd
+            if (!TEST_ERROR_MESSAGE_RE.test(errInfo.errMsg) || (errInfo.errMsg === '<<<Access deny>>>')) {
+              errInfo.errMsg = (authParams.authSchema === 'UB') ? 'msgInvalidUBAuth' : 'msgInvalidCertAuth'
+            }
           } else {
             if (!errInfo.errMsg) { errInfo.errMsg = 'unknownError' } // internalServerError
           }
@@ -632,9 +636,6 @@ $App.connection.userLang()
           let codeMsg = this.serverErrorByCode(errInfo.errCode)
           if (codeMsg) {
             errInfo.errDetails = codeMsg + ' ' + errInfo.errDetails
-            if (i18n(codeMsg) !== codeMsg) {
-              errInfo.errMsg = codeMsg
-            }
           }
           if (this.allowSessionPersistent) LDS.removeItem(this.__sessionPersistKey)
           throw new ubUtils.UBError(errInfo.errMsg, errInfo.errDetails, errInfo.errCode)

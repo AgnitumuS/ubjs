@@ -61,6 +61,7 @@ UB.i18nExtend({
   msgInvalidCertAuth: 'Invalid certificate or private key',
   msgInvalidUBAuth: 'Access denied. Invalid user name or password',
   ubErrElsInvalidUserOrPwd: 'Access deny. Check login name and password.',
+  UserWithoutOrgEmployeeNotAllowed: 'Login for user without corresponding employee on staff not allowed',
 
   'Access deny': 'You do not have rights to perform this operation',
   ERR_REFERENCE_ERROR: 'Unable to perform the operation - element is being used in other entities',

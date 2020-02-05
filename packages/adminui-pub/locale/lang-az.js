@@ -267,12 +267,8 @@ UB.i18nExtend({
   documentNotFound: 'Məlumatlar server -də tapılmadı. Zəhmət olmasa administratora müraciət edin.',
   currentPageNumber: 'Hazırki səhifə',
 
-  // signsInDocument: 'Sənəddəki imzalar',
-  UserWithoutOrgEmployeeNotAllowed: 'İstifadəçinin ştat vahidi mövcud deyildir (ştat vahidi göstərilməyib). Giriş qadağandır.',
-  // search form (UBPreFilter) 'Axtarış forması'
   search: 'Axtarış',
   'Filter by': 'Filtr',
-  // cancel: 'Ləğv et',
   filterForm: 'Axtarış forması',
   main: 'Əsas',
   other: 'Digər',

@@ -60,6 +60,7 @@ UB.i18nExtend({
   msgInvalidCertAuth: 'Girişə icazə verilmədi. Yanlış sertifikat, yaxud bağlı açar.',
   msgInvalidUBAuth: 'Keçid ləğv olunub. Zəhmət olmasa istifadəçi adı və parol -u yoxlayın.',
   ubErrElsInvalidUserOrPwd: 'Keçid ləğv olunub. Zəhmət olmasa istifadəçi adı və parol -u yoxlayın.',
+  UserWithoutOrgEmployeeNotAllowed: 'İstifadəçinin ştat vahidi mövcud deyildir (ştat vahidi göstərilməyib). Giriş qadağandır.',
 
   'Access deny': 'Bu əməliyyat yerinə yetirmək üçün hüquqları yoxdur',
   ERR_REFERENCE_ERROR: 'əməliyyat bilmir - element digər şəxslərin istifadə olunur',

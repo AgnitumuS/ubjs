@@ -270,8 +270,7 @@ UB.i18nExtend({
   author: 'Author',
   signVerification: 'Sign verification',
   signsInDocument: 'Signs',
-  UserWithoutOrgEmployeeNotAllowed: 'Login for user without corresponding employee on staff not allowed',
-  // search form (UBPreFilter)
+
   search: 'Search',
   'Filter by': 'Filter by',
   filterForm: 'Search form',

@@ -270,8 +270,7 @@ UB.i18nExtend({
   author: 'ავტორი',
   signVerification: 'შესვლის შემოწმება',
   signsInDocument: 'ნიშნები',
-  UserWithoutOrgEmployeeNotAllowed: 'შეამოწმეთ,რომ მომხმარებელს რომელსაც არ აქვს შესაბამისი სტატუსი არ უნდა ქონდეს რეგისტრაციის უფლება',
-  // search form (UBPreFilter)
+
   search: 'არჩევა',
   'Filter by': 'გაფილტრვა',
   filterForm: 'ძიების ფორმა',

@@ -273,13 +273,10 @@ UB.i18nExtend({
   location: 'Місцезнаходження',
   author: 'Автор',
   signVerification: 'Перевірка підпису',
-  // signsInDocument: 'Підписи в документі',
-  UserWithoutOrgEmployeeNotAllowed: 'Користувач не перебуває в штаті організації (не співставлений з жодною штатною одиницею). Вхід заборонено.',
-  // search form (UBPreFilter)
+
   search: 'Пошук',
   'Filter by': 'Фільтрувати по',
-  // cancel: 'Відміна',
-  filterForm: 'Форма пошуку',
+    filterForm: 'Форма пошуку',
   main: 'Основне',
   other: 'Інше',
   showPreFilter: 'Показати форму пошуку',

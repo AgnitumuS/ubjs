@@ -275,12 +275,9 @@ UB.i18nExtend({
   location: 'Ҷойгиршавӣ',
   author: 'Муаллиф',
   signVerification: 'Тафтиши имзо',
-  // signsInDocument: 'Имзоҳо дар ҳуҷҷат',
-  UserWithoutOrgEmployeeNotAllowed: 'Истифодабаранда узви созмон нест (ба шӯъбаи кормандон муқоиса карда нашудааст). Вуруд манъ аст.',
-  // search form (UBPreFilter)
+
   search: 'Ҷустуҷӯ',
   'Filter by': 'Филтр кардан бо',
-  // cancel: 'Бекор кардан',
   filterForm: 'Шакли ҷустуҷӯ',
   main: 'Асосӣ',
   other: 'Ғайра',

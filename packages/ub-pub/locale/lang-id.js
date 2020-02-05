@@ -52,6 +52,8 @@ UB.i18nExtend({
   msgInvalidCertAuth: 'Invalid certificate or private key',
   msgInvalidUBAuth: 'Access denied. Invalid user name or password',
   ubErrElsInvalidUserOrPwd: 'Access deny. Check login name and password.',
+  UserWithoutOrgEmployeeNotAllowed: 'Login for user without corresponding employee on staff not allowed',
+
   keyDeviseType: 'Тип носія',
   keyFile: 'Особистий ключ',
   keyDevise: 'Назва носія',

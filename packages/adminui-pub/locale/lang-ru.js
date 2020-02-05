@@ -273,12 +273,9 @@ UB.i18nExtend({
   location: 'Местоположение',
   author: 'Автор',
   signVerification: 'Проверка подписи',
-  // signsInDocument: 'Подписи в документе',
-  UserWithoutOrgEmployeeNotAllowed: 'Пользователь не состоит в штате организации (не сопоставлен со штатной единицей). Вход запрещён.',
-  // search form (UBPreFilter)
+
   search: 'Поиск',
   'Filter by': 'Фильтровать по',
-  // cancel: 'Отмена',
   filterForm: 'Форма поиска',
   main: 'Основное',
   other: 'Другое',
