@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+  - `cdn_organization.csv` sample data is removed from CDN package
 
 ### Fixed
  - cdn_classifier form: prevent error with "undefined" classifierID in items parentEntity combobox  
