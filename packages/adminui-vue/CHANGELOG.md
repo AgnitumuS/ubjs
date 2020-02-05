@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `formatValueMixin` - if column value has attribute `associatedEntity` so return value from its lookup
 
 ## [1.9.20] - 2020-02-03
 ### Added
