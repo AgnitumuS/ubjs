@@ -218,7 +218,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
         iconCls: 'fa fa-plus-circle',
         itemID: 'addItem',
         handler: me.addItem,
-        hidden: !!me.hideEntityItemInContext || me.disableModifyEntity,
+        hidden: !!me.hideEntityItemInContext || me.disableModifyEntity || !$App.domainInfo.isEntityMethodsAccessible(entityName, [methodNames.ADDNEW, methodNames.INSERT]),
         disabled: me.disableModifyEntity || me.disabled || me.readOnly || !$App.domainInfo.isEntityMethodsAccessible(entityName, [methodNames.ADDNEW, methodNames.INSERT]),
         scope: me
       })

@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - prevent self-circling on Negotiate authentication in case silence kerberos logon is `true` and second auth response
  contains invalid session number (error occurs at last with invalid Kerio Control proxy configuration)
 
+
+## [5.12.29] - 2020-02-07
+### Added
+   -for entityGridPanel and UBBaseCombobox hide actions when no rights (addNew, insert, update, delete)
+
 ## [5.12.28] - 2020-02-03
 ## [5.12.27] - 2020-01-31
 ### Added

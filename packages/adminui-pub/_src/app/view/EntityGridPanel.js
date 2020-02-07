@@ -1513,6 +1513,7 @@ Ext.define('UB.view.EntityGridPanel', {
       eventId: events.addnew,
       handler: me.onAction,
       disabled: !me.entity.haveAccessToMethods([methodNames.ADDNEW, methodNames.INSERT]),
+      hidden: !me.entity.haveAccessToMethods([methodNames.ADDNEW, methodNames.INSERT]),
       scope: me
     })
 
@@ -1526,6 +1527,7 @@ Ext.define('UB.view.EntityGridPanel', {
       eventId: events.addnewbycurrent,
       handler: me.onAction,
       disabled: !me.entity.haveAccessToMethod(methodNames.ADDNEW),
+      hidden: !me.entity.haveAccessToMethod(methodNames.ADDNEW),
       scope: me
     })
     if (!me.rowEditing) {
@@ -1538,6 +1540,7 @@ Ext.define('UB.view.EntityGridPanel', {
         eventId: events.edit,
         handler: me.onAction,
         disabled: !me.entity.haveAccessToMethod(methodNames.UPDATE),
+        hidden: !me.entity.haveAccessToMethod(methodNames.UPDATE),
         scope: me
       })
     }
@@ -1551,6 +1554,7 @@ Ext.define('UB.view.EntityGridPanel', {
       eventId: events.del,
       handler: me.onAction,
       disabled: !me.entity.haveAccessToMethod(methodNames.DELETE),
+      hidden: !me.entity.haveAccessToMethod(methodNames.DELETE),
       scope: me
     })
     me.actions[actions.showPreview] = new Ext.Action({
@@ -1573,6 +1577,7 @@ Ext.define('UB.view.EntityGridPanel', {
         eventId: events.newversion,
         handler: me.onAction,
         disabled: !me.entity.haveAccessToMethod(methodNames.NEWVERSION),
+        hidden: !me.entity.haveAccessToMethod(methodNames.NEWVERSION),
         scope: me
       })
 
@@ -1593,6 +1598,7 @@ Ext.define('UB.view.EntityGridPanel', {
         eventId: events.audit,
         handler: me.onAction,
         disabled: !$App.domainInfo.isEntityMethodsAccessible('uba_auditTrail', 'select'),
+        hidden: !$App.domainInfo.isEntityMethodsAccessible('uba_auditTrail', 'select'),
         scope: me
       })
     }
@@ -1605,6 +1611,7 @@ Ext.define('UB.view.EntityGridPanel', {
         eventId: events.accessRight,
         handler: me.onAction,
         disabled: !me.entity.haveAccessToMethod('select'),
+        hidden: !me.entity.haveAccessToMethod('select'),
         scope: me
       })
     }
