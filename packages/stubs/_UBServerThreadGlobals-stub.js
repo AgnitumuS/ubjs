@@ -153,6 +153,7 @@ const mStorage = {
    * Insert new row to the entity.
    * @published
    * @param {ubMethodParams} ctx
+   * @param {object} ctx.mParams
    * @param {Object|TubList} ctx.mParams.execParams Object keys is entity attributes names, key values is a value to be inserted
    */
   insert: function (ctx) {},
@@ -160,6 +161,7 @@ const mStorage = {
    * Update data
    * @published
    * @param {ubMethodParams} ctx
+   * @param {object} ctx.mParams
    * @param {Object|TubList} ctx.mParams.execParams Object keys is entity attributes names, key values is a value to be inserted
    * @param {number} ctx.mParams.execParams.ID element ID to be updated
    */
@@ -168,6 +170,7 @@ const mStorage = {
    * Delete data
    * @published
    * @param {ubMethodParams} ctx
+   * @param {object} ctx.mParams
    * @param {number} ctx.mParams.execParams.ID element ID to be deleted
    */
   delete: function (ctx) {},
@@ -176,6 +179,7 @@ const mStorage = {
    * Newly created record is not inserted to database. For inserting record to the database `insert` method should be called
    * @published
    * @param {ubMethodParams} ctx
+   * @param {object} [ctx.mParams] Optional values for attributes of new record
    */
   addNew: function (ctx) {}
 }
@@ -209,6 +213,7 @@ const softLock = {
    * Lock entity row. If entity row is not locked then `update` & `delete` operation are not permitted
    * @published
    * @param {ubMethodParams} ctx
+   * @param {object} ctx.mParams
    * @param {number} ctx.mParams.ID
    * @param {string} ctx.mParams.lockType Either 'Temp' or 'Persist'
    */
@@ -217,6 +222,7 @@ const softLock = {
    * Unlock entity row.
    * @published
    * @param {ubMethodParams} ctx
+   * @param {object} ctx.mParams
    * @param {number} ctx.mParams.ID
    */
   unlock: function (ctx) {},
