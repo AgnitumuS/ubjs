@@ -8,15 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-  - org model 'login' event will throw `<<<UserWithoutOrgEmployeeNotAllowed>>>` without detailed description
-  to allow ub-pub to i18n it
-  
+
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
+## [5.2.52] - 2020-02-08
+### Changed
+  - org model 'login' event will throw `<<<UserWithoutOrgEmployeeNotAllowed>>>` without detailed description
+  to allow ub-pub to i18n it
+  
 ## [5.2.51] - 2020-02-03
 ### Fixed
  - fixed not found record error after execute 'setDescriptionAttributeByCurrency' method in org_orgaccount.js

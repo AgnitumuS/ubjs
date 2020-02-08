@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - i18n for `UserWithoutOrgEmployeeNotAllowed` is moved from adminui-pub into ub-pub
- 
+
 ### Deprecated
 
 ### Removed
 
+### Fixed
+
+## [5.4.7] - 2020-02-08
+### Changed
+ - i18n for `UserWithoutOrgEmployeeNotAllowed` is moved from adminui-pub into ub-pub
+ 
 ### Fixed
  - in case text of the exception raised inside server side Session.on('login') event handler is wrapped into <<<>>>
  ub-pub will translate it and show as any other handled exception. Before this patch `InvalidUserNameOrPassword` always shown.

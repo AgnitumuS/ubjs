@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/amqp-notify",
-  "version": "1.1.76",
+  "version": "1.1.77",
   "description": "Server to client notification in UnityBase using amqp stomp protocol, server part",
   "main": "UBServerNotifier.js",
   "scripts": {
@@ -20,8 +20,8 @@
   },
   "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
   "dependencies": {
-    "@unitybase/amqp": "^1.0.38",
-    "@unitybase/ub": "^5.3.14",
+    "@unitybase/amqp": "^1.0.39",
+    "@unitybase/ub": "^5.3.15",
     "querystring": "^0.2.0"
   },
   "devDependencies": {

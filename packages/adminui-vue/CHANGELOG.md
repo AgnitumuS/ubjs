@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.9.21] - 2020-02-08
+### Changed
  - UAutoField component will prefer props passed into component over internally defined props. This allow to override anything,
   for example:
   ```vue
@@ -17,12 +26,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     <u-auto-field attribute-name="parentID" :repository="getRepo"/>
   ```
    
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ## [1.9.20] - 2020-02-03
 ### Added
  - `UTableEntity` prop `useRequestFieldList` for replacing result keys with fieldList.

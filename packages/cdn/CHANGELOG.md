@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.3.34] - 2020-02-08
+### Removed
   - `cdn_organization.csv` sample data is removed from CDN package
 
 ### Fixed

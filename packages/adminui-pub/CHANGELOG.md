@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - i18n for `UserWithoutOrgEmployeeNotAllowed` is moved from adminui-pub into ub-pub
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.12.29] - 2020-02-08
+### Changed
+ - i18n for `UserWithoutOrgEmployeeNotAllowed` is moved from adminui-pub into ub-pub
 
 ### Fixed
  - prevent self-circling on Negotiate authentication in case silence kerberos logon is `true` and second auth response
