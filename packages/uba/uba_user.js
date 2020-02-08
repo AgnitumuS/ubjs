@@ -241,9 +241,14 @@ function changePasswordEp (req, resp) {
 /**
  * Change (or set) user password for any user.
  * Call of this method should be restricted to a small number of roles/groups. By default can be called by supervisor role
- * @private
+ *
  * @param {ubMethodParams} ctxt
- * @deprecated
+ * @param {string|number} ctxt.mParams.forUser Name or ID of the user for whom you want to change the password
+ * @param {string} ctxt.mParams.newPwd New password
+ * @param {boolean} [ctxt.mParams.needChangePassword=false] Indicates that the user must change the password at the first login
+ * @memberOf uba_user_ns.prototype
+ * @memberOfModule @unitybase/uba
+ * @published
  */
 function changeOtherUserPassword (ctxt) {
   let { newPwd, needChangePassword, forUser } = ctxt.mParams.execParams

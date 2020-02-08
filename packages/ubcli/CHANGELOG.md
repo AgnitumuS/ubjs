@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `npx ubcli generateDoc` command will parse a domain models jsdoc and adds a entity methods description and
+   parameters into documentation
 
 ### Changed
 

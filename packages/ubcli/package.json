@@ -25,6 +25,7 @@
     "@unitybase/compressors": "^5.1.25",
     "@unitybase/cs-shared": "^5.1.17",
     "@unitybase/ub": "^5.3.14",
+    "ub-jsdoc": "^2.2.0",
     "lodash": "^4",
     "mustache": "^3.0.1"
   },

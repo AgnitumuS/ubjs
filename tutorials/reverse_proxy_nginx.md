@@ -4,8 +4,8 @@
 ![load balance](img/LoadBalancing.png)
 
 Using some kind of [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) 
-in combination with UnityBase application server is MUST HAVE for Socket type UB server (Linux, Windows) and optional
-but strongly recommended for HTTPSys base http server under Windows.
+in combination with UnityBase application server is MUST HAVE for plain socket based HTTP server kind (Linux, Windows) and optional
+but strongly recommended for HTTP.SYS based http server (Windows).
     
 Reverse proxy can be used to:
  - HTTP protocol verification and prevention of protocol level attacks

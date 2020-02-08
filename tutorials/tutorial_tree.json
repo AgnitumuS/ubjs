@@ -1,6 +1,6 @@
 {
   "http_server": {
-    "title": "01 Build-in HTTP server",
+    "title": "01 HTTP server",
     "children": {
       "web_sockets": {
         "title": "WebSockets"
