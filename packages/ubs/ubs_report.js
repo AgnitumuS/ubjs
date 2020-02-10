@@ -391,9 +391,9 @@ if (process.isDebug) {
 
 /**
  * New report
- * @method addNew
- * @memberOf ubm_form_ns.prototype
- * @memberOfModule @unitybase/ubm
+ * @method addnew
+ * @memberOf ubs_report_ns.prototype
+ * @memberOfModule @unitybase/ubs
  * @published
  * @param {ubMethodParams} ctxt
  * @return {boolean}

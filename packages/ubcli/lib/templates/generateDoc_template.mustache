@@ -72,19 +72,21 @@
       <td>{{name}}</td>
       <td>
         {{{jsdoc.description}}}
-        <details open>
-          <summary>Parameters:</summary>
-          <table class="table">
-            <tbody>
-            {{#jsdoc.params}}
-              <tr>
-                <td>{{name}}: {{#type.names}}{{.}}{{/type.names}}</td>
-                <td>{{description}}</td>
-              </tr>
-            {{/jsdoc.params}}
-            </tbody>
-          </table>
-        </details>
+        {{#jsdoc.params.length}}
+          <details open>
+            <summary>Parameters:</summary>
+            <table class="table">
+              <tbody>
+              {{#jsdoc.params}}
+                <tr>
+                  <td>{{name}}: {{#type.names}}{{.}}{{/type.names}}</td>
+                  <td>{{description}}</td>
+                </tr>
+              {{/jsdoc.params}}
+              </tbody>
+            </table>
+          </details>
+        {{/jsdoc.params.length}}
       </td>
     </tr>
   {{/methodsArray}}

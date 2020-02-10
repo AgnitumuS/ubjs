@@ -84,7 +84,7 @@ module.exports = function generateDoc (cfg) {
     domainI18n,
     i, j, len, lenj, k, lenk
 
-  console.time('Generate documentation')
+  console.time('Generation time')
   if (!cfg) {
     let opts = options.describe('generateDoc',
       'Generate domain documentation into single HTML file\nDocumentation generated using default language for user, specified in -u',
@@ -107,9 +107,7 @@ module.exports = function generateDoc (cfg) {
 
   // must be required for translation
   // require('@unitybase/ub/i18n')
-
-  console.log('Session.uData: ', session.uData, typeof session.uData)
-
+  // console.log('Session.uData: ', session.uData, typeof session.uData)
   conn = session.connection
   outputFileName = cfg.out
 
@@ -133,7 +131,11 @@ module.exports = function generateDoc (cfg) {
     })
     // transform domain to array of entity
     let domainAsArray = _.values(domainI18n)
-
+    let undocumentedMethods = []
+    let fakeDocumentedMethods = []
+    let documentedMethodsCnt = 0
+    let stdMethodsCnt = 0
+    let isStdMethod = false
     for (i = 0, len = domainAsArray.length; i < len; ++i) {
       for (j = 0, lenj = domainAsArray[i].length; j < lenj; ++j) {
         domainAsArray[i].entities[j] = domainAsArray[i][j]
@@ -170,13 +172,22 @@ module.exports = function generateDoc (cfg) {
           if (snippet) {
             convertServerSideParamsToAPI(snippet, e.name, methodName)
           }
+          isStdMethod = false
           if (!snippet && MIXIN_METHODS[methodName]) { // check mixin methods in case method not already documented
             snippet = MIXIN_METHODS[methodName].doc
+            isStdMethod = true
+            stdMethodsCnt++
+          }
+          if (!snippet || !snippet.comment) {
+            undocumentedMethods.push(`${e.name}.${methodName}`)
+          } else if (snippet) {
+            if (snippet.comment && (!snippet.params || !snippet.params.length)) {
+              fakeDocumentedMethods.push(`${e.name}.${methodName}`)
+            }
+            if (!isStdMethod) documentedMethodsCnt++
           }
           if (snippet) {
             m.jsdoc = snippet
-          } else {
-            console.warn(`${e.name}.${methodName} \t\t - please add a JsDoc for me`)
           }
           e.methodsArray.push(m)
         })
@@ -204,7 +215,22 @@ module.exports = function generateDoc (cfg) {
     if (!fs.writeFileSync(outputFileName, rendered)) {
       console.error('Write to file ' + outputFileName + ' fail')
     }
-    console.timeEnd('Generate documentation')
+    if (undocumentedMethods.length) {
+      console.warn(`Detected ${undocumentedMethods.length} undocumented entity level methods:`)
+      console.warn('\t' + undocumentedMethods.join('\n\t'))
+    }
+    if (fakeDocumentedMethods.length) {
+      console.warn(`Documentation w/o parameters detected for ${fakeDocumentedMethods.length} methods:`)
+      console.warn('\t' + fakeDocumentedMethods.join('\n\t'))
+    }
+    console.timeEnd('Generation time')
+    console.info(`API methods statistics:
+ - total methods count: ${stdMethodsCnt + documentedMethodsCnt + undocumentedMethods.length}
+ - methods added by mixins: ${stdMethodsCnt}
+ - methods added by developers: ${documentedMethodsCnt + undocumentedMethods.length}
+ - documentation written for ${documentedMethodsCnt} custom methods
+ - undocumented ${undocumentedMethods.length} custom methods
+ - fake documentation (no parameters defined) detected for ${fakeDocumentedMethods.length} custom methods`)
     console.info('Result file', outputFileName)
   } finally {
     if (session && session.logout) {
@@ -280,37 +306,6 @@ function generateJsDocSnippets(domain) {
   return snippets
 }
 
-/*
-{
- "params": [
-  {
-    "type": {
-        "names": [
-            "ubMethodParams"
-        ]
-    },
-    "name": "ctxt"
-  },
-  {
-    "type": {
-        "names": [
-            "string",
-            "number"
-        ]
-    },
-    "description": "Name or ID of the user for whom you want to change the password",
-    "name": "ctxt.mParams.forUser"
-  },
-  {
-    "type": {
-        "names": [
-            "string"
-        ]
-    },
-    "description": "New password",
-    "name": "ctxt.mParams.newPwd"
-   },
-]*/
 /**
  * Mutate a snipped what contains a server-side parameters description into client-side API
  *  - replace ubMethodParams type -> object
