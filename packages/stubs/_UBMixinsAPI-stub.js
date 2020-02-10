@@ -10,7 +10,7 @@ const mStorage_api = {
    * ORM query for read records
    * @param {object} ubql ORM query in UBQL format
    * @param {string} ubql.entity Entity name
-   * @param {string} ubql.method Method to use (usually `select`)
+   * @param {string} ubql.method Method to use (usually === select)
    * @param {array<string>} ubql.fieldList Attributes expressions
    * @param {object<string, {expression: string, condition: string, value: *}>} [ubql.whereList] Where conditions
    * @param {array<string>} [ubql.groupBy] Group by attributes expressions
@@ -22,44 +22,46 @@ const mStorage_api = {
   select: function (ubql) {},
   /**
    * New record insertion
-   * @param {object} cmd
-   * @param {string} cmd.entity Entity code
-   * @param {string} cmd.method Should be === 'insert'
-   * @param {object} cmd.execParams Pairs of attributeName: attributeValue to be inserted
-   * @param {array<string>} [cmd.fieldList] Optional names of attributes to be returned in result.
+   * @param {object} ctx
+   * @param {string} ctx.entity Entity code
+   * @param {string} ctx.method Should be === 'insert'
+   * @param {object} ctx.execParams Pairs of attributeName: attributeValue to be inserted
+   * @param {array<string>} [ctx.fieldList] Optional names of attributes to be returned in result.
    *   Additional DB query is required to return values, so if caller do not need it better to not pass a fieldList to insert
    */
-  insert: function (cmd) {},
+  insert: function (ctx) {},
   /**
    * Update existed record
    * @published
-   * @param {object} cmd
-   * @param {string} cmd.entity Entity code
-   * @param {string} cmd.method Should be === 'update'
-   * @param {Object<string, *>} cmd.execParams Pairs of attributeName: attributeValue to be updated
-   * @param {number} cmd.execParams.ID ID of instance we update
-   * @param {array<string>} [cmd.fieldList] Optional names of attributes to be returned in result.
+   * @param {object} ctx
+   * @param {string} ctx.entity Entity code
+   * @param {string} ctx.method Should be === 'update'
+   * @param {Object<string, *>} ctx.execParams Pairs of attributeName: attributeValue to be updated
+   * @param {number} ctx.execParams.ID ID of instance we update
+   * @param {array<string>} [ctx.fieldList] Optional names of attributes to be returned in result.
    *   Additional DB query is required to return values, so if caller do not need it better to not pass a fieldList to update
    */
-  update: function (cmd) {},
+  update: function (ctx) {},
   /**
    * Delete record by ID
    * @published
-   * @param {object} cmd
-   * @param {string} cmd.entity Entity code
-   * @param {string} cmd.method Should be === 'delete'
-   * @param {number} cmd.ID Instance ID to be deleted
+   * @param {object} ctx
+   * @param {string} ctx.entity Entity code
+   * @param {string} ctx.method Should be === 'delete'
+   * @param {number} ctx.ID Instance ID to be deleted
    */
-  delete: function (cmd) {},
+  delete: function (ctx) {},
   /**
    * Create record with filled default values and return it to caller.
    * Newly created record is not inserted to database. For inserting record to the database `insert` method should be called
    * @published
-   * @param {object} cmd
-   * @param {object} [cmd.execParams] Optional values for attributes of new record
-   * @param {array<string>} cmd.fieldList Names of attributes to be returned in result.
+   * @param {object} ctx
+   * @param {string} ctx.entity Entity code
+   * @param {string} ctx.method Should be === 'lock'
+   * @param {object} [ctx.execParams] Optional values for attributes of new record
+   * @param {array<string>} ctx.fieldList Names of attributes to be returned in result.
    */
-  addnew: function (cmd) {}
+  addnew: function (ctx) {}
 }
 
 /**
@@ -70,40 +72,40 @@ const softLock_api = {
   /**
    * Lock record. If record is not locked then `update` & `delete` operation are not permitted
    * @published
-   * @param {object} cmd
-   * @param {string} cmd.entity Entity code
-   * @param {string} cmd.method Should be === 'lock'
-   * @param {number} cmd.ID Record ID to lock
-   * @param {string} cmd.lockType Either 'Temp' or 'Persist'
+   * @param {object} ctx
+   * @param {string} ctx.entity Entity code
+   * @param {string} ctx.method Should be === 'lock'
+   * @param {number} ctx.ID Record ID to lock
+   * @param {string} ctx.lockType Either 'Temp' or 'Persist'
    */
-  lock: function (cmd) {},
+  lock: function (ctx) {},
   /**
    * Unlock record
    * @published
-   * @param {object} cmd
-   * @param {string} cmd.entity Entity code
-   * @param {string} cmd.method Should be === 'unlock'
-   * @param {number} cmd.lockID ID of lock to remove
+   * @param {object} ctx
+   * @param {string} ctx.entity Entity code
+   * @param {string} ctx.method Should be === 'unlock'
+   * @param {number} ctx.lockID ID of lock to remove
    */
-  unlock: function (cmd) {},
+  unlock: function (ctx) {},
   /**
    * Renew existed lock
    * @published
-   * @param {object} cmd
-   * @param {string} cmd.entity Entity code
-   * @param {string} cmd.method Should be === 'renewLock'
-   * @param {number} cmd.lockID ID of lock to remove
+   * @param {object} ctx
+   * @param {string} ctx.entity Entity code
+   * @param {string} ctx.method Should be === 'renewLock'
+   * @param {number} ctx.lockID ID of lock to remove
    */
-  renewLock: function (cmd) {},
+  renewLock: function (ctx) {},
   /**
    * Check record is locked
    * @published
-   * @param {object} cmd
-   * @param {string} cmd.entity Entity code
-   * @param {string} cmd.method Should be === 'isLocked'
-   * @param {number} cmd.ID Record ID
+   * @param {object} ctx
+   * @param {string} ctx.entity Entity code
+   * @param {string} ctx.method Should be === 'isLocked'
+   * @param {number} ctx.ID Record ID
    */
-  isLocked: function (cmd) {}
+  isLocked: function (ctx) {}
 }
 
 /**
@@ -113,18 +115,25 @@ const softLock_api = {
 const als_api = {
   /**
    * Return all possible roles what is a subject of attribute level security
-   * @param {object} cmd
-   * @param {string} cmd.entity Entity code
-   * @param {string} cmd.method Should be === 'getallroles'
+   * @param {object} ctx
+   * @param {string} ctx.entity Entity code
+   * @param {string} ctx.method Should be === 'getallroles'
    */
-  getallroles: function (cmd) {},
+  getallroles: function (ctx) {},
   /**
    * Return all possible states what is a subject of attribute level security
-   * @param {object} cmd
-   * @param {string} cmd.entity Entity code
-   * @param {string} cmd.method Should be === 'getallstates'
+   * @param {object} ctx
+   * @param {string} ctx.entity Entity code
+   * @param {string} ctx.method Should be === 'getallstates'
    */
-  getallstates: function (cmd) {}
+  getallstates: function (ctx) {},
+  /**
+   * Test Attribute Level Security configuration. For dev mode only
+   * @param {object} ctx
+   * @param {string} ctx.entity Entity code
+   * @param {string} ctx.method Should be === 'testAls'
+   */
+  testAls: function(ctx) {}
 }
 
 /**
@@ -139,13 +148,13 @@ const dataHistory_api = {
   /**
    * Create new version of specified record.
    * Newly created record is not inserted to database. For inserting record to the database `insert` method should be called
-   * @param {object} cmd
-   * @param {string} cmd.entity Entity code
-   * @param {string} cmd.method Should be === 'newversion'
-   * @param {object} [cmd.execParams] Optional values for attributes of new record
-   * @param {array<string>} cmd.fieldList Names of attributes to be returned in result
+   * @param {object} ctx
+   * @param {string} ctx.entity Entity code
+   * @param {string} ctx.method Should be === 'newversion'
+   * @param {object} [ctx.execParams] Optional values for attributes of new record
+   * @param {array<string>} ctx.fieldList Names of attributes to be returned in result
    */
-  newversion: function (cmd) {}
+  newversion: function (ctx) {}
 }
 
 /**
@@ -156,12 +165,12 @@ const dataHistory_api = {
 const fts_api = {
   /**
    * Full text search query
-   * @param {object} cmd
+   * @param {object} ctx
    */
-  fts: function (cmd) {},
+  fts: function (ctx) {},
   /**
    * Re-create entity FTS index
-   * @param {ubMethodParams} cmd
+   * @param {ubMethodParams} ctx
    */
-  ftsreindex: function (cmd) {}
+  ftsreindex: function (ctx) {}
 }

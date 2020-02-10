@@ -6,7 +6,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `npx ubcli generateDoc` now understand entity level method documentation in format
+```
+/**
+ * Forms and returns array of dynamical entity's roles
+ * @param {ubMethodParams} runparams
+ * @return {Boolean}
+ */
+me.addAllDynRoles = function(ctx) {...}
+```
+in addition to
+```
+/**
+ * Forms and returns array of dynamical entity's roles
+ * @param {ubMethodParams} runparams
+ * @return {Boolean}
+ * @memberOf contr_contractdoc_ns.prototype
+ * @memberOfModule @docflow/contr
+ * @published
+ */
+function addAllDynRoles(ctx) {...}
+me.addAllDynRoles = addAllDynRoles
+```
+ - `npx ubcli generateDoc` will look into 1 level depth sub-folders of model folders for sources
+  
 ### Changed
 
 ### Deprecated

@@ -159,10 +159,16 @@ module.exports = function generateDoc (cfg) {
             name: methodName,
             jsdoc: {description: ''}
           }
+          // 1) search find methods declared as function methodName(){}; me.methodName = methodName
           let snippetLongName = `${e.name}_ns#${methodName}`
           let snippet = snippets.find(s => s.longname === snippetLongName)
+          if (!snippet) {
+            // 2) search for methods declared as me.methodName = function(..){}
+            let fn = e.name + '.js'
+            snippet = snippets.find(s => s.name === methodName && s.meta.filename === fn)
+          }
           if (snippet) {
-            convertServerSideParamsToAPI(snippet)
+            convertServerSideParamsToAPI(snippet, e.name, methodName)
           }
           if (!snippet && MIXIN_METHODS[methodName]) { // check mixin methods in case method not already documented
             snippet = MIXIN_METHODS[methodName].doc
@@ -224,6 +230,7 @@ function generateJsDocSnippets(domain) {
   }
   // create config for jsdoc based on available domain models
   let jsdocConf = {
+    "recurseDepth": 2,
     "tags": {
       "allowUnknownTags": true
     },
@@ -231,7 +238,9 @@ function generateJsDocSnippets(domain) {
       "include": [
         "./node_modules/@unitybase/stubs/_UBMixinsAPI-stub.js" // mixins doc: mStorage etc
       ],
-      "includePattern": ".+\\.js(m|x)?$"
+      "includePattern": ".+\\.js(m|x)?$",
+      //"excludePattern": "(\\/_.*\\/|\\\\_.*\\\\|public)"
+      "excludePattern": "(\\/public|\\\\public|\\/_autotest|\\\\/_autotest)"
     },
     "plugins": [
       "plugins/markdown",
@@ -252,7 +261,7 @@ function generateJsDocSnippets(domain) {
   let snippets_full_fn = path.join(process.cwd(), SNIPPETS_FN)
   if (fs.existsSync(snippets_full_fn))  fs.unlinkSync(snippets_full_fn)
 
-  let cmd = `-c "${jsdocPath} -c ./${JSDOC_CONG_TMP} -X > ./${SNIPPETS_FN}"`
+  let cmd = `-c "${jsdocPath} -r -c ./${JSDOC_CONG_TMP} -X > ./${SNIPPETS_FN}"`
   let shell = process.platform === 'win32' ? 'cmd.exe' : '/bin/sh'
   let res = shellExecute(shell, cmd)
   if (res !== 0) {
@@ -266,6 +275,7 @@ function generateJsDocSnippets(domain) {
   Object.keys(MIXIN_METHODS).forEach(m => {
     let mdoc = MIXIN_METHODS[m]
     mdoc.doc = snippets.find(s => s.longname === mdoc.src)
+    if (mdoc.doc) convertServerSideParamsToAPI(mdoc.doc, '', mdoc.src.split('.')[1])
   })
   return snippets
 }
@@ -302,16 +312,57 @@ function generateJsDocSnippets(domain) {
    },
 ]*/
 /**
- * Convert a snipped what contains a server-side parameters description into client-side API
- * @param snipped
+ * Mutate a snipped what contains a server-side parameters description into client-side API
+ *  - replace ubMethodParams type -> object
+ *  - removes mParams
+ *  - adds entity & method parameters if not already added
+ * @param {object} snippet
+ * @param {string} eName
+ * @param {string} mName
  */
-function convertServerSideParamsToAPI(snippet) {
+function convertServerSideParamsToAPI(snippet, eName, mName) {
   let prms = snippet.params
   if (!prms || !prms.length) return
+  let topLevelObjPrm = null
   prms.forEach(p => {
     // ubMethodParams -> object
-    if (p.type && p.type.names) p.type.names = p.type.names.map(n => n === 'ubMethodParams' ? 'object' : n)
+    if (p.type && p.type.names) p.type.names = p.type.names.map(n => {
+      if (n === 'ubMethodParams') {
+        topLevelObjPrm = p
+        return 'object'
+      } else {
+        return n
+      }
+    })
     // ctxt.mParams.newPwd -> ctxt.newPwd
     p.name = p.name.replace('.mParams', '')
+    if (!p.description) p.description = ''
   })
+  if (topLevelObjPrm) { // @param {ubMethodParam} pn is defined - use this parameter name to add a entity & method if not exists
+    let pn = `${topLevelObjPrm}.entity`
+    let prm = prms.find( p => p.name === pn)
+    let pp = 1
+    if (!prm) { // add entity parameter
+      prms.splice(pp, 0, {
+        type: {
+          names: ['string']
+        },
+        description: eName ? `Should be "${eName}"` : 'Entity code',
+        name: `${topLevelObjPrm.name}.entity`
+      })
+      pp++
+    }
+    pn = `${topLevelObjPrm}.method`
+    prm = prms.find( p => p.name === pn)
+    if (!prm) { // add method parameter
+      prms.splice(pp, 0, {
+        type: {
+          names: ['string']
+        },
+        description: mName ? `Should be "${mName}"` : 'This method code',
+        name: `${topLevelObjPrm.name}.method`
+      })
+      pp++
+    }
+  }
 }
