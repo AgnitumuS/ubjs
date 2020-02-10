@@ -12,6 +12,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body class="py-4">
+<script>
+  window.onbeforeprint = function() {
+    [...document.getElementsByTagName('details')].forEach(e => e.setAttribute("open", ""))
+  };
+  window.onafterprint = function() {
+    [...document.getElementsByTagName('details')].forEach(e => e.removeAttribute("open"))
+  };
+</script>
 <div class="container">
 <h1>{{appInfo.uiSettings.adminUI.applicationName}} {{appInfo.appVersion}} documentation</h1>
 <h2>Available models</h2>
@@ -64,17 +72,19 @@
       <td>{{name}}</td>
       <td>
         {{{jsdoc.description}}}
-        <h6 class="text-muted">Parameters:</h6>
-        <table class="table">
-          <tbody>
-          {{#jsdoc.params}}
-            <tr>
-              <td>{{name}}: {{#type.names}}{{.}}{{/type.names}}</td>
-              <td>{{description}}</td>
-            </tr>
-          {{/jsdoc.params}}
-          </tbody>
-        </table>
+        <details open>
+          <summary>Parameters:</summary>
+          <table class="table">
+            <tbody>
+            {{#jsdoc.params}}
+              <tr>
+                <td>{{name}}: {{#type.names}}{{.}}{{/type.names}}</td>
+                <td>{{description}}</td>
+              </tr>
+            {{/jsdoc.params}}
+            </tbody>
+          </table>
+        </details>
       </td>
     </tr>
   {{/methodsArray}}
