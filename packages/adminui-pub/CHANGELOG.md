@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.12.30] - 2020-02-10
 ## [5.12.29] - 2020-02-08
 ### Changed
  - i18n for `UserWithoutOrgEmployeeNotAllowed` is moved from adminui-pub into ub-pub

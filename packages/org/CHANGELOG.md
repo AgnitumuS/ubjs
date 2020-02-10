@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.53] - 2020-02-10
 ## [5.2.52] - 2020-02-08
 ### Changed
   - org model 'login' event will throw `<<<UserWithoutOrgEmployeeNotAllowed>>>` without detailed description

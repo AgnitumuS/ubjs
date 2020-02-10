@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.4.17] - 2020-02-10
+### Added
  - `npx ubcli generateDoc` now understand entity level method documentation in format
 ```
 /**
@@ -31,14 +42,6 @@ me.addAllDynRoles = addAllDynRoles
  - `npx ubcli generateDoc` will look into 1 level depth sub-folders of model folders for sources
  - `npx ubcli generateDoc` will skip 'public', '_migration' and '_autotest' folders while generating jsdoc snippets
   
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ## [5.4.16] - 2020-02-08
 ### Added
  - `npx ubcli generateDoc` command will parse a domain models jsdoc and adds a entity methods description and
