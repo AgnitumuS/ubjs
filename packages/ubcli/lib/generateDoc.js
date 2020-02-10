@@ -240,7 +240,7 @@ function generateJsDocSnippets(domain) {
       ],
       "includePattern": ".+\\.js(m|x)?$",
       //"excludePattern": "(\\/_.*\\/|\\\\_.*\\\\|public)"
-      "excludePattern": "(\\/public|\\\\public|\\/_autotest|\\\\/_autotest)"
+      "excludePattern": "(\\/public|\\\\public|\\/_autotest|\\\\/_autotest|\\/_migration|\\\\/_migration)"
     },
     "plugins": [
       "plugins/markdown",

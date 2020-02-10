@@ -29,6 +29,7 @@ function addAllDynRoles(ctx) {...}
 me.addAllDynRoles = addAllDynRoles
 ```
  - `npx ubcli generateDoc` will look into 1 level depth sub-folders of model folders for sources
+ - `npx ubcli generateDoc` will skip 'public', '_migration' and '_autotest' folders while generating jsdoc snippets
   
 ### Changed
 
