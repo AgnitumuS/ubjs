@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - in case @unitybase/ub package installed into different path throw human friendly error
+ instead of `can't redefine non-configurable property "entity"`
+   
 ### Deprecated
 
 ### Removed
