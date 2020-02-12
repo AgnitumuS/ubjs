@@ -15,7 +15,8 @@ let workers = []
 // we can't start server from worker thread try to start it here
 const argv = require('@unitybase/base').argv
 let session = argv.establishConnectionFromCmdLineAttributes()
-let numThreads = parseInt(options.switchValue('t') || '2', 10)
+// writing into SQLite3 from several thread cause a "database is locked" error
+let numThreads = parseInt(options.switchValue('t') || '1', 10)
 const serverURL = argv.serverURLFromConfig(argv.getServerConfiguration())
 const transLen = parseInt(options.switchValue('transLen') || '10', 10)
 let i
