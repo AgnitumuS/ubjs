@@ -8,7 +8,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - The "collections" property "processing" module now supports not only ability to pass callback `buildRequest`,
+   but also an ability to pass `handleResponse` callback, because, know what?  Custom requests sometimes return custom
+   responses! :)
+   Example where the feature is useful: participants mixin, participants not an ordinary detail,
+   it uses `addParticipant` instead of `insert`, and it return a response, which could not be handled by a standard
+   response handler.  The callback looks like the following
 
+    ```javascript
+      handleResponse ({ commit, collection, response }) {
+        const loadedState = response.resultData
+        for (const loadedItem of loadedState) {
+          const index = collection.items.findIndex(i => i.data.subjectID === loadedItem.subjectID)
+          if (index !== -1) {
+            commit('LOAD_COLLECTION_PARTIAL', {
+              collection: 'participants',
+              index,
+              loadedState: loadedItem
+            })
+          }
+        }
+      }
+    ```
+ - Extended info passed to `buildRequest`, `buildDeleteRequest` and `handlerResponse`
+   callbacks for collections to entire store, not just selected store members like `state` or `state` and `commit`.
+  
 ### Deprecated
 
 ### Removed

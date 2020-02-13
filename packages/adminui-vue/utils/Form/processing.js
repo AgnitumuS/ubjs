@@ -657,7 +657,7 @@ function createProcessingModule ({
 
           for (const deletedItem of collection.deleted || []) {
             const request = typeof collectionInfo.buildDeleteRequest === 'function'
-              ? collectionInfo.buildDeleteRequest({ state, collection, item: deletedItem })
+              ? collectionInfo.buildDeleteRequest({ ...store, collection, item: deletedItem })
               : buildDeleteRequest(collectionEntityName, deletedItem.data.ID)
             requests.push(request)
 
@@ -675,7 +675,7 @@ function createProcessingModule ({
             const execParams = buildExecParams(item, collectionEntityName)
             if (execParams) {
               const request = typeof collectionInfo.buildRequest === 'function'
-                ? collectionInfo.buildRequest({ state, collection, execParams, fieldList: collectionFieldList, item })
+                ? collectionInfo.buildRequest({ ...store, collection, execParams, fieldList: collectionFieldList, item })
                 : {
                   entity: collectionEntityName,
                   method: item.isNew ? 'insert' : 'update',
@@ -686,13 +686,19 @@ function createProcessingModule ({
 
               responseHandlers.push(response => {
                 const loadedState = response.resultData
-                if (loadedState && Number.isInteger(loadedState.ID)) {
-                  const index = collection.items.findIndex(i => i.data.ID === loadedState.ID)
-                  commit('LOAD_COLLECTION_PARTIAL', {
-                    collection: collectionKey,
-                    index,
-                    loadedState
-                  })
+                if (loadedState) {
+                  if (typeof collectionInfo.handleResponse === 'function') {
+                    collectionInfo.handleResponse({ ...store, collection, response })
+                  } else if (Number.isInteger(loadedState.ID)) {
+                    const index = collection.items.findIndex(i => i.data.ID === loadedState.ID)
+                    if (index !== -1) {
+                      commit('LOAD_COLLECTION_PARTIAL', {
+                        collection: collectionKey,
+                        index,
+                        loadedState
+                      })
+                    }
+                  }
                 }
               })
             }
