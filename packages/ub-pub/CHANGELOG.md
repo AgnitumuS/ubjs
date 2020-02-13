@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - UBConnection.prototype.runTransAsObject will resolves after all possible cache invalidations are finished.
+   This fix `Cannot read property 'data' of undefined` for Vue based forms what based on cached entities  
 
 ## [5.4.7] - 2020-02-08
 ### Changed

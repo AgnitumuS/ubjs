@@ -1216,7 +1216,7 @@ UBConnection.prototype.invalidateCache = function (serverResponse) {
   let me = this
   let cacheType = me.domain.get(serverResponse.entity).cacheType
   if (cacheType === UBCache.cacheTypes.none) {
-    return serverResponse
+    return Promise.resolve(serverResponse)
   }
   return me.cacheOccurrenceRefresh(serverResponse.entity, cacheType).then(function () {
     return serverResponse
@@ -1672,12 +1672,14 @@ UBConnection.prototype.runTransAsObject = function (ubRequestArray, fieldAliases
   }
   let me = this
   return this.post('ubql', ubRequestArray).then((response) => {
-    let mutatedEntitiesNames = {}
+    let mutatedEntitiesNames = []
     let respArr = response.data
     respArr.forEach((resp, idx) => {
       let isInsUpd = ((resp.method === 'insert') || (resp.method === 'update'))
       if (resp.entity && (isInsUpd || (resp.method === 'delete'))) {
-        mutatedEntitiesNames[resp.entity] = true
+        if (!mutatedEntitiesNames.includes(resp.entity)) {
+          mutatedEntitiesNames.push(resp.entity)
+        }
       }
       if (resp.resultData && resp.resultData.data && resp.resultData.data && resp.resultData.fields) {
         me.convertResponseDataToJsTypes(resp) // mutate resp
@@ -1685,12 +1687,18 @@ UBConnection.prototype.runTransAsObject = function (ubRequestArray, fieldAliases
         resp.resultData = isInsUpd ? asObjectArr[0] : asObjectArr
       }
     })
-    Object.keys(mutatedEntitiesNames).forEach(eName => {
-      // ignore cache refresh promises results - let's it work on background
-      // noinspection JSIgnoredPromiseFromCall
-      me.invalidateCache({ entity: eName })
+    if (!mutatedEntitiesNames.length) {
+      // cache invalidation is not required
+      return respArr
+    }
+
+    let invalidations = mutatedEntitiesNames.map(eName => {
+      return me.invalidateCache({ entity: eName })
     })
-    return respArr
+    // await for cache invalidation
+    return Promise.all(invalidations).then(() => {
+      return respArr
+    })
   })
 }
 
