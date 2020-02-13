@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.18] - 2020-02-13
 ## [5.4.17] - 2020-02-10
 ### Added
  - `npx ubcli generateDoc` now understand entity level method documentation in format

@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.12.31] - 2020-02-13
+### Fixed
  - ExtJS based stores will smart merge orderList passed from Operations (EntityGridPanel for example) and
  original request order list. In case order by attribute already in serverRequest.orderList - override it.
  This prevent multiple orderBy on the same columns what cause an DB exception at last on MS SQL

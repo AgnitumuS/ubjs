@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.9.22] - 2020-02-13
+### Changed
  - The "collections" property "processing" module now supports not only ability to pass callback `buildRequest`,
    but also an ability to pass `handleResponse` callback, because, know what?  Custom requests sometimes return custom
    responses! :)
@@ -33,12 +42,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Extended info passed to `buildRequest`, `buildDeleteRequest` and `handlerResponse`
    callbacks for collections to entire store, not just selected store members like `state` or `state` and `commit`.
   
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ## [1.9.21] - 2020-02-08
 ### Changed
  - UAutoField component will prefer props passed into component over internally defined props. This allow to override anything,
