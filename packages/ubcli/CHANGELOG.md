@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.4.19] - 2020-02-14
+### Added
  - new command line option `-su` (skipUndocumented) for `ubcli generateDoc`. If passed then undocumented API methods
  will be excluded from documentation.
  Example: `npx ubcli generateDoc -u admin -p admin -su`

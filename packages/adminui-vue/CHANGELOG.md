@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.9.23] - 2020-02-14
 ## [1.9.22] - 2020-02-13
 ### Changed
  - The "collections" property "processing" module now supports not only ability to pass callback `buildRequest`,

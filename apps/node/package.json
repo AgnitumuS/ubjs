@@ -1,6 +1,6 @@
 {
   "name": "node",
-  "version": "1.0.107",
+  "version": "1.0.108",
   "description": "Call UnityBase methods from node.js",
   "main": "ub_from_node.js",
   "private": true,
