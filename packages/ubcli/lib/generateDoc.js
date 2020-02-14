@@ -98,6 +98,7 @@ module.exports = function generateDoc (cfg) {
         defaultValue: './domainDocumentation.html',
         help: 'Output file path'
       })
+      .add({short: 'su', long: 'skipUndocumented', defaultValue: false, help: 'Remove undocumented methods from API documentation' })
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
@@ -178,7 +179,9 @@ module.exports = function generateDoc (cfg) {
             isStdMethod = true
             stdMethodsCnt++
           }
+          let isDocumented = true
           if (!snippet || !snippet.comment) {
+            isDocumented = false
             undocumentedMethods.push(`${e.name}.${methodName}`)
           } else if (snippet) {
             if (snippet.comment && (!snippet.params || !snippet.params.length)) {
@@ -189,7 +192,9 @@ module.exports = function generateDoc (cfg) {
           if (snippet) {
             m.jsdoc = snippet
           }
-          e.methodsArray.push(m)
+          if (isDocumented || !cfg['skipUndocumented']) {
+            e.methodsArray.push(m)
+          }
         })
       }
     }
