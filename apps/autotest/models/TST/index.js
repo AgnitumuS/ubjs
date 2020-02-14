@@ -1,6 +1,9 @@
 const UB = require('@unitybase/ub')
 UB.loadLegacyModules(__dirname)
 
+const mailer = require('@unitybase/mailer')
+if (!mailer.TubSendMailBodyType) throw new Error('mailer binary package is invalid')
+
 let shouldNotThrowOnSecondThreadInitialize = UB.Repository('uba_user').attrs('ID', 'name').select()
 // const Worker = require('@unitybase/base').Worker
 //
