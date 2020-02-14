@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - binary compatibility with UB 5.17.14
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.1.27] - 2020-02-14
+### Changed
+ - binary compatibility with UB 5.17.14
 
 ## [5.1.26] - 2020-02-10
 ## [5.1.25] - 2020-02-08
