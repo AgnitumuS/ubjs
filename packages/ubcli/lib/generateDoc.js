@@ -215,22 +215,26 @@ module.exports = function generateDoc (cfg) {
     if (!fs.writeFileSync(outputFileName, rendered)) {
       console.error('Write to file ' + outputFileName + ' fail')
     }
-    if (undocumentedMethods.length) {
-      console.warn(`Detected ${undocumentedMethods.length} undocumented entity level methods:`)
-      console.warn('\t' + undocumentedMethods.join('\n\t'))
-    }
-    if (fakeDocumentedMethods.length) {
-      console.warn(`Documentation w/o parameters detected for ${fakeDocumentedMethods.length} methods:`)
-      console.warn('\t' + fakeDocumentedMethods.join('\n\t'))
-    }
-    console.timeEnd('Generation time')
-    console.info(`API methods statistics:
+    if (!snippets.length) {
+      console.warn('Methods documentation not added because of jsdoc errors')
+    } else {
+      if (undocumentedMethods.length) {
+        console.warn(`Detected ${undocumentedMethods.length} undocumented entity level methods:`)
+        console.warn('\t' + undocumentedMethods.join('\n\t'))
+      }
+      if (fakeDocumentedMethods.length) {
+        console.warn(`Documentation w/o parameters detected for ${fakeDocumentedMethods.length} methods:`)
+        console.warn('\t' + fakeDocumentedMethods.join('\n\t'))
+      }
+      console.timeEnd('Generation time')
+      console.info(`API methods statistics:
  - total methods count: ${stdMethodsCnt + documentedMethodsCnt + undocumentedMethods.length}
  - methods added by mixins: ${stdMethodsCnt}
  - methods added by developers: ${documentedMethodsCnt + undocumentedMethods.length}
  - documentation written for ${documentedMethodsCnt} custom methods
  - undocumented ${undocumentedMethods.length} custom methods
  - fake documentation (no parameters defined) detected for ${fakeDocumentedMethods.length} custom methods`)
+    }
     console.info('Result file', outputFileName)
   } finally {
     if (session && session.logout) {
@@ -251,7 +255,7 @@ function generateJsDocSnippets(domain) {
   // check jsdoc is installed
   const jsdocPath = path.join(process.cwd(), 'node_modules', 'jsdoc', 'jsdoc.js')
   if (!fs.existsSync(jsdocPath)) {
-    console.warn(`Can't find jsdoc module (expected to be in ${jsdocPath}). API methods documentation generation is skipped`)
+    console.error(`Can't find jsdoc module (expected to be in ${jsdocPath}). API methods documentation generation is skipped`)
     return []
   }
   // create config for jsdoc based on available domain models
@@ -287,8 +291,15 @@ function generateJsDocSnippets(domain) {
   let snippets_full_fn = path.join(process.cwd(), SNIPPETS_FN)
   if (fs.existsSync(snippets_full_fn))  fs.unlinkSync(snippets_full_fn)
 
-  let cmd = `-c "${jsdocPath} -r -c ./${JSDOC_CONG_TMP} -X > ./${SNIPPETS_FN}"`
-  let shell = process.platform === 'win32' ? 'cmd.exe' : '/bin/sh'
+  let cmd, shell
+  if (process.platform === 'win32' ) {
+    shell = 'cmd.exe'
+    cmd = `/c "node.exe ${jsdocPath} -r -c ./${JSDOC_CONG_TMP} -X > ./${SNIPPETS_FN}"`
+  } else {
+    shell = '/bin/sh'
+    cmd = `-c "${jsdocPath} -r -c ./${JSDOC_CONG_TMP} -X > ./${SNIPPETS_FN}"`
+  }
+  console.log(`Run jsdoc shell command: ${shell} ${cmd}`)
   let res = shellExecute(shell, cmd)
   if (res !== 0) {
     console.error(`Got error from jsdoc while executing command: ${shell} ${cmd}`)

@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+  - `npx ubcli generateDoc` now works on Windows platform 
 
 ## [5.4.18] - 2020-02-13
 ## [5.4.17] - 2020-02-10
