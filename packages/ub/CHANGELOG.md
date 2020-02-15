@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - ubConfig JSON schema: add `simpleCertAuth` parameter description; remove deprecated `novaLib` key 
 
 ### Deprecated
 

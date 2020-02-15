@@ -515,6 +515,11 @@
           "default": true,
           "description": "Will force a NTLM usage for Negotiate authentication method. If false - Kerberos will be used in most case"
         },
+        "simpleCertAuth": {
+          "type": "boolean",
+          "default": true,
+          "description": "Disable user name and password checking for CERT auth. If `false` uiSettings.adminUI.authenticationCert.requireUserName should be set to true"
+        },
         "domainMap": {
           "type": "object",
           "description": "Dictionary for converting fully qualified domain names to NT4-style NetBIOS names (Linux only). If empty or key not found then FQND will be truncated on first dot"
@@ -588,22 +593,10 @@
               "default": false,
               "description": "Used with `CERT` authentication to force search for user certificates only by by serial number (without issuer)"
             },
-            "novaLib": {
-              "type": "object",
-              "description": "novaLib configuration",
-              "properties": {
-                "keyStorage": {
-                  "type": "string",
-                  "description": "full path to keystore"
-                },
-                "keyStoragePin": {"type": "string"},
-                "keyName": {"type": "string"}
-              }
-            },
             "trafficEncryption": {
               "type": "boolean",
               "default": false,
-              "description": "encrypt client<->server traffic using DSTU algorithm. `novaLib` is required for encryption"
+              "description": "encrypt client<->server traffic using DSTU algorithm"
             },
             "nonEncryptedIPs": {
               "type": "array",
