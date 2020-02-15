@@ -55,7 +55,7 @@ module.exports.errorReporter = errorReporter
 
 if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
 
-const Vue = require('vue')
+const Vue = require('vue').default
 window.Vue = Vue
 // next 2 lines for modules what use ES6 import `import Vue from 'vue' (not recommended for use)
 Vue.__useDefault = Vue

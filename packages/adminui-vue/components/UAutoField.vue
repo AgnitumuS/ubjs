@@ -148,6 +148,28 @@ export default {
   <template>
     <u-auto-field attribute-name="code" />
   </template>
+  <script>
+    const { Form } = require('@unitybase/adminui-vue')
+
+    module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
+      Form({
+        component: rootComponent,
+        entity,
+        instanceID,
+        title
+      }).mount()
+    }
+    module.exports.default = {
+      name: 'MyCustomVueComponent',
+      inject: ['$v'], // валидация,
+
+      computed: {
+        ...mapInstanceFields(['code', 'caption']), // хелпер для получение/изменения данных формы
+
+        ...mapGetters(['loading'])
+      }
+    }
+  </script>
   ```
 
   ### Default slot
