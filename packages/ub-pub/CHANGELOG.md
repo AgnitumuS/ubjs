@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - i18n for `useCertificateInfo` (CERT2 auth with user/pwd) should be ... Continue instead of ...Ok
 
 ## [5.4.8] - 2020-02-13
 ### Fixed
