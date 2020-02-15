@@ -77,7 +77,7 @@
       </el-popover>
 
       <el-popover
-        v-if="supportedLanguages.length >= 1"
+        v-if="supportedLanguages.length > 1"
         ref="languages"
         placement="left"
         trigger="hover"
@@ -126,7 +126,7 @@ export default {
     const negotiateAvailable = this.$UB.connection.authMethods.indexOf('Negotiate') !== -1
     const userName = this.$UB.connection.userData('employeeShortFIO') || this.$UB.connection.userLogin()
     const cfg = this.$UB.connection.appConfig
-    let customVersion = this.$UB.connection.userData('appVersion')
+    const customVersion = this.$UB.connection.userData('appVersion')
     const appVersion = customVersion || `${cfg.serverVersion} / ${cfg.appVersion}`
     return {
       silenceKerberosLogin,
@@ -176,7 +176,7 @@ export default {
     },
 
     showSettings () {
-      $App.doCommand({
+      this.$UB.core.UBApp.doCommand({
         cmdType: this.$UB.core.UBCommand.commandType.showForm,
         formCode: 'ubm_desktop-userSettings'
       })
@@ -196,20 +196,20 @@ export default {
       window.localStorage.setItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT, 'true')
 
       if (window.localStorage.getItem('lastAuthType').toLowerCase() !== 'openidconnect') {
-        $App.logout()
+        this.$UB.core.UBApp.logout()
         return
       }
-      let selectedProvider = window.localStorage.getItem('openIDProvider')
+      const selectedProvider = window.localStorage.getItem('openIDProvider')
       if (!selectedProvider) {
-        $App.logout()
+        this.$UB.core.UBApp.logout()
         return
       }
-      $App.dialogYesNo('', 'doYouWantLogoutFromExternalServer').then(choice => {
+      this.$UB.core.UBApp.dialogYesNo('', 'doYouWantLogoutFromExternalServer').then(choice => {
         if (choice) {
-          let url = window.location.origin + '/openIDConnect/' + selectedProvider + '?logout=true'
+          const url = window.location.origin + '/openIDConnect/' + selectedProvider + '?logout=true'
           window.open(url, window.location.origin + 'login', 'toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0')
         }
-        $App.logout()
+        this.$UB.core.UBApp.logout()
       })
     },
 
@@ -244,7 +244,7 @@ export default {
         })
 
         window.localStorage.setItem(this.$UB.LDS_KEYS.PREFERRED_LOCALE, lang)
-        $App.logout()
+        this.$UB.core.UBApp.logout()
       }
     }
   }

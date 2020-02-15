@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - re-logon window & ub-auth view: added support for CERT2 auth with user/password in case
+ `uiSetting.adminUI.authenticationCert.requireUserName===true`
 
 ### Changed
+ - hide `Change language` user menu item in case only one language is supported
 
 ### Deprecated
 

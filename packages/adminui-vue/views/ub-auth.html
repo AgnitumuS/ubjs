@@ -190,7 +190,20 @@
         <div v-else>
           <el-form v-loading="processing" :model="authData" size="medium" @submit.native.prevent ref="authForm" :rules="authRules">
             <div v-if="hasCERT2">
-              <p class="auth-page__cert-info" v-html="$ut('useCertificateInfoSimple')"></p>
+              <p class="auth-page__cert-info" v-html="cert2Tip"></p>
+              <div v-if="!simpleCertAuth">
+                <el-form-item prop="user">
+                  <el-input autofocus="true" :placeholder="$ut('User')" v-model="authData.user" @keyup.enter.native="doCert2Login">
+                    <template slot="prepend"><i class="fa fa-fw fa-user"></i></template>
+                  </el-input>
+                </el-form-item>
+                <el-form-item prop="pwd">
+                  <el-input :placeholder="$ut('Password')" v-model="authData.pwd" @keyup.enter.native="doCert2Login"
+                      type="password" autocomplete="off">
+                    <template slot="prepend"><i class="fa fa-fw fa-key"></i></template>
+                  </el-input>
+                </el-form-item>
+              </div>
               <el-button type="primary" style="min-width: 8rem" @click="doCert2Login">{{ $ut('UBAuthContinue') }}</el-button>
             </div>
 
@@ -305,11 +318,10 @@
         registrationURL: '',
         silenceKerberosLogin: window.localStorage.getItem(this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true',
         authMethods: null,
+        simpleCertAuth: false,
         ubAuthVisible: true,
         userDidLogout: window.localStorage.getItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT) === 'true',
         authData: {user: '', pwd: ''},
-        // keyFile: null,
-        //injectionPromise: Promise.resolve(true),
         changePwdActive: false,
         authRules: {
           user: [
@@ -366,6 +378,9 @@
       isHttp () {
         // in case of http: browser "unsecure" warning overlap an Enter button
         return location.protocol === 'http:'
+      },
+      cert2Tip () {
+        return this.simpleCertAuth ? this.$ut('useCertificateInfoSimple') : this.$ut('useCertificateInfo')
       }
     },
     methods: {
@@ -417,11 +432,37 @@
           }
         })
       },
+      bigintPasswordHash: function(pwd){
+        let maxLen = 30, buff, c, resN = 1,
+          res = bigInt.one
+        buff = pwd
+        while(buff.length<maxLen){
+          buff = buff + pwd.length + pwd
+        }
+        buff = buff.substr(0, maxLen)
+        for(let i=1; i<=30; i++){
+          c = buff.charCodeAt(i-1) - 15
+          res = res.multiply(Math.ceil(c / 3)).add(c*i + i)
+        }
+        return res.toString().substr(0, maxLen)
+      },
       doCert2Login: function (pkParams) {
-        this.processing = true
-        window.deferred.resolve({
-          authSchema: 'CERT2'
-        })
+        var me = this
+        if (!this.simpleCertAuth) { // certificate + user name + pwd - only one project use it
+          this.$UB.inject('/models/UBA/BigInteger.js').then(function () {
+            me.$refs['authForm'].validate(function (valid) {
+              if (valid) {
+                me.processing = true
+                window.deferred.resolve({authSchema: 'CERT2', login: me.authData.user, password: me.bigintPasswordHash(me.authData.pwd)})
+              } else {
+                return false
+              }
+            })
+          })
+        } else {
+          this.processing = true
+          window.deferred.resolve({authSchema: 'CERT2'})
+        }
       }
     }
   })
@@ -441,6 +482,7 @@
       vm.authMethods = conn.authMethods || []
       vm.appName = conn.appConfig.applicationName
       let adminUICfg = conn.appConfig.uiSettings.adminUI
+      if (adminUICfg.authenticationCert) vm.simpleCertAuth = adminUICfg.authenticationCert.requireUserName !== true
       if (adminUICfg.applicationTitle) document.title = adminUICfg.applicationTitle
       if (adminUICfg.loginWindowTopLogoURL) vm.topLogoURL = adminUICfg.loginWindowTopLogoURL
       if (adminUICfg.registrationURL) vm.registrationURL = adminUICfg.registrationURL

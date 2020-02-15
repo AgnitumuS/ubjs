@@ -34,7 +34,7 @@
     <el-form-item prop="password">
       <el-input
         v-model="authData.password"
-        autofocus="true"
+        autofocus
         :placeholder="$ut('Password')"
         type="password"
         autocomplete="off"
@@ -88,7 +88,7 @@ module.exports = {
 
   methods: {
     doLogin () {
-      this.$refs['ubAuthForm'].validate((valid) => {
+      this.$refs.ubAuthForm.validate((valid) => {
         if (valid) {
           this.resolveAuth({
             authSchema: window.localStorage.getItem('lastAuthType'),
