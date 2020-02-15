@@ -20,11 +20,11 @@ class DBPostgreSQL extends DBAbstract {
    * @override
    */
   loadDatabaseMetadata () {
-    let mTables = this.refTableDefs
+    const mTables = this.refTableDefs
     if (!mTables.length) return // all entities in this connection are external or no entities at all - skip loading DB metadata
 
     // old code  // UPPER(t.table_name)
-    let tablesSQL = `select t.table_name as name, 
+    const tablesSQL = `select t.table_name as name, 
       (select description from pg_description
         where objoid = (select typrelid from pg_type where typname = t.table_name
         and typowner = (select oid from pg_roles where rolname = current_schema)) and objsubid = 0
@@ -43,15 +43,15 @@ class DBPostgreSQL extends DBAbstract {
     if (mTables.length) {
       dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, { _upperName: dbTab.name.toUpperCase() }) !== -1)
     }
-    for (let tabDef of dbTables) {
-      let asIsTable = new TableDefinition({
+    for (const tabDef of dbTables) {
+      const asIsTable = new TableDefinition({
         name: tabDef.name,
         caption: tabDef.caption
       })
 
       // Table Columns
       // TODO - rewrite using parameters in query (after rewriting runSQL using JS)
-      let columnSQL = `select c.column_name as name, c.data_type as typename,
+      const columnSQL = `select c.column_name as name, c.data_type as typename,
         c.character_maximum_length as len,
         COALESCE(c.numeric_precision, 0) as prec, COALESCE(c.numeric_scale, 0) as scale, substr(c.is_nullable, 1, 1) as is_nullable,
         'NO' as is_computed, c.column_default as defvalue,
@@ -64,28 +64,28 @@ class DBPostgreSQL extends DBAbstract {
         and c.table_name = LOWER(:('${asIsTable._upperName}'):)
         order by c.ordinal_position`
 
-      let columnsFromDb = this.conn.xhr({
+      const columnsFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: columnSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       // console.log('columnsFromDb', columnsFromDb)
-      for (let colDef of columnsFromDb) {
-        let physicalTypeLower = colDef['typename'].toLowerCase()
-        let def = colDef['defvalue']
+      for (const colDef of columnsFromDb) {
+        const physicalTypeLower = colDef.typename.toLowerCase()
+        let def = colDef.defvalue
         // Postgre prepend default by data type: 'A'::character varying
         if (def) {
           def = def.replace(/::character varying/, '')
         }
-        let nObj = {
+        const nObj = {
           name: colDef.name,
           description: colDef.description,
-          allowNull: (colDef['is_nullable'] === 'Y'),
-          dataType: this.dataBaseTypeToUni(colDef['typename'], colDef['len'], colDef['prec'], colDef['scale']),
+          allowNull: (colDef.is_nullable === 'Y'),
+          dataType: this.dataBaseTypeToUni(colDef.typename, colDef.len, colDef.prec, colDef.scale),
           size: (['character varying', 'nvarchar', 'varchar', 'char', 'nchar', 'text', 'ntext'].indexOf(physicalTypeLower) !== -1)
-            ? colDef['len']
+            ? colDef.len
             : colDef.prec,
-          prec: colDef['scale'],
+          prec: colDef.scale,
           // defaultValue: this.parseDefValue( colDef.defvalue ),
           defaultValue: def,
           defaultConstraintName: null // no name for default constraint in Postgre
@@ -98,7 +98,7 @@ class DBPostgreSQL extends DBAbstract {
 
       // foreign key
       // Zeos 7.2 serialize BOOL to false/true instead of 0/1, so transform it manually
-      let foreignKeysSQL =
+      const foreignKeysSQL =
 `SELECT 
   ct.conname as foreign_key_name,
   case when ct.condeferred then 1 else 0 end AS is_disabled,
@@ -112,7 +112,7 @@ WHERE
   conrelid = '${asIsTable.name}'::regclass 
   AND contype = 'f'`
 
-      let fkFromDb = this.conn.xhr({
+      const fkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: foreignKeysSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
@@ -125,19 +125,19 @@ WHERE
         d: 'SET_DEFAULT'
       }
 
-      for (let fkDef of fkFromDb) {
+      for (const fkDef of fkFromDb) {
         asIsTable.addFK({
-          name: fkDef['foreign_key_name'],
-          keys: [fkDef['constraint_column_name'].toUpperCase()],
-          references: fkDef['referenced_object'],
-          isDisabled: fkDef['is_disabled'] !== 0,
-          deleteAction: C_ACTIONS[fkDef['delete_referential_action_desc']], // NO_ACTION, CASCADE, SET_NULL,  SET_DEFAULT
-          updateAction: C_ACTIONS[fkDef['update_referential_action_desc']]
+          name: fkDef.foreign_key_name,
+          keys: [fkDef.constraint_column_name.toUpperCase()],
+          references: fkDef.referenced_object,
+          isDisabled: fkDef.is_disabled !== 0,
+          deleteAction: C_ACTIONS[fkDef.delete_referential_action_desc], // NO_ACTION, CASCADE, SET_NULL,  SET_DEFAULT
+          updateAction: C_ACTIONS[fkDef.update_referential_action_desc]
         })
       }
 
       // primary keys
-      let primaryKeySQL =
+      const primaryKeySQL =
         `SELECT UPPER(c.relname) constraint_name, UPPER(a.attname) AS column_name
         FROM   pg_index i
         JOIN pg_class c on i.indexrelid = c.oid
@@ -155,21 +155,21 @@ WHERE
       //   and tc.table_name = LOWER(:('${asIsTable._upperName}'):)
       //   and tc.constraint_type in ('PRIMARY KEY')`
 
-      let pkFromDb = this.conn.xhr({
+      const pkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: primaryKeySQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       if (pkFromDb.length) {
         asIsTable.primaryKey = {
-          name: pkFromDb[0]['constraint_name'],
+          name: pkFromDb[0].constraint_name,
           keys: _.map(pkFromDb, 'column_name'),
-          autoIncrement: pkFromDb[0]['auto_increment'] === 1
+          autoIncrement: pkFromDb[0].auto_increment === 1
         }
       }
 
       // indexes
-      let indexesSQL =
+      const indexesSQL =
 `SELECT 
   i.indexrelid as index_id,
   UPPER(c.relname) as index_name,
@@ -185,32 +185,32 @@ WHERE
   NOT i.indisprimary
 ORDER BY index_id, column_position`
 
-      let indexesFromDb = this.conn.xhr({
+      const indexesFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: indexesSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       let i = 0
-      let idxCnt = indexesFromDb.length
+      const idxCnt = indexesFromDb.length
       while (i < idxCnt) {
-        let indexObj = {
-          name: indexesFromDb[i]['index_name'],
-          isUnique: indexesFromDb[i]['is_unique'] !== 0,
+        const indexObj = {
+          name: indexesFromDb[i].index_name,
+          isUnique: indexesFromDb[i].is_unique !== 0,
           isDisabled: false, // indexesFromDb[i][ 'is_disabled' ] !== 0,
           isConstraint: false, // indexesFromDb[i][ 'is_unique_constraint' ] !== 0,
           keys: []
         }
         // index may consist of several keys (one row for each key)
-        let buildKeysFor = indexesFromDb[i]['index_id']
-        while ((i < idxCnt) && (indexesFromDb[i]['index_id'] === buildKeysFor)) {
-          indexObj.keys.push(indexesFromDb[i]['column_name'] + (indexesFromDb[i]['is_descending_key'] !== 0 ? ' DESC' : ''))
+        const buildKeysFor = indexesFromDb[i].index_id
+        while ((i < idxCnt) && (indexesFromDb[i].index_id === buildKeysFor)) {
+          indexObj.keys.push(indexesFromDb[i].column_name + (indexesFromDb[i].is_descending_key !== 0 ? ' DESC' : ''))
           i++
         }
         asIsTable.addIndex(indexObj)
       }
 
       // check constraints
-      let checkConstraintsSQL = `SELECT c.conname AS name, 
+      const checkConstraintsSQL = `SELECT c.conname AS name, 
          pg_get_constraintdef(c.oid) as definition 
          FROM pg_constraint c 
          LEFT JOIN pg_class t ON c.conrelid  = t.oid 
@@ -218,16 +218,16 @@ ORDER BY index_id, column_position`
          and t.relowner = (select oid from pg_roles where rolname = current_schema) 
          AND c.contype = 'c'`
 
-      let constraintsFromDb = this.conn.xhr({
+      const constraintsFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: checkConstraintsSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       // console.log('constraintsFromDb', constraintsFromDb)
-      for (let constraintDef of constraintsFromDb) {
+      for (const constraintDef of constraintsFromDb) {
         asIsTable.addCheckConstr({
-          name: constraintDef['name'],
-          definition: constraintDef['definition']
+          name: constraintDef.name,
+          definition: constraintDef.definition
         })
       }
 
@@ -236,14 +236,14 @@ ORDER BY index_id, column_position`
       this.dbTableDefs.push(asIsTable)
     }
 
-    let sequencesSQL = `select sequence_name from information_schema.sequences where sequence_schema = current_schema`
-    let dbSequences = this.conn.xhr({
+    const sequencesSQL = 'select sequence_name from information_schema.sequences where sequence_schema = current_schema'
+    const dbSequences = this.conn.xhr({
       endpoint: 'runSQL',
       data: sequencesSQL,
       URLParams: { CONNECTION: this.dbConnectionConfig.name }
     })
-    for (let seqDef of dbSequences) {
-      this.sequencesDefs.push(seqDef['sequence_name'].toUpperCase())
+    for (const seqDef of dbSequences) {
+      this.sequencesDefs.push(seqDef.sequence_name.toUpperCase())
     }
   }
 
@@ -272,6 +272,7 @@ ORDER BY index_id, column_position`
           : "'" + v.replace(/'/g, '') + "'")
         : v
     }
+    let possibleDefault
     switch (updateType) {
       case 'updConstComment':
         this.DDL.updateColumn.statements.push(
@@ -284,7 +285,7 @@ ORDER BY index_id, column_position`
         )
         break
       case 'updNull':
-        let possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
+        possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
         this.DDL.updateColumn.statements.push(
           `-- update ${table.name} set ${column.name} = ${possibleDefault} where ${column.name} is null`
         )
@@ -301,7 +302,7 @@ ORDER BY index_id, column_position`
   genCodeSetCaption (tableName, column, value, oldValue) {
     if (value) value = value.replace(/'/g, "''")
     if (!value && !oldValue) return // prevent create empty comments
-    let result = `comment on ${column ? 'column' : 'table'} ${tableName}${column ? '.' : ''}${column || ''} is '${value}'`
+    const result = `comment on ${column ? 'column' : 'table'} ${tableName}${column ? '.' : ''}${column || ''} is '${value}'`
     this.DDL.caption.statements.push(result)
   }
 
@@ -353,8 +354,8 @@ ORDER BY index_id, column_position`
     // in case of not null added - recreate index
     // if (allowNullChanged && !column.allowNull ){
 
-    let objects = tableDB.getIndexesByColumn(column)
-    for (let colIndex of objects) {
+    const objects = tableDB.getIndexesByColumn(column)
+    for (const colIndex of objects) {
       colIndex.isForDelete = true
       colIndex.isForDeleteMsg = `Delete for altering column ${table.name}.${column.name}`
     }
@@ -381,9 +382,9 @@ ORDER BY index_id, column_position`
    * @override
    */
   genCodeAddColumn (table, column, delayedNotNull) {
-    let typeDef = this.createTypeDefine(column)
-    let nullable = column.allowNull || delayedNotNull ? ' null' : ' not null'
-    let def = column.defaultValue ? ' default ' + column.defaultValue : ''
+    const typeDef = this.createTypeDefine(column)
+    const nullable = column.allowNull || delayedNotNull ? ' null' : ' not null'
+    const def = column.defaultValue ? ' default ' + column.defaultValue : ''
     this.DDL.addColumn.statements.push(
       `alter table ${table.name} add ${column.name} ${typeDef}${def}${nullable}`
     )
@@ -393,11 +394,12 @@ ORDER BY index_id, column_position`
       )
     }
   }
+
   /**
    * @override
    */
   genCodeAddColumnBase (table, column, baseColumn) {
-    let def = column.defaultValue ? ' default ' + column.defaultValue : ''
+    const def = column.defaultValue ? ' default ' + column.defaultValue : ''
     this.DDL.addColumn.statements.push(
       `alter table ${table.name} add ${column.name} ${this.createTypeDefine(column)}${def}`
     )
@@ -407,16 +409,17 @@ ORDER BY index_id, column_position`
     )
 
     if (!column.allowNull) {
-      let nullable = column.allowNull ? ' null' : ' not null'
+      const nullable = column.allowNull ? ' null' : ' not null'
       this.DDL.alterColumnNotNull.statements.push(
         `alter table ${table.name} alter column ${column.name} set ${nullable}`
       )
     }
   }
+
   /** @override */
   genCodeCreateTable (table) {
-    let res = [`create table ${table.name}(\r\n`]
-    let colLen = table.columns.length
+    const res = [`create table ${table.name}(\r\n`]
+    const colLen = table.columns.length
 
     table.columns.forEach((column, index) => {
       res.push('\t', column.name, ' ', this.createTypeDefine(column),
@@ -444,13 +447,14 @@ ORDER BY index_id, column_position`
   genCodeCreateFK (table, constraintFK) {
     if (!constraintFK.generateFK) return
 
-    let refTo = _.find(this.refTableDefs, { _nameUpper: constraintFK.references.toUpperCase() })
-    let refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
+    const refTo = _.find(this.refTableDefs, { _nameUpper: constraintFK.references.toUpperCase() })
+    const refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
 
     this.DDL.createFK.statements.push(
       `alter table ${table.name} add constraint ${constraintFK.name} foreign key (${constraintFK.keys.join(',')}) references ${constraintFK.references}(${refKeys})`
     )
   }
+
   /**
    * @abstract
    * @param {TableDefinition} tableDB
@@ -461,7 +465,7 @@ ORDER BY index_id, column_position`
    */
   genCodeDropIndex (tableDB, table, indexDB, comment, objCollect) {
     // todo - by felix: for Postgres no need rename primary key index
-    let cObj = objCollect || this.DDL.dropIndex.statements
+    const cObj = objCollect || this.DDL.dropIndex.statements
     if (comment) cObj.push(`-- ${comment}\r\n`)
     if (indexDB.isConstraint) {
       cObj.push(`ALTER TABLE ${tableDB.name} DROP CONSTRAINT ${indexDB.name}`)
@@ -469,6 +473,7 @@ ORDER BY index_id, column_position`
       cObj.push(`drop index ${indexDB.name}`)
     }
   }
+
   /**
    * @abstract
    */
@@ -478,6 +483,7 @@ ORDER BY index_id, column_position`
     )
     // throw new Error(`Abstract genCodeDropPK for ${tableName}.${constraintName}`)
   }
+
   /**
    * @override
    */
@@ -486,6 +492,7 @@ ORDER BY index_id, column_position`
       `alter table ${tableName} drop constraint ${constraintName}`
     )
   }
+
   /**
    * @override
    */
@@ -497,6 +504,7 @@ ORDER BY index_id, column_position`
       `SELECT nextval('${sequenceObj}')` // UB-1311
     )
   }
+
   /**
    * @abstract
    */
@@ -506,7 +514,7 @@ ORDER BY index_id, column_position`
 
   /** @override */
   genCodeCreateIndex (table, indexSH, comment) {
-    let commentText = comment ? `-- ${comment} \n` : ''
+    const commentText = comment ? `-- ${comment} \n` : ''
     this.DDL.createIndex.statements.push(
       `${commentText}create ${indexSH.isUnique ? 'unique' : ''} index ${indexSH.name} on ${table.name}(${indexSH.keys.join(',')})`
     )
@@ -523,7 +531,7 @@ ORDER BY index_id, column_position`
     function dateTimeExpression (val) {
       if (!val) return val
       switch (val) {
-        case 'currentDate': return `timezone('utc'::text, now())`
+        case 'currentDate': return 'timezone(\'utc\'::text, now())'
         case 'maxDate': return "'9999-12-31 00:00:00'::timestamp without time zone"
         default: throw new Error('Unknown expression with code ' + val)
       }
@@ -559,6 +567,7 @@ ORDER BY index_id, column_position`
       default: return dataType
     }
   }
+
   /**
    * Convert database types to universal
    * @override

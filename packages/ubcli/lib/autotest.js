@@ -21,16 +21,16 @@ const argv = require('@unitybase/base').argv
 const http = require('http')
 
 module.exports = function autotest (options) {
-  let testResults = []
+  const testResults = []
   let lastModelName
-  let realConsoleDebug = console.debug
+  const realConsoleDebug = console.debug
   let debugOutput = []
 
   // set timeout 10 min
   http.setGlobalConnectionDefaults({ receiveTimeout: 10 * 60 * 1000 })
 
   if (!options) {
-    let opts = cmdLineOpt.describe('autotest', 'Run autotest for application using scripts from models `_autotest` folders', 'ubcli')
+    const opts = cmdLineOpt.describe('autotest', 'Run autotest for application using scripts from models `_autotest` folders', 'ubcli')
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
       .add({ short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names list for run autotest' })
       .add({ short: 't', long: 'tests', param: 'filesList', searchInEnv: true, defaultValue: '*', help: 'Comma separated file names to run autotest' })
@@ -44,11 +44,11 @@ module.exports = function autotest (options) {
     debugOutput.push(util.format.apply(this, arguments))
   }
 
-  let configFileName = argv.getConfigFileName()
-  let configDir = path.dirname(configFileName)
-  let config = argv.getServerConfiguration()
-  let appConfig = config.application
-  let domainConfig = appConfig.domain
+  const configFileName = argv.getConfigFileName()
+  const configDir = path.dirname(configFileName)
+  const config = argv.getServerConfiguration()
+  const appConfig = config.application
+  const domainConfig = appConfig.domain
 
   console.time('Total time')
   // MPV - todo 1) How to test only modules (not a model)? Check a package.json config.ubmodel? 2) @unitybase - recutrsion
@@ -76,8 +76,8 @@ module.exports = function autotest (options) {
 
   console.info('Scan models `_autotest` folders')
 
-  let inModels = options.models
-  let models = domainConfig['models']
+  const inModels = options.models
+  let models = domainConfig.models
   if (!Array.isArray(models)) {
     throw new Error('models configuration MUST be an array on object')
   }
@@ -87,7 +87,7 @@ module.exports = function autotest (options) {
   }
 
   models.forEach(modelConfig => {
-    let folderName = path.join(configDir, modelConfig.path, '_autotest')
+    const folderName = path.join(configDir, modelConfig.path, '_autotest')
 
     if (fs.isDir(folderName)) {
       let inFiles = options.tests
@@ -114,7 +114,7 @@ module.exports = function autotest (options) {
   // return console.debug back
   console.debug = realConsoleDebug
 
-  let failed = testResults.filter(r => !r.result)
+  const failed = testResults.filter(r => !r.result)
   global._timerLoop.setTimeoutWithPriority(
     function () {
       process.on('exit', function () {

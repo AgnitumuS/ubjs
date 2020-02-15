@@ -76,17 +76,14 @@ const MIXIN_METHODS = {
   }
 }
 
-
 module.exports = function generateDoc (cfg) {
   let
-    session, conn,
-    outputFileName,
     domainI18n,
     i, j, len, lenj, k, lenk
 
   console.time('Generation time')
   if (!cfg) {
-    let opts = options.describe('generateDoc',
+    const opts = options.describe('generateDoc',
       'Generate domain documentation into single HTML file\nDocumentation generated using default language for user, specified in -u',
       'ubcli'
     )
@@ -98,22 +95,22 @@ module.exports = function generateDoc (cfg) {
         defaultValue: './domainDocumentation.html',
         help: 'Output file path'
       })
-      .add({short: 'su', long: 'skipUndocumented', defaultValue: false, help: 'Remove undocumented methods from API documentation' })
+      .add({ short: 'su', long: 'skipUndocumented', defaultValue: false, help: 'Remove undocumented methods from API documentation' })
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
   // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
   http.setGlobalConnectionDefaults({ receiveTimeout: 120000 })
-  session = argv.establishConnectionFromCmdLineAttributes(cfg)
+  const session = argv.establishConnectionFromCmdLineAttributes(cfg)
 
   // must be required for translation
   // require('@unitybase/ub/i18n')
   // console.log('Session.uData: ', session.uData, typeof session.uData)
-  conn = session.connection
-  outputFileName = cfg.out
+  const conn = session.connection
+  const outputFileName = cfg.out
 
   try {
-    let domain = conn.getDomainInfo(true)
+    const domain = conn.getDomainInfo(true)
     const snippets = generateJsDocSnippets(domain)
 
     domainI18n = domain.entities
@@ -131,16 +128,16 @@ module.exports = function generateDoc (cfg) {
       value.modelPackage = domain.models[key].packageJSON
     })
     // transform domain to array of entity
-    let domainAsArray = _.values(domainI18n)
-    let undocumentedMethods = []
-    let fakeDocumentedMethods = []
+    const domainAsArray = _.values(domainI18n)
+    const undocumentedMethods = []
+    const fakeDocumentedMethods = []
     let documentedMethodsCnt = 0
     let stdMethodsCnt = 0
     let isStdMethod = false
     for (i = 0, len = domainAsArray.length; i < len; ++i) {
       for (j = 0, lenj = domainAsArray[i].length; j < lenj; ++j) {
         domainAsArray[i].entities[j] = domainAsArray[i][j]
-        let e = domainAsArray[i].entities[j]
+        const e = domainAsArray[i].entities[j]
         _.each(e.attributes, function (value, key) {
           value.attrCode = key
         })
@@ -155,19 +152,19 @@ module.exports = function generateDoc (cfg) {
           value.mixinCode = key
         })
         e.mixins = _.values(e.mixins)
-        let methods = _.keys(e.entityMethods).sort()
+        const methods = _.keys(e.entityMethods).sort()
         e.methodsArray = []
         methods.forEach(methodName => {
-          let m = {
+          const m = {
             name: methodName,
-            jsdoc: {description: ''}
+            jsdoc: { description: '' }
           }
           // 1) search find methods declared as function methodName(){}; me.methodName = methodName
-          let snippetLongName = `${e.name}_ns#${methodName}`
+          const snippetLongName = `${e.name}_ns#${methodName}`
           let snippet = snippets.find(s => s.longname === snippetLongName)
           if (!snippet) {
             // 2) search for methods declared as me.methodName = function(..){}
-            let fn = e.name + '.js'
+            const fn = e.name + '.js'
             snippet = snippets.find(s => s.name === methodName && s.meta.filename === fn)
           }
           if (snippet) {
@@ -192,21 +189,21 @@ module.exports = function generateDoc (cfg) {
           if (snippet) {
             m.jsdoc = snippet
           }
-          if (isDocumented || !cfg['skipUndocumented']) {
+          if (isDocumented || !cfg.skipUndocumented) {
             e.methodsArray.push(m)
           }
         })
       }
     }
 
-    let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'generateDoc_template.mustache'), 'utf8')
-    let appInfo = conn.getAppInfo()
+    const tpl = fs.readFileSync(path.join(__dirname, 'templates', 'generateDoc_template.mustache'), 'utf8')
+    const appInfo = conn.getAppInfo()
     let appName = appInfo.uiSettings.adminUI.applicationName
     if (typeof appName === 'object') {
       appName = appName[Object.keys(appName)[0]]
       appInfo.uiSettings.adminUI.applicationName = appName
     }
-    let rendered = mustache.render(tpl, {
+    const rendered = mustache.render(tpl, {
       domain: domainAsArray,
       appInfo: conn.getAppInfo(),
       i18n: function () {
@@ -254,7 +251,7 @@ module.exports.shortDoc = 'Generate domain documentation into HTML file'
  * Generate JsDoc snippets for current domain. `npx ubcli generateDoc` is executed from folder with ubConfig
  * @param {UBDomain} domain
  */
-function generateJsDocSnippets(domain) {
+function generateJsDocSnippets (domain) {
   const JSDOC_CONG_TMP = '.jsdoc_conf_tmp.json'
   const JSDOC_CONF_TMP_PATH = path.join(process.cwd(), JSDOC_CONG_TMP)
   // check jsdoc is installed
@@ -264,24 +261,24 @@ function generateJsDocSnippets(domain) {
     return []
   }
   // create config for jsdoc based on available domain models
-  let jsdocConf = {
-    "recurseDepth": 2,
-    "tags": {
-      "allowUnknownTags": true
+  const jsdocConf = {
+    recurseDepth: 2,
+    tags: {
+      allowUnknownTags: true
     },
-    "source": {
-      "include": [
-        "./node_modules/@unitybase/stubs/_UBMixinsAPI-stub.js" // mixins doc: mStorage etc
+    source: {
+      include: [
+        './node_modules/@unitybase/stubs/_UBMixinsAPI-stub.js' // mixins doc: mStorage etc
       ],
-      "includePattern": ".+\\.js(m|x)?$",
-      //"excludePattern": "(\\/_.*\\/|\\\\_.*\\\\|public)"
-      "excludePattern": "(\\/public|\\\\public|\\/_autotest|\\\\/_autotest|\\/_migration|\\\\/_migration)"
+      includePattern: '.+\\.js(m|x)?$',
+      // "excludePattern": "(\\/_.*\\/|\\\\_.*\\\\|public)"
+      excludePattern: '(\\/public|\\\\public|\\/_autotest|\\\\/_autotest|\\/_migration|\\\\/_migration)'
     },
-    "plugins": [
-      "plugins/markdown",
-      "./node_modules/ub-jsdoc/plugins/sripPFromDescription",
-      "./node_modules/ub-jsdoc/plugins/memberOfModule.js",
-      "./node_modules/ub-jsdoc/plugins/publishedTag.js"
+    plugins: [
+      'plugins/markdown',
+      './node_modules/ub-jsdoc/plugins/sripPFromDescription',
+      './node_modules/ub-jsdoc/plugins/memberOfModule.js',
+      './node_modules/ub-jsdoc/plugins/publishedTag.js'
     ]
   }
   if (!fs.existsSync(path.join(process.cwd(), 'node_modules/@unitybase/stubs'))) {
@@ -293,11 +290,11 @@ function generateJsDocSnippets(domain) {
 
   if (fs.existsSync(JSDOC_CONF_TMP_PATH)) fs.unlinkSync(JSDOC_CONF_TMP_PATH)
   fs.writeFileSync(JSDOC_CONF_TMP_PATH, JSON.stringify(jsdocConf, null, '\t'))
-  let snippets_full_fn = path.join(process.cwd(), SNIPPETS_FN)
-  if (fs.existsSync(snippets_full_fn))  fs.unlinkSync(snippets_full_fn)
+  const snippetsFullFn = path.join(process.cwd(), SNIPPETS_FN)
+  if (fs.existsSync(snippetsFullFn)) fs.unlinkSync(snippetsFullFn)
 
   let cmd, shell
-  if (process.platform === 'win32' ) {
+  if (process.platform === 'win32') {
     shell = 'cmd.exe'
     cmd = `/c "node.exe ${jsdocPath} -r -c ./${JSDOC_CONG_TMP} -X > ./${SNIPPETS_FN}"`
   } else {
@@ -305,19 +302,20 @@ function generateJsDocSnippets(domain) {
     cmd = `-c "${jsdocPath} -r -c ./${JSDOC_CONG_TMP} -X > ./${SNIPPETS_FN}"`
   }
   console.log(`Run jsdoc shell command: ${shell} ${cmd}`)
-  let res = shellExecute(shell, cmd)
+  // eslint-disable-next-line no-undef
+  const res = shellExecute(shell, cmd)
   if (res !== 0) {
     console.error(`Got error from jsdoc while executing command: ${shell} ${cmd}`)
     return []
   }
 
-  let snippets = require(snippets_full_fn)
+  const snippets = require(snippetsFullFn)
   // fill build-in mixins
   // TODO - how to add a custom mixin documentation (ldoc etc)?
   Object.keys(MIXIN_METHODS).forEach(m => {
-    let mdoc = MIXIN_METHODS[m]
-    mdoc.doc = snippets.find(s => s.longname === mdoc.src)
-    if (mdoc.doc) convertServerSideParamsToAPI(mdoc.doc, '', mdoc.src.split('.')[1])
+    const mixinMethodDoc = MIXIN_METHODS[m]
+    mixinMethodDoc.doc = snippets.find(s => s.longname === mixinMethodDoc.src)
+    if (mixinMethodDoc.doc) convertServerSideParamsToAPI(mixinMethodDoc.doc, '', mixinMethodDoc.src.split('.')[1])
   })
   return snippets
 }
@@ -331,27 +329,29 @@ function generateJsDocSnippets(domain) {
  * @param {string} eName
  * @param {string} mName
  */
-function convertServerSideParamsToAPI(snippet, eName, mName) {
-  let prms = snippet.params
+function convertServerSideParamsToAPI (snippet, eName, mName) {
+  const prms = snippet.params
   if (!prms || !prms.length) return
   let topLevelObjPrm = null
   prms.forEach(p => {
     // ubMethodParams -> object
-    if (p.type && p.type.names) p.type.names = p.type.names.map(n => {
-      if (n === 'ubMethodParams') {
-        topLevelObjPrm = p
-        return 'object'
-      } else {
-        return n
-      }
-    })
+    if (p.type && p.type.names) {
+      p.type.names = p.type.names.map(n => {
+        if (n === 'ubMethodParams') {
+          topLevelObjPrm = p
+          return 'object'
+        } else {
+          return n
+        }
+      })
+    }
     // ctxt.mParams.newPwd -> ctxt.newPwd
     p.name = p.name.replace('.mParams', '')
     if (!p.description) p.description = ''
   })
   if (topLevelObjPrm) { // @param {ubMethodParam} pn is defined - use this parameter name to add a entity & method if not exists
     let pn = `${topLevelObjPrm}.entity`
-    let prm = prms.find( p => p.name === pn)
+    let prm = prms.find(p => p.name === pn)
     let pp = 1
     if (!prm) { // add entity parameter
       prms.splice(pp, 0, {
@@ -364,7 +364,7 @@ function convertServerSideParamsToAPI(snippet, eName, mName) {
       pp++
     }
     pn = `${topLevelObjPrm}.method`
-    prm = prms.find( p => p.name === pn)
+    prm = prms.find(p => p.name === pn)
     if (!prm) { // add method parameter
       prms.splice(pp, 0, {
         type: {

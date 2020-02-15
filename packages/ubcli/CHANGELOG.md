@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - ESLint errors and warnings fixed (no functional changes)
 
 ### Deprecated
 

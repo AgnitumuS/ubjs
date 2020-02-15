@@ -29,7 +29,7 @@ const RE_TRAILING_PATH_SEP = process.platform === 'win32' ? /\\$/ : /\/$/
 
 module.exports = function createStore (options) {
   if (!options) {
-    let opts = cmdLineOpt.describe('createStore',
+    const opts = cmdLineOpt.describe('createStore',
       'Create internal store structure (folders) for specifies FileSystem store. Must be used on the same computer where UnityBase server installed',
       'ubcli'
     )
@@ -39,14 +39,14 @@ module.exports = function createStore (options) {
     if (!options) return
   }
   let storeNames = options.store
-  let configFileName = argv.getConfigFileName()
+  const configFileName = argv.getConfigFileName()
 
   if (!configFileName) {
     throw new Error('Invalid server config path')
   }
 
-  let config = argv.getServerConfiguration()
-  let app = config.application
+  const config = argv.getServerConfiguration()
+  const app = config.application
 
   if (!app.blobStores) {
     throw new Error('No "blobStores" section inside application config')
@@ -68,15 +68,15 @@ module.exports = function createStore (options) {
     selectedStores = app.blobStores
   }
 
-  let configPath = path.dirname(configFileName)
+  const configPath = path.dirname(configFileName)
 
   function createOneStore (cStore) {
     console.log('Start handle blobStore "%s"', cStore.name)
-    if (!cStore['storeType']) {
-      cStore['storeType'] = 'FileSystem'
+    if (!cStore.storeType) {
+      cStore.storeType = 'FileSystem'
     }
     if (!cStore.path) {
-      console.log(`\tskipped - path not defined`)
+      console.log('\tskipped - path not defined')
       return
     }
     let cStorePath = cStore.path

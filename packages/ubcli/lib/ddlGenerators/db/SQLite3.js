@@ -9,13 +9,13 @@ const _ = require('lodash')
 
 class DBSQLite3 extends DBAbstract {
   loadDatabaseMetadata () {
-    let mTables = this.refTableDefs
+    const mTables = this.refTableDefs
     if (!mTables.length) return // all entities in this connection are external or no entities at all - skip loading DB metadata
 
     /** @type {Array<Object>} */
     let dbTables = this.conn.xhr({
       endpoint: 'runSQL',
-      data: `select name, tbl_name as caption from sqlite_master where type='table' and name not like 'sqlite_%'`,
+      data: 'select name, tbl_name as caption from sqlite_master where type=\'table\' and name not like \'sqlite_%\'',
       URLParams: { CONNECTION: this.dbConnectionConfig.name }
     })
 
@@ -23,16 +23,16 @@ class DBSQLite3 extends DBAbstract {
     if (mTables.length) {
       dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, { name: dbTab.name }) !== -1)
     }
-    for (let tabDef of dbTables) {
-      let asIsTable = new TableDefinition({
+    for (const tabDef of dbTables) {
+      const asIsTable = new TableDefinition({
         name: tabDef.name,
         caption: tabDef.caption
       })
-      let primaryKeyFields = []
+      const primaryKeyFields = []
 
       // Table Columns
-      let columnSQL = `PRAGMA table_info('${asIsTable.name}')`
-      let columnsFromDb = this.conn.xhr({
+      const columnSQL = `PRAGMA table_info('${asIsTable.name}')`
+      const columnsFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: columnSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
@@ -40,46 +40,46 @@ class DBSQLite3 extends DBAbstract {
       // cid name     type        notnull dflt_value pk
       // 0  ID       BIGINT         1       null      1
       // 1  name    VARCHAR(128)    1        0
-      for (let colDef of columnsFromDb) {
+      for (const colDef of columnsFromDb) {
         let fType
         let fLength = 0
         let fPrec = 0
         let fScale = 0
-        let fullType = colDef[ 'type' ]
+        const fullType = colDef.type
         // varchar(100) -> ["varchar(100)", "varchar", "(100)", "100", ""]
         // DECIMAL(10,5) ["DECIMAL(10,5)", "DECIMAL", "(10,5)", "10", "5"]
         // BIGINT -> null
-        let parsedType = fullType.match(/(\w*)(\((\d*),? *(\d*)\))/)
+        const parsedType = fullType.match(/(\w*)(\((\d*),? *(\d*)\))/)
         if (parsedType) {
-          fType = parsedType[ 1 ]
-          if (parsedType[ 4 ]) { // have precision
-            fPrec = parseInt(parsedType[ 3 ], 10)
-            fScale = parseInt(parsedType[ 4 ], 10)
+          fType = parsedType[1]
+          if (parsedType[4]) { // have precision
+            fPrec = parseInt(parsedType[3], 10)
+            fScale = parseInt(parsedType[4], 10)
           } else {
-            fLength = parseInt(parsedType[ 3 ], 10)
+            fLength = parseInt(parsedType[3], 10)
           }
         } else {
           fType = fullType
         }
-        let dataType = this.dataBaseTypeToUni(fType, fLength, fPrec, fScale)
+        const dataType = this.dataBaseTypeToUni(fType, fLength, fPrec, fScale)
 
         asIsTable.addColumn({
-          name: colDef[ 'name' ],
-          caption: colDef[ 'COMMENTS' ] || '', // TODO COMMENTS is a fake
-          allowNull: (colDef[ 'notnull' ] !== 1),
+          name: colDef.name,
+          caption: colDef.COMMENTS || '', // TODO COMMENTS is a fake
+          allowNull: (colDef.notnull !== 1),
           dataType: dataType,
           size: (dataType === 'UVARCHAR') ? fLength : fPrec,
           prec: fScale,
           isComputed: false,
-          defaultValue: colDef[ 'dflt_value' ]
+          defaultValue: colDef.dflt_value
         })
-        if (colDef[ 'pk' ]) {
+        if (colDef.pk) {
           primaryKeyFields.push(colDef.name)
         }
       }
 
       // foreign key
-      let fkFromDb = this.conn.xhr({
+      const fkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: `PRAGMA foreign_key_list('${asIsTable.name}')`,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
@@ -88,22 +88,22 @@ class DBSQLite3 extends DBAbstract {
       // 0  0   uba_user   mi_modifyuser    null   NO ACTION   NO ACTION  NONE
       // 1  0   uba_user   mi_createuser    null   NO ACTION   NO ACTION  NONE
       // 2  0   uba_user   mi_owner         null   NO ACTION   NO ACTION  NONE
-      for (let fkey of fkFromDb) {
+      for (const fkey of fkFromDb) {
         asIsTable.addFK({
-          name: `FK_${fkey[ 'table' ]}_${fkey.from}`,
-          keys: [ fkey.from ] || [],
-          references: fkey[ 'to' ] || 'ID',
+          name: `FK_${fkey.table}_${fkey.from}`,
+          keys: [fkey.from] || [],
+          references: fkey.to || 'ID',
           isDisabled: false,
-          deleteAction: fkey[ 'on_delete' ] === 'NO ACTION' ? 'NO_ACTION' : fkey[ 'on_delete' ], // NO_ACTION, CASCADE, SET_NULL,  SET_DEFAULT
-          updateAction: fkey[ 'on_update' ]
+          deleteAction: fkey.on_delete === 'NO ACTION' ? 'NO_ACTION' : fkey.on_delete, // NO_ACTION, CASCADE, SET_NULL,  SET_DEFAULT
+          updateAction: fkey.on_update
         })
       }
 
       // primary keys
       // there is only one primary key (but possible several fields on(sourceID, destID). SQL return field in right order?
       if (primaryKeyFields.length) {
-        let mustBeTab = _.find(mTables, { _upperName: asIsTable._upperName })
-        let pkNamePart = mustBeTab
+        const mustBeTab = _.find(mTables, { _upperName: asIsTable._upperName })
+        const pkNamePart = mustBeTab
           ? mustBeTab.__entity.sqlAlias ? mustBeTab.__entity.sqlAlias : asIsTable._upperName
           : asIsTable._upperName
         asIsTable.primaryKey = {
@@ -113,7 +113,7 @@ class DBSQLite3 extends DBAbstract {
       }
 
       // indexes. in case of several field - it is ordered by SQL
-      let indexesFromDb = this.conn.xhr({
+      const indexesFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: `PRAGMA index_list('${asIsTable.name}')`,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
@@ -123,9 +123,9 @@ class DBSQLite3 extends DBAbstract {
       // 1    idx_composit            0     c         0
       // 2    idx_usr_mi_createuser   0     c         0
       // 3    sqlite_autoindex_er_1   1     pk        0
-      for (let indexDef of indexesFromDb) {
-        if (indexDef[ 'origin' ] === 'pk') continue
-        let idxCols = this.conn.xhr({
+      for (const indexDef of indexesFromDb) {
+        if (indexDef.origin === 'pk') continue
+        const idxCols = this.conn.xhr({
           endpoint: 'runSQL',
           data: `PRAGMA index_xinfo(${indexDef.name})`,
           URLParams: { CONNECTION: this.dbConnectionConfig.name }
@@ -134,12 +134,12 @@ class DBSQLite3 extends DBAbstract {
         // 0     9    mi_createdate 0  ISO8601   1
         // 1     10   mi_createuser 0  BINARY    1
         // 2     -1                 0  BINARY    0
-        let idxColArr = _(idxCols).filter({ key: 1 }).map((col) => col[ 'desc' ] === 0 ? col.name : col.name + ' DESC').value()
+        const idxColArr = _(idxCols).filter({ key: 1 }).map((col) => col.desc === 0 ? col.name : col.name + ' DESC').value()
         asIsTable.addIndex({
           name: indexDef.name,
-          isUnique: indexDef[ 'unique' ] === 1,
+          isUnique: indexDef.unique === 1,
           isDisabled: false,
-          isConstraint: indexDef[ 'origin' ] === 'pk',
+          isConstraint: indexDef.origin === 'pk',
           keys: idxColArr
         })
       }
@@ -163,6 +163,7 @@ class DBSQLite3 extends DBAbstract {
         : v
       //  return ((!column.isString || (!column.defaultValue && (column.refTable || column.enumGroup))) ? v : "''" + v.replace(/'/g,'') + "''" );
     }
+    let possibleDefault
     switch (updateType) {
       case 'updConstComment':
         this.DDL.updateColumn.statements.push(
@@ -175,7 +176,7 @@ class DBSQLite3 extends DBAbstract {
         )
         break
       case 'updNull':
-        let possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
+        possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
         this.DDL.updateColumn.statements.push(
           `-- update ${table.name} set ${column.name} = ${possibleDefault} where ${column.name} is null`
         )
@@ -187,6 +188,7 @@ class DBSQLite3 extends DBAbstract {
         break
     }
   }
+
   /**
    * Generate a DDL statement for column
    * @param {TableDefinition} table
@@ -198,7 +200,7 @@ class DBSQLite3 extends DBAbstract {
       (column.defaultValue ? ` DEFAULT (${column.defaultValue})` : '') +
       (column.allowNull ? ' NULL' : ' NOT NULL') +
       (column.name === 'ID' ? ' PRIMARY KEY' : '')
-    let checkConstraint = _.find(table.checkConstraints, { column: column.name })
+    const checkConstraint = _.find(table.checkConstraints, { column: column.name })
     if (checkConstraint) {
       res += (checkConstraint.type === 'bool'
         ? ` CHECK (${checkConstraint.column} IN (0,1) )`
@@ -212,7 +214,7 @@ class DBSQLite3 extends DBAbstract {
    */
   foreignKeyDDL (constraintFK) {
     // lookup on mustBe tables, because asIs tatbe may noy exist yet
-    let referenceObj = _.find(this.refTableDefs, { _upperName: constraintFK.references.toUpperCase() })
+    const referenceObj = _.find(this.refTableDefs, { _upperName: constraintFK.references.toUpperCase() })
     if (!referenceObj) {
       throw new Error('Referenced object not found. Object name is ' + constraintFK.references)
     }
@@ -228,13 +230,13 @@ class DBSQLite3 extends DBAbstract {
    */
   genCodeCreateTable (table) {
     let res
-    let entity = table.__entity
-    let colLen = table.columns.length
+    const entity = table.__entity
+    const colLen = table.columns.length
 
     if (entity.isFTSDataTable) {
-      res = [ 'CREATE VIRTUAL TABLE ', table.name, ' USING fts4(\r\n' ]
+      res = ['CREATE VIRTUAL TABLE ', table.name, ' USING fts4(\r\n']
     } else {
-      res = [ 'CREATE TABLE ', table.name, ' (\r\n' ]
+      res = ['CREATE TABLE ', table.name, ' (\r\n']
     }
 
     table.columns.forEach((column, index) => {
@@ -252,7 +254,7 @@ class DBSQLite3 extends DBAbstract {
     }
 
     table.foreignKeys.forEach((fk) => {
-      let fkText = this.foreignKeyDDL(fk)
+      const fkText = this.foreignKeyDDL(fk)
       if (fkText) {
         res.push('\t,' + fkText + '\t\n')
       }
@@ -260,7 +262,7 @@ class DBSQLite3 extends DBAbstract {
 
     function getParamValue (params, name) {
       let res
-      for (let param of params) {
+      for (const param of params) {
         if (param.startsWith(name + '=')) {
           res = param.slice(name.length + 1)
           break
@@ -270,11 +272,11 @@ class DBSQLite3 extends DBAbstract {
     }
 
     if (entity.isFTSDataTable) { // add a tokenizer
-      let advSettings = entity.connectionConfig.advSettings.split(',')
+      const advSettings = entity.connectionConfig.advSettings.split(',')
       if (advSettings.length) {
-        let tokenizer = getParamValue(advSettings, 'Tokenizer') || ''
+        const tokenizer = getParamValue(advSettings, 'Tokenizer') || ''
         if (tokenizer) {
-          let aLang = table.name.split('_').pop() // get the language as a last part of name `fts_myEntity_uk` -> `uk`
+          const aLang = table.name.split('_').pop() // get the language as a last part of name `fts_myEntity_uk` -> `uk`
           let tokenizerParams = getParamValue(advSettings, 'TokenizerParams') || ''
           if (tokenizerParams.indexOf('lang=') === -1) { // no lang is defined in params - add a lang
             tokenizerParams += 'lang=' + aLang
@@ -432,8 +434,8 @@ class DBSQLite3 extends DBAbstract {
   genCodeCreateIndex (table, indexSH, comment) {
     if (table.__entity.isFTSDataTable) return // virtual tables may not be indexed
     this.DDL.createIndex.statements.push(
-      [ comment ? '--' + comment + '\r\n' : '', indexSH.isUnique ? 'CREATE UNIQUE INDEX ' : 'CREATE INDEX ', indexSH.name, ' ON ', table.name,
-        '(', indexSH.keys.join(','), ') ' ].join('')
+      [comment ? '--' + comment + '\r\n' : '', indexSH.isUnique ? 'CREATE UNIQUE INDEX ' : 'CREATE INDEX ', indexSH.name, ' ON ', table.name,
+        '(', indexSH.keys.join(','), ') '].join('')
     )
   }
 
@@ -449,6 +451,7 @@ class DBSQLite3 extends DBAbstract {
     // FK name is fake for SQLIte3, so warning doesn't matter
     // this.DDL.warnings.statements.push(`Attempt to drop a constraint ${constraintName} on table ${tableName}`)
   }
+
   genCodeAddSequence (sequenceObj) {
     // nothing to do
   }

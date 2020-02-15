@@ -24,24 +24,24 @@ const mustache = require('mustache')
 
 module.exports = function generateNginxCfg (cfg) {
   if (!cfg) {
-    let opts = options.describe('generateNginxCfg',
+    const opts = options.describe('generateNginxCfg',
       `Generate include for NGINX config based on reverseProxy section of application config.
  host for nginx is taken from httpServer.externalURL parameter`,
       'ubcli'
     )
       .add({ short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config' })
       .add({ short: 'l', long: 'lb', param: 'enableLoadBalancing', defaultValue: false, searchInEnv: false, help: 'Add this key to add upstream config for load balancing' })
-      .add({ short: 'r', long: 'sslRedirect', param: 'sslRedirect', defaultValue: false, help: `In case externalURL is https adds permanent redirect from http to https` })
-      .add({ short: 'sslkey', long: 'sslkey', param: 'pathToSSLKey', defaultValue: '', help: `For https - full path to ssl private key *.key file` })
-      .add({ short: 'sslcert', long: 'sslcert', param: 'pathToSSLCert', defaultValue: '', help: `For https - full path to ssl public certificate key *.pem file` })
-      .add({ short: 'ipv6', long: 'ipv6', defaultValue: false, help: `Bind to IPv6 address` })
+      .add({ short: 'r', long: 'sslRedirect', param: 'sslRedirect', defaultValue: false, help: 'In case externalURL is https adds permanent redirect from http to https' })
+      .add({ short: 'sslkey', long: 'sslkey', param: 'pathToSSLKey', defaultValue: '', help: 'For https - full path to ssl private key *.key file' })
+      .add({ short: 'sslcert', long: 'sslcert', param: 'pathToSSLCert', defaultValue: '', help: 'For https - full path to ssl public certificate key *.pem file' })
+      .add({ short: 'ipv6', long: 'ipv6', defaultValue: false, help: 'Bind to IPv6 address' })
       .add({ short: 'maxDocBody', long: 'maxDocBody', param: 'maxDocBodySize', defaultValue: '5m', help: 'Max body size for setDocument endpoint. See http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size' })
       .add({ short: 'out', long: 'out', param: 'outputPath', defaultValue: path.join(process.cwd(), 'ub-proxy.conf'), help: 'Full path to output file' })
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
-  let cfgPath = path.dirname(argv.getConfigFileName())
-  let serverConfig = argv.getServerConfiguration()
+  const cfgPath = path.dirname(argv.getConfigFileName())
+  const serverConfig = argv.getServerConfiguration()
   const reverseProxyCfg = serverConfig.httpServer.reverseProxy
   if (reverseProxyCfg.kind !== 'nginx') {
     console.error('httpServer.reverseProxy.kind !== \'nginx\' in server config. Terminated')
@@ -51,7 +51,7 @@ module.exports = function generateNginxCfg (cfg) {
     console.error('httpServer.externalURL is not defined in server config. Terminated')
     return
   }
-  let externalURL = url.parse(serverConfig.httpServer.externalURL)
+  const externalURL = url.parse(serverConfig.httpServer.externalURL)
   if (!externalURL.port) externalURL.port = (externalURL.protocol === 'https:') ? '443' : '80'
   if (externalURL.port === '443') externalURL.port = '443 ssl http2'
   if (externalURL.protocol === 'https:') {
@@ -62,10 +62,10 @@ module.exports = function generateNginxCfg (cfg) {
       cfg.sslRedirect = true
     }
   }
-  let ubURL = url.parse(argv.serverURLFromConfig(serverConfig))
+  const ubURL = url.parse(argv.serverURLFromConfig(serverConfig))
   if (!ubURL.port) ubURL.port = (ubURL.protocol === 'https:') ? '443' : '80'
   if (!reverseProxyCfg.sendFileHeader) console.warn('`reverseProxy.sendFileHeader` not defined in ub config. Skip internal locations generation')
-  let vars = {
+  const vars = {
     ubURL: ubURL,
     externalURL: externalURL,
     appPath: cfgPath.replace(/\\/g, '/'),
@@ -90,7 +90,7 @@ module.exports = function generateNginxCfg (cfg) {
     }
     vars.staticRoot = serverConfig.httpServer.inetPub.replace(/\\/g, '/')
   }
-  let configuredStores = serverConfig.application.blobStores
+  const configuredStores = serverConfig.application.blobStores
   if (configuredStores) {
     configuredStores.forEach((storeCfg) => {
       if (storeCfg.path) {
@@ -103,13 +103,13 @@ module.exports = function generateNginxCfg (cfg) {
       }
     })
   }
-  let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'nginx-cfg.mustache'), 'utf8')
+  const tpl = fs.readFileSync(path.join(__dirname, 'templates', 'nginx-cfg.mustache'), 'utf8')
 
-  let rendered = mustache.render(tpl, vars)
+  const rendered = mustache.render(tpl, vars)
   if (!fs.writeFileSync(cfg.out, rendered)) {
     console.error(`Write to file ${cfg.out} fail`)
   }
-  let linkAsFileName = externalURL.host + '.cfg'
+  const linkAsFileName = externalURL.host + '.cfg'
   console.info(`
 Config generated and can be included inside nginx.conf: 
   include ${cfg.out.replace(/\\/g, '/')};

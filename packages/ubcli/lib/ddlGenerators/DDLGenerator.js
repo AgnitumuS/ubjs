@@ -66,11 +66,11 @@ function genFKName (sourceTableName, sourceColumnName, destTableName, dialect = 
  * @param {String} attributeCode
  */
 function getAttributeDBName (entity, attributeCode) {
-  let attribute = entity.attributes[attributeCode]
+  const attribute = entity.attributes[attributeCode]
   if (!attribute) {
     throw new Error(`Attribute ${attributeCode} does not exist in entity ${entity.name}`)
   }
-  let mappedTo = attribute.mapping
+  const mappedTo = attribute.mapping
   if (mappedTo && (mappedTo.expressionType === UBDomain.ExpressionType.Field) && mappedTo.expression) {
     return mappedTo.expression
   } else {
@@ -79,10 +79,10 @@ function getAttributeDBName (entity, attributeCode) {
 }
 
 function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory, storage) {
-  let xDef = {
+  const xDef = {
     isUnique: true,
     name: formatName('UIDX_', sqlAlias, `_${attrName.toUpperCase()}`, dialect),
-    keys: [ attrName ]
+    keys: [attrName]
   }
   if (isHistory) xDef.keys.push('mi_dateTo')
   // xDef.keys.push('mi_data_id');
@@ -100,7 +100,7 @@ function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory,
  */
 function formatName (prefix, root, suffix, dialect = DDLGenerator.dbDialectes.AnsiSQL) {
   const MAX_IDENTIFIER_LEN = DDLGenerator.MAX_DB_IDENTIFIER_LENGTHS[dialect]
-  let totalLen = prefix.length + root.length + suffix.length
+  const totalLen = prefix.length + root.length + suffix.length
   let deltaLen
   if (totalLen > MAX_IDENTIFIER_LEN) {
     deltaLen = totalLen - MAX_IDENTIFIER_LEN
@@ -136,15 +136,15 @@ class DDLGenerator {
    * @return {Object} DDL SQL
    */
   generateDDL (names, conn, unsafe = false) {
-    let result = {}
-    let alreadyTraversed = new WeakSet()
+    const result = {}
+    const alreadyTraversed = new WeakSet()
 
     this.isUnsafe = unsafe
-    let domain = conn.getDomainInfo(true) // request extended domain info
-    let namesRe = names.map((re) => new RegExp(re))
+    const domain = conn.getDomainInfo(true) // request extended domain info
+    const namesRe = names.map((re) => new RegExp(re))
 
-    let forGeneration = _.filter(domain.entities, (entity) => {
-      for (let re of namesRe) {
+    const forGeneration = _.filter(domain.entities, (entity) => {
+      for (const re of namesRe) {
         // ignore DDL generation for External & Virtual entities
         if (re.test(entity.name) && (entity.dsType === UBDomain.EntityDataSourceType.Normal)) {
           return true
@@ -153,33 +153,33 @@ class DDLGenerator {
       return false
     })
 
-    for (let entity of forGeneration) {
+    for (const entity of forGeneration) {
       alreadyTraversed.add(entity)
       this.createReference(conn, entity)
     }
     // load referenced object for comparator
     this.relatedEntities.forEach((entityName) => {
-      let entity = domain.get(entityName)
+      const entity = domain.get(entityName)
       if (alreadyTraversed.has(entity)) {
         return // continue
       }
-      let tabDef = this.createReference(conn, entity)
+      const tabDef = this.createReference(conn, entity)
       alreadyTraversed.add(entity)
       if (tabDef) {
         tabDef.doComparision = false
       }
     })
 
-    let tablesByConnection = _.groupBy(
+    const tablesByConnection = _.groupBy(
       this.referenceTableDefs,
       (tableDef) => tableDef.__entity.connectionName
     )
 
-    for (let dbConnCfg of domain.connections) {
+    for (const dbConnCfg of domain.connections) {
       if (tablesByConnection[dbConnCfg.name] && tablesByConnection[dbConnCfg.name].length) {
         /** @type DBAbstract */
-        let DatabaseInfo = require(`./db/${dbConnCfg.dialect}`)
-        let maker = new DatabaseInfo(conn, dbConnCfg, tablesByConnection[dbConnCfg.name])
+        const DatabaseInfo = require(`./db/${dbConnCfg.dialect}`)
+        const maker = new DatabaseInfo(conn, dbConnCfg, tablesByConnection[dbConnCfg.name])
         console.log(`Loading database metadata for connection ${maker.dbConnectionConfig.name} (${maker.dbConnectionConfig.dialect})...`)
         console.time('Loaded in')
         maker.loadDatabaseMetadata()
@@ -198,25 +198,25 @@ class DDLGenerator {
    * @return {TableDefinition}
    */
   createReference (conn, entity) {
-    let addedAttributes = new Map()
-    let sqlAlias = (entity.sqlAlias || entity.name).toUpperCase()
-    let isHistory = entity.mixins.dataHistory
-    let storage = entity.mixins.mStorage
-    let dialect = entity.connectionConfig.dialect
-    let supportLang = entity.connectionConfig.supportLang
-    let entityTableName = getTableDBName(entity)
-    let tabNameInUpper = entityTableName.toUpperCase()
+    const addedAttributes = new Map()
+    const sqlAlias = (entity.sqlAlias || entity.name).toUpperCase()
+    const isHistory = entity.mixins.dataHistory
+    const storage = entity.mixins.mStorage
+    const dialect = entity.connectionConfig.dialect
+    const supportLang = entity.connectionConfig.supportLang
+    const entityTableName = getTableDBName(entity)
+    const tabNameInUpper = entityTableName.toUpperCase()
     let lang
 
     if (_.find(this.referenceTableDefs, (tabDef) => tabDef.name.toUpperCase() === tabNameInUpper)) {
       return null // already added
     }
-    let tableDef = new TableDefinition({
+    const tableDef = new TableDefinition({
       name: entityTableName,
       caption: entity.description || entity.caption
     })
 
-    let defaultLang = conn.getAppInfo().defaultLang
+    const defaultLang = conn.getAppInfo().defaultLang
 
     _.forEach(entity.attributes,
       /** @param {UBEntityAttribute} attribute
@@ -227,7 +227,7 @@ class DDLGenerator {
           return // calculated attribute
         }
         addedAttributes.set(attrCode.toUpperCase(), attribute)
-        let m = attribute.mapping
+        const m = attribute.mapping
         if (m && (m.expressionType === UBDomain.ExpressionType.Field) && m.expression) {
           if (!strIComp(attrCode, m.expression) && addedAttributes.has(m.expression.toUpperCase())) {
             return // use a original attribute
@@ -236,8 +236,8 @@ class DDLGenerator {
           attrCode = m.expression // use a field name from mapping
           if (tableDef.columnByName(attrCode)) return // already added
         }
-        let attrName = attrCode.toUpperCase()
-        let attrNameF = attrCode.toUpperCase()
+        const attrName = attrCode.toUpperCase()
+        const attrNameF = attrCode.toUpperCase()
         if (!attrNameF) {
           throw new Error('attrNameF is undefined for ' + attrCode)
         }
@@ -257,7 +257,7 @@ class DDLGenerator {
         }
 
         if (attribute.dataType === UBDomain.ubDataTypes.Boolean) {
-          let fName = formatName(`CHK_${sqlAlias}_`, attrCode, '_BOOL', entity.connectionConfig.dialect)
+          const fName = formatName(`CHK_${sqlAlias}_`, attrCode, '_BOOL', entity.connectionConfig.dialect)
           tableDef.addCheckConstr({
             name: fName,
             column: attrCode,
@@ -267,7 +267,7 @@ class DDLGenerator {
 
         if ((attribute.dataType === UBDomain.ubDataTypes.Entity) && (attribute.name !== 'ID')) {
           this.relatedEntities.push(attribute.associatedEntity)
-          let associatedEntity = attribute.getAssociatedEntity()
+          const associatedEntity = attribute.getAssociatedEntity()
           if (associatedEntity.connectionName === entity.connectionName) { // referential constraint between different connection not supported
             tableDef.addFK({
               name: genFKName(sqlAlias, attrNameF, (associatedEntity.sqlAlias || associatedEntity.name || ''), entity.connectionConfig.dialect),
@@ -281,7 +281,7 @@ class DDLGenerator {
             tableDef.addIndex({
               name: formatName('IDX_', sqlAlias, `_${attrNameF}`, entity.connectionConfig.dialect),
               isUnique: false,
-              keys: [ attrName ]
+              keys: [attrName]
             })
             if (attribute.isMultiLang) {
               for (lang of supportLang) {
@@ -312,17 +312,17 @@ class DDLGenerator {
       tableDef.addIndex({
         name: formatName('IDX_', sqlAlias, '_TREEPATH', entity.connectionConfig.dialect),
         isUnique: false,
-        keys: [ 'mi_treePath' ]
+        keys: ['mi_treePath']
       })
     }
 
     if (entity.mixins.unity) {
-      let u = entity.mixins.unity
+      const u = entity.mixins.unity
       this.relatedEntities.push(u.entity)
-      let refTo = entity.domain.get(u.entity)
+      const refTo = entity.domain.get(u.entity)
       tableDef.addFK({
         name: genFKName(sqlAlias, 'id', (refTo.sqlAlias || refTo.name || ''), entity.connectionConfig.dialect),
-        keys: [ 'ID' ],
+        keys: ['ID'],
         references: refTo.name,
         generateFK: true
       })
@@ -354,9 +354,9 @@ class DDLGenerator {
         })
       }
     }
-    if (entity.attributes['ID']) { // in case ID is mapped to non-uniq attribute - skip primary key generation. Example in tst_virtualID.meta
+    if (entity.attributes.ID) { // in case ID is mapped to non-uniq attribute - skip primary key generation. Example in tst_virtualID.meta
       let createPK = true
-      let m = entity.attributes['ID'].mapping
+      const m = entity.attributes.ID.mapping
       if (m && m.expressionType === 'Field') {
         if (entity.attributes[m.expression]) createPK = entity.attributes[m.expression].isUnique
       }
@@ -380,8 +380,8 @@ class DDLGenerator {
   addCustomElements (tableDef, entity) {
     let dbKeys
     let haveDeleteDateInFields = false
-    let dialect = entity.connectionConfig.dialect
-    let isHistory = entity.mixins.dataHistory
+    const dialect = entity.connectionConfig.dialect
+    const isHistory = entity.mixins.dataHistory
     function formatBrackets (stringToFormat, ...values) {
       const FORMAT_RE = /{(\d+)}/g
       return stringToFormat.replace(FORMAT_RE, function (m, i) {
@@ -391,7 +391,7 @@ class DDLGenerator {
     if (entity.dbKeys) {
       dbKeys = entity.dbKeys
       _.forEach(dbKeys, (fields, dbKey) => {
-        let indexDef = { name: dbKey, isUnique: true, keys: [], keyOptions: {} }
+        const indexDef = { name: dbKey, isUnique: true, keys: [], keyOptions: {} }
         _.forEach(fields, (options, field) => {
           let fieldKey = field
           if (options.func && (DDLGenerator.isOracle(dialect))) {
@@ -425,7 +425,7 @@ class DDLGenerator {
         }
         let objDef
         if (commands.definition && (commands.type !== 'OTHER')) {
-          let definition = commands.definition
+          const definition = commands.definition
           switch (commands.type) {
             case 'INDEX':
             case 'CATALOGUE':
@@ -451,13 +451,13 @@ class DDLGenerator {
               tableDef.addCheckConstr(objDef, true)
               break
             case 'FK':
-              objDef = { name: dbKey, keys: [ definition.key ], references: definition.references, generateFK: true }
+              objDef = { name: dbKey, keys: [definition.key], references: definition.references, generateFK: true }
               this.relatedEntities.push(objDef.references)
               tableDef.addFK(objDef, true)
               break
           }
         } else {
-          objDef = { name: dbKey, expression: commands[ DDLGenerator.dbDialectes[ dialect ] ] }
+          objDef = { name: dbKey, expression: commands[DDLGenerator.dbDialectes[dialect]] }
           tableDef.addOther(objDef)
         }
       })
@@ -569,9 +569,9 @@ class DDLGenerator {
    * @param {UBEntityAttribute} attribute
    */
   addManyTable (entity, attribute) {
-    let associatedEntity = entity.domain.get(attribute.associatedEntity)
+    const associatedEntity = entity.domain.get(attribute.associatedEntity)
     this.relatedEntities.push(attribute.associatedEntity)
-    let tableDef = new TableDefinition({
+    const tableDef = new TableDefinition({
       name: attribute.associationManyData,
       caption: ''
     })
@@ -586,22 +586,22 @@ class DDLGenerator {
       dataType: 'BIGINT',
       allowNull: false
     })
-    tableDef.primaryKey = { name: 'PK_' + attribute.associationManyData, keys: [ 'sourceID', 'destID' ] }
+    tableDef.primaryKey = { name: 'PK_' + attribute.associationManyData, keys: ['sourceID', 'destID'] }
     tableDef.addFK({
       name: genFKName(attribute.associationManyData, 'SOURCEID', entity.sqlAlias, entity.connectionConfig.dialect),
-      keys: [ 'sourceID'.toUpperCase() ],
+      keys: ['sourceID'.toUpperCase()],
       references: getTableDBName(entity),
       generateFK: true
     })
     tableDef.addFK({
       name: genFKName(attribute.associationManyData, 'DESTID', associatedEntity.sqlAlias, entity.connectionConfig.dialect),
-      keys: [ 'destID'.toUpperCase() ],
+      keys: ['destID'.toUpperCase()],
       references: getTableDBName(associatedEntity),
       generateFK: true
     })
     tableDef.addIndex({
       name: formatName('IDX_', attribute.associationManyData, '_DESTID', entity.connectionConfig.dialect),
-      keys: [ 'destID'.toUpperCase() ]
+      keys: ['destID'.toUpperCase()]
     })
     tableDef.isIndexOrganized = true
     this.referenceTableDefs.push(tableDef)
@@ -641,17 +641,17 @@ DDLGenerator.specialColumns = {
 }
 
 DDLGenerator.dialectsPriority = {
-  MSSQL2012: [ 'MSSQL2012', 'MSSQL', 'AnsiSQL' ],
-  MSSQL2008: [ 'MSSQL2008', 'MSSQL', 'AnsiSQL' ],
-  MSSQL: [ 'MSSQL', 'AnsiSQL' ],
-  Oracle11: [ 'Oracle11', 'Oracle', 'AnsiSQL' ],
-  Oracle10: [ 'Oracle10', 'Oracle', 'AnsiSQL' ],
-  Oracle9: [ 'Oracle9', 'Oracle', 'AnsiSQL' ],
-  Oracle: [ 'Oracle', 'AnsiSQL' ],
-  PostgreSQL: [ 'PostgreSQL', 'AnsiSQL' ],
-  AnsiSQL: [ 'AnsiSQL' ],
-  Firebird: [ 'Firebird', 'AnsiSQL' ],
-  SQLite3: [ 'SQLite3', 'AnsiSQL' ]
+  MSSQL2012: ['MSSQL2012', 'MSSQL', 'AnsiSQL'],
+  MSSQL2008: ['MSSQL2008', 'MSSQL', 'AnsiSQL'],
+  MSSQL: ['MSSQL', 'AnsiSQL'],
+  Oracle11: ['Oracle11', 'Oracle', 'AnsiSQL'],
+  Oracle10: ['Oracle10', 'Oracle', 'AnsiSQL'],
+  Oracle9: ['Oracle9', 'Oracle', 'AnsiSQL'],
+  Oracle: ['Oracle', 'AnsiSQL'],
+  PostgreSQL: ['PostgreSQL', 'AnsiSQL'],
+  AnsiSQL: ['AnsiSQL'],
+  Firebird: ['Firebird', 'AnsiSQL'],
+  SQLite3: ['SQLite3', 'AnsiSQL']
 }
 
 /**
