@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+  legacy `newUserRegistration` event for Session object is **not emitted**. CERT auth schema what use it is deprecated.
+  CERT2 auth schema do not require this event  
 
 ### Fixed
 

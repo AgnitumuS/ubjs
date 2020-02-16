@@ -15,7 +15,7 @@ const FEATURE_NEW_SESSION_MANAGER = (base.ubVersionNum >= 5017000)
 // cache for lazy session props
 let _userID = UBA_COMMON.USERS.ANONYMOUS.ID
 let _id
-let _sessionCached = {
+const _sessionCached = {
   sessionID: undefined,
   uData: undefined,
   callerIP: undefined,
@@ -161,7 +161,7 @@ Object.defineProperty(Session, 'uData', {
   enumerable: true,
   get: function () {
     if (_sessionCached.uData === undefined) {
-      let d = sessionBinding.userDataJSON()
+      const d = sessionBinding.userDataJSON()
       _sessionCached.uData = d ? JSON.parse(d) : {}
     }
     return _sessionCached.uData
@@ -322,33 +322,10 @@ Session.runAsUser = function (userID, func) {
  */
 
 /**
- * Legacy event **CERT authentication schema** only
- *
- * For CERT schema user registered means `auth` endpoint is called with registration=1 parameter.
- *
- * Called before start event "registration" and before starting check the user. You can create new user inside this event.
- *
- * Parameter is look like
- *
- *      {
- *          "authType": 'CERT',
- *          "serialSign": '<serialSign>',
- *          "name": '<user name>',
- *          "additional": '',
- *          "issuer": '<issuer>',
- *          "serial": '<serial>',
- *          "certification_b64": '<certification_b64>'
- *      }
- *
- * @memberOf Session
- * @event newUserRegistration
- */
-
-/**
  * Fires in case `auth` endpoint is called with authentication schema UB and userName is founded in database,
  * but password is incorrect.
  *
- * If wrong passord is entered more  than `UBA.passwordPolicy.maxInvalidAttempts`(from ubs_settings) times
+ * If wrong password is entered more  than `UBA.passwordPolicy.maxInvalidAttempts`(from ubs_settings) times
  * user will be locked
  *
  * 2 parameters are passes to this event userID(Number) and isUserLocked(Boolean)
@@ -414,7 +391,7 @@ function fillGroupIDsLimit () {
   }
   if (GROUP_CODES_LIMIT && GROUP_CODES_LIMIT.length) {
     GROUP_CODES_LIMIT.forEach(groupCode => {
-      let group = allGroups.find(g => g.code === groupCode)
+      const group = allGroups.find(g => g.code === groupCode)
       if (group) {
         GROUP_IDS_LIMIT.push(group.ID)
       } else {
@@ -426,7 +403,7 @@ function fillGroupIDsLimit () {
   GROUP_IDS_EXCLUDE = []
   if (GROUP_CODES_EXCLUDE && GROUP_CODES_EXCLUDE.length) {
     GROUP_CODES_EXCLUDE.forEach(groupCode => {
-      let group = allGroups.find(g => g.code === groupCode)
+      const group = allGroups.find(g => g.code === groupCode)
       if (group) {
         GROUP_IDS_EXCLUDE.push(group.ID)
       } else {
@@ -445,7 +422,7 @@ function fillGroupIDsLimit () {
  * @private
  */
 Session._getRBACInfo = function (userID) {
-  let userInfo = Repository('uba_user')
+  const userInfo = Repository('uba_user')
     .attrs(['name', 'uData', 'uPasswordHashHexa', 'lastPasswordChangeDate', 'firstName', 'lastName', 'fullName'])
     .selectById(userID)
   if (!userInfo) throw new Error(`User with ID=${userID} not found`)
@@ -463,13 +440,13 @@ Session._getRBACInfo = function (userID) {
   uData.login = userInfo.name
   uData.employeeShortFIO = userInfo.firstName || userInfo.name
   if (userInfo.fullName) uData.employeeFullFIO = userInfo.fullName
-  let result = {
+  const result = {
     uData: uData,
     uPasswordHashHexa: userInfo.uPasswordHashHexa,
     lastPasswordChangeDate: userInfo.lastPasswordChangeDate
   }
 
-  let roleNamesArr = [UBA_COMMON.ROLES.EVERYONE.NAME]
+  const roleNamesArr = [UBA_COMMON.ROLES.EVERYONE.NAME]
   if (userID === UBA_COMMON.USERS.ANONYMOUS.ID) {
     roleNamesArr.push(UBA_COMMON.ROLES.ANONYMOUS.NAME)
     uData.roleIDs.push(UBA_COMMON.ROLES.ANONYMOUS.ID)
@@ -478,7 +455,7 @@ Session._getRBACInfo = function (userID) {
     uData.roleIDs.push(UBA_COMMON.ROLES.USER.ID)
   }
   fillGroupIDsLimit()
-  let roles = Repository('uba_role')
+  const roles = Repository('uba_role')
     .attrs('ID', 'name')
     .exists(
       Repository('uba_userrole')
