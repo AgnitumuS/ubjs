@@ -34,13 +34,13 @@ let UB = module.exports = {
    * Server-side Abort exception. To be used in server-side logic in case of HANDLED
    * exception. This errors logged using "Error" log level to prevent unnecessary
    * EXC log entries.
-   * @type {UBAbort}
+   * @property {UBAbort} UBAbort
    */
   UBAbort: Errors.UBAbort,
   /**
    * Server-side Security exception. Throwing of such exception will trigger
    * `Session.securityViolation` event
-   * @type {ESecurityException}
+   * @propety {ESecurityException} ESecurityException
    */
   ESecurityException: Errors.ESecurityException,
   ns: ns,
@@ -60,7 +60,7 @@ let UB = module.exports = {
   getWSNotifier: ws.getWSNotifier,
   /**
    * Information about the logged in user
-   * @type {Session}
+   * @property {Session} Session
    */
   Session: Session,
   /**
@@ -153,7 +153,7 @@ console.log(UB.i18n(yourMessage, 'uk'))
   loadLegacyModules: modelLoader.loadLegacyModules,
   /**
    * Application instance
-   * @type {App}
+   * @property {App} App
    */
   App: App,
   start: start,

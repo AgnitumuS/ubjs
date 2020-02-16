@@ -13,10 +13,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
-  legacy `newUserRegistration` event for Session object is **not emitted**. CERT auth schema what use it is deprecated.
+ - legacy `newUserRegistration` event for Session object is **not emitted**. CERT auth schema what use it is deprecated.
   CERT2 auth schema do not require this event  
 
 ### Fixed
+ - fix JSDoc for UB namespace - mark UB.App as `@property {App} App` instead of `@type {App}` for WebStorm code competition
 
 ## [5.3.17] - 2020-02-13
 ### Changed
