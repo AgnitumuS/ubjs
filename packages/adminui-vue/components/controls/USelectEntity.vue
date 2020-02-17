@@ -155,7 +155,10 @@
 <script>
 const { debounce } = require('throttle-debounce')
 const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
-
+/**
+ * Test description.
+ * @displayName Custom name component
+ */
 export default {
   name: 'USelectEntity',
 
@@ -784,7 +787,7 @@ Need to set function which returns UB Repository
       getRepo () {
         return this.$UB.Repository('tst_maindata')
           .attrs('ID', 'code', 'caption')
-          .where('parent', '=', 31231221312312) // TODO: set valid ID
+          .where('parent', '=', 333306077119805) // TODO: set valid ID
       }
     }
   }
@@ -926,7 +929,7 @@ For example when you need instead `ID` like `code`.
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="tst_dictionary"
+    entity-name="tst_maindata"
     disabled
   />
 </template>
@@ -934,7 +937,7 @@ For example when you need instead `ID` like `code`.
   export default {
     data () {
       return {
-        value: 1
+        value: 333306077119805
       }
     }
   }
@@ -946,7 +949,7 @@ For example when you need instead `ID` like `code`.
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="tst_dictionary"
+    entity-name="tst_maindata"
     :build-edit-config="actionEditOverride"
   />
 </template>

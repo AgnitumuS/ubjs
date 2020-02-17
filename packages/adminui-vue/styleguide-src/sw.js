@@ -1,3 +1,6 @@
+import entityData from './entityData.js'
+import { LocalDataStore } from '../../cs-shared'
+
 self.addEventListener('install', function (event) {
   console.log('Service Worker installing.')
 })
@@ -109,7 +112,7 @@ self.addEventListener('fetch', event => {
           'sqlAlias': 'form',
           'descriptionAttribute': 'code',
           'attributes': {
-            'ID': { 'dataType': 'ID', 'caption': 'ID', 'allowNull': false, 'isUnique': true, 'name': 'ID' },
+            'ID': {'dataType': 'ID', 'caption': 'ID', 'allowNull': false, 'isUnique': true, 'name': 'ID'},
             'code': {
               'dataType': 'String',
               'size': 64,
@@ -118,7 +121,7 @@ self.addEventListener('fetch', event => {
               'isUnique': true,
               'name': 'code'
             },
-            'description': { 'dataType': 'String', 'size': 255, 'caption': 'Description', 'name': 'description' },
+            'description': {'dataType': 'String', 'size': 255, 'caption': 'Description', 'name': 'description'},
             'caption': {
               'dataType': 'String',
               'size': 128,
@@ -185,7 +188,7 @@ self.addEventListener('fetch', event => {
           'mixins': {},
           'isFTSDataTable': false,
           'name': 'ubm_form',
-          'entityMethods': { 'select': 1, 'update': 1, 'insert': 1, 'addnew': 1 },
+          'entityMethods': {'select': 1, 'update': 1, 'insert': 1, 'addnew': 1},
           'i18n': {
             'caption': 'Form',
             'description': 'Definition of interface forms',
@@ -235,7 +238,7 @@ self.addEventListener('fetch', event => {
           'sqlAlias': 'enu',
           'descriptionAttribute': 'name',
           'attributes': {
-            'ID': { 'dataType': 'ID', 'allowNull': false, 'defaultView': false, 'name': 'ID' },
+            'ID': {'dataType': 'ID', 'allowNull': false, 'defaultView': false, 'name': 'ID'},
             'eGroup': {
               'dataType': 'String',
               'size': 32,
@@ -338,10 +341,10 @@ self.addEventListener('fetch', event => {
               'name': 'mi_deleteUser'
             }
           },
-          'mixins': { 'mStorage': { 'simpleAudit': true, 'safeDelete': true, 'enabled': true } },
+          'mixins': {'mStorage': {'simpleAudit': true, 'safeDelete': true, 'enabled': true}},
           'isFTSDataTable': false,
           'name': 'ubm_enum',
-          'entityMethods': { 'select': 1, 'insert': 1, 'update': 1, 'addnew': 1, 'delete': 1 },
+          'entityMethods': {'select': 1, 'insert': 1, 'update': 1, 'addnew': 1, 'delete': 1},
           'i18n': {
             'caption': 'Enumerated values',
             'description': 'Enumerated values',
@@ -1700,123 +1703,26 @@ self.addEventListener('fetch', event => {
     }))
   }
   if (event.request.url.includes('ubql')) {
-    event.respondWith(event.request.json().then(function (ubqls) {
-      let result = []
-      ubqls.forEach(ubql => {
-        if (ubql.entity === 'tst_dictionary') {
-          let data = [
-            [1, 'Заголовок 101', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [2, 'Заголовок 102', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [3, 'Заголовок 103', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [5, 'Заголовок 106', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [6, 'Заголовок 107', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [8, 'Заголовок 110', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [9, 'Заголовок 111', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [11, 'Заголовок 113', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [12, 'Заголовок 1144', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [13, 'Заголовок 1151', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [14, 'Заголовок 1154', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [15, 'Заголовок 1155', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [16, 'Заголовок 1156', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [17, 'Заголовок 1157', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [18, 'Заголовок 1158', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [19, 'Заголовок 1159', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [20, 'Заголовок 1120', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [21, 'Заголовок 1121', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [22, 'Заголовок 1122', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [23, 'Заголовок 1123', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [24, 'Заголовок 1124', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [25, 'Заголовок 1125', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [26, 'Заголовок 1126', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [27, 'Заголовок 1127', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [28, 'Заголовок 1128', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [29, 'Заголовок 1129', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [30, 'Заголовок 1130', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [31, 'Заголовок 1131', new Date(2020, 2, 27, 10, 0, 0, 0)],
-            [32, 'Заголовок 1132', new Date(2020, 2, 27, 10, 0, 0, 0)]
-          ]
-          if (ubql.__allowSelectSafeDeleted) {
-            data.push(
-              [4, 'Заголовок 104', new Date(2018, 2, 27, 10, 0, 0, 0)],
-              [7, 'Заголовок 108', new Date(2018, 2, 27, 10, 0, 0, 0)],
-              [10, 'Заголовок 112', new Date(2018, 2, 27, 10, 0, 0, 0)]
-            )
+    event.respondWith(
+      event.request
+        .json()
+        .then(ubqls => {
+            const result = ubqls.map(ubql => {
+              const {resultData, total} = LocalDataStore.doFilterAndSort(entityData[ubql.entity].resultData, ubql)
+              resultData.rowCount = total
+              return {...entityData[ubql.entity], resultData}
+            })
+            return new Response(JSON.stringify(result), {
+              status: 200,
+              statusText: 'OK',
+              headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+                'ETag': '"DAFE9E0A"',
+                'Server': 'UnityBase Microsoft-HTTPAPI/2.0'
+              }
+            })
           }
-          result.push({
-            'entity': ubql.entity,
-            'method': ubql.method,
-            'fieldList': ['ID', 'caption', 'mi_deleteDate'],
-            'resultData': {
-              'fields': ['ID', 'caption', 'mi_deleteDate'],
-              'rowCount': 13,
-              'data': data
-            }
-          })
-        } else if (ubql.entity === 'tst_maindata' && ubql.fieldList.length === 3) {
-          result.push({
-            'entity': ubql.entity,
-            'method': ubql.method,
-            'fieldList': ubql.fieldList,
-            'resultData': {
-              'fields': ubql.fieldList,
-              'rowCount': 1,
-              'data': [
-                ['Текст заголовка', 'Тақырып мәтіні', 1]
-              ]
-            }
-          })
-        } else if (ubql.entity === 'tst_maindata' && ubql.fieldList.length > 3) {
-          result.push({
-            'entity': ubql.entity,
-            'method': ubql.method,
-            'fieldList': ubql.fieldList,
-            'resultData': {
-              'fields': ubql.fieldList,
-              'rowCount': 1,
-              'data': [
-                ['Code 3', 'Caption text', null, 3, null, null, null, 'TST1', null, 0, null, '1,4', null, 0, 0, 332320988692649, '2019-03-04T10:59:03Z', '2019-03-04T10:59:03Z']
-              ]
-            }
-          })
-        } else if (ubql.entity === 'ubm_enum') {
-          result.push({
-            'entity': ubql.entity,
-            'method': ubql.method,
-            'fieldList': ubql.fieldList,
-            'resultData': {
-              'fields': ubql.fieldList,
-              'rowCount': 3,
-              'data': [
-                ['TST1', 'Test1', 'TEST_GROUP_1'],
-                ['TST2', 'Long enumeration caption for test must be last in order', 'TEST_GROUP_1'],
-                ['TST3', 'Test Enum 3', 'TEST_GROUP_1']
-              ]
-            }
-          })
-        } else {
-          result.push({
-            'entity': ubql.entity,
-            'method': ubql.method,
-            'fieldList': ubql.fieldList,
-            'resultData': {
-              'fields': ubql.fieldList,
-              'rowCount': 1,
-              'data': [
-                ubql.fieldList
-              ]
-            }
-          })
-        }
-      })
-      return new Response(JSON.stringify(result), {
-        status: 200,
-        statusText: 'OK',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'ETag': '"DAFE9E0A"',
-          'Server': 'UnityBase Microsoft-HTTPAPI/2.0'
-        }
-      })
-    }))
+        )
+    )
   }
 })

@@ -2,11 +2,11 @@ const webpack = require('webpack')
 const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const { InjectManifest } = require('workbox-webpack-plugin')
+const {InjectManifest} = require('workbox-webpack-plugin')
 
 module.exports = {
   components: [
-    './components/UAutoField.vue',
+    // './components/UAutoField.vue',
 
     // './components/controls/UDropdown/UDropdownItem.vue',
     // './components/controls/UDropdown/UDropdown.vue',
@@ -17,7 +17,7 @@ module.exports = {
     // './components/controls/UInput/UInput.vue',
     // './components/controls/UTable/UTable.vue',
     //
-    // './components/controls/USelectEntity.vue',
+    './components/controls/USelectEntity.vue',
     // './components/controls/USelectEnum.vue',
     // './components/controls/USelectMany.vue',
     // './components/controls/UUploadDocument.vue',
@@ -34,7 +34,8 @@ module.exports = {
     resolve: {
       // extensions: ['.js', '.vue', '.json'],
       alias: {
-        '@unitybase/adminui-vue': path.resolve(__dirname, '.')
+        '@unitybase/adminui-vue': path.resolve(__dirname, '.'),
+        '@unitybase/ub-pub': path.resolve(__dirname, '../ub-pub')
         //   vue$: 'vue/dist/vue.common.js' // should be the same as in SystemJS dev config - see adminui-pub/index-dev.mustache
       }
     },
@@ -79,7 +80,8 @@ module.exports = {
         'process.env.NODE_ENV': JSON.stringify('develop')
       }),
       new InjectManifest({
-        swSrc: './styleguide-src/service-worker.js'
+        swSrc: './styleguide-src/service-worker.min.js',
+        swDest: 'service-worker.js'
       })
     ],
     node: {
