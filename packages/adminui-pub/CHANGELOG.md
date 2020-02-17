@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - i18n messages about certificate registration moved from `adminui-pub` into `ub-pub` to be used inside non-admin UI
 
 ### Deprecated
 

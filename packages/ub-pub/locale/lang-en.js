@@ -35,6 +35,14 @@ UB.i18nExtend({
   msgInvalidPlugin: 'Plugin version is out of date. You have version {0}, but version {1} is required. Automatically update occurs every 2 hours.' +
   ' For manual updating use <a href="update_plugin.html" target="_blank">instruction</a>. ' +
   ' If after updating message remains, please, contact your system administrator.',
+
+  registrationPassed: 'Your certificate has been successfully uploaded and passed to the processing',
+  keyAlreadyRegisteredForUser: 'Key is already registered for another user',
+  keyBlockedByAdmin: 'Key for entering the system was blocked by system administrator. Blocking reason: ',
+  keyNoRightsRejected: 'User cannot permissions to entering the system. Request for registration of key denied.',
+  keyNoRightsRepeat: 'User do no have permissions to entering the system. Request for reminding registration of key in consideration state.',
+  keyAlreadyRegistered: 'Unable to send request registration of key. Current key is already registered in system.',
+
   keyDeviseType: 'Device type',
   keyFile: 'Private key',
   keyDevise: 'Device name',

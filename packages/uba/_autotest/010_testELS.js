@@ -145,7 +145,7 @@ module.exports = function runELSTest (options) {
       }
     })
 
-    console.debug('Test new role do not hav permissions')
+    console.debug('Test new role do not have permissions')
     relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
     domainInfo = conn.getDomainInfo()
     if (domainInfo.has(TEST_ENTITY)) {

@@ -415,14 +415,6 @@ UB.i18nExtend({
 
   showPlanAndFact: 'Show plan and fact',
 
-  registrationPassed: 'Your certificate has been successfully downloaded and passed to the processing',
-  registraionPassed: 'Your certificate has been successfully downloaded and passed to the processing',
-  keyAlreadyRegisteredForUser: 'Key is already registered for another user',
-  keyBlockedByAdmin: 'Key for entering the system was blocked by system administrator. Blocking reason: ',
-  keyNoRightsRejected: 'User can not permissions to entering the system. Request for registration of key denied.',
-  keyNoRightsRepeat: 'User can not permissions to entering the system. Request for reminding registration of key in consideration state.',
-  keyAlreadyRegistered: 'Enable to send request registration of key. Current key is already registered in system.',
-
   'error': 'Error',
   'detail': 'Detail',
   'exportHtml': 'Export to Html',

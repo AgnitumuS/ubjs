@@ -6,9 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - SignatureValidationResult: new property `certificate.certificateAsBuffer` - signer certificate in bin format
+ 
 ### Changed
-
+ - i18n messages about certificate registration moved from `adminui-pub` into `ub-pub` to be used inside non-admin UI
+   
 ### Deprecated
 
 ### Removed

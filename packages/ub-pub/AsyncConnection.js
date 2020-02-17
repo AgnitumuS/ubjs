@@ -1864,6 +1864,7 @@ UBConnection.prototype.logout = function () {
  * @property {String} certificate.issuedBy.locality Authority location locality
  * @property {String} certificate.issuedBy.issuerID Authority ID
  * @property {String} [certificate.issuedBy.orgUnit] Authority organization unit
+ * @property {ArrayBuffer} [certificate.certificateAsBuffer] Signer certificate in bin format
  *
  * @property {Object} subject Individual who owns a certificate. In case valid===false certificate may not exists (or broken) and this property is empty object
  * @property {Object} [subject.DRFO] Individual DRFO (of ID card number in some cases)

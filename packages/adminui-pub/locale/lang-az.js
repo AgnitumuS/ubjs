@@ -448,14 +448,6 @@ UB.i18nExtend({
 
   showPlanAndFact: 'Plan və faktı göstər',
 
-  registrationPassed: 'Sertifikatınız uğurla yüklənmiş və emala verilmişdir',
-  registraionPassed: 'Sertifikatınız uğurla yüklənmiş və emala verilmişdir',
-  keyAlreadyRegisteredForUser: 'Açar artıq başqa bir əməkdaş üçün qeydiyyata alınmışdır',
-  keyBlockedByAdmin: 'Administrator sistemə daxil olmaq üçün açardan istifadəçi bloka salmışdır. Blok üçün əsas: ',
-  keyNoRightsRejected: 'İstifadəçinin sistemdə işləmək hüququq yoxdur. Açarın qeydiyyatı müraciətinə rədd cavab verilmişdir.',
-  keyNoRightsRepeat: 'İstifadəçinin sistemdə işləmək hüququq yoxdur. Açarın təkrar qeydiyyatı üçün müraciət baxılma mərhələsindədir.',
-  keyAlreadyRegistered: 'Açarı qeydiyyata almaq üçün müraciət etmək mümkün deyil. Bu açar artıq sistemdə qeydiyyata alınmışdır.',
-
   UbPreFilterMainGroup: 'Atributlar üzrə',
 
   // mxGraph (org chart)

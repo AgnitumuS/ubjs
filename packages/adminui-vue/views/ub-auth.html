@@ -283,7 +283,7 @@
                 </el-form-item>
               </div>
             </div>
-            <div v-if="!hasNegotiate && !hasOpenIDConnect">
+            <div v-if="!hasNegotiate && !hasOpenIDConnect" style="margin-top: 2rem">
               <div v-if="!hasCERT2"><a href="#">{{ $ut('UBAuthForgotPassword') }}</a></div>
               <div v-if="registrationURL"><a :href="registrationURL">{{ $ut('UBAuthRegistration') }}</a></div>
             </div>
@@ -297,15 +297,6 @@
 <div id="app"></div>
 
 <script>
-
-  var cert2FormDefer = {}
-  var promiseFrm = Promise.resolve({})
-  //   = new Promise((resolve, reject) => {
-  //   cert2FormDefer.resolve = resolve
-  //   cert2FormDefer.reject = reject
-  // })
-  Vue.component('cert2-param-form', () => promiseFrm)
-
   var vm = new Vue({
     template: '#ULoginPageTpl',
 

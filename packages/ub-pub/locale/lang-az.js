@@ -55,6 +55,13 @@ UB.i18nExtend({
   ' Əllə iş salmaq üçün bu instruksiyadan <a href="models/adminui-pub/ub-extension/pluginUpdateInstruction_az.html" target="_blank">istifadə edin</a>. ' +
   ' Əgər yenilənmədən sonra mesaj yenədə qalıbsa, administratorun köməyindən istifadə edin.',
 
+  registrationPassed: 'Sertifikatınız uğurla yüklənmiş və emala verilmişdir',
+  keyAlreadyRegisteredForUser: 'Açar artıq başqa bir əməkdaş üçün qeydiyyata alınmışdır',
+  keyBlockedByAdmin: 'Administrator sistemə daxil olmaq üçün açardan istifadəçi bloka salmışdır. Blok üçün əsas: ',
+  keyNoRightsRejected: 'İstifadəçinin sistemdə işləmək hüququq yoxdur. Açarın qeydiyyatı müraciətinə rədd cavab verilmişdir.',
+  keyNoRightsRepeat: 'İstifadəçinin sistemdə işləmək hüququq yoxdur. Açarın təkrar qeydiyyatı üçün müraciət baxılma mərhələsindədir.',
+  keyAlreadyRegistered: 'Açarı qeydiyyata almaq üçün müraciət etmək mümkün deyil. Bu açar artıq sistemdə qeydiyyata alınmışdır.',
+
   unknownError: 'Naməlum səhv baş vermişdir. Xahiş edirik, administratora müraciət edəsiniz.',
   recordNotExistsOrDontHaveRights: 'Qeyd mövcud deyil, yaxud Sizin ona baxmaq üçün hüququnuz yoxdur',
   msgInvalidCertAuth: 'Girişə icazə verilmədi. Yanlış sertifikat, yaxud bağlı açar.',
