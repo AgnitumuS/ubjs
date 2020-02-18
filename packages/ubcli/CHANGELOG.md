@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `npx ubcli generateNginxCfg` - expires 600; should be added to `/clientRequire`, `/models` and `/static` locations
+  to prevent Google Chrome cache heuristic to take a `js` files from a disk cache even if they modified on server 
 
 ## [5.4.20] - 2020-02-18
 ### Changed

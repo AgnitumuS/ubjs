@@ -123,13 +123,16 @@ server {
     location /clientRequire {
       root {{{staticRoot}}};
       index .entryPoint.js;
+      expires 600;
       try_files $uri $uri/ $uri.js;
     }
     location /models {
       root {{{staticRoot}}}/clientRequire;
+      expires 600;
     }
     location ~ /statics(.*) {
       root {{{staticRoot}}};
+      expires 600;
       try_files $1 $1/index.html =404;
     }
 {{/serveStatic}}
