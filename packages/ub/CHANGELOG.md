@@ -8,9 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - ubConfig JSON schema: add `simpleCertAuth` parameter description; remove deprecated `novaLib` key 
 
 ### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.3.18] - 2020-02-18
+### Changed
+ - ubConfig JSON schema: add `simpleCertAuth` parameter description; remove deprecated `novaLib` key 
 
 ### Removed
  - legacy `newUserRegistration` event for Session object is **not emitted**. CERT auth schema what use it is deprecated.

@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - ESLint errors and warnings fixed (no functional changes)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.4.20] - 2020-02-18
+### Changed
+ - ESLint errors and warnings fixed (no functional changes)
 
 ## [5.4.19] - 2020-02-14
 ### Added

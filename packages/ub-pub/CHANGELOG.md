@@ -6,15 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.4.9] - 2020-02-18
+### Added
  - SignatureValidationResult: new property `certificate.certificateAsBuffer` - signer certificate in bin format
  
 ### Changed
  - i18n messages about certificate registration moved from `adminui-pub` into `ub-pub` to be used inside non-admin UI
    
-### Deprecated
-
-### Removed
-
 ### Fixed
  - i18n for `useCertificateInfo` (CERT2 auth with user/pwd) should be ... Continue instead of ...Ok
 

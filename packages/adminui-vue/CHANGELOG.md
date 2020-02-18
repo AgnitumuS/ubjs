@@ -6,18 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - re-logon window & ub-auth view: added support for CERT2 auth with user/password in case
- `uiSetting.adminUI.authenticationCert.requireUserName===true`
- - new view for CERT2 certificate registration (can be used as registration URL for CERT2 with requireUserName===true)
- 
+
 ### Changed
- - hide `Change language` user menu item in case only one language is supported
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [1.9.24] - 2020-02-18
+### Added
+ - re-logon window & ub-auth view: added support for CERT2 auth with user/password in case
+ `uiSetting.adminUI.authenticationCert.requireUserName===true`
+ - new view for CERT2 certificate registration (can be used as registration URL for CERT2 with requireUserName===true)
+ 
+### Changed
+ - hide `Change language` user menu item in case only one language is supported
 
 ## [1.9.23] - 2020-02-14
 ## [1.9.22] - 2020-02-13
