@@ -186,7 +186,6 @@ export default {
       this.$UB.core.UBApp.doCommand({
         cmdType: 'showForm',
         formCode: 'uba_user-changeUserPassword',
-        entity: 'uba_user',
         title: 'changePassword',
         isModal: true
       })

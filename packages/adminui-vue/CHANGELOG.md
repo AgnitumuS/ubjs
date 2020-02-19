@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - usage of BigInteger.js is removed in CERT2 with login/password auth
  
 ### Fixed
+ - `showForm` command can be executed without entity code in case form code is defined and form do not use processing module
+ ```
+ UB.core.UBApp.doCommand({
+   cmdType: 'showForm',
+   formCode: 'uba_user-changeUserPassword',
+   title: 'changePassword',
+   isModal: true
+ })
+```
 
 ## [1.9.24] - 2020-02-18
 ### Added
