@@ -148,7 +148,9 @@ UB.i18nExtend({
   NewPassword: 'New password',
   RetypePassword: 'Retype password',
   HowToCreatePassword: 'How to create a good password?',
-  passwordRecommendation: 'Password length should be 6-20 characters. <br > You can use digits, latin characters and symbols: <br >! @ # $ % ^ & * ( ) _ - + : ; , . ',
+  passwordRecommendation: 'Password length should be {0}-20 characters.\n ' +
+    'You can use digits, latin characters and symbols:' +
+    ' ! @ # $ % ^ & * ( ) _ - + : ; , . ',
   passwordsDoNotMatch: 'Passwords do not match',
   passwordChangedSuccessfully: 'Password changed successfully. Please logout to use new password',
 

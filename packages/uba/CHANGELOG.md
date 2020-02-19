@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `uba_user-changeUserPassword`: opportunity to influence password policy validators from the admin panel
+ - `uba_user-changeUserPassword`: new validator for matching new password with login
+ - `uba_user-changeUserPassword`: several cases error texts
+ - `uba_user-changeUserPassword`: covered UB requests with catch block
 
 ### Changed
 
