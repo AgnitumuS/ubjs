@@ -67,7 +67,7 @@ UB.i18nExtend({
     },
     cascader: {
       noMatch: 'Ҳеҷ мувофиқат пайдо нашуд',
-      loading: 'Боргирӣ ',
+      loading: 'Боргирӣ',
       placeholder: 'Интихоб кунед'
     },
     pagination: {

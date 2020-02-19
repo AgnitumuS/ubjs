@@ -1,9 +1,9 @@
 /* global UB */
 UB.i18nExtend({
-  ok: 'ОК',
-  cancel: 'Отмена',
   Yes: 'Да',
   No: 'Нет',
+  ok: 'ОК',
+  cancel: 'Отмена',
   Enter: 'Войти',
   Password: 'Пароль',
   User: 'Имя пользователя',
@@ -98,6 +98,7 @@ UB.i18nExtend({
     ' ! @ # $ % ^ & * ( ) _ - + : ; , . ',
   passwordsDoNotMatch: 'Пароли не совпадают',
   passwordChangedSuccessfully: 'Пароль успешно изменён. Необходимо выйти из приложения для вступления изменений в силу',
+
   EnterOldPassword: 'Введите текущий пароль',
   OldPassword: 'Текущий пароль',
   'Your password is expired. Please change password': 'Ваш пароль устарел. Для продолжения работы необходимо изменить пароль',
