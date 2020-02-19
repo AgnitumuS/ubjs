@@ -35,6 +35,10 @@ UB.i18nExtend({
   needChangePassword: 'Пользователь должен изменить пароль при следующем входе',
   uba: {
     changePassword: {
+      newPassword: {
+        matchWithLoginError: 'Password matches the login',
+        fieldRequirementsError: 'Does not meet the requirements'
+      },
       retypePassword: {
         errorText: 'Passwords mismatch'
       }

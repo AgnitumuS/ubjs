@@ -88,7 +88,9 @@ UB.i18nExtend({
   NewPassword: 'Yeni parol',
   RetypePassword: 'Parol təkrarən',
   HowToCreatePassword: 'Etibarlı parolu necə seçməli?',
-  passwordRecommendation: '* Parol 6 simvoldan qısa olmalıdır. <br > * parol rəqəmlərdən ibarət olmalıdır  <br > * parol latın əlifbasının böyük və kiçik simvollardan ibarət olmalıdır <br >parol xüsusi simvollardan ibarət olmalıdır: ! @ # $ % ^ & * ( ) _ - + : ; , . ',
+  passwordRecommendation: 'Şifrə uzunluğu {0} -20 işarədən ibarət olmalıdır.\n' +
+    'Nömrələrdən, latın hərflərindən və işarələrdən istifadə edə bilərsiniz:' +
+    ' ! @ # $ % ^ & * ( ) _ - + : ; , . ',
   passwordsDoNotMatch: 'Parollar üst-üstə düşmür',
   passwordChangedSuccessfully: 'Parol uğurla dəyişdirildi',
 

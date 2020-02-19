@@ -85,7 +85,9 @@ UB.i18nExtend({
   NewPassword: 'Kata sandi baru',
   RetypePassword: 'Ketik ulang kata sandi',
   HowToCreatePassword: 'Cara membuat password yang baik?',
-  passwordRecommendation: 'Panjang password harus 6-20 karakter. <br> Anda dapat menggunakan angka, charecters latin dan simbol-simbol: <br>! @ # $% ^ & * () _ - +:; ,. ',
+  passwordRecommendation: 'Panjang password harus {0}-20 karakter.\n' +
+    'Anda dapat menggunakan angka, charecters latin dan simbol-simbol: ' +
+    '! @ # $% ^ & * () _ - +:; ,. ',
   passwordsDoNotMatch: 'Sandi tidak cocok',
   passwordChangedSuccessfully: 'Sandi berhasil diubah. Silakan logout untuk menggunakan password baru',
 
