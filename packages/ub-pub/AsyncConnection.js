@@ -519,7 +519,7 @@ $App.connection.userLang()
           // we must calculate md5(login + ':' + realm + ':' + password) in binary format
           pwdHash.concat(CryptoJSCore.enc.Utf8.parse(':' + serverNonce + ':' + clientNonce))
           pwdForAuth = MD5(pwdHash).toString()
-          secretWord = pwdForAuth // :( medium unsecured
+          secretWord = pwdForAuth // medium unsecured
         } else {
           pwdForAuth = window.btoa(authParams.password)
           secretWord = pwdForAuth // unsecured - to be used only with HTTPS!!
@@ -976,12 +976,14 @@ UBConnection.prototype.getDomainInfo = function () {
  * @private
  */
 UBConnection.prototype.processBuffer = function processBuffer () {
-  let bufferCopy = this._bufferedRequests
+  const bufferCopy = this._bufferedRequests
   // get ready to new buffer queue
   this._bufferTimeoutID = 0
   this._bufferedRequests = []
-  let reqData = bufferCopy.map(r => r.request)
-  this.post('ubql', reqData).then(
+  const reqData = bufferCopy.map(r => r.request)
+  const methods = reqData.map(ubq => `${ubq.entity}.${ubq.method}`).join('*')
+  const uri = `ubql?rq=${methods}`
+  this.post(uri, reqData).then(
     (responses) => {
       // we expect responses in order we send requests to server
       bufferCopy.forEach(function (bufferedRequest, num) {
@@ -1029,9 +1031,10 @@ UBConnection.prototype.processBuffer = function processBuffer () {
  *      $App.connection.query({entity: 'ubm_desktop', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
  */
 UBConnection.prototype.query = function query (ubq, allowBuffer) {
-  let me = this
+  const me = this
   if (!allowBuffer || !BUFFERED_DELAY) {
-    return me.post('ubql', [ubq]).then(function (response) {
+    const uri = `ubql?rq=${ubq.entity}.${ubq.method}`
+    return me.post(uri, [ubq]).then(function (response) {
       return response.data[0]
     })
   } else {

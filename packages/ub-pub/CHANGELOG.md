@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `AsyncConnection.query` method will add a method names into post request URL, so calls to `ubql` endpoint will become
+ `POST /ubql?rq=entity1.method1*entity2.method2`. This allow to apply a custom login into reverse proxy level and also simplify
+ a debugging, since all methods are directly visible in the network browser panel
 
 ### Deprecated
 
