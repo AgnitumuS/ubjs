@@ -115,7 +115,7 @@
 			"dataType": "String", "size": 64,
 			"caption": "Password hash",
 			"defaultView": false,
-			"documentation": "PasswordHashHexa := Session.buildPasswordHash(login, plainPwd)"
+			"documentation": "PasswordHashHexa := Session._buildPasswordHash(login, plainPwd)"
 		},
 		{
 			"name": "lastPasswordChangeDate",
