@@ -3,15 +3,9 @@ const UB = require('@unitybase/ub-pub')
 require('../../ux/window/Notification')
 require('../view/Viewport')
 require('../core/UBDataLoader.js')
-require('../view/cryptoUI/ReadPK')
-require('../view/cryptoUI/SelectCert')
 require('./UBStoreManager')
 
 const _ = require('lodash')
-
-const RE_LETTERS = /[A-Za-zА-Яа-яЁёіІїЇґҐ]/
-const RE_ENGLISH = /[A-Za-z]/
-const RE_CAPS = /[A-ZА-ЯЁІЇҐ]/
 
 /**
  * UnityBase adminUI application.
@@ -177,125 +171,9 @@ Ext.define('UB.core.UBApp', {
     return this
   },
 
-  /**
-   * Check field input and set a class in cace letters is english or CAPS
-   * @param {Ext.field.Field} textField
-   */
-  passwordKeyUpHandler: function (textField) {
-    let s = textField.getValue() || ''
-    if (!s) {
-      textField.removeCls('ub-pwd-keyboard-caps')
-      textField.removeCls('ub-pwd-keyboard-en')
-    } else {
-      let n = s.length
-      let t = s.substr(n - 1, 1)
-      if (RE_LETTERS.test(t)) {
-        if (RE_ENGLISH.test(t)) {
-          textField.addClass('ub-pwd-keyboard-en')
-        } else {
-          textField.removeCls('ub-pwd-keyboard-en')
-        }
-        if (RE_CAPS.test(t)) {
-          textField.addClass('ub-pwd-keyboard-caps')
-        } else {
-          textField.removeCls('ub-pwd-keyboard-caps')
-        }
-      }
-    }
-  },
-
   onPasswordChange: function (connection) {
-    var wind = new Ext.Window({
-      extend: 'Ext.form.Panel',
-      layout: 'vbox',
-      height: 300,
-      width: 400,
-      items: [{
-        xtype: 'label',
-        width: '100%',
-        text: UB.i18n('Your password is expired. Please change password')
-      }, {
-        xtype: 'textfield',
-        inputType: 'password',
-        listeners: {
-          keyup: {
-            fn: $App.passwordKeyUpHandler
-          }
-        },
-        enableKeyEvents: true,
-        emptyText: UB.i18n('EnterOldPassword'),
-        fieldLabel: UB.i18n('OldPassword'),
-        labelWidth: 100,
-        name: 'oldPwd',
-        margins: 10,
-        width: '100%',
-        allowBlank: false
-
-      }, {
-        xtype: 'textfield',
-        inputType: 'password',
-        listeners: {
-          keyup: {
-            fn: $App.passwordKeyUpHandler
-          }
-        },
-        enableKeyEvents: true,
-        emptyText: UB.i18n('EnterNewPassword'),
-        fieldLabel: UB.i18n('NewPassword'),
-        labelWidth: 100,
-        name: 'newPwd',
-        margins: 10,
-        width: '100%',
-        allowBlank: false,
-        afterLabelTextTpl: [
-          '<b data-qtitle="', UB.i18n('HowToCreatePassword'),
-          '" data-qtip="', UB.i18n('passwordRecommendation'),
-          '" style="color: red;">?</b>'
-        ]
-      }, {
-        xtype: 'textfield',
-        inputType: 'password',
-        listeners: {
-          keyup: {
-            fn: $App.passwordKeyUpHandler
-          }
-        },
-        enableKeyEvents: true,
-        emptyText: UB.i18n('RetypePassword'),
-        fieldLabel: UB.i18n('RetypePassword'),
-        labelWidth: 100,
-        name: 'newPwdRetyped',
-        margins: 10,
-        width: '100%',
-        allowBlank: false,
-        validator: function (value) {
-          let valid = this.up('panel').down('textfield[name=newPwd]').getValue() === value
-          this.up('window').down('button[ubID=btnOK]')[valid ? 'enable' : 'disable']()
-          return (valid)
-        }
-      }],
-      buttons: [{
-        ubID: 'btnOK',
-        text: UB.i18n('Change'),
-        iconCls: 'fas fa-save',
-        disabled: true
-      }]
-
-    })
-    wind.down('component[ubID="btnOK"]').handler = function () {
-      connection.xhr({
-        url: 'changePassword',
-        method: 'POST',
-        data: {
-          newPwd: wind.down('textfield[name=newPwd]').getValue(),
-          pwd: window.UB.SHA256('salt' + wind.down('textfield[name=oldPwd]').getValue()).toString()
-        }
-      }).then(function () {
-        wind.close()
-        $App.dialogInfo('passwordChangedSuccessfully').then(function () { $App.logout() })
-      })
-    }
-    wind.show()
+    // password changed on login form
+    $App.dialogInfo('Your password is expired. Please change password').then(function () { $App.logout() })
   },
 
   /**
