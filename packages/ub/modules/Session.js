@@ -379,6 +379,21 @@ Session.reset = function (sessionID, userID) {
   _sessionCached.zone = undefined
 }
 
+/**
+ * Build password hash based on user login and plain password
+ * Called by server during authorization handshake.
+ *
+ * In case application need to use it's own hash algorithm in can override this function inside model initialization.
+ * Maximum result length is 64 char. Result is case sensitive.
+ *
+ * @param {string} uName
+ * @param {string} uPwdPlain
+ * @return {string} password hash to be stored/compared with uba_used.uPasswordHashHexa
+ */
+Session._buildPasswordHash = function (uName, uPwdPlain) {
+  return nsha256('salt' + uPwdPlain)
+}
+
 function fillGroupIDsLimit () {
   if (GROUP_IDS_LIMIT !== undefined) return
   GROUP_IDS_LIMIT = []

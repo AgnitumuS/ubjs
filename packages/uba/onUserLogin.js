@@ -26,7 +26,7 @@ function checkAdvancedSecurity (req) {
     advData = UB.Repository('uba_advSecurity')
       .attrs(['ID', 'allowedIP', 'refreshIP', 'fp', 'refreshFp', 'keyMediaName', 'refreshKeyMedia', 'mi_modifyDate'])
       .where('[userID]', '=', Session.userID)
-      .selectAsObject()[ 0 ]
+      .selectSingle()
   } catch (e) {
     // nothing to do - table uba_advSecurity not exists
     console.warn('Advanced security is disabled because table uba_advSecurity does not exists')

@@ -127,7 +127,7 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
     }
   }
 
-  newPwd = nsha256('salt' + newPwd)
+  newPwd = Session._buildPasswordHash(userName, newPwd)
   // checkPrevPwdNum
   if (passwordPolicy.checkPrevPwdNum > 0) {
     UB.Repository('uba_prevPasswordsHash')
