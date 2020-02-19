@@ -423,32 +423,16 @@
           }
         })
       },
-      bigintPasswordHash: function(pwd){
-        let maxLen = 30, buff, c, resN = 1,
-          res = bigInt.one
-        buff = pwd
-        while(buff.length<maxLen){
-          buff = buff + pwd.length + pwd
-        }
-        buff = buff.substr(0, maxLen)
-        for(let i=1; i<=30; i++){
-          c = buff.charCodeAt(i-1) - 15
-          res = res.multiply(Math.ceil(c / 3)).add(c*i + i)
-        }
-        return res.toString().substr(0, maxLen)
-      },
       doCert2Login: function (pkParams) {
         var me = this
-        if (!this.simpleCertAuth) { // certificate + user name + pwd - only one project use it
-          this.$UB.inject('/models/UBA/BigInteger.js').then(function () {
-            me.$refs['authForm'].validate(function (valid) {
-              if (valid) {
-                me.processing = true
-                window.deferred.resolve({authSchema: 'CERT2', login: me.authData.user, password: me.bigintPasswordHash(me.authData.pwd)})
-              } else {
-                return false
-              }
-            })
+        if (!this.simpleCertAuth) { // certificate + user name + pwd
+          me.$refs['authForm'].validate(function (valid) {
+            if (valid) {
+              me.processing = true
+              window.deferred.resolve({authSchema: 'CERT2', login: me.authData.user, password: me.authData.pwd})
+            } else {
+              return false
+            }
           })
         } else {
           this.processing = true
