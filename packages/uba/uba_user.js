@@ -1,4 +1,4 @@
-﻿/* global uba_user ubs_settings uba_otp nsha256 */
+﻿/* global uba_user ubs_settings uba_otp */
 // eslint-disable-next-line camelcase
 let me = uba_user
 const UBA_COMMON = require('@unitybase/base').uba_common
@@ -67,24 +67,24 @@ function fillFullNameIfMissing (ctxt) {
  * @param {String} userName Either userName or userID must be specified
  * @param  {String} password
  * @param {Boolean} [needChangePassword=false] If true the password will by expired
- * @param {String} [oldPwd] Optional for optimisation
+ * @param {String} [oldPwdHash] Optional for optimisation
  * @method changePassword
  * @memberOf uba_user_ns.prototype
  * @memberOfModule @unitybase/uba
  * @public
  */
-me.changePassword = function (userID, userName, password, needChangePassword, oldPwd) {
+me.changePassword = function (userID, userName, password, needChangePassword, oldPwdHash) {
   if (!(userID || userName) || !password) throw new Error('Invalid parameters')
 
   let store = UB.DataStore('uba_user')
-  if (userID && (!userName || !oldPwd)) {
+  if (userID && (!userName || !oldPwdHash)) {
     UB.Repository('uba_user').attrs(['ID', 'name', 'uPasswordHashHexa']).where('[ID]', '=', userID).select(store)
     userName = store.get('name')
-    oldPwd = store.get('uPasswordHashHexa')
-  } else if (userName && (!userID || !oldPwd)) {
+    oldPwdHash = store.get('uPasswordHashHexa')
+  } else if (userName && (!userID || !oldPwdHash)) {
     UB.Repository('uba_user').attrs(['ID', 'name', 'uPasswordHashHexa']).where('[name]', '=', userName.toLowerCase()).select(store)
     userID = store.get('ID')
-    oldPwd = store.get('uPasswordHashHexa')
+    oldPwdHash = store.get('uPasswordHashHexa')
   }
 
   // eslint-disable-next-line camelcase
@@ -155,62 +155,52 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
       userID: userID
     }
   )
-  // store oldPwd
-  if (oldPwd) {
+  // store oldPwdHash
+  if (oldPwdHash) {
     store.run('insert', {
       entity: 'uba_prevPasswordsHash',
       execParams: {
         userID: userID,
-        uPasswordHashHexa: oldPwd
+        uPasswordHashHexa: oldPwdHash
       }
     })
   }
 }
 
 /**
- * Change (or set) user password.
- * For users with `admins` group we allow to change password for everyone,
- * in this case `forUser` parameter required.
+ * Change (or set) user password for currently logged in user.
+ * Members of `Supervisor` role can change password for other users using uba_user.changeOtherUserPassword method
  * @private
  * @param {THTTPRequest}req
  * @param {THTTPResponse}resp
  */
 function changePasswordEp (req, resp) {
-  let reqBody = req.read()
-  let params = JSON.parse(reqBody)
+  const reqBody = req.read()
+  const params = JSON.parse(reqBody)
   let forUser = params.forUser
-  let newPwd = params.newPwd || ''
-  let pwd = params.pwd || ''
-  let needChangePassword = params.needChangePassword || false
-  let store = UB.DataStore('uba_user')
-  let oldPwd
+  const newPwd = params.newPwd || ''
+  const pwd = params.pwd || ''
+  const needChangePassword = params.needChangePassword || false
+  const store = UB.DataStore('uba_user')
+  let dbPwdHash
 
   if (!newPwd) throw new Error('newPwd parameter is required')
 
   let failException = null
   let userID = Session.userID || UBA_COMMON.USERS.ANONYMOUS.ID
   try {
-    if (forUser) {
-      let roles = (Session.uData.roles || '').split(',')
-      if (!(UBA_COMMON.isSuperUser() || (roles.indexOf('accountAdmins') !== -1))) {
-        throw new Error(`Change password for other users allowed only for "${UBA_COMMON.ROLES.ADMIN.NAME}" or "accountAdmins" group members`)
-      }
-      UB.Repository('uba_user').attrs('ID', 'uPasswordHashHexa').where('[name]', '=', '' + forUser.toLowerCase()).select(store)
-      if (store.eof) throw new Error('User not found')
-
-      userID = store.get('ID')
-      oldPwd = store.get('uPasswordHashHexa')
-    } else {
-      userID = Session.userID
-      UB.Repository('uba_user').attrs('name', 'uPasswordHashHexa').where('ID', '=', userID).select(store)
-      if (!store.eof) {
-        forUser = store.get('name')
-        oldPwd = store.get('uPasswordHashHexa')
-      }
-      // checkPrevPwd
-      if (pwd !== oldPwd) throw new UB.UBAbort('<<<Incorrect old password>>>')
+    userID = Session.userID
+    UB.Repository('uba_user').attrs('name', 'uPasswordHashHexa').where('ID', '=', userID).select(store)
+    if (!store.eof) {
+      forUser = store.get('name')
+      dbPwdHash = store.get('uPasswordHashHexa')
     }
-    me.changePassword(userID, forUser, newPwd, needChangePassword, oldPwd)
+    // check password
+    const currentPwdHash = Session._buildPasswordHash(forUser, pwd)
+    if (currentPwdHash !== dbPwdHash) {
+      throw new UB.UBAbort('<<<Incorrect old password>>>')
+    }
+    me.changePassword(userID, forUser, newPwd, needChangePassword, dbPwdHash)
   } catch (e) {
     failException = e
   }

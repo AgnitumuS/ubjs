@@ -155,7 +155,7 @@
               method: 'POST',
               data: {
                 newPwd: me.changePwd.newPwd,
-                pwd: UB.SHA256('salt' + me.changePwd.oldPwd).toString()
+                pwd: me.changePwd.oldPwd
               }
             }).then(function () {
               me.changePwd.changedSuccessfully = true

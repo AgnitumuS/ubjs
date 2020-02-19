@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `uba_user-changeUserPassword`: opportunity to influence password policy validators from the admin panel
  - `uba_user-changeUserPassword`: new validator for matching new password with login
- - `uba_user-changeUserPassword`: several cases error texts
- - `uba_user-changeUserPassword`: covered UB requests with catch block
 
 ### Changed
+ - `changePassword` endpoint will accept old password in plain text (instead of hashed) to allow server to apply a
+ custom hashing algorithm from `Session._buildPasswordHash`
 
 ### Deprecated
 
 ### Removed
+ - ability to change password for other user using `changePassword` endpoint for members of `admin` group is removed.
+ `uba_user.changeOtherUserPassword` method should be used instead. By default access to this method is granted
+ to members or `Supervisor` role   
 
 ### Fixed
 

@@ -163,7 +163,7 @@ module.exports.default = {
       }
 
       if (this.isOwnRecord) {
-        execParams.pwd = this.$UB.connection.SHA256('salt' + this.oldPass).toString()
+        execParams.pwd = this.oldPass
       } else {
         execParams.forUser = this.parentContext.userLogin
         execParams.needChangePassword = this.isPasswordNeedChange
