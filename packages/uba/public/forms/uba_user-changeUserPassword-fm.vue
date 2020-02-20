@@ -116,7 +116,7 @@ module.exports.default = {
         minLength: minLength(this.passMinLength),
         maxLength: maxLength(20),
         ...(this.isAllowedMatchWithLogin === 'false'
-          ? { notEqualToLogin: (value) => value !== this.$UB.connection.userData('login') }
+          ? { notEqualToLogin: (value) => !this.$UB.connection.userData('login').includes(value) }
           : {})
       },
       retypePass: {
@@ -135,7 +135,7 @@ module.exports.default = {
       : 3
 
     const allowMatchWithLoginSettings = UBS.Settings.findByKey('UBA.passwordPolicy.allowMatchWithLogin')
-    this.isAllowedMatchWithLogin = allowMatchWithLoginSettings ? !!allowMatchWithLoginSettings.value : false
+    this.isAllowedMatchWithLogin = allowMatchWithLoginSettings ? allowMatchWithLoginSettings.value : 'true'
   },
 
   methods: {

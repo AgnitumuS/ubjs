@@ -98,7 +98,7 @@ UB.i18nExtend({
   'Password is too short': 'Пароль слишком короткий',
   'Password is too simple': 'Пароль не отвечает требованиям надежности',
   'Password is dictionary word': 'Пароль не может быть словом со словаря',
-  'Password matches with login': 'Пароль не может совпадать с логином',
+  'Password matches with login': 'Пароль не должен содержать в себе имя пользователя',
   'Previous password is not allowed': 'Пароль совпадает с одним из предидущих',
   logout: 'Logout',
   fieldValidationError: 'Can not save <b>{0}</b> card.<br > Invalid field',

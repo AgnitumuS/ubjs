@@ -173,7 +173,7 @@ UB.i18nExtend({
   'Password is too short': 'Пароль занадто короткий',
   'Password is too simple': 'Пароль не відповідає критеріям надійності',
   'Password is dictionary word': 'Пароль не може бути словом із словника',
-  'Password matches with login': 'Пароль не може співпадати з логіном',
+  'Password matches with login': 'Пароль не повинен містити в собі логін',
   'Previous password is not allowed': 'Пароль співпадає з одним із попередніх',
   logout: 'Вихід',
   fieldValidationError: 'Неможливо зберегти картку <b>{0}</b>.<br > Невірно заповнено поле ',

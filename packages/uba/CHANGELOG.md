@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `changePassword` endpoint will accept old password in plain text (instead of hashed) to allow server to apply a
  custom hashing algorithm from `Session._buildPasswordHash`
+ - in case `UBA.passwordPolicy.allowMatchWithLogin` set to `true` (default) `changePassword` endpoint will check
+ password do not **include** user login. Before this changes **equality** is verified  
 
 ### Deprecated
 

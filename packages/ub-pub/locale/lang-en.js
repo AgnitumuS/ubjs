@@ -160,9 +160,9 @@ UB.i18nExtend({
   'Incorrect old password': 'Incorrect current password',
   'Password is too short': 'New password is too short',
   'Password is too simple': 'New password is too simple',
-  'Password is dictionary word': 'New password cannot be as word from dictionary',
-  'Password matches with login': 'New password matches with login',
-  'Previous password is not allowed': 'New password matches with one of the previous',
+  'Password is dictionary word': 'New password must not be a dictionary word',
+  'Password matches with login': 'Password must not contain username',
+  'Previous password is not allowed': 'New password must not matches with one of the previous',
   logout: 'Logout',
   fieldValidationError: 'Cannot save <b>{0}</b> card.<br > Invalid field',
   blankText: 'This field is required'

@@ -122,7 +122,7 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
 
   // allowMatchWithLogin
   if (!passwordPolicy.allowMatchWithLogin) {
-    if (userName === newPwd) {
+    if (newPwd.includes(userName)) {
       throw new Error('<<<Password matches with login>>>')
     }
   }
@@ -184,11 +184,10 @@ function changePasswordEp (req, resp) {
   const store = UB.DataStore('uba_user')
   let dbPwdHash
 
-  if (!newPwd) throw new Error('newPwd parameter is required')
-
   let failException = null
   let userID = Session.userID || UBA_COMMON.USERS.ANONYMOUS.ID
   try {
+    if (!newPwd) throw new UB.ESecurityException('changePassword: newPwd parameter is required')
     userID = Session.userID
     UB.Repository('uba_user').attrs('name', 'uPasswordHashHexa').where('ID', '=', userID).select(store)
     if (!store.eof) {
@@ -198,7 +197,7 @@ function changePasswordEp (req, resp) {
     // check password
     const currentPwdHash = Session._buildPasswordHash(forUser, pwd)
     if (currentPwdHash !== dbPwdHash) {
-      throw new UB.UBAbort('<<<Incorrect old password>>>')
+      throw new UB.ESecurityException('<<<Incorrect old password>>>')
     }
     me.changePassword(userID, forUser, newPwd, needChangePassword, dbPwdHash)
   } catch (e) {
