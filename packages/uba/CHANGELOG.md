@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  to members or `Supervisor` role   
 
 ### Fixed
+ - change password form will load correct setting key (UBA.passwordPolicy.minLength) fro minimum pwd length 
+ and use `UBS.Settings.loadKey` instead of UB.Repository 
 
 ## [5.3.31] - 2020-02-18
 ## [5.3.30] - 2020-02-13

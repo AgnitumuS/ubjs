@@ -59,6 +59,7 @@
 </template>
 
 <script>
+/* global UBS */
 const { Form } = require('@unitybase/adminui-vue')
 const { validationMixin } = require('vuelidate/lib/index')
 const { required, minLength, maxLength, sameAs } = require('vuelidate/lib/validators/index')
@@ -128,32 +129,16 @@ module.exports.default = {
   },
 
   mounted () {
-    this.loadPasswordPolicy()
+    const minLengthSettings = UBS.Settings.findByKey('UBA.passwordPolicy.minLength')
+    this.passMinLength = minLengthSettings
+      ? minLengthSettings.value ? +minLengthSettings.value : +minLengthSettings.defaultValue
+      : 3
+
+    const allowMatchWithLoginSettings = UBS.Settings.findByKey('UBA.passwordPolicy.allowMatchWithLogin')
+    this.isAllowedMatchWithLogin = allowMatchWithLoginSettings ? !!allowMatchWithLoginSettings.value : false
   },
 
   methods: {
-    async loadPasswordPolicy () {
-      try {
-        const { settingValue: settingLength, defaultValue: defaultLength } = await this.$UB.connection
-          .Repository('ubs_settings')
-          .attrs('settingKey', 'settingValue', 'defaultValue')
-          .where('settingKey', '=', 'UBA.passwordPolicy.maxInvalidAttempts')
-          .limit(1)
-          .selectSingle()
-        this.passMinLength = +settingLength || +defaultLength
-
-        const { settingValue: settingAllowance, defaultValue: defaultAllowance } = await this.$UB.connection
-          .Repository('ubs_settings')
-          .attrs('settingKey', 'settingValue', 'defaultValue')
-          .where('settingKey', '=', 'UBA.passwordPolicy.allowMatchWithLogin')
-          .limit(1)
-          .selectSingle()
-        this.isAllowedMatchWithLogin = settingAllowance || defaultAllowance
-      } catch (e) {
-        this.$errorReporter({ errMsg: e.message })
-      }
-    },
-
     async submit () {
       this.$v.$touch()
       if (this.$v.$error) return
