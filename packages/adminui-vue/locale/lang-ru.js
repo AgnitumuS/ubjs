@@ -133,7 +133,7 @@ UB.i18nExtend({
 
   sidebar: {
     desktopSelector: {
-      title: 'Вибор рабочего стола'
+      title: 'Выбор рабочего стола'
     }
   },
 
@@ -142,7 +142,7 @@ UB.i18nExtend({
       list: {
         title: 'Фильтры'
       },
-      conditionPlaceholder: 'Виражение',
+      conditionPlaceholder: 'Выражение',
       valuePlaceholder: 'Значение',
       date: {
         from: 'от',

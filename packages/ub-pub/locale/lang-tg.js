@@ -1,9 +1,9 @@
 /* global UB */
 UB.i18nExtend({
-  ok: 'ОК',
-  cancel: 'Бекор кардан',
   Yes: 'Ҳа',
   No: 'Не',
+  ok: 'ОК',
+  cancel: 'Бекор кардан',
   Enter: 'Даромад',
   Password: 'Гузарвожа',
   User: 'Истифодабаранда', // login
@@ -17,10 +17,10 @@ UB.i18nExtend({
   KerberosHeader: 'Вуруд бо истифода аз аккаунти <br/> системаи амалиетӣ',
   KerberosTip: 'Воридшавӣ бо ҳуқуқи истифодабарандае, ки ба системаи амалиёти ворид шудааст. Компютер бояд ба домен дохил карда шавад',
 
-  OpenIDHeader: 'Login using external authorization service',
-  OpenidTip: 'Login using external authorization service. After clicking "enter", enter authorization data in the authorization window.',
+  OpenIDHeader: 'Вход через сервис авторизации',
+  OpenidTip: 'Вход через внешний сервис авторизации. После нажатия "войти", введите данные в окне автризации',
   OpenIDConnect: 'OpenID',
-  authOpenIDConnectFail: "Provider can't authorize your request",
+  authOpenIDConnectFail: 'Удостоверяющий центр отклонил запрос на аутентификацию',
 
   Authentication: 'Аттестатсия',
   RegistrationMode: 'Низоми бақайдгири',
@@ -60,9 +60,20 @@ UB.i18nExtend({
   'Selected certificate': 'Шаҳодатномаи интихобшуда',
   'Select certificate file': 'Файлҳои шаҳодатномаро интихоб кунед',
   LoadCertificatesFails: 'Мутаассифона, шаҳодатнома ёфт нашуд. Шаҳодатномаи худро интихоб ва бор кунед, ки бо калиди шахсии шумо мувофиқат мекунад.',
+  LoadCertificatesFailsCASelect: 'Для использования личного ключа необходим его сертификат. <br><br> Пожалуйста, выберите АЦСК в котором Вы получили личный ключ и мы попробуем загрузить сертификат автоматически',
   'Load': 'Бор кардан',
   'Cancel': 'Бекор кардан',
   'ByKeyFile': 'Файл',
+  'Use proxy server': 'Подключаться через прокси серервер',
+  'Proxy host': 'Сервер',
+  'Proxy port': 'Порт',
+  'Authenticate on proxy': 'Аутентифицировть на прокси сервере',
+  'User name': 'Пользователь',
+  'Save password': 'Сохранять пароль',
+  'Save': 'Сохранить',
+  'Select CA': 'Выберите АЦСК',
+  'CA': 'АЦСК',
+  'Crypto library settings': 'Параметры библиотеки подписания',
 
   unknownError: 'Хатогии номаълум рух додааст. Лутфан бо мудири системаи худ тамос гиред.',
   recordNotExistsOrDontHaveRights: 'Маълумот вуҷуд надорад ё шумо ҳуқуқи дастрасӣ надоред',
@@ -82,6 +93,61 @@ UB.i18nExtend({
   selectSigningCertificate: 'Интихоб кунед файлро бо сертификат барои имзо',
   certificate: 'Сертификат',
   certificates: 'Сертификатҳо',
+  SignatureVerificationResultObj: {
+    _: 'Результат проверки подписи(ей)',
+    valid: {
+      yes: 'Подпись проверена успешно, целостность данных подтверждена',
+      no: 'Подпись не верна',
+      warnings: {
+        annotations: 'Документ содержит аннотации',
+        signatureNotCoversWholeDocument: 'Подпись не покрывает весь документ'
+      }
+    },
+    tspValid: {
+      yes: 'Время подписи подтверждено квалифицированной меткой времени для подписи от Поставщика',
+      no: 'Время подписи НЕ ПОДТВЕРЖДЕНО квалифицированной меткой времени'
+    },
+    ocspVerified: {
+      yes: 'Сертификат для подписи был действителен на момент подписания',
+      no: 'Действительность сертификата для подписи на момент подписания НЕ ИЗВЕСТНА'
+    },
+    hardwareKeyUsed: 'hardwareKeyUsed',
+    signingTime: 'Время нанесения подписи',
+    signatureStatus: 'Статус подписи',
+    signatureAuthor: 'Подписант',
+    certificate: {
+      _: 'Сертификат',
+      keyUsage: 'Назначение ключей',
+      serial: 'Регистрационный номер',
+      validFrom: 'Начало срока действия',
+      validTo: 'Конец срока действия',
+      issuedBy: {
+        _: 'Видано',
+        orgName: 'Организация',
+        fullName: 'Центр сертификации',
+        country: 'Страна',
+        locality: 'Расположение',
+        issuerID: 'РН центру сертификации',
+        orgUnit: 'Департамент(подразделение)'
+      },
+      subject: {
+        _: 'Владелец',
+        DRFO: 'ДРФЛ',
+        fullName: 'Наименование',
+        country: 'Страна',
+        locality: 'Расположение',
+        eMail: 'E-Mail',
+        phone: 'Телефон'
+      },
+      organization: {
+        _: 'Организация(учреждение)',
+        EDRPOU: 'ЄГРПОУ',
+        orgName: 'Название',
+        position: 'Должность подписанта',
+        orgUnit: 'Департамент(подразделение)'
+      }
+    }
+  },
   'UacException BAD_PASSWORD : 1016': 'Гузарвожа нодуруст ё калид вайрон мебошад',
   'uac_certStatusError': 'Ҳолати шаҳодатнома муаян кардан имконнопазир мебошад',
   'uac_certificateRevoked': 'Шаҳодатнома аз тарафи маркази шаҳодатнома бозпас шуд. Шояд вакти кории шаҳодатнома ба итмом расидааст.',
@@ -99,6 +165,7 @@ UB.i18nExtend({
   passwordsDoNotMatch: 'Гузарвожаҳо мувофиқ нестанд',
   passwordChangedSuccessfully: 'Гузарвожа бомуваффақият ивваз карда шуд. Барои ворид намудани тағирот шумо бояд аз приложения бароед.',
   EnterOldPassword: 'Гузарвожаи ҷориро ворид кунед',
+
   OldPassword: 'Гузарвожаи ҳозира',
   'Your password is expired. Please change password': 'Мӯҳлати гузарвожаи шумо гузаштааст. Барои идомаи кор, шумо бояд гузарвожаро ивваз кунед',
   'Incorrect old password': 'Гузарвожаи ҷорӣ хато аст',

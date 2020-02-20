@@ -1,9 +1,9 @@
 /* global UB */
 UB.i18nExtend({
-  ok: 'ОК',
-  cancel: 'Отмена',
   Yes: 'Да',
   No: 'Нет',
+  ok: 'ОК',
+  cancel: 'Отмена',
   Enter: 'Войти',
   Password: 'Пароль',
   User: 'Имя пользователя',
@@ -64,14 +64,14 @@ UB.i18nExtend({
   'Load': 'Загрузить',
   'Cancel': 'Отменить',
   'ByKeyFile': 'Файл',
-  'Use proxy server': 'Подключатся через прокси серервер',
+  'Use proxy server': 'Подключаться через прокси серервер',
   'Proxy host': 'Сервер',
   'Proxy port': 'Порт',
   'Authenticate on proxy': 'Аутентифицировть на прокси сервере',
   'User name': 'Пользователь',
   'Save password': 'Сохранять пароль',
   'Save': 'Сохранить',
-  'Select CA': 'Віберите АЦСК',
+  'Select CA': 'Выберите АЦСК',
   'CA': 'АЦСК',
   'Crypto library settings': 'Параметры библиотеки подписания',
 
@@ -164,6 +164,7 @@ UB.i18nExtend({
     ' ! @ # $ % ^ & * ( ) _ - + : ; , . ',
   passwordsDoNotMatch: 'Пароли не совпадают',
   passwordChangedSuccessfully: 'Пароль успешно изменён. Необходимо выйти из приложения для вступления изменений в силу',
+
   EnterOldPassword: 'Введите текущий пароль',
   OldPassword: 'Текущий пароль',
   'Your password is expired. Please change password': 'Ваш пароль устарел. Для продолжения работы необходимо изменить пароль',
