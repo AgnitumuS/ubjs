@@ -1,6 +1,6 @@
 ﻿/* global uba_user ubs_settings uba_otp */
 // eslint-disable-next-line camelcase
-let me = uba_user
+const me = uba_user
 const UBA_COMMON = require('@unitybase/base').uba_common
 const UB = require('@unitybase/ub')
 const Session = UB.Session
@@ -28,11 +28,11 @@ me.on('delete:before', denyBuildInUserDeletion)
  * @param {ubMethodParams} ctxt
  */
 function checkDuplicateUser (ctxt) {
-  let params = ctxt.mParams.execParams
-  let newName = params.name
-  let ID = params.ID
+  const params = ctxt.mParams.execParams
+  const newName = params.name
+  const ID = params.ID
   if (newName) {
-    let store = UB.Repository('uba_user').attrs('ID')
+    const store = UB.Repository('uba_user').attrs('ID')
       .where('name', '=', newName.toLowerCase())
       .whereIf(ID, 'ID', '<>', ID)
       .select()
@@ -51,7 +51,7 @@ function checkDuplicateUser (ctxt) {
  * @param {ubMethodParams} ctxt
  */
 function fillFullNameIfMissing (ctxt) {
-  let params = ctxt.mParams.execParams
+  const params = ctxt.mParams.execParams
   if (!params.fullName) {
     params.fullName = params.name
   }
@@ -76,7 +76,7 @@ function fillFullNameIfMissing (ctxt) {
 me.changePassword = function (userID, userName, password, needChangePassword, oldPwdHash) {
   if (!(userID || userName) || !password) throw new Error('Invalid parameters')
 
-  let store = UB.DataStore('uba_user')
+  const store = UB.DataStore('uba_user')
   if (userID && (!userName || !oldPwdHash)) {
     UB.Repository('uba_user').attrs(['ID', 'name', 'uPasswordHashHexa']).where('[ID]', '=', userID).select(store)
     userName = store.get('name')
@@ -88,7 +88,7 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
   }
 
   // eslint-disable-next-line camelcase
-  let passwordPolicy = ubs_settings ? {
+  const passwordPolicy = ubs_settings ? {
     minLength: ubs_settings.loadKey('UBA.passwordPolicy.minLength', 3),
     checkCmplexity: ubs_settings.loadKey('UBA.passwordPolicy.checkCmplexity', false),
     checkDictionary: ubs_settings.loadKey('UBA.passwordPolicy.checkDictionary', false),
@@ -240,19 +240,19 @@ function changePasswordEp (req, resp) {
  * @published
  */
 function changeOtherUserPassword (ctxt) {
-  let { newPwd, needChangePassword, forUser } = ctxt.mParams.execParams
-  let store = UB.DataStore('uba_user')
+  const { newPwd, needChangePassword, forUser } = ctxt.mParams.execParams
+  const store = UB.DataStore('uba_user')
 
   if (!newPwd) throw new Error('newPwd parameter is required')
 
   let failException = null
-  let userID = UBA_COMMON.USERS.ANONYMOUS.ID
+  const userID = UBA_COMMON.USERS.ANONYMOUS.ID
   try {
     UB.Repository('uba_user').attrs('ID', 'uPasswordHashHexa').where('[name]', '=', '' + forUser.toLowerCase()).select(store)
     if (store.eof) throw new Error('User not found')
 
-    let userID = store.get('ID')
-    let oldPwd = store.get('uPasswordHashHexa')
+    const userID = store.get('ID')
+    const oldPwd = store.get('uPasswordHashHexa')
 
     me.changePassword(userID, forUser, newPwd, needChangePassword || false, oldPwd)
   } catch (e) {
@@ -288,8 +288,8 @@ me.changeOtherUserPassword = changeOtherUserPassword
  * @param {*} value
  */
 function internalSetUDataKey (key, value) {
-  let userID = Session.userID
-  let user = UB.Repository('uba_user').attrs(['name', 'uData', 'mi_modifyDate']).where('ID', '=', userID).select()
+  const userID = Session.userID
+  const user = UB.Repository('uba_user').attrs(['name', 'uData', 'mi_modifyDate']).where('ID', '=', userID).select()
   if (user.eof) {
     throw new Error('user is unknown or not logged in')
   }
@@ -323,14 +323,14 @@ function internalSetUDataKey (key, value) {
  * @published
  */
 function changeLanguage (ctxt) {
-  let params = ctxt.mParams
+  const params = ctxt.mParams
   const newLang = params.newLang
 
   if (!newLang) {
     throw new Error('newLang parameter is required')
   }
 
-  let supportedLangs = uba_user.entity.connectionConfig.supportLang
+  const supportedLangs = uba_user.entity.connectionConfig.supportLang
   if (supportedLangs.indexOf(newLang) < 0) {
     throw new Error(`Language "${newLang}" not supported`)
   }
@@ -352,7 +352,7 @@ me.changeLanguage = changeLanguage
  * @published
  */
 function setUDataKey (ctxt) {
-  let params = ctxt.mParams
+  const params = ctxt.mParams
   const key = params.key
   const value = params.value
   if (!key) throw new Error('key parameter is required')
@@ -370,8 +370,8 @@ me.setUDataKey = setUDataKey
 function ubaAuditNewUser (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
-  let store = UB.DataStore('uba_audit')
+  const params = ctx.mParams.execParams
+  const store = UB.DataStore('uba_audit')
   store.run('insert', {
     execParams: {
       entity: 'uba_user',
@@ -394,10 +394,10 @@ function ubaAuditNewUser (ctx) {
 function ubaAuditModifyUser (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
-  let store = UB.DataStore('uba_audit')
-  let origStore = ctx.dataStore
-  let origName = origStore.currentDataName
+  const params = ctx.mParams.execParams
+  const store = UB.DataStore('uba_audit')
+  const origStore = ctx.dataStore
+  const origName = origStore.currentDataName
   let oldValues, oldName
 
   try {
@@ -460,10 +460,10 @@ function ubaAuditModifyUser (ctx) {
 function ubaAuditDeleteUser (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
-  let store = UB.DataStore('uba_audit')
-  let origStore = ctx.dataStore
-  let origName = origStore.currentDataName
+  const params = ctx.mParams.execParams
+  const store = UB.DataStore('uba_audit')
+  const origStore = ctx.dataStore
+  const origName = origStore.currentDataName
   let oldValues, oldName
 
   try {
@@ -494,9 +494,9 @@ function ubaAuditDeleteUser (ctx) {
  * @param {ubMethodParams} ctx
  */
 function denyBuildInUserDeletion (ctx) {
-  let ID = ctx.mParams.execParams.ID
+  const ID = ctx.mParams.execParams.ID
 
-  for (let user in UBA_COMMON.USERS) {
+  for (const user in UBA_COMMON.USERS) {
     if (UBA_COMMON.USERS[user].ID === ID) {
       throw new UB.UBAbort('<<<Removing of built-in user is prohibited>>>')
     }
@@ -528,7 +528,7 @@ const RECAPTCHA_SECRET_KEY = App.serverConfig.application.customSettings &&
  */
 function validateRecaptcha (recaptcha) {
   if (!RECAPTCHA_SECRET_KEY) return true
-  let resp = http.request({
+  const resp = http.request({
     URL: 'https://www.google.com/recaptcha/api/siteverify' + '?' + 'secret=' + RECAPTCHA_SECRET_KEY + '&response=' + recaptcha,
     method: 'POST',
     sendTimeout: 30000,
@@ -536,7 +536,7 @@ function validateRecaptcha (recaptcha) {
     keepAlive: true,
     compressionEnable: true
   }).end('')
-  let data = JSON.parse(resp.read())
+  const data = JSON.parse(resp.read())
   return data.success
 }
 
@@ -558,7 +558,7 @@ const QueryString = require('querystring')
 function processRegistrationStep2 (resp, otp, login) {
   let userID
   let userOtpData = null
-  let store = UB.DataStore(me.entity.name)
+  const store = UB.DataStore(me.entity.name)
   uba_otp.authAndExecute(otp, 'EMail', function (uData) {
     userID = Session.userID
     userOtpData = uData
@@ -656,13 +656,13 @@ me.publicRegistration = function (fake, req, resp) {
   const publicRegistrationReportCode = ubs_settings.loadKey('uba.user.publicRegistrationReportCode')
 
   const { otp, login } = QueryString.parse(req.parameters, null, null, { maxKeys: 3 })
-  let store = UB.DataStore(me.entity.name)
+  const store = UB.DataStore(me.entity.name)
 
   if (otp && login) {
     processRegistrationStep2(resp, otp, login)
   } else {
-    let body = req.read('utf-8')
-    let { email, phone, utmSource, utmCampaign, recaptcha } = JSON.parse(body)
+    const body = req.read('utf-8')
+    const { email, phone, utmSource, utmCampaign, recaptcha } = JSON.parse(body)
     if (!validateEmail(email)) {
       throw new UB.UBAbort('Provided email address is invalid')
     }
@@ -692,13 +692,13 @@ me.publicRegistration = function (fake, req, resp) {
 
       const registrationAddress = `${App.externalURL}rest/uba_user/publicRegistration?otp=${encodeURIComponent(userOtp)}&login=${encodeURIComponent(email)}`
 
-      let reportResult = UBReport.makeReport(publicRegistrationReportCode, 'html', {
+      const reportResult = UBReport.makeReport(publicRegistrationReportCode, 'html', {
         login: email,
         password: password,
         activateUrl: registrationAddress,
         appConfig: App.serverConfig
       })
-      let mailBody = reportResult.reportData
+      const mailBody = reportResult.reportData
 
       mailQueue.queueMail({
         to: email,
