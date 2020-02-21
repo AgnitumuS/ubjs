@@ -18,7 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  pki provider interface defined in `uiSettings.adminUI.encryptionImplementation` server config section
   
 ### Fixed
-
+ - fixed `iconCls` for `ubDetailTree` actions (**moveUp|moveDown**) 
+ 
 ## [5.12.32] - 2020-02-18
 ### Changed
  - i18n messages about certificate registration moved from `adminui-pub` into `ub-pub` to be used inside non-admin UI
