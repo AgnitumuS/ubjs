@@ -14,8 +14,6 @@ const argv = require('@unitybase/base').argv
 const TEST_NAME = 'Entity Level Security (ELS) test'
 
 module.exports = function runELSTest (options) {
-  let session, conn
-
   if (!options) {
     const opts = cmdLineOpt.describe('', TEST_NAME)
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
@@ -23,11 +21,11 @@ module.exports = function runELSTest (options) {
     if (!options) return
   }
 
-  session = argv.establishConnectionFromCmdLineAttributes(options)
+  let session = argv.establishConnectionFromCmdLineAttributes(options)
   // if (!session.__serverStartedByMe) {
   //   throw new Error('Shut down server before run this test')
   // }
-  conn = session.connection
+  let conn = session.connection
 
   try {
     console.debug('Start ' + TEST_NAME)
@@ -64,9 +62,10 @@ module.exports = function runELSTest (options) {
           description: 'Test user who can not login (throws inside login event)'
         }
       })
-      conn.xhr({
-        UBMethod: 'changePassword',
-        data: {
+      conn.query({
+        entity: 'uba_user',
+        method: 'changeOtherUserPassword',
+        execParams: {
           newPwd: 'admin2',
           forUser: 'admin2'
         }
@@ -91,13 +90,15 @@ module.exports = function runELSTest (options) {
         name: 'testelsuser'
       }
     })
-    conn.xhr({
-      UBMethod: 'changePassword',
-      data: {
+    conn.query({
+      entity: 'uba_user',
+      method: 'changeOtherUserPassword',
+      execParams: {
         newPwd: 'testElsPwd',
         forUser: 'testelsuser'
       }
     })
+
     const testRole1 = conn.insert({
       entity: 'uba_role',
       fieldList: ['ID', 'mi_modifyDate'],

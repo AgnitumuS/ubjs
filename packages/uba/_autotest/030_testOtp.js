@@ -65,9 +65,10 @@ module.exports = function runOTPTest (options) {
           name: 'otp_testUser1'
         }
       })
-      conn.xhr({
-        UBMethod: 'changePassword',
-        data: {
+      conn.query({
+        entity: 'uba_user',
+        method: 'changeOtherUserPassword',
+        execParams: {
           newPwd: 'testPwd1',
           forUser: 'otp_testUser1'
         }
