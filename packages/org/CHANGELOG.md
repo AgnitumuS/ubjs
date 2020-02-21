@@ -9,6 +9,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - vue form adedd for org_execgruop
 
 ### Changed
+ - `Session.on('login', ...)` event handler now queries and records all Execution Groups IDs into `orgUnitIDs` member
+   of uData.  It could and should be used for RLS.  It would make all existing RLS to account memberships
+   in Execution Groups, if permission to row is added to some Execution Groups.
+   If Execution Groups are not used, it shall have no impact.
+
+   For clarity, that is what is done:
+    ```
+    // Query exec groups obtained though all staff member IDs
+    const execGroupIDs = UB.Repository('org_execgroupmember')
+      .attrs('execGroupID')
+      .where('orgUnitID', 'in', allStaffUnitIDsArray)
+      .selectAsObject()
+      .map(gm => gm.execGroupID)
+    if (execGroupIDs.length > 0) {
+      orgUnitIDs = _.union(orgUnitIDs, execGroupIDs)
+    }
+    ```
+
+   NOTE: Despite execution groups MAY belong to organizations or departments, this implementation won't automatically
+   grant user parent org units by execution groups, i.e. Staff Unit from ORG1 won't have permission of ORG2, even, if
+   included into an execution group of ORG2.
 
 ### Deprecated
 
