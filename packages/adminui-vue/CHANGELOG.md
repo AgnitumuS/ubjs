@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - usage of BigInteger.js is removed in CERT2 with login/password auth
  
 ### Fixed
+ - `truncTimeToUTCNull` now called for insert (as for update) and truncate time for attributes of type "Date" into 00:00:00Z as expected by server
  - `showForm` command can be executed without entity code in case form code is defined and form do not use processing module
  ```
  UB.core.UBApp.doCommand({
