@@ -3,6 +3,7 @@
     ref="ubAuthForm"
     :model="authData"
     :rules="authRules"
+    autocomplete="off"
     @submit.native.prevent
   >
     <div>
@@ -79,34 +80,18 @@ export default {
     cert2Tip () {
       return this.simpleCertAuth ? this.$ut('useCertificateInfoSimple') : this.$ut('useCertificateInfo')
     },
-    bigintPasswordHash: function (pwd) {
-      const maxLen = 30; let buff; let c;
-      let res = window.bigInt.one
-      buff = pwd
-      while (buff.length < maxLen) {
-        buff = buff + pwd.length + pwd
-      }
-      buff = buff.substr(0, maxLen)
-      for (let i = 1; i <= 30; i++) {
-        c = buff.charCodeAt(i - 1) - 15
-        res = res.multiply(Math.ceil(c / 3)).add(c * i + i)
-      }
-      return res.toString().substr(0, maxLen)
-    },
     doCert2Login: function (pkParams) {
       if (!this.simpleCertAuth) { // certificate + user name + pwd - only one project use it
-        this.$UB.inject('/models/UBA/BigInteger.js').then(() => {
-          this.$refs.ubAuthForm.validate((valid) => {
-            if (valid) {
-              this.resolveAuth({ authSchema: 'CERT2', login: this.authData.login, password: this.bigintPasswordHash(this.authData.password) })
-              if (!this.$UB.connection.appConfig.uiSettings.adminUI.defaultPasswordForDebugOnly) {
-                this.authData.password = ''
-              }
-              this.$emit('close')
-            } else {
-              return false
+        this.$refs.ubAuthForm.validate((valid) => {
+          if (valid) {
+            this.resolveAuth({ authSchema: 'CERT2', login: this.authData.login, password: this.authData.password })
+            if (!this.$UB.connection.appConfig.uiSettings.adminUI.defaultPasswordForDebugOnly) {
+              this.authData.password = ''
             }
-          })
+            this.$emit('close')
+          } else {
+            return false
+          }
         })
       } else {
         this.resolveAuth({

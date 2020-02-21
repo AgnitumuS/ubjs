@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - ESLint warnings resolved (mostly about let -> const) 
 
 ## [5.4.9] - 2020-02-18
 ### Added

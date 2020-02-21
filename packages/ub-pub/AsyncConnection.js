@@ -144,7 +144,7 @@ const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.lo
  * @param {boolean} [connectionParams.allowSessionPersistent=false] See {@link connect} for details
  */
 function UBConnection (connectionParams) {
-  let host = connectionParams.host || 'http://localhost:8881'
+  const host = connectionParams.host || 'http://localhost:8881'
   let appName = connectionParams.appName || '/'
   let requestAuthParams = connectionParams.requestAuthParams
   let baseURL, serverURL
@@ -303,31 +303,31 @@ $App.connection.userLang()
    * @returns {*}
    */
   this.userData = function (key) {
-    let uData = this.isAuthorized()
+    const uData = this.isAuthorized()
       ? currentSession.userData
       : { lang: this.appConfig.defaultLang || 'en', login: ANONYMOUS_USER }
 
-    return key ? uData[ key ] : uData
+    return key ? uData[key] : uData
   }
 
   function udot (conn, lg) {
     if ((typeof document === 'undefined') || (typeof window === 'undefined') || typeof btoa !== 'function') return
     if (!document.body || !window.location || !window.encodeURIComponent) return
-    let h = window.location.hostname
-    let appV = conn.appConfig.appVersion
+    const h = window.location.hostname
+    const appV = conn.appConfig.appVersion
     if (/(localhost|0.0.1)/.test(h)) return
     if (/-dev$/.test(window.location.pathname)) return
-    let aui = conn.appConfig.uiSettings.adminUI
+    const aui = conn.appConfig.uiSettings.adminUI
     let apn = aui && aui.applicationName
     if (apn && typeof apn === 'object') {
-      let k = Object.keys(apn)[0]
+      const k = Object.keys(apn)[0]
       apn = apn[k]
     } else if (typeof apn !== 'string') {
       apn = '-'
     }
     apn = apn.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 50).replace(/[:", ]/g, '.')
-    let ut = btoa(window.encodeURIComponent(`${conn.serverVersion}:${MD5(lg)}:${apn}:${h}:${appV}`))
-    let t = document.createElement('img')
+    const ut = btoa(window.encodeURIComponent(`${conn.serverVersion}:${MD5(lg)}:${apn}:${h}:${appV}`))
+    const t = document.createElement('img')
     t.style.position = 'absolute'
     t.style.display = 'none'
     t.style.width = t.style.height = '0px'
@@ -343,9 +343,9 @@ $App.connection.userLang()
    * @return {UBSession}
    */
   function doCreateNewSession (data, secretWord, authSchema, restored = false) {
-    let ubSession = new UBSession(data, secretWord, authSchema)
+    const ubSession = new UBSession(data, secretWord, authSchema)
     // noinspection JSAccessibilityCheck
-    let userData = ubSession.userData
+    const userData = ubSession.userData
     // noinspection JSPotentiallyInvalidUsageOfThis
     if (!userData.lang || this.appConfig.supportedLanguages.indexOf(userData.lang) === -1) {
       // noinspection JSPotentiallyInvalidUsageOfThis
@@ -369,14 +369,14 @@ $App.connection.userLang()
    * @returns {Promise<UBSession>} Resolved to {UBSession} if auth success or rejected to `{errMsg: string, errCode: number, errDetails: string}` if fail
    */
   this.authorize = function (isRepeat) {
-    let me = this
+    const me = this
     if (currentSession) return Promise.resolve(currentSession)
 
     if (this.allowSessionPersistent && !isRepeat) {
-      let storedSession = LDS.getItem(this.__sessionPersistKey)
+      const storedSession = LDS.getItem(this.__sessionPersistKey)
       if (storedSession) {
         try {
-          let parsed = JSON.parse(storedSession)
+          const parsed = JSON.parse(storedSession)
           currentSession = doCreateNewSession.call(this, parsed.data, parsed.secretWord, parsed.authSchema, true)
           me.emit('authorized', me, currentSession)
           return Promise.resolve(currentSession)
@@ -391,7 +391,7 @@ $App.connection.userLang()
     this.exchangeKeysPromise = null
     this._pendingAuthPromise = doOnCredentialsRequired(this, isRepeat)
       .then(function (authParams) {
-        let lastAuthType = authParams.authSchema
+        const lastAuthType = authParams.authSchema
         return me.doAuth(authParams).then(function (session) {
           me._pendingAuthPromise = null // must be before event emit to clear pending even in case of error in event handler
           currentSession = session
@@ -479,7 +479,7 @@ $App.connection.userLang()
    * @returns {Promise}
    */
   this.authHandshakeUB = function (authParams) {
-    let me = this
+    const me = this
     let secretWord
 
     if (!authParams.login || !authParams.password) {
@@ -493,14 +493,14 @@ $App.connection.userLang()
       }
     }).then(function (resp) {
       let serverNonce, pwdHash, pwdForAuth
-      let request = {
+      const request = {
         params: {
           AUTHTYPE: authParams.authSchema,
           userName: authParams.login,
           password: ''
         }
       }
-      let clientNonce = me.authMock
+      const clientNonce = me.authMock
         ? SHA256('1234567890abcdef').toString()
         : SHA256(new Date().toISOString().substr(0, 16)).toString()
       request.params.clientNonce = clientNonce
@@ -508,7 +508,7 @@ $App.connection.userLang()
         request.params.connectionID = resp.data.connectionID
       }
       // LDAP AUTH?
-      let realm = resp.data.realm
+      const realm = resp.data.realm
       if (realm) {
         serverNonce = resp.data.nonce
         if (!serverNonce) {
@@ -530,7 +530,7 @@ $App.connection.userLang()
           throw new Error('invalid auth response')
         }
         pwdHash = SHA256('salt' + authParams.password).toString()
-        let appForAuth = appName === '/' ? '/' : appName.replace(/\//g, '')
+        const appForAuth = appName === '/' ? '/' : appName.replace(/\//g, '')
         pwdForAuth = SHA256(appForAuth.toLowerCase() + serverNonce + clientNonce + authParams.login + pwdHash).toString()
         secretWord = pwdHash
       }
@@ -598,7 +598,7 @@ $App.connection.userLang()
     }
     promise = promise.then(
       (authResponse) => {
-        let ubSession = doCreateNewSession.call(this, authResponse.data, authResponse.secretWord, authParams.authSchema)
+        const ubSession = doCreateNewSession.call(this, authResponse.data, authResponse.secretWord, authParams.authSchema)
         if (this.allowSessionPersistent) {
           LDS.setItem(
             this.__sessionPersistKey,
@@ -610,8 +610,8 @@ $App.connection.userLang()
 
       (rejectReason) => {
         if (!(rejectReason instanceof Error)) {
-          let errDescription = rejectReason.data || rejectReason // in case of server-side error we got a {data: {errMsg: ..}..}
-          let errInfo = {
+          const errDescription = rejectReason.data || rejectReason // in case of server-side error we got a {data: {errMsg: ..}..}
+          const errInfo = {
             errMsg: errDescription.errMsg,
             errCode: errDescription.errCode,
             errDetails: errDescription.errMsg
@@ -633,7 +633,7 @@ $App.connection.userLang()
             errInfo.errMsg = parseUBErrorMessage(errInfo.errMsg)
           }
 
-          let codeMsg = this.serverErrorByCode(errInfo.errCode)
+          const codeMsg = this.serverErrorByCode(errInfo.errCode)
           if (codeMsg) {
             errInfo.errDetails = codeMsg + ' ' + errInfo.errDetails
           }
@@ -665,7 +665,7 @@ $App.connection.userLang()
  * @returns {Promise}
  */
 UBConnection.prototype.initCache = function (userDbVersion) {
-  let dbName = this.baseURL === '/' ? 'UB' : this.baseURL
+  const dbName = this.baseURL === '/' ? 'UB' : this.baseURL
   /**
    * @property {UBCache} cache
    * @readonly
@@ -689,7 +689,7 @@ UBConnection.prototype.initCache = function (userDbVersion) {
  * @returns {String}
  */
 UBConnection.prototype.cacheKeyCalculate = function (root, attributes) {
-  let keyPart = [this.userLogin().toLowerCase(), this.userLang(), root]
+  const keyPart = [this.userLogin().toLowerCase(), this.userLang(), root]
   if (Array.isArray(attributes)) {
     keyPart.push(MD5(JSON.stringify(attributes)).toString())
   }
@@ -707,23 +707,23 @@ UBConnection.prototype.cacheKeyCalculate = function (root, attributes) {
  * @returns {Promise}
  */
 UBConnection.prototype.cacheOccurrenceRefresh = function (root, cacheType) {
-  let me = this
+  const me = this
   let promise = Promise.resolve(true)
 
   if (cacheType === UBCache.cacheTypes.Session || cacheType === UBCache.cacheTypes.SessionEntity) {
-    let entity = this.domain.get(root)
+    const entity = this.domain.get(root)
     if (entity && entity.hasMixin('unity')) {
-      let unityMixin = entity.mixin('unity')
-      let unityEntity = this.domain.get(unityMixin.entity)
+      const unityMixin = entity.mixin('unity')
+      const unityEntity = this.domain.get(unityMixin.entity)
       if (unityEntity && (unityMixin.entity !== root) && (unityEntity.cacheType !== UBCache.cacheTypes.None)) {
         promise = promise.then(
           () => me.cacheOccurrenceRefresh(unityMixin.entity, unityEntity.cacheType)
         )
       }
     }
-    let cacheKey = me.cacheKeyCalculate(root)
-    let machRe = new RegExp('^' + cacheKey)
-    let machKeys = Object.keys(me.cachedSessionEntityRequested).filter(function (item) {
+    const cacheKey = me.cacheKeyCalculate(root)
+    const machRe = new RegExp('^' + cacheKey)
+    const machKeys = Object.keys(me.cachedSessionEntityRequested).filter(function (item) {
       return machRe.test(item)
     })
     machKeys.forEach(function (key) {
@@ -749,17 +749,17 @@ UBConnection.prototype.cacheOccurrenceRefresh = function (root, cacheType) {
  * @returns {Promise}
  */
 UBConnection.prototype.cacheOccurrenceRemove = function (root, cacheType) {
-  let me = this
+  const me = this
 
-  let cacheKey = me.cacheKeyCalculate(root)
-  let machRe = new RegExp('^' + cacheKey)
-  let machKeys = Object.keys(me.cachedSessionEntityRequested).filter(function (item) {
+  const cacheKey = me.cacheKeyCalculate(root)
+  const machRe = new RegExp('^' + cacheKey)
+  const machKeys = Object.keys(me.cachedSessionEntityRequested).filter(function (item) {
     return machRe.test(item)
   })
   machKeys.forEach(function (key) {
     delete me.cachedSessionEntityRequested[key]
   })
-  let cacheStore = (cacheType === UBCache.cacheTypes.Session) ? UBCache.SESSION : UBCache.PERMANENT
+  const cacheStore = (cacheType === UBCache.cacheTypes.Session) ? UBCache.SESSION : UBCache.PERMANENT
   return me.cache.removeIfMach(machRe, cacheStore)
 }
 
@@ -768,7 +768,7 @@ UBConnection.prototype.cacheOccurrenceRemove = function (root, cacheType) {
  * @returns {Promise}
  */
 UBConnection.prototype.cacheClearAll = function () {
-  let me = this
+  const me = this
   Object.keys(me.cachedSessionEntityRequested).forEach(function (item) {
     delete me.cachedSessionEntityRequested[item]
   })
@@ -828,9 +828,9 @@ UBConnection.prototype.checkChannelEncryption = function (session, cfg) {
  * @return {Promise}
  */
 UBConnection.prototype.xhr = function (config) {
-  let me = this
-  let cfg = Object.assign({ headers: {} }, config)
-  let url = cfg.url
+  const me = this
+  const cfg = Object.assign({ headers: {} }, config)
+  const url = cfg.url
   let promise
 
   if (me.recorderEnabled) {
@@ -849,7 +849,7 @@ UBConnection.prototype.xhr = function (config) {
     promise = promise.then(function () {
       // we must repeat authorize to obtain new session key ( because key exchange may happens before)
       return me.authorize().then(/** @param {UBSession} session */ function (session) {
-        let head = session.authHeader(me.authMock)
+        const head = session.authHeader(me.authMock)
         if (head) cfg.headers.Authorization = head // do not add header for anonymous session
         return transport.xhr(cfg)
       })
@@ -874,8 +874,8 @@ UBConnection.prototype.xhr = function (config) {
         throw new ubUtils.UBError('Request Entity Too Large')
       }
       if (reason.data && reason.data.hasOwnProperty('errCode')) { // this is server side error response
-        let errCode = reason.data.errCode
-        let errDetails = errMsg = reason.data.errMsg
+        const errCode = reason.data.errCode
+        const errDetails = errMsg = reason.data.errMsg
 
         errMsg = parseAndTranslateUBErrorMessage(errMsg)
 
@@ -915,10 +915,10 @@ UBConnection.prototype.xhr = function (config) {
  * @returns {Promise}  Promise resolved to result of getAppInfo method
  */
 UBConnection.prototype.getAppInfo = function () {
-  let me = this
+  const me = this
   return me.get('getAppInfo') // non-auth request
     .then(function (resp) {
-      let appInfo = resp.data
+      const appInfo = resp.data
       /** Is server require content encryption
        * @property {Boolean} trafficEncryption
        * The base of all urls of your requests. Will be prepend to all urls.
@@ -943,8 +943,8 @@ UBConnection.prototype.getAppInfo = function () {
        */
       Object.defineProperty(me, 'serverVersion', { enumerable: true, writable: false, value: appInfo.serverVersion || '' })
       ubUtils.apply(me.appConfig, appInfo.uiSettings.adminUI)
-      let v = appInfo.serverVersion.split('.')
-      let isUBQLv2 = ((v[0] >= 'v5') && (v[1] >= 10))
+      const v = appInfo.serverVersion.split('.')
+      const isUBQLv2 = ((v[0] >= 'v5') && (v[1] >= 10))
       /** UBQL v2 (value instead of values)
        * @property {Boolean} UBQLv2
        * @readonly */
@@ -960,12 +960,12 @@ UBConnection.prototype.getAppInfo = function () {
  * @returns {Promise}
  */
 UBConnection.prototype.getDomainInfo = function () {
-  let me = this
-  return me.get('getDomainInfo', { params: {
-    v: 4, userName: this.userLogin() }
+  const me = this
+  return me.get('getDomainInfo', {
+    params: { v: 4, userName: this.userLogin() }
   }).then(function (response) {
-    let result = response.data
-    let domain = new UBDomain(result)
+    const result = response.data
+    const domain = new UBDomain(result)
     me.domain = domain
     return domain
   })
@@ -1091,7 +1091,7 @@ UBConnection.prototype.run = UBConnection.prototype.query
  */
 UBConnection.prototype.queryAsObject = function queryAsObject (ubq, fieldAliases, allowBuffer) {
   if (ubq.execParams && (ubq.method === 'insert' || ubq.method === 'update')) {
-    let newEp = stringifyExecParamsValues(ubq.execParams)
+    const newEp = stringifyExecParamsValues(ubq.execParams)
     if (newEp) ubq.execParams = newEp
   }
   return this.query(ubq, allowBuffer).then(function (res) {
@@ -1122,13 +1122,13 @@ UBConnection.prototype.convertResponseDataToJsTypes = function (serverResponse) 
       serverResponse.resultData.fields &&
       serverResponse.resultData.data && serverResponse.resultData.data.length
   ) {
-    let convertRules = this.domain.get(serverResponse.entity).getConvertRules(serverResponse.resultData.fields)
-    let rulesLen = convertRules.length
-    let data = serverResponse.resultData.data
+    const convertRules = this.domain.get(serverResponse.entity).getConvertRules(serverResponse.resultData.fields)
+    const rulesLen = convertRules.length
+    const data = serverResponse.resultData.data
     if (rulesLen) {
       for (let d = 0, dataLen = data.length; d < dataLen; d++) {
         for (let r = 0; r < rulesLen; r++) {
-          let column = convertRules[r].index
+          const column = convertRules[r].index
           data[d][column] = convertRules[r].convertFn(data[d][column])
         }
       }
@@ -1177,7 +1177,7 @@ UBConnection.prototype.doFilterAndSort = function (cachedData, ubql) {
  * @returns {Promise<Object>}
  */
 UBConnection.prototype.addNew = function (serverRequest) {
-  let me = this
+  const me = this
   serverRequest.method = 'addnew'
   return me.query(serverRequest, true)
     .then(me.convertResponseDataToJsTypes.bind(me))
@@ -1216,8 +1216,8 @@ UBConnection.prototype.addNewAsObject = function (serverRequest, fieldAliases) {
  * @return {Promise} Promise resolved to serverResponse
  */
 UBConnection.prototype.invalidateCache = function (serverResponse) {
-  let me = this
-  let cacheType = me.domain.get(serverResponse.entity).cacheType
+  const me = this
+  const cacheType = me.domain.get(serverResponse.entity).cacheType
   if (cacheType === UBCache.cacheTypes.none) {
     return Promise.resolve(serverResponse)
   }
@@ -1234,20 +1234,20 @@ UBConnection.prototype.invalidateCache = function (serverResponse) {
  * @return {Object|false}
  */
 function stringifyExecParamsValues (execParams) {
-  let keys = Object.keys(execParams)
-  let L = keys.length
+  const keys = Object.keys(execParams)
+  const L = keys.length
   let needTransform = false
   for (let i = 0; i < L; i++) {
-    let v = execParams[keys[i]]
+    const v = execParams[keys[i]]
     if (v && (typeof v === 'object') && !(v instanceof Date)) {
       needTransform = true
       break
     }
   }
   if (!needTransform) return false
-  let newParams = {}
+  const newParams = {}
   for (let i = 0; i < L; i++) {
-    let v = execParams[keys[i]]
+    const v = execParams[keys[i]]
     newParams[keys[i]] = (v && (typeof v === 'object') && !(v instanceof Date))
       ? JSON.stringify(v)
       : v
@@ -1287,10 +1287,10 @@ function stringifyExecParamsValues (execParams) {
  * @returns {Promise<Object>}
  */
 UBConnection.prototype.update = function (serverRequest, allowBuffer) {
-  let me = this
+  const me = this
   serverRequest.method = serverRequest.method || 'update'
   if (serverRequest.execParams) {
-    let newEp = stringifyExecParamsValues(serverRequest.execParams)
+    const newEp = stringifyExecParamsValues(serverRequest.execParams)
     if (newEp) serverRequest.execParams = newEp
   }
   return me.query(serverRequest, allowBuffer)
@@ -1361,10 +1361,10 @@ UBConnection.prototype.updateAsObject = function (serverRequest, fieldAliases, a
  *
  */
 UBConnection.prototype.insert = function (serverRequest, allowBuffer) {
-  let me = this
+  const me = this
   serverRequest.method = serverRequest.method || 'insert'
   if (serverRequest.execParams) {
-    let newEp = stringifyExecParamsValues(serverRequest.execParams)
+    const newEp = stringifyExecParamsValues(serverRequest.execParams)
     if (newEp) serverRequest.execParams = newEp
   }
   return me.query(serverRequest, allowBuffer)
@@ -1433,7 +1433,7 @@ UBConnection.prototype.insertAsObject = function (serverRequest, fieldAliases, a
  *
  */
 UBConnection.prototype.doDelete = function (serverRequest, allowBuffer) {
-  let me = this
+  const me = this
   serverRequest.method = serverRequest.method || 'delete'
   return me.query(serverRequest, allowBuffer)
     .then(me.invalidateCache.bind(me))
@@ -1475,11 +1475,11 @@ UBConnection.prototype.doDelete = function (serverRequest, allowBuffer) {
  *      ).then(UB.logDebug);
  */
 UBConnection.prototype.select = function (serverRequest, bypassCache) {
-  let me = this
+  const me = this
   let dataPromise
 
   bypassCache = bypassCache || (serverRequest.__mip_disablecache === true)
-  let cacheType = bypassCache || serverRequest.ID || serverRequest.bypassCache
+  const cacheType = bypassCache || serverRequest.ID || serverRequest.bypassCache
     ? UBCache.cacheTypes.None
     : me.domain.get(serverRequest.entity).cacheType
 
@@ -1494,18 +1494,18 @@ UBConnection.prototype.select = function (serverRequest, bypassCache) {
     dataPromise = this.query(serverRequest, true)
       .then(this.convertResponseDataToJsTypes.bind(this))
       .then(response => {
-        let responseWithTotal = {}
+        const responseWithTotal = {}
         ubUtils.apply(responseWithTotal, response)
         if (response.__totalRecCount) {
           responseWithTotal.total = response.__totalRecCount
         } else if (response.resultData && response.resultData.data) {
-          let resRowCount = response.resultData.data.length
+          const resRowCount = response.resultData.data.length
           if (!serverRequest.options) {
             responseWithTotal.total = resRowCount
           } else {
-            let opt = serverRequest.options || {}
-            let start = opt.start ? opt.start : 0
-            let limit = opt.limit || 0
+            const opt = serverRequest.options || {}
+            const start = opt.start ? opt.start : 0
+            const limit = opt.limit || 0
             // in case we fetch less data then requested - this is last page and we know total
             responseWithTotal.total = (resRowCount < limit) ? start + resRowCount : -1
           }
@@ -1525,8 +1525,8 @@ UBConnection.prototype.select = function (serverRequest, bypassCache) {
  */
 UBConnection.prototype._doSelectForCacheableEntity = function (serverRequest, cacheType) {
 // TODO check all filtered attribute is present in whereList - rewrite me.checkFieldList(operation);
-  let cKey = this.cacheKeyCalculate(serverRequest.entity, serverRequest.fieldList)
-  let cacheStoreName = (cacheType === UBCache.cacheTypes.Session) ? UBCache.SESSION : UBCache.PERMANENT
+  const cKey = this.cacheKeyCalculate(serverRequest.entity, serverRequest.fieldList)
+  const cacheStoreName = (cacheType === UBCache.cacheTypes.Session) ? UBCache.SESSION : UBCache.PERMANENT
   // retrieve data either from cache or from server
   return this.cache.get(cKey + ':v', cacheStoreName).then((version) => {
     let cachedPromise
@@ -1537,14 +1537,14 @@ UBConnection.prototype._doSelectForCacheableEntity = function (serverRequest, ca
       (version && cacheType === UBCache.cacheTypes.SessionEntity && this.cachedSessionEntityRequested[cKey] !== version)
     ) {
       // remove where order logicalPredicates & limits
-      let serverRequestWOLimits = {}
+      const serverRequestWOLimits = {}
       Object.keys(serverRequest).forEach(function (key) {
         if (['whereList', 'orderList', 'options', 'logicalPredicates'].indexOf(key) === -1) {
           serverRequestWOLimits[key] = serverRequest[key]
         }
       })
       serverRequestWOLimits.version = version || '-1'
-      let pendingCachedEntityRequest = this._pendingCachedEntityRequests[cKey]
+      const pendingCachedEntityRequest = this._pendingCachedEntityRequests[cKey]
         ? this._pendingCachedEntityRequests[cKey]
         : this._pendingCachedEntityRequests[cKey] = this.query(serverRequestWOLimits, true)
       cachedPromise = pendingCachedEntityRequest
@@ -1619,7 +1619,7 @@ UBConnection.selectResultToArrayOfObjects = LocalDataStore.selectResultToArrayOf
 UBConnection.prototype.runTrans = function (ubRequestArray) {
   for (const serverRequest of ubRequestArray) {
     if (serverRequest.execParams && ((serverRequest.method === 'insert') || ((serverRequest.method === 'update')))) {
-      let newEp = stringifyExecParamsValues(serverRequest.execParams)
+      const newEp = stringifyExecParamsValues(serverRequest.execParams)
       if (newEp) serverRequest.execParams = newEp
     }
   }
@@ -1669,16 +1669,16 @@ UBConnection.prototype.runTrans = function (ubRequestArray) {
 UBConnection.prototype.runTransAsObject = function (ubRequestArray, fieldAliasesArray = []) {
   for (const serverRequest of ubRequestArray) {
     if (serverRequest.execParams && ((serverRequest.method === 'insert') || ((serverRequest.method === 'update')))) {
-      let newEp = stringifyExecParamsValues(serverRequest.execParams)
+      const newEp = stringifyExecParamsValues(serverRequest.execParams)
       if (newEp) serverRequest.execParams = newEp
     }
   }
-  let me = this
+  const me = this
   return this.post('ubql', ubRequestArray).then((response) => {
-    let mutatedEntitiesNames = []
-    let respArr = response.data
+    const mutatedEntitiesNames = []
+    const respArr = response.data
     respArr.forEach((resp, idx) => {
-      let isInsUpd = ((resp.method === 'insert') || (resp.method === 'update'))
+      const isInsUpd = ((resp.method === 'insert') || (resp.method === 'update'))
       if (resp.entity && (isInsUpd || (resp.method === 'delete'))) {
         if (!mutatedEntitiesNames.includes(resp.entity)) {
           mutatedEntitiesNames.push(resp.entity)
@@ -1686,7 +1686,7 @@ UBConnection.prototype.runTransAsObject = function (ubRequestArray, fieldAliases
       }
       if (resp.resultData && resp.resultData.data && resp.resultData.data && resp.resultData.fields) {
         me.convertResponseDataToJsTypes(resp) // mutate resp
-        let asObjectArr = LocalDataStore.selectResultToArrayOfObjects(resp, fieldAliasesArray[idx])
+        const asObjectArr = LocalDataStore.selectResultToArrayOfObjects(resp, fieldAliasesArray[idx])
         resp.resultData = isInsUpd ? asObjectArr[0] : asObjectArr
       }
     })
@@ -1695,7 +1695,7 @@ UBConnection.prototype.runTransAsObject = function (ubRequestArray, fieldAliases
       return respArr
     }
 
-    let invalidations = mutatedEntitiesNames.map(eName => {
+    const invalidations = mutatedEntitiesNames.map(eName => {
       return me.invalidateCache({ entity: eName })
     })
     // await for cache invalidation
@@ -1758,8 +1758,8 @@ const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty
  * @returns {Promise} Resolved to document content (either ArrayBuffer in case options.resultIsBinary===true or text/json)
  */
 UBConnection.prototype.getDocument = function (params, options) {
-  let opt = Object.assign({}, options)
-  let reqParams = {
+  const opt = Object.assign({}, options)
+  const reqParams = {
     url: 'getDocument',
     method: opt.bypassCache ? 'POST' : 'GET'
   }
@@ -1800,7 +1800,7 @@ UBConnection.prototype.getDocument = function (params, options) {
  * @return {Promise<Object>} Promise resolved blob store metadata
  */
 UBConnection.prototype.setDocument = function (content, params, onProgress) {
-  let xhrParams = {
+  const xhrParams = {
     url: 'setDocument',
     method: 'POST',
     data: content,
@@ -1836,7 +1836,7 @@ UBConnection.prototype.logout = function () {
 
   let logoutPromise = this.post('logout', {})
   if (this._pki) { // unload encryption private key
-    let me = this
+    const me = this
     logoutPromise = logoutPromise.then(
       () => new Promise((resolve) => { setTimeout(() => { me._pki.closePrivateKey(); resolve(true) }, 20) })
     )
@@ -1954,11 +1954,11 @@ UbPkiInterface.prototype.verificationUI = function (validationResults, sigCaptio
 UBConnection.prototype.pki = function () {
   if (this._pki) return Promise.resolve(this._pki)
   if (!this.appConfig.uiSettings) throw new Error('connection.pki() can be called either after connect() or inside connection.onGotApplicationConfig')
-  let pkiImplModule = this.appConfig.uiSettings.adminUI.encryptionImplementation
+  const pkiImplModule = this.appConfig.uiSettings.adminUI.encryptionImplementation
   if (!pkiImplModule) {
     throw new Error('"appConfig.uiSettings.adminUI.encryptionImplementation" is not defined in application config')
   }
-  let me = this
+  const me = this
   // eslint-disable-next-line no-undef
   return UB.inject(pkiImplModule).then(function () {
     // eslint-disable-next-line no-undef
@@ -2053,12 +2053,11 @@ UBConnection.prototype.serverErrorByCode = function (errorNum) {
  * @returns {ClientRepository}
  */
 UBConnection.prototype.Repository = function (entityCodeOrUBQL) {
-  if (typeof entityCodeOrUBQL == 'string') {
+  if (typeof entityCodeOrUBQL === 'string') {
     return new ClientRepository(this, entityCodeOrUBQL)
   } else {
     return new ClientRepository(this, '').fromUbql(entityCodeOrUBQL)
   }
-
 }
 
 /**
@@ -2096,9 +2095,9 @@ UBConnection.prototype.HMAC_SHA256 = HMAC_SHA256
  * @return {Promise<UBConnection>}
  */
 function connect (cfg, ubGlobal = null) {
-  let config = this.config = Object.assign({}, cfg)
+  const config = this.config = Object.assign({}, cfg)
 
-  let connection = new UBConnection({
+  const connection = new UBConnection({
     host: config.host,
     appName: config.path || '/',
     requestAuthParams: config.onCredentialRequired,
@@ -2146,9 +2145,9 @@ function connect (cfg, ubGlobal = null) {
     connection.preferredLocale = preferredLocale
     // localize application mae
 
-    let adminUICfg = connection.appConfig.uiSettings.adminUI
+    const adminUICfg = connection.appConfig.uiSettings.adminUI
     if (adminUICfg.applicationName) {
-      let appName = (typeof adminUICfg.applicationName === 'string')
+      const appName = (typeof adminUICfg.applicationName === 'string')
         ? adminUICfg.applicationName
         : adminUICfg.applicationName[connection.preferredLocale]
       if (appName) connection.appConfig.applicationName = appName
@@ -2160,7 +2159,7 @@ function connect (cfg, ubGlobal = null) {
     return connection.authorize()
   }).then(function () {
     // here we authorized and know a user-related data
-    let myLocale = connection.userData('lang')
+    const myLocale = connection.userData('lang')
     LDS && LDS.setItem(ubUtils.LDS_KEYS.PREFERRED_LOCALE, myLocale)
     connection.preferredLocale = myLocale
     let domainPromise = connection.getDomainInfo()
