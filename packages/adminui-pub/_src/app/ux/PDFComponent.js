@@ -89,7 +89,7 @@ Ext.define('UB.ux.PDFComponent', {
     let src
     if (viewerCfg && viewerCfg.customURI) {
       let f = this.up('form')
-      src = UB.format(viewerCfg.customURI, encodeURIComponent(this.data), $App.connection.userData('lang'), (f && f.instanceID))
+      src = UB.format(viewerCfg.customURI, encodeURIComponent(this.data), $App.connection.userData('lang'), (f && f.instanceID), (f && f.entityName))
     } else {
       src = this.data
     }

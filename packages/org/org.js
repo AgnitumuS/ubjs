@@ -147,6 +147,16 @@ function orgOnUserLogin () {
       }
     }
 
+    // Query exec groups obtained though all staff member IDs
+    const execGroupIDs = UB.Repository('org_execgroupmember')
+      .attrs('execGroupID')
+      .where('orgUnitID', 'in', allStaffUnitIDsArray)
+      .selectAsObject()
+      .map(gm => gm.execGroupID)
+    if (execGroupIDs.length > 0) {
+      orgUnitIDs = _.union(orgUnitIDs, execGroupIDs)
+    }
+
     if (permStaffUnitIDsArray.length > 1) {
       throw new UB.UBAbort(UB.i18n('errUserWithMultiplePermanentStaffUnitsNotAllowed'))
     }
