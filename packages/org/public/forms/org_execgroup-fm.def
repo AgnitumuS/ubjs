@@ -1,0 +1,7 @@
+//@! "do not remove comments below unless you know what you do!"
+// @isDefault "true"
+//@entity "org_execgroup"
+// @model "ORG"
+//@formType "vue"
+//@caption "Execution group"
+//@description "Execution group"
