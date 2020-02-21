@@ -8,7 +8,7 @@ Session.on('login', onUserLogin)
 Session.on('loginFailed', onUserLoginFailed)
 Session.on('securityViolation', securityViolation)
 
-let ubaAuditPresent = App.domainInfo.has('uba_audit')
+const ubaAuditPresent = App.domainInfo.has('uba_audit')
 let auditStore
 if (ubaAuditPresent) {
   auditStore = UB.DataStore('uba_audit')
@@ -33,14 +33,14 @@ function checkAdvancedSecurity (req) {
     doCheckAdvancedSecurity = function () { return { enabled: false } }
   }
   let fp = ''
-  let urlParams = queryString.parse(req.decodedParameters)
+  const urlParams = queryString.parse(req.decodedParameters)
 
   if (!advData) return { // no adv. settings for current user
     enabled: true,
     kmn: urlParams.KMN || '',
     fpa: urlParams.FPA || ''
   }
-  let updateParams = {}
+  const updateParams = {}
   let needUpdate = false
   if (advData.refreshIP) {
     updateParams.allowedIP = Session.callerIP
@@ -76,7 +76,7 @@ function checkAdvancedSecurity (req) {
   if (needUpdate) {
     updateParams.ID = advData.ID
     updateParams.mi_modifyDate = advData.mi_modifyDate
-    let advStore = UB.DataStore('uba_advSecurity')
+    const advStore = UB.DataStore('uba_advSecurity')
     advStore.run('update', {
       execParams: updateParams
     })
@@ -105,7 +105,7 @@ function onUserLogin (req) {
       ? checkAdvancedSecurity
       : function () { return { enabled: false } }
   }
-  let advCheckData = doCheckAdvancedSecurity(req)
+  const advCheckData = doCheckAdvancedSecurity(req)
 
   if (ubaAuditPresent) { // uba_audit exists
     try {
@@ -135,8 +135,8 @@ function onUserLoginFailed (isLocked) {
 
   if (ubaAuditPresent) { // uba_audit exists
     try {
-      let obj = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
-      let user = obj ? obj.name : Session.userID
+      const obj = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
+      const user = obj ? obj.name : Session.userID
 
       auditStore.run('insert', {
         execParams: {
@@ -163,7 +163,7 @@ function securityViolation (reason) {
   if (ubaAuditPresent) { // uba_audit exists
     let user = '?'
     if (Session.userID && (Session.userID > 0)) {
-      let obj = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
+      const obj = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
       user = obj ? obj.name : Session.userID
     }
     try {

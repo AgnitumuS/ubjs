@@ -21,7 +21,7 @@ function setBlob (ctxt) {
 }
 
 function clearBlob (ctxt) {
-  let execParams = ctxt.mParams.execParams
+  const execParams = ctxt.mParams.execParams
   if (execParams.certificate) {
     execParams.certificate = ''
   }
@@ -38,7 +38,7 @@ function clearBlob (ctxt) {
  * @published
  */
 me.getCertificate = function (ctxt) {
-  let store = UB.Repository('uba_usercertificate')
+  const store = UB.Repository('uba_usercertificate')
     .attrs(['ID', 'certificate'])
     .where('ID', '=', ctxt.mParams.ID).select()
 

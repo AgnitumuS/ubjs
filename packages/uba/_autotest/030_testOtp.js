@@ -7,20 +7,18 @@ const argv = require('@unitybase/base').argv
 
 /* global sleep */
 module.exports = function runOTPTest (options) {
-  let session, conn
-
   if (!options) {
-    let opts = cmdLineOpt.describe('', 'OTP test')
+    const opts = cmdLineOpt.describe('', 'OTP test')
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
 
-  session = argv.establishConnectionFromCmdLineAttributes(options)
+  const session = argv.establishConnectionFromCmdLineAttributes(options)
   // if (!session.__serverStartedByMe) {
   //   throw new Error('Shut down server before run this test')
   // }
-  conn = session.connection
+  const conn = session.connection
 
   try {
     console.debug('start uba_otp test')
@@ -31,7 +29,7 @@ module.exports = function runOTPTest (options) {
   function testOtpEmail () {
     let userID, otp
     const EMAIL = 'EMail'
-    let inst = conn.Repository('uba_user').attrs([ 'ID' ]).where('[name]', '=', 'otp_testuser1').select()
+    const inst = conn.Repository('uba_user').attrs(['ID']).where('[name]', '=', 'otp_testuser1').select()
 
     function genOtp (obj, lifeTime, otpKind) {
       otpKind = otpKind || EMAIL
@@ -43,14 +41,16 @@ module.exports = function runOTPTest (options) {
     }
 
     function checkAuth (fun, otpKind) {
-      let funStr, auth
+      let funStr
       otpKind = otpKind || EMAIL
 
       if (fun) {
         funStr = fun.toSource()
         funStr = ', ' + funStr.substr(1, funStr.length - 2)
-      } else { funStr = '' }
-      auth = conn.post('evaluateScript',
+      } else {
+        funStr = ''
+      }
+      const auth = conn.post('evaluateScript',
         'return {res: uba_otp.auth("' + otp + '", "' + otpKind + '"' + funStr + '), userID: Session.userID};')
       if (auth.res) { assert.strictEqual(auth.userID, userID, 'invalid userID after successful otp.auth') }
       return auth.res
@@ -60,7 +60,7 @@ module.exports = function runOTPTest (options) {
     if (inst.length === 0) {
       userID = conn.insert({
         entity: 'uba_user',
-        fieldList: [ 'ID' ],
+        fieldList: ['ID'],
         execParams: {
           name: 'otp_testUser1'
         }
@@ -75,7 +75,7 @@ module.exports = function runOTPTest (options) {
 
       conn.insert({
         entity: 'uba_userrole',
-        fieldList: [ 'ID' ],
+        fieldList: ['ID'],
         execParams: {
           userID: userID,
           roleID: conn.lookup('uba_role', 'ID', {
@@ -86,7 +86,7 @@ module.exports = function runOTPTest (options) {
         }
       })
     } else {
-      userID = inst[ 0 ].ID
+      userID = inst[0].ID
     }
     //  Start tests
     console.debug('1. Generate otp 1 (normal)')
@@ -109,7 +109,7 @@ module.exports = function runOTPTest (options) {
     ok(!checkAuth(function () { return false }), 'otp.auth incorrect check otp successful')
 
     console.debug('5. Generate TOTP')
-    let totpSecret = genOtp(null, 100, 'TOTP')
+    const totpSecret = genOtp(null, 100, 'TOTP')
     console.log('TOTP secret=', totpSecret)
     const totp = require('../modules/totp')
     let mustBe = totp.getTotp(totpSecret)
@@ -125,7 +125,7 @@ module.exports = function runOTPTest (options) {
     assert.strictEqual(valid, true, 'TOTP is valid')
 
     console.debug('6. Generate TOTP again')
-    let totpSecret2 = genOtp(null, 100, 'TOTP')
+    const totpSecret2 = genOtp(null, 100, 'TOTP')
     assert.strictEqual(totpSecret, totpSecret2, 'second call to generateOtp must return the same secret')
 
     console.debug('8. Validate TOTP -30 sec')
