@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - scanner settings - adds a PDF/A output format - to be used in nm-scanner plugin 
 
 ### Changed
 
