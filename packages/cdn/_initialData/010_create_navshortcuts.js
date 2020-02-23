@@ -398,7 +398,11 @@ module.exports = function (session) {
         cmdType: 'showList',
         cmdData: {
           entityName: 'cdn_currency',
-          columns: ['intCode', 'code3', 'name']
+          columns: [
+            { id: 'intCode', maxWidth: '60' },
+            { id: 'code3', maxWidth: '70' },
+            'name', 'description'
+          ]
         }
       }, null, '\t')
     }

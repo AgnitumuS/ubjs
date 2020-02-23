@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - currency dictionary shortcut - decrease a code & code3 column width
 
 ### Deprecated
 
