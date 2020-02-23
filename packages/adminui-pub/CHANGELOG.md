@@ -8,11 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.12.33] - 2020-02-23
+### Changed
  - in case server require user to change password during re-logon default behavior changed to reload app
  and point user into login page. Note: this situation should not happens in real life scenario's 
  
-### Deprecated
-
 ### Removed
  - obsolete `UB.view.cryptoUI.ReadPK`, `UB.view.cryptoUI.SelectCert` is removed. Private key reading is implemented inside 
  pki provider interface defined in `uiSettings.adminUI.encryptionImplementation` server config section

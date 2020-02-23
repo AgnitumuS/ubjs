@@ -6,9 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - new method `Session._buildPasswordHash` - create a password hash for login/plainPassword pair. Can be overrated by application
- to provide a custom hashing mechanism (in current implementation for CERT2/Basic auth only but will be used in UB auth in future)
-  
+
 ### Changed
 
 ### Deprecated
@@ -17,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.19] - 2020-02-23
+### Added
+ - new method `Session._buildPasswordHash` - create a password hash for login/plainPassword pair. Can be overrated by application
+ to provide a custom hashing mechanism (in current implementation for CERT2/Basic auth only but will be used in UB auth in future)
+  
 ## [5.3.18] - 2020-02-18
 ### Changed
  - ubConfig JSON schema: add `simpleCertAuth` parameter description; remove deprecated `novaLib` key 

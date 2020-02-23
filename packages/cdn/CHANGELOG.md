@@ -8,17 +8,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - currency dictionary shortcut - decrease `code` and `code3` column width
- - `cdn_orgaccount.bank` marked as **allow null** - IBAN account code already contains bank MFO, so having bank here is not necessary
- - optimization of account description calculation:
- in case bank/currency entity is updated but attributes bank.name/currency.code3 is not changed we do nt need to update accounts descriptions  
- 
+
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
+## [5.3.38] - 2020-02-23
+### Changed
+ - currency dictionary shortcut - decrease `code` and `code3` column width
+ - `cdn_orgaccount.bank` marked as **allow null** - IBAN account code already contains bank MFO, so having bank here is not necessary
+ - optimization of account description calculation:
+ in case bank/currency entity is updated but attributes bank.name/currency.code3 is not changed we do nt need to update accounts descriptions  
+ 
 ## [5.3.37] - 2020-02-18
 ## [5.3.36] - 2020-02-13
 ## [5.3.35] - 2020-02-10

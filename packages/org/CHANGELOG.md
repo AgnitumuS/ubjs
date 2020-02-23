@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.2.56] - 2020-02-23
+### Added
  - vue form adedd for org_execgruop
 
 ### Changed
@@ -30,12 +41,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    NOTE: Despite execution groups MAY belong to organizations or departments, this implementation won't automatically
    grant user parent org units by execution groups, i.e. Staff Unit from ORG1 won't have permission of ORG2, even, if
    included into an execution group of ORG2.
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.2.55] - 2020-02-18
 ## [5.2.54] - 2020-02-13

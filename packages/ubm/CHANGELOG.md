@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - scanner settings - adds a PDF/A output format - to be used in nm-scanner plugin 
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.2.53] - 2020-02-23
+### Added
+ - scanner settings - adds a PDF/A output format - to be used in nm-scanner plugin 
 
 ### Fixed
  - shortcut editor will recognize both `"entity": "entityCode"` & `"entityName": "entityCode"` while parsing

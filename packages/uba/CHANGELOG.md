@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.3.32] - 2020-02-23
+### Added
  - `uba_user-changeUserPassword`: opportunity to influence password policy validators from the admin panel
  - `uba_user-changeUserPassword`: new validator for matching new password with login
 
@@ -14,8 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  custom hashing algorithm from `Session._buildPasswordHash`
  - in case `UBA.passwordPolicy.allowMatchWithLogin` set to `true` (default) `changePassword` endpoint will check
  password do not **include** user login. Before this changes **equality** is verified  
-
-### Deprecated
 
 ### Removed
  - ability to change password for other user using `changePassword` endpoint for members of `admin` group is removed.

@@ -8,9 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- 
+
 ### Deprecated
 
+### Removed
+
+### Fixed
+
+## [1.9.25] - 2020-02-23
 ### Removed
  - usage of BigInteger.js is removed in CERT2 with login/password auth
  
