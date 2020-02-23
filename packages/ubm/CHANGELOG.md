@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - shortcut editor will recognize both `"entity": "entityCode"` & `"entityName": "entityCode"` while parsing
+ a command text for building attributes tree 
 
 ## [5.2.52] - 2020-02-18
 ## [5.2.51] - 2020-02-13
