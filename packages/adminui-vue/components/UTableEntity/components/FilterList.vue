@@ -9,9 +9,9 @@
 
     <div
       v-for="filter in filters"
-      :key="filter.columnId"
+      :key="filter.id"
       class="u-table-entity__filter-list-item"
-      @click.middle="removeFilter(filter.columnId)"
+      @click.middle="removeFilter(filter.id)"
     >
       <div>
         <span>
@@ -23,7 +23,7 @@
       </div>
       <i
         class="u-table-entity__filter-list-item__close-icon el-icon-close"
-        @click="removeFilter(filter.columnId)"
+        @click="removeFilter(filter.id)"
       />
     </div>
   </div>
