@@ -14,9 +14,6 @@
     @keydown.ctrl.r.prevent.exact="refresh"
     @keydown.ctrl.delete.exact="deleteRecord(selectedRowId)"
   >
-    <pre>
-      {{$store.state.filters}}
-    </pre>
     <div class="u-table-entity__head">
       <!-- @slot Replace whole toolbar -->
       <slot
