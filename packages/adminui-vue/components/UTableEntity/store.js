@@ -159,7 +159,7 @@ module.exports = (instance) => ({
     },
 
     APPLY_FILTER (state, filter) {
-      const index = state.filters.findIndex(f => f.columnId === filter.columnId)
+      const index = state.filters.findIndex(f => f.columnId === filter.id)
 
       if (index !== -1) {
         state.filters.splice(index, 1, filter)
