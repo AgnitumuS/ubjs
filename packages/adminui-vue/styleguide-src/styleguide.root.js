@@ -37,7 +37,7 @@ export default (previewComponent) => {
         */
         setTimeout(() => {
           this.authReady = true
-        }, 500)
+        }, 1000)
       })
     },
 

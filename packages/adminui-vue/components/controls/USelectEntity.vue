@@ -157,8 +157,7 @@
 const { debounce } = require('throttle-debounce')
 const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
 /**
- * Test description.
- * @displayName Custom name component
+ * Dropdown control for select data from entity.
  */
 export default {
   name: 'USelectEntity',
@@ -184,14 +183,17 @@ export default {
       default: 'ID'
     },
     /**
-     * Function which return UBRepository
+     * Function which return UBRepository.
+     * You need care yourself about pass displayAttribute to attrs to prevent blank rows!
      * @returns {ClientRepository}
      */
     repository: {
       type: Function,
       default () {
+        const attrs = (this.valueAttribute === this.displayAttribute) ? [this.displayAttribute] : [this.valueAttribute, this.displayAttribute]
+        console.log(attrs)
         return this.$UB.Repository(this.entityName)
-          .attrs(this.valueAttribute, this.displayAttribute)
+          .attrs(attrs)
           .orderBy(this.displayAttribute)
       }
     },
@@ -556,6 +558,12 @@ export default {
     // emits when user click on option or click enter when option is focused
     chooseOption (option) {
       if (this.selectedID !== this.value) {
+        /**
+         * Emits when value changed
+         *
+         * @property {number|string} newValue contain primitive value
+         * @property {Object} Row contain all attributes passed to Repository (when Repository not set contain only display and value attributes)
+         */
         this.$emit('input', this.selectedID, JSON.parse(JSON.stringify(option)))
       }
       this.setQueryByValue(this.selectedID)
@@ -658,11 +666,17 @@ export default {
 
     onFocus () {
       this.isFocused = true
+      /**
+       * Emits on focus
+       */
       this.$emit('focus')
     },
 
     onBlur () {
       this.isFocused = false
+      /**
+       * Emits on blur
+       */
       this.$emit('blur')
     }
   }
@@ -752,13 +766,15 @@ One of these options is required:
   - `entity-name`
   - `repository`
 
-### Use as `entity-name`
+### Usage with `entity-name`
 
+Use `entity-name` props when you need select all data from entity. Useful for dictionaries.
 ```vue
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="tst_maindata"
+    entity-name="cdn_country"
+    @input="lol"
   />
 </template>
 <script>
@@ -767,19 +783,32 @@ One of these options is required:
       return {
         value: null
       }
+    },
+    methods: {
+      lol(a, b) {
+        console.log(typeof a)
+        console.log(a,b)
+      }
     }
   }
 </script>
 ```
 
-### Use as `repository`
-Need to set function which returns UB Repository
+### Usage with `repository`
+Use `repository` props when you need filtering data on form.
+
+Set function which returns [UB Repository](https://unitybase.info/api/ubpub-v5/CustomRepository.html).
+You need care yourself about pass displayAttribute to attrs to prevent blank rows!
+
+(When you need filter not only on specific form, better be define data visibility rules across all application by
+use [RLS](https://unitybase.info/api/server-v5/tutorial-mixin_rls.html))
 
 ```vue
 <template>
   <u-select-entity
     v-model="value"
-    :repository="getRepo"
+    :repository="specificsCountry"
+    @input="lol"
   />
 </template>
 <script>
@@ -791,34 +820,66 @@ Need to set function which returns UB Repository
     },
 
     methods: {
-      getRepo () {
-        return this.$UB.Repository('tst_maindata')
-          .attrs('ID', 'code', 'caption')
-          .where('parent', '=', 333306077119805) // TODO: set valid ID
+      specificsCountry () {
+        return this.$UB.Repository('cdn_country')
+          // name is descriptionAttribute in meta file, and therefore displayAttribute by default, so we need it
+          .attrs('ID', 'code', 'name')
+          .where('code', 'startWith', 'U')
+      },
+      lol(a, b) {
+        console.log(typeof a)
+        console.log(a,b)
       }
     }
   }
 </script>
 ```
 
-### Custom `valueAttribute`
-Need when you need to change default model propery.
+### Custom `valueAttribute` and `displayAttribute`
+Use when you need to change default model and display property.
+
 Its like attribute `value` in native `<option>` tag.
-For example when you need instead `ID` like `code`.
+
+In example `code` uses for value (instead of `ID`), and for display (instead of `name`)
 
 ```vue
 <template>
-  <u-select-entity
-    v-model="value"
-    entity-name="tst_maindata"
-    value-attribute="code"
-  />
+  <div>
+    <u-grid>
+      <u-form-row label="Default">
+        <u-select-entity
+            v-model="value1"
+            entity-name="cdn_country"
+        />
+      </u-form-row>
+      <u-base-input
+          v-model="value1"
+          disabled="true"
+      ></u-base-input>
+    </u-grid>
+
+    <u-grid>
+      <u-form-row label="Custom">
+        <u-select-entity
+            v-model="value2"
+            entity-name="cdn_country"
+            value-attribute="code"
+            display-attribute="code"
+        />
+      </u-form-row>
+      <u-base-input
+          v-model="value2"
+          disabled="true"
+      ></u-base-input>
+    </u-grid>
+  </div>
 </template>
 <script>
   export default {
     data () {
       return {
-        value: null
+        value1: null,
+        value2: null
       }
     }
   }
@@ -827,13 +888,13 @@ For example when you need instead `ID` like `code`.
 
 ### Change default actions
 
-#### Remove default actions
-
+### Remove default actions
+Remove rigth menu when you dint need it!
 ```vue
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="tst_maindata"
+    entity-name="cdn_country"
     remove-default-actions
   />
 </template>
@@ -847,7 +908,7 @@ For example when you need instead `ID` like `code`.
   }
 </script>
 ```
-
+<!--
 #### Add actions
 
 ```vue
@@ -978,6 +1039,6 @@ For example when you need instead `ID` like `code`.
       }
     }
   }
-</script>
+</script>-->
 ```
 </docs>
