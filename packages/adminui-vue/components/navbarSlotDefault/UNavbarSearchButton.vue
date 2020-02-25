@@ -134,6 +134,7 @@ export default {
   },
 
   mounted () {
+    if (!this.modeList.length) return // widget is hidden because no fts connections
     document.body.addEventListener('keydown', (e) => {
       const { code, ctrlKey } = e
       if (code === 'KeyF' && ctrlKey) {
@@ -149,7 +150,7 @@ export default {
     },
 
     setFocusAndSelect () {
-      let i = this.$refs.input
+      const i = this.$refs.input
       i.focus()
       i.select()
     },
@@ -243,7 +244,7 @@ export default {
           }
         }
       })
-      for (let mode of modeSet) {
+      for (const mode of modeSet) {
         if (domain.isEntityMethodsAccessible(`fts_${mode}`, 'fts')) {
           this.modeList.push(mode)
         }
