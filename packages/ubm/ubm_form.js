@@ -400,7 +400,7 @@ me.insert = function (ctxt) {
 
 /**
  * New form
- * @method addNew
+ * @method addnew
  * @memberOf ubm_form_ns.prototype
  * @memberOfModule @unitybase/ubm
  * @published

@@ -6,7 +6,7 @@ const Session = UB.Session
 const totp = require('./modules/totp')
 /* global uba_otp createGuid */
 // eslint-disable-next-line camelcase
-let me = uba_otp
+const me = uba_otp
 /**
  * Generate one-time-password (OTP) and store it into uba_otp
  *
@@ -33,11 +33,11 @@ me.generateOtp = function (otpKind, userID, uData, lifeTime) {
   } else {
     throw new Error('invalid otpKind')
   }
-  let expiredDate = new Date()
+  const expiredDate = new Date()
   expiredDate.setTime(expiredDate.getTime() + lifeTime * 1000)
-  let uDataStr = uData ? JSON.stringify(uData) : ''
-  let store = UB.DataStore('uba_otp')
-  let res = store.run('insert', {
+  const uDataStr = uData ? JSON.stringify(uData) : ''
+  const store = UB.DataStore('uba_otp')
+  const res = store.run('insert', {
     execParams: {
       otp: otp,
       userID: userID,
@@ -69,15 +69,15 @@ me.generateOtp = function (otpKind, userID, uData, lifeTime) {
  * @public
  */
 me.auth = function (otp, otpKind, fCheckUData, checkData, call) {
-  let repo = UB.Repository('uba_otp').attrs(['userID', 'ID', 'uData'])
+  const repo = UB.Repository('uba_otp').attrs(['userID', 'ID', 'uData'])
     .where('[otp]', '=', otp).where('[expiredDate]', '>=', new Date())
     .whereIf(otpKind, '[otpKind]', '=', otpKind)
 
-  let inst = repo.select()
+  const inst = repo.select()
   if (inst.eof) return false
 
   if (otpKind !== 'TOTP') {
-    let res = inst.run('delete', {
+    const res = inst.run('delete', {
       execParams: { ID: inst.get('ID') }
     })
     if (!res) throw inst.lastError
@@ -105,7 +105,7 @@ me.auth = function (otp, otpKind, fCheckUData, checkData, call) {
  * @return {boolean}
  */
 me.verifyTotp = function (totpValue) {
-  let secret = UB.Repository('uba_otp').attrs('otp')
+  const secret = UB.Repository('uba_otp').attrs('otp')
     .where('userID', '=', Session.userID)
     .where('[expiredDate]', '>=', new Date())
     .where('[otpKind]', '=', 'TOTP')
@@ -169,10 +169,10 @@ function doGenerateTOTPSecret (userID) {
     .selectScalar()
   if (secret) return secret
 
-  let store = UB.DataStore('uba_otp')
+  const store = UB.DataStore('uba_otp')
   secret = totp.generateTotpSecret()
-  let lifeTime = 365 * 10 * 24 * 60 * 60 // 10 years
-  let expiredDate = new Date()
+  const lifeTime = 365 * 10 * 24 * 60 * 60 // 10 years
+  const expiredDate = new Date()
   expiredDate.setTime(expiredDate.getTime() + lifeTime * 1000)
   store.run('insert', {
     execParams: {

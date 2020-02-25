@@ -43,7 +43,7 @@
 
 <script>
 const { mapInstanceFields } = require('@unitybase/adminui-vue')
-const entityRe = /"entity"\s*:\s*"(\w*)"/
+const ENTITY_RE = /"(?:entity|entityName)"\s*:\s*"(\w*)"/
 
 export default {
   name: 'ShortcutCmdCodeSnippet',
@@ -83,7 +83,7 @@ export default {
     },
 
     getEntityName () {
-      const res = entityRe.exec(this.cmdCode)
+      const res = ENTITY_RE.exec(this.cmdCode)
       if (res && res[1] && this.$UB.connection.domain.has(res[1])) {
         this.entityName = res[1]
       }

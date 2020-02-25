@@ -158,6 +158,17 @@ TubDataStore.initialize = function (source, keyMap) {
   return this
 }
 
+if (TubDataStore.hasOwnProperty('entity')) {
+  throw new Error(`Package folder require deduplication.
+@unitybase/ub must present only once - inside ./node_modules/@unitybase/ub folder.
+All other appearances must be either a symbolic links created by lerna or not exists at all
+Detected duplicate path is ${__dirname}
+To solve this problem:
+ - in case this app is not managed by lerna - run "npm ddp"
+ - in case of lerna: remove package-lock.json, run "lerna clear && lerna bootstrap"  
+`)
+}
+
 /**
  * Entity metadata
  * @member {UBEntity} entity

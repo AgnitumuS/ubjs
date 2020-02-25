@@ -746,7 +746,7 @@ Ext.define('UBM.scanerSettings', {
             }, {
                 xtype: 'radiogroup',
                 fieldLabel: 'Output format',
-                columns: 3,
+                columns: 4,
                 ubID: 'UBScan.OutputFormat',
                 items: [{
                     name: 'UBScan.OutputFormat',
@@ -760,6 +760,10 @@ Ext.define('UBM.scanerSettings', {
                     name: 'UBScan.OutputFormat',
                     boxLabel: 'TIFF',
                     inputValue: 'TIFF'
+                }, {
+                    name: 'UBScan.OutputFormat',
+                    boxLabel: 'PDF/A',
+                    inputValue: 'PDF/A'
                 }]
             }, {
                 xtype: 'numberfield',

@@ -432,11 +432,7 @@ begin
 end;
 
 //procedure MimePartSubPartsDestroy(cx: PJSContext; obj: PJSObject); cdecl;
-{$IFDEF SM52}
 procedure MimePartSubPartsDestroy(var fop: JSFreeOp; obj: PJSObject); cdecl;
-{$ELSE}
-procedure MimePartSubPartsDestroy(var rt: PJSRuntime; obj: PJSObject); cdecl;
-{$ENDIF}
 //var
 //  SubPartsVals: PjsRVVector;
 //  SubPartsVal: jsval;
@@ -457,7 +453,6 @@ begin
 end;
 
 const
-{$IFDEF SM52}
   jsMimePartSubParts_classOps: JSClassOps = (
     getProperty: MimePartSubPartsReader;
     finalize: MimePartSubPartsDestroy; // call then JS object GC
@@ -466,14 +461,7 @@ const
     flags: JSCLASS_HAS_PRIVATE or JSCLASS_FOREGROUND_FINALIZE or  (255 shl JSCLASS_RESERVED_SLOTS_SHIFT);
     cOps: @jsMimePartSubParts_classOps
     );
-{$ELSE}
-  jsMimePartSubParts_class: JSClass = (name: 'MimePartSubParts';
-    flags: JSCLASS_HAS_PRIVATE or (255 shl JSCLASS_RESERVED_SLOTS_SHIFT);
-    getProperty: MimePartSubPartsReader;
-    finalize: MimePartSubPartsDestroy; // call then JS object GC
-    );
-{$ENDIF}
-    
+
 function MimePartGetSubParts(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
 var
   Inst: PSMInstanceRecord;

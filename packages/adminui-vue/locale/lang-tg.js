@@ -67,7 +67,7 @@ UB.i18nExtend({
     },
     cascader: {
       noMatch: 'Ҳеҷ мувофиқат пайдо нашуд',
-      loading: 'Боргирӣ ',
+      loading: 'Боргирӣ',
       placeholder: 'Интихоб кунед'
     },
     pagination: {
@@ -148,7 +148,8 @@ UB.i18nExtend({
         from: 'from',
         to: 'to',
         valuePlaceholder: 'Select date'
-      }
+      },
+      columnPlaceholder: 'Column'
     },
     pagination: {
       outOf: 'out of'

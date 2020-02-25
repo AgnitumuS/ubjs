@@ -15,6 +15,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.53] - 2020-02-23
+### Added
+ - scanner settings - adds a PDF/A output format - to be used in nm-scanner plugin 
+
+### Fixed
+ - shortcut editor will recognize both `"entity": "entityCode"` & `"entityName": "entityCode"` while parsing
+ a command text for building attributes tree 
+
+## [5.2.52] - 2020-02-18
+## [5.2.51] - 2020-02-13
+## [5.2.50] - 2020-02-10
+## [5.2.49] - 2020-02-08
+## [5.2.48] - 2020-02-03
+## [5.2.47] - 2020-01-31
 ## [5.2.46] - 2020-01-17
 ### Changed
  - rewrote `010_create_navshortcuts.js` config for rendering ubm forms on vue

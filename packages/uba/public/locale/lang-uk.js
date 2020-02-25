@@ -37,6 +37,10 @@ UB.i18nExtend({
   roles: 'Ролі',
   uba: {
     changePassword: {
+      newPassword: {
+        matchWithLoginError: 'Пароль співпадає з логіном',
+        fieldRequirementsError: 'Не відповідає вимогам'
+      },
       retypePassword: {
         errorText: 'Невідповідність паролів'
       }

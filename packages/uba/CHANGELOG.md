@@ -15,6 +15,38 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.32] - 2020-02-23
+### Added
+ - `uba_user-changeUserPassword`: opportunity to influence password policy validators from the admin panel
+ - `uba_user-changeUserPassword`: new validator for matching new password with login
+
+### Changed
+ - `changePassword` endpoint will accept old password in plain text (instead of hashed) to allow server to apply a
+ custom hashing algorithm from `Session._buildPasswordHash`
+ - in case `UBA.passwordPolicy.allowMatchWithLogin` set to `true` (default) `changePassword` endpoint will check
+ password do not **include** user login. Before this changes **equality** is verified  
+
+### Removed
+ - ability to change password for other user using `changePassword` endpoint for members of `admin` group is removed.
+ `uba_user.changeOtherUserPassword` method should be used instead. By default access to this method is granted
+ to members or `Supervisor` role   
+
+### Fixed
+ - change password form will load correct setting key (UBA.passwordPolicy.minLength) fro minimum pwd length 
+ and use `UBS.Settings.loadKey` instead of UB.Repository 
+
+## [5.3.31] - 2020-02-18
+## [5.3.30] - 2020-02-13
+## [5.3.29] - 2020-02-10
+## [5.3.28] - 2020-02-08
+## [5.3.27] - 2020-02-03
+### Changed
+ - `uba_user.trustedIP` attribute size increased to 2000
+
+### Fixed
+- ALS form: allow to change newly added record by enabling Save & SaveDiffInFile
+
+## [5.3.26] - 2020-01-31
 ## [5.3.25] - 2020-01-17
 ### Changed
  - rewrote `010_create_navshortcuts.js` config for rendering uba forms on vue

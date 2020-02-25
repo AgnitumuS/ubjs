@@ -4,7 +4,7 @@ const Session = UB.Session
 const App = UB.App
 /* global uba_role */
 // eslint-disable-next-line camelcase
-let me = uba_role
+const me = uba_role
 me.on('insert:before', fillRoleDescriptionIfMissing)
 me.on('insert:after', ubaAuditNewRole)
 me.on('update:after', ubaAuditModifyRole)
@@ -19,8 +19,8 @@ me.on('delete:after', ubaAuditDeleteRole)
 function ubaAuditNewRole (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let store = UB.DataStore('uba_audit')
-  let params = ctx.mParams.execParams
+  const store = UB.DataStore('uba_audit')
+  const params = ctx.mParams.execParams
   store.run('insert', {
     execParams: {
       entity: 'uba_role',
@@ -41,7 +41,7 @@ function ubaAuditNewRole (ctx) {
  * @param {ubMethodParams} ctxt
  */
 function fillRoleDescriptionIfMissing (ctxt) {
-  let params = ctxt.mParams.execParams
+  const params = ctxt.mParams.execParams
   const descriptionIndex = Object.keys(params).findIndex(item => item.includes('description'))
   if (descriptionIndex < 0) {
     params.description = params.name
@@ -56,11 +56,11 @@ function fillRoleDescriptionIfMissing (ctxt) {
 function ubaAuditModifyRole (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
-  let store = UB.DataStore('uba_audit')
-  let actionUser = Session.uData.login
-  let origStore = ctx.dataStore
-  let origName = origStore.currentDataName
+  const params = ctx.mParams.execParams
+  const store = UB.DataStore('uba_audit')
+  const actionUser = Session.uData.login
+  const origStore = ctx.dataStore
+  const origName = origStore.currentDataName
   let oldValues, oldName
 
   try {
@@ -123,9 +123,9 @@ function ubaAuditModifyRole (ctx) {
 function ubaAuditDeleteRole (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
-  let origStore = ctx.dataStore
-  let origName = origStore.currentDataName
+  const params = ctx.mParams.execParams
+  const origStore = ctx.dataStore
+  const origName = origStore.currentDataName
   let oldValues, oldName
 
   try {
@@ -136,7 +136,7 @@ function ubaAuditDeleteRole (ctx) {
     origStore.currentDataName = origName
   }
 
-  let store = UB.DataStore('uba_audit')
+  const store = UB.DataStore('uba_audit')
   store.run('insert', {
     execParams: {
       entity: 'uba_role',
@@ -157,9 +157,9 @@ function ubaAuditDeleteRole (ctx) {
  * @param {ubMethodParams} ctx
  */
 function disableBuildInRoleDelete (ctx) {
-  let ID = ctx.mParams.execParams.ID
+  const ID = ctx.mParams.execParams.ID
 
-  for (let role in UBA_COMMON.ROLES) {
+  for (const role in UBA_COMMON.ROLES) {
     if (UBA_COMMON.ROLES[role].ID === ID) {
       throw new UB.UBAbort('<<<Removing of built-in role is prohibited>>>')
     }

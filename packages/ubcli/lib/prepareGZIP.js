@@ -24,26 +24,26 @@ const gzipFile = require('@unitybase/compressors').gzipFile
 
 module.exports = function prepareGZIP (cfg) {
   if (!cfg) {
-    let opts = options.describe('prepareGZIP', 'GZIP `staticFolder` files according to `usePreparedGzip` `staticRules` for specified application', 'ubcli')
-      .add({short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: false, help: 'Path to server config'})
-      .add({short: 'd', long: 'deleteOriginals', defaultValue: false, help: 'Delete source files we compress(not recommended if you have a client what not support compression'})
-      .add({short: 'largeWhen', long: 'largeWhen', param: 'size', defaultValue: 3 * 1024, help: 'ompress only files with size > largeWhen bytes'})
+    const opts = options.describe('prepareGZIP', 'GZIP `staticFolder` files according to `usePreparedGzip` `staticRules` for specified application', 'ubcli')
+      .add({ short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: false, help: 'Path to server config' })
+      .add({ short: 'd', long: 'deleteOriginals', defaultValue: false, help: 'Delete source files we compress(not recommended if you have a client what not support compression' })
+      .add({ short: 'largeWhen', long: 'largeWhen', param: 'size', defaultValue: 3 * 1024, help: 'ompress only files with size > largeWhen bytes' })
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
-  let deleteOriginals = cfg.deleteOriginals
-  let largeWhen = cfg.largeWhen
+  const deleteOriginals = cfg.deleteOriginals
+  const largeWhen = cfg.largeWhen
 
-  let config = argv.getServerConfiguration()
+  const config = argv.getServerConfiguration()
 
   if (!config.httpServer || !config.httpServer.inetPub) {
     console.warn('config.httpServer.inetPub not configured')
     return
   }
-  let inetPub = config.httpServer.inetPub
-  let headersPostprocessors = config.httpServer.headersPostprocessors
+  const inetPub = config.httpServer.inetPub
+  const headersPostprocessors = config.httpServer.headersPostprocessors
 
-  let gzipRules = _.filter(headersPostprocessors, {usePreparedGzip: true})
+  const gzipRules = _.filter(headersPostprocessors, { usePreparedGzip: true })
   if (!gzipRules.length) {
     console.warn('header post-processors with `usePreparedGzip: true` option not found')
     return
@@ -55,12 +55,12 @@ module.exports = function prepareGZIP (cfg) {
     rule.re = new RegExp(rule.location)
   })
 
-  let configFileName = argv.getConfigFileName()
-  let configPath = path.dirname(configFileName)
+  const configFileName = argv.getConfigFileName()
+  const configPath = path.dirname(configFileName)
   let startFrom = path.isAbsolute(inetPub)
     ? inetPub
     : path.join(configPath, inetPub)
-  let endWith = startFrom.charAt(startFrom.length - 1)
+  const endWith = startFrom.charAt(startFrom.length - 1)
   if ((endWith !== '\\') && (endWith !== '/')) {
     startFrom += '/'
   }
@@ -111,4 +111,4 @@ module.exports = function prepareGZIP (cfg) {
   )
 }
 
-module.exports.shortDoc = `Deprecated. GZIP static files`
+module.exports.shortDoc = 'Deprecated. GZIP static files'

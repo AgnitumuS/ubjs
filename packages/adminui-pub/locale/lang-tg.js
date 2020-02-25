@@ -125,6 +125,12 @@ UB.i18nExtend({
   singOperationInProcess: 'Як санади дигар имзо шуда истодааст. Баъдтар дубора сайъ кунед',
 
     // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
+  NMInstallExtensionFirefox: '<p>To use this application Firefox extension <b>"UBExtension"</b> must be installed.</p> ' +
+    '<p>Follow <a href="https://addons.mozilla.org/addon/ub-extension/" target="_blank">ADD EXTENSION</a> ' +
+    ' to go to the Firefox add-ons</p>' +
+    '<p> At the add-on window click button <b>+Add to Firefox</b></p>' +
+    '<p>Confirm adding a new extension.</p>' +
+    '<p>After installing the extension <b>restart your browser!</b></p>',
   NMInstallExtensionChrome: '<p>Барои идома додани кор, шумо бояд як тавсеаи <b>"UBExtension"</b> браузери Google Chrome-ро насб кунед.</p> ' +
         '<p>Истинодро клик кунед <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">БАРНОМАИ ЁРИДАХАНДА-ро</a> ' +
         ' барои гузаштан ба мағозаи Google</p>' +
@@ -269,12 +275,9 @@ UB.i18nExtend({
   location: 'Ҷойгиршавӣ',
   author: 'Муаллиф',
   signVerification: 'Тафтиши имзо',
-  // signsInDocument: 'Имзоҳо дар ҳуҷҷат',
-  UserWithoutOrgEmployeeNotAllowed: 'Истифодабаранда узви созмон нест (ба шӯъбаи кормандон муқоиса карда нашудааст). Вуруд манъ аст.',
-  // search form (UBPreFilter)
+
   search: 'Ҷустуҷӯ',
   'Filter by': 'Филтр кардан бо',
-  // cancel: 'Бекор кардан',
   filterForm: 'Шакли ҷустуҷӯ',
   main: 'Асосӣ',
   other: 'Ғайра',
@@ -446,14 +449,6 @@ UB.i18nExtend({
   Transformation: 'Конвертатсия',
 
   showPlanAndFact: 'Нишон додани нақша ва далел',
-
-  registrationPassed: 'Сертификати шумо бо муваффақият бор карда шуд ва барои коркард пешниҳод карда шуд.',
-  registraionPassed: 'Сертификати шумо бо муваффақият бор карда шуд ва барои коркард пешниҳод карда шуд.',
-  keyAlreadyRegisteredForUser: 'Калид аллакай барои як корманди дигар ба қайд гирифта шудааст',
-  keyBlockedByAdmin: 'Мудир истифодаи калидро барои ворид шудан ба система масдуд кардааст. Пойгоҳ барои бастан: ',
-  keyNoRightsRejected: 'Истифодабаранда ҳуқуқ надорад, ки бо система кор кунад. Дархост барои бақайдгирии калид рад карда мешавад.',
-  keyNoRightsRepeat: 'Истифодабаранда ҳуқуқ надорад, ки бо система кор кунад. Дархост барои бақайдгирии дубораи калид баррасӣ мешавад.',
-  keyAlreadyRegistered: 'Аризаи бақайдгирии калидро фиристода наметавонад. Ин калид аллакай дар система сабт шудааст.',
 
   UbPreFilterMainGroup: 'Аз рӯи хусусиятҳо',
 

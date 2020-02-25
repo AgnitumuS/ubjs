@@ -20,19 +20,19 @@ me.on('delete:after', ubaAuditDeleteUserRole)
 function ubaAuditNewUserRole (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
+  const params = ctx.mParams.execParams
   let role = params.roleID
   let user = params.userID
   if (role) {
-    let obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', role).select()
+    const obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', role).select()
     role = obj.eof ? role : obj.get('name')
   }
   if (user) {
-    let obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', user).select()
+    const obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', user).select()
     user = obj.eof ? user : obj.get('name')
   }
 
-  let auditStore = UB.DataStore('uba_audit')
+  const auditStore = UB.DataStore('uba_audit')
   auditStore.run('insert', {
     execParams: {
       entity: 'uba_userrole',
@@ -56,18 +56,18 @@ function ubaAuditNewUserRole (ctx) {
 function ubaAuditModifyUserRole (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
-  let actionUser = Session.uData.login
-  let origStore = ctx.dataStore
-  let origName = origStore.currentDataName
+  const params = ctx.mParams.execParams
+  const actionUser = Session.uData.login
+  const origStore = ctx.dataStore
+  const origName = origStore.currentDataName
   let roleNew = params.roleID
   let userNew = params.userID
   if (roleNew) {
-    let obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', roleNew).select()
+    const obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', roleNew).select()
     roleNew = obj.eof ? roleNew : obj.get('name')
   }
   if (userNew) {
-    let obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', userNew).select()
+    const obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', userNew).select()
     userNew = obj.eof ? userNew : obj.get('name')
   }
 
@@ -81,14 +81,14 @@ function ubaAuditModifyUserRole (ctx) {
     origStore.currentDataName = origName
   }
   if (role) {
-    let obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', role).select()
+    const obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', role).select()
     role = obj.eof ? role : obj.get('name')
   }
   if (user) {
-    let obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', user).select()
+    const obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', user).select()
     user = obj.eof ? user : obj.get('name')
   }
-  let auditStore = UB.DataStore('uba_audit')
+  const auditStore = UB.DataStore('uba_audit')
   auditStore.run('insert', {
     execParams: {
       entity: 'uba_userrole',
@@ -120,9 +120,9 @@ function ubaAuditModifyUserRole (ctx) {
 
 me.on('delete:before', function (ctxt) {
   if (!App.domainInfo.has('uba_audit')) return
-  let execParams = ctxt.mParams.execParams
+  const execParams = ctxt.mParams.execParams
 
-  let store = UB.Repository('uba_userrole')
+  const store = UB.Repository('uba_userrole')
     .attrs(['userID', 'roleID'])
     .where('[ID]', '=', execParams.ID).select()
   ctxt.mParams.delUserID = store.get('userID')
@@ -137,20 +137,20 @@ me.on('delete:before', function (ctxt) {
 function ubaAuditDeleteUserRole (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
+  const params = ctx.mParams.execParams
 
   let role = ctx.mParams.delRoleID
   if (role) {
-    let obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', role).select()
+    const obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', role).select()
     role = obj.eof ? role : obj.get('name')
   }
   let user = ctx.mParams.delUserID
   if (user) {
-    let obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', user).select()
+    const obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', user).select()
     user = obj.eof ? user : obj.get('name')
   }
 
-  let auditStore = UB.DataStore('uba_audit')
+  const auditStore = UB.DataStore('uba_audit')
   auditStore.run('insert', {
     execParams: {
       entity: 'uba_userrole',

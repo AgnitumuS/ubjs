@@ -167,7 +167,7 @@ class ClientRepository extends CustomRepository {
    */
   selectSingle (fieldAliases) {
     return this.selectAsObject(fieldAliases).then(function (row) {
-      return row[ 0 ]
+      return row[0]
     })
   }
 
@@ -179,7 +179,7 @@ class ClientRepository extends CustomRepository {
    */
   selectScalar () {
     return this.selectAsArray().then(function (result) {
-      return (result.resultData.data.length) ? result.resultData.data[ 0 ][ 0 ] : undefined
+      return (result.resultData.data.length) ? result.resultData.data[0][0] : undefined
     })
   }
 

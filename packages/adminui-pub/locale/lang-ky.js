@@ -126,6 +126,12 @@ UB.i18nExtend({
   singOperationInProcess: 'Выполняется подписание другого документа. Повторите действие позже',
 
   // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
+  NMInstallExtensionFirefox: '<p>To use this application Firefox extension <b>"UBExtension"</b> must be installed.</p> ' +
+    '<p>Follow <a href="https://addons.mozilla.org/addon/ub-extension/" target="_blank">ADD EXTENSION</a> ' +
+    ' to go to the Firefox add-ons</p>' +
+    '<p> At the add-on window click button <b>+Add to Firefox</b></p>' +
+    '<p>Confirm adding a new extension.</p>' +
+    '<p>After installing the extension <b>restart your browser!</b></p>',
   NMInstallExtensionChrome: '<p>Для продолжения работы необходима установка расширения <b>"UBExtension"</b> для браузера Google Chrome.</p> ' +
         '<p>Нажмите на ссылку <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">УСТАНОВИТЬ РАСШИРЕНИЕ</a> ' +
         ' для перехода в магазин Google</p>' +
@@ -271,12 +277,9 @@ UB.i18nExtend({
   location: 'Местоположение',
   author: 'Автор',
   signVerification: 'Проверка подписи',
-  // signsInDocument: 'Подписи в документе',
-  UserWithoutOrgEmployeeNotAllowed: 'Пользователь не состоит в штате организации (не сопоставлен со штатной единицей). Вход запрещён.',
-  // search form (UBPreFilter)
+
   search: 'Поиск',
   'Filter by': 'Фильтровать по',
-  // cancel: 'Отмена',
   filterForm: 'Форма поиска',
   main: 'Основное',
   other: 'Другое',
@@ -449,14 +452,6 @@ UB.i18nExtend({
   Transformation: 'Конвертация',
 
   showPlanAndFact: 'Показать план и факт',
-
-  registrationPassed: 'Ваш сертификат успешно загружен и передан на обработку',
-  registraionPassed: 'Ваш сертификат успешно загружен и передан на обработку',
-  keyAlreadyRegisteredForUser: 'Ключ уже зарегистрирован для другого сотрудника',
-  keyBlockedByAdmin: 'Администратор заблокировал использование ключа для входа в систему. Основание для блокировки: ',
-  keyNoRightsRejected: 'Пользователь не имеет права на работу с системой. В заявке на регистрацию ключа отказано.',
-  keyNoRightsRepeat: 'Пользователь не имеет права на работу с системой. Заявка на повторную регистрацию ключа находится в состоянии рассмотрения.',
-  keyAlreadyRegistered: 'Невозможно отправить заявку на регистрацию ключа. Данный ключ уже зарегистрирован в системе.',
 
   UbPreFilterMainGroup: 'По атрибутам',
 

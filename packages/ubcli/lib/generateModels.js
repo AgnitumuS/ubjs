@@ -7,29 +7,29 @@
 const fs = require('fs')
 const http = require('http')
 const path = require('path')
-const {options, argv} = require('@unitybase/base').options
+const { options, argv } = require('@unitybase/base').options
 
 module.exports = function generateModels (cfg) {
   let session
   let conn
-  let modelsDir = path.join(__dirname, '..', '..', 'node_modules')
+  const modelsDir = path.join(__dirname, '..', '..', 'node_modules')
   let fileEntityName
 
   console.log('generate Models')
   if (!cfg) {
-    let opts = options.describe('generateModels', 'Generate models from database', 'ubcli')
+    const opts = options.describe('generateModels', 'Generate models from database', 'ubcli')
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
-      .add({short: 'tdb', long: 'targetDB', param: 'targetDB', defaultValue: '*', help: 'Database name as it defined in ubConfig.json'})
-      .add({short: 'ftr', long: 'tableFilter', param: 'tableFilter', defaultValue: '%', help: 'Filter for tables'})
-      .add({short: 'mn', long: 'modelName', param: 'modelName', defaultValue: 'newModel', help: 'New model name'})
+      .add({ short: 'tdb', long: 'targetDB', param: 'targetDB', defaultValue: '*', help: 'Database name as it defined in ubConfig.json' })
+      .add({ short: 'ftr', long: 'tableFilter', param: 'tableFilter', defaultValue: '%', help: 'Filter for tables' })
+      .add({ short: 'mn', long: 'modelName', param: 'modelName', defaultValue: 'newModel', help: 'New model name' })
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
 
   // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
-  http.setGlobalConnectionDefaults({receiveTimeout: 120000})
+  http.setGlobalConnectionDefaults({ receiveTimeout: 120000 })
 
-  let autorun = cfg.autorun
+  const autorun = cfg.autorun
 
   fileEntityName = createCommandEntity(modelsDir, cfg)
   try {
@@ -56,7 +56,7 @@ module.exports = function generateModels (cfg) {
 function doGenerateModels (modelsDir, conn, options) {
   let result
   let entity
-  let cModelPath = path.join(modelsDir, options.modelName)
+  const cModelPath = path.join(modelsDir, options.modelName)
 
   result = conn.post('generateModel', options)
   if (!fs.existsSync(cModelPath)) {
@@ -65,33 +65,33 @@ function doGenerateModels (modelsDir, conn, options) {
   result = JSON.parse(result)
   Object.keys(result).forEach(function (element) {
     entity = JSON.stringify(result[element], null, '\t')
-    fs.writeFileSync(path.join(cModelPath, element + '.meta'), entity, {encoding: 'utf-8'})
+    fs.writeFileSync(path.join(cModelPath, element + '.meta'), entity, { encoding: 'utf-8' })
   })
 }
 
 function createCommandEntity (modelsDir, options) {
   const entityName = 'ub_CommandEntity'
 
-  let modelCmd = {
-    'caption': entityName,
-    'description': entityName,
-    'connectionName': options.targetDB,
-    'sqlAlias': entityName,
-    'descriptionAttribute': 'ID',
-    'cacheType': 'None',
-    'attributes': {
+  const modelCmd = {
+    caption: entityName,
+    description: entityName,
+    connectionName: options.targetDB,
+    sqlAlias: entityName,
+    descriptionAttribute: 'ID',
+    cacheType: 'None',
+    attributes: {
     },
-    'mixins': {
-      'mStorage': {
-        'simpleAudit': true,
-        'safeDelete': false
+    mixins: {
+      mStorage: {
+        simpleAudit: true,
+        safeDelete: false
       }
     },
-    'options': {}
+    options: {}
   }
-  let fileName = path.join(modelsDir, 'ub_model_ub', entityName + '.meta')
+  const fileName = path.join(modelsDir, 'ub_model_ub', entityName + '.meta')
 
-  fs.writeFileSync(fileName, JSON.stringify(modelCmd, null, '\t'), {encoding: 'utf-8'})
+  fs.writeFileSync(fileName, JSON.stringify(modelCmd, null, '\t'), { encoding: 'utf-8' })
   // console.log(fileName);
   return fileName
 }

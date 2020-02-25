@@ -77,6 +77,7 @@ UB.i18nExtend({
   'desktopService.UBScan.OutputFormat': 'Формат файла',
   'desktopService.UBScan.OutputFormat.JPEG': 'JPEG',
   'desktopService.UBScan.OutputFormat.PDF': 'PDF',
+  'desktopService.UBScan.OutputFormat.PDF/A': 'PDF/A',
   'desktopService.UBScan.OutputFormat.TIFF': 'TIFF',
   'desktopService.UBScan.jpegQuality': 'Качество JPEG',
   'desktopService.DefaultPrinter': 'Принтер по умолчанию',
@@ -86,7 +87,7 @@ UB.i18nExtend({
   'desktopService.Color': 'Цветной',
 
   'desktopService.TopLeft': 'Сверху слева',
-  'desktopService.TopCenter': 'Сверзу по центру',
+  'desktopService.TopCenter': 'Сверху по центру',
   'desktopService.TopRight': 'Сверху справа',
   'desktopService.BottomLeft': 'Внизу слева',
   'desktopService.BottomCenter': 'Внизу по центру',

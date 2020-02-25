@@ -355,8 +355,11 @@ function getDomainInfoEp (req, resp) {
   if (isExtended && authenticationHandled && !uba_common.isSuperUser()) {
     return resp.badRequest('Extended domain info allowed only for member of admin group of if authentication is disabled')
   }
-  if (!params['userName'] || params['userName'] !== Session.uData.login) {
+  if (!params['userName']) {
     return resp.badRequest('userName=login parameter is required')
+  }
+  if (params['userName'] !== Session.uData.login) {
+    return resp.badRequest(`passed userName=${params['userName']} not match current session user "${Session.uData.login}"`)
   }
 
   // before UB 5.15.4 nativeGetDomainInfo returns domain string and ignore 2-nd parameter writeToResp

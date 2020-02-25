@@ -196,10 +196,27 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
 
     // merge operation sorters to orderList
     operationOrderList = me.operationOrder2OrderList(operation) || {}
-    UB.apply(operationOrderList, serverRequest.orderList)
-    if (Object.keys(operationOrderList).length) {
-      serverRequest.orderList = operationOrderList
-    } else {
+    // smart orderList merge - in case order by attribute already in serverRequest.orderList - override it
+    // to prevent multiple orderBy on the same columns
+    //UB.apply(operationOrderList, serverRequest.orderList)
+    if (!serverRequest.orderList) serverRequest.orderList = {}
+    for (let nk in operationOrderList) {
+      let nOrder = operationOrderList[nk]
+      let exist = false
+      for (let rk in serverRequest.orderList) {
+        if (serverRequest.orderList[rk].expression === nOrder.expression) {
+          serverRequest.orderList[rk].order = nOrder.order
+          exist = true
+          break
+        }
+      }
+      // order by this expression not exists in orderList
+      if (!exist) {
+        serverRequest.orderList[nk] = nOrder
+      }
+    }
+
+    if (!Object.keys(serverRequest.orderList).length) {
       delete serverRequest.orderList
     }
     limit = (operation.limit && operation.limit > 0) ? operation.limit : undefined

@@ -189,7 +189,7 @@ in application domain. In other case default values are applied.
 | `UBA.passwordPolicy.minLength`       | Minimal password length in chars. If user password length less to **minLength** *Password is too short* exception raised | 3 |
 | `UBA.passwordPolicy.checkCmplexity`  | If `true` server will check password must contains upper & lower case letters, numbers and special chars [~!@#$%^&***()_+\\=\-\/'":;<>]. If not - exception *Password is too simple* is raised | false |
 | `UBA.passwordPolicy.checkDictionary` | Check the password are not a word from a dictionary. If so - *Password is dictionary word* error is raised | false |
-| `UBA.passwordPolicy.allowMatchWithLogin` | Check password not match the user name. If so - *Password matches with login* error is raised | false |
+| `UBA.passwordPolicy.allowMatchWithLogin` | Check password not contain username. If so - *Password matches with login* error is raised | false |
 | `UBA.passwordPolicy.maxInvalidAttempts` | After *maxInvalidAttempts* unsuccessful authorization user will be locked (`uba_user.disabled=1`). All attempts will logged to `uba_audit` as  *LOGIN FAILED* or *LOCKED LOGIN FAILED* events | 0 (unlimited) |
 
 Note, that for some of these settings, you will need to restart UnityBase server after the change.

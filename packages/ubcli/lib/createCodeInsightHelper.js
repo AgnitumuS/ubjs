@@ -29,7 +29,7 @@ const argv = require('@unitybase/base').argv
 
 module.exports = function createCodeInsightHelper (cfg) {
   if (!cfg) {
-    let opts = options.describe('createCodeInsightHelper',
+    const opts = options.describe('createCodeInsightHelper',
       'create service scripts containing entity definition for code insight in WebStorm or other IDE work well',
       'ubcli'
     ).add(
@@ -45,16 +45,16 @@ module.exports = function createCodeInsightHelper (cfg) {
     if (!cfg) return
   }
 
-  let configFileName = argv.getConfigFileName()
-  let config = argv.getServerConfiguration()
-  let configPath = path.dirname(configFileName)
-  let domain = config.application.domain
+  const configFileName = argv.getConfigFileName()
+  const config = argv.getServerConfiguration()
+  const configPath = path.dirname(configFileName)
+  const domain = config.application.domain
 
   let models = domain.models
   if (!_.isArray(models)) {
     throw new Error('Domain.models configuration MUST be an array on object')
   }
-  let filterByModel = cfg.model
+  const filterByModel = cfg.model
   if (filterByModel) {
     console.log('Will generate a helpers for model', filterByModel)
     models = _.filter(models, function (modelCfg) {
@@ -71,7 +71,7 @@ module.exports = function createCodeInsightHelper (cfg) {
    * @param {object} namedCollection
    */
   function namedCollection2Array (namedCollection) {
-    let result = []
+    const result = []
     let item
     _.forEach(namedCollection, function (value, key) {
       item = { name: key }
@@ -101,12 +101,12 @@ module.exports = function createCodeInsightHelper (cfg) {
     Date: 'Date'
   }
 
-  let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'codeInsightHelper.mustache'), 'utf8')
+  const tpl = fs.readFileSync(path.join(__dirname, 'templates', 'codeInsightHelper.mustache'), 'utf8')
 
   function processEntities (entities, folderName, modelName) {
     let res, resFileName
 
-    let modulePackage = require(path.join(folderName, 'package.json'))
+    const modulePackage = require(path.join(folderName, 'package.json'))
     if (entities.length) {
       res = mustache.render(tpl, {
         module: modulePackage,
@@ -177,12 +177,12 @@ module.exports = function createCodeInsightHelper (cfg) {
 
   mustache.parse(tpl)
 
-  let session = argv.establishConnectionFromCmdLineAttributes(cfg)
-  let realDomain = session.connection.getDomainInfo()
+  const session = argv.establishConnectionFromCmdLineAttributes(cfg)
+  const realDomain = session.connection.getDomainInfo()
   let entities = []
 
   models.forEach(function processModel (modelCfg) {
-    let currentPath = path.join(configPath, modelCfg.path)
+    const currentPath = path.join(configPath, modelCfg.path)
     entities = []
 
     _.forEach(realDomain.entities, function (entityDef, entityName) {
@@ -194,7 +194,8 @@ module.exports = function createCodeInsightHelper (cfg) {
         entities.push({
           name: entityName,
           description: doc,
-          meta: entityDef })
+          meta: entityDef
+        })
       }
     })
     processEntities(entities, currentPath, modelCfg.name)

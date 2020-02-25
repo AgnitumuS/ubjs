@@ -24,9 +24,11 @@ function readDirectoryFiles (initialDirectory) {
 
 module.exports = function metaTr (options) {
   if (!options) {
-    let opts = cmdLineOpt.describe('meta-tr', '*.meta transformation to fit a latest meta JSON schema', 'ub')
-      .add({ short: 'm', long: 'meta', param: 'metaFile', help: `Path to *.meta or *.meta.lang file or to the folder;
-       In case of folder all *.meta* files will be transformed recursively` })
+    const opts = cmdLineOpt.describe('meta-tr', '*.meta transformation to fit a latest meta JSON schema', 'ub')
+      .add({
+        short: 'm', long: 'meta', param: 'metaFile', help: `Path to *.meta or *.meta.lang file or to the folder;
+       In case of folder all *.meta* files will be transformed recursively`
+      })
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
@@ -44,25 +46,25 @@ module.exports = function metaTr (options) {
   const readyConvertedFiles = []
   fileList.forEach(filePath => {
     try {
-      let metaContent = fs.readFileSync(filePath, {encoding: 'utf-8'})
+      let metaContent = fs.readFileSync(filePath, { encoding: 'utf-8' })
       // remove all comments from JSON
       metaContent = metaContent.replace(/(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm, '')
-      let jsonC = JSON.parse(metaContent)
+      const jsonC = JSON.parse(metaContent)
       if (Array.isArray(jsonC.attributes)) {
         readyConvertedFiles.push(filePath.replace(options.meta, ''))
         return
       }
-      let newAttributes = []
-      for (let attrName in jsonC.attributes) {
-        let oldAttr = jsonC.attributes[attrName]
-        let attr = Object.assign({name: attrName}, oldAttr)
+      const newAttributes = []
+      for (const attrName in jsonC.attributes) {
+        const oldAttr = jsonC.attributes[attrName]
+        const attr = Object.assign({ name: attrName }, oldAttr)
         if (attr.mapping) {
           if (!Array.isArray(attr.mapping)) {
-            let newMappings = []
-            for (let dialectName in attr.mapping) {
+            const newMappings = []
+            for (const dialectName in attr.mapping) {
               // noinspection JSUnfilteredForInLoop
-              let oldDialect = attr.mapping[dialectName]
-              let newDialect = Object.assign({name: dialectName}, oldDialect)
+              const oldDialect = attr.mapping[dialectName]
+              const newDialect = Object.assign({ name: dialectName }, oldDialect)
               newMappings.push(newDialect)
             }
             attr.mapping = newMappings

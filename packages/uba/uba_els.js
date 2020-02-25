@@ -3,7 +3,7 @@ const Session = UB.Session
 const App = UB.App
 /* global uba_els */
 // eslint-disable-next-line camelcase
-let me = uba_els
+const me = uba_els
 me.on('insert:after', ubaAuditNewEls)
 me.on('update:after', ubaAuditModifyEls)
 me.on('delete:after', ubaAuditDeleteEls)
@@ -16,13 +16,13 @@ me.on('delete:after', ubaAuditDeleteEls)
 function ubaAuditNewEls (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
+  const params = ctx.mParams.execParams
   let ruleRole = params.ruleRole
   if (ruleRole) {
     ruleRole = UB.Repository('uba_role').attrs('name').where('[ID]', '=', ruleRole).select()
     ruleRole = ruleRole.eof ? params.ruleRole : ruleRole.get('name')
   }
-  let store = UB.DataStore('uba_audit')
+  const store = UB.DataStore('uba_audit')
   store.run('insert', {
     execParams: {
       entity: 'uba_els',
@@ -46,12 +46,12 @@ function ubaAuditModifyEls (ctx) {
   if (!App.domainInfo.has('uba_audit')) {
     return
   }
-  let params = ctx.mParams.execParams
-  let origStore = ctx.dataStore
-  let origName = origStore.currentDataName
+  const params = ctx.mParams.execParams
+  const origStore = ctx.dataStore
+  const origName = origStore.currentDataName
   let ruleRoleNew = params.ruleRole
   if (ruleRoleNew) {
-    let obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', ruleRoleNew).select()
+    const obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', ruleRoleNew).select()
     ruleRoleNew = obj.eof ? ruleRoleNew : obj.get('name')
   }
 
@@ -64,13 +64,13 @@ function ubaAuditModifyEls (ctx) {
     origStore.currentDataName = origName
   }
   if (ruleRole && params.ruleRole !== ruleRole) {
-    let obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', ruleRole).select()
+    const obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', ruleRole).select()
     ruleRole = obj.eof ? ruleRole : obj.get('name')
   } else {
     ruleRole = null
   }
 
-  let store = UB.DataStore('uba_audit')
+  const store = UB.DataStore('uba_audit')
   if (ruleRole && ruleRoleNew !== ruleRole) {
     store.run('insert', {
       execParams: {
@@ -124,9 +124,9 @@ function ubaAuditDeleteEls (ctx) {
   if (!App.domainInfo.has('uba_audit')) {
     return
   }
-  let params = ctx.mParams.execParams
-  let origStore = ctx.dataStore
-  let origName = origStore.currentDataName
+  const params = ctx.mParams.execParams
+  const origStore = ctx.dataStore
+  const origName = origStore.currentDataName
   let oldValues, ruleRole, ruleRoleObj
 
   try {
@@ -140,7 +140,7 @@ function ubaAuditDeleteEls (ctx) {
     ruleRoleObj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', ruleRole).select()
     ruleRole = ruleRoleObj.eof ? ruleRole : ruleRoleObj.get('name')
   }
-  let store = UB.DataStore('uba_audit')
+  const store = UB.DataStore('uba_audit')
   store.run('insert', {
     execParams: {
       entity: 'uba_els',

@@ -15,6 +15,46 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.56] - 2020-02-23
+### Added
+ - vue form adedd for org_execgruop
+
+### Changed
+ - `Session.on('login', ...)` event handler now queries and records all Execution Groups IDs into `orgUnitIDs` member
+   of uData.  It could and should be used for RLS.  It would make all existing RLS to account memberships
+   in Execution Groups, if permission to row is added to some Execution Groups.
+   If Execution Groups are not used, it shall have no impact.
+
+   For clarity, that is what is done:
+    ```
+    // Query exec groups obtained though all staff member IDs
+    const execGroupIDs = UB.Repository('org_execgroupmember')
+      .attrs('execGroupID')
+      .where('orgUnitID', 'in', allStaffUnitIDsArray)
+      .selectAsObject()
+      .map(gm => gm.execGroupID)
+    if (execGroupIDs.length > 0) {
+      orgUnitIDs = _.union(orgUnitIDs, execGroupIDs)
+    }
+    ```
+
+   NOTE: Despite execution groups MAY belong to organizations or departments, this implementation won't automatically
+   grant user parent org units by execution groups, i.e. Staff Unit from ORG1 won't have permission of ORG2, even, if
+   included into an execution group of ORG2.
+
+## [5.2.55] - 2020-02-18
+## [5.2.54] - 2020-02-13
+## [5.2.53] - 2020-02-10
+## [5.2.52] - 2020-02-08
+### Changed
+  - org model 'login' event will throw `<<<UserWithoutOrgEmployeeNotAllowed>>>` without detailed description
+  to allow ub-pub to i18n it
+  
+## [5.2.51] - 2020-02-03
+### Fixed
+ - fixed not found record error after execute 'setDescriptionAttributeByCurrency' method in org_orgaccount.js
+
+## [5.2.50] - 2020-01-31
 ## [5.2.49] - 2020-01-17
 ### Changed
  - renamed caption of sextype from 'Sex' to 'Gender' 

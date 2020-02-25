@@ -9,9 +9,17 @@
     <link rel="icon" href="images/UBLogo32.png" type="image/png" sizes="32x32" />
     <link rel="icon" href="images/UBLogo48.png" type="image/png" sizes="48x48" />
     <link rel="icon" href="images/UBLogo128.png" type="image/png" sizes="128x128" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body class="py-4">
+<script>
+  window.onbeforeprint = function() {
+    [...document.getElementsByTagName('details')].forEach(e => e.setAttribute("open", ""))
+  };
+  window.onafterprint = function() {
+    [...document.getElementsByTagName('details')].forEach(e => e.removeAttribute("open"))
+  };
+</script>
 <div class="container">
 <h1>{{appInfo.uiSettings.adminUI.applicationName}} {{appInfo.appVersion}} documentation</h1>
 <h2>Available models</h2>
@@ -56,10 +64,34 @@
     {{/attributes}}
     </tbody>
 </table>
-<h5>API Methods</h5>
-{{#methodsArray}} {{.}}; {{/methodsArray}}
-<h5>Mixins</h5>
-{{#mixins}} {{mixinCode}}; {{/mixins}}
+<h5>API Methods (mixins: {{#mixins}} {{mixinCode}}; {{/mixins}})</h5>
+<table class="table table-striped">
+  <tbody>
+  {{#methodsArray}}
+    <tr >
+      <td>{{name}}</td>
+      <td>
+        {{{jsdoc.description}}}
+        {{#jsdoc.params.length}}
+          <details open>
+            <summary>Parameters:</summary>
+            <table class="table">
+              <tbody>
+              {{#jsdoc.params}}
+                <tr>
+                  <td>{{name}}: {{#type.names}}{{.}}{{/type.names}}</td>
+                  <td>{{description}}</td>
+                </tr>
+              {{/jsdoc.params}}
+              </tbody>
+            </table>
+          </details>
+        {{/jsdoc.params.length}}
+      </td>
+    </tr>
+  {{/methodsArray}}
+  </tbody>
+</table>
 <br><br>
 {{/entities}}
 {{/domain}}

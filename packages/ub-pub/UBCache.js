@@ -9,7 +9,7 @@ module.exports = UBCache
 
 /* eslint-disable prefer-promise-reject-errors */
 // Originally found on  from https://github.com/mozilla/localForage
-let dbInfo = {
+const dbInfo = {
   name: 'UB',
   stores: ['permanent', 'session', 'userData'],
   version: 1
@@ -64,8 +64,8 @@ function UBCache (dbName, version) {
     return this
   }
 
-  let _dbPromise = new Promise((resolve, reject) => {
-    let openRequest = iDB.open(this.dbName, version || 1)
+  const _dbPromise = new Promise((resolve, reject) => {
+    const openRequest = iDB.open(this.dbName, version || 1)
     openRequest.onerror = function withStoreOnError (e) {
       reject(e) // openRequest.error.name
     }
@@ -77,9 +77,9 @@ function UBCache (dbName, version) {
     }
     openRequest.onupgradeneeded = function withStoreOnUpgradeNeeded (e) {
       // First time setup: create an empty object stores
-      let db = e.target.result
-      let tx = e.target.transaction
-      console.debug(`upgrading database "${db.name}" from version ${e['oldVersion']} to version ${e['newVersion']}...`)
+      const db = e.target.result
+      const tx = e.target.transaction
+      console.debug(`upgrading database "${db.name}" from version ${e.oldVersion} to version ${e.newVersion}...`)
       dbInfo.stores.forEach(function (storeName) {
         // noinspection JSUnresolvedVariable
         if (!db.objectStoreNames.contains(storeName)) {
@@ -191,18 +191,18 @@ UBCache.prototype.onTransactionError = function (e) {
  */
 UBCache.prototype.get = function (key, storeName = 'userData') {
   if (!iDB) {
-    let store = this.__inMemoryCache[storeName]
+    const store = this.__inMemoryCache[storeName]
     return Promise.resolve(store ? store[key] : undefined)
   }
 
-  let me = this
+  const me = this
   return this.ready().then(function (db) {
-    let trans = db.transaction([storeName], 'readwrite')
+    const trans = db.transaction([storeName], 'readwrite')
     trans.oncomplete = me.onTransactionComplete
     trans.onabort = me.onTransactionAbort
     trans.onerror = me.onTransactionError
     return new Promise((resolve, reject) => {
-      let req = trans.objectStore(storeName).get(key)
+      const req = trans.objectStore(storeName).get(key)
       req.onsuccess = function getItemOnSuccess () {
         resolve(req.result)
       }
@@ -220,10 +220,10 @@ UBCache.prototype.get = function (key, storeName = 'userData') {
  */
 UBCache.prototype.getAllKeys = function (storeName = 'userData') {
   if (!iDB) {
-    let store = this.__inMemoryCache[storeName]
-    let res = []
+    const store = this.__inMemoryCache[storeName]
+    const res = []
     if (store) {
-      for (let prop in store) {
+      for (const prop in store) {
         // noinspection JSUnfilteredForInLoop
         res.push(store[prop])
       }
@@ -231,17 +231,17 @@ UBCache.prototype.getAllKeys = function (storeName = 'userData') {
     return Promise.resolve(res)
   }
 
-  let me = this
+  const me = this
   return this.ready().then(function (db) {
-    let trans = db.transaction([storeName], 'readwrite')
+    const trans = db.transaction([storeName], 'readwrite')
     trans.oncomplete = me.onTransactionComplete
     trans.onabort = me.onTransactionAbort
     trans.onerror = me.onTransactionError
     return new Promise((resolve, reject) => {
-      let results = []
-      let req = trans.objectStore(storeName).openCursor()
+      const results = []
+      const req = trans.objectStore(storeName).openCursor()
       req.onsuccess = function (e) {
-        let cursor = e.target.result
+        const cursor = e.target.result
         if (cursor) {
           results.push(cursor.key)
           cursor.continue()
@@ -278,9 +278,9 @@ UBCache.prototype.put = function (data, storeName = 'userData') {
     return Promise.resolve(true)
   }
 
-  let me = this
+  const me = this
   return this.ready().then(function (db) {
-    let trans = db.transaction([storeName], 'readwrite')
+    const trans = db.transaction([storeName], 'readwrite')
     trans.oncomplete = me.onTransactionComplete
     trans.onabort = me.onTransactionAbort
     trans.onerror = me.onTransactionError
@@ -320,14 +320,14 @@ UBCache.prototype.clear = function (storeName = 'userData') {
     return Promise.resolve(true)
   }
 
-  let me = this
+  const me = this
   return this.ready().then(function (db) {
-    let trans = db.transaction([storeName], 'readwrite')
+    const trans = db.transaction([storeName], 'readwrite')
     trans.oncomplete = me.onTransactionComplete
     trans.onabort = me.onTransactionAbort
     trans.onerror = me.onTransactionError
     return new Promise((resolve, reject) => {
-      let req = trans.objectStore(storeName).clear()
+      const req = trans.objectStore(storeName).clear()
       req.onsuccess = function (e) {
         resolve(e.target.result)
       }
@@ -359,7 +359,7 @@ $App.cache.remove(['key1', 'key2'], UBCache.SESSION).then();
  */
 UBCache.prototype.remove = function (key, storeName = 'userData') {
   if (!iDB) {
-    let store = this.__inMemoryCache[storeName]
+    const store = this.__inMemoryCache[storeName]
     if (store) {
       if (Array.isArray(key)) {
         delete store[key]
@@ -372,9 +372,9 @@ UBCache.prototype.remove = function (key, storeName = 'userData') {
     return Promise.resolve(true)
   }
 
-  let me = this
+  const me = this
   return this.ready().then(function (db) {
-    let trans = db.transaction([storeName], 'readwrite')
+    const trans = db.transaction([storeName], 'readwrite')
     trans.oncomplete = me.onTransactionComplete
     trans.onabort = me.onTransactionAbort
     trans.onerror = me.onTransactionError
@@ -426,9 +426,9 @@ $App.cache.removeIfMach(/^admin:ru:cdn_/, 'permanent').then(function(){
  * @returns {Promise}
  */
 UBCache.prototype.removeIfMach = function (regExp, storeName) {
-  let me = this
+  const me = this
   return me.getAllKeys(storeName).then(function (allKeys) {
-    let machKeys = allKeys.filter((item) => regExp.test(item))
+    const machKeys = allKeys.filter((item) => regExp.test(item))
     return me.remove(machKeys, storeName)
   })
 }

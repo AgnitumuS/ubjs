@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.1.44] - 2020-02-10
+## [5.1.43] - 2020-02-08
+## [5.1.42] - 2020-02-03
+## [5.1.41] - 2020-01-31
 ## [5.1.40] - 2020-01-17
 ### Added
   - `SyncConnection.prototype.Reposiroty` fabric function can now accept a UBQL passed in parameter as object while

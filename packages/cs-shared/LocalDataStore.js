@@ -261,7 +261,7 @@ function whereListToFunctions (ubql, fieldList) {
     property = (property.replace(/(\[)|(])/ig, '') || '').trim()
     propIdx = fieldList.indexOf(property)
     if (propIdx === -1) {
-      throw new Error(`Filtering by attribute "${property}" what not in fieldList is not allowed for cached entity "${ubql.entity}"`)
+      throw new Error(`Filtering by attribute "${property}" which is not in fieldList is not allowed for cached entity "${ubql.entity}"`)
     }
     // support for future (UB 5.10) where with "value" instead of "values"
     if (clause.value !== undefined) {

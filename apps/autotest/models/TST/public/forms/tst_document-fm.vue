@@ -16,49 +16,13 @@
     </u-toolbar>
 
     <u-form-container>
-      <el-row>
-        <el-col :lg="8">
-          <u-form-row
-            required
-            :label="getLabel('code')"
-            :error="$v.code.$error"
-          >
-            <el-input
-              v-model="code"
-            />
-          </u-form-row>
-        </el-col>
-      </el-row>
+      <u-auto-field attribute-name="code" :max-width="300"/>
 
-      <el-row :gutter="20">
-        <el-col :lg="8">
-          <u-auto-field attribute-name="docDate" />
-          <!--u-form-row :label="getLabel('docDate')">
-            <el-date-picker
-              v-model="docDate"
-              type="date"
-            />
-          </u-form-row-->
-        </el-col>
-
-        <el-col :lg="8">
-          <u-form-row :label="getLabel('incomeDate')">
-            <el-date-picker
-              v-model="incomeDate"
-              type="date"
-            />
-          </u-form-row>
-        </el-col>
-
-        <el-col :lg="8">
-          <u-form-row :label="getLabel('regDate')">
-            <el-date-picker
-              v-model="regDate"
-              type="date"
-            />
-          </u-form-row>
-        </el-col>
-      </el-row>
+      <u-grid :columns="3">
+        <u-auto-field attribute-name="docDate" placeholder="overrides placeholder" label="My custom label"/>
+        <u-auto-field attribute-name="incomeDate" />
+        <u-auto-field attribute-name="regDate" />
+      </u-grid>
 
       <!--      <u-form-row-->
       <!--        required-->
@@ -93,50 +57,20 @@
       <!--        />-->
       <!--      </u-form-row>-->
 
-      <u-form-row :label="getLabel('description')">
-        <el-input
-          v-model="description"
+      <u-auto-field
+          attribute-name="description"
           type="textarea"
           resize="none"
           rows="5"
-        />
-      </u-form-row>
+       />
+      <u-auto-field attribute-name="docDateTime"/>
 
-      <u-form-row
-        :label="getLabel('docDateTime')"
-        :label-width="150"
-      >
-        <el-date-picker
-          v-model="docDateTime"
-          type="date"
-        />
-      </u-form-row>
+      <u-auto-field attribute-name="fileStoreSimple"/>
 
-      <u-form-row :label="getLabel('fileStoreSimple')">
-        <u-file
-          v-model="fileStoreSimple"
-          attribute-name="fileStoreSimple"
-        />
-      </u-form-row>
-
-      <el-row :gutter="20">
-        <el-col :lg="12">
-          <u-form-row :label="getLabel('person')">
-            <u-select-entity
-              v-model="person"
-              :entity-name="getEntity('person')"
-            />
-          </u-form-row>
-        </el-col>
-        <el-col :lg="12">
-          <u-form-row :label="getLabel('employee')">
-            <u-select-entity
-              v-model="employee"
-              :entity-name="getEntity('employee')"
-            />
-          </u-form-row>
-        </el-col>
-      </el-row>
+      <u-grid>
+        <u-auto-field attribute-name="person"/>
+        <u-auto-field attribute-name="employee"/>
+      </u-grid>
     </u-form-container>
   </div>
 </template>
@@ -185,13 +119,6 @@ module.exports.default = {
   },
 
   methods: {
-    getLabel (attr) {
-      return this.entitySchema.attributes[attr].caption
-    },
-
-    getEntity (attr) {
-      return this.entitySchema.attributes[attr].associatedEntity
-    },
     async verifySignatures () {
       const docBin = await this.$UB.connection.getDocument({
         entity: this.entitySchema.name,
@@ -199,14 +126,19 @@ module.exports.default = {
         id: this.ID
       }, { resultIsBinary: true })
       const docb64 = await this.$UB.base64FromAny(docBin)
-      const pdfSigner = await $App.pdfSigner()
-      await pdfSigner.signOperationStart(docb64)
       try {
-        let r = await pdfSigner.validateAllSignatures()
-        let pki = await this.$UB.connection.pki()
-        await pki.verificationUI(r.validationResults, r.reasons)
-      } finally {
-        await pdfSigner.signOperationEnd()
+        const pdfSigner = await $App.pdfSigner()
+        await pdfSigner.signOperationStart(docb64)
+        try {
+          let r = await pdfSigner.validateAllSignatures()
+          let pki = await this.$UB.connection.pki()
+          await pki.verificationUI(r.validationResults, r.reasons)
+        } finally {
+          await pdfSigner.signOperationEnd()
+        }
+      } catch (e) {
+        this.$dialogError(e.message)
+        throw e
       }
     },
     showDialog () {

@@ -37,6 +37,14 @@ UB.i18nExtend({
   msgInvalidPlugin: 'Plugin version is out of date. You have version {0}, but version {1} is required. Automatically update occurs every 2 hours.' +
   ' For manual updating use <a href="update_plugin.html" target="_blank">instruction</a>. ' +
   ' If after updating message remains, please, contact your system administrator.',
+
+  registrationPassed: 'Your certificate has been successfully uploaded and passed to the processing',
+  keyAlreadyRegisteredForUser: 'Key is already registered for another user',
+  keyBlockedByAdmin: 'Key for entering the system was blocked by system administrator. Blocking reason: ',
+  keyNoRightsRejected: 'User cannot permissions to entering the system. Request for registration of key denied.',
+  keyNoRightsRepeat: 'User do no have permissions to entering the system. Request for reminding registration of key in consideration state.',
+  keyAlreadyRegistered: 'Unable to send request registration of key. Current key is already registered in system.',
+
   keyDeviseType: 'Device type',
   keyFile: 'Private key',
   keyDevise: 'Device name',
@@ -52,6 +60,8 @@ UB.i18nExtend({
   msgInvalidCertAuth: 'Invalid certificate or private key',
   msgInvalidUBAuth: 'Access denied. Invalid user name or password',
   ubErrElsInvalidUserOrPwd: 'Access deny. Check login name and password.',
+  UserWithoutOrgEmployeeNotAllowed: 'Login for user without corresponding employee on staff not allowed',
+
   keyDeviseType: 'Тип носія',
   keyFile: 'Особистий ключ',
   keyDevise: 'Назва носія',
@@ -75,7 +85,9 @@ UB.i18nExtend({
   NewPassword: 'Kata sandi baru',
   RetypePassword: 'Ketik ulang kata sandi',
   HowToCreatePassword: 'Cara membuat password yang baik?',
-  passwordRecommendation: 'Panjang password harus 6-20 karakter. <br> Anda dapat menggunakan angka, charecters latin dan simbol-simbol: <br>! @ # $% ^ & * () _ - +:; ,. ',
+  passwordRecommendation: 'Panjang password harus {0}-20 karakter.\n' +
+    'Anda dapat menggunakan angka, charecters latin dan simbol-simbol: ' +
+    '! @ # $% ^ & * () _ - +:; ,. ',
   passwordsDoNotMatch: 'Sandi tidak cocok',
   passwordChangedSuccessfully: 'Sandi berhasil diubah. Silakan logout untuk menggunakan password baru',
 
@@ -86,7 +98,7 @@ UB.i18nExtend({
   'Password is too short': 'Пароль слишком короткий',
   'Password is too simple': 'Пароль не отвечает требованиям надежности',
   'Password is dictionary word': 'Пароль не может быть словом со словаря',
-  'Password matches with login': 'Пароль не может совпадать с логином',
+  'Password matches with login': 'Пароль не должен содержать в себе имя пользователя',
   'Previous password is not allowed': 'Пароль совпадает с одним из предидущих',
   logout: 'Logout',
   fieldValidationError: 'Can not save <b>{0}</b> card.<br > Invalid field',

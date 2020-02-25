@@ -138,6 +138,12 @@ UB.i18nExtend({
   singOperationInProcess: 'Виконується підписання іншого документу. Спробуйте пізніше',
 
   // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
+  NMInstallExtensionFirefox: '<p>Для продовження роботи необхідно встановити розширення <b>"UBExtension"</b> для браузера.</p> ' +
+    '<p>Натисніть на посилання <a href="https://addons.mozilla.org/addon/ub-extension/" target="_blank">ВСТАНОВИТИ РОЗШИРЕННЯ</a> ' +
+    ' для переходу до сайту Firefox add-ons</p>' +
+    '<p> Натисніть кнопку <b>+Add to Firefox</b></p>' +
+    '<p>З`явиться вікно з підтвердженням встановлення розширення - натисніть "Додати"</p>' +
+    '<p>Після встановлення розширення <b>перезапустіть браузер!</b></p>',
   NMInstallExtensionChrome: '<p>Для продовження роботи необхідно встановити розширення <b>"UBExtension"</b> для браузера Google Chrome.</p> ' +
         '<p>Натисніть на посилання <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">ВСТАНОВИТИ РОЗШИРЕННЯ</a> ' +
         ' для переходу до магазину Google</p>' +
@@ -267,13 +273,10 @@ UB.i18nExtend({
   location: 'Місцезнаходження',
   author: 'Автор',
   signVerification: 'Перевірка підпису',
-  // signsInDocument: 'Підписи в документі',
-  UserWithoutOrgEmployeeNotAllowed: 'Користувач не перебуває в штаті організації (не співставлений з жодною штатною одиницею). Вхід заборонено.',
-  // search form (UBPreFilter)
+
   search: 'Пошук',
   'Filter by': 'Фільтрувати по',
-  // cancel: 'Відміна',
-  filterForm: 'Форма пошуку',
+    filterForm: 'Форма пошуку',
   main: 'Основне',
   other: 'Інше',
   showPreFilter: 'Показати форму пошуку',
@@ -450,14 +453,6 @@ UB.i18nExtend({
   Transformation: 'Конвертація',
 
   showPlanAndFact: 'Показати план та факт',
-
-  registrationPassed: 'Ваш сертифікат успішно завантажено та передано на обробку',
-  registraionPassed: 'Ваш сертифікат успішно завантажено та передано на обробку',
-  keyAlreadyRegisteredForUser: 'Ключ вже зареєстрований для іншого співробітника',
-  keyBlockedByAdmin: 'Адміністратор заблокував використання ключа для входу в систему. Підстава для блокування: ',
-  keyNoRightsRejected: 'Користувач не має права на роботу з системою. У заявці на реєстрацію ключа відмовлено.',
-  keyNoRightsRepeat: 'Користувач не має права на роботу з системою. Заявка на повторну реєстрацію ключа знаходиться у стані розгляду.',
-  keyAlreadyRegistered: 'Неможливо відправити заявку на реєстрацію ключа. Даний ключ вже зареєстрований в системі.',
 
   UbPreFilterMainGroup: 'По атрибутам',
 

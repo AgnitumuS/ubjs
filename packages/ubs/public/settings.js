@@ -2,9 +2,14 @@ const UB = require('@unitybase/ub-pub')
 const $App = require('@unitybase/adminui-pub')
 
 let __settingsData = []
-let Settings = UB.ns('UBS.Settings')
+const Settings = UB.ns('UBS.Settings')
+/**
+ * Get cached setting by key from ubs_settings
+ * @param {string} key
+ * @return {undefined|{ID: number, settingKey: string, name: string, description: string, type: string, settingValue: string, defaultValue: string}}
+ */
 Settings.findByKey = function (key) {
-  let res = __settingsData.find(elm => elm.settingKey === key)
+  const res = __settingsData.find(elm => elm.settingKey === key)
   if (res === undefined) {
     UB.logDebug(`value fom UBS.Settings[${key}] not found`)
   }

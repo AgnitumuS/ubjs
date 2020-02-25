@@ -69,7 +69,7 @@ const NM_EXTENSION_FEATURE = {
  * @param {NMFeatureConfig} featureConfig Feature we want from plugin
  */
 function UBNativeMessage (featureConfig) {
-  let me = this
+  const me = this
   let __messageCounter = 0
 
   me.getMessageId = function () {
@@ -118,7 +118,7 @@ function UBNativeMessage (featureConfig) {
 
   // must be defined inside constructor for removeEventListener work properly
   me.onContentMessage = function (event) {
-    let msg = event.detail
+    const msg = event.detail
     if (!msg || !msg.hasOwnProperty('msgType') || !msg.hasOwnProperty('messageID') || !msg.hasOwnProperty('clientID')) {
       console.error('Empty or invalid content message')
     }
@@ -126,7 +126,7 @@ function UBNativeMessage (featureConfig) {
       // native host connection error. For unknown reason clientID & messageId is lost in such type of message
       // there is slight chance what message not for this Client (in case of several UBNativeMessages instances),
       // but I (MPV) do not know how to solve this
-      let messageID = Object.keys(me.pendingMessages)[0]
+      const messageID = Object.keys(me.pendingMessages)[0]
       if (!messageID) return // this instance do not have any pending messages - try another UBNativeMessage instance
       clearTimeout(me.pendingMessages[messageID].timerID)
       me.onMsgTimeOut(messageID)
@@ -136,10 +136,10 @@ function UBNativeMessage (featureConfig) {
       return
     }
 
-    let messageID = msg['messageID']
-    let msgType = msg['msgType']
-    let data = msg['data']
-    let pending = me.pendingMessages[messageID]
+    const messageID = msg.messageID
+    const msgType = msg.msgType
+    let data = msg.data
+    const pending = me.pendingMessages[messageID]
     if (pending) {
       clearTimeout(pending.timerID)
     }
@@ -165,8 +165,8 @@ function UBNativeMessage (featureConfig) {
         console.error('UBNativeMessage. unknown messageID:' + messageID)
       } else if (msgType === 'resolve') {
         if (msg.hasOwnProperty('part') && msg.hasOwnProperty('totalParts')) { // partial response
-          let totalParts = msg['totalParts']
-          let currentPart = msg['part']
+          const totalParts = msg.totalParts
+          const currentPart = msg.part
           if (!pending.partials) {
             if (totalParts > 100) { // 100 Mb limit
               pending.deffer.reject(new ubUtils.UBError('unknownError', 'UBNativeMessage. Result exceed 100Mb limit'))
@@ -203,7 +203,7 @@ function UBNativeMessage (featureConfig) {
           data = data.match(/<<<(.*)>>>/)[1]
           isUserMessage = true
         }
-        let err = isUserMessage ? new ubUtils.UBError(data) : new ubUtils.UBError('unknownError', data)
+        const err = isUserMessage ? new ubUtils.UBError(data) : new ubUtils.UBError('unknownError', data)
         pending.deffer.reject(err)
       } else {
         throw new Error('UBNativeMessage. Invalid msgType type in: ' + msg)
@@ -241,13 +241,13 @@ function UBNativeMessage (featureConfig) {
  * @return {number}
  */
 function versionToNumber (versionStr) {
-  let arr = versionStr.split('.')
+  const arr = versionStr.split('.')
   if (arr.length > 4) {
     throw new Error('Invalid version number ' + versionStr)
   }
   let multiplier = 1
   let res = 0
-  let L = arr.length
+  const L = arr.length
   for (let i = L - 1; i >= 0; i--) {
     res += parseInt(arr[i], 10) * multiplier; multiplier *= (i === L - 1) ? 10000 : 1000 // last number may be 4 digit 1.2.3.1234
   }
@@ -262,14 +262,14 @@ function versionToNumber (versionStr) {
  * @return {Promise}
  */
 UBNativeMessage.prototype.invoke = function (methodName, methodParams, timeout) {
-  let me = this
+  const me = this
   if (!me.connected && methodName.substr(0, 2) !== '__') { // allow pseudo methods
     return Promise.reject(new ubUtils.UBError('unknownError', 'UBNativeMessage. Not connected. call connect() first'))
   }
   // methodParams = methodParams || null;
   timeout = timeout || me.callTimeOut
-  let msgID = me.getMessageId()
-  let messageToSend = { clientID: me.id, messageID: msgID, method: methodName, params: methodParams }
+  const msgID = me.getMessageId()
+  const messageToSend = { clientID: me.id, messageID: msgID, method: methodName, params: methodParams }
   return new Promise((resolve, reject) => {
     me.pendingMessages[msgID] = {
       request: null, // MPV - do not store - we do not need it!  messageToSend,
@@ -328,7 +328,7 @@ UBNativeMessage.prototype.invoke = function (methodName, methodParams, timeout) 
 UBNativeMessage.extensionExists = function () {
   if (ubUtils.isSecureBrowser) return true
 
-  let e = document.getElementById('ubExtensionPageMessageObj')
+  const e = document.getElementById('ubExtensionPageMessageObj')
   if (window.parent && (window.parent !== window)) {
     return true // check in connect
   }
@@ -337,8 +337,8 @@ UBNativeMessage.extensionExists = function () {
 }
 
 UBNativeMessage.prototype.doOnDisconnect = function (reason) {
-  let me = this
-  let rejections = me.pendingMessages
+  const me = this
+  const rejections = me.pendingMessages
   me.pendingMessages = {} // prevent several rejection
   me.connected = false
   if (rejections) {
@@ -363,7 +363,7 @@ UBNativeMessage.prototype.onParentWinMessage = function (event) {
  * @returns {Promise<UBNativeMessage>} resolved to UBNativeMessage or rejected to installation/upgrade message
  */
 UBNativeMessage.prototype.connect = function (timeOut) {
-  let me = this
+  const me = this
   let promise
   if (me.connected) {
     return Promise.resolve(me)
@@ -376,7 +376,7 @@ UBNativeMessage.prototype.connect = function (timeOut) {
         me.targetPage = window.parent
         promise = new Promise((resolve, reject) => {
           let timeId
-          let onMessage = function (event) {
+          const onMessage = function (event) {
             if (!event.data || (event.data.messageType !== 'initUbExtensionParent')) {
               return event
             }
@@ -402,7 +402,7 @@ UBNativeMessage.prototype.connect = function (timeOut) {
       return promise.then(function () {
         return me.invoke('__extensionVersion')
       }).then(function (extensionVersion) {
-        let versionNum = versionToNumber(extensionVersion)
+        const versionNum = versionToNumber(extensionVersion)
         if (versionNum < versionToNumber(NM_EXTENSION_FEATURE.minVersion)) {
           ubUtils.logDebug('browser extension version', extensionVersion, 'smaller than required', NM_EXTENSION_FEATURE.minVersion)
           throw new ubUtils.UBError(createFeatureUpdateMsg('extension', extensionVersion, true))
@@ -414,7 +414,7 @@ UBNativeMessage.prototype.connect = function (timeOut) {
         }
       }).then(function () {
         return me.invoke('__connect', { hostAppName: me._cfg.host }, timeOut).then(function (featureVersion) {
-          let requiredVersion = me._cfg.minVersion
+          const requiredVersion = me._cfg.minVersion
           me.connected = true
           me.featureVersion = featureVersion
           if (versionToNumber(featureVersion) < versionToNumber(requiredVersion)) {
@@ -440,7 +440,7 @@ UBNativeMessage.prototype.connect = function (timeOut) {
  * @return {*}
  */
 UBNativeMessage.prototype.disconnect = function () {
-  let me = this
+  const me = this
   if (!me.connected) {
     return Promise.resolve(true)
   }
@@ -455,7 +455,7 @@ UBNativeMessage.prototype.disconnect = function () {
 }
 
 UBNativeMessage.prototype.onMsgTimeOut = function (msgID) {
-  let pending = this.pendingMessages[msgID]
+  const pending = this.pendingMessages[msgID]
   if (pending) {
     pending.timerID = null
     delete this.pendingMessages[msgID]
@@ -470,8 +470,9 @@ UBNativeMessage.prototype.onMsgTimeOut = function (msgID) {
 UBNativeMessage.prototype.idCounter = 0
 
 function createFeatureUpdateMsg (featureConfig, currentVersion, isUpdate) {
-  let installer = ubUtils.format(featureConfig.installer, featureConfig.minVersion /* .replace(/\./g, '_') */)
-
-  let msg = 'NM' + (isUpdate ? 'Update' : 'Install') + ((featureConfig.host === 'none') ? 'Extension' + (ubUtils.isOpera ? 'Opera' : 'Chrome') : 'Feature')
+  const installer = ubUtils.format(featureConfig.installer, featureConfig.minVersion /* .replace(/\./g, '_') */)
+  const browserName = ubUtils.isOpera ? 'Opera'
+    : ubUtils.isChrome ? 'Chrome' : 'Firefox'
+  const msg = 'NM' + (isUpdate ? 'Update' : 'Install') + ((featureConfig.host === 'none') ? 'Extension' + browserName : 'Feature')
   return ubUtils.format(i18n(msg), i18n(featureConfig.UIName), featureConfig.minVersion, currentVersion, installer)
 }

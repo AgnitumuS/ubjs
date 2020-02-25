@@ -105,7 +105,7 @@
 		},
 		{
 			"name": "trustedIP",
-			"dataType": "String", "size": 255,
+			"dataType": "String", "size": 2000,
 			"defaultView": false,
 			"caption": "trusted IPs",
 			"documentation": "Semicolon separated list of allowed IPs for UBIP authentication schema. Warning! We recommend use it only for IPs from DMZ"
@@ -115,7 +115,7 @@
 			"dataType": "String", "size": 64,
 			"caption": "Password hash",
 			"defaultView": false,
-			"documentation": "PasswordHashHexa := SHA256('salt'+PasswordPlain) in UTF-8"
+			"documentation": "PasswordHashHexa := Session._buildPasswordHash(login, plainPwd)"
 		},
 		{
 			"name": "lastPasswordChangeDate",

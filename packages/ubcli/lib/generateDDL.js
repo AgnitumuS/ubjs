@@ -34,7 +34,7 @@ const argv = require('@unitybase/base').argv
 
 module.exports = function generateDDL (cfg) {
   if (!cfg) {
-    let opts = options.describe('generateDDL',
+    const opts = options.describe('generateDDL',
       'Check database structure for application domain. Generate DDL (both create and alter) if need and optionally run it\nShould be executed from application folder',
       'ubcli'
     )
@@ -54,10 +54,10 @@ module.exports = function generateDDL (cfg) {
   cfg.user = 'root'
   // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
   http.setGlobalConnectionDefaults({ receiveTimeout: 120000 })
-  let session = argv.establishConnectionFromCmdLineAttributes(cfg)
-  let conn = session.connection
+  const session = argv.establishConnectionFromCmdLineAttributes(cfg)
+  const conn = session.connection
   try {
-    runDDLGenerator(conn, cfg['autorun'], cfg['entities'], cfg.models, cfg['out'], cfg['optimistic'])
+    runDDLGenerator(conn, cfg.autorun, cfg.entities, cfg.models, cfg.out, cfg.optimistic)
   } finally {
     if (session && session.logout) {
       session.logout()
@@ -79,7 +79,7 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
   let entityNames = []
   let inModels = []
 
-  let domain = conn.getDomainInfo(true)
+  const domain = conn.getDomainInfo(true)
   if (!inEntities && !inModelsCSV) {
     entityNames = Object.keys(domain.entities)
   } else {
@@ -101,18 +101,18 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
   })
   console.log('Check congruence for domain metadata and database structure for: ', entityNames)
 
-  let Generator = require('./ddlGenerators/DDLGenerator')
-  let ddlResult = new Generator().generateDDL(entityNames, conn, true)
-  let dbConnNames = Object.keys(ddlResult)
-  for (let connectionName of dbConnNames) {
-    let fileName = path.join(outputPath, connectionName + '.sql')
+  const Generator = require('./ddlGenerators/DDLGenerator')
+  const ddlResult = new Generator().generateDDL(entityNames, conn, true)
+  const dbConnNames = Object.keys(ddlResult)
+  for (const connectionName of dbConnNames) {
+    const fileName = path.join(outputPath, connectionName + '.sql')
     let outWarnings = ''
     if (ddlResult[connectionName].warnings.statements.length) {
       console.warn('There are warnings. Please, review script ' + fileName)
       outWarnings = ddlResult[connectionName].warnings.statements.join('\r\n')
       delete ddlResult[connectionName].warnings
     }
-    let nonEmptySorted = _(ddlResult[connectionName]).values().filter(res => res.statements.length > 0).sortBy('order').value()
+    const nonEmptySorted = _(ddlResult[connectionName]).values().filter(res => res.statements.length > 0).sortBy('order').value()
 
     txtRes = formatAsText(connectionName, nonEmptySorted, outWarnings)
     if (txtRes) {
@@ -122,8 +122,8 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
         let withErrors = false
         console.log('Run a script ' + fileName)
         // Many databases (Oracle for example) do not allow to execute several DDL statement in one call
-        for (let part of nonEmptySorted) {
-          for (let stmt of part.statements) {
+        for (const part of nonEmptySorted) {
+          for (const stmt of part.statements) {
             try {
               if (stmt) {
                 conn.xhr({ endpoint: 'runSQL', data: stmt, URLParams: { CONNECTION: connectionName } })
@@ -155,7 +155,7 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
  *  @private
  */
 function formatAsText (connectionName, connDDLs, warnings) {
-  let txtRes = []
+  const txtRes = []
 
   if (warnings) {
     txtRes.push(
@@ -165,7 +165,7 @@ function formatAsText (connectionName, connDDLs, warnings) {
     )
   }
 
-  for (let res of connDDLs) {
+  for (const res of connDDLs) {
     txtRes.push(' ') // for last delimiter
     txtRes.push(
       '-- ' + res.description,

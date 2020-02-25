@@ -1,5 +1,5 @@
 <template>
-  <div class="ub-navbar__dropdown">
+  <div class="ub-navbar__dropdown" v-if="ubsMessagesAccessible">
     <el-popover
       v-model="isVisible"
       placement="bottom-end"
@@ -97,12 +97,19 @@
 
 <script>
 /* global $App */
+/**
+ * @class UNavbarNotificationsButton
+ * Navbar notification button.
+ *
+ * Hides itself in case `ubs_message.getCached` is not accessible to user
+ */
 export default {
   name: 'UNavbarNotificationsButton',
 
   data () {
     return {
       isVisible: false,
+      ubsMessagesAccessible: false,
       messages: []
     }
   },
@@ -114,8 +121,11 @@ export default {
   },
 
   created () {
-    this.addNotificationListeners()
-    this.getMessages()
+    this.ubsMessagesAccessible = this.$UB.connection.domain.isEntityMethodsAccessible('ubs_message', 'getCached')
+    if (this.ubsMessagesAccessible) {
+      this.addNotificationListeners()
+      this.getMessages()
+    }
   },
 
   methods: {

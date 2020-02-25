@@ -269,8 +269,8 @@ me.insert = function (ctxt) {
 }
 /**
  * New diagram
- * @method addNew
- * @memberOf ubm_form_ns.prototype
+ * @method addnew
+ * @memberOf ubm_diagram_ns.prototype
  * @memberOfModule @unitybase/ubm
  * @published
  * @param {ubMethodParams} ctxt

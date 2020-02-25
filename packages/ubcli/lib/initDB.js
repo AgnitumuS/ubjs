@@ -45,13 +45,14 @@ module.exports = initDB
  */
 function initDB (cfg) {
   if (!cfg) {
-    let opts = options.describe('initDB',
+    const opts = options.describe('initDB',
       `Prepare a new database for a UB ORM. Creates a user "${UBA_COMMON.USERS.ADMIN.NAME}" with password specified in -p parameter`, 'ubcli')
       .add([
         { short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: `Password for "${UBA_COMMON.USERS.ADMIN.NAME}"` },
         { short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config' },
         { short: 'timeout', long: 'timeout', param: 'timeout', defaultValue: 120000, searchInEnv: true, help: 'HTTP Receive timeout in ms' }])
-      .add({ short: 'c',
+      .add({
+        short: 'c',
         long: 'clientIdentifier',
         param: 'clientIdentifier',
         defaultValue: 3,
@@ -77,8 +78,8 @@ function initDB (cfg) {
   if (cfg.clientIdentifier > 8999) {
     throw new Error('clientIdentifier (-c parameter) must be between 1 and 8999')
   }
-  let originalConfigFileName = argv.getConfigFileName()
-  let config = argv.getServerConfiguration(true)
+  const originalConfigFileName = argv.getConfigFileName()
+  const config = argv.getServerConfiguration(true)
   cfg.host = argv.serverURLFromConfig(config)
   cfg.user = UBA_COMMON.USERS.ADMIN.NAME
   console.log(`Use host "${cfg.host}" as specified in config "${originalConfigFileName}"`)
@@ -92,7 +93,7 @@ function initDB (cfg) {
 
   fs.renameSync(originalConfigFileName, originalConfigFileName + '.bak')
   try {
-    let connectionToCreateDB = createFakeConfig(config, originalConfigFileName, cfg.connectionName)
+    const connectionToCreateDB = createFakeConfig(config, originalConfigFileName, cfg.connectionName)
     cfg.forceStartServer = true
     session = argv.establishConnectionFromCmdLineAttributes(cfg)
     conn = session.connection
@@ -128,7 +129,7 @@ function initDB (cfg) {
    * @private
    */
   function createFakeConfig (config, originalConfigFileName, connectionName = '') {
-    let newConfig = _.cloneDeep(config)
+    const newConfig = _.cloneDeep(config)
     let dbaConn
     let defaultDB = _.find(config.application.connections, { isDefault: true }) || config.application.connections[0]
 
@@ -171,7 +172,7 @@ function initDB (cfg) {
  * @private
  */
 function fillBuildInRoles (conn, dbDriverName, adminPwd) {
-  let initSecurity = []
+  const initSecurity = []
   let isoDate, auditTailColumns, auditTailValues
 
   if (dbDriverName === 'sqlite3') {
@@ -184,8 +185,8 @@ function fillBuildInRoles (conn, dbDriverName, adminPwd) {
     auditTailValues = ''
   }
   // build-in roles
-  for (let roleName in UBA_COMMON.ROLES) {
-    let aRole = UBA_COMMON.ROLES[roleName]
+  for (const roleName in UBA_COMMON.ROLES) {
+    const aRole = UBA_COMMON.ROLES[roleName]
     initSecurity.push(
       `insert into uba_subject (ID,code,name,sType,mi_unityentity) values(${aRole.ID}, '${aRole.NAME}', '${aRole.DESCR}', 'R', 'UBA_SUBJECT')`,
       `insert into uba_role (ID,name,description,sessionTimeout,allowedAppMethods${auditTailColumns}) 
@@ -193,9 +194,9 @@ function fillBuildInRoles (conn, dbDriverName, adminPwd) {
     )
   }
   // build-in users
-  for (let userName in UBA_COMMON.USERS) {
-    let aUser = UBA_COMMON.USERS[userName]
-    let uPwdHash = (aUser.NAME === UBA_COMMON.USERS.ADMIN.NAME)
+  for (const userName in UBA_COMMON.USERS) {
+    const aUser = UBA_COMMON.USERS[userName]
+    const uPwdHash = (aUser.NAME === UBA_COMMON.USERS.ADMIN.NAME)
       ? UBA_COMMON.ubAuthHash('', UBA_COMMON.USERS.ADMIN.NAME, adminPwd)
       : '-'
     initSecurity.push(

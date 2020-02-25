@@ -159,7 +159,7 @@ module.exports = (instance) => ({
     },
 
     APPLY_FILTER (state, filter) {
-      const index = state.filters.findIndex(f => f.columnId === filter.columnId)
+      const index = state.filters.findIndex(f => f.id === filter.id)
 
       if (index !== -1) {
         state.filters.splice(index, 1, filter)
@@ -177,7 +177,7 @@ module.exports = (instance) => ({
     },
 
     REMOVE_FILTER (state, columnId) {
-      const index = state.filters.findIndex(f => f.columnId === columnId)
+      const index = state.filters.findIndex(f => f.id === columnId)
       if (index !== -1) {
         state.filters.splice(index, 1)
       }
@@ -193,6 +193,11 @@ module.exports = (instance) => ({
       commit('LOADING', true)
       const repo = getters.currentRepository
       const response = await repo.selectAsArray()
+
+      if (instance.useRequestFieldList) {
+        response.resultData.fields = response.fieldList
+      }
+
       const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
 
       const isLastPage = items.length < getters.pageSize

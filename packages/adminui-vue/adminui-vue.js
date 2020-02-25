@@ -214,6 +214,7 @@ Vue.prototype.$zIndex = () => {
 Vue.config.warnHandler = (err, vm, info) => {
   setTimeout(() => {
     console.error(err, vm, info)
-    window.onerror.apply(UB, [err, info, '', '', new UB.UBError(err, info)])
+    let newErrText = '<b>THIS MESSAGE APPEARS ONLY IN DEBUG BUILD</b><br>' + err
+    window.onerror.apply(UB, [newErrText, info, '', '', new UB.UBError(newErrText, info)])
   }, 0)
 }

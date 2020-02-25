@@ -14,6 +14,105 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTableEntity` filters for different columns no more overrides each other
+
+## [1.9.25] - 2020-02-23
+### Removed
+ - usage of BigInteger.js is removed in CERT2 with login/password auth
+ 
+### Fixed
+ - `truncTimeToUTCNull` now called for insert (as for update) and truncate time for attributes of type "Date" into 00:00:00Z as expected by server
+ - `showForm` command can be executed without entity code in case form code is defined and form do not use processing module
+ ```
+ UB.core.UBApp.doCommand({
+   cmdType: 'showForm',
+   formCode: 'uba_user-changeUserPassword',
+   title: 'changePassword',
+   isModal: true
+ })
+```
+
+## [1.9.24] - 2020-02-18
+### Added
+ - re-logon window & ub-auth view: added support for CERT2 auth with user/password in case
+ `uiSetting.adminUI.authenticationCert.requireUserName===true`
+ - new view for CERT2 certificate registration (can be used as registration URL for CERT2 with requireUserName===true)
+ 
+### Changed
+ - hide `Change language` user menu item in case only one language is supported
+
+## [1.9.23] - 2020-02-14
+## [1.9.22] - 2020-02-13
+### Changed
+ - The "collections" property "processing" module now supports not only ability to pass callback `buildRequest`,
+   but also an ability to pass `handleResponse` callback, because, know what?  Custom requests sometimes return custom
+   responses! :)
+   Example where the feature is useful: participants mixin, participants not an ordinary detail,
+   it uses `addParticipant` instead of `insert`, and it return a response, which could not be handled by a standard
+   response handler.  The callback looks like the following
+
+    ```javascript
+      handleResponse ({ commit, collection, response }) {
+        const loadedState = response.resultData
+        for (const loadedItem of loadedState) {
+          const index = collection.items.findIndex(i => i.data.subjectID === loadedItem.subjectID)
+          if (index !== -1) {
+            commit('LOAD_COLLECTION_PARTIAL', {
+              collection: 'participants',
+              index,
+              loadedState: loadedItem
+            })
+          }
+        }
+      }
+    ```
+ - Extended info passed to `buildRequest`, `buildDeleteRequest` and `handlerResponse`
+   callbacks for collections to entire store, not just selected store members like `state` or `state` and `commit`.
+  
+## [1.9.21] - 2020-02-08
+### Changed
+ - UAutoField component will prefer props passed into component over internally defined props. This allow to override anything,
+  for example:
+  ```vue
+    // override default placeholder and label for Date control
+    <u-auto-field attribute-name="docDate" placeholder="overrides placeholder" label="My custom label"/>
+    // use custom repository for Entity attribute
+    <u-auto-field attribute-name="parentID" :repository="getRepo"/>
+  ```
+   
+## [1.9.20] - 2020-02-03
+### Added
+ - `UTableEntity` prop `useRequestFieldList` for replacing result keys with fieldList.
+ Sometimes, server returns result with altered fieldList, like entities with Entity-Attribute-Value mixin
+ (see `@unitybase/forms`).  This property tells UTableEntity control to stick with original fieldList from request,
+ rather than using fieldList from response.
+ - `UTable`, `UTableEntity` possibility to use `column format` function as string 
+ which be called by `new Function` constructor
+
+### Changed
+ - `UTableEntity` in case is set `columns` and `entityName` - `fieldList` will generated automatically by `columns`. 
+ Previously request sent `fieldList` with all available entity attributes.
+ - `UTableEntity` in case is set `repository` without `columns` - `columns` will generated automatically by `fieldList` which filtered by defaultView param. 
+  Previously `columns` was shows **all** attributes from entity with flag defaultView
+ 
+## [1.9.19] - 2020-01-31
+### Added
+ - warning text about silence unhandled exception ignoring in production build is added to unhandled exception message
+   
+### Changed
+ - `FullTextSearch` navbar widget will hide itself in case user do not have access to any of `fts` pseudo-entities.
+ This can be done either by set `application.fts.enabled: false` in ubConfig of by removing the fts
+ connections from connections array
+ - `UNavbarNotificationsButton` navbar widget will hides itself in case `ubs_message.getCached` is not accessible to user 
+
+### Fixed
+ - `USelectEntity` clicking on the arrow now works correctly after enabling/disabling control
+ - `UTableEntity` added localization of "column" placeholder in filtration panel
+ - `UFileInput`: prevent validation error in a case `accept` prop is empty
+ - `USelectEntity` disable `select more` button in case component is read only
+ - `UTableEntity` prevent error in case column attribute not exists in entity
+ - `UCodeMirror` prevent output of error "..split of undefined.." into console (or message in DEV mode )
+   in case value is `null` or `undefined` 
 
 ## [1.9.18] - 2020-01-17
 ### Added
@@ -32,6 +131,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - hide selected desktop icon in case sidebar is collapsed
  - signatureVerificationResult - prevent show `(undefined)` in signature status in case error code is unknown
+ - `UFormRow` - positioning label on top in case css `height !== auto`
 
 ## [1.9.17] - 2020-01-11
 ### Added

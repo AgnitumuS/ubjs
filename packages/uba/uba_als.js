@@ -1,7 +1,7 @@
 const UB = require('@unitybase/ub')
 /* global uba_als */
 // eslint-disable-next-line camelcase
-let me = uba_als
+const me = uba_als
 me.entity.addMethod('save')
 
 /**
@@ -16,9 +16,9 @@ me.entity.addMethod('save')
  * @published
  */
 me.save = function (ctxt) {
-  let execParams = ctxt.mParams.execParams
+  const execParams = ctxt.mParams.execParams
 
-  let alsDataStore = UB.Repository('uba_als')
+  const alsDataStore = UB.Repository('uba_als')
     .attrs(['ID'])
     .where('[entity]', '=', execParams.entity)
     .where('[attribute]', '=', execParams.attribute)
@@ -26,15 +26,15 @@ me.save = function (ctxt) {
     .where('[roleName]', '=', execParams.roleName)
     .select()
 
-  let rowCount = alsDataStore.rowCount
-  let execInst = UB.DataStore('uba_als')
+  const rowCount = alsDataStore.rowCount
+  const execInst = UB.DataStore('uba_als')
 
   console.debug('rowCount:', rowCount)
 
   if (rowCount === 0) {
     // insert
     console.debug('executing INSERT')
-    let insertExecParams = {
+    const insertExecParams = {
       entity: execParams.entity,
       attribute: execParams.attribute,
       state: execParams.state,
@@ -48,7 +48,7 @@ me.save = function (ctxt) {
   } else {
     // update
     console.debug('executing UPDATE')
-    let updateExecParams = {
+    const updateExecParams = {
       ID: alsDataStore.get('ID'),
       actions: execParams.actions
     }

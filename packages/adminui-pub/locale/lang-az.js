@@ -129,6 +129,9 @@ UB.i18nExtend({
   singOperationInProcess: 'Başqa sənədin imzalanmasını Running. Sonra hərəkətə təkrar',
 
   // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
+  NMInstallExtensionFirefox: '<p>İşi davam etdirmək üçün Firefox brauzeri üçün <b>"UBExtension"</b> genişlənməsini quraşdırmaq lazımdır.</p> ' +
+    '<p> "Google" mağazasına keçmək üçün <a href="https://addons.mozilla.org/addon/ub-extension/" target="_blank">GENİŞLƏNMƏNİ QURAŞDIR</a> keçidi üzərində vurun</p>' +
+    '<p>Genişlənməni quraşdırdıqdan sonra <b>brauzeri söndürüb yandırın!</b></p>',
   NMInstallExtensionChrome: '<p>İşi davam etdirmək üçün "Google Chrome" brauzeri üçün <b>"UBExtension"</b> genişlənməsini quraşdırmaq lazımdır.</p> ' +
         '<p> "Google" mağazasına keçmək üçün <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">GENİŞLƏNMƏNİ QURAŞDIR</a> keçidi üzərində vurun</p>' +
         '<p> Mağaza pəncərəsində <img src="models/adminui-pub/ub-extension/ChromePlusFreeEn.png"/> düyməsini(ola bilər ki, <b>+ÖDƏNİŞSİZ</b>) sıxın </p>' +
@@ -264,12 +267,8 @@ UB.i18nExtend({
   documentNotFound: 'Məlumatlar server -də tapılmadı. Zəhmət olmasa administratora müraciət edin.',
   currentPageNumber: 'Hazırki səhifə',
 
-  // signsInDocument: 'Sənəddəki imzalar',
-  UserWithoutOrgEmployeeNotAllowed: 'İstifadəçinin ştat vahidi mövcud deyildir (ştat vahidi göstərilməyib). Giriş qadağandır.',
-  // search form (UBPreFilter) 'Axtarış forması'
   search: 'Axtarış',
   'Filter by': 'Filtr',
-  // cancel: 'Ləğv et',
   filterForm: 'Axtarış forması',
   main: 'Əsas',
   other: 'Digər',
@@ -448,14 +447,6 @@ UB.i18nExtend({
   Transformation: 'Konvertasiya',
 
   showPlanAndFact: 'Plan və faktı göstər',
-
-  registrationPassed: 'Sertifikatınız uğurla yüklənmiş və emala verilmişdir',
-  registraionPassed: 'Sertifikatınız uğurla yüklənmiş və emala verilmişdir',
-  keyAlreadyRegisteredForUser: 'Açar artıq başqa bir əməkdaş üçün qeydiyyata alınmışdır',
-  keyBlockedByAdmin: 'Administrator sistemə daxil olmaq üçün açardan istifadəçi bloka salmışdır. Blok üçün əsas: ',
-  keyNoRightsRejected: 'İstifadəçinin sistemdə işləmək hüququq yoxdur. Açarın qeydiyyatı müraciətinə rədd cavab verilmişdir.',
-  keyNoRightsRepeat: 'İstifadəçinin sistemdə işləmək hüququq yoxdur. Açarın təkrar qeydiyyatı üçün müraciət baxılma mərhələsindədir.',
-  keyAlreadyRegistered: 'Açarı qeydiyyata almaq üçün müraciət etmək mümkün deyil. Bu açar artıq sistemdə qeydiyyata alınmışdır.',
 
   UbPreFilterMainGroup: 'Atributlar üzrə',
 

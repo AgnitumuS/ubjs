@@ -75,6 +75,7 @@
 			"sidebarLogoURL": "/models/ub-pub/img/sidebar-logo.svg",
 			"sidebarLogoBigURL": "/models/ub-pub/img/sidebar-logo-big.svg",
 			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
+			"encryptionImplementation": "/clientRequire/@ub-d/iit-sign-web/dist/iit-sign-web.min.js",
 			"registrationURL": "/models/adminui-vue/views/registration-stub.html",
 			"endpoint": "ubadminui",
 			"vueAutoForms": true,

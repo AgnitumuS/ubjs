@@ -15,6 +15,34 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.19] - 2020-02-23
+### Added
+ - new method `Session._buildPasswordHash` - create a password hash for login/plainPassword pair. Can be overrated by application
+ to provide a custom hashing mechanism (in current implementation for CERT2/Basic auth only but will be used in UB auth in future)
+  
+## [5.3.18] - 2020-02-18
+### Changed
+ - ubConfig JSON schema: add `simpleCertAuth` parameter description; remove deprecated `novaLib` key 
+
+### Removed
+ - legacy `newUserRegistration` event for Session object is **not emitted**. CERT auth schema what use it is deprecated.
+  CERT2 auth schema do not require this event  
+
+### Fixed
+ - fix JSDoc for UB namespace - mark UB.App as `@property {App} App` instead of `@type {App}` for WebStorm code competition
+
+## [5.3.17] - 2020-02-13
+### Changed
+ - in case @unitybase/ub package installed into different path throw human friendly error
+ instead of `can't redefine non-configurable property "entity"`
+   
+## [5.3.16] - 2020-02-10
+## [5.3.15] - 2020-02-08
+### Changed
+ - improved error message in case getDomainInfo called with invalid userName URL parameter
+
+## [5.3.14] - 2020-02-03
+## [5.3.13] - 2020-01-31
 ## [5.3.12] - 2020-01-17
 ### Added
  - new property `Session.zone: string` - security zone. Always empty for SE

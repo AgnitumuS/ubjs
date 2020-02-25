@@ -11,11 +11,11 @@ class DBOracle extends DBAbstract {
    * @override
    */
   loadDatabaseMetadata () {
-    let mTables = this.refTableDefs
+    const mTables = this.refTableDefs
     if (!mTables.length) return // all entities in this connection are external or no entities at all - skip loading DB metadata
 
     // old code  // UPPER(t.table_name)
-    let tablesSQL = `select
+    const tablesSQL = `select
       t.table_name as name,  tc.comments as caption
     from
       user_tables t
@@ -61,13 +61,13 @@ end;`,
     if (mTables.length) {
       dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, { _upperName: dbTab.NAME.toUpperCase() }) !== -1)
     }
-    for (let tabDef of dbTables) {
-      let asIsTable = new TableDefinition({
+    for (const tabDef of dbTables) {
+      const asIsTable = new TableDefinition({
         name: tabDef.NAME,
-        caption: tabDef['CAPTION']
+        caption: tabDef.CAPTION
       })
 
-      let columnSQL = `
+      const columnSQL = `
 select 
   tc.column_name as name,
   tc.data_type as typename, 
@@ -84,25 +84,25 @@ where
   tc.table_name=:('${asIsTable._upperName}'):
 order by tc.column_id`
 
-      let columnsFromDb = this.conn.xhr({
+      const columnsFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: columnSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       // console.log('columnsFromDb', columnsFromDb)
-      for (let colDef of columnsFromDb) {
-        let physicalTypeLower = colDef['TYPENAME'].toLowerCase()
-        let def = colDef['DEFVALUE'] ? colDef['DEFVALUE'].trim() : colDef['DEFVALUE']
-        let nObj = {
+      for (const colDef of columnsFromDb) {
+        const physicalTypeLower = colDef.TYPENAME.toLowerCase()
+        const def = colDef.DEFVALUE ? colDef.DEFVALUE.trim() : colDef.DEFVALUE
+        const nObj = {
           name: colDef.NAME,
-          description: colDef['DESCRIPTION'],
-          allowNull: (colDef['NULLABLE'] === 'Y'),
-          dataType: this.dataBaseTypeToUni(colDef['TYPENAME'], colDef['LEN'], colDef['PREC'], colDef['SCALE']),
+          description: colDef.DESCRIPTION,
+          allowNull: (colDef.NULLABLE === 'Y'),
+          dataType: this.dataBaseTypeToUni(colDef.TYPENAME, colDef.LEN, colDef.PREC, colDef.SCALE),
           size: (['varchar2', 'nvarchar2', 'character varying', 'nvarchar', 'varchar', 'char', 'nchar', 'clob', 'nclob']
             .indexOf(physicalTypeLower) !== -1)
-            ? colDef['LEN']
-            : colDef['PREC'],
-          prec: colDef['SCALE'],
+            ? colDef.LEN
+            : colDef.PREC,
+          prec: colDef.SCALE,
           defaultValue: def,
           defaultConstraintName: null // no name for default constraint in Oracle?
         }
@@ -113,7 +113,7 @@ order by tc.column_id`
       }
 
       // foreign key
-      let foreignKeysSQL = `
+      const foreignKeysSQL = `
 select
   uc.constraint_name as foreign_key_name,
   decode(uc.status,'ENABLED',0,1) as is_disabled,
@@ -126,7 +126,7 @@ from user_constraints uc
 where uc.constraint_type ='R'
   and uc.table_name=:('${asIsTable._upperName}'):`
 
-      let fkFromDb = this.conn.xhr({
+      const fkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: foreignKeysSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
@@ -134,45 +134,45 @@ where uc.constraint_type ='R'
       const C_ACTIONS = {
         'NO ACTION': 'NO_ACTION',
         // r: 'RESTRICT',
-        'CASCADE': 'CASCADE',
+        CASCADE: 'CASCADE',
         'SET NULL': 'SET_NULL'
         // d: 'SET_DEFAULT'
       }
 
-      for (let fkDef of fkFromDb) {
+      for (const fkDef of fkFromDb) {
         asIsTable.addFK({
-          name: fkDef['FOREIGN_KEY_NAME'],
-          keys: [fkDef['CONSTRAINT_COLUMN_NAME']],
-          references: fkDef['REFERENCED_OBJECT'],
-          isDisabled: fkDef['IS_DISABLED'] !== 0,
-          deleteAction: C_ACTIONS[fkDef['DELETE_REFERENTIAL_ACTION_DESC']], // NO_ACTION, CASCADE, SET_NULL,  SET_DEFAULT
+          name: fkDef.FOREIGN_KEY_NAME,
+          keys: [fkDef.CONSTRAINT_COLUMN_NAME],
+          references: fkDef.REFERENCED_OBJECT,
+          isDisabled: fkDef.IS_DISABLED !== 0,
+          deleteAction: C_ACTIONS[fkDef.DELETE_REFERENTIAL_ACTION_DESC], // NO_ACTION, CASCADE, SET_NULL,  SET_DEFAULT
           updateAction: 'NO_ACTION' // C_ACTIONS[fkDef['update_referential_action_desc']]
         })
       }
 
       // primary keys
-      let primaryKeySQL =
+      const primaryKeySQL =
         `select uc.constraint_name,ucc.column_name 
 from user_constraints uc
 join user_cons_columns ucc on ucc.owner=uc.owner and ucc.constraint_name=uc.constraint_name
 where uc.table_name=:('${asIsTable._upperName}'): 
 and uc.constraint_type='P'`
 
-      let pkFromDb = this.conn.xhr({
+      const pkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: primaryKeySQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       if (pkFromDb.length) {
         asIsTable.primaryKey = {
-          name: pkFromDb[0]['CONSTRAINT_NAME'],
+          name: pkFromDb[0].CONSTRAINT_NAME,
           keys: _.map(pkFromDb, 'COLUMN_NAME'),
-          autoIncrement: pkFromDb[0]['AUTO_INCREMENT'] === 1
+          autoIncrement: pkFromDb[0].AUTO_INCREMENT === 1
         }
       }
 
       // indexes
-      let indexesSQL = `
+      const indexesSQL = `
 select 
   ui.index_name as index_id,
   ui.index_name,
@@ -196,30 +196,30 @@ where
 order 
   by ui.index_name, uic.column_position`
 
-      let indexesFromDb = this.conn.xhr({
+      const indexesFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: indexesSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       let i = 0
-      let idxCnt = indexesFromDb.length
+      const idxCnt = indexesFromDb.length
       while (i < idxCnt) {
-        let indexObj = {
-          name: indexesFromDb[i]['INDEX_NAME'],
-          isUnique: indexesFromDb[i]['IS_UNIQUE'] !== 0,
+        const indexObj = {
+          name: indexesFromDb[i].INDEX_NAME,
+          isUnique: indexesFromDb[i].IS_UNIQUE !== 0,
           isDisabled: false, // indexesFromDb[i][ 'is_disabled' ] !== 0,
           isConstraint: false, // indexesFromDb[i][ 'is_unique_constraint' ] !== 0,
-          indexType: indexesFromDb[i]['INDEX_TYPE'] === 'CTXCAT' ? 'CATALOGUE' : null,
+          indexType: indexesFromDb[i].INDEX_TYPE === 'CTXCAT' ? 'CATALOGUE' : null,
           keys: []
         }
         // index may consist of several keys (one row for each key)
-        let buildKeysFor = indexesFromDb[i]['INDEX_ID']
-        while ((i < idxCnt) && (indexesFromDb[i]['INDEX_ID'] === buildKeysFor)) {
+        const buildKeysFor = indexesFromDb[i].INDEX_ID
+        while ((i < idxCnt) && (indexesFromDb[i].INDEX_ID === buildKeysFor)) {
           // Examples. Desc index: "REGDATE"; Func index: "NLSSORT(\"MI_WFSTATE\",'nls_sort=''BINARY_CI''')"
-          let colExpression = indexesFromDb[i]['COLUMN_NAME']
+          let colExpression = indexesFromDb[i].COLUMN_NAME
           // remove double quotes
           colExpression = colExpression.replace(/"/g, '')
-          indexObj.keys.push(colExpression + (indexesFromDb[i]['IS_DESCENDING_KEY'] !== 0 ? ' DESC' : ''))
+          indexObj.keys.push(colExpression + (indexesFromDb[i].IS_DESCENDING_KEY !== 0 ? ' DESC' : ''))
           i++
         }
         asIsTable.addIndex(indexObj)
@@ -230,7 +230,7 @@ order
       // we can filter such constraints by adding condition
       // and generated <> 'GENERATED NAME'`
       // also getting a user_constraints.search_condition is slow because this is a CLOB column
-      let checkConstraintsSQL = `
+      const checkConstraintsSQL = `
 select 
   constraint_name as name --,search_condition as definition
 from 
@@ -240,15 +240,15 @@ where
   and constraint_type='C'
   and generated <> 'GENERATED NAME'`
 
-      let constraintsFromDb = this.conn.xhr({
+      const constraintsFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: checkConstraintsSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       // console.log('constraintsFromDb', constraintsFromDb)
-      for (let constraintDef of constraintsFromDb) {
+      for (const constraintDef of constraintsFromDb) {
         asIsTable.addCheckConstr({
-          name: constraintDef['NAME'],
+          name: constraintDef.NAME,
           definition: '' // constraintDef['DEFINITION'].trim()
         })
       }
@@ -258,14 +258,14 @@ where
       this.dbTableDefs.push(asIsTable)
     }
 
-    let sequencesSQL = `select sequence_name from user_sequences`
-    let dbSequences = this.conn.xhr({
+    const sequencesSQL = 'select sequence_name from user_sequences'
+    const dbSequences = this.conn.xhr({
       endpoint: 'runSQL',
       data: sequencesSQL,
       URLParams: { CONNECTION: this.dbConnectionConfig.name }
     })
-    for (let seqDef of dbSequences) {
-      this.sequencesDefs.push(seqDef['SEQUENCE_NAME'])
+    for (const seqDef of dbSequences) {
+      this.sequencesDefs.push(seqDef.SEQUENCE_NAME)
     }
   }
 
@@ -297,7 +297,7 @@ where
         : v
       //  return ((!column.isString || (!column.defaultValue && (column.refTable || column.enumGroup))) ? v : "''" + v.replace(/'/g,'') + "''" );
     }
-
+    let possibleDefault
     switch (updateType) {
       case 'updConstComment':
         this.DDL.updateColumn.statements.push(
@@ -310,7 +310,7 @@ where
         )
         break
       case 'updNull':
-        let possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
+        possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
         this.DDL.updateColumn.statements.push(
           `-- update ${table.name} set ${column.name} = ${possibleDefault} where ${column.name} is null`
         )
@@ -327,7 +327,7 @@ where
   genCodeSetCaption (tableName, column, value, oldValue) {
     if (value) value = value.replace(/'/g, "''")
     if (!value && !oldValue) return // prevent create empty comments
-    let result = `comment on ${column ? 'column' : 'table'} ${tableName}${column ? '.' : ''}${column || ''} is '${value}'`
+    const result = `comment on ${column ? 'column' : 'table'} ${tableName}${column ? '.' : ''}${column || ''} is '${value}'`
     this.DDL.caption.statements.push(result)
   }
 
@@ -372,8 +372,8 @@ where
   genCodeAlterColumn (table, tableDB, column, columnDB, typeChanged, sizeChanged, allowNullChanged) {
     // recreate index only if type changed
     if (typeChanged || sizeChanged) {
-      let objects = tableDB.getIndexesByColumn(column)
-      for (let colIndex of objects) {
+      const objects = tableDB.getIndexesByColumn(column)
+      for (const colIndex of objects) {
         colIndex.isForDelete = true
         colIndex.isForDeleteMsg = `Delete for altering column ${table.name}.${column.name}`
       }
@@ -398,9 +398,9 @@ where
    * @override
    */
   genCodeAddColumn (table, column, delayedNotNull) {
-    let typeDef = this.createTypeDefine(column)
-    let nullable = column.allowNull || delayedNotNull ? ' null' : ' not null'
-    let def = column.defaultValue ? ' default ' + column.defaultValue : ''
+    const typeDef = this.createTypeDefine(column)
+    const nullable = column.allowNull || delayedNotNull ? ' null' : ' not null'
+    const def = column.defaultValue ? ' default ' + column.defaultValue : ''
     this.DDL.addColumn.statements.push(
       `alter table ${table.name} add ${column.name} ${typeDef}${def}${nullable}`
     )
@@ -415,7 +415,7 @@ where
    * @override
    */
   genCodeAddColumnBase (table, column, baseColumn) {
-    let def = column.defaultValue ? ' default ' + column.defaultValue : ''
+    const def = column.defaultValue ? ' default ' + column.defaultValue : ''
     this.DDL.addColumn.statements.push(
       `alter table ${table.name} add ${column.name} ${this.createTypeDefine(column)}${def}`
     )
@@ -425,7 +425,7 @@ where
     )
 
     if (!column.allowNull) {
-      let nullable = column.allowNull ? ' null' : ' not null'
+      const nullable = column.allowNull ? ' null' : ' not null'
       this.DDL.alterColumnNotNull.statements.push(
         `alter table ${table.name} modify ${column.name} ${nullable}`
       )
@@ -434,8 +434,8 @@ where
 
   /** @override */
   genCodeCreateTable (table) {
-    let res = [`create table ${table.name}(\r\n`]
-    let colLen = table.columns.length
+    const res = [`create table ${table.name}(\r\n`]
+    const colLen = table.columns.length
 
     table.columns.forEach((column, index) => {
       res.push(' ', column.name, ' ', this.createTypeDefine(column),
@@ -462,8 +462,8 @@ where
   genCodeCreateFK (table, constraintFK) {
     if (!constraintFK.generateFK) return
 
-    let refTo = _.find(this.refTableDefs, { _nameUpper: constraintFK.references.toUpperCase() })
-    let refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
+    const refTo = _.find(this.refTableDefs, { _nameUpper: constraintFK.references.toUpperCase() })
+    const refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
 
     this.DDL.createFK.statements.push(
       `alter table ${table.name} add constraint ${constraintFK.name} foreign key (${constraintFK.keys.join(',')}) references ${constraintFK.references}(${refKeys})`
@@ -479,7 +479,7 @@ where
    * @param {Array} [objCollect]
    */
   genCodeDropIndex (tableDB, table, indexDB, comment, objCollect) {
-    let cObj = objCollect || this.DDL.dropIndex.statements
+    const cObj = objCollect || this.DDL.dropIndex.statements
     if (comment) cObj.push(`-- ${comment}\r\n`)
     if (indexDB.isConstraint) {
       cObj.push(`ALTER TABLE ${tableDB.name} DROP CONSTRAINT ${indexDB.name}`)
@@ -528,7 +528,7 @@ where
 
   /** @override */
   genCodeCreateIndex (table, indexSH, comment) {
-    let commentText = comment ? `-- ${comment} \n` : ''
+    const commentText = comment ? `-- ${comment} \n` : ''
     let idxDDL = `${commentText}create ${indexSH.isUnique ? 'unique' : ''} index ${indexSH.name} on ${table.name}(${indexSH.keys.join(',')})`
     if (indexSH.indexType === 'CATALOGUE') idxDDL += ' INDEXTYPE IS CTXSYS.CTXCAT'
     this.DDL.createIndex.statements.push(idxDDL)
@@ -551,9 +551,9 @@ where
       if (!val) return val
       switch (val) {
         case 'currentDate':
-          return `CAST(sys_extract_utc(SYSTIMESTAMP) AS DATE)`
+          return 'CAST(sys_extract_utc(SYSTIMESTAMP) AS DATE)'
         case 'maxDate':
-          return `TO_DATE('31.12.9999', 'dd.mm.yyyy')`
+          return 'TO_DATE(\'31.12.9999\', \'dd.mm.yyyy\')'
         default:
           throw new Error(`Unknown expression with code ${val}`)
       }

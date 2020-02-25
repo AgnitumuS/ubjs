@@ -51,7 +51,7 @@ class UForm {
     rootComponent,
     props,
     title,
-    entity = required('entity'),
+    entity,
     instanceID,
     isModal,
     modalClass,
@@ -65,9 +65,15 @@ class UForm {
     this.storeConfig = {}
     this.$store = undefined
     this.entity = entity
-    this.entitySchema = UB.connection.domain.get(this.entity)
-    this.title = title || this.entitySchema.getEntityCaption()
-    this.fieldList = this.entitySchema.getAttributeNames()
+    if (this.entity && UB.connection.domain.has(this.entity)) {
+      this.entitySchema = UB.connection.domain.get(this.entity)
+      this.title = title || this.entitySchema.getEntityCaption()
+      this.fieldList = this.entitySchema.getAttributeNames()
+    } else {
+      this.entitySchema = null
+      this.title = title
+      this.fieldList = []
+    }
     this.instanceID = instanceID
     this.formCode = formCode
     this.collections = {}

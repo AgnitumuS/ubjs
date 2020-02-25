@@ -34,16 +34,16 @@ const argv = require('@unitybase/base').argv
 
 console.info('')
 
-let errors = []
+const errors = []
 let docsCount = 0
 let docsSize = 0
-let started = Date.now()
+const started = Date.now()
 
 module.exports = function checkStoreIntegrity (cfg) {
   // increase receive timeout - in case DB server is slow we can easy reach 30s timeout
   http.setGlobalConnectionDefaults({ receiveTimeout: 600000 })
   if (!cfg) {
-    let opts = cmdLineOpt.describe('checkStoreIntegrity',
+    const opts = cmdLineOpt.describe('checkStoreIntegrity',
       'Validate blobStore consistency by checking equality of the md5 checksum stored in the database with actual file MD5',
       'ubcli'
     )
@@ -58,8 +58,8 @@ module.exports = function checkStoreIntegrity (cfg) {
     if (!cfg) return
   }
   console.time('CheckStoreIntegrity')
-  let session = argv.establishConnectionFromCmdLineAttributes(cfg)
-  let conn = session.connection
+  const session = argv.establishConnectionFromCmdLineAttributes(cfg)
+  const conn = session.connection
   try {
     doCheckIntegrity(conn, cfg)
   } finally {
@@ -77,8 +77,8 @@ module.exports = function checkStoreIntegrity (cfg) {
 }
 
 function doCheckIntegrity (conn, { entity, attribute, start, limit, transLen, errLimit }) {
-  let blobStoresArray = argv.getServerConfiguration().application.blobStores
-  let blobStores = {}
+  const blobStoresArray = argv.getServerConfiguration().application.blobStores
+  const blobStores = {}
   blobStoresArray.forEach(store => { blobStores[store.name] = store })
   console.log(blobStores)
   let files = []
@@ -91,27 +91,27 @@ function doCheckIntegrity (conn, { entity, attribute, start, limit, transLen, er
       if (docsCount % 100 === 0) { process.stdout.write('.') }
 
       if (!file[attribute] || errors.length >= errLimit) return
-      let fti = JSON.parse(file[attribute])
+      const fti = JSON.parse(file[attribute])
       if (!blobStores[fti.store]) {
         errors.push(`${file.ID} invalid FTI in database ${file[attribute]}`)
         return
       }
 
-      let fName = fti.fName
-      let fullPath = path.join(blobStores[fti.store].path, fti.relPath, fName)
+      const fName = fti.fName
+      const fullPath = path.join(blobStores[fti.store].path, fti.relPath, fName)
 
       if (!fs.existsSync(fullPath)) {
         errors.push(fullPath + ' file does not exists')
         return
       }
-      let stat = fs.statSync(fullPath)
+      const stat = fs.statSync(fullPath)
       if (stat.size !== fti.size) {
         errors.push(`${fullPath} size: ${stat.size} <> DB size: ${fti.size}`)
       }
       docsSize += stat.size
       docsCount++
       // {"v":1,"store":"simple","fName":"tst_document-fileStoreSimple332717533790216239c.js","origName":"appLevelMethod.js","relPath":"108","ct":"application/javascript; charset=utf-8","size":10872,"md5":"d5d69826ae85346517dc090b4dd98989","revision":1}
-      let realMD5 = nhashFile(fullPath, 'MD5')
+      const realMD5 = nhashFile(fullPath, 'MD5')
       if (realMD5 !== fti.md5) {
         errors.push(`${fullPath} md5: ${realMD5} <> DB md5: ${fti.md5}`)
       }

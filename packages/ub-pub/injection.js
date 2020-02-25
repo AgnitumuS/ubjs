@@ -1,5 +1,5 @@
-let __loadedScript = {}
-let __head = (typeof document !== 'undefined') && document.getElementsByTagName('head')[0]
+const __loadedScript = {}
+const __head = (typeof document !== 'undefined') && document.getElementsByTagName('head')[0]
 
 /**
  * Exports client side injections
@@ -23,7 +23,7 @@ module.exports.inject = function inject (url, charset) {
     // attach event listeners that will trigger the Deferred.
     res = __loadedScript[url] = new Promise(function (resolve, reject) {
       let elm = null
-      let isCSS = /\.css(?:\?|$)/.test(url)
+      const isCSS = /\.css(?:\?|$)/.test(url)
       if (isCSS) {
         elm = document.createElement('link')
         elm.rel = 'stylesheet'
@@ -37,7 +37,7 @@ module.exports.inject = function inject (url, charset) {
         elm.async = true
       }
       elm.onerror = function (oError) {
-        let reason = 'Required ' + (oError.target.href || oError.target.src) + ' is not accessible'
+        const reason = 'Required ' + (oError.target.href || oError.target.src) + ' is not accessible'
         delete __loadedScript[url]
         elm.onerror = elm.onload = elm.onreadystatechange = null
         reject(new Error(reason))
@@ -46,7 +46,7 @@ module.exports.inject = function inject (url, charset) {
       elm.onload = function () {
         elm.onerror = elm.onload = elm.onreadystatechange = null
         setTimeout(function () { // script must evaluate first
-          let _elm = elm
+          const _elm = elm
           resolve()
           // Remove the script (do not remove CSS) ???
           if (_elm.parentNode && !_elm.rel) {
@@ -85,7 +85,7 @@ const MODEL_RE = new RegExp('models/(.+?)/') // speculative search. w/o ? found 
  * @returns {String}
  */
 function getResourceVersion (uri) {
-  let modelName = MODEL_RE.test(uri) ? MODEL_RE.exec(uri)[1] : '_web'
+  const modelName = MODEL_RE.test(uri) ? MODEL_RE.exec(uri)[1] : '_web'
   return (__ubVersion && __ubVersion[modelName])
     ? 'ubver=' + __ubVersion[modelName]
     : ''
@@ -98,9 +98,9 @@ function getResourceVersion (uri) {
  * @returns {String} uri with added resource version
  */
 function addResourceVersion (uri) {
-  let ver = getResourceVersion(uri)
+  const ver = getResourceVersion(uri)
   if (!ver) return uri
-  let separator = (uri.indexOf('?') === -1) ? '?' : '&'
+  const separator = (uri.indexOf('?') === -1) ? '?' : '&'
   return uri + separator + ver
 }
 module.exports.addResourceVersion = addResourceVersion

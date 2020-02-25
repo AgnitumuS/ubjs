@@ -15,6 +15,44 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.10] - 2020-02-23
+### Changed
+ - `AsyncConnection.query` method will add a method names into post request URL, so calls to `ubql` endpoint will become
+ `POST /ubql?rq=entity1.method1*entity2.method2`. This allow to apply a custom login into reverse proxy level and also simplify
+ a debugging, since all methods are directly visible in the network browser panel
+
+### Fixed
+ - ESLint warnings resolved (mostly about let -> const) 
+
+## [5.4.9] - 2020-02-18
+### Added
+ - SignatureValidationResult: new property `certificate.certificateAsBuffer` - signer certificate in bin format
+ 
+### Changed
+ - i18n messages about certificate registration moved from `adminui-pub` into `ub-pub` to be used inside non-admin UI
+   
+### Fixed
+ - i18n for `useCertificateInfo` (CERT2 auth with user/pwd) should be ... Continue instead of ...Ok
+
+## [5.4.8] - 2020-02-13
+### Fixed
+ - UBConnection.prototype.runTransAsObject will resolves after all possible cache invalidations are finished.
+   This fix `Cannot read property 'data' of undefined` for Vue based forms what based on cached entities  
+
+## [5.4.7] - 2020-02-08
+### Changed
+ - i18n for `UserWithoutOrgEmployeeNotAllowed` is moved from adminui-pub into ub-pub
+ 
+### Fixed
+ - in case text of the exception raised inside server side Session.on('login') event handler is wrapped into <<<>>>
+ ub-pub will translate it and show as any other handled exception. Before this patch `InvalidUserNameOrPassword` always shown.
+ Fix for [UB-1728]
+
+## [5.4.6] - 2020-02-03
+## [5.4.5] - 2020-01-31
+### Added
+ - support for native messages extension in Firefox
+
 ## [5.4.4] - 2020-01-17
 ### Added
  - `UB.Reposiroty` fabric function can now accept a UBQL passed in parameter as object while keeping an ability

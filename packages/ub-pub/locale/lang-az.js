@@ -55,11 +55,19 @@ UB.i18nExtend({
   ' Əllə iş salmaq üçün bu instruksiyadan <a href="models/adminui-pub/ub-extension/pluginUpdateInstruction_az.html" target="_blank">istifadə edin</a>. ' +
   ' Əgər yenilənmədən sonra mesaj yenədə qalıbsa, administratorun köməyindən istifadə edin.',
 
+  registrationPassed: 'Sertifikatınız uğurla yüklənmiş və emala verilmişdir',
+  keyAlreadyRegisteredForUser: 'Açar artıq başqa bir əməkdaş üçün qeydiyyata alınmışdır',
+  keyBlockedByAdmin: 'Administrator sistemə daxil olmaq üçün açardan istifadəçi bloka salmışdır. Blok üçün əsas: ',
+  keyNoRightsRejected: 'İstifadəçinin sistemdə işləmək hüququq yoxdur. Açarın qeydiyyatı müraciətinə rədd cavab verilmişdir.',
+  keyNoRightsRepeat: 'İstifadəçinin sistemdə işləmək hüququq yoxdur. Açarın təkrar qeydiyyatı üçün müraciət baxılma mərhələsindədir.',
+  keyAlreadyRegistered: 'Açarı qeydiyyata almaq üçün müraciət etmək mümkün deyil. Bu açar artıq sistemdə qeydiyyata alınmışdır.',
+
   unknownError: 'Naməlum səhv baş vermişdir. Xahiş edirik, administratora müraciət edəsiniz.',
   recordNotExistsOrDontHaveRights: 'Qeyd mövcud deyil, yaxud Sizin ona baxmaq üçün hüququnuz yoxdur',
   msgInvalidCertAuth: 'Girişə icazə verilmədi. Yanlış sertifikat, yaxud bağlı açar.',
   msgInvalidUBAuth: 'Keçid ləğv olunub. Zəhmət olmasa istifadəçi adı və parol -u yoxlayın.',
   ubErrElsInvalidUserOrPwd: 'Keçid ləğv olunub. Zəhmət olmasa istifadəçi adı və parol -u yoxlayın.',
+  UserWithoutOrgEmployeeNotAllowed: 'İstifadəçinin ştat vahidi mövcud deyildir (ştat vahidi göstərilməyib). Giriş qadağandır.',
 
   'Access deny': 'Bu əməliyyat yerinə yetirmək üçün hüquqları yoxdur',
   ERR_REFERENCE_ERROR: 'əməliyyat bilmir - element digər şəxslərin istifadə olunur',
@@ -80,7 +88,9 @@ UB.i18nExtend({
   NewPassword: 'Yeni parol',
   RetypePassword: 'Parol təkrarən',
   HowToCreatePassword: 'Etibarlı parolu necə seçməli?',
-  passwordRecommendation: '* Parol 6 simvoldan qısa olmalıdır. <br > * parol rəqəmlərdən ibarət olmalıdır  <br > * parol latın əlifbasının böyük və kiçik simvollardan ibarət olmalıdır <br >parol xüsusi simvollardan ibarət olmalıdır: ! @ # $ % ^ & * ( ) _ - + : ; , . ',
+  passwordRecommendation: 'Şifrə uzunluğu {0} -20 işarədən ibarət olmalıdır.\n' +
+    'Nömrələrdən, latın hərflərindən və işarələrdən istifadə edə bilərsiniz:' +
+    ' ! @ # $ % ^ & * ( ) _ - + : ; , . ',
   passwordsDoNotMatch: 'Parollar üst-üstə düşmür',
   passwordChangedSuccessfully: 'Parol uğurla dəyişdirildi',
 
