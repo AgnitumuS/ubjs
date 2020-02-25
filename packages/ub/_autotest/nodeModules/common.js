@@ -176,6 +176,7 @@ process.on('exit', function () {
     knownGlobals.push(Float64Array)
     knownGlobals.push(DataView)
   }
+  knownGlobals.push(internalBinding)
 
   for (var x in global) {
     var found = false
@@ -259,3 +260,87 @@ exports.platformTimeout = function (ms) {
 exports.skip = function (msg) {
   console.log(`1..0 # Skipped: ${msg}`)
 }
+
+// Useful for testing expected internal/error objects
+function expectsError(fn, settings, exact) {
+  if (typeof fn !== 'function') {
+    exact = settings;
+    settings = fn;
+    fn = undefined;
+  }
+
+  function innerFn(error) {
+    if (arguments.length !== 1) {
+      // Do not use `assert.strictEqual()` to prevent `util.inspect` from
+      // always being called.
+      assert.fail(`Expected one argument, got ${util.inspect(arguments)}`);
+    }
+    const descriptor = Object.getOwnPropertyDescriptor(error, 'message');
+    // The error message should be non-enumerable
+    assert.strictEqual(descriptor.enumerable, false);
+
+    let innerSettings = settings;
+    // if ('type' in settings) {
+    //   const type = settings.type;
+    //   if (type !== Error && !Error.isPrototypeOf(type)) {
+    //     throw new TypeError('`settings.type` must inherit from `Error`');
+    //   }
+    //   let constructor = error.constructor;
+    //   if (constructor.name === 'NodeError' && type.name !== 'NodeError') {
+    //     constructor = Object.getPrototypeOf(error.constructor);
+    //   }
+    //   // Add the `type` to the error to properly compare and visualize it.
+    //   if (!('type' in error))
+    //     error.type = constructor;
+    // }
+
+    if ('message' in settings &&
+      typeof settings.message === 'object' &&
+      settings.message.test(error.message)) {
+      // Make a copy so we are able to modify the settings.
+      innerSettings = Object.create(
+        settings, Object.getOwnPropertyDescriptors(settings));
+      // Visualize the message as identical in case of other errors.
+      innerSettings.message = error.message;
+    }
+
+    // Check all error properties.
+    const keys = Object.keys(settings);
+    for (const key of keys) {
+      if (!util.isDeepStrictEqual(error[key], innerSettings[key])) {
+        // Create placeholder objects to create a nice output.
+        // SyNode
+        // const a = new Comparison(error, keys);
+        // const b = new Comparison(innerSettings, keys);
+        var a = error
+        var b = innerSettings
+
+        const tmpLimit = Error.stackTraceLimit;
+        Error.stackTraceLimit = 0;
+        const err = new assert.AssertionError({
+          actual: a,
+          expected: b,
+          operator: 'strictEqual',
+          stackStartFn: assert.throws
+        });
+        Error.stackTraceLimit = tmpLimit;
+
+        throw new assert.AssertionError({
+          actual: error,
+          expected: settings,
+          operator: 'common.expectsError',
+          message: err.message
+        });
+      }
+
+    }
+    return true;
+  }
+  if (fn) {
+    assert.throws(fn, innerFn);
+    return;
+  }
+  return mustCall(innerFn, exact);
+}
+
+exports.expectsError = expectsError
