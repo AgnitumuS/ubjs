@@ -886,10 +886,74 @@ In example `code` uses for value (instead of `ID`), and for display (instead of 
 </script>
 ```
 
-### Change default actions
+### Editable
+Set editable="false" to prevent user from typing text directly into the field.
+In this state picker can be opened by clicking directly on the input field, not only on arrow.
+```vue
+<template>
+  <u-select-entity
+      v-model="value"
+      value-attribute="code"
+      entity-name="cdn_country"
+      :editable="false"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: 'UKR'
+      }
+    }
+  }
+</script>
+```
+### Disabled
+```vue
+<template>
+  <u-select-entity
+      v-model="value"
+      value-attribute="code"
+      entity-name="cdn_country"
+      disabled
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: 'UKR'
+      }
+    }
+  }
+</script>
+```
 
-### Remove default actions
-Remove rigth menu when you dint need it!
+### Clearable
+```vue
+<template>
+  <u-select-entity
+      v-model="value"
+      value-attribute="code"
+      entity-name="cdn_country"
+      clearable
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: 'UKR'
+      }
+    }
+  }
+</script>
+```
+### Actions
+#### Change default actions
+
+#### Remove default actions
+Remove right menu when you don't need it!
 ```vue
 <template>
   <u-select-entity
@@ -908,14 +972,13 @@ Remove rigth menu when you dint need it!
   }
 </script>
 ```
-<!--
-#### Add actions
 
+#### Add actions to menu
 ```vue
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="tst_maindata"
+    entity-name="cdn_country"
     :additional-actions="actions"
   />
 </template>
@@ -955,7 +1018,7 @@ Remove rigth menu when you dint need it!
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="tst_maindata"
+    entity-name="cdn_country"
     :additional-actions="actions"
     remove-default-actions
   />
@@ -991,33 +1054,13 @@ Remove rigth menu when you dint need it!
 </script>
 ```
 
-### Disabled
-
-```vue
-<template>
-  <u-select-entity
-    v-model="value"
-    entity-name="tst_maindata"
-    disabled
-  />
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        value: 333306077119805
-      }
-    }
-  }
-</script>
-```
 
 ### Actions overrides
 ```vue
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="tst_maindata"
+    entity-name="cdn_country"
     :build-edit-config="actionEditOverride"
   />
 </template>
@@ -1025,7 +1068,7 @@ Remove rigth menu when you dint need it!
   export default {
     data () {
       return {
-        value: 1
+        value: null
       }
     },
 
@@ -1039,6 +1082,6 @@ Remove rigth menu when you dint need it!
       }
     }
   }
-</script>-->
+</script>
 ```
 </docs>

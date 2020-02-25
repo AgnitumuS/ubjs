@@ -15,7 +15,7 @@
 
 <script>
 /**
-* Component for select UB enum.
+* Dropdown control for select UB enum
 */
 export default {
   name: 'USelectEnum',
@@ -97,13 +97,13 @@ export default {
 </script>
 
 <docs>
-Based on `u-select-entity` accordingly have all same props
+Based on [`u-select-entity`](#uselectentity) so have all same props
 
 ```vue
 <template>
   <u-select-enum
     v-model="value"
-    e-group="FORM_TYPE"
+    e-group="CDN_ACCOUNTTYPE"
   />
 </template>
 <script>

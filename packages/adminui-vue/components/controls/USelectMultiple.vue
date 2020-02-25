@@ -661,9 +661,9 @@ One of these options is required:
 ```vue
 <template>
   <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
-  />>
+    v-model="value"
+    entity-name="cdn_country"
+  />
 </template>
 <script>
   export default {
@@ -682,7 +682,7 @@ Need to set function which returns UB Repository
 ```vue
 <template>
   <u-select-multiple
-    v-model="model"
+    v-model="value"
     :repository="getRepo"
   />
 </template>
@@ -696,9 +696,9 @@ Need to set function which returns UB Repository
 
     methods: {
       getRepo () {
-        return $UB.Repository('tst_maindata')
-          .attrs('ID', 'code', 'caption')
-          .where('parent', '=', 31231221312312) // TODO: set valid ID
+        return this.$UB.Repository('cdn_country')
+          .attrs('ID', 'code', 'name')
+          .where('code', 'startWith', 'U')
       }
     }
   }
@@ -713,10 +713,10 @@ For example when you need instead `ID` like `code`.
 ```vue
 <template>
   <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
+    v-model="value"
+    entity-name="cdn_country"
     value-attribute="code"
-  />>
+  />
 </template>
 <script>
   export default {
@@ -734,8 +734,8 @@ For example when you need instead `ID` like `code`.
 ```vue
 <template>
   <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
+    v-model="value"
+    entity-name="cdn_country"
     clearable
   />
 </template>
@@ -755,8 +755,8 @@ For example when you need instead `ID` like `code`.
 ```vue
 <template>
   <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
+    v-model="value"
+    entity-name="cdn_country"
     disabled
   />
 </template>
@@ -771,13 +771,13 @@ For example when you need instead `ID` like `code`.
 </script>
 ```
 
-### filteredItems
+### Fixed items
 
 ```vue
 <template>
   <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
+    v-model="value"
+    entity-name="cdn_country"
     :fixed-items="fixedItems"
   />
 </template>

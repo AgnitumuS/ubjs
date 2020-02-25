@@ -16,8 +16,9 @@ module.exports = {
     // './components/controls/UInput/UInput.vue',
     // './components/controls/UTable/UTable.vue',
     //
-    './components/controls/USelectEntity.vue'
-    // './components/controls/USelectEnum.vue',
+    './components/controls/USelectEntity.vue',
+    './components/controls/USelectEnum.vue',
+    './components/controls/USelectMultiple.vue',
     // './components/controls/USelectMany.vue',
     // './components/controls/UUploadDocument.vue',
     // './components/controls/UCodeMirror.vue',
