@@ -9,7 +9,7 @@
 
     <div
       v-for="filter in filters"
-      :key="filter.columnId"
+      :key="filter.id"
       class="u-table-entity__filter-list-item"
       @click.middle="removeFilter(filter.columnId)"
     >

@@ -250,7 +250,7 @@ module.exports = (instance) => ({
     async applyFilter ({ state, getters, commit, dispatch }, { whereList, description }) {
       commit('PAGE_INDEX', 0)
       commit('APPLY_FILTER', {
-        id: state.selectedColumnId,
+        columnId: state.selectedColumnId,
         label: getters.selectedColumn.label,
         description,
         whereList: whereList.map(whereItem => ({

@@ -239,3 +239,181 @@ export default {
   }
 }
 </script>
+
+<docs>
+  Entity attributes with dataType `Text`, `BLOB`, `TimeLog` did not have default render component,
+  If you need to render this dataTypes render it by named column slots.
+  You need to decide to display this column type with great caution because this column can creates large server requests.
+
+  One of these options is required:
+  - `entity-name`
+  - `repository`
+
+  ### Use as `entity-name`
+
+  ```vue
+  <template>
+    <u-table-entity entity-name="uba_user"/>
+  </template>
+  ```
+
+  ### Use as `repository`
+  Need to set function which returns UB Repository
+
+  ```vue
+  <template>
+    <u-table-entity :repository="repository"/>
+  </template>
+
+  <script>
+    export default {
+      methods: {
+        repository () {
+          return this.$UB.Repository('uba_user')
+            .attrs('ID', 'login', 'name')
+        }
+      }
+    }
+  </script>
+  ```
+
+  ### Columns
+  Columns array can contains strings or objects
+
+  ```vue
+  <template>
+    <u-table-entity
+        entity-name="uba_user"
+        :columns="columns"
+    />
+  </template>
+
+  <script>
+    export default {
+      data () {
+        return {
+          columns: [
+            'phone', // default column from entity
+            'login', // default column from entity
+            {
+              id: 'name', // default column from but overrides settings
+              label: 'User name',
+              width: 250,
+              align: 'center'
+            }
+          ]
+        }
+      }
+    }
+  </script>
+  ```
+
+  ### Slots
+  You can override values as named slots.
+  In this case another columns will be shows as usual.
+  Slot scope will pass `value`, `row`, and `column`
+
+  ```vue
+  <template>
+    <u-table-entity
+        entity-name="uba_user"
+        :columns="columns"
+    >
+      <template #age="{row}">
+        {{ row.login }}
+        {{ row.age >= 18 ? 'is adult' : 'is kid'}}
+      </template>
+
+      <template #disabled="{value}">
+        {{ value ? 'user is disabled' : 'user is enabled'}}
+      </template>
+    </u-table-entity>
+  </template>
+
+  <script>
+    export default {
+      data () {
+        return {
+          columns: [
+            'phone',
+            'name',
+            'age',
+            'disabled'
+          ]
+        }
+      }
+    }
+  </script>
+  ```
+
+  ### Custom columns
+  Custom column always required to have slot, because entity dont have data for this column
+
+  ```vue
+  <template>
+    <u-table-entity
+        entity-name="uba_user"
+        :columns="columns"
+    >
+      <template #customCol="{row}">
+        {{ row.age >= 18 ? 'is adult' : 'is kid'}}
+      </template>
+
+      <template #customCol2="{row}">
+        {{ row.disabled ? 'user is disabled' : 'user is enabled'}}
+      </template>
+    </u-table-entity>
+  </template>
+
+  <script>
+    export default {
+      data () {
+        return {
+          columns: [
+            'phone',
+            'login',
+            'name',
+            'customCol',
+            {
+              id: 'customCol2',
+              label: 'Custom Col',
+              width: 200,
+              align: 'right'
+            },
+            'disabled'
+          ]
+        }
+      }
+    }
+  </script>
+  ```
+
+  ### Actions overrides
+  ```vue
+  <template>
+    <u-table-entity
+        entity-name="tst_dictionary"
+        :build-edit-config="actionEditOverride"
+    />
+  </template>
+  <script>
+    export default {
+      data () {
+        return {
+          value: 1
+        }
+      },
+
+      methods: {
+        actionEditOverride (cfg) {
+          return {
+            ...cfg,
+            isModal: false,
+            docID: 12345
+          }
+        }
+      }
+    }
+  </script>
+  ```
+</docs>

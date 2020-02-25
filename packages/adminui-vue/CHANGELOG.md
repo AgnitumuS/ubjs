@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTableEntity` filters for different columns no more overrides each other
 
 ## [1.9.25] - 2020-02-23
 ### Removed
