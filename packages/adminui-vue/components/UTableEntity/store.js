@@ -159,7 +159,7 @@ module.exports = (instance) => ({
     },
 
     APPLY_FILTER (state, filter) {
-      const index = state.filters.findIndex(f => f.id === filter.id)
+      const index = state.filters.findIndex(f => f.columnId === filter.columnId)
 
       if (index !== -1) {
         state.filters.splice(index, 1, filter)
@@ -177,7 +177,7 @@ module.exports = (instance) => ({
     },
 
     REMOVE_FILTER (state, columnId) {
-      const index = state.filters.findIndex(f => f.id === columnId)
+      const index = state.filters.findIndex(f => f.columnId === columnId)
       if (index !== -1) {
         state.filters.splice(index, 1)
       }
@@ -250,7 +250,7 @@ module.exports = (instance) => ({
     async applyFilter ({ state, getters, commit, dispatch }, { whereList, description }) {
       commit('PAGE_INDEX', 0)
       commit('APPLY_FILTER', {
-        id: state.selectedColumnId,
+        columnId: state.selectedColumnId,
         label: getters.selectedColumn.label,
         description,
         whereList: whereList.map(whereItem => ({
