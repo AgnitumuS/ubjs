@@ -90,6 +90,7 @@ class CustomRepository {
 
     this.entityName = entityName
   }
+
   /**
    * Retrieve a data from server using `methodName` entity method.
    * By default `select` method will be used.
@@ -220,7 +221,7 @@ UB.Repository('my_entity').attrs('ID')
         clauseName += '_'
       }
     }
-    let originalCondition = condition
+    const originalCondition = condition
     const WhereCondition = CustomRepository.prototype.WhereCondition
     condition = WhereCondition[condition]
     if (expression && condition !== 'custom' && !bracketsRe.test(expression)) {
@@ -259,7 +260,7 @@ UB.Repository('my_entity').attrs('ID')
       condition = WhereCondition.equal
       value = UBQL2 ? 1 : { a: 1 }
     } else if (value === null && (condition !== 'isNull' || condition !== 'notIsNull')) {
-      let wrongCondition = condition
+      const wrongCondition = condition
       value = undefined
       condition = conditionInCaseValueIsNull[wrongCondition]
       if (condition) {
@@ -274,11 +275,11 @@ UB.Repository('my_entity').attrs('ID')
       value = value[0]
     }
     if (!UBQL2 && (value !== undefined && (typeof (value) !== 'object' || Array.isArray(value) || _.isDate(value)))) {
-      let obj = {}
+      const obj = {}
       obj[clauseName] = value
       value = obj
     }
-    let whereItem = {
+    const whereItem = {
       expression: expression,
       condition: condition
     }
@@ -392,6 +393,7 @@ UB.Repository('uba_user').attrs(['ID', 'name']) //select users
     if (!condition) condition = '='
     return this.where(subQueryAttribute + condition + '[{master}.' + masterAttribute + ']', 'custom', undefined, clauseName)
   }
+
   /**
    * Arrange named `where expressions` in logical order. By default `where expressions` are joined by AND logical predicate.
    * It is possible to join it in custom order using `logic`.
@@ -485,7 +487,7 @@ UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
    * @return {CustomRepository}
    */
   orderBy (attr, direction) {
-    let i = this.orderList.findIndex(oi => oi.expression === attr)
+    const i = this.orderList.findIndex(oi => oi.expression === attr)
     if (direction === null) {
       if (i !== -1) this.orderList.splice(i, 1)
     } else {
@@ -593,8 +595,8 @@ inst.run('select', repo.ubql())
    * @return {UBQL}
    */
   ubql () {
-    let orderCnt = this.orderList.length
-    let req = {
+    const orderCnt = this.orderList.length
+    const req = {
       entity: this.entityName,
       method: this.method,
       fieldList: this.fieldList
@@ -637,7 +639,7 @@ inst.run('select', repo.ubql())
 
    * @return {UBQL}
    */
-  fromUbql(u) {
+  fromUbql (u) {
     this.entityName = u.entity
     this.method = u.method
     this.fieldList = u.fieldList
@@ -645,7 +647,7 @@ inst.run('select', repo.ubql())
     this.whereList = u.whereList || {}
     if (u.orderList) {
       // orderList in UBQL is object with keys === order position. Keys can be strings
-      let orderKeys = Object.keys(u.orderList)
+      const orderKeys = Object.keys(u.orderList)
       this.orderList = []
       orderKeys.forEach(k => {
         this.orderList.push(u.orderList['' + k])
@@ -655,7 +657,7 @@ inst.run('select', repo.ubql())
     this.logicalPredicates = u.logicalPredicates || {}
     this.joinAs = u.joinAs || []
     this.__misc = {}
-    let m = Object.keys(u)
+    const m = Object.keys(u)
     m.forEach(mt => {
       if ((u[mt] === true) && KNOWN_MISC_TAGS.has(mt)) this.__misc[mt] = true
     })
@@ -677,6 +679,7 @@ inst.run('select', repo.ubql())
   selectAsObject (fieldAliases) {
     throw new Error('abstract')
   }
+
   // noinspection JSMethodCanBeStatic
   /**
    * Must be implemented in descendants and return (or resolved for async clients)
@@ -689,6 +692,7 @@ inst.run('select', repo.ubql())
   selectAsArray () {
     throw new Error('abstract')
   }
+
   // noinspection JSMethodCanBeStatic
   /**
    * Must be implemented in descendants and return (or resolved for async clients)
@@ -705,6 +709,7 @@ inst.run('select', repo.ubql())
   selectAsStore (storeConfig) {
     throw new Error('abstract')
   }
+
   // noinspection JSMethodCanBeStatic
   /**
    * Must be implemented in descendants as a alias to the most appropriate method
@@ -798,7 +803,7 @@ inst.run('select', repo.ubql())
    * @return {CustomRepository}
    */
   misc (flags) {
-    for (let key in flags) {
+    for (const key in flags) {
       if (flags.hasOwnProperty(key)) {
         if (!flags[key]) {
           delete this.__misc[key]
@@ -868,11 +873,12 @@ inst.run('select', repo.ubql())
    * @return {CustomRepository}
    */
   clone () {
-    let cloned = _.cloneDeep(this)
+    const cloned = _.cloneDeep(this)
     // prevent deep clone of connection property
     Object.defineProperty(cloned, 'connection', { enumerable: false, writable: false, value: this.connection })
     return cloned
   }
+
   /**
    * Remove all where conditions (except ones using in joinAs). This function mutates current Repository
    * @example
@@ -885,7 +891,7 @@ inst.run('select', repo.ubql())
   clearWhereList () {
     this.logicalPredicates = []
     if (this.joinAs.length) {
-      let wNames = Object.keys(this.whereList)
+      const wNames = Object.keys(this.whereList)
       wNames.forEach(wName => {
         if (this.joinAs.indexOf(wName) === -1) {
           delete this.whereList[wName]
@@ -924,47 +930,47 @@ CustomRepository.prototype.ubRequest = CustomRepository.prototype.ubql
  */
 CustomRepository.prototype.WhereCondition = {
   /** @description Alias for `more` */
-  'gt': 'more',
+  gt: 'more',
   /** @description Alias for `more` */
   '>': 'more',
   /** @description Greater than */
-  'more': 'more',
+  more: 'more',
   /** @description Alias for `less` */
-  'lt': 'less',
+  lt: 'less',
   /** @description Alias for `less` */
   '<': 'less',
   /** @description Less than */
-  'less': 'less',
+  less: 'less',
 
   /** @description Alias for `equal` */
-  'eq': 'equal',
+  eq: 'equal',
   /** @description Alias for `equal` */
   '=': 'equal',
   /** @description Equal to */
-  'equal': 'equal',
+  equal: 'equal',
 
   /** @description Alias for `moreEqual` */
-  'ge': 'moreEqual',
+  ge: 'moreEqual',
   /** @description  Alias for `moreEqual` */
-  'geq': 'moreEqual',
+  geq: 'moreEqual',
   /** @description  Alias for `moreEqual` */
   '>=': 'moreEqual',
   /** @description  Greater than or equal */
-  'moreEqual': 'moreEqual',
+  moreEqual: 'moreEqual',
 
   /** @description Alias for `lessEqual` */
-  'le': 'lessEqual',
+  le: 'lessEqual',
   /** @description Alias for `lessEqual` */
-  'leq': 'lessEqual',
+  leq: 'lessEqual',
   /** @description Alias for `lessEqual` */
   '<=': 'lessEqual',
   /** @description Less than or equal */
-  'lessEqual': 'lessEqual',
+  lessEqual: 'lessEqual',
 
   /** @description Alias for `notEqual` */
-  'ne': 'notEqual',
+  ne: 'notEqual',
   /** @description Alias for `notEqual` */
-  'neq': 'notEqual',
+  neq: 'notEqual',
   /** @description Alias for `notEqual` */
   '<>': 'notEqual',
   /** @description Alias for `notEqual` */
@@ -972,68 +978,68 @@ CustomRepository.prototype.WhereCondition = {
   /** @description Alias for `notEqual` */
   '!==': 'notEqual',
   /** @description Not equal */
-  'notEqual': 'notEqual',
+  notEqual: 'notEqual',
 
   /** @description Alias for `like` */
-  'contains': 'like',
+  contains: 'like',
   /** @description Like condition. For attributes of type `String` only */
-  'like': 'like',
+  like: 'like',
 
   /** @description Alias for `notLike` */
-  'notContains': 'notLike',
+  notContains: 'notLike',
   /** @description Not like condition. For attributes of type `String` only */
-  'notLike': 'notLike',
+  notLike: 'notLike',
 
   /** @description Is null */
-  'isNull': 'isNull',
+  isNull: 'isNull',
   /** @description Alias for `isNull` */
-  'null': 'isNull',
+  null: 'isNull',
 
   /** @description Alias for `notIsNull` */
-  'notNull': 'notIsNull',
+  notNull: 'notIsNull',
   /** @description Not is null */
-  'notIsNull': 'notIsNull',
+  notIsNull: 'notIsNull',
   /** @description Alias for `notIsNull` */
-  'isNotNull': 'notIsNull',
+  isNotNull: 'notIsNull',
 
   /** @description Alias for `startWith` */
-  'beginWith': 'startWith',
+  beginWith: 'startWith',
   /** @description Start with. For attributes of type `String` only */
-  'startWith': 'startWith',
+  startWith: 'startWith',
   /** @description Alias for `startWith` */
-  'startsWith': 'startWith',
+  startsWith: 'startWith',
   /** @description Alias for `startWith` */
-  'startswith': 'startWith',
+  startswith: 'startWith',
 
   /** @description Alias for `notStartWith` */
-  'notBeginWith': 'notStartWith',
+  notBeginWith: 'notStartWith',
   /** @description Not start with. For attributes of type `String` only */
-  'notStartWith': 'notStartWith',
+  notStartWith: 'notStartWith',
   /** @description Alias for `notStartWith` */
-  'notStartsWith': 'notStartWith',
+  notStartsWith: 'notStartWith',
 
   /** @description Alias for `in` */
-  'includes': 'in',
+  includes: 'in',
   /** @description One of. Can accept array of string on array of Int/Int64 as values depending on attribute type. */
-  'in': 'in',
+  in: 'in',
 
   /** @description Alias for `notIn` */
-  'notIncludes': 'notIn',
+  notIncludes: 'notIn',
   /** @description Not one of. See WhereCondition.in for details */
-  'notIn': 'notIn',
+  notIn: 'notIn',
 
   /** @description For entities with FTS mixin enabled. TODO - expand */
-  'match': 'match',
+  match: 'match',
 
   /** @description Execute a sub-query passed in values. Better to use 'in' condition with Repository as a values parameter or a CustomRepository.exists method */
-  'subquery': 'subquery',
+  subquery: 'subquery',
   /** @description Execute a exists(sub-query) passed in values. Better to use CustomRepository.exists method */
-  'exists': 'subquery',
+  exists: 'subquery',
   /** @description Execute a not exists(sub-query) passed in values. Better to use CustomRepository.notExists method */
-  'notExists': 'subquery',
+  notExists: 'subquery',
 
   /** @description Custom condition. For Server-side call only. For this condition `expression` can be any SQL statement */
-  'custom': 'custom'
+  custom: 'custom'
 }
 
 /**

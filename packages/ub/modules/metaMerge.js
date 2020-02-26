@@ -6,6 +6,13 @@ const INVALID_ATTRS = 'Entity merging require attributes in meta file to be an a
 const INVALID_MAPPING = 'Entity merging require all mappings in meta file to be an array. In: '
 const META_TR = ' "ubcli meta-tr" command can be used for transformation from old format'
 
+// console is not defined jet because UB.js is not evaluated
+global.console = require('console')
+
+const argv = require('@unitybase/base').argv
+const serverConfig = argv.getServerConfiguration()
+console.log('Server config: ', JSON.stringify(serverConfig, null, '\t'))
+
 module.exports = mergeMeta
 
 function checkMetadataFormat (e, ePath) {

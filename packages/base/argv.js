@@ -325,7 +325,7 @@ function getServerConfiguration (forFutureSave = false) {
     result.application.domain = { models: [] }
   }
   // for models without name - read it from package.json
-  // read "browser" section of package.json to check model is require initialization in the browser
+  // read "browser" section of package.json to check public model part should be injected into browser
   // browser section may contains "prod" / "dev" key for production / development client execution
   result.application.domain.models.forEach((model) => {
     let p = (model.path === '_public_only_') ? model.publicPath : model.path
