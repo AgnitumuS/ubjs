@@ -79,7 +79,7 @@ Options.prototype.add = function add (otherOptions) {
  * @param {Array} [errors] If passed will bw filled by a errors in passed parameters
  */
 Options.prototype.parse = function parse (defaults, errors) {
-  let result = Object.assign({}, defaults)
+  const result = Object.assign({}, defaults)
   // [{short: 'u', long: 'user', param: 'userName', defaultValue: true, searchInEnv: true, help: 'A user name for server connection'}]
   let valid = true
   this.options.forEach(function (option) {
@@ -130,7 +130,7 @@ Options.prototype.parse = function parse (defaults, errors) {
  */
 Options.prototype.parseVerbose = function parseVerbose (defaults, outputParsed) {
   let result
-  let errors = []
+  const errors = []
   if (switchIndex('?') !== -1 || switchIndex('help') !== -1 ||
     switchIndex('-help') !== -1) {
     console.log(this.usage())
@@ -150,7 +150,7 @@ Options.prototype.parseVerbose = function parseVerbose (defaults, outputParsed) 
 }
 
 Options.prototype.howParamsAppearInCommandLine = function () {
-  let res = []
+  const res = []
   this.options.forEach(function (option) {
     let elm = '-' + option.short + (option.param ? ' ' + option.param : '')
     if (option.defaultValue) elm = '[' + elm + ']'
@@ -170,7 +170,7 @@ Options.prototype.usage = function usage () {
   }
   console.info(`\n${this.cli} ${this.commandName} ` + this.howParamsAppearInCommandLine())
   console.info('\nwhere:')
-  let envs = []
+  const envs = []
   let res = []
   // create a parameters description
   this.options.forEach(function (option) {
@@ -229,7 +229,7 @@ exports.describe = function describe (commandName = '', commandDescription = '',
  * @returns {Number} switch index if found or -1 otherwise
  */
 exports.switchIndex = function switchIndex (switchName) {
-  let res = process.argv.indexOf('-' + switchName)
+  const res = process.argv.indexOf('-' + switchName)
   return (res === -1) ? process.argv.indexOf('/' + switchName) : res
 }
 const switchIndex = exports.switchIndex
@@ -243,7 +243,7 @@ const switchIndex = exports.switchIndex
  * @returns {String|undefined} switch value or `undefined` in case switch not found or switch not have value
  */
 exports.switchValue = function switchValue (switchName) {
-  let idx = switchIndex(switchName) + 1
+  const idx = switchIndex(switchName) + 1
   let val
   return (idx && (val = process.argv[idx]) && val.charAt !== '-' && val.charAt !== '/') ? process.argv[idx] : undefined
 }

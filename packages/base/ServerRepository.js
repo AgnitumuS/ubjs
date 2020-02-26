@@ -8,7 +8,7 @@ const csShared = require('@unitybase/cs-shared')
 const CustomRepository = csShared.CustomRepository
 const LocalDataStore = csShared.LocalDataStore
 
-let v = process.version.split('.')
+const v = process.version.split('.')
 const LOCAL_SERVER_UBQL_V2 = ((v[0] >= 'v5') && (v[1] >= 10))
 
 /* global TubDataStore */
@@ -64,11 +64,11 @@ class ServerRepository extends CustomRepository {
       if ((typeof fieldAliases === 'boolean') || (fieldAliases && resultInPlainText)) {
         throw new Error('first parameter of ServerRepository should not be boolean. fieldAliases can not be combined with plain text result')
       }
-      let inst = new TubDataStore(this.entityName)
+      const inst = new TubDataStore(this.entityName)
       inst.run(this.method, this.ubql())
       let res
       if (fieldAliases) {
-        res = {resultData: JSON.parse(inst.asJSONArray)}
+        res = { resultData: JSON.parse(inst.asJSONArray) }
         res = LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)
       } else {
         res = resultInPlainText ? inst.asJSONObject : JSON.parse(inst.asJSONObject)
@@ -76,7 +76,7 @@ class ServerRepository extends CustomRepository {
       inst.freeNative() // release memory ASAP
       return res
     } else {
-      let conn = this.connection
+      const conn = this.connection
       if (resultInPlainText) throw new Error('plainTextResult parameter not applicable in this context')
       return LocalDataStore.selectResultToArrayOfObjects(conn.query(this.ubql()), fieldAliases)
     }
@@ -88,9 +88,9 @@ class ServerRepository extends CustomRepository {
    */
   selectAsArray (resultInPlainText) {
     if (process.isServer) { // inside server thread
-      let inst = new TubDataStore(this.entityName)
+      const inst = new TubDataStore(this.entityName)
       inst.run(this.method, this.ubql())
-      let res = resultInPlainText ? inst.asJSONArray : { resultData: JSON.parse(inst.asJSONArray) }
+      const res = resultInPlainText ? inst.asJSONArray : { resultData: JSON.parse(inst.asJSONArray) }
       if ((!resultInPlainText) && (this.options && this.options.totalRequired)) {
         inst.currentDataName = '__totalRecCount'
         res.__totalRecCount = inst.get(0)
@@ -142,7 +142,7 @@ class ServerRepository extends CustomRepository {
    * @return {Object|undefined}
    */
   selectSingle (fieldAliases) {
-    return this.selectAsObject(fieldAliases)[ 0 ]
+    return this.selectAsObject(fieldAliases)[0]
   }
 
   /**
@@ -152,8 +152,8 @@ class ServerRepository extends CustomRepository {
    * @return {Object|undefined}
    */
   selectScalar () {
-    let result = this.selectAsArray()
-    return Array.isArray(result.resultData.data[ 0 ]) ? result.resultData.data[ 0 ][ 0 ] : undefined
+    const result = this.selectAsArray()
+    return Array.isArray(result.resultData.data[0]) ? result.resultData.data[0][0] : undefined
   }
 
   /**

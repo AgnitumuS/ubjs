@@ -30,13 +30,13 @@ const NON_AUTH_URLS_RE = /(\/|^)(models|auth|getAppInfo|downloads)(\/|\?|$)/
  * @param {Object} options Connection parameters. See {@link module:http http.request} for details
  */
 function SyncConnection (options) {
-  let me = this
-  let client = http.request(options)
+  const me = this
+  const client = http.request(options)
   let /** @type UBDomain */
     _domain
   let ubSession = null
-  let lookupCache = {}
-  let userDataDefault = { lang: 'en' }
+  const lookupCache = {}
+  const userDataDefault = { lang: 'en' }
   let appInfo = {}
 
   /**
@@ -86,7 +86,7 @@ function SyncConnection (options) {
    */
   appInfo = this.get('getAppInfo') // non-auth request
 
-  let v = appInfo.serverVersion.split('.')
+  const v = appInfo.serverVersion.split('.')
   /**
    * Server support UBQL v2 (value instead of values)
    * @property {Boolean} UBQLv2
@@ -111,7 +111,7 @@ function SyncConnection (options) {
       // authorize connection to get a valid user name
       if (this.authNeed) this.authorize(false)
 
-      let domainData = this.get('getDomainInfo', {
+      const domainData = this.get('getDomainInfo', {
         v: 4,
         userName: this.userLogin(),
         extended: isExtended || undefined
@@ -164,7 +164,7 @@ function SyncConnection (options) {
    * AdminUI settings
    * @type {Object}
    */
-  this.appConfig = appInfo['adminUI']
+  this.appConfig = appInfo.adminUI
 
   /**
    * @param {Boolean} isRepeat
@@ -178,26 +178,26 @@ function SyncConnection (options) {
       if (!this.onRequestAuthParams) {
         throw new Error('set SyncConnection.onRequestAuthParams function to perform authorized requests')
       }
-      let authParams = this.onRequestAuthParams(this)
+      const authParams = this.onRequestAuthParams(this)
       if (authParams.authSchema === 'UBIP') {
         if (isRepeat) {
           throw new Error('UBIP authentication must not return false on the prev.step')
         }
-        resp = this.xhr({ endpoint: 'auth', headers: { 'Authorization': authParams.authSchema + ' ' + authParams.login } })
+        resp = this.xhr({ endpoint: 'auth', headers: { Authorization: authParams.authSchema + ' ' + authParams.login } })
         ubSession = new UBSession(resp, '', authParams.authSchema)
       } if (authParams.authSchema === 'ROOT') {
         if (isRepeat) {
           throw new Error('ROOT authentication must not return false on the prev.step')
         }
-        resp = this.xhr({ endpoint: 'auth?AUTHTYPE=ROOT', headers: { 'Authorization': authParams.authSchema + ' ' + process.rootOTP() } })
+        resp = this.xhr({ endpoint: 'auth?AUTHTYPE=ROOT', headers: { Authorization: authParams.authSchema + ' ' + process.rootOTP() } })
         ubSession = new UBSession(resp, '', authParams.authSchema)
       } else {
         resp = this.get('auth', {
           AUTHTYPE: authParams.authSchema || 'UB',
           userName: authParams.login
         })
-        let clientNonce = nsha256(new Date().toISOString().substr(0, 16))
-        let request2 = {
+        const clientNonce = nsha256(new Date().toISOString().substr(0, 16))
+        const request2 = {
           clientNonce: clientNonce
         }
         if (resp.connectionID) {
@@ -205,12 +205,12 @@ function SyncConnection (options) {
         }
         request2.AUTHTYPE = authParams.authSchema || 'UB'
         request2.userName = authParams.login
-        if (resp['realm']) { // LDAP
-          serverNonce = resp['nonce']
+        if (resp.realm) { // LDAP
+          serverNonce = resp.nonce
           if (!serverNonce) {
             throw new Error('invalid LDAP auth response')
           }
-          if (resp['useSasl']) {
+          if (resp.useSasl) {
             pwdHash = CryptoJS.MD5(authParams.login.split('\\')[1].toUpperCase() + ':' + resp.realm + ':' + authParams.password)
             // we must calculate md5(login + ':' + realm + ':' + password) in binary format
             pwdHash.concat(CryptoJS.enc.Utf8.parse(':' + serverNonce + ':' + clientNonce))
@@ -277,7 +277,7 @@ function SyncConnection (options) {
    * @returns {*}
    */
   this.userData = function (key) {
-    let uData = this.isAuthorized() ? ubSession.userData : userDataDefault
+    const uData = this.isAuthorized() ? ubSession.userData : userDataDefault
     return key ? uData[key] : uData
   }
 
@@ -302,8 +302,8 @@ function SyncConnection (options) {
    * @return {*} `lookupAttribute` value of first result row or null if not found.
    */
   this.lookup = function (aEntity, lookupAttribute, aCondition, doNotUseCache) {
-    let me = this
-    let cKey = aEntity + JSON.stringify(aCondition) + lookupAttribute
+    const me = this
+    const cKey = aEntity + JSON.stringify(aCondition) + lookupAttribute
     let request
 
     if (!doNotUseCache && lookupCache.hasOwnProperty(cKey)) {
@@ -319,7 +319,7 @@ function SyncConnection (options) {
         request.whereList = aCondition
       }
 
-      let resData = me.query(request).resultData.data
+      const resData = me.query(request).resultData.data
       if ((resData.length === 1) && (resData[0][0] != null)) { // `!= null` is equal to (not null && not undefined)
         if (!doNotUseCache) {
           lookupCache[cKey] = resData[0][0]
@@ -369,8 +369,8 @@ SyncConnection.prototype.query = function (ubq) {
  * @returns {ArrayBuffer|Object|String|Array<Object>}
  */
 SyncConnection.prototype.xhr = function (options) {
-  let me = this
-  let req = this.clientRequest
+  const me = this
+  const req = this.clientRequest
   let resp
   let result = {}
 
@@ -379,7 +379,7 @@ SyncConnection.prototype.xhr = function (options) {
     path = http.buildURL(path, options.URLParams)
   }
   if (me.authNeed && !NON_AUTH_URLS_RE.test(path)) { // request need authentication
-    let session = me.authorize(me._inRelogin)
+    const session = me.authorize(me._inRelogin)
     req.setHeader('Authorization', session.authHeader())
   }
   req.setMethod(options.HTTPMethod || 'POST') // must be after auth request!
@@ -400,13 +400,13 @@ SyncConnection.prototype.xhr = function (options) {
   } else {
     resp = req.end()
   }
-  let status = resp.statusCode
+  const status = resp.statusCode
 
   if (status >= 200 && status < 300) {
     if (options.responseType === 'arraybuffer') {
       result = resp.read('bin')
     } else if (((resp.headers['content-type'] || '').indexOf('json') >= 0) && !options.simpleTextResult) {
-      let txtRes = resp.read()
+      const txtRes = resp.read()
       result = txtRes ? JSON.parse(resp.read()) : null
     } else {
       result = resp.read() // return string reads as UTF-8
@@ -425,7 +425,7 @@ SyncConnection.prototype.xhr = function (options) {
     }
   } else {
     if ((status === 500) && ((resp.headers['content-type'] || '').indexOf('json') >= 0)) { // server report error and body is JSON
-      let respObj = JSON.parse(resp.read())
+      const respObj = JSON.parse(resp.read())
       if (respObj.errMsg) {
         throw new Error('Server error: "' + respObj.errMsg)
       } else {
@@ -445,7 +445,7 @@ SyncConnection.prototype.xhr = function (options) {
  * @returns {ArrayBuffer|Object|String}
  */
 SyncConnection.prototype.get = function (endpoint, URLParams) {
-  let params = {
+  const params = {
     endpoint: endpoint,
     HTTPMethod: 'GET'
   }
@@ -536,7 +536,7 @@ SyncConnection.prototype.logout = function () {
     })
  */
 SyncConnection.prototype.setDocument = function (entity, attribute, id, data, origName, fileName, dataEncoding) {
-  let urlParams = {
+  const urlParams = {
     entity,
     attribute,
     id,
@@ -602,8 +602,8 @@ const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty
  * @returns {ArrayBuffer|String} Document content (either ArrayBuffer in case options.resultIsBinary===true or text/json)
  */
 SyncConnection.prototype.getDocument = function (params, options) {
-  let opt = Object.assign({}, options)
-  let reqParams = {
+  const opt = Object.assign({}, options)
+  const reqParams = {
     endpoint: 'getDocument',
     HTTPMethod: opt.bypassCache ? 'POST' : 'GET'
   }
@@ -654,9 +654,9 @@ SyncConnection.prototype.getDocument = function (params, options) {
  */
 SyncConnection.prototype.insert = function (ubq) {
   // var req = _.clone(ubq, true)
-  let req = ubq
+  const req = ubq
   req.method = req.method || 'insert'
-  let res = this.query(req)
+  const res = this.query(req)
   if (req.fieldList) {
     return (req.fieldList.length === 1) && (req.fieldList[0] = 'ID') ? res.resultData.data[0][0] : res.resultData.data[0]
   } else {
@@ -668,9 +668,9 @@ SyncConnection.prototype.insert = function (ubq) {
  * Execute update method by add method: 'update' to `ubq` query (if req.method not already set)
  */
 SyncConnection.prototype.update = function (ubq) {
-  let req = ubq
+  const req = ubq
   req.method = req.method || 'update'
-  let res = this.query(req)
+  const res = this.query(req)
   return res.resultData
 }
 
@@ -680,7 +680,7 @@ SyncConnection.prototype.update = function (ubq) {
  * @returns {ServerRepository}
  */
 SyncConnection.prototype.Repository = function (entityCodeOrUBQL) {
-  if (typeof entityCodeOrUBQL == 'string') {
+  if (typeof entityCodeOrUBQL === 'string') {
     return new ServerRepository(this, entityCodeOrUBQL)
   } else {
     return new ServerRepository(this, '').fromUbql(entityCodeOrUBQL)

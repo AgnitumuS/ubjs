@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - fix ESLint warnings (mostly about let -> const)
 
 ### Deprecated
 
