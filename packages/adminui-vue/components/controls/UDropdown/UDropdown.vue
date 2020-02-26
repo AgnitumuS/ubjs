@@ -90,34 +90,36 @@ export default {
 </style>
 
 <docs>
-  <template>
-    <u-dropdown class="u-table-entity__head__dropdown">
-      <el-button icon="el-icon-setting"/>
+```vue
+<template>
+  <u-dropdown class="u-table-entity__head__dropdown">
+    <el-button icon="el-icon-setting"/>
 
-      <template slot="dropdown">
-        <u-dropdown-item
-          icon="el-icon-refresh"
-          label="refresh"
-        />
-        <u-dropdown-item
-          icon="el-icon-plus"
-          label="actionAdd"
-        />
-        <u-dropdown-item divider />
-        <u-dropdown-item
-          icon="el-icon-edit"
-          label="Edit"
-          disabled
-        />
-        <u-dropdown-item
-          icon="el-icon-copy-document"
-          label="Copy"
-        />
-        <u-dropdown-item
-          icon="el-icon-delete"
-          label="Delete"
-        />
-      </template>
-    </u-dropdown>
-  </template>
+    <template slot="dropdown">
+      <u-dropdown-item
+        icon="el-icon-refresh"
+        label="refresh"
+      />
+      <u-dropdown-item
+        icon="el-icon-plus"
+        label="actionAdd"
+      />
+      <u-dropdown-item divider />
+      <u-dropdown-item
+        icon="el-icon-edit"
+        label="Edit"
+        disabled
+      />
+      <u-dropdown-item
+        icon="el-icon-copy-document"
+        label="Copy"
+      />
+      <u-dropdown-item
+        icon="el-icon-delete"
+        label="Delete"
+      />
+    </template>
+  </u-dropdown>
+</template>
+```
 </docs>

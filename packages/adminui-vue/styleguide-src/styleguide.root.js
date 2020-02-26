@@ -3,15 +3,25 @@ import UB from '@unitybase/ub-pub'
 
 export default (previewComponent) => {
   const store = new Vuex.Store({
-    // getters: {
-    //   entityName () {
-    //     return 'tst_dictionary'
-    //   },
-    //
-    //   entitySchema (state, getters) {
-    //     return UB.connection.domain.get(getters.entityName)
-    //   }
-    // }
+    getters: {
+      entityName () {
+        return 'cdn_country'
+      },
+
+      entitySchema (state, getters) {
+        return UB.connection.domain.get(getters.entityName)
+      }
+    },
+    state: {
+      collections: {
+        passportPages: {
+          deleted: [],
+          entity: 'buc_fileCollection',
+          items: [],
+          key: 'passportPages'
+        }
+      }
+    }
   })
   return {
     render (createElement) {

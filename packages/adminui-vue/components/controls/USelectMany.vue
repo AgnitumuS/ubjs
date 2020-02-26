@@ -45,7 +45,7 @@ Based on `u-select-multiple` accordingly have all same props
 <template>
   <u-select-many
     v-model="value"
-    entity-name="tst_dictionary"
+    entity-name="cdn_country"
   />
 </template>
 <script>
