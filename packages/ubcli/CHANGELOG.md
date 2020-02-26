@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - use `model.realPath` in ubcli scripts instead of calculating absolute path manually
+   
 ### Deprecated
 
 ### Removed

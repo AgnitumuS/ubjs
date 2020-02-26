@@ -55,11 +55,7 @@ module.exports = function prepareGZIP (cfg) {
     rule.re = new RegExp(rule.location)
   })
 
-  const configFileName = argv.getConfigFileName()
-  const configPath = path.dirname(configFileName)
-  let startFrom = path.isAbsolute(inetPub)
-    ? inetPub
-    : path.join(configPath, inetPub)
+  let startFrom = inetPub
   const endWith = startFrom.charAt(startFrom.length - 1)
   if ((endWith !== '\\') && (endWith !== '/')) {
     startFrom += '/'
@@ -77,9 +73,9 @@ module.exports = function prepareGZIP (cfg) {
   let totalGZCount = 0
 
   function gzipFolder (startFromPath) {
-    let fullFileName, folderContent, sz
+    let fullFileName, sz
 
-    folderContent = fs.readdirSync(startFromPath)
+    const folderContent = fs.readdirSync(startFromPath)
 
     folderContent.forEach(function (fileName) {
       fullFileName = startFromPath + fileName

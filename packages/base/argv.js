@@ -330,6 +330,7 @@ function getServerConfiguration (forFutureSave = false) {
   result.application.domain.models.forEach((model) => {
     let p = (model.path === '_public_only_') ? model.publicPath : model.path
     p = path.resolve(process.configPath, p)
+    if (!forFutureSave) model.realPath = p
     const packFN = path.join(p, 'package.json')
     if (fs.existsSync(packFN)) {
       const packageData = require(packFN)

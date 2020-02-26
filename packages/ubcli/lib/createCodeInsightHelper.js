@@ -45,13 +45,11 @@ module.exports = function createCodeInsightHelper (cfg) {
     if (!cfg) return
   }
 
-  const configFileName = argv.getConfigFileName()
   const config = argv.getServerConfiguration()
-  const configPath = path.dirname(configFileName)
   const domain = config.application.domain
 
   let models = domain.models
-  if (!_.isArray(models)) {
+  if (!Array.isArray(models)) {
     throw new Error('Domain.models configuration MUST be an array on object')
   }
   const filterByModel = cfg.model
@@ -182,7 +180,7 @@ module.exports = function createCodeInsightHelper (cfg) {
   let entities = []
 
   models.forEach(function processModel (modelCfg) {
-    const currentPath = path.join(configPath, modelCfg.path)
+    const currentPath = modelCfg.realPath
     entities = []
 
     _.forEach(realDomain.entities, function (entityDef, entityName) {

@@ -39,12 +39,6 @@ module.exports = function createStore (options) {
     if (!options) return
   }
   let storeNames = options.store
-  const configFileName = argv.getConfigFileName()
-
-  if (!configFileName) {
-    throw new Error('Invalid server config path')
-  }
-
   const config = argv.getServerConfiguration()
   const app = config.application
 
@@ -68,8 +62,6 @@ module.exports = function createStore (options) {
     selectedStores = app.blobStores
   }
 
-  const configPath = path.dirname(configFileName)
-
   function createOneStore (cStore) {
     console.log('Start handle blobStore "%s"', cStore.name)
     if (!cStore.storeType) {
@@ -79,8 +71,7 @@ module.exports = function createStore (options) {
       console.log('\tskipped - path not defined')
       return
     }
-    let cStorePath = cStore.path
-    cStorePath = path.resolve(configPath, cStorePath)
+    let cStorePath = cStore.path // already converted to absolute by argv
     if (!RE_TRAILING_PATH_SEP.test(cStorePath)) {
       cStorePath += path.sep
     }
@@ -89,8 +80,7 @@ module.exports = function createStore (options) {
       console.log('\tresolved path not exists. Do force directory')
       fs.mkdirSync(cStorePath)
     }
-    let tmp = cStore.tempPath || (cStorePath + '_temp')
-    tmp = path.resolve(configPath, tmp)
+    const tmp = cStore.tempPath // already converted to absolute by argv
     if (!fs.existsSync(tmp)) {
       console.log('\t Create temp directory %s', tmp)
       fs.mkdirSync(tmp)

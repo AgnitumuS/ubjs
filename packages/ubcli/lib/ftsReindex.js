@@ -25,15 +25,15 @@ module.exports = function ftsReindex (cfg) {
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
-  let session, conn, req, reindexFor, reindexLimit, reindexChunk
+  let req
 
   // increase receive timeout to 5hours - in case DB server is slow we can easy reach 30s timeout
   http.setGlobalConnectionDefaults({ receiveTimeout: 5 * 60 * 60 * 1000 })
-  session = argv.establishConnectionFromCmdLineAttributes(cfg)
-  conn = session.connection
-  reindexFor = cfg.connection
-  reindexLimit = cfg.limit
-  reindexChunk = cfg.chunk
+  const session = argv.establishConnectionFromCmdLineAttributes(cfg)
+  const conn = session.connection
+  let reindexFor = cfg.connection
+  const reindexLimit = cfg.limit
+  const reindexChunk = cfg.chunk
   if (reindexFor) { // connection
     console.info('Start reindex FTS for connection', reindexFor)
     req = {

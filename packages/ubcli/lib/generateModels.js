@@ -13,7 +13,6 @@ module.exports = function generateModels (cfg) {
   let session
   let conn
   const modelsDir = path.join(__dirname, '..', '..', 'node_modules')
-  let fileEntityName
 
   console.log('generate Models')
   if (!cfg) {
@@ -31,7 +30,7 @@ module.exports = function generateModels (cfg) {
 
   const autorun = cfg.autorun
 
-  fileEntityName = createCommandEntity(modelsDir, cfg)
+  const fileEntityName = createCommandEntity(modelsDir, cfg)
   try {
     session = argv.establishConnectionFromCmdLineAttributes(cfg)
     conn = session.connection

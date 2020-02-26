@@ -35,8 +35,6 @@ module.exports = function initialize (cfg) {
   try {
     const oneModel = cfg.model
 
-    const configFileName = argv.getConfigFileName()
-    const configDir = path.dirname(configFileName)
     const config = argv.getServerConfiguration()
     const appConfig = config.application
     const domainConfig = appConfig.domain
@@ -46,7 +44,7 @@ module.exports = function initialize (cfg) {
       throw new Error('Domain.models configuration MUST be an array on object')
     }
     domainConfig.models.forEach(function (modelConfig) {
-      const folderName = path.join(configDir, modelConfig.path, '_initialData')
+      const folderName = path.join(modelConfig.realPath, '_initialData')
 
       if ((!oneModel || (modelConfig.name === oneModel)) && fs.isDir(folderName)) {
         let files = fs.readdirSync(folderName)

@@ -44,8 +44,6 @@ module.exports = function autotest (options) {
     debugOutput.push(util.format.apply(this, arguments))
   }
 
-  const configFileName = argv.getConfigFileName()
-  const configDir = path.dirname(configFileName)
   const config = argv.getServerConfiguration()
   const appConfig = config.application
   const domainConfig = appConfig.domain
@@ -87,7 +85,7 @@ module.exports = function autotest (options) {
   }
 
   models.forEach(modelConfig => {
-    const folderName = path.join(configDir, modelConfig.path, '_autotest')
+    const folderName = path.join(modelConfig.realPath, '_autotest')
 
     if (fs.isDir(folderName)) {
       let inFiles = options.tests
