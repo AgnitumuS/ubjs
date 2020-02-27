@@ -75,7 +75,7 @@ function ubaAuditModifyGroupRole (ctx) {
   let group, role, oldValues
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
-    oldValues = origStore.asJSONObject
+    oldValues = origStore.getAsTextInObjectNotation()
     role = origStore.get('roleID')
     group = origStore.get('groupID')
   } finally {

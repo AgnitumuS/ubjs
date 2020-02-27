@@ -8,7 +8,7 @@ me.on('update:before', setDescriptionAttribute)
 cdn_city.on('update:after', setDescriptionAttributeByCity)
 
 function setDescriptionAttribute (ctx) {
-  let instanceData = JSON.parse(ctx.dataStore.asJSONObject)[0] || {}
+  let instanceData = ctx.dataStore.getAsJsObject()[0] || {}
   const execParams = ctx.mParams.execParams
   let cityName = execParams.cityID || instanceData.cityID
     ? (UB.Repository('cdn_city').attrs('name')

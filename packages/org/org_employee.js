@@ -157,7 +157,7 @@ function ubaAuditLinkUserModify (ctx) {
   let origName = origStore.currentDataName
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
-    oldValues = JSON.parse(origStore.asJSONObject)
+    oldValues = origStore.getAsJsObject()
     oldValues = ((typeof oldValues === 'object') && (oldValues instanceof Array) && (oldValues.length > 0))
       ? oldValues[0]
       : oldValues
@@ -217,7 +217,7 @@ function ubaAuditLinkUserDelete (ctx) {
   let origName = origStore.currentDataName
   try {
     origStore.currentDataName = 'selectBeforeDelete'
-    oldValues = JSON.parse(origStore.asJSONObject)
+    oldValues = origStore.getAsJsObject()
     oldValues = ((typeof oldValues === 'object') && (oldValues instanceof Array) && (oldValues.length > 0))
       ? oldValues[0]
       : oldValues

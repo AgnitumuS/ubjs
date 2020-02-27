@@ -72,7 +72,7 @@ function ubaAuditModifyUserGroup (ctx) {
   let user, group, oldValues
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
-    oldValues = origStore.asJSONObject
+    oldValues = origStore.getAsTextInObjectNotation()
     group = origStore.get('groupID')
     user = origStore.get('userID')
   } finally {

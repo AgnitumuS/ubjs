@@ -10,7 +10,6 @@ const LocalDataStore = csShared.LocalDataStore
 
 const v = process.version.split('.')
 const LOCAL_SERVER_UBQL_V2 = ((v[0] >= 'v5') && (v[1] >= 10))
-
 /* global TubDataStore */
 /**
  * @classdesc
@@ -68,10 +67,12 @@ class ServerRepository extends CustomRepository {
       inst.run(this.method, this.ubql())
       let res
       if (fieldAliases) {
-        res = { resultData: JSON.parse(inst.asJSONArray) }
+        res = { resultData: inst.getAsJsArray() }
         res = LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)
       } else {
-        res = resultInPlainText ? inst.asJSONObject : JSON.parse(inst.asJSONObject)
+        res = resultInPlainText
+          ? inst.getAsTextInObjectNotation()
+          : inst.getAsJsObject()
       }
       inst.freeNative() // release memory ASAP
       return res
@@ -90,7 +91,9 @@ class ServerRepository extends CustomRepository {
     if (process.isServer) { // inside server thread
       const inst = new TubDataStore(this.entityName)
       inst.run(this.method, this.ubql())
-      const res = resultInPlainText ? inst.asJSONArray : { resultData: JSON.parse(inst.asJSONArray) }
+      const res = resultInPlainText
+        ? inst.getAsTextInArrayNotation()
+        : { resultData: inst.getAsJsArray() }
       if ((!resultInPlainText) && (this.options && this.options.totalRequired)) {
         inst.currentDataName = '__totalRecCount'
         res.__totalRecCount = inst.get(0)

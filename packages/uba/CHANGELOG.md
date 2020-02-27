@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - replace all occurrences of `store.asJSONObject` -> `store.getAsTextInObjectNotation()` according to latest changes in DataStore 
 
 ### Deprecated
 

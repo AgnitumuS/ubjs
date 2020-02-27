@@ -493,13 +493,31 @@ TubDataStore.generateID = function () {}
  */
 TubDataStore.initialized = false
 /**
+ * Return string representation of Instance in format `[{attr1: value1, attr2: value2},... ]`.
+ * To get a JavaScript object use `getAsJsObject()` method
+ *
+ * @memberOf TubDataStore.prototype
+ * @returns {string}
+ */
+TubDataStore.getAsTextInObjectNotation = function () {}
+/**
  * Return string representation of Instance in format `[{attr1: value1, attr2: value2},... ]`
+ * @deprecated Consider to replace JSON.parse(store.asJSONObject) -> store.getAsJsObject(). getAsJsObject() method return a plain JS object instead of string and 25% faster
  * @member {String} asJSONObject
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.asJSONObject = '[{},{}]'
 /**
+ * Return string representation of Instance in format `[{attr1: value1, attr2: value2},... ]`.
+ * To get a JavaScript object use getAsJsArray() method
+ *
+ * @memberOf TubDataStore.prototype
+ * @returns {string}
+ */
+TubDataStore.getAsTextInArrayNotation = function () {}
+/**
  * Return string representation of Instance in `Array of array` format
+ * @deprecated Consider to replace JSON.parse(store.asJSONOArray) -> store.getAsJsArray(). getAsJsArray() method return a plain JS object instead of string and 25% faster
  * @member {String} asJSONArray
  * @memberOf TubDataStore.prototype
  */
@@ -510,6 +528,18 @@ TubDataStore.asJSONArray = '[[],[]]'
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.asXMLPersistent = '<xml>...</xml>'
+/**
+ * Return JavaScript Object representation of Instance in format `[{attr1: value1, attr2: value2},... ]`
+ * @member {String} getAsJsObject
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.getAsJsObject = function () {}
+/**
+ * Return JavaScript Object representation of Instance in `Array of array` format
+ * @member {String} getAsJsArray
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.getAsJsArray = function () {}
 /**
  * Active dataset name we work with. There is some predefined
  * dataNames - see {@link TubDataStore#DATA_NAMES TubDataStore.DATA_NAMES}

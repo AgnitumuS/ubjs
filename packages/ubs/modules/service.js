@@ -65,7 +65,7 @@ exports.Service = {
       : method === 'delete'
         ? TubDataStore.DATA_NAMES.BEFORE_DELETE
         : currentDataName
-    let oldValues = JSON.parse(ctxt.dataStore.asJSONObject)
+    let oldValues = ctxt.dataStore.getAsJsObject()
     ctxt.dataStore.currentDataName = currentDataName
     return (oldValues && oldValues.length) ? oldValues[0] : ctxt.mParams.execParams
   },

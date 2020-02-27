@@ -58,7 +58,7 @@ function ubaAuditModifyEls (ctx) {
   let oldValues, ruleRole
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
-    oldValues = origStore.asJSONObject
+    oldValues = origStore.getAsTextInObjectNotation()
     ruleRole = origStore.get('ruleRole')
   } finally {
     origStore.currentDataName = origName
@@ -131,7 +131,7 @@ function ubaAuditDeleteEls (ctx) {
 
   try {
     origStore.currentDataName = 'selectBeforeDelete'
-    oldValues = origStore.asJSONObject
+    oldValues = origStore.getAsTextInObjectNotation()
     ruleRole = origStore.get('ruleRole')
   } finally {
     origStore.currentDataName = origName

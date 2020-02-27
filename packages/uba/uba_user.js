@@ -402,7 +402,7 @@ function ubaAuditModifyUser (ctx) {
 
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
-    oldValues = origStore.asJSONObject
+    oldValues = origStore.getAsTextInObjectNotation()
     oldName = origStore.get('name')
   } finally {
     origStore.currentDataName = origName
@@ -468,7 +468,7 @@ function ubaAuditDeleteUser (ctx) {
 
   try {
     origStore.currentDataName = 'selectBeforeDelete'
-    oldValues = origStore.asJSONObject
+    oldValues = origStore.getAsTextInObjectNotation()
     oldName = origStore.get('name')
   } finally {
     origStore.currentDataName = origName
