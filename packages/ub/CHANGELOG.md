@@ -16,7 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  (the easiest way if to search for all case sensitive occurrences of `asJSON`)
    
 ### Changed
-
+ - entity.schema.json: add conditional requirements for dataType field.
+ Now `size` required for dataType=String, associatedEntity for dataType=["Entity", "Many"], etc.
 ### Deprecated
  - `TubDataStore.asJSONObject`, `TubDataStore.asJSONArray`
  
