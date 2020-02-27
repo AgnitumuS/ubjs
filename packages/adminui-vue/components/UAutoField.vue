@@ -32,7 +32,7 @@ export default {
         if (this.$v && this.attributeName in this.$v) {
           this.$v[this.attributeName].$touch()
         }
-        this.$store.commit(`SET_DATA`, {key: this.attributeName, value})
+        this.$store.commit(`SET_DATA`, { key: this.attributeName, value })
       }
     },
 
@@ -95,8 +95,9 @@ export default {
             type: this.dataType.toLowerCase(),
             placeholder: this.$ut(this.dataType === 'Date' ? 'selectDate' : 'selectDateAndTime'),
             pickerOptions: { firstDayOfWeek: this.firstDayOfWeek },
-            ...baseAttrs,
-          }, on: {
+            ...baseAttrs
+          },
+          on: {
             input: (value) => {
               this.model = value
             }
@@ -142,9 +143,10 @@ export default {
           attrs: {
             type: 'textarea',
             autosize: { minRows: 3, maxRows: 4 },
-            placeholder: this.$ut(this.dataType === 'Date' ? 'selectDate' : 'selectDateAndTime'),
-            pickerOptions: this.firstDayOfWeek,
-            ...baseAttrs,
+            ...baseAttrs
+          },
+          on: {
+            input: (value) => { this.model = value }
           }
         })
         break

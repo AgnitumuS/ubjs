@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `UTableEntity` filters for different columns no more overrides each other
  - FTS navbar widget will not intercept `Ctrl+F` in case fts is disabled in config and widget is hidden
+ - `UAutoField` remove mistaken added properties for `Text` field, added missing input handler
  - `UTableEntity` build correct fieldList in case passed `entityName` and columnId is a path to Json attribute
 
 ## [1.9.25] - 2020-02-23
