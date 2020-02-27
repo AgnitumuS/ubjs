@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - entity.schema.json: add conditional requirements for dataType field.
+ Now `size` required for dataType=String, associatedEntity for dataType=["Entity", "Many"], etc.
 ### Deprecated
 
 ### Removed
