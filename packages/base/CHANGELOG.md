@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - fix ESLint warnings (mostly about let -> const)
+ - `ServerRepository.selectAsObject()` and `ServerRepository.selectAsArray()` will internally use new UB feature
+ `TubDataStore.getAsJsObject/TubDataStore.getAsJsArray` to convert store content into JS representation instead of
+ `JSON.parse(store.asJSON*)` which require to serialize store into string -> pass string from native code into JS runtime -> parse it using JSON.parse.
+ 
+ This give a 20% performance boots for `store to JS object` operation.       
 
 ### Deprecated
 

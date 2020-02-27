@@ -65,7 +65,8 @@ function ubaAuditModifyRole (ctx) {
 
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
-    oldValues = origStore.asJSONObject
+    // noinspection JSDeprecatedSymbols
+    oldValues = origStore.getAsTextInObjectNotation()
     oldName = origStore.get('name')
   } finally {
     origStore.currentDataName = origName
@@ -130,7 +131,7 @@ function ubaAuditDeleteRole (ctx) {
 
   try {
     origStore.currentDataName = 'selectBeforeDelete'
-    oldValues = origStore.asJSONObject
+    oldValues = origStore.getAsTextInObjectNotation()
     oldName = origStore.get('name')
   } finally {
     origStore.currentDataName = origName

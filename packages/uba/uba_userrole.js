@@ -74,7 +74,7 @@ function ubaAuditModifyUserRole (ctx) {
   let user, role, oldValues
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
-    oldValues = origStore.asJSONObject
+    oldValues = origStore.getAsTextInObjectNotation()
     role = origStore.get('roleID')
     user = origStore.get('userID')
   } finally {

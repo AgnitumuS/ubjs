@@ -6,11 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `dataStore.getAsJsObject()` and `dataStore.getAsJsArray()` methods - direct serialization of TubDataStore into JS Object
+ without using `JSON.parse`. This is 20% faster compared to `JSON.parse(dataStore.asJSONObject)`.
+ In case UB server is of version < 5.17.16 new methods will fallback to `JSON.parse(dataStore.asJSONObject)`
+ 
+ For better performance and code readability we recommend to apply following changes to the applications sources:  
+   - `JSON.parse(dataStore.asJSONObject)` -> `dataStore.getAsJsObject()`
+   - `JSON.parse(dataStore.asJSONArray)` -> `dataStore.getAsJsArray()`
+ (the easiest way if to search for all case sensitive occurrences of `asJSON`)
+   
 ### Changed
 
 ### Deprecated
-
+ - `TubDataStore.asJSONObject`, `TubDataStore.asJSONArray`
+ 
 ### Removed
 
 ### Fixed

@@ -12,7 +12,8 @@ const blobStores = require('@unitybase/blob-stores')
  *  - execute any SQL statement using {@link class:TubDataStore#runSQL TubDataStore.runSQL} or {@link class:TubDataStore#execSQL TubDataStore.execSQL} (we strongly recommend usage of ORM instead SQL)
  *  - store several named data collection using {@link class:TubDataStore#currentDataName TubDataStore.currentDataName} (data stored inside server memory, not in JS, this is very good for GC)
  *  - iterate other collection rows using {@link class:TubDataStore#next TubDataStore.next}, eof, e.t.c and retrieve row data using {@link class:TubDataStore#get TubDataStore.get}
- *  - serialize data to XML {@link class:TubDataStore#asXMLPersistent TubDataStore.asXMLPersistent} or JSON in array-of-array {@link class:TubDataStore#asJSONArray TubDataStore.asJSONArray} on array-of-object {@link class:TubDataStore#asJSONObject TubDataStore.asJSONObject} format
+ *  - serialize data to XML {@link class:TubDataStore#asXMLPersistent TubDataStore.asXMLPersistent} or JSON string in array-of-array {@link class:TubDataStore#asJSONArray TubDataStore.asJSONArray} or array-of-object {@link class:TubDataStore#asJSONObject TubDataStore.asJSONObject} format
+ *  - serialize data to JavaScript object in array-of-array {@link class:TubDataStore#getAsJsArray TubDataStore.getAsJsArray()} or array-of-object {@link class:TubDataStore#getAsJsObject TubDataStore.getAsJsObject()} format
  *
  *  To retrieve data from database using build-in ORM (execute entity `select` method) preferred way is
  *  to use {@link module:@unitybase/ub#Repository UB.Repository} fabric function.
@@ -275,6 +276,26 @@ TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
     execParams[modifiedBlob.attr.name] = newMeta ? JSON.stringify(newMeta) : null
   }
   return true
+}
+
+if (typeof TubDataStore.getAsJsArray !== 'function') { // fallback to JSON.parse for UB server < 5.17.16
+  TubDataStore.getAsJsArray = function () {
+    return JSON.parse(this.asJSONArray)
+  }
+
+  TubDataStore.getAsJsObject = function () {
+    return JSON.parse(this.asJSONObject)
+  }
+}
+
+TubDataStore.getAsTextInObjectNotation = function () {
+  // noinspection JSDeprecatedSymbols
+  return this.asJSONObject
+}
+
+TubDataStore.getAsTextInArrayNotation = function () {
+  // noinspection JSDeprecatedSymbols
+  return this.asJSONArray
 }
 
 module.exports = TubDataStore

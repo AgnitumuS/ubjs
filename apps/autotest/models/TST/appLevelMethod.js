@@ -21,7 +21,7 @@ if (global.ORG && ORG.checkOrgUnitRequired) {
 }
 
 const path = require('path')
-const GS_PATH = App.domainInfo.models['TST'].realPath
+const GS_PATH = App.domainInfo.models.TST.realPath
 const FIXTURES = path.join(GS_PATH, '_autotest', 'fixtures')
 /**
  * write custom request body to file FIXTURES/req and echo file back to client
@@ -40,7 +40,7 @@ function echoToFile (req, resp) {
  * @param {THTTPResponse} resp
  */
 function echoFromFile (req, resp) {
-  let str = fs.readFileSync(path.join(FIXTURES, 'respD.txt'), 'utf8')
+  const str = fs.readFileSync(path.join(FIXTURES, 'respD.txt'), 'utf8')
   resp.statusCode = 200
   resp.writeEnd(str)
 }
@@ -94,7 +94,7 @@ App.registerEndpoint('getIDTest', getIDTest, false)
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  */
-let __testIDStore = UB.DataStore('tst_IDMapping')
+const __testIDStore = UB.DataStore('tst_IDMapping')
 function getIDTest (req, resp) {
   resp.statusCode = 200
   resp.writeEnd(__testIDStore.generateID())
@@ -124,38 +124,38 @@ function testServerSideBLOB (req, resp) {
   resp.statusCode = 200
   let err
   try {
-    let firstDoc = UB.Repository(DOC_ENTITY)
+    const firstDoc = UB.Repository(DOC_ENTITY)
       .attrs(['ID', DOC_ATTRIBUTE, 'mi_modifyDate'])
       .where('code', '=', DOC_CODE)
       .limit(1).selectSingle()
     assert.ok(firstDoc, `${DOC_ENTITY} with code "${DOC_CODE}" not found`)
 
-    let content = fs.readFileSync(__filename, { encoding: 'bin' })
-    let fn = path.basename(__filename)
-    let blobItem = App.blobStores.putContent(
+    const content = fs.readFileSync(__filename, { encoding: 'bin' })
+    const fn = path.basename(__filename)
+    const blobItem = App.blobStores.putContent(
       { ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, fileName: fn },
       content
     )
     assert.strictEqual(blobItem.store, 'simple')
     assert.strictEqual(blobItem.origName, fn)
     assert.strictEqual(blobItem.ct, 'application/javascript; charset=utf-8')
-    let fStat = fs.statSync(__filename)
+    const fStat = fs.statSync(__filename)
     assert.strictEqual(blobItem.size, fStat.size)
     assert.strictEqual(blobItem.isDirty, true, 'BLOB should be dirty after putContent')
-    let tmpContent = App.blobStores.getContent(
+    const tmpContent = App.blobStores.getContent(
       { ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, isDirty: true },
       { encoding: 'bin' }
     )
     assert.strictEqual(tmpContent.byteLength, fStat.size, `temp content size ${tmpContent.byteLength} not match real ${fStat.size}`)
 
-    let tmpStrContent = App.blobStores.getContent(
+    const tmpStrContent = App.blobStores.getContent(
       { ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, isDirty: true },
       { encoding: 'utf-8' }
     )
-    let realStrContent = fs.readFileSync(__filename, 'utf8')
+    const realStrContent = fs.readFileSync(__filename, 'utf8')
     assert.strictEqual(tmpStrContent, realStrContent, 'BLOB store content obtained as string must match')
 
-    let dataStore = UB.DataStore(DOC_ENTITY)
+    const dataStore = UB.DataStore(DOC_ENTITY)
     dataStore.run('lock', {
       lockType: 'ltTemp',
       ID: firstDoc.ID
@@ -169,18 +169,18 @@ function testServerSideBLOB (req, resp) {
       }
     })
     dataStore.currentDataName = dataStore.DATA_NAMES.AFTER_UPDATE
-    let newBlobItem = dataStore.get(DOC_ATTRIBUTE)
+    const newBlobItem = dataStore.get(DOC_ATTRIBUTE)
     dataStore.run('unlock', {
       ID: firstDoc.ID
     })
     assert.ok(newBlobItem, 'updated blobItem content should be non empty')
-    let i = JSON.parse(newBlobItem)
+    const i = JSON.parse(newBlobItem)
     assert.strictEqual(i.v, 1, 'blobstore v1 implementation')
     assert.strictEqual(i.store, 'simple')
     assert.strictEqual(i.origName, fn)
     // assert.equal(i.relPath, '')
 
-    let binContent = App.blobStores.getContent(
+    const binContent = App.blobStores.getContent(
       { ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE },
       { encoding: 'bin' }
     )
@@ -216,14 +216,14 @@ function evaluateScript (req, resp) {
   // eslint-disable-next-line no-new-func
   let wrapped = new Function(script)
   wrapped = wrapped.bind(this)
-  let funcRes = wrapped()
+  const funcRes = wrapped()
   resp.writeEnd(funcRes)
   resp.statusCode = 200
 }
 App.registerEndpoint('evaluateScript', evaluateScript)
 
 const HttpProxy = require('@unitybase/http-proxy')
-let proxy = new HttpProxy({
+const proxy = new HttpProxy({
   endpoint: 'cms',
   targetURL: 'http://localhost:889/',
   nonAuthorizedURLs: [/./]
@@ -251,12 +251,53 @@ App.registerEndpoint('dbRaw', dbRaw, false)
  * @param {THTTPResponse} resp
  */
 function db (req, resp) {
-  let data = UB.Repository('uba_user').attrs(['ID', 'name']).where('ID', '>', 0).selectAsObject()
+  const data = UB.Repository('uba_user').attrs(['ID', 'name']).where('ID', '>', 0).selectAsObject()
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
   resp.writeEnd(data[0])
 }
 App.registerEndpoint('db', db, false)
+
+const UBQL = UB.Repository('cdn_country').attrs(['ID', 'code', 'name_uk^', 'intCode']).limit(10).ubql()
+const inst = UB.DataStore('cdn_country')
+const Q_ITER = 10000
+/**
+ * test dataStore.asJSONArray
+ * @private
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function asJSONArrayTest (req, resp) {
+  inst.run('select', UBQL)
+  let l = 0
+  for (let i = 0; i < Q_ITER; i++) {
+    // noinspection JSDeprecatedSymbols
+    const data = JSON.parse(inst.asJSONArray)
+    l += data.data.length
+  }
+  resp.statusCode = 200
+  resp.writeHead('Content-Type: application/json; charset=UTF-8')
+  resp.writeEnd({cnt: l})
+}
+App.registerEndpoint('asJSONArrayTest', asJSONArrayTest, false)
+
+/**
+ * test dataStore.asJSONArray
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function getAsJsArrayTest (req, resp) {
+  inst.run('select', UBQL)
+  let l = 0
+  for (let i = 0; i < Q_ITER; i++) {
+    const data = inst.getAsJsArray()
+    l += data.data.length
+  }
+  resp.statusCode = 200
+  resp.writeHead('Content-Type: application/json; charset=UTF-8')
+  resp.writeEnd({cnt: l})
+}
+App.registerEndpoint('getAsJsArrayTest', getAsJsArrayTest, false)
 
 /**
  * Single database query (ORM)  for performance test
@@ -264,7 +305,7 @@ App.registerEndpoint('db', db, false)
  * @param {THTTPResponse} resp
  */
 function dbLong (req, resp) {
-  let data = UB.Repository('tst_document').attrs('*').selectAsObject()
+  const data = UB.Repository('tst_document').attrs('*').selectAsObject()
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
   resp.writeEnd(data)
@@ -277,7 +318,7 @@ App.registerEndpoint('dbLong', dbLong, false)
  * @param {THTTPResponse} resp
  */
 function arrayBind (req, resp) {
-  let s = UB.DataStore('uba_user')
+  const s = UB.DataStore('uba_user')
   // s.execSQL(`
   //     CREATOR.PKI_ACCOUNTCONTR_API.contragent_insert(
   //       ADDRESS => :ADDRESS:, ADDR_BUILDING => :ADDR_BUILDING:, ADDR_CITY

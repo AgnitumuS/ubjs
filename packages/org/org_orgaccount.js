@@ -11,7 +11,7 @@ cdn_bank.on('update:after', setDescriptionAttributeByBank)
 const ORG_ACCOUNT_STORE = UB.DataStore('org_orgaccount')
 
 function setDescriptionAttribute (ctx) {
-  let instanceData = JSON.parse(ctx.dataStore.asJSONObject)[0] || {}
+  let instanceData = ctx.dataStore.getAsJsObject()[0] || {}
   const execParams = ctx.mParams.execParams
   let accTypeName = UB.Repository('ubm_enum').attrs(['name'])
     .where('eGroup', '=', 'CDN_ACCOUNTTYPE')
