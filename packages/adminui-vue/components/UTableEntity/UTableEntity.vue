@@ -220,7 +220,7 @@ export default {
       return {
         id: columnId,
         label,
-        attribute: last,
+        attribute: penult.dataType === 'Json' ? penult : last,
         ...columnDef
       }
     },
