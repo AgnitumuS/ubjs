@@ -13,7 +13,6 @@ require('./UBReportEditor')
 require('./UBMetaDiagram')
 // require('./GraphViewer')
 require('./UBOrgChart')
-require('./UBOnlyOffice')
 // noinspection JSUnusedGlobalSymbols
 /**
  * Container for display `Document` type attribute value.
@@ -63,8 +62,7 @@ Ext.define('UB.ux.UBDocument', {
       codeMirror: 'UB.ux.UBCodeMirror',
       ubDiagram: 'UB.ux.UBMetaDiagram',
       ubOrgChart: 'UB.ux.UBOrgChart',
-      ubReport: 'UB.ux.UBReportEditor',
-      onlyOffice: 'UB.ux.UBOnlyOffice'
+      ubReport: 'UB.ux.UBReportEditor'
     },
 
     valueProperties: {
@@ -109,9 +107,7 @@ Ext.define('UB.ux.UBDocument', {
       'application/ubMetaDiagram': 'UB.ux.UBMetaDiagram',
       'application/ubmetadiagram': 'UB.ux.UBMetaDiagram',
       'application/uborgchart': 'UB.ux.UBOrgChart',
-      'application/UBOrgChart': 'UB.ux.UBOrgChart',
-      'application/word': 'UB.ux.UBOnlyOffice',
-      'application/excel': 'UB.ux.UBOnlyOffice'
+      'application/UBOrgChart': 'UB.ux.UBOrgChart'
     }
   },
   layout: 'fit',
@@ -510,35 +506,13 @@ Ext.define('UB.ux.UBDocument', {
         }
       }
 
-      if (xtype === 'application/word' || xtype === 'application/excel') {
-        // <-- onlyOffice
-        // to prevent double loading of document from store
-        // onlyOffice has it's own block
+      if (UB.ux.UBDocument.contentTypeMapping[xtype] === 'UB.ux.UBOnlyOffice') {
         me.createComponent(xtype)
-        me.ubCmp.setSrc({
-          url: url,
-          contentType: xtype,
-          html: !val || val.deleting ? url : val.origName || url,
-          blobData: null
-        }).then(function () {
-          resolve(null)
-        }, function (reason) {
-          if (reason && !(reason instanceof UB.UBAbortError)) {
-            reject(reason)
-          } else {
-            resolve(null)
-          }
-        }).finally(function () {
-          if (me.getEl()) {
-            me.getEl().unmask()
-          }
-        })
-        return
-      } // --> /onlyOffice
-
-      if (xtype === 'UB.ux.UBLink' || (hasError && Ext.Object.getSize(val) !== 0)) {
-        me.createComponent(xtype)
+        resolve(null)
         onContentLoad(null, url, xtype)
+      } else if (xtype === 'UB.ux.UBLink' || (hasError && Ext.Object.getSize(val) !== 0)) {
+        me.createComponent(xtype)
+          onContentLoad(null, url, xtype)
       } else if (Ext.Object.getSize(val) === 0) {
         me.createComponent(xtype)
         // xmax событие для инициализации нового документа где такое необходимо
@@ -689,6 +663,7 @@ Ext.define('UB.ux.UBDocument', {
      * @cfg {String} me.documentFileName
      */
     return promise.then(function (contentData) {
+      // in case model `@unitybase/only-office` is active
       const endpointUrl = me.ubCmp.xtype === 'UBOnlyOffice' ? 'setOnlyOfficeDocumentToTempStore' : 'setDocument'
       return $App.connection.post(endpointUrl, contentData, {
         params: {

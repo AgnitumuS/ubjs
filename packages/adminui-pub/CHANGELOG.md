@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+- `UBOnlyOffice` editor. Moved to a separate package '@unitybase/only-office'
 
 ### Fixed
 

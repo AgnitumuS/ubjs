@@ -3,6 +3,8 @@
  * @module onlyOfficeEndpoints
  * @memberOf module:@unitybase/ub
  */
+const blobStores = require('@unitybase/blob-stores')
+
 module.exports = {
   notifyDocumentSaved,
   getDocumentOffice,
@@ -12,7 +14,11 @@ module.exports = {
 
 const qs = require('querystring')
 const _ = require('lodash')
-const uiSettings = JSON.parse(App.getUISettings() || '{}')
+const UB = require('@unitybase/ub')
+const App = UB.App
+const Session = UB.Session
+
+const uiSettings = App.serverConfig.uiSettings
 
 Session.on('login', onlyOfficeOnUserLogin)
 
@@ -49,17 +55,10 @@ function setOnlyOfficeDocumentToTempStore (req, resp) {
   const response = request.end()
   const docContent = response.read('bin')
 
-  const resultDocDS = new TubDocumentRequest()
-  resultDocDS.entity = params.entity
-  resultDocDS.attribute = params.attribute
-  resultDocDS.id = parseInt(params.ID)
-  resultDocDS.fileName = params.filename
-  resultDocDS.setContent(docContent)
-  const docInfo = resultDocDS.writeToTemp()
+  let blobStoreItem = blobStores.putContent(params, docContent)
 
   resp.statusCode = 200
-  const result = {result: docInfo}
-  resp.writeEnd(result)
+  resp.writeEnd({ success: true, errMsg: '', result: blobStoreItem })
 }
 
 /**
@@ -113,23 +112,13 @@ function getDocumentOffice (req, resp) {
     return
   }
 
-  if (!params.ID) {
+  if (!params.ID || !params.userID) {
     resp.statusCode = 200
     resp.writeHead('Content-Type: text/plain')
     resp.writeEnd(' ', 'utf-8')
     return
   }
-
-  const resultDocDS = new TubDocumentRequest()
-  resultDocDS.id = parseInt(params.ID)
-  resultDocDS.entity = params.entity
-  resultDocDS.attribute = params.attribute
-  resultDocDS.fileName = params.filename
-  resultDocDS.isDirty = params.isDirty === 'true'
-
-  const docHandler = resultDocDS.createHandlerObject(false)
-  docHandler.loadContent(TubLoadContentBody.No)
-  docHandler.fillResponse()
+  return Session.runAsUser(parseInt(params.userID), () => blobStores.getDocumentEndpoint(req, resp))
 }
 
 /**
@@ -138,6 +127,7 @@ function getDocumentOffice (req, resp) {
  * @property {string} entity - name of "Entity"
  * @property {string} filename - name of file in storage
  * @property {string} ID - of the "Entity"
+ * @property {string} userID - user id whom initiate request
  * @property {string} isDirty - get stored document or from temporary storage
  * @property {string} origName - name of file when uploaded
  * @property {string} store - name of file storage

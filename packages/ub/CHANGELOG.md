@@ -22,7 +22,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `TubDataStore.asJSONObject`, `TubDataStore.asJSONArray`
  
 ### Removed
-
+ - `onlyOfficeEndpoints` module. Moved to a separate package '@unitybase/only-office'
+ 
 ### Fixed
 
 ## [5.3.19] - 2020-02-23

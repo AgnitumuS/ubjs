@@ -5,7 +5,7 @@
 /**
  * Control to show document using OnlyOffice document server
  *
-  {....
+ {....
     layout: {
     type: 'vbox',
     align: 'stretch'
@@ -31,7 +31,9 @@ Ext.define('UB.ux.UBOnlyOffice', {
   autoEl: 'div',
   contentTypeMap: { // 'text' | 'spreadsheet' | 'presentation',
     'application/word': 'text',
-    'application/excel': 'spreadsheet'
+    'application/excel': 'spreadsheet',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'text',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'spreadsheet'
   },
 
   _documentKey: null,
@@ -71,14 +73,17 @@ Ext.define('UB.ux.UBOnlyOffice', {
   // region Inherited from UBDocument.js
   /**
    * Used by UBDocument to get value from component
-   * @param {any} requestedValue - ignored
    * @return {Promise<string>} - resolves to an URL on onlyOffice server with modified document
    */
-  getValue: function (requestedValue) {
+  getValue: function () {
     const me = this
-    me._onlyOfficeGetValueDefer = Q.defer()
-    me._onlyOfficeObject.downloadAs()
-    return me._onlyOfficeGetValueDefer.promise
+    return new Promise((resolve, reject) => {
+      me._onlyOfficeGetValueDefer = {
+        resolve: resolve,
+        reject: reject
+      }
+      me._onlyOfficeObject.downloadAs()
+    })
   },
 
   /**
@@ -156,11 +161,10 @@ Ext.define('UB.ux.UBOnlyOffice', {
    */
   _getServerConfiguration: function () {
     const serverAddress = $App.connection.userData('onlyOfficeServer')
-    const configuration = {
+    return {
       isConfigured: _.isString(serverAddress),
       serverIP: serverAddress || ''
     }
-    return configuration
   },
 
   /**
@@ -173,11 +177,12 @@ Ext.define('UB.ux.UBOnlyOffice', {
    */
   _getControlConfiguration: function (fileType, fileUrl, title) {
     const me = this
-    const serverFileUrl = $App.connection.serverUrl + (!fileUrl ? 'getDocumentOffice' : fileUrl.replace('/getDocument', 'getDocumentOffice'))
+    const serverFileUrl = $App.connection.serverUrl + (!fileUrl ? 'getDocumentOffice' : fileUrl.replace('/getDocument', 'getDocumentOffice')) +
+      `&userID=${$App.connection.userData('userID')}`
     // Server remembers keys and urls.
     // So if document with "key" were saved then "key" can't be reused - "onOutdatedVersion" will be called
     const key = UB.MD5((new Date()).toString() + '||' + serverFileUrl).toString().substr(20)
-    const lang = 'UK' // ToDo: find out how to set language (variants with 'uk-UA'|'UA' looks not working)
+    const lang = $App.connection.userLang() // ToDo: find out how to set language (variants with 'uk-UA'|'UA' looks not working)
     const callbackUrl = $App.connection.serverUrl + 'notifyDocumentSaved'
     const editorMode = me.readOnly ? 'view' : 'edit'
     return {
@@ -191,7 +196,14 @@ Ext.define('UB.ux.UBOnlyOffice', {
         'mode': editorMode,
         'lang': lang,
         'callbackUrl': callbackUrl,
+        user: {
+          id: $App.connection.userData('login'),
+          name: $App.connection.userData('employeeShortFIO')
+        },
         'customization': {
+          'chat': false,
+          'about': false,
+          'help': false,
           'autosave': true,
           'forcesave': true
         }
@@ -208,7 +220,12 @@ Ext.define('UB.ux.UBOnlyOffice', {
         'onDownloadAs': function onDownloadAs (e) {
           // fired after call to DocsAPI.DocEditor.downloadAs
           // e.data - url of the modified document
-          me._onlyOfficeGetValueDefer.resolve(e.data)
+          if (e.data) {
+            me._onlyOfficeGetValueDefer.resolve(e.data)
+          } else {
+            console.log('Unknown URL for saved document!')
+            me._onlyOfficeGetValueDefer.reject(false)
+          }
         },
         'onCollaborativeChanges': function onCollaborativeChanges (e) {
           console.log('onCollaborativeChanges')
