@@ -180,7 +180,7 @@ function buildExecParams (trackedObj, entity) {
     for (const [key, value] of Object.entries(trackedObj.data)) {
       const attr = schema.attributes[key]
       if (!(attr && attr.readOnly) && !key.includes('.')) {
-        if (attr.dataType === UB_DATA_TYPES.Date) {
+        if (attr && attr.dataType === UB_DATA_TYPES.Date) {
           execParams[key] = truncTimeToUTCNull(trackedObj.data[key])
         } else {
           execParams[key] = value
