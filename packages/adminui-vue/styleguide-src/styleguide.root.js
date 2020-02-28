@@ -1,18 +1,37 @@
 import Vuex from 'vuex'
 import UB from '@unitybase/ub-pub'
 
+let docDepartmentData
+UB.connection.Repository('doc_department').attrs([
+  'ID',
+  'name',
+  'address',
+  'phone',
+  'isMain',
+  'status',
+  'description',
+  'createDate',
+  'boss',
+  'logo',
+  'topManagers'
+])
+  .selectSingle()
+  .then(function (data) {
+    docDepartmentData = data
+    console.log(docDepartmentData)
+  })
 export default (previewComponent) => {
   const store = new Vuex.Store({
     getters: {
       entityName () {
         return 'cdn_country'
       },
-
       entitySchema (state, getters) {
         return UB.connection.domain.get(getters.entityName)
       }
     },
     state: {
+      data: docDepartmentData,
       collections: {
         passportPages: {
           deleted: [],

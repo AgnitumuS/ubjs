@@ -3,13 +3,16 @@ import UB from '@unitybase/ub-pub'
 import Vuex from 'vuex'
 import Element from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'
+import momentPlugin from '../utils/moment-plugin'
 import '../dist/adminui-vue.css'
 import '../theme/el-theme-compiled.css'
 import '../dist/fonts/fa/css/fontawesome.css'
 import '../dist/fonts/fa/css/regular.css'
 import '../dist/fonts/fa/css/solid.css'
 import '../dist/fonts/fa/css/v4-shims.css'
+import './style.css'
 
+Vue.use(momentPlugin)
 Vue.use(Element, {
   size: 'small',
   locale
@@ -43,11 +46,22 @@ UB.connect({
   //   console.log('Current server statistics:', statResp.data)
   // })
   //
-  // conn.Repository('ubm_navshortcut').attrs(['ID', 'code', 'caption'])
-  //   .limit(2)
-  //   .selectAsObject()
-  //   .then(function (data) {
-  //     console.log('First 2 adminUI shortcuts:')
-  //     console.log(JSON.stringify(data, null, '\t'))
-  //   })
+  conn.Repository('doc_department').attrs([
+    'ID',
+    'name',
+    'address',
+    'phone',
+    'isMain',
+    'status',
+    'description',
+    'createDate',
+    'boss',
+    'logo',
+    'topManagers'
+  ])
+    .selectSingle()
+    .then(function (data) {
+      Window.doc_departmentData = data
+      console.log(Window.doc_departmentData)
+    })
 })

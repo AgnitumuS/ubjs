@@ -188,30 +188,34 @@ export default {
   Create a form component and validators based on entity attribute type
 
   ### Basic usage
-
   ```vue
   <template>
-    <u-auto-field attribute-name="code" />
+    <u-form-container :label-width="150">
+      <u-auto-field attribute-name="name" />
+      <u-auto-field attribute-name="address" />
+      <u-auto-field attribute-name="phone" />
+      <u-auto-field attribute-name="isMain" />
+      <u-auto-field attribute-name="status" />
+      <u-auto-field attribute-name="description" />
+      <u-auto-field attribute-name="createDate" />
+      <u-auto-field attribute-name="boss" />
+      <u-auto-field attribute-name="logo" />
+    </u-form-container>
   </template>
   <script>
-    const { Form } = require('@unitybase/adminui-vue')
-
-    module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
-      Form({
-        component: rootComponent,
-        entity,
-        instanceID,
-        title
-      }).mount()
-    }
-    module.exports.default = {
+    module.exports = {
       name: 'MyCustomVueComponent',
-      inject: ['$v'], // валидация,
-
-      computed: {
-        ...mapInstanceFields(['code', 'caption']), // хелпер для получение/изменения данных формы
-
-        ...mapGetters(['loading'])
+      provide(){
+        return {
+          entitySchema: this.entitySchema,
+          entity: this.entity
+        }
+      },
+      data() {
+        return {
+          entity: 'doc_department',
+          entitySchema: this.$UB.connection.domain.entities['doc_department']
+        }
       }
     }
   </script>
@@ -222,10 +226,27 @@ export default {
   In sample below we output a description for SQL attribute:
 
   ``` vue
-  <u-auto-field attribute-name="SQL">
-    <div class="u-form-row__description">
-      {{ this.entitySchema.attr('SQL').description }}
-    </div>
-  </u-auto-field>
+  <template>
+    <u-auto-field attribute-name="fullName">
+      <div class="u-form-row__description">
+        {{ this.entitySchema.attr('fullName').description }}
+      </div>
+    </u-auto-field>
+  </template>
+  <script>
+    module.exports = {
+      name: 'MyCustomVueComponent',
+      provide(){
+        return {
+          entitySchema: this.entitySchema
+        }
+      },
+      data() {
+        return {
+          entitySchema: this.$UB.connection.domain.entities['cdn_country']
+        }
+      }
+    }
+  </script>
   ```
 </docs>

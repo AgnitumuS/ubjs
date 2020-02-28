@@ -158,6 +158,11 @@ const { debounce } = require('throttle-debounce')
 const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
 /**
  * Dropdown control for select data from entity.
+ *
+ * One of these options is required:
+ *
+ * - `entity-name`
+ * - `repository`
  */
 export default {
   name: 'USelectEntity',
@@ -762,11 +767,9 @@ export default {
 </style>
 
 <docs>
-One of these options is required:
-  - `entity-name`
-  - `repository`
 
-### Usage with `entity-name`
+
+### **Usage with `entity-name`**
 
 Use `entity-name` props when you need select all data from entity. Useful for dictionaries.
 ```vue
@@ -794,7 +797,7 @@ Use `entity-name` props when you need select all data from entity. Useful for di
 </script>
 ```
 
-### Usage with `repository`
+### **Usage with `repository`**
 Use `repository` props when you need filtering data on form.
 
 Set function which returns [UB Repository](https://unitybase.info/api/ubpub-v5/CustomRepository.html).
@@ -835,7 +838,7 @@ use [RLS](https://unitybase.info/api/server-v5/tutorial-mixin_rls.html))
 </script>
 ```
 
-### Custom `valueAttribute` and `displayAttribute`
+### **Custom `valueAttribute` and `displayAttribute`**
 Use when you need to change default model and display property.
 
 Its like attribute `value` in native `<option>` tag.
@@ -886,7 +889,7 @@ In example `code` uses for value (instead of `ID`), and for display (instead of 
 </script>
 ```
 
-### Editable
+### **Editable**
 Set editable="false" to prevent user from typing text directly into the field.
 In this state picker can be opened by clicking directly on the input field, not only on arrow.
 ```vue
@@ -908,7 +911,7 @@ In this state picker can be opened by clicking directly on the input field, not 
   }
 </script>
 ```
-### Disabled
+### **Disabled**
 ```vue
 <template>
   <u-select-entity
@@ -929,7 +932,7 @@ In this state picker can be opened by clicking directly on the input field, not 
 </script>
 ```
 
-### Clearable
+### **Clearable**
 ```vue
 <template>
   <u-select-entity
@@ -949,10 +952,10 @@ In this state picker can be opened by clicking directly on the input field, not 
   }
 </script>
 ```
-### Actions
+### **Actions**
 #### Change default actions
 
-#### Remove default actions
+#### **Remove default actions**
 Remove right menu when you don't need it!
 ```vue
 <template>
@@ -973,7 +976,7 @@ Remove right menu when you don't need it!
 </script>
 ```
 
-#### Add actions to menu
+#### **Add actions to menu**
 ```vue
 <template>
   <u-select-entity
@@ -1013,7 +1016,7 @@ Remove right menu when you don't need it!
 </script>
 ```
 
-#### Just custom actions
+#### **Just custom actions**
 ```vue
 <template>
   <u-select-entity
@@ -1055,7 +1058,7 @@ Remove right menu when you don't need it!
 ```
 
 
-### Actions overrides
+### **Actions overrides**
 ```vue
 <template>
   <u-select-entity
