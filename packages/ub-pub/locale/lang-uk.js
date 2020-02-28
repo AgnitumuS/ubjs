@@ -21,7 +21,7 @@ UB.i18nExtend({
   OpenidTip: 'Вхід через зовнішній сервіс авторізації. Після натискання "увійти", введіть авторізаційні данні у вікні автрізації',
   authOpenIDConnectFail: 'Засвідчувальний центр відхилив запит на аутентифікацію',
 
-  Authentication: 'Аутентифікація',
+  Authentication: 'Автентифікація',
   RegistrationMode: 'Режим реєстрації',
   AdditionalLoginOptions: 'Додаткові параметри входу',
   useOSCredentialTitle: 'Доменна',
