@@ -1,7 +1,7 @@
 const Session = require('@unitybase/ub').Session
 /* global ubs_filter */
 // eslint-disable-next-line camelcase
-let me = ubs_filter
+const me = ubs_filter
 /**
  * Set owner to current user before inserting data
  * @private
@@ -9,7 +9,7 @@ let me = ubs_filter
  * @returns {boolean}
  */
 me.on('insert:before', function (ctxt) {
-  let execParams = ctxt.mParams.execParams
+  const execParams = ctxt.mParams.execParams
   execParams.owner = Session.userID
   return true
 })

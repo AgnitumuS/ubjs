@@ -8,10 +8,10 @@ const me = ubs_softLock
  * @memberOf module:@unitybase/ubs
  */
 me.cleanupSoftLocks = function () {
-  let locksStore = UB.DataStore('ubs_softLock')
-  let queryText = `delete from ubs_softLock where lockType <> :ltype: and lockTime < :ltime:`
-  let dayBefore = new Date()
+  const locksStore = UB.DataStore('ubs_softLock')
+  const queryText = 'delete from ubs_softLock where lockType <> :ltype: and lockTime < :ltime:'
+  const dayBefore = new Date()
   dayBefore.setHours(-1) // shift one day before
   locksStore.execSQL(queryText, { ltype: 'Persist', ltime: dayBefore })
-  return `ubs_softLock cleared of expired temporary locks`
+  return 'ubs_softLock cleared of expired temporary locks'
 }

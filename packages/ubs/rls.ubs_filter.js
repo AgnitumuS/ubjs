@@ -1,5 +1,5 @@
 const UB = require('@unitybase/ub')
-let RLS = UB.ns('RLS')
+const RLS = UB.ns('RLS')
 
 /**
  * Dirty hack for federalized entities (for example ubs_numcounter) work without FED model.

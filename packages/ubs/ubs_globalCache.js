@@ -17,7 +17,7 @@ me.entity.addMethod('select')
 me.select = function (ctx) {
   ctx.dataStore.currentDataName = 'select'
   if (!_App.globalCacheList) throw new UB.UBAbort('<<<Upgrade your UB server version >=5.7.5>>>')
-  let arrData = JSON.parse(_App.globalCacheList())
+  const arrData = JSON.parse(_App.globalCacheList())
   ctx.dataStore.initialize(arrData, ['ID', 'key', 'keyValue'])
   return true // everything is OK
 }

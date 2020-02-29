@@ -29,9 +29,9 @@ me.getRegnum = function (regKeyValue, startNum, skipReservedNumber) {
 
   if (startNum !== 0) startNum = startNum || 1
   // Get autoRegWithDeletedNumber from settings if skipReservedNumber is not true
-  let autoRegWithDeletedNumber = !skipReservedNumber ? getAutoRegWithDeletedNumberSetting() : false
+  const autoRegWithDeletedNumber = !skipReservedNumber ? getAutoRegWithDeletedNumberSetting() : false
   // Get counter from reserved if autoRegWithDeletedNumber set to true in settings
-  let reservedCounter = (autoRegWithDeletedNumber === true) ? ubs_numcounterreserv.getReservedRegnum(regKeyValue) : -1
+  const reservedCounter = (autoRegWithDeletedNumber === true) ? ubs_numcounterreserv.getReservedRegnum(regKeyValue) : -1
 
   if (reservedCounter !== -1) {
     counterInData = reservedCounter
@@ -54,7 +54,7 @@ me.getRegnum = function (regKeyValue, startNum, skipReservedNumber) {
       if (!res) throw store.lastError
     } else {
       // in case mask exist
-      let IDInData = store.get('ID')
+      const IDInData = store.get('ID')
       // lock it for update
       store.run('update', {
         execParams: {
@@ -118,10 +118,10 @@ me.generateAutoIncrementalCode = function (ctx, forAttribute = 'code') {
   const entityCode = mParams.entity
   const ubEntity = App.domainInfo.get(entityCode)
   const attr = ubEntity.attributes[forAttribute]
-  let newAttrValue = execParams[forAttribute]
+  const newAttrValue = execParams[forAttribute]
   if (execParams && (!newAttrValue || (attr.defaultValue && attr.defaultValue === execParams[forAttribute]))) {
     const padTo = ubs_settings.loadKey('ubs.numcounter.autoIncrementalCodeLen', 6)
-    let newNum = '' + ubs_numcounter.getRegnum(entityCode, 1)
+    const newNum = '' + ubs_numcounter.getRegnum(entityCode, 1)
     execParams[forAttribute] = newNum.padStart(padTo, '0')
   }
 }
@@ -137,8 +137,8 @@ me.generateAutoIncrementalCode = function (ctx, forAttribute = 'code') {
  */
 me.getRegnumCounter = function (ctxt) {
   // RegKey caller pass to method
-  let upregKey = ctxt.mParams.execParams.regkey
-  let skipReservedNumber = ctxt.mParams.execParams.skipReservedNumber || false
+  const upregKey = ctxt.mParams.execParams.regkey
+  const skipReservedNumber = ctxt.mParams.execParams.skipReservedNumber || false
   ctxt.mParams.getRegnumCounter = me.getRegnum(upregKey, 1, skipReservedNumber)
   return true
 }

@@ -2,7 +2,7 @@ const UB = require('@unitybase/ub')
 const Session = UB.Session
 /* global ubs_message */
 // eslint-disable-next-line camelcase
-let me = ubs_message
+const me = ubs_message
 
 me.entity.addMethod('getCached')
 me.on('select:before', addUserFilters)
@@ -19,13 +19,13 @@ me.on('select:before', addUserFilters)
 me.getCached = function (ctx) {
   if (ctx.mParams.version) {
     const expr = 'SELECT MAX(mi_modifyDate) as last_number FROM ubs_message'
-    let store = UB.DataStore('ubs_message')
+    const store = UB.DataStore('ubs_message')
     store.runSQL(expr, {})
     let version = store.get('last_number')
     store.freeNative()
     version = (new Date(version)).getTime()
     if (version === Number(ctx.mParams.version)) {
-      ctx.mParams.resultData = {notModified: true}
+      ctx.mParams.resultData = { notModified: true }
       ctx.mParams.version = version
       return true
     } else {
@@ -42,24 +42,24 @@ me.getCached = function (ctx) {
  * @return {boolean}
  */
 function addUserFilters (ctx) {
-  let nm = Date.now()
+  const nm = Date.now()
   if (!ctx.mParams.whereList) {
     ctx.mParams.whereList = {}
   }
   ctx.mParams.whereList['user' + nm] = {
     expression: '[recipients.userID]',
     condition: 'equal',
-    values: {userID: Session.userID}
+    values: { userID: Session.userID }
   }
   ctx.mParams.whereList['complete' + nm] = {
     expression: '[complete]',
     condition: 'equal',
-    values: {complete: 1}
+    values: { complete: 1 }
   }
   ctx.mParams.whereList['startDate' + nm] = {
     expression: '[startDate]',
     condition: 'less',
-    values: {startDate: new Date()}
+    values: { startDate: new Date() }
   }
   return true
 }

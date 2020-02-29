@@ -45,7 +45,7 @@ me.loadKey = function loadKey (settingKey, defaultValue = null) {
     return defaultValue
   }
 
-  let res = convert(store.get('type'), store.get('settingValue'), settingKey)
+  const res = convert(store.get('type'), store.get('settingValue'), settingKey)
 
   store.next()
   if (!store.eof) { console.error('There is more than one settings with key: ' + settingKey) }
@@ -108,7 +108,7 @@ me.addOrUpdateKey = function (keyData) {
       }
     })
   } else {
-    getSettingsStore().run('insert', {execParams: keyData})
+    getSettingsStore().run('insert', { execParams: keyData })
   }
 }
 

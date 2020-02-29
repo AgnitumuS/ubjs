@@ -4,7 +4,7 @@ const me = ubs_report
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
-const {FileBasedStoreLoader, GC_KEYS} = require('@unitybase/base')
+const { FileBasedStoreLoader, GC_KEYS } = require('@unitybase/base')
 const csShared = require('@unitybase/cs-shared')
 const UBDomain = csShared.UBDomain
 const LocalDataStore = csShared.LocalDataStore
@@ -74,7 +74,7 @@ exports.reportCode = {
  */
 function postProcessing (loader, fullFilePath, content, row) {
   // we fill relPath in form "modelName"|"path inside model public folder" as expected by mdb virtual store
-  let relPath = loader.processingRootFolder.model.name + '|' + REL_PATH_TAIL
+  const relPath = loader.processingRootFolder.model.name + '|' + REL_PATH_TAIL
 
   // fill model attribute by current folder model name
   row.model = loader.processingRootFolder.model.name
@@ -98,9 +98,9 @@ function postProcessing (loader, fullFilePath, content, row) {
   })
 
   fileName = fileName.substring(0, fileName.length - TEMPLATE_EXTENSION.length) + SCRIPT_EXTENSION
-  let jsFilePath = path.join(path.dirname(fullFilePath), fileName)
+  const jsFilePath = path.join(path.dirname(fullFilePath), fileName)
   if (fs.existsSync(jsFilePath)) {
-    let jsFileStat = fs.statSync(jsFilePath)
+    const jsFileStat = fs.statSync(jsFilePath)
     row.code = JSON.stringify({
       fName: fileName,
       origName: fileName,
@@ -120,23 +120,23 @@ function postProcessing (loader, fullFilePath, content, row) {
 
 function loadAll () {
   const models = App.domainInfo.models
-  let folders = []
-  let modelLastDate = new Date(App.globalCacheGet(GC_KEYS.MODELS_MODIFY_DATE)).getTime()
+  const folders = []
+  const modelLastDate = new Date(App.globalCacheGet(GC_KEYS.MODELS_MODIFY_DATE)).getTime()
 
   console.debug('modelLastDate = ', modelLastDate)
   if (!resultDataCache || modelLoadDate < modelLastDate) {
     console.debug('load reports from models directory structure')
 
-    for (let modelCode in models) {
+    for (const modelCode in models) {
       // noinspection JSUnfilteredForInLoop
-      let model = models[modelCode]
-      let mPath = path.join(model.realPublicPath, REL_PATH_TAIL)
+      const model = models[modelCode]
+      const mPath = path.join(model.realPublicPath, REL_PATH_TAIL)
       folders.push({
         path: mPath,
         model: model // used for fill Document content for `mdb` store in postProcessing
       })
     }
-    let loader = new FileBasedStoreLoader({
+    const loader = new FileBasedStoreLoader({
       entity: me.entity,
       foldersConfig: folders,
       fileMask: new RegExp(TEMPLATE_EXTENSION + '$'),
@@ -160,13 +160,13 @@ function loadAll () {
  */
 function doSelect (ctxt) {
   const cType = ctxt.dataStore.entity.cacheType
-  let mP = ctxt.mParams
-  let aID = mP.ID
+  const mP = ctxt.mParams
+  const aID = mP.ID
 
-  let cachedData = loadAll()
+  const cachedData = loadAll()
 
   if (!(aID && (aID > -1)) && (cType === UBDomain.EntityCacheTypes.Entity) && (!mP.skipCache)) {
-    let reqVersion = mP.version
+    const reqVersion = mP.version
     mP.version = resultDataCache.version
     if (reqVersion === resultDataCache.version) {
       mP.resultData = {}
@@ -174,9 +174,9 @@ function doSelect (ctxt) {
       return
     }
   }
-  let filteredData = LocalDataStore.doFilterAndSort(cachedData, mP)
+  const filteredData = LocalDataStore.doFilterAndSort(cachedData, mP)
   // return as asked in fieldList using compact format  {fieldCount: 2, rowCount: 2, values: ["ID", "name", 1, "ss", 2, "dfd"]}
-  let resp = LocalDataStore.flatten(mP.fieldList, filteredData.resultData)
+  const resp = LocalDataStore.flatten(mP.fieldList, filteredData.resultData)
   ctxt.dataStore.initialize(resp)
 }
 
@@ -202,7 +202,7 @@ me.select = function (ctx) {
  * @param {String} modelName
  */
 function validateInput (reportCode, modelName) {
-  let model = App.domainInfo.models[modelName]
+  const model = App.domainInfo.models[modelName]
   if (!model) {
     throw new Error(`ubs_report: Invalid model attribute value "${modelName}". Model not exist in domain`)
   }
@@ -220,19 +220,19 @@ function validateInput (reportCode, modelName) {
  */
 function doUpdateInsert (ctxt, storedValue, isInsert) {
   console.debug('--==== ubs_report.doUpdateInsert ===-')
-  let entity = me.entity
-  let mP = ctxt.mParams
-  let newValues = mP.execParams || {}
-  let ID = newValues.ID
+  const entity = me.entity
+  const mP = ctxt.mParams
+  const newValues = mP.execParams || {}
+  const ID = newValues.ID
 
   // move all attributes from execParams to storedValue
   _.forEach(newValues, function (val, key) {
-    let attr = entity.attributes[key]
+    const attr = entity.attributes[key]
     if (attr && (attr.dataType !== UBDomain.ubDataTypes.Document)) {
       storedValue[key] = val
     }
   })
-  let newTemplateInfo = newValues.template
+  const newTemplateInfo = newValues.template
   let reportBody
   if (isInsert && !newTemplateInfo) {
     reportBody = ''
@@ -245,22 +245,22 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
         ID: ID,
         isDirty: Boolean(newTemplateInfo)
       },
-      {encoding: 'utf-8'}
+      { encoding: 'utf-8' }
     )
-    let clearAttrReg = new RegExp(FileBasedStoreLoader.XML_ATTRIBURE_REGEXP, 'gm') // seek for <!--@attr "bla bla"-->CRLF
+    const clearAttrReg = new RegExp(FileBasedStoreLoader.XML_ATTRIBURE_REGEXP, 'gm') // seek for <!--@attr "bla bla"-->CRLF
     reportBody = reportBody.replace(clearAttrReg, '') // remove all old entity attributes
   }
-  let attributes = entity.attributes
-  for (let attrName in attributes) {
+  const attributes = entity.attributes
+  for (const attrName in attributes) {
     // noinspection JSUnfilteredForInLoop
-    let attr = attributes[attrName]
+    const attr = attributes[attrName]
     if (attr.dataType !== UBDomain.ubDataTypes.Document && (attr.defaultView) && (attrName !== 'ID')) {
       // noinspection JSUnfilteredForInLoop
       reportBody = '<!--@' + attrName + ' "' + storedValue[attrName] + '"-->\r\n' + reportBody
     }
   }
 
-  let docInfo = App.blobStores.putContent({
+  const docInfo = App.blobStores.putContent({
     entity: entity.name,
     attribute: 'template',
     ID: ID,
@@ -273,7 +273,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   storedValue.template = JSON.stringify(docInfo)
 
   if (isInsert) {
-    let reportCodeInfo = App.blobStores.putContent({
+    const reportCodeInfo = App.blobStores.putContent({
       entity: entity.name,
       attribute: 'code',
       ID: ID,
@@ -281,9 +281,9 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     }, REPORT_BODY_TPL)
     newValues.code = JSON.stringify(reportCodeInfo)
   }
-  let newCode = newValues.code
+  const newCode = newValues.code
   if (newCode) { // in case report script is modified add a relPath
-    let parsed = JSON.parse(newCode)
+    const parsed = JSON.parse(newCode)
     parsed.relPath = storedValue.model + '|' + REL_PATH_TAIL
     parsed.fName = storedValue.report_code + SCRIPT_EXTENSION
     parsed.ct = SCRIPT_CONTENT_TYPE
@@ -293,7 +293,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   }
 
   // commit BLOB store changes
-  let fakeCtx = {
+  const fakeCtx = {
     dataStore: null,
     mParams: {
       execParams: storedValue
@@ -317,10 +317,10 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
  * @return {boolean}
  */
 me.update = function (ctxt) {
-  let inParams = ctxt.mParams.execParams || {}
-  let ID = inParams.ID
+  const inParams = ctxt.mParams.execParams || {}
+  const ID = inParams.ID
 
-  let cachedData = loadAll()
+  const cachedData = loadAll()
   let storedValue = LocalDataStore.byID(cachedData, ID)
   if (storedValue.total !== 1) {
     throw new Error(`Record with ID=${ID} not found`)
@@ -343,20 +343,20 @@ me.update = function (ctxt) {
  * @return {boolean}
  */
 me.insert = function (ctxt) {
-  let inParams = ctxt.mParams.execParams
+  const inParams = ctxt.mParams.execParams
 
-  let cachedData = loadAll()
-  let newReportCode = inParams.report_code
-  let ID = ncrc32(0, newReportCode)
+  const cachedData = loadAll()
+  const newReportCode = inParams.report_code
+  const ID = ncrc32(0, newReportCode)
   inParams.ID = ID
   validateInput(inParams.report_code, inParams.model)
 
-  let row = LocalDataStore.byID(cachedData, ID)
+  const row = LocalDataStore.byID(cachedData, ID)
   if (row.total) {
     throw new Error(`<<<Report with ID ${ID} already exist>>>`)
   }
 
-  let oldValue = {}
+  const oldValue = {}
   doUpdateInsert(ctxt, oldValue, true)
   return true
 }
@@ -373,10 +373,10 @@ if (process.isDebug) {
    * @param {THTTPResponse} resp
    */
   me.testServerRendering = function (ctxt, req, resp) {
-    let body = req.read()
-    let params = JSON.parse(body)
+    const body = req.read()
+    const params = JSON.parse(body)
     const UBServerReport = require('./modules/UBServerReport')
-    let result = UBServerReport.makeReport(params.reportCode, params.responseType, params.reportParams)
+    const result = UBServerReport.makeReport(params.reportCode, params.responseType, params.reportParams)
 
     if (result.reportType === 'pdf') {
       console.debug('Generate a PDF report of size=', result.reportData.byteLength)

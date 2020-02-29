@@ -20,7 +20,7 @@ me.accept = function (ctx) {
   if (!execParams || !execParams.ID) {
     throw new Error('Invalid value of parameter ID')
   }
-  let request = {
+  const request = {
     fieldList: ['ID'],
     execParams: {
       ID: execParams.ID,
@@ -30,7 +30,7 @@ me.accept = function (ctx) {
     __skipOptimisticLock: true
   }
 
-  let inst = UB.DataStore('ubs_message_recipient')
+  const inst = UB.DataStore('ubs_message_recipient')
   ctx.mParams.resultData = inst.run('update', request)
 }
 
@@ -52,11 +52,11 @@ me.addRoles = function (ctx) {
   if (!execParams || !execParams.roles) {
     throw new Error('Invalid value of parameter roles')
   }
-  let roles = String(execParams.roles).split(',').map(Number)
-  let messageID = execParams.messageID
-  let users = []
+  const roles = String(execParams.roles).split(',').map(Number)
+  const messageID = execParams.messageID
+  const users = []
 
-  let rInst = UB.DataStore('ubs_message_recipient')
+  const rInst = UB.DataStore('ubs_message_recipient')
   rInst.run('select', {
     entity: 'uba_userrole',
     fieldList: ['userID', 'roleID'],
@@ -74,20 +74,20 @@ me.addRoles = function (ctx) {
     users.push(Number(rInst.get('userID')))
     rInst.next()
   }
-  let request = {
+  const request = {
     fieldList: ['messageID', 'userID'],
     execParams: {
       messageID: messageID,
       userID: 0
     }
   }
-  let inst = UB.Repository('ubs_message_recipient')
+  const inst = UB.Repository('ubs_message_recipient')
     .attrs(['ID', 'messageID', 'userID'])
     .where('[messageID]', '=', messageID, 'message')
     .where('[userID]', 'in', users, 'user')
     .selectAsStore()
   while (!inst.eof) {
-    let userIdx = users.indexOf(Number(inst.get('userID')))
+    const userIdx = users.indexOf(Number(inst.get('userID')))
     if (userIdx >= 0) {
       users.splice(userIdx, 1)
     }
@@ -117,9 +117,9 @@ me.removeRoles = function (ctx) {
   if (!execParams || !execParams.roles) {
     throw new Error('Invalid value of parameter roles')
   }
-  let roles = String(execParams.roles).split(',').map(Number)
-  let messageID = execParams.messageID
-  let users = []
+  const roles = String(execParams.roles).split(',').map(Number)
+  const messageID = execParams.messageID
+  const users = []
 
   let rInst = UB.Repository('uba_userrole')
     .attrs(['userID', 'roleID'])
@@ -137,12 +137,12 @@ me.removeRoles = function (ctx) {
     .where('acceptDate', 'isNull')
     .select()
 
-  let request = {
+  const request = {
     execParams: {
       ID: 0
     }
   }
-  let store = UB.DataStore('ubs_message_recipient')
+  const store = UB.DataStore('ubs_message_recipient')
   while (!rInst.eof) {
     request.execParams.ID = rInst.get('ID')
     store.run('delete', request)

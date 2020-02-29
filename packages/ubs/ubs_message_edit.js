@@ -1,7 +1,7 @@
 const UB = require('@unitybase/ub')
 /* global ubs_message_edit */
 // eslint-disable-next-line camelcase
-let me = ubs_message_edit
+const me = ubs_message_edit
 const WebSockets = require('@unitybase/ub/modules/web-sockets')
 
 me.on('update:after', mayBeNotify)
@@ -13,16 +13,16 @@ me.on('update:after', mayBeNotify)
  * @return {boolean}
  */
 function mayBeNotify (ctx) {
-  let notifier = WebSockets.getWSNotifier()
+  const notifier = WebSockets.getWSNotifier()
   if (notifier) {
-    let store = ctx.dataStore
+    const store = ctx.dataStore
     store.currentDataName = 'selectAfterUpdate'
     if (!store.eof && store.get('complete')) {
       console.debug('ubs_message_edit: detected ready to send message - try to notify using WS')
-      let sentTime = new Date(store.get('startDate'))
-      let _expireStr = store.get('expireDate')
-      let expireDate = _expireStr ? new Date(store.get('expireDate')) : null
-      let now = new Date()
+      const sentTime = new Date(store.get('startDate'))
+      const _expireStr = store.get('expireDate')
+      const expireDate = _expireStr ? new Date(store.get('expireDate')) : null
+      const now = new Date()
       if ((sentTime <= now) && (!expireDate || (expireDate >= now))) {
         me.notifyAllMessageRecipients(store.get('ID'))
       }
@@ -39,20 +39,20 @@ function mayBeNotify (ctx) {
  * @param {Number} messageID
  */
 me.notifyAllMessageRecipients = function notifyAllMessageRecipient (messageID) {
-  let recipients = UB.Repository('ubs_message_recipient')
+  const recipients = UB.Repository('ubs_message_recipient')
     .attrs('userID')
     .where('messageID', '=', messageID)
     .where('acceptDate', 'isNull')
     .selectAsObject()
-  let notifier = WebSockets.getWSNotifier()
+  const notifier = WebSockets.getWSNotifier()
 
   function doNotify (wsSession) {
-    notifier.sendCommand('ubs_message', wsSession, {info: 'newMessage'})
+    notifier.sendCommand('ubs_message', wsSession, { info: 'newMessage' })
   }
 
   if (notifier) {
     for (let i = 0, L = recipients.length; i < L; i++) {
-      let wsSessions = notifier.getUserSessions(recipients[i].userID)
+      const wsSessions = notifier.getUserSessions(recipients[i].userID)
       wsSessions.forEach(doNotify)
     }
   }
@@ -67,15 +67,15 @@ me.notifyAllMessageRecipients = function notifyAllMessageRecipient (messageID) {
  * @public
  */
 me.notifyAllRecipients = function notifyAllRecipients () {
-  let notifier = WebSockets.getWSNotifier()
-  let now = new Date()
+  const notifier = WebSockets.getWSNotifier()
+  const now = new Date()
 
   function doNotify (wsSession) {
-    notifier.sendCommand('ubs_message', wsSession, {info: 'newMessage'})
+    notifier.sendCommand('ubs_message', wsSession, { info: 'newMessage' })
   }
 
   if (notifier) {
-    let recipients = UB.Repository('ubs_message_recipient')
+    const recipients = UB.Repository('ubs_message_recipient')
       .attrs('userID')
       .where('acceptDate', 'isNull')
       .where('[messageID.complete]', '=', 1)
@@ -84,7 +84,7 @@ me.notifyAllRecipients = function notifyAllRecipients () {
       .groupBy('userID')
       .select()
     while (!recipients.eof) {
-      let wsSessions = notifier.getUserSessions(recipients.get(0))
+      const wsSessions = notifier.getUserSessions(recipients.get(0))
       wsSessions.forEach(doNotify)
     }
     recipients.freeNative()
