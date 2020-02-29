@@ -20,11 +20,11 @@ me.on('delete:after', clearCache)
  * @returns {number}
  */
 function getContactTypeByCode (contactCode) {
-  let entry = App.globalCacheGet(CACHE_KEY)
-  let cachedTypes = entry ? JSON.parse(entry) : {}
+  const entry = App.globalCacheGet(CACHE_KEY)
+  const cachedTypes = entry ? JSON.parse(entry) : {}
 
   if (!cachedTypes.hasOwnProperty(contactCode)) {
-    let ID = UB.Repository(ENTITY_NAME).attrs('ID').where('code', '=', contactCode).selectScalar()
+    const ID = UB.Repository(ENTITY_NAME).attrs('ID').where('code', '=', contactCode).selectScalar()
     cachedTypes[contactCode] = ID || 0
     App.globalCachePut(CACHE_KEY, JSON.stringify(cachedTypes))
   }

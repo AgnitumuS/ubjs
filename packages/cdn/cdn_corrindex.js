@@ -12,15 +12,15 @@ const ORG_ENTITY_CODE = 'cdn_organization'
  * @return {Boolean}
  */
 function updateOrganizationCaptions (ctxt) {
-  let params = ctxt.mParams
+  const params = ctxt.mParams
   if (params.caller !== ORG_ENTITY_CODE) {
-    let execParams = params.execParams
-    let organisations = UB.Repository(ORG_ENTITY_CODE).attrs(['ID'])
+    const execParams = params.execParams
+    const organisations = UB.Repository(ORG_ENTITY_CODE).attrs(['ID'])
       .where('[corrIndexID]', '=', execParams.ID)
       .selectAsObject()
     if (organisations.length) {
-      let inst = UB.DataStore(ORG_ENTITY_CODE)
-      let updParams = {
+      const inst = UB.DataStore(ORG_ENTITY_CODE)
+      const updParams = {
         ['caption_' + App.defaultLang + '^']: '',
         ID: 0
       }

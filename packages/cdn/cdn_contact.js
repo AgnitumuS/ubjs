@@ -12,8 +12,8 @@ me.on('update:after', afterUpdateContact)
  * @param {ubMethodParams} ctx
  */
 function afterInsertContact (ctx) {
-  const {contactTypeID, subjectID, value} = ctx.mParams.execParams
-  updateUserMail (contactTypeID, subjectID, value)
+  const { contactTypeID, subjectID, value } = ctx.mParams.execParams
+  updateUserMail(contactTypeID, subjectID, value)
 }
 
 /**
@@ -21,7 +21,7 @@ function afterInsertContact (ctx) {
  * @param {ubMethodParams} ctx
  */
 function afterUpdateContact (ctx) {
-  let {contactTypeID, subjectID, value} = ctx.mParams.execParams
+  let { contactTypeID, subjectID, value } = ctx.mParams.execParams
   if (value === undefined) {
     // Value is not updated
     return
@@ -40,7 +40,6 @@ function afterUpdateContact (ctx) {
 
   updateUserMail(contactTypeID, subjectID, value)
 }
-
 
 /**
  * Update uba_user.email for all employee contact
@@ -71,7 +70,6 @@ function updateUserMail (contactTypeID, subjectID, value) {
   })
 }
 
-
 /**
  * Search for subjects contact values.
  * @method getSubjectsContacts
@@ -82,16 +80,16 @@ function updateUserMail (contactTypeID, subjectID, value) {
  * @returns {Array.<string>}
  */
 function getSubjectsContacts (subjects, contactCode) {
-  let result = []
-  let typeID = cdn_contacttype.getContactTypeByCode(contactCode)
+  const result = []
+  const typeID = cdn_contacttype.getContactTypeByCode(contactCode)
   if (!typeID || (Array.isArray(subjects) && !subjects.length) || !subjects) return result
-  let repo = UB.Repository(me.entity.name).attrs('value').where('contactTypeID', '=', typeID)
+  const repo = UB.Repository(me.entity.name).attrs('value').where('contactTypeID', '=', typeID)
   if (Array.isArray(subjects)) {
     repo.where('subjectID', 'in', subjects)
   } else {
     repo.where('subjectID', '=', subjects)
   }
-  let store = repo.selectAsArray()
+  const store = repo.selectAsArray()
   return store.resultData.data.reduce((a, b) => [...a, ...b], []) // _.flatten(store.resultData.data);
 }
 

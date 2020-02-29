@@ -26,20 +26,20 @@ me.updateOrganizationCaption = function (ctx) {
     execParams['name' + defaultSuffix] = execParams.name
     delete execParams.name
   }
-  let orgFields = ['corrIndexID']
+  const orgFields = ['corrIndexID']
   supportedLangs.forEach(function (lang) {
-    let suffix = `_${lang}^`
+    const suffix = `_${lang}^`
     orgFields.push('name' + suffix)
     if (!execParams['name' + suffix] && inserting) {
       execParams['name' + suffix] = execParams['name' + defaultSuffix]
     }
   })
 
-  let dataStore = UB.Repository(me.entity.name)
+  const dataStore = UB.Repository(me.entity.name)
     .attrs(orgFields)
     .where('[ID]', '=', organizationID)
     .select()
-  let corrIndexID = execParams.corrIndexID ? execParams.corrIndexID : dataStore.get('corrIndexID')
+  const corrIndexID = execParams.corrIndexID ? execParams.corrIndexID : dataStore.get('corrIndexID')
 
   let corrIndexCode = ''
   if (corrIndexID) {
@@ -51,8 +51,8 @@ me.updateOrganizationCaption = function (ctx) {
   corrIndexCode = corrIndexCode ? corrIndexCode + ' ' : ''
 
   supportedLangs.forEach(function (lang) {
-    let suffix = '_' + lang + '^'
-    let orgName = execParams['name' + suffix] || dataStore.get('name' + suffix)
+    const suffix = '_' + lang + '^'
+    const orgName = execParams['name' + suffix] || dataStore.get('name' + suffix)
 
     execParams['caption' + suffix] = corrIndexCode + orgName
   })
@@ -67,7 +67,7 @@ me.updateOrganizationCaption = function (ctx) {
  * @returns {Array}
  */
 function splitStringWithTrim (string2Split, separator) {
-  let array = string2Split.split(separator)
+  const array = string2Split.split(separator)
   for (let i = 0, L = array.length; i < L; ++i) {
     array[i] = array[i].trim()
   }
@@ -82,8 +82,8 @@ let allowAutoGenerateOKPO = null
  * @returns {boolean}
  */
 function checkCode (ctxt) {
-  let mParams = ctxt.mParams
-  let execParams = mParams.execParams
+  const mParams = ctxt.mParams
+  const execParams = mParams.execParams
 
   if (!execParams.OKPOCode) {
     if (allowAutoGenerateOKPO === null) allowAutoGenerateOKPO = ubs_settings.loadKey('cdn.organization.allowAutoGenerateOKPO', false)
@@ -105,20 +105,20 @@ function checkCode (ctxt) {
  * @returns {boolean}
  */
 function checkAccessAddGovByRoles (ctxt) {
-  let ID = ctxt.mParams.execParams.orgBusinessTypeID
-  let isGovAuthority = UB.Repository('cdn_orgbusinesstype')
+  const ID = ctxt.mParams.execParams.orgBusinessTypeID
+  const isGovAuthority = UB.Repository('cdn_orgbusinesstype')
     .attrs('isGovAuthority')
     .where('[ID]', '=', ID)
     .selectScalar()
   if (!isGovAuthority) return true
-  let accessAddGovByRoles = ubs_settings.loadKey('cdn.organization.accessAddGovByRoles', '')
+  const accessAddGovByRoles = ubs_settings.loadKey('cdn.organization.accessAddGovByRoles', '')
   if (accessAddGovByRoles === '') { // if setting is not present or it is empty
     return true
   }
   let rolesIntersection
   try {
-    let accessRoles = splitStringWithTrim(accessAddGovByRoles, ',')
-    let currentUserRoles = splitStringWithTrim(Session.uData.roles, ',')
+    const accessRoles = splitStringWithTrim(accessAddGovByRoles, ',')
+    const currentUserRoles = splitStringWithTrim(Session.uData.roles, ',')
     rolesIntersection = _.intersection(accessRoles, currentUserRoles)
   } catch (o) {
     throw new UB.UBAbort(UB.i18n('errUnableToPerformThisOperation'))

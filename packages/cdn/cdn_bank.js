@@ -1,16 +1,16 @@
 const UB = require('@unitybase/ub')
 /* global cdn_bank cdn_city */
 // eslint-disable-next-line camelcase
-let me = cdn_bank
+const me = cdn_bank
 
 me.on('insert:before', setDescriptionAttribute)
 me.on('update:before', setDescriptionAttribute)
 cdn_city.on('update:after', setDescriptionAttributeByCity)
 
 function setDescriptionAttribute (ctx) {
-  let instanceData = ctx.dataStore.getAsJsObject()[0] || {}
+  const instanceData = ctx.dataStore.getAsJsObject()[0] || {}
   const execParams = ctx.mParams.execParams
-  let cityName = execParams.cityID || instanceData.cityID
+  const cityName = execParams.cityID || instanceData.cityID
     ? (UB.Repository('cdn_city').attrs('name')
       .misc({ __allowSelectSafeDeleted: true })
       .selectById(execParams.cityID || instanceData.cityID)).name || ''
@@ -23,8 +23,8 @@ function setDescriptionAttribute (ctx) {
 }
 
 function setDescriptionAttributeByCity (ctx) {
-  let bankStore = UB.DataStore('cdn_bank')
-  let cdnAccount = UB.Repository('cdn_bank')
+  const bankStore = UB.DataStore('cdn_bank')
+  const cdnAccount = UB.Repository('cdn_bank')
     .attrs(['ID', 'mi_modifyDate'])
     .where('cityID', 'equal', ctx.mParams.execParams.ID)
     .misc({ __allowSelectSafeDeleted: true })
