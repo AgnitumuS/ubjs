@@ -20,9 +20,9 @@ me.entity.addMethod('updatePendingStaffUnitCaptions')
  */
 me.updatestaffunitcaption = function (staffUnitID) {
   const staffUnit = UB.DataStore('org_staffunit')
-  let updParams = {
+  const updParams = {
     ID: staffUnitID,
-    ['caption_' + App.defaultLang + '^']: ''
+    [`caption_${App.defaultLang}^`]: ''
   }
   staffUnit.run('update', {
     fieldList: [],
@@ -42,22 +42,22 @@ me.updatestaffunitcaption = function (staffUnitID) {
 me.updatePendingStaffUnitCaptions = function () {
   console.log('** updatePendingStaffUnitCaptions started')
   const pendingStoreName = me.entity.name + '_pending'
-  let pendingStore = UB.Repository(pendingStoreName)
+  const pendingStore = UB.Repository(pendingStoreName)
     .attrs(['ID', 'startDate', 'endDate', 'emponstaffID', 'emponstaffID.staffUnitID'])
     .orderBy('endDate')
     .select()
 
   if (pendingStore.eof) return
 
-  let now = new Date()
-  let updatedStaffUnitIDs = []
+  const now = new Date()
+  const updatedStaffUnitIDs = []
 
   App.dbCommit()
-  let storeForDelelion = UB.DataStore(pendingStoreName)
+  const storeForDelelion = UB.DataStore(pendingStoreName)
   while (!pendingStore.eof) {
-    let sDate = new Date(pendingStore.get('startDate'))
-    let eDate = new Date(pendingStore.get('endDate'))
-    let staffUnitID = pendingStore.get('emponstaffID.staffUnitID')
+    const sDate = new Date(pendingStore.get('startDate'))
+    const eDate = new Date(pendingStore.get('endDate'))
+    const staffUnitID = pendingStore.get('emponstaffID.staffUnitID')
     try {
       if ((sDate <= now || eDate <= now) &&
         updatedStaffUnitIDs.indexOf(staffUnitID) === -1) {
@@ -71,7 +71,7 @@ me.updatePendingStaffUnitCaptions = function () {
     if (sDate <= now && (eDate < now || eDate.getFullYear() > 5000)) {
       storeForDelelion.run('delete', {
         fieldList: [],
-        execParams: {ID: pendingStore.get('ID')},
+        execParams: { ID: pendingStore.get('ID') },
         __skipOptimisticLock: true
       })
     }
@@ -87,16 +87,16 @@ me.checkActual = function (ctxt) {
   let eDate = execParams.mi_dateTo
   if (!sDate && !eDate) return false
 
-  let now = new Date()
+  const now = new Date()
   if (!sDate || !eDate) {
-    let currentRow = UB.Repository(me.entity.name).attrs(['mi_dateFrom', 'mi_dateTo'])
-      .where('ID', '=', execParams.ID).misc({__mip_recordhistory_all: true}).select()
+    const currentRow = UB.Repository(me.entity.name).attrs(['mi_dateFrom', 'mi_dateTo'])
+      .where('ID', '=', execParams.ID).misc({ __mip_recordhistory_all: true }).select()
     sDate = sDate || currentRow.get('mi_dateFrom')
     eDate = eDate || currentRow.get('mi_dateTo')
   }
   if (sDate > now || (eDate && (new Date(eDate).getFullYear() < 3000))) {
     const pendingStore = UB.DataStore(me.entity.name + '_pending')
-    let pendingRow = UB.Repository(me.entity.name + '_pending')
+    const pendingRow = UB.Repository(me.entity.name + '_pending')
       .attrs(['ID', 'startDate', 'endDate'])
       .where('emponstaffID', '=', execParams.ID).select()
     if (!pendingRow.rowCount) {
@@ -136,10 +136,10 @@ function doAfterUpdate (ctxt) {
   const staffUnitID = execParams.staffUnitID
   me.checkActual(ctxt)
   if (params.caller !== 'org_staffunit') {
-    let store = ctxt.dataStore
-    let dataName = store.currentDataName
+    const store = ctxt.dataStore
+    const dataName = store.currentDataName
     store.currentDataName = TubDataStore.DATA_NAMES.BEFORE_UPDATE
-    let oldStaffUnitID = store.get('staffUnitID') || execParams.staffUnitID
+    const oldStaffUnitID = store.get('staffUnitID') || execParams.staffUnitID
     store.currentDataName = dataName
     if (staffUnitID) {
       me.updatestaffunitcaption(staffUnitID)
@@ -156,10 +156,10 @@ function doAfterUpdate (ctxt) {
  * @param {ubMethodParams} ctxt
  */
 function doAfterDelete (ctxt) {
-  let store = ctxt.dataStore
-  let dataName = store.currentDataName
+  const store = ctxt.dataStore
+  const dataName = store.currentDataName
   store.currentDataName = TubDataStore.DATA_NAMES.BEFORE_DELETE
-  let staffUnitID = store.get('staffUnitID')
+  const staffUnitID = store.get('staffUnitID')
   store.currentDataName = dataName
   me.updatestaffunitcaption(staffUnitID)
 }
@@ -194,7 +194,7 @@ function assignCaptions (ctxt) {
 
   let { staffUnitID, tabNo, employeeID, employeeOnStaffType } = execParams
   if (!tabNo || !staffUnitID || !employeeID || !employeeOnStaffType) {
-    let currentRow = UB.Repository(me.entity.name)
+    const currentRow = UB.Repository(me.entity.name)
       .attrs(['tabNo', 'staffUnitID', 'employeeID', 'employeeOnStaffType'])
       .where('[ID]', '=', execParams.ID).selectSingle()
     if (!currentRow) return
@@ -204,11 +204,11 @@ function assignCaptions (ctxt) {
     employeeOnStaffType = employeeOnStaffType || currentRow.employeeOnStaffType
   }
   const supportedLangs = me.entity.connectionConfig.supportLang
-  let depFieldList = []
-  let empFieldList = []
-  let eosTypeFieldList = []
+  const depFieldList = []
+  const empFieldList = []
+  const eosTypeFieldList = []
   supportedLangs.forEach(function (lang) {
-    let suffix = '_' + lang + '^'
+    const suffix = '_' + lang + '^'
     eosTypeFieldList.push('name' + suffix)
     depFieldList.push('parentID.caption' + suffix)
     empFieldList.push('shortFIO' + suffix)
@@ -222,15 +222,15 @@ function assignCaptions (ctxt) {
       .limit(1).selectSingle()
   }
 
-  let depInfo = UB.Repository('org_staffunit').attrs(depFieldList)
+  const depInfo = UB.Repository('org_staffunit').attrs(depFieldList)
     .misc({ __mip_recordhistory_all: true }).selectById(staffUnitID)
-  let employeeInfo = UB.Repository('org_employee').attrs(empFieldList).selectById(employeeID)
+  const employeeInfo = UB.Repository('org_employee').attrs(empFieldList).selectById(employeeID)
   if (!employeeInfo) return // employee can be deleted - issue unitybase/ubjs#46
   supportedLangs.forEach(function (lang) {
-    let suffix = '_' + lang + '^'
+    const suffix = '_' + lang + '^'
     // [unitybase/ubjs#14] - in case `shortFIO` is not defined use the `lastName` (it's not null attribute)
-    let empName = employeeInfo['shortFIO' + suffix] || employeeInfo['lastName' + suffix]
-    let depName = depInfo['parentID.caption' + suffix]
+    const empName = employeeInfo['shortFIO' + suffix] || employeeInfo['lastName' + suffix]
+    const depName = depInfo['parentID.caption' + suffix]
     let eosType = ''
     if (eosTypeInfo) {
       eosType = ' - (' + eosTypeInfo['name' + suffix] + ')'

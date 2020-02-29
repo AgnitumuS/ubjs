@@ -5,7 +5,7 @@ const Session = UB.Session
 // eslint-disable-next-line camelcase
 const me = org_employee
 
-let ubaAuditPresent = App.domainInfo.has('uba_audit')
+const ubaAuditPresent = App.domainInfo.has('uba_audit')
 let auditStore
 if (ubaAuditPresent) {
   auditStore = UB.DataStore('uba_audit')
@@ -35,7 +35,7 @@ function updateCaptionAndLogToAudit (ctx) {
  */
 function updateUserFullName (ctx, allowSelectBeforeUpdate) {
   let { fullFIO, firstName, lastName, userID } = ctx.mParams.execParams
-  if (fullFIO === undefined && firstName === undefined && lastName === undefined && !ctx.mParams.syncUser ) {
+  if (fullFIO === undefined && firstName === undefined && lastName === undefined && !ctx.mParams.syncUser) {
     // No name-related attributes updated, do not touch user in such a case
   }
 
@@ -71,7 +71,6 @@ function updateUserFullName (ctx, allowSelectBeforeUpdate) {
   })
 }
 
-
 /**
  * Update org_staffunit.caption for all staff units of current employee
  * @private
@@ -80,20 +79,20 @@ function updateUserFullName (ctx, allowSelectBeforeUpdate) {
 function updateStaffUnitCaption (ctxt) {
   const execParams = ctxt.mParams.execParams
   // in case shortFIO on any language is modified
-  let attrsForUpdate = Object.keys(execParams)
-  let needUpdate = attrsForUpdate.find(attrName => attrName.startsWith('shortFIO'))
+  const attrsForUpdate = Object.keys(execParams)
+  const needUpdate = attrsForUpdate.find(attrName => attrName.startsWith('shortFIO'))
   if (!needUpdate) return
   // and employee is assigned to staff
-  let myStaffs = UB.Repository('org_employeeonstaff')
+  const myStaffs = UB.Repository('org_employeeonstaff')
     .attrs('staffUnitID')
     .where('[employeeID]', '=', execParams.ID)
     .select()
   if (myStaffs.rowCount === 0) return
 
-  let updParams = {
+  const updParams = {
     ['caption_' + App.defaultLang + '^']: ''
   }
-  let staffUnitStore = UB.DataStore('org_staffunit')
+  const staffUnitStore = UB.DataStore('org_staffunit')
   while (!myStaffs.eof) {
     const staffID = myStaffs.get(0)
     const currentRow = UB.Repository('org_staffunit').attrs(['ID']).selectById(staffID)
@@ -120,8 +119,8 @@ function ubaAuditLinkUser (ctx) {
   const execParams = ctx.mParams.execParams
   if (!execParams.userID) return
 
-  let userName = Session.uData.login
-  let linkUserName = UB.Repository('uba_user').attrs('name')
+  const userName = Session.uData.login
+  const linkUserName = UB.Repository('uba_user').attrs('name')
     .where('[ID]', '=', execParams.userID)
     .selectScalar()
 
@@ -138,7 +137,6 @@ function ubaAuditLinkUser (ctx) {
     }
   })
   updateUserFullName(ctx, false)
-
 }
 
 /**
@@ -153,8 +151,8 @@ function ubaAuditLinkUserModify (ctx) {
   let actionUser
   let oldValues, linkUser
 
-  let origStore = ctx.dataStore
-  let origName = origStore.currentDataName
+  const origStore = ctx.dataStore
+  const origName = origStore.currentDataName
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
     oldValues = origStore.getAsJsObject()
@@ -213,8 +211,8 @@ function ubaAuditLinkUserDelete (ctx) {
   const params = ctx.mParams.execParams
   let oldValues, linkUser
 
-  let origStore = ctx.dataStore
-  let origName = origStore.currentDataName
+  const origStore = ctx.dataStore
+  const origName = origStore.currentDataName
   try {
     origStore.currentDataName = 'selectBeforeDelete'
     oldValues = origStore.getAsJsObject()
@@ -225,7 +223,7 @@ function ubaAuditLinkUserDelete (ctx) {
     origStore.currentDataName = origName
   }
   if (oldValues.userID) {
-    let actionUser = Session.uData.login
+    const actionUser = Session.uData.login
     linkUser = UB.Repository('uba_user').attrs('name').where('[ID]', '=', oldValues.userID).select()
     auditStore.run('insert', {
       execParams: {

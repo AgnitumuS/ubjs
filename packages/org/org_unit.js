@@ -12,13 +12,13 @@ me.on('insert:before', checkTreeIsNotSelfCircled)
  * @param {ubMethodParams} ctxt
  */
 function checkTreeIsNotSelfCircled (ctxt) {
-  let {ID, parentID} = ctxt.mParams.execParams
+  const { ID, parentID } = ctxt.mParams.execParams
   if (!parentID) return true
 
-  let store = UB.Repository('org_unit').attrs(['ID', 'parentID', 'mi_treePath'])
+  const store = UB.Repository('org_unit').attrs(['ID', 'parentID', 'mi_treePath'])
     .where('[parentID]', '=', parentID).select()
   if (store.rowCount > 0 || ((store.get('mi_treePath') || '').indexOf(ID) > 0)) {
-    let pList = (store.get('mi_treePath') || '').split('/')
+    const pList = (store.get('mi_treePath') || '').split('/')
     if (pList.indexOf(ID.toString()) >= 0) {
       throw new UB.UBAbort('<<<orgTreeCanNotBeCyclical>>>')
     }
@@ -33,14 +33,14 @@ const STAFFUNIT_STORE = UB.DataStore('org_staffunit')
 function updateStaffUnitCaption (ctxt) {
   const execParams = ctxt.mParams.execParams
 
-  let attrs = Object.keys(execParams)
-  let needUpdateStaffUnit = attrs.find(attrName => attrName.startsWith('caption'))
+  const attrs = Object.keys(execParams)
+  const needUpdateStaffUnit = attrs.find(attrName => attrName.startsWith('caption'))
   if (!needUpdateStaffUnit) return
 
-  let updParams = {
+  const updParams = {
     ['caption_' + App.defaultLang + '^']: ''
   }
-  let staffUnits = UB.Repository('org_staffunit').attrs('[ID]')
+  const staffUnits = UB.Repository('org_staffunit').attrs('[ID]')
     .where('parentID', '=', execParams.ID).select()
   while (!staffUnits.eof) {
     updParams.ID = staffUnits.get(0)
