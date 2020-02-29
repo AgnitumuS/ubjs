@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.0.113] - 2020-02-29
+### Changed
  - entities localization files (*.meta.??) are moved to `meta_locale` folder
  
 ## [5.0.54] - 2019-04-28

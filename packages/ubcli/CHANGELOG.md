@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - use `model.realPath` in `ubcli` scripts instead of calculating absolute models path manually
-   
+
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
+## [5.5.0] - 2020-02-29
+### Changed
+ - use `model.realPath` in `ubcli` scripts instead of calculating absolute models path manually
+   
 ## [5.4.21] - 2020-02-23
 ### Fixed
  - `npx ubcli generateNginxCfg` - expires 600; should be added to `/clientRequire`, `/models` and `/static` locations

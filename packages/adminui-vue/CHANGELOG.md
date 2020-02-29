@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [1.10.0] - 2020-02-29
+### Fixed
  - error while opening a multilanguage attribute editor (`truncTimeToUTCNull` will skip such attributes)
  - `UTableEntity` filters for different columns no more overrides each other
  - FTS navbar widget will not intercept `Ctrl+F` in case fts is disabled in config and widget is hidden

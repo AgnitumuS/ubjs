@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - ESLint warnings fixed (mostly let -> const)
- 
+
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
+## [5.2.0] - 2020-02-29
+### Changed
+ - ESLint warnings fixed (mostly let -> const)
+ 
 ## [5.1.17] - 2020-02-03
 ### Changed
  - `Repository.joinCondition` will throw in case clause name already in jointAs

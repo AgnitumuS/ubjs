@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.0] - 2020-02-29
 ## [5.4.10] - 2020-02-23
 ### Changed
  - `AsyncConnection.query` method will add a method names into post request URL, so calls to `ubql` endpoint will become

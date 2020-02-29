@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.2.0] - 2020-02-29
+### Added
  - new attribute `model.realPath` is added to each model collection item returned by `argv.getServerConfiguration()`.
  Contains a full file system path to the model folder
 
@@ -16,12 +27,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  `JSON.parse(store.asJSON*)` which require to serialize store into string -> pass string from native code into JS runtime -> parse it using JSON.parse.
  
  This give a 20% performance boots for `store to JS object` operation.       
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.1.44] - 2020-02-10
 ## [5.1.43] - 2020-02-08

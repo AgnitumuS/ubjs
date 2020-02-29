@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - entities localization files (*.meta.??) are moved to `meta_locale` folder
- 
+
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
+## [5.3.0] - 2020-02-29
+### Changed
+ - entities localization files (*.meta.??) are moved to `meta_locale` folder
+ 
 ## [5.2.53] - 2020-02-23
 ### Added
  - scanner settings - adds a PDF/A output format - to be used in nm-scanner plugin 

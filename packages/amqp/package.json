@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/amqp",
-  "version": "1.0.41",
+  "version": "1.0.42",
   "description": "This library tries to mimic amqplib nodejs library API but in synchronous mode which is natural for UnityBase",
   "main": "./amqp.js",
   "public": true,
@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@unitybase/fpc-utils": "^5.0.8",
-    "@unitybase/stubs": "^5.0.28",
+    "@unitybase/stubs": "^5.1.0",
     "@unitybase/update-changelog": "^1.0.3"
   },
   "engines": {

@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.4.0] - 2020-02-29
+### Added
  - **metadata transformation hook**: in case `_hookMetadataTransformation.js` file exists in the root of the model folder it's export
  will be applied to Domain JSON before Domain is created. This hook allow apply any modifications to metadata (*.meta).
  Usage example: `apps/autotest/models/TST/_hookMetadataTransformation.js` 
@@ -38,8 +49,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
  - `onlyOfficeEndpoints` module. Moved to a separate package '@unitybase/only-office'
  
-### Fixed
-
 ## [5.3.19] - 2020-02-23
 ### Added
  - new method `Session._buildPasswordHash` - create a password hash for login/plainPassword pair. Can be overrated by application
