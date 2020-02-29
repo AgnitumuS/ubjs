@@ -3,25 +3,25 @@ const assert = require('assert')
 const ok = assert.ok
 const argv = require('@unitybase/base').argv
 
-let i18nData = {
-  'en': {
+const i18nData = {
+  en: {
     notAssigned: 'Not assigned'
   },
-  'ru': {
+  ru: {
     notAssigned: 'Не назначено'
   },
-  'uk': {
+  uk: {
     notAssigned: 'Не призначено'
   },
-  'az': {
+  az: {
     notAssigned: 'Təyin edilməyib'
   }
 }
 
-let session = argv.establishConnectionFromCmdLineAttributes()
-let conn = session.connection
+const session = argv.establishConnectionFromCmdLineAttributes()
+const conn = session.connection
 
-let appInfo = conn.getAppInfo()
+const appInfo = conn.getAppInfo()
 
 try {
   console.debug('Start ORG model test')
@@ -31,7 +31,7 @@ try {
 }
 
 function testORG () {
-  let empID = conn.lookup('org_employee', 'ID', {expression: 'code', condition: 'equal', values: {code: '12356456'}})
+  let empID = conn.lookup('org_employee', 'ID', { expression: 'code', condition: 'equal', values: { code: '12356456' } })
   if (!empID) {
     empID = conn.insert({
       entity: 'org_employee',
@@ -53,7 +53,7 @@ function testORG () {
   var orgUnitID = conn.lookup('org_organization', 'ID', {
     expression: 'code',
     condition: 'equal',
-    values: {code: '6789012345'}
+    values: { code: '6789012345' }
   })
   if (!orgUnitID) {
     orgUnitID = conn.insert({
@@ -73,7 +73,7 @@ function testORG () {
   var professionID = conn.lookup('org_profession', 'ID', {
     expression: 'code',
     condition: 'equal',
-    values: {code: '7878'}
+    values: { code: '7878' }
   })
   if (!professionID) {
     professionID = conn.insert({
@@ -91,7 +91,7 @@ function testORG () {
   var staffUnitTypeID = conn.lookup('cdn_staffunittype', 'ID', {
     expression: 'code',
     condition: 'equal',
-    values: {code: '01'}
+    values: { code: '01' }
   })
   if (!staffUnitTypeID) {
     staffUnitTypeID = conn.insert({
@@ -108,7 +108,7 @@ function testORG () {
   var staffUnitID = conn.lookup('org_staffunit', 'ID', {
     expression: 'code',
     condition: 'equal',
-    values: {code: '797979'}
+    values: { code: '797979' }
   })
   if (!staffUnitID) {
     staffUnitID = conn.insert({
@@ -140,7 +140,7 @@ function testORG () {
 
   checkCaption('org_staffunit', staffUnitID)
 
-  empID = conn.lookup('org_employee', 'ID', {expression: 'code', condition: 'equal', values: {code: '888888'}})
+  empID = conn.lookup('org_employee', 'ID', { expression: 'code', condition: 'equal', values: { code: '888888' } })
   if (!empID) {
     empID = conn.insert({
       entity: 'org_employee',
@@ -172,8 +172,8 @@ function testORG () {
   })
   ok(empOnStaffID, 'can`t assign  staff unit record to org_employeeonstaff')
 
-  //MPV - TEMPORARY return here
-  //TODO - rewrite using HARDCODED expected values!!!!!!
+  // MPV - TEMPORARY return here
+  // TODO - rewrite using HARDCODED expected values!!!!!!
   // return
   //
   // checkCaption('org_staffunit', staffUnitID)
@@ -223,10 +223,10 @@ function i18n (str, lang) {
 }
 
 function checkCaption (entity, ID) {
-  var captionExpected = getCaptionExpected(entity, ID),
-    captionActual = getCaptionActual(entity, ID)
+  var captionExpected = getCaptionExpected(entity, ID)
+  var captionActual = getCaptionActual(entity, ID)
   _.forEach(captionActual, function (caption, attr) {
-    assert.equal(caption.trim(), captionExpected[attr].trim(),
+    assert.strictEqual(caption.trim(), captionExpected[attr].trim(),
       'Invalid caption for ' + entity + '.' + attr + '(ID=' + ID +
       ') Expected: "' + captionExpected[attr].trim() + '", actual: "' + caption.trim() + '"'
     )
@@ -244,11 +244,10 @@ function getCaptionExpected (entity, ID) {
 }
 
 function getEmployeeList (staffUnitID, supportLang) {
-  var
-    staffs,
-    staffsFieldList = [],
-    result = {},
-    lastOnStaff
+  var staffs
+  var staffsFieldList = []
+  var result = {}
+  var lastOnStaff
   supportLang.forEach(function (lang) {
     var
       suffix = '_' + lang + '^'
@@ -266,8 +265,8 @@ function getEmployeeList (staffUnitID, supportLang) {
   lastOnStaff = staffs[staffs.length - 1]
   supportLang.forEach(function (lang) {
     var
-      suffix = '_' + lang + '^',
-      employeeList = ''
+      suffix = '_' + lang + '^'
+    var employeeList = ''
     staffs.forEach(function (item) {
       employeeList += (item['employeeID.shortFIO' + suffix])
       if (item != lastOnStaff) {
@@ -281,11 +280,11 @@ function getEmployeeList (staffUnitID, supportLang) {
 
 function getCaptionForStaffUnitExpected (ID) {
   var
-    sLang = appInfo.supportedLanguages,
-    staffUnitFieldList = [],
-    rec = null,
-    result = {},
-    employeeList = {}
+    sLang = appInfo.supportedLanguages
+  var staffUnitFieldList = []
+  var rec = null
+  var result = {}
+  var employeeList = {}
   sLang.forEach(function (lang) {
     var
       suffix = '_' + lang + '^'
@@ -297,9 +296,9 @@ function getCaptionForStaffUnitExpected (ID) {
   employeeList = getEmployeeList(ID, sLang)
   sLang.forEach(function (lang) {
     var
-      suffix = '_' + lang + '^',
-      depName = rec['parentID.caption' + suffix],
-      staffUnitName = rec['name' + suffix]
+      suffix = '_' + lang + '^'
+    var depName = rec['parentID.caption' + suffix]
+    var staffUnitName = rec['name' + suffix]
 
     result['caption' + suffix] = (employeeList[lang] || i18n('notAssigned', lang)) + ' (' + depName + ' ' + staffUnitName + ')'
   })
@@ -308,16 +307,16 @@ function getCaptionForStaffUnitExpected (ID) {
 
 function getCaptionForEmpOnStaffExpected (ID) {
   var
-    sLang = appInfo.supportedLanguages,
-    depFieldList = [],
-    empFieldList = [],
-    employeeInfo,
-    depInfo,
-    currentRow = conn.Repository('org_employeeonstaff')
-      .attrs(['tabNo', 'staffUnitID', 'employeeID'])
-      .selectById(ID),
-    result = {},
-    {employeeID, tabNo, staffUnitID} = currentRow
+    sLang = appInfo.supportedLanguages
+  var depFieldList = []
+  var empFieldList = []
+  var employeeInfo
+  var depInfo
+  var currentRow = conn.Repository('org_employeeonstaff')
+    .attrs(['tabNo', 'staffUnitID', 'employeeID'])
+    .selectById(ID)
+  var result = {}
+  var { employeeID, tabNo, staffUnitID } = currentRow
 
   sLang.forEach(function (lang) {
     var
@@ -330,9 +329,9 @@ function getCaptionForEmpOnStaffExpected (ID) {
   employeeInfo = conn.Repository('org_employee').attrs(empFieldList).selectById(employeeID)
   sLang.forEach(function (lang) {
     var
-      suffix = '_' + lang + '^',
-      empName = employeeInfo['shortFIO' + suffix],
-      depName = depInfo['parentID.caption' + suffix]
+      suffix = '_' + lang + '^'
+    var empName = employeeInfo['shortFIO' + suffix]
+    var depName = depInfo['parentID.caption' + suffix]
     result['caption' + suffix] = empName + ' (' + tabNo + ',' + depName + ')'
   })
   return result
@@ -340,10 +339,10 @@ function getCaptionForEmpOnStaffExpected (ID) {
 
 function getCaptionActual (entityName, ID) {
   var
-    data = conn.Repository(entityName).where('[ID]', '=', ID),
-    sLang = appInfo.supportedLanguages,
-    fList = [],
-    store
+    data = conn.Repository(entityName).where('[ID]', '=', ID)
+  var sLang = appInfo.supportedLanguages
+  var fList = []
+  var store
   sLang.forEach(function (lang) {
     fList.push('caption_' + lang + '^')
   })

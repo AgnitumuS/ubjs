@@ -8,31 +8,26 @@
  * Used by `ubcli initialize` command
  * @param {ServerSession} session
  */
-module.exports = function(session){
+module.exports = function (session) {
+  const conn = session.connection
 
-    var conn = session.connection;
+  console.log('\t\tcreate `orgNodeAdmin` role')
+  conn.insert({
+    entity: 'uba_role',
+    execParams: {
+      name: 'orgNodeAdmin',
+      description: 'Administrator of organization node.',
+      sessionTimeout: 30
+    }
+  })
 
-    console.log('\t\tcreate `orgNodeAdmin` role');
-    var usersRoleID = conn.insert({
-        entity: 'uba_role',
-        fieldList: ['ID'],
-        execParams: {
-            name: 'orgNodeAdmin',
-            description: 'Administrator of organization node.',
-	    sessionTimeout: 30
-        }
-    });
-
-    console.log('\t\tcreate `orgAllNodeAccess` role');
-    var usersRoleID = conn.insert({
-        entity: 'uba_role',
-        fieldList: ['ID'],
-        execParams: {
-            name: 'orgAllNodeAccess',
-            description: 'Administrator of all organization node.',
-	    sessionTimeout: 30
-        }
-    });
-
-
-};
+  console.log('\t\tcreate `orgAllNodeAccess` role')
+  conn.insert({
+    entity: 'uba_role',
+    execParams: {
+      name: 'orgAllNodeAccess',
+      description: 'Administrator of all organization node.',
+      sessionTimeout: 30
+    }
+  })
+}
