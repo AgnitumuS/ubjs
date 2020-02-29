@@ -1,20 +1,21 @@
 {
-	"caption": "Test FB",
-	"description": "Test firebird",
-	"connectionName": "",
-	"attributes": {
-		"name": {
-		 	"dataType": "String",
-			"size": 100,
-            		"caption": "Name",
-            		"allowNull": false,
-			"isMultiLang": false
-		}	
-	},
-    "mixins": {
-        "mStorage": {
-            "simpleAudit": true,
-            "safeDelete": false
-        }
+  "caption": "Test FB",
+  "description": "Test firebird",
+  "connectionName": "",
+  "attributes": [
+    {
+      "name": "name",
+      "dataType": "String",
+      "size": 100,
+      "caption": "Name",
+      "allowNull": false,
+      "isMultiLang": false
     }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": false
+    }
+  }
 }

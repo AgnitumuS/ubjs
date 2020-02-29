@@ -226,7 +226,7 @@ function initializeDomain () {
   const { addEntityMethod } = process.binding('ub_app')
   const { getDomainInfo } = process.binding('ub_app')
   // create scope for all domain objects
-  const tempDomain = new UBDomain(JSON.parse(getDomainInfo(true)))
+  const tempDomain = new UBDomain(getDomainInfo(true))
   tempDomain.eachEntity(entity => {
     const e = global[entity.code] = { }
     Object.defineProperty(e, 'entity', {

@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - new attribute `model.realPath` if added to for each model collection item returned by `argv.getServerConfiguration()`.
+ - new attribute `model.realPath` is added to each model collection item returned by `argv.getServerConfiguration()`.
  Contains a full file system path to the model folder
 
 ### Changed

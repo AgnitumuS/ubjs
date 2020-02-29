@@ -1,44 +1,45 @@
-﻿{
-	"caption": "tst_mainunity",
-	"description": "ub test main unity",
-	"connectionName": "",
-	"sqlAlias": "tmu",
-	"descriptionAttribute": "caption",
-	"cacheType": "None",
-	"attributes": {
-		"code":
-		{
-			"dataType": "String",
-			"size": 32,
-			"caption": "Code",
-			"allowNull": false
-		},
-		"caption":
-		{
-			"dataType": "String",
-			"size": 255,
-			"caption": "Caption",
-			"allowNull": true,
-			"isMultiLang": true
-		},
-		"mi_wfState": {
-            "dataType": "Enum",
-            "enumGroup": "AUDIT_ACTION",
-            "caption": "Состояние",
-            "allowNull": true,
-            "defaultValue": "INSERT"
-        }
-	},
-	"mixins": {
-        "als": {
-            "enabled": true,
-            "stateAttrName": "mi_wfState",
-            "stateEnumGroup": "AUDIT_ACTION",
-            "optimistic": true
-        },
-		"mStorage": {
-			"simpleAudit": false,
-			"safeDelete": true
-        }
-	}
+{
+  "caption": "tst_mainunity",
+  "description": "ub test main unity",
+  "connectionName": "",
+  "sqlAlias": "tmu",
+  "descriptionAttribute": "caption",
+  "cacheType": "None",
+  "attributes": [
+    {
+      "name": "code",
+      "dataType": "String",
+      "size": 32,
+      "caption": "Code",
+      "allowNull": false
+    },
+    {
+      "name": "caption",
+      "dataType": "String",
+      "size": 255,
+      "caption": "Caption",
+      "allowNull": true,
+      "isMultiLang": true
+    },
+    {
+      "name": "mi_wfState",
+      "dataType": "Enum",
+      "enumGroup": "AUDIT_ACTION",
+      "caption": "Состояние",
+      "allowNull": true,
+      "defaultValue": "INSERT"
+    }
+  ],
+  "mixins": {
+    "als": {
+      "enabled": true,
+      "stateAttrName": "mi_wfState",
+      "stateEnumGroup": "AUDIT_ACTION",
+      "optimistic": true
+    },
+    "mStorage": {
+      "simpleAudit": false,
+      "safeDelete": true
+    }
+  }
 }

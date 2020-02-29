@@ -278,7 +278,7 @@ TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
   return true
 }
 
-if (typeof TubDataStore.getAsJsArray !== 'function') { // fallback to JSON.parse for UB server < 5.17.16
+if (typeof TubDataStore.getAsJsArray !== 'function') { // fallback to JSON.parse for UB server < 5.18.0
   TubDataStore.getAsJsArray = function () {
     return JSON.parse(this.asJSONArray)
   }

@@ -1,35 +1,39 @@
-﻿{
-	"caption": "tst_3unity",
-	"description": "ub test main unity",
-	"connectionName": "",
-	"descriptionAttribute": "caption",
-	"cacheType": "None",
-	"attributes": {
-		"code":
-		{
-			"dataType": "String",
-			"size": 32,
-			"caption": "Code",
-			"allowNull": false
-		},
-		"caption":
-		{
-			"dataType": "String",
-			"size": 255,
-			"caption": "Caption",
-			"allowNull": true,
-			"isMultiLang": true
-		}
-	},
-	"mixins": {
-		"mStorage": {
-			"simpleAudit": true,
-			"safeDelete": true
-        },
-	"unity": { 
-			"entity": "tst_2unity",
-			"attributeList": ["code"],
-			"defaults": {"caption": "3nd"} 
-		}
-	}
+{
+  "caption": "tst_3unity",
+  "description": "ub test main unity",
+  "connectionName": "",
+  "descriptionAttribute": "caption",
+  "cacheType": "None",
+  "attributes": [
+    {
+      "name": "code",
+      "dataType": "String",
+      "size": 32,
+      "caption": "Code",
+      "allowNull": false
+    },
+    {
+      "name": "caption",
+      "dataType": "String",
+      "size": 255,
+      "caption": "Caption",
+      "allowNull": true,
+      "isMultiLang": true
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    },
+    "unity": {
+      "entity": "tst_2unity",
+      "attributeList": [
+        "code"
+      ],
+      "defaults": {
+        "caption": "3nd"
+      }
+    }
+  }
 }

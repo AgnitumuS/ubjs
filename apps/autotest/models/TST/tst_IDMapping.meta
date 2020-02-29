@@ -1,41 +1,49 @@
-﻿{
-	"caption": "ID mapped",
-	"description": "Test for mapped ID [UB-1219]",
-	"connectionName": "",
-	"descriptionAttribute": "code",
-	"documentation": "",
-	"attributes": {
-		"ID": {
-			"caption": "Ідентифікатор запису",
-			"dataType": "BigInt",
-			"allowNull": false,
-			"description": "Ідентифікатор запису",
-			"isUnique": false,
-			"documentation": "Ідентифікатор запису",
-			"mapping": {
-				"AnsiSQL": { "expression": "C_ID" }
-			}
-		},
-		"code": {
-			"dataType": "String",
-			"size": 32,
-			"caption": "Code",
-			"description": "Internal code",
-			"allowNull": false,
-			"mapping": [
-				{"name": "AnsiSQL", "expressionType": "Field", "expression": "C_CODE" }
-			]
-                }
-	},
-	"mapping": {
-		"AnsiSQL": {
-			"pkGenerator": "SEQ_UBMAIN_BY1" 
-		}
-	},
-	"mixins": {
-		"mStorage": {
-			"simpleAudit":false,
-			"safeDelete":false
-        	}
-	}
+{
+  "caption": "ID mapped",
+  "description": "Test for mapped ID [UB-1219]",
+  "connectionName": "",
+  "descriptionAttribute": "code",
+  "documentation": "",
+  "attributes": [
+    {
+      "name": "ID",
+      "caption": "Ідентифікатор запису",
+      "dataType": "BigInt",
+      "allowNull": false,
+      "description": "Ідентифікатор запису",
+      "isUnique": false,
+      "documentation": "Ідентифікатор запису",
+      "mapping": [
+        {
+          "name": "AnsiSQL",
+          "expression": "C_ID"
+        }
+      ]
+    },
+    {
+      "name": "code",
+      "dataType": "String",
+      "size": 32,
+      "caption": "Code",
+      "description": "Internal code",
+      "allowNull": false,
+      "mapping": [
+        {
+          "name": "AnsiSQL",
+          "expressionType": "Field",
+          "expression": "C_CODE"
+        }
+      ]
+    }
+  ],
+  "mapping": [{
+      "name": "AnsiSQL",
+      "pkGenerator": "SEQ_UBMAIN_BY1"
+  }],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": false,
+      "safeDelete": false
+    }
+  }
 }

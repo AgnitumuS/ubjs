@@ -23,17 +23,40 @@ UB.start()
 ```
 
 ## Application initialization
+### once on server startup (single thread mode, http server do not accent connections)
+ This stage is added in UB@5.18.0 to allow custom Domain transformation before any other steps is performed.
+ 
+ Just after UB starts in server mode it creates a single-thread JavaScript runtime and use a `@unitybase/ub/metadataTransformation.js`
+ script as an entry point for Domain loading. Script loads all `*.meta` and `*.meta.lang` files into memory, merge files with the same names
+ and calls a `_hookMetadataTransformation.js` hook from models folders (if available) with two parameters `(domainJSON, serverConfig)`
+ 
+ Metadata transformation hook can mutate a Domain JSON, for example - adds additional attributes to the entities and lang files, etc     
+ 
+ Files are merged and hooks are called in order models appears in `application.domain.models` server config section.
+ 
+ After all hooks are called resulting domainJSON is passed back to UB to initialize a Domain classes.
+ 
+ UB initialize Domain, spawn JS working thread and switch to multi-thread mode.  
+   
+### JS working thread (multi-thread mode)
+  After switching to multi-thread UB will reuse a previously created JavaScript runtime and evaluate a UB.js script.
+  Every new working thread will also evaluate `UB.js`
+  
+  UB.js script content is embedded into executable, but it sources is also available in `@unitybase/stubs/UB.js`.
+  The task of UB.js script is to require and run an application entry point script (main from package.json). 
+  
+  As described above entry point script will execute a UB.start() and   
+    
 {@link module:@unitybase/ub~start UB.start} method of `@unitybase/ub` package will:
  - parse application config passed as `-cfg` command line parameter to `ub`
  and put parsed content to {@link class:App#serverConfig App.serverConfig}
  - create HTTP server and configure it using parameters from `httpServer` config section
-
-and perform steps below for every HTTP thread:
- - read and validate all `*.meta` files from folders, defined in `application.domain.models`
- - for each model from `application.domain.models` folders (except ones marked as `_public_only_`)
-  load a model (see below)
- - register build-in UnityBase {@link module:@unitybase/ub.module:endpoints endpoints}
- - emit {@link class:App#domainIsLoaded App.domainIsLoaded} event
+ - perform steps below for every HTTP thread:
+     - read and validate all `*.meta` files from folders, defined in `application.domain.models`
+     - for each model from `application.domain.models` folders (except ones marked as `_public_only_`)
+      load a model (see below)
+     - register build-in UnityBase {@link module:@unitybase/ub.module:endpoints endpoints}
+     - emit {@link class:App#domainIsLoaded App.domainIsLoaded} event
 
 ## Model
 ### Server-side

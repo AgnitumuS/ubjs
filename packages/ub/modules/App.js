@@ -362,7 +362,7 @@ Object.defineProperty(App, 'domainInfo', {
   enumerable: true,
   get: function () {
     if (!_domainCache) {
-      _domainCache = (new UBDomain(JSON.parse(getDomainInfo(true)))) // get extended domain information
+      _domainCache = (new UBDomain(getDomainInfo(true))) // get extended domain information
     }
     return _domainCache
   }
