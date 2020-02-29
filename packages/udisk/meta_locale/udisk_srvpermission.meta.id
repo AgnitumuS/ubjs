@@ -1,0 +1,26 @@
+{
+  "caption": "akses umum",
+  "description": "akses umum",
+  "attributes": [
+    {
+      "name": "cardID",
+      "caption": "Kartu",
+      "description": "Kartu"
+    },
+    {
+      "name": "userID",
+      "caption": "pemakai",
+      "description": "pemakai"
+    },
+    {
+      "name": "accessType",
+      "caption": "Jenis akses",
+      "description": "Jenis akses pemilik ###, membaca, menulis, delegasi"
+    },
+    {
+      "name": "parentID",
+      "caption": "parentID",
+      "description": "parentID"
+    }
+  ]
+}

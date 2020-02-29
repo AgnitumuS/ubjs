@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+
+### Changed
+ - entities localization files (*.meta.??) are moved to `meta_locale` folder
+ 
 ## [5.0.54] - 2019-04-28
 ### Fixed
  - initialization script adopted for UB 5x

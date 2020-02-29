@@ -258,7 +258,7 @@
             "items": {
                 "type": "object",
                 "additionalProperties": false,
-                "required": ["name", "selectName", "execName"],
+                "required": ["name"],
                 "properties": {
                     "name": {
                         "type": "string",

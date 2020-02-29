@@ -1,8 +1,6 @@
 {
-	"caption": "Test servises",
-	"description": "List of test commands",
-	"dsType": "Virtual",
-	"attributes": {
-
-	}
+  "caption": "Test servises",
+  "description": "List of test commands",
+  "dsType": "Virtual",
+  "attributes": []
 }

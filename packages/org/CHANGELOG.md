@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - entities localization files (*.meta.??) are moved to `meta_locale` folder
 
 ### Deprecated
 
@@ -17,7 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.56] - 2020-02-23
 ### Added
- - vue form adedd for org_execgruop
+ - vue form added for org_execgruop
 
 ### Changed
  - `Session.on('login', ...)` event handler now queries and records all Execution Groups IDs into `orgUnitIDs` member

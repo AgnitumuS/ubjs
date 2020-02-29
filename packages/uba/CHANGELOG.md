@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - replace all occurrences of `store.asJSONObject` -> `store.getAsTextInObjectNotation()` according to latest changes in DataStore 
+ - replace all occurrences of `store.asJSONObject` -> `store.getAsTextInObjectNotation()` according to latest changes in DataStore
+ - entities localization files (*.meta.??) are moved to `meta_locale` folder 
 
 ### Deprecated
 
@@ -45,7 +46,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `uba_user.trustedIP` attribute size increased to 2000
 
 ### Fixed
-- ALS form: allow to change newly added record by enabling Save & SaveDiffInFile
+ - ALS form: allow to change newly added record by enabling Save & SaveDiffInFile
 
 ## [5.3.26] - 2020-01-31
 ## [5.3.25] - 2020-01-17

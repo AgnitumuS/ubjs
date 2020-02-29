@@ -6,9 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - **metadata transformation hook**: in case `_hookMetadataTransformation.js` file exists in the root of the model folder it's export
+ will be applied to Domain JSON before Domain is created. This hook allow apply any modifications to metadata (*.meta).
+ Usage example: `apps/autotest/models/TST/_hookMetadataTransformation.js` 
+        
  - `dataStore.getAsJsObject()` and `dataStore.getAsJsArray()` methods - direct serialization of TubDataStore into JS Object
  without using `JSON.parse`. This is 20% faster compared to `JSON.parse(dataStore.asJSONObject)`.
- In case UB server is of version < 5.17.16 new methods will fallback to `JSON.parse(dataStore.asJSONObject)`
+ In case UB server is of version < 5.18.0 new methods will fallback to `JSON.parse(dataStore.asJSONObject)`
  
  For better performance and code readability we recommend to apply following changes to the applications sources:  
    - `JSON.parse(dataStore.asJSONObject)` -> `dataStore.getAsJsObject()`
@@ -16,8 +20,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  (the easiest way if to search for all case sensitive occurrences of `asJSON`)
    
 ### Changed
+ - metadata **localization** files can be placed in the **model sub-folder** instead of model folder root.
+ We recommend to name such folders `meta_locale`. In fact now localization files can be even moved into his own model.
+ for example for adding a new `zl` localization new model can be created and all `*.meta.zl` files can be placed where.
+ 
+ - Entity metadata merging: in case **several** descendant model contains entity with the same name as
+  original model they `*.meta` files will be **MERGED** (before this patch only **LAST** model metafile is merged with original metafile).
+ 
+ - metadata **localization** files are merged in the same way as *.meta files (see above)
+  
  - entity.schema.json: add conditional requirements for dataType field.
  Now `size` required for dataType=String, associatedEntity for dataType=["Entity", "Many"], etc.
+
 ### Deprecated
  - `TubDataStore.asJSONObject`, `TubDataStore.asJSONArray`
  
