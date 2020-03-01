@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - FileBasedStoreLoader - fix ESLint errors (mostly let -> const)
 
 ### Deprecated
 
