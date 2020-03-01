@@ -2,29 +2,31 @@
 
 ## Introduction
 
-UnityBase is platform for building complex enterprise application. So security is one of most important part of platform. UnityBase security mechanism includes:
+UnityBase is platform for building complex enterprise application. So security is one of most important part of platform.
+UnityBase security mechanism includes:
 
 *   Users, Groups, And Security Roles (UBA model)
 *   different types of authentication and authorization - modified DIGEST, Kerberos, via public/private key, using LDAP
 *   encrypted communication - either HTTPS or more secure internal mechanism
-*   audit - all operation is logged to audit tables (both old and new values are logged)
-*   simple row level audit - ability to memorize creator, modifier and owner of each entity row
-*   safe delete - ability to mark entity row as deleted without psychically delete it from database (or other store)
-*   data history - ability to track history of entity row modification and show row content on specified date
-*   entity-level security (ELS) - ability to restrict access to entity methods
-*   row-level security (RLS) - ability to restrict access to entity data based on row attribute values
-*   access control list (ACL) - ability to restrict access to entity data based on security principal assigned for each entity row
-*   attribute-level security (ALS) - ability to restrict access to entity attribute values based on different criteria
-*   record signing - ability to sign entity attributes using electronic signature
-*   PDF signing - ability to sign PDF documents, including visual signatures
-*   advanced logging mechanism - almost everything server do can be logged without performance lost
+*   audit trail - all operations are logged into audit tables (both old and new values are logged)
+*   simple row level audit - memorize creator, modifier and owner for each entity row
+*   safe delete - mark entity row as deleted without psychically delete it from database (or other store)
+*   data history - track history of entity row modification and show row content on specified date
+*   entity-level security (ELS) - restrict access to entity methods based on user roles
+*   row-level security (RLS) - restrict access to entity rows based on row attributes values + user roles
+*   access control list (ACL) - restrict access to entity rows based on security principal assigned for each entity row
+*   attribute-level security (ALS) - restrict access to entity attribute values based on different criteria
+*   record signing - sign entity attributes using electronic signature
+*   PDF signing - sign PDF documents, including visual signatures
+*   advanced logging mechanism - almost everything what server does can be logged into files without losing performance
 
 ## Users, Groups, And Security Roles
 
-A user is an entity that can be authenticated. A user can be a person or a software entity, such as other information systems. 
+A user is an entity that can be authenticated. A user can be a person or a software entity, such as other information system. 
 Each user is given a unique name. For efficient security management, we recommends adding users to groups. 
 A group is a collection of users who usually have something in common, such as working in the same department in a company 
 or perform a similar tasks, such as "document registration". 
+
 **Groups, users, and user to role assignments are usually created by the supervisor** - person in organization, 
 who monitors and regulates employees and their access rights.
    
@@ -35,7 +37,8 @@ It also defines the set of the `endpoints` to which access is allowed.
 **Security roles and ELS policies are usually created by the application developer**. 
 
 ### Build-in roles
-Table below lists the build-in roles UnityBase define by default. **Do not delete these roles**  - they are used in the default ELS policies.
+Table below lists the build-in roles UnityBase define by default.
+**Do not delete these roles** - they are used in the default ELS policies.
 
 | Role name | Default ELS rules... | Endpoints granted | Granted to groups... |
 |-----------|----------------------|-------------------|----------------------|
@@ -49,11 +52,11 @@ Table below lists the build-in roles UnityBase define by default. **Do not delet
 
 Roles `Anonymous`, `Everyone` and `User` are runtime roles. It assigned automatically by UnityBase server:
  
-  - `User`. This role contains all users who have been authenticated
-  - `Anonymous`. This role is assigned to any non-authorized user
-  - `Everyone`. This role for any anonymous users and all users who have been authenticated
+  - `User`: this role contains all users who have been authenticated
+  - `Anonymous`: this role is assigned to any non-authorized user
+  - `Everyone`: this role for any anonymous users and all users who have been authenticated
 
-We recommends that you add at least one user to the Admin role in addition to the `admin` user. 
+We recommends at least one user to be added into Admin role in addition to the `admin` user. 
 Having at least two administrators at all times helps protect against a single admin user being locked out from a potential security breach. 
 
 ## Authorization & authentication
@@ -88,14 +91,14 @@ authentication algorithm.
 | UBLDAP               | Based on a LDAP catalog | UB |
 | [UBIP](tutorial-security_ubip_schema.html)                 | Based on a caller IP. For a server <-> server communication | UBIP |
 | Negotiate            | SSO using MS Windows domain. Enterprise edition only | UB |
-| CERT                 | Based on a private/public keys. Defence edition only | UB |
+| CERT2                | Based on a private/public keys. Defence edition only | UB |
 | [OpenIDConnect](https://en.wikipedia.org/wiki/OpenID_Connect) | Authentication layer on top of OAuth 2.0 | UB |
 | [JWT](https://jwt.io/)| JSON Web Token - coming soon  | JWT |
 
-Some schemas have it own authorization some are only for a authentication - the last column it the table above note a
+Some schemas have its own authorization some are only for a authentication - the last column it the table above note a
  authorization method.
  
-UnityBase supports One-Time-Passwords (see `uba_otp`) using SMS, EMail and TOTP (Google Authenticator)  
+UnityBase also supports One-Time-Passwords (see `uba_otp`) using SMS, EMail and TOTP (Google Authenticator)  
 
 ### UB authorization
 If future client requests are authorized using UB method, the task of authentication is to elaborate two parameters

@@ -36,7 +36,11 @@ UB.start()
  
  After all hooks are called resulting domainJSON is passed back to UB to initialize a Domain classes.
  
- UB server initialize Domain, evaluate a application entry-point script (see UB.js below) and initialize ELS.
+ UB server:
+  - initialize internal Domain
+  - evaluate a application entry-point script (see UB.js below)
+  - initialize ELS (since all models scripts is evaluated on this point all entity-level methods and endpoints
+    are in Domain, so server can build an access matrix for methods and roles)
  
  UB server switches to multi-thread mode and can accept HTTP requests
     
