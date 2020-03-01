@@ -52,12 +52,8 @@ UB.start()
   
   As described above entry point script will execute a UB.start() and   
     
-{@link module:@unitybase/ub~start UB.start} method of `@unitybase/ub` package will:
- - parse application config passed as `-cfg` command line parameter to `ub`
-   and put parsed content to {@link class:App#serverConfig App.serverConfig}
- - create HTTP server and configure it using parameters from `httpServer` config section
- - perform steps below for every HTTP thread:
-     - read and validate all `*.meta` files from folders, defined in `application.domain.models`
+{@link module:@unitybase/ub~start UB.start} method of `@unitybase/ub` package will perform a steps below
+ (actually for every working thread):
      - for each model from `application.domain.models` folders (except ones marked as `_public_only_`)
       load a model (see below)
      - register build-in UnityBase {@link module:@unitybase/ub.module:endpoints endpoints}
