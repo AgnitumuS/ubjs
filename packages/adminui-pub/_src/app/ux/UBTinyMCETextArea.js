@@ -104,7 +104,7 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
   onStartSetup: function (ed) {
     let me = this
 
-    tinymce.baseURL = $App.connection.baseURL + 'clientRequire/tinymce/'
+    tinymce.baseURL = $App.connection.baseURL + 'clientRequire/tinymce'
     this.fireEvent('setup', ed)
     if (this.userSetup) {
       this.userSetup(ed)
