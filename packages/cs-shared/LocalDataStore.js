@@ -171,7 +171,6 @@ module.exports.doSorting = function (filteredArray, cachedData, ubRequest) {
  */
 function whereListToFunctions (ubql, fieldList) {
   Object.keys(ubql) // FIX BUG WITH TubList TODO - rewrite to native
-  let propIdx, fValue, filterFabricFn
   const filters = []
   const escapeForRegexp = function (text) {
     // convert text to string
@@ -179,7 +178,7 @@ function whereListToFunctions (ubql, fieldList) {
   }
   const whereList = ubql.whereList
 
-  filterFabricFn = function (propertyIdx, condition, value) {
+  const filterFabricFn = function (propertyIdx, condition, value) {
     let regExpFilter
 
     switch (condition) {
@@ -259,10 +258,11 @@ function whereListToFunctions (ubql, fieldList) {
       throw new Error('Condition "custom" is not supported for cached entities')
     }
     property = (property.replace(/(\[)|(])/ig, '') || '').trim()
-    propIdx = fieldList.indexOf(property)
+    const propIdx = fieldList.indexOf(property)
     if (propIdx === -1) {
       throw new Error(`Filtering by attribute "${property}" which is not in fieldList is not allowed for cached entity "${ubql.entity}"`)
     }
+    let fValue
     // support for future (UB 5.10) where with "value" instead of "values"
     if (clause.value !== undefined) {
       fValue = clause.value
@@ -279,6 +279,8 @@ function whereListToFunctions (ubql, fieldList) {
   _.forEach(whereList, transformClause)
   return filters
 }
+
+module.exports.whereListToFunctions = whereListToFunctions
 
 /**
  * Transform result of {@link class:SyncConnection#select SyncConnection.select} response
@@ -354,7 +356,6 @@ module.exports.flatten = function (requestedFieldList, cachedData) {
   let pos = 0
   const resultData = []
   const rowCount = cachedData.data.length
-  let idx, row, fieldCount
 
   if (!requestedFieldList || !requestedFieldList.length) {
     throw new Error('fieldList not exist or empty')
@@ -366,20 +367,21 @@ module.exports.flatten = function (requestedFieldList, cachedData) {
   }
 
   requestedFieldList.forEach(function (field) {
-    idx = cachedFields.indexOf(field)
+    const idx = cachedFields.indexOf(field)
     if (idx !== -1) {
       fldIdxArr.push(idx)
     } else {
       throw new Error('Invalid field list. Attribute ' + field + ' not found in local data store')
     }
   })
-  fieldCount = requestedFieldList.length
+  const fieldCount = requestedFieldList.length
   resultData.length = rowCount * (fieldCount + 1) // reserve fieldCount for field names
   while (++col < fieldCount) {
     resultData[pos] = requestedFieldList[pos]; pos++
   }
   while (++rowIdx < rowCount) {
-    col = -1; row = cachedData.data[rowIdx]
+    col = -1
+    const row = cachedData.data[rowIdx]
     while (++col < fieldCount) {
       resultData[pos++] = row[fldIdxArr[col]]
     }
