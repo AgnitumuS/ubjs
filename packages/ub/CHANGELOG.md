@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - user friendly exception in case UB server version < 5.18. 5.18.0 is a minimal version of server for this package version
 
 ### Changed
 

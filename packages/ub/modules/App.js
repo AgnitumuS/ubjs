@@ -11,6 +11,10 @@ const THTTPResponse = require('./HTTPResponse')
 const THTTPRequest = require('./HTTPRequest')
 const createDBConnections = require('./DBConnections')
 const blobStores = require('@unitybase/blob-stores')
+const base = require('@unitybase/base')
+if (base.ubVersionNum < 5018000) {
+  throw new Error('This version of @unitybase/ub package require UB server to be at last 5.18.0')
+}
 /**
  * @classdesc
  * Singleton instance of UnityBase application. Allow direct access to the database connections, blob stores,
