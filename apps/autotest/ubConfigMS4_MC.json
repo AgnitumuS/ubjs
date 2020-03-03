@@ -6,11 +6,6 @@
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
 		"inetPub": ".\\inetPub\\",
-		"headersPostprocessors": ["#include(%UB_HOME%\\defHeadersPostprocessors.json)"],
-		"watchFileChanges": {
-			"enabled": true,
-			"hashingStrategy": "ModifyDate"
-		},
 		"threadPoolSize": 8
 	},
 	"wsServer": {

@@ -322,28 +322,6 @@ App.resolveStatic = function (aRequestedFile) {
 }
 
 /**
- * First check in global cache for a entry "UB_GLOBAL_CACHE_CHECKSUM + filePath"
- * and if not exists - calculate a checksum using algorithm defined in
- * CONTROLLER.serverConfig.HTTPServer.watchFileChanges.hashingStrategy
- * if server in dev mode always return current timestamp
- * values from cache will be cleared in directoryNotifiers
- * @param {String} pathToFile
- * @returns {string}
- */
-App.fileChecksum = function (pathToFile) {
-  return _App.fileChecksum(pathToFile)
-}
-
-/**
- * A folder checksum (see fileChecksum for algorithm details)
- * @param {string} pathToFolder
- * @returns {string}
- */
-App.folderChecksum = function (pathToFolder) {
-  return _App.folderChecksum(pathToFolder)
-}
-
-/**
  * Current application Domain
  * @deprecated UB >=4 use a App.domainInfo - a pure JS domain representation
  * @readonly

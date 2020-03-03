@@ -13,7 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
-
+  - `App.fileChecksum` `App.folderChecksum` are removed (not used)
+  - ubConfig sections `httpServer.headersPostprocessors` and `httpServer.watchFileChanges` are removed
+   
 ### Fixed
 
 ## [5.4.0] - 2020-02-29
