@@ -74,7 +74,8 @@ function drawPicture (prog) {
       if (!cmd.type || (cmd.type === 'text')) {
         lineHeight = cmd.fontSize || defaultFontSize
         ctx.font = `${lineHeight}pt 'Times New Roman'`
-        currentY = wrapText(ctx, cmd.value, cmd.x || 0, currentY, prog.imgWidth, lineHeight + 5)
+        const textMaxWidth = cmd.maxWidth && cmd.maxWidth < prog.imgWidth ? cmd.maxWidth : prog.imgWidth
+        currentY = wrapText(ctx, cmd.value, cmd.x || 0, currentY, textMaxWidth, lineHeight + 5)
       } else if (cmd.type === 'png') {
         let imgBinary = Buffer.from(cmd.value, 'base64')
         let png = PNG.sync.read(imgBinary)
