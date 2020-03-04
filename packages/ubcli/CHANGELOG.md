@@ -6,14 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `ubcli meta-tr` will transform entity level mapping to object (missed in prev. version)
- - `ubcli meta-tr` will fix mapping dialect AnsiSql -> AnsiSQL (many such mistakes in old UB projects)
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.5.1] - 2020-03-04
+### Added
+ - `ubcli meta-tr` will transform entity level mapping to object (missed in prev. version)
+ - `ubcli meta-tr` will fix mapping dialect AnsiSql -> AnsiSQL (many such mistakes in old UB projects)
 
 ### Fixed
  - `ubcli meta-tr` will show line and column in case of invalid meta file JSON

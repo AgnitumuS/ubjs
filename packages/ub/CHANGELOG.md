@@ -6,18 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - user friendly exception in case UB server version < 5.18. 5.18.0 is a minimal version of server for this package version
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.4.1] - 2020-03-04
+### Added
+ - user friendly exception in case UB server version < 5.18. 5.18.0 is a minimal version of server for this package version
+
+### Removed
   - `App.fileChecksum` `App.folderChecksum` `App.resolveStatic` are removed
   - ubConfig sections `httpServer.headersPostprocessors` and `httpServer.watchFileChanges` are removed
    
-### Fixed
-
 ## [5.4.0] - 2020-02-29
 ### Added
  - **metadata transformation hook**: in case `_hookMetadataTransformation.js` file exists in the root of the model folder it's export
