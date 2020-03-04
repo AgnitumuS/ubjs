@@ -75,8 +75,9 @@ module.exports = {
     resolve: {
       // extensions: ['.js', '.vue', '.json'],
       alias: {
-        // 'vue$': 'vue/dist/vue.common.js', // should be the same as in SystemJS dev config - see adminui-pub/index-dev.mustache
-        '@unitybase/adminui-vue': path.resolve(__dirname, './dist/adminui-vue.min.js'),
+        'vue$': 'vue/dist/vue.common.js', // should be the same as in SystemJS dev config - see adminui-pub/index-dev.mustache
+        // '@unitybase/adminui-vue': path.resolve(__dirname, './dist/adminui-vue.min.js'),
+        '@unitybase/adminui-vue': path.resolve(__dirname, './adminui-vue'),
         '@unitybase/ub-pub': path.resolve(__dirname, '../ub-pub/dist/ub-pub.min.js')
       }
     },
@@ -118,7 +119,7 @@ module.exports = {
       new webpack.DefinePlugin({
         BOUNDLED_BY_WEBPACK: true,
         // VueJS use process.env.NODE_ENV to enable devtools
-        'process.env.NODE_ENV': JSON.stringify('production')
+        'process.env.NODE_ENV': JSON.stringify('development')
       })
       // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
     ]

@@ -1,37 +1,19 @@
+import Vue from 'vue'
 import Vuex from 'vuex'
 import UB from '@unitybase/ub-pub'
+import { change } from '../utils/Form/helpers'
 
-let docDepartmentData
-UB.connection.Repository('doc_department').attrs([
-  'ID',
-  'name',
-  'address',
-  'phone',
-  'isMain',
-  'status',
-  'description',
-  'createDate',
-  'boss',
-  'logo',
-  'topManagers'
-])
-  .selectSingle()
-  .then(function (data) {
-    docDepartmentData = data
-    console.log(docDepartmentData)
-  })
 export default (previewComponent) => {
   const store = new Vuex.Store({
     getters: {
       entityName () {
-        return 'cdn_country'
+        return 'doc_department'
       },
       entitySchema (state, getters) {
         return UB.connection.domain.get(getters.entityName)
       }
     },
     state: {
-      data: docDepartmentData,
       collections: {
         passportPages: {
           deleted: [],
@@ -39,6 +21,13 @@ export default (previewComponent) => {
           items: [],
           key: 'passportPages'
         }
+      }
+    },
+    mutations: {
+      SET_DATA (state, { collection, index, key, value, path }) {
+        debugger
+        this.$set(this.$store.state.data, key, value)
+        // change(state, key, value, path)
       }
     }
   })
@@ -62,10 +51,29 @@ export default (previewComponent) => {
         /*
          * added setTimeout (maybe need to remove it)
          * because when authorized event is triggered
-         * UB.connection.domail === null
+         * UB.connection.domain === null
         */
         setTimeout(() => {
-          this.authReady = true
+          this.$UB.connection.Repository('doc_department').attrs([
+            'ID',
+            'name',
+            'address',
+            'phone',
+            'isMain',
+            'status',
+            'description',
+            'createDate',
+            'boss',
+            'logo',
+            'topManagers'
+          ])
+            .selectSingle()
+            .then(data => {
+              console.log(data)
+              this.$set(this.$store.state, 'data', data)
+              this.$set(this.$store.state, 'originalData', data)
+              this.authReady = true
+            })
         }, 1000)
       })
     },

@@ -46,7 +46,7 @@ UB.connect({
   //   console.log('Current server statistics:', statResp.data)
   // })
   //
-  conn.Repository('doc_department').attrs([
+  /*conn.Repository('doc_department').attrs([
     'ID',
     'name',
     'address',
@@ -63,5 +63,5 @@ UB.connect({
     .then(function (data) {
       Window.doc_departmentData = data
       console.log(Window.doc_departmentData)
-    })
+    })*/
 })

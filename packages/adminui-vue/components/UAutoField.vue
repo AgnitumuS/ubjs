@@ -32,7 +32,7 @@ export default {
         if (this.$v && this.attributeName in this.$v) {
           this.$v[this.attributeName].$touch()
         }
-        this.$store.commit(`SET_DATA`, {key: this.attributeName, value})
+        this.$store.commit('SET_DATA', { key: this.attributeName, value })
       }
     },
 
@@ -200,6 +200,7 @@ export default {
       <u-auto-field attribute-name="createDate" />
       <u-auto-field attribute-name="boss" />
       <u-auto-field attribute-name="logo" />
+      <u-auto-field attribute-name="topManagers" />
     </u-form-container>
   </template>
   <script>
