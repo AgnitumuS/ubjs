@@ -211,8 +211,14 @@ export default {
       const dataType = last && last.dataType
       const columnDef = types.get(dataType)
       let label
+      let attribute
       if (penult) {
         label = this.$ut(`${penult.entity.code}.${penult.code}`) || columnId
+        if (penult.dataType === 'Json') {
+          attribute = penult
+        } else {
+          attribute = last
+        }
       } else {
         label = columnId
       }
@@ -220,7 +226,7 @@ export default {
       return {
         id: columnId,
         label,
-        attribute: penult.dataType === 'Json' ? penult : last,
+        attribute,
         ...columnDef
       }
     },
