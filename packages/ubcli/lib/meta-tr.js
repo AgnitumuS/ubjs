@@ -85,9 +85,12 @@ module.exports = function metaTr (options) {
       fs.writeFileSync(filePath, metaContent)
     } catch (e) {
       console.error(`!!!Error converting: ${filePath}`)
+      throw e
     }
   })
-  console.info(`Meta-file attributes are already converted to array:\n${readyConvertedFiles.join(';')}`)
+  if (readyConvertedFiles.length) {
+    console.info(`Meta-file attributes are already converted to array:\n${readyConvertedFiles.join(';')}`)
+  }
 }
 
 module.exports.shortDoc =
