@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
-  - `App.fileChecksum` `App.folderChecksum` are removed (not used)
+  - `App.fileChecksum` `App.folderChecksum` `App.resolveStatic` are removed
   - ubConfig sections `httpServer.headersPostprocessors` and `httpServer.watchFileChanges` are removed
    
 ### Fixed
