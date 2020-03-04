@@ -22,6 +22,24 @@ function readDirectoryFiles (initialDirectory) {
   })
 }
 
+/**
+ * Mutate obj.mapping property to array of object. Fix AnsiSql -> AnsiSQL
+ * @param obj
+ */
+function transformMapping (obj) {
+  if (!obj.mapping || Array.isArray(obj.mapping)) return // already array
+  const newMappings = []
+  for (const dialectName in obj.mapping) {
+    // noinspection JSUnfilteredForInLoop
+    const oldDialect = obj.mapping[dialectName]
+    let newDialectName = dialectName
+    if (newDialectName === 'AnsiSql') newDialectName = 'AnsiSQL' // UB5 is case sensitive here
+    const newDialect = Object.assign({ name: newDialectName }, oldDialect)
+    newMappings.push(newDialect)
+  }
+  obj.mapping = newMappings
+}
+
 module.exports = function metaTr (options) {
   if (!options) {
     const opts = cmdLineOpt.describe('meta-tr', '*.meta transformation to fit a latest meta JSON schema', 'ub')
@@ -54,22 +72,12 @@ module.exports = function metaTr (options) {
         readyConvertedFiles.push(filePath.replace(options.meta, ''))
         return
       }
+      transformMapping(jsonC)
       const newAttributes = []
       for (const attrName in jsonC.attributes) {
         const oldAttr = jsonC.attributes[attrName]
         const attr = Object.assign({ name: attrName }, oldAttr)
-        if (attr.mapping) {
-          if (!Array.isArray(attr.mapping)) {
-            const newMappings = []
-            for (const dialectName in attr.mapping) {
-              // noinspection JSUnfilteredForInLoop
-              const oldDialect = attr.mapping[dialectName]
-              const newDialect = Object.assign({ name: dialectName }, oldDialect)
-              newMappings.push(newDialect)
-            }
-            attr.mapping = newMappings
-          }
-        }
+        transformMapping(attr)
         newAttributes.push(attr)
       }
       jsonC.attributes = newAttributes
