@@ -53,6 +53,9 @@
 			"endpoint": "ubadminui",
 			//"encryptionImplementation": "@ub-d/uac-crypto/dist/uac-crypto.min.js", //prod
 			"encryptionImplementation": "/clientRequire/@ub-d/iit-sign-web/dist/iit-sign-web.min.js",
+			"authenticationCert": {
+			    "requireUserName": false
+			},
 			"allowCertificateProlongation": true,
 			//"encryptionImplementation": "@ub-d/uac-crypto", // adminui dev
 			"messenger": {
