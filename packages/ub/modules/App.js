@@ -310,18 +310,6 @@ App.externalURL = App.serverConfig.httpServer.externalURL || App.serverURL
 App.localIPs = _App.localIPs
 
 /**
- *  Resolve aRequestedFile to real file path.
- *  Internally analyse request and if it start with `model/` - resolve it to model public folder
- *  else - to `inetPub` folder.
- *  Will return '' in case of error (filePath not under `inetPub` or `model/`) to prevent ../../ attack
- * @param {String} aRequestedFile
- * @returns {String}
- */
-App.resolveStatic = function (aRequestedFile) {
-  return _App.resolveStatic(aRequestedFile)
-}
-
-/**
  * Current application Domain
  * @deprecated UB >=4 use a App.domainInfo - a pure JS domain representation
  * @readonly

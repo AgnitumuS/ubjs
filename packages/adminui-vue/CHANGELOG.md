@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [1.10.1] - 2020-03-04
+### Fixed
  - `UTableEntity` error `... .dataType of undefined ...` in case used custom columns
 
 ## [1.10.0] - 2020-02-29
