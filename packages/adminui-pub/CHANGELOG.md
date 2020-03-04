@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - tinyMCE base URL should not ends with `/` (prevent URLs like //skins/*)
+ - Ukrainian No i18n - replace english **i** with Ukrainian
 
 ## [5.13.0] - 2020-02-29
 ### Removed

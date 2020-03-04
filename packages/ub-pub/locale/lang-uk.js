@@ -1,7 +1,7 @@
 /* global UB */
 UB.i18nExtend({
   Yes: 'Так',
-  No: 'Нi',
+  No: 'Ні',
   ok: 'Ок',
   cancel: 'Відміна',
   Enter: 'Увійти',
