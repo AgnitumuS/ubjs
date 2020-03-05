@@ -151,22 +151,11 @@
           :column="col"
         >
           <component
-            :is="col.template()"
-            v-if="typeof col.template === 'function'"
+            :is="getCellTemplate(col)"
             :value="row[col.id]"
             :row="row"
             :column="col"
           />
-          <template v-else>
-            <div
-              v-if="col.isHtml"
-              :key="col.id"
-              v-html="formatValue({ value: row[col.id], column: col, row })"
-            />
-            <template v-else>
-              {{ formatValue({ value: row[col.id], column: col, row }) }}
-            </template>
-          </template>
         </slot>
       </template>
     </u-table>
@@ -183,7 +172,7 @@ const { mapState, mapGetters, mapMutations, mapActions } = require('vuex')
 const FilterList = require('./FilterList.vue').default
 const ToolbarDropdown = require('./ToolbarDropdown.vue').default
 const props = require('../props')
-const formatValueMixin = require('../../controls/UTable/formatValueMixin')
+const TypeProvider = require('../type-provider')
 /**
  * Replaced from function to global scope in case not to create a regular expression every function call.
  * Creating of regular expression is slow operation
@@ -200,8 +189,6 @@ export default {
     FilterList,
     ToolbarDropdown
   },
-
-  mixins: [formatValueMixin],
 
   props,
 
@@ -248,6 +235,15 @@ export default {
       'SELECT_COLUMN',
       'SELECT_ROW'
     ]),
+
+    getCellTemplate (column) {
+      if (typeof column.template === 'function') {
+        return column.template()
+      } else {
+        const dataType = column.attribute && column.attribute.dataType
+        return TypeProvider.get(dataType).template
+      }
+    },
 
     /**
      * In a case when you create component by repository prop

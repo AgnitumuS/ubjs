@@ -26,6 +26,7 @@
 
 <script>
 const { mapGetters } = require('vuex')
+const TypeProvider = require('../type-provider')
 
 export default {
   computed: {
@@ -33,11 +34,8 @@ export default {
 
     selectedColumnTemplate () {
       const column = this.selectedColumn
-      if (column && typeof column.filterTemplate === 'function') {
-        return column.filterTemplate()
-      } else {
-        return null
-      }
+      const dataType = column.attribute && column.attribute.dataType
+      return TypeProvider.get(dataType).filterTemplate
     },
 
     selectedColumnId: {

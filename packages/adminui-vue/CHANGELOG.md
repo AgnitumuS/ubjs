@@ -8,12 +8,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UTableEntity` all cell templates except type `Document` use `format` function instead vue templates.
+   So this cells templates can be overrides by `format` function in column definition.
+   As before, any column can be overwritten by template
 
 ### Deprecated
+ - `UTableEntity` props `dateFormat` and `dateTimeFormat`.
+ Now need to pass format function to column definition to change date format 
 
 ### Removed
 
 ### Fixed
+ - `UTableEntity` custom column filter renderer. 
+ Shows filter for dataType which custom provided by `attribute.dataType` in column definition 
 
 ## [1.10.1] - 2020-03-04
 ### Fixed
