@@ -22,7 +22,7 @@ const Root = {
     })
   }
 }
-const types = require('./type-provider')
+const TypeProvider = require('./type-provider')
 
 export default {
   name: 'UTableEntity',
@@ -56,22 +56,6 @@ export default {
       default () {
         return this.$UB.connection.appConfig.storeDefaultPageSize
       }
-    },
-
-    /**
-     * Date format for cell's with dataType 'Date'
-     */
-    dateFormat: {
-      type: String,
-      default: 'll'
-    },
-
-    /**
-     * Date format for cell's with dataType 'DateTime'
-     */
-    dateTimeFormat: {
-      type: String,
-      default: 'lll'
     },
 
     /**
@@ -209,7 +193,7 @@ export default {
       const last = attrInfo && attrInfo.attribute
       const penult = attrInfo && (attrInfo.parentAttribute || last)
       const dataType = last && last.dataType
-      const columnDef = types.get(dataType)
+      const columnDef = TypeProvider.get(dataType).definition
       let label
       let attribute
       if (penult) {

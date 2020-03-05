@@ -9,8 +9,6 @@ const { Notification: $notify } = require('element-ui')
  * @param {string} instance.getEntityName Entity name
  * @param {array<UTableColumn>} instance.getColumns Columns
  * @param {number} instance.pageSize Pagination page size
- * @param {string} instance.dateFormat Date format
- * @param {string} instance.dateTimeFormat Date time format
  * @param {function} instance.buildAddNewConfig AddNew config builder
  * @param {function} instance.buildEditConfig Edit config builder
  * @param {function} instance.buildCopyConfig Copy config builder
@@ -113,14 +111,6 @@ module.exports = (instance) => ({
 
     pageSize () {
       return instance.pageSize
-    },
-
-    dateFormat () {
-      return instance.dateFormat
-    },
-
-    dateTimeFormat () {
-      return instance.dateTimeFormat
     },
 
     selectedColumn (state, getters) {

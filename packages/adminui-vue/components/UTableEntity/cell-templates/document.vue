@@ -17,6 +17,8 @@
 
 <script>
 export default {
+  name: 'DocumentCellTemplate',
+
   props: ['value', 'row', 'column'],
 
   computed: {
