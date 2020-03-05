@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+  - prevent `USelectEnum` to show invalid selected item caption in case enum with the same code exists in different eGroup.
+  Internally USelectEnum uses `unclearable` Repository.where() parameter to prevent clearWhereList() to remove
+  filtering by `eGroup`
+ 
  - `UTableEntity` custom column filter renderer. 
  Shows filter for dataType which custom provided by `attribute.dataType` in column definition 
 

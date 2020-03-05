@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - new parameter `unclearable` as 4th parameter for `CustomRepository.where()`. If `true` then `CustomRepository.clearWhereList()`
+ will skip removing this where condition
+ 
 ### Changed
 
 ### Deprecated
