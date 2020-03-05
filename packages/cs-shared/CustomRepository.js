@@ -210,10 +210,11 @@ UB.Repository('my_entity').attrs('ID')
    * @param {string} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}
    *   If not passed unique clause name will be generated ('_1', '_2', ..).
    *   In case a condition with the same name exists, it will be overwritten.
+   * @param {boolean} [unclearable] If true then clearWhereList() will skip removing this where condition
    *
    * @return {CustomRepository}
    */
-  where (expression, condition, value, clauseName) {
+  where (expression, condition, value, clauseName, unclearable) {
     const UBQL2 = this.UBQLv2
     if (!clauseName) { // generate unique clause name
       clauseName = cNames[++this._whereLength]
@@ -225,7 +226,7 @@ UB.Repository('my_entity').attrs('ID')
     const WhereCondition = CustomRepository.prototype.WhereCondition
     condition = WhereCondition[condition]
     if (expression && condition !== 'custom' && !bracketsRe.test(expression)) {
-      expression = '[' + expression + ']'
+      expression = `[${expression}]`
     }
     if (!condition) {
       throw new Error('Unknown conditions')
@@ -242,20 +243,20 @@ UB.Repository('my_entity').attrs('ID')
       }
     } else if ((condition === 'in' || condition === 'notIn') && (value === null || value === undefined)) {
       // prevent ORA-00932 error - in case value is undefined instead of array
-      console.warn('Condition "in" is passed to CustomRepository.where but value is null or undefined -> condition transformed to (0=1). Check your logic')
+      console.warn('Condition "in" is passed to CustomRepository.where but value is null or undefined -> condition transformed to (0=1). Check where logic')
       expression = '0'
       condition = WhereCondition.equal
       value = UBQL2 ? 1 : { a: 1 }
     } else if (condition === 'in' && (!Array.isArray(value))) {
-      console.debug('Condition "in" is passed to CustomRepository.where but value is not an array -> condition transformed to equal. Check your logic')
+      console.debug('Condition "in" is passed to CustomRepository.where but value is not an array -> condition transformed to equal. Check where logic')
       condition = WhereCondition.equal
     } else if (condition === 'in' && (!value || !value.length)) {
-      console.warn('Condition "in" is passed to CustomRepository.where but value is empty array -> condition transformed to "0=1". Check your logic')
+      console.warn('Condition "in" is passed to CustomRepository.where but value is empty array -> condition transformed to "0=1". Check where logic')
       expression = '0'
       condition = WhereCondition.equal
       value = UBQL2 ? 1 : { a: 1 }
     } else if (condition === 'notIn' && (!value || !value.length)) {
-      console.warn('Condition "notIn" is passed to CustomRepository.where but value is empty array -> condition transformed to "1=1". Check your logic')
+      console.warn('Condition "notIn" is passed to CustomRepository.where but value is empty array -> condition transformed to "1=1". Check where logic')
       expression = '1'
       condition = WhereCondition.equal
       value = UBQL2 ? 1 : { a: 1 }
@@ -264,9 +265,9 @@ UB.Repository('my_entity').attrs('ID')
       value = undefined
       condition = conditionInCaseValueIsNull[wrongCondition]
       if (condition) {
-        console.warn('Condition ' + wrongCondition + 'is passed to CustomRepository.where but value is null -> condition transformed to ' + condition + '. Check your logic')
+        console.warn(`Condition ${wrongCondition} is passed to CustomRepository.where but value is null -> condition transformed to ${condition}. Check where logic`)
       } else {
-        throw new Error('Condition ' + wrongCondition + 'is passed to CustomRepository.where but value is null')
+        throw new Error(`Condition ${wrongCondition} is passed to CustomRepository.where but value is null`)
       }
     }
     if ((condition === 'in') && value && (value.length === 1)) {
@@ -294,6 +295,10 @@ UB.Repository('my_entity').attrs('ID')
       }
     }
     this.whereList[clauseName] = whereItem
+    if (unclearable) {
+      if (!this._unclearable) this._unclearable = {}
+      this._unclearable[clauseName] = true
+    }
     return this
   }
 
@@ -893,7 +898,7 @@ inst.run('select', repo.ubql())
     if (this.joinAs.length) {
       const wNames = Object.keys(this.whereList)
       wNames.forEach(wName => {
-        if (this.joinAs.indexOf(wName) === -1) {
+        if ((this._unclearable && !this._unclearable[wName]) && (this.joinAs.indexOf(wName) === -1)) {
           delete this.whereList[wName]
         }
       })
