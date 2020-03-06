@@ -4,8 +4,8 @@ const path = require('path')
 const filename = path.join(process.cwd(), 'CHANGELOG.md')
 if (!fs.existsSync(filename)) process.exit(0)
 
-const changedSectionRegex = /^## \[Unreleased\]\n(.*\n)+## \[[\d.]+\].*/gm
-const verifyEmptySectionsRegex = /###\s.*\n[\t\s]*\n/g
+const changedSectionRegex = /^## \[Unreleased\]\r?\n(.*\r?\n)+## \[[\d.]+\].*/gm
+const verifyEmptySectionsRegex = /###\s.*\r?\n[\t\s]*\r?\n/g
 const fileContent = fs.readFileSync(filename, 'utf-8')
 const matched = fileContent.match(changedSectionRegex)
 if (matched === null) process.exit(0)
