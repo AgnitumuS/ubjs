@@ -399,21 +399,21 @@ export default {
      * Get label and isDeleted status for displayedOptions
      * fetch labels from server just if is not already fetched in options
      *
-     * @param {array<number>} IDs list of IDs
+     * @param {array<number>} attributeValues list of attribute values
      * @returns {Promise<Array>}
      */
-    async getFormattedOptions (IDs) {
+    async getFormattedOptions (attributeValues) {
       const result = []
-      for (const ID of IDs) {
-        const option = this.options.find(o => o[this.valueAttribute] === ID)
+      for (const attributeValue of attributeValues) {
+        const option = this.options.find(o => o[this.valueAttribute] === attributeValue)
         if (option) {
           result.push({
-            ID,
+            [this.valueAttribute]: attributeValue,
             label: option[this.displayAttribute]
           })
         } else {
           result.push({
-            ID
+            [this.valueAttribute]: attributeValue
           })
         }
       }
