@@ -133,7 +133,7 @@ UB.i18nExtend({
 
   sidebar: {
     desktopSelector: {
-      title: 'Вибір робочого стола'
+      title: 'Вибір робочого столу'
     }
   },
 
@@ -179,5 +179,9 @@ UB.i18nExtend({
 
   select: {
     valueIsUndefined: 'Занчення "{0}" не знайдено в сутності "{1}"'
+  },
+
+  tableRegister: {
+    hideDetails: 'Приховати деталі'
   }
 })

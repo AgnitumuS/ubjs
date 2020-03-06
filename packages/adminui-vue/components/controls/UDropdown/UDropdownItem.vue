@@ -3,22 +3,45 @@
     v-if="divider"
     class="u-dropdown-item__divider"
   />
-  <div
+
+  <u-dropdown
     v-else
-    class="u-dropdown-item"
-    :class="{
-      disabled: disabled
-    }"
-    @click="onClick"
+    placement="right-start"
+    position="absolute"
   >
-    <i
-      class="u-dropdown-item__icon"
-      :class="icon"
-    />
-    <span class="u-dropdown-item__label">
-      {{ $ut(label) }}
-    </span>
-  </div>
+    <button
+      class="u-dropdown-item"
+      :disabled="disabled"
+      v-on="$listeners"
+      @click="close"
+    >
+      <i
+        v-if="icon"
+        class="u-dropdown-item__icon"
+        :class="icon"
+      />
+
+      <span class="u-dropdown-item__label">
+        <!-- @slot Replace label prop -->
+        <slot
+          v-if="$slots.label"
+          name="label"
+        />
+
+        <template v-else>
+          {{ $ut(label) }}
+        </template>
+      </span>
+
+      <i
+        v-if="hasChildren"
+        class="u-dropdown-item__arrow el-icon-caret-right"
+      />
+    </button>
+
+    <!-- @slot For children u-dropdown-item -->
+    <slot slot="dropdown" />
+  </u-dropdown>
 </template>
 
 <script>
@@ -50,24 +73,31 @@ export default {
     disabled: Boolean,
 
     /**
-     * Hide dropdown on click item. Add's a possibility to do child dropdown lists without closing dropdown
+     * Prevent close dropdown
      */
-    hideOnClick: {
-      type: Boolean,
-      default: true
+    preventClose: Boolean
+  },
+
+  computed: {
+    hasChildren () {
+      return this.$slots.default !== undefined
     }
   },
 
-  inject: ['hideDropdown'],
+  mounted () {
+    this.$on('hide', () => {
+      this.$parent.$emit('hide')
+    })
+  },
+
+  inject: ['parentClose'],
 
   methods: {
-    onClick (e) {
-      if (this.disabled) return
-      if (this.hideOnClick) {
-        this.hideDropdown()
+    close () {
+      if (this.preventClose || this.hasChildren) {
+        return
       }
-
-      this.$emit('click', e)
+      this.parentClose()
     }
   }
 }
@@ -78,10 +108,21 @@ export default {
   display: flex;
   align-items: center;
   cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  white-space: nowrap;
 }
 
 .u-dropdown-item:hover {
   background: rgba(var(--info), 0.13);
+}
+
+.u-dropdown-item__arrow{
+  font-size: 12px;
+  color: rgba(var(--info), 0.8);
+  padding-right: 4px;
+  margin-left: auto;
 }
 
 .u-dropdown-item__icon{
@@ -100,22 +141,161 @@ export default {
   font-size: 14px;
   line-height: 1.4;
   padding: 8px;
+  padding-right: 12px;
   margin-left: 4px;
 }
 
 .u-dropdown-item__divider{
   width: 100%;
   height: 1px;
-  background: rgba(var(--info), 0.2);
+  background: rgba(var(--info), 0.1);
   margin: 6px 0;
 }
 
-.u-dropdown-item.disabled{
+.u-dropdown-item:disabled{
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.u-dropdown-item.disabled:hover{
+.u-dropdown-item:disabled:hover{
   background: #fff;
 }
 </style>
+
+<docs>
+  ### Basic usage
+
+  ```vue
+  <template>
+    <u-dropdown>
+      <el-button>click me</el-button>
+
+      <template #dropdown>
+        <u-dropdown-item icon="el-icon-edit" label="Edit" @click="say('Edit')"/>
+        <u-dropdown-item icon="el-icon-delete" label="Delete" @click="say('Delete')"/>
+        <u-dropdown-item icon="el-icon-plus" label="Add" @click="say('Add')"/>
+      </template>
+    </u-dropdown>
+  </template>
+
+  <script>
+    export default {
+      methods: {
+        say(value) {
+          alert(value)
+        }
+      }
+    }
+  </script>
+  ```
+
+  ### Nested items
+
+  ```vue
+  <template>
+    <u-dropdown>
+      <el-button>click me</el-button>
+
+      <template #dropdown>
+        <u-dropdown-item icon="el-icon-setting" label="Actions">
+          <u-dropdown-item icon="el-icon-edit" label="Edit"/>
+          <u-dropdown-item icon="el-icon-delete" label="Delete"/>
+          <u-dropdown-item icon="el-icon-plus" label="Add"/>
+        </u-dropdown-item>
+        <u-dropdown-item icon="el-icon-user" label="User"/>
+        <u-dropdown-item icon="el-icon-bell" label="Notifications"/>
+      </template>
+    </u-dropdown>
+  </template>
+  ```
+
+  ### Disabled item
+
+  ```vue
+  <template>
+    <u-dropdown>
+      <el-button>click me</el-button>
+
+      <template #dropdown>
+        <u-dropdown-item icon="el-icon-lollipop" disabled label="Disabled" @click="say('Disabled')"/>
+        <u-dropdown-item icon="el-icon-edit" label="Edit" @click="say('Edit')"/>
+        <u-dropdown-item icon="el-icon-delete" label="Delete" @click="say('Delete')"/>
+        <u-dropdown-item icon="el-icon-plus" label="Add" @click="say('Add')"/>
+      </template>
+    </u-dropdown>
+  </template>
+
+  <script>
+    export default {
+      methods: {
+        say(value) {
+          alert(value)
+        }
+      }
+    }
+  </script>
+  ```
+
+  ### Divider
+
+  ```vue
+  <template>
+    <u-dropdown>
+      <el-button>click me</el-button>
+
+      <template #dropdown>
+        <u-dropdown-item icon="el-icon-edit" label="Edit"/>
+        <u-dropdown-item icon="el-icon-plus" label="Add"/>
+        <u-dropdown-item divider/>
+        <u-dropdown-item icon="el-icon-delete" label="Delete"/>
+      </template>
+    </u-dropdown>
+  </template>
+  ```
+
+  ### Prevent click
+  In case dont need close dropdown on click
+
+  ```vue
+  <template>
+    <u-dropdown>
+      <el-button>click me</el-button>
+
+      <template #dropdown>
+        <u-dropdown-item label="This button will close dropdown"/>
+        <u-dropdown-item prevent-close label="Prevented"/>
+      </template>
+    </u-dropdown>
+  </template>
+  ```
+
+  ### Slot label
+
+  ```vue
+  <template>
+    <u-dropdown>
+      <el-button>click me</el-button>
+
+      <template #dropdown>
+        <u-dropdown-item prevent-close>
+          <el-checkbox v-model="checked" slot="label">
+            Some action
+          </el-checkbox>
+        </u-dropdown-item>
+        <u-dropdown-item label="Another item 1"/>
+        <u-dropdown-item label="Another item 2"/>
+      </template>
+    </u-dropdown>
+  </template>
+
+  <script>
+    export default {
+      data () {
+        return {
+          checked: true
+        }
+      }
+    }
+  </script>
+  ```
+</docs>

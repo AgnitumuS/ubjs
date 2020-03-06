@@ -89,7 +89,7 @@ export default {
     getEnumRequest () {
       return this.$UB.Repository(this.enumEntity)
         .attrs('eGroup', this.valueAttribute, this.displayAttribute, 'sortOrder')
-        .where('eGroup', '=', this.eGroup)
+        .where('eGroup', '=', this.eGroup, null, true)
         .orderBy('sortOrder')
     }
   }

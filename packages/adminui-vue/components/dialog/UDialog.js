@@ -106,7 +106,7 @@ function errorReporter ({ errMsg, errCode, entityCode, detail }) {
   const devBtn = `<i title="${UB.i18n('showDeveloperDetail')}" class="fa fa-wrench" data-id="${devBtnID}"></i>`
   const showMessBtn = `<i title="${UB.i18n('showFullScreen')}" class="fa fa-window-restore" data-id="${showMessBtnID}"></i>`
   const footer = `<div class="ub-notification__error__btn-group">${showMessBtn + devBtn}</div>`
-  let msgToDisplay = USER_MESSAGE_RE.test(errMsg)
+  const msgToDisplay = USER_MESSAGE_RE.test(errMsg)
     ? UB.i18n(errMsg.replace(USER_MESSAGE_RE, '$1'))
     : errMsg
   const message = `<div class="ub-notification__error__content">${msgToDisplay}</div>${footer}`

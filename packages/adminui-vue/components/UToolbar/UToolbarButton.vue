@@ -7,7 +7,7 @@
     :disabled="!tooltip"
   >
     <button
-      class="ub-toolbar__button"
+      class="u-toolbar__button"
       :class="color"
       type="button"
       v-bind="$attrs"
@@ -50,7 +50,7 @@ export default {
 </script>
 
 <style>
-  .ub-toolbar__button{
+  .u-toolbar__button{
     background: none;
     border: none;
     padding: 0 8px;
@@ -62,36 +62,36 @@ export default {
     height: 100%;
   }
 
-  .ub-toolbar__button:disabled{
+  .u-toolbar__button:disabled{
     opacity: 0.5;
     cursor: not-allowed;
   }
 
-  .ub-toolbar__button:hover{
+  .u-toolbar__button:hover{
     opacity: 0.7;
   }
 
-  .ub-toolbar__button.primary {
+  .u-toolbar__button.primary {
     color: rgb(var(--primary));
   }
 
-  .ub-toolbar__button.secondary {
+  .u-toolbar__button.secondary {
     color: rgb(var(--secondary));
   }
 
-  .ub-toolbar__button.info {
+  .u-toolbar__button.info {
     color: rgb(var(--info));
   }
 
-  .ub-toolbar__button.danger {
+  .u-toolbar__button.danger {
     color: rgb(var(--danger));
   }
 
-  .ub-toolbar__button.warning {
+  .u-toolbar__button.warning {
     color: rgb(var(--warning));
   }
 
-  .ub-toolbar__button i {
+  .u-toolbar__button i {
     font-size: 18px;
     margin-right: 4px;
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="ub-navbar__dropdown" v-if="ubsMessagesAccessible">
+  <div class="u-navbar__dropdown" v-if="ubsMessagesAccessible">
     <el-popover
       v-model="isVisible"
       placement="bottom-end"

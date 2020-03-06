@@ -13,7 +13,7 @@ const createDBConnections = require('./DBConnections')
 const blobStores = require('@unitybase/blob-stores')
 const base = require('@unitybase/base')
 if (base.ubVersionNum < 5018000) {
-  throw new Error('This version of @unitybase/ub package require UB server to be at last 5.18.0')
+  throw new Error('This version of @unitybase/ub package requires UB server to be at least 5.18.0')
 }
 /**
  * @classdesc

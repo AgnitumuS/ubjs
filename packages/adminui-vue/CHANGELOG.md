@@ -6,14 +6,57 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UMasterDetailView` component. Same as UTableEntity but with details grid.
+ - `utils/clickOutside` additional listener to `contextmenu` event
+ - `UDropdownItem`
+   - [Documentation](https://git-pub.intecracy.com/unitybase/ubjs/blob/1ac4a8305d4f16ee525790c52a1938b7081cebad/packages/adminui-vue/components/controls/UDropdown/UDropdownItem.vue#L165-301)
+   - Property `preventClose` 
+   - Possibility to nest one in another
+ - `UDropdown`
+   - [Documentation](https://git-pub.intecracy.com/unitybase/ubjs/blob/1ac4a8305d4f16ee525790c52a1938b7081cebad/packages/adminui-vue/components/controls/UDropdown/UDropdown.vue#L260-309)
+   - Used [Popper.js](https://popper.js.org/docs/v2/) to correct positioning
+   - Possibility to use `UDropdown` as context menu
+ - `UTableEntity` slots
+   - `toolbarDropdownExports` replace exports button in toolbar dropdown
+   - `contextMenuPrepend` prepend items in context menu
+   - `contextMenu` replace whole context menu
+   - `contextMenuEditRecord` replace action "edit" in context menu
+   - `contextMenuCopy` replace action "copy" in context menu
+   - `contextMenuDelete` replace action "delete" in context menu
+   - `contextMenuLink` replace "copy link" in context menu
+   - `contextMenuAudit` replace "audit" in context menu
+   - `contextMenuDetails` replace "detail records list" in context menu
+   - `contextMenuAppend` append items in context menu
 
 ### Changed
+ - `UTableEntity`, `UToolbar`, `UNavbar` and `UNavbarUserButton` used `UDropdown` as context menu instead `UContextMenu` 
+ - `UTable` - event `contextmenu` replace from row to cell and renamed to `contextmenu-cell`
+ - `lookups/getEnumValue` remove console.error in case code is null
+ - `UTableEntity` all cell templates except type `Document` use `format` function instead vue templates.
+   So this cells templates can be overrides by `format` function in column definition.
+   As before, any column can be overwritten by template
 
 ### Deprecated
+ - `UTableEntity` props `dateFormat` and `dateTimeFormat`.
+ Now need to pass format function to column definition to change date format 
 
 ### Removed
+ - `UContextMenu` use `UDropdown` instead
+ - `UDropdown` prop `width`. It will computed automatically
+ - `UDropdownItem` prop `hideOnClick`. Hides on click by default. Can prevented by `preventClose` prop
 
 ### Fixed
+ - `USelectMultiple`: fetch displayed values by valueAttribute not ID
+ - prevent `USelectEnum` to show invalid selected item caption in case enum with the same code exists in different eGroup.
+  Internally USelectEnum uses `unclearable` Repository.where() parameter to prevent clearWhereList() to remove
+  filtering by `eGroup`
+ - `UTableEntity` custom column filter renderer. 
+ Shows filter for dataType which custom provided by `attribute.dataType` in column definition 
+ - `UTableEntity` show error window on failed load data
+ - `UCodeMirror` wrong position of help tooltip
+ - `UTableEntity` prevent keyboard actions - `arrow Up, Down etc.`, `edit`, `delete` 
+   in case table is empty. 
+ - `Form/processing` in case record ID is undefined in DB show error window and did not open this form
 
 ## [1.10.1] - 2020-03-04
 ### Fixed

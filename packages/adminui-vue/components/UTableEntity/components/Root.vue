@@ -111,6 +111,13 @@
               :store="$store"
               :close="close"
             />
+            <!-- @slot Replace exports button in toolbar dropdown -->
+            <slot
+              slot="exports"
+              name="toolbarDropdownExports"
+              :store="$store"
+              :close="close"
+            />
 
             <!-- @slot Append new buttons to toolbar -->
             <slot
@@ -138,7 +145,7 @@
       @dblclick-row="onSelect($event.row.ID, $event.row)"
       @click-cell="selectCell"
       @sort="updateSort"
-      @contextmenu="showContextMenu"
+      @contextmenu-cell="showContextMenu"
     >
       <template
         v-for="col in columns"
@@ -151,39 +158,132 @@
           :column="col"
         >
           <component
-            :is="col.template()"
-            v-if="typeof col.template === 'function'"
+            :is="getCellTemplate(col)"
             :value="row[col.id]"
             :row="row"
             :column="col"
           />
-          <template v-else>
-            <div
-              v-if="col.isHtml"
-              :key="col.id"
-              v-html="formatValue({ value: row[col.id], column: col, row })"
-            />
-            <template v-else>
-              {{ formatValue({ value: row[col.id], column: col, row }) }}
-            </template>
-          </template>
         </slot>
       </template>
     </u-table>
 
-    <context-menu ref="contextMenu" />
+    <u-dropdown ref="contextMenu">
+      <template slot="dropdown">
+        <!-- @slot Prepend items in context menu -->
+        <slot
+          name="contextMenuPrepend"
+          :store="$store"
+          :close="close"
+          :row-id="contextMenuRowId"
+        />
+        <!-- @slot Replace whole context menu -->
+        <slot
+          name="contextMenu"
+          :store="$store"
+          :close="close"
+          :row-id="contextMenuRowId"
+        >
+          <!-- @slot Replace action "edit" in context menu -->
+          <slot
+            name="contextMenuEditRecord"
+            :store="$store"
+            :close="close"
+            :row-id="contextMenuRowId"
+          >
+            <u-dropdown-item
+              label="Edit"
+              icon="el-icon-edit"
+              @click="editRecord(contextMenuRowId)"
+            />
+          </slot>
+
+          <!-- @slot Replace action "copy" in context menu -->
+          <slot
+            name="contextMenuCopy"
+            :store="$store"
+            :close="close"
+            :row-id="contextMenuRowId"
+          >
+            <u-dropdown-item
+              label="Copy"
+              :disabled="!canAddNew"
+              icon="el-icon-copy-document"
+              @click="copyRecord(contextMenuRowId)"
+            />
+          </slot>
+
+          <!-- @slot Replace action "delete" in context menu -->
+          <slot
+            name="contextMenuDelete"
+            :store="$store"
+            :close="close"
+            :row-id="contextMenuRowId"
+          >
+            <u-dropdown-item
+              label="Delete"
+              icon="el-icon-delete"
+              :disabled="!canDelete"
+              @click="deleteRecord(contextMenuRowId)"
+            />
+          </slot>
+
+          <!-- @slot Replace "copy link" in context menu -->
+          <slot
+            name="contextMenuLink"
+            :store="$store"
+            :close="close"
+            :row-id="contextMenuRowId"
+          >
+            <u-dropdown-item
+              label="link"
+              icon="el-icon-link"
+              @click="createLink(contextMenuRowId)"
+            />
+          </slot>
+
+          <!-- @slot Replace "audit" in context menu -->
+          <slot
+            name="contextMenuAudit"
+            :store="$store"
+            :close="close"
+            :row-id="contextMenuRowId"
+          >
+            <u-dropdown-item
+              label="Audit"
+              icon="el-icon-data-analysis"
+              :disabled="!canAudit"
+              @click="audit(contextMenuRowId)"
+            />
+          </slot>
+
+          <!-- @slot Replace "detail records list" in context menu -->
+          <slot
+            name="contextMenuDetails"
+            :store="$store"
+            :close="close"
+            :row-id="contextMenuRowId"
+          />
+        </slot>
+
+        <!-- @slot Append items in context menu -->
+        <slot
+          name="contextMenuAppend"
+          :store="$store"
+          :close="close"
+          :row-id="contextMenuRowId"
+        />
+      </template>
+    </u-dropdown>
   </div>
 </template>
 
 <script>
-const ContextMenu = require('./ContextMenu.vue').default
 const FilterContainer = require('./FilterContainer.vue').default
 const Pagination = require('./Pagination.vue').default
 const { mapState, mapGetters, mapMutations, mapActions } = require('vuex')
 const FilterList = require('./FilterList.vue').default
 const ToolbarDropdown = require('./ToolbarDropdown.vue').default
-const props = require('../props')
-const formatValueMixin = require('../../controls/UTable/formatValueMixin')
+const TypeProvider = require('../type-provider')
 /**
  * Replaced from function to global scope in case not to create a regular expression every function call.
  * Creating of regular expression is slow operation
@@ -194,20 +294,45 @@ export default {
   name: 'UTableEntityRoot',
 
   components: {
-    ContextMenu,
     FilterContainer,
     Pagination,
     FilterList,
     ToolbarDropdown
   },
 
-  mixins: [formatValueMixin],
+  props: {
+    /**
+     * If set table will be have static height.
+     * Table container will be have own scroll and fixed header.
+     */
+    height: [Number, String],
 
-  props,
+    /**
+     * If set table will be have maxHeight.
+     * Table container will be have own scroll and fixed header.
+     */
+    maxHeight: [Number, String],
+
+    /**
+     * Id of column which will stack when we scroll table by horizontal.
+     */
+    fixedColumnId: String,
+    /**
+     * Overrides the record selection event. That is, double click or enter
+     * @type {function({ID: Number, row: Object, close: function})}
+     */
+    onSelectRecord: Function
+  },
 
   inject: {
     close: {
       default: () => () => console.warn('Injection close didn\'t provided')
+    }
+  },
+
+  data () {
+    return {
+      contextMenuRowId: null
     }
   },
 
@@ -221,6 +346,8 @@ export default {
 
     ...mapGetters([
       'canAddNew',
+      'canDelete',
+      'canAudit',
       'formCode',
       'columns'
     ]),
@@ -235,6 +362,12 @@ export default {
     }
   },
 
+  watch: {
+    selectedRowId (id) {
+      this.$emit('change-row', id)
+    }
+  },
+
   methods: {
     ...mapActions([
       'updateSort',
@@ -242,21 +375,29 @@ export default {
       'addNew',
       'editRecord',
       'deleteRecord',
-      'refresh'
+      'refresh',
+      'copyRecord',
+      'createLink',
+      'audit'
     ]),
     ...mapMutations([
       'SELECT_COLUMN',
       'SELECT_ROW'
     ]),
 
-    /**
-     * In a case when you create component by repository prop
-     * and forgot to set attribute in fieldList but this attribute includes in columns
-     */
+    getCellTemplate (column) {
+      if (typeof column.template === 'function') {
+        return column.template()
+      } else {
+        const dataType = column.attribute && column.attribute.dataType
+        return TypeProvider.get(dataType).template
+      }
+    },
 
-    showContextMenu (event, row) {
-      this.selectedRowId = row.ID
-      this.$refs.contextMenu.show(event, row)
+    showContextMenu ({ event, row, column }) {
+      this.selectCell({ row, column })
+      this.contextMenuRowId = row.ID
+      this.$refs.contextMenu.show(event)
     },
 
     selectCell ({ row, column }) {
@@ -289,18 +430,22 @@ export default {
     },
 
     moveUp () {
+      if (this.selectedRowId === null) return
       this.SELECT_ROW(this.getPrevArrayValue(this.items, 'ID', this.selectedRowId))
       this.scrollIntoView()
     },
     moveDown () {
+      if (this.selectedRowId === null) return
       this.SELECT_ROW(this.getNextArrayValue(this.items, 'ID', this.selectedRowId))
       this.scrollIntoView()
     },
     moveLeft () {
+      if (this.selectedColumnId === null) return
       this.SELECT_COLUMN(this.getPrevArrayValue(this.columns, 'id', this.selectedColumnId))
       this.scrollIntoView()
     },
     moveRight () {
+      if (this.selectedColumnId === null) return
       this.SELECT_COLUMN(this.getNextArrayValue(this.columns, 'id', this.selectedColumnId))
       this.scrollIntoView()
     },

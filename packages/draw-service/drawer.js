@@ -4,10 +4,10 @@ const uint32 = require('pureimage/src/uint32')
 const opentype = require('opentype.js')
 
 module.exports.drawPicture = drawPicture
-let fontPath = process.env.FONT || './fonts/times.ttf'
-let fnt = PImage.registerFont(fontPath, 'Times New Roman')
+const fontPath = process.env.FONT || './fonts/times.ttf'
+const fnt = PImage.registerFont(fontPath, 'Times New Roman')
 // dirty hack to load font synchronously
-let opFont = opentype.loadSync(fontPath)
+const opFont = opentype.loadSync(fontPath)
 fnt.loaded = true
 fnt.font = opFont
 
@@ -57,11 +57,11 @@ fnt.font = opFont
  * @return {Buffer}
  */
 function drawPicture (prog) {
-  let img = PImage.make(prog.imgWidth, prog.imgHeight, null)
-  let ctx = img.getContext()
-  let defaultFillStyle = prog.fillStyle || '#000000'
+  const img = PImage.make(prog.imgWidth, prog.imgHeight, null)
+  const ctx = img.getContext()
+  const defaultFillStyle = prog.fillStyle || '#000000'
   ctx.fillStyle = defaultFillStyle
-  let defaultFontSize = prog.fontSize || 22
+  const defaultFontSize = prog.fontSize || 22
 
   if (prog.commands.length) {
     let lineHeight = prog.fontSize || defaultFontSize
@@ -74,13 +74,14 @@ function drawPicture (prog) {
       if (!cmd.type || (cmd.type === 'text')) {
         lineHeight = cmd.fontSize || defaultFontSize
         ctx.font = `${lineHeight}pt 'Times New Roman'`
-        currentY = wrapText(ctx, cmd.value, cmd.x || 0, currentY, prog.imgWidth, lineHeight + 5)
+        const textMaxWidth = cmd.maxWidth && cmd.maxWidth < prog.imgWidth ? cmd.maxWidth : prog.imgWidth
+        currentY = wrapText(ctx, cmd.value, cmd.x || 0, currentY, textMaxWidth, lineHeight + 5)
       } else if (cmd.type === 'png') {
-        let imgBinary = Buffer.from(cmd.value, 'base64')
-        let png = PNG.sync.read(imgBinary)
-        let signImg = bitmapFromPNG(png)
-        let dWidth = cmd.maxWidth && signImg.width > cmd.maxWidth ? cmd.maxWidth : signImg.width
-        let dHeight = cmd.maxHeight && signImg.height > cmd.maxHeight ? cmd.maxHeight : signImg.height
+        const imgBinary = Buffer.from(cmd.value, 'base64')
+        const png = PNG.sync.read(imgBinary)
+        const signImg = bitmapFromPNG(png)
+        const dWidth = cmd.maxWidth && signImg.width > cmd.maxWidth ? cmd.maxWidth : signImg.width
+        const dHeight = cmd.maxHeight && signImg.height > cmd.maxHeight ? cmd.maxHeight : signImg.height
         ctx.drawImage(signImg,
           0, 0, signImg.width, signImg.height, // source dimensions
           cmd.x || 0, currentY, dWidth, dHeight // destination dimensions
@@ -103,7 +104,7 @@ function drawPicture (prog) {
 }
 
 function bitmapFromPNG (png) {
-  let bitmap = PImage.make(png.width, png.height, null)
+  const bitmap = PImage.make(png.width, png.height, null)
   for (let i = 0, L = bitmap.data.length; i < L; i++) {
     bitmap.data[i] = png.data[i]
   }
@@ -111,16 +112,16 @@ function bitmapFromPNG (png) {
 }
 
 function pngFromBitmap (bmp) {
-  let png = new PNG({
+  const png = new PNG({
     width: bmp.width,
     height: bmp.height
   })
 
   for (let i = 0, W = bmp.width; i < W; i++) {
     for (let j = 0, H = bmp.height; j < H; j++) {
-      let rgba = bmp.getPixelRGBA(i, j)
-      let n = (j * bmp.width + i) * 4
-      let bytes = uint32.getBytesBigEndian(rgba)
+      const rgba = bmp.getPixelRGBA(i, j)
+      const n = (j * bmp.width + i) * 4
+      const bytes = uint32.getBytesBigEndian(rgba)
       for (var k = 0; k < 4; k++) {
         png.data[n + k] = bytes[k]
       }
@@ -140,18 +141,18 @@ function pngFromBitmap (bmp) {
  * @return {number} TExt end vertical position
  */
 function wrapText (ctx, text, x, y, maxWidth, lineHeight) {
-  let lines = text.split('\n')
+  const lines = text.split('\n')
   lines.forEach((line) => {
     y = printLine(line, y)
   })
   function printLine (lineText, yP) {
-    let words = lineText.split(' ')
+    const words = lineText.split(' ')
     let line = ''
 
     for (let n = 0, L = words.length; n < L; n++) {
-      let testLine = line + words[n] + ' '
-      let metrics = ctx.measureText(testLine)
-      let testWidth = metrics.width
+      const testLine = line + words[n] + ' '
+      const metrics = ctx.measureText(testLine)
+      const testWidth = metrics.width
       if (testWidth > maxWidth && n > 0) {
         ctx.fillText(line, x, yP)
         line = words[n] + ' '

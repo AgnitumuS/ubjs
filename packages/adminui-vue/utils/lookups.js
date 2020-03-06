@@ -61,7 +61,7 @@ const Lookups = {
       const value = groupMap.get(code)
       if (value) {
         return value
-      } else {
+      } else if (value !== null) {
         console.error(`Undefined code '${code}' in eGroup '${eGroup}'`)
       }
     } else {
