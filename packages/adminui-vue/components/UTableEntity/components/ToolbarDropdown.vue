@@ -6,7 +6,7 @@
     <u-toolbar-button icon="el-icon-more-outline" />
 
     <template slot="dropdown">
-      <slot name="prepend"/>
+      <slot name="prepend" />
 
       <u-dropdown-item
         icon="el-icon-refresh"
@@ -56,24 +56,28 @@
       </slot>
       <slot name="exports">
         <u-dropdown-item divider />
-        <!-- TODO - add submenu -->
         <u-dropdown-item
+          icon="fas fa-file-export"
+          label="export"
+        >
+          <u-dropdown-item
             icon="fas fa-file-excel"
             label="exportXls"
             @click="exportExcel"
-        />
-        <u-dropdown-item
+          />
+          <u-dropdown-item
             icon="fas fa-table"
             label="exportHtml"
             @click="exportHtml"
-        />
-        <u-dropdown-item
+          />
+          <u-dropdown-item
             icon="fas fa-file-csv"
             label="exportCsv"
             @click="exportCsv"
-        />
+          />
+        </u-dropdown-item>
       </slot>
-      <slot name="append"/>
+      <slot name="append" />
     </template>
   </u-dropdown>
 </template>
@@ -107,8 +111,8 @@ export default {
      * @param contentType
      * @param resultFileExtension
      */
-    exportTo(contentType, resultFileExtension) {
-      let repo = this.currentRepository.clone().withTotal(false).start(0).limit(0)
+    exportTo (contentType, resultFileExtension) {
+      const repo = this.currentRepository.clone().withTotal(false).start(0).limit(0)
       repo.connection.xhr({
         method: 'POST',
         url: 'ubql',

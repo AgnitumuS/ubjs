@@ -104,6 +104,7 @@ html, body {
 
 .ub-code-mirror {
   line-height: 15px;
+  position: relative;
 }
 
 .ub-upload-document__a {

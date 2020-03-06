@@ -96,7 +96,7 @@ class UForm {
 
   store (storeConfig = {}) {
     if (this.storeInitialized) {
-      throw new Error(`Store is already initialized. TIP: ".store()" should be called before ".processing()"`)
+      throw new Error('Store is already initialized. TIP: ".store()" should be called before ".processing()"')
     }
     this.storeInitialized = true
     mergeStore(this.storeConfig, storeConfig)
@@ -189,10 +189,10 @@ class UForm {
    */
   validation (validationMixin) {
     if (validationMixin && (typeof validationMixin === 'function')) {
-      throw new Error(`Invalid parameter type for UForm.validation - must be object with at last computed or validation props`)
+      throw new Error('Invalid parameter type for UForm.validation - must be object with at last computed or validation props')
     }
     if (!this.canValidationInit) {
-      throw new Error(`You can use ".validation()" only after ".processing()" and before ".mount()". Or ".validation()" is already initialized`)
+      throw new Error('You can use ".validation()" only after ".processing()" and before ".mount()". Or ".validation()" is already initialized')
     }
     this.canValidationInit = false
     this.isValidationUsed = true
@@ -204,7 +204,7 @@ class UForm {
     return this
   }
 
-  mount () {
+  async mount () {
     if (this.storeInitialized) {
       this.$store = new Vuex.Store(this.storeConfig)
     }
@@ -221,7 +221,12 @@ class UForm {
     }
 
     if (this.isProcessingUsed) {
-      this.$store.dispatch('init')
+      try {
+        await this.$store.dispatch('init')
+      } catch (err) {
+        UB.showErrorWindow(err.message)
+        return
+      }
     }
 
     if (this.isModal) {

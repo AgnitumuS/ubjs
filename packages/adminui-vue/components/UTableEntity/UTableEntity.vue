@@ -1,27 +1,26 @@
 <template>
   <root
-    :on-select-record="onSelectRecord"
-    :fixed-column-id="fixedColumnId"
-    :height="height"
-    :max-height="maxHeight"
-  />
+    v-bind="$attrs"
+    v-on="$listeners"
+  >
+    <template
+      v-for="slot in Object.keys($scopedSlots)"
+      :slot="slot"
+      slot-scope="scope"
+    >
+      <slot
+        :name="slot"
+        v-bind="scope"
+      />
+    </template>
+  </root>
 </template>
 
 <script>
 const Vuex = require('vuex')
 const { mapGetters, mapActions } = Vuex
-const props = require('./props')
 const createStore = require('./store')
-const RootComponent = require('./components/Root.vue').default
-const Root = {
-  // hack to pass all slots and props to child component
-  render (h) {
-    return h(RootComponent, {
-      props: this.$parent.$props,
-      scopedSlots: this.$parent.$scopedSlots
-    })
-  }
-}
+const Root = require('./components/Root.vue').default
 const TypeProvider = require('./type-provider')
 
 export default {
@@ -30,7 +29,6 @@ export default {
   components: { Root },
 
   props: {
-    ...props,
 
     /**
      * Function which return UB.ClientRepository or UBQL object
@@ -215,6 +213,10 @@ export default {
       }
     },
 
+    /**
+     * In a case when you create component by repository prop
+     * and forgot to set attribute in fieldList but this attribute includes in columns
+     */
     validateFieldList () {
       const fieldsWithError = this.getColumns
         .filter(column => !this.getRepository().fieldList.includes(column.id)) // is custom

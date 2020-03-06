@@ -347,16 +347,16 @@ function mountContainer ({
   }
 }
 
-const UTableEntity = require('../../components/UTableEntity/UTableEntity.vue').default
+const UMasterDetailView = require('../../components/UMasterDetailView.vue').default
 
 /**
- * Mount UTableEntity.
+ * Mount UMasterDetailView.
  *
  * @param {object} cfg Command config
  * @param {object} cfg.props Props data
  * @param {object} cfg.tabId Tab id
  * @param {object} [cfg.title] Tab title
- * @param {object} cfg.props UTableEntity props
+ * @param {object} cfg.props UMasterDetailView props
  * @param {function:ClientRepository} cfg.props.repository Function which returns ClientRepository
  * @param {array<string|UTableColumn>} [cfg.props.columns] Column list configs
  * @param {TableScopedSlotsBuilder} [cfg.scopedSlots] Scoped slots
@@ -380,8 +380,8 @@ function mountTableEntity (cfg) {
   const title = cfg.title || getEntityName()
   const tableRender = h => {
     const scopedSlots = cfg.scopedSlots && cfg.scopedSlots(h)
-    return h(UTableEntity, {
-      props: {
+    return h(UMasterDetailView, {
+      attrs: {
         ...cfg.props,
         height: '100%'
       },
@@ -405,11 +405,11 @@ function mountTableEntity (cfg) {
 }
 
 /**
- * Run UTableEntity as modal
+ * Run UMasterDetailView as modal
  *
  * @param {object} cfg
  * @param {string} cfg.title Modal title
- * @param {function} cfg.tableRender UTableEntity render function
+ * @param {function} cfg.tableRender UMasterDetailView render function
  * @param {string} [cfg.modalClass] Modal class
  * @param {string} [cfg.modalWidth] Modal width
  */
@@ -462,12 +462,12 @@ function mountTableEntityAsModal ({
 }
 
 /**
- * Run UTableEntity as tab
+ * Run UMasterDetailView as tab
  *
  * @param {object} cfg
  * @param {string} cfg.title Tab title
  * @param {string} cfg.tabId Navbar tab ID
- * @param {function} cfg.tableRender UTableEntity render function
+ * @param {function} cfg.tableRender UMasterDetailView render function
  */
 function mountTableEntityAsTab ({
   title,

@@ -4,7 +4,7 @@
     v-if="modeList.length"
     placement="bottom"
     trigger="click"
-    class="ub-navbar__dropdown"
+    class="u-navbar__dropdown"
     :width="400"
     @after-enter="setFocusAndSelect"
   >

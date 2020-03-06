@@ -33,7 +33,7 @@
             :class="{'active': current === idx}"
             @close="handleClose"
             @open="handleTabClick"
-            @right-click="$refs.context.show"
+            @right-click="showContextMenu($event, tab)"
           />
         </transition-group>
       </div>
@@ -78,23 +78,33 @@
 
     <slot />
 
-    <u-context-menu
-      ref="context"
-      :items="contextItems"
-      :width="200"
-      @select="selectContext"
-    />
+    <u-dropdown ref="contextMenu">
+      <template slot="dropdown">
+        <u-dropdown-item
+          label="closeOther"
+          @click="closeOther"
+        />
+        <u-dropdown-item
+          label="closeAll"
+          @click="closeAll"
+        />
+        <u-dropdown-item
+          label="close"
+          @click="close"
+        />
+      </template>
+    </u-dropdown>
   </div>
 </template>
 
 <script>
 const UNavbarTab = require('./UNavbarTab.vue').default
-const UContextMenu = require('../controls/UContextMenu.vue').default
 const { debounce } = require('throttle-debounce')
+
 export default {
   name: 'UNavbar',
 
-  components: { UNavbarTab, UContextMenu },
+  components: { UNavbarTab },
 
   props: {
     withHamburger: Boolean
@@ -137,18 +147,7 @@ export default {
        */
       activeTabPending: false,
 
-      contextItems: [{
-        label: 'close',
-        action: 'close'
-      }, {
-        label: 'closeOther',
-        action: 'closeOther'
-      }, {
-        label: '-'
-      }, {
-        label: 'closeAll',
-        action: 'closeAll'
-      }],
+      contextMenuTab: {},
 
       isCollapsed: this.getCollapsed()
     }
@@ -286,15 +285,20 @@ export default {
       }
     },
 
-    selectContext (action, tab) {
-      if (action === 'closeOther') {
-        const other = this.tabs.filter(t => t.id !== tab.id)
-        this.handleClose(other, true)
-      } else if (action === 'closeAll') {
-        this.handleClose(this.tabs, true)
-      } else if (action === 'close') {
-        this.handleClose([tab], true)
-      }
+    closeOther () {
+      const other = this.tabs.filter(t => t.id !== this.contextMenuTab.id)
+      this.handleClose(other, true)
+    },
+    closeAll () {
+      this.handleClose(this.tabs, true)
+    },
+    close () {
+      this.handleClose([this.contextMenuTab], true)
+    },
+
+    showContextMenu (event, tab) {
+      this.contextMenuTab = tab
+      this.$refs.contextMenu.show(event)
     },
 
     moveToView () {

@@ -35,11 +35,11 @@ export default {
   position: relative;
 }
 
-.ub-navbar__dropdown + .ub-navbar__dropdown{
+.u-navbar__dropdown + .u-navbar__dropdown{
   margin-left: 10px;
 }
 
-.ub-navbar__dropdown__caret {
+.u-navbar__dropdown__caret {
   position: absolute;
   bottom: 11px;
   font-size: 14px;

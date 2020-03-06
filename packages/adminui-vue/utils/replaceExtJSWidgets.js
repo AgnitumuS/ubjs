@@ -155,7 +155,7 @@ function replaceShowList () {
          * Test if command cfg use old construction with cfg.params as array.
          * In new construction we use 'repository' or 'entityName' params
          */
-        const vueCfgType = cfg.cmdData.hasOwnProperty('repository') || cfg.cmdData.hasOwnProperty('entityName')
+        const vueCfgType = 'repository' in cfg.cmdData || 'entityName' in cfg.cmdData
         if (vueCfgType) {
           mountTableEntity({
             isModal: cfg.isModal,
