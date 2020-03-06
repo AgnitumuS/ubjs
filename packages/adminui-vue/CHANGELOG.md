@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   As before any column can be overwritten by template
 
 ### Deprecated
- - `UTableEntity` props `dateFormat` and `dateTimeFormat`. `format` function io column definition should
+ - `UTableEntity` props `dateFormat` and `dateTimeFormat`. `format` function in column definition should
  be used to change date format 
 
 ### Removed
