@@ -175,6 +175,7 @@ export default {
     border-radius: 4px;
     z-index: 10;
     padding: 6px 0;
+    position: relative;
   }
 
   .u-dropdown__reference {
