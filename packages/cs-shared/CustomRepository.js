@@ -895,7 +895,7 @@ inst.run('select', repo.ubql())
    */
   clearWhereList () {
     this.logicalPredicates = []
-    if (this.joinAs.length) {
+    if (this.joinAs.length || this._unclearable) {
       const wNames = Object.keys(this.whereList)
       wNames.forEach(wName => {
         if ((this._unclearable && !this._unclearable[wName]) && (this.joinAs.indexOf(wName) === -1)) {
