@@ -123,9 +123,7 @@ function createProcessingModule ({
        */
       lockInfo: {},
 
-      pendings: [],
-
-      formCrashed: false
+      pendings: []
     },
 
     getters: {
@@ -205,6 +203,9 @@ function createProcessingModule ({
        * @param {object} loadedState
        */
       LOAD_DATA (state, loadedState) {
+        if (!loadedState) {
+          throw new UB.UBAbortError('documentNotFound')
+        }
         state.data = loadedState
         Vue.set(state, 'originalData', {})
       },
@@ -288,6 +289,9 @@ function createProcessingModule ({
        * @param {string} payload.entity
        */
       LOAD_COLLECTION (state, { collection, items: itemStates, entity }) {
+        if (!itemStates) {
+          throw new UB.UBAbortError('documentNotFound')
+        }
         const items = itemStates.map(item => ({
           data: item,
           originalData: {}
@@ -379,15 +383,6 @@ function createProcessingModule ({
       },
 
       /**
-       * Set formCrashed status when some request was rejected or something going wrong
-       * @param {VuexTrackedInstance} state
-       * @param {Boolean} isCrashed
-       */
-      ERROR (state, isCrashed) {
-        state.formCrashed = isCrashed
-      },
-
-      /**
        * Set "IsNew" flag for the master record.
        * @param {VuexTrackedInstance} state
        * @param {boolean} isNew
@@ -462,25 +457,19 @@ function createProcessingModule ({
           target: 'create'
         })
 
-        try {
-          const data = await UB.connection.addNewAsObject({
-            entity: masterEntityName,
-            fieldList,
-            execParams: parentContext
-          })
-          commit('LOAD_DATA', data)
-          if (created) {
-            await created()
-          }
-        } catch (err) {
-          commit('ERROR', true)
-          UB.showErrorWindow(err)
-        } finally {
-          commit('LOADING', {
-            isLoading: false,
-            target: 'create'
-          })
+        const data = await UB.connection.addNewAsObject({
+          entity: masterEntityName,
+          fieldList,
+          execParams: parentContext
+        })
+        commit('LOAD_DATA', data)
+        if (created) {
+          await created()
         }
+        commit('LOADING', {
+          isLoading: false,
+          target: 'create'
+        })
       },
 
       /**
@@ -498,43 +487,37 @@ function createProcessingModule ({
           target: 'loadMaster'
         })
 
-        try {
-          const repo = UB.connection
-            .Repository(masterEntityName)
-            .attrs(fieldList)
-            .miscIf(isLockable(), { lockType: 'None' }) // get lock info
-          const data = await repo.selectById(instanceID || newInstanceID)
+        const repo = UB.connection
+          .Repository(masterEntityName)
+          .attrs(fieldList)
+          .miscIf(isLockable(), { lockType: 'None' }) // get lock info
+        const data = await repo.selectById(instanceID || newInstanceID)
 
-          commit('LOAD_DATA', data)
+        commit('LOAD_DATA', data)
 
-          if (isLockable()) {
-            let rl = repo.rawResult.resultLock
-            commit('SET', { // TODO - create mutation SET_LOCK_RESULT
-              key: 'lockInfo',
-              value: rl.success
-                ? rl.lockInfo
-                : { // normalize response - ub api is ugly here
-                  lockExists: true,
-                  lockType: rl.lockType,
-                  lockUser: rl.lockUser,
-                  lockTime: rl.lockTime,
-                  lockValue: rl.lockInfo.lockValue
-                }
-            })
-          }
-
-          if (loaded) {
-            await loaded()
-          }
-        } catch (err) {
-          commit('ERROR', true)
-          UB.showErrorWindow(err)
-        } finally {
-          commit('LOADING', {
-            isLoading: false,
-            target: 'loadMaster'
+        if (isLockable()) {
+          const rl = repo.rawResult.resultLock
+          commit('SET', { // TODO - create mutation SET_LOCK_RESULT
+            key: 'lockInfo',
+            value: rl.success
+              ? rl.lockInfo
+              : { // normalize response - ub api is ugly here
+                lockExists: true,
+                lockType: rl.lockType,
+                lockUser: rl.lockUser,
+                lockTime: rl.lockTime,
+                lockValue: rl.lockInfo.lockValue
+              }
           })
         }
+
+        if (loaded) {
+          await loaded()
+        }
+        commit('LOADING', {
+          isLoading: false,
+          target: 'loadMaster'
+        })
       },
 
       /**
@@ -563,35 +546,29 @@ function createProcessingModule ({
           target: 'loadCollections'
         })
 
-        try {
-          const results = await Promise.all(
-            collectionKeys.map(key => {
-              const req = initCollectionsRequests[key].repository(store)
-              req.fieldList = enrichFieldList(
-                UB.connection.domain.get(req.entityName),
-                req.fieldList,
-                ['ID', 'mi_modifyDate', 'mi_createDate']
-              )
-              return req.select()
-            })
-          )
-          results.forEach((collectionData, index) => {
-            const collection = collectionKeys[index]
-            commit('LOAD_COLLECTION', {
-              collection,
-              items: collectionData,
-              entity: initCollectionsRequests[collection].repository(store).entityName
-            })
+        const results = await Promise.all(
+          collectionKeys.map(key => {
+            const req = initCollectionsRequests[key].repository(store)
+            req.fieldList = enrichFieldList(
+              UB.connection.domain.get(req.entityName),
+              req.fieldList,
+              ['ID', 'mi_modifyDate', 'mi_createDate']
+            )
+            return req.select()
           })
-        } catch (err) {
-          commit('ERROR', true)
-          UB.showErrorWindow(err)
-        } finally {
-          commit('LOADING', {
-            isLoading: false,
-            target: 'loadCollections'
+        )
+        results.forEach((collectionData, index) => {
+          const collection = collectionKeys[index]
+          commit('LOAD_COLLECTION', {
+            collection,
+            items: collectionData,
+            entity: initCollectionsRequests[collection].repository(store).entityName
           })
-        }
+        })
+        commit('LOADING', {
+          isLoading: false,
+          target: 'loadCollections'
+        })
       },
 
       /**
@@ -729,7 +706,6 @@ function createProcessingModule ({
             await saved()
           }
         } catch (err) {
-          commit('ERROR', true)
           UB.showErrorWindow(err)
           throw new UB.UBAbortError(err)
         } finally {
@@ -803,7 +779,6 @@ function createProcessingModule ({
               await deleted()
             }
           } catch (err) {
-            commit('ERROR', true)
             UB.showErrorWindow(err)
           } finally {
             commit('LOADING', {
@@ -851,7 +826,7 @@ function createProcessingModule ({
           lockType: persistentLock ? 'Persist' : 'Temp',
           ID: state.data.ID
         }).then(resp => {
-          let resultLock = resp.resultLock
+          const resultLock = resp.resultLock
           if (resultLock.success) {
             commit('SET', { // TODO - create mutation SET_LOCK_RESULT
               key: 'lockInfo',

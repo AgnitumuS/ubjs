@@ -16,48 +16,16 @@
     >
       <el-tabs>
         <el-tab-pane label="Main">
-          <el-row :gutter="20">
-            <el-col :lg="12">
-              <u-auto-field attribute-name="code" />
-
-              <u-form-row :label="`${entity}.caption`">
-                <u-input attribute-name="caption" />
-              </u-form-row>
-
-              <u-form-row
-                required
-                :label="`${entity}.filterValue`"
-                :error="$v.filterValue.$error"
-              >
-                <u-input attribute-name="filterValue" />
-              </u-form-row>
-
-              <u-form-row :label="`${entity}.currencyValue`">
-                <u-input attribute-name="currencyValue" />
-              </u-form-row>
-            </el-col>
-
-            <el-col :lg="12">
-              <u-form-row :label="`${entity}.floatValue`">
-                <u-input attribute-name="floatValue" />
-              </u-form-row>
-
-              <u-form-row :label="`${entity}.intValue`">
-                <u-input attribute-name="intValue" />
-              </u-form-row>
-
-              <u-form-row :label="`${entity}.calculated`">
-                <el-input
-                  :value="calculated"
-                  disabled
-                />
-              </u-form-row>
-
-              <u-form-row :label="`${entity}.booleanColumn`">
-                <el-checkbox v-model="booleanColumn" />
-              </u-form-row>
-            </el-col>
-          </el-row>
+          <u-grid>
+            <u-auto-field attribute-name="code" />
+            <u-auto-field attribute-name="caption" />
+            <u-auto-field attribute-name="filterValue" />
+            <u-auto-field attribute-name="currencyValue" />
+            <u-auto-field attribute-name="floatValue" />
+            <u-auto-field attribute-name="intValue" />
+            <u-auto-field attribute-name="calculated" />
+            <u-auto-field attribute-name="booleanColumn" />
+          </u-grid>
 
           <u-form-row label="Participants">
             <u-select-collection
@@ -68,9 +36,7 @@
             />
           </u-form-row>
 
-          <u-form-row :label="`${entity}.jsonColumn`">
-            <u-code-mirror v-model="jsonColumn" />
-          </u-form-row>
+          <u-auto-field attribute-name="jsonColumn" />
         </el-tab-pane>
         <el-tab-pane label="File upload">
           <u-form-row label="file collection">

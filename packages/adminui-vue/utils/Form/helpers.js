@@ -202,13 +202,13 @@ function buildExecParams (trackedObj, entity) {
   }
 
   execParams.ID = trackedObj.data.ID
-  if (schema.attributes['mi_modifyDate']) {
+  if (schema.attributes.mi_modifyDate) {
     execParams.mi_modifyDate = trackedObj.data.mi_modifyDate
   }
 
   for (const key of Object.keys(trackedObj.originalData)) {
     if (!key.includes('.')) {
-      let attr = schema.attributes[key]
+      const attr = schema.attributes[key]
       if (trackedObj.data[key] && attr && attr.dataType === UB_DATA_TYPES.Date) {
         execParams[key] = truncTimeToUTCNull(trackedObj.data[key])
       } else {
@@ -263,7 +263,7 @@ function mapInstanceFields (moduleOrArr, arr) {
         if (module) {
           this.$store.commit(`${module}/SET_DATA`, { key, value })
         } else {
-          this.$store.commit(`SET_DATA`, { key, value })
+          this.$store.commit('SET_DATA', { key, value })
         }
       }
     }

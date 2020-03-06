@@ -1,6 +1,7 @@
 const Lookups = require('../../utils/lookups.js')
 const UB = require('@unitybase/ub-pub')
 const { Notification: $notify } = require('element-ui')
+const { throttle } = require('throttle-debounce')
 
 /**
  * Build store by UTableEntity props
@@ -179,42 +180,51 @@ module.exports = (instance) => ({
   },
 
   actions: {
-    async fetchItems ({ state, getters, commit }) {
-      commit('LOADING', true)
-      const repo = getters.currentRepository
-      const response = await repo.selectAsArray()
+    fetchItems: throttle(
+      50,
+      async function ({ state, getters, commit }) {
+        commit('LOADING', true)
 
-      if (instance.useRequestFieldList) {
-        response.resultData.fields = response.fieldList
+        try {
+          const repo = getters.currentRepository
+          const response = await repo.selectAsArray()
+
+          if (instance.useRequestFieldList) {
+            response.resultData.fields = response.fieldList
+          }
+
+          const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
+
+          const isLastPage = items.length < getters.pageSize
+          commit('LAST_PAGE_INDEX', isLastPage)
+          /* We can get calculate total if this is last page. */
+          if (isLastPage) {
+            commit('TOTAL', state.pageIndex * getters.pageSize + items.length)
+          } else {
+            items.splice(getters.pageSize, 1)
+          }
+
+          if (state.withTotal) {
+            commit('TOTAL', response.total)
+          }
+          /* Filter lookups columns and load it */
+          await Promise.all(
+            getters.columns
+              .filter(c => c.isLookup)
+              .filter(c => c.attribute.dataType === 'Entity' || c.attribute.dataType === 'Many')
+              .map(({ attribute }) => {
+                const entity = attribute.associatedEntity
+                return Lookups.load(entity, attribute.associatedAttr)
+              })
+          )
+          commit('ITEMS', items)
+        } catch (err) {
+          UB.showErrorWindow(err)
+        } finally {
+          commit('LOADING', false)
+        }
       }
-
-      const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
-
-      const isLastPage = items.length < getters.pageSize
-      commit('LAST_PAGE_INDEX', isLastPage)
-      /* We can get calculate total if this is last page. */
-      if (isLastPage) {
-        commit('TOTAL', state.pageIndex * getters.pageSize + items.length)
-      } else {
-        items.splice(getters.pageSize, 1)
-      }
-
-      if (state.withTotal) {
-        commit('TOTAL', response.total)
-      }
-      /* Filter lookups columns and load it */
-      await Promise.all(
-        getters.columns
-          .filter(c => c.isLookup)
-          .filter(c => c.attribute.dataType === 'Entity' || c.attribute.dataType === 'Many')
-          .map(({ attribute }) => {
-            const entity = attribute.associatedEntity
-            return Lookups.load(entity, attribute.associatedAttr)
-          })
-      )
-      commit('ITEMS', items)
-      commit('LOADING', false)
-    },
+    ),
 
     async refresh ({ commit, dispatch }) {
       commit('PAGE_INDEX', 0)
@@ -279,6 +289,8 @@ module.exports = (instance) => ({
     },
 
     editRecord ({ getters }, ID) {
+      if (ID === null) return
+
       const tabId = UB.core.UBApp.generateTabId({
         entity: getters.entityName,
         instanceID: ID,
@@ -296,13 +308,20 @@ module.exports = (instance) => ({
     },
 
     async deleteRecord ({ getters }, ID) {
+      if (ID === null) return
+
       const answer = await UB.core.UBApp.dialogYesNo('deletionDialogConfirmCaption', 'vyHotiteUdalitSoderzhimoeDocumenta')
 
       if (answer) {
-        await UB.connection.doDelete({
-          entity: getters.entityName,
-          execParams: { ID }
-        })
+        try {
+          await UB.connection.doDelete({
+            entity: getters.entityName,
+            execParams: { ID }
+          })
+        } catch (err) {
+          UB.showErrorWindow(err)
+          throw new UB.UBAbortError(err)
+        }
         UB.connection.emit(`${getters.entityName}:changed`)
 
         $notify.success(UB.i18n('recordDeletedSuccessfully'))

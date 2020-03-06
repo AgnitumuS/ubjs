@@ -2,13 +2,15 @@ module.exports = {
   addClickOutsideListener,
   removeClickOutsideListener
 }
-
+const EVENTS = ['click', 'contextmenu']
 function addBodyListener () {
-  document.body.addEventListener('click', (e) => {
-    for (const listener of listeners) {
-      listener.handler(e)
-    }
-  })
+  for (const event of EVENTS) {
+    document.body.addEventListener(event, (e) => {
+      for (const listener of listeners) {
+        listener.handler(e)
+      }
+    })
+  }
 }
 
 const listeners = []

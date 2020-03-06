@@ -180,5 +180,9 @@ UB.i18nExtend({
 
   select: {
     valueIsUndefined: 'Qiymət "{0}" obeyktdə tapılmadı "{1}"'
+  },
+
+  tableRegister: {
+    hideDetails: 'Hide details'
   }
 })

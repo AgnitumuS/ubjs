@@ -15,6 +15,7 @@
     "ddl": "npx ubcli generateDDL -u admin -p admin -autorun"
   },
   "dependencies": {
+    "@popperjs/core": "^2.0.6",
     "@unitybase/adminui-pub": "^5.13.1",
     "@unitybase/adminui-reg": "^5.4.1",
     "@unitybase/adminui-vue": "^1.10.1",

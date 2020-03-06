@@ -179,5 +179,9 @@ UB.i18nExtend({
 
   select: {
     valueIsUndefined: 'Value "{0}" not found in entity "{1}"'
+  },
+
+  tableRegister: {
+    hideDetails: 'Hide details'
   }
 })

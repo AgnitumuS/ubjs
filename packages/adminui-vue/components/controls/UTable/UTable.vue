@@ -38,7 +38,6 @@
         :class="getRowClass(row)"
         @dblclick="$emit('dblclick-row', {row})"
         @click="$emit('click-row', {row})"
-        @contextmenu="$emit('contextmenu', $event, row)"
       >
         <td
           v-for="col in columns"
@@ -54,6 +53,7 @@
             padding: col.padding && col.padding + 'px'
           }"
           @click="$emit('click-cell', {row, column: col})"
+          @contextmenu="$emit('contextmenu-cell', {event: $event, row, column: col})"
         >
           <div class="u-table__cell-container">
             <slot
