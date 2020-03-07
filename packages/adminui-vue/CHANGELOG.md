@@ -29,16 +29,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - `contextMenuAppend` append items in context menu
 
 ### Changed
- - `UTableEntity`, `UToolbar`, `UNavbar` and `UNavbarUserButton` used `UDropdown` as context menu instead `UContextMenu` 
- - `UTable` - event `contextmenu` replace from row to cell and renamed to `contextmenu-cell`
- - `lookups/getEnumValue` remove console.error in case code is null
- - `UTableEntity` all cell templates except type `Document` use `format` function instead vue templates.
-   So this cells templates can be overrides by `format` function in column definition.
-   As before, any column can be overwritten by template
+ - `UTableEntity`, `UToolbar`, `UNavbar` and `UNavbarUserButton` used `UDropdown` as context
+  menu instead `UContextMenu` 
+ - `UTable` - event `contextmenu` is renamed to `contextmenu-cell` and emitted with `row` and `colunm` parameters
+ - `lookups/getEnumValue` console.error is removed in case code is null
+ - `UTableEntity` all cell templates except type `Document` are uses `format` function instead
+  of vue templates. This allow to override cell template `format` function in column definition.
+  As before any column can be overwritten by template
 
 ### Deprecated
- - `UTableEntity` props `dateFormat` and `dateTimeFormat`.
- Now need to pass format function to column definition to change date format 
+ - `UTableEntity` props `dateFormat` and `dateTimeFormat`. `format` function in column definition should
+ be used to change date format 
 
 ### Removed
  - `UContextMenu` use `UDropdown` instead
@@ -46,17 +47,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UDropdownItem` prop `hideOnClick`. Hides on click by default. Can prevented by `preventClose` prop
 
 ### Fixed
- - `USelectMultiple`: fetch displayed values by valueAttribute not ID
+ - `USelectMultiple`: fetch displayed values by `valueAttribute` not by `ID` only
  - prevent `USelectEnum` to show invalid selected item caption in case enum with the same code exists in different eGroup.
   Internally USelectEnum uses `unclearable` Repository.where() parameter to prevent clearWhereList() to remove
   filtering by `eGroup`
- - `UTableEntity` custom column filter renderer. 
- Shows filter for dataType which custom provided by `attribute.dataType` in column definition 
- - `UTableEntity` show error window on failed load data
+ - `UTableEntity` custom column filter renderer. Shows filter for dataType which custom provided by `attribute.dataType`
+  in column definition 
+ - `UTableEntity` show error window in case failed to load data
  - `UCodeMirror` wrong position of help tooltip
  - `UTableEntity` prevent keyboard actions - `arrow Up, Down etc.`, `edit`, `delete` 
    in case table is empty. 
- - `Form/processing` in case record ID is undefined in DB show error window and did not open this form
+ - `Form/processing` in case record ID is undefined in DB will show error window and did not open this form
 
 ## [1.10.1] - 2020-03-04
 ### Fixed

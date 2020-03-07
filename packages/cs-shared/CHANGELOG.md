@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - new parameter `unclearable` as 4th parameter for `CustomRepository.where()`. If `true` then `CustomRepository.clearWhereList()`
+ - 4th parameter of `CustomRepository.where()` can be either string for clause name or Object with optional properties
+ `{clauseName: string, clearable: boolean}`. If `clearable === false` then `CustomRepository.clearWhereList()`
  will skip removing this where condition
  
 ### Changed

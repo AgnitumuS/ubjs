@@ -207,15 +207,17 @@ UB.Repository('my_entity').attrs('ID')
    * @param {string} expression   Attribute name (with or without []) or valid expression with attributes in []
    * @param {CustomRepository.WhereCondition|String} condition  Any value from {@link CustomRepository#WhereCondition WhereCondition}
    * @param {*} [value] Condition value. If `undefined` value not passed to ubql
-   * @param {string} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}
-   *   If not passed unique clause name will be generated ('_1', '_2', ..).
-   *   In case a condition with the same name exists, it will be overwritten.
-   * @param {boolean} [unclearable] If true then clearWhereList() will skip removing this where condition
+   * @param {{clauseName?:string, clearable?: boolean}} [options]
+      - options.clauseName -  optional clause name to be used in {CustomRepository.logicalPredicates}
+        If not passed unique clause name will be generated ('_1', '_2', ..).
+        In case a condition with the same name exists, it will be overwritten.
+      - options.clearable - optional, if === false then clearWhereList() will skip removing this where condition
    *
    * @return {CustomRepository}
    */
-  where (expression, condition, value, clauseName, unclearable) {
+  where (expression, condition, value, options) {
     const UBQL2 = this.UBQLv2
+    let clauseName = (options && (typeof options === 'object')) ? options.clauseName : options
     if (!clauseName) { // generate unique clause name
       clauseName = cNames[++this._whereLength]
       while (this.whereList[clauseName]) {
@@ -295,7 +297,7 @@ UB.Repository('my_entity').attrs('ID')
       }
     }
     this.whereList[clauseName] = whereItem
-    if (unclearable) {
+    if (options && (typeof options === 'object') && (options.clearable === false)) {
       if (!this._unclearable) this._unclearable = {}
       this._unclearable[clauseName] = true
     }
@@ -895,7 +897,7 @@ inst.run('select', repo.ubql())
    */
   clearWhereList () {
     this.logicalPredicates = []
-    if (this.joinAs.length) {
+    if (this.joinAs.length || this._unclearable) {
       const wNames = Object.keys(this.whereList)
       wNames.forEach(wName => {
         if ((this._unclearable && !this._unclearable[wName]) && (this.joinAs.indexOf(wName) === -1)) {
