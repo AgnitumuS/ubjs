@@ -246,7 +246,7 @@ function checkServerStarted (URL) {
  */
 function replaceEnvironmentVariables (content) {
   return content.replace(/%(.*?)%/gm, function replacer (match, p1) {
-    return process.env[p1] ? process.env[p1].replace(/\\/g, '\\\\') : 'NOT_FOUND_ENV_VAR(' + match + ')'
+    return process.env.hasOwnProperty(p1) ? process.env[p1].replace(/\\/g, '\\\\') : 'NOT_FOUND_ENV_VAR(' + match + ')'
   })
 }
 

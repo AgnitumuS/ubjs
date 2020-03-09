@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - ubConfig parser what replace environment variables placeholders now replace variables with empty values (`var=`) by empty strings 
 
 ### Changed
 
