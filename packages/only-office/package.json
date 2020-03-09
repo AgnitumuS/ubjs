@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/only-office",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Module for integration with OnlyOffice services",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/only-office",
   "scripts": {
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.1.0",
-    "@unitybase/update-changelog": "^1.0.3"
+    "@unitybase/update-changelog": "^1.0.4"
   },
   "keywords": [
     "UnityBase",

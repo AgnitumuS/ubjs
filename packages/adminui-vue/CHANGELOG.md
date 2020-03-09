@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.10.2] - 2020-03-09
+### Added
  - `UMasterDetailView` component. Same as UTableEntity but with details grid.
  - `utils/clickOutside` additional listener to `contextmenu` event
  - `UDropdownItem`

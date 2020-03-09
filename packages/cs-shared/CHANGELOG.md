@@ -6,10 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - 4th parameter of `CustomRepository.where()` can be either string for clause name or Object with optional properties
- `{clauseName: string, clearable: boolean}`. If `clearable === false` then `CustomRepository.clearWhereList()`
- will skip removing this where condition
- 
+
 ### Changed
 
 ### Deprecated
@@ -18,6 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.2] - 2020-03-09
+### Added
+ - 4th parameter of `CustomRepository.where()` can be either string for clause name or Object with optional properties
+ `{clauseName: string, clearable: boolean}`. If `clearable === false` then `CustomRepository.clearWhereList()`
+ will skip removing this where condition
+ 
 ## [5.2.1] - 2020-03-04
 ### Added
  - LocalDataStore will exports `whereListToFunctions` method

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.2] - 2020-03-09
 ## [5.4.1] - 2020-03-04
 ### Added
  - user friendly exception in case UB server version < 5.18. 5.18.0 is a minimal version of server for this package version

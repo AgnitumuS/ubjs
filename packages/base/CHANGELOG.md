@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.2] - 2020-03-09
 ## [5.2.1] - 2020-03-04
 ### Changed
  - FileBasedStoreLoader - fix ESLint errors (mostly let -> const)

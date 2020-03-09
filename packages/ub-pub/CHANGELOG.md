@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.2] - 2020-03-09
 ## [5.5.1] - 2020-03-04
 ### Fixed
  - Ukrainian No i18n - replace english **i** with Ukrainian
