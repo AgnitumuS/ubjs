@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- fake parameter **_ rc=documentRevision** into `getDocument` request for `ubDocument` component
+  The reason is to prevent unexpected content caching by proxies in case content changed by server.
+  Used by "caching servers" in multi-region UB deployment 
 
 ### Changed
 
