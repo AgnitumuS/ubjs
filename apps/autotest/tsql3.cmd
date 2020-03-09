@@ -17,10 +17,9 @@ SET TESTCASE=hello
 ub -e "console.log('Start autotest')"
 @if errorlevel 1 goto err
 
+@REM delete all sqlute3 db and wals
 SET TESTCASE=drop database
-if exist autotestDB.sqlite3 del autotestDB.sqlite3
-if exist autotestFTS.sqlite3 del autotestFTS.sqlite3
-if exist autotestSubjectsFTS.sqlite3 del autotestSubjectsFTS.sqlite3
+del *.sqlite3*
 
 SET TESTCASE=init database
 if [%UB_CFG%]==[] (

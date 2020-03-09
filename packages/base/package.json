@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/base",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "description": "CLI classes for working with command line args, connecting to UnityBase server, bulk data loading",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/base",
   "scripts": {
@@ -14,12 +14,12 @@
   "main": "base.js",
   "dependencies": {
     "@unitybase/cryptojs": "^1.0.14",
-    "@unitybase/cs-shared": "^5.2.1",
+    "@unitybase/cs-shared": "^5.2.2",
     "lodash": "^4"
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.1.0",
-    "@unitybase/update-changelog": "^1.0.3"
+    "@unitybase/update-changelog": "^1.0.4"
   },
   "keywords": [
     "UnityBase",

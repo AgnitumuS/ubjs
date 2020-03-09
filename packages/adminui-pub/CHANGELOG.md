@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.13.2] - 2020-03-09
+### Added
+- fake parameter **_ rc=documentRevision** into `getDocument` request for `ubDocument` component
+  The reason is to prevent unexpected content caching by proxies in case content changed by server.
+  Used by "caching servers" in multi-region UB deployment 
+
 ## [5.13.1] - 2020-03-04
 ### Fixed
  - tinyMCE base URL should not ends with `/` (prevent URLs like //skins/*)

@@ -57,7 +57,8 @@ export default {
       return {
         entity: this.column.attribute.entity.code,
         attribute,
-        id
+        id,
+        _rc: this.document.revision
       }
     }
   }

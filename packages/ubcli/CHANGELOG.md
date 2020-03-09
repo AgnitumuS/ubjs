@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.2] - 2020-03-09
 ## [5.5.1] - 2020-03-04
 ### Added
  - `ubcli meta-tr` will transform entity level mapping to object (missed in prev. version)

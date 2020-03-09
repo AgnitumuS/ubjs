@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/uba",
-  "version": "5.4.1",
+  "version": "5.4.2",
   "description": "UnityBase Administrative model. Define users, roles and permissions",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/uba",
   "config": {
@@ -18,14 +18,14 @@
   },
   "main": "uba.js",
   "dependencies": {
-    "@unitybase/base": "^5.2.1",
-    "@unitybase/ub": "^5.4.1",
+    "@unitybase/base": "^5.2.2",
+    "@unitybase/ub": "^5.4.2",
     "asn1js": "^2.0.19",
     "pkijs": "^2.1.46"
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.1.0",
-    "@unitybase/update-changelog": "^1.0.3"
+    "@unitybase/update-changelog": "^1.0.4"
   },
   "keywords": [
     "UnityBase",
