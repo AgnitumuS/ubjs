@@ -463,6 +463,7 @@ Ext.define('UB.ux.UBDocument', {
         if (!params.filename) {
           params.filename = me.entityName + me.instanceID + me.attributeName
         }
+        params._rc = val.revision
 
         url = Ext.String.urlAppend(
           $App.connection.baseURL + 'getDocument',
