@@ -47,8 +47,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity` all cell templates except type `Document` are uses `format` function instead
   of vue templates. This allow to override cell template `format` function in column definition.
   As before any column can be overwritten by template
-- `UFile`, document column template and document preview will add fake parameter **_rc=documentRevision** for `getDocument`
+ - `UFile`, document column template and document preview will add fake parameter **_rc=documentRevision** for `getDocument`
    request to prevent unexpected caching by proxies in case content (together with revision) is changed by server
+ - renamed css classes: 
+   - from `ub-toolbar` to `u-toolbar`
+   - from `ub-toolbar__button` to `u-toolbar__button`
+   - from `ub-navbar` to `u-navbar`
  
 ### Deprecated
  - `UTableEntity` props `dateFormat` and `dateTimeFormat`. `format` function in column definition should
