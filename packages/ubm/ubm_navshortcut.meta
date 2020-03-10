@@ -72,7 +72,7 @@
     {
       "name": "displayOrder",
       "dataType": "Int",
-      "caption": "№ order",
+      "caption": "Order #",
       "description": "Display order (in current folder)",
       "allowNull": false,
       "defaultValue": "1000"

@@ -22,15 +22,15 @@ me.setCaption = function (ctx, mode) {
 
   if (mode === 'INS') {
     supportedLangs.forEach(function (lang) {
-      let suffix = '_' + lang + '^'
+      const suffix = '_' + lang + '^'
       if (execParams['name' + suffix]) {
         execParams['caption' + suffix] = execParams.code + ' - ' + execParams['name' + suffix]
       } else {
-        execParams['caption' + suffix] = execParams.code + ' - ' + execParams['name']
+        execParams['caption' + suffix] = execParams.code + ' - ' + execParams.name
       }
     })
   } else if (mode === 'UPD') {
-    let fieldList = ['code']
+    const fieldList = ['code']
     supportedLangs.forEach(function (lang) {
       fieldList.push('name' + '_' + lang + '^')
     })
@@ -38,16 +38,16 @@ me.setCaption = function (ctx, mode) {
       execParams['name' + defaultSuffix] = execParams.name
       delete execParams.name
     }
-    let department = UB.Repository('org_department')
+    const department = UB.Repository('org_department')
       .attrs(fieldList)
       .where('ID', '=', execParams.ID)
-      .misc({__allowSelectSafeDeleted: true})
-      .misc({__mip_recordhistory_all: true})
+      .misc({ __allowSelectSafeDeleted: true })
+      .misc({ __mip_recordhistory_all: true })
       .selectSingle()
     supportedLangs.forEach(function (lang) {
-      let suffix = '_' + lang + '^'
-      let name = execParams['name' + suffix] || department['name' + suffix]
-      let code = execParams.code || department.code
+      const suffix = '_' + lang + '^'
+      const name = execParams['name' + suffix] || department['name' + suffix]
+      const code = execParams.code || department.code
       execParams['caption' + suffix] = code + ' - ' + name
     })
   }

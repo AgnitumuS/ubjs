@@ -8,6 +8,7 @@
  * Used by `ubcli initialize` command
  * @param {ServerSession} session
  */
+
 module.exports = function (session) {
   'use strict'
   var desktopID; var folderID
@@ -58,15 +59,20 @@ module.exports = function (session) {
       code: 'ubm_enum',
       caption: 'Enumerations',
       displayOrder: 10,
-      cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [
-          { entity: 'ubm_enum',
-            method: 'select',
-            fieldList: '*',
-            orderList: [
-              { 'expression': 'eGroup' }, { 'expression': 'sortOrder' }
-            ] }
-        ] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          repository: {
+            entity: 'ubm_enum',
+            fieldList: ['eGroup', 'sortOrder', 'code', 'shortName', 'name'],
+            orderList: {
+              eGroup: { expression: 'eGroup', order: 'asc' },
+              sortOrder: { expression: 'sortOrder', order: 'asc' }
+            }
+          }
+        }
+      }, null, '\t')
     }
   })
 
@@ -80,10 +86,13 @@ module.exports = function (session) {
       code: 'ubm_desktop',
       caption: 'Desktops',
       displayOrder: 20,
-      cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [
-          { entity: 'ubm_desktop', method: 'select', fieldList: '*' }
-        ] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubm_desktop'
+        }
+      }, null, '\t')
     }
   })
 
@@ -97,10 +106,13 @@ module.exports = function (session) {
       code: 'ubm_navshortcut',
       caption: 'Shortcuts',
       displayOrder: 30,
-      cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [
-          { entity: 'ubm_navshortcut', method: 'select', fieldList: '*' }
-        ] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubm_navshortcut'
+        }
+      }, null, '\t')
     }
   })
 
@@ -114,10 +126,14 @@ module.exports = function (session) {
       code: 'ubm_form',
       caption: 'Forms',
       displayOrder: 40,
-      cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [
-          { entity: 'ubm_form', method: 'select', fieldList: ['entity', 'code', 'description', 'caption', 'formType', 'isDefault'] }
-        ] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubm_form',
+          columns: ['entity', 'code', 'description', 'caption', 'formType', 'isDefault']
+        }
+      }, null, '\t')
     }
   })
 
@@ -131,10 +147,14 @@ module.exports = function (session) {
       code: 'ubm_query',
       caption: 'Queries',
       displayOrder: 50,
-      cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [
-          { entity: 'ubm_query', method: 'select', fieldList: ['code', 'name']  }
-        ] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubm_query',
+          columns: ['code', 'name']
+        }
+      }, null, '\t')
     }
   })
 
@@ -148,10 +168,13 @@ module.exports = function (session) {
       code: 'ubm_diagram',
       caption: 'ER diagrams',
       displayOrder: 60,
-      cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [
-          { entity: 'ubm_diagram', method: 'select', fieldList: '*' }
-        ] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'ubm_diagram'
+        }
+      }, null, '\t')
     }
   })
 }

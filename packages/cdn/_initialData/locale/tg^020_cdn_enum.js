@@ -21,8 +21,8 @@ module.exports = function (session) {
       { keyValue: 'DISTRICT', execParams: { name: 'Минтақа' } },
       { keyValue: 'CITY', execParams: { name: 'Шаҳр' } },
       // CDN_SEXTYPE
-      { keyValue: 'F', execParams: { name: 'З' } },
-      { keyValue: 'M', execParams: { name: 'М' } },
+      { keyValue: 'F', execParams: { name: 'Занона' } },
+      { keyValue: 'M', execParams: { name: 'Марде' } },
       // CDN_ADDRESS
       { keyValue: 'YUR', execParams: { name: 'Суроғаи ҳуқуқӣ' } },
       { keyValue: 'PHYS', execParams: { name: 'Суроғаи воқеӣ' } }

@@ -399,21 +399,21 @@ export default {
      * Get label and isDeleted status for displayedOptions
      * fetch labels from server just if is not already fetched in options
      *
-     * @param {array<number>} IDs list of IDs
+     * @param {array<number>} attributeValues list of attribute values
      * @returns {Promise<Array>}
      */
-    async getFormattedOptions (IDs) {
+    async getFormattedOptions (attributeValues) {
       const result = []
-      for (const ID of IDs) {
-        const option = this.options.find(o => o[this.valueAttribute] === ID)
+      for (const attributeValue of attributeValues) {
+        const option = this.options.find(o => o[this.valueAttribute] === attributeValue)
         if (option) {
           result.push({
-            ID,
+            [this.valueAttribute]: attributeValue,
             label: option[this.displayAttribute]
           })
         } else {
           result.push({
-            ID
+            [this.valueAttribute]: attributeValue
           })
         }
       }
@@ -497,6 +497,7 @@ export default {
       await this.fetchPage(this.prevQuery, this.pageNum + 1)
       const { scrollHeight } = this.$refs.options
       this.$refs.options.scrollTop = scrollHeight
+      this.$refs.input.click()
     },
 
     toggleDropdown () {
@@ -563,7 +564,7 @@ export default {
 
 <style>
 .ub-select-multiple__container{
-  border: 1px solid #DCDFE6;
+  border: 1px solid rgb(var(--input-border));
   border-radius: 4px;
   padding-left: 5px;
   background-color: #FFF;
@@ -607,7 +608,7 @@ export default {
 }
 
 .ub-select-multiple__input::placeholder{
-  color: rgb(var(--info-light));
+  color: rgba(var(--input-placeholder), 0.54);
 }
 
 .ub-select-multiple__icon-wrap {
@@ -621,7 +622,7 @@ export default {
   justify-content: center;
   height: 100%;
   min-width: 34px;
-  color: rgb(var(--info-light));
+  color: rgb(var(--input-border));
   cursor: pointer;
 }
 

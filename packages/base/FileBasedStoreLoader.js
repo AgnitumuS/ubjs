@@ -29,7 +29,7 @@ let resultDataCache = loader.load()
 
  * @class
  * @param {Object}    config
- * @param {TubEntity|UBEntity} config.entity
+ * @param {UBEntity} config.entity
  * @param {Array.<{path: string}>} config.foldersConfig   Array of folder configuration to scan for files.
  *                                              Necessary param is path - path to folder. You can also pass additional information
  *                                              for use in  `onBeforeRowAdd` and `onNewFolder` callbacks.
@@ -75,8 +75,8 @@ function FileBasedStoreLoader (config) {
    * @readonly
    */
   this.attributes = []
-  for (let attrName in entityAttributes) {
-    let attr = entityAttributes[attrName]
+  for (const attrName in entityAttributes) {
+    const attr = entityAttributes[attrName]
     this.attributes.push({
       name: attr.name,
       dataType: attr.dataType,
@@ -113,7 +113,7 @@ FileBasedStoreLoader.XML_ATTRIBURE_REGEXP = '<!--@(\\w+)\\s*"(.+)"\\s*-->'
  * @return {TubCachedData}
  */
 FileBasedStoreLoader.prototype.load = function () {
-  let me = this
+  const me = this
   let result
 
   /**
@@ -126,7 +126,7 @@ FileBasedStoreLoader.prototype.load = function () {
     me.processingRootFolder = folderConfig
     me.parseFolder(folderConfig.path, 0)
   })
-    // transformation to array=of=array
+  // transformation to array=of=array
   if (me.config.zipToArray) {
     result = {
       data: [],
@@ -136,7 +136,7 @@ FileBasedStoreLoader.prototype.load = function () {
     result.fields = _.map(me.attributes, 'name')
     result.data = lds.arrayOfObjectsToSelectResult(me.resultCollection, result.fields)
     result.rowCount = result.data.length
-    let l = result.fields.indexOf('mi_modifyDate')
+    const l = result.fields.indexOf('mi_modifyDate')
     if (l !== -1) {
       let dataVersion = 0
       // for UnityBase calculate accum of crc32(prev, fileDate.toString()) and forms count
@@ -181,28 +181,28 @@ FileBasedStoreLoader.prototype.parseFolder = function (folderPath, recursionLeve
   if (config.onNewFolder) {
     if (config.onNewFolder(this, folderPath, recursionLevel) === false) return
   }
-  let folderFiles = fs.readdirSync(folderPath)
+  const folderFiles = fs.readdirSync(folderPath)
 
   folderFiles.forEach((fileName) => {
-    let fullPath = path.join(folderPath, fileName)
-    let stat = fs.statSync(fullPath)
+    const fullPath = path.join(folderPath, fileName)
+    const stat = fs.statSync(fullPath)
 
     if (stat.isDirectory()) {
       if (config.onNewFolder) {
-        let newFolderCheck = config.onNewFolder(this, folderPath + fileName, recursionLevel + 1)
+        const newFolderCheck = config.onNewFolder(this, folderPath + fileName, recursionLevel + 1)
         if (newFolderCheck !== false) {
           this.parseFolder(fullPath, recursionLevel + 1)
         }
       }
     } else if (!this.config.fileMask || this.config.fileMask.test(fileName)) { // filtration by mask
-      let content = fs.readFileSync(fullPath, 'utf8')
-      let oneRow = this.extractAttributesValues(content)
+      const content = fs.readFileSync(fullPath, 'utf8')
+      const oneRow = this.extractAttributesValues(content)
 
       if (this.haveModifyDate) {
-        oneRow['mi_modifyDate'] = stat.mtime
+        oneRow.mi_modifyDate = stat.mtime
       }
       if (this.haveCreateDate) {
-        oneRow['mi_createDate'] = stat.ctime
+        oneRow.mi_createDate = stat.ctime
       }
       let canAdd = this.config.onBeforeRowAdd ? this.config.onBeforeRowAdd(this, fullPath, content, oneRow) : true
       // check unique ID
@@ -235,10 +235,10 @@ FileBasedStoreLoader.prototype.parseFolder = function (folderPath, recursionLeve
  */
 FileBasedStoreLoader.prototype.extractAttributesValues = function (content) {
   const me = this
-  let regexp = me.config.attributeRegExpString ? new RegExp(me.config.attributeRegExpString, 'gm') : false
-  let result = {}
+  const regexp = me.config.attributeRegExpString ? new RegExp(me.config.attributeRegExpString, 'gm') : false
+  const result = {}
 
-    // extraction block
+  // extraction block
   if (regexp !== false) {
     let attrVal = regexp.exec(content)
     while (attrVal !== null) {
@@ -246,15 +246,15 @@ FileBasedStoreLoader.prototype.extractAttributesValues = function (content) {
       attrVal = regexp.exec(content)
     }
   }
-    // default block
+  // default block
   me.attributes.forEach(function (attribute) {
     if (attribute.defaultValue !== '' && !result[attribute.name]) {
       result[attribute.name] = attribute.defaultValue
     }
   })
-    // transformation block
+  // transformation block
   _.forEach(result, function (value, attribute) {
-    let attr = me.attributes.find(elm => elm.name === attribute)
+    const attr = me.attributes.find(elm => elm.name === attribute)
 
     if (!attr) { return }
     switch (attr.dataType) {

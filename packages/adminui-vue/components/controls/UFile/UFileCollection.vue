@@ -3,6 +3,7 @@
     <u-file-input
       multiple
       @upload="upload"
+      :accept="accept"
     />
     <u-table
       v-show="files.length > 0"
@@ -88,6 +89,14 @@ export default {
     subjectAttribute: {
       type: String,
       required: true
+    },
+
+    /**
+     * File extensions to bind into `accept` input property
+     */
+    accept: {
+      type: String,
+      default: ''
     }
   },
 
@@ -274,7 +283,6 @@ export default {
       formCode,
       isModal
     })
-      .instance()
       .processing({
         collections: {
           attachments: ({ state }) => UB.Repository('tst_attachment')

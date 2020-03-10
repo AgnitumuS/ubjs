@@ -20,8 +20,8 @@ module.exports = function (session) {
       { keyValue: 'DISTRICT', execParams: { name: 'District' } },
       { keyValue: 'CITY', execParams: { name: 'City' } },
       // CDN_SEXTYPE
-      { keyValue: 'F', execParams: { name: 'F' } },
-      { keyValue: 'M', execParams: { name: 'M' } },
+      { keyValue: 'F', execParams: { name: 'Female' } },
+      { keyValue: 'M', execParams: { name: 'Male' } },
       // CDN_ADDRESS
       { keyValue: 'YUR', execParams: { name: 'Legal address' } },
       { keyValue: 'PHYS', execParams: { name: 'Physical address' } }

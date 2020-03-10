@@ -11,13 +11,15 @@ const Dialog = require('element-ui').Dialog
  * @param {number} params.id ID of record that stores file
  * @param {boolean} params.isDirty Whether file is already saved in record
  * @param {string} params.ct Content type of loaded file
+ * @param {string} [params.revision] Current revision number of content
  */
-module.exports = async function ({ entity, attribute, id, isDirty, ct, origName }) {
+module.exports = async function ({ entity, attribute, id, isDirty, ct, origName, revision }) {
   const binaryFile = await UB.connection.getDocument({
     entity,
     attribute,
     id,
-    isDirty
+    isDirty,
+    _rc: revision
   }, { resultIsBinary: true })
 
   const previewUrl = window.URL.createObjectURL(new Blob([binaryFile], { type: ct }))

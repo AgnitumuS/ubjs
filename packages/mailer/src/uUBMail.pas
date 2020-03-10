@@ -432,11 +432,7 @@ begin
 end;
 
 //procedure MimePartSubPartsDestroy(cx: PJSContext; obj: PJSObject); cdecl;
-{$IFDEF SM52}
 procedure MimePartSubPartsDestroy(var fop: JSFreeOp; obj: PJSObject); cdecl;
-{$ELSE}
-procedure MimePartSubPartsDestroy(var rt: PJSRuntime; obj: PJSObject); cdecl;
-{$ENDIF}
 //var
 //  SubPartsVals: PjsRVVector;
 //  SubPartsVal: jsval;
@@ -457,7 +453,6 @@ begin
 end;
 
 const
-{$IFDEF SM52}
   jsMimePartSubParts_classOps: JSClassOps = (
     getProperty: MimePartSubPartsReader;
     finalize: MimePartSubPartsDestroy; // call then JS object GC
@@ -466,14 +461,7 @@ const
     flags: JSCLASS_HAS_PRIVATE or JSCLASS_FOREGROUND_FINALIZE or  (255 shl JSCLASS_RESERVED_SLOTS_SHIFT);
     cOps: @jsMimePartSubParts_classOps
     );
-{$ELSE}
-  jsMimePartSubParts_class: JSClass = (name: 'MimePartSubParts';
-    flags: JSCLASS_HAS_PRIVATE or (255 shl JSCLASS_RESERVED_SLOTS_SHIFT);
-    getProperty: MimePartSubPartsReader;
-    finalize: MimePartSubPartsDestroy; // call then JS object GC
-    );
-{$ENDIF}
-    
+
 function MimePartGetSubParts(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
 var
   Inst: PSMInstanceRecord;
@@ -633,6 +621,7 @@ var
   attDataBuf: Pointer;
   attDataBufSize: uint32;  
   atachName: RawUTF8;
+  attachContentID: RawUTF8;
   attDataIncorrect: Boolean;
   isBase64: Boolean;
   attStream: TStream;
@@ -737,6 +726,13 @@ begin
           else
             raise ESMException.CreateFmt('Attach file error. Attach %d, invalid atachName',[i]);
 
+          attachContentID :='';
+          if propObj.GetProperty(cx, 'contentID', val) and not val.isVoid then
+            if val.isString then
+              attachContentID := val.AsJSString.ToUTF8(cx)
+            else
+              raise ESMException.CreateFmt('Attach file error. Attach %d, contentID should be a string, got %d',[i, integer(val.ValType(cx))]);
+
           if propObj.GetProperty(cx, 'isBase64', val) and val.isBoolean then
             isBase64 := val.asBoolean
           else
@@ -758,6 +754,8 @@ begin
               Disposition := 'attachment';
               FileName := atachName;
               EncodingCode := ME_BASE64;
+              if (attachContentID <> '') then
+                contentID := attachContentID;
               PartBody.Clear;
               attStream.Position := 0;
               PartBody.LoadFromStream(attStream);

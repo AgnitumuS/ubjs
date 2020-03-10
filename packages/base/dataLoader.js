@@ -85,7 +85,7 @@ function loadSimpleCSVData (conn, fileName, entityName, ettAttributes, mapping, 
   let fContent = fs.readFileSync(fileName, 'utf8')
   if (!fContent) { throw new Error('File ' + fileName + ' is empty or not exist') }
   fContent = fContent.trim()
-  let csvData = csv.parse(fContent, delimiter)
+  const csvData = csv.parse(fContent, delimiter)
   if (!Array.isArray(csvData)) {
     throw new Error('Invalid CSV format or file ' + fileName + ' not found')
   }
@@ -114,11 +114,11 @@ function loadSimpleCSVData (conn, fileName, entityName, ettAttributes, mapping, 
  * @param {Number} [transLen=1000] Maximum rows count to be inserted on the single database transaction
  */
 function loadArrayData (conn, dataArray, entityName, ettAttributes, mapping, transLen) {
-  let attrCnt = ettAttributes.length
+  const attrCnt = ettAttributes.length
   let curTransCnt = 0
   let cmdArray = []
   let currentRecord, cmd, valToInsert, cmdIdx, idList, a, curMapObj
-  let dataLength = dataArray.length
+  const dataLength = dataArray.length
 
   transLen = transLen || 1000
   mapping = mapping || ettAttributes.map((a, i) => i)
@@ -176,26 +176,26 @@ function loadArrayData (conn, dataArray, entityName, ettAttributes, mapping, tra
  * @param {String} locale Locale to localize to. Either locale file name (contain file start with locale^ (uk^my_data.js)) or locale ("uk")
  */
 function localizeEntity (session, config, locale) {
-  let command = []
-  let conn = session.connection
-  let defaultLang = session.appInfo.defaultLang
-  let lang = path.basename(locale).split('^')[ 0 ]
-  let keys = config.keyAttribute.split(';')
-  let isMultyKey = (keys.length > 1)
+  const command = []
+  const conn = session.connection
+  const defaultLang = session.appInfo.defaultLang
+  const lang = path.basename(locale).split('^')[0]
+  const keys = config.keyAttribute.split(';')
+  const isMultyKey = (keys.length > 1)
   let idValue
 
   console.info('\tRun localize for', config.entity, 'to locale', lang)
 
   _.forEach(config.localization, function (oneRow) {
-    let execParams = {}
-    let lookupValue = {}
-    let whereCondition = {}
+    const execParams = {}
+    const lookupValue = {}
+    const whereCondition = {}
     let keyValues
 
-    if (isMultyKey && oneRow['keyValue']) {
-      keyValues = oneRow['keyValue'].split(';')
+    if (isMultyKey && oneRow.keyValue) {
+      keyValues = oneRow.keyValue.split(';')
     } else {
-      keyValues = [oneRow['keyValue']]
+      keyValues = [oneRow.keyValue]
     }
 
     _.forEach(keys, function (key, idx) {
@@ -204,7 +204,7 @@ function localizeEntity (session, config, locale) {
           expression: '[' + key + ']', condition: 'equal', value: keyValues[idx]
         }
       } else {
-        let lookupValue = {}
+        const lookupValue = {}
         lookupValue[key] = keyValues[idx]
         whereCondition['F' + key] = {
           expression: '[' + key + ']', condition: 'equal', values: lookupValue

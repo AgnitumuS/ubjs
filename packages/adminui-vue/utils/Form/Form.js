@@ -7,7 +7,6 @@
 module.exports = Form
 
 const Vuex = require('vuex')
-const createInstanceModule = require('./instance')
 const { mountTab, mountModal, mountContainer } = require('./mount')
 const createProcessingModule = require('./processing')
 const {
@@ -32,7 +31,8 @@ function Form (cfg) {
 class UForm {
   /**
    * @param {object} cfg
-   * @param {Vue} cfg.component Form component
+   * @param {Vue.Component} [cfg.component] Form component, same as cfg.rootComponent
+   * @param {Vue.Component} [cfg.rootComponent] Form component, same as cfg.component
    * @param {object} [cfg.props] Form component props
    * @param {object} [cfg.props.parentContext] Attributes values what will be passed to addNew method
    *   in case instanceID is empty. Think of it as default values for attributes of a new record
@@ -47,10 +47,11 @@ class UForm {
    * @param {object} [cfg.target] Optional target. Used for render form into form
    */
   constructor ({
-    component = required('component'),
+    component,
+    rootComponent,
     props,
     title,
-    entity = required('entity'),
+    entity,
     instanceID,
     isModal,
     modalClass,
@@ -59,14 +60,20 @@ class UForm {
     tabId,
     target
   }) {
-    this.component = component
+    this.component = component || rootComponent
     this.props = props
     this.storeConfig = {}
     this.$store = undefined
     this.entity = entity
-    this.entitySchema = UB.connection.domain.get(this.entity)
-    this.title = title || this.entitySchema.getEntityCaption()
-    this.fieldList = this.entitySchema.getAttributeNames()
+    if (this.entity && UB.connection.domain.has(this.entity)) {
+      this.entitySchema = UB.connection.domain.get(this.entity)
+      this.title = title || this.entitySchema.getEntityCaption()
+      this.fieldList = this.entitySchema.getAttributeNames()
+    } else {
+      this.entitySchema = null
+      this.title = title
+      this.fieldList = []
+    }
     this.instanceID = instanceID
     this.formCode = formCode
     this.collections = {}
@@ -84,14 +91,12 @@ class UForm {
     this.isValidationUsed = false
 
     this.storeInitialized = false
-    this.instanceInitilized = false
-    this.canProcessingInit = false
     this.canValidationInit = false
   }
 
   store (storeConfig = {}) {
     if (this.storeInitialized) {
-      throw new Error(`Store is already initialized. TIP: ".store()" should be called before ".instance()"`)
+      throw new Error('Store is already initialized. TIP: ".store()" should be called before ".processing()"')
     }
     this.storeInitialized = true
     mergeStore(this.storeConfig, storeConfig)
@@ -99,17 +104,10 @@ class UForm {
     return this
   }
 
+  /**
+   * @deprecated replaced to processing
+   */
   instance () {
-    if (this.instanceInitilized) {
-      throw new Error(`"UForm.instance()" should be called once`)
-    }
-    this.storeInitialized = true
-    this.instanceInitilized = false
-    this.canProcessingInit = true
-
-    const instanceModule = createInstanceModule()
-    mergeStore(this.storeConfig, instanceModule)
-
     return this
   }
 
@@ -145,12 +143,8 @@ class UForm {
     deleted,
     saveNotification
   } = {}) {
-    if (!this.canProcessingInit) {
-      throw new Error(`You can use ".processing()" only after ".instance()" and before ".mount()". Or ".processing()" is already initialized`)
-    }
-    this.canProcessingInit = false
+    this.storeInitialized = true
     this.canValidationInit = true
-
     this.isProcessingUsed = true
 
     if (masterFieldList) {
@@ -195,10 +189,10 @@ class UForm {
    */
   validation (validationMixin) {
     if (validationMixin && (typeof validationMixin === 'function')) {
-      throw new Error(`Invalid parameter type for UForm.validation - must be object with at last computed or validation props`)
+      throw new Error('Invalid parameter type for UForm.validation - must be object with at last computed or validation props')
     }
     if (!this.canValidationInit) {
-      throw new Error(`You can use ".validation()" only after ".processing()" and before ".mount()". Or ".validation()" is already initialized`)
+      throw new Error('You can use ".validation()" only after ".processing()" and before ".mount()". Or ".validation()" is already initialized')
     }
     this.canValidationInit = false
     this.isValidationUsed = true
@@ -210,7 +204,7 @@ class UForm {
     return this
   }
 
-  mount () {
+  async mount () {
     if (this.storeInitialized) {
       this.$store = new Vuex.Store(this.storeConfig)
     }
@@ -227,7 +221,12 @@ class UForm {
     }
 
     if (this.isProcessingUsed) {
-      this.$store.dispatch('init')
+      try {
+        await this.$store.dispatch('init')
+      } catch (err) {
+        UB.showErrorWindow(err.message)
+        return
+      }
     }
 
     if (this.isModal) {

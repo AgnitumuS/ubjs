@@ -1,29 +1,19 @@
 <template>
-  <u-form-row :label="label">
-    <el-row
-      :gutter="10"
-      type="flex"
-      align="middle"
+  <div>
+    <el-input
+      v-model="iconClass"
+      class="ub-icon-select__input-group"
     >
-      <el-col :span="14">
-        <el-input v-model="value">
-          <el-button
-            slot="append"
-            icon="el-icon-menu"
-            @click="dialogVisible = true"
-          />
-        </el-input>
-      </el-col>
-      <el-col
-        :span="2"
-        style="text-align: center"
-      >
-        <i
-          :class="value"
-          style="font-size: 32px;"
-        />
-      </el-col>
-    </el-row>
+      <i
+        slot="prepend"
+        :class="value"
+      />
+      <el-button
+        slot="append"
+        icon="el-icon-menu"
+        @click="dialogVisible = true"
+      />
+    </el-input>
 
     <el-dialog
       :visible.sync="dialogVisible"
@@ -38,44 +28,52 @@
         :placeholder="$ut('Search')"
       />
 
-      <div class="ub-shortcut__icon-select__list">
+      <div class="ub-icon-select__list">
         <h3>Element ui icons</h3>
 
-        <el-row v-if="getElIcons.length > 0">
-          <el-col
+        <div
+          v-if="getElIcons.length > 0"
+          class="ub-icon-select__list-wrapper"
+        >
+          <span
             v-for="icon in getElIcons"
             :key="icon"
-            :span="4"
-            class="ub-shortcut__icon-select__item"
+            class="ub-icon-select__item"
             :class="{
               selected: icon === selectedIcon
             }"
-            @click.native="selectedIcon = icon"
+            @click="selectedIcon = icon"
           >
             <i :class="icon" />
-            <div>{{ icon }}</div>
-          </el-col>
-        </el-row>
-        <div v-else>Not found</div>
+            <span>{{ icon }}</span>
+          </span>
+        </div>
+        <div v-else>
+          Not found
+        </div>
 
         <h3>Font awesome 5 free icons</h3>
 
-        <el-row v-if="getFaIcons.length > 0">
-          <el-col
+        <div
+          v-if="getFaIcons.length > 0"
+          class="ub-icon-select__list-wrapper"
+        >
+          <span
             v-for="icon in getFaIcons"
             :key="icon"
-            :span="4"
-            class="ub-shortcut__icon-select__item"
+            class="ub-icon-select__item"
             :class="{
               selected: icon === selectedIcon
             }"
-            @click.native="selectedIcon = icon"
+            @click="selectedIcon = icon"
           >
             <i :class="icon" />
             <div>{{ icon }}</div>
-          </el-col>
-        </el-row>
-        <div v-else>Not found</div>
+          </span>
+        </div>
+        <div v-else>
+          Not found
+        </div>
       </div>
 
       <template slot="footer">
@@ -95,7 +93,7 @@
         </el-button>
       </template>
     </el-dialog>
-  </u-form-row>
+  </div>
 </template>
 
 <script>
@@ -163,6 +161,15 @@ export default {
   },
 
   computed: {
+    iconClass: {
+      get () {
+        return this.value
+      },
+      set (value) {
+        this.$emit('change', value)
+      }
+    },
+
     getElIcons () {
       return this.elIcons.filter(this.iconFilter)
     },
@@ -177,7 +184,14 @@ export default {
       return icon.toLowerCase().indexOf(this.searchQuery.toLowerCase()) !== -1
     },
 
-    initIcons () {
+    async initIcons () {
+      let allFaAvailable = true
+      try {
+        let allFaIcons = await this.$UB.get('/models/adminui-vue/dist/fonts/all-fa-icons.json')
+        this.faIcons = allFaIcons.data
+      } catch (e) { // fallback in case json not found
+        allFaAvailable = false
+      }
       for (const ss of document.styleSheets) {
         for (const r of ss.cssRules) {
           if (r.selectorText) {
@@ -190,22 +204,24 @@ export default {
                 this.elIcons.push(icon)
               }
             }
-            let st = r.selectorText
-            if (st.startsWith('.fa-') && st.endsWith(':before')) {
-              let cls = st.split(':')[0].substr(1)
-              const icon = 'fas ' + cls
-              this.faIcons.push(icon)
+            if (!allFaAvailable) {
+              let st = r.selectorText
+              if (st.startsWith('.fa-') && st.endsWith(':before')) {
+                let cls = st.split(':')[0].substr(1)
+                const icon = 'fas ' + cls
+                this.faIcons.push(icon)
+              }
             }
           }
         }
       }
     },
 
-    onOpenDialog () {
+    async onOpenDialog () {
       this.selectedIcon = this.value ? this.value : null
       this.searchQuery = ''
       if (!this.isInited) {
-        this.initIcons()
+        await this.initIcons()
         this.isInited = true
       }
     },
@@ -215,7 +231,7 @@ export default {
     },
 
     chooseIcon () {
-      this.$emit('select', this.selectedIcon)
+      this.$emit('change', this.selectedIcon)
       this.dialogVisible = false
     }
   }
@@ -224,7 +240,7 @@ export default {
 </script>
 
 <style>
-.ub-shortcut__icon-select__list {
+.ub-icon-select__list {
   height: 45vh;
   overflow-y: auto;
   overflow-x: visible;
@@ -232,7 +248,12 @@ export default {
   padding-bottom: 20px;
 }
 
-.ub-shortcut__icon-select__item {
+.ub-icon-select__list-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ub-icon-select__item {
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -240,18 +261,38 @@ export default {
   align-items: center;
   font-size: 12px;
   height: 90px;
-  margin-right: -1px;
-  margin-bottom: -1px;
+  width: 16.6667%;
   padding: 5px;
   cursor: pointer;
 }
 
-.ub-shortcut__icon-select__item.selected {
+.ub-icon-select__item.selected {
   color: rgb(var(--primary))
 }
 
-.ub-shortcut__icon-select__item i {
+.ub-icon-select__item i {
   margin-bottom: 10px;
   font-size: 36px;
+}
+
+.ub-icon-select__input-group .el-input-group__prepend {
+  height: 30px;
+  width: 16px;
+  padding: 0;
+  padding-top: 0px;
+  position: absolute;
+  top: 1px;
+  left: 15px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: none;
+  font-size: 16px;
+}
+
+.ub-icon-select__input-group .el-input__inner {
+  padding-left: 45px;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
 }
 </style>

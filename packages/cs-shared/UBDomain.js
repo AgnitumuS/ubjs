@@ -41,9 +41,9 @@ const iso8601ParseAsDate = require('./LocalDataStore').iso8601ParseAsDate
  * @class
  */
 function UBDomain (domainInfo) {
-  let me = this
-  let entityCodes = Object.keys(domainInfo.domain)
-  let isV4API = (typeof domainInfo.entityMethods === 'undefined')
+  const me = this
+  const entityCodes = Object.keys(domainInfo.domain)
+  const isV4API = (typeof domainInfo.entityMethods === 'undefined')
   /**
    * Map with keys is entity name, value is UBEntity
    * @member {Object<string, UBEntity>}
@@ -53,7 +53,7 @@ function UBDomain (domainInfo) {
    * Connection collection (extended domain only)
    * @member {Array<DBConnectionConfig>}
    */
-  this.connections = domainInfo['connections']
+  this.connections = domainInfo.connections
   /**
    * Default connection (extended domain only)
    * @member {DBConnectionConfig}
@@ -61,25 +61,25 @@ function UBDomain (domainInfo) {
   this.defaultConnection = undefined
   if (this.connections) {
     this.connections.forEach((conn) => {
-      if (conn['isDefault']) this.defaultConnection = conn
+      if (conn.isDefault) this.defaultConnection = conn
     })
   }
   for (let i = 0, L = entityCodes.length; i < L; i++) {
-    let entityCode = entityCodes[i]
-    let entity = domainInfo.domain[entityCode]
+    const entityCode = entityCodes[i]
+    const entity = domainInfo.domain[entityCode]
     // entity attributes locale can come either as array
     // "attributes": [{"name": "attrCode", ...}, ..]
     // or as object
     // "attributes": {"attrCode": {...}, ..]
     // to be merged correctly transformation to object required
     if (entity.i18n && entity.i18n.attributes && Array.isArray(entity.i18n.attributes)) {
-      let attrs = entity.i18n.attributes
-      let newAttrs = {}
+      const attrs = entity.i18n.attributes
+      const newAttrs = {}
       for (let k = 0, lL = attrs.length; k < lL; k++) {
-        let attr = attrs[k]
-        let attrName = attr.name
+        const attr = attrs[k]
+        const attrName = attr.name
         if (!attrName) throw new Error('Invalid localization JSON for entity ' + entityCode)
-        delete attr['name']
+        delete attr.name
         newAttrs[attrName] = attr
       }
       entity.i18n.attributes = newAttrs
@@ -114,9 +114,9 @@ function UBDomain (domainInfo) {
    * @member {Object<string, UBModel>}
    */
   this.models = {}
-  let modelCodes = Object.keys(domainInfo.models)
+  const modelCodes = Object.keys(domainInfo.models)
   modelCodes.forEach(function (modelCode) {
-    let m = domainInfo.models[modelCode]
+    const m = domainInfo.models[modelCode]
     me.models[modelCode] = new UBModel(m, modelCode)
     me.orderedModels.push(me.models[modelCode])
   })
@@ -132,7 +132,7 @@ function UBDomain (domainInfo) {
  * @param {String|Array} methodNames
  */
 UBDomain.prototype.isEntityMethodsAccessible = function (entityCode, methodNames) {
-  let entity = this.entities[entityCode]
+  const entity = this.entities[entityCode]
   if (!entity) return false
   return Array.isArray(methodNames) ? entity.haveAccessToMethods(methodNames) : entity.haveAccessToMethod(methodNames)
 }
@@ -143,7 +143,7 @@ UBDomain.prototype.isEntityMethodsAccessible = function (entityCode, methodNames
  * @returns {UBEntity}
  */
 UBDomain.prototype.get = function (entityCode, raiseErrorIfNotExists) {
-  let result = this.entities[entityCode]
+  const result = this.entities[entityCode]
   if ((raiseErrorIfNotExists !== false) && !result) {
     throw new Error('Entity with code "' + entityCode + '" does not exists or not accessible')
   }
@@ -191,7 +191,7 @@ UBDomain.prototype.filterEntities = function (predicate) {
   } else {
     return _.filter(this.entities, function (item) {
       let res = true
-      for (let prop in predicate) {
+      for (const prop in predicate) {
         if (predicate.hasOwnProperty(prop)) {
           res = res && (item[prop] === predicate[prop])
         }
@@ -307,17 +307,17 @@ UBDomain.EntityCacheTypes = {
  * @protected
  */
 UBDomain.dialectsPriority = {
-  MSSQL2012: [ 'MSSQL2012', 'MSSQL', 'AnsiSQL' ],
-  MSSQL2008: [ 'MSSQL2008', 'MSSQL', 'AnsiSQL' ],
-  MSSQL: [ 'MSSQL', 'AnsiSQL' ],
-  Oracle11: [ 'Oracle11', 'Oracle', 'AnsiSQL' ],
-  Oracle10: [ 'Oracle10', 'Oracle', 'AnsiSQL' ],
-  Oracle9: [ 'Oracle9', 'Oracle', 'AnsiSQL' ],
-  Oracle: [ 'Oracle', 'AnsiSQL' ],
-  PostgreSQL: [ 'PostgreSQL', 'AnsiSQL' ],
-  AnsiSQL: [ 'AnsiSQL' ],
-  Firebird: [ 'Firebird', 'AnsiSQL' ],
-  SQLite3: [ 'SQLite3', 'AnsiSQL' ]
+  MSSQL2012: ['MSSQL2012', 'MSSQL', 'AnsiSQL'],
+  MSSQL2008: ['MSSQL2008', 'MSSQL', 'AnsiSQL'],
+  MSSQL: ['MSSQL', 'AnsiSQL'],
+  Oracle11: ['Oracle11', 'Oracle', 'AnsiSQL'],
+  Oracle10: ['Oracle10', 'Oracle', 'AnsiSQL'],
+  Oracle9: ['Oracle9', 'Oracle', 'AnsiSQL'],
+  Oracle: ['Oracle', 'AnsiSQL'],
+  PostgreSQL: ['PostgreSQL', 'AnsiSQL'],
+  AnsiSQL: ['AnsiSQL'],
+  Firebird: ['Firebird', 'AnsiSQL'],
+  SQLite3: ['SQLite3', 'AnsiSQL']
 }
 
 /**
@@ -326,8 +326,8 @@ UBDomain.dialectsPriority = {
  * @return {string}
  */
 UBDomain.getPhysicalDataType = function (dataType) {
-  let ubDataTypes = UBDomain.ubDataTypes
-  let typeMap = {}
+  const ubDataTypes = UBDomain.ubDataTypes
+  const typeMap = {}
 
   if (!this.physicalTypeMap) {
     typeMap[ubDataTypes.Int] = 'int'
@@ -359,7 +359,7 @@ UBDomain.getPhysicalDataType = function (dataType) {
  */
 UBDomain.jsonReplacer = function (k, v) {
   // eslint-disable-next-line no-proto
-  let jr = this.__proto__.forJSONReplacer
+  const jr = this.__proto__.forJSONReplacer
   if (jr) {
     // skip props marked as null inside forJSONReplacer collection
     if (jr.hasOwnProperty(k) && jr[k] === null) return undefined
@@ -501,7 +501,7 @@ function UBEntityMapping (maping) {
  * @param {UBDomain} domain
  */
 function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
-  let me = this
+  const me = this
   let mixinNames, mixinInfo, i18nMixin
 
   if (i18n && ((typeof process === 'undefined') || !process.isServer)) { // merge i18n only on client side
@@ -509,7 +509,7 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
     // verify entity is valid after merging i18n: at last all attributes have dataType
     _.forEach(entityInfo.attributes, (attrDef, attrKey) => {
       if (!attrDef.dataType) {
-        let eMsg = `Invalid i18n for entity "${entityCode}" - attribute "${attrKey}" not exist in meta or it's dataType is empty`
+        const eMsg = `Invalid i18n for entity "${entityCode}" - attribute "${attrKey}" not exist in meta or it's dataType is empty`
         throw new Error(eMsg)
       }
     })
@@ -578,13 +578,13 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
    */
   this.mapping = undefined
   if (entityInfo.mapping) {
-    let mappingKeys = Object.keys(entityInfo.mapping)
+    const mappingKeys = Object.keys(entityInfo.mapping)
     mappingKeys.forEach(key => {
       if (!UBDomain.dialectsPriority[key]) throw new Error(`Invalid dialect ${key} in ${this.code} mapping`)
     })
     if (mappingKeys.length) {
-      let me = this
-      let dialectPriority = UBDomain.dialectsPriority[this.connectionConfig.dialect]
+      const me = this
+      const dialectPriority = UBDomain.dialectsPriority[this.connectionConfig.dialect]
       _.forEach(dialectPriority, function (dialect) {
         if (entityInfo.mapping[dialect]) {
           me.mapping = new UBEntityMapping(entityInfo.mapping[dialect])
@@ -616,10 +616,10 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
    */
   this.blobAttributes = []
 
-  let attributesIsArray = Array.isArray(entityInfo.attributes)
+  const attributesIsArray = Array.isArray(entityInfo.attributes)
   _.forEach(entityInfo.attributes, (attributeInfo, attributeCode) => {
     if (attributesIsArray) attributeCode = attributeInfo.code || attributeInfo.name
-    let attr = new UBEntityAttribute(attributeInfo, attributeCode, me)
+    const attr = new UBEntityAttribute(attributeInfo, attributeCode, me)
     // record history mixin set a dateTo automatically, so let's allow blank mi_dateTo on UI
     // but for DDL generator mi_dateTo must be not null, so change only for browser side
     if ((attr.code === 'mi_dateTo') && (typeof window !== 'undefined')) {
@@ -747,7 +747,7 @@ UBEntity.prototype.attr = function (attributeCode, simpleOnly) {
  * @returns {UBEntityAttribute}
  */
 UBEntity.prototype.getAttribute = function (attributeCode) {
-  let attr = this.attributes[attributeCode]
+  const attr = this.attributes[attributeCode]
   if (!attr) {
     throw new Error(`Attribute ${this.code}.${attributeCode} doesn't exist`)
   }
@@ -785,7 +785,7 @@ UBEntity.prototype.mixin = function (mixinCode) {
  * @returns {Boolean}
  */
 UBEntity.prototype.hasMixin = function (mixinCode) {
-  let mixin = this.mixins[mixinCode]
+  const mixin = this.mixins[mixinCode]
   if (mixinCode === 'audit') {
     return !mixin || (!!mixin && mixin.enabled)
   }
@@ -819,7 +819,7 @@ const STD_MIXINS_ATTRIBUTES = [
  * @returns {any}
  */
 UBEntity.prototype.asPlainJSON = function (attributesAsArray = true, removeAttrsAddedByMixin = true) {
-  let entityJSON = JSON.parse(JSON.stringify(this, UBDomain.jsonReplacer))
+  const entityJSON = JSON.parse(JSON.stringify(this, UBDomain.jsonReplacer))
   if (removeAttrsAddedByMixin && entityJSON.dsType !== 'Virtual') {
     _.forEach(entityJSON.attributes, (attrVal, attrCode) => {
       if (attrCode.startsWith('mi_') && STD_MIXINS_ATTRIBUTES.includes(attrCode)) {
@@ -829,16 +829,16 @@ UBEntity.prototype.asPlainJSON = function (attributesAsArray = true, removeAttrs
   }
   if (!attributesAsArray) return entityJSON
   // transform {ID: {}, } -> [{name: 'ID',..},..]
-  let newAttributes = []
-  for (let attrName in entityJSON.attributes) {
-    let attr = Object.assign({ name: attrName }, entityJSON.attributes[attrName]) // move name to the first position in JSON
+  const newAttributes = []
+  for (const attrName in entityJSON.attributes) {
+    const attr = Object.assign({ name: attrName }, entityJSON.attributes[attrName]) // move name to the first position in JSON
     if (attr.mapping) {
       if (!Array.isArray(attr.mapping)) {
-        let newMappings = []
-        for (let dialectName in attr.mapping) {
+        const newMappings = []
+        for (const dialectName in attr.mapping) {
           // noinspection JSUnfilteredForInLoop
-          let oldDialect = attr.mapping[dialectName]
-          let newDialect = Object.assign({ name: dialectName }, oldDialect)
+          const oldDialect = attr.mapping[dialectName]
+          const newDialect = Object.assign({ name: dialectName }, oldDialect)
           newMappings.push(newDialect)
         }
         attr.mapping = newMappings
@@ -877,7 +877,7 @@ UBEntity.prototype.filterAttribute = function (predicate) {
   } else {
     return _.filter(this.attributes, function (item) {
       let res = true
-      for (let prop in predicate) {
+      for (const prop in predicate) {
         if (predicate.hasOwnProperty(prop)) {
           res = res && (item[prop] === predicate[prop])
         }
@@ -893,15 +893,15 @@ UBEntity.prototype.filterAttribute = function (predicate) {
  * @returns {boolean}
  */
 UBEntity.prototype.haveAccessToAnyMethods = function (methodsCodes) {
-  let me = this
-  let fMethods = methodsCodes || []
+  const me = this
+  const fMethods = methodsCodes || []
   let result = false
 
   fMethods.forEach(function (methodCode) {
     if (UB.isServer && process.isServer) {
       result = result || App.els(me.code, methodCode)
     } else {
-      result = result || me.entityMethods[ methodCode ] === 1
+      result = result || me.entityMethods[methodCode] === 1
     }
   })
   return result
@@ -913,15 +913,15 @@ UBEntity.prototype.haveAccessToAnyMethods = function (methodsCodes) {
  * @returns {Boolean}
  */
 UBEntity.prototype.haveAccessToMethods = function (methods) {
-  let me = this
+  const me = this
   let result = true
-  let fMethods = methods || []
+  const fMethods = methods || []
 
   fMethods.forEach(function (methodCode) {
     if (UB.isServer && process.isServer) {
       result = result && App.els(me.code, methodCode)
     } else {
-      result = result && (me.entityMethods[ methodCode ] === 1)
+      result = result && (me.entityMethods[methodCode] === 1)
     }
   })
   return result
@@ -1005,12 +1005,12 @@ function jsonParse (v) {
  * @returns {Array<{index: number, convertFn: function}>}
  */
 UBEntity.prototype.getConvertRules = function (fieldList) {
-  let me = this
-  let rules = []
-  let types = UBDomain.ubDataTypes
+  const me = this
+  const rules = []
+  const types = UBDomain.ubDataTypes
 
   fieldList.forEach(function (fieldName, index) {
-    let attribute = me.attr(fieldName)
+    const attribute = me.attr(fieldName)
     if (attribute) {
       if (attribute.dataType === types.DateTime) {
         rules.push({
@@ -1044,7 +1044,7 @@ UBEntity.prototype.getConvertRules = function (fieldList) {
  * @return {string}
  */
 UBEntity.prototype.getDescriptionAttribute = function () {
-  let result = this.descriptionAttribute || 'caption'
+  const result = this.descriptionAttribute || 'caption'
   if (!this.attr(result)) {
     throw new Error('Missing description attribute for entity ' + this.code)
   }
@@ -1092,7 +1092,7 @@ UBEntity.prototype.getEntityAttributeInfo = function (attributeName, depth) {
   let currentLevel = 0
   while (currentEntity && currentLevel < partsCount) {
     if (currentPart.indexOf('@') > -1) {
-      let complexAttr = currentPart.split('@')
+      const complexAttr = currentPart.split('@')
       currentEntityCode = complexAttr[1]
       currentEntity = this.domain.get(currentEntityCode) // real entity is text after @ parentID.code@org_department
       currentPart = complexAttr[0]
@@ -1130,7 +1130,7 @@ UBEntity.prototype.getEntityAttributeInfo = function (attributeName, depth) {
  * @return {UBEntityAttribute}
  */
 UBEntity.prototype.getEntityAttribute = function (attributeName, depth) {
-  let info = this.getEntityAttributeInfo(attributeName, depth)
+  const info = this.getEntityAttributeInfo(attributeName, depth)
   return info ? info.attribute : undefined
 }
 
@@ -1140,7 +1140,7 @@ UBEntity.prototype.getEntityAttribute = function (attributeName, depth) {
  * @returns {Array<string>}
  */
 UBEntity.prototype.getAttributeNames = function (predicate) {
-  let attributes = []
+  const attributes = []
   if (predicate) {
     _.forEach(this.filterAttribute(predicate), function (attr) {
       attributes.push(attr.code)
@@ -1157,10 +1157,10 @@ UBEntity.prototype.getAttributeNames = function (predicate) {
  * @return {Array<string>}
  */
 UBEntity.prototype.getEntityRequirements = function (fieldList) {
-  let result = []
+  const result = []
   fieldList = fieldList || this.getAttributeNames()
   for (let i = 0, L = fieldList.length; i < L; ++i) {
-    let attr = this.getEntityAttribute(fieldList[i])
+    const attr = this.getEntityAttribute(fieldList[i])
     if (attr && (attr.dataType === UBDomain.ubDataTypes.Entity) &&
       (result.indexOf(attr.associatedEntity) === -1)) {
       result.push(attr.associatedEntity)
@@ -1175,7 +1175,7 @@ UBEntity.prototype.getEntityRequirements = function (fieldList) {
  * @param {string} contextMessage
  */
 UBEntity.prototype.checkAttributeExist = function (attributeNames, contextMessage) {
-  let me = this
+  const me = this
   attributeNames = !Array.isArray(attributeNames) ? [attributeNames] : attributeNames
   attributeNames.forEach(function (fieldName) {
     if (!me.getEntityAttributeInfo(fieldName)) {
@@ -1347,13 +1347,13 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
   this.mapping = undefined
 
   if (attributeInfo.mapping) {
-    let me = this
-    let mappingKeys = Object.keys(attributeInfo.mapping)
+    const me = this
+    const mappingKeys = Object.keys(attributeInfo.mapping)
     mappingKeys.forEach(function (key) {
       if (!UBDomain.dialectsPriority[key]) throw new Error(`Invalid dialect ${key} in ${entity.code}.${me.code} mapping`)
     })
     if (mappingKeys.length) {
-      let dialectsPriority = UBDomain.dialectsPriority[this.entity.connectionConfig.dialect]
+      const dialectsPriority = UBDomain.dialectsPriority[this.entity.connectionConfig.dialect]
       _.forEach(dialectsPriority, function (dialect) {
         if (attributeInfo.mapping[dialect]) {
           me.mapping = new UBEntityAttributeMapping(attributeInfo.mapping[dialect])

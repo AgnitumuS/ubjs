@@ -15,6 +15,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.2] - 2020-03-09
+## [5.3.1] - 2020-03-04
+## [5.3.0] - 2020-02-29
+### Changed
+ - entities localization files (*.meta.??) are moved to `meta_locale` folder
+ 
+## [5.2.78] - 2020-02-23
+## [5.2.77] - 2020-02-18
+## [5.2.76] - 2020-02-14
+## [5.2.75] - 2020-02-13
+## [5.2.74] - 2020-02-10
+## [5.2.73] - 2020-02-08
+## [5.2.72] - 2020-02-03
+## [5.2.71] - 2020-01-31
+## [5.2.70] - 2020-01-17
+### Changed
+ - rewrote `010_create_UBQ_navshortcuts.js` config for rendering ubq forms on vue
+
+## [5.2.69] - 2020-01-13
+## [5.2.68] - 2020-01-11
+### Fixed
+ - scheduler worker will reuse a single http.request object instead of creation new one for each task execution command;
+ Under linux http.request creation can take up to 1ms
+
+## [5.2.67] - 2020-01-02
 ## [5.2.66] - 2019-12-27
 ## [5.2.65] - 2019-12-20
 ## [5.2.64] - 2019-12-18

@@ -152,7 +152,7 @@ Ext.define('UB.ux.UBDetailTree', {
 
     me.actions[actions.refresh] = new Ext.Action({
       actionId: actions.refresh,
-      iconCls: 'fas fa-refresh',
+      iconCls: 'fas fa-sync',
       cls: 'refresh-action',
       tooltip: UB.i18n('refresh'), // + hotKeys[actions.refresh].text,
       eventId: events.refresh,
@@ -182,7 +182,7 @@ Ext.define('UB.ux.UBDetailTree', {
 
     me.actions[actions.up] = new Ext.Action({
       actionId: actions.up,
-      iconCls: 'fa fa-up',
+      iconCls: 'fas fa-angle-up',
       cls: 'up-action',
       hidden: true,
       eventId: events.up,
@@ -192,7 +192,7 @@ Ext.define('UB.ux.UBDetailTree', {
 
     me.actions[actions.down] = new Ext.Action({
       actionId: actions.down,
-      iconCls: 'fa fa-down',
+      iconCls: 'fas fa-angle-down',
       cls: 'down-action',
       hidden: true,
       eventId: events.down,

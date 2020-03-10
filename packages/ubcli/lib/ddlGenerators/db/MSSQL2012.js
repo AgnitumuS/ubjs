@@ -15,10 +15,10 @@ class DBSQL2012 extends DBAbstract {
    * @override
    */
   loadDatabaseMetadata () {
-    let mTables = this.refTableDefs
+    const mTables = this.refTableDefs
     if (!mTables.length) return // all entities in this connection are external or no entities at all - skip loading DB metadata
 
-    let tablesSQL = `select o.name, cast( eprop.value as nvarchar(2000) ) as caption 
+    const tablesSQL = `select o.name, cast( eprop.value as nvarchar(2000) ) as caption 
       from  sys.tables o
        left outer join sys.extended_properties eprop 
          on eprop.major_id = o.object_id and eprop.minor_id = 0 and eprop.class = 1 and eprop.name = '${DB_DESCRIPTION_PROPERTY}'
@@ -35,15 +35,15 @@ class DBSQL2012 extends DBAbstract {
     if (mTables.length) {
       dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, { name: dbTab.name }) !== -1)
     }
-    for (let tabDef of dbTables) {
-      let asIsTable = new TableDefinition({
+    for (const tabDef of dbTables) {
+      const asIsTable = new TableDefinition({
         name: tabDef.name,
         caption: tabDef.caption
       })
 
       // Table Columns
       // TODO - rewrite using parameters in query (after rewriting runSQL using JS)
-      let columnSQL = `SELECT c.name, c.column_id AS colid, c.is_ansi_padded, c.is_nullable,
+      const columnSQL = `SELECT c.name, c.column_id AS colid, c.is_ansi_padded, c.is_nullable,
         c.is_identity, c.is_xml_document, c.is_computed, t.name AS typename, st.name AS systpname,
         c.max_length AS len, c.precision AS prec, c.scale, d.name AS defname, du.name AS defowner, 
         cast( ep.value as nvarchar(2000) ) as description, cm.definition  AS defvalue
@@ -57,33 +57,33 @@ class DBSQL2012 extends DBAbstract {
         LEFT OUTER JOIN sys.default_constraints cm ON cm.object_id = d.object_id
         left outer join sys.extended_properties ep on ep.major_id = tb.object_id and ep.minor_id = c.column_id and ep.class = 1 and ep.name = '${DB_DESCRIPTION_PROPERTY}'
       where tb.object_id = object_id( :("${asIsTable._upperName}"):, N'U')`
-      let columnsFromDb = this.conn.xhr({
+      const columnsFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: columnSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       // console.log('columnsFromDb', columnsFromDb)
-      for (let colDef of columnsFromDb) {
-        let physicalTypeLower = colDef['typename'].toLowerCase()
-        let def = colDef['defvalue']
+      for (const colDef of columnsFromDb) {
+        const physicalTypeLower = colDef.typename.toLowerCase()
+        let def = colDef.defvalue
         // SQL server return default value wrapped in 'A' -> ('A')
         // numeric & int types wrapped twice 0 -> ((0))
         if (def) {
           def = def.replace(/^\((.*)\)$/, '$1')
           if (['numeric', 'int'].indexOf(physicalTypeLower) !== -1) def = def.replace(/^\((.*)\)$/, '$1')
         }
-        let nObj = {
+        const nObj = {
           name: colDef.name,
           description: colDef.description,
-          allowNull: (colDef['is_nullable'] !== 0),
-          dataType: this.dataBaseTypeToUni(colDef['typename'], colDef['len'], colDef['prec'], colDef['scale']),
+          allowNull: (colDef.is_nullable !== 0),
+          dataType: this.dataBaseTypeToUni(colDef.typename, colDef.len, colDef.prec, colDef.scale),
           size: (['nvarchar', 'varchar', 'char', 'nchar', 'text', 'ntext'].indexOf(physicalTypeLower) !== -1)
-            ? colDef['len']
+            ? colDef.len
             : colDef.prec,
-          prec: colDef['scale'],
+          prec: colDef.scale,
           // defaultValue: this.parseDefValue( colDef.defvalue ),
           defaultValue: def,
-          defaultConstraintName: colDef['defname']
+          defaultConstraintName: colDef.defname
         }
         if (physicalTypeLower === 'nvarchar' || physicalTypeLower === 'nchar' || physicalTypeLower === 'ntext') {
           nObj.size = Math.floor(nObj.size / 2)
@@ -92,7 +92,7 @@ class DBSQL2012 extends DBAbstract {
       }
 
       // foreign key
-      let foreignKeysSQL = `SELECT f.name AS foreign_key_name
+      const foreignKeysSQL = `SELECT f.name AS foreign_key_name
         ,OBJECT_NAME(f.parent_object_id) AS table_name
         ,COL_NAME(fc.parent_object_id, fc.parent_column_id) AS constraint_column_name
         ,OBJECT_NAME (f.referenced_object_id) AS referenced_object
@@ -104,45 +104,45 @@ class DBSQL2012 extends DBAbstract {
         INNER JOIN sys.foreign_key_columns AS fc
         ON f.object_id = fc.constraint_object_id
         WHERE f.parent_object_id = OBJECT_ID( :("${asIsTable._upperName}"):, N'U')`
-      let fkFromDb = this.conn.xhr({
+      const fkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: foreignKeysSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
-      for (let fkDef of fkFromDb) {
+      for (const fkDef of fkFromDb) {
         asIsTable.addFK({
-          name: fkDef['foreign_key_name'],
-          keys: [fkDef['constraint_column_name'].toUpperCase()],
-          references: fkDef['referenced_object'],
-          isDisabled: fkDef['is_disabled'] !== 0,
-          deleteAction: fkDef['delete_referential_action_desc'], // NO_ACTION, CASCADE, SET_NULL,  SET_DEFAULT
-          updateAction: fkDef['update_referential_action_desc']
+          name: fkDef.foreign_key_name,
+          keys: [fkDef.constraint_column_name.toUpperCase()],
+          references: fkDef.referenced_object,
+          isDisabled: fkDef.is_disabled !== 0,
+          deleteAction: fkDef.delete_referential_action_desc, // NO_ACTION, CASCADE, SET_NULL,  SET_DEFAULT
+          updateAction: fkDef.update_referential_action_desc
         })
       }
 
       // primary keys
-      let primaryKeySQL = `SELECT i.name AS constraint_name, c.name AS column_name, c.is_identity as auto_increment
+      const primaryKeySQL = `SELECT i.name AS constraint_name, c.name AS column_name, c.is_identity as auto_increment
         FROM sys.indexes AS i
           INNER JOIN sys.index_columns AS ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id
           INNER JOIN sys.columns AS c ON ic.object_id = c.object_id AND c.column_id = ic.column_id
         WHERE i.is_primary_key = 1
           AND i.object_id = OBJECT_ID(:("${asIsTable._upperName}"):, N'U')
         ORDER BY ic.key_ordinal`
-      let pkFromDb = this.conn.xhr({
+      const pkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: primaryKeySQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       if (pkFromDb.length) {
         asIsTable.primaryKey = {
-          name: pkFromDb[0]['constraint_name'],
+          name: pkFromDb[0].constraint_name,
           keys: _.map(pkFromDb, 'column_name'),
-          autoIncrement: pkFromDb[0]['auto_increment'] === 1
+          autoIncrement: pkFromDb[0].auto_increment === 1
         }
       }
 
       // indexes
-      let indexesSQL = `SELECT ic.index_id, i.name AS index_name, c.name AS column_name, i.type_desc,
+      const indexesSQL = `SELECT ic.index_id, i.name AS index_name, c.name AS column_name, i.type_desc,
             i.is_unique, i.is_primary_key, i.is_unique_constraint, i.is_disabled, ic.is_descending_key
         FROM sys.indexes AS i
             INNER JOIN sys.index_columns ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id
@@ -151,43 +151,43 @@ class DBSQL2012 extends DBAbstract {
             and i.is_primary_key <> 1
             AND i.object_id = OBJECT_ID(:("${asIsTable._upperName}"):, N'U')
         order by ic.index_id, ic.key_ordinal, c.name`
-      let indexesFromDb = this.conn.xhr({
+      const indexesFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: indexesSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       let i = 0
-      let idxCnt = indexesFromDb.length
+      const idxCnt = indexesFromDb.length
       while (i < idxCnt) {
-        let indexObj = {
-          name: indexesFromDb[i][ 'index_name' ],
-          isUnique: indexesFromDb[i][ 'is_unique' ] !== 0,
-          isDisabled: indexesFromDb[i][ 'is_disabled' ] !== 0,
-          isConstraint: indexesFromDb[i][ 'is_unique_constraint' ] !== 0,
+        const indexObj = {
+          name: indexesFromDb[i].index_name,
+          isUnique: indexesFromDb[i].is_unique !== 0,
+          isDisabled: indexesFromDb[i].is_disabled !== 0,
+          isConstraint: indexesFromDb[i].is_unique_constraint !== 0,
           keys: []
         }
         // index may consist of several keys (one roe for each key)
-        let buildKeysFor = indexesFromDb[i]['index_id']
-        while ((i < idxCnt) && (indexesFromDb[i]['index_id'] === buildKeysFor)) {
-          indexObj.keys.push(indexesFromDb[i]['column_name'] + (indexesFromDb[i]['is_descending_key'] !== 0 ? ' DESC' : ''))
+        const buildKeysFor = indexesFromDb[i].index_id
+        while ((i < idxCnt) && (indexesFromDb[i].index_id === buildKeysFor)) {
+          indexObj.keys.push(indexesFromDb[i].column_name + (indexesFromDb[i].is_descending_key !== 0 ? ' DESC' : ''))
           i++
         }
         asIsTable.addIndex(indexObj)
       }
 
       // check constraints
-      let checkConstraintsSQL = `SELECT ck.name, ck.definition FROM sys.check_constraints ck
+      const checkConstraintsSQL = `SELECT ck.name, ck.definition FROM sys.check_constraints ck
         where ck.parent_object_id = OBJECT_ID(:("${asIsTable._upperName}"):, N'U')`
-      let constraintsFromDb = this.conn.xhr({
+      const constraintsFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: checkConstraintsSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       // console.log('constraintsFromDb', constraintsFromDb)
-      for (let constraintDef of constraintsFromDb) {
+      for (const constraintDef of constraintsFromDb) {
         asIsTable.addCheckConstr({
-          name: constraintDef['name'],
-          definition: constraintDef['definition']
+          name: constraintDef.name,
+          definition: constraintDef.definition
         })
       }
 
@@ -196,14 +196,14 @@ class DBSQL2012 extends DBAbstract {
       this.dbTableDefs.push(asIsTable)
     }
 
-    let sequencesSQL = `SELECT name AS sequence_name FROM sys.sequences WHERE SCHEMA_NAME(schema_id) = 'dbo'`
-    let dbSequences = this.conn.xhr({
+    const sequencesSQL = 'SELECT name AS sequence_name FROM sys.sequences WHERE SCHEMA_NAME(schema_id) = \'dbo\''
+    const dbSequences = this.conn.xhr({
       endpoint: 'runSQL',
       data: sequencesSQL,
       URLParams: { CONNECTION: this.dbConnectionConfig.name }
     })
-    for (let seqDef of dbSequences) {
-      this.sequencesDefs.push(seqDef['sequence_name'].toUpperCase())
+    for (const seqDef of dbSequences) {
+      this.sequencesDefs.push(seqDef.sequence_name.toUpperCase())
     }
   }
 
@@ -236,6 +236,7 @@ class DBSQL2012 extends DBAbstract {
         : v
       //  return ((!column.isString || (!column.defaultValue && (column.refTable || column.enumGroup))) ? v : "''" + v.replace(/'/g,'') + "''" );
     }
+    let possibleDefault
     switch (updateType) {
       case 'updConstComment':
         this.DDL.updateColumn.statements.push(
@@ -248,7 +249,7 @@ class DBSQL2012 extends DBAbstract {
         )
         break
       case 'updNull':
-        let possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
+        possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
         this.DDL.updateColumn.statements.push(
           `-- update dbo.${table.name} set ${column.name} = ${possibleDefault} where ${column.name} is null`
         )
@@ -264,7 +265,7 @@ class DBSQL2012 extends DBAbstract {
   /** @override */
   genCodeSetCaption (tableName, column, value, oldValue) {
     if (value) value = value.replace(/'/g, "''")
-    let proc = oldValue ? 'sp_updateextendedproperty' : 'sp_addextendedproperty'
+    const proc = oldValue ? 'sp_updateextendedproperty' : 'sp_addextendedproperty'
     let result = `EXEC ${proc} @name = N'${DB_DESCRIPTION_PROPERTY}', @value = N'${value === null ? (column || tableName) : value}',@level0type = N'SCHEMA',  @level0name= N'dbo', @level1type = N'TABLE',  @level1name = N'${tableName}'`
     if (column) result += `, @level2type = N'Column', @level2name = '${column}'`
     this.DDL.caption.statements.push(result)
@@ -317,8 +318,8 @@ class DBSQL2012 extends DBAbstract {
 
     // in case of not null added - recreate index
     // if (allowNullChanged && !column.allowNull ){
-    let objects = tableDB.getIndexesByColumn(column)
-    for (let colIndex of objects) {
+    const objects = tableDB.getIndexesByColumn(column)
+    for (const colIndex of objects) {
       colIndex.isForDelete = true
       colIndex.isForDeleteMsg = `Delete for altering column ${table.name}.${column.name}`
       console.log(colIndex.isForDeleteMsg)
@@ -344,9 +345,9 @@ class DBSQL2012 extends DBAbstract {
    * @override
    */
   genCodeAddColumn (table, column, delayedNotNull) {
-    let typeDef = this.createTypeDefine(column)
-    let nullable = column.allowNull || delayedNotNull ? ' null' : ' not null'
-    let def = column.defaultValue ? ' default ' + column.defaultValue : ''
+    const typeDef = this.createTypeDefine(column)
+    const nullable = column.allowNull || delayedNotNull ? ' null' : ' not null'
+    const def = column.defaultValue ? ' default ' + column.defaultValue : ''
     this.DDL.addColumn.statements.push(
       `alter table dbo.${table.name} add ${column.name} ${typeDef}${nullable}${def}`
     )
@@ -356,11 +357,12 @@ class DBSQL2012 extends DBAbstract {
       )
     }
   }
+
   /**
    * @override
    */
   genCodeAddColumnBase (table, column, baseColumn) {
-    let def = column.defaultValue ? ' default ' + column.defaultValue : ''
+    const def = column.defaultValue ? ' default ' + column.defaultValue : ''
     this.DDL.addColumn.statements.push(
       `alter table dbo.${table.name} add ${column.name} ${this.createTypeDefine(column)}${def}`
     )
@@ -370,16 +372,17 @@ class DBSQL2012 extends DBAbstract {
     )
 
     if (!column.allowNull) {
-      let nullable = column.allowNull ? ' null' : ' not null'
+      const nullable = column.allowNull ? ' null' : ' not null'
       this.DDL.alterColumnNotNull.statements.push(
         `alter table dbo.${table.name} alter column ${column.name} ${this.createTypeDefine(column)}${nullable}`
       )
     }
   }
+
   /** @override */
   genCodeCreateTable (table) {
-    let res = [`create table dbo.${table.name}(\r\n`]
-    let colLen = table.columns.length
+    const res = [`create table dbo.${table.name}(\r\n`]
+    const colLen = table.columns.length
 
     table.columns.forEach((column, index) => {
       res.push('\t', column.name, ' ', this.createTypeDefine(column), column.allowNull ? ' null' : ' not null',
@@ -404,13 +407,14 @@ class DBSQL2012 extends DBAbstract {
   genCodeCreateFK (table, constraintFK) {
     if (!constraintFK.generateFK) return
 
-    let refTo = _.find(this.refTableDefs, { _nameUpper: constraintFK.references.toUpperCase() })
-    let refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
+    const refTo = _.find(this.refTableDefs, { _nameUpper: constraintFK.references.toUpperCase() })
+    const refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
 
     this.DDL.createFK.statements.push(
       `alter table dbo.${table.name} add constraint ${constraintFK.name} foreign key (${constraintFK.keys.join(',')}) references dbo.${constraintFK.references}(${refKeys})`
     )
   }
+
   /**
    * @abstract
    * @param {TableDefinition} tableDB
@@ -420,7 +424,7 @@ class DBSQL2012 extends DBAbstract {
    * @param {Array} [objCollect]
    */
   genCodeDropIndex (tableDB, table, indexDB, comment, objCollect) {
-    let cObj = objCollect || this.DDL.dropIndex.statements
+    const cObj = objCollect || this.DDL.dropIndex.statements
     if (comment) cObj.push(`-- ${comment}\r\n`)
     if (indexDB.isConstraint) {
       cObj.push(`ALTER TABLE ${tableDB.name} DROP CONSTRAINT ${indexDB.name}`)
@@ -428,6 +432,7 @@ class DBSQL2012 extends DBAbstract {
       cObj.push(`drop index ${indexDB.name} on dbo.${tableDB.name}`)
     }
   }
+
   /**
    * @abstract
    */
@@ -436,6 +441,7 @@ class DBSQL2012 extends DBAbstract {
       `alter table dbo.${tableName} drop constraint ${constraintName}`
     )
   }
+
   /**
    * @override
    */
@@ -444,6 +450,7 @@ class DBSQL2012 extends DBAbstract {
       `alter table dbo.${tableName} drop constraint ${constraintName}`
     )
   }
+
   /**
    * @override
    */
@@ -453,6 +460,7 @@ class DBSQL2012 extends DBAbstract {
       `SELECT next value FOR ${sequenceObj}` // UB-1311
     )
   }
+
   /**
    * @abstract
    */
@@ -462,7 +470,7 @@ class DBSQL2012 extends DBAbstract {
 
   /** @override */
   genCodeCreateIndex (table, indexSH, comment) {
-    let commentText = comment ? `-- ${comment} \n` : ''
+    const commentText = comment ? `-- ${comment} \n` : ''
     this.DDL.createIndex.statements.push(
       `${commentText}create ${indexSH.isUnique ? 'unique' : ''} index ${indexSH.name} on dbo.${table.name}(${indexSH.keys.join(',')})`
     )
@@ -518,6 +526,7 @@ class DBSQL2012 extends DBAbstract {
       default: return dataType
     }
   }
+
   /**
    * Convert database types to universal
    * @override

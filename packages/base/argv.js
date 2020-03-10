@@ -74,7 +74,7 @@ function getConfigFileName () {
   return cfgFile
 }
 
-let verboseMode = options.switchIndex('noLogo') === -1
+const verboseMode = options.switchIndex('noLogo') === -1
 
 /**
  * @class ServerSession
@@ -161,7 +161,7 @@ function establishConnectionFromCmdLineAttributes (config) {
     config = options.describe('', '').add(establishConnectionFromCmdLineAttributes._cmdLineParams).parseVerbose()
     if (!config) throw new Error('Invalid command line arguments')
   }
-  let serverSession = serverSessionFromCmdLineAttributes(config)
+  const serverSession = serverSessionFromCmdLineAttributes(config)
 
   // if ((hostStart === 'localhost') || (hostStart === '127') || (hostStart === '10')) {
   if (config.forceStartServer) {
@@ -173,7 +173,7 @@ function establishConnectionFromCmdLineAttributes (config) {
     }
     serverSession.__serverStartedByMe = true
   } else {
-    let serverStarted = checkServerStarted(serverSession.HOST)
+    const serverStarted = checkServerStarted(serverSession.HOST)
     if (serverStarted) {
       if (verboseMode) console.info('Server is running - use started server instance')
     } else {
@@ -190,8 +190,8 @@ function establishConnectionFromCmdLineAttributes (config) {
   if (config.timeout) {
     http.setGlobalConnectionDefaults({ receiveTimeout: parseInt(config.timeout, 10) })
   }
-  let conn = serverSession.connection = new SyncConnection({ URL: serverSession.HOST })
-  let appInfo = conn.getAppInfo()
+  const conn = serverSession.connection = new SyncConnection({ URL: serverSession.HOST })
+  const appInfo = conn.getAppInfo()
   // allow anonymous login in case no UB auth method for application
   if (serverSession.__serverStartedByMe && config.user === 'root') {
     conn.onRequestAuthParams = function () {
@@ -231,7 +231,7 @@ function checkServerStarted (URL) {
   const http = require('http')
   if (verboseMode) console.info('Check server is running...')
   try {
-    let resp = http.get({ URL: URL + '/getAppInfo', connectTimeout: 1000, receiveTimeout: 1000, sendTimeout: 1000 }) // dummy
+    const resp = http.get({ URL: URL + '/getAppInfo', connectTimeout: 1000, receiveTimeout: 1000, sendTimeout: 1000 }) // dummy
     if (verboseMode) console.info('STATUS', resp.statusCode)
     return resp.statusCode === 200
   } catch (e) {}
@@ -246,7 +246,12 @@ function checkServerStarted (URL) {
  */
 function replaceEnvironmentVariables (content) {
   return content.replace(/%(.*?)%/gm, function replacer (match, p1) {
-    return process.env[p1] ? process.env[p1].replace(/\\/g, '\\\\') : 'NOT_FOUND_ENV_VAR(' + match + ')'
+    if (process.env.hasOwnProperty(p1)) {
+      return process.env[p1].replace(/\\/g, '\\\\')
+    } else {
+      console.warn(`Env var not defined:\t\t${p1}`)
+      return `NOT_FOUND_ENV_VAR(${match})`
+    }
   })
 }
 
@@ -260,7 +265,7 @@ function replaceIncludeVariables (content) {
   return content.replace(/"#include\((.*)\)"/gm, function replacer (match, p1) {
     let filePath
     try {
-      filePath = JSON.parse('{"f": "' + p1 + '"}')['f'] // hack to decode JSON string
+      filePath = JSON.parse('{"f": "' + p1 + '"}').f // hack to decode JSON string
     } catch (e) {
       return 'INVALID INCLUDE ' + p1
     }
@@ -270,7 +275,7 @@ function replaceIncludeVariables (content) {
     } catch (e) {
       return 'INVALID INCLUDE ' + filePath
     }
-    let content = removeCommentsFromJSON(fs.readFileSync(filePath, 'utf8'))
+    const content = removeCommentsFromJSON(fs.readFileSync(filePath, 'utf8'))
     if (!content) {
       return 'EMPTY INCLUDE ' + filePath
     }
@@ -290,7 +295,7 @@ function checkPackageBrowserPath (packageData, model, section) {
   let p = packageData.browser[section] || packageData.browser
   if (!path.isAbsolute(p)) {
     if (!packageData.name) {
-      let pKey = packageData.browser[section] ? `browser.${section}` : 'browser'
+      const pKey = packageData.browser[section] ? `browser.${section}` : 'browser'
       console.error(`package.json "${pKey}" section for ${model.name} model contains a relative path but package.json "name" section is empty\n
 Either use a absolute path ("/clientRequire/models/${model.name}/PathToYourDevScript" or specify a "name" section in package.json`)
       p = path.join(model.name, p).replace(/\\/g, '/')
@@ -309,15 +314,15 @@ Either use a absolute path ("/clientRequire/models/${model.name}/PathToYourDevSc
  * @return {Object}
  */
 function getServerConfiguration (forFutureSave = false) {
-  let cfgFileName = getConfigFileName()
+  const cfgFileName = getConfigFileName()
   if (verboseMode) console.debug('Used config:', cfgFileName)
 
-  let result = safeParseJSONfile(cfgFileName, true, (content) => replaceIncludeVariables(replaceEnvironmentVariables(content)))
+  const result = safeParseJSONfile(cfgFileName, true, (content) => replaceIncludeVariables(replaceEnvironmentVariables(content)))
   // add name attribute for applications
   if (!result.application) {
     result.application = {}
   }
-  result.application.name = result['httpServer'].path ? result['httpServer'].path : '/'
+  result.application.name = result.httpServer.path ? result.httpServer.path : '/'
   if (!result.application.defaultLang) {
     result.application.defaultLang = 'en'
   }
@@ -325,18 +330,19 @@ function getServerConfiguration (forFutureSave = false) {
     result.application.domain = { models: [] }
   }
   // for models without name - read it from package.json
-  // read "browser" section of package.json to check model is require initialization in the browser
+  // read "browser" section of package.json to check public model part should be injected into browser
   // browser section may contains "prod" / "dev" key for production / development client execution
   result.application.domain.models.forEach((model) => {
     let p = (model.path === '_public_only_') ? model.publicPath : model.path
     p = path.resolve(process.configPath, p)
-    let packFN = path.join(p, 'package.json')
+    if (!forFutureSave) model.realPath = p
+    const packFN = path.join(p, 'package.json')
     if (fs.existsSync(packFN)) {
-      let packageData = require(packFN)
+      const packageData = require(packFN)
       if (!packageData.name) console.error(`"name" section is required in package.json for "${packFN}`)
       model.moduleName = packageData.name
       if (packageData.config && packageData.config.ubmodel) {
-        let ubModelConfig = packageData.config.ubmodel
+        const ubModelConfig = packageData.config.ubmodel
         if (model.name) {
           console.warn(`Warning: name for model ${model.name} is configured in both "ubConfig" and model "package.json".
   Will use name from package.json`)
@@ -349,8 +355,8 @@ function getServerConfiguration (forFutureSave = false) {
       }
       // check browser settings
       if (packageData.browser) {
-        let dev = checkPackageBrowserPath(packageData, model, 'dev')
-        let prod = checkPackageBrowserPath(packageData, model, 'prod')
+        const dev = checkPackageBrowserPath(packageData, model, 'dev')
+        const prod = checkPackageBrowserPath(packageData, model, 'prod')
         if (!forFutureSave) model.browser = { dev, prod }
       }
       if (!forFutureSave) model.version = packageData.version
@@ -370,7 +376,7 @@ function getServerConfiguration (forFutureSave = false) {
     }
   })
   if (!result.application.domain.supportedLanguages) {
-    let connections = result.application.connections
+    const connections = result.application.connections
     if (connections) {
       result.application.domain.supportedLanguages = _(connections).map('supportLang').flatten().uniq().value()
     } else {
@@ -391,7 +397,7 @@ function getServerConfiguration (forFutureSave = false) {
   if (result.httpServer.serverType !== 'None') {
     if (!result.httpServer.externalURL) result.httpServer.externalURL = serverURLFromConfig(result)
     if (!result.httpServer.reverseProxy) result.httpServer.reverseProxy = {}
-    let rp = result.httpServer.reverseProxy
+    const rp = result.httpServer.reverseProxy
     if (rp.kind === 'nginx') {
       if (!rp.remoteIPHeader) rp.remoteIPHeader = 'X-Real-IP'
       if (!rp.remoteConnIDHeader) rp.remoteConnIDHeader = 'X-Conn-ID'
@@ -412,7 +418,7 @@ function getServerConfiguration (forFutureSave = false) {
  * @param {Object} config Server configuration
  */
 function serverURLFromConfig (config) {
-  let httpCfg = config['httpServer'] || {}
+  const httpCfg = config.httpServer || {}
   let rUrl = (httpCfg.protocol && httpCfg.protocol === 'https') ? 'https://' : 'http://'
   // in case of serverDomainNames in [+, *] replace it to localhost
   rUrl += httpCfg.host ? (httpCfg.host.length === 1 ? 'localhost' : httpCfg.host) : 'localhost'

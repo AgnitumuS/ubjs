@@ -43,7 +43,6 @@ module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
       mutations: {},
       //...
     })
-    .instance()
     .processing({
       // пример хука, список хуков описан ниже в processing
       async beforeSave (store) {
@@ -63,8 +62,8 @@ module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
       * В этом случае данные будут загружены только после вызова экшена loadCollections, 
       * который принимает в себя массив ключей коллекций, пример: loadCollections(['todo'])
       *
-      * Для коллекции "participants" указаны функции, которые строят запрос на создание записей и удаление записей,
-      * вместо логики по-умолчанию.
+      * Для коллекции "participants" указаны функции, которые строят запрос на создание записей
+      * и обработка ответов от этих запросов, а также удаление записей, вместо логики по-умолчанию.
       */
       collections: {
         todo: {
@@ -81,7 +80,7 @@ module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
           .where('dateTo', '<', Date.now()),
 
         participants: {
-          repository: ({state}) => Repository('ldoc_Document_ppt')
+          repository: ({state}) => Repository('dfx_Document_ppt')
             .attrs(
               'ID',
               'objectID',
@@ -92,7 +91,7 @@ module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
             .where('role', 'notIn', inAttrRoles),
           buildRequest({state, collection, fieldList, item}) {
             return {
-              entity: 'ldoc_Document',
+              entity: 'dfx_Document',
               method: 'addParticipant',
               fieldList,
               execParams: {
@@ -103,9 +102,22 @@ module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
               collection: collection.key
             }
           },
+          handleResponse ({ commit, collection, response }) {
+            const loadedState = response.resultData
+            for (const loadedItem of loadedState) {
+              const index = collection.items.findIndex(i => i.data.subjectID === loadedItem.subjectID)
+              if (index !== -1) {
+                commit('LOAD_COLLECTION_PARTIAL', {
+                  collection: 'participants',
+                  index,
+                  loadedState: loadedItem
+                })
+              }
+            }
+          },
           buildDeleteRequest({state, item}) {
             return {
-              entity: 'ldoc_Document',
+              entity: 'dfx_Document',
               method: 'removeParticipant',
               execParams: {
                 ID: state.data.ID,
@@ -263,7 +275,6 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
     title,
     formCode
   })
-  .instance()
   .processing()
   .validation({
     computed: {
@@ -304,7 +315,7 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
 ```vue
 <template>
   <!-- класс который растягивает форму на высоту окна и делает правильную работу скрола -->
-  <div class="ub-form-container">
+  <div class="u-form-layout">
     <!-- тулбар-->
     <u-toolbar />
 

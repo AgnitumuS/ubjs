@@ -1,17 +1,17 @@
 <template>
-  <div class="ub-toolbar">
+  <div class="u-toolbar">
     <u-toolbar-button
       v-for="button in mainPanelButtons"
-      :key="button.caption + '0'"
-      :icon="button.iconCls"
+      :key="button.label + button.icon"
+      :tooltip="button.label"
       :disabled="button.disabled"
-      :tooltip="button.caption"
-      :color="button.iconColor"
+      :icon="button.icon"
+      :color="button.color"
       @click="button.handler"
     />
     <!-- @slot left side toolbar (after default buttons) -->
     <slot name="left" />
-    <div class="ub-toolbar__flex-divider" />
+    <div class="u-toolbar__flex-divider" />
     <!-- @slot right side toolbar (before setting button) -->
     <slot name="right" />
 
@@ -22,38 +22,41 @@
       :tooltip="lockInfoMessage"
     />
 
-    <el-dropdown
-      ref="dropdown"
-      size="big"
-      trigger="click"
-      :hide-on-click="false"
-      @command="dropdownHandler"
+    <u-dropdown
+      class="u-toolbar__settings-button"
+      placement="bottom-end"
     >
       <u-toolbar-button
         icon="fa fa-cog"
         color="secondary"
       />
 
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item
+      <template #dropdown>
+        <template
           v-for="button in dropdownButtons"
-          :key="button.caption + '1'"
-          command="hide"
-          :disabled="button.disabled"
-          :divided="button.divided"
-          @click.native="button.handler"
         >
-          <i :class="button.iconCls" />
-          {{ button.caption }}
-        </el-dropdown-item>
+          <u-dropdown-item
+            :key="button.label + button.icon"
+            :label="button.label"
+            :disabled="button.disabled"
+            :icon="button.icon"
+            @click="button.handler"
+          />
+          <u-dropdown-item
+            v-if="button.divider"
+            :key="button.label + button.icon + 1"
+            divider
+          />
+        </template>
+
         <!-- @slot if need append items to dropdown -->
         <slot name="dropdown" />
-      </el-dropdown-menu>
-    </el-dropdown>
+      </template>
+    </u-dropdown>
 
     <table
       v-if="mi_createDate && mi_modifyDate"
-      class="ub-toolbar__date"
+      class="u-toolbar__date"
     >
       <tr>
         <td>{{ $ut('createdEntityCaption') }}:</td>
@@ -86,10 +89,15 @@ export default {
   inject: ['$formServices', 'formCode', 'entitySchema', 'fieldList', 'entity'],
 
   computed: {
-    ...mapGetters(['canSave', 'canRefresh', 'canDelete', 'isLocked', 'isLockedByMe', 'lockInfoMessage']),
-
+    ...mapGetters([
+      'canSave',
+      'canRefresh',
+      'canDelete',
+      'isLocked',
+      'isLockedByMe',
+      'lockInfoMessage'
+    ]),
     ...mapState(['isNew', 'lockInfo']),
-
     ...mapInstanceFields(['mi_createDate', 'mi_modifyDate']),
 
     mainPanelButtons () {
@@ -97,24 +105,24 @@ export default {
         return []
       }
       return [{
-        caption: this.$ut('save') + ' (Ctrl + S)',
-        iconCls: 'fa fa-save',
+        label: this.$ut('save') + ' (Ctrl + S)',
+        icon: 'fas fa-save',
         handler: () => this.save(),
         disabled: !this.canSave,
-        iconColor: 'primary'
+        color: 'primary'
       }, {
-        caption: this.$ut('saveAndClose') + ' (Ctrl + Enter)',
-        iconCls: 'fa fa-share-square-o',
+        label: this.$ut('saveAndClose') + ' (Ctrl + Enter)',
+        icon: 'far fa-share-square',
         handler: this.saveAndClose,
         disabled: !this.canSave,
-        iconColor: 'primary'
+        color: 'primary'
       }, {
-        caption: this.$ut('Delete') + ' (Ctrl + Delete)',
-        iconCls: 'fa fa-trash-o',
+        label: this.$ut('Delete') + ' (Ctrl + Delete)',
+        icon: 'far fa-trash-alt',
         handler: () => this.deleteInstance(this.$formServices.forceClose),
         disabled: !this.canDelete,
-        divided: true,
-        iconColor: 'secondary'
+        color: 'secondary',
+        divider: true
       }]
     },
 
@@ -123,8 +131,8 @@ export default {
         return []
       }
       const buttons = [{
-        caption: this.$ut('refresh') + ' (Ctrl + R)',
-        iconCls: 'fa fa-refresh',
+        label: this.$ut('refresh') + ' (Ctrl + R)',
+        icon: 'fa fa-refresh',
         handler: () => this.refresh(),
         disabled: !this.canRefresh
       }]
@@ -132,23 +140,23 @@ export default {
 
       if (this.$UB.connection.domain.isEntityMethodsAccessible('ubm_form', 'update')) {
         buttons.push({
-          iconCls: 'fa fa-wrench',
-          caption: this.$ut('formConstructor'),
+          icon: 'fa fa-wrench',
+          label: 'formConstructor',
           handler: this.formConstructorHandler,
-          divided: true
+          divider: true
         })
       }
 
       buttons.push({
-        iconCls: 'fa fa-link',
-        caption: this.$ut('link'),
+        icon: 'fa fa-link',
+        label: 'link',
         handler: this.copyLink
       })
 
       if (this.entitySchema.hasMixin('dataHistory')) {
         buttons.push({
-          iconCls: 'fa fa-history',
-          caption: this.$ut('ChangesHistory'),
+          icon: 'fa fa-history',
+          label: 'ChangesHistory',
           disabled: this.isNew,
           handler: this.showDataHistory
         })
@@ -156,8 +164,8 @@ export default {
 
       if (this.entitySchema.hasMixin('audit')) {
         buttons.push({
-          iconCls: 'fas fa-history',
-          caption: this.$ut('showAudit'),
+          icon: 'fas fa-history',
+          label: 'showAudit',
           handler: this.showAudit,
           disabled: !this.$UB.connection.domain.isEntityMethodsAccessible('uba_auditTrail', 'select')
         })
@@ -168,24 +176,24 @@ export default {
         const aclEntityName = mixins && mixins.aclRls && mixins.aclRls.useUnityName
           ? mixins.unity.entity + '_acl' : this.entitySchema.name + '_acl'
         buttons.push({
-          iconCls: 'fa fa-shield',
-          caption: this.$ut('accessRight'),
-          handler: () => { debugger },
+          icon: 'fa fa-shield',
+          label: 'accessRight',
+          handler: () => {},
           disabled: !this.$UB.connection.domain.isEntityMethodsAccessible(aclEntityName, 'select')
         })
       }
 
       if (this.entitySchema.hasMixin('softLock')) {
         buttons.push({
-          iconCls: 'fa fa-lock',
-          caption: this.$ut('lockBtn'),
+          icon: 'fa fa-lock',
+          label: 'lockBtn',
           handler: () => { this.lockEntity(true) },
           disabled: this.isNew,
-          divided: true
+          divider: true
         })
         buttons.push({
-          iconCls: 'fa fa-unlock',
-          caption: this.$ut('unLockBtn'),
+          icon: 'fa fa-unlock',
+          label: 'unLockBtn',
           handler: () => { this.unlockEntity() },
           disabled: !this.isLockedByMe
         })
@@ -217,7 +225,13 @@ export default {
   },
 
   methods: {
-    ...mapActions(['save', 'refresh', 'deleteInstance', 'lockEntity', 'unlockEntity']),
+    ...mapActions([
+      'save',
+      'refresh',
+      'deleteInstance',
+      'lockEntity',
+      'unlockEntity'
+    ]),
 
     async saveAndClose () {
       await this.save()
@@ -373,27 +387,32 @@ export default {
 </script>
 
 <style>
-.ub-toolbar{
+.u-toolbar{
   border-bottom: 1px solid rgba(var(--bg), 0.12);
   padding: 0.5em 1em;
   display: flex;
 }
 
-.ub-toolbar__flex-divider{
+.u-toolbar__flex-divider{
   margin-left: auto;
 }
 
-.ub-toolbar__date td{
+.u-toolbar__date td{
   font-size: 10px;
   color: rgb(var(--info));
   text-align: right;
   padding-right: 5px;
+  white-space: nowrap;
 }
 
-.ub-toolbar__date{
+.u-toolbar__date{
   border-left: 1px solid rgba(var(--info), 0.1);
   padding-left: 10px;
   margin-left: 10px;
+}
+
+.u-toolbar__settings-button > .u-dropdown__reference{
+  height: 100%;
 }
 </style>
 
@@ -401,7 +420,7 @@ export default {
 ### Usage
 ```vue
 <template>
-  <div class="ub-form-container">
+  <div class="u-form-layout">
     <u-toolbar/>
     <u-form-container>
       <!-- Your form -->
@@ -418,7 +437,7 @@ export default {
 ### Slots
 ```vue
 <template>
-  <div class="ub-form-container">
+  <div class="u-form-layout">
     <u-toolbar>
       <u-toolbar-button slot="left">left side btn</u-toolbar-button>
       <u-toolbar-button slot="right">right side btn</u-toolbar-button>

@@ -14,10 +14,10 @@ me.on('update:before', checkPhotoIsJpeg)
  * @param {Array<string>} mimeTypes
  */
 me.checkPhotoMimeType = function (ctxt, mimeTypes) {
-  let photo = ctxt.mParams.execParams.photo
+  const photo = ctxt.mParams.execParams.photo
   if (!photo) return
-  let photoObj = JSON.parse(photo)
-  let contentType = photoObj.ct
+  const photoObj = JSON.parse(photo)
+  const contentType = photoObj.ct
   if (!photoObj.deleting && (mimeTypes.indexOf(contentType) === -1)) {
     throw new UB.UBAbort(
       UB.format(UB.i18n('errNotSupportedFileType'), contentType, mimeTypes.join(','))

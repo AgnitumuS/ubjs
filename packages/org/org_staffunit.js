@@ -15,7 +15,7 @@ me.on('delete:before', checkUsed)
  * @param {ubMethodParams} ctxt
  */
 function checkUsed (ctxt) {
-  let assigned = UB.Repository('org_employeeonstaff').attrs(['ID'])
+  const assigned = UB.Repository('org_employeeonstaff').attrs(['ID'])
     .where('[staffUnitID]', '=', ctxt.mParams.execParams.ID).selectSingle()
   if (assigned) {
     throw new UB.UBAbort(UB.i18n('errAlreadyAssigned'))
@@ -33,9 +33,9 @@ function updateEmployeeOnStaffCaptions (ctxt) {
   const execParams = params.execParams
 
   if (params.caller === 'org_employeeonstaff') return
-  let onStaff = UB.Repository('org_employeeonstaff').attrs(['ID']).where('[staffUnitID]', '=', execParams.ID).select()
+  const onStaff = UB.Repository('org_employeeonstaff').attrs(['ID']).where('[staffUnitID]', '=', execParams.ID).select()
   if (onStaff.rowCount !== 0) {
-    let updParams = {
+    const updParams = {
       ['caption_' + App.defaultLang + '^']: ''
     }
     while (!onStaff.eof) {
@@ -76,15 +76,15 @@ function assignCaptions (ctxt) {
   const defaultSuffix = '_' + App.defaultLang + '^'
   const sLang = me.entity.connectionConfig.supportLang
   let needLoadStaffUnitRow = false
-  let parentFieldList = ['unitType', 'parentID']
+  const parentFieldList = ['unitType', 'parentID']
 
   if (execParams.name) {
     execParams['name' + defaultSuffix] = execParams.name
     delete execParams.name
   }
-  let staffUnitFieldList = ['parentID']
+  const staffUnitFieldList = ['parentID']
   sLang.forEach(function (lang) {
-    let suffix = '_' + lang + '^'
+    const suffix = '_' + lang + '^'
     staffUnitFieldList.push('name' + suffix)
     parentFieldList.push('caption' + suffix)
     if (!parentID) {
@@ -101,15 +101,15 @@ function assignCaptions (ctxt) {
   })
   if (needLoadStaffUnitRow || !parentID) {
     currentRow = UB.Repository(me.entity.name).attrs(staffUnitFieldList).selectById(ID)
-    parentID = currentRow['parentID']
+    parentID = currentRow.parentID
   }
   if (parentID) {
     parentOrgOrDep = UB.Repository('org_unit').attrs(parentFieldList).selectById(parentID)
     // search for first parent with type !== STAFF
-    while (parentOrgOrDep && (parentOrgOrDep['unitType'] === 'STAFF') && parentOrgOrDep['parentID']) {
-      parentOrgOrDep = UB.Repository('org_unit').attrs(parentFieldList).selectById(parentOrgOrDep['parentID'])
+    while (parentOrgOrDep && (parentOrgOrDep.unitType === 'STAFF') && parentOrgOrDep.parentID) {
+      parentOrgOrDep = UB.Repository('org_unit').attrs(parentFieldList).selectById(parentOrgOrDep.parentID)
     }
-    if (parentOrgOrDep && (parentOrgOrDep['unitType'] === 'STAFF')) {
+    if (parentOrgOrDep && (parentOrgOrDep.unitType === 'STAFF')) {
       // STAFF is a top level tree element
       parentOrgOrDep = null
     }
@@ -119,11 +119,11 @@ function assignCaptions (ctxt) {
     employeeList = getEmployeeList(ID, sLang)
   }
   sLang.forEach(function (lang) {
-    let suffix = '_' + lang + '^'
-    let depName = parentOrgOrDep
+    const suffix = '_' + lang + '^'
+    const depName = parentOrgOrDep
       ? parentOrgOrDep['caption' + suffix] + ' '
       : ''
-    let staffUnitName = execParams['name' + suffix] || currentRow['name' + suffix]
+    const staffUnitName = execParams['name' + suffix] || currentRow['name' + suffix]
     execParams['caption' + suffix] = (employeeList[lang] || UB.i18n('notAssigned', lang)) +
       ' (' + depName + staffUnitName + ')'
   })
@@ -143,10 +143,10 @@ function assignCaptions (ctxt) {
  * @return {Object}
  */
 function getEmployeeList (staffUnitID, supportLang) {
-  let staffsFieldList = ['employeeOnStaffType']
-  let result = {}
+  const staffsFieldList = ['employeeOnStaffType']
+  const result = {}
   supportLang.forEach(function (lang) {
-    let suffix = '_' + lang + '^'
+    const suffix = '_' + lang + '^'
     staffsFieldList.push('employeeID.shortFIO' + suffix)
     staffsFieldList.push('employeeID.lastName' + suffix)
     result[lang] = null
@@ -154,17 +154,17 @@ function getEmployeeList (staffUnitID, supportLang) {
   if (!staffUnitID) {
     return result
   }
-  let staffs = UB.Repository('org_employeeonstaff').attrs(staffsFieldList)
+  const staffs = UB.Repository('org_employeeonstaff').attrs(staffsFieldList)
     .where('[employeeOnStaffType]', '<>', 'ASSISTANT') // skip assistant for staff unit caption
     .where('[staffUnitID]', '=', staffUnitID)
     .orderBy('[employeeOnStaffType]').select()
-  let staffsCount = staffs.rowCount
+  const staffsCount = staffs.rowCount
   supportLang.forEach(function (lang) {
-    let suffix = '_' + lang + '^'
-    let employeeList = []
+    const suffix = '_' + lang + '^'
+    const employeeList = []
     staffs.first()
     while (!staffs.eof) {
-      let staf = ((staffsCount > 1 && staffs.get('employeeOnStaffType') === 'PERMANENT') ? '* ' : '') +
+      const staf = ((staffsCount > 1 && staffs.get('employeeOnStaffType') === 'PERMANENT') ? '* ' : '') +
         staffs.get('employeeID.shortFIO' + suffix)
       employeeList.push(staf)
       staffs.next()

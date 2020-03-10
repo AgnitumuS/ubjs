@@ -133,7 +133,7 @@ UB.i18nExtend({
 
   sidebar: {
     desktopSelector: {
-      title: 'Вибор рабочего стола'
+      title: 'Выбор рабочего стола'
     }
   },
 
@@ -142,13 +142,14 @@ UB.i18nExtend({
       list: {
         title: 'Фильтры'
       },
-      conditionPlaceholder: 'Виражение',
+      conditionPlaceholder: 'Выражение',
       valuePlaceholder: 'Значение',
       date: {
         from: 'от',
         to: 'до',
         valuePlaceholder: 'Выберите дату'
-      }
+      },
+      columnPlaceholder: 'Колонка'
     },
     pagination: {
       outOf: 'из'
@@ -170,10 +171,17 @@ UB.i18nExtend({
       type: 'Тип',
       uploadDate: 'Дата загрузки'
     },
-    dropZoneCaption: 'или перетащите файлы сюда'
+    dropZone: {
+      caption: 'или перетащите файлы сюда',
+      acceptError: 'Неверное расширение файла'
+    }
   },
 
   select: {
     valueIsUndefined: 'Занчение "{0}" не найдено в сущности "{1}"'
+  },
+
+  tableRegister: {
+    hideDetails: 'Скрыть детали'
   }
 })

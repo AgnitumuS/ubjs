@@ -10,7 +10,6 @@ UB.i18nExtend({
   employee_title: "გარე ორგანიზაციის თანამშრომელი",
   profession_title: "პროფესია",
   region_title: "რეგიონი",
-
   'ClassifTypePanelClassifiersTitle': 'კლასიფიკაციის ღირებულებები',
 
   // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.

@@ -32,7 +32,7 @@ class DBAbstract {
     this.wantedSequences = []
     // calculate wanted sequences
     referencedTables.forEach(tableDef => {
-      let entity = tableDef.__entity
+      const entity = tableDef.__entity
 
       // for a primary key generators, what don't mapped on the select statement
       if (entity.mapping && entity.mapping.pkGenerator && (entity.mapping.pkGenerator.indexOf('select ') < 0)) {
@@ -175,6 +175,7 @@ class DBAbstract {
   genCodeAddColumn (table, column, delayedNotNull) {
     throw new Error('Abstract genCodeAddColumn')
   }
+
   /**
    * Generate code for add language column
    * TODO rename to addLanguageColumn
@@ -186,6 +187,7 @@ class DBAbstract {
   genCodeAddColumnBase (table, column, baseColumn) {
     throw new Error('Abstract genCodeAddColumnBase')
   }
+
   /**
    * @abstract
    * @param {TableDefinition} table
@@ -193,6 +195,7 @@ class DBAbstract {
   genCodeCreateTable (table) {
     throw new Error('Abstract genCodeCreateTable')
   }
+
   /**
    * @abstract
    * @param {TableDefinition} table
@@ -200,6 +203,7 @@ class DBAbstract {
   genCodeCreatePK (table) {
     throw new Error('Abstract genCodeCreatePK')
   }
+
   /**
    * @abstract
    * @param {TableDefinition} table
@@ -220,12 +224,14 @@ class DBAbstract {
   genCodeDropIndex (tableDB, table, indexDB, comment, objCollect) {
     throw new Error('Abstract genCodeDropIndex')
   }
+
   /**
    * @abstract
    */
   genCodeDropPK (tableName, constraintName) {
     throw new Error(`Abstract genCodeDropPK ${constraintName} for table ${tableName}`)
   }
+
   /**
    * @abstract
    * @param {string} tableName
@@ -234,18 +240,21 @@ class DBAbstract {
   genCodeDropConstraint (tableName, constraintName) {
     throw new Error('Abstract genCodeDropConstraint')
   }
+
   /**
    * @abstract
    */
   genCodeAddSequence (sequenceObj) {
     throw new Error('Abstract genCodeAddSequence')
   }
+
   /**
    * @abstract
    */
   genCodeDropSequence (sequenceName) {
     throw new Error('Abstract genCodeDropSequence')
   }
+
   /**
    * @abstract
    * @param {TableDefinition} table
@@ -255,6 +264,7 @@ class DBAbstract {
   genCodeCreateIndex (table, indexSH, comment) {
     throw new Error('Abstract genCodeCreateIndex')
   }
+
   /**
    * Return a database-specific value for default expression.
    * Can parse UB macros (maxDate, currentDate etc)
@@ -276,6 +286,7 @@ class DBAbstract {
   uniTypeToDataBase (dataType) {
     throw new Error('Abstract uniTypeToDataBase')
   }
+
   /**
    * Convert database types to universal.
    * @abstract
@@ -288,13 +299,14 @@ class DBAbstract {
   dataBaseTypeToUni (dataType, len, prec, scale) {
     throw new Error('Abstract dataBaseTypeToUni')
   }
+
   /**
    * Decode a default values for a attributes to a database-specific values
    * "maxDate", "currentDate", quoter strings
    * @param {TableDefinition} table
    */
   normalizeDefaults (table) {
-    for (let column of table.columns) {
+    for (const column of table.columns) {
       if (column.defaultValue) {
         column.defaultValue = this.getExpression(column.defaultValue, column)
       }
@@ -303,10 +315,10 @@ class DBAbstract {
 
   /** compare referenced tables with database metadata */
   compare () {
-    for (let mustBe of this.refTableDefs) {
+    for (const mustBe of this.refTableDefs) {
       if (!mustBe.doComparision) continue
       this.normalizeDefaults(mustBe)
-      let asIs = _.find(this.dbTableDefs, { _upperName: mustBe._upperName })
+      const asIs = _.find(this.dbTableDefs, { _upperName: mustBe._upperName })
       this.compareTableDefinitions(mustBe, asIs)
     }
     this.wantedSequences.forEach(seq => {
@@ -322,13 +334,13 @@ class DBAbstract {
    * @param {TableDefinition} asIs
    */
   compareTableDefinitions (mustBe, asIs) {
-    let notEqualPK = false
+    const notEqualPK = false
     if (!asIs) { // table in database does not exists
       this.genCodeCreateTable(mustBe)
 
       // todo rename genCodeSetCaption -> addDBObjectDescription
       this.genCodeSetCaption(mustBe.name, null, mustBe.caption, null)
-      for (let col of mustBe.columns) {
+      for (const col of mustBe.columns) {
         this.genCodeSetCaption(mustBe.name, col.name, col.caption, null)
       }
     } else {
@@ -352,9 +364,9 @@ class DBAbstract {
       }
 
       // drop FK if not found in schema by name or not equal by columnus
-      for (let asIsFK of asIs.foreignKeys) {
+      for (const asIsFK of asIs.foreignKeys) {
         if (mustBe.existOther(asIsFK.name)) continue
-        let mustBeFK = mustBe.getFKByName(asIsFK.name)
+        const mustBeFK = mustBe.getFKByName(asIsFK.name)
         if (mustBeFK && mustBeFK.isDeleted) continue
         if (!mustBeFK || !_.isEqual(asIsFK.keys, mustBeFK.keys) || !strIComp(mustBeFK.references, asIsFK.references) ||
             asIsFK.updateAction !== 'NO_ACTION' || asIsFK.deleteAction !== 'NO_ACTION') {
@@ -364,9 +376,9 @@ class DBAbstract {
       }
 
       // drop indexes
-      for (let asIsIndex of asIs.indexes) {
+      for (const asIsIndex of asIs.indexes) {
         if (mustBe.existOther(asIsIndex.name)) continue
-        let mustBeIndex = mustBe.indexByName(asIsIndex.name)
+        const mustBeIndex = mustBe.indexByName(asIsIndex.name)
         if (!mustBeIndex || asIsIndex.isForDelete ||
           !_.isEqual(mustBeIndex.keys, asIsIndex.keys) ||
           (mustBeIndex.isUnique !== asIsIndex.isUnique) ||
@@ -381,9 +393,9 @@ class DBAbstract {
       }
 
       // drop check constraint
-      for (let asIsChk of asIs.checkConstraints) {
+      for (const asIsChk of asIs.checkConstraints) {
         if (mustBe.existOther(asIsChk.name)) continue
-        let mustBeChk = mustBe.getCheckConstrByName(asIsChk.name)
+        const mustBeChk = mustBe.getCheckConstrByName(asIsChk.name)
         if (!mustBeChk) {
           this.genCodeDropConstraint(asIs.name, asIsChk.name)
         }
@@ -402,8 +414,8 @@ class DBAbstract {
     }
 
     // create fk
-    for (let mustBeFK of mustBe.foreignKeys) {
-      let asIsFK = asIs && asIs.getFKByName(mustBeFK.name)
+    for (const mustBeFK of mustBe.foreignKeys) {
+      const asIsFK = asIs && asIs.getFKByName(mustBeFK.name)
       // && !constrFK.isRenamed
       if ((mustBeFK.isDeleted || !asIsFK) && !mustBeFK.isRenamed) {
         this.genCodeCreateFK(mustBe, mustBeFK)
@@ -411,16 +423,16 @@ class DBAbstract {
     }
 
     // create index
-    for (let mustBeIndex of mustBe.indexes) {
-      let asIsIndex = asIs && asIs.indexByName(mustBeIndex.name)
+    for (const mustBeIndex of mustBe.indexes) {
+      const asIsIndex = asIs && asIs.indexByName(mustBeIndex.name)
       if ((mustBeIndex.isDeleted || !asIsIndex) && !mustBeIndex.isRenamed) {
         this.genCodeCreateIndex(mustBe, mustBeIndex)
       }
     }
 
     // create check constraint
-    for (let mustBeChk of mustBe.checkConstraints) {
-      let asIsChk = asIs && asIs.getCheckConstrByName(mustBeChk.name)
+    for (const mustBeChk of mustBe.checkConstraints) {
+      const asIsChk = asIs && asIs.getCheckConstrByName(mustBeChk.name)
       if (!asIsChk) {
         this.genCodeCreateCheckC(mustBe, mustBeChk)
       }
@@ -444,18 +456,18 @@ class DBAbstract {
   compareColumns (mustBe, asIs) {
     let delayedNotNull
     // compare columns
-    for (let asIsC of asIs.columns) {
+    for (const asIsC of asIs.columns) {
       let sizeChanged = false
       let sizeIsSmaller = false
-      let mustBeC = mustBe.columnByName(asIsC.name)
+      const mustBeC = mustBe.columnByName(asIsC.name)
 
       if (mustBeC) { // alter
         // caption
         if (mustBeC.caption !== asIsC.caption) {
           this.genCodeSetCaption(mustBe.name, mustBeC.name, mustBeC.caption, asIsC.caption)
         }
-        let asIsType = this.createTypeDefine(asIsC)
-        let mustBeType = this.createTypeDefine(mustBeC)
+        const asIsType = this.createTypeDefine(asIsC)
+        const mustBeType = this.createTypeDefine(mustBeC)
         let typeChanged = (asIsType !== mustBeType)
 
         // let typeChanged = !strIComp(mustBeC.dataType, asIsC.dataType)
@@ -477,9 +489,9 @@ class DBAbstract {
             break
         }
 
-        let allowNullChanged = mustBeC.allowNull !== asIsC.allowNull
+        const allowNullChanged = mustBeC.allowNull !== asIsC.allowNull
 
-        let mustBeColumn = `${mustBe.name}.${mustBeC.name}`
+        const mustBeColumn = `${mustBe.name}.${mustBeC.name}`
         if (typeChanged &&
           (mustBeC.dataType === 'INTEGER' || mustBeC.dataType === 'BIGINT' || mustBeC.dataType === 'NUMBER') &&
           (asIsC.dataType === 'NVARCHAR' || asIsC.dataType === 'VARCHAR' || asIsC.dataType === 'UVARCHAR' ||
@@ -499,7 +511,7 @@ class DBAbstract {
         if (sizeChanged && sizeIsSmaller) {
           this.addWarning(`The size or precision for field ${mustBeColumn} was reduced potential loss of data: ${asIsType} -> ${mustBeType}`)
         }
-        let defChanged = this.compareDefault(mustBeC.dataType, mustBeC.defaultValue, asIsC.defaultValue, mustBeC.defaultConstraintName, asIsC.defaultConstraintName)
+        const defChanged = this.compareDefault(mustBeC.dataType, mustBeC.defaultValue, asIsC.defaultValue, mustBeC.defaultConstraintName, asIsC.defaultConstraintName)
         // TEMP
         if (defChanged) {
           console.log(`CONSTRAINT changed for ${mustBe.name}.${mustBeC.name} Must be "${mustBeC.defaultValue}" but in database "${asIsC.defaultValue}"`)
@@ -545,12 +557,12 @@ class DBAbstract {
     }
 
     // new columns
-    for (let mustBeCol of mustBe.columns) {
+    for (const mustBeCol of mustBe.columns) {
       if (mustBeCol.existInDB || mustBeCol.name === 'rowid') continue // special case for sqlite3
       delayedNotNull = false
       // update by base mustBeCol
       if (mustBeCol.baseName) { // multi language column
-        let lang = this.dbConnectionConfig.supportLang[0]
+        const lang = this.dbConnectionConfig.supportLang[0]
         let columnBase = ''
         if (lang === this.defaultLang) {
           columnBase = mustBeCol.baseName
@@ -642,10 +654,11 @@ class DBAbstract {
       case 'TEXT': res = 'ID'; break
       case 'BOOLEAN': res = '0'; break
       case 'DATETIME': res = this.getExpression('currentDate'); break
-      case 'JSON': res = `'{}'`
+      case 'JSON': res = '\'{}\''
     }
     return res
   }
+
   generateStatements () {
     return this.DDL
   }

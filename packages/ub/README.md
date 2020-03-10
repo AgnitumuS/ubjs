@@ -23,17 +23,45 @@ UB.start()
 ```
 
 ## Application initialization
-{@link module:@unitybase/ub~start UB.start} method of `@unitybase/ub` package will:
- - parse application config passed as `-cfg` command line parameter to `ub`
- and put parsed content to {@link class:App#serverConfig App.serverConfig}
- - create HTTP server and configure it using parameters from `httpServer` config section
-
-and perform steps below for every HTTP thread:
- - read and validate all `*.meta` files from folders, defined in `application.domain.models`
- - for each model from `application.domain.models` folders (except ones marked as `_public_only_`)
-  load a model (see below)
- - register build-in UnityBase {@link module:@unitybase/ub.module:endpoints endpoints}
- - emit {@link class:App#domainIsLoaded App.domainIsLoaded} event
+### once on server startup (single thread mode, http server do not accent connections)
+ This stage is added in UB@5.18.0 to allow custom Domain transformation before any other steps is performed.
+ 
+ Just after UB starts in server mode it creates a single-thread JavaScript runtime and use a `@unitybase/ub/metadataTransformation.js`
+ script as an entry point for Domain loading. Script loads all `*.meta` and `*.meta.lang` files into memory, merge files with the same names
+ and calls a `_hookMetadataTransformation.js` hook from models folders (if available) with two parameters `(domainJSON, serverConfig)`
+ 
+ Metadata transformation hook can mutate a Domain JSON, for example - adds additional attributes to the entities and lang files, etc     
+ 
+ Files are merged and hooks are called in order models appears in `application.domain.models` server config section.
+ 
+ After all hooks are called resulting domainJSON is passed back to UB to initialize a Domain classes.
+ 
+ UB server:
+  - initialize internal Domain
+  - evaluate a application entry-point script (see UB.js below)
+  - initialize ELS (since all models scripts is evaluated on this point all entity-level methods and endpoints
+    are in Domain, so server can build an access matrix for methods and roles)
+ 
+ UB server switches to multi-thread mode and can accept HTTP requests
+    
+### JS working thread (multi-thread mode)
+  In multi-thread mode UB use a thread pool of size `threadPoolSize` from ubConfig.
+  Threads in pool are created lazy - in case there is no free thread to accept an incoming request new thread is spawned
+  until thread poll is not full.
+     
+  Every new working thread use `UB.js` as entry point.
+  
+  UB.js script content is embedded into executable, but it sources is also available in `@unitybase/stubs/UB.js`.
+  The task of UB.js script is to require and run an application entry point script (main from package.json). 
+  
+  As described above entry point script will execute a UB.start() and   
+    
+{@link module:@unitybase/ub~start UB.start} method of `@unitybase/ub` package will perform a steps below
+ (actually for every working thread):
+     - for each model from `application.domain.models` folders (except ones marked as `_public_only_`)
+      load a model (see below)
+     - register build-in UnityBase {@link module:@unitybase/ub.module:endpoints endpoints}
+     - emit {@link class:App#domainIsLoaded App.domainIsLoaded} event
 
 ## Model
 ### Server-side

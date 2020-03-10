@@ -1,0 +1,26 @@
+{
+  "caption": "Access rights",
+  "description": "Access rights",
+  "attributes": [
+    {
+      "name": "cardID",
+      "caption": "File",
+      "description": "File"
+    },
+    {
+      "name": "userID",
+      "caption": "User",
+      "description": "User"
+    },
+    {
+      "name": "accessType",
+      "caption": "Access type",
+      "description": "Access type ### owner, read, write, delegate "
+    },
+    {
+      "name": "parentID",
+      "caption": "parentID",
+      "description": "parentID"
+    }
+  ]
+}

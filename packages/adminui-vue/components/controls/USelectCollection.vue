@@ -174,7 +174,6 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
     title,
     formCode
   })
-    .instance()
     .processing({
       collections: {
         rightsSubjects: UB.connection

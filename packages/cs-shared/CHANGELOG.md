@@ -15,6 +15,35 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.2] - 2020-03-09
+### Added
+ - 4th parameter of `CustomRepository.where()` can be either string for clause name or Object with optional properties
+ `{clauseName: string, clearable: boolean}`. If `clearable === false` then `CustomRepository.clearWhereList()`
+ will skip removing this where condition
+ 
+## [5.2.1] - 2020-03-04
+### Added
+ - LocalDataStore will exports `whereListToFunctions` method
+
+## [5.2.0] - 2020-02-29
+### Changed
+ - ESLint warnings fixed (mostly let -> const)
+ 
+## [5.1.17] - 2020-02-03
+### Changed
+ - `Repository.joinCondition` will throw in case clause name already in jointAs
+
+## [5.1.16] - 2020-01-31
+## [5.1.15] - 2020-01-17
+### Added
+ - new private method `CustomRepository.fromUbql` - used in UB.Repository() constructor to create Repository from UBQL
+ - `Repository.withTotal` can accept optional boolean parameter. If `false` total requirements will be removed from repository
+ - `Repository.limit(rowsLimit)` will remove limit in case rowsLimit === 0   
+  
+### Changed
+ - in case expression passed to `Repository.orderBy` already exists in order list it direction will be changed;
+ Before this patch the same order expression was added that led to errors with duplicates in `order by`
+    
 ## [5.1.14] - 2019-12-17
 ### Added
  - new method `CustomRepository.clearWhereList` - remove all where conditions from Repository.

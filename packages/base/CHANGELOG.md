@@ -4,12 +4,53 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+ - ubConfig parser what replace environment variables placeholders now replace variables with empty values (`var=`) by empty strings
+ - in case environment variable is not defined ubConfig parser will output error message with variable name 
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.2.2] - 2020-03-09
+## [5.2.1] - 2020-03-04
+### Changed
+ - FileBasedStoreLoader - fix ESLint errors (mostly let -> const)
+
+## [5.2.0] - 2020-02-29
+### Added
+ - new attribute `model.realPath` is added to each model collection item returned by `argv.getServerConfiguration()`.
+ Contains a full file system path to the model folder
+
+### Changed
+ - fix ESLint warnings (mostly about let -> const)
+ - `ServerRepository.selectAsObject()` and `ServerRepository.selectAsArray()` will internally use new UB feature
+ `TubDataStore.getAsJsObject/TubDataStore.getAsJsArray` to convert store content into JS representation instead of
+ `JSON.parse(store.asJSON*)` which require to serialize store into string -> pass string from native code into JS runtime -> parse it using JSON.parse.
+ 
+ This give a 20% performance boots for `store to JS object` operation.       
+
+## [5.1.44] - 2020-02-10
+## [5.1.43] - 2020-02-08
+## [5.1.42] - 2020-02-03
+## [5.1.41] - 2020-01-31
+## [5.1.40] - 2020-01-17
+### Added
+  - `SyncConnection.prototype.Reposiroty` fabric function can now accept a UBQL passed in parameter as object while
+  keeping an ability to pass entity code as string
+   
+    
 ## [5.1.34] - 2019-11-19
-#### Added
+### Added
  - argv.getServerConfiguration() will resolve a httpServer.inetPub location to absolute path
 
 ## [5.1.33] - 2019-11-07
-#### Fixed
+### Fixed
  - prevent an error in `dataLoader.localizeEntity` when running initialization scripts on entities with `softLock` mixin
 
 ## [5.1.29] - 2019-10-01

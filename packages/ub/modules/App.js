@@ -11,6 +11,10 @@ const THTTPResponse = require('./HTTPResponse')
 const THTTPRequest = require('./HTTPRequest')
 const createDBConnections = require('./DBConnections')
 const blobStores = require('@unitybase/blob-stores')
+const base = require('@unitybase/base')
+if (base.ubVersionNum < 5018000) {
+  throw new Error('This version of @unitybase/ub package requires UB server to be at least 5.18.0')
+}
 /**
  * @classdesc
  * Singleton instance of UnityBase application. Allow direct access to the database connections, blob stores,
@@ -115,8 +119,7 @@ App.preventDefault = function () {
 }
 
 /**
- * Called by native
- * TODO - remove when all App level method will be implemented in JS
+ * Called by native HTTP server worker
  * @param endpointName
  * @private
  * @returns {boolean}
@@ -125,10 +128,14 @@ App.launchEndpoint = function (endpointName) {
   __preventDefault = false
   let resp = new THTTPResponse()
   let req = new THTTPRequest()
-  this.emit(endpointName + ':before', req, resp)
-  if (!__preventDefault) {
-    appBinding.endpoints[endpointName](req, resp)
-    this.emit(endpointName + ':after', req, resp)
+  try {
+    this.emit(endpointName + ':before', req, resp)
+    if (!__preventDefault) {
+      appBinding.endpoints[endpointName](req, resp)
+      this.emit(endpointName + ':after', req, resp)
+    }
+  } finally {
+    App.endpointContext = {} // allow GC to release possible context data ASAP
   }
 }
 
@@ -303,40 +310,6 @@ App.externalURL = App.serverConfig.httpServer.externalURL || App.serverURL
 App.localIPs = _App.localIPs
 
 /**
- *  Resolve aRequestedFile to real file path.
- *  Internally analyse request and if it start with `model/` - resolve it to model public folder
- *  else - to `inetPub` folder.
- *  Will return '' in case of error (filePath not under `inetPub` or `model/`) to prevent ../../ attack
- * @param {String} aRequestedFile
- * @returns {String}
- */
-App.resolveStatic = function (aRequestedFile) {
-  return _App.resolveStatic(aRequestedFile)
-}
-
-/**
- * First check in global cache for a entry "UB_GLOBAL_CACHE_CHECKSUM + filePath"
- * and if not exists - calculate a checksum using algorithm defined in
- * CONTROLLER.serverConfig.HTTPServer.watchFileChanges.hashingStrategy
- * if server in dev mode always return current timestamp
- * values from cache will be cleared in directoryNotifiers
- * @param {String} pathToFile
- * @returns {string}
- */
-App.fileChecksum = function (pathToFile) {
-  return _App.fileChecksum(pathToFile)
-}
-
-/**
- * A folder checksum (see fileChecksum for algorithm details)
- * @param {string} pathToFolder
- * @returns {string}
- */
-App.folderChecksum = function (pathToFolder) {
-  return _App.folderChecksum(pathToFolder)
-}
-
-/**
  * Current application Domain
  * @deprecated UB >=4 use a App.domainInfo - a pure JS domain representation
  * @readonly
@@ -359,7 +332,7 @@ Object.defineProperty(App, 'domainInfo', {
   enumerable: true,
   get: function () {
     if (!_domainCache) {
-      _domainCache = (new UBDomain(JSON.parse(getDomainInfo(true)))) // get extended domain information
+      _domainCache = (new UBDomain(getDomainInfo(true))) // get extended domain information
     }
     return _domainCache
   }
@@ -521,5 +494,17 @@ App.blobStores = {
   putContent: blobStores.putContent,
   markRevisionAsPermanent: blobStores.markRevisionAsPermanent
 }
+
+/**
+ * Endpoint context. Application logic can store here some data what required during single HTTP method call;
+ * Starting from UB@5.17.9 server reset `App.endpointContext` to {} after endpoint implementation execution,
+ * so in the beginning of execution it's always empty
+ *
+ *    App.endpointContext.MYMODEL_mykey = 'some value we need to share between different methods during a single user request handling'
+ *
+ * @type {Object}
+ * @since UB@5.17.9
+ */
+App.endpointContext = {}
 
 module.exports = App

@@ -19,12 +19,12 @@ module.exports = UBSession
  * @protected
  */
 function UBSession (authResponse, secretWord, authSchema) {
-  let data = authResponse
-  let hexa8ID = hexa8(data.result.split('+')[ 0 ])
-  let userData = data.uData ? JSON.parse(data.uData) : { lang: 'en', login: 'anonymous' }
-  let sessionWord = data.result
-  let sessionPwdHash = secretWord || ''
-  let sessionSaltCRC = (typeof ncrc32 !== 'undefined') ? ncrc32(0, sessionWord + sessionPwdHash) : null
+  const data = authResponse
+  const hexa8ID = hexa8(data.result.split('+')[0])
+  const userData = data.uData ? JSON.parse(data.uData) : { lang: 'en', login: 'anonymous' }
+  const sessionWord = data.result
+  const sessionPwdHash = secretWord || ''
+  const sessionSaltCRC = (typeof ncrc32 !== 'undefined') ? ncrc32(0, sessionWord + sessionPwdHash) : null
 
   if (!userData.login) {
     userData.login = data.logonname
@@ -83,8 +83,8 @@ function UBSession (authResponse, secretWord, authSchema) {
       case 'ROOT':
         return process.rootOTP()
       default:
-        let timeStampI = authMock ? 1 : Math.floor(Date.now() / 1000)
-        let hexaTime = hexa8(timeStampI)
+        const timeStampI = authMock ? 1 : Math.floor(Date.now() / 1000)
+        const hexaTime = hexa8(timeStampI)
         return authMock
           ? hexa8ID + hexaTime + hexa8(1)
           : hexa8ID + hexaTime + hexa8((typeof ncrc32 !== 'undefined') ? ncrc32(sessionSaltCRC, hexaTime) : crc32(sessionWord + sessionPwdHash + hexaTime)) // + url?
@@ -120,7 +120,7 @@ function UBSession (authResponse, secretWord, authSchema) {
  * @returns {String}
  */
 UBSession.prototype.hexa8 = function hexa8 (value) {
-  let num = parseInt(value, 10)
+  const num = parseInt(value, 10)
   let res = isNaN(num) ? '00000000' : num.toString(16)
   while (res.length < 8) {
     res = '0' + res
@@ -150,8 +150,8 @@ UBSession.prototype.crc32 = function crc32 (s, polynomial, initialValue, finalXO
   if (!table) {
     table = CRC32_POLYTABLES[polynomial] = (function build () {
       let i, j, c
-      let table = []
-      let reverse = function (x, n) {
+      const table = []
+      const reverse = function (x, n) {
         let b = 0
         while (n) {
           b = b * 2 + x % 2
@@ -175,11 +175,11 @@ UBSession.prototype.crc32 = function crc32 (s, polynomial, initialValue, finalXO
   }
 
   for (let i = 0, l = s.length; i < l; i++) {
-    let c = s.charCodeAt(i)
+    const c = s.charCodeAt(i)
     if (c > 255) {
       throw new RangeError()
     }
-    let j = (crc % 256) ^ c
+    const j = (crc % 256) ^ c
     crc = ((crc / 256) ^ table[j]) >>> 0
   }
   return (crc ^ finalXORValue) >>> 0

@@ -15,6 +15,72 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.13.2] - 2020-03-09
+### Added
+- fake parameter **_ rc=documentRevision** into `getDocument` request for `ubDocument` component
+  The reason is to prevent unexpected content caching by proxies in case content changed by server.
+  Used by "caching servers" in multi-region UB deployment 
+
+## [5.13.1] - 2020-03-04
+### Fixed
+ - tinyMCE base URL should not ends with `/` (prevent URLs like //skins/*)
+ - Ukrainian No i18n - replace english **i** with Ukrainian
+
+## [5.13.0] - 2020-02-29
+### Removed
+- `UBOnlyOffice` editor. Moved to a separate package '@unitybase/only-office'
+
+## [5.12.33] - 2020-02-23
+### Changed
+ - in case server require user to change password during re-logon default behavior changed to reload app
+ and point user into login page. Note: this situation should not happens in real life scenario's 
+ 
+### Removed
+ - obsolete `UB.view.cryptoUI.ReadPK`, `UB.view.cryptoUI.SelectCert` is removed. Private key reading is implemented inside 
+ pki provider interface defined in `uiSettings.adminUI.encryptionImplementation` server config section
+  
+### Fixed
+ - fixed `iconCls` for `ubDetailTree` actions (**moveUp|moveDown**) 
+ 
+## [5.12.32] - 2020-02-18
+### Changed
+ - i18n messages about certificate registration moved from `adminui-pub` into `ub-pub` to be used inside non-admin UI
+
+## [5.12.31] - 2020-02-13
+### Fixed
+ - ExtJS based stores will smart merge orderList passed from Operations (EntityGridPanel for example) and
+ original request order list. In case order by attribute already in serverRequest.orderList - override it.
+ This prevent multiple orderBy on the same columns what cause an DB exception at last on MS SQL
+
+## [5.12.30] - 2020-02-10
+## [5.12.29] - 2020-02-08
+### Changed
+ - i18n for `UserWithoutOrgEmployeeNotAllowed` is moved from adminui-pub into ub-pub
+
+### Fixed
+ - prevent self-circling on Negotiate authentication in case silence kerberos logon is `true` and second auth response
+ contains invalid session number (error occurs at last with invalid Kerio Control proxy configuration)
+
+## [5.12.28] - 2020-02-03
+## [5.12.27] - 2020-01-31
+### Added
+ - translations for Firefox UBExtension setup 
+
+## [5.12.26] - 2020-01-17
+### Changed
+ - `locale/uk -> closeOther` added missing word "tabs" simplified in other languages
+
+### Fixed
+ - `Audit` for different auditable instances should be opened in different tabs  (fixed **tabId** generation in `BasePanel.onAudit`)
+ - `showForm` command will use `description` from command config (if defined) as a form caption. Compatibility fix for UB4  
+ 
+## [5.12.25] - 2020-01-11
+## [5.12.24] - 2020-01-03
+## [5.12.23] - 2020-01-02
+### Fixed
+ - UDetailTree refresh icon (fas fa-refresh -> fas fa-sync)
+
+## [5.12.22] - 2020-01-02
 ## [5.12.21] - 2019-12-30
 ## [5.12.20] - 2019-12-27
 ### Changed

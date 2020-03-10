@@ -22,7 +22,7 @@ const FORMAT_RE = /{([0-9a-zA-Z_]+)}/g
 /**
  * @module @unitybase/ub
  */
-let UB = module.exports = {
+const UB = module.exports = {
   /**
    * If we are in UnityBase server scripting (both -f or server thread) this property is true, if in browser - undefined or false.
    * Use it for check execution context in scripts, shared between client & server.
@@ -34,13 +34,13 @@ let UB = module.exports = {
    * Server-side Abort exception. To be used in server-side logic in case of HANDLED
    * exception. This errors logged using "Error" log level to prevent unnecessary
    * EXC log entries.
-   * @type {UBAbort}
+   * @property {UBAbort} UBAbort
    */
   UBAbort: Errors.UBAbort,
   /**
    * Server-side Security exception. Throwing of such exception will trigger
    * `Session.securityViolation` event
-   * @type {ESecurityException}
+   * @propety {ESecurityException} ESecurityException
    */
   ESecurityException: Errors.ESecurityException,
   ns: ns,
@@ -60,7 +60,7 @@ let UB = module.exports = {
   getWSNotifier: ws.getWSNotifier,
   /**
    * Information about the logged in user
-   * @type {Session}
+   * @property {Session} Session
    */
   Session: Session,
   /**
@@ -99,11 +99,11 @@ let UB = module.exports = {
     } else {
       lang = Session.userLang || App.defaultLang
     }
-    let res = mI18n.lookup(lang, msg)
+    const res = mI18n.lookup(lang, msg)
     if (args && args.length && (typeof res === 'string')) {
       // key-value object
       if ((args.length === 1) && (typeof args[0] === 'object')) {
-        let first = args[0]
+        const first = args[0]
         return res.replace(FORMAT_RE, function (m, k) {
           return _.get(first, k)
         })
@@ -153,7 +153,7 @@ console.log(UB.i18n(yourMessage, 'uk'))
   loadLegacyModules: modelLoader.loadLegacyModules,
   /**
    * Application instance
-   * @type {App}
+   * @property {App} App
    */
   App: App,
   start: start,
@@ -184,7 +184,7 @@ function start () {
   // for each model:
   // - load all entities modules
   // - require a model itself
-  let orderedModels = App.domainInfo.orderedModels
+  const orderedModels = App.domainInfo.orderedModels
   orderedModels.forEach((model) => {
     if (model.realPath && (model.name !== 'UB')) { // UB already loaded by UB.js
       modelLoader.loadEntitiesModules(model.realPath)
@@ -195,7 +195,7 @@ function start () {
   blobStores.initBLOBStores(App, Session)
 
   // ENDPOINTS
-  const {clientRequireEp, modelsEp, getAppInfoEp, getDomainInfoEp, staticEp, runSQLEp, restEp, allLocalesEp} = require('./modules/endpoints')
+  const { clientRequireEp, modelsEp, getAppInfoEp, getDomainInfoEp, staticEp, runSQLEp, restEp, allLocalesEp } = require('./modules/endpoints')
   App.registerEndpoint('getAppInfo', getAppInfoEp, false)
   App.registerEndpoint('models', modelsEp, false)
   App.registerEndpoint('clientRequire', clientRequireEp, false)
@@ -211,24 +211,24 @@ function start () {
 
 // normalize ENUMS TubCacheType = {Entity: 1, SessionEntity: 2} => {Entity: 'Entity', SessionEntity: 'SessionEntity'}
 function normalizeEnums () {
-  let enums = ['TubftsScope', 'TubCacheType', 'TubEntityDataSourceType', 'TubEntityDataSourceType',
+  const enums = ['TubftsScope', 'TubCacheType', 'TubEntityDataSourceType', 'TubEntityDataSourceType',
     'TubAttrDataType', 'TubSQLExpressionType', 'TubSQLDialect', 'TubSQLDriver']
   enums.forEach(eN => {
-    let e = global[eN]
+    const e = global[eN]
     if (!e) return
-    let vals = Object.keys(e)
+    const vals = Object.keys(e)
     vals.forEach(k => { e[k] = k })
   })
 }
 
 // domain initialization
 function initializeDomain () {
-  const {addEntityMethod} = process.binding('ub_app')
-  const {getDomainInfo} = process.binding('ub_app')
+  const { addEntityMethod } = process.binding('ub_app')
+  const { getDomainInfo } = process.binding('ub_app')
   // create scope for all domain objects
-  const tempDomain = new UBDomain(JSON.parse(getDomainInfo(true)))
+  const tempDomain = new UBDomain(getDomainInfo(true))
   tempDomain.eachEntity(entity => {
-    let e = global[entity.code] = { }
+    const e = global[entity.code] = { }
     Object.defineProperty(e, 'entity', {
       writable: false,
       enumerable: true,
@@ -260,10 +260,10 @@ function initializeDomain () {
  */
 function ns (namespacePath) {
   let root = global
-  let parts = namespacePath.split('.')
+  const parts = namespacePath.split('.')
 
   for (let j = 0, subLn = parts.length; j < subLn; j++) {
-    let part = parts[j]
+    const part = parts[j]
 
     if (!root[part]) {
       root[part] = {}

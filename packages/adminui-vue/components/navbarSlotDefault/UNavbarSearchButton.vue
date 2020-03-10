@@ -1,9 +1,10 @@
 <template>
   <el-popover
     ref="popover"
+    v-if="modeList.length"
     placement="bottom"
     trigger="click"
-    class="ub-navbar__dropdown"
+    class="u-navbar__dropdown"
     :width="400"
     @after-enter="setFocusAndSelect"
   >
@@ -68,15 +69,22 @@
 <script>
 /* global $App, Ext */
 const SNIPED_RE = new RegExp('Z(.*?)Z:', 'gim')
-
+/**
+ * @class UNavbarSearchButton
+ * Full text search navbar widget.
+ *
+ * Hides itself in case user do not have access to any of `fts` pseudo-entities.
+ * This can be done either by set `application.fts.enabled: false` in ubConfig of by removing the fts
+ * connections from connections array
+ */
 export default {
   name: 'UNavbarSearchButton',
 
   data () {
     return {
       query: '',
-      currentMode: 'ftsDefault',
-      modeList: ['ftsDefault'],
+      currentMode: '',
+      modeList: [],
       period: null,
       isPeriod: false,
       pickerOptions: {
@@ -126,6 +134,7 @@ export default {
   },
 
   mounted () {
+    if (!this.modeList.length) return // widget is hidden because no fts connections
     document.body.addEventListener('keydown', (e) => {
       const { code, ctrlKey } = e
       if (code === 'KeyF' && ctrlKey) {
@@ -141,7 +150,7 @@ export default {
     },
 
     setFocusAndSelect () {
-      let i = this.$refs.input
+      const i = this.$refs.input
       i.focus()
       i.select()
     },
@@ -225,17 +234,23 @@ export default {
 
     initSearchModes () {
       const modeSet = new Set()
-      this.$UB.connection.domain.eachEntity((ubEntity) => {
+      modeSet.add('ftsDefault')
+      const domain = this.$UB.connection.domain
+      domain.eachEntity((ubEntity) => {
         if (ubEntity.hasMixin('fts')) {
-          const { connectionName } = ubEntity.mixins.fts
-
+          const connectionName = ubEntity.mixins.fts.connectionName
           if (connectionName) {
             modeSet.add(connectionName)
           }
         }
       })
-      for (let mode of modeSet) {
-        this.modeList.push(mode)
+      for (const mode of modeSet) {
+        if (domain.isEntityMethodsAccessible(`fts_${mode}`, 'fts')) {
+          this.modeList.push(mode)
+        }
+      }
+      if (this.modeList.length) {
+        this.currentMode = this.modeList[0]
       }
     }
   }

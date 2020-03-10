@@ -114,7 +114,7 @@ if (isExt) {
   $App.on('applicationReady', replaceExtJSMessageBarDialog)
   $App.on('applicationReady', replaceShowList)
   $App.on('applicationReady', function () {
-    let v = UB.connection.appConfig.serverVersion.split('.')
+    const v = UB.connection.appConfig.serverVersion.split('.')
     if ((v[0] >= 'v5') && (v[1] < 14)) throw new Error('This version of adminui-vue require UB server to be >= 5.14')
   })
 }
@@ -124,7 +124,7 @@ function addVueSidebar () {
   const SidebarConstructor = Vue.extend(Sidebar)
   // eslint-disable-next-line no-new
   new SidebarConstructor({
-    el: `#sidebar-placeholder`
+    el: '#sidebar-placeholder'
   })
 }
 
@@ -155,11 +155,11 @@ function magicLinkAdminUiCommand (params) {
  * @param {EventTarget} target
  */
 function magicLinkFocusCommand (params, target) {
-  let extCmp = isExt && Ext.getCmp(params.elmId)
+  const extCmp = isExt && Ext.getCmp(params.elmId)
   if (extCmp) { // try Ext
     Ext.callback(extCmp.focus, extCmp, [], 100)
   } else { // try DOM
-    let domElm = document.getElementById(params.elmId)
+    const domElm = document.getElementById(params.elmId)
     if (domElm && domElm.focus) domElm.focus()
   }
 }
@@ -205,7 +205,7 @@ if (isExt && window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAuto
  * This hack is required to obtain current ElementUI zIndex
  */
 Vue.prototype.$zIndex = () => {
-  let vm = Vue.prototype.$message({
+  const vm = Vue.prototype.$message({
     customClass: 'ub-fake-notification'
   })
   return vm.$el.style.zIndex
@@ -214,6 +214,7 @@ Vue.prototype.$zIndex = () => {
 Vue.config.warnHandler = (err, vm, info) => {
   setTimeout(() => {
     console.error(err, vm, info)
-    window.onerror.apply(UB, [err, info, '', '', new UB.UBError(err, info)])
+    const newErrText = '<b>THIS MESSAGE APPEARS ONLY IN DEBUG BUILD</b><br>' + err
+    window.onerror.apply(UB, [newErrText, info, '', '', new UB.UBError(newErrText, info)])
   }, 0)
 }

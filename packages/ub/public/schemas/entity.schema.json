@@ -1,6 +1,6 @@
 {
     "id": "https://unitybase.info/models/UB/schemas/entity.schema.json",
-    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "UnityBase entity definition",
     "type": "object",
     "additionalProperties": false,
@@ -215,7 +215,41 @@
                             }
                         }
                     }
-                }
+                },
+                "allOf": [
+                    {
+                        "if": {
+                            "properties": {
+                                "dataType": { "const": "String" }
+                            }
+                        },
+                        "then": { "required": ["size"] }
+                    },
+                    {
+                        "if": {
+                            "properties": {
+                                "dataType": { "enum": ["Entity", "Many"] }
+                            }
+                        },
+                        "then": { "required": ["associatedEntity"] }
+                    },
+                    {
+                        "if": {
+                            "properties": {
+                                "dataType": { "const": "Many" }
+                            }
+                        },
+                        "then": { "required": ["associationManyData"] }
+                    },
+                    {
+                        "if": {
+                            "properties": {
+                                "dataType": { "const": "Enum" }
+                            }
+                        },
+                        "then": { "required": ["enumGroup"] }
+                    }
+                ]
             }
         },
         "mapping": {
@@ -224,7 +258,7 @@
             "items": {
                 "type": "object",
                 "additionalProperties": false,
-                "required": ["name", "selectName", "execName"],
+                "required": ["name"],
                 "properties": {
                     "name": {
                         "type": "string",

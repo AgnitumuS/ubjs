@@ -203,7 +203,7 @@ function fortunesRaw (req, resp) {
         data, rendered
 
   store.runSQL(F_SQL, {})
-  data = JSON.parse(store.asJSONObject)
+  data = store.getAsJsObject()
   data.push({ID: 0, message: 'Additional fortune added at request time'})
   _.sortBy(data, 'message')
   rendered = mustache.render(tpl, data)

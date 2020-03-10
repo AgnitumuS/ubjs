@@ -7,7 +7,6 @@
  */
 
 /* global FileReader, Blob */
-const _ = require('lodash')
 const i18n = require('./i18n')
 
 /**
@@ -36,10 +35,9 @@ const FORMAT_RE = /{(\d+)}/g
  * @param {...*} values The values to replace tokens `{0}`, `{1}`, etc in order.
  * @return {String} The formatted string.
  */
-module.exports.format = function (stringToFormat, values) {
-  let args = _.toArray(arguments).slice(1)
+module.exports.format = function (stringToFormat, ...values) {
   return stringToFormat.replace(FORMAT_RE, function (m, i) {
-    return args[i]
+    return values[i]
   })
 }
 
@@ -93,8 +91,8 @@ module.exports.booleanParse = function (v) {
  */
 module.exports.base64FromAny = function (data) {
   return new Promise((resolve, reject) => {
-    let reader = new FileReader()
-    let blob = (data instanceof Blob) ? data : new Blob([data])
+    const reader = new FileReader()
+    const blob = (data instanceof Blob) ? data : new Blob([data])
     reader.addEventListener('loadend', function () {
       resolve(reader.result.split(',', 2)[1]) // remove data:....;base64, from the beginning of string //TODO -use indexOf
     })
@@ -113,7 +111,7 @@ module.exports.base64FromAny = function (data) {
  */
 module.exports.file2Uint8Array = function (file) {
   return new Promise((resolve, reject) => {
-    let reader = new FileReader()
+    const reader = new FileReader()
     reader.onload = function () {
       resolve(new Uint8Array(reader.result))
     }
@@ -147,7 +145,7 @@ const BASE64DECODELOOKUP = new Uint8Array(256);
  */
 module.exports.base64toArrayBuffer = function (base64) {
   let bufferLength = base64.length * 0.75
-  let len = base64.length
+  const len = base64.length
   let p = 0
   let encoded1, encoded2, encoded3, encoded4
 
@@ -156,8 +154,8 @@ module.exports.base64toArrayBuffer = function (base64) {
     if (base64[base64.length - 2] === '=') bufferLength--
   }
 
-  let arrayBuffer = new ArrayBuffer(bufferLength)
-  let bytes = new Uint8Array(arrayBuffer)
+  const arrayBuffer = new ArrayBuffer(bufferLength)
+  const bytes = new Uint8Array(arrayBuffer)
 
   for (let i = 0; i < len; i += 4) {
     encoded1 = BASE64DECODELOOKUP[base64.charCodeAt(i)]

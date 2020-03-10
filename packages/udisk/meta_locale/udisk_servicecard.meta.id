@@ -1,0 +1,51 @@
+{
+  "caption": "arsip",
+  "description": "arsip",
+  "attributes": [
+    {
+      "name": "name",
+      "caption": "Nama",
+      "description": "Nama"
+    },
+    {
+      "name": "parentID",
+      "caption": "Map",
+      "description": "Map"
+    },
+    {
+      "name": "fcomment",
+      "caption": "Komentar",
+      "description": "Komentar"
+    },
+    {
+      "name": "isFolder",
+      "caption": "adalah folder",
+      "description": "adalah folder"
+    },
+    {
+      "name": "ownerID",
+      "caption": "pemilik",
+      "description": "pemilik"
+    },
+    {
+      "name": "fsize",
+      "caption": "ukuran",
+      "description": "ukuran"
+    },
+    {
+      "name": "contentType",
+      "caption": "Jenis konten",
+      "description": "Jenis konten"
+    },
+    {
+      "name": "isTemporary",
+      "caption": "Sementara",
+      "description": "Sementara"
+    },
+    {
+      "name": "fileData",
+      "caption": "mengajukan",
+      "description": "mengajukan"
+    }
+  ]
+}

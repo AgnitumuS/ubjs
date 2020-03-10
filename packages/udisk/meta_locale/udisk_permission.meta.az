@@ -1,0 +1,21 @@
+{
+  "caption": "Daxilolma icazələri",
+  "description": "Daxilolma icazələri",
+  "attributes": [
+    {
+      "name": "cardID",
+      "caption": "Fayl",
+      "description": "Fayl"
+    },
+    {
+      "name": "userID",
+      "caption": "İstifadəçi",
+      "description": "İstifadəçi"
+    },
+    {
+      "name": "accessType",
+      "caption": "Daxiloma səviyyəsi",
+      "description": "Daxiloma səviyyəsi (owner, read, write, delegate)"
+    }
+  ]
+}

@@ -12,9 +12,9 @@
         :class="selectedDesktop.iconCls"
       />
       <template v-if="!isCollapsed">
-        {{ selectedDesktop.caption }}
+        <span>{{ selectedDesktop.caption }}</span>
+        <i class="desktop-select-button__icon-after el-icon-menu" />
       </template>
-      <i class="desktop-select-button__icon-after el-icon-more" />
     </div>
 
     <transition name="sidebar-animation">

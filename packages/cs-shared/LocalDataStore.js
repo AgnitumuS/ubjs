@@ -49,7 +49,7 @@ module.exports.doFilterAndSort = function (cachedData, ubql) {
   let rangeStart
 
   let filteredData = this.doFiltration(cachedData, ubql)
-  let totalLength = filteredData.length
+  const totalLength = filteredData.length
   this.doSorting(filteredData, cachedData, ubql)
   // apply options start & limit
   if (ubql.options) {
@@ -87,18 +87,18 @@ module.exports.byID = function (cachedData, IDValue) {
  */
 module.exports.doFiltration = function (cachedData, ubql) {
   let f, isAcceptable
-  let rawDataArray = cachedData.data
-  let byPrimaryKey = Boolean(ubql.ID)
+  const rawDataArray = cachedData.data
+  const byPrimaryKey = Boolean(ubql.ID)
 
-  let filterFabric = whereListToFunctions(ubql, cachedData.fields)
-  let filterCount = filterFabric.length
+  const filterFabric = whereListToFunctions(ubql, cachedData.fields)
+  const filterCount = filterFabric.length
 
   if (filterCount === 0) {
     return rawDataArray
   }
 
-  let result = []
-  let l = rawDataArray.length
+  const result = []
+  const l = rawDataArray.length
   let i = -1
   while (++i < l) { // for each data
     isAcceptable = true; f = -1
@@ -123,10 +123,10 @@ module.exports.doFiltration = function (cachedData, ubql) {
  * @param {Object} ubRequest
  */
 module.exports.doSorting = function (filteredArray, cachedData, ubRequest) {
-  let preparedOrder = []
+  const preparedOrder = []
   if (ubRequest.orderList) {
     _.each(ubRequest.orderList, function (orderItem) {
-      let attrIdx = cachedData.fields.indexOf(orderItem.expression)
+      const attrIdx = cachedData.fields.indexOf(orderItem.expression)
       if (attrIdx < 0) {
         throw new Error('Ordering by ' + orderItem.expression + ' attribute that don\'t present in fieldList not allowed')
       }
@@ -135,13 +135,13 @@ module.exports.doSorting = function (filteredArray, cachedData, ubRequest) {
         modifier: (orderItem.order === 'desc') ? -1 : 1
       })
     })
-    let orderLen = preparedOrder.length
+    const orderLen = preparedOrder.length
     if (orderLen) {
-      let compareFn = function (v1, v2) {
+      const compareFn = function (v1, v2) {
         let res = 0
         let idx = -1
         while (++idx < orderLen && res === 0) {
-          let colNum = preparedOrder[idx].idx
+          const colNum = preparedOrder[idx].idx
           if (v1[colNum] !== v2[colNum]) {
             if (v1[colNum] === null && v2[colNum] !== null) {
               res = 1
@@ -171,22 +171,21 @@ module.exports.doSorting = function (filteredArray, cachedData, ubRequest) {
  */
 function whereListToFunctions (ubql, fieldList) {
   Object.keys(ubql) // FIX BUG WITH TubList TODO - rewrite to native
-  let propIdx, fValue, filterFabricFn
-  let filters = []
-  let escapeForRegexp = function (text) {
+  const filters = []
+  const escapeForRegexp = function (text) {
     // convert text to string
     return text ? ('' + text).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') : ''
   }
-  let whereList = ubql.whereList
+  const whereList = ubql.whereList
 
-  filterFabricFn = function (propertyIdx, condition, value) {
+  const filterFabricFn = function (propertyIdx, condition, value) {
     let regExpFilter
 
     switch (condition) {
       case 'like':
         regExpFilter = new RegExp(escapeForRegexp(value), 'i')
         return function (record) {
-          let val = record[propertyIdx]
+          const val = record[propertyIdx]
           return val && regExpFilter.test(val)
         }
       case 'equal':
@@ -224,27 +223,27 @@ function whereListToFunctions (ubql, fieldList) {
       case 'notLike':
         regExpFilter = new RegExp(escapeForRegexp(value), 'i')
         return function (record) {
-          let val = record[propertyIdx]
+          const val = record[propertyIdx]
           return val && !regExpFilter.test(val)
         }
       case 'startWith':
         return function (record) {
-          let str = record[propertyIdx]
+          const str = record[propertyIdx]
           return (str && str.indexOf(value) === 0)
         }
       case 'notStartWith':
         return function (record) {
-          let str = record[propertyIdx]
+          const str = record[propertyIdx]
           return str && str.indexOf(value) !== 0
         }
       case 'in':
         return function (record) {
-          let str = record[propertyIdx]
+          const str = record[propertyIdx]
           return str && value.indexOf(str) >= 0
         }
       case 'notIn':
         return function (record) {
-          let str = record[propertyIdx]
+          const str = record[propertyIdx]
           return str && value.indexOf(str) < 0
         }
       default:
@@ -259,10 +258,11 @@ function whereListToFunctions (ubql, fieldList) {
       throw new Error('Condition "custom" is not supported for cached entities')
     }
     property = (property.replace(/(\[)|(])/ig, '') || '').trim()
-    propIdx = fieldList.indexOf(property)
+    const propIdx = fieldList.indexOf(property)
     if (propIdx === -1) {
-      throw new Error(`Filtering by attribute "${property}" what not in fieldList is not allowed for cached entity "${ubql.entity}"`)
+      throw new Error(`Filtering by attribute "${property}" which is not in fieldList is not allowed for cached entity "${ubql.entity}"`)
     }
+    let fValue
     // support for future (UB 5.10) where with "value" instead of "values"
     if (clause.value !== undefined) {
       fValue = clause.value
@@ -279,6 +279,8 @@ function whereListToFunctions (ubql, fieldList) {
   _.forEach(whereList, transformClause)
   return filters
 }
+
+module.exports.whereListToFunctions = whereListToFunctions
 
 /**
  * Transform result of {@link class:SyncConnection#select SyncConnection.select} response
@@ -309,13 +311,13 @@ function whereListToFunctions (ubql, fieldList) {
  * @returns {Array.<*>}
  */
 module.exports.selectResultToArrayOfObjects = function (selectResult, fieldAlias) {
-  let inData = selectResult.resultData.data
-  let inAttributes = selectResult.resultData.fields
-  let inDataLength = inData.length
-  let result = inDataLength ? new Array(inDataLength) : []
+  const inData = selectResult.resultData.data
+  const inAttributes = selectResult.resultData.fields
+  const inDataLength = inData.length
+  const result = inDataLength ? new Array(inDataLength) : []
   if (fieldAlias) {
     _.forEach(fieldAlias, function (alias, field) {
-      let idx = inAttributes.indexOf(field)
+      const idx = inAttributes.indexOf(field)
       if (idx >= 0) {
         inAttributes[idx] = alias
       }
@@ -347,14 +349,13 @@ module.exports.selectResultToArrayOfObjects = function (selectResult, fieldAlias
  * @result {{fieldCount: number, rowCount: number, values: array.<*>}}
  */
 module.exports.flatten = function (requestedFieldList, cachedData) {
-  let fldIdxArr = []
-  let cachedFields = cachedData.fields
+  const fldIdxArr = []
+  const cachedFields = cachedData.fields
   let rowIdx = -1
   let col = -1
   let pos = 0
-  let resultData = []
-  let rowCount = cachedData.data.length
-  let idx, row, fieldCount
+  const resultData = []
+  const rowCount = cachedData.data.length
 
   if (!requestedFieldList || !requestedFieldList.length) {
     throw new Error('fieldList not exist or empty')
@@ -366,22 +367,23 @@ module.exports.flatten = function (requestedFieldList, cachedData) {
   }
 
   requestedFieldList.forEach(function (field) {
-    idx = cachedFields.indexOf(field)
+    const idx = cachedFields.indexOf(field)
     if (idx !== -1) {
       fldIdxArr.push(idx)
     } else {
       throw new Error('Invalid field list. Attribute ' + field + ' not found in local data store')
     }
   })
-  fieldCount = requestedFieldList.length
+  const fieldCount = requestedFieldList.length
   resultData.length = rowCount * (fieldCount + 1) // reserve fieldCount for field names
   while (++col < fieldCount) {
     resultData[pos] = requestedFieldList[pos]; pos++
   }
   while (++rowIdx < rowCount) {
-    col = -1; row = cachedData.data[rowIdx]
+    col = -1
+    const row = cachedData.data[rowIdx]
     while (++col < fieldCount) {
-      resultData[pos++] = row[ fldIdxArr[col] ]
+      resultData[pos++] = row[fldIdxArr[col]]
     }
   }
   return { fieldCount: fieldCount, rowCount: rowCount, values: resultData }
@@ -401,9 +403,9 @@ module.exports.flatten = function (requestedFieldList, cachedData) {
  * @returns {Array.<Array>}
  */
 module.exports.arrayOfObjectsToSelectResult = function (arrayOfObject, attributeNames) {
-  let result = []
+  const result = []
   arrayOfObject.forEach(function (obj) {
-    let row = []
+    const row = []
     attributeNames.forEach(function (attribute) {
       row.push(obj[attribute])
     })
@@ -437,7 +439,7 @@ module.exports.truncTimeToUtcNull = function (v) {
  * @returns {Date}
  */
 module.exports.iso8601ParseAsDate = function (value) {
-  let res = value ? new Date(value) : null
+  const res = value ? new Date(value) : null
   if (res) {
     return new Date(res.getFullYear(), res.getMonth(), res.getDate())
     // code below fails for 1988-03-27T00:00Z

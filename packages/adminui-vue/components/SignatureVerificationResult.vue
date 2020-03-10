@@ -31,7 +31,7 @@
               />
             </el-tooltip>
           </td>
-          <td> {{ $moment(vr.signingTime).format('L HH:MM') }} </td>
+          <td> {{ $moment(vr.signingTime).format('L HH:mm') }} </td>
           <td> {{ vr.subject.fullName }} </td>
         </tr>
         <template v-if="detailsOpened[vIdx] === true">
@@ -126,6 +126,7 @@ export default {
   },
   beforeMount () {
     this.VRi18n = this.$ut('SignatureVerificationResultObj')
+    if (this.verificationResults.length === 1) this.detailsOpened[0] = true
   },
   methods: {
     toggleRow (vIdx) {
@@ -134,15 +135,20 @@ export default {
     statusStyle (vIdx) {
       let r = this.verificationResults[vIdx]
       if (!r.valid) return 'color: rgba(var(--danger), 1);'
-      if (r.valid && r.tspValid && r.ocspVerified) return 'color: rgba(var(--success), 1);'
+      if (r.valid && r.tspValid && r.ocspVerified && !r.warnings) return 'color: rgba(var(--success), 1);'
       return 'color: rgba(var(--warning), 1);'
     },
     statusTip (vIdx, isHTML) {
       let r = this.verificationResults[vIdx]
-      if (!r.valid) return `${r.errorMessage || this.VRi18n.valid.no} (${r.errorCode})`
+      if (!r.valid) {
+        let m = `${r.errorMessage || this.VRi18n.valid.no}`
+        if (r.errorCode) m = m + ` (${r.errorCode})`
+        return m
+      }
       let s = this.VRi18n.valid.yes; s += isHTML ? '<br>' : '; '
       s += this.VRi18n.tspValid[r.tspValid ? 'yes' : 'no']; s += isHTML ? '<br>' : '; '
-      s += this.VRi18n.ocspVerified[r.ocspVerified ? 'yes' : 'no']
+      s += this.VRi18n.ocspVerified[r.ocspVerified ? 'yes' : 'no']; s += isHTML ? '<br>' : '; '
+      if (r.warnings) s += r.warnings
       return s
     }
   }

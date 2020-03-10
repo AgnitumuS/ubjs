@@ -141,7 +141,7 @@ module.exports = {
         : newVal
       if (newValAsText !== this.textValue) {
         this.textValue = newValAsText
-        this._codeMirror.setValue(newValAsText)
+        this._codeMirror.setValue(newValAsText || '')
       }
     },
 

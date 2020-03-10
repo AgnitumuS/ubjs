@@ -12,7 +12,8 @@ const blobStores = require('@unitybase/blob-stores')
  *  - execute any SQL statement using {@link class:TubDataStore#runSQL TubDataStore.runSQL} or {@link class:TubDataStore#execSQL TubDataStore.execSQL} (we strongly recommend usage of ORM instead SQL)
  *  - store several named data collection using {@link class:TubDataStore#currentDataName TubDataStore.currentDataName} (data stored inside server memory, not in JS, this is very good for GC)
  *  - iterate other collection rows using {@link class:TubDataStore#next TubDataStore.next}, eof, e.t.c and retrieve row data using {@link class:TubDataStore#get TubDataStore.get}
- *  - serialize data to XML {@link class:TubDataStore#asXMLPersistent TubDataStore.asXMLPersistent} or JSON in array-of-array {@link class:TubDataStore#asJSONArray TubDataStore.asJSONArray} on array-of-object {@link class:TubDataStore#asJSONObject TubDataStore.asJSONObject} format
+ *  - serialize data to XML {@link class:TubDataStore#asXMLPersistent TubDataStore.asXMLPersistent} or JSON string in array-of-array {@link class:TubDataStore#asJSONArray TubDataStore.asJSONArray} or array-of-object {@link class:TubDataStore#asJSONObject TubDataStore.asJSONObject} format
+ *  - serialize data to JavaScript object in array-of-array {@link class:TubDataStore#getAsJsArray TubDataStore.getAsJsArray()} or array-of-object {@link class:TubDataStore#getAsJsObject TubDataStore.getAsJsObject()} format
  *
  *  To retrieve data from database using build-in ORM (execute entity `select` method) preferred way is
  *  to use {@link module:@unitybase/ub#Repository UB.Repository} fabric function.
@@ -81,13 +82,13 @@ const blobStores = require('@unitybase/blob-stores')
  * @returns {TubDataStore}
  */
 TubDataStore.initialize = function (source, keyMap) {
-  let flatArray = []
-  let resultFields = []
-  let sourceFields = []
+  const flatArray = []
+  const resultFields = []
+  const sourceFields = []
 
   function keyMap2Mapping (keyMap, isIndexBased) {
     for (let i = 0, l = keyMap.length; i < l; i++) {
-      let elm = keyMap[i]
+      const elm = keyMap[i]
       if (typeof elm === 'object') {
         sourceFields.push(isIndexBased ? parseInt(elm.from, 10) : elm.from)
         resultFields.push(elm.to)
@@ -99,43 +100,43 @@ TubDataStore.initialize = function (source, keyMap) {
   }
 
   if (Array.isArray(source)) {
-    let rowCount = source.length
+    const rowCount = source.length
     if (rowCount === 0) {
       // 1) empty store
       keyMap2Mapping((keyMap && keyMap.length) ? keyMap : ['ID'])
-      this.initFromJSON({fieldCount: resultFields.length, rowCount: 0, values: resultFields}) // empty dataStore initialization
+      this.initFromJSON({ fieldCount: resultFields.length, rowCount: 0, values: resultFields }) // empty dataStore initialization
     } else if (Array.isArray(source[0])) {
       //  2) Array-of-array
       if ((!keyMap) || (!keyMap.length)) {
         throw new Error('TubDataStore.initialize: for array-of-array keyMap is required')
       }
       keyMap2Mapping(keyMap, true)
-      let fieldCount = resultFields.length
+      const fieldCount = resultFields.length
       for (let i = 0; i < fieldCount; i++) { // field names
         flatArray.push(resultFields[i])
       }
 
       for (let i = 0; i < rowCount; i++) { // data
-        let row = source[i]
+        const row = source[i]
         for (let j = 0; j < fieldCount; j++) {
           flatArray.push(row[sourceFields[j]]) // add source field using it index in keyMap
         }
       }
-      this.initFromJSON({fieldCount: fieldCount, rowCount: rowCount, values: flatArray})
+      this.initFromJSON({ fieldCount: fieldCount, rowCount: rowCount, values: flatArray })
     } else if (typeof source[0] === 'object') {
       // 3) Array-of-object
       keyMap2Mapping((keyMap && keyMap.length) ? keyMap : Object.keys(source[0]))
-      let fieldCount = resultFields.length
+      const fieldCount = resultFields.length
       for (let i = 0; i < fieldCount; i++) { // field names
         flatArray.push(resultFields[i])
       }
       for (let i = 0; i < rowCount; i++) { // data
-        let row = source[i]
+        const row = source[i]
         for (let j = 0; j < fieldCount; j++) {
           flatArray.push(row[sourceFields[j]]) // add source field using it name from keyMap
         }
       }
-      this.initFromJSON({fieldCount: fieldCount, rowCount: rowCount, values: flatArray})
+      this.initFromJSON({ fieldCount: fieldCount, rowCount: rowCount, values: flatArray })
     } else {
       throw new Error('TubDataStore.initialize: invalid source format for TubDataStore.initialize')
     }
@@ -151,11 +152,22 @@ TubDataStore.initialize = function (source, keyMap) {
         source.values[i] = keyMap[i]
       }
     }
-    this.initFromJSON({fieldCount: source.fieldCount, rowCount: source.rowCount, values: source.values}) // order of properties is important for native reader realization
+    this.initFromJSON({ fieldCount: source.fieldCount, rowCount: source.rowCount, values: source.values }) // order of properties is important for native reader realization
   } else {
     throw new Error('TubDataStore.initialize: invalid source format')
   }
   return this
+}
+
+if (TubDataStore.hasOwnProperty('entity')) {
+  throw new Error(`Package folder require deduplication.
+@unitybase/ub must present only once - inside ./node_modules/@unitybase/ub folder.
+All other appearances must be either a symbolic links created by lerna or not exists at all
+Detected duplicate path is ${__dirname}
+To solve this problem:
+ - in case this app is not managed by lerna - run "npm ddp"
+ - in case of lerna: remove package-lock.json, run "lerna clear && lerna bootstrap"  
+`)
 }
 
 /**
@@ -209,7 +221,7 @@ TubDataStore.DATA_NAMES = {
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
-  let entity = this.entity
+  const entity = this.entity
   if (!entity.blobAttributes.length) return false
 
   if (entity.isUnity) {
@@ -218,11 +230,11 @@ TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
   }
   console.debug('Start processing documents for entity', entity.name)
 
-  let execParams = ctx.mParams.execParams
-  let modifiedBlobs = []
+  const execParams = ctx.mParams.execParams
+  const modifiedBlobs = []
   for (let i = 0, L = entity.blobAttributes.length; i < L; i++) {
-    let blobAttr = entity.blobAttributes[i]
-    let newVal = execParams[blobAttr.name]
+    const blobAttr = entity.blobAttributes[i]
+    const newVal = execParams[blobAttr.name]
     if (newVal) {
       modifiedBlobs.push({
         attr: blobAttr,
@@ -234,18 +246,18 @@ TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
   if (!modifiedBlobs.length) return false
 
   if (isUpdate) { // for update operations retrieve a prev. values
-    let store = ctx.dataStore
+    const store = ctx.dataStore
     if (store && store.initialized) { // virtual entity can bypass store initialization
-      let prevDataName = store.currentDataName
+      const prevDataName = store.currentDataName
       try {
         store.currentDataName = this.DATA_NAMES.BEFORE_UPDATE
         if (!store.eof) {
           for (let i = 0, L = modifiedBlobs.length; i < L; i++) {
-            let modifiedBlob = modifiedBlobs[i]
+            const modifiedBlob = modifiedBlobs[i]
             if (!(modifiedBlob.newVal.isDirty || modifiedBlob.newVal.deleting)) { // [UB-858]
               throw new Error(`Invalid ${entity.name}.${modifiedBlob.attr.name} Document type attribute content. Update possible either for dirty or for deleting content`)
             }
-            let oldVal = store.get(modifiedBlob.attr.name)
+            const oldVal = store.get(modifiedBlob.attr.name)
             if (oldVal) modifiedBlob.oldVal = JSON.parse(oldVal)
           }
         }
@@ -257,13 +269,33 @@ TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
 
   // for each modified BLOB call a BLOB store implementation for actually
   // move BLOB data from temporary to permanent store
-  let ID = execParams.ID
+  const ID = execParams.ID
   for (let i = 0, L = modifiedBlobs.length; i < L; i++) {
-    let modifiedBlob = modifiedBlobs[i]
-    let newMeta = blobStores.doCommit(modifiedBlob.attr, ID, modifiedBlob.newVal, modifiedBlob.oldVal)
+    const modifiedBlob = modifiedBlobs[i]
+    const newMeta = blobStores.doCommit(modifiedBlob.attr, ID, modifiedBlob.newVal, modifiedBlob.oldVal)
     execParams[modifiedBlob.attr.name] = newMeta ? JSON.stringify(newMeta) : null
   }
   return true
+}
+
+if (typeof TubDataStore.getAsJsArray !== 'function') { // fallback to JSON.parse for UB server < 5.18.0
+  TubDataStore.getAsJsArray = function () {
+    return JSON.parse(this.asJSONArray)
+  }
+
+  TubDataStore.getAsJsObject = function () {
+    return JSON.parse(this.asJSONObject)
+  }
+}
+
+TubDataStore.getAsTextInObjectNotation = function () {
+  // noinspection JSDeprecatedSymbols
+  return this.asJSONObject
+}
+
+TubDataStore.getAsTextInArrayNotation = function () {
+  // noinspection JSDeprecatedSymbols
+  return this.asJSONArray
 }
 
 module.exports = TubDataStore

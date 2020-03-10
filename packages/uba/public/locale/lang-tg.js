@@ -37,6 +37,10 @@ UB.i18nExtend({
   roles: 'Ролҳо',
   uba: {
     changePassword: {
+      newPassword: {
+        matchWithLoginError: 'Password matches the login',
+        fieldRequirementsError: 'Does not meet the requirements'
+      },
       retypePassword: {
         errorText: 'Passwords mismatch'
       }

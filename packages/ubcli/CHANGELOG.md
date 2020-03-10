@@ -15,6 +15,74 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.2] - 2020-03-09
+## [5.5.1] - 2020-03-04
+### Added
+ - `ubcli meta-tr` will transform entity level mapping to object (missed in prev. version)
+ - `ubcli meta-tr` will fix mapping dialect AnsiSql -> AnsiSQL (many such mistakes in old UB projects)
+
+### Fixed
+ - `ubcli meta-tr` will show line and column in case of invalid meta file JSON
+
+## [5.5.0] - 2020-02-29
+### Changed
+ - use `model.realPath` in `ubcli` scripts instead of calculating absolute models path manually
+   
+## [5.4.21] - 2020-02-23
+### Fixed
+ - `npx ubcli generateNginxCfg` - expires 600; should be added to `/clientRequire`, `/models` and `/static` locations
+  to prevent Google Chrome cache heuristic to take a `js` files from a disk cache even if they modified on server 
+
+## [5.4.20] - 2020-02-18
+### Changed
+ - ESLint errors and warnings fixed (no functional changes)
+
+## [5.4.19] - 2020-02-14
+### Added
+ - new command line option `-su` (skipUndocumented) for `ubcli generateDoc`. If passed then undocumented API methods
+ will be excluded from documentation.
+ Example: `npx ubcli generateDoc -u admin -p admin -su`
+  
+### Fixed
+  - `npx ubcli generateDoc` now works on Windows platform 
+
+## [5.4.18] - 2020-02-13
+## [5.4.17] - 2020-02-10
+### Added
+ - `npx ubcli generateDoc` now understand entity level method documentation in format
+```
+/**
+ * Forms and returns array of dynamical entity's roles
+ * @param {ubMethodParams} runparams
+ * @return {Boolean}
+ */
+me.addAllDynRoles = function(ctx) {...}
+```
+in addition to
+```
+/**
+ * Forms and returns array of dynamical entity's roles
+ * @param {ubMethodParams} runparams
+ * @return {Boolean}
+ * @memberOf contr_contractdoc_ns.prototype
+ * @memberOfModule @docflow/contr
+ * @published
+ */
+function addAllDynRoles(ctx) {...}
+me.addAllDynRoles = addAllDynRoles
+```
+ - `npx ubcli generateDoc` will look into 1 level depth sub-folders of model folders for sources
+ - `npx ubcli generateDoc` will skip 'public', '_migration' and '_autotest' folders while generating jsdoc snippets
+  
+## [5.4.16] - 2020-02-08
+### Added
+ - `npx ubcli generateDoc` command will parse a domain models jsdoc and adds a entity methods description and
+   parameters into documentation
+
+## [5.4.15] - 2020-02-03
+## [5.4.14] - 2020-01-31
+## [5.4.13] - 2020-01-17
+## [5.4.12] - 2020-01-11
 ## [5.4.11] - 2019-12-27
 ## [5.4.10] - 2019-12-20
 ## [5.4.9] - 2019-12-19

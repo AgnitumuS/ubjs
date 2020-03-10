@@ -18,19 +18,19 @@ me.on('delete:after', ubaAuditDeleteUserGroup)
 function ubaAuditNewUserGroup (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
+  const params = ctx.mParams.execParams
   let group = params.groupID
   let user = params.userID
   if (group) {
-    let obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', group).select()
+    const obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', group).select()
     group = obj.eof ? group : obj.get('name')
   }
   if (user) {
-    let obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', user).select()
+    const obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', user).select()
     user = obj.eof ? user : obj.get('name')
   }
 
-  let auditStore = UB.DataStore('uba_audit')
+  const auditStore = UB.DataStore('uba_audit')
   auditStore.run('insert', {
     execParams: {
       entity: 'uba_usergroup',
@@ -54,39 +54,39 @@ function ubaAuditNewUserGroup (ctx) {
 function ubaAuditModifyUserGroup (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
-  let actionUser = Session.uData.login
-  let origStore = ctx.dataStore
-  let origName = origStore.currentDataName
+  const params = ctx.mParams.execParams
+  const actionUser = Session.uData.login
+  const origStore = ctx.dataStore
+  const origName = origStore.currentDataName
   let groupNew = params.groupID
   let userNew = params.userID
   if (groupNew) {
-    let obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', groupNew).select()
+    const obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', groupNew).select()
     groupNew = obj.eof ? groupNew : obj.get('name')
   }
   if (userNew) {
-    let obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', userNew).select()
+    const obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', userNew).select()
     userNew = obj.eof ? userNew : obj.get('name')
   }
 
   let user, group, oldValues
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
-    oldValues = origStore.asJSONObject
+    oldValues = origStore.getAsTextInObjectNotation()
     group = origStore.get('groupID')
     user = origStore.get('userID')
   } finally {
     origStore.currentDataName = origName
   }
   if (group) {
-    let obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', group).select()
+    const obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', group).select()
     group = obj.eof ? group : obj.get('name')
   }
   if (user) {
-    let obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', user).select()
+    const obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', user).select()
     user = obj.eof ? user : obj.get('name')
   }
-  let auditStore = UB.DataStore('uba_audit')
+  const auditStore = UB.DataStore('uba_audit')
   auditStore.run('insert', {
     execParams: {
       entity: 'uba_usergroup',
@@ -118,9 +118,9 @@ function ubaAuditModifyUserGroup (ctx) {
 
 me.on('delete:before', function (ctxt) {
   if (!App.domainInfo.has('uba_audit')) return
-  let execParams = ctxt.mParams.execParams
+  const execParams = ctxt.mParams.execParams
 
-  let store = UB.Repository('uba_usergroup')
+  const store = UB.Repository('uba_usergroup')
     .attrs(['userID', 'groupID'])
     .where('[ID]', '=', execParams.ID).select()
   ctxt.mParams.delUserID = store.get('userID')
@@ -135,20 +135,20 @@ me.on('delete:before', function (ctxt) {
 function ubaAuditDeleteUserGroup (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
+  const params = ctx.mParams.execParams
 
   let group = ctx.mParams.delGroupID
   if (group) {
-    let obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', group).select()
+    const obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', group).select()
     group = obj.eof ? group : obj.get('name')
   }
   let user = ctx.mParams.delUserID
   if (user) {
-    let obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', user).select()
+    const obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', user).select()
     user = obj.eof ? user : obj.get('name')
   }
 
-  let auditStore = UB.DataStore('uba_audit')
+  const auditStore = UB.DataStore('uba_audit')
   auditStore.run('insert', {
     execParams: {
       entity: 'uba_usergroup',

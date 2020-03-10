@@ -3,15 +3,18 @@
  * Fill navigation shortcuts for CDN model
  */
 
-var UBA_COMMON = require('@unitybase/uba/modules/uba_common')
+const UBA_COMMON = require('@unitybase/uba/modules/uba_common')
 /**
  * Initial script for create UnityBase Common Dictionaries desktop navigation short-cuts (CDN model)
  * Used by ubcli initialize command
  * @param {ServerSession} session
  */
 module.exports = function (session) {
-  var
-    desktopID; var usersRoleID; var folderID; var lastID; var conn = session.connection
+  let desktopID
+  let usersRoleID
+  let folderID
+  let lastID
+  let conn = session.connection
 
   desktopID = conn.lookup('ubm_desktop', 'ID', { expression: 'code', condition: 'equal', values: { code: 'cdn_desktop' } })
   usersRoleID = UBA_COMMON.ROLES.USER.ID
@@ -74,7 +77,13 @@ module.exports = function (session) {
       caption: 'Regions',
       iconCls: 'fa fa-cloud',
       displayOrder: 10,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'cdn_region', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_region'
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `Regions` shortcut to users role')
@@ -91,7 +100,13 @@ module.exports = function (session) {
       caption: 'Cities',
       iconCls: 'fa fa-group', // 'fa fa-institution' - where is this icon??
       displayOrder: 20,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'cdn_city', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_city'
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `City` shortcut to users role')
@@ -108,7 +123,13 @@ module.exports = function (session) {
       caption: 'Countries',
       iconCls: 'fa fa-flag-o',
       displayOrder: 30,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'cdn_country', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_country'
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `Country` shortcut to users role')
@@ -125,7 +146,13 @@ module.exports = function (session) {
       caption: 'Admin units',
       iconCls: 'fa fa-object-ungroup',
       displayOrder: 40,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'cdn_adminunit', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_adminunit'
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `Admin units` shortcut to users role')
@@ -142,7 +169,13 @@ module.exports = function (session) {
       caption: 'Streets',
       iconCls: 'fas fa-map-signs',
       displayOrder: 50,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'cdn_street', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_street'
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `Streets` shortcut to users role')
@@ -158,7 +191,13 @@ module.exports = function (session) {
       code: 'cdn_regiontype',
       caption: 'Region types',
       displayOrder: 100,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'cdn_regiontype', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_regiontype'
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `Region types` shortcut to users role')
@@ -174,7 +213,13 @@ module.exports = function (session) {
       code: 'cdn_citytype',
       caption: 'City types',
       displayOrder: 110,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'cdn_citytype', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_citytype'
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `City types` shortcut to users role')
@@ -209,11 +254,14 @@ module.exports = function (session) {
       caption: 'Organizations',
       iconCls: 'fa fa-university',
       displayOrder: 10,
-      cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [{ entity: 'cdn_organization',
-          method: 'select',
-          fieldList: ['OKPOCode', 'name', 'fullName', 'description', 'orgBusinessTypeID.name', 'orgOwnershipTypeID.name']
-        }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_organization',
+          columns: ['OKPOCode', 'name', 'fullName', 'description', 'orgBusinessTypeID.name', 'orgOwnershipTypeID.name']
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `Organizations` shortcut to users role')
@@ -230,11 +278,14 @@ module.exports = function (session) {
       caption: 'Employee',
       iconCls: 'fa fa-briefcase',
       displayOrder: 20,
-      cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [{ entity: 'cdn_employee',
-          method: 'select',
-          fieldList: ['ID', 'lastName', 'firstName', 'middleName', 'sexType', 'uniqNum', 'organizationID.name', 'departmentID.name']
-        }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_employee',
+          columns: ['ID', 'lastName', 'firstName', 'middleName', 'sexType', 'uniqNum', 'organizationID.name', 'departmentID.name']
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `Employee` shortcut to users role')
@@ -251,11 +302,14 @@ module.exports = function (session) {
       caption: 'Departments',
       iconCls: 'fa fa-cubes',
       displayOrder: 30,
-      cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [{ entity: 'cdn_department',
-          method: 'select',
-          fieldList: ['ID', 'code', 'name', 'fullName', 'depTypeID', 'organizationID.name']
-        }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_department',
+          columns: ['ID', 'code', 'name', 'fullName', 'depTypeID', 'organizationID.name']
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `Departments` shortcut to users role')
@@ -272,11 +326,14 @@ module.exports = function (session) {
       caption: 'Persons',
       iconCls: 'fa fa-male',
       displayOrder: 40,
-      cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [{ entity: 'cdn_person',
-          method: 'select',
-          fieldList: ['lastName', 'firstName', 'middleName', 'birthDate', 'description']
-        }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_person',
+          columns: ['lastName', 'firstName', 'middleName', 'birthDate', 'description']
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `Persons` shortcut to users role')
@@ -293,11 +350,13 @@ module.exports = function (session) {
       caption: 'Banks',
       iconCls: 'fas fa-hand-holding-usd',
       displayOrder: 40,
-      cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [{ entity: 'cdn_bank',
-          method: 'select',
-          fieldList: '*'
-        }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_bank'
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `Banks` shortcut to users role')
@@ -334,11 +393,18 @@ module.exports = function (session) {
       caption: 'Currency',
       iconCls: 'fa fa-usd',
       displayOrder: 10,
-      cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [{ entity: 'cdn_currency',
-          method: 'select',
-          fieldList: ['intCode', 'code3', 'name']
-        }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_currency',
+          columns: [
+            { id: 'intCode', maxWidth: '60' },
+            { id: 'code3', maxWidth: '70' },
+            'name', 'description'
+          ]
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `Currency` shortcut to users role')
@@ -355,11 +421,13 @@ module.exports = function (session) {
       caption: 'Languages',
       iconCls: 'fa fa-language',
       displayOrder: 20,
-      cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [{ entity: 'cdn_language',
-          method: 'select',
-          fieldList: '*'
-        }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_language'
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `Languages` shortcut to users role')
@@ -376,11 +444,13 @@ module.exports = function (session) {
       caption: 'Classifiers',
       iconCls: 'fa fa-tags',
       displayOrder: 30,
-      cmdCode: JSON.stringify({ cmdType: 'showList',
-        cmdData: { params: [{ entity: 'cdn_classifier',
-          method: 'select',
-          fieldList: '*'
-        }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'cdn_classifier'
+        }
+      }, null, '\t')
     }
   })
   console.info('\t\tprovide rights for `Classifiers` shortcut to users role')

@@ -23,11 +23,9 @@ module.exports = linkStatic
 module.exports.shortDoc = 'Create folder with static asserts'
 
 function linkStatic (cfg) {
-  let session, conn
-
   console.time('Generate documentation')
   if (!cfg) {
-    let opts = options.describe('linkStatic',
+    const opts = options.describe('linkStatic',
       `Create folder with static asserts. Such folder can be used by nginx
 as drop-in replacement to /clientRequire and /models endpoints`,
       'ubcli'
@@ -49,29 +47,29 @@ as drop-in replacement to /clientRequire and /models endpoints`,
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
-  session = argv.establishConnectionFromCmdLineAttributes(cfg)
-  conn = session.connection
-  let cfgFN = argv.getConfigFileName()
-  let ubCfg = argv.getServerConfiguration()
+  const session = argv.establishConnectionFromCmdLineAttributes(cfg)
+  const conn = session.connection
+  const cfgFN = argv.getConfigFileName()
+  const ubCfg = argv.getServerConfiguration()
   let target = cfg.target || ubCfg.httpServer.inetPub
   if (!target || (typeof target !== 'string')) {
-    throw new Error(`Target folder is not specified. Either set a "http.inetPub" value in config or pass switch --target path/to/target/folder`)
+    throw new Error('Target folder is not specified. Either set a "http.inetPub" value in config or pass switch --target path/to/target/folder')
   }
   if (!path.isAbsolute(target)) target = path.join(process.cwd(), target)
 
-  let CLIENT_REQUIRE_TARGET_ALIAS = WINDOWS ? '%CRT%' : '$CRT'
-  let NODE_MODULES_SOURCES_ALIAS = WINDOWS ? '%NMS%' : '$NMS'
+  const CLIENT_REQUIRE_TARGET_ALIAS = WINDOWS ? '%CRT%' : '$CRT'
+  const NODE_MODULES_SOURCES_ALIAS = WINDOWS ? '%NMS%' : '$NMS'
   try {
-    let domain = conn.getDomainInfo(true)
-    let domainModels = domain.models
-    let cfgPath = path.dirname(cfgFN)
-    let modulesPath = path.join(cfgPath, 'node_modules')
+    const domain = conn.getDomainInfo(true)
+    const domainModels = domain.models
+    const cfgPath = path.dirname(cfgFN)
+    const modulesPath = path.join(cfgPath, 'node_modules')
     if (!fs.existsSync(modulesPath)) {
       throw new Error(`node_modules folder not found in the folder with app config. Expected "${modulesPath}". May be you miss "npm i" command?`)
     }
-    let tm = fs.readdirSync(modulesPath)
-    let commands = []
-    let clientRequireTarget = path.join(target, 'clientRequire')
+    const tm = fs.readdirSync(modulesPath)
+    const commands = []
+    const clientRequireTarget = path.join(target, 'clientRequire')
     commands.push({
       type: 'comment',
       text: 'Modules for /clientRequire endpoint replacement'
@@ -79,12 +77,12 @@ as drop-in replacement to /clientRequire and /models endpoints`,
     tm.forEach(m => {
       if (m.startsWith('.')) return
       if (m.startsWith('@')) { // namespace
-        let ttm = fs.readdirSync(path.join(modulesPath, m))
+        const ttm = fs.readdirSync(path.join(modulesPath, m))
         commands.push({
           type: 'mkdir',
           to: path.join(CLIENT_REQUIRE_TARGET_ALIAS, m)
         })
-        let L = commands.length
+        const L = commands.length
         ttm.forEach(sm => {
           if (sm.startsWith('.')) return
           tryAddModule(modulesPath, NODE_MODULES_SOURCES_ALIAS, path.join(m, sm), commands, CLIENT_REQUIRE_TARGET_ALIAS)
@@ -99,15 +97,15 @@ as drop-in replacement to /clientRequire and /models endpoints`,
     })
     // process models. In case model is already sym-linked for clientRequire - use a related link
     // TODO - This allow to copy full folder to remote fs
-    let modelsTarget = path.join(clientRequireTarget, 'models')
+    const modelsTarget = path.join(clientRequireTarget, 'models')
     DEBUG && console.log(domainModels)
-    let mNames = Object.keys(domainModels)
+    const mNames = Object.keys(domainModels)
     commands.push({
       type: 'comment',
       text: 'Models for /model endpoint replacement'
     })
     mNames.forEach(mName => {
-      let m = domainModels[mName]
+      const m = domainModels[mName]
       if (!m.packageJSON.config || !m.packageJSON.config.ubmodel || !m.packageJSON.config.ubmodel.name) {
         throw new Error(`package.json config for model ${mName} should contains a section "config": {"ubmodel": {"name":...}`)
       }
@@ -117,7 +115,7 @@ as drop-in replacement to /clientRequire and /models endpoints`,
         DEBUG && console.info(`Skip model ${mName} - no public folder ${rpp}`)
         return
       }
-      let moduleLink = commands.find(c => c.from === rpp)
+      const moduleLink = commands.find(c => c.from === rpp)
       if (moduleLink) {
         commands.push({
           from: moduleLink.to,
@@ -137,20 +135,20 @@ as drop-in replacement to /clientRequire and /models endpoints`,
 
     if (WINDOWS) {
       script = [
-        `@ECHO OFF`,
+        '@ECHO OFF',
         `SET CRT=${clientRequireTarget}`,
         `SET NMS=${modulesPath}`,
-        `RMDIR %CRT% /s /q`, // prevent recursive symlinks
-        `MKDIR %CRT%\\models`
+        'RMDIR %CRT% /s /q', // prevent recursive symlinks
+        'MKDIR %CRT%\\models'
       ]
     } else {
       script = [
         'err() { echo "err"; exit $?; }',
         `CRT=${clientRequireTarget}`,
         `NMS=${modulesPath}`,
-        `rm -rf $CRT`, // prevent recursive symlinks
-        `mkdir -p $CRT`,
-        `mkdir -p $CRT/models`
+        'rm -rf $CRT', // prevent recursive symlinks
+        'mkdir -p $CRT',
+        'mkdir -p $CRT/models'
       ]
     }
 
@@ -178,9 +176,9 @@ as drop-in replacement to /clientRequire and /models endpoints`,
       }
     })
 
-    let favIconTarget = path.join(target, 'favicon.ico')
+    const favIconTarget = path.join(target, 'favicon.ico')
     if (!fs.existsSync(favIconTarget)) {
-      let favIconSrc = path.join(domainModels['UB'].realPublicPath, 'img', 'UBLogo16.ico')
+      const favIconSrc = path.join(domainModels.UB.realPublicPath, 'img', 'UBLogo16.ico')
       script.push(`${COMMENT} no favicon.ico found in target folder - use default favicon`)
       if (WINDOWS) {
         script.push(`MKLINK /H ${favIconTarget} ${favIconSrc}`)
@@ -205,12 +203,12 @@ goto :eof
 :eof
 `)
     } else {
-      script.push(`find -L $CRT -type f -not -path "*/node_modules/*" -not -newermt '1986-01-01' -exec touch -m {} +`)
+      script.push('find -L $CRT -type f -not -path "*/node_modules/*" -not -newermt \'1986-01-01\' -exec touch -m {} +')
     }
 
     // win
     // forfiles /P .\node_modules /S /D -01.01.1986 /C "cmd /c Copy /B @path+,,"
-    let resFn = path.join(process.cwd(), `.linkStatic.${WINDOWS ? 'cmd' : 'sh'}`)
+    const resFn = path.join(process.cwd(), `.linkStatic.${WINDOWS ? 'cmd' : 'sh'}`)
     fs.writeFileSync(resFn, script.join('\n'))
     console.log(`
 
@@ -262,11 +260,11 @@ to link a static`)
  * @param {string} target Target folder
  */
 function tryAddModule (modulesPath, MPT, module, commands, target) {
-  let pPath = path.join(modulesPath, module, 'package.json')
+  const pPath = path.join(modulesPath, module, 'package.json')
   if (!fs.existsSync(pPath)) return
-  let p = require(pPath)
+  const p = require(pPath)
 
-  let hasUbModel = p.config && p.config.ubmodel
+  const hasUbModel = p.config && p.config.ubmodel
   if (!hasUbModel || (hasUbModel && p.config.ubmodel.isPublic)) { // packages without `config.ubmodel` and public packages
     if (!hasUbModel) {
       DEBUG && console.info(`Add common module "${module}"`)
@@ -279,7 +277,7 @@ function tryAddModule (modulesPath, MPT, module, commands, target) {
       to: path.join(target, module)
     })
     if (!hasUbModel) { // add link to module entry point to use in `index .entryPoint.js` nginx directive
-      let pkgEntryPoint = path.join(modulesPath, module, p.main || 'index.js')
+      const pkgEntryPoint = path.join(modulesPath, module, p.main || 'index.js')
       if (fs.existsSync(pkgEntryPoint)) {
         commands.push({
           type: 'file',
@@ -291,7 +289,7 @@ function tryAddModule (modulesPath, MPT, module, commands, target) {
       }
     }
   } else { // packages with `public` folder
-    let pubPath = path.join(modulesPath, module, 'public')
+    const pubPath = path.join(modulesPath, module, 'public')
     if (!fs.existsSync(pubPath)) {
       DEBUG && console.log(`Skip server-side "${module}"`)
       return

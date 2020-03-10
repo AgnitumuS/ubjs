@@ -65,7 +65,7 @@ function orgOnUserLogin () {
   if (!staffs.length) {
     // allow anonymous login only for member of admin group (groupID = 1)
     if (ORG.checkOrgUnitRequired && (Session.uData.roleIDs.indexOf(UBA_COMMON.ROLES.ADMIN.ID) === -1)) {
-      throw new UB.UBAbort('<<<UserWithoutOrgEmployeeNotAllowed>>>. ' + lastError)
+      throw new UB.UBAbort('<<<UserWithoutOrgEmployeeNotAllowed>>>') //  + lastError
     } else {
       // defined by ub model data.employeeShortFIO = ''
       data['orgUnitIDs'] = ''
@@ -145,6 +145,16 @@ function orgOnUserLogin () {
           employeeOnStaffDescription: staff['description']
         })
       }
+    }
+
+    // Query exec groups obtained though all staff member IDs
+    const execGroupIDs = UB.Repository('org_execgroupmember')
+      .attrs('execGroupID')
+      .where('orgUnitID', 'in', allStaffUnitIDsArray)
+      .selectAsObject()
+      .map(gm => gm.execGroupID)
+    if (execGroupIDs.length > 0) {
+      orgUnitIDs = _.union(orgUnitIDs, execGroupIDs)
     }
 
     if (permStaffUnitIDsArray.length > 1) {

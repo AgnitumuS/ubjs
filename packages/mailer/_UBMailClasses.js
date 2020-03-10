@@ -95,11 +95,20 @@ TubMailReceiver.reconnect = function () {}
  */
 
 /**
- * Name of attached file.
- *
- * Optional when kind is File
- *
+ * Name of attached file. Optional when kind is File
  * @property atachName
+ * @type {String}
+ */
+
+/**
+ * Optional contentID of attached file. If contentID is defined for attachment it can be used in mail body
+ * for example to display embedded image as such:
+ *
+ *   const contentID = 'ub-generated-image-1'
+ *   //inside e-mail body
+ *   body = `<img id="footer-logo" src="cid:${contentID}" alt="UB logo" title="UB logo" width="36" height="36" class="image_fix">`
+ *
+ * @property contentID
  * @type {String}
  */
 
@@ -142,7 +151,7 @@ function TubMailSenderBind (paramsObj) {}
  * @param {String} [mailObj.body = ''] mail body. If bodyType is Calendar then valid *.ics file
  * @param {String} [mailObj.fromAddr = ''] sender address
  * @param {Array.<String>} [mailObj.toAddr = []] array of receivers addresses
- * @param {Array.<UBMail.TubMailAttach>} [mailObj.attaches = []] array of attaches. Ignoreg when bodyType is Calendar.
+ * @param {Array.<UBMail.TubMailAttach>} [mailObj.attaches = []] array of attaches. Ignored when bodyType is Calendar.
  * @returns {Boolean} True if successfully
  */
 TubMailSenderBind.sendMail = function (mailObj) {}

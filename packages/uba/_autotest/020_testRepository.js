@@ -10,31 +10,29 @@ const argv = require('@unitybase/base').argv
 const TEST_NAME = 'UB.Repository test'
 
 module.exports = function runRepositoryTest (options) {
-  let session, conn
-
   if (!options) {
-    let opts = cmdLineOpt.describe('', TEST_NAME)
+    const opts = cmdLineOpt.describe('', TEST_NAME)
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
 
-  session = argv.establishConnectionFromCmdLineAttributes(options)
-  conn = session.connection
+  const session = argv.establishConnectionFromCmdLineAttributes(options)
+  const conn = session.connection
 
   console.debug('start ' + TEST_NAME)
   testRepository()
 
   function testRepository () {
-    let data, row
-    let repository = conn.Repository('uba_user').attrs([ 'ID', 'name' ]).where('ID', '=', 10)
+    let data
+    const repository = conn.Repository('uba_user').attrs(['ID', 'name']).where('ID', '=', 10)
 
     console.debug('test Repository.selectAsObject')
     data = repository.selectAsObject()
     ok(Array.isArray(data), 'result is array')
-    assert.equal(data.length, 1, 'array on 1 element')
-    ok(typeof data[ 0 ] === 'object', 'element is object')
-    ok((data[ 0 ].ID === 10) && (data[ 0 ].name === 'admin'), 'object is { ID: 10, name: "admin" }')
+    assert.strictEqual(data.length, 1, 'array on 1 element')
+    ok(typeof data[0] === 'object', 'element is object')
+    ok((data[0].ID === 10) && (data[0].name === 'admin'), 'object is { ID: 10, name: "admin" }')
 
     console.debug('test Repository.selectAsArray')
     data = repository.selectAsArray()
@@ -42,10 +40,10 @@ module.exports = function runRepositoryTest (options) {
     ok(data.resultData, 'result have resultData property')
     data = data.resultData.data
     ok(Array.isArray(data), 'result is array')
-    assert.equal(data.length, 1, 'array on 1 element')
-    row = data[ 0 ]
+    assert.strictEqual(data.length, 1, 'array on 1 element')
+    const row = data[0]
     ok(Array.isArray(row), 'element is array')
-    ok((row[ 0 ] === 10) && (row[ 1 ] === 'admin'), 'array is [10, "admin"]')
+    ok((row[0] === 10) && (row[1] === 'admin'), 'array is [10, "admin"]')
     //    data = repository.selectAsArray(true);
     //    ok(data === '[{"entity":"uba_user","method":"select","fieldList":["ID","name"],"resultData":{"fields":["ID","name"],"rowCount": 1, "data":[[10,"admin"]]}}]',
     //        'plain text result is wrong');

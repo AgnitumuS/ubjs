@@ -14,6 +14,84 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.5.2] - 2020-03-09
+## [5.5.1] - 2020-03-04
+### Fixed
+ - Ukrainian No i18n - replace english **i** with Ukrainian
+
+## [5.5.0] - 2020-02-29
+## [5.4.10] - 2020-02-23
+### Changed
+ - `AsyncConnection.query` method will add a method names into post request URL, so calls to `ubql` endpoint will become
+ `POST /ubql?rq=entity1.method1*entity2.method2`. This allow to apply a custom login into reverse proxy level and also simplify
+ a debugging, since all methods are directly visible in the network browser panel
+
+### Fixed
+ - ESLint warnings resolved (mostly about let -> const) 
+
+## [5.4.9] - 2020-02-18
+### Added
+ - SignatureValidationResult: new property `certificate.certificateAsBuffer` - signer certificate in bin format
+ 
+### Changed
+ - i18n messages about certificate registration moved from `adminui-pub` into `ub-pub` to be used inside non-admin UI
+   
+### Fixed
+ - i18n for `useCertificateInfo` (CERT2 auth with user/pwd) should be ... Continue instead of ...Ok
+
+## [5.4.8] - 2020-02-13
+### Fixed
+ - UBConnection.prototype.runTransAsObject will resolves after all possible cache invalidations are finished.
+   This fix `Cannot read property 'data' of undefined` for Vue based forms what based on cached entities  
+
+## [5.4.7] - 2020-02-08
+### Changed
+ - i18n for `UserWithoutOrgEmployeeNotAllowed` is moved from adminui-pub into ub-pub
+ 
+### Fixed
+ - in case text of the exception raised inside server side Session.on('login') event handler is wrapped into <<<>>>
+ ub-pub will translate it and show as any other handled exception. Before this patch `InvalidUserNameOrPassword` always shown.
+ Fix for [UB-1728]
+
+## [5.4.6] - 2020-02-03
+## [5.4.5] - 2020-01-31
+### Added
+ - support for native messages extension in Firefox
+
+## [5.4.4] - 2020-01-17
+### Added
+ - `UB.Reposiroty` fabric function can now accept a UBQL passed in parameter as object while keeping an ability
+ to pass entity code as string
+ 
+ ``` 
+   // serialize Repository into plain java script object (UBQL)
+   const ubql = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a').ubql()
+   // restore Repository from (UBQL)
+   let repo = UB.Repository(ubql)
+ ```
+
+### Fixed
+ - `AsyncConnection.logout` will close loaded private key if any
+  
+## [5.4.3] - 2020-01-11
+### Added
+  - new connection function AsyncConnection.prototype.HMAC_SHA256(secret, data)
+  ```javascript
+  const shaHmacAsSting = UB.connection.HMAC_SHA256('secretKey', 'data for HMAC_SHA256 calculation').toString()
+  // shaHmacAsSting === 'aaa4c3a6d3a8c25cd32f366436af191ac83bc43d8655c15305877afd0975a2bc'
+  ```
+
+### Changed
+ - Negotiate auth schema security improved: use secret returned form `/auth` in `X-UB-Nonce` header to complete Negotiate authentication;
+  UB server must be upgraded to at last 5.17.9  
+ 
+## [5.4.2] - 2020-01-03
+## [5.4.1] - 2020-01-02
+### Changed
+ - remove usage of lodash from inside `UB.format` && `UB.i18n`
+
+### Fixed
  - `AsyncConnection.userLang` will return application default language in case user is not authorised yet (anonymous)
  but appInfo is obtained
 
@@ -62,7 +140,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.3.28] - 2019-11-18
 ### Add
  - translates for iit-sign-web forms
-
 
 ## [5.3.27] - 2019-11-18
 ### Fixed

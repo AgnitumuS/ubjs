@@ -1,5 +1,5 @@
 const bindings = process.binding('worker')
-const {sleep} = process.binding('syNode')
+const { sleep } = process.binding('syNode')
 
 /**
  * Create a worker to execute a script in a dedicated thread.
@@ -56,7 +56,7 @@ function Worker (paramsObj) {
  * @return {*}
  */
 Worker.prototype.getMessage = function () {
-  let mes = bindings.getMessage(this.workerID)
+  const mes = bindings.getMessage(this.workerID)
   if (mes) {
     return JSON.parse(mes)
   } else {
@@ -72,7 +72,7 @@ Worker.prototype.getMessage = function () {
  */
 Worker.prototype.waitMessage = function (timeout, checkEveryMS) {
   let mes
-  let start = Date.now()
+  const start = Date.now()
   if (!checkEveryMS) checkEveryMS = 10
   while ((!(mes = this.getMessage())) && (Date.now() - start < timeout)) {
     sleep(checkEveryMS)

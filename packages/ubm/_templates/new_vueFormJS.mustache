@@ -1,5 +1,5 @@
 ﻿<template>
-<div class="ub-form-container">
+<div class="u-form-layout">
   <u-toolbar />
 
   <u-form-container v-loading="loading">
@@ -21,7 +21,6 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
     title,
     formCode
   })
-    .instance()
     .processing()
     .validation()
     .mount()

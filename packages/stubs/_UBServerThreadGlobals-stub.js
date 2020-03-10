@@ -136,39 +136,46 @@ class EntityNamespace extends EventEmitter {
   }
 }
 
-// TODO - mixin documentation
 /**
  * Mixin. Provide CRUID operations for entity database persistent (ORM) using `ubql` query syntax
  * @mixin
  */
 const mStorage = {
   /**
-   * Read entity data
+   * ORM query for read records
    * @published
    * @param {ubMethodParams} ctx
    * @param {UBQL} ctx.mParams ORM query in UBQL format
    */
   select: function (ctx) {},
   /**
-   * Insert new row to the entity.
+   * New record insertion
    * @published
    * @param {ubMethodParams} ctx
-   * @param {Object|TubList} ctx.mParams.execParams Object keys is entity attributes names, key values is a value to be inserted
+   * @param {object} ctx.mParams Insert method parameters
+   * @param {object} ctx.mParams.execParams Pairs of attributeName: attributeValue to be inserted
+   * @param {array<string>} [ctx.mParams.fieldList] Optional attributes names. Values of this attributes will be returned in result.
+   *   Additional DB query is required to return values, so if caller do not need it better to not pass a fieldList to insert
    */
   insert: function (ctx) {},
   /**
-   * Update data
+   * Update existed record
    * @published
    * @param {ubMethodParams} ctx
-   * @param {Object|TubList} ctx.mParams.execParams Object keys is entity attributes names, key values is a value to be inserted
-   * @param {number} ctx.mParams.execParams.ID element ID to be updated
+   * @param {object} ctx.mParams Update method parameters
+   * @param {Object<string, *>} ctx.mParams.execParams Pairs of attributeName: attributeValue to be updated
+   * @param {number} ctx.mParams.execParams.ID ID of instance we update
+   * @param {array<string>} [ctx.fieldList] Optional attributes names. Values of this attributes will be returned in result.
+   *   Additional DB query is required to return values, so if caller do not need it better to not pass a fieldList to update
    */
   update: function (ctx) {},
   /**
-   * Delete data
+   * Delete record by ID
    * @published
    * @param {ubMethodParams} ctx
-   * @param {number} ctx.mParams.execParams.ID element ID to be deleted
+   * @param {object} ctx.mParams Delete method parameters
+   * @param {object} ctx.mParams.execParams
+   * @param {number} ctx.mParams.execParams.ID Instance ID to be deleted
    */
   delete: function (ctx) {},
   /**
@@ -176,6 +183,7 @@ const mStorage = {
    * Newly created record is not inserted to database. For inserting record to the database `insert` method should be called
    * @published
    * @param {ubMethodParams} ctx
+   * @param {object} [ctx.mParams] Optional values for attributes of new record
    */
   addNew: function (ctx) {}
 }
@@ -206,28 +214,36 @@ const audit = {
  */
 const softLock = {
   /**
-   * Lock entity row. If entity row is not locked then `update` & `delete` operation are not permitted
+   * Lock record. If record is not locked then `update` & `delete` operation are not permitted
    * @published
    * @param {ubMethodParams} ctx
-   * @param {number} ctx.mParams.ID
+   * @param {object} ctx.mParams Method parameters
+   * @param {number} ctx.mParams.ID Record ID to lock
    * @param {string} ctx.mParams.lockType Either 'Temp' or 'Persist'
    */
   lock: function (ctx) {},
   /**
-   * Unlock entity row.
+   * Unlock record
    * @published
    * @param {ubMethodParams} ctx
-   * @param {number} ctx.mParams.ID
+   * @param {object} ctx.mParams Method parameters
+   * @param {number} ctx.mParams.lockID ID of lock to remove
    */
   unlock: function (ctx) {},
   /**
+   * Renew existed lock
    * @published
    * @param {ubMethodParams} ctx
+   * @param {object} ctx.mParams Method parameters
+   * @param {number} ctx.mParams.lockID ID of lock to remove
    */
   renewLock: function (ctx) {},
   /**
+   * Check record is locked
    * @published
    * @param {ubMethodParams} ctx
+   * @param {object} ctx.mParams Method parameters
+   * @param {number} ctx.mParams.ID Record ID
    */
   isLocked: function (ctx) {}
 }
@@ -316,7 +332,7 @@ const fts = {
    */
   fts: function (ctx) {},
   /**
-   * Ce-create entity FTS index
+   * Re-create entity FTS index
    * @published
    * @param {ubMethodParams} ctx
    */
@@ -477,13 +493,31 @@ TubDataStore.generateID = function () {}
  */
 TubDataStore.initialized = false
 /**
+ * Return string representation of Instance in format `[{attr1: value1, attr2: value2},... ]`.
+ * To get a JavaScript object use `getAsJsObject()` method
+ *
+ * @memberOf TubDataStore.prototype
+ * @returns {string}
+ */
+TubDataStore.getAsTextInObjectNotation = function () {}
+/**
  * Return string representation of Instance in format `[{attr1: value1, attr2: value2},... ]`
+ * @deprecated Consider to replace JSON.parse(store.asJSONObject) -> store.getAsJsObject(). getAsJsObject() method return a plain JS object instead of string and 25% faster
  * @member {String} asJSONObject
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.asJSONObject = '[{},{}]'
 /**
+ * Return string representation of Instance in format `[{attr1: value1, attr2: value2},... ]`.
+ * To get a JavaScript object use getAsJsArray() method
+ *
+ * @memberOf TubDataStore.prototype
+ * @returns {string}
+ */
+TubDataStore.getAsTextInArrayNotation = function () {}
+/**
  * Return string representation of Instance in `Array of array` format
+ * @deprecated Consider to replace JSON.parse(store.asJSONOArray) -> store.getAsJsArray(). getAsJsArray() method return a plain JS object instead of string and 25% faster
  * @member {String} asJSONArray
  * @memberOf TubDataStore.prototype
  */
@@ -494,6 +528,18 @@ TubDataStore.asJSONArray = '[[],[]]'
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.asXMLPersistent = '<xml>...</xml>'
+/**
+ * Return JavaScript Object representation of Instance in format `[{attr1: value1, attr2: value2},... ]`
+ * @member {String} getAsJsObject
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.getAsJsObject = function () {}
+/**
+ * Return JavaScript Object representation of Instance in `Array of array` format
+ * @member {String} getAsJsArray
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.getAsJsArray = function () {}
 /**
  * Active dataset name we work with. There is some predefined
  * dataNames - see {@link TubDataStore#DATA_NAMES TubDataStore.DATA_NAMES}

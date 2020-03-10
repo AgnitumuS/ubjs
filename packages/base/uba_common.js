@@ -70,7 +70,7 @@ const ROLES = {
  * @returns {boolean}
  */
 function isSuperUser () {
-  let uID = Session.uData.userID
+  const uID = Session.uData.userID
   return (uID === USERS.ROOT.ID) || (uID === USERS.ADMIN.ID)
 }
 
@@ -114,8 +114,8 @@ module.exports = {
    * @param {ubMethodParams} ctxt
    */
   denyBuildInRoleAssignmentAndAdminsOnlyForAdmins: function (ctxt) {
-    let params = ctxt.mParams.execParams
-    let role = params.roleID
+    const params = ctxt.mParams.execParams
+    const role = params.roleID
 
     if (role === ROLES.EVERYONE.ID) {
       throw new Error(`<<<${ROLES.EVERYONE.ID} pseudo-role is assigned automatically>>>`)

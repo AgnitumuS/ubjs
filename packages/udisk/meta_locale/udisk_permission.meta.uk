@@ -1,0 +1,21 @@
+{
+  "caption": "Права на доступ",
+  "description": "Права на доступ",
+  "attributes": [
+    {
+      "name": "cardID",
+      "caption": "Файл",
+      "description": "Файл"
+    },
+    {
+      "name": "userID",
+      "caption": "Користувач",
+      "description": "Користувач"
+    },
+    {
+      "name": "accessType",
+      "caption": "Тип доступу",
+      "description": "Тип доступу ( owner, read, write, delegate)"
+    }
+  ]
+}

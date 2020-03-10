@@ -35,6 +35,14 @@ UB.i18nExtend({
   msgInvalidPlugin: 'Plugin version is out of date. You have version {0}, but version {1} is required. Automatically update occurs every 2 hours.' +
   ' For manual updating use <a href="update_plugin.html" target="_blank">instruction</a>. ' +
   ' If after updating message remains, please, contact your system administrator.',
+
+  registrationPassed: 'Your certificate has been successfully uploaded and passed to the processing',
+  keyAlreadyRegisteredForUser: 'Key is already registered for another user',
+  keyBlockedByAdmin: 'Key for entering the system was blocked by system administrator. Blocking reason: ',
+  keyNoRightsRejected: 'User cannot permissions to entering the system. Request for registration of key denied.',
+  keyNoRightsRepeat: 'User do no have permissions to entering the system. Request for reminding registration of key in consideration state.',
+  keyAlreadyRegistered: 'Unable to send request registration of key. Current key is already registered in system.',
+
   keyDeviseType: 'Device type',
   keyFile: 'Private key',
   keyDevise: 'Device name',
@@ -61,12 +69,14 @@ UB.i18nExtend({
   msgInvalidCertAuth: 'Invalid certificate or private key',
   msgInvalidUBAuth: 'Access denied. Invalid user name or password',
   ubErrElsInvalidUserOrPwd: 'Access deny. Check login name and password.',
+  UserWithoutOrgEmployeeNotAllowed: 'Login for user without corresponding employee on staff not allowed',
 
   'Access deny': 'You do not have rights to perform this operation',
   ERR_REFERENCE_ERROR: 'Unable to perform the operation - element is being used in other entities',
   VALUE_MUST_BE_UNIQUE: 'Unable to perform the operation - specified value must be unique, but is being used in other entities',
   SelectPKAndPassMsg: 'Select a file and fill out the password',
   ReadPkTitle: 'Reading a private key',
+  readPKCanceled: 'Private key load canceled',
   'Select private key file': 'Select private key file',
   'Selected key file': 'Selected key file',
   selectSigningCertificate: 'Select certificate for signing',
@@ -76,7 +86,11 @@ UB.i18nExtend({
     _: 'Signature(s) verification result',
     valid: {
       yes: 'Signature valid',
-      no: 'Signature invalid'
+      no: 'Signature invalid',
+      warnings: {
+        annotations: 'Document contains annotations',
+        signatureNotCoversWholeDocument: 'Signature do not covers whole document'
+      }
     },
     tspValid: {
       yes: 'Time stamp verification',
@@ -134,7 +148,9 @@ UB.i18nExtend({
   NewPassword: 'New password',
   RetypePassword: 'Retype password',
   HowToCreatePassword: 'How to create a good password?',
-  passwordRecommendation: 'Password length should be 6-20 characters. <br > You can use digits, latin characters and symbols: <br >! @ # $ % ^ & * ( ) _ - + : ; , . ',
+  passwordRecommendation: 'Password length should be {0}-20 characters.\n ' +
+    'You can use digits, latin characters and symbols:' +
+    ' ! @ # $ % ^ & * ( ) _ - + : ; , . ',
   passwordsDoNotMatch: 'Passwords do not match',
   passwordChangedSuccessfully: 'Password changed successfully. Please logout to use new password',
 
@@ -144,9 +160,9 @@ UB.i18nExtend({
   'Incorrect old password': 'Incorrect current password',
   'Password is too short': 'New password is too short',
   'Password is too simple': 'New password is too simple',
-  'Password is dictionary word': 'New password cannot be as word from dictionary',
-  'Password matches with login': 'New password matches with login',
-  'Previous password is not allowed': 'New password matches with one of the previous',
+  'Password is dictionary word': 'New password must not be a dictionary word',
+  'Password matches with login': 'Password must not contain username',
+  'Previous password is not allowed': 'New password must not matches with one of the previous',
   logout: 'Logout',
   fieldValidationError: 'Cannot save <b>{0}</b> card.<br > Invalid field',
   blankText: 'This field is required'

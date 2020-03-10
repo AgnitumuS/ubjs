@@ -1,0 +1,51 @@
+{
+  "caption": "Файлҳо",
+  "description": "Файлҳо",
+  "attributes": [
+    {
+      "name": "ownerID",
+      "caption": "Соҳиб",
+      "description": "Соҳиб"
+    },
+    {
+      "name": "isTemporary",
+      "caption": "Муваққатӣ",
+      "description": "Муваққатӣ"
+    },
+    {
+      "name": "fcomment",
+      "caption": "Тавзеҳ",
+      "description": "Тавзеҳ"
+    },
+    {
+      "name": "name",
+      "caption": "Номгуй",
+      "description": "Номгуй"
+    },
+    {
+      "name": "fsize",
+      "caption": "Андоза",
+      "description": "Андоза"
+    },
+    {
+      "name": "contentType",
+      "caption": "Намуд",
+      "description": "Намуд"
+    },
+    {
+      "name": "fileData",
+      "caption": "Файл",
+      "description": "Файл"
+    },
+    {
+      "name": "parentID",
+      "caption": "Ҷувздон",
+      "description": "Ҷувздон"
+    },
+    {
+      "name": "isFolder",
+      "caption": "Ҷувздон",
+      "description": "Ҷувздон"
+    }
+  ]
+}

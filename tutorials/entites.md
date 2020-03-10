@@ -3,18 +3,18 @@
 # Entities (Сущности)
 
 ## Общая информация
-**Сущность (Entity)** - базовая единица доступа к данным платформы UnityBase. Сущность определяет как способ хранения данных, так и поведение(методы). 
- Метаданные сущности могут быть использованы клиентскими приложениями для построения пользовательского интерфейса.  
+**Сущность (Entity)** - базовая единица доступа к данным платформы UnityBase. Сущность определяет как способ
+хранения данных, так и поведение(методы). Метаданные сущности могут быть использованы клиентскими приложениями для
+построения пользовательского интерфейса.  
 
- В клиент-серверной архитектуре ближайшая аналогия сущности - view в базе данных с триггерами на вставку/обновление/удаление записей. В OOP - класс, реализующий ORM.
+В клиент-серверной архитектуре ближайшая аналогия сущности - view в базе данных с триггерами на вставку/обновление/удаление записей.
+В OOP - класс, реализующий ORM.
  
 С точки зрения разработчика сущность - это:
- 
  - файл в формате [JSON] с расширением `.meta` (метафайл), описывающий сущность и её атрибуты 
  - опционально, файл с таким же именем, но расширением `.js`, описывающий дополнительно поведение (методы) сущности на языке JavaScript  
 
-Используя метафайл, UnityBase может: 
-  
+Используя метафайл, UnityBase может:  
   - сгенерировать скрипт на создание таблицы в целевой БД для хранениея данных сущности (если таблица уже есть - скрипт на модификацию)
   - сгеренировать инструкции SQL для выборки/вставки/удаления/добавления данных
   - сгенерировать базовый пользовательский интерфейс справочника (грида) и формы редактирования записи
@@ -23,37 +23,38 @@
    
 Пример метафайла __film_film.meta__: 
 
-        {
-        	"caption" : "Кинофильм",
-        	"description" : "Конифильмы",
-            "documentation": "Хранит все зарегистрированные кинофильмы",
-        	"descriptionAttribute" : "title",	
-        	"attributes" : {
-        	    "IMDB": {
-        	        "dataType": "String",
-                    "size": 12,
-                    "caption": "IMDB",
-                    "description" : "Идентификатор IMDB",
-                    "documentation": "Internet Movie Database (IMDb) идентификатор может быть использован для получения дополнительной информации о фильме через API www.omdbapi.com"
-                    "allowNull" : false,
-                    "isUnique": true    
-        	    },
-        		"title":
-        		{
-        			"dataType" : "String",
-        			"size" : 100,
-        			"caption" : "Название",
-        			"description" : "Название кинофильма",
-        			"allowNull" : false
-        		}
-        	},
-        	"mixins" : {
-        		"mStorage" : {
-        			"simpleAudit": true,
-        			"safeDelete": true 
-        		}
-        	}
+```json
+{
+    "caption" : "Кинофильм",
+    "description" : "Конифильмы",
+    "documentation": "Хранит все зарегистрированные кинофильмы",
+    "descriptionAttribute" : "title",	
+    "attributes" : {
+        "IMDB": {
+            "dataType": "String",
+            "size": 12,
+            "caption": "IMDB",
+            "description" : "Идентификатор IMDB",
+            "documentation": "Internet Movie Database (IMDb) идентификатор может быть использован для получения дополнительной информации о фильме через API www.omdbapi.com"
+            "allowNull" : false,
+            "isUnique": true    
+        },
+        "title": {
+            "dataType" : "String",
+            "size" : 100,
+            "caption" : "Название",
+            "description" : "Название кинофильма",
+            "allowNull" : false
         }
+    },
+    "mixins" : {
+        "mStorage" : {
+            "simpleAudit": true,
+            "safeDelete": true 
+        }
+    }
+}
+```
 
 В данном метафайле мы описали сущность `кинофильм` с кодом `film_film`, у которой есть два атрибута: "Идентификатор IMDB" и "Название".   
 
@@ -67,18 +68,18 @@
 UnityBase содержит ряд готовых методов, решающих наиболее часто встречающиеся задачи. Реализация методов находится в **Миксинах**.
 Разработчик может добавить свои методы к сущности либо перекрыть методы, добавленные миксинами.
      
-В примере выше для сущности `film_film` мы подключили миксин `mStorage`. Собственно он добавил для нашей сущности методы для [CRUID операций](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete).
+В примере выше для сущности `film_film` мы подключили миксин `mStorage`. Собственно он добавил для нашей сущности
+методы для [CRUID операций](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete).
 
 ### mStorage - Implements CRUID operations with entities (ORM)
 Добавляет методы:
+  - addNew
+  - select 
+  - insert
+  - update 
+  - delete
 
-    - addNew
-    - select 
-    - insert
-    - update 
-    - delete
-
-Implements "Optimistic locking" and "Soft deletion" - check out [mStorage mixin guide](#!/guide/mixin_mstorage) for additional reading.      
+Implements "Optimistic locking" and "Soft deletion" - check out [mStorage mixin guide](tutorial-mixin_mstorage.html) for additional reading.      
     
 ### audit - Аудит уровня записи
 Обеспечивает запись всех низкоуровневых операций `insert`/`update`/`delete` в сущность аудита **ubs_audit**. 
@@ -93,16 +94,16 @@ Grant to `select` method on a entity will allow a user to access all rows of tha
 RLS _supplements_ these with an additional layer of access controls on a per-row basis, so requirements such as 
 "a manager can only view sensitive employee information for those employees who report to them" can be specified and enforced by the ORM.
 
-Check out [Row Level Security Guide](#!/guide/rls) for additional reading.
+Check out [Row Level Security Mixin](tutorial-mixin_rls.html) for additional reading.
 
 ### aclRls - Access Control List Row Level Security (Безопасность уровня записей на базе списков контроля доступа)
 [Access Control List](https://en.wikipedia.org/wiki/Access_control_list) Row Level Security is a commonly used implementation of Row Level Security conception, 
 so we implement it as a mixin and add a client-side features for edit ACL. 
 
- Позволяет задать перечень субъектов, которые имеют доступ к конкретной записи из сущности. Субъектом может выступать произвольная сущность из предметной области. 
+ Позволяет задать перечень субъектов, которые имеют доступ к конкретной записи из сущности.
+Субъектом может выступать произвольная сущность из предметной области. 
   
  Реализует требования вида:
-  
   - дать возможность задать для каждого ярлыка перечень пользователей либо ролей, которым он доступен
   - дать возможность задать для каждого докумнета перечень огранизационных единиц либо пользователей, которым он доступен
   
@@ -110,7 +111,7 @@ so we implement it as a mixin and add a client-side features for edit ACL.
 
 ### als - безопасность уровня атрибутов (Attribute Level Security)
   
-### dataHistory -  Историчность записей
+### dataHistory - Историчность записей
   
 ### unity
    
@@ -120,7 +121,7 @@ so we implement it as a mixin and add a client-side features for edit ACL.
 
 ### softLock - Пессимистические блокировки (Pessimistic locks)
 
-See detailed [pessimistic locking guide](#!/guide/mixins_softlock)
+See detailed [pessimistic locking guide](tutorial-mixins_softlock.html)
 
 ### clobTruncate - Обрезает большие текстовые поля 
    

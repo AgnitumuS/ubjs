@@ -100,7 +100,6 @@ function replaceAutoForms () {
     isModal,
     modalClass: 'ub-dialog__reset-padding'
   })
-    .instance()
     .processing()
     .validation()
     .mount()
@@ -156,7 +155,7 @@ function replaceShowList () {
          * Test if command cfg use old construction with cfg.params as array.
          * In new construction we use 'repository' or 'entityName' params
          */
-        const vueCfgType = cfg.cmdData.hasOwnProperty('repository') || cfg.cmdData.hasOwnProperty('entityName')
+        const vueCfgType = 'repository' in cfg.cmdData || 'entityName' in cfg.cmdData
         if (vueCfgType) {
           mountTableEntity({
             isModal: cfg.isModal,
@@ -204,18 +203,13 @@ function replaceShowList () {
               fieldList.push(field)
             }
           }
-
           mountTableEntity({
             isModal: cfg.isModal,
             tabId: cfg.tabId,
             title: me.title || me.description || me.entity,
             props: {
               repository () {
-                return Object.assign(
-                  UB.Repository(req.entity),
-                  req,
-                  { fieldList }
-                )
+                return UB.Repository(req.entity).attrs(fieldList)
               },
               columns
             }

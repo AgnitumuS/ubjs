@@ -2,7 +2,10 @@
 	"httpServer": {
 		//"externalURL": "http://localhost",
 		//"serverType": "Socket",
-		//"reverseProxy": { "kind": "nginx" },
+//		"reverseProxy": {
+//			"kind": "nginx",
+//			"securityZoneHeader": "X-Sec-Zone"
+//		},
 		"host": "+",
 		"port": "8881",
 		"requestQueueLength": 1000,
@@ -31,8 +34,30 @@
 		"maxRecursionDepth": 32
 	},
 	"security": {
+		"zones": [
+			{
+				"name":  "internal",
+			    "includes": ["10.0.0.1/8"]
+			}
+			/*,{
+				"name": "ukraine",
+				// country-specific subnet masks can be downloaded from https://www.ip2location.com/free/visitor-blocker (use CIDR format)
+				"includes": "#include(./zones_ukraine.json)"
+			}*/
+		],
+//		// EE only
+//		"zonesAuthenticationMethods": [
+//			{
+//				"name": "intr",
+//				"authenticationMethods": ["UB", "Negotiate"]
+//			},
+//			{
+//				"name": "extr",
+//				"authenticationMethods": ["UB", "OpenIDConnect"]
+//			}
+//		],
 		"authenticationMethods": [
-			"UB"//, "Negotiate"//, "UBLDAP"
+			"UB", "Negotiate"//, "UBLDAP"
 		]/*,
 		"ldapCatalogs": [{
 			"name": "SOFTLINE",
@@ -50,6 +75,7 @@
 			"sidebarLogoURL": "/models/ub-pub/img/sidebar-logo.svg",
 			"sidebarLogoBigURL": "/models/ub-pub/img/sidebar-logo-big.svg",
 			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
+			"encryptionImplementation": "/clientRequire/@ub-d/iit-sign-web/dist/iit-sign-web.min.js",
 			"registrationURL": "/models/adminui-vue/views/registration-stub.html",
 			"endpoint": "ubadminui",
 			"vueAutoForms": true,
@@ -93,6 +119,9 @@
 				},
 				{
 					"path": "./node_modules/@unitybase/org"
+				},
+				{
+					"path": "./node_modules/@unitybase/udisk"
 				},
 				{
 					"path": "./node_modules/@unitybase/ub-pub"

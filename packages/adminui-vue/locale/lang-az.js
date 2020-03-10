@@ -149,7 +149,8 @@ UB.i18nExtend({
         from: 'dən',
         to: 'dək',
         valuePlaceholder: 'Tarixi seçin'
-      }
+      },
+      columnPlaceholder: 'Column'
     },
     pagination: {
       outOf: 'dan'
@@ -171,10 +172,17 @@ UB.i18nExtend({
       type: 'Tip',
       uploadDate: 'Yüklənmə tarixi'
     },
-    dropZoneCaption: 'və ya faylları buraya sürükləyin'
+    dropZone: {
+      caption: 'və ya faylları buraya sürükləyin',
+      acceptError: 'Invalid file extension'
+    }
   },
 
   select: {
     valueIsUndefined: 'Qiymət "{0}" obeyktdə tapılmadı "{1}"'
+  },
+
+  tableRegister: {
+    hideDetails: 'Hide details'
   }
 })

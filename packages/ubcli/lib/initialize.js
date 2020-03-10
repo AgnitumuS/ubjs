@@ -17,38 +17,34 @@
 const _ = require('lodash')
 const fs = require('fs')
 const path = require('path')
-const {options, argv} = require('@unitybase/base')
+const { options, argv } = require('@unitybase/base')
 
 module.exports = function initialize (cfg) {
-  let session
-
   if (!cfg) {
-    let opts = options
+    const opts = options
       .describe('initialize', 'Fill domain entities by it initial values using scripts from models `_initialData` folders', 'ubcli')
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
-      .add({short: 'm', long: 'model', param: 'modelName', defaultValue: '*', help: 'Name of model to initialize'})
+      .add({ short: 'm', long: 'model', param: 'modelName', defaultValue: '*', help: 'Name of model to initialize' })
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
   if (cfg.model === '*') cfg.model = ''
 
-  session = argv.establishConnectionFromCmdLineAttributes(cfg)
+  const session = argv.establishConnectionFromCmdLineAttributes(cfg)
 
   try {
-    let oneModel = cfg.model
+    const oneModel = cfg.model
 
-    let configFileName = argv.getConfigFileName()
-    let configDir = path.dirname(configFileName)
-    let config = argv.getServerConfiguration()
-    let appConfig = config.application
-    let domainConfig = appConfig.domain
+    const config = argv.getServerConfiguration()
+    const appConfig = config.application
+    const domainConfig = appConfig.domain
 
     console.info('Scan models `_initialData` folders for initialization scripts')
-    if (!Array.isArray(domainConfig['models'])) {
+    if (!Array.isArray(domainConfig.models)) {
       throw new Error('Domain.models configuration MUST be an array on object')
     }
-    domainConfig['models'].forEach(function (modelConfig) {
-      let folderName = path.join(configDir, modelConfig.path, '_initialData')
+    domainConfig.models.forEach(function (modelConfig) {
+      const folderName = path.join(modelConfig.realPath, '_initialData')
 
       if ((!oneModel || (modelConfig.name === oneModel)) && fs.isDir(folderName)) {
         let files = fs.readdirSync(folderName)
@@ -59,11 +55,11 @@ module.exports = function initialize (cfg) {
           })
         }
         // check localization
-        let localeFolderName = path.join(folderName, 'locale')
+        const localeFolderName = path.join(folderName, 'locale')
         if (fs.isDir(localeFolderName)) {
-          let allLocalefiles = fs.readdirSync(localeFolderName)
+          const allLocalefiles = fs.readdirSync(localeFolderName)
           _.forEach(session.appInfo.supportedLanguages, function (lang) {
-            let langFileRe = new RegExp(lang + '\\^.*\\.js$')
+            const langFileRe = new RegExp(lang + '\\^.*\\.js$')
             files = _.filter(allLocalefiles, (item) => langFileRe.test(item)).sort()
             if (files.length) {
               files.forEach((file) => requireAndRun(localeFolderName, modelConfig.name, file))
@@ -80,7 +76,7 @@ module.exports = function initialize (cfg) {
 
   function requireAndRun (folderName, modelName, file) {
     if (file.charAt(0) !== '_') {
-      let filler = require(path.join(folderName, file))
+      const filler = require(path.join(folderName, file))
       if (typeof filler === 'function') {
         console.info('\tmodel:', modelName, 'file:', file)
         filler(session)

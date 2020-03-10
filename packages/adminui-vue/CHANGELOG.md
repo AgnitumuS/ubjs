@@ -15,6 +15,269 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.10.2] - 2020-03-09
+### Added
+ - `UMasterDetailView` component. Same as UTableEntity but with details grid.
+ - `utils/clickOutside` additional listener to `contextmenu` event
+ - `UDropdownItem`
+   - [Documentation](https://git-pub.intecracy.com/unitybase/ubjs/blob/1ac4a8305d4f16ee525790c52a1938b7081cebad/packages/adminui-vue/components/controls/UDropdown/UDropdownItem.vue#L165-301)
+   - Property `preventClose` 
+   - Possibility to nest one in another
+ - `UDropdown`
+   - [Documentation](https://git-pub.intecracy.com/unitybase/ubjs/blob/1ac4a8305d4f16ee525790c52a1938b7081cebad/packages/adminui-vue/components/controls/UDropdown/UDropdown.vue#L260-309)
+   - Used [Popper.js](https://popper.js.org/docs/v2/) to correct positioning
+   - Possibility to use `UDropdown` as context menu
+ - `UTableEntity` slots
+   - `toolbarDropdownExports` replace exports button in toolbar dropdown
+   - `contextMenuPrepend` prepend items in context menu
+   - `contextMenu` replace whole context menu
+   - `contextMenuEditRecord` replace action "edit" in context menu
+   - `contextMenuCopy` replace action "copy" in context menu
+   - `contextMenuDelete` replace action "delete" in context menu
+   - `contextMenuLink` replace "copy link" in context menu
+   - `contextMenuAudit` replace "audit" in context menu
+   - `contextMenuDetails` replace "detail records list" in context menu
+   - `contextMenuAppend` append items in context menu
+
+### Changed
+ - `UTableEntity`, `UToolbar`, `UNavbar` and `UNavbarUserButton` used `UDropdown` as context
+  menu instead `UContextMenu` 
+ - `UTable` - event `contextmenu` is renamed to `contextmenu-cell` and emitted with `row` and `colunm` parameters
+ - `lookups/getEnumValue` console.error is removed in case code is null
+ - `UTableEntity` all cell templates except type `Document` are uses `format` function instead
+  of vue templates. This allow to override cell template `format` function in column definition.
+  As before any column can be overwritten by template
+ - `UFile`, document column template and document preview will add fake parameter **_rc=documentRevision** for `getDocument`
+   request to prevent unexpected caching by proxies in case content (together with revision) is changed by server
+ - renamed css classes: 
+   - from `ub-toolbar` to `u-toolbar`
+   - from `ub-toolbar__button` to `u-toolbar__button`
+   - from `ub-navbar` to `u-navbar`
+ 
+### Deprecated
+ - `UTableEntity` props `dateFormat` and `dateTimeFormat`. `format` function in column definition should
+ be used to change date format 
+
+### Removed
+ - `UContextMenu` use `UDropdown` instead
+ - `UDropdown` prop `width`. It will computed automatically
+ - `UDropdownItem` prop `hideOnClick`. Hides on click by default. Can prevented by `preventClose` prop
+
+### Fixed
+ - `USelectMultiple`: fetch displayed values by `valueAttribute` not by `ID` only
+ - prevent `USelectEnum` to show invalid selected item caption in case enum with the same code exists in different eGroup.
+  Internally USelectEnum uses `unclearable` Repository.where() parameter to prevent clearWhereList() to remove
+  filtering by `eGroup`
+ - `UTableEntity` custom column filter renderer. Shows filter for dataType which custom provided by `attribute.dataType`
+  in column definition 
+ - `UTableEntity` show error window in case failed to load data
+ - `UCodeMirror` wrong position of help tooltip
+ - `UTableEntity` prevent keyboard actions - `arrow Up, Down etc.`, `edit`, `delete` 
+   in case table is empty. 
+ - `Form/processing` in case record ID is undefined in DB will show error window and did not open this form
+
+## [1.10.1] - 2020-03-04
+### Fixed
+ - `UTableEntity` error `... .dataType of undefined ...` in case used custom columns
+
+## [1.10.0] - 2020-02-29
+### Fixed
+ - error while opening a multilanguage attribute editor (`truncTimeToUTCNull` will skip such attributes)
+ - `UTableEntity` filters for different columns no more overrides each other
+ - FTS navbar widget will not intercept `Ctrl+F` in case fts is disabled in config and widget is hidden
+ - `UAutoField` remove mistaken added properties for `Text` field, added missing input handler
+ - `UTableEntity` build correct fieldList in case passed `entityName` and columnId is a path to Json attribute
+
+## [1.9.25] - 2020-02-23
+### Removed
+ - usage of BigInteger.js is removed in CERT2 with login/password auth
+ 
+### Fixed
+ - `truncTimeToUTCNull` now called for insert (as for update) and truncate time for attributes of type "Date" into 00:00:00Z as expected by server
+ - `showForm` command can be executed without entity code in case form code is defined and form do not use processing module
+ ```
+ UB.core.UBApp.doCommand({
+   cmdType: 'showForm',
+   formCode: 'uba_user-changeUserPassword',
+   title: 'changePassword',
+   isModal: true
+ })
+```
+
+## [1.9.24] - 2020-02-18
+### Added
+ - re-logon window & ub-auth view: added support for CERT2 auth with user/password in case
+ `uiSetting.adminUI.authenticationCert.requireUserName===true`
+ - new view for CERT2 certificate registration (can be used as registration URL for CERT2 with requireUserName===true)
+ 
+### Changed
+ - hide `Change language` user menu item in case only one language is supported
+
+## [1.9.23] - 2020-02-14
+## [1.9.22] - 2020-02-13
+### Changed
+ - The "collections" property "processing" module now supports not only ability to pass callback `buildRequest`,
+   but also an ability to pass `handleResponse` callback, because, know what?  Custom requests sometimes return custom
+   responses! :)
+   Example where the feature is useful: participants mixin, participants not an ordinary detail,
+   it uses `addParticipant` instead of `insert`, and it return a response, which could not be handled by a standard
+   response handler.  The callback looks like the following
+
+    ```javascript
+      handleResponse ({ commit, collection, response }) {
+        const loadedState = response.resultData
+        for (const loadedItem of loadedState) {
+          const index = collection.items.findIndex(i => i.data.subjectID === loadedItem.subjectID)
+          if (index !== -1) {
+            commit('LOAD_COLLECTION_PARTIAL', {
+              collection: 'participants',
+              index,
+              loadedState: loadedItem
+            })
+          }
+        }
+      }
+    ```
+ - Extended info passed to `buildRequest`, `buildDeleteRequest` and `handlerResponse`
+   callbacks for collections to entire store, not just selected store members like `state` or `state` and `commit`.
+  
+## [1.9.21] - 2020-02-08
+### Changed
+ - UAutoField component will prefer props passed into component over internally defined props. This allow to override anything,
+  for example:
+  ```vue
+    // override default placeholder and label for Date control
+    <u-auto-field attribute-name="docDate" placeholder="overrides placeholder" label="My custom label"/>
+    // use custom repository for Entity attribute
+    <u-auto-field attribute-name="parentID" :repository="getRepo"/>
+  ```
+   
+## [1.9.20] - 2020-02-03
+### Added
+ - `UTableEntity` prop `useRequestFieldList` for replacing result keys with fieldList.
+ Sometimes, server returns result with altered fieldList, like entities with Entity-Attribute-Value mixin
+ (see `@unitybase/forms`).  This property tells UTableEntity control to stick with original fieldList from request,
+ rather than using fieldList from response.
+ - `UTable`, `UTableEntity` possibility to use `column format` function as string 
+ which be called by `new Function` constructor
+
+### Changed
+ - `UTableEntity` in case is set `columns` and `entityName` - `fieldList` will generated automatically by `columns`. 
+ Previously request sent `fieldList` with all available entity attributes.
+ - `UTableEntity` in case is set `repository` without `columns` - `columns` will generated automatically by `fieldList` which filtered by defaultView param. 
+  Previously `columns` was shows **all** attributes from entity with flag defaultView
+ 
+## [1.9.19] - 2020-01-31
+### Added
+ - warning text about silence unhandled exception ignoring in production build is added to unhandled exception message
+   
+### Changed
+ - `FullTextSearch` navbar widget will hide itself in case user do not have access to any of `fts` pseudo-entities.
+ This can be done either by set `application.fts.enabled: false` in ubConfig of by removing the fts
+ connections from connections array
+ - `UNavbarNotificationsButton` navbar widget will hides itself in case `ubs_message.getCached` is not accessible to user 
+
+### Fixed
+ - `USelectEntity` clicking on the arrow now works correctly after enabling/disabling control
+ - `UTableEntity` added localization of "column" placeholder in filtration panel
+ - `UFileInput`: prevent validation error in a case `accept` prop is empty
+ - `USelectEntity` disable `select more` button in case component is read only
+ - `UTableEntity` prevent error in case column attribute not exists in entity
+ - `UCodeMirror` prevent output of error "..split of undefined.." into console (or message in DEV mode )
+   in case value is `null` or `undefined` 
+
+## [1.9.18] - 2020-01-17
+### Added
+ - `UTableEntity`: added `beforeAddNew`callback which will be emitted before addNew
+ - `showList` command supports for cmdData.repository - an ubql object
+ - `UTableEntity` store getter `currentRepository` - returns repository with added filters, sorters, pagination
+   and total requests from state
+ - new actions "export to Excel|HTML|CSV" added to `UTableEntity` toolbar "All actions" menu. Require UB server @5.17.10   
+ - new component `UGrid` container for align form elements into columns - a wrapper for [display: grid;](https://css-tricks.com/snippets/css/complete-guide-grid/).
+ Recommended to use instead of `<el-row> <el-col>`. Usage samples are added into UGrid.vue file
+
+### Changed
+ - `UTableEntity`: all props now reactive. For example changing `entityName` property will cause table to load
+  rerender data and columns using new entity name, e.t.c 
+
+### Fixed
+ - hide selected desktop icon in case sidebar is collapsed
+ - signatureVerificationResult - prevent show `(undefined)` in signature status in case error code is unknown
+ - `UFormRow` - positioning label on top in case css `height !== auto`
+
+## [1.9.17] - 2020-01-11
+### Added
+- `UTable` new param padding for column settings. All cells by default have padding 16px 
+```
+<u-table 
+  :columns="[{ 
+    id: 'color', 
+    padding: 0, 
+    maxWidth: 4px
+  }, {
+    id: 'document'
+  }]" 
+/>
+``` 
+ - `UFileInput` - format validation of dragging files
+- `USelectEnum` prop `clearable`. Adds clear icon, false by default
+
+### Changed
+ - `UTableEntity` column of type `Document`: separate download button from file name
+  to prevent unexpected downloads while user click on file name
+ - `UTableEntity` prop `repository` now can be `ubql` or function which returns `ClientRepository`
+
+### Removed
+ - `UForm.instance()` method is removed (marked as deprecated). Please, remove all .instance() calls on your code
+
+### Fixed
+ - `saveAndClose` action should not close form in case of errors
+ - `UInput`: globe icon should be displayed instead of empty rectangle
+ - `UFormRow`: in case `label-position` is left or right error text should be displayed under input instead of udder label 
+ - `UFormRow` now can be used outside of `UFormContainer`
+ - `UIconPicker`: added border radius
+ - SignatureVerificationResult component: display a signing time as hours:minutes (instead of hours:month) 
+ - `UTableEntity` resets the filter value when a column changes
+ - `UTableEntity` impossible to select a condition 'contains' in filter for column with type entity
+
+## [1.9.16] - 2020-01-03
+### Added
+ - SignatureValidationResult.warnings attribute added
+ - FontAwesome5 Free regular icon set added (far prefix)
+
+### Changed
+ - UIconPicker will try to use a prepared list of available FontAwesome5 Free icons
+
+## [1.9.15] - 2020-01-03
+### Added
+ - default slot for UAutoField. Can hold content what renders in the same u-form-row
+ ``` vue
+   <u-auto-field attribute-name="SQL">
+     <div class="u-form-row__description">
+       {{ this.entitySchema.attr('SQL').description }}
+     </div>
+   </u-auto-field>
+ ```
+
+## [1.9.14] - 2020-01-02
+## [1.9.13] - 2020-01-02
+### Added
+ - `USelectEntity`: option's select emits two parameters - (value, option: Object)
+ - `uba_user-changeUserPassword-fm.vue` - changed form ExtJS to vue for changing user password
+ - OpenIDConnect authorization support for adminui-vue
+ - `UFormRow`, `UFormContainer` prop `maxWidth`. Sets max width of row
+ - `UToolbarButton`: added $ut to provide just string to tooltip prop
+
+### Changed
+ - **BREAKING** `UIconPicker`: removed the <u-form-row> wrapper, renamed classes to more general ones,
+   changed the icon selection emitting event from 'select' to 'change'
+ - **BREAKING** renamed class from `ub-form-container` to `u-form-layout`. Because there is a component UFormContainer that has nothing to do with the class.
+ - `UFormRow` colors have become more contrast 
+ - `UFormRow` fully refactor component. In case `labelPosition === 'top'` label and error text divide free space
+ - `UAutoForm` by default sets `labelPosition` to `top` and `maxWidth` to `800px`
+ - `UTable` text style changed from bold to regular
+ - `SignatureVerificationResult` view shown in expanded mode in case validationResult array contains one result
+ 
 ## [1.9.12] - 2019-12-30
 ### Added
  - global Vue component `SignatureVerificationResult` - view for `pki().verify`
@@ -37,8 +300,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - show actual text instead of empty <<< >>> in error window in case unhandled rejection message contains <<<text>>>
  - prevent multiple emitting of `input` event in case UInput is of type `number`
+ - `UIconPicker`: entering an icon class manually doesn't drop an error
+ - dynamically update desktops in sidebar on change in `ubm_desktop` form
  - prevent showing of form validation error twice in case user close tab on the unsaved form and validation error occures 
- - `enum` filter template of `UtableEntity` displays the correct locale in the filter list
+ - `enum` filter template of `UtableEntity` displays the correct locale in the filter list 
 
 ## [1.9.10] - 2019-12-20
 ## [1.9.9] - 2019-12-19
@@ -187,8 +452,8 @@ $App.doCommand({
  - `UFileInput` binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
  - `UFile` new property `accept` - optional comma-separated unique “content type specifiers”
  - `UContextMenu` - added prop width
- - Styles which adds `padding: 1em` to `<form>` inside `ub-form-container` class. 
-   So `UFormContainer` will have padding just only if it is a direct descendant of the `ub-form-container`  
+ - Styles which adds `padding: 1em` to `<form>` inside `u-form-layout` class. 
+   So `UFormContainer` will have padding just only if it is a direct descendant of the `u-form-layout`  
  - `USelectEntity` added props `buildShowDictionaryConfig`, `buildEditConfig`, `buildAddNewConfig`. 
    This props can overrides doCommand configs for base actions (edit, addNew, showDictionary). 
    Functions get current config as argument and must return new config.

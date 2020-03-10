@@ -1,12 +1,5 @@
 <template>
-  <el-dropdown
-    ref="dropdown"
-    size="big"
-    class="ub-navbar__dropdown"
-    trigger="click"
-    :hide-on-click="false"
-    @command="dropdownHandler"
-  >
+  <u-dropdown class="u-navbar__dropdown">
     <el-button
       circle
       style="padding: 2px"
@@ -16,105 +9,87 @@
         v-html="svgIcon"
       />
     </el-button>
-    <el-dropdown-menu
-      slot="dropdown"
-      class="ub-navbar__menu-dropdown"
-    >
-      <el-dropdown-item
-        disabled
-      >
-        <i class="fa fa-user" />
-        {{ userName }}
-      </el-dropdown-item>
 
-      <el-dropdown-item v-if="negotiateAvailable">
-        <el-checkbox v-model="silenceKerberosLogin">
+    <template #dropdown>
+      <u-dropdown-item
+        :label="userName"
+        disabled
+        icon="fa fa-user"
+      />
+
+      <u-dropdown-item
+        v-if="negotiateAvailable"
+        prevent-close
+      >
+        <el-checkbox
+          slot="label"
+          v-model="silenceKerberosLogin"
+        >
           {{ $ut('KerberosRememberUserMenu') }}
         </el-checkbox>
-      </el-dropdown-item>
+      </u-dropdown-item>
 
       <slot />
 
-      <el-dropdown-item
-        divided
-        command="hide"
-        @click.native="showSettings"
+      <u-dropdown-item divider />
+
+      <u-dropdown-item
+        label="userSettings"
+        icon="el-icon-setting"
+        @click="showSettings"
+      />
+
+      <u-dropdown-item
+        label="changePassword"
+        icon="fa fa-key"
+        @click="changePassword"
+      />
+
+      <u-dropdown-item divider />
+
+      <u-dropdown-item
+        label="storedData"
+        icon="fa fa-database"
       >
-        <i class="el-icon-setting" />
-        {{ $ut('userSettings') }}
-      </el-dropdown-item>
+        <u-dropdown-item
+          label="clearLocalStore"
+          @click="clearLocalStore"
+        />
+        <u-dropdown-item
+          label="resetGUIToDefault"
+          @click="resetGUIToDefault"
+        />
+      </u-dropdown-item>
 
-      <el-dropdown-item
-        command="hide"
-        @click.native="changePassword"
+      <u-dropdown-item
+        v-if="supportedLanguages.length > 1"
+        label="changeLanguage"
+        icon="fa fa-globe"
       >
-        <i class="fa fa-key" />
-        {{ $ut('changePassword') }}
-      </el-dropdown-item>
-
-      <el-popover
-        ref="storedData"
-        placement="left"
-        trigger="hover"
-        popper-class="ub-navbar__menu-dropdown__popover"
-      >
-        <el-dropdown-item
-          slot="reference"
-          divided
-        >
-          <i class="ub-navbar__dropdown__caret el-icon-caret-left" />
-          <i class="fa fa-database" />
-          {{ $ut('storedData') }}
-        </el-dropdown-item>
-
-        <el-dropdown-item @click.native="clearLocalStore">
-          {{ $ut('clearLocalStore') }}
-        </el-dropdown-item>
-
-        <el-dropdown-item @click.native="resetGUIToDefault">
-          {{ $ut('resetGUIToDefault') }}
-        </el-dropdown-item>
-      </el-popover>
-
-      <el-popover
-        v-if="supportedLanguages.length >= 1"
-        ref="languages"
-        placement="left"
-        trigger="hover"
-        popper-class="ub-navbar__menu-dropdown__popover"
-      >
-        <el-dropdown-item slot="reference">
-          <i class="ub-navbar__dropdown__caret el-icon-caret-left" />
-          <i class="fa fa-globe" />
-          {{ $ut('changeLanguage') }}
-        </el-dropdown-item>
-
-        <el-dropdown-item
+        <u-dropdown-item
           v-for="lang in supportedLanguages"
           :key="lang"
           :disabled="lang === $UB.connection.userLang()"
-          @click.native="changeLang(lang)"
-        >
-          {{ $ut(lang) }}
-        </el-dropdown-item>
-      </el-popover>
+          :label="lang"
+          @click="changeLang(lang)"
+        />
+      </u-dropdown-item>
 
-      <el-dropdown-item
-        divided
-        @click.native="doLogout"
-      >
-        <i class="fa fa-sign-out" />
-        {{ $ut('logout') }}
-      </el-dropdown-item>
-      <el-dropdown-item
-        divider
+      <u-dropdown-item divider />
+
+      <u-dropdown-item
+        label="logout"
+        icon="fa fa-sign-out"
+        @click="doLogout"
+      />
+
+      <u-dropdown-item
         disabled
-      >
-        <i class="fa fa-info" />
-        {{ appVersion }}
-      </el-dropdown-item>
-    </el-dropdown-menu>
-  </el-dropdown>
+        :label="appVersion"
+        icon="fa fa-info"
+      />
+    </template>
+  </u-dropdown>
 </template>
 
 <script>
@@ -126,7 +101,7 @@ export default {
     const negotiateAvailable = this.$UB.connection.authMethods.indexOf('Negotiate') !== -1
     const userName = this.$UB.connection.userData('employeeShortFIO') || this.$UB.connection.userLogin()
     const cfg = this.$UB.connection.appConfig
-    let customVersion = this.$UB.connection.userData('appVersion')
+    const customVersion = this.$UB.connection.userData('appVersion')
     const appVersion = customVersion || `${cfg.serverVersion} / ${cfg.appVersion}`
     return {
       silenceKerberosLogin,
@@ -139,8 +114,7 @@ export default {
     }
   },
 
-  computed: {
-  },
+  computed: {},
 
   watch: {
     silenceKerberosLogin (value) {
@@ -169,14 +143,8 @@ export default {
   },
 
   methods: {
-    dropdownHandler (command) {
-      if (command === 'hide') {
-        this.$refs.dropdown.hide()
-      }
-    },
-
     showSettings () {
-      $App.doCommand({
+      this.$UB.core.UBApp.doCommand({
         cmdType: this.$UB.core.UBCommand.commandType.showForm,
         formCode: 'ubm_desktop-userSettings'
       })
@@ -186,7 +154,6 @@ export default {
       this.$UB.core.UBApp.doCommand({
         cmdType: 'showForm',
         formCode: 'uba_user-changeUserPassword',
-        entity: 'uba_user',
         title: 'changePassword',
         isModal: true
       })
@@ -196,25 +163,24 @@ export default {
       window.localStorage.setItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT, 'true')
 
       if (window.localStorage.getItem('lastAuthType').toLowerCase() !== 'openidconnect') {
-        $App.logout()
+        this.$UB.core.UBApp.logout()
         return
       }
-      let selectedProvider = window.localStorage.getItem('openIDProvider')
+      const selectedProvider = window.localStorage.getItem('openIDProvider')
       if (!selectedProvider) {
-        $App.logout()
+        this.$UB.core.UBApp.logout()
         return
       }
-      $App.dialogYesNo('', 'doYouWantLogoutFromExternalServer').then(choice => {
+      this.$UB.core.UBApp.dialogYesNo('', 'doYouWantLogoutFromExternalServer').then(choice => {
         if (choice) {
-          let url = window.location.origin + '/openIDConnect/' + selectedProvider + '?logout=true'
+          const url = window.location.origin + '/openIDConnect/' + selectedProvider + '?logout=true'
           window.open(url, window.location.origin + 'login', 'toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0')
         }
-        $App.logout()
+        this.$UB.core.UBApp.logout()
       })
     },
 
     async clearLocalStore () {
-      this.$refs.storedData.doClose()
       await this.$UB.connection.cacheClearAll()
       this.$notify({
         title: this.$ut('executed'),
@@ -224,7 +190,6 @@ export default {
     },
 
     resetGUIToDefault () {
-      this.$refs.storedData.doClose()
       this.$UB.core.UBLocalStorageManager.removeUserDataUI()
       this.$notify({
         title: this.$ut('executed'),
@@ -234,7 +199,6 @@ export default {
     },
 
     async changeLang (lang) {
-      this.$refs.languages.doClose()
       const choice = await this.$dialogYesNo('changeLanguage', 'changeLanguageRequireRestart')
       if (choice) {
         await this.$UB.connection.query({
@@ -244,7 +208,7 @@ export default {
         })
 
         window.localStorage.setItem(this.$UB.LDS_KEYS.PREFERRED_LOCALE, lang)
-        $App.logout()
+        this.$UB.core.UBApp.logout()
       }
     }
   }

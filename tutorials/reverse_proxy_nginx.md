@@ -4,8 +4,8 @@
 ![load balance](img/LoadBalancing.png)
 
 Using some kind of [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) 
-in combination with UnityBase application server is MUST HAVE for Socket type UB server (Linux, Windows) and optional
-but strongly recommended for HTTPSys base http server under Windows.
+in combination with UnityBase application server is MUST HAVE for plain socket based HTTP server kind (Linux, Windows) and optional
+but strongly recommended for HTTP.SYS based http server (Windows).
     
 Reverse proxy can be used to:
  - HTTP protocol verification and prevention of protocol level attacks
@@ -130,6 +130,58 @@ Pass `-lb` option for adding load balancer specific settings to nginx config.
 npx ubcli generateNginxCfg -lb
 ```
 
+## Security zones
+UnityBase Enterprise and Defence Editions (starting from version 5.17.10) supports a security zones conception.
+Current implementation depends on [nginx geo module](http://nginx.org/ru/docs/http/ngx_http_geo_module.html)
+
+Setup:
+
+ - insure your nginx compiled with ngx_http_geo_module (`nginx -V`). If not either re-compile nginx or install a
+ full nginx version `sudo apt install nginx-full`
+ - configure a `zonesAuthenticationMethods` and `securityZoneHeader` in ubConfig. Example:
+```
+"httpServer": {
+    "reverseProxy": {
+        "kind": "nginx",
+        "securityZoneHeader": "X-Sec-Zone"
+    },
+    ....
+},
+...
+"security": {
+    "authenticationMethods": ["UB", "Negotiate", "OpenIDConnect"],
+    "zonesAuthenticationMethods": [
+        {
+            "name": "intr",
+            "authenticationMethods": ["UB", "Negotiate"]
+        },
+        {
+            "name": "extr",
+            "authenticationMethods": ["UB", "OpenIDConnect"]
+        }
+    ],
+    ...
+}
+```  
+ - add security zones mapping into nginx application config (usually `ub-proxy.conf`) just before `server` directive.
+ YOUR_EXTERNAL_URL should be replaced by server external url
+ ```
+# Security zones
+geo $YOUR_EXTERNAL_URL_security_zone {
+  default        extr;
+  # proxy          10.0.0.1 # requests from this address will use client IP from X-Forwarded-For header
+  10.8.0.0/16    intr;
+}
+
+server {
+   ....
+   proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+   proxy_set_header    X-Sec-Zone $YOUR_EXTERNAL_URL_security_zone;
+   ... 
+}
+ ``` 
+ 
+ 
 in the generated config adds additional servers inside `upstream` section 
 
 # Tuning operation system for Hi Load HTTP(S)

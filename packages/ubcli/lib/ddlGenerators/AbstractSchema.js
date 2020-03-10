@@ -82,7 +82,7 @@ class TableDefinition {
    * @returns {FieldDefinition}
    */
   addColumn (fieldAttributes) {
-    let fd = new FieldDefinition(fieldAttributes)
+    const fd = new FieldDefinition(fieldAttributes)
     this.columns.push(fd)
     return fd
   }
@@ -92,7 +92,7 @@ class TableDefinition {
    * @return {FieldDefinition}
    */
   columnByName (name) {
-    let u = name.toUpperCase()
+    const u = name.toUpperCase()
     return this.columns.find(c => c._upperName === u)
   }
 
@@ -121,10 +121,10 @@ class TableDefinition {
     obj.indexType = obj.indexType || null
     if (obj.keys && obj.keys.length) obj.keys = obj.keys.map(name => name.toUpperCase())
     if (checkName) {
-      existed = _.findIndex(this.indexes, {_upperName: obj._upperName})
+      existed = _.findIndex(this.indexes, { _upperName: obj._upperName })
     }
     if (existed !== -1) {
-      this.indexes[ existed ] = obj
+      this.indexes[existed] = obj
     } else {
       this.indexes.push(obj)
     }
@@ -136,7 +136,7 @@ class TableDefinition {
    * @return {IndexAttributes}
    */
   indexByName (name) {
-    return _.find(this.indexes, {_upperName: name.toUpperCase()})
+    return _.find(this.indexes, { _upperName: name.toUpperCase() })
   }
 
   /**
@@ -144,8 +144,8 @@ class TableDefinition {
    * @return {Array<IndexAttributes>}
    */
   getIndexesByColumn (column) {
-    let resultIdx = []
-    for (let indexObj of this.indexes) {
+    const resultIdx = []
+    for (const indexObj of this.indexes) {
       if (indexObj.keys.find(c => c === column._upperName)) {
         resultIdx.push(indexObj)
         break
@@ -175,10 +175,10 @@ class TableDefinition {
     let idxIndex = -1
     obj._upperName = obj.name.toUpperCase()
     if (checkName) {
-      idxIndex = _.findIndex(this.foreignKeys, {_upperName: obj._upperName})
+      idxIndex = _.findIndex(this.foreignKeys, { _upperName: obj._upperName })
     }
     if (idxIndex !== -1) {
-      this.foreignKeys[ idxIndex ] = obj
+      this.foreignKeys[idxIndex] = obj
     } else {
       this.foreignKeys.push(obj)
     }
@@ -190,14 +190,14 @@ class TableDefinition {
    * @return {FKAttributes}
    */
   getFKByName (fkName) {
-    return _.find(this.foreignKeys, {_upperName: fkName.toUpperCase()})
+    return _.find(this.foreignKeys, { _upperName: fkName.toUpperCase() })
   }
 
   getFKByColumnName (name) {
-    for (let fkObj of this.foreignKeys) {
-      for (let columnName of fkObj.keys) {
+    for (const fkObj of this.foreignKeys) {
+      for (const columnName of fkObj.keys) {
         if (strIComp(columnName, name)) {
-          return [ fkObj ]
+          return [fkObj]
         }
       }
     }
@@ -211,7 +211,7 @@ class TableDefinition {
       idxIndex = _.findIndex(this.checkConstraints, { _upperName: obj._upperName })
     }
     if (idxIndex !== -1) {
-      this.checkConstraints[ idxIndex ] = obj
+      this.checkConstraints[idxIndex] = obj
     } else {
       this.checkConstraints.push(obj)
     }
@@ -219,16 +219,16 @@ class TableDefinition {
   }
 
   getCheckConstrByName (name) {
-    return _.find(this.checkConstraints, {_upperName: name.toUpperCase()})
+    return _.find(this.checkConstraints, { _upperName: name.toUpperCase() })
   }
 
   addOther (obj) {
-    this.othersNames[ obj.name.toUpperCase() ] = obj
+    this.othersNames[obj.name.toUpperCase()] = obj
     return obj
   }
 
   getOtherByName (name) {
-    return this.othersNames[ name.toUpperCase() ]
+    return this.othersNames[name.toUpperCase()]
   }
 
   existOther (name) {

@@ -15,6 +15,90 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.2] - 2020-03-09
+## [5.4.1] - 2020-03-04
+### Added
+ - user friendly exception in case UB server version < 5.18. 5.18.0 is a minimal version of server for this package version
+
+### Removed
+  - `App.fileChecksum` `App.folderChecksum` `App.resolveStatic` are removed
+  - ubConfig sections `httpServer.headersPostprocessors` and `httpServer.watchFileChanges` are removed
+   
+## [5.4.0] - 2020-02-29
+### Added
+ - **metadata transformation hook**: in case `_hookMetadataTransformation.js` file exists in the root of the model folder it's export
+ will be applied to Domain JSON before Domain is created. This hook allow apply any modifications to metadata (*.meta).
+ Usage example: `apps/autotest/models/TST/_hookMetadataTransformation.js` 
+        
+ - `dataStore.getAsJsObject()` and `dataStore.getAsJsArray()` methods - direct serialization of TubDataStore into JS Object
+ without using `JSON.parse`. This is 20% faster compared to `JSON.parse(dataStore.asJSONObject)`.
+ In case UB server is of version < 5.18.0 new methods will fallback to `JSON.parse(dataStore.asJSONObject)`
+ 
+ For better performance and code readability we recommend to apply following changes to the applications sources:  
+   - `JSON.parse(dataStore.asJSONObject)` -> `dataStore.getAsJsObject()`
+   - `JSON.parse(dataStore.asJSONArray)` -> `dataStore.getAsJsArray()`
+ (the easiest way if to search for all case sensitive occurrences of `asJSON`)
+   
+### Changed
+ - metadata **localization** files can be placed in the **model sub-folder** instead of model folder root.
+ We recommend to name such folders `meta_locale`. In fact now localization files can be even moved into his own model.
+ for example for adding a new `zl` localization new model can be created and all `*.meta.zl` files can be placed where.
+ 
+ - Entity metadata merging: in case **several** descendant model contains entity with the same name as
+  original model they `*.meta` files will be **MERGED** (before this patch only **LAST** model metafile is merged with original metafile).
+ 
+ - metadata **localization** files are merged in the same way as *.meta files (see above)
+  
+ - entity.schema.json: add conditional requirements for dataType field.
+ Now `size` required for dataType=String, associatedEntity for dataType=["Entity", "Many"], etc.
+
+### Deprecated
+ - `TubDataStore.asJSONObject`, `TubDataStore.asJSONArray`
+ 
+### Removed
+ - `onlyOfficeEndpoints` module. Moved to a separate package '@unitybase/only-office'
+ 
+## [5.3.19] - 2020-02-23
+### Added
+ - new method `Session._buildPasswordHash` - create a password hash for login/plainPassword pair. Can be overrated by application
+ to provide a custom hashing mechanism (in current implementation for CERT2/Basic auth only but will be used in UB auth in future)
+  
+## [5.3.18] - 2020-02-18
+### Changed
+ - ubConfig JSON schema: add `simpleCertAuth` parameter description; remove deprecated `novaLib` key 
+
+### Removed
+ - legacy `newUserRegistration` event for Session object is **not emitted**. CERT auth schema what use it is deprecated.
+  CERT2 auth schema do not require this event  
+
+### Fixed
+ - fix JSDoc for UB namespace - mark UB.App as `@property {App} App` instead of `@type {App}` for WebStorm code competition
+
+## [5.3.17] - 2020-02-13
+### Changed
+ - in case @unitybase/ub package installed into different path throw human friendly error
+ instead of `can't redefine non-configurable property "entity"`
+   
+## [5.3.16] - 2020-02-10
+## [5.3.15] - 2020-02-08
+### Changed
+ - improved error message in case getDomainInfo called with invalid userName URL parameter
+
+## [5.3.14] - 2020-02-03
+## [5.3.13] - 2020-01-31
+## [5.3.12] - 2020-01-17
+### Added
+ - new property `Session.zone: string` - security zone. Always empty for SE
+ - new server config parameters `security.zones` and `security.zonesAuthenticationMethods` (UB EE. Ignored in UB SE)
+ - `getAppInfo` endpoint wil return `authMethods` restricted to `security.zonesAuthenticationMethods` (UB EE)  
+ 
+## [5.3.11] - 2020-01-11
+### Added
+ - `App.endpointContext` - an empty object what can be used to store data for a single endpoint execution.
+   Application logic can store here some data what required during single HTTP method call;
+   Starting from UB@5.17.9 server reset `App.endpointContext` to {} after endpoint implementation execution,
+   so in the beginning of execution it's always empty  
+
 ## [5.3.10] - 2019-12-27
 ## [5.3.9] - 2019-12-20
 ### Changed

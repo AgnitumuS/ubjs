@@ -17,15 +17,15 @@ const options = require('@unitybase/base').options
 
 module.exports = function upgradeConfig (cfg) {
   if (!cfg) {
-    let opts = options.describe('upgradeConfig', 'Convert UnityBase config to up-to-date version', 'ubcli')
-      .add({short: 'cfg', long: 'cfg', param: 'oldFormatConfigFileName', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'UnityBase config in old format'})
-      .add({short: 'app', long: 'app', param: 'NameOfApplicationForNewConfig', help: 'For config from version <=1.11 - application name to be converted'})
+    const opts = options.describe('upgradeConfig', 'Convert UnityBase config to up-to-date version', 'ubcli')
+      .add({ short: 'cfg', long: 'cfg', param: 'oldFormatConfigFileName', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'UnityBase config in old format' })
+      .add({ short: 'app', long: 'app', param: 'NameOfApplicationForNewConfig', help: 'For config from version <=1.11 - application name to be converted' })
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
-  let cfgFile = cfg.cfg
+  const cfgFile = cfg.cfg
 
-  let old = require(path.join(process.cwd(), cfgFile))
+  const old = require(path.join(process.cwd(), cfgFile))
   let n
 
   if (old.appConfigs) {
@@ -35,7 +35,7 @@ module.exports = function upgradeConfig (cfg) {
     return
   }
 
-  let oldContent = fs.readFileSync(path.join(process.cwd(), cfgFile), 'utf8')
+  const oldContent = fs.readFileSync(path.join(process.cwd(), cfgFile), 'utf8')
   fs.writeFileSync(path.join(process.cwd(), cfgFile + '.old'), oldContent)
   fs.writeFileSync(path.join(process.cwd(), cfgFile), JSON.stringify(n, null, '\t'))
 }
@@ -47,10 +47,10 @@ module.exports = function upgradeConfig (cfg) {
  * @private
  */
 function namedCollection2Array (namedCollection) {
-  let result = []
+  const result = []
   let item
   _.forEach(namedCollection, function (value, key) {
-    item = {name: key}
+    item = { name: key }
     item = _.defaults(item, value)
     result.push(item)
   })
@@ -58,7 +58,7 @@ function namedCollection2Array (namedCollection) {
 }
 
 function convert110To111 (old) {
-  let n = {
+  const n = {
     httpServer: {
     },
     logging: {
@@ -71,7 +71,7 @@ function convert110To111 (old) {
   n.httpServer.host = old.serverDomainNames
   n.httpServer.port = old.serverPort || '888'
 
-  let oldApps = Object.keys(old.appConfigs)
+  const oldApps = Object.keys(old.appConfigs)
   let appName
 
   if (oldApps.length !== 1) {
@@ -80,7 +80,7 @@ function convert110To111 (old) {
   } else {
     appName = oldApps[0]
   }
-  let oApp = old.appConfigs[appName]
+  const oApp = old.appConfigs[appName]
   if (!oApp) throw new Error('App with name ' + appName + ' not found in old config')
   n.httpServer.path = appName // old config always contain app
   if (old.threadPoolSize) n.httpServer.threadPoolSize = old.threadPoolSize
@@ -216,7 +216,7 @@ function convert110To111 (old) {
     n.uiSettings.adminUI = oApp.UBAppConfig
     n.uiSettings.adminUI.themeName = 'UBGrayTheme'
   } else {
-    n.uiSettings.adminUI = {themeName: 'UBGrayTheme'}
+    n.uiSettings.adminUI = { themeName: 'UBGrayTheme' }
   }
 
   if (old.licenseFilePath) n.licenseFilePath = old.licenseFilePath
@@ -224,4 +224,4 @@ function convert110To111 (old) {
   return n
 }
 
-module.exports.shortDoc = `Tool for converting UB config from v<=1.11 to v1.11`
+module.exports.shortDoc = 'Tool for converting UB config from v<=1.11 to v1.11'

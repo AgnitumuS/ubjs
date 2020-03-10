@@ -15,6 +15,55 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.2] - 2020-03-09
+## [5.4.1] - 2020-03-04
+## [5.4.0] - 2020-02-29
+### Changed
+ - entities localization files (*.meta.??) are moved to `meta_locale` folder
+
+## [5.3.38] - 2020-02-23
+### Changed
+ - currency dictionary shortcut - decrease `code` and `code3` column width
+ - `cdn_orgaccount.bank` marked as **allow null** - IBAN account code already contains bank MFO, so having bank here is not necessary
+ - optimization of account description calculation:
+ in case bank/currency entity is updated but attributes bank.name/currency.code3 is not changed we do nt need to update accounts descriptions  
+ 
+## [5.3.37] - 2020-02-18
+## [5.3.36] - 2020-02-13
+## [5.3.35] - 2020-02-10
+## [5.3.34] - 2020-02-08
+### Removed
+  - `cdn_organization.csv` sample data is removed from CDN package
+
+### Fixed
+ - cdn_classifier form: prevent error with "undefined" classifierID in items parentEntity combobox  
+
+## [5.3.33] - 2020-02-03
+## [5.3.32] - 2020-01-31
+## [5.3.31] - 2020-01-17
+### Added
+ - `cdn_employee-fm` form rewritten to Vue
+ - `cdn_department-fm` form rewritten to Vue
+ - `cdn_organization-fm` form rewritten to Vue
+ - `cdn_person-fm` form rewritten to Vue
+ - `cdn_contact-fm` form rewritten to Vue
+ - `cdn_classifier-fm` form rewritten to Vue
+ - `cdn_classifieritem-fm` form rewritten to Vue
+ - `beforeAddNew`, `contactsRepository` mixins
+
+### Changed
+ - renamed 'Sex' to 'Gender', added full gender name to 'CDN_SEXTYPE' enum
+ - renamed 'Sex' to 'Gender', added full gender name to 'CDN_SEXTYPE'
+ - `cdn_organization` 'OKPOcode' field is required
+ - rewrote `010_create_navshortcuts.js` config for rendering cdn forms on vue
+
+### Fixed
+ - cdn_classifieritem - fix error about non-existed attribute usage inside insert/update
+ - cdn_classifieritem - fix uniqueness constraint for code attribute, not code is unique inside classifier, not globally
+  
+## [5.3.30] - 2020-01-11
+## [5.3.29] - 2020-01-03
+## [5.3.28] - 2020-01-02
 ## [5.3.27] - 2019-12-30
 ## [5.3.26] - 2019-12-27
 ### Added
@@ -32,7 +81,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - navigation shortcuts for Banks and Streets
   
 ## [5.3.17] - 2019-12-04
-## Changed
+### Changed
   - **BREAKING!!!** Classifiers entities renamed, all over the code (navigation, etc)
     - `cdn_classifiertype` => `cdn_classifier`
     - `cdn_classifier` => `cdn_classifieritem`

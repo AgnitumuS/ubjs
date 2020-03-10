@@ -144,6 +144,11 @@
               "expressionType": "Field",
               "expression": "bigintValue"
             }]
+		}, {
+			"name": "staffUnit",
+			"caption": "OrgUnit",
+			"dataType": "Entity",
+			"associatedEntity": "org_unit"
 		}
 	],
 	"mixins": {

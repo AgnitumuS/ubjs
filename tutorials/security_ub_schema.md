@@ -11,7 +11,7 @@ On the UI client enter a `userName` & `password`, after this client must send a 
 ### 1) Request a nonce
 Client call `auth` endpoint passing `userName` as parameter.
 
-    -> GET|POST appName/auth?AUTHTYPE=UB&userName=admin
+    -> GET|POST /auth?AUTHTYPE=UB&userName=admin
 
 Server return a `serverNonce` - one time public key **valid for 5 minutes** in a result field
 
@@ -23,7 +23,7 @@ Server return a `serverNonce` - one time public key **valid for 5 minutes** in a
 Client generate `clientNonce`, calculate hash of his password
 and call auth again, passing as parameters `userName`, `clientNonce` and password hashed with `nonces`.
 
-    -> GET|POST appName/auth?AUTHTYPE=UB&
+    -> GET|POST /auth?AUTHTYPE=UB&
       clientNonce=ffac6401331cce72e82ecfa8dd40c8cb4456098000392da2bac8c41d19b57467&
       password=09561d07211a8ef1d125355bfb5e871028826484a30bde6c98562742d2e9460e
       &userName=admin
@@ -32,7 +32,7 @@ here:
 
     clientNonce = unique string client generate and memorize
     secretWord = sha256('salt' + passwordWhatUserEnterDuringLogin)
-    password=sha256(appName + serverNonce + clientNonce + userName + secretWord)
+    password=sha256('/' + serverNonce + clientNonce + userName + secretWord)
 
 
 Server return `sessionPrivateKey`, used in future request as one of signature part.
@@ -45,6 +45,7 @@ Server return `sessionPrivateKey`, used in future request as one of signature pa
     }
 
 `result` in response is a `sessionPrivateKey`. First part of result before `+` is `clientSessionID`.
+See [UB authorization](tutorial-security.html#ub-authorization) for authorization token calculation.
 
 Consider what neither password, nor password hash not transferred other the wire, so the MIT attack is impossible.
 
@@ -69,8 +70,7 @@ JavaScript implementation:
             params: {
                 AUTHTYPE: authSchema,
                 userName: authParams.login,
-                password: SHA256(appName.toLowerCase() + serverNonce +
-                    clientNonce + authParams.login + pwdHash).toString(),
+                password: SHA256('/' + serverNonce + clientNonce + authParams.login + pwdHash).toString(),
                 clientNonce: clientNonce
             }
         });

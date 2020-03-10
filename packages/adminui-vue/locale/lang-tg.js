@@ -67,7 +67,7 @@ UB.i18nExtend({
     },
     cascader: {
       noMatch: 'Ҳеҷ мувофиқат пайдо нашуд',
-      loading: 'Боргирӣ ',
+      loading: 'Боргирӣ',
       placeholder: 'Интихоб кунед'
     },
     pagination: {
@@ -148,7 +148,8 @@ UB.i18nExtend({
         from: 'from',
         to: 'to',
         valuePlaceholder: 'Select date'
-      }
+      },
+      columnPlaceholder: 'Column'
     },
     pagination: {
       outOf: 'out of'
@@ -170,10 +171,17 @@ UB.i18nExtend({
       type: 'Type',
       uploadDate: 'Upload date'
     },
-    dropZoneCaption: 'or drop files here'
+    dropZone: {
+      caption: 'or drop files here',
+      acceptError: 'Invalid file extension'
+    }
   },
 
   select: {
     valueIsUndefined: 'Value "{0}" not found in entity "{1}"'
+  },
+
+  tableRegister: {
+    hideDetails: 'Hide details'
   }
 })

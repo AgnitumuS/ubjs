@@ -6,6 +6,7 @@ module.exports.default = {
   components: { TstForm },
   data: function () {
     return {
+      txtCode: undefined,
       changePwd: {
         active: true, user: '', oldPwd: '', newPwd: '', newPwd2: '', changedSuccessfully: false, conn: null
       },
@@ -33,6 +34,7 @@ module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, r
 
 <template>
   <el-scrollbar style="height: 100%;">
+    <u-code-mirror v-model="txtCode" valueIsJson></u-code-mirror>
     <tst-form form-size=""></tst-form>
     <hr/>
     <tst-form form-size="mini"></tst-form>

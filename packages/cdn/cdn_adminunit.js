@@ -19,13 +19,13 @@ function beforeUpdate (ctxt) {
 }
 
 function afterUpdate (ctxt) {
-  let execParams = ctxt.mParams.execParams
+  const execParams = ctxt.mParams.execParams
   if (!ctxt.externalCall && ctxt.mParams.cascadeUpdate) {
     return true
   }
 
-  let name = execParams.name
-  let parentAdminUnitID = execParams.parentAdminUnitID
+  const name = execParams.name
+  const parentAdminUnitID = execParams.parentAdminUnitID
   console.debug('name:', name)
   console.debug('parentAdminUnitID:', parentAdminUnitID)
 
@@ -55,11 +55,11 @@ function updateChildCascade (id, caption) {
 }
 
 function updateCaption (ctxt, mode) {
-  let execParams = ctxt.mParams.execParams
+  const execParams = ctxt.mParams.execParams
   if (!ctxt.externalCall && ctxt.mParams.cascadeUpdate) {
     return true
   }
-  let dataStore = ctxt.dataStore
+  const dataStore = ctxt.dataStore
   let name = execParams.name
   let parentAdminUnitID = execParams.parentAdminUnitID
 
@@ -74,7 +74,7 @@ function updateCaption (ctxt, mode) {
     }
 
     if (parentAdminUnitID) {
-      let info = UB.Repository('cdn_adminunit').attrs(['ID', 'name', 'caption']).selectById(parentAdminUnitID)
+      const info = UB.Repository('cdn_adminunit').attrs(['ID', 'name', 'caption']).selectById(parentAdminUnitID)
       execParams.caption = makeCaption(name, info ? info.caption || info.name : null)
     } else {
       execParams.caption = name
@@ -83,7 +83,7 @@ function updateCaption (ctxt, mode) {
 }
 
 function makeCaption (name, parentCaption) {
-  let caption = name + ', ' + (parentCaption || '?')
+  const caption = name + ', ' + (parentCaption || '?')
   return (caption.length >= 1024)
     ? caption.substr(0, 1023)
     : caption

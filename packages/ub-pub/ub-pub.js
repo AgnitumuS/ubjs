@@ -21,7 +21,7 @@ let _globalVueInstance = null
  * Data layer for accessing UnityBase server from Browser or NodeJS
  * @module @unitybase/ub-pub
  */
-let UB = module.exports = {
+const UB = module.exports = {
   /**
    * Return locale-specific resource from it identifier. `localeString` must be:
    *
@@ -322,8 +322,12 @@ conn.then(function(conn){
       if (_globalVueInstance && _globalVueInstance.$i18n) {
         _globalVueInstance.$i18n.locale = conn.userLang()
       }
-      this.Repository = function (entityCode) {
-        return new ClientRepository(conn, entityCode)
+      this.Repository = function (entityCodeOrUBQL) {
+        if (typeof entityCodeOrUBQL === 'string') {
+          return new ClientRepository(conn, entityCodeOrUBQL)
+        } else {
+          return new ClientRepository(conn, '').fromUbql(entityCodeOrUBQL)
+        }
       }
       return conn
     })
@@ -341,10 +345,10 @@ conn.then(function(conn){
    * Create a new instance of repository for a current connection.
    * To be used after connection is created.
    *
-   * @param {String} entityCode The name of the Entity for which the Repository is being created
+   * @param {String|Object} entityCodeOrUBQL The name of the Entity for which the Repository is being created or UBQL
    * @returns {ClientRepository}
    */
-  Repository: function (entityCode) {
+  Repository: function (entityCodeOrUBQL) {
     throw new Error('function defined only after connect()')
   },
   /**
@@ -538,7 +542,7 @@ function addBrowserUnhandledRejectionHandler (UBPub) {
   // for a unhandled rejection in bluebird-q
   if (window.Q && window.Q.getBluebirdPromise) {
     window.Q.onerror = function (error) {
-      window.onerror.apply(UBPub, [ '', '', '', '', error ])
+      window.onerror.apply(UBPub, ['', '', '', '', error])
     }
   }
 
@@ -548,10 +552,10 @@ function addBrowserUnhandledRejectionHandler (UBPub) {
     // action which is currently to log the stack trace to console.warn
     e.preventDefault()
     // NOTE: parameters are properties of the event detail property
-    let reason = e.detail ? e.detail.reason : e.reason
-    let promise = e.detail ? e.detail.promise : e.promise
+    const reason = e.detail ? e.detail.reason : e.reason
+    const promise = e.detail ? e.detail.promise : e.promise
     // See Promise.onPossiblyUnhandledRejection for parameter documentation
-    if (window.onerror) window.onerror.apply(UBPub, [ '', '', '', '', reason ])
+    if (window.onerror) window.onerror.apply(UBPub, ['', '', '', '', reason])
     console.error('UNHANDLED', reason, promise)
   })
 
@@ -575,7 +579,7 @@ function ubGlobalErrorHandler (msg, file, line, column, errorObj) {
     if (file && (/q\.js/.test(file) === false)) {
       detail += 'file: "' + file + '" line: ' + line
     }
-    let strace = errorObj.stack || ''
+    const strace = errorObj.stack || ''
     detail += strace
       .replace(/\?ubver=\w*/g, '').replace(/\?ver=\w*/g, '') // remove any versions
       .replace(/\\n(?!\d)/g, '\n\t') // beatify stack trace

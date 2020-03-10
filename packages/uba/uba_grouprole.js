@@ -21,19 +21,19 @@ me.on('delete:after', ubaAuditDeleteGroupRole)
 function ubaAuditNewGroupRole (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
+  const params = ctx.mParams.execParams
   let role = params.roleID
   let group = params.groupID
   if (role) {
-    let obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', role).select()
+    const obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', role).select()
     role = obj.eof ? role : obj.get('name')
   }
   if (group) {
-    let obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', group).select()
+    const obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', group).select()
     group = obj.eof ? group : obj.get('name')
   }
 
-  let auditStore = UB.DataStore('uba_audit')
+  const auditStore = UB.DataStore('uba_audit')
   auditStore.run('insert', {
     execParams: {
       entity: 'uba_grouprole',
@@ -57,39 +57,39 @@ function ubaAuditNewGroupRole (ctx) {
 function ubaAuditModifyGroupRole (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
-  let actionUser = Session.uData.login
-  let origStore = ctx.dataStore
-  let origName = origStore.currentDataName
+  const params = ctx.mParams.execParams
+  const actionUser = Session.uData.login
+  const origStore = ctx.dataStore
+  const origName = origStore.currentDataName
   let roleNew = params.roleID
   let groupNew = params.groupID
   if (roleNew) {
-    let obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', roleNew).select()
+    const obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', roleNew).select()
     roleNew = obj.eof ? roleNew : obj.get('name')
   }
   if (groupNew) {
-    let obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', groupNew).select()
+    const obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', groupNew).select()
     groupNew = obj.eof ? groupNew : obj.get('name')
   }
 
   let group, role, oldValues
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
-    oldValues = origStore.asJSONObject
+    oldValues = origStore.getAsTextInObjectNotation()
     role = origStore.get('roleID')
     group = origStore.get('groupID')
   } finally {
     origStore.currentDataName = origName
   }
   if (role) {
-    let obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', role).select()
+    const obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', role).select()
     role = obj.eof ? role : obj.get('name')
   }
   if (group) {
-    let obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', group).select()
+    const obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', group).select()
     group = obj.eof ? group : obj.get('name')
   }
-  let auditStore = UB.DataStore('uba_audit')
+  const auditStore = UB.DataStore('uba_audit')
   auditStore.run('insert', {
     execParams: {
       entity: 'uba_grouprole',
@@ -121,9 +121,9 @@ function ubaAuditModifyGroupRole (ctx) {
 
 me.on('delete:before', function (ctxt) {
   if (!App.domainInfo.has('uba_audit')) return
-  let execParams = ctxt.mParams.execParams
+  const execParams = ctxt.mParams.execParams
 
-  let store = UB.Repository('uba_grouprole')
+  const store = UB.Repository('uba_grouprole')
     .attrs(['groupID', 'roleID'])
     .where('[ID]', '=', execParams.ID).select()
   ctxt.mParams.delGroupID = store.get('groupID')
@@ -138,20 +138,20 @@ me.on('delete:before', function (ctxt) {
 function ubaAuditDeleteGroupRole (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
-  let params = ctx.mParams.execParams
+  const params = ctx.mParams.execParams
 
   let role = ctx.mParams.delRoleID
   if (role) {
-    let obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', role).select()
+    const obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', role).select()
     role = obj.eof ? role : obj.get('name')
   }
   let group = ctx.mParams.delGroupID
   if (group) {
-    let obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', group).select()
+    const obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', group).select()
     group = obj.eof ? group : obj.get('name')
   }
 
-  let auditStore = UB.DataStore('uba_audit')
+  const auditStore = UB.DataStore('uba_audit')
   auditStore.run('insert', {
     execParams: {
       entity: 'uba_grouprole',

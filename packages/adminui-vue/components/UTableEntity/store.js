@@ -1,34 +1,20 @@
-/* global $App */
 const Lookups = require('../../utils/lookups.js')
 const UB = require('@unitybase/ub-pub')
 const { Notification: $notify } = require('element-ui')
+const { throttle } = require('throttle-debounce')
 
 /**
- * Generetes store config by component props.
- *
- * @param {function:ClientRepository} repository Function returns ClientRepository
- * @param {CustomRepository.entityName} entityName Entity name
- * @param {array<UTableColumn>} columns Columns config
- * @param {number} pageSize Page size
- * @param {string} dateFormat Date format
- * @param {string} dateTimeFormat DateTime format
- * @param {function(object):object} buildCopyConfig Function must return config for action "copy"
- * @param {function(object):object} buildEditConfig Function must return config for action "edit"
- * @param {function(object):object} buildAddNewConfig Function must return config for action "addNew"
- *
- * @returns {Vuex} Store config
+ * Build store by UTableEntity props
+ * @param {Vue} instance UTableEntity instance
+ * @param {function} instance.getRepository ClientRepository
+ * @param {string} instance.getEntityName Entity name
+ * @param {array<UTableColumn>} instance.getColumns Columns
+ * @param {number} instance.pageSize Pagination page size
+ * @param {function} instance.buildAddNewConfig AddNew config builder
+ * @param {function} instance.buildEditConfig Edit config builder
+ * @param {function} instance.buildCopyConfig Copy config builder
  */
-module.exports = ({
-  repository,
-  entityName,
-  columns,
-  pageSize,
-  dateFormat,
-  dateTimeFormat,
-  buildCopyConfig,
-  buildEditConfig,
-  buildAddNewConfig
-}) => ({
+module.exports = (instance) => ({
   state () {
     return {
       items: [], /* table data */
@@ -53,12 +39,45 @@ module.exports = ({
   },
 
   getters: {
+    // non reactive, returns function
+    /**
+     * Returns a function what returns initial repository passed to UTableEntity
+     * @return {Function<ClientRepository>}
+     */
     repository () {
-      return repository
+      return instance.getRepository
+    },
+
+    /**
+     * Returns repository with added filters, sorters, pagination and total requests from state
+     * @return {ClientRepository}
+     */
+    currentRepository (state, getters) {
+      const repo = getters.repository()
+        .start(state.pageIndex * getters.pageSize)
+        .limit(getters.pageSize + 1)
+
+      if (!repo.fieldList.includes('ID')) {
+        repo.attrs('ID')
+      }
+      if (state.sort) {
+        repo.orderBy(state.sort.column, state.sort.order)
+      }
+
+      for (const filter of state.filters) {
+        for (const { expression, condition, value } of filter.whereList) {
+          repo.where(expression, condition, value)
+        }
+      }
+
+      if (state.withTotal) {
+        repo.withTotal()
+      }
+      return repo
     },
 
     entityName () {
-      return entityName
+      return instance.getEntityName
     },
 
     /**
@@ -88,19 +107,11 @@ module.exports = ({
     },
 
     columns () {
-      return columns
+      return instance.getColumns
     },
 
     pageSize () {
-      return pageSize
-    },
-
-    dateFormat () {
-      return dateFormat
-    },
-
-    dateTimeFormat () {
-      return dateTimeFormat
+      return instance.pageSize
     },
 
     selectedColumn (state, getters) {
@@ -169,54 +180,51 @@ module.exports = ({
   },
 
   actions: {
-    async fetchItems ({ state, getters, commit }) {
-      commit('LOADING', true)
-      const repo = getters.repository()
-        .attrsIf(!getters.repository().fieldList.includes('ID'), 'ID')
-        .start(state.pageIndex * getters.pageSize)
-        .limit(getters.pageSize + 1)
+    fetchItems: throttle(
+      50,
+      async function ({ state, getters, commit }) {
+        commit('LOADING', true)
 
-      if (state.sort) {
-        repo.orderBy(state.sort.column, state.sort.order)
-      }
+        try {
+          const repo = getters.currentRepository
+          const response = await repo.selectAsArray()
 
-      for (const filter of state.filters) {
-        for (const { expression, condition, value } of filter.whereList) {
-          repo.where(expression, condition, value)
+          if (instance.useRequestFieldList) {
+            response.resultData.fields = response.fieldList
+          }
+
+          const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
+
+          const isLastPage = items.length < getters.pageSize
+          commit('LAST_PAGE_INDEX', isLastPage)
+          /* We can get calculate total if this is last page. */
+          if (isLastPage) {
+            commit('TOTAL', state.pageIndex * getters.pageSize + items.length)
+          } else {
+            items.splice(getters.pageSize, 1)
+          }
+
+          if (state.withTotal) {
+            commit('TOTAL', response.total)
+          }
+          /* Filter lookups columns and load it */
+          await Promise.all(
+            getters.columns
+              .filter(c => c.isLookup)
+              .filter(c => c.attribute.dataType === 'Entity' || c.attribute.dataType === 'Many')
+              .map(({ attribute }) => {
+                const entity = attribute.associatedEntity
+                return Lookups.load(entity, attribute.associatedAttr)
+              })
+          )
+          commit('ITEMS', items)
+        } catch (err) {
+          UB.showErrorWindow(err)
+        } finally {
+          commit('LOADING', false)
         }
       }
-
-      if (state.withTotal) {
-        repo.withTotal()
-      }
-      const response = await repo.selectAsArray()
-      const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
-
-      const isLastPage = items.length < getters.pageSize
-      commit('LAST_PAGE_INDEX', isLastPage)
-      /* We can get calculate total if this is last page. */
-      if (isLastPage) {
-        commit('TOTAL', state.pageIndex * getters.pageSize + items.length)
-      } else {
-        items.splice(getters.pageSize, 1)
-      }
-
-      if (state.withTotal) {
-        commit('TOTAL', response.total)
-      }
-      /* Filter lookups columns and load it */
-      await Promise.all(
-        getters.columns
-          .filter(c => c.isLookup)
-          .filter(c => c.attribute.dataType === 'Entity' || c.attribute.dataType === 'Many')
-          .map(({ attribute }) => {
-            const entity = attribute.associatedEntity
-            return Lookups.load(entity, attribute.associatedAttr)
-          })
-      )
-      commit('ITEMS', items)
-      commit('LOADING', false)
-    },
+    ),
 
     async refresh ({ commit, dispatch }) {
       commit('PAGE_INDEX', 0)
@@ -242,7 +250,7 @@ module.exports = ({
     async applyFilter ({ state, getters, commit, dispatch }, { whereList, description }) {
       commit('PAGE_INDEX', 0)
       commit('APPLY_FILTER', {
-        id: state.selectedColumnId,
+        columnId: state.selectedColumnId,
         label: getters.selectedColumn.label,
         description,
         whereList: whereList.map(whereItem => ({
@@ -259,71 +267,83 @@ module.exports = ({
       await dispatch('fetchItems')
     },
 
-    addNew ({ getters }) {
-      const tabId = $App.generateTabId({
+    async addNew ({ getters }) {
+      if (instance.beforeAddNew) {
+        const answer = await instance.beforeAddNew()
+        if (answer === false) {
+          return
+        }
+      }
+      const tabId = UB.core.UBApp.generateTabId({
         entity: getters.entityName,
         formCode: getters.formCode
       })
-      const config = buildAddNewConfig({
+      const config = instance.buildAddNewConfig({
         cmdType: 'showForm',
         entity: getters.entityName,
         formCode: getters.formCode,
-        target: $App.viewport.centralPanel,
+        target: UB.core.UBApp.viewport.centralPanel,
         tabId
       })
-      $App.doCommand(config)
+      UB.core.UBApp.doCommand(config)
     },
 
     editRecord ({ getters }, ID) {
-      const tabId = $App.generateTabId({
+      if (ID === null) return
+
+      const tabId = UB.core.UBApp.generateTabId({
         entity: getters.entityName,
         instanceID: ID,
         formCode: getters.formCode
       })
-      const config = buildEditConfig({
+      const config = instance.buildEditConfig({
         cmdType: 'showForm',
         entity: getters.entityName,
         formCode: getters.formCode,
         instanceID: ID,
-        target: $App.viewport.centralPanel,
+        target: UB.core.UBApp.viewport.centralPanel,
         tabId
       })
-      $App.doCommand(config)
+      UB.core.UBApp.doCommand(config)
     },
 
     async deleteRecord ({ getters }, ID) {
-      const answer = await $App.dialogYesNo('deletionDialogConfirmCaption', 'vyHotiteUdalitSoderzhimoeDocumenta')
+      if (ID === null) return
+
+      const answer = await UB.core.UBApp.dialogYesNo('deletionDialogConfirmCaption', 'vyHotiteUdalitSoderzhimoeDocumenta')
 
       if (answer) {
-        await UB.connection.doDelete({
-          entity: getters.entityName,
-          execParams: { ID }
-        })
+        try {
+          await UB.connection.doDelete({
+            entity: getters.entityName,
+            execParams: { ID }
+          })
+        } catch (err) {
+          UB.showErrorWindow(err)
+          throw new UB.UBAbortError(err)
+        }
         UB.connection.emit(`${getters.entityName}:changed`)
 
-        $notify({
-          type: 'success',
-          message: UB.i18n('recordDeletedSuccessfully')
-        })
+        $notify.success(UB.i18n('recordDeletedSuccessfully'))
       }
     },
 
     copyRecord ({ getters }, ID) {
-      const tabId = $App.generateTabId({
+      const tabId = UB.core.UBApp.generateTabId({
         entity: getters.entityName,
         instanceID: ID,
         formCode: getters.formCode
       })
-      const config = buildCopyConfig({
+      const config = instance.buildCopyConfig({
         cmdType: 'showForm',
         addByCurrent: true,
         entity: getters.entityName,
         formCode: getters.formCode,
         instanceID: ID,
-        target: $App.viewport.centralPanel,
+        target: UB.core.UBApp.viewport.centralPanel,
         tabId
       })
-      $App.doCommand(config)
+      UB.core.UBApp.doCommand(config)
     },
 
     createLink ({ getters }, ID) {
@@ -353,11 +373,11 @@ module.exports = ({
     },
 
     audit ({ getters }, ID) {
-      const tabId = $App.generateTabId({
+      const tabId = UB.core.UBApp.generateTabId({
         entity: getters.entityName,
         instanceID: ID
       })
-      $App.doCommand({
+      UB.core.UBApp.doCommand({
         cmdType: 'showList',
         tabId,
         title: `${UB.i18n('Audit')} (${UB.i18n(getters.entityName)})`,

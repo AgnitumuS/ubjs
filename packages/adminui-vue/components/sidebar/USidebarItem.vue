@@ -22,9 +22,9 @@
       v-for="child in item.children"
       :key="child.ID"
       :item="child"
-      :context-show="contextShow"
       :context-disabled="contextDisabled"
       :level="level+1"
+      @contextmenu="$emit('contextmenu', $event, child)"
     />
   </el-submenu>
 
@@ -32,7 +32,7 @@
     v-else
     :index="String(item.ID)"
     @click="openLink(item)"
-    @contextmenu.native="contextDisabled ? null : contextShow($event, item)"
+    @contextmenu.native="contextDisabled ? null : $emit('contextmenu', $event, item)"
   >
     <div
       :style="{marginLeft}"
@@ -52,7 +52,6 @@ export default {
       default: 1
     },
     item: Object,
-    contextShow: Function,
     contextDisabled: Boolean
   },
 
@@ -76,7 +75,7 @@ export default {
       e.stopPropagation()
       e.preventDefault()
       if (e.target.closest('.el-submenu__title')) {
-        this.contextShow(e, this.item)
+        this.$emit('contextmenu', e, this.item)
       }
     }
   }

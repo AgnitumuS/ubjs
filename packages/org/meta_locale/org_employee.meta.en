@@ -1,0 +1,162 @@
+{
+  "caption": "Employees of internal organizations",
+  "description": "List of employees of internal organizations",
+  "documentation": "This dictionary contains list of departments.  Employee is assigned to staff units in org_employeeonstaff entity",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Employees internal code"
+    },
+    {
+      "name": "userID",
+      "caption": "User",
+      "description": "User login"
+    },
+    {
+      "name": "lastName",
+      "caption": "Last name",
+      "description": "Employee last name"
+    },
+    {
+      "name": "firstName",
+      "caption": "First name",
+      "description": "Employee first name"
+    },
+    {
+      "name": "middleName",
+      "caption": "Middle name",
+      "description": "Employee middle name"
+    },
+    {
+      "name": "birthDate",
+      "caption": "Date of birth",
+      "description": "Date of birth"
+    },
+    {
+      "name": "description",
+      "caption": "Comment",
+      "description": "Comment on employee"
+    },
+    {
+      "name": "sexType",
+      "caption": "Gender",
+      "description": "Employee's gender"
+    },
+    {
+      "name": "suffix",
+      "caption": "Suffix",
+      "description": "Suffix"
+    },
+    {
+      "name": "shortFIO",
+      "caption": "Last name with initials",
+      "description": "Example: Smith J.K."
+    },
+    {
+      "name": "fullFIO",
+      "caption": "Full name",
+      "description": "Example: Smith Jay Key"
+    },
+    {
+      "name": "apply",
+      "caption": "Treatment",
+      "description": "Describes how to treat to this person"
+    },
+    {
+      "name": "lastNameGen",
+      "caption": "Last name in genitive",
+      "description": "Employee last name in genitive case"
+    },
+    {
+      "name": "lastNameDat",
+      "caption": "Last name in dative",
+      "description": "Employee last name in dative case"
+    },
+    {
+      "name": "firstNameGen",
+      "caption": "First name in genitive",
+      "description": "Employee first name in genitive case"
+    },
+    {
+      "name": "firstNameDat",
+      "caption": "First name in dative",
+      "description": "Employee first name in dative case"
+    },
+    {
+      "name": "middleNameGen",
+      "caption": "Middle name in genitive",
+      "description": "Employee middle name in genitive case"
+    },
+    {
+      "name": "middleNameDat",
+      "caption": "Middle name in dative",
+      "description": "Employee middle name in dative case"
+    },
+    {
+      "name": "shortFIOGen",
+      "caption": "Short name in genitive",
+      "description": "Employee short name in genitive case"
+    },
+    {
+      "name": "shortFIODat",
+      "caption": "Short name in dative",
+      "description": "Employee short name in dative case"
+    },
+    {
+      "name": "fullFIOGen",
+      "caption": "Full name in genitive",
+      "description": "Employee full name in genitive case"
+    },
+    {
+      "name": "fullFIODat",
+      "caption": "Full name in dative",
+      "description": "Employee full name in dative case"
+    },
+    {
+      "name": "applyGen",
+      "caption": "Treatment in genitive",
+      "description": "Describes how to treat to this person in genitive case"
+    },
+    {
+      "name": "applyDat",
+      "caption": "Treatment in dative",
+      "description": "Describes how to treat to this person in dative case"
+    },
+    {
+      "name": "facsimile",
+      "caption": "Facsimile",
+      "description": "Employee signature image"
+    },
+    {
+      "name": "lastNameObj",
+      "caption": "Last name in objective",
+      "description": "Employee last name in objective case"
+    },
+    {
+      "name": "firstNameObj",
+      "caption": "First name in objective",
+      "description": "Employee first name in objective case"
+    },
+    {
+      "name": "middleNameObj",
+      "caption": "Middle name in objective",
+      "description": "Employee middle name in objective case"
+    },
+    {
+      "name": "shortFIOObj",
+      "caption": "Short name in objective",
+      "description": "Employee short name in objective case"
+    },
+    {
+      "name": "fullFIOObj",
+      "caption": "Full name in objective",
+      "description": "Employee full name in objective case"
+    },
+    {
+      "name": "applyObj",
+      "caption": "Treatment in objective",
+      "description": "Describes how to treat to this person in objective case"
+    }
+  ]
+}

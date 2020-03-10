@@ -1,42 +1,8 @@
 // @! "do not remove comments below unless you know what you do!"
-// @isDefault "false"
+// @isDefault "true"
 // @entity "ubm_desktop"
 // @model "UBM"
-// @formType "auto"
+// @formType "vue"
 // @caption "Desktop"
 // @description "Desktop"
-exports.formDef = {
-  parentConfig: {
-    layout: { type: 'vbox', align: 'stretch' }
-  },
-  size: {
-    width: 500,
-    height: 500
-  },
-  items: [
-    { attributeName: 'caption' },
-    { attributeName: 'code' },
-    { attributeName: 'isDefault', labelWidth: 200 },
-    { attributeName: 'url' },
-    { attributeName: 'description' },
-    { attributeName: 'iconCls' },
-    {
-      xtype: 'label',
-      style: {
-        color: 'red'
-      },
-      text: 'Warning: Changes to Desktop\'s will be applied to the top navbar after relogon'
-    },
-    {
-      xtype: 'ubdetailgrid',
-      flex: 1,
-      height: 300,
-      entityConfig: {
-        entity: 'ubm_desktop_adm',
-        fieldList: ['instanceID', 'admSubjID']
-      },
-      masterFields: ['ID'],
-      detailFields: ['instanceID']
-    }
-  ]
-}
+

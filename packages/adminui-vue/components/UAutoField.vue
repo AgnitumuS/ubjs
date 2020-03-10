@@ -1,67 +1,3 @@
-<template>
-  <u-form-row
-    :label="label"
-    :required="isRequired"
-    :error="isError"
-    v-bind="$attrs"
-  >
-    <el-checkbox
-      v-if="dataType === 'Boolean'"
-      v-bind="$attrs"
-      v-model="model"
-    />
-    <el-date-picker
-      v-else-if="(dataType === 'Date') || (dataType === 'DateTime')"
-      v-model="model"
-      v-bind="$attrs"
-      :type="dataType.toLowerCase()"
-      :placeholder="$ut(dataType === 'Date' ? 'selectDate' : 'selectDateAndTime')"
-      :picker-options="{ firstDayOfWeek }"
-    />
-    <u-select-enum
-      v-else-if="dataType === 'Enum'"
-      v-model="model"
-      v-bind="$attrs"
-      :e-group="entitySchema.attributes[attributeName].enumGroup"
-    />
-    <u-select-entity
-      v-else-if="dataType === 'Entity'"
-      v-model="model"
-      v-bind="$attrs"
-      :entity-name="associatedEntity"
-    />
-    <u-select-many
-      v-else-if="dataType === 'Many'"
-      v-model="model"
-      v-bind="$attrs"
-      :entity-name="associatedEntity"
-    />
-    <el-input
-      v-else-if="dataType === 'Text'"
-      v-model="model"
-      v-bind="$attrs"
-      type="textarea"
-      :autosize="{ minRows: 3, maxRows: 4 }"
-    />
-    <u-file
-      v-else-if="dataType === 'Document'"
-      v-model="model"
-      v-bind="$attrs"
-      :attribute-name="attributeName"
-    />
-    <u-code-mirror
-      v-else-if="dataType === 'Json'"
-      v-model="model"
-      v-bind="$attrs"
-    />
-    <u-input
-      v-else
-      v-bind="$attrs"
-      :attribute-name="attributeName"
-    />
-  </u-form-row>
-</template>
-
 <script>
 /**
  * Create a form component and validators based on entity attribute type
@@ -133,6 +69,119 @@ export default {
         return momentDay
       }
     }
+  },
+  render: function (h) {
+    let cmp
+    let baseAttrs = { // vue split attrs into attrs and props automatically
+      ...this.$attrs,
+      attributeName: this.attributeName,
+      value: this.model
+    }
+    switch (this.dataType) {
+      case 'Boolean':
+        cmp = h('el-checkbox', {
+          attrs: baseAttrs,
+          on: {
+            change: (value) => {
+              this.model = value
+            }
+          }
+        })
+        break
+      case 'Date':
+      case 'DateTime':
+        cmp = h('el-date-picker', {
+          attrs: {
+            type: this.dataType.toLowerCase(),
+            placeholder: this.$ut(this.dataType === 'Date' ? 'selectDate' : 'selectDateAndTime'),
+            pickerOptions: { firstDayOfWeek: this.firstDayOfWeek },
+            ...baseAttrs
+          },
+          on: {
+            input: (value) => {
+              this.model = value
+            }
+          }
+        })
+        break
+      case 'Enum':
+        cmp = h('u-select-enum', {
+          attrs: {
+            eGroup: this.entitySchema.attributes[this.attributeName].enumGroup,
+            clearable: this.entitySchema.attributes[this.attributeName].allowNull,
+            ...baseAttrs
+          },
+          on: {
+            input: (value) => { this.model = value }
+          }
+        })
+        break
+      case 'Entity':
+        cmp = h('u-select-entity', {
+          attrs: {
+            entityName: this.associatedEntity,
+            ...baseAttrs
+          },
+          on: {
+            input: (value) => { this.model = value }
+          }
+        })
+        break
+      case 'Many':
+        cmp = h('u-select-many', {
+          attrs: {
+            entityName: this.associatedEntity,
+            ...baseAttrs
+          },
+          on: {
+            input: (value) => { this.model = value }
+          }
+        })
+        break
+      case 'Text':
+        cmp = h('el-input', {
+          attrs: {
+            type: 'textarea',
+            autosize: { minRows: 3, maxRows: 4 },
+            ...baseAttrs
+          },
+          on: {
+            input: (value) => { this.model = value }
+          }
+        })
+        break
+      case 'Document':
+        cmp = h('u-file', {
+          attrs: baseAttrs,
+          on: {
+            input: (value) => { this.model = value }
+          }
+        })
+        break
+      case 'Json':
+        cmp = h('u-code-mirror', {
+          attrs: baseAttrs,
+          on: {
+            input: (value) => { this.model = value }
+          }
+        })
+        break
+      default:
+        cmp = h('u-input', {
+          attrs: baseAttrs
+        })
+    }
+    return h('u-form-row',
+      {
+        attrs: {
+          label: this.label,
+          required: this.isRequired,
+          error: this.isError,
+          ...this.$attrs
+        }
+      },
+      [cmp, this.$slots.default]
+    )
   }
 }
 </script>
@@ -140,11 +189,23 @@ export default {
 <docs>
   Create a form component and validators based on entity attribute type
 
-  ### Basic usage:
+  ### Basic usage
 
   ```vue
   <template>
     <u-auto-field attribute-name="code" />
   </template>
+  ```
+
+  ### Default slot
+  Anything you need to render inside u-form-row container can be added as a u-auto-field default slot content.
+  In sample below we output a description for SQL attribute:
+
+  ``` vue
+  <u-auto-field attribute-name="SQL">
+    <div class="u-form-row__description">
+      {{ this.entitySchema.attr('SQL').description }}
+    </div>
+  </u-auto-field>
   ```
 </docs>

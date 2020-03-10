@@ -138,6 +138,12 @@ UB.i18nExtend({
   singOperationInProcess: 'სისტემა ასრულებს სხვა დოკუმენტის ხელმოწერას. სცადეთ მოგვიანებით',
 
   // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
+  NMInstallExtensionFirefox: '<p>To use this application Firefox extension <b>"UBExtension"</b> must be installed.</p> ' +
+    '<p>Follow <a href="https://addons.mozilla.org/addon/ub-extension/" target="_blank">ADD EXTENSION</a> ' +
+    ' to go to the Firefox add-ons</p>' +
+    '<p> At the add-on window click button <b>+Add to Firefox</b></p>' +
+    '<p>Confirm adding a new extension.</p>' +
+    '<p>After installing the extension <b>restart your browser!</b></p>',
   NMInstallExtensionChrome: '<p>To use this application Chrome extension <b>"UBExtension"</b> must be installed.</p> ' +
         '<p>Follow <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">ADD EXTENSION</a> ' +
         ' to go to the Google store</p>' +
@@ -264,8 +270,7 @@ UB.i18nExtend({
   author: 'ავტორი',
   signVerification: 'შესვლის შემოწმება',
   signsInDocument: 'ნიშნები',
-  UserWithoutOrgEmployeeNotAllowed: 'შეამოწმეთ,რომ მომხმარებელს რომელსაც არ აქვს შესაბამისი სტატუსი არ უნდა ქონდეს რეგისტრაციის უფლება',
-  // search form (UBPreFilter)
+
   search: 'არჩევა',
   'Filter by': 'გაფილტრვა',
   filterForm: 'ძიების ფორმა',
@@ -411,14 +416,6 @@ UB.i18nExtend({
   Transformation: 'ტრანსფორმაცია',
 
   showPlanAndFact: 'გეგმის ჩვენება და ფაქტი',
-
-  registrationPassed: 'თქვენი სერტიფიკატი წარმატებით გადმოიწერა და გადამუშავდა',
-  registraionPassed: 'თქვენი სერტიფიკატი წარმატებით გადმოიწერა და გადამუშავდა',
-  keyAlreadyRegisteredForUser: 'გასაღები უკვე რეგისტრირებულია სხვა მომხმარებლისთვის',
-  keyBlockedByAdmin: 'სისტემური ადმინისტრატორის მიერ იყო დაბლოკილი სისტემასში შესვლა. დაბლოკვის მიზეზი: ',
-  keyNoRightsRejected: 'მომხმარებელს არ შეუძლია სისტემაში შესვლა. მოთხოვნაზე უარის თქმა.',
-  keyNoRightsRepeat: 'მომხმარებელს არ აქვს სისტემაში შესვლის უფლება.სისტემაში შესვლის უფლება განიხილება',
-  keyAlreadyRegistered: 'რეგისტრაცია შესაძლებელია.აქტუალური გასაღები უკვე რეგისტრირებულია სისტემის',
 
   'error': 'შეცდომა',
   'detail': 'დეტალი',

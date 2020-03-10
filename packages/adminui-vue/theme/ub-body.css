@@ -6,7 +6,7 @@
   --primary: 66, 183, 115;
   --secondary: 128, 170, 226;
   --danger: 245, 108, 108;
-  --info: 144, 147, 153;
+  --info: 96, 98, 102;
   --info-light: 192, 196, 204;
   --warning: 230, 162, 60;
   --success: 103, 194, 58;
@@ -24,6 +24,8 @@
   --table-header-color: 125, 128, 135;
   --table-selected-row: 245, 252, 248;
   --table-selected-cell: 235, 248, 241;
+  --input-border: 173, 176, 184;
+  --input-placeholder: var(--bg);
 }
 
 ::-webkit-scrollbar {
@@ -102,6 +104,7 @@ html, body {
 
 .ub-code-mirror {
   line-height: 15px;
+  position: relative;
 }
 
 .ub-upload-document__a {
@@ -147,16 +150,36 @@ html, body {
   display: none !important;
 }
 
-.ub-form-container {
+/* Use for stretches the form to the height of available space and does the correct work of scrolling */
+.u-form-layout {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.ub-form-container > form {
+/* Add scroll to direct child u-form-container */
+.u-form-layout > form {
   overflow: auto;
   flex-grow: 1;
   padding: 1em;
+}
+
+/* el-tabs in root vue container will have fixed tab-header and scrollable tab-pane */
+.u-form-layout > form  > .el-tabs {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: auto;
+}
+
+.u-form-layout > form  > .el-tabs .el-tab-pane {
+  overflow: auto;
+  height: 100%;
+}
+
+/* Recommend to use in case 2-3 columns layout  */
+.u-form-max-width {
+  max-width: 1044px;
 }
 
 .ub-dialog__reset-padding .el-dialog__body{

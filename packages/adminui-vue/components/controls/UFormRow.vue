@@ -1,53 +1,40 @@
 <template>
   <label
-    class="ub-form-row"
-    :class="{
-      'ub-form-row__stacked': labelPositionComputed === 'top'
-    }"
+    class="u-form-row"
+    :class="[`u-form-row__${labelPosition}`, {
+      'is-error': error
+    }]"
+    :style="maxWidthCss"
   >
     <div
-      class="ub-form-row__label"
-      :class="[
-        `ub-form-row__label__${labelPositionComputed}`, {
-          required
-        }]"
+      class="u-form-row__label"
+      :class="{ required }"
       :style="labelWidthCss"
       :title="$ut(label)"
     >
       <span>{{ $ut(label) }}</span>
     </div>
-    <div
-      class="ub-form-row__content"
-      :style="contentWidthCss"
-    >
-      <div
-        class="ub-error-wrap"
-        :class="{
-          'is-error': error
-        }"
-      >
-        <slot />
-        <transition name="el-zoom-in-top">
-          <div
-            v-show="error"
-            class="ub-error-wrap__text"
-            :class="{
-              'ub-error-wrap__text__top': labelPositionComputed === 'top'
-            }"
-            :style="errorMessageMarginCss"
-          >
-            {{ errorText }}
-          </div>
-        </transition>
-      </div>
+    <div class="u-form-row__error">
+      <transition name="el-zoom-in-top">
+        <div
+          v-if="error"
+          class="u-form-row__error__text"
+          :title="errorText"
+        >
+          {{ errorText }}
+        </div>
+      </transition>
+    </div>
+    <div class="u-form-row__content">
+      <slot />
     </div>
   </label>
 </template>
 
 <script>
 /**
- * The mixin fixes the problem when, when you click on the arrow in el-select, a dropdown opens and closes immediately
- */
+   * The mixin fixes the problem when, when you click on the arrow in el-select, a dropdown opens and closes immediately
+   */
 const ElSelectHack = {
   data () {
     return {
@@ -58,8 +45,8 @@ const ElSelectHack = {
   mounted () {
     if (
       this.$slots.default &&
-      this.$slots.default[0].componentOptions &&
-      this.$slots.default[0].componentOptions.tag === 'el-select'
+        this.$slots.default[0].componentOptions &&
+        this.$slots.default[0].componentOptions.tag === 'el-select'
     ) {
       this.elSelectRef = this.$slots.default[0].elm
       this.elSelectRef.addEventListener('click', this.onClickSelect)
@@ -80,8 +67,8 @@ const ElSelectHack = {
 }
 
 /**
- * Form row with a label
- */
+   * Form row with a label
+   */
 export default {
   name: 'UFormRow',
 
@@ -108,6 +95,7 @@ export default {
     /**
      * Set label width. If set in wrap `<u-form-container>` component
      * will override be this prop.
+     * Will ignored with labelPosition === 'top'
      */
     labelWidth: {
       type: Number,
@@ -126,38 +114,26 @@ export default {
       default () {
         return this.formLabelPosition || 'left'
       }
+    },
+
+    /**
+     * Max width in px
+     */
+    maxWidth: {
+      type: Number,
+      default () {
+        return this.formMaxWidth
+      }
     }
   },
 
   inject: {
-    formLabelWidth: {
-      from: 'labelWidth',
-      default: false
-    },
-    formLabelPosition: {
-      from: 'labelPosition',
-      default: false
-    }
+    formLabelWidth: { from: 'labelWidth', default: null },
+    formLabelPosition: { from: 'labelPosition', default: null },
+    formMaxWidth: { from: 'maxWidth', default: null }
   },
 
   computed: {
-    labelWidthCss () {
-      return `
-        width: ${this.labelWidth}px;
-        min-width: ${this.labelWidth}px;
-      `
-    },
-
-    labelPositionComputed () {
-      return this.labelPosition
-    },
-
-    errorMessageMarginCss () {
-      return this.labelPositionComputed === 'top'
-        ? ` margin-left: ${this.labelWidth + 6}px`
-        : ''
-    },
-
     errorText () {
       if (this.error) {
         if (typeof this.error === 'boolean') {
@@ -169,130 +145,148 @@ export default {
       return ''
     },
 
-    contentWidthCss () {
-      return this.labelPositionComputed !== 'top'
-        ? `width: calc(100% - ${this.labelWidth}px);`
-        : ''
+    labelWidthCss () {
+      if (this.labelPosition === 'top') {
+        return ''
+      } else {
+        return `
+        width: ${this.labelWidth}px;
+        min-width: ${this.labelWidth}px;
+      `
+      }
+    },
+
+    maxWidthCss () {
+      if (this.maxWidth) {
+        return {
+          maxWidth: this.maxWidth + 'px'
+        }
+      } else {
+        return ''
+      }
     }
   }
 }
 </script>
 
 <style>
-.ub-form-row {
-  display: flex;
-  margin-bottom: 10px;
-}
+  .u-form-row {
+    display: grid;
+    grid-template-areas: 'label error' 'content content';
+    grid-template-rows: auto 1fr;
+    margin-bottom: 10px;
+  }
 
-.ub-form-row__stacked {
-  flex-direction: column;
-}
+  .u-form-row__content {
+    grid-area: content
+  }
 
-.ub-form-row__label {
-  color: rgb(var(--info));
-  white-space: nowrap;
-  padding-right: 8px;
-  padding-top: 7px;
-  display: flex;
-}
+  .u-form-row__label {
+    grid-area: label;
+    color: rgb(var(--info));
+    padding-right: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    align-self: center;
+    display: flex;
+  }
 
-.ub-form-row__label__right {
-  justify-content: flex-end;
-}
+  .u-form-row__label > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-.ub-form-row__label__top {
-  padding-bottom: 5px;
-}
+  .u-form-row__label.required:before {
+    content: '*';
+    color: rgb(var(--danger));
+    margin: 0 2px;
+    order: 1;
+  }
 
-.ub-form-row__label span {
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
+  .u-form-row__label[title]:after {
+    content: ':';
+  }
 
-.ub-form-row__label[title]:after {
-  content: ':';
-}
+  .u-form-row__left,
+  .u-form-row__right {
+    grid-template-columns: auto 1fr;
+    grid-template-areas: 'label content' '... error';
+  }
 
-.ub-form-row__label.required:before {
-  content: '*';
-  color: rgb(var(--danger));
-  margin: 0 2px;
-  order: 1;
-}
+  .u-form-row__left .u-form-row__error,
+  .u-form-row__right .u-form-row__error {
+    text-align: left;
+  }
 
-.ub-form-row__label__right.required:before {
-  order: 2;
-}
+  .u-form-row__error {
+    grid-area: error;
+    text-align: right;
+    color: rgb(var(--danger));
+    white-space: nowrap;
+    overflow: hidden;
+    height: 16px;
+  }
 
-.ub-form-row__content {
-  flex-grow: 1;
-}
+  .u-form-row__error__text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 
-.ub-error-wrap {
-  padding-bottom: 16px;
-  position: relative;
-}
+  .u-form-row.is-error .el-input__inner,
+  .u-form-row.is-error .el-textarea__inner,
+  .u-form-row.is-error .ub-select-multiple__container {
+    border-color: rgb(var(--danger));
+  }
 
-.ub-error-wrap__text {
-  color: rgb(var(--danger));
-  position: absolute;
-  bottom: 0;
-  left: 0;
-}
+  .u-form-row__top .u-form-row__label {
+    padding-bottom: 6px;
+  }
 
-.ub-error-wrap__text__top {
-  bottom: calc(100% + 5px);
-  left: auto;
-  right: 0;
-}
+  .u-form-row__right .u-form-row__label {
+    justify-content: flex-end;
+  }
 
-.ub-error-wrap.is-error .el-input__inner,
-.ub-error-wrap.is-error .el-textarea__inner,
-.ub-error-wrap.is-error .ub-select-multiple__container {
-  border-color: rgb(var(--danger));
-}
-
-.ub-form-row__description {
-  font-size: 12px;
-  margin-top: 5px;
-  color: rgb(var(--info), 0.6);
-}
+  .u-form-row__description {
+    font-size: 12px;
+    margin-top: 5px;
+    color: rgb(var(--info), 0.6);
+  }
 </style>
 
 <docs>
-### Error
+  ### Error
 
-```vue
-<template>
-  <div>
-    <u-form-row
-      required
-      label-position="top"
-      :error="showError"
-      label="temp label"
-    >
-      <el-input />
-    </u-form-row>
+  ```vue
+  <template>
+    <div>
+      <u-form-row
+          required
+          label-position="top"
+          :error="showError"
+          label="temp label"
+      >
+        <el-input/>
+      </u-form-row>
 
-    <el-button-group>
-      <el-button @click="showError = true">
-        Show error
-      </el-button>
-      <el-button @click="showError = false">
-        Hide error
-      </el-button>
-    </el-button-group>
-  </div>
-</template>
+      <el-button-group>
+        <el-button @click="showError = true">
+          Show error
+        </el-button>
+        <el-button @click="showError = false">
+          Hide error
+        </el-button>
+      </el-button-group>
+    </div>
+  </template>
 
-<script>
-export default {
-  data () {
-    return {
-      showError: true
+  <script>
+    export default {
+      data () {
+        return {
+          showError: true
+        }
+      }
     }
-  }
-}
-</script>
-```
+  </script>
+  ```
 </docs>

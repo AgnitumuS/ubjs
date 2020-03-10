@@ -10,7 +10,6 @@ UB.i18nExtend({
   employee_title: "Кормандони ташкилотҳои беруна ",
   profession_title: "Касб",
   region_title: "Ноҳия",
-
   'ClassifTypePanelClassifiersTitle': 'Арзишҳои таснифшуда',
 
   // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.

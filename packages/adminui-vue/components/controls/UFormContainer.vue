@@ -20,34 +20,42 @@ export default {
 
   props: {
     /**
-       * Set label width to child `<u-form-row>`'s
-       * Can be override by same prop in `u-form-row`
-       */
+     * Set label width to child `<u-form-row>`'s
+     * Can be override by same prop in `u-form-row`.
+     * Will ignored with labelPosition === 'top'
+     */
     labelWidth: {
       type: Number,
       default: 120
     },
     /**
-       * Set label position to child `<u-form-row>`'s
-       * Can be override by same prop in `u-form-row`
-       */
+     * Set label position to child `<u-form-row>`'s
+     * Can be override by same prop in `u-form-row`
+     */
     labelPosition: {
       type: String,
       default: 'left'
     },
     /**
-       * If set 'false' disable autofocus on mounted. 'true' by default
-       */
+     * If set 'false' disable autofocus on mounted. 'true' by default
+     */
     autofocus: {
       type: Boolean,
       default: true
-    }
+    },
+
+    /**
+     * Just provides max width in px to child UFormRow's.
+     * Do not confuse with the maximum width of the form itself
+     */
+    maxWidth: Number
   },
 
   provide () {
     return {
       labelWidth: this.labelWidth,
-      labelPosition: this.labelPosition
+      labelPosition: this.labelPosition,
+      maxWidth: this.maxWidth
     }
   },
 

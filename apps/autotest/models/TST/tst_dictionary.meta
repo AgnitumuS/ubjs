@@ -102,6 +102,7 @@
       "safeDelete": false // should be false for autotes
     }
   },
+  "customSettings": {"a": 1},
   "dbKeys": {
     "UIDX_CFV": {
       "code": {},

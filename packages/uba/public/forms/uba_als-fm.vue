@@ -85,7 +85,7 @@
               :key="role"
               :value="(currentRights.find(right => right.attribute === row.code && right.roleName === role) || {}).actions"
               class="als__actions"
-              @input="doOnDataChanged"
+              @input="doOnDataChanged($event, role)"
             />
           </template>
 
@@ -305,7 +305,8 @@ module.exports.default = {
         }
       })
     },
-    doOnDataChanged () {
+    doOnDataChanged (currentValue, role) {
+      this.createdRights[this.createdRights.findIndex(cr => cr.roleName === role)].actions = currentValue
       this.rightsFromDbCounter += 1
     },
     createRightForRole (role) {

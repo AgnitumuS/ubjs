@@ -68,10 +68,18 @@ module.exports = function (session) {
       iconCls: 'fa fa-user',
       displayOrder: 10,
       cmdCode: JSON.stringify({
+        renderer: 'vue',
         cmdType: 'showList',
-        cmdData: { params: [{
-          entity: 'uba_user', method: 'select', fieldList: ['disabled', 'isPending', 'name', 'firstName', 'lastName']
-        }] }
+        cmdData: {
+          entityName: 'uba_user',
+          columns: [
+            'disabled',
+            'isPending',
+            'name',
+            'firstName',
+            'lastName'
+          ]
+        }
       }, null, '\t')
     }
   })
@@ -88,8 +96,12 @@ module.exports = function (session) {
       iconCls: 'el-icon-office-building',
       displayOrder: 20,
       cmdCode: JSON.stringify({
+        renderer: 'vue',
         cmdType: 'showList',
-        cmdData: { params: [{ entity: 'uba_userrole', method: 'select', fieldList: ['userID', 'roleID'] }] }
+        cmdData: {
+          entityName: 'uba_userrole',
+          columns: ['userID', 'roleID']
+        }
       }, null, '\t')
     }
   })
@@ -105,7 +117,14 @@ module.exports = function (session) {
       caption: 'Group list',
       iconCls: 'fa fa-group',
       displayOrder: 30,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'uba_group', method: 'select', fieldList: ['name', 'description', 'code'] }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'uba_group',
+          columns: ['name', 'description', 'code']
+        }
+      }, null, '\t')
     }
   })
 
@@ -120,7 +139,13 @@ module.exports = function (session) {
       caption: 'Advanced security',
       displayOrder: 15,
       iconCls: 'fa fa-user-secret',
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'uba_advSecurity', method: 'select', fieldList: ['*'] }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'uba_advSecurity'
+        }
+      }, null, '\t')
     }
   })
 
@@ -136,13 +161,11 @@ module.exports = function (session) {
       caption: 'User groups',
       displayOrder: 40,
       cmdCode: JSON.stringify({
+        renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          params: [{
-            entity: 'uba_usergroup',
-            method: 'select',
-            fieldList: ['userID', 'groupID']
-          }]
+          entityName: 'uba_usergroup',
+          columns: ['userID', 'groupID']
         }
       }, null, '\t')
     }
@@ -161,13 +184,11 @@ module.exports = function (session) {
       isFolder: false,
       displayOrder: 50,
       cmdCode: JSON.stringify({
+        renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          params: [{
-            entity: 'uba_usercertificate',
-            method: 'select',
-            fieldList: ['userID', 'issuer_cn', 'serial', 'disabled', 'revoked']
-          }]
+          entityName: 'uba_usercertificate',
+          columns: ['userID', 'issuer_cn', 'serial', 'disabled', 'revoked']
         }
       })
     }
@@ -199,7 +220,13 @@ module.exports = function (session) {
       caption: 'System roles',
       iconCls: 'fa fa-users',
       displayOrder: 10,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'uba_role', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'uba_role'
+        }
+      }, null, '\t')
     }
   })
 
@@ -215,13 +242,11 @@ module.exports = function (session) {
       iconCls: 'fa fa-shield',
       displayOrder: 20,
       cmdCode: JSON.stringify({
+        renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          params: [{
-            entity: 'uba_els',
-            method: 'select',
-            fieldList: ['code', 'description', 'disabled', 'entityMask', 'methodMask', 'ruleType', 'ruleRole']
-          }]
+          entityName: 'uba_els',
+          columns: ['code', 'description', 'disabled', 'entityMask', 'methodMask', 'ruleType', 'ruleRole']
         }
       })
     }
@@ -239,8 +264,11 @@ module.exports = function (session) {
       iconCls: 'fa fa-share-alt',
       displayOrder: 30,
       cmdCode: JSON.stringify({
+        renderer: 'vue',
         cmdType: 'showList',
-        cmdData: { params: [{ entity: 'uba_als', method: 'select', fieldList: '*' }] }
+        cmdData: {
+          entityName: 'uba_als'
+        }
       }, null, '\t')
     }
   })
@@ -257,8 +285,11 @@ module.exports = function (session) {
       iconCls: 'fa fa-eye',
       displayOrder: 40,
       cmdCode: JSON.stringify({
+        renderer: 'vue',
         cmdType: 'showList',
-        cmdData: { params: [{ entity: 'uba_otp', method: 'select', fieldList: '*' }] }
+        cmdData: {
+          entityName: 'uba_otp'
+        }
       }, null, '\t')
     }
   })
@@ -274,13 +305,12 @@ module.exports = function (session) {
       caption: 'Security audit',
       displayOrder: 60,
       iconCls: 'fa fa-lock',
-      cmdCode: JSON.stringify({ 'cmdType': 'showList',
-        'cmdData': {
-          'params': [{
-            'entity': 'uba_audit',
-            'method': 'select',
-            'fieldList': ['entity', 'entityinfo_id', 'actionType', 'actionUser', 'actionTime', 'remoteIP', 'targetUser', 'targetGroup', 'targetRole']
-          }]
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'uba_audit',
+          columns: ['entity', 'entityinfo_id', 'actionType', 'actionUser', 'actionTime', 'remoteIP', 'targetUser', 'targetGroup', 'targetRole']
         }
       }, null, '\t')
     }
@@ -316,13 +346,12 @@ module.exports = function (session) {
       iconCls: 'el-icon-s-unfold',
       displayOrder: 40,
       cmdCode: JSON.stringify({
+        renderer: 'vue',
         cmdType: 'showList',
-        autoFilter: true,
-        cmdData: { params: [{
-          entity: 'uba_auditTrail',
-          method: 'select',
-          fieldList: ['ID', 'entity', 'entityinfo_id', 'actionType', 'actionUserName', 'actionTime', 'remoteIP', 'request_id']
-        }] }
+        cmdData: {
+          entityName: 'uba_auditTrail',
+          columns: ['ID', 'entity', 'entityinfo_id', 'actionType', 'actionUserName', 'actionTime', 'remoteIP', 'request_id']
+        }
       }, null, '\t')
     }
   })

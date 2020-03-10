@@ -138,6 +138,12 @@ UB.i18nExtend({
   singOperationInProcess: 'The system performs the signing of another document. Try again later',
 
   // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
+  NMInstallExtensionFirefox: '<p>To use this application Firefox extension <b>"UBExtension"</b> must be installed.</p> ' +
+    '<p>Follow <a href="https://addons.mozilla.org/addon/ub-extension/" target="_blank">ADD EXTENSION</a> ' +
+    ' to go to the Firefox add-ons</p>' +
+    '<p> At the add-on window click button <b>+Add to Firefox</b></p>' +
+    '<p>Confirm adding a new extension.</p>' +
+    '<p>After installing the extension <b>restart your browser!</b></p>',
   NMInstallExtensionChrome: '<p>To use this application Chrome extension <b>"UBExtension"</b> must be installed.</p> ' +
         '<p>Follow <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">ADD EXTENSION</a> ' +
         ' to go to the Google store</p>' +
@@ -264,8 +270,7 @@ UB.i18nExtend({
   author: 'Author',
   signVerification: 'Sign verification',
   signsInDocument: 'Signs',
-  UserWithoutOrgEmployeeNotAllowed: 'Login for user without corresponding employee on staff not allowed',
-  // search form (UBPreFilter)
+
   search: 'Search',
   'Filter by': 'Filter by',
   filterForm: 'Search form',
@@ -341,7 +346,7 @@ UB.i18nExtend({
 
   print: 'print',
   generalInfo: 'General info',
-  sexType: 'Sex',
+  sexType: 'Gender',
   lastName: 'Last name',
   firstName: 'First name',
   middleName: 'Middle name',
@@ -411,14 +416,6 @@ UB.i18nExtend({
   Transformation: 'Ttransformation',
 
   showPlanAndFact: 'Show plan and fact',
-
-  registrationPassed: 'Your certificate has been successfully downloaded and passed to the processing',
-  registraionPassed: 'Your certificate has been successfully downloaded and passed to the processing',
-  keyAlreadyRegisteredForUser: 'Key is already registered for another user',
-  keyBlockedByAdmin: 'Key for entering the system was blocked by system administrator. Blocking reason: ',
-  keyNoRightsRejected: 'User cannot permissions to entering the system. Request for registration of key denied.',
-  keyNoRightsRepeat: 'User cannot permissions to entering the system. Request for reminding registration of key in consideration state.',
-  keyAlreadyRegistered: 'Enable to send request registration of key. Current key is already registered in system.',
 
   'error': 'Error',
   'detail': 'Detail',

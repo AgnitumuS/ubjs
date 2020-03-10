@@ -7,7 +7,7 @@
     <el-select
       v-model="selectedColumnId"
       class="u-table-entity__filter__input"
-      :placeholder="$ut('Колонка')"
+      :placeholder="$ut('table.filter.columnPlaceholder')"
     >
       <el-option
         v-for="col in columns"
@@ -18,6 +18,7 @@
     </el-select>
     <component
       :is="selectedColumnTemplate"
+      :key="selectedColumnId"
       class="u-table-entity__filter__section"
     />
   </div>
@@ -25,6 +26,7 @@
 
 <script>
 const { mapGetters } = require('vuex')
+const TypeProvider = require('../type-provider')
 
 export default {
   computed: {
@@ -32,11 +34,8 @@ export default {
 
     selectedColumnTemplate () {
       const column = this.selectedColumn
-      if (column && typeof column.filterTemplate === 'function') {
-        return column.filterTemplate()
-      } else {
-        return null
-      }
+      const dataType = column.attribute && column.attribute.dataType
+      return TypeProvider.get(dataType).filterTemplate
     },
 
     selectedColumnId: {

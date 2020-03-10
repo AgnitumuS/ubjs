@@ -17,24 +17,41 @@ npm i --save-dev @unitybase/update-changelog
 ```
 
 ## Usage
-Chandelog before publishing package:
+Changelog before publishing package:
 
 ```
-[Unreleased]
-## Added
-....
+## [Unreleased]
+### Added
+...
+### Changed
 
+### Deprecated
+
+### Removed
+...
+### Fixed
 ```
 
 npm publish
 
-Changelod after publishing:
+Changelog after publishing:
 
 ```
-[Unreleased]
+## [Unreleased]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
 
 [X.x.x] - YYYY-MM-DD
 ## Added
 ....
-
+### Removed
+...
 ```

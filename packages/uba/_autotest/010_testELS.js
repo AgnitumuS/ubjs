@@ -14,20 +14,18 @@ const argv = require('@unitybase/base').argv
 const TEST_NAME = 'Entity Level Security (ELS) test'
 
 module.exports = function runELSTest (options) {
-  let session, conn
-
   if (!options) {
-    let opts = cmdLineOpt.describe('', TEST_NAME)
+    const opts = cmdLineOpt.describe('', TEST_NAME)
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
 
-  session = argv.establishConnectionFromCmdLineAttributes(options)
+  let session = argv.establishConnectionFromCmdLineAttributes(options)
   // if (!session.__serverStartedByMe) {
   //   throw new Error('Shut down server before run this test')
   // }
-  conn = session.connection
+  let conn = session.connection
 
   try {
     console.debug('Start ' + TEST_NAME)
@@ -38,10 +36,10 @@ module.exports = function runELSTest (options) {
 
   function testELS () {
     let domainInfo = conn.getDomainInfo()
-    let addedArray = []
+    const addedArray = []
 
     function relogon (credential) {
-      let opts = _.merge({}, options, { forceStartServer: true }, credential)
+      const opts = _.merge({}, options, { forceStartServer: true }, credential)
       session.logout() // shut down server
       session = argv.establishConnectionFromCmdLineAttributes(opts)
       conn = session.connection
@@ -64,9 +62,10 @@ module.exports = function runELSTest (options) {
           description: 'Test user who can not login (throws inside login event)'
         }
       })
-      conn.xhr({
-        UBMethod: 'changePassword',
-        data: {
+      conn.query({
+        entity: 'uba_user',
+        method: 'changeOtherUserPassword',
+        execParams: {
           newPwd: 'admin2',
           forUser: 'admin2'
         }
@@ -91,14 +90,16 @@ module.exports = function runELSTest (options) {
         name: 'testelsuser'
       }
     })
-    conn.xhr({
-      UBMethod: 'changePassword',
-      data: {
+    conn.query({
+      entity: 'uba_user',
+      method: 'changeOtherUserPassword',
+      execParams: {
         newPwd: 'testElsPwd',
         forUser: 'testelsuser'
       }
     })
-    let testRole1 = conn.insert({
+
+    const testRole1 = conn.insert({
       entity: 'uba_role',
       fieldList: ['ID', 'mi_modifyDate'],
       execParams: {
@@ -145,7 +146,7 @@ module.exports = function runELSTest (options) {
       }
     })
 
-    console.debug('Test new role do not hav permissions')
+    console.debug('Test new role do not have permissions')
     relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
     domainInfo = conn.getDomainInfo()
     if (domainInfo.has(TEST_ENTITY)) {
@@ -155,7 +156,7 @@ module.exports = function runELSTest (options) {
     assert.throws(function () { conn.Repository(TEST_ENTITY).attrs('ID').select() }, /Access deny/, 'must deny select permission for testelsuser ' + TEST_ENTITY)
 
     function addUBSAuditPermission (method, rule) {
-      let res = conn.insert({
+      const res = conn.insert({
         entity: 'uba_els',
         fieldList: ['ID'],
         execParams: {
@@ -169,7 +170,7 @@ module.exports = function runELSTest (options) {
       addedArray.push(res)
       return res
     }
-    let accessDenyRe = /Access deny/
+    const accessDenyRe = /Access deny/
     assert.throws(function () { conn.Repository(TEST_ENTITY).attrs('ID').select() }, accessDenyRe, 'must deny select permission for testelsuser ' + TEST_ENTITY)
     assert.throws(addUBSAuditPermission.bind(null, 'select', 'A'), accessDenyRe, 'must deny insert permission for testelsuser to ' + TEST_ENTITY)
 
@@ -205,7 +206,7 @@ module.exports = function runELSTest (options) {
 
     console.debug('Add', UBA_COMMON.ROLES.ADMIN.NAME, 'role for testelsuser and verify addnew method, complimented for role testElsRole is accessible via admin allow role')
     relogon()
-    let adminRoleID = conn.lookup('uba_role', 'ID', { expression: 'name', condition: 'equal', values: { nameVal: UBA_COMMON.ROLES.ADMIN.NAME } })
+    const adminRoleID = conn.lookup('uba_role', 'ID', { expression: 'name', condition: 'equal', values: { nameVal: UBA_COMMON.ROLES.ADMIN.NAME } })
     ok(adminRoleID, `role "${UBA_COMMON.ROLES.ADMIN.NAME}" not found in uba_role`)
     ok(grantRoleToUser(adminRoleID, testUserID), `role "${UBA_COMMON.ROLES.ADMIN.NAME}" not added for user testelsuser`)
     relogon({ user: 'testelsuser', pwd: 'testElsPwd' })

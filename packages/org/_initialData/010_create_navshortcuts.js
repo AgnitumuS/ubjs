@@ -56,7 +56,13 @@ module.exports = function (session) {
       caption: 'Departments',
       iconCls: 'fa fa-cubes',
       displayOrder: 10,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'org_department', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'org_department'
+        }
+      }, null, '\t')
     }
   })
 
@@ -71,7 +77,13 @@ module.exports = function (session) {
       caption: 'Organizations',
       iconCls: 'fa fa-university',
       displayOrder: 20,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'org_organization', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'org_organization'
+        }
+      }, null, '\t')
     }
   })
 
@@ -86,7 +98,13 @@ module.exports = function (session) {
       caption: 'Employee on staff',
       iconCls: 'fa fa-briefcase',
       displayOrder: 30,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'org_employeeonstaff', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'org_employeeonstaff'
+        }
+      }, null, '\t')
     }
   })
   console.log('\t\t\tcreate `All Employee on staff` shortcut')
@@ -100,7 +118,14 @@ module.exports = function (session) {
       caption: 'Employee on staff (all)',
       iconCls: 'fa fa-briefcase',
       displayOrder: 35,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'org_employeeonstaff', method: 'select', fieldList: '*', __mip_recordhistory_all: true }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'org_employeeonstaff',
+          __mip_recordhistory_all: true
+        }
+      }, null, '\t')
     }
   })
 
@@ -114,7 +139,13 @@ module.exports = function (session) {
       code: 'org_staffunit',
       caption: 'Staff units',
       displayOrder: 40,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'org_staffunit', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'org_staffunit'
+        }
+      }, null, '\t')
     }
   })
 
@@ -129,7 +160,13 @@ module.exports = function (session) {
       caption: 'Execution groups',
       iconCls: 'fa fa-group',
       displayOrder: 50,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'org_execgroup', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'org_execgroup'
+        }
+      }, null, '\t')
     }
   })
 
@@ -143,7 +180,13 @@ module.exports = function (session) {
       code: 'org_unit',
       caption: 'Org units',
       displayOrder: 100,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'org_unit', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'org_unit'
+        }
+      }, null, '\t')
     }
   })
 
@@ -158,7 +201,13 @@ module.exports = function (session) {
       caption: 'Employees',
       iconCls: 'fa fa-male',
       displayOrder: 110,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'org_employee', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'org_employee'
+        }
+      }, null, '\t')
     }
   })
 
@@ -187,7 +236,13 @@ module.exports = function (session) {
       caption: 'Professions',
       iconCls: 'fa fa-cloud',
       displayOrder: 10,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'org_profession', method: 'select', fieldList: '*' }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'org_profession'
+        }
+      }, null, '\t')
     }
   })
 
@@ -202,7 +257,14 @@ module.exports = function (session) {
       caption: 'Organizational chart',
       iconCls: 'fa fa-sitemap',
       displayOrder: 20,
-      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'org_diagram', method: 'select', fieldList: ['ID', 'caption', 'orgunitID.caption'] }] } }, null, '\t')
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'org_diagram',
+          columns: ['ID', 'caption', 'orgunitID.caption']
+        }
+      }, null, '\t')
     }
   })
 }

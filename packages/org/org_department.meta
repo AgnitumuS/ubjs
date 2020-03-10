@@ -27,7 +27,7 @@
     {
       "name": "name",
       "dataType": "String",
-      "size": 128,
+      "size": 256,
       "caption": "Department name",
       "description": "Name of department without the quotes and abbreviations",
       "allowNull": false,
@@ -36,7 +36,7 @@
     {
       "name": "fullName",
       "dataType": "String",
-      "size": 300,
+      "size": 500,
       "caption": "Department full name",
       "description": "Department full name",
       "allowNull": false,
@@ -45,7 +45,7 @@
     {
       "name": "description",
       "dataType": "String",
-      "size": 255,
+      "size": 290,
       "caption": "Department description",
       "description": "Department description",
       "allowNull": true,
@@ -54,7 +54,7 @@
     {
       "name": "nameGen",
       "dataType": "String",
-      "size": 128,
+      "size": 256,
       "caption": "Department name in genitive case",
       "description": "Department name without the quotes and abbreviations in genitive case",
       "allowNull": true,
@@ -63,7 +63,7 @@
     {
       "name": "nameDat",
       "dataType": "String",
-      "size": 128,
+      "size": 256,
       "caption": "Department name in dative case",
       "description": "Department name without the quotes and abbreviations in dative case",
       "allowNull": true,
@@ -72,7 +72,7 @@
     {
       "name": "fullNameGen",
       "dataType": "String",
-      "size": 300,
+      "size": 500,
       "caption": "Department full name in genitive case",
       "description": "Department full name in genitive case",
       "allowNull": true,
@@ -81,7 +81,7 @@
     {
       "name": "fullNameDat",
       "dataType": "String",
-      "size": 300,
+      "size": 500,
       "caption": "Department full name in dative case",
       "description": "Department full name in dative case",
       "allowNull": true,

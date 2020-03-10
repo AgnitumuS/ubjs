@@ -27,7 +27,25 @@ const queryString = require('querystring')
 const appBinding = process.binding('ub_app')
 const options = require('@unitybase/base').options
 const AUTH_MOCK = options.switchIndex('-authMock') >= 0
-const FEATURE_DOMAIN_INFO_DIRECT_WRITE = ubVersionNum >= 5015004
+
+// init zonesAuthenticationMethods
+const ZONES_AUTH_MAP = {}
+let USE_ZONE_AUTH = false
+const zonesAuthenticationMethods = App.serverConfig.security.zonesAuthenticationMethods
+if (zonesAuthenticationMethods && zonesAuthenticationMethods.length) {
+  const availableAuthMethods = App.serverConfig.security.authenticationMethods
+  zonesAuthenticationMethods.forEach(z => {
+    const zam = ZONES_AUTH_MAP[z.name] = []
+    z.authenticationMethods.forEach(am => {
+      if (availableAuthMethods.indexOf(am) !== -1) {
+        zam.push(am)
+        USE_ZONE_AUTH = true
+      } else {
+        console.warn(`Authentication method ${am} for security zone ${z.name} ignored because it is not found in the security.authenticationMethods`)
+      }
+    })
+  })
+}
 /**
  *
  * @param {string} reqPath
@@ -39,14 +57,14 @@ function resolveModelFile (reqPath, resp) {
     fullPath: ''
   }
   // cache actual file path & type for success models/* request
-  let cached = App.globalCacheGet(`${GC_KEYS.UB_MODELS_REQ_}${reqPath}`)
+  const cached = App.globalCacheGet(`${GC_KEYS.UB_MODELS_REQ_}${reqPath}`)
   if (!cached) {
-    let parts = reqPath.replace(/\\/g, '/').split('/')
-    let modelName = parts.shift()
+    const parts = reqPath.replace(/\\/g, '/').split('/')
+    const modelName = parts.shift()
     if (!modelName) {
       return resp.badRequest('first part of path must be model name')
     }
-    let model = App.domainInfo.models[modelName]
+    const model = App.domainInfo.models[modelName]
     if (!model) {
       return resp.badRequest('no such model ' + modelName)
     }
@@ -60,14 +78,14 @@ function resolveModelFile (reqPath, resp) {
     if (!fs.existsSync(entry.fullPath)) {
       return resp.notFound(`"${entry.fullPath}"`)
     }
-    let stat = fs.statSync(entry.fullPath)
+    const stat = fs.statSync(entry.fullPath)
     if (stat.isDirectory()) {
       return resp.badRequest(`Prevent access to folder "${entry.fullPath}"`)
     }
     if (PROXY_SEND_FILE_HEADER) {
       entry.fullPath = path.relative(process.configPath, entry.fullPath)
     } else {
-      let ct = mime.contentType(parts.pop())
+      const ct = mime.contentType(parts.pop())
       if (ct) {
         entry.mimeHead = 'Content-Type: ' + ct
       }
@@ -78,8 +96,8 @@ function resolveModelFile (reqPath, resp) {
     entry = JSON.parse(cached)
   }
   if (PROXY_SEND_FILE_HEADER) {
-    let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/app/${entry.fullPath}`
-    console.debug(`<- `, head)
+    const head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/app/${entry.fullPath}`
+    console.debug('<- ', head)
     resp.writeHead(head)
     resp.writeEnd('')
   } else {
@@ -105,7 +123,7 @@ function modelsEp (req, resp) {
   if ((req.method !== 'GET') && (req.method !== 'HEAD')) {
     return resp.badRequest('invalid request method ' + req.method)
   }
-  let reqPath = req.decodedUri
+  const reqPath = req.decodedUri
   if (!reqPath || !reqPath.length || (reqPath.length > 250)) {
     return resp.badRequest('path too long (max is 250) ' + reqPath.length)
   }
@@ -137,9 +155,9 @@ function clientRequireEp (req, resp) {
   if ((req.method !== 'GET') && (req.method !== 'HEAD')) {
     return resp.badRequest('invalid request method ' + req.method)
   }
-  let reqPath = req.decodedUri
+  const reqPath = req.decodedUri
   // cache actual file path & type for success clientRequire/* request
-  let cached = App.globalCacheGet(`${GC_KEYS.UB_CLIENT_REQ_}${reqPath}`)
+  const cached = App.globalCacheGet(`${GC_KEYS.UB_CLIENT_REQ_}${reqPath}`)
   let entry = {
     fullPath: ''
   }
@@ -171,11 +189,11 @@ function clientRequireEp (req, resp) {
       if (!fs.existsSync(resolvedPath)) { // try js file
         resolvedPath = resolvedPath + '.js'
       }
-      let stat = fs.statSync(resolvedPath)
+      const stat = fs.statSync(resolvedPath)
       if (stat.isDirectory()) {
-        let pkgName = path.join(resolvedPath, 'package.json')
+        const pkgName = path.join(resolvedPath, 'package.json')
         if (fs.existsSync(pkgName)) {
-          let pkgMain = JSON.parse(fs.readFileSync(pkgName, 'utf8')).main || './index.js'
+          const pkgMain = JSON.parse(fs.readFileSync(pkgName, 'utf8')).main || './index.js'
           resolvedPath = path.join(resolvedPath, pkgMain)
         } else {
           return resp.badRequest(`package.json not found in folder "${resolvedPath}"`)
@@ -192,7 +210,7 @@ function clientRequireEp (req, resp) {
       return resp.badRequest(`Path (${reqPath}) must be inside application node_modules folder but instead resolved to ${resolvedPath}`)
     }
 
-    let models = App.domainInfo.models
+    const models = App.domainInfo.models
     let restrictAccess = false
     // allow access to package.json for dynamically load a module from UI
     if (!reqPath.endsWith('/package.json')) {
@@ -216,7 +234,7 @@ function clientRequireEp (req, resp) {
     if (PROXY_SEND_FILE_HEADER) {
       entry.fullPath = path.relative(process.configPath, entry.fullPath)
     } else {
-      let ct = mime.contentType(path.extname(resolvedPath))
+      const ct = mime.contentType(path.extname(resolvedPath))
       if (ct) {
         entry.mimeHead = 'Content-Type: ' + ct
       }
@@ -228,8 +246,8 @@ function clientRequireEp (req, resp) {
     console.debug(`Retrieve cached ${reqPath} -> ${entry.fullPath}`)
   }
   if (PROXY_SEND_FILE_HEADER) {
-    let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/app/${entry.fullPath}`
-    console.debug(`<- `, head)
+    const head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/app/${entry.fullPath}`
+    console.debug('<- ', head)
     resp.writeHead(head)
     resp.writeEnd('')
   } else {
@@ -251,9 +269,22 @@ function clientRequireEp (req, resp) {
  */
 function getAppInfoEp (req, resp) {
   const serverConfig = App.serverConfig
-  let DSTU = serverConfig.security && serverConfig.security.dstu
 
-  let appInfo = {
+  const DSTU = serverConfig.security && serverConfig.security.dstu
+
+  let authMethods
+  if (USE_ZONE_AUTH) {
+    if (!Session.zone) console.warn(`Security zone for IP ${Session.callerIP} is empty`)
+    if (!ZONES_AUTH_MAP.hasOwnProperty(Session.zone)) {
+      console.warn(`Authentication methods not configured for "${Session.zone}" security zone`)
+    } else {
+      authMethods = ZONES_AUTH_MAP[Session.zone]
+    }
+  } else {
+    authMethods = serverConfig.security.authenticationMethods
+  }
+
+  const appInfo = {
     appVersion: App.package.version,
     serverVersion: process.version,
     defaultLang: serverConfig.application.defaultLang,
@@ -263,7 +294,7 @@ function getAppInfoEp (req, resp) {
     serverCertificate: (DSTU && DSTU.trafficEncryption) ? App.serverPublicCert : '',
     encryptionKeyLifetime: (DSTU && DSTU.trafficEncryption) ? DSTU.encryptionKeyLifeTime : 0,
 
-    authMethods: serverConfig.security.authenticationMethods || [],
+    authMethods: authMethods || [],
 
     supportedLanguages: serverConfig.application.domain.supportedLanguages || ['en'],
 
@@ -318,24 +349,19 @@ function getDomainInfoEp (req, resp) {
   // }
   // let res = JSON.stringify(restrictedDomain, domainReplacer)
 
-  let params = queryString.parse(req.parameters)
-  let isExtended = (params['extended'] === 'true')
+  const params = queryString.parse(req.parameters)
+  const isExtended = (params.extended === 'true')
   if (isExtended && authenticationHandled && !uba_common.isSuperUser()) {
     return resp.badRequest('Extended domain info allowed only for member of admin group of if authentication is disabled')
   }
-  if (!params['userName'] || params['userName'] !== Session.uData.login) {
+  if (!params.userName) {
     return resp.badRequest('userName=login parameter is required')
   }
-
-  // before UB 5.15.4 nativeGetDomainInfo returns domain string and ignore 2-nd parameter writeToResp
-  // for huge domain serializing/de-serializing string is expensive operation, so new implementation
-  // can wrote domain directly into response body
-  if (FEATURE_DOMAIN_INFO_DIRECT_WRITE) {
-    nativeGetDomainInfo(isExtended, true /* write to resp */)
-  } else {
-    let res = nativeGetDomainInfo(isExtended)
-    resp.writeEnd(res)
+  if (params.userName !== Session.uData.login) {
+    return resp.badRequest(`passed userName=${params.userName} not match current session user "${Session.uData.login}"`)
   }
+
+  nativeGetDomainInfo(isExtended, true /* write to resp */)
   resp.statusCode = 200
   resp.validateETag()
 }
@@ -350,10 +376,10 @@ function getDomainInfoEp (req, resp) {
 function staticEp (req, resp) {
   if (!App.staticPath) return resp.notFound('httpServer.inetPub is empty')
   if (PROXY_SEND_FILE_HEADER) { // redirect to statics endpoint handled by nginx
-    let head = req.url.startsWith('statics/')
+    const head = req.url.startsWith('statics/')
       ? `${PROXY_SEND_FILE_HEADER}: /${req.url}`
       : `${PROXY_SEND_FILE_HEADER}: /statics/${req.url}`
-    console.debug(`<- `, head)
+    console.debug('<- ', head)
     resp.writeHead(head)
     resp.writeEnd('')
     resp.statusCode = 200
@@ -361,25 +387,25 @@ function staticEp (req, resp) {
     if ((req.method !== 'GET') && (req.method !== 'HEAD')) {
       return resp.badRequest('invalid request method ' + req.method)
     }
-    let reqPath = req.decodedUri
+    const reqPath = req.decodedUri
     console.log('reqPath', reqPath)
     if (!reqPath || !reqPath.length || (reqPath.length > 250)) {
       return resp.badRequest('path too long (max is 250) ' + reqPath.length)
     }
-    let normalized = path.normalize(path.join(App.staticPath, reqPath))
+    const normalized = path.normalize(path.join(App.staticPath, reqPath))
     if (!normalized.startsWith(App.staticPath)) {
       return resp.badRequest(`statics: resolved path "${normalized}" is not inside inetPub folder ${App.staticPath}`)
     }
     if (!fs.existsSync(normalized)) {
       return resp.notFound(`"${normalized}"`)
     }
-    let stat = fs.statSync(normalized)
+    const stat = fs.statSync(normalized)
     if (stat.isDirectory()) {
       return resp.badRequest(`Prevent access to folder "${normalized}"`)
     }
 
-    let ext = path.extname(normalized)
-    let ct = mime.contentType(ext)
+    const ext = path.extname(normalized)
+    const ct = mime.contentType(ext)
     resp.writeEnd(normalized)
     resp.writeHead('Content-Type: !STATICFILE')
     if (ct) {
@@ -407,8 +433,8 @@ function runSQLEp (req, resp) {
   }
 
   const parameters = queryString.parse(req.parameters)
-  let connectionName = parameters.connection || parameters.CONNECTION || App.domainInfo.defaultConnection.name
-  let conn = App.dbConnections[connectionName]
+  const connectionName = parameters.connection || parameters.CONNECTION || App.domainInfo.defaultConnection.name
+  const conn = App.dbConnections[connectionName]
 
   if (!conn) throw new Error(`runSQL: Unknown connection ${connectionName}`)
 
@@ -426,7 +452,7 @@ function runSQLEp (req, resp) {
 
   if (!sql) throw new Error('runSQL: statement is empty')
   if (EXPECT_RESULT_RE.test(sql)) {
-    let result = conn.run(sql, sqlParams)
+    const result = conn.run(sql, sqlParams)
     resp.writeEnd(result)
   } else {
     conn.exec(sql, sqlParams)
@@ -449,11 +475,11 @@ function runSQLEp (req, resp) {
 function restEp (req, resp) {
   const INVALID_PARAMS = 'REST: parameters are invalid'
   if (req.uri === '') return resp.badRequest(INVALID_PARAMS)
-  let parts = req.uri.split('/')
-  let entity = App.domainInfo.get(parts[0], false)
+  const parts = req.uri.split('/')
+  const entity = App.domainInfo.get(parts[0], false)
   if (!entity) return resp.badRequest('REST: unknown entity ' + parts[0])
-  let method = parts[1]
-  if (!method) return resp.notImplemented(`REST: await "entity/method" in url`)
+  const method = parts[1]
+  if (!method) return resp.notImplemented('REST: await "entity/method" in url')
   if (!entity.haveAccessToMethod(method)) throw new ubErrors.ESecurityException(`REST: unknown method or access deny ${entity.code}.${method}`)
   // TODO - must be implemented using launchMethod to emit :before and :after events etc.
   global[entity.code][method](null, req, resp)
@@ -474,7 +500,7 @@ function allLocalesEp (req, resp) {
   const parameters = queryString.parse(req.parameters)
   const lang = parameters.lang
   if (!lang || lang.length > 5) return resp.badRequest('lang parameter required')
-  let supportedLanguages = App.serverConfig.application.domain.supportedLanguages || ['en']
+  const supportedLanguages = App.serverConfig.application.domain.supportedLanguages || ['en']
   if (supportedLanguages.indexOf(lang) === -1) return resp.badRequest('unsupported language')
 
   let cached = App.globalCacheGet(`${GC_KEYS.UB_LOCALE_REQ_}${lang}`)
@@ -482,9 +508,9 @@ function allLocalesEp (req, resp) {
     cached = ' '
     App.domainInfo.orderedModels.forEach((model) => {
       if (model.needLocalize) {
-        let localeScript = path.join(model.realPublicPath, 'locale', `lang-${lang}.js`)
+        const localeScript = path.join(model.realPublicPath, 'locale', `lang-${lang}.js`)
         if (fs.existsSync(localeScript)) {
-          let content = fs.readFileSync(localeScript, 'utf-8')
+          const content = fs.readFileSync(localeScript, 'utf-8')
           cached += `\n// ${model.name} localization\n${content}`
         }
       }

@@ -15,13 +15,13 @@ const UB = require('@unitybase/ub-pub')
 const Dialog = require('element-ui').Dialog
 const { dialog: $dialog } = require('../../components/dialog/UDialog')
 
-// TODO: describe typdef for VueComponent and VuexStore
 /**
  * Mount form in modal Dialog
+ *
  * @param {object} cfg
- * @param {VueComponent} cfg.component Form component
+ * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
- * @param {Vuex} cfg.store Store
+ * @param {Store} cfg.store Store
  * @param {object} cfg.validator Vuelidate validation object
  * @param {string} cfg.title Title
  * @param {string} [cfg.modalClass] Modal class
@@ -247,7 +247,7 @@ function mountTab ({
 
 /**
  * Check form isDirty then ask user what he want to do
- * @param {VuexStore} store Store
+ * @param {Store} store Store
  * @param {Function} close Callback for close
  */
 function beforeClose ({ store, close }) {
@@ -285,11 +285,10 @@ function beforeClose ({ store, close }) {
 /**
  * Mount form directly into html container
  * @param {object} cfg
- * @param {VueComponent} cfg.component Form component
+ * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
  * @param {Vuex} cfg.store Store
  * @param {object} cfg.validator Vuelidate validation object
- * @param {string} cfg.title Title
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  * @param {Ext.component|String} cfg.target Either id of html element or Ext component
  */
@@ -348,16 +347,16 @@ function mountContainer ({
   }
 }
 
-const UTableEntity = require('../../components/UTableEntity/components/UTableEntity.vue').default
+const UMasterDetailView = require('../../components/UMasterDetailView.vue').default
 
 /**
- * Mount UTableEntity.
+ * Mount UMasterDetailView.
  *
  * @param {object} cfg Command config
  * @param {object} cfg.props Props data
  * @param {object} cfg.tabId Tab id
  * @param {object} [cfg.title] Tab title
- * @param {object} cfg.props UTableEntity props
+ * @param {object} cfg.props UMasterDetailView props
  * @param {function:ClientRepository} cfg.props.repository Function which returns ClientRepository
  * @param {array<string|UTableColumn>} [cfg.props.columns] Column list configs
  * @param {TableScopedSlotsBuilder} [cfg.scopedSlots] Scoped slots
@@ -367,12 +366,22 @@ function mountTableEntity (cfg) {
   if (!cfg.props.entityName && !cfg.props.repository) {
     throw new Error(`One of these options is required: "props.entityName" or "props.repository"`)
   }
-  const entityName = cfg.props.entityName || cfg.props.repository().entityName
-  const title = cfg.title || entityName
+
+  function getEntityName () {
+    switch (typeof cfg.props.repository) {
+      case 'function':
+        return cfg.props.repository().entityName
+      case 'object':
+        return cfg.props.repository.entity
+      default:
+        return cfg.props.entityName
+    }
+  }
+  const title = cfg.title || getEntityName()
   const tableRender = h => {
     const scopedSlots = cfg.scopedSlots && cfg.scopedSlots(h)
-    return h(UTableEntity, {
-      props: {
+    return h(UMasterDetailView, {
+      attrs: {
         ...cfg.props,
         height: '100%'
       },
@@ -396,11 +405,11 @@ function mountTableEntity (cfg) {
 }
 
 /**
- * Run UTableEntity as modal
+ * Run UMasterDetailView as modal
  *
  * @param {object} cfg
  * @param {string} cfg.title Modal title
- * @param {function} cfg.tableRender UTableEntity render function
+ * @param {function} cfg.tableRender UMasterDetailView render function
  * @param {string} [cfg.modalClass] Modal class
  * @param {string} [cfg.modalWidth] Modal width
  */
@@ -453,12 +462,12 @@ function mountTableEntityAsModal ({
 }
 
 /**
- * Run UTableEntity as tab
+ * Run UMasterDetailView as tab
  *
  * @param {object} cfg
  * @param {string} cfg.title Tab title
  * @param {string} cfg.tabId Navbar tab ID
- * @param {function} cfg.tableRender UTableEntity render function
+ * @param {function} cfg.tableRender UMasterDetailView render function
  */
 function mountTableEntityAsTab ({
   title,

@@ -22,7 +22,7 @@ me.reserveRegnum = function (regkey, regNum, reservedDate, note) {
   console.debug('Parameters: regkey=' + regkey + ',regNum=' + regNum)
   // Read current counter value
   // Check, that we have value in database for specified key
-  let store = UB.Repository('ubs_numcounterreserv')
+  const store = UB.Repository('ubs_numcounterreserv')
     .attrs(['ID', 'regKey', 'counter'])
     .where('[regKey]', '=', regkey)
     .where('[counter]', '=', regNum)
@@ -30,7 +30,7 @@ me.reserveRegnum = function (regkey, regNum, reservedDate, note) {
     .select()
   // insert if not found
   if (store.eof) {
-    let insobj = {
+    const insobj = {
       execParams: {
         regKey: regkey,
         counter: regNum,
@@ -57,11 +57,11 @@ me.reserveRegnum = function (regkey, regNum, reservedDate, note) {
  * @returns {Boolean}
  */
 me.reserveRC = function (ctxt) {
-  let execParams = ctxt.mParams.execParams
-  let upregkey = execParams['regkey']
-  let upregNum = execParams['regNum']
-  let reservedDate = execParams['reservedDate']
-  let note = ctxt.mParams.execParams['note']
+  const execParams = ctxt.mParams.execParams
+  const upregkey = execParams.regkey
+  const upregNum = execParams.regNum
+  const reservedDate = execParams.reservedDate
+  const note = ctxt.mParams.execParams.note
   return me.reserveRegnum(upregkey, upregNum, reservedDate, note)
 }
 
@@ -78,7 +78,7 @@ me.getReservedRegnum = function (regKey) {
   console.debug('Parameters: regkey=', regKey)
   let returnVal = -1
 
-  let repo = UB.Repository('ubs_numcounterreserv')
+  const repo = UB.Repository('ubs_numcounterreserv')
     .attrs(['ID', 'regKey', 'counter', 'reservedDate'])
     .where('[regKey]', '=', regKey)
     .where('[reservedDate]', 'isNull')
@@ -88,11 +88,11 @@ me.getReservedRegnum = function (regKey) {
 
   // Read current counter value
   if (repo && (!repo.eof)) {
-    let IDValue = repo.get('ID')
+    const IDValue = repo.get('ID')
     returnVal = repo.get('counter')
-    let inst = UB.DataStore('ubs_numcounterreserv')
+    const inst = UB.DataStore('ubs_numcounterreserv')
     inst.run('delete', {
-      execParams: {ID: IDValue}
+      execParams: { ID: IDValue }
     })
   }
   return returnVal
@@ -111,8 +111,8 @@ me.getReservedRegnum = function (regKey) {
  * @returns {boolean}
  */
 me.getReservedRC = function (ctxt) {
-  let mp = ctxt.mParams
-  let upRegkey = mp.execParams['regkey']
+  const mp = ctxt.mParams
+  const upRegkey = mp.execParams.regkey
   mp.getReservedRC = me.getReservedRegnum(upRegkey)
   return true
 }

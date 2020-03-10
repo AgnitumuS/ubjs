@@ -1,5 +1,5 @@
 <template>
-  <div class="ub-form-container">
+  <div class="u-form-layout">
     <u-toolbar />
 
     <u-form-container
@@ -45,11 +45,15 @@
 
       <shortcut-tree />
 
-      <u-icon-picker
-        :label="entitySchema.attributes.iconCls.caption"
-        :value="iconCls"
-        @select="iconCls = $event"
-      />
+      <u-form-row
+        :label="iconClsCaption"
+      >
+        <u-icon-picker
+          :value="iconCls"
+          :label="iconClsCaption"
+          @change="iconCls = $event"
+        />
+      </u-form-row>
 
       <u-auto-field attribute-name="displayOrder" />
 
@@ -89,7 +93,6 @@ module.exports.mount = function ({
     formCode,
     modalClass: 'ub-dialog__reset-padding'
   })
-    .instance()
     .processing({
       inited (store) {
         if (parentContext) store.commit('ASSIGN_DATA', { loadedState: parentContext })
@@ -129,7 +132,12 @@ module.exports.default = {
       'inWindow',
       'iconCls'
     ]),
-    ...mapGetters(['loading'])
+
+    ...mapGetters(['loading']),
+
+    iconClsCaption () {
+      return this.entitySchema.attributes.iconCls.caption
+    }
   }
 }
 </script>

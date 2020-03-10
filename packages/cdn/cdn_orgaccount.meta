@@ -28,7 +28,7 @@
       "associatedEntity": "cdn_bank",
       "caption": "Bank",
       "description": "Bank of the account",
-      "allowNull": false
+      "allowNull": true
     },
     {
       "name": "code",

@@ -38,16 +38,40 @@
         v-for="item in activeShortcuts"
         :key="item.ID"
         :item="item"
-        :context-show="$refs.context.show"
         :context-disabled="isCollapsed"
+        @contextmenu="showContextMenu"
       />
     </el-menu>
 
-    <u-context-menu
-      ref="context"
-      :items="contextItems"
-      @select="selectContext"
-    />
+    <u-dropdown ref="contextMenu">
+      <template slot="dropdown">
+        <u-dropdown-item
+          label="Edit"
+          :disabled="!canEdit"
+          icon="el-icon-edit"
+          @click="selectContext('edit')"
+        />
+        <u-dropdown-item
+          label="addShortcut"
+          :disabled="!canAdd"
+          icon="el-icon-plus"
+          @click="selectContext('addShortcut')"
+        />
+        <u-dropdown-item
+          label="addFolder"
+          :disabled="!canAdd"
+          icon="el-icon-folder-add"
+          @click="selectContext('addFolder')"
+        />
+        <u-dropdown-item divider />
+        <u-dropdown-item
+          label="Delete"
+          :disabled="!canDelete"
+          icon="el-icon-delete"
+          @click="selectContext('deleteShortcut')"
+        />
+      </template>
+    </u-dropdown>
   </div>
 </template>
 
@@ -56,14 +80,12 @@
 
 const UB = require('@unitybase/ub-pub')
 const USidebarItem = require('./USidebarItem.vue').default
-const UContextMenu = require('../controls/UContextMenu.vue').default
 const DesktopSelector = require('./DesktopSelector.vue').default
 
 export default {
   name: 'USidebar',
   components: {
     USidebarItem,
-    UContextMenu,
     DesktopSelector
   },
 
@@ -74,7 +96,8 @@ export default {
       selectedDesktop: null,
       isCollapsed: null,
       logo: null,
-      logoBig: null
+      logoBig: null,
+      contextMenuPayload: {}
     }
   },
 
@@ -92,34 +115,18 @@ export default {
       }
     },
 
-    contextItems () {
-      let shortcutEntity = this.$UB.connection.domain.entities['ubm_navshortcut']
-      let canAdd = shortcutEntity && shortcutEntity.haveAccessToMethod('insert')
-      let canDelete = shortcutEntity && shortcutEntity.haveAccessToMethod('delete')
-      let canEdit = shortcutEntity && shortcutEntity.haveAccessToMethod('update')
-      return [{
-        label: 'Edit',
-        action: 'edit',
-        disabled: !canEdit,
-        iconCls: 'el-icon-edit'
-      }, {
-        label: 'addShortcut',
-        action: 'addShortcut',
-        disabled: !canAdd,
-        iconCls: 'el-icon-plus'
-      }, {
-        label: 'addFolder',
-        action: 'addFolder',
-        disabled: !canAdd,
-        iconCls: 'el-icon-folder-add'
-      }, {
-        label: '-'
-      }, {
-        label: 'Delete',
-        action: 'deleteShortcut',
-        disabled: !canDelete,
-        iconCls: 'el-icon-delete'
-      }]
+    schema () {
+      return this.$UB.connection.domain.entities.ubm_navshortcut
+    },
+
+    canAdd () {
+      return this.schema && this.schema.haveAccessToMethod('insert')
+    },
+    canDelete () {
+      return this.schema && this.schema.haveAccessToMethod('delete')
+    },
+    canEdit () {
+      return this.schema && this.schema.haveAccessToMethod('update')
     }
   },
 
@@ -162,7 +169,8 @@ export default {
         this.isCollapsed = !this.isCollapsed
       }
     })
-    UB.connection.on(`ubm_navshortcut:changed`, this.initMenu)
+    UB.connection.on('ubm_navshortcut:changed', this.initMenu)
+    UB.connection.on('ubm_desktop:changed', this.initMenu)
     Object.defineProperty(this.$refs.menu, 'hoverBackground', {
       get () {
         return 'rgb(var(--bg-hover))'
@@ -173,15 +181,15 @@ export default {
   methods: {
     async loadDesktops () {
       const desktops = await this.$UB.connection.Repository('ubm_desktop')
-        .attrs('ID', 'caption', 'isDefault', 'description', 'iconCls')
-        .orderBy('caption')
+        .attrs('ID', 'caption', 'isDefault', 'description', 'iconCls', 'displayOrder')
+        .orderBy('displayOrder').orderBy('caption')
         .select()
 
       const userLogin = UB.connection.userData().login
       let preferredDesktop = +window.localStorage.getItem(`${userLogin}:desktop`)
       // desktop can be deleted
       if (!preferredDesktop || !desktops.find(i => i.ID === preferredDesktop)) {
-        let defaultDesktop = desktops.find(d => d.isDefault)
+        const defaultDesktop = desktops.find(d => d.isDefault)
         preferredDesktop = defaultDesktop ? defaultDesktop.ID : null
       }
       if (!preferredDesktop) preferredDesktop = desktops.length && desktops[0].ID
@@ -240,32 +248,44 @@ export default {
       this.isCollapsed = isCollapsed
     },
 
-    async selectContext (action, { ID, desktopID, parentID, isFolder }) {
+    showContextMenu (event, payload) {
+      this.contextMenuPayload = payload
+      this.$refs.contextMenu.show(event)
+    },
+
+    async selectContext (action) {
+      const { ID, desktopID, parentID, isFolder } = this.contextMenuPayload
       const command = {
         cmdType: 'showForm',
         entity: 'ubm_navshortcut'
       }
-      if (action === 'edit') {
-        command.instanceID = ID
-      } else if ((action === 'addShortcut') || (action === 'addFolder')) {
-        command.parentContext = {
-          desktopID: desktopID,
-          parentID: isFolder ? ID : parentID,
-          isFolder: action === 'addFolder'
-        }
-      } else if (action === 'deleteShortcut') {
-        const confirm = await this.$dialogYesNo('areYouSure', 'deletionDialogConfirmCaption')
+      switch (action) {
+        case 'edit':
+          command.instanceID = ID
+          break
 
-        if (confirm) {
-          await $App.connection.doDelete({
-            entity: 'ubm_navshortcut',
-            execParams: {
-              ID
-            }
-          })
-          this.initMenu() // reload after delete
-        }
-        return
+        case 'addShortcut':
+        case 'addFolder':
+          command.parentContext = {
+            desktopID: desktopID,
+            parentID: isFolder ? ID : parentID,
+            isFolder: action === 'addFolder'
+          }
+          break
+
+        case 'deleteShortcut':
+          const confirm = await this.$dialogYesNo('areYouSure', 'deletionDialogConfirmCaption')
+
+          if (confirm) {
+            await $App.connection.doDelete({
+              entity: 'ubm_navshortcut',
+              execParams: {
+                ID
+              }
+            })
+            this.initMenu() // reload after delete
+          }
+          return
       }
 
       $App.doCommand(command)

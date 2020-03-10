@@ -133,7 +133,7 @@ UB.i18nExtend({
 
   sidebar: {
     desktopSelector: {
-      title: 'Вибір робочого стола'
+      title: 'Вибір робочого столу'
     }
   },
 
@@ -148,7 +148,8 @@ UB.i18nExtend({
         from: 'від',
         to: 'до',
         valuePlaceholder: 'Оберіть дату'
-      }
+      },
+      columnPlaceholder: 'Колонка'
     },
     pagination: {
       outOf: 'з'
@@ -170,10 +171,17 @@ UB.i18nExtend({
       type: 'Тип',
       uploadDate: 'Дата завантаження'
     },
-    dropZoneCaption: 'або перетягніть файли сюди'
+    dropZone: {
+      caption: 'або перетягніть файли сюди',
+      acceptError: 'Невірне розширення файлу'
+    }
   },
 
   select: {
     valueIsUndefined: 'Занчення "{0}" не знайдено в сутності "{1}"'
+  },
+
+  tableRegister: {
+    hideDetails: 'Приховати деталі'
   }
 })

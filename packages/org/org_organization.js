@@ -13,7 +13,7 @@ function checkOKPOCodeForUkraine (ctxt) {
   const execParams = mParams.execParams
   if ((mParams.method === 'update') && !execParams.OKPOCode) return true
 
-  let OKPOCode = execParams.OKPOCode
+  const OKPOCode = execParams.OKPOCode
   if (!OKPOCode) throw new UB.UBAbort('<<<Не вказаний код ЄДРПОУ>>>')
 
   if (ctxt.mParams.execParams._noValid) {

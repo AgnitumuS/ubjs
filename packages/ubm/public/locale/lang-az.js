@@ -77,6 +77,7 @@ UB.i18nExtend({
   'desktopService.UBScan.OutputFormat': 'Faylın formatı',
   'desktopService.UBScan.OutputFormat.JPEG': 'JPEG',
   'desktopService.UBScan.OutputFormat.PDF': 'PDF',
+  'desktopService.UBScan.OutputFormat.PDF/A': 'PDF/A',
   'desktopService.UBScan.OutputFormat.TIFF': 'TIFF',
   'desktopService.UBScan.jpegQuality': 'JPEG keyfiyyəti',
   'desktopService.DefaultPrinter': 'Susmaya görə printer',

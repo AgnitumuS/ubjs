@@ -1,3 +1,5 @@
+/* global _ */
+
 module.exports = {
   buildExecParams,
   mapInstanceFields,
@@ -7,12 +9,153 @@ module.exports = {
   transformCollections,
   buildDeleteRequest,
   enrichFieldList,
-  SET
+  SET,
+  isEmpty,
+  change
 }
 
 const UB = require('@unitybase/ub-pub')
 const truncTimeToUTCNull = UB.truncTimeToUtcNull
 const UB_DATA_TYPES = require('@unitybase/cs-shared').UBDomain.ubDataTypes
+const Vue = require('vue')
+const moment = require('moment')
+
+/**
+ * @typedef {object} VuexTrackedInstance
+ * @property {boolean} isNew        Whether master instance was loaded or it is newly created
+ * @property {object}  data         Master record instance, current values, as shall be shown on UI
+ * @property {object}  originalData Shadow copy of modified attributes
+ * @property {object<string, VuexTrackedCollection>} collections   List of tracked detain collections
+ */
+
+/**
+ * @typedef {object} VuexTrackedCollection
+ * @property {string} entity                     Entity code
+ * @property {string} key                        Unique collection identifier
+ * @property {Array<VuexTrackedObject>} items    Current items, as it shall be shown on UI
+ * @property {Array<VuexTrackedObject>} deleted  Deleted items, except items which are added
+ *   (not originally loaded)
+ * @property {string} key Custom unique key which is set on init collection
+ * @property {string} entity Entity code
+ */
+
+/**
+ * @typedef {object} VuexTrackedObject
+ * @property {boolean} isNew         Indicator of whether master instance was loaded or it is newly created
+ * @property {object}  data          Master record instance, current values, as shall be shown on UI
+ * @property {object}  originalData  Shadow copy of modified attributes
+ */
+
+/**
+ * A helper method to equal 2 params, can equal arrays or dates
+ * @param {*} arg1
+ * @param {*} arg2
+ */
+
+function isEqual (arg1, arg2) {
+  if (Array.isArray(arg1) || Array.isArray(arg2)) {
+    if (arg1 === undefined) {
+      arg1 = []
+    }
+    if (arg2 === undefined) {
+      arg2 = []
+    }
+    if (!Array.isArray(arg1) || !Array.isArray(arg2)) {
+      return false
+    }
+    if (arg1.find(i => !arg2.includes(i))) {
+      return false
+    }
+    if (arg2.find(i => !arg1.includes(i))) {
+      return false
+    }
+    return true
+  } else if (isDate(arg1) || isDate(arg2)) {
+    return moment(arg1).isSame(arg2)
+  } else if (isObject(arg1) || isObject(arg2)) {
+    if (arg1 === undefined) {
+      arg1 = {}
+    }
+    if (arg2 === undefined) {
+      arg2 = {}
+    }
+    return _.isEqual(arg1, arg2)
+  } else {
+    return arg1 === arg2
+  }
+}
+
+/**
+ * Check if value is a Date
+ * @param  {*} value
+ * @return {boolean}
+ */
+function isDate (value) {
+  return value instanceof Date && !isNaN(value)
+}
+
+/**
+ * Check if value is an object
+ * @param value
+ */
+function isObject (value) {
+  return typeof value === 'object' && value !== null
+}
+
+/**
+ * Check obj is empty
+ * @param  {*} obj
+ * @return {Boolean}
+ */
+function isEmpty (obj) {
+  if (obj === null) return true
+  return typeof obj === 'object' && Object.keys(obj).length === 0
+}
+
+/**
+ * A helper method to update the "tracked" object property.
+ * @param {VuexTrackedObject} state
+ * @param {string} key
+ * @param {*} value
+ * @param {string} [path]
+ */
+function change (state, key, value, path) {
+  let currentValue = state.data[key]
+  if (path !== undefined) {
+    currentValue = _.get(currentValue, path)
+  }
+  if (isEqual(currentValue, value)) {
+    return
+  }
+
+  if (!(key in state.originalData)) {
+    // No value in "originalData" - edited for the first time, so save old value to "originalData"
+    // TODO: for object types, need to create clone
+    Vue.set(state.originalData, key, _.clone(state.data[key]))
+  }
+
+  if (path === undefined) {
+    Vue.set(state.data, key, value)
+  } else {
+    if (typeof state.data[key] !== 'object' || state.data[key] === null) {
+      // Create an object, if current value is not a valid object
+      Vue.set(state.data, key, {})
+    }
+
+    const jsonAttr = state.data[key]
+    if (value !== undefined) {
+      Vue.set(jsonAttr, path, value)
+    } else {
+      Vue.delete(jsonAttr, path)
+    }
+  }
+
+  if (isEqual(state.originalData[key], state.data[key])) {
+    // After and only after setting value, check if we got the same value as in originalData
+    // If set value to its original value, means reverting any changes made, so delete it from "originalData"
+    Vue.delete(state.originalData, key)
+  }
+}
 
 /**
  * "execParams" and "fieldList"
@@ -37,7 +180,11 @@ function buildExecParams (trackedObj, entity) {
     for (const [key, value] of Object.entries(trackedObj.data)) {
       const attr = schema.attributes[key]
       if (!(attr && attr.readOnly) && !key.includes('.')) {
-        execParams[key] = value
+        if (attr && attr.dataType === UB_DATA_TYPES.Date) {
+          execParams[key] = truncTimeToUTCNull(trackedObj.data[key])
+        } else {
+          execParams[key] = value
+        }
       }
     }
     if (schema.hasMixin('dataHistory')) {
@@ -55,13 +202,13 @@ function buildExecParams (trackedObj, entity) {
   }
 
   execParams.ID = trackedObj.data.ID
-  if (schema.attributes['mi_modifyDate']) {
+  if (schema.attributes.mi_modifyDate) {
     execParams.mi_modifyDate = trackedObj.data.mi_modifyDate
   }
 
   for (const key of Object.keys(trackedObj.originalData)) {
     if (!key.includes('.')) {
-      let attr = schema.attributes[key]
+      const attr = schema.attributes[key]
       if (trackedObj.data[key] && attr && attr.dataType === UB_DATA_TYPES.Date) {
         execParams[key] = truncTimeToUTCNull(trackedObj.data[key])
       } else {
@@ -116,7 +263,7 @@ function mapInstanceFields (moduleOrArr, arr) {
         if (module) {
           this.$store.commit(`${module}/SET_DATA`, { key, value })
         } else {
-          this.$store.commit(`SET_DATA`, { key, value })
+          this.$store.commit('SET_DATA', { key, value })
         }
       }
     }

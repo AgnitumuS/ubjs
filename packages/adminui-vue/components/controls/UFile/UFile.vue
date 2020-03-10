@@ -254,7 +254,8 @@ export default {
         id: this.recordId,
         isDirty: this.file.isDirty,
         ct: this.file.ct,
-        origName: this.file.origName
+        origName: this.file.origName,
+        revision: this.file.revision
       })
     },
 
@@ -263,7 +264,8 @@ export default {
         entity: this.entityName,
         attribute: this.attributeName,
         id: this.recordId,
-        isDirty: this.file.isDirty
+        isDirty: this.file.isDirty,
+        _rc: this.file.revision
       }, { resultIsBinary: true })
     },
 

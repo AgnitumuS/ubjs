@@ -1,6 +1,6 @@
 {
   "name": "benchmarks",
-  "version": "5.0.140",
+  "version": "5.0.156",
   "description": "Benchmarks for UnityBase for a scenarios from the [TechEmpower Web Framework Benchmarks](https://www.techempower.com/benchmarks/).",
   "main": "index.js",
   "scripts": {
@@ -20,15 +20,15 @@
   },
   "homepage": "https://github.com/UnityBaseJS/benchmarks#readme",
   "dependencies": {
-    "@unitybase/base": "^5.1.38",
-    "@unitybase/cs-shared": "^5.1.14",
-    "@unitybase/dml-generator": "^5.0.70",
-    "@unitybase/ub": "^5.3.10",
-    "@unitybase/ub-pub": "^5.4.0",
+    "@unitybase/base": "^5.2.2",
+    "@unitybase/cs-shared": "^5.2.2",
+    "@unitybase/dml-generator": "^5.0.79",
+    "@unitybase/ub": "^5.4.2",
+    "@unitybase/ub-pub": "^5.5.2",
     "mustache": "^3.0.1"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.25",
-    "@unitybase/ubcli": "^5.4.11"
+    "@unitybase/stubs": "^5.1.0",
+    "@unitybase/ubcli": "^5.5.2"
   }
 }
