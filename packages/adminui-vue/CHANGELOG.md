@@ -53,6 +53,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - from `ub-toolbar` to `u-toolbar`
    - from `ub-toolbar__button` to `u-toolbar__button`
    - from `ub-navbar` to `u-navbar`
+ - *BREAKING* `UForm/processing` data is loaded before form mount.
+   If server returns undefined form will not mount
  
 ### Deprecated
  - `UTableEntity` props `dateFormat` and `dateTimeFormat`. `format` function in column definition should
