@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `USelectEntity`: fetch displayed value on `blur` event
 
 ## [1.10.2] - 2020-03-09
 ### Added
