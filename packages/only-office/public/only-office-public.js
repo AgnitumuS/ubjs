@@ -1,4 +1,4 @@
-require('./UBOnlyOffice.js')
+require('./ubOnlyOffice.js')
 
 if (UB.ux.UBDocument) {
   Ext.define('UB.ux.UBOnlyOfficeDocument', {
