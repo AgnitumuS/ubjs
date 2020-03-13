@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `lookups/getEnumValue` in case code is `null` or `undefined` didn't try to get value from eGroup
 
 ### Deprecated
 
