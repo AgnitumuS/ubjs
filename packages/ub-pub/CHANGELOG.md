@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UBProxy.doRequest` clears existed orderList in case `operation` parameter contains new `orderList`. [UBDF-11145]
+ To prevent an error when a new column for sorting is added to the end of the sql command and sorting by them is skipped. 
 
 ## [5.5.2] - 2020-03-09
 ## [5.5.1] - 2020-03-04

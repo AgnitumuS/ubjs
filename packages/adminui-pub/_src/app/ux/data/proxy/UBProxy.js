@@ -211,7 +211,9 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
         }
       }
       // order by this expression not exists in orderList
+      // should clear existed orderList and create new orderList
       if (!exist) {
+        serverRequest.orderList = {}
         serverRequest.orderList[nk] = nOrder
       }
     }
