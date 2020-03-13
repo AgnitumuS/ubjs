@@ -17,28 +17,28 @@ function onWorkerError (message, exception) {
 
 function onProcessReaderWorker (message) {
   // first of all we await for worker num
-  let command = message
+  const command = message
   if (message.signal !== 'start') {
     throw new Error('Worker module: Start phase. Wrong message ' + message)
   } else {
     console.log('Worker module: got a signal', JSON.stringify(message))
   }
-  const serverURL = message['serverURL']
-  let _conn = new SyncConnection(serverURL)
+  const serverURL = message.serverURL
+  const _conn = new SyncConnection(serverURL)
   _conn.onRequestAuthParams = function () {
     return { authSchema: 'UB', login: 'admin', password: 'admin' }
   }
 
-  let startTime = Date.now()
+  const startTime = Date.now()
   console.debug('\tFTS read test')
-  let res = testReadFTS(_conn)
+  const res = testReadFTS(_conn)
 
   postMessage({ signal: res, thread: command.thread, timeSpend: Date.now() - startTime })
   terminate()
 
   function testReadFTS (connection) {
     for (let i = command.beginFrom; i < command.beginFrom + command.insertCount; i++) {
-      let readRes = connection.run({
+      const readRes = connection.run({
         entity: 'fts_ftsDefault',
         method: 'fts',
         fieldList: ['ID', 'entity', 'entitydescr', 'snippet'],

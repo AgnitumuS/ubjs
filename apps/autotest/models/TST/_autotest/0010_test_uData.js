@@ -9,7 +9,7 @@ const UBA = require('@unitybase/base').uba_common
 
 module.exports = function runUDataTest (options) {
   if (!options) {
-    let opts = cmdLineOpt.describe('', 'uData test')
+    const opts = cmdLineOpt.describe('', 'uData test')
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
     options = opts.parseVerbose({}, true)
     if (!options) return
@@ -20,7 +20,7 @@ module.exports = function runUDataTest (options) {
   let conn = session.connection
 
   function relogon (credential) {
-    let opts = _.merge({}, options, { forceStartServer: true }, credential)
+    const opts = _.merge({}, options, { forceStartServer: true }, credential)
     session.logout() // shut down server
     // console.log('new options:', opts)
     session = argv.establishConnectionFromCmdLineAttributes(opts)
@@ -33,13 +33,13 @@ module.exports = function runUDataTest (options) {
   function testUDataPersistence () {
     relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
     // check it filled
-    let resp = conn.query({
+    const resp = conn.query({
       entity: 'tst_service',
       method: 'runAsAdminTest'
     })
     assert.deepStrictEqual(resp.runAsAdminUData.before, resp.runAsAdminUData.after, 'uData before and after runAsAdmin must be equal')
-    let uDataInsidePseudoAdmin = JSON.parse(resp.runAsAdminUData.uDataInsidePseudoAdmin)
-    let uDataInsidePseudoAdmin2level = JSON.parse(resp.runAsAdminUData.uDataInsidePseudoAdmin2level)
+    const uDataInsidePseudoAdmin = JSON.parse(resp.runAsAdminUData.uDataInsidePseudoAdmin)
+    const uDataInsidePseudoAdmin2level = JSON.parse(resp.runAsAdminUData.uDataInsidePseudoAdmin2level)
     assert.deepStrictEqual(resp.runAsAdminUData.before, resp.runAsAdminUData.after, 'uData before and after runAsAdmin must be equal')
     assert.ok(/testRole/.test(uDataInsidePseudoAdmin2level.roles),
       'uData after 2 level of recursion runAs must contains "testRole" but got ' + uDataInsidePseudoAdmin2level.roles)
@@ -53,7 +53,7 @@ module.exports = function runUDataTest (options) {
    */
   function testRunAsUserRestoreSessionOnFailInsideLogin () {
     relogon({ user: 'admin', pwd: 'admin' })
-    let resp = conn.query({
+    const resp = conn.query({
       entity: 'tst_service',
       method: 'runAsUserFailsTest'
     })

@@ -10,33 +10,31 @@ const argv = require('@unitybase/base').argv
 const TEST_NAME = 'Server-side tests'
 
 module.exports = function runOTPTest (options) {
-  let session, conn
-
   if (!options) {
-    let opts = cmdLineOpt.describe('', TEST_NAME)
+    const opts = cmdLineOpt.describe('', TEST_NAME)
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
 
-  session = argv.establishConnectionFromCmdLineAttributes(options)
+  const session = argv.establishConnectionFromCmdLineAttributes(options)
   // if (!session.__serverStartedByMe) {
   //   throw new Error('Shut down server before run this test')
   // }
-  conn = session.connection
+  const conn = session.connection
 
   console.debug('start ' + TEST_NAME)
   testServerSide()
 
   function testServerSide () {
-    let folder = path.dirname(__filename)
-    let tests = fs.readdirSync(path.join(folder, 'serverSide'))
+    const folder = path.dirname(__filename)
+    const tests = fs.readdirSync(path.join(folder, 'serverSide'))
 
     console.debug('test Server-side js')
     tests.forEach((test) => {
       if (!test.endsWith('.js') || test.charAt(0) === '_') return
-      let fullPath = path.join(folder, 'serverSide', test).replace(/\\/g, '/')
-      let content = `return require('${fullPath}')`
+      const fullPath = path.join(folder, 'serverSide', test).replace(/\\/g, '/')
+      const content = `return require('${fullPath}')`
       console.debug('Eval a ' + test)
       let result = { success: false }
       try {

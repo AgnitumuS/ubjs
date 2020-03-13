@@ -9,14 +9,14 @@ const assert = require('assert')
 
 module.exports = function runJSONTest (options) {
   if (!options) {
-    let opts = cmdLineOpt.describe('test attributes of type Json', TEST_NAME)
+    const opts = cmdLineOpt.describe('test attributes of type Json', TEST_NAME)
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
 
-  let session = argv.establishConnectionFromCmdLineAttributes(options)
-  let conn = session.connection
+  const session = argv.establishConnectionFromCmdLineAttributes(options)
+  const conn = session.connection
 
   console.debug('Start ' + TEST_NAME)
   testJsonAttr(conn)

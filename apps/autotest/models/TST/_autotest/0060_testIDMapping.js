@@ -8,14 +8,14 @@ const TEST_NAME = 'ID mapping'
 
 module.exports = function runFTSTest (options) {
   if (!options) {
-    let opts = cmdLineOpt.describe('', TEST_NAME)
+    const opts = cmdLineOpt.describe('', TEST_NAME)
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
 
-  let session = argv.establishConnectionFromCmdLineAttributes(options)
-  let conn = session.connection
+  const session = argv.establishConnectionFromCmdLineAttributes(options)
+  const conn = session.connection
 
   console.debug('Start ' + TEST_NAME)
   testIDMapping(conn)
@@ -27,7 +27,7 @@ module.exports = function runFTSTest (options) {
  */
 function testIDMapping (conn) {
   // add new
-  let ID = conn.insert({
+  const ID = conn.insert({
     entity: 'tst_IDMapping',
     fieldList: ['ID'],
     execParams: { code: 'testIDMap' }
@@ -39,7 +39,7 @@ function testIDMapping (conn) {
     execParams: { ID: ID }
   })
   // update parentID for UI tests
-  let md = conn.Repository('tst_maindata').attrs('ID', 'mi_modifyDate').limit(2).selectAsObject()
+  const md = conn.Repository('tst_maindata').attrs('ID', 'mi_modifyDate').limit(2).selectAsObject()
   conn.update({
     entity: 'tst_maindata',
     execParams: {
