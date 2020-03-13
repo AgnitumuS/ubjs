@@ -30,12 +30,21 @@ The module provides the ability to view and edit MS Office documents in the inte
 ```
 ### Configure interaction with OnlyOffice server in ubConfig.json
 
+Consider OnlyOffice server is installed on URL `https://our.only.office.local:4443`
+
+Content Security Policy and onlyOffice paraneters for adminUI should be configured to allow interaction with this URL:
+
 ```
 {
   "uiSettings": {
+    "cspAllow": {
+ 	  "defaultSrc": ["https://our.only.office.local:4443"],
+      "scriptSrc": ["https://our.only.office.local:4443"],
+      "frameSrc": ["https://our.only.office.local:4443"]
+    },
     "adminUI": {
       "onlyOffice": {
-	    "serverIP": "127.0.0.1"
+	    "serverIP": "https://our.only.office.local:4443"
       }
     }
   }

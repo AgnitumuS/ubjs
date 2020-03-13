@@ -64,7 +64,7 @@ Ext.define('UB.ux.UBOnlyOffice', {
     me._placeholderID = me.id + '_placeholder'
     me.html = ['<div style="width: 100%; height: 100%;" id="' + me._placeholderID + '"></div>']
 
-    const url = 'http://' + configuration.serverIP + '/web-apps/apps/api/documents/api.js'
+    const url = configuration.serverIP + '/web-apps/apps/api/documents/api.js'
     me._initializationPromise = me._loadScript(url)
     me.callParent(arguments)
   },
