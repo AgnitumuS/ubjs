@@ -35,8 +35,8 @@
     },
     {
       "name": "suffix",
-      "caption": "Sufix",
-      "description": "Sufix of the person"
+      "caption": "Suffix",
+      "description": "Suffix of the person"
     },
     {
       "name": "shortFIO",

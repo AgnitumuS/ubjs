@@ -1688,7 +1688,7 @@ cdn_person_ns.attrs = {
   */
   sexType: '',
  /**
-  * Sufix of the person
+  * Suffix of the person
   * @type {String}
   */
   suffix: null,

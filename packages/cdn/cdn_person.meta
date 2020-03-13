@@ -81,8 +81,8 @@
       "name": "suffix",
       "dataType": "String",
       "size": 30,
-      "caption": "Sufix",
-      "description": "Sufix of the person",
+      "caption": "Suffix",
+      "description": "Suffix of the person",
       "allowNull": true,
       "isMultiLang": true
     },
