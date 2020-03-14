@@ -8,7 +8,7 @@
  * @memberOf module:@unitybase/ubq
  */
 module.exports = function () {
-  let pendingCnt = UB.Repository('ubq_messages')
+  const pendingCnt = UB.Repository('ubq_messages')
     .attrs('COUNT([ID])')
     .where('completeDate', 'isNull')
     .selectScalar()
@@ -17,11 +17,11 @@ module.exports = function () {
     throw new Error(`There is ${pendingCnt} pending tasks in ubq_messages. Truncate aborted`)
   }
 
-  let msgStore = UB.DataStore('ubq_messages')
-  let queryText = (msgStore.entity.connectionConfig.dialect === 'SQLite3')
+  const msgStore = UB.DataStore('ubq_messages')
+  const queryText = (msgStore.entity.connectionConfig.dialect === 'SQLite3')
     ? 'delete from ubq_messages'
     : 'TRUNCATE TABLE ubq_messages'
 
   msgStore.execSQL(queryText, {})
-  return `ubq_messages is truncated`
+  return 'ubq_messages is truncated'
 }

@@ -1,6 +1,6 @@
 ﻿const UB = require('@unitybase/ub')
 const App = UB.App
-let mailerParams = App.serverConfig.application.customSettings['mailerConfig']
+const mailerParams = App.serverConfig.application.customSettings.mailerConfig
 const UBMail = require('@unitybase/mailer')
 
 /**
@@ -34,7 +34,7 @@ const UBMail = require('@unitybase/mailer')
  */
 module.exports = function () {
   let eMsg
-  let mailData = {}
+  const mailData = {}
   let sentCount = 0
 
   console.log('Call JS method: UB.UBQ.sendQueueMail')
@@ -42,7 +42,7 @@ module.exports = function () {
     throw new Error('Invalid mailer configuration. Define ubConfig.YourApp.customSettings.mailerConfig object')
   }
 
-  let inst = UB.Repository('ubq_messages')
+  const inst = UB.Repository('ubq_messages')
     .attrs(['ID', 'queueCode', 'msgCmd', 'msgData'])
     .where('[queueCode]', '=', 'mail')
     .where('[completeDate]', 'isNull')
@@ -68,16 +68,16 @@ module.exports = function () {
     mailData.ID = inst.get('ID')
     mailData.msgCmd = inst.get('msgCmd')
     mailData.msgData = inst.get('msgData')
-    let cmd = JSON.parse(mailData.msgCmd)
+    const cmd = JSON.parse(mailData.msgCmd)
     mailData.attaches = []
     if (cmd.attaches && cmd.attaches.length) {
       for (let i = 0, L = cmd.attaches.length; i < L; i++) {
         try {
-          let base64Body = App.blobStores.getContent({
+          const base64Body = App.blobStores.getContent({
             entity: cmd.attaches[i].entity,
             attribute: cmd.attaches[i].attribute,
             ID: cmd.attaches[i].id
-          }, {encoding: 'base64'})
+          }, { encoding: 'base64' })
           mailData.attaches.push({
             kind: UBMail.TubSendMailAttachKind.Text,
             atachName: cmd.attaches[i].atachName,
@@ -97,7 +97,7 @@ module.exports = function () {
       ID: mailData.ID
     })
 
-    App.dbCommit(App.domainInfo.entities['ubq_messages'].connectionName)
+    App.dbCommit(App.domainInfo.entities.ubq_messages.connectionName)
 
     inst.next()
   }
@@ -115,11 +115,11 @@ module.exports = function () {
  * @return {Boolean}
  */
 function internalSendMail (data, mailer) {
-  let fMailData = JSON.parse(data.msgCmd)
+  const fMailData = JSON.parse(data.msgCmd)
 
   console.log('UB.UBQ.internalSendMail. Trying send mail to:', fMailData.to)
 
-  let fRes = mailer.sendMail({
+  const fRes = mailer.sendMail({
     fromAddr: fMailData.from || mailerParams.fromAddr || ('no-reply@' + mailerParams.targetHost),
     subject: fMailData.subject,
     bodyType: fMailData.bodyType || UBMail.TubSendMailBodyType.Text,
