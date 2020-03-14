@@ -41,7 +41,6 @@ module.exports.queueMail = function (config) {
   // create store here - in case of initialization entity ubq_messages may not exists
   if (!ubqMessagesStore) ubqMessagesStore = UB.DataStore('ubq_messages')
   ubqMessagesStore.run('insert', {
-    fieldList: ['ID'],
     execParams: {
       queueCode: 'mail',
       msgCmd: JSON.stringify(msgCmd),
