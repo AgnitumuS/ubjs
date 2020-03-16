@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - mail-queue.queueMail method: remove unnecessary `fieldList: ['ID']` in queue insertion 
-  to prevent call of selectAfterInsert method since is ID not used anywhere 
+  to prevent call of selectAfterInsert method since ID is not used 
 
 ### Deprecated
 
