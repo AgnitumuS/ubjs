@@ -12,14 +12,14 @@ const path = require('path')
 
 module.exports = function runMixinsTests (options) {
   if (!options) {
-    let opts = cmdLineOpt.describe('', 'Mixins test')
+    const opts = cmdLineOpt.describe('', 'Mixins test')
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
 
-  let session = argv.establishConnectionFromCmdLineAttributes(options)
-  let conn = session.connection
+  const session = argv.establishConnectionFromCmdLineAttributes(options)
+  const conn = session.connection
 
   console.debug('testClobTruncate')
   testClobTruncate(conn)
@@ -41,10 +41,10 @@ module.exports = function runMixinsTests (options) {
  * @param {SyncConnection} conn
  */
 function testClobTruncate (conn) {
-  let s200 = '1234567890'.repeat(2000)
-  let insertedIDs = []
+  const s200 = '1234567890'.repeat(2000)
+  const insertedIDs = []
 
-  let values2insert = [{
+  const values2insert = [{
     code: '1truncate', text100: s200, text2: s200
   }, {
     code: '2strip', text100: '<i>' + s200 + '<i>', text2: '<b><i>' + s200 + '</b></i>'
@@ -72,14 +72,14 @@ function testClobTruncate (conn) {
     }))
   })
 
-  let inserted = conn.Repository('tst_clob').attrs(['code', 'mi_tr_text100', 'mi_tr_text2']).orderBy('code').selectAsObject()
+  const inserted = conn.Repository('tst_clob').attrs(['code', 'mi_tr_text100', 'mi_tr_text2']).orderBy('code').selectAsObject()
   // console.log('actual:', inserted);
   // console.log('expect:', mustBe);
 
   assert.deepStrictEqual(inserted, mustBe)
 
   let html2strip = fs.readFileSync(path.join(__dirname, 'fixtures/html2strip.html'), 'utf8')
-  let LINE_DELIMITER = html2strip.indexOf('\r\n') > -1 ? '\r\n' : '\n'
+  const LINE_DELIMITER = html2strip.indexOf('\r\n') > -1 ? '\r\n' : '\n'
   let updated = conn.query({
     entity: 'tst_clob',
     method: 'update',
@@ -101,17 +101,17 @@ function testClobTruncate (conn) {
       text2000: html2strip
     }
   })
-  let truncatedHuge = fs.readFileSync(path.join(__dirname, 'fixtures/html2stripHuge.txt'), 'utf8')
+  const truncatedHuge = fs.readFileSync(path.join(__dirname, 'fixtures/html2stripHuge.txt'), 'utf8')
   assert.strictEqual(updated.resultData.data[0][0], truncatedHuge)
 
-  let mResult = conn.query({ entity: 'tst_service', method: 'multiply', a: 2, b: 3 })
+  const mResult = conn.query({ entity: 'tst_service', method: 'multiply', a: 2, b: 3 })
   assert.strictEqual(mResult.multiplyResult, 2 * 3)
   // test listeners removed - not work!! must me removed in ALL threads
   // conn.post('evaluateScript', 'tst_service.removeAllListeners("multiply:before"); return {res: true}');
   // mResult = conn.run({entity: 'tst_service', method: 'multiply', a: 200, b: 300});
   // assert.equal(mResult.multiplyResult, 200*300);
 
-  let emitterLog = conn.post('evaluateScript', 'return {res: App.globalCacheGet("eventEmitterLog")}')
+  const emitterLog = conn.post('evaluateScript', 'return {res: App.globalCacheGet("eventEmitterLog")}')
   mustBe = 'insert:before;insert:after;'.repeat(values2insert.length) + 'multiply:before;multiply:after;'
   assert.strictEqual(emitterLog.res, mustBe)
 }
@@ -121,16 +121,16 @@ function testClobTruncate (conn) {
  * @param {SyncConnection} conn
  */
 function testDateTime (conn) {
-  let dayDate = new Date()
+  const dayDate = new Date()
 
   dayDate.setMilliseconds(0)
-  let row2Insert = {
+  const row2Insert = {
     code: '2014-01-01',
     docDate: dayDate,
     docDateTime: dayDate
   }
 
-  let inserted = conn.insert({
+  const inserted = conn.insert({
     entity: 'tst_document',
     fieldList: ['code', 'docDate', 'docDateTime'],
     execParams: row2Insert
@@ -145,7 +145,7 @@ function testDateTime (conn) {
  * @param {SyncConnection} conn
  */
 function testFloatAndCurrency (conn) {
-  let firstDictRow = conn.Repository('tst_dictionary').attrs(['ID', 'code', 'caption', 'filterValue', 'booleanColumn', 'currencyValue', 'floatValue']).selectById(1)
+  const firstDictRow = conn.Repository('tst_dictionary').attrs(['ID', 'code', 'caption', 'filterValue', 'booleanColumn', 'currencyValue', 'floatValue']).selectById(1)
   assert.strictEqual(firstDictRow.currencyValue, 1.11, 'Expect currency value to be 1.11')
   assert.strictEqual(firstDictRow.floatValue, 1.1111, 'Expect float value to be 1.1111')
 }
@@ -208,7 +208,7 @@ function testParamMacros (conn) {
  * @param {SyncConnection} conn
  */
 function testTreeMixin (conn) {
-  let desktopID = conn.lookup('ubm_desktop', 'ID', {
+  const desktopID = conn.lookup('ubm_desktop', 'ID', {
     expression: 'code',
     condition: 'equal',
     values: { code: 'tst_desktop' }
@@ -216,7 +216,7 @@ function testTreeMixin (conn) {
   console.info('\t\tuse existed desktop with code `tst_desktop`', desktopID)
 
   console.log('\t\t\tcreate `tree_deletion_test` shortcut')
-  let insertedID = conn.insert({
+  const insertedID = conn.insert({
     fieldList: ['ID'],
     entity: 'ubm_navshortcut',
     execParams: {
@@ -249,10 +249,10 @@ function testAsterisk (conn) {
   )
   console.debug('Allow asterisk in first position of server-side UBQL')
   conn.post('evaluateScript', "UB.Repository('uba_userrole').attrs('*', 'userID.name').select()")
-  console.debug(`For client side UBQL mixing of '*' and attribute names in fieldList is not allowed`)
+  console.debug('For client side UBQL mixing of \'*\' and attribute names in fieldList is not allowed')
   assert.throws(
     () => conn.Repository('uba_userrole').attrs(['*', 'userID.name']).select(),
     /(Internal Server Error|For client side UBQL mixing of)/,
-    `For client side UBQL mixing of '*' and attribute names in fieldList is not allowed`
+    'For client side UBQL mixing of \'*\' and attribute names in fieldList is not allowed'
   )
 }

@@ -1,10 +1,10 @@
 ﻿const UB = require('@unitybase/ub')
 const App = UB.App
 const Session = require('@unitybase/ub').Session
-const {uba_common, GC_KEYS} = require('@unitybase/base')
+const { uba_common, GC_KEYS } = require('@unitybase/base')
 /* global ubq_messages */
 // eslint-disable-next-line camelcase
-let me = ubq_messages
+const me = ubq_messages
 
 const os = require('os')
 const HOST_NAME = os.hostname() || 'unknown'
@@ -25,7 +25,7 @@ const statInst = UB.DataStore('ubq_runstat')
  * @memberOfModule @unitybase/ubq
  */
 me.success = function (ctxt) {
-  ctxt.dataStore.execSQL('update ubq_messages set completeDate = :completeDate: where ID = :ID:', {completeDate: new Date(), ID: ctxt.mParams.ID})
+  ctxt.dataStore.execSQL('update ubq_messages set completeDate = :completeDate: where ID = :ID:', { completeDate: new Date(), ID: ctxt.mParams.ID })
   return true
 }
 
@@ -47,9 +47,9 @@ const UBQ_STORE = UB.DataStore('ubq_messages')
  */
 me.addqueue = function (ctxt) {
   console.debug('JS: ubq_messages.addqueue')
-  let mParams = ctxt.mParams
-  let fMethod = 'insert'
-  let fexecParams = {
+  const mParams = ctxt.mParams
+  const fMethod = 'insert'
+  const fexecParams = {
     queueCode: mParams.queueCode,
     msgCmd: mParams.msgCmd,
     msgData: mParams.msgData
@@ -58,7 +58,7 @@ me.addqueue = function (ctxt) {
     fexecParams.msgPriority = 0
   }
 
-  let runobj = {
+  const runobj = {
     entity: 'ubq_messages',
     method: fMethod,
     execParams: fexecParams
@@ -80,10 +80,10 @@ function getFnFromNS (path) {
     return undefined
   }
 
-  let parts = path.split('.')
+  const parts = path.split('.')
 
   for (let j = 0, subLn = parts.length; j < subLn; j++) {
-    let part = parts[j]
+    const part = parts[j]
 
     if (root[part]) {
       root = root[part]
@@ -132,10 +132,10 @@ me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {
     throw new Error('SCHEDULER: remote or non root execution is not allowed')
   }
 
-  let task = JSON.parse(req.read())
-  let taskName = task.schedulerName || 'unknownTask'
-  let isSingleton = (task.singleton !== false)
-  let runAsID = task.runAsID
+  const task = JSON.parse(req.read())
+  const taskName = task.schedulerName || 'unknownTask'
+  const isSingleton = (task.singleton !== false)
+  const runAsID = task.runAsID
   if (isSingleton && (App.globalCacheGet(`${GC_KEYS.UBQ_TASK_RUNNING_}${taskName}`) === '1')) {
     console.warn('SCHEDULER: task %s is already running', taskName)
     return false
@@ -146,7 +146,7 @@ me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {
   err = ''
   try {
     console.debug('SCHEDULER: got a task %j', task)
-    let startTime = new Date()
+    const startTime = new Date()
     let entryPoint
     if (task.command) {
       entryPoint = getFnFromNS(task.command)
@@ -169,7 +169,7 @@ me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {
         App.dbRollback()
       }
     }
-    let endTime = new Date()
+    const endTime = new Date()
     if (task.logSuccessful || err !== '') {
       statParams = {
         appName: HOST_NAME,

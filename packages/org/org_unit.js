@@ -16,7 +16,7 @@ function checkTreeIsNotSelfCircled (ctxt) {
   if (!parentID) return true
 
   const store = UB.Repository('org_unit').attrs(['ID', 'parentID', 'mi_treePath'])
-    .where('[parentID]', '=', parentID).select()
+    .where('[ID]', '=', parentID).select()
   if (store.rowCount > 0 || ((store.get('mi_treePath') || '').indexOf(ID) > 0)) {
     const pList = (store.get('mi_treePath') || '').split('/')
     if (pList.indexOf(ID.toString()) >= 0) {

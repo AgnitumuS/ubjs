@@ -1,5 +1,5 @@
 const assert = require('assert')
-let res = [0]
+const res = [0]
 
 console.debug('testSetTimeout')
 

@@ -12,16 +12,16 @@ const __FILE_NAME = 'ConstitutionUkr.txt'
 
 module.exports = function runFTSTest (options) {
   if (!options) {
-    let opts = cmdLineOpt.describe('', 'FTS test')
+    const opts = cmdLineOpt.describe('', 'FTS test')
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
 
-  let session = argv.establishConnectionFromCmdLineAttributes(options)
-  let _conn = session.connection
+  const session = argv.establishConnectionFromCmdLineAttributes(options)
+  const _conn = session.connection
 
-  let expectations = [
+  const expectations = [
     /* 0 */{ condition: 'республіка', cnt: 1 }, // code016; стаття 5. україна є республікою.
     /* 1 */{ condition: 'БоГу', cnt: 1 }, // 006 усвідомлюючи відповідальність перед богом, власною совістю,
     /* 2 */{ condition: 'територія', cnt: 5 }, // територія, територію, території
@@ -53,16 +53,16 @@ module.exports = function runFTSTest (options) {
 
 function insertFirst50Article (connection) {
   const descrMaxLen = 2000
-  let d = new Date(2015, 1, 1)
+  const d = new Date(2015, 1, 1)
 
-  let data = fs.readFileSync(path.join(__dirname, 'fixtures', __FILE_NAME), 'utf8')
-  let LINE_DELIMITER = data.indexOf('\r\n') > -1 ? '\r\n' : '\n'
-  let testArr = data.split(LINE_DELIMITER)
+  const data = fs.readFileSync(path.join(__dirname, 'fixtures', __FILE_NAME), 'utf8')
+  const LINE_DELIMITER = data.indexOf('\r\n') > -1 ? '\r\n' : '\n'
+  const testArr = data.split(LINE_DELIMITER)
 
   console.time('FTS')
   for (let i = 0; i < 50; i++) {
     d.setDate(i % 30 + 1); d.setMonth(i % 11 + 1)
-    let descr = testArr[i].slice(0, descrMaxLen)
+    const descr = testArr[i].slice(0, descrMaxLen)
     connection.insert({
       entity: 'tst_document',
       execParams: {
@@ -76,19 +76,17 @@ function insertFirst50Article (connection) {
 }
 
 function testReadFTSGlobalAndEntity (connection) {
-  let res, dataFTS, res2, dataEntity
-
-  res = connection.run({
+  const res = connection.run({
     entity: 'fts_ftsDefault',
     method: 'fts',
     fieldList: ['ID'],
     whereList: { match: { condition: 'match', value: 'Україна' } },
     options: { limit: 100, start: 0 }
   })
-  dataFTS = res.resultData.data
+  const dataFTS = res.resultData.data
 
-  res2 = connection.Repository('tst_document').attrs('ID').where('', 'match', 'Україна').selectAsArray()
-  dataEntity = res2.resultData.data
+  let res2 = connection.Repository('tst_document').attrs('ID').where('', 'match', 'Україна').selectAsArray()
+  const dataEntity = res2.resultData.data
 
   assert.deepEqual(_.chain(dataFTS).flatten().sort().value(), _.chain(dataEntity).flatten().sort().value())
 
@@ -96,13 +94,13 @@ function testReadFTSGlobalAndEntity (connection) {
     .where('', 'match', 'Україна')
     .where('docDate', '<', new Date(2015, 2, 13))
     .selectAsArray()
-  assert.equal(res2.resultData.data.length, 6, 'FTS + docDate filter fail')
+  assert.strictEqual(res2.resultData.data.length, 6, 'FTS + docDate filter fail')
 }
 
 function expectationTest (connection, matches) {
   let res, dataFTS
 
-  let l = matches.length
+  const l = matches.length
   for (let i = 0; i < l; i++) {
     res = connection.run({
       entity: 'fts_ftsDefault',
@@ -112,7 +110,7 @@ function expectationTest (connection, matches) {
       options: { limit: 100, start: 0 }
     })
     dataFTS = res.resultData.data
-    assert.equal(dataFTS.length, matches[i].cnt, 'Expectation for: ' + matches[i].condition)
+    assert.strictEqual(dataFTS.length, matches[i].cnt, 'Expectation for: ' + matches[i].condition)
   }
 }
 
@@ -124,12 +122,12 @@ function expectationTest (connection, matches) {
  * @param {Array<Object>} expectations
  */
 function modifyData (connection, expectations) {
-  let modification = {
+  const modification = {
     code: 'code016',
     description: 'Стаття 5. Україна є монархією.'
   }
 
-  let row = connection.Repository('tst_document').attrs(['ID', 'mi_modifyDate']).where('code', '=', modification.code).selectAsObject()
+  const row = connection.Repository('tst_document').attrs(['ID', 'mi_modifyDate']).where('code', '=', modification.code).selectAsObject()
   connection.query({ entity: 'tst_document', method: 'select', ID: row[0].ID, lockType: 'ltTemp', fieldList: ['ID'] })
   connection.query({
     alsNeed: false,
@@ -146,7 +144,7 @@ function modifyData (connection, expectations) {
   expectations.push({ condition: 'монархія', cnt: 1 })
   connection.query({ entity: 'tst_document', method: 'unlock', ID: row[0].ID })
 
-  let ID = connection.lookup('tst_document', 'ID', { expression: 'code', condition: 'equal', values: { nameVal: 'code006' } })
+  const ID = connection.lookup('tst_document', 'ID', { expression: 'code', condition: 'equal', values: { nameVal: 'code006' } })
   connection.query({
     entity: 'tst_document',
     method: 'delete',

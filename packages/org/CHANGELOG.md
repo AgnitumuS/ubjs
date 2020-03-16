@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - cyclic dep check for org units - raised an exception, when pass parentID - the same as it was before
 
 ## [5.3.2] - 2020-03-09
 ## [5.3.1] - 2020-03-04

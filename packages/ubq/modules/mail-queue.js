@@ -28,8 +28,8 @@ let ubqMessagesStore
  * @param {Array<mailAttachmentReference>} [config.attachments] The references to documents, stored in the entities. Will be attached to EMail during sending
  */
 module.exports.queueMail = function (config) {
-  let msgCmd = {
-    from: config.from || App.serverConfig.application.customSettings['mailerConfig'].fromAddr,
+  const msgCmd = {
+    from: config.from || App.serverConfig.application.customSettings.mailerConfig.fromAddr,
     to: Array.isArray(config.to) ? config.to : [config.to],
     bodyType: config.bodyType || UBMail.TubSendMailBodyType.HTML,
     subject: config.subject
@@ -38,10 +38,9 @@ module.exports.queueMail = function (config) {
   if (config.attachments) {
     msgCmd.attaches = config.attachments
   }
-    // create store here - in case of initialization entity ubq_messages may not exists
+  // create store here - in case of initialization entity ubq_messages may not exists
   if (!ubqMessagesStore) ubqMessagesStore = UB.DataStore('ubq_messages')
   ubqMessagesStore.run('insert', {
-    fieldList: ['ID'],
     execParams: {
       queueCode: 'mail',
       msgCmd: JSON.stringify(msgCmd),

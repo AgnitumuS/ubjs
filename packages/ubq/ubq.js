@@ -22,8 +22,8 @@ if (!App.globalCacheGet(GC_KEYS.UBQ_SCHEDULER_INITIALIZED)) {
  * @private
  */
 function startSchedulers () {
-  let cfgForWorker = []
-  let usersIDs = {}
+  const cfgForWorker = []
+  const usersIDs = {}
 
   if (App.globalCacheGet(GC_KEYS.UBQ_SCHEDULER_INITIALIZED)) {
     console.debug('SCHEDULER: UBQ.initializeSchedulers already executed')
@@ -34,9 +34,9 @@ function startSchedulers () {
   console.debug('SCHEDULER: executing UBQ.initializeSchedulers')
 
   /** @type {Array<ubq_scheduler_ns>} */
-  let schedulers = UB.Repository('ubq_scheduler').attrs('*').selectAsObject()
+  const schedulers = UB.Repository('ubq_scheduler').attrs('*').selectAsObject()
   for (let i = 0, l = schedulers.length; i < l; i++) {
-    let /** @type {ubq_scheduler_ns} */ item = schedulers[i]
+    const /** @type {ubq_scheduler_ns} */ item = schedulers[i]
     if (item.schedulingCondition) {
       let canSchedule = false
       try {
@@ -51,7 +51,7 @@ function startSchedulers () {
       }
     }
     if (!usersIDs.hasOwnProperty(item.runAs)) {
-      let uID = UB.Repository('uba_user').attrs('ID').where('name', '=', item.runAs).selectScalar()
+      const uID = UB.Repository('uba_user').attrs('ID').where('name', '=', item.runAs).selectScalar()
       if (uID) {
         usersIDs[item.runAs] = uID
       }
@@ -74,7 +74,7 @@ function startSchedulers () {
 
   let workerPath = require.resolve('./modules/schedulerWorker.js')
   workerPath = workerPath.replace(/\\/g, '/')
-  let w = new Worker({
+  const w = new Worker({
     name: 'Scheduler',
     moduleName: workerPath
   })

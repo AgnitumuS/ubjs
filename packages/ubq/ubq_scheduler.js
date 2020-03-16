@@ -1,6 +1,6 @@
 /* global ubq_scheduler ncrc32 */
 // eslint-disable-next-line camelcase
-let me = ubq_scheduler
+const me = ubq_scheduler
 
 const fs = require('fs')
 const path = require('path')
@@ -18,9 +18,9 @@ let resultDataCache = null
 const FILE_NAME_TEMPLATE = '_schedulers.json'
 const ATTRIBUTES_NAMES = me.entity.getAttributeNames()
 
-let defaultValues = {}
+const defaultValues = {}
 ATTRIBUTES_NAMES.forEach(attrName => {
-  let attr = me.entity.attributes[attrName]
+  const attr = me.entity.attributes[attrName]
   if (attr.defaultValue) {
     defaultValues[attrName] = attr.defaultValue
   }
@@ -34,21 +34,21 @@ ATTRIBUTES_NAMES.forEach(attrName => {
  */
 function loadOneFile (model, loadedData) {
   if (!model.realPath) return // model with public path only
-  let fn = path.join(model.realPath, FILE_NAME_TEMPLATE)
-  let modelName = model.name
+  const fn = path.join(model.realPath, FILE_NAME_TEMPLATE)
+  const modelName = model.name
 
   if (!fs.existsSync(fn)) { return }
-  let schedulersEnabled = (!(App.serverConfig.application.schedulers && (App.serverConfig.application.schedulers.enabled === false)))
+  const schedulersEnabled = (!(App.serverConfig.application.schedulers && (App.serverConfig.application.schedulers.enabled === false)))
   const FALSE_CONDITION = 'false //disabled in app config'
   try {
-    let content = argv.safeParseJSONfile(fn)
+    const content = argv.safeParseJSONfile(fn)
     if (!Array.isArray(content)) {
       console.error('SCHEDULER: invalid config in %. Must be a array ob objects', fn)
       return
     }
     for (let i = 0, L = content.length; i < L; i++) {
-      let item = content[i]
-      let existedItem = _.find(loadedData, { name: item.name })
+      const item = content[i]
+      const existedItem = _.find(loadedData, { name: item.name })
       if (!existedItem) { // assign defaults for new items only
         _.defaults(item, defaultValues)
       } else {
@@ -72,13 +72,13 @@ function loadOneFile (model, loadedData) {
 }
 
 function loadAll () {
-  let models = App.domainInfo.models
-  let loadedData = []
+  const models = App.domainInfo.models
+  const loadedData = []
 
   if (!resultDataCache) {
     console.debug('load schedulers from models directory structure')
-    for (let modelName in models) {
-      let model = models[modelName]
+    for (const modelName in models) {
+      const model = models[modelName]
       loadOneFile(model, loadedData)
     }
 
@@ -101,13 +101,13 @@ function loadAll () {
  * @param {UBQL} ctx.mParams ORM query in UBQL format
  */
 function doSelect (ctx) {
-  let mP = ctx.mParams
-  let aID = mP.ID
-  let cType = ctx.dataStore.entity.cacheType
-  let cachedData = loadAll()
+  const mP = ctx.mParams
+  const aID = mP.ID
+  const cType = ctx.dataStore.entity.cacheType
+  const cachedData = loadAll()
 
   if (!(aID && (aID > -1)) && (cType === UBDomain.EntityCacheTypes.Entity || cType === UBDomain.EntityCacheTypes.SessionEntity) && (!mP.skipCache)) {
-    let reqVersion = mP.version
+    const reqVersion = mP.version
     mP.version = resultDataCache.version
     if (reqVersion === resultDataCache.version) {
       mP.resultData = {}
@@ -115,9 +115,9 @@ function doSelect (ctx) {
       return
     }
   }
-  let filteredData = LocalDataStore.doFilterAndSort(cachedData, mP)
+  const filteredData = LocalDataStore.doFilterAndSort(cachedData, mP)
   // return as asked in fieldList using compact format  {fieldCount: 2, rowCount: 2, values: ["ID", "name", 1, "ss", 2, "dfd"]}
-  let resp = LocalDataStore.flatten(mP.fieldList, filteredData.resultData)
+  const resp = LocalDataStore.flatten(mP.fieldList, filteredData.resultData)
   ctx.dataStore.initFromJSON(resp)
 }
 

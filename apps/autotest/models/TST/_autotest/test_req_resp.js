@@ -10,16 +10,16 @@ const http = require('http')
 
 module.exports = function runHTTPTest (options) {
   if (!options) {
-    let opts = cmdLineOpt.describe('', 'uData test')
+    const opts = cmdLineOpt.describe('', 'uData test')
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
 
   // console.log('orig options:', options)
-  let session = argv.establishConnectionFromCmdLineAttributes(options)
-  let conn = session.connection
-  let domain = conn.getDomainInfo()
+  const session = argv.establishConnectionFromCmdLineAttributes(options)
+  const conn = session.connection
+  const domain = conn.getDomainInfo()
   try {
     testHTTP(conn, domain, session)
     testRest(conn)
@@ -35,22 +35,22 @@ module.exports = function runHTTPTest (options) {
  * @param {ServerSession} session
  */
 function testHTTP (conn, domain, session) {
-  let req = http.request({
+  const req = http.request({
     URL: session.HOST + '/echoToFile',
     method: 'POST'
   })
   let data = 'Строка по русски'
   let resp = req.end(data)
 
-  assert.equal(resp.statusCode, 200, 'echo text string - response status is 200')
-  assert.equal(resp.read(), data, 'got the same text as send')
+  assert.strictEqual(resp.statusCode, 200, 'echo text string - response status is 200')
+  assert.strictEqual(resp.read(), data, 'got the same text as send')
 
   data = new Uint8Array(255000)
   for (let n = 0, L = data.byteLength; n < L; n++) {
     data[n] = n % 254 + 1
   }
   resp = req.end(data)
-  assert.equal(resp.statusCode, 200, 'echo binary - response status is 200')
+  assert.strictEqual(resp.statusCode, 200, 'echo binary - response status is 200')
   assert.deepEqual(resp.read('bin'), data.buffer, 'got the same text as send')
 
   // let t = Date.now()
@@ -74,19 +74,19 @@ function testRest (conn) {
     })
   }
   assert.throws(invalidRestCall, /Not Implemented/, 'Should throw on rest without method')
-  let d = conn.xhr({
+  const d = conn.xhr({
     endpoint: 'rest/tst_service/restTest',
     HTTPMethod: 'PUT',
     data: 'put test data'
   })
   assert.ok(typeof d === 'object', 'rest call convention fail')
-  let d1 = conn.xhr({
+  const d1 = conn.xhr({
     endpoint: 'rest/tst_service/restTest',
     HTTPMethod: 'GET',
     data: 'put test data'
   })
   assert.ok(typeof d1 === 'object', 'rest call convention fail')
-  let d2 = conn.xhr({
+  const d2 = conn.xhr({
     endpoint: 'rest/tst_service/restTest',
     HTTPMethod: 'POST',
     data: 'put test data'
@@ -99,15 +99,15 @@ function testRest (conn) {
  */
 function testUnicode (conn) {
   function unicodeExc () {
-    conn.query({entity: 'tst_service', method: 'throwTest', isUnicode: true})
+    conn.query({ entity: 'tst_service', method: 'throwTest', isUnicode: true })
   }
   assert.throws(unicodeExc, /<<<Підтримується>>>/, 'Should throw unicode error')
   function systemExc () {
-    conn.query({entity: 'tst_service', method: 'throwTest', isSystem: true})
+    conn.query({ entity: 'tst_service', method: 'throwTest', isSystem: true })
   }
   assert.throws(systemExc, /HTTP Error 500 - Internal Server Error/, 'Should hide system errors in production mode')
   function usualExc () {
-    conn.query({entity: 'tst_service', method: 'throwTest'})
+    conn.query({ entity: 'tst_service', method: 'throwTest' })
   }
   assert.throws(usualExc, /HTTP Error 500 - Internal Server Error/, 'Should hide JS errors in production mode')
 }

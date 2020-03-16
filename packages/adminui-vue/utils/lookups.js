@@ -58,11 +58,13 @@ const Lookups = {
   getEnumValue (eGroup, code) {
     const groupMap = this.enums.get(eGroup)
     if (groupMap) {
+      if (code == null) return ''
+
       const value = groupMap.get(code)
       if (value) {
         return value
-      } else if (value !== null) {
-        console.error(`Undefined code '${code}' in eGroup '${eGroup}'`)
+      } else {
+        console.error(`Code '${code}' is undefined in eGroup '${eGroup}'`)
       }
     } else {
       console.error(`Undefined eGroup '${eGroup}'`)

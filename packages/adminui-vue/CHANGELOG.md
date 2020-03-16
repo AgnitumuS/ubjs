@@ -8,12 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `lookups/getEnumValue` in case code is `null` or `undefined` didn't try to get value from eGroup
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `USelectEntity`: fetch displayed value on `blur` event
 
 ## [1.10.2] - 2020-03-09
 ### Added
@@ -53,6 +55,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - from `ub-toolbar` to `u-toolbar`
    - from `ub-toolbar__button` to `u-toolbar__button`
    - from `ub-navbar` to `u-navbar`
+ - *BREAKING* `UForm/processing` data is loaded before form mount.
+   If server returns undefined form will not mount
  
 ### Deprecated
  - `UTableEntity` props `dateFormat` and `dateTimeFormat`. `format` function in column definition should

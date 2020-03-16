@@ -658,7 +658,8 @@ export default {
       this.$emit('focus')
     },
 
-    onBlur () {
+    onBlur (e) {
+      this.leaveInput(e)
       this.isFocused = false
       this.$emit('blur')
     }
