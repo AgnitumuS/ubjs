@@ -68,7 +68,7 @@
 				"driver": "MSSQL2012OleDB",
 				"isDefault": true,
 				"dialect": "MSSQL2012",
-				"serverName": "localhost",
+				"serverName": "local_docker",
 				"databaseName": "ub_autotest",
 				"userID": "ub_autotest",
 				"password": "ub_autotest",

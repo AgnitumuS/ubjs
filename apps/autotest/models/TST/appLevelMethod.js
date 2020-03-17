@@ -562,3 +562,17 @@ function arrayBind (req, resp) {
   resp.writeEnd({ ok: true })
 }
 App.registerEndpoint('arrayBind', arrayBind, false)
+
+/**
+* pdfsigner multi-thread test
+* @param {THTTPRequest} req
+* @param {THTTPResponse} resp
+*/
+function pdfsigner (req, resp) {
+  const nps = require('@ub-e/pdfsign/_autotest/test_TubSigner.js')
+  nps()
+  resp.statusCode = 200
+  resp.writeHead('Content-Type: application/json; charset=UTF-8')
+  resp.writeEnd({ok: true})
+}
+App.registerEndpoint('pdfsigner', pdfsigner, false)
