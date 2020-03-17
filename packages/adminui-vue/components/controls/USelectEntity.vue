@@ -561,26 +561,12 @@ export default {
 
     handleShowDictionary () {
       if (!this.removeDefaultActions) {
-        const columns = this.$UB.connection.domain.get(this.entityName)
-          .filterAttribute(a => a.defaultView)
-          .map(({ code }) => code)
-
         const config = this.buildShowDictionaryConfig({
           renderer: 'vue',
           cmdType: 'showList',
           isModal: true,
           cmdData: {
-            repository: () => {
-              const repo = this.repository().clone()
-              for (const col of columns) {
-                const hasColumn = repo.fieldList.includes(col)
-                if (!hasColumn) {
-                  repo.fieldList.push(col)
-                }
-              }
-              return repo
-            },
-            columns,
+            entityName: this.entityName,
             onSelectRecord: ({ ID, row, close }) => {
               this.$emit('input', ID, JSON.parse(JSON.stringify(row)))
               close()
