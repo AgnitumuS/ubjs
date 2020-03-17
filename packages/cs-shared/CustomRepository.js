@@ -663,7 +663,7 @@ inst.run('select', repo.ubql())
       })
     }
     this.options = u.options || {}
-    this.logicalPredicates = u.logicalPredicates || {}
+    this.logicalPredicates = u.logicalPredicates || []
     this.joinAs = u.joinAs || []
     this.__misc = {}
     const m = Object.keys(u)
