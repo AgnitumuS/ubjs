@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.13.3] - 2020-03-17
+### Fixed
 - 'UBText.MultiLangForm' should set a lock on `BasePanel` when changing to avoid errors
   (Entry with ID = XXXXXXXX for "my_entity" is not blocked) when the form is saved.
 

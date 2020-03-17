@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.3] - 2020-03-17
+### Fixed
 - cdn_person, fixed EN word "sufix" to "suffix"
 
 ## [5.4.2] - 2020-03-09
