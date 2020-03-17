@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - `lookups/getEnumValue` in case code is `null` or `undefined` didn't try to get value from eGroup
+ - `UTableEntity` hide columns `Json` and `Document` by default in case `columns` param is unset.
+ - `USelectEntity` hide columns `Json` and `Document` by default in table which opened on click action - `Select from dictionary`
 
 ### Deprecated
 
