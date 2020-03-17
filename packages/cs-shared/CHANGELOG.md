@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.3] - 2020-03-17
+### Fixed
+ - `Repository.fromUbql(original)` will deep clone original UBQL instead of referencing to it elements.
+ This prevent unexpected mutations of new Repository when original UBQL is mutated.
+
 ## [5.2.2] - 2020-03-09
 ### Added
  - 4th parameter of `CustomRepository.where()` can be either string for clause name or Object with optional properties

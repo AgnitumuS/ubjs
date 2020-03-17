@@ -636,17 +636,19 @@ inst.run('select', repo.ubql())
 
   /**
    * Private method for construct a Repository from UBQL. Please, use UB.Repository(ubqlJson) instead of call this private method
+   * @param {Object} ubqlJson
    * @private
    * @example
 
    // serialize Repository into plain java script object (UBQL)
    const ubql = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a').ubql()
    // restore Repository from plain java script object (UBQL)
-   let repo = UB.Repository(ubql)
+   const repo = UB.Repository(ubql)
 
    * @return {UBQL}
    */
-  fromUbql (u) {
+  fromUbql (ubqlJson) {
+    const u = _.cloneDeep(ubqlJson)
     this.entityName = u.entity
     this.method = u.method
     this.fieldList = u.fieldList
@@ -661,7 +663,7 @@ inst.run('select', repo.ubql())
       })
     }
     this.options = u.options || {}
-    this.logicalPredicates = u.logicalPredicates || {}
+    this.logicalPredicates = u.logicalPredicates || []
     this.joinAs = u.joinAs || []
     this.__misc = {}
     const m = Object.keys(u)

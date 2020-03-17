@@ -6,14 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - ubConfig parser what replace environment variables placeholders now replace variables with empty values (`var=`) by empty strings
- - in case environment variable is not defined ubConfig parser will output error message with variable name 
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.2.3] - 2020-03-17
+### Added
+ - ubConfig parser what replace environment variables placeholders now replace variables with empty values (`var=`) by empty strings
+ - in case environment variable is not defined ubConfig parser will output error message with variable name 
 
 ### Fixed
   - for UBBaseCombobox will enable only accesible actions after setReadOnly(true)/setreadOnly(false) calls. Before this patch all actions became enabled
