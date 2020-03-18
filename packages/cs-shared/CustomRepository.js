@@ -659,7 +659,7 @@ inst.run('select', repo.ubql())
       const orderKeys = Object.keys(u.orderList)
       this.orderList = []
       orderKeys.forEach(k => {
-        this.orderList.push(u.orderList['' + k])
+        this.orderList.push(u.orderList[k])
       })
     }
     this.options = u.options || {}

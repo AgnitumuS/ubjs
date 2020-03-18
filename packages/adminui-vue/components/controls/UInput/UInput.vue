@@ -69,7 +69,7 @@ export default {
         return 1 / 10 ** (this.$UB.connection.domain.FLOATING_SCALE_PRECISION - 1)
       }
       if (this.dataType === 'Currency') {
-        return 0.1
+        return 0.01
       }
       return 1
     },
