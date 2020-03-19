@@ -14,8 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - UInput for Currency attribute will use 0.01 as step instead of 0.1.
+ - `UInput` for Currency attribute will use 0.01 as step instead of 0.1.
    This fix Firefox native validation for values with two digits after "."  
+ - `UCodeMirror` error `split of undefined`. Because codemirror must use JSON string instead value as object from props  
  - `USelectEntity` - set display value now emits on click outside instead blur input
 
 ## [1.10.3] - 2020-03-17
