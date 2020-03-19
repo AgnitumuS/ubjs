@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - UInput for Currency attribute will use 0.01 as step instead of 0.1.
    This fix Firefox native validation for values with two digits after "."  
+ - `USelectEntity` - set display value now emits on click outside instead blur input
 
 ## [1.10.3] - 2020-03-17
 ### Changed

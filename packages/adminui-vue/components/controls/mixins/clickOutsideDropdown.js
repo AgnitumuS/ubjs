@@ -25,6 +25,9 @@ module.exports = {
 
     this._clickOutsideListenerId = addClickOutsideListener(refs, () => {
       this.dropdownVisible = false
+      if (this.setQueryByValue) {
+        this.setQueryByValue(this.value)
+      }
     })
   },
 
