@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.13.4] - 2020-03-20
 ## [5.13.3] - 2020-03-17
 ### Fixed
 - 'UBText.MultiLangForm' should set a lock on `BasePanel` when changing to avoid errors

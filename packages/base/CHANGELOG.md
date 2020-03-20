@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.2.4] - 2020-03-20
+### Fixed
  - `SyncConnection.getDomainInfo` will reset cached domain in case isExtended parameter is changed.
    This fix a case like:
   ```

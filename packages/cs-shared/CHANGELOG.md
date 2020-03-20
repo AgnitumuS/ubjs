@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.4] - 2020-03-20
 ## [5.2.3] - 2020-03-17
 ### Fixed
  - `Repository.fromUbql(original)` will deep clone original UBQL instead of referencing to it elements.
