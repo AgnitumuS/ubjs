@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `SyncConnection.getDomainInfo` will reset cached domain in case isExtended parameter is changed.
+   This fix a case like:
+  ```
+  const dSimple = conn.getDomainInfo(); // get not extended domain
+  const dExtended = conn.getDomainInfo(true); // request for extended domain, but before this fix got non-extended cached instance
+  ``` 
 
 ## [5.2.3] - 2020-03-17
 ### Added

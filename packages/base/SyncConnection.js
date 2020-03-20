@@ -34,6 +34,7 @@ function SyncConnection (options) {
   const client = http.request(options)
   let /** @type UBDomain */
     _domain
+  let _cachedDomainIsExtended = false
   let ubSession = null
   const lookupCache = {}
   const userDataDefault = { lang: 'en' }
@@ -103,10 +104,14 @@ function SyncConnection (options) {
 
   /**
    * Retrieve application domain information.
-   * @param {Boolean} [isExtended=false] For member of admin group cen return a addinitonal domain information, such as mappings, connection details, indexes
+   * @param {Boolean} [isExtended=false] For member of admin group can return a additional domain information,
+   *   such as mappings, connection details, indexes, realPath for models etc.
    * @return {UBDomain}
    */
-  this.getDomainInfo = function (isExtended) {
+  this.getDomainInfo = function (isExtended = false) {
+    if (this._cachedDomainIsExtended !== isExtended) {
+      _domain = null
+    }
     if (!_domain) {
       // authorize connection to get a valid user name
       if (this.authNeed) this.authorize(false)
@@ -117,6 +122,7 @@ function SyncConnection (options) {
         extended: isExtended || undefined
       })
       _domain = new UBDomain(domainData)
+      this._cachedDomainIsExtended = isExtended
     }
     return _domain
   }
