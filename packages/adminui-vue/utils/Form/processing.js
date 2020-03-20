@@ -581,7 +581,7 @@ function createProcessingModule ({
         if (beforeSave) {
           const answer = await beforeSave()
           if (answer === false) {
-            return
+            return -1
           }
         }
         const $v = validator()
