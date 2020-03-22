@@ -15,6 +15,11 @@ function testBLOB () {
   for (let i = 0; i < 5000; i++) {
     v[i] = i % 255
   }
+
+  const store = UB.DataStore('tst_blob')
+  store.execSQL('delete from tst_blob', {})
+  App.dbCommit()
+
   insertion(123, 'test blob of size 5000', buf, 5000)
 
   let binContent = fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'file1.pdf'), { encoding: 'bin' })
