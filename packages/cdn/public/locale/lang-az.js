@@ -1,7 +1,6 @@
 /**
  * UnityBase Common Dictionaries (CDN) model AZ localization
  */
-/* global UB */
 UB.i18nExtend({
   externalOrganizations_title: 'Təşkilat',
   physPerson_title: 'Fiz. şəxslər',
@@ -11,7 +10,15 @@ UB.i18nExtend({
   employee_title: 'Xarici təşkilatın işçisi',
   profession_title: 'Peşə',
   region_title: 'Yerləşmə',
-  'ClassifTypePanelClassifiersTitle': 'Təsnifat qiyməti',
+  ClassifTypePanelClassifiersTitle: 'Təsnifat qiyməti',
+  classifier: {
+    caption: 'Təsnifatçı',
+    description: 'Təsnifat rekordu'
+  },
+  classifieritem: {
+    caption: 'Təsnifat elementi',
+    description: 'Təsnifat elementi qeydləri'
+  },
 
   // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF'
