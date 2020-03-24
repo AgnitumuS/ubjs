@@ -1,5 +1,5 @@
 {
-  "caption": "Вид классификации",
+  "caption": "Классификаторы",
   "attributes": [
     {
       "name": "code",
@@ -12,6 +12,10 @@
     {
       "name": "description",
       "caption": "Описание"
+    },
+    {
+      "name": "orderByAttr",
+      "caption": "Порядок элементов классификатора"
     }
   ]
 }

@@ -10,11 +10,13 @@
         <u-grid>
           <u-auto-field attribute-name="code" />
           <u-auto-field attribute-name="name" />
+          <u-auto-field attribute-name="orderByAttr" :clearable="false"/>
         </u-grid>
         <u-auto-field attribute-name="description" />
 
         <u-table-entity
           v-if="ID"
+          ref="detailsTable"
           :repository="classifierItemRepository"
           :columns="['code', 'hierarchyLevel', 'parentID', 'name']"
           :build-edit-config="getConfig"
@@ -41,9 +43,17 @@ module.exports.default = {
   name: 'CdnClassifier',
 
   computed: {
-    ...mapInstanceFields(['ID']),
+    ...mapInstanceFields(['ID', 'orderByAttr']),
     ...mapState(['isNew']),
     ...mapGetters(['loading', 'canSave'])
+  },
+
+  watch: {
+    orderByAttr () {
+      if (this.$refs.detailsTable) {
+        this.$refs.detailsTable.$store.dispatch('refresh')
+      }
+    }
   },
 
   methods: {
@@ -51,7 +61,7 @@ module.exports.default = {
       return this.$UB.connection.Repository('cdn_classifieritem')
         .attrs('ID', 'code', 'hierarchyLevel', 'parentID', 'name')
         .where('classifierID', '=', this.ID)
-        .orderBy('hierarchyLevel')
+        .orderBy(this.orderByAttr)
     },
 
     getConfig (cfg) {
