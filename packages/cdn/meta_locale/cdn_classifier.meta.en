@@ -1,5 +1,5 @@
 {
-  "caption": "Сlassifier",
+  "caption": "Сlassifiers",
   "attributes": [
     {
       "name": "code",
@@ -12,6 +12,10 @@
     {
       "name": "description",
       "caption": "Description"
+    },
+    {
+      "name": "orderByAttr",
+      "caption": "Classifier items order"
     }
   ]
 }
