@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UBCommand.showForm` will accept `instanceId` parameter in case it defined (preffer over `instanceID`). This fix opening form from `magic links`
 
 ## [5.13.4] - 2020-03-20
 ## [5.13.3] - 2020-03-17
