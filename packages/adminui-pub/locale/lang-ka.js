@@ -44,7 +44,7 @@ UB.i18nExtend({
   Copy: 'კოპირება',
   Edit: 'რედაქტირება',
   Delete: 'წაშლა',
-  vseDeystviya: 'ყველა ქმედება',
+  allActions: 'ყველა ქმედება...',
   saveAndClose: 'შენახვა და გამოსვლა',
   storedData: 'შენახული მონაცემები',
   resetGUIToDefault: 'GUI პარამეტრების დაყენება',

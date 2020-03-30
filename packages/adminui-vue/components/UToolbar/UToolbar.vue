@@ -29,6 +29,7 @@
       <u-toolbar-button
         icon="fa fa-cog"
         color="secondary"
+        tooltip="allActions"
       />
 
       <template #dropdown>

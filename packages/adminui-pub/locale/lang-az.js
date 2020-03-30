@@ -42,7 +42,7 @@ UB.i18nExtend({
   Copy: 'Nə kimi əlavə et',
   Edit: 'Redaktə et',
   Delete: 'Sil',
-  vseDeystviya: 'Bütün fəaliyyətlər',
+  allActions: 'Bütün fəaliyyətlər...',
   saveAndClose: 'Yadda saxla və bağla',
   storedData: 'Lokal saxlanc',
   resetGUIToDefault: 'İnterfeysin kökləmələri saxlancını təmizlə',

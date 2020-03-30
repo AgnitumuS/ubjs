@@ -42,7 +42,7 @@ UB.i18nExtend({
   Copy: 'Копіювати',
   Edit: 'Редагувати',
   Delete: 'Видалити',
-  vseDeystviya: 'Всі дії',
+  allActions: 'Всі дії...',
   saveAndClose: 'Зберегти та закрити',
   storedData: 'Дані, що збережено',
   resetGUIToDefault: 'Налаштування інтерфейсу "По замовчанню"',

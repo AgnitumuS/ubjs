@@ -42,7 +42,7 @@ UB.i18nExtend({
   Copy: 'Copy',
   Edit: 'Edit',
   Delete: 'Delete',
-  vseDeystviya: 'All actions',
+  allActions: 'All actions...',
   saveAndClose: 'Save and close',
   storedData: 'Stored data',
   resetGUIToDefault: 'Reset GUI settings',

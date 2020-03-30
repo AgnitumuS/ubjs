@@ -2476,7 +2476,7 @@ Ext.define('UB.view.BasePanel', {
           scale: 'medium',
           iconCls: 'fa fa-cog',
           arrowCls: '', // remove dropdown arrow
-          tooltip: UB.i18n('vseDeystviya'),
+          tooltip: UB.i18n('allActions'),
           menu: menuAllActions
         }]
 
