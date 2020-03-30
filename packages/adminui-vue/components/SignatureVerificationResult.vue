@@ -1,10 +1,10 @@
 <template>
   <div class="u-table">
     <table>
-<!--      <tr>-->
-<!--        <th :colspan="sigCaptions.length ? 4: 3"> {{ VRi18n.signingTime }} </th>-->
-<!--        <th> {{ VRi18n.signatureAuthor }} </th>-->
-<!--      </tr>-->
+      <!--      <tr>-->
+      <!--        <th :colspan="sigCaptions.length ? 4: 3"> {{ VRi18n.signingTime }} </th>-->
+      <!--        <th> {{ VRi18n.signatureAuthor }} </th>-->
+      <!--      </tr>-->
       <template
         v-for="(vr, vIdx) in verificationResults"
       >
@@ -18,8 +18,7 @@
           <td
             v-if="sigCaptions.length"
             v-html="sigCaptions[vIdx]"
-          >
-          </td>
+          />
           <td>
             <el-tooltip
               :content="statusTip(vIdx, false)"
@@ -38,7 +37,10 @@
           <tr :key="'d' + vIdx">
             <td :colspan="sigCaptions.length ? 5 : 4">
               <h4>{{ VRi18n.signatureStatus }}</h4>
-              <p :style="statusStyle(vIdx)" v-html="statusTip(vIdx, true)" />
+              <p
+                :style="statusStyle(vIdx)"
+                v-html="statusTip(vIdx, true)"
+              />
               <h4>{{ VRi18n.signatureAuthor }}</h4>
               <p>
                 {{ VRi18n.certificate.subject._ }}
@@ -97,7 +99,7 @@
 
 <style>
   .signature-verify-result_info {
-    color: rgb(var(--info-light))
+    color: hsl(var(--hs-text), var(--l-text-label))
   }
 </style>
 <script>
@@ -133,13 +135,13 @@ export default {
       this.$set(this.detailsOpened, vIdx, !this.detailsOpened[vIdx])
     },
     statusStyle (vIdx) {
-      let r = this.verificationResults[vIdx]
-      if (!r.valid) return 'color: rgba(var(--danger), 1);'
-      if (r.valid && r.tspValid && r.ocspVerified && !r.warnings) return 'color: rgba(var(--success), 1);'
-      return 'color: rgba(var(--warning), 1);'
+      const r = this.verificationResults[vIdx]
+      if (!r.valid) return 'color: hsl(var(--hs-danger), var(--l-state-default));'
+      if (r.valid && r.tspValid && r.ocspVerified && !r.warnings) return 'color: hsl(var(--hs-success), var(--l-state-default));'
+      return 'color:hsl(var(--hs-warning), var(--l-state-default);'
     },
     statusTip (vIdx, isHTML) {
-      let r = this.verificationResults[vIdx]
+      const r = this.verificationResults[vIdx]
       if (!r.valid) {
         let m = `${r.errorMessage || this.VRi18n.valid.no}`
         if (r.errorCode) m = m + ` (${r.errorCode})`

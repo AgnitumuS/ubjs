@@ -24,9 +24,9 @@
     </div>
     <el-menu
       ref="menu"
-      background-color="rgb(var(--bg))"
-      text-color="rgb(var(--text-contrast))"
-      active-text-color="rgb(var(--primary))"
+      background-color="hsl(var(--hs-sidebar), var(--l-sidebar-default))"
+      text-color="hsl(var(--hs-text), var(--l-text-inverse))"
+      active-text-color="hsl(var(--hs-primary), var(--l-text-disabled))"
       unique-opened
       :collapse="isCollapsed"
       :collapse-transition="false"
@@ -173,7 +173,7 @@ export default {
     UB.connection.on('ubm_desktop:changed', this.initMenu)
     Object.defineProperty(this.$refs.menu, 'hoverBackground', {
       get () {
-        return 'rgb(var(--bg-hover))'
+        return 'hsl(var(--hs-sidebar), var(--l-sidebar-depth-1))'
       }
     })
   },
@@ -315,7 +315,7 @@ export default {
 <style>
 .ub-sidebar{
   height: 100%;
-  background: rgb(var(--bg));
+  background: hsl(var(--hs-sidebar), var(--l-sidebar-default));
   display: flex;
   flex-direction: column;
   position: relative;
@@ -324,13 +324,13 @@ export default {
 .ub-sidebar .el-menu::-webkit-scrollbar {
   width: 12px;
   height: 12px;
-  background-color: rgba(var(--bg-hover), 0.2);
+  background-color: hsl(var(--hs-sidebar), var(--l-sidebar-depth-1));
 }
 
 .ub-sidebar .el-menu::-webkit-scrollbar-thumb {
   border: 2px solid rgba(0, 0, 0, 0);
   background-clip: padding-box;
-  background-color: #b0b3b5;
+  background-color: hsl(var(--hs-sidebar), 60%);
   transition:background-color .1s;
 }
 
@@ -365,6 +365,7 @@ export default {
   align-items: center;
   white-space: pre-wrap;
   min-height: 32px;
+  letter-spacing: 0.6px;
 }
 
 .ub-sidebar .el-menu--collapse .el-submenu__title,
@@ -393,7 +394,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid rgba(var(--text-contrast), 0.1);
   padding: 5px 15px;
 }
 
@@ -403,7 +403,7 @@ export default {
 }
 
 .ub-sidebar__nav-label {
-  color: rgba(255, 255, 255, 0.54);
+  color: hsl(var(--hs-text), var(--l-text-inverse));
   font-size: 12px;
   margin: 12px;
 }

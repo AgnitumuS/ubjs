@@ -136,7 +136,7 @@ export default {
       if (!this.isLoaded) {
         if (!this.isNew) {
           // fetch localized fields
-          let repo = this.$UB.Repository(this.entity).attrs('ID')
+          const repo = this.$UB.Repository(this.entity).attrs('ID')
           this.localeAttrs.forEach(a => repo.attrs(a.attr))
           const data = await repo.selectById(this.$store.state.data.ID)
           delete data.ID

@@ -564,35 +564,30 @@ export default {
 
 <style>
 .ub-select-multiple__container{
-  border: 1px solid rgb(var(--input-border));
-  border-radius: 4px;
+  border: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
+  border-radius: var(--border-radius);
   padding-left: 5px;
-  background-color: #FFF;
+  background-color: hsl(var(--hs-background), var(--l-background-inverse));
   display: flex;
 }
 
 .ub-select-multiple__container.disabled{
-  background-color: #F5F7FA;
-  border-color: #E4E7ED;
-  color: #C0C4CC;
+  background-color: hsl(var(--hs-background), var(--l-background-default));
+  border-color: hsl(var(--hs-border), var(--l-input-border-disabled));
+  color: hsl(var(--hs-text), var(--l-text-disabled));
   cursor: not-allowed;
-  min-height: 32px;
+  min-height: 36px;
 }
 
 .ub-select-multiple__container.is-focused{
   position: relative;
-  border-color: rgb(var(--primary));
-}
-
-.ub-select-multiple__tag {
-  margin-right: 4px;
-  margin-bottom: 5px;
+  border-color: hsl(var(--hs-primary), var(--l-input-border-default));
 }
 
 .ub-select-multiple__input-wrap{
   display: flex;
   flex-wrap: wrap;
-  margin-top: 5px;
+  margin-top: 7px;
   flex-grow: 1;
   overflow: hidden;
 }
@@ -602,13 +597,13 @@ export default {
   flex-grow: 1;
   min-width: 100px;
   background: none;
-  margin-bottom: 5px;
+  margin-bottom: 7px;
   margin-left: 10px;
   height: 20px;
 }
 
 .ub-select-multiple__input::placeholder{
-  color: rgba(var(--input-placeholder), 0.54);
+  color: hsl(var(--hs-text), var(--l-text-disabled));
 }
 
 .ub-select-multiple__icon-wrap {
@@ -622,7 +617,7 @@ export default {
   justify-content: center;
   height: 100%;
   min-width: 34px;
-  color: rgb(var(--input-border));
+  color: hsl(var(--hs-control), var(--l-state-default));
   cursor: pointer;
 }
 
@@ -631,12 +626,23 @@ export default {
   padding-right: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-right: 4px;
+  margin-bottom: 7px;
 }
 
 .ub-select-multiple__tag.fixed {
   padding-right: 10px;
-  background-color: rgba(var(--bg), 0.15);
-  border-color: rgba(var(--bg), 0.15);
+  background-color: hsl(var(--hs-background), var(--l-background-default));
+  border-color: hsl(var(--hs-border), var(--l-input-border-default));
+}
+
+.ub-select__option.selected.fixed {
+  background-color: hsl(var(--hs-primary), var(--l-background-default));
+}
+
+.ub-select__option.fixed .el-checkbox__inner {
+  background-color: hsl(var(--hs-primary), var(--l-background-default));
+  border-color: hsl(var(--hs-primary), var(--l-input-border-default));
 }
 
 .ub-select-multiple__tag .el-icon-close {

@@ -80,12 +80,12 @@ export default {
   }
 
   .pagination__current{
-    color: rgb(var(--info));
+    color: hsl(var(--hs-text), var(--l-text-label));
     font-weight: 500;
   }
 
   .pagination__total{
-    background: rgb(var(--bg-grey));
+    background: hsl(var(--hs-background), var(--l-background-default));
     border-radius: 5px;
     cursor: pointer;
     border: none;
@@ -100,7 +100,7 @@ export default {
   }
 
   .pagination__total span {
-    color: rgb(var(--info));
+    color: hsl(var(--hs-text), var(--l-text-label));
     font-weight: 500;
   }
 
@@ -109,12 +109,12 @@ export default {
   }
 
   .pagination__total i {
-    color: rgba(var(--secondary), 0.9);
+    color: hsl(var(--hs-primary), var(--l-state-default));
     font-size: 18px;
   }
 
   .pagination__out-of{
-    color: rgb(var(--info));
+    color: hsl(var(--hs-text), var(--l-text-label));
     font-weight: 500;
     margin: 0 4px;
   }
@@ -122,7 +122,7 @@ export default {
   .pagination__button{
     border: none;
     background: none;
-    color: rgb(var(--text));
+    color: hsl(var(--hs-control), var(--l-state-default));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -132,7 +132,7 @@ export default {
   }
 
   .pagination__button:disabled {
-    opacity: 0.5;
+    color: hsl(var(--hs-info), var(--l-state-disabled));
     cursor: not-allowed;
   }
   .pagination__button__prev{

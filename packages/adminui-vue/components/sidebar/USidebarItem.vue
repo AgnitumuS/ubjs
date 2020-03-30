@@ -21,8 +21,8 @@
     <u-sidebar-item
       v-for="child in item.children"
       :key="child.ID"
-      :item="child"
       :context-disabled="contextDisabled"
+      :item="child"
       :level="level+1"
       @contextmenu="$emit('contextmenu', $event, child)"
     />
@@ -83,57 +83,57 @@ export default {
 </script>
 
 <style>
-.ub-submenu__on-colapsed__title{
-  display: none;
-  font-size: 14px;
-  font-weight: 700;
-  padding: 8px;
-  height: auto;
-  color: white;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
+  .ub-submenu__on-colapsed__title {
+    display: none;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px;
+    height: auto;
+    color: white;
+    border-bottom: 1px solid hsl(var(--hs-sidebar), var(--l-sidebar-depth-3));
+    letter-spacing: 0.3px;
+  }
 
-.ub-sidebar__popup-menu .ub-submenu__on-colapsed__title{
-  display: block;
-}
+  .ub-sidebar__popup-menu .ub-submenu__on-colapsed__title {
+    display: block;
+  }
 
-.ub-sidebar__popup-menu .el-menu-item ,
-.ub-sidebar__popup-menu .el-submenu__title{
-  height: 32px;
-  line-height: 32px;
-}
+  .ub-sidebar__popup-menu .el-menu-item,
+  .ub-sidebar__popup-menu .el-submenu__title {
+    height: 32px;
+    line-height: 32px;
+  }
 
-.ub-sidebar__popup-menu .el-menu-item [class*=fa-],
-.ub-sidebar__popup-menu .el-submenu__title [class*=fa-],
-.ub-sidebar__popup-menu .el-menu-item [class^=el-icon-],
-.ub-sidebar__popup-menu .el-submenu__title [class^=el-icon-]{
-  margin-right: 4px;
-  min-width: 18px;
-  width: 18px;
-}
+  .ub-sidebar__popup-menu .el-menu-item [class*=fa-],
+  .ub-sidebar__popup-menu .el-submenu__title [class*=fa-],
+  .ub-sidebar__popup-menu .el-menu-item [class^=el-icon-],
+  .ub-sidebar__popup-menu .el-submenu__title [class^=el-icon-] {
+    margin-right: 4px;
+    min-width: 18px;
+    width: 18px;
+  }
 
-.ub-sidebar__popup-menu .el-submenu__title .el-submenu__icon-arrow {
-  transform: rotateZ(180deg);
-  position: relative;
-  top: 0;
-  right: 0;
-  margin-left: auto;
-  margin-top: 0;
-}
+  .ub-sidebar__popup-menu .el-submenu__title .el-submenu__icon-arrow {
+    transform: rotateZ(180deg);
+    position: relative;
+    top: 0;
+    right: 0;
+    margin-left: auto;
+    margin-top: 0;
+  }
 
-.ub-sidebar__popup-menu .el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow {
-  transform: rotateZ(0deg);
-}
+  .ub-sidebar__popup-menu .el-submenu.is-opened > .el-submenu__title .el-submenu__icon-arrow {
+    transform: rotateZ(0deg);
+  }
 
-.ub-sidebar__popup-menu .el-submenu__title,
-.ub-sidebar__popup-menu .el-menu-item{
-  display: flex;
-  align-items: center;
-}
+  .ub-sidebar__popup-menu .el-submenu__title,
+  .ub-sidebar__popup-menu .el-menu-item {
+    display: flex;
+    align-items: center;
+  }
 
-.ub-sidebar .el-menu--collapse .ub-sidebar__item-title__negative-margin,
-.ub-sidebar__popup-menu .ub-sidebar__item-title__negative-margin{
-  display: none;
-}
-
+  .ub-sidebar .el-menu--collapse .ub-sidebar__item-title__negative-margin,
+  .ub-sidebar__popup-menu .ub-sidebar__item-title__negative-margin {
+    display: none;
+  }
 </style>

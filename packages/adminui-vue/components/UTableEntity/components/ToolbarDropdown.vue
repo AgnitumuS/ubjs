@@ -1,9 +1,13 @@
 <template>
   <u-dropdown
     class="u-table-entity__head__dropdown"
+    placement="bottom-end"
     :width="210"
   >
-    <u-toolbar-button icon="el-icon-more-outline" />
+    <u-toolbar-button
+      icon="el-icon-more-outline"
+      color="secondary"
+    />
 
     <template slot="dropdown">
       <slot name="prepend" />

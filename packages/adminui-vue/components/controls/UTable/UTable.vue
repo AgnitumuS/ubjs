@@ -198,6 +198,15 @@ export default {
 </script>
 
 <style>
+.u-table {
+  --border: hsl(var(--hs-border), var(--l-layout-border-default));
+  --text:  hsl(var(--hs-text), var(--l-text-default));
+  --header-text: hsl(var(--hs-text), var(--l-text-label));
+  --border-hover: hsl(var(--hs-border), var(--l-layout-border-light));
+  --row-hover: hsl(var(--hs-background), var(--l-background-default));
+  --cell-hover: hsl(var(--hs-background), var(--l-background-active));
+}
+
 .u-table table {
   width: 100%;
   border-collapse: separate;
@@ -216,12 +225,14 @@ export default {
 
 .u-table td,
 .u-table th{
-  border-bottom: 1px solid rgb(var(--table-border));
-  background: rgb(var(--table-bg));
-  color: rgb(var(--table-text));
-  padding: 16px;
-  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  padding: 12px 16px;
+  font-size: 16px;
   position: relative;
+  letter-spacing: 0.3px;
+  font-weight: 400;
+  background: hsl(var(--hs-background), var(--l-background-inverse));
 }
 
 .u-table__cell-container{
@@ -235,9 +246,10 @@ export default {
   top: 0;
   z-index: 1;
   position: sticky;
-  color: rgba(var(--table-header-color), 0.76);
+  color: var(--header-text);
   white-space: nowrap;
-  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .u-table th:after{
@@ -247,7 +259,7 @@ export default {
   position: absolute;
   top: calc(50% - 14px);
   right: 0;
-  background: rgb(var(--table-border));
+  background: var(--border);
 }
 
 .u-table th:last-child:after,
@@ -267,12 +279,12 @@ export default {
 }
 
 .u-table tr:hover td{
-  background: rgb(var(--table-border));
-  border-bottom-color: rgb(var(--table-border-hover));
+  background: var(--row-hover);
+  border-bottom-color: var(--border-hover);
 }
 
 .u-table tr td:hover{
-  background: rgb(var(--table-cell-hover));
+  background: var(--cell-hover);
 }
 
 .u-table th.sortable{
@@ -282,7 +294,7 @@ export default {
 .u-table__head-cell__icon-sort{
   font-size: 13px;
   margin-left: 2px;
-  color: rgba(var(--info), 0.7);
+  color: var(--header-text);
 }
 </style>
 

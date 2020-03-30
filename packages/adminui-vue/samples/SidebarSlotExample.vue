@@ -83,14 +83,14 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border-bottom: 1px solid rgba(var(--info), 0.15);
+  border-bottom: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   padding-bottom: 10px;
   flex-shrink: 0;
 }
 
 .ub-sidebar__quick-access-group i{
   display: block;
-  color: rgb(var(--info));
+  color: hsl(var(--hs-control), var(--l-state-default));
   font-size: 30px;
   margin: 0 4px;
   width: 30px;
@@ -99,7 +99,7 @@ export default {
 }
 
 .ub-sidebar__quick-access-group i:hover{
-  color: rgb(var(--primary));
+  color: hsl(var(--hs-primary), var(--l-state-hover));
 }
 
 .ub-sidebar__quick-access-button{
@@ -107,7 +107,7 @@ export default {
   height: 56px;
   width: 100%;
   cursor: pointer;
-  color: rgb(var(--info));
+  color: hsl(var(--hs-text), var(--l-text-default));
   transition: .3s;
 }
 
@@ -120,7 +120,7 @@ export default {
 }
 
 .ub-sidebar__quick-access-button:hover{
-  color: rgb(var(--primary));
+  color: hsl(var(--hs-primary), var(--l-text-default));
   background: rgb(38, 51, 64);
 }
 </style>

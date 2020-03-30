@@ -6,10 +6,44 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - hsl css variables. [Instructions to use](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/3446a621479988ea0bd31afffc88f15474dc0516/packages/adminui-vue/samples/HSL-COLORS.md)
 
 ### Changed
+ - `UToolbarButton` color `info` replaced by `secondary` according new hsl variables
 
 ### Deprecated
+ - rgb css variables no more supports. Recommended migrate to hsl variables.
+ So that the old code doesn't break copy this css variables in project.
+```css
+:root{
+  --bg: 55, 63, 81;
+  --bg-hover: 47, 53, 68;
+  --bg-grey: 245, 247, 250;
+  --primary: 66, 183, 115;
+  --secondary: 128, 170, 226;
+  --danger: 245, 108, 108;
+  --info: 96, 98, 102;
+  --info-light: 192, 196, 204;
+  --warning: 230, 162, 60;
+  --success: 103, 194, 58;
+  --text: 50, 59, 69;
+  --text-contrast: 255, 255, 255;
+  --scrollbar: 232, 232, 232;
+  --scrollbar-bg: 251, 251, 251;
+
+  --table-bg: 255, 255, 255;
+  --table-cell-fixed-bg: 253, 253, 253;
+  --table-cell-hover: 238, 242, 247;
+  --table-border: var(--bg-grey);
+  --table-border-hover: 231, 236, 243;
+  --table-text: 77, 79, 83;
+  --table-header-color: 125, 128, 135;
+  --table-selected-row: 245, 252, 248;
+  --table-selected-cell: 235, 248, 241;
+  --input-border: 173, 176, 184;
+  --input-placeholder: var(--bg);
+}
+```
 
 ### Removed
 

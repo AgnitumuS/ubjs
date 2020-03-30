@@ -10,15 +10,15 @@
     position="absolute"
   >
     <button
-      class="u-dropdown-item"
       :disabled="disabled"
-      v-on="$listeners"
+      class="u-dropdown-item"
       @click="close"
+      v-on="$listeners"
     >
       <i
         v-if="icon"
-        class="u-dropdown-item__icon"
         :class="icon"
+        class="u-dropdown-item__icon"
       />
 
       <span class="u-dropdown-item__label">
@@ -46,35 +46,35 @@
 
 <script>
 /**
- * Child of UDropdown
- */
+   * Child of UDropdown
+   */
 export default {
   name: 'UDropdownItem',
 
   props: {
     /**
-     * Icon class
-     */
+       * Icon class
+       */
     icon: String,
 
     /**
-     * Item text
-     */
+       * Item text
+       */
     label: String,
 
     /**
-     * Render divider ignore other props
-     */
+       * Render divider ignore other props
+       */
     divider: Boolean,
 
     /**
-     * Disabled state
-     */
+       * Disabled state
+       */
     disabled: Boolean,
 
     /**
-     * Prevent close dropdown
-     */
+       * Prevent close dropdown
+       */
     preventClose: Boolean
   },
 
@@ -104,62 +104,65 @@ export default {
 </script>
 
 <style>
-.u-dropdown-item{
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  border: none;
-  background: none;
-  width: 100%;
-  white-space: nowrap;
-}
+  .u-dropdown-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    white-space: nowrap;
+  }
 
-.u-dropdown-item:hover {
-  background: rgba(var(--info), 0.13);
-}
+  .u-dropdown-item:not(:disabled):hover {
+    background: hsl(var(--hs-background), var(--l-background-default));
+  }
 
-.u-dropdown-item__arrow{
-  font-size: 12px;
-  color: rgba(var(--info), 0.8);
-  padding-right: 4px;
-  margin-left: auto;
-}
+  .u-dropdown-item__arrow {
+    font-size: 12px;
+    color: hsl(var(--hs-control), var(--l-state-default));
+    padding-right: 4px;
+    margin-left: auto;
+  }
 
-.u-dropdown-item__icon{
-  font-size: 14px;
-  color: rgba(var(--table-text), 0.8);
-  width: 14px;
-  height: 14px;
-  margin-left: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .u-dropdown-item__icon {
+    font-size: 14px;
+    color: hsl(var(--hs-control), var(--l-state-default));
+    width: 14px;
+    height: 14px;
+    margin-left: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.u-dropdown-item__label{
-  color: rgb(var(--table-text));
-  font-size: 14px;
-  line-height: 1.4;
-  padding: 8px;
-  padding-right: 12px;
-  margin-left: 4px;
-}
+  .u-dropdown-item__label {
+    color: hsl(var(--hs-text), var(--l-text-default));
+    font-size: 14px;
+    line-height: 1.4;
+    padding: 8px;
+    padding-right: 12px;
+    margin-left: 4px;
+  }
 
-.u-dropdown-item__divider{
-  width: 100%;
-  height: 1px;
-  background: rgba(var(--info), 0.1);
-  margin: 6px 0;
-}
+  .u-dropdown-item__divider {
+    width: 100%;
+    height: 1px;
+    background: hsl(var(--hs-border), var(--l-layout-border-default));
+    margin: 6px 0;
+  }
 
-.u-dropdown-item:disabled{
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+  .u-dropdown-item:disabled {
+    cursor: not-allowed;
+  }
 
-.u-dropdown-item:disabled:hover{
-  background: #fff;
-}
+  .u-dropdown-item:disabled > .u-dropdown-item__icon{
+    color: hsl(var(--hs-control), var(--l-state-disabled));
+  }
+
+  .u-dropdown-item:disabled > .u-dropdown-item__label{
+    color: hsl(var(--hs-text), var(--l-text-disabled));
+  }
 </style>
 
 <docs>
@@ -171,9 +174,9 @@ export default {
       <el-button>click me</el-button>
 
       <template #dropdown>
-        <u-dropdown-item icon="el-icon-edit" label="Edit" @click="say('Edit')"/>
-        <u-dropdown-item icon="el-icon-delete" label="Delete" @click="say('Delete')"/>
-        <u-dropdown-item icon="el-icon-plus" label="Add" @click="say('Add')"/>
+        <u-dropdown-item @click="say('Edit')" icon="el-icon-edit" label="Edit"/>
+        <u-dropdown-item @click="say('Delete')" icon="el-icon-delete" label="Delete"/>
+        <u-dropdown-item @click="say('Add')" icon="el-icon-plus" label="Add"/>
       </template>
     </u-dropdown>
   </template>
@@ -181,7 +184,7 @@ export default {
   <script>
     export default {
       methods: {
-        say(value) {
+        say (value) {
           alert(value)
         }
       }
@@ -217,10 +220,10 @@ export default {
       <el-button>click me</el-button>
 
       <template #dropdown>
-        <u-dropdown-item icon="el-icon-lollipop" disabled label="Disabled" @click="say('Disabled')"/>
-        <u-dropdown-item icon="el-icon-edit" label="Edit" @click="say('Edit')"/>
-        <u-dropdown-item icon="el-icon-delete" label="Delete" @click="say('Delete')"/>
-        <u-dropdown-item icon="el-icon-plus" label="Add" @click="say('Add')"/>
+        <u-dropdown-item @click="say('Disabled')" disabled icon="el-icon-lollipop" label="Disabled"/>
+        <u-dropdown-item @click="say('Edit')" icon="el-icon-edit" label="Edit"/>
+        <u-dropdown-item @click="say('Delete')" icon="el-icon-delete" label="Delete"/>
+        <u-dropdown-item @click="say('Add')" icon="el-icon-plus" label="Add"/>
       </template>
     </u-dropdown>
   </template>
@@ -228,7 +231,7 @@ export default {
   <script>
     export default {
       methods: {
-        say(value) {
+        say (value) {
           alert(value)
         }
       }
@@ -263,7 +266,7 @@ export default {
 
       <template #dropdown>
         <u-dropdown-item label="This button will close dropdown"/>
-        <u-dropdown-item prevent-close label="Prevented"/>
+        <u-dropdown-item label="Prevented" prevent-close/>
       </template>
     </u-dropdown>
   </template>
@@ -278,7 +281,7 @@ export default {
 
       <template #dropdown>
         <u-dropdown-item prevent-close>
-          <el-checkbox v-model="checked" slot="label">
+          <el-checkbox slot="label" v-model="checked">
             Some action
           </el-checkbox>
         </u-dropdown-item>
