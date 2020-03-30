@@ -29,6 +29,7 @@
       <u-toolbar-button
         icon="fa fa-cog"
         color="secondary"
+        tooltip="allActions"
       />
 
       <template #dropdown>
@@ -106,16 +107,16 @@ export default {
       }
       return [{
         label: this.$ut('save') + ' (Ctrl + S)',
-        icon: 'fas fa-save',
+        icon: 'far fa-save',
         handler: () => this.save(),
         disabled: !this.canSave,
-        color: 'primary'
+        color: 'secondary'
       }, {
         label: this.$ut('saveAndClose') + ' (Ctrl + Enter)',
         icon: 'far fa-share-square',
         handler: this.saveAndClose,
         disabled: !this.canSave,
-        color: 'primary'
+        color: 'secondary'
       }, {
         label: this.$ut('Delete') + ' (Ctrl + Delete)',
         icon: 'far fa-trash-alt',
@@ -388,7 +389,7 @@ export default {
 
 <style>
 .u-toolbar{
-  border-bottom: 1px solid rgba(var(--bg), 0.12);
+  border-bottom: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   padding: 0.5em 1em;
   display: flex;
 }
@@ -399,14 +400,14 @@ export default {
 
 .u-toolbar__date td{
   font-size: 10px;
-  color: rgb(var(--info));
+  color: hsl(var(--hs-text), var(--l-text-label));
   text-align: right;
   padding-right: 5px;
   white-space: nowrap;
 }
 
 .u-toolbar__date{
-  border-left: 1px solid rgba(var(--info), 0.1);
+  border-left: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   padding-left: 10px;
   margin-left: 10px;
 }

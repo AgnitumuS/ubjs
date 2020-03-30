@@ -84,6 +84,7 @@ const momentPlugin = require('./utils/moment-plugin')
 Vue.use(momentPlugin)
 
 require('normalize.css/normalize.css')
+require('./theme/fonts.css')
 require('./theme/ub-body.css')
 if (BOUNDLED_BY_WEBPACK) {
   // webpack MiniCssExtractPlugin extract all styles (for vue SFC), so we need to inject dist/adminui-vue.css

@@ -360,7 +360,7 @@ module.exports.default = {
 
 <style>
 .ub-notification__add__users-list{
-  border-top: 1px solid rgba(var(--info), 0.3);
+  border-top: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   margin-top: 10px;
   flex-grow: 1;
   overflow-y: auto;
@@ -368,7 +368,7 @@ module.exports.default = {
 }
 
 .ub-notification__users-list__item{
-  border-bottom: 1px solid rgba(var(--info), 0.1);
+  border-bottom: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   padding: 5px;
   display: flex;
   align-items: center;

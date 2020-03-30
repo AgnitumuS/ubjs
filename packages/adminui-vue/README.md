@@ -27,7 +27,7 @@ To use it in `adminUI` based apps in ubConfig
 ```
 "uiSettings": {
   "adminUI": {
-	"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
+	"loginWindowTopLogoURL": "/models/ub-pub/img/login-logo.svg",
 	"loginURL": "/models/adminui-vue/views/ub-auth.html",
   ...
 ```

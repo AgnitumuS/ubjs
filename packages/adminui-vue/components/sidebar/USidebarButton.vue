@@ -1,14 +1,14 @@
 <template>
   <el-tooltip
     :content="tooltip"
-    :open-delay="300"
-    :enterable="false"
     :disabled="!tooltip"
+    :enterable="false"
+    :open-delay="300"
     :placement="tooltipPlacement"
   >
     <button
-      v-bind="$attrs"
       class="u-sidebar__button"
+      v-bind="$attrs"
       v-on="$listeners"
     >
       <i :class="icon" />
@@ -21,19 +21,19 @@ export default {
   name: 'USidebarButton',
   props: {
     /**
-     * Icon class is required
-     */
+       * Icon class is required
+       */
     icon: {
       type: String,
       required: true
     },
     /**
-     * Tooltip text
-     */
+       * Tooltip text
+       */
     tooltip: String,
     /**
-     * Tooltip placement
-     */
+       * Tooltip placement
+       */
     tooltipPlacement: {
       type: String,
       default: 'bottom'
@@ -49,13 +49,13 @@ export default {
     padding: 0;
     border: none;
     border-radius: 40px;
-    color: rgb(var(--text-contrast), 0.7);
-    background: rgb(var(--bg-hover));
+    color: hsl(var(--hs-text), var(--l-text-inverse));
+    background: hsl(var(--hs-sidebar), var(--l-sidebar-depth-1));
     cursor: pointer;
     transition: background 0.1s;
   }
+
   .u-sidebar__button:hover {
-    background: rgb(var(--secondary));
-    color: rgb(var(--text-contrast));
+    background: hsl(var(--hs-sidebar), var(--l-sidebar-depth-2));
   }
 </style>

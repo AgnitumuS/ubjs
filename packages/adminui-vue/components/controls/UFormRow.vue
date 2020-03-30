@@ -67,8 +67,8 @@ const ElSelectHack = {
 }
 
 /**
-   * Form row with a label
-   */
+ * Form row with a label
+ */
 export default {
   name: 'UFormRow',
 
@@ -183,12 +183,13 @@ export default {
 
   .u-form-row__label {
     grid-area: label;
-    color: rgb(var(--info));
+    color: hsl(var(--hs-text), var(--l-text-label));
     padding-right: 8px;
     white-space: nowrap;
     overflow: hidden;
     align-self: center;
     display: flex;
+    font-size: 16px;
   }
 
   .u-form-row__label > span {
@@ -198,7 +199,7 @@ export default {
 
   .u-form-row__label.required:before {
     content: '*';
-    color: rgb(var(--danger));
+    color: hsl(var(--hs-danger), var(--l-state-default));
     margin: 0 2px;
     order: 1;
   }
@@ -221,7 +222,7 @@ export default {
   .u-form-row__error {
     grid-area: error;
     text-align: right;
-    color: rgb(var(--danger));
+    color: hsl(var(--hs-danger), var(--l-text-default));
     white-space: nowrap;
     overflow: hidden;
     height: 16px;
@@ -235,11 +236,12 @@ export default {
   .u-form-row.is-error .el-input__inner,
   .u-form-row.is-error .el-textarea__inner,
   .u-form-row.is-error .ub-select-multiple__container {
-    border-color: rgb(var(--danger));
+    border-color: hsl(var(--hs-danger), var(--l-input-border-default));
   }
 
   .u-form-row__top .u-form-row__label {
-    padding-bottom: 6px;
+    padding-bottom: 4px;
+    font-size: 14px;
   }
 
   .u-form-row__right .u-form-row__label {
@@ -249,7 +251,7 @@ export default {
   .u-form-row__description {
     font-size: 12px;
     margin-top: 5px;
-    color: rgb(var(--info), 0.6);
+    color: hsl(var(--hs-text), var(--l-text-description));
   }
 </style>
 
