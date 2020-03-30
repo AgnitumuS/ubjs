@@ -53,8 +53,8 @@ export default {
 <style>
 .u-table-entity__filter__container {
   display: flex;
-  background: rgb(var(--bg-grey));
-  border-radius: 5px;
+  background: hsl(var(--hs-background), var(--l-background-default));
+  border-radius: var(--border-radius);
   padding: 4px 8px;
   margin: 12px 0;
   margin-left: 16px;
@@ -63,7 +63,7 @@ export default {
 
 .u-table-entity__filter__icon{
   font-size: 20px;
-  color: rgba(var(--success), 0.9);
+  color: hsl(var(--hs-primary), var(--l-state-default));
   margin-right: 8px;
   margin-left: 4px;
 }

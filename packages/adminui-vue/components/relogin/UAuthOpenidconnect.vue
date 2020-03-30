@@ -33,16 +33,16 @@ export default {
 
   methods: {
     doLogin () {
-      let selectedProvider = localStorage.getItem('openIDProvider')
+      const selectedProvider = localStorage.getItem('openIDProvider')
       const me = this
-      let url = window.location.origin + '/openIDConnect/' + selectedProvider
+      const url = window.location.origin + '/openIDConnect/' + selectedProvider
 
       const loginWindowOpenID = window.open(url, 'login', 'toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0')
       function loginListener (event) {
         if (event.source === loginWindowOpenID) {
           window.removeEventListener('message', loginListener)
           if (event.origin.indexOf(window.location.origin) === 0) {
-            let response = event.data
+            const response = event.data
 
             if (response.success) {
               response.authSchema = 'OpenIDConnect'

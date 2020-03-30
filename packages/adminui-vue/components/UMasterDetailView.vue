@@ -204,7 +204,7 @@ export default {
   .u-table-register__divider-line {
     flex-grow: 1;
     height: 1px;
-    background: rgba(var(--info), 0.3);
+    background: hsl(var(--hs-border), var(--l-layout-border-default));
   }
 
   .u-table-register__divider-title {
@@ -214,7 +214,7 @@ export default {
   }
 
   .u-table-register__divider-button {
-    color: rgb(var(--primary));
+    color: hsl(var(--hs-primary), var(--l-text-default));
     font-size: 15px;
     background: none;
     border: none;
@@ -224,6 +224,6 @@ export default {
   }
 
   .u-table-register__divider-button:hover{
-    color: rgba(var(--primary), 0.7);
+    color: hsl(var(--hs-primary), var(--l-state-hover));
   }
 </style>

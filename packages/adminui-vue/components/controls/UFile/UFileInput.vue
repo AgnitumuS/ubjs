@@ -146,9 +146,9 @@ export default {
 
   .u-file__dropzone{
     padding: 10px;
-    border: 1px dashed rgb(var(--input-border));
-    border-radius: 4px;
-    color: rgb(var(--info));
+    border: 1px dashed hsl(var(--hs-border), var(--l-input-border-default));
+    border-radius: var(--border-radius);
+    color: hsl(var(--hs-text), var(--l-text-default));
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -158,9 +158,9 @@ export default {
 
   .u-file__dropzone:active:not(.disabled),
   .u-file__dropzone.hover:not(.disabled){
-    border-color: rgba(var(--primary), 0.3);
-    color: rgb(var(--primary));
-    background: rgba(var(--primary), 0.03);
+    border-color: hsl(var(--hs-primary), var(--l-input-border-hover));
+    color: hsl(var(--hs-primary), var(--l-text-label));
+    background: hsl(var(--hs-primary), var(--l-background-default));
   }
 
   .u-file__dropzone.disabled{
@@ -172,7 +172,7 @@ export default {
     font-size: 18px;
     margin-right: 10px;
     padding-right: 10px;
-    border-right: 1px solid rgba(var(--info), 0.3);
+    border-right: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   }
 
   .u-file__dropzone__horizontal{

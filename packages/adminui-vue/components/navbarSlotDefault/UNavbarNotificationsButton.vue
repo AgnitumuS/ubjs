@@ -1,5 +1,8 @@
 <template>
-  <div class="u-navbar__dropdown" v-if="ubsMessagesAccessible">
+  <div
+    v-if="ubsMessagesAccessible"
+    class="u-navbar__dropdown"
+  >
     <el-popover
       v-model="isVisible"
       placement="bottom-end"
@@ -218,19 +221,6 @@ export default {
 .notifications__list{
   max-height: 180px;
   overflow-y: auto;
-  border-top: 1px solid rgba(var(--info), 0.15);
-}
-
-.notifications__list::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-.notifications__list::-webkit-scrollbar-thumb {
-  border: 2px solid rgba(0, 0, 0, 0);
-  background-clip: padding-box;
-  background-color: rgba(var(--bg), 0.2);
-  transition:background-color .1s;
 }
 
 .notifications__popover__header{
@@ -238,7 +228,7 @@ export default {
   padding: 5px;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(var(--info), 0.15);
+  border-bottom: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
 }
 
 .notifications__btn-show-all{
@@ -246,7 +236,7 @@ export default {
 }
 
 .notifications__title-list-count{
-  color: rgba(var(--info), 0.7);
+  color: hsl(var(--hs-text), var(--l-text-label));
   font-size: 11px;
   padding-left: 10px;
 }
@@ -255,7 +245,7 @@ export default {
 .notifications__item{
   padding: 10px;
   padding-left: 20px;
-  border-bottom: 1px solid rgba(var(--info), 0.05);
+  border-bottom: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   position: relative;
   cursor: pointer;
 }
@@ -268,15 +258,14 @@ export default {
   padding: 10px;
   padding-top: 20px;
   font-size: 14px;
-  font-weight: 700;
-  color: rgb(var(--info));
+  color: hsl(var(--hs-text), var(--l-text-disabled));
   border: none;
-  background: linear-gradient(to bottom, transparent, white 50%);
+  background: linear-gradient(to bottom, transparent, hsl(var(--hs-background), var(--l-background-inverse)) 50%);
   pointer-events: none;
 }
 
 .notifications__item.unread .notifications__item__btn-overflow{
-  background: linear-gradient(to bottom, transparent, #f5faff 50%);
+  background: linear-gradient(to bottom, transparent, hsl(var(--hs-background), var(--l-background-inverse)) 50%);
 }
 
 .notifications__item.overflowed{
@@ -285,30 +274,30 @@ export default {
 }
 
 .notifications__item:hover .notifications__item__btn-overflow{
-  color: rgb(var(--primary));
+  color: hsl(var(--hs-primary), var(--l-state-default));
 }
 
 .notifications__item.active{
-  background: rgba(var(--info), 0.05);
+  background: hsl(var(--hs-primary), var(--l-background-default));
 }
 
 .notifications__item:hover{
-  background: rgba(var(--info), 0.1);
+  background: hsl(var(--hs-background), var(--l-background-active));
 }
 
 .notifications__item.unread:hover{
-  background: rgba(var(--primary), 0.1);
+  background: hsl(var(--hs-primary), var(--l-background-active));
 }
 
 .notifications__item.unread{
-  background: rgba(var(--primary), 0.05);
+  background: hsl(var(--hs-primary), var(--l-background-default));
 }
 
 .notifications__item.unread:before{
   content: '';
   width: 8px;
   height: 8px;
-  background: rgb(var(--primary));
+  background: hsl(var(--hs-primary), var(--l-state-default));
   border-radius: 100px;
   position: absolute;
   top: 50%;
@@ -328,33 +317,33 @@ export default {
 
 .notifications__item__icon{
   font-size: 16px;
-  color: rgb(var(--info));
+  color: hsl(var(--hs-control), var(--l-state-default));
   margin-left: 10px;
 }
 
 .notifications__item__icon.el-icon-error{
-  color: rgb(var(--danger));
+  color: hsl(var(--hs-danger), var(--l-state-default));
 }
 
 .notifications__item__icon.el-icon-warning{
-  color: rgb(var(--warning));
+  color: hsl(var(--hs-warning), var(--l-state-default));
 }
 
 .notifications__item__type{
   font-size: 11px;
-  color: rgba(var(--info), 0.8);
+  color: hsl(var(--hs-text), var(--l-text-default));
   padding-left: 7px;
 }
 
 .notifications__item__text{
   font-size: 13px;
-  color: rgb(var(--info));
+  color: hsl(var(--hs-text), var(--l-text-default));
   padding-left: 10px;
 }
 
 .notifications__item__date{
   font-size: 11px;
-  color: rgba(var(--info), 0.8);
+  color: hsl(var(--hs-text), var(--l-text-label));
   margin-left: auto;
 }
 </style>

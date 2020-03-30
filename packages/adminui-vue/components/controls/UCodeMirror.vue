@@ -174,8 +174,8 @@ module.exports = {
 }
 
 .ub-code-mirror .CodeMirror{
-  border-top: 1px solid rgba(var(--info), 0.3);
-  border-bottom: 1px solid rgba(var(--info), 0.3);
+  border-top: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
+  border-bottom: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
 }
 
 .ub-code-mirror__help{

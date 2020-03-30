@@ -2185,7 +2185,7 @@ Ext.define('UB.view.BasePanel', {
       saveAction = new Ext.Action({
         actionId: actions.save,
         scale: 'medium',
-        iconCls: 'fas fa-save',
+        iconCls: 'far fa-save',
         text: UB.i18n('save') + hotKeys[actions.save].text,
         cls: 'save-action',
         eventId: events.save,

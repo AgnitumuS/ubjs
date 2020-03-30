@@ -129,11 +129,11 @@ export default {
 .ub-dialog__info-icon {
   font-size: 32px;
   margin-right: 12px;
-  color: rgb(var(--info));
+  color: hsl(var(--hs-control), var(--l-state-default));
 }
 
 .ub-dialog__info-icon.el-icon-error{
-  color: rgb(var(--danger));
+  color: hsl(var(--hs-danger), var(--l-state-default));
 }
 
 .el-icon-error:before {
@@ -143,7 +143,7 @@ export default {
 }
 
 .ub-dialog__info-icon.el-icon-question{
-  color: rgb(var(--warning));
+  color: hsl(var(--hs-warning), var(--l-state-default));
 }
 
 .ub-notification__error {
@@ -161,12 +161,12 @@ export default {
   display: block;
   margin-left: 20px;
   font-size: 18px;
-  color: rgba(var(--blue), 0.5);
+  color: hsl(var(--hs-primary), var(--l-state-default));
   cursor: pointer;
 }
 
 .ub-notification__error__btn-group i:hover{
-  color: rgb(var(--blue));
+  color: hsl(var(--hs-primary), var(--l-state-hover));
 }
 
 .ub-notification__error__content{

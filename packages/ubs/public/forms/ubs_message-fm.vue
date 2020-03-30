@@ -216,7 +216,7 @@ module.exports.default = {
 .notifications-history__list{
   width: 350px;
   min-width: 350px;
-  border-right: 1px solid rgba(var(--info), 0.15);
+  border-right: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   height: 100%;
   overflow-y: auto;
 }

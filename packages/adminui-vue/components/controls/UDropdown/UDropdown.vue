@@ -166,13 +166,13 @@ export default {
 
 <style>
   .u-dropdown {
-    --border-color: rgba(var(--info), 0.2);
-    --popup-color: #fff;
+    --border-color: hsl(var(--hs-border), var(--l-layout-border-default));
+    --popup-color: hsl(var(--hs-background), var(--l-background-inverse));
 
     background: var(--popup-color);
     border: 1px solid var(--border-color);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    border-radius: 4px;
+    box-shadow: var(--box-shadow-default);
+    border-radius: var(--border-radius);
     z-index: 10;
     padding: 6px 0;
     position: relative;

@@ -14,7 +14,10 @@
       :disabled="disabled"
       v-on="$listeners"
     >
-      <i :class="icon" />
+      <i
+        class="u-toolbar__button-icon"
+        :class="icon"
+      />
       <slot />
     </button>
   </el-tooltip>
@@ -60,38 +63,41 @@ export default {
     align-items: center;
     transition: transform 0.1s;
     height: 100%;
+    --hs: var(--hs-primary);
+    --l: var(--l-state-default);
+    color: hsl(var(--hs), var(--l));
   }
 
   .u-toolbar__button:disabled{
-    opacity: 0.5;
+    --l: var(--l-state-disabled);
     cursor: not-allowed;
   }
 
   .u-toolbar__button:hover{
-    opacity: 0.7;
+    --l: var(--l-state-hover);
+  }
+
+  .u-toolbar__button:active{
+    --l: var(--l-state-active);
   }
 
   .u-toolbar__button.primary {
-    color: rgb(var(--primary));
+    --hs: var(--hs-primary);
   }
-
-  .u-toolbar__button.secondary {
-    color: rgb(var(--secondary));
+  .u-toolbar__button.success {
+    --hs: var(--hs-success);
   }
-
-  .u-toolbar__button.info {
-    color: rgb(var(--info));
-  }
-
-  .u-toolbar__button.danger {
-    color: rgb(var(--danger));
-  }
-
   .u-toolbar__button.warning {
-    color: rgb(var(--warning));
+    --hs: var(--hs-warning);
+  }
+  .u-toolbar__button.danger {
+    --hs: var(--hs-danger);
+  }
+  .u-toolbar__button.secondary {
+    --hs: var(--hs-control);
   }
 
-  .u-toolbar__button i {
+  .u-toolbar__button-icon {
     font-size: 18px;
     margin-right: 4px;
   }
