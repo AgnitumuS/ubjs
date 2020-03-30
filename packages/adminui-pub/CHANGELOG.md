@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-  - rename i18n key `vseDeystviya` -> `allActions` 
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.13.5] - 2020-03-30
+### Changed
+  - rename i18n key `vseDeystviya` -> `allActions` 
 
 ### Fixed
  - `UBCommand.showForm` will accept `instanceId` parameter in case it defined (preffer over `instanceID`). This fix opening form from `magic links`

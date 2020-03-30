@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `cdn_classifier`: added new attribute `orderByAttr` for sorting classifiers items
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.5] - 2020-03-30
+### Added
+- `cdn_classifier`: added new attribute `orderByAttr` for sorting classifiers items
 
 ## [5.4.4] - 2020-03-20
 ## [5.4.3] - 2020-03-17

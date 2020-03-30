@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.10.5] - 2020-03-30
+### Added
  - hsl css variables. [Instructions to use](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/3446a621479988ea0bd31afffc88f15474dc0516/packages/adminui-vue/samples/HSL-COLORS.md)
 
 ### Changed
@@ -44,10 +55,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   --input-placeholder: var(--bg);
 }
 ```
-
-### Removed
-
-### Fixed
 
 ## [1.10.4] - 2020-03-20
 ### Fixed
