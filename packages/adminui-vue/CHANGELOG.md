@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `USidebar` correct target of contextmenu click. In case on click contextmenu level 3 and more
 
 ## [1.10.5] - 2020-03-30
 ### Added
