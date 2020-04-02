@@ -8,12 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - Ext based forms label text weight changed from 600 to 400 (better looks with new Roboto font)
+ - for all Ext controls (except for labels) text weight changed from 600 to 500 (better looks with new Roboto font)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - use `fas fa-box-open` as Drop Zone icon (fa fa-dropbox not present in font awesome 5)
 
 ## [5.13.5] - 2020-03-30
 ### Changed
