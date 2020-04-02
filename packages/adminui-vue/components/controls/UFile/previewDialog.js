@@ -57,7 +57,7 @@ module.exports = async function ({ entity, attribute, id, isDirty, ct, origName,
         ref: 'dialog',
         class: 'u-file__preview-dialog',
         props: {
-          width: '80vw',
+          fullscreen: true,
           title: origName,
           visible: this.dialogVisible
         },
