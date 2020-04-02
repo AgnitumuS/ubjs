@@ -206,6 +206,44 @@ For user, specified in the `UBA.securityDashboard.supervisorUser` setting key (b
 `Security monitor` ( `Administrator -> Security -> Security monitor` ) feature, where all security related events are logged in the real time.
 For a real-time communication WebSockets must be turned on both server and client side - see {@tutorial web_sockets}.
 
+## LDAP authentication
+**Security warning** - password for LDAP authentication is passed in plain text other network, so server
+should accept only HTTPS connection to be secure.
+   
+In case UBLDAP authentication method is added to `security.authenticationMethods` ubConfig section server can verify
+user password using one or several LDAP catalogues.
+
+`security.ldapCatalogs` section should be configured for each supported domain. Consider customer have a Windows domain
+`company.com` and domain user is `company\user01`. Configuration example is:
+   
+```
+"ldapCatalogs": [{
+  "name": "COMPANY",
+  "URL": "ldaps://company.ldap.server:636/OU=MyCompany,DC=company,DC=com?cn?sub?(sAMAccountName=%)"
+}]
+```
+
+After user with name `company\user01`  and empty password is added to `uba_user` server can authenticate him by sending a curl request 
+using URL specified in `URL` parameter with `%` placeholder replaced by `user01` (without domain name).
+
+### Verifying LDAP auth
+LDAP URL can be verified using curl command:
+```
+curl -v "ldaps://company.ldap.server:636/OU=MyCompany,DC=company,DC=com?cn?sub?(sAMAccountName=user01)" -u company\\user01
+```   
+`-v` switch means verbosely. This mode can be used for diagnostic.
+
+See also `CAPath` and `ignoreSSLCertificateErrors` parameters in [ubConfig schema](https://unitybase.info/docson/index.html#https://unitybase.info/models/UB/schemas/ubConfig.schema.json)
+
+**MS LDAP note**
+ In some cases curl won't exit after success response. This occurs when:
+ - The ldap backend used by curl installation is openldap: probably the case on Debian
+ - Queries are made to a server that returns referrals: M$AD is one of them :-(
+ - External ldap configuration allows automatic referrals chasing
+ 
+ As a workaround, we can suggest to disable REFERRALS feature by ldap configuration (add "REFERRALS off" in ldap.conf).
+ This will release the hang. `ldap.conf` usually located in `/etc/openldap/ldap.conf` 
+ 
 ## Additional features of Enterprise edition
 ### Kerberos authentication
 
