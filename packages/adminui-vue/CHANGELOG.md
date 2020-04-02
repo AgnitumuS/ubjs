@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - UFile preview dialog now opened a full screen mode (instead of 80% screen height)
+ - `UFile` preview dialog now opened a full screen mode (instead of 80% screen height)
+ - `UFileCollection` width of column 'size' increased to prevent row wrap
   
 ### Deprecated
 

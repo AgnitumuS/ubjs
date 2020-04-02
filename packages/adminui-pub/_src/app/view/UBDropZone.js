@@ -218,7 +218,7 @@ Ext.define('UB.view.UBDropZone', {
             let zone = document.createElement('div')
             zone.className = 'ub-dz-placeholder'
             zone.id = 'ub-dz-item-' + i
-            zone.innerHTML = `<i class="${cfg.iconCls || 'fa fa-dropbox fa-5x'}"></i><br>${UB.i18n(cfg.message)}</div>`
+            zone.innerHTML = `<i class="${cfg.iconCls || 'fas fa-box-open fa-5x'}"></i><br>${UB.i18n(cfg.message)}</div>`
             content.appendChild(zone)
             me.addZoneHandlers(me, zone, cfg)
           })
