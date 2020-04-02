@@ -121,8 +121,8 @@ export default {
       }, {
         id: 'size',
         label: 'fileInput.manyFilesTable.size',
-        width: 100,
-        minWidth: 100
+        width: 120,
+        minWidth: 120
       }, {
         id: 'type',
         label: 'fileInput.manyFilesTable.type',
