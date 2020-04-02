@@ -378,7 +378,7 @@ export default {
 
   .u-file__preview-dialog .el-dialog__body{
     padding: 0;
-    height: 65vh;
+    height: 90vh;
   }
 </style>
 
