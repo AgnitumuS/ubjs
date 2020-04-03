@@ -8,15 +8,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.10.6] - 2020-04-03
+### Changed
  - `UFile` preview dialog now opened a full screen mode (instead of 80% screen height)
  - `UFileCollection` width of column 'size' increased to prevent row wrap
  - `css` reference for box shadow css variable 
  - `UToolbar` buttons `save` and `save and close` repainted primary blue color
   
-### Deprecated
-
-### Removed
-
 ### Fixed
  - `USidebar` correct target of contextmenu click. In case on click contextmenu level 3 and more
 
