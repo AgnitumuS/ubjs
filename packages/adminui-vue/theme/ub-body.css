@@ -35,7 +35,7 @@
   --l-background-inverse: 100%;
 
   --border-radius: 4px;
-  --box-shadow-default: 0 2px 12px hsl(var(--hs-border), var(--l-layout-border-default));
+  --box-shadow-default: 0 2px 12px hsla(var(--hs-text), var(--l-text-default), 0.05);
 
   --scrollbar-background: hsl(var(--hs-background), var(--l-background-default));
   --scrollbar-thumb: hsl(var(--hs-border), var(--l-layout-border-default));
