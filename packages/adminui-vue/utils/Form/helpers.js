@@ -118,6 +118,8 @@ function isEmpty (obj) {
  * @param {string} key
  * @param {*} value
  * @param {string} [path]
+ *   Path could be deep path.  Using deep path is only allowed to change or set leaf values,
+ *   it won't recursively create objects along the path.
  */
 function change (state, key, value, path) {
   let currentValue = state.data[key]
@@ -131,7 +133,7 @@ function change (state, key, value, path) {
   if (!(key in state.originalData)) {
     // No value in "originalData" - edited for the first time, so save old value to "originalData"
     // TODO: for object types, need to create clone
-    Vue.set(state.originalData, key, _.clone(state.data[key]))
+    Vue.set(state.originalData, key, _.cloneDeep(state.data[key]))
   }
 
   if (path === undefined) {
@@ -142,11 +144,25 @@ function change (state, key, value, path) {
       Vue.set(state.data, key, {})
     }
 
-    const jsonAttr = state.data[key]
-    if (value !== undefined) {
-      Vue.set(jsonAttr, path, value)
-    } else {
-      Vue.delete(jsonAttr, path)
+    // If json path is deep (like 'accounts[0].fullFIO.middleName') -
+    // we need pass to Vue.set separated target object (state.data[key].accounts[0].fullFIO) and last propertyName (middleName).
+    // To supporting bracket notation, brackets replaces to dot.
+    // accounts[0].fullFIO.middleName -> accounts.0.fullFIO.middleName -> ['accounts', '0', 'fullFIO', 'middleName] ->
+    // _.get(state.data[key], ['accounts', '0', 'fullFIO'])
+    // This code works with plain path too (split return [path] if no '.').
+    // **Disadvantages of implementation**:
+    // 1. Bracket notation for string properties especially with '.' (accounts["prop.a"]) - not supported
+    // 2. Client need care yourself of existence target part of path (state.data[key].accounts[0].fullFIO).
+    //    This implementation don't create not existed parts of path (like _.set() do)
+    const parts = path.replace(/]/g, '').replace(/\[/g, '.').split('.')
+    path = parts.pop()
+    const jsonAttr = parts.length === 0 ? state.data[key] : _.get(state.data[key], parts)
+    if (typeof jsonAttr === 'object' && jsonAttr !== null) {
+      if (value !== undefined) {
+        Vue.set(jsonAttr, path, value)
+      } else {
+        Vue.delete(jsonAttr, path)
+      }
     }
   }
 

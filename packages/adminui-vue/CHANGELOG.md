@@ -8,12 +8,73 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - `UFile` preview dialog now opened a full screen mode (instead of 80% screen height)
+ - `UFileCollection` width of column 'size' increased to prevent row wrap
+ - `css` reference for box shadow css variable 
+  
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `USidebar` correct target of contextmenu click. In case on click contextmenu level 3 and more
+
+## [1.10.5] - 2020-03-30
+### Added
+ - hsl css variables. [Instructions to use](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/3446a621479988ea0bd31afffc88f15474dc0516/packages/adminui-vue/samples/HSL-COLORS.md)
+
+### Changed
+ - `UToolbarButton` color `info` replaced by `secondary` according new hsl variables
+
+### Deprecated
+ - rgb css variables no more supports. Recommended migrate to hsl variables.
+ So that the old code doesn't break copy this css variables in project.
+```css
+:root{
+  --bg: 55, 63, 81;
+  --bg-hover: 47, 53, 68;
+  --bg-grey: 245, 247, 250;
+  --primary: 66, 183, 115;
+  --secondary: 128, 170, 226;
+  --danger: 245, 108, 108;
+  --info: 96, 98, 102;
+  --info-light: 192, 196, 204;
+  --warning: 230, 162, 60;
+  --success: 103, 194, 58;
+  --text: 50, 59, 69;
+  --text-contrast: 255, 255, 255;
+  --scrollbar: 232, 232, 232;
+  --scrollbar-bg: 251, 251, 251;
+
+  --table-bg: 255, 255, 255;
+  --table-cell-fixed-bg: 253, 253, 253;
+  --table-cell-hover: 238, 242, 247;
+  --table-border: var(--bg-grey);
+  --table-border-hover: 231, 236, 243;
+  --table-text: 77, 79, 83;
+  --table-header-color: 125, 128, 135;
+  --table-selected-row: 245, 252, 248;
+  --table-selected-cell: 235, 248, 241;
+  --input-border: 173, 176, 184;
+  --input-placeholder: var(--bg);
+}
+```
+
+## [1.10.4] - 2020-03-20
+### Fixed
+ - `UInput` for Currency attribute will use 0.01 as step instead of 0.1.
+   This fix Firefox native validation for values with two digits after "."  
+ - `UCodeMirror` error `split of undefined`. Because codemirror must use JSON string instead value as object from props  
+ - `USelectEntity` - set display value now emits on click outside instead blur input
+
+## [1.10.3] - 2020-03-17
+### Changed
+ - `lookups/getEnumValue` in case code is `null` or `undefined` didn't try to get value from eGroup
+ - `UTableEntity` hide columns `Json` and `Document` by default in case `columns` param is unset.
+ - `USelectEntity` hide columns `Json` and `Document` by default in table which opened on click action - `Select from dictionary`
+
+### Fixed
+ - `USelectEntity`: fetch displayed value on `blur` event
 
 ## [1.10.2] - 2020-03-09
 ### Added
@@ -53,6 +114,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - from `ub-toolbar` to `u-toolbar`
    - from `ub-toolbar__button` to `u-toolbar__button`
    - from `ub-navbar` to `u-navbar`
+ - *BREAKING* `UForm/processing` data is loaded before form mount.
+   If server returns undefined form will not mount
  
 ### Deprecated
  - `UTableEntity` props `dateFormat` and `dateTimeFormat`. `format` function in column definition should

@@ -44,7 +44,7 @@ UB.i18nExtend({
   Copy: 'Нусхабардоштан',
   Edit: 'Вироштан',
   Delete: 'Ҳавз кардан',
-  vseDeystviya: 'Ҳама амалҳо',
+  allActions: 'Ҳама амалҳо...',
   saveAndClose: 'Захира кардан ва пӯшиданд',
   storedData: 'Маълумоти захирашуда',
   resetGUIToDefault: 'Танзимоти интерфейс "бо нобаенӣ"',

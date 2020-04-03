@@ -293,8 +293,8 @@ export default {
 <style>
   .u-file{
     display: flex;
-    border: 1px solid rgba(var(--info), 0.3);
-    border-radius: 4px;
+    border: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
+    border-radius: var(--border-radius);
     align-items: center;
     height: 40px;
     padding-right: 10px;
@@ -305,7 +305,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(var(--secondary), 0.9);
+    color: hsl(var(--hs-primary), var(--l-state-default));
     cursor: pointer;
     background: none;
     border: none;
@@ -315,7 +315,7 @@ export default {
   }
 
   .u-file__button:disabled{
-    color: rgba(var(--info), 0.2);
+    color: hsl(var(--hs-text), var(--l-text-disabled));
     cursor: not-allowed;
   }
 
@@ -326,7 +326,7 @@ export default {
     top: calc(50% - 8px);
     width: 1px;
     height: 16px;
-    background: rgba(var(--info), 0.3);
+    background: hsl(var(--hs-border), var(--l-layout-border-default));
   }
 
   .u-file__button:first-child:after{
@@ -339,7 +339,7 @@ export default {
   }
 
   .u-file__size{
-    color: rgba(var(--info), 0.7);
+    color: hsl(var(--hs-text), var(--l-text-description));
     margin-left: 5px;
   }
 
@@ -349,8 +349,8 @@ export default {
     align-items: center;
     justify-content: center;
     height: 100%;
-    border: 1px solid rgba(var(--info), 0.3);
-    border-radius: 4px;
+    border: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
+    border-radius: var(--border-radius);
     min-height: 100px;
   }
 
@@ -364,8 +364,8 @@ export default {
     width: 40px;
     height: 40px;
     background: white;
-    border: 1px solid rgba(var(--info), 0.3);
-    color: rgb(var(--info));
+    border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+    color: hsl(var(--hs-control), var(--l-state-default));
     border-radius: 100px;
     top: 10px;
     right: 10px;
@@ -378,7 +378,7 @@ export default {
 
   .u-file__preview-dialog .el-dialog__body{
     padding: 0;
-    height: 65vh;
+    height: 90vh;
   }
 </style>
 

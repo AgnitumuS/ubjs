@@ -23,7 +23,7 @@
 			"applicationTitle": "AdminUI",
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
-			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
+			"loginWindowTopLogoURL": "/models/ub-pub/img/login-logo.svg",
 			"endpoint": "ubadminui",
 			"messenger": {
 				"enabled": true,

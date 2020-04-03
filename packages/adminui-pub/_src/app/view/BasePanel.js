@@ -2185,7 +2185,7 @@ Ext.define('UB.view.BasePanel', {
       saveAction = new Ext.Action({
         actionId: actions.save,
         scale: 'medium',
-        iconCls: 'fas fa-save',
+        iconCls: 'far fa-save',
         text: UB.i18n('save') + hotKeys[actions.save].text,
         cls: 'save-action',
         eventId: events.save,
@@ -2476,7 +2476,7 @@ Ext.define('UB.view.BasePanel', {
           scale: 'medium',
           iconCls: 'fa fa-cog',
           arrowCls: '', // remove dropdown arrow
-          tooltip: UB.i18n('vseDeystviya'),
+          tooltip: UB.i18n('allActions'),
           menu: menuAllActions
         }]
 

@@ -342,8 +342,19 @@ function mountContainer ({
     const basePanel = target.up('basepanel')
     if (!basePanel.vueChilds) basePanel.vueChilds = []
     basePanel.vueChilds.push(instance)
-
-    target.on('destroy', () => instance.$destroy())
+    // this watcher helps parent ExtJS form to see vue form is dirty
+    const unWatch = instance.$store
+      ? instance.$store.watch(
+        (state, getters) => getters.isDirty,
+        (newValue, oldValue) => {
+          basePanel.updateActions()
+        }
+      )
+      : null
+    target.on('destroy', () => {
+      if (unWatch) unWatch()
+      instance.$destroy()
+    })
   }
 }
 
@@ -364,7 +375,7 @@ const UMasterDetailView = require('../../components/UMasterDetailView.vue').defa
  */
 function mountTableEntity (cfg) {
   if (!cfg.props.entityName && !cfg.props.repository) {
-    throw new Error(`One of these options is required: "props.entityName" or "props.repository"`)
+    throw new Error('One of these options is required: "props.entityName" or "props.repository"')
   }
 
   function getEntityName () {
@@ -377,6 +388,7 @@ function mountTableEntity (cfg) {
         return cfg.props.entityName
     }
   }
+
   const title = cfg.title || getEntityName()
   const tableRender = h => {
     const scopedSlots = cfg.scopedSlots && cfg.scopedSlots(h)

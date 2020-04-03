@@ -57,7 +57,7 @@ module.exports = {
       default: 'application/x-javascript'
     },
 
-    /**  Allows to run CodeMirror in readOnly mode*/
+    /**  Allows to run CodeMirror in readOnly mode */
     readOnly: {
       type: Boolean,
       default: false
@@ -98,13 +98,13 @@ module.exports = {
           'Ctrl-B': this.doBeautify
         }
       })
-      this._codeMirror.setValue(this.value || '')
+      this._codeMirror.setValue(this.textValue || '')
       this._codeMirror.on('change', debounce(300, cmInstance => {
         try {
-          let newValFromCm = cmInstance.getValue()
+          const newValFromCm = cmInstance.getValue()
           if (newValFromCm !== this.textValue) {
             this.textValue = newValFromCm
-            let val = this.valueIsJson ? JSON.parse(this.textValue) : this.textValue
+            const val = this.valueIsJson ? JSON.parse(this.textValue) : this.textValue
             this.$emit('changed', val)
             this.$emit('input', val)
           }
@@ -136,7 +136,7 @@ module.exports = {
   methods: {
     updateValue (newVal) {
       if (!this._codeMirror) return
-      let newValAsText = (newVal && (typeof newVal === 'object'))
+      const newValAsText = (newVal && (typeof newVal === 'object'))
         ? JSON.stringify(newVal, null, 2)
         : newVal
       if (newValAsText !== this.textValue) {
@@ -150,8 +150,8 @@ module.exports = {
         return SystemJS.import('js-beautify/js/lib/beautify').then(function (beautify) {
           const text = this._codeMirror.getValue()
           const formatted = beautify.js_beautify(text, {
-            'indent_size': 2,
-            'indent_char': ' '
+            indent_size: 2,
+            indent_char: ' '
           })
           this._codeMirror.setValue(formatted)
         })
@@ -174,8 +174,8 @@ module.exports = {
 }
 
 .ub-code-mirror .CodeMirror{
-  border-top: 1px solid rgba(var(--info), 0.3);
-  border-bottom: 1px solid rgba(var(--info), 0.3);
+  border-top: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
+  border-bottom: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
 }
 
 .ub-code-mirror__help{

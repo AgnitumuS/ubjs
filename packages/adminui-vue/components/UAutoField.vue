@@ -32,7 +32,7 @@ export default {
         if (this.$v && this.attributeName in this.$v) {
           this.$v[this.attributeName].$touch()
         }
-        this.$store.commit(`SET_DATA`, { key: this.attributeName, value })
+        this.$store.commit('SET_DATA', { key: this.attributeName, value })
       }
     },
 
@@ -72,7 +72,7 @@ export default {
   },
   render: function (h) {
     let cmp
-    let baseAttrs = { // vue split attrs into attrs and props automatically
+    const baseAttrs = { // vue split attrs into attrs and props automatically
       ...this.$attrs,
       attributeName: this.attributeName,
       value: this.model

@@ -1,105 +1,107 @@
-/* Use rgb code for use rgba colors. Example color: rgba(var(--bg), 0.5);*/
-:root{
-  --bg: 55, 63, 81;
-  --bg-hover: 47, 53, 68;
-  --bg-grey: 245, 247, 250;
-  --primary: 66, 183, 115;
-  --secondary: 128, 170, 226;
-  --danger: 245, 108, 108;
-  --info: 96, 98, 102;
-  --info-light: 192, 196, 204;
-  --warning: 230, 162, 60;
-  --success: 103, 194, 58;
-  --text: 50, 59, 69;
-  --text-contrast: 255, 255, 255;
-  --scrollbar: 232, 232, 232;
-  --scrollbar-bg: 251, 251, 251;
+:root {
+  /* state colors */
+  --hs-primary: 220, 80%;
+  --hs-success: 120, 30%;
+  --hs-warning: 20, 65%;
+  --hs-danger: 360, 60%;
 
-  --table-bg: 255, 255, 255;
-  --table-cell-fixed-bg: 253, 253, 253;
-  --table-cell-hover: 238, 242, 247;
-  --table-border: var(--bg-grey);
-  --table-border-hover: 231, 236, 243;
-  --table-text: 77, 79, 83;
-  --table-header-color: 125, 128, 135;
-  --table-selected-row: 245, 252, 248;
-  --table-selected-cell: 235, 248, 241;
-  --input-border: 173, 176, 184;
-  --input-placeholder: var(--bg);
+  /* Controls - buttons, icons etc. */
+  --hs-control: 220, 15%;
+  --l-state-default: 45%;
+  --l-state-hover: 60%;
+  --l-state-active: 35%;
+  --l-state-disabled: 85%;
+
+  /* text */
+  --hs-text: 240, 5%;
+  --l-text-default: 20%;
+  --l-text-label: 45%;
+  --l-text-description: 60%;
+  --l-text-disabled: 80%;
+  --l-text-inverse: 100%;
+
+  /* border */
+  --hs-border: 220, 20%;
+  --l-input-border-default: 60%;
+  --l-input-border-hover: 40%;
+  --l-input-border-disabled: 75%;
+  --l-layout-border-default: 80%;
+  --l-layout-border-light: 90%;
+
+  /* background */
+  --hs-background: 220, 20%;
+  --l-background-default: 95%;
+  --l-background-active: 90%;
+  --l-background-inverse: 100%;
+
+  --border-radius: 4px;
+  --box-shadow-default: 0 2px 12px hsla(var(--hs-text), var(--l-text-default), 0.05);
+
+  --scrollbar-background: hsl(var(--hs-background), var(--l-background-default));
+  --scrollbar-thumb: hsl(var(--hs-border), var(--l-layout-border-default));
+
+  --hs-sidebar: 220, 20%;
+  --l-sidebar-default: 27%;
+  --l-sidebar-depth-1: 23%;
+  --l-sidebar-depth-2: 19%;
+  --l-sidebar-depth-3: 15%;
+  --l-sidebar-disabled: 80%;
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-  background: rgb(var(--scrollbar-bg));
+  width: 10px;
+  height: 10px;
+  background: var(--scrollbar-background);
 }
 
 ::-webkit-scrollbar-thumb {
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   background-clip: padding-box;
-  background-color: rgb(var(--scrollbar));
-  transition:background-color .1s;
+  background-color: var(--scrollbar-thumb);
+  transition: background-color .1s;
 }
 
-/* Use a native font stack that selects the best font-family for each OS and device. Thnks to bootstrap4 */
 html, body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
-  color: rgba(var(--text), 0.87);
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  color: hsl(var(--hs-text), var(--l-text-default));
+}
+
+.x-panel-body-default {
+  background: hsl(var(--hs-background), var(--l-background-inverse));
 }
 
 /* ExtJS form fields radius */
 .x-form-type-text .x-form-field {
-  border-radius: 4px;
+  border-radius: var(--border-radius);
 }
 
 /* ExtJS date picker radius */
 .x-form-trigger-wrap {
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   border-collapse: separate;
 }
 
 /* ExtJS popup border radius */
 .x-boundlist {
-  border-radius: 1px;
+  border-radius: var(--border-radius);
 }
 
 /* ExtJS fieldset border radius */
 .x-fieldset {
-  border-radius: 4px
+  border-radius: var(--border-radius);
 }
 
 /* Show required star on the right side of label */
 .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:after {
   content: '*';
-  color: #f56c6c;
+  color: hsl(var(--hs-danger), var(--l-text-default));
   margin-left: 4px;
 }
 
 /* Hide required star on the left side of label */
 .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before {
   content: '' !important;
-  margin-right: 0px !important;
-}
-
-.ub-select-entity__menu-button {
-  display: flex;
-  right: 0;
-  padding-right: 5px;
-  cursor: pointer;
-  top: 0;
-  transition: all .3s;
-  position: absolute;
-  -webkit-transition: all .3s;
-  height: 100%;
-  color: rgb(var(--info-light));
-  text-align: center;
-  align-items: center;
-}
-
-.ub-entity-edit__slot {
-  padding: 10px 20px 44px 20px;
-  height: 100%;
-  overflow: auto;
+  margin-right: 0 !important;
 }
 
 .ub-code-mirror {
@@ -107,46 +109,14 @@ html, body {
   position: relative;
 }
 
-.ub-upload-document__a {
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.ub-upload-document__file-input input[type=file] {
-  font-size: 100px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
-}
-
-.ub-upload-document__file-input {
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-}
-
-.ub-noselect {
-  user-select: none;
-}
-
-.ub-icon-menu {
-  display: flex !important;
-  width: 25px;
-  min-height: 32px;
-  pointer-events: auto;
-  justify-content: center;
-  align-items: center;
-}
-
-.ub-empty-text{
+.ub-empty-text {
   text-align: center;
-  color: rgb(var(--info));
+  color: hsl(var(--hs-text), var(--l-text-description));
   padding: 20px;
   font-size: 14px;
 }
 
-.ub-fake-notification{
+.ub-fake-notification {
   display: none !important;
 }
 
@@ -165,14 +135,14 @@ html, body {
 }
 
 /* el-tabs in root vue container will have fixed tab-header and scrollable tab-pane */
-.u-form-layout > form  > .el-tabs {
+.u-form-layout > form > .el-tabs {
   height: 100%;
   display: grid;
   grid-template-rows: auto 1fr;
   overflow: auto;
 }
 
-.u-form-layout > form  > .el-tabs .el-tab-pane {
+.u-form-layout > form > .el-tabs .el-tab-pane {
   overflow: auto;
   height: 100%;
 }
@@ -182,25 +152,43 @@ html, body {
   max-width: 1044px;
 }
 
-.ub-dialog__reset-padding .el-dialog__body{
+.ub-dialog__reset-padding .el-dialog__body {
   padding: 0;
 }
 
-.ub-dialog__max-width .el-dialog{
+.ub-dialog__max-width .el-dialog {
   max-width: 800px;
 }
 
-.ub-dialog__min-width .el-dialog{
+.ub-dialog__min-width .el-dialog {
   min-width: 480px;
 }
 
-.ub-dialog__table-entity .el-dialog{
+.ub-dialog__table-entity .el-dialog {
   height: 70vh;
   min-width: 80vw;
   display: flex;
   flex-direction: column;
 }
 
-.ub-dialog__table-entity .el-dialog__body{
+.ub-dialog__table-entity .el-dialog__body {
   height: 100%;
+}
+
+/* element-ui overrides */
+.el-select .el-tag__close.el-icon-close {
+  background-color: hsl(var(--hs-background), var(--l-background-default));
+}
+
+.el-input__inner,
+.el-textarea__inner{
+  font-size: 16px;
+}
+
+.el-select > .el-input > .el-input__inner {
+  height: 36px !important;
+}
+
+.el-button--small {
+  font-size: 16px;
 }

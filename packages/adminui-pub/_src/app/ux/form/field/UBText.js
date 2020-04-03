@@ -157,6 +157,9 @@ Ext.define('UB.ux.form.field.UBText', {
         saveData[me.attributeName + '_' + lang + '^'] = controls[lang].getValue()
       })
       basePanel.addExtendedDataForSave(saveData)
+      if (!basePanel.lockOnSave && !basePanel.entityLocked && !basePanel.isNewInstance && basePanel.formDataReady && !basePanel.isSaveProcess && !basePanel.hasPersistLock) {
+        basePanel.setEntityLocked()
+      }
       me.nationalFieldEdited = true
       window.close()
     }

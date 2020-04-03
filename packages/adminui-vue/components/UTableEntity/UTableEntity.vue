@@ -128,7 +128,9 @@ export default {
         return this.getRepository().fieldList
           .filter(attrCode => {
             const attr = this.schema.getEntityAttribute(attrCode, 0)
-            return attr.defaultView
+            return attr.defaultView &&
+              attr.dataType !== 'Json' &&
+              attr.dataType !== 'Document'
           })
           .map(attrCode => this.buildColumn(attrCode))
       }

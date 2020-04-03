@@ -25,37 +25,37 @@ function onProcessWorker (message) {
   } else {
     console.log('Worker module: got a signal', JSON.stringify(message))
   }
-  const serverURL = message['serverURL']
-  let connection = new SyncConnection(serverURL)
+  const serverURL = message.serverURL
+  const connection = new SyncConnection(serverURL)
   connection.onRequestAuthParams = function () {
-    return {authSchema: 'UB', login: 'admin', password: 'admin'}
+    return { authSchema: 'UB', login: 'admin', password: 'admin' }
   }
 
   // first of all we await for worker num
-  let command = message
+  const command = message
   // postMessage('connected');
-  let folder = command.folder
+  const folder = command.folder
 
-  let transLen = message.transLen
+  const transLen = message.transLen
 
-  let startTime = Date.now()
+  const startTime = Date.now()
   console.debug('\tFTS test')
   testFTS(connection, folder)
-  postMessage({signal: 'done', thread: command.thread, timeSpend: Date.now() - startTime})
+  postMessage({ signal: 'done', thread: command.thread, timeSpend: Date.now() - startTime })
   terminate()
 
   function testFTS (connection, folder) {
     const descrMaxLen = 2000
     let trans = []
-    let d = new Date(2015, 1, 1)
+    const d = new Date(2015, 1, 1)
 
-    let data = fs.readFileSync(path.join(folder, 'fixtures', FILE_NAME), 'utf8')
-    let LINE_DELIMITER = data.indexOf('\r\n') > -1 ? '\r\n' : '\n'
-    let testArr = data.split(LINE_DELIMITER)
+    const data = fs.readFileSync(path.join(folder, 'fixtures', FILE_NAME), 'utf8')
+    const LINE_DELIMITER = data.indexOf('\r\n') > -1 ? '\r\n' : '\n'
+    const testArr = data.split(LINE_DELIMITER)
     let curTrLen = 0
     for (let i = command.beginFrom; i < command.beginFrom + command.insertCount; i++) {
       d.setDate(i % 30 + 1); d.setMonth(i % 11 + 1)
-      let description = testArr[i].slice(0, descrMaxLen)
+      const description = testArr[i].slice(0, descrMaxLen)
       trans.push({
         entity: 'tst_document',
         method: 'insert',

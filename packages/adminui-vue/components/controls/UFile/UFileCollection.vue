@@ -2,8 +2,8 @@
   <div>
     <u-file-input
       multiple
-      @upload="upload"
       :accept="accept"
+      @upload="upload"
     />
     <u-table
       v-show="files.length > 0"
@@ -121,8 +121,8 @@ export default {
       }, {
         id: 'size',
         label: 'fileInput.manyFilesTable.size',
-        width: 100,
-        minWidth: 100
+        width: 120,
+        minWidth: 120
       }, {
         id: 'type',
         label: 'fileInput.manyFilesTable.type',
@@ -258,14 +258,14 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(var(--secondary), 0.9);
+    color: hsl(var(--hs-primary), var(--l-state-default));
     cursor: pointer;
     background: none;
     border: none;
   }
 
   .u-file-collection__action-icon:disabled{
-    color: rgba(var(--info), 0.2);
+    color: hsl(var(--hs-control), var(--l-state-disabled));
     cursor: not-allowed;
   }
 </style>

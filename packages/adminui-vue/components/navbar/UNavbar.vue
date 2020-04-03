@@ -49,32 +49,34 @@
       />
     </div>
 
-    <el-popover
-      class="u-navbar__overflow"
-      placement="bottom"
-      trigger="click"
-      popper-class="u-navbar__overflow__tray"
-      :class="{'hidden': visibleWidth >= tabsWidth}"
-    >
+    <u-dropdown class="u-navbar__overflow-button" v-if="tabsWidth >= visibleWidth">
       <el-button
-        slot="reference"
         icon="el-icon-more"
         circle
         class="u-navbar__button"
       />
 
-      <div class="u-navbar__overflow__tabs">
-        <u-navbar-tab
-          v-for="(tab, idx) in tabs"
-          :key="idx"
-          :tab-data="tab"
-          in-tray
-          :class="{'active': current === idx}"
-          @open="handleTabClick"
-          @close="handleClose"
-        />
-      </div>
-    </el-popover>
+      <template slot="dropdown">
+        <u-dropdown-item
+          v-for="(tab, index) in tabs"
+          :key="tab.id"
+          class="u-navbar__tray-item"
+          :class="{
+            active: current === index
+          }"
+          prevent-close
+          @click="handleTabClick(tab, true)"
+        >
+          <template #label>
+            {{ tab.title }}
+            <i
+              class="u-navbar__tray-item-close-icon el-icon-close"
+              @click="handleClose([tab], true)"
+            />
+          </template>
+        </u-dropdown-item>
+      </template>
+    </u-dropdown>
 
     <slot />
 
@@ -125,7 +127,7 @@ export default {
       /**
        * Width of the visible area
        */
-      visibleWidth: 0,
+      visibleWidth: Infinity,
 
       /**
        * Total width of all tabs
@@ -494,8 +496,8 @@ export default {
   padding-left: 30px;
   display:flex;
   justify-content: space-between;
-  background: #fff;
-  border-bottom: 1px solid rgba(var(--bg), 0.12);
+  background: hsl(var(--hs-background), var(--l-background-inverse));
+  border-bottom: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   position: relative;
 }
 
@@ -512,13 +514,13 @@ export default {
 }
 
 .u-navbar-tab-slider__ctrl__prev{
-  background: linear-gradient(to left, transparent, #fefefe 45%);
+  background: linear-gradient(to left, transparent, hsl(var(--hs-background), var(--l-background-inverse)) 45%);
   left: 0;
   justify-content: flex-start;
 }
 
 .u-navbar-tab-slider__ctrl__next{
-  background: linear-gradient(to right, transparent, #fefefe 45%);
+  background: linear-gradient(to right, transparent, hsl(var(--hs-background), var(--l-background-inverse))  45%);
   right: 0;
 }
 
@@ -550,18 +552,6 @@ export default {
 
 .u-navbar__overflow.hidden{
   visibility: collapse
-}
-
-.u-navbar__overflow__tray{
-  background-color: rgba(var(--bg), 1);
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.24);
-  padding: 8px 0;
-  border: none;
-  line-height: 1;
-}
-
-.u-navbar__overflow__tray[x-placement^=bottom] .popper__arrow::after{
-  border-bottom-color: rgba(var(--bg), 1);
 }
 
 .u-navbar__overflow__tabs{
@@ -603,14 +593,36 @@ export default {
   display: flex;
   align-items: center;
   font-size: 16px;
-  color: rgb(var(--text-contrast));
-  background: rgb(var(--bg));
+  color: hsl(var(--hs-text), var(--l-text-inverse));
+  background:  hsl(220, 20%, 27%);
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
   cursor: pointer;
 }
 
 .u-navbar__collapse-button:hover{
-  background: rgb(var(--bg-hover));
+  background: hsl(var(--hs-sidebar), var(--l-sidebar-depth-1));
+}
+
+.u-navbar__tray-item.active {
+  background: hsl(var(--hs-primary), var(--l-background-default));
+  color: hsl(var(--hs-primary), var(--l-text-default));
+}
+
+.u-navbar__tray-item .u-dropdown-item__label{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  height: 32px;
+}
+
+.u-navbar__tray-item-close-icon {
+  margin: 0 8px;
+}
+
+.u-navbar__overflow-button {
+  margin-left: 12px;
 }
 </style>

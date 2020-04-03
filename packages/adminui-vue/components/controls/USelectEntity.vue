@@ -57,10 +57,7 @@
             :content="$ut('select.valueIsUndefined', value, entityName)"
             :enterable="false"
           >
-            <i
-              class="el-input__icon el-icon-warning"
-              style="color:rgb(var(--warning))"
-            />
+            <i class="u-select-icon-warning el-input__icon el-icon-warning"/>
           </el-tooltip>
 
           <i
@@ -561,26 +558,12 @@ export default {
 
     handleShowDictionary () {
       if (!this.removeDefaultActions) {
-        const columns = this.$UB.connection.domain.get(this.entityName)
-          .filterAttribute(a => a.defaultView)
-          .map(({ code }) => code)
-
         const config = this.buildShowDictionaryConfig({
           renderer: 'vue',
           cmdType: 'showList',
           isModal: true,
           cmdData: {
-            repository: () => {
-              const repo = this.repository().clone()
-              for (const col of columns) {
-                const hasColumn = repo.fieldList.includes(col)
-                if (!hasColumn) {
-                  repo.fieldList.push(col)
-                }
-              }
-              return repo
-            },
-            columns,
+            entityName: this.entityName,
             onSelectRecord: ({ ID, row, close }) => {
               this.$emit('input', ID, JSON.parse(JSON.stringify(row)))
               close()
@@ -680,20 +663,11 @@ export default {
 }
 
 .ub-select__option.selected{
-  background: rgba(var(--primary), 0.1);
+  background: hsl(var(--hs-primary), var(--l-background-default));
 }
 
 .ub-select__option.active{
-  color: rgb(var(--primary));
-}
-
-.ub-select__option.selected.fixed {
-  background-color: rgba(var(--bg), 0.1);
-}
-
-.ub-select__option.fixed .el-checkbox__inner {
-  background-color: rgba(var(--bg), 0.08);
-  border-color: rgba(var(--bg), 0.08);
+  color: hsl(var(--hs-primary), var(--l-text-default));
 }
 
 .ub-select__container{
@@ -705,7 +679,7 @@ export default {
 }
 
 .ub-select__deleted-value input{
-  color: rgb(var(--info));
+  color: hsl(var(--hs-text), var(--l-text-disabled));
   text-decoration: line-through;
 }
 
@@ -718,7 +692,7 @@ export default {
 }
 
 .ub-select__undefined-record .el-input__inner{
-  border-color: rgb(var(--warning));
+  border-color: hsl(var(--hs-warning), var(--l-input-border-default));
 }
 
 .u-select{
@@ -730,17 +704,21 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   transform: rotate(90deg);
-  color: rgba(var(--info), 0.76);
+  color: hsl(var(--hs-control), var(--l-state-default));
   cursor: pointer;
   border: none;
   background: none;
 }
 
 .ub-select__more-icon:disabled {
-  opacity: 0.5;
+  color: hsl(var(--hs-control), var(--l-state-disabled));
+}
+
+.u-select-icon-warning {
+  color: hsl(var(--hs-warning), var(--l-state-default));
 }
 </style>
 

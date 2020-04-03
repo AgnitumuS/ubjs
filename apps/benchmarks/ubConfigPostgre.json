@@ -3,10 +3,7 @@
 		"host": "+",
 		"port": "8881",
 		"inetPub": "./img",
-		"watchFileChanges": {
-			"enabled": false,
-			"hashingStrategy": "ModifyDate"
-		}
+		"threadPullSize": 4
 	},
 	"logging": {
 		"levels": [],

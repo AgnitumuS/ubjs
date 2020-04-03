@@ -1,7 +1,7 @@
 <template>
   <el-popover
-    ref="popover"
     v-if="modeList.length"
+    ref="popover"
     placement="bottom"
     trigger="click"
     class="u-navbar__dropdown"
@@ -269,11 +269,11 @@ export default {
 
 .ub-fts__period-toggle .el-switch__label{
   font-weight: 400;
-  color: rgb(var(--info));
+  color: hsl(var(--hs-text), var(--l-text-default));
 }
 
 .ub-fts__period-toggle .el-switch__label.is-active {
-  color: rgb(var(--primary));
+  color: hsl(var(--hs-primary), var(--l-text-default));
 }
 
 .ub-fts__date-picker {
@@ -283,6 +283,6 @@ export default {
 }
 
 .fts__result-attribute-code {
-  color: rgba(var(--info), 0.9);
+  color: hsl(var(--hs-primary), var(--l-text-default));
 }
 </style>

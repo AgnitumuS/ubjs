@@ -15,15 +15,15 @@ const App = UB.App
 module.exports = function () {
   console.log('Call JS scheduler method: UB.UBQ.FTSReindexFromQueue')
 
-  let cmdStore = UB.Repository('ubq_messages')
+  const cmdStore = UB.Repository('ubq_messages')
     .attrs(['ID', 'queueCode', 'msgCmd'])
     .where('[queueCode]', '=', 'ASYNCFTS')
     .where('[completeDate]', 'isNull')
     .limit(1000)
     .select()
 
-  let cmdArray = []
-  let messageIDs = []
+  const cmdArray = []
+  const messageIDs = []
   let operationCount = 0
   while (!cmdStore.eof) {
     cmdArray.push(JSON.parse(cmdStore.get('msgCmd')))
@@ -33,15 +33,15 @@ module.exports = function () {
   // prevent multiple index update on the same instanceID
   // in case delete operation exists - we must delete from index, in case not - update index
   // group by entity {tst_document: [], other_entity: [], ...}
-  let groupedByEntity = _.groupBy(cmdArray, 'entity')
+  const groupedByEntity = _.groupBy(cmdArray, 'entity')
   _.forEach(groupedByEntity, function (commandsForEntity, entityName) {
     if (!App.domainInfo.has(entityName)) {
       console.warn(`Entity "${entityName}" scheduled in FTS operation is not in domain. Skips`)
       return
     }
-    let byID = _.groupBy(commandsForEntity, 'ID')
+    const byID = _.groupBy(commandsForEntity, 'ID')
     _.forEach(byID, function (commandsForID, instanceIDStr) {
-      let instanceID = parseInt(instanceIDStr) // converto from string
+      const instanceID = parseInt(instanceIDStr) // converto from string
       if (_.find(commandsForID, { operation: 'DELETE' })) {
         if (!_.find(commandsForID, { operation: 'INSERT' })) { // if insert exists delete is not necessary (no data in index yet)
           console.debug('AYNC_FTS: delete', entityName, instanceID)

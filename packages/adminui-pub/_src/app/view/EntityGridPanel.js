@@ -1806,7 +1806,7 @@ Ext.define('UB.view.EntityGridPanel', {
       scale: 'medium',
       iconCls: 'fa fa-cog',
       arrowCls: '',
-      tooltip: UB.i18n('vseDeystviya'),
+      tooltip: UB.i18n('allActions'),
       menu: menuAllActions,
       hidden: hideMenuAllActions
     })

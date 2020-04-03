@@ -4,5 +4,5 @@
 // @entity "cdn_classifier"
 // @model "CDN"
 // @formType "vue"
-// @caption "Сlassifiers"
-// @description "Сlassifiers Edit"
+// @caption "classifier.caption"
+// @description "classifier.description"

@@ -3,33 +3,33 @@
     v-loading="loading"
     class="u-table-entity"
     tabindex="1"
-    @keydown.exact="tryFocusFilter"
-    @keydown.up.exact="moveUp"
-    @keydown.down.exact="moveDown"
-    @keydown.left.exact="moveLeft"
-    @keydown.right.exact="moveRight"
-    @keydown.enter.exact="onSelect(selectedRowId)"
+    @keydown.ctrl.delete.exact="deleteRecord(selectedRowId)"
     @keydown.ctrl.e.prevent.exact="editRecord(selectedRowId)"
     @keydown.ctrl.insert.exact="addNew"
     @keydown.ctrl.r.prevent.exact="refresh"
-    @keydown.ctrl.delete.exact="deleteRecord(selectedRowId)"
+    @keydown.down.exact="moveDown"
+    @keydown.enter.exact="onSelect(selectedRowId)"
+    @keydown.exact="tryFocusFilter"
+    @keydown.left.exact="moveLeft"
+    @keydown.right.exact="moveRight"
+    @keydown.up.exact="moveUp"
   >
     <div class="u-table-entity__head">
       <!-- @slot Replace whole toolbar -->
       <slot
-        name="toolbar"
         :store="$store"
+        name="toolbar"
       >
         <!-- @slot Prepend new buttons to toolbar -->
         <slot
-          name="toolbarPrepend"
-          :store="$store"
           :close="close"
+          :store="$store"
+          name="toolbarPrepend"
         />
 
         <u-toolbar-button
-          color="secondary"
           icon="el-icon-refresh"
+          color="secondary"
           @click="refresh"
         >
           {{ $ut('refresh') }}
@@ -37,13 +37,14 @@
 
         <!-- @slot Replace add-new button in toolbar panel -->
         <slot
-          name="toolbarButtonAddNew"
-          :store="$store"
           :close="close"
+          :store="$store"
+          name="toolbarButtonAddNew"
         >
           <u-toolbar-button
-            icon="el-icon-plus"
             :disabled="!canAddNew"
+            icon="el-icon-plus"
+            color="secondary"
             @click="addNew"
           >
             {{ $ut('actionAdd') }}
@@ -52,9 +53,9 @@
 
         <!-- @slot Prepend new buttons to toolbar before filter -->
         <slot
-          name="toolbarAppend"
-          :store="$store"
           :close="close"
+          :store="$store"
+          name="toolbarAppend"
         />
 
         <filter-container ref="filterContainer" />
@@ -63,68 +64,68 @@
 
         <!-- @slot Replace whole toolbar dropdown -->
         <slot
-          name="toolbarDropdown"
-          :store="$store"
           :close="close"
+          :store="$store"
+          name="toolbarDropdown"
         >
           <toolbar-dropdown :close="close">
             <!-- @slot Prepend new buttons to toolbar -->
             <slot
               slot="prepend"
-              name="toolbarDropdownPrepend"
-              :store="$store"
               :close="close"
+              :store="$store"
+              name="toolbarDropdownPrepend"
             />
 
             <!-- @slot Replace add-new button in toolbar dropdown -->
             <slot
               slot="add-new"
-              name="toolbarDropdownAddNew"
-              :store="$store"
               :close="close"
+              :store="$store"
+              name="toolbarDropdownAddNew"
             />
             <!-- @slot Replace edit button in toolbar dropdown -->
             <slot
               slot="edit"
-              name="toolbarDropdownEdit"
-              :store="$store"
               :close="close"
+              :store="$store"
+              name="toolbarDropdownEdit"
             />
             <!-- @slot Replace copy button in toolbar dropdown -->
             <slot
               slot="copy"
-              name="toolbarDropdownCopy"
-              :store="$store"
               :close="close"
+              :store="$store"
+              name="toolbarDropdownCopy"
             />
             <!-- @slot Replace delete button in toolbar dropdown -->
             <slot
               slot="delete"
-              name="toolbarDropdownDelete"
-              :store="$store"
               :close="close"
+              :store="$store"
+              name="toolbarDropdownDelete"
             />
             <!-- @slot Replace audit button in toolbar dropdown -->
             <slot
               slot="audit"
-              name="toolbarDropdownAudit"
-              :store="$store"
               :close="close"
+              :store="$store"
+              name="toolbarDropdownAudit"
             />
             <!-- @slot Replace exports button in toolbar dropdown -->
             <slot
               slot="exports"
-              name="toolbarDropdownExports"
-              :store="$store"
               :close="close"
+              :store="$store"
+              name="toolbarDropdownExports"
             />
 
             <!-- @slot Append new buttons to toolbar -->
             <slot
               slot="append"
-              name="toolbarDropdownAppend"
-              :store="$store"
               :close="close"
+              :store="$store"
+              name="toolbarDropdownAppend"
             />
           </toolbar-dropdown>
         </slot>
@@ -136,141 +137,144 @@
     <u-table
       ref="table"
       :columns="columns"
-      :items="items"
+      :fixed-column-id="fixedColumnId"
       :get-column-class="getColumnClass"
       :get-row-class="getRowClass"
       :height="height"
+      :items="items"
       :max-height="maxHeight"
-      :fixed-column-id="fixedColumnId"
-      @dblclick-row="onSelect($event.row.ID, $event.row)"
       @click-cell="selectCell"
-      @sort="updateSort"
       @contextmenu-cell="showContextMenu"
+      @dblclick-row="onSelect($event.row.ID, $event.row)"
+      @sort="updateSort"
     >
       <template
         v-for="col in columns"
         #[col.id]="{name, value, row}"
       >
         <slot
-          :name="col.id"
-          :value="row[col.id]"
-          :row="row"
           :column="col"
+          :name="col.id"
+          :row="row"
+          :value="row[col.id]"
         >
           <component
             :is="getCellTemplate(col)"
-            :value="row[col.id]"
-            :row="row"
             :column="col"
+            :row="row"
+            :value="row[col.id]"
           />
         </slot>
       </template>
     </u-table>
 
-    <u-dropdown ref="contextMenu">
+    <u-dropdown
+      ref="contextMenu"
+      class="u-table-entity__contextmenu-wrap"
+    >
       <template slot="dropdown">
         <!-- @slot Prepend items in context menu -->
         <slot
-          name="contextMenuPrepend"
-          :store="$store"
           :close="close"
           :row-id="contextMenuRowId"
+          :store="$store"
+          name="contextMenuPrepend"
         />
         <!-- @slot Replace whole context menu -->
         <slot
-          name="contextMenu"
-          :store="$store"
           :close="close"
           :row-id="contextMenuRowId"
+          :store="$store"
+          name="contextMenu"
         >
           <!-- @slot Replace action "edit" in context menu -->
           <slot
-            name="contextMenuEditRecord"
-            :store="$store"
             :close="close"
             :row-id="contextMenuRowId"
+            :store="$store"
+            name="contextMenuEditRecord"
           >
             <u-dropdown-item
-              label="Edit"
               icon="el-icon-edit"
+              label="Edit"
               @click="editRecord(contextMenuRowId)"
             />
           </slot>
 
           <!-- @slot Replace action "copy" in context menu -->
           <slot
-            name="contextMenuCopy"
-            :store="$store"
             :close="close"
             :row-id="contextMenuRowId"
+            :store="$store"
+            name="contextMenuCopy"
           >
             <u-dropdown-item
-              label="Copy"
               :disabled="!canAddNew"
               icon="el-icon-copy-document"
+              label="Copy"
               @click="copyRecord(contextMenuRowId)"
             />
           </slot>
 
           <!-- @slot Replace action "delete" in context menu -->
           <slot
-            name="contextMenuDelete"
-            :store="$store"
             :close="close"
             :row-id="contextMenuRowId"
+            :store="$store"
+            name="contextMenuDelete"
           >
             <u-dropdown-item
-              label="Delete"
-              icon="el-icon-delete"
               :disabled="!canDelete"
+              icon="el-icon-delete"
+              label="Delete"
               @click="deleteRecord(contextMenuRowId)"
             />
           </slot>
 
           <!-- @slot Replace "copy link" in context menu -->
           <slot
-            name="contextMenuLink"
-            :store="$store"
             :close="close"
             :row-id="contextMenuRowId"
+            :store="$store"
+            name="contextMenuLink"
           >
             <u-dropdown-item
-              label="link"
               icon="el-icon-link"
+              label="link"
               @click="createLink(contextMenuRowId)"
             />
           </slot>
 
           <!-- @slot Replace "audit" in context menu -->
           <slot
-            name="contextMenuAudit"
-            :store="$store"
             :close="close"
             :row-id="contextMenuRowId"
+            :store="$store"
+            name="contextMenuAudit"
           >
             <u-dropdown-item
-              label="Audit"
-              icon="el-icon-data-analysis"
               :disabled="!canAudit"
+              icon="el-icon-data-analysis"
+              label="Audit"
               @click="audit(contextMenuRowId)"
             />
           </slot>
 
           <!-- @slot Replace "detail records list" in context menu -->
           <slot
-            name="contextMenuDetails"
-            :store="$store"
             :close="close"
             :row-id="contextMenuRowId"
+            :store="$store"
+            name="contextMenuDetails"
           />
         </slot>
 
         <!-- @slot Append items in context menu -->
         <slot
-          name="contextMenuAppend"
-          :store="$store"
           :close="close"
           :row-id="contextMenuRowId"
+          :store="$store"
+          name="contextMenuAppend"
         />
       </template>
     </u-dropdown>
@@ -285,9 +289,9 @@ const FilterList = require('./FilterList.vue').default
 const ToolbarDropdown = require('./ToolbarDropdown.vue').default
 const TypeProvider = require('../type-provider')
 /**
- * Replaced from function to global scope in case not to create a regular expression every function call.
- * Creating of regular expression is slow operation
- */
+   * Replaced from function to global scope in case not to create a regular expression every function call.
+   * Creating of regular expression is slow operation
+   */
 const regExpLetterOrNumber = /[A-Za-zА-Яа-я0-9]/
 
 export default {
@@ -302,25 +306,25 @@ export default {
 
   props: {
     /**
-     * If set table will be have static height.
-     * Table container will be have own scroll and fixed header.
-     */
+       * If set table will be have static height.
+       * Table container will be have own scroll and fixed header.
+       */
     height: [Number, String],
 
     /**
-     * If set table will be have maxHeight.
-     * Table container will be have own scroll and fixed header.
-     */
+       * If set table will be have maxHeight.
+       * Table container will be have own scroll and fixed header.
+       */
     maxHeight: [Number, String],
 
     /**
-     * Id of column which will stack when we scroll table by horizontal.
-     */
+       * Id of column which will stack when we scroll table by horizontal.
+       */
     fixedColumnId: String,
     /**
-     * Overrides the record selection event. That is, double click or enter
-     * @type {function({ID: Number, row: Object, close: function})}
-     */
+       * Overrides the record selection event. That is, double click or enter
+       * @type {function({ID: Number, row: Object, close: function})}
+       */
     onSelectRecord: Function
   },
 
@@ -452,19 +456,19 @@ export default {
 
     getColumnClass (column) {
       return column.id === this.selectedColumnId
-        ? 'u-table-entity__selected__column'
+        ? 'selected'
         : ''
     },
     getRowClass (row) {
       return row.ID === this.selectedRowId
-        ? 'u-table-entity__selected__row'
+        ? 'selected'
         : ''
     },
 
     async scrollIntoView () {
       await this.$nextTick()
       const table = this.$refs.table.$el
-      const cell = table.querySelector('.u-table-entity__selected__row .u-table-entity__selected__column')
+      const cell = table.querySelector('tr.selected td.selected')
       if (cell) {
         cell.scrollIntoView({
           block: 'nearest',
@@ -494,39 +498,46 @@ export default {
 </script>
 
 <style>
-.u-table-entity{
-  display: flex;
-  flex-direction: column;
-}
+  .u-table-entity {
+    --row-selected: hsl(var(--hs-primary), var(--l-background-default));
+    --cell-selected: hsl(var(--hs-primary), var(--l-background-active));
+    --row-selected-border: hsl(var(--hs-primary), var(--l-layout-border-default));
 
-.u-table-entity__head{
-  background: rgb(var(--table-bg));
-  padding: 0 8px;
-  display: flex;
-  align-items: center;
-}
+    display: flex;
+    flex-direction: column;
+  }
 
-.u-table-entity-panel__table th > .cell {
-  word-break: normal;
-}
+  .u-table-entity__head {
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+  }
 
-.u-table-entity .u-table th,
-.u-table-entity .u-table td {
-  user-select: none;
-}
+  .u-table-entity-panel__table th > .cell {
+    word-break: normal;
+  }
 
-.u-table-entity .u-table-entity__selected__row td,
-.u-table-entity .u-table-entity__selected__row:hover td{
-  background: rgb(var(--table-selected-row));
-}
+  .u-table-entity .u-table th,
+  .u-table-entity .u-table td {
+    user-select: none;
+  }
 
-.u-table-entity .u-table-entity__selected__row .u-table-entity__selected__column,
-.u-table-entity .u-table-entity__selected__row td:hover,
-.u-table-entity .u-table-entity__selected__row:hover .u-table-entity__selected__column{
-  background: rgb(var(--table-selected-cell));
-}
+  .u-table-entity tr.selected td {
+    background: var(--row-selected);
+    border-bottom-color: var(--row-selected-border);
+  }
 
-.u-table-entity__head__dropdown{
-  align-self: center;
-}
+  .u-table-entity tr.selected td.selected,
+  .u-table-entity tr.selected td:hover,
+  .u-table-entity tr.selected:hover td.selected {
+    background: var(--cell-selected);
+  }
+
+  .u-table-entity__head__dropdown {
+    align-self: center;
+  }
+
+  .u-table-entity__contextmenu-wrap {
+    height: 0;
+  }
 </style>

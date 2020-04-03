@@ -16,8 +16,7 @@ $--color-transition-base: color .2s cubic-bezier(.645,.045,.355,1) !default;
 /* Color
 -------------------------- */
 /// color|1|Brand Color|0
-// $--color-primary: #409EFF !default;
-$--color-primary: #42b773 !default;
+$--color-primary: hsl(220, 80%, 50%) !default;
 /// color|1|Background Color|4
 $--color-white: #FFFFFF !default;
 /// color|1|Background Color|4
@@ -32,13 +31,13 @@ $--color-primary-light-7: mix($--color-white, $--color-primary, 70%) !default; /
 $--color-primary-light-8: mix($--color-white, $--color-primary, 80%) !default; /* d9ecff */
 $--color-primary-light-9: mix($--color-white, $--color-primary, 90%) !default; /* ecf5ff */
 /// color|1|Functional Color|1
-$--color-success: #67C23A !default;
+$--color-success: hsl(120, 30%, 50%) !default;
 /// color|1|Functional Color|1
-$--color-warning: #E6A23C !default;
+$--color-warning: hsl(20, 65%, 50%) !default;
 /// color|1|Functional Color|1
-$--color-danger: #F56C6C !default;
+$--color-danger: hsl(360, 60%, 50%) !default;
 /// color|1|Functional Color|1
-$--color-info: #909399 !default;
+$--color-info: hsl(220, 15%, 50%) !default;
 
 $--color-success-light: mix($--color-white, $--color-success, 80%) !default;
 $--color-warning-light: mix($--color-white, $--color-warning, 80%) !default;
@@ -50,21 +49,21 @@ $--color-warning-lighter: mix($--color-white, $--color-warning, 90%) !default;
 $--color-danger-lighter: mix($--color-white, $--color-danger, 90%) !default;
 $--color-info-lighter: mix($--color-white, $--color-info, 90%) !default;
 /// color|1|Font Color|2
-$--color-text-primary: #303133 !default;
+$--color-text-primary: hsl(220, 5%, 10%) !default;
 /// color|1|Font Color|2
 $--color-text-regular: #606266 !default;
 /// color|1|Font Color|2
 $--color-text-secondary: #909399 !default;
 /// color|1|Font Color|2
-$--color-text-placeholder: #9397a1 !default;
+$--color-text-placeholder: hsl(220, 5%, 45%) !default;
 /// color|1|Border Color|3
-$--border-color-base: #ADB0B8 !default;
+$--border-color-base: hsl(222, 20%, 70%) !default;
 /// color|1|Border Color|3
-$--border-color-light: #E4E7ED !default;
+$--border-color-light: hsl(222, 20%, 80%) !default;
 /// color|1|Border Color|3
-$--border-color-lighter: #EBEEF5 !default;
+$--border-color-lighter: hsl(222, 20%, 90%) !default;
 /// color|1|Border Color|3
-$--border-color-extra-light: #F2F6FC !default;
+$--border-color-extra-light: hsl(222, 20%, 95%) !default;
 
 // Background
 /// color|1|Background Color|4
@@ -198,7 +197,7 @@ $--checkbox-bordered-medium-height: 36px !default;
 $--checkbox-bordered-small-input-height: 12px !default;
 $--checkbox-bordered-small-input-width: 12px !default;
 /// height||Other|4
-$--checkbox-bordered-small-height: 32px !default;
+$--checkbox-bordered-small-height: 36px !default;
 $--checkbox-bordered-mini-input-height: 12px !default;
 $--checkbox-bordered-mini-input-width: 12px !default;
 /// height||Other|4
@@ -262,7 +261,7 @@ $--radio-bordered-medium-input-width: 14px !default;
 $--radio-bordered-medium-height: 36px !default;
 $--radio-bordered-small-input-height: 12px !default;
 $--radio-bordered-small-input-width: 12px !default;
-$--radio-bordered-small-height: 32px !default;
+$--radio-bordered-small-height: 36px !default;
 $--radio-bordered-mini-input-height: 12px !default;
 $--radio-bordered-mini-input-width: 12px !default;
 $--radio-bordered-mini-height: 28px !default;
@@ -463,7 +462,7 @@ $--input-medium-height: 36px !default;
 /// fontSize||Font|1
 $--input-small-font-size: 13px !default;
 /// height||Other|4
-$--input-small-height: 32px !default;
+$--input-small-height: 36px !default;
 /// fontSize||Font|1
 $--input-mini-font-size: 12px !default;
 /// height||Other|4
@@ -882,7 +881,7 @@ $--transfer-panel-body-height: 246px !default;
 /// height||Other|4
 $--transfer-item-height: 30px !default;
 /// height||Other|4
-$--transfer-filter-height: 32px !default;
+$--transfer-filter-height: 36px !default;
 
 /* Header
   --------------------------*/

@@ -187,7 +187,7 @@ export default {
     async initIcons () {
       let allFaAvailable = true
       try {
-        let allFaIcons = await this.$UB.get('/models/adminui-vue/dist/fonts/all-fa-icons.json')
+        const allFaIcons = await this.$UB.get('/models/adminui-vue/dist/fonts/all-fa-icons.json')
         this.faIcons = allFaIcons.data
       } catch (e) { // fallback in case json not found
         allFaAvailable = false
@@ -205,9 +205,9 @@ export default {
               }
             }
             if (!allFaAvailable) {
-              let st = r.selectorText
+              const st = r.selectorText
               if (st.startsWith('.fa-') && st.endsWith(':before')) {
-                let cls = st.split(':')[0].substr(1)
+                const cls = st.split(':')[0].substr(1)
                 const icon = 'fas ' + cls
                 this.faIcons.push(icon)
               }
@@ -267,7 +267,7 @@ export default {
 }
 
 .ub-icon-select__item.selected {
-  color: rgb(var(--primary))
+  color: hsl(var(--hs-primary), var(--l-state-default))
 }
 
 .ub-icon-select__item i {

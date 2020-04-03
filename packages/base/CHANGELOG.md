@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - ubConfig parser what replace environment variables placeholders now replace variables with empty values (`var=`) by empty strings
- - in case environment variable is not defined ubConfig parser will output error message with variable name 
 
 ### Changed
 
@@ -17,6 +15,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.4] - 2020-03-20
+### Fixed
+ - `SyncConnection.getDomainInfo` will reset cached domain in case isExtended parameter is changed.
+   This fix a case like:
+  ```
+  const dSimple = conn.getDomainInfo(); // get not extended domain
+  const dExtended = conn.getDomainInfo(true); // request for extended domain, but before this fix got non-extended cached instance
+  ``` 
+
+## [5.2.3] - 2020-03-17
+### Added
+ - ubConfig parser what replace environment variables placeholders now replace variables with empty values (`var=`) by empty strings
+ - in case environment variable is not defined ubConfig parser will output error message with variable name 
+
+### Fixed
+  - for UBBaseCombobox will enable only accesible actions after setReadOnly(true)/setreadOnly(false) calls. Before this patch all actions became enabled
+
+## [5.2.3] - 2020-03-17
 ## [5.2.2] - 2020-03-09
 ## [5.2.1] - 2020-03-04
 ### Changed

@@ -9,14 +9,14 @@ const TEST_NAME = 'DDL generator'
 
 module.exports = function runFTSTest (options) {
   if (!options) {
-    let opts = cmdLineOpt.describe('', TEST_NAME)
+    const opts = cmdLineOpt.describe('', TEST_NAME)
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
 
-  let session = argv.establishConnectionFromCmdLineAttributes(options)
-  let conn = session.connection
+  const session = argv.establishConnectionFromCmdLineAttributes(options)
+  const conn = session.connection
 
   console.debug('Start ' + TEST_NAME)
   runTest(conn)
@@ -27,7 +27,7 @@ module.exports = function runFTSTest (options) {
  * @param {SyncConnection} conn
  */
 function runTest (conn) {
-  let dictID = conn.lookup('tst_dictionary', 'ID', { expression: 'code', condition: 'equal', values: { code: 'code10' } })
+  const dictID = conn.lookup('tst_dictionary', 'ID', { expression: 'code', condition: 'equal', values: { code: 'code10' } })
   assert.throws(function () {
     conn.run({
       entity: 'tst_dictionary',

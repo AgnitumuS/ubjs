@@ -42,12 +42,11 @@ export default {
 .u-table-entity__filter-list{
   display: flex;
   align-items: center;
-  background: rgb(var(--table-bg));
   padding: 8px 16px;
 }
 
 .u-table-entity__filter-list__title{
-  color: rgb(var(--info-light));
+  color: hsl(var(--hs-text), var(--l-text-label));
 }
 
 .u-table-entity__filter-list-item{
@@ -55,17 +54,17 @@ export default {
   align-items: center;
   padding-left: 8px;
   margin-left: 8px;
-  color: rgb(var(--text));
+  color: hsl(var(--hs-text), var(--l-text-default));
   font-size: 12px;
   line-height: 1.1;
-  background: rgb(var(--bg-grey));
-  border: 1px solid rgba(var(--info-light), 0.4);
-  border-radius: 5px;
+  background: hsl(var(--hs-background), var(--l-background-default));
+  border: 1px solid hsl(var(--hs-border), var(--l-input-border-disabled));
+  border-radius: var(--border-radius);
   font-weight: 300;
 }
 
 .filter-list-item__description{
-  color: rgb(var(--info-light));
+  color: hsl(var(--hs-text), var(--l-text-description));
 }
 
 .u-table-entity__filter-list-item__close-icon{

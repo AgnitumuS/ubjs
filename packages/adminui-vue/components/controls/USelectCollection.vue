@@ -107,7 +107,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations([ 'DELETE_COLLECTION_ITEM' ]),
+    ...mapMutations(['DELETE_COLLECTION_ITEM']),
     ...mapActions(['addCollectionItem']),
 
     async changeCollection (arr) {

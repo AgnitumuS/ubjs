@@ -15,6 +15,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.5] - 2020-03-30
+## [5.3.4] - 2020-03-20
+## [5.3.3] - 2020-03-17
+### Changed
+ - mail-queue.queueMail method: remove unnecessary `fieldList: ['ID']` in queue insertion 
+  to prevent call of selectAfterInsert method since ID is not used 
+
 ## [5.3.2] - 2020-03-09
 ## [5.3.1] - 2020-03-04
 ## [5.3.0] - 2020-02-29

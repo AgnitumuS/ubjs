@@ -16,19 +16,19 @@ function runSchedulersCircle (message) {
   */
   const serverURL = message.serverURL + '/rest/ubq_messages/executeSchedulerTask?async=true'
   const config = message.config
-  let jobs = []
-  let request = http.request({
+  const jobs = []
+  const request = http.request({
     URL: serverURL,
     method: 'POST',
     headers: {
-      'Authorization': 'ROOT ' + process.rootOTP(),
+      Authorization: 'ROOT ' + process.rootOTP(),
       'Content-Type': 'application/json'
     }
   })
 
   function safeSendAsyncRequest (cfgIdx) {
     try {
-      let cfg = config[cfgIdx]
+      const cfg = config[cfgIdx]
       request.setHeader('Authorization', 'ROOT ' + process.rootOTP())
       request.end({
         schedulerName: cfg.name,
@@ -54,7 +54,7 @@ function runSchedulersCircle (message) {
   console.debug('SCHEDULER: Got a init config %j', config)
   for (let i = 0, l = config.length; i < l; i++) {
     console.debug('SCHEDULER: add a job for', config[i].name, 'scheduled as', config[i].cron)
-    let job = cron.schedule(
+    const job = cron.schedule(
       config[i].cron,
       safeSendAsyncRequest.bind(null, i),
       true /* Start the job right now */

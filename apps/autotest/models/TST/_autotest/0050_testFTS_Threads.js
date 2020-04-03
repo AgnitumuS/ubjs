@@ -10,13 +10,13 @@
  */
 const Worker = require('@unitybase/base').Worker
 const options = require('@unitybase/base').options
-let workers = []
+const workers = []
 
 // we can't start server from worker thread try to start it here
 const argv = require('@unitybase/base').argv
-let session = argv.establishConnectionFromCmdLineAttributes()
+const session = argv.establishConnectionFromCmdLineAttributes()
 // writing into SQLite3 from several thread cause a "database is locked" error
-let numThreads = parseInt(options.switchValue('t') || '1', 10)
+const numThreads = parseInt(options.switchValue('t') || '1', 10)
 const serverURL = argv.serverURLFromConfig(argv.getServerConfiguration())
 const transLen = parseInt(options.switchValue('transLen') || '10', 10)
 let i
@@ -29,7 +29,7 @@ try {
   let writerPath = require.resolve('./_FTS_workerWriter.js')
   writerPath = writerPath.replace(/\\/g, '/')
   for (i = 0; i < numThreads; i++) {
-    let writerName = 'ftsWriter' + i
+    const writerName = 'ftsWriter' + i
     workers.push(new Worker({
       name: writerName,
       moduleName: writerPath
@@ -40,7 +40,7 @@ try {
   // add reader thread
   let readerPath = require.resolve('./_FTS_workerReader.js')
   readerPath = readerPath.replace(/\\/g, '/')
-  let readerName = 'ftsReader' + i
+  const readerName = 'ftsReader' + i
   workers.push(new Worker({
     name: readerName,
     moduleName: readerPath

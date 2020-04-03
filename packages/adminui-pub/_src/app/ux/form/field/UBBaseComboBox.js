@@ -155,14 +155,17 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
   },
 
   setReadOnly: function (readOnly) {
-    var
-            me = this, val
+    var me = this,
+      store = me.getStore(),
+      entityName = (store.ubRequest ? store.ubRequest.entity : null) || store.entityName,
+      methodNames = UB.core.UBCommand.methodName,
+      val
     me.callParent(arguments)
     if (me.showLookupButton) {
       me.showLookupButton.setDisabled(readOnly)
     }
     if (me.addItemButton) {
-      me.addItemButton.setDisabled(readOnly)
+      me.addItemButton.setDisabled(readOnly || !$App.domainInfo.isEntityMethodsAccessible(entityName, [methodNames.ADDNEW, methodNames.INSERT]))
     }
     if (me.clearValueButton) {
       me.clearValueButton.setDisabled(readOnly)

@@ -1,18 +1,22 @@
 ﻿{
-    "caption": "Намуди таснифот",
-    "description": "",
-    "attributes": [
-        {
-            "name": "code",
-            "caption": "Рамз"
-        },
-        {
-            "name": "name",
-            "caption": "Номгуй"
-        },
-        {
-            "name": "description",
-            "caption": "Тавсиф"
-        }
-    ]
+  "caption": "Таснифкунандагон",
+  "description": "",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Рамз"
+    },
+    {
+      "name": "name",
+      "caption": "Номгуй"
+    },
+    {
+      "name": "description",
+      "caption": "Тавсиф"
+    },
+    {
+      "name": "orderByAttr",
+      "caption": "Тартиби сабти таснифгар"
+    }
+  ]
 }

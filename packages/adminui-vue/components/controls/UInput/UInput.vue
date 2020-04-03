@@ -69,7 +69,7 @@ export default {
         return 1 / 10 ** (this.$UB.connection.domain.FLOATING_SCALE_PRECISION - 1)
       }
       if (this.dataType === 'Currency') {
-        return 0.1
+        return 0.01
       }
       return 1
     },
@@ -111,7 +111,7 @@ export default {
         if (this.$v && this.attributeName in this.$v) {
           this.$v[this.attributeName].$touch()
         }
-        this.$store.commit(`SET_DATA`, { key: this.attributeName, value })
+        this.$store.commit('SET_DATA', { key: this.attributeName, value })
       }
     }
   }
@@ -120,7 +120,7 @@ export default {
 
 <style>
   .ub-input.is-disabled .el-input-group__append{
-    border-color: rgba(var(--input-border), 0.3);
+    border-color: hsl(var(--hs-border), var(--l-input-border-default));
   }
 </style>
 

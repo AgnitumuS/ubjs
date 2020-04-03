@@ -8,12 +8,28 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - Ext based forms label text weight changed from 600 to 400 (better looks with new Roboto font)
+ - for all Ext controls (except for labels) text weight changed from 600 to 500 (better looks with new Roboto font)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - use `fas fa-box-open` as Drop Zone icon (fa fa-dropbox not present in font awesome 5)
+
+## [5.13.5] - 2020-03-30
+### Changed
+  - rename i18n key `vseDeystviya` -> `allActions` 
+
+### Fixed
+ - `UBCommand.showForm` will accept `instanceId` parameter in case it defined (preffer over `instanceID`). This fix opening form from `magic links`
+
+## [5.13.4] - 2020-03-20
+## [5.13.3] - 2020-03-17
+### Fixed
+- 'UBText.MultiLangForm' should set a lock on `BasePanel` when changing to avoid errors
+  (Entry with ID = XXXXXXXX for "my_entity" is not blocked) when the form is saved.
 
 ## [5.13.2] - 2020-03-09
 ### Added

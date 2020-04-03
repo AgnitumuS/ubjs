@@ -22,7 +22,9 @@ export default {
 
 <style>
 .u-table-entity__filter__submit{
-  color: rgba(var(--success), 0.9);
+  --hs: var(--hs-primary);
+  --l: var(--l-state-default);
+  color: hsl(var(--hs), var(--l));
   font-size: 24px;
   margin-right: 4px;
   margin-left: 8px;
@@ -32,11 +34,11 @@ export default {
 }
 
 .u-table-entity__filter__submit:disabled {
-  color: rgba(var(--info), 0.9);
+  --l: var(--l-state-disabled);
   cursor: not-allowed;
 }
 
 .u-table-entity__filter__submit:focus {
-  background: rgba(var(--primary), 0.05);
+  --l: var(--l-state-hover);
 }
 </style>
