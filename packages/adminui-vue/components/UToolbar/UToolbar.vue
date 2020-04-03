@@ -109,14 +109,12 @@ export default {
         label: this.$ut('save') + ' (Ctrl + S)',
         icon: 'far fa-save',
         handler: () => this.save(),
-        disabled: !this.canSave,
-        color: 'secondary'
+        disabled: !this.canSave
       }, {
         label: this.$ut('saveAndClose') + ' (Ctrl + Enter)',
         icon: 'far fa-share-square',
         handler: this.saveAndClose,
-        disabled: !this.canSave,
-        color: 'secondary'
+        disabled: !this.canSave
       }, {
         label: this.$ut('Delete') + ' (Ctrl + Delete)',
         icon: 'far fa-trash-alt',
