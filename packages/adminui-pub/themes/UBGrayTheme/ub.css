@@ -1484,7 +1484,7 @@ input.x-form-field-text{
 
 .save-action .x-btn-icon-el,
 .save-and-close-action .x-btn-icon-el{
-    color: #049540;
+    color: hsl(var(--hs-primary), var(--l-state-default));
 }
 
 .save-action.x-disabled .x-btn-icon-el,
@@ -1494,7 +1494,7 @@ input.x-form-field-text{
 }
 
 .add-new-action .x-btn-icon-el{
-    color: #049540;
+    color: hsl(var(--hs-primary), var(--l-state-default));
 }
 
 .filter-action .x-btn-icon-el{

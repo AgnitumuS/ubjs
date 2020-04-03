@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - Ext based forms label text weight changed from 600 to 400 (better looks with new Roboto font)
  - for all Ext controls (except for labels) text weight changed from 600 to 500 (better looks with new Roboto font)
+ - Colors according blue theme. Repainted to primary blue:
+   - grid selected cell
+   - toolbar buttons
 
 ### Deprecated
 
