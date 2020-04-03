@@ -38,7 +38,7 @@
     <div class="code">--hs-primary<br> --l-hover</div></div>
   <div class="palette-cell__inner active"><div class="label">Active</div>
     <div class="code">--hs-primary<br> --l-active</div></div>
-  <div class="palette-cell__inner disabled"><div class="invert"><div class="label">Disabled</div><div class="code">--hs-primary<br> --l-disabled</div></div>
+  <div class="palette-cell__inner invert disabled"><div class="label">Disabled</div><div class="code">--hs-primary<br> --l-disabled</div>
     </div>
 </div>
 <div class="palette-cell success">
@@ -48,7 +48,7 @@
     <div class="code">--hs-success<br> --l-hover</div></div>
   <div class="palette-cell__inner active"><div class="label">Active</div>
     <div class="code">--hs-success<br> --l-active</div></div>
-  <div class="palette-cell__inner disabled"><div class="invert"><div class="label">Disabled</div><div class="code">--hs-success<br> --l-disabled</div></div>
+  <div class="palette-cell__inner invert disabled"><div class="label">Disabled</div><div class="code">--hs-success<br> --l-disabled</div>
     </div>
 </div>
 <div class="palette-cell warning">
@@ -60,9 +60,9 @@
   <div class="palette-cell__inner active">
     <div class="label">Active</div>
     <div class="code">--hs-warning<br> --l-active</div></div>
-  <div class="palette-cell__inner disabled"><div class="invert">
+  <div class="palette-cell__inner invert disabled">
     <div class="label">Disabled</div>
-    <div class="code">--hs-warning<br> --l-disabled</div></div></div>
+    <div class="code">--hs-warning<br> --l-disabled</div></div>
 </div>
 <div class="palette-cell danger">
   <div class="palette-cell__inner default">
@@ -72,29 +72,41 @@
     <div class="code">--hs-danger<br> --l-hover</div></div>
   <div class="palette-cell__inner active"><div class="label">Active</div>
     <div class="code">--hs-danger<br> --l-active</div></div>
-  <div class="palette-cell__inner disabled"><div class="invert"><div class="label">Disabled</div>
-    <div class="code">--hs-danger<br> --l-disabled</div></div></div>
+  <div class="palette-cell__inner invert disabled"><div class="label">Disabled</div>
+    <div class="code">--hs-danger<br> --l-disabled</div></div>
 </div>
 <br>
 <div class="palette-cell text">
-  <div class="palette-cell__inner default"><div class="label">Default (Text)</div>
+  <div class="palette-cell__inner l-text-default"><div class="label">Default (Text)</div>
     <div class="code">--hs-text<br> --l-text-default</div></div>
-  <div class="palette-cell__inner light"><div class="label">Light</div>
-    <div class="code">--hs-text<br> --l-text-light</div></div>
+  <div class="palette-cell__inner l-text-label"><div class="label">Label (Text)</div>
+    <div class="code">--hs-text<br> --l-text-label</div></div>
+  <div class="palette-cell__inner l-text-description"><div class="label">Description (Text)</div>
+    <div class="code">--hs-text<br> --l-text-description</div></div>
+  <div class="palette-cell__inner l-text-disabled"><div class="label">Disabled (Text)</div>
+    <div class="code">--hs-text<br> --l-text-disabled</div></div>
+  <div class="palette-cell__inner invert l-text-inverse"><div class="label">Inverse (Text)</div>
+    <div class="code">--hs-text<br> --l-text-inverse</div></div>
 </div>
 <div class="palette-cell border">
-  <div class="palette-cell__inner default"><div class="label">Default (Border)</div>
-    <div class="code">--hs-border<br> --l-border-default</div></div>
-  <div class="palette-cell__inner hover"><div class="label">Hover</div>
-    <div class="code">--hs-border<br> --l-border-hover</div></div>
-  <div class="palette-cell__inner disabled"><div class="label">Disabled</div>
-    <div class="code">--hs-border<br> --l-border-disabled</div></div>
+  <div class="palette-cell__inner l-input-border-default"><div class="label">Default (Border)</div>
+    <div class="code">--hs-border<br> --l-input-border-default</div></div>
+  <div class="palette-cell__inner l-input-border-hover"><div class="label">Hover (Border)</div>
+    <div class="code">--hs-border<br> --l-input-border-hover</div></div>
+  <div class="palette-cell__inner l-input-border-disabled"><div class="label">Disabled (Border)</div>
+    <div class="code">--hs-border<br> --l-input-border-disabled</div></div>
+  <div class="palette-cell__inner l-layout-border-default"><div class="label">Default (Border)</div>
+    <div class="code">--hs-border<br> --l-layout-border-default</div></div>
+  <div class="palette-cell__inner invert l-layout-border-light"><div class="label">Light (Border)</div>
+    <div class="code">--hs-border<br> --l-layout-border-light</div></div>
 </div>
 <div class="palette-cell background">
-  <div class="palette-cell__inner default"><div class="label">Default (Background)</div>
+  <div class="palette-cell__inner invert l-background-default"><div class="label">Default (Background)</div>
     <div class="code">--hs-background<br> --l-background-default</div></div>
-  <div class="palette-cell__inner disabled"><div class="invert"><div class="label">Disabled</div>
-    <div class="code">--hs-background<br> --l-background-disabled</div></div></div>
+  <div class="palette-cell__inner invert l-background-active"><div class="label">Active (Background)</div>
+    <div class="code">--hs-background<br> --l-background-active</div></div>
+  <div class="palette-cell__inner invert l-background-inverse"><div class="label">Inverse (Background)</div>
+    <div class="code">--hs-background<br> --l-background-inverse</div></div>
 </div>
 
 <h2>Button</h2>
@@ -180,15 +192,14 @@
   </tr>
 </table>
 
-<h1>TODO:</h1>
-<h2>Layout border</h2>
-<h2>Sidebar</h2>
-<h2>scrollbar (dark/light)</h2>
-<h2>input with button (locale for example)</h2>
-<h2>toolbar button</h2>
-<h2>UFile</h2>
-<h2>USelectMultiple items</h2>
-<h2>form toolbar dropdown</h2>
-<h2></h2>
+<!--<h1>TODO:</h1>-->
+<!--<h2>Layout border</h2>-->
+<!--<h2>Sidebar</h2>-->
+<!--<h2>scrollbar (dark/light)</h2>-->
+<!--<h2>input with button (locale for example)</h2>-->
+<!--<h2>toolbar button</h2>-->
+<!--<h2>UFile</h2>-->
+<!--<h2>USelectMultiple items</h2>-->
+<!--<h2>form toolbar dropdown</h2>-->
 </body>
 </html>

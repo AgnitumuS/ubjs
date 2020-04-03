@@ -1,13 +1,12 @@
 .button {
     --hs-button: var(--hs-primary);
-    --l-button: var(--l-default);
-    --color-button: hsl(var(--hs-button), var(--l-button));
+    --l-button: var(--l-state-default);
 
     font-size: 1.6rem;
     padding: 0.8rem 1.5rem;
-    border-radius: var(--border-radius);
-    background: var(--color-button);
-    color: #fff;
+    border-radius: 4px;
+    background: hsl(var(--hs-button), var(--l-button));
+    color: hsl(var(--hs-text), var(--l-text-inverse));
     border: none;
     cursor: pointer;
     transition: .1s;
@@ -26,14 +25,14 @@
 }
 
 .button:hover {
-    --l-button: var(--l-hover);
+    --l-button: var(--l-state-hover);
 }
 
 .button:disabled {
     cursor: not-allowed;
-    --l-button: var(--l-disabled);
+    --l-button: var(--l-state-disabled);
 }
 
 .button:active {
-    --l-button: var(--l-active);
+    --l-button: var(--l-state-active);
 }

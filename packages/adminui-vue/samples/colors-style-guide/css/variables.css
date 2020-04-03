@@ -1,41 +1,36 @@
 :root {
-    --border-radius: 0.5rem;
+    /* state colors */
+    --hs-primary: 220, 80%;
+    --hs-success: 120, 30%;
+    --hs-warning: 20, 65%;
+    --hs-danger: 360, 60%;
 
-    /* COLOR PALLETE */
+    /* Controls - buttons, icons etc. */
+    --hs-control: 220, 15%;
+    --l-state-default: 45%;
+    --l-state-hover: 60%;
+    --l-state-active: 35%;
+    --l-state-disabled: 85%;
 
-    /* hue, saturation */
-    --hs-primary: 210, 100%;
-    --hs-success: 100, 50%;
-    --hs-warning: 36, 77%;
-    --hs-danger: 0, 87%;
-    /* lightness */
-    --l-default: 50%;
-    --l-hover: 60%;
-    --l-active: 40%;
-    --l-disabled: 80%;
+    /* text */
+    --hs-text: 240, 5%;
+    --l-text-default: 20%;
+    --l-text-label: 45%;
+    --l-text-description: 60%;
+    --l-text-disabled: 80%;
+    --l-text-inverse: 100%;
 
-    /* TEXT COLORS */
+    /* border */
+    --hs-border: 220, 20%;
+    --l-input-border-default: 60%;
+    --l-input-border-hover: 40%;
+    --l-input-border-disabled: 75%;
+    --l-layout-border-default: 80%;
+    --l-layout-border-light: 90%;
 
-    /* hue, saturation */
-    --hs-text: 220, 3%;
-    /* lightness */
-    --l-text-default: 10%;
-    --l-text-light: 45%;
-
-    /* BORDER COLORS */
-
-    /* hue, saturation */
-    --hs-border: 222, 17%;
-    /* lightness */
-    --l-border-default: 70%;
-    --l-border-hover: 55%;
-    --l-border-disabled: 80%;
-
-    /* BACKGROUND COLORS */
-
-    /* hue, saturation */
-    --hs-background: 222, 19%;
-    /* lightness */
-    --l-background-default: 33%;
-    --l-background-disabled: 95%;
+    /* background */
+    --hs-background: 220, 20%;
+    --l-background-default: 95%;
+    --l-background-active: 90%;
+    --l-background-inverse: 100%;
 }

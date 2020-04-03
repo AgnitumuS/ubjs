@@ -16,7 +16,7 @@ th {
     --background: hsl(var(--hs-background-cell), var(--l-background));
 
     /* border */
-    --l-border: var(--l-border-default);
+    --l-border: var(--l-layout-border-default);
     --border-color: hsl(var(--hs-border), var(--l-border));
 
     border-bottom: 0.1rem solid var(--border-color);
@@ -29,7 +29,7 @@ th {
 }
 
 th {
-    --l-text: var(--l-text-light);
+    --l-text: var(--l-text-label);
 
     white-space: nowrap;
     font-weight: 600;
@@ -53,7 +53,6 @@ th:last-child:after {
 tr:hover td,
 tr.active td {
     --l-background: 97%;
-    --l-border: var(--l-border-hover);
 }
 
 tr td:hover,
