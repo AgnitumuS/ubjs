@@ -15,6 +15,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.10.6] - 2020-04-03
+### Changed
+ - `UFile` preview dialog now opened a full screen mode (instead of 80% screen height)
+ - `UFileCollection` width of column 'size' increased to prevent row wrap
+ - `css` reference for box shadow css variable 
+ - `UToolbar` buttons `save` and `save and close` repainted primary blue color
+  
+### Fixed
+ - `USidebar` correct target of contextmenu click. In case on click contextmenu level 3 and more
+
 ## [1.10.5] - 2020-03-30
 ### Added
  - hsl css variables. [Instructions to use](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/3446a621479988ea0bd31afffc88f15474dc0516/packages/adminui-vue/samples/HSL-COLORS.md)

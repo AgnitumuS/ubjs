@@ -15,6 +15,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.13.6] - 2020-04-03
+### Changed
+ - Ext based forms label text weight changed from 600 to 400 (better looks with new Roboto font)
+ - for all Ext controls (except for labels) text weight changed from 600 to 500 (better looks with new Roboto font)
+ - Colors according blue theme. Repainted to primary blue:
+   - grid selected cell
+   - toolbar buttons
+
+### Fixed
+ - use `fas fa-box-open` as Drop Zone icon (fa fa-dropbox not present in font awesome 5)
+
 ## [5.13.5] - 2020-03-30
 ### Changed
   - rename i18n key `vseDeystviya` -> `allActions` 

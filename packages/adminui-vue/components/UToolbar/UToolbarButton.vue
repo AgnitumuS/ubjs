@@ -73,7 +73,7 @@ export default {
     cursor: not-allowed;
   }
 
-  .u-toolbar__button:hover{
+  .u-toolbar__button:not(:disabled):hover{
     --l: var(--l-state-hover);
   }
 

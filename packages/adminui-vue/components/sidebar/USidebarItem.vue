@@ -4,7 +4,7 @@
     v-if="item.children"
     :index="String(item.ID)"
     popper-class="ub-sidebar__popup-menu"
-    @contextmenu.native="contextDisabled ? null : contextOnTitle($event)"
+    @contextmenu.native.stop.prevent="emitContext($event, item)"
   >
     <template slot="title">
       <div
@@ -24,7 +24,7 @@
       :context-disabled="contextDisabled"
       :item="child"
       :level="level+1"
-      @contextmenu="$emit('contextmenu', $event, child)"
+      @contextmenu="emitContext"
     />
   </el-submenu>
 
@@ -32,7 +32,7 @@
     v-else
     :index="String(item.ID)"
     @click="openLink(item)"
-    @contextmenu.native="contextDisabled ? null : $emit('contextmenu', $event, item)"
+    @contextmenu.native.stop.prevent="emitContext($event, item)"
   >
     <div
       :style="{marginLeft}"
@@ -70,12 +70,9 @@ export default {
       return item.iconCls || (item.parentID ? '' : (item.isFolder ? 'fa fa-folder' : 'fa fa-file-text-o'))
     },
 
-    /* Need to do this hack because we cant bind event in slot */
-    contextOnTitle (e) {
-      e.stopPropagation()
-      e.preventDefault()
-      if (e.target.closest('.el-submenu__title')) {
-        this.$emit('contextmenu', e, this.item)
+    emitContext (event, item) {
+      if (!this.contextDisabled) {
+        this.$emit('contextmenu', event, item)
       }
     }
   }
