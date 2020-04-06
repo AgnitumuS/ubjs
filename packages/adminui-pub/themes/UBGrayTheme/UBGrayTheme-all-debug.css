@@ -2550,23 +2550,23 @@
  */
 /**
  * @var {number}
- * The height of the Month Picker year navigation buttons 
+ * The height of the Month Picker year navigation buttons
  */
 /**
  * @var {number}
- * The width of the Month Picker year navigation buttons 
+ * The width of the Month Picker year navigation buttons
  */
 /**
  * @var {string}
- * The type of cursor to display when the cursor is over a Month Picker year navigation button 
+ * The type of cursor to display when the cursor is over a Month Picker year navigation button
  */
 /**
  * @var {number}
- * The opacity of the Month Picker year navigation buttons 
+ * The opacity of the Month Picker year navigation buttons
  */
 /**
  * @var {number}
- * The opacity of hovered Month Picker year navigation buttons 
+ * The opacity of hovered Month Picker year navigation buttons
  */
 /**
  * @var {string}
@@ -3723,25 +3723,25 @@
 /**
  * @var {string/list}
  * The background-gradient for Tabs. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  */
 /**
  * @var {string/list}
  * The background-gradient for hovered Tabs. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  */
 /**
  * @var {string/list}
  * The background-gradient for the active Tab. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  */
 /**
  * @var {string/list}
  * The background-gradient for disabled Tabs. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  */
 /**
@@ -3920,7 +3920,7 @@
 /**
  * @var {string/list}
  * The background-gradient of the Tab Bar. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  */
 /**
@@ -4024,7 +4024,7 @@
  * The width of the tree folder/leaf icons
  */
 /**
- * @var {number} $tree-elbow-spacing 
+ * @var {number} $tree-elbow-spacing
  * The amount of spacing between the tree elbows or arrows, and the checkbox or icon.
  */
 /**
@@ -8382,7 +8382,7 @@ a.x-tab {
  * @param {string} $ui
  * The name of the UI being created. Can not included spaces or special punctuation
  * (used in CSS class names).
- * 
+ *
  * @param {color} [$ui-border-color=$panel-border-color]
  * The border-color of the Panel
  *
@@ -12904,22 +12904,22 @@ a.x-color-picker-item:hover {
  *
  * @param {string/list} [$ui-background-gradient=$tab-background-gradient]
  * The background-gradient for Tabs. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  *
  * @param {string/list} [$ui-background-gradient-over=$tab-background-gradient-over]
  * The background-gradient for hovered Tabs. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  *
  * @param {string/list} [$ui-background-gradient-active=$tab-background-gradient-active]
  * The background-gradient for the active Tab. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  *
  * @param {string/list} [$ui-background-gradient-disabled=$tab-background-gradient-disabled]
  * The background-gradient for disabled Tabs. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  *
  * @param {number} [$ui-inner-border-width=$tab-inner-border-width]
@@ -13023,7 +13023,7 @@ a.x-color-picker-item:hover {
  *
  * @param {string/list} [$ui-background-gradient=$tabbar-background-gradient]
  * The background-gradient of the Tab Bar. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  *
  * @param {number} [$ui-scroller-width=$tabbar-scroller-width]
@@ -13159,22 +13159,22 @@ a.x-color-picker-item:hover {
  *
  * @param {string/list} [$ui-tab-background-gradient=$tab-background-gradient]
  * The background-gradient for Tabs. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  *
  * @param {string/list} [$ui-tab-background-gradient-over=$tab-background-gradient-over]
  * The background-gradient for hovered Tabs. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  *
  * @param {string/list} [$ui-tab-background-gradient-active=$tab-background-gradient-active]
  * The background-gradient for the active Tab. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  *
  * @param {string/list} [$ui-tab-background-gradient-disabled=$tab-background-gradient-disabled]
  * The background-gradient for disabled Tabs. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  *
  * @param {number} [$ui-tab-inner-border-width=$tab-inner-border-width]
@@ -13251,7 +13251,7 @@ a.x-color-picker-item:hover {
  *
  * @param {string/list} [$ui-bar-background-gradient=$tabbar-background-gradient]
  * The background-gradient of the Tab Bar. Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for 
+ * or a list of color stops. Used as the `$type` parameter for
  * {@link Global_CSS#background-gradient}.
  *
  * @param {number} [$ui-bar-scroller-width=$tabbar-scroller-width]
@@ -16370,7 +16370,7 @@ h6,
 
 /* line 28, ../../sass/src/button/Button.scss */
 .x-btn {
-  
+
 }
 
 /* line 32, ../../sass/src/button/Button.scss */
@@ -16497,7 +16497,7 @@ h6,
 */
 /*
 .#{$prefix}form-readonly .#{$prefix}form-field {
-    background-color: $form-field-disabled-color !important; 
+    background-color: $form-field-disabled-color !important;
    color: $form-field-disabled-color;
 }
 */
@@ -16529,7 +16529,7 @@ h6,
 /* line 1, ../../sass/src/form/field/Text.scss */
 .x-form-text {
   font-size: 14px;
- /* 
+ /*
   border-top-style: none;
   border-left-style: none;
   border-right-style: none;
@@ -16780,12 +16780,12 @@ h6,
 
 /* line 2, ../../sass/src/panel/Table.scss */
 .ub-grid-row-selected td {
-  background-color: #ecf7ed !important;
+  background-color: hsl(var(--hs-primary), var(--l-background-default)) !important;
 }
 
 /* line 7, ../../sass/src/panel/Table.scss */
 .ub-grid-row-selected td.x-grid-cell-selected {
-  background-color: #d6ecd4 !important;
+  background-color: hsl(var(--hs-primary), var(--l-background-active)) !important;
 }
 
 /* line 11, ../../sass/src/panel/Table.scss */

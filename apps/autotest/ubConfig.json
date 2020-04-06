@@ -19,11 +19,13 @@
 		"threadPoolSize": 4
 	},
 	"logging": {
-		"path": "./logs/autotest.log",
+		//"path": "./logs/autotest.log",
+		"path": "./logs",
 		"levels": ["*"],
 		//"levels": [],
 		"stackTrackDepth": 20,
-		"rotationSizeInMB": 0,
+		//"rotationSizeInMB": 0,
+		"rotationSizeInMB": 200,
 		"performanceCounters": false
 	},
 	"javascript": {
