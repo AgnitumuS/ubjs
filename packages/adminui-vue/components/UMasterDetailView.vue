@@ -37,6 +37,32 @@
           </u-dropdown-item>
         </slot>
       </template>
+
+      <template #toolbarDropdownAppend="scope">
+        <slot
+          :scope="scope"
+          name="dropdownMenuDetails"
+        >
+          <u-dropdown-item
+            v-if="details.length"
+            label="Details"
+            icon="el-icon-tickets"
+          >
+            <u-dropdown-item
+              v-for="detail in details"
+              :key="detail.entity + detail.attribute"
+              :disabled="detail === selectedDetail && detailsVisible"
+              :label="formatDetailLabel(detail)"
+              @click="showDetail(detail)"
+            />
+          </u-dropdown-item>
+        </slot>
+
+        <slot
+          :scope="scope"
+          name="toolbarDropdownAppend"
+        />
+      </template>
     </u-table-entity>
 
     <template v-if="detailsVisible">
@@ -172,8 +198,15 @@ export default {
     },
 
     formatDetailLabel ({ entity, attribute }) {
-      const attributeLabel = this.$ut(`${entity}.${attribute}`)
-      return `${this.$ut(entity)} (${attributeLabel})`
+      const attributeLabelText = this.$ut(`${entity}.${attribute}`)
+      const attributeLabel = ` (${attributeLabelText})`
+      const hasSameEntity = this.details.filter(d => d.entity === entity).length > 1
+
+      if (hasSameEntity) {
+        return this.$ut(entity) + attributeLabel
+      } else {
+        return entity
+      }
     }
   }
 }

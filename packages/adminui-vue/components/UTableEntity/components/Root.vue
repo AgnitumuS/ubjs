@@ -70,63 +70,71 @@
         >
           <toolbar-dropdown :close="close">
             <!-- @slot Prepend new buttons to toolbar -->
-            <slot
-              slot="prepend"
-              :close="close"
-              :store="$store"
-              name="toolbarDropdownPrepend"
-            />
+            <template #prepend>
+              <slot
+                :close="close"
+                :store="$store"
+                name="toolbarDropdownPrepend"
+              />
+            </template>
 
             <!-- @slot Replace add-new button in toolbar dropdown -->
-            <slot
-              slot="add-new"
-              :close="close"
-              :store="$store"
-              name="toolbarDropdownAddNew"
-            />
+            <template #new>
+              <slot
+                :close="close"
+                :store="$store"
+                name="toolbarDropdownAddNew"
+              />
+            </template>
             <!-- @slot Replace edit button in toolbar dropdown -->
-            <slot
-              slot="edit"
-              :close="close"
-              :store="$store"
-              name="toolbarDropdownEdit"
-            />
+            <template #edit>
+              <slot
+                :close="close"
+                :store="$store"
+                name="toolbarDropdownEdit"
+              />
+            </template>
             <!-- @slot Replace copy button in toolbar dropdown -->
-            <slot
-              slot="copy"
-              :close="close"
-              :store="$store"
-              name="toolbarDropdownCopy"
-            />
+            <template #copy>
+              <slot
+                :close="close"
+                :store="$store"
+                name="toolbarDropdownCopy"
+              />
+            </template>
             <!-- @slot Replace delete button in toolbar dropdown -->
-            <slot
-              slot="delete"
-              :close="close"
-              :store="$store"
-              name="toolbarDropdownDelete"
-            />
+            <template #delete>
+              <slot
+                :close="close"
+                :store="$store"
+                name="toolbarDropdownDelete"
+              />
+            </template>
             <!-- @slot Replace audit button in toolbar dropdown -->
-            <slot
-              slot="audit"
-              :close="close"
-              :store="$store"
-              name="toolbarDropdownAudit"
-            />
+            <template #audit>
+              <slot
+                :close="close"
+                :store="$store"
+                name="toolbarDropdownAudit"
+              />
+            </template>
             <!-- @slot Replace exports button in toolbar dropdown -->
-            <slot
-              slot="exports"
-              :close="close"
-              :store="$store"
-              name="toolbarDropdownExports"
-            />
+            <template #exports>
+              <slot
+                :close="close"
+                :store="$store"
+                name="toolbarDropdownExports"
+              />
+            </template>
 
             <!-- @slot Append new buttons to toolbar -->
-            <slot
-              slot="append"
-              :close="close"
-              :store="$store"
-              name="toolbarDropdownAppend"
-            />
+            <template #append>
+              <slot
+                name="toolbarDropdownAppend"
+                :close="close"
+                :store="$store"
+              />
+            </template>
           </toolbar-dropdown>
         </slot>
       </slot>
