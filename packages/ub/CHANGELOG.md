@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - in case of unexpected exception inside metadata initialization entity name which cause an error will be logged
+   
 ### Changed
 
 ### Deprecated
