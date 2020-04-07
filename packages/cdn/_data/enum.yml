@@ -1,0 +1,27 @@
+$context:
+  type: enums
+
+CDN_ACCOUNTTYPE:
+- CHECK: Normal
+- CURR: Checking
+- BUDGET: Budget
+- SAVE: Deposit
+- CORR: Correspondent
+
+CDN_ADMINUNITTYPE:
+- COUNTRY: Country
+- DISTRICT: District
+- CITY: City
+
+CDN_SEXTYPE:
+- F: Female
+- M: Male
+- ?: ?
+
+CDN_ADDRESS:
+- YUR: Legal address
+- PHYS: Physical address
+
+CDN_CLASSIFIERITEM_ORDER:
+- code: Code
+- name: Name

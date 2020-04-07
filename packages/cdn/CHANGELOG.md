@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `enum.yml` in cdn/_data for migration
+ - locales for `CDN_CLASSIFIERITEM_ORDER` enum
 
 ### Changed
 

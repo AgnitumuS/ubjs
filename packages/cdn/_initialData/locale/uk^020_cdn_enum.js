@@ -25,7 +25,10 @@ module.exports = function (session) {
       { keyValue: 'M', execParams: { name: 'Чоловік' } },
       // CDN_ADDRESS
       { keyValue: 'YUR', execParams: { name: 'Юридична адреса' } },
-      { keyValue: 'PHYS', execParams: { name: 'Фізична адреса' } }
+      { keyValue: 'PHYS', execParams: { name: 'Фізична адреса' } },
+      // CDN_CLASSIFIERITEM_ORDER
+      { keyValue: 'code', execParams: { name: 'Код' } },
+      { keyValue: 'PHYS', execParams: { name: 'Ім`я' } }
     ]
   }
   loader.localizeEntity(session, localizationConfig, __filename)
