@@ -150,7 +150,7 @@ UB.i18nExtend({
         to: 'dək',
         valuePlaceholder: 'Tarixi seçin'
       },
-      columnPlaceholder: 'Column'
+      columnPlaceholder: 'Sütun'
     },
     pagination: {
       outOf: 'dan'
@@ -174,7 +174,7 @@ UB.i18nExtend({
     },
     dropZone: {
       caption: 'və ya faylları buraya sürükləyin',
-      acceptError: 'Invalid file extension'
+      acceptError: 'Yanlış fayl uzadılması'
     }
   },
 
@@ -183,6 +183,6 @@ UB.i18nExtend({
   },
 
   tableRegister: {
-    hideDetails: 'Hide details'
+    hideDetails: 'Detalları gizlət'
   }
 })

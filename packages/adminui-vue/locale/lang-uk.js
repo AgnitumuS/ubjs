@@ -178,7 +178,7 @@ UB.i18nExtend({
   },
 
   select: {
-    valueIsUndefined: 'Занчення "{0}" не знайдено в сутності "{1}"'
+    valueIsUndefined: 'Значення "{0}" не знайдено в сутності "{1}"'
   },
 
   tableRegister: {
