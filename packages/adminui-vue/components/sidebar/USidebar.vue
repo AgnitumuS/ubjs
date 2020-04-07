@@ -33,6 +33,7 @@
       class="ub-sidebar__main-menu"
       :default-openeds="defaultOpeneds"
       @open="setActiveFolder"
+      @contextmenu.native.stop.prevent="showContextMenu($event, {desktopID: selectedDesktop})"
     >
       <u-sidebar-item
         v-for="item in activeShortcuts"
@@ -66,7 +67,7 @@
         <u-dropdown-item divider />
         <u-dropdown-item
           label="Delete"
-          :disabled="!canDelete"
+          :disabled="!canDelete || contextMenuPayload.ID === undefined"
           icon="el-icon-delete"
           @click="selectContext('deleteShortcut')"
         />
@@ -255,9 +256,11 @@ export default {
 
     async selectContext (action) {
       const { ID, desktopID, parentID, isFolder } = this.contextMenuPayload
+      const contextMenuPayload = this.contextMenuPayload
       const command = {
         cmdType: 'showForm',
-        entity: 'ubm_navshortcut'
+        entity: 'ubm_navshortcut',
+        contextMenuPayload
       }
       switch (action) {
         case 'edit':
