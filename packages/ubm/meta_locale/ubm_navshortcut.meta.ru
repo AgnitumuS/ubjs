@@ -16,7 +16,7 @@
         },
         {
             "name": "isFolder",
-            "caption": "Папка?"
+            "caption": "Группа?"
         },
         {
             "name": "caption",

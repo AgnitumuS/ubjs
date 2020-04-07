@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- typo for `valueIsUndefined` in ru and uk languages, also fixed az translation for new keys
 
 ## [1.10.6] - 2020-04-03
 ### Changed

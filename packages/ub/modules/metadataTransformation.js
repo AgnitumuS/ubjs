@@ -81,7 +81,12 @@ function loadDomainIntoJS () {
   console.time('native init')
   for (const en in domainJSON) {
     const e = domainJSON[en]
-    nativeApp._nativeInitEntity(e.modelName, en, e.meta, e.langs)
+    try {
+      nativeApp._nativeInitEntity(e.modelName, en, e.meta, e.langs)
+    } catch (err) {
+      console.error(`Can't init entity ${en}\n Something wrong in entity JSON`)
+      throw e
+    }
   }
   console.timeEnd('native init')
   return domainJSON

@@ -451,8 +451,8 @@
         },
         "forceNTLM": {
           "type": "boolean",
-          "default": true,
-          "description": "Will force a NTLM usage for Negotiate authentication method. If false - Kerberos will be used in most case"
+          "default": false,
+          "description": "Will force a NTLM usage for Negotiate authentication method. If false (default starting from UB 5.18.1) - Kerberos will be used in most case. **Security warning** - even Microsoft strongly recommend to not use a NTLM. Please, use Kerberos аor the security of your data"
         },
         "simpleCertAuth": {
           "type": "boolean",
