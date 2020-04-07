@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Added
- - `UMasterDetailView`: adedd dropdown with details into toolbar
+ - `UMasterDetailView`: added dropdown with details into toolbar
  - `USidebar` - additional parameter `contextMenuPayload` (contains all ubm_navshortcut attributes) added to
    ubm_navshortcut.showForm action; Can be used in form for `ubm_navshortcut`
  - `USidebar` context menu work not only for sidebar item, but for empty space. In case user right-clicking on
