@@ -1,3 +1,9 @@
+/**
+ * Direct access to database connection pool defined in ubConfig
+ * @module DBConnections
+ * @memberOf module:@unitybase/base
+ * @author pavel.mash
+ */
 /*
  * Created by v.orel on 22.12.2016.
  */
@@ -64,6 +70,7 @@ class DBConnection {
   get inTransaction () {
     return binding.inTransaction(this[DB_INDEX])
   }
+
   /**
    * Start transaction. If transaction is already started return false
    * @returns {boolean}
@@ -71,6 +78,7 @@ class DBConnection {
   startTransaction () {
     return binding.startTransaction(this[DB_INDEX])
   }
+
   /**
    * Commit transaction. If transaction is not started return false
    * @returns {boolean}
@@ -78,6 +86,7 @@ class DBConnection {
   commit () {
     return binding.commit(this[DB_INDEX])
   }
+
   /**
    * Rollback transaction. If transaction is not started return false
    * @returns {boolean}
@@ -85,8 +94,9 @@ class DBConnection {
   rollback () {
     return binding.rollback(this[DB_INDEX])
   }
+
   /**
-   * Run select sql and return result
+   * Run SQL what expect a result and contains named `:paramName:` and/or inline `:(inlineValue):` parameters
    * @param {string} sql
    * @param {Object} params
    * @returns {string}
@@ -95,8 +105,29 @@ class DBConnection {
     const { parsedSql, parsedParams } = this.parseSQL(sql, params)
     return binding.run(this[DB_INDEX], parsedSql, parsedParams)
   }
+
   /**
-   * Execute sql
+   * Run parsed (all parameters are ?) SQL what expects result (select statement for example). Returns result as parsed JSON
+   * @param {string} parsedSql
+   * @param {Array} paramsValues
+   * @returns {Array<Object>}
+   */
+  selectParsedAsObject (parsedSql, paramsValues) {
+    return binding.runAsObject(this[DB_INDEX], parsedSql, paramsValues)
+  }
+
+  /**
+   * Run parsed (all parameters are ?) SQL what expects result (select statement for example)
+   * @param {string} sql
+   * @param {Array} params
+   * @returns {string}
+   */
+  runParsed (sql, params) {
+    return binding.run(this[DB_INDEX], sql, params)
+  }
+
+  /**
+   * Execute SQL what do not expect a result and contains named `:paramName:` and/or inline `:(inlineValue):` parameters
    * @param {string} sql
    * @param {Array} params
    * @returns {boolean}
@@ -108,8 +139,8 @@ class DBConnection {
 
   /**
    * Execute parsed (without inline parameters) sql statement
-   * @param {string} sqlStatement
-   * @param {Array} params
+   * @param {string} sqlStatement Statement with parameters as `?`
+   * @param {Array} params Parameters values
    * @returns {boolean}
    */
   execParsed (sqlStatement, params) {
@@ -306,14 +337,16 @@ class DBConnection {
  * @param {Array<DBConnectionConfig>} connectionsConfig
  * @return {Object<string, DBConnection>}
  */
-function createDBConnections (connectionsConfig) {
+function createDBConnectionPool (connectionsConfig) {
   let connections = {}
   const connBinding = binding.connections
   connectionsConfig.forEach((cfg, idx) => {
-    if (connBinding[idx] !== cfg.name) throw new Error(`internal error: domain config database connection name "${cfg.name}" with index ${idx} does not match database binding name "${connBinding[idx]}"`)
+    if (connBinding[idx] !== cfg.name) {
+      throw new Error(`internal error: domain config database connection name "${cfg.name}" with index ${idx} does not match database binding name "${connBinding[idx]}"`)
+    }
     Object.defineProperty(connections, cfg.name, { value: new DBConnection(idx, cfg), enumerable: true })
   })
   return connections
 }
 
-module.exports = createDBConnections
+module.exports = createDBConnectionPool

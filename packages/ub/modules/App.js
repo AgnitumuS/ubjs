@@ -9,7 +9,7 @@ const UBDomain = require('@unitybase/cs-shared').UBDomain
 const EventEmitter = require('events').EventEmitter
 const THTTPResponse = require('./HTTPResponse')
 const THTTPRequest = require('./HTTPRequest')
-const createDBConnections = require('./DBConnections')
+const createDBConnectionPool = require('@unitybase/base').createDBConnectionPool
 const blobStores = require('@unitybase/blob-stores')
 const base = require('@unitybase/base')
 if (base.ubVersionNum < 5018000) {
@@ -378,10 +378,10 @@ App.updateFTSIndex = function (entityName, instanceID) {
 }
 
 /**
- * Databases connections
+ * Databases connections pool
  * @type {Object<string, DBConnection>}
  */
-App.dbConnections = createDBConnections(App.domainInfo.connections)
+App.dbConnections = createDBConnectionPool(App.domainInfo.connections)
 
 /**
  * Check database are used in current endpoint context and DB transaction is already active.

@@ -8,7 +8,7 @@ const FileBasedStoreLoader = require('./FileBasedStoreLoader')
 const Worker = require('./worker')
 // eslint-disable-next-line camelcase
 const uba_common = require('./uba_common')
-
+const createDBConnectionPool = require('./DBConnections')
 /**
  * Classes, common for CLI and server side
  * @module @unitybase/base
@@ -68,6 +68,10 @@ module.exports = {
    * @type {uba_common}
    */
   uba_common,
+  /**
+   * Create a database connection pool from current config
+   */
+  createDBConnectionPool,
   /**
    * Allows to define a tokenized string and pass an arbitrary number of arguments to replace the tokens.  Each
    * token must be unique, and must increment in the format {0}, {1}, etc.
