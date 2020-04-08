@@ -6,8 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `DBConnection.selectParsedAsObject(sql, params)` method - the same as `runParsed` but
+ returns Array<Object> instead of String  
 
 ### Changed
+  - DBConnection unit moved into @unitybase/base from @unitybase/ub; This allows to use it in shell scripts
+  (App.dbConnections available as before)
 
 ### Deprecated
 
@@ -17,7 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.4] - 2020-03-20
 ### Fixed
- - `SyncConnection.getDomainInfo` will reset cached domain in case isExtended parameter is changed.
+ - `SyncConnection.getDomainInfo` will reset a cached domain in case isExtended parameter is changed.
    This fix a case like:
   ```
   const dSimple = conn.getDomainInfo(); // get not extended domain
@@ -27,10 +31,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.2.3] - 2020-03-17
 ### Added
  - ubConfig parser what replace environment variables placeholders now replace variables with empty values (`var=`) by empty strings
- - in case environment variable is not defined ubConfig parser will output error message with variable name 
+ - in case environment variable is undefined ubConfig parser will output error message with variable name 
 
 ### Fixed
-  - for UBBaseCombobox will enable only accesible actions after setReadOnly(true)/setreadOnly(false) calls. Before this patch all actions became enabled
+  - for UBBaseCombobox will enable only accessible actions after setReadOnly(true)/setReadOnly(false) calls.
+  Before this patch all actions become enabled
 
 ## [5.2.3] - 2020-03-17
 ## [5.2.2] - 2020-03-09
@@ -47,7 +52,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - fix ESLint warnings (mostly about let -> const)
  - `ServerRepository.selectAsObject()` and `ServerRepository.selectAsArray()` will internally use new UB feature
  `TubDataStore.getAsJsObject/TubDataStore.getAsJsArray` to convert store content into JS representation instead of
- `JSON.parse(store.asJSON*)` which require to serialize store into string -> pass string from native code into JS runtime -> parse it using JSON.parse.
+ `JSON.parse(store.asJSON*)` which require serializing store into string -> pass string from native code into JS runtime -> parse it using JSON.parse.
  
  This give a 20% performance boots for `store to JS object` operation.       
 

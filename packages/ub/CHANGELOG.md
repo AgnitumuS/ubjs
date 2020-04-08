@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - in case of unexpected exception inside metadata initialization entity name which cause an error will be logged
    
 ### Changed
+  - DBConnection unit moved into @unitybase/base from @unitybase/ub; This allows to use it in shell scripts
+  (App.dbConnections available as before)
 
 ### Deprecated
 
@@ -22,7 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.4.2] - 2020-03-09
 ## [5.4.1] - 2020-03-04
 ### Added
- - user friendly exception in case UB server version < 5.18. 5.18.0 is a minimal version of server for this package version
+ - user-friendly exception in case UB server version < 5.18. 5.18.0 is a minimal version of server for this package version
 
 ### Removed
   - `App.fileChecksum` `App.folderChecksum` `App.resolveStatic` are removed
@@ -31,7 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.4.0] - 2020-02-29
 ### Added
  - **metadata transformation hook**: in case `_hookMetadataTransformation.js` file exists in the root of the model folder it's export
- will be applied to Domain JSON before Domain is created. This hook allow apply any modifications to metadata (*.meta).
+ will be applied to Domain JSON before the Domain is created. This hook allows to apply any modifications to metadata (*.meta).
  Usage example: `apps/autotest/models/TST/_hookMetadataTransformation.js` 
         
  - `dataStore.getAsJsObject()` and `dataStore.getAsJsArray()` methods - direct serialization of TubDataStore into JS Object
@@ -45,7 +47,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    
 ### Changed
  - metadata **localization** files can be placed in the **model sub-folder** instead of model folder root.
- We recommend to name such folders `meta_locale`. In fact now localization files can be even moved into his own model.
+ Recommend naming such folders `meta_locale`. In fact now localization files can be even moved into his own model.
  for example for adding a new `zl` localization new model can be created and all `*.meta.zl` files can be placed where.
  
  - Entity metadata merging: in case **several** descendant model contains entity with the same name as
