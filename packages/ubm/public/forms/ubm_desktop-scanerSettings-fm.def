@@ -668,7 +668,7 @@ Ext.define('UBM.scanerSettings', {
             ubID: 'UBScan.tabScanning',
             defaults: {
                 labelWidth: 200,
-                width: 500
+                width: 550
             },
             items: [{
                 layout: 'hbox',
@@ -775,7 +775,6 @@ Ext.define('UBM.scanerSettings', {
                 step: 5
             }]
         }]
-
     }],
     buttons: [{
         ubID: 'btnOK',
