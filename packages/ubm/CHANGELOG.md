@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - ubm_navshortcut.isFolder i18n changed for uk/ru `Папка -> Группа` 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.3.6] - 2020-04-10
+### Changed
+ - ubm_navshortcut.isFolder i18n changed for uk/ru `Папка -> Группа` 
 
 ## [5.3.5] - 2020-03-30
 ## [5.3.4] - 2020-03-20

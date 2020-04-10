@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.0.31] - 2020-04-10
+### Fixed
  - fix potential invalid position calculation in HTLMToPdf (invalid use of let inside switch)
 
 ## [5.0.30] - 2020-03-09

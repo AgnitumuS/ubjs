@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.10.7] - 2020-04-10
+### Added
  - `UMasterDetailView`: added dropdown with details into toolbar
  - `USidebar` - additional parameter `contextMenuPayload` (contains all ubm_navshortcut attributes) added to
    ubm_navshortcut.showForm action; Can be used in form for `ubm_navshortcut`
@@ -24,10 +35,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UMasterDetailView`: details labels will contains only relation entity name (without attribute) in case only one attribute points to this entity
  - `Form/processing`, `UTableEntity` improve deletion confirmation message according template
  `Record [instance description attr value] will be deleted from the [entity caption]. Are You sure?`
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UTableEntity` toolbar slots. They overlapped the original action content but did not display provided slot
