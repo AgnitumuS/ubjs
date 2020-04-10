@@ -6,13 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-### Added
  - `UMasterDetailView`: added dropdown with details into toolbar
  - `USidebar` - additional parameter `contextMenuPayload` (contains all ubm_navshortcut attributes) added to
    ubm_navshortcut.showForm action; Can be used in form for `ubm_navshortcut`
  - `USidebar` context menu work not only for sidebar item, but for empty space. In case user right-clicking on
     empty space then action is applied to current desktop. This allow to create a nav shortcut for newly created desktops
-
+ - `UForm/processing` added hooks `beforeCopy` and `copied` for action `Copy` in `UTableEntity`
+ - `UForm` param `isCopy`. Creates copy of existing record
+ 
 ### Changed
  - `UMasterDetailView`: details labels will contains only relation entity name (without attribute) in case only one attribute points to this entity
 
@@ -22,7 +23,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UTableEntity` toolbar slots. They overlapped the original action content but did not display provided slot
-- typo for `valueIsUndefined` in ru and uk languages, also fixed az translation for new keys
+ - typo for `valueIsUndefined` in ru and uk languages, also fixed az translation for new keys
+ - `UTableEntity` copy action in context menu.
+   It copies the data of an existing record and creates a new with new collections records
 
 ## [1.10.6] - 2020-04-03
 ### Changed

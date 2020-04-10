@@ -13,14 +13,8 @@ const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 
-module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
-  Form({
-    component: rootComponent,
-    entity,
-    instanceID,
-    title,
-    formCode
-  })
+module.exports.mount = function (cfg) {
+  Form(cfg)
     .processing()
     .validation()
     .mount()
