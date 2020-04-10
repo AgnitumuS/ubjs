@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.13.7] - 2020-04-10
+### Fixed
  - random invalid session signature calculation (in @unitybase/csShared/UBSession.js) what cause a 401 server response
  and re-logon for UB authentication schema of self-circling for Kerberos.
  The root of problem is variable declaration (`let/const`) inside `switch` block - such construction **MUST NOT BE USED**

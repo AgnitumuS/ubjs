@@ -6,17 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - in case of unexpected exception inside metadata initialization entity name which cause an error will be logged
-   
+
 ### Changed
-  - DBConnection unit moved into @unitybase/base from @unitybase/ub; This allows to use it in shell scripts
-  (App.dbConnections available as before)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.4.6] - 2020-04-10
+### Added
+ - in case of unexpected exception inside metadata initialization entity name which cause an error will be logged
+   
+### Changed
+  - DBConnection unit moved into @unitybase/base from @unitybase/ub; This allows to use it in shell scripts
+  (App.dbConnections available as before)
 
 ## [5.4.5] - 2020-03-30
 ## [5.4.4] - 2020-03-20
