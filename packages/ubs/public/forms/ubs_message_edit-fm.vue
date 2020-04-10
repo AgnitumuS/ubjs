@@ -131,14 +131,8 @@
 const required = require('vuelidate/lib/validators/required').default
 const { Form } = require('@unitybase/adminui-vue')
 
-module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
-  Form({
-    component: rootComponent,
-    entity,
-    instanceID,
-    title,
-    formCode
-  }).mount()
+module.exports.mount = function (cfg) {
+  Form(cfg).mount()
 }
 
 module.exports.default = {

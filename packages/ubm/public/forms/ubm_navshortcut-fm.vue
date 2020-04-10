@@ -77,31 +77,20 @@ const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 
-module.exports.mount = function ({
-  title,
-  entity,
-  instanceID,
-  formCode,
-  rootComponent,
-  parentContext
-}) {
+module.exports.mount = function (cfg) {
   Form({
-    component: rootComponent,
-    entity,
-    instanceID,
-    title,
-    formCode,
+    ...cfg,
     modalClass: 'ub-dialog__reset-padding'
   })
     .processing({
       inited (store) {
-        if (parentContext) store.commit('ASSIGN_DATA', { loadedState: parentContext })
+        if (cfg.parentContext) store.commit('ASSIGN_DATA', { loadedState: cfg.parentContext })
       },
       collections: {
-        rightsSubjects: UB.connection
+        rightsSubjects: ({ state }) => UB.connection
           .Repository('ubm_navshortcut_adm')
           .attrs('ID', 'instanceID', 'admSubjID')
-          .where('instanceID', '=', instanceID)
+          .where('instanceID', '=', state.data.ID)
       }
     })
     .validation()

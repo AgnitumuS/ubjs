@@ -16,10 +16,17 @@
     </u-toolbar>
 
     <u-form-container>
-      <u-auto-field attribute-name="code" :max-width="300"/>
+      <u-auto-field
+        attribute-name="code"
+        :max-width="300"
+      />
 
       <u-grid :columns="3">
-        <u-auto-field attribute-name="docDate" placeholder="overrides placeholder" label="My custom label"/>
+        <u-auto-field
+          attribute-name="docDate"
+          placeholder="overrides placeholder"
+          label="My custom label"
+        />
         <u-auto-field attribute-name="incomeDate" />
         <u-auto-field attribute-name="regDate" />
       </u-grid>
@@ -58,34 +65,28 @@
       <!--      </u-form-row>-->
 
       <u-auto-field
-          attribute-name="description"
-          type="textarea"
-          resize="none"
-          rows="5"
-       />
-      <u-auto-field attribute-name="docDateTime"/>
+        attribute-name="description"
+        type="textarea"
+        resize="none"
+        rows="5"
+      />
+      <u-auto-field attribute-name="docDateTime" />
 
-      <u-auto-field attribute-name="fileStoreSimple"/>
+      <u-auto-field attribute-name="fileStoreSimple" />
 
       <u-grid>
-        <u-auto-field attribute-name="person"/>
-        <u-auto-field attribute-name="employee"/>
+        <u-auto-field attribute-name="person" />
+        <u-auto-field attribute-name="employee" />
       </u-grid>
     </u-form-container>
   </div>
 </template>
 
 <script>
-const adminUiVue = require('@unitybase/adminui-vue')
+const { Form, mapInstanceFields, dialogInfo } = require('@unitybase/adminui-vue')
 
-module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
-  adminUiVue.Form({
-    component: rootComponent,
-    entity,
-    instanceID,
-    title,
-    formCode
-  })
+module.exports.mount = function (cfg) {
+  Form(cfg)
     .processing({
       beforeDelete: (store) => {
         console.log(this, store, arguments)
@@ -101,7 +102,7 @@ module.exports.default = {
   inject: ['$v', 'entitySchema', 'entity'],
 
   computed: {
-    ...adminUiVue.mapInstanceFields([
+    ...mapInstanceFields([
       'ID',
       'code',
       'docDate',
@@ -130,8 +131,8 @@ module.exports.default = {
         const pdfSigner = await $App.pdfSigner()
         await pdfSigner.signOperationStart(docb64)
         try {
-          let r = await pdfSigner.validateAllSignatures()
-          let pki = await this.$UB.connection.pki()
+          const r = await pdfSigner.validateAllSignatures()
+          const pki = await this.$UB.connection.pki()
           await pki.verificationUI(r.validationResults, r.reasons)
         } finally {
           await pdfSigner.signOperationEnd()
@@ -144,7 +145,7 @@ module.exports.default = {
     showDialog () {
       // line below is for testing purpose
       // better to use this.dialogInfo('uba_user') inside Vue instance
-      return adminUiVue.dialogInfo('uba_user')
+      return dialogInfo('uba_user')
     }
   }
 }

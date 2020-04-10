@@ -336,7 +336,8 @@ module.exports = (instance) => ({
       })
       const config = instance.buildCopyConfig({
         cmdType: 'showForm',
-        addByCurrent: true,
+        isCopy: true,
+        addByCurrent: true, // TODO: remove it after drop ext.js from project
         entity: getters.entityName,
         formCode: getters.formCode,
         instanceID: ID,
