@@ -136,6 +136,30 @@ function errorReporter ({ errMsg, errCode, entityCode, detail }) {
 }
 
 /**
+ * Shows deletion confirmation message.
+ *
+ * @param {string} entity Entity code
+ * @param {object} [instanceData] Instance data needed to determine description attribute value
+ * @returns {Promise<boolean>}
+ */
+function dialogDeleteRecord (entity, instanceData = {}) {
+  const descriptionAttr = UB.connection.domain.get(entity).getDescriptionAttribute()
+  const hasDescriptionAttr = descriptionAttr && descriptionAttr in instanceData
+  const defaultMess = hasDescriptionAttr
+    ? UB.i18n('deleteConfirmationWithCaption', UB.i18n(entity), instanceData[descriptionAttr])
+    : UB.i18n('deleteConfirmation', UB.i18n(entity))
+  const customMessCode = `${entity}:deleteInquiry`
+  const customMess = UB.i18n(customMessCode, UB.i18n(entity), instanceData[descriptionAttr])
+  const hasCustomMess = customMessCode !== customMess
+
+  if (hasCustomMess) {
+    return dialogYesNo('deletionDialogConfirmCaption', customMess)
+  } else {
+    return dialogYesNo('deletionDialogConfirmCaption', defaultMess)
+  }
+}
+
+/**
  *  Inject $dialog into Vie prototype. To be used as Vue.use(dialog)
  *  @param {Vue} Vue
  * */
@@ -144,6 +168,7 @@ function install (Vue) {
   Vue.prototype.$dialogError = dialogError
   Vue.prototype.$dialogInfo = dialogInfo
   Vue.prototype.$dialogYesNo = dialogYesNo
+  Vue.prototype.$dialogDeleteRecord = dialogDeleteRecord
   Vue.prototype.$errorReporter = errorReporter
 }
 
@@ -152,6 +177,7 @@ module.exports = {
   dialogError,
   dialogInfo,
   dialogYesNo,
+  dialogDeleteRecord,
   errorReporter,
   install
 }

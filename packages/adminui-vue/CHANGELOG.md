@@ -11,11 +11,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    ubm_navshortcut.showForm action; Can be used in form for `ubm_navshortcut`
  - `USidebar` context menu work not only for sidebar item, but for empty space. In case user right-clicking on
     empty space then action is applied to current desktop. This allow to create a nav shortcut for newly created desktops
+ - `Form/processing`, `UTableEntity` added possibility to replace default deletion confirmation message
+ for each entity separately.
+ Add row to locale file according template: `{ 'ENTITY:deleteInquiry': 'Delete {1} from {0}' }`,
+ where `ENTITY` is entity code, `{0}` - translated entity name and `{1}` is instance description attribute.
+ - `UDialog` added `dialogDeleteRecord` - 'YesNo' dialog which compute delitation message.
+ Also added to Vue.prototype.$dialogDeleteRecord
  - `UForm/processing` added hooks `beforeCopy` and `copied` for action `Copy` in `UTableEntity`
  - `UForm` param `isCopy`. Creates copy of existing record
  
 ### Changed
  - `UMasterDetailView`: details labels will contains only relation entity name (without attribute) in case only one attribute points to this entity
+ - `Form/processing`, `UTableEntity` improve deletion confirmation message according template
+ `Record [instance description attr value] will be deleted from the [entity caption]. Are You sure?`
 
 ### Deprecated
 
