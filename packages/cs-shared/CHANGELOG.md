@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - random invalid session signature calculation what cause a 401 server response and re-logon for
+ UB authentication schema of self-circling for Kerberos.
+ The root of problem is variable declaration (`let/const`) inside `switch` block - such construction **MUST NOT BE USED**  
 
 ## [5.2.4] - 2020-03-20
 ## [5.2.3] - 2020-03-17

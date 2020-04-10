@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - random invalid session signature calculation (in @unitybase/csShared/UBSession.js) what cause a 401 server response
+ and re-logon for UB authentication schema of self-circling for Kerberos.
+ The root of problem is variable declaration (`let/const`) inside `switch` block - such construction **MUST NOT BE USED**
 
 ## [5.5.5] - 2020-03-30
 ## [5.5.4] - 2020-03-20
@@ -31,8 +34,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.4.10] - 2020-02-23
 ### Changed
  - `AsyncConnection.query` method will add a method names into post request URL, so calls to `ubql` endpoint will become
- `POST /ubql?rq=entity1.method1*entity2.method2`. This allow to apply a custom login into reverse proxy level and also simplify
- a debugging, since all methods are directly visible in the network browser panel
+ `POST /ubql?rq=entity1.method1*entity2.method2`. This allows to apply a custom login into reverse proxy level and simplify
+ a debugging, since all methods are directly visible in the network browser panel.
 
 ### Fixed
  - ESLint warnings resolved (mostly about let -> const) 
@@ -57,7 +60,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - i18n for `UserWithoutOrgEmployeeNotAllowed` is moved from adminui-pub into ub-pub
  
 ### Fixed
- - in case text of the exception raised inside server side Session.on('login') event handler is wrapped into <<<>>>
+ - in case text of the exception raised inside server side Session.on('login') event handler wraps into <<<>>>
  ub-pub will translate it and show as any other handled exception. Before this patch `InvalidUserNameOrPassword` always shown.
  Fix for [UB-1728]
 
@@ -99,7 +102,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - remove usage of lodash from inside `UB.format` && `UB.i18n`
 
 ### Fixed
- - `AsyncConnection.userLang` will return application default language in case user is not authorised yet (anonymous)
+ - `AsyncConnection.userLang` returns application default language in case user is not authorised yet (anonymous)
  but appInfo is obtained
 
 ## [5.4.0] - 2019-12-30
@@ -114,7 +117,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 - `AsyncConnection.authHandshakeCERT` & `authHandshakeCERT2` are **REMOVED**.
-   Instead `AsyncConnection.pki()` will return `UbPkiInterface` universal interface for PKI operations
+   Instead `AsyncConnection.pki()` will return `UbPkiInterface` universal interface for PKI operations.
  
 ### Fixed
  - native messages warning texts english grammar
@@ -137,9 +140,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
      // for my_string_key = 'Error value: {value:i18n}', will return 'Error value: Value', the "value" itself will be i18n-ed 
 
      ```
- - AsyncConnection already parses and translate encoded error messages from server.  For example `<<<Some error>>>`
-     string is converted to just `Some error`, moreover, if the string matches i18n resource key, it gets translated.
-   Now, this feature gets even more sophisticated, it support passing string formatting arguments.  For example,
+ - AsyncConnection already parses and translate encoded error messages from the server.  For example `<<<Some error>>>`
+     string will be converted into `Some error`, moreover, if the string matches i18n resource key, it gets translated.
+   Now, this feature gets even more sophisticated, it supports passing string formatting arguments.  For example,
    the error returned by server `<<<file_not_found>>>|["bad_file_name"]` will be translated using call
    `i18n('file_not_found', 'bad_file_name')` and if the i18n resource is `'The file "{0}" is not accessible or does not exist'`,
    the actual message will be: "The file "bad_file_name" is not accessible or does not exist".
@@ -188,14 +191,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.3.15] - 2019-08-22
 ### Changed
- - silenceKerberosLogin support is removed from AsyncConnection and moved into @unitybase/adminui-pub;
+ - silenceKerberosLogin support has been removed from AsyncConnection and moved into @unitybase/adminui-pub;
   This is responsibility of UI to analyse localStorage key and resolve requestAuthParams promise to Negotiate algorithm  
 
 ## [5.3.14] - 2019-08-19
 ### Added
  - new localStorage key **UB.LDS_KEYS.PREVENT_CALL_LOGOUT_ON_UNLOAD** added to prevent logout in case user open document
  using Document URI Schema (WebDav). Before call to document.location.href = 'ms-word....' developer must set this key value
- to `"true"` to prevent ub-pub to call $App.logout inside `document.onbeforeunload` handler 
+ to `"true"` to prevent ub-pub to call $App.logout inside `document.onbeforeunload` handler. 
  
 ## [5.3.13] - 2019-08-13
 ### Fixed
@@ -205,7 +208,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - AsyncConnection methods `runTrans` and `runTransAsObject` now stringify execParams for `insert` and `update` methods,
  just like single `insert`, `update`. This fixes problems with saving JSON attributes and overall,
- make connection object methods more consistent
+ make connection object methods more consistent.
 
 ## [5.3.11] - 2019-08-09
 ### Changed
@@ -217,9 +220,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.3.10] - 2019-07-31
 ### Fixed
  - in case UBNativeMessage instantiated inside iFrame `window.parent.postMessage` will be called with 
- `targetOrign` calculated during UBNativeMessage.connect. This prevent possible XSS attack to the NativeMessages app 
+ `targetOrign` calculated during UBNativeMessage.connect. This prevents possible XSS attack to the NativeMessages app 
  - UBNativeMessage will show extension setup instruction ASAP in case `__connect` to native messages host is failed
-  Technical details: for unknown reason in chrome 75 response for message to not existing host is a valid message instead of timeout
+  Technical details: for unknown reason in chrome 75 response for a message to not existing host is a valid message instead of timeout
    
 ## [5.3.9] - 2019-07-28
 ### Added
