@@ -769,9 +769,10 @@ HtmlToPdf.prototype.writeSpecial = function (context, noWrite) {
   let cfg, cmp
   let result = 0
   let node = context.node
+  let keyName
   switch (node.nodeName.toUpperCase()) {
     case 'POSITION-MARK':
-      let keyName = node.attributes.getNamedItem('code').nodeValue
+      keyName = node.attributes.getNamedItem('code').nodeValue
       context.getFirstBlockElm().positionMarkKey = keyName
       result = 1
       break
