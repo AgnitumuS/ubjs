@@ -2,6 +2,7 @@ const Lookups = require('../../utils/lookups.js')
 const UB = require('@unitybase/ub-pub')
 const { Notification: $notify } = require('element-ui')
 const { throttle } = require('throttle-debounce')
+const { dialogDeleteRecord } = require('../dialog/UDialog')
 
 /**
  * Build store by UTableEntity props
@@ -307,10 +308,11 @@ module.exports = (instance) => ({
       UB.core.UBApp.doCommand(config)
     },
 
-    async deleteRecord ({ getters }, ID) {
+    async deleteRecord ({ state, getters }, ID) {
       if (ID === null) return
 
-      const answer = await UB.core.UBApp.dialogYesNo('deletionDialogConfirmCaption', 'vyHotiteUdalitSoderzhimoeDocumenta')
+      const item = state.items.find(i => i.ID === ID)
+      const answer = await dialogDeleteRecord(getters.entityName, item)
 
       if (answer) {
         try {
