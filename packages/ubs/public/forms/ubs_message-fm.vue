@@ -61,14 +61,8 @@
 <script>
 const { Form } = require('@unitybase/adminui-vue')
 
-module.exports.mount = function ({ title, entity, instanceID, props, rootComponent }) {
-  Form({
-    component: rootComponent,
-    props,
-    entity,
-    instanceID,
-    title
-  }).mount()
+module.exports.mount = function (cfg) {
+  Form(cfg).mount()
 }
 
 module.exports.default = {

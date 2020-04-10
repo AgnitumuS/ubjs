@@ -23,8 +23,8 @@ function UBSession (authResponse, secretWord, authSchema) {
   const hexa8ID = hexa8(data.result.split('+')[0])
   const userData = data.uData ? JSON.parse(data.uData) : { lang: 'en', login: 'anonymous' }
   const sessionWord = data.result
-  const sessionPwdHash = secretWord || ''
-  const sessionSaltCRC = (typeof ncrc32 !== 'undefined') ? ncrc32(0, sessionWord + sessionPwdHash) : null
+  const secret = secretWord || ''
+  const sessionSaltCRC = (typeof ncrc32 !== 'undefined') ? ncrc32(0, sessionWord + secret) : null
 
   if (!userData.login) {
     userData.login = data.logonname
@@ -75,6 +75,7 @@ function UBSession (authResponse, secretWord, authSchema) {
    * @returns {string}
    */
   this.signature = function (authMock) {
+    let hexaTime
     switch (this.authSchema) {
       case 'None':
         return ''
@@ -83,11 +84,10 @@ function UBSession (authResponse, secretWord, authSchema) {
       case 'ROOT':
         return process.rootOTP()
       default:
-        const timeStampI = authMock ? 1 : Math.floor(Date.now() / 1000)
-        const hexaTime = hexa8(timeStampI)
+        hexaTime = hexa8(authMock ? 1 : Math.floor(Date.now() / 1000))
         return authMock
           ? hexa8ID + hexaTime + hexa8(1)
-          : hexa8ID + hexaTime + hexa8((typeof ncrc32 !== 'undefined') ? ncrc32(sessionSaltCRC, hexaTime) : crc32(sessionWord + sessionPwdHash + hexaTime)) // + url?
+          : hexa8ID + hexaTime + hexa8((typeof ncrc32 !== 'undefined') ? ncrc32(sessionSaltCRC, hexaTime) : crc32(sessionWord + secret + hexaTime)) // + url?
     }
   }
 

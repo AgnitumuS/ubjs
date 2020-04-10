@@ -60,27 +60,14 @@ const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapGetters, mapActions } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 
-module.exports.mount = function ({
-  title,
-  tabId,
-  entity,
-  instanceID,
-  formCode,
-  rootComponent
-}) {
-  Form({
-    component: rootComponent,
-    entity,
-    instanceID,
-    title,
-    formCode
-  })
+module.exports.mount = function (cfg) {
+  Form(cfg)
     .processing({
       collections: {
-        rightsSubjects: UB.connection
+        rightsSubjects: ({ state }) => UB.connection
           .Repository('ubm_desktop_adm')
           .attrs('ID', 'instanceID', 'admSubjID')
-          .where('instanceID', '=', instanceID)
+          .where('instanceID', '=', state.data.ID)
       }
     })
     .validation()

@@ -2,7 +2,7 @@
 module.exports = createProcessingModule
 
 const UB = require('@unitybase/ub-pub')
-const dialogs = require('../../components/dialog/UDialog')
+const { dialogError, dialogDeleteRecord } = require('../../components/dialog/UDialog')
 const moment = require('moment')
 const Vue = require('vue')
 const { Notification: $notify } = require('element-ui')
@@ -65,7 +65,10 @@ const {
  * @param {function} [saved] Callback which will be emit when data was saved
  * @param {function} [beforeDelete] Callback which will be emit before delete
  * @param {function} [deleted] Callback which will be emit when data was deleted
+ * @param {function} [beforeCopy] Callback which will be emit before copy of existing record
+ * @param {function} [copied] Callback which will be emit when data was copied from existing record
  * @param {function} [saveNotification] Callback which will be override default save notification
+ * @param {boolean} isCopy Flag which used for create new record with data of existing record
  * @return {object} Vue store cfg
  */
 function createProcessingModule ({
@@ -86,7 +89,10 @@ function createProcessingModule ({
   saved,
   beforeDelete,
   deleted,
-  saveNotification
+  beforeCopy,
+  copied,
+  saveNotification,
+  isCopy
 }) {
   const autoLoadedCollections = Object.entries(initCollectionsRequests)
     .filter(([, collData]) => !collData.lazy)
@@ -431,9 +437,11 @@ function createProcessingModule ({
         if (beforeInit) {
           await beforeInit()
         }
-        commit('IS_NEW', !instanceID)
+        commit('IS_NEW', !instanceID || isCopy)
 
-        if (state.isNew) {
+        if (isCopy) {
+          await dispatch('copyExisting')
+        } else if (state.isNew) {
           await dispatch('create')
         } else {
           await dispatch('load')
@@ -546,7 +554,7 @@ function createProcessingModule ({
           target: 'loadCollections'
         })
 
-        const results = await Promise.all(
+        const collectionsData = await Promise.all(
           collectionKeys.map(key => {
             const req = initCollectionsRequests[key].repository(store)
             req.fieldList = enrichFieldList(
@@ -557,7 +565,7 @@ function createProcessingModule ({
             return req.select()
           })
         )
-        results.forEach((collectionData, index) => {
+        collectionsData.forEach((collectionData, index) => {
           const collection = collectionKeys[index]
           commit('LOAD_COLLECTION', {
             collection,
@@ -568,6 +576,89 @@ function createProcessingModule ({
         commit('LOADING', {
           isLoading: false,
           target: 'loadCollections'
+        })
+      },
+
+      /**
+       * Create copy of master record and all collections
+       *
+       * @param {Store} store
+       * @returns {Promise<void>}
+       */
+      async copyExisting (store) {
+        const { commit, dispatch } = store
+        const collections = Object.keys(initCollectionsRequests)
+
+        commit('LOADING', {
+          isLoading: true,
+          target: 'createCopy'
+        })
+        if (beforeCopy) {
+          await beforeCopy()
+        }
+
+        // load master record
+        const copiedRecord = await UB.connection
+          .Repository(masterEntityName)
+          .attrs(fieldList)
+          .selectById(instanceID)
+        commit('LOAD_DATA', copiedRecord) // need for load collections because collections maps to data of master record
+
+        // load collections
+        const collectionsResponse = await Promise.all(
+          collections.map(collectionKey => {
+            const collectionDefinition = initCollectionsRequests[collectionKey]
+            const req = collectionDefinition.repository(store)
+            req.fieldList = enrichFieldList(
+              UB.connection.domain.get(req.entityName),
+              req.fieldList,
+              ['ID', 'mi_modifyDate', 'mi_createDate']
+            )
+            return req.select()
+          })
+        )
+
+        delete copiedRecord.ID
+        const newRecord = await UB.connection.addNewAsObject({
+          entity: masterEntityName,
+          fieldList,
+          execParams: copiedRecord
+        })
+        commit('LOAD_DATA', newRecord)
+
+        await Promise.all(
+          collectionsResponse.flatMap((collectionData, index) => {
+            const collection = collections[index]
+            const collectionDefinition = initCollectionsRequests[collection]
+            const entityName = collectionDefinition.repository(store).entityName
+            const associatedAttrs = UB.connection.domain.get(entityName)
+              .filterAttribute(attr => {
+                return attr.associatedEntity === masterEntityName
+              })
+              .map(attr => attr.code)
+
+            return collectionData.map(collectionItem => {
+              // replace associated attributes for current entity
+              for (const attr of associatedAttrs) {
+                if (attr in collectionItem) {
+                  collectionItem[attr] = newRecord.ID
+                }
+              }
+              delete collectionItem.ID
+              return dispatch('addCollectionItem', {
+                collection,
+                execParams: collectionItem
+              })
+            })
+          })
+        )
+
+        if (copied) {
+          await copied()
+        }
+        commit('LOADING', {
+          isLoading: false,
+          target: 'createCopy'
         })
       },
 
@@ -758,7 +849,7 @@ function createProcessingModule ({
             return
           }
         }
-        const answer = await $App.dialogYesNo('deletionDialogConfirmCaption', 'vyHotiteUdalitSoderzhimoeDocumenta')
+        const answer = await dialogDeleteRecord(masterEntityName, state.data)
 
         if (answer) {
           commit('LOADING', {
@@ -834,7 +925,7 @@ function createProcessingModule ({
             })
             $notify.success(UB.i18n('lockSuccessCreated'))
           } else {
-            return dialogs.dialogError(UB.i18n('softLockInfo', resultLock.lockUser, moment(resultLock.lockTime).format('lll')))
+            return dialogError(UB.i18n('softLockInfo', resultLock.lockUser, moment(resultLock.lockTime).format('lll')))
           }
         }).catch(e => {
           UB.showErrorWindow(e)

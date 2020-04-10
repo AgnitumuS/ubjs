@@ -11,7 +11,6 @@ const { mountTab, mountModal, mountContainer } = require('./mount')
 const createProcessingModule = require('./processing')
 const {
   mergeStore,
-  required,
   transformCollections,
   enrichFieldList
 } = require('./helpers')
@@ -45,6 +44,7 @@ class UForm {
    * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar and for correct tabID generation
    * @param {string} [cfg.tabId] Optional tabId. If omitted will be calculated using entity code and instanceID
    * @param {object} [cfg.target] Optional target. Used for render form into form
+   * @param {boolean} cfg.isCopy Required isCopy. Used for create new record with data of existing record
    */
   constructor ({
     component,
@@ -58,7 +58,8 @@ class UForm {
     modalWidth,
     formCode,
     tabId,
-    target
+    target,
+    isCopy
   }) {
     this.component = component || rootComponent
     this.props = props
@@ -76,6 +77,7 @@ class UForm {
     }
     this.instanceID = instanceID
     this.formCode = formCode
+    this.isCopy = isCopy
     this.collections = {}
 
     this.target = target
@@ -125,6 +127,8 @@ class UForm {
    * @param {function} [cfg.loaded]
    * @param {function} [cfg.beforeDelete]
    * @param {function} [cfg.deleted]
+   * @param {function} [cfg.beforeCopy]
+   * @param {function} [cfg.copied]
    * @param {function} [saveNotification] Callback which will be override default save notification
    * @returns {UForm}
    */
@@ -141,6 +145,8 @@ class UForm {
     loaded,
     beforeDelete,
     deleted,
+    beforeCopy,
+    copied,
     saveNotification
   } = {}) {
     this.storeInitialized = true
@@ -172,7 +178,10 @@ class UForm {
       loaded: loaded ? () => loaded.call(this, this.$store) : null,
       beforeDelete: beforeDelete ? () => beforeDelete.call(this, this.$store) : null,
       deleted: deleted ? () => deleted.call(this, this.$store) : null,
-      saveNotification
+      beforeCopy: beforeCopy ? () => beforeCopy.call(this, this.$store) : null,
+      copied: copied ? () => copied.call(this, this.$store) : null,
+      saveNotification,
+      isCopy: this.isCopy
     })
     mergeStore(this.storeConfig, processingModule)
 

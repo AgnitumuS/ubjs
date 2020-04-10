@@ -93,15 +93,8 @@ const { mapState, mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 const LazyCollection = require('../components/LazyCollection.vue').default
 
-module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent, isModal }) {
-  Form({
-    component: rootComponent,
-    entity,
-    instanceID,
-    title,
-    formCode,
-    isModal
-  })
+module.exports.mount = function (cfg) {
+  Form(cfg)
     .processing({
       collections: {
         todo: {
