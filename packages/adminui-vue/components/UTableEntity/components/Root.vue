@@ -205,6 +205,7 @@
             <u-dropdown-item
               icon="el-icon-edit"
               label="Edit"
+              :disabled="!canEdit"
               @click="editRecord(contextMenuRowId)"
             />
           </slot>
@@ -249,6 +250,7 @@
             <u-dropdown-item
               icon="el-icon-link"
               label="link"
+              :disabled="!hasSelectedRow"
               @click="createLink(contextMenuRowId)"
             />
           </slot>
@@ -358,8 +360,10 @@ export default {
 
     ...mapGetters([
       'canAddNew',
+      'canEdit',
       'canDelete',
       'canAudit',
+      'hasSelectedRow',
       'formCode',
       'columns'
     ]),

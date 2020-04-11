@@ -30,7 +30,7 @@
         <u-dropdown-item
           icon="el-icon-edit"
           :label="$ut('Edit') + ' (Ctrl + E)'"
-          :disabled="!selectedRowId"
+          :disabled="!canEdit"
           @click="editRecord(selectedRowId)"
         />
       </slot>
@@ -38,7 +38,7 @@
         <u-dropdown-item
           icon="el-icon-copy-document"
           label="Copy"
-          :disabled="!selectedRowId || !canAddNew"
+          :disabled="!hasSelectedRow || !canAddNew"
           @click="copyRecord(selectedRowId)"
         />
       </slot>
@@ -46,7 +46,7 @@
         <u-dropdown-item
           icon="el-icon-delete"
           :label="$ut('Delete') + ' (Ctrl + Delete)'"
-          :disabled="!selectedRowId || !canDelete"
+          :disabled="!canDelete"
           @click="deleteRecord(selectedRowId)"
         />
       </slot>
@@ -54,7 +54,7 @@
         <u-dropdown-item
           icon="el-icon-data-analysis"
           label="showAudit"
-          :disabled="!selectedRowId || !canAudit"
+          :disabled="!canAudit"
           @click="audit(selectedRowId)"
         />
       </slot>
@@ -93,8 +93,10 @@ export default {
   computed: {
     ...mapGetters([
       'canAddNew',
+      'canEdit',
       'canDelete',
       'canAudit',
+      'hasSelectedRow',
       'entityName',
       'currentRepository'
     ]),
