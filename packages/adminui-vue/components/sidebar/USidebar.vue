@@ -276,7 +276,7 @@ export default {
           }
           break
 
-        case 'deleteShortcut':
+        case 'deleteShortcut': {
           const confirm = await this.$dialogYesNo('areYouSure', 'deletionDialogConfirmCaption')
 
           if (confirm) {
@@ -289,6 +289,7 @@ export default {
             this.initMenu() // reload after delete
           }
           return
+        }
       }
 
       $App.doCommand(command)

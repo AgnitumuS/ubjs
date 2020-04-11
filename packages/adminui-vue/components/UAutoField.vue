@@ -51,7 +51,7 @@ export default {
     isRequired () {
       return this.$v &&
         this.$v[this.attributeName] &&
-        this.$v[this.attributeName].$params.hasOwnProperty('required')
+        'required' in this.$v[this.attributeName].$params
     },
 
     isError () {
