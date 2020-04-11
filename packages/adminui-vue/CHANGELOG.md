@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UTableEntity` in case row was deleted disable action buttons before choosing another row
 
 ## [1.10.7] - 2020-04-10
 ### Added
