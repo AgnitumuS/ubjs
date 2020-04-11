@@ -18,7 +18,7 @@
         v-for="(item, index) in langsData"
         :key="item.lang"
         :label="item.lang"
-        :required="$v.langsData.$each[index].value.$params.hasOwnProperty('required')"
+        :required="'required' in $v.langsData.$each[index].value.$params"
         :error="$v.langsData.$each[index].value.$error"
       >
         <el-input
@@ -104,8 +104,7 @@ export default {
   },
 
   validations () {
-    const isRequired = !this.isNew && this.isMasterAttrRequired
-    const value = isRequired ? { required } : {}
+    const value = this.isMasterAttrRequired ? { required } : {}
 
     return {
       langsData: {
