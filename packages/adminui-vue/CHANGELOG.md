@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `UInput/LocaleButton` in case field is required - localization field will always required. 
+If dialog is not opened fields will be filled automatically.
 
 ### Deprecated
 
