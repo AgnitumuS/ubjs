@@ -1,5 +1,6 @@
 {
 	"httpServer": {
+		"serverType": "Socket", // for testing purpose enable socket server on Windows
 		"host": "+",
 		"port": "8881",
 		"requestQueueLength": 1000,

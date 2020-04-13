@@ -1,7 +1,7 @@
 {
 	"httpServer": {
 		//"externalURL": "http://localhost",
-		//"serverType": "Socket",
+		"serverType": "Socket", // for testing purpose enable socket server on Windows
 //		"reverseProxy": {
 //			"kind": "nginx",
 //			"securityZoneHeader": "X-Sec-Zone"
