@@ -165,7 +165,7 @@ export default {
           return this.repository()
         case 'object':
           return this.$UB.Repository(this.repository)
-        default:
+        default: {
           const repo = this.$UB.Repository(this.entityName)
           if (this.columns) {
             repo.attrs(
@@ -179,6 +179,7 @@ export default {
             )
           }
           return repo
+        }
       }
     },
 

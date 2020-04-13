@@ -8,12 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `UInput/LocaleButton` in case field is required - localization field will always required. 
+If dialog is not opened fields will be filled automatically.
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+- `UTableEntity` in case row was deleted disable action buttons before choosing another row
 
 ## [1.10.7] - 2020-04-10
 ### Added

@@ -100,11 +100,15 @@ module.exports = (instance) => ({
     },
 
     canDelete (state, getters) {
-      return getters.schema.haveAccessToMethod('delete')
+      return getters.hasSelectedRow && getters.schema.haveAccessToMethod('delete')
     },
 
     canAudit (state, getters) {
-      return getters.schema.hasMixin('audit')
+      return getters.hasSelectedRow && getters.schema.hasMixin('audit')
+    },
+
+    canEdit (state, getters) {
+      return getters.hasSelectedRow
     },
 
     columns () {
@@ -122,6 +126,10 @@ module.exports = (instance) => ({
       } else {
         return {}
       }
+    },
+
+    hasSelectedRow (state) {
+      return state.items.findIndex(i => i.ID === state.selectedRowId) !== -1
     }
   },
 
