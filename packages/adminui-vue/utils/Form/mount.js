@@ -348,7 +348,8 @@ function mountContainer ({
         (state, getters) => getters.isDirty,
         (newValue, oldValue) => {
           basePanel.updateActions()
-        }
+        },
+        { immediate: true }
       )
       : null
     target.on('destroy', () => {
