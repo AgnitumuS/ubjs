@@ -17,6 +17,8 @@ If dialog is not opened fields will be filled automatically.
 
 ### Fixed
 - `UTableEntity` in case row was deleted disable action buttons before choosing another row
+- `UTableEntity` pass `isCopy` param to autoforms
+- `UForm/processing` during copying record set `canSave` params to `true`
 
 ## [1.10.7] - 2020-04-10
 ### Added
