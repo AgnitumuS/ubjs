@@ -2,26 +2,68 @@ $context:
   type: enums
 
 CDN_ACCOUNTTYPE:
-- CHECK: Normal
-- CURR: Checking
-- BUDGET: Budget
-- SAVE: Deposit
-- CORR: Correspondent
+  - CHECK:
+      en: Normal
+      ru: Расчетный
+      uk: Розрахунковий
+  - CURR:
+      en: Checking
+      ru: Текущий
+      uk: Поточний
+  - BUDGET:
+      en: Budget
+      ru: Бюджетный
+      uk: Бюджетний
+  - SAVE:
+      en: Deposit
+      ru: Депозитный
+      uk: Депозитний
+  - CORR:
+      en: Correspondent
+      ru: Корреспондентский
+      uk: Кореспондентський
 
 CDN_ADMINUNITTYPE:
-- COUNTRY: Country
-- DISTRICT: District
-- CITY: City
+  - COUNTRY:
+      en: Country
+      ru: Страна
+      uk: Країна
+  - DISTRICT:
+      en: District
+      ru: Регион
+      uk: Регіон
+  - CITY:
+      en: City
+      ru: Город
+      uk: Місто
 
 CDN_SEXTYPE:
-- F: Female
-- M: Male
-- ?: "?"
+  - F:
+      en: Female
+      ru: Женщина
+      uk: Жінка
+  - M:
+      en: Male
+      ru: Мужчина
+      uk: Чоловік
+  - ?: "?"
 
 CDN_ADDRESS:
-- YUR: Legal address
-- PHYS: Physical address
+  - YUR:
+      en: Legal address
+      ru: Юридический адрес
+      uk: Юридична адреса
+  - PHYS:
+      en: Physical address
+      ru: Физический адрес
+      uk: Фізична адреса
 
 CDN_CLASSIFIERITEM_ORDER:
-- code: Code
-- name: Name
+  - code:
+      en: Code
+      ru: Код
+      uk: Код
+  - name:
+      en: Name
+      ru: Название
+      uk: Назва

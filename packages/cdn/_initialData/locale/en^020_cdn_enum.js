@@ -27,7 +27,7 @@ module.exports = function (session) {
       { keyValue: 'PHYS', execParams: { name: 'Physical address' } },
       // CDN_CLASSIFIERITEM_ORDER
       { keyValue: 'code', execParams: { name: 'Code' } },
-      { keyValue: 'PHYS', execParams: { name: 'Name' } }
+      { keyValue: 'name', execParams: { name: 'Name' } }
     ]
   }
   loader.localizeEntity(session, localizationConfig, __filename)
