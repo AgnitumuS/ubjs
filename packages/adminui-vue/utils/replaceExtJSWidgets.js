@@ -98,6 +98,7 @@ function replaceAutoForms () {
     instanceID,
     title: UB.connection.domain.get(entity).caption,
     isModal,
+    isCopy: this.commandConfig.isCopy,
     modalClass: 'ub-dialog__reset-padding'
   })
     .processing()
