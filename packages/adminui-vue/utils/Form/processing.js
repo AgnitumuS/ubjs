@@ -68,7 +68,7 @@ const {
  * @param {function} [beforeCopy] Callback which will be emit before copy of existing record
  * @param {function} [copied] Callback which will be emit when data was copied from existing record
  * @param {function} [saveNotification] Callback which will be override default save notification
- * @param {boolean} isCopy Flag which used for create new record with data of existing record
+ * @param {boolean} [isCopy] Flag which used for create new record with data of existing record
  * @return {object} Vue store cfg
  */
 function createProcessingModule ({
@@ -129,7 +129,12 @@ function createProcessingModule ({
        */
       lockInfo: {},
 
-      pendings: []
+      pendings: [],
+
+      /**
+       * Whether master instance was copy of existing record
+       */
+      isCopy
     },
 
     getters: {
@@ -166,7 +171,7 @@ function createProcessingModule ({
       },
 
       canSave (state, getters) {
-        return getters.isDirty && entitySchema.haveAccessToAnyMethods(['insert', 'update'])
+        return (getters.isDirty || state.isCopy) && entitySchema.haveAccessToAnyMethods(['insert', 'update'])
       },
 
       canRefresh (state, getters) {
@@ -390,11 +395,20 @@ function createProcessingModule ({
 
       /**
        * Set "IsNew" flag for the master record.
-       * @param {VuexTrackedInstance} state
+       * @param {Store.state} state
        * @param {boolean} isNew
        */
       IS_NEW (state, isNew) {
         state.isNew = isNew
+      },
+
+      /**
+       * Set "IsCopy" flag.
+       * @param {Store.state} state
+       * @param {boolean} isCopy
+       */
+      IS_COPY (state, isCopy) {
+        state.isCopy = isCopy
       },
 
       /**
@@ -437,9 +451,9 @@ function createProcessingModule ({
         if (beforeInit) {
           await beforeInit()
         }
-        commit('IS_NEW', !instanceID || isCopy)
+        commit('IS_NEW', !instanceID || state.isCopy)
 
-        if (isCopy) {
+        if (state.isCopy) {
           await dispatch('copyExisting')
         } else if (state.isNew) {
           await dispatch('create')
@@ -632,9 +646,7 @@ function createProcessingModule ({
             const collectionDefinition = initCollectionsRequests[collection]
             const entityName = collectionDefinition.repository(store).entityName
             const associatedAttrs = UB.connection.domain.get(entityName)
-              .filterAttribute(attr => {
-                return attr.associatedEntity === masterEntityName
-              })
+              .filterAttribute(attr => attr.associatedEntity === masterEntityName)
               .map(attr => attr.code)
 
             return collectionData.map(collectionItem => {
@@ -787,6 +799,9 @@ function createProcessingModule ({
 
           if (state.isNew) {
             commit('IS_NEW', false)
+          }
+          if (state.isCopy) {
+            commit('IS_COPY', false)
           }
           if (typeof saveNotification === 'function') {
             saveNotification()
