@@ -563,7 +563,7 @@ Ext.define('UB.ux.UBPreFilter', {
             xtype: 'button',
             tooltip: UB.i18n('load'),
             scale: 'medium',
-            iconCls: 'fa fa-open',
+            iconCls: 'far fa-folder-open',
             // minWidth: 75,
             margin: '5 0 0 0',
             handler: function () {
@@ -573,7 +573,7 @@ Ext.define('UB.ux.UBPreFilter', {
             xtype: 'button',
             tooltip: UB.i18n('save'),
             scale: 'medium',
-            iconCls: 'fa fa-save',
+            iconCls: 'far fa-save',
             margin: '5 0 0 0',
             handler: function () {
               me.saveConfig()

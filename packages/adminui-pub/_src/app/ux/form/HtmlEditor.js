@@ -278,7 +278,7 @@ Ext.define('UB.ux.form.HtmlEditor', {
           flex: 1
         }, {
           text: UB.i18n('Change'),
-          iconCls: 'fa fa-save',
+          iconCls: 'far fa-save',
           handler: function () {
             var result = pnl.getValue()
             me.setValue(result)
