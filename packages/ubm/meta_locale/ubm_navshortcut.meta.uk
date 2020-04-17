@@ -41,6 +41,10 @@
       "name": "displayOrder",
       "caption": "№ п/п",
       "description": "Порядок відображення (в рамках поточного вузла)"
+    },
+    {
+      "name": "iconCls",
+      "caption": "Піктограма (CSS-класс)"
     }
   ]
 }

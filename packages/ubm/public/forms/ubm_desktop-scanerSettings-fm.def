@@ -779,12 +779,12 @@ Ext.define('UBM.scanerSettings', {
     buttons: [{
         ubID: 'btnOK',
         text: UB.i18n('Change'),
-        iconCls: 'fa fa-save',
+        iconCls: 'far fa-save',
         formBind: true
     }, {
         ubID: 'btnCancel',
         text: UB.i18n('cancel'),
-        iconCls: 'fa fa-times'
+        iconCls: 'fas fa-times'
     }],
 
     addLanguage: function() {

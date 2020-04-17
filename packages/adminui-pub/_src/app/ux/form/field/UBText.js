@@ -183,7 +183,7 @@ Ext.define('UB.ux.form.field.UBText', {
       }],
       buttons: [{
         text: UB.i18n('Change'),
-        iconCls: 'fa fa-save',
+        iconCls: 'far fa-save',
         hidden: me.readOnly || me.disabled,
         handler: saveForm,
         scope: me

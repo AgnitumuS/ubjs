@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `ubm_navshotrcut.iconCls` property caption changed from "icon css class name" -> "Icon (CSS class)" (also for ru and uk) 
 
 ### Deprecated
 

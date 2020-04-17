@@ -81,7 +81,7 @@
       "name": "iconCls",
       "dataType": "String",
       "size": 50,
-      "caption": "icon css class name",
+      "caption": "Icon (CSS class)",
       "allowNull": true
     },
     {
