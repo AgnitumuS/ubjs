@@ -18,11 +18,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.2.5] - 2020-04-10
 ### Added
  - `DBConnection.selectParsedAsObject(sql, params)` method - the same as `runParsed` but
- returns Array<Object> instead of String  
+ returns Array<Object> instead of String
 
 ### Changed
-  - DBConnection unit moved into @unitybase/base from @unitybase/ub; This allows to use it in shell scripts
-  (App.dbConnections available as before)
+ - DBConnection unit moved into @unitybase/base from @unitybase/ub; This allows to use it in shell scripts
+ (App.dbConnections available as before)
 
 ## [5.2.4] - 2020-03-20
 ### Fixed

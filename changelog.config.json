@@ -1,0 +1,10 @@
+{
+  "pathToPackages": {
+    "include": [
+      "./packages"
+    ],
+    "exclude": [
+      "./packages/update-changelog/*"
+    ]
+  }
+}

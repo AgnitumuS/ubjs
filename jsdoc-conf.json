@@ -106,6 +106,10 @@
         {
           "href": "gettingstarted/index.html",
           "name": "Getting Started"
+        },
+        {
+          "href": "changelog/index.html",
+          "name": "Monthly progress"
         }
       ]
     },
@@ -177,7 +181,8 @@
     },
     "extends": [
       "./src/generators/gettingStarted",
-      "./src/generators/mainDocPage"
+      "./src/generators/mainDocPage",
+      "./src/generators/changelogPage"
     ]
   }
 }
