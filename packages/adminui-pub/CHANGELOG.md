@@ -732,13 +732,13 @@ Ext.create('UB.view.UploadFileAjax', {
 - Issue #6 ALS screws up attributes by prevent calling of BasePanel.updateAls if record.resultAls is undefined
 
 ## [5.3.0] - 2018-07-19
-### BREAKING
-- `custom` (pure ExtJS) forms must export a entry point class name.
+### Changed
+- **BREAKING** `custom` (pure ExtJS) forms must export a entry point class name.
  
  For example if form `*-fm.def` contains `Ext.define("UBM.userSettings", ...` then line
  `exports.formDef = 'UBM.userSettings'` must be added to the beginning of file
 
-- `custom` && `auto` forms definition are not parsed for `requires: [...]` && 'uses: [...]' sections.
+- **BREAKING** `custom` && `auto` forms definition are not parsed for `requires: [...]` && 'uses: [...]' sections.
  All required components must be loaded using direct `require('pathToComponentImplementation')` calls.
 
  For example if form `*-fm.def` contains section
@@ -750,16 +750,14 @@ Ext.create('UB.view.UploadFileAjax', {
  require('@unitybase/adminui-pub/_src/app/ux/designer/VisualDesigner')
  ```
 
-- forms caching is moved to the HTTP cache level, localStorage is not used anymore for form cache
+- **BREAKING** forms caching is moved to the HTTP cache level, localStorage is not used anymore for form cache
+- all forms are loading using SystemJS.import:
+  - form definition can use `require('something')` and it will be parsed synchronously as expected
+  - forms are cached on HTTP level (in case of reverse proxy). local storage based cache not used for cache forms anymore
 
 ### Added
  - Hot Module Replacements for forms (work only for client in `dev` mode).
  See [ub-hrm server](https://git-pub.intecracy.com/unitybase/ubjs/tree/v5.x/packages/hmr) for details
-
-### Changed
-- all forms are loading using SystemJS.import:
-  - form definition can use `require('something')` and it will be parsed synchronously as expected
-  - forms are cached on HTTP level (in case of reverse proxy). local storage based cache not used for cache forms anymore
 
 
 ## [5.2.1] - 2018-07-19
