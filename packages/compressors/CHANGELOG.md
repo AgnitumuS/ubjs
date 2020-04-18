@@ -34,5 +34,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Ubuntu 18 support
 
 ## [5.1.0] - 2018-08-12
-### Addded
+### Added
 - ZipReader & ZipWriter classes added

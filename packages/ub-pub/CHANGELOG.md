@@ -128,7 +128,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.3.36] - 2019-12-27
 ## [5.3.35] - 2019-12-18
-### Add
+### Added
  - feature of i18n function to translate its arguments.  The syntax `{0:i18n}` or `{foo:i18n}` shall be used.
    - Examples:
      ```
@@ -151,7 +151,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    the actual message will be: "The file "bad_file_name" is not accessible or does not exist".
 
 ## [5.3.28] - 2019-11-18
-### Add
+### Added
  - translates for iit-sign-web forms
 
 ## [5.3.27] - 2019-11-18
