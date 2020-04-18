@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- immediate checking of `isDirty` store getter inside Ext component because `isDirty`
+could be marked as `true` before watcher was setted
 
 ### Changed
 - `UInput/LocaleButton` in case field is required - localization field will always required. 
