@@ -95,8 +95,7 @@ class ServerRepository extends CustomRepository {
         ? inst.getAsTextInArrayNotation()
         : { resultData: inst.getAsJsArray() }
       if ((!resultInPlainText) && (this.options && this.options.totalRequired)) {
-        inst.currentDataName = '__totalRecCount'
-        res.__totalRecCount = inst.get(0)
+        res.__totalRecCount = inst.totalRowCount
       }
       inst.freeNative() // release memory ASAP
       return res

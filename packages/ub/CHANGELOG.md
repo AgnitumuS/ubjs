@@ -8,11 +8,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - ServerRepository will check for total (in case builds using `.withTotal(true)`) in `DataStore.totalRowCount` property 
+ instead of switching DataStore to `.currentDataName = '__totalRecCount'`
+ 
 ### Deprecated
 
 ### Removed
-
+ - **BREAKING** UBQL with `options.totalRequired = true` no longer create a separate DataStore namespace `__totalRecCount`.
+ To get a total record count property `DataStore.totalRowCount` should be used instead.
+ This only affect a UB 1.12 legacy code like this:
+ ```
+  if(mParams.options.totalRequired) {
+    ctx.dataStore.currentDataName = "__totalRecCount";
+    mParams.__totalRecCount = (ctx.dataStore.rowCount) ? ctx.dataStore.get(0) : ctx.dataStore.rowCount;
+    ctx.dataStore.currentDataName = "";
+  }
+ ``` 
+ should be replaced by
+ ```
+   if(mParams.options.totalRequired) {
+     mParams.__totalRecCount = ctx.dataStore.totalRowCount
+   }
+ ```  
+ or simply removed - UB5.18.1 will add a `mParams.__totalRecCount` output parameter automatically
+        
 ### Fixed
 
 ## [5.4.6] - 2020-04-10
