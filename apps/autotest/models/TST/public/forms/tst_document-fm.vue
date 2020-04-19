@@ -108,9 +108,9 @@ module.exports.default = {
       'docDate',
       'incomeDate',
       'regDate',
-      'category',
+      /*'category',
       'favorites',
-      'favorites2',
+      'favorites2',*/
       'docDateTime',
       'description',
       'fileStoreSimple',

@@ -128,6 +128,9 @@
     },
     "softLock": {
     },
+    "rls": {
+      "expression": "tst_document.rlsSql()"
+    },
     "fts": {
       "scope": "Connection",
       "dataProvider": "Mixin",
