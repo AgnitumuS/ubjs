@@ -13,18 +13,18 @@ const TypeProvider = {
   _types: {},
 
   /**
-   * Register type
+   * Register new type
    *
    * @param {string} type Type from UBDomain.ubDataTypeProvider
    * @param {UTableColumnSettings} settings Column settings
    * @param {Vue.Component} [cellTemplate] Cell template
-   * @param {Vue.Component} [filterTemplate] Filter template
+   * @param {object<string, UTableColumnFilter>} [filters={}] Filters templates
    */
-  registerType ({ type, settings, cellTemplate: template = defaultCellTemplate, filterTemplate }) {
+  registerType ({ type, settings, cellTemplate: template = defaultCellTemplate, filters = {} }) {
     this._types[type] = {
       definition: { ...settings },
       template,
-      filterTemplate
+      filters
     }
   },
 
@@ -45,8 +45,26 @@ const TypeProvider = {
 TypeProvider.registerType({
   type: 'String',
   settings: require('./type-definitions/string'),
-  filterTemplate: require('./filter-templates/string.vue').default
+  filters: {
+    startWith: {
+      label: 'startWith',
+      template: require('./filter-templates/string/startWith.vue').default
+    },
+    equal: {
+      label: 'equal',
+      template: require('./filter-templates/string/equal.vue').default
+    },
+    contains: {
+      label: 'contains',
+      template: require('./filter-templates/string/contains.vue').default
+    },
+    isNull: {
+      label: 'isNull',
+      template: require('./filter-templates/string/isNull.vue').default
+    }
+  }
 })
+
 TypeProvider.registerType({
   type: 'Json',
   settings: require('./type-definitions/string')
@@ -54,73 +72,189 @@ TypeProvider.registerType({
 TypeProvider.registerType({
   type: 'ID',
   settings: require('./type-definitions/id'),
-  filterTemplate: require('./filter-templates/id.vue').default
+  filters: {
+    equal: {
+      label: 'equal',
+      template: require('./filter-templates/id/equal.vue').default
+    },
+    contains: {
+      label: 'contains',
+      template: require('./filter-templates/id/contains.vue').default
+    }
+  }
 })
 TypeProvider.registerType({
   type: 'Boolean',
   settings: require('./type-definitions/boolean'),
-  filterTemplate: require('./filter-templates/boolean.vue').default
+  filters: {
+    isTrue: {
+      label: 'Yes',
+      template: require('./filter-templates/boolean/isTrue.vue').default
+    },
+    isFalse: {
+      label: 'No',
+      template: require('./filter-templates/boolean/isFalse.vue').default
+    },
+    isNull: {
+      label: 'isNull',
+      template: require('./filter-templates/boolean/isNull.vue').default
+    }
+  }
 })
+
 TypeProvider.registerType({
   type: 'Entity',
   settings: require('./type-definitions/entity'),
-  filterTemplate: require('./filter-templates/entity.vue').default
+  filters: {
+    equal: {
+      label: 'equal',
+      template: require('./filter-templates/entity/equal.vue').default
+    },
+    contains: {
+      label: 'contains',
+      template: require('./filter-templates/entity/contains.vue').default
+    },
+    isNull: {
+      label: 'isNull',
+      template: require('./filter-templates/entity/isNull.vue').default
+    }
+  }
 })
+
 TypeProvider.registerType({
   type: 'Many',
   settings: require('./type-definitions/many'),
-  filterTemplate: require('./filter-templates/many.vue').default
+  filters: {
+    contains: {
+      label: 'contains',
+      template: require('./filter-templates/many/contains.vue').default
+    },
+    isNull: {
+      label: 'isNull',
+      template: require('./filter-templates/many/isNull.vue').default
+    }
+  }
 })
+
 TypeProvider.registerType({
   type: 'Enum',
   settings: require('./type-definitions/enum'),
-  filterTemplate: require('./filter-templates/enum.vue').default
+  filters: {
+    equal: {
+      label: 'equal',
+      template: require('./filter-templates/enum/equal.vue').default
+    },
+    contains: {
+      label: 'contains',
+      template: require('./filter-templates/enum/contains.vue').default
+    },
+    isNull: {
+      label: 'isNull',
+      template: require('./filter-templates/enum/isNull.vue').default
+    }
+  }
 })
+
+const dateFilters = {
+  range: {
+    label: 'range',
+    template: require('./filter-templates/date/range.vue').default
+  },
+  fromDate: {
+    label: 'from_date',
+    template: require('./filter-templates/date/fromDate.vue').default
+  },
+  onDate: {
+    label: 'date',
+    template: require('./filter-templates/date/onDate.vue').default
+  },
+  toDate: {
+    label: 'to_date',
+    template: require('./filter-templates/date/toDate.vue').default
+  },
+  isNull: {
+    label: 'isNull',
+    template: require('./filter-templates/date/isNull.vue').default
+  }
+}
+
 TypeProvider.registerType({
   type: 'Date',
   settings: require('./type-definitions/date'),
-  filterTemplate: require('./filter-templates/date.vue').default
+  filters: dateFilters
 })
+
 TypeProvider.registerType({
   type: 'DateTime',
   settings: require('./type-definitions/date-time'),
-  filterTemplate: require('./filter-templates/date.vue').default
+  filters: dateFilters
 })
+
+const numberFilter = {
+  equal: {
+    label: 'equal',
+    template: require('./filter-templates/number/equal.vue').default
+  },
+  more: {
+    label: 'more',
+    template: require('./filter-templates/number/more.vue').default
+  },
+  less: {
+    label: 'less',
+    template: require('./filter-templates/number/less.vue').default
+  },
+  range: {
+    label: 'range',
+    template: require('./filter-templates/number/range.vue').default
+  },
+  isNull: {
+    label: 'isNull',
+    template: require('./filter-templates/number/isNull.vue').default
+  }
+}
+
 TypeProvider.registerType({
   type: 'BigInt',
   settings: require('./type-definitions/number'),
-  filterTemplate: require('./filter-templates/number.vue').default
+  filters: numberFilter
 })
+
 TypeProvider.registerType({
   type: 'Currency',
   settings: require('./type-definitions/number'),
-  filterTemplate: require('./filter-templates/number.vue').default
+  filters: numberFilter
 })
+
 TypeProvider.registerType({
   type: 'Float',
   settings: require('./type-definitions/number'),
-  filterTemplate: require('./filter-templates/number.vue').default
+  filters: numberFilter
 })
+
 TypeProvider.registerType({
   type: 'Int',
   settings: require('./type-definitions/number'),
-  filterTemplate: require('./filter-templates/number.vue').default
+  filters: numberFilter
 })
+
 TypeProvider.registerType({
   type: 'Document',
   settings: require('./type-definitions/document'),
   cellTemplate: require('./cell-templates/document.vue').default
 })
+
 TypeProvider.registerType({
   type: 'Text',
   settings: require('./type-definitions/string'),
   cellTemplate: renderWarning('Text')
 })
+
 TypeProvider.registerType({
   type: 'BLOB',
   settings: require('./type-definitions/string'),
   cellTemplate: renderWarning('BLOB')
 })
+
 TypeProvider.registerType({
   type: 'TimeLog',
   settings: require('./type-definitions/string'),

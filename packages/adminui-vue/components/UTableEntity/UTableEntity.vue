@@ -113,15 +113,8 @@ export default {
           if (typeof column === 'string') {
             return this.buildColumn(column)
           } else {
-            return {
-              ...this.buildColumn(column.id),
-              ...column,
-              ...(
-                typeof column.format === 'string'
-                  ? { format: new Function('{value, column, row}', column.format) }
-                  : {}
-              )
-            }
+            const columnDefaults = this.buildColumn(column.id)
+            return this.mergeColumns(columnDefaults, column)
           }
         })
       } else {
@@ -194,7 +187,8 @@ export default {
       const last = attrInfo && attrInfo.attribute
       const penult = attrInfo && (attrInfo.parentAttribute || last)
       const dataType = last && last.dataType
-      const columnDef = TypeProvider.get(dataType).definition
+      const typeDefaults = TypeProvider.get(dataType)
+      const columnDef = typeDefaults.definition
       let label
       let attribute
       if (penult) {
@@ -212,7 +206,8 @@ export default {
         id: columnId,
         label,
         attribute,
-        ...columnDef
+        ...columnDef,
+        filters: typeDefaults.filters || {}
       }
     },
 
@@ -230,6 +225,28 @@ export default {
         const errMsg = `Columns [${fieldsWithError.join(', ')}] did not have slot for render`
         throw new Error(errMsg)
       }
+    },
+
+    mergeColumns (originalColumn, modifiedColumn) {
+      const filters = {}
+      const filterEntries = Object.entries(originalColumn.filters || {})
+      filterEntries.push(...Object.entries(modifiedColumn.filters || {}))
+
+      for (const [filterId, filterDef] of filterEntries) {
+        filters[filterId] = Object.assign({}, filters[filterId], filterDef)
+      }
+
+      const resultColumn = {
+        ...originalColumn,
+        ...modifiedColumn,
+        filters
+      }
+
+      if (typeof resultColumn.format === 'string') {
+        resultColumn.format = new Function('{value, column, row}', resultColumn.format)
+      }
+
+      return resultColumn
     }
   }
 }
@@ -406,6 +423,115 @@ export default {
             isModal: false,
             docID: 12345
           }
+        }
+      }
+    }
+  </script>
+  ```
+
+  ### Custom filter templates
+
+  By default most UBDataTypes has filter templates and any filter can be replaced by custom.
+  In each column filter label or filter template can be replaced separately.
+  This dataTypes has next filters:
+  - String
+    - equal
+    - contains
+    - startWith
+    - inNull
+  - Boolean
+    - isTrue
+    - isFalse
+    - isNull
+  - Date, DateTime
+    - range
+    - fromDate
+    - onDate
+    - toDate
+    - isNull
+  - Entity
+    - equal
+    - contains
+    - isNull
+  - Enum
+    - equal
+    - contains
+    - isNull
+  - ID
+    - equal
+    - contains
+  - Many
+    - contains
+    - isNull
+  - BigInt, Currency, Float, Int
+    - equal
+    - more
+    - less
+    - range
+    - isNull
+
+  Json, Document, Text, BLOB, TimeLog has no filters
+
+  `label` sets label for option in select with available filters for current column.
+  If unset label will be equal filter id.
+  `template` param must be `Vue.Component` or object with `render` function.
+  To apply filter from custom component emit event 'seach'
+  with object which has `description` and `whereList`.
+  `description` - is a text for tag in list of applied filters.
+  `whereList` - same as ubql whereList but without param `expression` it will be computed automatically.
+  Filter application example:
+  ```vue
+  <template>
+    <form @submit.prevent="$emit('search', {
+      description: 'Filter query: ' + value,
+      whereList: [{ condition: 'equal', value }]
+    })">
+      <input type="text" v-model="value">
+      <button type="submit">submit</button>
+    </form>
+  </template>
+  ```
+
+  ### Custom filter example
+
+  ```vue
+  <template>
+    <u-table-entity
+      entity-name="tst_dictionary"
+      :columns="columns"
+    />
+  </template>
+  <script>
+    export default {
+      data () {
+        return {
+          columns: [
+            'ID',
+            'code',
+            {
+              id: 'caption',
+              filters: {
+                // example replace default filters
+                equal: {
+                  label: 'Custom equal label', // Replace label
+                  template: {render(h) { return h('div', 'example') }} // Replace filter template
+                },
+                contains: {
+                  label: 'Custom contains label' // Can be replaced only label
+                },
+
+                // adds custom filter
+                myCustomFilter: {
+                  /**
+                   * In current example default value is "myCustomFilter"
+                   * if unset will be equal filter id by default.
+                   */
+                  label: 'My custom filter',
+                  template: {render(h) { return h('div', 'example') }}
+                }
+              }
+            }
+          ]
         }
       }
     }
