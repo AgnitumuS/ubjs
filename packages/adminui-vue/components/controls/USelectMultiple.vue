@@ -593,6 +593,7 @@ export default {
 }
 
 .ub-select-multiple__input{
+  font-size: 16px;
   border: none;
   flex-grow: 1;
   min-width: 100px;
@@ -603,7 +604,7 @@ export default {
 }
 
 .ub-select-multiple__input::placeholder{
-  color: hsl(var(--hs-text), var(--l-text-disabled));
+  color: hsl(var(--hs-text), var(--l-text-label));
 }
 
 .ub-select-multiple__icon-wrap {

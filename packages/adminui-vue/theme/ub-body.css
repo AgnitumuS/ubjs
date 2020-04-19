@@ -1,8 +1,8 @@
 :root {
   /* state colors */
-  --hs-primary: 220, 80%;
+  --hs-primary: 210, 80%;
   --hs-success: 120, 30%;
-  --hs-warning: 20, 65%;
+  --hs-warning: 20, 80%;
   --hs-danger: 360, 60%;
 
   /* Controls - buttons, icons etc. */

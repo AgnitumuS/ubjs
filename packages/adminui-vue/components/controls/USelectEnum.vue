@@ -9,7 +9,7 @@
     :editable="editable"
     :placeholder="placeholder"
     :clearable="clearable"
-    @input="$emit('input', $event)"
+    v-on="$listeners"
   />
 </template>
 

@@ -49,3 +49,10 @@
  * @property {string} label Column label which shows in header cells
  * @property {UBEntityAttribute} attribute Meta attribute info from UB entity schema
  */
+
+/**
+ * @typedef {object} UTableColumnFilter
+ *
+ * @property {Vue.Component} template Template which render filter for current column
+ * @property {string} [label] Label of current filter. If unset will shows filter id by default
+ */

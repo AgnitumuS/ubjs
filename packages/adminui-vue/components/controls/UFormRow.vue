@@ -222,7 +222,7 @@ export default {
   .u-form-row__error {
     grid-area: error;
     text-align: right;
-    color: hsl(var(--hs-danger), var(--l-text-default));
+    color: hsl(var(--hs-danger), var(--l-state-default));
     white-space: nowrap;
     overflow: hidden;
     height: 16px;
