@@ -58,7 +58,36 @@
           name="toolbarAppend"
         />
 
-        <filter-container ref="filterContainer" />
+        <div
+          class="filter-container"
+          @keydown.stop
+        >
+          <u-icon
+            color="primary"
+            icon="fa fa-filter"
+            class="u-table-entity__filter-icon"
+          />
+          <el-select
+            v-model="selectedColumnId"
+            class="filter-input"
+            :placeholder="$ut('table.filter.columnPlaceholder')"
+          >
+            <el-option
+              v-for="col in columns"
+              :key="col.id"
+              :value="col.id"
+              :label="$ut(col.label)"
+            />
+          </el-select>
+
+          <keep-alive>
+            <filter-selector
+              v-if="selectedColumnId"
+              ref="filterSelector"
+              :key="selectedColumnId"
+            />
+          </keep-alive>
+        </div>
 
         <pagination />
 
@@ -292,7 +321,7 @@
 </template>
 
 <script>
-const FilterContainer = require('./FilterContainer.vue').default
+const FilterSelector = require('./FilterSelector.vue').default
 const Pagination = require('./Pagination.vue').default
 const { mapState, mapGetters, mapMutations, mapActions } = require('vuex')
 const FilterList = require('./FilterList.vue').default
@@ -308,7 +337,7 @@ export default {
   name: 'UTableEntityRoot',
 
   components: {
-    FilterContainer,
+    FilterSelector,
     Pagination,
     FilterList,
     ToolbarDropdown
@@ -352,7 +381,6 @@ export default {
 
   computed: {
     ...mapState([
-      'selectedColumnId',
       'items',
       'loading',
       'withTotal'
@@ -367,6 +395,15 @@ export default {
       'formCode',
       'columns'
     ]),
+
+    selectedColumnId: {
+      get () {
+        return this.$store.state.selectedColumnId
+      },
+      set (value) {
+        this.$store.commit('SELECT_COLUMN', value)
+      }
+    },
 
     selectedRowId: {
       get () {
@@ -491,7 +528,7 @@ export default {
 
     tryFocusFilter ({ key }) {
       if (key.length === 1 && regExpLetterOrNumber.test(key)) {
-        const inputs = this.$refs.filterContainer.$el.querySelectorAll('input')
+        const inputs = this.$refs.filterSelector.$el.querySelectorAll('input')
         if (inputs.length > 0) {
           inputs[inputs.length - 1].focus()
         }
@@ -551,5 +588,10 @@ export default {
 
   .u-table-entity__contextmenu-wrap {
     height: 0;
+  }
+
+  .u-table-entity__filter-icon{
+    margin-right: 8px;
+    margin-left: 4px;
   }
 </style>

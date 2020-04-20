@@ -694,7 +694,7 @@ inst.run('select', repo.ubql())
    * Must be implemented in descendants and return (or resolved for async clients)
    * to `array of array` representation of result, like this
    *
-   *      {"resultData":{"fields":["ID","name","ID.name"],"rowCount":1,"data":[[10,"admin","admin"]]},"total":1,"__totalRecCount": totolRecCountIfWithTotalRequest}
+   *      {"resultData":{"fields":["ID","name","ID.name"],"rowCount":1,"data":[[10,"admin","admin"]]},"total":1,"__totalRecCount": totalRecCountIfWithTotalRequest}
    *
    * @abstract
    */

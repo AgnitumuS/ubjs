@@ -26,6 +26,8 @@ module.exports = {
     const USidebarButton = require('../components/sidebar/USidebarButton.vue').default
     const UGrid = require('../components/controls/UGrid.vue').default
     const UMasterDetailView = require('../components/UMasterDetailView.vue').default
+    const UButton = require('../components/controls/UButton.vue').default
+    const UIcon = require('../components/controls/UIcon.vue').default
     Vue.component(UFormContainer.name, UFormContainer)
     Vue.component(USelectEntity.name, USelectEntity)
     Vue.component(USelectMany.name, USelectMany)
@@ -51,6 +53,8 @@ module.exports = {
     Vue.component(USidebarButton.name, USidebarButton)
     Vue.component(UGrid.name, UGrid)
     Vue.component(UMasterDetailView.name, UMasterDetailView)
+    Vue.component(UButton.name, UButton)
+    Vue.component(UIcon.name, UIcon)
 
     const HoldFocus = require('../directives/HoldFocus')
     Vue.directive(HoldFocus.name, HoldFocus)

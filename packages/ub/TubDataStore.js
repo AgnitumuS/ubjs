@@ -202,7 +202,7 @@ TubDataStore.DATA_NAMES = {
   AFTER_UPDATE: 'selectAfterUpdate',
   AFTER_INSERT: 'selectAfterInsert',
   BEFORE_DELETE: 'selectBeforeDelete',
-  TOTAL: '__totalRecCount',
+  // TOTAL: '__totalRecCount', removed in UB5.18.1 inst.totalWorCount should be used insteard
   SOFTLOCK: 'softLock',
   RECORDSIGN: 'recordSign',
   TEMP: '_temp'
