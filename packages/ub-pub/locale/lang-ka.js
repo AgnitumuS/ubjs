@@ -96,6 +96,7 @@
   'Previous password is not allowed': 'წინა პაროლი არ არის დაშვებული',
   logout: 'გამოსვლა',
   fieldValidationError: 'შეუძლებელია დამახსოვრება <b>{0}</b> ბარათი.<br > არასწორი ველი',
-  blankText: 'This is required field'
+  blankText: 'This is required field',
+  licenseExceedText: 'განაცხადის ლიცენზიის ლიმიტები აღემატება. თქვენ შეგიძლიათ მონაცემების ნახვა, მაგრამ შეცვლა უმეტესობა დაუშვებელია'
 
 })

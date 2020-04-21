@@ -183,6 +183,9 @@
         <div class="auth-page__logo-container">
           <img :src="topLogoURL" class="auth-page__logo">
         </div>
+        <div v-if="licenseExceedText" style="color: hsl(var(--hs-warning),var(--l-state-default))">
+          {{ licenseExceedText }}
+        </div>
         <hr>
         <div v-if="changePwdActive">
           <ub-change-password :old-pwd="authData.pwd"></ub-change-password>
@@ -309,6 +312,7 @@
         registrationURL: '',
         silenceKerberosLogin: window.localStorage.getItem(this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true',
         authMethods: null,
+        licenseExceedText: '',
         simpleCertAuth: false,
         ubAuthVisible: true,
         userDidLogout: window.localStorage.getItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT) === 'true',
@@ -470,6 +474,7 @@
       return UB.inject('/models/ub-pub/locale/lang-' + conn.preferredLocale + '.js').then(function () {
         if (vm.authRules.user) vm.authRules.user[0].message = vm.$ut('blankText')
         if(vm.authRules.pwd) vm.authRules.pwd[0].message = vm.$ut('EnterOldPassword')
+        if (conn.appConfig.isLicenseExceed) vm.licenseExceedText = vm.$ut('licenseExceedText')
         vm.loading = false
       })
     },

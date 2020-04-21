@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `isLicenseExceed` property added to `getAppInfo` endpoint result (UB EE). `true` in case license is exceed. Undefined in other cases.
+  
 ### Changed
  - ServerRepository will check for total (in case builds using `.withTotal(true)`) in `DataStore.totalRowCount` property 
  instead of switching DataStore to `.currentDataName = '__totalRecCount'`

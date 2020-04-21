@@ -6,29 +6,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `UButton` component.
-Recommended to use UB buttons instead element-ui.
- [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UButton.vue)
-- `UIcon` component. [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UIcon.vue)
-- `UTableEntity, UMasterDetailView` ability to customize filters templates and labels. [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/UTableEntity/UTableEntity.vue)
-- immediate checking of `isDirty` store getter inside Ext component because `isDirty`
-could be marked as `true` before watcher was setted
+ - Login page for UB EE will indicate license is exceed 
+ - `UButton` component. Recommended to use instead of element-ui button.
+  [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UButton.vue)
+ - `UIcon` component. [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UIcon.vue)
+ - `UTableEntity, UMasterDetailView` ability to customize filters templates and labels. [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/UTableEntity/UTableEntity.vue)
+ - immediate checking of `isDirty` store getter inside Ext component because `isDirty`
+   could be marked as `true` before watcher was setted
 
 ### Changed
-- `UInput/LocaleButton` in case field is required - localization field will always required. 
-If dialog is not opened fields will be filled automatically.
-- `css variables` **primary** and **warning** colors little lighter.
-- `UFormRow` error text to lighter
-- `USelectMultiple` increase **font-size** to **16px** according other components
+ - `UInput/LocaleButton` in case field is required - localization field will always required. 
+   In case dialog is not opened fields will be filled automatically.
+ - `css variables` **primary** and **warning** colors little lighter.
+ - `UFormRow` error text to lighter
+ - `USelectMultiple` increase **font-size** to **16px** according other components
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
-- `UTableEntity` in case row was deleted disable action buttons before choosing another row
-- `UTableEntity` pass `isCopy` param to autoforms
-- `UForm/processing` during copying record set `canSave` params to `true`
+ - `UTableEntity` in case row was deleted disable action buttons before choosing another row
+ - `UTableEntity` pass `isCopy` param to autoforms
+ - `UForm/processing` during copying record set `canSave` params to `true`
 
 ## [1.10.7] - 2020-04-10
 ### Added
