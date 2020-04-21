@@ -16,7 +16,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
    * @returns {String}
    */
   getEntity: function () {
-    let request = this.ubRequest || (this.store ? this.store.ubRequest : null)
+    const request = this.ubRequest || (this.store ? this.store.ubRequest : null)
     return request ? request.entity : ''
   },
 
@@ -25,8 +25,8 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
    * @cfg {Array<String>} [gridFieldList]
    */
   initComponent: function () {
-    var me = this,
-      eStore = me.getStore()
+    var me = this
+    var eStore = me.getStore()
 
     me.callParent(arguments)
     me.on('afterrender', me.onAfterRender, me)
@@ -37,7 +37,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
         if (success) {
           me.dataLoaded = true
         }
-      }, me, {single: true})
+      }, me, { single: true })
     }
     // make default delay short for cached entities. For example user quickly type "Uni" and press Tab to select UnityBase from combo
     if (eStore && eStore.ubRequest && eStore.ubRequest.entity) {
@@ -53,12 +53,12 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
     var me = this
     me.callParent(arguments)
     if (me.inputEl && me.readOnly && value && value.length > 50) {
-      me.inputEl.set({'data-qtip': value})
+      me.inputEl.set({ 'data-qtip': value })
     }
   },
 
   onDataLoaded: function (callback, scope) {
-    var me = this, eStore = this.getStore()
+    var me = this; var eStore = this.getStore()
     if (this.dataLoaded) {
       Ext.callback(callback, scope || me, [me])
     } else {
@@ -67,16 +67,16 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
         if (success) {
           Ext.callback(callback, scope || me, [me])
         }
-      }, me, {single: true})
+      }, me, { single: true })
     }
   },
 
   onAfterRender: function () {
-    var me = this, val
+    var me = this; var val
     if (!me.disableContextMenu) {
       me.initContextMenu()
     }
-        /**
+    /**
          * @cfg disableContextMenu
          */
     me.inputCell.on('contextmenu', function (e, t) {
@@ -87,13 +87,13 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
       }
     }, me)
     if (me.inputEl && me.readOnly && (val = me.inputEl.getValue()) && val.length > 50) {
-      me.inputEl.set({'data-qtip': val})
+      me.inputEl.set({ 'data-qtip': val })
     }
-        /**
+    /**
          * @cfg {Boolean} disableLimitSearchLength disable automatic set maximum input length
          */
     if (!me.disableLimitSearchLength && !!UB.appConfig.maxSearchLength) {
-      me.inputEl.set({'maxlength': UB.appConfig.maxSearchLength})
+      me.inputEl.set({ maxlength: UB.appConfig.maxSearchLength })
     }
   },
 
@@ -113,8 +113,8 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
   },
 
   onValueChange: function () {
-    var me = this,
-      disabled = me.disabled || /* me.readOnly || */ me.disableModifyEntity || !me.getStore().getById(me.getValue())
+    var me = this
+    var disabled = me.disabled || /* me.readOnly || */ me.disableModifyEntity || !me.getStore().getById(me.getValue())
     if (me.editItemButton) {
       me.editItemButton.setDisabled(disabled)
     }
@@ -155,11 +155,11 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
   },
 
   setReadOnly: function (readOnly) {
-    var me = this,
-      store = me.getStore(),
-      entityName = (store.ubRequest ? store.ubRequest.entity : null) || store.entityName,
-      methodNames = UB.core.UBCommand.methodName,
-      val
+    var me = this
+    var store = me.getStore()
+    var entityName = (store.ubRequest ? store.ubRequest.entity : null) || store.entityName
+    var methodNames = UB.core.UBCommand.methodName
+    var val
     me.callParent(arguments)
     if (me.showLookupButton) {
       me.showLookupButton.setDisabled(readOnly)
@@ -172,28 +172,28 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
     }
     if (me.inputEl) {
       if (readOnly && (val = me.inputEl.getValue()) && val.length > 50) {
-        me.inputEl.set({'data-qtip': val})
+        me.inputEl.set({ 'data-qtip': val })
       } else {
-        me.inputEl.set({'data-qtip': undefined})
+        me.inputEl.set({ 'data-qtip': undefined })
       }
     }
   },
 
-    /**
+  /**
      * @cfg disableModifyEntity If true will be disabled items editInstance and addInstance in context menu.
      */
   disableModifyEntity: false,
 
-    /**
+  /**
      * @cfg  hideEntityItemInContext If true will be hidden entity actions in context menu.
      */
   hideEntityItemInContext: false,
 
   initContextMenu: function () {
-    var me = this, menuItems,
-      store,
-      entityName,
-      methodNames = UB.core.UBCommand.methodName
+    var me = this; var menuItems
+    var store
+    var entityName
+    var methodNames = UB.core.UBCommand.methodName
     store = me.getStore()
     menuItems = []
     entityName = (store.ubRequest ? store.ubRequest.entity : null) || store.entityName
@@ -235,7 +235,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
       scope: me
     })
 
-    me.contextMenu = Ext.create('Ext.menu.Menu', {items: menuItems })
+    me.contextMenu = Ext.create('Ext.menu.Menu', { items: menuItems })
 
     me.editItemButton = me.contextMenu.items.getAt(0)
     me.showLookupButton = me.contextMenu.items.getAt(1)
@@ -295,7 +295,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
         alt: false,
         key: 67,
         handler: function (/* keyCode, e */) {
-                    // e.stopEvent();
+          // e.stopEvent();
           me.ctrlCDown = true
           return true
         }
@@ -304,8 +304,8 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
   },
 
   doRawQuery: function () {
-    var me = this,
-      rawValue = this.getRawValue()
+    var me = this
+    var rawValue = this.getRawValue()
     if (!me.ctrlCDown && (rawValue || !me.editedByUser) && (me.getDisplayValue() !== rawValue)) {
       me.callParent(arguments)
     }
@@ -314,13 +314,13 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
   },
 
   addItem: function () {
-    let me = this
-    let store = me.getStore()
-    let entityName = store.entityName
-    let displayField = me.displayField
-    let val = me.getValue()
-    let rec = store.getById(val)
-    let cmdConfig = {
+    const me = this
+    const store = me.getStore()
+    const entityName = store.entityName
+    const displayField = me.displayField
+    const val = me.getValue()
+    const rec = store.getById(val)
+    const cmdConfig = {
       cmdType: UB.core.UBCommand.commandType.showForm,
       entity: entityName,
       store: store,
@@ -340,7 +340,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
   },
 
   editItem: function (initValue) {
-    var me = this, store, entityName, instanceID, cmdConfig
+    var me = this; var store; var entityName; var instanceID; var cmdConfig
     store = me.getStore()
     entityName = store.entityName
     if (!entityName) { return }
@@ -367,50 +367,73 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
     }
   },
 
-  showLookup: function () {
-    var me = this, store, entityName, instanceID, config, fieldList
-    store = me.getStore()
-    entityName = store.entityName
-    if (!entityName) { return }
-    instanceID = me.getValue()
-    fieldList = me.gridFieldList ? me.gridFieldList : '*'
+  showLookup () {
+    const store = this.getStore()
+    if (!store.entityName) { return }
 
-    config = {
-      entity: entityName,
+    const config = {
+      renderer: 'vue',
       cmdType: UB.core.UBCommand.commandType.showList,
-      description: $App.domainInfo.get(entityName, true).getEntityDescription(),
       isModal: true,
-      sender: me,
-      selectedInstanceID: instanceID,
-      onItemSelected: function (selected) {
-        if (me.setValueById) {
-          me.getStore().clearData()
-          me.setValueById(selected.get(me.valueField || 'ID'))
-        }
-      },
       cmdData: {
-        params: [{
-          entity: entityName,
-          method: 'select',
-          fieldList: fieldList,
+        repository: () => UB.Repository({
+          entity: store.entityName,
+          fieldList: this.gridFieldList || UB.connection.domain.get(store.entityName).getAttributeNames(),
           whereList: store.ubRequest.whereList,
           logicalPredicates: store.ubRequest.logicalPredicates,
           __mip_ondate: store.ubRequest.__mip_ondate
-        }]
-      },
-      hideActions: me.hideActions
+        }),
+        onSelectRecord: ({ ID, close }) => {
+          if (this.setValueById) {
+            this.getStore().clearData()
+            this.setValueById(ID)
+          }
+          close()
+        },
+        buildEditConfig (cfg) {
+          cfg.isModal = true
+          return cfg
+        },
+        buildCopyConfig (cfg) {
+          cfg.isModal = true
+          return cfg
+        },
+        buildAddNewConfig (cfg) {
+          cfg.isModal = true
+          return cfg
+        },
+        scopedSlots: createElement => ({
+          toolbarPrepend: ({ store: dictionaryStore, close }) => {
+            return createElement('u-toolbar-button', {
+              props: {
+                icon: 'el-icon-check',
+                disabled: !dictionaryStore.state.selectedRowId
+              },
+              on: {
+                click: () => {
+                  if (this.setValueById) {
+                    this.getStore().clearData()
+                    this.setValueById(dictionaryStore.state.selectedRowId)
+                  }
+                  close()
+                }
+              }
+            }, [UB.i18n('actionSelect')])
+          }
+        })
+      }
     }
-    var filters = store.filters.clone()
-    filters.removeAtKey(me.userFilterId)
+    const filters = store.filters.clone()
+    filters.removeAtKey(this.userFilterId)
     config.filters = filters
 
     UB.core.UBApp.doCommand(config)
   },
 
   onExpand: function () {
-    var me = this,
-      selectOnTab = me.selectOnTab,
-      picker = me.getPicker()
+    var me = this
+    var selectOnTab = me.selectOnTab
+    var picker = me.getPicker()
 
     me.listKeyNav = new Ext.view.BoundListKeyNav(this.inputEl, {
       boundList: picker,
@@ -420,17 +443,17 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
           this.selectHighlighted(e)
           me.triggerBlur()
         }
-                // Tab key event is allowed to propagate to field
+        // Tab key event is allowed to propagate to field
         return true
       },
       enter: function (e) {
-        var selModel = picker.getSelectionModel(),
-          count = selModel.getCount()
+        var selModel = picker.getSelectionModel()
+        var count = selModel.getCount()
 
         this.selectHighlighted(e)
 
-                // Handle the case where the highlighted item is already selected
-                // In this case, the change event won't fire, so just collapse
+        // Handle the case where the highlighted item is already selected
+        // In this case, the change event won't fire, so just collapse
         if (!me.multiSelect && count === selModel.getCount()) {
           me.collapse()
         }
@@ -439,17 +462,17 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
       end: null
     })
     me.callParent(arguments)
-        // keyNav = me.listKeyNav;
-        // keyNav.home = function(){};
-        // keyNav.end = function(){};
+    // keyNav = me.listKeyNav;
+    // keyNav.home = function(){};
+    // keyNav.end = function(){};
   },
 
   getErrors: function (value) {
-    var me = this, errors, fvalue
+    var me = this; var errors; var fvalue
     errors = me.callParent(arguments)
     fvalue = me.getValue()
     if (!fvalue && (fvalue !== 0) && !me.allowBlank) {
-            // If we are not configured to validate blank values, there cannot be any additional errors
+      // If we are not configured to validate blank values, there cannot be any additional errors
       if (errors.length === 0 || (errors.indexOf(me.blankText) < 0)) {
         errors.push(me.blankText)
       }
