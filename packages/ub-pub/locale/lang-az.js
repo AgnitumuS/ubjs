@@ -105,6 +105,7 @@ UB.i18nExtend({
   'Previous password is not allowed': 'Şifrə əvvəlkilərdən biri ilə eynidir',
   logout: 'Çıxış',
   fieldValidationError: '<b>{0}</b>.<br > kartını yadda saxlamaq mümkün deyil. Yanlış doldurulmuş xana',
-  blankText: 'Bu xana mütləq doldurulmalıdır'
+  blankText: 'Bu xana mütləq doldurulmalıdır',
+  licenseExceedText: 'Tətbiq lisenziyası həddi aşılır. Məlumatları görə bilərsiniz, lakin modifikasiyanın çoxuna icazə verilmir'
 
 })

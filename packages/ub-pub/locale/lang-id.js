@@ -102,6 +102,7 @@ UB.i18nExtend({
   'Previous password is not allowed': 'Пароль совпадает с одним из предидущих',
   logout: 'Logout',
   fieldValidationError: 'Can not save <b>{0}</b> card.<br > Invalid field',
-  blankText: 'This is required field'
+  blankText: 'This is required field',
+  licenseExceedText: 'Batas lisensi aplikasi terlampaui. Anda dapat melihat data tetapi sebagian besar modifikasi tidak diizinkan'
 
 })

@@ -165,6 +165,7 @@ UB.i18nExtend({
   'Previous password is not allowed': 'New password must not matches with one of the previous',
   logout: 'Logout',
   fieldValidationError: 'Cannot save <b>{0}</b> card.<br > Invalid field',
-  blankText: 'This field is required'
+  blankText: 'This field is required',
+  licenseExceedText: 'Application license limits is exceed. You can view data but most of modification is not allowed'
 
 })

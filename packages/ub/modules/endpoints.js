@@ -303,6 +303,7 @@ function getAppInfoEp (req, resp) {
     uiSettings: serverConfig.uiSettings || {},
     authMock: AUTH_MOCK || undefined
   }
+  if (App.isLicenseExceed) appInfo.isLicenseExceed = true
   resp.writeEnd(appInfo)
   resp.statusCode = 200
   resp.validateETag()

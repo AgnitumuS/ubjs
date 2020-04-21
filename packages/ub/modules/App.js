@@ -321,7 +321,20 @@ Object.defineProperty(App, 'domain', {
   }
 })
 
-const { getDomainInfo } = process.binding('ub_app')
+/**
+ * For UB EE return true in case product license is exceed. For UB Se always `false`
+ * @type {String}
+ */
+Object.defineProperty(App, 'isLicenseExceed', {
+  enumerable: true,
+  get: function () {
+    return typeof appBinding.isLicenseExceed === 'function'
+      ? appBinding.isLicenseExceed()
+      : false
+  }
+})
+
+const getDomainInfo = appBinding.getDomainInfo
 let _domainCache
 /**
  * Extended information about application domain (metadata)
