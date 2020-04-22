@@ -475,7 +475,7 @@
               },
               "URL": {
                 "type": "string",
-                "description": "LDAP query; % placeholder will be replaced by user name. See https://unitybase.info/api/server-v5/tutorial-security.html#ldap-authentication for details"
+                "description": "LDAP query; See https://unitybase.info/api/server-v5/tutorial-security.html#ldap-authentication for details"
               },
               "CAPath": {
                 "type": "string",
