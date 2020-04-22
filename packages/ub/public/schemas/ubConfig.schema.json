@@ -465,7 +465,7 @@
         },
         "ldapCatalogs": {
           "type": "array",
-          "description": "If `userName` passed to `auth` in form `DOMAIN\\domainUser` and `UBLDAP` is present in `authenticationMethods` user credentials will be checked by request to LDAP catalog using curl. **WARNING** - ldap password is passed in plain text other network, so server should accept only HTTPS connection to be secure",
+          "description": "If `userName` passed to `auth` in form `DOMAIN\\domainUser` and `UBLDAP` is present in `authenticationMethods` user credentials will be checked by request to LDAP catalog. **WARNING** - ldap password is passed in plain text other network, so server should accept only HTTPS connection to be secure",
           "items": {
             "type": "object",
             "properties": {
@@ -475,15 +475,15 @@
               },
               "URL": {
                 "type": "string",
-                "description": "LDAP query; % placeholder will be replaced by user name. UB will send this query directly to LDAP server with username/password passed from client using curl; Example: \"ldaps://myldap.server:636/OU=MyCompany,DC=myldap,DC=server?cn?sub?(sAMAccountName=%)\""
+                "description": "LDAP query; % placeholder will be replaced by user name. See https://unitybase.info/api/server-v5/tutorial-security.html#ldap-authentication for details"
               },
               "CAPath": {
                 "type": "string",
-                "description": "Unix only: optional path to folder with CA certificates. See https://curl.haxx.se/docs/sslcerts.html"
+                "description": "UB<5.18.1 on Unix and all UB version on Windows: optional path to folder with CA certificates. See https://curl.haxx.se/docs/sslcerts.html"
               },
               "ignoreSSLCertificateErrors": {
                 "type": "boolean",
-                "description": "Ignore SSL certificates errors (sets SSLVerifyPeer and SSLVerifyHost to false); **NOT RECOMMENDED**",
+                "description": "UB<5.18.1 on Unix and all UB version on Windows: ignore SSL certificates errors (sets SSLVerifyPeer and SSLVerifyHost to false); **NOT RECOMMENDED**",
                 "default": false
               }
             }
