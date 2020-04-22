@@ -207,26 +207,76 @@ For user, specified in the `UBA.securityDashboard.supervisorUser` setting key (b
 For a real-time communication WebSockets must be turned on both server and client side - see {@tutorial web_sockets}.
 
 ## LDAP authentication
-**Security warning** - password for LDAP authentication is passed in plain text other network, so server
+**Security warning** - password for LDAP authentication passed in plain text other the wire, so server
 should accept only HTTPS connection to be secure.
    
-In case UBLDAP authentication method is added to `security.authenticationMethods` ubConfig section server can verify
+In case UBLDAP authentication method added to `security.authenticationMethods` ubConfig section server can verify
 user password using one or several LDAP catalogues.
 
-`security.ldapCatalogs` section should be configured for each supported domain. Consider customer have a Windows domain
-`company.com` and domain user is `company\user01`. Configuration example is:
-   
+`security.ldapCatalogs` section should be configured for each supported domain. Consider a customer have two LDAP catalogues:
+ - first is a Windows domain `company.com` and domain user is `company\user01`
+ - second is OpenLDAP `secondcompany.local` and LDAP user is `secondcompany\user02`   
+
+After users with names `company\user01` and `secondcompany\user02` are added into `uba_user` server can authenticate him by sending a curl request 
+using URL specified in `URL` parameter with `%` placeholder replaced by `user01` (without domain name).
+
+### Configuring for Linux
+Starting from UB5.18.1 under Linux UB use libldap (libldap-2.4.so.2) to verify a user credential. Before 5.18.1 - libcurl (see curl section below)
+
+URLs in `ldapCatalogs` ubConfig section should
+be in format `protocol://server:post/DN` where DN is the Distinguished Name binddn to bind to the LDAP directory.
+`%` placeholder in DN will be replaced by user name (without domain part). Examples:
+
+```
+"ldapCatalogs": [{
+  "name": "COMPANY",
+  "URL": "ldaps://company.ldap.server:636/%@company.com"
+},{
+  "name": "SECONDCOMPANY",
+  "URL": "ldaps://secondcompany.ldap.server:636/CN=%,OU=users,OU=org,DC=secondcompany,DC=local"
+}]
+```
+
+Validity of URLs and ldap client configuration can be verified by `ldapsearch` utility:
+ - for first catalogue (where user is `company\user01` )
+```
+ldapsearch -W -H ldaps://company.ldap.server:636 -D "user01@company.com" -s sub "uid=user01"
+``` 
+ - for second catalogue (where user is `secondcompany\user02` )
+```
+ldapsearch -W -H ldaps://secondcompany.ldap.server:636 -D "CN=user02,OU=users,OU=org,DC=secondcompany,DC=local" -s sub "uid=user02"
+``` 
+
+`ldapserach` output should contain `result: 0 Success` phrase if all configured properly.
+ 
+### Troubleshooting for Linux
+In case `ldaps` protocol used and `ldapserach` give a connection error most likely CA certificates are not trusted and must
+be added to trusted storage:
+
+Ubuntu (Debian):
+ - Copy your CA to dir /usr/local/share/ca-certificates/: `sudo cp foo.crt /usr/local/share/ca-certificates/foo.crt`
+ - Update the CA store: `sudo update-ca-certificates`
+
+CentOS
+ - Install the ca-certificates package: `yum install ca-certificates`
+ - Enable the dynamic CA configuration feature: `update-ca-trust force-enable`
+ - Add it as a new file to /etc/pki/ca-trust/source/anchors/: `cp foo.crt /etc/pki/ca-trust/source anchors/`
+ - Use command: `update-ca-trust extract`
+
+Additional LDAP configurations settings usually located in:
+ - Ubuntu: `/etc/ldap/ldap.cof`
+ - CentOS: `/etc/openldap/ldap.conf`
+
+### Configuring for Windows (and Linux in case UB server < 5.18.1)
+Under Windows and under Linux in case UB version < 5.18.1 UB use libcurl to verify a user credential.
+Configuration example for Active Directory catalogue: 
 ```
 "ldapCatalogs": [{
   "name": "COMPANY",
   "URL": "ldaps://company.ldap.server:636/OU=MyCompany,DC=company,DC=com?cn?sub?(sAMAccountName=%)"
-}]
+}
 ```
 
-After user with name `company\user01`  and empty password is added to `uba_user` server can authenticate him by sending a curl request 
-using URL specified in `URL` parameter with `%` placeholder replaced by `user01` (without domain name).
-
-### Verifying LDAP auth
 LDAP URL can be verified using curl command:
 ```
 curl -v "ldaps://company.ldap.server:636/OU=MyCompany,DC=company,DC=com?cn?sub?(sAMAccountName=user01)" -u company\\user01
@@ -235,15 +285,8 @@ curl -v "ldaps://company.ldap.server:636/OU=MyCompany,DC=company,DC=com?cn?sub?(
 
 See also `CAPath` and `ignoreSSLCertificateErrors` parameters in [ubConfig schema](https://unitybase.info/docson/index.html#https://unitybase.info/models/UB/schemas/ubConfig.schema.json)
 
-**MS LDAP note**
- In some cases curl won't exit after success response. This occurs when:
- - The ldap backend used by curl installation is openldap: probably the case on Debian
- - Queries are made to a server that returns referrals: M$AD is one of them :-(
- - External ldap configuration allows automatic referrals chasing
- 
- As a workaround, we can suggest to disable REFERRALS feature by ldap configuration (add "REFERRALS off" in ldap.conf).
- This will release the hang. `ldap.conf` usually located in `/etc/openldap/ldap.conf` 
- 
+**WARNING** in case ldap catalogue use REFFERALS (as almost always with MS AD) curl will hang under linux. Recommended solution is to update to UB5.18.1 what uses libldap.
+
 ## Additional features of Enterprise edition
 ### Kerberos authentication
 
