@@ -207,7 +207,7 @@
                   </el-input>
                 </el-form-item>
               </div>
-              <el-button type="primary" style="min-width: 8rem" @click="doCert2Login">{{ $ut('UBAuthContinue') }}</el-button>
+              <el-button type="primary" plain style="min-width: 8rem" @click="doCert2Login">{{ $ut('UBAuthContinue') }}</el-button>
             </div>
 
             <div v-if="hasNegotiate">
@@ -218,7 +218,7 @@
               </div>
               <p v-html="$ut('KerberosHeader')"></p>
               <el-form-item>
-                <el-button type="primary" style="min-width: 8rem" @click="doNegotiateLogin">{{ $ut('UBAuthContinue') }}
+                <el-button plain type="primary" style="min-width: 8rem" @click="doNegotiateLogin">{{ $ut('UBAuthContinue') }}
                 </el-button>
                 <div>
                   <el-switch v-model="silenceKerberosLogin" :active-text="$ut('KerberosRemember')"></el-switch>
