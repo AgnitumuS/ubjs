@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `css variables` **primary** and **warning** colors little lighter.
  - `UFormRow` error text to lighter
  - `USelectMultiple` increase **font-size** to **16px** according other components
+ - `UFormRow` decrease label `font-size` from `16px` to `14px`
 
 ### Deprecated
 
