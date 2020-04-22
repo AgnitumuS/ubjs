@@ -207,12 +207,11 @@ UB.Repository('my_entity').attrs('ID')
    * @param {string} expression   Attribute name (with or without []) or valid expression with attributes in []
    * @param {CustomRepository.WhereCondition|String} condition  Any value from {@link CustomRepository#WhereCondition WhereCondition}
    * @param {*} [value] Condition value. If `undefined` value not passed to ubql
-   * @param {{clauseName?:string, clearable?: boolean}} [options]
-      - options.clauseName -  optional clause name to be used in {CustomRepository.logicalPredicates}
-        If not passed unique clause name will be generated ('_1', '_2', ..).
-        In case a condition with the same name exists, it will be overwritten.
-      - options.clearable - optional, if === false then clearWhereList() will skip removing this where condition
-   *
+   * @param {object} [options]
+   * @param {string} [options.clauseName] clause name to be used in {CustomRepository.logicalPredicates}
+   *  - If not passed unique clause name will be generated ('_1', '_2', ..).
+   *  - In case a condition with the same name exists, it will be overwritten.
+   * @param {boolean} [options.clearable] if === false then clearWhereList() will skip removing this where condition
    * @return {CustomRepository}
    */
   where (expression, condition, value, options) {
