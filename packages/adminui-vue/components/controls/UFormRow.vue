@@ -189,7 +189,7 @@ export default {
     overflow: hidden;
     align-self: center;
     display: flex;
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .u-form-row__label > span {
@@ -241,7 +241,6 @@ export default {
 
   .u-form-row__top .u-form-row__label {
     padding-bottom: 4px;
-    font-size: 14px;
   }
 
   .u-form-row__right .u-form-row__label {
