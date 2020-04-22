@@ -9,8 +9,8 @@ UnityBase security mechanism includes:
 *   different types of authentication and authorization - modified DIGEST, Kerberos, via public/private key, using LDAP
 *   encrypted communication - either HTTPS or more secure internal mechanism
 *   audit trail - all operations are logged into audit tables (both old and new values are logged)
-*   simple row level audit - memorize creator, modifier and owner for each entity row
-*   safe delete - mark entity row as deleted without psychically delete it from database (or other store)
+*   simple row level audit - memorize a creator, modifier and owner for each entity row
+*   safe delete - mark entity row as deleted without psychically delete it from the database (or other store)
 *   data history - track history of entity row modification and show row content on specified date
 *   entity-level security (ELS) - restrict access to entity methods based on user roles
 *   row-level security (RLS) - restrict access to entity rows based on row attributes values + user roles
@@ -23,12 +23,12 @@ UnityBase security mechanism includes:
 ## Users, Groups, And Security Roles
 
 A user is an entity that can be authenticated. A user can be a person or a software entity, such as other information system. 
-Each user is given a unique name. For efficient security management, we recommends adding users to groups. 
+Each user is given a unique name. For efficient security management, we recommend adding users to groups. 
 A group is a collection of users who usually have something in common, such as working in the same department in a company 
-or perform a similar tasks, such as "document registration". 
+or perform a similar task, such as "document registration". 
 
 **Groups, users, and user to role assignments are usually created by the supervisor** - person in organization, 
-who monitors and regulates employees and their access rights.
+who monitors and regulates employees, and their access rights.
    
 A security role is an identity granted to users or groups based on specific conditions. 
 Multiple users or groups can be granted the same security role and a user or group can be in more than one security role. 
@@ -56,7 +56,7 @@ Roles `Anonymous`, `Everyone` and `User` are runtime roles. It assigned automati
   - `Anonymous`: this role is assigned to any non-authorized user
   - `Everyone`: this role for any anonymous users and all users who have been authenticated
 
-We recommends at least one user to be added into Admin role in addition to the `admin` user. 
+We recommend at least one user to be added into Admin role in addition to the `admin` user. 
 Having at least two administrators at all times helps protect against a single admin user being locked out from a potential security breach. 
 
 ## Authorization & authentication
@@ -65,7 +65,7 @@ Having at least two administrators at all times helps protect against a single a
 
 **Authentication**
 
-Authentication verifies **who you are**. For example, you can login into your Unix server using the ssh client,
+Authentication verifies **who you are**. For example, you can log in into your Unix server using the ssh client,
 or access your email server using the POP3 and SMTP client.
 
 **Authorization**
@@ -102,7 +102,7 @@ UnityBase also supports One-Time-Passwords (see `uba_otp`) using SMS, EMail and 
 
 ### UB authorization
 If future client requests are authorized using UB method, the task of authentication is to elaborate two parameters
-between client and server: **clientSessionID** and **sessionPrivateKey**.
+between the client and server: **clientSessionID** and **sessionPrivateKey**.
 With knowledge of a `secretWord` - something only client is know, we can calculate a authentication header and add it
 to every request what require authentication.
 
@@ -139,7 +139,7 @@ Authorization signature calculation (JavaScript):
 The basis of all security mechanism is UnityBase Administration (UBA) model. To enable build-in security developer must
 include UBA model to application domain.
 
-This model define entities:
+This model defines entities:
 
 *  uba_role - security roles list
 *  uba_user - user list
@@ -162,7 +162,7 @@ Also developer can turn on "authentication not used" mode by comment `"authMetho
 ### One Time Passwords (OTP)
 `uba_otp` entity adds support for One Time Passwords into `UBA` model.
 
-Currently implemented methods is EMail, SMS and TOTP (google authenticator). OTP can be generated using `uba_otp.generateOtp`
+Currently, implemented methods is EMail, SMS and TOTP (google authenticator). OTP can be generated using `uba_otp.generateOtp`
 method and verified using `uba_otp.authAndExecute` for EMail/SMS or `uba_otp.verifyTotp` for TOTP   
 
 TOTP sample
@@ -182,7 +182,7 @@ TOTP sample
 ### Password policy
 
  For authentication schemas what based on a password, stored in the `uba_user` entity (Basic, UB & CERT) administrator
-can define a policies. The policies is stored in the `ubs_settings` entity, so the UBS model must be
+can define policies. The policies is stored in the `ubs_settings` entity, so the UBS model must be
 in application domain. In other case default values are applied.
 
 |Parameter | Description | Default value |
@@ -340,7 +340,7 @@ When the command successfully finishes, the Linux server become a member of the 
 
 ##### Configuring Active Directory
 It's now time to prepare Active Directory to know about UnityBase.
-Either computer's account or some special user account could be used by UnityBase service. The account should have "Logon as a service" right.
+Either computer's account, or some special user account could be used by UnityBase service. The account should have "Logon as a service" right.
 In either case it is a good practice to create Service Principal Name for UnitBase service and associate it with the account chosen. As UnityBase is a Web (http) service, the SPN should correspond to the following schema:
 
     HTTP/Fully_Qualified_Domain_Name_of_the_Server[:Listening_Port]
