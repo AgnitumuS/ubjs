@@ -9,8 +9,8 @@ UnityBase security mechanism includes:
 *   different types of authentication and authorization - modified DIGEST, Kerberos, via public/private key, using LDAP
 *   encrypted communication - either HTTPS or more secure internal mechanism
 *   audit trail - all operations are logged into audit tables (both old and new values are logged)
-*   simple row level audit - memorize creator, modifier and owner for each entity row
-*   safe delete - mark entity row as deleted without psychically delete it from database (or other store)
+*   simple row level audit - memorize a creator, modifier and owner for each entity row
+*   safe delete - mark entity row as deleted without psychically delete it from the database (or other store)
 *   data history - track history of entity row modification and show row content on specified date
 *   entity-level security (ELS) - restrict access to entity methods based on user roles
 *   row-level security (RLS) - restrict access to entity rows based on row attributes values + user roles
@@ -23,12 +23,12 @@ UnityBase security mechanism includes:
 ## Users, Groups, And Security Roles
 
 A user is an entity that can be authenticated. A user can be a person or a software entity, such as other information system. 
-Each user is given a unique name. For efficient security management, we recommends adding users to groups. 
+Each user is given a unique name. For efficient security management, we recommend adding users to groups. 
 A group is a collection of users who usually have something in common, such as working in the same department in a company 
-or perform a similar tasks, such as "document registration". 
+or perform a similar task, such as "document registration". 
 
 **Groups, users, and user to role assignments are usually created by the supervisor** - person in organization, 
-who monitors and regulates employees and their access rights.
+who monitors and regulates employees, and their access rights.
    
 A security role is an identity granted to users or groups based on specific conditions. 
 Multiple users or groups can be granted the same security role and a user or group can be in more than one security role. 
@@ -56,7 +56,7 @@ Roles `Anonymous`, `Everyone` and `User` are runtime roles. It assigned automati
   - `Anonymous`: this role is assigned to any non-authorized user
   - `Everyone`: this role for any anonymous users and all users who have been authenticated
 
-We recommends at least one user to be added into Admin role in addition to the `admin` user. 
+We recommend at least one user to be added into Admin role in addition to the `admin` user. 
 Having at least two administrators at all times helps protect against a single admin user being locked out from a potential security breach. 
 
 ## Authorization & authentication
@@ -65,7 +65,7 @@ Having at least two administrators at all times helps protect against a single a
 
 **Authentication**
 
-Authentication verifies **who you are**. For example, you can login into your Unix server using the ssh client,
+Authentication verifies **who you are**. For example, you can log in into your Unix server using the ssh client,
 or access your email server using the POP3 and SMTP client.
 
 **Authorization**
@@ -102,7 +102,7 @@ UnityBase also supports One-Time-Passwords (see `uba_otp`) using SMS, EMail and 
 
 ### UB authorization
 If future client requests are authorized using UB method, the task of authentication is to elaborate two parameters
-between client and server: **clientSessionID** and **sessionPrivateKey**.
+between the client and server: **clientSessionID** and **sessionPrivateKey**.
 With knowledge of a `secretWord` - something only client is know, we can calculate a authentication header and add it
 to every request what require authentication.
 
@@ -139,7 +139,7 @@ Authorization signature calculation (JavaScript):
 The basis of all security mechanism is UnityBase Administration (UBA) model. To enable build-in security developer must
 include UBA model to application domain.
 
-This model define entities:
+This model defines entities:
 
 *  uba_role - security roles list
 *  uba_user - user list
@@ -162,7 +162,7 @@ Also developer can turn on "authentication not used" mode by comment `"authMetho
 ### One Time Passwords (OTP)
 `uba_otp` entity adds support for One Time Passwords into `UBA` model.
 
-Currently implemented methods is EMail, SMS and TOTP (google authenticator). OTP can be generated using `uba_otp.generateOtp`
+Currently, implemented methods is EMail, SMS and TOTP (google authenticator). OTP can be generated using `uba_otp.generateOtp`
 method and verified using `uba_otp.authAndExecute` for EMail/SMS or `uba_otp.verifyTotp` for TOTP   
 
 TOTP sample
@@ -182,7 +182,7 @@ TOTP sample
 ### Password policy
 
  For authentication schemas what based on a password, stored in the `uba_user` entity (Basic, UB & CERT) administrator
-can define a policies. The policies is stored in the `ubs_settings` entity, so the UBS model must be
+can define policies. The policies is stored in the `ubs_settings` entity, so the UBS model must be
 in application domain. In other case default values are applied.
 
 |Parameter | Description | Default value |
@@ -207,26 +207,76 @@ For user, specified in the `UBA.securityDashboard.supervisorUser` setting key (b
 For a real-time communication WebSockets must be turned on both server and client side - see {@tutorial web_sockets}.
 
 ## LDAP authentication
-**Security warning** - password for LDAP authentication is passed in plain text other network, so server
+**Security warning** - password for LDAP authentication passed in plain text other the wire, so server
 should accept only HTTPS connection to be secure.
    
-In case UBLDAP authentication method is added to `security.authenticationMethods` ubConfig section server can verify
+In case UBLDAP authentication method added to `security.authenticationMethods` ubConfig section server can verify
 user password using one or several LDAP catalogues.
 
-`security.ldapCatalogs` section should be configured for each supported domain. Consider customer have a Windows domain
-`company.com` and domain user is `company\user01`. Configuration example is:
-   
+`security.ldapCatalogs` section should be configured for each supported domain. Consider a customer have two LDAP catalogues:
+ - first is a Windows domain `company.com` and domain user is `company\user01`
+ - second is OpenLDAP `secondcompany.local` and LDAP user is `secondcompany\user02`   
+
+After users with names `company\user01` and `secondcompany\user02` are added into `uba_user` server can authenticate him by sending a curl request 
+using URL specified in `URL` parameter with `%` placeholder replaced by `user01` (without domain name).
+
+### Configuring for Linux
+Starting from UB5.18.1 under Linux UB use libldap (libldap-2.4.so.2) to verify a user credential. Before 5.18.1 - libcurl (see curl section below)
+
+URLs in `ldapCatalogs` ubConfig section should
+be in format `protocol://server:post/DN` where DN is the Distinguished Name binddn to bind to the LDAP directory.
+`%` placeholder in DN will be replaced by user name (without domain part). Examples:
+
+```
+"ldapCatalogs": [{
+  "name": "COMPANY",
+  "URL": "ldaps://company.ldap.server:636/%@company.com"
+},{
+  "name": "SECONDCOMPANY",
+  "URL": "ldaps://secondcompany.ldap.server:636/CN=%,OU=users,OU=org,DC=secondcompany,DC=local"
+}]
+```
+
+Validity of URLs and ldap client configuration can be verified by `ldapsearch` utility:
+ - for first catalogue (where user is `company\user01` )
+```
+ldapsearch -W -H ldaps://company.ldap.server:636 -D "user01@company.com" -s sub "uid=user01"
+``` 
+ - for second catalogue (where user is `secondcompany\user02` )
+```
+ldapsearch -W -H ldaps://secondcompany.ldap.server:636 -D "CN=user02,OU=users,OU=org,DC=secondcompany,DC=local" -s sub "uid=user02"
+``` 
+
+`ldapserach` output should contain `result: 0 Success` phrase if all configured properly.
+ 
+### Troubleshooting for Linux
+In case `ldaps` protocol used and `ldapserach` give a connection error most likely CA certificates are not trusted and must
+be added to trusted storage:
+
+Ubuntu (Debian):
+ - Copy your CA to dir /usr/local/share/ca-certificates/: `sudo cp foo.crt /usr/local/share/ca-certificates/foo.crt`
+ - Update the CA store: `sudo update-ca-certificates`
+
+CentOS
+ - Install the ca-certificates package: `yum install ca-certificates`
+ - Enable the dynamic CA configuration feature: `update-ca-trust force-enable`
+ - Add it as a new file to /etc/pki/ca-trust/source/anchors/: `cp foo.crt /etc/pki/ca-trust/source anchors/`
+ - Use command: `update-ca-trust extract`
+
+Additional LDAP configurations settings usually located in:
+ - Ubuntu: `/etc/ldap/ldap.cof`
+ - CentOS: `/etc/openldap/ldap.conf`
+
+### Configuring for Windows (and Linux in case UB server < 5.18.1)
+Under Windows and under Linux in case UB version < 5.18.1 UB use libcurl to verify a user credential.
+Configuration example for Active Directory catalogue: 
 ```
 "ldapCatalogs": [{
   "name": "COMPANY",
   "URL": "ldaps://company.ldap.server:636/OU=MyCompany,DC=company,DC=com?cn?sub?(sAMAccountName=%)"
-}]
+}
 ```
 
-After user with name `company\user01`  and empty password is added to `uba_user` server can authenticate him by sending a curl request 
-using URL specified in `URL` parameter with `%` placeholder replaced by `user01` (without domain name).
-
-### Verifying LDAP auth
 LDAP URL can be verified using curl command:
 ```
 curl -v "ldaps://company.ldap.server:636/OU=MyCompany,DC=company,DC=com?cn?sub?(sAMAccountName=user01)" -u company\\user01
@@ -235,15 +285,8 @@ curl -v "ldaps://company.ldap.server:636/OU=MyCompany,DC=company,DC=com?cn?sub?(
 
 See also `CAPath` and `ignoreSSLCertificateErrors` parameters in [ubConfig schema](https://unitybase.info/docson/index.html#https://unitybase.info/models/UB/schemas/ubConfig.schema.json)
 
-**MS LDAP note**
- In some cases curl won't exit after success response. This occurs when:
- - The ldap backend used by curl installation is openldap: probably the case on Debian
- - Queries are made to a server that returns referrals: M$AD is one of them :-(
- - External ldap configuration allows automatic referrals chasing
- 
- As a workaround, we can suggest to disable REFERRALS feature by ldap configuration (add "REFERRALS off" in ldap.conf).
- This will release the hang. `ldap.conf` usually located in `/etc/openldap/ldap.conf` 
- 
+**WARNING** in case ldap catalogue use REFFERALS (as almost always with MS AD) curl will hang under linux. Recommended solution is to update to UB5.18.1 what uses libldap.
+
 ## Additional features of Enterprise edition
 ### Kerberos authentication
 
@@ -297,7 +340,7 @@ When the command successfully finishes, the Linux server become a member of the 
 
 ##### Configuring Active Directory
 It's now time to prepare Active Directory to know about UnityBase.
-Either computer's account or some special user account could be used by UnityBase service. The account should have "Logon as a service" right.
+Either computer's account, or some special user account could be used by UnityBase service. The account should have "Logon as a service" right.
 In either case it is a good practice to create Service Principal Name for UnitBase service and associate it with the account chosen. As UnityBase is a Web (http) service, the SPN should correspond to the following schema:
 
     HTTP/Fully_Qualified_Domain_Name_of_the_Server[:Listening_Port]

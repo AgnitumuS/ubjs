@@ -6,13 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Login page for UB EE will indicate license is exceed 
+ - Login page for UB EE will indicate license is exceed (UB server should be >= 5.18.1. For UB < 5.18.1 feature skipped)
  - `UButton` component. Recommended to use instead of element-ui button.
   [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UButton.vue)
  - `UIcon` component. [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UIcon.vue)
  - `UTableEntity, UMasterDetailView` ability to customize filters templates and labels. [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/UTableEntity/UTableEntity.vue)
  - immediate checking of `isDirty` store getter inside Ext component because `isDirty`
-   could be marked as `true` before watcher was setted
+   could be marked as `true` before watcher was sets
 
 ### Changed
  - `UInput/LocaleButton` in case field is required - localization field will always required. 
@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `css variables` **primary** and **warning** colors little lighter.
  - `UFormRow` error text to lighter
  - `USelectMultiple` increase **font-size** to **16px** according other components
+ - `UFormRow` decrease label `font-size` from `16px` to `14px`
 
 ### Deprecated
 
