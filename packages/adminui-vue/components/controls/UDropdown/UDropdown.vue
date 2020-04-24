@@ -1,6 +1,7 @@
 <template>
   <div :key="renderKey">
     <div
+      v-if="$slots.default"
       ref="reference"
       class="u-dropdown__reference"
       @click="toggleVisible"

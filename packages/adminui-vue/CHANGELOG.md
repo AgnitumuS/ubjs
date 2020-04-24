@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity, UMasterDetailView` ability to customize filters templates and labels. [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/UTableEntity/UTableEntity.vue)
  - immediate checking of `isDirty` store getter inside Ext component because `isDirty`
    could be marked as `true` before watcher was sets
+ - `UChat` component. Chat in document. [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/UChat.vue)
 
 ### Changed
  - `UInput/LocaleButton` in case field is required - localization field will always required. 

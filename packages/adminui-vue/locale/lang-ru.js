@@ -183,5 +183,13 @@ UB.i18nExtend({
 
   tableRegister: {
     hideDetails: 'Скрыть детали'
+  },
+
+  chat: {
+    emptyMessage: 'Здесь пока нет ни одного сообщения...',
+    inputPlaceholder: 'Введите сообщение',
+    copyNotification: 'Сообщение скопировано в буфер обмена',
+    removeMessageDialog: 'Удалить сообщение "{0}"',
+    removeMessageNotification: 'Сообщение успешно удалено'
   }
 })
