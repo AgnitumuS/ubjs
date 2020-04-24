@@ -1,6 +1,7 @@
 {
 	"httpServer": {
-		//"externalURL": "http://localhost",
+		"externalURL": "http://localhost",
+		//"externalURL": "http://pavelmash-u18",
 		//"serverType": "Socket", // for testing purpose socket based server can be enabled on Windows
 //		"reverseProxy": {
 //			"kind": "nginx",
@@ -12,10 +13,6 @@
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
 		"inetPub": "./inetPub/",
-		"watchFileChanges": {
-			"enabled": true,
-			"hashingStrategy": "ModifyDate"
-		},
 		"threadPoolSize": 4
 	},
 	"logging": {
@@ -59,14 +56,16 @@
 //			}
 //		],
 		"authenticationMethods": [
-			"UB", "Negotiate"//, "UBLDAP"
-		]/*,
+			"UB", "Negotiate", "UBLDAP"
+		],
 		"ldapCatalogs": [{
 			"name": "SOFTLINE",
-			"URL":  "ldaps://softline.main:636/OU=Softline,DC=softline,DC=main?cn?sub?(sAMAccountName=%)",
+			//"URL":  "ldaps://psi01.softline.main:636/OU=Softline,DC=softline,DC=main?cn?sub?(sAMAccountName=%)",
+			//"URL":  "ldaps://psi01.softline.main:636/OU=Softline,DC=softline,DC=main?(sAMAccountName=%)",
+			"URL":  "ldaps://psi01.softline.main:636/%@softline.main",
 			"CAPath": "",
 			"ignoreSSLCertificateErrors": true
-		}]*/
+		}]
 	},
 	"uiSettings": {
 		"adminUI": {

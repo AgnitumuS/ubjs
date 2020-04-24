@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.6] - 2020-04-24
 ## [5.2.5] - 2020-04-10
 ### Added
  - `DBConnection.selectParsedAsObject(sql, params)` method - the same as `runParsed` but

@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.13.8] - 2020-04-24
+### Fixed
  - Ext grid: change "load filter configuration" icon to `far fa-folder-open` `fa fa-folder` is missing in FontAwesome5  
  - Ext `ComboBox` "Select from dictionary" action will show Vue based dictionary with "Select" button (before this patch "Select" button is missing)
 

@@ -6,14 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.4.7] - 2020-04-24
+### Added
  - `isLicenseExceed` property added to `getAppInfo` endpoint result (UB EE). `true` in case license is exceed. Undefined in other cases.
   
 ### Changed
  - ServerRepository will check for total (in case builds using `.withTotal(true)`) in `DataStore.totalRowCount` property 
  instead of switching DataStore to `.currentDataName = '__totalRecCount'`
  
-### Deprecated
-
 ### Removed
  - **BREAKING** UBQL with `options.totalRequired = true` no longer create a separate DataStore namespace `__totalRecCount`.
  To get a total record count property `DataStore.totalRowCount` should be used instead.
@@ -33,8 +42,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  ```  
  or simply removed - UB5.18.1 will add a `mParams.__totalRecCount` output parameter automatically
         
-### Fixed
-
 ## [5.4.6] - 2020-04-10
 ### Added
  - in case of unexpected exception inside metadata initialization entity name which cause an error will be logged

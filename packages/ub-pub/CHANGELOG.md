@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `licenseExceedText` i18n client locale
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.5.7] - 2020-04-24
+### Added
+- `licenseExceedText` i18n client locale
 
 ## [5.5.6] - 2020-04-10
 ### Fixed
