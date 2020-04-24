@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.10.8] - 2020-04-24
+### Added
  - Login page for UB EE will indicate license is exceed (UB server should be >= 5.18.1. For UB < 5.18.1 feature skipped)
  - `UButton` component. Recommended to use instead of element-ui button.
   [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UButton.vue)
@@ -22,10 +33,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UFormRow` error text to lighter
  - `USelectMultiple` increase **font-size** to **16px** according other components
  - `UFormRow` decrease label `font-size` from `16px` to `14px`
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UTableEntity` in case row was deleted disable action buttons before choosing another row

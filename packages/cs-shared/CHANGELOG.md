@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.6] - 2020-04-24
 ## [5.2.5] - 2020-04-10
 ### Fixed
  - random invalid session signature calculation what cause a 401 server response and re-logon for
