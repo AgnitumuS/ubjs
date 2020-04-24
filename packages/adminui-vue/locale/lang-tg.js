@@ -183,5 +183,13 @@ UB.i18nExtend({
 
   tableRegister: {
     hideDetails: 'Hide details'
+  },
+
+  chat: {
+    emptyMessage: 'No messages yet...',
+    inputPlaceholder: 'Enter a message',
+    copyNotification: 'Message successfully copied in clipboard',
+    removeMessageDialog: 'Remove message "{0}"',
+    removeMessageNotification: 'Message successfully deleted'
   }
 })

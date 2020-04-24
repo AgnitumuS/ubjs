@@ -1,6 +1,6 @@
 <template>
   <u-dropdown
-    class="u-table-entity__head__dropdown"
+    class="u-table-entity__header-dropdown"
     placement="bottom-end"
     :width="210"
   >

@@ -1,0 +1,14 @@
+{
+  "caption": "Обговорення по документу",
+
+  "attributes": [
+    {
+      "name": "documentID",
+      "caption": "Документ"
+    },
+    {
+      "name": "commentText",
+      "caption": "Коментар"
+    }
+  ]
+}

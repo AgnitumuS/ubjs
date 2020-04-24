@@ -582,7 +582,7 @@ export default {
     background: var(--cell-selected);
   }
 
-  .u-table-entity__head__dropdown {
+  .u-table-entity__header-dropdown {
     align-self: center;
   }
 

@@ -1,0 +1,30 @@
+{
+  "connectionName": "",
+
+  "caption": "Document Discussion",
+  "descriptionAttribute": "ID",
+
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    }
+  },
+
+  "attributes": [
+    {
+      "name": "documentID",
+      "caption": "Document",
+      "dataType": "Entity",
+      "associatedEntity": "tst_dictionary",
+      "allowNull": false
+    },
+    {
+      "name": "commentText",
+      "caption": "Comment",
+      "dataType": "String",
+      "size": 2000,
+      "allowNull": false
+    }
+  ]
+}
