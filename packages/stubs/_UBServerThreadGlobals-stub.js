@@ -353,7 +353,7 @@ const clobTruncate = {
  * Return zero based index of fieldName from current data store (-1 if not found)
  * @example
 
- let r = UB.Repository('cdn_organization').attrs(['ID', 'mi_owner.name'])
+ const r = UB.Repository('cdn_organization').attrs(['ID', 'mi_owner.name'])
    .where('[ID]', '=', 3000000002801)
    .select()
  console.log(r.fieldIndexByName('mi_owner.name')) // 1
@@ -368,7 +368,7 @@ TubDataStore.fieldIndexByName = function(fieldName){}
  * Run any entity method.
  * @example
 
-let store = new TubDataStore('doc_attachment');
+const store = UB.DataStore('doc_attachment');
 store.run('update', {
   execParams: {
     ID: 1,
@@ -410,7 +410,7 @@ TubDataStore.execSQL = function (sql, params) {}
  * @example
 
 const UB = require('@unitybase/ub')
-let ds = UB.DataStore('myEntityCode')
+const ds = UB.DataStore('myEntityCode')
 ds.initFromJSON({"fieldCount":1,"values":["ID"],"rowCount":0});
 console.log(ds.initialized); // TRUE
 
@@ -541,12 +541,11 @@ TubDataStore.getAsJsObject = function () {}
  */
 TubDataStore.getAsJsArray = function () {}
 /**
- * Active dataset name we work with. There is some predefined
- * dataNames - see {@link TubDataStore#DATA_NAMES TubDataStore.DATA_NAMES}
+ * Active dataset name we work with. There is some predefined dataNames - see {@link TubDataStore#DATA_NAMES TubDataStore.DATA_NAMES}
  * @member {String} currentDataName
  * @memberOf TubDataStore.prototype
  */
-TubDataStore.currentDataName = '<xml>...</xml>'
+TubDataStore.currentDataName = 'select'
 /**
  * Record count. If DataStore is not initialized or empty will return 0.
  * @member {Number} rowCount
