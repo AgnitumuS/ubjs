@@ -40,7 +40,7 @@ module.exports = function runTest (options) {
         console.debug('run select for %s', eName)
         const defaultViewAttrs = []
         entity.eachAttribute((attr, name) => {
-          if (attr.defaultView) {
+          if (attr.defaultView || (attr.name === 'ID')) {
             defaultViewAttrs.push(name)
           }
         })
