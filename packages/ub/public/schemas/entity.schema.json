@@ -188,6 +188,30 @@
                             "forTypes": ["Document"]
                         }
                     },
+                    "restrictions": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "description": "Restrict access to attribute value only for specified role. Ths restriction work only for external UBQL (comes from client). UBQL executed from inside server will skip it. 'Nobody' pseudo role name can be used to deny access for everyone",
+                        "properties": {
+                            "I": {
+                                "type": "string",
+                                "description": "Role for which attribute value insertion is allowed"
+                            },
+                            "S": {
+                                "type": "string",
+                                "description": "Role for which attribute value reading is allowed"
+                            },
+                            "replaceBy": {
+                                "type": "string",
+                                "default": "",
+                                "description": "SQL expression used instead of attribute in select statement for attributes with restricted S. If empty and select is restricted then server will throw SecurityViolation"
+                            },
+                            "U": {
+                                "type": "string",
+                                "description": "Role for which attribute value updating is allowed"
+                            }
+                        }
+                    },
                     "mapping": {
                         "type": "array",
                         "description": "Optional mapping of attribute to physical DB structure",

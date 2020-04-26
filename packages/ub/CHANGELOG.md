@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - support for "attribute restriction" feature added in UB server 5.18.1 (u)
 
 ### Changed
 
