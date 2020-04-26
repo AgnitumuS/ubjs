@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - **BREAKING** this version of @unitybase/uba require UB server to be at last 5.18.1 ("attribute restriction" feature used)
+ - **SECURITY** access to `uba_user.uPasswordHashHexa` is disallowed from client (restricted for all)
+ - **SECURITY** access to `uba_user` `disabled`, `isPending` and `trustedIP` attributes are allowed only for members of 
+ `Supervisor` role; For other roles actual values is replaced by `*****` for trustedIP and `null` for `disabled`, `isPending`
 
 ### Changed
 
