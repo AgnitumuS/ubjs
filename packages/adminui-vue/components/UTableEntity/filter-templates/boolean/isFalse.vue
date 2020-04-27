@@ -10,7 +10,7 @@
       appearance="inverse"
       size="large"
       type="submit"
-      icon="el-icon-search"
+      icon="u-icon-search"
     />
   </form>
 </template>

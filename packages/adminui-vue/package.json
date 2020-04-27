@@ -83,6 +83,7 @@
     "shx": "^0.3.2",
     "vue-loader": "^15.7.0",
     "vue-styleguidist": "^3.10.2",
+    "webfont-webpack-plugin": "^1.0.0",
     "webpack": "^4.29.6",
     "webpack-bundle-analyzer": "^3",
     "webpack-cli": "^3.2.3"

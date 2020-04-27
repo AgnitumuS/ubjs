@@ -18,7 +18,7 @@
       appearance="inverse"
       :disabled="isEmpty"
       type="submit"
-      icon="el-icon-search"
+      icon="u-icon-search"
       size="large"
     />
   </form>

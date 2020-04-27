@@ -16,7 +16,10 @@
     >
       <i
         class="u-toolbar__button-icon"
-        :class="icon"
+        :class="[
+          icon,
+          {'u': icon.startsWith('u')}
+        ]"
       />
       <slot />
     </button>

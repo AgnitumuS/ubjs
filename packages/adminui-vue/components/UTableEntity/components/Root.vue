@@ -28,7 +28,7 @@
         />
 
         <u-toolbar-button
-          icon="el-icon-refresh"
+          icon="u-icon-refresh"
           color="secondary"
           @click="refresh"
         >
@@ -43,7 +43,7 @@
         >
           <u-toolbar-button
             :disabled="!canAddNew"
-            icon="el-icon-plus"
+            icon="u-icon-add"
             color="secondary"
             @click="addNew"
           >
@@ -64,7 +64,7 @@
         >
           <u-icon
             color="primary"
-            icon="fa fa-filter"
+            icon="u-icon-filter"
             class="u-table-entity__filter-icon"
           />
           <el-select
@@ -232,7 +232,7 @@
             name="contextMenuEditRecord"
           >
             <u-dropdown-item
-              icon="el-icon-edit"
+              icon="u-icon-edit"
               label="Edit"
               :disabled="!canEdit"
               @click="editRecord(contextMenuRowId)"
@@ -248,7 +248,7 @@
           >
             <u-dropdown-item
               :disabled="!canAddNew"
-              icon="el-icon-copy-document"
+              icon="u-icon-copy"
               label="Copy"
               @click="copyRecord(contextMenuRowId)"
             />
@@ -263,7 +263,7 @@
           >
             <u-dropdown-item
               :disabled="!canDelete"
-              icon="el-icon-delete"
+              icon="u-icon-delete"
               label="Delete"
               @click="deleteRecord(contextMenuRowId)"
             />
@@ -277,7 +277,7 @@
             name="contextMenuLink"
           >
             <u-dropdown-item
-              icon="el-icon-link"
+              icon="u-icon-link"
               label="link"
               :disabled="!hasSelectedRow"
               @click="createLink(contextMenuRowId)"
@@ -293,7 +293,7 @@
           >
             <u-dropdown-item
               :disabled="!canAudit"
-              icon="el-icon-data-analysis"
+              icon="u-icon-audit"
               label="Audit"
               @click="audit(contextMenuRowId)"
             />

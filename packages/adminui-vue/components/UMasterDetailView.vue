@@ -25,7 +25,7 @@
           <u-dropdown-item
             v-if="details.length"
             label="Details"
-            icon="el-icon-tickets"
+            icon="u-icon-file-list"
           >
             <u-dropdown-item
               v-for="detail in details"
@@ -46,7 +46,7 @@
           <u-dropdown-item
             v-if="details.length"
             label="Details"
-            icon="el-icon-tickets"
+            icon="u-icon-file-list"
           >
             <u-dropdown-item
               v-for="detail in details"

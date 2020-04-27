@@ -3,6 +3,7 @@
     v-if="icon"
     class="u-icon"
     :class="[
+      {'u': icon.startsWith('u')},
       icon,
       `u-icon_color-${color}`,
       `u-icon_size-${size}`
@@ -95,13 +96,13 @@ export default {
 <template>
   <div>
     <h1>Default color is "control"</h1>
-    <u-icon icon="el-icon-edit"/>
+    <u-icon icon="u-icon-edit"/>
     <h2>Other colors</h2>
-    <u-icon color="control" icon="el-icon-edit"/>
-    <u-icon color="primary" icon="el-icon-edit"/>
-    <u-icon color="success" icon="el-icon-edit"/>
-    <u-icon color="warning" icon="el-icon-edit"/>
-    <u-icon color="danger" icon="el-icon-edit"/>
+    <u-icon color="control" icon="u-icon-edit"/>
+    <u-icon color="primary" icon="u-icon-edit"/>
+    <u-icon color="success" icon="u-icon-edit"/>
+    <u-icon color="warning" icon="u-icon-edit"/>
+    <u-icon color="danger" icon="u-icon-edit"/>
   </div>
 </template>
 ```
@@ -111,9 +112,9 @@ export default {
 ```vue
 <template>
   <div>
-    <u-icon size="small" icon="el-icon-edit"/>
-    <u-icon size="medium" icon="el-icon-edit"/>
-    <u-icon size="large" icon="el-icon-edit"/>
+    <u-icon size="small" icon="u-icon-edit"/>
+    <u-icon size="medium" icon="u-icon-edit"/>
+    <u-icon size="large" icon="u-icon-edit"/>
   </div>
 </template>
 ```
