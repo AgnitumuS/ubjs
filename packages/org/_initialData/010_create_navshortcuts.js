@@ -22,7 +22,7 @@ module.exports = function (session) {
       execParams: {
         code: 'org_desktop',
         caption: 'Organizational structure',
-        iconCls: 'el-icon-office-building',
+        iconCls: 'u u-icon-desktop-orgstructure',
         description: 'Departments, positions, employees, appointments,...'
       }
     })

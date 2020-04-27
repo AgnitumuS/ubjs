@@ -315,8 +315,8 @@
           <div class="exmaple-icon">
             <u-icon
               :size="iconSize"
-              icon="u-icon-desktop-orgstucture"
-            /> u-icon-desktop-orgstucture
+              icon="u-icon-desktop-orgstructure"
+            /> u-icon-desktop-orgstructure
           </div>
           <div class="exmaple-icon">
             <u-icon

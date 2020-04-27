@@ -24,7 +24,7 @@ module.exports = function (session) {
       execParams: {
         code: 'adm_desktop',
         caption: 'Administrator',
-        iconCls: 'el-icon-setting'
+        iconCls: 'u u-icon-desktop-administrator'
       }
     })
   } else {

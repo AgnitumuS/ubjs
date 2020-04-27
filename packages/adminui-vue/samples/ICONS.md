@@ -39,7 +39,7 @@ In case use icon attribute in `UButton` and `UIcon` class `u` will automatically
 - u-icon-desktop-dictionaries
 - u-icon-desktop-document-types
 - u-icon-desktop-documents
-- u-icon-desktop-orgstucture
+- u-icon-desktop-orgstructure
 - u-icon-desktop-swap
 - u-icon-dictionary
 - u-icon-digits
