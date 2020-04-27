@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `ElSelect` removed fixed height. Layout was broken if the selected items no longer fit on the same line
 
 ## [1.10.8] - 2020-04-24
 ### Added
