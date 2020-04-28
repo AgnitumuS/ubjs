@@ -131,7 +131,7 @@ function onUserLogin (req) {
 }
 
 function onUserLoginFailed (isLocked) {
-  console.debug('Call JS method: UBA.onUserLoginFailef')
+  console.debug('Call JS method: UBA.onUserLoginFailed')
 
   if (ubaAuditPresent) { // uba_audit exists
     try {
