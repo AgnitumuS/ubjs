@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UButton` allow to bind any native events to inner <button> component. Example: `<u-button @click="action">click</u-button>`
 
 ## [1.10.8] - 2020-04-24
 ### Added

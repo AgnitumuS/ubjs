@@ -1,5 +1,6 @@
 <template>
   <button
+    v-on="$listeners"
     :class="[
       `u-button_appearance-${appearance}`,
       `u-button_color-${color}`,
