@@ -499,6 +499,7 @@ export default {
   background: hsl(var(--hs-background), var(--l-background-inverse));
   border-bottom: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   position: relative;
+  min-height: 54px;
 }
 
 .u-navbar-tab-slider__ctrl{
