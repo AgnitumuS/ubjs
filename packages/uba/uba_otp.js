@@ -26,7 +26,7 @@ me.generateOtp = function (otpKind, userID, uData, lifeTime) {
     otp = createGuid()
     if (!lifeTime) lifeTime = 30 * 24 * 60 * 60 // 30 days
   } else if (otpKind === 'SMS') {
-    otp = createGuid()
+    otp = (Math.random() * 1000000 >>> 0).toString(10).padStart(6, '0') // 6 digits random number
     if (!lifeTime) lifeTime = 20 * 60 // 30 minutes
   } else if (otpKind === 'TOTP') {
     return doGenerateTOTPSecret(userID)
@@ -60,7 +60,7 @@ me.generateOtp = function (otpKind, userID, uData, lifeTime) {
  * @param {string} otpKind
  * @param {Function} [fCheckUData] function for check OTP from uData
  * @param {Object} [checkData] value for check OTP from uData
- * @param {Function} [call] This function will be called in user's session. If defined then restore original user session after call it.
+ * @param {Function} [call] If defined then this function will be called in user's session and restore original user session after call
  * @returns {Boolean}
  * @method auth
  * @deprecated use authAndExecute instead
@@ -148,9 +148,7 @@ me.authAndExecute = function (otp, otpKind, callBack) {
     .select()
   if (store.eof) return false
 
-  if (!store.run('delete', { execParams: { ID: store.get('ID') } })) {
-    throw store.lastError
-  }
+  store.run('delete', { execParams: { ID: store.get('ID') } })
   Session.runAsUser(store.get('userID'), callBack.bind(null, store.get('uData')))
   return true
 }

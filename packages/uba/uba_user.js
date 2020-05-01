@@ -1,17 +1,19 @@
-﻿/* global uba_user ubs_settings uba_otp */
+﻿/* global uba_user ubs_settings */
 // eslint-disable-next-line camelcase
 const me = uba_user
 const UBA_COMMON = require('@unitybase/base').uba_common
 const UB = require('@unitybase/ub')
 const Session = UB.Session
 const App = UB.App
-const http = require('http')
+const publicRegistration = require('./modules/publicRegistration').publicRegistration
+
+me.publicRegistration = publicRegistration
+me.entity.addMethod('publicRegistration')
 
 App.registerEndpoint('changePassword', changePasswordEp)
 
 me.entity.addMethod('changeLanguage')
 me.entity.addMethod('setUDataKey')
-me.entity.addMethod('publicRegistration')
 me.entity.addMethod('changeOtherUserPassword')
 
 me.on('insert:before', checkDuplicateUser)
@@ -500,213 +502,5 @@ function denyBuildInUserDeletion (ctx) {
     if (UBA_COMMON.USERS[user].ID === ID) {
       throw new UB.UBAbort('<<<Removing of built-in user is prohibited>>>')
     }
-  }
-}
-
-// eslint-disable-next-line no-useless-escape
-const EMAIL_VALIDATION_RE = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-/**
- * Check provided Email is look like Email address
- * @private
- * @param {string} email
- * @returns {boolean}
- */
-function validateEmail (email) {
-  return email && (email.length < 60) && EMAIL_VALIDATION_RE.test(email)
-}
-
-const RECAPTCHA_SECRET_KEY = App.serverConfig.application.customSettings &&
-  App.serverConfig.application.customSettings.reCAPTCHA
-  ? App.serverConfig.application.customSettings.reCAPTCHA.secretKey
-  : ''
-/**
- * Validate a reCAPTCHA from client request. See <a href="https://developers.google.com/recaptcha/docs/verify"reCAPTCHA doc</a>
- * App.serverConfig.application.customSettings.reCAPTCHA.secretKey must be defined
- * @private
- * @param {string} recaptcha
- * @returns {boolean}
- */
-function validateRecaptcha (recaptcha) {
-  if (!RECAPTCHA_SECRET_KEY) return true
-  const resp = http.request({
-    URL: 'https://www.google.com/recaptcha/api/siteverify' + '?' + 'secret=' + RECAPTCHA_SECRET_KEY + '&response=' + recaptcha,
-    method: 'POST',
-    sendTimeout: 30000,
-    receiveTimeout: 30000,
-    keepAlive: true,
-    compressionEnable: true
-  }).end('')
-  const data = JSON.parse(resp.read())
-  return data.success
-}
-
-const confirmationRedirectURI = App.serverConfig.application.customSettings &&
-  App.serverConfig.application.customSettings.publicRegistration &&
-  App.serverConfig.application.customSettings.publicRegistration.confirmationRedirectURI
-  ? App.serverConfig.application.customSettings.publicRegistration.confirmationRedirectURI
-  : '/'
-
-const QueryString = require('querystring')
-
-/**
- * Process a user registration step 2 - OneTime password received
- * @private
- * @param {THTTPResponse} resp
- * @param {string} otp One Time Password
- * @param {string} login user login
- */
-function processRegistrationStep2 (resp, otp, login) {
-  let userID
-  let userOtpData = null
-  const store = UB.DataStore(me.entity.name)
-  uba_otp.authAndExecute(otp, 'EMail', function (uData) {
-    userID = Session.userID
-    userOtpData = uData
-  })
-  if (userID) {
-    Session.runAsAdmin(function () {
-      UB.Repository('uba_user').attrs(['name', 'mi_modifyDate']).where('ID', '=', userID).select(store)
-
-      store.run('update', {
-        execParams: {
-          ID: userID,
-          isPending: false,
-          lastPasswordChangeDate: new Date(),
-          mi_modifyDate: store.get('mi_modifyDate')
-        }
-      })
-    })
-
-    login = store.get('name')
-
-    Session.emit('registration', {
-      authType: 'UB',
-      publicRegistration: true,
-      userID,
-      login,
-      userOtpData
-    })
-  } else {
-    // check that login is correct
-    Session.runAsAdmin(function () {
-      UB.Repository('uba_user').attrs(['ID']).where('name', '=', login)
-        .select(store)
-    })
-
-    if (store.eof) {
-      throw new UB.UBAbort('Invalid OTP')
-    }
-  }
-  resp.writeHead(`Location: ${App.externalURL + confirmationRedirectURI}?login=${encodeURIComponent(login)}`)
-  resp.statusCode = 302
-}
-
-/**
- * Two-step new user public registration **rest** endpoint. Optionally can use google Re-captcha.
- * To enable re-captcha on server side provide a valid [re-captcha SECRET](https://www.google.com/recaptcha/admin#list)
- *  in `serverConfig.application.customSettings.reCAPTCHA.secretKey` application config.
- *
- * 1-st step: web page pass a registration parameters as JSON:
- *
- *      POST /rest/uba_user/publicRegistration
- *      {email: "<email>", phone: "", utmSource: '', utmCampaign: '', recaptca: "googleRecaptchaValue"}
- *
- *
- * Server will:
- *
- *  - create a new uba_user (in pending state isPending===true) and generate a password for user
- *  - generate OTP, and put a optional `utmSource` and `utmCampaign` parameters to the OTP uData
- *  - create a e-mail using using report code, provided by `uba.user.publicRegistrationReportCode` ubs_setting key.
- *    Report take a parameters {login, password, activateUrl, appConfig}
- *  - schedule a confirmation e-mail for user
- *
- * 2-nd step: user follow the link from e-mail
- *
- *      GET /rest/uba_user/publicRegistration?otp=<one time pwd value>&login=<user_login>
- *
- * Server will:
- *
- *  - check the provided OTP and if it is valud
- *  - remove a `pending` from uba_user row
- *  - fire a `registration` event for {@link Session}
- *
- * Access to endpoint is restricted by default. To enable public registration developer should grant ELS access for
- * `uba_user.publicRegistration` method to `Anonymous` role.
- *
- * @param fake
- * @param {THTTPRequest} req
- * @param {THTTPResponse} resp
- * @method publicRegistration
- * @memberOf uba_user_ns.prototype
- * @memberOfModule @unitybase/uba
- * @published
- */
-me.publicRegistration = function (fake, req, resp) {
-/*
-- if otp parameter present
-1. check otp
-2. activate user
-3. get redirect page address
-4. answer redirect
-*/
-  const mailQueue = require('@unitybase/ubq/modules/mail-queue')
-  const UBReport = require('@unitybase/ubs/modules/UBServerReport')
-
-  const publicRegistrationSubject = ubs_settings.loadKey('uba.user.publicRegistrationSubject')
-  const publicRegistrationReportCode = ubs_settings.loadKey('uba.user.publicRegistrationReportCode')
-
-  const { otp, login } = QueryString.parse(req.parameters, null, null, { maxKeys: 3 })
-  const store = UB.DataStore(me.entity.name)
-
-  if (otp && login) {
-    processRegistrationStep2(resp, otp, login)
-  } else {
-    const body = req.read('utf-8')
-    const { email, phone, utmSource, utmCampaign, recaptcha } = JSON.parse(body)
-    if (!validateEmail(email)) {
-      throw new UB.UBAbort('Provided email address is invalid')
-    }
-    if (!validateRecaptcha(recaptcha)) {
-      throw new UB.UBAbort('reCAPTCTA check fail')
-    }
-    Session.emit('registrationStart', {
-      authType: 'UB',
-      publicRegistration: true,
-      params: { email, phone, utmSource, utmCampaign, recaptcha }
-    })
-    Session.runAsAdmin(function () {
-      store.run('insert', {
-        execParams: {
-          name: email,
-          email: email,
-          phone: phone,
-          isPending: true,
-          lastPasswordChangeDate: new Date()
-        },
-        fieldList: ['ID']
-      })
-      const userID = store.get(0)
-      const password = (Math.random() * 100000000000 >>> 0).toString(24)
-      me.changePassword(userID, email, password)
-      const userOtp = uba_otp.generateOtp('EMail', userID, { utmSource, utmCampaign })
-
-      const registrationAddress = `${App.externalURL}rest/uba_user/publicRegistration?otp=${encodeURIComponent(userOtp)}&login=${encodeURIComponent(email)}`
-
-      const reportResult = UBReport.makeReport(publicRegistrationReportCode, 'html', {
-        login: email,
-        password: password,
-        activateUrl: registrationAddress,
-        appConfig: App.serverConfig
-      })
-      const mailBody = reportResult.reportData
-
-      mailQueue.queueMail({
-        to: email,
-        subject: publicRegistrationSubject,
-        body: mailBody
-      })
-    })
-    resp.statusCode = 200
-    resp.writeEnd({ success: true, message: '<strong>Thank you for your request!</strong> We have sent your access credentials via email. You should receive them very soon.' })
   }
 }
