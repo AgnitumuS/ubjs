@@ -24,9 +24,9 @@ if ((REG_KIND !== 'SMS') && (!App.serverConfig.customSettings.smsServiceProvider
   throw new Error('for "SMS" kind of registration "serverConfig.customSettings.smsServiceProvider" should point to sms provider module')
 }
 const ALLOWED_PHONE_CODES = PR_SETTINGS.allowedPhoneCodes || []
-const CONFIRMATION_EMAIL_SUBJECT = PR_SETTINGS.confirmationEMailSubject || ''
+const CONFIRMATION_EMAIL_SUBJECT = PR_SETTINGS.confirmationSubject || ''
 if ((REG_KIND !== 'EMail') && (!CONFIRMATION_EMAIL_SUBJECT)) {
-  throw new Error('for "EMail" kind of registration "serverConfig.application.customSettings.publicRegistration.confirmationEMailSubject" is required')
+  throw new Error('for "EMail" kind of registration "serverConfig.application.customSettings.publicRegistration.confirmationSubject" is required')
 }
 
 const CONFIRMATION_MESSAGE_REPORT_CODE = PR_SETTINGS.confirmationMessageReportCode
@@ -185,7 +185,7 @@ function publicRegistration (fake, req, resp) {
     }
   })
   resp.statusCode = 200
-  resp.writeEnd({ success: true, message: '<strong>Thank you for your request!</strong> We have sent your access credentials via email. You should receive them very soon.' })
+  resp.writeEnd({ success: true, message: `Thank you for your request! We have sent your access credentials via ${REG_KIND}. You should receive them very soon` })
 }
 
 /**
@@ -290,10 +290,15 @@ function processRegistrationStep2 (resp, otp, login) {
       throw new UB.UBAbort('Invalid OTP')
     }
   }
-  let redirectTo = `Location: ${App.externalURL + REG_CONFIRMATION_REDIRECT_URL}?login=${encodeURIComponent(login)}`
-  if (password) { // sms registration
-    redirectTo += `&password=${encodeURIComponent(password)}`
+  if (REG_KIND === 'EMail') {
+    resp.writeHead(`Location: ${App.externalURL + REG_CONFIRMATION_REDIRECT_URL}?login=${encodeURIComponent(login)}`)
+    resp.statusCode = 302
+  } else {
+    resp.statusCode = 200
+    resp.writeEnd({
+      status: 'OK',
+      login: login,
+      password: password
+    })
   }
-  resp.writeHead(redirectTo)
-  resp.statusCode = 302
 }

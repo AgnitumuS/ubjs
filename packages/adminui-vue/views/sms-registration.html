@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User registration</title>
+  <script src="/clientRequire/node_modules/vue/dist/vue.min.js"></script>
+</head>
+
+<body>
+<h1>User registration page</h1>
+<div id="app"></div>
+
+<template id="smsReg">
+  <img :src="topLogoURL">
+  <template v-if="stage==='enterPhone'">
+    <label for="phone">Enter your phone:</label>
+    <input id="phone" type="tel" v-model="phone" pattern="+38([0-9]{3})-[0-9]{3}-[0-9]{2}-[0-9]{2}" required></input>
+
+    <label for="email">Enter your e-mail:</label>
+    <input id="email" type="email" size="50" v-model="email"></input>
+
+    <button @click="regSendNumber">Register me!</button>
+  </template>
+  <template v-else-if="stage==='enterOtp'">
+    <p> We sent SMS to your phone "{{phone}}"</p>
+    <label for="otp">Enter SMS confirmation code:</label>
+    <input id="otp" type="number" v-model="otp" pattern="[0-9]{6}" required></input>
+    <button @click="regConfirm">Confirm registration</button>
+  </template>
+  <template v-else>
+    <p> Congratulation! Your registration is complete</p>
+    <p> Your password is <strong>{{password}}strong>. Use it to enter iCorn</p>
+    <a href="/" target="_blank">Continue</a>
+  </template>
+  <p v-if="error"> {{{ errorText }}} </p>
+</template>
+
+<script>
+  var vm = new Vue({
+    template: '#smsReg',
+
+    data: function () {
+      return {
+        topLogoURL: '/models/ub-pub/img/ub-login-logo.png',
+        stage: 'enterPhone',
+        phone: '',
+        email: '',
+        otp: '',
+        password: '',
+        errorText: ''
+      }
+    },
+    methods: {
+      regSendNumber: function () {
+        fetch('/rest/uba_user/publicRegistration',
+          {
+            method: 'post',
+            body: JSON.stringify({email: this.email, phone: this.phone, recaptcha: "googleRecaptchaValue"})
+          }
+        ).then(resp => {
+          this.stage = 'enterOtp'
+        }).catch(err => {
+          this.errorText = err
+        })
+      },
+      regConfirm: function () {
+        fetch(
+          `/rest/uba_user/publicRegistration?otp=${this.otp}&login=${this.phone}`
+        ).then(resp => {
+          return resp.json()
+        }).then(respJson => {
+          this.password = respJson.password
+          this.stage = 'confirmed'
+        }).catch(err => {
+          this.errorText = err
+        })
+      }
+    }
+  })
+  vm.$mount('#app')
+</script>
+</body>
+</html>

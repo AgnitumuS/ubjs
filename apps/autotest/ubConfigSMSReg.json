@@ -1,0 +1,134 @@
+{
+	"httpServer": {
+		"externalURL": "http://localhost",
+		"host": "+",
+		"port": "8881",
+		"inetPub": "./inetPub/",
+		"threadPoolSize": 4
+	},
+	"logging": {
+		"path": "./logs",
+		"levels": ["*"],
+		//"rotationSizeInMB": 0,
+		"rotationSizeInMB": 200
+	},
+	"security": {
+		"authenticationMethods": [
+			"UB"
+		]
+	},
+	"uiSettings": {
+		"adminUI": {
+			"applicationName": {"en": "SMS auth test", "uk": "SMS регистрация"},
+			"applicationTitle": "UB SMS Reg",
+			"defaultPasswordForDebugOnly": "admin",
+			"sidebarLogoURL": "/models/ub-pub/img/sidebar-logo.svg",
+			"sidebarLogoBigURL": "/models/ub-pub/img/sidebar-logo-big.svg",
+			"loginWindowTopLogoURL": "/models/ub-pub/img/login-logo.svg",
+			"registrationURL": "/models/adminui-vue/views/sms-registration.html",
+			"endpoint": "ubadminui",
+			"useVueTables": true
+		},
+		"portalUI": {
+			"applicationName": "UBCore usage"
+		}
+	},
+	"application": {
+		"defaultLang": "en",
+		"rootHandler": "index.html",
+		"schedulers": {"enabled": false},
+		"domain": {
+			"models": [
+				{
+					"path": "./node_modules/@unitybase/ub"
+				},
+				{
+					"path": "./node_modules/@unitybase/uba"
+				},
+				{
+					"path": "./node_modules/@unitybase/ubs"
+				},
+				{
+					"path": "./node_modules/@unitybase/ubm"
+				},
+				{
+					"path": "./node_modules/@unitybase/ubq"
+				},
+				{
+					"path": "./node_modules/@unitybase/cdn"
+				},
+				{
+					"path": "./node_modules/@unitybase/org"
+				},
+				{
+					"path": "./node_modules/@unitybase/ub-pub"
+				},
+				{
+					"path": "./node_modules/@unitybase/adminui-pub"
+				},
+				{
+					"path": "./node_modules/@unitybase/adminui-reg"
+				},
+				{
+					"path": "./node_modules/@unitybase/adminui-vue"
+				},
+				{
+					"path": "./models/TST"
+				}
+			]
+		},
+		"connections": [
+			{
+				"name": "main",
+				"driver": "SQLite3",
+				"isDefault": true,
+				"dialect": "SQLite3",
+				"databaseName": "./autotestDB.sqlite3",
+				"supportLang": ["en", "uk"],
+				"advSettings": "Synchronous=Off"
+			}
+		],
+		"blobStores": [
+			{
+				"name": "mdb",
+				"storeType": "Virtual",
+				"tempPath": "./_temp"
+			},
+			{
+				"name": "simple",
+				"path": "./documents/simple",
+				"tempPath": "./documents/simple/_temp",
+				"isDefault": true,
+				"historyDepth": 2,
+				"storeSize": "Medium",
+				"keepOriginalFileNames": false
+			},
+			{
+				"name": "avatars",
+				"path": "./documents/avatars",
+				"tempPath": "./documents/avatars/_temp",
+				"historyDepth": 0,
+				"storeSize": "Simple",
+				"keepOriginalFileNames": false
+			}
+		],
+		"customSettings": {
+			"publicRegistration": {
+				"kind": "SMS",
+				"confirmationRedirectURI": "/models/adminui-vue/views/sms-registration.html",
+				"confirmationMessageReportCode": "tst_smsRegistration",
+				"confirmationSubject": "iCorn",
+				"smsServiceProvider": "@unitybase/uba/modules/fakeSMSProvider.js"
+			},
+			"mailerConfig": {
+				"targetHost": "mail.softline.main",
+				"targetPort": "25",
+				"fromAddr": "no-reply@softline.kiev.ua",
+				"user": "",
+				"password": "",
+				"autoTLS": false,
+				"auth": false
+			}
+		}
+	}
+}
