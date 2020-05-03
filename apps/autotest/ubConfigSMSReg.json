@@ -26,7 +26,7 @@
 			"sidebarLogoBigURL": "/models/ub-pub/img/sidebar-logo-big.svg",
 			"loginWindowTopLogoURL": "/models/ub-pub/img/login-logo.svg",
 			"registrationURL": "/models/adminui-vue/views/sms-registration.html",
-			"endpoint": "ubadminui",
+			"endpoint": "index.html",
 			"useVueTables": true
 		},
 		"portalUI": {
@@ -113,12 +113,12 @@
 			}
 		],
 		"customSettings": {
+			"smsServiceProvider": "./fakeSMSProvider.js", // in real life should be a full path to provider
 			"publicRegistration": {
 				"kind": "SMS",
 				"confirmationRedirectURI": "/models/adminui-vue/views/sms-registration.html",
 				"confirmationMessageReportCode": "tst_smsRegistration",
-				"confirmationSubject": "iCorn",
-				"smsServiceProvider": "@unitybase/uba/modules/fakeSMSProvider.js"
+				"confirmationSubject": "iCorn"
 			},
 			"mailerConfig": {
 				"targetHost": "mail.softline.main",

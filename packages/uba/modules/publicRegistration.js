@@ -11,7 +11,7 @@ const RECAPTCHA_SECRET_KEY = App.serverConfig.application.customSettings.reCAPTC
 
 const PR_SETTINGS = App.serverConfig.application.customSettings.publicRegistration || {}
 const REG_KIND = PR_SETTINGS.kind
-if (REG_KIND && ((REG_KIND !== 'SMS') || (REG_KIND !== 'EMail'))) {
+if (REG_KIND && !((REG_KIND === 'SMS') || (REG_KIND === 'EMail'))) {
   throw new Error('App.serverConfig.application.customSettings.publicRegistration.kind should be one of "SMS" or "EMail"')
 }
 
@@ -20,7 +20,7 @@ if (REG_KIND && !REG_CONFIRMATION_REDIRECT_URL) {
   throw new Error('serverConfig.application.customSettings.publicRegistration.confirmationRedirectURI is required')
 }
 
-if ((REG_KIND !== 'SMS') && (!App.serverConfig.customSettings.smsServiceProvider)) {
+if ((REG_KIND === 'SMS') && (!App.serverConfig.application.customSettings.smsServiceProvider)) {
   throw new Error('for "SMS" kind of registration "serverConfig.customSettings.smsServiceProvider" should point to sms provider module')
 }
 const ALLOWED_PHONE_CODES = PR_SETTINGS.allowedPhoneCodes || []
@@ -85,7 +85,7 @@ module.exports = {
  * @published
  */
 function publicRegistration (fake, req, resp) {
-  // required here to prevent dependency circle between uba and ubs models
+  // required here to prevent dependency circle between uba and ubq/ubs models
   const mailQueue = require('@unitybase/ubq/modules/mail-queue')
   const UBReport = require('@unitybase/ubs/modules/UBServerReport')
 
@@ -104,20 +104,20 @@ function publicRegistration (fake, req, resp) {
   const body = req.read('utf-8')
   const { email, phone, utmSource, utmCampaign, recaptcha } = JSON.parse(body)
   if (email && !validateEmail(email)) {
-    throw new UB.UBAbort('Provided email address is invalid')
+    throw new UB.UBAbort('<<<email address is invalid>>>')
   }
   let phoneNormalized
   if (phone) {
     phoneNormalized = normalizeAndValidatePhone(phone)
-    if (!phoneNormalized) throw new UB.UBAbort('Provided phone number is invalid')
+    if (!phoneNormalized) throw new UB.UBAbort('<<<phone number is invalid>>>')
     if (ALLOWED_PHONE_CODES.length) {
       if (!ALLOWED_PHONE_CODES.find(c => phoneNormalized.startsWith(c))) {
-        throw new UB.UBAbort('Provided phone country is not allowed')
+        throw new UB.UBAbort('<<phone country is not allowed>>>')
       }
     }
   }
   if ((REG_KIND === 'SMS') && !phoneNormalized) {
-    throw new UB.UBAbort('Phone number is required for SMS registration')
+    throw new UB.UBAbort('<<<Phone number is required for SMS registration>>>')
   }
   if (!validateRecaptcha(recaptcha)) {
     throw new UB.UBAbort('reCAPTCHA check fail')
@@ -145,15 +145,16 @@ function publicRegistration (fake, req, resp) {
     const registrationAddress = `${App.externalURL}rest/uba_user/publicRegistration?otp=${encodeURIComponent(userOtp)}&login=${encodeURIComponent(email)}`
 
     if (REG_KIND === 'SMS') { // try to send OTP to user phone, in case of error (SMS provider is unavailable) - schedule OTP sending
-      const SMS_PROVIDER = require(App.serverConfig.customSettings.smsServiceProvider)
+      const SMS_PROVIDER = require(App.serverConfig.application.customSettings.smsServiceProvider)
       // generate OTP message. password is ''
-      const message = UBReport.makeReport(publicRegistrationReportCode, 'html', {
+      const renderedReport = UBReport.makeReport(publicRegistrationReportCode, 'html', {
         kind: REG_KIND,
         login: phoneNormalized,
         otp: userOtp,
         activateUrl: registrationAddress,
         appConfig: App.serverConfig
       })
+      const message = renderedReport.reportData
       if (!SMS_PROVIDER.send(phoneNormalized, message)) { // schedule SMS sending
         UB.DataStore('ubq_messages').run('insert', {
           execParams: {
@@ -255,7 +256,7 @@ function processRegistrationStep2 (resp, otp, login) {
   if (userID) {
     Session.runAsAdmin(function () {
       UB.Repository('uba_user').attrs(['name', 'mi_modifyDate']).where('ID', '=', userID).select(store)
-      const uname = store.get('name')
+      login = store.get('name')
       // remove pending
       store.run('update', {
         execParams: {
@@ -267,10 +268,9 @@ function processRegistrationStep2 (resp, otp, login) {
       })
       if (REG_KIND === 'SMS') { // for SMS registration type generate password after receiving valid OPT
         password = (Math.random() * 100000000000 >>> 0).toString(24)
-        uba_user.changePassword(userID, uname, password)
+        uba_user.changePassword(userID, login, password)
       }
     })
-    login = store.get('name')
 
     Session.emit('registration', {
       authType: 'UB',

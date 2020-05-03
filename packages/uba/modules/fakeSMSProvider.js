@@ -4,7 +4,7 @@
 
 // const http = require('http')
 module.exports.send = function (phoneNumber, message) {
-  console.log(`Message ${message} sends to ${phoneNumber}`)
+  console.log(`Message ${JSON.stringify(message)} sends to ${phoneNumber}`)
   return true
   // real implementation example below
   // let request = http.request({
