@@ -11,21 +11,11 @@ exports.reportCode = {
    * @params {[]|{}} reportParams
    * @returns {Promise|Object}
    */
-  buildReport: function(reportParams){
-    var reportData = this.buildHTML(reportParams)
+  buildReport: function (reportParams) {
+    let reportData = this.buildHTML(reportParams)
     if (this.reportType === 'pdf') {
-        reportData = this.transformToPdf(reportData)
+      reportData = this.transformToPdf(reportData)
     }
     return reportData
   }
-  /** optional report click event handler
-   * see click)sample report inside UBS model
-   */
-  // onReportClick: function (e) {
-  //   // prevent default action
-  //   e.preventDefault()
-  //   // get table/cell/roe based on event target
-  //   let cellInfo = UBS.UBReport.cellInfo(e)
-  //   ...
-  // }  
 }
