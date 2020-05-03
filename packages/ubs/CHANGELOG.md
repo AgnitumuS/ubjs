@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - fix ESLint warnings in initial JS template for ubs_report (no functional changes) 
 
 ## [5.3.7] - 2020-04-24
 ## [5.3.6] - 2020-04-10
