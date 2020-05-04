@@ -23,7 +23,7 @@ module.exports = function (session) {
       execParams: {
         code: 'tst_desktop',
         caption: 'Test',
-        iconCls: 'u u-icon-desktop-document-types'
+        iconCls: 'u-icon-desktop-document-types'
       }
     })
   } else {

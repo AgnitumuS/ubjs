@@ -6,7 +6,7 @@
     <span>{{ fileName }}</span>
     <el-button
       type="primary"
-      icon="u u-icon-download"
+      icon="u-icon-download"
       circle
       plain
       class="u-table-entity__document-button"

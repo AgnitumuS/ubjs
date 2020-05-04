@@ -16,6 +16,10 @@
     >
       <el-tabs>
         <el-tab-pane label="Main">
+          <div style="border: 1px solid; display: flex">
+            <u-icon icon="u-icon-settings" />
+            <u-icon icon="el-icon-setting" />
+          </div>
           <u-grid>
             <u-auto-field attribute-name="code" />
             <u-auto-field attribute-name="caption" />

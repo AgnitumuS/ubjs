@@ -32,7 +32,7 @@
           <li>Tab / Shift + Tab - If something is selected, indent/dedent it</li>
         </ul>
       </template>
-      <i class="u u-icon-question ub-code-mirror__help" />
+      <i class="u-icon-question ub-code-mirror__help" />
     </el-tooltip>
     <textarea ref="textarea" />
   </div>

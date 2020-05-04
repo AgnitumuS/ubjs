@@ -61,21 +61,21 @@
       <slot name="exports">
         <u-dropdown-item divider />
         <u-dropdown-item
-          icon="fas fa-file-export"
+          icon="u-icon-file-export"
           label="export"
         >
           <u-dropdown-item
-            icon="fas fa-file-excel"
+            icon="u-icon-file-excel"
             label="exportXls"
             @click="exportExcel"
           />
           <u-dropdown-item
-            icon="fas fa-table"
+            icon="u-icon-file-html"
             label="exportHtml"
             @click="exportHtml"
           />
           <u-dropdown-item
-            icon="fas fa-file-csv"
+            icon="u-icon-file-csv"
             label="exportCsv"
             @click="exportCsv"
           />

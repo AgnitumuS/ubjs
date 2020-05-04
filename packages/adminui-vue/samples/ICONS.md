@@ -1,7 +1,7 @@
 # Usage
 
 ```html
-<i class="u u-icon-save"/>
+<i class="u-icon-save"/>
 ```
 
 In case use icon attribute in `UButton` and `UIcon` class `u` will automatically added

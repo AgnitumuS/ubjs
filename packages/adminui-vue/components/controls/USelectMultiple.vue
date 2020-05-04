@@ -45,7 +45,7 @@
               :content="$ut('recordWasDeleted')"
               :enterable="false"
             >
-              <i class="u u-icon-delete" />
+              <i class="u-icon-delete" />
             </el-tooltip>
 
             <el-tooltip
@@ -77,7 +77,7 @@
         >
           <i
             v-if="clearable && value.length > 0 && !readonly"
-            class="ub-select-multiple__icon u u-icon-close"
+            class="ub-select-multiple__icon u-icon-close"
             @click="clearSelected"
           />
           <i
@@ -161,7 +161,7 @@
             :content="$ut('recordWasDeleted')"
             :enterable="false"
           >
-            <i class="u u-icon-delete" />
+            <i class="u-icon-delete" />
           </el-tooltip>
           {{ option.label }}
         </el-tag>
@@ -280,7 +280,7 @@ export default {
 
     inputIconCls () {
       let icon
-      const arrowPrefix = 'u u-icon-arrow-'
+      const arrowPrefix = 'u-icon-arrow-'
 
       if (this.dropdownVisible) {
         icon = arrowPrefix + 'up'

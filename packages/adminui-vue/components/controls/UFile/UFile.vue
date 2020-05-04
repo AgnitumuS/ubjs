@@ -15,7 +15,7 @@
       >
         <div
           v-show="!disabled"
-          class="u-file-preview__frame-close u u-icon-close"
+          class="u-file-preview__frame-close u-icon-close"
           @click="$emit('input', '')"
         />
         <iframe
@@ -45,18 +45,18 @@
       >
         <button
           type="button"
-          class="u-file__button u u-icon-eye"
+          class="u-file__button u-icon-eye"
           :disabled="!previewFormats.includes(file.ct)"
           @click="previewDialog"
         />
         <button
           type="button"
-          class="u-file__button u u-icon-download"
+          class="u-file__button u-icon-download"
           @click="saveAs"
         />
         <button
           type="button"
-          class="u-file__button u u-icon-delete"
+          class="u-file__button u-icon-delete"
           :disabled="disabled"
           @click="remove"
         />

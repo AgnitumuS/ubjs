@@ -27,7 +27,7 @@
       placement="bottom-end"
     >
       <u-toolbar-button
-        icon="fa fa-cog"
+        icon="u-icon-settings"
         color="secondary"
         tooltip="allActions"
       />
@@ -107,17 +107,17 @@ export default {
       }
       return [{
         label: this.$ut('save') + ' (Ctrl + S)',
-        icon: 'far fa-save',
+        icon: 'u-icon-save',
         handler: () => this.save(),
         disabled: !this.canSave
       }, {
         label: this.$ut('saveAndClose') + ' (Ctrl + Enter)',
-        icon: 'far fa-share-square',
+        icon: 'u-icon-share',
         handler: this.saveAndClose,
         disabled: !this.canSave
       }, {
         label: this.$ut('Delete') + ' (Ctrl + Delete)',
-        icon: 'far fa-trash-alt',
+        icon: 'u-icon-delete',
         handler: () => this.deleteInstance(this.$formServices.forceClose),
         disabled: !this.canDelete,
         color: 'secondary',
@@ -131,7 +131,7 @@ export default {
       }
       const buttons = [{
         label: this.$ut('refresh') + ' (Ctrl + R)',
-        icon: 'fa fa-refresh',
+        icon: 'u-icon-refresh',
         handler: () => this.refresh(),
         disabled: !this.canRefresh
       }]
@@ -147,7 +147,7 @@ export default {
       }
 
       buttons.push({
-        icon: 'fa fa-link',
+        icon: 'u-icon-link',
         label: 'link',
         handler: this.copyLink
       })
@@ -163,7 +163,7 @@ export default {
 
       if (this.entitySchema.hasMixin('audit')) {
         buttons.push({
-          icon: 'fas fa-history',
+          icon: 'u-icon-audit',
           label: 'showAudit',
           handler: this.showAudit,
           disabled: !this.$UB.connection.domain.isEntityMethodsAccessible('uba_auditTrail', 'select')

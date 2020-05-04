@@ -41,7 +41,7 @@
       "caption": "Desktop icon",
       "description": "",
       "allowNull": false,
-      "defaultValue": "u u-icon-desktop"
+      "defaultValue": "u-icon-desktop"
     },
     {
       "name": "url",

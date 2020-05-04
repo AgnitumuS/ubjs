@@ -1,28 +1,22 @@
 <template>
   <button
-    v-on="$listeners"
     :class="[
       `u-button_appearance-${appearance}`,
       `u-button_color-${color}`,
       `u-button_size-${size}`
     ]"
     class="u-button"
+    v-on="$listeners"
   >
     <span class="u-button__container">
       <i
         v-if="icon"
-        :class="[
-          icon,
-          {'u': icon.startsWith('u')}
-        ]"
+        :class="icon"
       />
-      <span><slot /></span>
+      <span v-if="$slots.default"><slot /></span>
       <i
         v-if="rightIcon"
-        :class="[
-          rightIcon,
-          {'u': rightIcon.startsWith('u')}
-        ]"
+        :class="[rightIcon, icon]"
       />
     </span>
   </button>
@@ -90,6 +84,9 @@ export default {
     background: hsl(var(--hs), var(--l));
     border-radius: var(--border-radius);
     border: 1px solid hsl(var(--hs), var(--l));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .u-button__container {
@@ -147,15 +144,15 @@ export default {
   }
 
   .u-button_size-small {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .u-button_size-medium {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .u-button_size-large {
-    font-size: 24px;
+    font-size: 26px;
   }
 </style>
 

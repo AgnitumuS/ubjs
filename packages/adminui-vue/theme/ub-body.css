@@ -192,3 +192,19 @@ html, body {
 .el-button--small {
   font-size: 16px;
 }
+
+[class^="u-icon-"],
+[class*=" u-icon-"] {
+  display: inline-block;
+  font-family: "ub-icons";
+  font-weight: 400;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  speak: none;
+  text-transform: none;
+  vertical-align: baseline;
+}

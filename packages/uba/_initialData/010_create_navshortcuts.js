@@ -33,7 +33,7 @@ module.exports = function (session) {
       execParams: {
         code: 'adm_desktop',
         caption: 'Administrator',
-        iconCls: 'u u-icon-desktop-administrator',
+        iconCls: 'u-icon-desktop-administrator',
         description: 'User management, UI settings, logs (audit trail, security, queue)'
       }
     })

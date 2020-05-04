@@ -73,7 +73,8 @@ module.exports = (options = {}) => ({
       files: path.resolve(__dirname, './icons/*.svg'),
       dest: path.resolve(__dirname, './theme/icons'),
       template: 'css',
-      fontName: 'u',
+      fontName: 'ub-icons',
+      templateClassName: 'u',
       fontHeight: 1001
     })
   ],

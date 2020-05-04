@@ -17,10 +17,7 @@
     >
       <i
         v-if="icon"
-        :class="[
-          icon,
-          {'u': icon.startsWith('u')}
-        ]"
+        :class="icon"
         class="u-dropdown-item__icon"
       />
 
@@ -38,7 +35,7 @@
 
       <i
         v-if="hasChildren"
-        class="u-dropdown-item__arrow u u-icon-arrow-right"
+        class="u-dropdown-item__arrow u-icon-arrow-right"
       />
     </button>
 
@@ -129,10 +126,10 @@ export default {
   }
 
   .u-dropdown-item__icon {
-    font-size: 18px;
+    font-size: 20px;
     color: hsl(var(--hs-control), var(--l-state-default));
-    width: 14px;
-    height: 14px;
+    width: 18px;
+    height: 18px;
     margin-left: 12px;
     display: flex;
     align-items: center;

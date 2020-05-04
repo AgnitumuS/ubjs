@@ -16,10 +16,7 @@
     >
       <i
         class="u-toolbar__button-icon"
-        :class="[
-          icon,
-          {'u': icon.startsWith('u')}
-        ]"
+        :class="icon"
       />
       <slot />
     </button>
@@ -101,7 +98,7 @@ export default {
   }
 
   .u-toolbar__button-icon {
-    font-size: 18px;
+    font-size: 20px;
     margin-right: 4px;
   }
 </style>
