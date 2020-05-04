@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UMasterDetailView`: prevent crops of the scrollbar's due to wrong navbar height (min navbar heingth set to 54px.
  - `UDialog/dialogDeleteRecord`: prevent error in case description attribute for entity is not defined
  - `UButton`: allow to bind any native events to inner <button> component. Example: `<u-button @onmouseover="action">click me</u-button>`
-
+ - `UTableEntity`: visibility of filters in case passed `attribute` param in column definition
 
 ## [1.10.8] - 2020-04-24
 ### Added
