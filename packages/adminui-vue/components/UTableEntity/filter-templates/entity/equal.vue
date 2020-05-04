@@ -46,7 +46,16 @@ export default {
 
   methods: {
     onChange (ID, row) {
-      this.formattedValue = row[this.column.attribute.entity.getDescriptionAttribute()]
+      const e = this.column.attribute.entity
+      let da = e.descriptionAttribute
+      if (!da && e.attributes.caption) {
+        da = 'caption'
+      } else if (!da && e.attributes.name) {
+        da = 'name'
+      } else {
+        da = 'ID'
+      }
+      this.formattedValue = row[da]
     }
   }
 }

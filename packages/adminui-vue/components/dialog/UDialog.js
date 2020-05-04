@@ -143,7 +143,7 @@ function errorReporter ({ errMsg, errCode, entityCode, detail }) {
  * @returns {Promise<boolean>}
  */
 function dialogDeleteRecord (entity, instanceData = {}) {
-  const descriptionAttr = UB.connection.domain.get(entity).getDescriptionAttribute()
+  const descriptionAttr = UB.connection.domain.get(entity).descriptionAttribute
   const hasDescriptionAttr = descriptionAttr && descriptionAttr in instanceData
   const defaultMess = hasDescriptionAttr
     ? UB.i18n('deleteConfirmationWithCaption', UB.i18n(entity), instanceData[descriptionAttr])

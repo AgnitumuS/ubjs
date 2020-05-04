@@ -42,6 +42,12 @@ function testJsonAttr (conn) {
   assert.strictEqual(data.length, 2, '2 json with propS starts with "Пр"')
   assert.strictEqual(data[0].S, 'Привет', 'first json propS is "Привет"')
 
+  const di = conn.getDomainInfo(true)
+  const expect = di.connections[0].dialect === 'SQLite3' ? 1 : '1'
+  data = conn.Repository('tst_dictionary').attrs('jsonColumn.objProp.val').where('jsonColumn.objProp.val', '=', expect).selectSingle()
+  assert.ok(data !== null, 'should got 1 record in case filtering by objProp.val === "1"')
+  assert.strictEqual(data['jsonColumn.objProp.val'], expect, 'should get objProp.val === "1"')
+
   let datesRes
   function datesSerialize () {
     datesRes = conn.query({

@@ -122,14 +122,21 @@ function UBNativeMessage (featureConfig) {
     if (!msg || !msg.hasOwnProperty('msgType') || !msg.hasOwnProperty('messageID') || !msg.hasOwnProperty('clientID')) {
       console.error('Empty or invalid content message')
     }
-    if ((msg.clientID === '') && (msg.messageID === -1) && (msg.msgType = 'reject')) {
-      // native host connection error. For unknown reason clientID & messageId is lost in such type of message
+    if ((msg.messageID === -1) && ((msg.clientID === '') || (msg.clientID === me._cfg.host)) && (msg.msgType = 'reject')) {
+      // native host connection error. For unknown reason clientID & messageId is lost in such type of message (Chrome)
+      // In FF (75 at last) clientID === me._cfg.host
       // there is slight chance what message not for this Client (in case of several UBNativeMessages instances),
       // but I (MPV) do not know how to solve this
-      const messageID = Object.keys(me.pendingMessages)[0]
-      if (!messageID) return // this instance do not have any pending messages - try another UBNativeMessage instance
-      clearTimeout(me.pendingMessages[messageID].timerID)
-      me.onMsgTimeOut(messageID)
+      const lastMsgID = Object.keys(me.pendingMessages)[0]
+      let message = me.pendingMessages[lastMsgID]
+      if (message) {
+        delete me.pendingMessages[lastMsgID]
+      } else {
+        message = me.__FFLastMsg
+      }
+      if (!message) return // this instance do not have any pending messages - try another UBNativeMessage instance
+      clearTimeout(message.timerID)
+      me.onMsgTimeOut(message)
       return
     }
     if (msg.clientID !== me.id) { // this is message to another UBNativeMessage instance
@@ -279,6 +286,8 @@ UBNativeMessage.prototype.invoke = function (methodName, methodParams, timeout) 
       timeoutValue: timeout || me.callTimeOut,
       stTime: Date.now()
     }
+    // FF 75 in case of connect error me.pendingMessages became {}
+    me.__FFLastMsg = me.pendingMessages[msgID]
     // if (UB.isSecureBrowser) {
     //     if (methodName === '__extensionVersion') {
     //         me.eventElm.emit('UBExtensionMsg', {
@@ -454,11 +463,23 @@ UBNativeMessage.prototype.disconnect = function () {
   })
 }
 
-UBNativeMessage.prototype.onMsgTimeOut = function (msgID) {
-  const pending = this.pendingMessages[msgID]
+/**
+ * Timeout (eitres called from setTimeout with msgIDOrMsg === [messageID]
+ * or from connection error with msgIDOrMsg === [message object]
+ * @param {string|object} msgIDOrMsg
+ */
+UBNativeMessage.prototype.onMsgTimeOut = function (msgIDOrMsg) {
+  let pending
+  if (typeof msgIDOrMsg === 'string') {
+    pending = this.pendingMessages[msgIDOrMsg]
+    if (pending) {
+      delete this.pendingMessages[msgIDOrMsg]
+    }
+  } else {
+    pending = msgIDOrMsg
+  }
   if (pending) {
     pending.timerID = null
-    delete this.pendingMessages[msgID]
     pending.deffer.reject(new ubUtils.UBError('unknownError', 'pluginMethodCallTimedOut'))
   }
 }
