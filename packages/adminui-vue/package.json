@@ -50,7 +50,7 @@
     "@unitybase/ub-pub": "^5.5.7",
     "element-ui": "2.13.0",
     "jdenticon": "^2.1.1",
-    "js-beautify": "^1.10.0",
+    "js-beautify": "^1.11.0",
     "lodash": "^4",
     "moment": "^2.24.0",
     "normalize.css": "^8.0.1",
