@@ -25,7 +25,7 @@ if ((REG_KIND === 'SMS') && (!App.serverConfig.application.customSettings.smsSer
 }
 const ALLOWED_PHONE_CODES = PR_SETTINGS.allowedPhoneCodes || []
 const CONFIRMATION_EMAIL_SUBJECT = PR_SETTINGS.confirmationSubject || ''
-if ((REG_KIND !== 'EMail') && (!CONFIRMATION_EMAIL_SUBJECT)) {
+if ((REG_KIND === 'EMail') && (!CONFIRMATION_EMAIL_SUBJECT)) {
   throw new Error('for "EMail" kind of registration "serverConfig.application.customSettings.publicRegistration.confirmationSubject" is required')
 }
 
