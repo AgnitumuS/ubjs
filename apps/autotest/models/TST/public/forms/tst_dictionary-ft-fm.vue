@@ -151,7 +151,7 @@ module.exports.default = {
 
   data () {
     return {
-      iconSize: 'large',
+      iconSize: 'medium',
       sizes: ['small', 'medium', 'large'],
       icons: [
         'u-icon-add',

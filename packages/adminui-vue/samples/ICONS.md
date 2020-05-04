@@ -1,15 +1,11 @@
 # Usage
 
-```html
-<i class="u-icon-save"/>
-```
-
-In case use icon attribute in `UButton` and `UIcon` class `u` will automatically added
 ```vue
 <template>
   <div>
+    <i class="u-icon-save"/>
     <u-button icon="u-icon-save"/>
-    <u-icon icon="u-icon-save"/>
+    <u-icon icon="u-icon-save" size="large" color="danger"/>
   </div>
 </template>
 ```
