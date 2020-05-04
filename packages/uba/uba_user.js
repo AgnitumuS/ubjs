@@ -107,7 +107,7 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
   // checkCmplexity
   if (passwordPolicy.checkCmplexity) {
     if (!(/[A-Z]/.test(newPwd) && /[a-z]/.test(newPwd) &&
-      /[0-9]/.test(newPwd) && /[~!@#$%^&*()_+|\\=\-/'":;<>]/.test(newPwd))
+      /[0-9]/.test(newPwd) && /[~!@#$%^&*()_+|\\=\-/'":;<>.,\[\]{}]/.test(newPwd))
     ) {
       throw new Error('<<<Password is too simple>>>')
     }
@@ -602,7 +602,7 @@ function processRegistrationStep2 (resp, otp, login) {
 }
 
 /**
- * Two-step new user public registration **rest** endpoint. Optionaly can use google Re-captcha.
+ * Two-step new user public registration **rest** endpoint. Optionally can use google Re-captcha.
  * To enable re-captcha on server side provide a valid [re-captcha SECRET](https://www.google.com/recaptcha/admin#list)
  *  in `serverConfig.application.customSettings.reCAPTCHA.secretKey` application config.
  *
