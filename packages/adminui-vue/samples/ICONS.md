@@ -47,7 +47,6 @@ In case use icon attribute in `UButton` and `UIcon` class `u` will automatically
 - u-icon-download
 - u-icon-edit
 - u-icon-edit-border
-- u-icon-edit-line
 - u-icon-eye
 - u-icon-file
 - u-icon-file-list
@@ -76,7 +75,7 @@ In case use icon attribute in `UButton` and `UIcon` class `u` will automatically
 - u-icon-mandatory
 - u-icon-mandatory-disabled
 - u-icon-more
-- u-icon-notification
+- u-icon-bell
 - u-icon-number
 - u-icon-person
 - u-icon-person-group
@@ -97,6 +96,8 @@ In case use icon attribute in `UButton` and `UIcon` class `u` will automatically
 - u-icon-share
 - u-icon-share-alt
 - u-icon-sort
+- u-icon-sort-asc
+- u-icon-sort-desc
 - u-icon-street
 - u-icon-swap
 - u-icon-tabs
