@@ -109,7 +109,7 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
   // checkCmplexity
   if (passwordPolicy.checkCmplexity) {
     if (!(/[A-Z]/.test(newPwd) && /[a-z]/.test(newPwd) &&
-      /[0-9]/.test(newPwd) && /[~!@#$%^&*()_+|\\=\-/'":;<>.,\[\]{}]/.test(newPwd))
+      /[0-9]/.test(newPwd) && /[~!@#$%^&*()_+|\\=\-/'":;<>.,\[\]{}\?]/.test(newPwd))
     ) {
       throw new Error('<<<Password is too simple>>>')
     }

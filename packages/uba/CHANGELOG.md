@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - characters `,.[]{}` added to password policy complexity check.
+ - characters `,.[]{}?` added to password policy complexity check.
  Checking is carried out in case ubs_settings `UBA.passwordPolicy.checkCmplexity` value is set to `true`.  
 
 ## [5.4.7] - 2020-04-24
