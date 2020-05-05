@@ -111,10 +111,9 @@ export default {
       if (this.columns) {
         return this.columns.map(column => {
           if (typeof column === 'string') {
-            return this.buildColumn(column)
+            return this.buildColumn({ id: column })
           } else {
-            const columnDefaults = this.buildColumn(column.id)
-            return this.mergeColumns(columnDefaults, column)
+            return this.buildColumn(column)
           }
         })
       } else {
@@ -125,7 +124,7 @@ export default {
               attr.dataType !== 'Json' &&
               attr.dataType !== 'Document'
           })
-          .map(attrCode => this.buildColumn(attrCode))
+          .map(attrCode => this.buildColumn({ id: attrCode }))
       }
     }
   },
@@ -177,37 +176,75 @@ export default {
     },
 
     /**
-     * Build column generate label and default settings for current attribute dataType
+     * Get default column settings by dataType and merge it with custom column settings
      *
-     * @param {string} columnId
+     * @param {UTableColumn} column
      * @returns {UTableColumn}
      */
-    buildColumn (columnId) {
-      const attrInfo = this.$store.getters.schema.getEntityAttributeInfo(columnId, 0)
-      const last = attrInfo && attrInfo.attribute
-      const penult = attrInfo && (attrInfo.parentAttribute || last)
-      const dataType = last && last.dataType
-      const typeDefaults = TypeProvider.get(dataType)
-      const columnDef = typeDefaults.definition
-      let label
-      let attribute
-      if (penult) {
-        label = this.$ut(`${penult.entity.code}.${penult.code}`) || columnId
-        if (penult.dataType === 'Json') {
-          attribute = penult
-        } else {
-          attribute = last
-        }
-      } else {
-        label = columnId
+    buildColumn (column) {
+      const attribute = this.buildColumnAttribute(column)
+      const label = this.buildColumnLabel(column)
+      const typeDefaults = TypeProvider.get(attribute.dataType)
+      const filters = {}
+      const filterEntries = Object.entries(typeDefaults.filters || {})
+        .concat(Object.entries(column.filters || {}))
+
+      for (const [filterId, filterDef] of filterEntries) {
+        filters[filterId] = Object.assign({}, filters[filterId], filterDef)
       }
 
-      return {
-        id: columnId,
+      /**
+       * @type {UTableColumn}
+       */
+      const resultColumn = {
         label,
         attribute,
-        ...columnDef,
-        filters: typeDefaults.filters || {}
+        ...typeDefaults.definition,
+        ...column,
+        filters
+      }
+      console.log(resultColumn)
+      if (typeof resultColumn.format === 'string') {
+        resultColumn.format = new Function('{value, column, row}', resultColumn.format)
+      }
+
+      return resultColumn
+    },
+
+    /**
+     * @param {UTableColumn} column
+     * @returns {string} Column label
+     */
+    buildColumnLabel (column) {
+      if (column.label !== undefined && column.label !== '') {
+        return column.label
+      }
+
+      const attrInfo = this.$store.getters.schema.getEntityAttributeInfo(column.id, 0)
+      if (attrInfo) {
+        const labelAttr = attrInfo.parentAttribute || attrInfo.attribute
+        return this.$ut(`${labelAttr.entity.code}.${labelAttr.code}`)
+      } else {
+        return column.id
+      }
+    },
+
+    /**
+     * @param {UTableColumn} column
+     * @returns {object|UBEntityAttribute|undefined}
+     */
+    buildColumnAttribute (column) {
+      if (column.attribute !== undefined) {
+        return column.attribute
+      }
+
+      const attrInfo = this.$store.getters.schema.getEntityAttributeInfo(column.id, 0)
+      if (attrInfo) {
+        if (attrInfo.parentAttribute && attrInfo.parentAttribute.dataType === 'Json') {
+          return attrInfo.parentAttribute
+        } else {
+          return attrInfo.attribute
+        }
       }
     },
 
@@ -225,28 +262,6 @@ export default {
         const errMsg = `Columns [${fieldsWithError.join(', ')}] did not have slot for render`
         throw new Error(errMsg)
       }
-    },
-
-    mergeColumns (originalColumn, modifiedColumn) {
-      const filters = {}
-      const filterEntries = Object.entries(originalColumn.filters || {})
-      filterEntries.push(...Object.entries(modifiedColumn.filters || {}))
-
-      for (const [filterId, filterDef] of filterEntries) {
-        filters[filterId] = Object.assign({}, filters[filterId], filterDef)
-      }
-
-      const resultColumn = {
-        ...originalColumn,
-        ...modifiedColumn,
-        filters
-      }
-
-      if (typeof resultColumn.format === 'string') {
-        resultColumn.format = new Function('{value, column, row}', resultColumn.format)
-      }
-
-      return resultColumn
     }
   }
 }
