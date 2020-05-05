@@ -56,7 +56,7 @@
 //			}
 //		],
 		"authenticationMethods": [
-			"UB"//, "Negotiate", "UBLDAP"
+			"UB", "Negotiate", "UBLDAP"
 		],
 		"ldapCatalogs": [{
 			"name": "SOFTLINE",

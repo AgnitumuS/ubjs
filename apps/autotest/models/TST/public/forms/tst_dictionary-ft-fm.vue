@@ -298,4 +298,8 @@ module.exports.default = {
     display: inline-flex;
     align-items: center;
   }
+
+  .exmaple-icon > .u-icon {
+    margin-right: 8px;
+  }
 </style>

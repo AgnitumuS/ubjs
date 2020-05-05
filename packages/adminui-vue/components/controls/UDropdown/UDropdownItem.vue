@@ -206,7 +206,7 @@ export default {
           <u-dropdown-item icon="u-icon-add" label="Add"/>
         </u-dropdown-item>
         <u-dropdown-item icon="u-icon-person" label="User"/>
-        <u-dropdown-item icon="el-icon-bell" label="Notifications"/>
+        <u-dropdown-item icon="u-icon-bell" label="Notifications"/>
       </template>
     </u-dropdown>
   </template>
