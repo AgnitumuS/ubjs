@@ -126,10 +126,10 @@ export default {
   }
 
   .u-dropdown-item__icon {
-    font-size: 20px;
+    font-size: 16px;
     color: hsl(var(--hs-control), var(--l-state-default));
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     margin-left: 12px;
     display: flex;
     align-items: center;

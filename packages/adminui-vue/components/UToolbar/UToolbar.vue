@@ -27,7 +27,7 @@
       placement="bottom-end"
     >
       <u-toolbar-button
-        icon="u-icon-settings"
+        icon="u-icon-setting"
         color="secondary"
         tooltip="allActions"
       />
@@ -112,7 +112,7 @@ export default {
         disabled: !this.canSave
       }, {
         label: this.$ut('saveAndClose') + ' (Ctrl + Enter)',
-        icon: 'u-icon-share',
+        icon: 'u-icon-save-and-close',
         handler: this.saveAndClose,
         disabled: !this.canSave
       }, {
@@ -139,7 +139,7 @@ export default {
 
       if (this.$UB.connection.domain.isEntityMethodsAccessible('ubm_form', 'update')) {
         buttons.push({
-          icon: 'fa fa-wrench',
+          icon: 'u-icon-wrench',
           label: 'formConstructor',
           handler: this.formConstructorHandler,
           divider: true

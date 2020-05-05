@@ -345,7 +345,9 @@ export default {
 }
 
 .ub-sidebar .el-menu-item [class*=fa-],
-.ub-sidebar .el-submenu [class*=fa-] {
+.ub-sidebar .el-submenu [class*=fa-],
+.ub-sidebar .el-menu-item [class*=u-icon-],
+.ub-sidebar .el-submenu [class*=u-icon-]{
   vertical-align: middle;
   width: 24px;
   min-width: 24px;
@@ -356,7 +358,9 @@ export default {
 .ub-sidebar .el-menu-item [class*=fa-],
 .ub-sidebar .el-submenu [class*=fa-],
 .ub-sidebar .el-menu-item [class^="el-icon-"],
-.ub-sidebar .el-submenu [class^="el-icon-"] {
+.ub-sidebar .el-submenu [class^="el-icon-"],
+.ub-sidebar .el-menu-item [class^="u-icon-"],
+.ub-sidebar .el-submenu [class^="u-icon-"] {
   margin-right: 5px!important;
 }
 

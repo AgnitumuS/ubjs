@@ -75,6 +75,11 @@ module.exports = (options = {}) => ({
       template: 'css',
       fontName: 'ub-icons',
       templateClassName: 'u',
+      glyphTransformFn: icon => {
+        // could just set u-icon in templateClassName but it will creates class .u-icon which override css in UIcon.vue
+        icon.name = `icon-${icon.name}`
+        return icon
+      },
       fontHeight: 1001
     })
   ],

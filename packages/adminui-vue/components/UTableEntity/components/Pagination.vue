@@ -14,7 +14,7 @@
       @click="getTotal"
     >
       <span>---</span>
-      <i class="pagination__total-icon fa fa-eye" />
+      <i class="pagination__total-icon u-icon-eye" />
     </button>
     <button
       v-else

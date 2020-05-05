@@ -1,12 +1,12 @@
 <template>
   <i
     v-if="icon"
+    class="u-icon"
     :class="[
       icon,
       `u-icon_color-${color}`,
       `u-icon_size-${size}`
     ]"
-    class="u-icon"
   />
 </template>
 
@@ -16,8 +16,8 @@ export default {
 
   props: {
     /**
-       * Icon color
-       */
+     * Icon color
+     */
     color: {
       type: String,
       default: 'control',
@@ -27,8 +27,8 @@ export default {
     },
 
     /**
-       * Icon size
-       */
+     * Icon size
+     */
     size: {
       type: String,
       default: 'medium',
@@ -38,8 +38,8 @@ export default {
     },
 
     /**
-       * Icon css class
-       */
+     * Icon css class
+     */
     icon: {
       type: String,
       default: ''
