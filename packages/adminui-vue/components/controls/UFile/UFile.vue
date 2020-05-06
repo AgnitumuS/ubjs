@@ -15,7 +15,7 @@
       >
         <div
           v-show="!disabled"
-          class="u-file-preview__frame-close el-icon-close"
+          class="u-file-preview__frame-close u-icon-close"
           @click="$emit('input', '')"
         />
         <iframe
@@ -30,14 +30,13 @@
           :src="previewUrl"
           :alt="file.name"
         >
-        <el-button
+        <u-button
           v-else
-          type="primary"
-          icon="el-icon-download"
+          icon="u-icon-download"
           @click="saveAs"
         >
           {{ fileName | cropFileName }} ({{ file.size | formatBytes }})
-        </el-button>
+        </u-button>
       </div>
       <div
         v-else
@@ -46,18 +45,18 @@
       >
         <button
           type="button"
-          class="u-file__button el-icon-view"
+          class="u-file__button u-icon-eye"
           :disabled="!previewFormats.includes(file.ct)"
           @click="previewDialog"
         />
         <button
           type="button"
-          class="u-file__button el-icon-download"
+          class="u-file__button u-icon-download"
           @click="saveAs"
         />
         <button
           type="button"
-          class="u-file__button el-icon-delete"
+          class="u-file__button u-icon-delete"
           :disabled="disabled"
           @click="remove"
         />

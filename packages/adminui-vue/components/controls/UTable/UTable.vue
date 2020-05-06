@@ -184,9 +184,9 @@ export default {
 
     getSortIcon (id) {
       if (this.sort && this.sort.column === id) {
-        return this.sort.order === 'asc' ? 'el-icon-caret-top' : 'el-icon-caret-bottom'
+        return this.sort.order === 'asc' ? 'u-icon-sort-asc' : 'u-icon-sort-desc'
       } else {
-        return 'el-icon-d-caret'
+        return 'u-icon-sort'
       }
     },
 

@@ -5,6 +5,7 @@ const webpack = require('webpack')
 const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const WebfontPlugin = require('webfont-webpack-plugin').default
 
 module.exports = (options = {}) => ({
   entry: {
@@ -20,7 +21,7 @@ module.exports = (options = {}) => ({
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.common.js' // should be the same as in SystemJS dev config - see adminui-pub/index-dev.mustache
+      vue$: 'vue/dist/vue.common.js' // should be the same as in SystemJS dev config - see adminui-pub/index-dev.mustache
     }
   },
   externals: {
@@ -67,7 +68,20 @@ module.exports = (options = {}) => ({
       // VueJS use process.env.NODE_ENV to enable devtools
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new WebfontPlugin({
+      files: path.resolve(__dirname, './icons/*.svg'),
+      dest: path.resolve(__dirname, './theme/icons'),
+      template: 'css',
+      fontName: 'ub-icons',
+      templateClassName: 'u',
+      glyphTransformFn: icon => {
+        // could just set u-icon in templateClassName but it will creates class .u-icon which override css in UIcon.vue
+        icon.name = `icon-${icon.name}`
+        return icon
+      },
+      fontHeight: 1001
+    })
   ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue

@@ -17,7 +17,7 @@
       size="large"
       :disabled="value === null"
       type="submit"
-      icon="el-icon-search"
+      icon="u-icon-search"
     />
   </form>
 </template>

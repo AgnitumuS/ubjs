@@ -35,7 +35,7 @@
 
       <u-dropdown-item
         label="userSettings"
-        icon="el-icon-setting"
+        icon="u-icon-setting"
         @click="showSettings"
       />
 

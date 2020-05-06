@@ -9,7 +9,7 @@
     <u-button
       appearance="inverse"
       type="submit"
-      icon="el-icon-search"
+      icon="u-icon-search"
       size="large"
     />
   </form>

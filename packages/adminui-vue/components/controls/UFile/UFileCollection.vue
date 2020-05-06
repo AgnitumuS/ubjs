@@ -16,7 +16,7 @@
       <button
         slot="preview"
         slot-scope="{row}"
-        class="u-file-collection__action-icon el-icon-view"
+        class="u-file-collection__action-icon u-icon-eye"
         :disabled="!previewFormats.includes(row.ct)"
         @click="preview(row.id)"
       />
@@ -24,14 +24,14 @@
       <button
         slot="download"
         slot-scope="{row}"
-        class="u-file-collection__action-icon el-icon-download"
+        class="u-file-collection__action-icon u-icon-download"
         @click="download(row.id)"
       />
 
       <button
         slot="remove"
         slot-scope="{row}"
-        class="u-file-collection__action-icon el-icon-delete"
+        class="u-file-collection__action-icon u-icon-delete"
         @click="remove(row.id)"
       />
 

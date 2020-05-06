@@ -29,6 +29,28 @@
       />
 
       <div class="ub-icon-select__list">
+        <h3>UB icons</h3>
+        <div
+          v-if="getUbIcons.length > 0"
+          class="ub-icon-select__list-wrapper"
+        >
+          <span
+            v-for="icon in getUbIcons"
+            :key="icon"
+            class="ub-icon-select__item"
+            :class="{
+              selected: icon === selectedIcon
+            }"
+            @click="selectedIcon = icon"
+          >
+            <i :class="icon" />
+            <span>{{ icon }}</span>
+          </span>
+        </div>
+        <div v-else>
+          Not found
+        </div>
+
         <h3>Element ui icons</h3>
 
         <div
@@ -153,6 +175,7 @@ export default {
     return {
       elIcons: [],
       faIcons: [],
+      ubIcons: [],
       dialogVisible: false,
       searchQuery: '',
       selectedIcon: null,
@@ -168,6 +191,10 @@ export default {
       set (value) {
         this.$emit('change', value)
       }
+    },
+
+    getUbIcons () {
+      return this.ubIcons.filter(this.iconFilter)
     },
 
     getElIcons () {
@@ -195,6 +222,12 @@ export default {
       for (const ss of document.styleSheets) {
         for (const r of ss.cssRules) {
           if (r.selectorText) {
+            if (r.selectorText.startsWith('.u-icon-')) {
+              const icon = r.selectorText.split(':')[0].substr(1)
+              if (!this.ubIcons.includes(icon)) {
+                this.ubIcons.push(icon)
+              }
+            }
             if (r.selectorText.startsWith('.el-icon')) {
               const icon = r.selectorText.split(':')[0].substr(1)
               const className = '.' + icon

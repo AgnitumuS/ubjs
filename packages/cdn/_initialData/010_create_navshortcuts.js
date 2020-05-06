@@ -27,7 +27,7 @@ module.exports = function (session) {
       execParams: {
         code: 'cdn_desktop',
         caption: 'Common dictionaries',
-        iconCls: 'el-icon-notebook-1',
+        iconCls: 'u-icon-desktop-dictionaries',
         description: 'Directories of subjects, addresses, other classifiers'
       }
     })

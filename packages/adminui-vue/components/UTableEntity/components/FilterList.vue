@@ -22,7 +22,7 @@
         </span>
       </div>
       <i
-        class="u-table-entity__filter-list-item__close-icon el-icon-close"
+        class="u-table-entity__filter-list-item__close-icon u-icon-close"
         @click="removeFilter(filter.columnId)"
       />
     </div>

@@ -48,7 +48,7 @@
             :content="$ut('selectedValueWasDeleted')"
             :enterable="false"
           >
-            <i class="el-input__icon el-icon-delete" />
+            <i class="el-input__icon u-icon-delete" />
           </el-tooltip>
 
           <el-tooltip
@@ -64,7 +64,7 @@
             v-if="clearable && value !== null && value !== '' && value !== undefined && !readonly"
             slot="suffix"
             style="cursor: pointer;"
-            class="el-input__icon el-icon-close"
+            class="el-input__icon u-icon-close"
             @click="$emit('input', null, null)"
           />
           <i
@@ -133,7 +133,7 @@
     >
       <button
         :disabled="disabled"
-        class="el-icon-more ub-select__more-icon"
+        class="u-icon-more ub-select__more-icon"
       />
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item
@@ -306,7 +306,7 @@ export default {
 
     inputIconCls () {
       let icon
-      const arrowPrefix = 'el-icon-arrow-'
+      const arrowPrefix = 'u-icon-arrow-'
 
       if (this.dropdownVisible) {
         icon = arrowPrefix + 'up'

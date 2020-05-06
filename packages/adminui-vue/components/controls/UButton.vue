@@ -1,22 +1,22 @@
 <template>
   <button
-    v-on="$listeners"
     :class="[
       `u-button_appearance-${appearance}`,
       `u-button_color-${color}`,
       `u-button_size-${size}`
     ]"
     class="u-button"
+    v-on="$listeners"
   >
     <span class="u-button__container">
       <i
         v-if="icon"
         :class="icon"
       />
-      <span><slot /></span>
+      <span v-if="$slots.default"><slot /></span>
       <i
         v-if="rightIcon"
-        :class="rightIcon"
+        :class="[rightIcon, icon]"
       />
     </span>
   </button>
@@ -84,6 +84,9 @@ export default {
     background: hsl(var(--hs), var(--l));
     border-radius: var(--border-radius);
     border: 1px solid hsl(var(--hs), var(--l));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .u-button__container {
@@ -141,15 +144,15 @@ export default {
   }
 
   .u-button_size-small {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .u-button_size-medium {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .u-button_size-large {
-    font-size: 24px;
+    font-size: 26px;
   }
 </style>
 
@@ -207,24 +210,24 @@ export default {
 <template>
   <div>
     <h1>Icon only</h1>
-    <u-button icon="el-icon-sugar"/>
-    <u-button appearance="plain" icon="el-icon-sugar"/>
-    <u-button appearance="inverse" icon="el-icon-sugar"/>
+    <u-button icon="u-icon-save"/>
+    <u-button appearance="plain" icon="u-icon-save"/>
+    <u-button appearance="inverse" icon="u-icon-save"/>
 
     <h1>Icon left</h1>
-    <u-button icon="el-icon-cold-drink">Default</u-button>
-    <u-button appearance="plain" icon="el-icon-cold-drink">Default</u-button>
-    <u-button appearance="inverse" icon="el-icon-cold-drink">Default</u-button>
+    <u-button icon="u-icon-save">Default</u-button>
+    <u-button appearance="plain" icon="u-icon-save">Default</u-button>
+    <u-button appearance="inverse" icon="u-icon-save">Default</u-button>
 
     <h1>Icon right</h1>
-    <u-button right-icon="el-icon-lollipop">Default</u-button>
-    <u-button appearance="plain" right-icon="el-icon-lollipop">Default</u-button>
-    <u-button appearance="inverse" right-icon="el-icon-lollipop">Default</u-button>
+    <u-button right-icon="u-icon-save">Default</u-button>
+    <u-button appearance="plain" right-icon="u-icon-save">Default</u-button>
+    <u-button appearance="inverse" right-icon="u-icon-save">Default</u-button>
 
     <h1>Icon left and right</h1>
-    <u-button icon="el-icon-tableware" right-icon="el-icon-arrow-right">Default</u-button>
-    <u-button appearance="plain" icon="el-icon-tableware" right-icon="el-icon-arrow-right">Default</u-button>
-    <u-button appearance="inverse" icon="el-icon-tableware" right-icon="el-icon-arrow-right">Default</u-button>
+    <u-button icon="u-icon-save" right-icon="u-icon-arrow-right">Default</u-button>
+    <u-button appearance="plain" icon="u-icon-save" right-icon="u-icon-arrow-right">Default</u-button>
+    <u-button appearance="inverse" icon="u-icon-save" right-icon="u-icon-arrow-right">Default</u-button>
   </div>
 </template>
 ```
@@ -234,9 +237,9 @@ export default {
 ```vue
 <template>
   <div>
-    <u-button icon="el-icon-sugar" size="small">Small</u-button>
-    <u-button icon="el-icon-sugar" size="medium">Medium</u-button>
-    <u-button icon="el-icon-sugar" size="large">Large</u-button>
+    <u-button icon="u-icon-save" size="small">Small</u-button>
+    <u-button icon="u-icon-save" size="medium">Medium</u-button>
+    <u-button icon="u-icon-save" size="large">Large</u-button>
   </div>
 </template>
 ```

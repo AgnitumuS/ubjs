@@ -67,7 +67,7 @@ export default {
     },
 
     getIcon (item) {
-      return item.iconCls || (item.parentID ? '' : (item.isFolder ? 'fa fa-folder' : 'fa fa-file-text-o'))
+      return item.iconCls || (item.parentID ? '' : (item.isFolder ? 'u-icon-folder' : 'u-icon-file'))
     },
 
     emitContext (event, item) {
@@ -104,7 +104,9 @@ export default {
   .ub-sidebar__popup-menu .el-menu-item [class*=fa-],
   .ub-sidebar__popup-menu .el-submenu__title [class*=fa-],
   .ub-sidebar__popup-menu .el-menu-item [class^=el-icon-],
-  .ub-sidebar__popup-menu .el-submenu__title [class^=el-icon-] {
+  .ub-sidebar__popup-menu .el-submenu__title [class^=el-icon-],
+  .ub-sidebar__popup-menu .el-menu-item [class^=u-icon-],
+  .ub-sidebar__popup-menu .el-submenu__title [class^=u-icon-] {
     margin-right: 4px;
     min-width: 18px;
     width: 18px;
