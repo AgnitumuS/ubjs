@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UButton`: allow to bind any native events to inner <button> component. Example: `<u-button @onmouseover="action">click me</u-button>`
  - `UCodeMirror`: error on ctrl+B (beautify)
  - `UTableEntity`: visibility of filters in case passed `attribute` param in column definition
+ - `UTableEntity`, `UMasterDetailView`: slot `toolbarDropdownAddNew`. Previously this slot did not replace the button
 
 ## [1.10.8] - 2020-04-24
 ### Added
