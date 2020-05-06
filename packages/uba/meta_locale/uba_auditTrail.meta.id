@@ -19,6 +19,11 @@
       "caption": "pemakai"
     },
     {
+      "name": "actionUserName",
+      "documentation": "User login at the time of audit recording",
+      "caption": "Login"
+    },
+    {
       "name": "actionTime",
       "caption": "waktu Action"
     },

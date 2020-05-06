@@ -23,6 +23,11 @@
             "description": "Пользователь"
         },
         {
+          "name": "actionUserName",
+          "documentation": "Логин пользователя на момент записи аудита",
+          "caption": "Логин"
+        },
+        {
             "name": "actionTime",
             "caption": "Время действия",
             "description": "Время действия"

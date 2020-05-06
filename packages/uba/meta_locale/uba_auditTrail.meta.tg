@@ -19,6 +19,11 @@
             "caption": "Истифодабаранда"
         },
         {
+            "name": "actionUserName",
+            "documentation": "Вуруди корбар ҳангоми сабти аудит",
+            "caption": "Вуруди корбар"
+        },
+        {
             "name": "entity",
             "caption": "Моҳият"
         },

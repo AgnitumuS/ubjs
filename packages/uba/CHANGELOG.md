@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - characters `,.[]{}?` added to password policy complexity check.
  Checking is carried out in case ubs_settings `UBA.passwordPolicy.checkCmplexity` value is set to `true`.  
+ - i18n added for `uba_auditTrail.actionUserName` attribute
 
 ## [5.4.7] - 2020-04-24
 ## [5.4.6] - 2020-04-10

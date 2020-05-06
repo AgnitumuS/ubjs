@@ -23,6 +23,11 @@
       "description": "Користувач"
     },
     {
+      "name": "actionUserName",
+      "documentation": "Логін користувача на момент запису аудиту",
+      "caption": "Логін"
+    },
+    {
       "name": "actionTime",
       "caption": "Час дії",
       "description": "Час дії"
