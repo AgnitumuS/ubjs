@@ -25,7 +25,7 @@
           <u-dropdown-item
             v-if="details.length"
             label="Details"
-            icon="u-icon-file-list"
+            icon="u-icon-file-text"
           >
             <u-dropdown-item
               v-for="detail in details"
