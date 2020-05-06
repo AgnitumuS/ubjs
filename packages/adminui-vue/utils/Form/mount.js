@@ -113,7 +113,8 @@ function mountModal ({
               close: done,
               store
             })
-          }
+          },
+          ...props
         },
         on: {
           closed: () => { this.$destroy() },
