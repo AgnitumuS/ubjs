@@ -19,6 +19,11 @@
             "caption": "მომხმარებელი"
         },
         {
+          "name": "actionUserName",
+          "documentation": "მომხმარებლის შესვლა აუდიტის ჩაწერის დროს",
+          "caption": "მომხმარებელი"
+        },
+        {
             "name": "actionTime",
             "caption": "ქმედების დრო"
         },

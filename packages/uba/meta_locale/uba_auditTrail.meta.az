@@ -23,6 +23,11 @@
       "description": "İstifadəçi"
     },
     {
+      "name": "actionUserName",
+      "documentation": "Audit qeydləri zamanı istifadəçi giriş",
+      "caption": "İstifadəçi adı"
+    },
+    {
       "name": "actionTime",
       "caption": "Əməliyyatvaxtı",
       "description": "Fəaliyyət vaxtı"
