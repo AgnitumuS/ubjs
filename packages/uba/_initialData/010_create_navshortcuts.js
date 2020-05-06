@@ -73,9 +73,9 @@ module.exports = function (session) {
         cmdData: {
           entityName: 'uba_user',
           columns: [
+            'name',
             'disabled',
             'isPending',
-            'name',
             'firstName',
             'lastName'
           ]
