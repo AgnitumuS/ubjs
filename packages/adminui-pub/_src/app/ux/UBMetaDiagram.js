@@ -21,7 +21,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
       dataHistory: '<i class="fa fa-clock-o"></i>',
       unity: '<i class="fa fa-toggle-off"></i>',
       tree: '<i class="fa fa-sitemap"></i>',
-      fts: '<i class="fa fa-search"></i>',
+      fts: '<i class="u-icon-search"></i>',
       rls: '<i class="fa fa-tasks"></i>',
       als: '<i class="fa fa-table"></i>',
       aclRls: '<i class="fa fa-tasks">a</i>',

@@ -7,7 +7,7 @@
     />
 
     <el-button
-      icon="fa fa-search"
+      icon="u-icon-search"
       circle
       class="u-navbar__button"
     />

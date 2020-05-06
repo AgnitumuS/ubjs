@@ -14,7 +14,7 @@
       :enterable="false"
     >
       <el-button
-        icon="fa fa-search"
+        icon="u-icon-search"
         circle
       />
     </el-tooltip>

@@ -1510,7 +1510,7 @@ Ext.define('UDISK.AdminView', {
         textField,
         {
           xtype: 'button',
-          iconCls: 'fa fa-search',
+          iconCls: 'u-icon-search',
           tooltip: UB.i18n('search'),
           handler: function (button) {
             me.doSearch(textField, button)

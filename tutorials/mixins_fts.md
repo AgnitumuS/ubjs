@@ -312,7 +312,7 @@ SQLite БД полнотекстового поиска, т.к. токенайз
                 margin: 3,
                 padding: 1,
                 style: {backgroundColor: 'white'},
-                iconCls: 'fa fa-search',
+                iconCls: 'u-icon-search',
                 handler: me.buttonClick,
                 scope: me
             });
