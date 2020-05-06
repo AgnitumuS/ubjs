@@ -35,7 +35,7 @@
 
       <i
         v-if="hasChildren"
-        class="u-dropdown-item__arrow el-icon-caret-right"
+        class="u-dropdown-item__arrow u-icon-arrow-right"
       />
     </button>
 
@@ -126,10 +126,10 @@ export default {
   }
 
   .u-dropdown-item__icon {
-    font-size: 14px;
+    font-size: 16px;
     color: hsl(var(--hs-control), var(--l-state-default));
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
     margin-left: 12px;
     display: flex;
     align-items: center;
@@ -174,9 +174,9 @@ export default {
       <el-button>click me</el-button>
 
       <template #dropdown>
-        <u-dropdown-item @click="say('Edit')" icon="el-icon-edit" label="Edit"/>
-        <u-dropdown-item @click="say('Delete')" icon="el-icon-delete" label="Delete"/>
-        <u-dropdown-item @click="say('Add')" icon="el-icon-plus" label="Add"/>
+        <u-dropdown-item @click="say('Edit')" icon="u-icon-edit" label="Edit"/>
+        <u-dropdown-item @click="say('Delete')" icon="u-icon-delete" label="Delete"/>
+        <u-dropdown-item @click="say('Add')" icon="u-icon-add" label="Add"/>
       </template>
     </u-dropdown>
   </template>
@@ -200,13 +200,13 @@ export default {
       <el-button>click me</el-button>
 
       <template #dropdown>
-        <u-dropdown-item icon="el-icon-setting" label="Actions">
-          <u-dropdown-item icon="el-icon-edit" label="Edit"/>
-          <u-dropdown-item icon="el-icon-delete" label="Delete"/>
-          <u-dropdown-item icon="el-icon-plus" label="Add"/>
+        <u-dropdown-item icon="u-icon-setting" label="Actions">
+          <u-dropdown-item icon="u-icon-edit" label="Edit"/>
+          <u-dropdown-item icon="u-icon-delete" label="Delete"/>
+          <u-dropdown-item icon="u-icon-add" label="Add"/>
         </u-dropdown-item>
-        <u-dropdown-item icon="el-icon-user" label="User"/>
-        <u-dropdown-item icon="el-icon-bell" label="Notifications"/>
+        <u-dropdown-item icon="u-icon-person" label="User"/>
+        <u-dropdown-item icon="u-icon-bell" label="Notifications"/>
       </template>
     </u-dropdown>
   </template>
@@ -220,10 +220,10 @@ export default {
       <el-button>click me</el-button>
 
       <template #dropdown>
-        <u-dropdown-item @click="say('Disabled')" disabled icon="el-icon-lollipop" label="Disabled"/>
-        <u-dropdown-item @click="say('Edit')" icon="el-icon-edit" label="Edit"/>
-        <u-dropdown-item @click="say('Delete')" icon="el-icon-delete" label="Delete"/>
-        <u-dropdown-item @click="say('Add')" icon="el-icon-plus" label="Add"/>
+        <u-dropdown-item @click="say('Disabled')" disabled icon="u-icon-person" label="Disabled"/>
+        <u-dropdown-item @click="say('Edit')" icon="u-icon-edit" label="Edit"/>
+        <u-dropdown-item @click="say('Delete')" icon="u-icon-delete" label="Delete"/>
+        <u-dropdown-item @click="say('Add')" icon="u-icon-add" label="Add"/>
       </template>
     </u-dropdown>
   </template>
@@ -247,10 +247,10 @@ export default {
       <el-button>click me</el-button>
 
       <template #dropdown>
-        <u-dropdown-item icon="el-icon-edit" label="Edit"/>
-        <u-dropdown-item icon="el-icon-plus" label="Add"/>
+        <u-dropdown-item icon="u-icon-edit" label="Edit"/>
+        <u-dropdown-item icon="u-icon-add" label="Add"/>
         <u-dropdown-item divider/>
-        <u-dropdown-item icon="el-icon-delete" label="Delete"/>
+        <u-dropdown-item icon="u-icon-delete" label="Delete"/>
       </template>
     </u-dropdown>
   </template>

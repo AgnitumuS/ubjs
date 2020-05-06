@@ -98,7 +98,7 @@ export default {
   }
 
   .u-toolbar__button-icon {
-    font-size: 18px;
+    font-size: 20px;
     margin-right: 4px;
   }
 </style>

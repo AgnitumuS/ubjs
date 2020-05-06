@@ -12,7 +12,7 @@
     @dragover="dragover"
     @drop.stop.prevent="drop"
   >
-    <i class="u-file__dropzone__plus-icon el-icon-plus" />
+    <i class="u-file__dropzone__plus-icon u-icon-add" />
     {{ $ut('fileInput.dropZone.caption') }}
     <input
       type="file"

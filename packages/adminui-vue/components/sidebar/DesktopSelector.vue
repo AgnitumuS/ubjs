@@ -13,7 +13,7 @@
       />
       <template v-if="!isCollapsed">
         <span>{{ selectedDesktop.caption }}</span>
-        <i class="desktop-select-button__icon-after el-icon-menu" />
+        <i class="desktop-select-button__icon-after u-icon-desktop-swap" />
       </template>
     </div>
 

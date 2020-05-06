@@ -14,7 +14,7 @@
       @click="getTotal"
     >
       <span>---</span>
-      <i class="pagination__total-icon fa fa-eye" />
+      <i class="pagination__total-icon u-icon-eye" />
     </button>
     <button
       v-else
@@ -24,20 +24,24 @@
       <span>{{ total }}</span>
     </button>
 
-    <button
-      class="pagination__button pagination__button__prev"
+    <u-button
+      icon="u-icon-arrow-left"
+      class="pagination__button__prev"
+      color="control"
+      size="small"
+      appearance="inverse"
       :disabled="pageIndex === 0 || loading"
       @click="pageIndex -= 1"
-    >
-      <i class="el-icon-arrow-left" />
-    </button>
-    <button
-      class="pagination__button pagination__button__next"
+    />
+    <u-button
+      icon="u-icon-arrow-right"
+      class="pagination__button__next"
+      color="control"
+      size="small"
+      appearance="inverse"
       :disabled="isLastPageIndex || loading"
       @click="pageIndex += 1"
-    >
-      <i class="el-icon-arrow-right" />
-    </button>
+    />
   </div>
 </template>
 
@@ -119,26 +123,13 @@ export default {
     margin: 0 4px;
   }
 
-  .pagination__button{
-    border: none;
-    background: none;
-    color: hsl(var(--hs-control), var(--l-state-default));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 24px;
-    cursor: pointer;
-  }
-
-  .pagination__button:disabled {
-    color: hsl(var(--hs-info), var(--l-state-disabled));
-    cursor: not-allowed;
-  }
   .pagination__button__prev{
     margin-left: 12px;
+    padding: 2px;
   }
+
   .pagination__button__next{
     margin-right: 8px;
+    padding: 2px;
   }
 </style>

@@ -5,7 +5,7 @@
     :width="210"
   >
     <u-toolbar-button
-      icon="el-icon-more-outline"
+      icon="u-icon-more"
       color="secondary"
     />
 
@@ -13,13 +13,13 @@
       <slot name="prepend" />
 
       <u-dropdown-item
-        icon="el-icon-refresh"
+        icon="u-icon-refresh"
         :label="$ut('refresh') + ' (Ctrl + R)'"
         @click="refresh"
       />
       <slot name="add-new">
         <u-dropdown-item
-          icon="el-icon-plus"
+          icon="u-icon-add"
           :label="$ut('actionAdd') + ' (Ctrl + Ins)'"
           :disabled="!canAddNew"
           @click="addNew"
@@ -28,7 +28,7 @@
       <u-dropdown-item divider />
       <slot name="edit">
         <u-dropdown-item
-          icon="el-icon-edit"
+          icon="u-icon-edit"
           :label="$ut('Edit') + ' (Ctrl + E)'"
           :disabled="!canEdit"
           @click="editRecord(selectedRowId)"
@@ -36,7 +36,7 @@
       </slot>
       <slot name="copy">
         <u-dropdown-item
-          icon="el-icon-copy-document"
+          icon="u-icon-copy"
           label="Copy"
           :disabled="!hasSelectedRow || !canAddNew"
           @click="copyRecord(selectedRowId)"
@@ -44,7 +44,7 @@
       </slot>
       <slot name="delete">
         <u-dropdown-item
-          icon="el-icon-delete"
+          icon="u-icon-delete"
           :label="$ut('Delete') + ' (Ctrl + Delete)'"
           :disabled="!canDelete"
           @click="deleteRecord(selectedRowId)"
@@ -52,7 +52,7 @@
       </slot>
       <slot name="audit">
         <u-dropdown-item
-          icon="el-icon-data-analysis"
+          icon="u-icon-audit"
           label="showAudit"
           :disabled="!canAudit"
           @click="audit(selectedRowId)"
@@ -61,21 +61,21 @@
       <slot name="exports">
         <u-dropdown-item divider />
         <u-dropdown-item
-          icon="fas fa-file-export"
+          icon="u-icon-file-export"
           label="export"
         >
           <u-dropdown-item
-            icon="fas fa-file-excel"
+            icon="u-icon-file-excel"
             label="exportXls"
             @click="exportExcel"
           />
           <u-dropdown-item
-            icon="fas fa-table"
+            icon="u-icon-file-html"
             label="exportHtml"
             @click="exportHtml"
           />
           <u-dropdown-item
-            icon="fas fa-file-csv"
+            icon="u-icon-file-csv"
             label="exportCsv"
             @click="exportCsv"
           />
