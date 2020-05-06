@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.8] - 2020-05-06
 ## [5.3.7] - 2020-04-24
 ### Changed
  - `ubm_navshotrcut.iconCls` property caption changed from "icon css class name" -> "Icon (CSS class)" (also for ru and uk) 

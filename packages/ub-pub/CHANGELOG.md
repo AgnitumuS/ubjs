@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.5.8] - 2020-05-06
+### Fixed
  - NativeMessages extension setup (@ub-e/nm-scanned, @ub-e/nm-pdfsign etc.) for FireFox >= 75 will show
  setup link for user as expected instead of silently ignore fact what extension not installed (work-around for bug in FF75+) 
 

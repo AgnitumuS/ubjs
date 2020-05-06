@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.4.8] - 2020-05-06
+### Added
  - **BREAKING** this version of @unitybase/uba require UB server to be at last 5.18.1 ("attribute restriction" feature used)
  - **SECURITY** access to `uba_user.uPasswordHashHexa` is disallowed from client (restricted for all)
  - **SECURITY** access to `uba_user` `disabled`, `isPending` and `trustedIP` attributes are allowed only for members of 
@@ -16,10 +27,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - **BREAKING** `uba_otp.generateOtp` will generate a 6 digits random string instead of GUID
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - characters `,.[]{}?` added to password policy complexity check.

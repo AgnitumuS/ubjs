@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.13.9] - 2020-05-06
 ## [5.13.8] - 2020-04-24
 ### Fixed
  - Ext grid: change "load filter configuration" icon to `far fa-folder-open` `fa fa-folder` is missing in FontAwesome5  
