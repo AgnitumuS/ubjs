@@ -29,7 +29,7 @@ module.exports = {
    * @returns {ReportResult}
    */
   makeReport: function (reportCode, reportType, params) {
-    let report = new UBServerReport(reportCode, reportType, params)
+    const report = new UBServerReport(reportCode, reportType, params)
     return report.makeReport()
   }
 }
@@ -52,7 +52,7 @@ global.XMLSerializer = xmldom.XMLSerializer
 // const browserLikebase64 = require('./base64')
 // global.atob = browserLikebase64.atob
 global.atob = function (text) {
-  let buf = Buffer.from(text, 'base64')
+  const buf = Buffer.from(text, 'base64')
   return buf.toString('binary') // buffer.toString('utf-8')
 }
 
@@ -113,7 +113,7 @@ function UBServerReport (reportCode, reportType, params, language) {
 * Load report template and code.
 */
 UBServerReport.prototype.init = function () {
-  let reportInfo = UB.Repository('ubs_report')
+  const reportInfo = UB.Repository('ubs_report')
     .attrs(['ID', 'report_code', 'name', 'template', 'code', 'model'])
     .where('[report_code]', '=', this.reportCode)
     .selectSingle()
@@ -142,7 +142,7 @@ UBServerReport.prototype.prepareTemplate = function () {
   this.reportRW.templateData = this.reportRW.templateData.replace(/<!--@\w+?[ ]*?".+?"-->/g, '')
 
   // parse options
-  let matches = this.reportRW.templateData.match(reOptions)
+  const matches = this.reportRW.templateData.match(reOptions)
   if (matches && matches.length > 0) {
     _.forEach(matches, (item) => {
       let itemVal = item.match(/<!--%(\w+?:.+?)-->/)[1]
@@ -174,7 +174,7 @@ UBServerReport.prototype.makeReport = function (params) {
     prm = _.assign(prm, params)
   }
   this.init()
-  let promiseOrData = this.buildReport(prm)
+  const promiseOrData = this.buildReport(prm)
   let report
   let errInsidePromise
   // convert to value
@@ -218,10 +218,10 @@ UBServerReport.prototype.transformToPdf = function (html, options = {}) {
 
   PDF.PrintToPdf.requireFonts({
     fonts: options.fonts ? options.fonts : [
-      {fontName: 'TimesNewRoman', fontStyle: 'Normal'},
-      {fontName: 'TimesNewRoman', fontStyle: 'Bold'},
-      {fontName: 'TimesNewRoman', fontStyle: 'Italic'},
-      {fontName: 'TimesNewRoman', fontStyle: 'BoldItalic'}
+      { fontName: 'TimesNewRoman', fontStyle: 'Normal' },
+      { fontName: 'TimesNewRoman', fontStyle: 'Bold' },
+      { fontName: 'TimesNewRoman', fontStyle: 'Italic' },
+      { fontName: 'TimesNewRoman', fontStyle: 'BoldItalic' }
     ]
   })
 
@@ -242,7 +242,7 @@ UBServerReport.prototype.transformToPdf = function (html, options = {}) {
   if (this.onTransformConfig) {
     pdfConfig = this.onTransformConfig(pdfConfig)
   }
-  let pdf = new PDF.PrintToPdf(pdfConfig)
+  const pdf = new PDF.PrintToPdf(pdfConfig)
   pdf.writeHtml({
     html: html,
     orientation: this.reportOptions.pageOrientation,
@@ -279,9 +279,9 @@ UBServerReport.prototype.makeResult = function (reportData) {
 * @private
 */
 UBServerReport.prototype.prepareCode = function () {
-  let modelPublicPath = App.domainInfo.models[this.reportRW.model].realPublicPath
-  let reportModulePath = path.join(modelPublicPath, 'reports', this.reportRW.report_code + '.js')
-  let reportModule = require(reportModulePath)
+  const modelPublicPath = App.domainInfo.models[this.reportRW.model].realPublicPath
+  const reportModulePath = path.join(modelPublicPath, 'reports', this.reportRW.report_code + '.js')
+  const reportModule = require(reportModulePath)
   if (reportModule.reportCode) {
     _.forEach(reportModule.reportCode, (val, name) => {
       this[name] = val
@@ -366,12 +366,12 @@ UBServerReport.prototype.buildReport = function (reportParams) {
 * @returns {string}
 */
 UBServerReport.prototype.getDocument = function (attribute) {
-  let cfg = JSON.parse(this.reportRW[attribute])
+  const cfg = JSON.parse(this.reportRW[attribute])
 
   return App.blobStores.getContent({
     entity: 'ubs_report',
     attribute: attribute,
     ID: this.reportRW.ID,
     isDirty: !!cfg.isDirty
-  }, {encoding: 'utf8'})
+  }, { encoding: 'utf8' })
 }
