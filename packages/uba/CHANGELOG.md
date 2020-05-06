@@ -10,16 +10,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - **SECURITY** access to `uba_user.uPasswordHashHexa` is disallowed from client (restricted for all)
  - **SECURITY** access to `uba_user` `disabled`, `isPending` and `trustedIP` attributes are allowed only for members of 
  `Supervisor` role; For other roles actual values is replaced by `*****` for trustedIP and `null` for `disabled`, `isPending`
+ - SMS registration handler added to `uba_user.publicRegistration` rest method. Registration kind can be defined
+  in `serverConfig.application.customSettings.publicRegistration.kind` application config key.
+  See `uba_user.publicRegistration` documentation for details.
 
 ### Changed
+ - **BREAKING** `uba_otp.generateOtp` will generate a 6 digits random string instead of GUID
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
- - characters `,.[]{}` added to password policy complexity check.
-  Checking is carried out in case ubs_settings `UBA.passwordPolicy.checkCmplexity` value is set to `true`.
+ - characters `,.[]{}?` added to password policy complexity check.
+ Checking is carried out in case ubs_settings `UBA.passwordPolicy.checkCmplexity` value is set to `true`.  
  - i18n added for `uba_auditTrail.actionUserName` attribute
 
 ## [5.4.7] - 2020-04-24
