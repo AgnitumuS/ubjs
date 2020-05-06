@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UForm/mount/mountModal`: added merge form component props with dialog props before render, in case you need to use
+  standard el-dialog props. For example: `close-on-press-escape: false`, `show-close: false`.
 
 ### Changed
 
