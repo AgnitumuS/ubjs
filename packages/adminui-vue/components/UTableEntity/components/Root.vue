@@ -108,7 +108,7 @@
             </template>
 
             <!-- @slot Replace add-new button in toolbar dropdown -->
-            <template #new>
+            <template #add-new>
               <slot
                 :close="close"
                 :store="$store"
