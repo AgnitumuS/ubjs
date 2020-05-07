@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `u-icon*` centered inside container properly (before this change they could move slightly upwards). Fixed by sets font [descent](https://proandroiddev.com/android-and-typography-101-5f06722dd611) to 100
 
 ## [1.10.9] - 2020-05-06
 ### Added

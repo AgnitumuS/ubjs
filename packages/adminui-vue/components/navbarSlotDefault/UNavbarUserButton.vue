@@ -14,7 +14,7 @@
       <u-dropdown-item
         :label="userName"
         disabled
-        icon="fa fa-user"
+        icon="u-icon-person"
       />
 
       <u-dropdown-item
