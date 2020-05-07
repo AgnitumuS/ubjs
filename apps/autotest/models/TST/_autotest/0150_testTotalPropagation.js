@@ -36,8 +36,18 @@ module.exports = function runMixinsTests (options) {
   assert.throws(
     () => unsafeExternalCallOrder(conn),
     /<<<Access deny>>>/,
-    'Should got error for order item what not in fieldList'
+    'Should got Access deny for order item without attribute'
   )
+  assert.throws(
+    () => unsafeExternalCallOrderAttr(conn),
+    /<<<Access deny>>>/,
+    'Should got Access deny for order item with attribute expression'
+  )
+  // order by safe attribute not in field list should not throws
+  conn.Repository('tst_document')
+    .attrs('ID')
+    .orderBy('code')
+    .limit(1).selectAsObject()
 }
 
 /**
@@ -72,5 +82,17 @@ function unsafeExternalCallOrder (conn) {
     .using('runSelectInJSContext')
     .attrs('ID')
     .orderBy("(select ID from uba_user where name = 'admin'")
+    .limit(1).selectAsObject()
+}
+
+/**
+ * Unsafe order expression for external call must throw
+ * @param {SyncConnection} conn
+ */
+function unsafeExternalCallOrderAttr (conn) {
+  return conn.Repository('tst_document')
+    .using('runSelectInJSContext')
+    .attrs('ID')
+    .orderBy('UNSAFE_FUNC([code])')
     .limit(1).selectAsObject()
 }
