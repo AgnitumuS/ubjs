@@ -17,7 +17,7 @@
         :value="unreadMessagesCount"
       >
         <el-button
-          icon="el-icon-bell"
+          icon="u-icon-bell"
           circle
         />
       </el-badge>
