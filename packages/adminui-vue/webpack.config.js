@@ -80,7 +80,8 @@ module.exports = (options = {}) => ({
         icon.name = `icon-${icon.name}`
         return icon
       },
-      fontHeight: 1001
+      fontHeight: 1001,
+      descent: 100
     })
   ],
   node: {
