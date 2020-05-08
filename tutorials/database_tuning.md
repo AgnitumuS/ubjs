@@ -102,6 +102,50 @@ GRANT RESOURCE, CONNECT, CTXAPP TO UBDF_FSS_TST;
 GRANT EXECUTE ON CTXSYS.CTX_DDL TO UBDF_FSS_TST; 
 ```
 
+## Array binding
+UnityBase can bind arrays (array of int64 or array of strings are supported) as parameters value:
+
+```
+UB.Repository('uba_user').attrs('ID').where('[ID]', 'in', [1, 2, 3]).select()
+```
+
+Depends on a RDBMS a resulting query became:
+
+### Oracle array binding
+UB server generates a query
+```
+SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT column_value FROM table(CAST( :1 AS SYS.ODCINUMBERLIST)))
+```
+
+crates in-memory SYS.ODCINUMBERLIST / SYS.ODCIVARCHAR2LIST structure and pass it as a parameter value to bind.
+
+We don't know how to run such query with parameters binding in plsql, without parameters:
+```
+SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT column_value FROM table(SYS.ODCINUMBERLIST(1, 2, 3)))
+```   
+
+### SQL Server array binding
+UB server generates a query
+```
+SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT * FROM ?)
+```
+creates in-memory IDList / StrList structure, fills it with passed array elements and binds to parameter value
+
+To run such query in management studio:
+```
+declare @a dbo.IDList;
+insert into @a (id) values (1), (2), (3);
+SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT * FROM @a)
+```
+
+### Postgres SQL array binding   
+UB server generates a query
+```
+SELECT A01.ID  FROM uba_user A01  WHERE A01.ID=ANY($1)
+```
+transform passed array into Postgres array syntax string `{1,2,3}` and bind such string as parameter value
+
+To execute a query in DBeaver tool press Ctrl+Enter, in binding dialog type "'{1,2,3}'" (in single quote)
 
 ## Oracle connection in depth
 
@@ -133,7 +177,7 @@ UnityBase always try to parametrise queries. For example in case you execute que
 store.runSQL('select * from somethere where code like :myCode:', {myCode: 'value%'});
 ```
 end expect to see the same execution plane in your tool, parametrise it!
-For example in TOAD: 
+For example in DBeaver: 
 ```
 // WRONG - the query plan may be different from what will be for the application server 
 select * from somethere where code like 'value%'
@@ -141,12 +185,12 @@ select * from somethere where code like 'value%'
 select * from somethere where code like :myCode
 ```
 
-When TOAD asks for parameters value - type value% and set parameter type to nvarchar2
+When DBeaver asks for parameters value - type value% and set parameter type to nvarchar2
 
  > Always set parameter type for string parameters to NVARCHAR2. This is the way UnityBase pass string parameters to Oracle
  
 #### Parameter types
-When binding a parameters for query UB apply this convention to call [OCIBundByPos](http://docs.oracle.com/cd/B10501_01/appdev.920/a96584/oci15r30.htm)
+When binding parameters for query UB applies this convention to call [OCIBundByPos](http://docs.oracle.com/cd/B10501_01/appdev.920/a96584/oci15r30.htm)
 
 | JS Type | Oracle Type |
 |---------|-------------|
@@ -156,7 +200,7 @@ When binding a parameters for query UB apply this convention to call [OCIBundByP
 | String  | SQLT_STR (NVARCHAR2) |
 | Blob    | SQLT_LVB |
 
-For a parameters of type `string` in case database table column is not of the type NVARCHAR2 to use a database index
+For parameters of type `string` in case database table column is not of the type NVARCHAR2 to use a database index
 you can cast parameter directly to type you need
 
 ```
@@ -164,18 +208,3 @@ you can cast parameter directly to type you need
 ```  
 
 The same POSSIBLE but not mandatory  for Int64/Float type of parameter.
-
-#### Array binding
-In case UnityBase bind array type parameter (array of int64 and array of string supported) as in example below
-
-```
-UB.Repository('uba_user').attrs('ID').where('[ID]', 'in', [1, 2, 3]).select()
-```
-
-it cast an array either to `SYS.ODCINUMBERLIST` or to `SYS.ODCIVARCHAR2LIST`, so SQL statement for execution in sqlplus will be
-
-```
-SELECT usr.ID   FROM uba_user usr WHERE usr.ID IN  (SELECT column_value FROM table(SYS.ODCINUMBERLIST(1, 2, 3)))
-// or for array of strings
-SELECT usr.ID, usr.name   FROM uba_user usr WHERE usr.name IN  (SELECT column_value FROM table(SYS.ODCIVARCHAR2LIST('one', 'two', 'three')))
-```   

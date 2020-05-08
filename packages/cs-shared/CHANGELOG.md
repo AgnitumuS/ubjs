@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - link to tutorial for an array bindings from `CustomRepository.where()`
+ 
 ### Changed
 
 ### Deprecated

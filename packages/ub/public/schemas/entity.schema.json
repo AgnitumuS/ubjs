@@ -348,9 +348,9 @@
                     "description": "Provide Row Level Security. See [RLS tutorial](https://unitybase.info/Server/index.html#!/guide/rls) for details",
                     "required": ["expression"],
                     "properties": {
-                        "historyType": {
+                        "expression": {
                             "type": "string",
-                            "description": "Any valid JavaScript expression. Executed in this entity context (`this===current entity`). Must return valid WHERE part of SQL statement (added to main WHERE using AND condition"
+                            "description": "Any valid JavaScript expression. Executed in this entity context (`this===current entity`). Must return valid WHERE part of SQL statement (added to the main WHERE using AND condition)"
                         }
                     }
                 },

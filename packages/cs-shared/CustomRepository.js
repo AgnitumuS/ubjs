@@ -187,6 +187,8 @@ class CustomRepository {
    *  - `in` and 'notIn` conditions can take a sub-repository as a value parameter value.
    *  See {@link class:CustomRepository#exists CustomRepository.exists} for sample
    *
+   *  - for details how array parameters binds to DB query see array binding section in [database tuning tutorial](https://unitybase.info/api/server-v5/tutorial-database_tuning.html#array-binding)
+   *
    * @example
 
 UB.Repository('my_entity').attrs('ID')
