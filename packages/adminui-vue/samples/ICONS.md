@@ -12,7 +12,6 @@
 
 # Available icons
 - u-icon-add
-- u-icon-add-circle
 - u-icon-arrow-alt-left
 - u-icon-arrow-alt-right
 - u-icon-arrow-double-left
@@ -33,8 +32,13 @@
 - u-icon-calendar-alt
 - u-icon-check
 - u-icon-check-double
+- u-icon-circle-close
+- u-icon-circle-dollar
+- u-icon-circle-info
+- u-icon-circle-plus
+- u-icon-circle-question
+- u-icon-circle-trademark
 - u-icon-close
-- u-icon-close-alt
 - u-icon-cloud
 - u-icon-cloud-alt
 - u-icon-copy
@@ -53,7 +57,6 @@
 - u-icon-digits
 - u-icon-document
 - u-icon-dollar
-- u-icon-dollar-alt
 - u-icon-download
 - u-icon-edit
 - u-icon-edit-alt
@@ -74,13 +77,12 @@
 - u-icon-folder
 - u-icon-folder-alt
 - u-icon-folder-open
-- u-icon-fulscreen
+- u-icon-fullscreen
 - u-icon-hashtag
 - u-icon-hdd
 - u-icon-hierarchy
 - u-icon-hierarchy-alt
 - u-icon-house
-- u-icon-info
 - u-icon-letter
 - u-icon-link
 - u-icon-list
@@ -89,7 +91,7 @@
 - u-icon-list-success
 - u-icon-lock
 - u-icon-mandatory
-- u-icon-mantadory-disabled
+- u-icon-mandatory-disabled
 - u-icon-message
 - u-icon-minus
 - u-icon-more
@@ -100,7 +102,6 @@
 - u-icon-person-success
 - u-icon-print
 - u-icon-puzzle-piece
-- u-icon-question
 - u-icon-redo
 - u-icon-refresh
 - u-icon-save
@@ -123,7 +124,6 @@
 - u-icon-tabs-dotted
 - u-icon-tag
 - u-icon-tags
-- u-icon-trademark
 - u-icon-undo
 - u-icon-wallet
 - u-icon-windows
