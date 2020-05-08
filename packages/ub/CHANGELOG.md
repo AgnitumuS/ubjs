@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - HTTPRequest.requestId property added: returns unique HTTP request ID - the same value as used to fill a `uba_auditTrail.request_id`;
+   In case audit trail is disabled in domain (uba_auditTrail entity not available) or Ub server version < 5.18.2 returns 0.
 
 ### Changed
 

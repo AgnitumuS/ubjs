@@ -1,5 +1,9 @@
 // eslint-disable-next-line camelcase
 const { req_read, reg_getHeaders, reg_getMethod, reg_getUrl, reg_getURI, reg_getDecodedURI, reg_getParameters, reg_getDecodedParameters, req_writeToFile } = process.binding('http_server')
+let reg_getRegId = process.binding('http_server').reg_getRegId
+if (!reg_getRegId) {
+  reg_getRegId = function () { return 0 }// fallback for UB<5.18.2
+}
 
 /**
  * @classdesc
@@ -112,6 +116,17 @@ class THTTPRequest {
   get decodedParameters () {
     if (this._decodedParameters === undefined) this._decodedParameters = reg_getDecodedParameters()
     return this._decodedParameters
+  }
+
+  /**
+   * Unique HTTP request ID - the same value as used to fill a `uba_auditTrail.request_id`.
+   * In case audit trail is disabled in domain (uba_auditTrail entity not available) or Ub server version < 5.18.2 returns 0
+   * @readonly
+   * @return {number}
+   * @since UB@5.18.2
+   */
+  get requestId () {
+    return reg_getRegId()
   }
 }
 

@@ -126,8 +126,8 @@ App.preventDefault = function () {
  */
 App.launchEndpoint = function (endpointName) {
   __preventDefault = false
-  let resp = new THTTPResponse()
-  let req = new THTTPRequest()
+  const req = new THTTPRequest()
+  const resp = new THTTPResponse()
   try {
     this.emit(endpointName + ':before', req, resp)
     if (!__preventDefault) {
@@ -238,13 +238,11 @@ try {
   console.error(e)
 }
 
-let pkgFile = path.join(process.configPath, 'package.json')
-let appPkg = JSON.parse(fs.readFileSync(pkgFile, 'utf8'))
 /**
  * Application `package.json` content (parsed)
  * @type {Object}
  */
-App.package = appPkg
+App.package = require(path.join(process.configPath, 'package.json'))
 
 /**
  * Full path to application static folder if any, '' if static folder not set
