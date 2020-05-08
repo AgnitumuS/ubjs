@@ -13,7 +13,7 @@ const fs = require('fs')
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
-  let conn = session.connection
+  const conn = session.connection
   conn.xhr({
     endpoint: 'runSQL',
     URLParams: { CONNECTION: DBA_FAKE },
@@ -41,7 +41,7 @@ module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.createMinSchema = function createMinSchema (conn, clientNum, databaseConfig) {
-  let sequences = 'CREATE SEQUENCE SEQ_UBMAIN INCREMENT 1 MAXVALUE   {0}4999999999 START   {0}0000000000 CYCLE CACHE 1; CREATE SEQUENCE SEQ_UBMAIN_BY1 INCREMENT 1 MAXVALUE {0}999999999999 START {0}500000000000 CYCLE CACHE 1;'
+  const sequences = 'CREATE SEQUENCE SEQ_UBMAIN INCREMENT 1 MAXVALUE   {0}4999999999 START   {0}0000000000 CYCLE CACHE 1; CREATE SEQUENCE SEQ_UBMAIN_BY1 INCREMENT 1 MAXVALUE {0}999999999999 START {0}500000000000 CYCLE CACHE 1;'
   conn.xhr({
     endpoint: 'runSQL',
     URLParams: { CONNECTION: databaseConfig.name },

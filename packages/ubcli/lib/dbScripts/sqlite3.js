@@ -13,7 +13,7 @@ const path = require('path')
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
-  let dbPath = path.join(process.configPath, databaseConfig.databaseName)
+  const dbPath = path.join(process.configPath, databaseConfig.databaseName)
   console.debug('Start drop a database', dbPath)
   if (fs.existsSync(dbPath)) {
     if (session.__serverStartedByMe) {
@@ -50,11 +50,11 @@ module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
 
 function splitAndExec (stmts, syncConnection, dbConnectionName) {
   // git can replace \r\n by \n on windows
-  let delimRe = /\r\n/.test(stmts) ? '--next\r\n' : '--next\n'
-  let statements = stmts.split(delimRe)
+  const delimRe = /\r\n/.test(stmts) ? '--next\r\n' : '--next\n'
+  const statements = stmts.split(delimRe)
   statements.forEach(function (statement) {
     if (statement) {
-      syncConnection.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: dbConnectionName}, data: statement})
+      syncConnection.xhr({ endpoint: 'runSQL', URLParams: { CONNECTION: dbConnectionName }, data: statement })
     }
   })
 }

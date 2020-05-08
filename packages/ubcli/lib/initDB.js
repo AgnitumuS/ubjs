@@ -1,5 +1,11 @@
 /**
- * Create a database (schema) and a minimal set of DB object for a UnityBase ORM
+ * Create a database (schema/user) and a minimal set of DB object for a UnityBase ORM.
+ * Depending of then RDBMS `-create` switch force to execute a folowing SQL statements with DBA user permissions:
+ *   - Oracle: `CREATE USER ${databaseConfig.userID}` and give a permissions;
+ *   - Postgres: `CREATE ROLE ${databaseConfig.userID} LOGIN PASSWORD '${databaseConfig.password}' VALID UNTIL 'infinity'; CREATE SCHEMA ${databaseConfig.userID} AUTHORIZATION ${databaseConfig.userID};`
+ *   - MS SQL: `CREATE DATABASE ${databaseConfig.databaseName}; CREATE LOGIN ${databaseConfig.userID} WITH PASSWORD = N'${databaseConfig.password}`
+ *
+ * DBA can create a user/role/database manually, in this case `-create` parameter must be omitted.
  *
  * Usage from a command line:
 
@@ -21,7 +27,6 @@
     }
     initDB(options)
 
- * If DBA already create a database set both `dropDatabase` & `createDatabase` to `false`
  * @module initDB
  * @memberOf module:@unitybase/ubcli
  */
@@ -46,7 +51,7 @@ module.exports = initDB
 function initDB (cfg) {
   if (!cfg) {
     const opts = options.describe('initDB',
-      `Prepare a new database for a UB ORM. Creates a user "${UBA_COMMON.USERS.ADMIN.NAME}" with password specified in -p parameter`, 'ubcli')
+      `Prepare a new database for a UB ORM.\nCreates a UB user "${UBA_COMMON.USERS.ADMIN.NAME}" with password specified in -p parameter.\nDB create tips: https://unitybase.info/api/server-v5/module-initDB.html`, 'ubcli')
       .add([
         { short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: `Password for "${UBA_COMMON.USERS.ADMIN.NAME}"` },
         { short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config' },
@@ -226,5 +231,7 @@ function fillBuildInRoles (conn, dbDriverName, adminPwd) {
   })
 }
 
-module.exports.shortDoc = `Create a database (schema) and a minimal set of DB
-\t\t\tobject for a UnityBase ORM`
+module.exports.shortDoc =
+`Create a database (schema) and a minimal set of DB
+\t\t\tobject for a UnityBase ORM. For detais see
+\t\t\thttps://unitybase.info/api/server-v5/module-initDB.html`

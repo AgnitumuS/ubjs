@@ -13,9 +13,9 @@ const fs = require('fs')
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
-  let conn = session.connection
-  let checkDB = conn.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: DBA_FAKE}, data: `select DB_ID (N'${databaseConfig.databaseName}') as DBID`})
-  if (checkDB[0]['DBID']) {
+  const conn = session.connection
+  const checkDB = conn.xhr({ endpoint: 'runSQL', URLParams: { CONNECTION: DBA_FAKE }, data: `select DB_ID (N'${databaseConfig.databaseName}') as DBID` })
+  if (checkDB[0].DBID) {
     // conn.xhr({
     //    endpoint: 'runSQL',
     //    URLParams: {CONNECTION: DBA_FAKE},
@@ -23,12 +23,12 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
     // });
     conn.xhr({ // This is required for OBDC connection - it does not use 'database' attribute in configuration file
       endpoint: 'runSQL',
-      URLParams: {CONNECTION: DBA_FAKE},
-      data: `USE master`
+      URLParams: { CONNECTION: DBA_FAKE },
+      data: 'USE master'
     })
     conn.xhr({
       endpoint: 'runSQL',
-      URLParams: {CONNECTION: DBA_FAKE},
+      URLParams: { CONNECTION: DBA_FAKE },
       data: `DROP DATABASE ${databaseConfig.databaseName}`
     })
   } else {
@@ -37,11 +37,11 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
 }
 
 function splitAndExec (stmts, syncConnection, dbConnectionName) {
-  let delimRe = /\r\n/.test(stmts) ? 'GO\r\n' : 'GO\n' // git can remove \r\n
-  let statements = stmts.split(delimRe)
+  const delimRe = /\r\n/.test(stmts) ? 'GO\r\n' : 'GO\n' // git can remove \r\n
+  const statements = stmts.split(delimRe)
   statements.forEach(function (statement) {
     if (statement && statement !== 'GO') {
-      syncConnection.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: dbConnectionName}, data: statement})
+      syncConnection.xhr({ endpoint: 'runSQL', URLParams: { CONNECTION: dbConnectionName }, data: statement })
     }
   })
 }
