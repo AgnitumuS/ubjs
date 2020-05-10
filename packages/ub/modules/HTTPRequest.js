@@ -1,8 +1,8 @@
 // eslint-disable-next-line camelcase
 const { req_read, reg_getHeaders, reg_getMethod, reg_getUrl, reg_getURI, reg_getDecodedURI, reg_getParameters, reg_getDecodedParameters, req_writeToFile } = process.binding('http_server')
-let reg_getRegId = process.binding('http_server').reg_getRegId
-if (!reg_getRegId) {
-  reg_getRegId = function () { return 0 }// fallback for UB<5.18.2
+let req_getReqId = process.binding('http_server').req_getReqId
+if (!req_getReqId) {
+  req_getReqId = function () { return 0 }// fallback for UB<5.18.2
 }
 
 /**
@@ -126,7 +126,7 @@ class THTTPRequest {
    * @since UB@5.18.2
    */
   get requestId () {
-    return reg_getRegId()
+    return req_getReqId()
   }
 }
 
