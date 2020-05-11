@@ -1,10 +1,17 @@
 {
   "pathToPackages": {
     "include": [
-      "./packages"
+      "./packages",
+      "../ub-server"
     ],
     "exclude": [
-      "./packages/update-changelog/*"
+      "./packages/update-changelog/*",
+      "../ub-server/package/*",
+      "../ub-server/ubuntu/*"
     ]
+  },
+  "order": {
+    "ub-server": 100,
+    "@unitybase/adminui-vue": 50
   }
 }

@@ -30,23 +30,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  instead of switching DataStore to `.currentDataName = '__totalRecCount'`
  
 ### Removed
- - **BREAKING** UBQL with `options.totalRequired = true` no longer create a separate DataStore namespace `__totalRecCount`.
- To get a total record count property `DataStore.totalRowCount` should be used instead.
- This only affect a UB 1.12 legacy code like this:
- ```
-  if(mParams.options.totalRequired) {
-    ctx.dataStore.currentDataName = "__totalRecCount";
-    mParams.__totalRecCount = (ctx.dataStore.rowCount) ? ctx.dataStore.get(0) : ctx.dataStore.rowCount;
-    ctx.dataStore.currentDataName = "";
-  }
- ``` 
- should be replaced by
- ```
-   if(mParams.options.totalRequired) {
+ - **BREAKING** UBQL with `options.totalRequired = true` no longer create a separate DataStore namespace `__totalRecCount`.  
+   To get a total record count property `DataStore.totalRowCount` should be used instead.  
+   This only affect a UB 1.12 legacy code like this:
+   ```js
+   if (mParams.options.totalRequired) {
+     ctx.dataStore.currentDataName = "__totalRecCount";
+     mParams.__totalRecCount = (ctx.dataStore.rowCount) ? ctx.dataStore.get(0) : ctx.dataStore.rowCount;
+     ctx.dataStore.currentDataName = "";
+   }
+   ```
+   should be replaced by
+   ```js
+   if (mParams.options.totalRequired) {
      mParams.__totalRecCount = ctx.dataStore.totalRowCount
    }
- ```  
- or simply removed - UB5.18.1 will add a `mParams.__totalRecCount` output parameter automatically
+   ```  
+   or simply removed - UB5.18.1 will add a `mParams.__totalRecCount` output parameter automatically
         
 ## [5.4.6] - 2020-04-10
 ### Added
