@@ -31,7 +31,7 @@ class Color {
 
   constructor (config, baseTag) {
     if (typeof config === 'string') {
-      config = {rgb: config}
+      config = { rgb: config }
     }
     this.theme = config.theme
     this.tint = config.tint
@@ -49,7 +49,7 @@ class Color {
   }
 
   compile (tag) {
-    let out = []
+    const out = []
 
     out.push('<' + (tag || this.baseTag || 'color') + ' ')
     if (this.theme) {

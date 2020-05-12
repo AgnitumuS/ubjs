@@ -86,7 +86,7 @@ class XLSXBaseStyleController {
    */
   itemByID (id) {
     if (id < this.initId) return id
-    let res = this.elements[id - this.initId]
+    const res = this.elements[id - this.initId]
     if (!res) {
       throw new Error(`XLSXBaseStyleElement element with id ${id} not found`)
     }
@@ -114,8 +114,8 @@ class XLSXBaseStyleController {
       }
       return info
     }
-    let hash = this.getHash(info)
-    let exist = this.hashList[hash]
+    const hash = this.getHash(info)
+    const exist = this.hashList[hash]
     if (exist) return exist
     const infoEl = new XLSXBaseStyleElement(info, type, this)
 

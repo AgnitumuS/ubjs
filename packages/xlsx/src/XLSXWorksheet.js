@@ -71,8 +71,8 @@ class XLSXWorksheet {
    * @param context
    */
   render (context) {
-    let me = this
-    let d = this.diapason
+    const me = this
+    const d = this.diapason
     let result = ''
 
     d.minColNum = d.minColNum === 0 ? 1 : d.minColNum
@@ -91,9 +91,9 @@ class XLSXWorksheet {
     result += '</sheetData>'
 
     if (this.protection) {
-      let out = []
+      const out = []
       let xkey
-      let element = this.protection
+      const element = this.protection
       out.push('<sheetProtection sheet="1"')
       for (xkey in element) {
         if (element.hasOwnProperty(xkey)) {
@@ -111,7 +111,7 @@ class XLSXWorksheet {
 
     // Отступы согласно https://enviance.softline.kiev.ua/confluence/pages/viewpage.action?pageId=70123712
     // 1 дюйм = 25.4 мм
-    let mm = 25.4
+    const mm = 25.4
     let margins = {
       left: 20,
       top: 10,
@@ -231,7 +231,7 @@ class XLSXWorksheet {
   addRow (config, template, rowConfig) {
     let type
     let valAsTagIs = false
-    let useSharedString = this.workBook.useSharedString
+    const useSharedString = this.workBook.useSharedString
 
     if (!config) throw new Error('XLSXWorksheet.addRow empty config')
     config = Array.isArray(config) ? config : [config]
@@ -279,14 +279,14 @@ class XLSXWorksheet {
       existCell[cd.column] = true
     })
     // write def
-    let defR = this.defStyles[this.nextRowNum]
+    const defR = this.defStyles[this.nextRowNum]
     let lastColCheckDef = 0
 
     config.forEach((cell, index) => {
       // cellCount++
       type = undefined
       valAsTagIs = false
-      let cellType = typeof cell
+      const cellType = typeof cell
       if (cellType !== 'object' || (cell instanceof Date)) {
         cell = { value: cell }
       }
@@ -374,7 +374,7 @@ class XLSXWorksheet {
         }
         if (cell.cellStyle.colSpan > 1 && cell.style && cell.style.config.border && cell.style.config.border.id > 0) {
           // this.workBook.style.getStyle({border})
-          let cEnd = cell.column + cell.cellStyle.colSpan - 1
+          const cEnd = cell.column + cell.cellStyle.colSpan - 1
           for (let i = cell.column + 1; i <= cEnd; i++) {
             if (!existCell[i]) {
               this.dataRows.push(
@@ -386,10 +386,10 @@ class XLSXWorksheet {
         }
         if (cell.cellStyle.rowSpan > 1 && cell.style && cell.style.config.border && cell.style.config.border.id > 0) {
           // remember style for down rows
-          let rwEnd = this.nextRowNum + cell.cellStyle.rowSpan - 1
-          let cEnd = cell.cellStyle.colSpan > 1 ? cell.column + cell.cellStyle.colSpan - 1 : cell.column
+          const rwEnd = this.nextRowNum + cell.cellStyle.rowSpan - 1
+          const cEnd = cell.cellStyle.colSpan > 1 ? cell.column + cell.cellStyle.colSpan - 1 : cell.column
           for (let ri = this.nextRowNum + 1; ri <= rwEnd; ri++) {
-            let rwCtx = this.defStyles[ri] = this.defStyles[ri] || []
+            const rwCtx = this.defStyles[ri] = this.defStyles[ri] || []
             for (let ci = cell.column; ci <= cEnd; ci++) {
               rwCtx[ci] = cell.style
             }
@@ -415,7 +415,7 @@ class XLSXWorksheet {
     this.diapason.maxRowNum = this.nextRowNum
 
     this.dataRows.push('</row>')
-    let res = this.nextRowNum
+    const res = this.nextRowNum
     this.nextRowNum++
     return res
   }
@@ -425,7 +425,7 @@ class XLSXWorksheet {
    * @param {Object} config array [{column: 1, width: 200},{column: 2, width: 100},{column: 3, width: 20}]
    */
   setColsProperties (config) {
-    let res = []
+    const res = []
     // this.columnProperties
     res.push('<cols>')
     config.sort((a, b) => a.column > b.column ? 1 : (a.column === b.column ? 0 : -1))
@@ -433,7 +433,7 @@ class XLSXWorksheet {
       if (typeof column.column !== 'number' || typeof column.width !== 'number') {
         throw new Error('Invalid parameters for XLSXWorksheet.setColsProperties')
       }
-      let col = XLSXWorksheet.checkColNum(column.column) + 1
+      const col = XLSXWorksheet.checkColNum(column.column) + 1
       res.push(`<col min="${col}" max="${col}" width="${column.width}" customWidth="1"/>`)
     })
     res.push('</cols>')

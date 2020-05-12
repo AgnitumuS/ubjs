@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+
+### Changed
+ - reformat code according to ESLint rules (no functional changes)
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+
 ## [5.1.0] - 2019-09-11
 ### Fixed
  - export to excel works without `Cannot read property 'length' of null` exception

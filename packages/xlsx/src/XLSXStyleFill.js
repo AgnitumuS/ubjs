@@ -1,7 +1,7 @@
 /**
  * Created by xmax on 16.11.2017.
  */
-const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
+const { XLSXBaseStyleController } = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
 const Color = require('./Color')
 
@@ -27,9 +27,9 @@ class XLSXStyleControllerFill extends XLSXBaseStyleController {
   }
 
   compile (item) {
-    let element = item.config
-    let fg = element.fgColor ? element.fgColor.compile('fgColor') : ''
-    let bg = element.bgColor ? element.bgColor.compile('bgColor') : ''
+    const element = item.config
+    const fg = element.fgColor ? element.fgColor.compile('fgColor') : ''
+    const bg = element.bgColor ? element.bgColor.compile('bgColor') : ''
     return `<fill><patternFill patternType="${element.patternType || 'solid'}"> ${fg}${bg}</patternFill></fill>`
   }
 
@@ -63,10 +63,10 @@ class XLSXStyleControllerFill extends XLSXBaseStyleController {
   add (info) {
     tools.checkParamTypeObjStr(info, 'XLSXStyleControllerFill.add')
     if (typeof info === 'string') {
-      info = {fgColor: new Color(info)}
+      info = { fgColor: new Color(info) }
     }
     if (info instanceof Color) {
-      info = {fgColor: info}
+      info = { fgColor: info }
     }
     if (info.fgColor && !(info.fgColor instanceof Color)) {
       info.fgColor = new Color(info.fgColor)

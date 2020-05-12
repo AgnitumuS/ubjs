@@ -7,8 +7,8 @@ if (typeof SystemJS !== 'undefined') { // browser
   if (!SystemJS.has('mustache')) SystemJS.set('mustache', SystemJS.newModule(mustache))
 }
 const ReachText = require('./ReachText')
-const {SpanMap} = require('./SpanMap')
-const {XLSXStyle} = require('./XLSXStyle')
+const { SpanMap } = require('./SpanMap')
+const { XLSXStyle } = require('./XLSXStyle')
 /**
  * This class used for extract value for html tag td and convert it to reachText
  */
@@ -40,14 +40,14 @@ class CellValue {
   getValue () {
     const childCount = this.rootNode.childNodes.length
     for (let i = 0; i < childCount; ++i) {
-      let childNode = this.rootNode.childNodes[i]
+      const childNode = this.rootNode.childNodes[i]
       this.addValue(childNode)
     }
     return this.useReachText ? this.reachText : (this.items.length > 0 ? this.items.join(' ') : null)
   }
 
   addValue (node) {
-    let value = node.nodeValue
+    const value = node.nodeValue
     if ((!node.childNodes || node.childNodes.length === 0) && value !== null && value !== undefined) {
       if (this.reachInfo || this.useReachText) {
         if (!this.useReachText && this.items.length > 0) {
@@ -61,9 +61,9 @@ class CellValue {
       }
       return
     }
-    let nodeInfo = (node.nodeName === '#text') ? null : getTagInfo(node)
-    let reachInfo = nodeInfo ? tagInfoToReachTextConfig(nodeInfo) : null
-    let masterReachInfo = this.reachInfo
+    const nodeInfo = (node.nodeName === '#text') ? null : getTagInfo(node)
+    const reachInfo = nodeInfo ? tagInfoToReachTextConfig(nodeInfo) : null
+    const masterReachInfo = this.reachInfo
     if (node.nodeName === 'br') {
       this.items.push('\n')
     }
@@ -74,7 +74,7 @@ class CellValue {
       this.reachInfo = Object.assign(this.reachInfo || {}, reachInfo)
     }
     for (let i = 0; i < node.childNodes.length; ++i) {
-      let childNode = node.childNodes[i]
+      const childNode = node.childNodes[i]
       this.addValue(childNode)
     }
     this.reachInfo = masterReachInfo
@@ -107,9 +107,9 @@ function formatMustache (format, fixFormat, root) {
   // const predefinedFormats = XLSXStyle.predefinedFormats
   return function (val, render) {
     const me = this
-    let data = render(val)
+    const data = render(val)
     if (!data) return data
-    let dataArr = JSON.parse('[' + data + ']')
+    const dataArr = JSON.parse('[' + data + ']')
     if (dataArr < 1) {
       throw new Error('$format function require one or two parameter. {{#$f}}"amount"{{/f}} {{#$f}}"amount","sum"{{/f}} ')
     }
@@ -142,20 +142,20 @@ const optimizationProp = '$xlsx_optimization'
  */
 function wrapIterator (sourceObj, tempObj, templates, templatesData, path, minLenOptimization) {
   // copy function from parent path
-  let ctxt = path && templatesData[path] ? Object.assign({}, templatesData[path]) : {}
+  const ctxt = path && templatesData[path] ? Object.assign({}, templatesData[path]) : {}
   const currCtxt = Object.keys(sourceObj)
     .map(key => typeof sourceObj[key] === 'function' ? sourceObj[key] : null)
     .filter(F => F)
   Object.assign(ctxt, currCtxt)
   Object.keys(sourceObj).forEach(key => {
-    let item = sourceObj[key]
-    let newPath = path ? path + '.' + key : key
+    const item = sourceObj[key]
+    const newPath = path ? path + '.' + key : key
     if (typeof item === 'object' && Array.isArray(item) && item.length >= minLenOptimization) {
-      templatesData[newPath] = Object.assign({items: item}, currCtxt)
+      templatesData[newPath] = Object.assign({ items: item }, currCtxt)
       tempObj[key] = function () {
         return function (iTemplate, render) {
           iTemplate = iTemplate.trim()
-          let hasComment = iTemplate.substr(0, 3) === '-->'
+          const hasComment = iTemplate.substr(0, 3) === '-->'
           templates[newPath] = hasComment ? iTemplate.substr(3, iTemplate.length - 7) : iTemplate
           return hasComment ? `--><iterator name="${newPath}" /><!--` : `<iterator name="${newPath}" />`
         }
@@ -205,7 +205,7 @@ class XLSXfromHTML {
    * @return {{title: string, name: string, setActive: boolean}}
    */
   getSheetConfig (index) {
-    let cfg = {title: 'Worksheet', name: 'sheet ' + (index + 1), setActive: (index === 0)}
+    const cfg = { title: 'Worksheet', name: 'sheet ' + (index + 1), setActive: (index === 0) }
     if (this.sheetConfig) {
       if (Array.isArray(this.sheetConfig)) {
         if (this.sheetConfig.length > index && (typeof this.sheetConfig[index] === 'object')) {
@@ -260,7 +260,7 @@ class XLSXfromHTML {
     }
     wrapIterator(data, tmpData, templates, templatesData, null, minLenOptimization)
     XLSXfromHTML.addMustacheSysFunction(tmpData)
-    data[optimizationProp] = {templates, templatesData}
+    data[optimizationProp] = { templates, templatesData }
     return mustache.render(template, tmpData)
   }
 
@@ -348,7 +348,7 @@ class XLSXfromHTML {
    * @param {Function} itemReady Callback for apply iterator result
    */
   applyIterator (node, tagName, sourceData, itemReady) {
-    const {templates, templatesData} = sourceData[optimizationProp]
+    const { templates, templatesData } = sourceData[optimizationProp]
     const itemName = getAttribute(node, 'name')
     const template = `{{#item}}${templates[itemName]}{{/item}}`
     const blockLen = 2
@@ -361,7 +361,7 @@ class XLSXfromHTML {
       data.item = F
       blockArr.push(mustache.render(template, data))
       if (blockArr.length >= blockLen) {
-        let root = this.parseXml(blockArr.join(''))
+        const root = this.parseXml(blockArr.join(''))
         blockArr = []
         findNode(root, tagName, result, true)
         result.forEach(itemReady)
@@ -369,7 +369,7 @@ class XLSXfromHTML {
       }
     })
     if (blockArr.length > 0) {
-      let root = this.parseXml(blockArr.join(''))
+      const root = this.parseXml(blockArr.join(''))
       findNode(root, tagName, result, true)
       result.forEach(itemReady)
     }
@@ -443,18 +443,18 @@ class XLSXfromHTML {
    */
   writeHtml (config) {
     if (!config.html) throw new Error('Empty config.html')
-    let root = this.parseXml(config.html)
+    const root = this.parseXml(config.html)
 
-    let tables = []
+    const tables = []
     findNode(root, config.sourceData ? ['table', 'iterator'] : 'table', tables, true)
     if (tables.length === 0) {
       throw new Error('Table tag not found')
     }
     let idx = 0
 
-    let addItem = F => {
+    const addItem = F => {
       const cfg = this.getSheetConfig(idx)
-      let ws = this.wb.addWorkSheet(cfg)
+      const ws = this.wb.addWorkSheet(cfg)
       this.writeTable(ws, F, config)
       idx++
     }
@@ -475,9 +475,9 @@ class XLSXfromHTML {
    * @param config
    */
   writeTable (ws, node, config) {
-    let rows = []
+    const rows = []
     let rowIndex = config.startRowIndex || 0
-    let ctxt = { tableInfo: getTagInfo(node), config: config }
+    const ctxt = { tableInfo: getTagInfo(node), config: config }
     ctxt.tableStyle = styleToXlsx(ctxt.tableInfo)
     // html do not inherit this
     // let ts = ctxt.tableStyle
@@ -486,7 +486,7 @@ class XLSXfromHTML {
     ctxt.spanMap = new SpanMap(ctxt.tableInfo.style.width || this.defaultTableWidth)
     findNode(node, config.sourceData ? ['tr', 'iterator'] : 'tr', rows, true)
 
-    let addItem = F => {
+    const addItem = F => {
       this.writeRow(ws, F, rowIndex, ctxt)
       rowIndex++
     }
@@ -500,7 +500,7 @@ class XLSXfromHTML {
     })
 
     let widths = ctxt.spanMap.getWidths()
-    widths = widths.map((F, i) => { return F ? {column: i, width: F} : null }).filter(F => F)
+    widths = widths.map((F, i) => { return F ? { column: i, width: F } : null }).filter(F => F)
     if (widths.length) {
       ws.setColsProperties(widths)
     }
@@ -514,39 +514,39 @@ class XLSXfromHTML {
    * @param ctxt
    */
   writeRow (ws, node, index, ctxt) {
-    let cells = []
-    let trInfo = getTagInfo(node)
+    const cells = []
+    const trInfo = getTagInfo(node)
     let minHeight = trInfo.style.height || trInfo.style.minHeight || 0
-    let trStyle = styleToXlsx(trInfo)
-    let startRow = ctxt.config.startRow || 0
-    let colWidth = []
+    const trStyle = styleToXlsx(trInfo)
+    const startRow = ctxt.config.startRow || 0
+    const colWidth = []
 
     findNode(node, ctxt.config.sourceData ? ['th', 'td', 'iterator'] : 'td', cells)
     let columnNum = startRow
     const cellsData = []
-    let addItem = F => {
-      let cellInfo = {}
-      let tdInfo = getTagInfo(F)
+    const addItem = F => {
+      const cellInfo = {}
+      const tdInfo = getTagInfo(F)
       cellInfo.value = CellValue.getValue(F, tdInfo)
-      let typedValue = getTypedValue(cellInfo.value)
-      let valueStyle = {}
+      const typedValue = getTypedValue(cellInfo.value)
+      const valueStyle = {}
       if (typedValue) {
         cellInfo.value = typedValue.value
         if (typedValue.format) {
           valueStyle.format = typedValue.format
         }
       }
-      let colSpan = getAttributeInt(F, 'colspan')
-      if (colSpan) cellInfo.cellStyle = {colSpan: colSpan}
-      let rowSpan = getAttributeInt(F, 'rowspan')
+      const colSpan = getAttributeInt(F, 'colspan')
+      if (colSpan) cellInfo.cellStyle = { colSpan: colSpan }
+      const rowSpan = getAttributeInt(F, 'rowspan')
       if (rowSpan) {
         cellInfo.cellStyle = cellInfo.cellStyle || {}
         cellInfo.cellStyle.rowSpan = rowSpan
       }
-      let tdMinHeight = tdInfo.style.height || tdInfo.style.minHeight
+      const tdMinHeight = tdInfo.style.height || tdInfo.style.minHeight
       if (tdMinHeight && tdMinHeight > minHeight) minHeight = tdMinHeight
-      colWidth.push({rowSpan, colSpan, width: tdInfo.style.width, widthPercent: tdInfo.style.widthPercent})
-      cellInfo.style = getStyleByHtml(ws.workBook, [valueStyle, styleToXlsx(tdInfo), trStyle, ctxt.tableStyle, {alignment: {wrapText: true}}])
+      colWidth.push({ rowSpan, colSpan, width: tdInfo.style.width, widthPercent: tdInfo.style.widthPercent })
+      cellInfo.style = getStyleByHtml(ws.workBook, [valueStyle, styleToXlsx(tdInfo), trStyle, ctxt.tableStyle, { alignment: { wrapText: true } }])
       cellInfo.column = columnNum = ctxt.spanMap.getCurrentCellNum(columnNum)
       // columnNum = ctxt.spanMap.getNextCellNum(columnNum, colSpan)
       columnNum = columnNum + 1 + (colSpan || 1) - 1
@@ -561,7 +561,7 @@ class XLSXfromHTML {
     })
 
     ctxt.spanMap.addRow(colWidth, node)
-    ws.addRow(cellsData, null, minHeight ? {height: minHeight} : null)
+    ws.addRow(cellsData, null, minHeight ? { height: minHeight } : null)
   }
 }
 
@@ -581,13 +581,13 @@ const formatPrefixLen = formatPrefix.length
 function getTypedValue (value) {
   if ((typeof value !== 'string') || value.length <= formatPrefixLen) return null
   if (value.substr(0, formatPrefixLen) === formatPrefix) {
-    let dataType = value.substr(formatPrefixLen, 1)
+    const dataType = value.substr(formatPrefixLen, 1)
     let dataValue = value.substr(formatPrefixLen + 1)
     let dataFormat
     dataValue = dataValue.split(formatPrefix + 'f')
     if (dataValue.length > 1) {
       dataFormat = dataValue[1]
-      let dataFormatF = XLSXStyle.predefinedFormats[dataFormat]
+      const dataFormatF = XLSXStyle.predefinedFormats[dataFormat]
       if (dataFormatF || dataFormatF === 0) {
         dataFormat = dataFormatF
       }
@@ -601,14 +601,14 @@ function getTypedValue (value) {
         dataValue = Number(dataValue)
         break
     }
-    return {value: dataValue, format: dataFormat, dataType}
+    return { value: dataValue, format: dataFormat, dataType }
   }
   return null
 }
 
 function tagInfoToReachTextConfig (tagInfo) {
   if (!tagInfo || !tagInfo.style) return null
-  let res = {}
+  const res = {}
   if (tagInfo.style.font.weight === 'bold') res.bold = true
   if (tagInfo.style.font.style === 'italic') res.italic = true
   if (tagInfo.style.font.name) {
@@ -636,8 +636,8 @@ function findNode (node, key, items, deep) {
   if (!node.childNodes) return
   key = Array.isArray(key) ? key : [key]
   for (let nodeIndex = 0; nodeIndex < node.childNodes.length; nodeIndex++) {
-    let nc = node.childNodes[nodeIndex]
-    let nodeName = nc.nodeName.toLowerCase()
+    const nc = node.childNodes[nodeIndex]
+    const nodeName = nc.nodeName.toLowerCase()
     if (key.indexOf(nodeName) >= 0) {
       items.push(nc)
     } else if (deep) {
@@ -665,14 +665,14 @@ function parseStyle (node) {
   if (!node.attributes) {
     return {}
   }
-  let styleStr = node.attributes.getNamedItem('style')
+  const styleStr = node.attributes.getNamedItem('style')
   if (!styleStr || !styleStr.value) {
     return {}
   }
-  let result = {}
+  const result = {}
   styleStr.value.split(';').forEach(function (elementStr) {
     if (!elementStr) return
-    let pair = elementStr.split(':')
+    const pair = elementStr.split(':')
     if (pair.length < 2) {
       return
     }
@@ -714,7 +714,7 @@ function toXLSMeasure (styleProp, options) {
   }
   val = parseInt(val, 10)
   if (val === 0) return val
-  if (Number.isNaN(val)) return null  // do not throw error
+  if (Number.isNaN(val)) return null // do not throw error
   return isPercent ? val : convertToMeasure(val, 'px', options.horizontal)
 }
 
@@ -732,7 +732,7 @@ function setDefaultNodeStyle (info, node) {
 }
 
 function getTagInfo (node) {
-  let info = {}
+  const info = {}
   info.styleProps = parseStyle(node)
   info.style = getStyleProp(info.styleProps)
   info.border = getBorderInfo(info.styleProps)
@@ -743,7 +743,7 @@ function getTagInfo (node) {
 }
 
 function getStyleByHtml (wb, styles) {
-  let config = {}
+  const config = {}
   styles.reverse().forEach(F => {
     _.defaultsDeep(config, F)
     // Object.assign(config, F)
@@ -778,8 +778,8 @@ function decodeAlign (align) {
  */
 function decodeVAlign (align) {
   if (!align) return align
- // baseline | sub | super | text-top | text-bottom | middle | top | bottom
- // top | center | bottom | justify distributed
+  // baseline | sub | super | text-top | text-bottom | middle | top | bottom
+  // top | center | bottom | justify distributed
   switch (align) {
     case 'baseline':
     case 'sub':
@@ -794,12 +794,12 @@ function decodeVAlign (align) {
 }
 
 function styleToXlsx (htmlStyleInfo) {
-  let config = {}
+  const config = {}
   if (htmlStyleInfo.style.backgroundColor) {
     config.fill = htmlStyleInfo.style.backgroundColor
   }
   if (htmlStyleInfo.style.font) {
-    let font = htmlStyleInfo.style.font
+    const font = htmlStyleInfo.style.font
     config.font = {}
     if (font.name) config.font.name = font.name
     if (font.weight) config.font.bold = font.weight === 'bold'
@@ -865,7 +865,7 @@ function htmlBorderStyle2XLSX (htmlStyle) {
 const RErotateDeg = /^rotate\((.*)deg\)$/
 
 function getStyleProp (style) {
-  let res = {
+  const res = {
     font: {}
   }
   if (style['font-family']) {
@@ -906,9 +906,9 @@ function getStyleProp (style) {
       res.textDecoration = style['text-decoration']
     }
   }
-  if (style['transform']) {
-    tmp = style['transform']
-    let rotateDeg = tmp.match(RErotateDeg)
+  if (style.transform) {
+    tmp = style.transform
+    const rotateDeg = tmp.match(RErotateDeg)
     if (rotateDeg && rotateDeg[1]) {
       res.textRotation = rotateDeg[1]
     }
@@ -932,7 +932,7 @@ function getStyleProp (style) {
 
   if (style['list-style']) {
     tmp = style['list-style']
-    let tmpArr = tmp.trim().split(' ')
+    const tmpArr = tmp.trim().split(' ')
     switch (tmpArr.length) {
       case 1:
         res.listStyleType = tmpArr[0]
@@ -953,7 +953,7 @@ function getStyleProp (style) {
   }
 
   if (style.width) {
-    tmp = {horizontal: true}
+    tmp = { horizontal: true }
     res.width = toXLSMeasure(style.width, tmp)
     if (tmp.isPercent) {
       res.widthPercent = res.width
@@ -980,7 +980,7 @@ function getStyleProp (style) {
 }
 
 function parseComplex (value, onValue) {
-  let result = {}
+  const result = {}
   if (!onValue) {
     onValue = function (v) { return v }
   }
@@ -1009,10 +1009,10 @@ function parseComplex (value, onValue) {
 
 function getBorderInfo (itemStyle) {
   let borderStyle, bWidth, borderColor
-  let border = {}
+  const border = {}
 
   if (itemStyle.border) {
-    let brd = extractBorderProps(itemStyle.border)
+    const brd = extractBorderProps(itemStyle.border)
     bWidth = [brd.width]
     borderStyle = [brd.style]
     borderColor = [brd.color]
@@ -1076,7 +1076,7 @@ function getBorderInfo (itemStyle) {
       bWidth = (bWidth || '').split(' ')
     }
   }
-  let rWidth = parseComplex(bWidth || [])
+  const rWidth = parseComplex(bWidth || [])
   if (itemStyle['border-top-width']) {
     rWidth.top = itemStyle['border-top-width']
   }
@@ -1117,25 +1117,25 @@ function getBorderInfo (itemStyle) {
   setPropertyStyleFromType(border, 'bottom', borderColor, 'color')
   setPropertyStyleFromType(border, 'top', borderColor, 'color')
 
-  let result = { borderWidth: rWidth, borderStyle: borderStyle, borderColor: borderColor }
+  const result = { borderWidth: rWidth, borderStyle: borderStyle, borderColor: borderColor }
   if (result.borderWidth.top && result.borderStyle.top) {
-    result.top = {width: result.borderWidth.top, style: result.borderStyle.top, color: result.borderColor.top}
+    result.top = { width: result.borderWidth.top, style: result.borderStyle.top, color: result.borderColor.top }
   }
   if (result.borderWidth.bottom && result.borderStyle.bottom) {
-    result.bottom = {width: result.borderWidth.bottom, style: result.borderStyle.bottom, color: result.borderColor.bottom}
+    result.bottom = { width: result.borderWidth.bottom, style: result.borderStyle.bottom, color: result.borderColor.bottom }
   }
   if (result.borderWidth.left && result.borderStyle.left) {
-    result.left = {width: result.borderWidth.left, style: result.borderStyle.left, color: result.borderColor.left}
+    result.left = { width: result.borderWidth.left, style: result.borderStyle.left, color: result.borderColor.left }
   }
   if (result.borderWidth.right && result.borderStyle.right) {
-    result.right = {width: result.borderWidth.right, style: result.borderStyle.right, color: result.borderColor.right}
+    result.right = { width: result.borderWidth.right, style: result.borderStyle.right, color: result.borderColor.right }
   }
   return result
 }
 
 function setPropertyStyleFromType (objType, type, obj, style) {
   if (objType[type] && objType[type][style] && (!obj[type] || !obj[type][style])) {
-   // obj[type] = obj[type] || {}
+    // obj[type] = obj[type] || {}
     obj[type] = objType[type][style]
   }
 }
@@ -1153,7 +1153,7 @@ function isWidth (value) {
  * @return {*}
  */
 function extractBorderProps (borderStyle) {
-  let items = (borderStyle || '').split(' ')
+  const items = (borderStyle || '').split(' ')
   if (items.length < 2) return false
   const v0 = items[0]
   const v1 = items[1]
@@ -1195,11 +1195,11 @@ function extractBorderProps (borderStyle) {
   if (!color) {
     color = 'black'
   }
-  return {style: style, width: convertToMeasure(parseIntValue(width)), color: color}
+  return { style: style, width: convertToMeasure(parseIntValue(width)), color: color }
 }
 
 function getPaddingInfo (itemStyle, def) {
-  let fdef = def || {}
+  const fdef = def || {}
   let rWidth = { top: fdef.top, left: fdef.left, right: fdef.right, bottom: fdef.bottom }
   let bWidth = itemStyle.padding
 
@@ -1235,7 +1235,7 @@ function getPaddingInfo (itemStyle, def) {
 }
 
 function getMarginInfo (itemStyle, def) {
-  let fDef = def || {}
+  const fDef = def || {}
   let rWidth = { top: fDef.top || 0, left: fDef.left || 0, right: fDef.right || 0, bottom: fDef.bottom || 0 }
   let bWidth = itemStyle.margin
 
@@ -1274,7 +1274,7 @@ function getAttribute (node, name, defaultValue) {
   if (!node.attributes) {
     return defaultValue
   }
-  let val = node.attributes.getNamedItem(name)
+  const val = node.attributes.getNamedItem(name)
   if (val) {
     return val.value || defaultValue
   }
@@ -1306,42 +1306,265 @@ function updateAttributeInt (node, name, value) {
 }
 */
 
-const htmlBaseEntity = {'&lt;': 1, '&gt;': 1, '&amp;': 1, '&apos;': 1, '&quot;': 1}
+const htmlBaseEntity = { '&lt;': 1, '&gt;': 1, '&amp;': 1, '&apos;': 1, '&quot;': 1 }
 // all HTML4 entities as defined here: http://www.w3.org/TR/html4/sgml/entities.html
 // added: amp, lt, gt, quot and apos
 // eslint-disable-next-line object-property-newline
-const htmlEntityTable = {'quot': 34, 'amp': 38, 'apos': 39, 'lt': 60, 'gt': 62, 'nbsp': 160, 'iexcl': 161, 'cent': 162,
-  'pound': 163, 'curren': 164, 'yen': 165, 'brvbar': 166, 'sect': 167, 'uml': 168, 'copy': 169, 'ordf': 170,
-  'laquo': 171, 'not': 172, 'shy': 173, 'reg': 174, 'macr': 175, 'deg': 176, 'plusmn': 177, 'sup2': 178, 'sup3': 179,
-  'acute': 180, 'micro': 181, 'para': 182, 'middot': 183, 'cedil': 184, 'sup1': 185, 'ordm': 186, 'raquo': 187,
-  'frac14': 188, 'frac12': 189, 'frac34': 190, 'iquest': 191, 'Agrave': 192, 'Aacute': 193, 'Acirc': 194, 'Atilde': 195,
-  'Auml': 196, 'Aring': 197, 'AElig': 198, 'Ccedil': 199, 'Egrave': 200, 'Eacute': 201, 'Ecirc': 202, 'Euml': 203,
-  'Igrave': 204, 'Iacute': 205, 'Icirc': 206, 'Iuml': 207, 'ETH': 208, 'Ntilde': 209, 'Ograve': 210, 'Oacute': 211,
-  'Ocirc': 212, 'Otilde': 213, 'Ouml': 214, 'times': 215, 'Oslash': 216, 'Ugrave': 217, 'Uacute': 218, 'Ucirc': 219,
-  'Uuml': 220, 'Yacute': 221, 'THORN': 222, 'szlig': 223, 'agrave': 224, 'aacute': 225, 'acirc': 226, 'atilde': 227,
-  'auml': 228, 'aring': 229, 'aelig': 230, 'ccedil': 231, 'egrave': 232, 'eacute': 233, 'ecirc': 234, 'euml': 235,
-  'igrave': 236, 'iacute': 237, 'icirc': 238, 'iuml': 239, 'eth': 240, 'ntilde': 241, 'ograve': 242, 'oacute': 243,
-  'ocirc': 244, 'otilde': 245, 'ouml': 246, 'divide': 247, 'oslash': 248, 'ugrave': 249, 'uacute': 250, 'ucirc': 251,
-  'uuml': 252, 'yacute': 253, 'thorn': 254, 'yuml': 255, 'OElig': 338, 'oelig': 339, 'Scaron': 352, 'scaron': 353,
-  'Yuml': 376, 'fnof': 402, 'circ': 710, 'tilde': 732, 'Alpha': 913, 'Beta': 914, 'Gamma': 915, 'Delta': 916,
-  'Epsilon': 917, 'Zeta': 918, 'Eta': 919, 'Theta': 920, 'Iota': 921, 'Kappa': 922, 'Lambda': 923, 'Mu': 924,
-  'Nu': 925, 'Xi': 926, 'Omicron': 927, 'Pi': 928, 'Rho': 929, 'Sigma': 931, 'Tau': 932, 'Upsilon': 933, 'Phi': 934,
-  'Chi': 935, 'Psi': 936, 'Omega': 937, 'alpha': 945, 'beta': 946, 'gamma': 947, 'delta': 948, 'epsilon': 949,
-  'zeta': 950, 'eta': 951, 'theta': 952, 'iota': 953, 'kappa': 954, 'lambda': 955, 'mu': 956, 'nu': 957, 'xi': 958,
-  'omicron': 959, 'pi': 960, 'rho': 961, 'sigmaf': 962, 'sigma': 963, 'tau': 964, 'upsilon': 965, 'phi': 966, 'chi': 967,
-  'psi': 968, 'omega': 969, 'thetasym': 977, 'upsih': 978, 'piv': 982, 'ensp': 8194, 'emsp': 8195, 'thinsp': 8201,
-  'zwnj': 8204, 'zwj': 8205, 'lrm': 8206, 'rlm': 8207, 'ndash': 8211, 'mdash': 8212, 'lsquo': 8216, 'rsquo': 8217,
-  'sbquo': 8218, 'ldquo': 8220, 'rdquo': 8221, 'bdquo': 8222, 'dagger': 8224, 'Dagger': 8225, 'bull': 8226,
-  'hellip': 8230, 'permil': 8240, 'prime': 8242, 'Prime': 8243, 'lsaquo': 8249, 'rsaquo': 8250, 'oline': 8254,
-  'frasl': 8260, 'euro': 8364, 'image': 8465, 'weierp': 8472, 'real': 8476, 'trade': 8482, 'alefsym': 8501,
-  'larr': 8592, 'uarr': 8593, 'rarr': 8594, 'darr': 8595, 'harr': 8596, 'crarr': 8629, 'lArr': 8656, 'uArr': 8657,
-  'rArr': 8658, 'dArr': 8659, 'hArr': 8660, 'forall': 8704, 'part': 8706, 'exist': 8707, 'empty': 8709, 'nabla': 8711,
-  'isin': 8712, 'notin': 8713, 'ni': 8715, 'prod': 8719, 'sum': 8721, 'minus': 8722, 'lowast': 8727, 'radic': 8730,
-  'prop': 8733, 'infin': 8734, 'ang': 8736, 'and': 8743, 'or': 8744, 'cap': 8745, 'cup': 8746, 'int': 8747, 'there4': 8756,
-  'sim': 8764, 'cong': 8773, 'asymp': 8776, 'ne': 8800, 'equiv': 8801, 'le': 8804, 'ge': 8805, 'sub': 8834, 'sup': 8835,
-  'nsub': 8836, 'sube': 8838, 'supe': 8839, 'oplus': 8853, 'otimes': 8855, 'perp': 8869, 'sdot': 8901, 'lceil': 8968,
-  'rceil': 8969, 'lfloor': 8970, 'rfloor': 8971, 'lang': 9001, 'rang': 9002, 'loz': 9674, 'spades': 9824,
-  'clubs': 9827, 'hearts': 9829, 'diams': 9830}
+const htmlEntityTable = {
+  quot: 34,
+  amp: 38,
+  apos: 39,
+  lt: 60,
+  gt: 62,
+  nbsp: 160,
+  iexcl: 161,
+  cent: 162,
+  pound: 163,
+  curren: 164,
+  yen: 165,
+  brvbar: 166,
+  sect: 167,
+  uml: 168,
+  copy: 169,
+  ordf: 170,
+  laquo: 171,
+  not: 172,
+  shy: 173,
+  reg: 174,
+  macr: 175,
+  deg: 176,
+  plusmn: 177,
+  sup2: 178,
+  sup3: 179,
+  acute: 180,
+  micro: 181,
+  para: 182,
+  middot: 183,
+  cedil: 184,
+  sup1: 185,
+  ordm: 186,
+  raquo: 187,
+  frac14: 188,
+  frac12: 189,
+  frac34: 190,
+  iquest: 191,
+  Agrave: 192,
+  Aacute: 193,
+  Acirc: 194,
+  Atilde: 195,
+  Auml: 196,
+  Aring: 197,
+  AElig: 198,
+  Ccedil: 199,
+  Egrave: 200,
+  Eacute: 201,
+  Ecirc: 202,
+  Euml: 203,
+  Igrave: 204,
+  Iacute: 205,
+  Icirc: 206,
+  Iuml: 207,
+  ETH: 208,
+  Ntilde: 209,
+  Ograve: 210,
+  Oacute: 211,
+  Ocirc: 212,
+  Otilde: 213,
+  Ouml: 214,
+  times: 215,
+  Oslash: 216,
+  Ugrave: 217,
+  Uacute: 218,
+  Ucirc: 219,
+  Uuml: 220,
+  Yacute: 221,
+  THORN: 222,
+  szlig: 223,
+  agrave: 224,
+  aacute: 225,
+  acirc: 226,
+  atilde: 227,
+  auml: 228,
+  aring: 229,
+  aelig: 230,
+  ccedil: 231,
+  egrave: 232,
+  eacute: 233,
+  ecirc: 234,
+  euml: 235,
+  igrave: 236,
+  iacute: 237,
+  icirc: 238,
+  iuml: 239,
+  eth: 240,
+  ntilde: 241,
+  ograve: 242,
+  oacute: 243,
+  ocirc: 244,
+  otilde: 245,
+  ouml: 246,
+  divide: 247,
+  oslash: 248,
+  ugrave: 249,
+  uacute: 250,
+  ucirc: 251,
+  uuml: 252,
+  yacute: 253,
+  thorn: 254,
+  yuml: 255,
+  OElig: 338,
+  oelig: 339,
+  Scaron: 352,
+  scaron: 353,
+  Yuml: 376,
+  fnof: 402,
+  circ: 710,
+  tilde: 732,
+  Alpha: 913,
+  Beta: 914,
+  Gamma: 915,
+  Delta: 916,
+  Epsilon: 917,
+  Zeta: 918,
+  Eta: 919,
+  Theta: 920,
+  Iota: 921,
+  Kappa: 922,
+  Lambda: 923,
+  Mu: 924,
+  Nu: 925,
+  Xi: 926,
+  Omicron: 927,
+  Pi: 928,
+  Rho: 929,
+  Sigma: 931,
+  Tau: 932,
+  Upsilon: 933,
+  Phi: 934,
+  Chi: 935,
+  Psi: 936,
+  Omega: 937,
+  alpha: 945,
+  beta: 946,
+  gamma: 947,
+  delta: 948,
+  epsilon: 949,
+  zeta: 950,
+  eta: 951,
+  theta: 952,
+  iota: 953,
+  kappa: 954,
+  lambda: 955,
+  mu: 956,
+  nu: 957,
+  xi: 958,
+  omicron: 959,
+  pi: 960,
+  rho: 961,
+  sigmaf: 962,
+  sigma: 963,
+  tau: 964,
+  upsilon: 965,
+  phi: 966,
+  chi: 967,
+  psi: 968,
+  omega: 969,
+  thetasym: 977,
+  upsih: 978,
+  piv: 982,
+  ensp: 8194,
+  emsp: 8195,
+  thinsp: 8201,
+  zwnj: 8204,
+  zwj: 8205,
+  lrm: 8206,
+  rlm: 8207,
+  ndash: 8211,
+  mdash: 8212,
+  lsquo: 8216,
+  rsquo: 8217,
+  sbquo: 8218,
+  ldquo: 8220,
+  rdquo: 8221,
+  bdquo: 8222,
+  dagger: 8224,
+  Dagger: 8225,
+  bull: 8226,
+  hellip: 8230,
+  permil: 8240,
+  prime: 8242,
+  Prime: 8243,
+  lsaquo: 8249,
+  rsaquo: 8250,
+  oline: 8254,
+  frasl: 8260,
+  euro: 8364,
+  image: 8465,
+  weierp: 8472,
+  real: 8476,
+  trade: 8482,
+  alefsym: 8501,
+  larr: 8592,
+  uarr: 8593,
+  rarr: 8594,
+  darr: 8595,
+  harr: 8596,
+  crarr: 8629,
+  lArr: 8656,
+  uArr: 8657,
+  rArr: 8658,
+  dArr: 8659,
+  hArr: 8660,
+  forall: 8704,
+  part: 8706,
+  exist: 8707,
+  empty: 8709,
+  nabla: 8711,
+  isin: 8712,
+  notin: 8713,
+  ni: 8715,
+  prod: 8719,
+  sum: 8721,
+  minus: 8722,
+  lowast: 8727,
+  radic: 8730,
+  prop: 8733,
+  infin: 8734,
+  ang: 8736,
+  and: 8743,
+  or: 8744,
+  cap: 8745,
+  cup: 8746,
+  int: 8747,
+  there4: 8756,
+  sim: 8764,
+  cong: 8773,
+  asymp: 8776,
+  ne: 8800,
+  equiv: 8801,
+  le: 8804,
+  ge: 8805,
+  sub: 8834,
+  sup: 8835,
+  nsub: 8836,
+  sube: 8838,
+  supe: 8839,
+  oplus: 8853,
+  otimes: 8855,
+  perp: 8869,
+  sdot: 8901,
+  lceil: 8968,
+  rceil: 8969,
+  lfloor: 8970,
+  rfloor: 8971,
+  lang: 9001,
+  rang: 9002,
+  loz: 9674,
+  spades: 9824,
+  clubs: 9827,
+  hearts: 9829,
+  diams: 9830
+}
 
 /**
  * Remove all not xml Entities
@@ -1357,7 +1580,7 @@ function removeEntities (htmlText) {
     if (htmlBaseEntity[c]) {
       return c
     }
-    let e = htmlEntityTable[c.substr(1, c.length - 2)]
+    const e = htmlEntityTable[c.substr(1, c.length - 2)]
     return e ? String.fromCharCode(e) : ' '
   })
 }

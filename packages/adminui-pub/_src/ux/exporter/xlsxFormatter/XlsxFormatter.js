@@ -72,7 +72,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     }, this)
 
     function getTypeStyle (fld) {
-      let attribute = eAttributes[fld.name]
+      const attribute = eAttributes[fld.name]
       if (attribute) {
         switch (attribute.dataType) { //   entity.attributes[fld.name].
           case UBDomain.ubDataTypes.Date: return datestyleCol
@@ -95,8 +95,8 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     }
 
     function getWide (fld) {
-      let attribute = eAttributes[fld.name]
-      let ubDataTypes = UBDomain.ubDataTypes
+      const attribute = eAttributes[fld.name]
+      const ubDataTypes = UBDomain.ubDataTypes
       if (attribute) {
         switch (attribute.dataType) { //   entity.attributes[fld.name].
           case ubDataTypes.Date: return 12
@@ -148,7 +148,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     /* auto (Default, implies no conversion) string int float boolean date */
     colParam.push({ column: 0, width: 1 })
     Ext.each(config.columns, function (field, index) {
-      let fld = modelFields[field.dataIndex]
+      const fld = modelFields[field.dataIndex]
       colParam.push({ column: index + 1, width: getWide(fld) })
       columnTemplate.push({ column: index + 1, style: getTypeStyle(fld) })
       fldtitle = Ext.String.capitalize(field.text || fld.name || '').replace(/_/g, ' ')
@@ -186,7 +186,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
         function (fdata, index) {
           nrowData = []
           Ext.each(config.columns, function (fld) {
-            formatValue(fld, fdata[ store.dataFieldsMap[fld.dataIndex] ], nrowData, index, fdata)
+            formatValue(fld, fdata[store.dataFieldsMap[fld.dataIndex]], nrowData, index, fdata)
           }, this)
           ws.addRow(nrowData, columnTemplate)
         }, this)
@@ -200,7 +200,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
       }, this)
     }
     // var rData = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + wb.render();
-    let result = wb.render()
+    const result = wb.render()
     config.callback.call(config.scope, result)
   }
 })

@@ -11,7 +11,7 @@ module.exports = {
   alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
 
   numAlpha: function (i) {
-    let t = Math.floor(i / 26) - 1
+    const t = Math.floor(i / 26) - 1
     return (t > -1 ? this.numAlpha(t) : '') + this.alphabet.charAt(i % 26)
   },
 
@@ -58,21 +58,21 @@ module.exports = {
    * @param {[string]} types
    */
   checkParamType: function (value, types, description) {
-    let t = typeof value
+    const t = typeof value
     if (types.indexOf(t) < 0) {
       throw new Error('Invalid parameter type ' + description + ' Type:' + t)
     }
   },
 
   checkParamTypeObj: function (value, description) {
-    let t = typeof value
+    const t = typeof value
     if (t !== 'object') {
       throw new Error('Invalid parameter type ' + description + ' Type:' + t)
     }
   },
 
   checkParamTypeObjStr: function (value, description) {
-    let t = typeof value
+    const t = typeof value
     if (t !== 'object' && t !== 'string') {
       throw new Error('Invalid parameter type ' + description + ' Type:' + t)
     }
@@ -91,7 +91,7 @@ module.exports = {
   },
 
   configFromInstance: function (instance) {
-    let result = {}
+    const result = {}
     Object.getOwnPropertyNames(instance).forEach(p => {
       if (p === 'hash' || p === 'id' || p === 'code') return
       result[p] = instance[p]

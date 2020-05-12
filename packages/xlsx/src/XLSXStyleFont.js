@@ -1,7 +1,7 @@
 /**
  * Created by xmax on 16.11.2017.
  */
-const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
+const { XLSXBaseStyleController } = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
 const Color = require('./Color')
 
@@ -17,8 +17,8 @@ class XLSXStyleControllerFont extends XLSXBaseStyleController {
   }
 
   compile (item) {
-    let out = []
-    let element = item.config
+    const out = []
+    const element = item.config
     // noinspection HtmlDeprecatedTag
     out.push('<font>')
     if (element.bold === true) {
@@ -49,7 +49,7 @@ class XLSXStyleControllerFont extends XLSXBaseStyleController {
       out.push(`<u val="${element.underline}"/>`)
     }
     if (element.strike) {
-      out.push(`<strike />`)
+      out.push('<strike />')
     }
     out.push('</font>')
     return out.join('')

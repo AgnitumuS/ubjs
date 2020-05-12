@@ -2,7 +2,7 @@
  * Created by xmax on 16.11.2017.
  */
 const tools = require('./tools')
-const {XLSXStyleController} = require('./XLSXStyle')
+const { XLSXStyleController } = require('./XLSXStyle')
 const XLSXWorksheet = require('./XLSXWorksheet')
 const JSZip = require('jszip/dist/jszip')
 const ReachText = require('./ReachText')
@@ -61,7 +61,7 @@ class XLSXWorkbook {
      */
     this.style = new XLSXStyleController()
     // Any file must have gray125
-    this.style.fills.add({patternType: 'gray125', code: 'gray125'})
+    this.style.fills.add({ patternType: 'gray125', code: 'gray125' })
   }
 
   /**
@@ -87,12 +87,12 @@ class XLSXWorkbook {
     if (!config.name) {
       config.name = 'Sheet ' + config.id
     } else {
-      config.name = (config.name || '').replace(/[\[\]/\\?:*]/g,'_')
+      config.name = (config.name || '').replace(/[\[\]/\\?:*]/g, '_')
     }
     while (this.worksheets.some(F => F.name === config.name)) {
       config.name += '_' + config.id
     }
-    let ws = new XLSXWorksheet(config, this)
+    const ws = new XLSXWorksheet(config, this)
     this.worksheets.unshift(ws)
     return ws
   }
@@ -129,13 +129,13 @@ class XLSXWorkbook {
     const opt = options || {}
     opt.type = opt.type || 'arraybuffer'
 
-    let zip = new JSZip()
+    const zip = new JSZip()
     this.zip = zip
     let xl
     let xlWorksheets
     let context
 
-    let hasCustomProps = Object.keys(this.customProperties).length > 0
+    const hasCustomProps = Object.keys(this.customProperties).length > 0
 
     // Fully static
     zip.folder('_rels').file('.rels',
@@ -156,7 +156,7 @@ class XLSXWorkbook {
     )
     // }
 
-    context = {xlWorksheets: xlWorksheets, xl: xl}
+    context = { xlWorksheets: xlWorksheets, xl: xl }
     this.compileWorksheets(context)
 
     xl.file('styles.xml', this.style.render(context))
@@ -203,7 +203,7 @@ class XLSXWorkbook {
       'xWindow="480" yWindow="60" windowWidth="18195" windowHeight="8505"/></bookViews><sheets>' +
       context.worksheets.join('') + '</sheets><calcPr calcId="145621"/></workbook>')
     // }
-    return zip.generate({type: opt.type, compression: this.compression})
+    return zip.generate({ type: opt.type, compression: this.compression })
   }
 
   /**
@@ -229,7 +229,7 @@ class XLSXWorkbook {
     let pId = 1
     return Object.keys(this.customProperties).map((p) => {
       if (this.customProperties.hasOwnProperty(p)) {
-        let v = this.customProperties[p]
+        const v = this.customProperties[p]
         switch (typeof v) {
           case 'string':
             return `<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="${++pId}" name="${p}"><vt:lpwstr>${v}</vt:lpwstr></property>`

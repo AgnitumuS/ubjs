@@ -1,7 +1,7 @@
 /**
  * Created by xmax on 16.11.2017.
  */
-const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
+const { XLSXBaseStyleController } = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
 
 let _instance = null
@@ -15,11 +15,11 @@ class XLSXStyleControllerProtect extends XLSXBaseStyleController {
   }
 
   compile (item) {
-    let out = []
+    const out = []
     let xkey
-    let element = item.config
+    const element = item.config
     out.push('<protection')
-    out.push(' ', element['type'], '="', element['value'] ? '1' : '0', '"')
+    out.push(' ', element.type, '="', element.value ? '1' : '0', '"')
     out.push('/>')
     return out.join('')
   }

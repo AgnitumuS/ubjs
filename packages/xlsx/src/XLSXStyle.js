@@ -1,10 +1,10 @@
-const {XLSXBaseStyleElement} = require('./XLSXBaseStyleElement')
-const {XLSXStyleControllerBorder} = require('./XLSXStyleBorder')
-const {XLSXStyleControllerFill} = require('./XLSXStyleFill')
-const {XLSXStyleControllerFormat} = require('./XLSXStyleFormat')
-const {XLSXStyleControllerFont} = require('./XLSXStyleFont')
-const {XLSXStyleControllerAlign} = require('./XLSXStyleAlign')
-const {XLSXStyleControllerProtect} = require('./XLSXStyleProtect')
+const { XLSXBaseStyleElement } = require('./XLSXBaseStyleElement')
+const { XLSXStyleControllerBorder } = require('./XLSXStyleBorder')
+const { XLSXStyleControllerFill } = require('./XLSXStyleFill')
+const { XLSXStyleControllerFormat } = require('./XLSXStyleFormat')
+const { XLSXStyleControllerFont } = require('./XLSXStyleFont')
+const { XLSXStyleControllerAlign } = require('./XLSXStyleAlign')
+const { XLSXStyleControllerProtect } = require('./XLSXStyleProtect')
 const tools = require('./tools')
 
 /**
@@ -29,6 +29,7 @@ class XLSXStyle {
   static get indexDefFormateDate () {
     return 14
   }
+
   static get predefinedFormats () {
     return {
       general: 0,
@@ -87,8 +88,8 @@ class XLSXStyle {
   }
 
   compile () {
-    let cfg = this.config
-    let out = []
+    const cfg = this.config
+    const out = []
     out.push(
       `<xf numFmtId="${extractId(cfg.format)}" fontId="${extractId(cfg.font)}"`
     )
@@ -98,7 +99,7 @@ class XLSXStyle {
     out.push(
       ` ${cfg.format ? 'applyNumberFormat="1"' : ''}  applyFont="1" ${cfg.fill ? 'applyFill="1"' : ''} ${cfg.border ? 'applyBorder="1"' : ''}`
     )
-    let setAdditionalAlignment = cfg.wrapText || cfg.verticalAlign || cfg.horizontalAlign
+    const setAdditionalAlignment = cfg.wrapText || cfg.verticalAlign || cfg.horizontalAlign
     out.push(
       ` ${cfg.alignment || setAdditionalAlignment ? 'applyAlignment="1"' : ''} ${cfg.protect ? 'applyProtection="1"' : ''} >`
     )
@@ -126,9 +127,9 @@ class XLSXStyleController {
 
     this.alignments = XLSXStyleControllerAlign.instance()
     this.borders = XLSXStyleControllerBorder.instance()
-    this.borders.add({left: {}, right: {}, top: {}, bottom: {}})
+    this.borders.add({ left: {}, right: {}, top: {}, bottom: {} })
     this.fills = XLSXStyleControllerFill.instance()
-    this.fills.add({patternType: 'none'})
+    this.fills.add({ patternType: 'none' })
     this.formats = XLSXStyleControllerFormat.instance()
     this.fonts = XLSXStyleControllerFont.instance()
     this.protects = XLSXStyleControllerProtect.instance()
@@ -138,11 +139,11 @@ class XLSXStyleController {
     this.styleHashList = {}
     this.styleHashListIndex = 0
 
-    this.defaultStyle = this.getStyle({code: 'defaultStyle'})
+    this.defaultStyle = this.getStyle({ code: 'defaultStyle' })
   }
 
   compile (obj) {
-    let out = []
+    const out = []
 
     out.push(
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n',
@@ -204,7 +205,7 @@ class XLSXStyleController {
     if (typeof cfg.font !== 'undefined') {
       cfg.font = this.fonts.get(cfg.font)
     }
-/*
+    /*
     cfg.wrapText = cfg.wrapText !== undefined ? cfg.wrapText : cfg.setWrapText
     cfg.verticalAlign = cfg.verticalAlign || cfg.setVerticalAlign
     cfg.horizontalAlign = cfg.horizontalAlign || cfg.setHorizontalAlign
@@ -233,7 +234,7 @@ class XLSXStyleController {
 
   getDefDateStyle () {
     if (!this.named.DefDateStyle) {
-      this.getStyle({format: XLSXStyle.indexDefFormateDate, code: 'DefDateStyle'})
+      this.getStyle({ format: XLSXStyle.indexDefFormateDate, code: 'DefDateStyle' })
     }
     return this.named.DefDateStyle
   }
@@ -251,7 +252,7 @@ class XLSXStyleController {
       !config.font ? '#' : String(extractId(config.font)),
       !config.alignment ? '#' : String(extractId(config.alignment)),
       !config.protect ? '#' : String(extractId(config.protect))
-/*
+      /*
       ,
       !config.wrapText ? '1' : '0',
       !config.verticalAlign ? '#' : config.verticalAlign,
@@ -266,7 +267,7 @@ class XLSXStyleController {
    */
   render () {
     if (this.fonts.elements.length === 0) {
-      this.fonts.add({name: 'Calibri', fontSize: 11, scheme: 'minor'})
+      this.fonts.add({ name: 'Calibri', fontSize: 11, scheme: 'minor' })
     }
 
     this.elementsJoined = this.elements.map(item => item.compile()).join('')

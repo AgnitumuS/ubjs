@@ -36,7 +36,7 @@ class SpanMap {
    * @return {number[]}
    */
   getWidths () {
-    let colWidth = this.colWidth.map(I => I)
+    const colWidth = this.colWidth.map(I => I)
     this.colWidthCalcSpan.forEach((v, i) => {
       if (!colWidth[i]) {
         colWidth[i] = v
@@ -107,7 +107,7 @@ Table columns count: ${this.columnCount}, row columns count: ${columnsConfig.len
         throw new Error(`To many columns in row config. Max=${this.columnCount} Current=${columnsConfig.length}`)
       }
     }
-    let rowNum = this.rowIndex
+    const rowNum = this.rowIndex
     // colNum, width, rowSpan, colSpan
     let spanRow = this.spanRows[rowNum]
     if (!spanRow) this.spanRows[rowNum] = spanRow = {}
@@ -116,7 +116,7 @@ Table columns count: ${this.columnCount}, row columns count: ${columnsConfig.len
       if (spanRow[colNum]) {
         continue
       }
-      let config = columnsConfig[configNum]
+      const config = columnsConfig[configNum]
       if (config.rowSpan && config.rowSpan > 1) {
         for (let rw = rowNum + 1; rw < rowNum + config.rowSpan; rw++) {
           let rowForSpan = this.spanRows[rw]

@@ -1,7 +1,7 @@
 /**
  * Created by xmax on 16.11.2017.
  */
-const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
+const { XLSXBaseStyleController } = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
 
 let _instance
@@ -54,7 +54,7 @@ class XLSXStyleControllerAlign extends XLSXBaseStyleController {
    */
   compile (item) {
     let prop
-    let out = []
+    const out = []
     const element = item.config
     out.push('<alignment ')
     for (prop in element) {

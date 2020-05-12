@@ -1,7 +1,7 @@
 /**
  * Created by xmax on 16.11.2017.
  */
-const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
+const { XLSXBaseStyleController } = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
 let _instance
 /**
@@ -26,7 +26,7 @@ class XLSXStyleControllerFormat extends XLSXBaseStyleController {
   add (info) {
     tools.checkParamType(info, ['object', 'string'], 'XLSXStyleControllerFormat.add')
     if (typeof info !== 'object') {
-      info = {formatCode: info}
+      info = { formatCode: info }
     }
     info.formatCode = tools.escapeXML(info.formatCode)
     return super.add(info, 'FORMAT')
@@ -39,7 +39,7 @@ class XLSXStyleControllerFormat extends XLSXBaseStyleController {
   }
 
   compile (item) {
-    let element = item.config
+    const element = item.config
     if (element.formatCode) {
       return `<numFmt numFmtId="${item.id}" formatCode="${element.formatCode}"/>`
     } else {

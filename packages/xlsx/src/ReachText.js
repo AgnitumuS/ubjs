@@ -114,8 +114,8 @@ class ReachText {
 }
 
 function isStyleEqual (style, compare) {
-  let ks = Object.keys(style)
-  let kc = Object.keys(compare)
+  const ks = Object.keys(style)
+  const kc = Object.keys(compare)
   if (ks.length !== kc.length) return false
   return ks.every(F => {
     if (kc.indexOf(F) < 0) return false

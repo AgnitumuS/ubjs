@@ -1,7 +1,7 @@
 /**
  * Created by xmax on 16.11.2017.
 */
-const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
+const { XLSXBaseStyleController } = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
 const Color = require('./Color')
 const orderWrite = ['left', 'right', 'top', 'bottom', 'diagonal']
@@ -35,17 +35,17 @@ class XLSXStyleControllerBorder extends XLSXBaseStyleController {
    * @return {string}
    */
   compile (item) {
-    let out = []
+    const out = []
     const element = item.config
     out.push('<border>')
     orderWrite.forEach(xKey => {
-      let prop = element[xKey]
+      const prop = element[xKey]
       if (prop) {
         if (xKey === 'id' || xKey === 'style' || xKey === 'color' || xKey === 'code') {
           return
         }
         if (prop.style) {
-          let colorT = prop.color ? prop.color.compile() : '<color auto="1" />'
+          const colorT = prop.color ? prop.color.compile() : '<color auto="1" />'
           out.push(`<${xKey} style="${prop.style}">${colorT}</${xKey}>`)
         } else {
           out.push(`<${xKey}/>`)
