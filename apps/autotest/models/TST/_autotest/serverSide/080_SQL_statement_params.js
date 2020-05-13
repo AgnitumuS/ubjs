@@ -50,7 +50,7 @@ function runTest () {
     st.execSQL(`
 DECLARE anID NUMBER(19,0);
 begin
-  select ID INTO anID from uba_user where ID > ? and name <> ? FETCH FIRST 1 ROWS ONLY;
+  select ID INTO anID from uba_user where ID > :ID: and name <> :name: FETCH FIRST 1 ROWS ONLY;
 END;
 `,
     { ID: 10, name: '123' })
