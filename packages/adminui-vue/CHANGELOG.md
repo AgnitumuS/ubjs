@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - styles for scrollbar in firefox
 
 ### Changed
+ - `UTableEntity/excel export` uses a client-side export and format excel data accoding to current TableEntity configuration;
+   Limitation: custom slots not exported yet; rows count limited to 50000.
 
 ### Deprecated
 

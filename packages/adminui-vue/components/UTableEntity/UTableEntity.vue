@@ -203,7 +203,6 @@ export default {
         ...column,
         filters
       }
-      console.log(resultColumn)
       if (typeof resultColumn.format === 'string') {
         resultColumn.format = new Function('{value, column, row}', resultColumn.format)
       }

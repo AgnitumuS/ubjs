@@ -3,6 +3,7 @@ const UB = require('@unitybase/ub-pub')
 const { Notification: $notify } = require('element-ui')
 const { throttle } = require('throttle-debounce')
 const { dialogDeleteRecord } = require('../dialog/UDialog')
+const { exportExcel, exportCsv, exportHtml } = require('../../utils/fileExporter')
 
 /**
  * Build store by UTableEntity props
@@ -14,6 +15,7 @@ const { dialogDeleteRecord } = require('../dialog/UDialog')
  * @param {function} instance.buildAddNewConfig AddNew config builder
  * @param {function} instance.buildEditConfig Edit config builder
  * @param {function} instance.buildCopyConfig Copy config builder
+ * @param {boolean} instance.useRequestFieldList Whether replacing result keys with fieldList
  */
 module.exports = (instance) => ({
   state () {
@@ -195,8 +197,7 @@ module.exports = (instance) => ({
         commit('LOADING', true)
 
         try {
-          const repo = getters.currentRepository
-          const response = await repo.selectAsArray()
+          const response = await getters.currentRepository.selectAsArray()
 
           if (instance.useRequestFieldList) {
             response.resultData.fields = response.fieldList
@@ -404,6 +405,37 @@ module.exports = (instance) => ({
           columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP']
         }
       })
+    },
+
+    async exportTo ({ getters }, exportFormat) {
+      const repository = getters.currentRepository
+        .clone()
+        .withTotal(false)
+        .start(0)
+        .limit(50000)
+      const fileName = UB.i18n(getters.entityName)
+
+      switch (exportFormat) {
+        case 'xlsx':
+          await exportExcel({
+            columns: getters.columns,
+            repository,
+            fileName
+          })
+          break
+        case 'csv':
+          await exportCsv({
+            repository,
+            fileName: 'fileName'
+          })
+          break
+        case 'html':
+          await exportHtml({
+            repository,
+            fileName
+          })
+          break
+      }
     }
   }
 })
