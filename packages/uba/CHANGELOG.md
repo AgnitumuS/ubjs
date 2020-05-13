@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.9] - 2020-05-13
 ## [5.4.8] - 2020-05-06
 ### Added
  - **BREAKING** this version of @unitybase/uba require UB server to be at last 5.18.1 ("attribute restriction" feature used)

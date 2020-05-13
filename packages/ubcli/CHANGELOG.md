@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - detailed explanation of database creation in initDB - see https://unitybase.info/api/server-v5/module-initDB.html
- for tips how to create a database manually
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.5.9] - 2020-05-13
+### Added
+ - detailed explanation of database creation in initDB - see https://unitybase.info/api/server-v5/module-initDB.html
+ for tips how to create a database manually
 
 ## [5.5.8] - 2020-05-06
 ## [5.5.7] - 2020-04-24

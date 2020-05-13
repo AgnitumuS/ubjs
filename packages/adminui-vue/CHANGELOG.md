@@ -6,15 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.10.10] - 2020-05-13
+### Added
  - styles for scrollbar in firefox
 
 ### Changed
  - `UTableEntity/excel export` uses a client-side export and format excel data accoding to current TableEntity configuration;
    Limitation: custom slots not exported yet; rows count limited to 50000.
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `u-icon*` centered inside container properly (before this change they could move slightly upwards). Fixed by sets font [descent](https://proandroiddev.com/android-and-typography-101-5f06722dd611) to 100

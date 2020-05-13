@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - reformat code according to ESLint rules (no functional changes)
 
 ### Deprecated
 
@@ -16,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.1.26] - 2020-05-13
+### Changed
+ - reformat code according to ESLint rules (no functional changes)
 
 ## [5.1.0] - 2019-09-11
 ### Fixed

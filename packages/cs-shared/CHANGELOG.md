@@ -6,8 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - link to tutorial for an array bindings from `CustomRepository.where()`
- 
+
 ### Changed
 
 ### Deprecated
@@ -16,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.7] - 2020-05-13
+### Added
+ - link to tutorial for an array bindings from `CustomRepository.where()`
+ 
 ## [5.2.6] - 2020-04-24
 ## [5.2.5] - 2020-04-10
 ### Fixed

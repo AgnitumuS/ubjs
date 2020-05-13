@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.9] - 2020-05-13
 ## [5.5.8] - 2020-05-06
 ### Fixed
  - NativeMessages extension setup (@ub-e/nm-scanned, @ub-e/nm-pdfsign etc.) for FireFox >= 75 will show
