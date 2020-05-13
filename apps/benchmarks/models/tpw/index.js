@@ -129,6 +129,7 @@ function queries (req, resp) {
 	  data,
 	  i
 
+  if (repeatNum === 'r') repeatNum = Math.round(Math.random() * 100) + 1 // random in case q=0
   repeatNum = (repeatNum > 500) ? 500 : repeatNum
   for (i = 0; i < repeatNum; i++) {
 	  data = UB.Repository('World').attrs(['ID', 'randomNumber']).where('ID', '=', rnd10000()).selectAsObject()
