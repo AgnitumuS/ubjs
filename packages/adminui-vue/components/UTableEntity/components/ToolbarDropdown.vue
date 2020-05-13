@@ -67,17 +67,17 @@
           <u-dropdown-item
             icon="u-icon-file-excel"
             label="exportXls"
-            @click="exportExcel"
+            @click="exportTo('xlsx')"
           />
           <u-dropdown-item
             icon="u-icon-file-html"
             label="exportHtml"
-            @click="exportHtml"
+            @click="exportTo('html')"
           />
           <u-dropdown-item
             icon="u-icon-file-csv"
             label="exportCsv"
-            @click="exportCsv"
+            @click="exportTo('csv')"
           />
         </u-dropdown-item>
       </slot>
@@ -110,44 +110,9 @@ export default {
       'deleteRecord',
       'editRecord',
       'copyRecord',
-      'audit'
-    ]),
-    /**
-     * Query server for content of current repository (without pagination) in specified contentType
-     * @param contentType
-     * @param resultFileExtension
-     */
-    exportTo (contentType, resultFileExtension) {
-      const repo = this.currentRepository.clone().withTotal(false).start(0).limit(0)
-      repo.connection.xhr({
-        method: 'POST',
-        url: 'ubql',
-        data: [repo.ubql()],
-        responseType: 'blob',
-        headers: { 'Content-Type': contentType }
-      }).then(res => {
-        window.saveAs(res.data, `${this.entityName}.${resultFileExtension}`)
-      })
-    },
-    exportExcel () {
-      this.exportTo('application/vnd.oasis.opendocument.spreadsheet', 'ods')
-    },
-    exportHtml () {
-      this.exportTo('text/html; charset=UTF-8', 'html')
-    },
-    exportCsv () {
-      this.exportTo('text/csv; charset=UTF-8', 'csv')
-    }
-    // exportExcel () {
-    //   const xlsx = require('@unitybase/xlsx')
-    //   const workbook = new xlsx.XLSXWorkbook()
-    //   workbook.useSharedString = true
-    //
-    //   workbook.addRow()
-    //   const file = workbook.render()
-    //   const blob = new Blob([file], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-    //   window.saveAs(blob, 'origName.xlsx')
-    // }
+      'audit',
+      'exportTo'
+    ])
   }
 }
 </script>
