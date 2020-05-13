@@ -46,6 +46,16 @@ function runTest () {
   })
   assert.strictEqual(st.rowCount, 1, `Mix un-named named and inlined parameters v2. Expect 1 row, got ${st.rowCount}`)
 
+  if (App.domainInfo.connections[0].dialect.startsWith('Oracle')) {
+    st.execSQL(`
+DECLARE anID NUMBER(19,0);
+begin
+  select ID INTO anID from uba_user where ID > ? and name <> ? FETCH FIRST 1 ROWS ONLY;
+END;
+`,
+    { ID: 10, name: '123' })
+  }
+
   return
 
   // below is fails
