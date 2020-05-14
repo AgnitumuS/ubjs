@@ -1,14 +1,14 @@
+// author pavel.mash on 25.09.2016.
 /**
  * Adding a EMail to queue for sending
  * @module mail-queue
  * @memberOf module:@unitybase/ubq
  */
-// author pavel.mash on 25.09.2016.
 const UB = require('@unitybase/ub')
 const App = UB.App
 const UBMail = require('@unitybase/mailer')
 let ubqMessagesStore
-
+const MAILER_ENABLED = App.serverConfig.application.customSettings && App.serverConfig.application.customSettings.mailerConfig
 /**
  * @typedef {Object} mailAttachmentReference
  * @property {String} entity The entity code where data is stored
@@ -28,6 +28,10 @@ let ubqMessagesStore
  * @param {Array<mailAttachmentReference>} [config.attachments] The references to documents, stored in the entities. Will be attached to EMail during sending
  */
 module.exports.queueMail = function (config) {
+  if (!MAILER_ENABLED) {
+    console.warn('Mailer disabled in config. queueMail is ignored. Better to check `mailerEnabled` before put mail into queue')
+    return
+  }
   const msgCmd = {
     from: config.from || App.serverConfig.application.customSettings.mailerConfig.fromAddr,
     to: Array.isArray(config.to) ? config.to : [config.to],
@@ -49,3 +53,11 @@ module.exports.queueMail = function (config) {
     }
   })
 }
+
+/**
+ * Indicate mailer is configured in serverConfig.application.customSettings.mailerConfig.
+ *
+ * In case this property is false calls to `queueMail` do nothing, so better to verify it before mail
+ * creation to save a server resources
+ */
+module.exports.mailerEnabled = MAILER_ENABLED
