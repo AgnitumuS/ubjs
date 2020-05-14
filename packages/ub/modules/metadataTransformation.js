@@ -157,7 +157,7 @@ function readAllEntitiesPathsAndHooks () {
       console.error(`Model "${model.name}" path "${model.path}" resolved to "${model.realPath}" does not exist, model not loaded`)
       return
     }
-    console.info(`"${model.name}" from "${model.path}"`)
+    console.info(`"${model.name}"(${model.version}) from "${model.path}"`)
     // todo - check public path
     readDir(model.name, model.realPath, true)
     const possibleHookFN = path.join(model.realPath, hookMetadataTransformationFn)

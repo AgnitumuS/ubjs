@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - put a model version (version from package.json) into log while loading domain models on server startup. New log example:
+```
+20200514 09285007  " info  		Loading domain models... 
+20200514 09285007  " info  		"UB"(5.4.9) from "./node_modules/@unitybase/ub" 
+20200514 09285007  " info  		"UBA"(5.4.9) from "./node_modules/@unitybase/uba" 
+```
 
 ### Changed
 
