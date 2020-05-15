@@ -35,7 +35,7 @@ module.exports = function (session) {
       caption: 'Miscellaneous',
       isFolder: true,
       isCollapsed: true,
-      iconCls: 'fa fa-cogs',
+      iconCls: 'u-icon-setting',
       displayOrder: 40
     }
   })
@@ -49,7 +49,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'ubs_settings',
       caption: 'Settings',
-      iconCls: 'fa fa-cog',
+      iconCls: 'u-icon-setting',
       displayOrder: 10,
       cmdCode: JSON.stringify({
         renderer: 'vue',
@@ -152,7 +152,7 @@ module.exports = function (session) {
       code: 'ubs_message',
       caption: 'Notifications',
       displayOrder: 60,
-      iconCls: 'fa fa-bell',
+      iconCls: 'u-icon-bell',
       cmdCode: JSON.stringify({
         renderer: 'vue',
         cmdType: 'showList',
@@ -174,7 +174,7 @@ module.exports = function (session) {
       code: 'ubs_globalCache',
       caption: 'Server-side cache',
       displayOrder: 60,
-      iconCls: 'fa fa-server',
+      iconCls: 'u-icon-data',
       cmdCode: JSON.stringify({
         renderer: 'vue',
         cmdType: 'showList',
@@ -198,7 +198,7 @@ module.exports = function (session) {
         caption: 'UI',
         isFolder: true,
         isCollapsed: false,
-        iconCls: 'fa fa-picture-o',
+        iconCls: 'u-icon-image',
         displayOrder: 30
       }
     })
@@ -215,7 +215,7 @@ module.exports = function (session) {
       code: 'ubs_report',
       caption: 'Reports',
       displayOrder: 60,
-      iconCls: 'fa fa-book',
+      iconCls: 'u-icon-book',
       cmdCode: JSON.stringify({
         renderer: 'vue',
         cmdType: 'showList',

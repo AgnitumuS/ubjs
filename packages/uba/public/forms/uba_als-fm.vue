@@ -45,7 +45,7 @@
       <el-button
         v-if="selectedState && emptyAttributes.length !== 0"
         slot="reference"
-        icon="el-icon-plus"
+        icon="u-icon-add"
         @click="popoverVisible = !popoverVisible"
       >
         {{ $ut('actionAdd') }}
@@ -54,7 +54,7 @@
     <el-button
       v-if="selectedState"
       type="success"
-      icon="el-icon-check"
+      icon="u-icon-check"
       :disabled="!needSave"
       @click="save"
     >
@@ -63,7 +63,7 @@
     <el-button
       v-if="selectedState"
       type="success"
-      icon="el-icon-document"
+      icon="u-icon-file-text"
       :disabled="!needSave"
       @click="generateDiffFile"
     >
@@ -92,7 +92,7 @@
           <template #removeAction="{row}">
             <el-button
               size="small"
-              icon="el-icon-delete"
+              icon="u-icon-delete"
               circle
               @click.native.prevent="deleteRow(row.code)"
             />

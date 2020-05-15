@@ -431,9 +431,9 @@ function launchApp () {
             // me.toggleCmp.getEl().on('click', me.toggle, me);
           })
           if (!me.collapsed) {
-            me.toggleCmp.addCls(['fa', 'fa-angle-down'])
+            me.toggleCmp.addCls(['u-icon-arrow-down'])
           } else {
-            me.toggleCmp.addCls(['fa', 'fa-angle-right'])
+            me.toggleCmp.addCls(['u-icon-arrow-right'])
           }
 
           let vertical = me.headerPosition === 'left' || me.headerPosition === 'right'
@@ -478,11 +478,11 @@ function launchApp () {
           return
         }
         if (!this.collapsed) {
-          this.toggleCmp.removeCls('fa-angle-right')
-          this.toggleCmp.addCls('fa-angle-down')
+          this.toggleCmp.removeCls('u-icon-arrow-right')
+          this.toggleCmp.addCls('u-icon-arrow-down')
         } else {
-          this.toggleCmp.removeCls('fa-angle-down')
-          this.toggleCmp.addCls('fa-angle-right')
+          this.toggleCmp.removeCls('u-icon-arrow-down')
+          this.toggleCmp.addCls('u-icon-arrow-right')
         }
       },
 

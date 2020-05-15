@@ -17,7 +17,7 @@
 
     <u-toolbar-button
       v-if="entitySchema.hasMixin('softLock')"
-      :icon="isLocked ? 'fa fa-lock' : 'fa fa-unlock'"
+      :icon="isLocked ? 'u-icon-lock' : 'u-icon-unlock'"
       :color="isLocked ? (isLockedByMe ? 'primary' : 'danger') : 'info'"
       :tooltip="lockInfoMessage"
     />
@@ -154,7 +154,7 @@ export default {
 
       if (this.entitySchema.hasMixin('dataHistory')) {
         buttons.push({
-          icon: 'fa fa-history',
+          icon: 'u-icon-branch',
           label: 'ChangesHistory',
           disabled: this.isNew,
           handler: this.showDataHistory
@@ -163,7 +163,7 @@ export default {
 
       if (this.entitySchema.hasMixin('audit')) {
         buttons.push({
-          icon: 'u-icon-audit',
+          icon: 'u-icon-line-chart',
           label: 'showAudit',
           handler: this.showAudit,
           disabled: !this.$UB.connection.domain.isEntityMethodsAccessible('uba_auditTrail', 'select')
@@ -175,7 +175,7 @@ export default {
         const aclEntityName = mixins && mixins.aclRls && mixins.aclRls.useUnityName
           ? mixins.unity.entity + '_acl' : this.entitySchema.name + '_acl'
         buttons.push({
-          icon: 'fa fa-shield',
+          icon: 'u-icon-key',
           label: 'accessRight',
           handler: () => {},
           disabled: !this.$UB.connection.domain.isEntityMethodsAccessible(aclEntityName, 'select')
@@ -184,14 +184,14 @@ export default {
 
       if (this.entitySchema.hasMixin('softLock')) {
         buttons.push({
-          icon: 'fa fa-lock',
+          icon: 'u-icon-lock',
           label: 'lockBtn',
           handler: () => { this.lockEntity(true) },
           disabled: this.isNew,
           divider: true
         })
         buttons.push({
-          icon: 'fa fa-unlock',
+          icon: 'u-icon-unlock',
           label: 'unLockBtn',
           handler: () => { this.unlockEntity() },
           disabled: !this.isLockedByMe

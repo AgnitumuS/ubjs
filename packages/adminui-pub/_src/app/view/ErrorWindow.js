@@ -111,7 +111,7 @@ UB.view.ErrorWindow = {
       msgDiv.style.display = 'table-cell';
       msgDiv.style.cursor = 'pointer';
       detailCloseBtn = document.createElement('a');
-      detailCloseBtn.className = 'ub-error-win-btn-detail-close fa fa-times';
+      detailCloseBtn.className = 'ub-error-win-btn-detail-close u-icon-close';
       detailCloseBtn.onclick = function(e){
           showDetail(arguments);
       };

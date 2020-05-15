@@ -26,7 +26,7 @@
     <template slot="footer">
       <el-button
         v-if="isDevInfo"
-        icon="fa fa-copy"
+        icon="u-icon-copy"
         @click="copyClipboard"
       />
       <el-button

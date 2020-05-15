@@ -81,7 +81,7 @@ Ext.define('UB.ux.Multifilter', {
     me.buttonSelectFilter = new Ext.button.Button({
       tooltip: UB.i18n('Filter by'),
       scale: 'medium',
-      iconCls: 'fas fa-filter',
+      iconCls: 'u-icon-filter',
       handler: function () {
         if (!me.filterMenu) {
           me.filterMenu = me.createSelectFilterMenu(me.selectColumnMenuClick)
@@ -230,7 +230,7 @@ Ext.define('UB.ux.Multifilter', {
 
     button = new Ext.button.Button({
       tooltip: UB.i18n('search'),
-      iconCls: 'fa fa-filter',
+      iconCls: 'u-icon-filter',
       handler: function () {
         menu.showBy(button.el, me.menuAlign)
       }
@@ -300,7 +300,7 @@ Ext.define('UB.ux.Multifilter', {
             ownerLayout: layout,
             ui: owner instanceof Ext.toolbar.Toolbar ? 'default-toolbar' : 'default',
             tooltip: UB.i18n('search'),
-            iconCls: 'fas fa-filter',
+            iconCls: 'u-icon-filter',
             handler: function () {
               if (me.activeFilterPanel) {
                 me.showContexFilterPanel()
@@ -1758,7 +1758,7 @@ Ext.define('UB.ux.Multifilter', {
     createSearchButton: function (handler) {
       return Ext.create('Ext.button.Button', {
         scale: 'medium',
-        iconCls: 'fas fa-binoculars',
+        iconCls: 'u-icon-search',
         tooltip: UB.i18n('search'),
         margin: '0 0 0 8',
         handler: handler

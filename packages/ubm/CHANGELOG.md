@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - replace most font-awesome and element-ui to UB icons analog
+ 
 ### Deprecated
 
 ### Removed

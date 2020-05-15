@@ -51,7 +51,7 @@ module.exports = function (session) {
       caption: 'Groups and Users',
       isFolder: true,
       isCollapsed: false,
-      iconCls: 'fa fa-folder-o',
+      iconCls: 'u-icon-folder-open',
       displayOrder: 10
     }
   })
@@ -65,7 +65,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'uba_user',
       caption: 'User list',
-      iconCls: 'fa fa-user',
+      iconCls: 'u-icon-person',
       displayOrder: 10,
       cmdCode: JSON.stringify({
         renderer: 'vue',
@@ -93,7 +93,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'uba_userrole',
       caption: 'User roles',
-      iconCls: 'el-icon-office-building',
+      iconCls: 'u-icon-street',
       displayOrder: 20,
       cmdCode: JSON.stringify({
         renderer: 'vue',
@@ -115,7 +115,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'uba_group',
       caption: 'Group list',
-      iconCls: 'fa fa-group',
+      iconCls: 'u-icon-person-group',
       displayOrder: 30,
       cmdCode: JSON.stringify({
         renderer: 'vue',
@@ -157,7 +157,7 @@ module.exports = function (session) {
       desktopID: desktopID,
       parentID: folderID,
       code: 'uba_usergroup',
-      iconCls: 'el-icon-school',
+      iconCls: 'u-icon-person-group',
       caption: 'User groups',
       displayOrder: 40,
       cmdCode: JSON.stringify({
@@ -180,7 +180,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'uba_usercertificate',
       caption: 'Certificates',
-      iconCls: 'fa fa-key',
+      iconCls: 'u-icon-key',
       isFolder: false,
       displayOrder: 50,
       cmdCode: JSON.stringify({
@@ -204,7 +204,7 @@ module.exports = function (session) {
       caption: 'Security',
       isFolder: true,
       isCollapsed: false,
-      iconCls: 'fa fa-lock',
+      iconCls: 'u-icon-lock',
       displayOrder: 20
     }
   })
@@ -218,7 +218,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'uba_role',
       caption: 'System roles',
-      iconCls: 'fa fa-users',
+      iconCls: 'u-icon-person-group',
       displayOrder: 10,
       cmdCode: JSON.stringify({
         renderer: 'vue',
@@ -282,7 +282,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'uba_otp',
       caption: 'One-time passwords',
-      iconCls: 'fa fa-eye',
+      iconCls: 'u-icon-eye',
       displayOrder: 40,
       cmdCode: JSON.stringify({
         renderer: 'vue',
@@ -304,7 +304,7 @@ module.exports = function (session) {
       code: 'uba_audit',
       caption: 'Security audit',
       displayOrder: 60,
-      iconCls: 'fa fa-lock',
+      iconCls: 'u-icon-lock',
       cmdCode: JSON.stringify({
         renderer: 'vue',
         cmdType: 'showList',
@@ -343,7 +343,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'uba_auditTrail',
       caption: 'Audit Trail',
-      iconCls: 'el-icon-s-unfold',
+      iconCls: 'u-icon-line-chart',
       displayOrder: 40,
       cmdCode: JSON.stringify({
         renderer: 'vue',

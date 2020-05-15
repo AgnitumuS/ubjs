@@ -53,7 +53,7 @@ module.exports = function (session) {
       caption: 'Territorial',
       isFolder: true,
       isCollapsed: false,
-      iconCls: 'fa fa-globe',
+      iconCls: 'u-icon-globe',
       displayOrder: 10
     }
   })
@@ -75,7 +75,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'cdn_region',
       caption: 'Regions',
-      iconCls: 'fa fa-cloud',
+      iconCls: 'u-icon-cloud',
       displayOrder: 10,
       cmdCode: JSON.stringify({
         renderer: 'vue',
@@ -98,7 +98,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'cdn_city',
       caption: 'Cities',
-      iconCls: 'fa fa-group', // 'fa fa-institution' - where is this icon??
+      iconCls: 'u-icon-person-group', // 'fa fa-institution' - where is this icon??
       displayOrder: 20,
       cmdCode: JSON.stringify({
         renderer: 'vue',
@@ -144,7 +144,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'cdn_adminunit',
       caption: 'Admin units',
-      iconCls: 'fa fa-object-ungroup',
+      iconCls: 'u-icon-object-group',
       displayOrder: 40,
       cmdCode: JSON.stringify({
         renderer: 'vue',
@@ -236,7 +236,7 @@ module.exports = function (session) {
       caption: 'Subjects',
       isFolder: true,
       isCollapsed: false,
-      iconCls: 'fa fa-user-circle-o',
+      iconCls: 'u-icon-person',
       displayOrder: 10
     }
   })
@@ -374,7 +374,7 @@ module.exports = function (session) {
         caption: 'Miscellaneous',
         isFolder: true,
         isCollapsed: true,
-        iconCls: 'fa fa-cogs',
+        iconCls: 'u-icon-setting',
         displayOrder: 40
       }
     })
@@ -391,7 +391,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'cdn_currency',
       caption: 'Currency',
-      iconCls: 'fa fa-usd',
+      iconCls: 'u-icon-dollar',
       displayOrder: 10,
       cmdCode: JSON.stringify({
         renderer: 'vue',
@@ -442,7 +442,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'cdn_classifier',
       caption: 'Classifiers',
-      iconCls: 'fa fa-tags',
+      iconCls: 'u-icon-tags',
       displayOrder: 30,
       cmdCode: JSON.stringify({
         renderer: 'vue',

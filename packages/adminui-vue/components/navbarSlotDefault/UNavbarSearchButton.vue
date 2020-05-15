@@ -40,7 +40,7 @@
       </el-select>
       <el-button
         slot="append"
-        icon="el-icon-search"
+        icon="u-icon-search"
         @click="doSearch"
       />
     </el-input>

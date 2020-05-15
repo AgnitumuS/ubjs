@@ -563,7 +563,7 @@ Ext.define('UB.ux.UBPreFilter', {
             xtype: 'button',
             tooltip: UB.i18n('load'),
             scale: 'medium',
-            iconCls: 'far fa-folder-open',
+            iconCls: 'u-icon-folder-open',
             // minWidth: 75,
             margin: '5 0 0 0',
             handler: function () {
@@ -573,7 +573,7 @@ Ext.define('UB.ux.UBPreFilter', {
             xtype: 'button',
             tooltip: UB.i18n('save'),
             scale: 'medium',
-            iconCls: 'far fa-save',
+            iconCls: 'u-icon-save',
             margin: '5 0 0 0',
             handler: function () {
               me.saveConfig()
@@ -582,7 +582,7 @@ Ext.define('UB.ux.UBPreFilter', {
             xtype: 'button',
             tooltip: UB.i18n('fDelete'),
             scale: 'medium',
-            iconCls: 'fa fa-trash-o',
+            iconCls: 'u-icon-delete',
             margin: '5 5 0 0',
             handler: function () {
               me.deleteConfig()
@@ -591,19 +591,19 @@ Ext.define('UB.ux.UBPreFilter', {
         ]
       }],
       buttons: [{
-        iconCls: 'fa fa-binoculars',
+        iconCls: 'u-icon-search',
         text: UB.i18n('search'),
         handler: me.searchHandler,
         scope: me
       }, {
         text: UB.i18n('clear'),
-        iconCls: 'fa fa-eraser',
+        iconCls: 'u-icon-eraser',
         handler: function () {
           me.clearAllFilter()
         }
       }, {
         text: UB.i18n('cancel'),
-        iconCls: 'fa fa-close',
+        iconCls: 'u-icon-close',
         handler: function () {
           window.close()
         }

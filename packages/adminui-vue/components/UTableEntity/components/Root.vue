@@ -293,7 +293,7 @@
           >
             <u-dropdown-item
               :disabled="!canAudit"
-              icon="u-icon-audit"
+              icon="u-icon-line-chart"
               label="Audit"
               @click="audit(contextMenuRowId)"
             />

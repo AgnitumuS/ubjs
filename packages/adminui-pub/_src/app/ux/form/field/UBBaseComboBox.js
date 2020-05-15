@@ -200,7 +200,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
     if ($App.domainInfo.has(entityName)) {
       menuItems.push({
         text: UB.i18n('editSelItem') + ' (Ctrl+E)',
-        iconCls: 'fa fa-edit',
+        iconCls: 'u-icon-edit',
         itemID: 'editItem',
         handler: me.editItem,
         hidden: !!me.hideEntityItemInContext || me.disableModifyEntity,
@@ -209,7 +209,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
       })
       menuItems.push({
         text: UB.i18n('selectFromDictionary') + ' (F9)',
-        iconCls: 'fa fa-table',
+        iconCls: 'u-icon-grid',
         itemID: 'showLookup',
         handler: me.showLookup,
         hidden: !!me.hideEntityItemInContext,
@@ -218,7 +218,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
       })
       menuItems.push({
         text: UB.i18n('addNewItem'),
-        iconCls: 'fa fa-plus-circle',
+        iconCls: 'u-icon-add',
         itemID: 'addItem',
         handler: me.addItem,
         hidden: !!me.hideEntityItemInContext || me.disableModifyEntity,
@@ -228,7 +228,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
     }
     menuItems.push({
       text: UB.i18n('clearSelection') + ' (Ctrl+BackSpace)',
-      iconCls: 'fa fa-eraser',
+      iconCls: 'u-icon-eraser',
       itemID: 'clearValue',
       handler: me.clearValue,
       disabled: me.disabled || me.readOnly,
@@ -406,7 +406,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
           toolbarPrepend: ({ store: dictionaryStore, close }) => {
             return createElement('u-toolbar-button', {
               props: {
-                icon: 'el-icon-check',
+                icon: 'u-icon-check',
                 disabled: !dictionaryStore.state.selectedRowId
               },
               on: {

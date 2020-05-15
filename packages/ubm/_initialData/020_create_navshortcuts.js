@@ -43,7 +43,7 @@ module.exports = function (session) {
         caption: 'UI',
         isFolder: true,
         isCollapsed: false,
-        iconCls: 'fa fa-picture-o',
+        iconCls: 'u-icon-image',
         displayOrder: 30
       }
     })

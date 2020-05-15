@@ -11,7 +11,7 @@
         placement="bottom"
         effect="light"
       >
-        <i class="auth-page__tooltip fa fa-question-circle-o" />
+        <i class="auth-page__tooltip u-icon-circle-question" />
       </el-tooltip>
 
       <p v-html="$ut('UBAuthHeader', applicationName)" />
@@ -26,7 +26,7 @@
         :value="login"
       >
         <template slot="prepend">
-          <i class="fa fa-fw fa-user" />
+          <i class="u-icon-person" />
         </template>
       </el-input>
     </el-form-item>
@@ -41,7 +41,7 @@
         @keyup.enter.native="doLogin"
       >
         <template slot="prepend">
-          <i class="fa fa-fw fa-key" />
+          <i class="u-icon-key" />
         </template>
       </el-input>
     </el-form-item>

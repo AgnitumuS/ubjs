@@ -52,7 +52,7 @@
             <el-button
               type="danger"
               size="small"
-              icon="el-icon-delete"
+              icon="u-icon-delete"
               @click="removeProperty(item)"
             >
               Delete
@@ -107,7 +107,7 @@
             <el-button
               type="success"
               size="small"
-              icon="el-icon-check"
+              icon="u-icon-check"
               @click="addProperty"
             >
               Add

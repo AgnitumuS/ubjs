@@ -5,7 +5,7 @@
       class="u-navbar__collapse-button"
       @click="$UB.core.UBApp.fireEvent('portal:sidebar:collapse')"
     >
-      <i :class="isCollapsed ? 'el-icon-arrow-right' : 'el-icon-arrow-left'" />
+      <i :class="isCollapsed ? 'u-icon-arrow-right' : 'u-icon-arrow-left'" />
     </div>
 
     <div
@@ -39,19 +39,19 @@
       </div>
       <i
         v-show="sliderPrevVisible"
-        class="u-navbar-tab-slider__ctrl el-icon-arrow-left u-navbar-tab-slider__ctrl__prev"
+        class="u-navbar-tab-slider__ctrl u-icon-arrow-left u-navbar-tab-slider__ctrl__prev"
         @click="navigate(1)"
       />
       <i
         v-show="sliderNextVisible"
-        class="u-navbar-tab-slider__ctrl el-icon-arrow-right u-navbar-tab-slider__ctrl__next"
+        class="u-navbar-tab-slider__ctrl u-icon-arrow-right u-navbar-tab-slider__ctrl__next"
         @click="navigate(-1)"
       />
     </div>
 
     <u-dropdown class="u-navbar__overflow-button" v-if="tabsWidth >= visibleWidth">
       <el-button
-        icon="el-icon-more"
+        icon="u-icon-more"
         circle
         class="u-navbar__button"
       />
@@ -70,7 +70,7 @@
           <template #label>
             {{ tab.title }}
             <i
-              class="u-navbar__tray-item-close-icon el-icon-close"
+              class="u-navbar__tray-item-close-icon u-icon-close"
               @click="handleClose([tab], true)"
             />
           </template>

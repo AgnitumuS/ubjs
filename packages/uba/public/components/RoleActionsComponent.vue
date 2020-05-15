@@ -23,13 +23,13 @@ module.exports.default = {
   data () {
     return {
       actions: [{
-        icon: 'fa fa-book',
+        icon: 'u-icon-book',
         value: 1
       }, {
-        icon: 'fa fa-pencil',
+        icon: 'u-icon-edit',
         value: 3
       }, {
-        icon: 'fa fa-asterisk',
+        icon: 'u-icon-mandatory',
         value: 7
       }],
       currentValue: this.value,

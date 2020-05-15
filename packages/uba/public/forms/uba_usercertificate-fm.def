@@ -37,10 +37,10 @@ exports.formDef = {
         },{
           itemId: 'downloadCertBtn',
           xtype: 'button',
-          iconCls: 'fa fa-download',
+          iconCls: 'u-icon-download',
           text: UB.i18n('Download certificate')
         }
      ]
-    }   
+    }
 	]
 }

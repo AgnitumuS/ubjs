@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - new icons `u-icon-circle`, `u-icon-circle-bold`, `u-icon-circle-close`, `u-icon-circle-dollar`, `u-icon-circle-double`, 
+ `u-icon-circle-info`, `u-icon-circle-minus`, `u-icon-circle-plus`, `u-icon-circle-question`, `u-icon-circle-trademark`,
+ `u-icon-clock`, `u-icon-data`, `u-icon-eraser`, `u-icon-exit`, `u-icon-expand`, `u-icon-eye-slash`, 
+ `u-icon-folder-add`, `u-icon-globe`, `u-icon-grid`, `u-icon-hand`, `u-icon-image`, `u-icon-key`, `u-icon-layers`,
+ `u-icon-line-chart`, `u-icon-message-alt`, `u-icon-message-text`, `u-icon-more-vertical`, `u-icon-object-group`,
+ `u-icon-rectangle`, `u-icon-rectangle-dotted`, `u-icon-resize`, `u-icon-rhombus`, `u-icon-sort-asc-alt`,
+ `u-icon-sort-desc-alt`, `u-icon-unlock`, `u-icon-window-left`, `u-icon-window-top` 
+ - replace most font-awesome and element-ui to UB icons analog
 
 ### Changed
 

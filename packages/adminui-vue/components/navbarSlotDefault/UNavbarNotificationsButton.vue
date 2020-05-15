@@ -29,7 +29,7 @@
 
         <el-button
           v-if="$UB.connection.domain.isEntityMethodsAccessible('ubs_message_edit', ['insert', 'update'])"
-          icon="el-icon-plus"
+          icon="u-icon-add"
           type="primary"
           plain
           size="mini"

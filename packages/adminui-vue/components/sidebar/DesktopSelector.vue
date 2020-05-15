@@ -36,7 +36,7 @@
         <!--              v-model="searchQuery"-->
         <!--              class="u-desktop-drawer__search-input"-->
         <!--              :class="searchDropdownVisible && 'u-desktop-drawer__search-input__open'"-->
-        <!--              prefix-icon="el-icon-search"-->
+        <!--              prefix-icon="u-icon-search"-->
         <!--              clearable-->
         <!--            />-->
 

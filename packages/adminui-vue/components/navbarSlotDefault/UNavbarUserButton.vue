@@ -41,7 +41,7 @@
 
       <u-dropdown-item
         label="changePassword"
-        icon="fa fa-key"
+        icon="u-icon-key"
         @click="changePassword"
       />
 
@@ -49,7 +49,7 @@
 
       <u-dropdown-item
         label="storedData"
-        icon="fa fa-database"
+        icon="u-icon-data"
       >
         <u-dropdown-item
           label="clearLocalStore"
@@ -64,7 +64,7 @@
       <u-dropdown-item
         v-if="supportedLanguages.length > 1"
         label="changeLanguage"
-        icon="fa fa-globe"
+        icon="u-icon-globe"
       >
         <u-dropdown-item
           v-for="lang in supportedLanguages"
@@ -79,14 +79,14 @@
 
       <u-dropdown-item
         label="logout"
-        icon="fa fa-sign-out"
+        icon="u-icon-exit"
         @click="doLogout"
       />
 
       <u-dropdown-item
         disabled
         :label="appVersion"
-        icon="fa fa-info"
+        icon="u-icon-circle-info"
       />
     </template>
   </u-dropdown>
@@ -108,7 +108,7 @@ export default {
       negotiateAvailable: negotiateAvailable,
       userName,
       appVersion,
-      iconClass: 'fa fa-user',
+      iconClass: 'u-icon-person',
       svgIcon: '',
       supportedLanguages: this.$UB.connection.appConfig.supportedLanguages
     }

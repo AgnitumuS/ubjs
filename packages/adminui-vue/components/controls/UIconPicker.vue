@@ -10,7 +10,7 @@
       />
       <el-button
         slot="append"
-        icon="el-icon-menu"
+        icon="u-icon-desktop-swap"
         @click="dialogVisible = true"
       />
     </el-input>
@@ -24,7 +24,7 @@
     >
       <el-input
         v-model="searchQuery"
-        suffix-icon="el-icon-search"
+        suffix-icon="u-icon-search"
         :placeholder="$ut('Search')"
       />
 

@@ -103,8 +103,8 @@ function errorReporter ({ errMsg, errCode, entityCode, detail }) {
   // all styles placed in ./template.vue
   const devBtnID = 'ub-notification__error__dev-btn'
   const showMessBtnID = 'ub-notification__error__show-mess-btn'
-  const devBtn = `<i title="${UB.i18n('showDeveloperDetail')}" class="fa fa-wrench" data-id="${devBtnID}"></i>`
-  const showMessBtn = `<i title="${UB.i18n('showFullScreen')}" class="fa fa-window-restore" data-id="${showMessBtnID}"></i>`
+  const devBtn = `<i title="${UB.i18n('showDeveloperDetail')}" class="u-icon-wrench" data-id="${devBtnID}"></i>`
+  const showMessBtn = `<i title="${UB.i18n('showFullScreen')}" class="u-icon-window-top" data-id="${showMessBtnID}"></i>`
   const footer = `<div class="ub-notification__error__btn-group">${showMessBtn + devBtn}</div>`
   const msgToDisplay = USER_MESSAGE_RE.test(errMsg)
     ? UB.i18n(errMsg.replace(USER_MESSAGE_RE, '$1'))

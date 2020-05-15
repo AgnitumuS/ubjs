@@ -6,7 +6,7 @@
         placement="bottom"
         effect="light"
       >
-        <i class="auth-page__tooltip fa fa-question-circle-o" />
+        <i class="auth-page__tooltip u-icon-circle-question" />
       </el-tooltip>
 
       <p v-html="$ut('KerberosHeader')" />

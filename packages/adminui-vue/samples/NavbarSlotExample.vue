@@ -1,7 +1,7 @@
 <template>
   <div class="u-navbar__right-side__buttons">
     <el-button
-      icon="el-icon-bell"
+      icon="u-icon-bell"
       circle
       class="u-navbar__button"
     />
@@ -17,7 +17,7 @@
       class="u-navbar__user-dropdown"
     >
       <el-button
-        icon="fa fa-user"
+        icon="u-icon-person"
         circle
         class="u-navbar__button"
       />
@@ -29,7 +29,7 @@
           Action 4
         </el-dropdown-item>
         <el-dropdown-item divided>
-          <i class="fa fa-sign-out" /> Logout
+          <i class="u-icon-exit" /> Logout
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>

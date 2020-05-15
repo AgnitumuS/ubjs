@@ -40,7 +40,7 @@
         <el-button
           slot="reference"
           type="success"
-          icon="el-icon-plus"
+          icon="u-icon-add"
         />
       </el-popover>
     </el-row>
@@ -168,7 +168,7 @@
               slot="reference"
               style="margin-top: 10px"
               type="success"
-              icon="el-icon-plus"
+              icon="u-icon-add"
             >
               Add Property
             </el-button>
@@ -176,7 +176,7 @@
           <el-button
             style="margin: 10px 0 0 5px"
             type="danger"
-            icon="el-icon-delete"
+            icon="u-icon-delete"
             @click="deleteMixin"
           >
             Remove

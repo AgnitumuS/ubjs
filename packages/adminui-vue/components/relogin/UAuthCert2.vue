@@ -20,7 +20,7 @@
             @keyup.enter.native="doCert2Login"
           >
             <template slot="prepend">
-              <i class="fa fa-fw fa-user" />
+              <i class="u-icon-person" />
             </template>
           </el-input>
         </el-form-item>
@@ -33,7 +33,7 @@
             @keyup.enter.native="doCert2Login"
           >
             <template slot="prepend">
-              <i class="fa fa-fw fa-key" />
+              <i class="u-icon-key" />
             </template>
           </el-input>
         </el-form-item>

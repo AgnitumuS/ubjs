@@ -123,7 +123,7 @@
       disabled
       :value="queryDisplayValue"
       :placeholder="placeholder"
-      suffix-icon="el-icon-arrow-down"
+      suffix-icon="u-icon-arrow-down"
     />
 
     <el-dropdown
@@ -328,26 +328,26 @@ export default {
       return [{
         name: 'ShowLookup',
         caption: this.$ut('selectFromDictionary') + ' (F9)',
-        icon: 'fa fa-table',
+        icon: 'u-icon-dictionary',
         handler: this.handleShowDictionary
       },
       {
         name: 'Edit',
         caption: this.$ut('editSelItem') + ' (Ctrl+E)',
-        icon: 'fa fa-pencil-square-o',
+        icon: 'u-icon-edit',
         disabled: !this.value,
         handler: this.handleEditItem
       },
       {
         name: 'Add',
         caption: this.$ut('addNewItem'),
-        icon: 'fa fa-plus-circle',
+        icon: 'u-icon-add',
         handler: this.handleAddNewItem
       },
       {
         name: 'Clear',
         caption: this.$ut('clearSelection') + ' (Ctrl+BackSpace)',
-        icon: 'fa fa-eraser',
+        icon: 'u-icon-eraser',
         disabled: !this.value,
         handler: this.handleClearClick
       }]
@@ -584,7 +584,7 @@ export default {
               toolbarPrepend: ({ store, close }) => {
                 return createElement('u-toolbar-button', {
                   props: {
-                    icon: 'el-icon-check',
+                    icon: 'u-icon-check',
                     disabled: !store.state.selectedRowId
                   },
                   on: {
@@ -846,14 +846,14 @@ For example when you need instead `ID` like `code`.
         return [{
           name: 'test action',
           caption: 'Test action caption',
-          icon: 'el-icon-grape',
+          icon: 'u-icon-branch',
           handler: () => {
             console.log('click test action')
           }
         }, {
           name: 'test action 2',
           caption: 'Test action 2 caption',
-          icon: 'el-icon-milk-tea',
+          icon: 'u-icon-calendar-alt',
           handler: () => {
             console.log('click test action 2')
           }
@@ -887,14 +887,14 @@ For example when you need instead `ID` like `code`.
         return [{
           name: 'test action',
           caption: 'Test action caption',
-          icon: 'el-icon-grape',
+          icon: 'u-icon-calendar-alt',
           handler: () => {
             console.log('click test action')
           }
         }, {
           name: 'test action 2',
           caption: 'Test action 2 caption',
-          icon: 'el-icon-milk-tea',
+          icon: 'u-icon-check-double',
           handler: () => {
             console.log('click test action 2')
           }

@@ -193,7 +193,7 @@ Ext.define('UB.ux.form.field.ComboExtraButtons', {
         xtype: 'button',
         width: '25px',
         flex: 1,
-        iconCls: 'fa fa-edit',
+        iconCls: 'u-icon-edit',
         // iconCls: 'ub-icon-table-edit',
         handler: {
           fn: me.editItem,
@@ -204,7 +204,7 @@ Ext.define('UB.ux.form.field.ComboExtraButtons', {
         xtype: 'button',
         width: '25px',
         flex: 1,
-        iconCls: 'fa fa-table',
+        iconCls: 'u-icon-grid',
         // iconCls: 'ub-icon-table',
         handler: {
           fn: me.showLookup,
@@ -215,7 +215,7 @@ Ext.define('UB.ux.form.field.ComboExtraButtons', {
         xtype: 'button',
         width: '25px',
         flex: 1,
-        iconCls: 'fa fa-plus-circle',
+        iconCls: 'u-icon-add',
         // iconCls: 'iconAdd',
         handler: {
           fn: me.addItem,
@@ -225,7 +225,7 @@ Ext.define('UB.ux.form.field.ComboExtraButtons', {
       {
         xtype: 'button',
         width: '25px',
-        iconCls: 'fa fa-eraser',
+        iconCls: 'u-icon-eraser',
         // iconCls: 'iconClear',
         handler: {
           fn: me.clearSelection,

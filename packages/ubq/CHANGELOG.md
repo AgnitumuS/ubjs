@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - `queueMail` do not put a mail sending job into queue in case mailer is not configured in `serverConfig.application.customSettings.mailerConfig` 
+ - replace most font-awesome and element-ui to UB icons analog
 
 ### Deprecated
 
