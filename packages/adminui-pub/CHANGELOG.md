@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UBMultiSelectVox`: changed **orderList** structure from Array<Object> to Object for compatibility wit `UB@5.18+`
 
 ## [5.13.10] - 2020-05-13
 ## [5.13.9] - 2020-05-06
