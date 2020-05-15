@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTableEntity` prevent error "get dataType of undefined" for table with custom columns
+ - `ElSelect(multiple)` removed fixed height to allow display several rows
+ - `UTableEntity/filters/entity/equal` prevent error "get descriptionAttribute of undefined"
+   for custom attributes in column definition
 
 ## [1.10.10] - 2020-05-13
 ### Added
