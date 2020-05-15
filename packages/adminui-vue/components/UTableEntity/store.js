@@ -15,7 +15,6 @@ const { exportExcel, exportCsv, exportHtml } = require('../../utils/fileExporter
  * @param {function} instance.buildAddNewConfig AddNew config builder
  * @param {function} instance.buildEditConfig Edit config builder
  * @param {function} instance.buildCopyConfig Copy config builder
- * @param {boolean} instance.useRequestFieldList Whether replacing result keys with fieldList
  */
 module.exports = (instance) => ({
   state () {
@@ -198,11 +197,13 @@ module.exports = (instance) => ({
 
         try {
           const response = await getters.currentRepository.selectAsArray()
-
-          if (instance.useRequestFieldList) {
-            response.resultData.fields = response.fieldList
-          }
-
+          /*
+           * Replace result keys with fieldList
+           * Sometimes, server returns result with altered fieldList, like entities with Entity-Attribute-Value mixin
+           * (see `@unitybase/forms`).  Below we force to stick with original fieldList from request,
+           * rather than using fieldList from response
+           */
+          response.resultData.fields = response.fieldList
           const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
 
           const isLastPage = items.length < getters.pageSize

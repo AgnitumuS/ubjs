@@ -10,7 +10,7 @@ module.exports = {
 /**
  * Generates excel and download it
  *
- * @param {ClientRepository} repository
+ * @param {CustomRepository} repository
  * @param {array<UTableColumn>} columns
  * @param {string} fileName
  * @returns {Promise<void>}
@@ -27,7 +27,10 @@ async function exportExcel ({ repository, columns, fileName }) {
   const rowStyles = []
   enrichSheetHeader({ sheet, columns, rowStyles, getStyle })
 
-  const data = await repository.select()
+  const response = await repository.selectAsArray()
+  response.resultData.fields = response.fieldList
+  const data = UB.LocalDataStore.selectResultToArrayOfObjects(response)
+
   for (const row of data) {
     sheet.addRow(
       columns.reduce((accum, column) => {

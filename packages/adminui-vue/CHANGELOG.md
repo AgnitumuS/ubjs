@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - `UTableEntity` property `useRequestFieldList` is removed. From now grid uses `fieldList` from request
  - `UChat` component moved into @unitybase/messaging package and renamed to `UmChat`
 
 ### Fixed
@@ -27,6 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `ElSelect(multiple)` removed fixed height to allow display several rows
  - `UTableEntity/filters/entity/equal` prevent error "get descriptionAttribute of undefined"
    for custom attributes in column definition
+ - `UTableEntity` excel export: fixed export of eav attributes by using a `fieldList` from request instead of broken one from server
 
 ## [1.10.10] - 2020-05-13
 ### Added
