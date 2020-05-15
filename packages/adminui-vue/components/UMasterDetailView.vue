@@ -86,6 +86,7 @@
         class="u-table-register__details"
         :repository="repository"
         :columns="columns"
+        :build-add-new-config="buildDetailAddNewConfig"
       />
     </template>
   </div>
@@ -207,6 +208,13 @@ export default {
       } else {
         return entity
       }
+    },
+
+    buildDetailAddNewConfig (cfg) {
+      cfg.parentContext = {
+        [this.selectedDetail.attribute]: this.selectedRowId
+      }
+      return cfg
     }
   }
 }
