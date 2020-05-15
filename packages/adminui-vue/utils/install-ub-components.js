@@ -28,7 +28,6 @@ module.exports = {
     const UMasterDetailView = require('../components/UMasterDetailView.vue').default
     const UButton = require('../components/controls/UButton.vue').default
     const UIcon = require('../components/controls/UIcon.vue').default
-    const UChat = require('../components/UChat.vue').default
     Vue.component(UFormContainer.name, UFormContainer)
     Vue.component(USelectEntity.name, USelectEntity)
     Vue.component(USelectMany.name, USelectMany)
@@ -56,7 +55,6 @@ module.exports = {
     Vue.component(UMasterDetailView.name, UMasterDetailView)
     Vue.component(UButton.name, UButton)
     Vue.component(UIcon.name, UIcon)
-    Vue.component(UChat.name, UChat)
 
     const HoldFocus = require('../directives/HoldFocus')
     Vue.directive(HoldFocus.name, HoldFocus)

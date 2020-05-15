@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - `UChat` component moved into @unitybase/messaging package and renamed to `UmChat`
 
 ### Fixed
  - `UTableEntity` prevent error "get dataType of undefined" for table with custom columns
