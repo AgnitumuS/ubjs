@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - replace most font-awesome and element-ui to UB icons analog
 
 ### Changed
+ - `UMasterDetailView` in detail grid hides column which relatives detail grid with master grid
 
 ### Deprecated
 
