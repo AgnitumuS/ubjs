@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - `UChat` replaced to @unitybase/messaging package
 
 ### Fixed
 
