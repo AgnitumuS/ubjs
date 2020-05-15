@@ -165,7 +165,7 @@ export default {
 
     columns () {
       return this.schema
-        .filterAttribute(a => a.defaultView)
+        .filterAttribute(a => a.defaultView && a.code !== this.selectedDetail.attribute)
         .map(a => a.code)
     }
   },
