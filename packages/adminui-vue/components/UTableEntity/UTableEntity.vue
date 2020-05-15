@@ -184,7 +184,7 @@ export default {
     buildColumn (column) {
       const attribute = this.buildColumnAttribute(column)
       const label = this.buildColumnLabel(column)
-      const typeDefaults = TypeProvider.get(attribute.dataType)
+      const typeDefaults = TypeProvider.get(attribute && attribute.dataType)
       const filters = {}
       const filterEntries = Object.entries(typeDefaults.filters || {})
         .concat(Object.entries(column.filters || {}))
