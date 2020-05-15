@@ -89,10 +89,12 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
 
     if (me.store.ubRequest) {
       request = Ext.clone(me.store.ubRequest)
-      request.orderList = [{
-        expression: me.displayField,
-        order: 'ASC'
-      }]
+      request.orderList = {
+        byDisplayField: {
+          expression: me.displayField,
+          order: 'ASC'
+        }
+      }
       storeMain = Ext.create('UB.ux.data.UBStore', {
         ubRequest: request,
         autoLoad: false,
