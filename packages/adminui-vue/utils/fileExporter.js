@@ -28,7 +28,7 @@ async function exportExcel ({ repository, columns, fileName }) {
   enrichSheetHeader({ sheet, columns, rowStyles, getStyle })
 
   const response = await repository.selectAsArray()
-  response.resultData.fields = response.fieldList
+  response.resultData.fields = repository.fieldList
   const data = UB.LocalDataStore.selectResultToArrayOfObjects(response)
 
   for (const row of data) {
