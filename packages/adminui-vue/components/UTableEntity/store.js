@@ -203,7 +203,7 @@ module.exports = (instance) => ({
            * (see `@unitybase/forms`).  Below we force to stick with original fieldList from request,
            * rather than using fieldList from response
            */
-          response.resultData.fields = response.fieldList
+          response.resultData.fields = getters.currentRepository.fieldList
           const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
 
           const isLastPage = items.length < getters.pageSize

@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - `UMasterDetailView` in detail grid hides column which relatives detail grid with master grid
+ - `UMasterDetailView` adding of new record sets a master attribute value as a detail default using `parentContext` param
 
 ### Deprecated
 
