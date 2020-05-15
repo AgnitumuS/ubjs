@@ -24,7 +24,7 @@
             slot="reference"
             type="danger"
             size="small"
-            icon="el-icon-delete"
+            icon="u-icon-delete"
             @click="removeProperty(name)"
           />
         </td>
@@ -50,7 +50,7 @@
             slot="reference"
             type="success"
             size="small"
-            icon="el-icon-check"
+            icon="u-icon-check"
             @click="addProperty"
           />
         </td>

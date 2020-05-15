@@ -39,9 +39,9 @@ Ext.define('UB.ux.form.UBFieldSet', {
       me.toggleCmp.getEl().on('click', me.toggle, me)
     })
     if (!me.collapsed) {
-      me.toggleCmp.addCls(['fa', 'fa-angle-down'])
+      me.toggleCmp.addCls(['u-icon-arrow-down'])
     } else {
-      me.toggleCmp.addCls(['fa', 'fa-angle-right'])
+      me.toggleCmp.addCls(['u-icon-arrow-right'])
     }
     return me.toggleCmp
   },
@@ -52,11 +52,11 @@ Ext.define('UB.ux.form.UBFieldSet', {
     me.callParent(arguments)
 
     if (!me.collapsed) {
-      me.toggleCmp.removeCls('fa-angle-right')
-      me.toggleCmp.addCls('fa-angle-down')
+      me.toggleCmp.removeCls('u-icon-arrow-right')
+      me.toggleCmp.addCls('u-icon-arrow-down')
     } else {
-      me.toggleCmp.removeCls('fa-angle-down')
-      me.toggleCmp.addCls('fa-angle-right')
+      me.toggleCmp.removeCls('u-icon-arrow-down')
+      me.toggleCmp.addCls('u-icon-arrow-right')
     }
   }
 })

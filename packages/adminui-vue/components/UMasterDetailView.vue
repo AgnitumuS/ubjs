@@ -74,7 +74,7 @@
           class="u-table-register__divider-button"
           @click="detailsVisible = false"
         >
-          <i class="far fa-eye-slash" />
+          <i class="u-icon-eye-slash" />
           {{ $ut('tableRegister.hideDetails') }}
         </button>
 

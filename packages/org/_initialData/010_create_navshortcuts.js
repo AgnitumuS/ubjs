@@ -40,7 +40,7 @@ module.exports = function (session) {
       caption: 'Org internal',
       isFolder: true,
       isCollapsed: false,
-      iconCls: 'fa fa-globe',
+      iconCls: 'u-icon-globe',
       displayOrder: 10
     }
   })
@@ -158,7 +158,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'org_execgroup',
       caption: 'Execution groups',
-      iconCls: 'fa fa-group',
+      iconCls: 'u-icon-layers',
       displayOrder: 50,
       cmdCode: JSON.stringify({
         renderer: 'vue',
@@ -234,7 +234,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'org_profession',
       caption: 'Professions',
-      iconCls: 'fa fa-cloud',
+      iconCls: 'u-icon-cloud',
       displayOrder: 10,
       cmdCode: JSON.stringify({
         renderer: 'vue',
@@ -255,7 +255,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'org_diagram',
       caption: 'Organizational chart',
-      iconCls: 'fa fa-sitemap',
+      iconCls: 'u-icon-hierarchy-alt',
       displayOrder: 20,
       cmdCode: JSON.stringify({
         renderer: 'vue',

@@ -29,7 +29,7 @@
       placement="right"
       :enterable="false"
     >
-      <i class="fa fa-bolt" />
+      <i class="u-icon-rhombus" />
     </el-tooltip>
 
     <el-dropdown-menu slot="dropdown">
@@ -52,19 +52,19 @@ export default {
   data () {
     return {
       quickAccessMenu: [{
-        iconCls: 'fa fa-address-book',
+        iconCls: 'u-icon-book',
         label: 'Contacts',
         onClick: (e) => {
           console.log(e)
         }
       }, {
-        iconCls: 'fa fa-adjust',
+        iconCls: 'u-icon-image',
         label: 'Colors'
       }, {
-        iconCls: 'el-icon-location',
+        iconCls: 'u-icon-globe',
         label: 'Locations'
       }, {
-        iconCls: 'el-icon-star-on',
+        iconCls: 'u-icon-list-success',
         label: 'Favorite'
       }]
     }

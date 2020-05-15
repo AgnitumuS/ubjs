@@ -49,26 +49,26 @@
         <u-dropdown-item
           label="Edit"
           :disabled="!canEdit"
-          icon="el-icon-edit"
+          icon="u-icon-edit"
           @click="selectContext('edit')"
         />
         <u-dropdown-item
           label="addShortcut"
           :disabled="!canAdd"
-          icon="el-icon-plus"
+          icon="u-icon-add"
           @click="selectContext('addShortcut')"
         />
         <u-dropdown-item
           label="addFolder"
           :disabled="!canAdd"
-          icon="el-icon-folder-add"
+          icon="u-icon-folder-add"
           @click="selectContext('addFolder')"
         />
         <u-dropdown-item divider />
         <u-dropdown-item
           label="Delete"
           :disabled="!canDelete || contextMenuPayload.ID === undefined"
-          icon="el-icon-delete"
+          icon="u-icon-delete"
           @click="selectContext('deleteShortcut')"
         />
       </template>

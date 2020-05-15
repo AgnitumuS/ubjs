@@ -232,7 +232,7 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
             width: 25,
             dataIndex: me.valueField,
             renderer: function (value) {
-              return '<a style="color: #141b9b; cursor:pointer;" class="fa fa-times"></a>'
+              return '<a style="color: #141b9b; cursor:pointer;" class="u-icon-close"></a>'
             }
           },
           { name: 'name', dataIndex: me.displayField, flex: 1 }
@@ -295,7 +295,7 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
       }],
       buttons: [{
         text: UB.i18n('clear'),
-        iconCls: 'fa fa-eraser',
+        iconCls: 'u-icon-eraser',
         handler: function () {
           storeSel.removeAll()
           isInitialSelect = true
@@ -321,7 +321,7 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
         flex: 1
       }, {
         text: UB.i18n('ok'),
-        iconCls: 'fa fa-check',
+        iconCls: 'u-icon-check',
         handler: function () {
           me.setValue(storeSel.getRange(0, storeSel.getCount() - 1))
           win.close()
@@ -329,7 +329,7 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
         }
       }, {
         text: UB.i18n('cancel'),
-        iconCls: 'fa fa-times',
+        iconCls: 'u-icon-close',
         handler: function () {
           win.close()
         }

@@ -37,7 +37,7 @@ module.exports = function (session) {
         caption: 'Queue',
         isFolder: true,
         isCollapsed: false,
-        iconCls: 'fa fa-ellipsis-h',
+        iconCls: 'u-icon-more',
         displayOrder: 50
       }
     })

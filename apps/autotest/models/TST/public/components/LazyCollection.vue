@@ -36,7 +36,7 @@
       Remove all items:
       <el-button
         type="danger"
-        icon="el-icon-delete"
+        icon="u-icon-delete"
         :disabled="todoList.length <= 0"
         @click="DELETE_ALL_COLLECTION_ITEMS('todo')"
       >
@@ -103,7 +103,7 @@
         <template slot-scope="{$index}">
           <el-button
             type="danger"
-            icon="el-icon-delete"
+            icon="u-icon-delete"
             @click="DELETE_COLLECTION_ITEM({
               collection: 'todo',
               index: $index

@@ -278,7 +278,7 @@ Ext.define('UB.ux.form.HtmlEditor', {
           flex: 1
         }, {
           text: UB.i18n('Change'),
-          iconCls: 'far fa-save',
+          iconCls: 'u-icon-save',
           handler: function () {
             var result = pnl.getValue()
             me.setValue(result)
@@ -286,7 +286,7 @@ Ext.define('UB.ux.form.HtmlEditor', {
           }
         }, {
           text: UB.i18n('cancel'),
-          iconCls: 'fa fa-times',
+          iconCls: 'u-icon-close',
           handler: function () {
             editorWnd.close()
           }
@@ -316,7 +316,7 @@ Ext.define('UB.ux.form.HtmlEditor', {
       tooltip: UB.i18n('Edit'),
       focusOnToFront: false,
       style: 'z-index: 3;',
-      iconCls: 'fa fa-pencil', // faEdit,
+      iconCls: 'u-icon-edit', // faEdit,
       handler: me.editContent,
       scope: me
     })

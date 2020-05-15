@@ -3,7 +3,7 @@
     <el-button
       :disabled="$parent.disabled"
       tabindex="-1"
-      icon="fas fa-globe"
+      icon="u-icon-globe"
       @click="showModal = true"
     />
     <el-dialog

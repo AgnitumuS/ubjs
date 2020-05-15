@@ -95,7 +95,7 @@
               <el-button
                 type="danger"
                 plain
-                icon="el-icon-delete"
+                icon="u-icon-delete"
                 size="mini"
                 style="margin-left: auto"
                 @click="removeUser(user.ID)"

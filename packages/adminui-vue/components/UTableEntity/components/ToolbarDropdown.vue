@@ -52,7 +52,7 @@
       </slot>
       <slot name="audit">
         <u-dropdown-item
-          icon="u-icon-audit"
+          icon="u-icon-line-chart"
           label="showAudit"
           :disabled="!canAudit"
           @click="audit(selectedRowId)"

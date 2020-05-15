@@ -33,14 +33,14 @@
             v-if="showMainProperties"
             style="border: 0"
             type="default"
-            icon="el-icon-arrow-up"
+            icon="u-icon-arrow-up"
             @click="showMainProperties = !showMainProperties"
           />
           <el-button
             v-else
             style="border: 0"
             type="default"
-            icon="el-icon-arrow-down"
+            icon="u-icon-arrow-down"
             @click="showMainProperties = !showMainProperties"
           />
         </el-row>
@@ -58,7 +58,7 @@
           <el-button
             slot="append"
             :disabled="!newAttrName"
-            icon="el-icon-plus"
+            icon="u-icon-add"
             @click="addAttribute"
           />
         </el-input>
@@ -100,7 +100,7 @@
             <template slot-scope="scope">
               <el-button
                 type="text"
-                icon="el-icon-delete"
+                icon="u-icon-delete"
                 @click="deleteRow(scope.$index)"
               />
             </template>

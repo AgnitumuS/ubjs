@@ -10,7 +10,7 @@
     >
       <el-button
         slot="append"
-        icon="el-icon-edit"
+        icon="u-icon-edit"
         @click="dialogVisible = true"
       />
     </el-input>
@@ -24,7 +24,7 @@
     >
       <el-input
         v-model="query"
-        suffix-icon="el-icon-search"
+        suffix-icon="u-icon-search"
         clearable
         :placeholder="$ut('Search')"
       />

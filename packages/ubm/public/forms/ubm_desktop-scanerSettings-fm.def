@@ -10,7 +10,7 @@ exports.formDef = 'UBM.scanerSettings'
 Ext.define('UBM.scanerSettings.doubleFields', {
     extend: 'Ext.data.Model',
     fields: ['name', 'code']
-}); 
+});
 
 Ext.create('Ext.data.Store', {
     storeId: 'UBM.scanerSettings.scanners',
@@ -363,7 +363,7 @@ Ext.define('UBM.scanerSettings', {
                         xtype: 'button',
                         ubID: 'FRScan.btnRefreshScaners',
                         tooltip: UB.i18n('refresh'), //'Перечитать сканеры',//localize+-
-                        iconCls: 'fa fa-refresh'
+                        iconCls: 'u-icon-refresh'
                     }]
                 }, {
                 xtype: 'radiogroup',
@@ -396,8 +396,8 @@ Ext.define('UBM.scanerSettings', {
                 minValue: 200,
                 maxValue: 600,
                 step: 100,
-                validator: function(value ){   
-                    if (value%100===0) 
+                validator: function(value ){
+                    if (value%100===0)
                         {
                             return true;
                         } else {
@@ -542,7 +542,7 @@ Ext.define('UBM.scanerSettings', {
                 }, {
                     xtype: 'button',
                     ubID: 'btnAddRecogLang',
-                    iconCls: 'fa fa-plus-circle',
+                    iconCls: 'u-icon-circle-plus',
                     tooltip: UB.i18n('Add')
                 }]
             }, {
@@ -687,7 +687,7 @@ Ext.define('UBM.scanerSettings', {
                     //width: 25,
                     ubID: 'UBScan.btnRefreshScaners',
                     tooltip: UB.i18n('refresh'), //'Перечитать сканеры',
-                    iconCls: 'fa fa-refresh'
+                    iconCls: 'u-icon-refresh'
                 }]
             }, {
                 xtype: 'radiogroup',
@@ -779,12 +779,12 @@ Ext.define('UBM.scanerSettings', {
     buttons: [{
         ubID: 'btnOK',
         text: UB.i18n('Change'),
-        iconCls: 'far fa-save',
+        iconCls: 'u-icon-save',
         formBind: true
     }, {
         ubID: 'btnCancel',
         text: UB.i18n('cancel'),
-        iconCls: 'fas fa-times'
+        iconCls: 'u-icon-circle-close'
     }],
 
     addLanguage: function() {

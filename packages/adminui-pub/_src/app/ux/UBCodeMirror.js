@@ -205,7 +205,7 @@ Ext.define('UB.ux.UBCodeMirror', {
         // <i style="position: absolute;right: 15px;" class="fa fa-question fa-lg" aria-hidden="true"></i>
         let help = document.createElement('i')
         help.style = 'position: absolute;right: 15px; z-index: 10000'
-        help.className = 'fa fa-question fa-border fa-2x'
+        help.className = 'u-icon-circle-question'
         myElm.firstChild.insertBefore(help, myElm.firstChild.firstChild)
         me.editorTip = Ext.create('Ext.tip.ToolTip', {
           target: help,

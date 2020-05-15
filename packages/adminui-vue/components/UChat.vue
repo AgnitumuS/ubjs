@@ -31,7 +31,7 @@
             <u-icon
               v-if="message.mi_modifyDate.getTime() !== message.mi_createDate.getTime()"
               class="u-chat__message-edit-icon"
-              icon="el-icon-edit"
+              icon="u-icon-edit"
             />
           </div>
         </div>
@@ -65,7 +65,7 @@
         type="submit"
         @click="focusInput"
       >
-        <i class="el-icon-arrow-right" />
+        <i class="u-icon-arrow-right" />
       </button>
     </form>
 

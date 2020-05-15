@@ -53,7 +53,7 @@ module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, r
       <div v-else>
         <p v-html="$ut('Your password is expired. Please change password')"></p>
         <el-tooltip placement="bottom" effect="light">
-          <i class="auth-page__tooltip fa fa-question-circle-o"></i>
+          <i class="auth-page__tooltip u-icon-circle-question"></i>
           <div slot="content" v-html="$ut('passwordRecommendation')"></div>
         </el-tooltip>
         <el-form-item class="auth-page--left" :label="$ut('User')">

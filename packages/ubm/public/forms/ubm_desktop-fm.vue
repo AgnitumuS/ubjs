@@ -3,7 +3,7 @@
     <u-toolbar>
       <template slot="left">
         <u-toolbar-button
-          icon="el-icon-refresh"
+          icon="u-icon-refresh"
           tooltip="refresh"
           @click="refresh"
         />

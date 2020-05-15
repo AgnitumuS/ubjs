@@ -13,7 +13,7 @@
           @click="toggleRow(vIdx)"
         >
           <td style="cursor: pointer">
-            <i :class="detailsOpened[vIdx] ? 'fa fa-chevron-up': 'fa fa-chevron-down'" />
+            <i :class="detailsOpened[vIdx] ? 'u-icon-arrow-up': 'u-icon-arrow-down'" />
           </td>
           <td
             v-if="sigCaptions.length"
@@ -25,7 +25,7 @@
               placement="right"
             >
               <i
-                class="fas fa-file-signature"
+                class="u-icon-file-edit"
                 :style="statusStyle(vIdx)"
               />
             </el-tooltip>

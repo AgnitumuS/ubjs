@@ -38,7 +38,7 @@ module.exports = function (session) {
       desktopID: desktopID,
       code: 'tst_document',
       caption: 'Document test',
-      iconCls: 'fa fa-folder',
+      iconCls: 'u-icon-folder',
       displayOrder: 10,
       cmdCode: JSON.stringify({
         renderer: 'vue',
@@ -116,7 +116,7 @@ module.exports = function (session) {
     execParams: {
       desktopID: desktopID,
       code: 'tst_maindata',
-      iconCls: 'fa fa-database',
+      iconCls: 'u-icon-data',
       caption: 'tst_maindata',
       displayOrder: displayOrder,
       cmdCode: JSON.stringify({
@@ -137,7 +137,7 @@ module.exports = function (session) {
     execParams: {
       desktopID: desktopID,
       code: 'tst_dictionary',
-      iconCls: 'fa fa-book',
+      iconCls: 'u-icon-dictionary',
       caption: 'tst_dictionary',
       displayOrder: displayOrder,
       cmdCode: JSON.stringify({

@@ -17,16 +17,16 @@ Ext.define('UB.ux.UBMetaDiagram', {
   layout: 'fit',
   statics: {
     mixinPictures: {
-      mStorage: '<i class="fa fa-database"></i>',
-      dataHistory: '<i class="fa fa-clock-o"></i>',
-      unity: '<i class="fa fa-toggle-off"></i>',
-      tree: '<i class="fa fa-sitemap"></i>',
+      mStorage: '<i class="u-icon-data"></i>',
+      dataHistory: '<i class="u-icon-clock"></i>',
+      unity: '<i class="u-icon-hierarchy"></i>',
+      tree: '<i class="u-icon-hierarchy-alt"></i>',
       fts: '<i class="u-icon-search"></i>',
-      rls: '<i class="fa fa-tasks"></i>',
-      als: '<i class="fa fa-table"></i>',
-      aclRls: '<i class="fa fa-tasks">a</i>',
-      audit: '<i class="fa fa-pencil-square-o"></i>',
-      softLock: '<i class="fa fa-key"></i>',
+      rls: '<i class="u-icon-list-success"></i>',
+      als: '<i class="u-icon-grid"></i>',
+      aclRls: '<i class="u-icon-list-success">a</i>',
+      audit: '<i class="u-icon-line-chart"></i>',
+      softLock: '<i class="u-icon-key"></i>',
       clobTruncate: 'ct'
     }
   },
