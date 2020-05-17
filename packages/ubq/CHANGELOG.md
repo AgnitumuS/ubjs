@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.3.10] - 2020-05-17
+### Added
  - `@unitybase/ubq/modules/mail-queue` exports a property `mailerEnabled`.
    - Indicate mailer is configured in `serverConfig.application.customSettings.mailerConfig`.
    - in case this property is false calls to `queueMail` do nothing, so better to verify it before mail creation to save a server resources
@@ -13,12 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `queueMail` do not put a mail sending job into queue in case mailer is not configured in `serverConfig.application.customSettings.mailerConfig` 
  - replace most font-awesome and element-ui to UB icons analog
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.3.9] - 2020-05-13
 ## [5.3.8] - 2020-05-06

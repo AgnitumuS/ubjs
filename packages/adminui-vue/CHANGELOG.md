@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.10.11] - 2020-05-17
+### Added
  - new icons `u-icon-circle`, `u-icon-circle-bold`, `u-icon-circle-close`, `u-icon-circle-dollar`, `u-icon-circle-double`, 
  `u-icon-circle-info`, `u-icon-circle-minus`, `u-icon-circle-plus`, `u-icon-circle-question`, `u-icon-circle-trademark`,
  `u-icon-clock`, `u-icon-data`, `u-icon-eraser`, `u-icon-exit`, `u-icon-expand`, `u-icon-eye-slash`, 
@@ -18,8 +29,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `UMasterDetailView` in detail grid hides column which relatives detail grid with master grid
  - `UMasterDetailView` adding of a record sets a master attribute value as a detail default using `parentContext` param
-
-### Deprecated
 
 ### Removed
  - `UTableEntity` property `useRequestFieldList` is removed. From now grid uses `fieldList` from request.

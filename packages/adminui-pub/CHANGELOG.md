@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - replace most font-awesome and element-ui to UB icons analog
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.13.11] - 2020-05-17
+### Changed
+ - replace most font-awesome and element-ui to UB icons analog
 
 ### Fixed
 - `UBMultiSelectVox`: changed **orderList** structure from Array<Object> to Object for compatibility wit `UB@5.18+`
