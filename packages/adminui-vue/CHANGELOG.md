@@ -17,16 +17,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - `UMasterDetailView` in detail grid hides column which relatives detail grid with master grid
- - `UMasterDetailView` adding of new record sets a master attribute value as a detail default using `parentContext` param
+ - `UMasterDetailView` adding of a record sets a master attribute value as a detail default using `parentContext` param
 
 ### Deprecated
 
 ### Removed
- - `UTableEntity` property `useRequestFieldList` is removed. From now grid uses `fieldList` from request
+ - `UTableEntity` property `useRequestFieldList` is removed. From now grid uses `fieldList` from request.
  - `UChat` component moved into @unitybase/messaging package and renamed to `UmChat`
 
 ### Fixed
- - `UTableEntity` prevent error "get dataType of undefined" for table with custom columns
+ - `UTableEntity` prevent error "get dataType of undefined" for a table with custom columns
  - `ElSelect(multiple)` removed fixed height to allow display several rows
  - `UTableEntity/filters/entity/equal` prevent error "get descriptionAttribute of undefined"
    for custom attributes in column definition
