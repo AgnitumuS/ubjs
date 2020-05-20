@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTableEntity` prevent error `dataType of undefined` on export table with custom column
 
 ## [1.10.11] - 2020-05-17
 ### Added

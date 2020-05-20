@@ -149,9 +149,9 @@ function enrichSheetHeader ({ sheet, columns, getStyle, rowStyles }) {
   let index = 0
   for (const column of columns) {
     index++
-    const type = column.attribute || column.attribute.dataType
+    const dataType = column.attribute && column.attribute.dataType
     properties.push({ column: index, width: getWide(column.attribute) })
-    rowStyles.push({ column: index, style: getStyle(type) })
+    rowStyles.push({ column: index, style: getStyle(dataType) })
     rowData.push({ column: index, value: UB.i18n(column.label), style: getStyle('headerRow') })
   }
 
@@ -169,8 +169,8 @@ function enrichSheetHeader ({ sheet, columns, getStyle, rowStyles }) {
  * @returns {function(string):XLSXStyle} Style getter
  */
 function createStyleGetter ({ styles, font, border, XLSX }) {
-  return (type) => {
-    switch (type) {
+  return (dataType) => {
+    switch (dataType) {
       case 'Date':
       case 'DateTime':
         return styles.getStyle({ font, border, format: XLSX.XLSXStyle.indexDefFormateDate, code: 'DefDateStyle' })
