@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UBCommand/showForm` provide shortcut caption to cmdCode. Now tab title will be equal to the caption of the shortcut
 
 ### Deprecated
 
