@@ -148,6 +148,9 @@ function testFloatAndCurrency (conn) {
   const firstDictRow = conn.Repository('tst_dictionary').attrs(['ID', 'code', 'caption', 'filterValue', 'booleanColumn', 'currencyValue', 'floatValue']).selectById(1)
   assert.strictEqual(firstDictRow.currencyValue, 1.11, 'Expect currency value to be 1.11')
   assert.strictEqual(firstDictRow.floatValue, 1.1111, 'Expect float value to be 1.1111')
+  const lastDictRow = conn.Repository('tst_dictionary').attrs(['ID', 'code', 'caption', 'filterValue', 'booleanColumn', 'currencyValue', 'floatValue']).selectById(8)
+  assert.strictEqual(lastDictRow.currencyValue, 0.01, 'Expect currency value to be 0.01')
+  assert.strictEqual(lastDictRow.floatValue, -0.0001, 'Expect float value to be -0.0001')
 }
 
 /**

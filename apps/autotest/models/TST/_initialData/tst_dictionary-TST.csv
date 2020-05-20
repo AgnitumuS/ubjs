@@ -6,3 +6,4 @@ ID;code;caption;filterValue;booleanColumn;currencyValue;floatValue;jsonColumn
 5;code50;caption 50;20;1;5.15;5.1115;"{""propI"": 40}"
 6;code60;caption 60;20;1;6.16;6.1116;"{""propS"": ""without propI""}"
 7;code70;caption 70;20;0;7.17;7.1117;""
+8;code80;caption 80;10;0;0.01;-0.0001;""
