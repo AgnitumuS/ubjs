@@ -485,7 +485,10 @@ Ext.define('UB.core.UBCommand', {
     me.windowCommandCode = me.commandCode || UB.core.UBUtil.getNameMd5(me.entity + Ext.String.capitalize(me.commandType), showListParam.fieldList)
 
     if (this.detailAttribute && this.parentID && showListParam.fieldList.indexOf(this.detailAttribute) === -1) {
-      showListParam.fieldList.push(this.detailAttribute)
+      showListParam.fieldList.push({
+        name: this.detailAttribute,
+        visibility: false
+      })
     }
     if (me.instanceID) {
       showListParam.ID = me.instanceID
