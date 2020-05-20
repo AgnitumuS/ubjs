@@ -350,7 +350,7 @@ Ext.define('UB.core.UBPanelMixin', {
       entity = $App.domainInfo.get(detail.entityName)
       details.push(new Ext.Action({
         actionId: UB.core.UBPanelMixin.actionId.showDetail,
-        iconCls: 'u-icon-arrow-down',
+        iconCls: 'u-icon-arrow-right',
         text: detail.caption ||
                   UB.format('{0} ({1})', entity.caption, entity.attr(detail.attribute).caption),
         entityName: detail.entityName,
@@ -364,7 +364,7 @@ Ext.define('UB.core.UBPanelMixin', {
     return Ext.create('Ext.menu.Item', {
       text: UB.i18n('Details'),
       hideOnClick: false,
-      iconCls: 'u-icon-arrow-down',
+      iconCls: 'u-icon-arrow-right',
       actionId: UB.core.UBPanelMixin.actionId.showDetail,
       menu: {
         items: details

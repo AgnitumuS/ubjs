@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- icon class for `MenuItem.Details`. Changed from **u-icon-arrow-down** to **u-icon-arrow-right** 
+- `ubfieldset`: use icon class `fa-angle-down|right` for expand button - u-icon-dows too large there
 
 ## [5.13.11] - 2020-05-17
 ### Changed
