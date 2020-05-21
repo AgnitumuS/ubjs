@@ -110,8 +110,8 @@ export default {
           .filter(attrCode => {
             const attr = this.schema.getEntityAttribute(attrCode, 0)
             return attr.defaultView &&
-              attr.dataType !== 'Json' &&
-              attr.dataType !== 'Document'
+              (attr.dataType !== 'Json') &&
+              (attr.dataType !== 'Document')
           })
           .map(attrCode => this.buildColumn({ id: attrCode }))
       }
@@ -146,19 +146,13 @@ export default {
           return this.repository()
         case 'object':
           return this.$UB.Repository(this.repository)
-        default: {
+        default: { // build repository based on columns (if available) or attributes with `defaultView: true`
           const repo = this.$UB.Repository(this.entityName)
-          if (this.columns) {
-            repo.attrs(
-              this.getColumns
-                .filter(c => c.attribute !== undefined)
-                .map(c => c.id)
-            )
-          } else {
-            repo.attrs(
-              this.$UB.connection.domain.get(this.entityName).getAttributeNames()
-            )
-          }
+          const viewableAttrs = this.columns
+            ? this.getColumns.filter(c => c.attribute !== undefined).map(c => c.id)
+            : this.$UB.connection.domain.get(this.entityName).getAttributeNames({ defaultView: true })
+          if (!viewableAttrs.includes('ID')) repo.attrs('ID')
+          repo.attrs(viewableAttrs)
           return repo
         }
       }
@@ -171,8 +165,29 @@ export default {
      * @returns {UTableColumn}
      */
     buildColumn (column) {
-      const attribute = this.buildColumnAttribute(column)
-      const label = this.buildColumnLabel(column)
+      const attrInfo = this.$store.getters.schema.getEntityAttributeInfo(column.id, 0)
+
+      let attribute = column.attribute
+      if (attribute === undefined) {
+        attribute = (attrInfo.parentAttribute && attrInfo.parentAttribute.dataType === 'Json')
+          ? attrInfo.parentAttribute // for JSON actual attribute is undefined
+          : attrInfo.attribute
+      }
+
+      let label = column.label
+      if ((label === undefined) || (label === '')) {
+        // 3 level depth is enough here. in case `attr0.attr1.attr2.attr3` then mostly what developer already pass description
+        if (attrInfo.parentAttribute) {
+          label = `${attrInfo.parentAttribute.caption}->${attrInfo.attribute.caption}`
+          // check 3 level depth
+          const prevAttrInfo = this.$store.getters.schema.getEntityAttributeInfo(column.id, -1)
+          if (prevAttrInfo.parentAttribute) label = `${prevAttrInfo.parentAttribute.caption}->${label}`
+        } else if (attrInfo.attribute) {
+          label = attrInfo.attribute.caption
+        } else {
+          label = column.id
+        }
+      }
       const typeDefaults = TypeProvider.get(attribute && attribute.dataType)
       const filters = {}
       const filterEntries = Object.entries(typeDefaults.filters || {})
@@ -197,43 +212,6 @@ export default {
       }
 
       return resultColumn
-    },
-
-    /**
-     * @param {UTableColumn} column
-     * @returns {string} Column label
-     */
-    buildColumnLabel (column) {
-      if (column.label !== undefined && column.label !== '') {
-        return column.label
-      }
-
-      const attrInfo = this.$store.getters.schema.getEntityAttributeInfo(column.id, 0)
-      if (attrInfo) {
-        const labelAttr = attrInfo.parentAttribute || attrInfo.attribute
-        return this.$ut(`${labelAttr.entity.code}.${labelAttr.code}`)
-      } else {
-        return column.id
-      }
-    },
-
-    /**
-     * @param {UTableColumn} column
-     * @returns {object|UBEntityAttribute|undefined}
-     */
-    buildColumnAttribute (column) {
-      if (column.attribute !== undefined) {
-        return column.attribute
-      }
-
-      const attrInfo = this.$store.getters.schema.getEntityAttributeInfo(column.id, 0)
-      if (attrInfo) {
-        if (attrInfo.parentAttribute && attrInfo.parentAttribute.dataType === 'Json') {
-          return attrInfo.parentAttribute
-        } else {
-          return attrInfo.attribute
-        }
-      }
     },
 
     /**

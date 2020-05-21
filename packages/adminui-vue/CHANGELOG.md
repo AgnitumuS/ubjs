@@ -8,13 +8,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `showList` command: in case config contains `fieldList: ["*"]` actual fieldList is constructed by UTableEntity.
+   This guaranty the same behavior of a command as with `<u-table-entity :entity-name="nameOfEntity">`.
+ - UTableEntity: column label for complex attribute like `currencyID.code` created as concatenation
+   of a parent attributes captions up to 3 level depth: `currency->code` (the same as for Ext based table);
+   To override this behavior column label can be specified in columns (for vue renderer format) or fieldList for Ext format config. 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
- - `UTableEntity` prevent error `dataType of undefined` on export table with custom column
+ - `UTableEntity`: if `columns` prop is not binds, then fieldList will contain attributes with `defaultView: true` only.
+   This prevents to fetch from DB attributes what not visible in the current view.
+ - `UTableEntity`: prevent error `dataType of undefined` on export table with custom column
+
 
 ## [1.10.11] - 2020-05-17
 ### Added

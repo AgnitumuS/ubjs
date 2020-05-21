@@ -258,4 +258,8 @@ function testAsterisk (conn) {
     /(Internal Server Error|For client side UBQL mixing of)/,
     'For client side UBQL mixing of \'*\' and attribute names in fieldList is not allowed'
   )
+  console.debug('Allow asterisk for cachable entities')
+  const q = conn.Repository('ubm_enum').attrs('*').ubql()
+  q.version = '-1'
+  conn.query(q)
 }

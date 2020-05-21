@@ -148,77 +148,73 @@ function replaceShowList () {
       const useVueTables = UB.connection.appConfig.uiSettings.adminUI.useVueTables
       const defaultRenderer = useVueTables ? 'vue' : 'ext'
       const renderer = me.commandConfig.renderer || defaultRenderer
-      if (renderer === 'vue') {
-        const cfg = me.commandConfig
-        const tabId = cfg.tabId
-        const title = me.title || me.entity
-        /**
-         * Test if command cfg use old construction with cfg.params as array.
-         * In new construction we use 'repository' or 'entityName' params
-         */
-        const vueCfgType = 'repository' in cfg.cmdData || 'entityName' in cfg.cmdData
-        if (vueCfgType) {
-          mountTableEntity({
-            isModal: cfg.isModal,
-            tabId,
-            title,
-            props: cfg.cmdData,
-            scopedSlots: cfg.cmdData.scopedSlots
-          })
-        } else {
-          const req = cfg.cmdData.params[0]
-          const fieldList = []
-          const columns = []
-          for (const field of req.fieldList) {
-            if (field === '*') {
-              fieldList.push(
-                ...UB.connection.domain.get(req.entity)
-                  .getAttributeNames()
-              )
-              columns.push(
-                ...UB.connection.domain.get(req.entity)
-                  .filterAttribute(a => a.defaultView)
-                  .map(a => a.code)
-              )
-              break
-            }
-            if (typeof field === 'object') {
-              if (field.visibility !== false) {
-                columns.push({
-                  id: field.name,
-                  label: field.description,
-                  format: field.format,
-                  isHtml: field.isHtml,
-                  sortable: field.sortable,
-                  isLookup: field.isLookup,
-                  align: field.align,
-                  headerAlign: field.headerAlign,
-                  maxWidth: field.maxWidth,
-                  minWidth: field.minWidth,
-                  width: field.width
-                })
-              }
-              fieldList.push(field.name)
-            } else {
-              columns.push(field)
-              fieldList.push(field)
-            }
-          }
-          mountTableEntity({
-            isModal: cfg.isModal,
-            tabId: cfg.tabId,
-            title: me.title || me.description || me.entity,
-            props: {
-              repository () {
-                return UB.Repository(req.entity).attrs(fieldList)
-              },
-              columns
-            }
-          })
-        }
-      } else {
-        this.callParent()
+      if (renderer !== 'vue') {
+        this.callParent() // Ext base showList
+        return
       }
+      /// Vue based UTableEntity
+      const cfg = me.commandConfig
+      const tabId = cfg.tabId
+      const title = me.title || me.entity
+      /*
+       * Test command cfg in old format with cfg.params as array.
+       * In new format 'repository' or 'entityName' params is used
+       */
+      const vueCfgType = ('repository' in cfg.cmdData) || ('entityName' in cfg.cmdData)
+      if (vueCfgType) {
+        mountTableEntity({
+          isModal: cfg.isModal,
+          tabId,
+          title,
+          props: cfg.cmdData,
+          scopedSlots: cfg.cmdData.scopedSlots
+        })
+        return
+      }
+      // Here we construct a UTableEntity props based on old Ext-based showList command format
+      const req = cfg.cmdData.params[0]
+      let props
+      if ((req.fieldList.length === 1) && (req.fieldList[0] === '*')) { // fieldList: ["*"] = all attributes
+        props = { entityName: req.entity } // let UTableEntity build fieldList and columns
+      } else {
+        const columns = []
+        const fieldList = []
+        for (const field of req.fieldList) {
+          if (typeof field === 'object') {
+            if (field.visibility !== false) {
+              columns.push({
+                id: field.name,
+                label: field.description,
+                format: field.format,
+                isHtml: field.isHtml,
+                sortable: field.sortable,
+                isLookup: field.isLookup,
+                align: field.align,
+                headerAlign: field.headerAlign,
+                maxWidth: field.maxWidth,
+                minWidth: field.minWidth,
+                width: field.width
+              })
+            }
+            fieldList.push(field.name)
+          } else {
+            columns.push(field)
+            fieldList.push(field)
+          }
+        }
+        props = {
+          repository () {
+            return UB.Repository(req.entity).attrs(fieldList)
+          },
+          columns
+        }
+      }
+      mountTableEntity({
+        isModal: cfg.isModal,
+        tabId: cfg.tabId,
+        title: me.title || me.description || me.entity,
+        props
+      })
     }
   })
 }

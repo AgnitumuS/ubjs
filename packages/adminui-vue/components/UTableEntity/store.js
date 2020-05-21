@@ -51,7 +51,7 @@ module.exports = (instance) => ({
     },
 
     /**
-     * Returns repository with added filters, sorters, pagination and total requests from state
+     * Returns repository with added 'ID' field is missed, filters, sorters, pagination and total requests from state
      * @return {ClientRepository}
      */
     currentRepository (state, getters) {
@@ -59,9 +59,8 @@ module.exports = (instance) => ({
         .start(state.pageIndex * getters.pageSize)
         .limit(getters.pageSize + 1)
 
-      if (!repo.fieldList.includes('ID')) {
-        repo.attrs('ID')
-      }
+      repo.attrsIf(!repo.fieldList.includes('ID'), 'ID')
+
       if (state.sort) {
         repo.orderBy(state.sort.column, state.sort.order)
       }
@@ -83,7 +82,7 @@ module.exports = (instance) => ({
     },
 
     /**
-     * Need for open form on add new or edit record.
+     * Used to open form on add new or edit record.
      */
     formCode (state, getters) {
       const form = UB.core.UBFormLoader.getFormByEntity(getters.entityName)
