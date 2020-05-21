@@ -370,14 +370,18 @@ const UMasterDetailView = require('../../components/UMasterDetailView.vue').defa
  * @param {object} cfg.tabId Tab id
  * @param {object} [cfg.title] Tab title
  * @param {object} cfg.props UMasterDetailView props
- * @param {function:ClientRepository} cfg.props.repository Function which returns ClientRepository
- * @param {array<string|UTableColumn>} [cfg.props.columns] Column list configs
+ * @param {function:ClientRepository} [cfg.props.repository] Function which returns ClientRepository.
+ *   Can be empty in case `props.entityName` is defined - it this case repository constructed automatically
+ *   based on attributes with `defaultView: true`
+ * @param {string} [cfg.props.entityName] Name of entity. Ignored in case `props.repository` is defined
+ * @param {array<string|UTableColumn>} [cfg.props.columns] Columns config.
+ *   If empty will be constructed based on repository attributes.
  * @param {TableScopedSlotsBuilder} [cfg.scopedSlots] Scoped slots
  * @param {boolean} [cfg.isModal] Is modal
  */
 function mountTableEntity (cfg) {
   if (!cfg.props.entityName && !cfg.props.repository) {
-    throw new Error('One of these options is required: "props.entityName" or "props.repository"')
+    throw new Error('One of "props.entityName" or "props.repository" is required')
   }
 
   function getEntityName () {
