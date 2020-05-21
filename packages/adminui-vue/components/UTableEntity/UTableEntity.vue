@@ -168,7 +168,7 @@ export default {
       const attrInfo = this.$store.getters.schema.getEntityAttributeInfo(column.id, 0)
 
       let attribute = column.attribute
-      if (attribute === undefined) {
+      if (attribute === undefined && attrInfo) {
         attribute = (attrInfo.parentAttribute && attrInfo.parentAttribute.dataType === 'Json')
           ? attrInfo.parentAttribute // for JSON actual attribute is undefined
           : attrInfo.attribute
@@ -177,17 +177,18 @@ export default {
       let label = column.label
       if ((label === undefined) || (label === '')) {
         // 3 level depth is enough here. in case `attr0.attr1.attr2.attr3` then mostly what developer already pass description
-        if (attrInfo.parentAttribute) {
+        if (attrInfo && attrInfo.parentAttribute && attrInfo.parentAttribute.dataType !== 'Json') {
           label = `${attrInfo.parentAttribute.caption}->${attrInfo.attribute.caption}`
           // check 3 level depth
           const prevAttrInfo = this.$store.getters.schema.getEntityAttributeInfo(column.id, -1)
           if (prevAttrInfo.parentAttribute) label = `${prevAttrInfo.parentAttribute.caption}->${label}`
-        } else if (attrInfo.attribute) {
+        } else if (attrInfo && attrInfo.attribute) {
           label = attrInfo.attribute.caption
         } else {
           label = column.id
         }
       }
+
       const typeDefaults = TypeProvider.get(attribute && attribute.dataType)
       const filters = {}
       const filterEntries = Object.entries(typeDefaults.filters || {})
