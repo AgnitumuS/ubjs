@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [1.10.13] - 2020-05-21
+### Fixed
  - `UTableEntity` prevent error `parentAttribute of undefined` in case `attribute` param is passed in column config.
 
 ## [1.10.12] - 2020-05-21
