@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.11] - 2020-05-22
 ## [5.3.10] - 2020-05-17
 ### Changed
  - replace most font-awesome and element-ui to UB icons analog

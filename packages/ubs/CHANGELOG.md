@@ -10,12 +10,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Deprecated
- - usage of `@unitybase/ubs/public/formatByPattern.js` is deprecated.
-   `require('@unitybase/cs-shared').formatByPattern` should be used instead.
 
 ### Removed
 
 ### Fixed
+
+## [5.4.0] - 2020-05-22
+### Deprecated
+ - usage of `@unitybase/ubs/public/formatByPattern.js` is deprecated.
+   `require('@unitybase/cs-shared').formatByPattern` should be used instead.
 
 ## [5.3.10] - 2020-05-17
 ### Changed

@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.11.0] - 2020-05-22
+### Added
  - `utils/lookups` method `subscribe` - subscribes to a local entity changes.
  Lookup attrs already includes ID and description attribute for current entity can be extend by attrs param.
  ```javascript
@@ -57,12 +68,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    in short format (month as number). UK: `23.05.2020`, `23.05.2020 13:14`, en: `05/23/2020` `05/23/2020, 1:14 PM`
  - `UToolbar`: creation and modification dates are rendered using **Intl** dateTime format with seconds   
  
-### Deprecated
-
 ### Removed
  - **BREAKING** methods `load`, `getEnumValue`, `getValueById`
-
-### Fixed
 
 ## [1.10.13] - 2020-05-21
 ### Fixed

@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `formatByPattern` module with `formatNumber` and `formatDate` functions using cached **Intl** instances.
-   This module is moved from `@unitybase/ubs` to be used in apps what not require a UBS model.
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.3.0] - 2020-05-22
+### Added
+ - `formatByPattern` module with `formatNumber` and `formatDate` functions using cached **Intl** instances.
+   This module is moved from `@unitybase/ubs` to be used in apps what not require a UBS model.
 
 ## [5.2.7] - 2020-05-13
 ### Added
