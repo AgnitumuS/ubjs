@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UAutoFiled` for `String` attributes will set a maxLength input property to `attribute.size`, so used can't enter
+ string longer when accepted by DB. This prevents a server-side errors like "attribute value will be truncated". 
 
 ## [1.11.0] - 2020-05-22
 ### Added

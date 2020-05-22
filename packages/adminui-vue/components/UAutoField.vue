@@ -166,6 +166,14 @@ export default {
           }
         })
         break
+      case 'String':
+        cmp = h('u-input', {
+          attrs: {
+            maxLength: this.entitySchema.attributes[this.attributeName].size,
+            ...baseAttrs
+          }
+        })
+        break
       default:
         cmp = h('u-input', {
           attrs: baseAttrs
