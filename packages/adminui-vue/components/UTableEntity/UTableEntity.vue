@@ -41,7 +41,7 @@ export default {
     entityName: String,
 
     /**
-     * Array of columns settings each item can be string or object.
+     * Array of columns settings where each item can be string or object.
      * For detail info about column object look JSDoc type {UTableColumn}
      */
     columns: Array,
@@ -217,7 +217,7 @@ export default {
 
     /**
      * In a case when you create component by repository prop
-     * and forgot to set attribute in fieldList but this attribute includes in columns
+     * and forget to set attribute in fieldList but this attribute is in columns
      */
     validateFieldList () {
       const fieldsWithError = this.getColumns
@@ -236,8 +236,8 @@ export default {
 
 <docs>
   Entity attributes with dataType `Text`, `BLOB`, `TimeLog` did not have default render component,
-  If you need to render this dataTypes render it by named column slots.
-  You need to decide to display this column type with great caution because this column can creates large server requests.
+  If you need to render this dataTypes, render it by named column slots.
+  You need to decide to display this column type with great caution because this column can create large server requests.
 
   One of these options is required:
   - `entity-name`
@@ -252,7 +252,7 @@ export default {
   ```
 
   ### Use as `repository`
-  Need to set function which returns UB Repository
+  Need to set function which returns UB Repository.
 
   ```vue
   <template>
@@ -272,7 +272,7 @@ export default {
   ```
 
   ### Columns
-  Columns array can contains strings or objects
+  Columns array can contain strings or objects.
 
   ```vue
   <template>
@@ -304,8 +304,8 @@ export default {
 
   ### Slots
   You can override values as named slots.
-  In this case another columns will be shows as usual.
-  Slot scope will pass `value`, `row`, and `column`
+  In this case another columns will be shown as usual.
+  Slot scope will pass `value`, `row`, and `column`.
 
   ```vue
   <template>
@@ -341,7 +341,7 @@ export default {
   ```
 
   ### Custom columns
-  Custom column always required to have slot, because entity dont have data for this column
+  Custom column always required to have slot, because entity doesn't have data for this column.
 
   ```vue
   <template>

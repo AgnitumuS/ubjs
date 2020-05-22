@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UTableEntity`: use store getters (`canAddNew`, `canEdit`, `canDelete`) to control keyboard events.
 
 ### Changed
 
@@ -644,12 +645,12 @@ $App.doCommand({
  - Styles which adds `padding: 1em` to `<form>` inside `u-form-layout` class. 
    So `UFormContainer` will have padding just only if it is a direct descendant of the `u-form-layout`  
  - `USelectEntity` added props `buildShowDictionaryConfig`, `buildEditConfig`, `buildAddNewConfig`. 
-   This props can overrides doCommand configs for base actions (edit, addNew, showDictionary). 
-   Functions get current config as argument and must return new config.
+   This props can override doCommand configs for base actions (edit, addNew, showDictionary). 
+   Function gets current config as argument and must return new config.
    Example in component docs.
  - `UTableEntity` added props `buildEditConfig`, `buildAddNewConfig`, `buildCopyConfig`. 
-   This props can overrides doCommand configs for base actions (edit, addNew, сopy). 
-   Functions get current config as argument and must return new config.
+   This props can override doCommand configs for base actions (edit, addNew, сopy). 
+   Function gets current config as argument and must return new config.
    Example in component docs.
  - `UTableEntity` toolbar slots:
    - `toolbar` - Replace whole toolbar 

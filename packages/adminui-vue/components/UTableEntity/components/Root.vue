@@ -3,9 +3,9 @@
     v-loading="loading"
     class="u-table-entity"
     tabindex="1"
-    @keydown.ctrl.delete.exact="deleteRecord(selectedRowId)"
-    @keydown.ctrl.e.prevent.exact="editRecord(selectedRowId)"
-    @keydown.ctrl.insert.exact="addNew"
+    @keydown.ctrl.delete.exact="canDelete && deleteRecord(selectedRowId)"
+    @keydown.ctrl.e.prevent.exact="canEdit && editRecord(selectedRowId)"
+    @keydown.ctrl.insert.exact="canAddNew && addNew"
     @keydown.ctrl.r.prevent.exact="refresh"
     @keydown.down.exact="moveDown"
     @keydown.enter.exact="onSelect(selectedRowId)"
@@ -345,14 +345,14 @@ export default {
 
   props: {
     /**
-       * If set table will be have static height.
-       * Table container will be have own scroll and fixed header.
+       * If set, table will have static height.
+       * Table container will have own scroll and fixed header.
        */
     height: [Number, String],
 
     /**
-       * If set table will be have maxHeight.
-       * Table container will be have own scroll and fixed header.
+       * If set, table will have maxHeight.
+       * Table container will have own scroll and fixed header.
        */
     maxHeight: [Number, String],
 
