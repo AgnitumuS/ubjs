@@ -8,7 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - `UTableEntity`: column of type `Currency` is rendered using **formatByPattern** from `@unitybase/cs-shared`
+   with a thousand separator and 2 fractions digits `2 203,00` `3.10` (before this changes `2203`, `3.1`) 
+ - `UTableEntity`: column of type `Date` and `DateTime` are rendered using **formatByPattern** from `@unitybase/cs-shared`
+   in short format (month as number). UK: `23.05.2020`, `23.05.2020 13:14`, en: `05/23/2020` `05/23/2020, 1:14 PM`
+ - `UToolbar`: creation and modification dates are rendered using **Intl** dateTime format with seconds   
+ 
 ### Deprecated
 
 ### Removed

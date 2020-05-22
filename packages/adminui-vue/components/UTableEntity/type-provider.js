@@ -1,5 +1,7 @@
 const defaultType = require('./type-definitions/default')
 const defaultCellTemplate = require('./cell-templates/default.vue').default
+const formatByPattern = require('@unitybase/cs-shared').formatByPattern
+const UB = require('@unitybase/ub-pub')
 
 /**
  * Module provides column settings, cell and filter templates by UB data types.
@@ -180,13 +182,27 @@ const dateFilters = {
 
 TypeProvider.registerType({
   type: 'Date',
-  settings: require('./type-definitions/date'),
+  settings: {
+    minWidth: 120,
+    sortable: true,
+    format ({ value }) {
+      const v = (value instanceof Date) ? value : new Date(value)
+      return formatByPattern.formatDate(v, 'date', UB.connection.userLang())
+    }
+  },
   filters: dateFilters
 })
 
 TypeProvider.registerType({
   type: 'DateTime',
-  settings: require('./type-definitions/date-time'),
+  settings: {
+    minWidth: 190, // en: 05/23/2020, 1:14 PM
+    sortable: true,
+    format ({ value }) {
+      const v = (value instanceof Date) ? value : new Date(value)
+      return formatByPattern.formatDate(v, 'dateTime', UB.connection.userLang())
+    }
+  },
   filters: dateFilters
 })
 
@@ -221,7 +237,14 @@ TypeProvider.registerType({
 
 TypeProvider.registerType({
   type: 'Currency',
-  settings: require('./type-definitions/number'),
+  settings: {
+    align: 'right',
+    sortable: true,
+    format: ({ value }) => {
+      const parsed = parseInt(value)
+      return formatByPattern.formatNumber(isNaN(parsed) ? null : parsed, 'sum', UB.connection.userLang())
+    }
+  },
   filters: numberFilter
 })
 
@@ -239,7 +262,9 @@ TypeProvider.registerType({
 
 TypeProvider.registerType({
   type: 'Document',
-  settings: require('./type-definitions/document'),
+  settings: {
+    sortable: false
+  },
   cellTemplate: require('./cell-templates/document.vue').default
 })
 
