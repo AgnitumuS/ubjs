@@ -22,11 +22,6 @@ const instance = new Vue({
   },
 
   methods: {
-    /**
-     * Fill all available domain entities by empty objects and loads enum entity
-     *
-     * @returns {Promise<void>}
-     */
     async init () {
       const availableEntities = Object.keys(UB.connection.domain.entities)
       for (const entity of availableEntities) {
@@ -72,14 +67,6 @@ const instance = new Vue({
       await this.subscribe(ENUM_ENTITY, ['eGroup', 'code', 'name'])
     },
 
-    /**
-     * Subscribes local changes of entity.
-     * Lookup attrs already includes ID and description attribute for current entity can be extend by attrs param.
-     *
-     * @param {string} entity Entity name.
-     * @param {string[]} [attrs] Additional lookup attrs.
-     * @returns {Promise<void>}
-     */
     async subscribe (entity, attrs = []) {
       const subscription = this.entities[entity]
       const isFirstSubscription = subscription.subscribes === 0
@@ -110,11 +97,6 @@ const instance = new Vue({
       }
     },
 
-    /**
-     * Unsubscribe entity from lookup. Listener removed only if current subscription is last.
-     *
-     * @param {string} entity Entity name
-     */
     unsubscribe (entity) {
       const subscription = this.entities[entity]
       subscription.subscribes++
@@ -128,21 +110,6 @@ const instance = new Vue({
       }
     },
 
-    /**
-     * Lookup getter
-     *
-     * @param {string} entity
-     *   Entity name
-     * @param {number|object|null} value
-     *   Search lookup record by ID.
-     *   In case passed object search for an object in which the key is an attribute
-     *   and the value is the value of this attribute.
-     *   Can be search by several attributes, for example {eGroup: 'AUDIT_ACTIONS', code: 'INSERT'}
-     * @param {string|boolean} [displayAttr]
-     *   Display attribute name.
-     *   If is not equal to description attribute of current entity - it must contained in attrs on subscribe.
-     *   If passed true will return the entire record.
-     */
     get (entity, value, displayAttr) {
       const returnsRecord = displayAttr === true
       if (value === null) {
@@ -173,10 +140,51 @@ const instance = new Vue({
     }
   }
 })
+
 const lookupsModule = {
+  /**
+   * Subscribes local changes of entity.
+   * Lookup attrs already includes ID and description attribute for current entity can be extend by attrs param.
+   *
+   * @param {string} entity Entity name.
+   * @param {string[]} [attrs] Additional lookup attrs.
+   * @returns {Promise<void>}
+   */
   subscribe: instance.subscribe,
+
+  /**
+   * Unsubscribe entity from lookup. Listener removed only if current subscription is last.
+   *
+   * @param {string} entity Entity name
+   */
   unsubscribe: instance.unsubscribe,
+
+  /**
+   * Fill all available domain entities by empty objects and loads enum entity
+   *
+   * @private
+   *
+   * @returns {Promise<void>}
+   */
   init: instance.init,
+
+  /**
+   * Lookup getter
+   *
+   * @param {string} entity
+   *   Entity name
+   * @param {number|object|null} value
+   *   Search lookup record by ID.
+   *   In case passed object search for an object in which the key is an attribute
+   *   and the value is the value of this attribute.
+   *   Can be search by several attributes, for example {eGroup: 'AUDIT_ACTIONS', code: 'INSERT'}
+   * @param {string|boolean} [displayAttr]
+   *   Display attribute name.
+   *   If is not equal to description attribute of current entity - it must contained in attrs on subscribe.
+   *   If passed true will return the entire record.
+   *
+   * @returns {*}
+   */
   get: instance.get
 }
 
@@ -184,8 +192,10 @@ module.exports = {
   ...lookupsModule,
   install (Vue) {
     Vue.prototype.$lookups = lookupsModule
-    UB.core.UBApp.on('applicationReady', () => {
-      lookupsModule.init()
-    })
+    if (UB.core.UBApp) {
+      UB.core.UBApp.on('applicationReady', () => {
+        lookupsModule.init()
+      })
+    }
   }
 }
