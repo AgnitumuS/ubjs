@@ -262,8 +262,7 @@ export default {
   background: var(--border);
 }
 
-.u-table th:last-child:after,
-.u-table th.u-table__fixed-column:after{
+.u-table th:last-child:after{
   content: none;
 }
 

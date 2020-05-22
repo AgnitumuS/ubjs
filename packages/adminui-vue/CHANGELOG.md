@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UTableEntity` table header cell attribute divider from '->' to `/`
+ - `UTableEntity` column divider of fixed column no more hiding
  - `UTableEntity`: column of type `Currency` is rendered using **formatByPattern** from `@unitybase/cs-shared`
    with a thousand separator and 2 fractions digits `2 203,00` `3.10` (before this changes `2203`, `3.1`) 
  - `UTableEntity`: column of type `Date` and `DateTime` are rendered using **formatByPattern** from `@unitybase/cs-shared`

@@ -178,7 +178,7 @@ export default {
       if ((label === undefined) || (label === '')) {
         // 3 level depth is enough here. in case `attr0.attr1.attr2.attr3` then mostly what developer already pass description
         if (attrInfo && attrInfo.parentAttribute && attrInfo.parentAttribute.dataType !== 'Json') {
-          label = `${attrInfo.parentAttribute.caption}->${attrInfo.attribute.caption}`
+          label = `${attrInfo.parentAttribute.caption} / ${attrInfo.attribute.caption}`
           // check 3 level depth
           const prevAttrInfo = this.$store.getters.schema.getEntityAttributeInfo(column.id, -1)
           if (prevAttrInfo.parentAttribute) label = `${prevAttrInfo.parentAttribute.caption}->${label}`
