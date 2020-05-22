@@ -6,10 +6,50 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `UTableEntity`: use store getters (`canAddNew`, `canEdit`, `canDelete`) to control keyboard events.
+ - `utils/lookups` method `subscribe` - subscribes to a local entity changes.
+ Lookup attrs already includes ID and description attribute for current entity can be extend by attrs param.
+ ```javascript
+ lookups.subscribe('tst_dictionary', ['code', 'userID'])
+ ```
+ - `utils/lookups` method `unsubscribe` Unsubscribe from entity changes. Listener is removed only if current subscription is last.
+ ```javascript
+ lookups.subscribe('tst_dictionary')
+ ```
+ - `utils/lookups` method `get` Getter for lookups
+ ```javascript
+ /** Returns description attribute value by ID */
+ lookups.get('tst_dictionary', 245671369782)
+ 
+ /** Returns description attribute value by ID */
+ lookups.get('tst_dictionary', {code: 'code10'})
+ 
+ /** Can search on several attributes */
+ lookups.get('ubm_enum', {eGroup: 'AUDIT_ACTION', code: 'INSERT'})
+ 
+ /** In case third param as string - returns displayValue as userID.fullName */
+ lookups.get('tst_dictionary', 245671369782, 'userID.fullName')
+ 
+ /** 
+  * In case third param is true (boolean) - returns entire record
+  * as object with all attributes what passed to subscribe
+  */
+ lookups.get('tst_dictionary', 245671369782, true)
+ ```
+ - `utils/lookups` added to Vue prototype. Example: `this.$lookups.get('tst_dictionary', 245671369782)`
 
 ### Changed
- - `UTableEntity` table header cell attribute divider from '->' to `/`
+ - `utils/lookups` fully refactored and maked reactive
+ - `Form/processing` connection listener `*:changed` now provides changed data.
+ So no more need to do select for fresh data in the neighboring tabs.
+ ```javascript
+ [{
+   entity: 'tst_dictionary',
+   method: 'insert',
+   resultData: { ID: 123312132313, name: 'name 1', caption: 'caption 1' }
+ }]
+ ```
+- `UTableEntity`: use store getters (`canAddNew`, `canEdit`, `canDelete`) to control keyboard events.
+ - `UTableEntity` table header cell attribute divider changed from '->' to ` / `
  - `UTableEntity` column divider of fixed column no more hiding
  - `UTableEntity`: column of type `Currency` is rendered using **formatByPattern** from `@unitybase/cs-shared`
    with a thousand separator and 2 fractions digits `2 203,00` `3.10` (before this changes `2203`, `3.1`) 
@@ -20,6 +60,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - **BREAKING** methods `load`, `getEnumValue`, `getValueById`
 
 ### Fixed
 

@@ -24,8 +24,6 @@
 </template>
 
 <script>
-const Lookups = require('../../../../utils/lookups')
-
 export default {
   name: 'FilterEnumEqual',
 
@@ -49,7 +47,10 @@ export default {
     },
 
     formattedValue () {
-      return Lookups.getEnumValue(this.eGroup, this.value)
+      return this.$lookups.get('ubm_enum', {
+        eGroup: this.eGroup,
+        code: this.value
+      })
     }
   }
 }

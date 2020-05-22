@@ -1,4 +1,4 @@
-const Lookups = require('../../../utils/lookups')
+const lookups = require('../../../utils/lookups')
 
 /**
  * @type {UTableColumnSettings}
@@ -10,7 +10,12 @@ module.exports = {
       return value.toString()
         .split(',')
         .map(id => {
-          return Lookups.getValueById(column.attribute.associatedEntity, Number(id))
+          const entity = column.attribute.associatedEntity
+          const associatedAttr = column.attribute.associatedAttr || 'ID'
+          const lookupQuery = {
+            [associatedAttr]: id
+          }
+          return lookups.get(entity, lookupQuery)
         })
         .join(', ')
     } else {

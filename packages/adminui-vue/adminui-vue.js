@@ -43,7 +43,6 @@ module.exports.mapInstanceFields = mapInstanceFields
 module.exports.computedVuex = computedVuex
 module.exports.SET = SET
 module.exports.mountUtils = require('./utils/Form/mount')
-module.exports.lookups = require('./utils/lookups')
 
 const dialogs = require('./components/dialog/UDialog')
 const { dialog, dialogError, dialogInfo, dialogYesNo, errorReporter } = dialogs // destructive assignment for WebStorm parameter parsing
@@ -103,6 +102,10 @@ Vue.use(Vuelidate)
 // add $dialog* to Vue prototype
 Vue.use(dialogs)
 UB.setErrorReporter(dialogs.errorReporter)
+
+const lookups = require('./utils/lookups')
+Vue.use(lookups)
+module.exports.lookups = lookups
 
 if (isExt) {
   const {
@@ -165,16 +168,12 @@ function magicLinkFocusCommand (params, target) {
     if (domElm && domElm.focus) domElm.focus()
   }
 }
-const Lookups = require('./utils/lookups.js')
 
 if (window.$App) {
   magicLink.addCommand('showForm', magicLinkAdminUiCommand)
   magicLink.addCommand('showList', magicLinkAdminUiCommand)
   magicLink.addCommand('showReport', magicLinkAdminUiCommand)
 
-  window.$App.on('applicationReady', () => {
-    Lookups.loadEnum()
-  })
   window.$App.on('applicationReady', replaceDefaultRelogin)
   window.$App.on('applicationReady', addVueSidebar)
   $App.on('buildMainMenu', items => {
