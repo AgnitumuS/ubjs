@@ -1,4 +1,3 @@
-const Lookups = require('../../utils/lookups.js')
 const UB = require('@unitybase/ub-pub')
 const { Notification: $notify } = require('element-ui')
 const { throttle } = require('throttle-debounce')
@@ -217,16 +216,6 @@ module.exports = (instance) => ({
           if (state.withTotal) {
             commit('TOTAL', response.total)
           }
-          /* Filter lookups columns and load it */
-          await Promise.all(
-            getters.columns
-              .filter(c => c.isLookup)
-              .filter(c => c.attribute.dataType === 'Entity' || c.attribute.dataType === 'Many')
-              .map(({ attribute }) => {
-                const entity = attribute.associatedEntity
-                return Lookups.load(entity, attribute.associatedAttr)
-              })
-          )
           commit('ITEMS', items)
         } catch (err) {
           UB.showErrorWindow(err)
@@ -333,8 +322,11 @@ module.exports = (instance) => ({
           UB.showErrorWindow(err)
           throw new UB.UBAbortError(err)
         }
-        UB.connection.emit(`${getters.entityName}:changed`)
-
+        UB.connection.emit(`${getters.entityName}:changed`, [{
+          entity: getters.entityName,
+          method: 'delete',
+          resultData: { ID }
+        }])
         $notify.success(UB.i18n('recordDeletedSuccessfully'))
       }
     },

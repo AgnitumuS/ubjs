@@ -1,4 +1,4 @@
-const Lookups = require('../../../utils/lookups')
+const lookups = require('../../../utils/lookups')
 
 /**
  * @type {UTableColumnSettings}
@@ -8,7 +8,8 @@ module.exports = {
   sortable: true,
   format ({ value, column }) {
     if (column.isLookup && value !== null) {
-      return Lookups.getEnumValue(column.attribute.enumGroup, value)
+      const eGroup = column.attribute.enumGroup
+      return lookups.get('ubm_enum', { eGroup, code: value })
     } else {
       return value
     }

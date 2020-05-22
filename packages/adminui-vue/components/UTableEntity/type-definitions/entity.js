@@ -1,4 +1,4 @@
-const Lookups = require('../../../utils/lookups')
+const lookups = require('../../../utils/lookups')
 
 /**
  * @type {UTableColumnSettings}
@@ -8,7 +8,12 @@ module.exports = {
   sortable: true,
   format ({ value, column }) {
     if (column.isLookup) {
-      return Lookups.getValueById(column.attribute.associatedEntity, value)
+      const entity = column.attribute.associatedEntity
+      const associatedAttr = column.attribute.associatedAttr || 'ID'
+      const lookupQuery = {
+        [associatedAttr]: value
+      }
+      return lookups.get(entity, lookupQuery)
     } else {
       return value
     }

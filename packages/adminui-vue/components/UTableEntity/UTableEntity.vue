@@ -29,7 +29,6 @@ export default {
   components: { Root },
 
   props: {
-
     /**
      * Function which return UB.ClientRepository or UBQL object
      */
@@ -115,6 +114,15 @@ export default {
           })
           .map(attrCode => this.buildColumn({ id: attrCode }))
       }
+    },
+
+    lookupsEntities () {
+      return this.getColumns
+        .filter(c => c.isLookup && c.attribute && c.attribute.associatedEntity)
+        .map(c => ({
+          entity: c.attribute.associatedEntity,
+          associatedAttr: c.attribute.associationAttr || 'ID'
+        }))
     }
   },
 
@@ -131,10 +139,16 @@ export default {
   mounted () {
     this.validateFieldList()
     this.$UB.connection.on(`${this.getEntityName}:changed`, this.refresh)
+    for (const { entity, associatedAttr } of this.lookupsEntities) {
+      this.$lookups.subscribe(entity, [associatedAttr])
+    }
   },
 
   beforeDestroy () {
     this.$UB.connection.removeListener(`${this.getEntityName}:changed`, this.refresh)
+    for (const { entity } of this.lookupsEntities) {
+      this.$lookups.unsubscribe(entity)
+    }
   },
 
   methods: {
