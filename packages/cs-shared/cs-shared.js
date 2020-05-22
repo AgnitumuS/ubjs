@@ -2,6 +2,7 @@ const CustomRepository = require('./CustomRepository')
 const LocalDataStore = require('./LocalDataStore')
 const UBDomain = require('./UBDomain')
 const UBSession = require('./UBSession')
+const formatByPattern = require('./formatByPattern')
 
 /**
  * Contains classes, common for CLI, server-side and browser side
@@ -27,5 +28,9 @@ module.exports = {
    * User session for connection to UB server
    * @type {UBSession}
    */
-  UBSession
+  UBSession,
+  /**
+   * Dates and Numbers formatting using Intl
+   */
+  formatByPattern
 }

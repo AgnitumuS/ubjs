@@ -61,11 +61,11 @@
     >
       <tr>
         <td>{{ $ut('createdEntityCaption') }}:</td>
-        <td>{{ $moment(mi_createDate).format('lll') }}</td>
+        <td>{{ formatDate(mi_createDate) }}</td>
       </tr>
       <tr>
         <td>{{ $ut('updatedEntityCaption') }}:</td>
-        <td>{{ $moment(mi_modifyDate).format('lll') }}</td>
+        <td>{{ formatDate(mi_modifyDate) }}</td>
       </tr>
     </table>
   </div>
@@ -75,6 +75,7 @@
 /* global $App */
 const { mapState, mapGetters, mapActions } = require('vuex')
 const { mapInstanceFields } = require('../../utils/Form/helpers')
+const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 
 /**
  * Form toolbar with default actions.
@@ -380,6 +381,10 @@ export default {
           this.deleteInstance(this.$formServices.forceClose)
         }
       }
+    },
+
+    formatDate (d) {
+      return formatByPattern.formatDate(d, 'dateTimeFull', this.$UB.connection.userLang())
     }
   }
 }

@@ -1,7 +1,7 @@
 /*
 * Created by xmax on 17.02.2018
 */
-const formatByPattern = require('./formatByPattern')
+const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 
 /**
  *
