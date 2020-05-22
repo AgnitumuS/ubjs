@@ -52,6 +52,9 @@ module.exports.dialogInfo = dialogInfo
 module.exports.dialogYesNo = dialogYesNo
 module.exports.errorReporter = errorReporter
 
+const lookups = require('./utils/lookups')
+module.exports.lookups = lookups
+
 if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
 
 const Vue = require('vue')
@@ -103,9 +106,7 @@ Vue.use(Vuelidate)
 Vue.use(dialogs)
 UB.setErrorReporter(dialogs.errorReporter)
 
-const lookups = require('./utils/lookups')
 Vue.use(lookups)
-module.exports.lookups = lookups
 
 if (isExt) {
   const {
