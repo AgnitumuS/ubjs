@@ -2,9 +2,8 @@
  * Dates and Numbers formatting using Intl
  *
  * @module formatByPattern
- * @author pavel.mash
- * @module @unitybase/cs-shared
  * @author xmax
+ * @memberOf module:@unitybase/cs-shared
  */
 // {month:  '2-digit', day: 'numeric', year: 'numeric',  hour: '2-digit', minute: '2-digit', second: '2-digit'})
 const datePatterns = {
@@ -77,7 +76,7 @@ function lang2locale (lang) {
  *
  * @param {Date} dateVal
  * @param {string} patternName One of `formatByPattern.datePatterns`
- * @param {string} lang Either ICU locale or UB language code
+ * @param {string} lang UB language code
  * @return {string}
  */
 module.exports.formatDate = function (dateVal, patternName, lang) {
@@ -105,7 +104,7 @@ module.exports.formatDate = function (dateVal, patternName, lang) {
  *
  * @param {Number} numVal
  * @param {string} patternName One of `formatByPattern.datePatterns`
- * @param {string} lang Either ICU locale or UB language code
+ * @param {string} lang UB language code
  * @return {string}
  */
 module.exports.formatNumber = function (numVal, patternName, lang) {
