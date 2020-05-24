@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  string longer when accepted by DB. This prevents a server-side errors like "attribute value will be truncated". 
  - prevent `o.core.UBApp  is undefined` error on login page (lookups initialized only in case `UB.core.UBApp` is defined)
  - production build of `@unitybase/adminui-vue` will exports `lookups` as expected
+ - `UTableEntity` table header cell attribute divider changed from '->' to ` / ` **for 3d level depth**
 
 ## [1.11.0] - 2020-05-22
 ### Added

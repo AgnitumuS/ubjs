@@ -195,7 +195,7 @@ export default {
           label = `${attrInfo.parentAttribute.caption} / ${attrInfo.attribute.caption}`
           // check 3 level depth
           const prevAttrInfo = this.$store.getters.schema.getEntityAttributeInfo(column.id, -1)
-          if (prevAttrInfo.parentAttribute) label = `${prevAttrInfo.parentAttribute.caption}->${label}`
+          if (prevAttrInfo.parentAttribute) label = `${prevAttrInfo.parentAttribute.caption} / ${label}`
         } else if (attrInfo && attrInfo.attribute) {
           label = attrInfo.attribute.caption
         } else {
