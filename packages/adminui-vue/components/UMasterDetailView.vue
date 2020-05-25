@@ -127,37 +127,24 @@ export default {
     },
 
     details () {
-      const { entities } = this.$UB.connection.domain
-      return Object.entries(entities)
-        .reduce((accum, [entityCode, entityData]) => {
-          const isCurrentEntity = entityCode === this.entityName
-          const hasAccess = entityData.haveAccessToMethod('select')
-          const attributes = Object.entries(entityData.attributes)
-          const relativeAttributes = attributes.filter(([attrCode, attrData]) => {
-            const equalCurrentEntity = attrData.associatedEntity === this.entityName
-            const isSystemAttr = attrCode.startsWith('ID') || attrCode.startsWith('mi_')
-            /**
-             * TODO: replace isMany check to association from meta file.
-             * Temporary solution is exclude attrs with type Many.
-             * That because dont have some flag in meta file which shows relations type.
-             * @Pavel.mash said he would add such an opportunity later.
-             */
-            const isMany = attrData.dataType === 'Many'
-
-            return equalCurrentEntity && !isSystemAttr && !isMany
-          })
-          const hasRelatives = relativeAttributes.length > 0
-
-          if (!isCurrentEntity && hasAccess && hasRelatives) {
-            for (const [attrCode, attrData] of relativeAttributes) {
-              accum.push({
-                attribute: attrCode,
-                entity: attrData.entity.code
+      const result = []
+      const thisE = this.entityName
+      this.$UB.connection.domain.eachEntity(function (curEntity, curEntityName) {
+        // [unitybase/ubjs#2] - do not display refs to attributes of "many" type
+        if ((curEntityName !== thisE) && curEntity.haveAccessToMethod('select')) {
+          curEntity.eachAttribute(function (curAttr, curAttrCode) {
+            // TODO - use assotiationKind here when it added to Domain
+            if ((curAttr.associatedEntity === thisE /* reject many attribute */) && !curAttrCode.startsWith('ID') &&
+              !curAttrCode.startsWith('mi_')) {
+              result.push({
+                attribute: curAttrCode,
+                entity: curEntityName
               })
             }
-          }
-          return accum
-        }, [])
+          })
+        }
+      })
+      return result
     },
 
     schema () {
@@ -199,14 +186,13 @@ export default {
     },
 
     formatDetailLabel ({ entity, attribute }) {
-      const attributeLabelText = this.$ut(`${entity}.${attribute}`)
-      const attributeLabel = ` (${attributeLabelText})`
       const hasSameEntity = this.details.filter(d => d.entity === entity).length > 1
-
       if (hasSameEntity) {
+        const attributeLabelText = this.$ut(`${entity}.${attribute}`)
+        const attributeLabel = ` (${attributeLabelText})`
         return this.$ut(entity) + attributeLabel
       } else {
-        return entity
+        return this.$ut(entity)
       }
     },
 

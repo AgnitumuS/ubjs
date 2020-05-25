@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - `UAutoFiled` for `String` attributes will set a maxLength input property to `attribute.size`, so used can't enter
+ - `UAutoFiled` for `String` attributes will set a maxLength input property to `attribute.size`, so user can't enter
  string longer when accepted by DB. This prevents a server-side errors like "attribute value will be truncated". 
  - prevent `o.core.UBApp  is undefined` error on login page (lookups initialized only in case `UB.core.UBApp` is defined)
  - production build of `@unitybase/adminui-vue` will exports `lookups` as expected
