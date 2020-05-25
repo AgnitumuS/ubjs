@@ -145,7 +145,7 @@ UB.i18nExtend({
       conditionPlaceholder: 'Вираз',
       valuePlaceholder: 'Значення',
       date: {
-        from: 'від',
+        from: 'з',
         to: 'до',
         valuePlaceholder: 'Оберіть дату'
       },

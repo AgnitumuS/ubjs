@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - production build of `@unitybase/adminui-vue` will exports `lookups` as expected
  - `UTableEntity` table header cell attribute divider changed from '->' to ` / ` **for 3d level depth**
  - `UMasterDetailView` detail header translated using i18n
+ - date filter caption i18n fixed for ru (от..до.. -> с..по..)  uk (вiд..до.. -> з..до..)   
 
 ## [1.11.0] - 2020-05-22
 ### Added

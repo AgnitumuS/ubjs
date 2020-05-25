@@ -145,8 +145,8 @@ UB.i18nExtend({
       conditionPlaceholder: 'Выражение',
       valuePlaceholder: 'Значение',
       date: {
-        from: 'от',
-        to: 'до',
+        from: 'с',
+        to: 'по',
         valuePlaceholder: 'Выберите дату'
       },
       columnPlaceholder: 'Колонка'
