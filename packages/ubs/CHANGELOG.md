@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.1] - 2020-05-25
 ## [5.4.0] - 2020-05-22
 ### Deprecated
  - usage of `@unitybase/ubs/public/formatByPattern.js` is deprecated.
