@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `formatByPattern.setLang2LocaleHook` function added - allows override default UB language to ICU locale transformation rules 
 
 ### Changed
+ - `formatByPattern.formatDate` now accept any type as a value. For `!value` returns '', for non-date value creates a Date using new Date(value)  
+ - `formatByPattern.formatNumber` now accept any type as a value. For `!value`(except 0) and `NaN` returns '', for non-number value uses `parseFloat()` 
 
 ### Deprecated
 

@@ -33,11 +33,11 @@ const numberPatterns = {
 }
 
 /**
- * Keys is a language, values is an object with keys is date pattern, value is Intl.DateTimeFormat for this pattern
- * {en: {date: new Intl.DateTimeFormat('en-US', datePatterns.date)}
+ * lang to ICU locale hook (if defined by setLang2LocaleHook)
+ * @private
+ * @type {null|function}
  */
-const dateTimeFormaters = {}
-
+let l2lHook = null
 const langToICU = {
   en: 'en-US',
   ru: 'ru-RU',
@@ -46,17 +46,12 @@ const langToICU = {
 }
 
 /**
- * Keys is a language, values is an object with keys is date pattern, value is Intl.NumberFormat for this pattern
- * {en: {sum: new Intl.NumberFormat('en-US', numberPatterns.sum)}
- */
-const numberFormaters = {}
-
-/**
  * Create a ICU locale based on UB language
  * @param lang
  * @return {string}
  */
 function lang2locale (lang) {
+  if (l2lHook) return l2lHook(lang)
   lang = lang || 'en'
   if ((lang.length < 3) && langToICU[lang]) {
     return langToICU[lang]
@@ -64,30 +59,51 @@ function lang2locale (lang) {
     return lang + '-' + lang.toUpperCase()
   }
 }
+
+/**
+ * Intl number formatters cache.
+ *
+ * Keys is a language, values is an object with keys is date pattern, value is Intl.NumberFormat for this pattern
+ * {en: {sum: new Intl.NumberFormat('en-US', numberPatterns.sum)}
+ * @private
+ */
+let numberFormaters = {}
+
+/**
+ * Intl Date formatters cache.
+ *
+ * Keys is a language, values is an object with keys is date pattern, value is Intl.DateTimeFormat for this pattern
+ * {en: {date: new Intl.DateTimeFormat('en-US', datePatterns.date)}
+ * @private
+ */
+let dateTimeFormaters = {}
+
 /**
  * Format date by pattern
  * @example
     const formatByPattern = require('@unitybase/cs-shared').formatByPattern
-    const d = new Date(20202, 04, 23, 13, 14)
+    const d = new Date(2020, 04, 23, 13, 14)
     formatByPattern.formatDate(d, 'date', 'uk') // 23.05.2020
+    formatByPattern.formatDate('2020-05-23', 'date', 'uk') // 23.05.2020
     formatByPattern.formatDate(d, 'date', 'en') // 05/23/2020
     formatByPattern.formatDate(d, 'dateTime', 'uk') // 23.05.2020 13:14
     formatByPattern.formatDate(d, 'date', 'en') // 05/23/2020, 1:14 PM
  *
- * @param {Date} dateVal
+ * @param {*} dateVal Date object or Number/String what will be converted to Date using new Date();
+ *   null, undefined and empty string will be converted to empty string
  * @param {string} patternName One of `formatByPattern.datePatterns`
  * @param {string} lang UB language code
  * @return {string}
  */
 module.exports.formatDate = function (dateVal, patternName, lang) {
-  if (!dateVal) return
-  if (!(dateVal instanceof Date)) throw new Error('Value must be Date')
-  const pattern = datePatterns[patternName]
-  if (!pattern) throw new Error(`Unknown date pattern ${patternName}`)
+  if (!dateVal) return ''
+  if (!(dateVal instanceof Date)) dateVal = new Date(dateVal)
 
   // lazy create Intl object
   if (!dateTimeFormaters[lang]) dateTimeFormaters[lang] = {}
   if (!dateTimeFormaters[lang][patternName]) {
+    const pattern = datePatterns[patternName]
+    if (!pattern) throw new Error(`Unknown date pattern ${patternName}`)
     const locale = lang2locale(lang)
     dateTimeFormaters[lang][patternName] = new Intl.DateTimeFormat(locale, pattern)
   }
@@ -95,33 +111,48 @@ module.exports.formatDate = function (dateVal, patternName, lang) {
 }
 
 /**
- * Format number by pattern
+ * Format number by pattern. Use parseFloat to convert non-number numVal argument into Number. Returns empty string for `!numVal` and `NaN`
  * @example
  const formatByPattern = require('@unitybase/cs-shared').formatByPattern
  const n = 2305.1
  formatByPattern.formatNumber(n, 'sum', 'en') // 2,305.10
+ formatByPattern.formatNumber('2305.1', 'sum', 'en') // 2,305.10
  formatByPattern.formatNumber(n, 'sum', 'uk') // 2 305,10
  *
- * @param {Number} numVal
+ * @param {*} numVal
  * @param {string} patternName One of `formatByPattern.datePatterns`
  * @param {string} lang UB language code
  * @return {string}
  */
 module.exports.formatNumber = function (numVal, patternName, lang) {
-  if (Number.isNaN(numVal)) return 'NaN'
-  if (!numVal && numVal !== 0) return ''
-  if (typeof numVal !== 'number') throw new Error('Value must be Number')
-  const pattern = numberPatterns[patternName]
-  if (!pattern) throw new Error(`Unknown number pattern ${patternName}`)
+  if (!numVal && (numVal !== 0)) return ''
+  const v = (typeof numVal === 'number') ? numVal : parseFloat(numVal)
+  if (Number.isNaN(v)) return ''
   // lazy create Intl object
   if (!numberFormaters[lang]) numberFormaters[lang] = {}
   if (!numberFormaters[lang][patternName]) {
+    const pattern = numberPatterns[patternName]
+    if (!pattern) throw new Error(`Unknown number pattern ${patternName}`)
     const locale = lang2locale(lang)
     numberFormaters[lang][patternName] = new Intl.NumberFormat(locale, pattern)
   }
   return numberFormaters[lang][patternName].format(numVal)
 }
 
+/**
+ * Set application-specific UB lang to ICU locale transformation hook.
+ * Default hook uses `{en: 'en-US', ru: 'ru-RU', uk: 'uk-UA', az: 'az'}` translation, any other language `ln` translated into `ln-LN`.
+ *
+ * Application can redefine this rule by sets his own hook, for example to translate `en -> 'en-GB'` etc.
+ *
+ * @param {function} newL2lHook function whats takes a UB language string and returns a ICU locale string
+ */
+module.exports.setLang2LocaleHook = function (newL2lHook) {
+  l2lHook = newL2lHook
+  // reset cache
+  numberFormaters = {}
+  dateTimeFormaters = {}
+}
 /**
  * Available date patterns
  * @type {string[]}

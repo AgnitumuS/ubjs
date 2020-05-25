@@ -1,4 +1,5 @@
 const UB = require('@unitybase/ub-pub')
+const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 
 module.exports = {
   filters: {
@@ -32,11 +33,7 @@ module.exports = {
 
   methods: {
     formatDate (value) {
-      if (value && value instanceof Date) {
-        return this.$moment(value).format('DD.MM.YYYY')
-      } else {
-        return ''
-      }
+      return formatByPattern.formatDate(value, 'dateTime', UB.connection.userLang())
     }
   }
 }

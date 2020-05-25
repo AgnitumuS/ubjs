@@ -186,8 +186,7 @@ TypeProvider.registerType({
     minWidth: 120,
     sortable: true,
     format ({ value }) {
-      const v = (value instanceof Date) ? value : new Date(value)
-      return formatByPattern.formatDate(v, 'date', UB.connection.userLang())
+      return formatByPattern.formatDate(value, 'date', UB.connection.userLang())
     }
   },
   filters: dateFilters
@@ -199,8 +198,7 @@ TypeProvider.registerType({
     minWidth: 190, // en: 05/23/2020, 1:14 PM
     sortable: true,
     format ({ value }) {
-      const v = (value instanceof Date) ? value : new Date(value)
-      return formatByPattern.formatDate(v, 'dateTime', UB.connection.userLang())
+      return formatByPattern.formatDate(value, 'dateTime', UB.connection.userLang())
     }
   },
   filters: dateFilters
@@ -241,8 +239,7 @@ TypeProvider.registerType({
     align: 'right',
     sortable: true,
     format: ({ value }) => {
-      const parsed = parseInt(value)
-      return formatByPattern.formatNumber(isNaN(parsed) ? null : parsed, 'sum', UB.connection.userLang())
+      return formatByPattern.formatNumber(value, 'sum', UB.connection.userLang())
     }
   },
   filters: numberFilter
