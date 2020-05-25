@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - prevent `o.core.UBApp  is undefined` error on login page (lookups initialized only in case `UB.core.UBApp` is defined)
  - production build of `@unitybase/adminui-vue` will exports `lookups` as expected
  - `UTableEntity` table header cell attribute divider changed from '->' to ` / ` **for 3d level depth**
+ - `UMasterDetailView` detail header translated using i18n
 
 ## [1.11.0] - 2020-05-22
 ### Added
