@@ -167,6 +167,7 @@ function replaceShowList () {
           tabId,
           title,
           props: cfg.cmdData,
+          shortcutCode: cfg.shortcutCode,
           scopedSlots: cfg.cmdData.scopedSlots
         })
         return
@@ -212,6 +213,7 @@ function replaceShowList () {
       mountTableEntity({
         isModal: cfg.isModal,
         tabId: cfg.tabId,
+        shortcutCode: cfg.shortcutCode,
         title: me.title || me.description || me.entity,
         props
       })
