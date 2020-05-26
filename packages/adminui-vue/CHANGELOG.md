@@ -12,7 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ### Changed
  - `UTableEntity`, `UTable` allow text selection in table using mouse
- - `UTableEntity` allow to scroll table using PgUp/PgDown/Ctrl+PgUp/Ctrl+PgDown
+ - `UTableEntity` allow scrolls table using PgUp/PgDown/Ctrl+PgUp/Ctrl+PgDown
+ - `UTableEntity` filter: top/bottom margins decreased to 4px from 12px - this decrease total toolbar height by 16px 
 
 ### Deprecated
 

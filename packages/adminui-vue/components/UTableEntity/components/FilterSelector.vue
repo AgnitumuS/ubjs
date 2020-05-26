@@ -80,8 +80,8 @@ export default {
   background: hsl(var(--hs-background), var(--l-background-default));
   border-radius: var(--border-radius);
   padding: 4px 8px;
-  margin: 12px 0;
-  margin-left: 16px;
+  margin: 4px 0;
+  margin-left: 8px;
   align-items: center;
 }
 
