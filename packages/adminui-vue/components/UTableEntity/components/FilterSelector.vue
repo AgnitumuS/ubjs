@@ -87,7 +87,9 @@ export default {
 
 .filter-input{
   margin: 0 4px;
-  width: 150px;
+  /*min-width: 150px;*/
+  flex-basis: 120px;
+  flex-grow: 1;
 }
 
 .filter-input-number{

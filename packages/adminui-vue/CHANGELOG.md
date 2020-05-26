@@ -11,12 +11,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity`: next page pagination link added to the end of table scrollable area
  
 ### Changed
+ - `UTableEntity`, `UTable` allow text selection in table using mouse
+ - `UTableEntity` allow to scroll table using PgUp/PgDown/Ctrl+PgUp/Ctrl+PgDown
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `UMasterDetailView` incorrect display of total count. Resets `total` on any changes in filters
+ - `UTableEntity` css fixes: 
+   - filters will try to expand to full width
+   - will wrap on overflow
+   - pagination `white-space` sets to `no-wrap` 
 
 ## [1.11.1] - 2020-05-25
 ### Fixed

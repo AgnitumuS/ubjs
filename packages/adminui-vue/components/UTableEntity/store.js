@@ -257,12 +257,14 @@ module.exports = (instance) => ({
           expression: state.selectedColumnId
         }))
       })
+      commit('TOTAL', null)
       await dispatch('fetchItems')
     },
 
     async removeFilter ({ commit, dispatch }, columnId) {
       commit('PAGE_INDEX', 0)
       commit('REMOVE_FILTER', columnId)
+      commit('TOTAL', null)
       await dispatch('fetchItems')
     },
 

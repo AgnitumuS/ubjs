@@ -95,6 +95,8 @@ export default {
     margin-left: auto;
     display: flex;
     align-items: center;
+    padding: 0 8px;
+    white-space: nowrap;
   }
 
   .pagination__current{
