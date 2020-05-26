@@ -152,7 +152,9 @@ UB.i18nExtend({
       columnPlaceholder: 'Колонка'
     },
     pagination: {
-      outOf: 'из'
+      outOf: 'из',
+      nextPage: 'Следующая страница',
+      prevPage: 'Предыдущая страница'
     }
   },
 

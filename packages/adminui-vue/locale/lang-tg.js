@@ -152,7 +152,9 @@ UB.i18nExtend({
       columnPlaceholder: 'Column'
     },
     pagination: {
-      outOf: 'out of'
+      outOf: 'out of',
+      nextPage: 'Саҳифаи навбатӣ',
+      prevPage: 'Саҳифаи гузашта'
     }
   },
 

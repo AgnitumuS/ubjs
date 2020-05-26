@@ -153,7 +153,9 @@ UB.i18nExtend({
       columnPlaceholder: 'Sütun'
     },
     pagination: {
-      outOf: 'dan'
+      outOf: 'dan',
+      nextPage: 'Sonrakı səhifə',
+      prevPage: 'Əvvəlki səhifə'
     }
   },
 

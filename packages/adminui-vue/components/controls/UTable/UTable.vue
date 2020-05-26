@@ -67,6 +67,8 @@
           </div>
         </td>
       </tr>
+      <!-- @slot Table footer (last row in table)-->
+      <slot name="lastTableRow"/>
     </table>
   </div>
 </template>

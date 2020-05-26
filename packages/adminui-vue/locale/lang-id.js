@@ -152,7 +152,9 @@ UB.i18nExtend({
       columnPlaceholder: 'Column'
     },
     pagination: {
-      outOf: 'out of'
+      outOf: 'out of',
+      nextPage: 'Next page',
+      prevPage: 'Previous page'
     }
   },
 
