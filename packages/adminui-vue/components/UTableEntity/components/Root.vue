@@ -7,12 +7,12 @@
     @keydown.ctrl.e.prevent.exact="canEdit && editRecord(selectedRowId)"
     @keydown.ctrl.insert.exact="canAddNew && addNew"
     @keydown.ctrl.r.prevent.exact="refresh"
-    @keydown.down.exact="moveDown"
     @keydown.enter.exact="onSelect(selectedRowId)"
     @keydown.exact="tryFocusFilter"
-    @keydown.left.exact="moveLeft"
-    @keydown.right.exact="moveRight"
-    @keydown.up.exact="moveUp"
+    @keydown.left.prevent.exact="moveLeft"
+    @keydown.right.prevent.exact="moveRight"
+    @keydown.up.prevent.exact="moveUp"
+    @keydown.down.prevent.exact="moveDown"
   >
     <div class="u-table-entity__head">
       <!-- @slot Replace whole toolbar -->
@@ -180,6 +180,7 @@
       :height="height"
       :items="items"
       :max-height="maxHeight"
+      tabindex="1"
       @click-cell="selectCell"
       @contextmenu-cell="showContextMenu"
       @dblclick-row="onSelect($event.row.ID, $event.row)"
@@ -597,11 +598,6 @@ export default {
 
   .u-table-entity-panel__table th > .cell {
     word-break: normal;
-  }
-
-  .u-table-entity .u-table th,
-  .u-table-entity .u-table td {
-    user-select: none;
   }
 
   .u-table-entity tr.selected td {
