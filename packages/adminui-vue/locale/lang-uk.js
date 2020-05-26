@@ -152,7 +152,9 @@ UB.i18nExtend({
       columnPlaceholder: 'Колонка'
     },
     pagination: {
-      outOf: 'з'
+      outOf: 'з',
+      nextPage: 'Наступна сторінка',
+      prevPage: 'Попередня сторінка'
     }
   },
 

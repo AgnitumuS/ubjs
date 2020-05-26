@@ -203,6 +203,22 @@
           />
         </slot>
       </template>
+      <template #lastTableRow>
+        <tr v-if="!isLastPageIndex && !loading">
+          <td
+            :colspan="columns.length"
+            align="center"
+          >
+            <u-button
+              appearance="plain"
+              right-icon="u-icon-arrow-right"
+              @click="pageIndex += 1"
+            >
+              {{ $ut('table.pagination.nextPage') }}
+            </u-button>
+          </td>
+        </tr>
+      </template>
     </u-table>
 
     <u-dropdown
@@ -383,7 +399,8 @@ export default {
     ...mapState([
       'items',
       'loading',
-      'withTotal'
+      'withTotal',
+      'isLastPageIndex'
     ]),
 
     ...mapGetters([
@@ -395,6 +412,15 @@ export default {
       'formCode',
       'columns'
     ]),
+
+    pageIndex: {
+      get () {
+        return this.$store.state.pageIndex
+      },
+      set (value) {
+        this.updatePageIndex(value)
+      }
+    },
 
     selectedColumnId: {
       get () {
@@ -418,11 +444,18 @@ export default {
   watch: {
     selectedRowId (id) {
       this.$emit('change-row', id)
+    },
+
+    pageIndex () {
+      if (this.$refs.table) {
+        this.$refs.table.$el.scrollTop = 0
+      }
     }
   },
 
   methods: {
     ...mapActions([
+      'updatePageIndex',
       'updateSort',
       'cellNavigate',
       'addNew',

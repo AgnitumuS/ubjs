@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `UTable`: lastTableRow slot added - used, for example, by UTableEntity to add a pagination in the end of the table
+ - `UTableEntity`: pagination buttons tooltips added (next page, prev page)
+ - `UTableEntity`: next page pagination link added to the end of table scrollable area
+ 
 ### Changed
 
 ### Deprecated
