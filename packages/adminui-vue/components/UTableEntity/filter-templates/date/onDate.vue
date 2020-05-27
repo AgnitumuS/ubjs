@@ -12,7 +12,9 @@
     <el-date-picker
       v-model="value"
       type="date"
+      :format="$ut('el').datepicker.format.date"
       :placeholder="$ut('table.filter.date.valuePlaceholder')"
+      :picker-options="{ firstDayOfWeek: $ut('el.datepicker.format.firstDayOfWeek') }"
     />
 
     <u-button
