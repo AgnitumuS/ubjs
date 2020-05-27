@@ -378,6 +378,7 @@ const UMasterDetailView = require('../../components/UMasterDetailView.vue').defa
  *   If empty will be constructed based on repository attributes.
  * @param {TableScopedSlotsBuilder} [cfg.scopedSlots] Scoped slots
  * @param {boolean} [cfg.isModal] Is modal
+ * @param {string} [cfg.shortcutCode] Shortcut code
  */
 function mountTableEntity (cfg) {
   if (!cfg.props.entityName && !cfg.props.repository) {
@@ -401,6 +402,7 @@ function mountTableEntity (cfg) {
     return h(UMasterDetailView, {
       attrs: {
         ...cfg.props,
+        shortcutCode: cfg.shortcutCode,
         height: '100%'
       },
       style: { height: '100%' },

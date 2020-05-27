@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTable`: lastTableRow slot added - used, for example, by UTableEntity to add a pagination in the end of the table
  - `UTableEntity`: pagination buttons tooltips added (next page, prev page)
  - `UTableEntity`: next page pagination link added to the end of table scrollable area
+ - `UMasterDetailView`: in case called from shortcut will store table filters in localStorage and apply it on open
  
 ### Changed
  - `UTableEntity`, `UTable` allow text selection in table using mouse

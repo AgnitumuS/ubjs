@@ -54,10 +54,11 @@ Ext.define('UB.core.UBStoreManager', {
     if (cmdCode) {
       cmdCodePromise = Promise.resolve(cmdCode)
     } else {
-      cmdCodePromise = UB.Repository('ubm_navshortcut').attrs(['ID', 'cmdCode', 'caption']).where('ID', '=', shortcutID)
+      cmdCodePromise = UB.Repository('ubm_navshortcut').attrs(['ID', 'cmdCode', 'caption', 'code']).where('ID', '=', shortcutID)
         .selectSingle().then(function (cmd) {
           var parsedCmdCode = Ext.JSON.decode(cmd.cmdCode)
           parsedCmdCode.title = cmd.caption
+          parsedCmdCode.shortcutCode = cmd.code
           UB.core.UBStoreManager.shortcutCommandCache[shortcutID] = parsedCmdCode
           return parsedCmdCode
         })

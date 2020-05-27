@@ -85,6 +85,17 @@ export default {
     beforeAddNew: {
       type: Function,
       default: null
+    },
+
+    /**
+     * If passed will store applied filters in localStorage
+     */
+    shortcutCode: [String, undefined]
+  },
+
+  data () {
+    return {
+      filtersUnwatch: () => {} // no-op. in case passed shortcutCode will replaced by filters unwatch function
     }
   },
 
@@ -123,6 +134,10 @@ export default {
           entity: c.attribute.associatedEntity,
           associatedAttr: c.attribute.associationAttr || 'ID'
         }))
+    },
+
+    filtersLocalStorageMask () {
+      return `UTableEntity:filters:${this.shortcutCode}`
     }
   },
 
@@ -133,6 +148,10 @@ export default {
   created () {
     const storeConfig = createStore(this)
     this.$store = new Vuex.Store(storeConfig)
+    if (this.shortcutCode !== undefined) {
+      this.applySavedFilters()
+      this.filtersUnwatch = this.watchFilters()
+    }
     this.fetchItems()
   },
 
@@ -149,6 +168,7 @@ export default {
     for (const { entity } of this.lookupsEntities) {
       this.$lookups.unsubscribe(entity)
     }
+    this.filtersUnwatch()
   },
 
   methods: {
@@ -243,6 +263,32 @@ export default {
         const errMsg = `Columns [${fieldsWithError.join(', ')}] did not have slot for render`
         throw new Error(errMsg)
       }
+    },
+
+    /**
+     * Apply filters in case local storage has value for current shortcut
+     */
+    applySavedFilters () {
+      const filtersStr = window.localStorage.getItem(this.filtersLocalStorageMask)
+      if (filtersStr) {
+        const filters = JSON.parse(filtersStr)
+        for (const filter of filters) {
+          this.$store.commit('APPLY_FILTER', filter)
+        }
+      }
+    },
+
+    /**
+     * Watch filters and save it into local storage
+     * @returns {function(): void} Unwatch store
+     */
+    watchFilters () {
+      return this.$store.watch(
+        state => state.filters,
+        value => {
+          window.localStorage.setItem(this.filtersLocalStorageMask, JSON.stringify(value))
+        }
+      )
     }
   }
 }
