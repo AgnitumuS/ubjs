@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.11.2] - 2020-05-27
+### Added
  - `UTable`: lastTableRow slot added - used, for example, by UTableEntity to add a pagination in the end of the table
  - `UTableEntity`: pagination buttons tooltips added (next page, prev page)
  - `UTableEntity`: next page pagination link added to the end of table scrollable area
@@ -15,10 +26,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity`, `UTable` allow text selection in a table using mouse
  - `UTableEntity` allow scrolls table using PgUp/PgDown/Ctrl+PgUp/Ctrl+PgDown
  - `UTableEntity` filter: top/bottom margins decreased to 4px from 12px - this decrease total toolbar height by 16px 
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UMasterDetailView` incorrect display of total count. Resets `total` on any changes in filters

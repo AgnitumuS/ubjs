@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UBCommand/getNavshortcutCommandText` param shortcutCode in returned commandConfig 
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.13.15] - 2020-05-27
+### Added
+ - `UBCommand/getNavshortcutCommandText` param shortcutCode in returned commandConfig 
 
 ## [5.13.14] - 2020-05-25
 ## [5.13.13] - 2020-05-22
