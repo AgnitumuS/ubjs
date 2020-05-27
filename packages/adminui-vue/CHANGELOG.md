@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `UFormRow`: in case `label` is empty string - do not render a trailing `:`
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.11.3] - 2020-05-27
+### Changed
+ - `UFormRow`: in case `label` is empty string - do not render a trailing `:`
 
 ### Fixed
  - JSDoc for UFormRow
