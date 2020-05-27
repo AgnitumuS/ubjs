@@ -8,12 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UFormRow`: in case `label` is empty string - do not render a trailing `:`
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - JSDoc for UFormRow
 
 ## [1.11.2] - 2020-05-27
 ### Added
@@ -24,7 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ### Changed
  - `UTableEntity`, `UTable` allow text selection in a table using mouse
- - `UTableEntity` allow scrolls table using PgUp/PgDown/Ctrl+PgUp/Ctrl+PgDown
+ - `UTableEntity` allow scrolls table using PgUp/PgDown/CtrlPgUp/Ctrl+PgDown
  - `UTableEntity` filter: top/bottom margins decreased to 4px from 12px - this decrease total toolbar height by 16px 
 
 ### Fixed

@@ -7,6 +7,7 @@
     :style="maxWidthCss"
   >
     <div
+      v-if="!!label"
       class="u-form-row__label"
       :class="{ required }"
       :style="labelWidthCss"
@@ -76,26 +77,26 @@ export default {
 
   props: {
     /**
-     * If is set String param will be show error text
-     * If set false will hide error
-     * If set true will show default error text $ut('requiredField')
+     * Either string with error message or boolean.
+     * For `false` error is always hidden, for `true` - $ut('requiredField') will be shown in case of error
      */
     error: {
       type: [String, Boolean],
       default: false
     },
 
+    /**
+     * Row label (automatically followed by ":".
+     */
     label: String,
 
     /**
-     * Show * red symbol after label.
+     * If true will show red asterix symbol after label
      */
     required: Boolean,
 
     /**
-     * Set label width. If set in wrap `<u-form-container>` component
-     * will override be this prop.
-     * Will ignored with labelPosition === 'top'
+     * Width of the label. Ignored in case labelPosition === 'top'
      */
     labelWidth: {
       type: Number,
@@ -105,12 +106,12 @@ export default {
     },
 
     /**
-     * Set label position. If set in wrap `<u-form-container>` component
-     * will override by this prop.
+     * Label position.
      * Available options: left | right | top
      */
     labelPosition: {
       type: String,
+      validator: (value) => ['top', 'left', 'right'].includes(value),
       default () {
         return this.formLabelPosition || 'left'
       }
