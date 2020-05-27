@@ -58,16 +58,6 @@ export default {
       return this.$v &&
         this.$v[this.attributeName] &&
         this.$v[this.attributeName].$error
-    },
-
-    firstDayOfWeek () {
-      // moment days monday equals to 0, instead element-ui which monday equals to 1
-      const momentDay = this.$moment.localeData().firstDayOfWeek()
-      if (momentDay === 0) {
-        return 7
-      } else {
-        return momentDay
-      }
     }
   },
   render: function (h) {
@@ -94,7 +84,8 @@ export default {
           attrs: {
             type: this.dataType.toLowerCase(),
             placeholder: this.$ut(this.dataType === 'Date' ? 'selectDate' : 'selectDateAndTime'),
-            pickerOptions: { firstDayOfWeek: this.firstDayOfWeek },
+            pickerOptions: { firstDayOfWeek: this.$ut('el.datepicker.format.firstDayOfWeek') },
+            format: this.$ut(`el.datepicker.format.${this.dataType.toLowerCase()}`),
             ...baseAttrs
           },
           on: {

@@ -57,6 +57,11 @@ UB.i18nExtend({
         oct: 'Oct',
         nov: 'Nov',
         dec: 'Dec'
+      },
+      format: {
+        date: 'dd.MM.yyyy',
+        datetime: 'dd.MM.yyyy HH:mm',
+        firstDayOfWeek: 1
       }
     },
     select: {

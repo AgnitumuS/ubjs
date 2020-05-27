@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UMasterDetailView`: in case called from shortcut will store table filters in localStorage and apply it on open
  
 ### Changed
- - `UTableEntity`, `UTable` allow text selection in table using mouse
+ - `UTableEntity`, `UTable` allow text selection in a table using mouse
  - `UTableEntity` allow scrolls table using PgUp/PgDown/Ctrl+PgUp/Ctrl+PgDown
  - `UTableEntity` filter: top/bottom margins decreased to 4px from 12px - this decrease total toolbar height by 16px 
 
@@ -25,7 +25,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity` css fixes: 
    - filters will try to expand to full width
    - will wrap on overflow
-   - pagination `white-space` sets to `no-wrap` 
+   - pagination `white-space` sets to `no-wrap`
+ - `DatePicker`: localize date/dateTime/firstDayOfWeek format for form auto field, full text search and table filters controls     
 
 ## [1.11.1] - 2020-05-25
 ### Fixed
