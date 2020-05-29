@@ -277,7 +277,7 @@ UB.i18nExtend({
   showPreFilter: 'Show search form',
   editSelItem: 'Edit selected element',
   addNewItem: 'Add new element',
-  selectFromDictionary: 'Select from dictionary',
+  selectFromDictionary: 'Select from the dictionary',
   clearSelection: 'Clear selection',
   isRequiredTip: 'It is required',
   isMultilangTip: 'Values for other languages',

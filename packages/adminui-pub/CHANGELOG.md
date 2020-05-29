@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+  - en i18n: "Select from dictionary" -> "Select from the dictionary"
 
 ## [5.13.15] - 2020-05-27
 ### Added

@@ -161,9 +161,9 @@ export default {
 
   props: {
     /**
-       * Selected entity ID
-       * @model
-       */
+     * Selected entity ID
+     * @model
+     */
     value: {
       type: [Number, String],
       default () {
@@ -558,12 +558,18 @@ export default {
 
     handleShowDictionary () {
       if (!this.removeDefaultActions) {
+        const selectRepo = this.repository().clone()
+        selectRepo.orderList = [] // clear order list
+        // override fieldList but  keep all possible filters
+        selectRepo.fieldList = this.$UB.connection.domain.get(this.entityName)
+          .filterAttribute(a => a.defaultView)
+          .map(a => a.code)
         const config = this.buildShowDictionaryConfig({
           renderer: 'vue',
           cmdType: 'showList',
           isModal: true,
           cmdData: {
-            entityName: this.entityName,
+            repository: () => selectRepo,
             onSelectRecord: ({ ID, row, close }) => {
               this.$emit('input', ID, JSON.parse(JSON.stringify(row)))
               close()
