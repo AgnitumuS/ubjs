@@ -5,12 +5,14 @@ const UB = require('@unitybase/ub-pub')
  */
 module.exports = {
   sortable: true,
+  align: 'center',
+  isHtml: true,
   format ({ value }) {
     switch (value) {
       case true:
-        return UB.i18n('Yes')
+        return '<i class="u-icon-add">'
       case false:
-        return UB.i18n('No')
+        return '<i class="u-icon-minus">'
       default:
         return null
     }

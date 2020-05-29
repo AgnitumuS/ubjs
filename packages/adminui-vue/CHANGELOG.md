@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - for `USelectEntity` what based on the repository "Select from the dictionary" action will filter dictionary in the same
+   way as in the repository. For example for such select:
+   ```
+    <u-select-entity :repository="getRepo">
+    ...
+    getRepo () {
+      return UB.Repository('cdn_currency').attrs('ID', 'code3').where('code3', '>', 'UAH')
+    }
+    ``` 
+    "Select from dictionary" action shows only currency with `codes > UAH`.
+    Before this change developer had to explicitly define a `buildShowDictionaryConfig` handler for such behavior.
+ - `UTabelEntity`: values for `Boolean` attributes rendered as "+" and "-" icons (instead of Yes/No);
+   Content of such columns are centered (instead of left aligned)   
+    
 
 ### Deprecated
 
