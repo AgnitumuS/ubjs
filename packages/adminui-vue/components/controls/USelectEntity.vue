@@ -562,8 +562,7 @@ export default {
         selectRepo.orderList = [] // clear order list
         // override fieldList but  keep all possible filters
         selectRepo.fieldList = this.$UB.connection.domain.get(this.entityName)
-          .filterAttribute(a => a.defaultView)
-          .map(a => a.code)
+          .getAttributeNames({ defaultView: true })
         const config = this.buildShowDictionaryConfig({
           renderer: 'vue',
           cmdType: 'showList',
