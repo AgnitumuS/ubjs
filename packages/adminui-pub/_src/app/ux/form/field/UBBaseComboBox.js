@@ -370,16 +370,21 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
   showLookup () {
     const store = this.getStore()
     if (!store.entityName) { return }
-
+    // build showList where based on ubRequest where + Ext filters
+    const filters = store.filters.clone()
+    filters.removeAtKey(this.userFilterId)
+    const reqWhere = Ext.clone(store.ubRequest).whereList || {}
+    const filtersWhere = UB.ux.data.proxy.UBProxy.ubFilterToWhereList(filters.getRange(), store.entityName)
+    Ext.Object.merge(reqWhere, filtersWhere)
     const config = {
       renderer: 'vue',
-      cmdType: UB.core.UBCommand.commandType.showList,
+      cmdType: 'showList',
       isModal: true,
       cmdData: {
         repository: () => UB.Repository({
           entity: store.entityName,
-          fieldList: this.gridFieldList || UB.connection.domain.get(store.entityName).getAttributeNames(),
-          whereList: store.ubRequest.whereList,
+          fieldList: this.gridFieldList || UB.connection.domain.get(store.entityName).getAttributeNames({ defaultView: true }),
+          whereList: reqWhere,
           logicalPredicates: store.ubRequest.logicalPredicates,
           __mip_ondate: store.ubRequest.__mip_ondate
         }),
@@ -423,10 +428,6 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
         })
       }
     }
-    const filters = store.filters.clone()
-    filters.removeAtKey(this.userFilterId)
-    config.filters = filters
-
     UB.core.UBApp.doCommand(config)
   },
 
