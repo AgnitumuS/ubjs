@@ -9,7 +9,7 @@
     <u-base-input
       v-model="value"
       :placeholder="$ut('table.filter.valuePlaceholder')"
-      class="filter-input"
+      class="filter-input_value"
       :min="0"
       type="number"
     />

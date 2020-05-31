@@ -53,14 +53,13 @@
       />
     </div>
 
-    <el-date-picker
+    <u-date-picker
       v-show="isPeriod"
       v-model="period"
       class="ub-fts__date-picker"
       type="daterange"
       :start-placeholder="$ut('el').datepicker.startDate"
       :end-placeholder="$ut('el').datepicker.endDate"
-      :format="$ut('el').datepicker.format.date"
       :picker-options="pickerOptions"
     />
   </el-popover>
@@ -88,7 +87,6 @@ export default {
       period: null,
       isPeriod: false,
       pickerOptions: {
-        firstDayOfWeek: this.$ut('el.datepicker.format.firstDayOfWeek'),
         shortcuts: [{
           text: this.$ut('el').datepicker.today,
           onClick (picker) {

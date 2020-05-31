@@ -3,7 +3,7 @@
     class="filter-section"
     @submit.prevent="$emit('search', {
       whereList: [{ condition: 'equal', value: false }],
-      description: $ut('equal') + ' ' + $ut('Yes')
+      description: $ut('equal') + ' ' + $ut('No')
     })"
   >
     <u-button

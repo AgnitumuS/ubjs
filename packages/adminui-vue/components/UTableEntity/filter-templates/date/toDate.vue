@@ -6,12 +6,11 @@
       description: $ut('to_date') + ' ' + $moment(addDay(value)).format('ll')
     })"
   >
-    <el-date-picker
+    <u-date-picker
       v-model="value"
+      class="filter-input_value"
       type="date"
-      :format="$ut('el').datepicker.format.date"
       :placeholder="$ut('table.filter.date.valuePlaceholder')"
-      :picker-options="{ firstDayOfWeek: $ut('el.datepicker.format.firstDayOfWeek') }"
     />
 
     <u-button

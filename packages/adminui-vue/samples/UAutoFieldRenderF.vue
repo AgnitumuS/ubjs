@@ -11,7 +11,7 @@
         v-bind="$attrs"
         v-model="model"
     />
-    <el-date-picker
+    <u-date-picker
         v-else-if="(dataType === 'Date') || (dataType === 'DateTime')"
         v-model="model"
         v-bind="$attrs"
