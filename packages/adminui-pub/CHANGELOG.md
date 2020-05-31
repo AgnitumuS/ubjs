@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.13.16] - 2020-05-31
+### Fixed
   - en i18n: "Select from dictionary" -> "Select from the dictionary"
   - for `UBBaseComboBox` with applied filters (new Ext.util.Filter) applied "Select from the dictionary" action will
     filter Vue based dictionary in the same way as in the ComboBox store (the same behavior as with obsolete Ext-based dictionary)

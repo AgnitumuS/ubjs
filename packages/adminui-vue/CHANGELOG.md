@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.11.4] - 2020-05-31
+### Added
  - introduce `UDatePicker` - a  wrapper around ElDatePicker with date format and first date of week 
   taken from UB localization. To be used as  direct replacement of `<el-date-picker>`
 
@@ -25,10 +36,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTabelEntity`: values for `Boolean` attributes rendered as "+" and "-" icons (instead of Yes/No);
    Content of such columns are centered (instead of left aligned)   
     
-### Deprecated
-
-### Removed
-
 ### Fixed
  - `UTableEntity/filters`: typo for boolean isFalse filter from 'Yes' to 'No'
  - `UTableEntity`: prevent error 'template of undefined' while user change focused column
