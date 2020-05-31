@@ -80,12 +80,10 @@ export default {
         break
       case 'Date':
       case 'DateTime':
-        cmp = h('el-date-picker', {
+        cmp = h('u-date-picker', {
           attrs: {
             type: this.dataType.toLowerCase(),
             placeholder: this.$ut(this.dataType === 'Date' ? 'selectDate' : 'selectDateAndTime'),
-            pickerOptions: { firstDayOfWeek: this.$ut('el.datepicker.format.firstDayOfWeek') },
-            format: this.$ut(`el.datepicker.format.${this.dataType.toLowerCase()}`),
             ...baseAttrs
           },
           on: {

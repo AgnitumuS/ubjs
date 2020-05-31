@@ -6,11 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UDatePicker`: wraper for ElDatePicker with date formad and first date of week 
-  tajen from UB localization.
+ - introduce `UDatePicker` - a  wrapper around ElDatePicker with date format and first date of week 
+  taken from UB localization. To be used as  direct replacement of `<el-date-picker>`
 
 ### Changed
- - `UTableEntity/filters`: increase width of filter value inputto fit all available space
+ - `UTableEntity/filters`: width of the filter value input increased to fit all available space
  - for `USelectEntity` what based on the repository "Select from the dictionary" action will filter dictionary in the same
    way as in the repository. For example for such select:
    ```
