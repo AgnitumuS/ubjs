@@ -19,6 +19,7 @@
     <keep-alive>
       <component
         :is="selectedColumn.filters[selectedFilter].template"
+        v-if="selectedColumn.filters[selectedFilter]"
         :key="condition"
         :column="selectedColumn"
         @search="throttledApplyFilter"
@@ -87,18 +88,25 @@ export default {
 
 .filter-input{
   margin: 0 4px;
-  /*min-width: 150px;*/
-  flex-basis: 120px;
   flex-grow: 1;
+  max-width: 170px;
+  min-width: 100px;
 }
 
 .filter-input-number{
   margin: 0 4px;
-  width: 90px;
+  width: 120px;
 }
 
 .filter-section{
   display: flex;
   align-items: center;
+  flex-grow: 1;
+}
+
+.filter-input_value{
+  margin: 0 4px;
+  flex-grow: 1;
+  min-width: 100px;
 }
 </style>

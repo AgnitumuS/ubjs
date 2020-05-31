@@ -12,6 +12,7 @@
       value-attribute="code"
       :repository="repository"
       :placeholder="$ut('table.filter.valuePlaceholder')"
+      class="filter-input_value"
     />
 
     <u-button

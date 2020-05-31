@@ -9,14 +9,14 @@
       description
     })"
   >
-    <el-date-picker
+    <u-date-picker
       v-model="value"
+      class="filter-input_value"
       type="daterange"
       range-separator="-"
       :start-placeholder="$ut('startDate')"
       :end-placeholder="$ut('endDate')"
       :picker-options="pickerOptions"
-      :format="$ut('el').datepicker.format.date"
     />
 
     <u-button
@@ -37,7 +37,6 @@ export default {
     return {
       value: null,
       pickerOptions: {
-        firstDayOfWeek: this.$ut('el.datepicker.format.firstDayOfWeek'),
         shortcuts: [{
           text: this.$ut('lastMonth'),
           onClick: (picker) => {

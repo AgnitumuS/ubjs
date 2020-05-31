@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UDatePicker`: wraper for ElDatePicker with date formad and first date of week 
+  tajen from UB localization.
 
 ### Changed
+ - `UTableEntity/filters`: increase width of filter value inputto fit all available space
  - for `USelectEntity` what based on the repository "Select from the dictionary" action will filter dictionary in the same
    way as in the repository. For example for such select:
    ```
@@ -22,12 +25,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTabelEntity`: values for `Boolean` attributes rendered as "+" and "-" icons (instead of Yes/No);
    Content of such columns are centered (instead of left aligned)   
     
-
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `UTableEntity/filters`: typo for boolean isFalse filter from 'Yes' to 'No'
+ - `UTableEntity`: prevent error 'template of undefined' while user change focused column
 
 ## [1.11.3] - 2020-05-27
 ### Changed

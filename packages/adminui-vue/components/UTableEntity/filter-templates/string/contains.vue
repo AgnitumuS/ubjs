@@ -9,7 +9,7 @@
     <el-input
       v-model="value"
       :placeholder="$ut('table.filter.valuePlaceholder')"
-      class="filter-input"
+      class="filter-input_value"
     />
     <u-button
       appearance="inverse"

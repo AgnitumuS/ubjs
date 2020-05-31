@@ -8,7 +8,7 @@
   >
     <u-select-enum
       v-model="value"
-      class="filter-input"
+      class="filter-input_value"
       :e-group="eGroup"
       :placeholder="$ut('table.filter.valuePlaceholder')"
     />

@@ -9,6 +9,7 @@
     <u-select-multiple
       ref="selectMany"
       v-model="value"
+      class="filter-input_value"
       :entity-name="column.attribute.associatedEntity"
       :placeholder="$ut('table.filter.valuePlaceholder')"
     />

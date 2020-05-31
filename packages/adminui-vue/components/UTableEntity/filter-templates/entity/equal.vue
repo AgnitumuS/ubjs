@@ -8,7 +8,7 @@
   >
     <u-select-entity
       v-model="value"
-      class="filter-input"
+      class="filter-input_value"
       remove-default-actions
       :entity-name="column.attribute.associatedEntity"
       :placeholder="$ut('table.filter.valuePlaceholder')"
