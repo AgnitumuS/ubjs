@@ -40,6 +40,6 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "ub-jsdoc": "^2.3.3"
+    "ub-jsdoc": "^2.3.4"
   }
 }
