@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - helper css class `.u-table_border` which adds border to UTable, UTableEntity or UMasterDetailView.
+  Usage: `<u-table-entity entity-name="uba_user" class="u-table_border"/>`
 
 ### Changed
  - `UTableEntity`: pagination now hidden in case there is only one page of data available

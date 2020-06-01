@@ -297,6 +297,12 @@ export default {
   margin-left: 2px;
   color: var(--header-text);
 }
+
+.u-table_border {
+  box-shadow: var(--box-shadow-default);
+  border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+  border-bottom: none;
+}
 </style>
 
 <docs>

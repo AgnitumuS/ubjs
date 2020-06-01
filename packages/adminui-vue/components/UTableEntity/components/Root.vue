@@ -619,7 +619,7 @@ export default {
     height: 0;
   }
 
-  .u-table-entity__filter-icon{
+  .u-table-entity__filter-icon {
     margin-right: 8px;
     margin-left: 4px;
   }
