@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UTableEntity`: pagination now hidden in case there is only one page of data available
 
 ### Deprecated
 
