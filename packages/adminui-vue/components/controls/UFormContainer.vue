@@ -34,7 +34,8 @@ export default {
      */
     labelPosition: {
       type: String,
-      default: 'left'
+      default: 'left',
+      validator: (value) => ['left', 'right', 'top'].includes(value)
     },
     /**
      * If set 'false' disable autofocus on mounted. 'true' by default

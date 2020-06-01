@@ -53,7 +53,33 @@ export default {
     /**
      * Sets (grid-row-gap)[https://developer.mozilla.org/en-US/docs/Web/CSS/row-gap]
      */
-    rowGap: String
+    rowGap: String,
+
+    /**
+     * Set label width to child `<u-form-row>`'s
+     * Can be override by same prop in `u-form-row`.
+     * Will ignored with labelPosition === 'top'
+     */
+    labelWidth: {
+      type: Number,
+      default: 120
+    },
+    /**
+     * Set label position to child `<u-form-row>`'s
+     * Can be override by same prop in `u-form-row`
+     */
+    labelPosition: {
+      type: String,
+      default: 'left',
+      validator: (value) => ['left', 'right', 'top'].includes(value)
+    }
+  },
+
+  provide () {
+    return {
+      labelWidth: this.labelWidth,
+      labelPosition: this.labelPosition
+    }
   },
 
   computed: {

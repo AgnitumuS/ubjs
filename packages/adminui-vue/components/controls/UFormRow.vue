@@ -111,7 +111,7 @@ export default {
      */
     labelPosition: {
       type: String,
-      validator: (value) => ['top', 'left', 'right'].includes(value),
+      validator: (value) => ['left', 'right', 'top'].includes(value),
       default () {
         return this.formLabelPosition || 'left'
       }

@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UGrid`: new props `labelWidth` and `labelPosition` to provide width and position to a child `UFormRow`'s.  
+ The same as in `UFormContainer`. This allow to change label position & width for individual UGrig blocks
  - helper css class `.u-table_border` which adds border to UTable, UTableEntity or UMasterDetailView.
   Usage: `<u-table-entity entity-name="uba_user" class="u-table_border"/>`
 
