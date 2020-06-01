@@ -1,61 +1,63 @@
 <template>
   <div class="pagination">
-    <div class="pagination__current">
-      {{ items.length === 0 ? 0 : pageIndex * pageSize + 1 }} - {{ pageIndex * pageSize + items.length }}
-    </div>
+    <template v-if="total === null || total > pageSize">
+      <div class="pagination__current">
+        {{ items.length === 0 ? 0 : pageIndex * pageSize + 1 }} - {{ pageIndex * pageSize + items.length }}
+      </div>
 
-    <div class="pagination__out-of">
-      {{ $ut('table.pagination.outOf') }}
-    </div>
+      <div class="pagination__out-of">
+        {{ $ut('table.pagination.outOf') }}
+      </div>
 
-    <button
-      v-if="total === null"
-      class="pagination__total"
-      @click="getTotal"
-    >
-      <span>---</span>
-      <i class="pagination__total-icon u-icon-eye" />
-    </button>
-    <button
-      v-else
-      class="pagination__total"
-      disabled
-    >
-      <span>{{ total }}</span>
-    </button>
+      <button
+        v-if="total === null"
+        class="pagination__total"
+        @click="getTotal"
+      >
+        <span>---</span>
+        <i class="pagination__total-icon u-icon-eye" />
+      </button>
+      <button
+        v-else
+        class="pagination__total"
+        disabled
+      >
+        <span>{{ total }}</span>
+      </button>
 
-    <el-tooltip
-      :content="$ut('table.pagination.prevPage')"
-      placement="bottom"
-      :open-delay="300"
-      :enterable="false"
-    >
-      <u-button
-        icon="u-icon-arrow-left"
-        class="pagination__button__prev"
-        color="control"
-        size="small"
-        appearance="inverse"
-        :disabled="pageIndex === 0 || loading"
-        @click="pageIndex -= 1"
-      />
-    </el-tooltip>
-    <el-tooltip
-      :content="$ut('table.pagination.nextPage')"
-      placement="bottom"
-      :open-delay="300"
-      :enterable="false"
-    >
-      <u-button
-        icon="u-icon-arrow-right"
-        class="pagination__button__next"
-        color="control"
-        size="small"
-        appearance="inverse"
-        :disabled="isLastPageIndex || loading"
-        @click="pageIndex += 1"
-      />
-    </el-tooltip>
+      <el-tooltip
+        :content="$ut('table.pagination.prevPage')"
+        placement="bottom"
+        :open-delay="300"
+        :enterable="false"
+      >
+        <u-button
+          icon="u-icon-arrow-left"
+          class="pagination__button__prev"
+          color="control"
+          size="small"
+          appearance="inverse"
+          :disabled="pageIndex === 0 || loading"
+          @click="pageIndex -= 1"
+        />
+      </el-tooltip>
+      <el-tooltip
+        :content="$ut('table.pagination.nextPage')"
+        placement="bottom"
+        :open-delay="300"
+        :enterable="false"
+      >
+        <u-button
+          icon="u-icon-arrow-right"
+          class="pagination__button__next"
+          color="control"
+          size="small"
+          appearance="inverse"
+          :disabled="isLastPageIndex || loading"
+          @click="pageIndex += 1"
+        />
+      </el-tooltip>
+    </template>
   </div>
 </template>
 
