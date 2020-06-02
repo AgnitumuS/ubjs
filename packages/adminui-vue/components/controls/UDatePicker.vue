@@ -1,6 +1,6 @@
 <template>
   <el-date-picker
-    type="date"
+    :type="type"
     :value="value"
     :format="dateFormat"
     :picker-options="mergedPickerOptions"
@@ -23,6 +23,11 @@ export default {
 
     format: String,
 
+    type: {
+      type: String,
+      default: 'date'
+    },
+
     pickerOptions: {
       type: Object,
       default: () => ({})
@@ -38,7 +43,11 @@ export default {
     },
 
     dateFormat () {
-      return this.format || this.$ut('el').datepicker.format.date
+      if (this.format) {
+        return this.format
+      }
+
+      return this.$ut('el').datepicker.format[this.type] || ''
     }
   }
 }
