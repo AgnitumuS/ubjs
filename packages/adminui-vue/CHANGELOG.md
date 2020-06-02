@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTableEntity`: date range filtering fixed
+ - `UDatePicker`: prevent override of `type` property (before this type always === `date`)
 
 ## [1.11.4] - 2020-05-31
 ### Added
