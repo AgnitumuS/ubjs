@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   Usage: `<u-table-entity entity-name="uba_user" class="u-table_border"/>`
 
 ### Changed
- - `UTableEntity`: pagination now hidden in case there is only one page of data available
+ - `UTableEntity`: pagination now hidden in case only one data page available
 
 ### Deprecated
 
