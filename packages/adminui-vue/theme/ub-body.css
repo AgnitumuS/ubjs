@@ -217,3 +217,7 @@ html, body {
     text-transform: none;
     vertical-align: baseline;
 }
+
+.el-input__inner{
+    color: hsl(var(--hs-text), var(--l-text-default))
+}
