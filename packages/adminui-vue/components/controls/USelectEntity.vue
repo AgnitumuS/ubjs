@@ -665,6 +665,7 @@ export default {
   padding: 7px 10px;
   font-size: 14px;
   cursor: pointer;
+  color: hsl(var(--hs-text), var(--l-text-default))
 }
 
 .ub-select__option.selected{
@@ -672,7 +673,7 @@ export default {
 }
 
 .ub-select__option.active{
-  color: hsl(var(--hs-primary), var(--l-text-default));
+  color: hsl(var(--hs-primary), var(--l-state-default));
 }
 
 .ub-select__container{

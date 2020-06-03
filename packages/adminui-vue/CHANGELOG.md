@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `USelectEntity` use css variables `--hs-text, --l-text-default` for text color in dropdown options
+ - `ElInput` use css variables `--hs-text, --l-text-default` for text color
 
 ### Deprecated
 
