@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `linkStatic` command now does not start ub server and does not require `user` and `password` command line parameters
+  anymore, but still requires `ubConfig.json` file.
 
 ### Deprecated
 
