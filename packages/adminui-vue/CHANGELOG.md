@@ -6,18 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - new method `lookups.getDescriptionById` - fast O(1) lookup of description attribute value using ID as a key
 
 ### Changed
- - `USelectEntity` use css variables `--hs-text, --l-text-default` for text color in dropdown options
- - `ElInput` use css variables `--hs-text, --l-text-default` for text color
- - `lookups` improve performance of lookup getter (`lookups.get`) in case lookup attribute is `ID` (as in most case)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [1.11.6] - 2020-06-09
+### Added
+ - new method `lookups.getDescriptionById` - fast O(1) lookup of description attribute value using ID as a key
+
+### Changed
+ - `USelectEntity` use css variables `--hs-text, --l-text-default` for text color in dropdown options
+ - `ElInput` use css variables `--hs-text, --l-text-default` for text color
+ - `lookups` improve performance of lookup getter (`lookups.get`) in case lookup attribute is `ID` (as in most case)
 
 ## [1.11.5] - 2020-06-02
 ### Added

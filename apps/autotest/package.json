@@ -1,6 +1,6 @@
 {
   "name": "autotest",
-  "version": "5.0.229",
+  "version": "5.0.230",
   "description": "Autotest for UnityBase",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/autotest",
   "private": true,
@@ -18,7 +18,7 @@
     "@popperjs/core": "^2.0.6",
     "@unitybase/adminui-pub": "^5.13.16",
     "@unitybase/adminui-reg": "^5.4.16",
-    "@unitybase/adminui-vue": "^1.11.5",
+    "@unitybase/adminui-vue": "^1.11.6",
     "@unitybase/base": "^5.2.9",
     "@unitybase/cdn": "^5.4.12",
     "@unitybase/codemirror-full": "^1.2.30",
@@ -68,7 +68,7 @@
   "devDependencies": {
     "@unitybase/hmr": "^1.0.101",
     "@unitybase/stubs": "^5.1.0",
-    "@unitybase/ubcli": "^5.5.12"
+    "@unitybase/ubcli": "^5.5.13"
   },
   "peerDependencies": {
     "testcafe": "^0.19.1"
