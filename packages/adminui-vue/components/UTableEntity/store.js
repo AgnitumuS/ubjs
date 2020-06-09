@@ -3,6 +3,7 @@ const { Notification: $notify } = require('element-ui')
 const { throttle } = require('throttle-debounce')
 const { dialogDeleteRecord } = require('../dialog/UDialog')
 const { exportExcel, exportCsv, exportHtml } = require('../../utils/fileExporter')
+const lookups = require('../../utils/lookups')
 
 /**
  * Build store by UTableEntity props
@@ -129,6 +130,15 @@ module.exports = (instance) => ({
 
     hasSelectedRow (state) {
       return state.items.findIndex(i => i.ID === state.selectedRowId) !== -1
+    },
+
+    lookupEntities (state, getters) {
+      return getters.columns
+        .filter(c => c.isLookup && c.attribute && c.attribute.associatedEntity)
+        .map(c => ({
+          entity: c.attribute.associatedEntity,
+          associatedAttr: c.attribute.associationAttr || 'ID'
+        }))
     }
   },
 
@@ -429,6 +439,30 @@ module.exports = (instance) => ({
             fileName
           })
           break
+      }
+    },
+
+    /**
+     * Used only on first loading
+     *
+     * @private
+     * @param getters
+     * @param commit
+     * @param dispatch
+     * @returns {Promise<void>}
+     */
+    async loadData ({ getters, commit, dispatch }) {
+      commit('LOADING', true)
+      for (const { entity, associatedAttr } of getters.lookupEntities) {
+        await lookups.subscribe(entity, [associatedAttr])
+      }
+      await dispatch('fetchItems')
+      commit('LOADING', false)
+    },
+
+    unsubscribeLookups ({ getters }) {
+      for (const { entity } of getters.lookupEntities) {
+        lookups.unsubscribe(entity)
       }
     }
   }

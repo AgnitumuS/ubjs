@@ -12,10 +12,13 @@ module.exports = {
         .map(id => {
           const entity = column.attribute.associatedEntity
           const associatedAttr = column.attribute.associatedAttr || 'ID'
-          const lookupQuery = {
-            [associatedAttr]: id
+          if (associatedAttr === 'ID') {
+            return lookups.getDescriptionById(entity, id)
+          } else {
+            return lookups.get(entity, {
+              [associatedAttr]: id
+            })
           }
-          return lookups.get(entity, lookupQuery)
         })
         .join(', ')
     } else {

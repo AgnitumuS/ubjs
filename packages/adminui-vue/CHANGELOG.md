@@ -6,10 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - new method `lookups.getDescriptionById` - fast O(1) lookup of description attribute value using ID as a key
 
 ### Changed
  - `USelectEntity` use css variables `--hs-text, --l-text-default` for text color in dropdown options
  - `ElInput` use css variables `--hs-text, --l-text-default` for text color
+ - `lookups` improve performance of lookup getter (`lookups.get`) in case lookup attribute is `ID` (as in most case)
 
 ### Deprecated
 
@@ -20,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.11.5] - 2020-06-02
 ### Added
  - `UGrid`: new props `labelWidth` and `labelPosition` to provide width and position to a child `UFormRow`'s.  
- The same as in `UFormContainer`. This allow to change label position & width for individual UGrig blocks
+ The same as in `UFormContainer`. This allows changing label position & width for individual UGrig blocks.
  - helper css class `.u-table_border` which adds border to UTable, UTableEntity or UMasterDetailView.
   Usage: `<u-table-entity entity-name="uba_user" class="u-table_border"/>`
 
@@ -98,11 +100,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `utils/lookups` method `subscribe` - subscribes to a local entity changes.
  Lookup attrs already includes ID and description attribute for current entity can be extend by attrs param.
  ```javascript
- lookups.subscribe('tst_dictionary', ['code', 'userID'])
+ await lookups.subscribe('tst_dictionary', ['code', 'userID'])
  ```
  - `utils/lookups` method `unsubscribe` Unsubscribe from entity changes. Listener is removed only if current subscription is last.
  ```javascript
- lookups.subscribe('tst_dictionary')
+ await lookups.subscribe('tst_dictionary')
  ```
  - `utils/lookups` method `get` Getter for lookups
  ```javascript

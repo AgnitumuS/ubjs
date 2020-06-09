@@ -95,7 +95,7 @@ export default {
 
   data () {
     return {
-      filtersUnwatch: () => {} // no-op. in case passed shortcutCode will replaced by filters unwatch function
+      unwatchFilters: () => {} // no-op. in case passed shortcutCode will replaced by filters unwatch function
     }
   },
 
@@ -110,7 +110,7 @@ export default {
       if (this.columns) {
         return this.columns.map(column => {
           if (typeof column === 'string') {
-            return this.buildColumn({ id: column })
+            return this.buildColumn(/** @type UTableColumn */{ id: column })
           } else {
             return this.buildColumn(column)
           }
@@ -123,17 +123,8 @@ export default {
               (attr.dataType !== 'Json') &&
               (attr.dataType !== 'Document')
           })
-          .map(attrCode => this.buildColumn({ id: attrCode }))
+          .map(attrCode => this.buildColumn(/** @type UTableColumn */{ id: attrCode }))
       }
-    },
-
-    lookupsEntities () {
-      return this.getColumns
-        .filter(c => c.isLookup && c.attribute && c.attribute.associatedEntity)
-        .map(c => ({
-          entity: c.attribute.associatedEntity,
-          associatedAttr: c.attribute.associationAttr || 'ID'
-        }))
     },
 
     filtersLocalStorageMask () {
@@ -142,7 +133,7 @@ export default {
   },
 
   watch: {
-    entityName: 'fetchItems'
+    entityName: 'loadData'
   },
 
   created () {
@@ -150,29 +141,26 @@ export default {
     this.$store = new Vuex.Store(storeConfig)
     if (this.shortcutCode !== undefined) {
       this.applySavedFilters()
-      this.filtersUnwatch = this.watchFilters()
+      this.unwatchFilters = this.watchFilters()
     }
-    this.fetchItems()
+    this.loadData()
   },
 
   mounted () {
     this.validateFieldList()
-    this.$UB.connection.on(`${this.getEntityName}:changed`, this.refresh)
-    for (const { entity, associatedAttr } of this.lookupsEntities) {
-      this.$lookups.subscribe(entity, [associatedAttr])
-    }
   },
 
   beforeDestroy () {
-    this.$UB.connection.removeListener(`${this.getEntityName}:changed`, this.refresh)
-    for (const { entity } of this.lookupsEntities) {
-      this.$lookups.unsubscribe(entity)
-    }
-    this.filtersUnwatch()
+    this.unsubscribeLookups()
+    this.unwatchFilters()
   },
 
   methods: {
-    ...mapActions(['fetchItems', 'refresh']),
+    ...mapActions([
+      'refresh',
+      'loadData',
+      'unsubscribeLookups'
+    ]),
 
     getRepository () {
       switch (typeof this.repository) {
