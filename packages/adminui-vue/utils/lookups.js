@@ -3,8 +3,10 @@
  *
  * @property {number} subscribes Subscribe counter
  * @property {function} onEntityChanged Client local changes listener
- * @property {set} attrs Lookup attributes
+ * @property {Set<string>} attrs Lookup attributes
  * @property {array<object>} data Lookup data
+ * @property {object} mapById
+ * @property {string} descriptionAttrName
  */
 const Vue = require('vue')
 const UB = require('@unitybase/ub-pub')
@@ -34,33 +36,36 @@ const instance = new Vue({
                 return
               }
 
-              const { data, attrs: lookupAttrs } = this.entities[entity]
-              const updatedItem = Object.keys(resultData)
-                .filter(attr => lookupAttrs.has(attr))
-                .reduce((accum, attr) => {
-                  accum[attr] = resultData[attr]
-                  return accum
-                }, {})
+              const cacheEntry = this.entities[entity]
+              if (method === 'delete') {
+                const lookupItemIndex = cacheEntry.data.findIndex(item => item.ID === resultData.ID)
+                cacheEntry.data.splice(lookupItemIndex, 1)
+                delete cacheEntry.mapById[resultData.ID]
+                return
+              }
+
+              const itemForCache = {}
+              for (const attr of cacheEntry.attrs) {
+                itemForCache[attr] = resultData[attr]
+              }
 
               if (method === 'insert') {
-                data.push(updatedItem)
+                cacheEntry.data.push(itemForCache)
+                cacheEntry.mapById[itemForCache.ID] = itemForCache
               }
 
               if (method === 'update') {
-                const lookupItem = data.find(item => item.ID === resultData.ID)
+                const lookupItem = cacheEntry.mapById[itemForCache.ID]
                 if (lookupItem) {
-                  Object.assign(lookupItem, updatedItem)
+                  Object.assign(lookupItem, itemForCache)
                 }
-              }
-
-              if (method === 'delete') {
-                const lookupItemIndex = data.findIndex(item => item.ID === resultData.ID)
-                data.splice(lookupItemIndex, 1)
               }
             }
           },
           attrs: new Set(['ID']),
-          data: []
+          data: [],
+          mapById: {},
+          descriptionAttrName: ''
         })
       }
 
@@ -74,7 +79,8 @@ const instance = new Vue({
 
       if (isFirstSubscription) {
         UB.connection.on(`${entity}:changed`, subscription.onEntityChanged)
-        subscription.attrs.add(UB.connection.domain.get(entity).getDescriptionAttribute())
+        subscription.descriptionAttrName = UB.connection.domain.get(entity).getDescriptionAttribute()
+        subscription.attrs.add(subscription.descriptionAttrName)
       }
       if (hasAdditionalAttrs) {
         for (const attr of attrs) {
@@ -87,6 +93,7 @@ const instance = new Vue({
       if (isFirstSubscription || hasAdditionalAttrs) {
         const resultData = await UB.Repository(entity)
           .attrs([...subscription.attrs])
+          .limit(LOOKUP_LIMIT + 1)
           .select()
 
         if (resultData.length > LOOKUP_LIMIT) {
@@ -94,6 +101,7 @@ const instance = new Vue({
           For large amounts of data, performance problems may occur on slower computers`)
         }
         subscription.data.splice(0, subscription.data.length, ...resultData)
+        resultData.forEach(r => { subscription.mapById[r.ID] = r })
       }
     },
 
@@ -105,36 +113,39 @@ const instance = new Vue({
         subscription.data.splice(0, subscription.data.length)
         // remove additional attrs
         subscription.attrs.clear()
-        subscription.attrs.add('ID')
-        subscription.attrs.add(UB.connection.domain.get(entity).getDescriptionAttribute())
       }
     },
 
-    get (entity, value, displayAttr) {
-      const returnsRecord = displayAttr === true
-      if (value === null) {
-        return returnsRecord ? {} : null
+    getDescriptionById (entity, ID) {
+      const e = this.entities[entity]
+      // for safe deleted record
+      if (e.mapById[ID] === undefined) {
+        return '---'
       }
-      const query = {}
-      if (typeof value === 'number') {
-        query.ID = value
-      }
-      if (typeof value === 'object') {
-        Object.assign(query, value)
-      }
-      const record = this.entities[entity].data.find(
-        record => Object.entries(query)
-          .every(([attrCode, attrValue]) => record[attrCode] === attrValue)
-      ) || {}
+      return e.mapById[ID][e.descriptionAttrName]
+    },
 
-      if (returnsRecord) {
-        return record
+    get (entity, predicate, resultIsRecord = false) {
+      if (predicate === null) {
+        return resultIsRecord ? {} : null
+      }
+      let founded
+      if (typeof predicate === 'number') {
+        founded = this.entities[entity].mapById[predicate]
+      } else if (typeof predicate === 'object') {
+        const pKeys = Object.keys(predicate)
+        founded = this.entities[entity].data.find(
+          r => pKeys.every(k => r[k] === predicate[k])
+        )
+      }
+
+      if (resultIsRecord) {
+        return founded || {}
       } else {
-        if (record) {
-          const descriptionAttr = UB.connection.domain.get(entity).getDescriptionAttribute()
-          return record[descriptionAttr]
+        if (founded) {
+          return founded[this.entities[entity].descriptionAttrName]
         } else {
-          return {}
+          return null
         }
       }
     }
@@ -151,14 +162,12 @@ const lookupsModule = {
    * @returns {Promise<void>}
    */
   subscribe: instance.subscribe,
-
   /**
    * Unsubscribe entity from lookup. Listener removed only if current subscription is last.
    *
    * @param {string} entity Entity name
    */
   unsubscribe: instance.unsubscribe,
-
   /**
    * Fill all available domain entities by empty objects and loads enum entity
    *
@@ -167,25 +176,26 @@ const lookupsModule = {
    * @returns {Promise<void>}
    */
   init: instance.init,
-
   /**
-   * Lookup getter
+   * Search for cached record inside in-memory entity values cache using predicate
    *
-   * @param {string} entity
-   *   Entity name
-   * @param {number|object|null} value
-   *   Search lookup record by ID.
-   *   In case passed object search for an object in which the key is an attribute
-   *   and the value is the value of this attribute.
-   *   Can be search by several attributes, for example {eGroup: 'AUDIT_ACTIONS', code: 'INSERT'}
-   * @param {string|boolean} [displayAttr]
-   *   Display attribute name.
-   *   If is not equal to description attribute of current entity - it must contained in attrs on subscribe.
-   *   If passed true will return the entire record.
-   *
+   * @param {string} entity Entity name
+   * @param {number|object|null} predicate
+   *   In case predicate is of type number - search by ID - O(1)
+   *   In case predicate is Object - search for record what match all predicate attributes - O(N)
+   * @param {boolean} [resultIsRecord=false]
+   *   - if `true` then return record as a result, in other cases - value of entity `displayAttribute`
    * @returns {*}
    */
-  get: instance.get
+  get: instance.get,
+  /**
+   * Fast O(1) lookup by ID. Return value of entity description attribute
+   *
+   * @param {string} entity Entity name
+   * @param {number} ID
+   * @returns {*}
+   */
+  getDescriptionById: instance.getDescriptionById
 }
 
 module.exports = {
