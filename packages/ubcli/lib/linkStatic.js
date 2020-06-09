@@ -223,11 +223,10 @@ goto :eof
 
 ${WINDOWS ? 'CMD' : 'Bash'} script ${resFn} is created
 
-Review a script, take care about target folder and package list
+Review a script, take care about target folder and package list.
 
 In case some package should not be exposed to client add a section
-"config": {"ubmodel": {} } 
-into corresponding package.json
+"config": {"ubmodel": {} } into corresponding package.json.
 
 Use a command:
 ${WINDOWS ? '.\\.linkStatic.cmd' : 'chmod +x ./.linkStatic.sh && ./.linkStatic.sh'}
