@@ -20,23 +20,22 @@ const WINDOWS = (process.platform === 'win32')
 const COMMENT = WINDOWS ? 'REM' : '#'
 
 module.exports = linkStatic
-module.exports.shortDoc = 'Create folder with static asserts'
+module.exports.shortDoc = 'Create directory with static assets'
 
 function linkStatic (cfg) {
-  console.time('Generate documentation')
+  console.time('Generate static content directory')
   if (!cfg) {
     const opts = options.describe('linkStatic',
-      `Create folder with static asserts. Such folder can be used by nginx
+      `Create folder with static assets, which can be used by nginx
 as drop-in replacement to /clientRequire and /models endpoints`,
       'ubcli'
     )
-      .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
       .add({
         short: 't',
         long: 'target',
         param: 'target',
         defaultValue: '*',
-        help: 'Target folder. Default is inetPub value from config'
+        help: 'Target folder. Default is "inetPub" value from config'
       })
       .add({
         short: 'run',
@@ -47,8 +46,6 @@ as drop-in replacement to /clientRequire and /models endpoints`,
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
-  const session = argv.establishConnectionFromCmdLineAttributes(cfg)
-  const conn = session.connection
   const cfgFN = argv.getConfigFileName()
   const ubCfg = argv.getServerConfiguration()
   let target = cfg.target || ubCfg.httpServer.inetPub
@@ -59,126 +56,137 @@ as drop-in replacement to /clientRequire and /models endpoints`,
 
   const CLIENT_REQUIRE_TARGET_ALIAS = WINDOWS ? '%CRT%' : '$CRT'
   const NODE_MODULES_SOURCES_ALIAS = WINDOWS ? '%NMS%' : '$NMS'
-  try {
-    const domain = conn.getDomainInfo(true)
-    const domainModels = domain.models
-    const cfgPath = path.dirname(cfgFN)
-    const modulesPath = path.join(cfgPath, 'node_modules')
-    if (!fs.existsSync(modulesPath)) {
-      throw new Error(`node_modules folder not found in the folder with app config. Expected "${modulesPath}". May be you miss "npm i" command?`)
-    }
-    const tm = fs.readdirSync(modulesPath)
-    const commands = []
-    const clientRequireTarget = path.join(target, 'clientRequire')
-    commands.push({
-      type: 'comment',
-      text: 'Modules for /clientRequire endpoint replacement'
-    })
-    tm.forEach(m => {
-      if (m.startsWith('.')) return
-      if (m.startsWith('@')) { // namespace
-        const ttm = fs.readdirSync(path.join(modulesPath, m))
-        commands.push({
-          type: 'mkdir',
-          to: path.join(CLIENT_REQUIRE_TARGET_ALIAS, m)
-        })
-        const L = commands.length
-        ttm.forEach(sm => {
-          if (sm.startsWith('.')) return
+
+  const domainModels = ubCfg.application.domain.models
+  const cfgPath = path.dirname(cfgFN)
+  const modulesPath = path.join(cfgPath, 'node_modules')
+  if (!fs.existsSync(modulesPath)) {
+    throw new Error(`node_modules folder not found in the folder with app config. Expected "${modulesPath}". May be you miss "npm i" command?`)
+  }
+  const tm = fs.readdirSync(modulesPath)
+  const commands = []
+  const clientRequireTarget = path.join(target, 'clientRequire')
+  commands.push({
+    type: 'comment',
+    text: 'Modules for /clientRequire endpoint replacement'
+  })
+
+  for (const m of tm) {
+    if (m.startsWith('.')) continue
+    if (m.startsWith('@')) { // namespace
+      const ttm = fs.readdirSync(path.join(modulesPath, m))
+      commands.push({
+        type: 'mkdir',
+        to: path.join(CLIENT_REQUIRE_TARGET_ALIAS, m)
+      })
+      const L = commands.length
+      for (const sm of ttm) {
+        if (!sm.startsWith('.')) {
           tryAddModule(modulesPath, NODE_MODULES_SOURCES_ALIAS, path.join(m, sm), commands, CLIENT_REQUIRE_TARGET_ALIAS)
-        })
-        if (commands.length === L) {
-          // no modules added - remove ns folder creation
-          commands.pop()
         }
-      } else {
-        tryAddModule(modulesPath, NODE_MODULES_SOURCES_ALIAS, m, commands, CLIENT_REQUIRE_TARGET_ALIAS)
       }
-    })
-    // process models. In case model is already sym-linked for clientRequire - use a related link
-    // TODO - This allow to copy full folder to remote fs
-    const modelsTarget = path.join(clientRequireTarget, 'models')
-    DEBUG && console.log(domainModels)
-    const mNames = Object.keys(domainModels)
-    commands.push({
-      type: 'comment',
-      text: 'Models for /model endpoint replacement'
-    })
-    mNames.forEach(mName => {
-      const m = domainModels[mName]
-      if (!m.packageJSON.config || !m.packageJSON.config.ubmodel || !m.packageJSON.config.ubmodel.name) {
-        throw new Error(`package.json config for model ${mName} should contains a section "config": {"ubmodel": {"name":...}`)
+      if (commands.length === L) {
+        // no modules added - remove ns folder creation
+        commands.pop()
       }
-      let rpp = m.realPublicPath
-      if (rpp.endsWith('/') || rpp.endsWith('\\')) rpp = rpp.slice(0, -1)
-      if (!fs.existsSync(rpp)) { // no public folder
-        DEBUG && console.info(`Skip model ${mName} - no public folder ${rpp}`)
-        return
-      }
-      const moduleLink = commands.find(c => c.from === rpp)
-      if (moduleLink) {
-        commands.push({
-          from: moduleLink.to,
-          to: path.join(CLIENT_REQUIRE_TARGET_ALIAS, 'models', m.packageJSON.config.ubmodel.name),
-          type: 'folder'
-        })
-      } else {
-        commands.push({
-          from: rpp,
-          to: path.join(CLIENT_REQUIRE_TARGET_ALIAS, 'models', m.packageJSON.config.ubmodel.name),
-          type: 'folder'
-        })
-      }
-    })
-
-    let script
-
-    if (WINDOWS) {
-      script = [
-        '@ECHO OFF',
-        `SET CRT=${clientRequireTarget}`,
-        `SET NMS=${modulesPath}`,
-        'RMDIR %CRT% /s /q', // prevent recursive symlinks
-        'MKDIR %CRT%\\models'
-      ]
     } else {
-      script = [
-        'err() { echo "err"; exit $?; }',
-        `CRT=${clientRequireTarget}`,
-        `NMS=${modulesPath}`,
-        'rm -rf $CRT', // prevent recursive symlinks
-        'mkdir -p $CRT',
-        'mkdir -p $CRT/models'
-      ]
+      tryAddModule(modulesPath, NODE_MODULES_SOURCES_ALIAS, m, commands, CLIENT_REQUIRE_TARGET_ALIAS)
+    }
+  }
+
+  // process models. In case model is already sym-linked for clientRequire - use a related link
+  // TODO - This allow to copy full folder to remote fs
+  const modelsTarget = path.join(clientRequireTarget, 'models')
+  DEBUG && console.log(domainModels)
+  commands.push({
+    type: 'comment',
+    text: 'Models for /model endpoint replacement'
+  })
+
+  for (const m of domainModels) {
+    const packageJsonFn = path.join(m.realPath, 'package.json')
+    const packageJSON = require(packageJsonFn)
+    if (!packageJSON.config || !packageJSON.config.ubmodel || !packageJSON.config.ubmodel.name) {
+      throw new Error(`package.json config for model ${m.name} should contains a section "config": {"ubmodel": {"name":...}`)
     }
 
-    commands.forEach(cmd => {
-      if (WINDOWS) {
-        if (cmd.type === 'comment') {
-          script.push(`REM ${cmd.text}`)
-        } else if (cmd.type === 'mkdir') {
-          script.push(`MKDIR ${cmd.to}`)
-        } else if (cmd.type === 'folder') {
-          script.push(`MKLINK /J /D ${cmd.to} ${cmd.from} || goto err`)
-        } else if (cmd.type === 'file') {
-          script.push(`if not exist ${cmd.to} MKLINK /H ${cmd.to} ${cmd.from} || goto err`)
-        }
-      } else {
-        if (cmd.type === 'comment') {
-          script.push(`# ${cmd.text}`)
-        } else if (cmd.type === 'mkdir') {
-          script.push(`mkdir -p ${cmd.to} || err`)
-        } else if (cmd.type === 'folder') {
-          script.push(`ln -s ${cmd.from} ${cmd.to} || err`)
-        } else if (cmd.type === 'file') {
-          script.push(`ln -s -f ${cmd.from} ${cmd.to} || err`)
-        }
-      }
-    })
+    m.realPublicPath = packageJSON.config.ubmodel.isPublic
+      ? m.realPath
+      : path.join(m.realPath, 'public')
+    m.packageJSON = packageJSON
 
-    const favIconTarget = path.join(target, 'favicon.ico')
-    if (!fs.existsSync(favIconTarget)) {
-      const favIconSrc = path.join(domainModels.UB.realPublicPath, 'img', 'UBLogo16.ico')
+    let rpp = m.realPublicPath
+    if (rpp.endsWith('/') || rpp.endsWith('\\')) rpp = rpp.slice(0, -1)
+    if (!fs.existsSync(rpp)) { // no public folder
+      DEBUG && console.info(`Skip model ${mName} - no public folder ${rpp}`)
+      continue
+    }
+    const moduleLink = commands.find(c => c.from === rpp)
+    if (moduleLink) {
+      commands.push({
+        from: moduleLink.to,
+        to: path.join(CLIENT_REQUIRE_TARGET_ALIAS, 'models', m.packageJSON.config.ubmodel.name),
+        type: 'folder'
+      })
+    } else {
+      commands.push({
+        from: rpp,
+        to: path.join(CLIENT_REQUIRE_TARGET_ALIAS, 'models', m.packageJSON.config.ubmodel.name),
+        type: 'folder'
+      })
+    }
+  }
+
+  let script
+
+  if (WINDOWS) {
+    script = [
+      '@ECHO OFF',
+      `SET CRT=${clientRequireTarget}`,
+      `SET NMS=${modulesPath}`,
+      'RMDIR %CRT% /s /q', // prevent recursive symlinks
+      'MKDIR %CRT%\\models'
+    ]
+  } else {
+    script = [
+      'err() { echo "err"; exit $?; }',
+      `CRT=${clientRequireTarget}`,
+      `NMS=${modulesPath}`,
+      'rm -rf $CRT', // prevent recursive symlinks
+      'mkdir -p $CRT',
+      'mkdir -p $CRT/models'
+    ]
+  }
+
+  for (const cmd of commands) {
+    if (WINDOWS) {
+      if (cmd.type === 'comment') {
+        script.push(`REM ${cmd.text}`)
+      } else if (cmd.type === 'mkdir') {
+        script.push(`MKDIR ${cmd.to}`)
+      } else if (cmd.type === 'folder') {
+        script.push(`MKLINK /J /D ${cmd.to} ${cmd.from} || goto err`)
+      } else if (cmd.type === 'file') {
+        script.push(`if not exist ${cmd.to} MKLINK /H ${cmd.to} ${cmd.from} || goto err`)
+      }
+    } else {
+      if (cmd.type === 'comment') {
+        script.push(`# ${cmd.text}`)
+      } else if (cmd.type === 'mkdir') {
+        script.push(`mkdir -p ${cmd.to} || err`)
+      } else if (cmd.type === 'folder') {
+        script.push(`ln -s ${cmd.from} ${cmd.to} || err`)
+      } else if (cmd.type === 'file') {
+        script.push(`ln -s -f ${cmd.from} ${cmd.to} || err`)
+      }
+    }
+  }
+
+  const favIconTarget = path.join(target, 'favicon.ico')
+  if (!fs.existsSync(favIconTarget)) {
+    const ubModel = domainModels.find(m => m.name === 'UB')
+    if (ubModel) {
+      const favIconSrc = path.join(ubModel.realPublicPath, 'img', 'UBLogo16.ico')
       script.push(`${COMMENT} no favicon.ico found in target folder - use default favicon`)
       if (WINDOWS) {
         script.push(`MKLINK /H ${favIconTarget} ${favIconSrc}`)
@@ -186,9 +194,10 @@ as drop-in replacement to /clientRequire and /models endpoints`,
         script.push(`ln -s ${favIconSrc} ${favIconTarget}`)
       }
     }
-    script.push(`${COMMENT} update modification time for files in modules updated by npm`)
-    if (WINDOWS) {
-      script.push(`
+  }
+  script.push(`${COMMENT} update modification time for files in modules updated by npm`)
+  if (WINDOWS) {
+    script.push(`
 if exist %NMS%\\@unitybase\\ub\\node_modules\\@unitybase (
   echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   echo Updating date for files in node_modules folder is skipped because symbolic links is detected between packages
@@ -202,53 +211,48 @@ goto :eof
  EXIT 1
 :eof
 `)
-    } else {
-      script.push('find -L $CRT -type f -not -path "*/node_modules/*" -not -newermt \'1986-01-01\' -exec touch -m {} +')
-    }
+  } else {
+    script.push('find -L $CRT -type f -not -path "*/node_modules/*" -not -newermt \'1986-01-01\' -exec touch -m {} +')
+  }
 
-    // win
-    // forfiles /P .\node_modules /S /D -01.01.1986 /C "cmd /c Copy /B @path+,,"
-    const resFn = path.join(process.cwd(), `.linkStatic.${WINDOWS ? 'cmd' : 'sh'}`)
-    fs.writeFileSync(resFn, script.join('\n'))
-    console.log(`
+  // win
+  // forfiles /P .\node_modules /S /D -01.01.1986 /C "cmd /c Copy /B @path+,,"
+  const resFn = path.join(process.cwd(), `.linkStatic.${WINDOWS ? 'cmd' : 'sh'}`)
+  fs.writeFileSync(resFn, script.join('\n'))
+  console.log(`
 
 ${WINDOWS ? 'CMD' : 'Bash'} script ${resFn} is created
 
 Review a script, take care about target folder and package list
 
 In case some package should not be exposed to client add a section
-  "config": {"ubmodel": {} } 
+"config": {"ubmodel": {} } 
 into corresponding package.json
-  
+
 Use a command:
-  ${WINDOWS ? '.\\.linkStatic.cmd' : 'chmod +x ./.linkStatic.sh && ./.linkStatic.sh'}
+${WINDOWS ? '.\\.linkStatic.cmd' : 'chmod +x ./.linkStatic.sh && ./.linkStatic.sh'}
 to link a static`)
 
-    // let pjsPath = path.join(cfgPath, 'package.json')
-    // if (!fs.existsSync(pjsPath)) {
-    //   throw new Error(`package.json not found in the folder with app config. Expected path "${pjsPath}"`)
-    // }
-    // let appPackage = require(pjsPath)
-    // console.log(domainModels)
-    // console.log(appPackage)
+  // let pjsPath = path.join(cfgPath, 'package.json')
+  // if (!fs.existsSync(pjsPath)) {
+  //   throw new Error(`package.json not found in the folder with app config. Expected path "${pjsPath}"`)
+  // }
+  // let appPackage = require(pjsPath)
+  // console.log(domainModels)
+  // console.log(appPackage)
 
-    /*
-    How to prevent server-side logic to be exposed for client
+  /*
+  How to prevent server-side logic to be exposed for client
 
-    First let's explain what packages are exposed:
-      - packages without `config.ubmodel` section and packaged with `config.ubmodel.isPublic: true` inside package.json
-        are exposed as is (sym-linked into ${httpServer.inetPub}/clientRequire)
-      - for packages with `config.ubmodel && !config.ubmodel.isPublic` only `public` folder content and package.json itself
-        is sym-linked into ${httpServer.inetPub}/clientRequire. All other model folders are hidden from client
+  First let's explain what packages are exposed:
+    - packages without `config.ubmodel` section and packaged with `config.ubmodel.isPublic: true` inside package.json
+      are exposed as is (sym-linked into ${httpServer.inetPub}/clientRequire)
+    - for packages with `config.ubmodel && !config.ubmodel.isPublic` only `public` folder content and package.json itself
+      is sym-linked into ${httpServer.inetPub}/clientRequire. All other model folders are hidden from client
 
-    So, to hide all package files from client add a "config" : {"ubmodel": {} } section into package.json
+  So, to hide all package files from client add a "config" : {"ubmodel": {} } section into package.json
 
-     */
-  } finally {
-    if (session && session.logout) {
-      session.logout()
-    }
-  }
+   */
 }
 
 /**
