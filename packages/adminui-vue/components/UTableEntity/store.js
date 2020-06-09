@@ -457,7 +457,7 @@ module.exports = (instance) => ({
         await lookups.subscribe(entity, [associatedAttr])
       }
       await dispatch('fetchItems')
-      commit('LOADING', false)
+      // commit('LOADING', false) used inside fetchItems
     },
 
     unsubscribeLookups ({ getters }) {

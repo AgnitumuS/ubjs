@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UTableEntity` missed displaying of loader in case grid has not lookups
 
 ## [1.11.6] - 2020-06-09
 ### Added
