@@ -48,6 +48,10 @@ module.exports = function runMixinsTests (options) {
     .attrs('ID')
     .orderBy('code')
     .limit(1).selectAsObject()
+  // order by attribute with unsafe expression binding should not throw
+  conn.Repository('tst_IDMapping')
+    .attrs('ID')
+    .orderBy('rnd').selectAsObject()
 }
 
 /**

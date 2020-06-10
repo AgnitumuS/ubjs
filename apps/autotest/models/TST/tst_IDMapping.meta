@@ -34,6 +34,24 @@
           "expression": "C_CODE"
         }
       ]
+    },
+    {
+      "name": "rnd",
+      "dataType": "BigInt",
+      "caption": "Random val",
+      "description": "Test mapping to function and order by unsafe expression for SQLite3",
+      "mapping": [
+        {
+          "name": "AnsiSQL",
+          "expressionType": "Expression",
+          "expression": "length(C_CODE)"
+        },
+        {
+          "name": "SQLite3",
+          "expressionType": "Expression",
+          "expression": "random()"
+        }
+      ]
     }
   ],
   "mapping": [{
