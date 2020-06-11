@@ -47,6 +47,11 @@
           "expression": "length(C_CODE)"
         },
         {
+          "name": "MSSQL",
+          "expressionType": "Expression",
+          "expression": "len(C_CODE)"
+        },
+        {
           "name": "SQLite3",
           "expressionType": "Expression",
           "expression": "random()"
