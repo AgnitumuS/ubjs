@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `ubs_messages.addUserFilters` method is use UBQLv2 syntax for parameters (no functional changes) 
 
 ## [5.4.1] - 2020-05-25
 ## [5.4.0] - 2020-05-22

@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `App.launchRLS` - a JS based RLS mixin helper for UB@5.18.4
 
 ### Changed
 

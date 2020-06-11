@@ -43,23 +43,24 @@ me.getCached = function (ctx) {
  */
 function addUserFilters (ctx) {
   const nm = Date.now()
-  if (!ctx.mParams.whereList) {
-    ctx.mParams.whereList = {}
+  const mParams = ctx.mParams
+  if (!mParams.whereList) {
+    mParams.whereList = {}
   }
-  ctx.mParams.whereList['user' + nm] = {
+  mParams.whereList['user' + nm] = {
     expression: '[recipients.userID]',
     condition: 'equal',
-    values: { userID: Session.userID }
+    value: Session.userID
   }
-  ctx.mParams.whereList['complete' + nm] = {
+  mParams.whereList['complete' + nm] = {
     expression: '[complete]',
     condition: 'equal',
-    values: { complete: 1 }
+    value: 1
   }
-  ctx.mParams.whereList['startDate' + nm] = {
+  mParams.whereList['startDate' + nm] = {
     expression: '[startDate]',
     condition: 'less',
-    values: { startDate: new Date() }
+    value: new Date()
   }
   return true
 }

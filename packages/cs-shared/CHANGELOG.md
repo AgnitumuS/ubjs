@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - for server-side UBEntity a mixins list include `rls` and `audit` mixin definition if they defined for entity.
+   Both `rls` and `audit` are hidden from client side for security reason. Before this patch `rls` and `audit`
+   were unavailable even to the server side UBDomain.
+   
 ### Changed
 
 ### Deprecated

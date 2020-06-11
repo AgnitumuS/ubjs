@@ -502,7 +502,7 @@ function UBEntityMapping (maping) {
  */
 function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
   const me = this
-  let mixinNames, mixinInfo, i18nMixin
+  let mixinInfo, i18nMixin
 
   if (i18n && ((typeof process === 'undefined') || !process.isServer)) { // merge i18n only on client side
     _.merge(entityInfo, i18n)
@@ -631,7 +631,7 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
     }
   })
 
-  mixinNames = Object.keys(entityInfo.mixins || {})
+  const mixinNames = Object.keys(entityInfo.mixins || {})
   /**
    * Collection of entity mixins
    * @type {Object<string, UBEntityMixin>}

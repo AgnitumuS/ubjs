@@ -120,7 +120,7 @@ App.preventDefault = function () {
 
 /**
  * Called by native HTTP server worker
- * @param endpointName
+ * @param {string} endpointName
  * @private
  * @returns {boolean}
  */
@@ -136,6 +136,32 @@ App.launchEndpoint = function (endpointName) {
     }
   } finally {
     App.endpointContext = {} // allow GC to release possible context data ASAP
+  }
+}
+
+/**
+ * Called by native RLS mixin. Task of method is to either run a rls.func or eval a rls.expression for ctxt.dataStore.Entity
+ * @param {ubMethodParams} ctxt
+ * @private
+ */
+App.launchRLS = function (ctxt) {
+  const rlsMixin = ctxt.dataStore.entity.mixins.rls
+  if (rlsMixin.func) { // functional RLS
+    if (!rlsMixin.__funcVar) {
+      // TODO
+    }
+    console.debug('Call func')
+  } else { // expression
+    const mParams = ctxt.mParams
+    const expr = eval(rlsMixin.expression)
+    console.debug('Eval expression', expr)
+    if (!mParams.whereList) {
+      mParams.whereList = {}
+    }
+    mParams.whereList[`rls${Date.now()}`] = {
+      expression: expr,
+      condition: 'custom'
+    }
   }
 }
 
