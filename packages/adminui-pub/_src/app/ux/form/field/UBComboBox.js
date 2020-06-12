@@ -574,6 +574,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
         fn: function () {
           if (store.getCount() === 0) {
             // Trying to load a filtered out row (probably deleted or historically not actual)
+            UB.xhr.allowRequestReiteration() // prevent a monkeyRequestsDetected in case 2 combobox are on the same form with the same filters
             UB.connection.select({
               entity: me.getEntity(),
               fieldList: store.ubRequest.fieldList, // [me.valueField, me.displayField ],

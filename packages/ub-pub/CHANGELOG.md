@@ -6,7 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - ub-pub exports a `xhr.allowRequestReiteration` method - prevent a `monkeyRequestsDetected` error for a next query. Example:
+ ```
+  UB.xhr.allowRequestReiteration() // prevent a monkeyRequestsDetected for qury below in case 2 combobox are on the same form with the same filters
+  UB.connection.select({
+    entity: me.getEntity(),
+    fieldList: store.ubRequest.fieldList,
+    __allowSelectSafeDeleted: true,
+    ID: id
+  })
+```
 ### Changed
 
 ### Deprecated

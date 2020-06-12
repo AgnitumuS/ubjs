@@ -489,6 +489,11 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
 }
 
 /**
+ * Allow Request reiteration, for example in case of request are repeated after re-auth
+ * @method
+ */
+UB.xhr.allowRequestReiteration = transport.xhr.allowRequestReiteration
+/**
  * Vue JS integration
  *  - inject UB localization {@link UB.i18n UB.i18n} to global Vue instance as $ut:
  *  - inject `@unitybase/ub-pub` to global Vue instance as $UB

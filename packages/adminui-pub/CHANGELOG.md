@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UBComboBox`: prevent a `monkeyRequestsDetected` error in case 2 combobox are on the same form with the same filters
 
 ## [5.13.16] - 2020-05-31
 ### Fixed
