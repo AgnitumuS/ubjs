@@ -147,6 +147,26 @@ module.exports = (instance) => ({
       state.items.splice(0, state.items.length, ...items)
     },
 
+    ADD_ITEM (state, item) {
+      state.items.push(item)
+    },
+
+    UPDATE_ITEM (state, updatedItem) {
+      const item = state.items.find(i => i.ID === updatedItem.ID)
+      if (item) {
+        Object.assign(item, updatedItem)
+      }
+    },
+
+    REMOVE_ITEM (state, deletedItem) {
+      if (deletedItem && deletedItem.ID) {
+        const deleteIndex = state.items.findIndex(i => i.ID === deletedItem.ID)
+        if (deleteIndex !== -1) {
+          state.items.splice(deleteIndex, 1)
+        }
+      }
+    },
+
     LAST_PAGE_INDEX (state, isLastPageIndex) {
       state.isLastPageIndex = isLastPageIndex
     },
@@ -198,42 +218,39 @@ module.exports = (instance) => ({
   },
 
   actions: {
-    fetchItems: throttle(
-      50,
-      async function ({ state, getters, commit }) {
-        commit('LOADING', true)
+    async fetchItems ({ state, getters, commit }) {
+      commit('LOADING', true)
 
-        try {
-          const response = await getters.currentRepository.selectAsArray()
-          /*
-           * Replace result keys with fieldList
-           * Sometimes, server returns result with altered fieldList, like entities with Entity-Attribute-Value mixin
-           * (see `@unitybase/forms`).  Below we force to stick with original fieldList from request,
-           * rather than using fieldList from response
-           */
-          response.resultData.fields = getters.currentRepository.fieldList
-          const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
+      try {
+        const response = await getters.currentRepository.selectAsArray()
+        /*
+         * Replace result keys with fieldList
+         * Sometimes, server returns result with altered fieldList, like entities with Entity-Attribute-Value mixin
+         * (see `@unitybase/forms`).  Below we force to stick with original fieldList from request,
+         * rather than using fieldList from response
+         */
+        response.resultData.fields = getters.currentRepository.fieldList
+        const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
 
-          const isLastPage = items.length < getters.pageSize
-          commit('LAST_PAGE_INDEX', isLastPage)
-          /* We can get calculate total if this is last page. */
-          if (isLastPage) {
-            commit('TOTAL', state.pageIndex * getters.pageSize + items.length)
-          } else {
-            items.splice(getters.pageSize, 1)
-          }
-
-          if (state.withTotal) {
-            commit('TOTAL', response.total)
-          }
-          commit('ITEMS', items)
-        } catch (err) {
-          UB.showErrorWindow(err)
-        } finally {
-          commit('LOADING', false)
+        const isLastPage = items.length < getters.pageSize
+        commit('LAST_PAGE_INDEX', isLastPage)
+        /* We can get calculate total if this is last page. */
+        if (isLastPage) {
+          commit('TOTAL', state.pageIndex * getters.pageSize + items.length)
+        } else {
+          items.splice(getters.pageSize, 1)
         }
+
+        if (state.withTotal) {
+          commit('TOTAL', response.total)
+        }
+        commit('ITEMS', items)
+      } catch (err) {
+        UB.showErrorWindow(err)
+      } finally {
+        commit('LOADING', false)
       }
-    ),
+    },
 
     async refresh ({ commit, dispatch }) {
       commit('PAGE_INDEX', 0)
@@ -463,6 +480,32 @@ module.exports = (instance) => ({
     unsubscribeLookups ({ getters }) {
       for (const { entity } of getters.lookupEntities) {
         lookups.unsubscribe(entity)
+      }
+    },
+
+    async updateData ({ state, getters, commit, dispatch }, responses) {
+      if (responses === undefined || responses.length === 0) {
+        await dispatch('refresh')
+      }
+
+      for (const response of responses) {
+        switch (response.method) {
+          case 'insert':
+            if (state.items.length < getters.pageSize) {
+              commit('ADD_ITEM', response.resultData)
+            }
+            break
+          case 'update':
+            commit('UPDATE_ITEM', response.resultData)
+            break
+          case 'delete':
+            commit('REMOVE_ITEM', response.resultData)
+            // in case items count equal pageSize then probably has next page so need refresh it
+            if (state.items.length === getters.pageSize - 1) {
+              await dispatch('refresh')
+            }
+            break
+        }
       }
     }
   }

@@ -15,6 +15,7 @@
       <u-dropdown-item
         icon="u-icon-refresh"
         :label="$ut('refresh') + ' (Ctrl + R)'"
+        :disabled="loading"
         @click="refresh"
       />
       <slot name="add-new">
@@ -100,7 +101,11 @@ export default {
       'entityName',
       'currentRepository'
     ]),
-    ...mapState(['items', 'selectedRowId'])
+    ...mapState([
+      'items',
+      'selectedRowId',
+      'loading'
+    ])
   },
 
   methods: {
