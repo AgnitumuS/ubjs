@@ -99,7 +99,11 @@ export default {
       'isLockedByMe',
       'lockInfoMessage'
     ]),
-    ...mapState(['isNew', 'lockInfo']),
+    ...mapState([
+      'isNew',
+      'lockInfo',
+      'loading'
+    ]),
     ...mapInstanceFields(['mi_createDate', 'mi_modifyDate']),
 
     mainPanelButtons () {
@@ -134,7 +138,7 @@ export default {
         label: this.$ut('refresh') + ' (Ctrl + R)',
         icon: 'u-icon-refresh',
         handler: () => this.refresh(),
-        disabled: !this.canRefresh
+        disabled: !this.canRefresh || this.loading
       }]
       buttons.push(...this.mainPanelButtons)
 
@@ -356,7 +360,7 @@ export default {
       if (!e.ctrlKey) return // return ASAP in case Ctrl not pressed
       if (e.key === 'r') {
         e.preventDefault()
-        if (this.canRefresh) {
+        if (this.canRefresh && !this.loading) {
           this.refresh()
         }
       }

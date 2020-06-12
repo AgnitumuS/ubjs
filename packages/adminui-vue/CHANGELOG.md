@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - **BREAKING** `UTableEntity`: action `fetchItems` no more throttling and returns promise as expeched.
+   This may be important in case `fetchItems` is called from scoped slots.
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `UTableEntity` refresh grid data on any local update in form
+ - `UTableEntity` fix missed loader appears for Tables without lookups during read/refresh data
+ - `UTableEntity` compute correct label for filter on attribute of type Entity
 
 ## [1.11.6] - 2020-06-09
 ### Added

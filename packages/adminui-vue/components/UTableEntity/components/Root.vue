@@ -5,8 +5,8 @@
     tabindex="1"
     @keydown.ctrl.delete.exact="canDelete && deleteRecord(selectedRowId)"
     @keydown.ctrl.e.prevent.exact="canEdit && editRecord(selectedRowId)"
-    @keydown.ctrl.insert.exact="canAddNew && addNew"
-    @keydown.ctrl.r.prevent.exact="refresh"
+    @keydown.ctrl.insert.exact="canAddNew && addNew()"
+    @keydown.ctrl.r.prevent.exact="!loading && refresh()"
     @keydown.enter.exact="onSelect(selectedRowId)"
     @keydown.exact="tryFocusFilter"
     @keydown.left.prevent.exact="moveLeft"
@@ -30,6 +30,7 @@
         <u-toolbar-button
           icon="u-icon-refresh"
           color="secondary"
+          :disabled="loading"
           @click="refresh"
         >
           {{ $ut('refresh') }}
@@ -184,7 +185,7 @@
       @click-cell="selectCell"
       @contextmenu-cell="showContextMenu"
       @dblclick-row="onSelect($event.row.ID, $event.row)"
-      @sort="updateSort"
+      @sort="throttledUpdateSort"
     >
       <template
         v-for="col in columns"
@@ -213,6 +214,7 @@
             <u-button
               appearance="plain"
               right-icon="u-icon-arrow-right"
+              :disabled="loading"
               @click="pageIndex += 1"
             >
               {{ $ut('table.pagination.nextPage') }}
@@ -349,6 +351,7 @@ const TypeProvider = require('../type-provider')
    * Creating of regular expression is slow operation
    */
 const regExpLetterOrNumber = /[A-Za-zА-Яа-я0-9]/
+const { throttle } = require('throttle-debounce')
 
 export default {
   name: 'UTableEntityRoot',
@@ -575,7 +578,15 @@ export default {
       } else {
         this.editRecord(ID)
       }
-    }
+    },
+
+    throttledUpdateSort: throttle(
+      50,
+      true,
+      function () {
+        this.updateSort()
+      }
+    )
   }
 }
 </script>

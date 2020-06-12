@@ -12,6 +12,7 @@
       <button
         v-if="total === null"
         class="pagination__total"
+        :disabled="loading"
         @click="getTotal"
       >
         <span>---</span>

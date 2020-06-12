@@ -148,18 +148,20 @@ export default {
 
   mounted () {
     this.validateFieldList()
+    this.$UB.connection.on(`${this.getEntityName}:changed`, this.updateData)
   },
 
   beforeDestroy () {
+    this.$UB.connection.removeListener(`${this.getEntityName}:changed`, this.updateData)
     this.unsubscribeLookups()
     this.unwatchFilters()
   },
 
   methods: {
     ...mapActions([
-      'refresh',
       'loadData',
-      'unsubscribeLookups'
+      'unsubscribeLookups',
+      'updateData'
     ]),
 
     getRepository () {

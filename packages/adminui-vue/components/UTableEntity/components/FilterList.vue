@@ -11,7 +11,7 @@
       v-for="filter in filters"
       :key="filter.id"
       class="u-table-entity__filter-list-item"
-      @click.middle="removeFilter(filter.columnId)"
+      @click.middle="!loading && removeFilter(filter.columnId)"
     >
       <div>
         <span>
@@ -23,7 +23,7 @@
       </div>
       <i
         class="u-table-entity__filter-list-item__close-icon u-icon-close"
-        @click="removeFilter(filter.columnId)"
+        @click="!loading && removeFilter(filter.columnId)"
       />
     </div>
   </div>
@@ -33,7 +33,7 @@
 const { mapState, mapActions } = require('vuex')
 
 export default {
-  computed: mapState(['filters']),
+  computed: mapState(['filters', 'loading']),
   methods: mapActions(['removeFilter'])
 }
 </script>

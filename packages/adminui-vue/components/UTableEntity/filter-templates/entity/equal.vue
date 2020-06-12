@@ -46,24 +46,19 @@ export default {
 
   methods: {
     onChange (ID, row) {
-      const entity = this.column.attribute.entity || {}
-      const descriptionAttr = entity.descriptionAttribute
-      if (descriptionAttr) {
-        this.formattedValue = row[descriptionAttr]
-        return
-      }
-
-      if ('caption' in entity.attributes) {
-        this.formattedValue = row.caption
-        return
-      }
-
-      if ('name' in entity.attributes) {
+      let value = row.ID
+      const entity = this.column.attribute.associatedEntity
+      const entitySchema = entity ? this.$UB.connection.domain.get(entity) : {}
+      const descriptionAttr = entitySchema.descriptionAttribute
+      if (descriptionAttr && descriptionAttr in row) {
+        value = row[descriptionAttr]
+      } else if ('caption' in row) {
+        value = row.caption
+      } else if ('name' in row) {
         this.formattedValue = row.name
-        return
       }
 
-      this.formattedValue = row.ID
+      this.formattedValue = value
     }
   }
 }

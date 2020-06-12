@@ -93,6 +93,8 @@
 </template>
 
 <script>
+const { throttle } = require('throttle-debounce')
+
 /**
  * Same as UTableEntity but with details grid.
  */
@@ -161,7 +163,7 @@ export default {
   watch: {
     selectedRowId () {
       if (this.$refs.detailsTable) {
-        this.$refs.detailsTable.$store.dispatch('refresh')
+        this.refreshMasterTable()
       }
     }
   },
@@ -181,9 +183,16 @@ export default {
       this.selectedDetail = detail
       this.detailsVisible = true
       await this.$nextTick()
-      this.$refs.detailsTable.$store.dispatch('refresh')
+      this.refreshMasterTable()
       this.$refs.masterTable.$el.focus()
     },
+
+    refreshMasterTable: throttle(
+      50,
+      true,
+      function () {
+        this.$refs.detailsTable.$store.dispatch('refresh')
+      }),
 
     formatDetailLabel ({ entity, attribute }) {
       const hasSameEntity = this.details.filter(d => d.entity === entity).length > 1
