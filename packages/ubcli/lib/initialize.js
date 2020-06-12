@@ -75,16 +75,17 @@ module.exports = function initialize (cfg) {
   }
 
   function requireAndRun (folderName, modelName, file) {
+    const realPath = path.join(folderName, file)
     if (file.charAt(0) !== '_') {
-      const filler = require(path.join(folderName, file))
+      const filler = require(realPath)
       if (typeof filler === 'function') {
         console.info('\tmodel:', modelName, 'file:', file)
         filler(session)
       } else {
-        console.warn('File', folderName + file, 'not export function')
+        console.warn('File', realPath, 'does not export function')
       }
     } else {
-      console.info('File', folderName + file, 'ignored because it name start from "_"')
+      console.info('File', realPath, 'is ignored because it name start from "_"')
     }
   }
 }
