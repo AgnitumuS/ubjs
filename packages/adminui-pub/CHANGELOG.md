@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - if `uiSettings.adminUI.useVueTables` is empty or `false` in ubConfig then "Select from the dictionary" action
+ of ExtJS based UBComboBox will show ExtJS based dictionary
+   
 ### Deprecated
 
 ### Removed

@@ -367,7 +367,52 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
     }
   },
 
+  showExtBasedLookup () {
+    const me = this
+    const store = me.getStore()
+    const entityName = store.entityName
+    if (!entityName) { return }
+    const instanceID = me.getValue()
+    const fieldList = me.gridFieldList ? me.gridFieldList : '*'
+
+    const config = {
+      renderer: 'ext',
+      entity: entityName,
+      cmdType: UB.core.UBCommand.commandType.showList,
+      description: $App.domainInfo.get(entityName, true).getEntityDescription(),
+      isModal: true,
+      sender: me,
+      selectedInstanceID: instanceID,
+      onItemSelected: function (selected) {
+        if (me.setValueById) {
+          me.getStore().clearData()
+          me.setValueById(selected.get(me.valueField || 'ID'))
+        }
+      },
+      cmdData: {
+        params: [{
+          entity: entityName,
+          method: 'select',
+          fieldList: fieldList,
+          whereList: store.ubRequest.whereList,
+          logicalPredicates: store.ubRequest.logicalPredicates,
+          __mip_ondate: store.ubRequest.__mip_ondate
+        }]
+      },
+      hideActions: me.hideActions
+    }
+    var filters = store.filters.clone()
+    filters.removeAtKey(me.userFilterId)
+    config.filters = filters
+
+    UB.core.UBApp.doCommand(config)
+  },
+
   showLookup () {
+    if (!UB.connection.appConfig.uiSettings.adminUI.useVueTables) {
+      // Use ExtJS based grid for "Select from dictionary"
+      return this.showExtBasedLookup()
+    }
     const store = this.getStore()
     if (!store.entityName) { return }
     // build showList where based on ubRequest where + Ext filters
