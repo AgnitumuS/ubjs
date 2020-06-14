@@ -4,7 +4,6 @@ if (typeof _App === 'undefined') {
 }
 const argv = require('@unitybase/base').argv
 const path = require('path')
-const fs = require('fs')
 const UBDomain = require('@unitybase/cs-shared').UBDomain
 const EventEmitter = require('events').EventEmitter
 const THTTPResponse = require('./HTTPResponse')
@@ -147,14 +146,21 @@ App.launchEndpoint = function (endpointName) {
 App.launchRLS = function (ctxt) {
   const rlsMixin = ctxt.dataStore.entity.mixins.rls
   if (rlsMixin.func) { // functional RLS
-    if (!rlsMixin.__funcVar) {
-      // TODO
+    if (!rlsMixin.__funcVar) { // parse func namespace 'uba_user.somefunc' (string) -> uba_user.somefunc (function)
+      const fPath = rlsMixin.func.split('.')
+      let f = global[fPath[0]]
+      for (let i = 1, L = fPath.length; i < L; i++) {
+        f = f[fPath[i]]
+      }
+      if (typeof f !== 'function') throw new Error(`${ctxt.dataStore.entity.name} rls func "${rlsMixin.func}" is not a function`)
+      rlsMixin.__funcVar = f
     }
-    console.debug('Call func')
+    console.debug('Call func', rlsMixin.func)
+    rlsMixin.__funcVar.call(global[ctxt.dataStore.entity.name], ctxt) // call RLS function using entity namespace as this
   } else { // expression
     const mParams = ctxt.mParams
     const expr = eval(rlsMixin.expression)
-    console.debug('Eval expression', expr)
+    console.debug('Eval rls expression to', expr)
     if (!mParams.whereList) {
       mParams.whereList = {}
     }

@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `App.launchRLS` - a JS based RLS mixin helper for UB@5.18.4
-
+ - `RLS.allowForAdminOwnerAndAdmTable`  a functional RLS for filtering rows by `${entity}_adm` subtable.
+   To be used instead of "expression based RLS": `${$.currentUserInGroup(ubm_navshortcut,'Admin')} OR ${$.currentUserOrUserGroupInAdmSubtable(ubm_navshortcut)}`.
+   See `ubm_navshortcut` for usage sample. 
+ - `rls.func` property added to entity.schema.json
+ 
 ### Changed
 
 ### Deprecated

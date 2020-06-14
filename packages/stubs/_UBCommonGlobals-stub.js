@@ -178,6 +178,11 @@ TubList.prototype.clear = function () {}
 TubList.prototype.setBLOBValue = function (paramName, data, encoding) {}
 
 /**
+ * Generate unique (not used yet) key name of length 3
+ */
+TubList.prototype.getUniqKey = function () {}
+
+/**
  * @classdesc Native realisation of HTTP client. Do not use it directly - instead use {@link http} module.
  * @class THTTPClient
  * @private
