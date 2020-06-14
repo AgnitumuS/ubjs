@@ -29,6 +29,11 @@ module.exports = function runMixinsTests (options) {
     'Should got error for unsafe fieldList'
   )
   assert.throws(
+    () => unsafeExternalCallFieldListAsterisk(conn),
+    /<<<Access deny>>>/,
+    'Should got Access deny for unsafe * fieldList'
+  )
+  assert.throws(
     () => unsafeExternalCallWhere(conn),
     /Internal Server Error/,
     'Should got error for unsafe orderItem'
@@ -98,5 +103,15 @@ function unsafeExternalCallOrderAttr (conn) {
     .using('runSelectInJSContext')
     .attrs('ID')
     .orderBy('UNSAFE_FUNC([code])')
+    .limit(1).selectAsObject()
+}
+
+/**
+ * Unsafe external call for `select *` must throws for unsafe field list
+ * @param {SyncConnection} conn
+ */
+function unsafeExternalCallFieldListAsterisk (conn) {
+  return conn.Repository('uba_user')
+    .attrs('*')
     .limit(1).selectAsObject()
 }
