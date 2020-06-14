@@ -189,9 +189,9 @@ function SyncConnection (options) {
         if (isRepeat) {
           throw new Error('UBIP authentication must not return false on the prev.step')
         }
-        resp = this.xhr({ endpoint: 'auth', headers: { Authorization: authParams.authSchema + ' ' + authParams.login } })
+        resp = this.xhr({ endpoint: 'auth?AUTHTYPE=UBIP', headers: { Authorization: authParams.authSchema + ' ' + authParams.login } })
         ubSession = new UBSession(resp, '', authParams.authSchema)
-      } if (authParams.authSchema === 'ROOT') {
+      } else if (authParams.authSchema === 'ROOT') {
         if (isRepeat) {
           throw new Error('ROOT authentication must not return false on the prev.step')
         }
