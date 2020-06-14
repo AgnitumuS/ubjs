@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.0.4] - 2020-06-14
 ## [1.0.3] - 2020-03-17
 ### Added
 - `cspAllow` configuration for production mode 

@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - **BREAKING** `UTableEntity`: action `fetchItems` no more throttling and returns promise as expeched.
-   This may be important in case `fetchItems` is called from scoped slots.
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.11.7] - 2020-06-14
+### Changed
+ - **BREAKING** `UTableEntity`: action `fetchItems` no more throttling and returns promise as expeched.
+   This may be important in case `fetchItems` is called from scoped slots.
 
 ### Fixed
  - `UTableEntity` refresh grid data on any local update in form

@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - ubm_desktop & ubm_navshortcut now use a "functional RLS" (require UB@5.18.4) 
-  
+
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
+## [5.3.13] - 2020-06-14
+### Changed
+ - ubm_desktop & ubm_navshortcut now use a "functional RLS" (require UB@5.18.4) 
+  
 ## [5.3.12] - 2020-05-25
 ## [5.3.11] - 2020-05-22
 ## [5.3.10] - 2020-05-17

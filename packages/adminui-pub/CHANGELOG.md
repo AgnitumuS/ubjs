@@ -8,13 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - if `uiSettings.adminUI.useVueTables` is empty or `false` in ubConfig then "Select from the dictionary" action
- of ExtJS based UBComboBox will show ExtJS based dictionary
-   
+
 ### Deprecated
 
 ### Removed
 
+### Fixed
+
+## [5.13.17] - 2020-06-14
+### Changed
+ - if `uiSettings.adminUI.useVueTables` is empty or `false` in ubConfig then "Select from the dictionary" action
+ of ExtJS based UBComboBox will show ExtJS based dictionary
+   
 ### Fixed
  - `UBComboBox`: prevent a `monkeyRequestsDetected` error in case 2 combobox are on the same form with the same filters
 

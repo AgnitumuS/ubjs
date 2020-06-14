@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.2.10] - 2020-06-14
+### Fixed
  - `SyncConnection`: prevent sending of second `/auth` request for UBIP authentication schema
 
 ## [5.2.9] - 2020-05-25

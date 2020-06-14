@@ -6,10 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - for server-side UBEntity a mixins list include `rls` and `audit` mixin definition if they defined for entity.
-   Both `rls` and `audit` are hidden from client side for security reason. Before this patch `rls` and `audit`
-   were unavailable even to the server side UBDomain.
-   
+
 ### Changed
 
 ### Deprecated
@@ -18,6 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.0] - 2020-06-14
+### Added
+ - for server-side UBEntity a mixins list include `rls` and `audit` mixin definition if they defined for entity.
+   Both `rls` and `audit` are hidden from client side for security reason. Before this patch `rls` and `audit`
+   were unavailable even to the server side UBDomain.
+   
 ## [5.3.1] - 2020-05-25
 ### Added
  - `formatByPattern.setLang2LocaleHook` function added - allows override default UB language to ICU locale transformation rules 

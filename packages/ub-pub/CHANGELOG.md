@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.5.12] - 2020-06-14
+### Added
  - ub-pub exports a `xhr.allowRequestReiteration` method - prevent a `monkeyRequestsDetected` error for a next query. Example:
  ```
   UB.xhr.allowRequestReiteration() // prevent a monkeyRequestsDetected for qury below in case 2 combobox are on the same form with the same filters
@@ -16,14 +27,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     ID: id
   })
 ```
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ## [5.5.11] - 2020-05-25
 ## [5.5.10] - 2020-05-22
 ## [5.5.9] - 2020-05-13

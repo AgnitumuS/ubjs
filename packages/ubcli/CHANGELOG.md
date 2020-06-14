@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.5.14] - 2020-06-14
+### Fixed
  - `ubcli initialize` command: added missed `/` in file path inside error message "File ... does not export function" 
 
 ## [5.5.13] - 2020-06-09
