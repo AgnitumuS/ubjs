@@ -183,11 +183,11 @@ function testORG () {
       professionID: professionID,
       staffUnitTypeID: staffUnitTypeID,
       mi_dateFrom: new Date(2020, 1, 1),
-      mi_dateTo: new Date(2020, 3, 1),
+      mi_dateTo: new Date(2020, 3, 1)
     }
   })
   const pastID = conn.Repository('org_staffunit').attrs('ID').selectById(staffUnitInPastID)
-  assert.strictEqual(pastID && pastID.ID, staffUnitInPastID, 'selectById should return a staffUnitInPastID')
+  assert.strictEqual(pastID && pastID.ID, staffUnitInPastID, 'selectById should return a staffUnitInPastID (do not apply filter by dateFrom/To)')
 
   // MPV - TEMPORARY return here
   // TODO - rewrite using HARDCODED expected values!!!!!!
