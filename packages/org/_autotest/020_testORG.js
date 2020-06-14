@@ -172,6 +172,23 @@ function testORG () {
   })
   ok(empOnStaffID, 'can`t assign  staff unit record to org_employeeonstaff')
 
+  const staffUnitInPastID = conn.insert({
+    entity: 'org_staffunit',
+    fieldList: ['ID'],
+    execParams: {
+      parentID: orgUnitID,
+      code: '898989',
+      name: 'Non-actual staff unit',
+      fullName: 'Non-actual staff unit',
+      professionID: professionID,
+      staffUnitTypeID: staffUnitTypeID,
+      mi_dateFrom: new Date(2020, 1, 1),
+      mi_dateTo: new Date(2020, 3, 1),
+    }
+  })
+  const pastID = conn.Repository('org_staffunit').attrs('ID').selectById(staffUnitInPastID)
+  assert.strictEqual(pastID && pastID.ID, staffUnitInPastID, 'selectById should return a staffUnitInPastID')
+
   // MPV - TEMPORARY return here
   // TODO - rewrite using HARDCODED expected values!!!!!!
   // return
@@ -258,7 +275,9 @@ function getEmployeeList (staffUnitID, supportLang) {
   if (!staffUnitID) {
     return result
   }
-  staffs = conn.Repository('org_employeeonstaff').attrs(staffsFieldList).where('[employeeOnStaffType]', '<>', 'ASSISTANT').where('[staffUnitID]', '=', staffUnitID).select()
+  staffs = conn.Repository('org_employeeonstaff').attrs(staffsFieldList)
+    .where('[employeeOnStaffType]', '<>', 'ASSISTANT')
+    .where('[staffUnitID]', '=', staffUnitID).select()
   if (!staffs || !staffs.length) {
     return result
   }
