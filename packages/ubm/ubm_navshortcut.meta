@@ -107,7 +107,7 @@
       "safeDelete": true
     },
     "rls": {
-      "expression": "`(${$.currentOwner()} OR ${$.currentUserInGroup(ubm_navshortcut,'Admin')} OR ${$.currentUserOrUserGroupInAdmSubtable(ubm_navshortcut)})`"
+      "func": "RLS.allowForAdminOwnerAndAdmTable"
     },
     "tree": {
       "parentAttr": "parentID"

@@ -2,34 +2,119 @@
 
 # Mixin RLS - Row Level Security
 
-Row-level security (RLS) is functionality built into UnityBase server core, which allows to filter rows available for the current user.
-
-Scenarios where RLS might be useful:
+ Allows to add a server-side filtering conditions in addition to client side `where`. Scenarios where RLS might be useful:
 * Show only tasks assigned to a current user, disallow to see any other tasks
 * Show only menu items, available to the roles of the current ser
 * Show only documents, where the current user is a participant
 
-## When to use RLS
+  Row-level security filters row, but that is not just filtering functionality. Use RLS, when application needs not just
+filter rows for user in specific scenarios, but consistently apply data visibility rules across application.
 
-Row-level security filters row, but that is not just filtering functionality.  Use RLS, when application needs not just filter rows for user in specific scenarios, but consistently apply data visibility rules across application.
+To just filter rows on a specific form, use `Repository.where` parameter of query.
 
-To just filter rows on a specific form, use `whereList` parameter of query.
-
-## Configuring RLS for an entity
+# Configuring RLS for an entity
 
 Configuration of RLS consists of the following steps:
-* Create a javascript file for the entity
-* Define a function, which builds a RLS expression
-* Configure entity
+ * Define a function, which builds an RLS expression
+ * Configure entity
 
-### Create a javascript file for the entity
+## Functional RLS (recommended)
 
-UnityBase entities are defined as `.meta` files, in json format.  Existence of `.meta` file is enough to make the entity function,
-but in case when any custom functionality is needed for an entity, a complimentary `.js` file is needed.
-So, if `.js` file not exists yet created one.  For example, for `msg_Message.meta` file, create a `msg_Message.js` file.
+Starting from UB 5.18.4 RLS cal be defined as a function what accept a `ctxt: ubMethodParams` and should modify
+ an `ctxt.mParams`. RLS mixin search for function starting from a global scope, so better to place such functions into
+ entity module (what exposed into global by UB server), or use `UB.ns('NS.for.your.function')` to create a namespace.
+ 
+Let's create an RLS function inside RLS namespace (function already exist, here we copy it code for tutorial) 
+```javascript
+/**
+ * For members of Admin group and for users `root` and `admin` do nothing.
+ *
+ * For other users adds condition what
+ *  - either current user is a record owner
+ *  - OR user or one of user role in `{$entity}_adm` sub-table
+ *
+ * @param {ubMethodParams} ctxt
+ */
+RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
+  // skip RLS for admin and root and Admin group member
+  if (uba_common.isSuperUser() || Session.uData.roleIDs.includes(uba_common.ROLES.ADMIN)) return
 
-### Define a function, which builds a RLS expression
+  const mParams = ctxt.mParams
+  let whereList = mParams.whereList
+  if (!whereList) {
+    whereList = mParams.whereList = {}
+  }
+  // either current user is record owner
+  const byOwner = whereList.getUniqKey()
+  whereList[byOwner] = {
+    expression: '[mi_owner]',
+    condition: 'equal',
+    value: Session.userID
+  }
+  // or User or one of user role in _adm sub-table
+  const byAdm = whereList.getUniqKey()
+  const eName = ctxt.dataStore.entity.name
+  const subQ = Repository(`${eName}_adm`)
+    .where('[admSubjID]', 'in', [Session.userID,...Session.uData.roleIDs])
+    .correlation('instanceID', 'ID')
+    .ubql()
+  whereList[byAdm] = {
+    expression: '',
+    condition: 'subquery',
+    subQueryType: 'exists',
+    value: subQ
+  }
+  const logic = `([${byOwner}]) OR ([${byAdm}])`
+  if (!mParams.logicalPredicates) {
+    mParams.logicalPredicates = [logic]
+  } else {
+    // ubList.push NOT WORK!
+    mParams.logicalPredicates = [...mParams.logicalPredicates, logic]
+  }
+}
+```
 
+and use it as a `rls.func` in `ubm_navshortcut` entity
+```json
+{
+  "caption": "Shortcut",
+  "description": "Metadata for build navbars",
+  "connectionName": "",
+  "descriptionAttribute": "caption",
+  "attributes": [
+    {
+      "name": "caption",
+      "dataType": "String",
+      "size": 255,
+      "caption": "Shortcut name",
+      "allowNull": false,
+      "isMultiLang": true
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    },
+    "rls": {
+      "func": "RLS.allowForAdminOwnerAndAdmTable"
+    }
+  }
+}
+```
+
+Now every time client sends a UBQL for `ubm_navshortcut` entity server add's a where conditions depending on user roles
+what verify row permission in `ubm_navshortcut_adm` entity.
+
+The benefits of functional (func) RLS over expression based RLS are:
+ - `func` is evaluated once and called many time, expression `eval`for every call
+ - `func` adds a where part in DB-independent way
+ - `in` condition with parameters binding can be used inside `func` rls (speed up query execution because of prepared statement cache)  
+
+  
+## Expression RLS (before UB 5.18.4. deprecated)
+### Define a function, which builds an RLS expression
+ 
 Add a function inside the `.js` file created, which would return SQL expression to filter the rows as required by RLS rules for this entity.
 Code example of what the function should look like:
 ```javascript
@@ -56,18 +141,16 @@ SELECT 1 FROM msg_Message_adm msgAdm
 msg_Message.rlsSql = rlsSql
 ```
 
-Here are some points worth mentioning about the code sample above:
+Here are some points worth mentioning the code sample above:
 * The SQL expression will be used inside `WHERE` clause of request.
   It will be applied to any `SELECT` and `UPDATE` statement done for the entity.
 * The SQL shall be compatible with database vendors supported by UnityBase: SQL Server, Oracle, PostgreSQL and SqLite3,
   so avoid using vendor-specific features.
-  * An exception to this rule is when the the database vendor to be used in known in advance and the code won't be used
-    by projects using other database vendors.
 * Each entity has a module object, available in global context. This means, that for entity defined in `msg_Message.meta` file
   there will be `msg_Message` global variable, available in any server-side script, without `require`.
   Our goal is to add to that object a function, which would return the RLS SQL expression.
 * Notice the syntax `:(${Session.userID}):` above - it is how the result query will be parameterized.
-  Just insert a value embraced with colons and braces and it will be added to result database request as a parameter, instead of inline value.
+  Just insert a value embraced with colons and braces, and it will be added to result database request as a parameter, instead of inline value.
   * It is considered to be a good practice to parameterize queries.
   * Notice that array is not parameterized - that is because arrays parametrization is not supported yet.
 
@@ -84,7 +167,7 @@ Add `rls` configuration to the `mixins` section of the `.meta` file:
 
 The value of `expression` property is just a javascript expression returning SQL.
 
-## Administrative Subjects
+### Administrative Subjects
 
 Notice that the sample defines `getAdmSubjIDs` function, which returns list of subjects of the current user.
 Subject is a terminology used in [Access Control List](https://en.wikipedia.org/wiki/Access_control_list) paradigm.
@@ -137,7 +220,7 @@ Example of ACL entity:
 }
 ```
 
-## Using `Session` object
+# Using `Session` object
 
 There is an object `Session`.  The following properties are useful for developing functions, which build RLS expression:
 * `userID`
@@ -148,6 +231,6 @@ There is an object `Session`.  The following properties are useful for developin
 const Session = require('@unitybase/ub').Session
 Session.uData.roles.split(',').find(r => r === 'roleName') != null
 ```
-* `uData` - a structure with other usefule properties like:
+* `uData` - a structure with other useful properties like:
   * `uData.roleIDs` - array of numbers - IDs of roles assigned to the current user
   * `uData.groupIDs` - array of numbers - IDs of groups the current user is member of

@@ -1,5 +1,7 @@
 /* global TubDataStore */
 const Session = require('./Session.js')
+const Repository = require('@unitybase/base').ServerRepository.fabric
+const uba_common = require('@unitybase/base').uba_common
 /**
  * UnityBase Row Level Security routines. For use in rls mixin.
  * @author MPV
@@ -22,7 +24,7 @@ RLS.initCache = function () {
     // here is direct SQL because permission to uba_role dose not exist for non-supervisor user's
     rInst.runSQL('select ID, name FROM uba_role', {})
     while (!rInst.eof) {
-      roleCache[rInst.get(1)] = rInst.get(0) // roleCashce['admin'] = 1 e.t.c.
+      roleCache[rInst.get(1)] = rInst.get(0) // roleCaсhe['admin'] = 1 e.t.c.
       rInst.next()
     }
   }
@@ -48,10 +50,8 @@ RLS.userInGroup = function (user, groupname) {
  * @return {*}
  */
 RLS.currentUserInGroup = function (sender, groupname) {
-  let groupID
-
   RLS.initCache()
-  groupID = roleCache[groupname]
+  const groupID = roleCache[groupname]
   if (groupID && (Session.uData.roleIDs.indexOf(groupID) !== -1)) {
     return '(1=1)'
   } else {
@@ -94,4 +94,51 @@ RLS.currentUserOrUserGroupInAdmSubtable = function (sender) {
     subjects += ` OR ast.admSubjID = :(${rID}):`
   })
   return `exists (select 1 from ${sender.entity.name}_adm ast where ast.instanceID = [ID] and (${subjects}))`
+}
+
+/**
+ * For members of Admin group and for users `root` and `admin` do nothing.
+ *
+ * For other users adds condition what
+ *  - either current user is a record owner
+ *  - OR user or one of user role in `{$entity}_adm` sub-table
+ *
+ * @param {ubMethodParams} ctxt
+ */
+RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
+  // skip RLS for admin and root and Admin group member
+  if (uba_common.isSuperUser() || Session.uData.roleIDs.includes(uba_common.ROLES.ADMIN)) return
+
+  const mParams = ctxt.mParams
+  let whereList = mParams.whereList
+  if (!whereList) {
+    whereList = mParams.whereList = {}
+  }
+  // either current user is record owner
+  const byOwner = whereList.getUniqKey()
+  whereList[byOwner] = {
+    expression: '[mi_owner]',
+    condition: 'equal',
+    value: Session.userID
+  }
+  // or User or one of user role in _adm sub-table
+  const byAdm = whereList.getUniqKey()
+  const eName = ctxt.dataStore.entity.name
+  const subQ = Repository(`${eName}_adm`)
+    .where('[admSubjID]', 'in', [Session.userID,...Session.uData.roleIDs])
+    .correlation('instanceID', 'ID')
+    .ubql()
+  whereList[byAdm] = {
+    expression: '',
+    condition: 'subquery',
+    subQueryType: 'exists',
+    value: subQ
+  }
+  const logic = `([${byOwner}]) OR ([${byAdm}])`
+  if (!mParams.logicalPredicates) {
+    mParams.logicalPredicates = [logic]
+  } else {
+    // ubList.push NOT WORK!
+    mParams.logicalPredicates = [...mParams.logicalPredicates, logic]
+  }
 }
