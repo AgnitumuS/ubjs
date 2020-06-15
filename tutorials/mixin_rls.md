@@ -42,7 +42,9 @@ RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
   const mParams = ctxt.mParams
   let whereList = mParams.whereList
   if (!whereList) {
-    whereList = mParams.whereList = {}
+    mParams.whereList = {}
+    // whereList = mParams.whereList = {} assign a {} to whereList instead of TubList instance
+    whereList = mParams.whereList
   }
   // either current user is record owner
   const byOwner = whereList.getUniqKey()
