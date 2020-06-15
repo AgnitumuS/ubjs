@@ -36,9 +36,9 @@ class FileSystemBlobStore extends BlobStoreCustom {
    */
   constructor (storeConfig, appInstance, sessionInstance) {
     super(storeConfig, appInstance, sessionInstance)
-    let storePath = this.config.path // already normalized inside argv
+    const storePath = this.config.path // already normalized inside argv
     if (!fs.existsSync(storePath)) throw new Error(`BLOB store "${this.name}" path "${storePath}" not exists`)
-    let fStat = fs.statSync(storePath)
+    const fStat = fs.statSync(storePath)
     if (!fStat.isDirectory()) {
       throw new Error(`BLOB store "${this.name}" path "${storePath}" is not a folder`)
     }
@@ -47,7 +47,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
      */
     this.fullStorePath = storePath
 
-    let tmpFolder = this.tempFolder // already normalized inside argv
+    const tmpFolder = this.tempFolder // already normalized inside argv
     if (!fs.existsSync(tmpFolder)) {
       throw new Error(`Temp folder "${tmpFolder}" for BLOB store "${this.name}" doesn't exist. Check a "tempPath" store config parameter`)
     } else {
@@ -68,6 +68,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
       this._folderCounter = (getRandomInt(STORE_SUBFOLDER_COUNT) + 1) * (getRandomInt(STORE_SUBFOLDER_COUNT) + 1)
     }
   }
+
   /**
    * @inheritDoc
    * @param {BlobStoreRequest} request Request params
@@ -76,7 +77,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @returns {BlobStoreItem}
    */
   saveContentToTempStore (request, attribute, content) {
-    let fn = this.getTempFileName(request)
+    const fn = this.getTempFileName(request)
     console.debug('temp file is written to', fn)
     try {
       fs.writeFileSync(fn, content)
@@ -84,9 +85,9 @@ class FileSystemBlobStore extends BlobStoreCustom {
       if (fs.existsSync(fn)) fs.unlinkSync(fn)
       throw e
     }
-    let origFn = request.fileName
-    let ct = mime.contentType(path.extname(origFn))
-    let newMD5 = nhashFile(fn, 'MD5')
+    const origFn = request.fileName
+    const ct = mime.contentType(path.extname(origFn))
+    const newMD5 = nhashFile(fn, 'MD5')
     return {
       store: attribute.storeName,
       fName: origFn,
@@ -97,6 +98,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
       isDirty: true
     }
   }
+
   /**
    * Retrieve BLOB content from blob store.
    * @param {BlobStoreRequest} request
@@ -108,9 +110,10 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @returns {String|ArrayBuffer}
    */
   getContent (request, blobInfo, options) {
-    let filePath = request.isDirty ? this.getTempFileName(request) : this.getPermanentFileName(blobInfo, request)
+    const filePath = request.isDirty ? this.getTempFileName(request) : this.getPermanentFileName(blobInfo, request)
     return filePath ? fs.readFileSync(filePath, options) : undefined
   }
+
   /**
    * Fill HTTP response for getDocument request
    * @param {BlobStoreRequest} requestParams
@@ -134,13 +137,13 @@ class FileSystemBlobStore extends BlobStoreCustom {
     if (filePath) {
       resp.statusCode = 200
       if (this.PROXY_SEND_FILE_HEADER) {
-        let storeRelPath = path.relative(this.fullStorePath, filePath)
+        const storeRelPath = path.relative(this.fullStorePath, filePath)
         let head = `${this.PROXY_SEND_FILE_HEADER}: /${this.PROXY_SEND_FILE_LOCATION_ROOT}/${this.name}/${storeRelPath}`
         head += `\r\nContent-Type: ${ct}`
         if (blobInfo && blobInfo.origName) {
           head += `\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`
         }
-        console.debug(`<- `, head)
+        console.debug('<- ', head)
         resp.writeHead(head)
         resp.writeEnd('')
       } else {
@@ -156,6 +159,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
       resp.writeEnd('Not found')
     }
   }
+
   /**
    * Move content defined by `dirtyItem` from temporary to permanent store.
    * TIPS: in v0 (UB<5) if file updated then implementation takes a store from old item.
@@ -172,7 +176,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
    */
   persist (attribute, ID, dirtyItem, newRevision) {
     if (dirtyItem.deleting) {
-      let tempPath = this.getTempFileName({
+      const tempPath = this.getTempFileName({
         entity: attribute.entity.name,
         attribute: attribute.name,
         ID: ID
@@ -180,17 +184,17 @@ class FileSystemBlobStore extends BlobStoreCustom {
       if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath)
       return null
     }
-    let tempPath = this.getTempFileName({
+    const tempPath = this.getTempFileName({
       entity: attribute.entity.name,
       attribute: attribute.name,
       ID: ID
     })
-    let newPlacement = this.genNewPlacement(attribute, dirtyItem, ID)
+    const newPlacement = this.genNewPlacement(attribute, dirtyItem, ID)
     fs.renameSync(tempPath, newPlacement.fullFn)
-    let newMD5 = nhashFile(newPlacement.fullFn, 'MD5')
-    let ct = mime.contentType(newPlacement.ext)
-    let stat = fs.statSync(newPlacement.fullFn)
-    let resp = {
+    const newMD5 = nhashFile(newPlacement.fullFn, 'MD5')
+    const ct = mime.contentType(newPlacement.ext)
+    const stat = fs.statSync(newPlacement.fullFn)
+    const resp = {
       v: 1,
       store: attribute.storeName,
       fName: newPlacement.fn,
@@ -239,27 +243,27 @@ class FileSystemBlobStore extends BlobStoreCustom {
   genNewPlacement (attribute, dirtyItem, ID) {
     // generate file name for storing file
     let fn = this.keepOriginalFileNames ? dirtyItem.origName : ''
-    let ext = path.extname(dirtyItem.origName)
+    const ext = path.extname(dirtyItem.origName)
     if (!fn) {
-      let entropy = (Date.now() & 0x0000FFFF).toString(16)
+      const entropy = (Date.now() & 0x0000FFFF).toString(16)
       fn = `${attribute.entity.sqlAlias || attribute.entity.code}-${attribute.code}${ID}${entropy}${ext}`
     }
     let l1subfolder = ''
     let l2subfolder = ''
     if (this.storeSize === this.SIZES.Medium) {
-      let c = this.safeIncFolderCounter()
+      const c = this.safeIncFolderCounter()
       l1subfolder = '' + (c % STORE_SUBFOLDER_COUNT + 100)
     } else if (this.storeSize === this.SIZES.Large) {
-      let c = this.safeIncFolderCounter()
+      const c = this.safeIncFolderCounter()
       l1subfolder = '' + (Math.floor(c / STORE_SUBFOLDER_COUNT) % STORE_SUBFOLDER_COUNT + 100)
       l2subfolder = '' + (c % STORE_SUBFOLDER_COUNT + 100)
     } else if (this.storeSize === this.SIZES.Monthly || this.storeSize === this.SIZES.Daily) {
-      let today = new Date()
-      let year = today.getFullYear().toString()
-      let month = today.getMonth().toString().padStart(2, '0')
+      const today = new Date()
+      const year = today.getFullYear().toString()
+      const month = (today.getMonth() + 1).toString().padStart(2, '0') // in JS month starts from 0
       l1subfolder = `${year}${month}`
       if (this.storeSize === this.SIZES.Daily) {
-        l2subfolder = today.getDay().toString().padStart(2, '0')
+        l2subfolder = today.getDate().toString().padStart(2, '0')
       }
     }
     // check target folder exists. Create if possible
@@ -269,7 +273,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     if (l1subfolder) {
       fullFn = path.join(this.fullStorePath, l1subfolder)
       let cacheKey = `BSFCACHE#${this.name}#${l1subfolder}`
-      let verified = this.App.globalCacheGet(cacheKey) === '1'
+      const verified = this.App.globalCacheGet(cacheKey) === '1'
       if (!verified) {
         if (!fs.existsSync(fullFn)) fs.mkdirSync(fullFn, '0777')
         this.App.globalCachePut(cacheKey, '1')
@@ -278,7 +282,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
       if (l2subfolder) {
         fullFn = path.join(fullFn, l2subfolder)
         cacheKey = `BSFCACHE#${this.name}#${l1subfolder}#${l2subfolder}`
-        let verified = this.App.globalCacheGet(cacheKey) === '1'
+        const verified = this.App.globalCacheGet(cacheKey) === '1'
         if (!verified) {
           if (!fs.existsSync(fullFn)) fs.mkdirSync(fullFn, '0777')
           this.App.globalCachePut(cacheKey, '1')
@@ -294,6 +298,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
       fullFn: fullFn
     }
   }
+
   /**
    * For file based store:
    *   - store.path + relativePath  + fileName
@@ -309,8 +314,8 @@ class FileSystemBlobStore extends BlobStoreCustom {
     // and place where file with name = revisionNumber+ext
     // sample: {"store":"documents","fName":"doc_outdoc document 3000019161319.pdf","origName":"3000019161319.pdf","relPath":"101\\","ct":"application/pdf","size":499546,"md5":"5224456db8d3c47f5681c5e970826211","revision":5}
     if (!blobItem.v) { // UB <5
-      let ext = path.extname(fn)
-      let fileFolder = path.basename(fn, ext) // file name without ext
+      const ext = path.extname(fn)
+      const fileFolder = path.basename(fn, ext) // file name without ext
       fn = `${blobItem.revision || 0}${ext}` // actual file name is `revision number + ext`
       relPath = path.join(relPath, fileFolder)
     }

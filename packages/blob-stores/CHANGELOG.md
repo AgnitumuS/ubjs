@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - FileSystem BLOB store - fix incorrect folder names for Monthly & Daily
+    - month numeration now starts from 01 (instead 00)
+    - day folder name generated as "day of month" (01, 02, .., 31) instead a "day of week" (01, 02, .., 07)
 
 ## [5.2.10] - 2020-06-14
 ## [5.2.9] - 2020-05-25
