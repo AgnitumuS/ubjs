@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-reg",
-  "version": "5.4.18",
+  "version": "5.4.19",
   "description": "UnityBase admin UI (server part)",
   "main": "index.html.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/adminui-reg",
@@ -20,9 +20,9 @@
     "registry": "https://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/adminui-pub": "^5.13.18",
+    "@unitybase/adminui-pub": "^5.13.19",
     "@unitybase/base": "^5.2.10",
-    "@unitybase/ub": "^5.5.1",
+    "@unitybase/ub": "^5.5.2",
     "mustache": "^3.0.1"
   },
   "devDependencies": {
