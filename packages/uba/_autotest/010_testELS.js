@@ -233,6 +233,15 @@ module.exports = function runELSTest (options) {
     domainInfo = conn.getDomainInfo()
     assert.deepStrictEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'insert', 'addnew', 'delete'].sort(), +TEST_ENTITY + ' permission do not have addnew for testelsuser')
 
+    console.debug('rls.func test without where')
+    conn.Repository('ubm_navshortcut').attrs('ID').select()
+    console.debug('rls.func test with where')
+    conn.Repository('ubm_navshortcut').attrs('ID')
+      .where('ID', '>', 0, 'A01')
+      .where('ID', '>', 1, 'A02')
+      .logic('([A01] OR [A02])')
+      .select()
+
     // cleanup
     relogon()
     addedArray.forEach(function (permissionID) {
