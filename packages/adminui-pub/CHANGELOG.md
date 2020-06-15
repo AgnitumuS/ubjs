@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.13.18] - 2020-06-15
 ## [5.13.17] - 2020-06-14
 ### Changed
  - if `uiSettings.adminUI.useVueTables` is empty or `false` in ubConfig then "Select from the dictionary" action

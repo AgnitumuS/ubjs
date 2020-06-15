@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.14] - 2020-06-15
 ## [5.3.13] - 2020-06-14
 ### Changed
  - ubm_desktop & ubm_navshortcut now use a "functional RLS" (require UB@5.18.4) 
