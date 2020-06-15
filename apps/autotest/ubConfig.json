@@ -203,7 +203,7 @@
 				"tempPath": "./documents/simple/_temp",
 				"isDefault": true,
 				"historyDepth": 2,
-				"storeSize": "Medium",
+				"storeSize": "Daily",
 				"keepOriginalFileNames": false
 			},
 			{
