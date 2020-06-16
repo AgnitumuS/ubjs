@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `CERT2` authentication: in case `uiSettings.adminUI.authenticationCert` block is missed in ubConfig login UI consider
+   authenticationCert.requireUserName is false and do not ask for user name/password, only for key and password for key
 
 ## [1.11.7] - 2020-06-14
 ### Changed
