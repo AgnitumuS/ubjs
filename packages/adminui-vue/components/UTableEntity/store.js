@@ -486,6 +486,7 @@ module.exports = (instance) => ({
     async updateData ({ state, getters, commit, dispatch }, responses) {
       if (responses === undefined || responses.length === 0) {
         await dispatch('refresh')
+        return
       }
 
       for (const response of responses) {
