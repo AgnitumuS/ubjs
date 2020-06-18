@@ -68,8 +68,8 @@ export default {
   methods: {
     ...mapActions(['applyFilter']),
 
-    throttledApplyFilter: throttle(50, function (args) {
-      this.applyFilter(args)
+    throttledApplyFilter: throttle(50, function (...args) {
+      this.applyFilter(...args)
     })
   }
 }
