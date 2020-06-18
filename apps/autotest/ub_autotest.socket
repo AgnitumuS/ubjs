@@ -1,0 +1,7 @@
+[Socket]
+ListenStream=127.0.0.1:8882
+NoDelay=true
+KeepAlive=true
+ 
+[Install]
+WantedBy=sockets.target

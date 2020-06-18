@@ -13,11 +13,12 @@
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
 		"inetPub": "./inetPub/",
-		"threadPoolSize": 4
+		"threadPoolSize": 4,
+		"autoShutdownTimeoutSec": 3000
 	},
 	"logging": {
 		//"path": "./logs/autotest.log",
-		"path": "./logs",
+		//"path": "./logs",
 		"levels": ["*"],
 		//"levels": [],
 		"stackTrackDepth": 20,

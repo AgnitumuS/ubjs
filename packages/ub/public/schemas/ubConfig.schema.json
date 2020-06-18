@@ -17,7 +17,8 @@
         "serverType",
         "protocol",
         "host",
-        "port"
+        "port",
+        "autoShutdownTimeoutSec"
       ],
       "properties": {
         "serverType": {
@@ -59,7 +60,7 @@
         },
         "additionalURLs": {
           "type": "array",
-          "description": "Additional URLs to listen on. Must be registered MANUALLY in the HTTP.SYS routing table",
+          "description": "Windows only. Additional URLs to listen on. Must be registered MANUALLY in the HTTP.SYS routing table",
           "items": {
             "type": "string",
             "description": "Full URL, for example `https://my.domain:443/` or `http://my.domain:80/path`"
@@ -151,6 +152,11 @@
               "description": "Set it to 0 to remove limit at all. The minimum send rate, in bytes-per-second, for the response. The default response send rate is 150 bytes-per-second"
             }
           }
+        },
+        "autoShutdownTimeoutSec": {
+          "type": "number",
+          "default": 0,
+          "description": "Linux only(UB>=18.4.5). In case no HTTP requests arrived during this timeout (in seconds) server will shutdown itself. Default is 0 - no auto shutdown"
         },
         "reverseProxy": {
           "type": "object",
