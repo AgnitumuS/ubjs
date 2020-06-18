@@ -583,8 +583,8 @@ export default {
     throttledUpdateSort: throttle(
       50,
       true,
-      function () {
-        this.updateSort()
+      function (...arg) {
+        this.updateSort(...arg)
       }
     )
   }
