@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.3] - 2020-06-21
 ## [5.5.2] - 2020-06-15
 ### Fixed
  - fix `getUniqKey is not a function` during login (ubm_navshortcut RLS)

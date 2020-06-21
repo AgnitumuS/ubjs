@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [1.11.8] - 2020-06-21
+### Fixed
  - `CERT2` authentication: in case `uiSettings.adminUI.authenticationCert` block is missed in ubConfig login UI consider
    authenticationCert.requireUserName is false and do not ask for user name/password, only for key and password for key
  - `UTableEntity`: error `r is not iterable`. In case form did not generate local changes - the grid has just been refreshed
