@@ -156,7 +156,7 @@
         "autoShutdownTimeoutSec": {
           "type": "number",
           "default": 0,
-          "description": "Linux only(UB>=18.4.5). In case no HTTP requests arrived during this timeout (in seconds) server will shutdown itself. Default is 0 - no auto shutdown"
+          "description": "Linux only(UB>=5.18.5). In case no HTTP requests arrived during this timeout (in seconds) server will shutdown itself. Default is 0 - no auto shutdown"
         },
         "reverseProxy": {
           "type": "object",
