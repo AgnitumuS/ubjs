@@ -14,7 +14,7 @@
 		"allowCORSFrom": "*",
 		"inetPub": "./inetPub/",
 		"threadPoolSize": 4,
-		"autoShutdownTimeoutSec": 3000
+		"autoShutdownTimeoutSec": 0
 	},
 	"logging": {
 		//"path": "./logs/autotest.log",

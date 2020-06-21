@@ -10,7 +10,7 @@ if (!App.globalCacheGet(GC_KEYS.UBQ_SCHEDULER_INITIALIZED)) {
     console.debug('SCHEDULER: disabled for command line startup')
   } else if (App.serverConfig.application.schedulers && (App.serverConfig.application.schedulers.enabled === false)) {
     App.globalCachePut(GC_KEYS.UBQ_SCHEDULER_INITIALIZED, 'yes')
-    console.warn('SCHEDULER: disabled in application config (application.schedulers.enabled === false)')
+    console.warn('SCHEDULER: disabled (application.schedulers.enabled === false)')
   } else {
     App.once('domainIsLoaded', startSchedulers)
   }
