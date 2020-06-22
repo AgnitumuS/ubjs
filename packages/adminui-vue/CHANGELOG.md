@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - auth view: UBAuthForgotPassword link removed (not implemented yet)
+ 
 ### Deprecated
 
 ### Removed
