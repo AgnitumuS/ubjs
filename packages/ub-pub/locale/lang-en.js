@@ -132,6 +132,7 @@ UB.i18nExtend({
         _: 'Organization',
         EDRPOU: 'EDRPOU',
         orgName: 'Name',
+        digitalStampName: 'Digital stamp',
         position: 'Position',
         orgUnit: 'Department'
       }

@@ -1854,6 +1854,7 @@ UBConnection.prototype.logout = function () {
  * @property {boolean} ocspVerified Is signer certificate status verified during signing
  * @property {boolean} hardwareKeyUsed Is hardware token used to made signature
  * @property {Date} signingTime Time of signing. In case tspValid this time is taken from authorised source using TSP protocol, in other case - this is **UNTRUSTED** time of local signer computer
+ * @property {Boolean} isDigitalStamp Is signature certificate is a digital time stamp (печать)
  *
  * @property {Object} certificate Signer certificate information. In case valid===false certificate may not exists (or broken) and this property is empty object
  * @property {String} certificate.keyUsage String with key usage information
@@ -1880,6 +1881,7 @@ UBConnection.prototype.logout = function () {
  * @property {Object} organization Organization where individual who owns a certificate works. In case of self-employed individual all fields are empty
  * @property {String} organization.EDRPOU Organization EDRPOU
  * @property {String} organization.orgName Organization EDRPOU
+ * @property {String} organization.digitalStampName In case certificate.isDigitalStamp===true contains stamp name
  * @property {String} organization.position Position of individual within the organization
  * @property {String} [organization.orgUnit] Department within the organization where individual works
  */
