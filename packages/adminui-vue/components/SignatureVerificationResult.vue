@@ -12,26 +12,26 @@
           :key="'c' + vIdx"
           @click="toggleRow(vIdx)"
         >
-          <td style="cursor: pointer">
+          <td style="cursor: pointer; width: 2em">
             <i :class="detailsOpened[vIdx] ? 'u-icon-arrow-up': 'u-icon-arrow-down'" />
           </td>
           <td
             v-if="sigCaptions.length"
             v-html="sigCaptions[vIdx]"
           />
-          <td>
+          <td style="width: 2em">
             <el-tooltip
               :content="statusTip(vIdx, false)"
               placement="right"
             >
               <i
-                class="u-icon-file-edit"
+                :class="vr.isDigitalStamp ? 'fas fa-2x fa-stamp' : 'fas fa-2x fa-signature'"
                 :style="statusStyle(vIdx)"
               />
             </el-tooltip>
           </td>
           <td> {{ $moment(vr.signingTime).format('L HH:mm') }} </td>
-          <td> {{ vr.subject.fullName }} </td>
+          <td> {{ vr.subject.fullName || vr.organization.digitalStampName || vr.organization.orgName }} </td>
         </tr>
         <template v-if="detailsOpened[vIdx] === true">
           <tr :key="'d' + vIdx">
@@ -47,6 +47,7 @@
                 <ul>
                   <li
                     v-for="(prop, idx) in Object.keys(vr.subject)"
+                    v-if="vr.subject[prop]"
                     :key="idx"
                   >
                     <span class="signature-verify-result_info">{{ VRi18n.certificate.subject[prop] }}:</span> {{ vr.subject[prop] }}
@@ -58,6 +59,7 @@
                 <ul>
                   <li
                     v-for="(prop, idx) in Object.keys(vr.organization)"
+                    v-if="vr.organization[prop]"
                     :key="idx"
                   >
                     <span class="signature-verify-result_info">{{ VRi18n.certificate.organization[prop] }}:</span> {{ vr.organization[prop] }}

@@ -9,7 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - auth view: UBAuthForgotPassword link removed (not implemented yet)
- 
+ - Signature Verification Result form improvements:
+   - different icons for digital stamp and digital signature
+   - emtpy fields are hidden
+   - 4th column contains either subject name or stamp name or organization name depending on certificate type
+   
 ### Deprecated
 
 ### Removed
@@ -279,7 +283,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  Add row to locale file according template: `{ 'ENTITY:deleteInquiry': 'Delete {1} from {0}' }`,
  where `ENTITY` is entity code, `{0}` - translated entity name and `{1}` is instance description attribute.
  - `UDialog` added `dialogDeleteRecord` - 'YesNo' dialog which compute delitation message.
- Also added to Vue.prototype.$dialogDeleteRecord
+ Also, added to Vue.prototype.$dialogDeleteRecord
  - `UForm/processing` added hooks `beforeCopy` and `copied` for action `Copy` in `UTableEntity`
  - `UForm` param `isCopy`. Creates copy of existing record
  
