@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - report template rendering: in case format function is called inside CONDITION block over primitive (number/string/Date)
+ value first argument is ignored. This allows rendering blocks like this (all 3 line below is the same
+ in case `dateObj.dInner` is of Date type:
+ ```
+ {{#dateObj.dInner}}Terms: {{#$f}}"dateObj.dInner","dateTime"{{/$f}}{{/dateObj.dInner}}
+ {{#dateObj.dInner}}Terms: {{#$f}}"IGNORED AND CAN BE EMPTY","dateTime"{{/$f}}{{/dateObj.dInner}}
+ {{#dateObj.dInner}}Terms: {{#$f}}"","dateTime"{{/$f}}{{/dateObj.dInner}}
+ ``` 
 
 ## [5.4.5] - 2020-06-21
 ## [5.4.4] - 2020-06-15

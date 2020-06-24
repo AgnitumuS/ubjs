@@ -28,13 +28,28 @@ function getDottedProperty (me, property) {
 function formatMustache (lang, format, fixFormat) {
   return function (val, render) {
     const me = this
-    let data = render(val)
+    const data = render(val)
+    // inside the loops or condition blocks function scope is a loop/condition variable
+    // in this case for template
+    // {{#dateObj.dInner}}Terms:{{#$f}}"dateObj.dInner","dateTime"{{/$f}}{{/dateObj.dInner}}
+    // scope is a value of dateObj.dInner - the Date object
+    const valueIsIterable = ((typeof me === 'object') && !(me instanceof Date))
     if (!data) return data
-    let dataArr = JSON.parse('[' + data + ']')
-    if (dataArr < 1) {
-      throw new Error('$format function require one or two parameter. {{#$f}}"amount"{{/f}} {{#$f}}"amount","sum"{{/f}} ')
+    let dataArr
+    if (data === '""') { // {{#dateObj.dInner}}{{#$fd}}""{{/$fd}}{{/dateObj.dInner}}
+      dataArr = []
+    } else {
+      dataArr = JSON.parse('[' + data + ']')
+      if (dataArr < 1) {
+        throw new Error('$format function require one or two parameter. {{#$f}}"amount"{{/f}} {{#$f}}"amount","sum"{{/f}} ')
+      }
     }
-    let value = getDottedProperty(me, dataArr[0])
+    let value
+    if (valueIsIterable) {
+      value = getDottedProperty(me, dataArr[0])
+    } else {
+      value = me
+    }
     if (fixFormat && (value !== undefined && value !== null)) {
       if (fixFormat === 'number') value = Number(value)
       else if (fixFormat === 'date' && !(value instanceof Date)) {

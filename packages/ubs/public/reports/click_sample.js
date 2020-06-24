@@ -14,15 +14,18 @@ exports.reportCode = {
   * Promise object must be resolved report code
   */
   buildReport: function (reportParams) {
-    let me = this
+    const me = this
     return UB.Repository('cdn_country').attrs(['ID', 'name', 'mi_owner', 'mi_owner.name', 'mi_modifyDate']).selectAsObject({'mi_owner.name': 'ownerName'})
       .then(function (countries) {
         let result
-        let data = {
+        const data = {
           countries: countries,
           date: new Date(),
           num: 1234567.89,
-          negNum: -1234567.89
+          negNum: -1234567.89,
+          dateObj: {
+            dInner: new Date()
+          }
         }
         switch (me.reportType) {
           case 'pdf':
