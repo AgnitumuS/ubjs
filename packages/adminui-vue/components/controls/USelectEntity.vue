@@ -342,6 +342,7 @@ export default {
         name: 'Add',
         caption: this.$ut('addNewItem'),
         icon: 'u-icon-add',
+        disabled: !this.entityName || !this.$UB.connection.domain.get(this.entityName).haveAccessToMethod('addnew'),
         handler: this.handleAddNewItem
       },
       {

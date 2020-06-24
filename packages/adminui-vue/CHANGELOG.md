@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `USelectEntity`: disable "Add new" in select popup in case user do not have rights for `addnew` methos (unity for example)  
  - command "et -c theme/ub-el.scss -o _el-theme" TEMPORARY removed from `build:el` package.json task. It can't be used
  with node12 because use gulp version (3.x). So temporary adminui-vue can be compiled only on node11 and command
  ```
