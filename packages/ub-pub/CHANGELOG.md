@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `SignatureValidationResult` class extended by `certificate.isDigitalStamp` and `organization.digitalStampName` attributes
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.5.13] - 2020-06-24
+### Added
+ - `SignatureValidationResult` class extended by `certificate.isDigitalStamp` and `organization.digitalStampName` attributes
 
 ## [5.5.12] - 2020-06-14
 ### Added

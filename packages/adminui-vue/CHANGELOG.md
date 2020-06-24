@@ -8,16 +8,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.11.9] - 2020-06-24
+### Changed
  - auth view: UBAuthForgotPassword link removed (not implemented yet)
  - Signature Verification Result form improvements:
    - different icons for digital stamp and digital signature
    - empty fields are hidden
    - 4-th column contains either subject name or stamp name or organization name depending on certificate type
    
-### Deprecated
-
-### Removed
-
 ### Fixed
  - `USelectEntity`: disable "Add new" in select popup in case user do not have rights for `addnew` method (unity for example)  
  - command "et -c theme/ub-el.scss -o _el-theme" TEMPORARY removed from `build:el` package.json task. It can't be used

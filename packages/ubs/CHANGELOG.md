@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.6] - 2020-06-24
+### Fixed
  - report template rendering: in case format function is called inside CONDITION block over primitive (number/string/Date)
  value first argument is ignored. This allows rendering blocks like this (all 3 line below is the same
  in case `dateObj.dInner` is of Date type:
