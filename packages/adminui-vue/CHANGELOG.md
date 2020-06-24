@@ -11,17 +11,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - auth view: UBAuthForgotPassword link removed (not implemented yet)
  - Signature Verification Result form improvements:
    - different icons for digital stamp and digital signature
-   - emtpy fields are hidden
-   - 4th column contains either subject name or stamp name or organization name depending on certificate type
+   - empty fields are hidden
+   - 4-th column contains either subject name or stamp name or organization name depending on certificate type
    
 ### Deprecated
 
 ### Removed
 
 ### Fixed
- - `USelectEntity`: disable "Add new" in select popup in case user do not have rights for `addnew` methos (unity for example)  
+ - `USelectEntity`: disable "Add new" in select popup in case user do not have rights for `addnew` method (unity for example)  
  - command "et -c theme/ub-el.scss -o _el-theme" TEMPORARY removed from `build:el` package.json task. It can't be used
- with node12 because use gulp version (3.x). So temporary adminui-vue can be compiled only on node11 and command
+ with node12 because use gulp version (3.x). So temporary adminui-vue can be compiled only on node11 and command:
  ```
  npr run  build:el-node11
 ```
