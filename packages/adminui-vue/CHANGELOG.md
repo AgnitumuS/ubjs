@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - command "et -c theme/ub-el.scss -o _el-theme" TEMPORARY removed from `build:el` package.json task. It can't be used
+ with node12 because use gulp version (3.x). So temporary adminui-vue can be compiled only on node11 and command
+ ```
+ npr run  build:el-node11
+```
+  MUST be executed once before `npm build`    
 
 ## [1.11.8] - 2020-06-21
 ### Fixed
