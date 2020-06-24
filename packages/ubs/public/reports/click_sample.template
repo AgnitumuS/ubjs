@@ -77,7 +77,8 @@
 </tr>
 </tbody>
 </table>
-<p>&nbsp;</p>
+<p><strong>{{#dateObj}} {{dInner}} {{num}} {{/dateObj}}<br /></strong></p>
+<p><strong>{{#dateObj}} {{dateObj.dInner}}&nbsp; {{/dateObj}}</strong></p>
 <h2>Using of format functions inside blocks</h2>
 <p>Inside "condition" block value passed to format function is the same as used in condition, so if condition checks for primitive value (string/number/date) first agrument of the format function simply ignored:</p>
 <ul>
