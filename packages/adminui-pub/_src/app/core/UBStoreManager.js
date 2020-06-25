@@ -43,6 +43,22 @@ Ext.define('UB.core.UBStoreManager', {
    */
   shortcutCommandCache: {},
   shortcutAttributes: ['ID', 'desktopID', 'parentID', 'code', 'isFolder', 'caption', 'inWindow', 'isCollapsed', 'displayOrder', 'iconCls'],
+
+  /**
+   * Update internal navshortcut cache for specified item
+   * @param {object} cmd ubm_navshortcut row
+   * @param {boolean} [force=true] Add command to cache if not exists
+   * @return {null|undefined}
+   */
+  updateNavshortcutCacheForItem: function (cmd, force = true) {
+    var parsedCmdCode = Ext.JSON.decode(cmd.cmdCode)
+    parsedCmdCode.title = cmd.caption
+    parsedCmdCode.shortcutCode = cmd.code
+    if (UB.core.UBStoreManager.shortcutCommandCache[cmd.ID] || force) {
+      UB.core.UBStoreManager.shortcutCommandCache[cmd.ID] = parsedCmdCode
+    }
+    return parsedCmdCode
+  },
   /**
    * Load a nav. shortcut command text from cache or from server
    * @param {number} shortcutID
@@ -54,13 +70,10 @@ Ext.define('UB.core.UBStoreManager', {
     if (cmdCode) {
       cmdCodePromise = Promise.resolve(cmdCode)
     } else {
+      const me = this
       cmdCodePromise = UB.Repository('ubm_navshortcut').attrs(['ID', 'cmdCode', 'caption', 'code']).where('ID', '=', shortcutID)
         .selectSingle().then(function (cmd) {
-          var parsedCmdCode = Ext.JSON.decode(cmd.cmdCode)
-          parsedCmdCode.title = cmd.caption
-          parsedCmdCode.shortcutCode = cmd.code
-          UB.core.UBStoreManager.shortcutCommandCache[shortcutID] = parsedCmdCode
-          return parsedCmdCode
+          return me.updateNavshortcutCacheForItem(cmd)
         })
     }
     return cmdCodePromise

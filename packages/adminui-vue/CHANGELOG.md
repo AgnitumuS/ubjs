@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - immediately apply a navigation shortcut command changes after edit. Now administrator do not need to reload full UI
+ after shortcut editing. 
 
 ### Changed
 
