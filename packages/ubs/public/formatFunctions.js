@@ -33,7 +33,7 @@ function formatMustache (lang, format, fixFormat) {
     // in this case for template
     // {{#dateObj.dInner}}Terms:{{#$f}}"dateObj.dInner","dateTime"{{/$f}}{{/dateObj.dInner}}
     // scope is a value of dateObj.dInner - the Date object
-    const valueIsIterable = ((typeof me === 'object') && !(me instanceof Date))
+    const valueIsIterable = ((me !== null) && (typeof me === 'object') && !(me instanceof Date))
     if (!data) return data
     let dataArr
     if (data === '""') { // {{#dateObj.dInner}}{{#$fd}}""{{/$fd}}{{/dateObj.dInner}}
