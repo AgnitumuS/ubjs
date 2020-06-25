@@ -9,6 +9,7 @@ const cmdLineOpt = require('@unitybase/base').options
 const base = require('@unitybase/base')
 const argv = base.argv
 const path = require('path')
+const csv = require('@unitybase/base').csv
 
 module.exports = function runMixinsTests (options) {
   if (!options) {
@@ -145,12 +146,18 @@ function testDateTime (conn) {
  * @param {SyncConnection} conn
  */
 function testFloatAndCurrency (conn) {
-  const firstDictRow = conn.Repository('tst_dictionary').attrs(['ID', 'code', 'caption', 'filterValue', 'booleanColumn', 'currencyValue', 'floatValue']).selectById(1)
-  assert.strictEqual(firstDictRow.currencyValue, 1.11, 'Expect currency value to be 1.11')
-  assert.strictEqual(firstDictRow.floatValue, 1.1111, 'Expect float value to be 1.1111')
-  const lastDictRow = conn.Repository('tst_dictionary').attrs(['ID', 'code', 'caption', 'filterValue', 'booleanColumn', 'currencyValue', 'floatValue']).selectById(8)
-  assert.strictEqual(lastDictRow.currencyValue, 0.01, 'Expect currency value to be 0.01')
-  assert.strictEqual(lastDictRow.floatValue, -0.0001, 'Expect float value to be -0.0001')
+  const fContent = fs.readFileSync(path.join(__dirname, '..', '_initialData', 'tst_dictionary-TST.csv'), 'utf8').trim()
+  const csvData = csv.parse(fContent, ';')
+  const dictRows = conn.Repository('tst_dictionary')
+    .attrs(['ID', 'code', 'caption', 'filterValue', 'booleanColumn', 'currencyValue', 'floatValue'])
+    .orderBy('ID')
+    .selectAsObject()
+  dictRows.forEach((r, idx) => {
+    // csv first row is ID;code;caption;filterValue;booleanColumn;currencyValue;floatValue
+    assert.strictEqual(csvData[idx + 1][0], r.ID, 'Expect ID equality for tst_dictionary')
+    assert.strictEqual(csvData[idx + 1][5], parseFloat(r.currencyValue), `Expect currencyValue equality for tst_dictionary. Got ${r.currencyValue} of type ${typeof r.currencyValue}, expect ${csvData[idx + 1][5]} of type ${typeof csvData[idx + 1][5]}`)
+    assert.strictEqual(csvData[idx + 1][6], parseFloat(r.floatValue), `Expect floatValue equality for tst_dictionary. Got ${r.floatValue} of type ${typeof r.floatValue}, expect ${csvData[idx + 1][6]} of type ${typeof csvData[idx + 1][6]}`)
+  })
 }
 
 /**

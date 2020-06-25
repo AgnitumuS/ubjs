@@ -227,7 +227,7 @@ CSV.record_end = function () {
 }
 
 CSV.resolve_type = function (token) {
-  if (token.match(/^\d+(\.\d+)?$/)) {
+  if (token.match(/^[+-]?\d+(\.\d+)?$/)) {
     token = parseFloat(token)
   } else if (token.match(/^true|false$/i)) {
     token = Boolean(token.match(/true/i))

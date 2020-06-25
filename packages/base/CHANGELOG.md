@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `csv` parser parse negative numbers to float (before this patch it returns negative numbers as strings)
 
 ## [5.2.10] - 2020-06-14
 ### Fixed
