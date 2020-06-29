@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - immediately apply a navigation shortcut command changes after edit. Now administrator do not need to reload full UI
  after shortcut editing. 
+ - `UGrid` provides `maxWidth`(in px) to child `UFormRow`'s
 
 ### Changed
  - `UButton`: font size is decreased for all button sizes. For example meddium (default) button font size now 14 (instead of 16)
@@ -17,6 +18,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UGrid` inherits `labelWidth`, `labelPosition` and `labelPosition` from parent:
+   ```vue
+    <u-form-container :label-width="200">
+     <u-grid> <!-- in previous version UGrid didn't inherits parent u-form-container label-width -->
+       ....
+     </u-grid> 
+    </u-form-container>
+   ```
+ - `UFormContainer` inherits parent `UFormContainer` props
+    ```vue
+     <u-form-container :label-width="200">
+      <u-form-container> <!-- in previous version UFormContainer don't inherits parent label-width -->
+        ...
+      </u-form-container> 
+     </u-form-container>
+    ```
 
 ## [1.11.9] - 2020-06-24
 ### Changed
