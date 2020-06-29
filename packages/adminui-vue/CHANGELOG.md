@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UDatePicker` of type `daterange` use date/datetime format for logged in user locale
 - `UGrid` inherits `labelWidth`, `labelPosition` and `labelPosition` from parent:
    ```vue
     <u-form-container :label-width="200">
