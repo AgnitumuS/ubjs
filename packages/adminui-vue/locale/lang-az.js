@@ -61,6 +61,7 @@ UB.i18nExtend({
       },
       format: {
         date: 'dd.MM.yyyy',
+        daterange: 'dd.MM.yyyy',
         datetime: 'dd.MM.yyyy HH:mm',
         firstDayOfWeek: 1
       }
