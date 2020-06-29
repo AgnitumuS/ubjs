@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  after shortcut editing. 
 
 ### Changed
+ - `UButton`: font size is decreased for all button sizes. For example meddium (default) button font size now 14 (instead of 16)
 
 ### Deprecated
 

@@ -78,8 +78,7 @@ export default {
     --hs: var(--hs-control);
     --l: var(--l-state-default);
     color: hsl(var(--hs-text), var(--l-text-inverse));
-    padding: 4px 8px;
-    font-size: 20px;
+    padding: 0.2em 0.6em;
     cursor: pointer;
     background: hsl(var(--hs), var(--l));
     border-radius: var(--border-radius);
@@ -87,6 +86,10 @@ export default {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .u-button span {
+    font-size: 0.9em;
   }
 
   .u-button__container {
