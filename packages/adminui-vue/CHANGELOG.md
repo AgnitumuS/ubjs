@@ -9,9 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - immediately apply a navigation shortcut command changes after edit. Now administrator do not need to reload full UI
  after shortcut editing. 
  - `UGrid` provides `maxWidth`(in px) to child `UFormRow`'s
+ - `UTable` prop `getCellClass` to get class name for each cell in table instead header cell's
 
 ### Changed
  - `UButton`: font size is decreased for all button sizes. For example meddium (default) button font size now 14 (instead of 16)
+ - `UTable` prop `getColumnClass` optimized. Calls just one time for each column
 
 ### Deprecated
 
