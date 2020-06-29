@@ -61,8 +61,7 @@ export default {
      * Will ignored with labelPosition === 'top'
      */
     labelWidth: {
-      type: Number,
-      default: 120
+      type: Number
     },
     /**
      * Set label position to child `<u-form-row>`'s
@@ -70,15 +69,27 @@ export default {
      */
     labelPosition: {
       type: String,
-      default: 'left',
       validator: (value) => ['left', 'right', 'top'].includes(value)
-    }
+    },
+
+    /**
+     * Just provides max width in px to child UFormRow's.
+     * Do not confuse with the maximum width of the form itself
+     */
+    maxWidth: Number
+  },
+
+  inject: {
+    parentLabelWidth: { from: 'labelWidth', default: null },
+    parentLabelPosition: { from: 'labelPosition', default: null },
+    parentMaxWidth: { from: 'labelPosition', default: null }
   },
 
   provide () {
     return {
-      labelWidth: this.labelWidth,
-      labelPosition: this.labelPosition
+      labelWidth: this.labelWidth || this.parentLabelWidth,
+      labelPosition: this.labelPosition || this.parentLabelPosition,
+      maxWidth: this.maxWidth || this.parentMaxWidth
     }
   },
 
