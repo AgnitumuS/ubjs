@@ -14,7 +14,7 @@
               sortable: col.sortable
             },
             getAlignClass(col.headerAlign),
-            getColumnClass(col)
+            columnsClasses[col.id]
           ]"
           :style="{
             maxWidth: col.maxWidth && col.maxWidth + 'px',
@@ -47,7 +47,8 @@
               'u-table__fixed-column': col.id === fixedColumnId,
             },
             getAlignClass(col.align),
-            getColumnClass(col)
+            columnsClasses[col.id],
+            getCellClass(row, col)
           ]"
           :style="{
             padding: col.padding && col.padding + 'px'
@@ -68,7 +69,7 @@
         </td>
       </tr>
       <!-- @slot Table footer (last row in table)-->
-      <slot name="lastTableRow"/>
+      <slot name="lastTableRow" />
     </table>
   </div>
 </template>
@@ -106,6 +107,8 @@ export default {
 
     /**
      * Function that returns custom class names for a column assigning class names for every cell in column
+     *
+     * @param {UTableColumn} column Current column
      */
     getColumnClass: {
       type: Function,
@@ -116,8 +119,24 @@ export default {
 
     /**
      * Function that returns custom class names for a row assigning class names for every row
+     *
+     * @param {object} row Current row
      */
     getRowClass: {
+      type: Function,
+      default () {
+        return ''
+      }
+    },
+
+    /**
+     * Function that returns custom class names for a cell
+     * !!WARNING!! Do not use complex calculations since the method is called for each cell separately
+     *
+     * @param {object} row Current row
+     * @param {UTableColumn} column Current column
+     */
+    getCellClass: {
       type: Function,
       default () {
         return ''
@@ -157,6 +176,13 @@ export default {
           }
         }
         return style
+      }, {})
+    },
+
+    columnsClasses () {
+      return this.columns.reduce((accum, column) => {
+        accum[column.id] = this.getColumnClass(column)
+        return accum
       }, {})
     }
   },
