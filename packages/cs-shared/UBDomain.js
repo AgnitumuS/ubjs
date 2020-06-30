@@ -545,7 +545,8 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
   if (entityInfo.cacheType) this.cacheType = entityInfo.cacheType
   if (entityInfo.dsType) this.dsType = entityInfo.dsType
   if (entityInfo.isUnity) this.isUnity = true
-
+  if (entityInfo.isManyManyRef) this.isManyManyRef = true
+  if (entityInfo.isFTSDataTable) this.isFTSDataTable = true
   /**
    * Internal short alias
    * @type {string}
@@ -558,11 +559,6 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
    * @readonly
    */
   this.connectionName = entityInfo.connectionName
-  /**
-   * This is a Full Text Search entity
-   * @type {boolean}
-   */
-  this.isFTSDataTable = entityInfo.isFTSDataTable === true
 
   /**
    * Reference to connection definition (for extended domain only)
@@ -675,6 +671,7 @@ UBEntity.prototype.forJSONReplacer = {
   modelName: null,
   cacheType: 'None',
   isFTSDataTable: null,
+  isManyManyRef: null,
   blobAttributes: null,
   entityMethods: null
 }
@@ -719,6 +716,16 @@ UBEntity.prototype.dsType = 'Normal'
  * @type {boolean}
  */
 UBEntity.prototype.isUnity = false
+/**
+ * Indicate this entity is a many-to-many storage for attributes of type "Many"
+ * @type {boolean}
+ */
+UBEntity.prototype.isManyManyRef = false
+/**
+ * This is a Full Text Search entity
+ * @type {boolean}
+ */
+UBEntity.prototype.isFTSDataTable = false
 /**
  * Return an entity caption to display on UI
  * @returns {string}

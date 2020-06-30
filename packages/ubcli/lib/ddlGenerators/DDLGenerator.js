@@ -146,7 +146,8 @@ class DDLGenerator {
     const forGeneration = _.filter(domain.entities, (entity) => {
       for (const re of namesRe) {
         // ignore DDL generation for External & Virtual entities
-        if (re.test(entity.name) && (entity.dsType === UBDomain.EntityDataSourceType.Normal)) {
+        if (re.test(entity.name) && (entity.dsType === UBDomain.EntityDataSourceType.Normal) && !entity.isManyManyRef) {
+          // many-to-many storage tables are added by addManyTable
           return true
         }
       }

@@ -116,7 +116,7 @@
 			"name": "manyValue",
             "dataType": "Many",
             "associatedEntity": "tst_dictionary",
-            "associationManyData": "tst_maind_dict",
+            "associationManyData": "tst_dictionary_dict",
             "caption": "test many data",
             "allowNull": true
 		},
