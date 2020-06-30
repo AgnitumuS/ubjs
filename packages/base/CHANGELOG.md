@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `-p` parameter for `argv.establishConnectionFromCmdLineAttributes` marked as non-required to allow
+ connecting under root without a password. For non-root users -p must be passed as before.  
 
 ### Deprecated
 

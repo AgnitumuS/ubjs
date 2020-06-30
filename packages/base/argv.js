@@ -135,7 +135,9 @@ function serverSessionFromCmdLineAttributes (config) {
   if (!config) {
     config = options.describe('', '').add(establishConnectionFromCmdLineAttributes._cmdLineParams).parse()
   }
-
+  if ((config.pwd === '-') && (config.user !== 'root')) {
+    throw new Error('Password (-p password) required for non-root user')
+  }
   return new ServerSession(config)
 }
 
@@ -217,7 +219,7 @@ function establishConnectionFromCmdLineAttributes (config) {
 establishConnectionFromCmdLineAttributes._cmdLineParams = [
   { short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:8881', searchInEnv: true, help: 'Full server URL' },
   { short: 'u', long: 'user', param: 'userName', searchInEnv: true, help: 'User name' },
-  { short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: 'User password' },
+  { short: 'p', long: 'pwd', param: 'password', defaultValue: '-', searchInEnv: true, help: 'User password. Required for non-root' },
   { short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config' },
   { short: 'timeout', long: 'timeout', param: 'timeout', defaultValue: 120000, searchInEnv: true, help: 'HTTP Receive timeout in ms' }
 ]
