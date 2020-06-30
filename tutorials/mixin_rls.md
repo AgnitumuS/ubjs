@@ -37,7 +37,7 @@ Let's create an RLS function inside RLS namespace (function already exist, here 
  */
 RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
   // skip RLS for admin and root and Admin group member
-  if (uba_common.isSuperUser() || Session.uData.roleIDs.includes(uba_common.ROLES.ADMIN)) return
+  if (uba_common.isSuperUser() || Session.uData.roleIDs.includes(uba_common.ROLES.ADMIN.ID)) return
 
   const mParams = ctxt.mParams
   let whereList = mParams.whereList
