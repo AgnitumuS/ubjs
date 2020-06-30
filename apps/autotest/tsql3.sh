@@ -51,7 +51,8 @@ TESTCASE=generateDDL
 npx ubcli generateDDL -cfg $UB_CFG -autorun || err
 
 TESTCASE=initialize
-npx ubcli initialize -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN || err
+#npx ubcli initialize -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN || err
+npx ubcli initialize -cfg $UB_CFG -u root -p root || err
 
 TESTCASE=autotest
 /usr/bin/time -v npx ubcli autotest -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -noLogo -skipModules

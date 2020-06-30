@@ -179,7 +179,7 @@ function testParamMacros (conn) {
       }
     }
   })
-  assert.strictEqual(selected.resultData.rowCount, 2, 'Must be 2 rew what start with #')
+  assert.strictEqual(selected.resultData.rowCount, 2, 'Must be 2 row with code start with "#Код"')
 
   console.debug('Check MAX date DDL macros "#maxdate" is valid')
   selected = conn.query({

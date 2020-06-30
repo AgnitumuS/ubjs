@@ -164,7 +164,7 @@
 		},
 		"rls": {
 			//"expression": "'([ID] > 100) AND ' + tst_maindata.maindataRLS() + ' AND ' + tst_service.serviceRLS()"
-			"expression": "'([mi_owner] = :(' + Session.userID + '):)'"
+			"expression": "'(([mi_owner] = :(' + Session.userID + '):) or ([mi_owner] =7))'"
 		}
 	},
 	"dbExtensions": {
