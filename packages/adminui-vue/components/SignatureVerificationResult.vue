@@ -139,7 +139,7 @@ export default {
     statusStyle (vIdx) {
       const r = this.verificationResults[vIdx]
       if (!r.valid) return 'color: hsl(var(--hs-danger), var(--l-state-default));'
-      if (r.valid && r.tspValid && r.ocspVerified && !r.warnings) return 'color: hsl(var(--hs-success), var(--l-state-default));'
+      if (r.valid && r.tspValid /* MPV - uncomment in 2021 && r.ocspVerified */ && !r.warnings) return 'color: hsl(var(--hs-success), var(--l-state-default));'
       return 'color:hsl(var(--hs-warning), var(--l-state-default);'
     },
     statusTip (vIdx, isHTML) {

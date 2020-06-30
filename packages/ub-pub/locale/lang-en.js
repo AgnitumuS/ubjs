@@ -93,12 +93,12 @@ UB.i18nExtend({
       }
     },
     tspValid: {
-      yes: 'Time stamp verification',
+      yes: 'Time stamp verified',
       no: 'Time stamp NOT verified'
     },
     ocspVerified: {
       yes: 'Certificate validated',
-      no: 'Certificate validation status is unknown'
+      no: 'Not for long-term validation (certificate validation result NOT included into signature)'
     },
     hardwareKeyUsed: 'hardwareKeyUsed',
     signingTime: 'Signing time',
