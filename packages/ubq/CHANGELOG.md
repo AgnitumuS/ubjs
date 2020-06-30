@@ -6,16 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `ub-migrate` command data. Execution of ub-migrate now apply a `ubq` model changes for project
 
 ### Changed
- - `UBQ` model initialization rewritten from scripts to `ub-migrate`
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.3.17] - 2020-06-30
+### Added
+ - `ub-migrate` command data. Execution of ub-migrate now apply a `ubq` model changes for project
+
+### Changed
+ - `UBQ` model initialization rewritten from scripts to `ub-migrate`
 
 ## [5.3.16] - 2020-06-21
 ## [5.3.15] - 2020-06-15

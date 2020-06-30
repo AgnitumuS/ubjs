@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - ub-migrate `_data` formats.js changed to use export function  
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.4.0] - 2020-06-30
+### Changed
+ - ub-migrate `_data` formats.js changed to use export function  
 
 ## [5.3.17] - 2020-06-24
 ## [5.3.16] - 2020-06-21

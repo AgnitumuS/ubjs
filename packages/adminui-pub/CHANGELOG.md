@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-  - `UB.core.UBStoreManager.updateNavshortcutCacheForItem` method to refresh a navshortcut command cache for specific item
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.13.22] - 2020-06-30
+### Added
+  - `UB.core.UBStoreManager.updateNavshortcutCacheForItem` method to refresh a navshortcut command cache for specific item
 
 ## [5.13.21] - 2020-06-24
 ## [5.13.20] - 2020-06-21

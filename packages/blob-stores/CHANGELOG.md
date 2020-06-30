@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.1] - 2020-06-30
 ## [5.3.0] - 2020-06-15
 ### Fixed
  - FileSystem BLOB store - fix incorrect folder names for Monthly & Daily

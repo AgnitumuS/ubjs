@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.7] - 2020-06-30
 ## [5.4.6] - 2020-06-24
 ### Fixed
  - report template rendering: in case format function is called inside CONDITION block over primitive (number/string/Date)

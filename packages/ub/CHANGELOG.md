@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.5.4] - 2020-06-30
+### Fixed
  - `RLS.allowForAdminOwnerAndAdmTable` fixed to allow for users with role `Admin` to see all folders
 
 ## [5.5.3] - 2020-06-21
