@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UBaseInput` in case type="number" prevent rounding before leave focus. This is 
+  a temporary solution to allow input of numbers with fraction starting with 0 (2.03)
 
 ## [1.11.10] - 2020-06-30
 ### Added

@@ -81,11 +81,7 @@ export default {
           return
         }
 
-        if (this.type === 'number') {
-          this.$emit('input', +value)
-        } else {
-          this.$emit('input', value)
-        }
+        this.$emit('input', value)
       }
     },
 
