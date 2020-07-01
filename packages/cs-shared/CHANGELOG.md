@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UBEntity.isManyManyRef` property added. `true` in case this is many-to-many relation table for storing values of attributes of "Many" type.
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.1] - 2020-07-01
+### Added
+ - `UBEntity.isManyManyRef` property added. `true` in case this is many-to-many relation table for storing values of attributes of "Many" type.
 
 ## [5.4.0] - 2020-06-14
 ### Added

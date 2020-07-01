@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.5.19] - 2020-07-01
+### Fixed
  - prevent generation of many-to-many table (storage for attributes of "Many" type) twice in case `associationManyData`
   property starts with entity name 
 

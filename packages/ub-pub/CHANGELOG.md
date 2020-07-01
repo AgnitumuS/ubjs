@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - translation for ocspVerified.no changed to "Not for long-term validation (certificate validation result NOT included into signature)"
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.5.14] - 2020-07-01
+### Changed
+ - translation for ocspVerified.no changed to "Not for long-term validation (certificate validation result NOT included into signature)"
 
 ## [5.5.13] - 2020-06-24
 ### Added

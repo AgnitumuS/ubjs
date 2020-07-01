@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.12] - 2020-07-01
 ## [5.2.11] - 2020-06-30
 ### Changed
  - `-p` parameter for `argv.establishConnectionFromCmdLineAttributes` marked as non-required to allow

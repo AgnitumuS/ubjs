@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - SignatureVerificationResult UI consider signature is **valid** even in case it is of type EU_SIGN_TYPE_CADES_C (ocspVerified===false)
- - `--hs-warning` color changed to me more close to yellow
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.11.11] - 2020-07-01
+### Changed
+ - SignatureVerificationResult UI consider signature is **valid** even in case it is of type EU_SIGN_TYPE_CADES_C (ocspVerified===false)
+ - `--hs-warning` color changed to me more close to yellow
 
 ### Fixed
  - `UBaseInput` in case type="number" prevent rounding before leave focus. This is 
