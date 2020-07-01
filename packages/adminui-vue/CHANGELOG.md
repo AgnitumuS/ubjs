@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - SignatureVerificationResult UI consider signature is **valid** even in case it is of type EU_SIGN_TYPE_CADES_C (ocspVerified===false)
+ - `--hs-warning` color changed to me more close to yellow
 
 ### Deprecated
 
