@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+  - optimization: removed global `selectstart` listener (ExtJS legacy for IE)
+  
 ### Deprecated
 
 ### Removed
