@@ -21,11 +21,11 @@ class FileSystemPDFBlobStore extends FileSystemBlobStore {
    * @returns {BlobStoreItem}
    */
   saveContentToTempStore (request, attribute, content) {
-    let fn = this.getTempFileName(request)
+    const fn = this.getTempFileName(request)
     // TODO - call convertion service here and store PDF to temp instead of doc/docx
     fs.writeFileSync(fn, content)
-    let origFn = request.fileName
-    let ct = mime.contentType(path.extname(origFn))
+    const origFn = request.fileName
+    const ct = mime.contentType(path.extname(origFn))
     return {
       store: attribute.storeName,
       fName: origFn,

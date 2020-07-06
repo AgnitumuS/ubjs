@@ -86,11 +86,11 @@ function initBLOBStores (appInstance, sessionInstance) {
   App = appInstance
   Session = sessionInstance
   Session = sessionInstance
-  let blobStores = App.serverConfig.application.blobStores
-  let res = blobStoresMap
+  const blobStores = App.serverConfig.application.blobStores
+  const res = blobStoresMap
   if (!blobStores) return res
   blobStores.forEach((storeConfig) => {
-    let storeImplementationModule = storeConfig['implementedBy']
+    const storeImplementationModule = storeConfig.implementedBy
     let StoreClass
     if (storeImplementationModule) {
       StoreClass = require(storeImplementationModule)
@@ -158,23 +158,23 @@ function initBLOBStores (appInstance, sessionInstance) {
  * @private
  */
 function parseBlobRequestParams (params) {
-  let ID = parseInt(params.ID || params.id)
+  const ID = parseInt(params.ID || params.id)
   if (ID <= 0) return { success: false, reason: 'incorrect ID value' }
   if (!params.entity || !params.attribute) {
     return { success: false, reason: 'One of required parameters (entity,attribute) not found' }
   }
-  let entity = App.domainInfo.get(params.entity)
-  let attribute = entity.getAttribute(params.attribute)
+  const entity = App.domainInfo.get(params.entity)
+  const attribute = entity.getAttribute(params.attribute)
   if (attribute.dataType !== UBDomain.ubDataTypes.Document) {
     return { success: false, reason: `Invalid getDocument Request to non-document attribute ${params.entity}.${params.attribute}` }
   }
-  let bsReq = {
+  const bsReq = {
     ID: ID,
     entity: params.entity,
     attribute: params.attribute,
     isDirty: (params.isDirty === true || params.isDirty === 'true' || params.isDirty === '1'),
     // UB <5 compatibility
-    fileName: (params.origName || params['origname'] || params.fileName || params.filename || params.fName),
+    fileName: (params.origName || params.origname || params.fileName || params.filename || params.fName),
     revision: params.revision ? parseInt(params.revision, 10) : undefined,
     extra: params.extra
   }
@@ -190,9 +190,9 @@ function parseBlobRequestParams (params) {
  * @private
  */
 function getRequestedBLOBInfo (parsedRequest) {
-  let attribute = parsedRequest.attribute
-  let entity = attribute.entity
-  let ID = parsedRequest.bsReq.ID
+  const attribute = parsedRequest.attribute
+  const entity = attribute.entity
+  const ID = parsedRequest.bsReq.ID
 
   let storeCode, blobInfo
   // dirty request always come to blob store defined in attribute
@@ -200,14 +200,14 @@ function getRequestedBLOBInfo (parsedRequest) {
     storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   } else {
     // check user have access to row and retrieve current blobInfo
-    let blobInfoDS = Repository(entity.code).attrs(attribute.code).where('ID', '=', ID).selectAsObject()
+    const blobInfoDS = Repository(entity.code).attrs(attribute.code).where('ID', '=', ID).selectAsObject()
     if (!blobInfoDS.length) {
       return {
         success: false,
         reason: `${entity.code} with ID=${ID} not accessible`
       }
     }
-    let blobInfoTxt = blobInfoDS[0][attribute.code]
+    const blobInfoTxt = blobInfoDS[0][attribute.code]
     if (!blobInfoTxt) {
       return {
         success: false,
@@ -217,9 +217,9 @@ function getRequestedBLOBInfo (parsedRequest) {
     }
     blobInfo = JSON.parse(blobInfoTxt)
     // check revision. If not current - get a blobInfo from history
-    let rev = parsedRequest.bsReq.revision
-    if (rev && (rev !== blobInfo['revision'])) {
-      let historicalBlobItem = Repository(BLOB_HISTORY_STORE_NAME)
+    const rev = parsedRequest.bsReq.revision
+    if (rev && (rev !== blobInfo.revision)) {
+      const historicalBlobItem = Repository(BLOB_HISTORY_STORE_NAME)
         .attrs('blobInfo')
         .where('instance', '=', ID)
         .where('attribute', '=', attribute.name)
@@ -236,7 +236,7 @@ function getRequestedBLOBInfo (parsedRequest) {
     }
     storeCode = (blobInfo && blobInfo.store) ? blobInfo.store : (attribute.storeName || blobStoresMap.defaultStoreName)
   }
-  let store = blobStoresMap[storeCode]
+  const store = blobStoresMap[storeCode]
   if (!store) {
     return {
       success: false,
@@ -259,7 +259,7 @@ function getRequestedBLOBInfo (parsedRequest) {
  * @param {boolean} withBody Set to false to check whether the document is available without sending it's body.
  */
 function writeDocumentToResp (requestParams, req, resp, withBody = true) {
-  let parsed = parseBlobRequestParams(requestParams)
+  const parsed = parseBlobRequestParams(requestParams)
   if (!parsed.success) return resp.badRequest(parsed.reason)
   // check user have access to entity select method
   if (!App.els(parsed.attribute.entity.code, 'select')) {
@@ -269,7 +269,7 @@ function writeDocumentToResp (requestParams, req, resp, withBody = true) {
       reason: `Access deny to ${parsed.attribute.entity.code}.select method`
     }
   }
-  let requested = getRequestedBLOBInfo(parsed)
+  const requested = getRequestedBLOBInfo(parsed)
   if (!requested.success) {
     return resp.badRequest(requested.reason)
   }
@@ -322,7 +322,7 @@ function getDocumentEndpointInternal (req, resp, withBody = true) {
   if (req.method === 'GET') { // TODO - should we handle 'HEAD' here?
     params = queryString.parse(req.parameters)
   } else if (req.method === 'POST') {
-    let paramStr = req.read()
+    const paramStr = req.read()
     try {
       params = JSON.parse(paramStr)
     } catch (e) {
@@ -347,9 +347,9 @@ function getDocumentEndpointInternal (req, resp, withBody = true) {
  * @returns {String|Buffer|ArrayBuffer|null}
  */
 function getContent (request, options) {
-  let parsed = parseBlobRequestParams(request)
+  const parsed = parseBlobRequestParams(request)
   if (!parsed.success) throw new Error(parsed.reason)
-  let requested = getRequestedBLOBInfo(parsed)
+  const requested = getRequestedBLOBInfo(parsed)
   if (!requested.success) {
     if (requested.isEmpty) {
       return null
@@ -383,14 +383,14 @@ function setDocumentEndpoint (req, resp) {
     return resp.badRequest('invalid HTTP verb' + req.method)
   }
 
-  let parsed = parseBlobRequestParams(request)
+  const parsed = parseBlobRequestParams(request)
   if (!parsed.success) return resp.badRequest(parsed.reason)
-  let attribute = parsed.attribute
+  const attribute = parsed.attribute
   if (attribute.entity.isUnity) {
     return resp.badRequest(`Direct modification of then UNITY entity ${attribute.entity.code} is not allowed`)
   }
-  let storeCode = attribute.storeName || blobStoresMap.defaultStoreName
-  let store = blobStoresMap[storeCode]
+  const storeCode = attribute.storeName || blobStoresMap.defaultStoreName
+  const store = blobStoresMap[storeCode]
   if (!store) return resp.badRequest(`Blob store ${storeCode} not found in application config`)
   let content
   if (request.encoding === 'base64') {
@@ -398,7 +398,7 @@ function setDocumentEndpoint (req, resp) {
   } else {
     content = req.read('bin')
   }
-  let blobStoreItem = store.saveContentToTempStore(parsed.bsReq, attribute, content)
+  const blobStoreItem = store.saveContentToTempStore(parsed.bsReq, attribute, content)
   resp.statusCode = 200
   resp.writeEnd({ success: true, errMsg: '', result: blobStoreItem })
 }
@@ -420,14 +420,14 @@ function setDocumentEndpoint (req, resp) {
  * @return {BlobStoreItem}
  */
 function putContent (request, content) {
-  let parsed = parseBlobRequestParams(request)
+  const parsed = parseBlobRequestParams(request)
   if (!parsed.success) throw new Error(parsed.reason)
-  let attribute = parsed.attribute
+  const attribute = parsed.attribute
   if (attribute.entity.isUnity) {
     throw new Error(`Direct modification of the UNITY entity ${attribute.entity.code} is not allowed`)
   }
-  let storeCode = attribute.storeName || blobStoresMap.defaultStoreName
-  let store = blobStoresMap[storeCode]
+  const storeCode = attribute.storeName || blobStoresMap.defaultStoreName
+  const store = blobStoresMap[storeCode]
   if (!store) throw new Error(`Blob store ${storeCode} not found in application config`)
   return store.saveContentToTempStore(parsed.bsReq, attribute, content)
 }
@@ -439,8 +439,8 @@ function putContent (request, content) {
  * @return {BlobStoreCustom}
  */
 function getStore (attribute, blobItem) {
-  let storeName = blobItem.store || attribute.storeName || blobStoresMap.defaultStoreName
-  let store = blobStoresMap[storeName]
+  const storeName = blobItem.store || attribute.storeName || blobStoresMap.defaultStoreName
+  const store = blobStoresMap[storeName]
   if (!store) throw new Error(`Blob store ${storeName} not found in application config`)
   return store
 }
@@ -457,7 +457,7 @@ function getStore (attribute, blobItem) {
 function rotateHistory (store, attribute, ID, blobInfo) {
   if (!blobInfo) return // deletion
   // clear expired historical items (excluding isPermanent)
-  let histData = Repository(BLOB_HISTORY_STORE_NAME)
+  const histData = Repository(BLOB_HISTORY_STORE_NAME)
     .attrs(['ID', 'blobInfo'])
     .where('instance', '=', ID)
     .where('attribute', '=', attribute.name)
@@ -465,17 +465,17 @@ function rotateHistory (store, attribute, ID, blobInfo) {
     .orderBy('revision')
     .limit(store.historyDepth)
     .selectAsObject()
-  let dataStore = getBlobHistoryDataStore()
+  const dataStore = getBlobHistoryDataStore()
   for (let i = 0, L = histData.length - store.historyDepth; i < L; i++) {
-    let item = histData[i]
-    let historicalBlobInfo = JSON.parse(item['blobInfo'])
-    let store = getStore(attribute, historicalBlobInfo)
+    const item = histData[i]
+    const historicalBlobInfo = JSON.parse(item.blobInfo)
+    const store = getStore(attribute, historicalBlobInfo)
     // delete persisted item
     store.doDeletion(attribute, ID, historicalBlobInfo)
     // and information about history from ub_blobHistory
-    dataStore.run('delete', { execParams: { ID: item['ID'] } })
+    dataStore.run('delete', { execParams: { ID: item.ID } })
   }
-  let archivedBlobInfo = store.doArchive(attribute, ID, blobInfo)
+  const archivedBlobInfo = store.doArchive(attribute, ID, blobInfo)
   // insert new historical item
   dataStore.run('insert', {
     execParams: {
@@ -496,7 +496,7 @@ function rotateHistory (store, attribute, ID, blobInfo) {
  * @private
  */
 function estimateNewRevisionNumber (attribute, ID) {
-  let maxNum = Repository(BLOB_HISTORY_STORE_NAME)
+  const maxNum = Repository(BLOB_HISTORY_STORE_NAME)
     .attrs(['MAX([revision])'])
     .where('instance', '=', ID)
     .where('attribute', '=', attribute.name)
@@ -522,14 +522,14 @@ function doCommit (attribute, ID, dirtyItem, oldItem) {
   }
   let newRevision = 1
   let oldItemStore
-  let store = getStore(attribute, dirtyItem)
+  const store = getStore(attribute, dirtyItem)
   if (oldItem) {
     oldItemStore = getStore(attribute, oldItem)
     if (oldItem.revision) newRevision = oldItem.revision + 1
   } else if (store.historyDepth) {
     newRevision = estimateNewRevisionNumber(attribute, ID)
   }
-  let persistedItem = store.persist(attribute, ID, dirtyItem, newRevision)
+  const persistedItem = store.persist(attribute, ID, dirtyItem, newRevision)
   if (store.historyDepth) { // for historical stores add item to history
     rotateHistory(store, attribute, ID, persistedItem)
   } else if (oldItem) { // delete / archive old item
@@ -556,13 +556,13 @@ App.blobStores.markRevisionAsPermanent({
  * @param  {Number} request.revision revision to be marked as permanent
  */
 function markRevisionAsPermanent (request) {
-  let r = parseBlobRequestParams(request)
+  const r = parseBlobRequestParams(request)
   if (!r.success) throw new Error(r.reason)
-  let revisionFor = r.bsReq.revision
-  if (!revisionFor) throw new Error(`Missing revision parameter`)
-  let store = getStore(r.attribute, {})
+  const revisionFor = r.bsReq.revision
+  if (!revisionFor) throw new Error('Missing revision parameter')
+  const store = getStore(r.attribute, {})
   if (!store.historyDepth) throw new Error(`Store ${store.name} is not a historical store`)
-  let histID = Repository(BLOB_HISTORY_STORE_NAME)
+  const histID = Repository(BLOB_HISTORY_STORE_NAME)
     .attrs(['ID'])
     .where('instance', '=', r.bsReq.ID)
     .where('attribute', '=', r.attribute.name)
@@ -571,11 +571,13 @@ function markRevisionAsPermanent (request) {
     .limit(1)
     .selectScalar()
   if (histID) {
-    let dataStore = getBlobHistoryDataStore()
-    dataStore.run('update', { execParams: {
-      ID: histID,
-      permanent: 1
-    } })
+    const dataStore = getBlobHistoryDataStore()
+    dataStore.run('update', {
+      execParams: {
+        ID: histID,
+        permanent: 1
+      }
+    })
   } else {
     console.error(`Revision ${r.bsReq.revision} not exists for ${r.attribute.entity.name}.${r.attribute.name} with ID ${r.bsReq.ID}`)
   }

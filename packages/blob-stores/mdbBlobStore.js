@@ -31,13 +31,14 @@ class MdbBlobStore extends BlobStoreCustom {
    */
   constructor (storeConfig, appInstance, sessionInstance) {
     super(storeConfig, appInstance, sessionInstance)
-    let tmpFolder = this.tempFolder // already normalized inside argv
+    const tmpFolder = this.tempFolder // already normalized inside argv
     if (!tmpFolder || !fs.existsSync(tmpFolder)) {
       throw new Error(`Temp folder '${tmpFolder}' for BLOB store '${this.name}' doesn't exist.
       Please, set a 'tempPath' store config parameter to existing folder,
       for example 'tempPath': './_temp'`)
     }
   }
+
   /**
    * @inheritDoc
    * @param {BlobStoreRequest} request Request params
@@ -46,7 +47,7 @@ class MdbBlobStore extends BlobStoreCustom {
    * @returns {BlobStoreItem}
    */
   saveContentToTempStore (request, attribute, content) {
-    let fn = this.getTempFileName(request)
+    const fn = this.getTempFileName(request)
     console.debug('temp file is written to', fn)
     fs.writeFileSync(fn, content)
     // TODO md5val = CryptoJS.MD5(content)
@@ -60,6 +61,7 @@ class MdbBlobStore extends BlobStoreCustom {
       isDirty: true
     }
   }
+
   /**
    * Retrieve BLOB content from blob store.
    * @abstract
@@ -72,9 +74,10 @@ class MdbBlobStore extends BlobStoreCustom {
    * @returns {String|ArrayBuffer}
    */
   getContent (request, blobInfo, options) {
-    let filePath = request.isDirty ? this.getTempFileName(request) : this.getPermanentFileName(blobInfo)
+    const filePath = request.isDirty ? this.getTempFileName(request) : this.getPermanentFileName(blobInfo)
     return fs.readFileSync(filePath, options)
   }
+
   /**
    * Fill HTTP response for getDocument request
    * @param {BlobStoreRequest} requestParams
@@ -84,13 +87,13 @@ class MdbBlobStore extends BlobStoreCustom {
    * @return {Boolean}
    */
   fillResponse (requestParams, blobItem, req, resp) {
-    let filePath = requestParams.isDirty ? this.getTempFileName(requestParams) : this.getPermanentFileName(blobItem)
+    const filePath = requestParams.isDirty ? this.getTempFileName(requestParams) : this.getPermanentFileName(blobItem)
     if (filePath) {
       resp.statusCode = 200
       if (this.PROXY_SEND_FILE_HEADER) {
-        let storeRelPath = path.relative(process.configPath, filePath)
+        const storeRelPath = path.relative(process.configPath, filePath)
         let head = `${this.PROXY_SEND_FILE_HEADER}: /${this.PROXY_SEND_FILE_LOCATION_ROOT}/app/${storeRelPath}`
-        console.debug(`<- `, head)
+        console.debug('<- ', head)
         head += `\r\nContent-Type: ${blobItem.ct}`
         resp.writeHead(head)
         resp.writeEnd('')
@@ -102,6 +105,7 @@ class MdbBlobStore extends BlobStoreCustom {
       return resp.notFound('mdb store item ' + filePath)
     }
   }
+
   /**
    * Move content defined by `dirtyItem` from temporary to permanent store.
    * In case `oldItem` is present store implementation & parameters should be taken from oldItem.store.
@@ -114,14 +118,14 @@ class MdbBlobStore extends BlobStoreCustom {
    * @return {BlobStoreItem}
    */
   persist (attribute, ID, dirtyItem, newRevision) {
-    let tempPath = this.getTempFileName({
+    const tempPath = this.getTempFileName({
       entity: attribute.entity.name,
       attribute: attribute.name,
       ID: ID
     })
-    let permanentPath = this.getPermanentFileName(dirtyItem)
+    const permanentPath = this.getPermanentFileName(dirtyItem)
     fs.renameSync(tempPath, permanentPath)
-    let nameWoPath = path.basename(permanentPath)
+    const nameWoPath = path.basename(permanentPath)
     return {
       store: attribute.storeName,
       fName: nameWoPath,
@@ -132,23 +136,25 @@ class MdbBlobStore extends BlobStoreCustom {
       md5: dirtyItem.md5
     }
   }
+
   /**
    * @override
    */
   doDeletion (attribute, ID, blobInfo) {
     throw new Error(`${this.name} store not support deletion. Developer must delete file manually`)
   }
+
   /**
    * For MDB blob store relPath === '[modelCode]|folderPath'
    * @private
    * @param {BlobStoreItem} bsItem
    */
   getPermanentFileName (bsItem) {
-    let pathPart = bsItem.relPath.split('|')
+    const pathPart = bsItem.relPath.split('|')
     if (pathPart.length !== 2) return '' // this is error
-    let model = this.App.domainInfo.models[pathPart[0]]
+    const model = this.App.domainInfo.models[pathPart[0]]
     if (!model) throw new Error('MDB blob store - not existed model' + pathPart[0])
-    let folder = path.join(model.realPublicPath, pathPart[1])
+    const folder = path.join(model.realPublicPath, pathPart[1])
     if (!VERIFIED_PATH[folder]) {
       // verify public path exists
       if (!fs.existsSync(model.realPublicPath)) {

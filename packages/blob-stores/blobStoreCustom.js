@@ -26,8 +26,8 @@ class BlobStoreCustom {
     this.App = appInstance
     /** @type {UBSession} */
     this.Session = sessionInstance
-    this.PROXY_SEND_FILE_HEADER = this.App.serverConfig.httpServer['reverseProxy']['sendFileHeader']
-    this.PROXY_SEND_FILE_LOCATION_ROOT = this.App.serverConfig.httpServer['reverseProxy']['sendFileLocationRoot']
+    this.PROXY_SEND_FILE_HEADER = this.App.serverConfig.httpServer.reverseProxy.sendFileHeader
+    this.PROXY_SEND_FILE_LOCATION_ROOT = this.App.serverConfig.httpServer.reverseProxy.sendFileLocationRoot
     /**
      * Store parameters as defined in ubConfig
      */
@@ -41,13 +41,14 @@ class BlobStoreCustom {
      * @type {String}
      * @protected
      */
-    this.tempFolder = this.config['tempPath']
+    this.tempFolder = this.config.tempPath
     /**
      * How many previous revision is stored
      * @type {number}
      */
     this.historyDepth = this.config.historyDepth || 0
   }
+
   /**
    * Implementation must save file content to temporary store
    * @abstract
@@ -102,6 +103,7 @@ class BlobStoreCustom {
   doArchive (attribute, ID, blobInfo) {
     return blobInfo
   }
+
   /**
    * Delete persisted BLOB content
    * @abstract
