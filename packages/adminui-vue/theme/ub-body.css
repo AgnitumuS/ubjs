@@ -218,6 +218,13 @@ html, body {
     vertical-align: baseline;
 }
 
-.el-input__inner{
+.el-input__inner {
     color: hsl(var(--hs-text), var(--l-text-default))
+}
+
+.u-divider {
+    height: 20px;
+    width: 1px;
+    background: hsl(var(--hs-border), var(--l-layout-border-default));
+    margin: 0 8px;
 }

@@ -1,102 +1,60 @@
 <template>
-  <div :style="previewMode && previewSizeCss">
-    <u-file-input
-      v-if="!value"
-      :disabled="disabled"
-      :accept="accept"
-      :layout="previewMode ? 'horizontal' : 'vertical'"
-      @upload="upload"
-    />
-    <template v-else>
+  <u-file-container :style="previewSizeCss">
+    <template #toolbar>
+      <u-file-add-button v-if="hasButton('add')" />
+      <u-file-webcam-button v-if="hasButton('webcam')" />
       <div
-        v-if="previewMode"
-        class="u-file-preview__frame"
-        @click.prevent
-      >
-        <div
-          v-show="!disabled"
-          class="u-file-preview__frame-close u-icon-close"
-          @click="$emit('input', '')"
-        />
-        <iframe
-          v-if="file.ct === 'application/pdf'"
-          frameborder="0"
-          :width="previewSizeCss.width"
-          :height="previewSizeCss.height"
-          :src="previewUrl"
-        />
-        <img
-          v-else-if="file.ct === 'image/png' || file.ct === 'image/jpeg'"
-          :src="previewUrl"
-          :alt="file.name"
-        >
-        <u-button
-          v-else
-          icon="u-icon-download"
-          @click="saveAs"
-        >
-          {{ fileName | cropFileName }} ({{ file.size | formatBytes }})
-        </u-button>
-      </div>
+        v-if="hasButton('add') || hasButton('webcam')"
+        class="u-divider"
+      />
+      <u-file-scan-button v-if="hasButton('scan')" />
+      <u-file-scan-settings-button v-if="hasButton('scanSettings')" />
       <div
-        v-else
-        class="u-file"
-        @click.prevent
-      >
-        <button
-          type="button"
-          class="u-file__button u-icon-eye"
-          :disabled="!previewFormats.includes(file.ct)"
-          @click="previewDialog"
-        />
-        <button
-          type="button"
-          class="u-file__button u-icon-download"
-          @click="saveAs"
-        />
-        <button
-          type="button"
-          class="u-file__button u-icon-delete"
-          :disabled="disabled"
-          @click="remove"
-        />
+        v-if="hasButton('scan') || hasButton('scanSettings')"
+        class="u-divider"
+      />
+      <u-file-download-button v-if="hasButton('download')" />
+      <u-file-preview-button v-if="hasButton('preview')" />
+      <u-file-fullscreen-button v-if="hasButton('fullscreen')" />
+      <div
+        v-if="hasButton('download') || hasButton('preview') || hasButton('fullscreen')"
+        class="u-divider"
+      />
+      <u-file-remove-button v-if="hasButton('remove')" />
 
-        <div class="u-file__label">
-          {{ fileName }}
-        </div>
-        <div class="u-file__size">
-          ({{ file.size | formatBytes }})
-        </div>
-      </div>
+      <slot />
     </template>
-  </div>
+
+    <template #view>
+      <file-renderer
+        v-if="value"
+        ref="renderer"
+        :attribute-name="attributeName"
+        :entity-name="entityName"
+        :file="file"
+        :file-id="recordId"
+        :with-preview="!!previewMode"
+      />
+      <u-file-input
+        v-else
+        ref="input"
+        :accept="accept"
+        :disabled="disabled"
+        @upload="upload"
+      />
+    </template>
+  </u-file-container>
 </template>
 
 <script>
-const formatterMixin = require('./formatterMixin.js')
-const previewDialog = require('./previewDialog')
+const FileLoader = require('./helpers/FileLoader')
 
-/**
- * Component for fields with type Document.
- * Can download file or if extension is pdf or image - can show content in dialog.
- * In preview mode will be shows preview immediately.
- */
 export default {
   name: 'UFile',
-  filters: {
-    cropFileName (fileName) {
-      if (fileName.length > 20) {
-        return fileName.substr(0, 9) + '...' + fileName.substr(-8)
-      } else {
-        return fileName
-      }
-    }
-  },
 
-  mixins: [formatterMixin],
-
-  inject: {
-    providedEntity: 'entity'
+  components: {
+    UFileContainer: require('./UFileContainer.vue').default,
+    FileRenderer: require('./views/FileRenderer.vue').default
   },
 
   props: {
@@ -155,21 +113,53 @@ export default {
      * Disable to remove or upload file
      */
     disabled: Boolean,
+
     /**
      * File extensions to bind into `accept` input property
      */
-    accept: String
+    accept: String,
+
+    /**
+     * In case pass true will remove all default buttons.
+     * To Exclude just few use value as array
+     *
+     * @example :remove-Default-Buttons="['add', 'preview']"
+     *
+     * Buttons names:
+     *  - add
+     *  - webcam
+     *  - scan
+     *  - scanSettings
+     *  - download
+     *  - remove
+     *  - fullscreen
+     *  - preview
+     */
+    removeDefaultButtons: [Boolean, Array],
+
+    /**
+     * Hook which called before UB.setDocument.
+     * Must contain async function or function which returns promise
+     *
+     * @param {object} params
+     * @param {string} params.entity
+     * @param {number} params.id
+     * @param {string} params.attribute
+     */
+    beforeSetDocument: {
+      type: Function,
+      default: () => Promise.resolve()
+    }
   },
 
-  data () {
+  provide () {
     return {
-      previewUrl: '',
-      previewFormats: [
-        'application/pdf',
-        'image/png',
-        'image/jpeg'
-      ]
+      fileComponentInstance: this
     }
+  },
+
+  inject: {
+    providedEntity: 'entity'
   },
 
   computed: {
@@ -187,8 +177,8 @@ export default {
     },
 
     /**
-     * Sets size values if unset in config
-     */
+       * Sets size values if unset in config
+       */
     previewSize () {
       const defaults = {
         width: '100%',
@@ -202,8 +192,8 @@ export default {
     },
 
     /**
-     * Transform number size values to string
-     */
+       * Transform number size values to string
+       */
     previewSizeCss () {
       return ['width', 'height'].reduce((style, property) => {
         const value = this.previewSize[property]
@@ -212,182 +202,93 @@ export default {
           : value
         return style
       }, {})
+    },
+
+    availableButtons () {
+      if (this.removeDefaultButtons === true) {
+        return []
+      }
+      const buttonsByDefault = [
+        'add',
+        'webcam',
+        'scan',
+        'scanSettings',
+        'download',
+        'remove'
+      ]
+
+      if (this.previewMode) {
+        buttonsByDefault.push('fullscreen')
+      } else {
+        buttonsByDefault.push('preview')
+      }
+
+      if (Array.isArray(this.removeDefaultButtons)) {
+        return buttonsByDefault.filter(b => !this.removeDefaultButtons.includes(b))
+      }
+
+      return buttonsByDefault
     }
   },
 
-  watch: {
-    value: {
-      immediate: true,
-      handler () {
-        if (this.value && this.previewMode) {
-          this.loadPreview()
-        }
-      }
-    }
+  created () {
+    this.fileLoader = new FileLoader(this.entityName, this.attributeName)
   },
 
   methods: {
     async upload (binaryFiles) {
       const file = binaryFiles[0]
-      const response = await this.$UB.connection.post('setDocument', binaryFiles[0], {
-        params: {
-          entity: this.entityName,
-          attribute: this.attributeName,
-          origName: file.name,
-          filename: file.name,
-          id: this.recordId
-        },
-        headers: { 'Content-Type': 'application/octet-stream' }
-      })
-      this.$emit('input', JSON.stringify(response.data.result))
-    },
-
-    remove () {
-      this.$emit('input', null)
-    },
-
-    previewDialog () {
-      previewDialog({
+      await this.beforeSetDocument({
         entity: this.entityName,
         attribute: this.attributeName,
-        id: this.recordId,
-        isDirty: this.file.isDirty,
-        ct: this.file.ct,
-        origName: this.file.origName,
-        revision: this.file.revision
+        id: this.recordId
       })
+      this.$emit(
+        'input',
+        await this.fileLoader.uploadFile(file, this.recordId)
+      )
     },
 
-    loadFile () {
-      return this.$UB.connection.getDocument({
-        entity: this.entityName,
-        attribute: this.attributeName,
-        id: this.recordId,
-        isDirty: this.file.isDirty,
-        _rc: this.file.revision
-      }, { resultIsBinary: true })
+    hasButton (button) {
+      return this.availableButtons.includes(button)
     },
 
-    async saveAs () {
-      const binaryFile = await this.loadFile()
-      window.saveAs(new Blob([binaryFile]), this.fileName)
-    },
-
-    async loadPreview () {
-      if (this.previewUrl) {
-        const oldPreviewUrl = this.previewUrl
-        this.previewUrl = ''
-        window.URL.revokeObjectURL(oldPreviewUrl)
-      }
-      if (this.previewFormats.includes(this.file.ct)) {
-        const binaryFile = await this.loadFile()
-
-        this.previewUrl = window.URL.createObjectURL(new Blob([binaryFile], { type: this.file.ct }))
+    requestFullscreen () {
+      if (this.$refs.renderer && this.$refs.renderer.$refs.view) {
+        this.$refs.renderer.$refs.view.requestFullscreen()
       }
     }
   }
 }
 </script>
 
-<style>
-  .u-file{
-    display: flex;
-    border: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
-    border-radius: var(--border-radius);
-    align-items: center;
-    height: 40px;
-    padding-right: 10px;
-  }
-
-  .u-file__button{
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: hsl(var(--hs-primary), var(--l-state-default));
-    cursor: pointer;
-    background: none;
-    border: none;
-    height: 100%;
-    position: relative;
-    margin-left: 10px;
-  }
-
-  .u-file__button:disabled{
-    color: hsl(var(--hs-text), var(--l-text-disabled));
-    cursor: not-allowed;
-  }
-
-  .u-file__button:after{
-    content: '';
-    position: absolute;
-    left: -5px;
-    top: calc(50% - 8px);
-    width: 1px;
-    height: 16px;
-    background: hsl(var(--hs-border), var(--l-layout-border-default));
-  }
-
-  .u-file__button:first-child:after{
-    content: none;
-  }
-
-  .u-file__label{
-    font-weight: 600;
-    margin-left: 10px;
-  }
-
-  .u-file__size{
-    color: hsl(var(--hs-text), var(--l-text-description));
-    margin-left: 5px;
-  }
-
-  .u-file-preview__frame{
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    border: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
-    border-radius: var(--border-radius);
-    min-height: 100px;
-  }
-
-  .u-file-preview__frame img {
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  .u-file-preview__frame-close{
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: white;
-    border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
-    color: hsl(var(--hs-control), var(--l-state-default));
-    border-radius: 100px;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-
-  .u-file__preview-dialog .el-dialog__body{
-    padding: 0;
-    height: 90vh;
-  }
-</style>
-
 <docs>
   ### Basic usage
   ```vue
   <template>
     <u-file
-      v-model="file"
       attribute-name="file"
+      v-model="file"
+    />
+  </template>
+  <script>
+    const {mapInstanceFields} = require('@unitybase/adminui-vue')
+
+    export default {
+      computed: {
+        ...mapInstanceFields(['file'])
+      }
+    }
+  </script>
+  ```
+
+  ### Disabled
+  ```vue
+  <template>
+    <u-file
+      attribute-name="file"
+      disabled
+      v-model="file"
     />
   </template>
   <script>
@@ -405,9 +306,9 @@ export default {
   ```vue
   <template>
     <u-file
-      v-model="file"
       attribute-name="file"
       preview-mode
+      v-model="file"
     />
   </template>
   <script>
@@ -421,15 +322,16 @@ export default {
   </script>
   ```
 
-  ### Preview mode config
+  ### Preview mode with size
   ```vue
   <template>
     <u-file
-      v-model="file"
-      attribute-name="file"
       :preview-mode="{
-        height: 400
+        height: 400,
+        width: 300
       }"
+      attribute-name="file"
+      v-model="file"
     />
   </template>
   <script>
@@ -441,5 +343,110 @@ export default {
       }
     }
   </script>
+  ```
+
+  ### Custom additional button
+  ```vue
+  <template>
+    <u-file
+      v-model="doc_file"
+      attribute-name="doc_file"
+    >
+      <u-button
+        appearance="inverse"
+        icon="u-icon-send"
+      >
+        Test
+      </u-button>
+    </u-file>
+  </template>
+  <script>
+    const {mapInstanceFields} = require('@unitybase/adminui-vue')
+
+    export default {
+      computed: {
+        ...mapInstanceFields(['file'])
+      }
+    }
+  </script>
+  ```
+
+  ### Access to parent UFile instance from custom button
+  ```vue
+  <template>
+    <u-file
+      v-model="doc_file"
+      attribute-name="doc_file"
+    >
+      <custom-button/>
+    </u-file>
+  </template>
+  <script>
+    const {mapInstanceFields} = require('@unitybase/adminui-vue')
+
+    export default {
+      computed: {
+        ...mapInstanceFields(['file'])
+      }
+    }
+  </script>
+
+  <!--  custom button component  -->
+  <template>
+    <u-button
+      appearance="inverse"
+      icon="u-icon-send"
+      :disabled="instance.file || instance.disabled"
+      @click="showParentInstance"
+    >
+      Test
+    </u-button>
+  </template>
+  <script>
+    export default {
+      inject: {
+        instance: 'fileComponentInstance'
+      },
+
+      methods: {
+        showParentInstance () {
+          console.log(this.instance)
+        }
+      }
+    }
+  </script>
+  ```
+
+  ### Remove default buttons
+
+  ```vue
+  <template>
+    <u-file
+      v-model="doc_file"
+      attribute-name="doc_file"
+      remove-default-buttons
+    />
+  </template>
+  ```
+
+  To remove one or few buttons pass array with buttons names
+  Buttons names:
+   - add
+   - webcam
+   - scan
+   - scanSettings
+   - download
+   - remove
+   - preview
+   - fullscreen
+
+  ```vue
+  <template>
+    <u-file
+      v-model="doc_file"
+      attribute-name="doc_file"
+      :remove-default-buttons="['add', 'preview']"
+    />
+  </template>
   ```
 </docs>

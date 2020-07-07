@@ -82,7 +82,7 @@ export default {
   inject: {
     parentLabelWidth: { from: 'labelWidth', default: null },
     parentLabelPosition: { from: 'labelPosition', default: null },
-    parentMaxWidth: { from: 'labelPosition', default: null }
+    parentMaxWidth: { from: 'maxWidth', default: null }
   },
 
   provide () {

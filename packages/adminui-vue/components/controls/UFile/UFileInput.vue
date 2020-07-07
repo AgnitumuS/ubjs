@@ -3,8 +3,7 @@
     class="u-file__dropzone"
     :class="{
       hover: dragging,
-      disabled,
-      'u-file__dropzone__horizontal': layout === 'horizontal'
+      disabled
     }"
     @dragleave.prevent.stop="dragging = false"
     @dragend.prevent.stop="dragging = false"
@@ -12,7 +11,12 @@
     @dragover="dragover"
     @drop.stop.prevent="drop"
   >
-    <i class="u-file__dropzone__plus-icon u-icon-add" />
+    <u-icon
+      icon="u-icon-cloud-alt"
+      color="control"
+      size="large"
+      class="u-file__dropzone-icon"
+    />
     {{ $ut('fileInput.dropZone.caption') }}
     <input
       type="file"
@@ -37,15 +41,6 @@ export default {
      * Like native attribute multiple in input[type=file].
      */
     multiple: Boolean,
-
-    /**
-     * In horizontal layout mode input will be fill full parent height.
-     * Can be 'horizontal' or 'vertical'.
-     */
-    layout: {
-      type: String,
-      default: 'vertical'
-    },
 
     /**
      * Set's disabled state
@@ -140,53 +135,38 @@ export default {
 </script>
 
 <style>
-  .u-file__dropzone input{
+  .u-file__dropzone input {
     display: none;
   }
 
-  .u-file__dropzone{
-    padding: 10px;
-    border: 1px dashed hsl(var(--hs-border), var(--l-input-border-default));
+  .u-file__dropzone {
+    padding: 20px 12px;
     border-radius: var(--border-radius);
-    color: hsl(var(--hs-text), var(--l-text-default));
+    color: hsl(var(--hs-text), var(--l-text-description));
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
-    font-size: 12px;
     line-height: 1;
+    height: 100%;
+    width: 100%;
+  }
+
+  .u-file__dropzone-icon {
+    margin-bottom: 4px;
   }
 
   .u-file__dropzone:active:not(.disabled),
-  .u-file__dropzone.hover:not(.disabled){
+  .u-file__dropzone.hover:not(.disabled) {
     border-color: hsl(var(--hs-primary), var(--l-input-border-hover));
     color: hsl(var(--hs-primary), var(--l-text-label));
     background: hsl(var(--hs-primary), var(--l-background-default));
   }
 
-  .u-file__dropzone.disabled{
+  .u-file__dropzone.disabled {
     opacity: 0.5;
     cursor: not-allowed;
-  }
-
-  .u-file__dropzone__plus-icon{
-    font-size: 18px;
-    margin-right: 10px;
-    padding-right: 10px;
-    border-right: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
-  }
-
-  .u-file__dropzone__horizontal{
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-  }
-
-  .u-file__dropzone__horizontal .u-file__dropzone__plus-icon{
-    margin: 0;
-    padding: 0;
-    border: none;
-    margin-bottom: 10px;
-    font-size: 30px;
   }
 </style>
 
@@ -205,10 +185,9 @@ export default {
         multiple: {{multiple}}
       </pre>
       <u-file-input
-        :disabled="disabled"
-        :layout="previewMode ? 'horizontal' : 'vertical'"
-        :multiple="multiple"
-        @upload="upload"
+          :disabled="disabled"
+          :multiple="multiple"
+          @upload="upload"
       />
     </div>
   </template>

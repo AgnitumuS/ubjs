@@ -6,14 +6,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - new icons: `photo` and `scan-settings`
+ - css class `.u-divider` to vertical split buttons or something else
+ - `UFileMultiple`: [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UFile/UFileMultiple.vue)
+ - Buttons components. Can be used as slots in: `UFile`, `UFileMultiple` or `UFileCollection`:  
+   - `UFileAddButton` 
+   - `UFileDownloadButton` 
+   - `UFileRemoveButton` 
+   - `UFilePreviewButton` 
+   - `UFileScanButton` 
+   - `UFileScanSettingsButton` 
+   - `UFileWebcamButton` 
+   - `UFileFullscreenButton`
 
 ### Changed
+ - `UFile`: refactored [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UFile/UFile.vue)
+ - `UFileCollection`: refactored [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UFile/UFileCollection.vue)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `UGrid`, `UFormContainer`: wrong declaration of provided property maxWidth
+ - `UTableEntity`: total now formatted as number with a thousand separators
 
 ## [1.11.11] - 2020-07-01
 ### Changed
@@ -32,8 +48,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTable` prop `getCellClass` to get class name for each cell in table instead header cell's
 
 ### Changed
- - `UButton`: font size is decreased for all button sizes. For example meddium (default) button font size now 14 (instead of 16)
- - `UTable` prop `getColumnClass` optimized. Calls just one time for each column
+ - `UButton`: font size is decreased for all button sizes. For example medium (default) button font size now 14 (instead of 16)
+ - `UTable` prop `getColumnClass` optimized. Calls just one time for each column.
 
 ### Fixed
  - `UDatePicker` of type `daterange` use date/datetime format for logged in user locale

@@ -114,8 +114,8 @@ class UForm {
   }
 
   /**
-   * @param {Object} cfg
-   * @param {string[]} cfg.masterFieldList
+   * @param {Object} [cfg]
+   * @param {string[]} [cfg.masterFieldList]
    * @param {Object} [cfg.collections]
    * @param {function} [cfg.beforeInit]
    * @param {function} [cfg.inited]

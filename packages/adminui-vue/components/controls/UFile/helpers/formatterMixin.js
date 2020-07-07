@@ -2,7 +2,7 @@ const UB = require('@unitybase/ub-pub')
 const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 
 module.exports = {
-  filters: {
+  methods: {
     /**
      * Humanize file size
      *
@@ -12,11 +12,11 @@ module.exports = {
      */
     formatBytes (bytes, decimals) {
       const sizes = ['sizeUnits.b', 'sizeUnits.kb', 'sizeUnits.mb', 'sizeUnits.gb', 'sizeUnits.tb']
-      if (bytes === 0) return `0 ${UB.i18n(sizes[0])}`
+      if (bytes === 0) return `0 ${this.$ut(sizes[0])}`
       const k = 1024
       const dm = decimals <= 0 ? 0 : decimals || 2
       const i = Math.floor(Math.log(bytes) / Math.log(k))
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + UB.i18n(sizes[i])
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + this.$ut(sizes[i])
     },
 
     /**
@@ -28,10 +28,8 @@ module.exports = {
     getType (str) {
       const arr = str.split('.')
       return arr[arr.length - 1].toUpperCase()
-    }
-  },
+    },
 
-  methods: {
     formatDate (value) {
       return formatByPattern.formatDate(value, 'dateTime', UB.connection.userLang())
     }
