@@ -135,7 +135,10 @@ me.throwTest = function (ctx) {
   let mParams = ctx.mParams
   let isUnicode = (mParams.isUnicode === true)
   let isSystem = (mParams.isSystem === true)
-  if (isUnicode) {
+  let isRepo = (mParams.isRepo === true)
+  if (isRepo) {
+    tstm1.throwStackTestInner()
+  } else if (isUnicode) {
     throw new UB.UBAbort('<<<Підтримується>>>')
   } else if (isSystem) {
     fs.renameSync('file_not_found_exos', 'second_path_wrong')
