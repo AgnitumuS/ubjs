@@ -1,4 +1,4 @@
-/** ElementUI for UB Tajik */
+/** ElementUI for Tajik */
 UB.i18nExtend({
   el: {
     colorpicker: {
@@ -146,82 +146,82 @@ UB.i18nExtend({
   table: {
     filter: {
       list: {
-        title: 'Filters'
+        title: 'Фильтры'
       },
-      conditionPlaceholder: 'Condition',
-      valuePlaceholder: 'Value',
+      conditionPlaceholder: 'Выражение',
+      valuePlaceholder: 'Значение',
       date: {
-        from: 'from',
-        to: 'to',
-        valuePlaceholder: 'Select date'
+        from: 'с',
+        to: 'по',
+        valuePlaceholder: 'Выберите дату'
       },
-      columnPlaceholder: 'Column'
+      columnPlaceholder: 'Колонка'
     },
     pagination: {
-      outOf: 'out of',
-      nextPage: 'Саҳифаи навбатӣ',
-      prevPage: 'Саҳифаи гузашта'
+      outOf: 'из',
+      nextPage: 'Следующая страница',
+      prevPage: 'Предыдущая страница'
     }
   },
 
   sizeUnits: {
-    b: 'Bytes',
-    kb: 'KB',
-    mb: 'MB',
-    gb: 'GB',
-    tb: 'TB'
+    b: 'Байт',
+    kb: 'КБ',
+    mb: 'МБ',
+    gb: 'ГБ',
+    tb: 'ТБ'
   },
 
   fileInput: {
     manyFilesTable: {
-      label: 'Label',
-      size: 'Size',
-      type: 'Type',
-      uploadDate: 'Upload date'
+      label: 'Название',
+      size: 'Размер',
+      type: 'Тип',
+      uploadDate: 'Дата загрузки'
     },
     dropZone: {
-      caption: 'Drop file(s) here or click to upload',
-      acceptError: 'Invalid file extension'
+      caption: 'Перетащите файл сюда или нажмите для выбора',
+      acceptError: 'Неверное расширение файла'
     }
   },
 
   select: {
-    valueIsUndefined: 'Value "{0}" not found in entity "{1}"'
+    valueIsUndefined: 'Значение "{0}" не найдено в сущности "{1}"'
   },
 
   tableRegister: {
-    hideDetails: 'Hide details'
+    hideDetails: 'Скрыть детали'
   },
 
   chat: {
-    emptyMessage: 'No messages yet...',
-    inputPlaceholder: 'Enter a message',
-    copyNotification: 'Message successfully copied in clipboard',
-    removeMessageDialog: 'Remove message "{0}"',
-    removeMessageNotification: 'Message successfully deleted'
+    emptyMessage: 'Здесь пока нет ни одного сообщения...',
+    inputPlaceholder: 'Введите сообщение',
+    copyNotification: 'Сообщение скопировано в буфер обмена',
+    removeMessageDialog: 'Удалить сообщение "{0}"',
+    removeMessageNotification: 'Сообщение успешно удалено'
   },
 
   UFile: {
     webcam: {
-      webcamLabel: 'Webcam',
-      pictureLabel: 'Picture',
-      emptyPicturePlaceholder: 'Your picture',
-      takePictureButton: 'Take picture',
-      takeAnotherPictureButton: 'Take another',
+      webcamLabel: 'Камера',
+      pictureLabel: 'Изображение',
+      emptyPicturePlaceholder: 'Ваше изображение',
+      takePictureButton: 'Сделать скриншот',
+      takeAnotherPictureButton: 'Сделать другой скриншот',
       error: {
-        NotReadableError: 'Access to webcam disabled by operation system settings',
-        NotFoundError: 'Cannot see any webcam devices',
-        NotAllowedError: 'Access to webcam disabled. Turn it on in browser settings'
+        NotReadableError: 'Доступ к камере запрещен в настройках операционной системы',
+        NotFoundError: 'Камера не найдена',
+        NotAllowedError: 'Доступ к камере запрещен. Включите доступ в настройках браузера'
       }
     },
 
-    addButtonTooltip: 'Add',
-    downloadButtonTooltip: 'Download',
-    previewButtonTooltip: 'Preview',
-    removeButtonTooltip: 'Remove',
-    scanButtonTooltip: 'Scan',
-    scanSettingsButtonTooltip: 'Scan settings',
-    webcamButtonTooltip: 'Take image from webcam',
-    fullscreenButtonTooltip: 'Full screen preview'
+    addButtonTooltip: 'Добавить',
+    downloadButtonTooltip: 'Скачать',
+    previewButtonTooltip: 'Предпросмотр',
+    removeButtonTooltip: 'Удалить',
+    scanButtonTooltip: 'Сканировать',
+    scanSettingsButtonTooltip: 'Настройки сканера',
+    webcamButtonTooltip: 'Загрузить изображение с ваб-камеры',
+    fullscreenButtonTooltip: 'Развернуть на весь экран'
   }
 })

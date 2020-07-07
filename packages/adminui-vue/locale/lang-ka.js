@@ -1,4 +1,4 @@
-/** ElementUI for UB English */
+/** ElementUI for UB Georgian */
 UB.i18nExtend({
   el: {
     colorpicker: {
