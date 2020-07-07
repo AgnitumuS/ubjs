@@ -116,6 +116,7 @@
  - u-icon-more-vertical
  - u-icon-number
  - u-icon-object-group
+ - u-icon-photo
  - u-icon-person
  - u-icon-person-group
  - u-icon-person-settings
@@ -131,6 +132,7 @@
  - u-icon-save
  - u-icon-save-and-close
  - u-icon-scan
+ - u-icon-scan-settings
  - u-icon-search
  - u-icon-search-minus
  - u-icon-search-plus

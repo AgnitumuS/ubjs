@@ -1,68 +1,24 @@
 <template>
-  <div>
-    <u-file-input
-      multiple
-      :accept="accept"
-      @upload="upload"
-    />
-    <u-table
-      v-show="files.length > 0"
-      :items="files"
-      :columns="columns"
-      class="u-file-collection__table"
-      max-height="100%"
-      @click.native.prevent
-    >
-      <button
-        slot="preview"
-        slot-scope="{row}"
-        class="u-file-collection__action-icon u-icon-eye"
-        :disabled="!previewFormats.includes(row.ct)"
-        @click="preview(row.id)"
-      />
-
-      <button
-        slot="download"
-        slot-scope="{row}"
-        class="u-file-collection__action-icon u-icon-download"
-        @click="download(row.id)"
-      />
-
-      <button
-        slot="remove"
-        slot-scope="{row}"
-        class="u-file-collection__action-icon u-icon-delete"
-        @click="remove(row.id)"
-      />
-
-      <template #size="{value}">
-        {{ value | formatBytes }}
-      </template>
-
-      <template #type="{row}">
-        {{ row.origName | getType }}
-      </template>
-
-      <template #uploadDate="{value}">
-        {{ formatDate(value) }}
-      </template>
-    </u-table>
-  </div>
+  <u-file-multiple
+    v-model="files"
+    :file-attribute="fileAttribute"
+    :subject-attribute="subjectAttribute"
+    :entity-name="entityName"
+    :view-mode="viewMode"
+    :remove-default-buttons="removeDefaultButtons"
+    :subject-attribute-value="$store.state.data.ID"
+    :disabled="disabled"
+    :before-set-document="beforeSetDocument"
+  >
+    <slot />
+  </u-file-multiple>
 </template>
 
 <script>
 const { mapMutations } = require('vuex')
-const formatterMixin = require('./formatterMixin.js')
-const previewDialog = require('./previewDialog')
 
-/**
- * Multi file upload to UB entity.
- * It maps to collection in UB.Form constructor.
- */
 export default {
   name: 'UFileCollection',
-
-  mixins: [formatterMixin],
 
   props: {
     /**
@@ -92,54 +48,62 @@ export default {
     },
 
     /**
+     * The name of entity that stores file
+     */
+    entityName: String,
+
+    /**
      * File extensions to bind into `accept` input property
      */
     accept: {
       type: String,
       default: ''
-    }
-  },
+    },
 
-  data () {
-    return {
-      columns: [{
-        id: 'preview',
-        width: 40,
-        minWidth: 40
-      }, {
-        id: 'download',
-        width: 40,
-        minWidth: 40
-      }, {
-        id: 'remove',
-        width: 40,
-        minWidth: 40
-      }, {
-        id: 'origName',
-        label: 'fileInput.manyFilesTable.label',
-        minWidth: 180
-      }, {
-        id: 'size',
-        label: 'fileInput.manyFilesTable.size',
-        width: 120,
-        minWidth: 120
-      }, {
-        id: 'type',
-        label: 'fileInput.manyFilesTable.type',
-        width: 60,
-        minWidth: 60
-      }, {
-        id: 'uploadDate',
-        label: 'fileInput.manyFilesTable.uploadDate',
-        width: 120,
-        minWidth: 120
-      }],
+    /**
+     * In case pass true will remove all default buttons.
+     * To Exclude just few use value as array
+     *
+     * @example :remove-Default-Buttons="['add', 'preview']"
+     *
+     * Buttons names:
+     *  - add
+     *  - webcam
+     *  - scan
+     *  - scanSettings
+     *  - download
+     *  - remove
+     */
+    removeDefaultButtons: [Boolean, Array],
 
-      previewFormats: [
-        'application/pdf',
-        'image/png',
-        'image/jpeg'
-      ]
+    /**
+     * Hook which called before UB.setDocument.
+     * Must contain async function or function which returns promise
+     *
+     * @param {object} params
+     * @param {string} params.entity
+     * @param {number} params.id
+     * @param {string} params.attribute
+     * @param {string} params.subjectAttribute
+     * @param {*} params.subjectAttributeValue
+     */
+    beforeSetDocument: {
+      type: Function,
+      default: () => Promise.resolve()
+    },
+
+    /**
+     * Disable to remove or upload file
+     */
+    disabled: Boolean,
+
+    /**
+     * Toggle carousel view mode
+     */
+    viewMode: {
+      type: String,
+      default: 'table',
+      validator: (value) => ['table', 'carousel', 'carouselWithPreview'].includes(value)
     }
   },
 
@@ -148,165 +112,71 @@ export default {
       return this.$store.state.collections[this.collectionName]
     },
 
-    files () {
-      return this.collectionData.items
-        .map(item => {
-          const file = JSON.parse(item.data[this.fileAttribute])
-          return {
-            id: item.data.ID,
-            origName: file.origName,
-            size: file.size,
-            isDirty: file.isDirty,
-            ct: file.ct,
-            uploadDate: item.data.mi_modifyDate || new Date()
-          }
-        })
-    },
+    files: {
+      get () {
+        return this.collectionData.items.map(i => i.data)
+      },
 
-    entityName () {
-      return this.collectionData.entity
+      set (updatedFiles) {
+        const collectionIds = this.collectionData.items.map(i => i.data.ID)
+        const updateFileIds = updatedFiles.map(f => f.ID)
+
+        const filesToAdd = updatedFiles.filter(file => !collectionIds.includes(file.ID))
+        const filesToUpdate = updatedFiles.filter(file => collectionIds.includes(file.ID))
+        const idsToDelete = collectionIds.filter(ID => !updateFileIds.includes(ID))
+
+        for (const item of filesToAdd) {
+          this.ADD_COLLECTION_ITEM({
+            collection: this.collectionName,
+            item
+          })
+        }
+
+        for (const file of filesToUpdate) {
+          const index = this.collectionData.items.findIndex(p => p.data.ID === file.ID)
+          this.SET_DATA({
+            collection: this.collectionName,
+            index,
+            key: this.subjectAttribute,
+            value: file[this.subjectAttribute]
+          })
+        }
+
+        for (const deleteId of idsToDelete) {
+          const deleteIndex = this.collectionData.items.findIndex(p => p.data.ID === deleteId)
+          this.DELETE_COLLECTION_ITEM({
+            collection: this.collectionName,
+            index: deleteIndex
+          })
+        }
+      }
     }
   },
 
   methods: {
     ...mapMutations([
+      'SET_DATA',
       'DELETE_COLLECTION_ITEM',
       'ADD_COLLECTION_ITEM'
-    ]),
-
-    upload (binaryFiles) {
-      for (const file of binaryFiles) {
-        this.bindFileToEntity(file)
-      }
-    },
-
-    async bindFileToEntity (file) {
-      const item = await this.$UB.connection.addNewAsObject({
-        entity: this.entityName,
-        fieldList: ['ID', this.subjectAttribute],
-        execParams: {
-          [this.subjectAttribute]: this.$store.state.data.ID
-        }
-      })
-
-      const fileResponse = await this.$UB.connection.post('setDocument', file, {
-        params: {
-          entity: this.entityName,
-          attribute: this.fileAttribute,
-          origName: file.name,
-          filename: file.name,
-          id: item.ID
-        },
-        headers: { 'Content-Type': 'application/octet-stream' }
-      })
-
-      item[this.fileAttribute] = JSON.stringify(fileResponse.data.result)
-
-      this.ADD_COLLECTION_ITEM({
-        collection: this.collectionName,
-        item
-      })
-    },
-
-    remove (id) {
-      const index = this.files.findIndex(f => f.id === id)
-      this.DELETE_COLLECTION_ITEM({
-        collection: this.collectionName,
-        index
-      })
-    },
-
-    preview (id) {
-      const file = this.files.find(f => f.id === id)
-      const { isDirty, ct } = file
-      previewDialog({
-        entity: this.entityName,
-        attribute: this.fileAttribute,
-        id,
-        isDirty,
-        ct,
-        origName: file.origName
-      })
-    },
-
-    async download (id) {
-      const { origName, isDirty } = this.files.find(f => f.id === id)
-      const binaryFile = await this.$UB.connection.getDocument({
-        entity: this.entityName,
-        attribute: this.fileAttribute,
-        id,
-        isDirty
-      }, { resultIsBinary: true })
-      window.saveAs(new Blob([binaryFile]), origName)
-    }
+    ])
   }
 }
 </script>
 
-<style>
-  .u-file-collection__table{
-    margin: 10px 0;
-  }
-
-  .u-file-collection__action-icon{
-    font-size: 20px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: hsl(var(--hs-primary), var(--l-state-default));
-    cursor: pointer;
-    background: none;
-    border: none;
-  }
-
-  .u-file-collection__action-icon:disabled{
-    color: hsl(var(--hs-control), var(--l-state-disabled));
-    cursor: not-allowed;
-  }
-</style>
-
 <docs>
-  First you need to create collection in UB.Form
+  UFileCollection extends UFileMultiple, so it has same props, slots etc.
+  But it maps on collection items by collection name
 
-  ```javascript
-  module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
-    Form({
-      component: rootComponent,
-      entity,
-      instanceID,
-      title,
-      formCode,
-      isModal
-    })
-      .processing({
-        collections: {
-          attachments: ({ state }) => UB.Repository('tst_attachment')
-            .attrs('ID', 'file', 'dictID')
-            .where('dictID', '=', state.data.ID)
-        }
-      })
-      .validation()
-      .mount()
-  }
-  ```
-
-  Then you need to set collection name, file attribute and subject attribute.
-
+  ### Basic usage
   ```vue
   <template>
     <u-file-collection
       collection-name="attachments"
-      file-attribute="file"
+      entity-name="tst_attachment"
+      file-attribute="doc_file"
       subject-attribute="dictID"
+      :remove-default-buttons="['add']"
     />
   </template>
-  <script>
-    export default {}
-  </script>
   ```
 </docs>

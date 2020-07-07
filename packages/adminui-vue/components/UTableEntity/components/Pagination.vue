@@ -23,7 +23,7 @@
         class="pagination__total"
         disabled
       >
-        <span>{{ total }}</span>
+        <span>{{ totalFormatted }}</span>
       </button>
 
       <el-tooltip
@@ -64,6 +64,7 @@
 
 <script>
 const { mapState, mapGetters, mapActions } = require('vuex')
+const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 
 export default {
   computed: {
@@ -75,6 +76,10 @@ export default {
     ]),
 
     ...mapGetters(['pageSize']),
+
+    totalFormatted () {
+      return formatByPattern.formatNumber(this.total, 'numberGroup', this.$UB.connection.userLang())
+    },
 
     pageIndex: {
       get () {

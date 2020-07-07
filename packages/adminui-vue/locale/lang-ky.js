@@ -180,7 +180,7 @@ UB.i18nExtend({
       uploadDate: 'Upload date'
     },
     dropZone: {
-      caption: 'or drop files here',
+      caption: 'Drop file(s) here or click to upload',
       acceptError: 'Invalid file extension'
     }
   },
@@ -199,5 +199,29 @@ UB.i18nExtend({
     copyNotification: 'Message successfully copied in clipboard',
     removeMessageDialog: 'Remove message "{0}"',
     removeMessageNotification: 'Message successfully deleted'
+  },
+
+  UFile: {
+    webcam: {
+      webcamLabel: 'Webcam',
+      pictureLabel: 'Picture',
+      emptyPicturePlaceholder: 'Your picture',
+      takePictureButton: 'Take picture',
+      takeAnotherPictureButton: 'Take another',
+      error: {
+        NotReadableError: 'Access to webcam disabled by operation system settings',
+        NotFoundError: 'Cannot see any webcam devices',
+        NotAllowedError: 'Access to webcam disabled. Turn it on in browser settings'
+      }
+    },
+
+    addButtonTooltip: 'Add',
+    downloadButtonTooltip: 'Download',
+    previewButtonTooltip: 'Preview',
+    removeButtonTooltip: 'Remove',
+    scanButtonTooltip: 'Scan',
+    scanSettingsButtonTooltip: 'Scan settings',
+    webcamButtonTooltip: 'Take image from webcam',
+    fullscreenButtonTooltip: 'Full screen preview'
   }
 })

@@ -38,43 +38,154 @@
 
           <u-auto-field attribute-name="jsonColumn" />
         </el-tab-pane>
-        <el-tab-pane label="File upload">
-          <u-form-row label="file collection">
-            <u-file-collection
-              collection-name="attachments"
-              file-attribute="doc_file"
-              subject-attribute="dictID"
-            />
-          </u-form-row>
-
-          <u-form-row label="Base file">
-            <u-file
+<!--    IMPORTANT tab below marked as lazy to prevent getDocument request on form open -->
+        <el-tab-pane label="File upload" lazy>
+          <u-form-container label-position="top">
+            <u-form-row label="<u-file-input/>">
+              <u-file-input />
+            </u-form-row>
+            <u-auto-field
               v-model="doc_file"
+              label="<u-file/> Auto field"
               attribute-name="doc_file"
             />
-          </u-form-row>
+            <u-form-row label="<u-file/> (Additional button)">
+              <u-file
+                v-model="doc_file"
+                attribute-name="doc_file"
+              >
+                <u-button
+                  appearance="inverse"
+                  icon="u-icon-send"
+                >
+                  Test
+                </u-button>
+              </u-file>
+            </u-form-row>
+            <u-form-row label="<u-file/> (Remove default buttons)">
+              <u-file
+                v-model="doc_file"
+                attribute-name="doc_file"
+                remove-default-buttons
+              />
+            </u-form-row>
+            <u-form-row label="<u-file/> (Hide one default button [add])">
+              <u-file
+                v-model="doc_file"
+                attribute-name="doc_file"
+                :remove-default-buttons="['add']"
+              />
+            </u-form-row>
+            <u-form-row label="<u-file/> (Disabled)">
+              <u-file
+                v-model="doc_file"
+                attribute-name="doc_file"
+                disabled
+              />
+            </u-form-row>
+            <u-form-row label="<u-file/> (Preview mode)">
+              <u-file
+                v-model="doc_file"
+                attribute-name="doc_file"
+                preview-mode
+              />
+            </u-form-row>
+            <u-form-row label="<u-file/> (Preview mode with size)">
+              <u-file
+                v-model="doc_file"
+                attribute-name="doc_file"
+                :preview-mode="{
+                  width: 400,
+                  height: 400
+                }"
+              />
+            </u-form-row>
 
-          <u-form-row label="Base file disabled">
-            <u-file
-              v-model="doc_file"
-              disabled
-              attribute-name="doc_file"
-            />
-          </u-form-row>
+            <u-form-row label="<u-file-multiple/>">
+              <u-file-multiple
+                v-model="multipleFileExample"
+                file-attribute="doc_file"
+                subject-attribute="dictID"
+                entity-name="tst_attachment"
+                :subject-attribute-value="ID"
+              />
+            </u-form-row>
 
-          <u-form-row label="Preview mode">
-            <u-file
-              v-model="doc_file"
-              attribute-name="doc_file"
-              preview-mode
-            />
-          </u-form-row>
+            <u-form-row label="<u-file-collection/>">
+              <u-file-collection
+                collection-name="attachments"
+                entity-name="tst_attachment"
+                file-attribute="doc_file"
+                subject-attribute="dictID"
+              />
+            </u-form-row>
 
-          <u-auto-field
-            v-model="doc_file"
-            label="Auto field"
-            attribute-name="doc_file"
-          />
+            <u-form-row label="<u-file-collection/> (Disabled)">
+              <u-file-collection
+                collection-name="attachments"
+                entity-name="tst_attachment"
+                file-attribute="doc_file"
+                subject-attribute="dictID"
+                disabled
+              />
+            </u-form-row>
+
+            <u-form-row label="<u-file-collection/> (Remove default buttons)">
+              <u-file-collection
+                collection-name="attachments"
+                entity-name="tst_attachment"
+                file-attribute="doc_file"
+                subject-attribute="dictID"
+                remove-default-buttons
+              />
+            </u-form-row>
+
+            <u-form-row label="<u-file-collection/> (Remove one default button [add])">
+              <u-file-collection
+                collection-name="attachments"
+                entity-name="tst_attachment"
+                file-attribute="doc_file"
+                subject-attribute="dictID"
+                :remove-default-buttons="['add']"
+              />
+            </u-form-row>
+
+            <u-form-row label="<u-file-collection/> (Additional custom button)">
+              <u-file-collection
+                collection-name="attachments"
+                entity-name="tst_attachment"
+                file-attribute="doc_file"
+                subject-attribute="dictID"
+              >
+                <u-button
+                  appearance="inverse"
+                  icon="u-icon-send"
+                >
+                  Test
+                </u-button>
+              </u-file-collection>
+            </u-form-row>
+
+            <u-form-row label="<u-file-collection/> (View mode carousel)">
+              <u-file-collection
+                collection-name="attachments"
+                entity-name="tst_attachment"
+                file-attribute="doc_file"
+                subject-attribute="dictID"
+                view-mode="carousel"
+              />
+            </u-form-row>
+
+            <u-form-row label="<u-file-collection/> (View mode carouselWithPreview)">
+              <u-file-collection
+                collection-name="attachments"
+                entity-name="tst_attachment"
+                file-attribute="doc_file"
+                subject-attribute="dictID"
+                view-mode="carouselWithPreview"
+              />
+            </u-form-row>
+          </u-form-container>
         </el-tab-pane>
         <el-tab-pane
           label="Lazy collection example"
@@ -147,6 +258,7 @@ module.exports.default = {
 
   data () {
     return {
+      multipleFileExample: [],
       iconSize: 'medium',
       sizes: ['small', 'medium', 'large'],
       icons: [
@@ -255,6 +367,7 @@ module.exports.default = {
         'u-icon-more-vertical',
         'u-icon-number',
         'u-icon-object-group',
+        'u-icon-photo',
         'u-icon-person',
         'u-icon-person-group',
         'u-icon-person-settings',
@@ -270,6 +383,7 @@ module.exports.default = {
         'u-icon-save',
         'u-icon-save-and-close',
         'u-icon-scan',
+        'u-icon-scan-settings',
         'u-icon-search',
         'u-icon-search-minus',
         'u-icon-search-plus',

@@ -25,6 +25,7 @@ module.exports = {
 
     this._clickOutsideListenerId = addClickOutsideListener(refs, () => {
       this.dropdownVisible = false
+      // TODO: prevent calling setQueryByValue on every click in document
       if (this.setQueryByValue) {
         this.setQueryByValue(this.value)
       }

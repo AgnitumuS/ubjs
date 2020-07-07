@@ -21,22 +21,22 @@ export default {
   props: {
     /**
      * Set label width to child `<u-form-row>`'s
-     * Can be override by same prop in `u-form-row`.
-     * Will ignored with labelPosition === 'top'
+     * Can be overrated by the same prop in `u-form-row`.
+     * Ignored for labelPosition === 'top'
      */
     labelWidth: {
       type: Number
     },
     /**
-     * Set label position to child `<u-form-row>`'s
-     * Can be override by same prop in `u-form-row`
+     * Label position of the child `<u-form-row>`'s
+     * Can be overrated by the same prop in `u-form-row`
      */
     labelPosition: {
       type: String,
       validator: (value) => ['left', 'right', 'top'].includes(value)
     },
     /**
-     * If set 'false' disable autofocus on mounted. 'true' by default
+     * If 'false' - disable autofocus on mounted. 'true' by default
      */
     autofocus: {
       type: Boolean,
@@ -44,7 +44,7 @@ export default {
     },
 
     /**
-     * Just provides max width in px to child UFormRow's.
+     * Provides max width in px to the child UFormRow's.
      * Do not confuse with the maximum width of the form itself
      */
     maxWidth: Number
@@ -53,7 +53,7 @@ export default {
   inject: {
     parentLabelWidth: { from: 'labelWidth', default: null },
     parentLabelPosition: { from: 'labelPosition', default: null },
-    parentMaxWidth: { from: 'labelPosition', default: null }
+    parentMaxWidth: { from: 'maxWidth', default: null }
   },
 
   provide () {

@@ -20,8 +20,17 @@ module.exports = {
     const UDropdown = require('../components/controls/UDropdown/UDropdown.vue').default
     const UDropdownItem = require('../components/controls/UDropdown/UDropdownItem.vue').default
     const UFile = require('../components/controls/UFile/UFile.vue').default
+    const UFileMultiple = require('../components/controls/UFile/UFileMultiple.vue').default
     const UFileCollection = require('../components/controls/UFile/UFileCollection.vue').default
     const UFileInput = require('../components/controls/UFile/UFileInput.vue').default
+    const UFileAddButton = require('../components/controls/UFile/buttons/UFileAddButton.vue').default
+    const UFileDownloadButton = require('../components/controls/UFile/buttons/UFileDownloadButton.vue').default
+    const UFileRemoveButton = require('../components/controls/UFile/buttons/UFileRemoveButton.vue').default
+    const UFilePreviewButton = require('../components/controls/UFile/buttons/UFilePreviewButton.vue').default
+    const UFileScanButton = require('../components/controls/UFile/buttons/UFileScanButton.vue').default
+    const UFileScanSettingsButton = require('../components/controls/UFile/buttons/UFileScanSettingsButton.vue').default
+    const UFileWebcamButton = require('../components/controls/UFile/buttons/UFileWebcamButton.vue').default
+    const UFileFullscreenButton = require('../components/controls/UFile/buttons/UFileFullscreenButton.vue').default
     const SignatureVerificationResult = require('../components/SignatureVerificationResult.vue').default
     const USidebarButton = require('../components/sidebar/USidebarButton.vue').default
     const UGrid = require('../components/controls/UGrid.vue').default
@@ -48,8 +57,17 @@ module.exports = {
     Vue.component(UDropdown.name, UDropdown)
     Vue.component(UDropdownItem.name, UDropdownItem)
     Vue.component(UFile.name, UFile)
+    Vue.component(UFileMultiple.name, UFileMultiple)
     Vue.component(UFileCollection.name, UFileCollection)
     Vue.component(UFileInput.name, UFileInput)
+    Vue.component(UFileAddButton.name, UFileAddButton)
+    Vue.component(UFileDownloadButton.name, UFileDownloadButton)
+    Vue.component(UFileRemoveButton.name, UFileRemoveButton)
+    Vue.component(UFilePreviewButton.name, UFilePreviewButton)
+    Vue.component(UFileScanButton.name, UFileScanButton)
+    Vue.component(UFileScanSettingsButton.name, UFileScanSettingsButton)
+    Vue.component(UFileWebcamButton.name, UFileWebcamButton)
+    Vue.component(UFileFullscreenButton.name, UFileFullscreenButton)
     Vue.component(SignatureVerificationResult.name, SignatureVerificationResult)
     Vue.component(USidebarButton.name, USidebarButton)
     Vue.component(UGrid.name, UGrid)

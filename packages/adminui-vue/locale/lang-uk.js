@@ -180,7 +180,7 @@ UB.i18nExtend({
       uploadDate: 'Дата завантаження'
     },
     dropZone: {
-      caption: 'або перетягніть файли сюди',
+      caption: 'Перетягніть файл сюди або натисніть для вибору',
       acceptError: 'Невірне розширення файлу'
     }
   },
@@ -199,5 +199,29 @@ UB.i18nExtend({
     copyNotification: 'Повідомлення скопійовано в буфер обміну',
     removeMessageDialog: 'Видалити повідомлення "{0}"',
     removeMessageNotification: 'Повідомлення успішно видалено'
+  },
+
+  UFile: {
+    webcam: {
+      webcamLabel: 'Камера',
+      pictureLabel: 'Зображення',
+      emptyPicturePlaceholder: 'Ваше зображення',
+      takePictureButton: 'Зробити знімок',
+      takeAnotherPictureButton: 'Зробити інший знімок',
+      error: {
+        NotReadableError: 'Доступ до камери заборонений в налаштуваннях операційної системи',
+        NotFoundError: 'Камера не знайдена',
+        NotAllowedError: 'Доступ до камери заборонений. Ввімкніть доступ у налаштуваннях браузера'
+      }
+    },
+
+    addButtonTooltip: 'Додати',
+    downloadButtonTooltip: 'Завантажити',
+    previewButtonTooltip: 'Попередній перегляд',
+    removeButtonTooltip: 'Видалити',
+    scanButtonTooltip: 'Сканувати',
+    scanSettingsButtonTooltip: 'Параметри сканування',
+    webcamButtonTooltip: 'Завантажити зображення з веб-камери',
+    fullscreenButtonTooltip: 'Розгорнути на весь екран'
   }
 })
