@@ -29,11 +29,11 @@ module.exports = function runSoftLockTest (options) {
     conn = session.connection
   }
 
-  const firsID = conn.Repository('tst_document').attrs('ID')
+  const firstID = conn.Repository('tst_document').attrs('ID')
     .limit(1).selectScalar()
 
   // should not throw in case ID not in top level but in filer and lockAttribute not in fieldList
-  conn.Repository('tst_document').attrs('description').where('ID', '=', firsID)
+  conn.Repository('tst_document').attrs('description').where('ID', '=', firstID)
     .misc({ lockType: 'None' }).selectSingle()
 
   const data = conn.Repository('tst_document').attrs('ID', 'description', 'mi_modifyDate')
