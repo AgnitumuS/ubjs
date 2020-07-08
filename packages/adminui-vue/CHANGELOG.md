@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.11.12] - 2020-07-08
+### Added
  - new icons: `photo` and `scan-settings`
  - new css class `.u-divider` vertical split for buttons or something else
  - new cmponent `UFileMultiple`: [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UFile/UFileMultiple.vue)
@@ -23,10 +34,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `UFile`: refactored [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UFile/UFile.vue)
  - `UFileCollection`: refactored [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UFile/UFileCollection.vue)
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UGrid`, `UFormContainer`: wrong declaration of provided property maxWidth

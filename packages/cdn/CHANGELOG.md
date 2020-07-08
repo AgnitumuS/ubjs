@@ -12,11 +12,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.4.20] - 2020-07-08
+### Removed
  - unused csv data `cdn_bank.csv`, `cdn_deptype.csv`, `cdn_orgbusinesstype.csv`, `cdn_orgownershiptype.csv`, `cdn_staffunittype.csv`
  are deleted
  
-### Fixed
-
 ## [5.4.19] - 2020-07-01
 ## [5.4.18] - 2020-06-30
 ### Changed

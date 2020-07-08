@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-  - optimization: removed global `selectstart` listener (ExtJS legacy for IE)
-  
+
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
+## [5.13.24] - 2020-07-08
+### Changed
+  - optimization: removed global `selectstart` listener (ExtJS legacy for IE)
+  
 ## [5.13.23] - 2020-07-01
 ## [5.13.22] - 2020-06-30
 ### Added
