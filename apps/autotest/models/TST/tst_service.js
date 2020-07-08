@@ -317,6 +317,23 @@ me.mParamsTest = function (ctxt) {
     p = _SApp.els('tst_clob', 'select')
   }
   console.timeEnd('_SApp.els')
-
 }
 me.entity.addMethod('mParamsTest')
+
+/**
+ * Verify signature using IIT library
+ * @param {ubMethodParams} ctx
+ * @param {string} ctx.mParams.base64Data
+ * @param {string} ctx.mParams.base64Signature
+ */
+me.iitVerify = function (ctx) {
+  const iitCrypto = require('@ub-d/iit-crypto')
+  iitCrypto.init()
+  const signature = Buffer.from(ctx.mParams.base64Signature,'base64')
+  const data = Buffer.from(ctx.mParams.base64Data, 'base64')
+  const verifyResult = iitCrypto.verify(signature, data)
+  delete ctx.mParams.base64Data
+  delete ctx.mParams.base64Signature
+  ctx.mParams.result = verifyResult
+}
+me.entity.addMethod('iitVerify')

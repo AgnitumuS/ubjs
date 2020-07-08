@@ -5,7 +5,6 @@
 // @caption "Test IIT Sign"
 // @description "Test IIT Sign"
 // @code "tst_service-IITSign"
-// @ID "3000000004904"
 exports.formDef = 'TST.IITSign'
 
 Ext.define('TST.IITSign', {
@@ -106,11 +105,16 @@ Ext.define('TST.IITSign', {
       width: 150,
       ubID: 'doSaveSign',
       text: 'Save signature to server'
-    },{
+    }, {
       xtype: 'button',
       width: 150,
       ubID: 'signDocumentPageInfo',
-      text: 'signDocumentPageInfo'
+      text: 'signPageInfo'
+    }, {
+      xtype: 'button',
+      width: 150,
+      ubID: 'serverVerify',
+      text: 'serverVerify'
     }]
   }],
 
@@ -120,7 +124,7 @@ Ext.define('TST.IITSign', {
     // debugger;
 
     me.down('component[ubID="doSign"]').handler = function () {
-      let f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
+      const f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
       me.mask('Signing')
       return UB.file2Uint8Array(f).then(fArray => {
         return $App.connection.pki().then(pki => {
@@ -134,7 +138,7 @@ Ext.define('TST.IITSign', {
     }
 
     me.down('component[ubID="doValidate"]').handler = function () {
-      let f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
+      const f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
       if (!f) throw new UB.UBError('Please, select file to validate')
       me.mask('Verifying')
       return UB.file2Uint8Array(f).then(fArray => {
@@ -167,6 +171,20 @@ Ext.define('TST.IITSign', {
       const f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
       if (!f) throw new UB.UBError('Please, select PDF file to get page info')
       pdfSignTest(f)
+    }
+    me.down('component[ubID="serverVerify"]').handler = async function () {
+      const f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
+      if (!f) throw new UB.UBError('Please, select file')
+      const b64data = await UB.base64FromAny(f)
+      const b64Sign = me.down('component[ubID="signature"]').value
+      if (!b64Sign) throw new UB.UBError('Sign data or paste a base64 encoded signature into signature text box')
+      const resp = await $App.connection.query({
+        entity: 'tst_service',
+        method: 'iitVerify',
+        base64Data: b64data,
+        base64Signature: b64Sign
+      })
+      me.down('component[ubID="resultData"]').setValue(JSON.stringify(resp, null, ' '))
     }
   }
 })
