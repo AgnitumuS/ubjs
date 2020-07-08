@@ -3,7 +3,8 @@
     class="u-file__dropzone"
     :class="{
       hover: dragging,
-      disabled
+      disabled,
+      'u-file__dropzone-border': border
     }"
     @dragleave.prevent.stop="dragging = false"
     @dragend.prevent.stop="dragging = false"
@@ -53,6 +54,14 @@ export default {
     accept: {
       type: String,
       default: ''
+    },
+
+    /**
+     * Display border
+     */
+    border: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -151,6 +160,10 @@ export default {
     line-height: 1;
     height: 100%;
     width: 100%;
+  }
+
+  .u-file__dropzone-border{
+    border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   }
 
   .u-file__dropzone-icon {
