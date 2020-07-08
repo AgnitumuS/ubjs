@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - new icons: `photo` and `scan-settings`
- - css class `.u-divider` to vertical split buttons or something else
- - `UFileMultiple`: [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UFile/UFileMultiple.vue)
- - Buttons components. Can be used as slots in: `UFile`, `UFileMultiple` or `UFileCollection`:  
+ - new css class `.u-divider` vertical split for buttons or something else
+ - new cmponent `UFileMultiple`: [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UFile/UFileMultiple.vue)
+ - new BLOB-store related buttons. Can be used as a slots in: `UFile`, `UFileMultiple` or `UFileCollection`:
    - `UFileAddButton` 
    - `UFileDownloadButton` 
    - `UFileRemoveButton` 
@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - `UFileScanSettingsButton` 
    - `UFileWebcamButton` 
    - `UFileFullscreenButton`
- `UTableEntity`: conditions `notEqual`, `notContains` for filters with type `Enum` and `Entity`
+ - `UTableEntity`: added conditions `notEqual`, `notContains` for filters with type `Enum` and `Entity`
 
 ### Changed
  - `UFile`: refactored [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UFile/UFile.vue)
