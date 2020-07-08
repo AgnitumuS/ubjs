@@ -296,6 +296,8 @@ UB.i18nExtend({
   range: 'Диапазон',
   contains: 'Дарбар мегирад',
   startWith: 'Оғоз бо',
+  notEqual: 'Не равняется',
+  notContains: 'Не содержит',
   attention: 'Огоҳ',
   doNotSelectedConfigName: 'Танзимот интихоб нашудааст',
   load: 'Зеркашӣ',

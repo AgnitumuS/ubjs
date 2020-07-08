@@ -297,6 +297,8 @@ UB.i18nExtend({
   range: 'Диапазон',
   contains: 'Содержит',
   startWith: 'Начинается с',
+  notEqual: 'Не равняется',
+  notContains: 'Не содержит',
   attention: 'Внимание',
   doNotSelectedConfigName: 'Не выбрана конфигурация',
   load: 'Загрузить',

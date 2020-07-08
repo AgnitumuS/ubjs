@@ -295,6 +295,8 @@ UB.i18nExtend({
   range: 'Range',
   contains: 'Contains',
   startWith: 'Starting with',
+  notEqual: 'Not equal',
+  notContains: 'Not contains',
   attention: 'Attention',
   doNotSelectedConfigName: 'No configuration is selected',
   load: 'Load',

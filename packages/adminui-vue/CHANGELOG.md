@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - `UFileScanSettingsButton` 
    - `UFileWebcamButton` 
    - `UFileFullscreenButton`
+ `UTableEntity`: conditions `notEqual`, `notContains` for filters with type `Enum` and `Entity`
 
 ### Changed
  - `UFile`: refactored [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UFile/UFile.vue)

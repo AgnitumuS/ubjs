@@ -297,6 +297,8 @@ UB.i18nExtend({
   range: 'Діапазон',
   contains: 'Містить',
   startWith: 'Починається з',
+  notEqual: 'Не дорівнює',
+  notContains: 'Не містить',
   attention: 'Увага',
   doNotSelectedConfigName: 'Не вибрано конфігурацію',
   load: 'Завантажити',
