@@ -40,6 +40,7 @@
         ref="input"
         :accept="accept"
         :disabled="disabled"
+        :border="false"
         @upload="upload"
       />
     </template>

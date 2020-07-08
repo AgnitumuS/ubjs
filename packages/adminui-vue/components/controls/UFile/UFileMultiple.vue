@@ -45,6 +45,7 @@
         v-if="value.length === 0"
         multiple
         :accept="accept"
+        :border="false"
         @upload="upload"
       />
       <component
