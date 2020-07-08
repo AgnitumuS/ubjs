@@ -287,6 +287,8 @@ UB.i18nExtend({
   range: 'Diapazon',
   contains: 'Daxildir',
   startWith: 'Bundan başlayır',
+  notEqual: 'Not equal',
+  notContains: 'Not contains',
   attention: 'Diqqət',
   doNotSelectedConfigName: 'Konfiqurasiya seçilməyib',
   load: 'Yüklə',

@@ -295,6 +295,8 @@ UB.i18nExtend({
   range: 'რიგი',
   contains: 'მოიცავს',
   startWith: 'დაწყებული',
+  notEqual: 'Not equal',
+  notContains: 'Not contains',
   attention: 'ყურადღება',
   doNotSelectedConfigName: 'კონფიგურაციის არჩევა არ არის',
   load: 'ჩატვირთვა',

@@ -119,7 +119,15 @@ TypeProvider.registerType({
     isNull: {
       label: 'isNull',
       template: require('./filter-templates/entity/isNull.vue').default
-    }
+    },
+    notEqual: {
+      label: 'notEqual',
+      template: require('./filter-templates/entity/notEqual.vue').default
+    },
+    notContains: {
+      label: 'notContains',
+      template: require('./filter-templates/entity/notContains.vue').default
+    },
   }
 })
 
@@ -153,6 +161,14 @@ TypeProvider.registerType({
     isNull: {
       label: 'isNull',
       template: require('./filter-templates/enum/isNull.vue').default
+    },
+    notEqual: {
+      label: 'notEqual',
+      template: require('./filter-templates/enum/notEqual.vue').default
+    },
+    notContains: {
+      label: 'notContains',
+      template: require('./filter-templates/enum/notContains.vue').default
     }
   }
 })
