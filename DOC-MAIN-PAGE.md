@@ -27,7 +27,7 @@ From the low level point of view UnityBase is a asynchronous non-blocking HTTP(S
 
 ![UB5 Server Architecture](server-v5/img/UB-Server-Architecture-v5.png) 
 
-Form a developer point of view UnityBase is:
+From a developer point of view UnityBase is:
  - An DBMS agnostic ORM what work over application Domain metadata
  - A set of tools for
    - synchronizing a physical database structure with Domain metadata
