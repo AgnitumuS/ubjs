@@ -10,7 +10,7 @@ if (!fs.existsSync(moduleName)) {
 } else {
   binding = require(moduleName)
 }
-let UBMail = module.exports
+const UBMail = module.exports
 /**
  * The module for sending and receiving mail
  * @module @unitybase/mailer
@@ -32,7 +32,7 @@ UBMail.TubMailReceiver = binding.TubMailReceiver
  */
 UBMail.TubMailSender = binding.TubMailSender
 
-let _bt = binding.TubSendMailBodyType
+const _bt = binding.TubSendMailBodyType || {}
 /**
  * Mail body type
  * @enum
@@ -43,7 +43,7 @@ UBMail.TubSendMailBodyType = {
   Calendar: _bt.Calendar
 }
 
-let _ac = binding.TubSendMailAttachKind
+const _ac = binding.TubSendMailAttachKind || {}
 /**
  * Mail attach kind
  * @enum
@@ -70,13 +70,13 @@ UBMail.getBodyFromMessage = function () {
  */
 UBMail.getBodyPart = function (message) {
   function bodyPartDeep (part) {
-    let subPart = part.subPart
-    let L = subPart.length
+    const subPart = part.subPart
+    const L = subPart.length
     if (L === 0) {
       return part
     } else {
       for (let i = 0; i < L; i++) {
-        let pi = subPart[i]
+        const pi = subPart[i]
         if (pi.disposition !== 'ATTACHMENT') {
           return bodyPartDeep(pi)
         }

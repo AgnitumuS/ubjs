@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - elementUI theme build is moved out of "build" script (into "build:el-node11" job). Compiled element theme is added into git.
+  This allows to bootstrap a ubjs project using node>11.
 
 ### Deprecated
 
@@ -20,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - new icons: `photo` and `scan-settings`
  - new css class `.u-divider` vertical split for buttons or something else
- - new cmponent `UFileMultiple`: [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UFile/UFileMultiple.vue)
+ - new component `UFileMultiple`: [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/controls/UFile/UFileMultiple.vue)
  - new BLOB-store related buttons. Can be used as a slots in: `UFile`, `UFileMultiple` or `UFileCollection`:
    - `UFileAddButton` 
    - `UFileDownloadButton` 

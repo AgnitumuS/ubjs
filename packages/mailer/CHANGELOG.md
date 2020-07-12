@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+  - remove exception `_bt is not defined` in case `@unitybase/mailer` is not compiled (lerna bootstrap on the machine where
+   fpc is not installed). In this case server output warning `UBMail is not compiled` to console and continue execution.  
 
 ## [5.2.2] - 2020-06-14
 ## [5.2.1] - 2020-03-09
