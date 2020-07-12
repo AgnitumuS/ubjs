@@ -191,7 +191,7 @@ Ext.define('UB.core.UBApp', {
           window.localStorage.setItem(UB.LDS_KEYS.USER_DID_LOGOUT, 'true')
           throw new UB.UBAbortError('Invalid credential (isRepeat === true)')
         }
-        let silenceKerberos = (window.localStorage.getItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true')
+        const silenceKerberos = (window.localStorage.getItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true')
         me.credeltionalRequireCount++
         const HAS_NEGOTIATE = (conn.authMethods.indexOf('Negotiate') >= 0)
         if (silenceKerberos && (me.credeltionalRequireCount > 16) && HAS_NEGOTIATE) {
@@ -270,9 +270,9 @@ Ext.define('UB.core.UBApp', {
     }).then(function (connection) {
       me.connection = connection
       me.ubNotifier = connection.ubNotifier
-      let myLocale = connection.preferredLocale
+      const myLocale = connection.preferredLocale
       me.domainInfo = connection.domain
-      let orderedModels = me.domainInfo.orderedModels
+      const orderedModels = me.domainInfo.orderedModels
 
       // for each model configure Ext.loader
       orderedModels.forEach(function (model) {
@@ -300,7 +300,7 @@ Ext.define('UB.core.UBApp', {
     }).then(function () {
       return UB.core.UBDataLoader.loadStores({
         ubRequests: ['ubm_form', 'ubm_enum'].map(function (item) {
-          let res = { entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames() }
+          const res = { entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames() }
           return res
         }),
         setStoreId: true
@@ -507,8 +507,8 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * @returns {Promise<UBNativePDFSign>}
    */
   pdfSigner: function () {
-    let i = 'import'
-    let moduleName = '@ub-e/nm-pdfsign' + (window.isDeveloperMode ? '' : '/dist/nm-pdfsign.min.js')
+    const i = 'import'
+    const moduleName = '@ub-e/nm-pdfsign' + (window.isDeveloperMode ? '' : '/dist/nm-pdfsign.min.js')
     // System[i] is required for preventing webpack to include a ub-e/nm-pdfsigner to the bundle
     return SystemJS[i](moduleName).then(function (nmPDFSignerModule) {
       return nmPDFSignerModule.connect()
@@ -520,8 +520,8 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * @returns {Promise<UBNativeDocEdit>} resolved to initialized UBNativeDocEdit instance
    */
   docEdit: function () {
-    let i = 'import'
-    let moduleName = '@ub-e/nm-docedit' + (window.isDeveloperMode ? '' : '/dist/nm-docedit.min.js')
+    const i = 'import'
+    const moduleName = '@ub-e/nm-docedit' + (window.isDeveloperMode ? '' : '/dist/nm-docedit.min.js')
     // System[i] is required for preventing webpack to include a ub-e/nm-docedit to the bundle
     return SystemJS[i](moduleName).then(function (nmDocEditModule) {
       return nmDocEditModule.connect()
@@ -546,8 +546,8 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * @return {Promise<UBNativeScanner>}
    */
   scanService: function () {
-    let i = 'import'
-    let moduleName = '@ub-e/nm-scanner' + (window.isDeveloperMode ? '' : '/dist/nm-scanner.min.js')
+    const i = 'import'
+    const moduleName = '@ub-e/nm-scanner' + (window.isDeveloperMode ? '' : '/dist/nm-scanner.min.js')
     // System[i] is required for preventing webpack to include a ub-e/nm-scanner to the bundle
     return SystemJS[i](moduleName).then(function (nmScannerModule) {
       return nmScannerModule.connect()
@@ -588,11 +588,11 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       'image/jpeg': 'JPEG',
       'application/jpg': 'JPEG'
     }
-    let outputFormat = mimeToOutputFormat[documentMIME]
+    const outputFormat = mimeToOutputFormat[documentMIME]
     return $App.scanService().then(function (scanner) {
       $App.__scanService = scanner
       let allowAddPages = false
-      let statusWindow = Ext.create('UB.view.StatusWindow', {
+      const statusWindow = Ext.create('UB.view.StatusWindow', {
         title: header
       })
 
@@ -649,7 +649,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       }
 
       return scanner.getDefaultSettings().then(function (defaultParams) {
-        let scanSettings = _.merge(defaultParams, config || {})
+        const scanSettings = _.merge(defaultParams, config || {})
         if (!scanSettings) {
           throw new UB.UBError(UB.format(UB.i18n('setScannerSettings'), '$App.scannerSettings(); '))
         }
@@ -690,7 +690,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
           })
         })
     }).then(function (scannedResult) {
-      const recognitionEndpoint = $App.connection.appConfig.uiSettings.adminUI['recognitionEndpoint']
+      const recognitionEndpoint = $App.connection.appConfig.uiSettings.adminUI.recognitionEndpoint
 
       /**
        * Converts scanned images to PDF and recognizes it.
@@ -851,31 +851,31 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    *
    * @param {Number|String} shortcutIDOrCode Either shortcut ID or shortcut code to run
    * @param {Boolean} inWindow Show a command result in window instead of tab
+   *
+   * @returns {Promise}
    */
-  runShortcutCommand: function (shortcutIDOrCode, inWindow) {
+  async runShortcutCommand (shortcutIDOrCode, inWindow) {
     let shortcutID = shortcutIDOrCode
     if (typeof shortcutIDOrCode !== 'number') {
-      let store = UB.core.UBStoreManager.getNavigationShortcutStore()
-      let rowNum = store.findExact('code', shortcutIDOrCode)
+      const store = UB.core.UBStoreManager.getNavigationShortcutStore()
+      const rowNum = store.findExact('code', shortcutIDOrCode)
       if (rowNum !== -1) {
         shortcutID = store.getAt(rowNum).get('ID')
       } else {
         throw new Error(`Shortcut with code ${shortcutIDOrCode} not found`)
       }
     }
-    let cmdCodePromise = UB.core.UBStoreManager.getNavshortcutCommandText(shortcutID)
-    cmdCodePromise.then(function (parsedCmdCode) {
-      if (parsedCmdCode === null) {
-        console.warn(`Command for shortcut ${shortcutIDOrCode} is empty or this is empty folder`)
-        return
-      }
-      let commandConfig = _.clone(parsedCmdCode)
-      if (!inWindow) {
-        commandConfig.tabId = 'navigator' + shortcutID
-        commandConfig.target = $App.viewport.centralPanel
-      }
-      $App.doCommand(commandConfig)
-    })
+    const parsedCmdCode = await UB.core.UBStoreManager.getNavshortcutCommandText(shortcutID)
+    if (parsedCmdCode === null) {
+      console.warn(`Command for shortcut ${shortcutIDOrCode} is empty or this is empty folder`)
+      return
+    }
+    const commandConfig = _.clone(parsedCmdCode)
+    if (!inWindow) {
+      commandConfig.tabId = 'navigator' + shortcutID
+      commandConfig.target = $App.viewport.centralPanel
+    }
+    $App.doCommand(commandConfig)
   },
 
   /**
@@ -948,7 +948,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * Logout active user. Reload page.
    */
   logout: function () {
-    let p = this.connection ? this.connection.logout() : Promise.resolve(true)
+    const p = this.connection ? this.connection.logout() : Promise.resolve(true)
     p.catch(() => true).then(function () {
       // MPV TODO Secure browser
       // if (UB.isSecureBrowser) {

@@ -62,21 +62,19 @@ Ext.define('UB.core.UBStoreManager', {
   /**
    * Load a nav. shortcut command text from cache or from server
    * @param {number} shortcutID
-   * @return {Promise}
+   * @return {Promise} command code
    */
-  getNavshortcutCommandText: function (shortcutID) {
-    var cmdCode = UB.core.UBStoreManager.shortcutCommandCache[shortcutID]
-    var cmdCodePromise
+  async getNavshortcutCommandText (shortcutID) {
+    const cmdCode = UB.core.UBStoreManager.shortcutCommandCache[shortcutID]
     if (cmdCode) {
-      cmdCodePromise = Promise.resolve(cmdCode)
+      return cmdCode
     } else {
-      const me = this
-      cmdCodePromise = UB.Repository('ubm_navshortcut').attrs(['ID', 'cmdCode', 'caption', 'code']).where('ID', '=', shortcutID)
-        .selectSingle().then(function (cmd) {
-          return me.updateNavshortcutCacheForItem(cmd)
-        })
+      return UB.Repository('ubm_navshortcut')
+        .attrs(['ID', 'cmdCode', 'caption', 'code'])
+        .where('ID', '=', shortcutID)
+        .selectSingle()
+        .then(this.updateNavshortcutCacheForItem)
     }
-    return cmdCodePromise
   },
   /**
    *
