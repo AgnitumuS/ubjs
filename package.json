@@ -3,8 +3,8 @@
   "private": true,
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs",
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/preset-env": "^7.9.6",
+    "@babel/core": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
     "babel-loader": "^8.1.0",
     "clean-css-cli": "^4.3.0",
     "cross-env": "^6.0.3",
@@ -14,17 +14,17 @@
     "exports-loader": "^0.6.3",
     "file-loader": "^3.0.1",
     "imports-loader": "^0.7.0",
-    "lerna": "^3.20.2",
-    "lodash": "^4.17.15",
+    "lerna": "^3.22.1",
+    "lodash": "^4.17.19",
     "mini-css-extract-plugin": "^0.5.0",
     "shx": "^0.2.2",
     "standard": "^14.3.4",
     "style-loader": "^0.18.2",
-    "uglify-js": "^3.9.2",
+    "uglify-js": "^3.10.0",
     "uglifycss": "*",
     "webpack": "^4.43.0",
-    "webpack-bundle-analyzer": "^3.7.0",
-    "webpack-cli": "^3.3.11"
+    "webpack-bundle-analyzer": "^3.8.0",
+    "webpack-cli": "^3.3.12"
   },
   "scripts": {
     "clean": "lerna clean --yes",
@@ -39,7 +39,7 @@
     "npm": "^5"
   },
   "dependencies": {
-    "@unitybase/ub-migrate": "^1.13.1",
+    "@unitybase/ub-migrate": "^1.14.1",
     "core-js": "^3.6.5",
     "ub-jsdoc": "^2.3.4"
   }
