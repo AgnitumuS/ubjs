@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UFileWebcamButton` prevent error on iOS (Safari) `getUserMedia of undefined`
 
 ## [1.11.12] - 2020-07-08
 ### Added
