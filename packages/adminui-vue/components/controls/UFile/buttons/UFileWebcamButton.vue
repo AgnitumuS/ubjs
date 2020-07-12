@@ -97,7 +97,11 @@ export default {
 
   computed: {
     isDisabled () {
-      return !('getUserMedia' in navigator) || this.instance.file || this.instance.disabled
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        return this.instance.file || this.instance.disabled
+      }
+
+      return false
     }
   },
 

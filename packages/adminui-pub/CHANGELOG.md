@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - correct rerender layout after window orientation changed in Safari(iOS)
 
 ## [5.13.24] - 2020-07-08
 ### Changed

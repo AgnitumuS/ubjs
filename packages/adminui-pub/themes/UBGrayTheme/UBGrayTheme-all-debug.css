@@ -4892,9 +4892,12 @@ svg {
   margin: 0;
   padding: 0;
   border: 0 none;
-  overflow: hidden;
   height: 100%;
-  position: static;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
 }
 
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/window/Window.scss */
