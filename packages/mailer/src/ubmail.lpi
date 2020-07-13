@@ -58,7 +58,6 @@
               <ShowHints Value="False"/>
             </Verbosity>
             <WriteFPCLogo Value="False"/>
-            <CustomOptions Value="-dSM52"/>
           </Other>
         </CompilerOptions>
       </Item2>
@@ -69,9 +68,9 @@
             <Filename Value="../bin/$(TargetCPU)/"/>
           </Target>
           <SearchPaths>
-            <IncludeFiles Value="../../../../ub-server/libs/Synopse/SyNode;../../../../ub-server/libs/Synopse;../../../../ub-server/libs/synapse40/source/lib;$(ProjOutDir)"/>
+            <IncludeFiles Value="../../../../ub-server/libs/Synopse/SyNode;../../../../ub-server/libs/Synopse;../../../../ub-server/libs/synapse40/source/lib;../../../../ub-server/libs/lazutils;$(ProjOutDir)"/>
             <Libraries Value="../../../../ub-server/bin/fpc-linux"/>
-            <OtherUnitFiles Value="../../../../ub-server/libs/Synopse/SyNode;../../../../ub-server/libs/Synopse;../../../../ub-server/libs/Synopse/SQLite3;../../../../ub-server/libs/synapse40/source/lib"/>
+            <OtherUnitFiles Value="../../../../ub-server/libs/Synopse/SyNode;../../../../ub-server/libs/Synopse;../../../../ub-server/libs/Synopse/SQLite3;../../../../ub-server/libs/synapse40/source/lib;../../../../ub-server/libs/lazutils"/>
             <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Conditionals Value="// check compilation executed under windows
@@ -108,7 +107,7 @@ end;"/>
               <ShowHints Value="False"/>
             </Verbosity>
             <WriteFPCLogo Value="False"/>
-            <CustomOptions Value="-dSM52"/>
+            <CustomOptions Value="-dFPC_SYNCMEM"/>
           </Other>
         </CompilerOptions>
       </Item3>
@@ -122,11 +121,6 @@ end;"/>
         <Mode0 Name="default"/>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="1">
-      <Item1>
-        <PackageName Value="LazUtils"/>
-      </Item1>
-    </RequiredPackages>
     <Units Count="2">
       <Unit0>
         <Filename Value="ubmail.dpr"/>
