@@ -16,71 +16,78 @@
 
 ## Включение и настройка подсистемы для сервиса
 В конфигурационном файле UB:
-Подключить модель UBS.
+Подключить модель UBS:  
+```json
+"domainConfigs": {
+    "AppName": {
+        "models": {
+            "UBS": { "path": "UB\\models\\UBS" }
+         }
+    }
+}       
+```
 
-      	"domainConfigs": {
-		"AppName": {
-			"models": {
-				"UBS": 		{ "path": "UB\\models\\UBS" }
-			 }
-            	 }
-        }       
+Если модель подключают к существующему приложению выполнить ее инициализацию:  
+```shell script
+ub cmd/initialize -m UBS
+```
 
-Если модель подключают к существующему приложению выполнить ее инициализацию:
-
-      >ub cmd/initialize -m UBS
-
-В секцию конфига `application.uiSettings.adminUI` добавить `messenger.enabled: true`:
-
-        "uiSettings": {
-            "adminUI": {
-                ...
-                "messenger": {
-                    "enabled": true
-                }
-                ...
-            },
-            ...
-        },
-
-Подключить на верхнюю панель виджет `UBS.MessageBar`:
-
-      $App.on('buildMainMenu', function (items) {
-          items.push(
-              Ext.create('UBS.MessageBar'),
-          );
-      });
- 
-Создать ярлык для реестра сообщений (создается автоматом при инициализации модели `UBS`):
-
-       {"cmdType": "showList",
-        "cmdData":{ 
-            "params":[{ 
-                "entity": "ubs_message_edit", 
-                 "method": "select", 
-                 "fieldList": ["messageBody", "messageType", "complete", "startDate", "expireDate"]         
-            }]
+В секцию конфига `application.uiSettings.adminUI` добавить `messenger.enabled: true`:  
+```json
+"uiSettings": {
+    "adminUI": {
+        ...
+        "messenger": {
+            "enabled": true
         }
-       }
+        ...
+    },
+    ...
+},
+```
+
+Подключить на верхнюю панель виджет `UBS.MessageBar`:    
+```javascript
+$App.on('buildMainMenu', function (items) {
+  items.push(
+      Ext.create('UBS.MessageBar'),
+  );
+});
+```
+
+Создать ярлык для реестра сообщений (создается автоматом при инициализации модели `UBS`):  
+```json
+{
+    "cmdType": "showList",
+    "cmdData":{ 
+        "params":[{ 
+            "entity": "ubs_message_edit", 
+             "method": "select", 
+             "fieldList": ["messageBody", "messageType", "complete", "startDate", "expireDate"]         
+        }]
+    }
+}
+```
 
 Добавить шедулер для периодической проверки наличия сообщений к отправке и рассылки нотификаций.
-Поправить файл `schedulers\schedulers.json` в корне приложения, добавив блок (для примера - раз в 10 минут):
-
-        "ubs_messages": {
-            "enabled": true,
-            "ownerUser": "admin",
-            "runcmd": "ubs_message_edit.notifyAllRecipients",
-            "useDaysOf": "Month",
-            "daysOfMonth": [],
-            "allMonthDays": true,
-            "lastMonthDay": true,
-            "daysOfWeek": [],
-            "timePeriodic": "Periodic",
-            "timeList": [],
-            "timePeriodicHour": 0,
-            "timePeriodicMinute": 10,
-            "name": "ubs_messages"
-        }
+Поправить файл `schedulers\schedulers.json` в корне приложения, добавив блок (для примера - раз в 10 минут):  
+```json
+"ubs_messages": {
+    "enabled": true,
+    "ownerUser": "admin",
+    "runcmd": "ubs_message_edit.notifyAllRecipients",
+    "useDaysOf": "Month",
+    "daysOfMonth": [],
+    "allMonthDays": true,
+    "lastMonthDay": true,
+    "daysOfWeek": [],
+    "timePeriodic": "Periodic",
+    "timeList": [],
+    "timePeriodicHour": 0,
+    "timePeriodicMinute": 10,
+    "name": "ubs_messages"
+}
+```
 
 При этом если создавать сообщения, указывая в качестве "Действително с" текущую дату-время, нотификации на такие сообщения
 уйдут мгновенно (отработает обработчик `ubs_message_edit.on('update:after')`).

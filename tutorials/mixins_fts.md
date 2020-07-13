@@ -21,69 +21,72 @@
 
 ## Включение FTS для приложения
 
- **Ниже приведены примеры для приложения `autotest`**
+**Ниже приведены примеры для приложения `autotest`**
 
- Включаем FTS на уровне приложения, добавив в конфиг (`ubConfig.json`) опцию `fts.enabled: true`:
+Включаем FTS на уровне приложения, добавив в конфиг (`ubConfig.json`) опцию `fts.enabled: true`:  
+```json
+"application": {
+        ......
+        "fts": {
+            "enabled": true
+        },
+}
+```
 
-        	"application": {
-                    ......
-                    "fts": {
-                        "enabled": true
-                    },
-       		}
+Добавляем коннекшин для SQLite БД полнотекстового поиска. Имя соединения по умолчанию `ftsDefault`:  
+```json
+"application": {
+       ......
+       "fts": {
+           "enabled": true,
+       },
+       .....
+       "connections": [{
+            "name": "ftsDefault", 
+                "driver": "SQLite3",
+                "dialect": "SQLite3",
+                "databaseName": "./fts/autotestFTS.ftsdb",
+                "supportLang": ["uk"],
+                "advSettings": "Synchronous=Off,Tokenizer=stemka,TokenizerParams=\"stem=yes\""
+            },
+           ......
+       ]
+}
+```
 
- Добавляем коннекшин для SQLite БД полнотекстового поиска. Имя соединения по умолчанию `ftsDefault`:
+При необходимости можно определить несколько полнотекстовых БД(конекшинов), при этом в описании миксинов сущности необходимо указывать имена соответствующих соединений.
 
-        "application": {
-               ......
-               "fts": {
-                   "enabled": true,
-               },
-               .....
-               "connections": [{
-                   	"name": "ftsDefault", 
-                       	"driver": "SQLite3",
-                      	"dialect": "SQLite3",
-                      	"databaseName": "./fts/autotestFTS.ftsdb",
-                       	"supportLang": ["uk"],
-                       	"advSettings": "Synchronous=Off,Tokenizer=stemka,TokenizerParams=\"stem=yes\""
-                    },
-                   ......
-               ]
-     	}
+Пример добавление второго конекшена:  
+```json
+"application": {
+        ......
+        "fts": {
+            "enabled": true,
+        },
+        .....
+        "connections": [{
+            "name": "ftsDefault",
+            "driver": "SQLite3",
+            "dialect": "SQLite3",
+            "databaseName": "./fts/autotestFTS.ftsdb",
+            "supportLang": ["uk"],
+            "advSettings": "Synchronous=Off,Tokenizer=stemka,TokenizerParams=\"stem=yes\""
+        }, {
+            "name": "ftsSubjectSearch",
+            "driver": "SQLite3",
+            "dialect": "SQLite3",
+            "databaseName": "./fts/autotestFTSSubjectSearch.ftsdb",
+            "supportLang": ["uk"],
+            "advSettings": "Synchronous=Off,Tokenizer=stemka,TokenizerParams=\"stem=yes\""
+        },
+        .....
+        ]
+}
+```
 
- При необходимости можно определить несколько полнотекстовых БД(конекшинов), при этом в описании миксинов сущности необходимо указывать имена соответствующих соединений.
+В миксине сущности соответствующее соединение второго конекшена наглядно указываем через `"connectionName": "ftsSubjectSearch"`
 
- Пример добавление второго конекшена:
- 
-		"application": {
-                ......
-                "fts": {
-                    "enabled": true,
-                },
-                .....
-                "connections": [{
-                    "name": "ftsDefault",
-                    "driver": "SQLite3",
-                    "dialect": "SQLite3",
-                    "databaseName": "./fts/autotestFTS.ftsdb",
-                    "supportLang": ["uk"],
-                    "advSettings": "Synchronous=Off,Tokenizer=stemka,TokenizerParams=\"stem=yes\""
-                }, {
-                    "name": "ftsSubjectSearch",
-                    "driver": "SQLite3",
-                    "dialect": "SQLite3",
-                    "databaseName": "./fts/autotestFTSSubjectSearch.ftsdb",
-                    "supportLang": ["uk"],
-                    "advSettings": "Synchronous=Off,Tokenizer=stemka,TokenizerParams=\"stem=yes\""
-                },
-                .....
-                ]
-        }
-
- В миксине сущности соответствующее соединение второго конекшена наглядно указываем через `"connectionName": "ftsSubjectSearch"`
- 
- **Важно: **
+**Важно: **
 
  - БД полнотекста должны располагаться на **локальной** к серверу приложений файловой системе (желательно SSD)
  - Рекомендуется называть файл БД начиная с имени приложения
@@ -115,17 +118,18 @@ SQLite БД полнотекстового поиска, т.к. токенайз
   
 ## Добавление сущностей в полнотекстовый поиск
 
-Для добавления сущности в полнотекстовый поиск необходимо в meta файле сущности сконфигурировать миксин fts.
-`myEntity.meta`:
-
-        "mixins": {
-            ....
-            "fts": {
-                "dataProvider": "Mixin",
-                "scope": "Connection",
-                "indexedAttributes": ["code", "description"],
-                "dateAttribute": "docDate"
-            }
+Для добавления сущности в полнотекстовый поиск необходимо в meta файле сущности сконфигурировать миксин fts.  
+`myEntity.meta`:  
+```json
+"mixins": {
+    ....
+    "fts": {
+        "dataProvider": "Mixin",
+        "scope": "Connection",
+        "indexedAttributes": ["code", "description"],
+        "dateAttribute": "docDate"
+    }
+```
 
 
 В примере выше мы для сущности `myEntity`:
@@ -148,17 +152,20 @@ SQLite БД полнотекстового поиска, т.к. токенайз
  - база с полнотекстовым индексом потеряна
 
 В таком случае необходимо воспользоваться утилитой командной строки `cmd/ftsReindex`.
-Пример перестройки всего индекса приложения для `autotest`:
-
-	ub cmd/ftsReindex -c ftsDefault -u admin -p admin -host http://127.0.0.1:888/autotest
+Пример перестройки всего индекса приложения для `autotest`:  
+```shell script
+ub cmd/ftsReindex -c ftsDefault -u admin -p admin -host http://127.0.0.1:888/autotest
+```
 	
-или так (с указаниме файла конфигурации):
+или так (с указаниме файла конфигурации):  
+```shell script
+ub cmd/ftsReindex -c ftsDefault -u admin -p admin -cfg ubConfig.json
+```
 
-	ub cmd/ftsReindex -c ftsDefault -u admin -p admin -cfg ubConfig.json
-
-Детальнее см. справку по команде:
-	
-	ub cmd/ftsReindex -help
+Детальнее см. справку по команде:  
+```shell script
+ub cmd/ftsReindex -help
+```
 
 ## Настройка асинхронной реиндексации
  Обновление (update) одной записи в полнотекстовом индексе - очень быстрая операция (порядка микросекунд). 
@@ -175,67 +182,71 @@ SQLite БД полнотекстового поиска, т.к. токенайз
             
 ### Включаем асинхронное обновление полнотекста
 
-На уровне приложения, в конфиг (`ubConfig.json`) добавляем опцию `fts.async: true`:
-
-        "application": {
-                    ......
-                    "fts": {
-                        "enabled": true,
-                        "async": true
-                    },
-                    .....
-                    "connections": {
-                        ......
-                    }
-        }
+На уровне приложения, в конфиг (`ubConfig.json`) добавляем опцию `fts.async: true`:  
+```json
+"application": {
+    ......
+    "fts": {
+        "enabled": true,
+        "async": true
+    },
+    .....
+    "connections": {
+        ......
+    }
+}
+```
 
 В перечне моделей `domainConfigs` дожна быть добавлена модель **UBQ**
 
 ### Настраиваем планировщик
 Добавляем новую задачу в планировщик для переодического обновление индекса, например раз в 10 минут 
-в конфигарационный файл планировщика `\Autotest\schedulers\schedulers.json`:
- 
-        {
-            ....,
-            "fts":{
-                 "enabled": true,
-                 "ownerUser": "admin",
-                 "runcmd": "UB.UBQ.FTSReindexFromQueue",
-                 "useDaysOf": "Month",
-                 "daysOfMonth": [],
-                 "allMonthDays": true,
-                 "lastMonthDay": true,
-                 "daysOfWeek": [],
-                 "timePeriodic": "Periodic",
-                 "timeList": [],
-                 "timePeriodicHour": 0,
-                 "timePeriodicMinute": 10,
-                 "name": "fts"
-            }
-        }
-        
-Включаем планировщик на уровне приложения:
- 
-        "enabledSchedulers": true,
-    	
+в конфигарационный файл планировщика `\Autotest\schedulers\schedulers.json`:  
+```json
+{
+    ....,
+    "fts":{
+         "enabled": true,
+         "ownerUser": "admin",
+         "runcmd": "UB.UBQ.FTSReindexFromQueue",
+         "useDaysOf": "Month",
+         "daysOfMonth": [],
+         "allMonthDays": true,
+         "lastMonthDay": true,
+         "daysOfWeek": [],
+         "timePeriodic": "Periodic",
+         "timeList": [],
+         "timePeriodicHour": 0,
+         "timePeriodicMinute": 10,
+         "name": "fts"
+    }
+}
+```
+
+Включаем планировщик на уровне приложения:  
+```json
+"enabledSchedulers": true,
+``` 
     	
 ## Програмное использование полнотекстового поиска
  
 ### Поиск по конкретной сущности
-Поиск по конкретной сущности - используем условие `match` в `where`:
+Поиск по конкретной сущности - используем условие `match` в `where`:  
+```javascript
+UB.Repository('myEntity').attrs(["ID", "code"])
+    .where('', 'match', 'республіка')
+    .selectAsObject()
+    .then(UB.logDebug);
+```
 
-    UB.Repository('myEntity').attrs(["ID", "code"])
-        .where('', 'match', 'республіка')
-        .selectAsObject()
-        .then(UB.logDebug);
-
-С добавлением условий на другие атрибуті сущности (в нанном примере - docDate):
-
-    UB.Repository('tst_document').attrs("ID")
-        .where('', 'match', 'Україна')
-        .where('docDate', '<', new Date(2015, 02, 13))
-        .selectAsArray()
-        .then(UB.logDebug);
+С добавлением условий на другие атрибуті сущности (в данном примере - docDate):  
+```javascript
+UB.Repository('tst_document').attrs("ID")
+    .where('', 'match', 'Україна')
+    .where('docDate', '<', new Date(2015, 02, 13))
+    .selectAsArray()
+    .then(UB.logDebug);
+```
 
 Оба примера выше выполняются в 2 этапа:
 
@@ -252,16 +263,17 @@ SQLite БД полнотекстового поиска, т.к. токенайз
 При подключении fts в сущностях, и указании атрибутов для индексирования, создается таблица в файле полнотекстового поиска, которая содержит индексируемые данные
 ![FTSIndexedData](img/FTSIndexedData.png)
 
-Поиск по всем сущностям в данном конекшине - используем метод `fts_ftsDefault.fts`:
-
-    $App.connection.run({
-        entity: "fts_ftsDefault",
-        method: "fts",
-        fieldList: ["ID", "entity", "entitydescr", "snippet"],
-        whereList: {match: {condition: "match", values: {"any": "Україна"}}},
-        options: {limit: 100, start: 0}
-    })
-    .then(function(result){...});
+Поиск по всем сущностям в данном конекшине - используем метод `fts_ftsDefault.fts`:  
+```javascript
+$App.connection.run({
+    entity: "fts_ftsDefault",
+    method: "fts",
+    fieldList: ["ID", "entity", "entitydescr", "snippet"],
+    whereList: {match: {condition: "match", values: {"any": "Україна"}}},
+    options: {limit: 100, start: 0}
+})
+.then(function(result){...});
+```
 
 Но также можно указывать конкретную сущность `tst_incDocument`, используя метод `fts`
 
@@ -287,81 +299,83 @@ SQLite БД полнотекстового поиска, т.к. токенайз
 
 ### Создание своего поиска на форме
 Пример создания своего поля поиска с использованием `fts` по аналогии с виджетом `UB.view.FullTextSearchWidget`:
- - Создаем строку для ввода данных:
-	
-	var me = this;
+ - Создаем строку для ввода данных:  
+    ```javascript
+    var me = this;
 	me.textBox = Ext.create('Ext.form.field.Text', {
-            enableKeyEvents: true,
-            fieldLabel: UB.i18n('myFieldLabel'),
-            style: "color: black; border-width: 5px;",
-            fieldStyle: "border-width: 0px;",
-            listeners: {
-                keyup: function(sender, e){
-                    if (e.getKey() === e.ENTER){
-                        me.buttonClick();
-                    }
-                },
-                scope: me
-            }
+        enableKeyEvents: true,
+        fieldLabel: UB.i18n('myFieldLabel'),
+        style: "color: black; border-width: 5px;",
+        fieldStyle: "border-width: 0px;",
+        listeners: {
+            keyup: function(sender, e){
+                if (e.getKey() === e.ENTER){
+                    me.buttonClick();
+                }
+            },
+            scope: me
+        }
+    });
+    ```
+ - Если необходимо, создаем кнопку-иконку поиска:  
+    ```javascript
+    me.button = Ext.create('Ext.button.Button',{
+        border: false,
+        margin: 3,
+        padding: 1,
+        style: {backgroundColor: 'white'},
+        iconCls: 'u-icon-search',
+        handler: me.buttonClick,
+        scope: me
         });
+    ```
+ -  Добавляем в нужное место на форме:  
+    ```json
+    {
+       xtype: 'panel',
+       layout: 'hbox',
+       style: {
+           background: "white"
+       },
+       items: [
+           me.textBox,
+           me.button
+       ]
+    }
+    ```
  
- - Если необходимо, создаем кнопку-иконку поиска:
- 
-        me.button = Ext.create('Ext.button.Button',{
-                border: false,
-                margin: 3,
-                padding: 1,
-                style: {backgroundColor: 'white'},
-                iconCls: 'u-icon-search',
-                handler: me.buttonClick,
-                scope: me
-            });
-		
- -  Добавляем в нужное место на форме:
- 
-        {
-           xtype: 'panel',
-           layout: 'hbox',
-           style: {
-               background: "white"
-           },
-           items: [
-               me.textBox,
-               me.button
-           ]
-        }
- 
- - Используем поиск по всем сущностям или конкретно указанной (см. `Поиск по всем сущностям одного индекса`)
-	
-        buttonClick: function() {
-            ...
-            $App.connection.run({
-                entity: "fts_ftsDefault",
-                method: "fts",
-                fieldList: ["ID", "entity", "entitydescr", "snippet"],
-                whereList: {match: {condition: "match", values: {"any": "Україна"}}},
-                options: {limit: 100, start: 0}
-            })
-            .then(function(result){...});
-            ...
-        }
-	
+ - Используем поиск по всем сущностям или конкретно указанной (см. `Поиск по всем сущностям одного индекса`):  
+    ```javascript
+    buttonClick: function() {
+        ...
+        $App.connection.run({
+            entity: "fts_ftsDefault",
+            method: "fts",
+            fieldList: ["ID", "entity", "entitydescr", "snippet"],
+            whereList: {match: {condition: "match", values: {"any": "Україна"}}},
+            options: {limit: 100, start: 0}
+        })
+        .then(function(result){...});
+        ...
+    }
+    ```
+
 ### Предварительная фильтрация справочника (автофильтр)
 При передачи на уровне команды `showList` параметра `autoFilter`
-(пример ярлыка):
-
-    {
-    	"cmdType": "showList",
-        "autoFilter": true,
-        "cmdData": {
-    		"params": [{
-                "entity": "tst_document",
-                "method": "select",
-                "fieldList": ["favorites.code", "docDate", "code", "description", "fileStoreSimple"]
-            }]
-    	}
+(пример ярлыка):  
+```json
+{
+    "cmdType": "showList",
+    "autoFilter": true,
+    "cmdData": {
+        "params": [{
+            "entity": "tst_document",
+            "method": "select",
+            "fieldList": ["favorites.code", "docDate", "code", "description", "fileStoreSimple"]
+        }]
     }
-
+}
+```
 для сущностей с миксином `fts` добавляется отдельная вкладка "Полнотекстовый поиск":
 ![FTSAutofilter](img/FTSAutofilter.png)
 

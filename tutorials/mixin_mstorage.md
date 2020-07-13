@@ -28,13 +28,14 @@ decrease it by 5$ to 85$ and save new amount.
     
 ### Implementation details
 #### Configuration
-To enable Optimistic locking for entity set `mixins.mStorage.simpleAudit` to `true` in entity *.meta file:
-
- 	"mixins": {
- 		"mStorage": {
- 			"simpleAudit": true
- 		}
- 	}
+To enable Optimistic locking for entity set `mixins.mStorage.simpleAudit` to `true` in entity *.meta file:  
+```json
+"mixins": {
+    "mStorage": {
+        "simpleAudit": true
+    }
+}
+```
 
 In this case 5 attributes will be added to entity (and 5 field to database by DDL generator):
 
@@ -47,27 +48,25 @@ In this case 5 attributes will be added to entity (and 5 field to database by DD
 #### Client (browser) side workflow
    
 While creation of form for editing record `adminUI` will check domain metadata and if `simpleAudit`
-is enabled will add attribute `mi_modifyDate` to the list of fields retrieved from server:
-
+is enabled will add attribute `mi_modifyDate` to the list of fields retrieved from server:  
 ```javascript
- let entity = $App.domainInfo.get(entityName)
- if (entity.mixins.mStorage && entity.mixins.mStorage.simpleAudit) {
+let entity = $App.domainInfo.get(entityName)
+if (entity.mixins.mStorage && entity.mixins.mStorage.simpleAudit) {
   attributes.push('mi_modifyDate') 
- }
+}
 ```
 
 While constructing of `update` query `adminUI` from will add value of `mi_modifyDate` to the execParams passed
-to server for update:
-
+to server for update:  
 ```javascript
- $App.connection.update({
-   entity: 'entityName',
-   execParams: {
-     ID: recordID,
-     attr1: 'new value',
-     mi_modifyDate: VALUE RETRIEVED ON SELECT 
-   }
- })
+$App.connection.update({
+    entity: 'entityName',
+    execParams: {
+        ID: recordID,
+        attr1: 'new value',
+        mi_modifyDate: VALUE RETRIEVED ON SELECT 
+    }
+})
 ```
 
 #### Server side workflow 
@@ -86,13 +85,14 @@ Developer can bypass optimistic locking by passing `__skipOptimisticLock` parame
 If soft deletion is enabled for mStorage mixin records not actually deleted by `delete` method, but marked as **deleted**.
 `Select` method will skip such "makred as deleted" records. 
   
-To enable soft deletion for entity set `mixins.mStorage.safeDelete` to `true` in entity *.meta file:
-
- 	"mixins": {
- 		"mStorage": {
- 			"safeDelete": true
- 		}
- 	}
+To enable soft deletion for entity set `mixins.mStorage.safeDelete` to `true` in entity *.meta file:  
+```json
+"mixins": {
+    "mStorage": {
+        "safeDelete": true
+    }
+}
+```
 
 In this case 2 attributes will be added to entity (and 2 field to database by DDL generator):
 

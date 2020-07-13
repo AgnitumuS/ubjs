@@ -107,32 +107,34 @@ With knowledge of a `secretWord` - something only client is know, we can calcula
 to every request what require authentication.
 
 After authentication all requests to a serve must include a `Authorization: UB signature` header,
-where `signature` is:
-
-    signature = hexa8(clientSessionID) + hexaTime + hexa8(crc32(sessionPrivateKey + secretWord + hexaTime));
+where `signature` is:  
+```javascript
+signature = hexa8(clientSessionID) + hexaTime + hexa8(crc32(sessionPrivateKey + secretWord + hexaTime));
+```
 
 Adding a time to a `signature` prevent from a relplay attack (server check time is growing in each request).
 
 For any request server MAY response with `401` - this mean session is expired and client must repeat the authorization.
 
-Authorization signature calculation (JavaScript):
+Authorization signature calculation (JavaScript):  
+```javascript
+function hexa8(value){
+    var num = parseInt(value, 10),
+        res = isNaN(num) ? '00000000' : num.toString(16);
+    while(res.length < 8) {
+        res = '0' + res;
+    }
+    return res;
+};
 
-    function hexa8(value){
-        var num = parseInt(value, 10),
-            res = isNaN(num) ? '00000000' : num.toString(16);
-        while(res.length < 8) {
-            res = '0' + res;
-        }
-        return res;
-    };
+function getSignature() {
+var
+    timeStampI = Math.floor(Date.now() /  1000),
+    hexaTime = hexa8(timeStampI);
 
-     function getSignature() {
-     var
-        timeStampI = Math.floor(Date.now() /  1000),
-        hexaTime = hexa8(timeStampI);
-
-        return  hexa(clientSessionID) + hexaTime + hexa8(crc32(sessionPrivateKey + secretWord + hexaTime));
-     }
+return  hexa(clientSessionID) + hexaTime + hexa8(crc32(sessionPrivateKey + secretWord + hexaTime));
+}
+```
 
 ## UnityBase Administration (UBA) model
 
@@ -165,18 +167,18 @@ Also developer can turn on "authentication not used" mode by comment `"authMetho
 Currently, implemented methods is EMail, SMS and TOTP (google authenticator). OTP can be generated using `uba_otp.generateOtp`
 method and verified using `uba_otp.authAndExecute` for EMail/SMS or `uba_otp.verifyTotp` for TOTP   
 
-TOTP sample
-```
-  // generate TOTP secret and store it for currently logged in user
-  uba_otp.generateOtp('TOTP') 
+TOTP sample:  
+```javascript
+// generate TOTP secret and store it for currently logged in user
+uba_otp.generateOtp('TOTP') 
 
-  // validate TOTP (6 digits passed from user)
-  let valid = uba_otp.verifyTotp('012345') // true/false
+// validate TOTP (6 digits passed from user)
+let valid = uba_otp.verifyTotp('012345') // true/false
 
-  // generate QR code for Google Authenticator for user with ID=userID
-  const totpLib = require('@unitybase/uba/modules/totp')
-  let secret = uba_otp.generateOtp('TOTP', userID)
-  let qrContent = totpLib.getTotpQRCodeData('My SuperApp', secret, 'My company name')
+// generate QR code for Google Authenticator for user with ID=userID
+const totpLib = require('@unitybase/uba/modules/totp')
+let secret = uba_otp.generateOtp('TOTP', userID)
+let qrContent = totpLib.getTotpQRCodeData('My SuperApp', secret, 'My company name')
 ```
 
 ### Password policy
@@ -225,9 +227,8 @@ Starting from UB5.18.1 under Linux UB use libldap (libldap-2.4.so.2) to verify a
 
 URLs in `ldapCatalogs` ubConfig section should
 be in format `protocol://server:post/DN` where DN is the Distinguished Name binddn to bind to the LDAP directory.
-`%` placeholder in DN will be replaced by user name (without domain part). Examples:
-
-```
+`%` placeholder in DN will be replaced by user name (without domain part). Examples:  
+```json
 "ldapCatalogs": [{
   "name": "COMPANY",
   "URL": "ldaps://company.ldap.server:636/%@company.com"
@@ -238,12 +239,12 @@ be in format `protocol://server:post/DN` where DN is the Distinguished Name bind
 ```
 
 Validity of URLs and ldap client configuration can be verified by `ldapsearch` utility:
- - for first catalogue (where user is `company\user01` )
-```
+ - for first catalogue (where user is `company\user01` ):  
+```shell script
 ldapsearch -W -H ldaps://company.ldap.server:636 -D "user01@company.com" -s sub "uid=user01"
 ``` 
- - for second catalogue (where user is `secondcompany\user02` )
-```
+ - for second catalogue (where user is `secondcompany\user02` ):  
+```shell script
 ldapsearch -W -H ldaps://secondcompany.ldap.server:636 -D "CN=user02,OU=users,OU=org,DC=secondcompany,DC=local" -s sub "uid=user02"
 ``` 
 
@@ -269,18 +270,19 @@ Additional LDAP configurations settings usually located in:
 
 ### Configuring for Windows (and Linux in case UB server < 5.18.1)
 Under Windows and under Linux in case UB version < 5.18.1 UB use libcurl to verify a user credential.
-Configuration example for Active Directory catalogue: 
-```
+Configuration example for Active Directory catalogue:  
+```json
 "ldapCatalogs": [{
   "name": "COMPANY",
   "URL": "ldaps://company.ldap.server:636/OU=MyCompany,DC=company,DC=com?cn?sub?(sAMAccountName=%)"
 }
 ```
 
-LDAP URL can be verified using curl command:
-```
+LDAP URL can be verified using curl command:  
+```shell script
 curl -v "ldaps://company.ldap.server:636/OU=MyCompany,DC=company,DC=com?cn?sub?(sAMAccountName=user01)" -u company\\user01
-```   
+```
+
 `-v` switch means verbosely. This mode can be used for diagnostic.
 
 See also `CAPath` and `ignoreSSLCertificateErrors` parameters in [ubConfig schema](https://unitybase.info/docson/index.html#https://unitybase.info/models/UB/schemas/ubConfig.schema.json)
@@ -331,9 +333,10 @@ In the document above there is a good example of /etc/realmd.conf file to be tak
 After the realmd.conf file is created it is needed to (re) start realmd service.
 
 ##### Joining the Linux Server to Active Directory
-Everything is now ready to join the domain. This may be done by issuing the following command:
-
-    realm join [your_domain.com] -U '[user_with_rights_to_add_computer_to_domain@YOUR_DOMAIN.COM]' -v
+Everything is now ready to join the domain. This may be done by issuing the following command:  
+```shell script
+realm join [your_domain.com] -U '[user_with_rights_to_add_computer_to_domain@YOUR_DOMAIN.COM]' -v
+```
 
 Please note that domain name should be provided using capital letters and this should be the full domain name.
 When the command successfully finishes, the Linux server become a member of the Active Directory domain.
@@ -341,35 +344,41 @@ When the command successfully finishes, the Linux server become a member of the 
 ##### Configuring Active Directory
 It's now time to prepare Active Directory to know about UnityBase.
 Either computer's account, or some special user account could be used by UnityBase service. The account should have "Logon as a service" right.
-In either case it is a good practice to create Service Principal Name for UnitBase service and associate it with the account chosen. As UnityBase is a Web (http) service, the SPN should correspond to the following schema:
-
-    HTTP/Fully_Qualified_Domain_Name_of_the_Server[:Listening_Port]
+In either case it is a good practice to create Service Principal Name for UnitBase service and associate it with the account chosen. 
+As UnityBase is a Web (http) service, the SPN should correspond to the following schema:  
+```shell script
+HTTP/Fully_Qualified_Domain_Name_of_the_Server[:Listening_Port]
+```
 
 Listening_Port is an optional component. it is recommended to add it when UnityBase listens on non default http|https port (not 80 or 443)
 Use setspn utility on Domain Controller or any Windows computer joined to the same domain to create SPN.
 
 ##### Creating keytab file for UnityBase service
 On the Linux server service's credentials are stored as keytab file. ktutil is used to create such a file on Linux.
-Look at the document on configuring MS SQL Server mentioned above to see how to prepare the keytab file. Don't forget about user rights - UnityBase local account should be able to read the file.
-Below is a list of the commands used:
+Look at the document on configuring MS SQL Server mentioned above to see how to prepare the keytab file. 
+Don't forget about user rights - UnityBase local account should be able to read the file.
+Below is a list of the commands used:  
+```
+kinit <user@REALM.COM>
+kvno <SPN>
+ktutil
 
-    kinit <user@REALM.COM>
-    kvno <SPN>
-    ktutil
- 
-    addent -password -p <SPN@REALM.COM> -k <no_from_kvno> -e aes256-cts-hmac-sha1-96
-    addent -password -p <SPN@REALM.COM> -k <no_from_kvno> -e rc4-hmac
-    write_kt /path/to/file.keytab
-    quit
+addent -password -p <SPN@REALM.COM> -k <no_from_kvno> -e aes256-cts-hmac-sha1-96
+addent -password -p <SPN@REALM.COM> -k <no_from_kvno> -e rc4-hmac
+write_kt /path/to/file.keytab
+quit
+```
 
 ##### Configuring UnityBase to support Kerberos authentication
 The final step is to provide configuration information to UnityBase.
-It is mandatory to specify the keytab file to be used by UnityBase to authenticate itself in the domain. This is done by specifying KRB5_KTNAME environment variable for UnityBase process. It is better to specify it just at the call to ub:
+It is mandatory to specify the keytab file to be used by UnityBase to authenticate itself in the domain. This is done by specifying KRB5_KTNAME environment variable for UnityBase process. 
+It is better to specify it just at the call to ub:  
+```
+KRB5_KTNAME=/path/to/file.keytab ub
+```
 
-    KRB5_KTNAME=/path/to/file.keytab ub
-
-UnityBase server configuration file should also be changed. At least 'Negotiate' should be specified in the list of authentication providers. It is also strongly recommended to specify SPN parameter in the "security" section - the SPN string here shuld be written in wide form, with realm specified: SPN@REALM.COM. It should be exactly the same as the name inside the keytab.
-
+UnityBase server configuration file should also be changed. At least 'Negotiate' should be specified in the list of authentication providers. It is also strongly recommended to specify SPN parameter in the "security" section - the SPN string here shuld be written in wide form, with realm specified: SPN@REALM.COM. 
+It should be exactly the same as the name inside the keytab.
 
 ## Additional features in Defence edition
 UnityBase Defense edition provide additional security features.
@@ -390,9 +399,10 @@ For the application server the subject of integrity checking are:
 * Files and folders whose names begin with "_" is ignored during checksum calculation
 
 After set up application on the production environment, the first step is to calculate an application integrity. 
-Command:
-
-	>ub -calcIntegrity  
+Command:  
+```shell script
+ub -calcIntegrity  
+```
 
 will calculate a MD5 checksum of all application components and write it to `system32` folder in the file UB_[applicationServerURL], 
 where applicationServerURL is a full URL of current application. 
@@ -408,9 +418,10 @@ For the UBDefenseBrowser the subject of integrity checking are:
  - offline application part
 
 After set up UBDefenseBrowser on the client, the first step is to calculate an application integrity. 
-Command:
-
-	>RunSecureBrowser.cmd -calcIntegrity  
+Command:  
+```shell script
+RunSecureBrowser.cmd -calcIntegrity  
+```
 
 will calculate a CRC32 checksum of all client components.
 

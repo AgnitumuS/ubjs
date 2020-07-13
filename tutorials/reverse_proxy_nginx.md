@@ -21,15 +21,13 @@ Below we describe how to configure nginx as a reverse proxy for ub
 
 ## Configuring UnityBase application
 
-In the application config (ubConfig.json) add `externalURL` and `reverseProxy` keys:    
-
+In the application config (ubConfig.json) add `externalURL` and `reverseProxy` keys:  
 ```json
 {
   "httpServer": {
     "externalURL": "https://myapp.mydomain.com",
     "reverseProxy": {"kind": "nginx"}
   }
-,
 }
 ```
 
@@ -53,9 +51,9 @@ Serving static by nginx improves:
   - run a command `npx ubcli linkStatic`. This command creates a `.linkStatic.sh` script for sym-linking a static assets into `inetPub` folder
   - execute a `.linkStatic.sh`     
 
-Step 2) and 3) must be performed every time application is updated. Recommended steps for update app
-
-```bash
+Step 2) and 3) must be performed every time application is updated. 
+Recommended steps for update app:  
+```shell script
 cd /your/app/folder
 # checkout a new package-lock.json
 npm ci
@@ -82,23 +80,21 @@ So, **to hide all package files from client add a "config" : {"ubmodel": {} } se
 ## Configuring nginx
 `ubcli` tool have a command `generateNginxCfg` for creating a include for nginx based on application configuration.
 
-cd to your application folder and type  
-
-```bash
+cd to your application folder and type:  
+```shell script
 npx ubcli generateNginxCfg
 ```  
 
 This command generate file `ub-proxy.conf` ready to be included into main nginx configuration.
 
-To see additional parameters what can be passed to `generateNginxCfg` type
-```bash
+To see additional parameters what can be passed to `generateNginxCfg` type:  
+```shell script
 npx ubcli generateNginxCfg --help
 ```  
 
 In case external url is use HTTPS protocol, you need to add `-sslkey path/to/key -sslcert path/to/cert`. 
-Also we recommend to add `-r` for adding redirection from http to https:
-
-```bash
+Also we recommend to add `-r` for adding redirection from http to https:  
+```shell script
 npx ubcli -r generateNginxCfg -sslkey /usr/www/.ssh/web_key.key -sslcert /usr/www/.ssh/web_ker_cert.pem
 ```
 
@@ -108,14 +104,14 @@ Generated config is well documented - see comments inside for explanation of wha
 
 `ub-proxy.conf` we generate should be included into `nginx.conf`:  
 
-For Windows add this line to end of http section inside `nginx.conf`:
+For Windows add this line to end of http section inside `nginx.conf`:  
 ```
 include path/to/ub-proxy.conf;
 ```
 and restart nginx.
 
-For unix symlink file into /etc/nginx/sites-enabled
-```bash
+For unix symlink file into `/etc/nginx/sites-enabled`:  
+```shell script
 sudo ln -s path/to/ub-proxy.conf /etc/nginx/sites-available/default_server.cfg 
 sudo ln -s /etc/nginx/sites-available/default_server.cfg /etc/nginx/sites-enabled 
 sudo nginx -s reload 
@@ -125,8 +121,8 @@ sudo nginx -s reload
 
 Generated config is ready to be extended for load balancing.
 
-Pass `-lb` option for adding load balancer specific settings to nginx config.
-```bash
+Pass `-lb` option for adding load balancer specific settings to nginx config:  
+```shell script
 npx ubcli generateNginxCfg -lb
 ```
 
@@ -138,8 +134,8 @@ Setup:
 
  - insure your nginx compiled with ngx_http_geo_module (`nginx -V`). If not either re-compile nginx or install a
  full nginx version `sudo apt install nginx-full`
- - configure a `zonesAuthenticationMethods` and `securityZoneHeader` in ubConfig. Example:
-```
+ - configure a `zonesAuthenticationMethods` and `securityZoneHeader` in ubConfig. Example:  
+```json
 "httpServer": {
     "reverseProxy": {
         "kind": "nginx",
@@ -164,8 +160,8 @@ Setup:
 }
 ```  
  - add security zones mapping into nginx application config (usually `ub-proxy.conf`) just before `server` directive.
- YOUR_EXTERNAL_URL should be replaced by server external url
- ```
+YOUR_EXTERNAL_URL should be replaced by server external url:  
+```
 # Security zones
 geo $YOUR_EXTERNAL_URL_security_zone {
   default        extr;
@@ -179,15 +175,16 @@ server {
    proxy_set_header    X-Sec-Zone $YOUR_EXTERNAL_URL_security_zone;
    ... 
 }
- ``` 
- 
+``` 
  
 in the generated config adds additional servers inside `upstream` section 
 
 # Tuning operation system for Hi Load HTTP(S)
 ## Linux
-```
+```shell script
 touch /etc/sysctl.d/60-tcp-hiload.conf
+```
+```shell script
 echo "
 # increase the ephermal port range
 net.ipv4.ip_local_port_range = 15000 65535
@@ -199,8 +196,9 @@ net.core.somaxconn=1024
 fs.file-max = 30000
 " > /etc/sysctl.d/60-tcp-hiload.conf
 ```
-to apply settings without reboot
-```
+
+to apply settings without reboot:  
+```shell script
 sysctl -p /etc/sysctl.d/60-tcp-hiload.conf
 ``` 
 

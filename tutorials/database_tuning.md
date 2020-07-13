@@ -20,22 +20,24 @@
  database for storing data, application server for data manipulation
  
 ## Indexes
-By default UnityBase DDL generator create indexes for all attributes of type `Entity`
+By default, UnityBase DDL generator create indexes for all attributes of type `Entity`
 and unique indexes for attributes marked as `"isUnique": true`. 
 
-In case additional indexes are required developer can specify it inside entity metadata `dbKeys` for **UNIQUE** indexes 
+In case developer need to add additional indexes it can be specified inside entity metadata `dbKeys` for **UNIQUE** indexes 
 or inside `dbExtensions` for any other index type (including functional indexes for Oracle/Postgres)
 
 ### Optimizing `like` queries
-Special index type **CATALOGUE** is available for optimizing queries with substring search: `where field like "%substr%"`.
+Special index type **CATALOGUE** is available for optimizing queries with substring search:  
+```sql
+where field like "%substr%"
+```
 
 Such queries usually produced by UI Select/ComboBox controls while user typing a text to search or from Filters in Grid 
-when `Contains` condition is selected. Database always do a table full scan for such a queries, what may lead to performance
+when `Contains` condition is selected. Database always do a table full scan for such queries, what may lead to performance
 problems when the table is large (100 000 records or more).  
 
-To avoid a full scan developer can define a "CATALOGUE" dbExtension as such:
-
-```myEntity.meta
+To avoid a full scan developer can define a "CATALOGUE" dbExtension as such (`myEntity.meta`):  
+```json
   "dbExtensions": {
     "CIDX_TMD_CAPTION": {
       "type": "CATALOGUE",
@@ -49,45 +51,44 @@ To avoid a full scan developer can define a "CATALOGUE" dbExtension as such:
 ```
 where `CIDX_TMD_CAPTION` is a index name and `caption` is attribute on which substring queries are executed.
 
-Depending on database type UBQL query
-```
+Depending on database type UBQL query:  
+```javascript
 UB.Repository('myEntyity').attrs('ID' 'caption').where('caption', 'like', 'substr').selectAsObject()
 ```
-will be translated to SQL
-
+will be translated to SQL:  
  - Oracle
- DDL generator creates CTXSYS.ctxcat index and DML generator creates CATSEARCH where expression  
-```
-  // ? = 'substr*'
-  select ID, caption from myEntity where CATSEARCH(caption, ?, null) > 0 
+ DDL generator creates CTXSYS.ctxcat index and DML generator creates CATSEARCH where expression:  
+```sql
+// ? = 'substr*'
+select ID, caption from myEntity where CATSEARCH(caption, ?, null) > 0 
 ```
 
  - PostgresSQL
  DDL generator creates [trigram](https://www.postgresql.org/docs/current/pgtrgm.html) index what work with ILIKE, so 
- statement will be:
-```
- // ? = '%substr%'
-  select ID, caption from myEntity where caption ILIKE ? 
+ statement will be:  
+```sql
+// ? = '%substr%'
+select ID, caption from myEntity where caption ILIKE ? 
 ``` 
 
 ####  CATALOGUE pre-requirements for Oracle
 - Check Database Collation
 
 Since `CTXCAT` indexes is not allowed for NVARCHAR2 columns DDL will convert such columns to VARCHAR2.
-To store international characters correctly in varchar3 columns ensure Oracle database is created using UTF8 collation
-```
+To store international characters correctly in varchar3 columns ensure Oracle database is created using UTF8 collation:  
+```sql
 SELECT PARAMETER, VALUE FROM nls_database_parameters WHERE PARAMETER = 'NLS_CHARACTERSET' 
 ```        
-NLS_CHARACTERSET value should be *UTF[8|16]
-```
-NLS_CHARACTERSET     AL32UTF8
-NLS_NCHAR_CHARACTERSET    AL16UTF16
+`NLS_CHARACTERSET` value should be *UTF[8|16]:  
+```sql
+NLS_CHARACTERSET            AL32UTF8
+NLS_NCHAR_CHARACTERSET      AL16UTF16
 ```
  
 - Enable Oracle Text
 
 Oracle text should be enabled for Oracle instance
-Can be checked by statement (under sys)
+Can be checked by statement (under sys):  
 ```sql
 SELECT comp_id, comp_name, status FROM dba_registry where COMP_NAME='Oracle Text'
 ```
@@ -96,51 +97,50 @@ See [Oracle Text Setup instruction](https://docs.oracle.com/cd/E11882_01/install
 
 - Grant Permissions
 
-To create a `CTXCAT` index CTXAPP and CTX_DDL should be granted to role 
-```
+To create a `CTXCAT` index CTXAPP and CTX_DDL should be granted to role:   
+```sql
 GRANT RESOURCE, CONNECT, CTXAPP TO UBDF_FSS_TST;
 GRANT EXECUTE ON CTXSYS.CTX_DDL TO UBDF_FSS_TST; 
 ```
 
 ## Array binding
-UnityBase can bind arrays (array of int64 or array of strings are supported) as parameters value:
-
-```
+UnityBase can bind arrays (array of int64 or array of strings are supported) as parameters value:    
+```javascript
 UB.Repository('uba_user').attrs('ID').where('[ID]', 'in', [1, 2, 3]).select()
 ```
 
 Depends on a RDBMS a resulting query became:
 
 ### Oracle array binding
-UB server generates a query
-```
+UB server generates a query:  
+```sql
 SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT column_value FROM table(CAST( :1 AS SYS.ODCINUMBERLIST)))
 ```
 
 crates in-memory SYS.ODCINUMBERLIST / SYS.ODCIVARCHAR2LIST structure and pass it as a parameter value to bind.
 
-We don't know how to run such query with parameters binding in plsql, without parameters:
-```
+We don't know how to run such query with parameters binding in plsql, without parameters:    
+```sql
 SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT column_value FROM table(SYS.ODCINUMBERLIST(1, 2, 3)))
 ```   
 
 ### SQL Server array binding
-UB server generates a query
-```
+UB server generates a query:  
+```sql
 SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT * FROM ?)
 ```
 creates in-memory IDList / StrList structure, fills it with passed array elements and binds to parameter value
 
-To run such query in management studio:
-```
+To run such query in management studio:  
+```sql
 declare @a dbo.IDList;
 insert into @a (id) values (1), (2), (3);
 SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT * FROM @a)
 ```
 
 ### Postgres SQL array binding   
-UB server generates a query
-```
+UB server generates a query:  
+```sql
 SELECT A01.ID  FROM uba_user A01  WHERE A01.ID=ANY($1)
 ```
 transform passed array into Postgres array syntax string `{1,2,3}` and bind such string as parameter value
@@ -163,8 +163,8 @@ Set the same session parameters as UnityBase sets.
 Look at server log - before the first database statement execution you can see instruction like `ALTER SESSION SET NLS........`;
 This instruction set Locale Settings. You can change it in advanced connection configuration for your application.
 
-Find all such instruction and execute it inside tool you use for work with database. Usually this is:
-```
+Find all such instruction and execute it inside tool you use for work with database. Usually this is:  
+```sql
 ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD-HH24:MI:SS';
 ALTER SESSION SET NLS_NUMERIC_CHARACTERS = ". ";
 ALTER SESSION SET NLS_COMP=LINGUISTIC;
@@ -172,13 +172,13 @@ ALTER SESSION SET NLS_SORT=BINARY_CI;
 ```
 
 ### Parameters in queries
-UnityBase always try to parametrise queries. For example in case you execute query
-```
+UnityBase always try to parametrise queries. For example in case you execute query:  
+```sql
 store.runSQL('select * from somethere where code like :myCode:', {myCode: 'value%'});
 ```
 end expect to see the same execution plane in your tool, parametrise it!
-For example in DBeaver: 
-```
+For example in DBeaver:   
+```sql
 // WRONG - the query plan may be different from what will be for the application server 
 select * from somethere where code like 'value%'
 // GOOD
@@ -201,10 +201,9 @@ When binding parameters for query UB applies this convention to call [OCIBundByP
 | Blob    | SQLT_LVB |
 
 For parameters of type `string` in case database table column is not of the type NVARCHAR2 to use a database index
-you can cast parameter directly to type you need
-
-```
-  ...  where my_function(column) = cast(my_function(?) as varchar2(xxx))
+you can cast parameter directly to type you need:  
+```sql
+...  where my_function(column) = cast(my_function(?) as varchar2(xxx))
 ```  
 
 The same POSSIBLE but not mandatory  for Int64/Float type of parameter.
