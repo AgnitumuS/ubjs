@@ -79,6 +79,7 @@
  - u-icon-file-html
  - u-icon-file-image
  - u-icon-file-pdf
+ - u-icon-file-signature
  - u-icon-file-text
  - u-icon-file-word
  - u-icon-filter
@@ -139,6 +140,7 @@
  - u-icon-send
  - u-icon-setting
  - u-icon-setting-alt
+ - u-icon-signature
  - u-icon-share
  - u-icon-share-alt
  - u-icon-sort

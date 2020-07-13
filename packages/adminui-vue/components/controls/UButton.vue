@@ -1,24 +1,33 @@
 <template>
   <button
+    class="u-button"
     :class="[
       `u-button_appearance-${appearance}`,
       `u-button_color-${color}`,
-      `u-button_size-${size}`
+      `u-button_size-${size}`,
+      {
+        'u-button_has-icon': icon || rightIcon,
+        'u-button_has-text': $slots.default
+      }
     ]"
-    class="u-button"
     v-on="$listeners"
   >
-    <span class="u-button__container">
-      <i
-        v-if="icon"
-        :class="icon"
-      />
-      <span v-if="$slots.default"><slot /></span>
-      <i
-        v-if="rightIcon"
-        :class="[rightIcon, icon]"
-      />
+    <i
+      v-if="icon"
+      class="u-button__icon"
+      :class="icon"
+    />
+    <span
+      v-if="$slots.default"
+      class="u-button__label"
+    >
+      <slot />
     </span>
+    <i
+      v-if="rightIcon"
+      class="u-button__icon"
+      :class="[rightIcon, icon]"
+    />
   </button>
 </template>
 
@@ -78,7 +87,6 @@ export default {
     --hs: var(--hs-control);
     --l: var(--l-state-default);
     color: hsl(var(--hs-text), var(--l-text-inverse));
-    padding: 0.2em 0.6em;
     cursor: pointer;
     background: hsl(var(--hs), var(--l));
     border-radius: var(--border-radius);
@@ -88,18 +96,80 @@ export default {
     justify-content: center;
   }
 
-  .u-button span {
-    font-size: 0.9em;
+  .u-button.u-button_has-icon {
+    padding: 0;
   }
 
-  .u-button__container {
-    margin: -2px;
-    display: inline-flex;
-    align-items: center;
+  /* SIZES BEGIN */
+  /* Size: small */
+  .u-button_size-small {
+    font-size: 14px;
   }
 
-  .u-button__container > * {
-    padding: 2px;
+  .u-button_size-small .u-button__icon {
+    font-size: 16px;
+  }
+
+  .u-button_size-small .u-button__icon,
+  .u-button_size-small .u-button__label {
+    padding: 4px;
+  }
+
+  .u-button_size-small.u-button_has-text {
+    padding: 0 20px;
+  }
+
+  .u-button_size-small.u-button_has-text.u-button_has-icon {
+    padding: 0 8px;
+  }
+
+  /* Size: medium */
+  .u-button_size-medium {
+    font-size: 16px;
+  }
+
+  .u-button_size-medium .u-button__icon {
+    font-size: 18px;
+  }
+
+  .u-button_size-medium .u-button__icon,
+  .u-button_size-medium .u-button__label {
+    padding: 8px;
+  }
+
+  .u-button_size-medium.u-button_has-text {
+    padding: 0 24px;
+  }
+
+  .u-button_size-medium.u-button_has-text.u-button_has-icon {
+    padding: 0 16px;
+  }
+
+  /* Size: large */
+  .u-button_size-large {
+    font-size: 18px;
+  }
+
+  .u-button_size-large .u-button__icon {
+    font-size: 20px;
+  }
+
+  .u-button_size-large .u-button__icon,
+  .u-button_size-large .u-button__label {
+    padding: 12px;
+  }
+
+  .u-button_size-large.u-button_has-text {
+    padding: 0 28px;
+  }
+
+  .u-button_size-large.u-button_has-text.u-button_has-icon {
+    padding: 0 20px;
+  }
+  /* SIZES END */
+
+  .u-button__icon {
+    font-size: 1em;
   }
 
   .u-button_appearance-inverse {
@@ -144,18 +214,6 @@ export default {
 
   .u-button_color-warning {
     --hs: var(--hs-warning)
-  }
-
-  .u-button_size-small {
-    font-size: 18px;
-  }
-
-  .u-button_size-medium {
-    font-size: 22px;
-  }
-
-  .u-button_size-large {
-    font-size: 26px;
   }
 </style>
 
