@@ -6,10 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - new `icons`: `u-icon-signature`, `u-icon-file-signature`
 
 ### Changed
  - elementUI theme build is moved out of "build" script (into "build:el-node11" job). Compiled element theme is added into git.
   This allows to bootstrap a ubjs project using node>11.
+ - `UButton`: text sizes changed according [design-system](https://www.figma.com/file/LlwA2pELR7hgjR6ELYIHUf/Scriptum-Design-System?node-id=1475%3A13)
 
 ### Deprecated
 
