@@ -20,7 +20,6 @@
       <component
         :is="selectedColumn.filters[selectedFilter].template"
         v-if="selectedColumn.filters[selectedFilter]"
-        :key="condition"
         :column="selectedColumn"
         @search="throttledApplyFilter"
       />

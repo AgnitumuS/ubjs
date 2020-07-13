@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UFileWebcamButton` prevent error on iOS (Safari) `getUserMedia of undefined`
+ - `UTableEntity`: in case filter for `String` column is applied and user click on column of type `Entity` 
+ and when back on `String` column filted input for string is not hiding
 
 ## [1.11.12] - 2020-07-08
 ### Added
