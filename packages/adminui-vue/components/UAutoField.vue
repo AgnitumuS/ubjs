@@ -19,7 +19,10 @@ export default {
     /**
      * Overrides required prop of <form-row />
      */
-    required: Boolean
+    required: {
+      type: Boolean,
+      default: undefined
+    }
   },
 
   computed: {
@@ -49,9 +52,9 @@ export default {
     },
 
     isRequired () {
-      return this.$v &&
-        this.$v[this.attributeName] &&
-        'required' in this.$v[this.attributeName].$params
+      return this.required !== undefined ? this.required : (
+        this.$v && this.$v[this.attributeName] && 'required' in this.$v[this.attributeName].$params
+      )
     },
 
     isError () {
