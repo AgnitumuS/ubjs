@@ -1,3 +1,5 @@
+#! /bin/bash
+
 # -Scgi <------>- Support operators like C; Enable LABEL and GOTO(default for -MDelphi; Inlining
 # -Cg PIC code >- for Linux library only (slowed code for program)
 # -Ci <><------>- IO checking
@@ -9,10 +11,18 @@
 # -Se10 <------>- halts after 10 error.
 # to switch to x64MM -dFPC_SYNCMEM should be removed and -dFPC_X64MM -dFPCMM_SERVER added
 
+err_report() {
+  >&2 echo "Error on line $1"
+  exit 1
+}
+# On error
+trap 'err_report $LINENO' ERR
+
 mkdir -p ./.dcu/fpc-{linux,win64} ./bin/x86_64
 
-UB_SRC=../../../ub-server
-echo $UB_SRC/libs/Synopse/SyNode
+if [ -z "$UB_SRC" ]; then
+  UB_SRC=../../../ub-server
+fi
 
 fpc.sh -MDelphi -Sci -Ci -O2 -g -gl -gw2 -Xg -k-Lbin/fpc-linux -Tlinux -Px86_64 \
   -veiq -vw-n-h- \
@@ -23,18 +33,10 @@ fpc.sh -MDelphi -Sci -Ci -O2 -g -gl -gw2 -Xg -k-Lbin/fpc-linux -Tlinux -Px86_64 
   -dFPC_SYNCMEM \
   -B -Se1 ./src/ubmail.dpr
 
-fpc.sh -MDelphi -Sci -Ci -O2 -g -gl -gw2 -Xg -k-Lbin/fpc-linux -Twin64 -Px86_64 \
+fpc.sh -MDelphi -Sci -Ci -O2 -k-Lbin/fpc-linux -Twin64 -Px86_64 \
   -veiq -vw-n-h- \
   -Fi.dcu/fpc-win64 -Fi$UB_SRC/libs/Synopse -Fi$UB_SRC/libs/Synopse/SQLite3 -Fi$UB_SRC/libs/Synopse/SyNode -Fi$UB_SRC/libs/synapse40/source/lib \
   -Fu$UB_SRC/libs/Synopse -Fu$UB_SRC/libs/Synopse/SQLite3 -Fu$UB_SRC/libs/Synopse/SyNode -Fu$UB_SRC/libs/synapse40/source/lib -Fu$LAZARUS_PATH/components/lazutils/lib/x86_64-win64 -Fu. \
   -FU.dcu/fpc-win64 -FEbin/x86_64 -obin/x86_64/ubmail.dll \
   -dFPC_SYNCMEM \
   -B -Se1 ./src/ubmail.dpr
-
-#/home/pavelmash/fpc/fpc/bin/x86_64-linux/fpc.sh
-#-Tlinux -Px86_64 -MDelphi -Scghi -Cg -O2 -veibq -vw-n-h-
-#-Fi../../../../ub-server/libs/Synopse/SyNode  -Fi../../../../ub-server/libs/Synopse -Fi../../../../ub-server/libs/synapse40/source/lib
-# -Fi../lib/x86_64-linux -Fl../../../../ub-server/bin/fpc-linux -Fu../../../../ub-server/libs/Synopse/SyNode
-# -Fu../../../../ub-server/libs/Synopse -Fu../../../../ub-server/libs/Synopse/SQLite3 -Fu../../../../ub-server/libs/synapse40/source/lib
-# -Fu../../../../../fpc/lazarus/components/lazutils/lib/x86_64-linux -Fu../../../../../fpc/lazarus/packager/units/x86_64-linux
-# -Fu. -FU../lib/x86_64-linux -FE../bin/x86_64 -o../bin/x86_64

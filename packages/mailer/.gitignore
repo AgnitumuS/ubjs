@@ -61,7 +61,7 @@ _FOSSIL_
 
 #FPC
 *.lps
-bin/x64
+bin/x86_64
 lib/
 src/backup/
 backup/

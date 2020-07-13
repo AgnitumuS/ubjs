@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - building of native code does not depends on lazarus (fpc is enough)
 
 ### Deprecated
 

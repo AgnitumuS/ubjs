@@ -7,8 +7,9 @@
     "ubmodel": {}
   },
   "scripts": {
-    "build": "npm run build:native",
-    "build:native": "node ./bin/compile.js",
+    "build": "run-script-os",
+    "build:linux": "./build_native.sh",
+    "build:win32": "./build_native.cmd",
     "version": "update-changelog && git add CHANGELOG.md"
   },
   "public": true,
@@ -17,9 +18,9 @@
   },
   "main": "./UBMail.js",
   "devDependencies": {
-    "@unitybase/fpc-utils": "^5.0.8",
     "@unitybase/stubs": "^5.1.1",
-    "@unitybase/update-changelog": "^1.0.4"
+    "@unitybase/update-changelog": "^1.0.4",
+    "run-script-os": "^1.1.1"
   },
   "keywords": [
     "UnityBase",
