@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - support for ADFS3 (Windows Server 2012 only - in Windows Server 2016+ ADFS version is 2016):
+   - added `providerConfig.resource` - requested resource
+   - `providerConfig.client_secret` can be omitted
 
 ### Changed
 

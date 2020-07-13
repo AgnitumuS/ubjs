@@ -66,11 +66,12 @@ function registerOpenIDEndpoint (endpointName) {
      * @param {String} providerConfig.userInfoUrl provider's userinfo url
      * @param {String} [providerConfig.logoutUrl] Logout url
      * @param {String} [providerConfig.userInfoHTTPMethod='GET'] Http method for userinfo request. Default GET
-     * @param {String} providerConfig.scope requested scopes delimited by '+' symbol
+     * @param {String} providerConfig.scope Requested scopes delimited by '+' symbol
+     * @param {String} [providerConfig.resource] Requested resource (required for MS ADFS3 windows server 2012)
      * @param {String} [providerConfig.nonce] nonce  TODO - generate random and cache in GlobalCache with expire
      * @param {String} providerConfig.response_type response type. Must contain code. This module use code responce type.
      * @param {String} providerConfig.client_id client_id. Get it from provider
-     * @param {String} providerConfig.client_secret client_secret. Get it from provider
+     * @param {String} [providerConfig.client_secret] client_secret. Get it from provider (not needed for ADFS3 - windows server 2012).
      * @param {Function} providerConfig.getCustomFABody Function, that returns custom text included to final html success/fail response
      * @param {String} providerConfig.response_mode One of: form_post, fragment, query
      * @param {Function} providerConfig.getOnFinishAction Function, that returns client-side code to be run after success/fail response from OpenID provider.
@@ -152,7 +153,6 @@ function openIDConnect (req, resp) {
     return
   }
 
-  params = queryString.parse(paramStr)
   if (params.code && params.state) {
     // if (!redirectUrl)
     //    redirectUrl = atob(params.state);
@@ -221,6 +221,7 @@ function redirectToProviderAuth (req, resp, providerConfig, redirectUrl, request
   resp.writeHead('Location: ' + providerConfig.authUrl +
     '?state=' + btoa('fakestate') + // TODO - get it from global cache
     (providerConfig.scope ? '&scope=' + providerConfig.scope : '') +
+    (providerConfig.resource ? '&resource=' + providerConfig.resource : '') +
     (providerConfig.nonce ? '&nonce=' + providerConfig.nonce : '') +
     '&redirect_uri=' + redirectUrl +
     '&response_type=' + providerConfig.response_type +
@@ -274,7 +275,7 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
         request.options.method = 'POST'
         request.write('access_token=' + responseData.access_token)
         request.write('&client_id=' + provider.client_id)
-        request.write('&client_secret=' + provider.client_secret)
+        if (!!provider.client_secret) request.write('&client_secret=' + provider.client_secret)
         request.setHeader('Content-Type', 'application/x-www-form-urlencoded')
       } else {
         request = http.request(provider.userInfoUrl + '?access_token=' + responseData.access_token)
