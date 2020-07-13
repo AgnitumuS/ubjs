@@ -42,8 +42,8 @@ For both ExtJS and Vue based forms and grids:
 
 ## Configuring softLock for an entity
 
-Application domain should contains `@unitybase/ubs` model (in ubConfig.json):
-``` 
+Application domain should contains `@unitybase/ubs` model (in ubConfig.json):  
+```json
 "application": {
     "domain": {
         "models": [
@@ -53,9 +53,8 @@ Application domain should contains `@unitybase/ubs` model (in ubConfig.json):
             },
 ```
 
-`softLock` mixin should be added to the `mixins` section of entity *.meta file:
-
-```json5
+`softLock` mixin should be added to the `mixins` section of entity *.meta file:  
+```json
 {
   //...
   "mixins": {

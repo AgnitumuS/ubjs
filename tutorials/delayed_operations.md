@@ -53,10 +53,10 @@ So this is a responsibility of endpoint handler to store the answer in the right
 a message to client using [Notification subsystem].
 
 The good use case for the asynchronous endpoints is {@tutorial scheduler}. When scheduler worker decides it is a time to execute
-a scheduled job, it sends a request to the server in async mode:
-
-    POST /rest/ubq_messages/executeSchedulerTask?async=true
-
+a scheduled job, it sends a request to the server in async mode:  
+```shell script
+POST /rest/ubq_messages/executeSchedulerTask?async=true
+```
 passing a task to be executed in the request body. Server determines the `async=true` URL parameter, and immediately
 answers [202 "Accepted"] to the scheduler worker, so worker is not waiting until job is completed and can send
 a next job execution request.

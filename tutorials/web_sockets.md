@@ -44,37 +44,40 @@ such threads. In case you need a database operations you must call a HTTP server
 support for WebSocket threads in future.
 
 ### Enable WebSocket support
-  To set up a WebSocket support on the server side you must add a `wsServer` section to the server config (example):
+To set up a WebSocket support on the server side you must add a `wsServer` section to the server config (example):  
+```json
+"httpServer": {...},
+"wsServer": {
+    "host": "127.0.0.1",
+    "port": "888",
+    "path": "ws"
+},....
+```
 
-        "httpServer": {...},
-        "wsServer": {
-            "host": "127.0.0.1",
-            "port": "888",
-            "path": "ws"
-        },....
-
-  Because [WebSockets] is implemented over HTTP(S), you MUST configure a `httpServer` also. In case you expect
+Because [WebSockets] is implemented over HTTP(S), you MUST configure a `httpServer` also. In case you expect
 many (more when 10000) concurrent connection tuning of HTTP.SYS is required (depend on your usage scenario).
 See {@tutorial HTTPServer} for details.
 
 ### Add a protocol
   The second step is to add a protocols (`subprotocols` in term of WebSocket RFC) in the WebSocket threads.
 UnityBase will call `require('models\yourModel\_wsThreadInitialization.js')` for each domain
-model during server startup. Inside this module you initialize a build-in {UB#getWSNotifier wsNotifier} protocol:
+model during server startup. Inside this module you initialize a build-in {UB#getWSNotifier wsNotifier} protocol:  
+```javascript
+const WebSockets = require('WebSockets');
+const wsNotifier = WebSockets.getWSNotifier();
+```
 
-        const WebSockets = require('WebSockets');
-        const wsNotifier = WebSockets.getWSNotifier();
-
-and assign handlers to it (if you need to receive web socket messages in server):
-
-        if (wsNotifier) {
-            console.debug('Start subscribing to wsNotifier tsts_* events');
-            wsNotifier.on('tst_echo', function (connection, params) {
-                connection.send({
-                    command: 'tst_message', params: {from: connection.session.userID, message: params}
-                });
-            });
-        }
+and assign handlers to it (if you need to receive web socket messages in server):  
+```javascript
+if (wsNotifier) {
+    console.debug('Start subscribing to wsNotifier tsts_* events');
+    wsNotifier.on('tst_echo', function (connection, params) {
+        connection.send({
+            command: 'tst_message', params: {from: connection.session.userID, message: params}
+        });
+    });
+}
+```
 
 or create a your own protocol implementation - see for example how {UB#getWSNotifier UB.getWSNotifier()} is implemented.
 
@@ -82,34 +85,35 @@ or create a your own protocol implementation - see for example how {UB#getWSNoti
  You can send a message to the WebSocket connection either from WebSocket thread or from HTTP thread.
 In case of HTTP thread do not try to obtain a protocol instance during thread initialization -
 both HTTP & WebSocket thread pool are initialized in parallel.
-So you must obtain a protocol instance inside entity methods:
-
-    const WebSockets = require('@unitybase/ub/modules/web-sockets');
-    function SomeMethod(ctx){
-        var notifier = WebSockets.getWSNotifier();
-        if (notifier) {
-            store.currentDataName = 'selectAfterInsert';
-            if (!store.eof) {
-                rowID = store.get('ID');
-            }
-            //send message to ALL connected sessions
-            notifier.broadcast('ub_entityModification', {action: 'insert', ID: rowID});
-
-            //Send to specific user
-            var userSessions = notifier.getUserSessions(Session.userID);
-            userSessions.forEach(function(sessionID){
-                notifier.sendCommand('test_command', sessionID, {action: 'inserted', ID: rowID});
-            });
+So you must obtain a protocol instance inside entity methods:  
+```javascript
+const WebSockets = require('@unitybase/ub/modules/web-sockets');
+function SomeMethod(ctx){
+    var notifier = WebSockets.getWSNotifier();
+    if (notifier) {
+        store.currentDataName = 'selectAfterInsert';
+        if (!store.eof) {
+            rowID = store.get('ID');
         }
+        //send message to ALL connected sessions
+        notifier.broadcast('ub_entityModification', {action: 'insert', ID: rowID});
+
+        //Send to specific user
+        var userSessions = notifier.getUserSessions(Session.userID);
+        userSessions.forEach(function(sessionID){
+            notifier.sendCommand('test_command', sessionID, {action: 'inserted', ID: rowID});
+        });
     }
+}
+```
+**WARNING** To avoid conflicts with other models ALWAYS append a model prefix to your events name:  
+```javascript
+//WRONG
+notifier.sendCommand('hello', sessionID, {action: 'inserted', ID: rowID});
 
-  **WARNING** To avoid conflicts with other models ALWAYS append a model prefix to your events name
-
-        //WRONG
-        notifier.sendCommand('hello', sessionID, {action: 'inserted', ID: rowID});
-
-        //GOOD (trs - is a model code here)
-        notifier.sendCommand('trs_hello', sessionID, {action: 'inserted', ID: rowID});
+//GOOD (trs - is a model code here)
+notifier.sendCommand('trs_hello', sessionID, {action: 'inserted', ID: rowID});
+```
 
 For a full list of available methods see {JsonMessagesProtocol}
 
@@ -118,58 +122,58 @@ For a full list of available methods see {JsonMessagesProtocol}
  `ub-core.js` package contain a client-side helper class UBNotifierWSProtocol. For a `adminUI` instance of this
 class is accessible via singleton $App.ubNotifier
 
-  Inside your model you can subscribe to events of $App.ubNotifier:
-
-    if ($App.ubNotifier.supported){
-        $App.ubNotifier.on('ubs_message', me.checkMessages.bind(me));
-    }
-
-
-
+Inside your model you can subscribe to events of $App.ubNotifier:  
+```javascript
+if ($App.ubNotifier.supported){
+    $App.ubNotifier.on('ubs_message', me.checkMessages.bind(me));
+}
+```
 
  To check UnityBase server support a spacified WebSocket protocol (i.e WebSocket is supported by the server OS,
 configured in the server config and protocol are registered) you must check a `supportedWSProtocols` section
 of `getAppInfo` response.
 
- On the client side HTML5 WebSocket can be used:
+On the client side HTML5 WebSocket can be used:  
+```javascript
+$App.connection.authorize().then(function(session){
+    $session = session;
+    $ws = new WebSocket('ws://' + location.host + '/autotest/ws?SESSION_SIGNATURE=' + session.signature(), 'ubNotifier');
 
-    $App.connection.authorize().then(function(session){
-        $session = session;
-        $ws = new WebSocket('ws://' + location.host + '/autotest/ws?SESSION_SIGNATURE=' + session.signature(), 'ubNotifier');
+    $ws.onopen = function(e){
+        console.log('Connected to:', e.target.url, 'protocol:', e.target.protocol);
+    };
 
-        $ws.onopen = function(e){
-            console.log('Connected to:', e.target.url, 'protocol:', e.target.protocol);
-        };
-
-        $ws.onmessage = function(e){
-    		var msg;
-    		try {
-    			msg = JSON.parse(e.data)
-    		} catch (err) {
-                console.error('Invalid command from server:', e.data);
-    		}
-            var
-                command = msg.command,
-                params = msg.params;
-            if (command === 'accepted') {
-                console.log('Server accept connection with session ID=', params.connectionID);
-            } else if (command  === 'tst_message') {
-                console.log('New message. ', params.from, 'said:', params.message);
-            } else if (command  === 'error') {
-                console.error('Error. Details:', params.description);
-            } else {
-                console.error('Invalid server response. Command', command, 'is unknown');
-            }
-        };
-
-        $ws.onclose = function(e){
-    		console.log('Connection closed from server. Code:', e.code, 'Reason:', e.reason);
+    $ws.onmessage = function(e){
+        var msg;
+        try {
+            msg = JSON.parse(e.data)
+        } catch (err) {
+            console.error('Invalid command from server:', e.data);
         }
-    })
+        var
+            command = msg.command,
+            params = msg.params;
+        if (command === 'accepted') {
+            console.log('Server accept connection with session ID=', params.connectionID);
+        } else if (command  === 'tst_message') {
+            console.log('New message. ', params.from, 'said:', params.message);
+        } else if (command  === 'error') {
+            console.error('Error. Details:', params.description);
+        } else {
+            console.error('Invalid server response. Command', command, 'is unknown');
+        }
+    };
 
-Now you can send a messages
+    $ws.onclose = function(e){
+        console.log('Connection closed from server. Code:', e.code, 'Reason:', e.reason);
+    }
+})
+```
 
-    $ws.send(JSON.stringify({command: 'yourCommand', params: {a: 12, b: 2}});
+Now you can send messages:  
+```javascript
+$ws.send(JSON.stringify({command: 'yourCommand', params: {a: 12, b: 2}});
+```
 
 ## Application architecture tips
 TODO

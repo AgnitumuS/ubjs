@@ -29,24 +29,27 @@ and whole file access and sending will occur in background, at the kernel level,
 
 ## URI authorization as Administrator
 
- Standard security policy, as requested by Windows for all its http.sys based systems (i.e. IIS and WCF services)
- is to explicitly register the URI. Depending on the system it runs on (i.e. Windows XP or Vista and up),
- a diverse command line tool is to be used.
+Standard security policy, as requested by Windows for all its http.sys based systems (i.e. IIS and WCF services)
+is to explicitly register the URI. Depending on the system it runs on (i.e. Windows XP or Vista and up),
+a diverse command line tool is to be used.
 
- For `Vista` and UP you can use
+For `Vista` and UP you can use:  
+```shell script
+netsh http
+```
 
-    >netsh http
-
-command line tool to manipulate URI registration. For example to to see currently registered URLs type command:
-
-    >netsh http show urlacl
+command line tool to manipulate URI registration. For example to to see currently registered URLs type command:  
+```shell script
+netsh http show urlacl
+```
 
 There is also GUI tools for manipulating http.sys URL ACL: [HttpSysConfig.exe](guides/HTTPServer/HttpSysConfig.exe) (click to download)
 
 To keep it simple, UnityBase provides a dedicated command line options to requester a particular URI prefix depending
-on current server configuration.
-
-    >ub -http register|unregister
+on current server configuration:  
+```shell script
+ub -http register|unregister
+```
 
 command will add / remove UnityBase server URI to `http.sys` routing table using current server configuration parameters.
 
@@ -55,25 +58,26 @@ Create on your Desktop a new shortcut, type cmd.exe in Targer field, click to Ad
 
 ![run as administrator](img/runAsAdmin.png)
 
-Run shortcut, `cd` to UB folder and execute
-
-    >ub -http register
+Run shortcut, `cd` to UB folder and execute:  
+```shell script
+ub -http register
+```
 
 ![HTTP server register](img/ubHTTPRegister.png) 
 
 
 ## Tuning a HTTP.sys
 
- By default HTTP.SYS is tund for a madium-size applications. If you need to support more (>10000) concurrent connection
- you must chage some of default setting.
- In [httpServer config](../models/UB/docson/index.html#../schemas/ubConfig.schema.json) you can cahnge:
+By default HTTP.SYS is tund for a madium-size applications. If you need to support more (>10000) concurrent connection
+you must chage some of default setting.
+In [httpServer config](../models/UB/docson/index.html#../schemas/ubConfig.schema.json) you can change:
 
-     - requestQueueLength
-     - maxBandwidth
-     - maxConnections
-     - timeouts
+ - requestQueueLength
+ - maxBandwidth
+ - maxConnections
+ - timeouts
 
- Other low-level settings can be changed in the registry (requre Winodws reboot) -
+Other low-level settings can be changed in the registry (requre Winodws reboot) -
 see a [full list here](https://support.microsoft.com/en-us/kb/820129)
 
 
@@ -98,11 +102,12 @@ which needs to be signed by your root authority.
 If you don't set up the root authority your single certificate won't be trusted, and you will start to discover this through
 a series of extremely annoying exceptions, long after the fact.
 
-The following command (run in a Visual Studio command prompt) will create your root certificate:
-
-    >makecert -sv SignRoot.pvk -cy authority -r signroot.cer ^
-      -a sha1 -n "CN=Dev Certification Authority" ^
-      -ss my -sr localmachine
+The following command (run in a Visual Studio command prompt) will create your root certificate:  
+```shell script
+makecert -sv SignRoot.pvk -cy authority -r signroot.cer ^
+  -a sha1 -n "CN=Dev Certification Authority" ^
+  -ss my -sr localmachine
+```
 
 Take a look at the above links to see what each of these arguments mean, it isn't terribly important, but it's nice to know.
 The MakeCert tool is available as part of the Windows SDK, which you [can download here](http://go.microsoft.com/fwlink/p/?linkid=84091).
@@ -112,28 +117,30 @@ minimum required to complete this procedure.
 Once this command has been run and succeeded, you need to make this certificate a trusted authority.
 You do this by using the MMC snap in console.
 Go to the run window and type `mmc`, hit enter. Then in the window that opens (called the "Microsoft Management Console", for those who care)
-perform the following actions:
-
-    File -> Add/Remove Snap-in -> Add… -> Double click Certificates
-    -> Select Computer Account and Click Next -> Finish -> Close -> OK
-
+perform the following actions:  
+```
+File -> Add/Remove Snap-in -> Add… -> Double click Certificates
+-> Select Computer Account and Click Next -> Finish -> Close -> OK
+```
 Then select the Certificates (Local Computer) -> Personal -> Certificates node
 
 You should see a certificate called "Dev Certificate Authority" (or whatever else you decided to call it as parameter in the above command line).
-Move this certificate from the current node to
-
-    Certificates (Local Computer) -> Trusted Root Certification Authorities
-    -> Certificates node
+Move this certificate from the current node to:  
+```
+Certificates (Local Computer) -> Trusted Root Certification Authorities
+-> Certificates node
+```
 
 drag and drop works happily.
 
 Now you have NOT the cert you need :) You have made yourself able to create trusted certs though, which is nice.
-Now you have to create another cert, which you are actually going to use. Run makecert again, but run it as follows...
-
-    >makecert -iv SignRoot.pvk -ic signroot.cer ^
-      -cy end -pe -n CN="localhost" -eku 1.3.6.1.5.5.7.3.1 ^
-      -ss my -sr localmachine -sky exchange ^
-      -sp "Microsoft RSA SChannel Cryptographic Provider" -sy 12
+Now you have to create another cert, which you are actually going to use. Run makecert again, but run it as follows:  
+```shell script
+makecert -iv SignRoot.pvk -ic signroot.cer ^
+  -cy end -pe -n CN="localhost" -eku 1.3.6.1.5.5.7.3.1 ^
+  -ss my -sr localmachine -sky exchange ^
+  -sp "Microsoft RSA SChannel Cryptographic Provider" -sy 12
+```
 
 Note that you are using the first certificate as the author for this latest one.
 This is important... where I have localhost you need to put the DNS name of your box. In other words, if you deploy
@@ -152,15 +159,15 @@ You have your certs set up. Congrats! But we are not finished yet.
 
 Now you get to use another fun tool, `httpcfg` (for XP/2003), or its newer version, named aka `netsh http` (for Vista/Seven/Eight).
 
-Firstly run the command below to check that you don't have anything running on a port you want
-
- under XP
-
-    >httpcfg query ssl
-
- under Vista/Seven/Eight
-
-    >netsh http show sslcert
+Firstly run the command below to check that you don't have anything running on a port you want:  
+ - under XP:
+    ```shell script
+    httpcfg query ssl
+    ```
+ - under Vista/Seven/Eight:
+    ```shell script
+    netsh http show sslcert
+    ```
 
 If this is your first time doing this, it should just return a newline.
 If there is already SSL set up on the exact IP you want to use (or if later on you need to delete any mistakes) you can use the following command,
@@ -168,29 +175,29 @@ where the IP and the port are displayed as a result from the previous query.
 
 Now we have to bind an SSL certificate to a port number, as such
 (here below, `0000000000003ed9cd0c315bbb6dc1c08da5e6` is the thumbprint of the certificate, as you copied it into
-the notepad in the previous paragraph):
-
- under XP
-
-    > httpcfg set ssl -i 0.0.0.0:8012 -h 0000000000003ed9cd0c315bbb6dc1c08da5e6
-
- under Vista/Seven/Eight
-
-    >netsh http add sslcert ipport=0.0.0.0:8000 ^
-      certhash=0000000000003ed9cd0c315bbb6dc1c08da5e6 ^
-      appid={00112233-4455-6677-8899-AABBCCDDEEFF}
-
+the notepad in the previous paragraph):    
+ - under XP:  
+    ```shell script
+    set ssl -i 0.0.0.0:8012 -h 0000000000003ed9cd0c315bbb6dc1c08da5e6
+    ```
+ - under Vista/Seven/Eight:  
+    ```shell script
+    netsh http add sslcert ipport=0.0.0.0:8000 ^
+        certhash=0000000000003ed9cd0c315bbb6dc1c08da5e6 ^
+        appid={00112233-4455-6677-8899-AABBCCDDEEFF}
+    ```
+    
 Here the `appid=` parameter is a GUID that can be used to identify the owning application.
 
-To delete an SSL certificate from a port number previously registered, you can use one of the following commands:
-
- under XP
-
-    > httpcfg delete ssl -i 0.0.0.0:8005 -h 0000000000003ed9cd0c315bbb6dc1c08da5e6
+To delete an SSL certificate from a port number previously registered, you can use one of the following commands:  
+ - under XP:  
+    ```shell script
+    httpcfg delete ssl -i 0.0.0.0:8005 -h 0000000000003ed9cd0c315bbb6dc1c08da5e6 ^ 
         httpcfg delete ssl -i 0.0.0.0:8005
-
- under Vista/Seven/Eight
-
-    > netsh http delete sslcert ipport=0.0.0.0:8005
+    ```
+ - under Vista/Seven/Eight:  
+    ```shell script
+    netsh http delete sslcert ipport=0.0.0.0:8005
+    ```
 
 Note that this is mandatory to first delete an existing certificate for a given port before replacing it with a new one.

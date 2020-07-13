@@ -26,39 +26,37 @@
 
 ## Включение подсистемы
 В конфигурационном файле UB:
-Подключить модель UBS
+Подключить модель UBS:  
 ```json
-      	"domainConfigs": {
-		"AppName": {
-			"models": {
-				"UBS": 		{ "path": "UB\\models\\UBS" }
-			 }}
-        }
+"domainConfigs": {
+"AppName": {
+    "models": {
+        "UBS": 		{ "path": "UB\\models\\UBS" }
+     }}
+}
 ```
 Если предпологается выгрузка в PDF то нужно включить модель PDF
 
-Ярлык для реестра отчетов
-
+Ярлык для реестра отчетов:  
 ```json
-    {
-          "cmdType": "showList",
-          "cmdData": {
-            "params": [
-              {
-                "entity": "ubs_report",
-                "method": "select",
-                "fieldList": [
-                  "ID",
-                  "model",
-                  "report_code",
-                  "name"
-                ]
-              }
-            ]
-          }
-        }
-```	
-
+{
+  "cmdType": "showList",
+  "cmdData": {
+    "params": [
+      {
+        "entity": "ubs_report",
+        "method": "select",
+        "fieldList": [
+          "ID",
+          "model",
+          "report_code",
+          "name"
+        ]
+      }
+    ]
+  }
+}
+```
 
 ## Возмжности и ограничения
 
@@ -80,51 +78,53 @@
  - Рядки таблиц должны всегда иметь ширину
 
 Сквозные строки таблицы. Будут выводится на каждой сранице где присутствует таблица. 
-Задается при промощи атрибута стиля `top-through-line: true`.
+Задается при помощи атрибута стиля `top-through-line: true`:  
+```html
+<tr style="disable-split: true; top-through-line: true;">
+```
 
-`<tr style="disable-split: true; top-through-line: true;">`
-
-Не разрывные строки таблицы. Можно указать не разрывать n строк в начале или в конце таблицы.
-
-`<table style="indissoluble-first-rows: 5; indissoluble-end-rows: 6;">`
+Не разрывные строки таблицы. Можно указать не разрывать n строк в начале или в конце таблицы:  
+```html
+<table style="indissoluble-first-rows: 5; indissoluble-end-rows: 6;">
+```
 	
 ## Настройка ПДФ отчетов (колонтитулы, отступы листа, шрифты)
 
-На данный момент колонтитулы, отступы листа и шрифты можно настроить только в коде. Для этого служит конфигурационная функция `onTransformConfig`.
-
-```js
-            onTransformConfig: function(config){
-                  config.margin = {top: 10, right: 8, bottom: 8, left: 20};  // page padding
-                  config.topColontitle = {
-                        height: 8,
-                        font: { size: 10, wide: 0 }
-                  };
-                  config.bottomColontitle = {
-                    height: 28,
-                    font: { size: 10, wide: 0 }
-                  };
-                  config.listeners = {
-                    initColontitle: function(obj, result) {
-                      if(!result.colontitle.isTop) {
-                        result.align = PDF.csPrintToPdf.alignType.center;
-                        result.text = '<p style="text-align:right">Текст</p><p style="text-align:left"> в верхнем колонтитуле <b>created</b> ' + result.currentDate ;
-                        result.isXml = true;
-                      } else {
-                          result.align = PDF.csPrintToPdf.alignType.center;
-                          result.text = 'page ' + result.pageNumber + ' of ' + result.totalPages;
-                      }
-                    }
-                  };
-                return config;
-            }
+На данный момент колонтитулы, отступы листа и шрифты можно настроить только в коде. 
+Для этого служит конфигурационная функция `onTransformConfig`:  
+```javascript
+onTransformConfig: function(config){
+      config.margin = {top: 10, right: 8, bottom: 8, left: 20};  // page padding
+      config.topColontitle = {
+            height: 8,
+            font: { size: 10, wide: 0 }
+      };
+      config.bottomColontitle = {
+        height: 28,
+        font: { size: 10, wide: 0 }
+      };
+      config.listeners = {
+        initColontitle: function(obj, result) {
+          if(!result.colontitle.isTop) {
+            result.align = PDF.csPrintToPdf.alignType.center;
+            result.text = '<p style="text-align:right">Текст</p><p style="text-align:left"> в верхнем колонтитуле <b>created</b> ' + result.currentDate ;
+            result.isXml = true;
+          } else {
+              result.align = PDF.csPrintToPdf.alignType.center;
+              result.text = 'page ' + result.pageNumber + ' of ' + result.totalPages;
+          }
+        }
+      };
+    return config;
+}
 ```
 Полный перечень настроек можно посмотреть [здесь](index.html#!/api/PDF.csPrintToPdf).
 
 ## Настройка панели параметров
 
 В коде отчета можно настроить панель для ввода параметров отчета. Эти настройки будет использовать просмотрщик отчетов.
-Для этого нужно в событии `onParamPanelConfig` создать нужную панель.
-```js
+Для этого нужно в событии `onParamPanelConfig` создать нужную панель:  
+```javascript
 onParamPanelConfig: function () {
   var paramForm = Ext.create('UBS.ReportParamForm', {
     items: [{
@@ -155,9 +155,8 @@ onParamPanelConfig: function () {
   return paramForm
 }
 ```
-Либо то же самое в упрощенном варианте:
-
-```js
+Либо то же самое в упрощенном варианте:  
+```javascript
 onParamPanelConfig: function () {
   return [{
     xtype: 'textfield',
@@ -180,7 +179,7 @@ onParamPanelConfig: function () {
 
 ## Запуск отчета из ярлыка
 
-Пример:
+Пример:  
 ```json
 {
   "cmdType": "showReport",
@@ -200,8 +199,8 @@ onParamPanelConfig: function () {
 
 ## Программный запуск формирования отчета
 
-Пример для запуска на сервере:
-```js
+Пример для запуска на сервере:  
+```javascript
 var UBReport = require('models/UBS/public/UBReport.js')
 var report = UBReport.makeReport('test', 'pdf', {})
 report.then(function (result) {
@@ -216,8 +215,8 @@ report.then(function (result) {
 })
 ```
 
-На клиенте(WEB):
-```js
+На клиенте(WEB):  
+```javascript
 UBS.UBReport.makeReport('test', 'pdf', {}).then(function (report) {
   var outputBlob = new Blob(
     [report.reportData],

@@ -6,26 +6,27 @@ This tutorial is a step-by-step instruction of setting up the schedulers in your
 ## Pre-requirements
 
 Schedulers are implemented by UBQ (UnityBase Queue) model. To enable the schedulers in your application the UBQ model
-must be included into the models section of [application config]:
+must be included into the models section of [application config]:  
+```json
+"application": {
+        ......
+        "domain": {
+            "models": [
+                ...,
+                {
+                    "name": "UBQ",
+                    "path": "%UB_HOME%\\models\\UBQ"
+                },
+                ...
+            ]
+        },
+}
+```
 
-        	"application": {
-                    ......
-                    "domain": {
-                        "models": [
-                            ...,
-                            {
-                                "name": "UBQ",
-                                "path": "%UB_HOME%\\models\\UBQ"
-                            },
-                            ...
-                        ]
-                    },
-       		}
-
-Schedulers are enabled by default, you can explicitly disable schedulers (for example for a test purpose), by adding a
-
-    "schedulers": {"enabled": false}
-
+Schedulers are enabled by default, you can explicitly disable schedulers (for example for a test purpose), by adding a:  
+```json
+"schedulers": {"enabled": false}
+```
 section to the [application config].
 
 `UB` authorization schema must be enabled in the `security.authenticationMethods` [application config].
@@ -49,35 +50,37 @@ The `cron` field is a UNIX-style [crontab] entry. The syntax in the file is:
       * * * * * *
 
 Some samples:
+```
+"cron": "0 0 */1 * * *" // execute a job every hour in 0 min 0 sec
 
-    "cron": "0 0 */1 * * *" // execute a job every hour in 0 min 0 sec
+"cron": "0 0 */3 * * *" // execute a job every three hour in 0 min 0 sec
 
-    "cron": "0 0 */3 * * *" // execute a job every three hour in 0 min 0 sec
+"cron": "0 15 1 * * 1" // execute a job every monday in 1:15.00 after midnight
 
-    "cron": "0 15 1 * * 1" // execute a job every monday in 1:15.00 after midnight
+"cron": "0 1 0 5 4 *" // execute a job every year on 5 april at 0:1.00
 
-    "cron": "0 1 0 5 4 *" // execute a job every year on 5 april at 0:1.00
-
-    "cron": "0 10 6 1 * *" // execute a job every 1 day of month at 6:10.00
+"cron": "0 10 6 1 * *" // execute a job every 1 day of month at 6:10.00
+```
 
 ### Define a task to be executed
 The `command` attribute defines a path to a function to be executed in the HTTP worker context.
-For example:
-
-    "command": "UB.UBQ.FTSReindexFromQueue"
-
+For example:  
+```json
+"command": "UB.UBQ.FTSReindexFromQueue"
+```
 will execute a function `FTSReindexFromQueue` from a namespace `UB.UBQ`.
 
 The tasks are executed from a user name passe to a "runAs" parameter. Users are logged into the system using `UB` authorization.
 
 Alternative way is to pass a `module` parameter, what resolved to module accessible via require and exports a function.
-For example:
-
-    "module": '@unitybase/myModule/schedTask'
-
-and in unitybase/myModule/schedTask.js 
-
-	module exports = function() {...}
+For example:  
+```json
+"module": '@unitybase/myModule/schedTask'
+```
+and in `unitybase/myModule/schedTask.js`: 
+```javascript
+module exports = function() {...}
+```
 
 ### Overriding the existing schedulers
 Each model can define his own schedulers. It is possible to define the job with the same name in the different models.
@@ -86,17 +89,18 @@ Instead of modifying job definition from a model you do not own, it is better to
 in your model and override the original job.
 
 For example, to disable the `FTSReindexFromQueue` job (defined in the UBQ model), place the following job definition
-inside your model `_schedulers.json`:
-
-    {
-     	"name": "FTSReindexFromQueue",
-        "schedulingCondition": "false"
-    }
-
+inside your model `_schedulers.json`:  
+```json
+{
+    "name": "FTSReindexFromQueue",
+    "schedulingCondition": "false"
+}
+```
 ## Tracking the schedulers
-To see the current scheduler definitions from the `AdminUI` you can select a data from a `ubq_scheduler` virtual entity
-
-    UB.Repository('ubq_scheduler').attrs('*').select()
+To see the current scheduler definitions from the `AdminUI` you can select a data from a `ubq_scheduler` virtual entity:  
+```javascript
+UB.Repository('ubq_scheduler').attrs('*').select()
+```
 
 The shortcut for a ubq_scheduler is placed in the `AdminUI` `Administration` desktop -> Queue->Schedulers.
 
@@ -117,20 +121,21 @@ The task below will:
   - only one `FTSReindexFromQueue` task can be performed at the same time - `"singleton": true`
   - not scheduled in case asynchronous FTS operations are disabled in the application configuration  `schedulingCondition`.
 
-Content of a `models/UBQ/_schedulers.json` file:
-
-    [{
-        "name": "FTSReindexFromQueue",
-        "schedulingCondition": "App.serverConfig.application.fts && App.serverConfig.application.fts.enabled && App.serverConfig.application.fts.async",
-        "cron": "0 */1 * * * *",
-        "description": "In case async FTS is enabled in server config will call a fts reindex for a queued items (ubq_messages.code = 'ASYNCFTS') every minute",
-        "command": "UB.UBQ.FTSReindexFromQueue",
-        "singleton": true,
-        "runAs": "admin",
-        "logSuccessful": false
-    }, {
-        /*other tasks can be here */
-    }]
+Content of a `models/UBQ/_schedulers.json` file:  
+```json
+[{
+    "name": "FTSReindexFromQueue",
+    "schedulingCondition": "App.serverConfig.application.fts && App.serverConfig.application.fts.enabled && App.serverConfig.application.fts.async",
+    "cron": "0 */1 * * * *",
+    "description": "In case async FTS is enabled in server config will call a fts reindex for a queued items (ubq_messages.code = 'ASYNCFTS') every minute",
+    "command": "UB.UBQ.FTSReindexFromQueue",
+    "singleton": true,
+    "runAs": "admin",
+    "logSuccessful": false
+}, {
+    /*other tasks can be here */
+}]
+```
 
 ## Implementation details
 

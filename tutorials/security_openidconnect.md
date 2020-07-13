@@ -25,44 +25,47 @@
 ## Настройка сервера UB
 
 ### Изменения в конфигурационном файле
-Для использование в AdminUI в секции authMethods добавляем значение "OpenIDConnect"
-
-    ...
-    "authMethods": [...,"OpenIDConnect"...],
-    ...
+Для использование в AdminUI в секции authMethods добавляем значение "OpenIDConnect":  
+```json
+...
+"authMethods": [...,"OpenIDConnect"...],
+...
+```
 
 Для клиентов, которые не используют метаинформацию сервера для постороения окна логина данный шаг не обязателен.
 
 ### В модели прикладной области
-
-    // Подключаем модуль 'openIDConnect'
-    var openIDConnect = require('openIDConnect');
-    // Регистрируем точку доступа
-    var openIDConnectEndPoint = openIDConnect.registerEndpoint(<EndPoint name>);
+```javascript
+// Подключаем модуль 'openIDConnect'
+var openIDConnect = require('openIDConnect');
+// Регистрируем точку доступа
+var openIDConnectEndPoint = openIDConnect.registerEndpoint(<EndPoint name>);
+```
 
 **`<EndPoint name>`** - имя точки доступа. Для AdminUI **нужно** использовать имя "openIDConnect"
 
-    // Регистрируем провайдер
-    openIDConnectEndPoint.registerProvider(<Provider name>,{
-	    authUrl: <authUrl>,
-	    tokenUrl: <tokenUrl>,
-	    userInfoUrl: <userInfoUrl>,
-	    client_id: <client_id>,
-	    client_secret: <client_secret>,
-	    userInfoHTTPMethod: <userInfoHTTPMethod>,
-	    scope: <scope>,
-	    nonce: <nonce>,
-	    response_type: <response_type>,
-	    getUserID: function(userInfo) {
-		    ...
-		    return id
-		    ...
-		    return null
-		    ...
-	    },
-	    onFinish: <onFinish>
-    });
-
+```javascript
+// Регистрируем провайдер
+openIDConnectEndPoint.registerProvider(<Provider name>,{
+    authUrl: <authUrl>,
+    tokenUrl: <tokenUrl>,
+    userInfoUrl: <userInfoUrl>,
+    client_id: <client_id>,
+    client_secret: <client_secret>,
+    userInfoHTTPMethod: <userInfoHTTPMethod>,
+    scope: <scope>,
+    nonce: <nonce>,
+    response_type: <response_type>,
+    getUserID: function(userInfo) {
+        ...
+        return id
+        ...
+        return null
+        ...
+    },
+    onFinish: <onFinish>
+});
+```
 Пояснения и пример для авторизации при помощи *Google*:
 
  - **`<Provider name>`** - имя провайдера. Будет отображаться в списках доступный провайдеров данной точки доступа.
@@ -109,17 +112,18 @@
 Функция должна проверить имеет ли пользователь с такой информацией доступ к системе,
 возможно, создать нового пользователя, назначить ему права,
 и вернуть его id из сущности _uba_user_.
-Если пользователь не имеет права на доступ к приложению функция должна вернуть `null`. **Пример функции:**
-
-		getUserID: function(userInfo) {
-			var inst = UB.Repository('uba_user').attrs(['ID'])
-				.where('[name]', '=', userInfo.id).select();
-			if (inst.eof)
-				return null;
-			else
-				return inst.get('ID');
-		}
-
+Если пользователь не имеет права на доступ к приложению функция должна вернуть `null`.  
+**Пример функции:**  
+```javascript
+getUserID: function(userInfo) {
+    var inst = UB.Repository('uba_user').attrs(['ID'])
+        .where('[name]', '=', userInfo.id).select();
+    if (inst.eof)
+        return null;
+    else
+        return inst.get('ID');
+}
+```
 
 ## Принцип работы
 
@@ -147,17 +151,18 @@ GET запрос **`/<EndPoint name>`** без параметров вернет
  - Если ф-я вернула пусто, то возвращаемая html-страница вызывает метод **`<onFinish>`** с признаком неуспешной аутентификации
  `{success: false}`
 
-Пример параметров при успешной аутентификации:
-
-    {
-	    success: true,
-		data: {
-		    logonname: "<user login>"
-			result: "<session word>"
-			uData: "{<uData>}"
-			},
-		secretWord: "<secretWord>"
-	}
+Пример параметров при успешной аутентификации:  
+```json
+{
+    success: true,
+    data: {
+        logonname: "<user login>"
+        result: "<session word>"
+        uData: "{<uData>}"
+        },
+    secretWord: "<secretWord>"
+}
+```
 
 На данном этапе если клиент загружен не по протоколу HTTPS, некоторые браузеры могут ругать пользователя.
 
@@ -169,62 +174,62 @@ GET запрос **`/<EndPoint name>`** без параметров вернет
 AdminUI реализует механизм поддержки множества провайдеров и методов аутентификации, динамически отстраивая форму
 логина в зависимости от параметров приложения. В портальных решениях все гораздо проще.
 Допустим нам известно, что на серверной части зарегистрирован ендпоинт `openIDConnect` и провайдер `IdentityServer`.
-Наш портал для приложения autotest будет приблизительно таким:
+Наш портал для приложения autotest будет приблизительно таким:  
+```html
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>&laquo;UB portal&raquo;</title>
 
-	<!doctype html>
-	<html>
-		<head>
-			<meta charset="utf-8"/>
-			<title>&laquo;UB portal&raquo;</title>
-
-			<script charset="utf-8" src="/autotest/compiled/ub-core.js"></script>
-		</head>
-		<body >
-			<h1>User list</h1>
-			<div id="UBData"></div>
-			<script type="text/javascript">
-				var conn = new UBConnection({
-					host: window.location.origin,
-					appName: 'autotest/',
-					requestAuthParams: function(conn, isRepeat){
-						var deferred = Q.defer();
-						var url = window.location.origin + '/autotest/openIDConnect/IdentityServer';
-					 
-						var loginWindowOpenID = window.open(url, 'login', 'toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0');
-						 
-						function loginListener(event) {
-							if (event.source === loginWindowOpenID) {
-								window.removeEventListener("message", loginListener);
-								if (event.origin.indexOf(window.location.origin) === 0) {
-									var response = event.data;
-									if (response.success) {
-										response.authSchema = 'OpenIDConnect';
-										deferred.resolve(response);
-									} else {
-										deferred.reject('authOpenIDConnectFail');
-									}
-								} else {
-									deferred.reject('authOpenIDConnectFail');
-								}
-							}
-						}
-						window.addEventListener("message", loginListener);
-						 
-						return deferred.promise;
-					}
-				});
-				conn.run({entity: 'uba_user', method: 'select', fieldList: ['ID', 'name']}).then(function(result){
-					var htmlTpl = '<table cellspacing = "0" border ="1">'+
-								  '<tr><td style = "text-align: center; padding: 2px;"><b>id</b></td>'+
-								  '<td style = "text-align: center; padding: 2px;"><b>login</b></td></tr>'+
-								  '<% _.forEach(resultData.data, function(user){%>'+
-								  '<tr><td style = "padding: 2px;"><%- user[0] %></td>'+
-								  '<td style = "padding: 2px;"><%- user[1] %></td></tr><%}); %>'+
-								  '</table>';
-					document.getElementById("UBData").innerHTML = _.template(htmlTpl)(result);
-				});
-			</script>
-		</body>
-	</html>
-
+        <script charset="utf-8" src="/autotest/compiled/ub-core.js"></script>
+    </head>
+    <body >
+        <h1>User list</h1>
+        <div id="UBData"></div>
+        <script type="text/javascript">
+            var conn = new UBConnection({
+                host: window.location.origin,
+                appName: 'autotest/',
+                requestAuthParams: function(conn, isRepeat){
+                    var deferred = Q.defer();
+                    var url = window.location.origin + '/autotest/openIDConnect/IdentityServer';
+                 
+                    var loginWindowOpenID = window.open(url, 'login', 'toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0');
+                     
+                    function loginListener(event) {
+                        if (event.source === loginWindowOpenID) {
+                            window.removeEventListener("message", loginListener);
+                            if (event.origin.indexOf(window.location.origin) === 0) {
+                                var response = event.data;
+                                if (response.success) {
+                                    response.authSchema = 'OpenIDConnect';
+                                    deferred.resolve(response);
+                                } else {
+                                    deferred.reject('authOpenIDConnectFail');
+                                }
+                            } else {
+                                deferred.reject('authOpenIDConnectFail');
+                            }
+                        }
+                    }
+                    window.addEventListener("message", loginListener);
+                     
+                    return deferred.promise;
+                }
+            });
+            conn.run({entity: 'uba_user', method: 'select', fieldList: ['ID', 'name']}).then(function(result){
+                var htmlTpl = '<table cellspacing = "0" border ="1">'+
+                              '<tr><td style = "text-align: center; padding: 2px;"><b>id</b></td>'+
+                              '<td style = "text-align: center; padding: 2px;"><b>login</b></td></tr>'+
+                              '<% _.forEach(resultData.data, function(user){%>'+
+                              '<tr><td style = "padding: 2px;"><%- user[0] %></td>'+
+                              '<td style = "padding: 2px;"><%- user[1] %></td></tr><%}); %>'+
+                              '</table>';
+                document.getElementById("UBData").innerHTML = _.template(htmlTpl)(result);
+            });
+        </script>
+    </body>
+</html>
+```
 Profit!

@@ -24,7 +24,7 @@ Starting from UB 5.18.4 RLS cal be defined as a function what accept a `ctxt: ub
  an `ctxt.mParams`. RLS mixin search for function starting from a global scope, so better to place such functions into
  entity module (what exposed into global by UB server), or use `UB.ns('NS.for.your.function')` to create a namespace.
  
-Let's create an RLS function inside RLS namespace (function already exist, here we copy it code for tutorial) 
+Let's create an RLS function inside RLS namespace (function already exist, here we copy it code for tutorial):   
 ```javascript
 /**
  * For members of Admin group and for users `root` and `admin` do nothing.
@@ -76,7 +76,7 @@ RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
 }
 ```
 
-and use it as a `rls.func` in `ubm_navshortcut` entity
+and use it as a `rls.func` in `ubm_navshortcut` entity:  
 ```json
 {
   "caption": "Shortcut",
@@ -118,7 +118,7 @@ The benefits of functional (func) RLS over expression based RLS are:
 ### Define a function, which builds an RLS expression
  
 Add a function inside the `.js` file created, which would return SQL expression to filter the rows as required by RLS rules for this entity.
-Code example of what the function should look like:
+Code example of what the function should look like:  
 ```javascript
 const uba_common = require('@unitybase/uba/modules/uba_common')
 const Session = require('@unitybase/ub').Session
@@ -158,8 +158,8 @@ Here are some points worth mentioning the code sample above:
 
 ### Configure entity
 
-Add `rls` configuration to the `mixins` section of the `.meta` file:
-```
+Add `rls` configuration to the `mixins` section of the `.meta` file:  
+```json
 "mixins": {
   "rls": {
    "expression": "msg_Message.rlsSql()"
@@ -193,7 +193,7 @@ Union of all subjects are stored in `uba_subject` entity - all the users, groups
 So, when create a mapping entity, which defines relation between objects and subjects - the ACL entity,
 its `subjectID` attribute usually points to the `uba_subject` entity.
 
-Example of ACL entity:
+Example of ACL entity:  
 ```json
 {
 	"connectionName": "",
@@ -227,8 +227,7 @@ Example of ACL entity:
 There is an object `Session`.  The following properties are useful for developing functions, which build RLS expression:
 * `userID`
 * `userRoleNames` - a string - comma-separated role names. Not very usable "as is", but role membership may be
-  checked without any query to DB by role name using the following code snippet:
-
+  checked without any query to DB by role name using the following code snippet:  
 ```javascript
 const Session = require('@unitybase/ub').Session
 Session.uData.roles.split(',').find(r => r === 'roleName') != null

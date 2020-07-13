@@ -1,13 +1,12 @@
 ## WebDav (UB Enterprise Edition)
 
-Add @ub-e/web-dav module to your app
-```bash
+Add @ub-e/web-dav module to your app:  
+```shell script
 npm i --save @ub-e/web-dav
 ```
 
-And use it in your model main file with appropriate provider.
- 
-```js
+And use it in your model main file with appropriate provider:  
+```javascript
 const WebDav = require('@ub-e/web-dav')
 const WebDavBlobStoreProvider = require('@ub-e/web-dav/providers/webDavBlobStoreProvider')
 const WebDavFsProvider = require('@ub-e/web-dav/providers/webDavFileSystemProvider')
