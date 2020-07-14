@@ -28,6 +28,7 @@
     <template #view>
       <file-renderer
         v-if="value"
+        :key="value"
         ref="renderer"
         :attribute-name="attributeName"
         :entity-name="entityName"

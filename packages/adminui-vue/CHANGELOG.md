@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UAutoField` property `required` does not passed to `UFormRow` component
  - `UTableEntity`: in case filter for `String` column is applied and user click on column of type `Entity` 
  and when back on `String` column filted input for string is not hiding
+- `UFile` now refresh iframe after value was changed, for example in case PDF is regenerated
 
 ## [1.11.12] - 2020-07-08
 ### Added
