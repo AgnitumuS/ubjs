@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.13.25] - 2020-07-15
+### Fixed
  - correct layout re-rendering after window orientation changed in Safari(iOS)
  - `$App.scan` can accept 'TIFF' or 'PDF' as second parameter (in addition to 'JPEG') - this allows override
  default scn result type

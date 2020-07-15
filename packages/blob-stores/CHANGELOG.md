@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.0] - 2020-07-15
+### Fixed
  - for attributes of "Document" type if store name is empty then name of the default store MUST be written to DB instead
  of empty string. This allows to add another `default` store (mounted to another fs for example) and access documents
  from previous store definition. Fixed regression introduced in UB 4.  

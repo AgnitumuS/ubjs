@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - building of native code does not depends on lazarus (fpc is enough)
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.3.0] - 2020-07-15
+### Changed
+ - building of native code does not depends on lazarus (fpc is enough)
 
 ### Fixed
   - remove exception `_bt is not defined` in case `@unitybase/mailer` is not compiled (lerna bootstrap on the machine where

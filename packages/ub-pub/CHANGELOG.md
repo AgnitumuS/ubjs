@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.15] - 2020-07-15
 ## [5.5.14] - 2020-07-01
 ### Changed
  - translation for ocspVerified.no changed to "Not for long-term validation (certificate validation result NOT included into signature)"

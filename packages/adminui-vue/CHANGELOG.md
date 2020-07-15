@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.11.13] - 2020-07-15
+### Added
  - new `icons`: `u-icon-signature`, `u-icon-file-signature`
  - actions column to SignatureVerificationResult dialog
  - @unitybase/adminui-vue exports `magikLinks` - instance of `adminui-vue/utils/magicLinks.js`  
@@ -14,10 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - elementUI theme build is moved out of "build" script (into "build:el-node11" job). Compiled element theme is added into git.
   This allows to bootstrap a ubjs project using node>11.
  - `UButton`: text sizes changed according [design-system](https://www.figma.com/file/LlwA2pELR7hgjR6ELYIHUf/Scriptum-Design-System?node-id=1475%3A13)
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UFileWebcamButton` prevent error on iOS (Safari) `getUserMedia of undefined`
