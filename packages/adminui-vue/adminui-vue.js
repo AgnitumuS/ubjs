@@ -148,6 +148,11 @@ function replaceDefaultRelogin () {
 }
 
 const magicLink = require('./utils/magicLinks')
+/**
+ * MagikLinks instance
+ * @type {{install: function(): void, addCommand: function(string, Function<Object, EventTarget, *>): void}}
+ */
+module.exports.magicLink = magicLink
 magicLink.install()
 magicLink.addCommand('setFocus', magicLinkFocusCommand)
 

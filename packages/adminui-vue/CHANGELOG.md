@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - new `icons`: `u-icon-signature`, `u-icon-file-signature`
+ - @unitybase/adminui-vue exports `magikLinks` - instance of `adminui-vue/utils/magicLinks.js`  
 
 ### Changed
  - elementUI theme build is moved out of "build" script (into "build:el-node11" job). Compiled element theme is added into git.
