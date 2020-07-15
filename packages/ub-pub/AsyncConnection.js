@@ -1887,6 +1887,13 @@ UBConnection.prototype.logout = function () {
  */
 
 /**
+ * @class SignatureValidationResultAction
+ * @property {String} icon Icon css class name
+ * @property {String} tooltip Tooltip caption
+ * @property {Function} callback Function for handle click
+ */
+
+/**
  * PKI interface
  * @interface
  */
@@ -1945,9 +1952,10 @@ UbPkiInterface.prototype.settingsUI = function () {}
  * Show UI for signature verification result
  * @param {Array<SignatureValidationResult>} validationResults Array of UbPkiInterface.verify() results
  * @param {Array<string>} [sigCaptions] Array of type and name for each signature from validationResults
+ * @param {Array<SignatureValidationResultAction>} [actions] Array of action button (icon and callback)
  * @return {Promise<boolean>}
  */
-UbPkiInterface.prototype.verificationUI = function (validationResults, sigCaptions) {}
+UbPkiInterface.prototype.verificationUI = function (validationResults, sigCaptions, actions) {}
 
 /**
  * Inject encryption implementation and return a promise to object what implements a UbPkiInterface

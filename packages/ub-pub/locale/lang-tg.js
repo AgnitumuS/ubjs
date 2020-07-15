@@ -64,7 +64,7 @@ UB.i18nExtend({
   'Load': 'Бор кардан',
   'Cancel': 'Бекор кардан',
   'ByKeyFile': 'Файл',
-  'Use proxy server': 'Подключаться через прокси серервер',
+  'Use proxy server': 'Подключаться через прокси сервер',
   'Proxy host': 'Сервер',
   'Proxy port': 'Порт',
   'Authenticate on proxy': 'Аутентифицировть на прокси сервере',
