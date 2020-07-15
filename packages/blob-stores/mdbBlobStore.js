@@ -52,7 +52,7 @@ class MdbBlobStore extends BlobStoreCustom {
     fs.writeFileSync(fn, content)
     // TODO md5val = CryptoJS.MD5(content)
     return {
-      store: attribute.storeName,
+      store: this.name,
       fName: request.fileName,
       origName: request.fileName,
       ct: '', // TODO
@@ -127,7 +127,7 @@ class MdbBlobStore extends BlobStoreCustom {
     fs.renameSync(tempPath, permanentPath)
     const nameWoPath = path.basename(permanentPath)
     return {
-      store: attribute.storeName,
+      store: this.name,
       fName: nameWoPath,
       origName: nameWoPath,
       relPath: dirtyItem.relPath,
