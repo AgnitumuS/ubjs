@@ -89,7 +89,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     const ct = mime.contentType(path.extname(origFn))
     const newMD5 = nhashFile(fn, 'MD5')
     return {
-      store: attribute.storeName,
+      store: this.name,
       fName: origFn,
       origName: origFn,
       ct: ct,
@@ -196,7 +196,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     const stat = fs.statSync(newPlacement.fullFn)
     const resp = {
       v: 1,
-      store: attribute.storeName,
+      store: this.name,
       fName: newPlacement.fn,
       origName: dirtyItem.origName,
       relPath: newPlacement.relPath,

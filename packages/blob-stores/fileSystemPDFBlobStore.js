@@ -27,7 +27,7 @@ class FileSystemPDFBlobStore extends FileSystemBlobStore {
     const origFn = request.fileName
     const ct = mime.contentType(path.extname(origFn))
     return {
-      store: attribute.storeName,
+      store: this.name,
       fName: origFn,
       origName: origFn,
       ct: ct,

@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - for attributes of "Document" type if store name is empty then name of the default store MUST be written to DB instead
+ of empty string. This allows to add another `default` store (mounted to another fs for example) and access documents
+ from previous store definition. Fixed regression introduced in UB 4.  
 
 ## [5.3.3] - 2020-07-08
 ### Changed
@@ -47,11 +50,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.1.7] - 2019-12-27
 ### Changed
   - `FileSystemBlobStore.saveContentToTempStore` will return a real file md5 instead of empty string.
-  This allow client to prevent downloading the same file several times
+  This allows preventing downloads of the same file several times.
 
 ## [5.1.2] - 2019-11-19
 ### Fixed
- - prevent expose a package to client by adding `"config": {"ubmodel": {} }` into package.json
+ - prevent exposing of package to client by adding `"config": {"ubmodel": {} }` into package.json
  
 ## [5.1.0] - 2019-10-14
 ### Fixed
@@ -110,7 +113,7 @@ resolved to `pathToSimpleStore/my file 3000006327362/0.pdf` instead of `.../1.pd
 
 ## [5.0.12] - 2018-08-03
 ### Changed
-- file system based BLOB store will use default tempPath: `path.join(this.path, '_temp')` to prevent
+- file system based BLOB store will use default tempPath: `path.join(this.path, '_temp')` to prevent a
  situation from [unitybase/ub-server#11]
 
 ## [5.0.6] - 2018-06-23
