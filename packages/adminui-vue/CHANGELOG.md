@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - new `icons`: `u-icon-signature`, `u-icon-file-signature`
+ - actions column to SignatureVerificationResult dialog
  - @unitybase/adminui-vue exports `magikLinks` - instance of `adminui-vue/utils/magicLinks.js`  
 
 ### Changed

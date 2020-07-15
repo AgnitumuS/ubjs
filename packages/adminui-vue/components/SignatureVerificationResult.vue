@@ -32,6 +32,20 @@
           </td>
           <td> {{ $moment(vr.signingTime).format('L HH:mm') }} </td>
           <td> {{ vr.subject.fullName || vr.organization.digitalStampName || vr.organization.orgName }} </td>
+          <template v-if="actions.length > 0">
+            <td>
+              <el-tooltip
+                  v-for="action in actions"
+                  :content="action.tooltip"
+                  placement="right"
+              >
+                <i
+                  :class="action.icon"
+                  @click="buttonClick($event, vIdx, action.callback)"
+                />
+              </el-tooltip>
+            </td>
+          </template>
         </tr>
         <template v-if="detailsOpened[vIdx] === true">
           <tr :key="'d' + vIdx">
@@ -121,6 +135,13 @@ export default {
     sigCaptions: {
       type: Array,
       default: () => []
+    },
+    /**
+     * @type {Array<SignatureValidationResultAction>}
+     */
+    actions: {
+      type: Array,
+      default: () => []
     }
   },
   data: () => {
@@ -145,8 +166,8 @@ export default {
     statusTip (vIdx, isHTML) {
       const r = this.verificationResults[vIdx]
       if (!r.valid) {
-        let m = `${r.errorMessage || this.VRi18n.valid.no}`
-        if (r.errorCode) m = m + ` (${r.errorCode})`
+        let m = this.VRi18n.valid.no
+        if (r.errorCode) m = r.errorMessage + ` (${r.errorCode})`
         return m
       }
       let s = this.VRi18n.valid.yes; s += isHTML ? '<br>' : '; '
@@ -154,6 +175,9 @@ export default {
       s += this.VRi18n.ocspVerified[r.ocspVerified ? 'yes' : 'no']; s += isHTML ? '<br>' : '; '
       if (r.warnings) s += r.warnings
       return s
+    },
+    async buttonClick(e, index, callback) {
+      await callback(e, index, this.verificationResults)
     }
   }
 }

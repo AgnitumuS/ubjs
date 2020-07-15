@@ -580,15 +580,20 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * Run scan process.
    * @param {String} header Caption of the scanning progress window
    * @param {Object} [config={}] Scanner settings. If passed - will merge config with UBNativeScanner.getDefaultSettings() result
-   * @param {String} [documentMIME] Mime type of scanned image. If passed will override scanSettings.UBScan.OutputFormat
+   * @param {String} [documentMIME] Mime type of scanned image. If passed will override scanSettings.UBScan.OutputFormat.
+   *  One of 'image/jpeg', 'application/jpg', 'JPEG', 'PDF', 'TIFF', 'PDF/A'.
    * @returns {Promise} resolved to base64 data or false in case user press cancel.
    */
   scan: function (header, config, documentMIME) {
     const mimeToOutputFormat = {
       'image/jpeg': 'JPEG',
-      'application/jpg': 'JPEG'
+      'application/jpg': 'JPEG',
+      JPEG: 'JPEG',
+      PDF: 'PDF',
+      TIFF: 'TIFF',
+      'PDF/A': 'PDF/A'
     }
-    const outputFormat = mimeToOutputFormat[documentMIME]
+    const outputFormat = mimeToOutputFormat[documentMIME] || documentMIME
     return $App.scanService().then(function (scanner) {
       $App.__scanService = scanner
       let allowAddPages = false
