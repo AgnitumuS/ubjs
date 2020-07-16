@@ -156,6 +156,10 @@ server {
         # force browser to ask what data is not modified on server on every request
         expires -1;
         add_header Cache-Control "must-revalidate, private";
+        {{#allowCORSFrom}}
+        # in case CORS is allowed and client request contains Origin: header - allow getDocument for it
+        add_header 'Access-Control-Allow-Origin' "$http_origin" always;
+        {{/allowCORSFrom}}
         alias {{{storePath}}};
     }
     {{/blobStores}}

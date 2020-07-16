@@ -89,6 +89,7 @@ module.exports = function generateNginxCfg (cfg) {
     sendFileLocationRoot: reverseProxyCfg.sendFileLocationRoot,
     serveStatic: reverseProxyCfg.serveStatic,
     staticRoot: '',
+    allowCORSFrom: serverConfig.httpServer.allowCORSFrom,
     blobStores: []
   }
   if (reverseProxyCfg.serveStatic) {
