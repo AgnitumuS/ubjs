@@ -29,36 +29,50 @@ const instance = new Vue({
       for (const entity of availableEntities) {
         this.$set(this.entities, entity, {
           subscribes: 0,
-          onEntityChanged: response => {
-            for (const { method, resultData } of response) {
-              if (resultData.ID === undefined) {
-                console.error('Lookups: server response must contain ID')
-                return
-              }
+          onEntityChanged: async response => {
+            if (response === undefined) {
+              return
+            }
+            const { method, resultData } = response
+            if (resultData.ID === undefined) {
+              console.error('Lookups: server response must contain ID')
+              return
+            }
 
-              const cacheEntry = this.entities[entity]
-              if (method === 'delete') {
-                const lookupItemIndex = cacheEntry.data.findIndex(item => item.ID === resultData.ID)
-                cacheEntry.data.splice(lookupItemIndex, 1)
-                delete cacheEntry.mapById[resultData.ID]
-                return
-              }
+            const cachedEntity = this.entities[entity]
+            if (method === 'delete') {
+              const lookupItemIndex = cachedEntity.data.findIndex(item => item.ID === resultData.ID)
+              cachedEntity.data.splice(lookupItemIndex, 1)
+              delete cachedEntity.mapById[resultData.ID]
+              return
+            }
 
-              const itemForCache = {}
-              for (const attr of cacheEntry.attrs) {
-                itemForCache[attr] = resultData[attr]
-              }
+            const attrs = Array.from(cachedEntity.attrs)
+            const updatedItem = {}
+            const hasAllDataInResponse = attrs.every(attr => attr in resultData)
 
-              if (method === 'insert') {
-                cacheEntry.data.push(itemForCache)
-                cacheEntry.mapById[itemForCache.ID] = itemForCache
+            if (hasAllDataInResponse) {
+              for (const attr of attrs) {
+                updatedItem[attr] = resultData[attr]
               }
+            } else {
+              Object.assign(
+                updatedItem,
+                await UB.Repository(entity)
+                  .attrs(attrs)
+                  .selectById(resultData.ID)
+              )
+            }
 
-              if (method === 'update') {
-                const lookupItem = cacheEntry.mapById[itemForCache.ID]
-                if (lookupItem) {
-                  Object.assign(lookupItem, itemForCache)
-                }
+            if (method === 'insert') {
+              cachedEntity.data.push(updatedItem)
+              cachedEntity.mapById[updatedItem.ID] = updatedItem
+            }
+
+            if (method === 'update') {
+              const lookupItem = cachedEntity.mapById[updatedItem.ID]
+              if (lookupItem) {
+                Object.assign(lookupItem, updatedItem)
               }
             }
           },
