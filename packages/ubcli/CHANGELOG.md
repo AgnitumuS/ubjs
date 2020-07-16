@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `ubcli generateNginxCfg`: in case `httpServer.host` is a Unix Domain Socket (unix:/path/to/file.socket) move
+ it to nginx upstream config as is (without trying to url.parse it) 
 
 ## [5.5.21] - 2020-07-15
 ## [5.5.20] - 2020-07-08

@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - Unix Domain Socket configuration notes added to the ubConfig.schema
 
 ### Changed
 

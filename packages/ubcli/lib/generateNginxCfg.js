@@ -62,7 +62,14 @@ module.exports = function generateNginxCfg (cfg) {
       cfg.sslRedirect = true
     }
   }
-  const ubURL = url.parse(argv.serverURLFromConfig(serverConfig))
+  let ubURL
+  if (serverConfig.httpServer && serverConfig.httpServer.host && serverConfig.httpServer.host.startsWith('unix:')) {
+    ubURL = {
+      host: serverConfig.httpServer.host
+    }
+  } else {
+    ubURL = url.parse(argv.serverURLFromConfig(serverConfig))
+  }
   if (!ubURL.port) ubURL.port = (ubURL.protocol === 'https:') ? '443' : '80'
   if (!reverseProxyCfg.sendFileHeader) console.warn('`reverseProxy.sendFileHeader` not defined in ub config. Skip internal locations generation')
   const vars = {

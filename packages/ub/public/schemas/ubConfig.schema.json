@@ -41,12 +41,12 @@
         "host": {
           "type": "string",
           "default": "+",
-          "description": "Host names for server. Could be either a fully qualified case-insensitive domain name, <br> an IPv4 or IPv6 literal string, <br> or a wildcard ('+' will bound to all domain names for the specified port, '*' will accept the request when no other listening host names match the request for that port"
+          "description": "Host name for server. Could be either a fully qualified case-insensitive domain name, <br> an IPv4 or IPv6 literal string, <br> or a wildcard ('+' will bound to all domain names for the specified port, '*' will accept the request when no other listening host names match the request for that port)<br>Under Unix can be a Unix Domain Socket in format 'unix:/path/to/appname.socket'"
         },
         "port": {
           "type": "string",
           "default": "8881",
-          "description": "Port to listen on"
+          "description": "Port to listen on. Keep empty for UDS"
         },
         "path": {
           "type": "string",
