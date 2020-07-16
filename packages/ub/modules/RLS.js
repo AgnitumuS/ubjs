@@ -127,7 +127,7 @@ RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
   const byAdm = whereList.getUniqKey()
   const eName = ctxt.dataStore.entity.name
   const subQ = Repository(`${eName}_adm`)
-    .where('[admSubjID]', 'in', [Session.userID,...Session.uData.roleIDs])
+    .where('[admSubjID]', 'in', [Session.userID,...Session.uData.roleIDs, ...Session.uData.groupIDs])
     .correlation('instanceID', 'ID')
     .ubql()
   whereList[byAdm] = {

@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `RLS.allowForAdminOwnerAndAdmTable` (used in ubm_desktop & ubm_navshortcut RLS) take into account user groups, so Groups
+ can be added to shortcut permissions 
 
 ## [5.5.7] - 2020-07-15
 ## [5.5.6] - 2020-07-08
