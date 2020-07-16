@@ -2323,10 +2323,12 @@ Ext.define('UB.view.EntityGridPanel', {
           parentForm.saveForm().then(function (result) {
             if (result !== -1) {
               me.addNewRecord(selection[0].getData(), true)
+              me.getSelectionModel().deselect(selection[0])
             }
           })
         } else {
           me.addNewRecord(selection[0].getData(), true)
+          me.getSelectionModel().deselect(selection[0])
         }
       } else {
         $App.dialogInfo('rowEditing')
