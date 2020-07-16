@@ -1,12 +1,25 @@
 ﻿[[toc]]
 
+# Linux
+For Linux UnityBase implements a plain socket based HTTP server.
+If `httpServer.serverType` not specified in the [httpServer config](../models/UB/docson/index.html#../schemas/ubConfig.schema.json)
+this is a default choice for Linux.
+
+Depending on `httpServer.host` config parameter value server can listen on:
+ - all host IP addresses for `0.0.0.0`
+ - specified IPv4 address for `x.y.w.z` (example: 10.21.123.256)
+ - specified IPv6 address
+ - Unix Domain Socket (UDS) for `unix:/path/to/file.socket` (`port` should be empty string in this case `"port": ""`) 
+
+Since a server not implements HTTP-level protocol security for production usage we recommend using some kind
+of [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy). See [reverse proxy with nginx](https://unitybase.info/api/server-v5/tutorial-reverse_proxy_nginx.html)
+     
+# Windows
 Since `Windows XP SP2` and `Windows Server 2003`, the Operating System provides a kernel stack to handle HTTP requests.
 This `http.sys` driver is in fact a full featured HTTP server, running in kernel mode.
 It is part of the networking subsystem of the Windows operating system, as a core component.
-UnityBase implement a thow kind of HTTP server:
-
- - based on `http.sys`
- - based on plain sockets
+For Windows we recommend using a http.ssy base server implementation (if `httpServer.serverType` not specified in
+the [httpServer config](../models/UB/docson/index.html#../schemas/ubConfig.schema.json) this is a default choice for Windows)
 
 What’s good about http.sys?
 
