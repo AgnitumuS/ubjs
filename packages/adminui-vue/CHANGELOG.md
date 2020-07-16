@@ -8,12 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - **BREAKING** `UB.conenction` event `<ENTITY_NAME>:changed` payload is a single response (instead an array of responses as before)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `UTableEntity` in case of changes form with collection items does bnot empty rows anymore
+ - `UTableEntity` and `lookups` will update all attributes during `<ENTITY_NAME>:changed` event instead of modified ones.
+ - `UTableEntity` "copy record" does NOT copy arttributes of type `Document` (behavior is the same as in Ext-based table)
 
 ## [1.11.13] - 2020-07-15
 ### Added

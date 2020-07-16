@@ -351,11 +351,11 @@ module.exports = (instance) => ({
           UB.showErrorWindow(err)
           throw new UB.UBAbortError(err)
         }
-        UB.connection.emit(`${getters.entityName}:changed`, [{
+        UB.connection.emit(`${getters.entityName}:changed`, {
           entity: getters.entityName,
           method: 'delete',
           resultData: { ID }
-        }])
+        })
         $notify.success(UB.i18n('recordDeletedSuccessfully'))
       }
     },
@@ -483,30 +483,45 @@ module.exports = (instance) => ({
       }
     },
 
-    async updateData ({ state, getters, commit, dispatch }, responses) {
-      if (responses === undefined || responses.length === 0) {
+    async updateData ({ state, getters, commit, dispatch }, response) {
+      if (response === undefined) {
         await dispatch('refresh')
         return
       }
 
-      for (const response of responses) {
-        switch (response.method) {
-          case 'insert':
-            if (state.items.length < getters.pageSize) {
-              commit('ADD_ITEM', response.resultData)
-            }
-            break
-          case 'update':
-            commit('UPDATE_ITEM', response.resultData)
-            break
-          case 'delete':
-            commit('REMOVE_ITEM', response.resultData)
-            // in case items count equal pageSize then probably has next page so need refresh it
-            if (state.items.length === getters.pageSize - 1) {
-              await dispatch('refresh')
-            }
-            break
+      if (response.method === 'delete') {
+        commit('REMOVE_ITEM', response.resultData.ID)
+        // in case items count equal pageSize then probably has next page so need refresh it
+        if (state.items.length === getters.pageSize - 1) {
+          await dispatch('refresh')
         }
+      }
+
+      const updatedItem = {}
+      const hasAllDataInResponse = getters.currentRepository.fieldList
+        .every(attr => attr in response.resultData)
+
+      if (hasAllDataInResponse) {
+        for (const attr of getters.currentRepository.fieldList) {
+          updatedItem[attr] = response.resultData[attr]
+        }
+      } else {
+        Object.assign(
+          updatedItem,
+          await UB.Repository(response.entity)
+            .attrs(getters.currentRepository.fieldList)
+            .selectById(response.resultData.ID)
+        )
+      }
+
+      if (response.method === 'insert') {
+        if (state.items.length < getters.pageSize) {
+          commit('ADD_ITEM', updatedItem)
+        }
+      }
+
+      if (response.method === 'update') {
+        commit('UPDATE_ITEM', updatedItem)
       }
     }
   }

@@ -123,9 +123,9 @@ if (isExt) {
     const v = UB.connection.appConfig.serverVersion.split('.')
     if ((v[0] >= 'v5') && (v[1] < 14)) throw new Error('This version of adminui-vue require UB server to be >= 5.14')
   })
-  UB.connection.on('ubm_navshortcut:changed', (event) => {
-    if (event && event.length && (event.length === 1)) {
-      UB.core.UBStoreManager.updateNavshortcutCacheForItem(event[0].resultData, false)
+  UB.connection.on('ubm_navshortcut:changed', (execParams) => {
+    if (execParams && execParams.method !== 'delete') {
+      UB.core.UBStoreManager.updateNavshortcutCacheForItem(execParams.resultData, false)
     }
   })
 }

@@ -614,7 +614,18 @@ function createProcessingModule ({
         // load master record
         const copiedRecord = await UB.connection
           .Repository(masterEntityName)
-          .attrs(fieldList)
+          .attrs(
+            fieldList
+              .filter(attrCode => {
+                // exclude UB attributes with dataType 'Document'
+                const attr = entitySchema.getEntityAttribute(attrCode)
+                if (attr) {
+                  return attr.dataType !== UB.connection.domain.ubDataTypes.Document
+                }
+
+                return true
+              })
+          )
           .selectById(instanceID)
         commit('LOAD_DATA', copiedRecord) // need for load collections because collections maps to data of master record
 
@@ -795,7 +806,9 @@ function createProcessingModule ({
 
           commit('CLEAR_ALL_DELETED_ITEMS')
 
-          UB.connection.emit(`${masterEntityName}:changed`, responses)
+          for (const response of responses) {
+            UB.connection.emit(`${response.entity}:changed`, response)
+          }
 
           if (state.isNew) {
             commit('IS_NEW', false)
@@ -876,11 +889,11 @@ function createProcessingModule ({
               entity: masterEntityName,
               execParams: { ID: state.data.ID }
             })
-            UB.connection.emit(`${masterEntityName}:changed`, [{
+            UB.connection.emit(`${masterEntityName}:changed`, {
               entity: masterEntityName,
               method: 'delete',
               resultData: { ID: state.data.ID }
-            }])
+            })
 
             closeForm()
 
