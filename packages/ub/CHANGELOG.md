@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Unix Domain Socket configuration notes added to the ubConfig.schema
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.5.8] - 2020-07-16
+### Added
+ - Unix Domain Socket configuration notes added to the ubConfig.schema
 
 ### Fixed
  - `RLS.allowForAdminOwnerAndAdmTable` (used in ubm_desktop & ubm_navshortcut RLS) take into account user groups, so Groups

@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.6.0] - 2020-07-16
+### Fixed
  - `ubcli generateNginxCfg`: in case `httpServer.host` is a Unix Domain Socket (unix:/path/to/file.socket) move
  it to nginx upstream config as is (without trying to url.parse it)
  - `ubcli generateNginxCfg`: adds `Access-Control-Allow-Origin` for internal location in case CORS is allowed and

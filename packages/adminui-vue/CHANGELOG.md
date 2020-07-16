@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - **BREAKING** `UB.conenction` event `<ENTITY_NAME>:changed` payload is a single response (instead an array of responses as before)
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.12.0] - 2020-07-16
+### Changed
+ - **BREAKING** `UB.conenction` event `<ENTITY_NAME>:changed` payload is a single response (instead an array of responses as before)
 
 ### Fixed
  - `UTableEntity` in case of changes form with collection items does bnot empty rows anymore

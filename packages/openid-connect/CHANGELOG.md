@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.1.21] - 2020-07-16
 ## [5.1.20] - 2020-07-15
 ### Added
  - support for ADFS3 (Windows Server 2012 only - in Windows Server 2016+ ADFS version is 2016):
