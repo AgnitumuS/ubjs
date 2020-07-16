@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTableEntity` "copy record" action will NOT copy arttributes of type `Document` (behavior the same as in Ext-based table)
 
 ## [1.11.13] - 2020-07-15
 ### Added
