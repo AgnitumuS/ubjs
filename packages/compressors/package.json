@@ -8,8 +8,7 @@
   },
   "scripts": {
     "test": "ub ./test/testCompresors.js",
-    "build": "npm run build:native",
-    "build:native": "node ./bin/compile.js",
+    "build": "./build_native",
     "version": "update-changelog && git add CHANGELOG.md"
   },
   "public": true,
@@ -18,7 +17,6 @@
   },
   "main": "./UBCompressors.js",
   "devDependencies": {
-    "@unitybase/fpc-utils": "^5.0.8",
     "@unitybase/stubs": "^5.1.1",
     "@unitybase/update-changelog": "^1.0.4"
   },
