@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Removed
+ - this package is obsolete. package.json remaned to _package.json to prevent building and publishing
+
 ## [1.0.10] - 2018-09-26
 ### Changed
 - Fix bug when processing '*' uri value

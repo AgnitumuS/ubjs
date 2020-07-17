@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - this package is obsolete. package.json remaned to _package.json to prevent building and publishing
 
 ### Fixed
 
