@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `Vue.prototype.$formatByPattern` which provides format methods from `cs-shared`. Example:
+```javascript
+this.$formatByPattern.formatNumber(
+  this.total,
+  'numberGroup',
+  this.$UB.connection.userLang()
+)
+```
 
 ### Changed
 
