@@ -230,3 +230,5 @@ Vue.config.warnHandler = (err, vm, info) => {
     window.onerror.apply(UB, [newErrText, info, '', '', new UB.UBError(newErrText, info)])
   }, 0)
 }
+
+Vue.prototype.$formatByPattern = require('@unitybase/cs-shared').formatByPattern

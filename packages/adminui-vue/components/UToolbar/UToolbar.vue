@@ -75,7 +75,6 @@
 /* global $App */
 const { mapState, mapGetters, mapActions } = require('vuex')
 const { mapInstanceFields } = require('../../utils/Form/helpers')
-const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 
 /**
  * Form toolbar with default actions.
@@ -387,8 +386,12 @@ export default {
       }
     },
 
-    formatDate (d) {
-      return formatByPattern.formatDate(d, 'dateTimeFull', this.$UB.connection.userLang())
+    formatDate (date) {
+      return this.$formatByPattern.formatDate(
+        date,
+        'dateTimeFull',
+        this.$UB.connection.userLang()
+      )
     }
   }
 }
