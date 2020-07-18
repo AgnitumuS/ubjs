@@ -19,7 +19,6 @@
       :disabled="value.length === 0"
       type="submit"
       icon="u-icon-search"
-      size="large"
     />
   </form>
 </template>

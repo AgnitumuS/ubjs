@@ -1,6 +1,5 @@
 const UB = require('@unitybase/ub-pub')
 const { Notification: $notify } = require('element-ui')
-const { throttle } = require('throttle-debounce')
 const { dialogDeleteRecord } = require('../dialog/UDialog')
 const { exportExcel, exportCsv, exportHtml } = require('../../utils/fileExporter')
 const lookups = require('../../utils/lookups')
@@ -158,9 +157,9 @@ module.exports = (instance) => ({
       }
     },
 
-    REMOVE_ITEM (state, deletedItem) {
-      if (deletedItem && deletedItem.ID) {
-        const deleteIndex = state.items.findIndex(i => i.ID === deletedItem.ID)
+    REMOVE_ITEM (state, deleteID) {
+      if (deleteID) {
+        const deleteIndex = state.items.findIndex(i => i.ID === deleteID)
         if (deleteIndex !== -1) {
           state.items.splice(deleteIndex, 1)
         }

@@ -8,7 +8,6 @@
   >
     <u-button
       appearance="inverse"
-      size="large"
       type="submit"
       icon="u-icon-search"
     />
