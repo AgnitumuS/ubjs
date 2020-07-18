@@ -11,7 +11,8 @@ module.exports = {
   enrichFieldList,
   SET,
   isEmpty,
-  change
+  change,
+  prepareCopyAddNewExecParams
 }
 
 const UB = require('@unitybase/ub-pub')
@@ -449,4 +450,26 @@ function replaceMultilangParams (execParams) {
       delete execParams[key]
     }
   })
+}
+
+/**
+ * @param {object} originalExecParams
+ * @param {string} entity
+ * @returns {object} execParams
+ */
+function prepareCopyAddNewExecParams (originalExecParams, entity) {
+  const execParams = { ...originalExecParams }
+
+  // exclude ID
+  delete execParams.ID
+
+  // convert Json fields into string
+  for (const attrCode of Object.keys(execParams)) {
+    const attr = UB.connection.domain.get(entity).getAttribute(attrCode)
+    if (attr.dataType === UB.connection.domain.ubDataTypes.Json) {
+      execParams[attrCode] = JSON.stringify(execParams[attrCode])
+    }
+  }
+
+  return execParams
 }

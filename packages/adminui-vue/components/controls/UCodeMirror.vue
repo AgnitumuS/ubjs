@@ -45,7 +45,7 @@ const { debounce } = require('throttle-debounce')
 module.exports = {
   name: 'UCodeMirror',
   props: {
-    value: [String, Object],
+    value: [String, Object, Array],
     /** true in case binded value is Object (parsed JSON) */
     valueIsJson: {
       type: Boolean,
