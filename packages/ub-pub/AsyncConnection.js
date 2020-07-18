@@ -981,8 +981,8 @@ UBConnection.prototype.processBuffer = function processBuffer () {
   this._bufferTimeoutID = 0
   this._bufferedRequests = []
   const reqData = bufferCopy.map(r => r.request)
-  const methods = reqData.map(ubq => `${ubq.entity}.${ubq.method}`).join('*')
-  const uri = `ubql?rq=${methods}`
+  const rq = buildUriQueryPath(reqData)
+  const uri = `ubql?rq=${rq}`
   this.post(uri, reqData).then(
     (responses) => {
       // we expect responses in order we send requests to server
@@ -1623,7 +1623,9 @@ UBConnection.prototype.runTrans = function (ubRequestArray) {
       if (newEp) serverRequest.execParams = newEp
     }
   }
-  return this.post('ubql', ubRequestArray).then((response) => response.data)
+  const rq = buildUriQueryPath(ubRequestArray)
+  const uri = `ubql?rq=${rq}`
+  return this.post(uri, ubRequestArray).then((response) => response.data)
 }
 
 /**
@@ -2181,6 +2183,44 @@ function connect (cfg, ubGlobal = null) {
     connection.domain = domain
     return connection
   })
+}
+
+/**
+ * Helper function for building `rq` parameter value for ubql entpoint.
+ * Takes into account the same method calls sequences. Limit URI length.
+ * @private
+ * @param {Array<ubRequest>} reqData
+ */
+function buildUriQueryPath (reqData) {
+  const L = reqData.length
+  if (!L) return ''
+  if (L === 1) return `${reqData[0].entity}.${reqData[0].method}`
+  if (L) {
+    const methodsArr = []
+    methodsArr.push(`${reqData[0].entity}.${reqData[0].method}`)
+    let i = 1
+    while (i < L) {
+      // repeatable methods
+      if ((reqData[i].entity === reqData[i - 1].entity) &&
+        (reqData[i].method === reqData[i - 1].method)) {
+        let repeats = 1
+        do {
+          repeats++
+          i++
+        } while ((i < L) && (reqData[i].entity === reqData[i - 1].entity) && (reqData[i].method === reqData[i - 1].method))
+        methodsArr.push(repeats)
+      }
+      if (i < L) {
+        methodsArr.push(`${reqData[i].entity}.${reqData[i].method}`)
+        if (methodsArr.length > 20) { // in any case limit a URI length
+          methodsArr.push('**')
+          break
+        }
+        i++
+      }
+    }
+    return methodsArr.join('*')
+  }
 }
 
 module.exports.UBConnection = UBConnection
