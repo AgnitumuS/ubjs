@@ -22,7 +22,8 @@ this.$formatByPattern.formatNumber(
 ### Removed
 
 ### Fixed
-- `UTableEntity` - fixed error during "copy record" what contains attributes of type JSON
+ - `USelectEntity` - do not call a `setQueryByValue` in case dropdown is closed and user click outside USelectEntity
+ - `UTableEntity` - fixed error during "copy record" what contains attributes of type JSON
 
 ## [1.12.0] - 2020-07-16
 ### Changed

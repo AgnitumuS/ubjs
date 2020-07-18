@@ -24,11 +24,12 @@ module.exports = {
     const refs = [input, this.$refs.options]
 
     this._clickOutsideListenerId = addClickOutsideListener(refs, () => {
-      this.dropdownVisible = false
-      // TODO: prevent calling setQueryByValue on every click in document
+      if (!this.dropdownVisible) return
+      
       if (this.setQueryByValue) {
         this.setQueryByValue(this.value)
       }
+      this.dropdownVisible = false
     })
   },
 
