@@ -29,6 +29,7 @@
  */
 
 const _ = require('lodash')
+const collationCompare = require('./formatByPattern').collationCompare
 
 /**
  * Format for data, stored in client-side cache
@@ -128,7 +129,7 @@ module.exports.doSorting = function (filteredArray, cachedData, ubRequest) {
     _.each(ubRequest.orderList, function (orderItem) {
       const attrIdx = cachedData.fields.indexOf(orderItem.expression)
       if (attrIdx < 0) {
-        throw new Error('Ordering by ' + orderItem.expression + ' attribute that don\'t present in fieldList not allowed')
+        throw new Error(`Ordering by "${orderItem.expression}" attribute that not in fieldList is not allowed`)
       }
       preparedOrder.push({
         idx: attrIdx,
@@ -143,16 +144,7 @@ module.exports.doSorting = function (filteredArray, cachedData, ubRequest) {
         while (++idx < orderLen && res === 0) {
           const colNum = preparedOrder[idx].idx
           if (v1[colNum] !== v2[colNum]) {
-            if (v1[colNum] === null && v2[colNum] !== null) {
-              res = 1
-            } else if (v1[colNum] !== null && v2[colNum] === null) {
-              res = -1
-            } else if (v1[colNum] > v2[colNum]) {
-              res = 1
-            } else {
-              res = -1
-            }
-            res = res * preparedOrder[idx].modifier
+            res = collationCompare(v1[colNum], v2[colNum]) * preparedOrder[idx].modifier
           }
         }
         return res
@@ -180,7 +172,7 @@ function whereListToFunctions (ubql, fieldList) {
 
   const filterFabricFn = function (propertyIdx, condition, value) {
     let regExpFilter
-
+    const valIsStr = typeof value === 'string'
     switch (condition) {
       case 'like':
         regExpFilter = new RegExp(escapeForRegexp(value), 'i')
@@ -197,20 +189,44 @@ function whereListToFunctions (ubql, fieldList) {
           return record[propertyIdx] !== value
         }
       case 'more':
-        return function (record) {
-          return record[propertyIdx] > value
+        if (valIsStr) {
+          return function (record) {
+            return collationCompare(record[propertyIdx], value) === 1
+          }
+        } else {
+          return function (record) {
+            return record[propertyIdx] > value
+          }
         }
       case 'moreEqual':
-        return function (record) {
-          return record[propertyIdx] >= value
+        if (valIsStr) {
+          return function (record) {
+            return collationCompare(record[propertyIdx], value) >= 0
+          }
+        } else {
+          return function (record) {
+            return record[propertyIdx] >= value
+          }
         }
       case 'less':
-        return function (record) {
-          return record[propertyIdx] < value
+        if (valIsStr) {
+          return function (record) {
+            return collationCompare(record[propertyIdx], value) === -1
+          }
+        } else {
+          return function (record) {
+            return record[propertyIdx] < value
+          }
         }
       case 'lessEqual':
-        return function (record) {
-          return record[propertyIdx] <= value
+        if (valIsStr) {
+          return function (record) {
+            return collationCompare(record[propertyIdx], value) <= 0
+          }
+        } else {
+          return function (record) {
+            return record[propertyIdx] <= value
+          }
         }
       case 'isNull':
         return function (record) {

@@ -351,6 +351,7 @@ $App.connection.userLang()
       // noinspection JSPotentiallyInvalidUsageOfThis
       userData.lang = this.appConfig.defaultLang
     }
+    csShared.formatByPattern.setDefaultLang(userData.lang)
     if (!restored) udot(this, userData.login)
     return ubSession
   }

@@ -45,6 +45,9 @@ const langToICU = {
   az: 'az'
 }
 
+let _defaultLang
+let _collator
+
 /**
  * Create a ICU locale based on UB language
  * @param lang
@@ -52,7 +55,7 @@ const langToICU = {
  */
 function lang2locale (lang) {
   if (l2lHook) return l2lHook(lang)
-  lang = lang || 'en'
+  lang = lang || _defaultLang
   if ((lang.length < 3) && langToICU[lang]) {
     return langToICU[lang]
   } else {
@@ -92,10 +95,10 @@ let dateTimeFormaters = {}
  * @param {*} dateVal Date object or Number/String what will be converted to Date using new Date();
  *   null, undefined and empty string will be converted to empty string
  * @param {string} patternName One of `formatByPattern.datePatterns`
- * @param {string} lang UB language code
+ * @param {string} [lang=defaultLang] UB language code. If not specified value defined by setDefaultLang is used
  * @return {string}
  */
-module.exports.formatDate = function (dateVal, patternName, lang) {
+module.exports.formatDate = function (dateVal, patternName, lang = _defaultLang) {
   if (!dateVal) return ''
   if (!(dateVal instanceof Date)) dateVal = new Date(dateVal)
 
@@ -121,10 +124,10 @@ module.exports.formatDate = function (dateVal, patternName, lang) {
  *
  * @param {*} numVal
  * @param {string} patternName One of `formatByPattern.datePatterns`
- * @param {string} lang UB language code
+ * @param {string} [lang=defaultLang] UB language code. If not specified value defined by `setDefaultLang` is used
  * @return {string}
  */
-module.exports.formatNumber = function (numVal, patternName, lang) {
+module.exports.formatNumber = function (numVal, patternName, lang = _defaultLang) {
   if (!numVal && (numVal !== 0)) return ''
   const v = (typeof numVal === 'number') ? numVal : parseFloat(numVal)
   if (Number.isNaN(v)) return ''
@@ -163,3 +166,36 @@ module.exports.datePatterns = Object.keys(datePatterns)
  * @type {string[]}
  */
 module.exports.numberPatterns = Object.keys(numberPatterns)
+
+/**
+ * Set a default language to use with `strCmp`, `formatNumber` and `formatDate`.
+ * For UI this is usually a logged in user language.
+ * @param {string} lang
+ */
+function setDefaultLang (lang) {
+  if (_defaultLang === lang) return
+  _collator = undefined
+  if (lang === 'en') return
+  if ((typeof Intl === 'object') && Intl.Collator) {
+    _collator = new Intl.Collator(lang)
+  }
+}
+setDefaultLang('en')
+
+module.exports.setDefaultLang = setDefaultLang
+
+/**
+ * Compare two value using `Intl.collator` for default language.
+ * Returns 0 if values are equal, otherwise 1 or -1.
+ * @param {*} v1
+ * @param {*} v2
+ * @return {number}
+ */
+module.exports.collationCompare = function (v1, v2) {
+  if (_collator) {
+    return _collator.compare(v1, v2)
+  } else {
+    if (v1 === v2) return 0
+    return v1 > v2 ? 1 : -1
+  }
+}
