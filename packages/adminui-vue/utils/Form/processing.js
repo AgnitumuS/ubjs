@@ -12,7 +12,8 @@ const {
   enrichFieldList,
   SET,
   isEmpty,
-  change
+  change,
+  prepareCopyAddNewExecParams
 } = require('./helpers')
 /**
  * @typedef {object} UbVuexStoreCollectionInfo
@@ -643,11 +644,10 @@ function createProcessingModule ({
           })
         )
 
-        delete copiedRecord.ID
         const newRecord = await UB.connection.addNewAsObject({
           entity: masterEntityName,
           fieldList,
-          execParams: copiedRecord
+          execParams: prepareCopyAddNewExecParams(copiedRecord, masterEntityName)
         })
         commit('LOAD_DATA', newRecord)
 

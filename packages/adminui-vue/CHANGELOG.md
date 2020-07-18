@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UTableEntity` - fixed error during "copy record" what contains attributes of type JSON
 
 ## [1.12.0] - 2020-07-16
 ### Changed
