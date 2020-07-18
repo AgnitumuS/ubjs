@@ -7,7 +7,6 @@
     })"
   >
     <u-button
-      size="large"
       appearance="inverse"
       type="submit"
       icon="u-icon-search"

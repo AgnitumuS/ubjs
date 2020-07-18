@@ -22,8 +22,10 @@ this.$formatByPattern.formatNumber(
 ### Removed
 
 ### Fixed
- - `USelectEntity` - do not call a `setQueryByValue` in case dropdown is closed and user click outside USelectEntity
+ - `UTableEntity` vertical align of inputs in filter is fixed by decreasing a size of the search button
+ - `UTableEntity` will remove record from a table after deleting as expected
  - `UTableEntity` - fixed error during "copy record" what contains attributes of type JSON
+ - `USelectEntity` - do not call a `setQueryByValue` in case dropdown is closed and user click outside USelectEntity
 
 ## [1.12.0] - 2020-07-16
 ### Changed
