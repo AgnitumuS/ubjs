@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `AsyncConnection.runTrans` method will add a method names into post request URL (the same as `AsyncConnection.query`),
+ so request become `POST /ubql?rq=entity1.method1*entity2.method2`.
+ 
 ### Changed
 
 ### Deprecated
@@ -14,11 +16,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+ - `rq` parameter value for `AsyncConnection.runTrans` or buffered `AsyncConnection.query` requests takes into account
+ the same method calls sequences to use such names once. Also, limits methods count to 20 methods ( max 20*41=820 characters ).
+ This fix situation when long URLs are rejected by reverse proxy. For example for sequence of
+ 3 call to `UB.connection.query({entity: 'uba_user', method: 'addnew'})`  previous implementation
+ generate `POST /ubql?rq=uba_user.addnew*uba_user.addnew*uba_user.addnew`, but new - `POST /ubql?rq=uba_user.addnew*3`    
+  
 ## [5.5.15] - 2020-07-15
 ## [5.5.14] - 2020-07-01
 ### Changed
- - translation for ocspVerified.no changed to "Not for long-term validation (certificate validation result NOT included into signature)"
+ - translation for `ocspVerified.no` changed to "Not for long-term validation (certificate validation result NOT included into signature)"
 
 ## [5.5.13] - 2020-06-24
 ### Added
@@ -103,7 +110,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.4.6] - 2020-02-03
 ## [5.4.5] - 2020-01-31
 ### Added
- - support for native messages extension in Firefox
+ - support for native message extension in Firefox
 
 ## [5.4.4] - 2020-01-17
 ### Added
