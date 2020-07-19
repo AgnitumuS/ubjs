@@ -41,6 +41,6 @@
   "dependencies": {
     "@unitybase/ub-migrate": "^1.14.1",
     "core-js": "^3.6.5",
-    "ub-jsdoc": "^2.4.1"
+    "ub-jsdoc": "^2.4.2"
   }
 }
