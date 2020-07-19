@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.12.1] - 2020-07-19
+### Added
  - `Vue.prototype.$formatByPattern` which provides format methods from `cs-shared`. Example:
 ```javascript
 this.$formatByPattern.formatNumber(
@@ -14,12 +25,6 @@ this.$formatByPattern.formatNumber(
   this.$UB.connection.userLang()
 )
 ```
-
-### Changed
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UTableEntity` vertical align of inputs in filter is fixed by decreasing a size of the search button

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.13.27] - 2020-07-19
 ## [5.13.26] - 2020-07-16
 ### Fixed
 - fixed removing two rows in `ubDetailGrid` after execute `delete` action in row created by `addNewByCurrent` action

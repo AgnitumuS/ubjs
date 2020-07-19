@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.5.0] - 2020-07-19
+### Added
  - `@unitybase/cs-shared/formatByPattern.setDefaultLang` function - set a default language. Called by AsyncConnection 
  automatically.
  - `@unitybase/cs-shared/formatByPattern.collationCompare` function - compare two value using default language.
@@ -14,12 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `formatByPattern.formatNumber` & `formatByPattern.formatDate` without language parameter uses default language 
  defined by call to `formatByPattern.setDefaultLang` 
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.4.1] - 2020-07-01
 ### Added

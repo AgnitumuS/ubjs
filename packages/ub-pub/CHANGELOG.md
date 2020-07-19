@@ -6,18 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `AsyncConnection.runTrans` method will add a method names into post request URL (the same as `AsyncConnection.query`),
- so request become `POST /ubql?rq=entity1.method1*entity2.method2`.
- - AsyncConnection will call `@unitybase/cs-shared.formatByPattern.setDefaultLang` during user session creation.
- This enables string sorting according to locale and allow calling of `formatByPattern.formatNumber` & `formatByPattern.formatDate`
- without language parameter (user language will be used).  
- 
+
 ### Changed
 
 ### Deprecated
 
 ### Removed
 
+### Fixed
+
+## [5.5.16] - 2020-07-19
+### Added
+ - `AsyncConnection.runTrans` method will add a method names into post request URL (the same as `AsyncConnection.query`),
+ so request become `POST /ubql?rq=entity1.method1*entity2.method2`.
+ - AsyncConnection will call `@unitybase/cs-shared.formatByPattern.setDefaultLang` during user session creation.
+ This enables string sorting according to locale and allow calling of `formatByPattern.formatNumber` & `formatByPattern.formatDate`
+ without language parameter (user language will be used).  
+ 
 ### Fixed
  - `rq` parameter value for `AsyncConnection.runTrans` or buffered `AsyncConnection.query` requests takes into account
  the same method calls sequences to use such names once. Also, limits methods count to 20 methods ( max 20*41=820 characters ).

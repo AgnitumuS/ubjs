@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.1] - 2020-07-19
 ## [5.3.0] - 2020-07-15
 ### Changed
  - building of native code does not depends on lazarus (fpc is enough)
