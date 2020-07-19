@@ -25,43 +25,42 @@ if (base.ubVersionNum < 5018000) {
  *  - `endpointName + ':after'` event in case neither exception is raised nor App.preventDefault()
  *  is called inside endpoint handler
  *
- *
-     const App = require('@unitybase/ub').App
-     // Register public (accessible without authentication) endpoint
-     App.registerEndpoint('echoToFile', echoToFile, false)
-
-     // write custom request body to file FIXTURES/req and echo file back to client
-     // @param {THTTPRequest} req
-     // @param {THTTPResponse} resp
-     function echoToFile (req, resp) {
-       var fs = require('fs')
-       fs.writeFileSync(path.join(FIXTURES, 'req'), req.read('bin'))
-       resp.statusCode = 200
-       resp.writeEnd(fs.readFileSync(path.join(FIXTURES, 'req'), {encoding: 'bin'}))
-     }
-
-     //Before getDocument requests
-     //@param {THTTPRequest} req
-     //@param {THTTPResponse} resp
-     function doSomethingBeforeGetDocumentCall(req, resp){
-       console.log('User with ID', Session.userID, 'try to get document')
-     }
-     // Adds hook called before each call to getDocument endpoint
-     App.on('getDocument:before', doSomethingBeforeGetDocumentCall)
-
-     const querystring = require('querystring')
-     //
-     //After getDocument requests
-     //@param {THTTPRequest} req
-     //@param {THTTPResponse} resp
-     function doSomethingAfterGetDocumentCall(req, resp){
-       params = querystring.parse(req.parameters)
-       console.log('User with ID', Session.userID, 'obtain document using params',  params)
-     }
-     App.on('getDocument:after', doSomethingAfterGetDocumentCall)
-
- *
  * To prevent endpoint handler execution App.preventDefault() can be used inside `:before` handler.
+ *
+ * @example
+const App = require('@unitybase/ub').App
+// Register public (accessible without authentication) endpoint
+App.registerEndpoint('echoToFile', echoToFile, false)
+
+// write custom request body to file FIXTURES/req and echo file back to client
+// @param {THTTPRequest} req
+// @param {THTTPResponse} resp
+function echoToFile (req, resp) {
+  var fs = require('fs')
+  fs.writeFileSync(path.join(FIXTURES, 'req'), req.read('bin'))
+  resp.statusCode = 200
+  resp.writeEnd(fs.readFileSync(path.join(FIXTURES, 'req'), {encoding: 'bin'}))
+}
+
+//Before getDocument requests
+//@param {THTTPRequest} req
+//@param {THTTPResponse} resp
+function doSomethingBeforeGetDocumentCall(req, resp){
+  console.log('User with ID', Session.userID, 'try to get document')
+}
+// Adds hook called before each call to getDocument endpoint
+App.on('getDocument:before', doSomethingBeforeGetDocumentCall)
+
+const querystring = require('querystring')
+//
+//After getDocument requests
+//@param {THTTPRequest} req
+//@param {THTTPResponse} resp
+function doSomethingAfterGetDocumentCall(req, resp){
+  params = querystring.parse(req.parameters)
+  console.log('User with ID', Session.userID, 'obtain document using params',  params)
+}
+App.on('getDocument:after', doSomethingAfterGetDocumentCall)
  *
  * @class App
  * @mixes EventEmitter
