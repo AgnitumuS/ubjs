@@ -68,9 +68,11 @@
           </div>
         </td>
       </tr>
-      <!-- @slot Table footer (last row in table)-->
+      <!-- @slot Last row in table -->
       <slot name="lastTableRow" />
     </table>
+    <!-- @slot Table footer -->
+    <slot name="appendTable" />
   </div>
 </template>
 

@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `UTable`: new slot `appendTable` - rendered below the table and can be used as a table footer
+ 
 ### Changed
 
 ### Deprecated
@@ -14,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTableEntity`: hidding of bottom pagination button for tables with many columns.
 
 ## [1.12.1] - 2020-07-19
 ### Added
