@@ -74,6 +74,7 @@ UB.i18nExtend({
   'Select CA': 'Оберіть АЦСК',
   'CA': 'АЦСК',
   'Crypto library settings': 'Параметри бібліотеки підпису',
+  'Select device': 'Оберіть пристрій',
 
   unknownError: 'Виникла невідома помилка. Зверніться, будь ласка, до адміністратора системи.',
   recordNotExistsOrDontHaveRights: 'Запису не існує або у Вас відсутні права доступу',
