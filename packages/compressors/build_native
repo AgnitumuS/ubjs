@@ -23,12 +23,16 @@ mkdir -p ./.dcu/fpc-{linux,win64} ./bin/x86_64
 if [ -z "$UB_SRC" ]; then
   UB_SRC=../../../ub-server
 fi
+if [ -z "$LAZ_DIR" ]; then
+  LAZ_DIR=/usr/share/lazarus/2.0.10
+fi
 
 fpc -MDelphi -Sci -Ci -O2 -g -gl -gw2 -Xg -k-Lbin/fpc-linux -Tlinux -Px86_64 \
   -veiq -vw-n-h- \
   -Fi.dcu/fpc-linux -Fi$UB_SRC/libs/Synopse -Fi$UB_SRC/libs/Synopse/SQLite3 -Fi$UB_SRC/libs/Synopse/SyNode -Fi$UB_SRC/libs/synapse40/source/lib \
   -Fl$UB_SRC/bin/fpc-linux \
-  -Fu$UB_SRC/libs/Synopse -Fu$UB_SRC/libs/Synopse/SQLite3 -Fu$UB_SRC/libs/Synopse/SyNode -Fu$UB_SRC/libs/lazutils -Fu. \
+  -Fu$UB_SRC/libs/Synopse -Fu$UB_SRC/libs/Synopse/SQLite3 -Fu$UB_SRC/libs/Synopse/SyNode \
+  -Fu$LAZ_DIR/lcl/units/$ARCH-$TARGET -Fu$LAZ_DIR/components/lazutils/lib/$ARCH-$TARGET -Fu$LAZ_DIR/lcl \
   -FU.dcu/fpc-linux -FEbin/x86_64 -obin/x86_64/libubcompressors.so \
   -dFPC_SYNCMEM \
   -B -Se1 ./src/ubcompressors.dpr
@@ -36,7 +40,8 @@ fpc -MDelphi -Sci -Ci -O2 -g -gl -gw2 -Xg -k-Lbin/fpc-linux -Tlinux -Px86_64 \
 fpc -MDelphi -Sci -Ci -O2 -k-Lbin/fpc-linux -Twin64 -Px86_64 \
   -veiq -vw-n-h- \
   -Fi.dcu/fpc-win64 -Fi$UB_SRC/libs/Synopse -Fi$UB_SRC/libs/Synopse/SQLite3 -Fi$UB_SRC/libs/Synopse/SyNode -Fi$UB_SRC/libs/synapse40/source/lib \
-  -Fu$UB_SRC/libs/Synopse -Fu$UB_SRC/libs/Synopse/SQLite3 -Fu$UB_SRC/libs/Synopse/SyNode -Fu$UB_SRC/libs/lazutils -Fu. \
+  -Fu$UB_SRC/libs/Synopse -Fu$UB_SRC/libs/Synopse/SQLite3 -Fu$UB_SRC/libs/Synopse/SyNode \
+  -Fu$LAZ_DIR/lcl/units/$ARCH-$TARGET -Fu$LAZ_DIR/components/lazutils/lib/$ARCH-$TARGET -Fu$LAZ_DIR/lcl \
   -FU.dcu/fpc-win64 -FEbin/x86_64 -obin/x86_64/ubcompressors.dll \
   -dFPC_SYNCMEM \
   -B -Se1 ./src/ubcompressors.dpr
