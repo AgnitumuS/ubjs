@@ -39,7 +39,7 @@ export default {
 
     /**
      * Name of attribute which creates relation master entity with entity that stores files.
-     * For example we have master entity "tst_dictionary" and entity which collect user files "tst_attachment".
+     * For example we have master entity "tst_dictionary" and entity which collects user files "tst_attachment".
      * In this case subjectAttribute in "tst_attachment" is a link to "tst_dictionary.ID"
      */
     subjectAttribute: {

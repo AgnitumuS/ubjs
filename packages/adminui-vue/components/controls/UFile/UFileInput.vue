@@ -44,7 +44,7 @@ export default {
     multiple: Boolean,
 
     /**
-     * Set's disabled state
+     * Sets disabled state
      */
     disabled: Boolean,
 

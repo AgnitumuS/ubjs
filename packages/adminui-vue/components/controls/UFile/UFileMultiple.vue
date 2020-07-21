@@ -131,10 +131,10 @@ export default {
     disabled: Boolean,
 
     /**
-     * In case pass true will remove all default buttons.
-     * To Exclude just few use value as array
+     * Will remove all default buttons if passed true .
+     * To exclude only a few use value as array
      *
-     * @example :remove-Default-Buttons="['add', 'preview']"
+     * @example :remove-default-buttons="['add', 'preview']"
      *
      * Buttons names:
      *  - add

@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `UTable`: new slot `appendTable` - rendered below the table and can be used as a table footer
+ - `UFile`: additional param `file` to the `beforeSetDocument` hook
  
 ### Changed
 

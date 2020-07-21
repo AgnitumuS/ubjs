@@ -97,9 +97,9 @@ export default {
 
     /**
      * Toggle preview mode, do not confuse with preview dialog.
-     * Loaded file will shows content immediately if it's PDF or PNG or JPG format.
-     * If passed true will sets default values for width="100%" and height="auto".
-     * Passed object can overrides default width or height.
+     * Loaded file will show content immediately if it's PDF or PNG or JPG format.
+     * Will set default values for width="100%" and height="auto" if passed true.
+     * Passed object can override default width or height.
      */
     previewMode: {
       type: [Boolean, Object],
@@ -112,7 +112,7 @@ export default {
     },
 
     /**
-     * Disable to remove or upload file
+     * Disable removing or uploading file
      */
     disabled: Boolean,
 
@@ -122,10 +122,10 @@ export default {
     accept: String,
 
     /**
-     * In case pass true will remove all default buttons.
-     * To Exclude just few use value as array
+     * Will remove all default buttons if passed true .
+     * To exclude only a few use value as array
      *
-     * @example :remove-Default-Buttons="['add', 'preview']"
+     * @example :remove-default-buttons="['add', 'preview']"
      *
      * Buttons names:
      *  - add
@@ -147,6 +147,7 @@ export default {
      * @param {string} params.entity
      * @param {number} params.id
      * @param {string} params.attribute
+     * @param {object} params.file
      */
     beforeSetDocument: {
       type: Function,
@@ -179,8 +180,8 @@ export default {
     },
 
     /**
-       * Sets size values if unset in config
-       */
+     * Sets preview size if unset in config
+     */
     previewSize () {
       const defaults = {
         width: '100%',
@@ -194,8 +195,8 @@ export default {
     },
 
     /**
-       * Transform number size values to string
-       */
+     * Transform number size values to string
+     */
     previewSizeCss () {
       return ['width', 'height'].reduce((style, property) => {
         const value = this.previewSize[property]
@@ -243,7 +244,8 @@ export default {
       await this.beforeSetDocument({
         entity: this.entityName,
         attribute: this.attributeName,
-        id: this.recordId
+        id: this.recordId,
+        file
       })
       this.$emit(
         'input',
