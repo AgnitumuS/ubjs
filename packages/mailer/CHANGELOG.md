@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - cross-compilation from Windows to Linux is removed - use linux build environment to build both Win64 & Linux tagrets
 
 ### Fixed
 
