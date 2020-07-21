@@ -205,23 +205,20 @@
           />
         </slot>
       </template>
-      <template #lastTableRow>
-        <tr v-if="!isLastPageIndex && !loading">
-          <td
-            :colspan="columns.length"
-            align="center"
-          >
-            <u-button
-              appearance="plain"
-              right-icon="u-icon-arrow-right"
-              :disabled="loading"
-              @click="pageIndex += 1"
-            >
-              {{ $ut('table.pagination.nextPage') }}
-            </u-button>
-          </td>
-        </tr>
-      </template>
+
+      <div
+        slot="appendTable"
+        class="u-table-entity__next-page-button-wrap"
+      >
+        <u-button
+          appearance="plain"
+          right-icon="u-icon-arrow-right"
+          :disabled="loading"
+          @click="pageIndex += 1"
+        >
+          {{ $ut('table.pagination.nextPage') }}
+        </u-button>
+      </div>
     </u-table>
 
     <u-dropdown
@@ -633,5 +630,14 @@ export default {
   .u-table-entity__filter-icon {
     margin-right: 8px;
     margin-left: 4px;
+  }
+
+  .u-table-entity__next-page-button-wrap {
+    position: sticky;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 12px 16px;
   }
 </style>
