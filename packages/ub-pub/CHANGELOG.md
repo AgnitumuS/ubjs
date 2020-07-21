@@ -14,7 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- fixed missed localization for `Select device` caption on `@ub-d/iit-sign-web/IitReadPk.vue` form 
+ - fixed missed localization for `Select device` caption on `@ub-d/iit-sign-web/IitReadPk.vue` form
+ - prevent sets of `connection.domain` to null in case `onGotApplicationDomain` handler is passed to `AsyncConection.connect` and
+   implementation do not return domain  
 
 ## [5.5.16] - 2020-07-19
 ### Added
