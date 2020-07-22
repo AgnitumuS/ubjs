@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UTableEntity`: hidding of bottom pagination button for tables with many columns.
+ - `UNavbar` collapse button background color is bound to `USidebar` background.
 
 ## [1.12.1] - 2020-07-19
 ### Added
