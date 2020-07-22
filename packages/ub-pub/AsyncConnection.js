@@ -147,7 +147,7 @@ function UBConnection (connectionParams) {
   const host = connectionParams.host || 'http://localhost:8881'
   let appName = connectionParams.appName || '/'
   let requestAuthParams = connectionParams.requestAuthParams
-  let baseURL, serverURL
+  let baseURL
   /*
    * Current session (Promise). Result of {@link UBConnection#auth auth} method
    * {@link UBConnection#xhr} use this promise as a first `then` in call chain. In case of 401 response
@@ -218,7 +218,7 @@ function UBConnection (connectionParams) {
     return requestAuthParams(conn, isRepeat)
   }
 
-  serverURL = host + appName
+  const serverURL = host + appName
   /** UB Server URL with protocol and host.
    * @type {string}
    * @readonly
@@ -874,6 +874,7 @@ UBConnection.prototype.xhr = function (config) {
       if (reason.status === 413) { // Request Entity Too Large
         throw new ubUtils.UBError('Request Entity Too Large')
       }
+      // eslint-disable-next-line no-prototype-builtins
       if (reason.data && reason.data.hasOwnProperty('errCode')) { // this is server side error response
         const errCode = reason.data.errCode
         const errDetails = errMsg = reason.data.errMsg
