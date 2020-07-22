@@ -8,11 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - double-click on entity inside ER Diagram opens Vue base entity editor `ubm_form-entityEdit`.
+ Previous implementation did such only in case UBDEV model (obsolete) is in the domain.   
 
 ### Deprecated
 
 ### Removed
-
+ - ExtJS based entity editor is removed (obsolete) in flavor of Vue based `ubm_form-entityEdit`
+ 
 ### Fixed
 
 ## [5.13.27] - 2020-07-19
