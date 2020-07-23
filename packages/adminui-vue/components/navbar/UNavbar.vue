@@ -595,7 +595,7 @@ export default {
   align-items: center;
   font-size: 16px;
   color: hsl(var(--hs-text), var(--l-text-inverse));
-  background:  hsl(220, 20%, 27%);
+  background: hsl(var(--hs-sidebar), var(--l-sidebar-default));
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
   cursor: pointer;
