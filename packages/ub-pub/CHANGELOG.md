@@ -17,6 +17,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - fixed missed localization for `Select device` caption on `@ub-d/iit-sign-web/IitReadPk.vue` form
  - prevent sets of `connection.domain` to null in case `onGotApplicationDomain` handler is passed to `AsyncConection.connect` and
    implementation do not return domain
+ - for cached entities `ClientRepository` will automatically adds attributes what used in where/order but missed in fieldList.
+   This fix [#107]. **WARNING** - this operation mutate fieldList, so result can contains additional attributes, not listed in .attrs() calls
+    ```javascript
+    UB.Repository('ubm_enum').attrs('name').where('code', '=', 'INSERT').orderBy('ID').select().then(console.table)
+    // result contains `ID, code, name` instead of `name` only 
+    // [{ID: 333742612906169, code: "INSERT", name: "Insert"}]
+    ```      
  - i18n for `Select key media`     
 
 ## [5.5.16] - 2020-07-19

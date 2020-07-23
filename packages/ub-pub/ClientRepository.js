@@ -63,6 +63,35 @@ class ClientRepository extends CustomRepository {
   }
 
   /**
+   * For cached entities check all attributes from where/order is in fieldList and adds missed. Fix for [#107]
+   * @private
+   */
+  addAttrsForCachedEntity () {
+    if (!this.connection.domain) return
+    /** @type {UBEntity} */
+    const e = this.connection.domain.get(this.entityName, false)
+    if (!e || !e.cacheType || (e.cacheType === 'None')) return
+    const addAttrIfNotAdded = (expr) => {
+      if (!expr) return
+      let attr
+      if (expr && (expr[0] === '[')) {
+        attr = e.attributes[expr.slice(1, -1)] // remove []
+      } else {
+        attr = e.attributes[expr]
+      }
+      if (attr && !(this.fieldList.includes(attr.name) || this.fieldList.includes(expr))) {
+        this.attrs(attr.name)
+      }
+    }
+    for (const wn in this.whereList) {
+      addAttrIfNotAdded(this.whereList[wn].expression)
+    }
+    for (const orderItem of this.orderList) {
+      addAttrIfNotAdded(orderItem.expression)
+    }
+  }
+
+  /**
    * Asynchronously run request, constructed by Repository. Return promise, resolved to `array of object`
    * representation of response.
    *
@@ -90,6 +119,7 @@ class ClientRepository extends CustomRepository {
    * @return {Promise}
    */
   selectAsObject (fieldAliases) {
+    this.addAttrsForCachedEntity()
     return this.connection.select(this.ubql()).then(resp => {
       this.rawResult = resp
       return LocalDataStore.selectResultToArrayOfObjects(resp, fieldAliases)
@@ -124,6 +154,7 @@ class ClientRepository extends CustomRepository {
    * @return {Promise}
    */
   selectAsArray () {
+    this.addAttrsForCachedEntity()
     return this.connection.select(this.ubql()).then(resp => {
       this.rawResult = resp
       return resp
