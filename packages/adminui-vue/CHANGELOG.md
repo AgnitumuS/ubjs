@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `UTable`: new slot `appendTable` - rendered below the table and can be used as a table footer
  - `UFile`: additional param `file` to the `beforeSetDocument` hook
+ - `UToolbar`: handler for `showAccessRights` action added for entites with aclRls mixin
  
 ### Changed
 
