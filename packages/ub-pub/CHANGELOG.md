@@ -24,7 +24,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     // result contains `ID, code, name` instead of `name` only 
     // [{ID: 333742612906169, code: "INSERT", name: "Insert"}]
     ```      
- - i18n for `Select key media`     
+ - i18n for `Select key media`
+ - i18n Ukrainian for `Реєстрація нового сертифікату` -> `Реєстрація нового сертифіката`     
 
 ## [5.5.16] - 2020-07-19
 ### Added
