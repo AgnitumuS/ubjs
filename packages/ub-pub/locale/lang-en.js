@@ -64,6 +64,7 @@ UB.i18nExtend({
   'CA': 'CA',
   'Crypto library settings': 'Crypto library settings',
   'Select device': 'Select device',
+  'Select key media': 'Select key media',
 
   unknownError: 'Unknown error. Please, contact your system administrator.',
   recordNotExistsOrDontHaveRights: 'Record not exists or you don\'t have access rights',
