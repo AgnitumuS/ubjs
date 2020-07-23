@@ -181,7 +181,7 @@ export default {
         buttons.push({
           icon: 'u-icon-key',
           label: 'accessRight',
-          handler: () => {},
+          handler: () => { this.showAccessRights(aclEntityName) },
           disabled: !this.$UB.connection.domain.isEntityMethodsAccessible(aclEntityName, 'select')
         })
       }
@@ -333,6 +333,29 @@ export default {
         },
         instanceID: this.$store.state.data.ID,
         __mip_recordhistory: true
+      })
+    },
+
+    showAccessRights (aclEntityName) {
+      const aclFields = []
+      const mixin = this.entitySchema.mixins.aclRls
+      mixin.onEntities.forEach(attrEntity => {
+        const e = $App.domainInfo.get(attrEntity)
+        aclFields.push(e.sqlAlias + 'ID' + (e.descriptionAttribute ? '.' + e.descriptionAttribute : ''))
+      })
+      $App.doCommand({
+        renderer: 'vue',
+        isModal: true,
+        title: `${this.$UB.i18n('accessRight')} (${this.$UB.i18n(this.entity)})`,
+        cmdType: 'showList',
+        cmdData: {
+          repository: () => {
+            return this.$UB.Repository(aclEntityName)
+              .attrs(aclFields)
+              .where('[instanceID]', '=', this.$store.state.data.ID)
+          },
+          columns: aclFields
+        }
       })
     },
 
