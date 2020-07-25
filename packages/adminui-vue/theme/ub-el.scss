@@ -33,7 +33,7 @@ $--color-primary-light-9: mix($--color-white, $--color-primary, 90%) !default; /
 /// color|1|Functional Color|1
 $--color-success: hsl(120, 30%, 45%) !default;
 /// color|1|Functional Color|1
-$--color-warning: hsl(20, 80%, 45%) !default;
+$--color-warning: hsl(50, 100%, 45%) !default;
 /// color|1|Functional Color|1
 $--color-danger: hsl(360, 60%, 45%) !default;
 /// color|1|Functional Color|1
@@ -49,21 +49,21 @@ $--color-warning-lighter: mix($--color-white, $--color-warning, 90%) !default;
 $--color-danger-lighter: mix($--color-white, $--color-danger, 90%) !default;
 $--color-info-lighter: mix($--color-white, $--color-info, 90%) !default;
 /// color|1|Font Color|2
-$--color-text-primary: hsl(220, 5%, 10%) !default;
+$--color-text-primary: hsl(240, 5%, 20%) !default;
 /// color|1|Font Color|2
 $--color-text-regular: #606266 !default;
 /// color|1|Font Color|2
 $--color-text-secondary: #909399 !default;
 /// color|1|Font Color|2
-$--color-text-placeholder: hsl(220, 5%, 45%) !default;
+$--color-text-placeholder: hsl(240, 5%, 45%) !default;
 /// color|1|Border Color|3
-$--border-color-base: hsl(222, 20%, 70%) !default;
+$--border-color-base: hsl(220, 20%, 70%) !default;
 /// color|1|Border Color|3
-$--border-color-light: hsl(222, 20%, 80%) !default;
+$--border-color-light: hsl(220, 20%, 80%) !default;
 /// color|1|Border Color|3
-$--border-color-lighter: hsl(222, 20%, 90%) !default;
+$--border-color-lighter: hsl(220, 20%, 90%) !default;
 /// color|1|Border Color|3
-$--border-color-extra-light: hsl(222, 20%, 95%) !default;
+$--border-color-extra-light: hsl(220, 20%, 95%) !default;
 
 // Background
 /// color|1|Background Color|4
