@@ -182,7 +182,8 @@ UB.i18nExtend({
     },
     dropZone: {
       caption: 'Faylı buraya sürün və ya seçmək üçün vurun',
-      acceptError: 'Yanlış fayl uzadılması'
+      acceptError: 'Yanlış fayl uzadılması',
+      selectedFiles: 'Seçilib'
     }
   },
 

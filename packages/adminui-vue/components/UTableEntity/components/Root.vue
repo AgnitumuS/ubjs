@@ -207,6 +207,7 @@
       </template>
 
       <div
+        v-if="!isLastPageIndex && !loading"
         slot="appendTable"
         class="u-table-entity__next-page-button-wrap"
       >

@@ -181,7 +181,8 @@ UB.i18nExtend({
     },
     dropZone: {
       caption: 'Drop file(s) here or click to upload',
-      acceptError: 'Invalid file extension'
+      acceptError: 'Invalid file(s) type',
+      selectedFiles: 'Selected'
     }
   },
 

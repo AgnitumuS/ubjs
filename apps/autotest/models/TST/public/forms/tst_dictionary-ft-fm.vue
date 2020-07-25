@@ -44,6 +44,10 @@
             <u-form-row label="<u-file-input/>">
               <u-file-input />
             </u-form-row>
+            <u-form-row label="<u-file-input accept='.dbf'/>">
+              <u-file-input accept=".dbf" placeholder="DBF upload" v-model="selectedFiles"/>
+              <div> {{ selectedFiles.length }} files selected </div>
+            </u-form-row>
             <u-auto-field
               v-model="doc_file"
               label="<u-file/> Auto field"
@@ -259,6 +263,7 @@ module.exports.default = {
   data () {
     return {
       multipleFileExample: [],
+      selectedFiles: [],
       iconSize: 'medium',
       sizes: ['small', 'medium', 'large'],
       icons: [
