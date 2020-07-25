@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - in case `accept` prop is not empty then allowed file types displayed after `placeholder`
    - `v-model` support
  - `UToolbar`: handler for `showAccessRights` action added for entites with aclRls mixin
+ - `lookups` new helper method `getEnum`. It has 2 params `eGroup`, `code`. Example: `this.$lookups.getEnum('AUDIT', 'INSERT')`
 
 ### Changed
 
