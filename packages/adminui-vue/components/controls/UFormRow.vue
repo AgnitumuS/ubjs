@@ -236,7 +236,8 @@ export default {
 
   .u-form-row.is-error .el-input__inner,
   .u-form-row.is-error .el-textarea__inner,
-  .u-form-row.is-error .ub-select-multiple__container {
+  .u-form-row.is-error .ub-select-multiple__container,
+  .u-form-row.is-error .u-file-container {
     border-color: hsl(var(--hs-danger), var(--l-input-border-default));
   }
 

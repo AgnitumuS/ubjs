@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity`: bottom pagination button for tables is centered on a current viewport, so visible even in case of many columns in table  
  - `UTableEntity`: bottom pagination button is hidden in case next page is unavailable 
  - `UNavbar` collapse button background color is bound to `USidebar` background.
+ - `UFile` - use danger border color for `UFile` placed inside `UFormRow` what in error state
  - `UBaseInput` prevent error border around input in Firefox by changing default values for props `step="any"` (instead of 1), `precision="Infinity"` (insead of 0)
  - `el-theme` rebuild theme with actual css variables (uses the same colors for warning, prmary text and borders in El controls as for U controls)
 
