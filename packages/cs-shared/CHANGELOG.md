@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - documentation for `__skipSelectBeforeUpdate` `CustomRepository.misc` flag (added in UB@5.18.9)
+ 
 ### Changed
 
 ### Deprecated

@@ -36,6 +36,7 @@ module.exports = function runMixinsTests (options) {
     console.debug('test asterisk in UBQL')
     testAsterisk(conn)
   }
+  testSkipSelectBeforeUpdate(conn)
 }
 
 /**
@@ -269,4 +270,37 @@ function testAsterisk (conn) {
   const q = conn.Repository('ubm_enum').attrs('*').ubql()
   q.version = '-1'
   conn.query(q)
+}
+
+/**
+ * @param {SyncConnection} conn
+ */
+function testSkipSelectBeforeUpdate (conn) {
+  console.debug('Test __skipSelectBeforeUpdate')
+  const ID = conn.insert({
+    entity: 'tst_IDMapping',
+    fieldList: ['ID'],
+    execParams: {
+      code: 'testSkipSelectBeforeUpdate'
+    }
+  })
+  conn.update({
+    entity: 'tst_IDMapping',
+    __skipSelectBeforeUpdate: true,
+    execParams: {
+      ID,
+      code: 'testSkipSelectBeforeUpdate2'
+    }
+  })
+  const serverSideUpdate = `const store = UB.DataStore('tst_IDMapping')
+  store.run('update', {
+    __skipSelectBeforeUpdate: true,
+    execParams: {
+      ID: ${ID},
+      code: 'testSkipSelectBeforeUpdate3'
+    }
+  })`
+  conn.post('evaluateScript', serverSideUpdate)
+  const updatedCode = conn.Repository('tst_IDMapping').attrs('code').where('ID', '=', ID).selectScalar()
+  assert.strictEqual(updatedCode, 'testSkipSelectBeforeUpdate3', 'Should update on server side while __skipSelectBeforeUpdate: true')
 }
