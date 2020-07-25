@@ -19,7 +19,7 @@ for (let i = 0; i < 100; i++) {
 
 const KNOWN_MISC_TAGS = new Set(['__mip_ondate', '__mip_recordhistory', '__mip_recordhistory_all',
   '__mip_disablecache', '__skipOptimisticLock', '__allowSelectSafeDeleted', '__skipSelectAfterUpdate',
-  '__skipSelectAfterInsert', '__skipRls', '__skipAclRls', 'lockType'])
+  '__skipSelectAfterInsert', '__skipSelectBeforeUpdate', '__skipRls', '__skipAclRls', 'lockType'])
 
 /**
  * Ancestor for Browser/NodeJS ClientRepository and server side ServerRepository.
@@ -804,6 +804,9 @@ inst.run('select', repo.ubql())
    * @param {Boolean} [flags.__allowSelectSafeDeleted=false] Include softly deleted rows to the result
    * @param {Boolean} [flags.__skipSelectAfterUpdate=false] **Server-side only.**
    * @param {Boolean} [flags.__skipSelectAfterInsert=false] **Server-side only.**
+   * @param {Boolean} [flags.__skipSelectBeforeUpdate=false] **Server-side only.** if added then `mStorage` mixin don't execute `select` before execution of `update`.
+   *   As a **UNSAFE** side effect `update` won't check record is accessible to user.
+   *   **UNSAFE** If `Audit` mixin is implemented for entity empty OldValue in inserted into `uba_auditTrail` in case this flag is enabled, so better to think twice before skip select before update
    * @param {Boolean} [flags.__skipRls=false] **Server-side only.**
    * @param {Boolean} [flags.__skipAclRls=false] **Server-side only.**
    * @param {string} [flags.lockType] For entities with `softLock` mixin retrieve/set a lock during method execution.
