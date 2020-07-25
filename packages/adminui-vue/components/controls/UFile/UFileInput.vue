@@ -18,38 +18,64 @@
       size="large"
       class="u-file__dropzone-icon"
     />
-    {{ $ut('fileInput.dropZone.caption') }}
+    <div v-if="value.length">
+      {{ $ut(selectedPlaceholder) }}: {{ selectedFileNames }}
+    </div>
+    <div
+      v-else
+      class="u-file__dropzone-placeholder"
+    >
+      {{ $ut(placeholder) }}
+      <div v-if="accept">
+        ({{ accept }})
+      </div>
+    </div>
     <input
       type="file"
       :disabled="disabled"
       :multiple="multiple"
       :accept="accept"
       v-bind="$attrs"
-      @change="fileChanged"
+      @change="fileInputChanged"
     >
   </label>
 </template>
 
 <script>
 /**
- * Input file with drag and drop, but without display value - just upload
+ * Input file with drag and drop
  */
 export default {
   name: 'UFileInput',
 
   props: {
     /**
-     * Like native attribute multiple in input[type=file].
+     * Allow to select multiple files. Like native attribute `multiple` in input[type=file]
      */
     multiple: Boolean,
-
+    /**
+     * Dropzone in non-selected state placeholder
+     */
+    placeholder: {
+      type: String,
+      default: 'fileInput.dropZone.caption'
+    },
+    /**
+     * Dropzone in selected state placeholder
+     */
+    selectedPlaceholder: {
+      type: String,
+      default: 'fileInput.dropZone.selectedFiles'
+    },
     /**
      * Sets disabled state
      */
     disabled: Boolean,
-
     /**
-     * File extensions to bind into `accept` input property
+     * File types the file input should accept. This string is a comma-separated list of unique file type specifiers.
+     * See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept
+     *
+     * Example: ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
      */
     accept: {
       type: String,
@@ -57,11 +83,16 @@ export default {
     },
 
     /**
-     * Display border
+     * Show border
      */
     border: {
       type: Boolean,
       default: true
+    },
+
+    value: {
+      type: Array,
+      default: () => []
     }
   },
 
@@ -71,33 +102,34 @@ export default {
     }
   },
 
+  computed: {
+    acceptableFileTypes: function () {
+      return this.accept.split(',').map(a => a.trim())
+    },
+    selectedFileNames: function () {
+      return this.value.map(f => f.name).join(', ')
+    }
+  },
+
   methods: {
-    fileChanged (e) {
-      const files = e.target.files
-      if (files && files.length) {
-        this.$emit('upload', [...files])
-        e.target.value = null
-      }
+    fileInputChanged (e) {
+      this.upload(e.target.files)
+      e.target.value = null
     },
 
     drop (e) {
       this.dragging = false
       if (this.disabled) return
 
-      const { valid, invalid } = [...e.dataTransfer.files].reduce((files, file) => {
-        const isValid = this.isAccept(file)
-        if (isValid) {
-          files.valid.push(file)
-        } else {
-          files.invalid.push(file)
-        }
-        return files
-      }, {
-        valid: [],
-        invalid: []
-      })
+      this.upload(e.dataTransfer.files)
+    },
 
-      this.$emit('upload', valid)
+    upload (files) {
+      const { valid, invalid } = this.validateFiles(files)
+
+      if (valid.length) {
+        this.$emit('input', valid)
+      }
 
       if (invalid.length) {
         const invalidFilesNames = invalid.map(f => f.name).join(', ')
@@ -109,34 +141,34 @@ export default {
       }
     },
 
-    dragover (e) {
-      if (this.disabled) {
-        return false
-      } else {
-        e.preventDefault()
-        e.stopPropagation()
-        this.dragging = true
+    validateFiles (files) {
+      const valid = []
+      const invalid = []
+      for (const file of Array.from(files)) {
+        if (this.isAcceptable(file)) {
+          valid.push(file)
+        } else {
+          invalid.push(file)
+        }
       }
+
+      return { valid, invalid }
     },
 
-    isAccept (file) {
+    dragover (e) {
+      if (this.disabled) return false
+      e.preventDefault()
+      e.stopPropagation()
+      this.dragging = true
+    },
+
+    isAcceptable (file) {
       if (this.accept === '') {
         return true
       }
-      const accepts = this.accept.split(',')
-        .map(a => a.trim())
-      return accepts.some(accept => {
-        const [type, extension] = accept.split(/\/|\./)
-        if (type === '') {
-          const fileExtention = file.name.split('.').pop()
-          return fileExtention.includes(extension)
-        } else {
-          if (extension === '*') {
-            return file.type.includes(type)
-          } else {
-            return file.type === accept
-          }
-        }
+      return this.acceptableFileTypes.some(ft => {
+        // file type specifier can be either extension or mime
+        return file.name.endsWith(ft) || file.type.includes(ft)
       })
     }
   }
@@ -151,7 +183,6 @@ export default {
   .u-file__dropzone {
     padding: 20px 12px;
     border-radius: var(--border-radius);
-    color: hsl(var(--hs-text), var(--l-text-description));
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -160,6 +191,10 @@ export default {
     line-height: 1;
     height: 100%;
     width: 100%;
+  }
+
+  .u-file__dropzone-placeholder {
+    color: hsl(var(--hs-text), var(--l-text-description));
   }
 
   .u-file__dropzone-border{
@@ -189,19 +224,30 @@ export default {
   ```vue
   <template>
     <div>
-      <el-button @click="previewMode = !previewMode">Toggle "previewMode"</el-button>
       <el-button @click="disabled = !disabled">Toggle "disabled"</el-button>
       <el-button @click="multiple = !multiple">Toggle "multiple"</el-button>
       <pre>
-        previewMode: {{previewMode}}
         disabled: {{disabled}}
         multiple: {{multiple}}
       </pre>
       <u-file-input
           :disabled="disabled"
           :multiple="multiple"
-          @upload="upload"
+          @input="upload"
       />
+      Accept only PDF and txt and bind to model selectedFiles property:
+      <u-file-input
+          :disabled="disabled"
+          :multiple="multiple"
+          placeholder="Select file for import"
+          selected-placeholder="Will import"
+          accept=".pdf,.txt"
+          v-model="selectedFiles"
+      />
+      <u-button @click="doImport" :disabled="!selectedFiles.length">Import</u-button>
+      <div>
+        {{selectedFiles.length}} files selected
+      </div>
     </div>
   </template>
   <script>
@@ -209,13 +255,17 @@ export default {
       data () {
         return {
           disabled: false,
-          previewMode: false,
-          multiple: true
+          multiple: true,
+          selectedFiles: []
         }
       },
       methods: {
         upload (files) {
           console.log(files)
+        },
+        doImport () {
+          const fileNames = selectedFiles.map(f => f.name).join(', ')
+          this.$dialogYesNo(`Import ${fileNames} into database?`)
         }
       }
     }

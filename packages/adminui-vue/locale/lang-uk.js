@@ -181,7 +181,8 @@ UB.i18nExtend({
     },
     dropZone: {
       caption: 'Перетягніть файл сюди або натисніть для вибору',
-      acceptError: 'Невірне розширення файлу'
+      acceptError: 'Невірний тип файлу(ів)',
+      selectedFiles: 'Обрано'
     }
   },
 

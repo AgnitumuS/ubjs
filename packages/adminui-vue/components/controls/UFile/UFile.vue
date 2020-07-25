@@ -42,7 +42,7 @@
         :accept="accept"
         :disabled="disabled"
         :border="false"
-        @upload="upload"
+        @input="upload"
       />
     </template>
   </u-file-container>

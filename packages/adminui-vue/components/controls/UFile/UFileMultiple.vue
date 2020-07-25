@@ -46,7 +46,7 @@
         multiple
         :accept="accept"
         :border="false"
-        @upload="upload"
+        @input="upload"
       />
       <component
         :is="view"

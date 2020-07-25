@@ -8,8 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `UTable`: new slot `appendTable` - rendered below the table and can be used as a table footer
  - `UFile`: additional param `file` to the `beforeSetDocument` hook
+ - `UFileInput` improvement allows to use a control as independent file selection (for example to select files for import, select PKI key etc.):
+   - new properties `placeholder` & `selectedPlaceholder` allows change text what displaying in case file(s) is not selected / selected
+   - in case some files are selected it names are displayed behind `selectedPlaceholder` instead of `placeholder`
+   - in case `accept` prop is not empty then allowed file types displayed after `placeholder`
+   - `v-model` support
  - `UToolbar`: handler for `showAccessRights` action added for entites with aclRls mixin
- 
+
 ### Changed
 
 ### Deprecated
@@ -17,7 +22,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - `UTableEntity`: hidding of bottom pagination button for tables with many columns.
+ - `UTableEntity`: bottom pagination button for tables is centered on a current viewport, so visible even in case of many columns in table  
+ - `UTableEntity`: bottom pagination button is hidden in case next page is unavailable 
  - `UNavbar` collapse button background color is bound to `USidebar` background.
 
 ## [1.12.1] - 2020-07-19
