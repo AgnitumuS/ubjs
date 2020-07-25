@@ -66,12 +66,13 @@ export default {
         return this.step
       }
       if (this.dataType === 'Float') {
-        return 1 / 10 ** (this.$UB.connection.domain.FLOATING_SCALE_PRECISION - 1)
+        return 1 / 10 ** (this.$UB.connection.domain.FLOATING_SCALE_PRECISION)
       }
       if (this.dataType === 'Currency') {
         return 0.01
       }
-      return 1
+
+      return undefined
     },
 
     getPrecision () {
@@ -80,7 +81,8 @@ export default {
       }
       if (this.dataType === 'Float') return this.$UB.connection.domain.FLOATING_SCALE_PRECISION
       if (this.dataType === 'Currency') return 2
-      return 0
+
+      return undefined
     },
 
     dataType () {
