@@ -209,7 +209,18 @@ const lookupsModule = {
    * @param {number} ID
    * @returns {*}
    */
-  getDescriptionById: instance.getDescriptionById
+  getDescriptionById: instance.getDescriptionById,
+
+  /**
+   * Helper for short calling of enum values
+   *
+   * @param {string} eGroup
+   * @param {string} code
+   * @returns {string|null}
+   */
+  getEnum (eGroup, code) {
+    return instance.get(ENUM_ENTITY, { eGroup, code })
+  }
 }
 
 module.exports = {
