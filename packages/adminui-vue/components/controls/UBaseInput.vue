@@ -47,8 +47,8 @@ export default {
      * will be ignored if type !== 'number'
      */
     step: {
-      type: Number,
-      default: 1
+      type: [Number, String],
+      default: 'any'
     },
 
     /**
@@ -58,7 +58,7 @@ export default {
      */
     precision: {
       type: Number,
-      default: 0
+      default: Infinity
     },
 
     /**
