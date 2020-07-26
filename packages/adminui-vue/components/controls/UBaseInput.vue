@@ -58,7 +58,7 @@ export default {
      */
     precision: {
       type: Number,
-      default: Infinity
+      default: 0
     },
 
     /**
