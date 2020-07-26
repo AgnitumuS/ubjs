@@ -13,11 +13,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - in case some files are selected it names are displayed behind `selectedPlaceholder` instead of `placeholder`
    - in case `accept` prop is not empty then allowed file types displayed after `placeholder`
    - `v-model` support
- - `UToolbar`: handler for `showAccessRights` action added for entites with aclRls mixin
+ - `UToolbar`: handler for `showAccessRights` action added for entities with aclRls mixin
  - `lookups` new helper method `getEnum`. It has 2 params `eGroup`, `code`. Example: `this.$lookups.getEnum('AUDIT', 'INSERT')`
 
 ### Changed
-
+ - `UBaseInput`: change default value for `precision` to `undefined` (instead of 0).
+   If precision is not defined UBaseInput do not round a value for inputs of type `number` - only transform it
+   into `Number` before emitting `input` event.
+ 
 ### Deprecated
 
 ### Removed

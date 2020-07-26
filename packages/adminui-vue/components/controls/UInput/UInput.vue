@@ -71,6 +71,7 @@ export default {
       if (this.dataType === 'Currency') {
         return 0.01
       }
+      if ((this.dataType === 'Int') || (this.dataType === 'BigInt') || (this.dataType === 'ID')) return 1
 
       return undefined
     },
@@ -81,6 +82,7 @@ export default {
       }
       if (this.dataType === 'Float') return this.$UB.connection.domain.FLOATING_SCALE_PRECISION
       if (this.dataType === 'Currency') return 2
+      if ((this.dataType === 'Int') || (this.dataType === 'BigInt') || (this.dataType === 'ID')) return 0
 
       return undefined
     },

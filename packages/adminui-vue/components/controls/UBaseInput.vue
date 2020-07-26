@@ -52,13 +52,11 @@ export default {
     },
 
     /**
-     * rounding precision.
-     * accepts only integers.
-     * will be ignored if type !== 'number'
+     * rounding precision. Applied in case `type !== 'number'` and `precision !== undefined`
      */
     precision: {
       type: Number,
-      default: 0
+      default: undefined
     },
 
     /**
@@ -98,10 +96,12 @@ export default {
       if (this.type !== 'number') {
         return value
       }
-      const digit = Number(value)
-      const preciseness = 10 ** this.precision
-      const rounded = Math.round((digit * preciseness)) / preciseness
-      this.$emit('input', rounded)
+      let asNumber = Number(value)
+      if (this.precision !== undefined) {
+        const preciseness = 10 ** this.precision
+        asNumber = Math.round((asNumber * preciseness)) / preciseness
+      }
+      this.$emit('input', asNumber)
     }
   }
 }
