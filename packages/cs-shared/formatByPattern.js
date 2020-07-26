@@ -177,7 +177,7 @@ function setDefaultLang (lang) {
   _collator = undefined
   if (lang === 'en') return
   if ((typeof Intl === 'object') && Intl.Collator) {
-    _collator = new Intl.Collator(lang)
+    _collator = new Intl.Collator(lang, { numeric: true })
   }
 }
 setDefaultLang('en')

@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - force `numeric: true` for `Intl.Collator(lang, { numeric: true })`. For `en` this is not necessary, but for `uk`
+  without forcing numeric numbers compared as strings. 
 
 ## [5.5.0] - 2020-07-19
 ### Added
