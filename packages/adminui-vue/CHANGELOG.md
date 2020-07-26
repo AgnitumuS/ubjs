@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.12.2] - 2020-07-26
+### Added
  - `UTable`: new slot `appendTable` - rendered below the table and can be used as a table footer
  - `UFile`: additional param `file` to the `beforeSetDocument` hook
  - `UFileInput` improvement allows to use a control as independent file selection (for example to select files for import, select PKI key etc.):
@@ -21,10 +32,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    If precision is not defined UBaseInput do not round a value for inputs of type `number` - only transform it
    into `Number` before emitting `input` event.
  
-### Deprecated
-
-### Removed
-
 ### Fixed
  - `UTableEntity`: bottom pagination button for tables is centered on a current viewport, so visible even in case of many columns in table  
  - `UTableEntity`: bottom pagination button is hidden in case next page is unavailable 

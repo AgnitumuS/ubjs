@@ -8,14 +8,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - building of native code depend on LCL
 
 ### Deprecated
 
 ### Removed
- - cross-compilation from Windows to Linux is removed - use linux build environment to build both Win64 & Linux tagrets
 
 ### Fixed
+
+## [5.3.2] - 2020-07-26
+### Changed
+ - building of native code depend on LCL
+
+### Removed
+ - cross-compilation from Windows to Linux is removed - use linux build environment to build both Win64 & Linux tagrets
 
 ## [5.3.1] - 2020-07-19
 ## [5.3.0] - 2020-07-15

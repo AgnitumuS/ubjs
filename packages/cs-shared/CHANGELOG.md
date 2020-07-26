@@ -6,14 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - documentation for `__skipSelectBeforeUpdate` `CustomRepository.misc` flag (added in UB@5.18.9)
- 
+
 ### Changed
 
 ### Deprecated
 
 ### Removed
 
+### Fixed
+
+## [5.5.1] - 2020-07-26
+### Added
+ - documentation for `__skipSelectBeforeUpdate` `CustomRepository.misc` flag (added in UB@5.18.9)
+ 
 ### Fixed
  - force `numeric: true` for `Intl.Collator(lang, { numeric: true })`. For `en` this is not necessary, but for `uk`
   without forcing numeric numbers compared as strings. 
