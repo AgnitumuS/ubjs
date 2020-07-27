@@ -59,6 +59,7 @@ END;
     st.execSQL('create global temporary table TMP_ID(id NUMBER not null) on commit delete rows', {})
     App.dbCommit()
     st.execSQL('insert into TMP_ID(id) values (?)', { a: [1, 2, 3] })
+    st.runSQL('select * from TMP_ID', {})
     assert.strictEqual(st.rowCount, 3, `Array binding for Oracle Insert - expect 3 rows to be inserted, got ${st.rowCount}`)
   }
 
