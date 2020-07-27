@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added new attributes `objectID` and `objectEntity` into `udisk_card` for further integration with the `Scriptum` system
+ - rewritten form opening by double click on file
 
 ### Changed
 
