@@ -53,7 +53,13 @@ begin
   select ID INTO anID from uba_user where ID > :ID: and name <> :name: FETCH FIRST 1 ROWS ONLY;
 END;
 `,
-    { ID: 10, name: '123' })
+    { ID: 10, name: '123' }
+    )
+
+    st.execSQL('create global temporary table TMP_ID(id NUMBER not null) on commit delete rows', {})
+    App.dbCommit()
+    st.execSQL('insert into TMP_ID(id) values (?)', { a: [1, 2, 3] })
+    assert.strictEqual(st.rowCount, 3, `Array binding for Oracle Insert - except 3 rows to be inserted, got ${st.rowCount}`)
   }
 
   return
