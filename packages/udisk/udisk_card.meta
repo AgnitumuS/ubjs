@@ -84,6 +84,19 @@
       "description": "file",
       "allowNull": true,
       "storeName": "udiskStore"
+    },
+    {
+      "name": "objectID",
+      "dataType": "BigInt",
+      "caption": "Related object ID",
+      "defaultView": false
+    },
+    {
+      "name": "objectEntity",
+      "dataType": "String",
+      "size": 32,
+      "caption": "Related object entity name",
+      "defaultView": false
     }
   ],
   "mixins": {

@@ -123,7 +123,8 @@ Ext.define('UDISK.AdminView', {
     me.mainTree.on('select', me.onNodeSelect, me)
 
     me.orderList = { '0': {expression: 'isFolder', order: 'desc'} }
-    me.fieldList = ['ID', 'name', 'parentID', 'isFolder', 'ownerID', 'fsize', 'contentType', 'isTemporary', 'fileData', 'mi_treePath', /* 'permission.accessType', */ 'mi_modifyDate']
+    me.fieldList = ['ID', 'name', 'parentID', 'isFolder', 'ownerID', 'fsize', 'contentType',
+      'isTemporary', 'fileData', 'mi_treePath', /* 'permission.accessType', */ 'mi_modifyDate', 'objectID', 'objectEntity']
     me.isTempWhere = {
       expression: '[isTemporary]',
       condition: 'notEqual',
@@ -516,7 +517,31 @@ Ext.define('UDISK.AdminView', {
         me.refreshCurrent()
       })
     } else {
-      me.openEditForm()
+      // me.openEditForm()
+      me.openObjectForm()
+    }
+  },
+
+
+  openObjectForm: function () {
+    const me = this
+    let selection = me.fileGrid.getSelectionModel().getSelection()
+    if (selection.length < 1) {
+      return
+    }
+    const objectID = selection[0].get('objectID')
+    if (objectID) {
+      const config = {
+        cmdType: 'showForm',
+        instanceID: objectID,
+        entity: selection[0].get('objectEntity'),
+        isModal: true,
+        sender: this
+      }
+      config.onClose = function () {
+        me.reloadFolders()
+      }
+      $App.doCommand(config)
     }
   },
 
