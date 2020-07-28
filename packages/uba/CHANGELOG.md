@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.24] - 2020-07-28
+### Fixed
   - TOTP (Google Authenticator) One Time Password verification fixed to allow up to (inclusive) 90 second shift between the server and a caller.
   Because of arithmetic mistake previous implementation validate correctly only up to (but not inclusive) +-30 second shift.   
   

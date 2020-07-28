@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.13.29] - 2020-07-28
 ## [5.13.28] - 2020-07-26
 ### Changed
  - double-click on entity inside ER Diagram opens Vue base entity editor `ubm_form-entityEdit`.
