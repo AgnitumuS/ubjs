@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - show correct JS exception with trace in case domain transformation hook broke some entities
 
 ## [5.5.10] - 2020-07-26
 ## [5.5.9] - 2020-07-19

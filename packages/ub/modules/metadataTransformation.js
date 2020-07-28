@@ -85,7 +85,7 @@ function loadDomainIntoJS () {
       nativeApp._nativeInitEntity(e.modelName, en, e.meta, e.langs)
     } catch (err) {
       console.error(`Can't init entity ${en}\n Something wrong in entity JSON`)
-      throw e
+      throw err
     }
   }
   console.timeEnd('native init')
