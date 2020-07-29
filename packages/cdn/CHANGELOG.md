@@ -14,7 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+ - `cdn_orgaccount`: allow `null` for `currencyID` attribute (milty-currency accounts)
+ - `cdn_orgaccount`: added default value for `acctype` = `CORR`
+ 
 ## [5.4.25] - 2020-07-28
 ## [5.4.24] - 2020-07-26
 ## [5.4.23] - 2020-07-19
