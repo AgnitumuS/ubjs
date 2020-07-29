@@ -229,6 +229,7 @@ export default {
 
   .u-table-register__details {
     min-height: 50%;
+    max-height: 75%;
   }
 
   .u-table-register__divider {
