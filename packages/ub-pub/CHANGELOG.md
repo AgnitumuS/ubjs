@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `ub-pub` now exports a `CryptoJS` instance (included modules are enc-base64, sha256, md5)
+ - `enc-base64` module added to CryptoJS instance. Available as `UB.CryptoJS.enc.Base64`. 
 
 ### Changed
 
@@ -14,6 +16,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - allows to encode a non-english passwords for UBLDAP auth by using `base64` from CryptoJS instead of `btoa` in AsyncConnection.
+ This fix error "String contains an invalid character" in case password contains non-english letters. From a server side
+ UTF8 LDAP password support is added in UB@5.18.10   
 
 ## [5.5.17] - 2020-07-26
 ### Fixed

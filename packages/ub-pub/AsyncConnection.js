@@ -522,7 +522,8 @@ $App.connection.userLang()
           pwdForAuth = MD5(pwdHash).toString()
           secretWord = pwdForAuth // medium unsecured
         } else {
-          pwdForAuth = window.btoa(authParams.password)
+          // window.btoa(authParams.password) fails on non Latin1 chars
+          pwdForAuth = CryptoJSCore.enc.Base64.stringify(CryptoJSCore.enc.Utf8.parse(authParams.password))
           secretWord = pwdForAuth // unsecured - to be used only with HTTPS!!
         }
       } else {

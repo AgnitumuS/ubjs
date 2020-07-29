@@ -13,6 +13,7 @@ const CryptoJS = require('@unitybase/cryptojs')
 // const CryptoJSCore = require('@unitybase/cryptojs/core')
 const SHA256 = require('@unitybase/cryptojs/sha256')
 const MD5 = require('@unitybase/cryptojs/md5')
+const BASE64Encl = require('@unitybase/cryptojs/enc-base64')
 const UBNativeMessage = require('./UBNativeMessage')
 
 let _errorReporter = null
@@ -452,6 +453,10 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
    */
   inject: function (url, charset) { return injection.inject(url, charset) },
   addResourceVersion: injection.addResourceVersion,
+  /**
+   * CryptoJS instance (included modules are enc-base64, sha256, md5)
+   */
+  CryptoJS: CryptoJS,
   /**
    * Calculate SHA256 checksum
    */
