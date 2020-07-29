@@ -337,7 +337,11 @@ function mountContainer ({
     })
     instance.$mount(`#${target}`)
   } else { // Ext component
-    instance.$mount(`#${target.getId()}-outerCt`)
+    if (document.getElementById(`${target.getId()}-outerCt`)) {
+      instance.$mount(`#${target.getId()}-outerCt`)
+    } else {
+      instance.$mount(`#${target.getId()}-innerCt`)
+    }
 
     // adding vue instance to basepanel
     const basePanel = target.up('basepanel')
