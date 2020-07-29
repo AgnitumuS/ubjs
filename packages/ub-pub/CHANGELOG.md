@@ -6,14 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `ub-pub` now exports a `CryptoJS` instance (included modules are enc-base64, sha256, md5)
- - `enc-base64` module added to CryptoJS instance. Available as `UB.CryptoJS.enc.Base64`. 
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.5.18] - 2020-07-29
+### Added
+ - `ub-pub` now exports a `CryptoJS` instance (included modules are enc-base64, sha256, md5)
+ - `enc-base64` module added to CryptoJS instance. Available as `UB.CryptoJS.enc.Base64`. 
 
 ### Fixed
  - allows to encode a non-english passwords for UBLDAP auth by using `base64` from CryptoJS instead of `btoa` in AsyncConnection.

@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [1.12.3] - 2020-07-29
+### Fixed
  - `UMasterDetailView`: added max detail height limit (75%). This fix issue when master table contains one or two rows and details expands on full view.
 
 ## [1.12.2] - 2020-07-26
