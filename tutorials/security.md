@@ -254,11 +254,16 @@ ldapsearch -W -H ldaps://secondcompany.ldap.server:636 -D "CN=user02,OU=users,OU
 In case `ldaps` protocol used and `ldapserach` give a connection error most likely CA certificates are not trusted and must
 be added to trusted storage:
 
-Ubuntu (Debian):
- - Copy your CA to dir /usr/local/share/ca-certificates/: `sudo cp foo.crt /usr/local/share/ca-certificates/foo.crt`
- - Update the CA store: `sudo update-ca-certificates`
+#### Ubuntu (Debian):
+Copy your CA certificates to folder /usr/local/share/ca-certificates and run update-ca-certificates:
+```bash
+sudo cp myCACertificate.crt /usr/local/share/ca-certificates/myCACertificate.crt
+sudo update-ca-certificates
+```
+**BE CAREFUL** - files copied into /usr/local/share/ca-certificates (myCACertificate.crt in example) MUST have `crt` extension
+BUT file content MUST be in pem encoding (base64 encoded data starts with `-----BEGIN CERTIFICATE-----`
 
-CentOS
+#### CentOS
  - Install the ca-certificates package: `yum install ca-certificates`
  - Enable the dynamic CA configuration feature: `update-ca-trust force-enable`
  - Add it as a new file to /etc/pki/ca-trust/source/anchors/: `cp foo.crt /etc/pki/ca-trust/source anchors/`
