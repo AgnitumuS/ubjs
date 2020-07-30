@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `SignatureVerificationResult` view: in case signature is invalid and library provide some reason this reason will be shown in `()`
+   For example: `Signature invalid (Неверный сертификат OSCP сервера)` 
 
 ### Changed
 

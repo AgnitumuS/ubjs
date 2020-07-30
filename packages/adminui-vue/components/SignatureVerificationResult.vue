@@ -167,7 +167,13 @@ export default {
       const r = this.verificationResults[vIdx]
       if (!r.valid) {
         let m = this.VRi18n.valid.no
-        if (r.errorCode) m = r.errorMessage + ` (${r.errorCode})`
+        if (r.errorMessage && r.errorCode) {
+          m = `${m} (#${r.errorCode}: ${r.errorMessage})`
+        } else if (r.errorMessage) {
+          m = `${m} (${r.errorMessage})`
+        } else if (r.errorCode) {
+          m = `${m} (#${r.errorCode})`
+        }
         return m
       }
       let s = this.VRi18n.valid.yes; s += isHTML ? '<br>' : '; '
