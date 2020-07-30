@@ -13,7 +13,7 @@ function getSupervisorID () {
   if (__supervisorUserID === 0) {
     const supervisorUserName = ubs_settings.loadKey('UBA.securityDashboard.supervisorUser')
     if (supervisorUserName) {
-      __supervisorUserID = UB.Repository('uba_user').attrs('ID').where('name', '=', supervisorUserName).selectAsObject()[0].ID
+      __supervisorUserID = UB.Repository('uba_user').attrs('ID').where('name', '=', supervisorUserName).selectScalar()
     }
   }
   return __supervisorUserID
