@@ -1,6 +1,6 @@
 {
-  "caption": "Current accounts",
-  "description": "List of current accounts of internal organizations",
+  "caption": "Settlement accounts",
+  "description": "Settlement accounts for internal organizations",
   "connectionName": "",
   "sqlAlias": "uorgacc",
   "cacheType": "Entity",

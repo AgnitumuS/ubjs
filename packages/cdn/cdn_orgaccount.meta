@@ -1,6 +1,6 @@
 {
-  "caption": "Current accounts",
-  "description": "Organization's current accounts dictionary",
+  "caption": "Settlement accounts",
+  "description": "Organization's settlement accounts dictionary",
   "connectionName": "",
   "sqlAlias": "orgacc",
   "cacheType": "None",
