@@ -3,7 +3,7 @@
   "description": "Organization's current accounts dictionary",
   "connectionName": "",
   "sqlAlias": "orgacc",
-  "cacheType": "Entity",
+  "cacheType": "None",
   "descriptionAttribute": "description",
   "attributes": [
     {
@@ -61,6 +61,13 @@
     "mStorage": {
       "simpleAudit":true,
       "safeDelete":true
+    }
+  },
+  "dbKeys": {
+    "UIDX_ORGACC_ACCCODE": {
+      "code": {},
+      "currencyID": {},
+      "bankID": {}
     }
   }
 }

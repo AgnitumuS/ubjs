@@ -29,9 +29,12 @@ function setDescriptionAttribute (ctx) {
     .where('eGroup', '=', 'CDN_ACCOUNTTYPE')
     .where('code', '=', execParams.acctype || oldData.acctype)
     .selectScalar() || ''
-  const currencyCode3 = UB.Repository('cdn_currency').attrs('code3')
-    .where('ID', '=', execParams.currencyID || oldData.currencyID)
-    .selectScalar() || ''
+  let currencyCode3 = ''
+  if (execParams.currencyID || oldData.currencyID) { // multi-currency account - currency can be empty
+    currencyCode3 = UB.Repository('cdn_currency').attrs('code3')
+      .where('ID', '=', execParams.currencyID || oldData.currencyID)
+      .selectScalar() || ''
+  }
   const bankID = execParams.bankID || oldData.bankID
   let bankDescription
   if (bankID) {
