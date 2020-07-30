@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - nodeJS usage example (in a README.md) rewritten using `async function`  
 
 ### Deprecated
 
