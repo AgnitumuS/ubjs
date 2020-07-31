@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - ensure adminui-vue exports `magicLink` (SystemJS.set freeze object, so should be exported before call to SystemJS) 
 
 ## [1.12.3] - 2020-07-29
 ### Fixed

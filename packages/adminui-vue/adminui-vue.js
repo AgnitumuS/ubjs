@@ -55,6 +55,15 @@ module.exports.errorReporter = errorReporter
 const lookups = require('./utils/lookups')
 module.exports.lookups = lookups
 
+const magicLink = require('./utils/magicLinks')
+/**
+ * MagikLinks instance
+ * @type {{install: function(): void, addCommand: function(string, Function<Object, EventTarget, *>): void}}
+ */
+module.exports.magicLink = magicLink
+magicLink.install()
+magicLink.addCommand('setFocus', magicLinkFocusCommand)
+
 if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
 
 const Vue = require('vue')
@@ -146,15 +155,6 @@ function replaceDefaultRelogin () {
   const vm = instance.$mount()
   document.body.appendChild(vm.$el)
 }
-
-const magicLink = require('./utils/magicLinks')
-/**
- * MagikLinks instance
- * @type {{install: function(): void, addCommand: function(string, Function<Object, EventTarget, *>): void}}
- */
-module.exports.magicLink = magicLink
-magicLink.install()
-magicLink.addCommand('setFocus', magicLinkFocusCommand)
 
 function magicLinkAdminUiCommand (params) {
   $App.doCommand(params)
