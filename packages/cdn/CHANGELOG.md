@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `cdn_orgaccount`: added complex unique index on `(code, currencyID, bankID)`
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.4.27] - 2020-08-03
+### Added
+ - `cdn_orgaccount`: added complex unique index on `(code, currencyID, bankID)`
 
 ### Fixed
  - `cdn_orgaccount`: change cache type to "None" since row count can be huge

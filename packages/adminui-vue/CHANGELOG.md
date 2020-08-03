@@ -6,14 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `SignatureVerificationResult` view: in case signature is invalid and library provide some reason this reason will be shown in `()`
-   For example: `Signature invalid (Неверный сертификат OSCP сервера)` 
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.12.4] - 2020-08-03
+### Added
+ - `SignatureVerificationResult` view: in case signature is invalid and library provide some reason this reason will be shown in `()`
+   For example: `Signature invalid (Неверный сертификат OSCP сервера)` 
 
 ### Fixed
  - ensure adminui-vue exports `magicLink` (SystemJS.set freeze object, so should be exported before call to SystemJS) 
