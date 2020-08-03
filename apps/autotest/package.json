@@ -16,9 +16,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.0.6",
-    "@unitybase/adminui-pub": "^5.13.31",
-    "@unitybase/adminui-reg": "^5.4.31",
-    "@unitybase/adminui-vue": "^1.12.4",
+    "@unitybase/adminui": "^0.0.1",
     "@unitybase/base": "^5.2.14",
     "@unitybase/cdn": "^5.4.27",
     "@unitybase/codemirror-full": "^1.2.30",

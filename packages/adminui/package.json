@@ -1,0 +1,33 @@
+{
+  "name": "@unitybase/adminui",
+  "version": "0.0.1",
+  "description": "UnityBase admin UI",
+  "main": "adminui.js",
+  "config": {
+    "ubmodel": {
+      "name": "adminui"
+    }
+  },
+  "scripts": {
+    "version": "update-changelog && git add CHANGELOG.md"
+  },
+  "public": true,
+  "publishConfig": {
+    "registry": "https://registry.unitybase.info"
+  },
+  "dependencies": {
+    "@unitybase/base": "^5.2.14",
+    "@unitybase/ub": "^5.5.11",
+    "mustache": "^3.0.1"
+  },
+  "devDependencies": {
+    "@unitybase/stubs": "^5.1.1",
+    "@unitybase/update-changelog": "^1.0.4"
+  },
+  "keywords": [
+    "UnityBase",
+    "UB5"
+  ],
+  "author": "pavel.mash <pavel.mash@gmail.com> (https://unitybase.info)",
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
+}
