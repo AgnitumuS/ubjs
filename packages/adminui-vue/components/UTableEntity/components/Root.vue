@@ -590,6 +590,12 @@ export default {
 </script>
 
 <style>
+  @media (min-height: 500px) {
+    .u-table-entity .u-table {
+      overflow: auto;
+    }
+  }
+
   .u-table-entity {
     --row-selected: hsl(var(--hs-primary), var(--l-background-default));
     --cell-selected: hsl(var(--hs-primary), var(--l-background-active));
@@ -597,12 +603,17 @@ export default {
 
     display: flex;
     flex-direction: column;
+    overflow: auto;
   }
 
   .u-table-entity__head {
     padding: 0 8px;
     display: flex;
     align-items: center;
+    position: sticky;
+    top: 0;
+    left: 0;
+    flex-shrink: 0;
   }
 
   .u-table-entity-panel__table th > .cell {

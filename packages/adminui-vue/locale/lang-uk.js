@@ -224,5 +224,9 @@ UB.i18nExtend({
     scanSettingsButtonTooltip: 'Параметри сканування',
     webcamButtonTooltip: 'Завантажити зображення з веб-камери',
     fullscreenButtonTooltip: 'Розгорнути на весь екран'
+  },
+
+  UNavbar: {
+    allTabsButton: 'Усі відкриті вкладинки'
   }
 })

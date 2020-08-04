@@ -75,16 +75,7 @@ function replaceExtJSNavbar () {
   document.body.appendChild(styles)
 
   new Vue({
-    mounted () {
-      const { offsetHeight } = this.$el
-      window.UB.core.UBApp.viewport.centralPanel.setMargin(`-${offsetHeight} 0 0 0`)
-      window.UB.core.UBApp.viewport.centralPanel.tabBar.setHeight(offsetHeight)
-    },
-    render: (h) => h(UNavbar, {
-      props: {
-        withHamburger: true // UB.connection.appConfig.uiSettings.adminUI.customSidebar
-      }
-    })
+    render: (h) => h(UNavbar)
   }).$mount(`#${id}`)
 }
 

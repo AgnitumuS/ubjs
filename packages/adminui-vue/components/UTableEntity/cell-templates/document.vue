@@ -4,11 +4,11 @@
     class="u-table-entity__document-col"
   >
     <span>{{ fileName }}</span>
-    <el-button
-      type="primary"
+    <u-button
       icon="u-icon-download"
-      circle
-      plain
+      size="small"
+      color="control"
+      appearance="plain"
       class="u-table-entity__document-button"
       @click="download"
     />

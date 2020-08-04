@@ -425,6 +425,8 @@ export default {
   border-bottom: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   padding: 0.5em 1em;
   display: flex;
+  flex-shrink: 0;
+  align-items: center;
 }
 
 .u-toolbar__flex-divider{

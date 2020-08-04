@@ -1,6 +1,13 @@
 <template>
   <div class="ub-sidebar">
     <div
+      class="u-sidebar__collapse-button"
+      @click="isCollapsed = !isCollapsed"
+    >
+      <i :class="isCollapsed ? 'u-icon-arrow-right' : 'u-icon-arrow-left'" />
+    </div>
+
+    <div
       v-if="logo !== null"
       class="ub-sidebar__logo"
     >
@@ -134,6 +141,7 @@ export default {
   watch: {
     isCollapsed (value) {
       window.localStorage.setItem('portal:sidebar:isCollapsed', value)
+      this.$UB.core.UBApp.fireEvent('portal:sidebar:collapse', value)
       const { full, collapsed } = $App.viewport.leftPanel.defaultSizes
       $App.viewport.leftPanel.setWidth(value ? collapsed : full)
     },
@@ -164,10 +172,6 @@ export default {
           this.$slots.default = [this.$slots.default, this.$createElement(Component, bindings)]
         }
         this.$forceUpdate()
-      },
-
-      'portal:sidebar:collapse': () => {
-        this.isCollapsed = !this.isCollapsed
       }
     })
     UB.connection.on('ubm_navshortcut:changed', this.initMenu)
@@ -242,11 +246,12 @@ export default {
     },
 
     initCollapseState () {
-      let isCollapsed = window.innerWidth < 1024
       const savedCollapse = window.localStorage.getItem('portal:sidebar:isCollapsed')
-      if (savedCollapse) isCollapsed = (savedCollapse === 'true')
-
-      this.isCollapsed = isCollapsed
+      if (savedCollapse) {
+        this.isCollapsed = savedCollapse === 'true'
+      } else {
+        this.isCollapsed = window.innerWidth < 1024
+      }
     },
 
     showContextMenu (event, payload) {
@@ -418,5 +423,26 @@ export default {
 
 .ub-sidebar__nav-label.collapsed {
   text-align: center;
+}
+
+.u-sidebar__collapse-button{
+  position: absolute;
+  top: 8px;
+  left: 100%;
+  z-index: 11;
+  width: 20px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: hsl(var(--hs-text), var(--l-text-inverse));
+  background: hsl(var(--hs-sidebar), var(--l-sidebar-default));
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  cursor: pointer;
+}
+
+.u-sidebar__collapse-button:hover{
+  background: hsl(var(--hs-sidebar), var(--l-sidebar-depth-1));
 }
 </style>
