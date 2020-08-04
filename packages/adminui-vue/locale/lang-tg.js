@@ -139,28 +139,28 @@ UB.i18nExtend({
 
   sidebar: {
     desktopSelector: {
-      title: 'Интихоби десктопа'
+      title: 'Интихоби равзана (Десктоп)'
     }
   },
 
   table: {
     filter: {
       list: {
-        title: 'Фильтры'
+        title: 'Филтрҳо'
       },
-      conditionPlaceholder: 'Выражение',
-      valuePlaceholder: 'Значение',
+      conditionPlaceholder: 'Ифода',
+      valuePlaceholder: 'Қиммат',
       date: {
-        from: 'с',
-        to: 'по',
-        valuePlaceholder: 'Выберите дату'
+        from: 'аз',
+        to: 'то',
+        valuePlaceholder: 'Интихоби сана'
       },
-      columnPlaceholder: 'Колонка'
+      columnPlaceholder: 'Сутун'
     },
     pagination: {
-      outOf: 'из',
-      nextPage: 'Следующая страница',
-      prevPage: 'Предыдущая страница'
+      outOf: 'аз',
+      nextPage: 'Саҳифаи навбатӣ',
+      prevPage: 'Саҳифаи гузашта'
     }
   },
 
@@ -174,30 +174,30 @@ UB.i18nExtend({
 
   fileInput: {
     manyFilesTable: {
-      label: 'Название',
-      size: 'Размер',
-      type: 'Тип',
-      uploadDate: 'Дата загрузки'
+      label: 'Номгӯй',
+      size: ' Андоза',
+      type: 'Намуд',
+      uploadDate: 'Санаи ворид карда шуда'
     },
     dropZone: {
-      caption: 'Перетащите файл сюда или нажмите для выбора',
-      acceptError: 'Неверный тип файла(ов)',
-      selectedFiles: 'Выбрано'
+      caption: 'Файлро ба ин ҷо кашед ё интихоб кунед',
+      acceptError: 'Тамдиди (Намуди) файл нодуруст аст'
+      selectedFiles: 'Интихобшуда'
     }
   },
 
   select: {
-    valueIsUndefined: 'Значение "{0}" не найдено в сущности "{1}"'
+    valueIsUndefined: 'Қиммати "{0}" дар моҳияти (объекти) "{1}" ёфт нашуд.'
   },
 
   tableRegister: {
-    hideDetails: 'Скрыть детали'
+    hideDetails: 'Тафсилотро пинҳон кардан'
   },
 
   chat: {
-    emptyMessage: 'Здесь пока нет ни одного сообщения...',
-    inputPlaceholder: 'Введите сообщение',
-    copyNotification: 'Сообщение скопировано в буфер обмена',
+    emptyMessage: 'Ҳоло дар ин ҷо ягон паём нест...',
+    inputPlaceholder: 'Паёми худро ворид кунедя',
+    copyNotification: 'Паёмак ба силули мухобиротӣ (Буферӣ мубодила) нусхабардорӣ шуд',
     removeMessageDialog: 'Удалить сообщение "{0}"',
     removeMessageNotification: 'Сообщение успешно удалено'
   },
@@ -205,28 +205,28 @@ UB.i18nExtend({
   UFile: {
     webcam: {
       webcamLabel: 'Камера',
-      pictureLabel: 'Изображение',
-      emptyPicturePlaceholder: 'Ваше изображение',
-      takePictureButton: 'Сделать скриншот',
-      takeAnotherPictureButton: 'Сделать другой скриншот',
+      pictureLabel: 'Сурат',
+      emptyPicturePlaceholder: 'Сурати шумо',
+      takePictureButton: 'Скриншот сохтан',
+      takeAnotherPictureButton: 'Скриншоти нав сохтан',
       error: {
-        NotReadableError: 'Доступ к камере запрещен в настройках операционной системы',
-        NotFoundError: 'Камера не найдена',
-        NotAllowedError: 'Доступ к камере запрещен. Включите доступ в настройках браузера'
+        NotReadableError: 'Барои истифодаи камера дар танзимоти системаи оператсиони иҷозат нест',
+        NotFoundError: 'Камера ёфт нашуд',
+        NotAllowedError: 'Иҷозати истифодаи камера рад карда шудааст. Дар танзимоти браузер фаъол кунед'
       }
     },
 
-    addButtonTooltip: 'Добавить',
-    downloadButtonTooltip: 'Скачать',
-    previewButtonTooltip: 'Предпросмотр',
-    removeButtonTooltip: 'Удалить',
-    scanButtonTooltip: 'Сканировать',
-    scanSettingsButtonTooltip: 'Настройки сканера',
-    webcamButtonTooltip: 'Загрузить изображение с ваб-камеры',
-    fullscreenButtonTooltip: 'Развернуть на весь экран'
+    addButtonTooltip: 'Илова кардан',
+    downloadButtonTooltip: 'Берунорӣ',
+    previewButtonTooltip: 'Пешнамоиш',
+    removeButtonTooltip: 'Нобуд кардан',
+    scanButtonTooltip: 'Скан кардан',
+    scanSettingsButtonTooltip: 'Танзимоти сканер',
+    webcamButtonTooltip: 'Боркуни аз ваб-камера',
+    fullscreenButtonTooltip: 'Пурра ба экран намоиш додан'
   },
 
   UNavbar: {
-    allTabsButton: 'Все открытые вкладки'
+    allTabsButton: 'Ҳамаи равзанаҳои кушода'
   }
 })

@@ -13,7 +13,7 @@ module.exports = function (session) {
       { keyValue: 'cdn.organization.accessAddGovByRoles',
         execParams: {
           name: 'Рӯйхати ролҳоро бо вергул ҷудо кунед',
-          description: ' Рӯйхати ролҳо бо вергул ҷудо карда шудаанд, ки ба онҳо сабтҳо илова карда метавонанд `cdn_organigation` с типом `cdn_orgbusinesstype.isGovAuthority`' }
+          description: ' Рӯйхати ролҳо бо вергул ҷудо карда шудаанд, ки ба онҳо сабтҳо илова карда метавонанд `cdn_organigation` бо намуди `cdn_orgbusinesstype.isGovAuthority`' }
 	    },
       { keyValue: 'cdn.organization.allowAutoGenerateOKPO',
         execParams: {

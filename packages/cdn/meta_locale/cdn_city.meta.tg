@@ -9,17 +9,17 @@
         {
             "name": "code",
             "caption": "Рамз",
-            "description": "Рамзи маҳалҳои аҳолинишин"
+            "description": "Рамзи маҳаллаи аҳолинишин"
         },
         {
             "name": "name",
-            "caption": "Номгуй",
-            "description": "Номи маҳалаи аҳолинишин"
+            "caption": "Номгӯй",
+            "description": "Номи маҳаллаи аҳолинишин"
         },
         {
             "name": "description",
             "caption": "Тавсиф",
-            "description": "Тавсифи маҳалаи  аҳолинишин"
+            "description": "Тавсифи маҳаллаи  аҳолинишин"
         },
         {
             "name": "postalCode",
@@ -33,12 +33,12 @@
         {
             "name": "phoneCode",
             "caption": "Рамзи телефон",
-            "description": "Рамзи телефони маҳалаи аҳолинишин"
+            "description": "Рамзи телефони маҳаллаи аҳолинишин"
         },
         {
             "name": "cityTypeID",
-            "caption": "Навъи маҳалаҳои аҳолинишин",
-            "description": "Навъи маҳалаҳои аҳолинишин"
+            "caption": "Навъи маҳаллаҳои аҳолинишин",
+            "description": "Навъи маҳаллаҳои аҳолинишин"
         }
     ]
 }

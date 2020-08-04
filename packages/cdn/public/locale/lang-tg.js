@@ -10,6 +10,7 @@ UB.i18nExtend({
   employee_title: 'Кормандони ташкилотҳои беруна',
   profession_title: 'Касб',
   region_title: 'Ноҳия',
+
   ClassifTypePanelClassifiersTitle: 'Арзишҳои таснифшуда',
   classifier: {
     caption: 'Таснифгар',

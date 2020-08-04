@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Рӯйхати забонҳо",
+    "description": "Рӯйхати забонҳо мувофиқи ISO-639-1",
     "attributes": [
         {
             "name": "code",

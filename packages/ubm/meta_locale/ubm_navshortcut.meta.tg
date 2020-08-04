@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Барчасб",
-    "description": "",
+    "description": "Барчасб барои сохтани навбарҳо",
     "attributes": [
         {
             "name": "inWindow",
@@ -45,6 +45,14 @@
         {
             "name": "isFolder",
             "caption": "Ҷувздон?"
+        },
+        {
+            "name": "description",
+            "caption": "Тавсифи тамғакоғазҳо"
+        },
+        {
+            "name": "keywords",
+            "caption": "Калимаҳои калидӣ барои ҷустуҷӯ "
         }
     ]
 }

@@ -14,7 +14,7 @@
         },
         {
             "name": "name",
-            "caption": "Номгуи воҳидҳо",
+            "caption": "Номгӯи воҳидҳо",
             "description": "Номгӯй бе нохунак ва ихтисорот"
         },
         {
@@ -45,12 +45,12 @@
         {
             "name": "nameDat",
             "description": "Номгӯй бе нохунак ва ихтисорот",
-            "caption": "Номгуй"
+            "caption": "Номгӯй"
         },
         {
             "name": "nameGen",
-            "caption": "Номгуй",
-            "description": "Номгуи воҳидҳо"
+            "caption": "Номгӯй",
+            "description": "Номгӯи воҳидҳо"
         },
         {
             "name": "fullNameDat",

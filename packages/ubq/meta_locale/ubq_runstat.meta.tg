@@ -9,7 +9,8 @@
         },
         {
             "name": "startTime",
-            "description": "Вақти оғози банди нақшачӣ"
+            "description": "Вақти оғози банди нақшачӣ",
+            "caption": "Вақти оғози банди нақшачӣ"
         },
         {
             "name": "logText",
@@ -27,6 +28,10 @@
         {
             "name": "resultErrorMsg",
             "caption": "Паёми хаттии хатогӣ агар натиҷа > 0"
+        },
+        {
+            "name": "schedulerName",
+            "caption": "Номгӯи нақшакаш"
         }
     ]
 }

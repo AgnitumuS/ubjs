@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - Tajik locale translation
+ 
 ### Changed
  - `UNavbar`: tabs now displayed insoide scroll box and prepended by "All tabs" button for tab management
  - `UTableEntity` in case `window.outerHeight < 500px` then table header hides while user scroll down (as with address bar in mobile browsers)
