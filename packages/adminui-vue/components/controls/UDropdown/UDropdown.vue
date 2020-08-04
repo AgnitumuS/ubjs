@@ -1,5 +1,5 @@
 <template>
-  <div :key="renderKey">
+  <div>
     <div
       v-if="$slots.default"
       ref="reference"
@@ -16,6 +16,7 @@
     >
       <div
         v-show="visible && $slots.dropdown"
+        :key="renderKey"
         ref="dropdown"
       >
         <div class="u-dropdown">
@@ -124,6 +125,8 @@ export default {
       el.style.zIndex = this.$zIndex()
       this.referenceEl = this.$slots.default === undefined ? this.virtualElement : this.$refs.reference
       const arrow = this.$refs.arrow
+
+      document.body.appendChild(this.$refs.dropdown)
       createPopper(this.referenceEl, this.$refs.dropdown, {
         strategy: this.position,
         placement: this.placement,

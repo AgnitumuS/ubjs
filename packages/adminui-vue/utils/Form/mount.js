@@ -406,8 +406,7 @@ function mountTableEntity (cfg) {
     return h(UMasterDetailView, {
       attrs: {
         ...cfg.props,
-        shortcutCode: cfg.shortcutCode,
-        height: '100%'
+        shortcutCode: cfg.shortcutCode
       },
       style: { height: '100%' },
       scopedSlots

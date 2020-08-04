@@ -1,82 +1,72 @@
 <template>
-  <div class="u-navbar">
-    <div
-      v-if="withHamburger"
-      class="u-navbar__collapse-button"
-      @click="$UB.core.UBApp.fireEvent('portal:sidebar:collapse')"
-    >
-      <i :class="isCollapsed ? 'u-icon-arrow-right' : 'u-icon-arrow-left'" />
-    </div>
+  <div
+    class="u-navbar"
+    :class="{'u-navbar__hidden': !visibleNavbar}"
+  >
+    <i
+      class="u-icon-more u-navbar__collapse-button"
+      @click="visibleNavbar = !visibleNavbar"
+    />
 
-    <div
-      ref="tabWrap"
-      class="u-navbar__tabs-wrap"
+    <u-dropdown
+      v-show="tabs.length"
+      class="u-navbar-all-tabs__dropdown-reference"
     >
-      <div
-        ref="tabInner"
-        :class="{'disabled-transition': dragging}"
-        :style="{transform: `translateX(${ offset }px)`}"
-        class="u-navbar-tab-slider"
-        @mousedown="startDrag"
+      <el-tooltip
+        :content="$ut('UNavbar.allTabsButton')"
+        :enterable="false"
       >
-        <transition-group
-          name="tab-anim"
-          class="u-navbar-tab-slider__transition-group"
-          @before-leave="beforeLeaveAnimation"
-          @after-leave="afterLeaveAnimation"
-        >
-          <u-navbar-tab
-            v-for="(tab, idx) in tabs"
-            ref="tabs"
-            :key="tab.id"
-            :tab-data="tab"
-            :class="{'active': current === idx}"
-            @close="handleClose"
-            @open="handleTabClick"
-            @right-click="showContextMenu($event, tab)"
-          />
-        </transition-group>
-      </div>
-      <i
-        v-show="sliderPrevVisible"
-        class="u-navbar-tab-slider__ctrl u-icon-arrow-left u-navbar-tab-slider__ctrl__prev"
-        @click="navigate(1)"
-      />
-      <i
-        v-show="sliderNextVisible"
-        class="u-navbar-tab-slider__ctrl u-icon-arrow-right u-navbar-tab-slider__ctrl__next"
-        @click="navigate(-1)"
-      />
-    </div>
-
-    <u-dropdown class="u-navbar__overflow-button" v-if="tabsWidth >= visibleWidth">
-      <el-button
-        icon="u-icon-more"
-        circle
-        class="u-navbar__button"
-      />
-
+        <button class="u-navbar-all-tabs__button">
+          {{ tabs.length }}
+        </button>
+      </el-tooltip>
       <template slot="dropdown">
         <u-dropdown-item
-          v-for="(tab, index) in tabs"
+          v-for="tab of tabs"
           :key="tab.id"
-          class="u-navbar__tray-item"
-          :class="{
-            active: current === index
-          }"
-          prevent-close
-          @click="handleTabClick(tab, true)"
+          class="u-navbar-all-tabs__dropdown-item"
+          :class="{active: tab.id === activeTabId}"
+          @click="setActiveTab(tab.id)"
         >
           <template #label>
-            {{ tab.title }}
-            <i
-              class="u-navbar__tray-item-close-icon u-icon-close"
-              @click="handleClose([tab], true)"
+            <div v-html="tab.title" />
+
+            <u-button
+              class="u-navbar-all-tabs__dropdown-item-close-button"
+              icon="u-icon-close"
+              color="control"
+              appearance="inverse"
+              @click.stop="handleClose([tab])"
             />
           </template>
         </u-dropdown-item>
       </template>
     </u-dropdown>
+
+    <div class="u-navbar__tab-container">
+      <div
+        v-for="tab of tabs"
+        :key="tab.id"
+        :ref="`tab${tab.id}`"
+        :class="{
+          active: tab.id === activeTabId
+        }"
+        class="u-navbar__tab"
+        @click="setActiveTab(tab.id)"
+        @contextmenu="showContextMenu($event, tab.id)"
+        @click.middle="handleClose([tab])"
+      >
+        <span
+          class="u-navbar__tab-text"
+          v-html="tab.title"
+        />
+
+        <i
+          class="u-icon-close u-navbar__tab-close-button"
+          @click.stop="handleClose([tab])"
+        />
+      </div>
+    </div>
 
     <slot />
 
@@ -100,354 +90,105 @@
 </template>
 
 <script>
-const UNavbarTab = require('./UNavbarTab.vue').default
-const { debounce } = require('throttle-debounce')
-
 export default {
   name: 'UNavbar',
 
-  components: { UNavbarTab },
-
-  props: {
-    withHamburger: Boolean
-  },
-
   data () {
     return {
-      dragging: false,
-      dragStart: null,
-      offsetStart: null,
-      disabledTabClick: false,
-
       tabs: [],
-      current: 0,
-
-      offset: 0,
-
-      /**
-       * Width of the visible area
-       */
-      visibleWidth: Infinity,
-
-      /**
-       * Total width of all tabs
-       */
-      tabsWidth: 0,
-
-      sliderPrevWidth: 0,
-      sliderNextWidth: 0,
-
-      /**
-       * Some actions have to wait until DOM elements measurements are done.  This flag tracks that.
-       */
-      measurementPending: false,
-
-      /**
-       * Making active tab visible is only allowed after measurements completed.  This flag tracks that action is
-       * pending, it could be used to "setTimeout" changing offset, instead of immediately do it, to allow for
-       * making measurements first.
-       */
-      activeTabPending: false,
-
-      contextMenuTab: {},
-
-      isCollapsed: this.getCollapsed()
-    }
-  },
-
-  computed: {
-    sliderPrevVisible () {
-      return this.visibleWidth < this.tabsWidth && this.offset < 0
-    },
-
-    sliderNextVisible () {
-      return this.visibleWidth < this.tabsWidth && this.tabsWidth + this.offset > this.visibleWidth
+      activeTabId: null,
+      contextMenuTabId: null,
+      isCollapsed: window.localStorage.getItem('portal:sidebar:isCollapsed') === 'true',
+      visibleNavbar: true,
+      originalExtNavbarHeight: null
     }
   },
 
   watch: {
-    measurementPending (isPending) {
-      if (isPending) {
-        // $nextTick is strictly required here, to allow DOM changes to be completed.
-        // This code is often called after tab is added or removed or other DOM changes made, which might
-        // impact on measurements, so let them finish.
-        this.$nextTick(this.calcTabWidth)
+    visibleNavbar (value) {
+      if (value) {
+        this.$UB.core.UBApp.viewport.centralPanel.tabBar.setHeight(this.originalExtNavbarHeight)
+        this.$UB.core.UBApp.viewport.centralPanel.setMargin(`-${this.originalExtNavbarHeight} 0 0 0`)
+      } else {
+        this.$UB.core.UBApp.viewport.centralPanel.tabBar.setHeight(0)
+        this.$UB.core.UBApp.viewport.centralPanel.setMargin(`-${this.originalExtNavbarHeight} 0 0 0`)
       }
     }
   },
 
   created () {
     this.subscribeCentralPanelEvents()
-    $App.on({
-      'portal:navbar:appendSlot': (Component, bindings) => {
-        if (Array.isArray(this.$slots.default)) {
-          this.$slots.default.push(this.$createElement(Component, bindings))
-        } else {
-          this.$slots.default = [this.$slots.default, this.$createElement(Component, bindings)]
-        }
-        this.$forceUpdate()
-      },
-
-      'portal:navbar:prependSlot': (Component, bindings) => {
-        if (Array.isArray(this.$slots.default)) {
-          // this.$slots.default.push(this.$createElement(Component, bindings))
-          this.$slots.default = this.$slots.default.slice().unshift(this.$createElement(Component, bindings)) // prepend data to array
-        } else {
-          this.$slots.default = [this.$createElement(Component, bindings), this.$slots.default]
-        }
-        this.$forceUpdate()
-      },
-
-      'portal:navbar:defineSlot': (Component, bindings) => {
-        this.$slots.default = this.$createElement(Component, bindings)
-        this.$forceUpdate()
-      },
-
-      'portal:sidebar:collapse': (Component, bindings) => {
-        setTimeout(() => {
-          this.isCollapsed = this.getCollapsed()
-        }, 0)
-      }
-    })
+    this.subscribeSlotDefine()
   },
 
   mounted () {
-    this.initCreatedTabs()
-    window.addEventListener('mouseup', this.stopDrag)
-    this._oldWindowOnResize = window.onresize
-    window.onresize = debounce(300, () => { this.calcTabWidth() })
-  },
+    this.tabs = window.$App.viewport.centralPanel.items.items
+      .map(({ id, title }) => ({ id, title }))
 
-  beforeDestroy () {
-    window.removeEventListener('mouseup', this.stopDrag)
-    window.onresize = this._oldWindowOnResize
-    delete this._oldWindowOnResize
+    this.originalExtNavbarHeight = this.$el.offsetHeight
+    this.$UB.core.UBApp.viewport.centralPanel.tabBar.setHeight(this.originalExtNavbarHeight)
+    this.$UB.core.UBApp.viewport.centralPanel.setMargin(`-${this.originalExtNavbarHeight} 0 0 0`)
   },
 
   methods: {
-    beforeLeaveAnimation (el) {
-      el.style.left = el.offsetLeft + 'px'
-    },
+    subscribeSlotDefine () {
+      this.$UB.core.UBApp.on({
+        'portal:navbar:appendSlot': (Component, bindings) => {
+          if (Array.isArray(this.$slots.default)) {
+            this.$slots.default.push(this.$createElement(Component, bindings))
+          } else {
+            this.$slots.default = [this.$slots.default, this.$createElement(Component, bindings)]
+          }
+          this.$forceUpdate()
+        },
 
-    afterLeaveAnimation () {
-      this.calcTabWidth()
-    },
+        'portal:navbar:prependSlot': (Component, bindings) => {
+          if (Array.isArray(this.$slots.default)) {
+            // this.$slots.default.push(this.$createElement(Component, bindings))
+            this.$slots.default = this.$slots.default.slice().unshift(this.$createElement(Component, bindings)) // prepend data to array
+          } else {
+            this.$slots.default = [this.$createElement(Component, bindings), this.$slots.default]
+          }
+          this.$forceUpdate()
+        },
 
-    calcTabWidth () {
-      const points = []
-      if (this.$refs.tabs) {
-        for (const tab of this.$refs.tabs) {
-          const { offsetLeft } = tab.$el
-          points.push(offsetLeft)
+        'portal:navbar:defineSlot': (Component, bindings) => {
+          this.$slots.default = this.$createElement(Component, bindings)
+          this.$forceUpdate()
         }
-      }
-      this.setMeasurements({
-        visibleWidth: this.$refs.tabWrap.offsetWidth,
-        tabsWidth: this.$refs.tabInner.offsetWidth,
-        points
       })
-      this.positionActiveTab()
     },
 
-    startDrag ({ clientX }) {
-      window.addEventListener('mousemove', this.doDrag)
-      this.dragStart = clientX
-      this.offsetStart = this.offset
-      this.dragging = true
-      this.disabledTabClick = false
-      setTimeout(() => { this.disabledTabClick = true }, 200)
-    },
-
-    doDrag ({ clientX }) {
-      this.offset = Math.min(this.offsetStart + clientX - this.dragStart, 0)
-    },
-
-    stopDrag () {
-      window.removeEventListener('mousemove', this.doDrag)
-      this.dragging = false
-      this.moveToView()
-    },
-
-    handleTabClick (tab, ignoreDrag = false) {
-      if (ignoreDrag || !this.disabledTabClick) {
-        const idx = this.tabs.indexOf(tab)
-        if (idx !== -1) {
-          window.$App.viewport.centralPanel.setActiveTab(idx)
-        }
+    setActiveTab (tabId) {
+      const index = this.tabs.findIndex(tab => tab.id === tabId)
+      if (index !== -1) {
+        this.$UB.core.UBApp.viewport.centralPanel.setActiveTab(index)
       }
     },
 
-    handleClose (tabs, ignoreDrag) {
-      if (!this.disabledTabClick || ignoreDrag) {
-        for (const tabId of tabs.map(t => t.id)) {
-          const currentTab = window.$App.viewport.centralPanel.queryById(tabId)
-
-          currentTab.close()
+    handleClose (tabs) {
+      for (const { id } of tabs) {
+        const tab = this.$UB.core.UBApp.viewport.centralPanel.queryById(id)
+        if (tab) {
+          tab.close()
         }
       }
     },
 
     closeOther () {
-      const other = this.tabs.filter(t => t.id !== this.contextMenuTab.id)
-      this.handleClose(other, true)
+      const other = this.tabs.filter(tab => tab.id !== this.contextMenuTabId)
+      this.handleClose(other)
     },
     closeAll () {
-      this.handleClose(this.tabs, true)
+      this.handleClose(this.tabs)
     },
     close () {
-      this.handleClose([this.contextMenuTab], true)
+      this.handleClose([{ id: this.contextMenuTabId }])
     },
 
-    showContextMenu (event, tab) {
-      this.contextMenuTab = tab
+    showContextMenu (event, tabId) {
+      this.contextMenuTabId = tabId
       this.$refs.contextMenu.show(event)
-    },
-
-    moveToView () {
-      if (this.tabsWidth <= this.visibleWidth || this.offset > 0) {
-        // Content fully fits into visible area, or it is a positive offset, which should not be
-        this.offset = 0
-      } else if (this.tabsWidth + this.offset <= this.visibleWidth) {
-        // Content does not fit, but the right border of the tabs ends within the visible area, so
-        // shift content so that right border of content hits the right border of the visible area.
-        this.offset = this.visibleWidth - this.tabsWidth
-      }
-    },
-
-    navigate (direction) {
-      this.offset += direction * this.visibleWidth * 0.3
-      this.moveToView()
-    },
-
-    /**
-     * Reaction on change of the active tab.  Await for measurements, if needed.
-     */
-    onChangeActiveTab (tabId) {
-      let idx = this.tabs.findIndex(t => t.id === tabId)
-
-      /* Change index of currently selected tab */
-      if (idx < 0 || this.tabs.length === 0) {
-        idx = 0
-      } else if (idx >= this.tabs.length) {
-        idx = this.tabs.length - 1
-      }
-      this.current = idx
-
-      if (this.measurementPending) {
-        if (!this.activeTabPending) {
-          this.activeTabPending = true
-          this.$nextTick(this.positionActiveTab)
-        }
-        return
-      }
-
-      this.positionActiveTab()
-    },
-
-    /**
-     * Make the current tab visible
-     */
-    positionActiveTab () {
-      const SLIDER_WIDTH = 35
-
-      if (this.measurementPending) {
-        // Still await for measurements
-        this.$nextTick(this.positionActiveTab)
-        return
-      }
-
-      const {
-        current,
-        tabs,
-        offset,
-        tabsWidth,
-        visibleWidth
-      } = this
-
-      let newOffset = 0
-
-      if (current !== -1 && tabsWidth > visibleWidth) {
-        // We have tabs and tabs do not fit into visible area
-
-        // Calculate tab left and right coordinates
-        const tabLeft = tabs[current].point
-        const tabRight = current + 1 < tabs.length
-          ? tabs[current + 1].point
-          : tabsWidth
-
-        const prevSliderVisible = current !== 0
-        const prevSliderWidth = prevSliderVisible ? SLIDER_WIDTH : 0
-
-        const nextSliderVisible = current + 2 < tabs.length ||
-                tabRight - tabLeft - prevSliderWidth > visibleWidth
-        const nextSliderWidth = nextSliderVisible ? SLIDER_WIDTH : 0
-
-        if (current !== 0) {
-          const offsetMakingTabRightVisible = visibleWidth - nextSliderWidth - tabRight
-
-          if (tabLeft + offset < prevSliderWidth) {
-            // Left side of the tab is beyond left side of the visible part.
-            // Move it to the right, so that it would be visible
-            // "+50" here is to make the part of right side of the previous tab visible to be able to click it
-            newOffset = -(tabLeft - prevSliderWidth) + 50
-          } else if (offset > offsetMakingTabRightVisible) {
-            // Right side of the tab is beyond right side of the visible part (remember, offsets are negative!)
-
-            // Use Math.max, because making right side visible may move left side outside the visible range,
-            // and in that case, making left side visible takes priority
-            newOffset = Math.max(-(tabLeft - prevSliderWidth), offsetMakingTabRightVisible)
-          } else {
-            // Stick the the current offset, if no need to adjust
-            newOffset = offset
-          }
-        }
-      }
-
-      this.offset = newOffset
-      this.activeTabPending = false
-    },
-
-    /**
-     * Set measurements of the DOM.
-     */
-    setMeasurements ({ visibleWidth, tabsWidth, points }) {
-      this.visibleWidth = visibleWidth
-      this.tabsWidth = tabsWidth
-      for (let i = 0; i < points.length; i++) {
-        // For some reason, when tab is deleted, DOM is still there during measurement, so need to check
-        if (this.tabs[i]) {
-          this.tabs[i].point = points[i]
-        }
-      }
-      this.measurementPending = false
-      this.moveToView()
-    },
-
-    addTab (tab) {
-      // When an ExtJS tab changes its title, need to sync it with navbar tab
-      tab.addListener('titlechange', (UBTab, newText) => {
-        const tab = this.tabs.find(t => t.id === UBTab.id)
-        if (tab) {
-          tab.title = newText
-          this.measurementPending = true
-        }
-      })
-
-      /* Add a new tab to the end of tab list */
-      this.tabs.push({
-        id: tab.id,
-        title: tab.title,
-        point: null
-      })
-
-      this.measurementPending = true
-    },
-
-    initCreatedTabs () {
-      const createdTabs = window.$App.viewport.centralPanel.items.items
-      for (const tab of createdTabs) {
-        this.addTab(tab)
-      }
     },
 
     subscribeCentralPanelEvents () {
@@ -458,172 +199,179 @@ export default {
          * @param tab
          */
         add (sender, tab) {
-          this.addTab(tab)
+          tab.addListener('titlechange', (UBTab, newText) => {
+            const tab = this.tabs.find(t => t.id === UBTab.id)
+            if (tab) {
+              tab.title = newText
+            }
+          })
+          this.tabs.push({
+            id: tab.id,
+            title: tab.title
+          })
         },
 
         remove (sender, tab) {
-          const { tabs, current } = this
-          const idx = tabs.findIndex(t => t.id === tab.id)
-          if (idx !== -1) {
-            /* Remove a tab by its Id */
-            this.tabs.splice(idx, 1)
-            this.measurementPending = true
-
-            if (current > idx) {
-              this.onChangeActiveTab(tabs[current - 1].id)
-            }
+          const index = this.tabs.findIndex(({ id }) => id === tab.id)
+          if (index !== -1) {
+            this.tabs.splice(index, 1)
           }
         },
 
         async tabchange (sender, tab) {
-          this.onChangeActiveTab(tab.id)
+          this.activeTabId = tab.id
+          await this.$nextTick()
+          const ref = this.$refs[`tab${tab.id}`]
+          if (ref) {
+            ref[0].scrollIntoView({
+              behavior: 'smooth',
+              inline: 'center'
+            })
+          }
         },
 
         scope: this
       })
-    },
-
-    getCollapsed () {
-      return window.localStorage.getItem('portal:sidebar:isCollapsed') === 'true'
     }
   }
 }
 </script>
 
 <style>
-.u-navbar{
+.u-navbar {
   padding: 8px;
   padding-left: 30px;
-  display:flex;
-  justify-content: space-between;
+  display: flex;
   background: hsl(var(--hs-background), var(--l-background-inverse));
   border-bottom: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   position: relative;
-  min-height: 54px;
-}
-
-.u-navbar-tab-slider__ctrl{
-  position: absolute;
-  top: 0;
-  width: 35px;
-  height: 100%;
-  display:flex;
-  justify-content: flex-end;
-  align-items: center;
   z-index: 10;
+  height: 54px;
+}
+
+.u-navbar__hidden {
+  transform: translateY(-100%);
+}
+
+.u-navbar__tab-container {
+  scroll-snap-type: x mandatory;
+  overflow-x: auto;
+  flex-grow: 1;
+  display: flex;
+  padding-bottom: 3px;
+}
+
+.u-navbar__tab-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.u-navbar__tab-container::-webkit-scrollbar-thumb {
+  border-width: 0;
+}
+
+.u-navbar__tab {
+  scroll-snap-align: start;
+  max-width: 200px;
+  flex-shrink: 0;
+  border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+  border-radius: 8px;
+  font-size: 14px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   cursor: pointer;
+  color: hsl(var(--hs-text), var(--l-text-default));
 }
 
-.u-navbar-tab-slider__ctrl__prev{
-  background: linear-gradient(to left, transparent, hsl(var(--hs-background), var(--l-background-inverse)) 45%);
-  left: 0;
-  justify-content: flex-start;
+.u-navbar__tab + .u-navbar__tab {
+  margin-left: 12px;
 }
 
-.u-navbar-tab-slider__ctrl__next{
-  background: linear-gradient(to right, transparent, hsl(var(--hs-background), var(--l-background-inverse))  45%);
-  right: 0;
+.u-navbar__tab.active {
+  background: hsl(var(--hs-sidebar), var(--l-sidebar-depth-1));
+  border-color: hsl(var(--hs-sidebar), var(--l-sidebar-depth-1));
+  color: hsl(var(--hs-text), var(--l-text-inverse))
 }
 
-.u-navbar__tabs-wrap{
-  position: relative;
-  width: 100%;
-  height: 32px;
+.u-navbar__tab-close-button {
+  font-size: 12px;
+  padding: 0 12px;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+.u-navbar__tab-text {
+  padding-left: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   overflow: hidden;
 }
 
-.u-navbar-tab-slider{
+.u-navbar__collapse-button {
+  z-index: 10;
   position: absolute;
-  top: 0;
-  left: 0;
-  transition:transform .2s;
-}
-
-.u-navbar-tab-slider.disabled-transition{
-  transition: none;
-}
-
-.u-navbar__overflow{
-  width: 32px;
-  min-width: 32px;
-  height: 32px;
-  margin-left: 30px;
-  position: relative;
-}
-
-.u-navbar__overflow.hidden{
-  visibility: collapse
-}
-
-.u-navbar__overflow__tabs{
-  max-height: 400px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.tab-anim-move {
-  transition: .23s;
-}
-
-.u-navbar__tab{
-  transition:transform .23s, opacity .23s;
-}
-
-.tab-anim-enter,
-.tab-anim-leave-to{
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-.u-navbar__tab.tab-anim-leave-active{
-  transition: all .23s;
-  position: absolute;
-  top: 0
-}
-
-.u-navbar-tab-slider__transition-group{
-  display: flex
-}
-
-.u-navbar__collapse-button{
-  position: absolute;
-  top: 8px;
-  left: 0;
-  width: 20px;
-  height: 32px;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: hsl(var(--hs-background), var(--l-background-inverse));
+  background: hsl(var(--hs-sidebar), var(--l-sidebar-default));
+  width: 50px;
+  height: 16px;
+  font-size: 20px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
   display: flex;
   align-items: center;
-  font-size: 16px;
-  color: hsl(var(--hs-text), var(--l-text-inverse));
-  background: hsl(var(--hs-sidebar), var(--l-sidebar-default));
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+  justify-content: center;
   cursor: pointer;
 }
 
-.u-navbar__collapse-button:hover{
+.u-navbar__collapse-button:hover {
   background: hsl(var(--hs-sidebar), var(--l-sidebar-depth-1));
 }
 
-.u-navbar__tray-item.active {
-  background: hsl(var(--hs-primary), var(--l-background-default));
-  color: hsl(var(--hs-primary), var(--l-text-default));
+@media (min-height: 500px) {
+  .u-navbar__collapse-button {
+    display: none;
+  }
 }
 
-.u-navbar__tray-item .u-dropdown-item__label{
+.u-navbar-all-tabs__dropdown-reference {
+  margin-right: 8px;
+}
+
+.u-navbar-all-tabs__button {
+  color: hsl(var(--hs-text), var(--l-text-default));
+  border:  1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+  border-radius: var(--border-radius);
+  width: 30px;
+  height: 30px;
   display: flex;
-  width: 100%;
   align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: none;
+}
+
+.u-navbar-all-tabs__button:hover {
+  background: hsl(var(--hs-background), var(--l-background-default));
+}
+
+.u-navbar-all-tabs__dropdown-item .u-dropdown-item__label {
+  padding: 0 12px;
+  display: flex;
   justify-content: space-between;
-  padding: 0;
-  height: 32px;
+  align-items: center;
+  width: 100%;
 }
 
-.u-navbar__tray-item-close-icon {
-  margin: 0 8px;
+.u-navbar-all-tabs__dropdown-item.active {
+  background: hsl(var(--hs-primary), var(--l-background-default));
 }
 
-.u-navbar__overflow-button {
-  margin-left: 12px;
+.u-navbar-all-tabs__dropdown-item-close-button {
+  margin-left: 8px;
 }
 </style>

@@ -8,12 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UNavbar`: tabs now displayed insoide scroll box and prepended by "All tabs" button for tab management
+ - `UTableEntity` in case `window.outerHeight < 500px` then table header hides while user scroll down (as with address bar in mobile browsers)
+ - `UNavbar` in case `window.outerHeight < 500px` then navbar visibility can be toggled on/off (new toggle button added)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `UDropdown`: in case dropdown is placed into HTML attribute with  `position: sticky/absolute/fixed` then it it shown in full size (not cropped to the outer elements bounds as before)
  - `ub-icons` iconic font uses fixed character code for each icon, so adding new icons do not broke unicode codes for old icons.  
 
 ## [1.12.4] - 2020-08-03

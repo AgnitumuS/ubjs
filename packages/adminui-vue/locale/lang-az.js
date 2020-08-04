@@ -225,5 +225,9 @@ UB.i18nExtend({
     scanSettingsButtonTooltip: 'Scan settings',
     webcamButtonTooltip: 'Take image from webcam',
     fullscreenButtonTooltip: 'Full screen preview'
+  },
+
+  UNavbar: {
+    allTabsButton: 'All opened tabs'
   }
 })

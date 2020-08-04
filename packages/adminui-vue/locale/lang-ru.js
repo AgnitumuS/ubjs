@@ -224,5 +224,9 @@ UB.i18nExtend({
     scanSettingsButtonTooltip: 'Настройки сканера',
     webcamButtonTooltip: 'Загрузить изображение с ваб-камеры',
     fullscreenButtonTooltip: 'Развернуть на весь экран'
+  },
+
+  UNavbar: {
+    allTabsButton: 'Все открытые вкладки'
   }
 })
