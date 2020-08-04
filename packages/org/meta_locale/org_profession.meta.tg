@@ -13,7 +13,7 @@
         },
         {
             "name": "name",
-            "caption": "Номгуй",
+            "caption": "Номгӯй",
             "description": "Номгӯи вазифа"
         },
         {
@@ -23,12 +23,12 @@
         },
         {
             "name": "nameDat",
-            "caption": "Номгуй",
+            "caption": "Номгӯй",
             "description": "Номгӯи вазифа"
         },
         {
             "name": "nameGen",
-            "caption": "Номгуй",
+            "caption": "Номгӯй",
             "description": "Номи пурраи вазифа"
         },
         {

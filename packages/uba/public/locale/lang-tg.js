@@ -38,11 +38,11 @@ UB.i18nExtend({
   uba: {
     changePassword: {
       newPassword: {
-        matchWithLoginError: 'Password matches the login',
-        fieldRequirementsError: 'Does not meet the requirements'
+        matchWithLoginError: 'Гузарвожа (Рамз) бо номи истифодабаранда мувофиқат мекунад',
+        fieldRequirementsError: 'Ба талабот ҷавобгӯ нест'
       },
       retypePassword: {
-        errorText: 'Passwords mismatch'
+        errorText: 'Рамзҳо ба ҳамдигар мутобиқат намекунаж'
       }
     }
   },

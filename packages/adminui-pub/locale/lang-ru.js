@@ -8,7 +8,7 @@ UB.i18nExtend({
   setScannerSettings: 'Перед первым использованием сканера, необходимо его настроить. Настроить можно <a href="/" onclick="{0} return false;">тут</a>.',
   showResultConfig: 'Просмотр конфигурации',
   numberOfSignificantDigits: 'Количество значимых знаков превышает допустимое',
-  yearShort: 'р.',
+  yearShort: 'г.',
   PastTooLargeText: 'Вы выполняете вставку большого объема. Эта операция может занять много времени. Вы желаете продолжить?',
   gridOptimizeWidth: 'Автоподбор ширины',
   showDeveloperDetail: 'Детали для разработчика',

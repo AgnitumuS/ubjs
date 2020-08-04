@@ -52,7 +52,7 @@ UB.i18nExtend({
   messageSendTitle: 'Ирсоли паём',
   messageSentSuccessfully: 'Паём бо муваффақият фиристода шуд',
 
-  rep_clickSample: 'Пример реакции на клик',
+  rep_clickSample: 'Намунаи амал ба пахшкунӣ',
 
   // !!!  Do not change this last item.
   EOF: 'EOF'

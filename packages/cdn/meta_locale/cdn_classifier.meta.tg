@@ -1,22 +1,23 @@
 ﻿{
-  "caption": "Таснифкунандагон",
-  "description": "",
-  "attributes": [
-    {
-      "name": "code",
-      "caption": "Рамз"
-    },
-    {
-      "name": "name",
-      "caption": "Номгуй"
-    },
-    {
-      "name": "description",
-      "caption": "Тавсиф"
-    },
-    {
-      "name": "orderByAttr",
-      "caption": "Тартиби сабти таснифгар"
-    }
-  ]
+    "caption": "Таснифкунандагон",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "Рамз"
+        },
+        {
+            "name": "name",
+            "caption": "Номгӯй"
+        },
+        {
+            "name": "description",
+            "caption": "Тавсиф"
+        },
+        {
+            "name": "orderByAttr",
+            "caption": "Тартиби сабти таснифгар",
+            "description": "Тартиби навъҳои таснифоти гурӯҳҳо"
+        }
+    ]
 }

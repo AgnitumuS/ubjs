@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - Tajik locale translation
+ 
 ### Changed
 
 ### Deprecated

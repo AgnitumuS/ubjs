@@ -23,6 +23,14 @@
             "name": "displayOrder",
             "caption": "№ б/т",
             "description": "Тартиботи нишондиҳӣ"
+        },
+        {
+            "name": "description",
+            "caption": "Тавсифи мизи корӣ"
+        },
+        {
+            "name": "iconCls",
+            "caption": "Нишонаи мизи корӣ"
         }
     ]
 }

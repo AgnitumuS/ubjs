@@ -14,8 +14,8 @@
         },
         {
             "name": "name",
-            "caption": "Номгуи филтр",
-            "description": "Номгуи филтр"
+            "caption": "Номгӯи филтр",
+            "description": "Номгӯи филтр"
         },
         {
             "name": "isGlobal",

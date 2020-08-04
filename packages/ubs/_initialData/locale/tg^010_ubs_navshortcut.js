@@ -17,7 +17,7 @@ module.exports = function (session) {
       { keyValue: 'ubs_numcounterreserv', execParams: { caption: 'Рақамгузорӣ (захира)' } },
       { keyValue: 'ubs_softLock', execParams: { caption: 'Худбандӣ (SoftLocks)' } },
       { keyValue: 'ubs_report', execParams: { caption: 'Ҳисоботҳо' } },
-      { keyValue: 'ubs_globalCache', execParams: { caption: 'Серверный кэш' } },
+      { keyValue: 'ubs_globalCache', execParams: { caption: 'Кеши сервер' } },
       { keyValue: 'ubs_message', execParams: { caption: 'Паёмҳо' } }
     ]
   }
