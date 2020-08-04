@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `ub-icons` iconic font uses fixed character code for each icon, so adding new icons do not broke unicode codes for old icons.  
 
 ## [1.12.4] - 2020-08-03
 ### Added
