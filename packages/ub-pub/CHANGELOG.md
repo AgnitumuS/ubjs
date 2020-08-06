@@ -15,7 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+ - default login page top logo URL changed from `/models/ub-pub/img/ub-login-logo.png` to `models/ub-pub/img/login-logo.svg`.
+ For any app we recommend to change `uiSettings.loginWindowTopLogoURL` to a logo for your app and not to use default logo.
+ 
 ## [5.5.19] - 2020-08-03
 ### Changed
  - nodeJS usage example (in a README.md) rewritten using `async function`  
