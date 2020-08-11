@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - `cross-env` dependency removed
 
 ### Fixed
  - `UDropdown`: in case dropdown is placed into HTML attribute with  `position: sticky/absolute/fixed` then it it shown in full size (not cropped to the outer elements bounds as before)

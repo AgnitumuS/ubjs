@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
-
+ - `cross-env` dependency removed 
+ 
 ### Fixed
 
 ## [5.4.16] - 2020-08-03

@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "ubcli autotest -m UBS -skipModules",
-    "build": "cross-env-shell NODE_ENV=production \"cd ./public && webpack --mode production\"",
+    "build": "cd ./public && webpack --mode production",
     "build:watch": "cd ./public && webpack --progress --colors --watch",
     "prepare": "npm run build",
     "analyse-boundle": "cd ./public && webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
@@ -41,7 +41,6 @@
   "devDependencies": {
     "@unitybase/stubs": "^5.1.1",
     "@unitybase/update-changelog": "^1.0.4",
-    "cross-env": "^5",
     "exports-loader": "^0.7.0"
   },
   "keywords": [
