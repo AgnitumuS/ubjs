@@ -4,14 +4,14 @@ const UB = require('@unitybase/ub')
 const App = UB.App
 
 function runTest () {
-  let st = UB.DataStore('uba_user')
+  const st = UB.DataStore('uba_user')
   st.runSQL('select id from uba_user where name = :name:', { name: 'testelsuser' })
   assert.strictEqual(st.rowCount, 1, `single named param. Expect 1 row, got ${st.rowCount}`)
 
   st.runSQL(`select id from uba_user where name = :("${UBA.USERS.ADMIN.NAME}"): and name = :('${UBA.USERS.ADMIN.NAME}'): and id = :(${UBA.USERS.ADMIN.ID}):`, {})
   assert.strictEqual(st.rowCount, 1, `Simple inlined params. Expect 1 row, got ${st.rowCount}`)
 
-  let st2 = UB.DataStore('uba_user')
+  const st2 = UB.DataStore('uba_user')
   st2.runSQL('select id from uba_user where name = :name: or name = :name2:', { name: 'testelsuser', name2: 'admin' })
   assert.strictEqual(st2.rowCount, 2, `Two named parameters. Expect 2 row, got ${st2.rowCount}`)
   assert.notStrictEqual(st2.rowCount, st.rowCount, `Different object with the same prototype should have different prop vals but ${st.rowCount}=${st2.rowCount}`)
@@ -60,10 +60,9 @@ END;
     App.dbCommit()
     st.execSQL('insert into TMP_ID(id) values (?)', { a: [1, 2, 3] })
     st.runSQL('select * from TMP_ID', {})
-    assert.strictEqual(st.rowCount, 3, `Array binding for Oracle Insert - expect 3 rows to be inserted, got ${st.rowCount}`)
+    const data = JSON.stringify(st.getAsJsObject())
+    assert.strictEqual(st.rowCount, 3, `Array binding for Oracle Insert - expect 3 rows to be inserted, got ${st.rowCount}: ${data} `)
   }
-
-  return
 
   // below is fails
 
@@ -95,7 +94,7 @@ END;
 }
 
 (function () {
-  let res = { success: true }
+  const res = { success: true }
   try {
     runTest()
   } catch (e) {
