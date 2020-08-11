@@ -18,7 +18,7 @@
 	},
 	"logging": {
 		//"path": "./logs/autotest.log",
-		"path": "./logs",
+//		"path": "./logs",
 		//"levels": ["*"],
 		"levels": ["Info", "Debug", "Trace", "Warning", "Error", "Enter", "Leave", "LastError", "Exception", "ExceptionOS", "Memory", "StackTrace", "Fail", "SQL", "Cache", "Result", "DB", "HTTP", "Client", "Server", "ServiceCall", "ServiceReturn", "UserAuth", "Custom1", "Custom2", "Monitoring"],
 		"stackTrackDepth": 20,
