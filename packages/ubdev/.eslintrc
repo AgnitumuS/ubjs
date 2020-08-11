@@ -1,8 +1,0 @@
-{
-  "extends": ["standard"],
-  "globals": {
-    "UB": true,
-    "$App": true,
-    "Blob": true
-  }
-} 

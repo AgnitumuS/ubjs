@@ -1,11 +1,11 @@
 [Unit]
 Description=UnityBase Autotest App
 Documentation=https://unitybase.info
-RefuseManualStart=true
+#RefuseManualStart=true
 
 [Service]
 Restart=on-failure
-ExecStart=/home/pavelmash/dev/ub-server/bin/fpc-linux/ub -cfg /home/pavelmash/dev/ubjs/apps/autotest/ubConfig.json
+ExecStart=/usr/bin/ub -cfg `realpath /home/pavelmash/dev/ubjs/apps/autotest/ubConfig.json`
 # starting from systemd v244 is possible to configure log limits per service as below
 # befote - only inside journald.conf
 # LogRateLimitIntervalSec=1s

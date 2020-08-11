@@ -68,7 +68,8 @@
   "devDependencies": {
     "@unitybase/hmr": "^1.0.109",
     "@unitybase/stubs": "^5.1.1",
-    "@unitybase/ubcli": "^5.6.3"
+    "@unitybase/ubcli": "^5.6.3",
+    "@unitybase/ub-migrate": "^1.14.1"
   },
   "peerDependencies": {
     "testcafe": "^0.19.1"
