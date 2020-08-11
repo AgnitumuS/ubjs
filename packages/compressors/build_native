@@ -27,7 +27,9 @@ if [ -z "$LAZ_DIR" ]; then
   LAZ_DIR=/usr/share/lazarus/2.0.10
 fi
 
-fpc -MDelphi -Sci -Ci -O2 -g -gl -gw2 -Xg -k-Lbin/fpc-linux -Tlinux -Px86_64 \
+ARCH=x86_64
+TARGET=linux
+fpc -MDelphi -Sci -Ci -O2 -g -gl -gw2 -Xg -k-Lbin/fpc-linux -T$TARGET -P$ARCH \
   -veiq -vw-n-h- \
   -Fi.dcu/fpc-linux -Fi$UB_SRC/libs/Synopse -Fi$UB_SRC/libs/Synopse/SQLite3 -Fi$UB_SRC/libs/Synopse/SyNode -Fi$UB_SRC/libs/synapse40/source/lib \
   -Fl$UB_SRC/bin/fpc-linux \
@@ -37,7 +39,8 @@ fpc -MDelphi -Sci -Ci -O2 -g -gl -gw2 -Xg -k-Lbin/fpc-linux -Tlinux -Px86_64 \
   -dFPC_SYNCMEM \
   -B -Se1 ./src/ubcompressors.dpr
 
-fpc -MDelphi -Sci -Ci -O2 -k-Lbin/fpc-linux -Twin64 -Px86_64 \
+TARGET=win64
+fpc -MDelphi -Sci -Ci -O2 -k-Lbin/fpc-linux -T$TARGET -P$ARCH \
   -veiq -vw-n-h- \
   -Fi.dcu/fpc-win64 -Fi$UB_SRC/libs/Synopse -Fi$UB_SRC/libs/Synopse/SQLite3 -Fi$UB_SRC/libs/Synopse/SyNode -Fi$UB_SRC/libs/synapse40/source/lib \
   -Fu$UB_SRC/libs/Synopse -Fu$UB_SRC/libs/Synopse/SQLite3 -Fu$UB_SRC/libs/Synopse/SyNode \
