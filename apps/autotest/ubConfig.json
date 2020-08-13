@@ -8,7 +8,7 @@
 //			"securityZoneHeader": "X-Sec-Zone"
 //		},
 		"host": "+",
-		"port": "8881",
+		"port": "0",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
@@ -18,9 +18,9 @@
 	},
 	"logging": {
 		//"path": "./logs/autotest.log",
-//		"path": "./logs",
-		//"levels": ["*"],
-		"levels": ["Info", "Debug", "Trace", "Warning", "Error", "Enter", "Leave", "LastError", "Exception", "ExceptionOS", "Memory", "StackTrace", "Fail", "SQL", "Cache", "Result", "DB", "HTTP", "Client", "Server", "ServiceCall", "ServiceReturn", "UserAuth", "Custom1", "Custom2", "Monitoring"],
+		"path": "./logs",
+		"levels": ["*"],
+		//"levels": ["Info", "Debug", "Trace", "Warning", "Error", "Enter", "Leave", "LastError", "Exception", "ExceptionOS", "Memory", "StackTrace", "Fail", "SQL", "Cache", "Result", "DB", "HTTP", "Client", "Server", "ServiceCall", "ServiceReturn", "UserAuth", "Custom1", "Custom2", "Monitoring"],
 		"stackTrackDepth": 20,
 		//"rotationSizeInMB": 0,
 		"rotationSizeInMB": 200,
@@ -145,7 +145,8 @@
 				},*/
 				{
 					//"name": "TST",
-					"path": "./models/TST"
+					//"path": "./models/TST"
+					"path": "/opt/unitybase/data/TST"
 				},
 				{
 					"path": "./models/FB"

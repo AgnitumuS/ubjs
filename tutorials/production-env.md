@@ -4,18 +4,43 @@
 
 For a production deployment we recommend using Linux. Current targets what tested by UnityBase team are CentOS8 and Ubuntu 20.04.
 
-In case UnityBase server is installed using deb/rpm package then the following directory structure is created:
+Recommended folder structure:
 ```
 \opt
   \unitybase
-    \ub-server
+    \server                 # ub server (installed by rpm/deb) 
+    \products               # products (should be installed by app developer)
+        \docflow
+        \scriptum
+        \deals
+        \docflow-bpm
+        ...
+    \apps-available         # available applications (products what configured for certain customer)                   
+        dkc-lin.docflow-bpm.json
+        dkc-lin.docflow-bpm.env
+        crb.docflow.json
+        crb.docflow.env
+        inbase.deals.json
+        inbase.deals.env
+    \apps-enabled           # symlinks from apps-available
+        dkc-lin.docflow-bpm.json -> ../apps-available/dkc-lin.docflow-bpm.json
+        dkc-lin.docflow-bpm.env  -> ../apps-available/dkc-lin.docflow-bpm.env
+    \data                   # applications data
+        \dkc-lin.docflow-bpm
+            \db
+            \store
+            \models
+                \vendor
+                \cust
+         
+        
+    
+             
 
-\etc
- \unitybase
-   
 \usr\lib\systemd\system
   unitybase@.service        # UnityBase vendor unit. Do not edit it directly - see overriding topic below   
 ```
+where
 
 ## Starting application as a service
 
@@ -94,3 +119,7 @@ systemctl revert unit
 
 POSTINSTALL
 systemctl enable unitybase@.service
+
+RUN
+
+NODE_PATH=`pwd`/node_modules UB_CFG=/opt/unitybase/data/ubConfig.json ./tsql3.sh
