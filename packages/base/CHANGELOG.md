@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - support for `#ifdef..#endif` & `#ifndef..#endif` in ubConfig
 
 ### Changed
 

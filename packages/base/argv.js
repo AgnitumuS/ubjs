@@ -241,7 +241,41 @@ function checkServerStarted (URL) {
 }
 
 /**
- * Will replace placeholders %VAR_NAME% to environment variable value
+ * #ifdef / #ifndef directives parser:
+ *  - remove part of JSON content between `"#ifdef": "VAR_NAME", ... "#endif": ""` if environment variable VAR_NAME is not defined or empty
+ *  - remove part of JSON content between`"#ifndef": "VAR_NAME", ... "#endif": ""` if environment variable VAR_NAME is defined and not empty
+ *  - nested conditions IS NOT SUPPORTED
+ *  - content replaced by empty strings to keep the same line numbers as in original file
+ * @private
+ * @param {String} content
+ * @return {String}
+ */
+function replaceIfDefs (content) {
+  function getCRCnt (s) {
+    let r = 0
+    for (let i = 0, L = s.length; i < L; i++) {
+      if (s.charAt(i) === '\n') r++
+    }
+    return r
+  }
+  let res = content.replace(/"#ifdef": "(.*?)",([\s\S]*?)"#endif": "(.*?)"(,?)/gm, (match, envvar, envct) => {
+    if (process.env[envvar]) {
+      return envct
+    } else {
+      return '\n'.repeat(getCRCnt(envct))
+    }
+  })
+  res = res.replace(/"#ifndef": "(.*?)",([\s\S]*?)"#endif": "(.*?)"(,?)/gm, (match, envvar, envct) => {
+    if (!process.env[envvar]) {
+      return envct
+    } else {
+      return '\n'.repeat(getCRCnt(envct))
+    }
+  })
+  return res
+}
+/**
+ * Replace placeholders %VAR_NAME% to environment variable value
  * @private
  * @param {String} content
  * @return {String}
@@ -319,7 +353,7 @@ function getServerConfiguration (forFutureSave = false) {
   const cfgFileName = getConfigFileName()
   if (verboseMode) console.debug('Used config:', cfgFileName)
 
-  const result = safeParseJSONfile(cfgFileName, true, (content) => replaceIncludeVariables(replaceEnvironmentVariables(content)))
+  const result = safeParseJSONfile(cfgFileName, true, (content) => replaceIncludeVariables(replaceEnvironmentVariables(replaceIfDefs(content))))
   // add name attribute for applications
   if (!result.application) {
     result.application = {}

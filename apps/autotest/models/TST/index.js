@@ -4,6 +4,11 @@ UB.loadLegacyModules(__dirname)
 const mailer = require('@unitybase/mailer')
 if (!mailer.TubSendMailBodyType) throw new Error('mailer binary package is invalid')
 
+//line below tests UB sets NODE_PATh to configPath:configPath/node_modules
+const rootModule = require('scripts/rootModuleTest.js');
+rootModule.root()
+
+
 let shouldNotThrowOnSecondThreadInitialize = UB.Repository('uba_user').attrs('ID', 'name').select()
 // const Worker = require('@unitybase/base').Worker
 //
