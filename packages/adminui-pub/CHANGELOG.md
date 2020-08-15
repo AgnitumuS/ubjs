@@ -16,7 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `cross-env` dependency removed
 
 ### Fixed
-
+- typo in Ukrainian translation for key `doYouWantFillOtherAttr`, removed quotes for unnecessarily quoted properties
+ 
 ## [5.13.31] - 2020-08-03
 ## [5.13.30] - 2020-07-29
 ## [5.13.29] - 2020-07-28
