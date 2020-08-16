@@ -145,8 +145,8 @@
 				},*/
 				{
 					//"name": "TST",
-					//"path": "./models/TST"
-					"path": "/opt/unitybase/data/TST"
+					"path": "./models/TST"
+					//"path": "/opt/unitybase/data/TST"
 				},
 				{
 					"path": "./models/FB"
