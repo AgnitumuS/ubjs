@@ -8,7 +8,7 @@
 //			"securityZoneHeader": "X-Sec-Zone"
 //		},
 		"host": "+",
-		"port": "0",
+		"port": "8881",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",

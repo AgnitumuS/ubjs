@@ -242,8 +242,8 @@ function checkServerStarted (URL) {
 
 /**
  * #ifdef / #ifndef directives parser:
- *  - remove part of JSON content between `"#ifdef": "VAR_NAME", ... "#endif": ""` if environment variable VAR_NAME is not defined or empty
- *  - remove part of JSON content between`"#ifndef": "VAR_NAME", ... "#endif": ""` if environment variable VAR_NAME is defined and not empty
+ *  - keep a part of JSON content between `"#ifdef": "VAR_NAME", ... "#endif": ""` if environment variable VAR_NAME is defined and not empty
+ *  - keep a part of JSON content between`"#ifndef": "VAR_NAME", ... "#endif": ""` if environment variable VAR_NAME is not defined or empty
  *  - nested conditions IS NOT SUPPORTED
  *  - content replaced by empty strings to keep the same line numbers as in original file
  * @private
