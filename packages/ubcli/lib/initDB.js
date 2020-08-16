@@ -136,7 +136,7 @@ function initDB (cfg) {
   function createFakeConfig (config, originalConfigFileName, connectionName = '') {
     const newConfig = _.cloneDeep(config)
     let dbaConn
-    let defaultDB = _.find(config.application.connections, { isDefault: true }) || config.application.connections[0]
+    let defaultDB
 
     if (connectionName) {
       defaultDB = _.find(config.application.connections, { name: connectionName })

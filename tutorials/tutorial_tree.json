@@ -84,6 +84,9 @@
   "administration": {
     "title": "07 Administration",
     "children": {
+      "production_env": {
+        "title": "Manage production environment"
+      },
       "public_key_authentication_from_Windows_to_Linux": {
         "title": "SSH public key authentication"
       }
