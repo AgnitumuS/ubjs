@@ -5,4 +5,4 @@ Prerequirment
 
 Production version
 - `ub`
-- then should be available by url `http://localhost:8881/doca-adminui/index.html`
+- http://localhost:8881/doca-adminui/index.html

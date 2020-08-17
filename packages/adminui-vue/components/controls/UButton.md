@@ -32,8 +32,14 @@
     <u-button appearance="inverse" color="success">Inverse success</u-button>
     <u-button appearance="inverse" color="warning">Inverse warning</u-button>
     <u-button appearance="inverse" color="danger">Inverse danger</u-button>
-  
-    <h4>Icons</h4>
+  </div>
+</template>
+```
+
+### Icons
+```vue
+<template>
+  <div>
     <h5>Icon only:</h5>
     <u-button icon="u-icon-clock"/>
     <u-button appearance="plain" icon="u-icon-signature"/>
