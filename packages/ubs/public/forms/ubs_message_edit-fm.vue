@@ -1,137 +1,128 @@
 <template>
-  <u-form-container
-    v-loading="loading"
-    style="overflow:auto; height: 100%"
-  >
-    <el-row
-      :gutter="20"
-      style="width: 100%"
+  <div class="u-form-layout">
+    <u-form-container
+      v-loading="loading"
+      label-position="top"
     >
-      <el-col :lg="16">
-        <u-form-row
-          required
-          :label="$ut('messageType')"
-          :error="$v.messageType.$error && $ut('isRequiredFieldFmt', $ut('messageType'))"
-        >
-          <u-select-enum
-            v-model="messageType"
-            :e-group="$UB.connection.domain.entities.ubs_message.attributes.messageType.enumGroup"
-            @input="$v.messageType.$touch()"
-          />
-        </u-form-row>
-        <u-form-row
-          required
-          label="message"
-          :error="$v.messageBody.$error && $ut('isRequiredFieldFmt', $ut('message'))"
-        >
-          <el-input
-            v-model="messageBody"
-            type="textarea"
-            :rows="7"
-            resize="none"
-            @change="$v.messageBody.$touch()"
-          />
-        </u-form-row>
-        <u-form-row :label="$ut('byDateRange')">
-          <el-date-picker
-            v-model="dateRange"
-            type="datetimerange"
-            unlink-panels
-            range-separator="-"
-            :start-placeholder="$ut('startDate')"
-            :end-placeholder="$ut('endDate')"
-            :picker-options="pickerOptions"
-            :clearable="false"
-          />
-        </u-form-row>
-      </el-col>
-      <el-col :lg="8">
-        <u-form-row :label="$ut('addByRole')">
-          <el-row :gutter="10">
-            <el-col :span="16">
+      <u-grid template-columns="1fr 40%">
+        <div>
+          <u-form-row
+            required
+            :label="$ut('messageType')"
+            :error="$v.messageType.$error && $ut('isRequiredFieldFmt', $ut('messageType'))"
+          >
+            <u-select-enum
+              v-model="messageType"
+              :e-group="$UB.connection.domain.entities.ubs_message.attributes.messageType.enumGroup"
+              @input="$v.messageType.$touch()"
+            />
+          </u-form-row>
+          <u-form-row
+            required
+            :label="$ut('message')"
+            :error="$v.messageBody.$error && $ut('isRequiredFieldFmt', $ut('message'))"
+          >
+            <el-input
+              v-model="messageBody"
+              type="textarea"
+              :rows="7"
+              resize="none"
+              @change="$v.messageBody.$touch()"
+            />
+          </u-form-row>
+          <u-form-row :label="$ut('byDateRange')">
+            <el-date-picker
+              v-model="dateRange"
+              type="datetimerange"
+              unlink-panels
+              range-separator="-"
+              :start-placeholder="$ut('startDate')"
+              :end-placeholder="$ut('endDate')"
+              :picker-options="pickerOptions"
+              :clearable="false"
+            />
+          </u-form-row>
+        </div>
+        <u-form-row>
+          <u-form-row :label="$ut('addByRole')">
+            <u-grid>
               <u-select-entity
                 v-model="roleModel"
                 entity-name="uba_role"
               />
-            </el-col>
-            <el-col :span="8">
-              <el-button
-                style="width: 100%"
+              <u-button
+                color="success"
+                appearance="plain"
+                icon="u-icon-add"
                 @click="addByRole"
               >
                 {{ $ut('actionAdd') }}
-              </el-button>
-            </el-col>
-          </el-row>
-        </u-form-row>
-        <u-form-row :label="$ut('addUser')">
-          <el-row :gutter="10">
-            <el-col :span="16">
+              </u-button>
+            </u-grid>
+          </u-form-row>
+          <u-form-row :label="$ut('addUser')">
+            <u-grid>
               <u-select-entity
                 v-model="userModel"
                 entity-name="uba_user"
               />
-            </el-col>
-            <el-col :span="8">
-              <el-button
-                style="width: 100%"
+              <u-button
+                color="success"
+                appearance="plain"
+                icon="u-icon-add"
                 @click="addUser"
               >
                 {{ $ut('actionAdd') }}
-              </el-button>
-            </el-col>
-          </el-row>
-        </u-form-row>
-
-        <u-form-row :label="$ut('selectedUsers')" />
-        <div class="ub-notification__add__users-list">
-          <template v-if="selectedUsers.length">
+              </u-button>
+            </u-grid>
+          </u-form-row>
+          <u-form-row :label="$ut('selectedUsers')" />
+          <div class="ub-notification__add__users-list">
+            <template v-if="selectedUsers.length">
+              <div
+                v-for="user in selectedUsers"
+                :key="user.ID"
+                class="ub-notification__users-list__item"
+              >
+                {{ user.name }}
+                <u-button
+                  color="danger"
+                  appearance="plain"
+                  icon="u-icon-delete"
+                  size="small"
+                  style="margin-left: auto"
+                  @click="removeUser(user.ID)"
+                />
+              </div>
+            </template>
             <div
-              v-for="user in selectedUsers"
-              :key="user.ID"
-              class="ub-notification__users-list__item"
+              v-else
+              class="ub-empty-text"
             >
-              {{ user.name }}
-              <el-button
-                type="danger"
-                plain
-                icon="u-icon-delete"
-                size="mini"
-                style="margin-left: auto"
-                @click="removeUser(user.ID)"
-              />
+              {{ $ut('allUsers') }}
             </div>
-          </template>
-          <div
-            v-else
-            class="ub-empty-text"
-          >
-            {{ $ut('allUsers') }}
           </div>
-        </div>
-      </el-col>
-    </el-row>
-    <br>
-    <el-row
-      type="flex"
-      justify="end"
-    >
-      <el-button
-        type="primary"
-        size="big"
-        @click="save"
-      >
-        {{ $ut('send') }}
-      </el-button>
-    </el-row>
-  </u-form-container>
+          <div style="direction: rtl">
+            <u-button
+              color="primary"
+              right-icon="u-icon-send"
+              style="margin-top: 10px; width: 100%"
+              @click="save"
+            >
+              {{ $ut('send') }}
+            </u-button>
+          </div>
+        </u-form-row>
+      </u-grid>
+    </u-form-container>
+  </div>
 </template>
 
 <script>
 const required = require('vuelidate/lib/validators/required').default
 const { Form } = require('@unitybase/adminui-vue')
 
-module.exports.mount = function (cfg) {
+module.exports.mount = cfg => {
   Form(cfg).mount()
 }
 
@@ -157,7 +148,7 @@ module.exports.default = {
          * @param  {Date} time
          * @return {Boolean}
          */
-        disabledDate: (time) => {
+        disabledDate: time => {
           return this.$moment().isAfter(time, 'day')
         },
         shortcuts: [{
@@ -209,42 +200,43 @@ module.exports.default = {
      * cleans `userModel`
      */
     async addUser () {
-      this.loading = true
-      const user = await this.$UB.connection
-        .Repository('uba_user')
-        .attrs('ID', 'name')
-        .selectById(this.userModel)
-      const notExist = this.selectedUsers.findIndex(u => u.ID === user.ID) === -1
-      if (notExist) {
-        this.selectedUsers.push(user)
+      if (this.userModel) {
+        this.loading = true
+        const user = await this.$UB.connection.Repository('uba_user')
+          .attrs('ID', 'name')
+          .selectById(this.userModel)
+        const notExist = this.selectedUsers.findIndex(u => u.ID === user.ID) === -1
+        if (notExist) this.selectedUsers.push(user)
+        this.userModel = null
+        this.loading = false
       }
-      this.userModel = null
-      this.loading = false
     },
     /**
      * adds new users to the list only if it is not in the list.
      * cleans `roleModel`
      */
     async addByRole () {
-      this.loading = true
-      const users = await this.$UB.connection
-        .Repository('uba_userrole')
-        .attrs('ID', 'roleID', 'userID', 'userID.name')
-        .where('roleID', '=', this.roleModel)
-        .select()
+      if (this.roleModel) {
+        this.loading = true
+        const users = await this.$UB.connection
+          .Repository('uba_userrole')
+          .attrs('ID', 'roleID', 'userID', 'userID.name')
+          .where('roleID', '=', this.roleModel)
+          .select()
 
-      for (const user of users) {
-        const notExist = this.selectedUsers.findIndex(u => u.ID === user.userID) === -1
-        if (notExist) {
-          this.selectedUsers.push({
-            ID: user.userID,
-            name: user['userID.name']
-          })
+        for (const user of users) {
+          const notExist = this.selectedUsers.findIndex(u => u.ID === user.userID) === -1
+          if (notExist) {
+            this.selectedUsers.push({
+              ID: user.userID,
+              name: user['userID.name']
+            })
+          }
         }
-      }
 
-      this.roleModel = null
-      this.loading = false
+        this.roleModel = null
+        this.loading = false
+      }
     },
     /**
      * remove current user by ID
@@ -252,9 +244,7 @@ module.exports.default = {
      */
     removeUser (ID) {
       const index = this.selectedUsers.findIndex(u => u.ID === ID)
-      if (index !== -1) {
-        this.selectedUsers.splice(index, 1)
-      }
+      if (index !== -1) this.selectedUsers.splice(index, 1)
     },
     /**
      * show dialog before close form
@@ -301,9 +291,7 @@ module.exports.default = {
      * if dateRange is unset - will set range from today to start of next year
      */
     async insertMessage () {
-      if (this.dateRange === null) {
-        this.dateRange = [new Date(), new Date(new Date().getFullYear() + 1, 0)]
-      }
+      if (this.dateRange === null) this.dateRange = [new Date(), new Date(new Date().getFullYear() + 1, 0)]
       await this.$UB.connection.insert({
         entity: 'ubs_message_edit',
         fieldList: ['complete', 'messageType', 'startDate', 'expireDate', 'messageBody', 'ID', 'mi_modifyDate'],

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Tajik locale translation
 
 ### Changed
+- `ubs_message_edit-fm.vue`: refactored, fixed layouts and loading mask
 
 ### Deprecated
 
