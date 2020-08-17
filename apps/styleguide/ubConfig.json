@@ -1,0 +1,77 @@
+{
+  "httpServer": {
+    "externalURL": "http://localhost",
+    "host": "+",
+    "port": "8881",
+    "allowCORSFrom": "*",
+    "inetPub": "./public/"
+  },
+  "logging": {
+    "levels": ["*"]
+  },
+  "security": {
+    "authenticationMethods": ["UB"]
+  },
+  "uiSettings": {
+    "adminUI": {
+      "applicationName": {
+        "en": "Adminui components docs",
+        "ru": "Документация компонентов админки"
+      },
+      "applicationTitle": "AdminUI docs",
+      "defaultPasswordForDebugOnly": "admin",
+      "sidebarLogoURL": "/models/ub-pub/img/sidebar-logo.svg",
+      "sidebarLogoBigURL": "/models/ub-pub/img/sidebar-logo-big.svg",
+      "loginWindowTopLogoURL": "/models/ub-pub/img/login-logo.svg",
+      "registrationURL": "/models/adminui-vue/views/registration-stub.html",
+      "endpoint": "/",
+      "vueAutoForms": true,
+      "useVueTables": true
+    }
+  },
+  "application": {
+    "defaultLang": "en",
+    "schedulers": {"enabled": false},
+    "domain": {
+      "models": [
+        {"path": "./node_modules/@unitybase/ub"},
+        {"path": "./node_modules/@unitybase/uba"},
+        {"path": "./node_modules/@unitybase/ubm"},
+        {"path": "./node_modules/@unitybase/ubs"},
+        {"path": "./node_modules/@unitybase/cdn"},
+        {"path": "./node_modules/@unitybase/ub-pub"},
+        {"path": "./node_modules/@unitybase/adminui-pub"},
+        {"path": "./node_modules/@unitybase/adminui-reg"},
+        {"path": "./node_modules/@unitybase/adminui-vue"},
+        {"path": "./models/req"}
+      ],
+      "implicitlyAddedMixins": ["audit"]
+    },
+    "connections": [
+      {
+        "name": "main",
+        "driver": "SQLite3",
+        "dialect": "SQLite3",
+        "isDefault": true,
+        "databaseName": "./database/main.sqlite3",
+        "supportLang": ["en", "ru"],
+        "advSettings": "Synchronous=Off"
+      }
+    ],
+    "blobStores": [
+      {
+        "name": "mdb",
+        "storeType": "Virtual",
+        "tempPath": "./stores/default/_temp"
+      },
+      {
+        "name": "attachments",
+        "path": "./stores/attachments",
+        "tempPath": "./stores/attachments/_temp",
+        "historyDepth": 0,
+        "storeSize": "Simple",
+        "keepOriginalFileNames": false
+      }
+    ]
+  }
+}

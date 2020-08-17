@@ -33,8 +33,14 @@ function addClickOutsideListener (refs, hide) {
   const listener = {
     id,
     handler (e) {
-      const isTarget = refs.some(ref => ref && ref.contains(e.target))
+      const isTarget = refs.some(refOrComponent => {
+        if (refOrComponent === undefined) return
 
+        const ref = '$el' in refOrComponent
+          ? refOrComponent.$el
+          : refOrComponent
+        return ref.contains(e.target)
+      })
       if (!isTarget) {
         hide()
       }

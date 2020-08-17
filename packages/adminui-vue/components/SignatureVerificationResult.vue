@@ -36,6 +36,7 @@
             <td>
               <el-tooltip
                   v-for="action in actions"
+                  :key="action.tooltip"
                   :content="action.tooltip"
                   placement="right"
               >

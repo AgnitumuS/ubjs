@@ -1,6 +1,6 @@
 #Adminui Vue
 
-This model extend UnityBase adminUI by Vue + ElementUI libraries
+This model extends UnityBase adminUI by Vue + ElementUI libraries
 
 # What included
 ## JavaScript
@@ -88,9 +88,9 @@ In case you embed a compiled Vue app into adminUI:
 
 # Contribution
 ## Debugging
-### ElemetUI in debug mode 
- For better debugging experience we recommend to rebuild element-ui in development mode.
- Use `element-ui` brunch for version specified in `adminui-vue` package.json (2.5.4 in a moment of writing this manual)
+### ElementUI in debug mode 
+ For better debugging experience we recommend rebuilding element-ui in development mode.
+ Use `element-ui` brunch for a version specified in `adminui-vue` package.json (2.5.4 in a moment of writing this manual)
  
  ```bash
   git clone https://github.com/ElemeFE/element.git

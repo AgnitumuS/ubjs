@@ -65,9 +65,10 @@ magicLink.install()
 magicLink.addCommand('setFocus', magicLinkFocusCommand)
 
 if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
-
-const Vue = require('vue')
-window.Vue = Vue
+if (window.Vue === undefined) {
+  window.Vue = require('vue')
+}
+const Vue = window.Vue
 // next 2 lines for modules what use ES6 import `import Vue from 'vue' (not recommended for use)
 Vue.__useDefault = Vue
 Vue.default = Vue
