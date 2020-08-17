@@ -2,5 +2,5 @@ node_modules
 database
 logs
 stores
-public/styleguide
+public/docs-adminui
 !docs

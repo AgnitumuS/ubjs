@@ -82,7 +82,7 @@ module.exports = {
   renderRootJsx: path.join(__dirname, './eachRender'),
   webpackConfig: require('./webpack.config'),
 
-  styleguideDir: '../public/styleguide',
+  styleguideDir: '../public/docs-adminui',
 
   compilerConfig: {
     objectAssign: 'Object.assign',

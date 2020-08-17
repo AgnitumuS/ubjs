@@ -1,14 +1,14 @@
 {
-  "name": "styleguide",
-  "version": "0.0.1",
+  "name": "docs-adminui",
+  "version": "0.0.2",
   "description": "Adminui components docs",
-  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/styleguide",
+  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/docs-adminui",
   "private": true,
   "main": "ubApp.js",
   "scripts": {
-    "styleguide:dev": "vue-styleguidist --config ./build/styleguidist.config.js server",
-    "styleguide:build": "vue-styleguidist --config ./build/styleguidist.config.js build",
-    "dev": "gnome-terminal -x ub; npm run styleguide:dev"
+    "watch": "vue-styleguidist --config ./build/styleguidist.config.js server",
+    "build": "vue-styleguidist --config ./build/styleguidist.config.js build",
+    "dev": "gnome-terminal -x ub; npm run watch"
   },
   "dependencies": {
     "@unitybase/adminui-pub": "^5.13.27",
