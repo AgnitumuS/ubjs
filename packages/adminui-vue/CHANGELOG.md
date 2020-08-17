@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UNavbar` in case `window.outerHeight < 500px` then navbar visibility can be toggled on/off (new toggle button added)
 
 ### Deprecated
+- `styleguidist` package replaced as external application in `ubjs/styleguide`
 
 ### Removed
  - `cross-env` dependency removed
@@ -28,7 +29,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    For example: `Signature invalid (Неверный сертификат OSCP сервера)` 
 
 ### Fixed
- - ensure adminui-vue exports `magicLink` (SystemJS.set freeze object, so should be exported before call to SystemJS) 
+ - ensure adminui-vue exports `magicLink` (SystemJS.set freeze object, so should be exported before call to SystemJS)
+ - `Vue package` if exist `window.Vue` use it as package entry point else use `Vue` from `node_modules`
+ - `UTableEntity.pageSize` set default value `50` in case `storeDefaultPageSize` didn't present in `ubConfig.json` 
 
 ## [1.12.3] - 2020-07-29
 ### Fixed

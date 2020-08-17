@@ -1,0 +1,42 @@
+- $context:
+    type: req_Department
+- dep1:
+    name: Kiev
+    postAddr: Khreschatik street
+    phoneNum: '+380443338844'
+    items:
+    - dep2:
+        name: Electricity of Kiev
+        postAddr: Novokontsantinovkaya
+        phoneNum: '+380441117711'
+    - dep3:
+        name: Water utility of kiev
+        postAddr: Shevchenka
+        phoneNum: '+380442225522'
+
+- $context:
+    type: req_User
+- petr:
+    email: petr@main.com
+    phone: '+380449992299'
+    website: http://google.com
+- ivan:
+    email: ivan@main.com
+    phone: '+380448884488'
+    website: http://amazon.com
+
+- $context:
+    type: req_Request
+- petr:
+    reqDate: 2020-02-12
+    department: dep3
+    text: Отключили горячую воду, что делать?
+    answer: Перезагрузите роутер
+    duration: 10
+    cost: 12.53
+    notes: Клиент неадекватен
+- ivan:
+    reqDate: 2020-02-01
+    department: dep2
+    text: Кто ответственный за лопату?
+

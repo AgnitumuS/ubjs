@@ -136,7 +136,7 @@ export default {
   },
 
   mounted () {
-    System.import('jdenticon/dist/jdenticon.min.js').then(jdenticon => {
+    window.System.import('jdenticon/dist/jdenticon.min.js').then(jdenticon => {
       this.iconClass = ''
       this.svgIcon = jdenticon.toSvg(this.userName, 26)
     })

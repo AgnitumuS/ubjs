@@ -127,34 +127,3 @@ export default {
     border-color: hsl(var(--hs-border), var(--l-input-border-default));
   }
 </style>
-
-<docs>
-Component will automaticly check data type by attribute name in entitySchema
-
-### Basic usage
-
-```vue
-<template>
-  <u-input attribute-name="caption" />
-</template>
-```
-
-### When attribute type is number
-
-```vue
-<template>
-  <u-input attribute-name="currencyValue" />
-</template>
-```
-
-### Disabled
-
-```vue
-<template>
-  <u-input
-    attribute-name="caption"
-    disabled
-  />
-</template>
-```
-</docs>

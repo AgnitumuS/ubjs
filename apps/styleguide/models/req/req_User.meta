@@ -1,0 +1,37 @@
+{
+  "caption": "User",
+  "descriptionAttribute": "name",
+  "attributes": [
+    {
+      "name": "name",
+      "dataType": "String",
+      "size": 255,
+      "caption": "Name",
+      "allowNull": false
+    },
+    {
+      "name": "email",
+      "dataType": "String",
+      "size": 255,
+      "caption": "Email",
+      "allowNull": false
+    },
+    {
+      "name": "phone",
+      "dataType": "String",
+      "size": 255,
+      "caption": "Phone",
+      "allowNull": false
+    },
+    {
+      "name": "website",
+      "dataType": "String",
+      "size": 255,
+      "caption": "Website",
+      "allowNull": false
+    }
+  ],
+  "mixins": {
+    "mStorage": {}
+  }
+}

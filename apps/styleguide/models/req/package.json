@@ -1,0 +1,16 @@
+{
+  "name": "requests",
+  "version": "1.0.0",
+  "description": "",
+  "config": {
+    "ubmodel": {
+      "name": "req"
+    }
+  },
+  "main": "req.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -21,6 +21,7 @@
       v-if="$slots.default"
       class="u-button__label"
     >
+      <!-- @slot Use this slot for button content -->
       <slot />
     </span>
     <i
@@ -32,6 +33,13 @@
 </template>
 
 <script>
+/**
+ * Button with icon (left and right), multiple sizes, appearances and colors.
+ * Button with primary color should be used only once per view for main call-to-action.
+ *
+ * Accept handlers for all [HTML element events](https://developer.mozilla.org/en-US/docs/Web/API/Element#Events), for example
+ * `@click="onClick" @paste="onPaste"` etc.
+ */
 export default {
   name: 'UButton',
 
@@ -47,7 +55,7 @@ export default {
     rightIcon: String,
 
     /**
-     * Button size
+     * Size of the button
      */
     size: {
       type: String,
@@ -58,7 +66,7 @@ export default {
     },
 
     /**
-     * Button render appearance
+     * Appearance of the button
      */
     appearance: {
       type: String,
@@ -69,7 +77,7 @@ export default {
     },
 
     /**
-     * Button color
+     * Color of the button
      */
     color: {
       type: String,
@@ -216,92 +224,3 @@ export default {
     --hs: var(--hs-warning)
   }
 </style>
-
-<docs>
-### Color
-
-```vue
-<template>
-  <div>
-    <h1>Primary by default</h1>
-    <u-button>Default</u-button>
-
-    <h1>Colors</h1>
-    <u-button color="primary">Default</u-button>
-    <u-button color="control">Default</u-button>
-    <u-button color="success">Default</u-button>
-    <u-button color="warning">Default</u-button>
-    <u-button color="danger">Default</u-button>
-
-    <h1>Disabled</h1>
-    <u-button disabled color="primary">Default</u-button>
-    <u-button disabled color="control">Default</u-button>
-    <u-button disabled color="success">Default</u-button>
-    <u-button disabled color="warning">Default</u-button>
-    <u-button disabled color="danger">Default</u-button>
-  </div>
-</template>
-```
-
-### Appearance
-
-```vue
-<template>
-  <div>
-    <h1>Plain</h1>
-    <u-button appearance="plain" color="primary">Default</u-button>
-    <u-button appearance="plain" color="control">Default</u-button>
-    <u-button appearance="plain" color="success">Default</u-button>
-    <u-button appearance="plain" color="warning">Default</u-button>
-    <u-button appearance="plain" color="danger">Default</u-button>
-
-    <h1>Inverse</h1>
-    <u-button appearance="inverse" color="primary">Default</u-button>
-    <u-button appearance="inverse" color="control">Default</u-button>
-    <u-button appearance="inverse" color="success">Default</u-button>
-    <u-button appearance="inverse" color="warning">Default</u-button>
-    <u-button appearance="inverse" color="danger">Default</u-button>
-  </div>
-</template>
-```
-
-### With icon
-
-```vue
-<template>
-  <div>
-    <h1>Icon only</h1>
-    <u-button icon="u-icon-save"/>
-    <u-button appearance="plain" icon="u-icon-save"/>
-    <u-button appearance="inverse" icon="u-icon-save"/>
-
-    <h1>Icon left</h1>
-    <u-button icon="u-icon-save">Default</u-button>
-    <u-button appearance="plain" icon="u-icon-save">Default</u-button>
-    <u-button appearance="inverse" icon="u-icon-save">Default</u-button>
-
-    <h1>Icon right</h1>
-    <u-button right-icon="u-icon-save">Default</u-button>
-    <u-button appearance="plain" right-icon="u-icon-save">Default</u-button>
-    <u-button appearance="inverse" right-icon="u-icon-save">Default</u-button>
-
-    <h1>Icon left and right</h1>
-    <u-button icon="u-icon-save" right-icon="u-icon-arrow-right">Default</u-button>
-    <u-button appearance="plain" icon="u-icon-save" right-icon="u-icon-arrow-right">Default</u-button>
-    <u-button appearance="inverse" icon="u-icon-save" right-icon="u-icon-arrow-right">Default</u-button>
-  </div>
-</template>
-```
-
-### Size
-
-```vue
-<template>
-  <div>
-    <u-button icon="u-icon-save" size="small">Small</u-button>
-    <u-button icon="u-icon-save" size="medium">Medium</u-button>
-    <u-button icon="u-icon-save" size="large">Large</u-button>
-  </div>
-</template>
-```
-</docs>

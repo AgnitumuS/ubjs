@@ -43,39 +43,39 @@
 
 <script>
 /**
- * Input file with drag and drop
+ * Select file(s) from the file system by clicking or drag-and-drop
  */
 export default {
   name: 'UFileInput',
 
   props: {
     /**
-     * Allow to select multiple files. Like native attribute `multiple` in input[type=file]
+     * Whether uploading multiple files is permitted
      */
     multiple: Boolean,
     /**
-     * Dropzone in non-selected state placeholder
+     * Placeholder for dropzone when file(s) is not selected
      */
     placeholder: {
       type: String,
       default: 'fileInput.dropZone.caption'
     },
     /**
-     * Dropzone in selected state placeholder
+     * Placeholder for dropzone when file(s) are selected
      */
     selectedPlaceholder: {
       type: String,
       default: 'fileInput.dropZone.selectedFiles'
     },
     /**
-     * Sets disabled state
+     * Whether to disable input
      */
     disabled: Boolean,
     /**
      * File types the file input should accept. This string is a comma-separated list of unique file type specifiers.
-     * See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept
+     * See [Input element accept](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept)
      *
-     * Example: ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+     * Example: ".doc,.docx,application/msword"
      */
     accept: {
       type: String,
@@ -83,13 +83,16 @@ export default {
     },
 
     /**
-     * Show border
+     * Whether to show border
      */
     border: {
       type: Boolean,
       default: true
     },
 
+    /**
+     * Selected files
+     */
     value: {
       type: Array,
       default: () => []
@@ -128,6 +131,11 @@ export default {
       const { valid, invalid } = this.validateFiles(files)
 
       if (valid.length) {
+        /**
+         * Triggers when file(s) selected for valid (match `accept` rule) files
+         *
+         * @param {Array<File>} valid
+         */
         this.$emit('input', valid)
       }
 
@@ -217,58 +225,3 @@ export default {
     cursor: not-allowed;
   }
 </style>
-
-<docs>
-  When multiple is false will be emits upload just with one file.
-
-  ```vue
-  <template>
-    <div>
-      <el-button @click="disabled = !disabled">Toggle "disabled"</el-button>
-      <el-button @click="multiple = !multiple">Toggle "multiple"</el-button>
-      <pre>
-        disabled: {{disabled}}
-        multiple: {{multiple}}
-      </pre>
-      <u-file-input
-          :disabled="disabled"
-          :multiple="multiple"
-          @input="upload"
-      />
-      Accept only PDF and txt and bind to model selectedFiles property:
-      <u-file-input
-          :disabled="disabled"
-          :multiple="multiple"
-          placeholder="Select file for import"
-          selected-placeholder="Will import"
-          accept=".pdf,.txt"
-          v-model="selectedFiles"
-      />
-      <u-button @click="doImport" :disabled="!selectedFiles.length">Import</u-button>
-      <div>
-        {{selectedFiles.length}} files selected
-      </div>
-    </div>
-  </template>
-  <script>
-    export default {
-      data () {
-        return {
-          disabled: false,
-          multiple: true,
-          selectedFiles: []
-        }
-      },
-      methods: {
-        upload (files) {
-          console.log(files)
-        },
-        doImport () {
-          const fileNames = selectedFiles.map(f => f.name).join(', ')
-          this.$dialogYesNo(`Import ${fileNames} into database?`)
-        }
-      }
-    }
-  </script>
-  ```
-</docs>
