@@ -75,16 +75,16 @@ During startup service sets following variables:
 | Variable name | Value and explanation                                                             |
 |---------------|-----------------------------------------------------------------------------------|
 | UB_APP        | Part after @ in the service name (autotest for `systemctl start unitybase@autotest`)  |
-| UB_APP_FOLDER | `/opt/unitybase/apps` Developer can set this var to app git folder for debugging  |
+| UB_APP_FOLDER | `/opt/unitybase/apps/$UB_APP` Developer can set this var to app git folder for debugging  |
 | UB_VMODEL     | `vmodel` developer can set this to customer model path for debugging              |                                                                           |
 | UB_CMODEL     | `cmodel` developer can set this to customer model path for debugging              | 
 
-Additional variables can be added for application by placing it in the `$UB_APP_FOLDER/$UB_APP/ubConfig.env`.
+Additional variables can be added for application by placing it in the `$UB_APP_FOLDER/ubConfig.env`.
 This file used as `env` file for service.
     
 Product template should add 2 additional model path to the `ubConfigProductName-tpl.json` models list:
- - `{"path": "%UB_APP_FOLDER%/%UB_APP%/models/%UB_VMODEL%"}` - a product extension for a specific customer made by application "vendor"      
- - `{"path": "%UB_APP_FOLDER%/%UB_APP%/models/%UB_CMODEL%"}` - a product extension for a specific customer made by customer
+ - `{"path": "%UB_APP_FOLDER%/models/%UB_VMODEL%"}` - a product extension for a specific customer made by application "vendor"      
+ - `{"path": "%UB_APP_FOLDER%/models/%UB_CMODEL%"}` - a product extension for a specific customer made by customer
 
 > Starting from UB@5.18.12 server sets a NODE_PATH variable to the real path of application config, so all modules in the
 `product/node_modules` folder are available in the `vmodel` using `require('moduleName')`.
@@ -109,7 +109,7 @@ UB_CFG=ubConfigDocFlow-oracle-tpl.json UB_APP_FOLDER=`pwd` UB_VMODEL=crb ub -cd 
 ### Application
 
 In terms of UnityBase application is a product what configured for a certain customer.
-Applications are placed in the `/opt/unitybase/apps/appName` folders.
+Applications are placed in the sub-folders of `/opt/unitybase/apps` folder. Name of the sub-folder is a $UB_APP 
 
 #### Application folder structure
 Each application folder should contain the follow:

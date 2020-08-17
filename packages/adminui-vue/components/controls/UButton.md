@@ -36,7 +36,7 @@
 </template>
 ```
 
-### Icons
+### Icons & sizes
 ```vue
 <template>
   <div>
