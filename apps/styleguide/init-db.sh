@@ -1,52 +1,49 @@
 #!/bin/bash
 
-err() {
-  echo Process $PROCESS failed
+err_report() {
+  >&2 echo "Error on line $1 for $PROCESS"
   exit 1
 }
+# On error
+trap 'err_report $LINENO' ERR
 
 PROCESS='Drop database'
-rm -rf database || err
+rm -rf database
 
 PROCESS='Drop stores'
-rm -rf stores || err
+rm -rf stores
 
 PROCESS='Drop logs'
-rm -rf logs || err
+rm -rf logs
 
 PROCESS='Create logs folder'
-mkdir logs || err
+mkdir logs
 PROCESS='Create database folder'
-mkdir database || err
+mkdir database
 PROCESS='Create stores folder'
-mkdir stores || err
-mkdir stores/default || err
-mkdir stores/default/_temp || err
+mkdir -p stores/default/_temp
 
 PROCESS='Init database'
-# Check whether UB_CFG set and contains a value, not spaces
-if [ -z ${UB_CFG+x} ] || [ -z "${UB_CFG// }" ]; then
+if [ -z "$UB_CFG" ]; then
   UB_CFG=ubConfig.json
 fi
-# Check whether UB_DBA set and contains a value, not spaces
-if [ -z ${UB_DBA+x} ] || [ -z "${UB_DBA// }" ]; then
+if [ -z "$UB_DBA" ]; then
   UB_DBA=sa
 fi
-# Check whether UB_DBAPWD set and contains a value, not spaces
-if [ -z ${UB_DBAPWD+x} ] || [ -z "${UB_DBAPWD// }" ]; then
+if [ -z "$UB_DBAPWD" ]; then
   UB_DBAPWD=sa
 fi
 
-npx ubcli createStore -cfg $UB_CFG -noLogo || err
+npx ubcli createStore -cfg $UB_CFG -noLogo
 
-PASSWORD_FOR_ADMIN=admin
-npx ubcli initDB -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -p $PASSWORD_FOR_ADMIN -drop -create || err
+PASSWORD_FOR_ADMIN='admin'
+npx ubcli initDB -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -p $PASSWORD_FOR_ADMIN -drop -create
 
 PROCESS='Generate DDL'
-npx ubcli generateDDL -cfg $UB_CFG -autorun -out ./database || err
+npx ubcli generateDDL -cfg $UB_CFG -autorun -out ./database
 
 PROCESS='Initialize'
-npx ubcli initialize -cfg $UB_CFG -u root -p root || err
+npx ubcli initialize -cfg $UB_CFG -u root -p root
 
 PROCESS='Fill demo data'
 npx ub-migrate -u admin -p admin
