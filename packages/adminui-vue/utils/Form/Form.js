@@ -39,6 +39,7 @@ class UForm {
    * @param {string} cfg.entity Entity name for master record
    * @param {number} [cfg.instanceID] Instance ID
    * @param {boolean} [cfg.isModal=false] If true form will be displayed inside modal dialog. Otherwise - in tab (default)
+   * @param {boolean} [cfg.openInBackgroundTab=false] If `true` - the tab with a newly opened form does not become active
    * @param {string} [cfg.modalClass] Modal class
    * @param {string} [cfg.modalWidth] Modal width
    * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar and for correct tabID generation
@@ -59,7 +60,8 @@ class UForm {
     formCode,
     tabId,
     target,
-    isCopy
+    isCopy,
+    openInBackgroundTab
   }) {
     this.component = component || rootComponent
     this.props = props
@@ -83,6 +85,7 @@ class UForm {
     this.target = target
     this.tabId = tabId
     this.isModal = isModal
+    this.openInBackgroundTab = openInBackgroundTab
     this.modalClass = modalClass
     this.modalWidth = modalWidth
 
@@ -271,6 +274,7 @@ class UForm {
         validator: this.validator,
         title: this.title,
         tabId: this.tabId,
+        openInBackgroundTab: this.openInBackgroundTab,
         provide: {
           formCode: this.formCode,
           entity: this.entity,

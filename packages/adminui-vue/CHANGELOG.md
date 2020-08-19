@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - Tajik locale translation
+ - `Form/mount`: added param `openInBackgroundTab` to `mountTab`. If `true` - the tab with a newly opened form does not become active.
+   Default is `false` and new tab is activated.
  
 ### Changed
  - `UNavbar`: tabs now displayed insoide scroll box and prepended by "All tabs" button for tab management

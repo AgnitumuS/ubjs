@@ -149,6 +149,7 @@ function mountModal ({
  * @param {string} cfg.title Title
  * @param {string} cfg.tabId navbar tab ID
  * @param {object} cfg.provide Regular object which provide all props what passed in it
+ * @param {boolean} [cfg.openInBackgroundTab=false] If `true` - the tab with a newly opened form does not become active.
  */
 function mountTab ({
   component,
@@ -157,7 +158,8 @@ function mountTab ({
   validator,
   title: titleText,
   tabId,
-  provide
+  provide,
+  openInBackgroundTab
 }) {
   const tab = $App.viewport.centralPanel.add({
     title: titleText,
@@ -243,7 +245,9 @@ function mountTab ({
 
     return false
   })
-  $App.viewport.centralPanel.setActiveTab(tab)
+  if (!openInBackgroundTab) {
+    $App.viewport.centralPanel.setActiveTab(tab)
+  }
 }
 
 /**
