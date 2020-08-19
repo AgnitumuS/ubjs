@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.16] - 2020-08-19
 ## [5.2.15] - 2020-08-19
 ### Added
  - support for `#ifdef..#endif` & `#ifndef..#endif` in ubConfig

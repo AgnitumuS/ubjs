@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/openid-connect",
-  "version": "5.1.25",
+  "version": "5.1.26",
   "description": "OpenID Connect authentication for UnityBase",
   "keywords": [
     "UB",
@@ -23,8 +23,8 @@
     "version": "update-changelog && git add CHANGELOG.md"
   },
   "dependencies": {
-    "@unitybase/base": "^5.2.15",
-    "@unitybase/ub": "^5.5.12",
+    "@unitybase/base": "^5.2.16",
+    "@unitybase/ub": "^5.5.13",
     "btoa": "^1.1.2"
   },
   "devDependencies": {

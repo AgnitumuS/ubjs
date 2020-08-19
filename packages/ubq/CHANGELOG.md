@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.27] - 2020-08-19
 ## [5.3.26] - 2020-08-19
 ### Added
  - Tajik locale translation

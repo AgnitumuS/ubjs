@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.13] - 2020-08-19
 ## [5.5.12] - 2020-08-19
 ### Removed
  - nodeJS compatibility test suite is moved from `@unitybase/ub` to `apps/autotest/models/TST`.
