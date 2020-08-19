@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "@unitybase/base": "^5.2.14",
-    "@unitybase/compressors": "^5.1.33",
     "@unitybase/cs-shared": "^5.5.1",
     "@unitybase/ub": "^5.5.11",
     "lodash": "^4",
