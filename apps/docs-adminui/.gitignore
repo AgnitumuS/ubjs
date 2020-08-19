@@ -1,7 +1,5 @@
-node_modules
-database
+localdb
 logs
+node_modules
 stores
 public/docs-adminui
-!docs
-!package*
