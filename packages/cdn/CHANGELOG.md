@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Tajik locale translation
+
 ### Changed
 
 ### Deprecated
@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.28] - 2020-08-19
+### Added
+ - Tajik locale translation
 ## [5.4.27] - 2020-08-03
 ### Added
  - `cdn_orgaccount`: added complex unique index on `(code, currencyID, bankID)`

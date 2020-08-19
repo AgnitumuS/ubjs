@@ -12,10 +12,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
- - nodeJS compatibility test suite is moved from `@unitybase/ub` to `apps/autotest/models/TST`.
- This reduced the `@unitybase/ub` module size by 900Kb.
 
 ### Fixed
+
+## [5.5.12] - 2020-08-19
+### Removed
+ - nodeJS compatibility test suite is moved from `@unitybase/ub` to `apps/autotest/models/TST`.
+ This reduced the `@unitybase/ub` module size by 900Kb.
 
 ## [5.5.11] - 2020-07-28
 ### Fixed

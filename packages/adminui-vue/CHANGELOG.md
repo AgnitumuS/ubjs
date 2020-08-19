@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.12.5] - 2020-08-19
+### Added
  - Tajik locale translation
  - `Form/mount`: added param `openInBackgroundTab` to `mountTab`. If `true` - the tab with a newly opened form does not become active.
    Default is `false` and new tab is activated.

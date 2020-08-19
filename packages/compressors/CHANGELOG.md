@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.1.34] - 2020-08-19
 ## [5.1.33] - 2020-07-26
 ### Changed
  - building of native code depend on LCL

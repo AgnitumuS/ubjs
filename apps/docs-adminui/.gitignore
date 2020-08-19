@@ -4,3 +4,4 @@ logs
 stores
 public/docs-adminui
 !docs
+!package*

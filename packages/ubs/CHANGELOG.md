@@ -6,18 +6,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.4.17] - 2020-08-19
+### Added
  - Tajik locale translation
 
 ### Changed
 - `ubs_message_edit-fm.vue`: refactored, fixed layouts and loading mask
 
-### Deprecated
-
 ### Removed
  - `cross-env` dependency removed 
  
-### Fixed
-
 ## [5.4.16] - 2020-08-03
 ## [5.4.15] - 2020-07-29
 ## [5.4.14] - 2020-07-28

@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Tajik locale translation
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.3.28] - 2020-08-19
+### Added
+ - Tajik locale translation
 
 ## [5.3.27] - 2020-08-03
 ## [5.3.26] - 2020-07-29

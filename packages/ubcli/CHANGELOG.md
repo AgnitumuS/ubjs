@@ -10,12 +10,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Deprecated
- - `ubcli prepareGZIP` command is removed (obsolete). For a production environment `generateNgingCfg & linkStatic`
-  should be used instead.
 
 ### Removed
 
 ### Fixed
+
+## [5.6.4] - 2020-08-19
+### Deprecated
+ - `ubcli prepareGZIP` command is removed (obsolete). For a production environment `generateNgingCfg & linkStatic`
+  should be used instead.
 
 ## [5.6.3] - 2020-07-28
 ## [5.6.2] - 2020-07-26

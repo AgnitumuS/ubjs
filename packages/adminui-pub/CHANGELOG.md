@@ -6,12 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Tajik locale translation
- 
+
 ### Changed
 
 ### Deprecated
 
+### Removed
+
+### Fixed
+
+## [5.13.32] - 2020-08-19
+### Added
+ - Tajik locale translation
+ 
 ### Removed
  - `cross-env` dependency removed
 

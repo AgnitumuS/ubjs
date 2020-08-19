@@ -6,8 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Tajik locale translation
- 
+
 ### Changed
 
 ### Deprecated
@@ -16,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.0.138] - 2020-08-19
+### Added
+ - Tajik locale translation
+ 
 ## [5.0.137] - 2020-07-28
 ### Added
  - added new attributes `objectID` and `objectEntity` into `udisk_card` for further integration with the `Scriptum` system

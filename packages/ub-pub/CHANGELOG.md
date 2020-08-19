@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Tajik locale translation
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.5.20] - 2020-08-19
+### Added
+ - Tajik locale translation
 
 ### Fixed
  - default login page top logo URL changed from `/models/ub-pub/img/ub-login-logo.png` to `models/ub-pub/img/login-logo.svg`.
