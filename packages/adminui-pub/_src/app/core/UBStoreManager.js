@@ -52,7 +52,7 @@ Ext.define('UB.core.UBStoreManager', {
    */
   updateNavshortcutCacheForItem: function (cmd, force = true) {
     const parsedCmdCode = Ext.JSON.decode(cmd.cmdCode)
-    parsedCmdCode.title = cmd.caption
+    if (!parsedCmdCode.title) parsedCmdCode.title = cmd.caption
     parsedCmdCode.shortcutCode = cmd.code
     if (UB.core.UBStoreManager.shortcutCommandCache[cmd.ID] || force) {
       UB.core.UBStoreManager.shortcutCommandCache[cmd.ID] = parsedCmdCode

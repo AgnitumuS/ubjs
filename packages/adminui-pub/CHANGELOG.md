@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - in case `title` property is defined in nav shortcut JSON - use if, otherwise - use a `ubm_navshortcut.caption` for title.
+ Before this fix `ubm_navshortcut.caption` always overrides title.     
 
 ## [5.13.33] - 2020-08-19
 ## [5.13.32] - 2020-08-19
