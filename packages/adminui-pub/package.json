@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-pub",
-  "version": "5.13.33",
+  "version": "5.13.34",
   "description": "UnityBase admin UI",
   "main": "adminui.js",
   "browser": {
