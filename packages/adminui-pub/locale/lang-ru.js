@@ -416,6 +416,7 @@ UB.i18nExtend({
 
   close: 'Закрыть',
   closeOther: 'Закрыть другие вкладки',
+  closeInactive: 'Закрыть неактивные',
   closeAll: 'Закрыть все',
   elementIsNotActual: 'Элемент не актуален на текущую дату.',
 

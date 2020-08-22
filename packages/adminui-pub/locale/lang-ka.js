@@ -410,6 +410,7 @@ UB.i18nExtend({
 
   close: 'დახურვა',
   closeOther: 'სხვა ჩანართების დახურვა',
+  closeInactive: 'უმოქმედო დახურვა',
   closeAll: 'ყველაფრის დახურვა',
   dropZoneOneFileRequired: 'ამ ოპერაციისთვის საჭიროა ერთი ფაილი',
   dropZoneReplace: 'ჩანაცვლება',

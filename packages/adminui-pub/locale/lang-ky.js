@@ -427,6 +427,7 @@ UB.i18nExtend({
 
   close: 'Закрыть',
   closeOther: 'Закрыть другие вкладки',
+  closeInactive: 'Закрыть неактивные',
   closeAll: 'Закрыть все',
 
   dropZoneOneFileRequired: 'Для этой операции можно использовать только один файл',

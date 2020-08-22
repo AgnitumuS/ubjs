@@ -415,6 +415,7 @@ UB.i18nExtend({
 
   close: 'Пӯшед',
   closeOther: 'Ҳама чизро пӯшед гайр аз ин',
+  closeInactive: 'Close inactive',
   closeAll: 'Ҳамаашро пӯшед',
   elementIsNotActual: 'Унсур дар санаи ҷорӣ муҳим нест.',
 

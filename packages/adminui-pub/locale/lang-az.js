@@ -432,6 +432,7 @@ UB.i18nExtend({
 
   close: 'Bağla',
   closeOther: 'Bundan başqa hər şeyi bağla',
+  closeInactive: 'Qeyri-aktiv bağlayın',
   closeAll: 'Hər şeyi bağla',
 
   selectedElements: 'Seçilmiş elementlər',

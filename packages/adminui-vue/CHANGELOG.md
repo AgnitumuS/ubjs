@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+  - `UNavbar`: `Close all` and `Close inactive` actions added to tabs menu (as in tab popup)
 
 ### Changed
 
@@ -14,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- `UNavbar`: all tabs now closed by clicking on dropdown menu button `Close all` 
+ - `UNavbar`: all tabs now closed by clicking on dropdown menu button `Close all` 
 
 ## [1.12.6] - 2020-08-19
 ## [1.12.5] - 2020-08-19

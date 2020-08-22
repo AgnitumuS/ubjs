@@ -408,6 +408,7 @@ UB.i18nExtend({
 
   close: 'Close',
   closeOther: 'Close all but this',
+  closeInactive: 'Close inactive',
   closeAll: 'Close all',
   dropZoneOneFileRequired: 'One file required for this operation',
   dropZoneReplace: 'Replace',

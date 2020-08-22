@@ -40,6 +40,18 @@
             />
           </template>
         </u-dropdown-item>
+
+        <u-dropdown-item divider/>
+
+        <u-dropdown-item
+          label="closeAll"
+          @click="closeAll"
+        />
+        <u-dropdown-item
+          v-if="tabs.length>1"
+          label="closeInactive"
+          @click="closeOther(activeTabId)"
+        />
       </template>
     </u-dropdown>
 
@@ -74,7 +86,7 @@
       <template slot="dropdown">
         <u-dropdown-item
           label="closeOther"
-          @click="closeOther"
+          @click="closeOther(contextMenuTabId)"
         />
         <u-dropdown-item
           label="closeAll"
@@ -175,8 +187,8 @@ export default {
       }
     },
 
-    closeOther () {
-      const other = this.tabs.filter(tab => tab.id !== this.contextMenuTabId)
+    closeOther (exceptId) {
+      const other = this.tabs.filter(tab => tab.id !== exceptId)
       this.handleClose(other)
     },
     closeAll () {
