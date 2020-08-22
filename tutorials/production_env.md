@@ -183,6 +183,25 @@ Restart journald to apply new changes
 systemctl force-reload systemd-journald
 ```
 
+### Logging performance
+ Logs are written using UDP sockets. UDP/IP receive buffer default should be increased for better performance.
+ 
+ Check the current UDP/IP receive buffer default and limit by typing the following commands:
+```shell script 
+ sysctl net.core.rmem_max
+ sysctl net.core.rmem_default
+``` 
+ If the values are less than 26214400 bytes (25MB), you should add the following lines to the /etc/sysctl.conf file:
+```shell script 
+ net.core.rmem_max=26214400
+ net.core.rmem_default=26214400
+``` 
+ Changes to /etc/sysctl.conf do not take effect until reboot. To update the values immediately, type the following commands as root:
+```shell script 
+ sysctl -w net.core.rmem_max=26214400
+ sysctl -w net.core.rmem_default=26214400
+```
+
 ### Use logs
 
 ```shell script
