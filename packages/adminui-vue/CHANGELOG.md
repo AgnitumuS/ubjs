@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UNavbar`: all tabs now closed by clicking on dropdown menu button `Close all` 
 
 ## [1.12.6] - 2020-08-19
 ## [1.12.5] - 2020-08-19
