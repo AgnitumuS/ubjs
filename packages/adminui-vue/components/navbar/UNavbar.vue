@@ -180,7 +180,7 @@ export default {
       this.handleClose(other)
     },
     closeAll () {
-      this.handleClose(this.tabs)
+      this.handleClose([...this.tabs])
     },
     close () {
       this.handleClose([{ id: this.contextMenuTabId }])
