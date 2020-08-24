@@ -2,9 +2,11 @@
   "httpServer": {
     "externalURL": "http://localhost",
     "host": "+",
-    "port": "8881",
-    "allowCORSFrom": "*",
-    "inetPub": "./public/"
+    "port": "%UB_PORT%",
+    //#ifdef(%UB_ALLOW_CORS_FROM%)
+    "allowCORSFrom": "%UB_ALLOW_CORS_FROM%",
+    //#endif
+    "inetPub": "%UB_APPDATA%inetpub"
   },
   "logging": {
     "levels": ["*"]
@@ -19,13 +21,14 @@
         "ru": "Документация компонентов админки"
       },
       "applicationTitle": "AdminUI docs",
+      //#ifdef(%UB_DEV%)
       "defaultPasswordForDebugOnly": "admin",
+      //#endif
       "sidebarLogoURL": "/models/ub-pub/img/sidebar-logo.svg",
       "sidebarLogoBigURL": "/models/ub-pub/img/sidebar-logo-big.svg",
       "loginWindowTopLogoURL": "/models/ub-pub/img/login-logo.svg",
       "registrationURL": "/models/adminui-vue/views/registration-stub.html",
       "endpoint": "/",
-      "vueAutoForms": true,
       "useVueTables": true
     }
   },
@@ -43,9 +46,8 @@
         {"path": "./node_modules/@unitybase/adminui-pub"},
         {"path": "./node_modules/@unitybase/adminui-reg"},
         {"path": "./node_modules/@unitybase/adminui-vue"},
-        {"path": "./models/req"}
-      ],
-      "implicitlyAddedMixins": ["audit"]
+        {"path": "%UB_APPDATA%models/req"}
+      ]
     },
     "connections": [
       {
@@ -53,7 +55,7 @@
         "driver": "SQLite3",
         "dialect": "SQLite3",
         "isDefault": true,
-        "databaseName": "./database/main.sqlite3",
+        "databaseName": "%UB_APPDATA%localdb/main.sqlite3",
         "supportLang": ["en", "ru"],
         "advSettings": "Synchronous=Off"
       }
@@ -62,12 +64,12 @@
       {
         "name": "mdb",
         "storeType": "Virtual",
-        "tempPath": "./stores/default/_temp"
+        "tempPath": "%UB_APPDATA%stores/default/_temp"
       },
       {
         "name": "attachments",
-        "path": "./stores/attachments",
-        "tempPath": "./stores/attachments/_temp",
+        "path": "%UB_APPDATA%stores/attachments",
+        "tempPath": "%UB_APPDATA%stores/attachments/_temp",
         "historyDepth": 0,
         "storeSize": "Simple",
         "keepOriginalFileNames": false

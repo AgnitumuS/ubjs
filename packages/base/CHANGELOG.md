@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - support for `//#ifdef(%VAR_NAME%)..//#endif` & `//#ifndef(%VAR_NAME%)..//#endif`
+  & `//#ifdef(%VAR_NAME%=someValue)` in ubConfig
+ - support for `vendorModels` and `customerModels` in `ubConfig.application.domain`
+ - [trailing commas](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Trailing_commas) now supported
+    in config and meta files (actually trailing commas are replaced by ' ' in removeCommentsFromJSON function), so JSONs like
+   ```
+   {
+     "someArray": [
+        "val",
+        // "val2"
+     ],
+   }
+   ```
+   now VALID (trailing comma after last array element and after last object property).
+   It's very conveniently in config files, for example to comment a last array element etc.
 
 ### Changed
 

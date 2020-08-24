@@ -7,21 +7,26 @@ err_report() {
 # On error
 trap 'err_report $LINENO' ERR
 
+set -o allexport
+source ./ubConfig-dev.env
+set +o allexport
+
 PROCESS='Drop database'
-rm -rf database
+rm -rf $UB_APPDATA/localdb/*.sqlite3
 
 PROCESS='Drop stores'
-rm -rf stores
+rm -rf $UB_APPDATA/stores
 
 PROCESS='Drop logs'
-rm -rf logs
+rm -f $UB_APPDATA/logs/*
 
 PROCESS='Create logs folder'
-mkdir logs
+mkdir -p $UB_APPDATA/logs
 PROCESS='Create database folder'
-mkdir database
+mkdir -p $UB_APPDATA/localdb
 PROCESS='Create stores folder'
-mkdir -p stores/default/_temp
+mkdir -p $UB_APPDATA/stores/default/_temp
+
 
 PROCESS='Init database'
 if [ -z "$UB_CFG" ]; then
@@ -36,14 +41,14 @@ fi
 
 npx ubcli createStore -cfg $UB_CFG -noLogo
 
-PASSWORD_FOR_ADMIN='admin'
-npx ubcli initDB -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -p $PASSWORD_FOR_ADMIN -drop -create
+UB_PWD=admin
+npx ubcli initDB -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -p $UB_PWD -drop -create
 
 PROCESS='Generate DDL'
-npx ubcli generateDDL -cfg $UB_CFG -autorun -out ./database
+npx ubcli generateDDL -cfg $UB_CFG -autorun -out $UB_APPDATA/localdb
 
 PROCESS='Initialize'
-npx ubcli initialize -cfg $UB_CFG -u root -p root
+npx ubcli initialize -cfg $UB_CFG -u root
 
 PROCESS='Fill demo data'
-npx ub-migrate -u admin -p admin
+npx ub-migrate -u admin -p $UB_PWD

@@ -8,7 +8,8 @@
   "scripts": {
     "watch": "vue-styleguidist --config ./build/styleguidist.config.js server",
     "build": "vue-styleguidist --config ./build/styleguidist.config.js build",
-    "dev": "gnome-terminal -x ub; npm run watch"
+    "ubapp": "set -o allexport;. ./ubConfig-dev.env; set +o allexport; ub",
+    "dev": "gnome-terminal -x npm run ubapp; npm run watch"
   },
   "dependencies": {
     "@unitybase/adminui-pub": "^5.13.34",

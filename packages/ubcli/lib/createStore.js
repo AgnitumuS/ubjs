@@ -67,23 +67,25 @@ module.exports = function createStore (options) {
     if (!cStore.storeType) {
       cStore.storeType = 'FileSystem'
     }
-    if (!cStore.path) {
+    if (cStore.path) {
+      let cStorePath = cStore.path // already converted to absolute by argv
+      if (!RE_TRAILING_PATH_SEP.test(cStorePath)) {
+        cStorePath += path.sep
+      }
+      console.log('\tresolved to path', cStorePath)
+      if (!fs.existsSync(cStorePath)) {
+        console.log('\tresolved path not exists. Do force directory')
+        fs.mkdirSync(cStorePath)
+      }
+    } else {
       console.log('\tskipped - path not defined')
-      return
     }
-    let cStorePath = cStore.path // already converted to absolute by argv
-    if (!RE_TRAILING_PATH_SEP.test(cStorePath)) {
-      cStorePath += path.sep
-    }
-    console.log('\tresolved to path', cStorePath)
-    if (!fs.existsSync(cStorePath)) {
-      console.log('\tresolved path not exists. Do force directory')
-      fs.mkdirSync(cStorePath)
-    }
-    const tmp = cStore.tempPath // already converted to absolute by argv
-    if (!fs.existsSync(tmp)) {
-      console.log('\t Create temp directory %s', tmp)
-      fs.mkdirSync(tmp)
+    if (cStore.tempPath) {
+      const tmp = cStore.tempPath // already converted to absolute by argv
+      if (!fs.existsSync(tmp)) {
+        console.log('\t Create temp directory %s', tmp)
+        fs.mkdirSync(tmp)
+      }
     }
     console.log('Done!')
   }

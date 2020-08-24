@@ -6,10 +6,6 @@
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
 		"inetPub": "./inetPub/",
-		"watchFileChanges": {
-			"enabled": true,
-			"hashingStrategy": "ModifyDate"
-		},
 		"threadPoolSize": 2
 	},
 	"logging": {

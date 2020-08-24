@@ -10,16 +10,30 @@ if [%UB_RP_CONFIG%]==[] (
   SET UB_RP_CONFIG=./rp-config-disable.json
 )
 
-if exist .\_autotestResults*.json del .\_autotestResults*.json
-if exist .\last_result.log del .\last_result.log
+if [%UB_APP%]==[] (
+  SET UB_APP=autotest
+)
+
+if [%UB_APPDATA%]==[] (
+  SET UB_APPDATA=.\
+)
+
+SET PLATFORM=win
+
+if exist %UB_APPDATA%_autotestResults*.json del %UB_APPDATA%_autotestResults*.json
+if exist %UB_APPDATA%last_result.log del %UB_APPDATA%last_result.log
 
 SET TESTCASE=hello
 ub -e "console.log('Start autotest')"
 @if errorlevel 1 goto err
 
+SET TESTCASE='Check config'
+ub -T > NUL
+@if errorlevel 1 goto err
+
 @REM delete all sqlute3 db and wals
 SET TESTCASE=drop database
-del *.sqlite3*
+del %UB_APPDATA%localdb\*.sqlite3*
 
 SET TESTCASE=init database
 if [%UB_CFG%]==[] (

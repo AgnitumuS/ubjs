@@ -3,35 +3,30 @@
 		"externalURL": "http://localhost",
 		//"externalURL": "http://pavelmash-u18",
 		//"serverType": "Socket", // for testing purpose socket based server can be enabled on Windows
-//		"reverseProxy": {
-//			"kind": "nginx",
-//			"securityZoneHeader": "X-Sec-Zone"
-//		},
+		//#ifdef(%UB_USE_NGINX%)
+		"reverseProxy": {
+			"kind": "nginx",
+			"securityZoneHeader": "X-Sec-Zone"
+		},
+		//#endif
 		"host": "+",
 		"port": "8881",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
-		"inetPub": "./inetPub/",
+		"inetPub": "%UB_APPDATA%inetPub/",
 		"threadPoolSize": 4,
 		"autoShutdownTimeoutSec": 0
 	},
 	"logging": {
-		//"path": "./logs/autotest.log",
-		"path": "./logs",
+		//"path": "%UB_APPDATA%logs/autotest.log",
+		"path": "%UB_APPDATA%logs",
 		"levels": ["*"],
 		//"levels": ["Info", "Debug", "Trace", "Warning", "Error", "Enter", "Leave", "LastError", "Exception", "ExceptionOS", "Memory", "StackTrace", "Fail", "SQL", "Cache", "Result", "DB", "HTTP", "Client", "Server", "ServiceCall", "ServiceReturn", "UserAuth", "Custom1", "Custom2", "Monitoring"],
 		"stackTrackDepth": 20,
 		//"rotationSizeInMB": 0,
 		"rotationSizeInMB": 200,
 		"performanceCounters": false
-	},
-	"javascript": {
-		"timeout": -1,
-		"lifetimeInMinutes": 1000,
-		"fullGCPeriod": 100,
-		"maxPerEngineMemory": 512,
-		"maxRecursionDepth": 32
 	},
 	"security": {
 		"zones": [
@@ -42,31 +37,50 @@
 			/*,{
 				"name": "ukraine",
 				// country-specific subnet masks can be downloaded from https://www.ip2location.com/free/visitor-blocker (use CIDR format)
-				"includes": "#include(./zones_ukraine.json)"
+				"includes": "# include(./zones_ukraine.json)"
 			}*/
 		],
-//		// EE only
-//		"zonesAuthenticationMethods": [
-//			{
-//				"name": "intr",
-//				"authenticationMethods": ["UB", "Negotiate"]
-//			},
-//			{
-//				"name": "extr",
-//				"authenticationMethods": ["UB", "OpenIDConnect"]
-//			}
-//		],
-		"authenticationMethods": [
-			"UB", "Negotiate", "UBLDAP"
+		//#ifdef(%UB_USE_ZONES%)
+		// EE only
+		"zonesAuthenticationMethods": [
+			{
+				"name": "intr",
+				"authenticationMethods": ["UB", "Negotiate"]
+			},
+			{
+				"name": "extr",
+				"authenticationMethods": ["UB", "OpenIDConnect"]
+			}
 		],
+		//#endif
+		"authenticationMethods": [
+			"UB", "Negotiate", "UBLDAP",
+			//#ifdef(%UB_USE_CERT2%)
+			"CERT2"
+			//#endif
+		],
+		//#ifdef(%UB_USE_DSTU%)
+		"simpleCertAuth": true,
+		"dstu": {
+			"findCertificateBySerial": true,
+			"iit": {
+				"libraryPath": "./node_modules/@ub-d/iit-libbin/bin/x86_64_nix",
+				"librarySettings": "./.key",
+				"keyPath": "./.key/Key-6.dat",
+				"password": "%KEY_PWD%"
+			}
+		},
+		//#endif
+		//#ifdef(%UB_LDAPURL%)
 		"ldapCatalogs": [{
 			"name": "SOFTLINE",
 			//"URL":  "ldaps://psi01.softline.main:636/OU=Softline,DC=softline,DC=main?cn?sub?(sAMAccountName=%)",
 			//"URL":  "ldaps://psi01.softline.main:636/OU=Softline,DC=softline,DC=main?(sAMAccountName=%)",
-			"URL":  "ldaps://psi01.softline.main:636/%@softline.main",
+			"URL":  "%UB_LDAPURL%", //ldaps://psi01.softline.main:636/%@softline.main
 			"CAPath": "",
 			"ignoreSSLCertificateErrors": true
 		}]
+		//#endif
 	},
 	"uiSettings": {
 		"adminUI": {
@@ -77,19 +91,22 @@
 			"sidebarLogoURL": "/models/ub-pub/img/sidebar-logo.svg",
 			"sidebarLogoBigURL": "/models/ub-pub/img/sidebar-logo-big.svg",
 			"loginWindowTopLogoURL": "/models/ub-pub/img/login-logo.svg",
+			//#ifdef(%UB_USE_DSTU%)
 			"encryptionImplementation": "/clientRequire/@ub-d/iit-sign-web/dist/iit-sign-web.min.js",
+			//#endif
 			"registrationURL": "/models/adminui-vue/views/registration-stub.html",
 			"endpoint": "ubadminui",
-			"vueAutoForms": true,
 			"useVueTables": true,
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30
 			},
 			"linter": { "asi": true, "sub": true },
+			//#ifdef(%UB_USE_ONLYOFFICE%)
 			"onlyOffice": {
 				"serverIP": "10.8.17.6:32771"
 			}
+			//#endif
 		},
 		"portalUI": {
 			"applicationName": "UBCore usage"
@@ -137,72 +154,122 @@
 				{
 					"path": "./node_modules/@unitybase/adminui-vue"
 				},
-				/*{
+				//#ifdef(%UB_USE_UDISK%)
+				{
 					"path": "./node_modules/@unitybase/udisk"
-				},*/
-				/*{
-					"path": "./node_modules/@ub-e/ocr"
-				},*/
-				{
-					//"name": "TST",
-					"path": "./models/TST"
-					//"path": "/opt/unitybase/data/TST"
 				},
+				//#endif
+				//#ifdef(%UB_USE_OCR%)
 				{
-					"path": "./models/FB"
-				}
+					"path": "./node_modules/@ub-e/ocr"
+				},
+				//#endif
 			],
-			"implicitlyAddedMixins": [
-				"audit"
-			]
+			"vendorModels": "TST"
 		},
+		//#ifndef(%UB_NOFTS%)
 		"fts": {
 			"enabled": true,
 			"async": false
 		},
+		//#endif
 		"connections": [
+			//#ifdef(%UB_DB_DRIVER%=Oracle)
+			{
+				"name": "main",
+				"driver": "Oracle",
+				"isDefault": true,
+				"dialect": "Oracle11",
+				"serverName": "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = ora12.unitybase.info)(PORT = 15211)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = oraub.cloud.local)))",
+				"userID": "UB5_%UB_APP%_%PLATFORM%",
+				"password": "UB5_%UB_APP%_%PLATFORM%",
+				"supportLang": ["en", "uk"],
+				"executeWhenConnected": ["ALTER SESSION SET NLS_COMP=LINGUISTIC", "ALTER SESSION SET NLS_SORT=BINARY_CI"]
+			},
+			//#endif
+			//#ifdef(%UB_DB_DRIVER%=PostgreSQL)
+			{
+				"name": "main",
+				"driver": "PostgreSQL",
+				"isDefault": true,
+				"dialect": "PostgreSQL",
+				"serverName": "postgresql://pg10.unitybase.info:5402",
+				"databaseName": "ub5_%UB_APP%_%PLATFORM%",
+				"userID": "ub5_%UB_APP%_%PLATFORM%",
+				"password": "ub5_%UB_APP%_%PLATFORM%",
+				"supportLang": ["en", "uk"],
+				"advSettings": "LibLocation=%UB_POSTGRE_LIB%" //linux - can be empty or libpq.so.5; Windows = path to libpq.dll, for example D:/PostgreClient/10/x64/bin/libpq.dll
+			},
+			//#endif
+			//#ifdef(%UB_DB_DRIVER%=MSSQLODBC)
+			{
+				"name": "main",
+				"driver": "MSSQLODBC",
+				"isDefault": true,
+				"dialect": "MSSQL2012",
+				"serverName": "ub5_autotest_mssql", // this is an entry in ~/.obdc.ini file
+				"databaseName": "ub5_%UB_APP%_%PLATFORM%",
+				"userID": "ub5_%UB_APP%_%PLATFORM%",
+				"password": "ub5_%UB_APP%_%PLATFORM%",
+				"supportLang": ["en", "uk"]
+			},
+			//#endif
+			//#ifdef(%UB_DB_DRIVER%=MSSQL2012OleDB)
+			{
+				"name": "main",
+				"driver": "MSSQL2012OleDB",
+				"isDefault": true,
+				"dialect": "MSSQL2012",
+				"serverName": "ms16.unitybase.info,1405",
+				"databaseName": "ub5_%UB_APP%_%PLATFORM%",
+				"userID": "ub5_%UB_APP%_%PLATFORM%",
+				"password": "ub5_%UB_APP%_%PLATFORM%",
+				"supportLang": ["en", "uk"]
+			},
+			//#endif
+			//#ifndef(%UB_DB_DRIVER%)
 			{
 				"name": "main",
 				"driver": "SQLite3",
 				"isDefault": true,
 				"dialect": "SQLite3",
-				"databaseName": "./autotestDB.sqlite3",
+				"databaseName": "%UB_APPDATA%localdb/%UB_APP%DB.sqlite3",
 				"supportLang": ["en", "uk"],
 				"advSettings": "Synchronous=Off"
 			},
+			//#endif
+			//#ifndef(%UB_NOFTS%)
 			{
 				"name": "ftsDefault",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": "./autotestFTS.sqlite3",
+				"databaseName": "%UB_APPDATA%localdb/%UB_APP%FTS.sqlite3",
 				"supportLang": [
 					"en", "uk"
 				],
-				//"advSettings": "Synchronous=Off"
 				"advSettings": "Synchronous=Off,Tokenizer=stemka"
 			},
 			{
 				"name": "ftsSubjectSearch",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": "./autotestSubjectsFTS.sqlite3",
+				"databaseName": "%UB_APPDATA%localdb/%UB_APP%SubjectsFTS.sqlite3",
 				"supportLang": [
 					"en", "uk"
 				],
-				//"advSettings": "Synchronous=Off"
 				"advSettings": "Synchronous=Off,Tokenizer=stemka"
 			}
+			//#endif
 		],
 		"blobStores": [
 			{
 				"name": "mdb",
 				"storeType": "Virtual",
-				"tempPath": "./_temp"
+				"tempPath": "%UB_APPDATA%stores/_temp"
 			},
 			{
 				"name": "simple",
-				"path": "./documents/simple",
-				"tempPath": "./documents/simple/_temp",
+				"path": "%UB_APPDATA%stores/documents/simple",
 				"isDefault": true,
 				"historyDepth": 2,
 				"storeSize": "Daily",
@@ -210,24 +277,29 @@
 			},
 			{
 				"name": "avatars",
-				"path": "./documents/avatars",
-				"tempPath": "./documents/avatars/_temp",
+				"path": "%UB_APPDATA%stores/documents/avatars",
 				"historyDepth": 0,
 				"storeSize": "Simple",
 				"keepOriginalFileNames": false
 			}
 		],
 		"customSettings": {
+			/*"cryptoService": {
+			   "trustedCACertificatesPath": "./trustedCerts",
+			  "tspServers": ["http://acsk.privatbank.ua/services/tsp/", "http://ca.informjust.ua/services/tsp/"],
+			  "cmpServers": ["http://acsk.privatbank.ua/services/cmp","http://uakey.com.ua/services/cmp", "http://ca.informjust.ua/services/cmp/", "http://ca.mvs.gov.ua/services/cmp", "http://ca.ksystems.com.ua/services/cmp", "http://acskidd.gov.ua/services/cmp/"],
+
+			  //"tspServers": ["http://ca.informjust.ua/services/tsp/"],
+			  //"cmpServers": ["http://acskidd.gov.ua/services/cmp/","http://ca.informjust.ua/services/cmp/"],
+			  //"cmpServers": ["http://uakey.com.ua/services/cmp/","http://ca.informjust.ua/services/cmp/","http://acskidd.gov.ua/services/cmp/"],
+			  "useIITCMP": true
+			},*/
+			//#ifdef(%UB_USE_OCR%)
 			"OCR": {
 			  "dataPath": "C:\\dev\\TTesseractOCR4\\bin\\tessdata",
 			  "languages": "ukr+eng"
 			},
-			"docuSign": {
-				"userName":"",
-				"password":"",
-				"integratorKey":"",
-				"apiUrl":"https://demo.docusign.net/restapi"
-			},
+			//#endif
 			"mailerConfig": {
 				"targetHost": "mail.softline.main",
 				"targetPort": "25",
