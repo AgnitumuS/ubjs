@@ -363,7 +363,6 @@ function getServerConfiguration (forFutureSave = false) {
   const result = safeParseJSONfile(cfgFileName, true,
     (content) => replaceIncludeVariables(replaceIfDefs(replaceEnvironmentVariables(content)))
   )
-  fs.writeFileSync('/tmp/cfgTest.json', JSON.stringify(result, null, ' '))
   // add name attribute for applications
   if (!result.application) {
     result.application = {}
