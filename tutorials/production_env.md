@@ -6,7 +6,8 @@
 ```
 /opt
   /unitybase
-    /server                 # ub server (installed by rpm/deb. ub symlinked to `/usr/bin/ub`) 
+    /server                 # ub server (installed by rpm/deb. ub symlinked to `/usr/bin/ub`)
+        ub                  # executable 
     /products               # products (should be installed by app developer)
         /docflow
             ubConfigDocflow-tpl.json
@@ -16,24 +17,26 @@
         /deals
         /docflow-bpm
         ...
-    /apps                  # available applications (products what configured for certain customer)
-        /crb.docflow
+    /apps                  # available applications (either products what configured for certain customer or stand-alone app)
+        /crb.docflow        # product based application
             /localdb        # local database files (SQLite3, SQL Server localdb etc.)  
             /inetpub        # content of this folder available using `/statics` endpoint
             /stores         # application BLOB stores
+            /logs           # local logs (for develepnemt purpose; production logs are written to journald)
             /models         # customer models  
                 /vmodel     # vendor model (customer-specific addition for product developed by product owner) 
                     crb.js  
                 /cmodel     # customer model (customer-specific addition for product developed by customer)
-            ubConfig.json   # application config - symlynk to a product config `../../prodicts/docflow@2.1.4/ubConfigDocflow-tpl.json`
+            ubConfig.json   # application config - for products - symlynk to a product config `../../prodicts/docflow@2.1.4/ubConfigDocflow-tpl.json`
             ubConfig.env    # Environment variables for application instance                   
-       /dkc.docflow-bpm
+       /docs-adminui        # stand-alone application (not based on any product)
             /localdb
             /inetpub
             /stores
-            /vmodel
-            /cmodel
-            ubConfig.json -> `../../prodicts/docflow-bpm/ubConfigDocflowBpm-tpl.json`
+            /models
+                /req        # application specific model
+            /node_modules   # application modules. For products this folder is placed in /products/productName
+            ubConfig.json   # for stand-alone app not a symlynk but file
             ubConfig.env
         
 
@@ -65,51 +68,100 @@ In terms of UnityBase `product` is a set of models and customizations what can b
 The product examples is: `DocFlow`, `Scriptum`, `df-bpm` etc.
 
 Products installed in the `/opt/unitybase/products/productname` folder as a superuser (root).
-Product folder write permission allowed only for `root`, other user and read it content.
+Product folder write permission allowed only for `root`, other user can read it content.
  
 Product owner should create an application config template `ubConfigProductName-tpl.json` what uses environment
-variables for its variable parts. For a multi-database products recommended template naming convention is
-`ubConfinProduct-database-tpl.josn`, for example:`ubConfigDocFlow-oracle-tpl.json`.
+variables for its variable parts. For a multi-database products we recommended wraping a database sectins to `#ifdef` as such:
+```
+"connections": [
+    //#ifdef(%UB_DB_DRIVER%=Oracle)
+    { oracle config },
+    //#endif
+	//#ifdef(%UB_DB_DRIVER%=PostgreSQL)
+    { Postgres config },
+    //#endif
+]
+```
+See `apps/autotest/ubConfig.json` in [ubjs project git repository](https://git-pub.intecracy.com/unitybase/ubjs).  
+
 During startup service sets following variables:
 
 | Variable name | Value and explanation                                                             |
 |---------------|-----------------------------------------------------------------------------------|
 | UB_APP        | Part after @ in the service name (autotest for `systemctl start unitybase@autotest`)  |
-| UB_APP_FOLDER | `/opt/unitybase/apps/$UB_APP` Developer can set this var to app git folder for debugging  |
-| UB_VMODEL     | `vmodel` developer can set this to customer model path for debugging              |                                                                           |
-| UB_CMODEL     | `cmodel` developer can set this to customer model path for debugging              | 
+| UB_APPDATA    | `/opt/unitybase/apps/$UB_APP/` Note a trailing '/' - this allows to use path relative to `cwd` for development (when UB_APPDATA is not defined) |
 
-Additional variables can be added for application by placing it in the `$UB_APP_FOLDER/ubConfig.env`.
+Additional variables can be added for application by placing it in the `%UB_APPDATA%ubConfig.env`.
 This file used as `env` file for service.
     
-Product template should add 2 additional model path to the `ubConfigProductName-tpl.json` models list:
- - `{"path": "%UB_APP_FOLDER%/models/%UB_VMODEL%"}` - a product extension for a specific customer made by application "vendor"      
- - `{"path": "%UB_APP_FOLDER%/models/%UB_CMODEL%"}` - a product extension for a specific customer made by customer
+Product template should contain placeholders for `application.domain.vendorModels` and `application.domain.customerModels`:
+```
+"application": {
+  "domain": {
+    "models": [....],
+    "vendorModels": "%UB_VMODELS%",
+    "customerModels": "%UB_CMODELS%"     
+  }
+}  
+```
+This allows application to add a customer-specific behaviors to a product.
 
+ 
 > Starting from UB@5.18.12 server sets a NODE_PATH variable to the real path of application config, so all modules in the
 `product/node_modules` folder are available in the `vmodel` using `require('moduleName')`.
-  
+   
 See application structure below for a list of folders for application data.
 
 #### Tip for products developers
-During development customers models and test data usually placed in the same git repository as a product files:
+During development customers specific models and test data usually placed in the same git repository as a product files:
 ```
  \docflow
    \models
      \customer1
      \crb
+     \crb_bpm
    \stores
-   ubConfigDocFlow-oracle-tpl.json     
+   ubConfigDocFlow-oracle-tpl.json
+     (config contains `"vendorModels": "%UB_VMODELS%"`)         
 ```
-To start an application in debug mode for a certain customer (crb) using product template run ub as:
+To start an application in debug mode for a certain customer (crb) using product template
+and Oracle as a database run ub as:
 ```shell script
-UB_CFG=ubConfigDocFlow-oracle-tpl.json UB_APP_FOLDER=`pwd` UB_VMODEL=crb ub -cd -dev
+UB_DB_DRIVER=Oracle UB_CFG='ubConfigDocFlow-tpl.json' UB_VMODELS='crb:crb_bpm' ub -cd -dev
 ```   
 
+All variables can be exported from env file using
+```shell script
+set -o allexport; . ubConfig-dev.env; set +o allexport
+```
+
+We also recommend exporting an `UB_ENV` variable and put it to the `PROMPT_COMMAND` inside `.bashrc` to
+see a current environment (put a `\e[0;35m\$UB_ENV\e[m` in your .bashrc PROMPT_COMMAND=). For example:
+```shell script
+PROMPT_COMMAND="__git_ps1 '\e[0;34m\$UB_ENV\e[m \w' '\\$ '"
+```  
+ 
 ### Application
 
-In terms of UnityBase application is a product what configured for a certain customer.
-Applications are placed in the sub-folders of `/opt/unitybase/apps` folder. Name of the sub-folder is a $UB_APP 
+In terms of UnityBase application is either a product what configured for a certain customer, or a
+"stand-alone" app - an application what not based on any product and used in single environment only.
+
+Product based application examples are:
+ - DocFlow for Customer#1: application based on DocFlow product with customizations for Customer#1
+ - Scriptum for Customer#2: application based on `Scriptum` product with customizations for Customer#2
+
+Stand-alone application examples are:
+ - docs-adminui: AdminUI documentation project. Not based on a product since used on the unitybase.info website only 
+ - autotest: an autotest application for UnityBase
+    
+Both type of applications are placed in the sub-folders of `/opt/unitybase/apps` folder. Name of the sub-folder is a $UB_APP.
+
+Main part of product-based applications (including `node_modules` and config template) are placed in the /products sub-folder
+and application data (vendorModels, customerModel, localdb, stores and .env file) - in the /apps sub-folder.
+Config is symlinked from products into apps.
+
+Stand-alone application can place all its part into /apps.
+   
 
 #### Application folder structure
 Each application folder should contain the follow:
@@ -125,9 +177,9 @@ Each application folder should contain the follow:
       ...    
     /stores         # application BLOB stores
     /models         # customer models  
-      /vmodel       # vendor model (customer-specific addition for product developed by product owner) 
+      /crb          # vendor model (customer-specific addition for product developed by product owner) 
         package.json  
-      /cmodel       # customer model (customer-specific addition for product developed by customer)
+      /crbc         # customer model (customer-specific addition for product developed by customer)
     ubConfig.json   # application config - symlynk to a product config `../../products/docflow@2.1.4/ubConfigDocflow-tpl.json`
     ubConfig.env    # Environment variables for application instance  
 ```

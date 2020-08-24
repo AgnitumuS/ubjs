@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `ubcli createStore` creates a `tempPath` even in case path is empty (for example for mdb store) 
 
 ## [5.6.5] - 2020-08-19
 ## [5.6.4] - 2020-08-19

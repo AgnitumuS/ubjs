@@ -225,25 +225,9 @@ establishConnectionFromCmdLineAttributes._cmdLineParams = [
 ]
 
 /**
- * Perform check somebody listen on URL
- * @param {String} URL
- * @return {boolean}
- */
-function checkServerStarted (URL) {
-  const http = require('http')
-  if (verboseMode) console.info('Check server is running...')
-  try {
-    const resp = http.get({ URL: URL + '/getAppInfo', connectTimeout: 1000, receiveTimeout: 1000, sendTimeout: 1000 }) // dummy
-    if (verboseMode) console.info('STATUS', resp.statusCode)
-    return resp.statusCode === 200
-  } catch (e) {}
-  return false
-}
-
-/**
  * #ifdef / #ifndef directives parser:
- *  - keep a part of JSON content between `"#ifdef": "VAR_NAME", ... "#endif": ""` if environment variable VAR_NAME is defined and not empty
- *  - keep a part of JSON content between`"#ifndef": "VAR_NAME", ... "#endif": ""` if environment variable VAR_NAME is not defined or empty
+ *  - keep a part of JSON content between `"#ifdef": "%VAR_NAME%", ... "#endif": ""` if environment variable VAR_NAME is defined and not empty
+ *  - keep a part of JSON content between`"#ifndef": "%VAR_NAME%", ... "#endif": ""` if environment variable VAR_NAME is not defined or empty
  *  - nested conditions IS NOT SUPPORTED
  *  - content replaced by empty strings to keep the same line numbers as in original file
  * @private
@@ -258,21 +242,45 @@ function replaceIfDefs (content) {
     }
     return r
   }
-  let res = content.replace(/"#ifdef": "(.*?)",([\s\S]*?)"#endif": "(.*?)"(,?)/gm, (match, envvar, envct) => {
-    if (process.env[envvar]) {
-      return envct
-    } else {
-      return '\n'.repeat(getCRCnt(envct))
+  let res = content.replace(/\/\/#ifdef\((.*?)\)([\s\S]*?)\/\/#endif/gm, (match, envVarVal, envCt) => {
+    if (envVarVal) {
+      const arr = envVarVal.split('=')
+      if (arr.length === 2) { // check === condition //#ifdef(val=val)
+        if (arr[0] === arr[1]) return envCt
+      } else {
+        return envCt
+      }
     }
+    return '\n'.repeat(getCRCnt(envCt))
   })
-  res = res.replace(/"#ifndef": "(.*?)",([\s\S]*?)"#endif": "(.*?)"(,?)/gm, (match, envvar, envct) => {
-    if (!process.env[envvar]) {
-      return envct
+  res = res.replace(/\/\/#ifndef\((.*?)\)([\s\S]*?)\/\/#endif/gm, (match, envVarVal, envCt) => {
+    if (!envVarVal) {
+      return envCt
     } else {
-      return '\n'.repeat(getCRCnt(envct))
+      const arr = envVarVal.split('=')
+      if (arr.length === 2) { // check !== condition //#ifdef(val1=val2)
+        if (arr[0] !== arr[1]) return envCt
+      }
     }
+    return '\n'.repeat(getCRCnt(envCt))
   })
   return res
+}
+
+/**
+ * Perform check somebody listen on URL
+ * @param {String} URL
+ * @return {boolean}
+ */
+function checkServerStarted (URL) {
+  const http = require('http')
+  if (verboseMode) console.info('Check server is running...')
+  try {
+    const resp = http.get({ URL: URL + '/getAppInfo', connectTimeout: 1000, receiveTimeout: 1000, sendTimeout: 1000 }) // dummy
+    if (verboseMode) console.info('STATUS', resp.statusCode)
+    return resp.statusCode === 200
+  } catch (e) {}
+  return false
 }
 /**
  * Replace placeholders %VAR_NAME% to environment variable value
@@ -285,8 +293,7 @@ function replaceEnvironmentVariables (content) {
     if (process.env.hasOwnProperty(p1)) {
       return process.env[p1].replace(/\\/g, '\\\\')
     } else {
-      console.warn(`Env var not defined:\t\t${p1}`)
-      return `NOT_FOUND_ENV_VAR(${match})`
+      return ''
     }
   })
 }
@@ -353,7 +360,10 @@ function getServerConfiguration (forFutureSave = false) {
   const cfgFileName = getConfigFileName()
   if (verboseMode) console.debug('Used config:', cfgFileName)
 
-  const result = safeParseJSONfile(cfgFileName, true, (content) => replaceIncludeVariables(replaceEnvironmentVariables(replaceIfDefs(content))))
+  const result = safeParseJSONfile(cfgFileName, true,
+    (content) => replaceIncludeVariables(replaceIfDefs(replaceEnvironmentVariables(content)))
+  )
+  fs.writeFileSync('/tmp/cfgTest.json', JSON.stringify(result, null, ' '))
   // add name attribute for applications
   if (!result.application) {
     result.application = {}
@@ -365,6 +375,16 @@ function getServerConfiguration (forFutureSave = false) {
   if (!result.application.domain) {
     result.application.domain = { models: [] }
   }
+  // adds vendor and customer models
+  function addModels (csvList) {
+    if (!csvList) return
+    const UB_APPDATA = process.env.UB_APPDATA
+    csvList.split(':').forEach(p => {
+      result.application.domain.models.push({ path: UB_APPDATA ? path.join(UB_APPDATA, 'models', p) : path.join('models', p) })
+    })
+  }
+  addModels(result.application.domain.vendorModels)
+  addModels(result.application.domain.customerModels)
   // for models without name - read it from package.json
   // read "browser" section of package.json to check public model part should be injected into browser
   // browser section may contains "prod" / "dev" key for production / development client execution
@@ -471,11 +491,12 @@ function serverURLFromConfig (config) {
  * @return {Object}
  */
 function safeParseJSONfile (fileName, allowMultiLineString, preprocessor) {
-  let content = removeCommentsFromJSON(fs.readFileSync(fileName, 'utf8'))
-  if (allowMultiLineString) {
-    content = content.replace(/[\n\r\t]/gm, ' ')
-  }
+  let content = fs.readFileSync(fileName, 'utf8')
+  // if (allowMultiLineString) {
+  //   content = content.replace(/[\n\r\t]/gm, ' ')
+  // }
   if (preprocessor) content = preprocessor(content)
+  content = removeCommentsFromJSON(content)
   try {
     return JSON.parse(content)
   } catch (e) {

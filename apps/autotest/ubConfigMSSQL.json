@@ -6,17 +6,8 @@
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
 		"inetPub": ".\\inetPub/",
-		"watchFileChanges": {
-			"enabled": true,
-			"hashingStrategy": "ModifyDate"
-		},
 		"threadPoolSize": 8
 	},
-	/*"wsServer": {
-		"host": "+",
-		"port": "888",
-		"path": "ws"
-	},*/
 	"logging": {
 		"path": ".\\logs",
 		"levels": [
@@ -99,7 +90,6 @@
 					"path": "./node_modules/@unitybase/adminui-reg"
 				},
 				{
-					//"name": "TST",
 					"path": "./models/TST"
 				}
 			],
