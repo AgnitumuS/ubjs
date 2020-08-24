@@ -34,6 +34,8 @@ ub -T > NUL
 @REM delete all sqlute3 db and wals
 SET TESTCASE=drop database
 del %UB_APPDATA%localdb\*.sqlite3*
+mkdir %UB_APPDATA%localdb\
+
 
 SET TESTCASE=init database
 if [%UB_CFG%]==[] (
@@ -41,6 +43,7 @@ if [%UB_CFG%]==[] (
 )
 rem SET UB_DEV=true
 
+mkdir %UB_APPDATA%stores/documents
 call npx ubcli createStore -cfg %UB_CFG% -noLogo
 @if errorlevel 1 goto err
 

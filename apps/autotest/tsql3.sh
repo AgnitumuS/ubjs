@@ -32,8 +32,13 @@ ub -T > /dev/null || err
 
 TESTCASE='drop database'
 rm -f "$UB_APPDATA"localdb/*.sqlite3* || err
+mkdir -p "$UB_APPDATA"localdb
 
 rm -rf "$UB_APPDATA"stores/documents/simple || err
+mkdir -p "$UB_APPDATA"stores/documents
+
+rm -rf "$UB_APPDATA"stores/documents/simple || err
+>>>>>>> apps/autotest/tsql3.sh
 
 TESTCASE='init database'
 # Check whether UB_CFG set and contains a value, not spaces
