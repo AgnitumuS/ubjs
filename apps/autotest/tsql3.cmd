@@ -6,10 +6,6 @@ if [%UB_HOST%]==[] (
   SET UB_HOST=http://localhost:8881
 )
 
-if [%UB_RP_CONFIG%]==[] (
-  SET UB_RP_CONFIG=./rp-config-disable.json
-)
-
 if [%UB_APP%]==[] (
   SET UB_APP=autotest
 )
@@ -22,6 +18,8 @@ SET PLATFORM=win
 
 if exist %UB_APPDATA%_autotestResults*.json del %UB_APPDATA%_autotestResults*.json
 if exist %UB_APPDATA%last_result.log del %UB_APPDATA%last_result.log
+del %UB_APPDATA%logs\*.log
+mkdir %UB_APPDATA%logs\
 
 SET TESTCASE=hello
 ub -e "console.log('Start autotest')"

@@ -14,7 +14,7 @@
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
-		"inetPub": "%UB_APPDATA%inetPub/",
+		"inetPub": "%UB_APPDATA%inetpub/",
 		"threadPoolSize": 4,
 		"autoShutdownTimeoutSec": 0
 	},
