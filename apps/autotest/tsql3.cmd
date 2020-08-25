@@ -1,6 +1,7 @@
 @rem PATH=..\..\..\..\ub-server\bin\d-win32;..\..\node_modules\.bin;%PATH%
 @rem PATH=..\..\..\..\ub-server\bin\fpc-win32;..\..\node_modules\.bin;%PATH%
 rem PATH=..\..\..\..\ub-server\bin\fpc-win64;..\..\node_modules\.bin;%PATH%
+echo on
 
 if [%UB_HOST%]==[] (
   SET UB_HOST=http://localhost:8881
@@ -11,7 +12,7 @@ if [%UB_APP%]==[] (
 )
 
 if [%UB_APPDATA%]==[] (
-  SET UB_APPDATA=.\
+  SET UB_APPDATA=./
 )
 
 SET PLATFORM=win
@@ -19,7 +20,7 @@ SET PLATFORM=win
 if exist %UB_APPDATA%_autotestResults*.json del %UB_APPDATA%_autotestResults*.json
 if exist %UB_APPDATA%last_result.log del %UB_APPDATA%last_result.log
 del %UB_APPDATA%logs\*.log
-mkdir %UB_APPDATA%logs\
+mkdir "%UB_APPDATA%logs\"
 
 SET TESTCASE=hello
 ub -e "console.log('Start autotest')"
@@ -32,7 +33,7 @@ ub -T > NUL
 @REM delete all sqlute3 db and wals
 SET TESTCASE=drop database
 del %UB_APPDATA%localdb\*.sqlite3*
-mkdir %UB_APPDATA%localdb\
+mkdir "%UB_APPDATA%localdb\"
 
 
 SET TESTCASE=init database
@@ -41,7 +42,7 @@ if [%UB_CFG%]==[] (
 )
 rem SET UB_DEV=true
 
-mkdir %UB_APPDATA%stores/documents
+mkdir "%UB_APPDATA%stores/documents"
 call npx ubcli createStore -cfg %UB_CFG% -noLogo
 @if errorlevel 1 goto err
 
