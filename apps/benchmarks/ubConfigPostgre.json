@@ -3,7 +3,7 @@
 		"host": "+",
 		"port": "8881",
 		"inetPub": "./img",
-		"threadPullSize": 4
+		"threadPoolSize": 4
 	},
 	"logging": {
 		"levels": [],
