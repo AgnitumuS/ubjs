@@ -19,7 +19,7 @@ SET PLATFORM=win
 
 if exist %UB_APPDATA%_autotestResults*.json del %UB_APPDATA%_autotestResults*.json
 if exist %UB_APPDATA%last_result.log del %UB_APPDATA%last_result.log
-del %UB_APPDATA%logs\*.log
+del "%UB_APPDATA%logs\*.log"
 mkdir "%UB_APPDATA%logs\"
 
 SET TESTCASE=hello
@@ -32,7 +32,7 @@ ub -T > NUL
 
 @REM delete all sqlute3 db and wals
 SET TESTCASE=drop database
-del %UB_APPDATA%localdb\*.sqlite3*
+del "%UB_APPDATA%localdb\*.sqlite3*"
 mkdir "%UB_APPDATA%localdb\"
 
 
