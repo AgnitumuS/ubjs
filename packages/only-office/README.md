@@ -1,13 +1,12 @@
-﻿[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+﻿## UnityBase module for integration with OnlyOffice service  
 
-# UnityBase module for integration with OnlyOffice service  
-
-The module provides the ability to view and edit MS Office documents in the integrated `OnlyOffice` editor
+The module allows viewing and editing MS Office documents
+ in the integrated `OnlyOffice` editor
 
 ## Usage
 
 ### Should be installed OnlyOffice integration service
- Allowed to download from https://www.onlyoffice.com/en/connectors-request.aspx?from=downloadintegrationmenu
+ Can be downloaded from https://www.onlyoffice.com/en/connectors-request.aspx?from=downloadintegrationmenu
     
 ### Install package and add model to ubConfig.json   
  Install npm packages:
@@ -28,25 +27,22 @@ The module provides the ability to view and edit MS Office documents in the inte
   }
 }
 ```
-### Configure interaction with OnlyOffice server in ubConfig.json
+
+## Partial and environment variables
+
+Model partial config adds `uiSettings.cspAllow` and  `uiSettings.adminUI.onlyOffice` sections.
+
+Used environment variables:
+ 
+| Variable name | Default | Description |
+|---------------|---------|-------------|
+| UB_ONLYOFFICE_URL  |         | Full URL. Example: https://our.only.office.local:4443   |
+| UB_ONLYOFFICE_IP  |       | IP address of host specified in URL. Example: 192.168.2.15   |
 
 Consider OnlyOffice server is installed on URL `https://our.only.office.local:4443`
 
-Content Security Policy and onlyOffice paraneters for adminUI should be configured to allow interaction with this URL:
+Content Security Policy and onlyOffice parameters for adminUI should be configured to allow interaction with this URL:
 
 ```
-{
-  "uiSettings": {
-    "cspAllow": {
- 	  "defaultSrc": ["https://our.only.office.local:4443"],
-      "scriptSrc": ["https://our.only.office.local:4443"],
-      "frameSrc": ["https://our.only.office.local:4443"]
-    },
-    "adminUI": {
-      "onlyOffice": {
-	    "serverIP": "https://our.only.office.local:4443"
-      }
-    }
-  }
-}
+
 ```

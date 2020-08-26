@@ -1,0 +1,14 @@
+{
+  "uiSettings": {
+    "cspAllow": {
+      "defaultSrc": ["%UB_ONLYOFFICE_URL%"],
+      "scriptSrc": ["%UB_ONLYOFFICE_URL%"],
+      "frameSrc": ["%UB_ONLYOFFICE_URL%"]
+    },
+    "adminUI": {
+      "onlyOffice": {
+        "serverIP": "UB_ONLYOFFICE_IP"
+      }
+    }
+  }
+}

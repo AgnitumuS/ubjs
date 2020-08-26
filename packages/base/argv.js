@@ -53,25 +53,12 @@ module.exports = {
  * @return {String}
  */
 function getConfigFileName () {
-  let cfgFile = options.switchValue('cfg') || process.env.UB_CFG
-
-  if (cfgFile) {
-    if (!path.isAbsolute(cfgFile)) cfgFile = path.join(process.cwd(), cfgFile)
-    if (!fs.existsSync(cfgFile)) {
-      console.warn('passed -cfg file not exist ' + cfgFile)
-      cfgFile = ''
-    }
+  if (global.UB && global.UB.getConfigFileName) {
+    // config related functions moved inside server UB.js resource
+    return global.UB.getConfigFileName()
+  } else {
+    console.error('UnityBase server >= 5.18.12 is required for this version of @unitybase/base')
   }
-  if (!cfgFile) {
-    cfgFile = path.join(process.cwd(), 'ubConfig.json')
-    cfgFile = fs.existsSync(cfgFile) ? cfgFile : ''
-  }
-  if (!cfgFile) {
-    cfgFile = path.resolve(path.dirname(process.execPath), 'ubConfig.json')
-    cfgFile = fs.existsSync(cfgFile) ? cfgFile : ''
-  }
-  if (!cfgFile) throw new Error('Server configuration file not found')
-  return cfgFile
 }
 
 const verboseMode = options.switchIndex('noLogo') === -1
@@ -225,49 +212,6 @@ establishConnectionFromCmdLineAttributes._cmdLineParams = [
 ]
 
 /**
- * #ifdef / #ifndef directives parser:
- *  - keep a part of JSON content between `"#ifdef": "%VAR_NAME%", ... "#endif": ""` if environment variable VAR_NAME is defined and not empty
- *  - keep a part of JSON content between`"#ifndef": "%VAR_NAME%", ... "#endif": ""` if environment variable VAR_NAME is not defined or empty
- *  - nested conditions IS NOT SUPPORTED
- *  - content replaced by empty strings to keep the same line numbers as in original file
- * @private
- * @param {String} content
- * @return {String}
- */
-function replaceIfDefs (content) {
-  function getCRCnt (s) {
-    let r = 0
-    for (let i = 0, L = s.length; i < L; i++) {
-      if (s.charAt(i) === '\n') r++
-    }
-    return r
-  }
-  let res = content.replace(/\/\/#ifdef\((.*?)\)([\s\S]*?)\/\/#endif/gm, (match, envVarVal, envCt) => {
-    if (envVarVal) {
-      const arr = envVarVal.split('=')
-      if (arr.length === 2) { // check === condition //#ifdef(val=val)
-        if (arr[0] === arr[1]) return envCt
-      } else {
-        return envCt
-      }
-    }
-    return '\n'.repeat(getCRCnt(envCt))
-  })
-  res = res.replace(/\/\/#ifndef\((.*?)\)([\s\S]*?)\/\/#endif/gm, (match, envVarVal, envCt) => {
-    if (!envVarVal) {
-      return envCt
-    } else {
-      const arr = envVarVal.split('=')
-      if (arr.length === 2) { // check !== condition //#ifdef(val1=val2)
-        if (arr[0] !== arr[1]) return envCt
-      }
-    }
-    return '\n'.repeat(getCRCnt(envCt))
-  })
-  return res
-}
-
-/**
  * Perform check somebody listen on URL
  * @param {String} URL
  * @return {boolean}
@@ -282,72 +226,6 @@ function checkServerStarted (URL) {
   } catch (e) {}
   return false
 }
-/**
- * Replace placeholders %VAR_NAME% to environment variable value
- * @private
- * @param {String} content
- * @return {String}
- */
-function replaceEnvironmentVariables (content) {
-  return content.replace(/%(.*?)%/gm, function replacer (match, p1) {
-    if (process.env.hasOwnProperty(p1)) {
-      return process.env[p1].replace(/\\/g, '\\\\')
-    } else {
-      return ''
-    }
-  })
-}
-
-/**
- * Will replace placeholders "#include(pathToFile) to file content
- * @private
- * @param {String} content
- * @return {String}
- */
-function replaceIncludeVariables (content) {
-  return content.replace(/"#include\((.*)\)"/gm, function replacer (match, p1) {
-    let filePath
-    try {
-      filePath = JSON.parse('{"f": "' + p1 + '"}').f // hack to decode JSON string
-    } catch (e) {
-      return 'INVALID INCLUDE ' + p1
-    }
-    filePath = path.resolve(process.configPath, filePath)
-    try {
-      fs.statSync(filePath)
-    } catch (e) {
-      return 'INVALID INCLUDE ' + filePath
-    }
-    const content = removeCommentsFromJSON(fs.readFileSync(filePath, 'utf8'))
-    if (!content) {
-      return 'EMPTY INCLUDE ' + filePath
-    }
-    return replaceEnvironmentVariables(content)
-  })
-}
-
-/**
- * In case packageData.section contains relative path return package.name+path else path
- * @private
- * @param packageData
- * @param model
- * @param section
- * @return {*|browser|{}}
- */
-function checkPackageBrowserPath (packageData, model, section) {
-  let p = packageData.browser[section] || packageData.browser
-  if (!path.isAbsolute(p)) {
-    if (!packageData.name) {
-      const pKey = packageData.browser[section] ? `browser.${section}` : 'browser'
-      console.error(`package.json "${pKey}" section for ${model.name} model contains a relative path but package.json "name" section is empty\n
-Either use a absolute path ("/clientRequire/models/${model.name}/PathToYourDevScript" or specify a "name" section in package.json`)
-      p = path.join(model.name, p).replace(/\\/g, '/')
-    } else {
-      p = path.join(packageData.name, p).replace(/\\/g, '/')
-    }
-  }
-  return p
-}
 
 /**
  * Read server configuration from file, resolved by {@link getConfigFileName}
@@ -357,115 +235,7 @@ Either use a absolute path ("/clientRequire/models/${model.name}/PathToYourDevSc
  * @return {Object}
  */
 function getServerConfiguration (forFutureSave = false) {
-  const cfgFileName = getConfigFileName()
-  if (verboseMode) console.debug('Used config:', cfgFileName)
-
-  const result = safeParseJSONfile(cfgFileName, true,
-    (content) => replaceIncludeVariables(replaceIfDefs(replaceEnvironmentVariables(content)))
-  )
-  // add name attribute for applications
-  if (!result.application) {
-    result.application = {}
-  }
-  result.application.name = result.httpServer.path ? result.httpServer.path : '/'
-  if (!result.application.defaultLang) {
-    result.application.defaultLang = 'en'
-  }
-  if (!result.application.domain) {
-    result.application.domain = { models: [] }
-  }
-  // adds vendor and customer models
-  function addModels (csvList) {
-    if (!csvList) return
-    const UB_APPDATA = process.env.UB_APPDATA
-    csvList.split(':').forEach(p => {
-      result.application.domain.models.push({ path: UB_APPDATA ? path.join(UB_APPDATA, 'models', p) : path.join('models', p) })
-    })
-  }
-  addModels(result.application.domain.vendorModels)
-  addModels(result.application.domain.customerModels)
-  // for models without name - read it from package.json
-  // read "browser" section of package.json to check public model part should be injected into browser
-  // browser section may contains "prod" / "dev" key for production / development client execution
-  result.application.domain.models.forEach((model) => {
-    let p = (model.path === '_public_only_') ? model.publicPath : model.path
-    p = path.resolve(process.configPath, p)
-    if (!forFutureSave) model.realPath = p
-    const packFN = path.join(p, 'package.json')
-    if (fs.existsSync(packFN)) {
-      const packageData = require(packFN)
-      if (!packageData.name) console.error(`"name" section is required in package.json for "${packFN}`)
-      model.moduleName = packageData.name
-      if (packageData.config && packageData.config.ubmodel) {
-        const ubModelConfig = packageData.config.ubmodel
-        if (model.name) {
-          console.warn(`Warning: name for model ${model.name} is configured in both "ubConfig" and model "package.json".
-  Will use name from package.json`)
-        }
-        model.name = ubModelConfig.name
-        if (ubModelConfig.isPublic) {
-          model.publicPath = model.path
-          model.path = '_public_only_'
-        }
-      }
-      // check browser settings
-      if (packageData.browser) {
-        const dev = checkPackageBrowserPath(packageData, model, 'dev')
-        const prod = checkPackageBrowserPath(packageData, model, 'prod')
-        if (!forFutureSave) model.browser = { dev, prod }
-      }
-      if (!forFutureSave) model.version = packageData.version
-    }
-  })
-  // normalize blobStores paths. In case path is relative transform it to absolure regarding to configPath
-  if (!result.application.blobStores) result.application.blobStores = []
-  result.application.blobStores.forEach(storeConfig => {
-    if (storeConfig.path) {
-      storeConfig.path = path.resolve(process.configPath, storeConfig.path)
-      if (!storeConfig.tempPath) {
-        storeConfig.tempPath = path.join(storeConfig.path, '_temp')
-      }
-    }
-    if (storeConfig.tempPath) {
-      storeConfig.tempPath = path.resolve(process.configPath, storeConfig.tempPath)
-    }
-  })
-  if (!result.application.domain.supportedLanguages) {
-    const connections = result.application.connections
-    if (connections) {
-      result.application.domain.supportedLanguages = _(connections).map('supportLang').flatten().uniq().value()
-    } else {
-      result.application.domain.supportedLanguages = [result.application.defaultLang]
-    }
-  }
-  if (!result.application.customSettings) {
-    result.application.customSettings = {}
-  }
-  if (!result.uiSettings) {
-    result.uiSettings = {}
-  }
-  if (!result.security) result.security = {}
-  if (!result.httpServer) result.httpServer = { serverType: 'None' }
-  if (result.httpServer.inetPub) {
-    result.httpServer.inetPub = path.resolve(process.configPath, result.httpServer.inetPub)
-  }
-  if (result.httpServer.serverType !== 'None') {
-    if (!result.httpServer.externalURL) result.httpServer.externalURL = serverURLFromConfig(result)
-    if (!result.httpServer.reverseProxy) result.httpServer.reverseProxy = {}
-    const rp = result.httpServer.reverseProxy
-    if (rp.kind === 'nginx') {
-      if (!rp.remoteIPHeader) rp.remoteIPHeader = 'X-Real-IP'
-      if (!rp.remoteConnIDHeader) rp.remoteConnIDHeader = 'X-Conn-ID'
-      if (!rp.sendFileHeader) rp.sendFileHeader = 'X-Accel-Redirect'
-      if (!rp.sendFileLocationRoot) {
-        rp.sendFileLocationRoot = url.parse(result.httpServer.externalURL).hostname.replace(/\./g, '-')
-      }
-      if (!rp.hasOwnProperty('serveStatic')) {
-        rp.serveStatic = true
-      }
-    }
-  }
-  return result
+  return global.UB.getServerConfiguration(forFutureSave)
 }
 
 /**
@@ -491,9 +261,6 @@ function serverURLFromConfig (config) {
  */
 function safeParseJSONfile (fileName, allowMultiLineString, preprocessor) {
   let content = fs.readFileSync(fileName, 'utf8')
-  // if (allowMultiLineString) {
-  //   content = content.replace(/[\n\r\t]/gm, ' ')
-  // }
   if (preprocessor) content = preprocessor(content)
   content = removeCommentsFromJSON(content)
   try {
