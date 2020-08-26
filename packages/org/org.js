@@ -63,9 +63,9 @@ function orgOnUserLogin () {
   }
 
   if (!staffs.length) {
-    // allow anonymous login only for member of admin group (groupID = 1)
-    if (ORG.checkOrgUnitRequired && (Session.uData.roleIDs.indexOf(UBA_COMMON.ROLES.ADMIN.ID) === -1)) {
-      throw new UB.UBAbort('<<<UserWithoutOrgEmployeeNotAllowed>>>') //  + lastError
+    // allow anonymous login only for SUPERUSER (before @unitybase/org@5.3 - a member of admin group)
+    if (ORG.checkOrgUnitRequired && !UBA_COMMON.isSuperUser()) {
+      throw new UB.UBAbort('<<<UserWithoutOrgEmployeeNotAllowed>>>')
     } else {
       // defined by ub model data.employeeShortFIO = ''
       data['orgUnitIDs'] = ''

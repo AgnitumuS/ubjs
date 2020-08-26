@@ -8,7 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - **BREAKING** login for user who not assigned to employee allowed only for superusers
+ (users `admin` and `root` = uba_common.isSuperuser()). Before these changes' logon without
+ an employee is allowed for members of `Admin` group.
+ 
 ### Deprecated
 
 ### Removed
