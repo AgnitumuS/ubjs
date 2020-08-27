@@ -33,17 +33,19 @@ const instance = new Vue({
             if (response === undefined) {
               return
             }
-            const { method, resultData } = response
-            if (resultData.ID === undefined) {
+            const { ID, method, resultData } = response
+
+            const responseID = resultData ? resultData.ID : ID
+            if (responseID === undefined) {
               console.error('Lookups: server response must contain ID')
               return
             }
 
             const cachedEntity = this.entities[entity]
             if (method === 'delete') {
-              const lookupItemIndex = cachedEntity.data.findIndex(item => item.ID === resultData.ID)
+              const lookupItemIndex = cachedEntity.data.findIndex(item => item.ID === ID)
               cachedEntity.data.splice(lookupItemIndex, 1)
-              delete cachedEntity.mapById[resultData.ID]
+              delete cachedEntity.mapById[ID]
               return
             }
 
