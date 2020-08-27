@@ -25,7 +25,7 @@ rm -f "$UB_APPDATA"last_result.log
 rm "$UB_APPDATA"logs/*.log
 
 TESTCASE='hello'
-ub -e "console.log('Start autotest')"
+ub -e "console.log('Start autotest')" || err
 
 TESTCASE='Check config'
 ub -T > /dev/null || err
@@ -67,7 +67,7 @@ TESTCASE=initialize
 npx ubcli initialize -cfg $UB_CFG -u root -p root || err
 
 TESTCASE=autotest
-/usr/bin/time -v npx ubcli autotest -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -noLogo -skipModules
+/usr/bin/time -v npx ubcli autotest -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -noLogo -skipModules -cd
 if [ ! $? = 0 ]; then
   cat ./_autotestResults.json;
   if [ ! -z ${UB_TESTRES+x} ] && [ ! -z "${UB_TESTRES// }" ]; then

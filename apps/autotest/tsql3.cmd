@@ -17,8 +17,8 @@ if [%UB_APPDATA%]==[] (
 
 SET PLATFORM=win
 
-if exist %UB_APPDATA%_autotestResults*.json del %UB_APPDATA%_autotestResults*.json
-if exist %UB_APPDATA%last_result.log del %UB_APPDATA%last_result.log
+if exist "%UB_APPDATA%_autotestResults*.json" del "%UB_APPDATA%_autotestResults*.json"
+if exist "%UB_APPDATA%last_result.log" del "%UB_APPDATA%last_result.log"
 del "%UB_APPDATA%logs\*.log"
 mkdir "%UB_APPDATA%logs\"
 
