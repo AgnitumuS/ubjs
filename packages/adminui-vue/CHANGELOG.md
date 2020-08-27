@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UNavbar`: all tabs now closed by clicking on dropdown menu button `Close all` 
+ - `lookups.js`: onEntityChange delete event - in case response resultData do not contains ID, get it from 
+ response object not from resultData of response object
 
 ## [1.12.6] - 2020-08-19
 ## [1.12.5] - 2020-08-19
