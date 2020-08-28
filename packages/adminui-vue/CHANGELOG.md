@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
   - `UNavbar`: `Close all` and `Close inactive` actions added to tabs menu (as in tab popup)
   - `USelectEntity`, `USelectEnum`, `USelectMultiple`, `USelectMany`: prop `searchStrategy` which sets search request condition
+  - `lookups.js`: made it possible to pass the wherelist to lookups in the case when there is no need to load all 
+  the directory records
 
 ### Changed
 
