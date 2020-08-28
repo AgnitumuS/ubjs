@@ -9,76 +9,68 @@ const fs = require('fs')
 
 /**
  * Drop a specified schema & role (databaseName)
- * @param {ServerSession} session
+ * @param {DBConnection} dbConn
  * @param {Object} databaseConfig A database configuration
  */
-module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
-  const conn = session.connection
-  const checkDB = conn.xhr({ endpoint: 'runSQL', URLParams: { CONNECTION: DBA_FAKE }, data: `select DB_ID (N'${databaseConfig.databaseName}') as DBID` })
+module.exports.dropDatabase = function dropDatabase (dbConn, databaseConfig) {
+  const checkDB = dbConn.selectParsedAsObject(`select DB_ID (N'${databaseConfig.databaseName}') as DBID`)
   if (checkDB[0].DBID) {
-    // conn.xhr({
-    //    endpoint: 'runSQL',
-    //    URLParams: {CONNECTION: DBA_FAKE},
-    //    data: UB.format("ALTER DATABASE {0} SET SINGLE_USER WITH ROLLBACK IMMEDIATE", databaseConfig.databaseName)
-    // });
-    conn.xhr({ // This is required for OBDC connection - it does not use 'database' attribute in configuration file
-      endpoint: 'runSQL',
-      URLParams: { CONNECTION: DBA_FAKE },
-      data: 'USE master'
-    })
-    conn.xhr({
-      endpoint: 'runSQL',
-      URLParams: { CONNECTION: DBA_FAKE },
-      data: `DROP DATABASE ${databaseConfig.databaseName}`
-    })
+    dbConn.execParsed('USE master') // This required for ODBC connection - it does not use 'database' attribute in configuration file
+    dbConn.commit() // DROP DATABASE statement cannot be used inside a user transaction
+    dbConn.execParsed(`DROP DATABASE ${databaseConfig.databaseName}`)
   } else {
     console.warn('Database %s does not exist. Drop skipped', databaseConfig.databaseName)
   }
 }
 
-function splitAndExec (stmts, syncConnection, dbConnectionName) {
+/**
+ * Split multi-statement onto single statement and execute it
+ * @param {string} stmts
+ * @param {DBConnection} targetConn
+ */
+function splitAndExec (stmts, targetConn) {
   const delimRe = /\r\n/.test(stmts) ? 'GO\r\n' : 'GO\n' // git can remove \r\n
   const statements = stmts.split(delimRe)
   statements.forEach(function (statement) {
-    if (statement && statement !== 'GO') {
-      syncConnection.xhr({ endpoint: 'runSQL', URLParams: { CONNECTION: dbConnectionName }, data: statement })
+    if (statement && (statement !== 'GO')) {
+      targetConn.execParsed(statement)
+      targetConn.commit()
     }
   })
 }
 /**
  * Drop a specified schema & role (databaseName) with a pwd
- * @param {SyncConnection} conn
+ * @param {DBConnection} dbConn
  * @param {Object} databaseConfig A database configuration
  */
-module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
+module.exports.createDatabase = function createDatabase (dbConn, databaseConfig) {
   let script = fs.readFileSync(path.join(__dirname, 'mssqlCreateDatabase.sql'), 'utf8')
   script = UB.format(script, databaseConfig.databaseName, databaseConfig.userID, databaseConfig.password)
-  splitAndExec(script, conn, DBA_FAKE)
+  splitAndExec(script, dbConn)
 
   script = fs.readFileSync(path.join(__dirname, 'mssqlCreateLogin.sql'), 'utf8')
   script = UB.format(script, databaseConfig.databaseName, databaseConfig.userID, databaseConfig.password)
-  splitAndExec(script, conn, DBA_FAKE /* databaseConfig.name */)
+  splitAndExec(script, dbConn)
 }
 
 /**
  * Create a minimally required  functions & tables for a first sign-in
- * @param {SyncConnection} conn
+ * @param {DBConnection} targetConn
  * @param {Number} clientNum A number of client we create database for
  * @param {Object} databaseConfig A database configuration
  */
-module.exports.createMinSchema = function createMinSchema (conn, clientNum, databaseConfig) {
-  let sequences = [
-    'CREATE SEQUENCE dbo.SEQ_UBMAIN AS bigint START WITH {0}0000000000 INCREMENT BY 1 MINVALUE {0}0000000000 MAXVALUE {0}4999999999 NO CACHE',
+module.exports.createMinSchema = function createMinSchema (targetConn, clientNum, databaseConfig) {
+  const sequences = [
+    `CREATE SEQUENCE dbo.SEQ_UBMAIN AS bigint START WITH ${clientNum}0000000000 INCREMENT BY 1 MINVALUE ${clientNum}0000000000 MAXVALUE ${clientNum}4999999999 NO CACHE`,
     'GO',
-    'CREATE SEQUENCE dbo.SEQ_UBMAIN_BY1 AS bigint START WITH {0}500000000000 INCREMENT BY 1 MINVALUE {0}500000000000 MAXVALUE {0}999999999999 NO CACHE'
+    `CREATE SEQUENCE dbo.SEQ_UBMAIN_BY1 AS bigint START WITH ${clientNum}500000000000 INCREMENT BY 1 MINVALUE ${clientNum}500000000000 MAXVALUE ${clientNum}999999999999 NO CACHE`
   ].join('\r\n')
 
-  sequences = UB.format(sequences, clientNum)
-  splitAndExec(sequences, conn, databaseConfig.name)
+  splitAndExec(sequences, targetConn)
 
   let script = fs.readFileSync(path.join(__dirname, 'mssqlObjects.sql'), 'utf8')
-  splitAndExec(script, conn, databaseConfig.name)
+  splitAndExec(script, targetConn)
 
   script = fs.readFileSync(path.join(__dirname, 'mssqlTables.sql'), 'utf8')
-  splitAndExec(script, conn, databaseConfig.name)
+  splitAndExec(script, targetConn)
 }

@@ -1,4 +1,3 @@
-/* global stopServer, startServer */
 /**
  * Create SQLite3 database & database objects for a UnityBase ORM
  * @module cmd/initDB/sqlite3
@@ -9,18 +8,13 @@ const path = require('path')
 
 /**
  * Drop a specified schema & role (databaseName)
- * @param {ServerSession} session
- * @param {Object} databaseConfig A database configuration
+ * @param {DBConnection} dbConn
+ * @param {Object} targetDBConfig A database configuration
  */
-module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
-  const dbPath = path.join(process.configPath, databaseConfig.databaseName)
+module.exports.dropDatabase = function dropDatabase (dbConn, targetDBConfig) {
+  const dbPath = path.join(process.configPath, targetDBConfig.databaseName)
   console.debug('Start drop a database', dbPath)
   if (fs.existsSync(dbPath)) {
-    if (session.__serverStartedByMe) {
-      stopServer()
-    } else {
-      throw new Error('To drop a SQLite3 database start cmd/initDB in local mode')
-    }
     if (!fs.unlinkSync(dbPath)) {
       throw new Error('Can not delete SQLite3 database file ' + dbPath + ' May be database in use?')
     }
@@ -35,45 +29,49 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
         throw new Error('Can not delete SQLite3 SHM file ' + dbPath + '-shm May be database in use?')
       }
     }
-    startServer()
   }
 }
 
 /**
  * Drop a specified schema & role (databaseName) with a pwd
- * @param {SyncConnection} conn
- * @param {Object} databaseConfig A database configuration
+ * @param {DBConnection} dbConn
+ * @param {Object} targetDBConfig A database configuration
  */
-module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
+module.exports.createDatabase = function createDatabase (dbConn, targetDBConfig) {
   // SQLite3 database are created automatically during connection open
 }
 
-function splitAndExec (stmts, syncConnection, dbConnectionName) {
+/**
+ * Split multi-statement onto single statement and execute it
+ * @param {string} stmts
+ * @param {DBConnection} targetConn
+ */
+function splitAndExec (stmts, targetConn) {
   // git can replace \r\n by \n on windows
   const delimRe = /\r\n/.test(stmts) ? '--next\r\n' : '--next\n'
   const statements = stmts.split(delimRe)
   statements.forEach(function (statement) {
     if (statement) {
-      syncConnection.xhr({ endpoint: 'runSQL', URLParams: { CONNECTION: dbConnectionName }, data: statement })
+      targetConn.execParsed(statement, [])
     }
   })
 }
 /**
  * Create a minimally required  functions & tables for a first sign-in
- * @param {SyncConnection} conn
+ * @param {DBConnection} targetConn
  * @param {Number} clientNum A number of client we create database for
  * @param {Object} databaseConfig A database configuration
  */
-module.exports.createMinSchema = function createMinSchema (conn, clientNum, databaseConfig) {
+module.exports.createMinSchema = function createMinSchema (targetConn, clientNum, databaseConfig) {
   let script
 
   script = 'create table seq_ubmain (client_num INTEGER) /* generateID = clientNum+currentTimeUnixEpoch*100 + 1...99 */'
-  splitAndExec(script, conn, databaseConfig.name)
+  splitAndExec(script, targetConn)
   // set a initial ID value
   script = `insert into seq_ubmain (client_num) values(${clientNum}0000000000)`
-  splitAndExec(script, conn, databaseConfig.name)
+  splitAndExec(script, targetConn)
 
   // TODO put clientNum to a table for a ID generator initialization
   script = fs.readFileSync(path.join(__dirname, 'sqlite3Tables.sql'), 'utf8')
-  splitAndExec(script, conn, databaseConfig.name)
+  splitAndExec(script, targetConn)
 }

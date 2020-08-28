@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - `ubcli initDb` command execute all SQL statements from a command line script.
+  This allows not to start a server and prevents fake config creation.
+  
 ### Deprecated
 
 ### Removed

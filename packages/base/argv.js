@@ -43,6 +43,7 @@ module.exports = {
   establishConnectionFromCmdLineAttributes: establishConnectionFromCmdLineAttributes,
   checkServerStarted: checkServerStarted,
   getServerConfiguration,
+  setServerConfiguration,
   serverURLFromConfig: serverURLFromConfig
 }
 
@@ -236,6 +237,19 @@ function checkServerStarted (URL) {
  */
 function getServerConfiguration (forFutureSave = false) {
   return global.UB.getServerConfiguration(forFutureSave)
+}
+
+/**
+ * Set a configuration for native part of UB server
+ * WARNING - in case domain already initialized by native this value is ignored until stopServer() is called
+ * @param {string|Object} newCfg
+ */
+function setServerConfiguration (newCfg) {
+  if (typeof newCfg === 'string') {
+    process.cachedConfigStr = newCfg
+  } else {
+    process.cachedConfigStr = JSON.stringify(newCfg, null, '\t')
+  }
 }
 
 /**
