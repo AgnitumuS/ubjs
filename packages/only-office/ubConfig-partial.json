@@ -7,7 +7,7 @@
     },
     "adminUI": {
       "onlyOffice": {
-        "serverIP": "UB_ONLYOFFICE_IP"
+        "serverIP": "%UB_ONLYOFFICE_IP%"
       }
     }
   }

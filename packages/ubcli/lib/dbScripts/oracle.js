@@ -8,28 +8,18 @@ const path = require('path')
 const fs = require('fs')
 /**
  * Drop a specified schema & role (databaseName)
- * @param {ServerSession} session
+ * @param {DBConnection} dbConn
  * @param {Object} databaseConfig A database configuration
  */
-module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
-  const conn = session.connection
+module.exports.dropDatabase = function dropDatabase (dbConn, databaseConfig) {
   const upperUser = databaseConfig.userID.toUpperCase()
-
-  const userExist = conn.xhr({ endpoint: 'runSQL', URLParams: { CONNECTION: DBA_FAKE }, data: "SELECT COUNT(1) as CNT FROM dba_users WHERE username = '" + upperUser + "'" })
+  const userExist = dbConn.selectParsedAsObject('SELECT COUNT(1) as CNT FROM dba_users WHERE username = ?', [upperUser])
   if (userExist.length && userExist[0].CNT !== 0) {
-    const activeConnections = conn.xhr({
-      endpoint: 'runSQL',
-      URLParams: { CONNECTION: DBA_FAKE },
-      data: "SELECT sid, serial# AS sn FROM v$session WHERE username = '" + upperUser + "'"
-    })
+    const activeConnections = dbConn.selectParsedAsObject('SELECT sid, serial# AS sn FROM v$session WHERE username = ?', [upperUser])
     for (let i = 0, l = activeConnections.length; i < l; i++) {
-      conn.xhr({
-        endpoint: 'runSQL',
-        URLParams: { CONNECTION: DBA_FAKE },
-        data: "alter system kill session '" + activeConnections[i].SID + ', ' + activeConnections[i].SN + "'"
-      })
+      dbConn.execParsed(`alter system kill session '${activeConnections[i].SID}, ${activeConnections[i].SN}'`)
     }
-    conn.xhr({ endpoint: 'runSQL', URLParams: { CONNECTION: DBA_FAKE }, data: 'DROP USER ' + upperUser + ' CASCADE' })
+    dbConn.execParsed('DROP USER ' + upperUser + ' CASCADE')
   } else {
     console.warn('User %s dose not exists. Drop skipped', upperUser)
   }
@@ -37,15 +27,11 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
 
 /**
  * Drop a specified schema & role (databaseName) with a pwd
- * @param {SyncConnection} conn
+ * @param {DBConnection} dbConn
  * @param {Object} databaseConfig A database configuration
  */
-module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
-  conn.xhr({
-    endpoint: 'runSQL',
-    URLParams: { CONNECTION: DBA_FAKE },
-    data: `CREATE USER ${databaseConfig.userID} IDENTIFIED BY ${databaseConfig.password} DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP PROFILE DEFAULT ACCOUNT UNLOCK;`
-  })
+module.exports.createDatabase = function createDatabase (dbConn, databaseConfig) {
+  dbConn.execParsed(`CREATE USER ${databaseConfig.userID} IDENTIFIED BY ${databaseConfig.password} DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP PROFILE DEFAULT ACCOUNT UNLOCK;`)
 
   const grants = [
     'GRANT RESOURCE, CONNECT, CTXAPP TO {0}',
@@ -76,47 +62,34 @@ module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
     'GRANT UNLIMITED TABLESPACE TO {0}'
   ]
   for (let i = 0, l = grants.length; i < l; i++) {
-    conn.xhr({
-      endpoint: 'runSQL',
-      URLParams: { CONNECTION: DBA_FAKE },
-      data: grants[i].replace('{0}', databaseConfig.userID)
-    })
+    dbConn.execParsed(grants[i].replace('{0}', databaseConfig.userID))
   }
 }
 
 /**
  * Create a minimally required  functions & tables for a first sign-in
- * @param {SyncConnection} conn
+ * @param {DBConnection} targetConn
  * @param {Number} clientNum A number of client we create database for
  * @param {Object} databaseConfig A database configuration
  */
-module.exports.createMinSchema = function createMinSchema (conn, clientNum, databaseConfig) {
-  conn.xhr({
-    endpoint: 'runSQL',
-    URLParams: { CONNECTION: databaseConfig.name },
-    data: `CREATE SEQUENCE SEQ_UBMAIN START WITH ${clientNum}0000000000 MAXVALUE ${clientNum}4999999999 MINVALUE ${clientNum}0000000000 NOCYCLE CACHE 10 ORDER`
-  })
+module.exports.createMinSchema = function createMinSchema (targetConn, clientNum, databaseConfig) {
+  targetConn.execParsed(`CREATE SEQUENCE SEQ_UBMAIN
+    START WITH ${clientNum}0000000000 MAXVALUE ${clientNum}4999999999 MINVALUE ${clientNum}0000000000 NOCYCLE CACHE 10 ORDER`)
 
-  conn.xhr({
-    endpoint: 'runSQL',
-    URLParams: { CONNECTION: databaseConfig.name },
-    data: `CREATE SEQUENCE SEQ_UBMAIN_BY1 START WITH ${clientNum}500000000000 MAXVALUE ${clientNum}999999999999 MINVALUE ${clientNum}500000000000 NOCYCLE ORDER`
-  })
+  targetConn.execParsed(`CREATE SEQUENCE SEQ_UBMAIN_BY1 START WITH ${clientNum}500000000000
+    MAXVALUE ${clientNum}999999999999 MINVALUE ${clientNum}500000000000 NOCYCLE ORDER`)
 
   const createObjectSQL = fs.readFileSync(path.join(__dirname, 'oracleObjects.sql'), 'utf8')
   const delimRe = /\r\n/.test(createObjectSQL) ? '/\r\n--' : '/\n--' // git can remove \r\n
   let statements = createObjectSQL.split(delimRe)
   statements.forEach(function (statement) {
-    if (statement) {
-      conn.xhr({ endpoint: 'runSQL', URLParams: { CONNECTION: databaseConfig.name }, data: statement })
-    }
+    if (statement) targetConn.execParsed(statement)
   })
+  targetConn.commit()
 
   const initialData = fs.readFileSync(path.join(__dirname, 'oracleTables.sql'), 'utf8')
   statements = initialData.split(delimRe)
   statements.forEach(function (statement) {
-    if (statement) {
-      conn.xhr({ endpoint: 'runSQL', URLParams: { CONNECTION: 'main' }, data: statement })
-    }
+    if (statement) targetConn.execParsed(statement)
   })
 }

@@ -55,7 +55,7 @@ function initDB (cfg) {
       .add([
         { short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: `Password for "${UBA_COMMON.USERS.ADMIN.NAME}"` },
         { short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config' },
-        { short: 'timeout', long: 'timeout', param: 'timeout', defaultValue: 120000, searchInEnv: true, help: 'HTTP Receive timeout in ms' }])
+      ])
       .add({
         short: 'c',
         long: 'clientIdentifier',
@@ -64,10 +64,38 @@ function initDB (cfg) {
         searchInEnv: false,
         help: 'Identifier of the client. Must be between 2 and 8999. \n\t\t1 is for UnityBase developer, 3 for test. \n\t\tNumbers > 100 is for real installations'
       })
-      .add({ short: 'drop', long: 'dropDatabase', param: '', defaultValue: false, searchInEnv: false, help: 'Drop a database/schema first' })
-      .add({ short: 'create', long: 'createDatabase', param: '', defaultValue: false, searchInEnv: false, help: 'Create a new database/schema' })
-      .add({ short: 'dba', long: 'dba', param: 'DBA_user_name', defaultValue: '', searchInEnv: true, help: 'A DBA name. Used in case `createDatabase=true`' })
-      .add({ short: 'dbaPwd', long: 'dbaPwd', param: 'DBA_password', defaultValue: '', searchInEnv: true, help: 'A DBA password. Used in case `createDatabase=true`' })
+      .add({
+        short: 'drop',
+        long: 'dropDatabase',
+        param: '',
+        defaultValue: false,
+        searchInEnv: false,
+        help: 'Drop a database/schema first'
+      })
+      .add({
+        short: 'create',
+        long: 'createDatabase',
+        param: '',
+        defaultValue: false,
+        searchInEnv: false,
+        help: 'Create a new database/schema'
+      })
+      .add({
+        short: 'dba',
+        long: 'dba',
+        param: 'DBA_user_name',
+        defaultValue: '',
+        searchInEnv: true,
+        help: 'A DBA name. Used in case `createDatabase=true`'
+      })
+      .add({
+        short: 'dbaPwd',
+        long: 'dbaPwd',
+        param: 'DBA_password',
+        defaultValue: '',
+        searchInEnv: true,
+        help: 'A DBA password. Used in case `createDatabase=true`'
+      })
       .add({
         short: 'conn',
         long: 'connectionName',
@@ -79,104 +107,70 @@ function initDB (cfg) {
     cfg = opts.parseVerbose({}, true)
   }
   if (!cfg) return
-  let session, conn, generator
   if (cfg.clientIdentifier > 8999) {
     throw new Error('clientIdentifier (-c parameter) must be between 1 and 8999')
   }
-  const originalConfigFileName = argv.getConfigFileName()
   const config = argv.getServerConfiguration(true)
-  cfg.host = argv.serverURLFromConfig(config)
-  cfg.user = UBA_COMMON.USERS.ADMIN.NAME
-  console.log(`Use host "${cfg.host}" as specified in config "${originalConfigFileName}"`)
 
-  // database are slow :( Increase timeout to 2 minutes
-  http.setGlobalConnectionDefaults({ receiveTimeout: 2 * 60 * 1000 })
+  let mainConnCfg
+  if (cfg.connectionName) {
+    mainConnCfg = _.find(config.application.connections, {name: cfg.connectionName})
+    if (!mainConnCfg) throw new Error(`Database connection @${cfg.connectionName} not found in application.connections`)
+  } else {
+    mainConnCfg = _.find(config.application.connections, {isDefault: true}) || config.application.connections[0]
+  }
+  const dbaConnCfg = Object.assign({}, mainConnCfg)
+  // set DBA user/pwd
+  dbaConnCfg.name = 'FAKE_DBA_CONN'
+  dbaConnCfg.userID = cfg.dba
+  dbaConnCfg.password = cfg.dbaPwd
 
-  if (argv.checkServerStarted(cfg.host)) {
-    // throw new Error('Please, shutdown a server on ' + cfg.host + ' before run this command');
+  let dbDriverName = dbaConnCfg.driver.toLowerCase()
+  if (dbDriverName.startsWith('mssql')) {
+    dbDriverName = 'mssql'
+    dbaConnCfg.databaseName = 'master'
+  }
+  config.application.connections.push(dbaConnCfg)
+
+  // add FAKE_DBA_CONN for native
+  argv.setServerConfiguration(config)
+  const createDBConnectionPool = require('@unitybase/base').createDBConnectionPool
+  const dbConnections = createDBConnectionPool(config.application.connections)
+  const dbaConn = dbConnections.FAKE_DBA_CONN
+
+  const generator = require(`./dbScripts/${dbDriverName}`)
+  if (cfg.dropDatabase) {
+    console.info(`Dropping a database ${mainConnCfg.name}...`)
+    generator.dropDatabase(dbaConn, mainConnCfg)
+  }
+  if (cfg.createDatabase) {
+    console.info(`Creating a database ${mainConnCfg.name}...`)
+    generator.createDatabase(dbaConn, mainConnCfg)
+    dbaConn.commit()
   }
 
-  fs.renameSync(originalConfigFileName, originalConfigFileName + '.bak')
-  try {
-    const connectionToCreateDB = createFakeConfig(config, originalConfigFileName, cfg.connectionName)
-    cfg.forceStartServer = true
-    session = argv.establishConnectionFromCmdLineAttributes(cfg)
-    conn = session.connection
-    let dbDriverName = connectionToCreateDB.driver.toLowerCase()
-    if (dbDriverName.startsWith('mssql')) {
-      dbDriverName = 'mssql'
-    }
-    generator = require(`./dbScripts/${dbDriverName}`)
-    if (cfg.dropDatabase) {
-      console.info(`Dropping a database ${connectionToCreateDB.name}...`)
-      generator.dropDatabase(session, connectionToCreateDB)
-    }
-    if (cfg.createDatabase) {
-      console.info(`Creating a database ${connectionToCreateDB.name}...`)
-      generator.createDatabase(conn, connectionToCreateDB)
-    }
-    if (cfg.connectionName) {
-      console.info('Skip creating additional objects for non-default connection...')
-    } else {
-      console.info('Creating a minimal set of database objects...')
-      generator.createMinSchema(conn, cfg.clientIdentifier, connectionToCreateDB)
-      console.info('Creating a superuser..')
-      fillBuildInRoles(conn, dbDriverName, cfg.pwd)
-    }
-    console.info('Database is ready. Run a `ubcli generateDDL` command to create a database tables for a domain')
-  } finally {
-    fs.renameSync(originalConfigFileName + '.bak', originalConfigFileName)
+  const targetConn = dbConnections[mainConnCfg.name]
+  if (cfg.connectionName) {
+    console.info('Skip creating additional objects for non-default connection...')
+  } else {
+    console.info('Creating a minimal set of database objects...')
+    generator.createMinSchema(targetConn, cfg.clientIdentifier, mainConnCfg)
+    targetConn.commit()
+    console.info('Creating a superuser..')
+    fillBuildInRoles(targetConn, dbDriverName, cfg.pwd)
+    targetConn.commit()
   }
-
-  /**
-   * Create a fake config with authentication disabled & empty domain.
-   * Return a default database driver name
-   * @private
-   */
-  function createFakeConfig (config, originalConfigFileName, connectionName = '') {
-    const newConfig = _.cloneDeep(config)
-    let dbaConn
-    let defaultDB
-
-    if (connectionName) {
-      defaultDB = _.find(config.application.connections, { name: connectionName })
-      if (!defaultDB) throw new Error(`Database connection @${connectionName} not found in application.connections`)
-    } else {
-      defaultDB = _.find(config.application.connections, { isDefault: true }) || config.application.connections[0]
-    }
-
-    newConfig.security = {}
-    newConfig.application.domain = { models: _.filter(newConfig.application.domain.models, { name: 'UB' }) }
-    delete newConfig.application.domain.models[0].name
-    if (cfg.dropDatabase || cfg.createDatabase) {
-      dbaConn = _.cloneDeep(defaultDB)
-      _.assign(dbaConn, {
-        name: '__dba',
-        userID: cfg.dba,
-        password: cfg.dbaPwd,
-        isDefault: false
-      })
-      if (dbaConn.driver.toLowerCase().startsWith('mssql')) {
-        dbaConn.databaseName = 'master'
-      }
-      newConfig.httpServer.threadPoolSize = 1
-      newConfig.application.connections.push(dbaConn)
-    }
-    fs.writeFileSync(originalConfigFileName, newConfig)
-    // uncomment for debug purpose
-    // fs.writeFileSync(originalConfigFileName + '.fake', JSON.stringify(newConfig, null, '\t'));
-    return defaultDB
-  }
+  console.info('Database is ready. Run a `ubcli generateDDL` command to create a database tables for a domain')
 }
 
 /**
  * Create a Everyone & admin roles and a SuperUser named admin with password `admin`
- * @param {SyncConnection} conn
+ * @param {DBConnection} targetConn
  * @param {String} dbDriverName
  * @param {string} adminPwd Password for "admin" user
  * @private
  */
-function fillBuildInRoles (conn, dbDriverName, adminPwd) {
+function fillBuildInRoles (targetConn, dbDriverName, adminPwd) {
   const initSecurity = []
   let isoDate, auditTailColumns, auditTailValues
 
@@ -225,9 +219,7 @@ function fillBuildInRoles (conn, dbDriverName, adminPwd) {
   }
 
   initSecurity.forEach(function (stmt) {
-    conn.xhr({
-      endpoint: 'runSQL', URLParams: { CONNECTION: 'main' }, data: stmt
-    })
+    targetConn.execParsed(stmt, [])
   })
 }
 

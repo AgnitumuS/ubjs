@@ -112,7 +112,7 @@ class DBConnection {
    * @param {Array} paramsValues
    * @returns {Array<Object>}
    */
-  selectParsedAsObject (parsedSql, paramsValues) {
+  selectParsedAsObject (parsedSql, paramsValues = []) {
     return binding.runAsObject(this[DB_INDEX], parsedSql, paramsValues)
   }
 
@@ -122,7 +122,7 @@ class DBConnection {
    * @param {Array} params
    * @returns {string}
    */
-  runParsed (sql, params) {
+  runParsed (sql, params = []) {
     return binding.run(this[DB_INDEX], sql, params)
   }
 
@@ -132,7 +132,7 @@ class DBConnection {
    * @param {Array} params
    * @returns {boolean}
    */
-  exec (sql, params) {
+  exec (sql, params = []) {
     const { parsedSql, parsedParams } = this.parseSQL(sql, params)
     return this.execParsed(parsedSql, parsedParams)
   }
@@ -143,7 +143,7 @@ class DBConnection {
    * @param {Array} params Parameters values
    * @returns {boolean}
    */
-  execParsed (sqlStatement, params) {
+  execParsed (sqlStatement, params = []) {
     return binding.exec(this[DB_INDEX], sqlStatement, params)
   }
 
@@ -172,6 +172,7 @@ class DBConnection {
       return func()
     }
   }
+
   /**
    * Generate ID for entity
    * @param {string} entity
@@ -338,7 +339,7 @@ class DBConnection {
  * @return {Object<string, DBConnection>}
  */
 function createDBConnectionPool (connectionsConfig) {
-  let connections = {}
+  const connections = {}
   const connBinding = binding.connections
   connectionsConfig.forEach((cfg, idx) => {
     if (connBinding[idx] !== cfg.name) {

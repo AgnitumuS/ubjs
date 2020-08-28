@@ -14,7 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - [trailing commas](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Trailing_commas) now supported
     in config and meta files
   - partial configs for models
-    
+ - `argv.setServerConfiguration` method - allows to set a config for native part
+   
 ### Changed
  - ubConfig parser implementation is moved into UB.js (compiled as resource into ub server)
 
