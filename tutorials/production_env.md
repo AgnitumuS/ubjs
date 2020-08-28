@@ -133,6 +133,7 @@ UB_DB_DRIVER=Oracle UB_CFG='ubConfigDocFlow-tpl.json' UB_VMODELS='crb:crb_bpm' u
 All variables can be exported from env file using
 ```shell script
 set -o allexport; . ubConfig-dev.env; set +o allexport
+# set -o allexport; source ubConfig-dev.env; set +o allexport
 ```
 
 We also recommend exporting an `UB_ENV` variable and put it to the `PROMPT_COMMAND` inside `.bashrc` to
