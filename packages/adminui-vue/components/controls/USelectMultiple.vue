@@ -252,6 +252,15 @@ export default {
     fixedItems: {
       type: Array,
       default: () => []
+    },
+
+    /**
+     * Search request condition
+     */
+    searchStrategy: {
+      type: String,
+      default: 'like',
+      validator: value => ['like', 'startsWith'].includes(value)
     }
   },
 
@@ -350,7 +359,7 @@ export default {
       this.pageNum = pageNum
 
       const data = await this.repository()
-        .whereIf(query, this.displayAttribute, 'like', query)
+        .whereIf(query, this.displayAttribute, this.searchStrategy, query)
         .start(pageNum * this.pageSize)
         .limit(this.pageSize + 1)
         .select()
