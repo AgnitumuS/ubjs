@@ -64,7 +64,16 @@ export default {
     /**
      * Add clear icon
      */
-    clearable: Boolean
+    clearable: Boolean,
+
+    /**
+     * Search request condition
+     */
+    searchStrategy: {
+      type: String,
+      default: 'like',
+      validator: value => ['like', 'startsWith'].includes(value)
+    }
   },
 
   data () {
