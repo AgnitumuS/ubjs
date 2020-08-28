@@ -67,7 +67,7 @@ TESTCASE=initialize
 npx ubcli initialize -cfg $UB_CFG -u root -p root || err
 
 TESTCASE=autotest
-/usr/bin/time -v npx ubcli autotest -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -noLogo -skipModules -cd
+/usr/bin/time -v npx ubcli autotest -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -noLogo -skipModules
 if [ ! $? = 0 ]; then
   cat ./_autotestResults.json;
   if [ ! -z ${UB_TESTRES+x} ] && [ ! -z "${UB_TESTRES// }" ]; then
