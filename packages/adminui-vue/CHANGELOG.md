@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
   - `UNavbar`: `Close all` and `Close inactive` actions added to tabs menu (as in tab popup)
+  - `lookups.js`: made it possible to pass the wherelist to lookups in the case when there is no need to load all
+  the directory records
 
 ### Changed
 

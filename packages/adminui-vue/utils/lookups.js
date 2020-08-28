@@ -88,7 +88,7 @@ const instance = new Vue({
       await this.subscribe(ENUM_ENTITY, ['eGroup', 'code', 'name'])
     },
 
-    async subscribe (entity, attrs = []) {
+    async subscribe (entity, attrs = [], whereList) {
       const subscription = this.entities[entity]
       const isFirstSubscription = subscription.subscribes === 0
       const hasAdditionalAttrs = !attrs.every(attr => subscription.attrs.has(attr))
@@ -106,9 +106,14 @@ const instance = new Vue({
 
       subscription.subscribes++
 
-      if (isFirstSubscription || hasAdditionalAttrs) {
-        const resultData = await UB.Repository(entity)
-          .attrs([...subscription.attrs])
+      if (isFirstSubscription || hasAdditionalAttrs || whereList) {
+        const ubql = {
+          entity,
+          fieldList: [...subscription.attrs],
+          whereList: whereList || {}
+        }
+
+        const resultData = await UB.Repository(ubql)
           .limit(LOOKUP_LIMIT + 1)
           .select()
 
@@ -116,8 +121,19 @@ const instance = new Vue({
           console.warn(`Lookups: Entity "${entity}" contains more than ${LOOKUP_LIMIT} records. 
           For large amounts of data, performance problems may occur on slower computers`)
         }
-        subscription.data.splice(0, subscription.data.length, ...resultData)
-        resultData.forEach(r => { subscription.mapById[r.ID] = r })
+
+        let uniqueData
+        if (whereList) {
+          const data = resultData.filter(({ ID: resultDataID }) => (
+            subscription.data.every(({ ID: dataID }) => dataID !== resultDataID)
+          ))
+          uniqueData = subscription.data.concat(data)
+        } else {
+          uniqueData = resultData
+        }
+
+        subscription.data.splice(0, subscription.data.length, ...uniqueData)
+        uniqueData.forEach(r => { subscription.mapById[r.ID] = r })
       }
     },
 
@@ -175,6 +191,7 @@ const lookupsModule = {
    *
    * @param {string} entity Entity name.
    * @param {string[]} [attrs] Additional lookup attrs.
+   * @param {object} [whereList] Additional lookup whereList.
    * @returns {Promise<void>}
    */
   subscribe: instance.subscribe,
