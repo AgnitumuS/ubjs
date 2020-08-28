@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
   - `UNavbar`: `Close all` and `Close inactive` actions added to tabs menu (as in tab popup)
+  - `USelectEntity`, `USelectEnum`, `USelectMultiple`, `USelectMany`: prop `searchStrategy` which sets search request condition
 
 ### Changed
 
