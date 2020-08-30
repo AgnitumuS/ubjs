@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
   - `UNavbar`: `Close all` and `Close inactive` actions added to tabs menu (as in tab popup)
   - `USelectEntity`, `USelectEnum`, `USelectMultiple`, `USelectMany`: prop `searchStrategy` which sets search request condition
+  - `USelectEntity`, `USelectEnum`, `USelectMultiple`, `USelectMany`: user input debounce timeout increased from 120 to 600
 
 ### Changed
 
@@ -28,7 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    Default is `false` and new tab is activated.
  
 ### Changed
- - `UNavbar`: tabs now displayed insoide scroll box and prepended by "All tabs" button for tab management
+ - `UNavbar`: tabs now displayed inside scroll box and prepended by "All tabs" button for tab management
  - `UTableEntity` in case `window.outerHeight < 500px` then table header hides while user scroll down (as with address bar in mobile browsers)
  - `UNavbar` in case `window.outerHeight < 500px` then navbar visibility can be toggled on/off (new toggle button added)
 

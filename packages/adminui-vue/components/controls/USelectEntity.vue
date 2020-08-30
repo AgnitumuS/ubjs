@@ -433,7 +433,7 @@ export default {
       this.loading = false
     },
 
-    debouncedFetch: debounce(120, function (query) {
+    debouncedFetch: debounce(600, function (query) {
       this.fetchPage(query)
     }),
 
