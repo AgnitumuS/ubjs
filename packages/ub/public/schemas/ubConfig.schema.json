@@ -348,7 +348,7 @@
     },
     "javascript": {
       "type": "object",
-      "description": "JavaScript VM configuration",
+      "description": "**DEPRECATED** - starting from UB 5.18.12 use command line switches or env. vars. JavaScript VM configuration",
       "properties": {
         "timeout": {
           "type": "number",
