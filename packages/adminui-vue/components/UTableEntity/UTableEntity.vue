@@ -1,6 +1,7 @@
 <template>
   <root
     v-bind="$attrs"
+    :view-mode.sync="viewMode"
     v-on="$listeners"
   >
     <template
@@ -88,14 +89,25 @@ export default {
     },
 
     /**
-     * If passed will store applied filters in localStorage
+     * Array of column settings. Same as "column" prop but for card view.
      */
-    shortcutCode: [String, undefined]
+    cardColumns: {
+      type: Array,
+      default: () => []
+    },
+
+    /**
+     * Hook which called after store created, but data didn't start to load.
+     */
+    beforeInitialLoad: {
+      type: Function,
+      default: () => () => Promise.resolve()
+    }
   },
 
   data () {
     return {
-      unwatchFilters: () => {} // no-op. in case passed shortcutCode will replaced by filters unwatch function
+      viewMode: 'table'
     }
   },
 
@@ -127,8 +139,18 @@ export default {
       }
     },
 
-    filtersLocalStorageMask () {
-      return `UTableEntity:filters:${this.shortcutCode}`
+    getCardColumns () {
+      if (this.cardColumns.length > 0) {
+        return this.cardColumns.map(column => {
+          if (typeof column === 'string') {
+            return this.buildColumn(/** @type UTableColumn */{ id: column })
+          } else {
+            return this.buildColumn(column)
+          }
+        })
+      } else {
+        return this.getColumns
+      }
     }
   },
 
@@ -136,13 +158,10 @@ export default {
     entityName: 'loadData'
   },
 
-  created () {
+  async created () {
     const storeConfig = createStore(this)
     this.$store = new Vuex.Store(storeConfig)
-    if (this.shortcutCode !== undefined) {
-      this.applySavedFilters()
-      this.unwatchFilters = this.watchFilters()
-    }
+    await this.beforeInitialLoad(this)
     this.loadData()
   },
 
@@ -154,7 +173,6 @@ export default {
   beforeDestroy () {
     this.$UB.connection.removeListener(`${this.getEntityName}:changed`, this.updateData)
     this.unsubscribeLookups()
-    this.unwatchFilters()
   },
 
   methods: {
@@ -206,7 +224,7 @@ export default {
           // check 3 level depth
           const prevAttrInfo = this.$store.getters.schema.getEntityAttributeInfo(column.id, -1)
           if (prevAttrInfo.parentAttribute) label = `${prevAttrInfo.parentAttribute.caption} / ${label}`
-        } else if (attrInfo && attrInfo.attribute) {
+        } else if (attrInfo && attrInfo.attribute && attrInfo.attribute.caption) {
           label = attrInfo.attribute.caption
         } else {
           label = column.id
@@ -253,32 +271,6 @@ export default {
         const errMsg = `Columns [${fieldsWithError.join(', ')}] did not have slot for render`
         throw new Error(errMsg)
       }
-    },
-
-    /**
-     * Apply filters in case local storage has value for current shortcut
-     */
-    applySavedFilters () {
-      const filtersStr = window.localStorage.getItem(this.filtersLocalStorageMask)
-      if (filtersStr) {
-        const filters = JSON.parse(filtersStr)
-        for (const filter of filters) {
-          this.$store.commit('APPLY_FILTER', filter)
-        }
-      }
-    },
-
-    /**
-     * Watch filters and save it into local storage
-     * @returns {function(): void} Unwatch store
-     */
-    watchFilters () {
-      return this.$store.watch(
-        state => state.filters,
-        value => {
-          window.localStorage.setItem(this.filtersLocalStorageMask, JSON.stringify(value))
-        }
-      )
     }
   }
 }

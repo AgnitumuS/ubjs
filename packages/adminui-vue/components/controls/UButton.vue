@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <button
     class="u-button"
     :class="[
@@ -72,7 +72,7 @@ export default {
       type: String,
       default: 'default',
       validator (value) {
-        return ['default', 'inverse', 'plain'].includes(value)
+        return ['default', 'plain', 'inverse'].includes(value)
       }
     },
 
@@ -104,80 +104,60 @@ export default {
     justify-content: center;
   }
 
-  .u-button.u-button_has-icon {
-    padding: 0;
-  }
-
-  /* SIZES BEGIN */
-  /* Size: small */
   .u-button_size-small {
-    font-size: 14px;
+    --font-size: 14px;
+    --padding-of-button-and-inner-elements: 2px;
+    --side-padding-of-button-with-text: 20px;
+    --side-padding-of-button-with-text-and-icon: 8px;
   }
 
-  .u-button_size-small .u-button__icon {
-    font-size: 16px;
-  }
-
-  .u-button_size-small .u-button__icon,
-  .u-button_size-small .u-button__label {
-    padding: 4px;
-  }
-
-  .u-button_size-small.u-button_has-text {
-    padding: 0 20px;
-  }
-
-  .u-button_size-small.u-button_has-text.u-button_has-icon {
-    padding: 0 8px;
-  }
-
-  /* Size: medium */
   .u-button_size-medium {
-    font-size: 16px;
+    --font-size: 16px;
+    --padding-of-button-and-inner-elements: 4px;
+    --side-padding-of-button-with-text: 24px;
+    --side-padding-of-button-with-text-and-icon: 16px;
   }
 
-  .u-button_size-medium .u-button__icon {
-    font-size: 18px;
-  }
-
-  .u-button_size-medium .u-button__icon,
-  .u-button_size-medium .u-button__label {
-    padding: 8px;
-  }
-
-  .u-button_size-medium.u-button_has-text {
-    padding: 0 24px;
-  }
-
-  .u-button_size-medium.u-button_has-text.u-button_has-icon {
-    padding: 0 16px;
-  }
-
-  /* Size: large */
   .u-button_size-large {
-    font-size: 18px;
+    --font-size: 18px;
+    --padding-of-button-and-inner-elements: 6px;
+    --side-padding-of-button-with-text: 28px;
+    --side-padding-of-button-with-text-and-icon: 20px;
   }
 
-  .u-button_size-large .u-button__icon {
-    font-size: 20px;
+  .u-button {
+    font-size: var(--font-size);
   }
-
-  .u-button_size-large .u-button__icon,
-  .u-button_size-large .u-button__label {
-    padding: 12px;
-  }
-
-  .u-button_size-large.u-button_has-text {
-    padding: 0 28px;
-  }
-
-  .u-button_size-large.u-button_has-text.u-button_has-icon {
-    padding: 0 20px;
-  }
-  /* SIZES END */
 
   .u-button__icon {
-    font-size: 1em;
+    font-size: calc(var(--font-size) + 2px);
+  }
+
+  .u-button,
+  .u-button__icon,
+  .u-button__label {
+    padding: var(--padding-of-button-and-inner-elements);
+  }
+
+  .u-button_has-text:before,
+  .u-button_has-text:after {
+    min-width: var(--side-padding-of-button-with-text);
+  }
+
+  .u-button_has-text.u-button_has-icon:before,
+  .u-button_has-text.u-button_has-icon:after {
+    min-width: var(--side-padding-of-button-with-text-and-icon);
+  }
+
+  .u-button_appearance-default:before,
+  .u-button_appearance-default:after,
+  .u-button_appearance-plain:before,
+  .u-button_appearance-plain:after {
+    content: ''
+  }
+
+  .u-button__label {
+    line-height: 1;
   }
 
   .u-button_appearance-inverse {

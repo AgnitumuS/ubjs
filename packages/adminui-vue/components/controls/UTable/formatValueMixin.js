@@ -6,6 +6,14 @@ module.exports = {
       } else {
         return value
       }
+    },
+
+    formatHead ({ column }) {
+      if (typeof column.formatHead === 'function') {
+        return column.formatHead({ column })
+      } else {
+        return column.label
+      }
     }
   }
 }

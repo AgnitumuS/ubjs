@@ -1,37 +1,38 @@
 <template>
-  <form
-    class="filter-section"
-    @submit.prevent="$emit('search', {
+  <filter-template
+    :button-disabled="isEmpty"
+    @submit="$emit('search', {
       whereList,
       description: `${$ut('table.filter.date.from')} ${valueFrom} ${$ut('table.filter.date.to')} ${valueTo} `
     })"
   >
-    <u-base-input
-      v-model="valueFrom"
-      :placeholder="$ut('table.filter.date.from')"
-      class="filter-input-number"
-      type="number"
-    />
-    -
-    <u-base-input
-      v-model="valueTo"
-      :placeholder="$ut('table.filter.date.to')"
-      class="filter-input-number"
-      type="number"
-    />
-
-    <u-button
-      appearance="inverse"
-      :disabled="isEmpty"
-      type="submit"
-      icon="u-icon-search"
-    />
-  </form>
+    <div class="u-table-entity-filter__date-range">
+      <u-base-input
+        v-model="valueFrom"
+        class="u-table-entity-filter__date-range-input"
+        :placeholder="$ut('table.filter.date.from')"
+        type="number"
+      />
+      <div class="u-table-entity-filter__date-range-divider">
+        -
+      </div>
+      <u-base-input
+        v-model="valueTo"
+        class="u-table-entity-filter__date-range-input"
+        :placeholder="$ut('table.filter.date.to')"
+        type="number"
+      />
+    </div>
+  </filter-template>
 </template>
 
 <script>
 export default {
   name: 'FilterNumberRange',
+
+  components: {
+    FilterTemplate: require('../../components/FilterTemplate.vue').default
+  },
 
   data () {
     return {
@@ -66,3 +67,19 @@ export default {
   }
 }
 </script>
+
+<style>
+.u-table-entity-filter__date-range {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.u-table-entity-filter__date-range-input {
+  max-width: 100px;
+}
+
+.u-table-entity-filter__date-range-divider {
+  padding: 0 12px;
+}
+</style>

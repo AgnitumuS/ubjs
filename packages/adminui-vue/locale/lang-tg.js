@@ -161,6 +161,21 @@ UB.i18nExtend({
       outOf: 'аз',
       nextPage: 'Саҳифаи навбатӣ',
       prevPage: 'Саҳифаи гузашта'
+    },
+    columnLabel: 'Колонка',
+    viewMode: {
+      label: 'Вид отображения',
+      card: 'Карточки',
+      table: 'Таблица'
+    },
+    sort: {
+      label: 'Сортировка',
+      direction: {
+        label: 'Направление',
+        asc: 'По возрастанию',
+        desc: 'По убыванию',
+        none: 'Нет'
+      }
     }
   },
 
@@ -181,7 +196,7 @@ UB.i18nExtend({
     },
     dropZone: {
       caption: 'Файлро ба ин ҷо кашед ё интихоб кунед',
-      acceptError: 'Тамдиди (Намуди) файл нодуруст аст'
+      acceptError: 'Тамдиди (Намуди) файл нодуруст аст',
       selectedFiles: 'Интихобшуда'
     }
   },

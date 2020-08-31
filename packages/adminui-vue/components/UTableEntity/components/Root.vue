@@ -8,11 +8,10 @@
     @keydown.ctrl.insert.exact="canAddNew && addNew()"
     @keydown.ctrl.r.prevent.exact="!loading && refresh()"
     @keydown.enter.exact="onSelect(selectedRowId)"
-    @keydown.exact="tryFocusFilter"
-    @keydown.left.prevent.exact="moveLeft"
-    @keydown.right.prevent.exact="moveRight"
-    @keydown.up.prevent.exact="moveUp"
-    @keydown.down.prevent.exact="moveDown"
+    @keydown.left.prevent.exact="move('left')"
+    @keydown.right.prevent.exact="move('right')"
+    @keydown.up.prevent.exact="move('up')"
+    @keydown.down.prevent.exact="move('down')"
   >
     <div class="u-table-entity__head">
       <!-- @slot Replace whole toolbar -->
@@ -27,14 +26,15 @@
           name="toolbarPrepend"
         />
 
-        <u-toolbar-button
+        <u-button
+          appearance="inverse"
           icon="u-icon-refresh"
-          color="secondary"
+          color="control"
           :disabled="loading"
           @click="refresh"
         >
           {{ $ut('refresh') }}
-        </u-toolbar-button>
+        </u-button>
 
         <!-- @slot Replace add-new button in toolbar panel -->
         <slot
@@ -42,14 +42,15 @@
           :store="$store"
           name="toolbarButtonAddNew"
         >
-          <u-toolbar-button
+          <u-button
+            appearance="inverse"
             :disabled="!canAddNew"
             icon="u-icon-add"
-            color="secondary"
+            color="control"
             @click="addNew"
           >
             {{ $ut('actionAdd') }}
-          </u-toolbar-button>
+          </u-button>
         </slot>
 
         <!-- @slot Prepend new buttons to toolbar before filter -->
@@ -59,37 +60,8 @@
           name="toolbarAppend"
         />
 
-        <div
-          class="filter-container"
-          @keydown.stop
-        >
-          <u-icon
-            color="primary"
-            icon="u-icon-filter"
-            class="u-table-entity__filter-icon"
-          />
-          <el-select
-            v-model="selectedColumnId"
-            class="filter-input"
-            :placeholder="$ut('table.filter.columnPlaceholder')"
-          >
-            <el-option
-              v-for="col in columns"
-              :key="col.id"
-              :value="col.id"
-              :label="$ut(col.label)"
-            />
-          </el-select>
-
-          <keep-alive>
-            <filter-selector
-              v-if="selectedColumnId"
-              ref="filterSelector"
-              :key="selectedColumnId"
-            />
-          </keep-alive>
-        </div>
-
+        <filter-selector />
+        <sort />
         <pagination />
 
         <!-- @slot Replace whole toolbar dropdown -->
@@ -157,6 +129,33 @@
               />
             </template>
 
+            <!-- @slot Replace viewMode button in toolbar dropdown -->
+            <template #viewMode>
+              <slot
+                :close="close"
+                :store="$store"
+                name="toolbarDropdownViewMode"
+              >
+                <u-dropdown-item
+                  label="table.viewMode.label"
+                  icon="u-icon-eye"
+                >
+                  <u-dropdown-item
+                    :disabled="viewMode === 'table'"
+                    label="table.viewMode.table"
+                    icon="u-icon-grid"
+                    @click="$emit('update:viewMode', 'table')"
+                  />
+                  <u-dropdown-item
+                    :disabled="viewMode === 'card'"
+                    label="table.viewMode.card"
+                    icon="u-icon-attributes"
+                    @click="$emit('update:viewMode', 'card')"
+                  />
+                </u-dropdown-item>
+              </slot>
+            </template>
+
             <!-- @slot Append new buttons to toolbar -->
             <template #append>
               <slot
@@ -173,6 +172,7 @@
     <filter-list />
 
     <u-table
+      v-if="viewMode === 'table'"
       ref="table"
       :columns="columns"
       :fixed-column-id="fixedColumnId"
@@ -182,26 +182,41 @@
       :items="items"
       :max-height="maxHeight"
       tabindex="1"
-      @click-cell="selectCell"
+      @click-cell="select"
       @contextmenu-cell="showContextMenu"
       @dblclick-row="onSelect($event.row.ID, $event.row)"
-      @sort="throttledUpdateSort"
     >
       <template
-        v-for="col in columns"
-        #[col.id]="{name, value, row}"
+        v-for="column in columns"
+        #[`head_${column.id}`]
       >
         <slot
-          :column="col"
-          :name="col.id"
+          :column="column"
+          :name="`head_${column.id}`"
+        >
+          {{ column.label }}
+          <i
+            v-if="sort"
+            :class="getSortIconClass(column.id)"
+          />
+        </slot>
+      </template>
+
+      <template
+        v-for="column in columns"
+        #[column.id]="{row, value}"
+      >
+        <slot
+          :column="column"
+          :name="column.id"
           :row="row"
-          :value="row[col.id]"
+          :value="value"
         >
           <component
-            :is="getCellTemplate(col)"
-            :column="col"
+            :is="getCellTemplate(column)"
+            :column="column"
             :row="row"
-            :value="row[col.id]"
+            :value="row[column.id]"
           />
         </slot>
       </template>
@@ -221,6 +236,23 @@
         </u-button>
       </div>
     </u-table>
+
+    <u-card-view
+      v-if="viewMode === 'card'"
+      :columns="cardColumns"
+      :items="items"
+      :get-card-class="getRowClass"
+      @click="select"
+      @contextmenu="showContextMenu"
+      @dblclick="onSelect"
+    >
+      <slot
+        slot="card"
+        slot-scope="{row}"
+        name="card"
+        :row="row"
+      />
+    </u-card-view>
 
     <u-dropdown
       ref="contextMenu"
@@ -338,51 +370,53 @@
 </template>
 
 <script>
-const FilterSelector = require('./FilterSelector.vue').default
-const Pagination = require('./Pagination.vue').default
 const { mapState, mapGetters, mapMutations, mapActions } = require('vuex')
-const FilterList = require('./FilterList.vue').default
-const ToolbarDropdown = require('./ToolbarDropdown.vue').default
 const TypeProvider = require('../type-provider')
-/**
-   * Replaced from function to global scope in case not to create a regular expression every function call.
-   * Creating of regular expression is slow operation
-   */
-const regExpLetterOrNumber = /[A-Za-zА-Яа-я0-9]/
-const { throttle } = require('throttle-debounce')
 
 export default {
   name: 'UTableEntityRoot',
 
   components: {
-    FilterSelector,
-    Pagination,
-    FilterList,
-    ToolbarDropdown
+    FilterSelector: require('./FilterSelector.vue').default,
+    Pagination: require('./Pagination.vue').default,
+    Sort: require('./Sort.vue').default,
+    FilterList: require('./FilterList.vue').default,
+    ToolbarDropdown: require('./ToolbarDropdown.vue').default,
+    UCardView: require('../../controls/UCardView.vue').default
   },
 
   props: {
     /**
-       * If set, table will have static height.
-       * Table container will have own scroll and fixed header.
-       */
+     * If set, table will have static height.
+     * Table container will have own scroll and fixed header.
+     */
     height: [Number, String],
 
     /**
-       * If set, table will have maxHeight.
-       * Table container will have own scroll and fixed header.
-       */
+     * If set, table will have maxHeight.
+     * Table container will have own scroll and fixed header.
+     */
     maxHeight: [Number, String],
 
     /**
-       * Id of column which will stack when we scroll table by horizontal.
-       */
+     * Id of column which will stack when we scroll table by horizontal.
+     */
     fixedColumnId: String,
     /**
-       * Overrides the record selection event. That is, double click or enter
-       * @type {function({ID: Number, row: Object, close: function})}
-       */
-    onSelectRecord: Function
+     * Overrides the record selection event. That is, double click or enter
+     * @type {function({ID: Number, row: Object, close: function})}
+     */
+    onSelectRecord: Function,
+
+    /**
+     * View mode.
+     * @private
+     */
+    viewMode: {
+      type: String,
+      default: 'table',
+      validator: value => ['card', 'table'].includes(value)
+    }
   },
 
   inject: {
@@ -402,7 +436,8 @@ export default {
       'items',
       'loading',
       'withTotal',
-      'isLastPageIndex'
+      'isLastPageIndex',
+      'sort'
     ]),
 
     ...mapGetters([
@@ -412,7 +447,8 @@ export default {
       'canAudit',
       'hasSelectedRow',
       'formCode',
-      'columns'
+      'columns',
+      'cardColumns'
     ]),
 
     pageIndex: {
@@ -458,7 +494,6 @@ export default {
   methods: {
     ...mapActions([
       'updatePageIndex',
-      'updateSort',
       'cellNavigate',
       'addNew',
       'editRecord',
@@ -483,14 +518,18 @@ export default {
     },
 
     showContextMenu ({ event, row, column }) {
-      this.selectCell({ row, column })
+      this.select({ row, column })
       this.contextMenuRowId = row.ID
       this.$refs.contextMenu.show(event)
     },
 
-    selectCell ({ row, column }) {
-      this.SELECT_COLUMN(column.id)
-      this.SELECT_ROW(row.ID)
+    select ({ row, column }) {
+      if (column !== undefined) {
+        this.SELECT_COLUMN(column.id)
+      }
+      if (row !== undefined) {
+        this.SELECT_ROW(row.ID)
+      }
     },
 
     getNextArrayValue (array, key, current) {
@@ -517,31 +556,41 @@ export default {
       }
     },
 
-    moveUp () {
-      if (this.selectedRowId === null) return
-      this.SELECT_ROW(this.getPrevArrayValue(this.items, 'ID', this.selectedRowId))
-      this.scrollIntoView()
-    },
-    moveDown () {
-      if (this.selectedRowId === null) return
-      this.SELECT_ROW(this.getNextArrayValue(this.items, 'ID', this.selectedRowId))
-      this.scrollIntoView()
-    },
-    moveLeft () {
-      if (this.selectedColumnId === null) return
-      this.SELECT_COLUMN(this.getPrevArrayValue(this.columns, 'id', this.selectedColumnId))
-      this.scrollIntoView()
-    },
-    moveRight () {
-      if (this.selectedColumnId === null) return
-      this.SELECT_COLUMN(this.getNextArrayValue(this.columns, 'id', this.selectedColumnId))
-      this.scrollIntoView()
+    move (direction) {
+      if (this.viewMode !== 'table') return
+
+      switch (direction) {
+        case 'up':
+          if (this.selectedRowId === null) return
+          this.SELECT_ROW(this.getPrevArrayValue(this.items, 'ID', this.selectedRowId))
+          this.scrollIntoView()
+          break
+
+        case 'down':
+          if (this.selectedRowId === null) return
+          this.SELECT_ROW(this.getNextArrayValue(this.items, 'ID', this.selectedRowId))
+          this.scrollIntoView()
+          break
+
+        case 'left':
+          if (this.selectedColumnId === null) return
+          this.SELECT_COLUMN(this.getPrevArrayValue(this.columns, 'id', this.selectedColumnId))
+          this.scrollIntoView()
+          break
+
+        case 'right':
+          if (this.selectedColumnId === null) return
+          this.SELECT_COLUMN(this.getNextArrayValue(this.columns, 'id', this.selectedColumnId))
+          this.scrollIntoView()
+          break
+      }
     },
 
     getColumnClass (column) {
-      return column.id === this.selectedColumnId
-        ? 'selected'
-        : ''
+      if (column.id === this.selectedColumnId) {
+        return 'selected'
+      }
+      return ''
     },
     getRowClass (row) {
       return row.ID === this.selectedRowId
@@ -561,15 +610,6 @@ export default {
       }
     },
 
-    tryFocusFilter ({ key }) {
-      if (key.length === 1 && regExpLetterOrNumber.test(key)) {
-        const inputs = this.$refs.filterSelector.$el.querySelectorAll('input')
-        if (inputs.length > 0) {
-          inputs[inputs.length - 1].focus()
-        }
-      }
-    },
-
     onSelect (ID, row) {
       if (this.onSelectRecord) {
         this.onSelectRecord({ ID, row, close: this.close })
@@ -578,78 +618,120 @@ export default {
       }
     },
 
-    throttledUpdateSort: throttle(
-      50,
-      true,
-      function (...arg) {
-        this.updateSort(...arg)
-      }
-    )
+    getSortIconClass (columnId) {
+      if (this.sort.column !== columnId) return ''
+
+      if (this.sort.order === 'asc') return 'u-icon-sort-asc'
+      if (this.sort.order === 'desc') return 'u-icon-sort-desc'
+    }
   }
 }
 </script>
 
 <style>
-  @media (min-height: 500px) {
-    .u-table-entity .u-table {
-      overflow: auto;
-    }
-  }
-
-  .u-table-entity {
-    --row-selected: hsl(var(--hs-primary), var(--l-background-default));
-    --cell-selected: hsl(var(--hs-primary), var(--l-background-active));
-    --row-selected-border: hsl(var(--hs-primary), var(--l-layout-border-default));
-
-    display: flex;
-    flex-direction: column;
+@media (min-height: 500px) {
+  .u-table-entity .u-table {
     overflow: auto;
   }
+}
 
-  .u-table-entity__head {
-    padding: 0 8px;
-    display: flex;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    left: 0;
-    flex-shrink: 0;
-  }
+.u-table-entity {
+  --row-selected: hsl(var(--hs-primary), var(--l-background-default));
+  --cell-selected: hsl(var(--hs-primary), var(--l-background-active));
+  --row-selected-border: hsl(var(--hs-primary), var(--l-layout-border-default));
 
-  .u-table-entity-panel__table th > .cell {
-    word-break: normal;
-  }
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
 
-  .u-table-entity tr.selected td {
-    background: var(--row-selected);
-    border-bottom-color: var(--row-selected-border);
-  }
+.u-table-entity .u-table {
+  flex-grow: 1;
+}
 
-  .u-table-entity tr.selected td.selected,
-  .u-table-entity tr.selected td:hover,
-  .u-table-entity tr.selected:hover td.selected {
-    background: var(--cell-selected);
-  }
+.u-table-entity__head {
+  padding: 8px;
+  padding-left: 0;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  left: 0;
+  flex-shrink: 0;
+}
 
-  .u-table-entity__header-dropdown {
-    align-self: center;
-  }
+.u-table-entity__head .u-button {
+  margin-left: 8px;
+}
 
-  .u-table-entity__contextmenu-wrap {
-    height: 0;
-  }
+.u-table-entity-panel__table th > .cell {
+  word-break: normal;
+}
 
-  .u-table-entity__filter-icon {
-    margin-right: 8px;
-    margin-left: 4px;
-  }
+.u-table-entity tr.selected td {
+  background: var(--row-selected);
+  border-bottom-color: var(--row-selected-border);
+}
 
-  .u-table-entity__next-page-button-wrap {
-    position: sticky;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 12px 16px;
-  }
+.u-table-entity tr.selected td.selected,
+.u-table-entity tr.selected td:hover,
+.u-table-entity tr.selected:hover td.selected {
+  background: var(--cell-selected);
+}
+
+.u-table-entity__header-dropdown {
+  align-self: center;
+}
+
+.u-table-entity__contextmenu-wrap {
+  height: 0;
+}
+
+.u-table-entity__next-page-button-wrap {
+  position: sticky;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 12px 16px;
+}
+
+.u-table-entity .u-card {
+  border: 2px solid transparent;
+}
+
+.u-table-entity .u-card.selected {
+  background: hsl(var(--hs-primary), var(--l-background-default));
+}
+
+.u-fake-table {
+  display: table;
+  padding: 6px;
+}
+
+.u-fake-table__tbody {
+  display: table-row-group;
+}
+
+.u-fake-table__tr {
+  display: table-row;
+}
+
+.u-fake-table__td {
+  display: table-cell;
+  padding: 6px;
+  vertical-align: middle;
+}
+
+.u-fake-table__label {
+  color: hsl(var(--hs-text), var(--l-text-label))
+}
+
+.u-fake-table__label:after {
+  content: ':';
+}
+
+.u-table-entity__filter-submit-container {
+  text-align: right;
+}
 </style>

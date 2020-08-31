@@ -1,30 +1,63 @@
 <template>
-  <div
-    v-if="availableFilters.length > 0"
-    class="filter-section"
-  >
-    <el-select
-      v-model="selectedFilter"
-      class="filter-input"
-      :placeholder="$ut('table.filter.conditionPlaceholder')"
+  <u-dropdown ref="dropdown">
+    <u-button
+      appearance="inverse"
+      color="control"
+      icon="u-icon-filter"
     >
-      <el-option
-        v-for="filterKey in availableFilters"
-        :key="filterKey"
-        :value="filterKey"
-        :label="$ut(selectedColumn.filters[filterKey].label || filterKey)"
-      />
-    </el-select>
+      {{ $ut('table.filter.list.title') }}
+    </u-button>
 
-    <keep-alive>
-      <component
-        :is="selectedColumn.filters[selectedFilter].template"
-        v-if="selectedColumn.filters[selectedFilter]"
-        :column="selectedColumn"
-        @search="throttledApplyFilter"
-      />
-    </keep-alive>
-  </div>
+    <div
+      slot="dropdown"
+      class="u-fake-table"
+    >
+      <div class="u-fake-table__tr">
+        <div class="u-fake-table__td u-fake-table__label">
+          {{ $ut('table.columnLabel') }}
+        </div>
+        <div class="u-fake-table__td">
+          <el-select
+            v-model="selectedColumnId"
+            :placeholder="$ut('table.filter.columnPlaceholder')"
+          >
+            <el-option
+              v-for="column in filterColumns"
+              :key="column.id"
+              :value="column.id"
+              :label="$ut(column.label)"
+            />
+          </el-select>
+        </div>
+      </div>
+
+      <template v-if="selectedColumnId">
+        <div class="u-fake-table__tr">
+          <div class="u-fake-table__td u-fake-table__label">
+            {{ $ut('table.filter.conditionPlaceholder') }}
+          </div>
+          <div class="u-fake-table__td">
+            <el-select v-model="condition">
+              <el-option
+                v-for="(filterData, filterId) in selectedColumn.filters"
+                :key="filterId"
+                :value="filterId"
+                :label="$ut(filterData.label)"
+              />
+            </el-select>
+          </div>
+        </div>
+
+        <keep-alive>
+          <component
+            :is="selectedColumn.filters[condition].template"
+            :column="selectedColumn"
+            @search="throttledApplyFilter"
+          />
+        </keep-alive>
+      </template>
+    </div>
+  </u-dropdown>
 </template>
 
 <script>
@@ -34,32 +67,65 @@ const { throttle } = require('throttle-debounce')
 export default {
   data () {
     return {
-      condition: null
+      conditionsByColumns: {}
     }
   },
 
   computed: {
-    ...mapGetters(['selectedColumn']),
+    ...mapGetters(['columns']),
 
-    availableFilters () {
-      return Object.keys(this.selectedColumn.filters)
-        .filter(key => this.selectedColumn.filters[key].template)
+    filterColumns () {
+      return this.columns.filter(column => {
+        const availableFilters = Object.keys(column.filters)
+        const hasFilters = availableFilters.length > 0
+        const everyFilterHasTemplate = availableFilters.every(filterCode => column.filters[filterCode].template)
+
+        return hasFilters && everyFilterHasTemplate
+      })
     },
 
-    selectedFilter: {
+    selectedColumnId: {
       get () {
-        if (this.condition) {
-          return this.condition
-        }
-
-        if (this.availableFilters.length > 0) {
-          return this.availableFilters[0]
-        } else {
-          return {}
-        }
+        return this.$store.state.selectedColumnId
       },
+
       set (value) {
-        this.condition = value
+        this.$store.commit('SELECT_COLUMN', value)
+      }
+    },
+
+    selectedColumn () {
+      const column = this.filterColumns.find(c => c.id === this.selectedColumnId)
+      if (column) {
+        return column
+      } else {
+        return {}
+      }
+    },
+
+    condition: {
+      get () {
+        return this.conditionsByColumns[this.selectedColumnId]
+      },
+
+      set (value) {
+        this.conditionsByColumns[this.selectedColumnId] = value
+      }
+    }
+  },
+
+  watch: {
+    filterColumns: {
+      immediate: true,
+      handler (columns) {
+        this.$set(this, 'conditionsByColumns', {})
+        for (const column of columns) {
+          this.$set(
+            this.conditionsByColumns,
+            column.id,
+            Object.keys(column.filters)[0]
+          )
+        }
       }
     }
   },
@@ -68,44 +134,9 @@ export default {
     ...mapActions(['applyFilter']),
 
     throttledApplyFilter: throttle(50, function (...args) {
+      this.$refs.dropdown.close()
       this.applyFilter(...args)
     })
   }
 }
 </script>
-
-<style>
-.filter-container {
-  display: flex;
-  background: hsl(var(--hs-background), var(--l-background-default));
-  border-radius: var(--border-radius);
-  padding: 4px 8px;
-  margin: 4px 0;
-  margin-left: 8px;
-  align-items: center;
-}
-
-.filter-input{
-  margin: 0 4px;
-  flex-grow: 1;
-  max-width: 170px;
-  min-width: 100px;
-}
-
-.filter-input-number{
-  margin: 0 4px;
-  width: 120px;
-}
-
-.filter-section{
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-}
-
-.filter-input_value{
-  margin: 0 4px;
-  flex-grow: 1;
-  min-width: 100px;
-}
-</style>

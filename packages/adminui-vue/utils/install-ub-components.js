@@ -34,10 +34,11 @@ module.exports = {
     const SignatureVerificationResult = require('../components/SignatureVerificationResult.vue').default
     const USidebarButton = require('../components/sidebar/USidebarButton.vue').default
     const UGrid = require('../components/controls/UGrid.vue').default
-    const UMasterDetailView = require('../components/UMasterDetailView.vue').default
+    const UMasterDetailView = require('../components/UMasterDetailView/UMasterDetailView.vue').default
     const UButton = require('../components/controls/UButton.vue').default
     const UIcon = require('../components/controls/UIcon.vue').default
     const UDatePicker = require('../components/controls/UDatePicker.vue').default
+    const UButtonGroup = require('../components/controls/UButtonGroup.vue').default
     Vue.component(UFormContainer.name, UFormContainer)
     Vue.component(USelectEntity.name, USelectEntity)
     Vue.component(USelectMany.name, USelectMany)
@@ -75,6 +76,7 @@ module.exports = {
     Vue.component(UButton.name, UButton)
     Vue.component(UIcon.name, UIcon)
     Vue.component(UDatePicker.name, UDatePicker)
+    Vue.component(UButtonGroup.name, UButtonGroup)
 
     const HoldFocus = require('../directives/HoldFocus')
     Vue.directive(HoldFocus.name, HoldFocus)

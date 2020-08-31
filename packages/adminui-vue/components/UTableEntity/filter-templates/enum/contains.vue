@@ -1,7 +1,7 @@
 <template>
-  <form
-    class="filter-section"
-    @submit.prevent="$emit('search', {
+  <filter-template
+    :button-disabled="value.length === 0"
+    @submit="$emit('search', {
       whereList: [{condition: 'in', value}],
       description: $ut('contains') + ' ' + manyOptions
     })"
@@ -11,22 +11,17 @@
       v-model="value"
       value-attribute="code"
       :repository="repository"
-      :placeholder="$ut('table.filter.valuePlaceholder')"
-      class="filter-input_value"
     />
-
-    <u-button
-      appearance="inverse"
-      :disabled="value.length === 0"
-      type="submit"
-      icon="u-icon-search"
-    />
-  </form>
+  </filter-template>
 </template>
 
 <script>
 export default {
   name: 'FilterEnumContains',
+
+  components: {
+    FilterTemplate: require('../../components/FilterTemplate.vue').default
+  },
 
   props: {
     column: {

@@ -149,7 +149,7 @@ UB.i18nExtend({
         title: 'Фільтри'
       },
       conditionPlaceholder: 'Вираз',
-      valuePlaceholder: 'Значення',
+      valueLabel: 'Значення',
       date: {
         from: 'з',
         to: 'до',
@@ -161,6 +161,21 @@ UB.i18nExtend({
       outOf: 'з',
       nextPage: 'Наступна сторінка',
       prevPage: 'Попередня сторінка'
+    },
+    columnLabel: 'Колонка',
+    viewMode: {
+      label: 'Вид відображення',
+      card: 'Картки',
+      table: 'Таблиця'
+    },
+    sort: {
+      label: 'Сортування',
+      direction: {
+        label: 'Напрямок',
+        asc: 'По зростанню',
+        desc: 'За зменшенням',
+        none: 'Немає'
+      }
     }
   },
 

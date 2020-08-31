@@ -454,9 +454,10 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
         },
         scopedSlots: createElement => ({
           toolbarPrepend: ({ store: dictionaryStore, close }) => {
-            return createElement('u-toolbar-button', {
+            return createElement('u-button', {
               props: {
                 icon: 'u-icon-check',
+                appearance: 'inverse',
                 disabled: !dictionaryStore.state.selectedRowId
               },
               on: {

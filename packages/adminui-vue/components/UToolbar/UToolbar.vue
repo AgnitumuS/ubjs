@@ -1,14 +1,24 @@
 <template>
   <div class="u-toolbar">
-    <u-toolbar-button
+    <el-tooltip
       v-for="button in mainPanelButtons"
       :key="button.label + button.icon"
       :tooltip="button.label"
-      :disabled="button.disabled"
-      :icon="button.icon"
-      :color="button.color"
-      @click="button.handler"
-    />
+      :content="$ut(button.label)"
+      placement="bottom"
+      :open-delay="300"
+      :enterable="false"
+      :disabled="!button.label"
+    >
+      <u-button
+        appearance="inverse"
+        size="large"
+        :disabled="button.disabled"
+        :icon="button.icon"
+        :color="button.color"
+        @click="button.handler"
+      />
+    </el-tooltip>
     <!-- @slot left side toolbar (after default buttons) -->
     <slot name="left" />
     <div class="u-toolbar__flex-divider" />
@@ -26,9 +36,10 @@
       class="u-toolbar__settings-button"
       placement="bottom-end"
     >
-      <u-toolbar-button
+      <u-button
+        appearance="inverse"
         icon="u-icon-setting"
-        color="secondary"
+        color="control"
         tooltip="allActions"
       />
 
@@ -124,7 +135,7 @@ export default {
         icon: 'u-icon-delete',
         handler: () => this.deleteInstance(this.$formServices.forceClose),
         disabled: !this.canDelete,
-        color: 'secondary',
+        color: 'control',
         divider: true
       }]
     },
@@ -427,6 +438,10 @@ export default {
   display: flex;
   flex-shrink: 0;
   align-items: center;
+}
+
+.u-toolbar > .u-button:not(:first-child) {
+  margin-left: 8px;
 }
 
 .u-toolbar__flex-divider{

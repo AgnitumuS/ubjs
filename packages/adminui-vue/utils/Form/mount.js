@@ -368,7 +368,7 @@ function mountContainer ({
   }
 }
 
-const UMasterDetailView = require('../../components/UMasterDetailView.vue').default
+const UMasterDetailView = require('../../components/UMasterDetailView/UMasterDetailView.vue').default
 
 /**
  * Mount UMasterDetailView.

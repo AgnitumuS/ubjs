@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <div>
     <div
       v-if="column.isHtml"

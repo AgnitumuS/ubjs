@@ -16,10 +16,7 @@ const LOOKUP_LIMIT = 10000 // limit after which a warning is displayed
 const instance = new Vue({
   data () {
     return {
-      /**
-       * @type {object<string, LookupSubscription>}
-       */
-      entities: {}
+      entities: /** @type {object<string, LookupSubscription>} */ {}
     }
   },
 
@@ -133,12 +130,12 @@ const instance = new Vue({
     },
 
     getDescriptionById (entity, ID) {
-      const e = this.entities[entity]
+      const subscription = this.entities[entity]
       // for safe deleted record
-      if (e.mapById[ID] === undefined) {
+      if (subscription.mapById[ID] === undefined) {
         return '---'
       }
-      return e.mapById[ID][e.descriptionAttrName]
+      return subscription.mapById[ID][subscription.descriptionAttrName]
     },
 
     get (entity, predicate, resultIsRecord = false) {

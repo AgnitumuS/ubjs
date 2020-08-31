@@ -66,6 +66,8 @@
 const { mapState, mapGetters, mapActions } = require('vuex')
 
 export default {
+  name: 'UTableEntityPagination',
+
   computed: {
     ...mapState([
       'items',

@@ -6,7 +6,7 @@
 
   <u-dropdown
     v-else
-    placement="right-start"
+    :placement="placement"
     position="absolute"
   >
     <button
@@ -51,6 +51,8 @@
 export default {
   name: 'UDropdownItem',
 
+  inject: ['placement', 'parentClose'],
+
   props: {
     /**
        * Icon class
@@ -89,8 +91,6 @@ export default {
       this.$parent.$emit('hide')
     })
   },
-
-  inject: ['parentClose'],
 
   methods: {
     close () {

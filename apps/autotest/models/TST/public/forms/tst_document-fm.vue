@@ -7,12 +7,13 @@
       >
         Show dialog
       </button>
-      <u-toolbar-button
+      <u-button
         slot="left"
+        appearance="inverse"
         @click="verifySignatures"
       >
         Verify PDF signatures
-      </u-toolbar-button>
+      </u-button>
     </u-toolbar>
 
     <u-form-container>

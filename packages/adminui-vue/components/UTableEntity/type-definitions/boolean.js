@@ -1,5 +1,3 @@
-const UB = require('@unitybase/ub-pub')
-
 /**
  * @type {UTableColumnSettings}
  */
@@ -10,9 +8,9 @@ module.exports = {
   format ({ value }) {
     switch (value) {
       case true:
-        return '<i class="u-icon-add">'
+        return '<i class="u-icon-add"/>'
       case false:
-        return '<i class="u-icon-minus">'
+        return '<i class="u-icon-minus"/>'
       default:
         return null
     }

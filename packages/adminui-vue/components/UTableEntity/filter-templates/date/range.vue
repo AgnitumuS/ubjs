@@ -1,7 +1,7 @@
 <template>
-  <form
-    class="filter-section"
-    @submit.prevent="$emit('search', {
+  <filter-template
+    :button-disabled="value === null"
+    @submit="$emit('search', {
       whereList: [
         { condition: 'moreEqual', value: value[0] },
         { condition: 'less', value: addDay(value[1]) }
@@ -11,26 +11,22 @@
   >
     <u-date-picker
       v-model="value"
-      class="filter-input_value"
       type="daterange"
       range-separator="-"
       :start-placeholder="$ut('startDate')"
       :end-placeholder="$ut('endDate')"
       :picker-options="pickerOptions"
     />
-
-    <u-button
-      appearance="inverse"
-      :disabled="value === null"
-      type="submit"
-      icon="u-icon-search"
-    />
-  </form>
+  </filter-template>
 </template>
 
 <script>
 export default {
   name: 'FilterDateRange',
+
+  components: {
+    FilterTemplate: require('../../components/FilterTemplate.vue').default
+  },
 
   data () {
     return {

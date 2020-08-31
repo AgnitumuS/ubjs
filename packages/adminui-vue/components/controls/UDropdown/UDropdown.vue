@@ -68,6 +68,14 @@ export default {
     placement: {
       type: String,
       default: 'bottom-start'
+    },
+
+    /**
+     * Popper placement relative to opened dropdown
+     */
+    childPlacement: {
+      type: String,
+      default: 'right-start'
     }
   },
 
@@ -98,7 +106,8 @@ export default {
       parentClose: () => {
         this.parentClose()
         this.close()
-      }
+      },
+      placement: this.childPlacement
     }
   },
 
@@ -126,7 +135,9 @@ export default {
       this.referenceEl = this.$slots.default === undefined ? this.virtualElement : this.$refs.reference
       const arrow = this.$refs.arrow
 
-      document.body.appendChild(this.$refs.dropdown)
+      if (this.position === 'fixed') {
+        document.body.appendChild(this.$refs.dropdown)
+      }
       createPopper(this.referenceEl, this.$refs.dropdown, {
         strategy: this.position,
         placement: this.placement,

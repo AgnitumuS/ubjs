@@ -1,31 +1,26 @@
 <template>
-  <form
-    class="filter-section"
-    @submit.prevent="$emit('search', {
+  <filter-template
+    :button-disabled="value === null"
+    @submit="$emit('search', {
       whereList: [{condition: 'moreEqual', value}],
       description: $ut('from_date') + ' ' + $moment(value).format('ll')
     })"
   >
     <u-date-picker
       v-model="value"
-      class="filter-input_value"
-      type="date"
       :placeholder="$ut('table.filter.date.valuePlaceholder')"
+      type="date"
     />
-
-    <u-button
-      appearance="inverse"
-      size="large"
-      :disabled="value === null"
-      type="submit"
-      icon="u-icon-search"
-    />
-  </form>
+  </filter-template>
 </template>
 
 <script>
 export default {
   name: 'FilterDateFromDate',
+
+  components: {
+    FilterTemplate: require('../../components/FilterTemplate.vue').default
+  },
 
   data () {
     return {
