@@ -8,15 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `application.customSettings.mailerConfig` section now defined in model partial config
- and automatically merged into main config (starting from ub@5.18.12). See README.md for 
- environment variables list.
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [1.1.0] - 2020-08-31
+### Changed
+ - `application.customSettings.mailerConfig` section now defined in model partial config
+ and automatically merged into main config (starting from ub@5.18.12). See README.md for 
+ environment variables list.
 
 ## [1.0.4] - 2020-06-14
 ## [1.0.3] - 2020-03-17

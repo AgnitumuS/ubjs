@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.13.0] - 2020-08-31
+### Added
  - `UDropdown`: prop `childPlacement` - popper placement relative to opened dropdown
  - `UTable`: param `formatHead` in column config. Render function for header cell
  - `UButtonGroup`: added border for child `UButton`'s
@@ -22,8 +33,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity`: display of filter and sort. It is displayed as a button with a popup
  - `UTableEntity`: color of filter tags. Value has "black" color, condition - "grey"
  
-### Deprecated
-
 ### Removed
  - `UTable`: event `sort`
 

@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.3.0] - 2020-08-31
+### Added
  - config parser enhancements - see server 5.18.12 changelog for details
   - `//#ifdef(%VAR_NAME%)..//#endif` & `//#ifndef(%VAR_NAME%)..//#endif`
   - `//#ifdef(%VAR_NAME%=someValue)`
@@ -18,12 +29,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    
 ### Changed
  - ubConfig parser implementation is moved into UB.js (compiled as resource into ub server)
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.2.16] - 2020-08-19
 ## [5.2.15] - 2020-08-19

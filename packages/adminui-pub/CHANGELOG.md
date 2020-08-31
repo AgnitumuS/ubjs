@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.13.35] - 2020-08-31
 ## [5.13.34] - 2020-08-20
 ### Fixed
  - in case `title` property is defined in nav shortcut JSON - use it, otherwise - use a `ubm_navshortcut.caption` for title.

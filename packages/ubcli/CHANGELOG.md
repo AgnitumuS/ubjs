@@ -8,13 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `ubcli initDb` command execute all SQL statements from a command line script.
-  This allows not to start a server and prevents fake config creation.
-  
+
 ### Deprecated
 
 ### Removed
 
+### Fixed
+
+## [5.7.0] - 2020-08-31
+### Changed
+ - `ubcli initDb` command execute all SQL statements from a command line script.
+  This allows not to start a server and prevents fake config creation.
+  
 ### Fixed
  - `ubcli createStore` creates a `tempPath` even in case path is empty (for example for mdb store) 
 
