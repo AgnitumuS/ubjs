@@ -11,7 +11,7 @@
   },
   {
 	"name": "mail",
-	"schedulingCondition": "App.serverConfig.application.customSettings && App.serverConfig.application.customSettings.mailerConfig",
+	"schedulingCondition": "App.serverConfig.application.customSettings.mailerConfig && App.serverConfig.application.customSettings.mailerConfig.targetHost",
 	"cron": "0 */1 * * * *",
 	"description": "Send emails from queue every minute",
 	"module": "./ubqMailJob",

@@ -14,7 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+ - mailer scheduler is enabled when `application.customSettings.mailerConfig.targetHost` not empty in the config.
+ Before these changes `targetHost` is not checked, but only `mailerConfig` section availability.
+ 
 ## [5.4.0] - 2020-08-31
 ### Changed
  - `application.customSettings.mailerConfig` section now defined in model partial config
