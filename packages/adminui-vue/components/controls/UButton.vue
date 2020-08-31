@@ -1,4 +1,4 @@
-<template functional>
+<template>
   <button
     class="u-button"
     :class="[
