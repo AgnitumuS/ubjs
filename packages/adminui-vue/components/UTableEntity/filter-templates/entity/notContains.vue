@@ -1,31 +1,26 @@
 <template>
-  <form
-    class="filter-section"
-    @submit.prevent="$emit('search', {
+  <filter-template
+      :button-disabled="value.length === 0"
+      @submit="$emit('search', {
       whereList: [{condition: 'notIn', value}],
       description: $ut('notContains') + ' ' + manyOptions
     })"
   >
     <u-select-multiple
-      ref="selectMany"
-      v-model="value"
-      class="filter-input_value"
-      :entity-name="column.attribute.associatedEntity"
-      :placeholder="$ut('table.filter.valuePlaceholder')"
+        ref="selectMany"
+        v-model="value"
+        :entity-name="column.attribute.associatedEntity"
     />
-
-    <u-button
-      appearance="inverse"
-      :disabled="value.length === 0"
-      type="submit"
-      icon="u-icon-search"
-    />
-  </form>
+  </filter-template>
 </template>
 
 <script>
 export default {
   name: 'FilterEntityNotContains',
+
+  components: {
+    FilterTemplate: require('../../components/FilterTemplate.vue').default
+  },
 
   props: {
     column: {

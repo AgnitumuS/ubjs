@@ -77,3 +77,27 @@
  * @property {Vue.Component} template Template which render filter for current column
  * @property {string} [label] Label of current filter. If unset will shows filter id by default
  */
+
+/**
+ * @typedef {object|null} UTableSort
+ *
+ * @property {string} column
+ * @property {'asc'|'desc'} order
+ */
+
+/**
+ * @typedef {object} UTableFilterDefinitionWhereListItem
+ *
+ * @property {string} expression
+ * @property {string} condition
+ * @property {string} value
+ */
+
+/**
+ * @typedef {object} UTableFilterDefinition
+ *
+ * @property {string} columnId
+ * @property {string} label
+ * @property {string} description
+ * @property {UTableFilterDefinitionWhereListItem[]} whereList
+ */

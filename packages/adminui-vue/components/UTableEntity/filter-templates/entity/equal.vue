@@ -1,32 +1,27 @@
 <template>
-  <form
-    class="filter-section"
-    @submit.prevent="$emit('search', {
+  <filter-template
+    :button-disabled="value === null"
+    @submit="$emit('search', {
       whereList: [{ condition, value }],
       description: $ut(condition) + ' ' + formattedValue
     })"
   >
     <u-select-entity
       v-model="value"
-      class="filter-input_value"
       remove-default-actions
       :entity-name="column.attribute.associatedEntity"
-      :placeholder="$ut('table.filter.valuePlaceholder')"
       @input="onChange"
     />
-
-    <u-button
-      appearance="inverse"
-      :disabled="value === null"
-      type="submit"
-      icon="u-icon-search"
-    />
-  </form>
+  </filter-template>
 </template>
 
 <script>
 export default {
   name: 'FilterEntityEqual',
+
+  components: {
+    FilterTemplate: require('../../components/FilterTemplate.vue').default
+  },
 
   props: {
     column: {

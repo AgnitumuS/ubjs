@@ -149,7 +149,7 @@ UB.i18nExtend({
         title: 'Фильтры'
       },
       conditionPlaceholder: 'Выражение',
-      valuePlaceholder: 'Значение',
+      valueLabel: 'Значение',
       date: {
         from: 'с',
         to: 'по',
@@ -161,6 +161,21 @@ UB.i18nExtend({
       outOf: 'из',
       nextPage: 'Следующая страница',
       prevPage: 'Предыдущая страница'
+    },
+    columnLabel: 'Колонка',
+    viewMode: {
+      label: 'Вид отображения',
+      card: 'Карточки',
+      table: 'Таблица'
+    },
+    sort: {
+      label: 'Сортировка',
+      direction: {
+        label: 'Направление',
+        asc: 'По возрастанию',
+        desc: 'По убыванию',
+        none: 'Нет'
+      }
     }
   },
 

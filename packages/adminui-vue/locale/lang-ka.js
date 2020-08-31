@@ -149,7 +149,7 @@ UB.i18nExtend({
         title: 'Filters'
       },
       conditionPlaceholder: 'Condition',
-      valuePlaceholder: 'Value',
+      valueLabel: 'Value',
       date: {
         from: 'from',
         to: 'to',
@@ -161,6 +161,21 @@ UB.i18nExtend({
       outOf: 'out of',
       nextPage: 'შემდეგი გვერდი',
       prevPage: 'წინა გვერდი'
+    },
+    columnLabel: 'Column',
+    viewMode: {
+      label: 'View mode',
+      card: 'Card',
+      table: 'Table'
+    },
+    sort: {
+      label: 'Sort',
+      direction: {
+        label: 'Direction',
+        asc: 'Ascending',
+        desc: 'Descending',
+        none: 'None'
+      }
     }
   },
 

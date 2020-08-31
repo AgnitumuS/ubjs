@@ -3,6 +3,7 @@
     <u-table-entity
       ref="masterTable"
       v-bind="$attrs"
+      :before-initial-load="onInitialLoad"
       v-on="$listeners"
       @change-row="selectedRowId = $event"
     >
@@ -100,6 +101,10 @@ const { throttle } = require('throttle-debounce')
  */
 export default {
   name: 'UMasterDetailView',
+
+  mixins: [
+    require('./localStorageMixin')
+  ],
 
   data () {
     return {

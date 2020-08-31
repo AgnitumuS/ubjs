@@ -2,11 +2,13 @@
   <u-dropdown
     class="u-table-entity__header-dropdown"
     placement="bottom-end"
+    child-placement="left-start"
     :width="210"
   >
-    <u-toolbar-button
+    <u-button
+      appearance="inverse"
       icon="u-icon-more"
-      color="secondary"
+      color="control"
     />
 
     <template slot="dropdown">
@@ -82,6 +84,9 @@
           />
         </u-dropdown-item>
       </slot>
+
+      <slot name="viewMode" />
+
       <slot name="append" />
     </template>
   </u-dropdown>

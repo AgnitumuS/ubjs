@@ -1,5 +1,4 @@
 /** ElementUI for UB Azerbaijani */
-/* globals UB */
 UB.i18nExtend({
   el: {
     colorpicker: {
@@ -150,7 +149,7 @@ UB.i18nExtend({
         title: 'Filtlər'
       },
       conditionPlaceholder: 'Şərt',
-      valuePlaceholder: 'Qiymət',
+      valueLabel: 'Qiymət',
       date: {
         from: 'dən',
         to: 'dək',
@@ -162,6 +161,21 @@ UB.i18nExtend({
       outOf: 'dan',
       nextPage: 'Sonrakı səhifə',
       prevPage: 'Əvvəlki səhifə'
+    },
+    columnLabel: 'Column',
+    viewMode: {
+      label: 'View mode',
+      card: 'Card',
+      table: 'Table'
+    },
+    sort: {
+      label: 'Sort',
+      direction: {
+        label: 'Direction',
+        asc: 'Ascending',
+        desc: 'Descending',
+        none: 'None'
+      }
     }
   },
 

@@ -2,7 +2,8 @@
   <div class="u-form-layout">
     <u-toolbar>
       <template slot="left">
-        <u-toolbar-button
+        <u-button
+          appearance="inverse"
           icon="u-icon-refresh"
           tooltip="refresh"
           @click="refresh"

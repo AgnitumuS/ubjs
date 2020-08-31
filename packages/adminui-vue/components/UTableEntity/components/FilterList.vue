@@ -54,7 +54,7 @@ export default {
   align-items: center;
   padding-left: 8px;
   margin-left: 8px;
-  color: hsl(var(--hs-text), var(--l-text-default));
+  color: hsl(var(--hs-text), var(--l-text-description));
   font-size: 12px;
   line-height: 1.1;
   background: hsl(var(--hs-background), var(--l-background-default));
@@ -64,7 +64,7 @@ export default {
 }
 
 .filter-list-item__description{
-  color: hsl(var(--hs-text), var(--l-text-description));
+  color: hsl(var(--hs-text), var(--l-text-default));
 }
 
 .u-table-entity__filter-list-item__close-icon{

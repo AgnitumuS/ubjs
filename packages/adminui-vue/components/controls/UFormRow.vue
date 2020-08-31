@@ -6,6 +6,10 @@
     }]"
     :style="maxWidthCss"
   >
+    <button
+      v-if="preventLabelEvents"
+      class="u-form-row__ghost-button"
+    />
     <div
       v-if="!!label"
       class="u-form-row__label"
@@ -125,7 +129,12 @@ export default {
       default () {
         return this.formMaxWidth
       }
-    }
+    },
+
+    /**
+     * Disable label click, hover etc. Creates fake hidden button which intercepts events
+     */
+    preventLabelEvents: Boolean
   },
 
   inject: {
@@ -253,6 +262,13 @@ export default {
     font-size: 12px;
     margin-top: 5px;
     color: hsl(var(--hs-text), var(--l-text-description));
+  }
+
+  .u-form-row__ghost-button {
+    position: absolute;
+    visibility: hidden;
+    height: 0;
+    width: 0;
   }
 </style>
 

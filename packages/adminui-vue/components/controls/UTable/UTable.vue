@@ -9,10 +9,7 @@
           v-for="col in columns"
           :key="col.id"
           :class="[
-            {
-              'u-table__fixed-column': col.id === fixedColumnId,
-              sortable: col.sortable
-            },
+            { 'u-table__fixed-column': col.id === fixedColumnId },
             getAlignClass(col.headerAlign),
             columnsClasses[col.id]
           ]"
@@ -22,14 +19,13 @@
             width: col.width && col.width + 'px',
             padding: col.padding && col.padding + 'px'
           }"
-          @click="col.sortable && changeSort(col.id)"
         >
-          {{ $ut(col.label) }}
-          <i
-            v-if="col.sortable"
-            class="u-table__head-cell__icon-sort"
-            :class="getSortIcon(col.id)"
-          />
+          <slot
+            :name="`head_${col.id}`"
+            :column="col"
+          >
+            {{ formatHead({ column: col }) }}
+          </slot>
         </th>
       </tr>
       <tr
@@ -77,12 +73,12 @@
 </template>
 
 <script>
-const formatValueMixin = require('./formatValueMixin')
-
 export default {
   name: 'UTable',
 
-  mixins: [formatValueMixin],
+  mixins: [
+    require('./formatValueMixin')
+  ],
 
   props: {
     /**
@@ -158,12 +154,6 @@ export default {
     maxHeight: [Number, String]
   },
 
-  data () {
-    return {
-      sort: null
-    }
-  },
-
   computed: {
     tableStyle () {
       return ['height', 'maxHeight'].reduce((style, prop) => {
@@ -190,36 +180,6 @@ export default {
   },
 
   methods: {
-    changeSort (id) {
-      if (this.sort) {
-        if (this.sort.column === id) {
-          if (this.sort.order === 'asc') {
-            this.sort.order = 'desc'
-          } else {
-            this.sort = null
-          }
-        } else {
-          this.sort.column = id
-          this.sort.order = 'asc'
-        }
-      } else {
-        this.sort = {
-          column: id,
-          order: 'asc'
-        }
-      }
-
-      this.$emit('sort', this.sort)
-    },
-
-    getSortIcon (id) {
-      if (this.sort && this.sort.column === id) {
-        return this.sort.order === 'asc' ? 'u-icon-sort-asc' : 'u-icon-sort-desc'
-      } else {
-        return 'u-icon-sort'
-      }
-    },
-
     getAlignClass (align = 'left') {
       return `u-table__cell__align-${align}`
     }
@@ -316,16 +276,6 @@ export default {
   background: var(--cell-hover);
 }
 
-.u-table th.sortable{
-  cursor: pointer;
-}
-
-.u-table__head-cell__icon-sort{
-  font-size: 13px;
-  margin-left: 2px;
-  color: var(--header-text);
-}
-
 .u-table_border {
   box-shadow: var(--box-shadow-default);
   border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
@@ -334,76 +284,12 @@ export default {
 </style>
 
 <docs>
-### Sortable
-When `sortable` for a column is enabled, the sort icon will appear in the column header.
-After clicking on this column, the sort change event will fire,
-an object with the sort order and columnId is passed to it
-
-```vue
-  <template>
-    <u-table
-      :items="currencies"
-      :columns="columns"
-      @sort="onSortChanged"
-    />
-  </template>
-  <script>
-    export default {
-      data () {
-        return {
-          currencies: [{
-            ID: 1,
-            code: 'UAH',
-            caption: 'Hryvna',
-            country: 'Ukraine'
-          },{
-            ID: 2,
-            code: 'USD',
-            caption: 'Dollar',
-            country: 'USA'
-          },{
-            ID: 3,
-            code: 'EUR',
-            caption: 'Euro',
-            country: 'France'
-          },{
-            ID: 4,
-            code: 'JPY',
-            caption: 'Yen',
-            country: 'Japan'
-          },{
-            ID: 5,
-            code: 'PLN',
-            caption: 'Zloty',
-            country: 'Poland'
-          }],
-          columns: [{
-            id: 'code',
-            label: 'Code'
-          }, {
-            id: 'caption',
-            label: 'Caption',
-            sortable: true
-          }, {
-            id: 'country',
-            label: 'Country'
-          }]
-        }
-      },
-
-      methods: {
-        onSortChanged (sort) {
-          console.log(sort)
-        }
-      }
-    }
-  </script>
-```
-
 ### Slots
 You can override values as named slots.
 In this case another columns will be shows as usual.
 Slot scope will pass `value`, `row`, and `column`
+Header cell also has format functions and scoped slots but it provides only `column` param.
+To set scoped slot for header cell just add prefix `head_` to column ID
 
 ```vue
 <template>
@@ -411,6 +297,13 @@ Slot scope will pass `value`, `row`, and `column`
     :items="currencies"
     :columns="columns"
   >
+    <template #head_code="{ value, row }">
+      <el-input
+          :value="value"
+          @input="changeCode({ ID: row.ID, value: $event })"
+      />
+    </template>
+
     <template #code="{ value, row }">
       <el-input
         :value="value"

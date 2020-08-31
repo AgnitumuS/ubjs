@@ -127,7 +127,7 @@ TypeProvider.registerType({
     notContains: {
       label: 'notContains',
       template: require('./filter-templates/entity/notContains.vue').default
-    },
+    }
   }
 })
 

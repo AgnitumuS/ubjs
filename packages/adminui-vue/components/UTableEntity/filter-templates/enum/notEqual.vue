@@ -1,30 +1,25 @@
 <template>
-  <form
-    class="filter-section"
-    @submit.prevent="$emit('search', {
+  <filter-template
+    :button-disabled="value === null"
+    @submit="$emit('search', {
       whereList: [{ condition, value }],
       description: $ut(condition) + ' ' + formattedValue
     })"
   >
     <u-select-enum
       v-model="value"
-      class="filter-input_value"
       :e-group="eGroup"
-      :placeholder="$ut('table.filter.valuePlaceholder')"
     />
-
-    <u-button
-      appearance="inverse"
-      :disabled="value === null"
-      type="submit"
-      icon="u-icon-search"
-    />
-  </form>
+  </filter-template>
 </template>
 
 <script>
 export default {
   name: 'FilterEnumNotEqual',
+
+  components: {
+    FilterTemplate: require('../../components/FilterTemplate.vue').default
+  },
 
   props: {
     column: {

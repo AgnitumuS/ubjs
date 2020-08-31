@@ -1,28 +1,22 @@
 <template>
-  <form
-    class="filter-section"
-    @submit.prevent="$emit('search', {
+  <filter-template
+    :button-disabled="isEmpty"
+    @submit="$emit('search', {
       whereList: [{ condition, value }],
       description: $ut(condition) + ' ' + value
     })"
   >
-    <el-input
-      v-model="value"
-      :placeholder="$ut('table.filter.valuePlaceholder')"
-      class="filter-input_value"
-    />
-    <u-button
-      appearance="inverse"
-      :disabled="isEmpty"
-      type="submit"
-      icon="u-icon-search"
-    />
-  </form>
+    <el-input v-model="value" />
+  </filter-template>
 </template>
 
 <script>
 export default {
   name: 'FilterStringStartWith',
+
+  components: {
+    FilterTemplate: require('../../components/FilterTemplate.vue').default
+  },
 
   data () {
     return {

@@ -6,19 +6,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-  - `UNavbar`: `Close all` and `Close inactive` actions added to tabs menu (as in tab popup)
-  - `USelectEntity`, `USelectEnum`, `USelectMultiple`, `USelectMany`: prop `searchStrategy` which sets search request condition
-  - `USelectEntity`, `USelectEnum`, `USelectMultiple`, `USelectMany`: user input debounce timeout increased from 120 to 600
+ - `UDropdown`: prop `childPlacement` - popper placement relative to opened dropdown
+ - `UTable`: param `formatHead` in column config. Render function for header cell
+ - `UButtonGroup`: added border for child `UButton`'s
+ - `UFormRow`: prop `preventLabelEvents` - disable label click, hover etc.
+ - `UTableEntity`: view mode option in user settings, also added slot `viewMode` to overlap it.
+ - `UTableEntity`: prop `cardColumns`. Array of column configs for card view
+ - `UTableEntity`: prop `beforeInitialLoad`. Hook which called after store created, but data didn't start to load.
+ - `UNavbar`: `Close all` and `Close inactive` actions added to tabs menu (as in tab popup)
+ - `USelectEntity`, `USelectEnum`, `USelectMultiple`, `USelectMany`: prop `searchStrategy` which sets search request condition
+ - `USelectEntity`, `USelectEnum`, `USelectMultiple`, `USelectMany`: user input debounce timeout increased from 120 to 600
 
 ### Changed
-
+ - `UButton`: changed sizes according design in figma
+ - `UTableEntity`: display of filter and sort. It is displayed as a button with a popup
+ - `UTableEntity`: color of filter tags. Value has "black" color, condition - "grey"
+ 
 ### Deprecated
 
 ### Removed
+ - `UTable`: event `sort`
 
 ### Fixed
- - `UNavbar`: all tabs now closed by clicking on dropdown menu button `Close all` 
- - `lookups.js`: onEntityChange delete event - in case response resultData do not contains ID, get it from 
+ - `UNavbar`: fix `Close all` behavior 
+ - `lookups.js`: onEntityChange for `delete` event - in case response resultData do not contains ID, get it from 
  response object not from resultData of response object
 
 ## [1.12.6] - 2020-08-19

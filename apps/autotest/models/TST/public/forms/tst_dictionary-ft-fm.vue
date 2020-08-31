@@ -243,7 +243,8 @@ module.exports.default = {
 
   data () {
     return {
-      multipleFileExample: []
+      multipleFileExample: [],
+      selectedFiles: []
     }
   },
 

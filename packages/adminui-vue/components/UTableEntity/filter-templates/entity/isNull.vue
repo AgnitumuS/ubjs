@@ -1,21 +1,18 @@
 <template>
-  <form
-    class="filter-section"
-    @submit.prevent="$emit('search', {
+  <filter-template
+    @submit="$emit('search', {
       whereList: [{ condition: 'isNull' }],
       description: 'isNull'
     })"
-  >
-    <u-button
-      appearance="inverse"
-      type="submit"
-      icon="u-icon-search"
-    />
-  </form>
+  />
 </template>
 
 <script>
 export default {
-  name: 'FilterEntityIsNull'
+  name: 'FilterEntityIsNull',
+
+  components: {
+    FilterTemplate: require('../../components/FilterTemplate.vue').default
+  }
 }
 </script>

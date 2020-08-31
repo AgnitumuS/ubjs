@@ -14,6 +14,7 @@ const lookups = require('../../utils/lookups')
  * @param {function} instance.buildAddNewConfig AddNew config builder
  * @param {function} instance.buildEditConfig Edit config builder
  * @param {function} instance.buildCopyConfig Copy config builder
+ * @param {object[]} instance.getCardColumns Columns to show in card view
  */
 module.exports = (instance) => ({
   state () {
@@ -27,8 +28,10 @@ module.exports = (instance) => ({
       isLastPageIndex: true,
       total: null,
 
+      /** @type {UTableSort} */
       sort: null,
 
+      /** @type {UTableFilterDefinition[]} */
       filters: [],
 
       /* cell selected by keyboard or mouse */
@@ -51,6 +54,10 @@ module.exports = (instance) => ({
 
     /**
      * Returns repository with added 'ID' field is missed, filters, sorters, pagination and total requests from state
+     * @param {object} state
+     * @param {UTableSort} state.sort
+     * @param {UTableFilterDefinition[]} state.filters
+     * @param {object} getters
      * @return {ClientRepository}
      */
     currentRepository (state, getters) {
@@ -138,6 +145,10 @@ module.exports = (instance) => ({
           entity: c.attribute.associatedEntity,
           associatedAttr: c.attribute.associationAttr || 'ID'
         }))
+    },
+
+    cardColumns () {
+      return instance.getCardColumns
     }
   },
 
@@ -182,10 +193,20 @@ module.exports = (instance) => ({
       state.pageIndex = pageIndex
     },
 
+    /**
+     * @param {object} state
+     * @param {UTableSort} state.sort
+     * @param {UTableSort} sort
+     */
     SORT (state, sort) {
       state.sort = sort
     },
 
+    /**
+     * @param {object} state
+     * @param {UTableFilterDefinition[]} state.filters
+     * @param {UTableFilterDefinition} filter
+     */
     APPLY_FILTER (state, filter) {
       const index = state.filters.findIndex(f => f.columnId === filter.columnId)
 
@@ -204,6 +225,11 @@ module.exports = (instance) => ({
       state.selectedRowId = selectedRowId
     },
 
+    /**
+     * @param {object} state
+     * @param {UTableFilterDefinition[]} state.filters
+     * @param {UTableFilterDefinition.columnId} columnId
+     */
     REMOVE_FILTER (state, columnId) {
       const index = state.filters.findIndex(f => f.columnId === columnId)
       if (index !== -1) {
