@@ -53,9 +53,9 @@ EventEmitter.prototype._events = undefined
  */
 EventEmitter.prototype._maxListeners = undefined
 
-// By default EventEmitters will print a warning if more than 10 listeners are
+// By default EventEmitters will print a warning if more than 20 listeners are
 // added to it. This is a useful default which helps finding memory leaks.
-EventEmitter.defaultMaxListeners = 10
+EventEmitter.defaultMaxListeners = 20
 
 /**
  * @private

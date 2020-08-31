@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `EventEmitter.defaultMaxListeners` increased from 10 to 20. This removes warning then event emitter are used for 
+ by JS mixins (EAV etc) to adds `:after` and `:before` events - in this case listeners count can exceed 10 
 
 ### Deprecated
 
