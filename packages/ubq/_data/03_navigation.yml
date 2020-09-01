@@ -12,6 +12,7 @@ adm_desktop:
         uk: Черги повідомлень
         tg: Навбати паёмҳо
         ka: რიგი
+        az: İsmarış növbələri
       iconCls: u-icon-more
       displayOrder: 50
       items:
@@ -22,6 +23,7 @@ adm_desktop:
             uk: Планувальники задач
             tg: Нақшакашҳои вазифаҳо
             ka: განრიგის შემქმნელი
+            az: Tapşırıq planlaşdırıcıları
           iconCls: fas fa-tasks
           displayOrder: 10
           cmd: >
@@ -39,6 +41,7 @@ adm_desktop:
             uk: Статистика
             tg: Омор
             ka: სტატისტიკა
+            az: Statistika
           iconCls: u-icon-circle-info
           displayOrder: 20
           cmd: >
@@ -56,6 +59,7 @@ adm_desktop:
             uk: Черга
             tg: Навбат
             ka: რიგირ
+            az: Növbə
           iconCls: fas fa-list-ol
           displayOrder: 30
           cmd: >
