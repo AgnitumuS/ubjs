@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.23] - 2020-09-01
 ## [5.5.22] - 2020-08-31
 ### Changed
  - `EventEmitter.defaultMaxListeners` increased from 10 to 20. This removes warning then event emitter are used for 

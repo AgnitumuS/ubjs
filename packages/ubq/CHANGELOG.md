@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Azerbaijani locale for initial data
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.4.1] - 2020-09-01
+### Added
+- Azerbaijani locale for initial data
 
 ### Fixed
  - mailer scheduler is enabled when `application.customSettings.mailerConfig.targetHost` not empty in the config.

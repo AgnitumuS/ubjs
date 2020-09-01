@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.6.1] - 2020-09-01
 ## [5.6.0] - 2020-08-31
 ### Deprecated
  - `javascript` section in ubConfig is deprecated. Starting from UB 5.18.12 use command line switches or env. vars

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.3.1] - 2020-09-01
 ## [5.3.0] - 2020-08-31
 ### Added
  - config parser enhancements - see server 5.18.12 changelog for details

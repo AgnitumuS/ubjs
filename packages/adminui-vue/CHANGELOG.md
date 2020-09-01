@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.13.1] - 2020-09-01
 ## [1.13.0] - 2020-08-31
 ### Added
  - `UDropdown`: prop `childPlacement` - popper placement relative to opened dropdown
