@@ -445,13 +445,6 @@ function UBModel (cfg, modelCode) {
      */
     this.realPath = cfg.realPath
   }
-  if (cfg.packageJSON) {
-    /**
-     * Extended domain only - model package.json content
-     * @type {object}
-     */
-    this.packageJSON = cfg.packageJSON
-  }
   /**
    * Model version as specified in `version` key of model package.json
    * If package.json not found version is empty.

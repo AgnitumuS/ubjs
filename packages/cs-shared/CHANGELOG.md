@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - `packageJSON` property is removed from extended domain
 
 ### Fixed
 

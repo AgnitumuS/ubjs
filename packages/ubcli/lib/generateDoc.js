@@ -125,7 +125,8 @@ module.exports = function generateDoc (cfg) {
     _.each(domainI18n, function (value, key) {
       value.modelCode = key
       value.entities = []
-      value.modelPackage = domain.models[key].packageJSON
+      const packageJsonFn = path.join(domain.models[key].realPath, 'package.json')
+      value.modelPackage = require(packageJsonFn)
     })
     // transform domain to array of entity
     const domainAsArray = _.values(domainI18n)
