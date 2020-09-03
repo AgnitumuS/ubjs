@@ -8,4 +8,5 @@ ub-proxy.conf
 screenshots/
 _temp/
 callgrind*
+ubConfig*.env
 

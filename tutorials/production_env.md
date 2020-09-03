@@ -17,28 +17,32 @@
         /deals
         /docflow-bpm
         ...
-    /apps                  # available applications (either products what configured for certain customer or stand-alone app)
+    /apps                   # available applications (either products what configured for certain customer or stand-alone app)
         /crb.docflow        # product based application
-            /localdb        # local database files (SQLite3, SQL Server localdb etc.)  
             /inetpub        # content of this folder available using `/statics` endpoint
-            /stores         # application BLOB stores
-            /logs           # local logs (for develepnemt purpose; production logs are written to journald)
-            /models         # customer models  
-                /vmodel     # vendor model (customer-specific addition for product developed by product owner) 
-                    crb.js  
-                /cmodel     # customer model (customer-specific addition for product developed by customer)
+            /models         # vendor model (customer-specific addition for product developed by product owner)
+              /crb
+                crb.js
+                package.json
+            /cmodels        # customer model (customer-specific addition for product developed by customer)  
             ubConfig.json   # application config - for products - symlynk to a product config `../../prodicts/docflow@2.1.4/ubConfigDocflow-tpl.json`
-            ubConfig.env    # Environment variables for application instance                   
        /docs-adminui        # stand-alone application (not based on any product)
-            /localdb
             /inetpub
-            /stores
             /models
                 /req        # application specific model
             /node_modules   # application modules. For products this folder is placed in /products/productName
             ubConfig.json   # for stand-alone app not a symlynk but file
-            ubConfig.env
-        
+    /appdata                # applications data (localdb, stores, temporary logs)
+        /crb.docflow        # crb.docflow data
+            /localdb        # local database files (SQLite3, SQL Server localdb etc.)  
+            /stores         # BLOB stores
+            /logs           # local logs (for develepnemt purpose; production logs are written to journald)
+            ubConfig.env    # Environment variables for application instance
+        /docs-adminui       # docs-adminui application data
+            /localdb          
+            /stores         
+            /logs           
+            ubConfig.env        
 
 /usr/lib/systemd/system
   unitybase@.service        # UnityBase vendor unit. Do not edit it directly - see overriding topic below
@@ -89,7 +93,8 @@ During startup service sets following variables:
 | Variable name | Value and explanation                                                             |
 |---------------|-----------------------------------------------------------------------------------|
 | UB_APP        | Part after @ in the service name (autotest for `systemctl start unitybase@autotest`)  |
-| UB_APPDATA    | `/opt/unitybase/apps/$UB_APP/` Note a trailing '/' - this allows to use path relative to `cwd` for development (when UB_APPDATA is not defined) |
+| UB_APPDATA    | `/opt/unitybase/appdata/$UB_APP/` Note a trailing '/' - this allows to use path relative to `cwd` for development (when UB_APPDATA is not defined) |
+| UB_APPHOME    | `/opt/unitybase/apps/$UB_APP/` |
 
 Additional variables can be added for application by placing it in the `%UB_APPDATA%ubConfig.env`.
 This file used as `env` file for service.
@@ -127,7 +132,7 @@ During development customers specific models and test data usually placed in the
 To start an application in debug mode for a certain customer (crb) using product template
 and Oracle as a database run ub as:
 ```shell script
-UB_DB_DRIVER=Oracle UB_CFG='ubConfigDocFlow-tpl.json' UB_VMODELS='crb:crb_bpm' ub -cd -dev
+UB_DB_DRIVER=Oracle UB_VMODELS='crb:crb_bpm' ub -cd -dev
 ```   
 
 All variables can be exported from env file using
@@ -135,6 +140,11 @@ All variables can be exported from env file using
 set -o allexport; . ubConfig-dev.env; set +o allexport
 # set -o allexport; source ubConfig-dev.env; set +o allexport
 ```
+
+Or via command line using `-env`
+```
+ub -env ./ubConfig-dev.env
+```  
 
 We also recommend exporting an `UB_ENV` variable and put it to the `PROMPT_COMMAND` inside `.bashrc` to
 see a current environment (put a `\e[0;35m\$UB_ENV\e[m` in your .bashrc PROMPT_COMMAND=). For example:
@@ -164,29 +174,33 @@ Config is symlinked from products into apps.
 Stand-alone application can place all its part into /apps.
    
 
-#### Application folder structure
-Each application folder should contain the follow:
+#### Application folders structure
+Application with name `appName` place it's code in `/opt/unitybase/apps/appName` (UB_APPHOME environment variable) and
+it's data in `/opt/unitybase/appdata/appName`:
+
 ```
 /opt/unitybase/apps
   /appName
-    /localdb        # local database files (SQLite3, SQL Server localdb etc.)
-      appnameFTS.sqlite3
-      ..    
     /inetpub        # content of this folder available using `/statics` endpoint
       favicon.ico
       robots.txt
       ...    
-    /stores         # application BLOB stores
     /models         # customer models  
       /crb          # vendor model (customer-specific addition for product developed by product owner) 
-        package.json  
+        package.json
+    /cmodels  
       /crbc         # customer model (customer-specific addition for product developed by customer)
     ubConfig.json   # application config - symlynk to a product config `../../products/docflow@2.1.4/ubConfigDocflow-tpl.json`
-    ubConfig.env    # Environment variables for application instance  
+/opt/unitybase/appdata
+  /appName
+      /localdb        # local database files (SQLite3, SQL Server localdb etc.)
+        appnameFTS.sqlite3
+        ..    
+      /stores         # application BLOB stores
+      ubConfig.env    # Environment variables for application instance  
 ```
-Product template uses this directory structure in the product template ubConfig. 
 
-Product template can use additional environment variables. These variables should be defined in `appfolder/ubConfig.env`.  
+Product template can use additional environment variables. These variables should be defined in `$UB_APPDATA/ubConfig.env`.  
 
 ### Start application 
 A command below starts `autotest` application and schedule it to start after OS reboot:

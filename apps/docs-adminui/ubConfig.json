@@ -6,7 +6,7 @@
     //#ifdef(%UB_ALLOW_CORS_FROM%)
     "allowCORSFrom": "%UB_ALLOW_CORS_FROM%",
     //#endif
-    "inetPub": "%UB_APPDATA%inetpub"
+    "inetPub": "%UB_APPHOME%inetpub"
   },
   "logging": {
     "levels": ["*"]
@@ -46,7 +46,7 @@
         {"path": "./node_modules/@unitybase/adminui-pub"},
         {"path": "./node_modules/@unitybase/adminui-reg"},
         {"path": "./node_modules/@unitybase/adminui-vue"},
-        {"path": "%UB_APPDATA%models/req"}
+        {"path": "%UB_APPHOME%models/req"}
       ]
     },
     "connections": [

@@ -1,0 +1,1 @@
+sed -i 's/limit(5e4)/limit(5e5)/' ./node_modules/@unitybase/adminui-vue/dist/adminui-vue.min.js

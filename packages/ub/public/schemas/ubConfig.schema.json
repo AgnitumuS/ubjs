@@ -633,11 +633,11 @@
             },
             "vendorModels": {
               "type": "string",
-              "description": "Colon separated folder names (related to %UB_APPDATA%models/ folder) of vendor models. This models will be added to domain models during server startup. Example \"KS:KS_BPM\" "
+              "description": "Colon separated folder names (sub-folders of %UB_APPHOME%models/ folder) of vendor models. This models will be added to domain models during server startup. Example \"KS:KS_BPM\" "
             },
             "customerModels": {
               "type": "string",
-              "description": "Colon separated folder names (related to %UB_APPDATA%models/ folder) of customer models. This models will be added to domain models after vendorModels during server startup. Example \"ksc\" "
+              "description": "Colon separated folder names (sub-folders of %UB_APPHOME%cmodels/ folder) of customer models. This models will be added to domain models after vendorModels during server startup. Example \"ksc\" "
             },
             "implicitlyAddedMixins": {
               "type": "array",
