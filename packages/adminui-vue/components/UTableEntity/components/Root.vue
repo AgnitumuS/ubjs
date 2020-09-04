@@ -194,7 +194,7 @@
           :column="column"
           :name="`head_${column.id}`"
         >
-          {{ column.label }}
+          {{ $ut(column.label) }}
           <i
             v-if="sort"
             :class="getSortIconClass(column.id)"
