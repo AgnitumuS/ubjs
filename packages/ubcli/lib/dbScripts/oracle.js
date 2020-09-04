@@ -3,9 +3,20 @@
  * @module cmd/initDB/oracle
  */
 
-const DBA_FAKE = '__dba'
 const path = require('path')
 const fs = require('fs')
+
+/**
+ * Check database (user name) already exists
+ * @param {DBConnection} dbConn
+ * @param {Object} databaseConfig A database configuration
+ * @return {boolean}
+ */
+module.exports.databaseExists = function databaseExists (dbConn, databaseConfig) {
+  const userExist = dbConn.selectParsedAsObject('SELECT COUNT(1) as CNT FROM dba_users WHERE username = ?', [databaseConfig.userID.toUpperCase()])
+  return (userExist.length > 0) && (userExist[0].CNT !== 0)
+}
+
 /**
  * Drop a specified schema & role (databaseName)
  * @param {DBConnection} dbConn
@@ -13,24 +24,24 @@ const fs = require('fs')
  */
 module.exports.dropDatabase = function dropDatabase (dbConn, databaseConfig) {
   const upperUser = databaseConfig.userID.toUpperCase()
-  const userExist = dbConn.selectParsedAsObject('SELECT COUNT(1) as CNT FROM dba_users WHERE username = ?', [upperUser])
-  if (userExist.length && userExist[0].CNT !== 0) {
-    const activeConnections = dbConn.selectParsedAsObject('SELECT sid, serial# AS sn FROM v$session WHERE username = ?', [upperUser])
-    for (let i = 0, l = activeConnections.length; i < l; i++) {
-      dbConn.execParsed(`alter system kill session '${activeConnections[i].SID}, ${activeConnections[i].SN}'`)
-    }
-    dbConn.execParsed('DROP USER ' + upperUser + ' CASCADE')
-  } else {
-    console.warn('User %s dose not exists. Drop skipped', upperUser)
+  const activeConnections = dbConn.selectParsedAsObject('SELECT sid, serial# AS sn FROM v$session WHERE username = ?', [upperUser])
+  for (let i = 0, L = activeConnections.length; i < L; i++) {
+    dbConn.execParsed(`alter system kill session '${activeConnections[i].SID}, ${activeConnections[i].SN}'`)
   }
+  dbConn.execParsed('DROP USER ' + upperUser + ' CASCADE')
 }
 
 /**
  * Drop a specified schema & role (databaseName) with a pwd
  * @param {DBConnection} dbConn
  * @param {Object} databaseConfig A database configuration
+ * @returns {boolean} if database already exists - returns false
  */
 module.exports.createDatabase = function createDatabase (dbConn, databaseConfig) {
+  if (databaseExists(dbConn, databaseConfig)) {
+    console.warn('User %s already exists. Creation skipped', databaseConfig.userID.toUpperCase())
+    return false
+  }
   dbConn.execParsed(`CREATE USER ${databaseConfig.userID} IDENTIFIED BY ${databaseConfig.password} DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP PROFILE DEFAULT ACCOUNT UNLOCK;`)
 
   const grants = [
@@ -64,6 +75,7 @@ module.exports.createDatabase = function createDatabase (dbConn, databaseConfig)
   for (let i = 0, l = grants.length; i < l; i++) {
     dbConn.execParsed(grants[i].replace('{0}', databaseConfig.userID))
   }
+  return true
 }
 
 /**

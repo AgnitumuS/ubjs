@@ -35,8 +35,7 @@ const options = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 const UBA_COMMON = require('@unitybase/base').uba_common
 const _ = require('lodash')
-const fs = require('fs')
-const http = require('http')
+
 module.exports = initDB
 /**
  * @param {Object} cfg
@@ -139,14 +138,24 @@ function initDB (cfg) {
   const dbaConn = dbConnections.FAKE_DBA_CONN
 
   const generator = require(`./dbScripts/${dbDriverName}`)
+  let dbExists = generator.databaseExists(dbaConn, mainConnCfg)
   if (cfg.dropDatabase) {
-    console.info(`Dropping a database ${mainConnCfg.name}...`)
-    generator.dropDatabase(dbaConn, mainConnCfg)
+    if (!dbExists) {
+      console.warn(`Database for connection ${mainConnCfg.name} not exists. Drop skipped`)
+    } else {
+      console.info(`Dropping a database for connection ${mainConnCfg.name}...`)
+      generator.dropDatabase(dbaConn, mainConnCfg)
+      dbExists = false
+    }
   }
   if (cfg.createDatabase) {
-    console.info(`Creating a database ${mainConnCfg.name}...`)
-    generator.createDatabase(dbaConn, mainConnCfg)
-    dbaConn.commit()
+    if (!dbExists) {
+      console.info(`Creating a database ${mainConnCfg.name}...`)
+      generator.createDatabase(dbaConn, mainConnCfg)
+      dbaConn.commit()
+    } else {
+      console.warn(`Database for connection ${mainConnCfg.name} already exists. Creation skipped`)
+    }
   }
 
   const targetConn = dbConnections[mainConnCfg.name]

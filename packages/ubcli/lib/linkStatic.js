@@ -26,7 +26,7 @@ function linkStatic (cfg) {
   console.time('Generate static content directory')
   if (!cfg) {
     const opts = options.describe('linkStatic',
-      `Create folder with static assets, which can be used by nginx
+      `Create folder with a static assets, which can be used by nginx
 as drop-in replacement to /clientRequire and /models endpoints`,
       'ubcli'
     )

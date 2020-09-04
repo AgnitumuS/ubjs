@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - `ubcli inidDB -create` skips database(role for Oracle, schema for Postgres, file for SQLite3)
+ creation in case database already exists 
+ 
 ### Deprecated
 
 ### Removed

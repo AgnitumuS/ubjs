@@ -7,29 +7,39 @@ const fs = require('fs')
 const path = require('path')
 
 /**
+ * Check database already exists
+ * @param {DBConnection} dbConn
+ * @param {Object} databaseConfig A database configuration
+ * @return {boolean}
+ */
+module.exports.databaseExists = function databaseExists (dbConn, databaseConfig) {
+  const dbPath = path.join(process.configPath, databaseConfig.databaseName)
+  return fs.existsSync(dbPath)
+}
+
+/**
  * Drop a specified schema & role (databaseName)
  * @param {DBConnection} dbConn
  * @param {Object} targetDBConfig A database configuration
  */
 module.exports.dropDatabase = function dropDatabase (dbConn, targetDBConfig) {
   const dbPath = path.join(process.configPath, targetDBConfig.databaseName)
-  console.debug('Start drop a database', dbPath)
-  if (fs.existsSync(dbPath)) {
-    if (!fs.unlinkSync(dbPath)) {
-      throw new Error('Can not delete SQLite3 database file ' + dbPath + ' May be database in use?')
-    }
-    // drop WALs if any. Can appear after unsuccessfully termination on prev. UB session
-    if (fs.existsSync(dbPath + '-wal')) {
-      if (!fs.unlinkSync(dbPath + '-wal')) {
-        throw new Error('Can not delete SQLite3 WAL file ' + dbPath + '-wal May be database in use?')
-      }
-    }
-    if (fs.existsSync(dbPath + '-shm')) {
-      if (!fs.unlinkSync(dbPath + '-shm')) {
-        throw new Error('Can not delete SQLite3 SHM file ' + dbPath + '-shm May be database in use?')
-      }
+  console.debug('Start dropping a database %s ..', dbPath)
+  if (!fs.unlinkSync(dbPath)) {
+    throw new Error('Can not delete SQLite3 database file ' + dbPath + ' May be database in use?')
+  }
+  // drop WALs if any. Can appear after unsuccessfully termination on prev. UB session
+  if (fs.existsSync(dbPath + '-wal')) {
+    if (!fs.unlinkSync(dbPath + '-wal')) {
+      throw new Error('Can not delete SQLite3 WAL file ' + dbPath + '-wal May be database in use?')
     }
   }
+  if (fs.existsSync(dbPath + '-shm')) {
+    if (!fs.unlinkSync(dbPath + '-shm')) {
+      throw new Error('Can not delete SQLite3 SHM file ' + dbPath + '-shm May be database in use?')
+    }
+  }
+  console.debug('Database dropped')
 }
 
 /**

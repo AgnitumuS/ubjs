@@ -3,9 +3,19 @@
  * @module cmd/initDB/mssql
  */
 
-const DBA_FAKE = '__dba'
 const path = require('path')
 const fs = require('fs')
+
+/**
+ * Check database already exists
+ * @param {DBConnection} dbConn
+ * @param {Object} databaseConfig A database configuration
+ * @return {boolean}
+ */
+module.exports.databaseExists = function databaseExists (dbConn, databaseConfig) {
+  const checkDB = dbConn.selectParsedAsObject(`select DB_ID (N'${databaseConfig.databaseName}') as DBID`)
+  return (checkDB.length > 0) && (!!checkDB[0].DBID)
+}
 
 /**
  * Drop a specified schema & role (databaseName)
@@ -13,14 +23,9 @@ const fs = require('fs')
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.dropDatabase = function dropDatabase (dbConn, databaseConfig) {
-  const checkDB = dbConn.selectParsedAsObject(`select DB_ID (N'${databaseConfig.databaseName}') as DBID`)
-  if (checkDB[0].DBID) {
-    dbConn.execParsed('USE master') // This required for ODBC connection - it does not use 'database' attribute in configuration file
-    dbConn.commit() // DROP DATABASE statement cannot be used inside a user transaction
-    dbConn.execParsed(`DROP DATABASE ${databaseConfig.databaseName}`)
-  } else {
-    console.warn('Database %s does not exist. Drop skipped', databaseConfig.databaseName)
-  }
+  dbConn.execParsed('USE master') // This required for ODBC connection - it does not use 'database' attribute in configuration file
+  dbConn.commit() // DROP DATABASE statement cannot be used inside a user transaction
+  dbConn.execParsed(`DROP DATABASE ${databaseConfig.databaseName}`)
 }
 
 /**

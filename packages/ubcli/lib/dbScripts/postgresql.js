@@ -7,6 +7,17 @@ const path = require('path')
 const fs = require('fs')
 
 /**
+ * Check database (schema) already exists
+ * @param {DBConnection} dbConn
+ * @param {Object} databaseConfig A database configuration
+ * @return {boolean}
+ */
+module.exports.databaseExists = function databaseExists (dbConn, databaseConfig) {
+  const schemaExist = dbConn.selectParsedAsObject('SELECT schema_name FROM information_schema.schemata WHERE schema_name = ?', [databaseConfig.userID])
+  return (schemaExist.length > 0)
+}
+
+/**
  * Drop a specified schema & role (databaseName)
  * @param {DBConnection} dbConn
  * @param {Object} databaseConfig A database configuration
