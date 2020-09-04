@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTableEntity`: apply to i18n all `<th>` by default
 
 ## [1.13.1] - 2020-09-01
 ## [1.13.0] - 2020-08-31
