@@ -1,7 +1,7 @@
 //@! "do not remove comments below unless you know what you do!"
 //@isDefault "false"
 //@entity "ubm_desktop"
-//@formType "custom"
+//@formType "vue"
 //@caption "ScanerSettings"
 //@description "ScanerSettings"
 
