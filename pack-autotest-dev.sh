@@ -1,3 +1,4 @@
+#!/bin/bash
 err_report() {
   >&2 echo "Error on line $1"
   exit 1
@@ -22,10 +23,13 @@ yarn --prod
 # remove artifacts
 # .dcu
 find -L . -name \.dcu -type d -exec rm -rf {} +
+# possible symlinked packages entry-points
+find -L ./node_modules -name \.entryPoint.js -type f -exec rm -rf {} +
 
 rm -f ~/autotest.tar.gz
 # h to follow hyperlink
 tar cvhfz ~/autotest.tar.gz package.json package-lock.json ubConfig.json ./*.js ./models ./node_modules ./scripts
+exit 0
 
 # deploy
 # mkdir -p ./autotest
