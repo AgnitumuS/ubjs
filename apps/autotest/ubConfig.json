@@ -100,13 +100,7 @@
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30
-			},
-			"linter": { "asi": true, "sub": true },
-			//#ifdef(%UB_USE_ONLYOFFICE%)
-			"onlyOffice": {
-				"serverIP": "10.8.17.6:32771"
 			}
-			//#endif
 		},
 		"portalUI": {
 			"applicationName": "UBCore usage"
@@ -265,7 +259,7 @@
 			{
 				"name": "mdb",
 				"storeType": "Virtual",
-				"tempPath": "%UB_APPDATA%stores/_temp"
+				"tempPath": "%UB_APPHOME%_temp"
 			},
 			{
 				"name": "simple",
