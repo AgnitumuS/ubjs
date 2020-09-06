@@ -1,95 +1,136 @@
 <template>
   <div class="u-table-register">
-    <u-table-entity
-      ref="masterTable"
-      v-bind="$attrs"
-      :before-initial-load="onInitialLoad"
-      v-on="$listeners"
-      @change-row="selectedRowId = $event"
-    >
-      <template
-        v-for="slot in Object.keys($scopedSlots)"
-        :slot="slot"
-        slot-scope="scope"
-      >
-        <slot
-          :name="slot"
-          v-bind="scope"
-        />
-      </template>
-
-      <template #contextMenuDetails="scope">
-        <slot
-          :scope="scope"
-          name="contextMenuDetails"
-        >
-          <u-dropdown-item
-            v-if="details.length"
-            label="Details"
-            icon="u-icon-file-text"
-          >
-            <u-dropdown-item
-              v-for="detail in details"
-              :key="detail.entity + detail.attribute"
-              :disabled="detail === selectedDetail && detailsVisible"
-              :label="formatDetailLabel(detail)"
-              @click="showDetail(detail)"
-            />
-          </u-dropdown-item>
-        </slot>
-      </template>
-
-      <template #toolbarDropdownAppend="scope">
-        <slot
-          :scope="scope"
-          name="dropdownMenuDetails"
-        >
-          <u-dropdown-item
-            v-if="details.length"
-            label="Details"
-            icon="u-icon-file-text"
-          >
-            <u-dropdown-item
-              v-for="detail in details"
-              :key="detail.entity + detail.attribute"
-              :disabled="detail === selectedDetail && detailsVisible"
-              :label="formatDetailLabel(detail)"
-              @click="showDetail(detail)"
-            />
-          </u-dropdown-item>
-        </slot>
-
-        <slot
-          :scope="scope"
-          name="toolbarDropdownAppend"
-        />
-      </template>
-    </u-table-entity>
-
-    <template v-if="detailsVisible">
-      <div class="u-table-register__divider">
-        <div class="u-table-register__divider-title">
-          {{ formatDetailLabel(selectedDetail) }}
-        </div>
-        <button
-          class="u-table-register__divider-button"
-          @click="detailsVisible = false"
-        >
-          <i class="u-icon-eye-slash" />
-          {{ $ut('tableRegister.hideDetails') }}
-        </button>
-
-        <div class="u-table-register__divider-line" />
-      </div>
-
+    <div class="u-table-register__view">
       <u-table-entity
-        ref="detailsTable"
-        class="u-table-register__details"
-        :repository="repository"
-        :columns="columns"
-        :build-add-new-config="buildDetailAddNewConfig"
-      />
-    </template>
+        ref="masterTable"
+        v-bind="$attrs"
+        :before-initial-load="onInitialLoad"
+        v-on="$listeners"
+        @change-row="selectedRowId = $event"
+      >
+        <template
+          v-for="slot in Object.keys($scopedSlots)"
+          :slot="slot"
+          slot-scope="scope"
+        >
+          <slot
+            :name="slot"
+            v-bind="scope"
+          />
+        </template>
+
+        <template #contextMenuDetails="scope">
+          <slot
+            :scope="scope"
+            name="contextMenuDetails"
+          >
+            <u-dropdown-item
+              v-if="details.length"
+              label="Details"
+              icon="u-icon-file-text"
+            >
+              <u-dropdown-item
+                v-for="detail in details"
+                :key="detail.entity + detail.attribute"
+                :disabled="detail === selectedDetail && detailsVisible"
+                :label="formatDetailLabel(detail)"
+                @click="showDetail(detail)"
+              />
+            </u-dropdown-item>
+          </slot>
+        </template>
+
+        <template #contextMenuAppend="scope">
+          <slot
+            :scope="scope"
+            name="contextMenuPreviewButton"
+          >
+            <u-dropdown-item
+              label="Form preview"
+              icon="u-icon-eye"
+              @click="formPreviewVisible = !formPreviewVisible"
+            />
+          </slot>
+
+          <slot
+            :scope="scope"
+            name="contextMenuAppend"
+          />
+        </template>
+
+        <template #toolbarDropdownAppend="scope">
+          <slot
+            :scope="scope"
+            name="dropdownMenuDetails"
+          >
+            <u-dropdown-item
+              v-if="details.length"
+              label="Details"
+              icon="u-icon-file-text"
+            >
+              <u-dropdown-item
+                v-for="detail in details"
+                :key="detail.entity + detail.attribute"
+                :disabled="detail === selectedDetail && detailsVisible"
+                :label="formatDetailLabel(detail)"
+                @click="showDetail(detail)"
+              />
+            </u-dropdown-item>
+          </slot>
+
+          <slot
+            :scope="scope"
+            name="dropdownMenuPreviewButton"
+          >
+            <u-dropdown-item
+              label="Form preview"
+              icon="u-icon-eye"
+              :disabled="!selectedRowId"
+              @click="formPreviewVisible = !formPreviewVisible"
+            />
+          </slot>
+
+          <slot
+            :scope="scope"
+            name="toolbarDropdownAppend"
+          />
+        </template>
+      </u-table-entity>
+
+      <template v-if="detailsVisible">
+        <div class="u-table-register__divider">
+          <div class="u-table-register__divider-title">
+            {{ formatDetailLabel(selectedDetail) }}
+          </div>
+          <button
+            class="u-table-register__divider-button"
+            @click="detailsVisible = false"
+          >
+            <i class="u-icon-eye-slash" />
+            {{ $ut('tableRegister.hideDetails') }}
+          </button>
+
+          <div class="u-table-register__divider-line" />
+        </div>
+
+        <u-table-entity
+          ref="detailsTable"
+          class="u-table-register__details"
+          :repository="repository"
+          :columns="columns"
+          :build-add-new-config="buildDetailAddNewConfig"
+        />
+      </template>
+    </div>
+
+    <preview-form
+      v-if="formPreviewVisible"
+      :id="selectedRowId"
+      ref="previewForm"
+      :entity="entityName"
+      class="u-table-register__form-preview"
+      @cancel-close="setSelectedRow"
+    />
   </div>
 </template>
 
@@ -102,6 +143,10 @@ const { throttle } = require('throttle-debounce')
 export default {
   name: 'UMasterDetailView',
 
+  components: {
+    PreviewForm: require('./PreviewForm.vue').default
+  },
+
   mixins: [
     require('./localStorageMixin')
   ],
@@ -111,7 +156,9 @@ export default {
       rowId: null,
       selectedDetail: null,
       detailsVisible: false,
-      selectedRowId: null
+      selectedRowId: null,
+      formPreviewVisible: false,
+      viewModeBeforeOpenPreview: null
     }
   },
 
@@ -170,10 +217,24 @@ export default {
       if (this.$refs.detailsTable) {
         this.refreshMasterTable()
       }
+    },
+
+    formPreviewVisible (isVisible) {
+      const masterTable = this.$refs.masterTable
+      if (isVisible) {
+        this.viewModeBeforeOpenPreview = masterTable.viewMode
+        masterTable.viewMode = 'card'
+      } else {
+        masterTable.viewMode = this.viewModeBeforeOpenPreview
+      }
     }
   },
 
   methods: {
+    setSelectedRow (id) {
+      this.$refs.masterTable.$store.commit('SELECT_ROW', id)
+    },
+
     repository () {
       const columns = [...new Set(
         this.columns.concat(this.selectedDetail.attribute)
@@ -221,51 +282,67 @@ export default {
 </script>
 
 <style>
-  .u-table-register {
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
-  }
+.u-table-register {
+  display: flex;
+}
 
-  .u-table-register > .u-table-entity {
-    overflow: auto;
-    flex-grow: 1;
-  }
+.u-table-register__view {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 450px;
+  min-width: 450px;
+}
 
-  .u-table-register__details {
-    min-height: 50%;
-    max-height: 75%;
-  }
+.u-table-register__form-preview {
+  flex-grow: 1;
+  flex-basis: 100%;
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+}
 
-  .u-table-register__divider {
-    padding: 4px 0;
-    display: flex;
-    align-items: center;
-  }
+.u-table-register__view > .u-table-entity {
+  overflow: auto;
+  flex-grow: 1;
+}
 
-  .u-table-register__divider-line {
-    flex-grow: 1;
-    height: 1px;
-    background: hsl(var(--hs-border), var(--l-layout-border-default));
-  }
+.u-table-register__details {
+  min-height: 50%;
+  max-height: 75%;
+  flex-grow: 1;
+}
 
-  .u-table-register__divider-title {
-    padding: 0 10px;
-    font-size: 18px;
-    line-height: 1;
-  }
+.u-table-register__divider {
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
+}
 
-  .u-table-register__divider-button {
-    color: hsl(var(--hs-primary), var(--l-text-default));
-    font-size: 15px;
-    background: none;
-    border: none;
-    padding-right: 10px;
-    padding-left: 0;
-    cursor: pointer;
-  }
+.u-table-register__divider-line {
+  flex-grow: 1;
+  height: 1px;
+  background: hsl(var(--hs-border), var(--l-layout-border-default));
+}
 
-  .u-table-register__divider-button:hover{
-    color: hsl(var(--hs-primary), var(--l-state-hover));
-  }
+.u-table-register__divider-title {
+  padding: 0 10px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.u-table-register__divider-button {
+  color: hsl(var(--hs-primary), var(--l-state-default));
+  font-size: 15px;
+  background: none;
+  border: none;
+  padding-right: 10px;
+  padding-left: 0;
+  cursor: pointer;
+}
+
+.u-table-register__divider-button:hover {
+  color: hsl(var(--hs-primary), var(--l-state-hover));
+}
 </style>

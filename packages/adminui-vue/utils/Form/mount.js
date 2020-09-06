@@ -340,7 +340,7 @@ function mountContainer ({
       instance.$destroy()
     })
     instance.$mount(`#${target}`)
-  } else { // Ext component
+  } else if ('getId' in target) { // Ext component
     if (document.getElementById(`${target.getId()}-outerCt`)) {
       instance.$mount(`#${target.getId()}-outerCt`)
     } else {
@@ -365,6 +365,8 @@ function mountContainer ({
       if (unWatch) unWatch()
       instance.$destroy()
     })
+  } else if (target instanceof HTMLElement) {
+    instance.$mount(target)
   }
 }
 
@@ -486,6 +488,8 @@ function mountTableEntityAsModal ({
   instance.$mount()
   document.body.appendChild(instance.$el)
   instance.dialogVisible = true
+
+  return instance
 }
 
 /**
