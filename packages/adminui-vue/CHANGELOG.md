@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `UToolbar`: 'toolbarInfoRow' slot for additional information about record in toolbar
+ under the dates of creation and modification
 ### Changed
 
 ### Deprecated

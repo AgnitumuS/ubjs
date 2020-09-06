@@ -78,6 +78,9 @@
         <td>{{ $ut('updatedEntityCaption') }}:</td>
         <td>{{ formatDate(mi_modifyDate) }}</td>
       </tr>
+
+      <!-- @slot under the dates of creation and modification -->
+      <slot name="toolbarInfoRow" />
     </table>
   </div>
 </template>
@@ -494,6 +497,7 @@ export default {
       <u-toolbar-button slot="right">right side btn</u-toolbar-button>
       <!-- Or any component you need, button for example -->
       <button slot="dropdown">dropdown btn</button>
+      <div slot="toolbarInfoRow">some content</div>
     </u-toolbar>
     <u-form-container>
       <!-- Your form -->
