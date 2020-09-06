@@ -80,7 +80,7 @@ function replaceExtJSNavbar () {
 }
 
 function replaceAutoForms () {
-  const { entity, instanceID, parentContext, isModal } = this
+  const { entity, instanceID, parentContext, isModal, target } = this
 
   Form({
     component: autoForm,
@@ -89,6 +89,7 @@ function replaceAutoForms () {
     instanceID,
     title: UB.connection.domain.get(entity).caption,
     isModal,
+    target,
     isCopy: this.commandConfig.isCopy,
     modalClass: 'ub-dialog__reset-padding'
   })

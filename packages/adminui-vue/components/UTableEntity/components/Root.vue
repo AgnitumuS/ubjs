@@ -239,6 +239,7 @@
 
     <u-card-view
       v-if="viewMode === 'card'"
+      ref="cardView"
       :columns="cardColumns"
       :items="items"
       :get-card-class="getRowClass"
@@ -557,8 +558,6 @@ export default {
     },
 
     move (direction) {
-      if (this.viewMode !== 'table') return
-
       switch (direction) {
         case 'up':
           if (this.selectedRowId === null) return
@@ -574,13 +573,23 @@ export default {
 
         case 'left':
           if (this.selectedColumnId === null) return
-          this.SELECT_COLUMN(this.getPrevArrayValue(this.columns, 'id', this.selectedColumnId))
+          if (this.viewMode === 'table') {
+            this.SELECT_COLUMN(this.getPrevArrayValue(this.columns, 'id', this.selectedColumnId))
+          }
+          if (this.viewMode === 'card') {
+            this.SELECT_ROW(this.getPrevArrayValue(this.items, 'ID', this.selectedRowId))
+          }
           this.scrollIntoView()
           break
 
         case 'right':
           if (this.selectedColumnId === null) return
-          this.SELECT_COLUMN(this.getNextArrayValue(this.columns, 'id', this.selectedColumnId))
+          if (this.viewMode === 'table') {
+            this.SELECT_COLUMN(this.getNextArrayValue(this.columns, 'id', this.selectedColumnId))
+          }
+          if (this.viewMode === 'card') {
+            this.SELECT_ROW(this.getNextArrayValue(this.items, 'ID', this.selectedRowId))
+          }
           this.scrollIntoView()
           break
       }
@@ -600,13 +609,27 @@ export default {
 
     async scrollIntoView () {
       await this.$nextTick()
-      const table = this.$refs.table.$el
-      const cell = table.querySelector('tr.selected td.selected')
-      if (cell) {
-        cell.scrollIntoView({
-          block: 'nearest',
-          inline: 'nearest'
-        })
+
+      if (this.viewMode === 'table') {
+        const table = this.$refs.table.$el
+        const cell = table.querySelector('tr.selected td.selected')
+        if (cell) {
+          cell.scrollIntoView({
+            block: 'nearest',
+            inline: 'nearest'
+          })
+        }
+      }
+
+      if (this.viewMode === 'card') {
+        const cardView = this.$refs.cardView.$el
+        const card = cardView.querySelector('.u-card.selected')
+        if (card) {
+          card.scrollIntoView({
+            block: 'nearest',
+            inline: 'nearest'
+          })
+        }
       }
     },
 

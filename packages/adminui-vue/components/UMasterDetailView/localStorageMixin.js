@@ -88,6 +88,9 @@ module.exports = {
       return this.$watch(
         () => masterTableInstance.viewMode,
         value => {
+          const ignoreSaving = this.formPreviewVisible
+          if (ignoreSaving) return
+
           window.localStorage.setItem(
             this.localStorageKey('viewMode'),
             value
