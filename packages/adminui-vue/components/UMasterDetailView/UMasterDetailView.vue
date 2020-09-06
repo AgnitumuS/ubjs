@@ -46,7 +46,7 @@
             name="contextMenuPreviewButton"
           >
             <u-dropdown-item
-              label="Form preview"
+              label="showPreview"
               icon="u-icon-eye"
               @click="formPreviewVisible = !formPreviewVisible"
             />
@@ -83,7 +83,7 @@
             name="dropdownMenuPreviewButton"
           >
             <u-dropdown-item
-              label="Form preview"
+              label="showPreview"
               icon="u-icon-eye"
               :disabled="!selectedRowId"
               @click="formPreviewVisible = !formPreviewVisible"
