@@ -17,6 +17,25 @@ const {
 const createValidator = require('./validation')
 const UB = require('@unitybase/ub-pub')
 
+/**
+ * @param {object} cfg
+ * @param {Vue.Component} [cfg.component] Form component, same as cfg.rootComponent
+ * @param {Vue.Component} [cfg.rootComponent] Form component, same as cfg.component
+ * @param {object} [cfg.props] Form component props
+ * @param {object} [cfg.props.parentContext] Attributes values what will be passed to addNew method
+ *   in case instanceID is empty. Think of it as default values for attributes of a new record
+ * @param {string} [cfg.title] Form title
+ * @param {string} cfg.entity Entity name for master record
+ * @param {number} [cfg.instanceID] Instance ID
+ * @param {boolean} [cfg.isModal=false] If true form will be displayed inside modal dialog. Otherwise - in tab (default)
+ * @param {boolean} [cfg.openInBackgroundTab=false] If `true` - the tab with a newly opened form does not become active
+ * @param {string} [cfg.modalClass] Modal class
+ * @param {string} [cfg.modalWidth] Modal width
+ * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar and for correct tabID generation
+ * @param {string} [cfg.tabId] Optional tabId. If omitted will be calculated using entity code and instanceID
+ * @param {object} [cfg.target] Optional target. Used for render form into form
+ * @param {boolean} cfg.isCopy Required isCopy. Used for create new record with data of existing record
+ */
 function Form (cfg) {
   return new UForm(cfg)
 }

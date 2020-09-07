@@ -13,9 +13,10 @@ module.exports = {
  * @param {CustomRepository} repository
  * @param {array<UTableColumn>} columns
  * @param {string} fileName
+ * @param {Array<UTableFilterDefinition>} filters
  * @returns {Promise<void>}
  */
-async function exportExcel ({ repository, columns, fileName }) {
+async function exportExcel ({ repository, columns, fileName, filters }) {
   const XLSX = await loadXLSX()
   const workbook = new XLSX.XLSXWorkbook()
   workbook.useSharedString = true
@@ -24,6 +25,13 @@ async function exportExcel ({ repository, columns, fileName }) {
   const sheet = workbook.addWorkSheet({ caption: fileName, name: fileName })
   sheet.addMerge({ colFrom: 1, colTo: columns.length })
   sheet.addRow({ value: fileName, column: 1, style: getStyle('header') }, {}, { height: 40 })
+  if (filters && filters.length) {
+    const allFiltersDescr = filters.map(f => f.label + ' ' + f.description).join('; ')
+    if (allFiltersDescr) {
+      sheet.addMerge({ colFrom: 1, colTo: columns.length })
+      sheet.addRow({ value: allFiltersDescr, column: 1, style: getStyle('header') }, {}, { height: 40 })
+    }
+  }
   const rowStyles = []
   enrichSheetHeader({ sheet, columns, rowStyles, getStyle })
 
@@ -32,17 +40,13 @@ async function exportExcel ({ repository, columns, fileName }) {
   const data = UB.LocalDataStore.selectResultToArrayOfObjects(response)
 
   for (const row of data) {
-    sheet.addRow(
-      columns.reduce((accum, column) => {
-        const value = typeof column.format === 'function'
-          ? column.format({ value: row[column.id], row, column })
-          : row[column.id]
-
-        accum.push({ value })
-        return accum
-      }, []),
-      rowStyles
-    )
+    const rowCells = columns.map((column) => {
+      const value = typeof column.exportFormat === 'function'
+        ? column.exportFormat({ value: row[column.id], row, column })
+        : row[column.id]
+      return { value }
+    })
+    sheet.addRow(rowCells, rowStyles)
   }
   const file = new Blob(
     [workbook.render()],

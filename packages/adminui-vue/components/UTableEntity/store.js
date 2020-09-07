@@ -453,7 +453,7 @@ module.exports = (instance) => ({
       })
     },
 
-    async exportTo ({ getters }, exportFormat) {
+    async exportTo ({ state, getters }, exportFormat) {
       const repository = getters.currentRepository
         .clone()
         .withTotal(false)
@@ -466,7 +466,8 @@ module.exports = (instance) => ({
           await exportExcel({
             columns: getters.columns,
             repository,
-            fileName
+            fileName,
+            filters: state.filters
           })
           break
         case 'csv':

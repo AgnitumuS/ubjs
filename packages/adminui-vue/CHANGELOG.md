@@ -20,7 +20,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - `UTableEntity`: apply to i18n all `<th>` by default
+ - `UTableEntity`: i18n is applied to all `<th>` values
+ - Excel export from UTableEntity fixed:
+   - numbers now exported as numbers, not as strings
+   - boolean values exported as 0 or 1
+   - filters descriptions (if applied to UTableEntity) are added as a second header row  
 
 ## [1.13.1] - 2020-09-01
 ## [1.13.0] - 2020-08-31

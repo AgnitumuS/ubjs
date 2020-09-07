@@ -97,6 +97,7 @@
 			"registrationURL": "/models/adminui-vue/views/registration-stub.html",
 			"endpoint": "ubadminui",
 			"useVueTables": true,
+			"vueAutoForms": true,
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30

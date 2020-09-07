@@ -41,7 +41,8 @@
  * @property {number} [minWidth] Minimum width
  * @property {number} [width] Width
  * @property {boolean} [isHtml=false] If set true will render content as v-html directive
- * @property {UTableColumnFormat} [format] Format displayed value in cell. Will ignored if is set custom slot.
+ * @property {UTableColumnFormat} [format] Function what returns a formatted cell value to be inserted as cell innerHTML. Ignored in case slot is defined for column.
+ * @property {UTableColumnFormat} [exportFormat] Function what returns a formatted cell value to be used during exports. If omitted - value will be used as is.
  * @property {number} [padding=16] column cells padding.
  * @property {object<string, UTableColumnFilter>} [filters={}] Filters templates
  */
