@@ -50,7 +50,7 @@
 
             <el-tooltip
               v-if="option.isUndefined"
-              :content="$ut('select.valueIsUndefined', option[valueAttribute], entityName)"
+              :content="$ut('select.valueIsUndefined', option[valueAttribute], getEntityName)"
               :enterable="false"
             >
               <i class="el-icon-warning" />
@@ -110,7 +110,7 @@
           <el-checkbox
             :value="value.includes(option[valueAttribute])"
           />
-          {{ option[displayAttribute] }}
+          {{ option[getDisplayAttribute] }}
         </div>
         <el-row
           type="flex"
@@ -150,7 +150,7 @@
         >
           <el-tooltip
             v-if="option.isUndefined"
-            :content="$ut('select.valueIsUndefined', option[valueAttribute], entityName)"
+            :content="$ut('select.valueIsUndefined', option[valueAttribute], getEntityName)"
             :enterable="false"
           >
             <i class="el-icon-warning" />
@@ -192,7 +192,7 @@ export default {
       required: true
     },
     /**
-     * attribute which is the value for v-model
+     * Attribute which is the value for v-model
      */
     valueAttribute: {
       type: String,
@@ -201,32 +201,15 @@ export default {
     /**
      * Function which return UBRepository
      */
-    repository: {
-      type: Function,
-      default () {
-        return this.$UB.Repository(this.entityName)
-          .attrs(this.valueAttribute, this.displayAttribute)
-          .orderBy(this.displayAttribute)
-      }
-    },
+    repository: Function,
     /**
      * Name of entity. If repository is set entityName will be ignored
      */
-    entityName: {
-      type: String,
-      default () {
-        return this.repository().entityName
-      }
-    },
+    entityName: String,
     /**
-     * attribute which is display value of options
+     * Attribute which is display value of options
      */
-    displayAttribute: {
-      type: String,
-      default () {
-        return this.$UB.connection.domain.get(this.entityName).descriptionAttribute
-      }
-    },
+    displayAttribute: String,
     /**
      * Set disable status
      */
@@ -282,8 +265,16 @@ export default {
   },
 
   computed: {
+    getEntityName () {
+      return this.entityName || this.repository().entityName
+    },
+
+    getDisplayAttribute () {
+      return this.displayAttribute || this.$UB.connection.domain.get(this.getEntityName).descriptionAttribute
+    },
+
     isExistDeleteDate () {
-      const schema = this.$UB.connection.domain.get(this.entityName)
+      const schema = this.$UB.connection.domain.get(this.getEntityName)
       return 'mi_deleteDate' in schema.attributes
     },
 
@@ -353,13 +344,23 @@ export default {
   },
 
   methods: {
+    getRepository () {
+      if (this.repository) {
+        return this.repository()
+      }
+
+      return this.$UB.Repository(this.entityName)
+        .attrs(this.valueAttribute, this.getDisplayAttribute)
+        .orderBy(this.getDisplayAttribute)
+    },
+
     async fetchPage (query, pageNum = 0) {
       this.loading = true
       this.prevQuery = query
       this.pageNum = pageNum
 
-      const data = await this.repository()
-        .whereIf(query, this.displayAttribute, this.searchStrategy, query)
+      const data = await this.getRepository()
+        .whereIf(query, this.getDisplayAttribute, this.searchStrategy, query)
         .start(pageNum * this.pageSize)
         .limit(this.pageSize + 1)
         .select()
@@ -391,7 +392,7 @@ export default {
 
     async fetchDisplayValues (IDs) {
       this.loading = true
-      const repositoryClone = this.repository().clone().clearWhereList()
+      const repositoryClone = this.getRepository().clone().clearWhereList()
       const data = await repositoryClone
         .where(this.valueAttribute, 'in', IDs)
         .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
@@ -418,7 +419,7 @@ export default {
         if (option) {
           result.push({
             [this.valueAttribute]: attributeValue,
-            label: option[this.displayAttribute]
+            label: option[this.getDisplayAttribute]
           })
         } else {
           result.push({
@@ -436,7 +437,7 @@ export default {
           const responseItem = responseData.find(i => i[this.valueAttribute] === fetchedID)
           const option = result.find(i => i[this.valueAttribute] === fetchedID)
           if (responseItem) {
-            option.label = responseItem[this.displayAttribute]
+            option.label = responseItem[this.getDisplayAttribute]
             if (this.isExistDeleteDate) {
               const isDeleted = responseItem.mi_deleteDate.getTime() < Date.now()
               if (isDeleted) {
