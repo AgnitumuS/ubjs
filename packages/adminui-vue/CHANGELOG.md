@@ -22,7 +22,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - numbers now exported as numbers, not as strings
    - boolean values exported as 0 or 1
    - filters descriptions (if applied to UTableEntity) are added as a second header row  
-
+ - `USelectEntity` - removed 64px wide empty space inside input (adds visibility for 4 additional characters) 
+ 
 ## [1.13.1] - 2020-09-01
 ## [1.13.0] - 2020-08-31
 ### Added

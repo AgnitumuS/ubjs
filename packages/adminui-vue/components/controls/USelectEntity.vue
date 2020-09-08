@@ -707,10 +707,6 @@ export default {
   cursor: pointer;
 }
 
-.ub-select__container .el-input__inner {
-  padding-right: 64px;
-}
-
 .ub-select__undefined-record .el-input__inner{
   border-color: hsl(var(--hs-warning), var(--l-input-border-default));
 }
