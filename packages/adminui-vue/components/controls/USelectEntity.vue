@@ -154,6 +154,9 @@
 const { debounce } = require('throttle-debounce')
 const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
 
+/**
+ * Select component mapped to Entity
+ */
 export default {
   name: 'USelectEntity',
 
@@ -171,7 +174,7 @@ export default {
       }
     },
     /**
-     * attribute which is the value for v-model
+     * Attribute which is the value for v-model
      */
     valueAttribute: {
       type: String,
