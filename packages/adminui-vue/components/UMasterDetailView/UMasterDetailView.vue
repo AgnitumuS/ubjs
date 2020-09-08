@@ -6,6 +6,9 @@
         v-bind="$attrs"
         :before-initial-load="onInitialLoad"
         v-on="$listeners"
+        :class="{
+          'u-table-register__view__preview-form-mode': viewMode === 'previewForm'
+        }"
         @change-row="selectedRowId = $event"
       >
         <template
@@ -21,7 +24,7 @@
 
         <template #contextMenuDetails="scope">
           <slot
-            :scope="scope"
+            v-bind="scope"
             name="contextMenuDetails"
           >
             <u-dropdown-item
@@ -40,27 +43,9 @@
           </slot>
         </template>
 
-        <template #contextMenuAppend="scope">
-          <slot
-            :scope="scope"
-            name="contextMenuPreviewButton"
-          >
-            <u-dropdown-item
-              label="showPreview"
-              icon="u-icon-eye"
-              @click="formPreviewVisible = !formPreviewVisible"
-            />
-          </slot>
-
-          <slot
-            :scope="scope"
-            name="contextMenuAppend"
-          />
-        </template>
-
         <template #toolbarDropdownAppend="scope">
           <slot
-            :scope="scope"
+            v-bind="scope"
             name="dropdownMenuDetails"
           >
             <u-dropdown-item
@@ -79,21 +64,30 @@
           </slot>
 
           <slot
-            :scope="scope"
-            name="dropdownMenuPreviewButton"
-          >
-            <u-dropdown-item
-              label="showPreview"
-              icon="u-icon-eye"
-              :disabled="!selectedRowId"
-              @click="formPreviewVisible = !formPreviewVisible"
-            />
-          </slot>
-
-          <slot
-            :scope="scope"
+            v-bind="scope"
             name="toolbarDropdownAppend"
           />
+        </template>
+
+        <template #toolbarDropdownViewMode="scope">
+          <slot
+            name="toolbarDropdownViewMode"
+            v-bind="scope"
+          >
+            <u-dropdown-item
+              label="table.viewMode.label"
+              icon="u-icon-eye"
+            >
+              <u-dropdown-item
+                v-for="button in viewModeButtons"
+                :key="button.code"
+                :disabled="viewMode === button.code"
+                :label="button.label"
+                :icon="button.icon"
+                @click="viewMode = button.code"
+              />
+            </u-dropdown-item>
+          </slot>
         </template>
       </u-table-entity>
 
@@ -124,7 +118,7 @@
     </div>
 
     <preview-form
-      v-if="formPreviewVisible"
+      v-if="viewMode === 'previewForm'"
       :id="selectedRowId"
       ref="previewForm"
       :entity="entityName"
@@ -157,8 +151,20 @@ export default {
       selectedDetail: null,
       detailsVisible: false,
       selectedRowId: null,
-      formPreviewVisible: false,
-      viewModeBeforeOpenPreview: null
+      viewModeButtons: [{
+        code: 'table',
+        label: 'table.viewMode.table',
+        icon: 'u-icon-grid'
+      }, {
+        code: 'card',
+        label: 'table.viewMode.card',
+        icon: 'u-icon-attributes'
+      }, {
+        code: 'previewForm',
+        label: 'showPreview',
+        icon: 'u-icon-window-left'
+      }],
+      viewMode: null
     }
   },
 
@@ -219,13 +225,15 @@ export default {
       }
     },
 
-    formPreviewVisible (isVisible) {
-      const masterTable = this.$refs.masterTable
-      if (isVisible) {
-        this.viewModeBeforeOpenPreview = masterTable.viewMode
-        masterTable.viewMode = 'card'
-      } else {
-        masterTable.viewMode = this.viewModeBeforeOpenPreview
+    viewMode (mode) {
+      switch (mode) {
+        case 'table':
+        case 'card':
+          this.$refs.masterTable.$store.commit('SET_VIEW_MODE', mode)
+          break
+        case 'previewForm':
+          this.$refs.masterTable.$store.commit('SET_VIEW_MODE', 'card')
+          break
       }
     }
   },
@@ -236,9 +244,11 @@ export default {
     },
 
     repository () {
-      const columns = [...new Set(
-        this.columns.concat(this.selectedDetail.attribute)
-      )]
+      const columns = Array.from(
+        new Set(
+          this.columns.concat(this.selectedDetail.attribute)
+        )
+      )
 
       return this.$UB.Repository(this.selectedDetail.entity)
         .attrs(columns)
@@ -276,6 +286,11 @@ export default {
         [this.selectedDetail.attribute]: this.selectedRowId
       }
       return cfg
+    },
+
+    onInitialLoad (masterTableInstance) {
+      this.viewMode = masterTableInstance.viewMode
+      this.initLocalStorageWatcher(masterTableInstance)
     }
   }
 }
@@ -295,12 +310,17 @@ export default {
   min-width: 450px;
 }
 
+.u-table-register__view__preview-form-mode > .u-table-entity__head .u-button .u-button__label {
+  display: none;
+}
+
 .u-table-register__form-preview {
   flex-grow: 1;
   flex-basis: 100%;
   margin-left: 8px;
   padding-left: 8px;
   border-left: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+  overflow: auto;
 }
 
 .u-table-register__view > .u-table-entity {

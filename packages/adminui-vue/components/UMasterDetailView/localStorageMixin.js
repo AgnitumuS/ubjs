@@ -48,14 +48,11 @@ module.exports = {
 
     /**
      * Apply view mode in case local storage has value for current shortcut
-     *
-     * @param {Vue} masterTableInstance Master table instance
-     * @param {string} masterTableInstance.viewMode Master instance view mode
      */
-    applySavedViewMode (masterTableInstance) {
+    applySavedViewMode () {
       const viewMode = window.localStorage.getItem(this.localStorageKey('viewMode'))
       if (viewMode) {
-        masterTableInstance.viewMode = viewMode
+        this.viewMode = viewMode
       }
     },
 
@@ -80,17 +77,12 @@ module.exports = {
     /**
      * Watch filters and save it into local storage
      *
-     * @param {Vue} masterTableInstance Master table instance
-     * @param {string} masterTableInstance.viewMode View mode
      * @returns {function(): void} Unwatch store
      */
-    watchViewMode (masterTableInstance) {
+    watchViewMode () {
       return this.$watch(
-        () => masterTableInstance.viewMode,
+        () => this.viewMode,
         value => {
-          const ignoreSaving = this.formPreviewVisible
-          if (ignoreSaving) return
-
           window.localStorage.setItem(
             this.localStorageKey('viewMode'),
             value
@@ -105,12 +97,12 @@ module.exports = {
      * @param {Vue} masterTableInstance Master table instance
      * @param {Store} masterTableInstance.$store Master instance store
      */
-    onInitialLoad (masterTableInstance) {
+    initLocalStorageWatcher (masterTableInstance) {
       if (this.shortcutCode !== undefined) {
         this.applySavedFilters(masterTableInstance.$store)
-        this.applySavedViewMode(masterTableInstance)
+        this.applySavedViewMode()
         const unwatchFilters = this.watchFilters(masterTableInstance.$store)
-        const unwatchViewMode = this.watchViewMode(masterTableInstance)
+        const unwatchViewMode = this.watchViewMode()
         this.unwatch = () => {
           unwatchFilters()
           unwatchViewMode()

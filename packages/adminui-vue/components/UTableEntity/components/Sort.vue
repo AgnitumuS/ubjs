@@ -1,12 +1,19 @@
 <template>
   <u-dropdown v-if="sortableColumns.length">
-    <u-button
-      icon="u-icon-sort-asc-alt"
-      appearance="inverse"
-      color="control"
+    <el-tooltip
+      :content="$ut('table.sort.label')"
+      placement="bottom"
+      :open-delay="300"
+      :enterable="false"
     >
-      {{ $ut('table.sort.label') }}
-    </u-button>
+      <u-button
+        icon="u-icon-sort-asc-alt"
+        appearance="inverse"
+        color="control"
+      >
+        {{ $ut('table.sort.label') }}
+      </u-button>
+    </el-tooltip>
 
     <div
       slot="dropdown"

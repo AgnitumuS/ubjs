@@ -6,10 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UMasterDetailView`: form preview mode. Also added:
-   - `contextMenuPreviewButton` slot
-   - `dropdownMenuPreviewButton` slot
-
+ - `UMasterDetailView`: form preview mode.
  - `UToolbar`: 'toolbarInfoRow' slot for additional information about record in toolbar
    under the dates of creation and modification
 
