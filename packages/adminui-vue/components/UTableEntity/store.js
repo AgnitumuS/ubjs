@@ -38,7 +38,8 @@ module.exports = (instance) => ({
       selectedColumnId: null,
       selectedRowId: null,
 
-      withTotal: false // need for fetch with total always after click total btn
+      withTotal: false, // need for fetch with total always after click total btn
+      viewMode: 'table'
     }
   },
 
@@ -239,6 +240,10 @@ module.exports = (instance) => ({
 
     WITH_TOTAL (state) {
       state.withTotal = true
+    },
+
+    SET_VIEW_MODE (state, mode) {
+      state.viewMode = mode
     }
   },
 
@@ -360,7 +365,7 @@ module.exports = (instance) => ({
       UB.core.UBApp.doCommand(config)
     },
 
-    async deleteRecord ({ state, getters }, ID) {
+    async deleteRecord ({ state, commit, getters }, ID) {
       if (ID === null) return
 
       const item = state.items.find(i => i.ID === ID)
@@ -381,6 +386,7 @@ module.exports = (instance) => ({
           method: 'delete',
           resultData: { ID }
         })
+        commit('SELECT_ROW', null)
         $notify.success(UB.i18n('recordDeletedSuccessfully'))
       }
     },

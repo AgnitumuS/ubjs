@@ -46,6 +46,8 @@
         </slot>
       </div>
     </div>
+    <!-- @slot Table footer -->
+    <slot name="append" />
   </div>
 </template>
 

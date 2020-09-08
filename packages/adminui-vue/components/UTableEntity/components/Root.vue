@@ -26,15 +26,22 @@
           name="toolbarPrepend"
         />
 
-        <u-button
-          appearance="inverse"
-          icon="u-icon-refresh"
-          color="control"
-          :disabled="loading"
-          @click="refresh"
+        <el-tooltip
+          :content="$ut('refresh')"
+          placement="bottom"
+          :open-delay="300"
+          :enterable="false"
         >
-          {{ $ut('refresh') }}
-        </u-button>
+          <u-button
+            appearance="inverse"
+            icon="u-icon-refresh"
+            color="control"
+            :disabled="loading"
+            @click="refresh"
+          >
+            {{ $ut('refresh') }}
+          </u-button>
+        </el-tooltip>
 
         <!-- @slot Replace add-new button in toolbar panel -->
         <slot
@@ -42,15 +49,22 @@
           :store="$store"
           name="toolbarButtonAddNew"
         >
-          <u-button
-            appearance="inverse"
-            :disabled="!canAddNew"
-            icon="u-icon-add"
-            color="control"
-            @click="addNew"
+          <el-tooltip
+            :content="$ut('actionAdd')"
+            placement="bottom"
+            :open-delay="300"
+            :enterable="false"
           >
-            {{ $ut('actionAdd') }}
-          </u-button>
+            <u-button
+              appearance="inverse"
+              :disabled="!canAddNew"
+              icon="u-icon-add"
+              color="control"
+              @click="addNew"
+            >
+              {{ $ut('actionAdd') }}
+            </u-button>
+          </el-tooltip>
         </slot>
 
         <!-- @slot Prepend new buttons to toolbar before filter -->
@@ -144,13 +158,13 @@
                     :disabled="viewMode === 'table'"
                     label="table.viewMode.table"
                     icon="u-icon-grid"
-                    @click="$emit('update:viewMode', 'table')"
+                    @click="viewMode = 'table'"
                   />
                   <u-dropdown-item
                     :disabled="viewMode === 'card'"
                     label="table.viewMode.card"
                     icon="u-icon-attributes"
-                    @click="$emit('update:viewMode', 'card')"
+                    @click="viewMode = 'card'"
                   />
                 </u-dropdown-item>
               </slot>
@@ -221,20 +235,7 @@
         </slot>
       </template>
 
-      <div
-        v-if="!isLastPageIndex && !loading"
-        slot="appendTable"
-        class="u-table-entity__next-page-button-wrap"
-      >
-        <u-button
-          appearance="plain"
-          right-icon="u-icon-arrow-right"
-          :disabled="loading"
-          @click="pageIndex += 1"
-        >
-          {{ $ut('table.pagination.nextPage') }}
-        </u-button>
-      </div>
+      <next-page-button slot="appendTable" />
     </u-table>
 
     <u-card-view
@@ -253,6 +254,8 @@
         name="card"
         :row="row"
       />
+
+      <next-page-button slot="append" />
     </u-card-view>
 
     <u-dropdown
@@ -383,7 +386,8 @@ export default {
     Sort: require('./Sort.vue').default,
     FilterList: require('./FilterList.vue').default,
     ToolbarDropdown: require('./ToolbarDropdown.vue').default,
-    UCardView: require('../../controls/UCardView.vue').default
+    UCardView: require('../../controls/UCardView.vue').default,
+    NextPageButton: require('./NextPageButton.vue').default
   },
 
   props: {
@@ -407,17 +411,7 @@ export default {
      * Overrides the record selection event. That is, double click or enter
      * @type {function({ID: Number, row: Object, close: function})}
      */
-    onSelectRecord: Function,
-
-    /**
-     * View mode.
-     * @private
-     */
-    viewMode: {
-      type: String,
-      default: 'table',
-      validator: value => ['card', 'table'].includes(value)
-    }
+    onSelectRecord: Function
   },
 
   inject: {
@@ -437,7 +431,6 @@ export default {
       'items',
       'loading',
       'withTotal',
-      'isLastPageIndex',
       'sort'
     ]),
 
@@ -449,17 +442,9 @@ export default {
       'hasSelectedRow',
       'formCode',
       'columns',
-      'cardColumns'
+      'cardColumns',
+      'pageIndex'
     ]),
-
-    pageIndex: {
-      get () {
-        return this.$store.state.pageIndex
-      },
-      set (value) {
-        this.updatePageIndex(value)
-      }
-    },
 
     selectedColumnId: {
       get () {
@@ -476,6 +461,16 @@ export default {
       },
       set (value) {
         this.$store.commit('SELECT_ROW', value)
+      }
+    },
+
+    viewMode: {
+      get () {
+        return this.$store.state.viewMode
+      },
+
+      set (mode) {
+        this.$store.commit('SET_VIEW_MODE', mode)
       }
     }
   },
@@ -494,7 +489,6 @@ export default {
 
   methods: {
     ...mapActions([
-      'updatePageIndex',
       'cellNavigate',
       'addNew',
       'editRecord',
@@ -708,15 +702,6 @@ export default {
 
 .u-table-entity__contextmenu-wrap {
   height: 0;
-}
-
-.u-table-entity__next-page-button-wrap {
-  position: sticky;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 12px 16px;
 }
 
 .u-table-entity .u-card {

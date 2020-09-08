@@ -105,12 +105,6 @@ export default {
     }
   },
 
-  data () {
-    return {
-      viewMode: 'table'
-    }
-  },
-
   computed: {
     ...mapGetters(['schema']),
 
@@ -150,6 +144,16 @@ export default {
         })
       } else {
         return this.getColumns
+      }
+    },
+
+    viewMode: {
+      get () {
+        return this.$store.state.viewMode
+      },
+
+      set (mode) {
+        this.$store.commit('SET_VIEW_MODE', mode)
       }
     }
   },

@@ -1,13 +1,21 @@
 <template>
   <div
+    v-if="id"
     ref="formContainer"
     v-loading="loading"
   >
     <div />
   </div>
+  <u-icon
+    v-else
+    class="preview-form_empty"
+    icon="u-icon-file"
+  />
 </template>
 
 <script>
+const { throttle } = require('throttle-debounce')
+
 export default {
   name: 'PreviewForm',
 
@@ -24,15 +32,21 @@ export default {
   },
 
   watch: {
-    id: 'loadForm'
+    id: 'throttledLoadForm'
   },
 
   mounted () {
-    this.loadForm(this.id)
+    this.throttledLoadForm(this.id)
   },
 
   methods: {
+    throttledLoadForm: throttle(200, function (...args) {
+      this.loadForm(...args)
+    }),
+
     async loadForm (id, prevId) {
+      if (!id) return
+
       if (this.openedFormId !== undefined) {
         this.openedFormId = undefined
         return
@@ -54,6 +68,7 @@ export default {
     },
 
     async savePreviousForm () {
+      await this.$nextTick()
       const formInstance = this.$refs.formContainer.firstChild.__vue__
       if (!formInstance || !formInstance.$store) {
         return true
@@ -88,3 +103,12 @@ export default {
   }
 }
 </script>
+
+<style>
+.preview-form_empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 100px;
+}
+</style>
