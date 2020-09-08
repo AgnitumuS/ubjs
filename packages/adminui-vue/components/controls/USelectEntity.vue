@@ -54,7 +54,7 @@
           <el-tooltip
             v-if="undefinedRecord"
             slot="prefix"
-            :content="$ut('select.valueIsUndefined', value, entityName)"
+            :content="$ut('select.valueIsUndefined', value, getEntityName)"
             :enterable="false"
           >
             <i class="u-select-icon-warning el-input__icon el-icon-warning" />
@@ -95,7 +95,7 @@
           @click="chooseOption(option)"
           @mouseenter="selectedID = option[valueAttribute]"
         >
-          {{ option[displayAttribute] }}
+          {{ option[getDisplayAttribute] }}
         </div>
         <el-row
           type="flex"
@@ -169,9 +169,7 @@ export default {
      */
     value: {
       type: [Number, String],
-      default () {
-        return null
-      }
+      default: null
     },
     /**
      * Attribute which is the value for v-model
@@ -184,32 +182,15 @@ export default {
      * Function which return UBRepository
      * @returns {ClientRepository}
      */
-    repository: {
-      type: Function,
-      default () {
-        return this.$UB.Repository(this.entityName)
-          .attrs(this.valueAttribute, this.displayAttribute)
-          .orderBy(this.displayAttribute)
-      }
-    },
+    repository: Function,
     /**
      * Name of entity. If repository is set entityName will be ignored
      */
-    entityName: {
-      type: String,
-      default () {
-        return this.repository().entityName
-      }
-    },
+    entityName: String,
     /**
-     * attribute which is display value of options
+     * Attribute which is display value of options
      */
-    displayAttribute: {
-      type: String,
-      default () {
-        return this.$UB.connection.domain.get(this.entityName).descriptionAttribute
-      }
-    },
+    displayAttribute: String,
     /**
      * Set disable status
      */
@@ -311,8 +292,16 @@ export default {
   },
 
   computed: {
+    getEntityName () {
+      return this.entityName || this.repository().entityName
+    },
+
+    getDisplayAttribute () {
+      return this.displayAttribute || this.$UB.connection.domain.get(this.getEntityName).descriptionAttribute
+    },
+
     isExistDeleteDate () {
-      const schema = this.$UB.connection.domain.get(this.entityName)
+      const schema = this.$UB.connection.domain.get(this.getEntityName)
       return 'mi_deleteDate' in schema.attributes
     },
 
@@ -354,7 +343,7 @@ export default {
         name: 'Add',
         caption: this.$ut('addNewItem'),
         icon: 'u-icon-add',
-        disabled: !this.entityName || !this.$UB.connection.domain.get(this.entityName).haveAccessToMethod('addnew'),
+        disabled: !this.getEntityName || !this.$UB.connection.domain.get(this.getEntityName).haveAccessToMethod('addnew'),
         handler: this.handleAddNewItem
       },
       {
@@ -403,13 +392,23 @@ export default {
   },
 
   methods: {
+    getRepository () {
+      if (this.repository) {
+        return this.repository()
+      }
+
+      return this.$UB.Repository(this.entityName)
+        .attrs(this.valueAttribute, this.getDisplayAttribute)
+        .orderBy(this.getDisplayAttribute)
+    },
+
     async fetchPage (query, pageNum = 0) {
       this.loading = true
       this.prevQuery = query
       this.pageNum = pageNum
 
-      const data = await this.repository()
-        .whereIf(query, this.displayAttribute, this.searchStrategy, query)
+      const data = await this.getRepository()
+        .whereIf(query, this.getDisplayAttribute, this.searchStrategy, query)
         .start(pageNum * this.pageSize)
         .limit(this.pageSize + 1)
         .select()
@@ -442,7 +441,7 @@ export default {
 
     async fetchDisplayValue (value) {
       this.loading = true
-      const repositoryClone = this.repository().clone().clearWhereList()
+      const repositoryClone = this.getRepository().clone().clearWhereList()
       const data = await repositoryClone
         .where(this.valueAttribute, '=', value)
         .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
@@ -468,13 +467,13 @@ export default {
         const index = this.options.findIndex(o => o[this.valueAttribute] === value)
         if (index !== -1) {
           const option = this.options[index]
-          this.query = option[this.displayAttribute]
+          this.query = option[this.getDisplayAttribute]
           this.setSafeDeleteValue(option)
         } else {
           this.fetchDisplayValue(value)
             .then(option => {
               if (option) {
-                this.query = option[this.displayAttribute]
+                this.query = option[this.getDisplayAttribute]
                 this.setSafeDeleteValue(option)
               } else {
                 this.query = value
@@ -571,10 +570,10 @@ export default {
 
     handleShowDictionary () {
       if (!this.removeDefaultActions) {
-        const selectRepo = this.repository().clone()
+        const selectRepo = this.getRepository().clone()
         selectRepo.orderList = [] // clear order list
         // override fieldList but  keep all possible filters
-        selectRepo.fieldList = this.$UB.connection.domain.get(this.entityName)
+        selectRepo.fieldList = this.$UB.connection.domain.get(this.getEntityName)
           .getAttributeNames({ defaultView: true })
         const config = this.buildShowDictionaryConfig({
           renderer: 'vue',
@@ -627,7 +626,7 @@ export default {
       if (!this.removeDefaultActions) {
         const config = this.buildEditConfig({
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
-          entity: this.entityName,
+          entity: this.getEntityName,
           isModal: true,
           instanceID: this.value
         })
@@ -639,7 +638,7 @@ export default {
       if (!this.removeDefaultActions) {
         const config = this.buildAddNewConfig({
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
-          entity: this.entityName,
+          entity: this.getEntityName,
           isModal: true
         })
         this.$UB.core.UBApp.doCommand(config)
