@@ -6,15 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UMasterDetailView`: form preview mode.
- - `UToolbar`: 'toolbarInfoRow' slot for additional information about record in toolbar
-   under the dates of creation and modification
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.13.2] - 2020-09-08
+### Added
+ - `UMasterDetailView`: form preview mode.
+ - `UToolbar`: 'toolbarInfoRow' slot for additional information about record in toolbar
+   under the dates of creation and modification
 
 ### Fixed
  - `UTableEntity`: i18n is applied to all `<th>` values
