@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UTableEntity`: always show pagination. Before this change, pagination was hidden when table contains one page
 
 ### Deprecated
 
@@ -15,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `USelectEntity`: prevent open dropdown menu in case pressed `enter` on another component on the same form.
+ - `UTableEntity`: will scroll to the top after page is changed
 
 ## [1.13.2] - 2020-09-08
 ### Added

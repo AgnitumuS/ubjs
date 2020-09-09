@@ -431,7 +431,8 @@ export default {
       'items',
       'loading',
       'withTotal',
-      'sort'
+      'sort',
+      'pageIndex'
     ]),
 
     ...mapGetters([
@@ -442,8 +443,7 @@ export default {
       'hasSelectedRow',
       'formCode',
       'columns',
-      'cardColumns',
-      'pageIndex'
+      'cardColumns'
     ]),
 
     selectedColumnId: {
@@ -483,6 +483,9 @@ export default {
     pageIndex () {
       if (this.$refs.table) {
         this.$refs.table.$el.scrollTop = 0
+      }
+      if (this.$refs.cardView) {
+        this.$refs.cardView.$el.scrollTop = 0
       }
     }
   },
