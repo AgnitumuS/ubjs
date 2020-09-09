@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `USelectEntity`: prevent open dropdown menu in case pressed `enter` on another component on the same form.
 
 ## [1.13.2] - 2020-09-08
 ### Added
