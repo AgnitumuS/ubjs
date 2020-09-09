@@ -12,7 +12,7 @@ module.exports = {
       if (typeof column.formatHead === 'function') {
         return column.formatHead({ column })
       } else {
-        return column.label
+        return this.$ut(column.label)
       }
     }
   }
