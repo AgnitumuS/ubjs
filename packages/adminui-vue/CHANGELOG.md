@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `replaceShowList`: fix missed `scopedSlots` in Ext-based showList command format
  - `USelectEntity`: prevent open dropdown menu in case pressed `enter` on another component on the same form.
  - `UTableEntity`: will scroll to the top after page is changed
 
