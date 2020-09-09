@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `UTableEntity`: always show pagination. Before this change, pagination was hidden when table contains one page
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.13.3] - 2020-09-09
+### Changed
+ - `UTableEntity`: always show pagination. Before this change, pagination was hidden when table contains one page
 
 ### Fixed
  - `UTable` apply i18n to the table header cells labels
