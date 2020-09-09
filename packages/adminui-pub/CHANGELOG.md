@@ -94,6 +94,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UBCommand/showForm` provide shortcut caption to cmdCode. Now tab title will be equal to the caption of the shortcut
 
 ### Fixed
+ - `UB.ux.UBImg`: image content is scaled to maintain its aspect ratio while fitting within the element's content box
  - `UBCommand.showList`: **detailAttribute** should be added to **fieldList** as object with **visibility:false**, 
    to prevent lookup queries for this field
  - icon class for `MenuItem.Details`. Changed from **u-icon-arrow-down** to **u-icon-arrow-right** 

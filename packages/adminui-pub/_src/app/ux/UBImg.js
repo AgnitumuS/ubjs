@@ -4,6 +4,7 @@
 Ext.define('UB.ux.UBImg', {
   extend: 'Ext.Img',
   alias: 'widget.ubimg',
+  style: 'object-fit:contain',
 
   constructor: function () {
     this.useBlobForData = true
