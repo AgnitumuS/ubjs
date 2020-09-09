@@ -133,6 +133,7 @@
     >
       <button
         :disabled="disabled"
+        type="button"
         class="u-icon-more ub-select__more-icon"
       />
       <el-dropdown-menu slot="dropdown">
