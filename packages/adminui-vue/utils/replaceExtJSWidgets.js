@@ -207,6 +207,7 @@ function replaceShowList () {
         tabId: cfg.tabId,
         shortcutCode: cfg.shortcutCode,
         title: me.title || me.description || me.entity,
+        scopedSlots: cfg.cmdData.scopedSlots,
         props
       })
     }
