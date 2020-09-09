@@ -15,17 +15,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-<<<<<<< packages/adminui-vue/CHANGELOG.md
  - `UTable` apply i18n to the table header cells labels
- - `replaceShowList`: fix missed `scopedSlots` in Ext-based showList command format
- - `USelectEntity`: prevent open dropdown menu in case pressed `enter` on another component on the same form.
- - `UTableEntity`: will scroll to the top after page is changed
+ - `replaceShowList`: added missed `scopedSlots` for Ext-based `showList` command format
+ - `USelectEntity`: prevent open dropdown menu in case enter is pressed on another component on the same form
+ - `UTableEntity` will scroll to the top after page is changed
 
 ## [1.13.2] - 2020-09-08
 ### Added
- - `UMasterDetailView`: form preview mode.
- - `UToolbar`: 'toolbarInfoRow' slot for additional information about record in toolbar
-   under the dates of creation and modification
+ - `UMasterDetailView`: form preview mode.(in menu All actions-> View mode)
+ - `UToolbar`: new 'toolbarInfoRow' slot to place additional information about record in the toolbar
+   (under the dates of creation and modification)
 
 ### Fixed
  - `UTableEntity`: i18n is applied to all `<th>` values
@@ -34,7 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - boolean values exported as 0 or 1
    - filters descriptions (if applied to UTableEntity) are added as a second header row  
  - `USelectEntity` - removed 64px wide empty space inside input (adds visibility for 4 additional characters) 
- 
+
 ## [1.13.1] - 2020-09-01
 ## [1.13.0] - 2020-08-31
 ### Added
