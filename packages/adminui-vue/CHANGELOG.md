@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UButton`: native button property "type" is sets to "button" by default. Can be changed by passing type in prop
+ ```
+  <u-button type="submit">Submit button</u-button>
+```
 
 ### Deprecated
 

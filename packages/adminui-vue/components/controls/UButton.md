@@ -65,6 +65,7 @@
     <u-button appearance="plain">
       Mixed content: <a href="https://unitybase.info" target="_blank">href</a> 
     </u-button>
+    <u-button type="submit">Submit(acts on user press enter anywhere in &lt;form&gt;</u-button>
   </div>
 </template>
 ```

@@ -1,6 +1,7 @@
 <template>
   <button
     class="u-button"
+    :type="type"
     :class="[
       `u-button_appearance-${appearance}`,
       `u-button_color-${color}`,
@@ -63,6 +64,13 @@ export default {
       validator (value) {
         return ['small', 'medium', 'large'].includes(value)
       }
+    },
+    /**
+     * Native button type. See "type" property on https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button
+     */
+    type: {
+      type: String,
+      default: 'button'
     },
 
     /**
