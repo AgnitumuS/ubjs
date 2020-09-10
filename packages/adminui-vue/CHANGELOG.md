@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `UTableEntity` toolbar date range filter extended by "yesterday" and "today" shotrcuts
+ 
 ### Changed
  - `UButton`: native button property "type" is sets to "button" by default. Can be changed by passing type in prop
  ```
@@ -18,6 +19,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTableEntity` toolbar date range filters "last month", "last year" and "last 6 month" will truncate time part before apply a filter.
+ Before this fix these filters excludes first and last day of period (because of time)
 
 ## [1.13.3] - 2020-09-09
 ### Changed
