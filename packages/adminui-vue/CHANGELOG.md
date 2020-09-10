@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UTableEntity` toolbar date range filter extended by "yesterday" and "today" shotrcuts
+ - `UTableEntity` toolbar date range filter extended by "yesterday" and "today" shortcuts
+ - `replaceShowList` now creates vue-based scopedSlots from ext-based hideActions array
  
 ### Changed
  - `UButton`: native button property "type" is sets to "button" by default. Can be changed by passing type in prop

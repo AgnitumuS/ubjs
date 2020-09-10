@@ -199,16 +199,78 @@ function replaceShowList () {
           repository () {
             return UB.Repository(req.entity).attrs(fieldList)
           },
-          columns
+          columns,
+          buildEditConfig: cfg.cmpInitConfig && cfg.cmpInitConfig.buildEditConfig
         }
       }
+
+      /**
+       * Creates vue-based scopedSlots function from ext-based hideActions array
+       * @param h - callback render function
+       * @returns {object}
+       */
+      function createScopedSlotsFromHideActions (h) {
+        const hideActions = cfg.hideActions
+        if (!hideActions) return {}
+
+        const actionsMappingObj = {
+          showDetail: {
+            contextMenuDetails: () => h('div', ''),
+            dropdownMenuDetails: () => h('div', '')
+          },
+          addNewByCurrent: {
+            contextMenuCopy: () => h('div', ''),
+            toolbarDropdownCopy: () => h('div', '')
+          },
+          addNew: {
+            contextMenuAdd: () => h('div', ''),
+            toolbarDropdownAddNew: () => h('div', ''),
+            toolbarButtonAddNew: () => h('div', '')
+          },
+          del: {
+            contextMenuDelete: () => h('div', ''),
+            toolbarDropdownDelete: () => h('div', '')
+          },
+          edit: {
+            contextMenuEditRecord: () => h('div', ''),
+            toolbarDropdownEdit: () => h('div', '')
+          },
+          audit: {
+            contextMenuAudit: () => h('div', ''),
+            toolbarDropdownAudit: () => h('div', '')
+          },
+          exports: {
+            toolbarDropdownExports: () => h('div', '')
+          },
+          link: {
+            contextMenuLink: () => h('div', '')
+          },
+          showPreview: {
+            // TODO add ability to hide preview button after packages update
+          }
+        }
+        const scopedSlots = {}
+
+        hideActions && hideActions.forEach(action => {
+          Object.assign(scopedSlots, actionsMappingObj[action])
+        })
+
+        return scopedSlots
+      }
+
+      // if showList command has own scopedSlots function, merge it with already created one
+      const customActions = cfg.scopedSlots || function () {}
+
       mountTableEntity({
         isModal: cfg.isModal,
         tabId: cfg.tabId,
         shortcutCode: cfg.shortcutCode,
         title: me.title || me.description || me.entity,
-        scopedSlots: cfg.cmdData.scopedSlots,
-        props
+        props,
+        scopedSlots: h => ({
+          ...createScopedSlotsFromHideActions(h),
+          ...customActions(h)
+        })
       })
     }
   })
