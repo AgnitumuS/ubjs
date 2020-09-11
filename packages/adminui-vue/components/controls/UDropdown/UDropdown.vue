@@ -125,6 +125,10 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    this.$refs.dropdown.remove()
+  },
+
   methods: {
     toggleVisible () {
       this.visible = !this.visible

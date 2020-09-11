@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UDropdown` remove popup HTMLElement after parent instance destroyed
 
 ## [1.13.4] - 2020-09-11
 ### Added
