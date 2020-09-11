@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.13.4] - 2020-09-11
+### Added
  - `UTableEntity` toolbar date range filter extended by "yesterday" and "today" shortcuts
  - `replaceShowList` now creates vue-based scopedSlots from ext-based hideActions array
  
@@ -14,10 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  ```
   <u-button type="submit">Submit button</u-button>
 ```
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UTableEntity` toolbar date range filters "last month", "last year" and "last 6 month" will truncate time part before apply a filter.
