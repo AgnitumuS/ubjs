@@ -12,7 +12,7 @@ module.exports = {
 
   data () {
     return {
-      unwatch: () => {} // no-op. in case passed shortcutCode will replaced by unwatch function
+      unwatchList: []
     }
   },
 
@@ -32,27 +32,15 @@ module.exports = {
     },
 
     /**
-     * Apply filters in case local storage has value for current shortcut
+     * Checks localStorage value by key and run callback which apply this value
      *
-     * @param {Store} store Master instance store
+     * @param {string} key
+     * @param {function(string):void} applyFunc
      */
-    applySavedFilters (store) {
-      const filtersStr = window.localStorage.getItem(this.localStorageKey('filters'))
-      if (filtersStr) {
-        const filters = JSON.parse(filtersStr)
-        for (const filter of filters) {
-          store.commit('APPLY_FILTER', filter)
-        }
-      }
-    },
-
-    /**
-     * Apply view mode in case local storage has value for current shortcut
-     */
-    applySavedViewMode () {
-      const viewMode = window.localStorage.getItem(this.localStorageKey('viewMode'))
-      if (viewMode) {
-        this.viewMode = viewMode
+    applySavedValue (key, applyFunc) {
+      const localStorageString = window.localStorage.getItem(this.localStorageKey(key))
+      if (localStorageString) {
+        applyFunc(localStorageString)
       }
     },
 
@@ -60,7 +48,7 @@ module.exports = {
      * Watch filters and save it into local storage
      *
      * @param {Store} store Master instance store
-     * @returns {function(): void} Unwatch store
+     * @returns {function} Unwatch
      */
     watchFilters (store) {
       return store.watch(
@@ -77,7 +65,7 @@ module.exports = {
     /**
      * Watch filters and save it into local storage
      *
-     * @returns {function(): void} Unwatch store
+     * @returns {function} Unwatch
      */
     watchViewMode () {
       return this.$watch(
@@ -92,6 +80,40 @@ module.exports = {
     },
 
     /**
+     * Watch sort and save it into local storage
+     *
+     * @param {Store} store Master instance store
+     * @returns {function} Unwatch
+     */
+    watchSort (store) {
+      return store.watch(
+        state => state.sort,
+        value => {
+          window.localStorage.setItem(
+            this.localStorageKey('sort'),
+            JSON.stringify(value)
+          )
+        }
+      )
+    },
+
+    applySaved (store) {
+      this.applySavedValue('filters', (filtersStr) => {
+        const filters = JSON.parse(filtersStr)
+        for (const filter of filters) {
+          store.commit('APPLY_FILTER', filter)
+        }
+      })
+      this.applySavedValue('viewMode', (viewMode) => {
+        this.viewMode = viewMode
+      })
+      this.applySavedValue('sort', (sortStr) => {
+        const sort = JSON.parse(sortStr)
+        store.commit('SORT', sort)
+      })
+    },
+
+    /**
      * UTableEntity hook which used before load data
      *
      * @param {Vue} masterTableInstance Master table instance
@@ -99,14 +121,19 @@ module.exports = {
      */
     initLocalStorageWatcher (masterTableInstance) {
       if (this.shortcutCode !== undefined) {
-        this.applySavedFilters(masterTableInstance.$store)
-        this.applySavedViewMode()
-        const unwatchFilters = this.watchFilters(masterTableInstance.$store)
-        const unwatchViewMode = this.watchViewMode()
-        this.unwatch = () => {
-          unwatchFilters()
-          unwatchViewMode()
-        }
+        this.applySaved(masterTableInstance.$store)
+
+        this.unwatchList.push(
+          this.watchFilters(masterTableInstance.$store),
+          this.watchViewMode(),
+          this.watchSort(masterTableInstance.$store)
+        )
+      }
+    },
+
+    unwatch () {
+      for (const unwatch of this.unwatchList) {
+        unwatch()
       }
     }
   }

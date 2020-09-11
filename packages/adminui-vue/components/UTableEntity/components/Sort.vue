@@ -1,5 +1,8 @@
 <template>
-  <u-dropdown v-if="sortableColumns.length">
+  <u-dropdown
+    v-if="sortableColumns.length"
+    ref="dropdown"
+  >
     <el-tooltip
       :content="$ut('table.sort.label')"
       placement="bottom"
@@ -53,7 +56,7 @@
               :icon="sortOption.icon"
               :color="sortOption.value === sortOrder ? 'primary' : 'control'"
               :appearance="sortOption.value === sortOrder ? 'default' : 'plain'"
-              @click="sortOrder = sortOption.value"
+              @click="selectSort(sortOption.value)"
             >
               {{ sortOption.label }}
             </u-button>
@@ -117,6 +120,17 @@ export default {
           order
         })
       }
+    }
+  },
+
+  methods: {
+    closeDropdown () {
+      this.$refs.dropdown.visible = false
+    },
+
+    selectSort (sortOrder) {
+      this.closeDropdown()
+      this.sortOrder = sortOrder
     }
   }
 }
