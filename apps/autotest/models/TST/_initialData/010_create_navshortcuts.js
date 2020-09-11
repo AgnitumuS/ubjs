@@ -11,7 +11,7 @@ const dataLoader = require('@unitybase/base').dataLoader
  * @param {ServerSession} session
  */
 module.exports = function (session) {
-  let conn = session.connection
+  const conn = session.connection
 
   let desktopID = conn.lookup('ubm_desktop', 'ID', { expression: 'code', condition: 'equal', values: { code: 'tst_desktop' } })
   console.info('\tFill `Test` desktop')
@@ -179,6 +179,7 @@ module.exports = function (session) {
     }
   })
 
+  displayOrder += 10
   console.log('\t\t\tcreate `tst_onlyOffice` shortcut')
   conn.insert({
     fieldList: ['ID'],
@@ -194,6 +195,42 @@ module.exports = function (session) {
         cmdData: {
           entityName: 'tst_onlyoffice',
           columns: ['ID', 'caption']
+        }
+      }, null, '\t')
+    }
+  })
+
+  displayOrder += 10
+  console.log('\t\t\tcreate `tst_onlyOffice` shortcut')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'uba_auditTrail_summary',
+      caption: 'Audit with summary',
+      iconCls: 'u-icon-signature',
+      displayOrder: displayOrder,
+      cmdCode: JSON.stringify({
+        renderer: 'ext',
+        cmdType: 'showList',
+        summary: { entity: 'count', request_id: 'sum' },
+        summaryDataOnClient: false, // true will calc using loaded store (only current page)
+        cmdData: {
+          params: [{
+            entity: 'uba_auditTrail',
+            method: 'select',
+            fieldList: [
+              'ID',
+              'entity',
+              'entityinfo_id',
+              'actionType',
+              'actionUserName',
+              'actionTime',
+              'remoteIP',
+              'request_id'
+            ]
+          }]
         }
       }, null, '\t')
     }
