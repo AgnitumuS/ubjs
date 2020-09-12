@@ -1,17 +1,19 @@
 const path = require('path')
-const version = require('../node_modules/@unitybase/adminui-vue/package.json').version
+const { version } = require('../node_modules/@unitybase/adminui-vue/package.json')
 
 /**
- * Return component path
- * @param cpm
+ * Return relative component path
+ *
+ * @param {string} absolutePath
+ * @returns {string}
  */
-function c (cmp) {
-  return `../../../packages/adminui-vue/components/${cmp}`
+function c (absolutePath) {
+  return `../../../packages/adminui-vue/components/${absolutePath}`
 }
 
 module.exports = {
   title: '@unitybase/adminui-vue',
-  version: version,
+  version,
   /**
    * Enabling the following option splits sections into separate views.
    */
@@ -23,6 +25,15 @@ module.exports = {
     name: 'Theme (colors & icons)',
     content: '../docs/colors-and-icons.md'
   }, {
+    name: 'App shell ($App)',
+    usageMode: 'expand', // expand props, methods and events
+    exampleMode: 'expand', // expand example source
+    sectionDepth: 2,
+    sections: [{
+      name: 'Show list',
+      content: '../docs/show-list.md'
+    }]
+  }, {
     name: 'Presentational',
     usageMode: 'expand', // expand props, methods and events
     exampleMode: 'expand', // expand example source
@@ -30,7 +41,15 @@ module.exports = {
     components: [
       c('controls/UIcon.vue'), // TODO
       c('controls/UButton.vue'),
-      c('controls/UFile/UFileInput.vue')
+      c('controls/UButtonGroup.vue'),
+      c('controls/UBaseInput.vue'),
+      c('controls/UFile/UFileInput.vue'),
+      c('controls/UTable/UTable.vue'), // TODO
+      c('controls/UFormRow.vue'), // TODO
+      c('controls/UGrid.vue'), // TODO
+      c('controls/UDatePicker.vue'), // TODO
+      c('controls/UDropdown/UDropdown.vue'), // TODO
+      c('controls/UDropdown/UDropdownItem.vue') // TODO
     ]
   }, {
     name: 'Data-aware',
@@ -40,8 +59,14 @@ module.exports = {
     components: [
       c('controls/UInput/UInput.vue'), // TODO
       c('controls/UFile/UFile.vue'), // TODO
+      c('controls/UFile/UFileMultiple.vue'), // TODO
+      c('controls/UFile/UFileCollection.vue'), // TODO
+      c('UTableEntity/UTableEntity.vue'), // TODO
       c('controls/USelectEntity.vue'), // TODO
-      c('UTableEntity/UTableEntity.vue') // TODO
+      c('controls/USelectEnum.vue'), // TODO
+      c('controls/USelectMultiple.vue'), // TODO
+      c('controls/USelectMany.vue'), // TODO
+      c('controls/USelectCollection.vue') // TODO
     ]
   }, {
     name: 'Views',
@@ -49,15 +74,10 @@ module.exports = {
     exampleMode: 'expand',
     sectionDepth: 2,
     components: [
-      // TODO
+      c('UToolbar/UToolbar.vue'), // TODO
+      c('UMasterDetailView/UMasterDetailView.vue') // TODO
     ]
-  }
-    // TODO - where to place this tutorial?
-    //   {
-    //   name: 'UB command: Show list',
-    //   content: '../docs/show-list.md'
-    // },
-  ],
+  }],
 
   theme: {
     maxWidth: '1440px',

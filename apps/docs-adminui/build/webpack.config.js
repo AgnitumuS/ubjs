@@ -1,13 +1,11 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const path = require('path')
 
 module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      vue: 'vue/dist/vue.common.js',
-      '@unitybase/adminui-vue': path.resolve(__dirname, '../../../packages/adminui-vue/adminui-vue.js')
+      vue: 'vue/dist/vue.common.js'
     }
   },
   module: {

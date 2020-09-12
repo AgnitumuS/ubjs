@@ -5,10 +5,13 @@
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/docs-adminui",
   "private": true,
   "main": "ubApp.js",
+  "workspaces": [
+    "../../packages/*"
+  ],
   "scripts": {
     "watch": "vue-styleguidist --config ./build/styleguidist.config.js server",
     "build": "vue-styleguidist --config ./build/styleguidist.config.js build",
-    "ubapp": "set -o allexport;. ./ubConfig-dev.env; set +o allexport; ub",
+    "ubapp": "ub -env ./ubConfig-dev.env",
     "dev": "gnome-terminal -x npm run ubapp; npm run watch"
   },
   "dependencies": {

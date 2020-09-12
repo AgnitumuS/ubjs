@@ -297,10 +297,9 @@ To set scoped slot for header cell just add prefix `head_` to column ID
     :items="currencies"
     :columns="columns"
   >
-    <template #head_code="{ value, row }">
+    <template #head_code="{ column }">
       <el-input
-          :value="value"
-          @input="changeCode({ ID: row.ID, value: $event })"
+        :value="column.label"
       />
     </template>
 

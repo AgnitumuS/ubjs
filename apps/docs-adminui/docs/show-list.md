@@ -1,4 +1,4 @@
-# Базовый пример
+# Basic usage
 
 ```json
 {
@@ -22,22 +22,22 @@
 }
 ```
 ### renderer
- Опциональный параметр, позволяет изменить отображение грида ext || vue
+ Optional param to change renderer type - ext || vue
 
 ### cmdData.repository
-обычный ubql
+Common `ubql`
 
 ### cmdData.columns
-Массив<объектов или строк> отображаемых колонок.
-Если columns не передан, будет автоматически вычеслен из fieldList.
+array<object|string> of display columns.
+If `columns` is unset, will automatically computed from fieldList.
 
 ### cmdData.columns[].format
-Форматирование может быть функцией или строкой,
-если передан строкой то такая строка будет вызвана оператором `new Function`.
-Туда будут переданы такие параметры `value`, `column`, `row`
+`format` can be as function or string.
+In case format function passed as string it will call by `new Function` class.
+`format` has next params: `value`, `column`, `row`
 
-# Параметр entityName
-В этом случае colmuns и fieldList будут вычеслены автоматически
+### cmdData.entityName
+In case passed `entityName` then colmuns and fieldList will compute automatically
 
 ```json
 {
@@ -48,8 +48,8 @@
 }
 ```
 
-# entityName + columns
-В этом случае fieldList вычеслен автоматически, а колонки вручную
+### cmdData.entityName + cmdData.columns
+FieldList will compute automatically, but columns manually
 
 ```json
 {
@@ -58,5 +58,28 @@
     "entityName": "ubm_enum",
     "columns": ["eGroup", "code"]
   }
+}
+```
+
+# Provide custom slots to showList
+```javascript
+{
+  "cmdType": "showList",
+  "cmdData": {
+    "entityName": "ubm_enum",
+    "columns": ["eGroup", "code"]
+  },
+  scopedSlots: createElement => ({
+    toolbarAppend: (slotScope) => createElement('button', 'click me'),
+    eGroup: ({ row }) => createElement(
+      'u-button', 
+      {
+        props: {
+          icon: 'u-icon-send'
+        }
+      },
+      row.ID + row.eGroup 
+    )    
+  })
 }
 ```

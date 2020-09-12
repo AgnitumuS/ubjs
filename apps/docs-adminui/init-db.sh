@@ -11,6 +11,14 @@ set -o allexport
 source ./ubConfig-dev.env
 set +o allexport
 
+if [ -z "$UB_APP" ]; then
+  export UB_APP='autotest'
+fi
+
+if [ -z "$UB_APPDATA" ]; then
+  export UB_APPDATA='./'
+fi
+
 PROCESS='Drop database'
 rm -rf $UB_APPDATA/localdb/*.sqlite3
 

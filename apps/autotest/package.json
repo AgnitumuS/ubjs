@@ -64,8 +64,8 @@
     "systemjs-plugin-css": "^0.1.32",
     "throttle-debounce": "^2.1.0",
     "tinymce": "4.9.5",
-    "vue": "^2.6.10",
-    "vue-template-compiler": "^2.6.10",
+    "vue": "^2.6.12",
+    "vue-template-compiler": "^2.6.12",
     "vuelidate": "^0.7.4",
     "vuex": "^3.1.2"
   },
