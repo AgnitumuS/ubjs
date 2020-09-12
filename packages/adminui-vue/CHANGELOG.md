@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UMasterDetailView`: sort order will saved in localStorage for each shortcut
 
 ### Changed
+ - `vue` updated 2.6.10 -> 2.6.12; `vue-template-compiler` updated 2.6.10 -> 2.6.12
  - `UTableEntity`: close sort popup after change sort order
 
 ### Deprecated
