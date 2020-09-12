@@ -6,14 +6,10 @@ const { lookups } = require('@unitybase/adminui-vue')
 window.onerror = console.error // silent error as alert
 require('../../../packages/adminui-vue/theme/el-theme-compiled.css')
 
-var UB_HOST
-
 console.log('window.location', window.location, window.location.port)
-if (window.location.port === '6060') { // webpack dev server
-  UB_HOST = 'http://localhost:8881'
-} else {
-  UB_HOST = window.location.origin
-}
+const UB_HOST = window.location.port === '6060' // webpack dev server
+  ? 'http://localhost:8881'
+  : window.location.origin
 console.log('!!HOST', UB_HOST)
 
 Vue.prototype._authPromise = UB.connect({

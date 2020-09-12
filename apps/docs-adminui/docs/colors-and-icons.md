@@ -6,103 +6,13 @@ l - indicates how much color will be closer to black or white <br>
 Each color has its own modifiers. <br>
 For example, to get the "success-hover" combination, you need to use them like this: <br>
 
-TODO - create a matrix:
-  - text: `hs-[primary,success,warning,danger] + l-state || hs-text + l-text-*`
-  - border: `hs-[primary,success,warning,danger] + l-[input, layout]-border-* || hs-border + l-[input, layout]-border-*`
-  - background: `hs-[primary,success,warning,danger] + l-background-* || hs-background + l-background-*`
-  
-  
+![hsl-color-wheel](/docs/hsl-color-wheel.png)
+
 ### **Important** css variables don\'n affect the colors of the element-ui components 
 
-```vue 
-<template>
-  <div>
-    <h1>It changes global css variable</h1>
-    
-    <u-button icon="u-icon-save" color="control">Save</u-button>
-    <u-button icon="u-icon-save" color="primary">Save</u-button>
-    <u-button icon="u-icon-save" color="success">Save</u-button>
-    <u-button icon="u-icon-save" color="warning">Save</u-button>
-    <u-button icon="u-icon-save" color="danger">Save</u-button>
-    <br>
-    <br>
-    <u-grid
-      v-for="section in colors"
-      :columns="section.length > 5 ? 3 : section.length"
-      :key="section[0].name"
-    >
-      <u-form-row
-        v-for="color in section"
-        :key="color.name"
-        :label="color.name"
-        label-position="top"
-      >
-        <u-base-input
-          v-model="color.value"
-          @input="setColor(color.name, $event)"
-        />
-      </u-form-row>
-    </u-grid>
-  </div>
-</template>
-
-<script>
-  const colorNames = [
-    ['hs-primary',
-      'hs-success',
-      'hs-warning',
-      'hs-danger'],
-
-    ['hs-control',
-      'l-state-default',
-      'l-state-hover',
-      'l-state-active',
-      'l-state-disabled'],
-
-    ['hs-text',
-      'l-text-default',
-      'l-text-label',
-      'l-text-description',
-      'l-text-disabled',
-      'l-text-inverse'],
-
-    ['hs-border',
-      'l-input-border-default',
-      'l-input-border-hover',
-      'l-input-border-disabled',
-      'l-layout-border-default',
-      'l-layout-border-light'],
-
-    ['hs-background',
-      'l-background-default',
-      'l-background-active',
-      'l-background-inverse']
-  ]
-
-  export default {
-    data () {
-      const styles = getComputedStyle(document.documentElement)
-
-      return {
-        colors: colorNames.map(section => section.map(color => {
-          const colorName = `--${color}`
-          return {
-            name: colorName,
-            value: styles.getPropertyValue(colorName).trim()
-          }
-        }))
-      }
-    },
-
-    methods: {
-      setColor (name, value) {
-        document.documentElement.style
-          .setProperty(name, value)
-      }
-    }
-  }
-</script>
+```[import](./ColorMatrix.vue)
 ```
+
 ```css
 hsl(var(--hs-success), var(--l-state-default))
 ```
