@@ -6,8 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UMasterDetailView`: sort order will saved in localStorage for each shortcut
 
 ### Changed
+ - `UTableEntity`: close sort popup after change sort order
 
 ### Deprecated
 
