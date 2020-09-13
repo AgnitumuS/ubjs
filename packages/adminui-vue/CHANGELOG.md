@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UMasterDetailView`: sort order will saved in localStorage for each shortcut
+ - `UMasterDetailView`: sort order saved in the localStorage for each shortcut
+ - Excel export from UTableEntity adds a total row with SUM formula for a numeric columnus
 
 ### Changed
  - `vue` updated 2.6.10 -> 2.6.12; `vue-template-compiler` updated 2.6.10 -> 2.6.12

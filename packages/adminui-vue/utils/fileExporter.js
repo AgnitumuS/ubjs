@@ -20,20 +20,25 @@ async function exportExcel ({ repository, columns, fileName, filters }) {
   const XLSX = await loadXLSX()
   const workbook = new XLSX.XLSXWorkbook()
   workbook.useSharedString = true
+  let dataRowStartNum = 1
   const { font, border } = enrichStyles(workbook.style)
   const getStyle = createStyleGetter({ border, font, styles: workbook.style, XLSX })
   const sheet = workbook.addWorkSheet({ caption: fileName, name: fileName })
   sheet.addMerge({ colFrom: 1, colTo: columns.length })
   sheet.addRow({ value: fileName, column: 1, style: getStyle('header') }, {}, { height: 40 })
+  dataRowStartNum++
   if (filters && filters.length) {
     const allFiltersDescr = filters.map(f => f.label + ' ' + f.description).join('; ')
     if (allFiltersDescr) {
       sheet.addMerge({ colFrom: 1, colTo: columns.length })
       sheet.addRow({ value: allFiltersDescr, column: 1, style: getStyle('header') }, {}, { height: 40 })
+      dataRowStartNum++
     }
   }
   const rowStyles = []
   enrichSheetHeader({ sheet, columns, rowStyles, getStyle })
+  dataRowStartNum++
+  let dataRowEndNum = dataRowStartNum
 
   const response = await repository.selectAsArray()
   response.resultData.fields = repository.fieldList
@@ -46,6 +51,22 @@ async function exportExcel ({ repository, columns, fileName, filters }) {
         : row[column.id]
       return { value }
     })
+    sheet.addRow(rowCells, rowStyles)
+    dataRowEndNum++
+  }
+  dataRowEndNum-- // last dat row
+
+  if (dataRowEndNum > dataRowStartNum) {
+    let cIdx = 0
+    const rowCells = []
+    for (const column of columns) {
+      cIdx++
+      const dataType = column.attribute && column.attribute.dataType
+      if (['Currency', 'Int', 'Float'].includes(dataType)) {
+        const colChar = String.fromCharCode('A'.charCodeAt(0) + cIdx)
+        rowCells.push({ column: cIdx, formula: `SUM(${colChar}${dataRowStartNum}:${colChar}${dataRowEndNum})` })
+      }
+    }
     sheet.addRow(rowCells, rowStyles)
   }
   const file = new Blob(
