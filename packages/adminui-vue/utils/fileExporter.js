@@ -67,7 +67,9 @@ async function exportExcel ({ repository, columns, fileName, filters }) {
         rowCells.push({ column: cIdx, formula: `SUM(${colChar}${dataRowStartNum}:${colChar}${dataRowEndNum})` })
       }
     }
-    sheet.addRow(rowCells, rowStyles)
+    if (rowCells.length) {
+      sheet.addRow(rowCells, rowStyles)
+    }
   }
   const file = new Blob(
     [workbook.render()],
