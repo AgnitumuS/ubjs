@@ -54,8 +54,9 @@ async function exportExcel ({ repository, columns, fileName, filters }) {
     sheet.addRow(rowCells, rowStyles)
     dataRowEndNum++
   }
-  dataRowEndNum-- // last dat row
+  dataRowEndNum-- // last data row
 
+  // summary row
   if (dataRowEndNum > dataRowStartNum) {
     let cIdx = 0
     const rowCells = []
