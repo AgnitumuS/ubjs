@@ -53,7 +53,7 @@
       </u-form-row>
 
       <u-form-row
-        v-if="isOrgAdministartionExists"
+        v-if="isOrgAdministrationExists"
         label="Desktop rights by org units"
       >
         <u-select-collection
@@ -74,12 +74,12 @@ const UB = require('@unitybase/ub-pub')
 
 module.exports.mount = function (cfg) {
   const { entities } = UB.connection.domain
-  const isOrgAdministartionExists = entities.org_desktop_adm !== undefined
+  const isOrgAdministrationExists = entities.org_desktop_adm !== undefined
 
   Form({
     ...cfg,
     props: {
-      isOrgAdministartionExists
+      isOrgAdministrationExists
     }
   })
     .processing({
@@ -89,7 +89,7 @@ module.exports.mount = function (cfg) {
           .attrs('ID', 'instanceID', 'admSubjID')
           .where('instanceID', '=', state.data.ID),
 
-        ...(isOrgAdministartionExists
+        ...(isOrgAdministrationExists
           ? {
             rightsOrgUnits: ({ state }) => UB.connection
               .Repository('org_desktop_adm')
@@ -108,7 +108,7 @@ module.exports.default = {
   inject: ['entitySchema', '$v', 'entity'],
 
   props: {
-    isOrgAdministartionExists: {
+    isOrgAdministrationExists: {
       type: Boolean,
       required: true
     }

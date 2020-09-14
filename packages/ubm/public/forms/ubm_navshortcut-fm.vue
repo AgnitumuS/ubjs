@@ -66,7 +66,7 @@
       </u-form-row>
 
       <u-form-row
-        v-if="isOrgAdministartionExists"
+        v-if="isOrgAdministrationExists"
         label="Shortcut right by staff units"
       >
         <u-select-collection
@@ -91,13 +91,13 @@ const UB = require('@unitybase/ub-pub')
 
 module.exports.mount = function (cfg) {
   const { entities } = UB.connection.domain
-  const isOrgAdministartionExists = entities.org_navshortcut_adm !== undefined
+  const isOrgAdministrationExists = entities.org_navshortcut_adm !== undefined
 
   Form({
     ...cfg,
     modalClass: 'ub-dialog__reset-padding',
     props: {
-      isOrgAdministartionExists
+      isOrgAdministrationExists
     }
   })
     .processing({
@@ -112,7 +112,7 @@ module.exports.mount = function (cfg) {
           .attrs('ID', 'instanceID', 'admSubjID')
           .where('instanceID', '=', state.data.ID),
 
-        ...(isOrgAdministartionExists
+        ...(isOrgAdministrationExists
           ? {
             rightsOrgUnits: ({ state }) => UB.connection
               .Repository('org_navshortcut_adm')
@@ -135,7 +135,7 @@ module.exports.default = {
   inject: ['entitySchema'],
 
   props: {
-    isOrgAdministartionExists: {
+    isOrgAdministrationExists: {
       type: Boolean,
       required: true
     }
