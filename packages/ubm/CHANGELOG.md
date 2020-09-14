@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - adapt `ubm_desktop-fm` and `ubm_navshortcut-fm` forms for managing access depends on org units
 
 ### Deprecated
 

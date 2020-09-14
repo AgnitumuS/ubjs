@@ -47,11 +47,22 @@
       <u-form-row label="Desktop rights">
         <u-select-collection
           associated-attr="admSubjID"
-          entity-name="ubm_desktop_adm"
           collection-name="rightsSubjects"
           clearable
         />
       </u-form-row>
+
+      <u-form-row
+        v-if="isOrgAdministartionExists"
+        label="Desktop rights by org units"
+      >
+        <u-select-collection
+          associated-attr="orgUnitID"
+          collection-name="rightsOrgUnits"
+          clearable
+        />
+      </u-form-row>
+
     </u-form-container>
   </div>
 </template>
@@ -62,13 +73,30 @@ const { mapGetters, mapActions } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 
 module.exports.mount = function (cfg) {
-  Form(cfg)
+  const { entities } = UB.connection.domain
+  const isOrgAdministartionExists = entities.org_desktop_adm !== undefined
+
+  Form({
+    ...cfg,
+    props: {
+      isOrgAdministartionExists
+    }
+  })
     .processing({
       collections: {
         rightsSubjects: ({ state }) => UB.connection
           .Repository('ubm_desktop_adm')
           .attrs('ID', 'instanceID', 'admSubjID')
-          .where('instanceID', '=', state.data.ID)
+          .where('instanceID', '=', state.data.ID),
+
+        ...(isOrgAdministartionExists
+          ? {
+            rightsOrgUnits: ({ state }) => UB.connection
+              .Repository('org_desktop_adm')
+              .attrs('ID', 'instanceID', 'orgUnitID')
+              .where('instanceID', '=', state.data.ID)
+          }
+          : {})
       }
     })
     .validation()
@@ -78,6 +106,13 @@ module.exports.mount = function (cfg) {
 module.exports.default = {
   name: 'UbmDesktop',
   inject: ['entitySchema', '$v', 'entity'],
+
+  props: {
+    isOrgAdministartionExists: {
+      type: Boolean,
+      required: true
+    }
+  },
 
   computed: {
     ...mapInstanceFields([

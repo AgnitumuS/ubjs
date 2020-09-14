@@ -64,6 +64,18 @@
           clearable
         />
       </u-form-row>
+
+      <u-form-row
+        v-if="isOrgAdministartionExists"
+        label="Shortcut right by staff units"
+      >
+        <u-select-collection
+          associated-attr="orgUnitID"
+          collection-name="rightsOrgUnits"
+          clearable
+        />
+      </u-form-row>
+
       <shortcut-cmd-code />
     </u-form-container>
   </div>
@@ -78,19 +90,36 @@ const { mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 
 module.exports.mount = function (cfg) {
+  const { entities } = UB.connection.domain
+  const isOrgAdministartionExists = entities.org_navshortcut_adm !== undefined
+
   Form({
     ...cfg,
-    modalClass: 'ub-dialog__reset-padding'
+    modalClass: 'ub-dialog__reset-padding',
+    props: {
+      isOrgAdministartionExists
+    }
   })
     .processing({
       inited (store) {
-        if (cfg.parentContext) store.commit('ASSIGN_DATA', { loadedState: cfg.parentContext })
+        if (cfg.parentContext) {
+          store.commit('ASSIGN_DATA', { loadedState: cfg.parentContext })
+        }
       },
       collections: {
         rightsSubjects: ({ state }) => UB.connection
           .Repository('ubm_navshortcut_adm')
           .attrs('ID', 'instanceID', 'admSubjID')
-          .where('instanceID', '=', state.data.ID)
+          .where('instanceID', '=', state.data.ID),
+
+        ...(isOrgAdministartionExists
+          ? {
+            rightsOrgUnits: ({ state }) => UB.connection
+              .Repository('org_navshortcut_adm')
+              .attrs('ID', 'instanceID', 'orgUnitID')
+              .where('instanceID', '=', state.data.ID)
+          }
+          : {})
       }
     })
     .validation()
@@ -104,6 +133,13 @@ module.exports.default = {
     ShortcutCmdCode
   },
   inject: ['entitySchema'],
+
+  props: {
+    isOrgAdministartionExists: {
+      type: Boolean,
+      required: true
+    }
+  },
 
   data () {
     return {

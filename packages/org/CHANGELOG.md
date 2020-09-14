@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `org_navshortcut_adm` and `org_navshortcut_adm` entities in order to manage access to navigation shortcuts ans desktops depends on org unit
 
 ### Changed
 

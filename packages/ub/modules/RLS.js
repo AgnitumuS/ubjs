@@ -144,3 +144,85 @@ RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
     mParams.logicalPredicates = [...mParams.logicalPredicates, logic]
   }
 }
+
+/**
+ * For members of Admin group and for users `root` and `admin` do nothing.
+ *
+ * For other users adds condition what
+ *  - either current user is a record owner
+ *  - OR user or one of him role in `{$entity}_adm` sub-table
+ *  - OR user orgUnit in `org_${baseEntityName}_adm` sub-table
+ *
+ * @param {ubMethodParams} ctx
+ */
+RLS.allowForAdminOwnerAndAdmTableAndOrgTable = ctx => {
+  // skip RLS for admin and root and Admin group member
+  if (uba_common.isSuperUser() || Session.uData.roleIDs.includes(uba_common.ROLES.ADMIN.ID)) {
+    return
+  }
+
+  if (ctx.mParams.whereList === undefined) {
+    ctx.mParams.whereList = {}
+  }
+
+  const { mParams } = ctx
+  const { whereList, logicalPredicates } = mParams
+  const entityName = ctx.dataStore.entity.name
+  const newLogicalPredicates = []
+
+  // if current user is record owner
+
+  const byOwner = whereList.getUniqKey()
+
+  whereList[byOwner] = {
+    expression: '[mi_owner]',
+    condition: 'equal',
+    value: Session.userID
+  }
+
+  newLogicalPredicates.push(byOwner)
+
+  // if current user or one of his role in _adm sub-table
+
+  const byAdm = whereList.getUniqKey()
+  const userSubjectIds = [Session.userID, ...Session.uData.roleIDs, ...Session.uData.groupIDs]
+  const subjectQuery = Repository(`${entityName}_adm`)
+    .where('admSubjID', 'in', userSubjectIds)
+    .correlation('instanceID', 'ID')
+    .ubql()
+
+  whereList[byAdm] = {
+    expression: '',
+    condition: 'subquery',
+    subQueryType: 'exists',
+    value: subjectQuery
+  }
+
+  newLogicalPredicates.push(byAdm)
+
+  // if User's orgUnit in `org_${baseEntityName}_adm` sub-table
+
+  const byOrgUnit = whereList.getUniqKey()
+  const [, baseEntityName] = entityName.split('_')
+  const currentUserOrgUnitIDs = (Session.uData.orgUnitIDs || '').split(',').map(Number)
+
+  if (currentUserOrgUnitIDs.length > 0) {
+    const orgQuery = Repository(`org_${baseEntityName}_adm`)
+      .where('orgUnitID', 'in', currentUserOrgUnitIDs)
+      .correlation('instanceID', 'ID')
+      .ubql()
+
+    whereList[byOrgUnit] = {
+      expression: '',
+      condition: 'subquery',
+      subQueryType: 'exists',
+      value: orgQuery
+    }
+
+    newLogicalPredicates.push(byOrgUnit)
+  }
+
+  const logic = newLogicalPredicates.map(s => `([${s}])`).join(' OR ')
+
+  mParams.logicalPredicates = [ ...(logicalPredicates || []), logic ]
+}

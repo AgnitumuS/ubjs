@@ -1,0 +1,36 @@
+{
+  "caption": "Administering of navigation panels for organization units",
+  "description": "List of accesses to navigation shortcuts for some org_units",
+  "documentation": "This entity is used for giving access to ubm_navshortcut for some org_unit entries",
+  "connectionName": "",
+  "sqlAlias": "onavshortadm",
+  "cacheType": "Session",
+  "descriptionAttribute": "ID",
+  
+  "attributes": [
+    {
+      "name": "instanceID",
+      "dataType": "Entity",
+      "associatedEntity": "ubm_navshortcut",
+      "caption": "Navigation shortcut",
+      "cascadeDelete": true,
+      "description": "",
+      "allowNull": false
+    },
+
+    {
+      "name": "orgUnitID",
+      "dataType": "Entity",
+      "associatedEntity": "org_unit",
+      "caption": "Organization Unit",
+      "allowNull": false
+    }
+  ],
+
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": false,
+      "safeDelete": false
+    }
+  }
+}
