@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `UMasterDetailView`: sort order saved in the localStorage for each shortcut
  - Excel export from UTableEntity adds a total row with SUM formula for a numeric columnus
-
+ - `UToolbar.showAccessRights`: added `parentContext.instanceID` (ID of the ubstance we adds rigths for) to the `addNew` command
+ 
 ### Changed
  - `vue` updated 2.6.10 -> 2.6.12; `vue-template-compiler` updated 2.6.10 -> 2.6.12
  - `UTableEntity`: close sort popup after change sort order
