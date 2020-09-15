@@ -195,9 +195,10 @@ function replaceShowList () {
             fieldList.push(field)
           }
         }
+        req.fieldList = fieldList
         props = {
           repository () {
-            return UB.Repository(req.entity).attrs(fieldList)
+            return UB.Repository(req)
           },
           columns,
           buildEditConfig: cfg.cmpInitConfig && cfg.cmpInitConfig.buildEditConfig
