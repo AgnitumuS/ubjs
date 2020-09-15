@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `vue` updated 2.6.10 -> 2.6.12; `vue-template-compiler` updated 2.6.10 -> 2.6.12
  - `UTableEntity`: close sort popup after change sort order
+- `replaceShowList` creates Repository from ubql passed to `cmdData[0]`, so accept where, groups etc.
+  Before this only `entity` and `fieldList` takes into account
 
 ### Deprecated
 
