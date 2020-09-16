@@ -357,6 +357,7 @@ export default {
         const e = $App.domainInfo.get(attrEntity)
         aclFields.push(e.sqlAlias + 'ID' + (e.descriptionAttribute ? '.' + e.descriptionAttribute : ''))
       })
+      const instanceID = this.$store.state.data.ID
       $App.doCommand({
         renderer: 'vue',
         isModal: true,
@@ -366,7 +367,11 @@ export default {
           repository: () => {
             return this.$UB.Repository(aclEntityName)
               .attrs(aclFields)
-              .where('[instanceID]', '=', this.$store.state.data.ID)
+              .where('[instanceID]', '=', instanceID)
+          },
+          buildAddNewConfig (cfg) {
+            cfg.parentContext = { instanceID }
+            return cfg
           },
           columns: aclFields
         }
