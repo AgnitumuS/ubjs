@@ -9,7 +9,7 @@ function copyFromAdmToAclTable (entityName) {
   const admEntityName = `${entityName}_adm`
   const aclEntityName = `${entityName}_acl`
 
-  console.info(`\tStart moving access info for '${entityName}' from '${admEntityName}' to '${aclEntityNAme}' `)
+  console.info(`\tStart moving access info for '${entityName}' from '${admEntityName}' to '${aclEntityName}' `)
 
   connection.Repository(admEntityName)
     .attrs('ID', 'instanceID', 'admSubjID')
@@ -25,5 +25,5 @@ function copyFromAdmToAclTable (entityName) {
       })
     })
 
-  console.info(`\tEnd moving access info for '${entityName}' from '${admEntityName}' to '${aclEntityNAme}' `)
+  console.info(`\tEnd moving access info for '${entityName}' from '${admEntityName}' to '${aclEntityName}' `)
 }
