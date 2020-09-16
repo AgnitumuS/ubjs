@@ -2,7 +2,7 @@
 UB.i18nExtend({
   Yes: 'Yes',
   No: 'No',
-  ok: 'Ok',
+  ok: 'OK',
   cancel: 'Cancel',
   Enter: 'Enter',
   Password: 'Password',
