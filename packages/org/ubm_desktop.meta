@@ -1,7 +1,14 @@
 {
   "mixins": {
-    "rls": {
-      "func": "RLS.allowForAdminOwnerAndAdmTableAndOrgTable"
+    "aclRls": {
+      "useUnityName": false,
+      "onEntities": [
+        "uba_subject",
+        "org_unit"
+      ],
+      "entityConnectAttr": "ID",
+      "exprMethod": "getCurrentOrgUnitsAndAdminSubjects",
+      "model": "UBM"
     }
   }
 }

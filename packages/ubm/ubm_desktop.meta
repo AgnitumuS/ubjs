@@ -71,8 +71,14 @@
       "simpleAudit": true,
       "safeDelete": true
     },
-    "rls": {
-      "func": "RLS.allowForAdminOwnerAndAdmTable"
+    "aclRls": {
+      "useUnityName": false,
+      "onEntities": [
+        "uba_subject"
+      ],
+      "entityConnectAttr": "ID",
+      "exprMethod": "getCurrentAdminSubjects",
+      "model": "UBM"
     }
   }
 }

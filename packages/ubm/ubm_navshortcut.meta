@@ -106,11 +106,17 @@
       "simpleAudit": true,
       "safeDelete": true
     },
-    "rls": {
-      "func": "RLS.allowForAdminOwnerAndAdmTable"
-    },
     "tree": {
       "parentAttr": "parentID"
+    },
+    "aclRls": {
+      "useUnityName": false,
+      "onEntities": [
+        "uba_subject"
+      ],
+      "entityConnectAttr": "ID",
+      "exprMethod": "getCurrentAdminSubjects",
+      "model": "UBM"
     }
   }
 }

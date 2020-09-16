@@ -5,6 +5,9 @@ const UB = require('@unitybase/ub')
 const Session = UB.Session
 const UBA_COMMON = require('@unitybase/base').uba_common
 
+// define methods for ubm_desktop and ubm_navshortcut than are necessary for them aclRls mixin
+require('./modules/ubm_aclRls')
+
 const ORG = UB.ns('ORG')
 ORG.checkOrgUnitRequired = true
 Session.on('login', orgOnUserLogin)
