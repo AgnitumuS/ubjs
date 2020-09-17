@@ -57,24 +57,7 @@
 
       <u-auto-field attribute-name="displayOrder" />
 
-      <u-form-row label="navShortcutRights">
-        <u-select-collection
-          associated-attr="subjID"
-          collection-name="rightsSubjects"
-          clearable
-        />
-      </u-form-row>
-
-      <u-form-row
-        v-if="isOrgAdministrationExists"
-        label="Shortcut right by staff units"
-      >
-        <u-select-collection
-          associated-attr="orgUnitID"
-          collection-name="rightsOrgUnits"
-          clearable
-        />
-      </u-form-row>
+      <u-acl-rls-input collection-name="rightsSubjects"/>
 
       <shortcut-cmd-code />
     </u-form-container>
@@ -90,15 +73,9 @@ const { mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 
 module.exports.mount = function (cfg) {
-  const { entities } = UB.connection.domain
-  const isOrgAdministrationExists = entities.org_navshortcut_adm !== undefined
-
   Form({
     ...cfg,
-    modalClass: 'ub-dialog__reset-padding',
-    props: {
-      isOrgAdministrationExists
-    }
+    modalClass: 'ub-dialog__reset-padding'
   })
     .processing({
       inited (store) {
@@ -109,17 +86,8 @@ module.exports.mount = function (cfg) {
       collections: {
         rightsSubjects: ({ state }) => UB.connection
           .Repository('ubm_navshortcut_acl')
-          .attrs('ID', 'instanceID', 'subjID')
+          .attrs('*')
           .where('instanceID', '=', state.data.ID),
-
-        ...(isOrgAdministrationExists
-          ? {
-            rightsOrgUnits: ({ state }) => UB.connection
-              .Repository('org_navshortcut_adm')
-              .attrs('ID', 'instanceID', 'orgUnitID')
-              .where('instanceID', '=', state.data.ID)
-          }
-          : {})
       }
     })
     .validation()
@@ -133,13 +101,6 @@ module.exports.default = {
     ShortcutCmdCode
   },
   inject: ['entitySchema'],
-
-  props: {
-    isOrgAdministrationExists: {
-      type: Boolean,
-      required: true
-    }
-  },
 
   data () {
     return {

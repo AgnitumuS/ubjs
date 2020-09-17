@@ -44,25 +44,7 @@
 
       <u-auto-field attribute-name="displayOrder" />
 
-      <u-form-row label="Desktop rights">
-        <u-select-collection
-          associated-attr="subjID"
-          collection-name="rightsSubjects"
-          clearable
-        />
-      </u-form-row>
-
-      <u-form-row
-        v-if="isOrgAdministrationExists"
-        label="Desktop rights by org units"
-      >
-        <u-select-collection
-          associated-attr="orgUnitID"
-          collection-name="rightsOrgUnits"
-          clearable
-        />
-      </u-form-row>
-
+      <u-acl-rls-input collection-name="rightsSubjects"/>
     </u-form-container>
   </div>
 </template>
@@ -72,31 +54,14 @@ const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapGetters, mapActions } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 
-module.exports.mount = function (cfg) {
-  const { entities } = UB.connection.domain
-  const isOrgAdministrationExists = entities.org_desktop_adm !== undefined
-
-  Form({
-    ...cfg,
-    props: {
-      isOrgAdministrationExists
-    }
-  })
+module.exports.mount = cfg => {
+  Form(cfg)
     .processing({
       collections: {
         rightsSubjects: ({ state }) => UB.connection
           .Repository('ubm_desktop_acl')
-          .attrs('ID', 'instanceID', 'subjID')
-          .where('instanceID', '=', state.data.ID),
-
-        ...(isOrgAdministrationExists
-          ? {
-            rightsOrgUnits: ({ state }) => UB.connection
-              .Repository('org_desktop_adm')
-              .attrs('ID', 'instanceID', 'orgUnitID')
-              .where('instanceID', '=', state.data.ID)
-          }
-          : {})
+          .attrs('*')
+          .where('instanceID', '=', state.data.ID)
       }
     })
     .validation()
@@ -106,13 +71,6 @@ module.exports.mount = function (cfg) {
 module.exports.default = {
   name: 'UbmDesktop',
   inject: ['entitySchema', '$v', 'entity'],
-
-  props: {
-    isOrgAdministrationExists: {
-      type: Boolean,
-      required: true
-    }
-  },
 
   computed: {
     ...mapInstanceFields([
