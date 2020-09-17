@@ -171,4 +171,9 @@ UB.i18nExtend({
   blankText: 'This field is required',
   licenseExceedText: 'Application license limits is exceed. You can view data but most of modification is not allowed'
 
+  aclRlsPane: {
+    title: 'Access',
+    inclusive: 'Inclusive',
+    remove: 'Remove'
+  }
 })
