@@ -358,18 +358,18 @@ module.exports = function (session) {
 
   console.log('\t\t\tSetting up default uba navigation shortcuts access rights')
   dataLoader.loadSimpleCSVData(conn,
-    path.join(__dirname, 'ubm_desktop_adm.csv'),
-    'ubm_desktop_adm',
-    'instanceID;admSubjID'.split(';'),
+    path.join(__dirname, 'ubm_desktop_acl.csv'),
+    'ubm_desktop_acl',
+    'instanceID;subjID'.split(';'),
     [
       dataLoader.lookup(conn, 'ubm_desktop', 'code', 0),
       dataLoader.lookup(conn, 'uba_subject', 'code', 1)
     ],
     1)
   dataLoader.loadSimpleCSVData(conn,
-    path.join(__dirname, 'ubm_navshortcut_adm.csv'),
-    'ubm_navshortcut_adm',
-    'instanceID;admSubjID'.split(';'),
+    path.join(__dirname, 'ubm_navshortcut_acl.csv'),
+    'ubm_navshortcut_acl',
+    'instanceID;subjID'.split(';'),
     [
       dataLoader.lookup(conn, 'ubm_navshortcut', 'code', 0),
       dataLoader.lookup(conn, 'uba_subject', 'code', 1)

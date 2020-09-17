@@ -33,10 +33,10 @@ module.exports = function (session) {
     })
     console.info('\t\tprovide rights for `Common dictionaries` to users role')
     conn.insert({
-      entity: 'ubm_desktop_adm',
+      entity: 'ubm_desktop_acl',
       execParams: {
         instanceID: desktopID,
-        admSubjID: usersRoleID
+        subjID: usersRoleID
       }
     })
   } else {
@@ -59,10 +59,10 @@ module.exports = function (session) {
   })
   console.info('\t\tprovide rights for `Territorial` folder to users role')
   conn.insert({
-    entity: 'ubm_navshortcut_adm',
+    entity: 'ubm_navshortcut_acl',
     execParams: {
       instanceID: folderID,
-      admSubjID: usersRoleID
+      subjID: usersRoleID
     }
   })
 
@@ -87,7 +87,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `Regions` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 
   console.log('\t\t\tcreate `City` shortcut')
   lastID = conn.insert({
@@ -110,7 +110,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `City` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 
   console.log('\t\t\tcreate `Country` shortcut')
   lastID = conn.insert({
@@ -133,7 +133,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `Country` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 
   console.log('\t\t\tcreate `Admin units` shortcut')
   lastID = conn.insert({
@@ -156,7 +156,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `Admin units` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 
   console.log('\t\t\tcreate `Streets` shortcut')
   lastID = conn.insert({
@@ -179,7 +179,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `Streets` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 
   console.log('\t\t\tcreate `Region types` shortcut')
   lastID = conn.insert({
@@ -201,7 +201,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `Region types` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 
   console.log('\t\t\tcreate `City types` shortcut')
   lastID = conn.insert({
@@ -223,7 +223,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `City types` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 
   // Subjects
   console.log('\t\tcreate `Subjects` folder')
@@ -241,7 +241,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `City types` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: folderID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: folderID, subjID: usersRoleID } })
 
   console.log('\t\t\tcreate `Organizations` shortcut')
   lastID = conn.insert({
@@ -265,7 +265,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `Organizations` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 
   console.log('\t\t\tcreate `Employee` shortcut')
   lastID = conn.insert({
@@ -289,7 +289,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `Employee` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 
   console.log('\t\t\tcreate `Departments` shortcut')
   lastID = conn.insert({
@@ -313,7 +313,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `Departments` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 
   console.log('\t\t\tcreate `Persons` shortcut')
   lastID = conn.insert({
@@ -337,7 +337,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `Persons` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 
   console.log('\t\t\tcreate `Banks` shortcut')
   lastID = conn.insert({
@@ -360,7 +360,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `Banks` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 
   console.log('\t\tcreate `Miscellaneous` folder')
   folderID = conn.lookup('ubm_navshortcut', 'ID', { expression: 'code', condition: 'equal', values: { code: 'cdn_folder_misc' } })
@@ -380,7 +380,7 @@ module.exports = function (session) {
     })
   }
   console.info('\t\tprovide rights for Miscellaneous` folder to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: folderID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: folderID, subjID: usersRoleID } })
 
   console.log('\t\t\tcreate `Currency` shortcut')
   lastID = conn.insert({
@@ -408,7 +408,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `Currency` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 
   console.log('\t\t\tcreate `Languages` shortcut')
   lastID = conn.insert({
@@ -431,7 +431,7 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `Languages` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 
   console.log('\t\t\tcreate `Classifiers` shortcut')
   lastID = conn.insert({
@@ -454,5 +454,5 @@ module.exports = function (session) {
     }
   })
   console.info('\t\tprovide rights for `Classifiers` shortcut to users role')
-  conn.insert({ entity: 'ubm_navshortcut_adm', execParams: { instanceID: lastID, admSubjID: usersRoleID } })
+  conn.insert({ entity: 'ubm_navshortcut_acl', execParams: { instanceID: lastID, subjID: usersRoleID } })
 }

@@ -46,7 +46,7 @@
 
       <u-form-row label="Desktop rights">
         <u-select-collection
-          associated-attr="admSubjID"
+          associated-attr="subjID"
           collection-name="rightsSubjects"
           clearable
         />
@@ -85,8 +85,8 @@ module.exports.mount = function (cfg) {
     .processing({
       collections: {
         rightsSubjects: ({ state }) => UB.connection
-          .Repository('ubm_desktop_adm')
-          .attrs('ID', 'instanceID', 'admSubjID')
+          .Repository('ubm_desktop_acl')
+          .attrs('ID', 'instanceID', 'subjID')
           .where('instanceID', '=', state.data.ID),
 
         ...(isOrgAdministrationExists

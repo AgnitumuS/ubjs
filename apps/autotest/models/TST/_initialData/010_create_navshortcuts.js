@@ -258,8 +258,8 @@ module.exports = function (session) {
   console.log('\t\t\tSetting up default TST navigation shortcuts access rights')
   dataLoader.loadArrayData(conn,
     [['tst_desktop', 'User']],
-    'ubm_desktop_adm',
-    'instanceID;admSubjID'.split(';'),
+    'ubm_desktop_acl',
+    'instanceID;subjID'.split(';'),
     [
       dataLoader.lookup(conn, 'ubm_desktop', 'code', 0),
       dataLoader.lookup(conn, 'uba_subject', 'code', 1)
@@ -271,8 +271,8 @@ module.exports = function (session) {
       ['tst_document-vue', 'User'],
       ['tst_dictionary', 'User']
     ],
-    'ubm_navshortcut_adm',
-    'instanceID;admSubjID'.split(';'),
+    'ubm_navshortcut_acl',
+    'instanceID;subjID'.split(';'),
     [
       dataLoader.lookup(conn, 'ubm_navshortcut', 'code', 0),
       dataLoader.lookup(conn, 'uba_subject', 'code', 1)

@@ -59,7 +59,7 @@
 
       <u-form-row label="navShortcutRights">
         <u-select-collection
-          associated-attr="admSubjID"
+          associated-attr="subjID"
           collection-name="rightsSubjects"
           clearable
         />
@@ -108,8 +108,8 @@ module.exports.mount = function (cfg) {
       },
       collections: {
         rightsSubjects: ({ state }) => UB.connection
-          .Repository('ubm_navshortcut_adm')
-          .attrs('ID', 'instanceID', 'admSubjID')
+          .Repository('ubm_navshortcut_acl')
+          .attrs('ID', 'instanceID', 'subjID')
           .where('instanceID', '=', state.data.ID),
 
         ...(isOrgAdministrationExists
