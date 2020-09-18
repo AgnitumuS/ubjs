@@ -176,6 +176,12 @@ UB.i18nExtend({
         desc: 'Descending',
         none: 'None'
       }
+    },
+    summary: {
+      menuText: 'Show totals',
+      header: 'Totals for "{forTitle:i18n}"',
+      totalRowCount: 'Total row count',
+      columnSummaries: 'Column summaries'
     }
   },
 

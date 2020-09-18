@@ -147,7 +147,7 @@ export default {
 </script>
 ```
 
-### Actions overrides
+### Actions override
 ```vue
 <template>
 <u-table-entity

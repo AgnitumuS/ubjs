@@ -170,6 +170,14 @@
               </slot>
             </template>
 
+            <template #summary>
+              <slot
+                :close="close"
+                :store="$store"
+                name="toolbarDropdownSummary"
+              />
+            </template>
+
             <!-- @slot Append new buttons to toolbar -->
             <template #append>
               <slot

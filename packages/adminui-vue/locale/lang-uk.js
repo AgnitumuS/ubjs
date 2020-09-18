@@ -176,6 +176,12 @@ UB.i18nExtend({
         desc: 'За зменшенням',
         none: 'Немає'
       }
+    },
+    summary: {
+      menuText: 'Показати підсумки',
+      header: 'Підсумки для "{forTitle:i18n}"',
+      totalRowCount: 'Всього рядків',
+      columnSummaries: 'Суми по колонкам'
     }
   },
 
