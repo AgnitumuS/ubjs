@@ -345,7 +345,8 @@ module.exports = function (session) {
       entity: 'ubm_desktop_acl',
       execParams: {
         instanceID: desktopID,
-        subjID: roles[roleCode]
+        subjID: roles[roleCode],
+        valueID: roles[roleCode]
       }
     })
   })
@@ -372,7 +373,8 @@ module.exports = function (session) {
     entity: 'ubm_navshortcut_acl',
     execParams: {
       instanceID: newFolderID,
-      subjID: roles.publicUser
+      subjID: roles.publicUser,
+      valueID: roles.publicUser
     }
   })
 
@@ -398,14 +400,16 @@ module.exports = function (session) {
     entity: 'ubm_navshortcut_acl',
     execParams: {
       instanceID: newFolderID,
-      subjID: roles.publicAdmin
+      subjID: roles.publicAdmin,
+      valueID: roles.publicAdmin
     }
   })
   conn.insert({
     entity: 'ubm_navshortcut_acl',
     execParams: {
       instanceID: newFolderID,
-      subjID: roles.publicAdminDC
+      subjID: roles.publicAdminDC,
+      valueID: roles.publicAdminDC
     }
   })
 
@@ -428,7 +432,8 @@ module.exports = function (session) {
     entity: 'ubm_navshortcut_acl',
     execParams: {
       instanceID: newFolderID,
-      subjID: roles.serviceUser
+      subjID: roles.serviceUser,
+      valueID: roles.serviceUser
     }
   })
 
@@ -454,14 +459,16 @@ module.exports = function (session) {
     entity: 'ubm_navshortcut_acl',
     execParams: {
       instanceID: newFolderID,
-      subjID: roles.serviceAdmin
+      subjID: roles.serviceAdmin,
+      valueID: roles.serviceAdmin
     }
   })
   conn.insert({
     entity: 'ubm_navshortcut_acl',
     execParams: {
       instanceID: newFolderID,
-      subjID: roles.serviceAdminDC
+      subjID: roles.serviceAdminDC,
+      valueID: roles.serviceAdminDC
     }
   })
 
@@ -485,7 +492,8 @@ module.exports = function (session) {
     fieldList: ['ID'],
     execParams: {
       instanceID: newFolderID,
-      subjID: roles.secretUser
+      subjID: roles.secretUser,
+      valueID: roles.secretUser
     }
   })
 
@@ -511,14 +519,16 @@ module.exports = function (session) {
     entity: 'ubm_navshortcut_acl',
     execParams: {
       instanceID: newFolderID,
-      subjID: roles.secretAdmin
+      subjID: roles.secretAdmin,
+      valueID: roles.secretAdmin
     }
   })
   conn.insert({
     entity: 'ubm_navshortcut_acl',
     execParams: {
       instanceID: newFolderID,
-      subjID: roles.secretAdminDC
+      subjID: roles.secretAdminDC,
+      valueID: roles.secretAdminDC
     }
   })
 }

@@ -234,9 +234,10 @@ module.exports = function (session) {
   dataLoader.loadSimpleCSVData(conn,
     path.join(__dirname, 'ubm_navshortcut_acl.csv'),
     'ubm_navshortcut_acl',
-    'instanceID;subjID'.split(';'),
+    'instanceID;subjID;valueID'.split(';'),
     [
       dataLoader.lookup(conn, 'ubm_navshortcut', 'code', 0),
+      dataLoader.lookup(conn, 'uba_subject', 'code', 1),
       dataLoader.lookup(conn, 'uba_subject', 'code', 1)
     ],
     1)
