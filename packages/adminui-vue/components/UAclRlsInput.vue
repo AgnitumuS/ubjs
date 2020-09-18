@@ -109,7 +109,7 @@ export default {
     },
 
     rightAttributes () {
-      return Object.keys(this.attributes).filter(attr => !NOT_FK_ACL_ATTRIBUTES.includes(attr))
+      return Object.keys(this.entityAttributes).filter(attr => !NOT_FK_ACL_ATTRIBUTES.includes(attr))
     },
 
     rightAttributesWithMetaInfo () {
