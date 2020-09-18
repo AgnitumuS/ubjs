@@ -34,7 +34,15 @@
     </u-table>
 
 
-    <el-dialog>
+    <el-dialog
+      v-hold-focus
+      :title="$ut('dfx_DocType_form.accessPane.addAccess')"
+      :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
+      width="600px"
+      top="0"
+      class="dfx-dialog"
+    >
       <u-form-container
         label-position="top"
         :label-width="200"
