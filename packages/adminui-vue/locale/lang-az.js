@@ -176,6 +176,12 @@ UB.i18nExtend({
         desc: 'Descending',
         none: 'None'
       }
+    },
+    summary: {
+      menuText: 'Cəmi göstərin',
+      header: 'Üçün nəticələr "{forTitle:i18n}"',
+      totalRowCount: 'Cəmi sətirlər',
+      columnSummaries: 'Sütuna görə cəmlər'
     }
   },
 

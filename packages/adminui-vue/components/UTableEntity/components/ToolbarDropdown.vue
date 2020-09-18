@@ -61,6 +61,14 @@
           @click="audit(selectedRowId)"
         />
       </slot>
+      <slot name="summary">
+        <u-dropdown-item
+          icon="u-icon-list-success"
+          label="table.summary.menuText"
+          @click="showSummary"
+        />
+      </slot>
+
       <slot name="exports">
         <u-dropdown-item divider />
         <u-dropdown-item
@@ -121,7 +129,8 @@ export default {
       'editRecord',
       'copyRecord',
       'audit',
-      'exportTo'
+      'exportTo',
+      'showSummary'
     ])
   }
 }

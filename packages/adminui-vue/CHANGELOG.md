@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UTableEntity`: action `show summary` in dropdown menu which shows summary data for each column with type Number.
+   Also added slot for summary action - `toolbarDropdownSummary`
  - `UMasterDetailView`: sort order saved in the localStorage for each shortcut
  - Excel export from UTableEntity adds a total row with SUM formula for a numeric columns
  - `UToolbar.showAccessRights`: added `parentContext.instanceID` (ID of the instance we add rigths for) to the `addNew` command
