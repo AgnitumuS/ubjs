@@ -374,7 +374,7 @@ function createProcessingModule ({
        * @param {string} payload.collection  Collection name
        * @param {number} payload.index       Index of item inside a collection to remove
        */
-      PURGE_COLLECTION_ITEM (state, { collection, index }) {
+      DELETE_COLLECTION_ITEM_WITHOUT_TRACKING (state, { collection, index }) {
         if (collection in state.collections) {
           state.collections[collection].items.splice(index, 1)
         }
