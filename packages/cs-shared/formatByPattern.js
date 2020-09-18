@@ -86,7 +86,7 @@ let dateTimeFormaters = {}
  * @example
     const formatByPattern = require('@unitybase/cs-shared').formatByPattern
     const d = new Date(2020, 04, 23, 13, 14)
-    formatByPattern.formatDate(d, 'date', 'uk') // 23.05.2020
+    formatByPattern.formatDate(d, 'date') // on client can be called without 3rd lang parameter - will be formatted for user default lang (for uk - 23.05.2020)
     formatByPattern.formatDate('2020-05-23', 'date', 'uk') // 23.05.2020
     formatByPattern.formatDate(d, 'date', 'en') // 05/23/2020
     formatByPattern.formatDate(d, 'dateTime', 'uk') // 23.05.2020 13:14
@@ -120,7 +120,7 @@ module.exports.formatDate = function (dateVal, patternName, lang = _defaultLang)
  const n = 2305.1
  formatByPattern.formatNumber(n, 'sum', 'en') // 2,305.10
  formatByPattern.formatNumber('2305.1', 'sum', 'en') // 2,305.10
- formatByPattern.formatNumber(n, 'sum', 'uk') // 2 305,10
+ formatByPattern.formatNumber(n, 'sum') // on client can be called without 3rd lang parameter - will be formatted for user default lang (for uk "2 305,10")
  *
  * @param {*} numVal
  * @param {string} patternName One of `formatByPattern.datePatterns`
@@ -174,8 +174,8 @@ module.exports.numberPatterns = Object.keys(numberPatterns)
  */
 function setDefaultLang (lang) {
   if (_defaultLang === lang) return
+  _defaultLang = lang
   _collator = undefined
-  if (lang === 'en') return
   if ((typeof Intl === 'object') && Intl.Collator) {
     _collator = new Intl.Collator(lang, { numeric: true })
   }
