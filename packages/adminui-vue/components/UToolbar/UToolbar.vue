@@ -432,7 +432,6 @@ export default {
       return this.$formatByPattern.formatDate(
         date,
         'dateTimeFull',
-        this.$UB.connection.userLang()
       )
     }
   }

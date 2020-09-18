@@ -202,7 +202,7 @@ TypeProvider.registerType({
     minWidth: 120,
     sortable: true,
     format ({ value }) {
-      return formatByPattern.formatDate(value, 'date', UB.connection.userLang())
+      return formatByPattern.formatDate(value, 'date')
     }
   },
   filters: dateFilters
@@ -214,7 +214,7 @@ TypeProvider.registerType({
     minWidth: 190, // en: 05/23/2020, 1:14 PM
     sortable: true,
     format ({ value }) {
-      return formatByPattern.formatDate(value, 'dateTime', UB.connection.userLang())
+      return formatByPattern.formatDate(value, 'dateTime')
     }
   },
   filters: dateFilters
@@ -255,7 +255,7 @@ TypeProvider.registerType({
     align: 'right',
     sortable: true,
     format: ({ value }) => {
-      return formatByPattern.formatNumber(value, 'sum', UB.connection.userLang())
+      return formatByPattern.formatNumber(value, 'sum')
     }
   },
   filters: numberFilter

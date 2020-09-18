@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `formatByPattern.setDefaultLang` correctly sets `en` default language.
+   Before this fix in case user default language is `en` `undegined` is sets instead of `en`. 
+   This allows calling `formatByPattern.formatNumber` and `formatByPattern.formatDate` on the client side without 3rd `lang` argument:
+ ```
+   const n = 2305.1
+   // on client can be called without 3rd lang parameter - will be formatted for user default lang (for uk "2 305,10")
+   formatByPattern.formatNumber(n, 'sum')
+ ```
 
 ## [5.5.2] - 2020-09-01
 ### Removed

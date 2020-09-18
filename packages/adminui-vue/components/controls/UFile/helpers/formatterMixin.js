@@ -31,7 +31,7 @@ module.exports = {
     },
 
     formatDate (value) {
-      return formatByPattern.formatDate(value, 'dateTime', UB.connection.userLang())
+      return formatByPattern.formatDate(value, 'dateTime')
     }
   }
 }
