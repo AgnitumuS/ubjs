@@ -367,6 +367,20 @@ function createProcessingModule ({
       },
 
       /**
+       * Remove an item from a collection and do NOT track its deletion.
+       * Could be useful for entities deleted by cascade
+       * @param {VuexTrackedInstance} state
+       * @param {object} payload
+       * @param {string} payload.collection  Collection name
+       * @param {number} payload.index       Index of item inside a collection to remove
+       */
+      PURGE_COLLECTION_ITEM (state, { collection, index }) {
+        if (collection in state.collections) {
+          state.collections[collection].items.splice(index, 1)
+        }
+      },
+
+      /**
        * Clear deleted items in all collections, after sending removal requests
        * @param {VuexTrackedInstance} state
        */
