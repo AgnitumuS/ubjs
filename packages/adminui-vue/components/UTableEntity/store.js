@@ -1,7 +1,8 @@
 const UB = require('@unitybase/ub-pub')
 const { Notification: $notify } = require('element-ui')
-const { dialogDeleteRecord } = require('../dialog/UDialog')
+const { dialogDeleteRecord, dialogInfo } = require('../dialog/UDialog')
 const { exportExcel, exportCsv, exportHtml } = require('../../utils/fileExporter')
+const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 const lookups = require('../../utils/lookups')
 
 /**
@@ -555,6 +556,39 @@ module.exports = (instance) => ({
       if (response.method === 'update') {
         commit('UPDATE_ITEM', updatedItem)
       }
+    },
+
+    async showSummary ({ state, getters }) {
+      const repo = getters.currentRepository.clone()
+        .withTotal(false).start(0).limit(0) // clear total and possible pagination
+      repo.fieldList = ['COUNT([ID])'] // always calc count in first column
+      const numberColumns = []
+      const NUMBER_TYPES = ['BigInt', 'Currency', 'Float', 'Int']
+      for (const column of getters.columns) {
+        const isNumber = column.attribute && NUMBER_TYPES.includes(column.attribute.dataType)
+        if (isNumber) {
+          numberColumns.push(column)
+          repo.fieldList.push(`SUM([${column.attribute.code}])`)
+        }
+      }
+
+      const sumRepo = await repo.selectAsArray()
+      const resultRow = sumRepo.resultData.data[0]
+      let resultHtml = `<h3>${UB.i18n('table.summary.header', { forTitle: getters.entityName })}</h3>`
+      if (state.filters && state.filters.length) {
+        const allFiltersDescr = state.filters.map(f => f.label + ' ' + f.description).join('; ')
+        resultHtml += `<h5>${allFiltersDescr}</h5>`
+      }
+      const sumsHtml = numberColumns
+        .map((column, idx) => {
+          return `<b>${column.label}:</b> ${formatByPattern.formatNumber(resultRow[idx + 1], 'sum')}`
+        })
+        .join('<br><br>')
+      if (sumsHtml) {
+        resultHtml += `<h4>${UB.i18n('table.summary.columnSummaries')}:</h4>${sumsHtml}`
+      }
+      resultHtml += `<br><br><b>${UB.i18n('table.summary.totalRowCount')}:</b> ${formatByPattern.formatNumber(resultRow[0], 'number')}`
+      await dialogInfo(resultHtml, 'summary')
     }
   }
 })

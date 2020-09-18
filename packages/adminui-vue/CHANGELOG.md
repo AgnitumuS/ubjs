@@ -6,12 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UTableEntity`: action `show summary` in dropdown menu which shows summary data for each column with type Number.
+   Also added slot for summary action - `toolbarDropdownSummary`
  - `UMasterDetailView`: sort order saved in the localStorage for each shortcut
- - Excel export from UTableEntity adds a total row with SUM formula for a numeric columnus
-
+ - Excel export from UTableEntity adds a total row with SUM formula for a numeric columns
+ - `UToolbar.showAccessRights`: added `parentContext.instanceID` (ID of the instance we add rigths for) to the `addNew` command
+ - The `processing` vuex module now has `PURGE_COLLECTION_ITEM` mutation.  It acts like `DELETE_COLLECTION_ITEM`,
+   but does NOT track deletion.  This is useful for collection items, which depends on other collections and ARE
+   deleted by cascade.
+ 
 ### Changed
  - `vue` updated 2.6.10 -> 2.6.12; `vue-template-compiler` updated 2.6.10 -> 2.6.12
  - `UTableEntity`: close sort popup after change sort order
+- `replaceShowList` creates Repository from ubql passed to `cmdData[0]`, so accept where, groups etc.
+  Before this only `entity` and `fieldList` takes into account
 
 ### Deprecated
 

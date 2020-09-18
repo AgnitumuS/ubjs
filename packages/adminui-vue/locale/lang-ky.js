@@ -176,6 +176,12 @@ UB.i18nExtend({
         desc: 'По убыванию',
         none: 'Нет'
       }
+    },
+    summary: {
+      menuText: 'Показать итоги',
+      header: 'Итоги для "{forTitle:i18n}"',
+      totalRowCount: 'Всего строк',
+      columnSummaries: 'Сумы по столбцам'
     }
   },
 

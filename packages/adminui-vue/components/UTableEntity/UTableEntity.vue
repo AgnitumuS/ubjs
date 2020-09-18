@@ -74,7 +74,7 @@ export default {
     },
     /**
      * Overrides addNew action config.
-     * Function accepts current config and must return new config
+     * Function accept one parameter cfg: Object - config for doCmd.showForm, can mutate it and return mutated config
      */
     buildAddNewConfig: {
       type: Function,
