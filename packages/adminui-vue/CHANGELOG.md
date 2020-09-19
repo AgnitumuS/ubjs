@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UDropdown` remove popup HTMLElement after parent instance destroyed
+ - `lookups` - if updated value retrived from Repository then response fieldList taken from request.
+ It's important for EAV atts
  - `mountContainer` provide stubs `$formServices.setTitle` & `$formServices.close` as `mountTab` and `mountModal` do.
   This allows form to be mounted inside preview area without changing form code (in case form use these methods).
 

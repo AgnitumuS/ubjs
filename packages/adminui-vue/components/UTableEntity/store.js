@@ -530,23 +530,37 @@ module.exports = (instance) => ({
         }
       }
 
+      const { fieldList } = getters.currentRepository
       const updatedItem = {}
-      const hasAllDataInResponse = getters.currentRepository.fieldList
+      const hasAllDataInResponse = fieldList
         .every(attr => attr in response.resultData)
 
       if (hasAllDataInResponse) {
-        for (const attr of getters.currentRepository.fieldList) {
+        for (const attr of fieldList) {
           updatedItem[attr] = response.resultData[attr]
         }
       } else {
         Object.assign(
           updatedItem,
           await UB.Repository(response.entity)
-            .attrs(getters.currentRepository.fieldList)
-            .selectById(response.resultData.ID)
+            .attrs(fieldList)
+            .where('ID', '=', response.resultData.ID)
+            .selectAsArray()
+            .then(response => {
+              // Works like selectById except that returned
+              // fieldList equal to fieldList in request.
+              // For example in eav attrs.
+              const { data } = response.resultData
+              if (data.length > 0) {
+                const item = {}
+                for (const [index, attr] of fieldList.entries()) {
+                  item[attr] = data[0][index]
+                }
+                return item
+              }
+            })
         )
       }
-
       if (response.method === 'insert') {
         if (state.items.length < getters.pageSize) {
           commit('ADD_ITEM', updatedItem)
