@@ -249,5 +249,11 @@ UB.i18nExtend({
 
   UNavbar: {
     allTabsButton: 'All opened tabs'
+  },
+
+  USelectEntity: {
+    dropdown: {
+      moreButton: 'More'
+    }
   }
 })
