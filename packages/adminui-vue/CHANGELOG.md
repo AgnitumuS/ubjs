@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UDropdown` remove popup HTMLElement after parent instance destroyed
+ - `UTableEntity` - hide audit button in case `uba_auditTrail.select` is not accessible to user 
  - `lookups` - if updated value retrived from Repository then response fieldList taken from request.
  It's important for EAV atts
  - `mountContainer` provide stubs `$formServices.setTitle` & `$formServices.close` as `mountTab` and `mountModal` do.

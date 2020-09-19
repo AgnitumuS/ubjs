@@ -4,6 +4,7 @@ const { dialogDeleteRecord, dialogInfo } = require('../dialog/UDialog')
 const { exportExcel, exportCsv, exportHtml } = require('../../utils/fileExporter')
 const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 const lookups = require('../../utils/lookups')
+const AUDIT_ENTITY = 'uba_auditTrail'
 
 /**
  * Build store by UTableEntity props
@@ -112,7 +113,9 @@ module.exports = (instance) => ({
     },
 
     canAudit (state, getters) {
-      return getters.hasSelectedRow && getters.schema.hasMixin('audit')
+      return getters.hasSelectedRow &&
+        getters.schema.hasMixin('audit') &&
+      UB.connection.domain.isEntityMethodsAccessible(AUDIT_ENTITY, 'select')
     },
 
     canEdit (state, getters) {
