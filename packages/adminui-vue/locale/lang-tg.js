@@ -249,5 +249,11 @@ UB.i18nExtend({
 
   UNavbar: {
     allTabsButton: 'Ҳамаи равзанаҳои кушода'
+  },
+
+  USelectEntity: {
+    dropdown: {
+      moreButton: 'Больше'
+    }
   }
 })

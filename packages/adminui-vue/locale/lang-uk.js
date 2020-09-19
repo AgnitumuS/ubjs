@@ -249,5 +249,11 @@ UB.i18nExtend({
 
   UNavbar: {
     allTabsButton: 'Усі відкриті вкладинки'
+  },
+
+  USelectEntity: {
+    dropdown: {
+      moreButton: 'Більше'
+    }
   }
 })

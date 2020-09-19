@@ -121,7 +121,7 @@
             style="margin: 5px"
             @click="showMore"
           >
-            {{ $ut('more') }}
+            {{ $ut('USelectEntity.dropdown.moreButton') }}
           </el-button>
         </el-row>
       </div>
