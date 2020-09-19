@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UDropdown` remove popup HTMLElement after parent instance destroyed
+ - `mountContainer` provide stubs `$formServices.setTitle` & `$formServices.close` as `mountTab` and `mountModal` do.
+  This allows form to be mounted inside preview area without changing form code (in case form use these methods).
 
 ## [1.13.4] - 2020-09-11
 ### Added
