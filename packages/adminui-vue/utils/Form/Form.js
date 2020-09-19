@@ -118,6 +118,11 @@ class UForm {
     this.canValidationInit = false
   }
 
+  /**
+   *
+   * @param {Vuex.StoreOptions} [storeConfig={}] Vuex store constructor options - merged with UForm store
+   * @return {UForm}
+   */
   store (storeConfig = {}) {
     if (this.storeInitialized) {
       throw new Error('Store is already initialized. TIP: ".store()" should be called before ".processing()"')
@@ -137,7 +142,7 @@ class UForm {
 
   /**
    * @param {Object} [cfg]
-   * @param {string[]} [cfg.masterFieldList]
+   * @param {string[]} [cfg.masterFieldList] form field list. By default all entity attributes
    * @param {Object} [cfg.collections]
    * @param {function} [cfg.beforeInit]
    * @param {function} [cfg.inited]
