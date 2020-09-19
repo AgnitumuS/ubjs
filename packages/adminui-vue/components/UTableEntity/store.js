@@ -525,6 +525,8 @@ module.exports = (instance) => ({
         return
       }
 
+      if (!isApplicableWhereList(response, getters.currentRepository)) return
+
       if (response.method === 'delete') {
         commit('REMOVE_ITEM', response.resultData.ID)
         // in case items count equal pageSize then probably has next page so need refresh it
@@ -609,3 +611,34 @@ module.exports = (instance) => ({
     }
   }
 })
+
+/**
+ * Transform one record which returned by runTrans to TubCachedData.
+ * Used to prepare data for method `LocalDataStore.doFiltration`
+ *
+ * @param {object} response
+ * @returns {TubCachedData}
+ */
+function transformResponseToTubCachedData (response) {
+  return {
+    data: [Object.values(response.resultData)],
+    fields: Object.keys(response.resultData),
+    rowCount: 1
+  }
+}
+
+/**
+ * Checks record is applicable to current repository whereList
+ *
+ * @param {object} response
+ * @param {ClientRepository} repository
+ * @returns {boolean}
+ */
+function isApplicableWhereList (response, repository) {
+  const filteredResponse = UB.LocalDataStore.doFiltration(
+    transformResponseToTubCachedData(response),
+    repository.ubql()
+  )
+
+  return filteredResponse.length > 0
+}

@@ -33,6 +33,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  It's important for EAV atts
  - `mountContainer` provide stubs `$formServices.setTitle` & `$formServices.close` as `mountTab` and `mountModal` do.
   This allows form to be mounted inside preview area without changing form code (in case form use these methods).
+ - `UTableEntity` update lookup data only in case of updated record match current repository whereList conditions.
+  This prevents adding unexpected values to lookups in opened forms 
 
 ## [1.13.4] - 2020-09-11
 ### Added
