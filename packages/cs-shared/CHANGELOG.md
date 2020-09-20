@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.5.3] - 2020-09-20
+### Fixed
  - `formatByPattern.setDefaultLang` correctly sets `en` default language.
    Before this fix in case user default language is `en` `undegined` is sets instead of `en`. 
    This allows calling `formatByPattern.formatNumber` and `formatByPattern.formatDate` on the client side without 3rd `lang` argument:

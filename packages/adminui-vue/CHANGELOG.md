@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.13.5] - 2020-09-20
+### Added
  - `UTableEntity`: action `show summary` in dropdown menu which shows summary data for each column with type Number.
    Also, added slot for summary action - `toolbarDropdownSummary`
  - `UMasterDetailView`: sort order saved in the localStorage for each shortcut
@@ -23,10 +34,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `USelectEntity` label for "More" button in english locale changed from "more than" to "More"
  - Use HTML formatting inside i18n for `validationError` - 'Unable to save.<br>Error in fields:<br>{0}'
    This is the same as in Ext based component. 
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UDropdown` remove popup HTMLElement after parent instance destroyed
