@@ -20,7 +20,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity`: close sort popup after change sort order
  - `replaceShowList` creates Repository from ubql passed to `cmdData[0]`, so accept where, groups etc.
   Before this only `entity` and `fieldList` takes into account
- - `USelectEntity` label for "More" button in english locale changed from "more than" to "More"  
+ - `USelectEntity` label for "More" button in english locale changed from "more than" to "More"
+ - Use HTML formatting inside i18n for `validationError` - 'Unable to save.<br>Error in fields:<br>{0}'
+   This is the same as in Ext based component. 
 
 ### Deprecated
 

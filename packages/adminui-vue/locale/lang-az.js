@@ -130,7 +130,7 @@ UB.i18nExtend({
   recordDeletedSuccessfully: 'Yazı uğurla silinmişdir',
   selectedValueWasDeleted: 'Seçilmiş yazı silinmişdir',
   recordWasDeleted: 'Yazı silinmişdir',
-  validationError: 'Yadda saxlamaq mümkün deyil, sahələr yalnışdır - {0}',
+  validationError: 'Yadda saxlamaq mümkün deyil.<br>Sahələr yalnışdır:<br>{0}',
   formCrashTitle: 'Formada xəta baş vermişdir',
   formCrashBody: 'Xəta baş vermişdir, fomranı yeniləyin və yaxud sistem administratorla əlaqə saxlayın',
 
