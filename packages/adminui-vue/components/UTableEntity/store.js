@@ -580,6 +580,7 @@ module.exports = (instance) => ({
     async showSummary ({ state, getters }) {
       const repo = getters.currentRepository.clone()
         .withTotal(false).start(0).limit(0) // clear total and possible pagination
+      repo.orderList = [] // clear possible order list
       repo.fieldList = ['COUNT([ID])'] // always calc count in first column
       const numberColumns = []
       const NUMBER_TYPES = ['BigInt', 'Currency', 'Float', 'Int']
