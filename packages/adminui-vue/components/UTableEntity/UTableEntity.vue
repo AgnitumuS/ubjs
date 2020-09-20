@@ -21,7 +21,7 @@
 const Vuex = require('vuex')
 const { mapGetters, mapActions } = Vuex
 const createStore = require('./store')
-const Root = require('./components/Root.vue').default
+const Root = require('./components/UTableEntityRoot.vue').default
 const TypeProvider = require('./type-provider')
 
 export default {
