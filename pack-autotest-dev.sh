@@ -14,21 +14,9 @@ npm run build
 cd $ROOT/packages/compressors
 npm run build
 
-cd $ROOT
-npx lerna clean -y
-
 cd $ROOT/apps/autotest
-yarn --prod
 
-# remove artifacts
-# .dcu
-find -L . -name \.dcu -type d -exec rm -rf {} +
-# possible symlinked packages entry-points
-find -L ./node_modules -name \.entryPoint.js -type f -exec rm -rf {} +
-
-rm -f ~/autotest.tar.gz
-# h to follow hyperlink
-tar cvhfz ~/autotest.tar.gz package.json package-lock.json ubConfig.json ./*.js ./models ./node_modules ./scripts
+ub-app-pack -m DEV
 exit 0
 
 # deploy
