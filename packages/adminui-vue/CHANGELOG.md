@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [1.13.6] - 2020-09-21
+### Fixed
  - `UTableEntity/updateData`:  error on delete record
 
 ## [1.13.5] - 2020-09-20
