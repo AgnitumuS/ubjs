@@ -4,7 +4,7 @@ const Vue = require('vue')
 window.Vue = Vue
 const { lookups } = require('@unitybase/adminui-vue')
 window.onerror = console.error // silent error as alert
-require('../../../packages/adminui-vue/theme/el-theme-compiled.css')
+require('@unitybase/adminui-vue/theme/el-theme-compiled.css')
 
 console.log('window.location', window.location, window.location.port)
 const UB_HOST = window.location.port === '6060' // webpack dev server
