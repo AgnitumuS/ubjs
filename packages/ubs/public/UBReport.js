@@ -149,7 +149,7 @@ UBReport.prototype.makeReport = function (params) {
  */
 UBReport.prototype.buildXLSX = function (reportData, config) {
   if (!reportData || typeof (reportData) !== 'object' || reportData instanceof Array) {
-    throw new Error('reportData must have type Object')
+    throw new Error('reportData must be of type Object')
   }
 
   formatFunctions.addBaseMustacheSysFunction(reportData)
@@ -178,7 +178,7 @@ UBReport.prototype.buildXLSX = function (reportData, config) {
 */
 UBReport.prototype.buildHTML = function (reportData) {
   if (!reportData || typeof (reportData) !== 'object' || reportData instanceof Array) {
-    throw new Error('reportData must have type Object')
+    throw new Error('reportData must be of type Object')
   }
 
   formatFunctions.addBaseMustacheSysFunction(reportData)
