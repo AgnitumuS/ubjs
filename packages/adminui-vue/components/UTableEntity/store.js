@@ -525,15 +525,16 @@ module.exports = (instance) => ({
         return
       }
 
-      if (!isApplicableWhereList(response, getters.currentRepository)) return
-
       if (response.method === 'delete') {
         commit('REMOVE_ITEM', response.resultData.ID)
         // in case items count equal pageSize then probably has next page so need refresh it
         if (state.items.length === getters.pageSize - 1) {
           await dispatch('refresh')
         }
+        return
       }
+
+      if (!isApplicableWhereList(response, getters.currentRepository)) return
 
       const { fieldList } = getters.currentRepository
       const updatedItem = {}
