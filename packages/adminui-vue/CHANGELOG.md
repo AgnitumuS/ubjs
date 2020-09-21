@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - design of icons: `sort`, `sort-asc`, `sort-desc`
 
 ### Deprecated
 
