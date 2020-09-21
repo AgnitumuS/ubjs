@@ -54,6 +54,7 @@
     "lodash": "^4",
     "moment": "^2.24.0",
     "mxgraph-js": "^1.0.1",
+    "mustache": "^3.0.1",
     "node-cron": "^1.1.2",
     "normalize.css": "^8.0.0",
     "pkijs": "^2.1.46",
