@@ -44,11 +44,12 @@ exports.reportCode = {
    * @returns {Promise|Object}
    */
   buildReport: function (reportParams) {
-    let reportData = this.buildHTML(reportParams)
+    // let data = UB.Repository(..).selectAsObject() 
+    let renderedReport = this.buildHTML(data)
     if (this.reportType === 'pdf') {
-      reportData = this.transformToPdf(reportData)
+      renderedReport = this.transformToPdf(renderedReport)
     }
-    return reportData
+    return renderedReport
   }
   /** optional report click event handler
    * see click_sample report inside UBS model
