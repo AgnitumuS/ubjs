@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.8] - 2020-09-22
+### Fixed
 - Allow `getDocument` endpoint calls with specific "revision" parameter for "Document" attributes,
   which does not have current value. 
 

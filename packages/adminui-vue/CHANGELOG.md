@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.13.8] - 2020-09-22
 ## [1.13.7] - 2020-09-22
 ### Added
  - `UTable` event `click-head-cell` fires in case user click on the header cell

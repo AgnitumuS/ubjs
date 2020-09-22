@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.5.4] - 2020-09-22
+### Fixed
  - prevent `formatByPattern` to use multiple collator instances and prevents from
  sets default language to `unknown`. Current solution is a temporary DIRTY HACK.
  The reason of the problem is that `@unitybase/cs-shared` package is included into every compiled module

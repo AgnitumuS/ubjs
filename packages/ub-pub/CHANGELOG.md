@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.25] - 2020-09-22
 ## [5.5.24] - 2020-09-20
 ### Fixed
  - en i18n('ok') changed from 'Ok' -> 'OK'
