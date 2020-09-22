@@ -1,12 +1,14 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       vue: 'vue/dist/vue.common.js'
-    }
+    },
+    symlinks: false
   },
   module: {
     rules: [{
@@ -42,5 +44,13 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'style.css'
     })
-  ]
+  ],
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        cache: true
+      })
+    ]
+  }
 }

@@ -163,7 +163,8 @@ export default {
     collection-name="rightsSubjects"
   />
 </template>
-
+```
+```javascript
 <script>
 const { Form } = require('@unitybase/adminui-vue')
 module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
@@ -176,10 +177,10 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
   })
     .processing({
       collections: {
-        rightsSubjects: UB.connection
+        rightsSubjects: ({state}) => UB.connection
           .Repository('ubm_navshortcut_adm')
           .attrs('ID', 'instanceID', 'admSubjID')
-          .where('instanceID', '=', params.instanceID)
+          .where('instanceID', '=', state.data.ID)
       }
     })
     .validation()

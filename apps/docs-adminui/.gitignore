@@ -3,4 +3,5 @@ localdb
 logs
 node_modules
 stores
-public/docs-adminui
+inetpub
+!inetpub/robots.txt
