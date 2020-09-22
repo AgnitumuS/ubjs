@@ -14,3 +14,23 @@ require('./src/test-module.js')
 //     })
 //   })
 // }
+
+const TST = UB.ns('TST')
+TST.addGridActions = function (createElement) {
+  return {
+    toolbarPrepend: ({ store, close }) => {
+      return createElement('u-button', {
+        props: {
+          appearance: 'inverse',
+          icon: 'el-icon-document-remove'
+        },
+        on: {
+          click: async function () { // this === window!
+            await $App.dialogInfo('Action fired')
+            return
+          }
+        }
+      }, ['ActionTest'])
+    }
+  }
+}

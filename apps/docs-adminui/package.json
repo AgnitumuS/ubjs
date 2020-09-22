@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "watch": "vue-styleguidist --config ./build/styleguidist.config.js server",
-    "build": "vue-styleguidist --config ./build/styleguidist.config.js build",
+    "build1": "vue-styleguidist --config ./build/styleguidist.config.js build",
     "ubapp": "ub -env ./ubConfig-dev.env",
     "dev": "gnome-terminal -x npm run ubapp; npm run watch"
   },
