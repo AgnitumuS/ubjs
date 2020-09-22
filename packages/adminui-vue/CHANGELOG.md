@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UFile`, `UFileMultiple`: provide revision param to getDocument 
+ - `UFileMultiple`: provide `disabled` prop to `UFileInput` so if UFileMultiple is disabled inner UFileInput is also disabled
 
 ## [1.13.6] - 2020-09-21
 ### Fixed
