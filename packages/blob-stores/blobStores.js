@@ -207,18 +207,19 @@ function getRequestedBLOBInfo (parsedRequest) {
         reason: `${entity.code} with ID=${ID} not accessible`
       }
     }
+    const rev = parsedRequest.bsReq.revision
     const blobInfoTxt = blobInfoDS[0][attribute.code]
-    if (!blobInfoTxt) {
+    if (!blobInfoTxt && !rev) {
+      // only return error, if request does not have parameter "revision"
       return {
         success: false,
         isEmpty: true,
         reason: `${entity.code} with ID=${ID} is empty`
       }
     }
-    blobInfo = JSON.parse(blobInfoTxt)
+    blobInfo = blobInfoTxt ? JSON.parse(blobInfoTxt) : undefined
     // check revision. If not current - get a blobInfo from history
-    const rev = parsedRequest.bsReq.revision
-    if (rev && (rev !== blobInfo.revision)) {
+    if (rev && (!blobInfo || rev !== blobInfo.revision)) {
       const historicalBlobItem = Repository(BLOB_HISTORY_STORE_NAME)
         .attrs('blobInfo')
         .where('instance', '=', ID)
