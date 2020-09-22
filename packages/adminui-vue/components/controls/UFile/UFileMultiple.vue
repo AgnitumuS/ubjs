@@ -44,6 +44,7 @@
       <u-file-input
         v-if="value.length === 0"
         multiple
+        :disabled="disabled"
         :accept="accept"
         :border="false"
         @input="upload"
