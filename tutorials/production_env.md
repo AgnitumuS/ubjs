@@ -10,9 +10,9 @@
         ub                  # executable 
     /products               # products (should be installed by app developer)
         /docflow
-            ubConfigDocflow-tpl.json
+            ubConfig.json
         /docflow@2.1.4
-            ubConfigDocflow-tpl.json
+            ubConfig.json
         /scriptum
         /deals
         /docflow-bpm
@@ -25,13 +25,13 @@
                 crb.js
                 package.json
             /cmodels        # customer model (customer-specific addition for product developed by customer)  
-            ubConfig.json   # application config - for products - symlynk to a product config `../../prodicts/docflow@2.1.4/ubConfigDocflow-tpl.json`
+            ubConfig.json   # application config - for products - symlynk to a product config `../../products/docflow@2.1.4/ubConfig.json`
        /docs-adminui        # stand-alone application (not based on any product)
             /inetpub
             /models
                 /req        # application specific model
             /node_modules   # application modules. For products this folder is placed in /products/productName
-            ubConfig.json   # for stand-alone app not a symlynk but file
+            ubConfig.json   # for stand-alone app not a symlynk but a file
     /appdata                # applications data (localdb, stores, temporary logs)
         /crb.docflow        # crb.docflow data
             /localdb        # local database files (SQLite3, SQL Server localdb etc.)  

@@ -4,6 +4,7 @@ const { dialogDeleteRecord, dialogInfo } = require('../dialog/UDialog')
 const { exportExcel, exportCsv, exportHtml } = require('../../utils/fileExporter')
 const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 const lookups = require('../../utils/lookups')
+const AUDIT_ENTITY = 'uba_auditTrail'
 
 /**
  * Build store by UTableEntity props
@@ -112,7 +113,9 @@ module.exports = (instance) => ({
     },
 
     canAudit (state, getters) {
-      return getters.hasSelectedRow && getters.schema.hasMixin('audit')
+      return getters.hasSelectedRow &&
+        getters.schema.hasMixin('audit') &&
+      UB.connection.domain.isEntityMethodsAccessible(AUDIT_ENTITY, 'select')
     },
 
     canEdit (state, getters) {
@@ -528,25 +531,42 @@ module.exports = (instance) => ({
         if (state.items.length === getters.pageSize - 1) {
           await dispatch('refresh')
         }
+        return
       }
 
+      if (!isApplicableWhereList(response, getters.currentRepository)) return
+
+      const { fieldList } = getters.currentRepository
       const updatedItem = {}
-      const hasAllDataInResponse = getters.currentRepository.fieldList
+      const hasAllDataInResponse = fieldList
         .every(attr => attr in response.resultData)
 
       if (hasAllDataInResponse) {
-        for (const attr of getters.currentRepository.fieldList) {
+        for (const attr of fieldList) {
           updatedItem[attr] = response.resultData[attr]
         }
       } else {
         Object.assign(
           updatedItem,
           await UB.Repository(response.entity)
-            .attrs(getters.currentRepository.fieldList)
-            .selectById(response.resultData.ID)
+            .attrs(fieldList)
+            .where('ID', '=', response.resultData.ID)
+            .selectAsArray()
+            .then(response => {
+              // Works like selectById except that returned
+              // fieldList equal to fieldList in request.
+              // For example in eav attrs.
+              const { data } = response.resultData
+              if (data.length > 0) {
+                const item = {}
+                for (const [index, attr] of fieldList.entries()) {
+                  item[attr] = data[0][index]
+                }
+                return item
+              }
+            })
         )
       }
-
       if (response.method === 'insert') {
         if (state.items.length < getters.pageSize) {
           commit('ADD_ITEM', updatedItem)
@@ -561,6 +581,7 @@ module.exports = (instance) => ({
     async showSummary ({ state, getters }) {
       const repo = getters.currentRepository.clone()
         .withTotal(false).start(0).limit(0) // clear total and possible pagination
+      repo.orderList = [] // clear possible order list
       repo.fieldList = ['COUNT([ID])'] // always calc count in first column
       const numberColumns = []
       const NUMBER_TYPES = ['BigInt', 'Currency', 'Float', 'Int']
@@ -592,3 +613,34 @@ module.exports = (instance) => ({
     }
   }
 })
+
+/**
+ * Transform one record which returned by runTrans to TubCachedData.
+ * Used to prepare data for method `LocalDataStore.doFiltration`
+ *
+ * @param {object} response
+ * @returns {TubCachedData}
+ */
+function transformResponseToTubCachedData (response) {
+  return {
+    data: [Object.values(response.resultData)],
+    fields: Object.keys(response.resultData),
+    rowCount: 1
+  }
+}
+
+/**
+ * Checks record is applicable to current repository whereList
+ *
+ * @param {object} response
+ * @param {ClientRepository} repository
+ * @returns {boolean}
+ */
+function isApplicableWhereList (response, repository) {
+  const filteredResponse = UB.LocalDataStore.doFiltration(
+    transformResponseToTubCachedData(response),
+    repository.ubql()
+  )
+
+  return filteredResponse.length > 0
+}

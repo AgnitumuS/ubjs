@@ -130,7 +130,7 @@ UB.i18nExtend({
   recordDeletedSuccessfully: 'Record deleted successfully',
   selectedValueWasDeleted: 'Selected value was deleted',
   recordWasDeleted: 'Record was deleted',
-  validationError: 'Unable to save, error in fields - {0}',
+  validationError: 'Unable to save.<br>Error in fields:<br>{0}',
   formCrashTitle: 'Form was crashed',
   formCrashBody: 'Something going wrong please reload form or contact system administrator',
 
@@ -249,5 +249,11 @@ UB.i18nExtend({
 
   UNavbar: {
     allTabsButton: 'All opened tabs'
+  },
+
+  USelectEntity: {
+    dropdown: {
+      moreButton: 'More'
+    }
   }
 })

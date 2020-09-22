@@ -130,7 +130,7 @@ UB.i18nExtend({
   recordDeletedSuccessfully: 'Сабт бомуваффақият нест карда шуд',
   selectedValueWasDeleted: 'Қимати интихобшуда нест карда мешавад',
   recordWasDeleted: 'Маълумот нест карда шуд',
-  validationError: 'Нигоҳ доштан ғайриимкон аст, маъмулот хатогӣ дорад - {0}',
+  validationError: 'Нигоҳ доштан ғайриимкон аст.<br>Маъмулот хатогӣ дорад:<br>{0}',
   formCrashTitle: 'Шакл шикастааст',
   formCrashBody: 'Чизе нодуруст шуд, шаклро аз нав бор кунед ё бо мудири системаи худ дар тамос шавед',
 
@@ -249,5 +249,11 @@ UB.i18nExtend({
 
   UNavbar: {
     allTabsButton: 'Ҳамаи равзанаҳои кушода'
+  },
+
+  USelectEntity: {
+    dropdown: {
+      moreButton: 'Больше'
+    }
   }
 })

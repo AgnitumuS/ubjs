@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.7.3] - 2020-09-20
 ## [5.7.2] - 2020-09-08
 ### Changed
  - `ubcli inidDB -create` skips database(role for Oracle, schema for Postgres, file for SQLite3)

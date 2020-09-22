@@ -6,27 +6,49 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UTableEntity`: action `show summary` in dropdown menu which shows summary data for each column with type Number.
-   Also added slot for summary action - `toolbarDropdownSummary`
- - `UMasterDetailView`: sort order saved in the localStorage for each shortcut
- - Excel export from UTableEntity adds a total row with SUM formula for a numeric columns
- - `UToolbar.showAccessRights`: added `parentContext.instanceID` (ID of the instance we add rigths for) to the `addNew` command
- - The `processing` vuex module now has `PURGE_COLLECTION_ITEM` mutation.  It acts like `DELETE_COLLECTION_ITEM`,
-   but does NOT track deletion.  This is useful for collection items, which depends on other collections and ARE
-   deleted by cascade.
- 
+
 ### Changed
- - `vue` updated 2.6.10 -> 2.6.12; `vue-template-compiler` updated 2.6.10 -> 2.6.12
- - `UTableEntity`: close sort popup after change sort order
-- `replaceShowList` creates Repository from ubql passed to `cmdData[0]`, so accept where, groups etc.
-  Before this only `entity` and `fieldList` takes into account
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `UFile`, `UFileMultiple`: provide revision param to getDocument 
+
+## [1.13.6] - 2020-09-21
+### Fixed
+ - `UTableEntity/updateData`:  error on delete record
+
+## [1.13.5] - 2020-09-20
+### Added
+ - `UTableEntity`: action `show summary` in dropdown menu which shows summary data for each column with type Number.
+   Also, added slot for summary action - `toolbarDropdownSummary`
+ - `UMasterDetailView`: sort order saved in the localStorage for each shortcut
+ - Excel export from UTableEntity adds a total row with SUM formula for a numeric columns
+ - `UToolbar.showAccessRights`: added `parentContext.instanceID` (ID of the instance we add rigths for) to the `addNew` command
+ - The `processing` vuex module now has `DELETE_COLLECTION_ITEM_WITHOUT_TRACKING` mutation.  It acts like `DELETE_COLLECTION_ITEM`,
+   but does NOT track deletion.  This is useful for collection items, which depends on other collections and ARE
+   deleted by cascade.
+ 
+### Changed
+ - `vue` updated 2.6.10 -> 2.6.12; `vue-template-compiler` updated 2.6.10 -> 2.6.12
+ - `UTableEntity`: close sort popup after change sort order
+ - `replaceShowList` creates Repository from ubql passed to `cmdData[0]`, so accept where, groups etc.
+  Before this only `entity` and `fieldList` takes into account
+ - `USelectEntity` label for "More" button in english locale changed from "more than" to "More"
+ - Use HTML formatting inside i18n for `validationError` - 'Unable to save.<br>Error in fields:<br>{0}'
+   This is the same as in Ext based component. 
+
+### Fixed
  - `UDropdown` remove popup HTMLElement after parent instance destroyed
+ - `UTableEntity` - hide audit button in case `uba_auditTrail.select` is not accessible to user 
+ - `lookups` - if updated value retrived from Repository then response fieldList taken from request.
+ It's important for EAV atts
+ - `mountContainer` provide stubs `$formServices.setTitle` & `$formServices.close` as `mountTab` and `mountModal` do.
+  This allows form to be mounted inside preview area without changing form code (in case form use these methods).
+ - `UTableEntity` update lookup data only in case of updated record match current repository whereList conditions.
+  This prevents adding unexpected values to lookups in opened forms.
 
 ## [1.13.4] - 2020-09-11
 ### Added

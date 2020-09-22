@@ -130,7 +130,7 @@ UB.i18nExtend({
   recordDeletedSuccessfully: 'Запись успешно удалена',
   selectedValueWasDeleted: 'Выбраное значение удалено',
   recordWasDeleted: 'Запись была удалена',
-  validationError: 'Невозможно сохранить, поля с ошибкой - {0}',
+  validationError: 'Невозможно сохранить.<br>Поля с ошибкой:<br> {0}',
   formCrashTitle: 'Форма сломалась',
   formCrashBody: 'Что то пошло не так, перезагрузите форму или свяжитесь с системным администратором',
 
@@ -249,5 +249,11 @@ UB.i18nExtend({
 
   UNavbar: {
     allTabsButton: 'Все открытые вкладки'
+  },
+
+  USelectEntity: {
+    dropdown: {
+      moreButton: 'Больше'
+    }
   }
 })

@@ -24,8 +24,6 @@
  *
  */
 
-const Vue = require('vue')
-
 module.exports = {
   addCommand,
   install
@@ -49,17 +47,17 @@ function install () {
 function addCommand (command, handler) {
   commands[command] = handler
 }
+
 /**
  *
  * @param {Event} e
  */
-
 function checkClickOnMagicLink (e) {
-  let target = e.target
+  const target = e.target
   if (target.nodeName !== 'A') return
   if (!target.href.endsWith('#')) return
   let intercepted = false
-  let params = dataAttributesToObject(target.dataset)
+  const params = dataAttributesToObject(target.dataset)
 
   if (!params.cmdType && params.entity && params.id) { // legacy data-entity + data-id
     console.warn('Deprecated magic link format data-entity + data-id. Use <a href="#" data-cmd-type="showForm" data-entity="ubs_filter" data-instance-id=1233>')
@@ -91,11 +89,11 @@ function checkClickOnMagicLink (e) {
  * @param dataset
  */
 function dataAttributesToObject (dataset) {
-  let keys = Object.keys(dataset)
-  let result = {}
+  const keys = Object.keys(dataset)
+  const result = {}
   for (let i = 0, L = keys.length; i < L; i++) {
-    let k = keys[i]
-    let v = dataset[k]
+    const k = keys[i]
+    const v = dataset[k]
     if ((v.startsWith('{') && v.endsWith('}')) ||
       (v.startsWith('[') && v.endsWith('}'))) {
       result[k] = JSON.parse(v)

@@ -315,6 +315,8 @@ function mountContainer ({
         $v: validator,
         // for UToolbar
         $formServices: {
+          setTitle () {},
+          close () {},
           forceClose () { }
         },
         ...provide
