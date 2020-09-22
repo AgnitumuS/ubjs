@@ -45,8 +45,10 @@ const langToICU = {
   az: 'az'
 }
 
-let _defaultLang
-let _collator
+// TODO - FIX ME by prevent `@unitybase/cs-shared` package includes into every compiled module
+//  (adminui-pub, adminui-vue, vendor packages etc.).
+_defaultLang = undefined
+_collator = undefined
 
 /**
  * Create a ICU locale based on UB language

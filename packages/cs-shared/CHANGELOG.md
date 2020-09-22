@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - prevent `formatByPattern` to use multiple collator instances and prevents from
+ sets default language to `unknown`. Current solution is a temporary DIRTY HACK.
+ The reason of the problem is that `@unitybase/cs-shared` package is included into every compiled module
+ (adminui-pub, adminui-vue, vendor packages etc.). The good solution is to be found.    
 
 ## [5.5.3] - 2020-09-20
 ### Fixed
