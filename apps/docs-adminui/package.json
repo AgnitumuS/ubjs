@@ -25,18 +25,21 @@
     "@unitybase/uba": "^5.4.31",
     "@unitybase/ubm": "^5.4.16",
     "@unitybase/ubs": "^5.4.23",
-    "vuex": "^3.5.1"
+    "vuex": "^3.5.1",
+    "vue": "^2.6.12"
   },
   "devDependencies": {
-    "@babel/plugin-syntax-object-rest-spread": "^7.8.3",
     "@unitybase/ub-migrate": "^1.14.1",
     "@unitybase/ubcli": "^5.7.3",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.6.0",
+    "file-loader": "^6.1.0",
     "mini-css-extract-plugin": "^0.9.0",
+    "terser-webpack-plugin": "^4.2.2",
     "vue-loader": "^15.9.3",
-    "vue-styleguidist": "^4.27.1",
-    "webpack": "^4.43.0"
+    "vue-styleguidist": "^4.32.3",
+    "vue-template-compiler": "^2.6.12",
+    "webpack": "^4.44.2"
   },
   "engines": {
     "ub": "^5.0"
