@@ -75,7 +75,7 @@
         />
 
         <filter-selector />
-        <sort />
+        <sort ref="sort" />
         <pagination />
 
         <!-- @slot Replace whole toolbar dropdown -->
@@ -204,6 +204,7 @@
       :items="items"
       :max-height="maxHeight"
       tabindex="1"
+      @click-head-cell="showSortDropdown"
       @click-cell="select"
       @contextmenu-cell="showContextMenu"
       @dblclick-row="onSelect($event.row.ID, $event.row)"
@@ -651,6 +652,12 @@ export default {
 
       if (this.sort.order === 'asc') return 'u-icon-sort-asc'
       if (this.sort.order === 'desc') return 'u-icon-sort-desc'
+    },
+
+    showSortDropdown (column) {
+      this.SELECT_COLUMN(column.id)
+      // setTimeout for prevent click outside
+      setTimeout(this.$refs.sort.$refs.dropdown.toggleVisible, 0)
     }
   }
 }
