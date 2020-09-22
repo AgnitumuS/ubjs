@@ -6,16 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.13.7] - 2020-09-22
+### Added
  - `UTable` event `click-head-cell` fires in case user click on the header cell
  - `UTableEntity` will show dropdown for sort order selection while user click on the table header
  - `UToolbar`: slot `leftBefore` is added on the left side of the toolbar before default buttons
 
 ### Changed
  - design of icons: `sort`, `sort-asc`, `sort-desc`
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UFileMultiple`: `carouselWithPreview` now lazy

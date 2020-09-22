@@ -1,6 +1,6 @@
 {
   "name": "docs-adminui",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Adminui components docs",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/docs-adminui",
   "private": true,
@@ -17,7 +17,7 @@
   "dependencies": {
     "@unitybase/adminui-pub": "^5.13.40",
     "@unitybase/adminui-reg": "^5.4.40",
-    "@unitybase/adminui-vue": "^1.13.6",
+    "@unitybase/adminui-vue": "^1.13.7",
     "@unitybase/cdn": "^5.4.34",
     "@unitybase/cs-shared": "^5.5.3",
     "@unitybase/ub": "^5.6.3",
@@ -25,8 +25,8 @@
     "@unitybase/uba": "^5.4.31",
     "@unitybase/ubm": "^5.4.16",
     "@unitybase/ubs": "^5.4.23",
-    "vuex": "^3.5.1",
-    "vue": "^2.6.12"
+    "vue": "^2.6.12",
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
     "@unitybase/ub-migrate": "^1.14.1",
