@@ -1,5 +1,7 @@
 <template>
   <div class="u-toolbar">
+    <!-- @slot left side toolbar (before default buttons) -->
+    <slot name="leftBefore" />
     <el-tooltip
       v-for="button in mainPanelButtons"
       :key="button.label + button.icon"
