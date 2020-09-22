@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UToolbar`: slot `leftBefore` is added on the left side of the toolbar before default buttons
 
 ### Changed
 
