@@ -14,8 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - `UFile`, `UFileMultiple`: provide revision param to getDocument 
+ - `UFileMultiple`: `carouselWithPreview` now lazy
  - `UFileMultiple`: provide `disabled` prop to `UFileInput` so if UFileMultiple is disabled inner UFileInput is also disabled
+ - `UFile`, `UFileMultiple`: provide revision param to getDocument 
 
 ## [1.13.6] - 2020-09-21
 ### Fixed
