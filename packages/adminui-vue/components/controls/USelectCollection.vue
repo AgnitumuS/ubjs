@@ -163,7 +163,8 @@ export default {
     collection-name="rightsSubjects"
   />
 </template>
-
+```
+```javascript
 <script>
 const { Form } = require('@unitybase/adminui-vue')
 module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {

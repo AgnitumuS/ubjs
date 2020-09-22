@@ -19,13 +19,13 @@ Vue.prototype._authPromise = UB.connect({
       ? Promise.reject(new UB.UBAbortError('Invalid password for user admin'))
       : Promise.resolve({ authSchema: 'UB', login: 'admin', password: 'admin' })
   }
-}).then(resp => {
-  UB.inject(`${UB_HOST}/allLocales?lang=${UB.connection.preferredLocale}`)
+}).then(async resp => {
+  await UB.inject(`${UB_HOST}/allLocales?lang=${UB.connection.preferredLocale}`)
   /*
    basically lookups automatically calls init from adminui-vue entry file,
    but it requires $App from adminui-pub which calls lookups.init
    */
-  lookups.init()
+  await lookups.init()
   return resp
 }).catch(e => {
   console.error('UB server not respond - works in OFFLINE mode', e)
