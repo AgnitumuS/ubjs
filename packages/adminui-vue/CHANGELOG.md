@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UTable` event `click-head-cell` fires in case user click on the header cell
+ - `UTableEntity` will show dropdown for sort order selection while user click on the table header
  - `UToolbar`: slot `leftBefore` is added on the left side of the toolbar before default buttons
 
 ### Changed
