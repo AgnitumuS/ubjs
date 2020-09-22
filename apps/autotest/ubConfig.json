@@ -228,7 +228,7 @@
 				"driver": "SQLite3",
 				"isDefault": true,
 				"dialect": "SQLite3",
-				"databaseName": "%UB_APPDATA%localdb/%UB_APP%DB.sqlite3",
+				"databaseName": "%UB_APPDATA%localdb/DB.sqlite3",
 				"supportLang": ["en", "uk"],
 				"advSettings": "Synchronous=Off"
 			},
@@ -238,7 +238,7 @@
 				"name": "ftsDefault",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": "%UB_APPDATA%localdb/%UB_APP%FTS.sqlite3",
+				"databaseName": "%UB_APPDATA%localdb/FTS.sqlite3",
 				"supportLang": [
 					"en", "uk"
 				],
@@ -248,7 +248,7 @@
 				"name": "ftsSubjectSearch",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": "%UB_APPDATA%localdb/%UB_APP%SubjectsFTS.sqlite3",
+				"databaseName": "%UB_APPDATA%localdb/subjectsFTS.sqlite3",
 				"supportLang": [
 					"en", "uk"
 				],
