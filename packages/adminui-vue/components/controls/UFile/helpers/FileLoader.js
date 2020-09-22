@@ -46,7 +46,7 @@ class FileLoader {
       attribute: this.attribute,
       id: fileId,
       isDirty: file.isDirty,
-      _rc: file.revision
+      revision: file.revision
     }, { resultIsBinary: true })
   }
 
