@@ -25,7 +25,7 @@
     "build:theme": "cleancss -O2 -o ./themes/UBGrayTheme/UBGrayTheme-all.css ./themes/UBGrayTheme/UBGrayTheme-all-debug.css && uglifyjs ./themes/UBGrayTheme/UBGrayTheme-debug.js -o ./themes/UBGrayTheme/UBGrayTheme.js --screw-ie8 --prefix relative --compress --mangle",
     "build:adminui": "webpack --mode production",
     "build:watch": "webpack --progress --colors --watch",
-    "analyse-boundle": "webpack --mode production --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
+    "analyse-boundle": "webpack --mode production --profile --json > /tmp/wp_stats_adminui_pub.json && webpack-bundle-analyzer /tmp/wp_stats_adminui_pub.json",
     "lint": "eslint source test",
     "prepare": "npm run build",
     "test": "npm run test",
