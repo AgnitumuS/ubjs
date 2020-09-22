@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UToolbar`: slot `leftBefore` is added on the left side of the toolbar before default buttons
 
 ### Changed
+ - design of icons: `sort`, `sort-asc`, `sort-desc`
 
 ### Deprecated
 
