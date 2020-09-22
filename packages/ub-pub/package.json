@@ -14,7 +14,7 @@
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
     "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json",
-    "analyse-boundle": "webpack --mode production --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
+    "analyse-boundle": "webpack --mode production --profile --json > /tmp/wp_stats_ub_pub.json && webpack-bundle-analyzer /tmp/wp_stats_ub_pub.json",
     "lint": "eslint source test",
     "prepare": "npm run build",
     "test": "npm run test",
