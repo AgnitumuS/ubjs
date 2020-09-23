@@ -10,7 +10,7 @@ const datePatterns = {
   date: { month: '2-digit', day: '2-digit', year: 'numeric' },
   dateFull: { month: '2-digit', day: '2-digit', year: '2-digit' },
   dateShort: { month: '2-digit', year: '2-digit' },
-  dateFullLong: { month: 'long', day: '2-digit', year: '2-digit' },
+  dateFullLong: { month: 'long', day: '2-digit', year: 'numeric' },
   dateMYY: { month: '2-digit', year: 'numeric' },
   dateMYLong: { month: 'long', year: 'numeric' },
   time: { hour: '2-digit', minute: '2-digit' },

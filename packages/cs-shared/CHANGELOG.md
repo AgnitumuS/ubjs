@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `formatByPattern.formatDate(d, 'dateFullLong')` year format changed to 4 digits
+ to produce 'March 25, 2020' instead of 'March 25, 20' 
 
 ### Deprecated
 
