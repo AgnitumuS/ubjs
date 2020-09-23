@@ -47,7 +47,9 @@ const langToICU = {
 
 // TODO - FIX ME by prevent `@unitybase/cs-shared` package includes into every compiled module
 //  (adminui-pub, adminui-vue, vendor packages etc.).
-_defaultLang = undefined
+if (typeof _defaultLang === 'undefined') {
+  _defaultLang = 'en'
+}
 _collator = undefined
 
 /**
@@ -182,7 +184,6 @@ function setDefaultLang (lang) {
     _collator = new Intl.Collator(lang, { numeric: true })
   }
 }
-setDefaultLang('en')
 
 module.exports.setDefaultLang = setDefaultLang
 

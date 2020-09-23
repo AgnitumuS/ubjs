@@ -14,7 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+ - another dirty fix for prevent `formatByPattern` to use multiple collator instances. Prev.
+ not works as expected.
+ 
 ## [5.5.4] - 2020-09-22
 ### Fixed
  - prevent `formatByPattern` to use multiple collator instances and prevents from
