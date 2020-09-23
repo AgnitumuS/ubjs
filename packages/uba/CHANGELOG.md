@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+  - 'Record modified by another user' localization string typo fixed for ru and ky langs
 
 ## [5.4.32] - 2020-09-22
 ## [5.4.31] - 2020-09-20

@@ -31,7 +31,7 @@ UB.i18nExtend({
   auditImageRevision: 'Ревизия',
   auditImageVersion: 'Версия',
   SecurityAudit: 'Аудит безопасности',
-  'Record modified by another user': 'Пока Вы просматривали запись она была изменена другим пользщователем. Необходимо обновить данные',
+  'Record modified by another user': 'Пока Вы просматривали запись она была изменена другим пользователем. Необходимо обновить данные',
   needChangePassword: 'Пользователь должен изменить пароль при следующем входе',
   checkAll: 'Выбрать все',
   roles: 'Роли',
