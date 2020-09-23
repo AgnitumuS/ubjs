@@ -1,4 +1,5 @@
 const { Session } = require('@unitybase/ub')
+const ubaCommon = require('@unitybase/base').uba_common
 
 /**
  * define `getCurrentOrgUnitsAndAdminSubjects` method for `ubm_desktop` and `ubm_navshortcut`
@@ -8,6 +9,10 @@ global.ubm_desktop.getCurrentOrgUnitsAndAdminSubjects = getCurrentOrgUnitsAndAdm
 global.ubm_navshortcut.getCurrentOrgUnitsAndAdminSubjects = getCurrentOrgUnitsAndAdminSubjects
 
 function getCurrentOrgUnitsAndAdminSubjects (aclParams, aclRlsEntityName) {
+  if (ubaCommon.isSuperUser() || Session.uData.roleIDs.includes(ubaCommon.ROLES.ADMIN.ID)) {
+    return
+  }
+
   const whereList = {
     byOwner: {
       expression: '[instanceID.mi_owner]',

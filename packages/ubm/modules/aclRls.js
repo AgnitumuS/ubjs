@@ -1,4 +1,5 @@
 const { Session, UBAbort } = require('@unitybase/ub')
+const ubaCommon = require('@unitybase/base').uba_common
 
 module.exports = {
   getCurrentAdminSubjects,
@@ -6,6 +7,10 @@ module.exports = {
 }
 
 function getCurrentAdminSubjects (aclParams, aclRlsEntityName) {
+  if (ubaCommon.isSuperUser() || Session.uData.roleIDs.includes(ubaCommon.ROLES.ADMIN.ID)) {
+    return
+  }
+
   aclParams.aclRlsResult = {
     entity: aclRlsEntityName,
     whereList: {

@@ -2,6 +2,6 @@ const { getCurrentAdminSubjects, formatAclRlsExecParams } = require('./modules/a
 
 const me = global.ubm_desktop
 
-me.on('insert:before', formatAclRlsExecParams)
-
 me.getCurrentAdminSubjects = getCurrentAdminSubjects
+
+global.ubm_desktop_acl.on('insert:before', formatAclRlsExecParams)

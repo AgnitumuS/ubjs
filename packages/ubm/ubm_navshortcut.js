@@ -2,6 +2,6 @@ const { getCurrentAdminSubjects, formatAclRlsExecParams } = require('./modules/a
 
 const me = global.ubm_navshortcut
 
-me.on('insert:before', formatAclRlsExecParams)
-
 me.getCurrentAdminSubjects = getCurrentAdminSubjects
+
+global.ubm_navshortcut_acl.on('insert:before', formatAclRlsExecParams)
