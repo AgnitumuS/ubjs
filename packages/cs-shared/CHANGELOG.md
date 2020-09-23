@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `formatByPattern.formatDate(d, 'dateFullLong')` year format changed to 4 digits
- to produce 'March 25, 2020' instead of 'March 25, 20' 
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.5.5] - 2020-09-23
+### Changed
+ - `formatByPattern.formatDate(d, 'dateFullLong')` year format changed to 4 digits
+ to produce 'March 25, 2020' instead of 'March 25, 20' 
 
 ### Fixed
  - another dirty fix for prevent `formatByPattern` to use multiple collator instances. Prev.
