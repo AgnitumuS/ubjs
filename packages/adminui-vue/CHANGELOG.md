@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - new icons:
+   - u-icon-brand-ub
+   - u-icon-brand-docnet
+   - u-icon-brand-scriptum
+   - u-icon-brand-deals
+   - u-icon-brand-bpm
+   - u-icon-file-preview
+   - u-icon-file-add
 
 ### Changed
 
