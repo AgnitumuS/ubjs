@@ -19,7 +19,6 @@ function copyFromAdmToAclTable (entityName) {
         entity: aclEntityName,
         execParams: {
           instanceID,
-          valueID: admSubjID,
           subjID: admSubjID
         }
       })

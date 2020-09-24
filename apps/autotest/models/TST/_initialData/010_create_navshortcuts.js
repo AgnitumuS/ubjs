@@ -259,10 +259,9 @@ module.exports = function (session) {
   dataLoader.loadArrayData(conn,
     [['tst_desktop', 'User']],
     'ubm_desktop_acl',
-    'instanceID;subjID;valueID'.split(';'),
+    'instanceID;subjID'.split(';'),
     [
       dataLoader.lookup(conn, 'ubm_desktop', 'code', 0),
-      dataLoader.lookup(conn, 'uba_subject', 'code', 1),
       dataLoader.lookup(conn, 'uba_subject', 'code', 1)
     ],
     1)
@@ -273,10 +272,9 @@ module.exports = function (session) {
       ['tst_dictionary', 'User']
     ],
     'ubm_navshortcut_acl',
-    'instanceID;subjID;valueID'.split(';'),
+    'instanceID;subjID'.split(';'),
     [
       dataLoader.lookup(conn, 'ubm_navshortcut', 'code', 0),
-      dataLoader.lookup(conn, 'uba_subject', 'code', 1),
       dataLoader.lookup(conn, 'uba_subject', 'code', 1)
     ],
     1)

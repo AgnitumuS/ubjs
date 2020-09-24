@@ -36,8 +36,7 @@ module.exports = function (session) {
       entity: 'ubm_desktop_acl',
       execParams: {
         instanceID: desktopID,
-        subjID: usersRoleID,
-        valueID: usersRoleID
+        subjID: usersRoleID
       }
     })
   } else {
@@ -49,8 +48,7 @@ module.exports = function (session) {
       entity: 'ubm_navshortcut_acl',
       execParams: {
         instanceID,
-        subjID: usersRoleID,
-        valueID: usersRoleID
+        subjID: usersRoleID
       }
     })
   }
