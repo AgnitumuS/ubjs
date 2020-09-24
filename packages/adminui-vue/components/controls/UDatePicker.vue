@@ -61,7 +61,7 @@ export default {
 <style>
 
 .u-date-picker__date {
-  width: 160px !important;
+  width: 150px !important;
 }
 
 </style>
