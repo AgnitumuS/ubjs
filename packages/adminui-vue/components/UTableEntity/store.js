@@ -14,8 +14,8 @@ const AUDIT_ENTITY = 'uba_auditTrail'
  * @param {array<UTableColumn>} instance.getColumns Columns
  * @param {number} instance.pageSize Pagination page size
  * @param {function} instance.buildAddNewConfig AddNew config builder
- * @param {function} instance.buildEditConfig Edit config builder
- * @param {function} instance.buildCopyConfig Copy config builder
+ * @param {function} instance.buildEditConfig Edit config builder. Called with (cfg: configToMutate, row: content of row to edit)
+ * @param {function} instance.buildCopyConfig Copy config builder. Called with (cfg: configToMutate, row: content of row to edit)
  * @param {object[]} instance.getCardColumns Columns to show in card view
  */
 module.exports = (instance) => ({
@@ -350,7 +350,7 @@ module.exports = (instance) => ({
       UB.core.UBApp.doCommand(config)
     },
 
-    editRecord ({ getters }, ID) {
+    async editRecord ({ state, getters }, ID) {
       if (ID === null) return
 
       const tabId = UB.core.UBApp.generateTabId({
@@ -358,14 +358,15 @@ module.exports = (instance) => ({
         instanceID: ID,
         formCode: getters.formCode
       })
-      const config = instance.buildEditConfig({
+      const item = state.items.find(i => i.ID === ID)
+      const config = await instance.buildEditConfig({
         cmdType: 'showForm',
         entity: getters.entityName,
         formCode: getters.formCode,
         instanceID: ID,
         target: UB.core.UBApp.viewport.centralPanel,
         tabId
-      })
+      }, item)
       UB.core.UBApp.doCommand(config)
     },
 
@@ -395,13 +396,14 @@ module.exports = (instance) => ({
       }
     },
 
-    copyRecord ({ getters }, ID) {
+    async copyRecord ({ state, getters }, ID) {
       const tabId = UB.core.UBApp.generateTabId({
         entity: getters.entityName,
         instanceID: ID,
         formCode: getters.formCode
       })
-      const config = instance.buildCopyConfig({
+      const item = state.items.find(i => i.ID === ID)
+      const config = await instance.buildCopyConfig({
         cmdType: 'showForm',
         isCopy: true,
         addByCurrent: true, // TODO: remove it after drop ext.js from project
@@ -410,7 +412,7 @@ module.exports = (instance) => ({
         instanceID: ID,
         target: UB.core.UBApp.viewport.centralPanel,
         tabId
-      })
+      }, item)
       UB.core.UBApp.doCommand(config)
     },
 
