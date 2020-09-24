@@ -17,6 +17,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - `UDatePicker` component width decreased to 150px for :type="date" (instead of 220px as hardcoded in el-datepicker)
+ - `UTableEntity` `buildCopyConfig` and `buildEditConfig` now called using await (so can be async) and with the
+ second argument row - content of row been edited (copied). This allows to open a form based on current row values
+ and possible asynchronously retrieved information. For example - navshortcut what shows form based on detailed itemID
+```
+{
+  cmdType: 'showList',
+  cmdData: {
+      repository: () => UB.Repository('up_invoiceitem')
+        .attrs(["enclosure_id", "enclosure_id.date_reg","pay_sum"]),
+      buildEditConfig: async function (cfg, row) {
+        cfg.entity = 'up_enclosure'
+        let additionalInfo = await something() // can await for data
+        cfg.instanceID = row.enclosure_id // can use row to get some value
+        return cfg
+      }
+ }
+}
+
+```
 
 ### Deprecated
 
@@ -1062,12 +1081,12 @@ $App.doCommand({
  - `UNavbar` search widget
  
 ### Added
- - `UFileInput` binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
+ - `UFileInput` binds all props to underline input controls using v-bind. This allow,s for example, to pass `accept` property value
  - new property UFile.accept - optional comma-separated unique “content type specifiers”
- - UFileInput binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
+ - UFileInput binds all props to underline input controls using v-bind. This allows, for example, to pass `accept` property value
   - new property UFile.accept - optional comma-separated unique “content type specifiers”
-  - `UTable` - Added column param `isHtml`. If set true will render content as v-html directive 
-  - `UTable` - Added column format. Format displayed value in cell. Will ignored if is set custom slot. Example:
+  - `UTable` - Added column param `isHtml`. If set true will render content as v-html directive. 
+  - `UTable` - Added column format. Format the cell value for display. Will be ignored if is set custom slot. Example:
   ```javascript
    {
      id: 'attributeCode',
@@ -1106,18 +1125,18 @@ $App.doCommand({
  - `UFormContainer` removed padding and inner div
  
 ### Added
- - `UFileInput` binds all props to underline input controls using v-bind. This allow, for example, to pass `accept` property value
+ - `UFileInput` binds all props to underline input controls using v-bind. This allows, for example, to pass `accept` property value
  - `UFile` new property `accept` - optional comma-separated unique “content type specifiers”
  - `UContextMenu` - added prop width
  - Styles which adds `padding: 1em` to `<form>` inside `u-form-layout` class. 
    So `UFormContainer` will have padding just only if it is a direct descendant of the `u-form-layout`  
  - `USelectEntity` added props `buildShowDictionaryConfig`, `buildEditConfig`, `buildAddNewConfig`. 
    This props can override doCommand configs for base actions (edit, addNew, showDictionary). 
-   Function gets current config as argument and must return new config.
+   Function gets a current config as argument and must return a new config.
    Example in component docs.
  - `UTableEntity` added props `buildEditConfig`, `buildAddNewConfig`, `buildCopyConfig`. 
    This props can override doCommand configs for base actions (edit, addNew, сopy). 
-   Function gets current config as argument and must return new config.
+   Function gets a current config as argument and must return a new config.
    Example in component docs.
  - `UTableEntity` toolbar slots:
    - `toolbar` - Replace whole toolbar 

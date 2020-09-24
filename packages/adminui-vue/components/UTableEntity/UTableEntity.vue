@@ -58,7 +58,7 @@ export default {
 
     /**
      * Overrides showDictionary action config.
-     * Function accepts current config and must return new config
+     * Function is called (using await, so can be async) with 2 arguments: (cfg: current config, row: content of row to edit) can mutate cfg and return mutated config
      */
     buildCopyConfig: {
       type: Function,
@@ -66,7 +66,7 @@ export default {
     },
     /**
      * Overrides edit action config.
-     * Function accepts current config and must return new config
+     * Function is called (using await, so can be async) with 2 arguments: (cfg: current config, row: content of row to edit) can mutate cfg and return mutated config
      */
     buildEditConfig: {
       type: Function,
