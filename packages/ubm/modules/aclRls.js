@@ -19,12 +19,12 @@ function getCurrentAdminSubjects (aclParams, aclRlsEntityName) {
         value: Session.userID
       },
 
-      bySubject: {
-        expression: '[subjID]',
+      byValue: {
+        expression: '[valueID]',
         condition: 'in',
         value: [Session.userID, ...Session.uData.roleIDs, ...Session.uData.groupIDs]
       }
     },
-    logicalPredicates: ['([byOwner] OR [bySubject])']
+    logicalPredicates: ['([byOwner] OR [byValue])']
   }
 }

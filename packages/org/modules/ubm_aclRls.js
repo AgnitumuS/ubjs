@@ -13,6 +13,9 @@ function getCurrentOrgUnitsAndAdminSubjects (aclParams, aclRlsEntityName) {
     return
   }
 
+  const orgUnitsIDs = (Session.uData.orgUnitIDs || '').split(',').map(Number)
+  const valueIDs = [Session.userID, ...Session.uData.roleIDs, ...Session.uData.groupIDs, ...orgUnitsIDs]
+
   const whereList = {
     byOwner: {
       expression: '[instanceID.mi_owner]',
@@ -20,30 +23,16 @@ function getCurrentOrgUnitsAndAdminSubjects (aclParams, aclRlsEntityName) {
       value: Session.userID
     },
 
-    bySubject: {
-      expression: '[subjID]',
+    byValueID: {
+      expression: '[valueID]',
       condition: 'in',
-      value: [Session.userID, ...Session.uData.roleIDs, ...Session.uData.groupIDs]
+      value: valueIDs
     }
-  }
-  const logic = ['byOwner', 'bySubject']
-
-  const orgUnitsIDs = (Session.uData.orgUnitIDs || '').split(',').map(Number)
-
-  if (orgUnitsIDs.length > 0) {
-    Object.assign(whereList, {
-      byOrgUnits: {
-        expression: '[ounitID]',
-        condition: 'in',
-        value: orgUnitsIDs
-      }
-    })
-    logic.push('byOrgUnits')
   }
 
   aclParams.aclRlsResult = {
     entity: aclRlsEntityName,
     whereList,
-    logicalPredicates: `(${logic.map(s => `[${s}]`).join(' OR ')})`
+    logicalPredicates: '([byOwner] OR [byValueID])'
   }
 }
