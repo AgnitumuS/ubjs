@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - u-icon-file-add
 
 ### Changed
+ - `UDatePicker` component width decreased to 160px for :type="date" (instead of 220px as hardcoded in el-datepicker)
 
 ### Deprecated
 
