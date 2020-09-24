@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - u-icon-brand-bpm
    - u-icon-file-preview
    - u-icon-file-add
+ - `UAutoField` new property `forceCmp` - if defined then specified component will be used instead of default what based on attribute type.
+   For example `<u-auto-field attribute-name="bool_attr" force-cmp="el-switch" />` will create a
+   `el-switch` instead of `el-checkbox` (default cmp for Boolean)
+         
 
 ### Changed
  - `UDatePicker` component width decreased to 150px for :type="date" (instead of 220px as hardcoded in el-datepicker)
