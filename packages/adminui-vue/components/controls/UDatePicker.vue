@@ -1,6 +1,7 @@
 <template>
   <el-date-picker
     :type="type"
+    :class="pickerClass"
     :value="value"
     :format="dateFormat"
     :picker-options="mergedPickerOptions"
@@ -48,7 +49,19 @@ export default {
       }
 
       return this.$ut('el').datepicker.format[this.type] || ''
+    },
+
+    pickerClass () {
+      return 'u-date-picker__' + this.type
     }
   }
 }
 </script>
+
+<style>
+
+.u-date-picker__date {
+  width: 160px !important;
+}
+
+</style>
