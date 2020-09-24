@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.13.10] - 2020-09-24
+### Added
  - new icons:
    - u-icon-brand-ub
    - u-icon-brand-docnet
@@ -40,12 +51,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 }
 
 ```
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [1.13.9] - 2020-09-23
 ## [1.13.8] - 2020-09-22
