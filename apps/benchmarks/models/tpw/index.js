@@ -32,8 +32,8 @@ function rnd10000 () {
  * @param {THTTPResponse} resp
  */
 function db (req, resp) {
-  let query = UB.Repository('World').attrs(['ID', 'randomNumber'])
-  let data = query.where('ID', '=', rnd10000()).selectAsObject()
+  const query = UB.Repository('World').attrs(['ID', 'randomNumber'])
+  const data = query.where('ID', '=', rnd10000()).selectAsObject()
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
   resp.writeEnd(data[0])
@@ -48,18 +48,18 @@ const DEFAULT_DB = App.dbConnections[App.domainInfo.defaultConnection.name]
  * @param {THTTPResponse} resp
  */
 function dbUbql (req, resp) {
-  let query = UB.Repository('World').attrs(['ID', 'randomNumber']).where('ID', '=', rnd10000()).ubql()
-  let {sql, params} = dml.mssql.biuldSelectSql('World', query)
+  const query = UB.Repository('World').attrs(['ID', 'randomNumber']).where('ID', '=', rnd10000()).ubql()
+  const { sql, params } = dml.mssql.biuldSelectSql('World', query)
 
-  let data = JSON.parse(DEFAULT_DB.run(sql, params))[0]
+  const data = JSON.parse(DEFAULT_DB.run(sql, params))[0]
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
-  resp.writeEnd({ID: data['F0'], randomNumber: data['F1']})
+  resp.writeEnd({ ID: data.F0, randomNumber: data.F1 })
 }
 App.registerEndpoint('dbUbql', dbUbql, false)
 
 const CustomRepository = require('@unitybase/cs-shared').CustomRepository
-let PureQ = new CustomRepository('World').attrs(['ID', 'randomNumber']).where('ID', '=', 0).ubql()
+const PureQ = new CustomRepository('World').attrs(['ID', 'randomNumber']).where('ID', '=', 0).ubql()
 
 /**
  * TechemPower Test type 2: Single database query (ORM)
@@ -68,12 +68,12 @@ let PureQ = new CustomRepository('World').attrs(['ID', 'randomNumber']).where('I
  */
 function dbUbqlPure (req, resp) {
   PureQ.whereList.c1.values.c1 = rnd10000()
-  let {sql, params} = dml.mssql.biuldSelectSql('World', PureQ)
+  const { sql, params } = dml.mssql.biuldSelectSql('World', PureQ)
 
-  let data = JSON.parse(App.defaultDatabase_.run(sql, params))[0]
+  const data = JSON.parse(App.defaultDatabase_.run(sql, params))[0]
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
-  resp.writeEnd({ID: data['F0'], randomNumber: data['F1']})
+  resp.writeEnd({ ID: data.F0, randomNumber: data.F1 })
 }
 App.registerEndpoint('dbUbqlPure', dbUbqlPure, false)
 
@@ -86,10 +86,10 @@ const dataStore = new TubDataStore('World')
  * @param {THTTPResponse} resp
  */
 function dbRaw (req, resp) {
-  dataStore.runSQL(SQL, {ID: rnd10000()})
+  dataStore.runSQL(SQL, { ID: rnd10000() })
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
-  resp.writeEnd({id: dataStore.get(0), randomNumber: dataStore.get(1)})
+  resp.writeEnd({ id: dataStore.get(0), randomNumber: dataStore.get(1) })
 }
 App.registerEndpoint('dbRaw', dbRaw, false)
 
@@ -99,16 +99,16 @@ App.registerEndpoint('dbRaw', dbRaw, false)
  * @param {THTTPResponse} resp
  */
 function dbRawJS (req, resp) {
-  let resStr = App.defaultDatabase_.run(SQL, [rnd10000()])
-  let res = JSON.parse(resStr)
+  const resStr = App.defaultDatabase_.run(SQL, [rnd10000()])
+  const res = JSON.parse(resStr)
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
-  resp.writeEnd({id: res[0].ID, randomNumber: res[0].randomNumber})
+  resp.writeEnd({ id: res[0].ID, randomNumber: res[0].randomNumber })
 }
 App.registerEndpoint('dbRawJS', dbRawJS, false)
 
 function dbRawJSnoParse (req, resp) {
-  let resStr = App.defaultDatabase_.run(SQL, [rnd10000()])
+  const resStr = App.defaultDatabase_.run(SQL, [rnd10000()])
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
   resp.writeEnd(resStr)
@@ -122,18 +122,15 @@ var queryString = require('querystring')
  * @param {THTTPResponse} resp
  */
 function queries (req, resp) {
-  var
-	  params = queryString.parse(req.parameters),
-	  repeatNum = params['q'] || 1,
-	  result = [],
-	  data,
-	  i
+  const params = queryString.parse(req.parameters)
+  let repeatNum = params.q || 1
+  const result = []
 
   if (repeatNum === 'r') repeatNum = Math.round(Math.random() * 100) + 1 // random in case q=0
   repeatNum = (repeatNum > 500) ? 500 : repeatNum
-  for (i = 0; i < repeatNum; i++) {
-	  data = UB.Repository('World').attrs(['ID', 'randomNumber']).where('ID', '=', rnd10000()).selectAsObject()
-	  result.push(data[0])
+  for (let i = 0; i < repeatNum; i++) {
+    const data = UB.Repository('World').attrs(['ID', 'randomNumber']).where('ID', '=', rnd10000()).selectAsObject()
+    result.push(data[0])
   }
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
@@ -147,16 +144,14 @@ App.registerEndpoint('queries', queries, false)
  * @param {THTTPResponse} resp
  */
 function queriesRaw (req, resp) {
-  var
-	  params = queryString.parse(req.parameters),
-	  repeatNum = params['q'] || 1,
-	  result = [],
-	  i
+  const params = queryString.parse(req.parameters)
+  let repeatNum = params.q || 1
+  const result = []
 
   repeatNum = (repeatNum > 500) ? 500 : repeatNum
-  for (i = 0; i < repeatNum; i++) {
-	  dataStore.runSQL(SQL, {ID: rnd10000()})
-	  result.push({id: dataStore.get(0), randomNumber: dataStore.get(1)})
+  for (let i = 0; i < repeatNum; i++) {
+    dataStore.runSQL(SQL, { ID: rnd10000() })
+    result.push({ id: dataStore.get(0), randomNumber: dataStore.get(1) })
   }
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
@@ -165,11 +160,11 @@ function queriesRaw (req, resp) {
 App.registerEndpoint('queriesRaw', queriesRaw, false)
 
 var
-  fs = require('fs'),
-  path = require('path'),
-  _ = require('lodash'),
-  tpl = fs.readFileSync(path.join(App.domainInfo.models['TPW'].realPath, 'Fortune.mustache')),
-  mustache = require('mustache')
+  fs = require('fs')
+var path = require('path')
+var _ = require('lodash')
+var tpl = fs.readFileSync(path.join(App.domainInfo.models.TPW.realPath, 'Fortune.mustache'), 'utf-8')
+var mustache = require('mustache')
 
 /**
  * TechemPower Test type 3: Multiple database queries (Raw);
@@ -177,22 +172,18 @@ var
  * @param {THTTPResponse} resp
  */
 function fortunes (req, resp) {
-  var
-        data, rendered
-
-  data = UB.Repository('Fortune').attrs(['ID', 'message']).selectAsObject()
-  data.push({ID: 0, message: 'Additional fortune added at request time'})
-  _.sortBy(data, 'message')
-  rendered = mustache.render(tpl, data)
+  const data = UB.Repository('Fortune').attrs(['ID', 'message']).selectAsObject()
+  data.push({ ID: 0, message: 'Additional fortune added at request time' })
+  data.sort((a, b) => a.message > b.message ? 1 : ((a.message === b.message) ? 0 : -1))
+  const rendered = mustache.render(tpl, data)
   resp.statusCode = 200
   resp.writeHead('Content-Type: text/html; charset=UTF-8')
   resp.writeEnd(rendered)
 }
 App.registerEndpoint('fortunes', fortunes, false)
 
-var
-  F_SQL = 'select ID, message from Fortune',
-  store = new TubDataStore('Fortune')
+const F_SQL = 'select ID, message from Fortune'
+const store = new TubDataStore('Fortune')
 
 /**
  * TechemPower Test type 3: Multiple database queries (Raw);
@@ -200,33 +191,30 @@ var
  * @param {THTTPResponse} resp
  */
 function fortunesRaw (req, resp) {
-  var
-        data, rendered
-
   store.runSQL(F_SQL, {})
-  data = store.getAsJsObject()
-  data.push({ID: 0, message: 'Additional fortune added at request time'})
+  const data = store.getAsJsObject()
+  data.push({ ID: 0, message: 'Additional fortune added at request time' })
   _.sortBy(data, 'message')
-  rendered = mustache.render(tpl, data)
+  const rendered = mustache.render(tpl, data)
   resp.statusCode = 200
   resp.writeHead('Content-Type: text/html; charset=UTF-8')
   resp.writeEnd(rendered)
 }
 App.registerEndpoint('fortunesRaw', fortunesRaw, false)
 
-var fortuneData = [
-    {ID: 1, message: 'fortune: No such file or directory'},
-    {ID: 2, message: 'A computer scientist is someone who fixes things that aren\'t broken.'},
-    {ID: 3, message: 'After enough decimal places, nobody gives a damn.'},
-    {ID: 4, message: 'A bad random number generator: 1, 1, 1, 1, 1, 4.33e+67, 1, 1, 1'},
-    {ID: 5, message: 'A computer program does what you tell it to do, not what you want it to do.'},
-    {ID: 6, message: 'Emacs is a nice operating system, but I prefer UNIX. — Tom Christaensen'},
-    {ID: 7, message: 'Any program that runs right is obsolete.'},
-    {ID: 8, message: 'A list is only as strong as its weakest link. — Donald Knuth'},
-    {ID: 9, message: 'Feature: A bug with seniority.'},
-    {ID: 10, message: 'Computers make very fast, very accurate mistakes.'},
-    {ID: 11, message: '<script>alert("This should not be displayed in a browser alert box.");</script>'},
-    {ID: 12, message: 'フレームワークのベンチマーク'}]
+const fortuneData = [
+  { ID: 1, message: 'fortune: No such file or directory' },
+  { ID: 2, message: 'A computer scientist is someone who fixes things that aren\'t broken.' },
+  { ID: 3, message: 'After enough decimal places, nobody gives a damn.' },
+  { ID: 4, message: 'A bad random number generator: 1, 1, 1, 1, 1, 4.33e+67, 1, 1, 1' },
+  { ID: 5, message: 'A computer program does what you tell it to do, not what you want it to do.' },
+  { ID: 6, message: 'Emacs is a nice operating system, but I prefer UNIX. — Tom Christaensen' },
+  { ID: 7, message: 'Any program that runs right is obsolete.' },
+  { ID: 8, message: 'A list is only as strong as its weakest link. — Donald Knuth' },
+  { ID: 9, message: 'Feature: A bug with seniority.' },
+  { ID: 10, message: 'Computers make very fast, very accurate mistakes.' },
+  { ID: 11, message: '<script>alert("This should not be displayed in a browser alert box.");</script>' },
+  { ID: 12, message: 'フレームワークのベンチマーク' }]
 
 /**
  * TechemPower Test type 3: Multiple database queries (Raw, no database - all data in-memory);
@@ -235,10 +223,10 @@ var fortuneData = [
  */
 function fortunesInMemoryRaw (req, resp) {
   var
-        data, rendered
+    data, rendered
 
   data = _.cloneDeep(fortuneData)
-  data.push({id: 0, message: 'Additional fortune added at request time'})
+  data.push({ id: 0, message: 'Additional fortune added at request time' })
   _.sortBy(data, 'message')
   rendered = mustache.render(tpl, data)
   resp.statusCode = 200

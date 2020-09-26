@@ -2,10 +2,6 @@
 	"httpServer": {
 		"host": "+",
 		"port": "8881",
-		"watchFileChanges": {
-			"enabled": false,
-			"hashingStrategy": "ModifyDate"
-		},
 		"threadPoolSize": 8
 	},
 	"logging": {
@@ -38,7 +34,7 @@
 				"driver": "SQLite3",
 				"isDefault": true,
 				"dialect": "SQLite3",
-				"databaseName": "./techempower.sqlite3",
+				"databaseName": "%UB_APPDATA%localdb/techempower.sqlite3",
 				"supportLang": [
 					"en"
 				]
@@ -48,7 +44,7 @@
 			{
 				"name": "mdb",
 				"storeType": "Virtual",
-				"tempPath": "./logs"
+				"tempPath": "%UB_APPHOME%_temp"
 			}
 		]
 	},
