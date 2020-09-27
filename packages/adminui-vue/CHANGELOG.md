@@ -16,6 +16,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - adminui-vue sets `Vue.config.errorHandler`, so uncaught errors
+   - during component render function and watchers
+   - in component lifecycle hooks
+   - thrown inside Vue custom event handlers
+   - thrown inside v-on DOM listeners
+ are displayed to user (except [UB.UBAbortError](https://unitybase.info/api/ubpub-v5/module-@unitybase_ub-pub.html#UBAbortError)).
+ Before this fix such exceptions are silently ignored.   
 
 ## [1.13.10] - 2020-09-24
 ### Added
