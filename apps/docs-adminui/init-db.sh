@@ -29,12 +29,13 @@ PROCESS='Drop logs'
 rm -f $UB_APPDATA/logs/*
 
 PROCESS='Create logs folder'
-mkdir -p $UB_APPDATA/logs
+mkdir -p "$UB_APPDATA"logs
 PROCESS='Create database folder'
-mkdir -p $UB_APPDATA/localdb
+mkdir -p "$UB_APPDATA"localdb
 PROCESS='Create stores folder'
-mkdir -p $UB_APPDATA/stores/default/_temp
+mkdir -p "$UB_APPDATA"stores/default/_temp
 
+mkdir -p "$UB_APPDATA"inetpub
 
 PROCESS='Init database'
 if [ -z "$UB_CFG" ]; then

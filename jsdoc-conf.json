@@ -23,9 +23,9 @@
       "./packages/ubm",
       "./packages/org",
       "./packages/ubs/modules/UBServerReport.js",
-      "../bpm/packages/messaging/exchange",
-      "../bpm/packages/messaging/notification",
-      "../bpm/packages/messaging"
+      "../ldoc/packages/messaging/exchange",
+      "../ldoc/packages/messaging/notification",
+      "../ldoc/packages/messaging"
     ],
     "includePattern": ".+\\.js(m|x)?$"
   },
