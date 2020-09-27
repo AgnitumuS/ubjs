@@ -225,10 +225,19 @@ Vue.prototype.$zIndex = () => {
 }
 
 Vue.config.warnHandler = (err, vm, info) => {
+  Vue.util.warn(('Error in ' + info + ': "' + (err.toString()) + '"'), vm)
   setTimeout(() => {
     console.error(err, vm, info)
     const newErrText = '<b>THIS MESSAGE APPEARS ONLY IN DEBUG BUILD</b><br>' + err
     window.onerror.apply(UB, [newErrText, info, '', '', new UB.UBError(newErrText, info)])
+  }, 0)
+}
+
+Vue.config.errorHandler = function (err, vm, info) {
+  Vue.util.warn(('Error in ' + info + ': "' + (err.toString()) + '"'), vm)
+  setTimeout(() => {
+    console.error(err, vm, info)
+    window.onerror.apply(UB, ['', info, '', '', err])
   }, 0)
 }
 

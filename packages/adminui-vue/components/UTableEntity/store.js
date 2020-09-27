@@ -13,7 +13,7 @@ const AUDIT_ENTITY = 'uba_auditTrail'
  * @param {string} instance.getEntityName Entity name
  * @param {array<UTableColumn>} instance.getColumns Columns
  * @param {number} instance.pageSize Pagination page size
- * @param {function} instance.buildAddNewConfig AddNew config builder
+ * @param {function} instance.buildAddNewConfig AddNew config builder. Called with (cfg: configToMutate, instance: UTableEntity)
  * @param {function} instance.buildEditConfig Edit config builder. Called with (cfg: configToMutate, row: content of row to edit)
  * @param {function} instance.buildCopyConfig Copy config builder. Called with (cfg: configToMutate, row: content of row to edit)
  * @param {object[]} instance.getCardColumns Columns to show in card view
@@ -340,13 +340,13 @@ module.exports = (instance) => ({
         entity: getters.entityName,
         formCode: getters.formCode
       })
-      const config = instance.buildAddNewConfig({
+      const config = await instance.buildAddNewConfig({
         cmdType: 'showForm',
         entity: getters.entityName,
         formCode: getters.formCode,
         target: UB.core.UBApp.viewport.centralPanel,
         tabId
-      })
+      }, instance)
       UB.core.UBApp.doCommand(config)
     },
 
