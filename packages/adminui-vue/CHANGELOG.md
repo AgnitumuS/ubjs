@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UTableEntity` `buildAddNewConfig now called using await (so can be async) and with the
+  second argument `instance: UTableEntity`
 
 ### Deprecated
 
