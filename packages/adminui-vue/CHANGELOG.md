@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `UTableEntity` `buildAddNewConfig now called using await (so can be async) and with the
-  second argument `instance: UTableEntity`
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.13.11] - 2020-09-27
+### Changed
+ - `UTableEntity` `buildAddNewConfig now called using await (so can be async) and with the
+  second argument `instance: UTableEntity`
 
 ### Fixed
  - adminui-vue sets `Vue.config.errorHandler`, so uncaught errors
