@@ -224,21 +224,15 @@ Vue.prototype.$zIndex = () => {
   return vm.$el.style.zIndex
 }
 
-Vue.config.warnHandler = (err, vm, info) => {
-  Vue.util.warn(('Error in ' + info + ': "' + (err.toString()) + '"'), vm)
-  setTimeout(() => {
-    console.error(err, vm, info)
-    const newErrText = '<b>THIS MESSAGE APPEARS ONLY IN DEBUG BUILD</b><br>' + err
-    window.onerror.apply(UB, [newErrText, info, '', '', new UB.UBError(newErrText, info)])
-  }, 0)
+Vue.config.warnHandler = (err, vm, trace) => {
+  console.error(err, vm, trace)
+  const newErrText = '<b>THIS MESSAGE APPEARS ONLY IN DEBUG BUILD</b><br>' + err
+  window.onerror.apply(UB, [newErrText, trace, '', '', new UB.UBError(newErrText, trace)])
 }
 
-Vue.config.errorHandler = function (err, vm, info) {
-  Vue.util.warn(('Error in ' + info + ': "' + (err.toString()) + '"'), vm)
-  setTimeout(() => {
-    console.error(err, vm, info)
-    window.onerror.apply(UB, ['', info, '', '', err])
-  }, 0)
+Vue.config.errorHandler = function (err, vm, trace) {
+  console.error(err, vm, trace)
+  window.onerror.apply(UB, ['', trace, '', '', err])
 }
 
 Vue.prototype.$formatByPattern = require('@unitybase/cs-shared').formatByPattern
