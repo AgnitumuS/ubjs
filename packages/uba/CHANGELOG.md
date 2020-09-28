@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `uba_advSecurity`: ukrainian localization
+ - `uba_group`: azerbaijani localization
+ 
 ### Changed
 
 ### Deprecated
@@ -14,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `uba_group-fm.def`: title and description localization
 
 ## [5.4.33] - 2020-09-23
 ### Fixed
