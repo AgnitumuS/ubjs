@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - ajust ub-icons size to be the same for all icons
 
 ## [1.13.11] - 2020-09-27
 ### Changed
