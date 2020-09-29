@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `$App.showAuditTrail` method added - used in both adminui-vue and adminui-pub to show audit trail for instance
 
 ### Changed
-<<<<<<< packages/adminui-vue/CHANGELOG.md
  - `UDropdown` close on press `esc` button
  - instance audit trail list now filtered by `parentEntityInfo_id`, so shows audit for all related entities
  where `parentIdentifier` & `parentEntity` is configured
@@ -21,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - ajust ub-icons size to be the same for all icons
+ - `UTableEntity -> toolbar` show scrollbar in case toolbar content is overflowed
  - `fts table`: edit action now uses `onBuildEditConfig` handler, so worsk the same way as for othes entites lists
  - `UTableEntity`: change color of the selected card to be darker
 

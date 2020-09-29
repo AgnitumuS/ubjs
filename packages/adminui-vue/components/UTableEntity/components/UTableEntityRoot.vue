@@ -693,6 +693,7 @@ export default {
   top: 0;
   left: 0;
   flex-shrink: 0;
+  overflow: auto;
 }
 
 .u-table-entity__head .u-button {
