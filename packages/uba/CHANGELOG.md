@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `uba_advSecurity`: ukrainian localization
  - `uba_group`: azerbaijani localization
+ - `Audit Trail` shortcut: added columns `Parent entity name`, `Request ID` and `Parent instance ID` 
  
 ### Changed
+ - uba* navshotrcut initialization uses ub-migrate instead of handmade script
 
 ### Deprecated
 

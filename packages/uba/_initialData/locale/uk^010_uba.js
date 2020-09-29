@@ -11,40 +11,6 @@ module.exports = function (session) {
   }
 
   localize({
-    entity: 'ubm_desktop',
-    keyAttribute: 'code',
-    localization: [{
-      keyValue: 'adm_desktop',
-      execParams: {
-        caption: 'Адміністратор',
-        description: 'Керування користувачами, налаштування інтерфейсу, журнали (аудит, безпека, черга)'
-      }
-    }]
-  })
-
-  localize({
-    entity: 'ubm_navshortcut',
-    keyAttribute: 'code',
-    localization: [
-      { keyValue: 'uba_auditTrail', execParams: { caption: 'Аудит' } },
-      { keyValue: 'adm_folder_users', execParams: { caption: 'Користувачі' } },
-      { keyValue: 'uba_user', execParams: { caption: 'Список користувачів' } },
-      { keyValue: 'uba_userrole', execParams: { caption: 'Ролі користувачів' } },
-      { keyValue: 'uba_advSecurity', execParams: { caption: 'Додаткова безпека' } },
-      { keyValue: 'uba_group', execParams: { caption: 'Список груп' } },
-      { keyValue: 'uba_usergroup', execParams: { caption: 'Групи користувачів' } },
-      { keyValue: 'uba_usercertificate', execParams: { caption: 'Сертифікати' } },
-      { keyValue: 'adm_folder_security', execParams: { caption: 'Безпека' } },
-      { keyValue: 'uba_role', execParams: { caption: 'Системні ролі' } },
-      { keyValue: 'uba_els', execParams: { caption: 'Права на методи (ELS)' } },
-      { keyValue: 'uba_audit', execParams: { caption: 'Аудит безпеки' } },
-      { keyValue: 'uba_audit-securityDashboard', execParams: { caption: 'Консоль безпеки' } },
-      { keyValue: 'uba_als', execParams: { caption: 'Права на атрибути (ALS)' } },
-      { keyValue: 'uba_otp', execParams: { caption: 'Одноразові паролі (OTP)' } }
-    ]
-  })
-
-  localize({
     entity: 'uba_role',
     keyAttribute: 'name',
     localization: [

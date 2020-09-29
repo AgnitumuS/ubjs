@@ -37,6 +37,10 @@
     }
   ],
   "mixins": {
+    "audit": {
+      "parentEntity": "tst_dictionary",
+      "parentIdentifier": "objectID"
+    },
     "mStorage": {
       "simpleAudit": true
     }

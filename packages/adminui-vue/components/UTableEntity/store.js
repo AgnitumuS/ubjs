@@ -443,25 +443,10 @@ module.exports = (instance) => ({
     },
 
     audit ({ getters }, ID) {
-      const tabId = UB.core.UBApp.generateTabId({
-        entity: getters.entityName,
-        instanceID: ID
-      })
-      UB.core.UBApp.doCommand({
-        cmdType: 'showList',
-        tabId,
-        title: `${UB.i18n('Audit')} (${UB.i18n(getters.entityName)})`,
-        renderer: 'vue',
-        cmdData: {
-          repository () {
-            return UB.Repository('uba_auditTrail')
-              .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP'])
-              .where('entity', '=', getters.entityName)
-              .where('entityinfo_id', '=', ID)
-              .orderByDesc('actionTime')
-          },
-          columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP']
-        }
+      UB.core.UBApp.showAuditTrail({
+        entityCode: getters.entityName,
+        instanceID: ID,
+        isModal: false
       })
     },
 

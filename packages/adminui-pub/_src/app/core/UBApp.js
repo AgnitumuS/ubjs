@@ -917,6 +917,33 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
   },
 
   /**
+   * Show audit trail list for specified instanceID
+   * @param {object} cfg
+   * @param {number} cfg.instanceID
+   * @param {strong} [cfg.entityCode]
+   * @param {boolean} [cfg.isModal=false]
+   */
+  showAuditTrail ({ entityCode, instanceID, isModal }) {
+    $App.doCommand({
+      renderer: 'vue',
+      isModal: isModal || false,
+      tabId: isModal ? undefined : `${entityCode}${instanceID}-auditTrail`,
+      title: `${UB.i18n('Audit')} (${UB.i18n(entityCode)})`,
+      cmdType: 'showList',
+      cmdData: {
+        repository () {
+          return UB.Repository('uba_auditTrail')
+            .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP', 'entity', 'parentEntity', 'request_id'])
+            // .where('entity', '=', entityCode) show all
+            .where('parentEntityInfo_id', '=', instanceID)
+            .orderByDesc('actionTime')
+        },
+        columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP', 'entity', 'parentEntity', 'request_id']
+      }
+    })
+  },
+
+  /**
    *
    * @param {String} prefix
    */
