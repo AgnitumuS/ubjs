@@ -15,9 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - `fts table`: audit action is removed (fts is not an audit subject)
 
 ### Fixed
  - ajust ub-icons size to be the same for all icons
+ - `fts table`: edit action now uses `onBuildEditConfig` handler, so worsk the same way as for othes entites lists
  - `UTableEntity`: change color of the selected card to be darker
 
 ## [1.13.11] - 2020-09-27
