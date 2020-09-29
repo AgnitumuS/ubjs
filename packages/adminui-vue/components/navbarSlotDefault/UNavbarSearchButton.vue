@@ -181,21 +181,23 @@ export default {
         target: $App.viewport.centralPanel,
         title: this.$ut('fullTextSearchWidgetResultTitle', this.query),
         cmdData: {
+          scopedSlots: h => ({
+            toolbarDropdownAudit: () => h('div'),
+            contextMenuAudit: () => h('div')
+          }),
           repository () {
             return repo
           },
-          onSelectRecord (cfg) {
-            const tabId = $App.generateTabId({
-              entity: cfg.row.entity,
-              instanceID: cfg.ID
+          buildEditConfig (cfg, row) {
+            cfg.entity = row.entity
+            cfg.instanceID = row.ID
+            cfg.target = $App.viewport.centralPanel
+            cfg.tabId = $App.generateTabId({
+              entity: row.entity,
+              instanceID: row.ID
             })
-            $App.doCommand({
-              cmdType: 'showForm',
-              entity: cfg.row.entity,
-              instanceID: cfg.ID,
-              target: $App.viewport.centralPanel,
-              tabId
-            })
+
+            return cfg
           },
           columns: [{
             id: 'entitydescr',
@@ -257,16 +259,16 @@ export default {
 </script>
 
 <style>
-.ub-fts__select{
+.ub-fts__select {
   width: 10em;
 }
 
-.ub-fts__period-toggle{
+.ub-fts__period-toggle {
   padding: 10px 10px 0;
   text-align: right;
 }
 
-.ub-fts__period-toggle .el-switch__label{
+.ub-fts__period-toggle .el-switch__label {
   font-weight: 400;
   color: hsl(var(--hs-text), var(--l-text-default));
 }
