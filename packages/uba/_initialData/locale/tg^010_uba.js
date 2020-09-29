@@ -11,40 +11,6 @@ module.exports = function (session) {
   }
 
   localize({
-    entity: 'ubm_desktop',
-    keyAttribute: 'code',
-    localization: [{
-      keyValue: 'adm_desktop',
-      execParams: {
-        caption: 'Маъмур',
-        description: 'Идоракунии корбар, танзимоти UI, гузоришҳо (пайгирии аудит, амният, навбат)'
-      }
-    }]
-  })
-
-  localize({
-    entity: 'ubm_navshortcut',
-    keyAttribute: 'code',
-    localization: [
-      { keyValue: 'uba_auditTrail', execParams: { caption: 'Аудит' } },
-      { keyValue: 'adm_folder_users', execParams: { caption: 'Истифодабарандагон' } },
-      { keyValue: 'uba_user', execParams: { caption: 'Рӯйхати истифодабарандагон' } },
-      { keyValue: 'uba_userrole', execParams: { caption: 'Ролҳои истифодабарандагон' } },
-      { keyValue: 'uba_advSecurity', execParams: { caption: 'Амнияти васеъ' } },
-      { keyValue: 'uba_group', execParams: { caption: 'Рӯйхати гурӯҳҳо' } },
-      { keyValue: 'uba_usergroup', execParams: { caption: 'Гурӯҳи истифодабарандагон' } },
-      { keyValue: 'uba_usercertificate', execParams: { caption: 'Сертификатҳо' } },
-      { keyValue: 'adm_folder_security', execParams: { caption: 'Бехатарӣ' } },
-      { keyValue: 'uba_role', execParams: { caption: 'Ролҳои системавӣ' } },
-      { keyValue: 'uba_els', execParams: { caption: 'Дастрасӣ ба амалкардҳо  (ELS)' } },
-      { keyValue: 'uba_audit', execParams: { caption: 'Аудити бехатарӣ' } },
-      { keyValue: 'uba_audit-securityDashboard', execParams: { caption: 'Консоли амният' } },
-      { keyValue: 'uba_als', execParams: { caption: 'Дастрасӣ ба хусусиятҳо (ALS)' } },
-      { keyValue: 'uba_otp', execParams: { caption: 'Якдафъаина гузарвожаҳо (OTP)' } }
-    ]
-  })
-
-  localize({
     entity: 'uba_role',
     keyAttribute: 'name',
     localization: [

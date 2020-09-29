@@ -2672,35 +2672,15 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onAudit: function () {
-    var me = this
-    var sel = this.getSelectionModel().getSelection()
-
+    const sel = this.getSelectionModel().getSelection()
     if (sel.length < 1) {
       return
     }
-
     const ID = sel[0].get('ID')
-    const entity = me.entityName
-    const tabId = $App.generateTabId({
-      entity,
-      instanceID: ID
-    })
-
-    $App.doCommand({
-      renderer: 'vue',
-      tabId,
-      title: `${UB.i18n('Audit')} (${UB.i18n(entity)})`,
-      cmdType: 'showList',
-      cmdData: {
-        repository () {
-          return UB.Repository('uba_auditTrail')
-            .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP'])
-            .where('entity', '=', entity)
-            .where('entityinfo_id', '=', ID)
-            .orderByDesc('actionTime')
-        },
-        columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP']
-      }
+    UB.core.UBApp.showAuditTrail({
+      entityCode: this.entityName,
+      instanceID: ID,
+      isModal: false
     })
   },
 

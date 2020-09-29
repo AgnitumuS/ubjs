@@ -3652,28 +3652,13 @@ Ext.define('UB.view.BasePanel', {
   },
 
   onAudit () {
-    const { instanceID: ID, entityName: entity } = this
-    if (ID) {
-      let wnd = this.up('window')
-      let modal = wnd ? wnd.modal : false
-      $App.doCommand({
-        renderer: 'vue',
-        isModal: modal,
-        tabId: modal ? undefined : `${entity}${ID}-auditTrail`,
-        title: `${UB.i18n('Audit')} (${UB.i18n(entity)})`,
-        cmdType: 'showList',
-        cmdData: {
-          repository () {
-            return UB.Repository('uba_auditTrail')
-              .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP'])
-              .where('entity', '=', entity)
-              .where('entityinfo_id', '=', ID)
-              .orderByDesc('actionTime')
-          },
-          columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP']
-        }
-      })
-    }
+    if (!this.ID) return
+    const wnd = this.up('window')
+    $App.showAuditTrail({
+      entityCode: this.entity,
+      instanceID: this.ID,
+      isModal: wnd ? wnd.modal : false
+    })
   }
 })
 

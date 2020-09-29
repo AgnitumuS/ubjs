@@ -1,0 +1,283 @@
+$context:
+  type: navigation
+
+# Submenu in "Administrator" desktop
+adm_desktop:
+  access: Supervisor
+  caption:
+    en: Administrator
+    uk: Адміністратор
+    ru: Администратор
+    ka: ადმინისტრატორი
+    tg: Маъмур
+  description:
+    en: User management, UI settings, logs (audit trail, security, queue)
+    uk: Керування користувачами, налаштування інтерфейсу, журнали (аудит, безпека, черга)
+    ru: Управление пользователями, настройки интерфейса, журналы (аудит, безопасность, очередь)
+    ka: მომხმარებლის მენეჯმენტი, ინტერფეისის პარამეტრები, ჟურნალი (აუდიტის ბილიკი, დაცვა, რიგები)
+    tg: Идоракунии корбар, танзимоти UI, гузоришҳо (пайгирии аудит, амният, навбат)
+  iconCls: u-icon-desktop-administrator
+  items:
+  - adm_folder_users:
+      access: Supervisor
+      caption:
+        en: Groups and Users
+        uk: Користувачі
+        ru: Пользователи
+        ka: ჯგუფები და მომხმარებლები
+        tg: Истифодабарандагон
+      iconCls: u-icon-folder-open
+      items:
+      - uba_user:
+          access: Supervisor
+          caption:
+            en: User list
+            uk: Список користувачів
+            ru: Список пользователей
+            ka: მომხმარებლების სია
+            tg: Рӯйхати истифодабарандагон
+          iconCls: u-icon-person
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_user',
+                columns: [
+                  'name',
+                  'disabled',
+                  'isPending',
+                  'firstName',
+                  'lastName'
+                ]
+              }
+            }
+      - uba_advSecurity:
+          access: Supervisor
+          caption:
+            en: Advanced security
+            uk: Додаткова безпека
+            ru: Расширенная безопасность
+            ka: უსაფრთხოება
+            tg: Амнияти васеъ
+          iconCls: fa fa-user-secret
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_advSecurity'
+              }
+            }
+      - uba_userrole:
+          access: Supervisor
+          caption:
+            en: User roles
+            uk: Ролі користувачів
+            ru: Роли пользователей
+            ka: მომხმარებლის როლი
+            tg: Ролҳои истифодабарандагон
+          iconCls: u-icon-street
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_userrole',
+                columns: ['userID', 'roleID']
+              }
+            }
+      - uba_group:
+          access: Supervisor
+          caption:
+            en: Group list
+            uk: Список груп
+            ru: Список групп
+            ka: ჯგუფის სია
+            tg: Рӯйхати гурӯҳҳо
+          iconCls: u-icon-person-group
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_group',
+                columns: ['name', 'description', 'code']
+              }
+            }
+      - uba_usergroup:
+          access: Supervisor
+          caption:
+            en: User groups
+            uk: Групи користувачів
+            ru: Группа пользователей
+            ka: მომხმარებელთა ჯგუფი
+            tg: Гурӯҳи истифодабарандагон
+          iconCls: u-icon-person-group
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_usergroup',
+                columns: ['userID', 'groupID']
+              }
+            }
+      - uba_usercertificate:
+          access: Supervisor
+          caption:
+            en: Certificates
+            uk: Сертифікати
+            ru: Сертификаты
+            ka: სერთიფიკატები
+            tg: Сертификатҳо
+          iconCls: u-icon-key
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_usercertificate',
+                columns: ['userID', 'issuer_cn', 'serial', 'disabled', 'revoked']
+              }
+            }
+  - adm_folder_security:
+      access: Supervisor
+      caption:
+        en: Security
+        uk: Безпека
+        ru: Безопасность
+        ka: უსაფრთხოება
+        tg: Бехатарӣ
+      iconCls: u-icon-lock
+      items:
+      - uba_role:
+          access: Supervisor
+          caption:
+            en: System roles
+            uk: Системні ролі
+            ru: Системные роли
+            ka: სისტემის როლი
+            tg: Ролҳои системавӣ
+          iconCls: u-icon-person-group
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_role'
+              }
+            }
+      - uba_els:
+          access: Supervisor
+          caption:
+            en: Entity level security
+            uk: Права на методи (ELS)
+            ru: Права на методы (ELS)
+            ka: ერთეულის დონის უსაფრთხოება
+            tg: Дастрасӣ ба амалкардҳо (ELS)
+          iconCls: fa fa-shield
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_els',
+                columns: ['code', 'description', 'disabled', 'entityMask', 'methodMask', 'ruleType', 'ruleRole']
+              }
+            }
+      - uba_als:
+          access: Supervisor
+          caption:
+            en: Attribute level security
+            uk: Права на атрибути (ALS)
+            ru: Права на атрибуты (ALS)
+            ka: ატრიბუტების დონის უსაფრთხოება
+            tg: Дастрасӣ ба хусусиятҳо (ALS)
+          iconCls: fa fa-share-alt
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_als'
+              }
+            }
+      - uba_auditTrail:
+          access: Supervisor
+          caption:
+            en: Audit Trail
+            uk: Аудит
+            ru: Аудит
+            ka: აუდიტის ბილიკი
+            tg: Аудит
+          iconCls: u-icon-line-chart
+          cmd: >
+            {
+            	"renderer": "vue",
+            	"cmdType": "showList",
+            	"cmdData": {
+            		"entityName": "uba_auditTrail",
+            		"columns": [
+            			"ID",
+            			"entity",
+            			"entityinfo_id",
+            			"actionType",
+            			"actionUserName",
+            			"actionTime",
+            			"remoteIP",
+                        "parentEntity",
+            			"request_id",
+                        "parentEntityInfo_id"
+            		]
+            	}
+            }
+      - uba_otp:
+          access: Supervisor
+          caption:
+            en: One-time passwords
+            uk: Одноразові паролі (OTP)
+            ru: Одноразовые пароли (OTP)
+            ka: ერთჯერადი პაროლი
+            tg: Якдафъаина гузарвожаҳо (OTP)
+          iconCls: u-icon-eye
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_otp'
+              }
+            }
+      - uba_audit:
+          access: Supervisor
+          caption:
+            en: Security audit
+            uk: Аудит безпеки
+            ru: Аудит безопасности
+            ka: უსაფრთხოების აუდიტი
+            tg: Аудити бехатарӣ
+          iconCls: u-icon-lock
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_audit',
+                columns: ['entity', 'entityinfo_id', 'actionType', 'actionUser', 'actionTime', 'remoteIP', 'targetUser', 'targetGroup', 'targetRole']
+              }
+            }
+      - uba_audit-securityDashboard:
+          access: Supervisor
+          caption:
+            en: Security dashboard
+            uk: Консоль безпеки
+            ru: Консоль безопасности
+            ka: უსაფრთხოების დაფა
+            tg: Консоли амният
+          iconCls: fa fa-user-secret
+          cmd: >
+            {
+              cmdType: 'showForm',
+              formCode: 'uba_audit-securityDashboard'
+            }
