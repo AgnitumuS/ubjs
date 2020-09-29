@@ -122,6 +122,14 @@ module.exports = (instance) => ({
       return getters.hasSelectedRow
     },
 
+    canNewRevision (state, getters) {
+      return getters.schema.haveAccessToMethod(UB.core.UBCommand.methodName.NEWVERSION)
+    },
+
+    hasDataHistoryMixin (state, getters) {
+      return getters.schema.hasMixin('dataHistory')
+    },
+
     columns () {
       return instance.getColumns
     },
@@ -612,6 +620,85 @@ module.exports = (instance) => ({
       }
       resultHtml += `<br><br><b>${UB.i18n('table.summary.totalRowCount')}:</b> ${formatByPattern.formatNumber(resultRow[0], 'number')}`
       await dialogInfo(resultHtml, 'summary')
+    },
+
+    createNewVersion () {
+      debugger
+      const me = this
+      const sel = me.getSelectionModel().getSelection()
+      if (sel.length < 1) return
+
+      UB.Repository(me.entityName)
+        .attrs(['ID', 'mi_data_id'])
+        .selectById(sel[0].get('ID'))
+        .then(function (record) {
+          return UB.Repository(me.entityName)
+            .attrs(['mi_dateFrom', 'mi_data_id'])
+            .where('mi_data_id', '=', record.mi_data_id)
+            .misc({ __mip_recordhistory_all: true })
+            .orderByDesc('mi_dateFrom')
+            .limit(1)
+            .select()
+        }).then(function (rows) {
+          var record = rows[0]
+          Ext.create('UB.view.InputDateWindow', {
+            callback: function (date) {
+              if (date > record.mi_dateFrom) {
+                me.onItemDblClick(me, sel[0], null, null, null, { __mip_ondate: date })
+              } else {
+                throw new UB.UBError(UB.format(UB.i18n('dateIsTooEarly'), record.mi_dateFrom))
+              }
+            },
+            scope: me
+          })
+        })
+    },
+
+    showRevision () {
+      debugger
+      const me = this
+      let fieldList = me.entityConfig.fieldList.concat()
+      let extendedFieldList = me.extendedFieldList.concat()
+
+      function configureMixinAttribute (attributeCode) {
+        if (_.findIndex(extendedFieldList, { name: attributeCode }) < 0) {
+          fieldList = [attributeCode].concat(fieldList)
+          extendedFieldList = [{
+            name: attributeCode,
+            visibility: true,
+            description: UB.i18n(attributeCode)
+          }].concat(extendedFieldList)
+        }
+      }
+      configureMixinAttribute('mi_dateTo')
+      configureMixinAttribute('mi_dateFrom')
+
+      const sel = this.getSelectionModel().getSelection()
+      if (!me.isInHistory && sel.length < 1) {
+        return
+      }
+
+      $App.connection.select({
+        entity: me.entityName,
+        fieldList: ['ID', 'mi_data_id'],
+        ID: me.isInHistory ? me.miDataID : sel[0].get('ID')
+      }).then(function (response) {
+        const rows = UB.core.UBCommand.resultDataRow2Object(response)
+        $App.doCommand({
+          cmdType: 'showList',
+          cmdData: {
+            params: [{
+              entity: me.entityName, method: UB.core.UBCommand.methodName.SELECT, fieldList: fieldList
+            }]
+          },
+          cmpInitConfig: {
+            extendedFieldList: extendedFieldList
+          },
+          isModalDialog: true,
+          instanceID: rows.mi_data_id,
+          __mip_recordhistory: true
+        })
+      })
     }
   }
 })
