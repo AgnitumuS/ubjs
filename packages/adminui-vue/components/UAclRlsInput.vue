@@ -40,6 +40,7 @@
       :close-on-click-modal="false"
       width="600px"
       top="0"
+      @closed="resetSelectedItems"
     >
       <u-form-container
         label-position="top"
@@ -234,6 +235,7 @@ export default {
     closeDialog () {
       this.dialog.isVisible = false
       this.resetSelectedItems()
+      this.dialog.currentEntityName = null
     },
 
     resetSelectedItems (attributes = this.rightAttributes) {
@@ -263,6 +265,7 @@ export default {
       ))
       this.dialog.isVisible = false
       this.resetSelectedItems()
+      this.dialog.currentEntityName = null
     },
 
     async addRights ({ entity, entries }) {
