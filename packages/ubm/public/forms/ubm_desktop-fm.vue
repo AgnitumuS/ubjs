@@ -58,10 +58,14 @@ module.exports.mount = cfg => {
   Form(cfg)
     .processing({
       collections: {
-        rightsSubjects: ({ state }) => UB.connection
-          .Repository('ubm_desktop_acl')
-          .attrs('*')
-          .where('instanceID', '=', state.data.ID)
+        rightsSubjects: ({ state }) => {
+          // select all fields ('*' is ont allowed on client) in order to display them in UAclRlsInput (view its docs)
+          const attributes = Object.keys(UB.connection.domain.entities['ubm_desktop_acl'].attributes)
+
+          return UB.Repository('ubm_desktop_acl')
+            .attrs(attributes)
+            .where('instanceID', '=', state.data.ID)
+        }
       }
     })
     .validation()

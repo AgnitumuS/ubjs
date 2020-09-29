@@ -84,10 +84,14 @@ module.exports.mount = function (cfg) {
         }
       },
       collections: {
-        rightsSubjects: ({ state }) => UB.connection
-          .Repository('ubm_navshortcut_acl')
-          .attrs('*')
-          .where('instanceID', '=', state.data.ID),
+        rightsSubjects: ({ state }) => {
+          // select all fields ('*' is ont allowed on client) in order to display them in UAclRlsInput (view its docs)
+          const attributes = Object.keys(UB.connection.domain.entities['ubm_navshortcut_acl'].attributes)
+
+          return UB.Repository('ubm_navshortcut_acl')
+            .attrs(attributes)
+            .where('instanceID', '=', state.data.ID)
+        }
       }
     })
     .validation()
