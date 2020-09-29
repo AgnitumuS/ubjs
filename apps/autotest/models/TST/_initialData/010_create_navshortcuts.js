@@ -236,6 +236,7 @@ module.exports = function (session) {
     }
   })
 
+  displayOrder += 10
   console.log('\t\t\tcreate `tst_aclrls` shortcut')
   conn.insert({
     fieldList: ['ID'],
@@ -252,6 +253,26 @@ module.exports = function (session) {
           entityName: 'tst_aclrls'
         }
       }, null, '\t')
+    }
+  })
+
+  displayOrder += 10
+  console.log('\t\t\tcreate `tst_gridAction` shortcut')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'tst_gridAction',
+      caption: 'Grid action test',
+      iconCls: 'u-icon-wrench',
+      displayOrder: displayOrder,
+      cmdCode: `{cmdType: 'showList', cmdData: {
+  repository: () => UB.Repository('tst_dictionary')
+    .attrs(["ID", "code","caption"]),
+  scopedSlots: TST.addGridActions  
+}}
+`
     }
   })
 

@@ -178,6 +178,10 @@ process.on('exit', function () {
   }
   knownGlobals.push(internalBinding)
 
+  // temporary hack - used by formatByPattern
+  knownGlobals.push(_defaultLang)
+  knownGlobals.push(_collator)
+
   for (var x in global) {
     var found = false
     if (x === 'exports' || x === 'require') continue
@@ -206,9 +210,9 @@ function runCallChecks (exitCode) {
 
   failed.forEach(function (context) {
     console.log('Mismatched %s function calls. Expected %d, actual %d.',
-                context.name,
-                context.expected,
-                context.actual)
+      context.name,
+      context.expected,
+      context.actual)
     console.log(context.stack.split('\n').slice(2).join('\n'))
   })
 

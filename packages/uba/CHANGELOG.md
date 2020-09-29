@@ -6,15 +6,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `uba_advSecurity`: ukrainian localization
+ - `uba_group`: azerbaijani localization
+ - `Audit Trail` shortcut: added columns `Parent entity name`, `Request ID` and `Parent instance ID` 
+ 
 ### Changed
+ - uba* navshotrcut initialization uses ub-migrate instead of handmade script
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+- `uba_group-fm.def`: title and description localization
 
+## [5.4.33] - 2020-09-23
+### Fixed
+  - 'Record modified by another user' localization string typo fixed for ru and ky langs
+
+## [5.4.32] - 2020-09-22
 ## [5.4.31] - 2020-09-20
 ## [5.4.30] - 2020-09-08
 ## [5.4.29] - 2020-09-01

@@ -13,9 +13,9 @@ const AUDIT_ENTITY = 'uba_auditTrail'
  * @param {string} instance.getEntityName Entity name
  * @param {array<UTableColumn>} instance.getColumns Columns
  * @param {number} instance.pageSize Pagination page size
- * @param {function} instance.buildAddNewConfig AddNew config builder
- * @param {function} instance.buildEditConfig Edit config builder
- * @param {function} instance.buildCopyConfig Copy config builder
+ * @param {function} instance.buildAddNewConfig AddNew config builder. Called with (cfg: configToMutate, instance: UTableEntity)
+ * @param {function} instance.buildEditConfig Edit config builder. Called with (cfg: configToMutate, row: content of row to edit)
+ * @param {function} instance.buildCopyConfig Copy config builder. Called with (cfg: configToMutate, row: content of row to edit)
  * @param {object[]} instance.getCardColumns Columns to show in card view
  */
 module.exports = (instance) => ({
@@ -340,17 +340,17 @@ module.exports = (instance) => ({
         entity: getters.entityName,
         formCode: getters.formCode
       })
-      const config = instance.buildAddNewConfig({
+      const config = await instance.buildAddNewConfig({
         cmdType: 'showForm',
         entity: getters.entityName,
         formCode: getters.formCode,
         target: UB.core.UBApp.viewport.centralPanel,
         tabId
-      })
+      }, instance)
       UB.core.UBApp.doCommand(config)
     },
 
-    editRecord ({ getters }, ID) {
+    async editRecord ({ state, getters }, ID) {
       if (ID === null) return
 
       const tabId = UB.core.UBApp.generateTabId({
@@ -358,14 +358,15 @@ module.exports = (instance) => ({
         instanceID: ID,
         formCode: getters.formCode
       })
-      const config = instance.buildEditConfig({
+      const item = state.items.find(i => i.ID === ID)
+      const config = await instance.buildEditConfig({
         cmdType: 'showForm',
         entity: getters.entityName,
         formCode: getters.formCode,
         instanceID: ID,
         target: UB.core.UBApp.viewport.centralPanel,
         tabId
-      })
+      }, item)
       UB.core.UBApp.doCommand(config)
     },
 
@@ -395,13 +396,14 @@ module.exports = (instance) => ({
       }
     },
 
-    copyRecord ({ getters }, ID) {
+    async copyRecord ({ state, getters }, ID) {
       const tabId = UB.core.UBApp.generateTabId({
         entity: getters.entityName,
         instanceID: ID,
         formCode: getters.formCode
       })
-      const config = instance.buildCopyConfig({
+      const item = state.items.find(i => i.ID === ID)
+      const config = await instance.buildCopyConfig({
         cmdType: 'showForm',
         isCopy: true,
         addByCurrent: true, // TODO: remove it after drop ext.js from project
@@ -410,7 +412,7 @@ module.exports = (instance) => ({
         instanceID: ID,
         target: UB.core.UBApp.viewport.centralPanel,
         tabId
-      })
+      }, item)
       UB.core.UBApp.doCommand(config)
     },
 
@@ -441,25 +443,10 @@ module.exports = (instance) => ({
     },
 
     audit ({ getters }, ID) {
-      const tabId = UB.core.UBApp.generateTabId({
-        entity: getters.entityName,
-        instanceID: ID
-      })
-      UB.core.UBApp.doCommand({
-        cmdType: 'showList',
-        tabId,
-        title: `${UB.i18n('Audit')} (${UB.i18n(getters.entityName)})`,
-        renderer: 'vue',
-        cmdData: {
-          repository () {
-            return UB.Repository('uba_auditTrail')
-              .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP'])
-              .where('entity', '=', getters.entityName)
-              .where('entityinfo_id', '=', ID)
-              .orderByDesc('actionTime')
-          },
-          columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP']
-        }
+      UB.core.UBApp.showAuditTrail({
+        entityCode: getters.entityName,
+        instanceID: ID,
+        isModal: false
       })
     },
 

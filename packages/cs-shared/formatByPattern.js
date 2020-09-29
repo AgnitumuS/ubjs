@@ -10,7 +10,7 @@ const datePatterns = {
   date: { month: '2-digit', day: '2-digit', year: 'numeric' },
   dateFull: { month: '2-digit', day: '2-digit', year: '2-digit' },
   dateShort: { month: '2-digit', year: '2-digit' },
-  dateFullLong: { month: 'long', day: '2-digit', year: '2-digit' },
+  dateFullLong: { month: 'long', day: '2-digit', year: 'numeric' },
   dateMYY: { month: '2-digit', year: 'numeric' },
   dateMYLong: { month: 'long', year: 'numeric' },
   time: { hour: '2-digit', minute: '2-digit' },
@@ -45,8 +45,12 @@ const langToICU = {
   az: 'az'
 }
 
-let _defaultLang
-let _collator
+// TODO - FIX ME by prevent `@unitybase/cs-shared` package includes into every compiled module
+//  (adminui-pub, adminui-vue, vendor packages etc.).
+if (typeof _defaultLang === 'undefined') {
+  _defaultLang = 'en'
+}
+_collator = undefined
 
 /**
  * Create a ICU locale based on UB language
@@ -180,7 +184,6 @@ function setDefaultLang (lang) {
     _collator = new Intl.Collator(lang, { numeric: true })
   }
 }
-setDefaultLang('en')
 
 module.exports.setDefaultLang = setDefaultLang
 

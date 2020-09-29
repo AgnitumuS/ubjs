@@ -15,6 +15,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.5] - 2020-09-23
+### Changed
+ - `formatByPattern.formatDate(d, 'dateFullLong')` year format changed to 4 digits
+ to produce 'March 25, 2020' instead of 'March 25, 20' 
+
+### Fixed
+ - another dirty fix for prevent `formatByPattern` to use multiple collator instances. Prev.
+ not works as expected.
+ 
+## [5.5.4] - 2020-09-22
+### Fixed
+ - prevent `formatByPattern` to use multiple collator instances and prevents from
+ sets default language to `unknown`. Current solution is a temporary DIRTY HACK.
+ The reason of the problem is that `@unitybase/cs-shared` package is included into every compiled module
+ (adminui-pub, adminui-vue, vendor packages etc.). The good solution is to be found.    
+
 ## [5.5.3] - 2020-09-20
 ### Fixed
  - `formatByPattern.setDefaultLang` correctly sets `en` default language.

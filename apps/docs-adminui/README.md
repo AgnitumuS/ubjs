@@ -1,8 +1,12 @@
+> Warning!
+> Now works only with yarn
+
 Prerequirment 
 - `./init-db.sh`
-- Dev mode `npm run dev`
-- Build `npm run build`
+- Install dependenies `yarn`.
+- Dev mode `yarn run dev`
+- Build `yarn run build`
 
 Production version
 - `ub`
-- http://localhost:8881/doca-adminui/index.html
+- `http://localhost:8881/`

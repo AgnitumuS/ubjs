@@ -7,11 +7,12 @@
     @change="setSelectedFileId"
   >
     <el-carousel-item
-      v-for="file in files"
+      v-for="(file, index) in files"
       :key="file.ID"
       class="u-file-multiple__carousel-item"
     >
       <file-renderer
+        v-if="activeIndex === index"
         :ref="`renderer_${file.ID}`"
         :file="file"
         :entity-name="entityName"
@@ -40,6 +41,12 @@ export default {
     entityName: String,
     fileAttribute: String,
     withPreview: Boolean
+  },
+
+  data () {
+    return {
+      activeIndex: 0
+    }
   },
 
   computed: {
@@ -72,6 +79,7 @@ export default {
     },
 
     setSelectedFileId (index) {
+      this.activeIndex = index
       this.selectedFileId = this.files[index].ID
     }
   }

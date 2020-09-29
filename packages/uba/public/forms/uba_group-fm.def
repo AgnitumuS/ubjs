@@ -1,53 +1,53 @@
 // @! "do not remove comments below unless you know what you do!"
-// @mi_modifyDate "Wed Jul 10 2019 09:38:07 GMT+0300 (EEST)"
 // @isDefault "true"
 // @entity "uba_group"
 // @model "UBA"
 // @formType "auto"
-// @caption "Group"
-// @description "Group"
+// @caption "uba_group"
+// @description "uba_group"
+
 exports.formDef = {
-	size: {
-		width: 500,
-		height: 300
-	},
-	
-	items: [{
-		layout: 'hbox',
-		items: [
-			{
-				items: [
-					{attributeName: "code"},
-          {attributeName: "description"}
-				]
-			},
-			{
-				items: [
-					{attributeName: "name"}
-				]
-			}
-		],
-	}, {
-		layout: "fit",
-		xtype: "ubdetailgrid",
-		entity: "uba_usergroup",
-		entityConfig: {
-			entity: "uba_usergroup",
-			method: "select",
-			fieldList: ["userID"]
-		},
-		masterFields: ["ID"],
-		detailFields: ["groupID"]
-	}, {
-		layout: "fit",
-		xtype: "ubdetailgrid",
-		entity: "uba_grouprole",
-		entityConfig: {
-			entity: "uba_grouprole",
-			method: "select",
-			fieldList: ["roleID"]
-		},
-		masterFields: ["ID"],
-		detailFields: ["groupID"]
-	}]
+  size: {
+    width: 500,
+    height: 300
+  },
+
+  items: [{
+    layout: 'hbox',
+    items: [
+      {
+        items: [
+          { attributeName: 'code' },
+          { attributeName: 'description' }
+        ]
+      },
+      {
+        items: [
+          { attributeName: 'name' }
+        ]
+      }
+    ]
+  }, {
+    layout: 'fit',
+    xtype: 'ubdetailgrid',
+    entity: 'uba_usergroup',
+    entityConfig: {
+      entity: 'uba_usergroup',
+      method: 'select',
+      fieldList: ['userID']
+    },
+    masterFields: ['ID'],
+    detailFields: ['groupID']
+  }, {
+    layout: 'fit',
+    xtype: 'ubdetailgrid',
+    entity: 'uba_grouprole',
+    entityConfig: {
+      entity: 'uba_grouprole',
+      method: 'select',
+      fieldList: ['roleID']
+    },
+    masterFields: ['ID'],
+    detailFields: ['groupID']
+  }]
 }

@@ -17,10 +17,20 @@ export default {
     },
 
     /**
-     * Overrides required prop of <form-row />
+     * Can be used to override "required" prop of <form-row />
      */
     required: {
       type: Boolean,
+      default: undefined
+    },
+
+    /**
+     * If defined then specified component will be used instead of default what based on attribute type.
+     * For example `<u-auto-field attribute-name="bool_attr" force-cmp="el-switch" />` will create
+     * `el-switch` instead of `el-checkbox` (default cmp for Boolean)
+     */
+    forceCmp: {
+      type: String,
       default: undefined
     }
   },
@@ -72,7 +82,7 @@ export default {
     }
     switch (this.dataType) {
       case 'Boolean':
-        cmp = h('el-checkbox', {
+        cmp = h(this.forceCmp || 'el-checkbox', {
           attrs: baseAttrs,
           on: {
             change: (value) => {
@@ -83,7 +93,7 @@ export default {
         break
       case 'Date':
       case 'DateTime':
-        cmp = h('u-date-picker', {
+        cmp = h(this.forceCmp || 'u-date-picker', {
           attrs: {
             type: this.dataType.toLowerCase(),
             placeholder: this.$ut(this.dataType === 'Date' ? 'selectDate' : 'selectDateAndTime'),
@@ -97,7 +107,7 @@ export default {
         })
         break
       case 'Enum':
-        cmp = h('u-select-enum', {
+        cmp = h(this.forceCmp || 'u-select-enum', {
           attrs: {
             eGroup: this.entitySchema.attributes[this.attributeName].enumGroup,
             clearable: this.entitySchema.attributes[this.attributeName].allowNull,
@@ -109,7 +119,7 @@ export default {
         })
         break
       case 'Entity':
-        cmp = h('u-select-entity', {
+        cmp = h(this.forceCmp || 'u-select-entity', {
           attrs: {
             entityName: this.associatedEntity,
             ...baseAttrs
@@ -120,7 +130,7 @@ export default {
         })
         break
       case 'Many':
-        cmp = h('u-select-many', {
+        cmp = h(this.forceCmp || 'u-select-many', {
           attrs: {
             entityName: this.associatedEntity,
             ...baseAttrs
@@ -131,7 +141,7 @@ export default {
         })
         break
       case 'Text':
-        cmp = h('el-input', {
+        cmp = h(this.forceCmp || 'el-input', {
           attrs: {
             type: 'textarea',
             autosize: { minRows: 3, maxRows: 4 },
@@ -143,7 +153,7 @@ export default {
         })
         break
       case 'Document':
-        cmp = h('u-file', {
+        cmp = h(this.forceCmp || 'u-file', {
           attrs: baseAttrs,
           on: {
             input: (value) => { this.model = value }
@@ -151,7 +161,7 @@ export default {
         })
         break
       case 'Json':
-        cmp = h('u-code-mirror', {
+        cmp = h(this.forceCmp || 'u-code-mirror', {
           attrs: baseAttrs,
           on: {
             input: (value) => { this.model = value }
@@ -159,7 +169,7 @@ export default {
         })
         break
       case 'String':
-        cmp = h('u-input', {
+        cmp = h(this.forceCmp || 'u-input', {
           attrs: {
             maxLength: this.entitySchema.attributes[this.attributeName].size,
             ...baseAttrs
@@ -167,7 +177,7 @@ export default {
         })
         break
       default:
-        cmp = h('u-input', {
+        cmp = h(this.forceCmp || 'u-input', {
           attrs: baseAttrs
         })
     }

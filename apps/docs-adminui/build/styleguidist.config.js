@@ -1,5 +1,5 @@
 const path = require('path')
-const { version } = require('../node_modules/@unitybase/adminui-vue/package.json')
+const { version } = require('@unitybase/adminui-vue/package.json')
 
 /**
  * Return relative component path
@@ -8,7 +8,7 @@ const { version } = require('../node_modules/@unitybase/adminui-vue/package.json
  * @returns {string}
  */
 function c (absolutePath) {
-  return `../../../packages/adminui-vue/components/${absolutePath}`
+  return `../node_modules/@unitybase/adminui-vue/components/${absolutePath}`
 }
 
 module.exports = {
@@ -18,6 +18,7 @@ module.exports = {
    * Enabling the following option splits sections into separate views.
    */
   pagePerSection: true,
+  // TODO: add packages/adminui-vue/utils/Form/README.md
   sections: [{
     name: 'Getting Started',
     content: '../docs/getting-started-adminui-vue.md'
@@ -102,7 +103,7 @@ module.exports = {
   renderRootJsx: path.join(__dirname, './eachRender'),
   webpackConfig: require('./webpack.config'),
 
-  styleguideDir: '../public/docs-adminui',
+  styleguideDir: '../inetpub',
 
   compilerConfig: {
     objectAssign: 'Object.assign',

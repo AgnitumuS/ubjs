@@ -1,5 +1,7 @@
 <template>
   <div class="u-toolbar">
+    <!-- @slot left side toolbar (before default buttons) -->
+    <slot name="leftBefore" />
     <el-tooltip
       v-for="button in mainPanelButtons"
       :key="button.label + button.icon"
@@ -379,21 +381,10 @@ export default {
     },
 
     showAudit () {
-      $App.doCommand({
-        renderer: 'vue',
-        isModal: true,
-        title: `${this.$UB.i18n('Audit')} (${this.$UB.i18n(this.entity)})`,
-        cmdType: 'showList',
-        cmdData: {
-          repository: () => {
-            return this.$UB.Repository('uba_auditTrail')
-              .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP'])
-              .where('entity', '=', this.entity)
-              .where('entityinfo_id', '=', this.$store.state.data.ID)
-              .orderByDesc('actionTime')
-          },
-          columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP']
-        }
+      $App.showAuditTrail({
+        entityCode: this.entity,
+        instanceID: this.$store.state.data.ID,
+        isModal: true
       })
     },
 
