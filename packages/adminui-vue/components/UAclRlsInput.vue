@@ -20,7 +20,7 @@
         v-for="attr in rightAttributes"
         #[attr]="{row}"
       >
-        {{ row[`${attr}Val`]}}
+        {{ row[`${attr}Val`] }}
       </template>
 
       <template #removeAction="{row}">
@@ -40,7 +40,6 @@
       :close-on-click-modal="false"
       width="600px"
       top="0"
-      class="dfx-dialog"
     >
       <u-form-container
         label-position="top"
@@ -120,8 +119,7 @@ export default {
       currentEntityName: null,
       selected: {}
     },
-    subjects: {},
-    collectionSnapshot: {}
+    subjects: {}
   }),
 
   computed: {
@@ -129,12 +127,8 @@ export default {
       return this.$store.state.collections[this.collectionName]
     },
 
-    aclRlsEntityName () {
-      return this.currentCollection.entity
-    },
-
     entityAttributes () {
-      return this.$UB.connection.domain.get(this.aclRlsEntityName).attributes
+      return this.$UB.connection.domain.get(this.currentCollection.entity).attributes
     },
 
     rightAttributes () {
@@ -208,18 +202,15 @@ export default {
 
   created () {
     for (const { entity, descriptionAttribute } of this.rightAttributesWithMetaInfo) {
-      Repository(entity)
-        .attrs('ID', descriptionAttribute)
-        .select()
-        .then(entries => {
-          const keyValueMap = entries.reduce((obj, entry) => {
-            obj[entry.ID] = entry[descriptionAttribute]
+      Repository(entity).attrs('ID', descriptionAttribute).select().then(entries => {
+        const keyValueMap = entries.reduce((obj, entry) => {
+          obj[entry.ID] = entry[descriptionAttribute]
 
-            return obj
-          }, {})
+          return obj
+        }, {})
 
-          this.$set(this.subjects, entity, keyValueMap)
-        })
+        this.$set(this.subjects, entity, keyValueMap)
+      })
     }
   },
 
