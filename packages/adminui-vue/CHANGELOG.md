@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `UTableEntity` data history mixin support
+ - `UTableEntity` slots for data history mixin:
+   - `toolbarDropdownSummary` to replace in toolbar dropdown 
+   - `contextMenuDataHistory` to replace in context menu 
 
 ### Changed
 
