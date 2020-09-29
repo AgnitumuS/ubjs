@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `shortcut form`: error on change data of shortcut which has type "folder"
 
 ## [5.13.42] - 2020-09-23
 ## [5.13.41] - 2020-09-22
