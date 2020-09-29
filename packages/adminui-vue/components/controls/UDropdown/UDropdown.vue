@@ -4,7 +4,9 @@
       v-if="$slots.default"
       ref="reference"
       class="u-dropdown__reference"
+      tabindex="1"
       @click="toggleVisible"
+      @keydown.esc="closeByEscape"
     >
       <!-- @slot Reference button -->
       <slot />
@@ -18,6 +20,8 @@
         v-show="visible && $slots.dropdown"
         :key="renderKey"
         ref="dropdown"
+        tabindex="1"
+        @keydown.esc="closeByEscape"
       >
         <div class="u-dropdown">
           <div
@@ -160,6 +164,15 @@ export default {
       this.$emit('close')
     },
 
+    closeByEscape (event) {
+      if (this.visible) {
+        event.stopPropagation()
+      }
+
+      this.parentClose()
+      this.close()
+    },
+
     async show ({ x, y, target }) {
       this.visible = false
       this.renderKey++
@@ -167,6 +180,8 @@ export default {
       this.virtualElement.getBoundingClientRect = this.generateClientRect(x, y)
       this.virtualElement.contains = (ref) => target.contains(ref)
       this.visible = true
+      await this.$nextTick()
+      this.$refs.dropdown.focus()
     },
 
     generateClientRect (x = 0, y = 0) {
@@ -184,146 +199,146 @@ export default {
 </script>
 
 <style>
-  .u-dropdown {
-    --border-color: hsl(var(--hs-border), var(--l-layout-border-default));
-    --popup-color: hsl(var(--hs-background), var(--l-background-inverse));
+.u-dropdown {
+  --border-color: hsl(var(--hs-border), var(--l-layout-border-default));
+  --popup-color: hsl(var(--hs-background), var(--l-background-inverse));
 
-    background: var(--popup-color);
-    border: 1px solid var(--border-color);
-    box-shadow: var(--box-shadow-default);
-    border-radius: var(--border-radius);
-    z-index: 10;
-    padding: 6px 0;
-    position: relative;
-  }
+  background: var(--popup-color);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--box-shadow-default);
+  border-radius: var(--border-radius);
+  z-index: 10;
+  padding: 6px 0;
+  position: relative;
+}
 
-  .u-dropdown__reference {
-    display: inline-block;
-  }
+.u-dropdown__reference {
+  display: inline-block;
+}
 
-  .u-dropdown .u-dropdown__reference {
-    /* prevent inline-block for inner elements */
-    display: block;
-  }
+.u-dropdown .u-dropdown__reference {
+  /* prevent inline-block for inner elements */
+  display: block;
+}
 
-  .dropdown-transition-leave-active,
-  .dropdown-transition-enter-active {
-    transition: visibility .1s;
-  }
+.dropdown-transition-leave-active,
+.dropdown-transition-enter-active {
+  transition: visibility .1s;
+}
 
-  .dropdown-transition-leave-active .u-dropdown,
-  .dropdown-transition-enter-active .u-dropdown {
-    transition: .1s;
-  }
+.dropdown-transition-leave-active .u-dropdown,
+.dropdown-transition-enter-active .u-dropdown {
+  transition: .1s;
+}
 
-  .dropdown-transition-leave-to .u-dropdown,
-  .dropdown-transition-enter .u-dropdown {
-    transform: scale(0.8);
-    opacity: 0;
-  }
+.dropdown-transition-leave-to .u-dropdown,
+.dropdown-transition-enter .u-dropdown {
+  transform: scale(0.8);
+  opacity: 0;
+}
 
-  .u-dropdown__arrow {
-    --size: 4px;
-    pointer-events: none;
-    z-index: 1;
-  }
+.u-dropdown__arrow {
+  --size: 4px;
+  pointer-events: none;
+  z-index: 1;
+}
 
-  .u-dropdown__arrow-inner:before {
-    content: '';
-    position: absolute;
-    border: var(--size) solid transparent;
-    border-bottom-color: var(--border-color);
-  }
+.u-dropdown__arrow-inner:before {
+  content: '';
+  position: absolute;
+  border: var(--size) solid transparent;
+  border-bottom-color: var(--border-color);
+}
 
-  .u-dropdown__arrow-inner:after {
-    content: '';
-    position: absolute;
-    border: var(--size) solid transparent;
-    border-bottom-color: var(--popup-color);
-    bottom: -1px;
-  }
+.u-dropdown__arrow-inner:after {
+  content: '';
+  position: absolute;
+  border: var(--size) solid transparent;
+  border-bottom-color: var(--popup-color);
+  bottom: -1px;
+}
 
-  .u-dropdown__arrow-inner {
-    width: calc(var(--size) * 2);
-    height: calc(var(--size) * 2);
-  }
+.u-dropdown__arrow-inner {
+  width: calc(var(--size) * 2);
+  height: calc(var(--size) * 2);
+}
 
-  [data-popper-placement^='bottom'] > .u-dropdown > .u-dropdown__arrow {
-    bottom: 100%;
-  }
+[data-popper-placement^='bottom'] > .u-dropdown > .u-dropdown__arrow {
+  bottom: 100%;
+}
 
-  [data-popper-placement^='top'] > .u-dropdown > .u-dropdown__arrow {
-    top: 100%;
-  }
+[data-popper-placement^='top'] > .u-dropdown > .u-dropdown__arrow {
+  top: 100%;
+}
 
-  [data-popper-placement^='top'] > .u-dropdown > .u-dropdown__arrow > .u-dropdown__arrow-inner {
-    transform: rotate(180deg);
-  }
+[data-popper-placement^='top'] > .u-dropdown > .u-dropdown__arrow > .u-dropdown__arrow-inner {
+  transform: rotate(180deg);
+}
 
-  [data-popper-placement^='right'] > .u-dropdown > .u-dropdown__arrow {
-    right: 100%;
-  }
+[data-popper-placement^='right'] > .u-dropdown > .u-dropdown__arrow {
+  right: 100%;
+}
 
-  [data-popper-placement^='right'] > .u-dropdown > .u-dropdown__arrow > .u-dropdown__arrow-inner {
-    transform: rotate(-90deg);
-  }
+[data-popper-placement^='right'] > .u-dropdown > .u-dropdown__arrow > .u-dropdown__arrow-inner {
+  transform: rotate(-90deg);
+}
 
-  [data-popper-placement^='left'] > .u-dropdown > .u-dropdown__arrow {
-    left: 100%;
-  }
+[data-popper-placement^='left'] > .u-dropdown > .u-dropdown__arrow {
+  left: 100%;
+}
 
-  [data-popper-placement^='left'] > .u-dropdown > .u-dropdown__arrow > .u-dropdown__arrow-inner {
-    transform: rotate(90deg);
-  }
+[data-popper-placement^='left'] > .u-dropdown > .u-dropdown__arrow > .u-dropdown__arrow-inner {
+  transform: rotate(90deg);
+}
 </style>
 
 <docs>
-  ### Basic usage
+### Basic usage
 
-  ```vue
-  <template>
-    <u-dropdown>
-      <el-button>click me</el-button>
+```vue
+<template>
+  <u-dropdown>
+    <el-button>click me</el-button>
 
-      <template #dropdown>
+    <template #dropdown>
+      <u-dropdown-item label="item 1"/>
+      <u-dropdown-item label="item 2"/>
+      <u-dropdown-item label="item 3"/>
+    </template>
+  </u-dropdown>
+</template>
+```
+
+### Context menu
+
+For use as context menu just pass slot dropdown without default slot and use method show from UDropdown ref
+
+```vue
+<template>
+  <div>
+    <div
+      @contextmenu="showContextMenu"
+      style="width: 200px; height: 200px; background: lightblue"
+    />
+
+    <u-dropdown ref="contextMenu">
+      <template slot="dropdown">
         <u-dropdown-item label="item 1"/>
         <u-dropdown-item label="item 2"/>
         <u-dropdown-item label="item 3"/>
       </template>
     </u-dropdown>
-  </template>
-  ```
+  </div>
+</template>
 
-  ### Context menu
-
-  For use as context menu just pass slot dropdown without default slot and use method show from UDropdown ref
-
-  ```vue
-  <template>
-    <div>
-      <div
-        @contextmenu="showContextMenu"
-        style="width: 200px; height: 200px; background: lightblue"
-      />
-
-      <u-dropdown ref="contextMenu">
-        <template slot="dropdown">
-          <u-dropdown-item label="item 1"/>
-          <u-dropdown-item label="item 2"/>
-          <u-dropdown-item label="item 3"/>
-        </template>
-      </u-dropdown>
-    </div>
-  </template>
-
-  <script>
-    export default {
-      methods: {
-        showContextMenu(event) {
-          this.$refs.contextMenu.show(event)
-        }
+<script>
+  export default {
+    methods: {
+      showContextMenu (event) {
+        this.$refs.contextMenu.show(event)
       }
     }
-  </script>
-  ```
+  }
+</script>
+```
 </docs>
