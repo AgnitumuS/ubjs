@@ -727,7 +727,7 @@ export default {
 }
 
 .u-table-entity .u-card.selected {
-  background: hsl(var(--hs-primary), var(--l-background-default));
+  background: hsl(var(--hs-primary), var(--l-background-active));
 }
 
 .u-fake-table {

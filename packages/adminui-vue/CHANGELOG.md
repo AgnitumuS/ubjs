@@ -17,7 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - adjust ub-icons size to be the same for all icons
+ - ajust ub-icons size to be the same for all icons
+ - `UTableEntity`: change color of the selected card to be darker
 
 ## [1.13.11] - 2020-09-27
 ### Changed
