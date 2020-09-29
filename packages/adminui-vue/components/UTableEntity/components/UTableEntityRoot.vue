@@ -382,13 +382,13 @@
                 icon="u-icon-file-add"
                 label="novajaVersija"
                 :disabled="!canNewRevision"
-                @click="createNewVersion"
+                @click="createNewVersion(selectedRowId)"
               />
 
               <u-dropdown-item
                 icon="u-icon-file-preview"
                 label="ChangesHistory"
-                @click="showRevision"
+                @click="showRevision(selectedRowId)"
               />
             </template>
           </slot>

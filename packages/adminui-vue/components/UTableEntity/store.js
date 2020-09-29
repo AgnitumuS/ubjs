@@ -5,6 +5,8 @@ const { exportExcel, exportCsv, exportHtml } = require('../../utils/fileExporter
 const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 const lookups = require('../../utils/lookups')
 const AUDIT_ENTITY = 'uba_auditTrail'
+const Vue = require('vue')
+const openDataHistoryDatePicker = require('./components/DataHistoryDatePicker/datePickerDialog')
 
 /**
  * Build store by UTableEntity props
@@ -162,6 +164,14 @@ module.exports = (instance) => ({
 
     cardColumns () {
       return instance.getCardColumns
+    },
+
+    generateTabId (state, getters) {
+      return ID => UB.core.UBApp.generateTabId({
+        entity: getters.entityName,
+        instanceID: ID,
+        formCode: getters.formCode
+      })
     }
   },
 
@@ -344,16 +354,12 @@ module.exports = (instance) => ({
           return
         }
       }
-      const tabId = UB.core.UBApp.generateTabId({
-        entity: getters.entityName,
-        formCode: getters.formCode
-      })
       const config = await instance.buildAddNewConfig({
         cmdType: 'showForm',
         entity: getters.entityName,
         formCode: getters.formCode,
         target: UB.core.UBApp.viewport.centralPanel,
-        tabId
+        tabId: getters.generateTabId()
       }, instance)
       UB.core.UBApp.doCommand(config)
     },
@@ -361,11 +367,6 @@ module.exports = (instance) => ({
     async editRecord ({ state, getters }, ID) {
       if (ID === null) return
 
-      const tabId = UB.core.UBApp.generateTabId({
-        entity: getters.entityName,
-        instanceID: ID,
-        formCode: getters.formCode
-      })
       const item = state.items.find(i => i.ID === ID)
       const config = await instance.buildEditConfig({
         cmdType: 'showForm',
@@ -373,7 +374,7 @@ module.exports = (instance) => ({
         formCode: getters.formCode,
         instanceID: ID,
         target: UB.core.UBApp.viewport.centralPanel,
-        tabId
+        tabId: getters.generateTabId(ID)
       }, item)
       UB.core.UBApp.doCommand(config)
     },
@@ -405,11 +406,6 @@ module.exports = (instance) => ({
     },
 
     async copyRecord ({ state, getters }, ID) {
-      const tabId = UB.core.UBApp.generateTabId({
-        entity: getters.entityName,
-        instanceID: ID,
-        formCode: getters.formCode
-      })
       const item = state.items.find(i => i.ID === ID)
       const config = await instance.buildCopyConfig({
         cmdType: 'showForm',
@@ -419,7 +415,7 @@ module.exports = (instance) => ({
         formCode: getters.formCode,
         instanceID: ID,
         target: UB.core.UBApp.viewport.centralPanel,
-        tabId
+        tabId: getters.generateTabId(ID)
       }, item)
       UB.core.UBApp.doCommand(config)
     },
@@ -607,82 +603,48 @@ module.exports = (instance) => ({
       await dialogInfo(resultHtml, 'summary')
     },
 
-    createNewVersion () {
-      debugger
-      const me = this
-      const sel = me.getSelectionModel().getSelection()
-      if (sel.length < 1) return
+    async createNewVersion ({ getters }, ID) {
+      const { mi_data_id: dataHistoryId } = await UB.Repository(getters.entityName)
+        .attrs('ID', 'mi_data_id')
+        .selectById(ID)
 
-      UB.Repository(me.entityName)
-        .attrs(['ID', 'mi_data_id'])
-        .selectById(sel[0].get('ID'))
-        .then(function (record) {
-          return UB.Repository(me.entityName)
-            .attrs(['mi_dateFrom', 'mi_data_id'])
-            .where('mi_data_id', '=', record.mi_data_id)
-            .misc({ __mip_recordhistory_all: true })
-            .orderByDesc('mi_dateFrom')
-            .limit(1)
-            .select()
-        }).then(function (rows) {
-          var record = rows[0]
-          Ext.create('UB.view.InputDateWindow', {
-            callback: function (date) {
-              if (date > record.mi_dateFrom) {
-                me.onItemDblClick(me, sel[0], null, null, null, { __mip_ondate: date })
-              } else {
-                throw new UB.UBError(UB.format(UB.i18n('dateIsTooEarly'), record.mi_dateFrom))
-              }
-            },
-            scope: me
-          })
+      const history = await UB.Repository(getters.entityName)
+        .attrs('mi_dateFrom', 'mi_data_id')
+        .where('mi_data_id', '=', dataHistoryId)
+        .misc({ __mip_recordhistory_all: true })
+        .orderByDesc('mi_dateFrom')
+        .limit(1)
+        .select()
+
+      const { mi_dateFrom: dateFrom } = history[0]
+      const selectedDate = await openDataHistoryDatePicker(dateFrom)
+
+      if (selectedDate) {
+        UB.core.UBApp.doCommand({
+          cmdType: 'showForm',
+          entity: getters.entityName,
+          instanceID: ID,
+          __mip_ondate: selectedDate,
+          target: UB.core.UBApp.viewport.centralPanel,
+          tabId: getters.generateTabId(ID)
         })
+      }
     },
 
-    showRevision () {
-      debugger
-      const me = this
-      let fieldList = me.entityConfig.fieldList.concat()
-      let extendedFieldList = me.extendedFieldList.concat()
+    async showRevision ({ getters }, ID) {
+      const { mi_data_id: historyId } = await UB.Repository(getters.entityName)
+        .attrs('ID', 'mi_data_id')
+        .selectById(ID)
 
-      function configureMixinAttribute (attributeCode) {
-        if (_.findIndex(extendedFieldList, { name: attributeCode }) < 0) {
-          fieldList = [attributeCode].concat(fieldList)
-          extendedFieldList = [{
-            name: attributeCode,
-            visibility: true,
-            description: UB.i18n(attributeCode)
-          }].concat(extendedFieldList)
-        }
-      }
-      configureMixinAttribute('mi_dateTo')
-      configureMixinAttribute('mi_dateFrom')
-
-      const sel = this.getSelectionModel().getSelection()
-      if (!me.isInHistory && sel.length < 1) {
-        return
-      }
-
-      $App.connection.select({
-        entity: me.entityName,
-        fieldList: ['ID', 'mi_data_id'],
-        ID: me.isInHistory ? me.miDataID : sel[0].get('ID')
-      }).then(function (response) {
-        const rows = UB.core.UBCommand.resultDataRow2Object(response)
-        $App.doCommand({
-          cmdType: 'showList',
-          cmdData: {
-            params: [{
-              entity: me.entityName, method: UB.core.UBCommand.methodName.SELECT, fieldList: fieldList
-            }]
-          },
-          cmpInitConfig: {
-            extendedFieldList: extendedFieldList
-          },
-          isModalDialog: true,
-          instanceID: rows.mi_data_id,
-          __mip_recordhistory: true
-        })
+      UB.core.UBApp.doCommand({
+        cmdType: 'showList',
+        cmdData: {
+          entityName: getters.entityName,
+          columns: getters.columns.concat('mi_dateTo', 'mi_dateFrom')
+        },
+        isModal: true,
+        instanceID: historyId,
+        __mip_recordhistory: true
       })
     }
   }
