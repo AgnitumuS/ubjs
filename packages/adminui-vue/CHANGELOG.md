@@ -6,15 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `$App.showAuditTrail` method added - used in both adminui-vue and adminui-pub to show audit trail for instance
 
 ### Changed
+ - instance audit trail list now filtered by `parentEntityInfo_id`, so shows audit for all related entities
+ where `parentIdentifier` & `parentEntity` is configured
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
- - ajust ub-icons size to be the same for all icons
+ - adjust ub-icons size to be the same for all icons
 
 ## [1.13.11] - 2020-09-27
 ### Changed
