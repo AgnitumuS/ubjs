@@ -1,7 +1,7 @@
 <template>
   <div class="u-acl-rls-input">
     <h4 class="u-acl-rls__title">
-      {{ $ut('UAclRlsiInput.access') }}
+      {{ $ut('UAclRlsInput.access') }}
     </h4>
 
     <el-button
@@ -339,8 +339,8 @@ export default {
 
 .u-acl-rls-input-dialog {
   display: flex;
-  flex-direction: column;
-  height: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 .u-acl-rls-input-dialog__form {
