@@ -2,11 +2,10 @@
   <div class="u-form-layout">
     <u-form-container :label-width="250">
       <el-tabs>
-        <el-tab-pane label="Scanning">
-          <u-form-row :label="$ut('Scanner')">
+        <el-tab-pane :label="$ut('desktopService.UBScan.tabScanning')">
+          <u-form-row :label="$ut('desktopService.UBScan.LastUsedScanner')">
             <el-select
               v-model="selectedScanner"
-              placeholder="Choose scanner"
             >
               <el-option
                 v-for="{ value, label } in scanners"
@@ -24,7 +23,7 @@
             />
           </u-form-row>
 
-          <u-form-row :label="$ut('ScannerType')">
+          <u-form-row>
             <el-radio
               v-for="{ label } in scannerTypes" :key="label"
               v-model="scannerType"
@@ -34,15 +33,14 @@
             </el-radio>
           </u-form-row>
 
-          <u-form-row :label="$ut('Show scanner driver window')">
+          <u-form-row :label="$ut('desktopService.UBScan.ShowUI')">
             <el-checkbox v-model="isDriverWindowShown" />
           </u-form-row>
 
 
-          <u-form-row :label="$ut('Picture mode')">
+          <u-form-row :label="$ut('desktopService.UBScan.CurrentScaner.PictureMode')">
             <el-select
               v-model="pictureMode"
-              placeholder="Choose picture mode"
             >
               <el-option
                 v-for="{ value, label } in pictureModes" :key="value"
@@ -52,7 +50,7 @@
             </el-select>
           </u-form-row>
 
-          <u-form-row :label="$ut('Resolution in DPI')">
+          <u-form-row :label="$ut('desktopService.UBScan.CurrentScaner.Resolution')">
             <el-input-number
               v-model="dpiResolution"
               :min="200"
@@ -61,19 +59,19 @@
             />
           </u-form-row>
 
-          <u-form-row :label="$ut('Duplex scanning')">
+          <u-form-row :label="$ut('desktopService.UBScan.CurrentScaner.DuplexMode')">
             <el-checkbox v-model="isDuplexScanning" />
           </u-form-row>
 
-          <u-form-row :label="$ut('Multiple pages')">
+          <u-form-row :label="$ut('desktopService.UBScan.CurrentScaner.AllowAddPages')">
             <el-checkbox v-model="isMultiplePages" />
           </u-form-row>
 
-          <u-form-row :label="$ut('Use tray')">
+          <u-form-row :label="$ut('desktopService.UBScan.CurrentScaner.UseFeeder')">
             <el-checkbox v-model="isTrayUsed" />
           </u-form-row>
 
-          <u-form-row :label="$ut('File format')">
+          <u-form-row :label="$ut('desktopService.UBScan.OutputFormat')">
             <el-radio
               v-for="{ label, value } in outputFormats" :key="value"
               v-model="outputFormat"
@@ -83,7 +81,7 @@
             </el-radio>
           </u-form-row>
 
-          <u-form-row :label="$ut('JPEG quality')">
+          <u-form-row :label="$ut('desktopService.UBScan.jpegQuality')">
             <el-input-number
               v-model="jpegQuality"
               :min="10"
@@ -93,11 +91,13 @@
           </u-form-row>
         </el-tab-pane>
 
-        <el-tab-pane label="Bar code">
-          <u-form-row :label="$ut('Printer')">
+        <el-tab-pane :label="$ut('desktopService.tabBarcode')">
+          <h4>
+            {{ $ut('desktopService.FRScan.tabFineReader.Common') }}
+          </h4>
+          <u-form-row :label="$ut('desktopService.BarcodeSettings.PrinterName')">
             <el-select
               v-model="selectedPrinter"
-              placeholder="Choose scanner"
             >
               <el-option
                 v-for="{ value, label } in printers"
@@ -108,14 +108,13 @@
             </el-select>
           </u-form-row>
 
-          <u-form-row :label="$ut('Rotate by 180 degrees')">
+          <u-form-row :label="$ut('desktopService.BarcodeSettings.Rotate180')">
             <el-checkbox v-model="isBarcodeRotated" />
           </u-form-row>
 
-          <u-form-row :label="$ut('Position on the page')">
+          <u-form-row :label="$ut('desktopService.BarcodeSettings.pagePosition')">
             <el-select
               v-model="pagePosition"
-              placeholder="Choose position"
               @change="pagePositionChange"
             >
               <el-option
@@ -126,6 +125,9 @@
             </el-select>
           </u-form-row>
 
+          <h4>
+            {{ $ut('desktopService.tabBarcode.Margins') }}
+          </h4>
           <u-form-row
             v-for="({ label, value, disabled }, i) in pageMargins" :key="label"
             :label="label"
@@ -141,6 +143,19 @@
         </el-tab-pane>
       </el-tabs>
     </u-form-container>
+    <span slot="footer" class="el-dialog__footer">
+      <el-button
+        @click="saveClick"
+      >
+        {{ $ut('Change') }}
+      </el-button>
+      <el-button
+        type="primary"
+        @click="closeClick"
+      >
+        {{ $ut('cancel') }}
+      </el-button>
+    </span>
   </div>
 </template>
 
@@ -148,8 +163,12 @@
 const { Form } = require('@unitybase/adminui-vue')
 
 module.exports.mount = function (cfg) {
+  const props = {}
+  props.customParams = cfg.customParams
+  props.deferred = cfg.deferred
   Form({
     ...cfg,
+    props,
     isModal: true,
     modalWidth: '700px'
   })
@@ -158,16 +177,28 @@ module.exports.mount = function (cfg) {
 
 module.exports.default = {
   name: 'UbmDesktopScanerSettings',
+  inject: ['$formServices'],
+
+  props: {
+    customParams: undefined,
+    deferred: Object
+  },
+
+  mounted () {
+    this.initData()
+  },
 
   data () {
     return {
+      isDeferred: false,
+
       selectedScanner: null,
       scanners: [],
 
       scannerType: 'Streaming',
       scannerTypes: [
-        { label: 'Streaming' },
-        { label: 'Tablet' }
+        { label: this.$ut('desktopService.UBScan.CurrentScaner.MultiplePages.true') },
+        { label: this.$ut('desktopService.UBScan.CurrentScaner.MultiplePages.false') }
       ],
 
       isDriverWindowShown: false,
@@ -186,10 +217,10 @@ module.exports.default = {
 
       outputFormat: 'PDF',
       outputFormats: [
-        { label: 'JPEG', value: 'JPEG' },
-        { label: 'PDF', value: 'PDF' },
-        { label: 'TIFF', value: 'TIFF' },
-        { label: 'PDF/A', value: 'PDF/A' }
+        { label: this.$ut('desktopService.UBScan.OutputFormat.JPEG'), value: 'JPEG' },
+        { label: this.$ut('desktopService.UBScan.OutputFormat.PDF'), value: 'PDF' },
+        { label: this.$ut('desktopService.UBScan.OutputFormat.TIFF'), value: 'TIFF' },
+        { label: this.$ut('desktopService.UBScan.OutputFormat.PDF/A'), value: 'PDF/A' }
       ],
 
       jpegQuality: 70,
@@ -210,7 +241,8 @@ module.exports.default = {
       ],
 
       pageMargins: [{
-        label: this.$ut('Left'),
+        key: 'LeftMargin',
+        label: this.$ut('desktopService.BarcodeSettings.LeftMargin'),
         value: 5,
         disabled: [
           'bcppTopCenter',
@@ -219,7 +251,8 @@ module.exports.default = {
           'bcppBottomRight'
         ]
       }, {
-        label: this.$ut('Top'),
+        key: 'TopMargin',
+        label: this.$ut('desktopService.BarcodeSettings.TopMargin'),
         value: 5,
         disabled: [
           'bcppBottomLeft',
@@ -227,7 +260,8 @@ module.exports.default = {
           'bcppBottomRight'
         ]
       }, {
-        label: this.$ut('Right'),
+        key: 'RightMargin',
+        label: this.$ut('desktopService.BarcodeSettings.RightMargin'),
         value: 5,
         disabled: [
           'bcppTopLeft',
@@ -236,7 +270,8 @@ module.exports.default = {
           'bcppBottomCenter'
         ]
       }, {
-        label: this.$ut('Bottom'),
+        key: 'BottomMargin',
+        label: this.$ut('desktopService.BarcodeSettings.BottomMargin'),
         value: 5,
         disabled: [
           'bcppTopLeft',
@@ -253,11 +288,38 @@ module.exports.default = {
   },
 
   methods: {
+    initData (){
+      if (this.customParams.BarcodeSettings.UseDefaultPrinter)
+        this.selectedPrinter = this.$ut('desktopService.DefaultPrinter')
+      this.selectedPrinter = this.customParams.BarcodeSettings.PrinterName
+      this.isBarcodeRotated = this.customParams.BarcodeSettings.Rotate180
+      this.pagePosition = this.customParams.BarcodeSettings.pagePosition
+      this.pageMargins.forEach((attr) => {
+        attr.value = this.customParams.BarcodeSettings[attr.key]
+      })
+
+      this.isDriverWindowShown = this.customParams.UBScan.ShowUI
+      this.outputFormat = this.customParams.UBScan.OutputFormat
+      this.jpegQuality = this.customParams.UBScan.jpegQuality
+
+      if(this.customParams.LastUsedScanner){
+        this.selectedScanner = this.customParams.LastUsedScanner
+        let scannerParam = _.find(this.customParams.UBScan.ScanSettings, {Source: this.selectedScanner})
+        this.pictureMode = scannerParam.PictureMode
+        this.dpiResolution = scannerParam.Resolution
+        this.isDuplexScanning = scannerParam.DuplexMode
+        this.isMultiplePages = scannerParam.AllowAddPages
+        this.isTrayUsed = scannerParam.UseFeeder
+      }
+    },
+
     async getScanners () {
       const service = await $App.scanService()
       const scanners = await service.getScanners()
       if (scanners) {
-        this.scanners = scanners
+        this.scanners = [
+          ...scanners.map(scannerName => ({ label: scannerName, value: scannerName }))
+        ]
       }
     },
 
@@ -278,13 +340,62 @@ module.exports.default = {
 
     pagePositionChange () {
       this.pageMargins = this.pageMargins.reduce((accum, margin) => {
-        if (margin.disabled.includes(this.pagePosition)) {
+        /*if (margin.disabled.includes(this.pagePosition)) {
           margin.value = 5
-        }
+        }*/
         accum.push(margin)
         return accum
       }, [])
+    },
+
+    saveScanner() {
+      if (this.selectedScanner){
+        let scannerParam = _.find(this.customParams.UBScan.ScanSettings, {Source: this.selectedScanner})
+        scannerParam.PictureMode = this.pictureMode
+        scannerParam.Resolution = this.dpiResolution
+        scannerParam.DuplexMode = this.isDuplexScanning
+        scannerParam.AllowAddPages = this.isMultiplePages
+        scannerParam.UseFeeder = this.isTrayUsed
+      }
+    },
+
+    saveParams() {
+      this.saveScanner()
+
+      this.customParams.BarcodeSettings.PrinterName = this.selectedPrinter
+      this.customParams.BarcodeSettings.Rotate180 = this.isBarcodeRotated
+      this.customParams.BarcodeSettings.pagePosition = this.pagePosition
+      this.pageMargins.forEach((attr) => {
+        this.customParams.BarcodeSettings[attr.key] = attr.value
+      })
+
+      this.customParams.UBScan.ShowUI = this.isDriverWindowShown
+      this.customParams.UBScan.OutputFormat = this.outputFormat
+      this.customParams.UBScan.jpegQuality = this.jpegQuality
+
+      this.customParams.BarcodeSettings.UseDefaultPrinter = (this.selectedPrinter == this.$ut(
+        'desktopService.DefaultPrinter'));
+    },
+
+    saveClick() {
+      this.saveParams()
+      this.isDeferred = true
+
+      this.$props.deferred.resolve({
+        action: 'ok',
+        params: this.customParams
+      })
+      this.$formServices.forceClose()
+    },
+
+    closeClick(){
+      this.$props.deferred.resolve({
+        action: 'cancel'
+      })
+      this.$formServices.forceClose()
     }
+
   }
+
 }
 </script>
