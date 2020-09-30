@@ -1,14 +1,16 @@
 const createDialog = require('./create')
 const CustomTemplate = require('./CustomTemplate.vue').default
 
-module.exports = async function () {
-  const payload = await createDialog(CustomTemplate, {
-    props: {
-      dateFrom: new Date()
-    }
+module.exports = async function (title) {
+  const selectedDate = await createDialog(CustomTemplate, {
+    externalTitle: title,
+  }, {
+    width: '800px'
   })
 
-  doSmth(payload)
+  doSmth(selectedDate)
 }
 
-function doSmth () {}
+function doSmth (res) {
+  console.log('result is ', res)
+}
