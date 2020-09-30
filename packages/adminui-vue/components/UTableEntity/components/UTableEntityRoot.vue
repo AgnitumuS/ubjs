@@ -729,6 +729,7 @@ export default {
   top: 0;
   left: 0;
   flex-shrink: 0;
+  overflow: auto;
 }
 
 .u-table-entity__head .u-button {
@@ -763,7 +764,7 @@ export default {
 }
 
 .u-table-entity .u-card.selected {
-  background: hsl(var(--hs-primary), var(--l-background-default));
+  background: hsl(var(--hs-primary), var(--l-background-active));
 }
 
 .u-fake-table {
