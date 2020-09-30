@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- possibility to manage access for desktops and shortcuts by org_unit by redefining `exprMethod` of aclRls mixin for `ubm_desktop` and `ubm_navshortcut`
 
 ### Changed
 
