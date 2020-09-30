@@ -57,8 +57,10 @@
 
       <u-auto-field attribute-name="displayOrder" />
 
-      <u-acl-rls-input collection-name="rightsSubjects"/>
-
+      <u-acl-rls-input
+        collection-name="rightsSubjects"
+        :instance-id="ID"
+      />
       <shortcut-cmd-code />
     </u-form-container>
   </div>

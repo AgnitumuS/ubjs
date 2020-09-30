@@ -44,7 +44,10 @@
 
       <u-auto-field attribute-name="displayOrder" />
 
-      <u-acl-rls-input collection-name="rightsSubjects"/>
+      <u-acl-rls-input
+        collection-name="rightsSubjects"
+        :instance-id="ID"
+      />
     </u-form-container>
   </div>
 </template>

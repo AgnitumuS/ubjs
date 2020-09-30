@@ -111,6 +111,14 @@ export default {
     collectionName: {
       type: String,
       required: true
+    },
+
+    /**
+     * ID of entry for which we configure access
+     */
+    instanceId: {
+      type: Number,
+      required: true
     }
   },
 
@@ -177,7 +185,7 @@ export default {
           itemValues[key] = fieldValue
 
           return itemValues
-        }, item.data)
+        }, { ...item.data })
       })
     },
 
@@ -254,15 +262,20 @@ export default {
       const selectedIds = this.aclRlsEntries.map(entry => entry[attrName]).filter(Boolean)
       const repo = Repository(entityName)
         .attrs('ID', descriptionAttribute)
-        .where('ID', 'notIn', selectedIds)
+        .whereIf(selectedIds.length, 'ID', 'notIn', selectedIds)
 
       return () => repo
     },
 
     async submitRights () {
-      await Promise.all(Object.entries(this.dialog.selected).map(
-        ([ entity, entries ]) => this.addRights({ entity, entries })
-      ))
+      await Promise.all(Object.entries(this.dialog.selected).map(([ entity, ids ]) => {
+        const { attrName } = this.rightAttributesWithMetaInfo.find(meta => meta.entity === entity)
+
+        return this.addRights({
+          entity,
+          entries: ids.map(value => ({ [attrName]: value, instanceID: this.instanceId }))
+        })
+      }))
       this.dialog.isVisible = false
       this.resetSelectedItems()
       this.dialog.currentEntityName = null
@@ -271,7 +284,7 @@ export default {
     async addRights ({ entity, entries }) {
       const newRightObjects = await Promise.all(
         entries.map(() => this.$UB.connection.addNewAsObject({
-          entity,
+          entity: this.currentCollection.entity,
           fieldList: ['ID'],
           __antiMonkeyRequest: Math.random()
         }))
@@ -280,7 +293,7 @@ export default {
       entries.forEach((entry, index) => {
         this.ADD_COLLECTION_ITEM({
           collection: this.collectionName,
-          items: Object.assign(newRightObjects[index], entry)
+          item: Object.assign(newRightObjects[index], entry)
         })
       })
     }
