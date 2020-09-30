@@ -69,26 +69,6 @@
         />
       </slot>
 
-      <slot name="dataHistory">
-        <template v-if="hasDataHistoryMixin">
-          <u-dropdown-item divider />
-
-          <u-dropdown-item
-            icon="u-icon-file-add"
-            label="novajaVersija"
-            :disabled="!canCreateNewVersion || !selectedRowId"
-            @click="createNewVersion(selectedRowId)"
-          />
-
-          <u-dropdown-item
-            icon="u-icon-file-preview"
-            label="ChangesHistory"
-            :disabled="!selectedRowId"
-            @click="showRevision(selectedRowId)"
-          />
-        </template>
-      </slot>
-
       <slot name="exports">
         <u-dropdown-item divider />
         <u-dropdown-item
@@ -132,9 +112,7 @@ export default {
       'canAudit',
       'hasSelectedRow',
       'entityName',
-      'currentRepository',
-      'hasDataHistoryMixin',
-      'canCreateNewVersion'
+      'currentRepository'
     ]),
     ...mapState([
       'items',
@@ -152,9 +130,7 @@ export default {
       'copyRecord',
       'audit',
       'exportTo',
-      'showSummary',
-      'createNewVersion',
-      'showRevision'
+      'showSummary'
     ])
   }
 }
