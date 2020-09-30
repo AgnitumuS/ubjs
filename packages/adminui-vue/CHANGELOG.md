@@ -13,15 +13,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - `contextMenuDataHistory` to replace in context menu 
 
 ### Changed
+ - `UDropdown` close on press `esc` button
  - instance audit trail list now filtered by `parentEntityInfo_id`, so shows audit for all related entities
  where `parentIdentifier` & `parentEntity` is configured
 
 ### Deprecated
 
 ### Removed
+ - `fts table`: audit action is removed (fts is not an audit subject)
 
 ### Fixed
- - adjust ub-icons size to be the same for all icons
+ - ajust ub-icons size to be the same for all icons
+ - `UTableEntity -> toolbar` show scrollbar in case toolbar content is overflowed
+ - `fts table`: edit action now uses `onBuildEditConfig` handler, so worsk the same way as for othes entites lists
+ - `UTableEntity`: change color of the selected card to be darker
 
 ## [1.13.11] - 2020-09-27
 ### Changed
