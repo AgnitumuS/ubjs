@@ -124,7 +124,7 @@ module.exports = (instance) => ({
       return getters.hasSelectedRow
     },
 
-    canNewRevision (state, getters) {
+    canCreateNewVersion (state, getters) {
       return getters.schema.haveAccessToMethod(UB.core.UBCommand.methodName.NEWVERSION)
     },
 

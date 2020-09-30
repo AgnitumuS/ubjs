@@ -381,7 +381,7 @@
               <u-dropdown-item
                 icon="u-icon-file-add"
                 label="novajaVersija"
-                :disabled="!canNewRevision"
+                :disabled="!canCreateNewVersion"
                 @click="createNewVersion(selectedRowId)"
               />
 
@@ -485,7 +485,7 @@ export default {
       'formCode',
       'columns',
       'cardColumns',
-      'canNewRevision',
+      'canCreateNewVersion',
       'hasDataHistoryMixin'
     ]),
 

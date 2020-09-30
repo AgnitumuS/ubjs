@@ -76,13 +76,14 @@
           <u-dropdown-item
             icon="u-icon-file-add"
             label="novajaVersija"
-            :disabled="!canNewRevision"
+            :disabled="!canCreateNewVersion || !selectedRowId"
             @click="createNewVersion(selectedRowId)"
           />
 
           <u-dropdown-item
             icon="u-icon-file-preview"
             label="ChangesHistory"
+            :disabled="!selectedRowId"
             @click="showRevision(selectedRowId)"
           />
         </template>
@@ -133,7 +134,7 @@ export default {
       'entityName',
       'currentRepository',
       'hasDataHistoryMixin',
-      'canNewRevision'
+      'canCreateNewVersion'
     ]),
     ...mapState([
       'items',

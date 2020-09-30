@@ -5,20 +5,20 @@
     :close-on-click-modal="false"
     :visible.sync="visible"
     :title="$ut('aktualnoS')"
+    width="300px"
   >
     <u-date-picker
       v-model="selectedDate"
       :picker-options="pickerOptions"
     />
 
-    <div class="data-history-date-picker__dialog-footer">
-      <u-button
-        :disabled="!selectedDate"
-        @click="submit"
-      >
-        {{ $ut('ok') }}
-      </u-button>
-    </div>
+    <u-button
+      slot="footer"
+      :disabled="!selectedDate"
+      @click="submit"
+    >
+      {{ $ut('ok') }}
+    </u-button>
   </el-dialog>
 </template>
 
@@ -67,11 +67,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.data-history-date-picker__dialog-footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 8px;
-}
-</style>
