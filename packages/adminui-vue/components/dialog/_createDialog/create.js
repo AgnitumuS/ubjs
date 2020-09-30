@@ -10,7 +10,7 @@ module.exports = function (Template, props, dialogProps) {
           attrs: props,
           props: { resolve, ...dialogProps },
           scopedSlots: {
-            default: props => h(Template, { props }),
+            default: props => h(Template, { props })
           }
         }
       )

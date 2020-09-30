@@ -4,7 +4,6 @@
     <u-date-picker v-model="someDate" />
 
     <u-button
-      slot="footer"
       @click="done({someDate,externalTitle: externalTitle + 123123312132})"
     >
       ok
