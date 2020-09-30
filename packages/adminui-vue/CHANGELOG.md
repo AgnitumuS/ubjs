@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity` slots for data history mixin:
    - `toolbarDropdownSummary` to replace in toolbar dropdown 
    - `contextMenuDataHistory` to replace in context menu 
+ - `createDialog`: Creates dialog from template. [Docs](./components/dialog/createDialogFromTemplate/createDialog.md)
 
 ### Changed
  - `UDropdown` close on press `esc` button
