@@ -13,11 +13,6 @@
     @keydown.up.prevent.exact="move('up')"
     @keydown.down.prevent.exact="move('down')"
   >
-    <u-button @click="showDialog('Dimka ')">test</u-button>
-
-    <br>
-    <br>
-    <br>
     <div class="u-table-entity__head">
       <!-- @slot Replace whole toolbar -->
       <slot
@@ -699,9 +694,7 @@ export default {
       this.SELECT_COLUMN(column.id)
       // setTimeout for prevent click outside
       setTimeout(this.$refs.sort.$refs.dropdown.toggleVisible, 0)
-    },
-
-    showDialog: require('../../dialog/_createDialog/usage')
+    }
   }
 }
 </script>
