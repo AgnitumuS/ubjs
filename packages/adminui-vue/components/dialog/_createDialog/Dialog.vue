@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'BaseTemplate',
+  name: 'Dialog',
 
   props: {
     resolve: Function

@@ -1,4 +1,4 @@
-const createDialog = require('./create')
+const createDialog = require('./createDialog')
 const CustomTemplate = require('./CustomTemplate.vue').default
 
 module.exports = async function (title) {
