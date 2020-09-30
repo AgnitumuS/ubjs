@@ -255,5 +255,19 @@ UB.i18nExtend({
     dropdown: {
       moreButton: 'Більше'
     }
+  },
+
+  UAclRlsInput: {
+    access: 'Доступ',
+    add: 'Додати',
+    table: {
+      remove: 'Видалити'
+    },
+    dialog: {
+      addAccess: 'Дати доступ наступним записам:',
+      entity: 'Сутність',
+      entityPlaceholder: 'Сутність',
+      add: 'Додати'
+    }
   }
 })

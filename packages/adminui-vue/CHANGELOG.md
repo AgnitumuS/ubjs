@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `$App.showAuditTrail` method added - used in both adminui-vue and adminui-pub to show audit trail for instance
+ - `UaclRlsInput` component. Recomended to use for managing acces to some entity with aclRls mixin
+  [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/UAclRlsInput.vue)
 
 ### Changed
  - instance audit trail list now filtered by `parentEntityInfo_id`, so shows audit for all related entities

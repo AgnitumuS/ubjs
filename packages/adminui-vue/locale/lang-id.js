@@ -255,5 +255,19 @@ UB.i18nExtend({
     dropdown: {
       moreButton: 'More'
     }
+  },
+
+  UAclRlsInput: {
+    access: 'Access',
+    add: 'Add',
+    table: {
+      remove: 'Remove'
+    },
+    dialog: {
+      addAccess: 'Give access to such entries:',
+      entity: 'Entity',
+      entityPlaceholder: 'Entity',
+      add: 'Add'
+    }
   }
 })

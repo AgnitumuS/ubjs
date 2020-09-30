@@ -1,15 +1,15 @@
 <template>
-  <div>
-    <h4 class="u-aclRls__title">
-      {{ $ut('dfx_DocType_form.tabs.access') }}
+  <div class="u-acl-rls-input">
+    <h4 class="u-acl-rls__title">
+      {{ $ut('UAclRlsiInput.access') }}
     </h4>
 
     <el-button
       icon="el-icon-plus"
-      class="dfx_DocType_form__open-dialog"
+      class="u-acl-rls__open-dialog"
       @click="openDialog"
     >
-      {{ $ut('dfx_DocType_form.roles.add') }}
+      {{ $ut('UAclRlsInput.add') }}
     </el-button>
 
     <u-table
@@ -28,29 +28,33 @@
           type="danger"
           @click="deleteAccessRecord(row.ID)"
         >
-          {{ $ut('aclRlsPane.remove') }}
+          {{ $ut('UAclRlsInput.table.remove') }}
         </el-button>
       </template>
     </u-table>
 
     <el-dialog
       v-hold-focus
-      :title="$ut('dfx_DocType_form.accessPane.addAccess')"
+      :title="$ut('UAclRlsInput.dialog.addAccess')"
       :visible.sync="dialog.isVisible"
       :close-on-click-modal="false"
       width="600px"
       top="0"
+      class="u-acl-rls-input-dialog"
       @closed="resetSelectedItems"
     >
       <u-form-container
         label-position="top"
         :label-width="200"
-        class="dfx-dialog__form"
+        class="u-acl-rls-input-dialog__form"
       >
-        <u-form-row label="Select Entity">
+        <u-form-row
+          label="UAclRlsInput.dialog.entity"
+          class="u-acl-rls-input-overflow"
+        >
           <el-select
             v-model="dialog.currentEntityName"
-            placeholder="Select entity"
+            :placeholder="$ut('UAclRlsInput.dialog.entityPlaceholder')"
           >
             <el-option
               v-for="{ entity } in rightAttributesWithMetaInfo"
@@ -63,7 +67,8 @@
 
         <u-form-row
           v-if="currentDialogEntityMeta !== undefined"
-          :label="`aclRlsPane.${currentDialogEntityMeta.attrName}`"
+          :label="currentDialogEntityMeta.entity"
+          class="u-acl-rls-input-overflow"
         >
           <u-select-multiple
             v-model="dialog.selected[currentDialogEntityMeta.entity]"
@@ -75,7 +80,7 @@
 
       <span
         slot="footer"
-        class="dfx-dialog__footer"
+        class="u-acl-rls-dialog__footer"
       >
         <el-button @click="closeDialog">
           {{ $ut('cancel') }}
@@ -85,7 +90,7 @@
           type="primary"
           @click="submitRights"
         >
-          {{ $ut('dfx_DocType_form.roles.add') }}
+          {{ $ut('UAclRlsInput.dialog.add') }}
         </el-button>
       </span>
     </el-dialog>
@@ -99,7 +104,8 @@ const { Repository } = require('@unitybase/ub-pub')
 const NOT_FK_ACL_ATTRIBUTES = ['ID', 'valueID', 'instanceID']
 
 /**
- * Component for managing access rights defined with aclRls entity mixin
+ * Component is responsible for displaying and managing access rights defined with
+ * aclRls entity mixin
  */
 export default {
   name: 'UAclRlsInput',
@@ -156,14 +162,14 @@ export default {
     },
 
     tableColumns () {
-      return this.rightAttributes
-        .map(attribute => ({
-          id: attribute,
-          label: `aclRlsPane.${attribute}`
+      return this.rightAttributesWithMetaInfo
+        .map(({ attrName, entity }) => ({
+          id: attrName,
+          label: entity
         }))
         .concat({
           id: 'removeAction',
-          label: 'aclRlsPane.remove',
+          label: 'UAclRlsInput.table.remove',
           width: 130
         })
     },
@@ -304,8 +310,92 @@ export default {
 
 <style>
 
+.u-acl-rls-input {
+  margin-top: 1rem;
+}
+
+.u-acl-rls__title {
+  margin: 0;
+  padding-bottom: 12px;
+}
+
+.u-acl-rls__open-dialog {
+  padding-left: 10px;
+  border: 0;
+  font-size: 14px;
+  color: hsl(var(--hs-primary), var(--l-state-default));
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.u-acl-rls__open-dialog:hover,
+.u-acl-rls__open-dialog:focus {
+  color: hsl(var(--hs-primary), var(--l-state-hover));
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.u-acl-rls__open-dialog:active {
+  color: hsl(var(--hs-primary), var(--l-state-active));
+}
+
+.u-acl-rls-input-dialog {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.u-acl-rls-input-dialog__form {
+  padding: 0;
+  word-break: normal;
+  overflow: visible;
+}
+
+.u-acl-rls-input-overflow > .u-form-row__content {
+  overflow: hidden;
+}
+
+.u-acl-rls-dialog__footer {
+  display: flex;
+  justify-content: space-between;
+}
+
 </style>
 
 <docs>
+
+```vue
+<u-acl-rls-input
+  collection-name="rightsSubjects"
+  :instance-id="ID"
+/>
+```
+```javascript
+<script>
+const { Form } = require('@unitybase/adminui-vue')
+
+module.exports.mount = cfg => {
+  Form(cfg)
+    .processing({
+      collections: {
+        rightsSubjects ({state}) {
+          // should slect all attributes from domain info as we can use '*' on client side
+          const attributes = Object.keys(
+            UB.connection.domain.entities['ubm_navshortcut_acl'].attributes
+          )
+
+          return Repository('ubm_navshortcut_acl')
+            .attrs(attributes)
+            .where('instanceID', '=', state.data.ID)
+        }
+      }
+    })
+    .validation()
+    .mount()
+}
+
+module.exports.default = {
+  // root component
+}
+</script>
+```
 
 </docs>
