@@ -307,7 +307,7 @@ export default {
   flex-direction: column;
   flex-grow: 1;
   flex-basis: 450px;
-  min-width: 450px;
+  flex-shrink: 0;
 }
 
 .u-table-register__view__preview-form-mode > .u-table-entity__head .u-button .u-button__label {
