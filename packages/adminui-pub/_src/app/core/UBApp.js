@@ -835,8 +835,9 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * @param {String/Object} config
    * @param {Object} [config.cmpInitConfig] Configuration, applied to Component created by command
    * @param {Boolean} [config.openInBackgroundTab] true if you want to set form/list to tab without setActiveTab. Default undefined.
+   * @return {Promise} Resolves on open Ext tab
    */
-  doCommand: function (config) {
+  doCommand (config) {
     if (Ext.isString(config)) {
       config = Ext.JSON.decode(config)
     }
@@ -845,7 +846,12 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       throw new Error('invalid config passed to UBApp.doCommand')
     }
 
+    const openTabPromise = new Promise(resolve => {
+      config.resolveOpen = resolve
+    })
+      .then((r) => {debugger})
     Ext.create('UB.core.UBCommand', config)
+    return openTabPromise
   },
   /**
    * Load a shortcut command by given shortcut ID (or code) and run it

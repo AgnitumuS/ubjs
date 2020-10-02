@@ -17,6 +17,7 @@ const AUDIT_ENTITY = 'uba_auditTrail'
  * @param {function} instance.buildEditConfig Edit config builder. Called with (cfg: configToMutate, row: content of row to edit)
  * @param {function} instance.buildCopyConfig Copy config builder. Called with (cfg: configToMutate, row: content of row to edit)
  * @param {object[]} instance.getCardColumns Columns to show in card view
+ * @param {function} instance.beforeAddNew Before "addNew" hook
  */
 module.exports = (instance) => ({
   state () {
@@ -329,7 +330,8 @@ module.exports = (instance) => ({
       await dispatch('fetchItems')
     },
 
-    async addNew ({ getters }) {
+    async addNew ({ getters, commit }) {
+      commit('LOADING', true)
       if (instance.beforeAddNew) {
         const answer = await instance.beforeAddNew()
         if (answer === false) {
@@ -347,11 +349,14 @@ module.exports = (instance) => ({
         target: UB.core.UBApp.viewport.centralPanel,
         tabId
       }, instance)
-      UB.core.UBApp.doCommand(config)
+      await UB.core.UBApp.doCommand(config)
+      commit('LOADING', false)
     },
 
-    async editRecord ({ state, getters }, ID) {
+    async editRecord ({ state, getters, commit }, ID) {
       if (ID === null) return
+
+      commit('LOADING', true)
 
       const tabId = UB.core.UBApp.generateTabId({
         entity: getters.entityName,
@@ -367,7 +372,8 @@ module.exports = (instance) => ({
         target: UB.core.UBApp.viewport.centralPanel,
         tabId
       }, item)
-      UB.core.UBApp.doCommand(config)
+      await UB.core.UBApp.doCommand(config)
+      commit('LOADING', false)
     },
 
     async deleteRecord ({ state, commit, getters }, ID) {
@@ -396,7 +402,8 @@ module.exports = (instance) => ({
       }
     },
 
-    async copyRecord ({ state, getters }, ID) {
+    async copyRecord ({ state, getters, commit }, ID) {
+      commit('LOADING', true)
       const tabId = UB.core.UBApp.generateTabId({
         entity: getters.entityName,
         instanceID: ID,
@@ -413,7 +420,8 @@ module.exports = (instance) => ({
         target: UB.core.UBApp.viewport.centralPanel,
         tabId
       }, item)
-      UB.core.UBApp.doCommand(config)
+      await UB.core.UBApp.doCommand(config)
+      commit('LOADING', false)
     },
 
     createLink ({ getters }, ID) {
@@ -620,7 +628,7 @@ function transformResponseToTubCachedData (response) {
  * Checks record is applicable to current repository whereList
  *
  * @param {object} response
- * @param {ClientRepository} repository
+ * @param {CustomRepository} repository
  * @returns {boolean}
  */
 function isApplicableWhereList (response, repository) {

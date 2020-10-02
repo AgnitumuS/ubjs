@@ -551,6 +551,7 @@ Ext.define('UB.core.UBCommand', {
       config.id = me.tabId
       config.closable = true
     }
+    me.commandConfig.resolveOpen()
     const grid = Ext.create('UB.view.EntityGridPanel', config)
     me.bindFocus(grid)
 
@@ -624,6 +625,7 @@ Ext.define('UB.core.UBCommand', {
             me.onShowFormRun(formDefinition.formView, formDefinition.formController)
           }
         })
+          .then(me.commandConfig.resolveOpen)
       }
     }
   },
