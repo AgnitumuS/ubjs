@@ -10,7 +10,7 @@
 		},
 		//#endif
 		"host": "+",
-		"port": "8881",
+		"port": "%UB_PORT||8881%",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",

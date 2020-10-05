@@ -16,7 +16,7 @@ npm run build
 
 cd $ROOT/apps/autotest
 
-ub-app-pack -m DEV
+ub-pack -m DEV
 exit 0
 
 # deploy
