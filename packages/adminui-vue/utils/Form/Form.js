@@ -141,12 +141,16 @@ class UForm {
   }
 
   /**
+   * Sets store field list, collections and lifecircle hooks.
+   * All hooks are called with one argument $store and this === Current form.
+   *
    * @param {Object} [cfg]
    * @param {string[]} [cfg.masterFieldList] form field list. By default all entity attributes
    * @param {Object} [cfg.collections]
    * @param {function} [cfg.beforeInit]
    * @param {function} [cfg.inited]
-   * @param {function} [cfg.beforeSave]
+   * @param {function} [cfg.beforeSave] Called before form creates insert\update request.
+   *   If returned value is resolved to `false` then save action is canceled
    * @param {function} [cfg.saved]
    * @param {function} [cfg.beforeCreate]
    * @param {function} [cfg.created]
