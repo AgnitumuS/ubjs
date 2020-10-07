@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - instance audit trail list now filtered by `parentEntityInfo_id`, so shows audit for all related entities
  where `parentIdentifier` & `parentEntity` is configured
+ - transformation timeout for `/ocr/transform` XHR request for `$App.scan()` increased to 10 minutes (from default 2 minutes).
+   This allows recognizing big or complex documents.
 
 ### Deprecated
 
