@@ -98,15 +98,16 @@ me.auth = function (otp, otpKind, fCheckUData, checkData, call) {
 /**
  * Verify TOTP for currently logged in user
  *
- * @param {string} totp TOTP value entered by user (6 digits string)
+ * @param {string} totpValue TOTP value entered by user (6 digits string)
+ * @param {number} [userID] optional user ID to verify TOTP for. By default - Session.userID
  * @method verifyTotp
  * @memberOf uba_otp_ns.prototype
  * @memberOfModule @unitybase/uba
  * @return {boolean}
  */
-me.verifyTotp = function (totpValue) {
+me.verifyTotp = function (totpValue, userID) {
   const secret = UB.Repository('uba_otp').attrs('otp')
-    .where('userID', '=', Session.userID)
+    .where('userID', '=', userID || Session.userID)
     .where('[expiredDate]', '>=', new Date())
     .where('[otpKind]', '=', 'TOTP')
     .selectScalar()
