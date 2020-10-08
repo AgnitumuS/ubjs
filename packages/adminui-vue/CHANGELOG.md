@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `$App.showAuditTrail` method added - used in both adminui-vue and adminui-pub to show audit trail for instance
-
+ - `replaceShowList`: provide `onSelectRecord` prop to `UTableEntity`
+ 
 ### Changed
  - `UDropdown` close on press `esc` button
  - instance audit trail list now filtered by `parentEntityInfo_id`, so shows audit for all related entities
