@@ -24,30 +24,33 @@
     />
 
     <template slot="footer">
-      <el-button
+      <u-button
         v-if="isDevInfo"
+        appearance="plain"
+        color="control"
         icon="u-icon-copy"
         @click="copyClipboard"
       />
-      <el-button
+      <u-button
         v-if="buttons.cancel"
+        ref="cancelButton"
+        appearance="plain"
+        color="control"
         @click="cancel"
       >
         {{ $ut(buttons.cancel) }}
-      </el-button>
-      <el-button
+      </u-button>
+      <u-button
         v-if="buttons.no"
+        appearance="plain"
+        color="control"
         @click="decline"
       >
         {{ $ut(buttons.no) }}
-      </el-button>
-      <el-button
-        ref="acceptButton"
-        type="primary"
-        @click="accept"
-      >
+      </u-button>
+      <u-button @click="accept">
         {{ $ut(buttons.yes) }}
-      </el-button>
+      </u-button>
     </template>
   </el-dialog>
 </template>
@@ -104,8 +107,10 @@ export default {
 
     async setFocus () {
       await this.$nextTick()
-      const acceptButton = this.$refs.acceptButton
-      acceptButton.$el.focus()
+      const cancelButton = this.$refs.cancelButton
+      if (this.$refs.cancelButton) {
+        cancelButton.$el.focus()
+      }
     }
   }
 }
