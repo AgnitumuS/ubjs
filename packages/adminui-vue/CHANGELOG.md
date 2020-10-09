@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `$App.showAuditTrail` method added - used in both adminui-vue and adminui-pub to show audit trail for instance
+ - `UTableEntity` - added data history mixin support
+ - `UTableEntity` - new slots for data history mixin:
+   - `toolbarDropdownSummary` to replace in toolbar dropdown 
+   - `contextMenuDataHistory` to replace in context menu 
  - `replaceShowList`: provide `onSelectRecord` prop to `UTableEntity`
  
 ### Changed

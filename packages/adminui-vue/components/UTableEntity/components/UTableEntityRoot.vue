@@ -134,6 +134,22 @@
                 name="toolbarDropdownAudit"
               />
             </template>
+            <!-- @slot Replace summary button in toolbar dropdown -->
+            <template #summary>
+              <slot
+                :close="close"
+                :store="$store"
+                name="toolbarDropdownSummary"
+              />
+            </template>
+            <!-- @slot Replace data history button in toolbar dropdown -->
+            <template #dataHistory>
+              <slot
+                :close="close"
+                :store="$store"
+                name="toolbarDropdownDataHistory"
+              />
+            </template>
             <!-- @slot Replace exports button in toolbar dropdown -->
             <template #exports>
               <slot
@@ -168,14 +184,6 @@
                   />
                 </u-dropdown-item>
               </slot>
-            </template>
-
-            <template #summary>
-              <slot
-                :close="close"
-                :store="$store"
-                name="toolbarDropdownSummary"
-              />
             </template>
 
             <!-- @slot Append new buttons to toolbar -->
@@ -361,6 +369,30 @@
             />
           </slot>
 
+          <slot
+            :close="close"
+            :row-id="contextMenuRowId"
+            :store="$store"
+            name="contextMenuDataHistory"
+          >
+            <template v-if="hasDataHistoryMixin">
+              <u-dropdown-item divider />
+
+              <u-dropdown-item
+                icon="u-icon-file-add"
+                label="novajaVersija"
+                :disabled="!canCreateNewVersion"
+                @click="createNewVersion(selectedRowId)"
+              />
+
+              <u-dropdown-item
+                icon="u-icon-file-preview"
+                label="ChangesHistory"
+                @click="showRevision(selectedRowId)"
+              />
+            </template>
+          </slot>
+
           <!-- @slot Replace "detail records list" in context menu -->
           <slot
             :close="close"
@@ -452,7 +484,9 @@ export default {
       'hasSelectedRow',
       'formCode',
       'columns',
-      'cardColumns'
+      'cardColumns',
+      'canCreateNewVersion',
+      'hasDataHistoryMixin'
     ]),
 
     selectedColumnId: {
@@ -508,7 +542,9 @@ export default {
       'refresh',
       'copyRecord',
       'createLink',
-      'audit'
+      'audit',
+      'createNewVersion',
+      'showRevision'
     ]),
     ...mapMutations([
       'SELECT_COLUMN',
