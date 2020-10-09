@@ -201,7 +201,8 @@ function replaceShowList () {
             return UB.Repository(req)
           },
           columns,
-          buildEditConfig: cfg.cmpInitConfig && cfg.cmpInitConfig.buildEditConfig
+          buildEditConfig: cfg.cmpInitConfig && cfg.cmpInitConfig.buildEditConfig,
+          onSelectRecord: cfg.onSelectRecord
         }
       }
 
