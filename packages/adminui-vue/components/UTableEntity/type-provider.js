@@ -1,7 +1,6 @@
 const defaultType = require('./type-definitions/default')
 const defaultCellTemplate = require('./cell-templates/default.vue').default
 const formatByPattern = require('@unitybase/cs-shared').formatByPattern
-const UB = require('@unitybase/ub-pub')
 
 /**
  * Module provides column settings, cell and filter templates by UB data types.

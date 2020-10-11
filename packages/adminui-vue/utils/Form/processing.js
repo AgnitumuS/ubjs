@@ -464,7 +464,7 @@ function createProcessingModule ({
           })
         }
         if (beforeInit) {
-          await beforeInit()
+          await beforeInit(store)
         }
         commit('IS_NEW', !instanceID || state.isCopy)
 
@@ -477,7 +477,7 @@ function createProcessingModule ({
           await dispatch('loadCollections', autoLoadedCollections)
         }
         if (inited) {
-          await inited()
+          await inited(store)
         }
       },
 

@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ### Changed
  - uba* navshotrcut initialization uses ub-migrate instead of handmade script
+ - `Audit Trail form` rewrite from Ext to Vue
 
 ### Deprecated
 

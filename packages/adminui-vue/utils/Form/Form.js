@@ -264,8 +264,7 @@ class UForm {
       try {
         await this.$store.dispatch('init')
       } catch (err) {
-        UB.showErrorWindow(err.message)
-        return
+        throw new UB.UBError(err)
       }
     }
 
