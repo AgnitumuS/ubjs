@@ -9,6 +9,7 @@
       </button>
       <u-button
         slot="left"
+        color="primary"
         appearance="inverse"
         @click="verifySignatures"
       >
@@ -109,9 +110,9 @@ module.exports.default = {
       'docDate',
       'incomeDate',
       'regDate',
-      /*'category',
+      /* 'category',
       'favorites',
-      'favorites2',*/
+      'favorites2', */
       'docDateTime',
       'description',
       'fileStoreSimple',

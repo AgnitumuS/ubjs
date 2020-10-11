@@ -63,6 +63,7 @@
               >
                 <u-button
                   appearance="inverse"
+                  color="primary"
                   icon="u-icon-send"
                 >
                   Test
@@ -165,6 +166,7 @@
                 subject-attribute="dictID"
               >
                 <u-button
+                  color="primary"
                   appearance="inverse"
                   icon="u-icon-send"
                 >

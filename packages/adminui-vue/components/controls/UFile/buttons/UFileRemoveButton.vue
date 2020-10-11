@@ -4,6 +4,7 @@
     :enterable="false"
   >
     <u-button
+      color="primary"
       icon="u-icon-delete"
       appearance="inverse"
       :disabled="isDisabled"

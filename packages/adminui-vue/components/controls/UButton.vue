@@ -89,7 +89,7 @@ export default {
      */
     color: {
       type: String,
-      default: 'primary',
+      default: 'control',
       validator (value) {
         return ['control', 'primary', 'success', 'danger', 'warning'].includes(value)
       }
