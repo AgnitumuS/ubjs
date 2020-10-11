@@ -5,6 +5,7 @@
   >
     <u-button
       appearance="plain"
+      color="primary"
       right-icon="u-icon-arrow-right"
       :disabled="loading"
       @click="pageIndex += 1"

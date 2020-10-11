@@ -3,6 +3,7 @@
     <u-toolbar>
       <template slot="left">
         <u-button
+          color="primary"
           appearance="inverse"
           icon="u-icon-refresh"
           tooltip="refresh"

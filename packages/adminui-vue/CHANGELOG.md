@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UDropdown` close on press `esc` button
  - instance audit trail list now filtered by `parentEntityInfo_id`, so shows audit for all related entities
  where `parentIdentifier` & `parentEntity` is configured
+ - *BREAKING* `UButton` default color is changed from `primary` to `control`. The reason - only one primary button should be on the form.
  - `diologYesNo` focus "No" action by default
 
 ### Deprecated

@@ -4,6 +4,7 @@
     :enterable="false"
   >
     <u-button
+      color="primary"
       icon="u-icon-scan"
       appearance="inverse"
       :disabled="instance.file || instance.disabled"
