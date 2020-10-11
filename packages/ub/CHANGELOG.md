@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `ignoreCollation` attribute property added to entity metadata schema
 
 ### Changed
 

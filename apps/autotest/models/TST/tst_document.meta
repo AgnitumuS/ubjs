@@ -10,7 +10,8 @@
       "dataType": "String",
       "size": 64,
       "caption": "Code",
-      "allowNull": false
+      "allowNull": false,
+      "ignoreCollation": true
     },
     {
       "name": "docDate",
@@ -139,6 +140,16 @@
         "description"
       ],
       "dateAttribute": "docDate"
+    }
+  },
+  "dbExtensions": {
+    "CIDX_DOC_DESCRIPTION": {
+      "type": "CATALOGUE",
+      "definition": {
+        "keys": {
+          "description": {}
+        }
+      }
     }
   }
 }
