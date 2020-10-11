@@ -27,5 +27,5 @@ module.exports = function runMDBTest (options) {
  */
 function testServerSideBLOB (conn) {
   const resp = conn.post('testServerSideBLOB', {})
-  assert.equal(resp.success, true, resp.reason)
+  assert.strictEqual(resp.success, true, resp.reason)
 }
