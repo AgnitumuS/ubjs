@@ -255,5 +255,9 @@ UB.i18nExtend({
     dropdown: {
       moreButton: 'Більше'
     }
+  },
+
+  UTable: {
+    noData: 'Немає даних'
   }
 })

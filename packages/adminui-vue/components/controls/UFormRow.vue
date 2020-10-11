@@ -11,7 +11,7 @@
       class="u-form-row__ghost-button"
     />
     <div
-      v-if="!!label"
+      v-if="label"
       class="u-form-row__label"
       :class="{ required }"
       :style="labelWidthCss"

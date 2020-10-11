@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - `toolbarDropdownSummary` to replace in toolbar dropdown 
    - `contextMenuDataHistory` to replace in context menu 
  - `replaceShowList`: provide `onSelectRecord` prop to `UTableEntity`
+ - `UTable`, `UTableEntity`: caption "No data" in case has no data in table
+ - `Form`: pass param `store` in hooks `beforeInit` and `inited`
  
 ### Changed
  - `UDropdown` close on press `esc` button
