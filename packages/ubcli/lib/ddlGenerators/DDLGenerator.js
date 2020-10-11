@@ -96,7 +96,7 @@ function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory,
  * @param root
  * @param suffix
  * @param {string|DDLGenerator.dbDialectes} dialect One of DDLGenerator.dbDialectes
- * @returns {*}
+ * @returns {string}
  */
 function formatName (prefix, root, suffix, dialect = DDLGenerator.dbDialectes.AnsiSQL) {
   const MAX_IDENTIFIER_LEN = DDLGenerator.MAX_DB_IDENTIFIER_LENGTHS[dialect]
@@ -374,7 +374,7 @@ class DDLGenerator {
   }
 
   /**
-   *
+   * Add dbKeys and dbExtension indexes
    * @param {TableDefinition} tableDef
    * @param {UBEntity} entity
    */
@@ -420,6 +420,19 @@ class DDLGenerator {
       })
     }
     if (entity.dbExtensions) {
+      const IS_SQL_SERVER = DDLGenerator.isMSSQL(dialect)
+      if (IS_SQL_SERVER) { // merge CATALOGUE DBExtensions for SQL server into one FTS index
+        const msSqlFtsIdx = { name: '__CATALOGUE__', keys: [], indexType: 'CATALOGUE' }
+        _.forEach(entity.dbExtensions, (command) => {
+          if (command.type === 'CATALOGUE') {
+            msSqlFtsIdx.keys.push(...Object.keys(command.definition.keys))
+          }
+        })
+        if (msSqlFtsIdx.keys.length) {
+          msSqlFtsIdx.keys.sort()
+          tableDef.addIndex(msSqlFtsIdx, true)
+        }
+      }
       _.forEach(entity.dbExtensions, (commands, dbKey) => {
         if (!commands.type) {
           commands.type = 'OTHER'
@@ -430,22 +443,24 @@ class DDLGenerator {
           switch (commands.type) {
             case 'INDEX':
             case 'CATALOGUE':
-              objDef = { name: dbKey, keys: [], isUnique: definition.isUnique }
-              if (commands.type === 'CATALOGUE') objDef.indexType = commands.type
-              _.forEach(definition.keys, (fKeyOptions, fkeyText) => {
-                if (fKeyOptions.func && DDLGenerator.isOracle(dialect)) {
-                  if (fKeyOptions.func.indexOf('{0}') === -1) {
-                    fkeyText = fKeyOptions.func + '(' + fkeyText + ')'
-                  } else {
-                    fkeyText = formatBrackets(fKeyOptions.func, fkeyText)
+              if (!(IS_SQL_SERVER && commands.type === 'CATALOGUE')) { // already added
+                objDef = { name: dbKey, keys: [], isUnique: definition.isUnique }
+                if (commands.type === 'CATALOGUE') objDef.indexType = commands.type
+                _.forEach(definition.keys, (fKeyOptions, fkeyText) => {
+                  if (fKeyOptions.func && DDLGenerator.isOracle(dialect)) {
+                    if (fKeyOptions.func.indexOf('{0}') === -1) {
+                      fkeyText = fKeyOptions.func + '(' + fkeyText + ')'
+                    } else {
+                      fkeyText = formatBrackets(fKeyOptions.func, fkeyText)
+                    }
                   }
-                }
-                if (fKeyOptions.sort && (DDLGenerator.isEqualStrings(fKeyOptions.sort, 'DESC'))) {
-                  fkeyText += ' DESC'
-                }
-                objDef.keys.push(fkeyText)
-              })
-              tableDef.addIndex(objDef, true)
+                  if (fKeyOptions.sort && (DDLGenerator.isEqualStrings(fKeyOptions.sort, 'DESC'))) {
+                    fkeyText += ' DESC'
+                  }
+                  objDef.keys.push(fkeyText)
+                })
+                tableDef.addIndex(objDef, true)
+              }
               break
             case 'CHECK':
               objDef = { name: dbKey, type: 'custom', expression: definition.check }
@@ -476,7 +491,7 @@ class DDLGenerator {
     let dataType, size, prec, enumGroup
     let allowNull = attribute.allowNull
     let refTable
-    // convert UB type to phisical type
+    // convert UB type to physical type
     switch (attribute.dataType) {
       case UBDomain.ubDataTypes.String:
         dataType = 'NVARCHAR'

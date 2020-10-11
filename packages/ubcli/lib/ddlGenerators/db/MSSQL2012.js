@@ -156,6 +156,24 @@ class DBSQL2012 extends DBAbstract {
         data: indexesSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
+      const ftsIndexesSQL = `select
+ i.object_id as index_id, '__CATALOGUE__' AS index_name, c.name as column_name, '' as type_desc,
+ 0 as is_unique, 0 as is_primary_key, 0 as is_unique_constraint, case when i.is_enabled = 1 then 0 else 1 end as is_disabled, 0 as is_descending_key
+FROM 
+  sys.fulltext_indexes as i 
+    INNER JOIN sys.fulltext_index_columns ic ON i.object_id = ic.object_id
+    INNER JOIN sys.columns c  ON ic.object_id = c.object_id AND c.column_id = ic.column_id
+WHERE 
+  i.object_id = OBJECT_ID(:("${asIsTable._upperName}"):, N'U')
+ORDER BY i.object_id, c.name`
+      const ftsIndexesFromDb = this.conn.xhr({
+        endpoint: 'runSQL',
+        data: ftsIndexesSQL,
+        URLParams: { CONNECTION: this.dbConnectionConfig.name }
+      })
+      if (ftsIndexesFromDb.length) {
+        indexesFromDb.push(...ftsIndexesFromDb)
+      }
       let i = 0
       const idxCnt = indexesFromDb.length
       while (i < idxCnt) {
@@ -164,6 +182,7 @@ class DBSQL2012 extends DBAbstract {
           isUnique: indexesFromDb[i].is_unique !== 0,
           isDisabled: indexesFromDb[i].is_disabled !== 0,
           isConstraint: indexesFromDb[i].is_unique_constraint !== 0,
+          indexType: i.name === '__CATALOGUE__' ? 'CATALOGUE' : null,
           keys: []
         }
         // index may consist of several keys (one roe for each key)
@@ -426,7 +445,9 @@ class DBSQL2012 extends DBAbstract {
   genCodeDropIndex (tableDB, table, indexDB, comment, objCollect) {
     const cObj = objCollect || this.DDL.dropIndex.statements
     if (comment) cObj.push(`-- ${comment}\r\n`)
-    if (indexDB.isConstraint) {
+    if (indexDB.indexType === 'CATALOGUE') {
+      cObj.push(`DROP FULLTEXT INDEX ON dbo.${tableDB.name}`)
+    } else if (indexDB.isConstraint) {
       cObj.push(`ALTER TABLE ${tableDB.name} DROP CONSTRAINT ${indexDB.name}`)
     } else {
       cObj.push(`drop index ${indexDB.name} on dbo.${tableDB.name}`)
@@ -471,9 +492,17 @@ class DBSQL2012 extends DBAbstract {
   /** @override */
   genCodeCreateIndex (table, indexSH, comment) {
     const commentText = comment ? `-- ${comment} \n` : ''
-    this.DDL.createIndex.statements.push(
-      `${commentText}create ${indexSH.isUnique ? 'unique' : ''} index ${indexSH.name} on dbo.${table.name}(${indexSH.keys.join(',')})`
-    )
+    if (indexSH.indexType === 'CATALOGUE') {
+      // we adds commit / begin transaction because FTS index can not be created inside user transaction,
+      // but RUN SQL endpoint starts it
+      this.DDL.createIndex.statements.push(`COMMIT; CREATE FULLTEXT INDEX ON dbo.${table.name}(${indexSH.keys.join(',')})
+      KEY INDEX ${table.primaryKey.name} WITH STOPLIST = SYSTEM;
+      BEGIN TRANSACTION`)
+    } else {
+      this.DDL.createIndex.statements.push(
+        `${commentText}create ${indexSH.isUnique ? 'unique' : ''} index ${indexSH.name} on dbo.${table.name}(${indexSH.keys.join(',')})`
+      )
+    }
   }
 
   /**

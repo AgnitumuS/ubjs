@@ -32,6 +32,8 @@ Special index type **CATALOGUE** is available for optimizing queries with substr
 where field like "%substr%"
 ```
 
+See also 'ignoreCollation' below.
+
 Such queries usually produced by UI Select/ComboBox controls while user typing a text to search or from Filters in Grid 
 when `Contains` condition is selected. Database always do a table full scan for such queries, what may lead to performance
 problems when the table is large (100 000 records or more).  
@@ -53,7 +55,7 @@ where `CIDX_TMD_CAPTION` is a index name and `caption` is attribute on which sub
 
 Depending on database type UBQL query:  
 ```javascript
-UB.Repository('myEntyity').attrs('ID' 'caption').where('caption', 'like', 'substr').selectAsObject()
+UB.Repository('myEntyity').attrs('ID', 'caption').where('caption', 'like', 'substr').selectAsObject()
 ```
 will be translated to SQL:  
  - Oracle
@@ -71,7 +73,22 @@ select ID, caption from myEntity where CATSEARCH(caption, ?, null) > 0
 select ID, caption from myEntity where caption ILIKE ? 
 ``` 
 
-####  CATALOGUE pre-requirements for Oracle
+ - SQL Server (UB >= 5.18.15)
+ DDL generator creates Full Text Search index for tables with CATALOGUE extension (one index for all keys). Statement will be:
+```sql
+// ? = '"substr*"'
+select ID, caption from myEntity where CONTAINS(caption, ?) 
+```  
+
+#### CATALOGUE pre-requirements for SQL Server
+Default Full Text Catalogue must exist in the database. 
+In case database is created using `ubcli initDB -create` it will be created automatically,
+for other cases run a following statement:
+```
+CREATE FULLTEXT CATALOG ftsDefault AS DEFAULT;
+```  
+
+#### CATALOGUE pre-requirements for Oracle
 - Check Database Collation
 
 Since `CTXCAT` indexes is not allowed for NVARCHAR2 columns DDL will convert such columns to VARCHAR2.
@@ -102,6 +119,21 @@ To create a `CTXCAT` index CTXAPP and CTX_DDL should be granted to role:
 GRANT RESOURCE, CONNECT, CTXAPP TO UBDF_FSS_TST;
 GRANT EXECUTE ON CTXSYS.CTX_DDL TO UBDF_FSS_TST; 
 ```
+
+#### Using `ignoreCollation` for non-words attributes
+Catalogue indexes works perfectly for attributes what not contains abbreviations and acronyms, but otherwise it depends on 
+RDBMS implementation. 
+
+For Postgres, where such indexes are based on trigrams, or for Oracle with CXTCAT it **may work as expected**, for SQL server 
+where CATALOGUE index is based on FTS - not.
+
+For example in case attribute contains a document number, like `01-114-56-15(9370)` and we need to search by part of it,
+FTS word breaker do not recognize "words" correctly, and search by phrase `14-56` do not return a number above.
+
+For such attributes `"ignoreCollation": true` can be defined in meta file and UnityBase (>=5.18.15) tries to optimize `like %..%` 
+to decrease SQL Server CPU consumption. 
+
+**Please, verify such optimization on your data, since logic is not strict in this case**         
 
 ## Array binding
 UnityBase can bind arrays (array of int64 or array of strings are supported) as parameters value:    
