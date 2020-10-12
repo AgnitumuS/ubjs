@@ -4,7 +4,7 @@
 
 <script>
 const { Form } = require('@unitybase/adminui-vue')
-
+/* TODO: custom tab title */
 module.exports.mount = cfg => {
   Form(cfg)
     .processing({
