@@ -64,6 +64,8 @@ module.exports.magicLink = magicLink
 magicLink.install()
 magicLink.addCommand('setFocus', magicLinkFocusCommand)
 
+module.exports.createDialog = require('./components/dialog/createDialogFromTemplate/createDialog')
+
 if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
 if (window.Vue === undefined) {
   window.Vue = require('vue')
