@@ -5,7 +5,9 @@
       color="primary"
       appearance="inverse"
       :disabled="!haveAccess('addnew', 'insert')"
-      @click="openCertForm()"
+      @click="openCertForm({
+        userID: $store.state.data.ID
+      })"
     >
       {{ $ut('actionAdd') }}
     </u-button>
@@ -22,13 +24,6 @@
             appearance="inverse"
             :disabled="!haveAccess('delete')"
             @click="removeCert(row.ID)"
-          />
-          <u-button
-            icon="u-icon-edit"
-            color="primary"
-            appearance="inverse"
-            :disabled="!haveAccess('insert', 'update')"
-            @click="openCertForm(row)"
           />
           <u-button
             icon="u-icon-edit"
@@ -65,7 +60,9 @@
 </template>
 
 <script>
-const { mapMutations } = require('vuex')
+const { mapMutations, mapActions } = require('vuex')
+const { createDialog } = require('@unitybase/adminui-vue')
+const CertificateForm = require('./CertificateForm.vue').default
 
 export default {
   name: 'Certificates',
@@ -100,10 +97,26 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['DELETE_COLLECTION_ITEM']),
+    ...mapMutations(['ASSIGN_DATA', 'DELETE_COLLECTION_ITEM']),
+    ...mapActions(['addCollectionItem']),
 
-    openCertForm (row) {
-      console.log(row)
+    async openCertForm (row) {
+      const modifiedRow = await createDialog(CertificateForm, { row })
+      if (!modifiedRow) return
+
+      const index = this.tableData.findIndex(predicate => predicate.ID === modifiedRow.ID)
+      if (index === -1) {
+        this.addCollectionItem({
+          collection: 'certificates',
+          execParams: modifiedRow
+        })
+      } else {
+        this.ASSIGN_DATA({
+          collection: 'certificates',
+          index,
+          loadedState: modifiedRow
+        })
+      }
     },
 
     removeCert (ID) {
