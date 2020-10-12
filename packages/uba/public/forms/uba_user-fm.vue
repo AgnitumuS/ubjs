@@ -6,9 +6,6 @@
 const { Form } = require('@unitybase/adminui-vue')
 
 module.exports.mount = cfg => {
-  // uba_userrole
-  // uba_usergroup
-  // uba_usercertificate
   Form(cfg)
     .processing({
       masterFieldList: [
@@ -25,7 +22,20 @@ module.exports.mount = cfg => {
         'trustedIP',
         'uData',
         'avatar'
-      ]
+      ],
+
+      collections: {
+        roles: ({ state }) => UB.Repository('uba_userrole')
+          .attrs('ID', 'roleID', 'userID')
+          .where('userID', '=', state.data.ID),
+        groups: ({ state }) => UB.Repository('uba_usergroup')
+          .attrs('ID', 'groupID', 'userID')
+          .where('userID', '=', state.data.ID),
+        certificates: ({ state }) => UB.Repository('uba_usercertificate')
+          .attrs('issuer_serial', 'serial', 'description', 'disabled', 'revoked', 'ID', 'userID')
+          .where('userID', '=', state.data.ID)
+
+      }
     })
     .validation()
     .mount()
