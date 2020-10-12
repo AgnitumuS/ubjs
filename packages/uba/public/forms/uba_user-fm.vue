@@ -34,7 +34,6 @@ module.exports.mount = cfg => {
         certificates: ({ state }) => UB.Repository('uba_usercertificate')
           .attrs('issuer_serial', 'serial', 'description', 'disabled', 'revoked', 'ID', 'userID')
           .where('userID', '=', state.data.ID)
-
       }
     })
     .validation()

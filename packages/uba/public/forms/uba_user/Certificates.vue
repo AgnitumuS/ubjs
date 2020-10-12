@@ -4,6 +4,8 @@
       icon="u-icon-add"
       color="primary"
       appearance="inverse"
+      :disabled="!haveAccess('addnew', 'insert')"
+      @click="openCertForm()"
     >
       {{ $ut('actionAdd') }}
     </u-button>
@@ -12,6 +14,31 @@
       :items="tableData"
       :columns="columns"
     >
+      <template #actions="{row}">
+        <u-button-group>
+          <u-button
+            icon="u-icon-delete"
+            color="primary"
+            appearance="inverse"
+            :disabled="!haveAccess('delete')"
+            @click="removeCert(row.ID)"
+          />
+          <u-button
+            icon="u-icon-edit"
+            color="primary"
+            appearance="inverse"
+            :disabled="!haveAccess('insert', 'update')"
+            @click="openCertForm(row)"
+          />
+          <u-button
+            icon="u-icon-edit"
+            color="primary"
+            appearance="inverse"
+            :disabled="!haveAccess('insert', 'update')"
+            @click="openCertForm(row)"
+          />
+        </u-button-group>
+      </template>
       <template #disabled="{value}">
         <i
           v-if="value === true"
@@ -38,12 +65,16 @@
 </template>
 
 <script>
+const { mapMutations } = require('vuex')
+
 export default {
   name: 'Certificates',
 
   data () {
     return {
       columns: [{
+        id: 'actions'
+      }, {
         id: 'issuer_serial',
         label: 'uba_usercertificate.issuer_serial'
       }, {
@@ -65,6 +96,31 @@ export default {
   computed: {
     tableData () {
       return this.$store.state.collections.certificates.items.map(i => i.data)
+    }
+  },
+
+  methods: {
+    ...mapMutations(['DELETE_COLLECTION_ITEM']),
+
+    openCertForm (row) {
+      console.log(row)
+    },
+
+    removeCert (ID) {
+      const index = this.tableData.findIndex(predicate => predicate.ID === ID)
+      if (index !== -1) {
+        this.DELETE_COLLECTION_ITEM({
+          collection: 'certificates',
+          index
+        })
+      }
+    },
+
+    haveAccess (...methods) {
+      return methods.every(method => (
+        this.$UB.connection.domain.get('uba_usercertificate')
+          .haveAccessToMethod(method)
+      ))
     }
   }
 }
