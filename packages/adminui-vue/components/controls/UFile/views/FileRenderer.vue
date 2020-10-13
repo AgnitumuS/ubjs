@@ -5,14 +5,12 @@
   >
     <div class="file-renderer__scale-button-group">
       <u-button
-        color="control"
         icon="u-icon-search-plus"
         appearance="plain"
         :disabled="scaleValue >= MAX_SCALE"
         @click="zoomIn"
       />
       <u-button
-        color="control"
         icon="u-icon-search-minus"
         appearance="plain"
         :disabled="scaleValue <= MIN_SCALE"

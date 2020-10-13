@@ -184,8 +184,12 @@ export default {
     cursor: not-allowed;
   }
 
-  .u-button:hover:not(:disabled) {
+  .u-button:hover:not(:disabled){
     --l: var(--l-state-hover);
+  }
+
+  .u-button:focus {
+    outline: 2px solid hsl(var(--hs), var(--l-layout-border-default));
   }
 
   .u-button:active:not(:disabled) {
@@ -211,4 +215,5 @@ export default {
   .u-button_color-warning {
     --hs: var(--hs-warning)
   }
+
 </style>

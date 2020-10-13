@@ -41,7 +41,6 @@
       <u-button
         appearance="inverse"
         icon="u-icon-setting"
-        color="control"
         tooltip="allActions"
       />
 
@@ -129,18 +128,19 @@ export default {
         label: this.$ut('save') + ' (Ctrl + S)',
         icon: 'u-icon-save',
         handler: () => this.save(),
-        disabled: !this.canSave
+        disabled: !this.canSave,
+        color: 'primary'
       }, {
         label: this.$ut('saveAndClose') + ' (Ctrl + Enter)',
         icon: 'u-icon-save-and-close',
         handler: this.saveAndClose,
-        disabled: !this.canSave
+        disabled: !this.canSave,
+        color: 'primary'
       }, {
         label: this.$ut('Delete') + ' (Ctrl + Delete)',
         icon: 'u-icon-delete',
         handler: () => this.deleteInstance(this.$formServices.forceClose),
         disabled: !this.canDelete,
-        color: 'control',
         divider: true
       }]
     },
