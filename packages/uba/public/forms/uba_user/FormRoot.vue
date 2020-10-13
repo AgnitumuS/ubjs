@@ -20,55 +20,59 @@
     <u-form-container label-position="top">
       <el-tabs>
         <el-tab-pane :label="$ut('main')">
-          <div class="u-form-max-width">
-            <u-auto-field attribute-name="name" />
-            <u-grid :columns="3">
-              <u-auto-field attribute-name="firstName" />
-              <u-auto-field attribute-name="lastName" />
-              <u-auto-field attribute-name="fullName" /> <!--TODO: compute from "firstName" and "lastName"-->
-            </u-grid>
-            <u-grid :columns="3">
-              <u-auto-field attribute-name="gender" />
-              <u-auto-field attribute-name="email" />
-              <u-auto-field attribute-name="phone" />
-            </u-grid>
-            <u-auto-field
-              attribute-name="avatar"
-              preview-mode
-            />
-            <u-grid :columns="3">
-              <u-auto-field attribute-name="trustedIP" />
-              <u-auto-field attribute-name="disabled" />
-              <u-auto-field attribute-name="isPending" />
-            </u-grid>
-            <u-grid>
-              <u-auto-field
-                attribute-name="description"
-                type="textarea"
-                resize="none"
-                rows="4"
-              />
-              <u-auto-field
-                attribute-name="uData"
-                type="textarea"
-                resize="none"
-                rows="4"
-              />
-            </u-grid>
+          <u-grid>
+            <div>
+              <u-auto-field attribute-name="name" />
+              <u-grid :columns="3">
+                <u-auto-field attribute-name="firstName" />
+                <u-auto-field attribute-name="lastName" />
+                <u-auto-field attribute-name="fullName" /> <!--TODO: compute from "firstName" and "lastName"-->
+              </u-grid>
+              <u-form-row label="uba_userrole">
+                <u-select-collection
+                  collection-name="roles"
+                  associated-attr="roleID"
+                />
+              </u-form-row>
+              <u-form-row label="uba_usergroup">
+                <u-select-collection
+                  collection-name="groups"
+                  associated-attr="groupID"
+                />
+              </u-form-row>
+              <u-grid :columns="3">
+                <u-auto-field attribute-name="gender" />
+                <u-auto-field attribute-name="email" />
+                <u-auto-field attribute-name="phone" />
+              </u-grid>
+              <u-grid :columns="3">
+                <u-auto-field attribute-name="trustedIP" />
+                <u-auto-field attribute-name="disabled" />
+                <u-auto-field attribute-name="isPending" />
+              </u-grid>
+            </div>
 
-            <u-form-row label="uba_userrole">
-              <u-select-collection
-                collection-name="roles"
-                associated-attr="roleID"
+            <div>
+              <u-auto-field
+                attribute-name="avatar"
+                preview-mode
               />
-            </u-form-row>
-            <u-form-row label="uba_usergroup">
-              <u-select-collection
-                collection-name="groups"
-                associated-attr="groupID"
-              />
-            </u-form-row>
-          </div>
+              <u-grid>
+                <u-auto-field
+                  attribute-name="description"
+                  type="textarea"
+                  resize="none"
+                  rows="4"
+                />
+                <u-auto-field
+                  attribute-name="uData"
+                  type="textarea"
+                  resize="none"
+                  rows="4"
+                />
+              </u-grid>
+            </div>
+          </u-grid>
         </el-tab-pane>
         <el-tab-pane :label="$ut('uba_usercertificate')">
           <certificates />
