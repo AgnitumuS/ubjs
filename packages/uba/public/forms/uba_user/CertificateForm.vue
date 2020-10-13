@@ -4,7 +4,10 @@
       v-if="isNew"
       label="uba_usercertificate.certificate"
     >
-      <u-file-input /> <!--TODO: upload with "accept", then assign with modifiedRow -->
+      <u-file-input
+        accept=".cer"
+        @input="uploadCert"
+      />
     </u-form-row>
 
     <template v-else>
@@ -12,8 +15,9 @@
         <u-button
           color="primary"
           icon="el-icon-download"
+          @click="downloadCert"
         >
-          {{ $ut('downloadAttach') }} <!--TODO: download file -->
+          {{ $ut('downloadAttach') }}
         </u-button>
       </u-form-row>
 
@@ -92,6 +96,28 @@ export default {
   created () {
     for (const [key, value] of Object.entries(this.row)) {
       this.$set(this.modifiedRow, key, value)
+    }
+  },
+
+  methods: {
+    async downloadCert () {
+      const data = await this.$UB.connection.query({
+        entity: 'uba_usercertificate',
+        method: 'getCertificate',
+        ID: this.modifiedRow.userID
+      })
+        .then(UB.LocalDataStore.selectResultToArrayOfObjects)
+
+      const blobData = new Blob(
+        [UB.base64toArrayBuffer(data[0].certificate)],
+        { type: 'application/x-x509-ca-cert' }
+      )
+      window.saveAs(blobData, this.modifiedRow.serial + '.cer')
+    },
+
+    uploadCert (files) {
+      // TODO: upload then assign with modifiedRow
+      debugger
     }
   }
 }
