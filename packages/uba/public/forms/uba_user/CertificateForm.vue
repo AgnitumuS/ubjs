@@ -1,5 +1,5 @@
 <template>
-  <u-form-container label-position="top">
+  <u-form-container>
     <u-form-row
       v-if="isNew"
       label="uba_usercertificate.certificate"
@@ -21,17 +21,17 @@
         </u-button>
       </u-form-row>
 
-      <u-form-row :label="buildLabel('issuer_serial', true)">
-        <u-base-input
-          :value="modifiedRow.issuer_serial"
-          readonly
-        />
+      <u-form-row :label="buildLabel('issuer_serial')">
+        {{ modifiedRow.issuer_serial }}
       </u-form-row>
-      <u-form-row :label="buildLabel('issuer', true)">
-        <u-base-input
-          :value="modifiedRow.serial"
-          readonly
-        />
+      <u-form-row :label="buildLabel('serial')">
+        {{ modifiedRow.serial }}
+      </u-form-row>
+      <u-form-row
+        v-if="modifiedRow.revocationDate"
+        :label="buildLabel('revocationDate')"
+      >
+        {{ $formatByPattern.formatDate(modifiedRow.revocationDate, 'dateTime') }}
       </u-form-row>
       <u-form-row :label="buildLabel('description')">
         <u-base-input
@@ -43,12 +43,6 @@
       </u-form-row>
       <u-form-row :label="buildLabel('disabled')">
         <el-switch v-model="modifiedRow.disabled" />
-      </u-form-row>
-      <u-form-row :label="buildLabel('revoked', true)">
-        <el-switch :value="modifiedRow.revoked" />
-        <template v-if="modifiedRow.revoked">
-          {{ $formatByPattern.formatDate(modifiedRow.revocationDate, 'dateTime') }}
-        </template>
       </u-form-row>
     </template>
 
@@ -120,12 +114,8 @@ export default {
       debugger
     },
 
-    buildLabel (attribute, readonly) {
-      let label = this.$ut(`uba_usercertificate.${attribute}`)
-      if (readonly) {
-        label += ` (${this.$ut('readonly')})` // TODO: add locale for readonly
-      }
-      return label
+    buildLabel (attribute) {
+      return this.$ut(`uba_usercertificate.${attribute}`)
     }
   }
 }
