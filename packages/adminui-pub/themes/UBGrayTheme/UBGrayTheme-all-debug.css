@@ -4321,11 +4321,6 @@ img {
   cursor: default;
 }
 
-/* line 193, ../../../../ext/packages/ext-theme-base/sass/src/Component.scss */
-.x-webkit *:focus {
-  outline: none !important;
-}
-
 /* line 3, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Container.scss */
 .x-box-item {
   position: absolute !important;
