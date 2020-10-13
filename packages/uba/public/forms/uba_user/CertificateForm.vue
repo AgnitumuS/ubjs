@@ -1,5 +1,5 @@
 <template>
-  <u-form-container>
+  <u-form-container label-position="top">
     <u-form-row
       v-if="isNew"
       label="uba_usercertificate.certificate"
@@ -11,7 +11,7 @@
     </u-form-row>
 
     <template v-else>
-      <u-form-row label="uba_usercertificate.certificate">
+      <u-form-row :label="buildLabel('certificate')">
         <u-button
           color="primary"
           icon="el-icon-download"
@@ -21,19 +21,19 @@
         </u-button>
       </u-form-row>
 
-      <u-form-row label="uba_usercertificate.issuer_serial">
+      <u-form-row :label="buildLabel('issuer_serial', true)">
         <u-base-input
           :value="modifiedRow.issuer_serial"
           readonly
         />
       </u-form-row>
-      <u-form-row label="uba_usercertificate.serial">
+      <u-form-row :label="buildLabel('issuer', true)">
         <u-base-input
           :value="modifiedRow.serial"
           readonly
         />
       </u-form-row>
-      <u-form-row label="uba_usercertificate.description">
+      <u-form-row :label="buildLabel('description')">
         <u-base-input
           v-model="modifiedRow.description"
           type="textarea"
@@ -41,10 +41,10 @@
           resize="none"
         />
       </u-form-row>
-      <u-form-row label="uba_usercertificate.disabled">
+      <u-form-row :label="buildLabel('disabled')">
         <el-switch v-model="modifiedRow.disabled" />
       </u-form-row>
-      <u-form-row label="uba_usercertificate.revoked">
+      <u-form-row :label="buildLabel('revoked', true)">
         <el-switch :value="modifiedRow.revoked" />
         <template v-if="modifiedRow.revoked">
           {{ $formatByPattern.formatDate(modifiedRow.revocationDate, 'dateTime') }}
@@ -118,6 +118,14 @@ export default {
     uploadCert (files) {
       // TODO: upload then assign with modifiedRow
       debugger
+    },
+
+    buildLabel (attribute, readonly) {
+      let label = this.$ut(`uba_usercertificate.${attribute}`)
+      if (readonly) {
+        label += ` (${this.$ut('readonly')})` // TODO: add locale for readonly
+      }
+      return label
     }
   }
 }
