@@ -3652,11 +3652,11 @@ Ext.define('UB.view.BasePanel', {
   },
 
   onAudit () {
-    if (!this.ID) return
+    if (!this.instanceID) return
     const wnd = this.up('window')
     $App.showAuditTrail({
-      entityCode: this.entity,
-      instanceID: this.ID,
+      entityCode: this.entityName,
+      instanceID: this.instanceID,
       isModal: wnd ? wnd.modal : false
     })
   }

@@ -163,8 +163,16 @@ SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT * FROM ?)
 ```
 creates in-memory IDList / StrList structure, fills it with passed array elements and binds to parameter value
 
-To run such query in management studio:  
+To run such a query in management studio:  
 ```sql
+-- if type not exists - create it
+CREATE TYPE dbo.IDList AS TABLE (
+  id bigint NULL
+)
+CREATE TYPE dbo.StrList AS TABLE (
+  id nvarchar(255) NULL
+)
+
 declare @a dbo.IDList;
 insert into @a (id) values (1), (2), (3);
 SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT * FROM @a)
