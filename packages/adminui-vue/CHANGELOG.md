@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity -> toolbar` show scrollbar in case toolbar content is overflowed
  - `fts table`: edit action now uses `onBuildEditConfig` handler, so worsk the same way as for othes entites lists
  - `UTableEntity`: change color of the selected card to be darker
+ - `UTableEntity/updateData`: prevent error on updating data for cached entity
 
 ## [1.13.11] - 2020-09-27
 ### Changed

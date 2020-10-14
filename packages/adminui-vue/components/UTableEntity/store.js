@@ -655,12 +655,23 @@ module.exports = (instance) => ({
  * Used to prepare data for method `LocalDataStore.doFiltration`
  *
  * @param {object} response
+ * @param {object} [whereList]
  * @returns {TubCachedData}
  */
-function transformResponseToTubCachedData (response) {
+function transformResponseToTubCachedData (response, whereList = {}) {
+  const fieldsSet = new Set(
+    Object.keys(response.resultData)
+  )
+  for (const whereItem of Object.values(whereList)) {
+    if (whereItem.expression) {
+      fieldsSet.add(
+        whereItem.expression.replace(/\[|\]/g, '')
+      )
+    }
+  }
   return {
     data: [Object.values(response.resultData)],
-    fields: Object.keys(response.resultData),
+    fields: Array.from(fieldsSet),
     rowCount: 1
   }
 }
@@ -673,9 +684,10 @@ function transformResponseToTubCachedData (response) {
  * @returns {boolean}
  */
 function isApplicableWhereList (response, repository) {
+  const query = repository.ubql()
   const filteredResponse = UB.LocalDataStore.doFiltration(
-    transformResponseToTubCachedData(response),
-    repository.ubql()
+    transformResponseToTubCachedData(response, query.whereList),
+    query
   )
 
   return filteredResponse.length > 0
