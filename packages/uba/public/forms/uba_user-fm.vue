@@ -3,6 +3,8 @@
 </template>
 
 <script>
+/* TODO: prevent boolean fields required values */
+
 const { Form } = require('@unitybase/adminui-vue')
 const {
   entityName: certificateEntity,
