@@ -123,11 +123,6 @@
                             "required": true
                         }
                     },
-                    "ignoreCollation": {
-                        "type": "boolean",
-                        "default": false,
-                        "description": "Sor attributes of type String and MS SQL Server optimize like search by ignoring collation"
-                    },
                     "isMultiLang": {
                         "type": "boolean",
                         "default": false,
@@ -597,7 +592,7 @@
                     "properties": {
                         "type": {
                             "type": "string",
-                            "enum": ["INDEX", "FK", "CHECK", "CATALOGUE", "OTHER"],
+                            "enum": ["INDEX", "FK", "CHECK", "CATALOGUE", "SUFFIXES", "OTHER"],
                             "description": "Feature type"
                         },
                         "definition": {
