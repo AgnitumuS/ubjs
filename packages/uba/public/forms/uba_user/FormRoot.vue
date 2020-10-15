@@ -26,7 +26,7 @@
               <u-grid :columns="3">
                 <u-auto-field attribute-name="firstName" />
                 <u-auto-field attribute-name="lastName" />
-                <u-auto-field attribute-name="fullName" /> <!--TODO: compute from "firstName" and "lastName"-->
+                <u-auto-field attribute-name="fullName" />
               </u-grid>
               <u-form-row label="uba_userrole">
                 <u-select-collection
@@ -105,7 +105,27 @@ export default {
         .isEntityMethodsAccessible('uba_user', 'changeOtherUserPassword')
     },
 
-    ...mapInstanceFields(['ID', 'name'])
+    ...mapInstanceFields([
+      'ID',
+      'name',
+      'firstName',
+      'lastName',
+      'fullName'
+    ])
+  },
+
+  watch: {
+    firstName (newValue, prevValue) {
+      if (this.fullNamePattern(prevValue, this.lastName) === this.fullName) {
+        this.fullName = this.fullNamePattern(newValue, this.lastName)
+      }
+    },
+
+    lastName (newValue, prevValue) {
+      if (this.fullNamePattern(this.firstName, prevValue) === this.fullName) {
+        this.fullName = this.fullNamePattern(this.firstName, newValue)
+      }
+    }
   },
 
   methods: {
@@ -123,6 +143,23 @@ export default {
           }
         }
       })
+    },
+
+    /**
+     * @param {string|null} firstName
+     * @param {string|null} lastName
+     * @return {string|null}
+     */
+    fullNamePattern (firstName, lastName) {
+      const fullName = [firstName, lastName]
+        .filter(value => value !== '' && value !== null)
+        .join(' ')
+
+      if (fullName.length === 0) {
+        return null
+      }
+
+      return fullName
     }
   }
 }

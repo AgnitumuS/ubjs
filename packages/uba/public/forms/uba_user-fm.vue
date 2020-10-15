@@ -4,7 +4,6 @@
 
 <script>
 const { Form } = require('@unitybase/adminui-vue')
-/* TODO: custom tab title */
 const {
   entityName: certificateEntity,
   fieldList: certificateFieldList
@@ -49,6 +48,10 @@ module.exports.default = {
   name: 'UserForm',
   components: {
     FormRoot: require('./uba_user/FormRoot.vue').default
-  }
+  },
+
+  mixins: [
+    require('./uba_user/formCaptionMixin')
+  ]
 }
 </script>
