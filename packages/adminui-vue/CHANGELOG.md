@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `createDialog`: Creates dialog from template. [Docs](./components/dialog/createDialogFromTemplate/createDialog.md)
 
 ### Changed
 
@@ -26,7 +27,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTable`, `UTableEntity`: caption "No data" in case has no data in table
  - `Form`: pass param `store` in hooks `beforeInit` and `inited`
  - `UButton` added outline to focused button
- - `createDialog`: Creates dialog from template. [Docs](./components/dialog/createDialogFromTemplate/createDialog.md)
  
 ### Changed
  - `UDropdown` close on press `esc` button
