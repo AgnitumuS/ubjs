@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - improved error message for `Repository.where` with unknown condition (wrong condition included in error text) 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.5.6] - 2020-10-15
+### Changed
+ - improved error message for `Repository.where` with unknown condition (wrong condition included in error text) 
 
 ## [5.5.5] - 2020-09-23
 ### Changed

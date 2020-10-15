@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.13.12] - 2020-10-15
+### Added
  - `$App.showAuditTrail` method added - used in both adminui-vue and adminui-pub to show audit trail for instance
  - `UTableEntity` - added data history mixin support
  - `UTableEntity` - new slots for data history mixin:
@@ -22,8 +33,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  where `parentIdentifier` & `parentEntity` is configured
  - *BREAKING* `UButton` default color is changed from `primary` to `control`. The reason - only one primary button should be on the form.
  - `diologYesNo` focus "No" action by default
-
-### Deprecated
 
 ### Removed
  - `fts table`: audit action is removed (fts is not an audit subject)
