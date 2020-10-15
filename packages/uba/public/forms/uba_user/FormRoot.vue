@@ -74,7 +74,7 @@
             </div>
           </u-grid>
         </el-tab-pane>
-        <el-tab-pane :label="$ut('uba_usercertificate')">
+        <el-tab-pane :label="$ut(certificateEntity)">
           <certificates />
         </el-tab-pane>
       </el-tabs>
@@ -84,11 +84,19 @@
 
 <script>
 const { mapInstanceFields } = require('@unitybase/adminui-vue')
+const { entityName: certificateEntity } = require('./certificateCollectionDefinition')
+
 export default {
   name: 'UserFormRoot',
 
   components: {
     Certificates: require('./Certificates.vue').default
+  },
+
+  data () {
+    return {
+      certificateEntity
+    }
   },
 
   computed: {

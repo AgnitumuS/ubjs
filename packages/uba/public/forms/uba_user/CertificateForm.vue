@@ -1,5 +1,5 @@
 <template>
-  <u-form-container>
+  <u-form-container v-loading="loading">
     <u-form-row
       v-if="isNew"
       :label="buildLabel('certificate')"
@@ -65,8 +65,10 @@
 
 <script>
 /* global SystemJS */
-const certificateEntity = 'uba_usercertificate'
-const certificateCollectionFieldList = ['issuer_serial', 'serial', 'description', 'disabled', 'revoked', 'ID', 'userID']
+const {
+  entityName: certificateEntity,
+  fieldList: certificateCollectionFieldList
+} = require('./certificateCollectionDefinition')
 
 export default {
   name: 'CertificateForm',
@@ -83,7 +85,8 @@ export default {
 
   data () {
     return {
-      modifiedRow: {}
+      modifiedRow: {},
+      loading: false
     }
   },
 
@@ -245,6 +248,7 @@ export default {
      * @return {Promise<void>}
      */
     async uploadCertificate (files) {
+      this.loading = true
       const certData = await this.parseCertificateFile(files[0])
 
       const item = await UB.connection.addNewAsObject({
@@ -256,6 +260,7 @@ export default {
         }
       })
       this.$set(this, 'modifiedRow', item)
+      this.loading = false
     },
 
     /**

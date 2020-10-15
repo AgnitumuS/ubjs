@@ -5,6 +5,11 @@
 <script>
 const { Form } = require('@unitybase/adminui-vue')
 /* TODO: custom tab title */
+const {
+  entityName: certificateEntity,
+  fieldList: certificateFieldList
+} = require('./uba_user/certificateCollectionDefinition')
+
 module.exports.mount = cfg => {
   Form(cfg)
     .processing({
@@ -31,8 +36,8 @@ module.exports.mount = cfg => {
         groups: ({ state }) => UB.Repository('uba_usergroup')
           .attrs('ID', 'groupID', 'userID')
           .where('userID', '=', state.data.ID),
-        certificates: ({ state }) => UB.Repository('uba_usercertificate')
-          .attrs('issuer_serial', 'serial', 'description', 'disabled', 'revoked', 'ID', 'userID')
+        certificates: ({ state }) => UB.Repository(certificateEntity)
+          .attrs(certificateFieldList)
           .where('userID', '=', state.data.ID)
       }
     })

@@ -60,9 +60,10 @@
 </template>
 
 <script>
-const { mapMutations, mapActions } = require('vuex')
+const { mapMutations } = require('vuex')
 const { createDialog } = require('@unitybase/adminui-vue')
 const CertificateForm = require('./CertificateForm.vue').default
+const { entityName: certificateEntity } = require('./certificateCollectionDefinition')
 
 export default {
   name: 'Certificates',
@@ -73,19 +74,19 @@ export default {
         id: 'actions'
       }, {
         id: 'issuer_serial',
-        label: 'uba_usercertificate.issuer_serial'
+        label: `${certificateEntity}.issuer_serial`
       }, {
         id: 'serial',
-        label: 'uba_usercertificate.serial'
+        label: `${certificateEntity}.serial`
       }, {
         id: 'description',
-        label: 'uba_usercertificate.description'
+        label: `${certificateEntity}.description`
       }, {
         id: 'disabled',
-        label: 'uba_usercertificate.disabled'
+        label: `${certificateEntity}.disabled`
       }, {
         id: 'revoked',
-        label: 'uba_usercertificate.revoked'
+        label: `${certificateEntity}.revoked`
       }]
     }
   },
@@ -134,7 +135,7 @@ export default {
 
     haveAccess (...methods) {
       return methods.every(method => (
-        this.$UB.connection.domain.get('uba_usercertificate')
+        this.$UB.connection.domain.get(certificateEntity)
           .haveAccessToMethod(method)
       ))
     }
