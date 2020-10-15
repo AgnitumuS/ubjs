@@ -64,6 +64,11 @@
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-background);
+
+}
+
+:focus {
+    outline: none;
 }
 
 ::-webkit-scrollbar-track {

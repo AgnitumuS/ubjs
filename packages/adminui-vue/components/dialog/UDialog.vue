@@ -27,7 +27,6 @@
       <u-button
         v-if="isDevInfo"
         appearance="plain"
-        color="control"
         icon="u-icon-copy"
         @click="copyClipboard"
       />
@@ -35,7 +34,6 @@
         v-if="buttons.cancel"
         ref="cancelButton"
         appearance="plain"
-        color="control"
         @click="cancel"
       >
         {{ $ut(buttons.cancel) }}
@@ -43,12 +41,14 @@
       <u-button
         v-if="buttons.no"
         appearance="plain"
-        color="control"
         @click="decline"
       >
         {{ $ut(buttons.no) }}
       </u-button>
-      <u-button @click="accept">
+      <u-button
+        color="primary"
+        @click="accept"
+      >
         {{ $ut(buttons.yes) }}
       </u-button>
     </template>

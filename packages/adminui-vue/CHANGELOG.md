@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `replaceShowList`: provide `onSelectRecord` prop to `UTableEntity`
  - `UTable`, `UTableEntity`: caption "No data" in case has no data in table
  - `Form`: pass param `store` in hooks `beforeInit` and `inited`
+ - `UButton` added outline to focused button
  - `createDialog`: Creates dialog from template. [Docs](./components/dialog/createDialogFromTemplate/createDialog.md)
  
 ### Changed
