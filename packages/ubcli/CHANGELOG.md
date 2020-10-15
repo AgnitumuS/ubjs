@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `ubcli generateDDL` now support CATALOGUE indexes for MS SQL Server database. See [turning query performance tutorial](https://unitybase.info/api/server-v5/tutorial-database_tuning.html#optimizing-%60like%60-queries)
-   for details. 
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.7.6] - 2020-10-15
+### Added
+ - `ubcli generateDDL` now support CATALOGUE indexes for MS SQL Server database. See [turning query performance tutorial](https://unitybase.info/api/server-v5/tutorial-database_tuning.html#optimizing-%60like%60-queries)
+   for details. 
 
 ## [5.7.5] - 2020-09-23
 ## [5.7.4] - 2020-09-22

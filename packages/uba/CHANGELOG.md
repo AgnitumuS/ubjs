@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.4.34] - 2020-10-15
+### Added
  - `uba_advSecurity`: ukrainian localization
  - `uba_group`: azerbaijani localization
  - `Audit Trail` shortcut: added columns `Parent entity name`, `Request ID` and `Parent instance ID`
@@ -15,10 +26,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - uba* navshotrcut initialization uses ub-migrate instead of handmade script
  - `Audit Trail form` rewrite from Ext to Vue
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 - `uba_group-fm.def`: title and description localization

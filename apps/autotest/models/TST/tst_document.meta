@@ -150,6 +150,12 @@
           "description": {}
         }
       }
+    },
+    "TST_DOCUMENT_CODE_SU": {
+      "type": "SUFFIXES",
+      "description": "Creates index organized table TST_DOCUMENT_CODE_SU(ID, TAIL). Fills it by all possible suffixes of code using splitRe as separator. Expressions like are replaced by exists in this table",
+      "splitRe": "[/-]",
+      "attribute": "code"
     }
   }
 }

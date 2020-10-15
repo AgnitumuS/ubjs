@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.13.43] - 2020-10-15
+### Added
  - `$App.showAuditTrail` method added - used in both adminui-vue and adminui-pub to show audit trail for instance
 
 ### Changed
@@ -13,10 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  where `parentIdentifier` & `parentEntity` is configured
  - transformation timeout for `/ocr/transform` XHR request for `$App.scan()` increased to 10 minutes (from default 2 minutes).
    This allows recognizing big or complex documents.
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `shortcut form`: error on change data of shortcut which has type "folder"

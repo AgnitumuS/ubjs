@@ -8,14 +8,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - scanner settings form rewritten to vue
 
 ### Deprecated
- - ABBY settings is removed from scanner settings form - use OCR service instead of ABBY 
 
 ### Removed
 
 ### Fixed
+
+## [5.4.19] - 2020-10-15
+### Changed
+ - scanner settings form rewritten to vue
+
+### Deprecated
+ - ABBY settings is removed from scanner settings form - use OCR service instead of ABBY 
 
 ## [5.4.18] - 2020-09-23
 ## [5.4.17] - 2020-09-22
