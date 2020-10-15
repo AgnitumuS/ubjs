@@ -97,24 +97,27 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['ASSIGN_DATA', 'DELETE_COLLECTION_ITEM']),
-    ...mapActions(['addCollectionItem']),
+    ...mapMutations([
+      'ASSIGN_DATA',
+      'DELETE_COLLECTION_ITEM',
+      'ADD_COLLECTION_ITEM'
+    ]),
 
     async openCertForm (row) {
-      const modifiedRow = await createDialog(CertificateForm, { row })
-      if (!modifiedRow) return
+      const resultRow = await createDialog(CertificateForm, { row })
+      if (!resultRow) return
 
-      const index = this.tableData.findIndex(predicate => predicate.ID === modifiedRow.ID)
+      const index = this.tableData.findIndex(predicate => predicate.ID === resultRow.ID)
       if (index === -1) {
-        this.addCollectionItem({
+        this.ADD_COLLECTION_ITEM({
           collection: 'certificates',
-          execParams: modifiedRow
+          item: resultRow
         })
       } else {
         this.ASSIGN_DATA({
           collection: 'certificates',
           index,
-          loadedState: modifiedRow
+          loadedState: resultRow
         })
       }
     },
