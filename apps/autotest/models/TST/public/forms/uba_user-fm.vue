@@ -1,20 +1,25 @@
 <template>
-  <parent>
-    <div slot="id"></div>
-    <div slot="test"></div>
-  </parent>
+  <uba-user-form>
+    <template #autofield_name="{value}">
+      <u-form-row label="Name change">
+        <el-input :value="value" />
+      </u-form-row>
+    </template>
+
+    <template #customSlot="{name}">
+      <h1>Hi, {{ name }}. How are you?</h1>
+    </template>
+  </uba-user-form>
 </template>
 
 <script>
-const Parent = require('@unitybase/uba/public/forms/uba_user.vue').default
+const UbaUserForm = require('@unitybase/uba/public/forms/uba_user-fm.vue').default
 
-module.exports.mount = function (cfg) {
-  Form({
-    component: Parent
-  })
-}
+export default {
+  name: 'ChangedUserForm',
 
-const ExtendRoot = module.exports.default = {
-  name: 'ChangedUserForm'
+  components: {
+    UbaUserForm
+  }
 }
 </script>

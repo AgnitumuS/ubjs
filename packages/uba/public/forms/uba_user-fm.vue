@@ -1,5 +1,13 @@
 <template>
-  <form-root/>
+  <form-root>
+    <div slot="test" />
+    <div
+      slot="test2"
+      slot-scope="{value}"
+    >
+      {{ value }} Рш
+    </div>
+  </form-root>
 </template>
 
 <script>
@@ -54,6 +62,6 @@ module.exports.default = {
 
   mixins: [
     require('./uba_user/formCaptionMixin')
-  ]
+  ],
 }
 </script>
