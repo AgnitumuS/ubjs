@@ -48,7 +48,9 @@ async function exportExcel ({ repository, columns, fileName, filters }) {
     const rowCells = columns.map((column) => {
       const value = typeof column.exportFormat === 'function'
         ? column.exportFormat({ value: row[column.id], row, column })
-        : row[column.id]
+        : typeof column.format === 'function'
+          ? column.format({ value: row[column.id], row, column })
+          : row[column.id]
       return { value }
     })
     sheet.addRow(rowCells, rowStyles)
