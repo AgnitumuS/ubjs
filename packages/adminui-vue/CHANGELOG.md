@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `Form/validation` building of validation() rules takes into account only fields what included into `masterFieldList` (if passed).
+   Before this fix all entity attributes with defaultView && !allowNull are included.
 
 ### Deprecated
 

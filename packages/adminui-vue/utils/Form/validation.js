@@ -12,11 +12,12 @@ const { mapInstanceFields } = require('./helpers')
  * @param {Vuex} store Store
  * @param {UBEntity} entitySchema Entity schema
  * @param {Vue} customValidationMixin Custom validation mixin in case when need to override default validation
+ * @param {string[]} masterFieldList Field list of master entity
  * @return {object} Vuelidate validation object
  */
-function createValidator (store, entitySchema, customValidationMixin = {}) {
+function createValidator (store, entitySchema, masterFieldList, customValidationMixin = {}) {
   const requiredFields = entitySchema
-    .filterAttribute(attr => attr.defaultView && !attr.allowNull)
+    .filterAttribute(attr => attr.defaultView && !attr.allowNull && masterFieldList.includes(attr.code))
     .map(a => a.name)
 
   const defaultValidationMixin = {
