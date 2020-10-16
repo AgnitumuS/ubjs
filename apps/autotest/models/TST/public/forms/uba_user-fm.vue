@@ -1,13 +1,20 @@
 <template>
-  <div>ChangedUserForm</div>
+  <parent>
+    <div slot="id"></div>
+    <div slot="test"></div>
+  </parent>
 </template>
 
 <script>
+const Parent = require('@unitybase/uba/public/forms/uba_user.vue').default
+
 module.exports.mount = function (cfg) {
-  debugger
+  Form({
+    component: Parent
+  })
 }
 
-module.exports.default = {
+const ExtendRoot = module.exports.default = {
   name: 'ChangedUserForm'
 }
 </script>

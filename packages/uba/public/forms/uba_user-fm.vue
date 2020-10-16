@@ -1,5 +1,5 @@
 <template>
-  <form-root />
+  <form-root/>
 </template>
 
 <script>
