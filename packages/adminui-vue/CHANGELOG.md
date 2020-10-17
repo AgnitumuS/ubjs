@@ -9,12 +9,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `createDialog`: Creates dialog from template. [Docs](./components/dialog/createDialogFromTemplate/createDialog.md)
 
 ### Changed
+ - `Form/validation` building of validation() rules takes into account only fields what included into `masterFieldList` (if passed).
+   Before this fix all entity attributes with defaultView && !allowNull are included.
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - Excel export from UTableEntity - fixed format for Date anf Boolean attributes
 
 ## [1.13.12] - 2020-10-15
 ### Added

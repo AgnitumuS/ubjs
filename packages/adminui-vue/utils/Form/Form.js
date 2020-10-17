@@ -259,7 +259,7 @@ class UForm {
     }
 
     if (this.isValidationUsed) {
-      this.validator = createValidator(this.$store, this.entitySchema, this.customValidationMixin)
+      this.validator = createValidator(this.$store, this.entitySchema, this.fieldList, this.customValidationMixin)
     }
 
     if (this.isProcessingUsed) {

@@ -90,6 +90,18 @@ const { Form, mapInstanceFields, dialogInfo } = require('@unitybase/adminui-vue'
 module.exports.mount = function (cfg) {
   Form(cfg)
     .processing({
+      masterFieldList: [
+        'ID',
+        'code',
+        'docDate',
+        'incomeDate',
+        'regDate',
+        'docDateTime',
+        'description',
+        'fileStoreSimple',
+        'person',
+        'employee'
+      ],
       beforeDelete: (store) => {
         console.log(this, store, arguments)
         return $App.dialogYesNo('Confirm', 'Really?')
@@ -110,7 +122,7 @@ module.exports.default = {
       'docDate',
       'incomeDate',
       'regDate',
-      /* 'category',
+      /*'category',
       'favorites',
       'favorites2', */
       'docDateTime',
