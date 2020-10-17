@@ -20,7 +20,7 @@
     <u-form-container label-position="top">
       <el-tabs>
         <el-tab-pane :label="$ut('main')">
-          <component :is="slots.test2" :value="123333"/>
+<!--          <component :is="slots.test2" :value="123333"/>-->
           <u-grid>
             <div>
               <u-auto-field attribute-name="name" />
@@ -94,7 +94,11 @@ export default {
     Certificates: require('./Certificates.vue').default
   },
 
-  inject: ['slots'],
+  inject: ['test'],
+  mounted () {
+    debugger
+    this.test
+  },
 
   data () {
     return {

@@ -170,8 +170,7 @@ function mountTab ({
   const instance = new Vue({
     data () {
       return {
-        titleText,
-        slots: {}
+        titleText
       }
     },
     computed: {
@@ -205,13 +204,6 @@ function mountTab ({
         }
       }
     },
-    mounted () {
-      for (const [name, slot] of Object.entries(this.$children[0].$children[0].$scopedSlots)) {
-        this.$set(this.slots, name, {
-          render: slot
-        })
-      }
-    },
     methods: {
       setTitle (title) {
         this.titleText = title
@@ -229,7 +221,6 @@ function mountTab ({
             tab.close()
           }
         },
-        slots: this.slots,
         ...provide
       }
     },

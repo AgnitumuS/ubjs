@@ -1,6 +1,8 @@
 <template>
-  <form-root>
-    <div slot="test" />
+  <form-root v-slot-provider>
+    <div slot="test">
+      asd
+    </div>
     <div
       slot="test2"
       slot-scope="{value}"
@@ -63,5 +65,29 @@ module.exports.default = {
   mixins: [
     require('./uba_user/formCaptionMixin')
   ],
+
+  directives: {
+    // TODO: replace to globals
+    slotProvider: {
+      bind (el, binding, vNode) {
+        const slots = Object.entries(vNode.componentInstance.$scopedSlots)
+          .reduce((accum, [name, slot]) => {
+            accum[name] = {
+              render () {
+                return slot(this.$attrs)
+              }
+            }
+
+            return accum
+          }, {})
+
+        debugger
+        // TODO: provide slots to childrens
+        vNode.parent.componentOptions = {
+          slots
+        }
+      }
+    }
+  }
 }
 </script>
