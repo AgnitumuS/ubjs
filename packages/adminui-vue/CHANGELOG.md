@@ -10,7 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `Form/validation` building of validation() rules takes into account only fields what included into `masterFieldList` (if passed).
    Before this fix all entity attributes with defaultView && !allowNull are included.
-
+ - UTable: cells left/right padding decreased from 16 to 8px; row top/bottom paddings decreased from 12 to 10px;
+   This allows fit more data on the screen without negative UX effect (verified on laptops and tablets)
+ 
 ### Deprecated
 
 ### Removed
