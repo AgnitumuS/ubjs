@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - DDL generator: added storage table generation for SUFFIX indexes. 
+   **EXISTED DATA SHOULD BE MIGRATED MANUALLY** 
 
 ### Changed
 
