@@ -10,8 +10,7 @@
       "dataType": "String",
       "size": 64,
       "caption": "Code",
-      "allowNull": false,
-      "ignoreCollation": true
+      "allowNull": false
     },
     {
       "name": "docDate",
@@ -153,7 +152,7 @@
     },
     "TST_DOCUMENT_CODE_SU": {
       "type": "SUFFIXES",
-      "description": "Creates index organized table TST_DOCUMENT_CODE_SU(TAIL, ID). Fills it by all possible suffixes of attribute value using splitChars as separator. Use 'exists' in this table instead of 'like %?%' for substring search",
+      "description": "Creates index organized table TST_DOCUMENT_CODE_SU(TAIL, sourceID). Fills it by all possible suffixes of attribute value using splitChars as separator. Use 'exists' in this table instead of 'like %?%' for substring search",
       "splitChars": "/-",
       "includeLast": false,
       "attribute": "code"
