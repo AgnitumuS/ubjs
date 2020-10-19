@@ -1,5 +1,5 @@
 <template>
-  <form-root>
+  <uba-user-root>
     <div
       slot="autofield_name"
       slot-scope="{value, originalComponent, test}"
@@ -7,7 +7,7 @@
       {{ value }} - {{ test }}
       <component :is="originalComponent" />
     </div>
-  </form-root>
+  </uba-user-root>
 </template>
 
 <script>
@@ -57,7 +57,7 @@ module.exports.mount = cfg => {
 module.exports.default = {
   name: 'UserForm',
   components: {
-    FormRoot: require('./uba_user/FormRoot.vue').default
+    UbaUserRoot: require('./uba_user/UbaUserRoot.vue').default
   },
 
   mixins: [
