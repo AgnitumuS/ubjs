@@ -312,6 +312,7 @@ function testSkipSelectBeforeUpdate (conn) {
 * @param {SyncConnection} conn
 */
 function testSuffixIndex (conn) {
+  console.debug('Test SUFFIXES index')
   const doc = conn.Repository('tst_document').attrs('ID', 'code')
     .where('code', 'like', '01-01').selectSingle()
   assert.strictEqual(doc.code, '2014-01-01', 'Suffix index should return \'2014-01-01\' but got ' + doc.code)
