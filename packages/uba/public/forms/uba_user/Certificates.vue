@@ -97,6 +97,8 @@ export default {
     }
   },
 
+  inject: ['inerhitedSlots'],
+
   methods: {
     ...mapMutations([
       'ASSIGN_DATA',

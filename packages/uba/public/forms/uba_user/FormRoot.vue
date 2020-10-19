@@ -20,10 +20,9 @@
     <u-form-container label-position="top">
       <el-tabs>
         <el-tab-pane :label="$ut('main')">
-<!--          <component :is="slots.test2" :value="123333"/>-->
           <u-grid>
             <div>
-              <u-auto-field attribute-name="name" />
+              <u-auto-field attribute-name="name"/>
               <u-grid :columns="3">
                 <u-auto-field attribute-name="firstName" />
                 <u-auto-field attribute-name="lastName" />
@@ -84,20 +83,18 @@
 </template>
 
 <script>
-const { mapInstanceFields } = require('@unitybase/adminui-vue')
+const { mapInstanceFields, provideSlotsMixin } = require('@unitybase/adminui-vue')
 const { entityName: certificateEntity } = require('./certificateCollectionDefinition')
 
 export default {
   name: 'UserFormRoot',
 
+  mixins: [
+    provideSlotsMixin
+  ],
+
   components: {
     Certificates: require('./Certificates.vue').default
-  },
-
-  inject: ['test'],
-  mounted () {
-    debugger
-    this.test
   },
 
   data () {
@@ -105,7 +102,6 @@ export default {
       certificateEntity
     }
   },
-
   computed: {
     canChangePassword () {
       return this.$UB.connection.domain

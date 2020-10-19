@@ -5,7 +5,14 @@
 export default {
   name: 'UAutoField',
 
-  inject: ['$v', 'entity', 'entitySchema'],
+  inject: {
+    $v: {},
+    entity: {},
+    entitySchema: {},
+    inerhitedSlots: {
+      default: () => ({})
+    }
+  },
 
   props: {
     /**
@@ -80,6 +87,7 @@ export default {
       attributeName: this.attributeName,
       value: this.model
     }
+
     switch (this.dataType) {
       case 'Boolean':
         cmp = h(this.forceCmp || 'el-checkbox', {
@@ -181,7 +189,7 @@ export default {
           attrs: baseAttrs
         })
     }
-    return h('u-form-row',
+    const UFormRow = h('u-form-row',
       {
         attrs: {
           label: this.label,
@@ -192,6 +200,20 @@ export default {
       },
       [cmp, this.$slots.default]
     )
+
+    const slot = this.inerhitedSlots[`autofield_${this.attributeName}`]
+    if (slot) {
+      return h(slot, {
+        attrs: {
+          ...baseAttrs,
+          originalComponent: {
+            render: () => UFormRow
+          }
+        }
+      })
+    }
+
+    return UFormRow
   }
 }
 </script>
