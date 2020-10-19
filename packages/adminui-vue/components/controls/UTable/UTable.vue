@@ -224,12 +224,16 @@ export default {
 .u-table th{
   border-bottom: 1px solid var(--border);
   color: var(--text);
-  padding: 12px 16px;
+  padding: 10px 8px;
   font-size: 16px;
   position: relative;
   letter-spacing: 0.3px;
   font-weight: 400;
   background: hsl(var(--hs-background), var(--l-background-inverse));
+}
+
+.u-table th {
+  padding-left: 10px;
 }
 
 .u-table__cell-container{

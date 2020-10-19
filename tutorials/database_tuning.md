@@ -32,7 +32,7 @@ Special index type **CATALOGUE** is available for optimizing queries with substr
 where field like "%substr%"
 ```
 
-See also 'ignoreCollation' below.
+See also 'SUFFIXES index' below.
 
 Such queries usually produced by UI Select/ComboBox controls while user typing a text to search or from Filters in Grid 
 when `Contains` condition is selected. Database always do a table full scan for such queries, what may lead to performance
@@ -120,7 +120,7 @@ GRANT RESOURCE, CONNECT, CTXAPP TO UBDF_FSS_TST;
 GRANT EXECUTE ON CTXSYS.CTX_DDL TO UBDF_FSS_TST; 
 ```
 
-#### Using `ignoreCollation` for non-words attributes
+#### SUFFIXES index for non-words attributes
 Catalogue indexes works perfectly for attributes what not contains abbreviations and acronyms, but otherwise it depends on 
 RDBMS implementation. 
 
@@ -130,8 +130,28 @@ where CATALOGUE index is based on FTS - not.
 For example in case attribute contains a document number, like `01-114-56-15(9370)` and we need to search by part of it,
 FTS word breaker do not recognize "words" correctly, and search by phrase `14-56` do not return a number above.
 
-For such attributes `"ignoreCollation": true` can be defined in meta file and UnityBase (>=5.18.15) tries to optimize `like %..%` 
+For such attributes dbExtension of type `SUFFIXES` can be defined in meta file and UnityBase (>=5.18.15) tries to optimize `like %..%` 
 to decrease SQL Server CPU consumption. 
+
+With such extension:
+ 
+ - DDL generator creates index organized table with 2 columns (tail, sourceID).
+ - mStorage mixin fills this table by all possible suffixes of attribute value using splitChars as separator.
+ - select queries with `like` condition on such attributes will use 'exists' in suffixes table where `tail line %?` 
+   instead of 'like %?%' on the main table what prevents a full scan.
+                  
+A usage sample in meta file: 
+```json
+"dbExtensions": {
+    "TST_DOCUMENT_CODE_SU": {
+      "type": "SUFFIXES",
+      "description": "Creates index organized table TST_DOCUMENT_CODE_SU(TAIL, sourceID)",
+      "splitChars": "/-",
+      "includeLast": false,
+      "attribute": "code"
+    }
+}
+```
 
 **Please, verify such optimization on your data, since logic is not strict in this case**         
 

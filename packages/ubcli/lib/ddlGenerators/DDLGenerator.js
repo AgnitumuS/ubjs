@@ -366,6 +366,14 @@ class DDLGenerator {
       }
     }
 
+    // reference tables for SUFFIXES index storage
+    if (entity.dbExtensions) {
+      _.forEach(entity.dbExtensions, (s, tblName) => {
+        if (s.type === 'SUFFIXES') {
+          this.addSuffixIndexTable(entity, entity.attr(s.attribute), tblName)
+        }
+      })
+    }
     this.addCustomElements(tableDef, entity)
 
     tableDef.__entity = entity
@@ -580,7 +588,7 @@ class DDLGenerator {
   }
 
   /**
-   *
+   * Add references definition for "Many" attribute storage table
    * @param {UBEntity} entity
    * @param {UBEntityAttribute} attribute
    */
@@ -618,6 +626,44 @@ class DDLGenerator {
     tableDef.addIndex({
       name: formatName('IDX_', attribute.associationManyData, '_DESTID', entity.connectionConfig.dialect),
       keys: ['destID'.toUpperCase()]
+    })
+    tableDef.isIndexOrganized = true
+    this.referenceTableDefs.push(tableDef)
+  }
+
+  /**
+   * Add references table definition for storing data of "SUFFIX" index
+   * @param {UBEntity} entity
+   * @param {UBEntityAttribute} attribute
+   * @param {string} tblName
+   */
+  addSuffixIndexTable (entity, attribute, tblName) {
+    const tableDef = new TableDefinition({
+      name: tblName,
+      caption: `SUFFIX index storage for ${entity.name}.${attribute.name}`
+    })
+    tableDef.__entity = entity
+    tableDef.addColumn({
+      name: 'tail',
+      dataType: 'NVARCHAR',
+      size: attribute.size,
+      allowNull: false
+    })
+    tableDef.addColumn({
+      name: 'sourceID',
+      dataType: 'BIGINT',
+      allowNull: false
+    })
+    tableDef.primaryKey = { name: 'PK_' + tblName, keys: ['tail', 'sourceID'] }
+    tableDef.addFK({
+      name: genFKName(tblName, 'SOURCEID', entity.sqlAlias, entity.connectionConfig.dialect),
+      keys: ['sourceID'.toUpperCase()],
+      references: getTableDBName(entity),
+      generateFK: true
+    })
+    tableDef.addIndex({
+      name: formatName('IDX_', tblName, '_SOURCEID', entity.connectionConfig.dialect),
+      keys: ['sourceID'.toUpperCase()]
     })
     tableDef.isIndexOrganized = true
     this.referenceTableDefs.push(tableDef)
