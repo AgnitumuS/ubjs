@@ -77,6 +77,7 @@
         <el-tab-pane :label="$ut(certificateEntity)">
           <certificates />
         </el-tab-pane>
+        <component :is="inheritedSlots.additionalTabs" />
       </el-tabs>
     </u-form-container>
   </div>

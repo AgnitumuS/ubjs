@@ -1,19 +1,19 @@
 module.exports = {
   data () {
     return {
-      inerhitedSlots: {}
+      inheritedSlots: {}
     }
   },
 
   provide () {
     return {
-      inerhitedSlots: this.inerhitedSlots
+      inheritedSlots: this.inheritedSlots
     }
   },
 
   mounted () {
     for (const [name, slot] of Object.entries(this.$scopedSlots)) {
-      this.$set(this.inerhitedSlots, name, {
+      this.$set(this.inheritedSlots, name, {
         render () {
           return slot(this.$attrs)
         }

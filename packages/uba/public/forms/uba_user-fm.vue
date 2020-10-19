@@ -1,26 +1,16 @@
 <template>
-  <uba-user-root>
-    <div
-      slot="autofield_name"
-      slot-scope="{value, originalComponent, test}"
-    >
-      {{ value }} - {{ test }}
-      <component :is="originalComponent" />
-    </div>
-  </uba-user-root>
+  <uba-user-root />
 </template>
 
 <script>
-/* TODO: prevent boolean fields required values */
-
 const { Form } = require('@unitybase/adminui-vue')
 const {
   entityName: certificateEntity,
   fieldList: certificateFieldList
 } = require('./uba_user/certificateCollectionDefinition')
 
-module.exports.mount = cfg => {
-  Form(cfg)
+module.exports.controller = cfg => {
+  return Form(cfg)
     .processing({
       masterFieldList: [
         'firstName',
@@ -51,7 +41,6 @@ module.exports.mount = cfg => {
       }
     })
     .validation()
-    .mount()
 }
 
 module.exports.default = {

@@ -1,0 +1,11 @@
+{
+  "attributes": [
+    {
+      "name": "addedAttr",
+      "dataType": "string",
+      "size": 32,
+      "caption": "Added by TST",
+      "allowNull": true
+    }
+  ]
+}

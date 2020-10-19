@@ -9,7 +9,7 @@ export default {
     $v: {},
     entity: {},
     entitySchema: {},
-    inerhitedSlots: {
+    inheritedSlots: {
       default: () => ({})
     }
   },
@@ -201,7 +201,7 @@ export default {
       [cmp, this.$slots.default]
     )
 
-    const slot = this.inerhitedSlots[`autofield_${this.attributeName}`]
+    const slot = this.inheritedSlots[`attr_${this.attributeName}`]
     if (slot) {
       return h(slot, {
         attrs: {
