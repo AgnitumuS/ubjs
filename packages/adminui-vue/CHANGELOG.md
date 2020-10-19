@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `replaceShowList`: provide `onSelectRecord` prop to `UTableEntity`
  - `UTable`, `UTableEntity`: caption "No data" in case has no data in table
  - `Form`: pass param `store` in hooks `beforeInit` and `inited`
- - `UButton` added outline to focused button
+ - `UButton` added an outline to the focused button
  
 ### Changed
  - `UDropdown` close on press `esc` button
@@ -43,9 +43,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `fts table`: audit action is removed (fts is not an audit subject)
 
 ### Fixed
- - ajust ub-icons size to be the same for all icons
+ - adjust ub-icons size to be the same for all icons
  - `UTableEntity -> toolbar` show scrollbar in case toolbar content is overflowed
- - `fts table`: edit action now uses `onBuildEditConfig` handler, so worsk the same way as for othes entites lists
+ - `fts table`: edit action now uses `onBuildEditConfig` handler, so work in the same way as for other entities lists
  - `UTableEntity`: change color of the selected card to be darker
  - `UTableEntity/updateData`: prevent error on updating data for cached entity
 
