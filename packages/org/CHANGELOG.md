@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - ORG model now uses ub-migrate for adding/updating ORG related enums, roles and els
 
 ### Deprecated
 
