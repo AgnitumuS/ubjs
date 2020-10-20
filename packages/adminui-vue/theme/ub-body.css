@@ -187,6 +187,7 @@ html, body {
 
 .ub-dialog__table-entity .el-dialog__body {
     height: 100%;
+    overflow: auto;
 }
 
 /* element-ui overrides */

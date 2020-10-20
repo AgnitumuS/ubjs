@@ -297,7 +297,8 @@ export default {
         instanceID: result.ID,
         sender: this,
         target: $App.getViewport().centralPanel,
-        tabId: 'ubm_form' + result.ID
+        tabId: 'ubm_form' + result.ID,
+        isModal: this.$store.state.isModal
       })
     },
 
@@ -384,7 +385,7 @@ export default {
       $App.showAuditTrail({
         entityCode: this.entity,
         instanceID: this.$store.state.data.ID,
-        isModal: true
+        isModal: this.$store.state.isModal
       })
     },
 

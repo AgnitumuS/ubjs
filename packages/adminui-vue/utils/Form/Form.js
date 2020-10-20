@@ -212,7 +212,8 @@ class UForm {
       beforeCopy: beforeCopy ? () => beforeCopy.call(this, this.$store) : null,
       copied: copied ? () => copied.call(this, this.$store) : null,
       saveNotification,
-      isCopy: this.isCopy
+      isCopy: this.isCopy,
+      isModal: this.isModal
     })
     mergeStore(this.storeConfig, processingModule)
 

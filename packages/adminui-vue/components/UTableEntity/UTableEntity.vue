@@ -102,7 +102,12 @@ export default {
     beforeInitialLoad: {
       type: Function,
       default: () => () => Promise.resolve()
-    }
+    },
+
+    /**
+     * Whether is opened as modal to provide open of child commands as modal
+     */
+    isModal: Boolean
   },
 
   computed: {
