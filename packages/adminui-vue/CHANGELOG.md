@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - Excel export from UTableEntity - fixed format for Date anf Boolean attributes
+ - `UNavbar` show tooltip on tab in case text length > 18
 
 ## [1.13.12] - 2020-10-15
 ### Added
