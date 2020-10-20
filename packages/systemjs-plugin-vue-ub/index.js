@@ -27,7 +27,7 @@ function compile (load, opts, vueOpts) {
     template
   } = parseComponent(load.source, { pad: 'space' })
   // extract styles and inject it into DCM
-  const hasScoped = sfc.styles.some(s => s.scoped)
+  const hasScoped = styles.some(s => s.scoped)
   if (hasScoped) console.error('Scoped style not supported. Use BEM and CSS variables')
 
   if (styles.length) {
