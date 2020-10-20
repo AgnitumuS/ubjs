@@ -19,6 +19,7 @@
 
 <script>
 const parentForm = require('@unitybase/uba/public/forms/uba_user-fm.vue')
+const Vue = require('vue')
 
 module.exports.controller = (cfg) => {
   return parentForm.controller(cfg)
@@ -31,8 +32,5 @@ module.exports.controller = (cfg) => {
   // return parentController
 }
 
-const {render, ...replacedForm} = parentForm.default
-module.exports.default = {
-  ...replacedForm
-}
+module.exports.default = Vue.extend(parentForm.default)
 </script>
