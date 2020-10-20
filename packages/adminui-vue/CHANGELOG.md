@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    Before this fix all entity attributes with defaultView && !allowNull are included.
  - UTable: cells left/right padding decreased from 16 to 8px; row top/bottom paddings decreased from 12 to 10px;
    This allows fit more data on the screen without negative UX effect (verified on laptops and tablets)
+ - `UToolbar` audit table opens in separate tab 
+ - `audit table` save in localStorage last preview mode and active filters
+ - `Form`, `UTableEntity` in case table or form opened as modal then all child tables and forms are also opened as modals
  
 ### Deprecated
 

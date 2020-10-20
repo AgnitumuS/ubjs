@@ -19,6 +19,7 @@ const openDataHistoryDatePicker = require('./components/DataHistoryDatePicker/da
  * @param {function} instance.buildEditConfig Edit config builder. Called with (cfg: configToMutate, row: content of row to edit)
  * @param {function} instance.buildCopyConfig Copy config builder. Called with (cfg: configToMutate, row: content of row to edit)
  * @param {object[]} instance.getCardColumns Columns to show in card view
+ * @param {boolean} instance.isModal Is parent opened from modal. Used to provide modal state to child
  */
 module.exports = (instance) => ({
   state () {
@@ -359,7 +360,8 @@ module.exports = (instance) => ({
         entity: getters.entityName,
         formCode: getters.formCode,
         target: UB.core.UBApp.viewport.centralPanel,
-        tabId: getters.generateTabId()
+        tabId: getters.generateTabId(),
+        isModal: instance.isModal
       }, instance)
       UB.core.UBApp.doCommand(config)
     },
@@ -374,7 +376,8 @@ module.exports = (instance) => ({
         formCode: getters.formCode,
         instanceID: ID,
         target: UB.core.UBApp.viewport.centralPanel,
-        tabId: getters.generateTabId(ID)
+        tabId: getters.generateTabId(ID),
+        isModal: instance.isModal
       }, item)
       UB.core.UBApp.doCommand(config)
     },
@@ -415,7 +418,8 @@ module.exports = (instance) => ({
         formCode: getters.formCode,
         instanceID: ID,
         target: UB.core.UBApp.viewport.centralPanel,
-        tabId: getters.generateTabId(ID)
+        tabId: getters.generateTabId(ID),
+        isModal: instance.isModal
       }, item)
       UB.core.UBApp.doCommand(config)
     },
@@ -450,7 +454,7 @@ module.exports = (instance) => ({
       UB.core.UBApp.showAuditTrail({
         entityCode: getters.entityName,
         instanceID: ID,
-        isModal: false
+        isModal: instance.isModal
       })
     },
 
@@ -626,7 +630,8 @@ module.exports = (instance) => ({
           instanceID: ID,
           __mip_ondate: selectedDate,
           target: UB.core.UBApp.viewport.centralPanel,
-          tabId: getters.generateTabId(ID)
+          tabId: getters.generateTabId(ID),
+          isModal: instance.isModal
         })
       }
     },
@@ -642,7 +647,7 @@ module.exports = (instance) => ({
           entityName: getters.entityName,
           columns: getters.columns.concat('mi_dateTo', 'mi_dateFrom')
         },
-        isModal: true,
+        isModal: instance.isModal,
         instanceID: historyId,
         __mip_recordhistory: true
       })

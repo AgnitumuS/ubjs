@@ -5,25 +5,27 @@
   >
     <div />
     <u-form-container label-position="top">
-      <u-grid :columns="5">
-        <u-form-row :label="`${masterEntity}.entity`">
-          {{ entity }} ({{ $ut(entity) }})
-        </u-form-row>
+      <u-form-row :label="`${masterEntity}.entity`">
+        <span class="uba-audit__field-text">{{ entity }} ({{ $ut(entity) }})</span>
+      </u-form-row>
 
+      <u-grid>
         <u-form-row :label="`${masterEntity}.actionType`">
-          {{ actionType }}
+          <span class="uba-audit__field-text">{{ actionType }}</span>
         </u-form-row>
 
         <u-form-row :label="`${masterEntity}.actionUser`">
-          {{ actionUserName }} ({{ actionUser }})
+          <span class="uba-audit__field-text">{{ actionUserName }} ({{ actionUser }})</span>
         </u-form-row>
+      </u-grid>
 
+      <u-grid>
         <u-form-row :label="`${masterEntity}.remoteIP`">
-          {{ remoteIP }}
+          <span class="uba-audit__field-text">{{ remoteIP }}</span>
         </u-form-row>
 
         <u-form-row :label="`${masterEntity}.actionTime`">
-          {{ $formatByPattern.formatDate(actionTime, 'dateTime') }}
+          <span class="uba-audit__field-text">{{ $formatByPattern.formatDate(actionTime, 'dateTime') }}</span>
         </u-form-row>
       </u-grid>
 
@@ -77,5 +79,9 @@ export default {
   margin-bottom: 4px;
   color: hsl(var(--hs-text), var(--l-text-default));
   margin-top: 20px;
+}
+
+.uba-audit__field-text {
+  color: hsl(var(--hs-text), var(--l-text-default));
 }
 </style>
