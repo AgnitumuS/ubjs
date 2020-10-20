@@ -2185,6 +2185,10 @@ Ext.define('UB.ux.Multifilter', {
         toDateV = toDate.getValue()
         oneDateV = date.getValue()
 
+        if (!fromDate.isValid() || !toDate.isValid() || !date.isValid()) {
+          return null
+        }
+
         switch (cfilterType) {
           case 'no_filter':
             return null
