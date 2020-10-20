@@ -234,7 +234,7 @@ export default {
           this.activeTabId = tab.id
           await this.$nextTick()
           const ref = this.$refs[`tab${tab.id}`]
-          if (ref) {
+          if (ref && ref.length) { // ref can be []  https://dev.intecracy.com/jira/browse/DRORM-2465
             ref[0].scrollIntoView({
               behavior: 'smooth',
               inline: 'center'
