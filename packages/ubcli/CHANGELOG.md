@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - SQL Server: prevent create FullText Catalogue in case `IsFullTextInstalled` is false (localDB for example)
 
 ## [5.7.6] - 2020-10-15
 ### Added
