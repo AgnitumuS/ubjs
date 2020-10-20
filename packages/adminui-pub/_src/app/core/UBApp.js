@@ -877,7 +877,9 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       return
     }
     const commandConfig = _.clone(parsedCmdCode)
-    if (!inWindow) {
+    if (inWindow) {
+      commandConfig.isModal = true
+    } else {
       commandConfig.tabId = 'navigator' + shortcutID
       commandConfig.target = $App.viewport.centralPanel
     }
@@ -940,7 +942,8 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
             .orderByDesc('actionTime')
         },
         columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP', 'entity', 'parentEntity', 'request_id']
-      }
+      },
+      shortcutCode: `audit-${entityCode}`
     })
   },
 
