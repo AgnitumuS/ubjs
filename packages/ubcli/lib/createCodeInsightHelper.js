@@ -79,24 +79,27 @@ module.exports = function createCodeInsightHelper (cfg) {
     return result
   }
 
-  const ub2JS = {
-    Unknown: '*',
-    String: 'String',
-    Int: 'Number',
-    BigInt: 'Number',
-    Float: 'Number',
-    Currency: 'Number',
-    Boolean: 'Boolean',
-    DateTime: 'Date',
-    Text: 'String',
-    ID: 'Number',
-    Entity: 'Number',
-    Document: 'String',
-    Many: 'String',
-    TimeLog: 'Number',
-    Enum: 'String',
-    BLOB: 'ArrayBuffer',
-    Date: 'Date'
+  const ub2JS = (dataType, associatedEntity) => {
+    const ubTypes = {
+      Unknown: () => '*',
+      String: () => 'String',
+      Int: () => 'Number',
+      BigInt: () => 'Number',
+      Float: () => 'Number',
+      Currency: () => 'Number',
+      Boolean: () => 'Boolean',
+      DateTime: () => 'Date',
+      Text: () => 'String',
+      ID: () => 'Number',
+      Entity: associatedEntity => `Number|${_.camelCase(associatedEntity)}Attrs`,
+      Document: () => 'String',
+      Many: associatedEntity => `Number|${_.camelCase(associatedEntity)}Attrs`,
+      TimeLog: () => 'Number',
+      Enum: () => 'String|ubmEnumAttrs',
+      BLOB: () => 'ArrayBuffer',
+      Date: () => 'Date'
+    }
+    return (typeof ubTypes[dataType] === 'function') ? ubTypes[dataType](associatedEntity) : '*'
   }
 
   const tpl = fs.readFileSync(path.join(__dirname, 'templates', 'codeInsightHelper.mustache'), 'utf8')
@@ -110,7 +113,7 @@ module.exports = function createCodeInsightHelper (cfg) {
         module: modulePackage,
         entities: entities,
         getJSType: function () {
-          return '{' + (ub2JS[this.dataType] || '*') + '}'
+          return '{' + (ub2JS(this.dataType, this.associatedEntity) || '*') + '}'
         },
         getDefaultValue: function () {
           var res = ''
@@ -191,6 +194,7 @@ module.exports = function createCodeInsightHelper (cfg) {
         if (entityDef.documentation) doc += '.\n * ' + entityDef.documentation
         entities.push({
           name: entityName,
+          camelName: _.camelCase(entityName),
           description: doc,
           meta: entityDef
         })

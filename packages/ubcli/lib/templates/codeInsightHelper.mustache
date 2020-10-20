@@ -18,21 +18,21 @@
  {{/meta.mixins}}
  */
 class {{name}}_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-{{name}}_ns.attrs = {
-{{#meta.attributes}}
- /**
-  {{#description}}
-  * {{description}}{{#associatedEntity}} -> {{associatedEntity}}{{/associatedEntity}}
-  {{/description}}
-  {{#documentation}}
-  * {{{documentation}}}
-  {{/documentation}}
-  * @type {{getJSType}}
-  */
-  {{name}}: {{{getDefaultValue}}},
-{{/meta.attributes}}
-}
+
+/**
+ * @typedef {{camelName}}Attrs
+ * @type {object}
+ {{#meta.attributes}}
+ * @property {{{getJSType}}} {{name}}{{#caption}} - {{caption}}{{/caption}}
+ {{/meta.attributes}}
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * {{=<% %>=}}@type {<%camelName%>Attrs}<%={{ }}=%>
+ */
+{{name}}_ns.attrs = {}
+
 /**
 * {{description}}
 * {{=<% %>=}}@type {<%name%>_ns}<%={{ }}=%>

@@ -11,7 +11,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    ```
    ub ./node_modules/@unitybase/ubcli/lib/flow/genSuffixesIndexInitScript.js -u root [-env ubConfig.env] [-e entity] [-m models] [-cfg path/to/ubConfig.json]
    ```
-    
+
+- `ubcli createCodeInsightHelper` added types definition for entity attributes. The type name is `_.camelCase(entityName) + Attr` (uba_auditTrail -> ubaAuditTrailAttr).
+   This allows to declare a variable as:
+   ```
+   /** @type ubaUserAttrs */
+   const userExecParams = {}
+   useruserExecParams.name = 12333
+   ``` 
+   and IDE (at last in WebStorm) adds a code insight and type checking
+
 ### Changed
 
 ### Deprecated
