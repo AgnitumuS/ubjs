@@ -41,7 +41,7 @@
           </template>
         </u-dropdown-item>
 
-        <u-dropdown-item divider/>
+        <u-dropdown-item divider />
 
         <u-dropdown-item
           label="closeAll"
@@ -56,28 +56,35 @@
     </u-dropdown>
 
     <div class="u-navbar__tab-container">
-      <div
-        v-for="tab of tabs"
+      <el-tooltip
+        v-for="tab in tabs"
         :key="tab.id"
-        :ref="`tab${tab.id}`"
-        :class="{
-          active: tab.id === activeTabId
-        }"
-        class="u-navbar__tab"
-        @click="setActiveTab(tab.id)"
-        @contextmenu="showContextMenu($event, tab.id)"
-        @click.middle="handleClose([tab])"
+        :content="tab.title"
+        placement="bottom"
+        :enterable="false"
+        :disabled="tab.title.length < 18"
       >
-        <span
-          class="u-navbar__tab-text"
-          v-html="tab.title"
-        />
+        <div
+          :ref="`tab${tab.id}`"
+          :class="{
+            active: tab.id === activeTabId
+          }"
+          class="u-navbar__tab"
+          @click="setActiveTab(tab.id)"
+          @contextmenu="showContextMenu($event, tab.id)"
+          @click.middle="handleClose([tab])"
+        >
+          <span
+            class="u-navbar__tab-text"
+            v-html="tab.title"
+          />
 
-        <i
-          class="u-icon-close u-navbar__tab-close-button"
-          @click.stop="handleClose([tab])"
-        />
-      </div>
+          <i
+            class="u-icon-close u-navbar__tab-close-button"
+            @click.stop="handleClose([tab])"
+          />
+        </div>
+      </el-tooltip>
     </div>
 
     <slot />
