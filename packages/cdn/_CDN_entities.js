@@ -5,7 +5,7 @@
 
 /**
  * Set of dictionaries, common for most enterprise systems. For internal organization structure see @ubitybase&#x2F;org module
- * @version 5.0.10
+ * @version 5.4.37
  * @module @unitybase/cdn
  */
 
@@ -15,61 +15,29 @@
  * @mixes mStorage
  */
 class cdn_address_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_address_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * @type {String}
-  */
-  addressType: '',
- /**
-  * @type {String}
-  */
-  value: '',
- /**
-  * Reference to address owner. No database constraint here, since we don't know all entities what want to store contacts. Entity developer must remove contacts in beforedelete manually.
-  * @type {Number}
-  */
-  subjectID: 0,
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnAddressAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String|ubmEnumAttrs} addressType - Address type
+ * @property {String} value - Address
+ * @property {Number} subjectID - Subject
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnAddressAttrs}
+ */
+cdn_address_ns.attrs = {}
+
 /**
 * Addresses directory
 * @type {cdn_address_ns}
@@ -82,79 +50,33 @@ const cdn_address = new cdn_address_ns()
  * @mixes mStorage
  */
 class cdn_adminunit_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_adminunit_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Parent -> cdn_adminunit
-  * @type {Number}
-  */
-  parentAdminUnitID: null,
- /**
-  * Internal code
-  * @type {String}
-  */
-  code: '',
- /**
-  * @type {String}
-  */
-  name: '',
- /**
-  * @type {String}
-  */
-  fullName: null,
- /**
-  * String representation of unit's type for fast queries
-  * @type {String}
-  */
-  adminUnitType: '',
- /**
-  * @type {String}
-  */
-  caption: null,
- /**
-  * @type {String}
-  */
-  mi_unityEntity: '',
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnAdminunitAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {Number|cdnAdminunitAttrs} parentAdminUnitID - Parent
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {String} fullName - Full name
+ * @property {String|ubmEnumAttrs} adminUnitType - Admin unit type
+ * @property {String} caption - Caption
+ * @property {String} mi_unityEntity
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnAdminunitAttrs}
+ */
+cdn_adminunit_ns.attrs = {}
+
 /**
 * Admin unit (country, region, city).
  * Main parent for countries, regions and cities
@@ -167,92 +89,35 @@ const cdn_adminunit = new cdn_adminunit_ns()
  * @mixes mStorage
  */
 class cdn_bank_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_bank_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Bank branch code
-  * @type {String}
-  */
-  MFO: '',
- /**
-  * Bank organization code
-  * @type {String}
-  */
-  code: null,
- /**
-  * Name without quotes and ownership. For searching data.
-  * @type {String}
-  */
-  name: '',
- /**
-  * Full official bank name . For displaying in reports.
-  * @type {String}
-  */
-  fullName: '',
- /**
-  * @type {String}
-  */
-  phones: null,
- /**
-  * @type {String}
-  */
-  address: null,
- /**
-  * Registration country -> cdn_country
-  * @type {Number}
-  */
-  countryID: null,
- /**
-  * City -> cdn_city
-  * @type {Number}
-  */
-  cityID: null,
- /**
-  * Description
-  * description
-  * @type {String}
-  */
-  description: '',
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnBankAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} MFO - Bank code
+ * @property {String} code - Organization code
+ * @property {String} name - Name
+ * @property {String} fullName - Full name
+ * @property {String} phones - Phones
+ * @property {String} address - Address
+ * @property {Number|cdnCountryAttrs} countryID - Country
+ * @property {Number|cdnCityAttrs} cityID - City
+ * @property {String} description - Description
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnBankAttrs}
+ */
+cdn_bank_ns.attrs = {}
+
 /**
 * Bank branches directory
 * @type {cdn_bank_ns}
@@ -265,83 +130,34 @@ const cdn_bank = new cdn_bank_ns()
  * @mixes dataHistory
  */
 class cdn_building_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_building_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * @type {Number}
-  */
-  streetID: 0,
- /**
-  * @type {Number}
-  */
-  postIndexID: 0,
- /**
-  * Code
-  * @type {String}
-  */
-  code: '',
- /**
-  * Description
-  * @type {String}
-  */
-  description: null,
- /**
-  * Type
-  * @type {String}
-  */
-  buildingType: '',
- /**
-  * @type {Number}
-  */
-  mi_data_id: 0,
- /**
-  * @type {Date}
-  */
-  mi_dateFrom: new Date(),
- /**
-  * @type {Date}
-  */
-  mi_dateTo: new Date(),
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnBuildingAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {Number|cdnStreetAttrs} streetID - Street
+ * @property {Number|cdnPostindexAttrs} postIndexID - Zip
+ * @property {String} code - Num
+ * @property {String} description - Description
+ * @property {String|ubmEnumAttrs} buildingType - Type
+ * @property {Number|cdnBuildingAttrs} mi_data_id
+ * @property {Date} mi_dateFrom
+ * @property {Date} mi_dateTo
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnBuildingAttrs}
+ */
+cdn_building_ns.attrs = {}
+
 /**
 * List of buildings
 * @type {cdn_building_ns}
@@ -354,86 +170,34 @@ const cdn_building = new cdn_building_ns()
  * @mixes unity
  */
 class cdn_city_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_city_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * @type {Number}
-  */
-  parentAdminUnitID: 0,
- /**
-  * City code
-  * @type {String}
-  */
-  code: '',
- /**
-  * City name
-  * @type {String}
-  */
-  name: '',
- /**
-  * @type {String}
-  */
-  caption: null,
- /**
-  * City description
-  * @type {String}
-  */
-  description: null,
- /**
-  * City postal code
-  * @type {String}
-  */
-  postalCode: null,
- /**
-  * City phone code
-  * @type {String}
-  */
-  phoneCode: null,
- /**
-  * City type -> cdn_citytype
-  * @type {Number}
-  */
-  cityTypeID: null,
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnCityAttrs
+ * @type {object}
+ * @property {Number|cdnAdminunitAttrs} ID
+ * @property {Number|cdnAdminunitAttrs} parentAdminUnitID - Parent
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {String} caption - Caption
+ * @property {String} description - Description
+ * @property {String} postalCode - Postal code
+ * @property {String} phoneCode - Phone code
+ * @property {Number|cdnCitytypeAttrs} cityTypeID - Type
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnCityAttrs}
+ */
+cdn_city_ns.attrs = {}
+
 /**
 * Cities directory
 * @type {cdn_city_ns}
@@ -445,124 +209,135 @@ const cdn_city = new cdn_city_ns()
  * @mixes mStorage
  */
 class cdn_citytype_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_citytype_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Internal code of city type
-  * @type {String}
-  */
-  code: '',
- /**
-  * City type name
-  * @type {String}
-  */
-  name: '',
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnCitytypeAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnCitytypeAttrs}
+ */
+cdn_citytype_ns.attrs = {}
+
 /**
 * City types directory
 * @type {cdn_citytype_ns}
 */
 const cdn_citytype = new cdn_citytype_ns()
 /**
+ * Сlassifiers
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_classifier_ns extends EntityNamespace {}
+
+/**
+ * @typedef cdnClassifierAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {String} description - Description
+ * @property {String|ubmEnumAttrs} orderByAttr - Classifier items order
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnClassifierAttrs}
+ */
+cdn_classifier_ns.attrs = {}
+
+/**
+* Сlassifiers
+* @type {cdn_classifier_ns}
+*/
+const cdn_classifier = new cdn_classifier_ns()
+/**
+ * Сlassifier Item
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes tree
+ */
+class cdn_classifieritem_ns extends EntityNamespace {}
+
+/**
+ * @typedef cdnClassifieritemAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - System code
+ * @property {String} name - Name
+ * @property {Number|cdnClassifierAttrs} classifierID - Classifier
+ * @property {Number|cdnClassifieritemAttrs} parentID - Parent
+ * @property {Number} hierarchyLevel - Level
+ * @property {String} mi_treePath
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnClassifieritemAttrs}
+ */
+cdn_classifieritem_ns.attrs = {}
+
+/**
+* Сlassifier Item
+* @type {cdn_classifieritem_ns}
+*/
+const cdn_classifieritem = new cdn_classifieritem_ns()
+/**
  * Contacts directory
  * @extends EntityNamespace
  * @mixes mStorage
  */
 class cdn_contact_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_contact_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * @type {Number}
-  */
-  contactTypeID: 0,
- /**
-  * @type {String}
-  */
-  value: '',
- /**
-  * Reference to contact owner. No database constraint here, since we don't know all entities what want to store contacts. Entity developer must remove contacts in delete:before manually
-  * @type {Number}
-  */
-  subjectID: 0,
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnContactAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {Number|cdnContacttypeAttrs} contactTypeID - Contact type
+ * @property {String} value - Contact
+ * @property {Number} subjectID - Subject
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnContactAttrs}
+ */
+cdn_contact_ns.attrs = {}
+
 /**
 * Contacts directory
 * @type {cdn_contact_ns}
@@ -574,57 +349,28 @@ const cdn_contact = new cdn_contact_ns()
  * @mixes mStorage
  */
 class cdn_contacttype_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_contacttype_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * @type {String}
-  */
-  code: '',
- /**
-  * Contact type name
-  * @type {String}
-  */
-  name: '',
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnContacttypeAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnContacttypeAttrs}
+ */
+cdn_contacttype_ns.attrs = {}
+
 /**
 * Contact types directory
 * @type {cdn_contacttype_ns}
@@ -636,63 +382,29 @@ const cdn_contacttype = new cdn_contacttype_ns()
  * @mixes mStorage
  */
 class cdn_corrindex_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_corrindex_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Code of correspondent index
-  * @type {String}
-  */
-  code: '',
- /**
-  * Name of correspondent index
-  * @type {String}
-  */
-  name: '',
- /**
-  * Full name of correspondent index
-  * @type {String}
-  */
-  fullName: '',
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnCorrindexAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {String} fullName - Full name
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnCorrindexAttrs}
+ */
+cdn_corrindex_ns.attrs = {}
+
 /**
 * Correspondent indexes directory
 * @type {cdn_corrindex_ns}
@@ -705,98 +417,36 @@ const cdn_corrindex = new cdn_corrindex_ns()
  * @mixes unity
  */
 class cdn_country_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_country_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Internal code
-  * @type {String}
-  */
-  code: '',
- /**
-  * Name of the country
-  * @type {String}
-  */
-  name: '',
- /**
-  * Full official name of the country
-  * @type {String}
-  */
-  fullName: '',
- /**
-  * Digital code of the country
-  * @type {Number}
-  */
-  intCode: 0,
- /**
-  * 2-character code of the country by ISO classification
-  * @type {String}
-  */
-  symbol2: '',
- /**
-  * 3-character code of the country by IOC classification
-  * @type {String}
-  */
-  symbol3: '',
- /**
-  * Country description
-  * @type {String}
-  */
-  description: null,
- /**
-  * Country phone code
-  * @type {String}
-  */
-  phoneCode: null,
- /**
-  * Main currency of the country -> cdn_currency
-  * @type {Number}
-  */
-  currencyID: null,
- /**
-  * Capital of the country -> cdn_city
-  * @type {Number}
-  */
-  capitalID: null,
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnCountryAttrs
+ * @type {object}
+ * @property {Number|cdnAdminunitAttrs} ID
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {String} fullName - Full name
+ * @property {Number} intCode - Digital code
+ * @property {String} symbol2 - ISO code
+ * @property {String} symbol3 - IOC code
+ * @property {String} description - Description
+ * @property {String} phoneCode - Phone code
+ * @property {Number|cdnCurrencyAttrs} currencyID - Currency
+ * @property {Number|cdnCityAttrs} capitalID - Capital
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnCountryAttrs}
+ */
+cdn_country_ns.attrs = {}
+
 /**
 * Countries directory
 * @type {cdn_country_ns}
@@ -808,74 +458,31 @@ const cdn_country = new cdn_country_ns()
  * @mixes mStorage
  */
 class cdn_currency_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_currency_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Digital code of currency
-  * @type {Number}
-  */
-  intCode: 0,
- /**
-  * 3-character code of currency
-  * @type {String}
-  */
-  code3: '',
- /**
-  * Name of currency
-  * @type {String}
-  */
-  name: '',
- /**
-  * Default multiplicity
-  * @type {Number}
-  */
-  curMult: 0,
- /**
-  * Description
-  * Description
-  * @type {String}
-  */
-  description: '',
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnCurrencyAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {Number} intCode - Digital code
+ * @property {String} code3 - 3-character code
+ * @property {String} name - Name
+ * @property {Number} curMult - Default multiplicity
+ * @property {String} description - Description
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnCurrencyAttrs}
+ */
+cdn_currency_ns.attrs = {}
+
 /**
 * Currencies dictionary
 * @type {cdn_currency_ns}
@@ -888,110 +495,39 @@ const cdn_currency = new cdn_currency_ns()
  * @mixes dataHistory
  */
 class cdn_department_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_department_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Code of the department
-  * @type {String}
-  */
-  code: null,
- /**
-  * Name of the department
-  * @type {String}
-  */
-  name: '',
- /**
-  * Full official name of the department
-  * @type {String}
-  */
-  fullName: null,
- /**
-  * Description of the department
-  * @type {String}
-  */
-  description: null,
- /**
-  * Department name in genitive case
-  * @type {String}
-  */
-  nameGen: null,
- /**
-  * Department name in dative case
-  * @type {String}
-  */
-  nameDat: null,
- /**
-  * Department full official name in genitive case
-  * @type {String}
-  */
-  fullNameGen: null,
- /**
-  * Department full official name in dative case
-  * @type {String}
-  */
-  fullNameDat: null,
- /**
-  * Type of the department -> cdn_deptype
-  * @type {Number}
-  */
-  depTypeID: null,
- /**
-  * Parent external organization -> cdn_organization
-  * @type {Number}
-  */
-  organizationID: null,
- /**
-  * @type {Number}
-  */
-  mi_data_id: 0,
- /**
-  * @type {Date}
-  */
-  mi_dateFrom: new Date(),
- /**
-  * @type {Date}
-  */
-  mi_dateTo: new Date(),
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnDepartmentAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {String} fullName - Full name
+ * @property {String} description - Description
+ * @property {String} nameGen - Name in genitive case
+ * @property {String} nameDat - Name in dative case
+ * @property {String} fullNameGen - Full name in genitive case
+ * @property {String} fullNameDat - Full name in dative case
+ * @property {Number|cdnDeptypeAttrs} depTypeID - Type
+ * @property {Number|cdnOrganizationAttrs} organizationID - Organization
+ * @property {Number|cdnDepartmentAttrs} mi_data_id
+ * @property {Date} mi_dateFrom
+ * @property {Date} mi_dateTo
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnDepartmentAttrs}
+ */
+cdn_department_ns.attrs = {}
+
 /**
 * External departments dictionary
 * @type {cdn_department_ns}
@@ -1003,58 +539,28 @@ const cdn_department = new cdn_department_ns()
  * @mixes mStorage
  */
 class cdn_deptype_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_deptype_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Code of the department type
-  * @type {String}
-  */
-  code: '',
- /**
-  * Name of the department type
-  * @type {String}
-  */
-  name: '',
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnDeptypeAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnDeptypeAttrs}
+ */
+cdn_deptype_ns.attrs = {}
+
 /**
 * Department types dictionary
 * @type {cdn_deptype_ns}
@@ -1067,493 +573,197 @@ const cdn_deptype = new cdn_deptype_ns()
  * @mixes dataHistory
  */
 class cdn_employee_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_employee_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Employee last name
-  * @type {String}
-  */
-  lastName: '',
- /**
-  * Employee first name
-  * @type {String}
-  */
-  firstName: '',
- /**
-  * Employee middle name
-  * @type {String}
-  */
-  middleName: null,
- /**
-  * Employee description
-  * @type {String}
-  */
-  description: null,
- /**
-  * Employee sex
-  * @type {String}
-  */
-  sexType: '',
- /**
-  * Employee number
-  * @type {String}
-  */
-  uniqNum: null,
- /**
-  * Suffix
-  * @type {String}
-  */
-  suffix: null,
- /**
-  * Example: A.O. Ivanov
-  * @type {String}
-  */
-  shortFIO: '',
- /**
-  * Example: Anton Olegovich Ivanov
-  * @type {String}
-  */
-  fullFIO: '',
- /**
-  * Describes how to treat to this person
-  * @type {String}
-  */
-  apply: null,
- /**
-  * Employee last name in genitive case
-  * @type {String}
-  */
-  lastNameGen: null,
- /**
-  * Employee last name in dative case
-  * @type {String}
-  */
-  lastNameDat: null,
- /**
-  * Employee first name in genitive case
-  * @type {String}
-  */
-  firstNameGen: null,
- /**
-  * Employee first name in dative case
-  * @type {String}
-  */
-  firstNameDat: null,
- /**
-  * Employee middle name in genitive case
-  * @type {String}
-  */
-  middleNameGen: null,
- /**
-  * Employee middle name in dative case
-  * @type {String}
-  */
-  middleNameDat: null,
- /**
-  * Employee short name in genitive case
-  * @type {String}
-  */
-  shortFIOGen: null,
- /**
-  * Employee short name in dative case
-  * @type {String}
-  */
-  shortFIODat: null,
- /**
-  * Employee full name in genitive case
-  * @type {String}
-  */
-  fullFIOGen: null,
- /**
-  * Employee full name in dative case
-  * @type {String}
-  */
-  fullFIODat: null,
- /**
-  * Describes how to treat to this person in genitive case
-  * @type {String}
-  */
-  applyGen: null,
- /**
-  * Describes how to treat to this person in dative case
-  * @type {String}
-  */
-  applyDat: null,
- /**
-  * Department of external organization, which employee belongs -> cdn_department
-  * @type {Number}
-  */
-  departmentID: null,
- /**
-  * External organization, which employee belongs -> cdn_organization
-  * @type {Number}
-  */
-  organizationID: 0,
- /**
-  * Formulation of the recipient, that will appear in the formation of outgoing document
-  * @type {String}
-  */
-  addrText: null,
- /**
-  * @type {Number}
-  */
-  mi_data_id: 0,
- /**
-  * @type {Date}
-  */
-  mi_dateFrom: new Date(),
- /**
-  * @type {Date}
-  */
-  mi_dateTo: new Date(),
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnEmployeeAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} lastName - Last name
+ * @property {String} firstName - First name
+ * @property {String} middleName - Middle name
+ * @property {String} description - Description
+ * @property {String|ubmEnumAttrs} sexType - Gender
+ * @property {String} uniqNum - Employee number
+ * @property {String} suffix - Suffix
+ * @property {String} shortFIO - Last name with initials
+ * @property {String} fullFIO - Full name
+ * @property {String} apply - Treatment
+ * @property {String} lastNameGen - Last name in genitive
+ * @property {String} lastNameDat - Last name in dative
+ * @property {String} firstNameGen - First name in genitive
+ * @property {String} firstNameDat - First name in dative
+ * @property {String} middleNameGen - Middle name in genitive
+ * @property {String} middleNameDat - Middle name in dative
+ * @property {String} shortFIOGen - Short name in genitive
+ * @property {String} shortFIODat - Short name in dative
+ * @property {String} fullFIOGen - Full name in genitive
+ * @property {String} fullFIODat - Full name in dative
+ * @property {String} applyGen - Treatment in genitive
+ * @property {String} applyDat - Treatment in dative
+ * @property {Number|cdnDepartmentAttrs} departmentID - Department
+ * @property {Number|cdnOrganizationAttrs} organizationID - Organization
+ * @property {String} addrText - Addressee formulation
+ * @property {Number|cdnEmployeeAttrs} mi_data_id
+ * @property {Date} mi_dateFrom
+ * @property {Date} mi_dateTo
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnEmployeeAttrs}
+ */
+cdn_employee_ns.attrs = {}
+
 /**
 * List of employees of external organizations
 * @type {cdn_employee_ns}
 */
 const cdn_employee = new cdn_employee_ns()
 /**
- * Organization&#39;s current accounts dictionary
+ * Languages directory according to ISO-639-1
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_language_ns extends EntityNamespace {}
+
+/**
+ * @typedef cdnLanguageAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - ISO 639-1 code
+ * @property {String} languageName - Language name
+ * @property {String} nativeName - Native name (Endonym)
+ * @property {Boolean} isRTL - Is right-to-left
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnLanguageAttrs}
+ */
+cdn_language_ns.attrs = {}
+
+/**
+* Languages directory according to ISO-639-1
+* @type {cdn_language_ns}
+*/
+const cdn_language = new cdn_language_ns()
+/**
+ * Nationality
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_nationality_ns extends EntityNamespace {}
+
+/**
+ * @typedef cdnNationalityAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {String} nameM - Name(male)
+ * @property {String} nameF - Name(female)
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnNationalityAttrs}
+ */
+cdn_nationality_ns.attrs = {}
+
+/**
+* Nationality
+* @type {cdn_nationality_ns}
+*/
+const cdn_nationality = new cdn_nationality_ns()
+/**
+ * Organization&#39;s settlement accounts
  * @extends EntityNamespace
  * @mixes mStorage
  */
 class cdn_orgaccount_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_orgaccount_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Organization -> cdn_organization
-  * @type {Number}
-  */
-  organizationID: 0,
- /**
-  * Currency of the account -> cdn_currency
-  * @type {Number}
-  */
-  currencyID: 0,
- /**
-  * Bank of the account -> cdn_bank
-  * @type {Number}
-  */
-  bankID: 0,
- /**
-  * Code of the account
-  * @type {String}
-  */
-  code: '',
- /**
-  * Type of the account
-  * @type {String}
-  */
-  acctype: '',
- /**
-  * Description
-  * @type {String}
-  */
-  description: '',
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
 /**
-* Organization&#39;s current accounts dictionary
+ * @typedef cdnOrgaccountAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {Number|cdnOrganizationAttrs} organizationID - Organization
+ * @property {Number|cdnCurrencyAttrs} currencyID - Currency
+ * @property {Number|cdnBankAttrs} bankID - Bank
+ * @property {String} code - Code
+ * @property {String|ubmEnumAttrs} acctype - Type
+ * @property {String} description - Description
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnOrgaccountAttrs}
+ */
+cdn_orgaccount_ns.attrs = {}
+
+/**
+* Organization&#39;s settlement accounts
 * @type {cdn_orgaccount_ns}
 */
 const cdn_orgaccount = new cdn_orgaccount_ns()
-/**
- * List of external organizations
- * @extends EntityNamespace
- * @mixes mStorage
- * @mixes dataHistory
- * @mixes fts
- */
-class cdn_organization_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_organization_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Organization internal code
-  * @type {String}
-  */
-  code: null,
- /**
-  * Common classifier of enterprises and organizations (CCEO)
-  * @type {String}
-  */
-  OKPOCode: null,
- /**
-  * Tax number
-  * @type {String}
-  */
-  taxCode: null,
- /**
-  * VAT (value-added tax) registration certificate number
-  * @type {String}
-  */
-  vatCode: null,
- /**
-  * Name of organization without the quotes and abbreviations
-  * @type {String}
-  */
-  name: '',
- /**
-  * Full name of organization, as it&#39;s specified in the certificate of registration
-  * @type {String}
-  */
-  fullName: '',
- /**
-  * Organization name in genitive case
-  * @type {String}
-  */
-  nameGen: null,
- /**
-  * Organization name in dative case
-  * @type {String}
-  */
-  nameDat: null,
- /**
-  * Full name of organization, as it&#39;s specified in the certificate of registration, in genitive case
-  * @type {String}
-  */
-  fullNameGen: null,
- /**
-  * Full name of organization, as it&#39;s specified in the certificate of registration, in dative case
-  * @type {String}
-  */
-  fullNameDat: null,
- /**
-  * Organization description
-  * @type {String}
-  */
-  description: null,
- /**
-  * Organization type -> cdn_orgbusinesstype
-  * @type {Number}
-  */
-  orgBusinessTypeID: null,
- /**
-  * Ownership type -> cdn_orgownershiptype
-  * @type {Number}
-  */
-  orgOwnershipTypeID: null,
- /**
-  * Index of correspondent -> cdn_corrindex
-  * @type {Number}
-  */
-  corrIndexID: null,
- /**
-  * Formulation of the recipient, that will appear in the formation of PDF outgoing document
-  * @type {String}
-  */
-  addrText: null,
- /**
-  * Caption
-  * @type {String}
-  */
-  caption: null,
- /**
-  * @type {Number}
-  */
-  mi_data_id: 0,
- /**
-  * @type {Date}
-  */
-  mi_dateFrom: new Date(),
- /**
-  * @type {Date}
-  */
-  mi_dateTo: new Date(),
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
-/**
-* List of external organizations
-* @type {cdn_organization_ns}
-*/
-const cdn_organization = new cdn_organization_ns()
 /**
  * Organization types dictionary (LTD etc.)
  * @extends EntityNamespace
  * @mixes mStorage
  */
 class cdn_orgbusinesstype_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_orgbusinesstype_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Code of the organization type
-  * @type {String}
-  */
-  code: '',
- /**
-  * Acronim of the organization type
-  * @type {String}
-  */
-  shortName: null,
- /**
-  * Name of the organization type
-  * @type {String}
-  */
-  name: '',
- /**
-  * Description of the organization type
-  * @type {String}
-  */
-  fullName: null,
- /**
-  * Sign, that the organization of this type is a government authority
-  * @type {Boolean}
-  */
-  isGovAuthority: undefined,
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnOrgbusinesstypeAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} shortName - Acronim
+ * @property {String} name - Name
+ * @property {String} fullName - Description
+ * @property {Boolean} isGovAuthority - Gov. authority
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnOrgbusinesstypeAttrs}
+ */
+cdn_orgbusinesstype_ns.attrs = {}
+
 /**
 * Organization types dictionary (LTD etc.)
 * @type {cdn_orgbusinesstype_ns}
@@ -1565,68 +775,30 @@ const cdn_orgbusinesstype = new cdn_orgbusinesstype_ns()
  * @mixes mStorage
  */
 class cdn_orgownershiptype_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_orgownershiptype_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Code of the ownership type
-  * @type {String}
-  */
-  code: '',
- /**
-  * Acronim of the ownership type
-  * @type {String}
-  */
-  shortName: null,
- /**
-  * Name of the ownership type
-  * @type {String}
-  */
-  name: '',
- /**
-  * Full name of the ownership type
-  * @type {String}
-  */
-  fullName: null,
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnOrgownershiptypeAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} shortName - Acronim
+ * @property {String} name - Name
+ * @property {String} fullName - Full name
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnOrgownershiptypeAttrs}
+ */
+cdn_orgownershiptype_ns.attrs = {}
+
 /**
 * Types of ownership
 * @type {cdn_orgownershiptype_ns}
@@ -1641,200 +813,60 @@ const cdn_orgownershiptype = new cdn_orgownershiptype_ns()
  * @mixes fts
  */
 class cdn_person_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_person_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Last name of the person
-  * @type {String}
-  */
-  lastName: '',
- /**
-  * First name of the person
-  * @type {String}
-  */
-  firstName: '',
- /**
-  * Middle name of the person
-  * @type {String}
-  */
-  middleName: null,
- /**
-  * Person&#39;s identity card
-  * @type {String}
-  */
-  identCard: null,
- /**
-  * Place of work, position
-  * @type {String}
-  */
-  workPlacePos: null,
- /**
-  * Birthday of the person
-  * @type {Date}
-  */
-  birthDate: null,
- /**
-  * Description of the person
-  * @type {String}
-  */
-  description: null,
- /**
-  * Sex of the person
-  * @type {String}
-  */
-  sexType: '',
- /**
-  * Suffix of the person
-  * @type {String}
-  */
-  suffix: null,
- /**
-  * Example: Antonov I.P.
-  * @type {String}
-  */
-  shortFIO: null,
- /**
-  * Example: Antonov Ivan Petrovich
-  * @type {String}
-  */
-  fullFIO: '',
- /**
-  * Apply to the person
-  * @type {String}
-  */
-  apply: null,
- /**
-  * Person&#39;s photo
-  * @type {String}
-  */
-  photo: null,
- /**
-  * Person&#39;s last name in genitive case
-  * @type {String}
-  */
-  lastNameGen: null,
- /**
-  * Person&#39;s last name in dative case
-  * @type {String}
-  */
-  lastNameDat: null,
- /**
-  * Person&#39;s first name in genitive case
-  * @type {String}
-  */
-  firstNameGen: null,
- /**
-  * Person&#39;s first name in dative case
-  * @type {String}
-  */
-  firstNameDat: null,
- /**
-  * Person&#39;s middle name in genitive case
-  * @type {String}
-  */
-  middleNameGen: null,
- /**
-  * Person&#39;s middle name in dative case
-  * @type {String}
-  */
-  middleNameDat: null,
- /**
-  * Person&#39;s short name in genitive case
-  * @type {String}
-  */
-  shortFIOGen: null,
- /**
-  * Person&#39;s short name in dative case
-  * @type {String}
-  */
-  shortFIODat: null,
- /**
-  * Person&#39;s full name in genitive case
-  * @type {String}
-  */
-  fullFIOGen: null,
- /**
-  * Person&#39;s full name in dative case
-  * @type {String}
-  */
-  fullFIODat: null,
- /**
-  * Apply to the person in genitive case
-  * @type {String}
-  */
-  applyGen: null,
- /**
-  * Apply to the person in dative case
-  * @type {String}
-  */
-  applyDat: null,
- /**
-  * Person&#39;s region -> cdn_region
-  * @type {Number}
-  */
-  regionID: null,
- /**
-  * Social status position -> cdn_personsocialstatus
-  * @type {Number}
-  */
-  socialstatusID: null,
- /**
-  * Category position -> cdn_personcategory
-  * @type {Number}
-  */
-  categoryID: null,
- /**
-  * @type {Number}
-  */
-  mi_data_id: 0,
- /**
-  * @type {Date}
-  */
-  mi_dateFrom: new Date(),
- /**
-  * @type {Date}
-  */
-  mi_dateTo: new Date(),
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnPersonAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} lastName - Last name
+ * @property {String} firstName - First name
+ * @property {String} middleName - Middle name
+ * @property {String} identCard - Identity card
+ * @property {String} workPlacePos - Place of work, position
+ * @property {Date} birthDate - Birthday
+ * @property {String} description - Description
+ * @property {String|ubmEnumAttrs} sexType - Gender
+ * @property {String} suffix - Suffix
+ * @property {String} shortFIO - Short name
+ * @property {String} fullFIO - Full name
+ * @property {String} apply - Apply
+ * @property {String} photo - Photo
+ * @property {String} lastNameGen - Last name in genitive
+ * @property {String} lastNameDat - Last name in dative
+ * @property {String} firstNameGen - First name in genitive
+ * @property {String} firstNameDat - First name in dative
+ * @property {String} middleNameGen - Middle name in genitive
+ * @property {String} middleNameDat - Middle name in dative
+ * @property {String} shortFIOGen - Short name in genitive
+ * @property {String} shortFIODat - Short name in dative
+ * @property {String} fullFIOGen - Full name in genitive
+ * @property {String} fullFIODat - Full name in dative
+ * @property {String} applyGen - Apply in genitive
+ * @property {String} applyDat - Apply in dative
+ * @property {Number|cdnRegionAttrs} regionID - Region
+ * @property {Number|cdnPersonsocialstatusAttrs} socialstatusID - Social status
+ * @property {Number|cdnPersoncategoryAttrs} categoryID - Category
+ * @property {Number|cdnNationalityAttrs} nationality - Nationality
+ * @property {Boolean} resident - Resident?
+ * @property {Number|cdnPersonclassAttrs} classID - Person classification
+ * @property {Number|cdnPersonAttrs} mi_data_id
+ * @property {Date} mi_dateFrom
+ * @property {Date} mi_dateTo
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnPersonAttrs}
+ */
+cdn_person_ns.attrs = {}
+
 /**
 * Physical persons dictionary.
  * The directory stores a list of persons (physical persons)
@@ -1842,70 +874,75 @@ cdn_person_ns.attrs = {
 */
 const cdn_person = new cdn_person_ns()
 /**
- * Ctegory of persons.
+ * Category of persons.
  * The directory stores a list of categories or physical persons
  * @extends EntityNamespace
  * @mixes mStorage
  */
 class cdn_personcategory_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_personcategory_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Code
-  * @type {String}
-  */
-  code: '',
- /**
-  * Name of category
-  * @type {String}
-  */
-  name: '',
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
 /**
-* Ctegory of persons.
+ * @typedef cdnPersoncategoryAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnPersoncategoryAttrs}
+ */
+cdn_personcategory_ns.attrs = {}
+
+/**
+* Category of persons.
  * The directory stores a list of categories or physical persons
 * @type {cdn_personcategory_ns}
 */
 const cdn_personcategory = new cdn_personcategory_ns()
+/**
+ * Person classification.
+ * Internal classification of persons
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_personclass_ns extends EntityNamespace {}
+
+/**
+ * @typedef cdnPersonclassAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnPersonclassAttrs}
+ */
+cdn_personclass_ns.attrs = {}
+
+/**
+* Person classification.
+ * Internal classification of persons
+* @type {cdn_personclass_ns}
+*/
+const cdn_personclass = new cdn_personclass_ns()
 /**
  * Dictionary of social status.
  * The directory stores a list of social status for individuals
@@ -1913,58 +950,28 @@ const cdn_personcategory = new cdn_personcategory_ns()
  * @mixes mStorage
  */
 class cdn_personsocialstatus_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_personsocialstatus_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Code
-  * @type {String}
-  */
-  code: '',
- /**
-  * Name of social status
-  * @type {String}
-  */
-  name: '',
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnPersonsocialstatusAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnPersonsocialstatusAttrs}
+ */
+cdn_personsocialstatus_ns.attrs = {}
+
 /**
 * Dictionary of social status.
  * The directory stores a list of social status for individuals
@@ -1977,62 +984,29 @@ const cdn_personsocialstatus = new cdn_personsocialstatus_ns()
  * @mixes mStorage
  */
 class cdn_postindex_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_postindex_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Index
-  * @type {String}
-  */
-  code: '',
- /**
-  * @type {Number}
-  */
-  streetID: 0,
- /**
-  * Description
-  * @type {String}
-  */
-  description: '',
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnPostindexAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Index
+ * @property {Number|cdnStreetAttrs} streetID - Street
+ * @property {String} description - Description
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnPostindexAttrs}
+ */
+cdn_postindex_ns.attrs = {}
+
 /**
 * ZIP codes
 * @type {cdn_postindex_ns}
@@ -2044,62 +1018,29 @@ const cdn_postindex = new cdn_postindex_ns()
  * @mixes mStorage
  */
 class cdn_profession_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_profession_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Code
-  * @type {String}
-  */
-  code: '',
- /**
-  * Name of profession
-  * @type {String}
-  */
-  name: '',
- /**
-  * @type {String}
-  */
-  description: '',
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnProfessionAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {String} description - Caption
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnProfessionAttrs}
+ */
+cdn_profession_ns.attrs = {}
+
 /**
 * Dictionary of standard professions
 * @type {cdn_profession_ns}
@@ -2113,105 +1054,38 @@ const cdn_profession = new cdn_profession_ns()
  * @mixes unity
  */
 class cdn_region_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_region_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Parent -> cdn_adminunit
-  * @type {Number}
-  */
-  parentAdminUnitID: 0,
- /**
-  * Internal code
-  * @type {String}
-  */
-  code: '',
- /**
-  * Type of region -> cdn_regiontype
-  * @type {Number}
-  */
-  regionTypeID: null,
- /**
-  * Name of region
-  * @type {String}
-  */
-  name: '',
- /**
-  * Caption
-  * @type {String}
-  */
-  caption: null,
- /**
-  * Full name of region
-  * @type {String}
-  */
-  fullName: '',
- /**
-  * Description of region
-  * @type {String}
-  */
-  description: null,
- /**
-  * Phone code of region
-  * @type {String}
-  */
-  phoneCode: null,
- /**
-  * Center of region -> cdn_city
-  * @type {Number}
-  */
-  centerID: null,
- /**
-  * @type {Number}
-  */
-  mi_data_id: 0,
- /**
-  * @type {Date}
-  */
-  mi_dateFrom: new Date(),
- /**
-  * @type {Date}
-  */
-  mi_dateTo: new Date(),
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnRegionAttrs
+ * @type {object}
+ * @property {Number|cdnAdminunitAttrs} ID
+ * @property {Number|cdnAdminunitAttrs} parentAdminUnitID - Parent
+ * @property {String} code - Code
+ * @property {Number|cdnRegiontypeAttrs} regionTypeID - Type
+ * @property {String} name - Name
+ * @property {String} caption - Caption
+ * @property {String} fullName - Full name
+ * @property {String} description - Description
+ * @property {String} phoneCode - Phone code
+ * @property {Number|cdnCityAttrs} centerID - Center
+ * @property {Number|cdnRegionAttrs} mi_data_id
+ * @property {Date} mi_dateFrom
+ * @property {Date} mi_dateTo
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnRegionAttrs}
+ */
+cdn_region_ns.attrs = {}
+
 /**
 * Regions dictionary
 * @type {cdn_region_ns}
@@ -2223,58 +1097,28 @@ const cdn_region = new cdn_region_ns()
  * @mixes mStorage
  */
 class cdn_regiontype_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_regiontype_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Code
-  * @type {String}
-  */
-  code: '',
- /**
-  * Name of region type
-  * @type {String}
-  */
-  name: '',
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnRegiontypeAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnRegiontypeAttrs}
+ */
+cdn_regiontype_ns.attrs = {}
+
 /**
 * Region types dictionary
 * @type {cdn_regiontype_ns}
@@ -2286,58 +1130,28 @@ const cdn_regiontype = new cdn_regiontype_ns()
  * @mixes mStorage
  */
 class cdn_staffunittype_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_staffunittype_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Code of the staffunit type
-  * @type {String}
-  */
-  code: '',
- /**
-  * Name of the staffunit type
-  * @type {String}
-  */
-  name: '',
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnStaffunittypeAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} code - Code
+ * @property {String} name - Name
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnStaffunittypeAttrs}
+ */
+cdn_staffunittype_ns.attrs = {}
+
 /**
 * Staffunit types dictionary
 * @type {cdn_staffunittype_ns}
@@ -2351,85 +1165,34 @@ const cdn_staffunittype = new cdn_staffunittype_ns()
  * @mixes dataHistory
  */
 class cdn_street_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-cdn_street_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Street name
-  * @type {String}
-  */
-  name: '',
- /**
-  * Street full name
-  * @type {String}
-  */
-  fullName: '',
- /**
-  * Code
-  * @type {String}
-  */
-  code: null,
- /**
-  * Type
-  * @type {String}
-  */
-  streetType: null,
- /**
-  * City -> cdn_city
-  * @type {Number}
-  */
-  cityID: null,
- /**
-  * @type {Number}
-  */
-  mi_data_id: 0,
- /**
-  * @type {Date}
-  */
-  mi_dateFrom: new Date(),
- /**
-  * @type {Date}
-  */
-  mi_dateTo: new Date(),
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
- /**
-  * Deletion date
-  * @type {Date}
-  */
-  mi_deleteDate: new Date(),
- /**
-  * User who delete row -> uba_user
-  * @type {Number}
-  */
-  mi_deleteUser: null,
-}
+
+/**
+ * @typedef cdnStreetAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} name - Name
+ * @property {String} fullName - Full name
+ * @property {String} code - Code
+ * @property {String|ubmEnumAttrs} streetType - Type
+ * @property {Number|cdnCityAttrs} cityID - City
+ * @property {Number|cdnStreetAttrs} mi_data_id
+ * @property {Date} mi_dateFrom
+ * @property {Date} mi_dateTo
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ * @property {Date} mi_deleteDate
+ * @property {Number|ubaUserAttrs} mi_deleteUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {cdnStreetAttrs}
+ */
+cdn_street_ns.attrs = {}
+
 /**
 * List of streets.
  * В этом справочнике хранится перечень вулиць

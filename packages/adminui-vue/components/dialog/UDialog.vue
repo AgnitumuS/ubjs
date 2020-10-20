@@ -108,7 +108,7 @@ export default {
     async setFocus () {
       await this.$nextTick()
       const cancelButton = this.$refs.cancelButton
-      if (this.$refs.cancelButton) {
+      if (cancelButton) {
         cancelButton.$el.focus()
       }
     }
