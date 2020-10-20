@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+  - `UNavbar` show tooltip on tabs in case caption length > 18
 
 ### Changed
  - `Form/validation` building of validation() rules takes into account only fields what included into `masterFieldList` (if passed).
@@ -19,7 +20,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - Excel export from UTableEntity - fixed format for Date anf Boolean attributes
- - `UNavbar` show tooltip on tab in case text length > 18
+ - prevent error `Cannot read property 'scrollIntoView' of undefined` during
+  navbar tab closing (occurs for Ext based forms with close confirmation) 
+ 
 
 ## [1.13.12] - 2020-10-15
 ### Added
