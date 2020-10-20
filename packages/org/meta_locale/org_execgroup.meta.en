@@ -13,6 +13,11 @@
       "description": "Code of the group"
     },
     {
+      "name": "groupType",
+      "caption": "Type",
+      "description": "Type of group"
+    },
+    {
       "name": "name",
       "caption": "Name of the group",
       "description": "Name of the group"

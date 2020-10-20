@@ -8,6 +8,11 @@
       "description": "Родительский узел"
     },
     {
+      "name": "groupType",
+      "caption": "Тип",
+      "description": "Тип группы"
+    },
+    {
       "name": "code",
       "caption": "Внутренний код",
       "description": "Внутренний код группы"
