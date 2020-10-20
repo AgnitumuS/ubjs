@@ -7,8 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - DDL generator: added storage table generation for SUFFIX indexes. 
-   **EXISTED DATA SHOULD BE MIGRATED MANUALLY** 
-
+ - added a SUFFIX indexes initialization script generator (SQL SERVER for a while)
+   ```
+   ub ./node_modules/@unitybase/ubcli/lib/flow/genSuffixesIndexInitScript.js -u root [-env ubConfig.env] [-e entity] [-m models] [-cfg path/to/ubConfig.json]
+   ```
+    
 ### Changed
 
 ### Deprecated

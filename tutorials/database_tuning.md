@@ -153,6 +153,16 @@ A usage sample in meta file:
 }
 ```
 
+In case `SUFFIXES` index is added to an entity which already contains data it must be filled using script generated using command:
+```
+ub ./node_modules/@unitybase/ubcli/lib/flow/genSuffixesIndexInitScript.js -u root [-env ubConfig.env] 
+```
+
+See `ub ./node_modules/@unitybase/ubcli/lib/flow/genSuffixesIndexInitScript.js -?` for other parameters
+
+> !!WARNING: script should be executed while UB server is down!!
+> Execution can take a long time (~10 second for each 500 000 rows)
+
 **Please, verify such optimization on your data, since logic is not strict in this case**         
 
 ## Array binding
