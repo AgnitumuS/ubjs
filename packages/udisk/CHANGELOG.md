@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.0.147] - 2020-10-20
 ## [5.0.146] - 2020-10-15
 ### Changed
 - `application.blobStores` section now defined in model partial config

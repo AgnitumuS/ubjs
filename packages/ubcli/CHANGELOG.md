@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.7.7] - 2020-10-20
+### Added
  - DDL generator: added storage table generation for SUFFIX indexes. 
  - added a SUFFIX indexes initialization script generator (SQL SERVER for a while)
    ```
@@ -20,12 +31,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    useruserExecParams.name = 12333
    ``` 
    and IDE (at last in WebStorm) adds a code insight and type checking
-
-### Changed
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - SQL Server: prevent create FullText Catalogue in case `IsFullTextInstalled` is false (localDB for example)

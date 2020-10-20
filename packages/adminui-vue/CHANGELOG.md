@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.13.13] - 2020-10-20
+### Added
   - `UNavbar` show tooltip on tabs in case caption length > 18
 
 ### Changed
@@ -17,10 +28,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `audit table` save in localStorage last preview mode and active filters
  - `Form`, `UTableEntity` in case table or form opened as modal then all child tables and forms are also opened as modals
  
-### Deprecated
-
-### Removed
-
 ### Fixed
  - Excel export from UTableEntity - fixed format for Date anf Boolean attributes
  - prevent error `Cannot read property 'scrollIntoView' of undefined` during

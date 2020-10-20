@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.13.44] - 2020-10-20
+### Fixed
  - Ext based grid multifilter: checking date value is valid before filtering into ubdetailgrid
 
 ## [5.13.43] - 2020-10-15

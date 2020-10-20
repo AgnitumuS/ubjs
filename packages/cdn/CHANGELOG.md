@@ -6,8 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - added DB index by cdn_organization.name
-    
+
 ### Changed
 
 ### Deprecated
@@ -16,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.38] - 2020-10-20
+### Added
+ - added DB index by cdn_organization.name
+    
 ## [5.4.37] - 2020-10-15
 ## [5.4.36] - 2020-09-23
 ## [5.4.35] - 2020-09-22

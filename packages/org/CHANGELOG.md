@@ -6,16 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- new attribute `org_execgroup.groupType` ('*' by default) to separate groups by business logic
 
 ### Changed
- - ORG model now uses ub-migrate for adding/updating ORG related enums
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.4.8] - 2020-10-20
+### Added
+- new attribute `org_execgroup.groupType` ('*' by default) to separate groups by business logic
+
+### Changed
+ - ORG model now uses ub-migrate for adding/updating ORG related enums
 
 ## [5.4.7] - 2020-10-15
 ## [5.4.6] - 2020-09-23

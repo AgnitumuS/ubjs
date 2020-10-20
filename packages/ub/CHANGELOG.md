@@ -6,17 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - SUFFIXES dbExtension type added to entity schema (UB>=5.18.15)
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
-  - `ignoreCollation` attribute property removed (in flavor of SUFFIXES extension)
-  
+
 ### Fixed
 
+## [5.6.7] - 2020-10-20
+### Added
+ - SUFFIXES dbExtension type added to entity schema (UB>=5.18.15)
+
+### Removed
+  - `ignoreCollation` attribute property removed (in flavor of SUFFIXES extension)
+  
 ## [5.6.6] - 2020-10-15
 ### Added
  - `ignoreCollation` attribute property added to entity metadata schema
