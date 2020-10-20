@@ -11,3 +11,6 @@ ORG_UNITTYPE:
   - ORG: {en: Organization, ru: Организация, uk: Організація, tg: Ташкилот}
   - DEP: {en: Department, ru: Подразделение, uk: Підрозділ, tg: Шӯъба}
   - EXECGROUP: {en: Execution group, ru: Группа исполнителей, uk: Група виконавців, tg: Гурӯҳҳои рассомон}
+
+EXECGROUP_TYPE:
+  - '*': {en: Main, ru: Общая, uk: Загальна, tg: Main}

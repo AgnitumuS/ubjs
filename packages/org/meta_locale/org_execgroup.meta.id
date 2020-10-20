@@ -8,6 +8,11 @@
       "description": "Parent unit of group"
     },
     {
+      "name": "groupType",
+      "caption": "Type",
+      "description": "Type of group"
+    },
+    {
       "name": "code",
       "caption": "Kode",
       "description": "Kode departemen"

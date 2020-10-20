@@ -15,6 +15,15 @@
       "allowNull": false
     },
     {
+      "name": "groupType",
+      "dataType": "Enum",
+      "enumGroup": "EXECGROUP_TYPE",
+      "caption": "Group type",
+      "description": "Group type for separating groups between processes",
+      "defaultValue": "*",
+      "allowNull": false
+    },
+    {
       "name": "code",
       "dataType": "String",
       "size": 16,
