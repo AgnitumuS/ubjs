@@ -22,7 +22,7 @@
         <el-tab-pane :label="$ut('main')">
           <u-grid>
             <div>
-              <u-auto-field attribute-name="name"/>
+              <u-auto-field attribute-name="name" />
               <u-grid :columns="3">
                 <u-auto-field attribute-name="firstName" />
                 <u-auto-field attribute-name="lastName" />
@@ -77,7 +77,6 @@
         <el-tab-pane :label="$ut(certificateEntity)">
           <certificates />
         </el-tab-pane>
-        <component :is="inheritedSlots.additionalTabs" />
       </el-tabs>
     </u-form-container>
   </div>
@@ -89,10 +88,7 @@ const { entityName: certificateEntity } = require('./certificateCollectionDefini
 
 export default {
   name: 'UserFormRoot',
-
-  mixins: [
-    provideSlotsMixin
-  ],
+  mixins: [provideSlotsMixin],
 
   components: {
     Certificates: require('./Certificates.vue').default
@@ -103,6 +99,7 @@ export default {
       certificateEntity
     }
   },
+
   computed: {
     canChangePassword () {
       return this.$UB.connection.domain
@@ -117,6 +114,7 @@ export default {
       'fullName'
     ])
   },
+
   watch: {
     firstName (newValue, prevValue) {
       if (this.fullNamePattern(prevValue, this.lastName) === this.fullName) {

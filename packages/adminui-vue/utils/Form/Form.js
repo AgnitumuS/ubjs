@@ -189,15 +189,14 @@ class UForm {
     }
 
     this.collections = collections
-    transformCollections(this.collections)
 
-    const processingModule = createProcessingModule({
+    this._createProcessingModule = () => createProcessingModule({
       entity: this.entity,
       entitySchema: this.entitySchema,
       fieldList: this.fieldList,
       instanceID: this.instanceID,
       parentContext: (this.props && this.props.parentContext) ? this.props.parentContext : undefined,
-      collections,
+      collections: this.collections,
       validator: () => this.validator,
       beforeInit: beforeInit ? () => beforeInit.call(this, this.$store) : null,
       inited: inited ? () => inited.call(this, this.$store) : null,
@@ -214,7 +213,6 @@ class UForm {
       saveNotification,
       isCopy: this.isCopy
     })
-    mergeStore(this.storeConfig, processingModule)
 
     return this
   }
@@ -245,6 +243,11 @@ class UForm {
   }
 
   async mount () {
+    if (this.isProcessingUsed) {
+      transformCollections(this.collections)
+      mergeStore(this.storeConfig, this._createProcessingModule())
+    }
+
     if (this.storeInitialized) {
       this.$store = new Vuex.Store(this.storeConfig)
     }

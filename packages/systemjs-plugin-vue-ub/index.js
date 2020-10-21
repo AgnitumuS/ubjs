@@ -1,6 +1,5 @@
 /* global SystemJS */
 const { parseComponent, compileToFunctions } = require('vue-template-compiler/browser.js')
-const EXPORTS_RE = /module\.exports\.default = {/
 
 /**
  * Parse *.vue files
@@ -22,7 +21,7 @@ function compile (load, opts, vueOpts) {
   const {
     styles,
     script = {
-      content: ''
+      content: 'module.exports.default = {}'
     },
     template
   } = parseComponent(load.source, { pad: 'space' })
@@ -38,7 +37,7 @@ function compile (load, opts, vueOpts) {
     document.head.appendChild(styleTag)
   }
   // script block: transform `export default` & `module.exports` into `module.exports.default`
-  let script1 = script.content
+  const scriptContent = script.content
     .replace(/export default/, 'module.exports.default =')
     .replace(/(module\.exports =)/, 'module.exports.default =')
 
@@ -49,19 +48,14 @@ function compile (load, opts, vueOpts) {
       compileToFunctions(template.content)
     ))
     // MPV TODO use something like falafel to to parse AST and replace exports gracefully
-    script1 = script1 || 'module.exports.default = {}'
-    if (!EXPORTS_RE.test(script1)) {
-      const msg = `Invalid "script" section for ${load.address}
-In UB script section of vue component should contains "module.exports.default = {" or "export default {" phrase`
-      console.error(msg)
-    }
-    script1 = script1.replace(EXPORTS_RE,
+    return `var __renderFns__ = SystemJS.get(${JSON.stringify(templateModuleName)});` + scriptContent.replace(
+      /module\.exports\.default = {/,
       'module.exports.default = {render:__renderFns__.render,' +
       'staticRenderFns:__renderFns__.staticRenderFns,'
     )
-    script1 = `var __renderFns__ = SystemJS.get(${JSON.stringify(templateModuleName)});` + script1
   }
-  return script1
+
+  return scriptContent
 }
 
 function getTemplateModuleName (name) {

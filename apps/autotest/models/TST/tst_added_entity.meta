@@ -1,0 +1,24 @@
+{
+  "caption": "tst_added_entity",
+  "description": "Added example entity",
+  "attributes": [
+    {
+      "name": "userID",
+      "dataType": "Entity",
+      "associatedEntity": "uba_user",
+      "cascadeDelete": false,
+      "caption": "User ID"
+    },
+    {
+      "name": "caption",
+      "dataType": "String",
+      "caption": "Caption",
+       "size": 64
+    }
+  ],
+   "mixins": {
+     "mStorage": {
+       "simpleAudit": true
+     }
+   }
+}
