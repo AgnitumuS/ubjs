@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.35] - 2020-10-20
 ## [5.4.34] - 2020-10-15
 ### Added
  - `uba_advSecurity`: ukrainian localization

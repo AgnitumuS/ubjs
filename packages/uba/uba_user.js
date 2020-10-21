@@ -173,8 +173,8 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
  * Change (or set) user password for currently logged in user.
  * Members of `Supervisor` role can change password for other users using uba_user.changeOtherUserPassword method
  * @private
- * @param {THTTPRequest}req
- * @param {THTTPResponse}resp
+ * @param {THTTPRequest}  req
+ * @param {THTTPResponse} resp
  */
 function changePasswordEp (req, resp) {
   const reqBody = req.read()
@@ -235,7 +235,7 @@ function changePasswordEp (req, resp) {
  *
  * @param {ubMethodParams} ctxt
  * @param {string|number} ctxt.mParams.execParams.forUser Name or ID of the user for whom you want to change the password
- * @param {string} ctxt.mParams.execParams.newPwd New password
+ * @param {string} ctxt.mParams.execParams.newPwd         New password
  * @param {boolean} [ctxt.mParams.execParams.needChangePassword=false] Indicates that the user must change the password at the first login
  * @memberOf uba_user_ns.prototype
  * @memberOfModule @unitybase/uba

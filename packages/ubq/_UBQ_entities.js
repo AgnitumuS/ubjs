@@ -5,7 +5,7 @@
 
 /**
  * Asynchronous task queue persisted into database. Contains jobs for sending e-mail and updating FTS indexes
- * @version 5.0.10
+ * @version 5.4.6
  * @module @unitybase/ubq
  */
 
@@ -16,62 +16,29 @@
  * @mixes mStorage
  */
 class ubq_messages_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-ubq_messages_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Receivers determinate handler by this code. For each queCode must be receiver which handle it
-  * @type {String}
-  */
-  queueCode: '',
- /**
-  * Command for receiver. Contain JSON serialized object with command parameters. Command must contain attributes receiver understand
-  * @type {String}
-  */
-  msgCmd: null,
- /**
-  * Additional data for message. May contain Base64 encoded binary data
-  * @type {String}
-  */
-  msgData: null,
- /**
-  * Priority of messages. 1&#x3D;High, 0&#x3D;Low, default 1
-  * @type {Number}
-  */
-  msgPriority: 0,
- /**
-  * @type {Date}
-  */
-  completeDate: null,
- /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
-  * @type {Date}
-  */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
-}
+
+/**
+ * @typedef ubqMessagesAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} queueCode - Queue code
+ * @property {String} msgCmd - Command
+ * @property {String} msgData - Message data
+ * @property {Number} msgPriority - Priority
+ * @property {Date} completeDate - Complete date
+ * @property {Number|ubaUserAttrs} mi_owner
+ * @property {Date} mi_createDate
+ * @property {Number|ubaUserAttrs} mi_createUser
+ * @property {Date} mi_modifyDate
+ * @property {Number|ubaUserAttrs} mi_modifyUser
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {ubqMessagesAttrs}
+ */
+ubq_messages_ns.attrs = {}
+
 /**
 * Message queue.
  * Store messages posted by producers. Consumers read messages from this table and run corresponding tasks
@@ -85,44 +52,26 @@ const ubq_messages = new ubq_messages_ns()
  * @mixes mStorage
  */
 class ubq_runstat_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-ubq_runstat_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * @type {String}
-  */
-  appName: '',
- /**
-  * @type {String}
-  */
-  schedulerName: '',
- /**
-  * Time of start scheduler item
-  * @type {Date}
-  */
-  startTime: new Date(),
- /**
-  * Time of end scheduler item
-  * @type {Date}
-  */
-  endTime: null,
- /**
-  * Log from runned script about all actions
-  * @type {String}
-  */
-  logText: null,
- /**
-  * @type {Number}
-  */
-  resultError: null,
- /**
-  * @type {String}
-  */
-  resultErrorMsg: null,
-}
+
+/**
+ * @typedef ubqRunstatAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {String} appName - Application name
+ * @property {String} schedulerName - Scheduler name
+ * @property {Date} startTime - Time of start scheduler item
+ * @property {Date} endTime - Time of end scheduler item
+ * @property {String} logText - Log from runned script about all actions
+ * @property {Number} resultError - Result error code. 0&#x3D;No error
+ * @property {String} resultErrorMsg - Error text message if resultError &gt; 1
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {ubqRunstatAttrs}
+ */
+ubq_runstat_ns.attrs = {}
+
 /**
 * Scheduler run statistic.
  * Statistic for every scheduler item run and result
@@ -135,74 +84,31 @@ const ubq_runstat = new ubq_runstat_ns()
  * @extends EntityNamespace
  */
 class ubq_scheduler_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-ubq_scheduler_ns.attrs = {
- /**
-  * crc32(name)
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * Unique job name. Models will override a jobs with the same name in order models are listen in server configuration
-  * @type {String}
-  */
-  name: '',
- /**
-  * Expression to be evaluated during server startup. In case result is empty or evaluated to &#x60;true&#x60; job will be scheduled
-  * @type {String}
-  */
-  schedulingCondition: null,
- /**
-  * A cron for job as in unix systems. Format: &#39;Seconds(0-59) Minutes(0-59) Hours(0-23) DayOfMonth(1-31) Months(0-11) DayOfWeek(0-6)&#39;
-  * @type {String}
-  */
-  cron: '',
- /**
-  * Job description
-  * @type {String}
-  */
-  description: null,
- /**
-  * Name of function to be executed in a server context
-  * @type {String}
-  */
-  command: null,
- /**
-  * Name of module to require with scheduler job function as a default export
-  * @type {String}
-  */
-  module: null,
- /**
-  * If &#x60;1&#x60; - only single instance of a running job is allowed
-  * @type {Boolean}
-  */
-  singleton: undefined,
- /**
-  * A user name for a job execution
-  * @type {String}
-  */
-  runAs: null,
- /**
-  * If 1 (default) then successful job execution result will be logged into &#x60;ubq_runstat&#x60;, otherwise - only errors
-  * @type {Boolean}
-  */
-  logSuccessful: undefined,
- /**
-  * Indicate original job is overridden by other models
-  * @type {Boolean}
-  */
-  overridden: undefined,
- /**
-  * A model name where original job definition file is stored
-  * @type {String}
-  */
-  originalModel: '',
- /**
-  * A name of model where actual job definition file is stored. Can de not equal to &#x60;originalModel&#x60; if someone overrides the job
-  * @type {String}
-  */
-  actualModel: '',
-}
+
+/**
+ * @typedef ubqSchedulerAttrs
+ * @type {object}
+ * @property {Number} ID - ID
+ * @property {String} name - Job name
+ * @property {String} schedulingCondition - Condition to schedule a job
+ * @property {String} cron - Cron record
+ * @property {String} description - Description
+ * @property {String} command - Command
+ * @property {String} module - Module
+ * @property {Boolean} singleton - Singleton
+ * @property {String} runAs - runAs
+ * @property {Boolean} logSuccessful - Log a Successful execution
+ * @property {Boolean} overridden - Overridden
+ * @property {String} originalModel - OriginalModel
+ * @property {String} actualModel - Actual model
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {ubqSchedulerAttrs}
+ */
+ubq_scheduler_ns.attrs = {}
+
 /**
 * Scheduled jobs.
  * Virtual entity for show configured schedulers. Schedulers are placed in files MODEL_FOLDER&#x2F;_schedulers.json. To override a existed scheduler do not modify it directly, instead create the scheduler with the same name inside your model

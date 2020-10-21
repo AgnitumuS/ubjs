@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.20] - 2020-10-20
 ## [5.4.19] - 2020-10-15
 ### Changed
  - scanner settings form rewritten to vue

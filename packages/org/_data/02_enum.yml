@@ -1,0 +1,16 @@
+$context:
+  type: enums
+
+CDN_EMPLOYEEONSTAFFTYPE:
+  - PERMANENT: {en: Permanent, ru: Постоянный, uk: Постійний, tg: Доимӣ}
+  - TEMPORARY: {en: Acting, ru: вр.и.о., uk: т.в.о., tg: м.и.в.}
+  - ASSISTANT: {en: Assistant, ru: Ассистент, uk: Асистент, tg: Ёрдамчи}
+
+ORG_UNITTYPE:
+  - STAFF: {en: Staff unit, ru: Персонал, uk: Персонал, tg: Кормандон}
+  - ORG: {en: Organization, ru: Организация, uk: Організація, tg: Ташкилот}
+  - DEP: {en: Department, ru: Подразделение, uk: Підрозділ, tg: Шӯъба}
+  - EXECGROUP: {en: Execution group, ru: Группа исполнителей, uk: Група виконавців, tg: Гурӯҳҳои рассомон}
+
+EXECGROUP_TYPE:
+  - '*': {en: Main, ru: Общая, uk: Загальна, tg: Main}

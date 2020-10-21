@@ -3,7 +3,7 @@ build-doc:
     - ub-linux-64
   script:
     - cd ..
-    - if [ -d ldoc ] && [ -d ldoc/.git ]; then cd ldoc; git reset --hard master; git checkout master; git pull; else git clone ssh://git@git-pub.intecracy.com:9922/unitybase/ldoc.git; cd ldoc; git checkout master; fi
+    - echo 'Start job as' `whoami` ' in folder ' `pwd`
     - cd ../ubjs
     - NODE_ENV=production npm i
     - npm ddp

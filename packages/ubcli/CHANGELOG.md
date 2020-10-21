@@ -6,12 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - DDL generator: added storage table generation for SUFFIX indexes. 
- - added a SUFFIX indexes initialization script generator (SQL SERVER for a while)
-   ```
-   ub ./node_modules/@unitybase/ubcli/lib/flow/genSuffixesIndexInitScript.js -u root [-env ubConfig.env] [-e entity] [-m models] [-cfg path/to/ubConfig.json]
-   ```
-    
+
 ### Changed
 
 ### Deprecated
@@ -19,6 +14,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.7.7] - 2020-10-20
+### Added
+ - DDL generator: added storage table generation for SUFFIX indexes. 
+ - added a SUFFIX indexes initialization script generator (SQL SERVER for a while)
+   ```
+   ub ./node_modules/@unitybase/ubcli/lib/flow/genSuffixesIndexInitScript.js -u root [-env ubConfig.env] [-e entity] [-m models] [-cfg path/to/ubConfig.json]
+   ```
+
+- `ubcli createCodeInsightHelper` added types definition for entity attributes. The type name is `_.camelCase(entityName) + Attr` (uba_auditTrail -> ubaAuditTrailAttr).
+   This allows to declare a variable as:
+   ```
+   /** @type ubaUserAttrs */
+   const userExecParams = {}
+   useruserExecParams.name = 12333
+   ``` 
+   and IDE (at last in WebStorm) adds a code insight and type checking
+
+### Fixed
+ - SQL Server: prevent create FullText Catalogue in case `IsFullTextInstalled` is false (localDB for example)
 
 ## [5.7.6] - 2020-10-15
 ### Added

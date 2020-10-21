@@ -9,17 +9,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `createDialog`: Creates dialog from template. [Docs](./components/dialog/createDialogFromTemplate/createDialog.md)
 
 ### Changed
- - `Form/validation` building of validation() rules takes into account only fields what included into `masterFieldList` (if passed).
-   Before this fix all entity attributes with defaultView && !allowNull are included.
- - UTable: cells left/right padding decreased from 16 to 8px; row top/bottom paddings decreased from 12 to 10px;
-   This allows fit more data on the screen without negative UX effect (verified on laptops and tablets)
- 
+
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [1.13.13] - 2020-10-20
+### Added
+  - `UNavbar` show tooltip on tabs in case caption length > 18
+
+### Changed
+ - `Form/validation` building of validation() rules takes into account only fields what included into `masterFieldList` (if passed).
+   Before this fix all entity attributes with defaultView && !allowNull are included.
+ - UTable: cells left/right padding decreased from 16 to 8px; row top/bottom paddings decreased from 12 to 10px;
+   This allows fit more data on the screen without negative UX effect (verified on laptops and tablets)
+ - `UToolbar` audit table opens in separate tab 
+ - `audit table` save in localStorage last preview mode and active filters
+ - `Form`, `UTableEntity` in case table or form opened as modal then all child tables and forms are also opened as modals
+ 
+### Fixed
  - Excel export from UTableEntity - fixed format for Date anf Boolean attributes
+ - prevent error `Cannot read property 'scrollIntoView' of undefined` during
+  navbar tab closing (occurs for Ext based forms with close confirmation) 
+ 
 
 ## [1.13.12] - 2020-10-15
 ### Added

@@ -5,7 +5,7 @@
 
 /**
  * Build-in UnityBase model
- * @version 5.0.10
+ * @version 5.6.6
  * @module @unitybase/ub
  */
 
@@ -16,36 +16,24 @@
  * @mixes mStorage
  */
 class ub_blobHistory_ns extends EntityNamespace {}
-/** Attributes defined in metadata. This property not exist in real life and added just for help */
-ub_blobHistory_ns.attrs = {
- /**
-  * @type {Number}
-  */
-  ID: 0,
- /**
-  * @type {Number}
-  */
-  instance: 0,
- /**
-  * @type {String}
-  */
-  attribute: null,
- /**
-  * Revision number
-  * @type {Number}
-  */
-  revision: 0,
- /**
-  * 1 on case we do not delete this revision during history rotation
-  * @type {Boolean}
-  */
-  permanent: undefined,
- /**
-  * Content of historical Document attribute
-  * @type {String}
-  */
-  blobInfo: '',
-}
+
+/**
+ * @typedef ubBlobHistoryAttrs
+ * @type {object}
+ * @property {Number} ID
+ * @property {Number} instance - InstanceID
+ * @property {String} attribute - Attribute
+ * @property {Number} revision - Revision
+ * @property {Boolean} permanent - isPermanent
+ * @property {String} blobInfo - blobInfo
+ */
+
+/**
+ * Attributes defined in metadata. Property does not exists in real life and added for IDE
+ * @type {ubBlobHistoryAttrs}
+ */
+ub_blobHistory_ns.attrs = {}
+
 /**
 * File BLOB history.
  * Store historical data for all file based BLOB stores
