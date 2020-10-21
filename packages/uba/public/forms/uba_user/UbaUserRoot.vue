@@ -18,66 +18,75 @@
       </el-tooltip>
     </u-toolbar>
     <u-form-container label-position="top">
-      <el-tabs>
-        <el-tab-pane :label="$ut('main')">
-          <u-grid>
-            <div>
-              <u-auto-field attribute-name="name" />
-              <u-grid :columns="3">
-                <u-auto-field attribute-name="firstName" />
-                <u-auto-field attribute-name="lastName" />
-                <u-auto-field attribute-name="fullName" />
-              </u-grid>
-              <u-form-row label="uba_userrole">
-                <u-select-collection
-                  collection-name="roles"
-                  associated-attr="roleID"
-                />
-              </u-form-row>
-              <u-form-row label="uba_usergroup">
-                <u-select-collection
-                  collection-name="groups"
-                  associated-attr="groupID"
-                />
-              </u-form-row>
-              <u-grid :columns="3">
-                <u-auto-field attribute-name="gender" />
-                <u-auto-field attribute-name="email" />
-                <u-auto-field attribute-name="phone" />
-              </u-grid>
-              <u-grid :columns="3">
-                <u-auto-field attribute-name="trustedIP" />
-                <u-auto-field attribute-name="disabled" />
-                <u-auto-field attribute-name="isPending" />
-              </u-grid>
-            </div>
+      <component :is="inheritedSlots.tabs">
+        <el-tabs>
+          <!--НЕ РАБОТАЕТ ПОТОМУ ЧТО ЛЕЖИТ В el-tabs -->
+          <el-tab-pane
+            slot="main"
+            :label="$ut('main')"
+          >
+            <u-grid>
+              <div>
+                <u-auto-field attribute-name="name" />
+                <u-grid :columns="3">
+                  <u-auto-field attribute-name="firstName" />
+                  <u-auto-field attribute-name="lastName" />
+                  <u-auto-field attribute-name="fullName" />
+                </u-grid>
+                <u-form-row label="uba_userrole">
+                  <u-select-collection
+                    collection-name="roles"
+                    associated-attr="roleID"
+                  />
+                </u-form-row>
+                <u-form-row label="uba_usergroup">
+                  <u-select-collection
+                    collection-name="groups"
+                    associated-attr="groupID"
+                  />
+                </u-form-row>
+                <u-grid :columns="3">
+                  <u-auto-field attribute-name="gender" />
+                  <u-auto-field attribute-name="email" />
+                  <u-auto-field attribute-name="phone" />
+                </u-grid>
+                <u-grid :columns="3">
+                  <u-auto-field attribute-name="trustedIP" />
+                  <u-auto-field attribute-name="disabled" />
+                  <u-auto-field attribute-name="isPending" />
+                </u-grid>
+              </div>
 
-            <div>
-              <u-auto-field
-                attribute-name="avatar"
-                preview-mode
-              />
-              <u-grid>
+              <div>
                 <u-auto-field
-                  attribute-name="description"
-                  type="textarea"
-                  resize="none"
-                  rows="4"
+                  attribute-name="avatar"
+                  preview-mode
                 />
-                <u-auto-field
-                  attribute-name="uData"
-                  type="textarea"
-                  resize="none"
-                  rows="4"
-                />
-              </u-grid>
-            </div>
-          </u-grid>
-        </el-tab-pane>
-        <el-tab-pane :label="$ut(certificateEntity)">
-          <certificates />
-        </el-tab-pane>
-      </el-tabs>
+                <u-grid>
+                  <u-auto-field
+                    attribute-name="description"
+                    type="textarea"
+                    resize="none"
+                    rows="4"
+                  />
+                  <u-auto-field
+                    attribute-name="uData"
+                    type="textarea"
+                    resize="none"
+                    rows="4"
+                  />
+                </u-grid>
+              </div>
+            </u-grid>
+          </el-tab-pane>
+          <el-tab-pane
+            slot="certificates"
+            :label="$ut(certificateEntity)"
+          >
+            <certificates />
+          </el-tab-pane>
+        </el-tabs>
+      </component>
     </u-form-container>
   </div>
 </template>

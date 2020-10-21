@@ -9,35 +9,37 @@
       </div>
     </template>
 
-    <template #tabs="{tabsComponents}">
-      <component :is="tabsComponents.main" />
+    <template #tabs="{defaultComponents}">
+      <el-tabs>
+        <component :is="defaultComponents.main" />
 
-      <el-tab-pane label="New tab">
-        <form @submit.prevent="addExampleItem">
-          <u-base-input v-model="exampleCaptionModel" />
-          <u-button type="submit">
-            Add
-          </u-button>
-        </form>
-        <ul>
-          <li
-            v-for="item in exampleCollectionData"
-            :key="item.ID"
-          >
-            <u-button
-              icon="u-icon-delete"
-              @click="deleteExampleItem(item.ID)"
-            />
-            {{ item.caption }}
-          </li>
-        </ul>
-      </el-tab-pane>
+        <el-tab-pane label="New tab">
+          <form @submit.prevent="addExampleItem">
+            <u-base-input v-model="exampleCaptionModel" />
+            <u-button type="submit">
+              Add
+            </u-button>
+          </form>
+          <ul>
+            <li
+              v-for="item in exampleCollectionData"
+              :key="item.ID"
+            >
+              <u-button
+                icon="u-icon-delete"
+                @click="deleteExampleItem(item.ID)"
+              />
+              {{ item.caption }}
+            </li>
+          </ul>
+        </el-tab-pane>
 
-      <component :is="tabsComponents.certificates" />
+        <component :is="defaultComponents.certificates" />
 
-      <el-tab-pane label="Another tab">
-        Is empty
-      </el-tab-pane>
+        <el-tab-pane label="Another tab">
+          Is empty
+        </el-tab-pane>
+      </el-tabs>
     </template>
   </uba-user-root>
 </template>
