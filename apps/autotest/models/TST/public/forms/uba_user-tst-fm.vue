@@ -2,7 +2,6 @@
   <uba-user-root>
     <template #attr_name="{value, originalComponent}">
       <div>
-        <!--TODO: remove div-->
         add info before login field
         <component :is="originalComponent" />
         add info after login field
@@ -14,22 +13,22 @@
         <component :is="defaultComponents.main" />
 
         <el-tab-pane label="New tab">
-          <form @submit.prevent="addExampleItem">
-            <u-base-input v-model="exampleCaptionModel" />
+          <form @submit.prevent="addTask">
+            <u-base-input v-model="taskModel" />
             <u-button type="submit">
               Add
             </u-button>
           </form>
           <ul>
             <li
-              v-for="item in exampleCollectionData"
+              v-for="item in todoData"
               :key="item.ID"
             >
               <u-button
                 icon="u-icon-delete"
-                @click="deleteExampleItem(item.ID)"
+                @click="deleteTask(item.ID)"
               />
-              {{ item.caption }}
+              {{ item.task }}
             </li>
           </ul>
         </el-tab-pane>
@@ -53,8 +52,8 @@ module.exports.controller = (cfg) => {
 
   originalController.fieldList.push('addedAttr')
 
-  originalController.collections.example = ({ state }) => UB.Repository('tst_added_entity')
-    .attrs('ID', 'userID', 'caption')
+  originalController.collections.todos = ({ state }) => UB.Repository('tst_user_todo')
+    .attrs('ID', 'userID', 'task')
     .where('userID', '=', state.data.ID)
 
   return originalController
@@ -67,13 +66,13 @@ module.exports.default = {
 
   data () {
     return {
-      exampleCaptionModel: ''
+      taskModel: ''
     }
   },
 
   computed: {
-    exampleCollectionData () {
-      return this.$store.state.collections.example.items.map(i => i.data)
+    todoData () {
+      return this.$store.state.collections.todos.items.map(i => i.data)
     }
   },
 
@@ -81,23 +80,23 @@ module.exports.default = {
     ...mapMutations(['DELETE_COLLECTION_ITEM']),
     ...mapActions(['addCollectionItem']),
 
-    async addExampleItem () {
+    async addTask () {
       await this.addCollectionItem({
-        collection: 'example',
+        collection: 'todos',
         execParams: {
-          caption: this.exampleCaptionModel,
+          caption: this.taskModel,
           userID: this.$store.state.data.ID
         }
       })
 
-      this.exampleCaptionModel = ''
+      this.taskModel = ''
     },
 
-    deleteExampleItem (ID) {
-      const index = this.exampleCollectionData.findIndex(i => i.ID === ID)
+    deleteTask (ID) {
+      const index = this.todoData.findIndex(i => i.ID === ID)
       if (index !== -1) {
         this.DELETE_COLLECTION_ITEM({
-          collection: 'example',
+          collection: 'todos',
           index
         })
       }

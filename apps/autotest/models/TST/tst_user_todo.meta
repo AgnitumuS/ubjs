@@ -1,6 +1,6 @@
 {
-  "caption": "tst_added_entity",
-  "description": "Added example entity",
+  "caption": "tst_user_todo",
+  "description": "User entity 'to do' collection",
   "attributes": [
     {
       "name": "userID",
@@ -10,7 +10,7 @@
       "caption": "User ID"
     },
     {
-      "name": "caption",
+      "name": "task",
       "dataType": "String",
       "caption": "Caption",
        "size": 64
