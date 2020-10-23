@@ -127,12 +127,11 @@
     />
 
     <el-dropdown
-      v-if="actions.length > 0 && !readonly"
+      v-if="actions.length > 0 && !disabled"
       trigger="click"
       :tabindex="-1"
     >
       <button
-        :disabled="disabled"
         type="button"
         class="u-icon-more ub-select__more-icon"
       />
@@ -331,6 +330,7 @@ export default {
         name: 'ShowLookup',
         caption: this.$ut('selectFromDictionary') + ' (F9)',
         icon: 'u-icon-dictionary',
+        disabled: this.readonly,
         handler: this.handleShowDictionary
       },
       {
@@ -344,14 +344,14 @@ export default {
         name: 'Add',
         caption: this.$ut('addNewItem'),
         icon: 'u-icon-add',
-        disabled: !this.getEntityName || !this.$UB.connection.domain.get(this.getEntityName).haveAccessToMethod('addnew'),
+        disabled: !this.getEntityName || !this.$UB.connection.domain.get(this.getEntityName).haveAccessToMethod('addnew') || this.readonly,
         handler: this.handleAddNewItem
       },
       {
         name: 'Clear',
         caption: this.$ut('clearSelection') + ' (Ctrl+BackSpace)',
         icon: 'u-icon-eraser',
-        disabled: !this.value,
+        disabled: !this.value || this.readonly,
         handler: this.handleClearClick
       }]
     },
