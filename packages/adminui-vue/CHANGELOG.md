@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `USelectEntity`: prop `readonly` does not disable action `edit` in dropdown anymore, but `disabled` still does
 
 ### Deprecated
 
