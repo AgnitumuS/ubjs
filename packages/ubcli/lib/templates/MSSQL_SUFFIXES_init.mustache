@@ -55,7 +55,7 @@ BEGIN
     print 'Insert portion for ID < ' + CAST(@TO_ID as VARCHAR(20))
     begin transaction;
       insert into {{SUFFIXES_TABLE}}(tail, sourceID)
-        select t.tail, e.ID  from {{MAIN_TABLE}} e cross apply dbo.strTails(e.code) t
+        select t.tail, e.ID  from {{MAIN_TABLE}} e cross apply dbo.strTails(e.{{MAIN_TABLE_ATTR}}) t
           where e.{{MAIN_TABLE_ATTR}} is not null and e.ID >= @FROM_ID and e.ID < @TO_ID;
     commit;
   END

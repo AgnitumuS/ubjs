@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `genSuffixesIndexInitScript` fixed to generate an SQL with valid argument for `dbo.strTails`
 
 ## [5.7.7] - 2020-10-20
 ### Added
