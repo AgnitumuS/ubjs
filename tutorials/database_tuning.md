@@ -26,7 +26,7 @@ and unique indexes for attributes marked as `"isUnique": true`.
 In case developer need to add additional indexes it can be specified inside entity metadata `dbKeys` for **UNIQUE** indexes 
 or inside `dbExtensions` for any other index type (including functional indexes for Oracle/Postgres)
 
-### Optimizing `like` queries
+### Optimizing like queries
 Special index type **CATALOGUE** is available for optimizing queries with substring search:  
 ```sql
 where field like "%substr%"
@@ -80,7 +80,8 @@ select ID, caption from myEntity where caption ILIKE ?
 select ID, caption from myEntity where CONTAINS(caption, ?) 
 ```  
 
-### CATALOGUE pre-requirements for SQL Server
+### CATALOGUE index pre-requirements
+#### for SQL Server
 Default Full Text Catalogue must exist in the database. 
 In case database is created using `ubcli initDB -create` it will be created automatically,
 for other cases run a following statement:
@@ -88,7 +89,7 @@ for other cases run a following statement:
 CREATE FULLTEXT CATALOG ftsDefault AS DEFAULT;
 ```  
 
-### CATALOGUE pre-requirements for Oracle
+#### for Oracle
 - Check Database Collation
 
 Since `CTXCAT` indexes is not allowed for NVARCHAR2 columns DDL will convert such columns to VARCHAR2.
