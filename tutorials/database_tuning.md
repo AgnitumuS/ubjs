@@ -17,7 +17,7 @@
  So in most cases performance bottleneck is a Database. 
  
  > Use the database for those things for which it was designed. Be [KISS](http://en.wikipedia.org/wiki/KISS_principle) -
- database for storing data, application server for data manipulation
+ database for storing data, application server for data manipulation.
  
 ## Indexes
 By default, UnityBase DDL generator create indexes for all attributes of type `Entity`
@@ -80,7 +80,7 @@ select ID, caption from myEntity where caption ILIKE ?
 select ID, caption from myEntity where CONTAINS(caption, ?) 
 ```  
 
-#### CATALOGUE pre-requirements for SQL Server
+### CATALOGUE pre-requirements for SQL Server
 Default Full Text Catalogue must exist in the database. 
 In case database is created using `ubcli initDB -create` it will be created automatically,
 for other cases run a following statement:
@@ -88,7 +88,7 @@ for other cases run a following statement:
 CREATE FULLTEXT CATALOG ftsDefault AS DEFAULT;
 ```  
 
-#### CATALOGUE pre-requirements for Oracle
+### CATALOGUE pre-requirements for Oracle
 - Check Database Collation
 
 Since `CTXCAT` indexes is not allowed for NVARCHAR2 columns DDL will convert such columns to VARCHAR2.
@@ -120,7 +120,7 @@ GRANT RESOURCE, CONNECT, CTXAPP TO UBDF_FSS_TST;
 GRANT EXECUTE ON CTXSYS.CTX_DDL TO UBDF_FSS_TST; 
 ```
 
-#### SUFFIXES index for non-words attributes
+### SUFFIXES index for non-words attributes
 Catalogue indexes works perfectly for attributes what not contains abbreviations and acronyms, but otherwise it depends on 
 RDBMS implementation. 
 
