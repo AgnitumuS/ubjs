@@ -183,40 +183,44 @@ By default most UBDataTypes has filter templates and any filter can be replaced 
 In each column filter label or filter template can be replaced separately.
 This dataTypes has next filters:
 - String
-- equal
-- contains
-- startWith
-- inNull
+    - equal
+    - contains
+    - startWith
+    - inNull
 - Boolean
-- isTrue
-- isFalse
-- isNull
+    - isTrue
+    - isFalse
+    - isNull
 - Date, DateTime
-- range
-- fromDate
-- onDate
-- toDate
-- isNull
+    - range
+    - fromDate
+    - onDate
+    - toDate
+    - isNull
 - Entity
-- equal
-- contains
-- isNull
+    - contains
+    - equal
+    - isNull
+    - notContains
+    - notEqual
 - Enum
-- equal
-- contains
-- isNull
+    - contains
+    - equal
+    - isNull
+    - notContains
+    - notEqual
 - ID
-- equal
-- contains
+    - equal
+    - contains
 - Many
-- contains
-- isNull
+    - contains
+    - isNull
 - BigInt, Currency, Float, Int
-- equal
-- more
-- less
-- range
-- isNull
+    - equal
+    - more
+    - less
+    - range
+    - isNull
 
 Json, Document, Text, BLOB, TimeLog has no filters
 

@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - ClientReposirory Object result will force converting Enums attributes values to String.
+   This fix a problem when enum value is number like (1 for example) and client got a numeric response.
+   General recomendation is to set enum values to alphanumeric string. 
 
 ### Deprecated
 
@@ -17,7 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.5.6] - 2020-10-15
 ### Changed
- - improved error message for `Repository.where` with unknown condition (wrong condition included in error text) 
+ - improved error message for `Repository.where` with unknown condition (wrong condition included in error text)
 
 ## [5.5.5] - 2020-09-23
 ### Changed
