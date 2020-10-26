@@ -48,7 +48,7 @@ SET @TO_ID=0
 WHILE @TO_ID IS NOT NULL
 BEGIN
   SET @FROM_ID = @TO_ID
-  SET @TO_ID = (select max(ID) from (select top 500000 ID from {{MAIN_TABLE}} where {{MAIN_TABLE_ATTR}} is not null AND ID > @FROM_ID  order by ID) d)
+  SET @TO_ID = (select max(ID) from (select top 100000 ID from {{MAIN_TABLE}} where {{MAIN_TABLE_ATTR}} is not null AND ID > @FROM_ID  order by ID) d)
 
   IF @TO_ID IS NOT NULL
   BEGIN
