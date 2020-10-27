@@ -180,7 +180,7 @@ function createProcessingModule ({
       },
 
       canRefresh (state, getters) {
-        return !state.isNew && getters.isDirty
+        return !state.isNew
       },
 
       isLocked (state) {
