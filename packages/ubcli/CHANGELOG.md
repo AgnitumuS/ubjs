@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - new command `ubcli execSql -c connectionName -f path/to/script.sql`.
+   Exec a multi-statement SQL script in specified connection without starting a server, so can be used to apply some patches.
+   Can be used as a module:
+   ```javascript
+   const execSql = require('@unitybase/ubcli/lib/execSql')
+   execSql({
+     connection: 'main',
+     file: './myScript.sql',
+     optimistic: true
+   })
+   ```
 
 ### Changed
 

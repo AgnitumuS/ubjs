@@ -1,5 +1,4 @@
 const assert = require('assert')
-const ok = assert.ok
 const UBA = require('@unitybase/base').uba_common
 const App = require('@unitybase/ub').App
 // let res

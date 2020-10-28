@@ -15,8 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - store.canRefresh getter returns `true` for any non-new record (before this fix - for not new and dirty).
-   This allows calling "Refresh" action for non-dirty forms. 
+ - `store.canRefresh` getter returns `true` for any non-new record (before this fix - for non-new and dirty).
+   This allows calling "Refresh" action on the non-dirty forms. 
 
 ## [1.13.13] - 2020-10-20
 ### Added
