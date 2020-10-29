@@ -101,7 +101,7 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
   entityNames = entityNames.filter((eName) => {
     return domain.get(eName).mixin('mStorage') !== undefined
   })
-  console.log('Check congruence for domain metadata and database structure for: ', entityNames)
+  console.log('Check congruence for domain metadata and database structure for: ', JSON.stringify(entityNames))
 
   const Generator = require('./ddlGenerators/DDLGenerator')
   const ddlResult = new Generator().generateDDL(entityNames, conn, true)
@@ -115,7 +115,6 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
     const fileName = path.join(outputPath, connectionName + '.sql')
     let outWarnings = ''
     if (ddlResult[connectionName].warnings.statements.length) {
-      console.warn('There are warnings. Please, review script ' + fileName)
       outWarnings = ddlResult[connectionName].warnings.statements.join(CRLF)
       delete ddlResult[connectionName].warnings
     }
@@ -127,6 +126,9 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
       txtRes = '' // warnings only - ignore such DDL results
     }
     if (txtRes) {
+      if (outWarnings) {
+        console.warn('There are warnings. Please, review script ' + fileName)
+      }
       fs.writeFileSync(fileName, txtRes)
       console.log('DDL script is saved to ' + fileName)
       if (autorun) {
@@ -159,7 +161,7 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
         // console.info('Database script', fileName, 'executed', withErrors ? 'with errors!' : 'successfully')
       }
     } else {
-      console.log('Specified entity metadata is congruence with database for connection ' + connectionName)
+      console.log('Specified entity metadata is congruence with the database for connection ' + connectionName)
       fs.unlinkSync(fileName)
     }
   }

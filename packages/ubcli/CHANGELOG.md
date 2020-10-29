@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `genSuffixesIndexInitScript` fixed to generate an SQL with valid argument for `dbo.strTails`
+ - DDL generator: remove warning from a console in case entity metadata is congruence with the database for connection
 
 ## [5.7.7] - 2020-10-20
 ### Added
