@@ -107,10 +107,6 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
   const ddlResult = new Generator().generateDDL(entityNames, conn, true)
   const dbConnNames = Object.keys(ddlResult)
 
-  // const createDBConnectionPool = require('@unitybase/base').createDBConnectionPool
-  // const serverConfig = argv.getServerConfiguration(true)
-  // const dbConnections = createDBConnectionPool(serverConfig.application.connections)
-
   for (const connectionName of dbConnNames) {
     const fileName = path.join(outputPath, connectionName + '.sql')
     let outWarnings = ''
@@ -137,28 +133,6 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
           optimistic: optimistic,
           file: fileName
         })
-        // let withErrors = false
-        // console.log('Executing a script ' + fileName)
-        // // Many databases (Oracle for example) do not allow to execute several DDL statement in one call
-        // const dbConn = dbConnections[connectionName]
-        // for (const part of nonEmptySorted) {
-        //   for (const stmt of part.statements) {
-        //     try {
-        //       if (stmt) {
-        //         dbConn.execParsed(stmt)
-        //         dbConn.commit()
-        //       }
-        //     } catch (e) {
-        //       if (!optimistic) {
-        //         throw e
-        //       } else {
-        //         console.error(e)
-        //         withErrors = true
-        //       }
-        //     }
-        //   }
-        // }
-        // console.info('Database script', fileName, 'executed', withErrors ? 'with errors!' : 'successfully')
       }
     } else {
       console.log('Specified entity metadata is congruence with the database for connection ' + connectionName)
