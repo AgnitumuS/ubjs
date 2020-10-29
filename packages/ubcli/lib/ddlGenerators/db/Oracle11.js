@@ -325,9 +325,9 @@ where
 
   /** @override */
   genCodeSetCaption (tableName, column, value, oldValue) {
-    if (value) value = value.replace(/'/g, "''")
+    if (value) value = value.replace(/'/g, "''''")
     if (!value && !oldValue) return // prevent create empty comments
-    const result = `comment on ${column ? 'column' : 'table'} ${tableName}${column ? '.' : ''}${column || ''} is '${value}'`
+    const result = `EXECUTE IMMEDIATE 'comment on ${column ? 'column' : 'table'} ${tableName}${column ? '.' : ''}${column || ''} is ''${value}'''`
     this.DDL.caption.statements.push(result)
   }
 
@@ -514,9 +514,10 @@ where
     // "nocache" is important
     // http://stackoverflow.com/questions/10210273/how-to-retrieve-the-current-value-of-an-oracle-sequence-without-increment-it
     this.DDL.createSequence.statements.push(
-      `create sequence ${sequenceObj}  start with 1 maxvalue 999999999999999 minvalue 1 cycle nocache order`,
-      `SELECT ${sequenceObj}.nextval FROM dual` // UB-1311
+      `create sequence ${sequenceObj}  start with 1 maxvalue 999999999999999 minvalue 1 cycle nocache order`
     )
+    // need to select nextval because of UB-1311
+    this.DDL.caption.statements.push(`SELECT ${sequenceObj}.nextval INTO V FROM dual`) // speed ut excution by adding to block what executed in begin/end
   }
 
   /**

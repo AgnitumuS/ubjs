@@ -122,7 +122,7 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
     const nonEmptySorted = _(ddlResult[connectionName]).values().filter(res => res.statements.length > 0).sortBy('order').value()
 
     if (Object.keys(nonEmptySorted).length) {
-      txtRes = formatAsText(connectionName, nonEmptySorted, outWarnings)
+      txtRes = formatAsText(connectionName, nonEmptySorted, outWarnings, domain)
     } else {
       txtRes = '' // warnings only - ignore such DDL results
     }
@@ -170,9 +170,10 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
  *  @param {String} connectionName
  *  @param {Object<string, object>} connDDLs See DBAbstract.DDL for content
  *  @param {string} warnings
+ *  @param {UBDomain} domain
  *  @private
  */
-function formatAsText (connectionName, connDDLs, warnings) {
+function formatAsText (connectionName, connDDLs, warnings, domain) {
   const txtRes = []
 
   if (warnings) {
@@ -190,7 +191,15 @@ function formatAsText (connectionName, connDDLs, warnings) {
       '--######################################'
     )
     if (res.resultInSingleStatement) {
-      txtRes.push(res.statements.join(`;${CRLF}`))
+      const isOracle = domain.connections.find(c => c.name === connectionName).dialect.startsWith('Oracle')
+      if (isOracle) {
+        if (!res.statements[res.statements.length - 1].endsWith(';')) {
+          res.statements[res.statements.length - 1] += ';'
+        }
+        txtRes.push('DECLARE V NUMBER(19);\nBEGIN\n' + res.statements.join(`;${CRLF}`) + '\nEND;')
+      } else {
+        txtRes.push(res.statements.join(`;${CRLF}`))
+      }
       txtRes.push('--')
     } else {
       txtRes.push(res.statements.join(`;${CRLF}--${CRLF}`) + ';')

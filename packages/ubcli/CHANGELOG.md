@@ -17,10 +17,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
      optimistic: true
    })
    ```
+
  - DDL generator will execute result script using `@unitybase/ubcli/lib/execSql` (split a result file into parts and directly execute SQL statements)
 
 ### Changed
- - DDL generator result will join all object annotation into one SQL statement - this speed p database generation a lot
+ - DDL generator result will join all object annotation (comment on) into one SQL statement - this speed up database generation a lot
+ - DDL generator for Oracle moves sequence incrementation calls into annotation block, so all of them are executed as a single call 
  
 ### Deprecated
 
