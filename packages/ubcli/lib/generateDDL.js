@@ -31,6 +31,8 @@ const path = require('path')
 const http = require('http')
 const options = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
+const execSql = require('./execSql')
+const CRLF = '\n'
 
 module.exports = function generateDDL (cfg) {
   if (!cfg) {
@@ -71,7 +73,7 @@ module.exports = function generateDDL (cfg) {
  *  @param {String} inEntities
  *  @param {String} inModelsCSV
  *  @param {String} outputPath
- *  @param {String} [optimistic = false]
+ *  @param {String} [optimistic=false]
  *  @private
  */
 function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, optimistic) {
@@ -104,41 +106,57 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
   const Generator = require('./ddlGenerators/DDLGenerator')
   const ddlResult = new Generator().generateDDL(entityNames, conn, true)
   const dbConnNames = Object.keys(ddlResult)
+
+  // const createDBConnectionPool = require('@unitybase/base').createDBConnectionPool
+  // const serverConfig = argv.getServerConfiguration(true)
+  // const dbConnections = createDBConnectionPool(serverConfig.application.connections)
+
   for (const connectionName of dbConnNames) {
     const fileName = path.join(outputPath, connectionName + '.sql')
     let outWarnings = ''
     if (ddlResult[connectionName].warnings.statements.length) {
       console.warn('There are warnings. Please, review script ' + fileName)
-      outWarnings = ddlResult[connectionName].warnings.statements.join('\r\n')
+      outWarnings = ddlResult[connectionName].warnings.statements.join(CRLF)
       delete ddlResult[connectionName].warnings
     }
     const nonEmptySorted = _(ddlResult[connectionName]).values().filter(res => res.statements.length > 0).sortBy('order').value()
 
-    txtRes = formatAsText(connectionName, nonEmptySorted, outWarnings)
+    if (Object.keys(nonEmptySorted).length) {
+      txtRes = formatAsText(connectionName, nonEmptySorted, outWarnings)
+    } else {
+      txtRes = '' // warnings only - ignore such DDL results
+    }
     if (txtRes) {
       fs.writeFileSync(fileName, txtRes)
-      console.log('Created a script ' + fileName)
+      console.log('DDL script is saved to ' + fileName)
       if (autorun) {
-        let withErrors = false
-        console.log('Run a script ' + fileName)
-        // Many databases (Oracle for example) do not allow to execute several DDL statement in one call
-        for (const part of nonEmptySorted) {
-          for (const stmt of part.statements) {
-            try {
-              if (stmt) {
-                conn.xhr({ endpoint: 'runSQL', data: stmt, URLParams: { CONNECTION: connectionName } })
-              }
-            } catch (e) {
-              if (!optimistic) {
-                throw e
-              } else {
-                console.error(e)
-                withErrors = true
-              }
-            }
-          }
-        }
-        console.info('Database script', fileName, 'executed', withErrors ? 'with errors!' : 'successfully')
+        execSql({
+          connection: connectionName,
+          optimistic: optimistic,
+          file: fileName
+        })
+        // let withErrors = false
+        // console.log('Executing a script ' + fileName)
+        // // Many databases (Oracle for example) do not allow to execute several DDL statement in one call
+        // const dbConn = dbConnections[connectionName]
+        // for (const part of nonEmptySorted) {
+        //   for (const stmt of part.statements) {
+        //     try {
+        //       if (stmt) {
+        //         dbConn.execParsed(stmt)
+        //         dbConn.commit()
+        //       }
+        //     } catch (e) {
+        //       if (!optimistic) {
+        //         throw e
+        //       } else {
+        //         console.error(e)
+        //         withErrors = true
+        //       }
+        //     }
+        //   }
+        // }
+        // console.info('Database script', fileName, 'executed', withErrors ? 'with errors!' : 'successfully')
       }
     } else {
       console.log('Specified entity metadata is congruence with database for connection ' + connectionName)
@@ -159,9 +177,9 @@ function formatAsText (connectionName, connDDLs, warnings) {
 
   if (warnings) {
     txtRes.push(
-      '/*\r\n $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ \r\n Attantion! Achtung! Vnimanie! ',
-      '\r\n', warnings,
-      '\r\n $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ \r\n*/\r\n'
+      `/*${CRLF} $$$$$$$$$$$$$$$$$$$$$$$$$ ${CRLF} Attantion! Achtung! Vnimanie!`,
+      `${CRLF}`, warnings,
+      `${CRLF} $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ${CRLF}*/${CRLF}`
     )
   }
 
@@ -169,13 +187,19 @@ function formatAsText (connectionName, connDDLs, warnings) {
     txtRes.push(' ') // for last delimiter
     txtRes.push(
       '-- ' + res.description,
-      '--#############################################################',
-      res.statements.join(';\r\n--\r\n') + ';'
+      '--######################################'
     )
+    if (res.resultInSingleStatement) {
+      txtRes.push(res.statements.join(`;${CRLF}`))
+      txtRes.push('--')
+    } else {
+      txtRes.push(res.statements.join(`;${CRLF}--${CRLF}`) + ';')
+      txtRes.push('--')
+    }
   }
 
   return txtRes.length
-    ? '--##############     start script for connection "' + connectionName + '" #######\r\n' + txtRes.join('\r\n')
+    ? `--############## start script for connection "${connectionName}" #######${CRLF}` + txtRes.join(CRLF)
     : ''
 }
 

@@ -21,7 +21,8 @@
  let options = {
       connection: 'main',
       file: './myScript.sql',
-      optimistic: true
+      optimistic: true,
+      progress: false
   }
  execSql(options)
 
@@ -44,6 +45,7 @@ let dbConnections
  * @param {string} [cfg.connection]        Connection name. If empty - uses default connection
  * @param {string} cfg.file                Path to a script for execution
  * @param {Boolean} [cfg.optimistic=false] Wrap each statement in try/catch block. Continue execution on exceptions
+ * @param {Boolean} [cfg.progress=false]   Output execution time for each command into console
  */
 function execSql (cfg) {
   if (!cfg) {
@@ -58,7 +60,14 @@ function execSql (cfg) {
         long: 'optimistic',
         defaultValue: false,
         searchInEnv: false,
-        help: 'Wrap each statement in try/catch block\n\t\tContinue execution on exceptions.'
+        help: 'Wrap each statement in try/catch block\n\t\tContinue execution on exceptions'
+      })
+      .add({
+        short: 'p',
+        long: 'progress',
+        defaultValue: false,
+        searchInEnv: true,
+        help: 'Output execution time for each command into console'
       })
     cfg = opts.parseVerbose({}, true)
   }
@@ -79,20 +88,22 @@ function execSql (cfg) {
   }
   let script = fs.readFileSync(cfg.file, { encoding: 'utf8' })
   script = script.replace(/\r\n/g, '\n')
-  const stmts = script.split(/^[ \t]*--[ \t]*$|^[ \t]*GO[ \t]*$|^[ \t]*\/[ \t]*$/gm)
+  const stmts = script.split(/^[ \t]*--[ \t]*$|^[ \t]*GO[ \t]*$|^[ \t]*\/[ \t]*$/gm).filter(s => s.trim() !== '')
   const dbConn = dbConnections[connDef.name]
   console.log(`Executing script '${cfg.file}' using connection '${connDef.name}' (${stmts.length} statements)...`)
-  console.time('Execution time')
+  const totalT = Date.now()
   let invalidStmtCnt = 0
   let successStmtCnt = 0
   let ignoreErr = false
   stmts.forEach((stmt, n) => {
     try {
-      console.time(`statement ${n} exec time`)
+      const d = Date.now()
       ignoreErr = stmt.indexOf('-- ignore error') > -1
       dbConn.execParsed(stmt)
       dbConn.commit()
-      console.timeEnd(`statement ${n} exec time`)
+      if (cfg.progress) {
+        console.log(`#${n + 1}: ${Date.now() - d}ms`)
+      }
       successStmtCnt++
     } catch (e) {
       invalidStmtCnt++
@@ -104,7 +115,7 @@ function execSql (cfg) {
   } else {
     console.info(`Successfully completed ${successStmtCnt} statements`)
   }
-  console.timeEnd('Execution time')
+  console.log(`Total execution time: ${Date.now() - totalT}ms`)
 }
 
 module.exports.shortDoc = 'Execute an SQL script in specified connection'

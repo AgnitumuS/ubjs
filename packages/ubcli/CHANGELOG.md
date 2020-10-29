@@ -17,9 +17,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
      optimistic: true
    })
    ```
+ - DDL generator will execute result script using `@unitybase/ubcli/lib/execSql` (split a result file into parts and directly execute SQL statements)
 
 ### Changed
-
+ - DDL generator result will join all object annotation into one SQL statement - this speed p database generation a lot
+ 
 ### Deprecated
 
 ### Removed

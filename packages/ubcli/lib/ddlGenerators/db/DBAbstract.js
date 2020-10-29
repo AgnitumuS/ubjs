@@ -81,7 +81,7 @@ class DBAbstract {
 
       dropColumn: { order: 210, statements: [], description: 'drop columns' },
 
-      caption: { order: 220, statements: [], description: 'Annotate an objects' },
+      caption: { order: 220, resultInSingleStatement: true, statements: [], description: 'Annotate an objects' },
       warnings: { order: 230, statements: [], description: 'Warnings' }
     }
   }
