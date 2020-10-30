@@ -59,10 +59,19 @@ class BlobStoreCustom {
    */
   saveContentToTempStore (request, attribute, content) {}
   /**
+   * Returns full path to the file with BLOB content
+   * @param {BlobStoreRequest} request
+   * @param {BlobStoreItem} blobInfo JSON retrieved from a DB
+   * @returns {String}
+   */
+  getContentFilePath (request, blobInfo) {
+    return ''
+  }
+  /**
    * Retrieve BLOB content from blob store.
    * @abstract
    * @param {BlobStoreRequest} request
-   * @param {BlobStoreItem} blobInfo JSON retrieved from a DB.
+   * @param {BlobStoreItem} blobInfo JSON retrieved from a DB
    * @param {Object} [options]
    * @param {String|Null} [options.encoding] Default to 'bin'. Possible values: 'bin'|'ascii'|'utf-8'
    *   If `undefined` UB will send query to entity anf get it from DB.

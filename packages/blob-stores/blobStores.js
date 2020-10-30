@@ -338,7 +338,7 @@ function getDocumentEndpointInternal (req, resp, withBody = true) {
 }
 
 /**
- * Server-side method for obtaining BLOB content from the blob store.
+ * Retrieve BLOB content from the blob store
  * Return `null` in case attribute value is null.
  * @param {BlobStoreRequest} request
  * @param {Object} [options]
@@ -359,6 +359,30 @@ function getContent (request, options) {
     }
   }
   return requested.store.getContent(parsed.bsReq, requested.blobInfo, options)
+}
+
+/**
+ * Retrieve full path to a file with BLOB content
+ * Returns:
+ *   - `null` in case attribute value is null (document not assigned)
+ *   - '' (empty string) in case store is not file based (reserved for future use)
+ *   - full path to file on success
+ *   - throws if parameters is invalid or document is not accessible
+ * @param {BlobStoreRequest} request
+ * @returns {String|null}
+ */
+function getContentPath (request) {
+  const parsed = parseBlobRequestParams(request)
+  if (!parsed.success) throw new Error(parsed.reason)
+  const requested = getRequestedBLOBInfo(parsed)
+  if (!requested.success) {
+    if (requested.isEmpty) {
+      return null
+    } else {
+      throw new Error(requested.reason)
+    }
+  }
+  return requested.store.getContentFilePath(parsed.bsReq, requested.blobInfo)
 }
 
 /**
@@ -591,6 +615,7 @@ module.exports = {
   setDocumentEndpoint,
   markRevisionAsPermanent,
   getContent,
+  getContentPath,
   putContent,
   doCommit,
   initBLOBStores,
