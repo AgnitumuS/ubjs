@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - new `generateDDL` parameter `-c connectionName`. If passed DDL generator works only for entities for specified connection.
  - new command `ubcli execSql -c connectionName -f path/to/script.sql`.
    Exec a multi-statement SQL script in specified connection without starting a server, so can be used to apply some patches.
    Can be used as a module:
@@ -18,8 +19,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    })
    ```
 
- - DDL generator will execute result script using `@unitybase/ubcli/lib/execSql` (split a result file into parts and directly execute SQL statements)
-
+ - In case UB > 5.18.15 DDL generator will execute result script using `@unitybase/ubcli/lib/execSql` - 
+   split a result file into parts and directly execute SQL statements instead of using runSQL endpoint.
+   
 ### Changed
  - DDL generator result will join all object annotation (comment on) into one SQL statement - this speed up database generation a lot
  - DDL generator for Oracle moves sequence incrementation calls into annotation block, so all of them are executed as a single call 
