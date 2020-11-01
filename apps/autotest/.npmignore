@@ -1,0 +1,4 @@
+./inetpub/clientRequire
+*.log
+*.sqlite3
+./stores
