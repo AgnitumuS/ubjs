@@ -2,7 +2,7 @@
 
 ## Introduction
 
-UnityBase is platform for building complex enterprise application. So security is one of most important part of platform.
+UnityBase is a platform for building complex enterprise application. So security is one of most important part of platform.
 UnityBase security mechanism includes:
 
 *   Users, Groups, And Security Roles (UBA model)
@@ -159,14 +159,14 @@ Session context for method execution. This mode can be used in several cases:
 *   during database initialization
 *   for test or developing purpose
 
-Also developer can turn on "authentication not used" mode by comment `"authMethods"` section in application config.
+Also, developer can turn on "authentication not used" mode by comment `"authMethods"` section in application config.
 
 ### One Time Passwords (OTP)
 `uba_otp` entity adds support for One Time Passwords into `UBA` model.
 
-Currently, implemented methods is EMail, SMS and TOTP (google authenticator). OTP can be generated using `uba_otp.generateOtp`
-method and verified using `uba_otp.authAndExecute` for EMail/SMS or `uba_otp.verifyTotp` for TOTP   
-
+Currently, implemented methods is EMail, SMS and TOTP (FreeTOTP, Google Authenticator etc). OTP can be generated using `uba_otp.generateOtp`
+method and verified using `uba_otp.authAndExecute` for EMail/SMS or `uba_otp.verifyTotp` for TOTP.  
+.
 TOTP sample:  
 ```javascript
 // generate TOTP secret and store it for currently logged in user
@@ -184,7 +184,7 @@ let qrContent = totpLib.getTotpQRCodeData('My SuperApp', secret, 'My company nam
 ### Password policy
 
  For authentication schemas what based on a password, stored in the `uba_user` entity (Basic, UB & CERT) administrator
-can define policies. The policies is stored in the `ubs_settings` entity, so the UBS model must be
+can define policies. The policies are stored in the `ubs_settings` entity, so the UBS model must be
 in application domain. In other case default values are applied.
 
 |Parameter | Description | Default value |
@@ -198,7 +198,7 @@ in application domain. In other case default values are applied.
 | `UBA.passwordPolicy.maxInvalidAttempts` | After *maxInvalidAttempts* unsuccessful authorization user will be locked (`uba_user.disabled=1`). All attempts will logged to `uba_audit` as  *LOGIN FAILED* or *LOCKED LOGIN FAILED* events | 0 (unlimited) |
 
 Note, that for some of these settings, you will need to restart UnityBase server after the change.
-Setting value is a localizable string, make sure you update the setting in all the languages.
+Setting value is a localized string, make sure you update the setting in all the languages.
 
 ### Security audit & dashboard
 All security related operations are added to the `uba_audit` entity. The interface part is available in the `adminUI` on the path
@@ -299,9 +299,12 @@ See also `CAPath` and `ignoreSSLCertificateErrors` parameters in [ubConfig schem
 
 #### Linux
 
-UnityBase Enterprise edition supports Kerberos authentication on Linux using gssapi. UnityBase binary is compiled against MIT implementation of gssapi library.
-Internally the implementation of Kerberos authentication supports only one authentication iteration while RFC 2743 defines multiple iterations - this is a known implementation limitation.
-Despite there are some plugins for gssapi library that define NTLM support, use of such plugins is neither recommended nor functional. For Kerberos authentication to work properly it is recommended to setup domain to use SPNEGO authentication mechanism.
+UnityBase Enterprise edition supports Kerberos authentication on Linux using MIT implementation of gssapi library. 
+
+Internally the implementation of Kerberos authentication supports only one authentication iteration while RFC 2743
+defines multiple iterations - this is a known implementation limitation.
+Despite there are some plugins for gssapi library that define NTLM support, use of such plugins is neither recommended nor functional.
+For Kerberos authentication to work properly it is recommended to setup domain to use SPNEGO authentication mechanism.
 
 To prepare UnityBase to use Kerberos authentication on Linux a number of steps should be done:
 
@@ -313,11 +316,18 @@ To prepare UnityBase to use Kerberos authentication on Linux a number of steps s
 1. Creating keytab file for UnityBase service
 1. Configuring UnityBase to support Kerberos authentication
 
-Most of the steps above are clearly described in a document for configuring Microsoft SQL Sever to use Windows authentication which can be found at [https://www.mssqltips.com/sqlservertip/5075/configure-sql-server-on-linux-to-use-windows-authentication](https://www.mssqltips.com/sqlservertip/5075/configure-sql-server-on-linux-to-use-windows-authentication). These steps are described here only briefly.
+Most of the steps above are clearly described in a
+[document for configuring Microsoft SQL Sever to use Windows authentication](https://www.mssqltips.com/sqlservertip/5075/configure-sql-server-on-linux-to-use-windows-authentication).
+The steps for UnityBase server is the same as for SQL Server under linux/
+
+Another tutorial (Russian) is [ALT Linux Создание SPN и Keytab файла](https://www.altlinux.org/%D0%A1%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5_SPN_%D0%B8_Keytab_%D1%84%D0%B0%D0%B9%D0%BB%D0%B0) 
+These steps are described here only briefly.
 
 ##### Preparation of network interfaces
-Network interfaces on the Linux server should be configured in the way that the server is on the same network as Domain Controller is and the server can resolve names withing Domain Controller's network.
-To achieve this an actions described in the document above could be done. By the way as a result "nslookup <DC_name>" should be resulted in actual Domain Controller's address.
+Network interfaces on the Linux server should be configured in the way that the server is on the same network
+as Domain Controller is and the server can resolve names withing Domain Controller's network.
+To achieve this actions described in the document above could be done.
+By the way as a result "nslookup <DC_name>" should be resulted in actual Domain Controller's address.
 This may be required to check here an availability of desired ports if some filters are active in the network.
 At the moment a change of the name of the Linux server may be required to follow the domain's policies.
 
@@ -328,9 +338,12 @@ A few packages should be installed on the Linux server to prepare it to join an 
  - MIT kerberos implementation libraries and tools including gssapi library
 Here is a list of packages that could be applicable:
   realmd krb5-user sssd-ad samba-common-bin samba-libs sssd-tools krb5-user adcli
-When installing the packages a prompt for default realm should appear. Please note that it is required to enter the full (not short NETBIOS form) realm name in uppercase.
+When installing the packages a prompt for default realm should appear.
 
-This is also worth to mention that time on the Linux server should be synchronized with Domain Controller's one. For this purpose it is recommended to have ntpd installed of the server and ntpd configured to take time from Domain Controller.
+> Please note that it is required to enter the full (not short NETBIOS form) realm name in uppercase.
+
+This is also worth to mention that time on the Linux server should be synchronized with Domain Controller's one.
+For this purpose it is recommended to have ntpd installed of the server and ntpd configured to take time from Domain Controller.
 
 ##### realmd configuration
 Before joining Active Directory realmd service should be properly configured.
@@ -356,7 +369,7 @@ HTTP/Fully_Qualified_Domain_Name_of_the_Server[:Listening_Port]
 ```
 
 Listening_Port is an optional component. it is recommended to add it when UnityBase listens on non default http|https port (not 80 or 443)
-Use setspn utility on Domain Controller or any Windows computer joined to the same domain to create SPN.
+Use `setspn` utility on Domain Controller or any Windows computer joined to the same domain to create SPN.
 
 ##### Creating keytab file for UnityBase service
 On the Linux server service's credentials are stored as keytab file. ktutil is used to create such a file on Linux.
@@ -376,13 +389,16 @@ quit
 
 ##### Configuring UnityBase to support Kerberos authentication
 The final step is to provide configuration information to UnityBase.
-It is mandatory to specify the keytab file to be used by UnityBase to authenticate itself in the domain. This is done by specifying KRB5_KTNAME environment variable for UnityBase process. 
+It is mandatory to specify the keytab file to be used by UnityBase to authenticate itself in the domain.
+This is done by specifying KRB5_KTNAME environment variable for UnityBase process. 
 It is better to specify it just at the call to ub:  
 ```
 KRB5_KTNAME=/path/to/file.keytab ub
 ```
 
-UnityBase server configuration file should also be changed. At least 'Negotiate' should be specified in the list of authentication providers. It is also strongly recommended to specify SPN parameter in the "security" section - the SPN string here shuld be written in wide form, with realm specified: SPN@REALM.COM. 
+UnityBase server configuration file should also be changed. At least 'Negotiate' should be specified in the list
+of authentication providers. It is also strongly recommended to specify SPN parameter in the "security"
+section - the SPN string here shuld be written in wide form, with realm specified: SPN@REALM.COM. 
 It should be exactly the same as the name inside the keytab.
 
 ## Additional features in Defence edition

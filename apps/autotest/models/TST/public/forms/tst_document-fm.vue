@@ -9,6 +9,7 @@
       </button>
       <u-button
         slot="left"
+        color="primary"
         appearance="inverse"
         @click="verifySignatures"
       >
@@ -89,6 +90,18 @@ const { Form, mapInstanceFields, dialogInfo } = require('@unitybase/adminui-vue'
 module.exports.mount = function (cfg) {
   Form(cfg)
     .processing({
+      masterFieldList: [
+        'ID',
+        'code',
+        'docDate',
+        'incomeDate',
+        'regDate',
+        'docDateTime',
+        'description',
+        'fileStoreSimple',
+        'person',
+        'employee'
+      ],
       beforeDelete: (store) => {
         console.log(this, store, arguments)
         return $App.dialogYesNo('Confirm', 'Really?')
@@ -111,7 +124,7 @@ module.exports.default = {
       'regDate',
       /*'category',
       'favorites',
-      'favorites2',*/
+      'favorites2', */
       'docDateTime',
       'description',
       'fileStoreSimple',

@@ -5,10 +5,10 @@
         ref="masterTable"
         v-bind="$attrs"
         :before-initial-load="onInitialLoad"
-        v-on="$listeners"
         :class="{
           'u-table-register__view__preview-form-mode': viewMode === 'previewForm'
         }"
+        v-on="$listeners"
         @change-row="selectedRowId = $event"
       >
         <template
@@ -27,19 +27,21 @@
             v-bind="scope"
             name="contextMenuDetails"
           >
-            <u-dropdown-item
-              v-if="details.length"
-              label="Details"
-              icon="u-icon-file-text"
-            >
+            <template v-if="details.length">
+              <u-dropdown-item divider />
               <u-dropdown-item
-                v-for="detail in details"
-                :key="detail.entity + detail.attribute"
-                :disabled="detail === selectedDetail && detailsVisible"
-                :label="formatDetailLabel(detail)"
-                @click="showDetail(detail)"
-              />
-            </u-dropdown-item>
+                label="Details"
+                icon="u-icon-file-text"
+              >
+                <u-dropdown-item
+                  v-for="detail in details"
+                  :key="detail.entity + detail.attribute"
+                  :disabled="detail === selectedDetail && detailsVisible"
+                  :label="formatDetailLabel(detail)"
+                  @click="showDetail(detail)"
+                />
+              </u-dropdown-item>
+            </template>
           </slot>
         </template>
 
@@ -48,19 +50,21 @@
             v-bind="scope"
             name="dropdownMenuDetails"
           >
-            <u-dropdown-item
-              v-if="details.length"
-              label="Details"
-              icon="u-icon-file-text"
-            >
+            <template v-if="details.length">
+              <u-dropdown-item divider />
               <u-dropdown-item
-                v-for="detail in details"
-                :key="detail.entity + detail.attribute"
-                :disabled="detail === selectedDetail && detailsVisible"
-                :label="formatDetailLabel(detail)"
-                @click="showDetail(detail)"
-              />
-            </u-dropdown-item>
+                label="Details"
+                icon="u-icon-file-text"
+              >
+                <u-dropdown-item
+                  v-for="detail in details"
+                  :key="detail.entity + detail.attribute"
+                  :disabled="detail === selectedDetail && detailsVisible"
+                  :label="formatDetailLabel(detail)"
+                  @click="showDetail(detail)"
+                />
+              </u-dropdown-item>
+            </template>
           </slot>
 
           <slot
@@ -307,7 +311,7 @@ export default {
   flex-direction: column;
   flex-grow: 1;
   flex-basis: 450px;
-  min-width: 450px;
+  flex-shrink: 0;
 }
 
 .u-table-register__view__preview-form-mode > .u-table-entity__head .u-button .u-button__label {

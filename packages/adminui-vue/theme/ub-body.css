@@ -64,6 +64,11 @@
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-background);
+
+}
+
+:focus {
+    outline: none;
 }
 
 ::-webkit-scrollbar-track {
@@ -182,6 +187,7 @@ html, body {
 
 .ub-dialog__table-entity .el-dialog__body {
     height: 100%;
+    overflow: auto;
 }
 
 /* element-ui overrides */

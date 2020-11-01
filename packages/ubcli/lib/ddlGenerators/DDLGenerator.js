@@ -96,7 +96,7 @@ function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory,
  * @param root
  * @param suffix
  * @param {string|DDLGenerator.dbDialectes} dialect One of DDLGenerator.dbDialectes
- * @returns {*}
+ * @returns {string}
  */
 function formatName (prefix, root, suffix, dialect = DDLGenerator.dbDialectes.AnsiSQL) {
   const MAX_IDENTIFIER_LEN = DDLGenerator.MAX_DB_IDENTIFIER_LENGTHS[dialect]
@@ -366,6 +366,14 @@ class DDLGenerator {
       }
     }
 
+    // reference tables for SUFFIXES index storage
+    if (entity.dbExtensions) {
+      _.forEach(entity.dbExtensions, (s, tblName) => {
+        if (s.type === 'SUFFIXES') {
+          this.addSuffixIndexTable(entity, entity.attr(s.attribute), tblName)
+        }
+      })
+    }
     this.addCustomElements(tableDef, entity)
 
     tableDef.__entity = entity
@@ -374,7 +382,7 @@ class DDLGenerator {
   }
 
   /**
-   *
+   * Add dbKeys and dbExtension indexes
    * @param {TableDefinition} tableDef
    * @param {UBEntity} entity
    */
@@ -420,6 +428,19 @@ class DDLGenerator {
       })
     }
     if (entity.dbExtensions) {
+      const IS_SQL_SERVER = DDLGenerator.isMSSQL(dialect)
+      if (IS_SQL_SERVER) { // merge CATALOGUE DBExtensions for SQL server into one FTS index
+        const msSqlFtsIdx = { name: '__CATALOGUE__', keys: [], indexType: 'CATALOGUE' }
+        _.forEach(entity.dbExtensions, (command) => {
+          if (command.type === 'CATALOGUE') {
+            msSqlFtsIdx.keys.push(...Object.keys(command.definition.keys))
+          }
+        })
+        if (msSqlFtsIdx.keys.length) {
+          msSqlFtsIdx.keys.sort()
+          tableDef.addIndex(msSqlFtsIdx, true)
+        }
+      }
       _.forEach(entity.dbExtensions, (commands, dbKey) => {
         if (!commands.type) {
           commands.type = 'OTHER'
@@ -430,22 +451,24 @@ class DDLGenerator {
           switch (commands.type) {
             case 'INDEX':
             case 'CATALOGUE':
-              objDef = { name: dbKey, keys: [], isUnique: definition.isUnique }
-              if (commands.type === 'CATALOGUE') objDef.indexType = commands.type
-              _.forEach(definition.keys, (fKeyOptions, fkeyText) => {
-                if (fKeyOptions.func && DDLGenerator.isOracle(dialect)) {
-                  if (fKeyOptions.func.indexOf('{0}') === -1) {
-                    fkeyText = fKeyOptions.func + '(' + fkeyText + ')'
-                  } else {
-                    fkeyText = formatBrackets(fKeyOptions.func, fkeyText)
+              if (!(IS_SQL_SERVER && commands.type === 'CATALOGUE')) { // already added
+                objDef = { name: dbKey, keys: [], isUnique: definition.isUnique }
+                if (commands.type === 'CATALOGUE') objDef.indexType = commands.type
+                _.forEach(definition.keys, (fKeyOptions, fkeyText) => {
+                  if (fKeyOptions.func && DDLGenerator.isOracle(dialect)) {
+                    if (fKeyOptions.func.indexOf('{0}') === -1) {
+                      fkeyText = fKeyOptions.func + '(' + fkeyText + ')'
+                    } else {
+                      fkeyText = formatBrackets(fKeyOptions.func, fkeyText)
+                    }
                   }
-                }
-                if (fKeyOptions.sort && (DDLGenerator.isEqualStrings(fKeyOptions.sort, 'DESC'))) {
-                  fkeyText += ' DESC'
-                }
-                objDef.keys.push(fkeyText)
-              })
-              tableDef.addIndex(objDef, true)
+                  if (fKeyOptions.sort && (DDLGenerator.isEqualStrings(fKeyOptions.sort, 'DESC'))) {
+                    fkeyText += ' DESC'
+                  }
+                  objDef.keys.push(fkeyText)
+                })
+                tableDef.addIndex(objDef, true)
+              }
               break
             case 'CHECK':
               objDef = { name: dbKey, type: 'custom', expression: definition.check }
@@ -476,7 +499,7 @@ class DDLGenerator {
     let dataType, size, prec, enumGroup
     let allowNull = attribute.allowNull
     let refTable
-    // convert UB type to phisical type
+    // convert UB type to physical type
     switch (attribute.dataType) {
       case UBDomain.ubDataTypes.String:
         dataType = 'NVARCHAR'
@@ -565,7 +588,7 @@ class DDLGenerator {
   }
 
   /**
-   *
+   * Add references definition for "Many" attribute storage table
    * @param {UBEntity} entity
    * @param {UBEntityAttribute} attribute
    */
@@ -603,6 +626,44 @@ class DDLGenerator {
     tableDef.addIndex({
       name: formatName('IDX_', attribute.associationManyData, '_DESTID', entity.connectionConfig.dialect),
       keys: ['destID'.toUpperCase()]
+    })
+    tableDef.isIndexOrganized = true
+    this.referenceTableDefs.push(tableDef)
+  }
+
+  /**
+   * Add references table definition for storing data of "SUFFIX" index
+   * @param {UBEntity} entity
+   * @param {UBEntityAttribute} attribute
+   * @param {string} tblName
+   */
+  addSuffixIndexTable (entity, attribute, tblName) {
+    const tableDef = new TableDefinition({
+      name: tblName,
+      caption: `SUFFIX index storage for ${entity.name}.${attribute.name}`
+    })
+    tableDef.__entity = entity
+    tableDef.addColumn({
+      name: 'tail',
+      dataType: 'NVARCHAR',
+      size: attribute.size,
+      allowNull: false
+    })
+    tableDef.addColumn({
+      name: 'sourceID',
+      dataType: 'BIGINT',
+      allowNull: false
+    })
+    tableDef.primaryKey = { name: 'PK_' + tblName, keys: ['tail', 'sourceID'] }
+    tableDef.addFK({
+      name: genFKName(tblName, 'SOURCEID', entity.sqlAlias, entity.connectionConfig.dialect),
+      keys: ['sourceID'.toUpperCase()],
+      references: getTableDBName(entity),
+      generateFK: true
+    })
+    tableDef.addIndex({
+      name: formatName('IDX_', tblName, '_SOURCEID', entity.connectionConfig.dialect),
+      keys: ['sourceID'.toUpperCase()]
     })
     tableDef.isIndexOrganized = true
     this.referenceTableDefs.push(tableDef)

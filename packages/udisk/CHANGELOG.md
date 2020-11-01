@@ -8,16 +8,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- `application.blobStores` section now defined in model partial config
-  and automatically merged into main config (starting from ub@5.18.12). See README.md for
-  environment variables list.
-  
+
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
+## [5.0.147] - 2020-10-20
+## [5.0.146] - 2020-10-15
+### Changed
+- `application.blobStores` section now defined in model partial config
+  and automatically merged into main config (starting from ub@5.18.12). See README.md for
+  environment variables list.
+  
 ## [5.0.145] - 2020-09-23
 ## [5.0.144] - 2020-09-22
 ## [5.0.143] - 2020-09-20

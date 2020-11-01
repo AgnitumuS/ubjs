@@ -14,7 +14,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `cdn_contact-fm.vue`: fixed form opening without parentContext [UBDF-12453]
 
+## [5.4.38] - 2020-10-20
+### Added
+ - added DB index by cdn_organization.name
+    
+## [5.4.37] - 2020-10-15
 ## [5.4.36] - 2020-09-23
 ## [5.4.35] - 2020-09-22
 ## [5.4.34] - 2020-09-21

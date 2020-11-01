@@ -20,7 +20,9 @@ module.exports.mount = cfg => {
   })
     .processing({
       inited (store) {
-        store.commit('LOAD_DATA_PARTIAL', { 'subjectID': cfg.parentContext.subjectID })
+        if (cfg.parentContext && cfg.parentContext.subjectID) {
+          store.commit('LOAD_DATA_PARTIAL', { subjectID: cfg.parentContext.subjectID })
+        }
       }
     })
     .validation({

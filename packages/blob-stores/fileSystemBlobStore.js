@@ -100,6 +100,16 @@ class FileSystemBlobStore extends BlobStoreCustom {
   }
 
   /**
+   * Returns full path to the file with BLOB content
+   * @param {BlobStoreRequest} request
+   * @param {BlobStoreItem} blobInfo JSON retrieved from a DB
+   * @returns {String}
+   */
+  getContentFilePath (request, blobInfo) {
+    return request.isDirty ? this.getTempFileName(request) : this.getPermanentFileName(blobInfo, request)
+  }
+
+  /**
    * Retrieve BLOB content from blob store.
    * @param {BlobStoreRequest} request
    * @param {BlobStoreItem} blobInfo JSON retrieved from a DB.
@@ -110,7 +120,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @returns {String|ArrayBuffer}
    */
   getContent (request, blobInfo, options) {
-    const filePath = request.isDirty ? this.getTempFileName(request) : this.getPermanentFileName(blobInfo, request)
+    const filePath = this.getContentFilePath(request, blobInfo)
     return filePath ? fs.readFileSync(filePath, options) : undefined
   }
 

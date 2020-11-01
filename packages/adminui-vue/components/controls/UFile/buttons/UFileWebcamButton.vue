@@ -5,6 +5,7 @@
       :enterable="false"
     >
       <u-button
+        color="primary"
         icon="u-icon-photo"
         appearance="inverse"
         :disabled="isDisabled"
@@ -58,6 +59,7 @@
 
         <div class="u-file-webcam__button-group">
           <u-button
+            color="primary"
             icon="u-icon-photo"
             appearance="plain"
             @click="takePicture"
@@ -66,6 +68,7 @@
           </u-button>
 
           <u-button
+            color="primary"
             icon="u-icon-save"
             :disabled="!previewImageSrc"
             @click="save"

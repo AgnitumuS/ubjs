@@ -8,6 +8,11 @@
       "description": "Батьківський вузол групи"
     },
     {
+      "name": "groupType",
+      "caption": "Тип",
+      "description": "Тип групи"
+    },
+    {
       "name": "code",
       "caption": "Внутрішній код",
       "description": "Внутрішній код групи"

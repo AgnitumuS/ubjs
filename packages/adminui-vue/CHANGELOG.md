@@ -6,20 +6,67 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `$App.showAuditTrail` method added - used in both adminui-vue and adminui-pub to show audit trail for instance
- - `UaclRlsInput` component. Recomended to use for managing acces to some entity with aclRls mixin
+- `UaclRlsInput` component. Recommended to use for managing access to some entity with aclRls mixin
   [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/UAclRlsInput.vue)
 
 ### Changed
- - instance audit trail list now filtered by `parentEntityInfo_id`, so shows audit for all related entities
- where `parentIdentifier` & `parentEntity` is configured
+- `USelectEntity`: prop `readonly` does not disable action `edit` in dropdown anymore, but `disabled` still does
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `store.canRefresh` getter returns `true` for any non-new record (before this fix - for non-new and dirty).
+   This allows calling "Refresh" action on the non-dirty forms. 
+
+## [1.13.13] - 2020-10-20
+### Added
+  - `UNavbar` show tooltip on tabs in case caption length > 18
+
+### Changed
+ - `Form/validation` building of validation() rules takes into account only fields what included into `masterFieldList` (if passed).
+   Before this fix all entity attributes with defaultView && !allowNull are included.
+ - UTable: cells left/right padding decreased from 16 to 8px; row top/bottom paddings decreased from 12 to 10px;
+   This allows fit more data on the screen without negative UX effect (verified on laptops and tablets)
+ - `UToolbar` audit table opens in separate tab 
+ - `audit table` save in localStorage last preview mode and active filters
+ - `Form`, `UTableEntity` in case table or form opened as modal then all child tables and forms are also opened as modals
+ 
+### Fixed
+ - Excel export from UTableEntity - fixed format for Date anf Boolean attributes
+ - prevent error `Cannot read property 'scrollIntoView' of undefined` during
+  navbar tab closing (occurs for Ext based forms with close confirmation) 
+ 
+
+## [1.13.12] - 2020-10-15
+### Added
+ - `$App.showAuditTrail` method added - used in both adminui-vue and adminui-pub to show audit trail for instance
+ - `UTableEntity` - added data history mixin support
+ - `UTableEntity` - new slots for data history mixin:
+   - `toolbarDropdownSummary` to replace in toolbar dropdown 
+   - `contextMenuDataHistory` to replace in context menu 
+ - `replaceShowList`: provide `onSelectRecord` prop to `UTableEntity`
+ - `UTable`, `UTableEntity`: caption "No data" in case has no data in table
+ - `Form`: pass param `store` in hooks `beforeInit` and `inited`
+ - `UButton` added an outline to the focused button
+
+### Changed
+ - `UDropdown` close on press `esc` button
+ - instance audit trail list now filtered by `parentEntityInfo_id`, so shows audit for all related entities
+ where `parentIdentifier` & `parentEntity` is configured
+ - *BREAKING* `UButton` default color is changed from `primary` to `control`. The reason - only one primary button should be on the form.
+ - `diologYesNo` focus "No" action by default
+
+### Removed
+ - `fts table`: audit action is removed (fts is not an audit subject)
+
+### Fixed
  - adjust ub-icons size to be the same for all icons
+ - `UTableEntity -> toolbar` show scrollbar in case toolbar content is overflowed
+ - `fts table`: edit action now uses `onBuildEditConfig` handler, so work in the same way as for other entities lists
+ - `UTableEntity`: change color of the selected card to be darker
+ - `UTableEntity/updateData`: prevent error on updating data for cached entity
 
 ## [1.13.11] - 2020-09-27
 ### Changed

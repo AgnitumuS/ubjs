@@ -2,6 +2,117 @@
 
 # Production deployment (recommendations)
 
+## Lifecycle
+
+### Application lifecycle
+
+For applications (consider application name is `autotest`) 
+
+ - Pack app for deployment (in the application folder)
+```shell script
+# 
+cd autotest
+ub-pack # this creates `/tmp/ubapp-autotest@x.y.z.tar.gz
+```
+ - Copy resulting tarball to the server and run deploy
+```shell script
+sudo ub-deploy ubapp-autotest@x.y.z.tar.gz
+```
+
+ - Edit (create) environment variables file in `/opt/unitybase/appdata/autotest/ubConfig.env`.
+> cd `/opt/unitybase/apps/autotest` and run `ub -T` to see variables list  
+
+ - If this is first time setup of application - run initialization 
+```shell script
+sudo -u unitybase ub-app-init autotest
+sudo systemctl enable --now unitybase@autotest
+```
+
+ - If this is upgrade
+```shell script
+sudo systemctl stop unitybase@autotest
+sudo -u unitybase ub-app-upgrade autotest 
+sudo systemctl start unitybase@autotest
+```
+
+### Product lifecycle
+For products (consider product name is `docflow`)
+
+ - Pack product for deployment (in the application folder)
+```shell script
+# 
+cd docflow
+ub-pack # this creates `/tmp/ubproduct-docflow@x.y.z.tar.gz
+```
+
+ - Copy resulting tarball to the server and run deploy
+```shell script
+sudo ub-deploy ubproduct-docflow@x.y.z.tar.gz
+```
+
+ - If this is first time product setup (there is no application for this product on this server)
+   - create new app
+   ```shell script
+   sudo -u unitybase ub-app-new -p docflow -a docflow-cust1
+   ``` 
+   - edit application environment variables file in `/opt/unitybase/appdata/docflow-cust1/ubConfig.env` and 
+     run application initialization
+   ```shell script
+   sudo -u unitybase ub-app-init cust1 # will create app docflow-cust1  
+   ```
+   
+ - if this is upgrade - all affected applications should be upgraded
+ ```shell script
+ sudo systemctl stop unitybase@docflow*
+ # for each app (docflow-cust1)
+ sudo -u unitybase ub-app-upgrade docflow-cust1
+  ...
+ sudo -u unitybase ub-app-upgrade docflow-custN
+ sudo systemctl start unitybase@docflow*  
+ ```    
+     
+
+### Prepare application/product for deployment
+In the application/product folder run a command
+```shell script
+ub-pack
+``` 
+This command installs all application dependencies and creates an archive for future deployment.
+
+All files what must be excluded from archive should be noted in `.npmignore`. Also, ignored:
+ - all files and folders starts with '.'
+ - *.log
+ - /logs, /stores, /localdb
+ - ./inetpub/clientRequire folder 
+
+If this is a product set a
+```
+"config": {
+ "ubapptype": "product"
+}  
+```
+in the package.json.
+
+Application/product version is taken from "version" inside package.json and should be increased before packing to prevent
+deployment conflict in the future.
+
+For testing purpose `ub-pack` can be executed with `-m DEV` parameter. In this case instead of `npm i --production`
+packing script uses `yarn`, so if `workspaces` is defined in the package.json then some dependencies are linked.
+In any case all linked dependencies are included into resulting archive as files (not as symlinks). 
+
+### Deploy app/product
+Archive created by `ub-pack` can be deployed using command 
+```shell script
+sudo ub-deploy path/to/ubapp-appName@version.tar.gz
+```
+For applications (`ubapp-*.tar.gz`) deploy script archive previous app version, unpack a new app into `/opt/unitybase/apps/$UB_APP`
+and creates folder structure for application data in the `/opt/unitybase/appdata/$UB_APP` (if missing).
+
+For products (`ubproduct-*.tar.gz`) deploy script archive previous product version and unpack a new product
+into `/opt/unitybase/products/$UB_APP`.
+
+### 
+ 
 ##  Folder structure
 ```
 /opt
@@ -18,14 +129,13 @@
         /docflow-bpm
         ...
     /apps                   # available applications (either products what configured for certain customer or stand-alone app)
-        /crb.docflow        # product based application
+        /crb-docflow        # product based application (in form customer-product)
             /inetpub        # content of this folder available using `/statics` endpoint
             /models         # vendor model (customer-specific addition for product developed by product owner)
               /crb
                 crb.js
-                package.json
-            /cmodels        # customer model (customer-specific addition for product developed by customer)  
-            ubConfig.json   # application config - for products - symlynk to a product config `../../products/docflow@2.1.4/ubConfig.json`
+                package.json  
+            ubConfig.json   # application config - for products - symlynk to a product config `../../products/docflow/ubConfig.json`
        /docs-adminui        # stand-alone application (not based on any product)
             /inetpub
             /models
@@ -33,12 +143,14 @@
             /node_modules   # application modules. For products this folder is placed in /products/productName
             ubConfig.json   # for stand-alone app not a symlynk but a file
     /appdata                # applications data (localdb, stores, temporary logs)
-        /crb.docflow        # crb.docflow data
+        /crb-docflow        # crb.docflow data
+            /cmodels        # customer model (customer-specific addition for product developed by customer)
             /localdb        # local database files (SQLite3, SQL Server localdb etc.)  
             /stores         # BLOB stores
             /logs           # local logs (for develepnemt purpose; production logs are written to journald)
             ubConfig.env    # Environment variables for application instance
         /docs-adminui       # docs-adminui application data
+            /cmodels
             /localdb          
             /stores         
             /logs           
@@ -74,8 +186,8 @@ The product examples is: `DocFlow`, `Scriptum`, `df-bpm` etc.
 Products installed in the `/opt/unitybase/products/productname` folder as a superuser (root).
 Product folder write permission allowed only for `root`, other user can read it content.
  
-Product owner should create an application config template `ubConfigProductName-tpl.json` what uses environment
-variables for its variable parts. For a multi-database products we recommended wraping a database sectins to `#ifdef` as such:
+Product owner should create an application config template `ubConfig.json` what uses environment
+variables for its variable parts. For a multi-database products we recommended wrapping a database section to `#ifdef` as such:
 ```
 "connections": [
     //#ifdef(%UB_DB_DRIVER%=Oracle)
@@ -111,9 +223,10 @@ Product template should contain placeholders for `application.domain.vendorModel
 ```
 This allows application to add a customer-specific behaviors to a product.
 
+`up-app-pack` lifecycle script detect product by check `config.ubapptype` in package.json === 'product'. 
  
 > Starting from UB@5.18.12 server sets a NODE_PATH variable to the real path of application config, so all modules in the
-`product/node_modules` folder are available in the `vmodel` using `require('moduleName')`.
+> `product/node_modules` folder are accessible for `vendorModel` using `require('moduleName')`.
    
 See application structure below for a list of folders for application data.
 
@@ -126,7 +239,7 @@ During development customers specific models and test data usually placed in the
      \crb
      \crb_bpm
    \stores
-   ubConfigDocFlow-oracle-tpl.json
+   ubConfig.json
      (config contains `"vendorModels": "%UB_VMODELS%"`)         
 ```
 To start an application in debug mode for a certain customer (crb) using product template
@@ -175,8 +288,8 @@ Stand-alone application can place all its part into /apps.
    
 
 #### Application folders structure
-Application with name `appName` place it's code in `/opt/unitybase/apps/appName` (UB_APPHOME environment variable) and
-it's data in `/opt/unitybase/appdata/appName`:
+Application with name `appName` place its code in `/opt/unitybase/apps/appName` (UB_APPHOME environment variable) and
+its data in `/opt/unitybase/appdata/appName`:
 
 ```
 /opt/unitybase/apps
@@ -188,8 +301,6 @@ it's data in `/opt/unitybase/appdata/appName`:
     /models         # customer models  
       /crb          # vendor model (customer-specific addition for product developed by product owner) 
         package.json
-    /cmodels  
-      /crbc         # customer model (customer-specific addition for product developed by customer)
     ubConfig.json   # application config - symlynk to a product config `../../products/docflow@2.1.4/ubConfigDocflow-tpl.json`
 /opt/unitybase/appdata
   /appName
@@ -197,6 +308,8 @@ it's data in `/opt/unitybase/appdata/appName`:
         appnameFTS.sqlite3
         ..    
       /stores         # application BLOB stores
+      /cmodels  
+        /crbc         # customer model (customer-specific addition for product developed by customer)
       ubConfig.env    # Environment variables for application instance  
 ```
 

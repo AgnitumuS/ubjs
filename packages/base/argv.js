@@ -231,6 +231,9 @@ function checkServerStarted (URL) {
 /**
  * Read server configuration from file, resolved by {@link getConfigFileName}
  * parse it in safe mode, replace environment variables by it values and return parsed config
+ *
+ * In server thread use `App.serverConfig` to read already parsed server configuration.
+ *
  * @param {boolean} [forFutureSave=false] If true will return config ready to save back as new ubConfig
  *  (do not add props model.browser & model.version)
  * @return {Object}

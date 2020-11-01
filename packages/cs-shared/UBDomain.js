@@ -967,7 +967,7 @@ UBEntity.prototype.addMethod = function (methodName) {
  * Convert UnityBase server dateTime response to Date object
  * @private
  * @param value
- * @returns {Date}
+ * @returns {Date|null}
  */
 function iso8601Parse (value) {
   return value ? new Date(value) : null
@@ -997,6 +997,18 @@ function booleanParse (v) {
  */
 function jsonParse (v) {
   return v ? JSON.parse(v) : null
+}
+
+/**
+ * Convert UnityBase server Enum response to String, Return null in case of empty string
+ * @private
+ * @param v Value to convert
+ * @returns {String|null}
+ */
+function enumParse (v) {
+  return (typeof v === 'number')
+    ? String(v)
+    : v || null
 }
 
 /**
@@ -1031,6 +1043,11 @@ UBEntity.prototype.getConvertRules = function (fieldList) {
         rules.push({
           index: index,
           convertFn: jsonParse
+        })
+      } else if (attribute.dataType === types.Enum) {
+        rules.push({
+          index: index,
+          convertFn: enumParse
         })
       }
     }

@@ -5,6 +5,8 @@ const { exportExcel, exportCsv, exportHtml } = require('../../utils/fileExporter
 const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 const lookups = require('../../utils/lookups')
 const AUDIT_ENTITY = 'uba_auditTrail'
+const Vue = require('vue')
+const openDataHistoryDatePicker = require('./components/DataHistoryDatePicker/datePickerDialog')
 
 /**
  * Build store by UTableEntity props
@@ -17,6 +19,7 @@ const AUDIT_ENTITY = 'uba_auditTrail'
  * @param {function} instance.buildEditConfig Edit config builder. Called with (cfg: configToMutate, row: content of row to edit)
  * @param {function} instance.buildCopyConfig Copy config builder. Called with (cfg: configToMutate, row: content of row to edit)
  * @param {object[]} instance.getCardColumns Columns to show in card view
+ * @param {boolean} instance.isModal Is parent opened from modal. Used to provide modal state to child
  */
 module.exports = (instance) => ({
   state () {
@@ -122,6 +125,14 @@ module.exports = (instance) => ({
       return getters.hasSelectedRow
     },
 
+    canCreateNewVersion (state, getters) {
+      return getters.schema.haveAccessToMethod(UB.core.UBCommand.methodName.NEWVERSION)
+    },
+
+    hasDataHistoryMixin (state, getters) {
+      return getters.schema.hasMixin('dataHistory')
+    },
+
     columns () {
       return instance.getColumns
     },
@@ -154,6 +165,14 @@ module.exports = (instance) => ({
 
     cardColumns () {
       return instance.getCardColumns
+    },
+
+    generateTabId (state, getters) {
+      return ID => UB.core.UBApp.generateTabId({
+        entity: getters.entityName,
+        instanceID: ID,
+        formCode: getters.formCode
+      })
     }
   },
 
@@ -336,16 +355,13 @@ module.exports = (instance) => ({
           return
         }
       }
-      const tabId = UB.core.UBApp.generateTabId({
-        entity: getters.entityName,
-        formCode: getters.formCode
-      })
       const config = await instance.buildAddNewConfig({
         cmdType: 'showForm',
         entity: getters.entityName,
         formCode: getters.formCode,
         target: UB.core.UBApp.viewport.centralPanel,
-        tabId
+        tabId: getters.generateTabId(),
+        isModal: instance.isModal
       }, instance)
       UB.core.UBApp.doCommand(config)
     },
@@ -353,11 +369,6 @@ module.exports = (instance) => ({
     async editRecord ({ state, getters }, ID) {
       if (ID === null) return
 
-      const tabId = UB.core.UBApp.generateTabId({
-        entity: getters.entityName,
-        instanceID: ID,
-        formCode: getters.formCode
-      })
       const item = state.items.find(i => i.ID === ID)
       const config = await instance.buildEditConfig({
         cmdType: 'showForm',
@@ -365,7 +376,8 @@ module.exports = (instance) => ({
         formCode: getters.formCode,
         instanceID: ID,
         target: UB.core.UBApp.viewport.centralPanel,
-        tabId
+        tabId: getters.generateTabId(ID),
+        isModal: instance.isModal
       }, item)
       UB.core.UBApp.doCommand(config)
     },
@@ -397,11 +409,6 @@ module.exports = (instance) => ({
     },
 
     async copyRecord ({ state, getters }, ID) {
-      const tabId = UB.core.UBApp.generateTabId({
-        entity: getters.entityName,
-        instanceID: ID,
-        formCode: getters.formCode
-      })
       const item = state.items.find(i => i.ID === ID)
       const config = await instance.buildCopyConfig({
         cmdType: 'showForm',
@@ -411,7 +418,8 @@ module.exports = (instance) => ({
         formCode: getters.formCode,
         instanceID: ID,
         target: UB.core.UBApp.viewport.centralPanel,
-        tabId
+        tabId: getters.generateTabId(ID),
+        isModal: instance.isModal
       }, item)
       UB.core.UBApp.doCommand(config)
     },
@@ -446,7 +454,7 @@ module.exports = (instance) => ({
       UB.core.UBApp.showAuditTrail({
         entityCode: getters.entityName,
         instanceID: ID,
-        isModal: false
+        isModal: instance.isModal
       })
     },
 
@@ -597,6 +605,52 @@ module.exports = (instance) => ({
       }
       resultHtml += `<br><br><b>${UB.i18n('table.summary.totalRowCount')}:</b> ${formatByPattern.formatNumber(resultRow[0], 'number')}`
       await dialogInfo(resultHtml, 'summary')
+    },
+
+    async createNewVersion ({ getters }, ID) {
+      const { mi_data_id: dataHistoryId } = await UB.Repository(getters.entityName)
+        .attrs('ID', 'mi_data_id')
+        .selectById(ID)
+
+      const history = await UB.Repository(getters.entityName)
+        .attrs('mi_dateFrom', 'mi_data_id')
+        .where('mi_data_id', '=', dataHistoryId)
+        .misc({ __mip_recordhistory_all: true })
+        .orderByDesc('mi_dateFrom')
+        .limit(1)
+        .select()
+
+      const { mi_dateFrom: dateFrom } = history[0]
+      const selectedDate = await openDataHistoryDatePicker(dateFrom)
+
+      if (selectedDate) {
+        UB.core.UBApp.doCommand({
+          cmdType: 'showForm',
+          entity: getters.entityName,
+          instanceID: ID,
+          __mip_ondate: selectedDate,
+          target: UB.core.UBApp.viewport.centralPanel,
+          tabId: getters.generateTabId(ID),
+          isModal: instance.isModal
+        })
+      }
+    },
+
+    async showRevision ({ getters }, ID) {
+      const { mi_data_id: historyId } = await UB.Repository(getters.entityName)
+        .attrs('ID', 'mi_data_id')
+        .selectById(ID)
+
+      UB.core.UBApp.doCommand({
+        cmdType: 'showList',
+        cmdData: {
+          entityName: getters.entityName,
+          columns: getters.columns.concat('mi_dateTo', 'mi_dateFrom')
+        },
+        isModal: instance.isModal,
+        instanceID: historyId,
+        __mip_recordhistory: true
+      })
     }
   }
 })
@@ -606,12 +660,23 @@ module.exports = (instance) => ({
  * Used to prepare data for method `LocalDataStore.doFiltration`
  *
  * @param {object} response
+ * @param {object} [whereList]
  * @returns {TubCachedData}
  */
-function transformResponseToTubCachedData (response) {
+function transformResponseToTubCachedData (response, whereList = {}) {
+  const fieldsSet = new Set(
+    Object.keys(response.resultData)
+  )
+  for (const whereItem of Object.values(whereList)) {
+    if (whereItem.expression) {
+      fieldsSet.add(
+        whereItem.expression.replace(/\[|\]/g, '')
+      )
+    }
+  }
   return {
     data: [Object.values(response.resultData)],
-    fields: Object.keys(response.resultData),
+    fields: Array.from(fieldsSet),
     rowCount: 1
   }
 }
@@ -624,9 +689,10 @@ function transformResponseToTubCachedData (response) {
  * @returns {boolean}
  */
 function isApplicableWhereList (response, repository) {
+  const query = repository.ubql()
   const filteredResponse = UB.LocalDataStore.doFiltration(
-    transformResponseToTubCachedData(response),
-    repository.ubql()
+    transformResponseToTubCachedData(response, query.whereList),
+    query
   )
 
   return filteredResponse.length > 0

@@ -269,5 +269,9 @@ UB.i18nExtend({
       entityPlaceholder: 'Entity',
       add: 'Add'
     }
+  },
+
+  UTable: {
+    noData: 'No data'
   }
 })

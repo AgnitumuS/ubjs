@@ -37,6 +37,9 @@ module.exports = function runMixinsTests (options) {
     testAsterisk(conn)
   }
   testSkipSelectBeforeUpdate(conn)
+  if (base.ubVersionNum >= 5018014) {
+    testSuffixIndex(conn)
+  }
 }
 
 /**
@@ -303,4 +306,38 @@ function testSkipSelectBeforeUpdate (conn) {
   conn.post('evaluateScript', serverSideUpdate)
   const updatedCode = conn.Repository('tst_IDMapping').attrs('code').where('ID', '=', ID).selectScalar()
   assert.strictEqual(updatedCode, 'testSkipSelectBeforeUpdate3', 'Should update on server side while __skipSelectBeforeUpdate: true')
+}
+
+/**
+* @param {SyncConnection} conn
+*/
+function testSuffixIndex (conn) {
+  console.debug('Test SUFFIXES index')
+  const doc = conn.Repository('tst_document').attrs('ID', 'code')
+    .where('code', 'like', '01-01').selectSingle()
+  assert.strictEqual(doc.code, '2014-01-01', 'Suffix index should return \'2014-01-01\' but got ' + doc.code)
+
+  const code = conn.Repository('tst_document').attrs('code')
+    .where('code', 'like', '1-01').selectScalar()
+  assert.strictEqual(code, undefined, 'Suffix index should not select  \'2014-01-01\' using "0-01" as filter, but got ' + code)
+
+  conn.insert({
+    entity: 'tst_dictionary_todo',
+    execParams: {
+      objectID: 1,
+      name: 'test link to doc',
+      status: false,
+      link: doc.ID
+    }
+  })
+
+  const linkedCode = conn.Repository('tst_dictionary_todo').attrs('link.code')
+    .where('link.code', 'like', '01-01').selectScalar()
+  assert.strictEqual(linkedCode, '2014-01-01', 'Suffix index FOR JOIN should return \'2014-01-01\' but got ' + linkedCode)
+
+  const wrongLinkedCode = conn.Repository('tst_dictionary_todo').attrs('link.code')
+    .where('link.code', 'like', '1-01').selectScalar()
+  assert.strictEqual(wrongLinkedCode, undefined, 'Suffix index FOR JOIN should not select  \'2014-01-01\' using "0-01" as filter, but got ' + wrongLinkedCode)
+
+  // [{"entity":"tst_dictionary_todo","method":"insert","execParams":{"ID":334003995017217,,"fieldList":["ID","objectID","name","status","link","mi_modifyDate","mi_createDate"]}]
 }

@@ -68,6 +68,12 @@
       <!-- @slot Last row in table -->
       <slot name="lastTableRow" />
     </table>
+    <div
+      v-if="items.length === 0"
+      class="u-table-no-data"
+    >
+      {{ $ut('UTable.noData') }}
+    </div>
     <!-- @slot Table footer -->
     <slot name="appendTable" />
   </div>
@@ -218,12 +224,16 @@ export default {
 .u-table th{
   border-bottom: 1px solid var(--border);
   color: var(--text);
-  padding: 12px 16px;
+  padding: 10px 8px;
   font-size: 16px;
   position: relative;
   letter-spacing: 0.3px;
   font-weight: 400;
   background: hsl(var(--hs-background), var(--l-background-inverse));
+}
+
+.u-table th {
+  padding-left: 10px;
 }
 
 .u-table__cell-container{
@@ -281,6 +291,13 @@ export default {
   box-shadow: var(--box-shadow-default);
   border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   border-bottom: none;
+}
+
+.u-table-no-data {
+  color: hsl(var(--hs-text), var(--l-text-disabled));
+  font-size: 16px;
+  padding: 16px;
+  width: 100%;
 }
 </style>
 

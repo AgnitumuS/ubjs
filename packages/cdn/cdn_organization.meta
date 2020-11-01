@@ -163,5 +163,15 @@
         "corrIndexID.code"
       ]
     }
+  },
+  "dbExtensions": {
+    "idx_org_name": {
+      "type": "INDEX",
+      "definition": {
+        "keys": {
+          "name": {}
+        }
+      }
+    }
   }
 }

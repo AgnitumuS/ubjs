@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+  - `App.blobStores.getContentPath` method - retrieve full path to a file with BLOB content (in case store is file-based)
 
 ### Changed
 
@@ -15,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.10] - 2020-10-15
 ## [5.4.9] - 2020-09-23
 ## [5.4.8] - 2020-09-22
 ### Fixed

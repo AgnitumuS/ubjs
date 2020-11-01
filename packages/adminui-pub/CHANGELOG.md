@@ -6,17 +6,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `$App.showAuditTrail` method added - used in both adminui-vue and adminui-pub to show audit trail for instance
 
 ### Changed
- - instance audit trail list now filtered by `parentEntityInfo_id`, so shows audit for all related entities
- where `parentIdentifier` & `parentEntity` is configured
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.13.44] - 2020-10-20
+### Fixed
+ - Ext based grid multifilter: checking date value is valid before filtering into ubdetailgrid
+
+## [5.13.43] - 2020-10-15
+### Added
+ - `$App.showAuditTrail` method added - used in both adminui-vue and adminui-pub to show audit trail for instance
+
+### Changed
+ - instance audit trail list now filtered by `parentEntityInfo_id`, so shows audit for all related entities
+ where `parentIdentifier` & `parentEntity` is configured
+ - transformation timeout for `/ocr/transform` XHR request for `$App.scan()` increased to 10 minutes (from default 2 minutes).
+   This allows recognizing big or complex documents.
+
+### Fixed
+ - `shortcut form`: error on change data of shortcut which has type "folder"
 
 ## [5.13.42] - 2020-09-23
 ## [5.13.41] - 2020-09-22

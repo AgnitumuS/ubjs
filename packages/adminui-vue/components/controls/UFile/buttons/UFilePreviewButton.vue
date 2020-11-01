@@ -5,6 +5,7 @@
       :enterable="false"
     >
       <u-button
+        color="primary"
         icon="u-icon-eye"
         appearance="inverse"
         :disabled="isDisabled"
@@ -24,6 +25,7 @@
         :enterable="false"
       >
         <u-button
+          color="primary"
           icon="u-icon-expand"
           @click="requestFullscreen"
         />

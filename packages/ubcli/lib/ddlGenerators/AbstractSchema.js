@@ -104,7 +104,7 @@ class TableDefinition {
    * @property {boolean} [isUnique=false]
    * @property {boolean} [isDisabled=false]
    * @property {boolean} [isConstraint=false]
-   * @property {string} indexType One of CATALOGUE,FTS or null for usual indexes
+   * @property {string} [indexType] One of CATALOGUE,FTS or null|undefined for usual indexes
    */
 
   /**

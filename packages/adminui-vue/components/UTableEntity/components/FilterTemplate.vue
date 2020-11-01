@@ -21,6 +21,7 @@
           :disabled="buttonDisabled"
           type="submit"
           icon="u-icon-search"
+          color="primary"
         >
           {{ $ut('search') }}
         </u-button>

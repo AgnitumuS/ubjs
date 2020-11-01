@@ -140,5 +140,22 @@
       ],
       "dateAttribute": "docDate"
     }
+  },
+  "dbExtensions": {
+    "CIDX_DOC_DESCRIPTION": {
+      "type": "CATALOGUE",
+      "definition": {
+        "keys": {
+          "description": {}
+        }
+      }
+    },
+    "TST_DOCUMENT_CODE_SU": {
+      "type": "SUFFIXES",
+      "description": "Creates index organized table TST_DOCUMENT_CODE_SU(TAIL, sourceID). Fills it by all possible suffixes of attribute value using splitChars as separator. Use 'exists' in this table instead of 'like %?%' for substring search",
+      "splitChars": "/-",
+      "includeLast": false,
+      "attribute": "code"
+    }
   }
 }

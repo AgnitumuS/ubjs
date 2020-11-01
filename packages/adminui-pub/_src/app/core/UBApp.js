@@ -700,7 +700,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       /**
        * Converts scanned images to PDF and recognizes it.
        * @param {string} scannedResult - scanned file, received from `nm-scanner` as base64 string
-       * @return {Promise<ArrayBuffer>} - PDF-file recognized by tesseract server, defined in ubConfig
+       * @return {Promise<ArrayBuffer>} - PDF-file recognized by ocr service, defined in ubConfig
        * (`uiSettings.adminUI['recognitionServer']`)
        */
       function transformToPdf (scannedResult) {
@@ -711,7 +711,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
         })
         statusWindow.setStatus(UB.i18n('doRecognizeDocument'))
         return $App.connection.post(`${recognitionEndpoint}upload`, scannedArrayB, {
-          // headers: {'Content-Type': 'application/octet-stream'}
+          headers: { 'Content-Type': 'application/octet-stream' }
         }).then(response => {
           uploadItemID = response && response.data && response.data.item
           if (uploadItemID) {
@@ -721,7 +721,8 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
               blobInResponse: true
             }, {
               responseType: 'arraybuffer',
-              headers: { 'Content-Type': 'application/json' }
+              headers: { 'Content-Type': 'application/json' },
+              timeout: 600000 // MPV - ocr service is slow for big or complex documents
             })
           } else {
             throw new UB.UBError('Error upload data to recognition server.')
@@ -876,7 +877,9 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       return
     }
     const commandConfig = _.clone(parsedCmdCode)
-    if (!inWindow) {
+    if (inWindow) {
+      commandConfig.isModal = true
+    } else {
       commandConfig.tabId = 'navigator' + shortcutID
       commandConfig.target = $App.viewport.centralPanel
     }
@@ -939,7 +942,8 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
             .orderByDesc('actionTime')
         },
         columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP', 'entity', 'parentEntity', 'request_id']
-      }
+      },
+      shortcutCode: `audit-${entityCode}`
     })
   },
 

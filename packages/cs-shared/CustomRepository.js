@@ -232,7 +232,7 @@ UB.Repository('my_entity').attrs('ID')
       expression = `[${expression}]`
     }
     if (!condition) {
-      throw new Error('Unknown conditions')
+      throw new Error('Unknown condition ' + originalCondition)
     }
     let subQueryType
     if (((condition === 'in') || (condition === 'notIn')) && (value instanceof CustomRepository)) { // subquery

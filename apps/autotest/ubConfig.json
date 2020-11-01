@@ -10,7 +10,7 @@
 		},
 		//#endif
 		"host": "+",
-		"port": "8881",
+		"port": "%UB_PORT||8881%",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
@@ -193,7 +193,7 @@
 				"userID": "ub5_%UB_APP%_%PLATFORM%",
 				"password": "ub5_%UB_APP%_%PLATFORM%",
 				"supportLang": ["en", "uk"],
-				"advSettings": "LibLocation=%UB_POSTGRE_LIB%" //linux - can be empty or libpq.so.5; Windows = path to libpq.dll, for example D:/PostgreClient/10/x64/bin/libpq.dll
+				"advSettings": "LibLocation=%UB_POSTGRE_LIB||libpq.so.5%" //linux - can be empty or libpq.so.5; Windows = path to libpq.dll, for example D:/PostgreClient/10/x64/bin/libpq.dll
 			},
 			//#endif
 			//#ifdef(%UB_DB_DRIVER%=MSSQLODBC)

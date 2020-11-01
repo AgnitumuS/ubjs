@@ -70,6 +70,7 @@ const {
  * @param {function} [copied] Callback which will be emit when data was copied from existing record
  * @param {function} [saveNotification] Callback which will be override default save notification
  * @param {boolean} [isCopy] Flag which used for create new record with data of existing record
+ * @param {boolean} [isModal] Is parent opened from modal. Used to provide modal state to child
  * @return {object} Vue store cfg
  */
 function createProcessingModule ({
@@ -93,7 +94,8 @@ function createProcessingModule ({
   beforeCopy,
   copied,
   saveNotification,
-  isCopy
+  isCopy,
+  isModal
 }) {
   const autoLoadedCollections = Object.entries(initCollectionsRequests)
     .filter(([, collData]) => !collData.lazy)
@@ -135,7 +137,9 @@ function createProcessingModule ({
       /**
        * Whether master instance was copy of existing record
        */
-      isCopy
+      isCopy,
+
+      isModal
     },
 
     getters: {
@@ -176,7 +180,7 @@ function createProcessingModule ({
       },
 
       canRefresh (state, getters) {
-        return !state.isNew && getters.isDirty
+        return !state.isNew
       },
 
       isLocked (state) {
@@ -464,7 +468,7 @@ function createProcessingModule ({
           })
         }
         if (beforeInit) {
-          await beforeInit()
+          await beforeInit(store)
         }
         commit('IS_NEW', !instanceID || state.isCopy)
 
@@ -477,7 +481,7 @@ function createProcessingModule ({
           await dispatch('loadCollections', autoLoadedCollections)
         }
         if (inited) {
-          await inited()
+          await inited(store)
         }
       },
 

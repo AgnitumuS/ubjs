@@ -6,16 +6,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `uba_advSecurity`: ukrainian localization
- - `uba_group`: azerbaijani localization
- - `Audit Trail` shortcut: added columns `Parent entity name`, `Request ID` and `Parent instance ID` 
- 
+
 ### Changed
- - uba* navshotrcut initialization uses ub-migrate instead of handmade script
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.4.35] - 2020-10-20
+## [5.4.34] - 2020-10-15
+### Added
+ - `uba_advSecurity`: ukrainian localization
+ - `uba_group`: azerbaijani localization
+ - `Audit Trail` shortcut: added columns `Parent entity name`, `Request ID` and `Parent instance ID`
+ - an optional parameter `userId` added to `uba_opt.verifyTotp` function.
+   This allows verifying TOTP for user other when currently logged in.   
+ 
+### Changed
+ - uba* navshotrcut initialization uses ub-migrate instead of handmade script
+ - `Audit Trail form` rewrite from Ext to Vue
 
 ### Fixed
 - `uba_group-fm.def`: title and description localization

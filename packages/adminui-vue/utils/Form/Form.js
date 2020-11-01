@@ -141,12 +141,16 @@ class UForm {
   }
 
   /**
+   * Sets store field list, collections and lifecircle hooks.
+   * All hooks are called with one argument $store and this === Current form.
+   *
    * @param {Object} [cfg]
    * @param {string[]} [cfg.masterFieldList] form field list. By default all entity attributes
    * @param {Object} [cfg.collections]
    * @param {function} [cfg.beforeInit]
    * @param {function} [cfg.inited]
-   * @param {function} [cfg.beforeSave]
+   * @param {function} [cfg.beforeSave] Called before form creates insert\update request.
+   *   If returned value is resolved to `false` then save action is canceled
    * @param {function} [cfg.saved]
    * @param {function} [cfg.beforeCreate]
    * @param {function} [cfg.created]
@@ -208,7 +212,8 @@ class UForm {
       beforeCopy: beforeCopy ? () => beforeCopy.call(this, this.$store) : null,
       copied: copied ? () => copied.call(this, this.$store) : null,
       saveNotification,
-      isCopy: this.isCopy
+      isCopy: this.isCopy,
+      isModal: this.isModal
     })
     mergeStore(this.storeConfig, processingModule)
 
@@ -253,15 +258,14 @@ class UForm {
     }
 
     if (this.isValidationUsed) {
-      this.validator = createValidator(this.$store, this.entitySchema, this.customValidationMixin)
+      this.validator = createValidator(this.$store, this.entitySchema, this.fieldList, this.customValidationMixin)
     }
 
     if (this.isProcessingUsed) {
       try {
         await this.$store.dispatch('init')
       } catch (err) {
-        UB.showErrorWindow(err.message)
-        return
+        throw new UB.UBError(err)
       }
     }
 

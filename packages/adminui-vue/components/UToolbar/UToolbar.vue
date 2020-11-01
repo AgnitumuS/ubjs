@@ -41,7 +41,6 @@
       <u-button
         appearance="inverse"
         icon="u-icon-setting"
-        color="control"
         tooltip="allActions"
       />
 
@@ -129,18 +128,19 @@ export default {
         label: this.$ut('save') + ' (Ctrl + S)',
         icon: 'u-icon-save',
         handler: () => this.save(),
-        disabled: !this.canSave
+        disabled: !this.canSave,
+        color: 'primary'
       }, {
         label: this.$ut('saveAndClose') + ' (Ctrl + Enter)',
         icon: 'u-icon-save-and-close',
         handler: this.saveAndClose,
-        disabled: !this.canSave
+        disabled: !this.canSave,
+        color: 'primary'
       }, {
         label: this.$ut('Delete') + ' (Ctrl + Delete)',
         icon: 'u-icon-delete',
         handler: () => this.deleteInstance(this.$formServices.forceClose),
         disabled: !this.canDelete,
-        color: 'control',
         divider: true
       }]
     },
@@ -297,7 +297,8 @@ export default {
         instanceID: result.ID,
         sender: this,
         target: $App.getViewport().centralPanel,
-        tabId: 'ubm_form' + result.ID
+        tabId: 'ubm_form' + result.ID,
+        isModal: this.$store.state.isModal
       })
     },
 
@@ -384,7 +385,7 @@ export default {
       $App.showAuditTrail({
         entityCode: this.entity,
         instanceID: this.$store.state.data.ID,
-        isModal: true
+        isModal: this.$store.state.isModal
       })
     },
 
