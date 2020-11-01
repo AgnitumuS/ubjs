@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.8.0] - 2020-11-01
+### Added
  - new `generateDDL` parameter `-c connectionName`. If passed DDL generator works only for entities for specified connection.
  - new command `ubcli execSql -c connectionName -f path/to/script.sql`.
    Exec a multi-statement SQL script in specified connection without starting a server, so can be used to apply some patches.
@@ -26,10 +37,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - DDL generator result will join all object annotation (comment on) into one SQL statement - this speed up database generation a lot
  - DDL generator for Oracle moves sequence incrementation calls into annotation block, so all of them are executed as a single call 
  
-### Deprecated
-
-### Removed
-
 ### Fixed
  - `genSuffixesIndexInitScript` fixed to generate an SQL with valid argument for `dbo.strTails`
  - DDL generator: remove warning from a console in case entity metadata is congruence with the database for connection

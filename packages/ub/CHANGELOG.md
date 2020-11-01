@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `App.blobStores.getContentPath` - retrieve full path to a file with BLOB content
- - EE & DE edition: added `dstu.iit.strictMode` parameter. If true (default) - force server-side signature format to CADES_X_LONG (enable TSP if disabled)
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.6.8] - 2020-11-01
+### Added
+ - `App.blobStores.getContentPath` - retrieve full path to a file with BLOB content
+ - EE & DE edition: added `dstu.iit.strictMode` parameter. If true (default) - force server-side signature format to CADES_X_LONG (enable TSP if disabled)
 
 ## [5.6.7] - 2020-10-20
 ### Added
