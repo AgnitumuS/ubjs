@@ -1,36 +1,34 @@
-console.log('CRT model required')
+const iitCrypto = require('@ub-d/iit-crypto')
+const assert = require('assert')
+// const cryptoService = require('@ub-d/crypto-service').cryptoService
+// App.registerEndpoint('cryptoService', cryptoService, false)
 
-/*
-// source: http://stackoverflow.com/a/11058858
-function str2ab(str) {
-  var buf = new ArrayBuffer(str.length * 2); // 2 bytes for each char
-  var bufView = new Uint16Array(buf);
-  for (var i = 0, strLen = str.length; i < strLen; i++) {
-    bufView[i] = str.charCodeAt(i);
+App.registerEndpoint('testIIT', testIIT, false)
+
+/**
+ * Call IIT verify for test file
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function testIIT (req, resp) {
+  // file below placed into store by function testServerSideBLOB
+  const DOC_CODE = '2014-01-01'
+  const DOC_ENTITY = 'tst_document'
+  const DOC_ATTRIBUTE = 'fileStoreSimple'
+  const ID = UB.Repository(DOC_ENTITY).attrs('ID').where('code', '=', DOC_CODE).selectScalar()
+
+  const content = App.blobStores.getContent({ ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE })
+  assert.ok(content.byteLength, `${DOC_ENTITY} BLOB store for code ${DOC_CODE} should not be empty`)
+
+  const signature = iitCrypto.sign(content)
+  const storeFilePath = App.blobStores.getContentPath({ ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE })
+
+  const verifyResult = iitCrypto.verify(signature, storeFilePath)
+  if (!verifyResult.valid) {
+    console.error('Signed from memory but verified from file should be valid')
+    resp.statusCode = 500
+  } else {
+    resp.statusCode = 200
   }
-  return buf;
+  resp.writeEnd(verifyResult)
 }
-
-const password = '100000'; // Change to actual password for Key-6.dat file
-const data = str2ab('This is a test data');
-
-iitCrypto = require('@ub-d/iit-crypto');
-iitCrypto.init();
-let keyPath = relToAbs(process.cwd(), 'Key-6.dat')
-console.log(keyPath)
-iitCrypto.readPkFromFile(keyPath, password); // Put Key-6.dat file to the working folder
-// sign data
-signature = iitCrypto.signData(data);
-// verify data
-signInfo = iitCrypto.verifyData(signature, data);
-if (!signInfo.success){
-  throw new Error(signInfo.message);
-}
-console.log(signInfo);
-cert = iitCrypto.getOwnCertificate();
-certInfo = iitCrypto.parseCertificate(cert);
-console.log(certInfo);
-*/
-
-const cryptoService = require('@ub-d/crypto-service').cryptoService
-App.registerEndpoint('cryptoService', cryptoService, false)
