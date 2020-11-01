@@ -16,7 +16,7 @@ lerna bootstrap
 
 Starting from 2019-03-01 all subpackages use `webpack@4` for build.
 
-To prevent installing webpack and all other needed stuffs in every packages/* folder and to avoid
+To prevent installing webpack and all other needed stuffs in every `packages/*` folder and to avoid
 installing it globally we set all build-related tools into the `devDependency` section of `ubjs/package.json`.
 
 Before execution of any build commands like `npm run build` or `lerna bootstrap` first install ubjs
@@ -42,7 +42,7 @@ SET PATH=%CD%\node_modules\.bin;%PATH%
 
 Verify webpack is accessible
 ```
- webpack --version
+webpack --version
 ```
 should output version >= 2.29.6
 
@@ -56,7 +56,7 @@ tsql3.cmd
 // run ub in dev move with console debug logs
 ub -cd -dev
 ```
-Point your browser (Chrome or FireFox) to http://localhost:8881/ubadminui-dev to access AuminUI (admin/admin)
+Point your browser (Chrome or FireFox) to http://localhost:8881/ubadminui-dev to access AdminUI (admin/admin)
 
 
 To run a [TechEmpower Web Framework Benchmarks](https://www.techempower.com/benchmarks/)
@@ -73,8 +73,10 @@ See benchmarking instruction in [benchmarks/README.md](https://git-pub.intecracy
 
 ## package.json
 
-Modify your `package.json` file by adding a `publishConfig` property. This prevent `npm` to publish a module to a public npm repository.
-We strongly recommend to use a (http://standardjs.com/index.html)[JavaScript Standard Style] code style so we add a "standard" to the package.json devDependency
+Modify your `package.json` file by adding a `publishConfig` property. This prevents `npm` from publishing the module
+  to a public npm repository.
+We strongly recommend using (http://standardjs.com/index.html)[JavaScript Standard Style] code style,
+so we add a "standard" to the package.json devDependency
  
        "publishConfig": {
          "registry": "http://packages.unitybase.info"
@@ -83,7 +85,7 @@ We strongly recommend to use a (http://standardjs.com/index.html)[JavaScript Sta
            "standard": "*"
        }
 
-## Build UntyBase packages with lerna
+## Build UnityBase packages with Lerna
 
   Compiling native modules. Current implementation fpc3.1.1 to be installed.
   Path to FPC should be added to PATh environment variable:
@@ -123,19 +125,19 @@ To publish to a UnityBase repository you must authorize your requests
       
       npm adduser --registry https://registry.unitybase.info
 
-## Publishing using lerna
+## Publishing using Lerna
 
- For a monorepo controlled by lerna 
+For a monorepo controlled by Lerna 
 
 	lerna updated
 
- will list a modules updated from a last `lerna publish` run - see [lerna update](https://github.com/staltz/lerna/blob/master/README.md#updated) for details
+ will list modules updated after the last execution of `lerna publish` run - see [lerna update](https://github.com/staltz/lerna/blob/master/README.md#updated) for details
 
  	lerna publish 
 
  will publish all updated modules and create a new git commit/tag
 
- In case monorepo contains many modules (as ubjs) with cross-dependencies and you _SHURE_ you 
+ In case monorepo contains many modules (as ubjs) with cross-dependencies and you _SURE_ you 
 make a minor update to one of them then recommended way is to use `--only-explicit-updates` option during publishing.
 This option allows only the packages that have been explicitly updated to make a new version.
 
@@ -145,25 +147,24 @@ This option allows only the packages that have been explicitly updated to make a
  See [only-explicit-updates options explanation](https://github.com/staltz/lerna/blob/master/README.md#--only-explicit-updates)
 
 # Installing packages
-Create file .npmrc with next content:
+Create the `.npmrc` file with the following content:
 
     @unitybase:registry=https://registry.unitybase.info/
     @ub-e:registry=https://registry.unitybase.info/
     @ub-d:registry=https://registry.unitybase.info/
 
 This set a registry for a UnityBase scope.
-Now you can install packages:
-
+Now install packages:
 
     npm install @unitybase/ub --save
 
 
 # Manage a remote server using console
-Usually we manage a windows-based enviromnent using Remote Desktop Connection (log in to the GUI mode and use a mouse to do somethoing). 
-This is slow and non-scailable way. Below we describe a "unix way" of remote server managment.
+Usually we manage a windows-based environment using Remote Desktop Connection (log in to the GUI mode and use a mouse to do something). 
+This is a slow and a non-scalable way. Below we describe a "unix way" of remote server management.
 
 ## Console - a right way
-  We strongly recommend to use a Far Manager + ConEmu instead of Explorer + cmd:
+  We strongly recommend using a Far Manager + ConEmu instead of Explorer + cmd:
 
   - install a [Far Manager](https://www.farmanager.com/download.php?l=en)
   - install a [ConEmu](https://conemu.github.io/) to the same folder where Far is installed
@@ -181,19 +182,19 @@ This is slow and non-scailable way. Below we describe a "unix way" of remote ser
 
   _ConEmu {cmd:Admin} console indicate a `admin` session as a **$** sign in the left of command line_
 
-###  Enable WinRM remote acces 
+###  Enable WinRM remote access
 
 #### Both server and client are in the same domain
 
-  In case both your computer and remote server are in the same domain, no additional såteps is required. 
+  In case both your computer and remote server are in the same domain, no additional steps required. 
 
 #### Server and client are in re different domain (or no domain at all)
 
-  - set up a valid HTTPS certificate (with common name your host <fdqn hostname> either using IIS of from command line using `makecert` & `httpcfg` as 
+  - set up a valid HTTPS certificate (with a common name your host <fdqn hostname> either using IIS of from command line using `makecert` & `httpcfg` as 
     described [in UnityBase HTTP server tutorial](http://unitybase.info/api/serverNew/tutorial-http_server.html).
     In case you use a self-signed certificate add your CA certificate to the Local Computer Trusted root certification list
 
-  - configure a  winrm to accept connections using https protocol
+  - configure a winrm to accept connections using https protocol
 
 	$ winrm create winrm/config/Listener?Address=*+Transport=HTTPS @{Hostname="<fdqn hostname>";CertificateThumbprint="<tumbprint without space your ssl cert>"}
 
@@ -210,7 +211,7 @@ This is slow and non-scailable way. Below we describe a "unix way" of remote ser
 
 	$ winrm set winrm/config/client @{TrustedHosts="*"}
     
-## Add ub-service (local users perm) to "Allow logon localy" and "Logon as batch job" to local security policy
+## Add ub-service (local users perm) to "Allow logon locally" and "Logon as batch job" to local security policy
 
   	
 ## Connect ot Remote Server using PowerShell
@@ -221,7 +222,7 @@ This is slow and non-scailable way. Below we describe a "unix way" of remote ser
 
 # Applications pool management using `pm2`
 
-For a production environment all operations below must be performed under user who execute a applications in pool. Consider this is a `ub-service` user 
+For a production environment all operations below must be performed under user who execute applications in pool. Consider this is a `ub-service` user 
 
 
         runas /user:ub-service "C:\Far\Far.exe"
@@ -270,7 +271,7 @@ For a production environment all operations below must be performed under user w
 
  - [create a scheduled task](https://technet.microsoft.com/en-us/library/cc748993(v=ws.11).aspx) for run a pm2 on system startup
     
-**Under admin commad prompt** run
+**Under admin command prompt** run
 
 ```    
 schtasks /Create /RU ub-service /RP adminub /SC ONSTART /TN PM2 /TR "C:\Users\ub-service\AppData\Roaming\npm\pm2.cmd resurrect" /V1 /F
