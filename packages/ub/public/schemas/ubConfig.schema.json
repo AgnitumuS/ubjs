@@ -509,7 +509,8 @@
               "description": "IIT library configuration",
               "properties": {
                 "libraryPath": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "starts from UB 5.18.16 is resolved automatically to @ub-d/iit-libbin/bin"
                 },
                 "librarySettings": {
                   "type": "string",
@@ -530,6 +531,11 @@
                 "password": {
                   "type": "string",
                   "description": "keystore password"
+                },
+                "strictMode": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Turn off offline mode; If TSP disabled - enable and set TSP server to http://ca.informjust.ua/services/tsp:80; Force signature format to CADES_X_LONG"
                 }
               }
             },
