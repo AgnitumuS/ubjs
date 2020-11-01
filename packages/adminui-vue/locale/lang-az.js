@@ -264,7 +264,7 @@ UB.i18nExtend({
       remove: 'Remove'
     },
     dialog: {
-      addAccess: 'Give access to such entries:',
+      addAccess: 'Grant access to the following subjects:',
       entity: 'Entity',
       entityPlaceholder: 'Entity',
       add: 'Add'
