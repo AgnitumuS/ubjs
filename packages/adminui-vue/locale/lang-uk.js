@@ -264,10 +264,10 @@ UB.i18nExtend({
       remove: 'Видалити'
     },
     dialog: {
-      addAccess: 'Дати доступ наступним записам:',
+      grantAccess: 'Надати доступ',
       entity: 'Сутність',
       entityPlaceholder: 'Сутність',
-      add: 'Додати'
+      grant: 'Надати'
     }
   },
 

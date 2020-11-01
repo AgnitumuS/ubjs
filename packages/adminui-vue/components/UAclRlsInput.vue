@@ -35,7 +35,7 @@
 
     <el-dialog
       v-hold-focus
-      :title="$ut('UAclRlsInput.dialog.addAccess')"
+      :title="$ut('UAclRlsInput.dialog.grantAccess')"
       :visible.sync="dialog.isVisible"
       :close-on-click-modal="false"
       width="600px"
@@ -54,6 +54,7 @@
         >
           <el-select
             v-model="dialog.currentEntityName"
+            class="u-select"
             :placeholder="$ut('UAclRlsInput.dialog.entityPlaceholder')"
           >
             <el-option
@@ -90,7 +91,7 @@
           type="primary"
           @click="submitRights"
         >
-          {{ $ut('UAclRlsInput.dialog.add') }}
+          {{ $ut('UAclRlsInput.dialog.grant') }}
         </el-button>
       </span>
     </el-dialog>
@@ -176,7 +177,7 @@ export default {
 
     aclRlsEntries () {
       return this.currentCollection.items.map(item => {
-        // merge field values from dictionary to each colection item in order to display them in table
+        // merge each collection item with values from appropriate dictionary in order to display them in table
         return this.rightAttributesWithMetaInfo.reduce((itemValues, { entity, attrName }) => {
           // while dictionary in created hook is not loaded yet
           if (this.subjects[entity] === undefined) {
@@ -371,6 +372,7 @@ export default {
 ```javascript
 <script>
 const { Form } = require('@unitybase/adminui-vue')
+const { Repository } = require('@unitybase/ub-pub')
 
 module.exports.mount = cfg => {
   Form(cfg)

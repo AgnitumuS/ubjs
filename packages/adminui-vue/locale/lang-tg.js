@@ -264,10 +264,10 @@ UB.i18nExtend({
       remove: 'Remove'
     },
     dialog: {
-      addAccess: 'Grant access to the following subjects:',
+      grantAccess: 'Grant access',
       entity: 'Entity',
       entityPlaceholder: 'Entity',
-      add: 'Add'
+      grant: 'Grant'
     }
   },
 
