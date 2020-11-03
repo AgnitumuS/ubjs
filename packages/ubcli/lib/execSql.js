@@ -26,6 +26,16 @@
   }
  execSql(options)
 
+ // exec SQL script in default connection
+ options = {
+      sql: `BEGIN'
+      import_users.do_import;
+      END;
+      /
+      delete from myTable where code = 'oldCode';`
+  }
+ execSql(options)
+
  * @module execSql
  * @memberOf module:@unitybase/ubcli
  */
@@ -53,7 +63,8 @@ function execSql (cfg) {
       'Execute an SQL script in specified connection.\nEach statment executed in separate transaction', 'ubcli')
       .add([
         { short: 'c', long: 'connection', param: 'connectionName', defaultValue: '', searchInEnv: true, help: 'Connection name. If empty - uses default connection' },
-        { short: 'f', long: 'file', param: '/path/to/script.sql', searchInEnv: false, help: 'Path to a script for execution' }
+        { short: 'f', long: 'file', param: '/path/to/script.sql', defaultValue: '', searchInEnv: false, help: 'Path to a script for execution. Either -f or -sql should be specified' },
+        { short: 'sql', long: 'sql', param: 'sql text for execution', defaultValue: '', searchInEnv: false, help: 'text of SQL script for execution. Either -f or -sql should be specified' }
       ])
       .add({
         short: 'o',
@@ -86,7 +97,15 @@ function execSql (cfg) {
   if (!dbConnections) {
     dbConnections = createDBConnectionPool(config.application.connections)
   }
-  let script = fs.readFileSync(cfg.file, { encoding: 'utf8' })
+  let script
+  if (cfg.file) {
+    script = fs.readFileSync(cfg.file, { encoding: 'utf8' })
+  } else if (cfg.sql) {
+    script = cfg.sql
+  } else {
+    throw new Error('Either -f or -sql must be specified')
+  }
+
   script = script.replace(/\r\n/g, '\n')
   const stmts = script.split(/^[ \t]*--[ \t]*$|^[ \t]*GO[ \t]*$|^[ \t]*\/[ \t]*$/gm).filter(s => s.trim() !== '')
   const dbConn = dbConnections[connDef.name]

@@ -6,10 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `ubcli execSql`: new option `-sql script` added for execute SQL script from string. Usage sample:
+```shell script
+ubcli execSql -sql $'BEGIN\n import_users.do_import;\n END;--\n delete from aa where 1=0;'
+``` 
 
 ### Changed
  - `linkStatic` command uses realpath for a config to search for `node_modules`.
-   This allows using `linkStatic` in product based apps, where config is symlynked from /opt/unitybase/products
+   This allows using `linkStatic` in product based apps, where config is sym-linked from `/opt/unitybase/products`.
 
 ### Deprecated
 
