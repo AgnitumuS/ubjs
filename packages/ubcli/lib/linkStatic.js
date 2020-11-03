@@ -49,6 +49,7 @@ as drop-in replacement to /clientRequire and /models endpoints`,
   const cfgFN = argv.getConfigFileName()
   const ubCfg = argv.getServerConfiguration()
   let target = cfg.target || ubCfg.httpServer.inetPub
+
   if (!target || (typeof target !== 'string')) {
     throw new Error('Target folder is not specified. Either set a "http.inetPub" value in config or pass switch --target path/to/target/folder')
   }
@@ -58,8 +59,8 @@ as drop-in replacement to /clientRequire and /models endpoints`,
   const NODE_MODULES_SOURCES_ALIAS = WINDOWS ? '%NMS%' : '$NMS'
 
   const domainModels = ubCfg.application.domain.models
-  const cfgPath = path.dirname(cfgFN)
-  const modulesPath = path.join(cfgPath, 'node_modules')
+  const realCfgPath = path.dirname(fs.realpathSync(cfgFN)) // config can be a symlink from /opt/unitybase/products
+  const modulesPath = path.join(realCfgPath, 'node_modules')
   if (!fs.existsSync(modulesPath)) {
     throw new Error(`node_modules folder not found in the folder with app config. Expected "${modulesPath}". May be you miss "npm i" command?`)
   }

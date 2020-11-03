@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `linkStatic` command uses realpath for a config to search for `node_modules`.
+   This allows using `linkStatic` in product based apps, where config is symlynked from /opt/unitybase/products
 
 ### Deprecated
 
