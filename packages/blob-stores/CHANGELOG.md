@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- MdbBlobStore do not throw an error on deletion
 
 ## [5.4.11] - 2020-11-01
 ### Added
