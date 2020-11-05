@@ -6,9 +6,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.9.0] - 2020-11-05
+### Added
  - `ubcli execSql`: new option `-sql script` added for execute SQL script from string. Usage sample:
 ```shell script
-ubcli execSql -sql $'BEGIN\n import_users.do_import;\n END;--\n delete from aa where 1=0;'
+ubcli execSql -sql 
+### Added
+
+### Fixed
+- DDL generator will skip attributes mapped to another existed attribute
+BEGIN\n import_users.do_import;\n END;--\n delete from aa where 1=0;'
 ``` 
 
  - `ubcli migrate` - see [Version migrations tutorial](https://unitybase.info/api/server-v5/tutorial-migrations.html)
@@ -19,12 +35,6 @@ ubcli execSql -sql $'BEGIN\n import_users.do_import;\n END;--\n delete from aa w
    This allows using `linkStatic` in product based apps, where config is sym-linked from `/opt/unitybase/products`.
  - generateDDL: prevent unnecessary warning for SQLite3 default constraint changing
  - generateDDL: removed unnecessary logout after generateDDL function is ends. Consider generateDDL always executed as local root (-u root) 
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.8.0] - 2020-11-01
 ### Added

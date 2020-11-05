@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.4.0] - 2020-11-05
+### Added
  - `createDBConnectionPool` adds connection with name `DEFAULT` for easy access to default DB connection
  - in case `DBConnection.genID` called with `undefined` it return ID for connection. If with entity code - for specified entity.
  - `argv.establishConnectionFromCmdLineAttributes` will always uses 'ROOT' auth schema if user is 'root'. Before this fix 
@@ -14,10 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - `createDBConnectionPool` will re-use previously created pool
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - added missing {ubRequest} type definition

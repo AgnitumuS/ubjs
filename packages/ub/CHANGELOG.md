@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `ub_migration` & `ub_version` entities added
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.7.0] - 2020-11-05
+### Added
+ - `ub_migration` & `ub_version` entities added
 
 ## [5.6.8] - 2020-11-01
 ### Added
