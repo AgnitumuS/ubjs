@@ -121,7 +121,7 @@ function runMigrations (params) {
     migrations.hooks.forEach(h => {
       if (typeof h.hook.beforeGenerateDDL === 'function') {
         if (params.verbose) console.log(`Call beforeGenerateDDL hook for model '${h.model}'`)
-        h.hook.beforeGenerateDDL(null, dbVersions, migrations.files)
+        h.hook.beforeGenerateDDL({ conn: null, dbConnections, dbVersions, files: migrations.files })
       }
     })
     // run DDL generator
@@ -142,7 +142,7 @@ function runMigrations (params) {
     migrations.hooks.forEach(h => {
       if (typeof h.hook.afterGenerateDDL === 'function') {
         if (params.verbose) console.log(`Call afterGenerateDDL hook for model '${h.model}'`)
-        h.hook.afterGenerateDDL(conn, dbVersions, migrations.files)
+        h.hook.afterGenerateDDL({ conn, dbConnections, dbVersions, files: migrations.files })
       }
     })
   } else if (params.verbose) {
@@ -180,7 +180,7 @@ function runMigrations (params) {
   for (let i = migrations.hooks.length - 1; i >= 0; i--) {
     if (typeof migrations.hooks[i].hook.filterFiles === 'function') {
       if (params.verbose) console.log(`Call filterFiles hook for model '${migrations.hooks[i].model}'`)
-      migrations.files = migrations.hooks[i].hook.filterFiles(conn, dbVersions, migrations.files)
+      migrations.files = migrations.hooks[i].hook.filterFiles({ conn, dbConnections, dbVersions, files: migrations.files })
     }
   }
   if (params.verbose) console.log(`filterFiles hooks decline ${initialFilesCnt - migrations.files.length} files`)
@@ -225,7 +225,7 @@ function runMigrations (params) {
   migrations.hooks.forEach(h => {
     if (typeof h.hook.finalize === 'function') {
       if (params.verbose) console.log(`Call finalize hook for model '${h.model}'`)
-      h.hook.finalize(conn, dbVersions, migrations.files)
+      h.hook.finalize({ conn, dbConnections, dbVersions, files: migrations.files })
     }
   })
 
