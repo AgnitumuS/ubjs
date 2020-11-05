@@ -59,15 +59,14 @@ module.exports = function migrate (cfg) {
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
-
-  cfg.forceStartServer = true
   cfg.user = 'root'
-
   // increase receive timeout to 10 minutes - in case DB server is slow we can easy reach 30s timeout
   http.setGlobalConnectionDefaults({ receiveTimeout: 600000 })
   runMigrations(cfg)
 }
 
+const BEFORE_DDL_RE = /_beforeDDL[_/.]/
+const AFTER_DDL_RE = /_afterDDL[_/.]/
 /**
  *  @param {Object} params  Migration parameters
  *  @private
@@ -84,7 +83,7 @@ function runMigrations (params) {
 
   console.log('Loading application migration state...')
   let d = Date.now()
-  const { dbVersions, dbVersionIDs, appliedScripts } = getMigrationState(dbConnections.DEFULT, modelsToMigrate)
+  const { dbVersions, dbVersionIDs, appliedScripts } = getMigrationState(dbConnections.DEFAULT, modelsToMigrate)
   console.log(`Migration state (${appliedScripts.length} applied scripts for ${Object.keys(dbVersions).length} models) is loaded in ${Date.now() - d}ms`)
   // console.debug('DBVersions=', dbVersions)
   // console.debug('executedScripts=', executedScripts)
@@ -99,9 +98,9 @@ function runMigrations (params) {
   let shaIsEqual = true
   migrations.files = migrations.files.filter(f => {
     const applied = appliedScripts.find(s => (s.modelName === f.model) && (s.filePath === f.name))
-    if (applied && applied.sha !== f.sha) {
+    if (applied && applied.fileSha !== f.sha) {
       shaIsEqual = false
-      console.error(`File checksum for '${f.name}' in model '${f.model}' is '${f.sha}' but in database is '${applied.sha}'`)
+      console.error(`File checksum for '${f.name}' in model '${f.model}' is '${f.sha}' but in database is '${applied.fileSha}'`)
     }
     return !applied
   })
@@ -121,15 +120,23 @@ function runMigrations (params) {
     migrations.hooks.forEach(h => {
       if (typeof h.hook.beforeGenerateDDL === 'function') {
         if (params.verbose) console.log(`Call beforeGenerateDDL hook for model '${h.model}'`)
-        h.hook.beforeGenerateDDL({ conn: null, dbConnections, dbVersions, files: migrations.files })
+        h.hook.beforeGenerateDDL({ conn: null, dbConnections, dbVersions, migrations })
       }
     })
+
+    // apply file based before DDL hooks
+    const beforeDDLFiles = migrations.files.filter(f => BEFORE_DDL_RE.test(f.name))
+    if (params.verbose && beforeDDLFiles.length) console.log('Run beforeDDL hooks:', beforeDDLFiles)
+    runFiles(beforeDDLFiles, params, { conn: null, dbConnections, dbVersions, migrations })
+
     // run DDL generator
     const paramsForDDL = Object.assign({}, params)
     paramsForDDL.autorun = true // force autorun
     paramsForDDL.out = process.cwd() // save script into current folder
+    paramsForDDL.forceStartServer = true // use a local server instance
     releaseDBConnectionPool() // release DB pool created by controller
 
+    if (params.verbose) console.log('Run generateDDL with params:', paramsForDDL)
     generateDDL(paramsForDDL)
 
     // after generateDDL we can connect to UB server
@@ -142,16 +149,24 @@ function runMigrations (params) {
     migrations.hooks.forEach(h => {
       if (typeof h.hook.afterGenerateDDL === 'function') {
         if (params.verbose) console.log(`Call afterGenerateDDL hook for model '${h.model}'`)
-        h.hook.afterGenerateDDL({ conn, dbConnections, dbVersions, files: migrations.files })
+        h.hook.afterGenerateDDL({ conn, dbConnections, dbVersions, migrations })
       }
     })
-  } else if (params.verbose) {
-    console.log('Skip generateDDL stage')
+
+    // apply file based before DDL hooks
+    const afterDDLFiles = migrations.files.filter(f => AFTER_DDL_RE.test(f.name))
+    if (params.verbose && afterDDLFiles.length) console.log('Run afterDDL hooks:', afterDDLFiles)
+    runFiles(afterDDLFiles, params, { conn, dbConnections, dbVersions, migrations })
+  } else {
+    if (params.verbose) console.log('Skip generateDDL stage')
     releaseDBConnectionPool() // release DB pool created by controller
     session = argv.establishConnectionFromCmdLineAttributes(params)
     dbConnections = createDBConnectionPool(serverConfig.application.connections)
     conn = session.connection
   }
+
+  // remove before/after DDL hook files - either already applied or should be skipped
+  migrations.files = migrations.files.filter(f => !BEFORE_DDL_RE.test(f.name) && !AFTER_DDL_RE.test(f.name))
 
   // apply ub-migrate if installed
   if (!params.nodata) {
@@ -167,6 +182,7 @@ function runMigrations (params) {
         paramsForUbMigrate.silent = true
         // paramsForUbMigrate.verbose = false
         console.log('Run ub-migrate with parameters:', JSON.stringify(paramsForUbMigrate))
+        debugger
         ubMigrate.exec(paramsForUbMigrate)
       }
     }
@@ -180,19 +196,39 @@ function runMigrations (params) {
   for (let i = migrations.hooks.length - 1; i >= 0; i--) {
     if (typeof migrations.hooks[i].hook.filterFiles === 'function') {
       if (params.verbose) console.log(`Call filterFiles hook for model '${migrations.hooks[i].model}'`)
-      migrations.files = migrations.hooks[i].hook.filterFiles({ conn, dbConnections, dbVersions, files: migrations.files })
+      migrations.hooks[i].hook.filterFiles({ conn, dbConnections, dbVersions, migrations })
     }
   }
   if (params.verbose) console.log(`filterFiles hooks decline ${initialFilesCnt - migrations.files.length} files`)
 
-  // execute files
-  migrations.files.forEach(f => {
+  runFiles(migrations.files, params, { conn, dbConnections, dbVersions, migrations })
+
+  // apply finalize hooks
+  migrations.hooks.forEach(h => {
+    if (typeof h.hook.finalize === 'function') {
+      if (params.verbose) console.log(`Call finalize hook for model '${h.model}'`)
+      h.hook.finalize({ conn, dbConnections, dbVersions, migrations: migrations })
+    }
+  })
+
+  updateVersionsInDB(conn, modelsToMigrate, { dbVersionIDs, dbVersions })
+
+  console.info('Migration success')
+}
+
+/**
+ * Run filesToRun
+ */
+function runFiles (filesToRun, params, { conn, dbConnections, dbVersions, migrations }) {
+  // execute filesToRun
+  filesToRun.forEach(f => {
     if (f.name.endsWith('.js')) {
       const jsMigrationModule = require(f.fullPath)
-      if (typeof m !== 'function') {
-        console.error(`File '${f.name}' in model '${f.model}' do not exports a function`)
+      if (typeof jsMigrationModule !== 'function') {
+        console.error(`File '${f.name}' in model '${f.model}' do not exports a function. Skipped`)
+      } else {
+        jsMigrationModule({ conn, dbConnections, dbVersions, migrations })
       }
-      jsMigrationModule(conn, dbConnections, dbVersions)
     } else if (f.name.endsWith('.sql')) {
       const parts = /#(.*?)#/.exec(f.name) // 010#rrpUb#fix-UBJS-1223.sql -> ["#rrpUb#", "rrpUb"]
       let connName
@@ -210,30 +246,23 @@ function runMigrations (params) {
     } else {
       console.warn(`Unknown extension for '${f.name}' in model '${f.model}'`)
     }
-    conn.insert({
-      entity: 'ub_migration',
-      method: 'insert',
-      execParams: {
-        modelName: f.model,
-        filePath: f.name,
-        fileSha: f.sha
-      }
-    })
+
+    // conn.insert cant be used because in beforeDDL hook conn is not defined
+    dbConnections.DEFAULT.exec('insert into ub_migration(ID, modelName, filePath, fileSha) VALUES(?, ?, ?, ?)',
+      [dbConnections.DEFAULT.genID(undefined), f.model, f.name, f.sha])
+    dbConnections.DEFAULT.commit()
+    // conn.insert({
+    //   entity: 'ub_migration',
+    //   method: 'insert',
+    //   execParams: {
+    //     ID:
+    //     modelName: f.model,
+    //     filePath: f.name,
+    //     fileSha: f.sha
+    //   }
+    // })
   })
-
-  // apply finalize hooks
-  migrations.hooks.forEach(h => {
-    if (typeof h.hook.finalize === 'function') {
-      if (params.verbose) console.log(`Call finalize hook for model '${h.model}'`)
-      h.hook.finalize({ conn, dbConnections, dbVersions, files: migrations.files })
-    }
-  })
-
-  updateVersionsInDB(conn, modelsToMigrate, { dbVersionIDs, dbVersions })
-
-  console.info('Migration success')
 }
-
 /**
  * Read ub_version and ub_migration from database. Return `000000000` for model versions what not exists in ub_version
  * @param {DBConnection} dbConn

@@ -51,22 +51,16 @@ module.exports = function generateDDL (cfg) {
       .add({ short: 'optimistic', long: 'optimistic', defaultValue: false, help: 'skip errors on execute DDL statement. BE CAREFUL! DO NOT USE ON PRODUCTION' })
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
+    cfg.forceStartServer = true
+    cfg.user = 'root'
   }
   if (!process.rootOTP) throw new Error('This version of @unitybase/ubcli require version of UB server to be >= 5.7.3')
 
-  cfg.forceStartServer = true
-  cfg.user = 'root'
   // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
   http.setGlobalConnectionDefaults({ receiveTimeout: 120000 })
   const session = argv.establishConnectionFromCmdLineAttributes(cfg)
   const conn = session.connection
-  try {
-    runDDLGenerator(conn, cfg.autorun, cfg.entities, cfg.models, cfg.out, cfg.optimistic, cfg.connection)
-  } finally {
-    if (session && session.logout) {
-      session.logout()
-    }
-  }
+  runDDLGenerator(conn, cfg.autorun, cfg.entities, cfg.models, cfg.out, cfg.optimistic, cfg.connection)
 }
 
 /**
@@ -188,7 +182,7 @@ function formatAsText (connectionName, connDDLs, warnings, domain) {
 
   if (warnings) {
     txtRes.push(
-      `/*${CRLF} $$$$$$$$$$$$$$$$$$$$$$$$$ ${CRLF} Attantion! Achtung! Vnimanie!`,
+      `/*${CRLF} $$$$$$$$$$$ Attantion! Achtung! Vnimanie!`,
       `${CRLF}`, warnings,
       `${CRLF} $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ${CRLF}*/${CRLF}`
     )

@@ -48,8 +48,6 @@ const createDBConnectionPool = require('@unitybase/base').createDBConnectionPool
 
 module.exports = execSql
 
-let dbConnections
-
 /**
  * @param {Object} cfg
  * @param {string} [cfg.connection]        Connection name. If empty - uses default connection
@@ -95,9 +93,8 @@ function execSql (cfg) {
     if (!connCfg) throw new Error('Connection with isDefault=true not found in application.connections')
   }
 
-  if (!dbConnections) {
-    dbConnections = createDBConnectionPool(config.application.connections)
-  }
+  const dbConnections = createDBConnectionPool(config.application.connections)
+
   let script
   if (cfg.file) {
     script = fs.readFileSync(cfg.file, { encoding: 'utf8' })

@@ -10,13 +10,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ```shell script
 ubcli execSql -sql $'BEGIN\n import_users.do_import;\n END;--\n delete from aa where 1=0;'
 ``` 
+
  - `ubcli migrate` - see [Version migrations tutorial](https://unitybase.info/api/server-v5/tutorial-migrations.html)
  - `ubcli initialize` will fill `ub_version` table by versions of the models on the moment of initialization
 
 ### Changed
  - `linkStatic` command uses realpath for a config to search for `node_modules`.
    This allows using `linkStatic` in product based apps, where config is sym-linked from `/opt/unitybase/products`.
- - DDLGenerator: prevent unnecessary warning for SQLite3 default constraint changing  
+ - generateDDL: prevent unnecessary warning for SQLite3 default constraint changing
+ - generateDDL: removed unnecessary logout after generateDDL function is ends. Consider generateDDL always executed as local root (-u root) 
 
 ### Deprecated
 
