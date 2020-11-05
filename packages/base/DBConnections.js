@@ -332,13 +332,18 @@ class DBConnection {
   }
 }
 
+let __cachedPool
 /**
  * Create a DBConnection for each connection config item
  * @protected
  * @param {Array<DBConnectionConfig>} connectionsConfig
+ * @param {boolean} [useCached=true] Return already created pool if any
  * @return {Object<string, DBConnection>}
  */
-function createDBConnectionPool (connectionsConfig) {
+function createDBConnectionPool (connectionsConfig, useCached = true) {
+  if (__cachedPool && useCached) {
+    return __cachedPool
+  }
   const connections = {}
   const connBinding = binding.connections
   connectionsConfig.forEach((cfg, idx) => {
@@ -346,8 +351,25 @@ function createDBConnectionPool (connectionsConfig) {
       throw new Error(`internal error: domain config database connection name "${cfg.name}" with index ${idx} does not match database binding name "${connBinding[idx]}"`)
     }
     Object.defineProperty(connections, cfg.name, { value: new DBConnection(idx, cfg), enumerable: true })
+    if (cfg.isDefault && !connections.DEFAULT) {
+      Object.defineProperty(connections, 'DEFAULT', { value: connections[cfg.name], enumerable: true })
+    }
   })
+  if (!connections.DEFAULT && connectionsConfig.length) {
+    Object.defineProperty(connections, 'DEFAULT', { value: connections[connectionsConfig[0].name], enumerable: true })
+  }
+  if (useCached) {
+    __cachedPool = connections
+  }
   return connections
 }
 
-module.exports = createDBConnectionPool
+function releaseDBConnectionPool () {
+  binding.releaseConnections()
+  __cachedPool = undefined
+}
+
+module.exports = {
+  createDBConnectionPool,
+  releaseDBConnectionPool
+}

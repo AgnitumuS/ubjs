@@ -53,7 +53,7 @@ function initDB (cfg) {
       `Prepare a new database for a UB ORM.\nCreates a UB user "${UBA_COMMON.USERS.ADMIN.NAME}" with password specified in -p parameter.\nDB create tips: https://unitybase.info/api/server-v5/module-initDB.html`, 'ubcli')
       .add([
         { short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: `Password for "${UBA_COMMON.USERS.ADMIN.NAME}"` },
-        { short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config' },
+        { short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config' }
       ])
       .add({
         short: 'c',
@@ -113,10 +113,10 @@ function initDB (cfg) {
 
   let mainConnCfg
   if (cfg.connectionName) {
-    mainConnCfg = _.find(config.application.connections, {name: cfg.connectionName})
+    mainConnCfg = _.find(config.application.connections, { name: cfg.connectionName })
     if (!mainConnCfg) throw new Error(`Database connection @${cfg.connectionName} not found in application.connections`)
   } else {
-    mainConnCfg = _.find(config.application.connections, {isDefault: true}) || config.application.connections[0]
+    mainConnCfg = _.find(config.application.connections, { isDefault: true }) || config.application.connections[0]
   }
   const dbaConnCfg = Object.assign({}, mainConnCfg)
   // set DBA user/pwd

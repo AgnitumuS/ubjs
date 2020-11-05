@@ -6,14 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `createDBConnectionPool` adds connection with name `DEFAULT` for easy access to default DB connection 
 
 ### Changed
+ - `createDBConnectionPool` will re-use previously created pool
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - added missing {ubRequest} type definition
 
 ## [5.3.6] - 2020-11-01
 ## [5.3.5] - 2020-10-15
@@ -280,14 +283,14 @@ defined as array
 ## [4.2.23] - 2017-10-26
 ### Added
 - `FileBaseStoreLoader` now use a `CRC32(fileDate.toString())` to calculate a cache version (UB only).
-Prev. implementataion based on max file modification date fails in 
-case we updated something backwards
+Prev. implementation based on max file modification date fails in 
+case we updated something backwards.
 
 ## [4.2.21] - 2017-10-05
 ### Added
 - `argv.establishConnectionFromCmdLineAttributes` can accept a `-timeout` command line which
- set a connection receive timeout. By default timeout increased to 120 set to
- allow a long-live script execution
+ set a connection receive timeout. Default timeout increased to 120 sec to
+ allow a long-live script execution.
 
 ## [4.2.20] - 2017-09-22
 ### Added
@@ -301,8 +304,8 @@ case we updated something backwards
 ### Added
 - `argv.getConfigFileName` take a config from UB_CFG environment variable if `-cfg` cmd line switch omitted
 - `FileBaseStoreLoader.load()` now return data version in TubDataCache. 
-  To be used in file-based entitis select's instead of version calculation individually in each entity
-- `SyncConnection.setDocument` method for convinient uploading content to temp store, for example in model initialization or
+  To be used in file-based entities selects instead of version calculation individually in each entity
+- `SyncConnection.setDocument` method for convenient uploading content to temp store, for example in model initialization or
   data update/migration scripts
 
 ### Fixed

@@ -13,6 +13,7 @@ const iso8601ParseAsDate = require('./LocalDataStore').iso8601ParseAsDate
  * @typedef {object} DBConnectionConfig
  * @property {string} name
  * @property {string} dialect
+ * @property {boolean} isDefault
  * @property {Array<string>} supportLang
  * @property {string} advSettings database specific settings
  */

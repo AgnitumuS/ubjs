@@ -84,6 +84,9 @@
   "administration": {
     "title": "07 Administration",
     "children": {
+      "migrations": {
+        "title": "Version migrations"
+      },
       "production_env": {
         "title": "Manage production environment"
       },
