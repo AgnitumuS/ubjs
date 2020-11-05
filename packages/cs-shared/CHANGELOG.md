@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - DBConnectionConfig type definition: added missing `isDefault` property
 
 ## [5.5.7] - 2020-11-01
 ### Changed

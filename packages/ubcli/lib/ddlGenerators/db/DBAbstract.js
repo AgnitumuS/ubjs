@@ -514,7 +514,9 @@ class DBAbstract {
         const defChanged = this.compareDefault(mustBeC.dataType, mustBeC.defaultValue, asIsC.defaultValue, mustBeC.defaultConstraintName, asIsC.defaultConstraintName)
         // TEMP
         if (defChanged) {
-          console.log(`CONSTRAINT changed for ${mustBe.name}.${mustBeC.name} Must be "${mustBeC.defaultValue}" but in database "${asIsC.defaultValue}"`)
+          if (asIsC.defaultValue !== null) { // prevent unnecessary warning for SQLite3
+            console.log(`CONSTRAINT changed for ${mustBe.name}.${mustBeC.name} Must be "${mustBeC.defaultValue}" but in database "${asIsC.defaultValue}"`)
+          }
         }
         if (defChanged && (asIsC.defaultValue != null)) {
           this.genCodeDropDefault(mustBe, asIsC)

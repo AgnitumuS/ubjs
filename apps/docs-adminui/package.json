@@ -29,7 +29,7 @@
     "vuex": "^3.5.1"
   },
   "devDependencies": {
-    "@unitybase/ub-migrate": "^1.14.1",
+    "@unitybase/ub-migrate": "^1.17.0",
     "@unitybase/ubcli": "^5.8.0",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.6.0",

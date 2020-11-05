@@ -53,7 +53,8 @@ let dbConnections
 /**
  * @param {Object} cfg
  * @param {string} [cfg.connection]        Connection name. If empty - uses default connection
- * @param {string} cfg.file                Path to a script for execution
+ * @param {string} [cfg.file]              Path to a script for execution. Either file or sql should be specified
+ * @param {string} [cfg.sql]               Text of SQL script for execution. Either file or sql should be specified
  * @param {Boolean} [cfg.optimistic=false] Wrap each statement in try/catch block. Continue execution on exceptions
  * @param {Boolean} [cfg.progress=false]   Output execution time for each command into console
  */
@@ -85,13 +86,13 @@ function execSql (cfg) {
   if (!cfg) return
   const config = argv.getServerConfiguration(true)
 
-  let connDef
+  let connCfg
   if (cfg.connection) {
-    connDef = config.application.connections.find(c => c.name === cfg.connection)
-    if (!connDef) throw new Error(`Database connection with name '@${cfg.connection}' not found in application.connections`)
+    connCfg = config.application.connections.find(c => c.name === cfg.connection)
+    if (!connCfg) throw new Error(`Database connection with name '@${cfg.connection}' not found in application.connections`)
   } else {
-    connDef = config.application.connections.find(c => c.isDefault === true)
-    if (!connDef) throw new Error('Connection with isDefault=true not found in application.connections')
+    connCfg = config.application.connections.find(c => c.isDefault === true)
+    if (!connCfg) throw new Error('Connection with isDefault=true not found in application.connections')
   }
 
   if (!dbConnections) {
@@ -103,13 +104,13 @@ function execSql (cfg) {
   } else if (cfg.sql) {
     script = cfg.sql
   } else {
-    throw new Error('Either -f or -sql must be specified')
+    throw new Error('Either file or sql MUST be specified')
   }
 
   script = script.replace(/\r\n/g, '\n')
   const stmts = script.split(/^[ \t]*--[ \t]*$|^[ \t]*GO[ \t]*$|^[ \t]*\/[ \t]*$/gm).filter(s => s.trim() !== '')
-  const dbConn = dbConnections[connDef.name]
-  console.log(`Executing script '${cfg.file}' using connection '${connDef.name}' (${stmts.length} statements)...`)
+  const dbConn = dbConnections[connCfg.name]
+  console.log(`Executing script '${cfg.file}' using connection '${connCfg.name}' (${stmts.length} statements)...`)
   const totalT = Date.now()
   let invalidStmtCnt = 0
   let successStmtCnt = 0

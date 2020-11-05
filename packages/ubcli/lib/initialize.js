@@ -18,6 +18,7 @@ const _ = require('lodash')
 const fs = require('fs')
 const path = require('path')
 const { options, argv } = require('@unitybase/base')
+const { updateVersionsInDB } = require('./flow/migrationUtils')
 
 module.exports = function initialize (cfg) {
   if (!cfg) {
@@ -68,6 +69,10 @@ module.exports = function initialize (cfg) {
         }
       }
     })
+
+    // sets initial versions in ub_version table
+    updateVersionsInDB(session.connection, config.application.domain.models, {})
+
   } finally {
     if (session && session.logout) {
       session.logout()

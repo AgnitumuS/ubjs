@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - Nav Shortcuts: `Migrations` folder with `Models versions` and `Applied files` shortcuts
 
 ### Changed
 

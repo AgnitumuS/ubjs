@@ -11,6 +11,16 @@ CryptoJS.MD5 = require('@unitybase/cryptojs/md5')
 const NON_AUTH_URLS_RE = /(\/|^)(models|auth|getAppInfo|downloads)(\/|\?|$)/
 
 /* global nsha256,btoa */
+
+/**
+ * @typedef ubRequest
+ * @type {object}
+ * @property {string} entity
+ * @property {string} method
+ * @property {Array<string>} [fieldList]
+ * @property {Object<string, *>} [execParams]
+ */
+
 /**
  * Synchronous server-side connection to the UnityBase instance. To be used only inside UnityBase.
  * For nodeJS & browser use asynchronous UBConnection class from @unitybase/ub-pub package.
@@ -473,7 +483,7 @@ SyncConnection.prototype.post = function (endpoint, data) {
  * Shortcut method to perform authorized `POST` request to `ubql` endpoint
  * @private
  * @deprecated Since UB 1.11 use SyncConnection.query
- * @param {Array.<ubRequest>} runListData
+ * @param {Array<ubRequest>} runListData
  * @returns {Object}
  */
 SyncConnection.prototype.runList = function (runListData) {
