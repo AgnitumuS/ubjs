@@ -92,42 +92,67 @@ To execute a script in specific connection file (or folder) name should contain 
 
 ### JS file requirements
 
-Each *.js file MUST export a function. This function will be called by migrate with 3 parameters:
- - conn: SyncConnection                        # HTTP connection to server (to be used as use conn.Repository etc.) 
- - dbConnections: Object<string, DBConnection> # direct assess to SQL connection pool
- - dbVersions: Object<string, string>          # keys is model name, value is model version BEFORE migration (a content of ub_version entity)
+Each *.js file MUST export a function. This function will be called by migrate with 4 parameters:
+```javascript
+/**
+ * Migrate a CDN model to 2.13.15 (update cdn_person captions)
+ * @param {SyncConnection} conn
+ * @param {Object<string, DBConnection>} dbConnections
+ * @param {Object} dbVersions
+ * @param {{hooks: Array<{model: string, hook: Object<string, function>}>, files: Array<{model: string, name: string, fullPath: string, sha: string}>}} migrations
+ */
+module.exports = function giveItAGoodNameWhichExplainWhatFunctionDoes ({ conn, dbConnections, dbVersions, migrations }) {
+  // do something here
+}
+```
  
  
 ## Applying a Migrations
   
 ```
-ub-app-upgrade  TODO
+npx ubcli migrate -u root
 ```
 
-`ub-app-upgrade` execute only scripts what not exists in `ub_migration` table.
+`migrate` execute only scripts what not exists in `ub_migration` table.
  
-Before any operations `ub-app-upgrade` verify SHA sums (+modelName) is matched for intersection of all files in `ub_migration` table
+Before any operations `migrate` verify SHA sums (+modelName) is matched for intersection of all files in `ub_migration` table
 and all `_migrate` folder files (excluding files what starts from `_`). If any file checksum differ then migration
-**is fails** (neither generateDDL nor ub-migrate nor any `_mirg` script are not executed).
+**is fails** (neither generateDDL nor ub-migrate nor any `_mirgate` script are not executed).
   
 
 ## Migration hooks
 
-A `/_migrate/_hookMigration.js` file for each model CAN exports migrations hook. 
+### Using naming convention
+Migration file or folder name can contain a `_beforeDDL_` or `_afterDDL_` substring. Such files are applied before/after DDL generation. 
+
+> _beforeDDL_ js hook is called with `conn === null` because on this stage HTTP connection to the server is impossible  
+ 
+### Using per-model `_hooks.js`
+A `/_migrate/_hooks.js` file for each model can exports migrations hook. 
 Such hooks are applied by `ub-app-upgrade` lifecycle script during migrating of a whole application.
 The possible hooks are:
   - `beforeGenerateDDL`     # a good place for alter database objects
     - here generateDDL is executed
   - `afterGenerateDDL`      # a good place for massive update columns
     -  here ub-migrate is executed
-  - `filterFiles`           # remove some scripts from execution (called in reverse order of models, so descendants can disable some scripts from parent)
+  - `filterFiles`           # remove some scripts from execution (called in reverse order of models, should mutate a `migtarions.files` array)
     - here sql and js form `_migrate` folder are executed
   - `finalize`              # executed after any migration
 
-Each lifecycle hook is called with 3 parameters:
-  - UBConnection: {SyncConnection} (null for beforeGenerateDDL)
-  - dbConnections: Object<string, DBConnection> # direct assess to SQL connection pool
-  - dbVersions: object with versions for all application models BEFORE migration (a content of ub_version entity)
-  - filesToBeApplied: array of files to be applied
+A hook signature is:
+```javascript
+/**
+ * before generate DDL hook example
+ * @param {SyncConnection} conn
+ * @param {Object<string, DBConnection>} dbConnections
+ * @param {Object} dbVersions
+ * @param {{hooks: Array<{model: string, hook: Object<string, function>}>, files: Array<{model: string, name: string, fullPath: string, sha: string}>}} migrations
+ */
+function beforeGenerateDDL ({ conn, dbConnections, dbVersions, migrations }) {
+  // do something here
+}
+```
+
+> beforeGenerateDDL hook is called with conn: null because on this stage HTTP connection to the server is impossible 
   
    

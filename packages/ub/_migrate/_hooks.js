@@ -7,8 +7,8 @@ module.exports = {
  * @param {SyncConnection} conn
  * @param {Object<string, DBConnection>} dbConnections
  * @param {Object} dbVersions
- * @param {Array<{model: string, name: string, fullPath: string, sha: string}>} files
+ * @param {{hooks: Array<{model: string, hook: Object<string, function>}>, files: Array<{model: string, name: string, fullPath: string, sha: string}>}} migrations
  */
-function beforeGenerateDDL ({ conn, dbConnections, dbVersions, files }) {
+function beforeGenerateDDL ({ conn, dbConnections, dbVersions, migrations }) {
 
 }
