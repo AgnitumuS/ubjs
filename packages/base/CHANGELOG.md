@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `createDBConnectionPool` adds connection with name `DEFAULT` for easy access to default DB connection 
+ - `createDBConnectionPool` adds connection with name `DEFAULT` for easy access to default DB connection
+ - in case `DBConnection.genID` called with `undefined` it return ID for connection. If with entity code - for specified entity.
+ - `argv.establishConnectionFromCmdLineAttributes` will always uses 'ROOT' auth schema if user is 'root'. Before this fix 
+   'ROOT' schema is used if user is root AND server is started by this session.
+    
 
 ### Changed
  - `createDBConnectionPool` will re-use previously created pool

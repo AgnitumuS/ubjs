@@ -174,12 +174,13 @@ class DBConnection {
   }
 
   /**
-   * Generate ID for entity
-   * @param {string} entity
+   * Generate ID. If entity is specified - generate for specified entity (it cah have hos own sequence generator)
+   *   if entity not specified (UB 5.18.17+) - generate ID for this connection
+   * @param {string|undefined} entity code or nothing to get connection level ID
    * @returns {number}
    */
   genID (entity) {
-    return binding.genID(entity)
+    return entity ? binding.genID(entity) : binding.genID(this[DB_INDEX])
   }
 
   /**

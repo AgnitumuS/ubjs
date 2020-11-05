@@ -183,7 +183,7 @@ function establishConnectionFromCmdLineAttributes (config) {
   const conn = serverSession.connection = new SyncConnection({ URL: serverSession.HOST })
   const appInfo = conn.getAppInfo()
   // allow anonymous login in case no UB auth method for application
-  if (serverSession.__serverStartedByMe && config.user === 'root') {
+  if (config.user === 'root') {
     conn.onRequestAuthParams = function () {
       return { authSchema: 'ROOT' }
     }

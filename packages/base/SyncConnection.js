@@ -44,7 +44,6 @@ function SyncConnection (options) {
   const client = http.request(options)
   let /** @type UBDomain */
     _domain
-  let _cachedDomainIsExtended = false
   let ubSession = null
   const lookupCache = {}
   const userDataDefault = { lang: 'en' }
