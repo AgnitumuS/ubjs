@@ -75,3 +75,6 @@ if [ ! $? = 0 ]; then
   fi
   err;
 fi
+
+TESTCASE=migrate
+npx ubcli migrate -cfg $UB_CFG -u root -v || err
