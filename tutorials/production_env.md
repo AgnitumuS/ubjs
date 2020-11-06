@@ -118,6 +118,9 @@ into `/opt/unitybase/products/$UB_APP`.
 /var
   /lib
       /unitybase            # applications data (localdb, stores, temporary logs)
+        /shared             # data shared between all applications
+            /certificates   # DSTU certificates storage (FileStore key in osplm.ini should point to this folder. 
+                 CACertificates.p7b # trusted CA's certificates bundle 
         /crb-docflow        # crb.docflow data
             /cmodels        # customer model (customer-specific addition for product developed by customer)
             /localdb        # local database files (SQLite3, SQL Server localdb etc.)  
