@@ -119,22 +119,23 @@ into `/opt/unitybase/products/$UB_APP`.
   /lib
       /unitybase            # applications data (localdb, stores, temporary logs)
         /shared             # data shared between all applications
-            /certificates   # DSTU certificates storage (FileStore key in osplm.ini should point to this folder. 
-                 CACertificates.p7b # trusted CA's certificates bundle 
+            osplm.ini       # UB EE+ DSTU library settings 
+            /certificates   # UB EE+ DSTU certificates storage 
+                 CACertificates.p7b # UB EE+ root CA's certificates bundle 
         /crb-docflow        # crb.docflow data
+            /_temp          # temp folder for mdb BLOB store
             /cmodels        # customer model (customer-specific addition for product developed by customer)
             /localdb        # local database files (SQLite3, SQL Server localdb etc.)  
             /stores         # BLOB stores
-            /logs           # local logs (for develepnemt purpose; production logs are written to journald)
             ubConfig.env    # Environment variables for application instance
         /docs-adminui       # docs-adminui application data
+            /_temp
             /cmodels
             /localdb          
             /stores         
-            /logs           
             ubConfig.env
   /log
-     /unitybase             # recomended folder for logs (if started by systemd logs are written to sysytemd journal)     
+     /unitybase             # local logs for develepnemt purpose; production logs are written to journald  
 /opt
   /unitybase
     /server                 # ub server (installed by rpm/deb. ub symlinked to `/usr/bin/ub`)
@@ -410,6 +411,13 @@ systemctl edit unitybase@.sevrice
 systemctl revert unitybase@.sevrice
 sudo systemctl daemon-reload
 ```
+
+Or create a drop-in 
+```
+mkdir /etc/systemd/system/unitybase@.sevrice.d
+```
+and place there `*.conf` file with parameters what needs to be added / override. 
+See [systemd.unit](https://www.freedesktop.org/software/systemd/man/systemd.unit.htm) for more information.
 
 ### Certain my-app instance
 ```shell script

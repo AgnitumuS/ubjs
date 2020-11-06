@@ -39,9 +39,6 @@ const { normalizeVersion, updateVersionsInDB } = require('./flow/migrationUtils'
 const MIGR_FOLDER_NAME = '_migrate'
 const HOOK_FILE_NAME = '_hooks.js'
 
-module.exports.shortDoc = `Run generateDDL + ub-migrate + apply scripts from
-\t\t\t${MIGR_FOLDER_NAME} models folders`
-
 module.exports = function migrate (cfg) {
   if (!cfg) {
     const opts = options.describe('migrate',
@@ -357,3 +354,6 @@ function readMigrations (models) {
   })
   return migrations
 }
+
+module.exports.shortDoc = `Run generateDDL + ub-migrate + apply scripts from
+\t\t\t'${MIGR_FOLDER_NAME}' models folders`

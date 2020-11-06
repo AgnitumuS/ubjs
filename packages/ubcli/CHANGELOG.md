@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `ubcli migrate` command line doc added
 
 ## [5.9.0] - 2020-11-05
 ### Added
