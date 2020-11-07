@@ -119,7 +119,7 @@ as drop-in replacement to /clientRequire and /models endpoints`,
     let rpp = m.realPublicPath
     if (rpp.endsWith('/') || rpp.endsWith('\\')) rpp = rpp.slice(0, -1)
     if (!fs.existsSync(rpp)) { // no public folder
-      DEBUG && console.info(`Skip model ${mName} - no public folder ${rpp}`)
+      DEBUG && console.info(`Skip model ${m.Name} - no public folder ${rpp}`)
       continue
     }
     const moduleLink = commands.find(c => c.from === rpp)
@@ -282,14 +282,17 @@ function tryAddModule (modulesPath, MPT, module, commands, target) {
     })
     if (!hasUbModel) { // add link to module entry point to use in `index .entryPoint.js` nginx directive
       const pkgEntryPoint = path.join(modulesPath, module, p.main || 'index.js')
-      if (fs.existsSync(pkgEntryPoint)) {
+      // Check only files. Entry point can be a folder as in https://github.com/tarruda/has:  "main": "./src"
+      // In such cases second call to linkStatic creates a File system loop
+      // In any case such modules can't be requires by systemjs? so better to exclude it at all
+      if (fs.isFile(pkgEntryPoint)) {
         commands.push({
           type: 'file',
           from: path.join(MPT, module, p.main || 'index.js'),
           to: path.join(target, module, '.entryPoint.js')
         })
       } else {
-        DEBUG && console.warn(`Entry point ${pkgEntryPoint} not exists. Skip linking of .entryPoint.js`)
+        DEBUG && console.warn(`Entry point ${pkgEntryPoint} not exists (or points to a folder). Skip linking of .entryPoint.js`)
       }
     }
   } else { // packages with `public` folder
