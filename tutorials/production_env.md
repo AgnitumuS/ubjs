@@ -31,7 +31,7 @@ sudo systemctl enable --now unitybase@autotest
  - If this is upgrade
 ```shell script
 sudo systemctl stop unitybase@autotest
-sudo -u unitybase ub-app-upgrade autotest 
+sudo -u unitybase ub-app-upgrade --app autotest 
 sudo systemctl start unitybase@autotest
 ```
 
@@ -65,9 +65,9 @@ sudo ub-deploy ubproduct-docflow#x.y.z.tar.gz
  ```shell script
  sudo systemctl stop unitybase@docflow*
  # for each app (docflow-cust1)
- sudo -u unitybase ub-app-upgrade docflow-cust1
+ sudo -u unitybase ub-app-upgrade --app docflow-cust1
   ...
- sudo -u unitybase ub-app-upgrade docflow-custN
+ sudo -u unitybase ub-app-upgrade --app docflow-custN
  sudo systemctl start unitybase@docflow*  
  ```    
      

@@ -129,7 +129,6 @@ Migration file or folder name can contain a `_beforeDDL_` or `_afterDDL_` substr
  
 ### Using per-model `_hooks.js`
 A `/_migrate/_hooks.js` file for each model can exports migrations hook. 
-Such hooks are applied by `ub-app-upgrade` lifecycle script during migrating of a whole application.
 The possible hooks are:
   - `beforeGenerateDDL`     # a good place for alter database objects
     - here generateDDL is executed

@@ -64,8 +64,8 @@
 		"dstu": {
 			"findCertificateBySerial": true,
 			"iit": {
-				"librarySettings": "%UB_APPDATA%.key",
-				"keyPath": "%UB_APPDATA%.key/Key-6.dat",
+				"librarySettings": "%UB_APPDATA%../shared",
+				"keyPath": "%UB_APPDATA%../shared/Key-6.dat",
 				"password": "%KEY_PWD%"
 			}
 		},
@@ -264,7 +264,7 @@
 			{
 				"name": "mdb",
 				"storeType": "Virtual",
-				"tempPath": "%UB_APPHOME%_temp"
+				"tempPath": "%UB_APPDATA%_temp"
 			},
 			{
 				"name": "simple",
