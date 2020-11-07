@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `ubcli createStore`: minimize console output by notify only for newly created directory path 
 
 ### Deprecated
 
