@@ -90,6 +90,51 @@ To execute a script in specific connection file (or folder) name should contain 
        010-some.sql                                
  ``` 
 
+### Migrations for non-table Database objects (views, procedures etc.)
+UnityBase based projects trends to be database agnostic and usually do not use RDBMS specific features like views, procedures etc.,
+but sometimes, for example when mapping to the existed database, using of views/procedures simplify a development.
+
+In this case the referential database objects can be stored somewhere in the model and when changed can be sym-linked to the
+`_migrate` folder with a proper name. 
+
+Consider we need maintains a view `v_coursesFromBankDB` and place it definition in the `myModel/_database/v_coursesFromBankDB.sql`
+```
+CREATE OR REPLACE VIEW v_coursesFromBankDB AS
+SELECT .......
+``` 
+
+```
+/myModel
+  /_database
+    v_coursesFromBankDB.sql
+  /_migrate
+    /001001000
+      010-#connName#v_coursesFromBankDB.sql    # a symblik link to ../../_database/coursesFromBankDB.sql
+```    
+
+When view `myModel/_database/v_coursesFromBankDB.sql` is changed in version 2.0 of the model we can add it into new migration:
+```
+/myModel
+  /_database
+    v_coursesFromBankDB.sql
+  /_migrate
+    /001001000
+      010-#connName#v_coursesFromBankDB.sql     # a symblik link to `../../_database/coursesFromBankDB.sql`
+    002001000-#connName#v_coursesFromBankDB.sql # a symblik link to the same file as in firs migration `../_database/coursesFromBankDB.sql`
+```    
+> as noted above migration can be a file - as we did for `002001000#connName#-v_coursesFromBankDB.sql` 
+
+> **IMPORTANT** The reference path of the source file should be relative to the repository
+
+```shell script
+# Not good for Git repositories
+ln -s /Users/pavel/dev/app/myModel/_database/v_coursesFromBankDB.sql ./_migrate/001001000/010-#connName#-v_coursesFromBankDB.sql
+
+# Good for Git repositories
+cd ./_migrate/001001000 && ln -s ../../_database/coursesFromBankDB.sql 010-#connName#-v_coursesFromBankDB.sql
+git add 010-#connName#-v_coursesFromBankDB.sql
+```
+
 ### JS file requirements
 
 Each *.js file MUST export a function. This function will be called by migrate with 4 parameters:

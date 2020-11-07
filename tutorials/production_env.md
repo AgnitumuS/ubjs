@@ -110,8 +110,6 @@ and creates folder structure for application data in the `/var/lib/unitybase/$UB
 
 For products (`ubproduct-*.tar.gz`) deploy script archive previous product version and unpack a new product
 into `/opt/unitybase/products/$UB_APP`.
-
-### 
  
 ##  Folder structure
 ```
