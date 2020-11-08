@@ -16,9 +16,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `ubcli migrate`: command line doc added
- - `ubcli linkStatic`: skip creation of `.entryPoint.js` for modules with **folder** entry-point.
+ - `ubcli linkStatic`: skip creation of `.entryPoint.js` for modules with **folder** entry-point
    For example: `"main": "./src"` in package.json.
-   Such links create a file system loop. In any case they can't be required from client side by systemJS  
+   Such links create a file system loop. In any case they can't be required from client side by systemJS.
+ - if invalid arguments is passed to the `ubcli` command it exits with exit code 1.
+   This prevents a batch script from further execution in case of invalid command.
 
 ## [5.9.0] - 2020-11-05
 ### Added

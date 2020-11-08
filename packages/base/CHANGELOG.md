@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - `options.parseVerbose` ( a command line parameters parser) will throw in case of invalid / missed parameters.
-   This returns a 1 exit code to caller and? for example, can prevents batch script from further execution. 
+   This returns a 1 exit code to caller and, for example, can prevent batch script from further execution. 
 
 ### Deprecated
 

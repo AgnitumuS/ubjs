@@ -58,8 +58,8 @@ module.exports = execSql
  */
 function execSql (cfg) {
   if (!cfg) {
-    const opts = options.describe('initDB',
-      'Execute an SQL script in specified connection.\nEach statment executed in separate transaction', 'ubcli')
+    const opts = options.describe('execSql',
+      'Execute an SQL script in specified connection.\nEach statement executed in its own transaction', 'ubcli')
       .add([
         { short: 'c', long: 'connection', param: 'connectionName', defaultValue: '', searchInEnv: true, help: 'Connection name. If empty - uses default connection' },
         { short: 'f', long: 'file', param: '/path/to/script.sql', defaultValue: '', searchInEnv: false, help: 'Path to a script for execution. Either -f or -sql should be specified' },
@@ -107,7 +107,7 @@ function execSql (cfg) {
   script = script.replace(/\r\n/g, '\n')
   const stmts = script.split(/^[ \t]*--[ \t]*$|^[ \t]*GO[ \t]*$|^[ \t]*\/[ \t]*$/gm).filter(s => s.trim() !== '')
   const dbConn = dbConnections[connCfg.name]
-  console.log(`Executing script '${cfg.file}' using connection '${connCfg.name}' (${stmts.length} statements)...`)
+  console.log(`Executing '${cfg.file ? cfg.file : '-sql'}' script using connection '${connCfg.name}' (${stmts.length} statements)...`)
   const totalT = Date.now()
   let invalidStmtCnt = 0
   let successStmtCnt = 0
