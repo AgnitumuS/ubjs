@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.7.1] - 2020-11-08
 ## [5.7.0] - 2020-11-05
 ### Added
  - `ub_migration` & `ub_version` entities added

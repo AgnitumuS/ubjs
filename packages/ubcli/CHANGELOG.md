@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.9.1] - 2020-11-08
+### Changed
  - `ubcli createStore`: minimize console output by notify only for newly created directory path 
  - `ubcli execSql` mute per-statement exception in case it contains `--@optimistic` comment somewhere in text.
    In example below in case table1 already exists exception wil be muted. For table2 - will be raised (`--@optimistic` not in statement text).
@@ -17,10 +26,6 @@ create table1 ....
 --
 create table2...
 ```
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `ubcli migrate`: command line doc added
@@ -35,8 +40,6 @@ create table2...
  - `ubcli execSql`: new option `-sql script` added for execute SQL script from string. Usage sample:
 ```shell script
 ubcli execSql -sql 
-### Added
-
 ### Fixed
 - DDL generator will skip attributes mapped to another existed attribute
 BEGIN\n import_users.do_import;\n END;--\n delete from aa where 1=0;'

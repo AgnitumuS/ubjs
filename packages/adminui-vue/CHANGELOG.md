@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [1.13.16] - 2020-11-08
+### Fixed
  - `UDialog` - if `Cancel` button not available - sets focut to first available button.
    
 ## [1.13.15] - 2020-11-05
