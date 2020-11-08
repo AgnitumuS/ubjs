@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - `ubcli createStore`: minimize console output by notify only for newly created directory path 
+ - `ubcli execSql` mute per-statement exception in case it contains `--@optimistic` comment somewhere in text.
+   In example below in case table1 already exists exception wil be muted. For table2 - will be raised (`--@optimistic` not in statement text).
+```
+--@optimistic
+create table1 ....
+--
+create table2...
+```
 
 ### Deprecated
 

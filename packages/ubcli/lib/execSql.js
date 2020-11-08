@@ -8,7 +8,7 @@
  *
  * If --optimistic (-o) option is passed each statement are wrapped in try/finally block and script execution will continue even after error in individual statement
  *
- * Exceptions in statements what contains `-- ignore error` string are ignored
+ * Exceptions in statements what contains `--@optimistic` string are ignored
  *
  * Usage from a command line:
 
@@ -115,7 +115,7 @@ function execSql (cfg) {
   stmts.forEach((stmt, n) => {
     try {
       const d = Date.now()
-      ignoreErr = stmt.indexOf('-- ignore error') > -1
+      ignoreErr = stmt.indexOf('--@optimistic') > -1
       dbConn.execParsed(stmt)
       dbConn.commit()
       if (cfg.progress) {
@@ -124,7 +124,11 @@ function execSql (cfg) {
       successStmtCnt++
     } catch (e) {
       invalidStmtCnt++
-      if (!cfg.optimistic && !ignoreErr) throw e
+      if (!cfg.optimistic && !ignoreErr) {
+        throw e
+      } else {
+        console.log("Exception in statement is mutes because of 'optimistic' mode")
+      }
     }
   })
   if (invalidStmtCnt > 0) {
@@ -134,5 +138,6 @@ function execSql (cfg) {
   }
   console.log(`Total execution time: ${Date.now() - totalT}ms`)
 }
+
 
 module.exports.shortDoc = 'Execute an SQL script in specified connection'
