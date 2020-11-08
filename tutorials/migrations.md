@@ -153,7 +153,9 @@ Example:
 
 `conn` is a connection config (as it specified in ubConfig `application.connections` section) for connection script is executed in.
 
-`--@optimistic` feature of execSql also works here 
+`--@optimistic` feature of execSql also works here
+ 
+ > the `optimistic` mode is dangerous - use it if it absolutely required
    
 ### JS file requirements
 
