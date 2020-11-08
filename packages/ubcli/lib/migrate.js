@@ -227,7 +227,7 @@ function runFiles (filesToRun, params, { conn, dbConnections, dbVersions, migrat
         jsMigrationModule({ conn, dbConnections, dbVersions, migrations })
       }
     } else if (f.name.endsWith('.sql')) {
-      const parts = /#(.*?)#/.exec(f.name) // 010#rrpUb#fix-UBJS-1223.sql -> ["#rrpUb#", "rrpUb"]
+      const parts = /#(.*?)[\-.#/]/.exec(f.name) // 010#rrpUb#fix-UBJS-1223.sql -> ["#rrpUb#", "rrpUb"]
       let connName
       if (parts && parts[1]) {
         if (!dbConnections[parts[1]]) {

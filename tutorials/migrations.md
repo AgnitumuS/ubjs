@@ -80,14 +80,24 @@ SHOULD rename an unreleased migration.
 In complex application one model can store its data in the several DB connections (not recommended).
 
 By default, *.sql files are executed using default DB connection (`isDefault: true` in connections section of ubConfig).
-To execute a script in specific connection file (or folder) name should contain connection name wrapped in #. Example:
+To execute a script in specific connection file (or folder) name should contain connection name wrapped in #.
+
+Actually `/#(.*?)[\-.#/]/` regular expression is used, so the ending char can be one of `-.#` or migration folder name ends with `#conn`.
+All names below are specify a SECOND connection:
+  - /unreleased#SECOND# 
+  - /unreleased#SECOND
+  -  010#SECOND#fix-UBJS-1223.sql (use #SECOND#)
+  -  010#SECOND-fix-UBJS-1223.sql (use #SECOND-)
+  -  010#SECOND.fix-UBJS-1223.sql (use #SECOND.)
+
+Example:
 ```
  /myModel
    /_migrate
      /unreleased                 
        010#rrpUb#fix-UBJS-1223.sql          # if connection with name `rrpUb` exists this script will be executed there
        020-fix-VP-3_addVP_PP_table.sql      # and this - in default connection
-     /unreleased#rst#                       # all SQL files from this folred will be executed in `rst` connection
+     /unreleased#rst                        # all SQL files from this folred will be executed in `rst` connection
        010-some.sql                                
  ``` 
 
