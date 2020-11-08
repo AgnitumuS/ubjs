@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - removed many unnecessary logging messages form `ubcli` tools output. 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.9.2] - 2020-11-08
+### Changed
+ - removed many unnecessary logging messages form `ubcli` tools output. 
 
 ## [5.9.1] - 2020-11-08
 ### Changed
