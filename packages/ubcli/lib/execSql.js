@@ -8,15 +8,29 @@
  *
  * If --optimistic (-o) option is passed each statement are wrapped in try/finally block and script execution will continue even after error in individual statement
  *
- * Exceptions in statements what contains `--@optimistic` string are ignored
+ * Exceptions in statements what contains `--@optimistic` string is forced to be optimistic.
  *
+ * SQL script can be a [lodash template](https://lodash.com/docs/4.17.15#template). In this case it preparsed using
+ * `options = {conn: connectionConfig, cfg: execSqlOptionsObject}`
+ *
+ * Template example:
+
+  <% if (conn.dialect.startsWith('MSSQL')) { %>
+  SQL server specific statement
+  <% } else { %>
+  non SQL server statement
+  <% } %>
+  --
+  one more statement for any DBMS;
+  --
+
  * Usage from a command line:
 
  ubcli execSsq -?
  ubcli execSql -c connectionName -f path/to/script.sql -o
 
  * Usage from a code:
- *
+
  const execSql = require('@unitybase/ubcli/lib/execSql')
  let options = {
       connection: 'main',
@@ -28,7 +42,7 @@
 
  // exec SQL script in default connection
  options = {
-      sql: `BEGIN'
+      sql: `BEGIN
       import_users.do_import;
       END;
       /
@@ -95,18 +109,29 @@ function execSql (cfg) {
 
   const dbConnections = createDBConnectionPool(config.application.connections)
 
-  let script
+  let scriptTpl
   if (cfg.file) {
-    script = fs.readFileSync(cfg.file, { encoding: 'utf8' })
+    scriptTpl = fs.readFileSync(cfg.file, { encoding: 'utf8' })
   } else if (cfg.sql) {
-    script = cfg.sql
+    scriptTpl = cfg.sql
   } else {
     throw new Error('Either file or sql MUST be specified')
   }
 
-  script = script.replace(/\r\n/g, '\n')
-  const stmts = script.split(/^[ \t]*--[ \t]*$|^[ \t]*GO[ \t]*$|^[ \t]*\/[ \t]*$/gm).filter(s => s.trim() !== '')
+  scriptTpl = scriptTpl.replace(/\r\n/g, '\n')
+  let script
+  if (scriptTpl.indexOf('<%') >= 0) { // contains a template
+    const compiledTpl = _.template(scriptTpl)
+    script = compiledTpl({
+      conn: connCfg,
+      cfg
+    })
+  } else {
+    script = scriptTpl
+  }
+
   const dbConn = dbConnections[connCfg.name]
+  const stmts = script.split(/^[ \t]*--[ \t]*$|^[ \t]*GO[ \t]*$|^[ \t]*\/[ \t]*$/gm).filter(s => s.trim() !== '')
   console.log(`Executing '${cfg.file ? cfg.file : '-sql'}' script using connection '${connCfg.name}' (${stmts.length} statements)...`)
   const totalT = Date.now()
   let invalidStmtCnt = 0

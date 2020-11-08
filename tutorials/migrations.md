@@ -75,7 +75,8 @@ SHOULD rename an unreleased migration.
 
 > TIP: `ub-pack` lifecycle script will check version don't contain an unreleased migration (TODO)
 
-### Specifying DB Connection for SQL script
+### SQL scripts features
+#### Specifying a DB connection
 In complex application one model can store its data in the several DB connections (not recommended).
 
 By default, *.sql files are executed using default DB connection (`isDefault: true` in connections section of ubConfig).
@@ -90,7 +91,7 @@ To execute a script in specific connection file (or folder) name should contain 
        010-some.sql                                
  ``` 
 
-### Migrations for non-table Database objects (views, procedures etc.)
+#### Migrations for non-table Database objects (views, procedures etc.)
 UnityBase based projects trends to be database agnostic and usually do not use RDBMS specific features like views, procedures etc.,
 but sometimes, for example when mapping to the existed database, using of views/procedures simplify a development.
 
@@ -135,6 +136,23 @@ cd ./_migrate/001001000 && ln -s ../../_database/coursesFromBankDB.sql 010-#conn
 git add 010-#connName#-v_coursesFromBankDB.sql
 ```
 
+#### Conditional SQL
+Under the hood SQL scripts are executed using `ubcli execSql` command, so can be a [lodash template](https://lodash.com/docs/4.17.15#template).  
+Example:
+ 
+```
+ <% if (conn.dialect.startsWith('MSSQL')) { %>
+  SQL server specific statement
+  <% } else { %>
+  non SQL server statement
+  <% } %>
+  --
+  one more statement for any DBMS;
+  --
+```
+
+`conn` is a connection config (as it specified in ubConfig `application.connections` section) for connection script is executed in.
+   
 ### JS file requirements
 
 Each *.js file MUST export a function. This function will be called by migrate with 4 parameters:
