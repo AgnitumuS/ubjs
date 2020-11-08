@@ -105,7 +105,7 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
   entityNames = entityNames.filter((eName) => {
     return domain.get(eName).mixin('mStorage') !== undefined
   })
-  console.log('Check congruence for domain metadata and database structure for: ', JSON.stringify(entityNames))
+  console.log(`Checking congruence of domain metadata and database structure for ${entityNames.length} entities...`)
 
   const Generator = require('./ddlGenerators/DDLGenerator')
   const ddlResult = new Generator().generateDDL(entityNames, conn, true)

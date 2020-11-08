@@ -81,15 +81,15 @@ function runMigrations (params) {
   console.log('Loading application migration state...')
   let d = Date.now()
   const { dbVersions, dbVersionIDs, appliedScripts } = getMigrationState(dbConnections.DEFAULT, modelsToMigrate)
-  console.log(`Migration state (${appliedScripts.length} applied scripts for ${Object.keys(dbVersions).length} models) is loaded in ${Date.now() - d}ms`)
+  console.log(`Migration state (${appliedScripts.length} applied scripts for ${Object.keys(dbVersions).length} models) is loaded from ub_migration table in ${Date.now() - d}ms`)
   // console.debug('DBVersions=', dbVersions)
   // console.debug('executedScripts=', executedScripts)
 
   d = Date.now()
-  console.log('Search for migrations...')
+  console.log(`Search for migration files in models ${MIGR_FOLDER_NAME} folders..`)
   const migrations = readMigrations(modelsToMigrate)
   const totalFiles = migrations.files.length
-  console.log(`Found ${totalFiles} migration files in ${Date.now() - d}ms`)
+  console.log(`Found ${totalFiles} migration file(s) in ${Date.now() - d}ms`)
 
   // remove already applied files and verify files SHA
   let shaIsEqual = true
@@ -104,7 +104,7 @@ function runMigrations (params) {
   if (!shaIsEqual) {
     throw new Error('Some files are modified after been applied. Migration terminated')
   }
-  console.log(`${migrations.files.length} of ${totalFiles} is new and will be applied`)
+  console.log(`${migrations.files.length} migration files is new and will be applied`)
 
   // generateDDL stage
   /** @type ServerSession */
