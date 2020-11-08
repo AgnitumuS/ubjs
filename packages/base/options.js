@@ -111,7 +111,7 @@ Options.prototype.parse = function parse (defaults, errors) {
       if ((typeof val === 'undefined')) {
         valid = false
         if (errors) {
-          errors.push('expected parameter "' + option.long + '" not found')
+          errors.push(`expected parameter '-${option.long}' (-${option.short}) not found`)
         }
       } else {
         result[option.long] = (val === '*' ? '' : val)
@@ -139,8 +139,9 @@ Options.prototype.parseVerbose = function parseVerbose (defaults, outputParsed) 
 
     if (!result) console.log(this.usage())
     if (errors.length) {
-      console.error('\nInvalid usage')
-      console.error('\t' + errors.join('\n\t'))
+      throw new Error('invalid usage - ' + errors.join('\n\t') + '\n')
+      // console.error('\nInvalid usage')
+      // console.error('\t' + errors.join('\n\t'))
     }
     if (outputParsed) {
       console.info('Run a command "%s" using %j', this.commandName, result)
@@ -245,6 +246,6 @@ const switchIndex = exports.switchIndex
 exports.switchValue = function switchValue (switchName) {
   const idx = switchIndex(switchName) + 1
   let val
-  return (idx && (val = process.argv[idx]) && val.charAt !== '-' && val.charAt !== '/') ? process.argv[idx] : undefined
+  return (idx && (val = process.argv[idx]) && val.charAt(0) !== '-' && val.charAt(0) !== '/') ? process.argv[idx] : undefined
 }
 const switchValue = exports.switchValue
