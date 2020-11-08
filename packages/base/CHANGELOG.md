@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `DBCOnnection.selectParsedAsObject` for Oracle warning added: 
+  Oracle return all field name in UPPER case if `AS "normalName"` is not specified, so better to write a query as such
+  `select ID, modelName AS "modelName" from ..` instead of `select ID, modelName from ..`
 
 ### Changed
 

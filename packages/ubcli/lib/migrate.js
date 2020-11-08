@@ -83,7 +83,7 @@ function runMigrations (params) {
   const { dbVersions, dbVersionIDs, appliedScripts } = getMigrationState(dbConnections.DEFAULT, modelsToMigrate)
   console.log(`Migration state (${appliedScripts.length} applied scripts for ${Object.keys(dbVersions).length} models) is loaded from ub_migration table in ${Date.now() - d}ms`)
   // console.debug('DBVersions=', dbVersions)
-  // console.debug('executedScripts=', executedScripts)
+  // console.debug('appliedScripts=', appliedScripts)
 
   d = Date.now()
   console.log(`Search for migration files in models ${MIGR_FOLDER_NAME} folders..`)
@@ -273,7 +273,7 @@ function getMigrationState (dbConn, modelsConfig) {
     appliedScripts: []
   }
   try {
-    const versions = dbConn.selectParsedAsObject('select ID, modelName, version from ub_version')
+    const versions = dbConn.selectParsedAsObject('select ID, modelName AS "modelName", version as "version" from ub_version')
     versions.forEach(v => {
       r.dbVersions[v.modelName] = v.version
       r.dbVersionIDs[v.modelName] = v.ID
@@ -291,7 +291,7 @@ function getMigrationState (dbConn, modelsConfig) {
   if (!r.dbVersions.APPLICATION) r.dbVersions.APPLICATION = normalizeVersion()
 
   try {
-    r.appliedScripts = dbConn.selectParsedAsObject('select modelName, filePath, fileSha from ub_migration')
+    r.appliedScripts = dbConn.selectParsedAsObject('select modelName AS "modelName", filePath as "filePath", fileSha as "fileSha" from ub_migration')
   } catch (e) {
     // table not exists
   }
