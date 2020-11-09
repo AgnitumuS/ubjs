@@ -185,19 +185,28 @@ module.exports = function giveItAGoodNameWhichExplainWhatFunctionDoes ({ conn, d
  
  
 ## Applying a Migrations
-  
+
+For development purpose and under Windows:  
 ```
+cd /path/to/app/folder
 ubcli migrate -u root
 ```
 
 > under unix `ubcli` is called by shell script /usr/bin/ubcli, so npx can be omitted. Under Windows use `npx ubcli ....`
 
-`migrate` execute only scripts what not exists in `ub_migration` table.
+On the Linux-based production environment (see [Manage production environment](https://unitybase.info/api/server-v5/tutorial-production_env.html))
+```
+sudo -u unitybase ub-app-upgrade --app app_name 
+```
+
+`migrate` execute only scripts what do not exist in the `ub_migration` table.
  
 Before any operations `migrate` verify SHA sums (+modelName) is matched for intersection of all files in `ub_migration` table
 and all `_migrate` folder files (excluding files what starts from `_`). If any file checksum differ then migration
 **is fails** (neither generateDDL nor ub-migrate nor any `_mirgate` script are not executed).
-  
+
+On the adminUI interface two shortcuts are added `Administrator->Migrations->Applied files` and `Administrator->Migrations->Models versions`.
+Use it to see al applied migration files and models versions on the moment of last success migration. 
 
 ## Migration hooks
 
