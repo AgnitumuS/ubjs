@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `ubcli execSql` will log first 30 chars of statement for `-sql` mode instead of `-sql` word
 
 ### Deprecated
 

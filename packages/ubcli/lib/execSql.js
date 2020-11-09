@@ -132,7 +132,8 @@ function execSql (cfg) {
 
   const dbConn = dbConnections[connCfg.name]
   const stmts = script.split(/^[ \t]*--[ \t]*$|^[ \t]*GO[ \t]*$|^[ \t]*\/[ \t]*$/gm).filter(s => s.trim() !== '')
-  console.log(`Executing '${cfg.file ? cfg.file : '-sql'}' script using connection '${connCfg.name}' (${stmts.length} statements)...`)
+  const execLogIdent = cfg.file ? cfg.file : script.slice(0, 30) + '...'
+  console.log(`Executing '${execLogIdent}' script of ${stmts.length} statements in connection '${connCfg.name}'...`)
   const totalT = Date.now()
   let invalidStmtCnt = 0
   let successStmtCnt = 0
@@ -157,11 +158,10 @@ function execSql (cfg) {
     }
   })
   if (invalidStmtCnt > 0) {
-    console.warn(`Script completed ${successStmtCnt} statement success and ${invalidStmtCnt} statements with exceptions (ignored in optimistic mode)`)
+    console.warn(`Script completed in ${Date.now() - totalT}ms. ${successStmtCnt} statement success and ${invalidStmtCnt} statements with exceptions (ignored in optimistic mode)`)
   } else {
-    console.info(`Successfully completed ${successStmtCnt} statements`)
+    console.info(`Successfully completed in ${Date.now() - totalT}ms`)
   }
-  console.log(`Total execution time: ${Date.now() - totalT}ms`)
 }
 
 
