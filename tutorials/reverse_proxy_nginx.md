@@ -48,7 +48,7 @@ Serving static by nginx improves:
 ### Prepare application for serving static by nginx
 
   - define `httpServer.inetPub` parameter in config. This is a folder where static files will be stored. Usually = `./itetpub`
-  - run a command `npx ubcli linkStatic`. This command creates a `.linkStatic.sh` script for sym-linking a static assets into `inetPub` folder
+  - run a command `ubcli linkStatic`. This command creates a `.linkStatic.sh` script for sym-linking a static asset into `inetPub` folder
   - execute a `.linkStatic.sh`     
 
 Step 2) and 3) must be performed every time application is updated. 
@@ -58,7 +58,7 @@ cd /your/app/folder
 # checkout a new package-lock.json
 npm ci
 npm ddp
-npx ubcli linkStatic -u .. -p ... - cfg ...
+ubcli linkStatic -u .. -p ... - cfg ...
 chmod +x ./.linkStatic.sh
 ./.linkStatic.sh
 ``` 
@@ -67,7 +67,7 @@ Last command in script will set a modification time for all files downloaded fro
 to the current time. This allow nginx to generate a correct ETag for such files.
        
 ### How to prevent server-side logic to be exposed for client
-Some of modules placed into `node_modules` folder can contains a server-side logic what should be hidden from clients.
+Some of the modules placed into `node_modules` folder can contain a server-side logic what should be hidden from clients.
   
 First let's explain what modules are exposed:
    - modules without `config.ubmodel` section and modules with `config.ubmodel.isPublic: true` inside package.json
@@ -78,29 +78,29 @@ First let's explain what modules are exposed:
 So, **to hide all package files from client add a "config" : {"ubmodel": {} } section into package.json**
     
 ## Configuring nginx
-`ubcli` tool have a command `generateNginxCfg` for creating a include for nginx based on application configuration.
+`ubcli` tool have a command `generateNginxCfg` for creating include for nginx based on application configuration.
 
 cd to your application folder and type:  
 ```shell script
-npx ubcli generateNginxCfg
+ubcli generateNginxCfg
 ```  
 
 This command generate file `ub-proxy.conf` ready to be included into main nginx configuration.
 
 To see additional parameters what can be passed to `generateNginxCfg` type:  
 ```shell script
-npx ubcli generateNginxCfg --help
+ubcli generateNginxCfg --help
 ```  
 
 In case external url is use HTTPS protocol, you need to add `-sslkey path/to/key -sslcert path/to/cert`. 
-Also we recommend to add `-r` for adding redirection from http to https:  
+Also, we recommend adding a switch `-r` to add a redirection from http to https:  
 ```shell script
-npx ubcli -r generateNginxCfg -sslkey /usr/www/.ssh/web_key.key -sslcert /usr/www/.ssh/web_ker_cert.pem
+ubcli -r generateNginxCfg -sslkey /usr/www/.ssh/web_key.key -sslcert /usr/www/.ssh/web_ker_cert.pem
 ```
 
 If you expect user need to store a big documents add `-maxDocBody XXXm` where XXX ia a maximum document size (in Mb) for upload.      
 
-Generated config is well documented - see comments inside for explanation of what we did there. 
+The generated config is well documented - see comments inside for explanation of what we did there. 
 
 `ub-proxy.conf` we generate should be included into `nginx.conf`:  
 
@@ -110,7 +110,7 @@ include path/to/ub-proxy.conf;
 ```
 and restart nginx.
 
-For unix symlink file into `/etc/nginx/sites-enabled`:  
+For Unix symlink file into `/etc/nginx/sites-enabled`:  
 ```shell script
 sudo ln -s path/to/ub-proxy.conf /etc/nginx/sites-available/default_server.cfg 
 sudo ln -s /etc/nginx/sites-available/default_server.cfg /etc/nginx/sites-enabled 
@@ -119,11 +119,11 @@ sudo nginx -s reload
 
 ## Load balancing
 
-Generated config is ready to be extended for load balancing.
+The generated config is ready to be extended for load balancing.
 
 Pass `-lb` option for adding load balancer specific settings to nginx config:  
 ```shell script
-npx ubcli generateNginxCfg -lb
+ubcli generateNginxCfg -lb
 ```
 
 ## Security zones
@@ -133,7 +133,7 @@ Current implementation depends on [nginx geo module](http://nginx.org/ru/docs/ht
 Setup:
 
  - insure your nginx compiled with ngx_http_geo_module (`nginx -V`). If not either re-compile nginx or install a
- full nginx version `sudo apt install nginx-full`
+ full nginx version: `sudo apt install nginx-full`
  - configure a `zonesAuthenticationMethods` and `securityZoneHeader` in ubConfig. Example:  
 ```json
 "httpServer": {

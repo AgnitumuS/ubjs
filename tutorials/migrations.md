@@ -187,8 +187,10 @@ module.exports = function giveItAGoodNameWhichExplainWhatFunctionDoes ({ conn, d
 ## Applying a Migrations
   
 ```
-npx ubcli migrate -u root
+ubcli migrate -u root
 ```
+
+> under unix `ubcli` is called by shell script /usr/bin/ubcli, so npx can be omitted. Under Windows use `npx ubcli ....`
 
 `migrate` execute only scripts what not exists in `ub_migration` table.
  
