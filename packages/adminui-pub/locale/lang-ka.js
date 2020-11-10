@@ -62,7 +62,7 @@ UB.i18nExtend({
   po: '-მდე',
   pluginNeUstanovlen: "მოდული არ არის დაყენებული",
   pluginNedostupen: 'მოდული გამორთულია',
-  nastroykiSkanera: "სკანერის პარამეტრები",
+  scannerSettings: "სკანერის პარამეტრები",
   skanirovat: 'სკანერი',
   skanirovanieAtributa: 'ატრიბუტის სკანირება',
   izFayla: 'ფაილიდან',

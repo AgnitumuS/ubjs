@@ -60,7 +60,7 @@ UB.i18nExtend({
   po: 'till',
   pluginNeUstanovlen: "Plugin isn't installed",
   pluginNedostupen: 'Plugin is disabled',
-  nastroykiSkanera: "Scanner's settings",
+  scannerSettings: "Scanner's settings",
   skanirovat: 'Scan',
   skanirovanieAtributa: 'Scanning of attribute',
   izFayla: 'From file',

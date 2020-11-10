@@ -563,7 +563,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
     }).then(function (settings) {
       $App.showModal({
         formCode: 'ubm_desktop-scanerSettings',
-        description: UB.i18n('nastroykiSkanera'),
+        description: UB.i18n('scannerSettings'),
         isClosable: true,
         customParams: settings
       }).then(function (result) {
