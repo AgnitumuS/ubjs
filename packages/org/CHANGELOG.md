@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- `org_unit-fm`, `org_staffunit-fm`, `org_profession-fm`, `org_department-fm`: rewritten to vue
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.4.13] - 2020-11-10
+### Changed
+- `org_unit-fm`, `org_staffunit-fm`, `org_profession-fm`, `org_department-fm`: rewritten to vue
 
 ## [5.4.12] - 2020-11-08
 ## [5.4.11] - 2020-11-08

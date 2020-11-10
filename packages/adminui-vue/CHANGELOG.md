@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `USidebar` sidebar width to `0px` in collapsed state and screen less then `768px` (mobile)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [1.13.17] - 2020-11-10
+### Changed
+ - `USidebar` sidebar width to `0px` in collapsed state and screen less then `768px` (mobile)
 
 ## [1.13.16] - 2020-11-08
 ### Fixed
