@@ -32,6 +32,7 @@
       "dataType": "String",
       "size": 128,
       "allowNull": false,
+      "defaultView": false,
       "mapping": [
         {
           "name": "AnsiSQL",

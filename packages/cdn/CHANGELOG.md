@@ -8,10 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `cdn_profession.meta`: added `defaultView: false` for attribute `description`
 
 ### Deprecated
 
 ### Removed
+-`cdn_profession-fm.def`: better to use autoform
 
 ### Fixed
 
