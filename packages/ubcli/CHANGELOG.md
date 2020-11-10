@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+  - all `ubcli` command what accept -host parameter now automatically discovers a server URL from ubConfig 
+  if `-host auto` (or UB_HOST=auto env var) is not explicitly defined. This helps to use `ubcli` in CI script.
+   
 ### Changed
  - `ubcli execSql` will log first 30 chars of statement for `-sql` mode instead of `-sql` word
 
