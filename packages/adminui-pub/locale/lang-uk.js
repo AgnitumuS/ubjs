@@ -60,7 +60,7 @@ UB.i18nExtend({
   po: 'по',
   pluginNeUstanovlen: 'Плагін не встановлено',
   pluginNedostupen: 'Плагін недоступний',
-  nastroykiSkanera: 'Налаштування сканера',
+  scannerSettings: 'Налаштування сканера',
   skanirovat: 'Сканувати',
   skanirovanieAtributa: 'Сканування атрибуту',
   izFayla: 'З файлу',

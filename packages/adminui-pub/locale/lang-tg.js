@@ -60,7 +60,7 @@ UB.i18nExtend({
   po: 'то',
   pluginNeUstanovlen: 'Плагин насб нашудааст',
   pluginNedostupen: 'Плагин дастнорас аст',
-  nastroykiSkanera: 'Танзимоти сканер',
+  scannerSettings: 'Танзимоти сканер',
   skanirovat: 'Скан кардан',
   skanirovanieAtributa: 'Сканкунии хусусият',
   izFayla: 'Аз файл',
