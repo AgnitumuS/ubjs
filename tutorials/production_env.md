@@ -12,14 +12,14 @@ For applications (consider application name is `autotest`)
 ```shell script
 # 
 cd autotest
-ub-pack # this creates `/tmp/ubapp-autotest@x.y.z.tar.gz
+ub-pack # this creates `/tmp/ubapp-autotest#x.y.z.tar.gz
 ```
  - Copy resulting tarball to the server and run deploy
 ```shell script
-sudo ub-deploy ubapp-autotest@x.y.z.tar.gz
+sudo ub-deploy ubapp-autotest#x.y.z.tar.gz
 ```
 
- - Edit (create) environment variables file in `/opt/unitybase/appdata/autotest/ubConfig.env`.
+ - Edit (create) environment variables file in `/var/lib/unitybase/autotest/ubConfig.env`.
 > cd `/opt/unitybase/apps/autotest` and run `ub -T` to see variables list  
 
  - If this is first time setup of application - run initialization 
@@ -31,7 +31,7 @@ sudo systemctl enable --now unitybase@autotest
  - If this is upgrade
 ```shell script
 sudo systemctl stop unitybase@autotest
-sudo -u unitybase ub-app-upgrade autotest 
+sudo -u unitybase ub-app-upgrade --app autotest 
 sudo systemctl start unitybase@autotest
 ```
 
@@ -42,12 +42,12 @@ For products (consider product name is `docflow`)
 ```shell script
 # 
 cd docflow
-ub-pack # this creates `/tmp/ubproduct-docflow@x.y.z.tar.gz
+ub-pack # this creates `/tmp/ubproduct-docflow#x.y.z.tar.gz
 ```
 
  - Copy resulting tarball to the server and run deploy
 ```shell script
-sudo ub-deploy ubproduct-docflow@x.y.z.tar.gz
+sudo ub-deploy ubproduct-docflow#x.y.z.tar.gz
 ```
 
  - If this is first time product setup (there is no application for this product on this server)
@@ -55,7 +55,7 @@ sudo ub-deploy ubproduct-docflow@x.y.z.tar.gz
    ```shell script
    sudo -u unitybase ub-app-new -p docflow -a docflow-cust1
    ``` 
-   - edit application environment variables file in `/opt/unitybase/appdata/docflow-cust1/ubConfig.env` and 
+   - edit application environment variables file in `/var/lib/unitybase/docflow-cust1/ubConfig.env` and 
      run application initialization
    ```shell script
    sudo -u unitybase ub-app-init cust1 # will create app docflow-cust1  
@@ -65,9 +65,9 @@ sudo ub-deploy ubproduct-docflow@x.y.z.tar.gz
  ```shell script
  sudo systemctl stop unitybase@docflow*
  # for each app (docflow-cust1)
- sudo -u unitybase ub-app-upgrade docflow-cust1
+ sudo -u unitybase ub-app-upgrade --app docflow-cust1
   ...
- sudo -u unitybase ub-app-upgrade docflow-custN
+ sudo -u unitybase ub-app-upgrade --app docflow-custN
  sudo systemctl start unitybase@docflow*  
  ```    
      
@@ -103,18 +103,37 @@ In any case all linked dependencies are included into resulting archive as files
 ### Deploy app/product
 Archive created by `ub-pack` can be deployed using command 
 ```shell script
-sudo ub-deploy path/to/ubapp-appName@version.tar.gz
+sudo ub-deploy path/to/ubapp-appName#version.tar.gz
 ```
 For applications (`ubapp-*.tar.gz`) deploy script archive previous app version, unpack a new app into `/opt/unitybase/apps/$UB_APP`
-and creates folder structure for application data in the `/opt/unitybase/appdata/$UB_APP` (if missing).
+and creates folder structure for application data in the `/var/lib/unitybase/$UB_APP` (if missing).
 
 For products (`ubproduct-*.tar.gz`) deploy script archive previous product version and unpack a new product
 into `/opt/unitybase/products/$UB_APP`.
-
-### 
  
 ##  Folder structure
 ```
+/var
+  /lib
+      /unitybase            # applications data (localdb, stores, temporary logs)
+        /shared             # data shared between all applications
+            osplm.ini       # UB EE+ DSTU library settings 
+            /certificates   # UB EE+ DSTU certificates storage 
+                 CACertificates.p7b # UB EE+ root CA's certificates bundle 
+        /crb-docflow        # crb.docflow data
+            /_temp          # temp folder for mdb BLOB store
+            /cmodels        # customer model (customer-specific addition for product developed by customer)
+            /localdb        # local database files (SQLite3, SQL Server localdb etc.)  
+            /stores         # BLOB stores
+            ubConfig.env    # Environment variables for application instance
+        /docs-adminui       # docs-adminui application data
+            /_temp
+            /cmodels
+            /localdb          
+            /stores         
+            ubConfig.env
+  /log
+     /unitybase             # local logs for develepnemt purpose; production logs are written to journald  
 /opt
   /unitybase
     /server                 # ub server (installed by rpm/deb. ub symlinked to `/usr/bin/ub`)
@@ -141,20 +160,7 @@ into `/opt/unitybase/products/$UB_APP`.
             /models
                 /req        # application specific model
             /node_modules   # application modules. For products this folder is placed in /products/productName
-            ubConfig.json   # for stand-alone app not a symlynk but a file
-    /appdata                # applications data (localdb, stores, temporary logs)
-        /crb-docflow        # crb.docflow data
-            /cmodels        # customer model (customer-specific addition for product developed by customer)
-            /localdb        # local database files (SQLite3, SQL Server localdb etc.)  
-            /stores         # BLOB stores
-            /logs           # local logs (for develepnemt purpose; production logs are written to journald)
-            ubConfig.env    # Environment variables for application instance
-        /docs-adminui       # docs-adminui application data
-            /cmodels
-            /localdb          
-            /stores         
-            /logs           
-            ubConfig.env        
+            ubConfig.json   # for stand-alone app not a symlynk but a file                           
 
 /usr/lib/systemd/system
   unitybase@.service        # UnityBase vendor unit. Do not edit it directly - see overriding topic below
@@ -205,7 +211,7 @@ During startup service sets following variables:
 | Variable name | Value and explanation                                                             |
 |---------------|-----------------------------------------------------------------------------------|
 | UB_APP        | Part after @ in the service name (autotest for `systemctl start unitybase@autotest`)  |
-| UB_APPDATA    | `/opt/unitybase/appdata/$UB_APP/` Note a trailing '/' - this allows to use path relative to `cwd` for development (when UB_APPDATA is not defined) |
+| UB_APPDATA    | `/var/lib/unitybase/$UB_APP/` Note a trailing '/' - this allows to use path relative to `cwd` for development (when UB_APPDATA is not defined) |
 | UB_APPHOME    | `/opt/unitybase/apps/$UB_APP/` |
 
 Additional variables can be added for application by placing it in the `%UB_APPDATA%ubConfig.env`.
@@ -289,7 +295,7 @@ Stand-alone application can place all its part into /apps.
 
 #### Application folders structure
 Application with name `appName` place its code in `/opt/unitybase/apps/appName` (UB_APPHOME environment variable) and
-its data in `/opt/unitybase/appdata/appName`:
+its data in `/var/lib/unitybase/appName` (UB_APPDATA environment variable):
 
 ```
 /opt/unitybase/apps
@@ -302,7 +308,7 @@ its data in `/opt/unitybase/appdata/appName`:
       /crb          # vendor model (customer-specific addition for product developed by product owner) 
         package.json
     ubConfig.json   # application config - symlynk to a product config `../../products/docflow@2.1.4/ubConfigDocflow-tpl.json`
-/opt/unitybase/appdata
+/var/lib/unitybase/
   /appName
       /localdb        # local database files (SQLite3, SQL Server localdb etc.)
         appnameFTS.sqlite3
@@ -403,6 +409,13 @@ systemctl edit unitybase@.sevrice
 systemctl revert unitybase@.sevrice
 sudo systemctl daemon-reload
 ```
+
+Or create a drop-in 
+```
+mkdir /etc/systemd/system/unitybase@.sevrice.d
+```
+and place there `*.conf` file with parameters what needs to be added / override. 
+See [systemd.unit](https://www.freedesktop.org/software/systemd/man/systemd.unit.htm) for more information.
 
 ### Certain my-app instance
 ```shell script

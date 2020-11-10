@@ -4,20 +4,20 @@ This model is a main entry point for a UnityBase server application.
 
 ## Application
 
-In term of UnityBase application is defined by:
+In terms of UnityBase application is defined by:
  - configuration (ubConfig.json by default): file what
  describe settings for http server, logging, authorization methods,
  Domain, etc. See [server config json schema](https://unitybase.info/docson/index.html#https://unitybase.info/models/UB/schemas/ubConfig.schema.json)
- for full description
+ for full description;
  - `package.json` - npm/yarn configuration used to give information to
  package manager that allows it to identify the project as well as
  handle the project's dependencies
 
-Inside `package.json` [main field](https://docs.npmjs.com/files/package.json#main)
-is the primary entry point to UnityBase application. In most case entry point
-file content is
+Inside `package.json` the [main field](https://docs.npmjs.com/files/package.json#main)
+is a primary entry point of UnityBase application. In most case entry point
+file content is:
 
-```JavaScript
+```javascript
 const UB = require('@unitybase/ub')
 UB.start()
 ```
@@ -38,14 +38,14 @@ UB.start()
  
  UB server:
   - initialize internal Domain
-  - evaluate a application entry-point script (see UB.js below)
+  - evaluate an application entry-point script (see UB.js below)
   - initialize ELS (since all models scripts is evaluated on this point all entity-level methods and endpoints
     are in Domain, so server can build an access matrix for methods and roles)
  
  UB server switches to multi-thread mode and can accept HTTP requests
     
 ### JS working thread (multi-thread mode)
-  In multi-thread mode UB use a thread pool of size `threadPoolSize` from ubConfig.
+  In multi-thread mode UB uses a thread pool of size `threadPoolSize` from ubConfig.
   Threads in pool are created lazy - in case there is no free thread to accept an incoming request new thread is spawned
   until thread poll is not full.
      
@@ -73,7 +73,7 @@ Model is loaded in server thread memory(in order they defined in `application.do
  - `require` is called for all `*.js` files paired with `*.meta`
  - `require` is called for model entry point defined in `package.json` placed in the model folder
 
-To simplify a ubConfig model `package.json` can contains `config.ubmodel` section what describe the
+To simplify a ubConfig model `package.json` can contain `config.ubmodel` section what describe the
 model name and (optionally) ``"isPublic": true` for "browser-only" model
 
 ```json
@@ -107,8 +107,8 @@ For such models only path to model should be added to the `application.domain.mo
 ```
 
 ### Client-side (adminUI)
-Model can contains a "browser-side" part. In this case model `package.json` should contains `browser` section
-what point to the model initialization script for browser
+Model can contain a "browser-side" part. In this case model `package.json` should contains `browser` section
+what point to the model initialization script for browser:
 
  - In case model is a published module (placed in the node_modules folder) path should be relative to the `package.json`:
 
@@ -136,19 +136,19 @@ UnityBase comes with simple one-level routing.
 {@link class:App#registerEndpoint App.registerEndpoint} method will add a handlers
 functions for a first level of routing:
 
-```js
+```javascript
+const fs = require('fs')
 /**
  * Write a custom request body to file FIXTURES/req and echo file back to client
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  */
 function echoToFile(req, resp) {
-   var fs = require('fs');
-   fs.writeFileSync(FIXTURES + 'req', req.read('bin'));
-   resp.statusCode = 200;
-   resp.writeEnd(fs.readFileSync(FIXTURES + 'req', {encoding: 'bin'}));
+   fs.writeFileSync(FIXTURES + 'req', req.read('bin'))
+   resp.statusCode = 200
+   resp.writeEnd(fs.readFileSync(FIXTURES + 'req', {encoding: 'bin'}))
 }
-App.registerEndpoint('echoToFile', echoToFile);
+App.registerEndpoint('echoToFile', echoToFile)
 ```
 
 More deep routing can be implemented inside the endpoint handler, as we
@@ -157,8 +157,7 @@ did inside build-in UnityBase {@link module:@unitybase/ub.module:endpoints endpo
 ## JSON schemas
 `@unitybase/ub/public/schemas` folder contains JSON schemas for server config, entity meta file and scheduler config.
 It's a good idea to configure your IDE for JSON schema support.
-See for example [WebStorm IDE configuratuion manual](https://git-pub.intecracy.com/unitybase/ubjs/wikis/configuring-webstorm)
-
+See [WebStorm IDE configuratuion manual](https://git-pub.intecracy.com/unitybase/ubjs/wikis/configuring-webstorm)
 
 
 

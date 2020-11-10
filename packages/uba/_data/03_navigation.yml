@@ -281,3 +281,48 @@ adm_desktop:
               cmdType: 'showForm',
               formCode: 'uba_audit-securityDashboard'
             }
+  - adm_folder_mirg:
+      access: Admin
+      displayOrder: 25
+      caption:
+        en: Migrations
+        uk: Міграції
+        ru: Миграции
+        ka: Migrations
+        tg: Миграции
+      iconCls: u-icon-swap
+      items:
+        - ub_version:
+            access: Admin
+            caption:
+              en: Models versions
+              uk: Версії моделей
+              ru: Версии модеоей
+              ka: Models versions
+              tg: Версии модеоей
+            iconCls: u-icon-file-export
+            cmd: >
+              {
+                renderer: 'vue',
+                cmdType: 'showList',
+                cmdData: {
+                  entityName: 'ub_version'
+                }
+              }
+        - ub_migration:
+            access: Admin
+            caption:
+              en: Applied files
+              uk: Міграції що виконано
+              ru: Выполненные миграции
+              ka: Applied files
+              tg: Выполненные миграции
+            iconCls: u-icon-file-text
+            cmd: >
+              {
+                renderer: 'vue',
+                cmdType: 'showList',
+                cmdData: {
+                  entityName: 'ub_migration'
+                }
+              }

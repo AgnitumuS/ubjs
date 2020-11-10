@@ -8,15 +8,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - ClientReposirory Object result will force converting Enums attributes values to String.
-   This fix a problem when enum value is number like (1 for example) and client got a numeric response.
-   General recomendation is to set enum values to alphanumeric string. 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.5.8] - 2020-11-05
+### Added
+ - new properties `UBDomain.customerModels` & `UBDomain.vendorModels` - array of customer/vendor models names.
+   Require UB server to be >= 5.18.17. For earlier versions returns empty arrays. 
+
+### Fixed
+ - DBConnectionConfig type definition: added missing `isDefault` property
+
+## [5.5.7] - 2020-11-01
+### Changed
+ - ClientRepository Object result will force converting Enums attributes values to String.
+   This fix a problem when enum value is number like (1 for example) and client got a numeric response.
+   General recommendations is to set enum values to alphanumeric string. 
 
 ## [5.5.6] - 2020-10-15
 ### Changed

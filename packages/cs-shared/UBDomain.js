@@ -13,6 +13,7 @@ const iso8601ParseAsDate = require('./LocalDataStore').iso8601ParseAsDate
  * @typedef {object} DBConnectionConfig
  * @property {string} name
  * @property {string} dialect
+ * @property {boolean} isDefault
  * @property {Array<string>} supportLang
  * @property {string} advSettings database specific settings
  */
@@ -121,6 +122,17 @@ function UBDomain (domainInfo) {
     me.orderedModels.push(me.models[modelCode])
   })
   me.orderedModels.sort((a, b) => a.order - b.order)
+
+  /**
+   * Array of vendor models names
+   * @type {Array<string>}
+   */
+  this.vendorModels = domainInfo.vendorModels ? domainInfo.vendorModels.split(':') : []
+  /**
+   * Array of customer models names
+   * @type {Array<string>}
+   */
+  this.customerModels = domainInfo.customerModels ? domainInfo.customerModels.split(':') : []
 }
 
 /**

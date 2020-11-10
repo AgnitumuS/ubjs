@@ -108,6 +108,10 @@ class DBConnection {
 
   /**
    * Run parsed (all parameters are ?) SQL what expects result (select statement for example). Returns result as parsed JSON
+   *
+   * **WARNING** Oracle return all field name in UPPER case if `AS "normalName"` is not specified, so better to write a query as such
+   *  `select ID, modelName AS "modelName" from ..` instead of `select ID, modelName from ..`
+   *
    * @param {string} parsedSql
    * @param {Array} paramsValues
    * @returns {Array<Object>}
@@ -174,12 +178,13 @@ class DBConnection {
   }
 
   /**
-   * Generate ID for entity
-   * @param {string} entity
+   * Generate ID. If entity is specified - generate for specified entity (it cah have hos own sequence generator)
+   *   if entity not specified (UB 5.18.17+) - generate ID for this connection
+   * @param {string|undefined} entity code or nothing to get connection level ID
    * @returns {number}
    */
   genID (entity) {
-    return binding.genID(entity)
+    return entity ? binding.genID(entity) : binding.genID(this[DB_INDEX])
   }
 
   /**
@@ -332,13 +337,18 @@ class DBConnection {
   }
 }
 
+let __cachedPool
 /**
  * Create a DBConnection for each connection config item
  * @protected
  * @param {Array<DBConnectionConfig>} connectionsConfig
+ * @param {boolean} [useCached=true] Return already created pool if any
  * @return {Object<string, DBConnection>}
  */
-function createDBConnectionPool (connectionsConfig) {
+function createDBConnectionPool (connectionsConfig, useCached = true) {
+  if (__cachedPool && useCached) {
+    return __cachedPool
+  }
   const connections = {}
   const connBinding = binding.connections
   connectionsConfig.forEach((cfg, idx) => {
@@ -346,8 +356,25 @@ function createDBConnectionPool (connectionsConfig) {
       throw new Error(`internal error: domain config database connection name "${cfg.name}" with index ${idx} does not match database binding name "${connBinding[idx]}"`)
     }
     Object.defineProperty(connections, cfg.name, { value: new DBConnection(idx, cfg), enumerable: true })
+    if (cfg.isDefault && !connections.DEFAULT) {
+      Object.defineProperty(connections, 'DEFAULT', { value: connections[cfg.name], enumerable: true })
+    }
   })
+  if (!connections.DEFAULT && connectionsConfig.length) {
+    Object.defineProperty(connections, 'DEFAULT', { value: connections[connectionsConfig[0].name], enumerable: true })
+  }
+  if (useCached) {
+    __cachedPool = connections
+  }
   return connections
 }
 
-module.exports = createDBConnectionPool
+function releaseDBConnectionPool () {
+  binding.releaseConnections()
+  __cachedPool = undefined
+}
+
+module.exports = {
+  createDBConnectionPool,
+  releaseDBConnectionPool
+}

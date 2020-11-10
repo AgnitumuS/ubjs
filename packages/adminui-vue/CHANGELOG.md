@@ -10,11 +10,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/UAclRlsInput.vue)
 
 ### Changed
-- `USelectEntity`: prop `readonly` does not disable action `edit` in dropdown anymore, but `disabled` still does
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.13.16] - 2020-11-08
+### Fixed
+ - `UDialog` - if `Cancel` button not available - sets focut to first available button.
+   
+## [1.13.15] - 2020-11-05
+## [1.13.14] - 2020-11-01
+### Changed
+- `USelectEntity`: prop `readonly` does not disable action `edit` in dropdown anymore, but `disabled` still does
 
 ### Fixed
  - `store.canRefresh` getter returns `true` for any non-new record (before this fix - for non-new and dirty).

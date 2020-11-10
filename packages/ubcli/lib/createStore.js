@@ -63,7 +63,7 @@ module.exports = function createStore (options) {
   }
 
   function createOneStore (cStore) {
-    console.log('Start handle blobStore "%s"', cStore.name)
+    let newStores=0
     if (!cStore.storeType) {
       cStore.storeType = 'FileSystem'
     }
@@ -72,25 +72,30 @@ module.exports = function createStore (options) {
       if (!RE_TRAILING_PATH_SEP.test(cStorePath)) {
         cStorePath += path.sep
       }
-      console.log('\tresolved to path', cStorePath)
       if (!fs.existsSync(cStorePath)) {
-        console.log('\tresolved path not exists. Do force directory')
+        console.log(`\tStore ${cStore.name}: path '${cStorePath}' not exists and will be created`)
         fs.mkdirSync(cStorePath)
+        newStores++
       }
     } else {
-      console.log('\tskipped - path not defined')
+      console.log('\tStore ${cStore.name}: skipped - path not defined')
     }
     if (cStore.tempPath) {
       const tmp = cStore.tempPath // already converted to absolute by argv
       if (!fs.existsSync(tmp)) {
-        console.log('\t Create temp directory %s', tmp)
+        console.log(`\tStore ${cStore.name}: create temp directory ${tmp}`)
         fs.mkdirSync(tmp)
       }
     }
-    console.log('Done!')
+    return newStores
   }
 
-  selectedStores.forEach(createOneStore)
+  const created = selectedStores.forEach(createOneStore)
+  if (created) {
+    console.log(`BLOB stores folders roots are OK (${created} new root folders are created)`)
+  } else {
+    console.log('BLOB stores folders roots are OK')
+  }
 }
 
 module.exports.shortDoc = `Create internal BLOB store structure (folders) for

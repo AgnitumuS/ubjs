@@ -15,6 +15,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.7.2] - 2020-11-08
+## [5.7.1] - 2020-11-08
+## [5.7.0] - 2020-11-05
+### Added
+ - `ub_migration` & `ub_version` entities added
+
+## [5.6.8] - 2020-11-01
+### Added
+ - `App.blobStores.getContentPath` - retrieve full path to a file with BLOB content
+ - EE & DE edition: added `dstu.iit.strictMode` parameter. If true (default) - force server-side signature format to CADES_X_LONG (enable TSP if disabled)
+
 ## [5.6.7] - 2020-10-20
 ### Added
  - SUFFIXES dbExtension type added to entity schema (UB>=5.18.15)

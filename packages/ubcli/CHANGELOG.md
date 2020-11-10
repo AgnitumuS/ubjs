@@ -6,6 +6,61 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+ - `ubcli execSql` will log first 30 chars of statement for `-sql` mode instead of `-sql` word
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.9.2] - 2020-11-08
+### Changed
+ - removed many unnecessary logging messages form `ubcli` tools output. 
+
+## [5.9.1] - 2020-11-08
+### Changed
+ - `ubcli createStore`: minimize console output by notify only for newly created directory path 
+ - `ubcli execSql` mute per-statement exception in case it contains `--@optimistic` comment somewhere in text.
+   In example below in case table1 already exists exception wil be muted. For table2 - will be raised (`--@optimistic` not in statement text).
+```
+--@optimistic
+create table1 ....
+--
+create table2...
+```
+
+### Fixed
+ - `ubcli migrate`: command line doc added
+ - `ubcli linkStatic`: skip creation of `.entryPoint.js` for modules with **folder** entry-point
+   For example: `"main": "./src"` in package.json.
+   Such links create a file system loop. In any case they can't be required from client side by systemJS.
+ - if invalid arguments is passed to the `ubcli` command it exits with exit code 1.
+   This prevents a batch script from further execution in case of invalid command.
+
+## [5.9.0] - 2020-11-05
+### Added
+ - `ubcli execSql`: new option `-sql script` added for execute SQL script from string. Usage sample:
+```shell script
+ubcli execSql -sql 
+### Fixed
+- DDL generator will skip attributes mapped to another existed attribute
+BEGIN\n import_users.do_import;\n END;--\n delete from aa where 1=0;'
+``` 
+
+ - `ubcli migrate` - see [Version migrations tutorial](https://unitybase.info/api/server-v5/tutorial-migrations.html)
+ - `ubcli initialize` will fill `ub_version` table by versions of the models on the moment of initialization
+
+### Changed
+ - `linkStatic` command uses realpath for a config to search for `node_modules`.
+   This allows using `linkStatic` in product based apps, where config is sym-linked from `/opt/unitybase/products`.
+ - generateDDL: prevent unnecessary warning for SQLite3 default constraint changing
+ - generateDDL: removed unnecessary logout after generateDDL function is ends. Consider generateDDL always executed as local root (-u root) 
+
+## [5.8.0] - 2020-11-01
+### Added
  - new `generateDDL` parameter `-c connectionName`. If passed DDL generator works only for entities for specified connection.
  - new command `ubcli execSql -c connectionName -f path/to/script.sql`.
    Exec a multi-statement SQL script in specified connection without starting a server, so can be used to apply some patches.
@@ -26,10 +81,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - DDL generator result will join all object annotation (comment on) into one SQL statement - this speed up database generation a lot
  - DDL generator for Oracle moves sequence incrementation calls into annotation block, so all of them are executed as a single call 
  
-### Deprecated
-
-### Removed
-
 ### Fixed
  - `genSuffixesIndexInitScript` fixed to generate an SQL with valid argument for `dbo.strTails`
  - DDL generator: remove warning from a console in case entity metadata is congruence with the database for connection

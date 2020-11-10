@@ -8,21 +8,45 @@
  *
  * If --optimistic (-o) option is passed each statement are wrapped in try/finally block and script execution will continue even after error in individual statement
  *
- * Exceptions in statements what contains `-- ignore error` string are ignored
+ * Exceptions in statements what contains `--@optimistic` string is forced to be optimistic.
  *
+ * SQL script can be a [lodash template](https://lodash.com/docs/4.17.15#template). In this case it preparsed using
+ * `options = {conn: connectionConfig, cfg: execSqlOptionsObject}`
+ *
+ * Template example:
+
+  <% if (conn.dialect.startsWith('MSSQL')) { %>
+  SQL server specific statement
+  <% } else { %>
+  non SQL server statement
+  <% } %>
+  --
+  one more statement for any DBMS;
+  --
+
  * Usage from a command line:
 
  ubcli execSsq -?
  ubcli execSql -c connectionName -f path/to/script.sql -o
 
  * Usage from a code:
- *
+
  const execSql = require('@unitybase/ubcli/lib/execSql')
  let options = {
       connection: 'main',
       file: './myScript.sql',
       optimistic: true,
       progress: false
+  }
+ execSql(options)
+
+ // exec SQL script in default connection
+ options = {
+      sql: `BEGIN
+      import_users.do_import;
+      END;
+      /
+      delete from myTable where code = 'oldCode';`
   }
  execSql(options)
 
@@ -38,22 +62,22 @@ const createDBConnectionPool = require('@unitybase/base').createDBConnectionPool
 
 module.exports = execSql
 
-let dbConnections
-
 /**
  * @param {Object} cfg
  * @param {string} [cfg.connection]        Connection name. If empty - uses default connection
- * @param {string} cfg.file                Path to a script for execution
+ * @param {string} [cfg.file]              Path to a script for execution. Either file or sql should be specified
+ * @param {string} [cfg.sql]               Text of SQL script for execution. Either file or sql should be specified
  * @param {Boolean} [cfg.optimistic=false] Wrap each statement in try/catch block. Continue execution on exceptions
  * @param {Boolean} [cfg.progress=false]   Output execution time for each command into console
  */
 function execSql (cfg) {
   if (!cfg) {
-    const opts = options.describe('initDB',
-      'Execute an SQL script in specified connection.\nEach statment executed in separate transaction', 'ubcli')
+    const opts = options.describe('execSql',
+      'Execute an SQL script in specified connection.\nEach statement executed in its own transaction', 'ubcli')
       .add([
         { short: 'c', long: 'connection', param: 'connectionName', defaultValue: '', searchInEnv: true, help: 'Connection name. If empty - uses default connection' },
-        { short: 'f', long: 'file', param: '/path/to/script.sql', searchInEnv: false, help: 'Path to a script for execution' }
+        { short: 'f', long: 'file', param: '/path/to/script.sql', defaultValue: '', searchInEnv: false, help: 'Path to a script for execution. Either -f or -sql should be specified' },
+        { short: 'sql', long: 'sql', param: 'sql text for execution', defaultValue: '', searchInEnv: false, help: 'text of SQL script for execution. Either -f or -sql should be specified' }
       ])
       .add({
         short: 'o',
@@ -74,23 +98,42 @@ function execSql (cfg) {
   if (!cfg) return
   const config = argv.getServerConfiguration(true)
 
-  let connDef
+  let connCfg
   if (cfg.connection) {
-    connDef = config.application.connections.find(c => c.name === cfg.connection)
-    if (!connDef) throw new Error(`Database connection with name '@${cfg.connection}' not found in application.connections`)
+    connCfg = config.application.connections.find(c => c.name === cfg.connection)
+    if (!connCfg) throw new Error(`Database connection with name '@${cfg.connection}' not found in application.connections`)
   } else {
-    connDef = config.application.connections.find(c => c.isDefault === true)
-    if (!connDef) throw new Error('Connection with isDefault=true not found in application.connections')
+    connCfg = config.application.connections.find(c => c.isDefault === true)
+    if (!connCfg) throw new Error('Connection with isDefault=true not found in application.connections')
   }
 
-  if (!dbConnections) {
-    dbConnections = createDBConnectionPool(config.application.connections)
+  const dbConnections = createDBConnectionPool(config.application.connections)
+
+  let scriptTpl
+  if (cfg.file) {
+    scriptTpl = fs.readFileSync(cfg.file, { encoding: 'utf8' })
+  } else if (cfg.sql) {
+    scriptTpl = cfg.sql
+  } else {
+    throw new Error('Either file or sql MUST be specified')
   }
-  let script = fs.readFileSync(cfg.file, { encoding: 'utf8' })
-  script = script.replace(/\r\n/g, '\n')
+
+  scriptTpl = scriptTpl.replace(/\r\n/g, '\n')
+  let script
+  if (scriptTpl.indexOf('<%') >= 0) { // contains a template
+    const compiledTpl = _.template(scriptTpl)
+    script = compiledTpl({
+      conn: connCfg,
+      cfg
+    })
+  } else {
+    script = scriptTpl
+  }
+
+  const dbConn = dbConnections[connCfg.name]
   const stmts = script.split(/^[ \t]*--[ \t]*$|^[ \t]*GO[ \t]*$|^[ \t]*\/[ \t]*$/gm).filter(s => s.trim() !== '')
-  const dbConn = dbConnections[connDef.name]
-  console.log(`Executing script '${cfg.file}' using connection '${connDef.name}' (${stmts.length} statements)...`)
+  const execLogIdent = cfg.file ? cfg.file : script.slice(0, 30) + '...'
+  console.log(`Executing '${execLogIdent}' script of ${stmts.length} statements in connection '${connCfg.name}'...`)
   const totalT = Date.now()
   let invalidStmtCnt = 0
   let successStmtCnt = 0
@@ -98,7 +141,7 @@ function execSql (cfg) {
   stmts.forEach((stmt, n) => {
     try {
       const d = Date.now()
-      ignoreErr = stmt.indexOf('-- ignore error') > -1
+      ignoreErr = stmt.indexOf('--@optimistic') > -1
       dbConn.execParsed(stmt)
       dbConn.commit()
       if (cfg.progress) {
@@ -107,15 +150,19 @@ function execSql (cfg) {
       successStmtCnt++
     } catch (e) {
       invalidStmtCnt++
-      if (!cfg.optimistic && !ignoreErr) throw e
+      if (!cfg.optimistic && !ignoreErr) {
+        throw e
+      } else {
+        console.log("Exception in statement is mutes because of 'optimistic' mode")
+      }
     }
   })
   if (invalidStmtCnt > 0) {
-    console.warn(`Script completed ${successStmtCnt} statement success and ${invalidStmtCnt} statements with exceptions (ignored in optimistic mode)`)
+    console.warn(`Script completed in ${Date.now() - totalT}ms. ${successStmtCnt} statement success and ${invalidStmtCnt} statements with exceptions (ignored in optimistic mode)`)
   } else {
-    console.info(`Successfully completed ${successStmtCnt} statements`)
+    console.info(`Successfully completed in ${Date.now() - totalT}ms`)
   }
-  console.log(`Total execution time: ${Date.now() - totalT}ms`)
 }
+
 
 module.exports.shortDoc = 'Execute an SQL script in specified connection'

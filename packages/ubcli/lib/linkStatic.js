@@ -49,6 +49,7 @@ as drop-in replacement to /clientRequire and /models endpoints`,
   const cfgFN = argv.getConfigFileName()
   const ubCfg = argv.getServerConfiguration()
   let target = cfg.target || ubCfg.httpServer.inetPub
+
   if (!target || (typeof target !== 'string')) {
     throw new Error('Target folder is not specified. Either set a "http.inetPub" value in config or pass switch --target path/to/target/folder')
   }
@@ -58,8 +59,8 @@ as drop-in replacement to /clientRequire and /models endpoints`,
   const NODE_MODULES_SOURCES_ALIAS = WINDOWS ? '%NMS%' : '$NMS'
 
   const domainModels = ubCfg.application.domain.models
-  const cfgPath = path.dirname(cfgFN)
-  const modulesPath = path.join(cfgPath, 'node_modules')
+  const realCfgPath = path.dirname(fs.realpathSync(cfgFN)) // config can be a symlink from /opt/unitybase/products
+  const modulesPath = path.join(realCfgPath, 'node_modules')
   if (!fs.existsSync(modulesPath)) {
     throw new Error(`node_modules folder not found in the folder with app config. Expected "${modulesPath}". May be you miss "npm i" command?`)
   }
@@ -118,7 +119,7 @@ as drop-in replacement to /clientRequire and /models endpoints`,
     let rpp = m.realPublicPath
     if (rpp.endsWith('/') || rpp.endsWith('\\')) rpp = rpp.slice(0, -1)
     if (!fs.existsSync(rpp)) { // no public folder
-      DEBUG && console.info(`Skip model ${mName} - no public folder ${rpp}`)
+      DEBUG && console.info(`Skip model ${m.Name} - no public folder ${rpp}`)
       continue
     }
     const moduleLink = commands.find(c => c.from === rpp)
@@ -222,15 +223,12 @@ goto :eof
   console.log(`
 
 ${WINDOWS ? 'CMD' : 'Bash'} script ${resFn} is created
-
-Review a script, take care about target folder and package list.
-
-In case some package should not be exposed to client add a section
-"config": {"ubmodel": {} } into corresponding package.json.
-
-Use a command:
-${WINDOWS ? '.\\.linkStatic.cmd' : 'chmod +x ./.linkStatic.sh && ./.linkStatic.sh'}
-to link a static`)
+  Review a script, take care about target folder and package list.
+  In case some package should not be exposed to client add a section
+        "config": {"ubmodel": {} } into corresponding package.json.
+  Use a command:
+    ${WINDOWS ? '.\\.linkStatic.cmd' : 'chmod +x ./.linkStatic.sh && ./.linkStatic.sh'}
+  to link a static`)
 
   // let pjsPath = path.join(cfgPath, 'package.json')
   // if (!fs.existsSync(pjsPath)) {
@@ -281,14 +279,17 @@ function tryAddModule (modulesPath, MPT, module, commands, target) {
     })
     if (!hasUbModel) { // add link to module entry point to use in `index .entryPoint.js` nginx directive
       const pkgEntryPoint = path.join(modulesPath, module, p.main || 'index.js')
-      if (fs.existsSync(pkgEntryPoint)) {
+      // Check only files. Entry point can be a folder as in https://github.com/tarruda/has:  "main": "./src"
+      // In such cases second call to linkStatic creates a File system loop
+      // In any case such modules can't be requires by systemjs? so better to exclude it at all
+      if (fs.isFile(pkgEntryPoint)) {
         commands.push({
           type: 'file',
           from: path.join(MPT, module, p.main || 'index.js'),
           to: path.join(target, module, '.entryPoint.js')
         })
       } else {
-        DEBUG && console.warn(`Entry point ${pkgEntryPoint} not exists. Skip linking of .entryPoint.js`)
+        DEBUG && console.warn(`Entry point ${pkgEntryPoint} not exists (or points to a folder). Skip linking of .entryPoint.js`)
       }
     }
   } else { // packages with `public` folder

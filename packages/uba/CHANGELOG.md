@@ -15,6 +15,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.39] - 2020-11-08
+## [5.4.38] - 2020-11-08
+## [5.4.37] - 2020-11-05
+### Added
+ - Nav Shortcuts: `Migrations` folder with `Models versions` and `Applied files` shortcuts
+
+## [5.4.36] - 2020-11-01
 ## [5.4.35] - 2020-10-20
 ## [5.4.34] - 2020-10-15
 ### Added

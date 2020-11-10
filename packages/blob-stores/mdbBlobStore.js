@@ -12,7 +12,6 @@ const VERIFIED_PATH = {}
  *
  *    - relative path created in format modelName|relativePathFromModelDir to hide real file place from client
  *    - OS user temp folder used for store temporary content
- *    - delete operation is forbidden since models must be under version control
  *
  *  Used in:
  *
@@ -135,13 +134,6 @@ class MdbBlobStore extends BlobStoreCustom {
       size: dirtyItem.size,
       md5: dirtyItem.md5
     }
-  }
-
-  /**
-   * @override
-   */
-  doDeletion (attribute, ID, blobInfo) {
-    throw new Error(`${this.name} store not support deletion. Developer must delete file manually`)
   }
 
   /**

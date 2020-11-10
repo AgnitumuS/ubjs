@@ -107,9 +107,11 @@ export default {
 
     async setFocus () {
       await this.$nextTick()
-      const cancelButton = this.$refs.cancelButton
-      if (cancelButton) {
-        cancelButton.$el.focus()
+      const btn = this.$refs.cancelButton
+        ? this.$refs.cancelButton.$el // focut on 'Cancel' by default
+        : this.$el.getElementsByClassName('u-button')[0] // no 'Cancel' button - search for first available
+      if (btn) {
+        btn.focus()
       }
     }
   }

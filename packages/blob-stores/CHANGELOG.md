@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-  - `App.blobStores.getContentPath` method - retrieve full path to a file with BLOB content (in case store is file-based)
 
 ### Changed
 
@@ -15,6 +14,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.14] - 2020-11-08
+## [5.4.13] - 2020-11-08
+## [5.4.12] - 2020-11-05
+### Fixed
+- MdbBlobStore do not throw an error on deletion
+
+## [5.4.11] - 2020-11-01
+### Added
+  - `App.blobStores.getContentPath` method - retrieve full path to a file with BLOB content (in case store is file-based)
 
 ## [5.4.10] - 2020-10-15
 ## [5.4.9] - 2020-09-23

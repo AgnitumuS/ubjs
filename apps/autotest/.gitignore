@@ -9,4 +9,5 @@ screenshots/
 _temp/
 callgrind*
 ubConfig*.env
-
+*.supp
+.*

@@ -15,6 +15,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.2] - 2020-11-08
+### Added
+ - `DBCOnnection.selectParsedAsObject` for Oracle warning added: 
+  Oracle return all field name in UPPER case if `AS "normalName"` is not specified, so better to write a query as such
+  `select ID, modelName AS "modelName" from ..` instead of `select ID, modelName from ..`
+
+## [5.4.1] - 2020-11-08
+### Changed
+ - `options.parseVerbose` ( a command line parameters parser) will throw in case of invalid / missed parameters.
+   This returns a 1 exit code to caller and, for example, can prevent batch script from further execution. 
+
+## [5.4.0] - 2020-11-05
+### Added
+ - `createDBConnectionPool` adds connection with name `DEFAULT` for easy access to default DB connection
+ - in case `DBConnection.genID` called with `undefined` it return ID for connection. If with entity code - for specified entity.
+ - `argv.establishConnectionFromCmdLineAttributes` will always uses 'ROOT' auth schema if user is 'root'. Before this fix 
+   'ROOT' schema is used if user is root AND server is started by this session.
+    
+
+### Changed
+ - `createDBConnectionPool` will re-use previously created pool
+
+### Fixed
+ - added missing {ubRequest} type definition
+
+## [5.3.6] - 2020-11-01
 ## [5.3.5] - 2020-10-15
 ## [5.3.4] - 2020-09-23
 ## [5.3.3] - 2020-09-22
@@ -279,14 +305,14 @@ defined as array
 ## [4.2.23] - 2017-10-26
 ### Added
 - `FileBaseStoreLoader` now use a `CRC32(fileDate.toString())` to calculate a cache version (UB only).
-Prev. implementataion based on max file modification date fails in 
-case we updated something backwards
+Prev. implementation based on max file modification date fails in 
+case we updated something backwards.
 
 ## [4.2.21] - 2017-10-05
 ### Added
 - `argv.establishConnectionFromCmdLineAttributes` can accept a `-timeout` command line which
- set a connection receive timeout. By default timeout increased to 120 set to
- allow a long-live script execution
+ set a connection receive timeout. Default timeout increased to 120 sec to
+ allow a long-live script execution.
 
 ## [4.2.20] - 2017-09-22
 ### Added
@@ -300,8 +326,8 @@ case we updated something backwards
 ### Added
 - `argv.getConfigFileName` take a config from UB_CFG environment variable if `-cfg` cmd line switch omitted
 - `FileBaseStoreLoader.load()` now return data version in TubDataCache. 
-  To be used in file-based entitis select's instead of version calculation individually in each entity
-- `SyncConnection.setDocument` method for convinient uploading content to temp store, for example in model initialization or
+  To be used in file-based entities selects instead of version calculation individually in each entity
+- `SyncConnection.setDocument` method for convenient uploading content to temp store, for example in model initialization or
   data update/migration scripts
 
 ### Fixed

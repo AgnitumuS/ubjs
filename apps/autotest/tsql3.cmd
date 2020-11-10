@@ -66,6 +66,9 @@ call npx ubcli autotest -cfg %UB_CFG% -u admin -p %PASSWORD_FOR_ADMIN% -host %UB
   goto err
 )
 
+SET TESTCASE=migrate
+call npx ubcli migrate -cfg %UB_CFG% -u root -v
+@if errorlevel 1 goto err
 
 goto :eof
 

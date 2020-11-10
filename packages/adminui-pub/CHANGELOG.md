@@ -15,9 +15,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.13.48] - 2020-11-08
+## [5.13.47] - 2020-11-08
+## [5.13.46] - 2020-11-05
+## [5.13.45] - 2020-11-01
 ## [5.13.44] - 2020-10-20
 ### Fixed
- - Ext based grid multifilter: checking date value is valid before filtering into ubdetailgrid
+ - Ext based grid multi-filter: checking date value is valid before filtering into `ubdetailgrid`
 
 ## [5.13.43] - 2020-10-15
 ### Added
@@ -127,7 +131,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - replace most font-awesome and element-ui to UB icons analog
 
 ### Fixed
-- `UBMultiSelectVox`: changed **orderList** structure from Array<Object> to Object for compatibility wit `UB@5.18+`
+- `UBMultiSelectBox`: changed **orderList** structure from Array<Object> to Object for compatibility wit `UB@5.18+`
 
 ## [5.13.10] - 2020-05-13
 ## [5.13.9] - 2020-05-06
