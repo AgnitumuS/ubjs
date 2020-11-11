@@ -151,9 +151,12 @@ function establishConnectionFromCmdLineAttributes (config) {
     config = options.describe('', '').add(establishConnectionFromCmdLineAttributes._cmdLineParams).parseVerbose()
     if (!config) throw new Error('Invalid command line arguments')
   }
+  if (config.host === 'auto') {
+    const appConfig = getServerConfiguration(false)
+    config.host = serverURLFromConfig(appConfig)
+  }
   const serverSession = serverSessionFromCmdLineAttributes(config)
 
-  // if ((hostStart === 'localhost') || (hostStart === '127') || (hostStart === '10')) {
   if (config.forceStartServer) {
     console.info('Force server starting')
     if (startServer()) {
@@ -205,10 +208,10 @@ function establishConnectionFromCmdLineAttributes (config) {
  * @type {Array<Object>}
  */
 establishConnectionFromCmdLineAttributes._cmdLineParams = [
-  { short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:8881', searchInEnv: true, help: 'Full server URL' },
+  { short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'auto', searchInEnv: true, help: 'Full server URL. If not passed - will try to read host from ubConfig' },
   { short: 'u', long: 'user', param: 'userName', searchInEnv: true, help: 'User name' },
   { short: 'p', long: 'pwd', param: 'password', defaultValue: '-', searchInEnv: true, help: 'User password. Required for non-root' },
-  { short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config' },
+  { short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to the UB server config' },
   { short: 'timeout', long: 'timeout', param: 'timeout', defaultValue: 120000, searchInEnv: true, help: 'HTTP Receive timeout in ms' }
 ]
 

@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.3] - 2020-11-10
+### Added
+ - `argv.establishConnectionFromCmdLineAttributes`: default value for -host parameter is changed to `auto`.
+ if `-host auto` or UB_HOST=auto env variable is defined then host will be taken from application config
+  
 ## [5.4.2] - 2020-11-08
 ### Added
  - `DBCOnnection.selectParsedAsObject` for Oracle warning added: 

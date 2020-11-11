@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- fix last used scanner and supplement type for UBScan on scanner settings form
+ 
+## [5.4.25] - 2020-11-10
+### Fixed
+- `ubm_desktop-scanerSettings-fm`: fixed correct settings saving and localization [UBDF-12670], [LDOC-1010],
+    [LDOC-1041], [LDOC-1011], [LDOC-1015]
 
 ## [5.4.24] - 2020-11-08
 ## [5.4.23] - 2020-11-08

@@ -142,7 +142,11 @@ export default {
     isCollapsed (value) {
       window.localStorage.setItem('portal:sidebar:isCollapsed', value)
       this.$UB.core.UBApp.fireEvent('portal:sidebar:collapse', value)
-      const { full, collapsed } = $App.viewport.leftPanel.defaultSizes
+      let { full, collapsed } = $App.viewport.leftPanel.defaultSizes
+
+      if (window.innerWidth < 768) {
+        collapsed = 0
+      }
       $App.viewport.leftPanel.setWidth(value ? collapsed : full)
     },
     selectedDesktop (value) {
@@ -322,7 +326,7 @@ export default {
 </script>
 
 <style>
-.ub-sidebar{
+.ub-sidebar {
   height: 100%;
   background: hsl(var(--hs-sidebar), var(--l-sidebar-default));
   display: flex;
@@ -340,10 +344,10 @@ export default {
   border: 2px solid rgba(0, 0, 0, 0);
   background-clip: padding-box;
   background-color: hsl(var(--hs-sidebar), 60%);
-  transition:background-color .1s;
+  transition: background-color .1s;
 }
 
-.ub-sidebar .el-menu-item .el-tooltip{
+.ub-sidebar .el-menu-item .el-tooltip {
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -352,7 +356,7 @@ export default {
 .ub-sidebar .el-menu-item [class*=fa-],
 .ub-sidebar .el-submenu [class*=fa-],
 .ub-sidebar .el-menu-item [class*=u-icon-],
-.ub-sidebar .el-submenu [class*=u-icon-]{
+.ub-sidebar .el-submenu [class*=u-icon-] {
   vertical-align: middle;
   width: 24px;
   min-width: 24px;
@@ -366,11 +370,11 @@ export default {
 .ub-sidebar .el-submenu [class^="el-icon-"],
 .ub-sidebar .el-menu-item [class^="u-icon-"],
 .ub-sidebar .el-submenu [class^="u-icon-"] {
-  margin-right: 5px!important;
+  margin-right: 5px !important;
 }
 
 .ub-sidebar .el-submenu__title,
-.ub-sidebar .el-menu-item{
+.ub-sidebar .el-menu-item {
   display: flex;
   height: auto;
   line-height: 1.5;
@@ -382,24 +386,24 @@ export default {
 }
 
 .ub-sidebar .el-menu--collapse .el-submenu__title,
-.ub-sidebar .el-menu--collapse .el-menu-item{
+.ub-sidebar .el-menu--collapse .el-menu-item {
   justify-content: center;
 }
 
 .ub-sidebar .el-menu-item,
-.ub-sidebar .el-submenu__title{
+.ub-sidebar .el-submenu__title {
   padding-right: 15px;
 }
 
-.ub-sidebar .el-submenu__icon-arrow{
+.ub-sidebar .el-submenu__icon-arrow {
   right: 6px;
 }
 
 .ub-sidebar .el-submenu__title .el-submenu__icon-arrow {
- transform: rotateZ(-90deg);
+  transform: rotateZ(-90deg);
 }
 
-.ub-sidebar .el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow {
+.ub-sidebar .el-submenu.is-opened > .el-submenu__title .el-submenu__icon-arrow {
   transform: rotateZ(0deg);
 }
 
@@ -425,7 +429,7 @@ export default {
   text-align: center;
 }
 
-.u-sidebar__collapse-button{
+.u-sidebar__collapse-button {
   position: absolute;
   top: 8px;
   left: 100%;
@@ -442,7 +446,7 @@ export default {
   cursor: pointer;
 }
 
-.u-sidebar__collapse-button:hover{
+.u-sidebar__collapse-button:hover {
   background: hsl(var(--hs-sidebar), var(--l-sidebar-depth-1));
 }
 </style>

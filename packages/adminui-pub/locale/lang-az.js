@@ -60,7 +60,7 @@ UB.i18nExtend({
   po: 'Bu tarixədək',
   pluginNeUstanovlen: 'Plagin quraşdırılmayıb',
   pluginNedostupen: 'Plagin əlçatmazdır',
-  nastroykiSkanera: 'Skayner kökləmələri',
+  scannerSettings: 'Skayner kökləmələri',
   skanirovat: 'Skan et',
   skanirovanieAtributa: 'Atributun skan edilməsi',
   izFayla: 'Fayldan',

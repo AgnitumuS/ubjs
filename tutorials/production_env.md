@@ -19,7 +19,7 @@ ub-pack # this creates `/tmp/ubapp-autotest#x.y.z.tar.gz
 sudo ub-deploy ubapp-autotest#x.y.z.tar.gz
 ```
 
- - Edit (create) environment variables file in `/var/lib/unitybase/autotest/ubConfig.env`.
+ - Edit (create) environment variables file in `/var/opt/unitybase/autotest/ubConfig.env`.
 > cd `/opt/unitybase/apps/autotest` and run `ub -T` to see variables list  
 
  - If this is first time setup of application - run initialization 
@@ -55,7 +55,7 @@ sudo ub-deploy ubproduct-docflow#x.y.z.tar.gz
    ```shell script
    sudo -u unitybase ub-app-new -p docflow -a docflow-cust1
    ``` 
-   - edit application environment variables file in `/var/lib/unitybase/docflow-cust1/ubConfig.env` and 
+   - edit application environment variables file in `/var/opt/unitybase/docflow-cust1/ubConfig.env` and 
      run application initialization
    ```shell script
    sudo -u unitybase ub-app-init cust1 # will create app docflow-cust1  
@@ -106,7 +106,7 @@ Archive created by `ub-pack` can be deployed using command
 sudo ub-deploy path/to/ubapp-appName#version.tar.gz
 ```
 For applications (`ubapp-*.tar.gz`) deploy script archive previous app version, unpack a new app into `/opt/unitybase/apps/$UB_APP`
-and creates folder structure for application data in the `/var/lib/unitybase/$UB_APP` (if missing).
+and creates folder structure for application data in the `/var/opt/unitybase/$UB_APP` (if missing).
 
 For products (`ubproduct-*.tar.gz`) deploy script archive previous product version and unpack a new product
 into `/opt/unitybase/products/$UB_APP`.
@@ -114,7 +114,7 @@ into `/opt/unitybase/products/$UB_APP`.
 ##  Folder structure
 ```
 /var
-  /lib
+  /opt
       /unitybase            # applications data (localdb, stores, temporary logs)
         /shared             # data shared between all applications
             osplm.ini       # UB EE+ DSTU library settings 
@@ -211,7 +211,7 @@ During startup service sets following variables:
 | Variable name | Value and explanation                                                             |
 |---------------|-----------------------------------------------------------------------------------|
 | UB_APP        | Part after @ in the service name (autotest for `systemctl start unitybase@autotest`)  |
-| UB_APPDATA    | `/var/lib/unitybase/$UB_APP/` Note a trailing '/' - this allows to use path relative to `cwd` for development (when UB_APPDATA is not defined) |
+| UB_APPDATA    | `/var/opt/unitybase/$UB_APP/` Note a trailing '/' - this allows to use path relative to `cwd` for development (when UB_APPDATA is not defined) |
 | UB_APPHOME    | `/opt/unitybase/apps/$UB_APP/` |
 
 Additional variables can be added for application by placing it in the `%UB_APPDATA%ubConfig.env`.
@@ -295,7 +295,7 @@ Stand-alone application can place all its part into /apps.
 
 #### Application folders structure
 Application with name `appName` place its code in `/opt/unitybase/apps/appName` (UB_APPHOME environment variable) and
-its data in `/var/lib/unitybase/appName` (UB_APPDATA environment variable):
+its data in `/var/opt/unitybase/appName` (UB_APPDATA environment variable):
 
 ```
 /opt/unitybase/apps
@@ -308,7 +308,7 @@ its data in `/var/lib/unitybase/appName` (UB_APPDATA environment variable):
       /crb          # vendor model (customer-specific addition for product developed by product owner) 
         package.json
     ubConfig.json   # application config - symlynk to a product config `../../products/docflow@2.1.4/ubConfigDocflow-tpl.json`
-/var/lib/unitybase/
+/var/opt/unitybase/
   /appName
       /localdb        # local database files (SQLite3, SQL Server localdb etc.)
         appnameFTS.sqlite3
