@@ -415,6 +415,8 @@ module.exports.default = {
         }
         this.customParams.LastUsedScanner = this.selectedScanner
         this.customParams.LastSelectedScanner = this.selectedScanner
+        this.customParams.UBScan.LastUsedScanner = this.selectedScanner
+        this.customParams.UBScan.LastSelectedScanner = this.selectedScanner
       }
     },
 
@@ -424,7 +426,6 @@ module.exports.default = {
       this.customParams.BarcodeSettings.PrinterName = this.selectedPrinter
       this.customParams.BarcodeSettings.Rotate180 = this.isBarcodeRotated
       this.customParams.BarcodeSettings.pagePosition = this.pagePosition
-      this.customParams.BarcodeSettings.SupplementType = this.defaultBarcodeSettings.SupplementType
       this.pageMargins.forEach(attr => {
         this.customParams.BarcodeSettings[attr.key] = attr.value
       })
