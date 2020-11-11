@@ -118,15 +118,23 @@ module.exports = function generateNginxCfg (cfg) {
     console.error(`Write to file ${cfg.out} fail`)
   }
   const linkAsFileName = externalURL.host + '.cfg'
-  console.info(`
-Config generated and can be included inside nginx.conf: 
-  include ${cfg.out.replace(/\\/g, '/')};
-  
-or linked to /etc/nginx/sites-enabled if you are on linux:
+  if (process.platform === 'win32') {
+    console.info(`Config generated and can be included inside nginx.conf: 
+    include ${cfg.out.replace(/\\/g, '/')};`)
+  } else {
+    if (fs.existsSync('/etc/nginx/sites-enabled')) {
+      console.info(`Config generated and can be linked to /etc/nginx/sites-enabled:
   sudo ln -s ${cfg.out.replace(/\\\\/g, '/')} /etc/nginx/sites-available/${linkAsFileName}
   sudo ln -s /etc/nginx/sites-available/${linkAsFileName} /etc/nginx/sites-enabled
   sudo nginx -s reload
-`)
+    `)
+    } else {
+      console.info(`Config generated and can be linked to /etc/nginx/conf.d:
+  sudo ln -s ${cfg.out.replace(/\\\\/g, '/')} /etc/nginx/conf.d/${linkAsFileName}
+    `)
+    }
+    console.info('To apply new configs type\n  sudo nginx -s reload')
+  }
 }
 
 module.exports.shortDoc = `Generate include for NGINX config based on
