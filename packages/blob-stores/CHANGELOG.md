@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- mdb store now stores MD5
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.4.16] - 2020-11-12
+### Changed
+- mdb store now stores MD5
 
 ## [5.4.15] - 2020-11-10
 ## [5.4.14] - 2020-11-08

@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `ubcli generateNgingCfg`: a final message for CentOS propose to link config to `/etc/nginx/conf.d`
-   instead of `/etc/nginx/sites-available` for Ubuntu
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.9.4] - 2020-11-12
+### Changed
+ - `ubcli generateNgingCfg`: a final message for CentOS propose to link config to `/etc/nginx/conf.d`
+   instead of `/etc/nginx/sites-available` for Ubuntu
 
 ## [5.9.3] - 2020-11-10
 ### Added

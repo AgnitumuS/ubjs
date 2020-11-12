@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.4] - 2020-11-12
 ## [5.4.3] - 2020-11-10
 ### Added
  - `argv.establishConnectionFromCmdLineAttributes`: default value for -host parameter is changed to `auto`.
