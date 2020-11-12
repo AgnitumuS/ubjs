@@ -16,7 +16,7 @@ ub-pack # this creates `/tmp/ubapp-autotest#x.y.z.tar.gz
 ```
  - Copy resulting tarball to the server and run deploy
 ```shell script
-sudo ub-deploy ubapp-autotest#x.y.z.tar.gz
+sudo -u unitybase ub-deploy ubapp-autotest#x.y.z.tar.gz
 ```
 
  - Edit (create) environment variables file in `/var/opt/unitybase/autotest/ubConfig.env`.
@@ -47,7 +47,7 @@ ub-pack # this creates `/tmp/ubproduct-docflow#x.y.z.tar.gz
 
  - Copy resulting tarball to the server and run deploy
 ```shell script
-sudo ub-deploy ubproduct-docflow#x.y.z.tar.gz
+sudo -u unitybase ub-deploy ubproduct-docflow#x.y.z.tar.gz
 ```
 
  - If this is first time product setup (there is no application for this product on this server)
@@ -103,7 +103,7 @@ In any case all linked dependencies are included into resulting archive as files
 ### Deploy app/product
 Archive created by `ub-pack` can be deployed using command 
 ```shell script
-sudo ub-deploy path/to/ubapp-appName#version.tar.gz
+sudo -u unitybase ub-deploy path/to/ubapp-appName#version.tar.gz
 ```
 For applications (`ubapp-*.tar.gz`) deploy script archive previous app version, unpack a new app into `/opt/unitybase/apps/$UB_APP`
 and creates folder structure for application data in the `/var/opt/unitybase/$UB_APP` (if missing).
