@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - UTableEntity: new prop `bordered` (true by default) - display a border around table
+  and toolbar. See for example cdn_person form - with border around Contacts its looks
+  better.
+  
 ### Changed
 
 ### Deprecated
