@@ -1,6 +1,6 @@
-const BlobStoreCustom = require('./blobStoreCustom')
 const path = require('path')
 const fs = require('fs')
+const BlobStoreCustom = require('./blobStoreCustom')
 
 // model's public folder may not exists - in this we will create it
 // during `getPermanentFileName` and cache verified path's here
@@ -49,14 +49,15 @@ class MdbBlobStore extends BlobStoreCustom {
     const fn = this.getTempFileName(request)
     console.debug('temp file is written to', fn)
     fs.writeFileSync(fn, content)
-    // TODO md5val = CryptoJS.MD5(content)
+    const md5 = nhashFile(fn, 'MD5')
+    console.debug('temp file MD5:', md5)
     return {
       store: this.name,
       fName: request.fileName,
       origName: request.fileName,
       ct: '', // TODO
       size: content.byteLength,
-      md5: '',
+      md5,
       isDirty: true
     }
   }
