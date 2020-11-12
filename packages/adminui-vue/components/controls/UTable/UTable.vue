@@ -222,6 +222,7 @@ export default {
 
 .u-table td,
 .u-table th{
+  border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   color: var(--text);
   padding: 10px 8px;
@@ -229,7 +230,7 @@ export default {
   position: relative;
   letter-spacing: 0.3px;
   font-weight: 400;
-  background: hsl(var(--hs-background), var(--l-background-inverse));
+  background: hsl(var(--hs-background), var(--l-background-active));
 }
 
 .u-table th {
@@ -251,6 +252,7 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  background: hsl(var(--hs-background), var(--l-background-default));
 }
 
 .u-table th:after{
