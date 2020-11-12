@@ -410,9 +410,9 @@ systemctl revert unitybase@.sevrice
 sudo systemctl daemon-reload
 ```
 
-Or create a drop-in 
+Or create a drop-in manually 
 ```
-mkdir /etc/systemd/system/unitybase@.sevrice.d
+mkdir /etc/systemd/system/unitybase@.service.d
 ```
 and place there `*.conf` file with parameters what needs to be added / override. 
 See [systemd.unit](https://www.freedesktop.org/software/systemd/man/systemd.unit.htm) for more information.
