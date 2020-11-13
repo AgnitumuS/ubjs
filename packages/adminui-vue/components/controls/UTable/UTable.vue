@@ -225,10 +225,9 @@ export default {
   border-bottom: 1px solid var(--border);
   color: var(--text);
   padding: 10px 8px;
-  font-size: 16px;
+  font-size: 14px;
   position: relative;
   letter-spacing: 0.3px;
-  font-weight: 400;
   background: hsl(var(--hs-background), var(--l-background-inverse));
 }
 
@@ -248,11 +247,12 @@ export default {
   top: 0;
   z-index: 1;
   position: sticky;
-  color: var(--header-text);
+  color: hsla(60, 0%, 50%, 1);;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  background: hsl(var(--hs-background), var(--l-background-active));
+  font-weight: 500;
+  background: hsla(180, 7%, 89%, 1);
 }
 
 .u-table th:after{
