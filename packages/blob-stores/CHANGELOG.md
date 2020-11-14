@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `@unitybase/blob-stores/storesPerfTest.js` - BLOB store performance testing endpoints implementation.
+   See doc inside a `storesPerfTest.js` for usage sample.
 
 ### Changed
 

@@ -26,6 +26,7 @@
     "@unitybase/adminui-reg": "^5.4.50",
     "@unitybase/adminui-vue": "^1.13.17",
     "@unitybase/base": "^5.4.4",
+    "@unitybase/blob-stores": "^5.4.16",
     "@unitybase/cdn": "^5.4.44",
     "@unitybase/codemirror-full": "^1.2.30",
     "@unitybase/cryptojs": "^1.0.14",
