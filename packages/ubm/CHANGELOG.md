@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.27] - 2020-11-14
 ## [5.4.26] - 2020-11-12
 ### Fixed
 - fix last used scanner and supplement type for UBScan on scanner settings form

@@ -3,6 +3,7 @@
     <div class="u-table-register__view">
       <u-table-entity
         ref="masterTable"
+        :bordered=false
         v-bind="$attrs"
         :before-initial-load="onInitialLoad"
         :class="{

@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.9] - 2020-11-14
+### Added
+ - `CustomRepository.selectAsArrayOfValues()` - for Repository with ONE attribute returns a flat array of attribute values
+
 ## [5.5.8] - 2020-11-05
 ### Added
  - new properties `UBDomain.customerModels` & `UBDomain.vendorModels` - array of customer/vendor models names.

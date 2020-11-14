@@ -1,7 +1,10 @@
 <template>
   <div
     v-loading="loading"
-    class="u-table-entity"
+    :class="{
+      'u-table-entity': true,
+      'u-table-entity__bordered': bordered
+    }"
     tabindex="1"
     @keydown.ctrl.delete.exact="canDelete && deleteRecord(selectedRowId)"
     @keydown.ctrl.e.prevent.exact="canEdit && editRecord(selectedRowId)"
@@ -445,6 +448,14 @@ export default {
     maxHeight: [Number, String],
 
     /**
+     * Display a border around table and toolbar
+     */
+    bordered: {
+      type: Boolean,
+      default: true
+    },
+
+    /**
      * Id of column which will stack when we scroll table by horizontal.
      */
     fixedColumnId: String,
@@ -714,6 +725,10 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: auto;
+}
+
+.u-table-entity__bordered {
+  border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default))
 }
 
 .u-table-entity .u-table {

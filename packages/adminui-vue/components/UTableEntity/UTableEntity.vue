@@ -1,5 +1,6 @@
 <template>
-  <root
+  <u-table-entity-root
+    :bordered="bordered"
     v-bind="$attrs"
     :view-mode.sync="viewMode"
     v-on="$listeners"
@@ -14,20 +15,20 @@
         v-bind="scope"
       />
     </template>
-  </root>
+  </u-table-entity-root>
 </template>
 
 <script>
 const Vuex = require('vuex')
 const { mapGetters, mapActions } = Vuex
 const createStore = require('./store')
-const Root = require('./components/UTableEntityRoot.vue').default
+const UTableEntityRoot = require('./components/UTableEntityRoot.vue').default
 const TypeProvider = require('./type-provider')
 
 export default {
   name: 'UTableEntity',
 
-  components: { Root },
+  components: { UTableEntityRoot },
 
   props: {
     /**
@@ -107,7 +108,15 @@ export default {
     /**
      * Whether is opened as modal to provide open of child commands as modal
      */
-    isModal: Boolean
+    isModal: Boolean,
+
+    /**
+     * Display a border around table and toolbar
+     */
+    bordered: {
+      type: Boolean,
+      default: true
+    }
   },
 
   computed: {
