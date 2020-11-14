@@ -90,7 +90,7 @@ In case you embed a compiled Vue app into adminUI:
 ## Debugging
 ### ElementUI in debug mode 
  For better debugging experience we recommend rebuilding element-ui in development mode.
- Use `element-ui` brunch for a version specified in `adminui-vue` package.json (2.5.4 in a moment of writing this manual)
+ Use `element-ui` branch for a version specified in `adminui-vue` package.json (2.5.4 in a moment of writing this manual)
  
  ```bash
   git clone https://github.com/ElemeFE/element.git
