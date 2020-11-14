@@ -162,6 +162,22 @@ class ClientRepository extends CustomRepository {
   }
 
   /**
+   * For repository with ONE attribute returns a flat array of attribute values
+   * @example
+
+     const usersIDs = await UB.Repository('uba_user').attrs('ID').limit(100).selectAsArrayOfValues()
+     // usersIDs is array of IDs [1, 2, 3, 4]
+
+   * @return Array<string|number>
+   */
+  selectAsArrayOfValues () {
+    this.addAttrsForCachedEntity()
+    return this.connection.select(this.ubql()).then(resp => {
+      return resp.resultData.data.map(r => r[0])
+    })
+  }
+
+  /**
    * For core module (without Ext) - do the same as {ClientRepository.selectAsObj}
    *
    * For EntJS based client (actual implementation in {UB.ux.data.UBStore}) - create store based on request, constructed by Repository.
