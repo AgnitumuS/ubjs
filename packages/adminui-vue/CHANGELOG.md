@@ -6,18 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - UTableEntity: new prop `bordered` (true by default) - display a border around table
-  and toolbar. See for example cdn_person form - with border around Contacts its looks
-  better.
-  
+
 ### Changed
- - `UCodeMirror` - use `esversion: 8` (async functions) as default for linter
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [1.13.18] - 2020-11-14
+### Added
+ - UTableEntity: new prop `bordered` (true by default) - display a border around table
+  and toolbar. See for example cdn_person form - with border around Contacts its looks
+  better.
+  
+### Changed
+ - `UCodeMirror` - use `esversion: 8` (async functions) as default for linter
 
 ## [1.13.17] - 2020-11-10
 ### Changed

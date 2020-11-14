@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `UBCodeMirror` - use `esversion: 8` (async functions) as default for linter
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.13.51] - 2020-11-14
+### Changed
+ - `UBCodeMirror` - use `esversion: 8` (async functions) as default for linter
 
 ## [5.13.50] - 2020-11-12
 ## [5.13.49] - 2020-11-10

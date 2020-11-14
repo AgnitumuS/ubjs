@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `CustomRepository.selectAsArrayOfValues()` - for Repository with ONE attribute returns a flat array of attribute values
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.5.9] - 2020-11-14
+### Added
+ - `CustomRepository.selectAsArrayOfValues()` - for Repository with ONE attribute returns a flat array of attribute values
 
 ## [5.5.8] - 2020-11-05
 ### Added

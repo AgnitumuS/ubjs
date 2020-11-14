@@ -6,12 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `ServerRepository.selectAsArrayOfValues()` - for Repository with ONE attribute returns a flat array of attribute values
-   ```javascript
-    const usersIDs = UB.Repository('uba_user').attrs('ID').limit(100).selectAsArrayOfValues()
-    // usersIDs is array of IDs [1, 2, 3, 4]
-   ```
-   
+
 ### Changed
 
 ### Deprecated
@@ -20,6 +15,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.5] - 2020-11-14
+### Added
+ - `ServerRepository.selectAsArrayOfValues()` - for Repository with ONE attribute returns a flat array of attribute values
+   ```javascript
+    const usersIDs = UB.Repository('uba_user').attrs('ID').limit(100).selectAsArrayOfValues()
+    // usersIDs is array of IDs [1, 2, 3, 4]
+   ```
+   
 ## [5.4.4] - 2020-11-12
 ## [5.4.3] - 2020-11-10
 ### Added
