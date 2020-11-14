@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `ubcli generateNginxCfg`: new parameter `-nginxPort` - a port for nginx `listen` directive. If not specified then equal to
+ `httpServer.externalURL` port (if specified, like http://server.com:8083, of 80/443 for short notation of externalUrl).
+ 
+ Use this parameter in 2-proxy configurations. 
 
 ### Changed
 
