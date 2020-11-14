@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `ubcli migrate` - prevent duplicate model insertion into `ub_version` for Postgres.
+ For Postgres direct query execution using `DBConnection.selectParsedAsObject` without filed aliases in SQL 
+ returns field names in lower case, so `select ID, modelName...` returns `[{id: 1, modelname: "}, ..]`).
+ The solution is to specify alias  `select ID ad "ID", modelName as "modelName" ....` - in this case result will be
+ as expected `[{ID: 1, modelName: "}, ..]`.
+ 
+ Notes - for Oracle fields without aliases is UPPERCASE'S, so alias is mandatory for cross-db solutions.
 
 ## [5.9.5] - 2020-11-14
 ### Added

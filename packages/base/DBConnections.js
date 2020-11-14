@@ -109,8 +109,10 @@ class DBConnection {
   /**
    * Run parsed (all parameters are ?) SQL what expects result (select statement for example). Returns result as parsed JSON
    *
-   * **WARNING** Oracle return all field name in UPPER case if `AS "normalName"` is not specified, so better to write a query as such
-   *  `select ID, modelName AS "modelName" from ..` instead of `select ID, modelName from ..`
+   * **WARNING** Oracle return all field name in UPPER case if `AS "normalName"` is not specified, Postgres - in lower case
+   *   so better to write a query as such
+   *  `select ID as "ID", modelName AS "modelName" from ..`
+   *  instead of `select ID, modelName from ..`
    *
    * @param {string} parsedSql
    * @param {Array} paramsValues

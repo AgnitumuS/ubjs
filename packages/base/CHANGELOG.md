@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `DBConnection.selectParsedAsObject` for Postgres warning added: 
+  Postgres return all field name in lower case if `AS "normalName"` is not specified, so better to write a query as such
+  `select ID as "ID", modelName AS "modelName" from ..` instead of `select ID, modelName from ..`
 
 ### Changed
 

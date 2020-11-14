@@ -273,7 +273,7 @@ function getMigrationState (dbConn, modelsConfig) {
     appliedScripts: []
   }
   try {
-    const versions = dbConn.selectParsedAsObject('select ID, modelName AS "modelName", version as "version" from ub_version')
+    const versions = dbConn.selectParsedAsObject('select ID as "ID", modelName AS "modelName", version as "version" from ub_version')
     versions.forEach(v => {
       r.dbVersions[v.modelName] = v.version
       r.dbVersionIDs[v.modelName] = v.ID
