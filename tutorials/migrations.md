@@ -46,7 +46,7 @@ Example:
 > TIP: files and folders what starts from `_` are ignored
 
 ### Migrations under development
-During development, it is unknown when our brunch will be merged into main brunch and in which version
+During development, it is unknown when our branch will be merged into main branch and in which version
 our migrations will be released. To solve this problem (and prevent possible merge conflicts) it's recommended to
 begin migrations names with `unreleased`:
 
@@ -172,7 +172,7 @@ Example:
 Each *.js file MUST export a function. This function will be called by migrate with 4 parameters:
 ```javascript
 /**
- * Migrate a CDN model to 2.13.15 (update cdn_person captions)
+ * Migrate the CDN model to 2.13.15 (update cdn_person captions)
  * @param {SyncConnection} conn
  * @param {Object<string, DBConnection>} dbConnections
  * @param {Object} dbVersions
@@ -201,7 +201,7 @@ sudo -u unitybase ub-app-upgrade --app app_name
 
 `migrate` execute only scripts what do not exist in the `ub_migration` table.
  
-Before any operations `migrate` verify SHA sums (+modelName) is matched for intersection of all files in `ub_migration` table
+Before any operations `migrate` verifies SHA sums (+modelName) is matched for intersection of all files in `ub_migration` table
 and all `_migrate` folder files (excluding files what starts from `_`). If any file checksum differ then migration
 **is fails** (neither generateDDL nor ub-migrate nor any `_mirgate` script are not executed).
 
