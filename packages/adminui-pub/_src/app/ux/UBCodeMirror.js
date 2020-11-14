@@ -189,7 +189,7 @@ Ext.define('UB.ux.UBCodeMirror', {
             ? this.rawValue ? JSON.stringify(this.rawValue) : ''
             : (this.rawValue || ''),
           lineNumbers: true,
-          lint: Object.assign({asi: true, esversion: 6}, $App.connection.appConfig.uiSettings.adminUI.linter),
+          lint: Object.assign({asi: true, esversion: 8}, $App.connection.appConfig.uiSettings.adminUI.linter),
           readOnly: false,
           tabSize: 2,
           highlightSelectionMatches: {annotateScrollbar: true},

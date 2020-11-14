@@ -537,7 +537,7 @@ function estimateNewRevisionNumber (attribute, ID) {
  * @param {UBEntityAttribute} attribute
  * @param {Number} ID
  * @param {BlobStoreItem} dirtyItem
- * @param {BlobStoreItem} oldItem
+ * @param {BlobStoreItem} [oldItem]
  * @return {BlobStoreItem}
  * @private
  */
