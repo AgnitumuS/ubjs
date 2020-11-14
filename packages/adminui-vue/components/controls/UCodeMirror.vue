@@ -85,7 +85,7 @@ module.exports = {
       this._codeMirror = CodeMirror.fromTextArea(this.$refs.textarea, {
         mode: this.editorMode,
         lineNumbers: true,
-        lint: Object.assign({ asi: true, esversion: 6 }, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
+        lint: Object.assign({ asi: true, esversion: 8 }, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
         readOnly: this.readOnly,
         tabSize: 2,
         highlightSelectionMatches: { annotateScrollbar: true },

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   better.
   
 ### Changed
+ - `UCodeMirror` - use `esversion: 8` (async functions) as default for linter
 
 ### Deprecated
 
