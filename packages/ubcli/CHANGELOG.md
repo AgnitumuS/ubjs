@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.9.6] - 2020-11-15
+### Fixed
  - `ubcli migrate` - prevent duplicate model insertion into `ub_version` for Postgres.
  For Postgres direct query execution using `DBConnection.selectParsedAsObject` without filed aliases in SQL 
  returns field names in lower case, so `select ID, modelName...` returns `[{id: 1, modelname: "}, ..]`).

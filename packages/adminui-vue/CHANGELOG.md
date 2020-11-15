@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `processing.load`: added `.misc({ ID: ID })` which allows to make a request with ID bypassing caching,
-  soft deletion and history. This solves the problem with the opening of forms of records that are no longer relevant.
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [1.13.19] - 2020-11-15
+### Added
+- `processing.load`: added `.misc({ ID: ID })` which allows to make a request with ID bypassing caching,
+  soft deletion and history. This solves the problem with the opening of forms of records that are no longer relevant.
 
 ## [1.13.18] - 2020-11-14
 ### Added

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.10] - 2020-11-15
 ## [5.5.9] - 2020-11-14
 ### Added
  - `CustomRepository.selectAsArrayOfValues()` - for Repository with ONE attribute returns a flat array of attribute values

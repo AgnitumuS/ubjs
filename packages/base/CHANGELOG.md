@@ -6,18 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `DBConnection.selectParsedAsObject` for Postgres warning added: 
-  Postgres return all field name in lower case if `AS "normalName"` is not specified, so better to write a query as such
-  `select ID as "ID", modelName AS "modelName" from ..` instead of `select ID, modelName from ..`
 
 ### Changed
- - `ServerRepository.selectScalar()` optimized to use less JS memory
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.4.6] - 2020-11-15
+### Added
+ - `DBConnection.selectParsedAsObject` for Postgres warning added: 
+  Postgres return all field name in lower case if `AS "normalName"` is not specified, so better to write a query as such
+  `select ID as "ID", modelName AS "modelName" from ..` instead of `select ID, modelName from ..`
+
+### Changed
+ - `ServerRepository.selectScalar()` optimized to use less JS memory
 
 ## [5.4.5] - 2020-11-14
 ### Added
