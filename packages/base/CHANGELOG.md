@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   `select ID as "ID", modelName AS "modelName" from ..` instead of `select ID, modelName from ..`
 
 ### Changed
+ - `ServerRepository.selectScalar()` optimized to use less JS memory
 
 ### Deprecated
 

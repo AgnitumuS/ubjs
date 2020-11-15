@@ -181,8 +181,16 @@ class ServerRepository extends CustomRepository {
    * @return {Object|undefined}
    */
   selectScalar () {
-    const result = this.selectAsArray()
-    return Array.isArray(result.resultData.data[0]) ? result.resultData.data[0][0] : undefined
+    if (process.isServer) { // inside server thread
+      const inst = new TubDataStore(this.entityName)
+      inst.run(this.method, this.ubql())
+      const res = inst.eof ? undefined : inst.get(0)
+      inst.freeNative() // release memory ASAP
+      return res
+    } else {
+      const result = this.selectAsArray()
+      return Array.isArray(result.resultData.data[0]) ? result.resultData.data[0][0] : undefined
+    }
   }
 
   /**
