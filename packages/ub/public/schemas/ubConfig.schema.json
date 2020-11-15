@@ -760,11 +760,11 @@
               },
               "isDefault": {
                 "type": "boolean",
-                "description": "Is this store default for application. i.e. used for `Document` type entity attributes without store name defined"
+                "description": "Is this store is default for the application. i.e. used in `Document` type entity attributes without store name defined"
               },
               "implementedBy": {
                 "type": "string",
-                "description": "Name of module what implement a BlobStoreCustom interface for this store"
+                "description": "Name of the module what implement a BlobStoreCustom interface for this store"
               },
               "path": {
                 "type": "string",
@@ -777,13 +777,19 @@
               },
               "historyDepth": {
                 "type": "number",
-                "description": "Depth of revision history. 0 means no history",
+                "description": "Depth of the revision history. 0 means no history",
                 "default": 0
               },
               "storeSize": {
-                "enum": ["Simple", "Medium", "Large", "Monthly", "Daily"],
-                "description": "Approximate number of files to store\n\n |Value  |Description\n|-\n| `Simple`|Up to 10000\n| `Medium`| Up to 500 000\n| `Large` | More when 500 000\n| `Monthly`| New subfolder `YYYYMM` for every month\n| `Daily`| New subfolder `YYYYMM` for every month and when new folder `DD` for every day",
+                "enum": ["Simple", "Medium", "Large", "Monthly", "Daily", "Hourly"],
+                "description": "Approximate number of files to store\n\n |Value  |Description\n|-\n| `Simple`|Up to 10000\n| `Medium`| Up to 500 000\n| `Large` | More when 500 000\n| `Monthly`| New subfolder `YYYYMM` for every month\n| `Daily`| New sub-folder `YYYYMM` for every month and when new folder `DD` for every day\n| `Hourly`| As Daily but with sub-folder for each hour inside a day folder",
                 "default": "Simple"
+              },
+              "LUCount": {
+                "type": "number",
+                "description": "Logical Units count. If > 0 then files are stored inside `Logical Unit` sub-folders `/LU01`, `/LU02`, ... Write operations works with last LU folder.\nEach LU folder can be mounted to his own partition. In this case `tempPath` should point to the same partition as last LU.\n Applicable only for `non-Simple` 'FileSystem' based  stores",
+                "default": 0,
+                "maxValue": 99
               },
               "keepOriginalFileNames":{
                 "type": "boolean",

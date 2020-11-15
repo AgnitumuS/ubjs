@@ -47,6 +47,12 @@ class FileSystemBlobStore extends BlobStoreCustom {
      */
     this.fullStorePath = storePath
 
+    /**
+     * Logical Unit Count for store. If > 0 then files are stored inside `Logical Unit` sub-folders `/LU01`, `/LU02` etc
+     * Write operations works with last LU folder
+     */
+    this.LUCount = this.config.LUCount || 0
+
     const tmpFolder = this.tempFolder // already normalized inside argv
     if (!fs.existsSync(tmpFolder)) {
       throw new Error(`Temp folder "${tmpFolder}" for BLOB store "${this.name}" doesn't exist. Check a "tempPath" store config parameter`)
@@ -57,7 +63,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     this.storeSize = this.config.storeSize || 'Simple'
     this._folderCounter = 0
     this.SIZES = {
-      Simple: 'Simple', Medium: 'Medium', Large: 'Large', Monthly: 'Monthly', Daily: 'Daily'
+      Simple: 'Simple', Medium: 'Medium', Large: 'Large', Monthly: 'Monthly', Daily: 'Daily', Hourly: 'Hourly'
     }
     if (!this.SIZES[this.storeSize]) {
       throw new Error(`Invalid storeSize "${this.storeSize}" for BLOB store "${this.name}"`)
@@ -66,6 +72,9 @@ class FileSystemBlobStore extends BlobStoreCustom {
       this._folderCounter = getRandomInt(STORE_SUBFOLDER_COUNT) + 100
     } else if (this.storeSize === this.SIZES.Large) {
       this._folderCounter = (getRandomInt(STORE_SUBFOLDER_COUNT) + 1) * (getRandomInt(STORE_SUBFOLDER_COUNT) + 1)
+    }
+    if ((this.storeSize === this.SIZES.Simple) && (this.LUCount>0)) {
+      throw new Error(`BLOB Store '${this.name}': LUCount can not be set for 'Simple' store`)
     }
   }
 
@@ -176,7 +185,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
    *   This raise a problem - old store may be in archive state (readonly)
    * So in UB5 we change implementation to use a store defined in the attribute for new items
    *
-   * Return a new attribute content which describe a place of BLOB in permanent store
+   * Return a new attribute content which describe a place of the BLOB in permanent store
    *
    * @param {UBEntityAttribute} attribute
    * @param {Number} ID
@@ -267,13 +276,17 @@ class FileSystemBlobStore extends BlobStoreCustom {
       const c = this.safeIncFolderCounter()
       l1subfolder = '' + (Math.floor(c / STORE_SUBFOLDER_COUNT) % STORE_SUBFOLDER_COUNT + 100)
       l2subfolder = '' + (c % STORE_SUBFOLDER_COUNT + 100)
-    } else if (this.storeSize === this.SIZES.Monthly || this.storeSize === this.SIZES.Daily) {
+    } else if (this.storeSize === this.SIZES.Monthly || this.storeSize === this.SIZES.Daily || this.storeSize === this.SIZES.Hourly) {
       const today = new Date()
       const year = today.getFullYear().toString()
       const month = (today.getMonth() + 1).toString().padStart(2, '0') // in JS month starts from 0
       l1subfolder = `${year}${month}`
       if (this.storeSize === this.SIZES.Daily) {
         l2subfolder = today.getDate().toString().padStart(2, '0')
+      } else if (this.storeSize === this.SIZES.Hourly) {
+        l2subfolder = `${today.getDate().toString().padStart(2, '0')}${path.sep}${today.getHours().toString().padStart(2, '0')}`
+        // for testing - seconds
+        // l2subfolder = `${today.getDate().toString().padStart(2, '0')}${path.sep}${today.getSeconds().toString().padStart(2, '0')}`
       }
     }
     // check target folder exists. Create if possible
@@ -281,7 +294,11 @@ class FileSystemBlobStore extends BlobStoreCustom {
     let fullFn = this.fullStorePath
     let relPath = ''
     if (l1subfolder) {
-      fullFn = path.join(this.fullStorePath, l1subfolder)
+      if (this.LUCount) {
+        const LUN = ('' + this.LUCount).padStart(2, 0)
+        l1subfolder = `LU${LUN}${path.sep}${l1subfolder}`
+      }
+      fullFn = path.join(fullFn, l1subfolder)
       let cacheKey = `BSFCACHE#${this.name}#${l1subfolder}`
       const verified = this.App.globalCacheGet(cacheKey) === '1'
       if (!verified) {
