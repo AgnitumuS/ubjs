@@ -66,33 +66,50 @@
           </el-select>
         </u-form-row>
 
-        <u-form-row
-          v-if="currentDialogEntityMeta !== undefined"
-          :label="currentDialogEntityMeta.entity"
-          class="u-acl-rls-input-overflow"
-        >
-          <u-select-multiple
-            v-model="dialog.selected[currentDialogEntityMeta.entity]"
-            :repository="getCurrentSelectedRepository(currentDialogEntityMeta.entity)"
-            clearable
-          />
-        </u-form-row>
+        <template v-if="dialog.currentEntityName">
+          <u-form-row
+            v-if="!withMappedEntities"
+            :label="dialog.currentEntityName"
+            class="u-acl-rls-input-overflow"
+          >
+            <u-select-multiple
+              v-model="dialog.selected[dialog.currentEntityName]"
+              :repository="getRepoForSelectionByEntity(dialog.currentEntityName)"
+              clearable
+            />
+          </u-form-row>
+          <template v-else>
+            <u-form-row
+              v-for="childEntity in currentAttrMetaInfo.mappedEntities"
+              :key="childEntity"
+              :label="dialog.currentEntityName"
+              class="u-acl-rls-input-overflow"
+            >
+              <u-select-multiple
+                v-model="dialog.selected[dialog.currentEntityName][childEntity]"
+                :repository="getRepoForSelectionByEntity(dialog.currentEntityName, childEntity)"
+                clearable
+              />
+            </u-form-row>
+          </template>
+        </template>
+
       </u-form-container>
 
       <span
         slot="footer"
         class="u-acl-rls-dialog__footer"
       >
-        <el-button @click="closeDialog">
+        <u-button @click="closeDialog">
           {{ $ut('cancel') }}
-        </el-button>
+        </u-button>
 
-        <el-button
+        <u-button
           type="primary"
           @click="submitRights"
         >
           {{ $ut('UAclRlsInput.dialog.grant') }}
-        </el-button>
+        </u-button>
       </span>
     </el-dialog>
   </div>
@@ -156,9 +173,14 @@ export default {
     rightAttributesWithMetaInfo () {
       return this.rightAttributes.map(attrName => {
         const entity = this.entityAttributes[attrName].associatedEntity
-        const { descriptionAttribute } = this.$UB.connection.domain.get(entity)
+        const mappedEntites = this.getMappeEntities(entity)
 
-        return { attrName, entity, descriptionAttribute }
+        return {
+          attrName,
+          entity,
+          mappedEntites,
+          hasMappedEntities: mappedEntites.length > 0
+        }
       })
     },
 
@@ -196,18 +218,23 @@ export default {
       })
     },
 
-    currentDialogEntityMeta () {
+    currentAttrMetaInfo () {
       return this.rightAttributesWithMetaInfo.find(
-        ({ entity }) => entity === this.dialog.currentEntityName
+        meta => meta.entity === this.dialog.currentEntityName
       )
+    },
+
+    withMappedEntities () {
+      return this.currentAttrMetaInfo && this.currentAttrMetaInfo.hasMappedEntities
     }
   },
 
   watch: {
     rightAttributes: {
       immediate: true,
-      handler (value) {
-        this.resetSelectedItems(value)
+      async handler () {
+        await this.nextTick()
+        this.resetSelectedItems()
       }
     },
 
@@ -217,7 +244,8 @@ export default {
   },
 
   created () {
-    for (const { entity, descriptionAttribute } of this.rightAttributesWithMetaInfo) {
+    for (const { entity } of this.rightAttributesWithMetaInfo) {
+      const { descriptionAttribute } = this.$UB.connection.domain.get(entity)
       Repository(entity).attrs('ID', descriptionAttribute).select().then(entries => {
         const keyValueMap = entries.reduce((obj, entry) => {
           obj[entry.ID] = entry[descriptionAttribute]
@@ -253,21 +281,55 @@ export default {
       this.dialog.currentEntityName = null
     },
 
-    resetSelectedItems (attributes = this.rightAttributes) {
-      attributes.forEach(attribute => {
-        const { entity } = this.rightAttributesWithMetaInfo.find(
+    resetSelectedItems () {
+      this.rightAttributes.forEach(attribute => {
+        const { entity, hasMappedEntities, mappedEntities } = this.rightAttributesWithMetaInfo.find(
           ({ attrName }) => attrName === attribute
         )
-        this.$set(this.dialog.selected, entity, [])
+        if (hasMappedEntities) {
+          this.$set(this.dialog.selected, entity, {})
+          mappedEntities.forEach(mappedEntity => {
+            this.$set(this.dialog.selected[entity], mappedEntity, [])
+          })
+        } else {
+          this.$set(this.dialog.selected, entity, [])
+        }
       })
     },
 
-    getCurrentSelectedRepository (entityName) {
-      const { attrName, descriptionAttribute } = this.rightAttributesWithMetaInfo.find(
-        ({ entity }) => entity === entityName
-      )
-      const selectedIds = this.aclRlsEntries.map(entry => entry[attrName]).filter(Boolean)
-      const repo = Repository(entityName)
+    getMappeEntities (entityName) {
+      return Object.entries(this.$UB.connection.domain.entities)
+        .filter(([entityName, entityInfo]) => {
+          if (!entityInfo.hasMixin('unity')) {
+            return false
+          }
+
+          const unityEntity = entityInfo.mixin('unity').entity
+
+          return unityEntity === entityName
+        })
+        .map(([entityName]) => entityName)
+    },
+
+    getSelectedIdsByEntityName (unityEntity, entity) {
+      const selectedSource = this.dialog.selected[unityEntity]
+
+      if (entity) {
+        return selectedSource[entity].filter(Boolean)
+      }
+
+      const flattenSelectedIds = Array.isArray(selectedSource)
+        ? selectedSource
+        : Object.values(selectedSource)
+
+      return flattenSelectedIds.filter(Boolean)
+    },
+
+    getRepoForSelectionByEntity (unityEntity, entity) {
+      const repoEntityName = entity || unityEntity
+      const { descriptionAttribute } = this.$UB.connection.domain.get(repoEntityName)
+      const selectedIds = this.getSelectedIdsByEntityName(unityEntity, entity)
+      const repo = Repository(repoEntityName)
         .attrs('ID', descriptionAttribute)
         .whereIf(selectedIds.length, 'ID', 'notIn', selectedIds)
 
@@ -275,34 +337,34 @@ export default {
     },
 
     async submitRights () {
-      await Promise.all(Object.entries(this.dialog.selected).map(([ entity, ids ]) => {
+      await Promise.all(Object.keys(this.dialog.selected).map(async entity => {
         const { attrName } = this.rightAttributesWithMetaInfo.find(meta => meta.entity === entity)
+        const selectedIds = this.getSelectedIdsByEntityName(entity)
+        const entries = selectedIds.map(value => ({
+          [attrName]: value,
+          instanceID: this.instanceId
+        }))
 
-        return this.addRights({
-          entity,
-          entries: ids.map(value => ({ [attrName]: value, instanceID: this.instanceId }))
-        })
+        await this.addRights(entries)
       }))
       this.dialog.isVisible = false
       this.resetSelectedItems()
       this.dialog.currentEntityName = null
     },
 
-    async addRights ({ entity, entries }) {
-      const newRightObjects = await Promise.all(
-        entries.map(() => this.$UB.connection.addNewAsObject({
+    async addRights (entries) {
+      await Promise.all(entries.map(async entry => {
+        const newRightObject = await this.$UB.connection.addNewAsObject({
           entity: this.currentCollection.entity,
           fieldList: ['ID'],
           __antiMonkeyRequest: Math.random()
-        }))
-      )
+        })
 
-      entries.forEach((entry, index) => {
         this.ADD_COLLECTION_ITEM({
           collection: this.collectionName,
-          item: Object.assign(newRightObjects[index], entry)
+          item: { ...newRightObject, ...entry }
         })
-      })
+      }))
     }
   }
 }
