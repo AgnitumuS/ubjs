@@ -41,7 +41,8 @@
       width="600px"
       top="0"
       class="u-acl-rls-input-dialog"
-      @closed="resetSelectedItems"
+      @close="closeDialog"
+      @open="setSocus"
     >
       <u-form-container
         label-position="top"
@@ -55,6 +56,7 @@
           <el-select
             v-model="dialog.currentEntityName"
             class="u-select"
+            ref="selectEntity"
             :placeholder="$ut('UAclRlsInput.dialog.entityPlaceholder')"
           >
             <el-option
@@ -82,7 +84,7 @@
             <u-form-row
               v-for="childEntity in currentAttrMetaInfo.mappedEntities"
               :key="childEntity"
-              :label="dialog.currentEntityName"
+              :label="childEntity"
               class="u-acl-rls-input-overflow"
             >
               <u-select-multiple
@@ -96,21 +98,22 @@
 
       </u-form-container>
 
-      <span
-        slot="footer"
-        class="u-acl-rls-dialog__footer"
-      >
-        <u-button @click="closeDialog">
+      <template slot="footer">
+        <u-button
+          appearance="plain"
+          @click="closeDialog"
+        >
           {{ $ut('cancel') }}
         </u-button>
 
         <u-button
           type="primary"
+          :disabled="!canSubmit"
           @click="submitRights"
         >
           {{ $ut('UAclRlsInput.dialog.grant') }}
         </u-button>
-      </span>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -173,13 +176,13 @@ export default {
     rightAttributesWithMetaInfo () {
       return this.rightAttributes.map(attrName => {
         const entity = this.entityAttributes[attrName].associatedEntity
-        const mappedEntites = this.getMappeEntities(entity)
+        const mappedEntities = this.getMappeEntities(entity)
 
         return {
           attrName,
           entity,
-          mappedEntites,
-          hasMappedEntities: mappedEntites.length > 0
+          mappedEntities,
+          hasMappedEntities: mappedEntities.length > 0
         }
       })
     },
@@ -226,6 +229,14 @@ export default {
 
     withMappedEntities () {
       return this.currentAttrMetaInfo && this.currentAttrMetaInfo.hasMappedEntities
+    },
+
+    canSubmit () {
+      const selectedIds = Object.keys(this.dialog.selected).flatMap(entityName => {
+        return this.getSelectedIdsByEntityName(entityName)
+      })
+
+      return selectedIds.length > 0
     }
   },
 
@@ -233,7 +244,7 @@ export default {
     rightAttributes: {
       immediate: true,
       async handler () {
-        await this.nextTick()
+        await this.$nextTick()
         this.resetSelectedItems()
       }
     },
@@ -271,6 +282,11 @@ export default {
       })
     },
 
+    async setSocus () {
+      await this.$nextTick()
+      this.$refs.selectEntity.focus()
+    },
+
     openDialog () {
       this.dialog.isVisible = true
     },
@@ -297,7 +313,7 @@ export default {
       })
     },
 
-    getMappeEntities (entityName) {
+    getMappeEntities (masterEntityName) {
       return Object.entries(this.$UB.connection.domain.entities)
         .filter(([entityName, entityInfo]) => {
           if (!entityInfo.hasMixin('unity')) {
@@ -306,7 +322,7 @@ export default {
 
           const unityEntity = entityInfo.mixin('unity').entity
 
-          return unityEntity === entityName
+          return unityEntity === masterEntityName
         })
         .map(([entityName]) => entityName)
     },
@@ -320,7 +336,7 @@ export default {
 
       const flattenSelectedIds = Array.isArray(selectedSource)
         ? selectedSource
-        : Object.values(selectedSource)
+        : Object.values(selectedSource).flat()
 
       return flattenSelectedIds.filter(Boolean)
     },
@@ -414,11 +430,6 @@ export default {
 
 .u-acl-rls-input-overflow > .u-form-row__content {
   overflow: hidden;
-}
-
-.u-acl-rls-dialog__footer {
-  display: flex;
-  justify-content: space-between;
 }
 
 </style>
