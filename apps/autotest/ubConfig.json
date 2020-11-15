@@ -271,7 +271,8 @@
 				"path": "%UB_APPDATA%stores/documents/simple",
 				"isDefault": true,
 				"historyDepth": 2,
-				"storeSize": "Daily",
+				"storeSize": "Hourly",
+				"LUCount": 1,
 				"keepOriginalFileNames": false
 			},
 			{
