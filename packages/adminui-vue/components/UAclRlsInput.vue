@@ -41,7 +41,7 @@
       width="600px"
       top="0"
       class="u-acl-rls-input-dialog"
-      @close="closeDialog"
+      @close="resetSelectedItems"
       @open="setSocus"
     >
       <u-form-container
@@ -119,7 +119,7 @@
 </template>
 
 <script>
-const { mapMutations } = require('vuex')
+const { mapMutations, mapActions } = require('vuex')
 const { Repository } = require('@unitybase/ub-pub')
 
 const NOT_FK_ACL_ATTRIBUTES = ['ID', 'valueID', 'instanceID']
@@ -275,10 +275,14 @@ export default {
       'ADD_COLLECTION_ITEM'
     ]),
 
+    ...mapActions([
+      'addCollectionItemWithoutDefaultValues'
+    ]),
+
     deleteAccessRecord (aclID) {
       this.DELETE_COLLECTION_ITEM({
         collection: this.collectionName,
-        index: this.currentCollection.items.findIndex(item => item.ID === aclID)
+        index: this.currentCollection.items.findIndex(item => item.data.ID === aclID)
       })
     },
 
@@ -327,18 +331,26 @@ export default {
         .map(([entityName]) => entityName)
     },
 
-    getSelectedIdsByEntityName (unityEntity, entity) {
+    getDialogSelectedIds (unityEntity, entity) {
       const selectedSource = this.dialog.selected[unityEntity]
 
       if (entity) {
-        return selectedSource[entity].filter(Boolean)
+        return selectedSource[entity]
       }
 
       const flattenSelectedIds = Array.isArray(selectedSource)
         ? selectedSource
         : Object.values(selectedSource).flat()
 
-      return flattenSelectedIds.filter(Boolean)
+      return flattenSelectedIds
+    },
+
+    getSelectedIdsByEntityName (unityEntity, entity) {
+      const { attrName } = this.rightAttributesWithMetaInfo.find(m => m.entity === unityEntity)
+      const collectionIds = this.currentCollection.items.map(item => item.data[attrName])
+      const dialogIds = this.getDialogSelectedIds(unityEntity, entity)
+
+      return [...collectionIds, ...dialogIds].filter(Boolean)
     },
 
     getRepoForSelectionByEntity (unityEntity, entity) {
@@ -353,34 +365,28 @@ export default {
     },
 
     async submitRights () {
-      await Promise.all(Object.keys(this.dialog.selected).map(async entity => {
+      const requests = Object.keys(this.dialog.selected).flatMap(entity => {
         const { attrName } = this.rightAttributesWithMetaInfo.find(meta => meta.entity === entity)
-        const selectedIds = this.getSelectedIdsByEntityName(entity)
-        const entries = selectedIds.map(value => ({
+        const selectedIds = this.getDialogSelectedIds(entity)
+
+        return selectedIds.map(value => ({
           [attrName]: value,
           instanceID: this.instanceId
         }))
+      })
 
-        await this.addRights(entries)
-      }))
+      await Promise.all(
+        requests.map(request => {
+          return this.addCollectionItemWithoutDefaultValues({
+            collection: this.collectionName,
+            execParams: request
+          })
+        })
+      )
+
       this.dialog.isVisible = false
       this.resetSelectedItems()
       this.dialog.currentEntityName = null
-    },
-
-    async addRights (entries) {
-      await Promise.all(entries.map(async entry => {
-        const newRightObject = await this.$UB.connection.addNewAsObject({
-          entity: this.currentCollection.entity,
-          fieldList: ['ID'],
-          __antiMonkeyRequest: Math.random()
-        })
-
-        this.ADD_COLLECTION_ITEM({
-          collection: this.collectionName,
-          item: { ...newRightObject, ...entry }
-        })
-      }))
     }
   }
 }
@@ -472,5 +478,7 @@ module.exports.default = {
 }
 </script>
 ```
+
+If you want to add some item to collection of aclRls entries use `addCollectionItemWithoutDefaultValues` Vuex action
 
 </docs>
