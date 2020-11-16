@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UFile`: prevent download document in case `preview-mode` not sets
 
 ## [1.13.19] - 2020-11-15
 ### Added
