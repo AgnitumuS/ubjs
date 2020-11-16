@@ -183,6 +183,7 @@
 				"userID": "UB5_%UB_APP%_%PLATFORM%",
 				"password": "UB5_%UB_APP%_%PLATFORM%",
 				"supportLang": ["en", "uk"],
+				"advSettings": "CARDINALITY_IN",
 				"executeWhenConnected": ["ALTER SESSION SET NLS_COMP=LINGUISTIC", "ALTER SESSION SET NLS_SORT=BINARY_CI"]
 			},
 			//#endif
