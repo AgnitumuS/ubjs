@@ -36,6 +36,7 @@ module.exports = function generateNginxCfg (cfg) {
       .add({ short: 'sslcert', long: 'sslcert', param: 'pathToSSLCert', defaultValue: '', help: 'For https - full path to ssl public certificate key *.pem file' })
       .add({ short: 'ipv6', long: 'ipv6', defaultValue: false, help: 'Bind to IPv6 address' })
       .add({ short: 'maxDocBody', long: 'maxDocBody', param: 'maxDocBodySize', defaultValue: '5m', help: 'Max body size for setDocument endpoint. See http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size' })
+      .add({ short: 'nginxPort', long: 'nginxPort', param: 'nginxPort', defaultValue: '', help: 'Specify port for nginx other when externalURL port. Useful in case externalURL handled by external load balancer' })
       .add({ short: 'out', long: 'out', param: 'outputPath', defaultValue: path.join(process.cwd(), 'ub-proxy.conf'), help: 'Full path to output file' })
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
@@ -72,9 +73,11 @@ module.exports = function generateNginxCfg (cfg) {
   }
   if (!ubURL.port) ubURL.port = (ubURL.protocol === 'https:') ? '443' : '80'
   if (!reverseProxyCfg.sendFileHeader) console.warn('`reverseProxy.sendFileHeader` not defined in ub config. Skip internal locations generation')
+  const nginxPort = cfg.nginxPort || externalURL.port
   const vars = {
     ubURL: ubURL,
     externalURL: externalURL,
+    nginxPort,
     appPath: cfgPath.replace(/\\/g, '/'),
     sslRedirect: Boolean(cfg.sslRedirect),
     sslkey: cfg.sslkey,
@@ -118,15 +121,23 @@ module.exports = function generateNginxCfg (cfg) {
     console.error(`Write to file ${cfg.out} fail`)
   }
   const linkAsFileName = externalURL.host + '.cfg'
-  console.info(`
-Config generated and can be included inside nginx.conf: 
-  include ${cfg.out.replace(/\\/g, '/')};
-  
-or linked to /etc/nginx/sites-enabled if you are on linux:
+  if (process.platform === 'win32') {
+    console.info(`Config generated and can be included inside nginx.conf: 
+    include ${cfg.out.replace(/\\/g, '/')};`)
+  } else {
+    if (fs.existsSync('/etc/nginx/sites-enabled')) {
+      console.info(`Config generated and can be linked to /etc/nginx/sites-enabled:
   sudo ln -s ${cfg.out.replace(/\\\\/g, '/')} /etc/nginx/sites-available/${linkAsFileName}
   sudo ln -s /etc/nginx/sites-available/${linkAsFileName} /etc/nginx/sites-enabled
   sudo nginx -s reload
-`)
+    `)
+    } else {
+      console.info(`Config generated and can be linked to /etc/nginx/conf.d:
+  sudo ln -s ${cfg.out.replace(/\\\\/g, '/')} /etc/nginx/conf.d/${linkAsFileName}
+    `)
+    }
+    console.info('To apply new configs type\n  sudo nginx -s reload')
+  }
 }
 
 module.exports.shortDoc = `Generate include for NGINX config based on

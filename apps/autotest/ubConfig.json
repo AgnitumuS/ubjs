@@ -183,6 +183,7 @@
 				"userID": "UB5_%UB_APP%_%PLATFORM%",
 				"password": "UB5_%UB_APP%_%PLATFORM%",
 				"supportLang": ["en", "uk"],
+				"advSettings": "CARDINALITY_IN",
 				"executeWhenConnected": ["ALTER SESSION SET NLS_COMP=LINGUISTIC", "ALTER SESSION SET NLS_SORT=BINARY_CI"]
 			},
 			//#endif
@@ -271,7 +272,8 @@
 				"path": "%UB_APPDATA%stores/documents/simple",
 				"isDefault": true,
 				"historyDepth": 2,
-				"storeSize": "Daily",
+				"storeSize": "Hourly",
+				"LUCount": 1,
 				"keepOriginalFileNames": false
 			},
 			{

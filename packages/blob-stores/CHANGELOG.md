@@ -15,6 +15,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.0] - 2020-11-15
+### Added
+  - BLOB stores: new `storeSize` `Hourly` - as `Daily` but with sub-folder for each hour inside a day folder
+  - BLOB sores: new property `LUCount` - a count of Logical Units BLOB stores divided into.
+    If > 0 then files are stored inside `Logical Unit` sub-folders `/LU01`, `/LU02`,.
+     
+    Write operations works with last LU folder. Each LU folder can be mounted to his own partition.
+    In this case `tempPath` should point to the same partition as last LU.
+    
+## [5.4.17] - 2020-11-14
+### Added
+ - `@unitybase/blob-stores/storesPerfTest.js` - BLOB store performance testing endpoints implementation.
+   See doc inside a `storesPerfTest.js` for usage sample.
+
+## [5.4.16] - 2020-11-12
+### Changed
+- mdb store now stores MD5
+
 ## [5.4.15] - 2020-11-10
 ## [5.4.14] - 2020-11-08
 ## [5.4.13] - 2020-11-08

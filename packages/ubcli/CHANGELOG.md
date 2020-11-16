@@ -15,6 +15,28 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.9.6] - 2020-11-15
+### Fixed
+ - `ubcli migrate` - prevent duplicate model insertion into `ub_version` for Postgres.
+ For Postgres direct query execution using `DBConnection.selectParsedAsObject` without filed aliases in SQL 
+ returns field names in lower case, so `select ID, modelName...` returns `[{id: 1, modelname: "}, ..]`).
+ The solution is to specify alias  `select ID ad "ID", modelName as "modelName" ....` - in this case result will be
+ as expected `[{ID: 1, modelName: "}, ..]`.
+ 
+ Notes - for Oracle fields without aliases is UPPERCASE'S, so alias is mandatory for cross-db solutions.
+
+## [5.9.5] - 2020-11-14
+### Added
+ - `ubcli generateNginxCfg`: new parameter `-nginxPort` - a port for nginx `listen` directive. If not specified then equal to
+ `httpServer.externalURL` port (if specified, like http://server.com:8083, of 80/443 for short notation of externalUrl).
+ 
+ Use this parameter in 2-proxy configurations. 
+
+## [5.9.4] - 2020-11-12
+### Changed
+ - `ubcli generateNgingCfg`: a final message for CentOS propose to link config to `/etc/nginx/conf.d`
+   instead of `/etc/nginx/sites-available` for Ubuntu
+
 ## [5.9.3] - 2020-11-10
 ### Added
   - all `ubcli` command what accept -host parameter now automatically discovers a server URL from ubConfig 

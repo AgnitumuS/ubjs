@@ -531,6 +531,8 @@ function createProcessingModule ({
         const repo = UB.connection
           .Repository(masterEntityName)
           .attrs(fieldList)
+          .misc({ ID: instanceID || newInstanceID }) // Add top level ID to bypass caching, soft deletion and history
+
           .miscIf(isLockable(), { lockType: 'None' }) // get lock info
         const data = await repo.selectById(instanceID || newInstanceID)
 

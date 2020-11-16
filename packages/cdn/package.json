@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/cdn",
-  "version": "5.4.43",
+  "version": "5.4.46",
   "description": "Set of dictionaries, common for most enterprise systems. For internal organization structure see @ubitybase/org module",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/cdn",
   "config": {
@@ -18,14 +18,14 @@
   },
   "main": "cdn.js",
   "dependencies": {
-    "@unitybase/base": "^5.4.3",
-    "@unitybase/ub": "^5.7.3",
-    "@unitybase/uba": "^5.4.40",
-    "@unitybase/ubs": "^5.4.32",
+    "@unitybase/base": "^5.4.6",
+    "@unitybase/ub": "^5.7.6",
+    "@unitybase/uba": "^5.4.43",
+    "@unitybase/ubs": "^5.4.35",
     "lodash": "^4"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.1.1",
+    "@unitybase/stubs": "^5.1.4",
     "@unitybase/update-changelog": "^1.0.4"
   },
   "keywords": [

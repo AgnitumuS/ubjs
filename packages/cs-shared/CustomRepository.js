@@ -703,6 +703,18 @@ inst.run('select', repo.ubql())
     throw new Error('abstract')
   }
 
+  /**
+   * For repository with ONE attribute returns a flat array of attribute values
+   *
+   *   [1, 2, 3, 4]
+   *
+   * @return Array<string|number>
+   * @abstract
+   */
+  selectAsArrayOfValues () {
+    throw new Error('abstract')
+  }
+
   // noinspection JSMethodCanBeStatic
   /**
    * Must be implemented in descendants and return (or resolved for async clients)

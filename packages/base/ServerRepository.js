@@ -108,6 +108,33 @@ class ServerRepository extends CustomRepository {
   }
 
   /**
+   * For repository with ONE attribute returns a flat array of attribute values
+   * @example
+
+       const usersIDs = UB.Repository('uba_user'),attrs('ID').limit(100).selectAsArrayOfValues()
+       // usersIDs is array of IDs [1, 2, 3, 4]
+
+   * @return Array<string|number>
+   */
+  selectAsArrayOfValues () {
+    if (process.isServer) { // inside server thread
+      const res = []
+      const inst = new TubDataStore(this.entityName)
+      inst.run(this.method, this.ubql())
+      while (!inst.eof) {
+        res.push(inst.get(0))
+        inst.next()
+      }
+      inst.freeNative() // release memory ASAP
+      return res
+    } else {
+      const resp = this.connection.query(this.ubql())
+      return resp.resultData.data.map(r => r[0])
+    }
+
+  }
+
+  /**
    * Create new, or use passed as parameter {@link TubDataStore} and run {@link class:TubDataStore#select TubDataStore.select} method passing result of {@link class:CustomRepository#ubql CustomRepository.ubql()} as config.
    * Do not work for remote connection.
    *
@@ -154,8 +181,16 @@ class ServerRepository extends CustomRepository {
    * @return {Object|undefined}
    */
   selectScalar () {
-    const result = this.selectAsArray()
-    return Array.isArray(result.resultData.data[0]) ? result.resultData.data[0][0] : undefined
+    if (process.isServer) { // inside server thread
+      const inst = new TubDataStore(this.entityName)
+      inst.run(this.method, this.ubql())
+      const res = inst.eof ? undefined : inst.get(0)
+      inst.freeNative() // release memory ASAP
+      return res
+    } else {
+      const result = this.selectAsArray()
+      return Array.isArray(result.resultData.data[0]) ? result.resultData.data[0][0] : undefined
+    }
   }
 
   /**

@@ -19,6 +19,20 @@ but does not fetch default params except ID
 
 ### Fixed
 
+## [1.13.19] - 2020-11-15
+### Added
+- `processing.load`: added `.misc({ ID: ID })` which allows to make a request with ID bypassing caching,
+  soft deletion and history. This solves the problem with the opening of forms of records that are no longer relevant.
+
+## [1.13.18] - 2020-11-14
+### Added
+ - UTableEntity: new prop `bordered` (true by default) - display a border around table
+  and toolbar. See for example cdn_person form - with border around Contacts its looks
+  better.
+  
+### Changed
+ - `UCodeMirror` - use `esversion: 8` (async functions) as default for linter
+
 ## [1.13.17] - 2020-11-10
 ### Changed
  - `USidebar` sidebar width to `0px` in collapsed state and screen less then `768px` (mobile)
