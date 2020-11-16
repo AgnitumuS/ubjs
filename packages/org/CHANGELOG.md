@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - possibility to manage access for desktops and shortcuts by org_unit by redefining `exprMethod` of aclRls mixin for `ubm_desktop` and `ubm_navshortcut`
 
 ### Changed
+- sortOrder of for `ORG_UNITTYPE` enum values in order to use this order on UI for `UAclRlsInput` component
 
 ### Deprecated
 

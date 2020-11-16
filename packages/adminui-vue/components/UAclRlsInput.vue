@@ -121,6 +121,7 @@
 <script>
 const { mapMutations, mapActions } = require('vuex')
 const { Repository } = require('@unitybase/ub-pub')
+const { UBDomain } = require('@unitybase/cs-shared')
 
 const NOT_FK_ACL_ATTRIBUTES = ['ID', 'valueID', 'instanceID']
 
@@ -155,7 +156,8 @@ export default {
       currentEntityName: null,
       selected: {}
     },
-    subjects: {}
+    subjects: {},
+    enumOrders: {}
   }),
 
   computed: {
@@ -176,7 +178,7 @@ export default {
     rightAttributesWithMetaInfo () {
       return this.rightAttributes.map(attrName => {
         const entity = this.entityAttributes[attrName].associatedEntity
-        const mappedEntities = this.getMappeEntities(entity)
+        const mappedEntities = this.getMappedEntities(entity)
 
         return {
           attrName,
@@ -255,18 +257,8 @@ export default {
   },
 
   created () {
-    for (const { entity } of this.rightAttributesWithMetaInfo) {
-      const { descriptionAttribute } = this.$UB.connection.domain.get(entity)
-      Repository(entity).attrs('ID', descriptionAttribute).select().then(entries => {
-        const keyValueMap = entries.reduce((obj, entry) => {
-          obj[entry.ID] = entry[descriptionAttribute]
-
-          return obj
-        }, {})
-
-        this.$set(this.subjects, entity, keyValueMap)
-      })
-    }
+    this.loadSubjects()
+    this.loadEnumOrdersAndSortMappedEntities()
   },
 
   methods: {
@@ -278,6 +270,44 @@ export default {
     ...mapActions([
       'addCollectionItemWithoutDefaultValues'
     ]),
+
+    loadSubjects () {
+      for (const { entity } of this.rightAttributesWithMetaInfo) {
+        const { descriptionAttribute } = this.$UB.connection.domain.get(entity)
+        Repository(entity).attrs('ID', descriptionAttribute).select().then(entries => {
+          const keyValueMap = entries.reduce((obj, entry) => {
+            obj[entry.ID] = entry[descriptionAttribute]
+
+            return obj
+          }, {})
+
+          this.$set(this.subjects, entity, keyValueMap)
+        })
+      }
+    },
+
+    async loadEnumOrdersAndSortMappedEntities() {
+      for (const { entity, hasMappedEntities, mappedEntities } of this.rightAttributesWithMetaInfo) {
+        if (!hasMappedEntities) {
+          continue
+        }
+
+        const enumAttrs = Object.entries(this.$UB.connection.domain.get(entity).attributes)
+          .filter(([, attrInfo]) => attrInfo.dataType === UBDomain.ubDataTypes.Enum)
+
+        const enums = await Promise.all(enumAttrs.flatMap(([, { enumGroup }]) => {
+          return Repository('ubm_enum')
+            .attrs('sortOrder', 'code', 'eGroup')
+            .where('eGroup', '=', enumGroup)
+            .select()
+        }))
+        enums.flat().forEach(({ sortOrder, code, eGroup }) => {
+          const enumKey = eGroup + code
+          this.$set(this.enumOrders, enumKey, sortOrder)
+        })
+        this.sortMappedEntitites(mappedEntities, entity)
+      }
+    },
 
     deleteAccessRecord (aclID) {
       this.DELETE_COLLECTION_ITEM({
@@ -317,7 +347,7 @@ export default {
       })
     },
 
-    getMappeEntities (masterEntityName) {
+    getMappedEntities (masterEntityName) {
       return Object.entries(this.$UB.connection.domain.entities)
         .filter(([entityName, entityInfo]) => {
           if (!entityInfo.hasMixin('unity')) {
@@ -329,6 +359,59 @@ export default {
           return unityEntity === masterEntityName
         })
         .map(([entityName]) => entityName)
+    },
+
+    /**
+     * Function for sorting mapped enetites of `masteEntityName` entity. It sorts array
+     * of entites' names by defaults property of `unity` mixin. If you define
+     * several default values in `unity` mixin error will be throwed since there
+     * should be only one attribute that will be used for sorting in UI.
+     */
+    sortMappedEntitites (entities, masterEntityName) {
+      const masterEntityMetaInfo = this.$UB.connection.domain.get(masterEntityName)
+
+      entities.sort((entity1, entity2) => {
+        const entityInfo1 = this.$UB.connection.domain.get(entity1)
+        const entityInfo2 = this.$UB.connection.domain.get(entity2)
+        const defaults1 = entityInfo1.mixin('unity').defaults
+        const defaults2 = entityInfo2.mixin('unity').defaults
+
+        if (!defaults1 || !defaults2) {
+          return 0
+        }
+
+        const commonAttributes = Object.keys(defaults1).filter(key => {
+          return Object.keys(defaults2).includes(key)
+        })
+
+        if (commonAttributes.length !== 1) {
+          throw new Error(
+            `You should define only one default value that will be mapped to the unity entity as it defines an order for displaying in UI.`
+          )
+        }
+
+        const [unityClassifierAttribute] = commonAttributes
+        const value1 = defaults1[unityClassifierAttribute]
+        const value2 = defaults2[unityClassifierAttribute]
+        const classifierInfo = masterEntityMetaInfo.attributes[unityClassifierAttribute]
+        const isEnumDataType = classifierInfo.dataType === UBDomain.ubDataTypes.Enum
+
+        if (isEnumDataType) {
+          const { enumGroup } = classifierInfo
+          const order1 = this.enumOrders[enumGroup + value1]
+          const order2 = this.enumOrders[enumGroup + value2]
+
+          if (!order1 || !order2) {
+            return 0
+          }
+
+          // compare sortOrder of ubm_enum entity
+          return order1 > order2 ? 1 : -1
+        }
+
+        // compare chars
+        return value1 > value2 ? 1 : -1
+      })
     },
 
     getDialogSelectedIds (unityEntity, entity) {
@@ -384,9 +467,7 @@ export default {
         })
       )
 
-      this.dialog.isVisible = false
-      this.resetSelectedItems()
-      this.dialog.currentEntityName = null
+      this.closeDialog()
     }
   }
 }
