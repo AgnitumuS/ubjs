@@ -155,7 +155,17 @@ function doBeforeUpdate (ctxt) {
   }
   if (execParams.orgBusinessTypeID) {
     checkAccessAddGovByRoles(ctxt)
+  } else {
+    let orgBusinessTypeID = UB.Repository('cdn_organization')
+        .attrs('orgBusinessTypeID')
+        .where('[ID]', '=', execParams.ID)
+        .selectScalar()
+    if (orgBusinessTypeID) {
+      execParams.orgBusinessTypeID = orgBusinessTypeID
+      checkAccessAddGovByRoles(ctxt)
+    }
   }
+
   me.updateOrganizationCaption(ctxt)
   return true
 }
