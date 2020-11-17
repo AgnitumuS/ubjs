@@ -69,6 +69,7 @@ const {
  * @param {function} [beforeCopy] Callback which will be emit before copy of existing record
  * @param {function} [copied] Callback which will be emit when data was copied from existing record
  * @param {function} [saveNotification] Callback which will be override default save notification
+ * @param {function} [errorNotification] Callback which will be override default error notification
  * @param {boolean} [isCopy] Flag which used for create new record with data of existing record
  * @param {boolean} [isModal] Is parent opened from modal. Used to provide modal state to child
  * @return {object} Vue store cfg
@@ -94,6 +95,7 @@ function createProcessingModule ({
   beforeCopy,
   copied,
   saveNotification,
+  errorNotification,
   isCopy,
   isModal
 }) {
@@ -845,8 +847,12 @@ function createProcessingModule ({
             await saved()
           }
         } catch (err) {
-          UB.showErrorWindow(err)
-          throw new UB.UBAbortError(err)
+          if (typeof errorNotification === 'function') {
+            errorNotification(err)
+          } else {
+            UB.showErrorWindow(err)
+            throw new UB.UBAbortError(err)
+          }
         } finally {
           commit('LOADING', {
             isLoading: false,

@@ -161,6 +161,7 @@ class UForm {
    * @param {function} [cfg.beforeCopy]
    * @param {function} [cfg.copied]
    * @param {function} [saveNotification] Callback which will be override default save notification
+   * @param {function} [errorNotification] Callback which will be override default error notification
    * @returns {UForm}
    */
   processing ({
@@ -178,7 +179,8 @@ class UForm {
     deleted,
     beforeCopy,
     copied,
-    saveNotification
+    saveNotification,
+    errorNotification
   } = {}) {
     this.storeInitialized = true
     this.canValidationInit = true
@@ -212,6 +214,7 @@ class UForm {
       beforeCopy: beforeCopy ? () => beforeCopy.call(this, this.$store) : null,
       copied: copied ? () => copied.call(this, this.$store) : null,
       saveNotification,
+      errorNotification,
       isCopy: this.isCopy,
       isModal: this.isModal
     })

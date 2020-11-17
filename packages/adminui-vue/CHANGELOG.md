@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Callback `errorNotification` is added to `UForm.processing` parameters - will override default error notification
 
 ### Changed
 
