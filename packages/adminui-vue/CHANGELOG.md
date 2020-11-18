@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - `UFile`: prevent download document in case `preview-mode` not sets
+ - `UFile`: prevent download document in case `preview-mode` is not sets
 
 ## [1.13.19] - 2020-11-15
 ### Added
@@ -1139,7 +1139,7 @@ this.$formatByPattern.formatNumber(
  - `USelectEntity`/`USelectMultiple`: prevent exception `Error in build SQL "where" expressions: item "XXX" not found ordinar item with name "YYY"`
  while fetching a display value 
  - `ElSelect` wrapped by `UFormRow` no longer breaks arrow click behavior 
- - `UFile` - more accurate work with previewURL inside control, to prevent situation, when `previewUrl` is still set,
+ - `UFile` - more accurate work with `previewURL` inside control, to prevent situation, when `previewUrl` is still set,
    but value is no longer valid due to `window.URL.revokeObjectURL` call. 
 
 ## [1.9.6] - 2019-12-12
