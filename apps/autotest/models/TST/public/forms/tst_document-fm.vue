@@ -76,9 +76,6 @@
 
       <u-auto-field
         attribute-name="fileStoreSimple"
-        :preview-mode="{
-           height: 400
-        }"
       />
 
       <u-grid>
@@ -92,6 +89,9 @@
 <script>
 const { Form, mapInstanceFields, dialogInfo } = require('@unitybase/adminui-vue')
 
+/*:preview-mode="{
+           height: 400
+        }"*/
 module.exports.mount = function (cfg) {
   Form(cfg)
     .processing({

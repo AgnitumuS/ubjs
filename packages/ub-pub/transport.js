@@ -428,5 +428,6 @@ module.exports = {
   xhrDefaults,
   xhr,
   get,
-  post
+  post,
+  buildUrl
 }

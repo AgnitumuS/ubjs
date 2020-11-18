@@ -159,15 +159,16 @@ class FileSystemBlobStore extends BlobStoreCustom {
         const storeRelPath = path.relative(this.fullStorePath, filePath)
         let head = `${this.PROXY_SEND_FILE_HEADER}: /${this.PROXY_SEND_FILE_LOCATION_ROOT}/${this.name}/${storeRelPath}`
         head += `\r\nContent-Type: ${ct}`
-        if (blobInfo && blobInfo.origName) {
-          head += `\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`
-        }
+        // if (blobInfo && blobInfo.origName) {
+        //   head += `\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`
+        // }
         console.debug('<- ', head)
         resp.writeHead(head)
         resp.writeEnd('')
       } else {
         if (blobInfo && blobInfo.origName) {
-          resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`)
+          // resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`)
+          resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}\r\nContent-Disposition: inline; filename="${blobInfo.origName}"`)
         } else {
           resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}`)
         }
