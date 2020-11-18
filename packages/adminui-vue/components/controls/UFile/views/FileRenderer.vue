@@ -29,30 +29,14 @@
     </div>
   </div>
 
-  <object
+  <iframe
     v-else-if="renderType === 'pdf'"
-    type="application/pdf"
-    :data="previewUrl"
     ref="view"
+    frameborder="0"
     width="100%"
     height="100%"
-  >
-    <param name="view" value="FitH">
-    <param name="fileName" value="YAYAYAY">
-
-    <p>Oops! Your browser doesn't support PDFs!</p>
-  </object>
-
-<!--  <iframe-->
-<!--    v-else-if="renderType === 'pdf'"-->
-<!--    type="application/pdf"-->
-<!--    ref="view"-->
-<!--    frameborder="0"-->
-<!--    width="100%"-->
-<!--    height="100%"-->
-<!--    :src="previewUrl"-->
-<!--  />-->
-<!--  :srcdoc="pdfIFrameHtml()"-->
+    :src="previewUrl"
+  />
 
   <div
     v-else
@@ -184,8 +168,7 @@ export default {
   async created () {
     this.fileLoader = new FileLoader(this.entityName, this.attributeName)
     if (this.withPreview) { // prevent download document for non-preview mode
-      // this.previewUrl = await this.fileLoader.getPreviewUrl(this.file, this.fileId)
-      this.previewUrl = await this.fileLoader.getDocumentURI(this.file, this.fileId) + '#view=Fit' // TODO
+      this.previewUrl = await this.fileLoader.getPreviewUrl(this.file, this.fileId)
     }
   },
 

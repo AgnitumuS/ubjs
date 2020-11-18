@@ -24,30 +24,13 @@ class FileLoader {
   /**
    * Creates preview url
    *
-   * @param {object} file
+   * @param {blob} file
    * @param {number} fileId
    * @returns {Promise<string>}
    */
   async getPreviewUrl (file, fileId) {
     const binaryFile = await this.downloadFile(file, fileId)
     return window.URL.createObjectURL(new Blob([binaryFile], { type: file.ct }))
-  }
-
-  /**
-   * Returns document URL valid for 1 minute
-   *
-   * @param {object} file
-   * @param {number} fileId
-   * @returns {Promise<string>}
-   */
-  async getDocumentURI (file, fileId) {
-    return UB.connection.getDocumentURI({
-      entity: this.entity,
-      attribute: this.attribute,
-      id: fileId,
-      isDirty: file.isDirty,
-      revision: file.revision
-    })
   }
 
   /**

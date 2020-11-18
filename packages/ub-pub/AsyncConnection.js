@@ -1786,27 +1786,6 @@ UBConnection.prototype.getDocument = function (params, options) {
 }
 
 /**
- * Return a URI (URL part without domain name) valid for 1 minute for download a document from server using GET request without any additional headers
- * @param params
- * @return {Promise<string>}
- */
-UBConnection.prototype.getDocumentURI = function (params) {
-  let URL = 'getDocument'
-
-  let urlParams = Object.assign({}, params)
-  Object.keys(urlParams).forEach(key => {
-    if (ALLOWED_GET_DOCUMENT_PARAMS.indexOf(key) === -1) {
-      delete urlParams.data[key]
-      ubUtils.logDebug(`invalid parameter '${key}' is passed to then getDocument request`)
-    }
-  })
-  URL = transport.buildUrl(URL, urlParams)
-  return this.authorize().then(session => {
-    return URL + '&session_signature=' + session.signature(this.authMock)
-  })
-}
-
-/**
  * Saves a file content to the TEMP store of the specified entity attribute of Document type.
  *
  * Should be called before insert of update. Result of this function is what shall be assigned to the
