@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - a client-side report builder `UBReport` uses a `/clientRequire` endpoint instead of `/getDocument` to obtain a report template.
+   This fix 404 report template response on production deployment where models can be either inside
+   app folder (`/opt/unitybase/apps/appName`) or inside appData folder (`var/opt/unitybase/apps/appName`)   
 
 ## [5.4.35] - 2020-11-15
 ## [5.4.34] - 2020-11-14

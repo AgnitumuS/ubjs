@@ -74,23 +74,24 @@ UBReport.makeReport = function (reportCode, reportType, params) {
 * @returns {Promise|Boolean}
 */
 UBReport.prototype.init = function () {
-  let me = this
+  const me = this
   if (me.isInited) {
     return Promise.resolve(true)
   }
-  let repository = $App.connection.Repository('ubs_report')
+  const repository = $App.connection.Repository('ubs_report')
     .attrs(['ID', 'report_code', 'name', 'template', 'code', 'model'])
     .where('[report_code]', '=', me.reportCode)
 
   return repository.selectSingle().then(function (reportRow) {
     me.reportRW = reportRow
 
-    let model = $App.domainInfo.models[reportRow.model]
-    let reportCodePath = `${model.clientRequirePath}/reports/${me.reportCode}.js`
+    const model = $App.domainInfo.models[reportRow.model]
+    const reportCodePath = `${model.clientRequirePath}/reports/${me.reportCode}.js`
+    const reportTplPath = `clientRequire/${model.clientRequirePath}/reports/${me.reportCode}.template`
 
-    return Promise.all([me.getDocument('template'), SystemJS.import(reportCodePath)])
+    return Promise.all([$App.connection.get(reportTplPath), SystemJS.import(reportCodePath)])
       .then(function ([tpl, codeModule]) {
-        me.reportRW.templateData = tpl
+        me.reportRW.templateData = tpl.data
         me.prepareTemplate()
         me.prepareCode(codeModule)
         me.isInited = true
@@ -107,7 +108,7 @@ UBReport.prototype.prepareTemplate = function () {
   this.reportRW.templateData = this.reportRW.templateData.replace(/<!--@\w+?[ ]*?".+?"-->/g, '')
 
   // parse options
-  let matches = this.reportRW.templateData.match(reOptions)
+  const matches = this.reportRW.templateData.match(reOptions)
   if (matches && matches.length) {
     matches.forEach((item) => {
       let itemVal = item.match(/<!--%(\w+?:.+?)-->/)[1]
@@ -154,7 +155,7 @@ UBReport.prototype.buildXLSX = function (reportData, config) {
 
   formatFunctions.addBaseMustacheSysFunction(reportData)
   formatFunctions.addMustacheSysFunction(reportData, this.lang)
-  let xlsxPromise = System.import('@unitybase/xlsx')
+  const xlsxPromise = System.import('@unitybase/xlsx')
   return xlsxPromise.then((xlsx) => {
     config = config || {}
     let html
@@ -164,9 +165,9 @@ UBReport.prototype.buildXLSX = function (reportData, config) {
     } else {
       html = xlsx.XLSXfromHTML.mustacheRenderOptimization(this.reportRW.templateData, reportData, config.minLenOptimization)
     }
-    const wb = new xlsx.XLSXWorkbook({useSharedString: !!config.useSharedString})
-    const converter = new xlsx.XLSXfromHTML(global.DOMParser, wb, config.sheetConfig || [{name: 'Sheet'}])
-    converter.writeHtml({html: html, sourceData: reportData})
+    const wb = new xlsx.XLSXWorkbook({ useSharedString: !!config.useSharedString })
+    const converter = new xlsx.XLSXfromHTML(global.DOMParser, wb, config.sheetConfig || [{ name: 'Sheet' }])
+    converter.writeHtml({ html: html, sourceData: reportData })
     return wb.render()
   })
 }
@@ -182,7 +183,7 @@ UBReport.prototype.buildHTML = function (reportData) {
   }
 
   formatFunctions.addBaseMustacheSysFunction(reportData)
-  let lang = $App.connection.userLang()
+  const lang = $App.connection.userLang()
   formatFunctions.addMustacheSysFunction(reportData, lang)
   return Mustache.render(this.reportRW.templateData, reportData)
 }
@@ -220,16 +221,16 @@ UBReport.prototype.transformToPdf = function (html, options) {
   // })
   // let pdfPromise = window.isDeveloperMode ? System.import('@unitybase/pdf') : System.import('@unitybase/pdf/dist/pdf.min.js')
   // window.BOUNDLED_BY_WEBPACK = false
-  let pdfPromise = System.import('@unitybase/pdf')
+  const pdfPromise = System.import('@unitybase/pdf')
 
   return pdfPromise.then((PDF) => {
     return PDF.PrintToPdf.requireFonts({
       fonts: options.fonts
         ? options.fonts
-        : [{fontName: 'TimesNewRoman', fontStyle: 'Normal'},
-          {fontName: 'TimesNewRoman', fontStyle: 'Bold'},
-          {fontName: 'TimesNewRoman', fontStyle: 'Italic'},
-          {fontName: 'TimesNewRoman', fontStyle: 'BoldItalic'}]
+        : [{ fontName: 'TimesNewRoman', fontStyle: 'Normal' },
+            { fontName: 'TimesNewRoman', fontStyle: 'Bold' },
+            { fontName: 'TimesNewRoman', fontStyle: 'Italic' },
+            { fontName: 'TimesNewRoman', fontStyle: 'BoldItalic' }]
     }).then(() => PDF)
   }).then((PDF) => {
     let pdfConfig = {
@@ -249,7 +250,7 @@ UBReport.prototype.transformToPdf = function (html, options) {
     if (this.onTransformConfig) {
       pdfConfig = this.onTransformConfig(pdfConfig)
     }
-    let pdf = new PDF.PrintToPdf(pdfConfig)
+    const pdf = new PDF.PrintToPdf(pdfConfig)
     pdf.writeHtml({
       html: html,
       orientation: this.reportOptions.pageOrientation,
@@ -299,7 +300,7 @@ UBReport.prototype.prepareCode = function (codeModule) {
 }
 
 /**
-* This function should be defined in report code block.
+* This function should be defined in the report code block.
 *
 * Implementation should:
 *
@@ -313,7 +314,7 @@ UBReport.prototype.prepareCode = function (codeModule) {
 * @returns {Promise|Object|String} If code run at server, method should return report data, else - Promise, which resolves to report data
 */
 UBReport.prototype.buildReport = function (reportParams) {
-  throw new UB.UBError('Function "buildReport" not defined in report code block')
+  throw new UB.UBError('Function "buildReport" not defined in the report code block')
 }
 
 /**
@@ -375,15 +376,15 @@ UBReport.prototype.buildReport = function (reportParams) {
 * @returns {Promise<string|Buffer>}
 */
 UBReport.prototype.getDocument = function (attribute) {
-  let cfg = JSON.parse(this.reportRW[attribute])
+  const cfg = JSON.parse(this.reportRW[attribute])
 
-  let params = {
+  const params = {
     entity: 'ubs_report',
     attribute: attribute,
     id: this.reportRW.ID,
     isDirty: cfg.isDirty === true
   }
-  return $App.connection.getDocument(params, {resultIsBinary: false})
+  return $App.connection.getDocument(params, { resultIsBinary: false })
 }
 
 /**
@@ -396,12 +397,12 @@ UBReport.cellInfo = function (e) {
   while (td && td.tagName !== 'TD') {
     td = td.parentNode
   }
-  let colIndex = td.cellIndex
+  const colIndex = td.cellIndex
   let tr = td
   while (tr && tr.tagName !== 'TR') {
     tr = tr.parentNode
   }
-  let rowIndex = tr.rowIndex
+  const rowIndex = tr.rowIndex
   let tbl = tr
   while (tbl && tbl.tagName !== 'TABLE') {
     tbl = tbl.parentNode
