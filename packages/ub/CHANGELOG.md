@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+  - `UB.UBAbort` server side abort error now logged as `ERR` log level instead of `EXC` (as should be) for UBServer@5.18.20.
+  For UBServer < 5.18.20 nothing changed and UB.UBAbort will be logged as `EXC`.
+    
 
 ## [5.7.6] - 2020-11-15
 ## [5.7.5] - 2020-11-14

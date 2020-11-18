@@ -27,6 +27,7 @@ function UBAbort (message, ...args) {
   // For SM<=45 we use a "exception class" inherit pattern below, but it stop working in SM52, so fallback to Error
   this.name = 'UBAbort'
   this.code = 'UBAbort'
+  this.errorNumber = 1002 // UBEXC_UBABORT_EXCEPTION in native code. such exceptions are logged as ERR level
   this.message = message || 'UBAbortError'
   if (args.length > 0) {
     this.message += '|' + JSON.stringify(args)
