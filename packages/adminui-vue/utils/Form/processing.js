@@ -339,7 +339,7 @@ function createProcessingModule ({
       },
 
       /**
-       * Add a new item to a collection.  Added item that marks as "isNew".
+       * Add a new item to a collection. Added item is marked as "isNew".
        * @param {VuexTrackedInstance} state
        * @param {object} payload
        * @param {string} payload.collection Collection name
