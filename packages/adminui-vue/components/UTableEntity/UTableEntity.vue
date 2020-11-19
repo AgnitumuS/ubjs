@@ -299,7 +299,7 @@ export default {
 
     /**
      * Whenever attribute is viewable by default. Attributes what potentially can contains
-     *   a huge text ('Json', 'Document' and 'Text' type) are excluded
+     *   a huge text ('Json', 'Document' and 'Text' type) `are excluded
      * @param {UBEntityAttribute} attr
      * @return {boolean}
      */

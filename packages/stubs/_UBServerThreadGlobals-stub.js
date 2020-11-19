@@ -517,7 +517,7 @@ TubDataStore.asJSONObject = '[{},{}]'
 TubDataStore.getAsTextInArrayNotation = function () {}
 /**
  * Return string representation of Instance in `Array of array` format
- * @deprecated Consider to replace JSON.parse(store.asJSONOArray) -> store.getAsJsArray(). getAsJsArray() method return a plain JS object instead of string and 25% faster
+ * @deprecated Consider to replace `JSON.parse(store.asJSONArray) -> store.getAsJsArray()` which returns a plain JS object instead of string and 25% faster
  * @member {String} asJSONArray
  * @memberOf TubDataStore.prototype
  */
