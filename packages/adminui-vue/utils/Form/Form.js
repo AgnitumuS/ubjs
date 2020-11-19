@@ -160,8 +160,8 @@ class UForm {
    * @param {function} [cfg.deleted]
    * @param {function} [cfg.beforeCopy]
    * @param {function} [cfg.copied]
-   * @param {function} [saveNotification] Callback which will be override default save notification
-   * @param {function} [errorNotification] Callback which will be override default error notification
+   * @param {function} [saveNotification] Callback what overrides the default save notification
+   * @param {function} [errorNotification] Callback what overrides the default error notification
    * @returns {UForm}
    */
   processing ({
