@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - new optional column property `filterable` for column configuration of UTableEntity. To disable filtration by column sets `column.filterable = false`
+- `UFormContainer`: provides `isDisabled` property to child controls.
+  This property disables child "U-controls" when its `true`.
+- `UBaseInput`, `UAutoField` and `USelectEntity` inherit `isDisabled` from parent
+- `UForm.processing`: callback `errorNotification` is added. Allows override a default error notification behavior
 
 ### Changed
  - `UTableEntity` - prevent hangs on huge text attributes content:
@@ -20,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UFile`: prevent download document in case `preview-mode` not sets
+ - `UTableEntity` error on click column which has no filters
 
 ## [1.13.19] - 2020-11-15
 ### Added
