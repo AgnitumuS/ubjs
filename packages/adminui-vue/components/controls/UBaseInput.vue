@@ -4,6 +4,7 @@
     class="ub-input"
     :type="type"
     :step="step"
+    :disabled="isDisabled"
     v-bind="$attrs"
     @[numberEvent]="rounding"
   >
@@ -33,6 +34,8 @@
 
 export default {
   name: 'UBaseInput',
+
+  inject: ['isDisabled'],
 
   props: {
     /*

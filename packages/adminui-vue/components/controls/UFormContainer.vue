@@ -47,20 +47,31 @@ export default {
      * Provides max width in px to the child UFormRow's.
      * Do not confuse with the maximum width of the form itself
      */
-    maxWidth: Number
+    maxWidth: Number,
+
+    /**
+     * Provides is-disabled property to child U-controls
+     * Do not work with child Element controls
+     */
+    isDisabled: {
+      type: Boolean,
+      default: false
+    }
   },
 
   inject: {
     parentLabelWidth: { from: 'labelWidth', default: null },
     parentLabelPosition: { from: 'labelPosition', default: null },
-    parentMaxWidth: { from: 'maxWidth', default: null }
+    parentMaxWidth: { from: 'maxWidth', default: null },
+    parentIsDisabled: { from: 'isDisabled', default: false }
   },
 
   provide () {
     return {
       labelWidth: this.labelWidth || this.parentLabelWidth,
       labelPosition: this.labelPosition || this.parentLabelPosition,
-      maxWidth: this.maxWidth || this.parentMaxWidth
+      maxWidth: this.maxWidth || this.parentMaxWidth,
+      isDisabled: this.isDisabled || this.parentIsDisabled
     }
   },
 

@@ -30,15 +30,15 @@
             'ub-select__deleted-value': isSafeDeletedValue && !isFocused,
             'ub-select__undefined-record': undefinedRecord
           }"
-          :readonly="!editable || readonly"
+          :readonly="!editable || isReadOnly"
           :placeholder="$ut(placeholder)"
           @click.native="editable || toggleDropdown()"
           @focus="onFocus"
           @blur="onBlur"
-          @keydown.native.exact.e.ctrl.prevent="readonly || handleEditItem()"
-          @keydown.native.exact.f9="readonly || handleShowDictionary()"
-          @keydown.native.exact.delete.ctrl="readonly || handleClearClick()"
-          @keydown.native.exact.down.alt="readonly || onKeydownAltDown()"
+          @keydown.native.exact.e.ctrl.prevent="isReadOnly || handleEditItem()"
+          @keydown.native.exact.f9="isReadOnly || handleShowDictionary()"
+          @keydown.native.exact.delete.ctrl="isReadOnly || handleClearClick()"
+          @keydown.native.exact.down.alt="isReadOnly || onKeydownAltDown()"
           @keydown.native.exact.up.prevent
           @keydown.native.exact.down.prevent
         >
@@ -61,14 +61,14 @@
           </el-tooltip>
 
           <i
-            v-if="clearable && value !== null && value !== '' && value !== undefined && !readonly"
+            v-if="clearable && value !== null && value !== '' && value !== undefined && !isReadOnly"
             slot="suffix"
             style="cursor: pointer;"
             class="el-input__icon u-icon-close"
             @click="$emit('input', null, null)"
           />
           <i
-            v-if="!readonly"
+            v-if="!isReadOnly"
             slot="suffix"
             class="el-input__icon"
             style="cursor: pointer;"
@@ -159,6 +159,8 @@ const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
  */
 export default {
   name: 'USelectEntity',
+
+  inject: ['isDisabled'],
 
   mixins: [clickOutsideDropdown],
 
@@ -330,7 +332,7 @@ export default {
         name: 'ShowLookup',
         caption: this.$ut('selectFromDictionary') + ' (F9)',
         icon: 'u-icon-dictionary',
-        disabled: this.readonly,
+        disabled: this.isReadOnly,
         handler: this.handleShowDictionary
       },
       {
@@ -344,14 +346,14 @@ export default {
         name: 'Add',
         caption: this.$ut('addNewItem'),
         icon: 'u-icon-add',
-        disabled: !this.getEntityName || !this.$UB.connection.domain.get(this.getEntityName).haveAccessToMethod('addnew') || this.readonly,
+        disabled: !this.getEntityName || !this.$UB.connection.domain.get(this.getEntityName).haveAccessToMethod('addnew') || this.isReadOnly,
         handler: this.handleAddNewItem
       },
       {
         name: 'Clear',
         caption: this.$ut('clearSelection') + ' (Ctrl+BackSpace)',
         icon: 'u-icon-eraser',
-        disabled: !this.value || this.readonly,
+        disabled: !this.value || this.isReadOnly,
         handler: this.handleClearClick
       }]
     },
@@ -376,6 +378,10 @@ export default {
         }
         this.debouncedFetch(value)
       }
+    },
+
+    isReadOnly () {
+      return this.isDisabled || this.readonly
     }
   },
 
@@ -531,7 +537,7 @@ export default {
 
     // shows all search result when click on dropdown arrow
     toggleDropdown () {
-      if (this.readonly) return
+      if (this.isReadOnly) return
       this.dropdownVisible = !this.dropdownVisible
       if (this.dropdownVisible) {
         this.fetchPage()
