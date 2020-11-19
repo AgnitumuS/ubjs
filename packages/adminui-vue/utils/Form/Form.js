@@ -52,7 +52,7 @@ class UForm {
    * @param {Vue.Component} [cfg.component] Form component, same as cfg.rootComponent
    * @param {Vue.Component} [cfg.rootComponent] Form component, same as cfg.component
    * @param {object} [cfg.props] Form component props
-   * @param {object} [cfg.props.parentContext] Attributes values what will be passed to addNew method
+   * @param {object} [cfg.props.parentContext] Attributes values that will be passed to addNew method
    *   in case instanceID is empty. Think of it as default values for attributes of a new record
    * @param {string} [cfg.title] Form title
    * @param {string} cfg.entity Entity name for master record
@@ -160,8 +160,8 @@ class UForm {
    * @param {function} [cfg.deleted]
    * @param {function} [cfg.beforeCopy]
    * @param {function} [cfg.copied]
-   * @param {function} [saveNotification] Callback what overrides the default save notification
-   * @param {function} [errorNotification] Callback what overrides the default error notification
+   * @param {function} [saveNotification] Callback that overrides the default save notification
+   * @param {function} [errorNotification] Callback that overrides the default error notification
    * @returns {UForm}
    */
   processing ({
