@@ -139,9 +139,7 @@ export default {
         return this.getRepository().fieldList
           .filter(attrCode => {
             const attr = this.schema.getEntityAttribute(attrCode, 0)
-            return attr.defaultView &&
-              (attr.dataType !== 'Json') &&
-              (attr.dataType !== 'Document')
+            return attr && this.isAttributeViewableByDefault(attr)
           })
           .map(attrCode => this.buildColumn(/** @type UTableColumn */{ id: attrCode }))
       }
@@ -208,9 +206,14 @@ export default {
           return this.$UB.Repository(this.repository)
         default: { // build repository based on columns (if available) or attributes with `defaultView: true`
           const repo = this.$UB.Repository(this.entityName)
-          const viewableAttrs = this.columns
-            ? this.getColumns.filter(c => c.attribute !== undefined).map(c => c.id)
-            : this.$UB.connection.domain.get(this.entityName).getAttributeNames({ defaultView: true })
+          let viewableAttrs = []
+          if (this.columns) {
+            this.getColumns.filter(c => c.attribute !== undefined).map(c => c.id)
+          } else {
+            this.$UB.connection.domain.get(this.entityName).eachAttribute(a => {
+              if (this.isAttributeViewableByDefault) viewableAttrs.push(a.name)
+            })
+          }
           if (!viewableAttrs.includes('ID')) repo.attrs('ID')
           repo.attrs(viewableAttrs)
           return repo
@@ -289,6 +292,19 @@ export default {
         const errMsg = `Columns [${fieldsWithError.join(', ')}] did not have slot for render`
         throw new Error(errMsg)
       }
+    },
+
+    /**
+     * Whenever attribute is viewable by default. Attributes what potentially can contains
+     *   a huge text ('Json', 'Document' and 'Text' type) are excluded
+     * @param {UBEntityAttribute} attr
+     * @return {boolean}
+     */
+    isAttributeViewableByDefault(attr) {
+      return attr.defaultView &&
+        (attr.dataType !== 'Json') &&
+        (attr.dataType !== 'Document') &&
+        (attr.dataType !== 'Text')
     }
   }
 }
