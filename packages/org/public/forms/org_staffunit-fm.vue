@@ -57,7 +57,10 @@
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 module.exports.mount = cfg => {
   Form(cfg)
-    .processing()
+    .processing({
+      masterFieldList: ['parentID', 'professionID', 'staffUnitTypeID', 'professionExtID', 'code', 'name', 'fullName',
+        'description', 'subordinationLevel', 'isBoss', 'nameGen', 'nameDat', 'fullNameGen', 'fullNameDat']
+    })
     .validation()
     .mount()
 }
