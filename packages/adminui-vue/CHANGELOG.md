@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UFile`: prevent download document in case `preview-mode` not sets
+ - `UTableEntity` error on click column which has no filters
 
 ## [1.13.19] - 2020-11-15
 ### Added
