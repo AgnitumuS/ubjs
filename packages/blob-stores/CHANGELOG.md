@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.1] - 2020-11-19
 ## [5.5.0] - 2020-11-15
 ### Added
   - BLOB stores: new `storeSize` `Hourly` - as `Daily` but with sub-folder for each hour inside a day folder

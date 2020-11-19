@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.17] - 2020-11-19
+### Fixed
 - `org_staffunit-fm`, `org_profession-fm`, `org_department-fm`: fixed form saving without a required `caption` field
   by adding `masterFieldList` [UBDF-12721]
 

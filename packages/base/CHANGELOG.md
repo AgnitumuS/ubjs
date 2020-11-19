@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.7] - 2020-11-19
 ## [5.4.6] - 2020-11-15
 ### Added
  - `DBConnection.selectParsedAsObject` for Postgres warning added: 
