@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UFormContainer`: provides `isDisabled` property to child controls.
+  This property disables child "U-controls" when its `true`.
+- `UBaseInput`, `UAutoField` and `USelectEntity` inherit `isDisabled` from parent
 - Callback `errorNotification` is added to `UForm.processing` parameters - allows to override a default error notification behavior
 
 ### Changed
