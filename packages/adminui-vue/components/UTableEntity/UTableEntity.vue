@@ -251,11 +251,14 @@ export default {
 
       const typeDefaults = TypeProvider.get(attribute && attribute.dataType)
       const filters = {}
-      const filterEntries = Object.entries(typeDefaults.filters || {})
-        .concat(Object.entries(column.filters || {}))
 
-      for (const [filterId, filterDef] of filterEntries) {
-        filters[filterId] = Object.assign({}, filters[filterId], filterDef)
+      if (column.filterable !== false) {
+        const filterEntries = Object.entries(typeDefaults.filters || {})
+          .concat(Object.entries(column.filters || {}))
+
+        for (const [filterId, filterDef] of filterEntries) {
+          filters[filterId] = Object.assign({}, filters[filterId], filterDef)
+        }
       }
 
       /**
