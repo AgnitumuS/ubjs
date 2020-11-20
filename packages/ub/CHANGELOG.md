@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - new `privateSettings` property for entity and attribute added to the JSON schema for entity metadata
+  
 ### Changed
 
 ### Deprecated
