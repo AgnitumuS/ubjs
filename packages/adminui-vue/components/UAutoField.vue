@@ -5,7 +5,12 @@
 export default {
   name: 'UAutoField',
 
-  inject: ['$v', 'entity', 'entitySchema', 'isDisabled'],
+  inject: {
+    $v: { from: '$v' },
+    entity: { from: 'entity' },
+    entitySchema: { from: 'entitySchema' },
+    isDisabled: { from: 'isDisabled', default: false }
+  },
 
   props: {
     /**

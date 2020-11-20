@@ -160,7 +160,9 @@ const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
 export default {
   name: 'USelectEntity',
 
-  inject: ['isDisabled'],
+  inject: {
+    isDisabled: { from: 'isDisabled', default: false }
+  },
 
   mixins: [clickOutsideDropdown],
 
