@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UBEntityAttribute.privateSettings` & `UBEntity.privateSettings` properties.
+    Can be defined in meta file and available in server-side domain. not available on client-side.
+    Require UB server 5.18.20 and up. 
 
 ### Changed
 
