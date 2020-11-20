@@ -36,8 +36,13 @@
       <u-dropdown-item
         label="userSettings"
         icon="u-icon-setting"
-        @click="showSettings"
-      />
+      >
+        <u-dropdown-item
+          label="scannerSettings"
+          icon="u-icon-scan-settings"
+          @click="showScannerSettings"
+        />
+      </u-dropdown-item>
 
       <u-dropdown-item
         label="changePassword"
@@ -143,11 +148,8 @@ export default {
   },
 
   methods: {
-    showSettings () {
-      this.$UB.core.UBApp.doCommand({
-        cmdType: this.$UB.core.UBCommand.commandType.showForm,
-        formCode: 'ubm_desktop-userSettings'
-      })
+    showScannerSettings () {
+      $App.scannerSettings()
     },
 
     changePassword () {
