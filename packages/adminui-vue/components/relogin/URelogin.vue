@@ -57,7 +57,7 @@ export default {
 
   computed: {
     authSchema () {
-      console.log('authSchema ####', window.localStorage.getItem('lastAuthType').toLowerCase())
+      // console.debug('authSchema ####', window.localStorage.getItem('lastAuthType').toLowerCase())
       return window.localStorage.getItem('lastAuthType').toLowerCase()
     },
 
