@@ -8,7 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - `mdb` BLOB store: if reverseProxy is `nginx` then `getDocument` request for permanently stored items will
+   redirect to `sendFileLocationRoot/models` internal location to unify retrieving of models and cmodels.
+   
+   On the production `cmodels` is located in then `/var/opt/unitybase/..` while models - in the `/opt/unitybase/...`
+   Since linkStatic links both to the `inetpub/clientRequire/models`, so better to get all `mdb` items from there.
+   
+   `ubcli generateNginxCfg` should be executed after upgrade to this version (`ub-app-upgrade` lifecycle script is doing this)
+          
 ### Deprecated
 
 ### Removed

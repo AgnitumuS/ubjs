@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `ubcli generateNginxCfg` - added internal location `location /{{sendFileLocationRoot}}/models`
+   mdb BLOB store redirect to it a `getDocument` requests. This fix problem on production deployment
+   when `cmodels` is located in the `/var/opt/..`.
+  
 ### Changed
 
 ### Deprecated

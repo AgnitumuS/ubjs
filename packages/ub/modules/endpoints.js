@@ -146,7 +146,10 @@ const MODULES_ROOT = path.join(process.configPath, 'node_modules')
  *   - in case requested module is a UnityBase model (present in ubConfig.json) then restrict access to non-public part of such model
  *
  * So developer should list all the modules that contain a sensitive server-side business logic inside the application
- * config and set a `moduleName` parameter correctly for such models
+ * config and set a `moduleName` parameter correctly for such models.
+ *
+ * On the production where nginx is used as a reverse proxy requests to /clientRequire is intercepted by nginx and
+ * returns a static file previously linked by `ubcli linkStatic` command, which uses the same resolve algorithm as described above
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
