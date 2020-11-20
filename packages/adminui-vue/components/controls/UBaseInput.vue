@@ -35,7 +35,9 @@
 export default {
   name: 'UBaseInput',
 
-  inject: ['isDisabled'],
+  inject: {
+    isDisabled: { from: 'isDisabled', default: false }
+  },
 
   props: {
     /*

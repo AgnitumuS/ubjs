@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UBaseInput`,`UAutoField`,`USelectEntity`: fixed missing injection in case when the control is outside the
+   `UFormContainer`
 
 ## [1.13.20] - 2020-11-19
 ### Added
