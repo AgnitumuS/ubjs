@@ -208,10 +208,12 @@ export default {
           const repo = this.$UB.Repository(this.entityName)
           let viewableAttrs = []
           if (this.columns) {
-            this.getColumns.filter(c => c.attribute !== undefined).map(c => c.id)
+            this.getColumns.forEach(c => {
+              if (c.attribute !== undefined) viewableAttrs.push(c.id)
+            })
           } else {
             this.$UB.connection.domain.get(this.entityName).eachAttribute(a => {
-              if (this.isAttributeViewableByDefault) viewableAttrs.push(a.name)
+              if (this.isAttributeViewableByDefault) viewableAttrs.push(a.code)
             })
           }
           if (!viewableAttrs.includes('ID')) repo.attrs('ID')
@@ -282,17 +284,19 @@ export default {
     },
 
     /**
-     * In a case when you create component by repository prop
-     * and forget to set attribute in fieldList but this attribute is in columns
+     * Each attribute (except custom) what used in columns definition should be added into repository `fieldList`
      */
     validateFieldList () {
+      const repoFieldList = this.getRepository().fieldList
       const fieldsWithError = this.getColumns
-        .filter(column => !this.getRepository().fieldList.includes(column.id)) // is custom
-        .filter(column => !this.$scopedSlots[column.id]) // dont have slot
+        .filter(column => {
+          return !repoFieldList.includes(column.id) // is custom
+            && !this.$scopedSlots[column.id] // dont have slot
+        })
         .map(column => column.id)
 
       if (fieldsWithError.length > 0) {
-        const errMsg = `Columns [${fieldsWithError.join(', ')}] did not have slot for render`
+        const errMsg = `Rendering slot is not defined for columns [${fieldsWithError.join(', ')}]`
         throw new Error(errMsg)
       }
     },
