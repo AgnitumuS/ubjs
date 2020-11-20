@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.5.2] - 2020-11-20
+### Changed
  - `mdb` BLOB store: if reverseProxy is `nginx` then `getDocument` request for permanently stored items will
    redirect to `sendFileLocationRoot/models` internal location to unify retrieving of models and cmodels.
    
@@ -16,12 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    
    `ubcli generateNginxCfg` should be executed after upgrade to this version (`ub-app-upgrade` lifecycle script is doing this)
           
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ## [5.5.1] - 2020-11-19
 ## [5.5.0] - 2020-11-15
 ### Added

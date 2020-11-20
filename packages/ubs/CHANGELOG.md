@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.37] - 2020-11-20
 ## [5.4.36] - 2020-11-19
 ### Fixed
  - a client-side report builder `UBReport` uses a `/clientRequire` endpoint instead of `/getDocument` to obtain a report template.

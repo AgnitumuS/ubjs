@@ -6,8 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - new `privateSettings` property for entity and attribute added to the JSON schema for entity metadata
-  
+
 ### Changed
 
 ### Deprecated
@@ -16,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.7.8] - 2020-11-20
+### Added
+ - new `privateSettings` property for entity and attribute added to the JSON schema for entity metadata
+  
 ## [5.7.7] - 2020-11-19
 ### Fixed
   - `UB.UBAbort` server side abort error now logged as `ERR` log level instead of `EXC` (as should be) for UBServer@5.18.20.
