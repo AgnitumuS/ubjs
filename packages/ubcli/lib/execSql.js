@@ -28,6 +28,8 @@
 
  ubcli execSsq -?
  ubcli execSql -c connectionName -f path/to/script.sql -o
+ // run a statement and output colored beautified result
+ ubcli execSql -sql 'select * from uba_user' -withResult -noLogo | sed -n "/--BEGIN/,/--END/p" | tail -n +2 | head -n -2 | jq -r .
 
  * Usage from a code:
 
@@ -69,6 +71,9 @@ module.exports = execSql
  * @param {string} [cfg.sql]               Text of SQL script for execution. Either file or sql should be specified
  * @param {Boolean} [cfg.optimistic=false] Wrap each statement in try/catch block. Continue execution on exceptions
  * @param {Boolean} [cfg.progress=false]   Output execution time for each command into console
+ * @param {Boolean} [cfg.withResult=false] If `true` execSql expect last statement in batch to be a statement what
+ *                                         returns a result, exec it using runSQL and returns a result as JSON
+ * @param {Boolean} [cfg.outputRes=false] If `withResult` is true - output last statement result to stdout
  */
 function execSql (cfg) {
   if (!cfg) {
@@ -92,6 +97,20 @@ function execSql (cfg) {
         defaultValue: false,
         searchInEnv: true,
         help: 'Output execution time for each command into console'
+      })
+      .add({
+        short: 'withResult',
+        long: 'withResult',
+        defaultValue: false,
+        searchInEnv: false,
+        help: 'If `true` execSql expect last statement in batch to be a statement what returns a result, exec it using runSQL and returns a result as JSON'
+      })
+      .add({
+        short: 'outputRes',
+        long: 'outputRes',
+        defaultValue: true,
+        searchInEnv: false,
+        help: ' If `withResult` is true - output last statement result to stdout'
       })
     cfg = opts.parseVerbose({}, true)
   }
@@ -138,12 +157,18 @@ function execSql (cfg) {
   let invalidStmtCnt = 0
   let successStmtCnt = 0
   let ignoreErr = false
+  const lastIdx = stmts.length - 1
+  let lastStatementResult = ''
   stmts.forEach((stmt, n) => {
     try {
       const d = Date.now()
       ignoreErr = stmt.indexOf('--@optimistic') > -1
-      dbConn.execParsed(stmt)
-      dbConn.commit()
+      if (cfg.withResult && (n === lastIdx)) {
+        lastStatementResult = dbConn.runParsed(stmt)
+      } else {
+        dbConn.execParsed(stmt)
+        dbConn.commit()
+      }
       if (cfg.progress) {
         console.log(`#${n + 1}: ${Date.now() - d}ms`)
       }
@@ -162,6 +187,12 @@ function execSql (cfg) {
   } else {
     console.info(`Successfully completed in ${Date.now() - totalT}ms`)
   }
+  if (cfg.withResult && cfg.outputRes) {
+    console.log('--BEGIN STATEMENT RESULT--')
+    console.log(lastStatementResult)
+    console.log('--END STATEMENT RESULT--')
+  }
+  return lastStatementResult
 }
 
 
