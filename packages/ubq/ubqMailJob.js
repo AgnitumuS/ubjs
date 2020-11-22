@@ -61,6 +61,7 @@ module.exports = function () {
     user: mailerParams.user || '',
     password: mailerParams.password || '',
     tls: Boolean(mailerParams.autoTLS),
+    fullSSL: Boolean(mailerParams.fullSSL),
     auth: mailerParams.auth || false
   })
 

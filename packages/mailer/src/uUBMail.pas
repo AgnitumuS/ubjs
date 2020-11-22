@@ -14,8 +14,8 @@ type
 implementation
 
 uses
-  mimemess, mimepart, synautil, synachar, smtpsend, pop3send, ssl_openssl,
-  SpiderMonkey, SyNodeProto, SyNodeSimpleProto,
+  mimemess, mimepart, synautil, synachar, smtpsend, pop3send, imapsend, ssl_openssl,
+  SpiderMonkey, SyNodeProto, SyNodeSimpleProto, jsbUtils,
   Classes, SysUtils,{$IFDEF MSWINDOWS} Windows,{$ENDIF}
   SynCommons, mORMOt, DateUtils, SyNodeReadWrite;
 
@@ -44,6 +44,49 @@ type
     procedure DoLogin;
     procedure DoLogout;
   end;
+
+  { TubMailImap }
+
+  TubMailImap = class(TIMAPSend)
+  private
+    fIsLogined: Boolean;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    procedure DoLogin;
+    procedure DoLogout;
+  end;
+
+{ TubMailImap }
+
+constructor TubMailImap.Create;
+begin
+  fIsLogined := false;
+  inherited Create;
+end;
+
+destructor TubMailImap.Destroy;
+begin
+  try
+    doLogout;
+  except
+    // no exceptions in destructor
+  end;
+  inherited;
+end;
+
+procedure TubMailImap.DoLogin;
+begin
+  fIsLogined := Login;
+end;
+
+procedure TubMailImap.DoLogout;
+begin
+  if fIsLogined then
+    Logout;
+  fIsLogined :=False;
+end;
+
 { TubMailReceiver }
 
 constructor TubMailReceiver.Create;
@@ -592,6 +635,15 @@ type
     function NewSMInstance(aCx: PJSContext; argc: uintN; var vp: JSArgRec): TObject; override;
   end;
 
+  { TubMailImapProtoObject }
+
+  TubMailImapProtoObject = class(TSMCustomProtoObject)
+  protected
+    procedure InitObject(aParent: PJSRootedObject); override;
+  public
+    function NewSMInstance(aCx: PJSContext; argc: uintN; var vp: JSArgRec): TObject; override;
+  end;
+
 function TUBMimeMessProtoObject.NewSMInstance(aCx: PJSContext; argc: uintN; var vp: JSArgRec): TObject;
 begin
   Result := TUBMimeMess.Create;
@@ -882,9 +934,10 @@ begin
       else
         Sender.password := '';
       if obj.GetProperty(aCx, 'tls', val) and val.isBoolean then
-        Sender.autoTLS := val.asBoolean
-      else
-        Sender.autoTLS := False;
+        Sender.autoTLS := val.asBoolean;
+      if obj.GetProperty(aCx, 'fullSSL', val) and val.isBoolean then
+        Sender.FullSSL := val.asBoolean;
+
       if obj.GetProperty(aCx, 'auth', val) and val.isBoolean then
         authNeccessary := val.asBoolean
       else
@@ -907,57 +960,47 @@ begin
 end;
 
 { TubMailReceiverProtoObject }
-
-function ubMailReceiver_getMessagesCount_impl(cx: PJSContext; argc: uintN; vals: PjsvalVector; thisObj, calleeObj: PJSObject): jsval; cdecl;
+function ubMailReceiver_getMessagesCount(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
 var
   nativeObj: PSMInstanceRecord;
   receiver: TubMailReceiver;
 begin
-  if not IsInstanceObject(cx, thisObj, nativeObj) then
-    raise ESMException.Create('Object not Native');
-  receiver := TubMailReceiver(nativeObj.instance);
-  Result.asInteger := receiver.StatCount;
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  try
+    receiver := TubMailReceiver(nativeObj.instance);
+    vp.rval := jsval.Int32Value(receiver.StatCount);
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
 end;
 
-function ubMailReceiver_getMessagesCount(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
-const
-  SLCalls: array [0..0] of TNSMCallInfo = (
-    ( func: @ubMailReceiver_getMessagesCount_impl; argc: 0; argt: nil )
-  );
-begin
-  Result := nsmCallFunc(cx, argc, vp, @SLCalls, Length(SLCalls));
-end;
-
-function ubMailReceiver_getMessageSize_impl(cx: PJSContext; argc: uintN; vals: PjsvalVector; thisObj, calleeObj: PJSObject): jsval; cdecl;
+function ubMailReceiver_getMessageSize(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
 var
   nativeObj: PSMInstanceRecord;
   mailIndex: integer;
   receiver: TubMailReceiver;
 begin
-  if not IsInstanceObject(cx, thisObj, nativeObj) then
-    raise ESMException.Create('Object not Native');
-  mailIndex := vals[0].asInteger;
-  if mailIndex = 0 then
-    raise ESMException.CreateFmt('TubMailReceiver.mailSize() Error: %s', ['mailIndex start with 1']);
-  receiver := TubMailReceiver(nativeObj.instance);
+  result := checkFuncArgs(cx, argc, vp, [atI32]);
+  if not result then exit;
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  try
+    mailIndex := vp.argv^[0].asInteger;
+    if mailIndex = 0 then
+      raise ESMException.CreateFmt('TubMailReceiver.mailSize() Error: %s', ['mailIndex start with 1']);
+    receiver := TubMailReceiver(nativeObj.instance);
 
-  if receiver.List(mailIndex) then
-    Result.asInteger := receiver.ListSize
-  else
-    raise ESMException.CreateFmt('TubMailReceiver.mailSize() Error: %s', [receiver.ResultString]);
+    if receiver.List(mailIndex) then
+      vp.rval := jsval.Int32Value(receiver.ListSize)
+    else
+     raise ESMException.CreateFmt('TubMailReceiver.mailSize() Error: %s', [receiver.ResultString]);
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
 end;
 
-function ubMailReceiver_getMessageSize(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
-const
-  SLCallArgs: array [0..0] of uintN = ( ptInt );
-  SLCalls: array [0..0] of TNSMCallInfo = (
-    ( func: @ubMailReceiver_getMessageSize_impl; argc: Length(SLCallArgs); argt: @SLCallArgs )
-  );
-begin
-  Result := nsmCallFunc(cx, argc, vp, @SLCalls, Length(SLCalls));
-end;
-
-function ubMailReceiver_receive_impl(cx: PJSContext; argc: uintN; vals: PjsvalVector; thisObj, calleeObj: PJSObject): jsval; cdecl;
+function ubMailReceiver_receive(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
 var
   nativeObj: PSMInstanceRecord;
   mailIndex: integer;
@@ -966,35 +1009,31 @@ var
   inst: PSMInstanceRecord;
   fake: JSArgRec;
 begin
-  if not IsInstanceObject(cx, thisObj, nativeObj) then
-    raise ESMException.Create('Object not Native');
-  mailIndex := vals[0].asInteger;
-  receiver := TubMailReceiver(nativeObj.instance);
+  result := checkFuncArgs(cx, argc, vp, [atI32]);
+  if not result then exit;
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  try
+    mailIndex := vp.argv^[0].asInteger;
+    receiver := TubMailReceiver(nativeObj.instance);
 
-  if receiver.Retr(mailIndex) then begin
-    New(inst);
-    Result := inst.CreateNew(cx, defineClass(cx, TUBMimeMess, TUBMimeMessProtoObject, PJSRootedObject(nil)), 0, fake);
-    FMailMessage := TUBMimeMess(inst.Instance);
-    FMailMessage.Clear;
-    // MPV - clear will clear the MessagePart.TargetCharset
-    FMailMessage.MessagePart.TargetCharset := UTF_8;
-    FMailMessage.Header.CharsetCode := UTF_8;
-    FMailMessage.MessagePart.ConvertCharset := false;
-    FMailMessage.Lines.Assign(receiver.FullResult);
-    FMailMessage.DecodeMessage;
-    FMailMessage.MessagePart.DecodePart;
-  end else
-    raise ESMException.CreateFmt('TubMailReceiver cannot receive mail with index %d: %s',[mailIndex, receiver.ResultString]);
-end;
-
-function ubMailReceiver_receive(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
-const
-  SLCallArgs: array [0..0] of uintN = ( ptInt );
-  SLCalls: array [0..0] of TNSMCallInfo = (
-    ( func: @ubMailReceiver_receive_impl; argc: Length(SLCallArgs); argt: @SLCallArgs )
-  );
-begin
-  Result := nsmCallFunc(cx, argc, vp, @SLCalls, Length(SLCalls));
+    if receiver.Retr(mailIndex) then begin
+      New(inst);
+      vp.rval := inst.CreateNew(cx, defineClass(cx, TUBMimeMess, TUBMimeMessProtoObject, PJSRootedObject(nil)), 0, fake);
+      FMailMessage := TUBMimeMess(inst.Instance);
+      FMailMessage.Clear;
+      // MPV - clear will clear the MessagePart.TargetCharset
+      FMailMessage.MessagePart.TargetCharset := UTF_8;
+      FMailMessage.Header.CharsetCode := UTF_8;
+      FMailMessage.MessagePart.ConvertCharset := false;
+      FMailMessage.Lines.Assign(receiver.FullResult);
+      FMailMessage.DecodeMessage;
+      FMailMessage.MessagePart.DecodePart;
+    end else
+      raise ESMException.CreateFmt('TubMailReceiver cannot receive mail with index %d: %s',[mailIndex, receiver.ResultString]);
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
 end;
 
 function ubMailReceiver_top_impl(cx: PJSContext; argc: uintN; vals: PjsvalVector; thisObj, calleeObj: PJSObject): jsval; cdecl;
@@ -1061,27 +1100,21 @@ begin
   Result := nsmCallFunc(cx, argc, vp, @SLCalls, Length(SLCalls));
 end;
 
-function ubMailReceiver_reconnect_impl(cx: PJSContext; argc: uintN; vals: PjsvalVector; thisObj, calleeObj: PJSObject): jsval; cdecl;
+function ubMailReceiver_reconnect(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
 var
   nativeObj: PSMInstanceRecord;
   receiver: TubMailReceiver;
 begin
-  if not IsInstanceObject(cx, thisObj, nativeObj) then
-    raise ESMException.Create('Object not Native');
-  receiver := TubMailReceiver(nativeObj.instance);
-
-  receiver.Logout;
-  receiver.DoLogin;
-  Result.asBoolean := True;
-end;
-
-function ubMailReceiver_reconnect(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
-const
-  SLCalls: array [0..0] of TNSMCallInfo = (
-    ( func: @ubMailReceiver_reconnect_impl; argc: 0; argt: nil )
-  );
-begin
-  Result := nsmCallFunc(cx, argc, vp, @SLCalls, Length(SLCalls));
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  try
+    receiver := TubMailReceiver(nativeObj.instance);
+    receiver.Logout;
+    receiver.DoLogin;
+    vp.rval := jsval.TrueValue;
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
 end;
 
 procedure TubMailReceiverProtoObject.InitObject(aParent: PJSRootedObject);
@@ -1123,6 +1156,9 @@ begin
         Receiver.password := '';
       if obj.GetProperty(aCx, 'tls', val) and val.isBoolean then
         Receiver.AutoTLS := val.asBoolean;
+      if obj.GetProperty(aCx, 'fullSSL', val) and val.isBoolean then
+        Receiver.FullSSL := val.asBoolean;
+
       Receiver.DoLogin;
     except
       Receiver.Free;
@@ -1131,6 +1167,294 @@ begin
     result := Receiver;
   end else
     raise ESMException.Create('new TubMailReceiver() invalid call');
+end;
+
+// IMAP
+
+function ubMailImap_StatusFolder(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  nativeObj: PSMInstanceRecord;
+  IMAP: TubMailImap;
+  folder, criteria: string;
+begin
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  result := checkFuncArgs(cx, argc, vp, [atStr, atStr]);
+  try
+    IMAP := TubMailImap(nativeObj.instance);
+    folder := vp.argv^[0].asJSString.ToString(cx);
+    criteria := vp.argv^[1].asJSString.ToString(cx);
+    vp.rval := jsval.Int32Value(IMAP.StatusFolder(folder, criteria));
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
+end;
+
+function ubMailImap_SelectFolder(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  nativeObj: PSMInstanceRecord;
+  IMAP: TubMailImap;
+  uFolder: RawUTF8;
+  folder: string;
+begin
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  result := checkFuncArgs(cx, argc, vp, [atStr]);
+  try
+    IMAP := TubMailImap(nativeObj.instance);
+    uFolder := vp.argv^[0].asJSString.ToUTF8(cx);
+    folder := CharsetConversion(uFolder, TMimeChar.UTF_8, TMimeChar.UTF_7mod);
+    vp.rval := jsval.BooleanValue(IMAP.SelectFolder(folder));
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
+end;
+
+function ubMailImap_CloseFolder(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  nativeObj: PSMInstanceRecord;
+  IMAP: TubMailImap;
+ begin
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  try
+    IMAP := TubMailImap(nativeObj.instance);
+    vp.rval := jsval.BooleanValue(IMAP.CloseFolder());
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
+end;
+
+function ubMailImap_SearchMess(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  nativeObj: PSMInstanceRecord;
+  IMAP: TubMailImap;
+  criteria: string;
+  sl: TStringList;
+begin
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  result := checkFuncArgs(cx, argc, vp, [atStr]);
+  try
+    IMAP := TubMailImap(nativeObj.instance);
+    criteria := vp.argv^[0].asJSString.ToString(cx);
+    sl := TStringList.create();
+    try
+      if IMAP.SearchMess(criteria, sl) then
+        vp.rval := jsval.StringValue(cx.NewJSString(sl.DelimitedText))
+      else
+        vp.rval := jsval.FalseValue;
+    finally
+      sl.free;
+    end;
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
+end;
+
+function ubMailImap_getMessageSize(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  nativeObj: PSMInstanceRecord;
+  IMAP: TubMailImap;
+  msgID, res: integer;
+begin
+  result := checkFuncArgs(cx, argc, vp, [atI32]);
+  if not result then exit;
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  try
+    IMAP := TubMailImap(nativeObj.instance);
+    msgID := vp.argv^[0].asInteger;
+    res := IMAP.MessageSize(msgID);
+    vp.rval := jsval.Int32Value(res);
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
+end;
+
+function ubMailImap_getResultString(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  nativeObj: PSMInstanceRecord;
+  IMAP: TubMailImap;
+begin
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  try
+    IMAP := TubMailImap(nativeObj.instance);
+    vp.rval := jsval.StringValue(cx.NewJSString(IMAP.ResultString))
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
+end;
+
+function ubMailImap_listFolders(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  nativeObj: PSMInstanceRecord;
+  IMAP: TubMailImap;
+  initialFolder: string;
+  sl: TStringList;
+  uF: RawUTF8;
+begin
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  result := checkFuncArgs(cx, argc, vp, [atStr]);
+  try
+    IMAP := TubMailImap(nativeObj.instance);
+    initialFolder := vp.argv^[0].asJSString.ToString(cx);
+    sl := TStringList.create();
+    try
+      if IMAP.List(initialFolder, sl) then begin
+        uf := CharsetConversion(sl.DelimitedText, TMimeChar.UTF_7mod, TMimeChar.UTF_8);
+        vp.rval := jsval.StringValue(cx.NewJSString(uf))
+      end else
+        vp.rval := jsval.FalseValue;
+    finally
+      sl.free;
+    end;
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
+end;
+
+function ubMailImap_receive(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  nativeObj: PSMInstanceRecord;
+  mailIndex: integer;
+  receiver: TubMailImap;
+  FMailMessage: TUBMimeMess;
+  inst: PSMInstanceRecord;
+  fake: JSArgRec;
+begin
+  result := checkFuncArgs(cx, argc, vp, [atI32]);
+  if not result then exit;
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  try
+    mailIndex := vp.argv^[0].asInteger;
+    receiver := TubMailimap(nativeObj.instance);
+
+    New(inst);
+    vp.rval := inst.CreateNew(cx, defineClass(cx, TUBMimeMess, TUBMimeMessProtoObject, PJSRootedObject(nil)), 0, fake);
+    FMailMessage := TUBMimeMess(inst.Instance);
+    FMailMessage.Clear;
+    // MPV - clear will clear the MessagePart.TargetCharset
+    FMailMessage.MessagePart.TargetCharset := UTF_8;
+    FMailMessage.Header.CharsetCode := UTF_8;
+    FMailMessage.MessagePart.ConvertCharset := false;
+    if receiver.FetchMess(mailIndex, FMailMessage.Lines) then begin
+      FMailMessage.DecodeMessage;
+      FMailMessage.MessagePart.DecodePart;
+    end else
+      raise ESMException.CreateFmt('IMAP - receive fail for message ''%d'': %s',[mailIndex, receiver.ResultString]);
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
+end;
+
+function ubMailImap_top(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  NOT_IMPL: RawUTF8;
+begin
+   NOT_IMPL := 'IMAP: top not implemented';
+   JS_ReportError(cx, PChar(pointer(NOT_IMPL)));
+  Result := false;
+end;
+
+function ubMailImap_mailDelete(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  nativeObj: PSMInstanceRecord;
+  IMAP: TubMailImap;
+  msgID: integer;
+  res: boolean;
+begin
+  result := checkFuncArgs(cx, argc, vp, [atI32]);
+  if not result then exit;
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  try
+    IMAP := TubMailImap(nativeObj.instance);
+    msgID := vp.argv^[0].asInteger;
+    res := IMAP.DeleteMess(msgID);
+    vp.rval := jsval.BooleanValue(res);
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
+end;
+
+function ubMailImap_reconnect(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  nativeObj: PSMInstanceRecord;
+  receiver: TubMailImap;
+begin
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  try
+    receiver := TubMailImap(nativeObj.instance);
+    receiver.Logout;
+    receiver.DoLogin;
+    vp.rval := jsval.TrueValue;
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
+end;
+
+
+procedure TubMailImapProtoObject.InitObject(aParent: PJSRootedObject);
+begin
+  inherited;
+  definePrototypeMethod('selectFolder', @ubMailImap_SelectFolder, 1, [jspEnumerate, jspPermanent, jspReadOnly]);
+  definePrototypeMethod('closeFolder', @ubMailImap_CloseFolder, 0, [jspEnumerate, jspPermanent, jspReadOnly]);
+
+  definePrototypeMethod('statusFolder', @ubMailImap_StatusFolder, 2, [jspEnumerate, jspPermanent, jspReadOnly]);
+  definePrototypeMethod('searchMess', @ubMailImap_SearchMess, 1, [jspEnumerate, jspPermanent, jspReadOnly]);
+  definePrototypeMethod('getMessageSize', @ubMailImap_getMessageSize, 1, [jspEnumerate, jspPermanent, jspReadOnly]);
+  definePrototypeMethod('getResultString', @ubMailImap_getResultString, 0, [jspEnumerate, jspPermanent, jspReadOnly]);
+  definePrototypeMethod('listFolders', @ubMailImap_listFolders, 1, [jspEnumerate, jspPermanent, jspReadOnly]);
+  definePrototypeMethod('receive', @ubMailImap_receive, 1, [jspEnumerate, jspPermanent, jspReadOnly]);
+
+  definePrototypeMethod('top', @ubMailImap_top, 2, [jspEnumerate, jspPermanent, jspReadOnly]);
+  definePrototypeMethod('deleteMessage', @ubMailImap_mailDelete, 1, [jspEnumerate, jspPermanent, jspReadOnly]);
+  definePrototypeMethod('reconnect', @ubMailImap_reconnect, 0, [jspEnumerate, jspPermanent, jspReadOnly]);
+end;
+
+function TubMailImapProtoObject.NewSMInstance(aCx: PJSContext; argc: uintN; var vp: JSArgRec): TObject;
+var
+  obj: PJSObject;
+  val: jsval;
+  Receiver: TubMailImap;
+begin
+  if (argc=1) and vp.argv[0].isObject then begin
+    obj := vp.argv[0].asObject;
+    Receiver := TubMailImap.Create;
+    try
+      if obj.GetProperty(aCx, 'host', val) and val.isString then
+        Receiver.targetHost := val.asJSString.ToUTF8(aCx)
+      else
+        raise ESMException.Create('new TubMailReceiver() host is not specified');
+      if obj.GetProperty(aCx, 'port', val) and val.isString then
+        Receiver.targetPort := val.asJSString.ToUTF8(aCx)
+      else
+        raise ESMException.Create('new TubMailReceiver() port is not specified');
+      if obj.GetProperty(aCx, 'user', val) and val.isString then
+        Receiver.userName := val.asJSString.ToUTF8(aCx)
+      else
+        Receiver.userName := '';
+      if obj.GetProperty(aCx, 'password', val) and val.isString then
+        Receiver.password := val.asJSString.ToUTF8(aCx)
+      else
+        Receiver.password := '';
+      if obj.GetProperty(aCx, 'tls', val) and val.isBoolean then
+        Receiver.AutoTLS := val.asBoolean;
+      if obj.GetProperty(aCx, 'fullSSL', val) and val.isBoolean then
+        Receiver.FullSSL := val.asBoolean;
+
+      Receiver.DoLogin;
+    except
+      Receiver.Free;
+      raise;
+    end;
+    result := Receiver;
+  end else
+    raise ESMException.Create('new TubMailImap() invalid call');
 end;
 
 { TUBMailPlugin }
@@ -1142,6 +1466,7 @@ begin
 
   defineClass(rec.cx, TubMailSender, TubMailSenderProtoObject, rec.Exp);
   defineClass(rec.cx, TubMailReceiver, TubMailReceiverProtoObject, rec.Exp);
+  defineClass(rec.cx, TubMailImap, TubMailImapProtoObject, rec.Exp);
   defineClass(rec.cx, TMessHeader, TMessHeaderProtoObject, rec.Exp);
   defineClass(rec.cx, TMimePart, TMimePartProtoObject, rec.Exp);
   defineClass(rec.cx, TUBMimeMess, TUBMimeMessProtoObject, rec.Exp);
