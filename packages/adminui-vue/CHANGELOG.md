@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `UBaseInput`,`UAutoField`,`USelectEntity`: fixed missing injection in case when the control is outside the
    `UFormContainer`
+ - `UTableEntity`: sorting now replaces the `orderList` rather than adding a new condition to the existing one
 
 ## [1.13.21] - 2020-11-20
 ### Fixed
