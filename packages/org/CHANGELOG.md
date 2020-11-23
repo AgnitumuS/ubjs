@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - allow log-in for user who not assigned to employee for members of Admin group (in addition to `admin` and `root` user).
+   This fix regression introduced in @unitybase/org@5.4.0.
+   
+   The source of regression is so called "local administrators" - a regional administrator`s in a huge organizations.
+  
 
 ### Deprecated
 
