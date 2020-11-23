@@ -74,6 +74,7 @@ module.exports = (instance) => ({
       repo.attrsIf(!repo.fieldList.includes('ID'), 'ID')
 
       if (state.sort) {
+        if (repo.orderList && repo.orderList.length) repo.orderList = [] // clean default repository sort
         repo.orderBy(state.sort.column, state.sort.order)
       }
 
