@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.49] - 2020-11-23
+### Fixed
   - `cdn_organization` - deny ANY update for organizations with government organization type (`orgBusinessTypeID.isGovAuthority=true`)
    by roles not in `cdn.organization.accessAddGovByRoles` list.
    

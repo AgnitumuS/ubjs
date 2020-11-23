@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-  - user menu `Settings` now contains a sub-menu `Scanner settings` what shows a scanner settings form.
-    Ext based `ubm_desktop-userSettings` form (was shown on setting menu click before these changes) is removed.
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.13.22] - 2020-11-23
+### Changed
+  - user menu `Settings` now contains a sub-menu `Scanner settings` what shows a scanner settings form.
+    Ext based `ubm_desktop-userSettings` form (was shown on setting menu click before these changes) is removed.
 
 ### Fixed
  - `UBaseInput`,`UAutoField`,`USelectEntity`: fixed missing injection in case when the control is outside the

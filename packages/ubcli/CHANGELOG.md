@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.10.0] - 2020-11-23
+### Added
   - `ubcli execSql`: `-withResult` option added - if passed then expect last statement in the batch to be a statement what
      returns a result, exec it using runSQL and returns a result as JSON
      
@@ -15,14 +26,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    ubcli execSql -sql 'select * from uba_user' -withResult -noLogo | sed -n "/--BEGIN/,/--END/p" | tail -n +2 | head -n -2 | jq -r .
   ```   
       
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ## [5.9.8] - 2020-11-20
 ### Added
  - `ubcli generateNginxCfg` - added internal location `location /{{sendFileLocationRoot}}/models`
