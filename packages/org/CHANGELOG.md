@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `org_staffunit-fm`: fixed typo in parent context of org_employeeonstaff grid
 
 ## [5.4.19] - 2020-11-23
 ## [5.4.18] - 2020-11-20
