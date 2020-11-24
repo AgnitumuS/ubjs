@@ -516,8 +516,12 @@ module.exports = (instance) => ({
     },
 
     async updateData ({ state, getters, commit, dispatch }, response) {
-      if (response === undefined) {
-        await dispatch('refresh')
+      // do nothing if response.resultData is not valid for correct processing (inserting, updating or deleting) in table grid
+      if (
+        response === undefined ||
+        typeof response.resultData !== 'object' ||
+        Array.isArray(response.resultData)
+      ) {
         return
       }
 
