@@ -956,7 +956,7 @@
             },
             "encryptionImplementation" : {
               "type": "string",
-              "description": "Define encryption implementation for authentication CERT. By default @ub-d/nm-dstu/injectEncription.js"
+              "description": "Define encryption implementation for authentication CERT. Use one of @ub-d packages, example: `/clientRequire/@ub-d/iit-sign-web/dist/iit-sign-web.min.js`"
             },
             "authenticationCert": {
               "type": "object",
