@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `loadWithCollections` - new action for loading master record and collections from
+  one place. This action is necessary for the correct working of the `loaded` hook.
+  This hook should be called after loading of collections since:
+   * we can use collection items in the `loaded` hook;
+   * `load` and `loadCollections` called in pairs in many places now;
+   * we don't have an appropriate common hook that will be always called after full
+     loading or refreshing the instance and collections.
 
 ### Changed
 

@@ -479,8 +479,9 @@ function createProcessingModule ({
         } else if (state.isNew) {
           await dispatch('create')
         } else {
-          await dispatch('load')
-          await dispatch('loadCollections', autoLoadedCollections)
+          await dispatch('loadWithCollections', {
+            collectionKeys: autoLoadedCollections
+          })
         }
         if (inited) {
           await inited(store)
@@ -521,10 +522,7 @@ function createProcessingModule ({
        * @param {Store} store
        * @param {number} [newInstanceID] optional row id to load. If omitted instanceID will be used
        */
-      async load ({ commit, dispatch }, newInstanceID) {
-        if (beforeLoad) {
-          await beforeLoad()
-        }
+      async load ({ commit }, newInstanceID) {
         commit('LOADING', {
           isLoading: true,
           target: 'loadMaster'
@@ -556,9 +554,6 @@ function createProcessingModule ({
           })
         }
 
-        if (loaded) {
-          await loaded()
-        }
         commit('LOADING', {
           isLoading: false,
           target: 'loadMaster'
@@ -614,6 +609,28 @@ function createProcessingModule ({
           isLoading: false,
           target: 'loadCollections'
         })
+      },
+
+      /**
+       * Load instance data by record ID or newInstanceID and load collections by collectionKeys
+       *
+       * @param {object} payload
+       * @param {object} payload.collectionKeys Collections keys
+       * @param {string} [payload.newInstanceID] optional row id to load. If omitted instanceID will be used
+       */
+      async loadWithCollections ({ dispatch }, payload) {
+        const { collectionKeys, newInstanceID } = payload
+
+        if (beforeLoad) {
+          await beforeLoad()
+        }
+
+        await dispatch('load', newInstanceID)
+        await dispatch('loadCollections', collectionKeys)
+
+        if (loaded) {
+          await loaded()
+        }
       },
 
       /**
@@ -876,12 +893,14 @@ function createProcessingModule ({
           isLoading: true,
           target: 'master'
         })
-        await dispatch('load', state.data.ID)
+        await dispatch('loadWithCollections', {
+          newInstanceID: state.data.ID,
+          collectionKeys: Object.keys(state.collections)
+        })
         commit('LOADING', {
           isLoading: false,
           target: 'master'
         })
-        await dispatch('loadCollections', Object.keys(state.collections))
 
         if (validator()) {
           validator().$reset()
