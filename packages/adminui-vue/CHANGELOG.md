@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UTableEntity`: fixed disabling of sorting by clicking on a column header if the column configured as not sortable
 
 ## [1.13.22] - 2020-11-23
 ### Changed

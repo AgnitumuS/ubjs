@@ -702,6 +702,9 @@ export default {
     },
 
     showSortDropdown (column) {
+      if (column.sortable === false) {
+        return
+      }
       this.SELECT_COLUMN(column.id)
       // setTimeout for prevent click outside
       setTimeout(this.$refs.sort.$refs.dropdown.toggleVisible, 0)
