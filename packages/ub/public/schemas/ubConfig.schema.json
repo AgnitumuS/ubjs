@@ -737,7 +737,7 @@
               },
               "advSettings": {
                 "type": "string",
-                "description": "Advanced driver settings\n\n |DBMS| Value  | Description \n|-\n|`Postgre`|LibLocation=`Path to 64bit libpq.dll`| \"LibLocation=C:/Program Files/PostgreSQL (x86)/10/bin/libpq.dll\"\n| `Oracle`| Combination of `INLINE_IN` `USE_WALLET` and `CARDINALITY_IN`<br>INLINE_IN - do not use array bindings for `in` and `not in` condition<br><br>CARDINALITY_IN (Oracle, UB EE - ORM adds `/*+ CARDINALITY(t1, P) */` hint for IN sub-queries<br>(UB5 only) LibLocation=`Path to folder with oci.dll(windows only)` | \\/INLINE_IN,CARDINALITY_IN,USE_WALLET,LibLocation=/usr/lib/oracle/11.2/clien64/lib\" \n| `SQLIte3` | [Synchronous=Full or Off or Normal],[Tokenizer=stemka,TokenizerParams=\"stem=yes or no\" \"lang=uk or ru or en\"]"
+                "description": "Advanced driver settings\n\n |DBMS| Value  | Description \n|-\n|`Postgre`|LibLocation=`Path to 64bit libpq.dll`| \"LibLocation=C:/Program Files/PostgreSQL (x86)/10/bin/libpq.dll\"\n| `Oracle`| Combination of `INLINE_IN` `USE_WALLET` and `CARDINALITY_IN`<br>INLINE_IN - do not use array bindings for `in` and `not in` condition<br><br>CARDINALITY_IN (Oracle, UB EE - ORM adds `/*+ CARDINALITY(t1, P) */` hint for IN sub-queries;<br>P value depends on array length L:  L<10 => P = 1; L < 50 => P=10 else P = 100<br>(UB5 only) LibLocation=`Path to folder with oci.dll(windows only)` | \\/INLINE_IN,CARDINALITY_IN,USE_WALLET,LibLocation=/usr/lib/oracle/11.2/clien64/lib\" \n| `SQLIte3` | [Synchronous=Full or Off or Normal],[Tokenizer=stemka,TokenizerParams=\"stem=yes or no\" \"lang=uk or ru or en\"]"
               }
             }
           }
