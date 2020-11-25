@@ -4,7 +4,7 @@
     class="ub-input"
     :type="type"
     :step="step"
-    :disabled="isDisabled"
+    :disabled="isDisabled || $attrs.disabled"
     v-bind="$attrs"
     @[numberEvent]="rounding"
   >
