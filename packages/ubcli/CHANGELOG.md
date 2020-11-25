@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.10.1] - 2020-11-25
 ## [5.10.0] - 2020-11-23
 ### Added
   - `ubcli execSql`: `-withResult` option added - if passed then expect last statement in the batch to be a statement what

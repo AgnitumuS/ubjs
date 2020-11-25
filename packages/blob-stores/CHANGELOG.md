@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.3] - 2020-11-25
 ## [5.5.2] - 2020-11-20
 ### Changed
  - `mdb` BLOB store: if reverseProxy is `nginx` then `getDocument` request for permanently stored items will

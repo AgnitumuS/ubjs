@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.50] - 2020-11-25
 ## [5.4.49] - 2020-11-23
 ### Fixed
   - `cdn_organization` - deny ANY update for organizations with government organization type (`orgBusinessTypeID.isGovAuthority=true`)

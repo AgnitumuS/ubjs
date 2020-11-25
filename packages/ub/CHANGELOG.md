@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.7.9] - 2020-11-25
 ## [5.7.8] - 2020-11-20
 ### Added
  - new `privateSettings` property for entity and attribute added to the JSON schema for entity metadata
