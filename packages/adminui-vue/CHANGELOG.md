@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UBaseInput`: fix `disabled` prop in case need to disable only this field and not the entire form container
  - `UTableEntity` `<entity-name>:changed` events (do not tries to refresh) in case payload not contains a valid `resultData` with ID
  - `UTableEntity`: fixed disabling of sorting by clicking on a column header if the column configured as not sortable
+ - `UTableEntity` filter - use correct translation for multiple condition - `Multiple` instead of `Contains`   
 
 ## [1.13.22] - 2020-11-23
 ### Changed
