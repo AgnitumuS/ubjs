@@ -15,6 +15,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.10.1] - 2020-11-25
+## [5.10.0] - 2020-11-23
+### Added
+  - `ubcli execSql`: `-withResult` option added - if passed then expect last statement in the batch to be a statement what
+     returns a result, exec it using runSQL and returns a result as JSON
+     
+  ```shell script
+   ubcli execSql -sql 'select * from uba_user' -withResult
+   # run a statement and output colored beautified result
+   ubcli execSql -sql 'select * from uba_user' -withResult -noLogo | sed -n "/--BEGIN/,/--END/p" | tail -n +2 | head -n -2 | jq -r .
+  ```   
+      
+## [5.9.8] - 2020-11-20
+### Added
+ - `ubcli generateNginxCfg` - added internal location `location /{{sendFileLocationRoot}}/models`
+   mdb BLOB store redirect to it a `getDocument` requests. This fix problem on production deployment
+   when `cmodels` is located in the `/var/opt/..`.
+  
+## [5.9.7] - 2020-11-19
 ## [5.9.6] - 2020-11-15
 ### Fixed
  - `ubcli migrate` - prevent duplicate model insertion into `ub_version` for Postgres.

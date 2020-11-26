@@ -74,6 +74,7 @@ module.exports = (instance) => ({
       repo.attrsIf(!repo.fieldList.includes('ID'), 'ID')
 
       if (state.sort) {
+        if (repo.orderList && repo.orderList.length) repo.orderList = [] // clean default repository sort
         repo.orderBy(state.sort.column, state.sort.order)
       }
 
@@ -515,8 +516,12 @@ module.exports = (instance) => ({
     },
 
     async updateData ({ state, getters, commit, dispatch }, response) {
-      if (response === undefined) {
-        await dispatch('refresh')
+      // do nothing if response.resultData is not valid for correct processing (inserting, updating or deleting) in table grid
+      if (
+        response === undefined ||
+        typeof response.resultData !== 'object' ||
+        Array.isArray(response.resultData)
+      ) {
         return
       }
 

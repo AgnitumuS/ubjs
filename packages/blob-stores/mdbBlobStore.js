@@ -91,10 +91,19 @@ class MdbBlobStore extends BlobStoreCustom {
     if (filePath) {
       resp.statusCode = 200
       if (this.PROXY_SEND_FILE_HEADER) {
-        const storeRelPath = path.relative(process.configPath, filePath)
-        let head = `${this.PROXY_SEND_FILE_HEADER}: /${this.PROXY_SEND_FILE_LOCATION_ROOT}/app/${storeRelPath}`
-        console.debug('<- ', head)
+        // Redirect to `models` internal location to unify retrieving of models and cmodels.
+        // On production cmodels is in /var/opt/unitybase/.. while models is in /opt/unitybase/...
+        // linkStatic links both to `inetpub/clientRequire/models`
+        let head
+        if (requestParams.isDirty) {
+          const storeRelPath = path.relative(process.configPath, filePath)
+          head = `${this.PROXY_SEND_FILE_HEADER}: /${this.PROXY_SEND_FILE_LOCATION_ROOT}/app/${storeRelPath}`
+        } else {
+          // relPath === '[modelCode]|folderPath' so replacing | -> / is enough
+          head = `${this.PROXY_SEND_FILE_HEADER}: /${this.PROXY_SEND_FILE_LOCATION_ROOT}/models/${blobItem.relPath.replace('|', '/')}/${blobItem.fName}`
+        }
         head += `\r\nContent-Type: ${blobItem.ct}`
+        console.debug('<- ', head)
         resp.writeHead(head)
         resp.writeEnd('')
       } else {

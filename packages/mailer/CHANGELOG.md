@@ -15,6 +15,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.1] - 2020-11-25
+## [5.4.0] - 2020-11-23
+### Added
+ - notes in the README about SSL setup for Linux
+ - `UBMail.UBMailImap` class - receive mail using IMAP protocol
+ - `UBMail.TubMailReceiverImap` - a direct replacement for `UBMail.TubMailReceiver` but uses IMAP instead of POP3  
+ - `fullSSL` property added for `TubMailReceiver`, `TubMailSender` and `TubMailImap`.
+   If `true` - setup TLS before any command to mail server. See README for OpenSSL requirements.
+   
+## [5.3.8] - 2020-11-19
 ## [5.3.7] - 2020-11-15
 ## [5.3.6] - 2020-11-14
 ## [5.3.5] - 2020-11-12

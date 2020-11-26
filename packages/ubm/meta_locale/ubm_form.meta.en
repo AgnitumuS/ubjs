@@ -40,7 +40,7 @@
     },
     {
       "name": "isDefault",
-      "caption": "By default",
+      "caption": "Default",
       "description": "Default entity form"
     }
   ]

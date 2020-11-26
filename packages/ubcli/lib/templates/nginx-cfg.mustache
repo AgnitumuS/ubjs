@@ -148,6 +148,17 @@ server {
         add_header X-Content-Type-Options nosniff;
         alias {{{appPath}}};
     }
+    # application internal location for return a public part of models content
+    location /{{sendFileLocationRoot}}/models {
+      internal;
+      # this endpoint is uses only to get a models public files during development,
+      # so expires can be sets to -1 to force browser to check a e-tag for every request
+      expires -1;
+      add_header X-Frame-Options sameorigin;
+      add_header X-XSS-Protection "1; mode=block";
+      add_header X-Content-Type-Options nosniff;
+      alias {{{staticRoot}}}/clientRequire/models;
+    }
     # BLOB stores internal locations
     {{#blobStores}}
     location /{{sendFileLocationRoot}}/{{storeName}} {

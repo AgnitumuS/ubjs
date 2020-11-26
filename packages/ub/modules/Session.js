@@ -133,10 +133,10 @@ Object.defineProperty(Session, 'userLang', {
  * @property {number} userID Logged in user ID. The same as Session.userID. Added by `ub` model
  * @property {string} login Logged in user name. Added by `ub` model
  * @property {string} roles Logged in user roles names separated by comma. In most case better to use uData.roleIDs array. Added by `ub` model
- * @property {Array<number>} roleIDs Array or role IDs for logged in user roles. Added by `ub` model
- * @property {Array<number>} groupIDs Array or group IDs for logged in user roles. Added by `ub` model
- * @property {string} [employeeShortFIO] Short name of employee. Added by `ub` model from uba_user.firstName. `org` model override it
- * @property {string} [employeeFullFIO] Full name of employee. Added by `ub` model from uba_user.fullName. `org` model override it
+ * @property {Array<number>} roleIDs Array or role IDs for logged in user. Added by `ub` model
+ * @property {Array<number>} groupIDs Array or group IDs for logged in user. Added by `ub` model
+ * @property {string} [employeeShortFIO] Short name of the employee. Added by `ub` model from uba_user.firstName. `org` model override it
+ * @property {string} [employeeFullFIO] Full name of the employee. Added by `ub` model from uba_user.fullName. `org` model override it
  * @property {number} [employeeID] Employee ID
  * @property {string} [staffUnitFullName]
  * @property {string} [staffUnitName]

@@ -668,6 +668,12 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
    * @readOnly
    */
   this.entityMethods = entityMethods || {}
+
+  /**
+   * Private settings (for extended domain info)
+   * @property {object} privateSettings
+   */
+  if (entityInfo.privateSettings) this.privateSettings = entityInfo.privateSettings
 }
 
 // default UBEntity props - used by JSON.stringify replacer to produce entity JSON representation
@@ -1403,6 +1409,13 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
    * @readonly
    */
   this.hasCatalogueIndex = attributeInfo.hasCatalogueIndex === true
+
+  /**
+   * Private settings (for extended domain info)
+   * @property {object} privateSettings
+   * @readonly
+   */
+  if (attributeInfo.privateSettings) this.privateSettings = attributeInfo.privateSettings
 }
 
 // default UBEntityAttribute props - used by JSON.stringify replacer to produce entity JSON representation

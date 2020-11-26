@@ -2,8 +2,11 @@ const opt = require('@unitybase/base').options
 // disable NODE.JS tests if auto tests executed with -skipModules command line switch
 const fs = require('fs')
 const path = require('path')
+const os = require('os')
 
 let tests = fs.readdirSync(path.join(__dirname, 'nodeModules', 'simple'))
+console.debug(`process.platform is ${process.platform}, OS EOL length is ${os.EOL.length}`)
+
 tests.forEach(function (test) {
   console.log('\t\tRun', test)
   console.debug('Run', test)

@@ -139,9 +139,7 @@ export default {
         return this.getRepository().fieldList
           .filter(attrCode => {
             const attr = this.schema.getEntityAttribute(attrCode, 0)
-            return attr.defaultView &&
-              (attr.dataType !== 'Json') &&
-              (attr.dataType !== 'Document')
+            return attr && this.isAttributeViewableByDefault(attr)
           })
           .map(attrCode => this.buildColumn(/** @type UTableColumn */{ id: attrCode }))
       }
@@ -208,9 +206,16 @@ export default {
           return this.$UB.Repository(this.repository)
         default: { // build repository based on columns (if available) or attributes with `defaultView: true`
           const repo = this.$UB.Repository(this.entityName)
-          const viewableAttrs = this.columns
-            ? this.getColumns.filter(c => c.attribute !== undefined).map(c => c.id)
-            : this.$UB.connection.domain.get(this.entityName).getAttributeNames({ defaultView: true })
+          let viewableAttrs = []
+          if (this.columns) {
+            this.getColumns.forEach(c => {
+              if (c.attribute !== undefined) viewableAttrs.push(c.id)
+            })
+          } else {
+            this.$UB.connection.domain.get(this.entityName).eachAttribute(a => {
+              if (this.isAttributeViewableByDefault) viewableAttrs.push(a.code)
+            })
+          }
           if (!viewableAttrs.includes('ID')) repo.attrs('ID')
           repo.attrs(viewableAttrs)
           return repo
@@ -251,11 +256,14 @@ export default {
 
       const typeDefaults = TypeProvider.get(attribute && attribute.dataType)
       const filters = {}
-      const filterEntries = Object.entries(typeDefaults.filters || {})
-        .concat(Object.entries(column.filters || {}))
 
-      for (const [filterId, filterDef] of filterEntries) {
-        filters[filterId] = Object.assign({}, filters[filterId], filterDef)
+      if (column.filterable !== false) {
+        const filterEntries = Object.entries(typeDefaults.filters || {})
+          .concat(Object.entries(column.filters || {}))
+
+        for (const [filterId, filterDef] of filterEntries) {
+          filters[filterId] = Object.assign({}, filters[filterId], filterDef)
+        }
       }
 
       /**
@@ -276,19 +284,34 @@ export default {
     },
 
     /**
-     * In a case when you create component by repository prop
-     * and forget to set attribute in fieldList but this attribute is in columns
+     * Each attribute (except custom) what used in columns definition should be added into repository `fieldList`
      */
     validateFieldList () {
+      const repoFieldList = this.getRepository().fieldList
       const fieldsWithError = this.getColumns
-        .filter(column => !this.getRepository().fieldList.includes(column.id)) // is custom
-        .filter(column => !this.$scopedSlots[column.id]) // dont have slot
+        .filter(column => {
+          return !repoFieldList.includes(column.id) // is custom
+            && !this.$scopedSlots[column.id] // dont have slot
+        })
         .map(column => column.id)
 
       if (fieldsWithError.length > 0) {
-        const errMsg = `Columns [${fieldsWithError.join(', ')}] did not have slot for render`
+        const errMsg = `Rendering slot is not defined for columns [${fieldsWithError.join(', ')}]`
         throw new Error(errMsg)
       }
+    },
+
+    /**
+     * Whenever attribute is viewable by default. Attributes what potentially can contains
+     *   a huge text ('Json', 'Document' and 'Text' type) `are excluded
+     * @param {UBEntityAttribute} attr
+     * @return {boolean}
+     */
+    isAttributeViewableByDefault(attr) {
+      return attr.defaultView &&
+        (attr.dataType !== 'Json') &&
+        (attr.dataType !== 'Document') &&
+        (attr.dataType !== 'Text')
     }
   }
 }

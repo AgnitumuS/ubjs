@@ -16,7 +16,8 @@
  * @param {String} paramsObj.port port of mail server
  * @param {String} [paramsObj.user = ''] user login on mail server
  * @param {String} [paramsObj.password = ''] user password on mail server
- * @param {Boolean} [paramsObj.tls = false] use tls. Require openSSL library to be installed
+ * @param {Boolean} [paramsObj.tls=false] use tls on server request. OpenSSL libraries version >= 0.9.7 must be installed - see package README.md for details
+ * @param {Boolean} [paramsObj.fullSSL=false] Setup TLS before any POP3 command
  */
 function TubMailReceiver (paramsObj) {}
 
@@ -128,12 +129,14 @@ TubMailReceiver.reconnect = function () {}
  * @param {Object} paramsObj parameters object
  * @param {String} paramsObj.host mail server host
  * @param {String} paramsObj.port mail server port
- * @param {String} [paramsObj.user = ''] mail server login
- * @param {String} [paramsObj.password = ''] mail server password
- * @param {Boolean} [paramsObj.tls = false] use tls. OpenSSL libraries version >= 0.9.7 must be installed - see package README.md for details
+ * @param {String} [paramsObj.user=''] mail server login
+ * @param {String} [paramsObj.password=''] mail server password
+ * @param {Boolean} [paramsObj.tls=false] use tls on server request. OpenSSL libraries version >= 0.9.7 must be installed - see package README.md for details
+ * @param {Boolean} [paramsObj.fullSSL=false] Setup TLS before any command to SMTP
  * @param {Boolean} [paramsObj.auth = false] authentication required
  */
 function TubMailSenderBind (paramsObj) {}
+
 
 /**
  * Last error when last sendMail failed. Empty string last sendMail finished successfully.
@@ -160,12 +163,12 @@ TubMailSenderBind.sendMail = function (mailObj) {}
  * @class
  * Received message
  */
-function TubMimeMessBind () {}
+class TubMimeMessBind {}
 
 /**
  * Main mime part of message
   */
-TubMimeMessBind.messagePart = {}
+TubMimeMessBind.prototype.messagePart = {}
 /**
  * Full text of message
  *
@@ -176,7 +179,7 @@ TubMimeMessBind.fullText = {}
 /**
  * Header of message
  *
- * @type TMessHeaderBind
+ * @type {TMessHeaderBind}
  */
 TubMimeMessBind.header = {}
 
@@ -523,4 +526,4 @@ TMimePartBind.maxLineLength = 0
  *
  * @type {Array<TMimePartBind>}
  */
-TMimePartBind.subPart = []
+TMimePartBind.prototype.subPart = []

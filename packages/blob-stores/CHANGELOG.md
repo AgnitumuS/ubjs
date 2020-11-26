@@ -15,6 +15,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.3] - 2020-11-25
+## [5.5.2] - 2020-11-20
+### Changed
+ - `mdb` BLOB store: if reverseProxy is `nginx` then `getDocument` request for permanently stored items will
+   redirect to `sendFileLocationRoot/models` internal location to unify retrieving of models and cmodels.
+   
+   On the production `cmodels` is located in then `/var/opt/unitybase/..` while models - in the `/opt/unitybase/...`
+   Since linkStatic links both to the `inetpub/clientRequire/models`, so better to get all `mdb` items from there.
+   
+   `ubcli generateNginxCfg` should be executed after upgrade to this version (`ub-app-upgrade` lifecycle script is doing this)
+          
+## [5.5.1] - 2020-11-19
 ## [5.5.0] - 2020-11-15
 ### Added
   - BLOB stores: new `storeSize` `Hourly` - as `Daily` but with sub-folder for each hour inside a day folder

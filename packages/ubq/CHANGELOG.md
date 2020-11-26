@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.19] - 2020-11-25
+## [5.4.18] - 2020-11-23
+### Added
+ - `mailerConfig.fullSSL` parameter added to UBQ partial config - use a TLS tunnel for SMTP. 
+   Environment variable - `UB_SMTP_FULL_SSL` (false by default)
+    
+## [5.4.17] - 2020-11-20
+## [5.4.16] - 2020-11-19
 ## [5.4.15] - 2020-11-15
 ## [5.4.14] - 2020-11-14
 ## [5.4.13] - 2020-11-12

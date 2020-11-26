@@ -5,7 +5,12 @@
 export default {
   name: 'UAutoField',
 
-  inject: ['$v', 'entity', 'entitySchema'],
+  inject: {
+    $v: { from: '$v' },
+    entity: { from: 'entity' },
+    entitySchema: { from: 'entitySchema' },
+    isDisabled: { from: 'isDisabled', default: false }
+  },
 
   props: {
     /**
@@ -78,7 +83,8 @@ export default {
     const baseAttrs = { // vue split attrs into attrs and props automatically
       ...this.$attrs,
       attributeName: this.attributeName,
-      value: this.model
+      value: this.model,
+      disabled: this.isDisabled || this.$attrs.disabled
     }
     switch (this.dataType) {
       case 'Boolean':
@@ -122,7 +128,10 @@ export default {
         cmp = h(this.forceCmp || 'u-select-entity', {
           attrs: {
             entityName: this.associatedEntity,
-            ...baseAttrs
+            attributeName: this.attributeName,
+            value: this.model,
+            readonly: this.isDisabled,
+            ...this.$attrs
           },
           on: {
             input: (value) => { this.model = value }

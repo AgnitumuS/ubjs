@@ -5,6 +5,9 @@
   "sqlAlias": "tdict",
   "cacheType": "SessionEntity",
   "descriptionAttribute": "caption",
+  "privateSettings": {
+    "privPrm": 12
+  },
   "attributes": [
     {
       "name": "code",
@@ -12,7 +15,10 @@
       "size": 32,
       "caption": "Code",
       "description": "Code",
-      "allowNull": false
+      "allowNull": false,
+      "privateSettings": {
+	    "attrPriv": 14
+      }
     },
     {
       "name": "caption",

@@ -112,7 +112,12 @@
                     },
                     "customSettings": {
                         "type": "object",
-                        "description": "Optional settings for attribute. Can be any valid JSON",
+                        "description": "Optional settings for attribute",
+                        "additionalProperties": true
+                    },
+                    "privateSettings": {
+                        "type": "object",
+                        "description": "Optional PRIVATE (available on server side only) settings for attribute",
                         "additionalProperties": true
                     },
                     "size": {
@@ -647,6 +652,11 @@
                     }
                 }
             }
+        },
+        "privateSettings": {
+            "type": "object",
+            "description": "Optional PRIVATE (available on server side only) settings for entity",
+            "additionalProperties": true
         }
     }
 }

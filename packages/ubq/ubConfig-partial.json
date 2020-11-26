@@ -8,6 +8,7 @@
         "user": "%UB_SMTP_USER%",
         "password": "%UB_SMTP_PWD%",
         "autoTLS": %UB_SMTP_TLS||false%,
+        "fullSSL": %UB_SMTP_FULL_SSL||false%,
         "auth": %UB_SMTP_AUTH||false%
       }
     }

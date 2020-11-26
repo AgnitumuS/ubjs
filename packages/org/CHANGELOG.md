@@ -17,6 +17,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.20] - 2020-11-25
+### Changed
+ - allow log-in for user who not assigned to employee for members of Admin group (in addition to `admin` and `root` user).
+   This fix regression introduced in @unitybase/org@5.4.0.
+   
+   The source of regression is so called "local administrators" - a regional administrator`s in a huge organizations.
+  
+
+### Fixed
+ - `org_staffunit-fm`: fixed typo in parent context of org_employeeonstaff grid
+
+## [5.4.19] - 2020-11-23
+## [5.4.18] - 2020-11-20
+## [5.4.17] - 2020-11-19
+### Fixed
+- `org_staffunit-fm`, `org_profession-fm`, `org_department-fm`: fixed form saving without a required `caption` field
+  by adding `masterFieldList` [UBDF-12721]
+
 ## [5.4.16] - 2020-11-15
 ## [5.4.15] - 2020-11-14
 ## [5.4.14] - 2020-11-12

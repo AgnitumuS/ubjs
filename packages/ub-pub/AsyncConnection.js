@@ -778,7 +778,7 @@ UBConnection.prototype.cacheClearAll = function () {
 }
 
 /**
- * Shortcut method to perform authorized `GET` request to application we connected
+ * Shortcut method to perform authorized `GET` request to the application we connected
  * @param {string} url Relative or absolute URL specifying the destination of the request
  * @param {Object=} [config] Optional configuration object as in {xhr}
  * @returns {Promise} Future object

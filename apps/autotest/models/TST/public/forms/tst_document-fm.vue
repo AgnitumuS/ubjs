@@ -74,7 +74,12 @@
       />
       <u-auto-field attribute-name="docDateTime" />
 
-      <u-auto-field attribute-name="fileStoreSimple" />
+      <u-auto-field
+        attribute-name="fileStoreSimple"
+        :preview-mode="{
+           height: 400
+        }"
+      />
 
       <u-grid>
         <u-auto-field attribute-name="person" />

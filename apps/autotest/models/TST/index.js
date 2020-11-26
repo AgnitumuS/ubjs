@@ -62,7 +62,6 @@ if (App.serverConfig.security.authenticationMethods.indexOf('OpenIDConnect') !==
   })
 }
 
-// require('http').setGlobalProxyConfiguration('proxy3.softline.main:3249', 'localhost');
 // var oID = require('@unitybase/openid-connect')
 // var oIdEndPoint = oID.registerEndpoint('openIDConnect')
 //

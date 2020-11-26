@@ -57,6 +57,7 @@
 
         <keep-alive>
           <component
+            v-if="selectedColumn.filters && selectedColumn.filters[condition]"
             :is="selectedColumn.filters[condition].template"
             :column="selectedColumn"
             @search="throttledApplyFilter"

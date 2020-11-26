@@ -167,7 +167,9 @@ export default {
 
   async created () {
     this.fileLoader = new FileLoader(this.entityName, this.attributeName)
-    this.previewUrl = await this.fileLoader.getPreviewUrl(this.file, this.fileId)
+    if (this.withPreview) { // prevent download document for non-preview mode
+      this.previewUrl = await this.fileLoader.getPreviewUrl(this.file, this.fileId)
+    }
   },
 
   beforeDestroy () {

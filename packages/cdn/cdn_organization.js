@@ -102,15 +102,25 @@ function checkCode (ctxt) {
 /**
  * @private
  * @param {ubMethodParams} ctxt
+ * @param {boolean} isUpdate
  * @returns {boolean}
  */
-function checkAccessAddGovByRoles (ctxt) {
-  const ID = ctxt.mParams.execParams.orgBusinessTypeID
+function checkAccessAddGovByRoles (ctxt, isUpdate) {
+  let newBusinessTypeID = ctxt.mParams.execParams.orgBusinessTypeID || 0
+  if (!newBusinessTypeID && !isUpdate) return true // insertion without orgBusinessTypeID
+  let oldBusinessTypeID = 0
+  if (isUpdate) {
+    let dn = ctxt.dataStore.currentDataName
+    ctxt.dataStore.currentDataName = TubDataStore.DATA_NAMES.BEFORE_UPDATE
+    oldBusinessTypeID = ctxt.dataStore.get('orgBusinessTypeID')
+    ctxt.dataStore.currentDataName = dn
+    if (!oldBusinessTypeID && !newBusinessTypeID) return true // no business type
+  }
   const isGovAuthority = UB.Repository('cdn_orgbusinesstype')
     .attrs('isGovAuthority')
-    .where('[ID]', '=', ID)
+    .where('[ID]', 'in', [newBusinessTypeID, oldBusinessTypeID])
     .selectScalar()
-  if (!isGovAuthority) return true
+  if (!isGovAuthority) return true // if no row exists - this is not a gov authority
   const accessAddGovByRoles = ubs_settings.loadKey('cdn.organization.accessAddGovByRoles', '')
   if (accessAddGovByRoles === '') { // if setting is not present or it is empty
     return true
@@ -153,9 +163,7 @@ function doBeforeUpdate (ctxt) {
   if (typeof execParams.OKPOCode !== 'undefined') {
     checkCode(ctxt)
   }
-  if (execParams.orgBusinessTypeID) {
-    checkAccessAddGovByRoles(ctxt)
-  }
+  checkAccessAddGovByRoles(ctxt, true)
   me.updateOrganizationCaption(ctxt)
   return true
 }
