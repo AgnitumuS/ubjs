@@ -70,9 +70,6 @@ TESTCASE=autotest
 /usr/bin/time -v npx ubcli autotest -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -noLogo -skipModules
 if [ ! $? = 0 ]; then
   cat ./_autotestResults.json;
-  if [ ! -z ${UB_TESTRES+x} ] && [ ! -z "${UB_TESTRES// }" ]; then
-    mv ./_autotestResults.json ./_autotestResults$UB_TESTRES.json
-  fi
   err;
 fi
 
