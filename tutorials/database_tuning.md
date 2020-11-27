@@ -44,11 +44,15 @@
   We recommend to sets a `tcp_user_timeout=3000` to disconnect ASAP in case TCP connection to database server is lost.
   A kernel default (~20 minutes) is too large.
   
-  UnityBase expect Postgres error messages to be in English locale. This uses to detect connection lost, constraint violation and so on.
+#### Postgres messages locale
+  UnityBase expect Postgres **error messages to be in English locale**. This uses to detect connection lost, constraint violation and so on.
   
   We **STRONGLY** recommend use `en_US.UTF-8` during Postgres setup (parameter is taken from OS locale settings,
   so better to switch your OS to English before Postgres server setup). 
-  Locale can be forced by sets a `lc_locale` parameter in the `postgres.conf`, or (not recommended) - on the client level by 
+  
+  For existed Postgres installation locale can be forced by sets a `lc_locale=en_US.UTF-8` parameter in the `postgres.conf`.
+  
+  In case it is not possible to set an English locale in the `postgres.conf` it can be switched on the client side by 
   adding a `SET lc_messages TO 'en_US.UTF-8';` to the `executeWhenConnected` key of ubConfig connection parameters:
  ```json
  "connections": [{
@@ -56,7 +60,7 @@
     ...
     "executeWhenConnected": ["SET lc_messages TO 'en_US.UTF-8'"]
  },...]
- ```     
+ ```
   
 ### MS SQL server (Linux)
   Under Linux ODBC is used for SQL Server connection. Connection parameters can be defined either in 
