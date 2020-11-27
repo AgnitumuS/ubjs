@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - login form expired password changing component design is given to the `uba_user-changePassword` form design 
 
 ### Deprecated
 
