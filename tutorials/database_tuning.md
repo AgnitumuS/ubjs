@@ -12,7 +12,7 @@
  Usually it is faster to execute several simple queries from application server and
  do something inside JavaScript instead of write complex database query.
  
- In any cases developer must remember - usually there is __only ONE database__  server for application,
+ In any case developer must remember - usually there is __only ONE database__  server for application,
  but we can run multiple application servers and do load balancing.
  So in most cases performance bottleneck is a Database. 
  
@@ -36,7 +36,7 @@
     "userID": "%UB_DB_MAIN_USER%",
     "password": "%UB_DB_MAIN_PWD%"
     "supportLang": ["en", "uk"],
-    "advSettings": "LibLocation=%UB_POSTGRE_LIB||libpq.so.5%" //linux - can be empty or libpq.so.5; Windows = path to libpq.dll, for example D:/PostgreClient/10/x64/bin/libpq.dll
+    "advSettings": "LibLocation=%UB_POSTGRE_LIB||libpq.so.5%" // for linux - can be empty or libpq.so.5; Windows = path to libpq.dll, for example D:/PostgreClient/10/x64/bin/libpq.dll
 },...]
 ```  
   A connection parameters key words are listed in [Section 33.1.2 of Postgres documentation](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-PARAMKEYWORDS)
@@ -273,7 +273,17 @@ crates in-memory SYS.ODCINUMBERLIST / SYS.ODCIVARCHAR2LIST structure and pass it
 We don't know how to run such query with parameters binding in plsql, without parameters:    
 ```sql
 SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT column_value FROM table(SYS.ODCINUMBERLIST(1, 2, 3)))
-```   
+```
+
+> Connection `advSettings` can contain `CARDINALITY_IN` directive.
+>   If enabled then ORM adds `/*+ CARDINALITY(t1, P) */` hint for IN sub-queries.
+>
+> P value depends on array length L:  L<10 => P = 1; L < 50 => P=10 else P = 100 
+
+Query with cardinality hint 
+```sql
+SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT /*+ CARDINALITY(t1, P) */ column_value FROM table(SYS.ODCINUMBERLIST(1, 2, 3)))
+```
 
 ### SQL Server array binding
 UB server generates a query:  
