@@ -194,7 +194,8 @@
 				"isDefault": true,
 				"dialect": "PostgreSQL",
 				"serverName": "",
-				"databaseName": "postgresql://pg10.unitybase.info:5402/ub5_%UB_APP%_%PLATFORM%?tcp_user_timeout=3000",
+				//"databaseName": "postgresql://pg10.unitybase.info:5402/ub5_%UB_APP%_%PLATFORM%?tcp_user_timeout=3000",
+				"databaseName": "postgresql://pg10.unitybase.info:5402/ub5_%UB_APP%_%PLATFORM%", // pg9 client not supports tcp_user_timeout
 				"userID": "ub5_%UB_APP%_%PLATFORM%",
 				"password": "ub5_%UB_APP%_%PLATFORM%",
 				"supportLang": ["en", "uk"],
