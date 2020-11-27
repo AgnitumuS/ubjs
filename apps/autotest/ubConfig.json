@@ -109,7 +109,7 @@
 	"application": {
 		"defaultLang": "en",
 		"rootHandler": "index.html",
-		"schedulers": {"enabled": false},
+		"schedulers": { "enabled": %UB_USE_SCHEDULERS||false% },
 		"domain": {
 			"models": [
 				{
@@ -193,8 +193,8 @@
 				"driver": "PostgreSQL",
 				"isDefault": true,
 				"dialect": "PostgreSQL",
-				"serverName": "postgresql://pg10.unitybase.info:5402",
-				"databaseName": "ub5_%UB_APP%_%PLATFORM%",
+				"serverName": "",
+				"databaseName": "postgresql://pg10.unitybase.info:5402/ub5_%UB_APP%_%PLATFORM%?tcp_user_timeout=3000",
 				"userID": "ub5_%UB_APP%_%PLATFORM%",
 				"password": "ub5_%UB_APP%_%PLATFORM%",
 				"supportLang": ["en", "uk"],
