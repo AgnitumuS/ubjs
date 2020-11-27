@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - Postgres DDL generator: prevent re-create default value constraint for `Json` attributes with `defaultValue` (fix #109) 
 
 ## [5.10.1] - 2020-11-25
 ## [5.10.0] - 2020-11-23
