@@ -95,16 +95,11 @@
               :placeholder="$ut('EnterNewPassword')"
               @keyup.enter.native="doChangePassword"
               show-password
-          />
-<!--          TODO widget below does NOT get to the DOM -->
-<!--          <div class="u-form-row__description">-->
-<!--            {{ $ut('passwordRecommendation', changePwd.passMinLength) }}-->
-<!--          </div>-->
+          ></el-input>
+          <div class="u-form-row__description">
+            {{ $ut('passwordRecommendation', changePwd.passMinLength) }}
+          </div>
         </u-form-row>
-<!--        TODO - remove 3 lines below when above issue is solved -->
-        <div class="u-form-row__description" style="margin-bottom: 12px;">
-          {{ $ut('passwordRecommendation', changePwd.passMinLength) }}
-        </div>
         <u-form-row
             label="RetypePassword"
             required
