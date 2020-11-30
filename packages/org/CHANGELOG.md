@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - fixed `roleIDs.has is not a function` during log-in of user who not assigned to employee and not a `admin` (introduced in 5.4.20) 
 
 ## [5.4.20] - 2020-11-25
 ### Changed
