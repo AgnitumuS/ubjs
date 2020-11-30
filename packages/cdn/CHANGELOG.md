@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `cdn_employee.meta.uk`: typo in 'middleNameGen', 'middleNameDat', 'fullFIO', 'middleName'
+- `cdn_person.meta.uk`: typo in 'middleNameGen', 'middleNameDat', 'classID', 'middleName'
 
 ## [5.4.50] - 2020-11-25
 ## [5.4.49] - 2020-11-23
