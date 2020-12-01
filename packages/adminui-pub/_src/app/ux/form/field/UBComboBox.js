@@ -55,6 +55,15 @@ Ext.define('UB.ux.form.field.UBComboBox', {
    */
   allowCustomText: false,
   /**
+   * If ID not found in combobox store - try to load a record by ID with `__allowSelectSafeDeleted: true`
+   *   and if found - show it with strikethrough.
+   *
+   * This allows to see a filtered out row (probably deleted or historically not actual)
+   *
+   * @cfg {Boolean} allowSafeDeleted
+   */
+  allowFilteredOut: true,
+  /**
    * true - has delay when set value
    */
   dataLoadDelay: true,
@@ -573,6 +582,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
       load: {
         fn: function () {
           if (store.getCount() === 0) {
+            if (!me.allowFilteredOut) return // do not show filtered out row
             // Trying to load a filtered out row (probably deleted or historically not actual)
             UB.xhr.allowRequestReiteration() // prevent a monkeyRequestsDetected in case 2 combobox are on the same form with the same filters
             UB.connection.select({
