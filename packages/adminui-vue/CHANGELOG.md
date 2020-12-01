@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UTablEntity`: not show column name in the filter dropdown or in the sort dropdown based on the
+  selected table cell if the column configured as not filterable or not sortable
 
 ## [1.13.23] - 2020-11-25
 ### Fixed
