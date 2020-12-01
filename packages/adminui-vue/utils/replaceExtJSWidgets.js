@@ -202,7 +202,8 @@ function replaceShowList () {
           },
           columns,
           buildEditConfig: cfg.cmpInitConfig && cfg.cmpInitConfig.buildEditConfig,
-          onSelectRecord: cfg.onSelectRecord
+          onSelectRecord: cfg.onSelectRecord,
+          parentContext: cfg.parentContext
         }
       }
 
