@@ -338,7 +338,7 @@ manually (using `systemstl start`).
 
 To force systemd to reset service startup failure counters use a command:
 ```shell script
-systemctl reset-failed
+sudo systemctl reset-failed
 ```
  
 Typical operations are:

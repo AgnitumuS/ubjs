@@ -8,15 +8,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+ - fixed `roleIDs.has is not a function` during log-in of user who not assigned to employee and not a `admin` (introduced in 5.4.20) 
+- `org_employee.meta.uk`: typo in 'middleNameGen', 'middleNameDat'
+
+## [5.4.20] - 2020-11-25
+### Changed
  - allow log-in for user who not assigned to employee for members of Admin group (in addition to `admin` and `root` user).
    This fix regression introduced in @unitybase/org@5.4.0.
    
    The source of regression is so called "local administrators" - a regional administrator`s in a huge organizations.
   
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `org_staffunit-fm`: fixed typo in parent context of org_employeeonstaff grid

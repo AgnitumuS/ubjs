@@ -10,13 +10,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - call `loaded` processing hook after loading of collections
+ - login form expired password changing component design is given to the `uba_user-changePassword` form design 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
-- `UTableEntity`: fixed disabling of sorting by clicking on a column header if the column configured as not sortable
+- `UTablEntity`: not show column name in the filter dropdown or in the sort dropdown based on the
+  selected table cell if the column configured as not filterable or not sortable
+
+## [1.13.23] - 2020-11-25
+### Fixed
+ - `UBaseInput`: fix `disabled` prop in case need to disable only this field and not the entire form container
+ - `UTableEntity` `<entity-name>:changed` events (does not try to refresh) in case payload not contains a valid `resultData` with ID
+ - `UTableEntity`: fixed disabling of sorting by clicking on a column header if the column configured as not sortable
+ - `UTableEntity` filter - use correct translation for multiple condition - `Multiple` instead of `Contains`   
 
 ## [1.13.22] - 2020-11-23
 ### Changed

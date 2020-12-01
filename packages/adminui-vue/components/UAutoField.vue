@@ -84,7 +84,7 @@ export default {
       ...this.$attrs,
       attributeName: this.attributeName,
       value: this.model,
-      disabled: this.isDisabled
+      disabled: this.isDisabled || this.$attrs.disabled
     }
     switch (this.dataType) {
       case 'Boolean':

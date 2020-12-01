@@ -707,11 +707,11 @@
               },
               "serverName": {
                 "type": "string",
-                "description": "Database host\n\n |DBMS  |Format|Example\n|-\n| `MS SQL`|Windows: [protocol:]hostname or IP[\\instanceName]; Linux: section name from `/etc/odbc.ini`| example1: `\"SQLSERVER1\\instance2\"` <br> example2: \"tcp:SQL_SERVER12\" <br> example linux: \"myserver\"\n| `Oracle`| TNS_NAME or <br> TNS definition string| example1: \"MyOraTNSName\"<br>example: \"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=do5-s8)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORAUTC)))\" \n| `Postgre` |  | "
+                "description": "Database host\n\n |DBMS  |Format|Example\n|-\n| `MS SQL`|Windows: [protocol:]hostname or IP[\\instanceName]; Linux: section name from `/etc/odbc.ini`| example1: `\"SQLSERVER1\\instance2\"` <br> example2: \"tcp:SQL_SERVER12\" <br> example linux: \"myserver\"\n| `Oracle`| TNS_NAME or <br> TNS definition string| example1: \"MyOraTNSName\"<br>example: \"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=do5-s8)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORAUTC)))\" \n| `Postgre` | A host part of PostgreURL | Recommended to be empty - use a full PostgreURL in the `databaseName` instead |"
               },
               "databaseName": {
                 "type": "string",
-                "description": "Name of the database\n\n |DBMS  |Mean|Example\n|-\n| `MS SQL`|Name of a database| \"myDatabase\" \n| `Oracle`| not applicable|  \n| `Postgre` | PostgreURL  - https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING | \"postgres://host:port/dbname\" \n| `SQLite3`|Full path to database file. **Don`t use UNC path here - only local file system files is allowed**| \"d:\\myDB\\myDatabase.db\""
+                "description": "Name of the database\n\n |DBMS  |Mean|Example\n|-\n| `MS SQL`|Name of a database| \"myDatabase\" \n| `Oracle`| not applicable|  \n| `Postgre` | PostgreURL  - https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING | \"postgres://host:port/dbname?tcp_user_timeout=3000\" \n| `SQLite3`|Full path to database file. **Don`t use UNC path here - only local file system files is allowed**| \"d:\\myDB\\myDatabase.db\""
               },
               "userID": {
                 "type": "string",
@@ -737,7 +737,7 @@
               },
               "advSettings": {
                 "type": "string",
-                "description": "Advanced driver settings\n\n |DBMS| Value  | Description \n|-\n|`Postgre`|LibLocation=`Path to 64bit libpq.dll`| \"LibLocation=C:/Program Files/PostgreSQL (x86)/10/bin/libpq.dll\"\n| `Oracle`| Combination of `INLINE_IN` `USE_WALLET`<br>INLINE_IN - do not use array bindings for `in` and `not in` condition<br>(UB5 only) LibLocation=`Path to folder with oci.dll(windows only)` | \\/INLINE_IN,USE_WALLET,LibLocation=/usr/lib/oracle/11.2/clien64/lib\" \n| `SQLIte3` | [Synchronous=Full or Off or Normal],[Tokenizer=stemka,TokenizerParams=\"stem=yes or no\" \"lang=uk or ru or en\"]"
+                "description": "Advanced driver settings\n\n |DBMS| Value  | Description \n|-\n|`Postgre`|LibLocation=`Path to 64bit libpq.dll`| \"LibLocation=C:/Program Files/PostgreSQL (x86)/10/bin/libpq.dll\"\n| `Oracle`| Combination of `INLINE_IN` `USE_WALLET` and `CARDINALITY_IN`<br>INLINE_IN - do not use array bindings for `in` and `not in` condition<br><br>CARDINALITY_IN (Oracle, UB EE - ORM adds `/*+ CARDINALITY(t1, P) */` hint for IN sub-queries;<br>P value depends on array length L:  L<10 => P = 1; L < 50 => P=10 else P = 100<br>(UB5 only) LibLocation=`Path to folder with oci.dll(windows only)` | \\/INLINE_IN,CARDINALITY_IN,USE_WALLET,LibLocation=/usr/lib/oracle/11.2/clien64/lib\" \n| `SQLIte3` | [Synchronous=Full or Off or Normal],[Tokenizer=stemka,TokenizerParams=\"stem=yes or no\" \"lang=uk or ru or en\"]"
               }
             }
           }

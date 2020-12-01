@@ -73,9 +73,9 @@ class DBPostgreSQL extends DBAbstract {
       for (const colDef of columnsFromDb) {
         const physicalTypeLower = colDef.typename.toLowerCase()
         let def = colDef.defvalue
-        // Postgre prepend default by data type: 'A'::character varying
+        // Postgre prepend default by data type: `'A'::character varying` or `'{}':jsonb`
         if (def) {
-          def = def.replace(/::character varying/, '')
+          def = def.replace(/::(character varying|jsonb)/, '')
         }
         const nObj = {
           name: colDef.name,

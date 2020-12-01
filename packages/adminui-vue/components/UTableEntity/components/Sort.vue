@@ -28,7 +28,7 @@
         </div>
         <div class="u-fake-table__td">
           <el-select
-            v-model="selectedColumnId"
+            v-model="selectedSortableColumnId"
             :placeholder="$ut('table.filter.columnPlaceholder')"
           >
             <el-option
@@ -42,7 +42,7 @@
       </div>
 
       <div
-        v-if="selectedColumnId !== null"
+        v-if="selectedSortableColumnId !== null"
         class="u-fake-table__tr"
       >
         <div class="u-fake-table__td u-fake-table__label">
@@ -102,10 +102,22 @@ export default {
       }
     },
 
+    selectedSortableColumnId: {
+      get () {
+        const column = this.sortableColumns.find(column => column.id === this.selectedColumnId)
+
+        return column ? column.id : null
+      },
+
+      set (value) {
+        this.selectedColumnId = value
+      }
+    },
+
     sortOrder: {
       get () {
         const { order, column } = /** @type {UTableSort} */ this.$store.state.sort || { order: 'none' }
-        if (column === this.selectedColumnId) {
+        if (column === this.selectedSortableColumnId) {
           return order
         }
         return 'none'
@@ -116,7 +128,7 @@ export default {
         }
 
         this.$store.dispatch('updateSort', {
-          column: this.selectedColumnId,
+          column: this.selectedSortableColumnId,
           order
         })
       }

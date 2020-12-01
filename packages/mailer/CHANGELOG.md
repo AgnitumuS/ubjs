@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.1] - 2020-11-25
 ## [5.4.0] - 2020-11-23
 ### Added
  - notes in the README about SSL setup for Linux

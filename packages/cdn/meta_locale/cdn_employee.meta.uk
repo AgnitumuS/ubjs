@@ -14,8 +14,8 @@
     },
     {
       "name": "middleName",
-      "caption": "По-батькові",
-      "description": "По-батькові"
+      "caption": "По батькові",
+      "description": "По батькові"
     },
     {
       "name": "description",
@@ -45,7 +45,7 @@
     {
       "name": "fullFIO",
       "caption": "Повне ПІБ",
-      "description": "Приклад: Прізвище Ім'я По-батькові"
+      "description": "Приклад: Прізвище Ім'я По батькові"
     },
     {
       "name": "apply",
@@ -74,13 +74,13 @@
     },
     {
       "name": "middleNameGen",
-      "caption": "По-батькові в род. відмінку",
-      "description": "По-батькові в родовому відмінку"
+      "caption": "По батькові в род. відмінку",
+      "description": "По батькові в родовому відмінку"
     },
     {
       "name": "middleNameDat",
-      "caption": "По-батькові в дав. відмінку",
-      "description": "По-батькові в давальному відмінку"
+      "caption": "По батькові в дав. відмінку",
+      "description": "По батькові в давальному відмінку"
     },
     {
       "name": "shortFIOGen",

@@ -62,7 +62,6 @@ SET TESTCASE=autotest
 call npx ubcli autotest -cfg %UB_CFG% -u admin -p %PASSWORD_FOR_ADMIN% -host %UB_HOST% -noLogo -skipModules
 @if errorlevel 1 (
   type .\_autotestResults.json
-  if not [%UB_TESTRES%]==[] rename .\_autotestResults.json _autotestResults%UB_TESTRES%.json
   goto err
 )
 
