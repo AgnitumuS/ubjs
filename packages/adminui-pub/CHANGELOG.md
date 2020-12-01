@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - UBComboBox: new property `allowFilteredOut` (true by default).
+   If sets to false - do not try to load a filtered out row (probably deleted or historically not actual)
+   it with strikethrough. For UB 1.12 compatibility can be sets to `false`.  
 
 ### Changed
 
