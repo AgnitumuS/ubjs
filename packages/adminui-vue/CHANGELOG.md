@@ -6,8 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `loadWithCollections` - new action for loading master record and collections from one place
 
 ### Changed
+- call `loaded` processing hook after loading of collections
  - login form expired password changing component design is given to the `uba_user-changePassword` form design 
 
 ### Deprecated
