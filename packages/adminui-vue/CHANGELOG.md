@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.13.24] - 2020-12-02
+### Added
 - `loadWithCollections` - new action for loading master record and collections from one place
 
 ### Changed
@@ -17,8 +28,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
  - `UToolbarButton`: Use `el-tooltip` + `u-button` instead
-
-### Removed
 
 ### Fixed
 - `UTablEntity`: not show column name in the filter dropdown or in the sort dropdown based on the

@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `cdn_person form`: make inputs adaptive to form width
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.4.51] - 2020-12-02
+### Changed
+ - `cdn_person form`: make inputs adaptive to form width
 
 ### Fixed
 - `cdn_employee.meta.uk`: typo in 'middleNameGen', 'middleNameDat', 'fullFIO', 'middleName'

@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.21] - 2020-12-02
+### Fixed
  - fixed `roleIDs.has is not a function` during log-in of user who not assigned to employee and not a `admin` (introduced in 5.4.20) 
 - `org_employee.meta.uk`: typo in 'middleNameGen', 'middleNameDat'
 

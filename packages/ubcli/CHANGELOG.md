@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `ubcli generateDDL` - default value for `-host` changed to `auto` as in all other `ubcli` commands
-- `ubcli genSuffixesIndexInitScript` -  default value for `-host` changed to `auto`
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.10.2] - 2020-12-02
+### Changed
+ - `ubcli generateDDL` - default value for `-host` changed to `auto` as in all other `ubcli` commands
+- `ubcli genSuffixesIndexInitScript` -  default value for `-host` changed to `auto`
 
 ### Fixed
  - Postgres DDL generator: prevent re-create default value constraint for `Json` attributes with `defaultValue` (fix #109) 
