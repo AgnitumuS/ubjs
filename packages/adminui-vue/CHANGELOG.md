@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `lookups` remove listener on unsubscribe last subscription
 
 ## [1.13.24] - 2020-12-02
 ### Added
