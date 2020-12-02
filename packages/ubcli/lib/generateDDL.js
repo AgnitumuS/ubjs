@@ -41,7 +41,7 @@ module.exports = function generateDDL (cfg) {
       'Check database structure for application domain. Generate DDL (both create and alter) if need and optionally run it\nShould be executed from application folder',
       'ubcli'
     )
-      .add({ short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:8881', searchInEnv: true, help: 'Full server URL' })
+      .add({ short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'auto', searchInEnv: true, help: 'Full server URL. If not passed - will try to read host from ubConfig' })
       .add({ short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config' })
       .add({ short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names for DDL generation. If -e specified this options is ignored' })
       .add({ short: 'e', long: 'entities', param: 'entitiesList', defaultValue: '*', help: 'Comma separated entity names list for DDL generation' })

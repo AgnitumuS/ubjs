@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `ubcli generateDDL` - default value for `-host` changed to `auto` as in all other ubcli commands.
 
 ### Deprecated
 
