@@ -8,9 +8,9 @@
     >
       <el-tabs>
         <el-tab-pane :label="$ut('General')">
-          <u-grid template-columns="1fr 300px">
+          <u-grid template-columns="1fr 350px">
             <div>
-              <u-grid>
+              <u-grid template-columns="repeat(auto-fill, minmax(300px, 1fr))">
                 <u-auto-field attribute-name="lastName" />
                 <u-auto-field attribute-name="firstName" />
                 <u-auto-field attribute-name="middleName" />
@@ -34,7 +34,7 @@
                 </el-radio>
               </u-form-row>
 
-              <u-grid>
+              <u-grid template-columns="repeat(auto-fill, minmax(300px, 1fr))">
                 <u-auto-field attribute-name="categoryID" />
                 <u-auto-field attribute-name="apply" />
                 <u-auto-field attribute-name="identCard" />
@@ -43,7 +43,7 @@
 
               <u-auto-field attribute-name="birthDate" />
 
-              <u-grid>
+              <u-grid template-columns="repeat(auto-fill, minmax(300px, 1fr))">
                 <u-auto-field attribute-name="socialstatusID" />
                 <u-auto-field attribute-name="description" />
                 <u-auto-field attribute-name="regionID" />
@@ -58,14 +58,16 @@
                 :before-add-new="saveParentBeforeAddNew"
               />
             </div>
-            <u-file
-              v-model="photo"
-              attribute-name="photo"
-              :preview-mode="{
-                height: 300
-              }"
-              accept="image/*"
-            />
+            <div style="padding-right: 12px">
+              <u-file
+                v-model="photo"
+                attribute-name="photo"
+                :preview-mode="{
+                  height: 300
+                }"
+                accept="image/*"
+              />
+            </div>
           </u-grid>
         </el-tab-pane>
 
@@ -148,7 +150,7 @@ module.exports.default = {
       const fullFIOPrediction = this.buildFullFIO({ [prop]: prevValue })
       const fullFIO = this.fullFIO === null ? '' : this.fullFIO
       if (fullFIOPrediction === fullFIO) {
-        this.$store.commit(`SET_DATA`, {
+        this.$store.commit('SET_DATA', {
           key: 'fullFIO',
           value: this.buildFullFIO({ [prop]: value })
         })
@@ -157,7 +159,7 @@ module.exports.default = {
       const shortFIOPrediction = this.buildShortFIO({ [prop]: prevValue })
       const shortFIO = this.shortFIO === null ? '' : this.shortFIO
       if (shortFIOPrediction === shortFIO) {
-        this.$store.commit(`SET_DATA`, {
+        this.$store.commit('SET_DATA', {
           key: 'shortFIO',
           value: this.buildShortFIO({ [prop]: value })
         })

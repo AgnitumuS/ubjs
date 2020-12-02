@@ -13,9 +13,7 @@
         icon="u-icon-sort-asc-alt"
         appearance="inverse"
         color="control"
-      >
-        {{ $ut('table.sort.label') }}
-      </u-button>
+      />
     </el-tooltip>
 
     <div
