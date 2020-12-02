@@ -41,9 +41,7 @@
             color="control"
             :disabled="loading"
             @click="refresh"
-          >
-            {{ $ut('refresh') }}
-          </u-button>
+          />
         </el-tooltip>
 
         <!-- @slot Replace add-new button in toolbar panel -->
@@ -64,9 +62,7 @@
               icon="u-icon-add"
               color="control"
               @click="addNew"
-            >
-              {{ $ut('actionAdd') }}
-            </u-button>
+            />
           </el-tooltip>
         </slot>
 
@@ -731,7 +727,12 @@ export default {
 }
 
 .u-table-entity__bordered {
-  border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default))
+  border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+  border-radius: var(--border-radius);
+}
+
+.u-table-entity__bordered tr:last-child td {
+  border-bottom: none;
 }
 
 .u-table-entity .u-table {

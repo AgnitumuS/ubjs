@@ -11,8 +11,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - call `loaded` processing hook after loading of collections
  - login form expired password changing component design is given to the `uba_user-changePassword` form design 
+ - `UTableEntity`: remove text of all toolbar buttons. Shows tooltips instead
+ - `UTableEntity`: remove border from last row in `bordered` mode
+ - `UTableEntity`: add default border-radius (4px) to table border in `bordered` mode
 
 ### Deprecated
+ - `UToolbarButton`: Use `el-tooltip` + `u-button` instead
 
 ### Removed
 

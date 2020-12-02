@@ -10,9 +10,7 @@
         appearance="inverse"
         color="control"
         icon="u-icon-filter"
-      >
-        {{ $ut('table.filter.list.title') }}
-      </u-button>
+      />
     </el-tooltip>
 
     <div

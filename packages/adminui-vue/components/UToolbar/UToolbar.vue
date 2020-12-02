@@ -27,12 +27,16 @@
     <!-- @slot right side toolbar (before setting button) -->
     <slot name="right" />
 
-    <u-toolbar-button
+    <el-tooltip
       v-if="entitySchema.hasMixin('softLock')"
-      :icon="isLocked ? 'u-icon-lock' : 'u-icon-unlock'"
-      :color="isLocked ? (isLockedByMe ? 'primary' : 'danger') : 'info'"
-      :tooltip="lockInfoMessage"
-    />
+      :content="lockInfoMessage"
+    >
+      <u-button
+        :icon="isLocked ? 'u-icon-lock' : 'u-icon-unlock'"
+        :color="isLocked ? (isLockedByMe ? 'primary' : 'danger') : 'control'"
+        appearance="inverse"
+      />
+    </el-tooltip>
 
     <u-dropdown
       class="u-toolbar__settings-button"
@@ -423,7 +427,7 @@ export default {
     formatDate (date) {
       return this.$formatByPattern.formatDate(
         date,
-        'dateTimeFull',
+        'dateTimeFull'
       )
     }
   }
@@ -431,7 +435,7 @@ export default {
 </script>
 
 <style>
-.u-toolbar{
+.u-toolbar {
   border-bottom: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   padding: 0.5em 1em;
   display: flex;
@@ -443,11 +447,11 @@ export default {
   margin-left: 8px;
 }
 
-.u-toolbar__flex-divider{
+.u-toolbar__flex-divider {
   margin-left: auto;
 }
 
-.u-toolbar__date td{
+.u-toolbar__date td {
   font-size: 10px;
   color: hsl(var(--hs-text), var(--l-text-label));
   text-align: right;
@@ -455,13 +459,13 @@ export default {
   white-space: nowrap;
 }
 
-.u-toolbar__date{
+.u-toolbar__date {
   border-left: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   padding-left: 10px;
   margin-left: 10px;
 }
 
-.u-toolbar__settings-button > .u-dropdown__reference{
+.u-toolbar__settings-button > .u-dropdown__reference {
   height: 100%;
 }
 </style>
@@ -479,8 +483,7 @@ export default {
 </template>
 
 <script>
-export default {
-}
+  export default {}
 </script>
 ```
 
@@ -489,8 +492,8 @@ export default {
 <template>
   <div class="u-form-layout">
     <u-toolbar>
-      <u-toolbar-button slot="left">left side btn</u-toolbar-button>
-      <u-toolbar-button slot="right">right side btn</u-toolbar-button>
+      <u-button slot="left">left side btn</u-button>
+      <u-button slot="right">right side btn</u-button>
       <!-- Or any component you need, button for example -->
       <button slot="dropdown">dropdown btn</button>
       <div slot="toolbarInfoRow">some content</div>
