@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `lookups` remove listener on unsubscribe last subscription
+ - Excel export of Vue tables: Boolean column values will be exported as 0/1 instead of HTML code fragment
 
 ## [1.13.24] - 2020-12-02
 ### Added
@@ -91,11 +92,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.13.17] - 2020-11-10
 ### Changed
- - `USidebar` sidebar width to `0px` in collapsed state and screen less then `768px` (mobile)
+ - `USidebar` sidebar width to `0px` in collapsed state and screen less than `768px` (mobile)
 
 ## [1.13.16] - 2020-11-08
 ### Fixed
- - `UDialog` - if `Cancel` button not available - sets focut to first available button.
+ - `UDialog` - if `Cancel` button not available - sets focus to the first available button.
    
 ## [1.13.15] - 2020-11-05
 ## [1.13.14] - 2020-11-01
@@ -117,10 +118,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    This allows fit more data on the screen without negative UX effect (verified on laptops and tablets)
  - `UToolbar` audit table opens in separate tab 
  - `audit table` save in localStorage last preview mode and active filters
- - `Form`, `UTableEntity` in case table or form opened as modal then all child tables and forms are also opened as modals
+ - `Form`, `UTableEntity` if table or form opened as modal then all child tables and forms are also opened as modals
  
 ### Fixed
- - Excel export from UTableEntity - fixed format for Date anf Boolean attributes
+ - Excel export from UTableEntity - fixed format for Date and Boolean attributes
  - prevent error `Cannot read property 'scrollIntoView' of undefined` during
   navbar tab closing (occurs for Ext based forms with close confirmation) 
  
