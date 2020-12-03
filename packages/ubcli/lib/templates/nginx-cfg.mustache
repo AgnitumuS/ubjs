@@ -122,9 +122,8 @@ server {
     # intercept static asserts prepared by "npx ubcli linkStatic"
     location /clientRequire {
       root {{{staticRoot}}};
-      index .entryPoint.js;
       expires 600;
-      try_files $uri $uri/ $uri.js;
+      try_files $uri $uri/.entryPoint.js $uri.js =404;
     }
     location /models {
       root {{{staticRoot}}}/clientRequire;

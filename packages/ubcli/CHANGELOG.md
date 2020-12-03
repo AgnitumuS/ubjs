@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `ubcli generateNginxCfg` - `/clientRequire` location will try `$uri` `$uri/.entryPoint.js` `$uri.js` (`$uri/.entryPoint.js` added).
+  This prevents an unnecessary redirect for folders, for example `GET http://localhost/clientRequire/asn1js`
+  will return `inetpub/clientRequire/asn1js/entryPoint.js` instead of redirect to `http://localhost/clientRequire/asn1js/`. 
 
 ## [5.10.2] - 2020-12-02
 ### Changed
