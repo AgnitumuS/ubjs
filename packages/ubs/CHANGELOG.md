@@ -250,7 +250,7 @@ $App.doCommand({
 ## [5.1.17] - 2018-09-24
 ### Changed
  - `reportOptions.allowExportToExcel` allowed value changed from to 'xls' or 'xlsx'. ('xlsx' by default)
-   For 'xls' report will be saved as html but with **xls** extension - excell will convert such files on open
+   For 'xls' report will be saved as html but with **xls** extension - excel will convert such files on open
    otherwise report will be regenerated as native **xlsx** file
  ```javascript
 $App.doCommand({

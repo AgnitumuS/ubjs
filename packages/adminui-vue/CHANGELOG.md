@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `lookups` remove listener on unsubscribe last subscription
- - Excel export of Vue tables: Boolean column values will be exported as 0/1 instead of HTML code fragment
+ - Excel export of Vue tables: values in columns of type Boolean will be exported as 0/1 instead of HTML code fragment
 
 ## [1.13.24] - 2020-12-02
 ### Added
