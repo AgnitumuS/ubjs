@@ -401,6 +401,11 @@ journalctl -u unitybase@autotest --no-hostname -o short-iso-precise --since toda
 journalctl -u unitybase* -f
 ```
 
+## Metrics
+Starting from 5.18.21 UnityBase EE expose a various application metrics in [Prometeus](https://prometheus.io/) format.
+Feature is configured using `metrics` section of ubConfig. 
+
+
 ## Overriding a default application startup rules 
 
 ### All services

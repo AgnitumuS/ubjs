@@ -74,6 +74,16 @@ module.exports = function generateNginxCfg (cfg) {
   if (!ubURL.port) ubURL.port = (ubURL.protocol === 'https:') ? '443' : '80'
   if (!reverseProxyCfg.sendFileHeader) console.warn('`reverseProxy.sendFileHeader` not defined in ub config. Skip internal locations generation')
   const nginxPort = cfg.nginxPort || externalURL.port
+  if (!serverConfig.metrics) {
+    serverConfig.metrics = {
+      enabled: true,
+      allowedFrom: ''
+    }
+  }
+  let metricsAllowedFrom = []
+  if (serverConfig.metrics.enabled && serverConfig.metrics.allowedFrom) {
+    metricsAllowedFrom = serverConfig.metrics.allowedFrom.split(';')
+  }
   const vars = {
     ubURL: ubURL,
     externalURL: externalURL,
@@ -93,6 +103,7 @@ module.exports = function generateNginxCfg (cfg) {
     serveStatic: reverseProxyCfg.serveStatic,
     staticRoot: '',
     allowCORSFrom: serverConfig.httpServer.allowCORSFrom,
+    metricsAllowedFrom,
     blobStores: []
   }
   if (reverseProxyCfg.serveStatic) {

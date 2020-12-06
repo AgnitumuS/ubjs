@@ -338,11 +338,27 @@
           "minimum": 0,
           "maximum": 255,
           "description": "The recursive depth of stack trace symbol to write. Used only if exceptions are handled, or by StackTrace level. 0 mean no stack trace"
-        },
-        "performanceCounters": {
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "description": "Metrics collector settings (added in UB 5.18.21). See [metrics tutorial](https://unitybase.info/api/server-v5/tutorial-production_env.html#metrics) for details",
+      "properties": {
+        "enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable Windows Performance Counters Set with name _UnityBase_. Set must be registered using `ub -perf` command. See <a href=\"https://dev.softengi.com/confluence/pages/viewpage.action?pageId=72909043\">this article</a> for details"
+          "description": "Enable metrics collection"
+        },
+        "allowedFrom": {
+          "type": "string",
+          "description": "Semicolon separated list of allowed subnets for /metrics endpoint; Restriction applied on reverse proxy level by ubcli generateNginxCfg. Direct access (without proxy) is allowed for everyone",
+          "default": ""
+        },
+        "disableMethodProfile": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable histogram metric for entity methods execution time"
         }
       }
     },

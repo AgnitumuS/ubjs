@@ -118,6 +118,14 @@ server {
         proxy_pass          http://{{{sendFileLocationRoot}}};
         client_max_body_size    {{maxDocBodySize}};
     }
+    location /metrics {
+        proxy_pass          http://{{{sendFileLocationRoot}}};
+        {{#metricsAllowedFrom}}
+        allow {{{.}}};
+        {{/metricsAllowedFrom}}
+        deny  all;
+    }
+
 {{#serveStatic}}
     # intercept static asserts prepared by "npx ubcli linkStatic"
     location /clientRequire {
