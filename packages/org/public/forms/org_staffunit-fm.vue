@@ -129,7 +129,6 @@ module.exports.default = {
     getConfig (cfg) {
       return {
         ...cfg,
-        isModal: true,
         parentContext: {
           staffUnitID: this.ID
         }
