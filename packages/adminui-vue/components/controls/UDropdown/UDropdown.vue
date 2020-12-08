@@ -80,6 +80,14 @@ export default {
     childPlacement: {
       type: String,
       default: 'right-start'
+    },
+
+    /**
+     * Disables dropdown toggle
+     */
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -135,6 +143,7 @@ export default {
 
   methods: {
     toggleVisible () {
+      if (this.disabled) return
       this.visible = !this.visible
     },
 

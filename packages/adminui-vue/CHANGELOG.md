@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UDropdown`: new property `disabled` (`false` by default), this property disables dropdown toggle when its `true`
 
 ### Changed
 

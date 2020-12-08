@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `org_employeeonstaff-fm`: rewritten to vue
 
 ### Deprecated
 
