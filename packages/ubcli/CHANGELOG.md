@@ -10,6 +10,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    ubConfig `metrics.allowedFrom` setting. 
 
 ### Changed
+ - Oracle: DDL generator creates CLOB field for attributes of type `JSON`.
+
+  **WARNING** manual migration of  `_beforeDDL_` type is required for each JSON attribute.
+  Create a file named `010_beforeDDL_OraVarchar2CLOB.sql` (${TBL} and ${ATTR} should be replaced
+  by entity and attribute for JSON attributes):    
+  ```
+<% if (conn.dialect.startsWith('Oracle')) { %>
+    ALTER TABLE ${TBL} ADD (${ATTR}_c CLOB);
+    --
+    UPDATE ${TBL} SET ${ATTR}_c = ${ATTR} WHERE 1=1;
+    --
+    ALTER TABLE ${TBL} DROP COLUMN ${ATTR};
+    --
+    ALTER TABLE ${TBL} RENAME COLUMN ${ATTR}_c TO ${ATTR};
+<% } %>
+  ``` 
+
 
 ### Deprecated
 

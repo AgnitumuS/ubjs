@@ -585,7 +585,7 @@ where
       case 'TEXT': return 'CLOB'
       case 'DOCUMENT': return 'VARCHAR2'
       case 'BLOB': return 'BLOB'
-      case 'JSON': return 'NVARCHAR2'
+      case 'JSON': return 'CLOB'
       default: return dataType
     }
   }
@@ -637,6 +637,8 @@ where
       let res = this.uniTypeToDataBase(column.dataType)
       res += `(${column.size.toString()} CHAR)`
       return res
+    } else if (column.dataType === 'JSON') { // prevent adding (SIZE)
+      return this.uniTypeToDataBase(column.dataType)
     } else {
       return super.createTypeDefine(column)
     }
