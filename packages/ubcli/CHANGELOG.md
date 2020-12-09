@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.11.0] - 2020-12-09
+### Added
  - `ubcli generateNginxCfg` - added `/metrics` endpoint restriction generation using
    ubConfig `metrics.allowedFrom` setting. 
 
@@ -27,10 +38,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 <% } %>
   ``` 
 
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `ubcli generateNginxCfg` - `/clientRequire` location will try `$uri` `$uri/.entryPoint.js` `$uri.js` (`$uri/.entryPoint.js` added).

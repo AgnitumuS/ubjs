@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.48] - 2020-12-09
 ## [5.4.47] - 2020-12-02
 ### Fixed
  - Password change dialog - prevent displaying of error message twice when server declines a password [ERC-1145]

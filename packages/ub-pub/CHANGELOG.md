@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - i18n for `info`, `error`, `detail`, `login` and languages abbr: uk, ru, etc.
-   Moved here from adminui-pub to allow use it on the login form 
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.5.34] - 2020-12-09
+### Added
+ - i18n for `info`, `error`, `detail`, `login` and languages abbr: uk, ru, etc.
+   Moved here from adminui-pub to allow use it on the login form 
 
 ## [5.5.33] - 2020-11-20
 ## [5.5.32] - 2020-11-19
