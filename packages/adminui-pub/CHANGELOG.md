@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.13.59] - 2020-12-09
 ## [5.13.58] - 2020-12-09
 ### Removed
  - i18n for `info`, `error`, `detail`, `login` and languages abbr: uk, ru, etc. moved into ub-pub to allow use it on the login form
