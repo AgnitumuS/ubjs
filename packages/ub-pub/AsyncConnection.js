@@ -1966,7 +1966,7 @@ UbPkiInterface.prototype.verificationUI = function (validationResults, sigCaptio
  * Inject encryption implementation and return a promise to object what implements a UbPkiInterface
  * @return {Promise<UbPkiInterface>}
  */
-UBConnection.prototype.pki = function () {
+UBConnection.prototype.pki = async function () {
   if (this._pki) return Promise.resolve(this._pki)
   if (!this.appConfig.uiSettings) throw new Error('connection.pki() can be called either after connect() or inside connection.onGotApplicationConfig')
   const pkiImplModule = this.appConfig.uiSettings.adminUI.encryptionImplementation
@@ -1974,12 +1974,9 @@ UBConnection.prototype.pki = function () {
     throw new Error('"appConfig.uiSettings.adminUI.encryptionImplementation" is not defined in application config')
   }
   const me = this
-  // eslint-disable-next-line no-undef
-  return UB.inject(pkiImplModule).then(function () {
-    // eslint-disable-next-line no-undef
-    me._pki = UA_CRYPT.getPkiInterface(me)
-    return me._pki
-  })
+  await UB.inject(pkiImplModule)
+  me._pki = await UA_CRYPT.getPkiInterface(me)
+  return me._pki
 }
 
 /**

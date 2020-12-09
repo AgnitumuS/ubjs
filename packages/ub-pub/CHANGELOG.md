@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UBConnection.prototype.pki` will await for `UA_CRYPT.getPkiInterface`.
+   This allows to implement custom encryption implementation module, what, for example, give a choice to user which library to use 
 
 ### Changed
 
