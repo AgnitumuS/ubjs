@@ -382,7 +382,7 @@ systemctl force-reload systemd-journald
  net.core.rmem_max=26214400
  net.core.rmem_default=26214400
 ``` 
- Changes to /etc/sysctl.conf do not take effect until reboot. To update the values immediately, type the following commands as root:
+ Changes to /etc/sysctl.conf do not take effect until a reboot. To update the values immediately, type the following commands as root:
 ```shell script 
  sysctl -w net.core.rmem_max=26214400
  sysctl -w net.core.rmem_default=26214400

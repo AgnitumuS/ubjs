@@ -101,12 +101,14 @@ ubConfig section example:
   Connection parameters can be specified in `tnsnames.ora` - in this case `serverName` in the ubConfig should be a TNS name,
   or directly in the TNS string passed to the `serverName`.
   
-  Some connection parameters can be specified on the server-side in
-     - profiles (`select * from dba_profiles`)
-     - [SQLNET](https://docs.oracle.com/cd/B19306_01/network.102/b14213/sqlnet.htm) 
+  Some connection parameters can be specified on the server-side in:
+ - profiles (`select * from dba_profiles`)
+ - [SQLNET](https://docs.oracle.com/cd/B19306_01/network.102/b14213/sqlnet.htm) 
   
   We recommend set `SQLNET.EXPIRE_TIME=10` to prevent a firewall/proxy/routers to terminate a idle connections.
   See [this article about keepalive](https://prashantatridba.wordpress.com/2015/12/05/sqlnet-and-tcp-keepalive-settings/) for details.
+
+  For configuring SQLNET parameters for Oracle Instant Client see [How do I ensure that my Oracle Net files like "tnsnames.ora" and "sqlnet.ora" are being used in Instant Client?](https://www.oracle.com/ru/database/technologies/faq-instant-client.html)
 
 ubConfig section example (connect without using tnsnames) :
 
