@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+  - UNavbarNotificationsButton shows message sent date with time (before this changes only date is displayed)
+    using `$formatByPattern.formatDate(item.startDate, 'dateTime')`
+    
 ### Deprecated
 
 ### Removed
