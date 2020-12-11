@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - form for changing expired password - validation fixed
 
 ## [1.13.26] - 2020-12-09
 ## [1.13.25] - 2020-12-09

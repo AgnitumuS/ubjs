@@ -171,22 +171,31 @@
     methods: {
       doChangePassword: function () {
         var me = this
-        this.$refs['changePwdForm'].validate(function (valid) {
-          if (valid) {
-            me.$UB.connection.xhr({
-              url: 'changePassword',
-              method: 'POST',
-              data: {
-                newPwd: me.changePwd.newPwd,
-                pwd: me.changePwd.oldPwd
-              }
-            }).then(function () {
-              me.changePwd.changedSuccessfully = true
-            })
-          } else {
-            return false
-          }
-        })
+        // MPV - el validate not work inside single HTML with multiple templates
+        if (me.changePwd.oldPwd === '') {
+          this.$dialogError('EnterOldPassword')
+        } else  if (me.changePwd.newPwd === '') {
+          this.$dialogError('EnterNewPassword')
+        } else if (me.changePwd.newPwd !== me.changePwd.newPwd2) {
+          this.$dialogError('passwordsDoNotMatch')
+        } else {
+          this.$refs['changePwdForm'].validate(function (valid) {
+            if (valid) {
+              me.$UB.connection.xhr({
+                url: 'changePassword',
+                method: 'POST',
+                data: {
+                  newPwd: me.changePwd.newPwd,
+                  pwd: me.changePwd.oldPwd
+                }
+              }).then(function () {
+                me.changePwd.changedSuccessfully = true
+              })
+            } else {
+              return false
+            }
+          })
+        }
       },
       doLogout: function () {
         this.$UB.connection.logout()
