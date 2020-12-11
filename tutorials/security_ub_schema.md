@@ -51,6 +51,7 @@ Server return `sessionPrivateKey`, used in future request as one of signature pa
 ```
 
 `result` in response is a `sessionPrivateKey`. First part of result before `+` is `clientSessionID`.
+
 See [UB authorization](tutorial-security.html#ub-authorization) for authorization token calculation.
 
 Consider what neither password, nor password hash not transferred other the wire, so the MIT attack is impossible.

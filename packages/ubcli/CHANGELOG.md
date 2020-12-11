@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `changePassword` endpoint - deprecated `forUser` parameter is removed. To change a password for other user by `Supervisor`
+   `uba_user.changeOtherUserPassword` method should be used everywhere (as it is already done on uba_user form) 
 
 ## [5.11.0] - 2020-12-09
 ### Added

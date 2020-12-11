@@ -132,7 +132,7 @@ var
     timeStampI = Math.floor(Date.now() /  1000),
     hexaTime = hexa8(timeStampI);
 
-return  hexa(clientSessionID) + hexaTime + hexa8(crc32(sessionPrivateKey + secretWord + hexaTime));
+return  hexa8(clientSessionID) + hexaTime + hexa8(crc32(sessionPrivateKey + secretWord + hexaTime));
 }
 ```
 
