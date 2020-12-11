@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - Oracle: added migration to transform ubm_query json attribute from NVARCHAR to CLOB 
 
 ### Changed
 
