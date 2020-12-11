@@ -246,6 +246,6 @@ const switchIndex = exports.switchIndex
 exports.switchValue = function switchValue (switchName) {
   const idx = switchIndex(switchName) + 1
   let val
-  return (idx && (val = process.argv[idx]) && val.charAt(0) !== '-' && val.charAt(0) !== '/') ? process.argv[idx] : undefined
+  return (idx && (val = process.argv[idx]) && val.charAt(0) !== '-') ? process.argv[idx] : undefined
 }
 const switchValue = exports.switchValue

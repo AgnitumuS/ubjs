@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `options.switchValue` correctly returns option value started with `/` (for example: ubcli execSql -f /home/mpv/s.sql).
+  Before this fix value starts with '/' recognized as switch index.
 
 ## [5.4.9] - 2020-11-25
 ## [5.4.8] - 2020-11-20
