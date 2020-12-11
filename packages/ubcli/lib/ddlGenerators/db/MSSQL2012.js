@@ -239,48 +239,6 @@ ORDER BY i.object_id, c.name`
     )
   }
 
-  /**
-   * @override
-   * @param {TableDefinition} table
-   * @param {FieldDefinition} column
-   * @param {String} updateType
-   * @param {Object} [value] optional for updateType updConst
-   */
-  genCodeUpdate (table, column, updateType, value) {
-    function quoteIfNeed (v) {
-      return column.isString
-        ? (!column.defaultValue && (column.refTable || column.enumGroup)
-          ? v.replace(/'/g, "''")
-          : "''" + v.replace(/'/g, '') + "''")
-        : v
-      //  return ((!column.isString || (!column.defaultValue && (column.refTable || column.enumGroup))) ? v : "''" + v.replace(/'/g,'') + "''" );
-    }
-    let possibleDefault
-    switch (updateType) {
-      case 'updConstComment':
-        this.DDL.updateColumn.statements.push(
-          `-- update dbo.${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
-        )
-        break
-      case 'updConst':
-        this.DDL.updateColumn.statements.push(
-          `EXEC('update dbo.${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null')`
-        )
-        break
-      case 'updNull':
-        possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
-        this.DDL.updateColumn.statements.push(
-          `-- update dbo.${table.name} set ${column.name} = ${possibleDefault} where ${column.name} is null`
-        )
-        break
-      case 'updBase':
-        this.DDL.updateColumn.statements.push(
-          `EXEC('update dbo.${table.name} set ${column.name} = ${quoteIfNeed(column.baseName)} where ${column.name} is null')`
-        )
-        break
-    }
-  }
-
   /** @override */
   genCodeSetCaption (tableName, column, value, oldValue) {
     if (value) value = value.replace(/'/g, "''")

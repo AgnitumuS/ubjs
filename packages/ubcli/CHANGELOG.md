@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - DDL generator uses the same code for all RDBMS to generate an `update` statement for fields with `not null` and for
+  fields with `defaultValue`
 
 ### Deprecated
 

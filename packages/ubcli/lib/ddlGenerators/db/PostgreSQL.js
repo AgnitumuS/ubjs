@@ -256,48 +256,6 @@ ORDER BY index_id, column_position`
     }
   }
 
-  /**
-   * @override
-   * @param {TableDefinition} table
-   * @param {FieldDefinition} column
-   * @param {String} updateType
-   * @param {Object} [value] optional for updateType updConst
-   */
-  genCodeUpdate (table, column, updateType, value) {
-    function quoteIfNeed (v) {
-      if (column.isString && v && /min\(code\)/.test(v)) return v // special case for updating enum - unitybase/ubjs#23
-      return column.isString
-        ? (!column.defaultValue && (column.refTable || column.enumGroup)
-          ? v.replace(/'/g, "''")
-          : "'" + v.replace(/'/g, '') + "'")
-        : v
-    }
-    let possibleDefault
-    switch (updateType) {
-      case 'updConstComment':
-        this.DDL.updateColumn.statements.push(
-          `-- update ${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
-        )
-        break
-      case 'updConst':
-        this.DDL.updateColumn.statements.push(
-          `update ${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
-        )
-        break
-      case 'updNull':
-        possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
-        this.DDL.updateColumn.statements.push(
-          `-- update ${table.name} set ${column.name} = ${possibleDefault} where ${column.name} is null`
-        )
-        break
-      case 'updBase':
-        this.DDL.updateColumn.statements.push(
-          `EXEC('update ${table.name} set ${column.name} = ${quoteIfNeed(column.baseName)} where ${column.name} is null`
-        )
-        break
-    }
-  }
-
   /** @override */
   genCodeSetCaption (tableName, column, value, oldValue) {
     if (value) value = value.replace(/'/g, "''")
