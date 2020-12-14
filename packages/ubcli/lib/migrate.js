@@ -79,6 +79,7 @@ function runMigrations (params) {
   }
 
   console.log('Loading application migration state...')
+  createUbMigrateIfNotExists(dbConnections.DEFAULT)
   let d = Date.now()
   const { dbVersions, dbVersionIDs, appliedScripts } = getMigrationState(dbConnections.DEFAULT, modelsToMigrate)
   console.log(`Migration state (${appliedScripts.length} applied scripts for ${Object.keys(dbVersions).length} models) is loaded from ub_migration table in ${Date.now() - d}ms`)
@@ -259,6 +260,26 @@ function runFiles (filesToRun, params, { conn, dbConnections, dbVersions, migrat
     //   }
     // })
   })
+}
+/**
+ * Create ub_migration table if it is not exists
+ * @param {DBConnection} dbConn
+ */
+function createUbMigrateIfNotExists(dbConn) {
+  let exists = null
+  try {
+    // fake select to ensure table is exists
+    exists = dbConn.selectParsedAsObject('select modelName AS "modelName", filePath as "filePath", fileSha as "fileSha" from ub_migration where ID=0')
+  } catch (e) {
+    // table not exists
+  }
+  if (!exists) {
+    let ubMigrateTableScript = path.join(__dirname, 'dbScripts', 'create_ub_migrate.sql')
+    execSql({
+      file: ubMigrateTableScript,
+      optimistic: true
+    })
+  }
 }
 /**
  * Read ub_version and ub_migration from database. Return `000000000` for model versions what not exists in ub_version

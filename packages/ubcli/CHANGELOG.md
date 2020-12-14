@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - DDL generator uses the same code for all RDBMS to generate an `update` statement for fields with `not null` and for
+ - DDL generator uses the same sources for all RDBMS to generate an `update` statement for fields with `not null` and for
   fields with `defaultValue`
 
 ### Deprecated
@@ -17,7 +17,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `changePassword` endpoint - deprecated `forUser` parameter is removed. To change a password for other user by `Supervisor`
-   `uba_user.changeOtherUserPassword` method should be used everywhere (as it is already done on uba_user form) 
+   `uba_user.changeOtherUserPassword` method should be used everywhere (as it is already done on uba_user form)
+ - `ubcli migrate` will check `ub_migration` table exists before applying a `_beforeDDL_` hooks.
+   If table is not exists it will be created, so names of `_beforeDDL_` hooks files can be inserted into `ub_migration` table. 
 
 ## [5.11.0] - 2020-12-09
 ### Added
