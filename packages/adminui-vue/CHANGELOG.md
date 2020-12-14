@@ -8,13 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-  - UNavbarNotificationsButton shows message sent date with time (before this changes only date is displayed)
-    using `$formatByPattern.formatDate(item.startDate, 'dateTime')`
-    
+
 ### Deprecated
 
 ### Removed
 
+### Fixed
+
+## [1.13.27] - 2020-12-14
+### Changed
+  - UNavbarNotificationsButton shows message sent date with time (before this changes only date is displayed)
+    using `$formatByPattern.formatDate(item.startDate, 'dateTime')`
+    
 ### Fixed
  - form for changing expired password - validation fixed
 
