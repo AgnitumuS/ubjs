@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - fixed UB 1.12 and UB 4.x compatibility for file system BLOB stores with historyDepth = 0.
+   For such stores file path is calculated without adding a folder for revisions
 
 ## [5.5.3] - 2020-11-25
 ## [5.5.2] - 2020-11-20

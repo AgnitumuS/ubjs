@@ -340,7 +340,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     // v:0 create a folder FormatUTF8('% % %%', [Attribute.Entity.name, Attribute.name, Request.ID])
     // and place where file with name = revisionNumber+ext
     // sample: {"store":"documents","fName":"doc_outdoc document 3000019161319.pdf","origName":"3000019161319.pdf","relPath":"101\\","ct":"application/pdf","size":499546,"md5":"5224456db8d3c47f5681c5e970826211","revision":5}
-    if (!blobItem.v) { // UB <5
+    if (!blobItem.v && this.historyDepth) { // UB <5 with historical store
       const ext = path.extname(fn)
       const fileFolder = path.basename(fn, ext) // file name without ext
       fn = `${blobItem.revision || 0}${ext}` // actual file name is `revision number + ext`
