@@ -57,9 +57,14 @@ module.exports = function generateDDL (cfg) {
   if (!process.rootOTP) throw new Error('This version of @unitybase/ubcli require version of UB server to be >= 5.7.3')
 
   // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
-  http.setGlobalConnectionDefaults({ receiveTimeout: 120000 })
-  const session = argv.establishConnectionFromCmdLineAttributes(cfg)
-  const conn = session.connection
+  let conn
+  if (!cfg.syncConnection) {
+    http.setGlobalConnectionDefaults({receiveTimeout: 120000})
+    const session = argv.establishConnectionFromCmdLineAttributes(cfg)
+    conn = session.connection
+  } else {
+    conn = cfg.syncConnection
+  }
   runDDLGenerator(conn, cfg.autorun, cfg.entities, cfg.models, cfg.out, cfg.optimistic, cfg.connection)
 }
 

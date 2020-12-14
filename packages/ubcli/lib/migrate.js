@@ -63,6 +63,7 @@ module.exports = function migrate (cfg) {
 }
 
 const BEFORE_DDL_RE = /_beforeDDL[_/.]/
+const BEFORE_DDL_C_RE = /_beforeDDLc[_/.]/
 const AFTER_DDL_RE = /_afterDDL[_/.]/
 /**
  *  @param {Object} params  Migration parameters
@@ -79,7 +80,7 @@ function runMigrations (params) {
   }
 
   console.log('Loading application migration state...')
-  createUbMigrateIfNotExists(dbConnections.DEFAULT)
+  createUbMigrateIfNotExists(dbConnections.DEFAULT) // allows beforeDDL script to be added into ub_migration table
   let d = Date.now()
   const { dbVersions, dbVersionIDs, appliedScripts } = getMigrationState(dbConnections.DEFAULT, modelsToMigrate)
   console.log(`Migration state (${appliedScripts.length} applied scripts for ${Object.keys(dbVersions).length} models) is loaded from ub_migration table in ${Date.now() - d}ms`)
@@ -126,22 +127,34 @@ function runMigrations (params) {
     const beforeDDLFiles = migrations.files.filter(f => BEFORE_DDL_RE.test(f.name))
     if (params.verbose && beforeDDLFiles.length) console.log('Run beforeDDL hooks:', beforeDDLFiles)
     runFiles(beforeDDLFiles, params, { conn: null, dbConnections, dbVersions, migrations })
+    releaseDBConnectionPool() // release DB pool created by controller
+
+    // connect to server to allows _beforeDDLc_ hooks
+    session = argv.establishConnectionFromCmdLineAttributes(params)
+    conn = session.connection
+    // recreate DB pool - will use server pool (server is started on this stage)
+    dbConnections = createDBConnectionPool(serverConfig.application.connections)
+
+    // apply beforeDDL then connected (beforeDDLc) hooks
+    migrations.hooks.forEach(h => {
+      if (typeof h.hook.beforeGenerateDDLc === 'function') {
+        if (params.verbose) console.log(`Call beforeGenerateDDL hook for model '${h.model}'`)
+        h.hook.beforeGenerateDDLc({ conn, dbConnections, dbVersions, migrations })
+      }
+    })
+    // apply file based before DDL when connected hooks
+    const beforeDDLFilesC = migrations.files.filter(f => BEFORE_DDL_C_RE.test(f.name))
+    if (params.verbose && beforeDDLFilesC.length) console.log('Run beforeDDL when connected hooks:', beforeDDLFilesC)
+    runFiles(beforeDDLFilesC, params, { conn, dbConnections, dbVersions, migrations })
+
 
     // run DDL generator
     const paramsForDDL = Object.assign({}, params)
     paramsForDDL.autorun = true // force autorun
     paramsForDDL.out = process.cwd() // save script into current folder
     paramsForDDL.forceStartServer = true // use a local server instance
-    releaseDBConnectionPool() // release DB pool created by controller
-
     if (params.verbose) console.log('Run generateDDL with params:', paramsForDDL)
     generateDDL(paramsForDDL)
-
-    // after generateDDL we can connect to UB server
-    session = argv.establishConnectionFromCmdLineAttributes(params)
-    conn = session.connection
-    // recreate DB pool - will use server pool (server is started on this stage)
-    dbConnections = createDBConnectionPool(serverConfig.application.connections)
 
     // apply afterGenerateDDL hooks
     migrations.hooks.forEach(h => {
@@ -164,7 +177,8 @@ function runMigrations (params) {
   }
 
   // remove before/after DDL hook files - either already applied or should be skipped
-  migrations.files = migrations.files.filter(f => !BEFORE_DDL_RE.test(f.name) && !AFTER_DDL_RE.test(f.name))
+  migrations.files = migrations.files.filter(f => !BEFORE_DDL_RE.test(f.name) && !AFTER_DDL_RE.test(f.name)
+    && !BEFORE_DDL_C_RE.test(f.name))
 
   // apply ub-migrate if installed
   if (!params.nodata) {

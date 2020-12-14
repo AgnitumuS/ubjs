@@ -211,14 +211,16 @@ Use it to see al applied migration files and models versions on the moment of la
 ## Migration hooks
 
 ### Using naming convention
-Migration file or folder name can contain a `_beforeDDL_` or `_afterDDL_` substring. Such files are applied before/after DDL generation. 
+Migration file or folder name can contain a `_beforeDDL_`, `_beforeDDLc_` or `_afterDDL_` substring. Such files are applied before/after DDL generation. 
 
-> _beforeDDL_ js hook is called with `conn === null` because on this stage HTTP connection to the server is impossible  
+ - **_beforeDDL_** js hook is called with `conn === null` because on this stage HTTP connection to the server is impossible.
+ - **_beforeDDLc_** js hook is called after beforeDDL hooks but before generateDDL and HTTP connection is available here (conn !== null)
  
 ### Using per-model `_hooks.js`
 A `/_migrate/_hooks.js` file for each model can exports migrations hook. 
 The possible hooks are:
-  - `beforeGenerateDDL`     # a good place for alter database objects
+  - `beforeGenerateDDL`     # a good place to alter database objects (server **is not** started here)
+  - `beforeGenerateDDLc`    # a good place to modify a data using fields what can be dropped/altered by generateDDL (server is started, SyncConnection is available)  
     - here generateDDL is executed
   - `afterGenerateDDL`      # a good place for massive update columns
     -  here ub-migrate is executed
@@ -240,6 +242,8 @@ function beforeGenerateDDL ({ conn, dbConnections, dbVersions, migrations }) {
 }
 ```
 
-> beforeGenerateDDL hook is called with conn: null because on this stage HTTP connection to the server is impossible 
+> beforeGenerateDDL hook is called with conn: null because on this stage HTTP connection to the server is impossible
+> 
+> beforeGenerateDDLc hook is called after beforeGenerateDDL and befor actual generateDDL and HTTP connection is available here
   
    

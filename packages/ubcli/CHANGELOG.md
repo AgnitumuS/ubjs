@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `migrate`: a new hook `_beforeDDLc_` (_hooks.beforeGenerateDDLc) is added - called after `_beforeDDL_` but before
+  generateDDL. The difference from `__beforeDDL_` - an HTTP connection to server (conn parameter) is available for this hook.   
 
 ### Changed
  - DDL generator uses the same sources for all RDBMS to generate an `update` statement for fields with `not null` and for
