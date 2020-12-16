@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+  - UI Tag tracking (adding of `uitag=${uiTag}` to `ubql` URI) is implemented for Vue based tables (what mounts as tab).
+    For Vue based forms UI tracking is implemented in adminui-pub. 
 
 ### Changed
 

@@ -148,6 +148,7 @@ function mountModal ({
  * @param {object} cfg.validator Vuelidate validation object
  * @param {string} cfg.title Title
  * @param {string} cfg.tabId navbar tab ID
+ * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  * @param {boolean} [cfg.openInBackgroundTab=false] If `true` - the tab with a newly opened form does not become active.
  */
@@ -158,13 +159,15 @@ function mountTab ({
   validator,
   title: titleText,
   tabId,
+  uiTag,
   provide,
   openInBackgroundTab
 }) {
   const tab = $App.viewport.centralPanel.add({
     title: titleText,
     id: tabId,
-    closable: true
+    closable: true,
+    uiTag
   })
 
   const instance = new Vue({
@@ -380,6 +383,7 @@ const UMasterDetailView = require('../../components/UMasterDetailView/UMasterDet
  * @param {object} cfg Command config
  * @param {object} cfg.props Props data
  * @param {object} cfg.tabId Tab id
+ * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
  * @param {object} [cfg.title] Tab title
  * @param {object} cfg.props UMasterDetailView props
  * @param {function:ClientRepository} [cfg.props.repository] Function which returns ClientRepository.
@@ -431,6 +435,7 @@ function mountTableEntity (cfg) {
     mountTableEntityAsTab({
       title,
       tabId: cfg.tabId,
+      uiTag: cfg.uiTag,
       tableRender
     })
   }
@@ -501,11 +506,13 @@ function mountTableEntityAsModal ({
  * @param {object} cfg
  * @param {string} cfg.title Tab title
  * @param {string} cfg.tabId Navbar tab ID
+ * @param {string} [cfg.uiTag] UI Tag for tracking subsystem
  * @param {function} cfg.tableRender UMasterDetailView render function
  */
 function mountTableEntityAsTab ({
   title,
   tabId,
+  uiTag,
   tableRender
 }) {
   const existedTab = Ext.getCmp(tabId) || $App.viewport.centralPanel.down(`panel[tabID=${tabId}]`)
@@ -515,7 +522,8 @@ function mountTableEntityAsTab ({
     const tab = $App.viewport.centralPanel.add({
       title: UB.i18n(title),
       id: tabId,
-      closable: true
+      closable: true,
+      uiTag
     })
 
     const instance = new Vue({
