@@ -2104,6 +2104,20 @@ UBConnection.prototype.setUiTag = function(uiTag) {
 }
 
 /**
+ * Emit `${entityCode}:changed` event. In case entity has a unity mixin - emit also for unityEntity
+ *
+ * @param {string} entityCode
+ * @param {Object} payload  An object with at last {entity: 'entityCode', method: 'entityMethod', resultData: {} } attributes
+ */
+UBConnection.prototype.emitEntityChanged = function(entityCode, payload) {
+  const e = this.domain.get(entityCode, false)
+  this.emit(`${entityCode}:changed`, payload)
+  if (e && e.hasMixin('unity') && e.mixins.unity.entity) {
+    this.emit(`${e.mixins.unity.entity}:changed`, payload)
+  }
+}
+
+/**
  * see docs in ub-pub main module
  * @private
  * @param cfg

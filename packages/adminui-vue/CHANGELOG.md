@@ -16,7 +16,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+ - `UTableEntity` & `UForm` uses `AsyncConnection.prototype.emitEntityChanged` to emit `${entityCode}:changed` event.
+   `emitEntityChanged` method emit `${entityCode}:changed` event and, in case entity has a unity mixin - emit also `${minixs.unity.entity}:changed`.
+   This allows to refresh, for example, a `uba_subject` table in case `uba_user` is edited.
+   
 ## [1.13.27] - 2020-12-14
 ### Changed
   - UNavbarNotificationsButton shows message sent date with time (before this changes only date is displayed)

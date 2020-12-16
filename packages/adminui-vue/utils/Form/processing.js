@@ -846,7 +846,7 @@ function createProcessingModule ({
           commit('CLEAR_ALL_DELETED_ITEMS')
 
           for (const response of responses) {
-            UB.connection.emit(`${response.entity}:changed`, response)
+            UB.connection.emitEntityChanged(response.entity, response)
           }
 
           if (state.isNew) {
@@ -934,7 +934,7 @@ function createProcessingModule ({
               entity: masterEntityName,
               execParams: { ID: state.data.ID }
             })
-            UB.connection.emit(`${masterEntityName}:changed`, {
+            UB.connection.emitEntityChanged(masterEntityName, {
               entity: masterEntityName,
               method: 'delete',
               resultData: { ID: state.data.ID }
