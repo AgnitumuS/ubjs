@@ -399,7 +399,7 @@ module.exports = (instance) => ({
           UB.showErrorWindow(err)
           throw new UB.UBAbortError(err)
         }
-        UB.connection.emit(`${getters.entityName}:changed`, {
+        UB.connection.emitEntityChanged(getters.entityName, {
           entity: getters.entityName,
           method: 'delete',
           resultData: { ID }

@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `AsyncConnection.prototype.setUiTag` method added.
    UI tag will be added to a `ubql` HTTP request as `uitag=${uiTag}` and can be used to track from which part of UI request is generated.
+ - `AsyncConnection.prototype.emitEntityChanged` method added.
+   Emit `${entityCode}:changed` event. In case entity has a unity mixin - emit also for unityEntity
 
 ### Changed
 
