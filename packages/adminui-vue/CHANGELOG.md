@@ -6,14 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-  - UI Tag tracking (adding of `uitag=${uiTag}` to `ubql` URI) is implemented for Vue based tables (what mounts as tab).
-    For Vue based forms UI tracking is implemented in adminui-pub. 
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.13.28] - 2020-12-16
+### Added
+  - UI Tag tracking (adding of `uitag=${uiTag}` to `ubql` URI) is implemented for Vue based tables (what mounts as tab).
+    For Vue based forms UI tracking is implemented in adminui-pub. 
 
 ### Fixed
  - `UTableEntity` & `UForm` uses `AsyncConnection.prototype.emitEntityChanged` to emit `${entityCode}:changed` event.

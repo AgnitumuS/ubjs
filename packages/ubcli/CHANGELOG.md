@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.11.2] - 2020-12-16
+### Fixed
  - SQL Server DDL generation - fix error ` Property 'MS_Description' already exists` by using `sp_updateextendedproperty` if previous comment is ''.
 
 ## [5.11.1] - 2020-12-14

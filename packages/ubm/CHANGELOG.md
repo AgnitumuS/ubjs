@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.37] - 2020-12-16
 ## [5.4.36] - 2020-12-14
 ### Added
  - Oracle: added migration to transform ubm_query json attribute from NVARCHAR to CLOB 

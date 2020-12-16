@@ -6,10 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - UI Tag tracking for all forms and ExtJS tables what mounts as tab:
-   - `$App.doCommand` generate a UI Tag for and assign it to uiTag property of central panel tabs
-   - on tab activation `beforetabchange` event handler sets a `connection.setUiTag(tab.uiTag)`
-   - `uitag=${uiTag}` is added to all `ubql` requeset URL, so in server logs the source of UBQL can be tracked   
 
 ### Changed
 
@@ -18,6 +14,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.13.61] - 2020-12-16
+### Added
+ - UI Tag tracking for all forms and ExtJS tables what mounts as tab:
+   - `$App.doCommand` generate a UI Tag for and assign it to uiTag property of central panel tabs
+   - on tab activation `beforetabchange` event handler sets a `connection.setUiTag(tab.uiTag)`
+   - `uitag=${uiTag}` is added to all `ubql` requeset URL, so in server logs the source of UBQL can be tracked   
 
 ## [5.13.60] - 2020-12-14
 ## [5.13.59] - 2020-12-09
