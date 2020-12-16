@@ -37,7 +37,14 @@ Ext.define('UB.view.Viewport', {
       maxTabWidth: 200,
       border: false,
       margin: '1, 0, 0, 0',
-      loader: { autoLoad: false }
+      loader: { autoLoad: false },
+      listeners: {
+        beforetabchange: function(tabs, newTab, oldTab) {
+          const uiTag = (newTab && newTab.uiTag)  || ''
+          if ($App && $App.connection) $App.connection.setUiTag(uiTag) // tracking
+          return true
+        }
+      }
     })
 
     Ext.apply(me, {

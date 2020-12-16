@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `AsyncConnection.prototype.setUiTag` method added.
+   UI tag will be added to a `ubql` HTTP request as `uitag=${uiTag}` and can be used to track from which part of UI request is generated.
 
 ### Changed
 

@@ -264,6 +264,7 @@ function UBConnection (connectionParams) {
 
   this._bufferedRequests = []
   this._bufferTimeoutID = 0
+  this.uiTag = ''
 
   /**
    * Is user currently logged in. There is no guaranty what session actually exist in server.
@@ -985,7 +986,7 @@ UBConnection.prototype.processBuffer = function processBuffer () {
   this._bufferedRequests = []
   const reqData = bufferCopy.map(r => r.request)
   const rq = buildUriQueryPath(reqData)
-  const uri = `ubql?rq=${rq}`
+  const uri = `ubql?rq=${rq}&uitag=${this.uiTag}`
   this.post(uri, reqData).then(
     (responses) => {
       // we expect responses in order we send requests to server
@@ -1036,7 +1037,7 @@ UBConnection.prototype.processBuffer = function processBuffer () {
 UBConnection.prototype.query = function query (ubq, allowBuffer) {
   const me = this
   if (!allowBuffer || !BUFFERED_DELAY) {
-    const uri = `ubql?rq=${ubq.entity}.${ubq.method}`
+    const uri = `ubql?rq=${ubq.entity}.${ubq.method}&uitag=${this.uiTag}`
     return me.post(uri, [ubq]).then(function (response) {
       return response.data[0]
     })
@@ -1627,7 +1628,7 @@ UBConnection.prototype.runTrans = function (ubRequestArray) {
     }
   }
   const rq = buildUriQueryPath(ubRequestArray)
-  const uri = `ubql?rq=${rq}`
+  const uri = `ubql?rq=${rq}&uitag=${this.uiTag}`
   return this.post(uri, ubRequestArray).then((response) => response.data)
 }
 
@@ -2084,6 +2085,23 @@ UBConnection.prototype.SHA256 = SHA256
  *    var shaAsSting = UB.connection.HMAC_SHA256('secretKey', 'something').toString()
  */
 UBConnection.prototype.HMAC_SHA256 = HMAC_SHA256
+
+/**
+ * Sets UI tag for connection.
+ *
+ * This tag will be added to a ubql HTTP request as `uitag=${uiTag}` and can be used to track from which part of UI request is generated
+ *
+ * Recommended naming convention for tags are:
+ *  - nsc-${shortcutCode} for something executed from navshortcut
+ *  - frm-${formCode} for forms
+ *  - afm-${entity} for auto-forms
+ *  - rpt-${reportCode} for reports
+ *
+ * @param {string} uiTag
+ */
+UBConnection.prototype.setUiTag = function(uiTag) {
+  this.uiTag = encodeURIComponent(uiTag || '')
+}
 
 /**
  * see docs in ub-pub main module

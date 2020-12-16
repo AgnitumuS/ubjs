@@ -90,6 +90,7 @@ function replaceAutoForms () {
     title: UB.connection.domain.get(entity).caption,
     isModal,
     target,
+    uiTag: `afm-${entity}`,
     isCopy: this.commandConfig.isCopy,
     modalClass: 'ub-dialog__reset-padding'
   })
@@ -157,6 +158,7 @@ function replaceShowList () {
         mountTableEntity({
           isModal: cfg.isModal,
           tabId,
+          uiTag: me.uiTag,
           title,
           props: cfg.cmdData,
           shortcutCode: cfg.shortcutCode,
@@ -266,6 +268,7 @@ function replaceShowList () {
       mountTableEntity({
         isModal: cfg.isModal,
         tabId: cfg.tabId,
+        uiTag: me.uiTag,
         shortcutCode: cfg.shortcutCode,
         title: me.title || me.description || me.entity,
         props,
