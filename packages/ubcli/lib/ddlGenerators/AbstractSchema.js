@@ -28,7 +28,7 @@ function FieldDefinition (cfg) {
   this.attribute = cfg.attribute
   this.name = cfg.name
   this.dataType = cfg.dataType || 'NVARCHAR'
-  this.caption = cfg.description || ''
+  this.caption = cfg.description
   this.allowNull = cfg.allowNull !== false
   this.defaultValue = cfg.defaultValue
   this.defaultConstraintName = cfg.defaultConstraintName

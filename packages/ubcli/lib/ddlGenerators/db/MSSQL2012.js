@@ -242,7 +242,7 @@ ORDER BY i.object_id, c.name`
   /** @override */
   genCodeSetCaption (tableName, column, value, oldValue) {
     if (value) value = value.replace(/'/g, "''")
-    const proc = oldValue ? 'sp_updateextendedproperty' : 'sp_addextendedproperty'
+    const proc = oldValue === null  ? 'sp_addextendedproperty': 'sp_updateextendedproperty'
     let result = `EXEC ${proc} @name = N'${DB_DESCRIPTION_PROPERTY}', @value = N'${value === null ? (column || tableName) : value}',@level0type = N'SCHEMA',  @level0name= N'dbo', @level1type = N'TABLE',  @level1name = N'${tableName}'`
     if (column) result += `, @level2type = N'Column', @level2name = '${column}'`
     this.DDL.caption.statements.push(result)

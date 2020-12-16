@@ -490,7 +490,7 @@ class DBAbstract {
 
       if (mustBeC) { // alter
         // caption
-        if (mustBeC.caption !== asIsC.caption) {
+        if (mustBeC.caption !== asIsC.caption && mustBeC.caption) {
           this.genCodeSetCaption(mustBe.name, mustBeC.name, mustBeC.caption, asIsC.caption)
         }
         const asIsType = this.createTypeDefine(asIsC)
