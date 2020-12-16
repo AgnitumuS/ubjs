@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - new method `AsyncConnection.prototype.userCanChangePassword` - Is auth schema for logged in user allows
+   password changing (currently - only UB and CERT* with requireUserName)
+   
 ### Changed
 
 ### Deprecated

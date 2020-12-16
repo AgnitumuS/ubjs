@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `Change password` user menu item now hidden for users logged in with Auth Schema what not support
+   password changing (all except UB, Basic abn CERT with login) 
 
 ## [1.13.28] - 2020-12-16
 ### Added

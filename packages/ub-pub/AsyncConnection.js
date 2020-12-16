@@ -2118,6 +2118,18 @@ UBConnection.prototype.emitEntityChanged = function(entityCode, payload) {
 }
 
 /**
+ * Is auth schema for logged in user allows password changing (currently - only UB and CERT* with requireUserName)
+ * @return {boolean}
+ */
+UBConnection.prototype.userCanChangePassword = function() {
+  if (!LDS) return false
+  const lastAuthType = LDS.getItem(ubUtils.LDS_KEYS.LAST_AUTH_SCHEMA) || '' // session.authSchema
+  const auis = (this.appConfig.uiSettings && this.appConfig.uiSettings.adminUI) || {}
+  return (lastAuthType === 'UB' || lastAuthType === 'Basic') ||
+    (lastAuthType.startsWith('CERT') && auis.authenticationCert && auis.authenticationCert.requireUserName)
+}
+
+/**
  * see docs in ub-pub main module
  * @private
  * @param cfg

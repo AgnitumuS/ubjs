@@ -45,6 +45,7 @@
       </u-dropdown-item>
 
       <u-dropdown-item
+        v-if="userCanChangePassword"
         label="changePassword"
         icon="u-icon-key"
         @click="changePassword"
@@ -108,8 +109,10 @@ export default {
     const cfg = this.$UB.connection.appConfig
     const customVersion = this.$UB.connection.userData('appVersion')
     const appVersion = customVersion || `${cfg.serverVersion} / ${cfg.appVersion}`
+    const userCanChangePassword = this.$UB.connection.userCanChangePassword()
     return {
       silenceKerberosLogin,
+      userCanChangePassword,
       negotiateAvailable: negotiateAvailable,
       userName,
       appVersion,
