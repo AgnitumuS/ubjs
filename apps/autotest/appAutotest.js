@@ -22,3 +22,8 @@ function testPdfSignerSpeed (req, resp) {
 }
 
 UB.start()
+
+console.log('Verify adding of 50 listeners not produce a ERR in console');
+for (let i=0; i < 50; i++) {
+  uba_user.on('select:after', function(){})
+}
