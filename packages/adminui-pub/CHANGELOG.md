@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.13.62] - 2020-12-17
 ## [5.13.61] - 2020-12-16
 ### Added
  - UI Tag tracking for all forms and ExtJS tables what mounts as tab:

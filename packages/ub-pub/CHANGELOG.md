@@ -6,15 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - new method `AsyncConnection.prototype.userCanChangePassword` - Is auth schema for logged in user allows
-   password changing (currently - only UB and CERT* with requireUserName)
-   
+
 ### Changed
 
 ### Deprecated
 
 ### Removed
 
+### Fixed
+
+## [5.6.1] - 2020-12-17
+### Added
+ - new method `AsyncConnection.prototype.userCanChangePassword` - Is auth schema for logged in user allows
+   password changing (currently - only UB and CERT* with requireUserName)
+   
 ### Fixed
  - `AsyncConnection.prototype.emitEntityChanged` will transform a payload to match a unity entity before emitting
    a `${e.mixins.unity.entity}:changed` event, so ':changed' listener in controls what based on unity entity got

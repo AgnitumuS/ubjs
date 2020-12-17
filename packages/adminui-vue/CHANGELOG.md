@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UFileAddButton`: added property `accept` - a file extensions to bind into `accept` input property
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.13.29] - 2020-12-17
+### Added
+ - `UFileAddButton`: added property `accept` - a file extensions to bind into `accept` input property
 
 ### Fixed
  - `Change password` user menu item now hidden for users logged in with Auth Schema what not support
