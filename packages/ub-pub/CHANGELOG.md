@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `AsyncConnection.prototype.emitEntityChanged` will transform a payload to match a unity entity before emitting
+   a `${e.mixins.unity.entity}:changed` event, so ':changed' listener in controls what based on unity entity got
+   a payload they expect, instead of payload for child entity 
 
 ## [5.6.0] - 2020-12-16
 ### Added

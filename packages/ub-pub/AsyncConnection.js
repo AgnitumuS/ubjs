@@ -2113,7 +2113,26 @@ UBConnection.prototype.emitEntityChanged = function(entityCode, payload) {
   const e = this.domain.get(entityCode, false)
   this.emit(`${entityCode}:changed`, payload)
   if (e && e.hasMixin('unity') && e.mixins.unity.entity) {
-    this.emit(`${e.mixins.unity.entity}:changed`, payload)
+    const U = e.mixins.unity
+    // transform response to match a unity
+    const unityPayload = {
+      entity: U.entity,
+      method: payload.method,
+      resultData: U.defaults || {}
+    }
+    const uAttrsSet = new Set(U.attributeList)
+    const uMapping = U.mapping || {}
+    const RD = payload.resultData || {}
+    for (const attr in RD) {
+      if (attr === 'ID') {
+        unityPayload.resultData.ID = RD.ID
+      } else if (uAttrsSet.has(attr)) {
+        unityPayload.resultData[attr] = RD[attr]
+      } else if (uMapping[attr]) {
+        unityPayload.resultData[uMapping[attr]] = RD[attr]
+      }
+    }
+    this.emit(`${e.mixins.unity.entity}:changed`, unityPayload)
   }
 }
 
