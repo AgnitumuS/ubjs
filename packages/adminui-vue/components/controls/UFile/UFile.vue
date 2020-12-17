@@ -1,7 +1,7 @@
 <template>
   <u-file-container :style="previewSizeCss">
     <template #toolbar>
-      <u-file-add-button v-if="hasButton('add')" />
+      <u-file-add-button v-if="hasButton('add')" :accept="accept"/>
       <u-file-webcam-button v-if="hasButton('webcam')" />
       <div
         v-if="hasButton('add') || hasButton('webcam')"
