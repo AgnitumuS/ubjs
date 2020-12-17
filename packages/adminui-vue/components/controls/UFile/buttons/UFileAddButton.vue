@@ -4,6 +4,7 @@
       v-show="false"
       ref="input"
       type="file"
+      :accept="accept"
       :multiple="multiple"
       @change="upload"
     >
@@ -27,7 +28,8 @@ export default {
   name: 'UFileAddButton',
 
   props: {
-    multiple: Boolean
+    multiple: Boolean,
+    accept: String
   },
 
   inject: {

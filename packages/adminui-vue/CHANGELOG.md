@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UFileAddButton`: added property `accept` - a file extensions to bind into `accept` input property
 
 ### Changed
 
@@ -16,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `Change password` user menu item now hidden for users logged in with Auth Schema what not support
    password changing (all except UB, Basic and CERT/CERT2 with `requireUserName`) 
+ - `UFile`: `accept` property propagated to child `UFileAddButton`, so behavior of clicking into drag area and `Add` button is the same now  
 
 ## [1.13.28] - 2020-12-16
 ### Added
