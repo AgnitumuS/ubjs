@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Shortcuts for entities with `parentID` attribute associated with `org_unit`, are created with predefined columns.
+  `parentID` is described as `parentID.caption` instead of lookup, because `getDescriptionById` method 
+  returns '---' (for safe deleted, not accessible records, etc). [UBDF-12752]
 
 ### Deprecated
 
