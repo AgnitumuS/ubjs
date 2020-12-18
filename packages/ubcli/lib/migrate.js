@@ -65,6 +65,7 @@ module.exports = function migrate (cfg) {
 const BEFORE_DDL_RE = /_beforeDDL[_/.]/
 const BEFORE_DDL_C_RE = /_beforeDDLc[_/.]/
 const AFTER_DDL_RE = /_afterDDL[_/.]/
+const IS_VERSION_RE = /^\d{9}$/  // 9 digits version number 005001001
 /**
  *  @param {Object} params  Migration parameters
  *  @private
@@ -79,7 +80,7 @@ function runMigrations (params) {
     modelsToMigrate = modelsToMigrate.filter(m => inModels.includes(m.name))
   }
 
-  console.log('Loading application migration state...')
+  console.log('Loading application migration state from DB...')
   createUbMigrateIfNotExists(dbConnections.DEFAULT) // allows beforeDDL script to be added into ub_migration table
   let d = Date.now()
   const { dbVersions, dbVersionIDs, appliedScripts } = getMigrationState(dbConnections.DEFAULT, modelsToMigrate)
@@ -92,6 +93,24 @@ function runMigrations (params) {
   const migrations = readMigrations(modelsToMigrate)
   const totalFiles = migrations.files.length
   console.log(`Found ${totalFiles} migration file(s) in ${Date.now() - d}ms`)
+
+  // remove files for model versions prior to dbVersions
+  // for a "fresh" setup `ubcli initialize` fills ub_version table by models version on the moment of initialization
+  let oldFilesSkipped = 0
+  migrations.files = migrations.files.filter(f => {
+    let fileModelVersion = f.name.substring(0, 9)
+    if (IS_VERSION_RE.test(fileModelVersion)) {  // file should starts from 9 digits model version to which it migrate
+      if (fileModelVersion <= dbVersions[f.model]) { // files intended for migrate to model versions prior to current DB state are skipped
+        oldFilesSkipped++
+        // console.debug(f)
+        return false
+      }
+    }
+    return true // apply files what ot starts from 9 digits or intended for migrate to version newer than current
+  })
+  if (oldFilesSkipped) {
+    console.log(`${oldFilesSkipped} files intended for migrate to the version of model prior to currently applied are skipped`)
+  }
 
   // remove already applied files and verify files SHA
   let shaIsEqual = true
