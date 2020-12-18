@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `ubcli migrate` will skip files what intended for migrate to the model version prior to the current DB state.
+   For example if ub_version table contains row with `modelName=UBA` and `version=005018021` all files and folders in
+   `@unitybase/uba/_migrate` folder what starts from 9 digits what smaller than 005018021 are skipped.
+
+   This prevents to apply an outdated migrations what do the same things `ubcli initialize` already did for new application.  
 
 ### Changed
 
