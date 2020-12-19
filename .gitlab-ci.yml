@@ -11,7 +11,7 @@ build-doc:
     - cp -rf ./node_modules/ub-jsdoc/templateHelper.js-patched ./node_modules/jsdoc/lib/jsdoc/util/templateHelper.js
     - wget -nv -O samples-master.zip https://git-pub.intecracy.com/unitybase/samples/-/archive/master/samples-master.zip
     - unzip -o samples-master.zip "samples-master/courses/tutorial-v5/*" -d getting-started
-    - npm run build:doc || false
+    - npm run build:doc
     - rsync -avz -e "ssh -p 2222" docs/* gitlab-builder@registry.unitybase.info:/home/ub-service/website/unitybase-info/inetPub/api
   when: manual
   only:
