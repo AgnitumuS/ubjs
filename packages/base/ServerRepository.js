@@ -14,13 +14,14 @@ const LOCAL_SERVER_UBQL_V2 = ((v[0] >= 'v5') && (v[1] >= 10))
 /**
  * @classdesc
  * Server side repository.
- * Overrided {@link ServerRepository#select} method return initialized {@link TubDataStore}
+ * Override {@link ServerRepository#select} method return initialized {@link TubDataStore}
  *
  * Usually is created by using one of the fabric functions:
  *
  *   - {@link module:@unitybase/ub#Repository UB.Repository} for entities from this server instance
  *   - {@link class:SyncConnection#Repository conn.Repository} for access remote UB server
  *
+ * @example
 
      let store = UB.Repository('my_entity')
        .attrs('id')
@@ -114,7 +115,7 @@ class ServerRepository extends CustomRepository {
        const usersIDs = UB.Repository('uba_user'),attrs('ID').limit(100).selectAsArrayOfValues()
        // usersIDs is array of IDs [1, 2, 3, 4]
 
-   * @return Array<string|number>
+   * @return {Array<string|number>}
    */
   selectAsArrayOfValues () {
     if (process.isServer) { // inside server thread

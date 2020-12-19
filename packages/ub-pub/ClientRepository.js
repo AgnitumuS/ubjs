@@ -168,7 +168,7 @@ class ClientRepository extends CustomRepository {
      const usersIDs = await UB.Repository('uba_user').attrs('ID').limit(100).selectAsArrayOfValues()
      // usersIDs is array of IDs [1, 2, 3, 4]
 
-   * @return Array<string|number>
+   * @return {Array<string|number>}
    */
   selectAsArrayOfValues () {
     this.addAttrsForCachedEntity()
@@ -180,7 +180,7 @@ class ClientRepository extends CustomRepository {
   /**
    * For core module (without Ext) - do the same as {ClientRepository.selectAsObj}
    *
-   * For EntJS based client (actual implementation in {UB.ux.data.UBStore}) - create store based on request, constructed by Repository.
+   * For ExtJS based client (actual implementation in {UB.ux.data.UBStore}) - create store based on request, constructed by Repository.
    * Return promise resolved to loaded {UB.ux.data.UBStore} instance.
    *
    *      UB.Repository('ubm_navshortcut').attrs(['ID', 'code'])

@@ -95,6 +95,7 @@ class CustomRepository {
    * Retrieve a data from server using `methodName` entity method.
    * By default `select` method will be used.
    * @param {string} methodName
+   * @return {CustomRepository}
    */
   using (methodName) {
     this.method = methodName
@@ -165,7 +166,7 @@ class CustomRepository {
 
    * @param {*} addingCondition Attributes will be added only in case addingCondition is truthy
    * @param {string|Array<string>} attrs
-   * @return {CustomRepository}attrs
+   * @return {CustomRepository}
    */
   attrsIf (addingCondition, ...attrs) {
     return addingCondition
@@ -684,7 +685,7 @@ inst.run('select', repo.ubql())
    * @abstract
    * @param {Object<string, string>} [fieldAliases] Optional object to change attribute
    *  names during transform array to object
-   * @return {Array.<object>}
+   * @return {Array<object>}
    */
   selectAsObject (fieldAliases) {
     throw new Error('abstract')
@@ -708,7 +709,7 @@ inst.run('select', repo.ubql())
    *
    *   [1, 2, 3, 4]
    *
-   * @return Array<string|number>
+   * @return {Array<string|number>}
    * @abstract
    */
   selectAsArrayOfValues () {
