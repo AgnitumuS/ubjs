@@ -869,7 +869,7 @@ UBEntity.prototype.asPlainJSON = function (attributesAsArray = true, removeAttrs
 }
 
 /**
- * Checks if current user has access to specified entity method
+ * Checks if current user has access to a specified entity method
  * @param {string} methodCode
  * @returns {Boolean}
  */
@@ -1227,6 +1227,37 @@ UBEntity.prototype.checkAttributeExist = function (attributeNames, contextMessag
 UBEntity.prototype.getEntityDescription = function () {
   return this.description || this.caption
 }
+
+/**
+ * Returns an array of UBEntityAttribute what points to this entity (associatedEntity === this entity)
+ *   and such relation should be visible in the UI "Details" menu.
+ *
+ * Excluded attributes are:
+ *  - `mi_*` attributes
+ *  - attributes with customSetting.hiddenInDetails === true
+ *  - all attributes for entities user do not have access to the `select` method
+ *
+ * @returns {Array<UBEntityAttribute>}
+ */
+UBEntity.prototype.getDetailsForUI = function () {
+  const IS_ATTR_FROM_MIXIN = /^ID|mi_/
+  const myName = this.name
+  const result = []
+  this.domain.eachEntity(function (e) {
+    // [unitybase/ubjs#2] - do not display refs to attributes of "many" type
+    if ((e.name !== myName) && e.haveAccessToMethod('select')) {
+      e.eachAttribute(function (attr) {
+        if ((attr.associatedEntity === myName) &&
+            (!attr.customSettings || !attr.customSettings.hiddenInDetails) &&
+            !IS_ATTR_FROM_MIXIN.test(attr.name)) {
+          result.push(attr)
+        }
+      })
+    }
+  })
+  return result
+}
+
 
 /**
  * @class

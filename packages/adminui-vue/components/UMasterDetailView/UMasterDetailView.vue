@@ -192,24 +192,10 @@ export default {
     },
 
     details () {
-      const result = []
-      const thisE = this.entityName
-      this.$UB.connection.domain.eachEntity(function (curEntity, curEntityName) {
-        // [unitybase/ubjs#2] - do not display refs to attributes of "many" type
-        if ((curEntityName !== thisE) && curEntity.haveAccessToMethod('select')) {
-          curEntity.eachAttribute(function (curAttr, curAttrCode) {
-            // TODO - use assotiationKind here when it added to Domain
-            if ((curAttr.associatedEntity === thisE /* reject many attribute */) && !curAttrCode.startsWith('ID') &&
-              !curAttrCode.startsWith('mi_')) {
-              result.push({
-                attribute: curAttrCode,
-                entity: curEntityName
-              })
-            }
-          })
-        }
+      const thisEntity = $App.domainInfo.get(this.entityName)
+      return thisEntity.getDetailsForUI().map(attr => {
+        return {entity: attr.entity.name, attribute: attr.name}
       })
-      return result
     },
 
     schema () {

@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UBEntity.prototype.getDetailsForUI` - method returns an array of UBEntityAttribute what points to
+   this entity (associatedEntity === this entity) and such relation should be visible in the UI "Details" menu 
 
 ### Changed
 

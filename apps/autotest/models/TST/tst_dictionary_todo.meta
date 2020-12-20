@@ -33,7 +33,10 @@
       "dataType": "Entity",
       "associatedEntity": "tst_document",
       "cascadeDelete": false,
-      "caption": "Link to entity"
+      "caption": "Link to entity",
+      "customSettings": {
+        "hiddenInDetails": true
+      }
     }
   ],
   "mixins": {
