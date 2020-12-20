@@ -112,8 +112,15 @@
                     },
                     "customSettings": {
                         "type": "object",
-                        "description": "Optional settings for attribute",
-                        "additionalProperties": true
+                        "description": "Optional settings for attribute. All properties are available on client side, for server-side properties use 'privateSettings'",
+                        "additionalProperties": true,
+                        "properties": {
+                            "hiddenInDetails": {
+                                "type": "boolean",
+                                "description": "For attributes of type 'entity' - hide this relation in the UI 'Details' menu",
+                                "default": false
+                            }
+                        }
                     },
                     "privateSettings": {
                         "type": "object",
