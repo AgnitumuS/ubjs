@@ -6,12 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - support for `attribute.customSettings.hiddenInDetails` is added while building `Details` menu
-   by using `UBEntity.prototype.getDetailsForUI`
 
 ### Changed
 
 ### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.13.63] - 2020-12-20
+### Added
+ - support for `attribute.customSettings.hiddenInDetails` is added while building `Details` menu
+   by using `UBEntity.prototype.getDetailsForUI`
 
 ### Removed
  - 21 IE8 specific SCC rules is are removed from UBGrayTheme for old adminUI

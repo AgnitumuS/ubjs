@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `attribute.customSettings.hiddenInDetails` is documented in the `entity.schema.json`
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.7.13] - 2020-12-20
+### Added
+ - `attribute.customSettings.hiddenInDetails` is documented in the `entity.schema.json`
 
 ## [5.7.12] - 2020-12-14
 ## [5.7.11] - 2020-12-09

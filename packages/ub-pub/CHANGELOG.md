@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.6.2] - 2020-12-20
 ## [5.6.1] - 2020-12-17
 ### Added
  - new method `AsyncConnection.prototype.userCanChangePassword` - Is auth schema for logged in user allows

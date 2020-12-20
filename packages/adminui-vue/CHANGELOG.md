@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - support for `attribute.customSettings.hiddenInDetails` is added while building `Details` menu
-   by using `UBEntity.prototype.getDetailsForUI`
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [1.13.30] - 2020-12-20
+### Added
+ - support for `attribute.customSettings.hiddenInDetails` is added while building `Details` menu
+   by using `UBEntity.prototype.getDetailsForUI`
 
 ## [1.13.29] - 2020-12-17
 ### Added

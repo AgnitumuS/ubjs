@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.11] - 2020-12-20
 ## [5.4.10] - 2020-12-14
 ### Fixed
  - `options.switchValue` correctly returns option value started with `/` (for example: ubcli execSql -f /home/mpv/s.sql).
