@@ -18,9 +18,39 @@ using `alter table .. rename to ..` or similar.
 Another example is changes in data not covered by `ub-migrate`. Consider we have a Firm entity with 2 attributes (code, name)
 and need to update all Firm names and add a code part to the beginning of name (to simplify selection).
 In this case good solution is to write a custom JS what solves this task and run it during version upgrade.  
- 
-## Creating a Migration
 
+## Overview
+UnityBase migration tool is `ubcli migrate`. The flow: 
+```mermaid
+graph TD
+    start[ubcli migrate] --> dbLoad(Load dbVersions - migration state from the ub_version and ub_migration DB tables)
+    dbLoad --> filesLoad(For each model read migration files list from the _migrate folder)
+    filesLoad --> filterOutdated(Exclude migration files for model versions prior to dbVersions)
+    filterOutdated --> filterApplied("Exclude already applied files (present in ub_migration table) and verify files SHA")
+    filterApplied --> noddl{-noddl?}
+    noddl --> |Yes| migrateData{-nodata?}
+    noddl --> |No| jsHookBefore(For each model call beforeGenerateDDL from _migrate/_hooks.js)
+    jsHookBefore --> fileHookBefore("For each model execute _migrate/*_beforeDDL_*.[sql|js] files")  
+    fileHookBefore --> connectToServer(Create SyncConnection to server)
+    connectToServer --> jsHookBeforeC(For each model call beforeGenerateDDLc from _migrate/_hooks.js)
+    jsHookBeforeC --> fileHookBeforeC("For each model execute _migrate/*_beforeDDLc_*.[sql|js] files")  
+    fileHookBeforeC --> generateDDL(Call `ubcli generateDDL -autorun`)
+    generateDDL --> jsHookAfter(For each model call afterGenerateDDL from _migrate/_hooks.js)
+    jsHookAfter --> fileHookAfter("For each model execute _migrate/*_afterDDL_*.[sql|js] files")  
+    fileHookAfter --> migrateData
+    migrateData --> |Yes| checkUbMigrate{{"Is @unitybase/ub-migrate installed?"}}
+    checkUbMigrate --> |Yes| callUbMigrate(Sync data with yaml's from models _data folders)
+    checkUbMigrate --> |No| applyfilterFilesHook
+    callUbMigrate --> applyfilterFilesHook
+    migrateData --> |No| applyfilterFilesHook(For each model call filterFiles from _migrate/_hooks.js)
+    applyfilterFilesHook --> executeUsualFiles("For each model execute _migrate/*.[js|sql] files")
+    executeUsualFiles --> jsHookFinalyze(For each model call _migrate/_hooks.js finalize)  
+    
+    click checkUbMigrate "https://git-pub.intecracy.com/unitybase/ub-migrate/-/blob/master/README.md" "Click for @unitybase/ub-migrate documentation"
+    click callUbMigrate "https://git-pub.intecracy.com/unitybase/ub-migrate/-/blob/master/README.md" "Click for @unitybase/ub-migrate documentation"
+```
+
+## Creating a Migration
 ### Naming conventions
 All migrations are stored in `_migrate` sub-folder in the model directories (for historical reasons _migrations name is busy) 
 
@@ -227,6 +257,8 @@ The possible hooks are:
   - `filterFiles`           # remove some scripts from execution (called in reverse order of models, should mutate a `migtarions.files` array)
     - here sql and js form `_migrate` folder are executed
   - `finalize`              # executed after any migration
+
+See overview diagram in the beginning ot the article.
 
 A hook signature is:
 ```javascript

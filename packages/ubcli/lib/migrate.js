@@ -222,7 +222,6 @@ function runMigrations (params) {
   }
 
   // call filterFiles hooks in reverse order
-  // apply afterGenerateDDL hooks
   const initialFilesCnt = migrations.files.length
   for (let i = migrations.hooks.length - 1; i >= 0; i--) {
     if (typeof migrations.hooks[i].hook.filterFiles === 'function') {
@@ -232,6 +231,7 @@ function runMigrations (params) {
   }
   if (params.verbose) console.log(`filterFiles hooks decline ${initialFilesCnt - migrations.files.length} files`)
 
+  // apply remains migration files (without beforeDDL* hooks)
   runFiles(migrations.files, params, { conn, dbConnections, dbVersions, migrations })
 
   // apply finalize hooks
