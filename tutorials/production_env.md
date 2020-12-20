@@ -401,8 +401,29 @@ journalctl -u unitybase@autotest --no-hostname -o short-iso-precise --since toda
 journalctl -u unitybase* -f
 ```
 
+## Overriding a default application startup rules 
+
+### All services
+```shell script
+systemctl edit unitybase@.sevrice
+systemctl revert unitybase@.sevrice
+sudo systemctl daemon-reload
+```
+
+Or create a drop-in manually 
+```
+mkdir /etc/systemd/system/unitybase@.service.d
+```
+and place there `*.conf` file with parameters what needs to be added / override. 
+See [systemd.unit](https://www.freedesktop.org/software/systemd/man/systemd.unit.htm) for more information.
+
+### Certain my-app instance
+```shell script
+systemctl edit unitybase@my-app.sevrice
+```
+
 ## Metrics
-There is two metrics sources 
+There is two metrics sources
 
 ### /stat endpoint
 - authorised user can send a GET request to `/stat` endpoint to obtain a metrics.
@@ -444,7 +465,7 @@ Feature is configured using `metrics` section of ubConfig.
 `/metrics` endpoint is available without authorization. Access to endpoint is limited on the reverse proxy level using
 `metrics.allowedFrom` parameter in ubConfig. Default is `deny` for all subnet masks.
 
-For Linux server Prometheus metrics uses histograms whenever it makes sense, so per-endpoint (for HTTP), per-thread (for JS GC) 
+For Linux server Prometheus metrics uses histograms whenever it makes sense, so per-endpoint (for HTTP), per-thread (for JS GC)
 and per-entity statistics are available.
 
 > **IMPORTANT** For Linux with non-english locale (not recommended) LC_NUMERIC=C environment variable should be sets for UnityBase server
@@ -570,24 +591,3 @@ Most important is [HTTP Service Request Queues](https://docs.microsoft.com/en-us
 
 If queue length is too long (200 and more) either a thread pool should be increased or profile and tune application logic.
 
-
-## Overriding a default application startup rules 
-
-### All services
-```shell script
-systemctl edit unitybase@.sevrice
-systemctl revert unitybase@.sevrice
-sudo systemctl daemon-reload
-```
-
-Or create a drop-in manually 
-```
-mkdir /etc/systemd/system/unitybase@.service.d
-```
-and place there `*.conf` file with parameters what needs to be added / override. 
-See [systemd.unit](https://www.freedesktop.org/software/systemd/man/systemd.unit.htm) for more information.
-
-### Certain my-app instance
-```shell script
-systemctl edit unitybase@my-app.sevrice
-```
