@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - 21 IE8 specific SCC rules is are removed from UBGrayTheme for old adminUI
 
 ### Fixed
  - removed `>` sign from the left side of `Details` menu and `Details` menu items
