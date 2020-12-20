@@ -28,7 +28,7 @@ graph TD
     filesLoad --> filterOutdated(Exclude migration files for model versions prior to dbVersions)
     filterOutdated --> filterApplied("Exclude already applied files (present in ub_migration table) and verify files SHA")
     filterApplied --> noddl{-noddl?}
-    noddl --> |Yes| migrateData{-nodata?}
+    noddl --> |Yes| skipMigrateData{-nodata?}
     noddl --> |No| jsHookBefore(For each model call beforeGenerateDDL from _migrate/_hooks.js)
     jsHookBefore --> fileHookBefore("For each model execute _migrate/*_beforeDDL_*.[sql|js] files")  
     fileHookBefore --> connectToServer(Create SyncConnection to server)
@@ -37,12 +37,12 @@ graph TD
     fileHookBeforeC --> generateDDL(Call `ubcli generateDDL -autorun`)
     generateDDL --> jsHookAfter(For each model call afterGenerateDDL from _migrate/_hooks.js)
     jsHookAfter --> fileHookAfter("For each model execute _migrate/*_afterDDL_*.[sql|js] files")  
-    fileHookAfter --> migrateData
-    migrateData --> |Yes| checkUbMigrate{{"Is @unitybase/ub-migrate installed?"}}
-    checkUbMigrate --> |Yes| callUbMigrate(Sync data with yaml's from models _data folders)
+    fileHookAfter --> skipMigrateData
+    skipMigrateData --> |No| checkUbMigrate{{"Is @unitybase/ub-migrate installed?"}}
+    checkUbMigrate --> |Yes| callUbMigrate(Sync entites data with yaml's from the models _data folders)
     checkUbMigrate --> |No| applyfilterFilesHook
     callUbMigrate --> applyfilterFilesHook
-    migrateData --> |No| applyfilterFilesHook(For each model call filterFiles from _migrate/_hooks.js)
+    skipMigrateData --> |Yes| applyfilterFilesHook(For each model call filterFiles from _migrate/_hooks.js)
     applyfilterFilesHook --> executeUsualFiles("For each model execute _migrate/*.[js|sql] files")
     executeUsualFiles --> jsHookFinalyze(For each model call _migrate/_hooks.js finalize)  
     
@@ -236,7 +236,7 @@ and all `_migrate` folder files (excluding files what starts from `_`). If any f
 **is fails** (neither generateDDL nor ub-migrate nor any `_mirgate` script are not executed).
 
 On the adminUI interface two shortcuts are added `Administrator->Migrations->Applied files` and `Administrator->Migrations->Models versions`.
-Use it to see al applied migration files and models versions on the moment of last success migration. 
+Use it to see all applied migration files and models versions on the moment of last success migration. 
 
 ## Migration hooks
 
