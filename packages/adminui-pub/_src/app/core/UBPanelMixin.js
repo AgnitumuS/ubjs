@@ -41,6 +41,7 @@ Ext.define('UB.core.UBPanelMixin', {
     if (details.length > 0) {
       result = details
     } else {
+      if (!this.entityName) return [] // UBDetailTree do not have entityName
       const thisEntity = $App.domainInfo.get(this.entityName)
       result = thisEntity.getDetailsForUI().map(attr => {
         return {entityName: attr.entity.name, attribute: attr.name}
