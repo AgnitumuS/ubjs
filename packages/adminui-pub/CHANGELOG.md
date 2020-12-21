@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    by using `UBEntity.prototype.getDetailsForUI`
 
 ### Removed
- - 21 IE8 specific SCC rules is are removed from UBGrayTheme for old adminUI
+ - 21 IE8 specific CSS rules is are removed from UBGrayTheme for old adminUI
 
 ### Fixed
  - removed `>` sign from the left side of `Details` menu and `Details` menu items
