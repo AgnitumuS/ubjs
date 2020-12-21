@@ -92,41 +92,41 @@ const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.lo
  * <a href="https://developer.mozilla.org/en-US/docs/HTTP/Access_control_CORS">CORS</a> requests.
  * This is usually done by setting "HTTPAllowOrigin" server configuration option.
  *
-   * **Recommended way to create a UBConnection is** {@link module:@unitybase/ub-pub.html#connect UB.connect} method
+ * **Recommended way to create a UBConnection is** {@link module:@unitybase/ub-pub.html#connect UB.connect} method
  *
- * In case you need to create connection directly (for example in case of multiple connection from one page)
- * the usage sample is:
- *
-       const UB = require('@ubitybase/ub-pub')
-       const UBConnection = UB.UBConnection
-       // connect using UBIP schema
-       let conn = new UBConnection({
-         host: 'http://127.0.0.1:888',
-         requestAuthParams: function(conn, isRepeat){
-           if (isRepeat){
-             throw new UB.UBAbortError('invalid credential')
-           } else {
-             return Promise.resolve({authSchema: 'UBIP', login: 'admin'})
-           }
-         }
-       })
-       conn.query({entity: 'uba_user', method: 'select', fieldList: ['ID', 'name']}).then(UB.logDebug)
+ * @example
+ // !! In most case UB.connect should be used to create a connection !!
+ // But can be created directly, for example in case of multiple connection from one page
+ const UB = require('@ubitybase/ub-pub')
+ const UBConnection = UB.UBConnection
+ // connect using UBIP schema
+ let conn = new UBConnection({
+   host: 'http://127.0.0.1:888',
+   requestAuthParams: function(conn, isRepeat){
+     if (isRepeat){
+       throw new UB.UBAbortError('invalid credential')
+     } else {
+       return Promise.resolve({authSchema: 'UBIP', login: 'admin'})
+     }
+   }
+ })
+ conn.query({entity: 'uba_user', method: 'select', fieldList: ['ID', 'name']}).then(UB.logDebug)
 
-       // Anonymous connect. Allow access to entity methods, granted by ELS rules to `Anonymous` role
-       // Request below will be success if we grant a `ubm_navshortcut.select` to `Anonymous` on the server side
-       let conn = new UBConnection({
-         host: 'http://127.0.0.1:888'
-       })
-       conn.query({entity: 'ubm_navshortcut', method: 'select', fieldList: ['ID', 'name']}).then(UB.logDebug)
+ // Anonymous connect. Allow access to entity methods, granted by ELS rules to `Anonymous` role
+ // Request below will be success if we grant a `ubm_navshortcut.select` to `Anonymous` on the server side
+ let conn = new UBConnection({
+   host: 'http://127.0.0.1:888'
+ })
+ conn.query({entity: 'ubm_navshortcut', method: 'select', fieldList: ['ID', 'name']}).then(UB.logDebug)
+
+ //subscribe to events
+ conn.on('authorizationFail', function(reason){
+      // indicate user credential is wrong
+ })
+ conn.on('authorized', function(ubConnection, session, authParams){console.debug(arguments)} )
 
  * UBConnection mixes an EventEmitter, so you can subscribe for {@link event:authorized authorized}
- * and {@link event:authorizationFail authorizationFail} events:
- *
-       conn.on('authorizationFail', function(reason){
-            // indicate user credential is wrong
-       })
-
-       conn.on('authorized', function(ubConnection, session, authParams){console.debug(arguments)} )
+ * and {@link event:authorizationFail authorizationFail} events.
  *
  * @class UBConnection
  * @mixes EventEmitter
@@ -1024,15 +1024,15 @@ UBConnection.prototype.processBuffer = function processBuffer () {
  * @method
  * @returns {Promise}
  *
- * Example:
- *
- *      //this two execution is passed to single ubql server execution
- *      $App.connection.query({entity: 'uba_user', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
- *      $App.connection.query({entity: 'ubm_navshortcut', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
- *
- *      //but this request is passed in separate ubql (because allowBuffer false in first request
- *      $App.connection.query({entity: 'uba_user', method: 'select', fieldList: ['*']}).then(UB.logDebug);
- *      $App.connection.query({entity: 'ubm_desktop', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
+ * @example
+
+ //this two execution is passed to single ubql server execution
+ $App.connection.query({entity: 'uba_user', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
+ $App.connection.query({entity: 'ubm_navshortcut', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
+
+ //but this request is passed in separate ubql (because allowBuffer false in first request
+ $App.connection.query({entity: 'uba_user', method: 'select', fieldList: ['*']}).then(UB.logDebug);
+ $App.connection.query({entity: 'ubm_desktop', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
  */
 UBConnection.prototype.query = function query (ubq, allowBuffer) {
   const me = this
@@ -1083,15 +1083,15 @@ UBConnection.prototype.run = UBConnection.prototype.query
  * @method
  * @returns {Promise<Array|null>}
  *
- * Example:
- *
- *      //this two execution is passed to single ubql server execution
- *      $App.connection.queryAsObject({entity: 'uba_user', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
- *      $App.connection.queryAsObject({entity: 'ubm_navshortcut', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
- *
- *      //but this request is passed in separate ubql (because allowBuffer false in first request
- *      $App.connection.queryAsObject({entity: 'uba_user', method: 'select', fieldList: ['*']}).then(UB.logDebug);
- *      $App.connection.queryAsObject({entity: 'ubm_desktop', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
+ * @example
+
+ //this two execution is passed to single ubql server execution
+ $App.connection.queryAsObject({entity: 'uba_user', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
+ $App.connection.queryAsObject({entity: 'ubm_navshortcut', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
+
+ //but this request is passed in separate ubql (because allowBuffer false in first request
+ $App.connection.queryAsObject({entity: 'uba_user', method: 'select', fieldList: ['*']}).then(UB.logDebug);
+ $App.connection.queryAsObject({entity: 'ubm_desktop', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
  */
 UBConnection.prototype.queryAsObject = function queryAsObject (ubq, fieldAliases, allowBuffer) {
   if (ubq.execParams && (ubq.method === 'insert' || ubq.method === 'update')) {
@@ -1111,10 +1111,12 @@ UBConnection.prototype.queryAsObject = function queryAsObject (ubq, fieldAliases
  * Currently only Data/DateTime & boolean conversion done
  * If resultLock present - resultLock.lockTime also converted
  *
- *      // convert all string representation of date/dateTime to Date object, integer representation of bool to Boolean
- *      return me.query({entity: 'my_entity', method: 'select'}, true)
- *          .then(me.convertResponseDataToJsTypes.bind(me));
- *
+ * @example
+
+ // convert all string representation of date/dateTime to Date object, integer representation of bool to Boolean
+ return me.query({entity: 'my_entity', method: 'select'}, true)
+     .then(me.convertResponseDataToJsTypes.bind(me));
+
  * @method
  * @param serverResponse
  * @returns {*}
@@ -1166,11 +1168,13 @@ UBConnection.prototype.doFilterAndSort = function (cachedData, ubql) {
  * - requests is always buffered in the 20ms period into one ubql call
  * - `Date` & 'DateTime' entity attributes are converted from ISO8601 text representation to javaScript Date object
  *
- * Example:
- *
- *      $App.connection.addNew({entity: 'uba_user', fieldList: ['*']}).then(UB.logDebug)
- *      // [{"entity":"uba_user","fieldList":["ID","isPending"],"method":"addnew","resultData":{"fields":["ID","isPending"],"rowCount": 1, "data":[[332462711046145,0]]}}]
- *
+ * @example
+
+ $App.connection.addNew({entity: 'uba_user', fieldList: ['*']}).then(UB.logDebug)
+ // [{"entity":"uba_user","fieldList":["ID","isPending"],"method":"addnew",
+ //   "resultData":{"fields":["ID","isPending"],"rowCount": 1, "data":[[332462711046145,0]]}
+ // }]
+
  * @param {Object} serverRequest    Request to execute
  * @param {String} serverRequest.entity Entity to execute the method
  * @param {Array.<string>} serverRequest.fieldList
@@ -1192,11 +1196,11 @@ UBConnection.prototype.addNew = function (serverRequest) {
  *
  * Result is Object with default values for row.
  *
- * Example:
- *
- *      $App.connection.addNewAsObject({"entity":"uba_user"}).then(UB.logDebug)
- *      // result is {ID: 332462709833729, isPending: false}
- *
+ * @example
+
+ $App.connection.addNewAsObject({"entity":"uba_user"}).then(UB.logDebug)
+ // result is {ID: 332462709833729, isPending: false}
+
  * @param {Object} serverRequest    Request to execute
  * @param {String} serverRequest.entity Entity to execute the method
  * @param {Array.<string>} serverRequest.fieldList
@@ -1270,15 +1274,20 @@ function stringifyExecParamsValues (execParams) {
  * In case `fieldList` is passed - result will contains updated values for attributes specified in `fieldList`
  *  in Array representation
  *
- * Example:
- *
- *      $App.connection.update({
- *        entity: 'uba_user',
- *        fieldList: ['ID','name', 'mi_modifyDate'],
- *        execParams: {ID: 332462122205200, name:'test', mi_modifyDate:"2019-04-23T13:00:00Z"}
- *      }).then(UB.logDebug);
- *      // [{"entity":"uba_user","fieldList":["ID","name","mi_modifyDate"],"execParams":{"ID":332462122205200,"name":"test","mi_modifyDate":"2019-04-23T13:03:51Z","mi_modifyUser":10},"method":"update","resultData":{"fields":["ID","name","mi_modifyDate"],"rowCount": 1, "data":[[332462122205200,"test","2019-04-23T13:03:51Z"]]}}]
- *
+ * @example
+
+ $App.connection.update({
+   entity: 'uba_user',
+   fieldList: ['ID','name', 'mi_modifyDate'],
+   execParams: {ID: 332462122205200, name:'test', mi_modifyDate:"2019-04-23T13:00:00Z"}
+ }).then(UB.logDebug);
+ // [{"entity":"uba_user","fieldList":["ID","name","mi_modifyDate"],
+ //   "execParams":{"ID":332462122205200,"name":"test","mi_modifyDate":"2019-04-23T13:03:51Z","mi_modifyUser":10},
+ //   "method":"update",
+ //   "resultData":{"fields":["ID","name","mi_modifyDate"],"rowCount": 1,
+ //               "data":[[332462122205200,"test","2019-04-23T13:03:51Z"]]}
+ // }]
+
  * @param {Object} serverRequest          Request to execute
  * @param {String} serverRequest.entity   Entity to execute the method
  * @param {String} [serverRequest.method='update'] Method of entity to executed
@@ -1308,15 +1317,15 @@ UBConnection.prototype.update = function (serverRequest, allowBuffer) {
  * In case `fieldList` is passed - result will contains updated values for attributes specified in `fieldList` as Object;
  *   >If `fieldList` is not passed or empty - return `null`
  *
- * Example:
- *
- *      $App.connection.updateAsObject({
- *        entity: 'uba_user',
- *        fieldList: ['ID','name','mi_modifyDate', 'isPending'],
- *        execParams: {ID: 33246, name:'newName', mi_modifyDate:"2019-04-23T13:00:00Z"}
- *      }).then(UB.logDebug);
- *      // {"ID": 332462122205200, "name": newName", "mi_modifyDate": new Date("2019-04-23T13:03:51Z"), isPending: false}
- *
+ * @example
+
+ $App.connection.updateAsObject({
+   entity: 'uba_user',
+   fieldList: ['ID','name','mi_modifyDate', 'isPending'],
+   execParams: {ID: 33246, name:'newName', mi_modifyDate:"2019-04-23T13:00:00Z"}
+ }).then(UB.logDebug);
+ // {"ID": 332462122205200, "name": newName", "mi_modifyDate": new Date("2019-04-23T13:03:51Z"), isPending: false}
+
  * @param {Object} serverRequest          Request to execute
  * @param {String} serverRequest.entity   Entity to execute the method
  * @param {String} [serverRequest.method='update'] Method of entity to executed
@@ -1359,10 +1368,12 @@ UBConnection.prototype.updateAsObject = function (serverRequest, fieldAliases, a
  * @method
  * @returns {Promise}
  *
- * Example:
- *
- *      $App.connection.insert({entity: 'uba_user', fieldList: ['ID','name'], execParams: {ID: 1, name:'newName'}).then(UB.logDebug);
- *
+ * @example
+
+ $App.connection.insert({
+   entity: 'uba_user', fieldList: ['ID','name'], execParams: {ID: 1, name:'newName'}
+ }).then(UB.logDebug);
+
  */
 UBConnection.prototype.insert = function (serverRequest, allowBuffer) {
   const me = this
@@ -1396,12 +1407,14 @@ UBConnection.prototype.insert = function (serverRequest, allowBuffer) {
  * @method
  * @returns {Promise<Object>}
  *
- * Example:
- *
- *   $App.connection.insertAsObject({"entity":"uba_user","fieldList":['ID', 'name', 'mi_modifyDate'], execParams: {name: 'insertedName'}}).then(UB.logDebug)
- *   // {ID: 332462911062017, mi_modifyDate: Tue Apr 23 2019 17:04:30 GMT+0300 (Eastern European Summer Time), name: "insertedname"}
- *
- *
+ * @example
+
+  $App.connection.insertAsObject({
+    entity:"uba_user",
+    fieldList:['ID', 'name', 'mi_modifyDate'],
+    execParams: {name: 'insertedName'}
+  }).then(UB.logDebug)
+  // {ID: 332462911062017, mi_modifyDate: Tue Apr 23 2019 17:04:30 GMT+0300 (Eastern European Summer Time), name: "insertedname"}
  */
 UBConnection.prototype.insertAsObject = function (serverRequest, fieldAliases, allowBuffer) {
   return this.insert(serverRequest, allowBuffer).then(function (res) {
@@ -1431,10 +1444,12 @@ UBConnection.prototype.insertAsObject = function (serverRequest, fieldAliases, a
  * @method
  * @returns {Promise}
  *
- * Example:
- *
- *      $App.connection.doDelete({entity: 'uba_user', fieldList: ['ID','name'], execParams: {ID: 1, name:'newName'}).then(UB.logDebug);
- *
+ * @example
+
+ $App.connection.doDelete({
+   entity: 'uba_user', fieldList: ['ID','name'], execParams: {ID: 1, name:'newName'}
+ }).then(UB.logDebug);
+
  */
 UBConnection.prototype.doDelete = function (serverRequest, allowBuffer) {
   const me = this
@@ -1468,15 +1483,15 @@ UBConnection.prototype.doDelete = function (serverRequest, allowBuffer) {
  * @method
  * @returns {Promise}
  *
- * Example:
- *
- *      //retrieve users
- *      $App.connection.select({entity: 'uba_user', fieldList: ['*']}).then(UB.logDebug);
- *
- *      //retrieve users and desktops and then both done - do something
- *      Promise.all($App.connection.select({entity: 'uba_user', fieldList: ['ID', 'name']})
- *        $App.connection.select({entity: 'ubm_desktop', fieldList: ['ID', 'code']})
- *      ).then(UB.logDebug);
+ * @example
+
+ //retrieve users
+ $App.connection.select({entity: 'uba_user', fieldList: ['*']}).then(UB.logDebug);
+
+ //retrieve users and desktops and then both done - do something
+ Promise.all($App.connection.select({entity: 'uba_user', fieldList: ['ID', 'name']})
+   $App.connection.select({entity: 'ubm_desktop', fieldList: ['ID', 'code']})
+ ).then(UB.logDebug);
  */
 UBConnection.prototype.select = function (serverRequest, bypassCache) {
   const me = this
@@ -1642,29 +1657,26 @@ UBConnection.prototype.runTrans = function (ubRequestArray) {
  * In case method is insert or update array is replaced by first element. Example below use one entity,
  *   but real app can use any combination of entities and methods
  *
-       $App.connection.runTransAsObject([
-         {entity: "tst_aclrls", method: 'insert', fieldList: ['ID', 'caption'], execParams: {caption: 'inserted1'}},
-         {entity: "tst_aclrls", method: 'insert', opaqueParam: 'insertWoFieldList', execParams: {caption: 'inserted2'}},
-         {entity: "tst_aclrls", method: 'update', fieldList: ['ID', 'caption'], execParams: {ID: 332463213805569, caption: 'updated1'}},
-         {entity: "tst_aclrls", method: 'delete', execParams: {ID: 332463213805572}}]
-       ).then(UB.logDebug)
-       // result is:
-       [{
-          "entity": "tst_aclrls","method": "insert","fieldList": ["ID","caption"],"execParams": {"caption": "inserted1","ID": 332463256010753},
-          "resultData": {"ID": 332463256010753,"caption": "inserted1"}
-         },
-         {
-          "entity": "tst_aclrls","method": "insert","opaqueParam": "insertWoFieldList","execParams": {"caption": "inserted2","ID": 332463256010756},"fieldList": []
-         },
-         {
-          "entity": "tst_aclrls","method": "update","fieldList": ["ID","caption"],"execParams": {"ID": 332463213805569,"caption": "updated1"},
-          "resultData": {"ID": 332463213805569,"caption": "updated1"}
-         },
-         {
-          "entity": "tst_aclrls","method": "delete","execParams": {"ID": 332463213805572},
-          "ID": 332463213805572
-         }
-       ]
+ * @example
+ $App.connection.runTransAsObject([
+   {entity: "tst_aclrls", method: 'insert', fieldList: ['ID', 'caption'], execParams: {caption: 'inserted1'}},
+   {entity: "tst_aclrls", method: 'insert', opaqueParam: 'insertWoFieldList', execParams: {caption: 'inserted2'}},
+   {entity: "tst_aclrls", method: 'update', fieldList: ['ID', 'caption'], execParams: {ID: 332463213805569, caption: 'updated1'}},
+   {entity: "tst_aclrls", method: 'delete', execParams: {ID: 332463213805572}}]
+ ).then(UB.logDebug)
+ // result is:
+  [{
+    "entity": "tst_aclrls","method": "insert","fieldList": ["ID","caption"],"execParams": {"caption": "inserted1","ID": 332463256010753},
+    "resultData": {"ID": 332463256010753,"caption": "inserted1"}
+  }, {
+    "entity": "tst_aclrls","method": "insert","opaqueParam": "insertWoFieldList","execParams": {"caption": "inserted2","ID": 332463256010756},"fieldList": []
+  }, {
+    "entity": "tst_aclrls","method": "update","fieldList": ["ID","caption"],"execParams": {"ID": 332463213805569,"caption": "updated1"},
+    "resultData": {"ID": 332463213805569,"caption": "updated1"}
+  }, {
+    "entity": "tst_aclrls","method": "delete","execParams": {"ID": 332463213805572},
+    "ID": 332463213805572
+  }]
  *
  * @method
  * @param {Array.<ubRequest>} ubRequestArray
@@ -1715,36 +1727,37 @@ const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty
 /**
  * Retrieve content of `document` type attribute field from server. Usage samples:
  *
- *      //Retrieve content of document as string using GET
- *      $App.connection.getDocument({
- *          entity:'ubm_form',
- *          attribute: 'formDef',
- *          ID: 100000232003
- *       }).then(function(result){console.log(typeof result)}); // string
- *
- *      //The same, but using POST for bypass cache
- *      $App.connection.getDocument({
- *          entity:'ubm_form',
- *          attribute: 'formDef',
- *          ID: 100000232003
- *       }, {
- *          bypassCache: true
- *       }).then(function(result){console.log(typeof result)}); // string
- *
- *
- *      //Retrieve content of document as ArrayBuffer and bypass cache
- *      $App.connection.getDocument({
- *          entity:'ubm_form',
- *          attribute: 'formDef',
- *          ID: 100000232003
- *       }, {
- *          bypassCache: true, resultIsBinary: true
- *       }).then(function(result){
- *          console.log('Result is', typeof result, 'of length' , result.byteLength, 'bytes'); //output: Result is ArrayBuffer of length 2741 bytes
- *          let uiArr = new Uint8Array(result) // view into ArrayButter as on the array of byte
- *          console.log('First byte of result is ', uiArr[0])
- *       });
- *
+ * @example
+ //Retrieve content of document as string using GET
+ $App.connection.getDocument({
+     entity:'ubm_form',
+     attribute: 'formDef',
+     ID: 100000232003
+  }).then(function(result){console.log(typeof result)}); // string
+
+ //The same, but using POST for bypass cache
+ $App.connection.getDocument({
+     entity:'ubm_form',
+     attribute: 'formDef',
+     ID: 100000232003
+  }, {
+     bypassCache: true
+  }).then(function(result){console.log(typeof result)}); // string
+
+
+ //Retrieve content of document as ArrayBuffer and bypass cache
+ $App.connection.getDocument({
+     entity:'ubm_form',
+     attribute: 'formDef',
+     ID: 100000232003
+  }, {
+     bypassCache: true, resultIsBinary: true
+  }).then(function(result){
+     console.log('Result is', typeof result, 'of length' , result.byteLength, 'bytes'); //output: Result is ArrayBuffer of length 2741 bytes
+     let uiArr = new Uint8Array(result) // view into ArrayButter as on the array of byte
+     console.log('First byte of result is ', uiArr[0])
+  })
+
  * @method
  * @param {Object} params
  * @param {String} params.entity Code of entity to retrieve from

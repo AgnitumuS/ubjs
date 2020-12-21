@@ -9,32 +9,28 @@
 /**
  * NodeJS like EventEmitter for Browser usage. See also <a href="http://nodejs.org/api/events.html">NodeJS events documentation</a>
  *
- * To add event emitting to any object:
- *
+ * @example
 
+ // adding event emitting to any object:
  var myObject = {},
  var EventEmitter = UB.EventEmitter;
  // add EventEmitter to myObject
  EventEmitter.call(myObject);
  Object.assign(myObject, EventEmitter.prototype);
 
- * In case object created via constructor function
-
+ // In case object created via constructor function
  var EventEmitter = UB.EventEmitter;
  function MyObject() {
-        EventEmitter.call(this);
-     }
+    EventEmitter.call(this);
+ }
  MyObject.prototype = _.create(EventEmitter.prototype);
  var myObject = new MyObject();
  myObject instanceof UB.EventEmitter; //true
 
- * Usage:
-
+ // usage:
  myObject.on('myEvent', function(num, str){console.log(num, str) });
-
  myObject.emit('myEvent', 1, 'two'); // output: 1 "two"
 
- *
  * @class EventEmitter
  * @mixin
  */

@@ -2,28 +2,28 @@
  * Parse a command line options & environment variables and create a configuration object.
  *
  * @example
- * const cmdLineOpt = require('@unitybase/base').options
- * const argv = require('@unitybase/base').argv
- *
- * let paramsDescription = cmdLineOpt.describe('cmd/generateDDL',
- *  'Check database structure for application domain. ' +
- *  'Generate DDL (both create and alter) if need and optionally run it'
- * ).add(
- *    argv.establishConnectionFromCmdLineAttributes._cmdLineParams
- * ).add({
- *   short: 'm',  long: 'models', param: 'modelsList', defaultValue: '*',
- *   help: 'Comma separated model names for DDL generation. If -e specified this options is ignored'
- * }).add({
- *   short: 'e',  long: 'entities', param: 'entitiesList', defaultValue: '*',
- *   help: 'Comma separated entity names list for DDL generation'
- * }).add({
- *   short: 'out',  long: 'out', param: 'outputPath', defaultValue: process.cwd(),
- *   help: 'Folder to output generated DDLs (one file per connection)'
- * }).add({
- *   short: 'autorun',  long: 'autorun', defaultValue: false,
- *   help: 'execute DDL statement after generation. BE CAREFUL! DO NOT USE ON PRODUCTION'
- * })
- * let passedOptions = paramsDescription.parseVerbose({}, true)
+const cmdLineOpt = require('@unitybase/base').options
+const argv = require('@unitybase/base').argv
+
+let paramsDescription = cmdLineOpt.describe('cmd/generateDDL',
+ 'Check database structure for application domain. ' +
+ 'Generate DDL (both create and alter) if need and optionally run it'
+).add(
+   argv.establishConnectionFromCmdLineAttributes._cmdLineParams
+).add({
+  short: 'm',  long: 'models', param: 'modelsList', defaultValue: '*',
+  help: 'Comma separated model names for DDL generation. If -e specified this options is ignored'
+}).add({
+  short: 'e',  long: 'entities', param: 'entitiesList', defaultValue: '*',
+  help: 'Comma separated entity names list for DDL generation'
+}).add({
+  short: 'out',  long: 'out', param: 'outputPath', defaultValue: process.cwd(),
+  help: 'Folder to output generated DDLs (one file per connection)'
+}).add({
+  short: 'autorun',  long: 'autorun', defaultValue: false,
+  help: 'execute DDL statement after generation. BE CAREFUL! DO NOT USE ON PRODUCTION'
+})
+let passedOptions = paramsDescription.parseVerbose({}, true)
 
  * @module options
  * @memberOf module:@unitybase/base

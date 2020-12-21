@@ -40,31 +40,31 @@ const NM_EXTENSION_FEATURE = {
  *
  * The preferred way to communicate with native messages plugin feature is a  UBNativeMessage descendants, for example {@link UBNativeScanner} for scanning etc.
  *
- * Usage:
- *    // without systemJS:
- *    // const nmScannerModule = require('@ub-e/nm-scanner')
- *    // nmScannerModule.connect().then(...)
- *
- *    System.import('@ub-e/nm-scanner').then(function (nmScannerModule) {
- *       return nmScannerModule.connect()
- *    }).then(function (nmScanner) {
- *      return nmScanner.scan()
- *    }).then(UB.logDebug)
- *
- *    // for debugging:
- *    var nm = new UBNativeMessage();
- *    nm.onMessage = function(message){
- *       console.log(message);
- *    };
- *    nm.onDisconnected = function(sender){
- *       console.log('disconnected');
- *    };
- *    nm.connect(5000).then( function(nm){
- *        nm.sendMessage({text: 'Message : Hello!'});
- *    });
- *
- *    nm.invoke('methodName', {a: 'method param'})
- *
+ * @example
+ // without systemJS:
+ // const nmScannerModule = require('@ub-e/nm-scanner')
+ // nmScannerModule.connect().then(...)
+
+ System.import('@ub-e/nm-scanner').then(function (nmScannerModule) {
+    return nmScannerModule.connect()
+ }).then(function (nmScanner) {
+   return nmScanner.scan()
+ }).then(UB.logDebug)
+
+ // for debugging:
+ var nm = new UBNativeMessage();
+ nm.onMessage = function(message){
+    console.log(message);
+ };
+ nm.onDisconnected = function(sender){
+    console.log('disconnected');
+ };
+ nm.connect(5000).then( function(nm){
+     nm.sendMessage({text: 'Message : Hello!'});
+ });
+
+ nm.invoke('methodName', {a: 'method param'})
+
  * @constructor
  * @param {NMFeatureConfig} featureConfig Feature we want from plugin
  */

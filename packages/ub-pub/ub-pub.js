@@ -370,21 +370,21 @@ conn.then(function(conn){
    * For a UI other then adminUI developer can call `UB.setErrorReporter` to set his own error reporter
    * @example
 
-      const UB = require('@unitybase/ub-pub')
-      const vm = new Vue({
-        ...
-        methods: {
-          showError: function(errMsg, errCode, entityCode, detail) {
-            this.$message({
-              showClose: true,
-              message: errMsg,
-              type: 'error'
-            })
-          }
-          ...
-      })
-      UB.setErrorReporter(vm.showError.bind(vm))
-   *
+  const UB = require('@unitybase/ub-pub')
+  const vm = new Vue({
+    ...
+    methods: {
+      showError: function(errMsg, errCode, entityCode, detail) {
+        this.$message({
+          showClose: true,
+          message: errMsg,
+          type: 'error'
+        })
+      }
+      ...
+  })
+  UB.setErrorReporter(vm.showError.bind(vm))
+
    * @param {String|Object|Error|UBError} errMsg  message to show
    * @param {String} [errCode] error code
    * @param {String} [entityCode] entity code

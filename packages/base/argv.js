@@ -10,17 +10,17 @@ const SyncConnection = require('./SyncConnection')
  *
  * Command-line utils for connecting to a UnityBase server
  * @example
- *
- * const argv = require('@unitybase/base').argv
- * // connect to server
- * let session = argv.establishConnectionFromCmdLineAttributes()
- * console.log('Session.uData:', session.uData, typeof session.uData, session.uData.lang)
- *
- * let userLang = session.uData.lang
- * let conn = session.connection
- * // obtain domain information
- * const domainInfo = conn.getDomainInfo()
- *
+
+const argv = require('@unitybase/base').argv
+// connect to server
+let session = argv.establishConnectionFromCmdLineAttributes()
+console.log('Session.uData:', session.uData, typeof session.uData, session.uData.lang)
+
+let userLang = session.uData.lang
+let conn = session.connection
+// obtain domain information
+const domainInfo = conn.getDomainInfo()
+
  * @module argv
  * @memberOf module:@unitybase/base
  */

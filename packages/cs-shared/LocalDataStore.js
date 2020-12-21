@@ -324,7 +324,7 @@ module.exports.whereListToFunctions = whereListToFunctions
  *
  * @param {{resultData: TubCachedData}} selectResult
  * @param {Object<string, string>} [fieldAlias] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
- * @returns {Array.<*>}
+ * @returns {Array<*>}
  */
 module.exports.selectResultToArrayOfObjects = function (selectResult, fieldAlias) {
   const inData = selectResult.resultData.data
