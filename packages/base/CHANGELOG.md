@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+  - `SyncConnection.prototype.insertAsObject` & `SyncConnection.prototype.updateAsObject` - send an
+    insert/update UBQL and return result (attributes listed in fieldList) with parsed Dates/Booleans etc. based
+    on entity attributes data types as Object. The same as in `AsyncConnection` for browsers:
+```javascript
+const newRole = conn.updateAsObject({
+  entity: 'uba_role',
+  fieldList: ['ID', 'name', 'allowedAppMethods', 'mi_modifyDate'],
+  execParams: {
+      ID: 123,
+      name: 'testRole61'
+  }
+}, {mi_modifyDate: 'modifiedAt'})
+ console.log(newRole) // {ID: 332462911062017, name: 'testRole1', allowedAppMethods: 'runList', mi_modifyDate: 2020-12-21T15:45:01.000Z}
+ console.log(newRole.modifiedAt instanceof Date) //true
+```
 
 ### Changed
 
