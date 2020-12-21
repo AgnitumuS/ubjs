@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.11.4] - 2020-12-21
 ## [5.11.3] - 2020-12-20
 ### Added
  - `ubcli migrate` will skip files what intended for migrate to the model version prior to the current DB state.

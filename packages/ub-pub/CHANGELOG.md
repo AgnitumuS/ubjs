@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.6.3] - 2020-12-21
+### Fixed
  - improved JSDoc (use @example tag for methods examples - it correctly rendered by both WebStorm and ub-jsdoc)
 
 ## [5.6.2] - 2020-12-20

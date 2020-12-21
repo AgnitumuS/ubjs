@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.13.31] - 2020-12-21
 ## [1.13.30] - 2020-12-20
 ### Added
  - support for `attribute.customSettings.hiddenInDetails` is added while building `Details` menu

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.7.14] - 2020-12-21
 ## [5.7.13] - 2020-12-20
 ### Added
  - `attribute.customSettings.hiddenInDetails` is documented in the `entity.schema.json`
