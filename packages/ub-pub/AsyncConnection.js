@@ -1122,28 +1122,7 @@ UBConnection.prototype.queryAsObject = function queryAsObject (ubq, fieldAliases
  * @returns {*}
  */
 UBConnection.prototype.convertResponseDataToJsTypes = function (serverResponse) {
-  if (serverResponse.entity && // fieldList &&  serverResponse.fieldList
-      serverResponse.resultData &&
-      !serverResponse.resultData.notModified &&
-      serverResponse.resultData.fields &&
-      serverResponse.resultData.data && serverResponse.resultData.data.length
-  ) {
-    const convertRules = this.domain.get(serverResponse.entity).getConvertRules(serverResponse.resultData.fields)
-    const rulesLen = convertRules.length
-    const data = serverResponse.resultData.data
-    if (rulesLen) {
-      for (let d = 0, dataLen = data.length; d < dataLen; d++) {
-        for (let r = 0; r < rulesLen; r++) {
-          const column = convertRules[r].index
-          data[d][column] = convertRules[r].convertFn(data[d][column])
-        }
-      }
-    }
-  }
-  if (serverResponse.resultLock && serverResponse.resultLock.lockTime) {
-    serverResponse.resultLock.lockTime = ubUtils.iso8601Parse(serverResponse.resultLock.lockTime)
-  }
-  return serverResponse
+  return LocalDataStore.convertResponseDataToJsTypes(this.domain, serverResponse)
 }
 
 /**

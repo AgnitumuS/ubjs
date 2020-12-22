@@ -1,6 +1,7 @@
 const http = require('http')
 const _ = require('lodash')
 const csShared = require('@unitybase/cs-shared')
+const LocalDataStore = csShared.LocalDataStore
 const UBSession = csShared.UBSession
 const UBDomain = csShared.UBDomain
 const CryptoJS = require('@unitybase/cryptojs/core')
@@ -686,6 +687,42 @@ SyncConnection.prototype.insert = function (ubq) {
 }
 
 /**
+ * Run UBQL command with `insert` method
+ *
+ * In case `fieldList` is passed - result will contains new values for attributes specified in `fieldList` as Object, otherwise - null
+ *
+ * In opposite to `insert` method values in result are PARSED based on Domain (as in AsyncConnection) - so values
+ * for boolean attributes is true/false, date is typeof Date etc.
+ *
+ * @param {ubRequest} ubq
+ * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
+ * @returns {Object}
+ *
+ * @example
+
+const newRole = conn.insertAsObject({
+  entity: 'uba_role',
+  fieldList: ['ID', 'name', 'allowedAppMethods', 'mi_modifyDate'],
+  execParams: {
+      name: 'testRole61',
+      allowedAppMethods: 'runList'
+  }
+}, {mi_modifyDate: 'modifiedAt'})
+console.log(newRole) // {ID: 332462911062017, name: 'testRole1', allowedAppMethods: 'runList', mi_modifyDate: 2020-12-21T15:45:01.000Z}
+console.log(newRole.modifiedAt instanceof Date) //true
+
+ */
+SyncConnection.prototype.insertAsObject = function (ubq, fieldAliases) {
+  const req = ubq
+  req.method = req.method || 'insert'
+  const serverResp = this.query(req)
+  const res = LocalDataStore.convertResponseDataToJsTypes(this.getDomainInfo(), serverResp)
+  return (res.resultData && res.resultData.data && res.resultData.data.length)
+    ? LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)[0]
+    : null
+}
+
+/**
  * Execute update method (adds method: 'update' if req.method is not already set)
  */
 SyncConnection.prototype.update = function (ubq) {
@@ -693,6 +730,42 @@ SyncConnection.prototype.update = function (ubq) {
   req.method = req.method || 'update'
   const res = this.query(req)
   return res.resultData
+}
+
+/**
+ * Run UBQL command with `update` method
+ *
+ * In case `fieldList` is passed - result will contains new values for attributes specified in `fieldList` as Object, otherwise - null
+ *
+ * In opposite to `update` method values in result are PARSED based on Domain (as in AsyncConnection) - so values
+ * for boolean attributes is true/false, date is typeof Date etc.
+ *
+ * @param {ubRequest} ubq
+ * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
+ * @returns {Object}
+ *
+ * @example
+
+ const newRole = conn.updateAsObject({
+  entity: 'uba_role',
+  fieldList: ['ID', 'name', 'allowedAppMethods', 'mi_modifyDate'],
+  execParams: {
+      ID: 123,
+      name: 'testRole61'
+  }
+}, {mi_modifyDate: 'modifiedAt'})
+ console.log(newRole) // {ID: 332462911062017, name: 'testRole1', allowedAppMethods: 'runList', mi_modifyDate: 2020-12-21T15:45:01.000Z}
+ console.log(newRole.modifiedAt instanceof Date) //true
+
+ */
+SyncConnection.prototype.updateAsObject = function (ubq, fieldAliases) {
+  const req = ubq
+  req.method = req.method || 'update'
+  const serverResp = this.query(req)
+  const res = LocalDataStore.convertResponseDataToJsTypes(this.getDomainInfo(), serverResp)
+  return (res.resultData && res.resultData.data && res.resultData.data.length)
+    ? LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)[0]
+    : null
 }
 
 /**
