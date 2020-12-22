@@ -1,1 +1,0 @@
-throw new Error('This file must be skipped because it version smapller than initial model version')

@@ -1,5 +1,5 @@
 /**
- *  Apply models migrations for application. See []
+ *  Apply models migrations for application. See [Version migrations tutorial](https://unitybase.info/api/server-v5/tutorial-migrations.html)
  *
  * Usage from a command line:
 
@@ -66,6 +66,8 @@ const BEFORE_DDL_RE = /_beforeDDL[_/.]/
 const BEFORE_DDL_C_RE = /_beforeDDLc[_/.]/
 const AFTER_DDL_RE = /_afterDDL[_/.]/
 const IS_VERSION_RE = /^\d{9}$/  // 9 digits version number 005001001
+const NORMALIZE_VERSION_RE=/^((\d{1,3})[._](\d{1,3})[._](\d{1,3}))/
+
 /**
  *  @param {Object} params  Migration parameters
  *  @private
@@ -256,7 +258,7 @@ function runFiles (filesToRun, params, { conn, dbConnections, dbVersions, migrat
     if (f.name.endsWith('.js')) {
       const jsMigrationModule = require(f.fullPath)
       if (typeof jsMigrationModule !== 'function') {
-        console.error(`File '${f.name}' in model '${f.model}' do not exports a function. Skipped`)
+        console.error(`File '${f.origName}' in model '${f.model}' do not exports a function. Skipped`)
       } else {
         jsMigrationModule({ conn, dbConnections, dbVersions, migrations })
       }
@@ -265,7 +267,7 @@ function runFiles (filesToRun, params, { conn, dbConnections, dbVersions, migrat
       let connName
       if (parts && parts[1]) {
         if (!dbConnections[parts[1]]) {
-          throw new Error(`Unknown connection '${parts[1]}' (text between ##): file '${f.name}' in model '${f.model}'`)
+          throw new Error(`Unknown connection '${parts[1]}' (text between ##): file '${f.origName}' in model '${f.model}'`)
         }
         connName = parts[1]
       }
@@ -275,7 +277,7 @@ function runFiles (filesToRun, params, { conn, dbConnections, dbVersions, migrat
         optimistic: params.optimistic
       })
     } else {
-      console.warn(`Unknown extension for '${f.name}' in model '${f.model}'`)
+      console.warn(`Unknown extension for '${f.origName}' in model '${f.model}'`)
     }
 
     // conn.insert cant be used because in beforeDDL hook conn is not defined
@@ -370,24 +372,31 @@ function readMigrations (models) {
       console.error(`'${mp}' is a file, but should be a folder`)
       return
     }
-    const files = fs.readdirSync(mp).filter(f => !f.startsWith('_')).sort()
+    const files = fs.readdirSync(mp).filter(f => !f.startsWith('_'))
+      .map(f => {
+        return {fn: f, normalizedFn: normalizeVersionInFileName(f)}
+      }).sort( // sort files by normalized 9digits version number
+        (a, b) => a.normalizedFn.localeCompare(b.normalizedFn)
+      )
     files.forEach(f => {
-      const ffp = path.join(mp, f)
+      const ffp = path.join(mp, f.fn)
       if (fs.isFile(ffp)) {
         migrations.files.push({
           model: m.name,
-          name: f,
+          name: f.normalizedFn,
+          origName: f.fn,
           fullPath: ffp,
           sha: nhashFile(ffp, 'SHA256')
         })
       } else { // folder
-        const fFiles = fs.readdirSync(ffp).filter(f => !f.startsWith('_')).sort()
+        const fFiles = fs.readdirSync(ffp).filter(subFolderF => !subFolderF.startsWith('_')).sort()
         fFiles.forEach(ff => {
           const subPath = path.join(ffp, ff)
           if (fs.isFile(subPath)) {
             migrations.files.push({
               model: m.name,
-              name: f + '/' + ff, // folder/file
+              name: f.normalizedFn + '/' + ff, // normalized folder/file
+              origName: f.fn + '/' + ff, // original folder/file
               fullPath: subPath,
               sha: nhashFile(subPath, 'SHA256')
             })
@@ -409,5 +418,21 @@ function readMigrations (models) {
   return migrations
 }
 
+/**
+ * Normalize beginning of the string to match XXXYYYZZZ version pattern
+ *   - '2.13.21*' -> '002013021*'
+ *   - '02_1_1*' -> '002001001*'
+ *   - 'notA3digitsGroup' -> 'notA3digitsGroup'
+ * @param {string} fn
+ * @returns {string}
+ */
+function normalizeVersionInFileName (fn) {
+  // '2.3.12-asdsa' ->  ["2.3.12", "2.3.12", "2", "3", "12"]
+  const p = NORMALIZE_VERSION_RE.exec(fn)
+  if (p === null) return fn // not match 3digits pattern
+  const tail = fn.substring(p[0].length)
+  return `${p[2].padStart(3, '0')}${p[3].padStart(3, '0')}${p[4].padStart(3, '0')}${tail}`
+}
+
 module.exports.shortDoc = `Run generateDDL + ub-migrate + apply scripts from
-\t\t\t'${MIGR_FOLDER_NAME}' models folders`
+\t\t\t'${MIGR_FOLDER_NAME}' models _migrate folders`

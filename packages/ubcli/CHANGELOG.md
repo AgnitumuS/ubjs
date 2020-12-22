@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - allow to specify a folder (or file for single-sile) migration name in dotted notation for better human readability.
+   Such versions are transformed to 9-digits notation just after reading a file names and
+   all other operations (sorting, comparing, inserting in ub_migration table) are done with normalized file names.
+   
+   So instead of `001001001-initial.sql` `1.01.01-initial.sql` or even `1.1.1-initial.sql`(not recommended)
+   can be used (the same with folder names).
+   
+   Existed migrations can be safely renamed even if they are already applied, because names are normalized **before**
+   they written/compared with DB versions. Full Backward compatibility - no breaking changes.
+
 
 ### Changed
 
