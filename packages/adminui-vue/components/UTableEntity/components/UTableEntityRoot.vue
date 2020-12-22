@@ -703,7 +703,9 @@ export default {
       }
       this.SELECT_COLUMN(column.id)
       // setTimeout for prevent click outside
-      setTimeout(this.$refs.sort.$refs.dropdown.toggleVisible, 0)
+      if (this.$refs.sort && this.$refs.sort.$refs.dropdown) {
+        setTimeout(this.$refs.sort.$refs.dropdown.toggleVisible, 0)
+      }
     }
   }
 }
