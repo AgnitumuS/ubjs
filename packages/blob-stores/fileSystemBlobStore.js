@@ -295,7 +295,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     let relPath = ''
     if (l1subfolder) {
       if (this.LUCount) {
-        const LUN = ('' + this.LUCount).padStart(2, 0)
+        const LUN = ('' + this.LUCount).padStart(2, '0')
         l1subfolder = `LU${LUN}${path.sep}${l1subfolder}`
       }
       fullFn = path.join(fullFn, l1subfolder)
@@ -350,6 +350,9 @@ class FileSystemBlobStore extends BlobStoreCustom {
       if (relPath.indexOf('\\') !== -1) { // in case file written from Windows relPath contains win separator
         relPath = relPath.replace(/\\/g, '/')
       }
+    }
+    if ((this.LUCount) && !relPath.startsWith('LU')) { // for non-lun`ed stores transformed to lune`s old store MUST be mounted into LU00
+      relPath = `LU00${path.sep}${relPath}`
     }
     return path.join(this.fullStorePath, relPath, fn)
   }
