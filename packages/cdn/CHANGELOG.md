@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Classifier item: add mi_deleteDate to unique index to account for safe delete and fix bug
+  when user cannot insert item with code equal to code of delete item
 
 ## [5.4.59] - 2020-12-22
 ## [5.4.58] - 2020-12-21

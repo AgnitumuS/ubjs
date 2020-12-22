@@ -55,7 +55,8 @@
       "definition": {
         "keys": {
           "classifierID": {},
-          "code": {}
+          "code": {},
+          "mi_deleteDate": {}
         },
         "isUnique": true
       }
