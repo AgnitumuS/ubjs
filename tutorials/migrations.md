@@ -58,7 +58,11 @@ Individual migration can be a folder or a file. Each migration MUST starts from 
   - XXX-major
   - YYY-minor
   - ZZZ-patch
-All parts are padded by 0 to be a three letter. For example migration to a model version `2.15.1` MUST starts from `002015001`.
+All parts are padded by 0 to be a three letter.
+
+For better human readability version can be written in `.` or `_` notation - a 3 group of digits (3 digit max)
+separated by either `.` or `_`. Such versions are transformed to 9-digits notation just after reading a file names and 
+all other operations (sorting, comparing, inserting in ub_migration table) are done with normalized file names.
 
 In case migration is a folder all files inside a folder SHOULD begin from 3 digits - and order in which it will be applied.
 Example:
@@ -66,8 +70,9 @@ Example:
 ```
 /myModel
   /_migrate
-    001001001-initial.sql       # a single file migration to myModel@1.1.1 
-    /001001002                  # a multifile migration to myModel@1.1.2
+    001001001-initial.sql     # a single file migration to myModel@1.1.1
+    1.01.02-initial.sql       # a single file migration to myModel@1.1.2 in dotted notation
+    /1.01.02                  # a multifile migration to myModel@1.1.2
       010-impl-RST-1222_SPGetBallance.sql    # files inside folder execuded in lexical order
       020-fixCaptions.js
       030-massiveCaptionUpdate.sql  
