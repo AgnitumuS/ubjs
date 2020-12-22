@@ -60,7 +60,9 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_department'
+          entityName: 'org_department',
+          columns: ['parentID.caption', 'code', 'name', 'fullName', 'description', 'nameGen', 'nameDat',
+            'fullNameGen', 'fullNameDat', 'depTypeID', 'isClerical', 'caption']
         }
       }, null, '\t')
     }
@@ -81,7 +83,9 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_organization'
+          entityName: 'org_organization',
+          columns: ['parentID.caption', 'code', 'OKPOCode', 'taxCode', 'vatCode', 'name', 'fullName', 'nameGen',
+            'nameDat', 'fullNameGen', 'fullNameDat', 'description', 'orgBusinessTypeID', 'orgOwnershipTypeID']
         }
       }, null, '\t')
     }
@@ -143,7 +147,9 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_staffunit'
+          entityName: 'org_staffunit',
+          columns: ['parentID.caption', 'code', 'name', 'fullName', 'description', 'nameGen', 'nameDat', 'fullNameGen',
+            'fullNameDat', 'caption', 'professionExtID', 'professionID', 'staffUnitTypeID', 'subordinationLevel', 'isBoss']
         }
       }, null, '\t')
     }
@@ -164,7 +170,8 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_execgroup'
+          entityName: 'org_execgroup',
+          columns: ['parentID.caption', 'groupType', 'code', 'name', 'nameGen', 'nameDat']
         }
       }, null, '\t')
     }
@@ -184,7 +191,8 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_unit'
+          entityName: 'org_unit',
+          columns: ['parentID.caption', 'code', 'caption', 'unitType']
         }
       }, null, '\t')
     }
