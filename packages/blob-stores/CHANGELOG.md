@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+  - hack with UB 1.12 and UB 4.x compatibility for file system BLOB stores with historyDepth = 0 is **REMOVED**.
+    Previous implementation is correct.
+    
 ### Deprecated
 
 ### Removed
