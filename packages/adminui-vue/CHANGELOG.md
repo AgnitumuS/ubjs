@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [1.13.32] - 2020-12-22
+### Fixed
 - Bug in some preview forms, which show entity table, when clicking on table header
 
 ## [1.13.31] - 2020-12-21

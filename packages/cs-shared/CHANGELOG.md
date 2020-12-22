@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `LocalDataStore.convertResponseDataToJsTypes` - moved from AsyncConnection to LocalDataStorage to be
-   used in SyncConnection also. AsyncConnection.convertResponseDataToJsTypes remains. 
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.5.14] - 2020-12-22
+### Added
+ - `LocalDataStore.convertResponseDataToJsTypes` - moved from AsyncConnection to LocalDataStorage to be
+   used in SyncConnection also. AsyncConnection.convertResponseDataToJsTypes remains. 
 
 ## [5.5.13] - 2020-12-21
 ## [5.5.12] - 2020-12-20

@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.11.5] - 2020-12-22
+### Added
  - allow to specify a folder (or file for single-sile) migration name in dotted notation for better human readability.
    Such versions are transformed to 9-digits notation just after reading a file names and
    all other operations (sorting, comparing, inserting in ub_migration table) are done with normalized file names.
@@ -16,14 +27,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    Existed migrations can be safely renamed even if they are already applied, because names are normalized **before**
    they written/compared with DB versions. Full Backward compatibility - no breaking changes.
 
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.11.4] - 2020-12-21
 ## [5.11.3] - 2020-12-20

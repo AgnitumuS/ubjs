@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.13.65] - 2020-12-22
 ## [5.13.64] - 2020-12-21
 ### Fixed
  - fixed details calculation for UBDetailTree (should be [] since entityName is undefined)
