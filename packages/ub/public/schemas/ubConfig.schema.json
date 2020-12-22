@@ -803,7 +803,7 @@
               },
               "LUCount": {
                 "type": "number",
-                "description": "Logical Units count. If > 0 then files are stored inside `Logical Unit` sub-folders `/LU01`, `/LU02`, ... Write operations works with last LU folder.\nEach LU folder can be mounted to his own partition. In this case `tempPath` should point to the same partition as last LU.\n Applicable only for `non-Simple` 'FileSystem' based  stores",
+                "description": "Logical Units count. If > 0 then files are stored inside `Logical Unit` sub-folders `/LU01`, `/LU02`, ... Folder, what contains OLD files MUST be mounted to /LU00 manually. Write operations works with last LU folder.\nEach LU folder can be mounted to his own partition. In this case `tempPath` should point to the same partition as last LU.\n Applicable only for `non-Simple` 'FileSystem' based  stores",
                 "default": 0,
                 "maxValue": 99
               },
