@@ -15,6 +15,38 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.6.3] - 2020-12-21
+### Fixed
+ - improved JSDoc (use @example tag for methods examples - it correctly rendered by both WebStorm and ub-jsdoc)
+
+## [5.6.2] - 2020-12-20
+## [5.6.1] - 2020-12-17
+### Added
+ - new method `AsyncConnection.prototype.userCanChangePassword` - Is auth schema for logged in user allows
+   password changing (currently - only UB and CERT* with requireUserName)
+   
+### Fixed
+ - `AsyncConnection.prototype.emitEntityChanged` will transform a payload to match a unity entity before emitting
+   a `${e.mixins.unity.entity}:changed` event, so ':changed' listener in controls what based on unity entity got
+   a payload they expect, instead of payload for child entity 
+
+## [5.6.0] - 2020-12-16
+### Added
+ - `AsyncConnection.prototype.setUiTag` method added.
+   UI tag will be added to a `ubql` HTTP request as `uitag=${uiTag}` and can be used to track from which part of UI request is generated.
+ - `AsyncConnection.prototype.emitEntityChanged` method added.
+   Emit `${entityCode}:changed` event. In case entity has a unity mixin - emit also for unityEntity
+
+## [5.5.35] - 2020-12-09
+### Added
+ - `UBConnection.prototype.pki` will await for `UA_CRYPT.getPkiInterface`.
+   This allows to implement custom encryption implementation module, what, for example, give a choice to user which library to use 
+
+## [5.5.34] - 2020-12-09
+### Added
+ - i18n for `info`, `error`, `detail`, `login` and languages abbr: uk, ru, etc.
+   Moved here from adminui-pub to allow use it on the login form 
+
 ## [5.5.33] - 2020-11-20
 ## [5.5.32] - 2020-11-19
 ## [5.5.31] - 2020-11-15

@@ -55,6 +55,7 @@
 
 <script>
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
+const { mapState, mapGetters } = require('vuex')
 module.exports.mount = cfg => {
   Form(cfg)
     .processing({
@@ -89,7 +90,9 @@ module.exports.default = {
       'nameDat',
       'fullNameGen',
       'fullNameDat'
-    ])
+    ]),
+    ...mapState(['isNew']),
+    ...mapGetters(['canSave'])
   },
 
   watch: {
@@ -126,7 +129,6 @@ module.exports.default = {
     getConfig (cfg) {
       return {
         ...cfg,
-        isModal: true,
         parentContext: {
           staffUnitID: this.ID
         }

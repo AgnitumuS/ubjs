@@ -73,9 +73,9 @@ class DBPostgreSQL extends DBAbstract {
       for (const colDef of columnsFromDb) {
         const physicalTypeLower = colDef.typename.toLowerCase()
         let def = colDef.defvalue
-        // Postgre prepend default by data type: 'A'::character varying
+        // Postgre prepend default by data type: `'A'::character varying` or `'{}':jsonb`
         if (def) {
-          def = def.replace(/::character varying/, '')
+          def = def.replace(/::(character varying|jsonb)/, '')
         }
         const nObj = {
           name: colDef.name,
@@ -253,48 +253,6 @@ ORDER BY index_id, column_position`
       this.DDL.rename.statements.push(`ALTER INDEX ${oldName} RENAME TO ${newName}`)
     } else {
       this.DDL.rename.statements.push(`ALTER TABLE ${table.name} RENAME CONSTRAINT ${oldName} TO ${newName}`)
-    }
-  }
-
-  /**
-   * @override
-   * @param {TableDefinition} table
-   * @param {FieldDefinition} column
-   * @param {String} updateType
-   * @param {Object} [value] optional for updateType updConst
-   */
-  genCodeUpdate (table, column, updateType, value) {
-    function quoteIfNeed (v) {
-      if (column.isString && v && /min\(code\)/.test(v)) return v // special case for updating enum - unitybase/ubjs#23
-      return column.isString
-        ? (!column.defaultValue && (column.refTable || column.enumGroup)
-          ? v.replace(/'/g, "''")
-          : "'" + v.replace(/'/g, '') + "'")
-        : v
-    }
-    let possibleDefault
-    switch (updateType) {
-      case 'updConstComment':
-        this.DDL.updateColumn.statements.push(
-          `-- update ${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
-        )
-        break
-      case 'updConst':
-        this.DDL.updateColumn.statements.push(
-          `update ${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
-        )
-        break
-      case 'updNull':
-        possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
-        this.DDL.updateColumn.statements.push(
-          `-- update ${table.name} set ${column.name} = ${possibleDefault} where ${column.name} is null`
-        )
-        break
-      case 'updBase':
-        this.DDL.updateColumn.statements.push(
-          `EXEC('update ${table.name} set ${column.name} = ${quoteIfNeed(column.baseName)} where ${column.name} is null`
-        )
-        break
     }
   }
 

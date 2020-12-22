@@ -117,7 +117,34 @@ class DBAbstract {
    * @param {Object} [value] optional for updateType updConst
    */
   genCodeUpdate (table, column, updateType, value) {
-    throw new Error(`Abstract genCodeUpdate(${table.name}, ${column.name}, ${updateType}, ${value})`)
+    function quoteIfNeed (v) {
+      if (column.enumGroup) return v // do not quoter enums
+      return column.isString
+        ? (!column.defaultValue && (column.refTable || column.enumGroup)
+          ? v.replace(/'/g, "''")
+          : v === 'ID'
+            ? 'ID' // do not quoter ID
+            : "'" + v.replace(/'/g, "") + "'")
+        : v
+    }
+    switch (updateType) {
+      case 'updConstComment':
+        this.DDL.updateColumn.statements.push(
+          `-- update ${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
+        )
+        break
+      case 'updConst':
+        this.DDL.updateColumn.statements.push(
+          `update ${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
+        )
+        break
+      case 'updNull':
+        let possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
+        this.DDL.updateColumn.statements.push(
+          `-- update ${table.name} set ${column.name} = ${possibleDefault} where ${column.name} is null`
+        )
+        break
+    }
   }
 
   /**
@@ -463,7 +490,7 @@ class DBAbstract {
 
       if (mustBeC) { // alter
         // caption
-        if (mustBeC.caption !== asIsC.caption) {
+        if (mustBeC.caption !== asIsC.caption && mustBeC.caption) {
           this.genCodeSetCaption(mustBe.name, mustBeC.name, mustBeC.caption, asIsC.caption)
         }
         const asIsType = this.createTypeDefine(asIsC)

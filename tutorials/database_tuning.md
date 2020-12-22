@@ -2,7 +2,7 @@
 
 ##  General tips
  UnityBase designed to support different types of databases (Oracle, MS SQL, Postgre, ......).
- Even if you develop your application for some specific database, there is a chance that later
+ Even if you develop your application for some specific database, there is a chance later
  you will need to migrate it to other database (for example from Oracle to Postgres).
  So, general tip:
  
@@ -12,13 +12,121 @@
  Usually it is faster to execute several simple queries from application server and
  do something inside JavaScript instead of write complex database query.
  
- In any cases developer must remember - usually there is __only ONE database__  server for application,
+ In any case developer must remember - usually there is __only ONE database__  server for application,
  but we can run multiple application servers and do load balancing.
  So in most cases performance bottleneck is a Database. 
  
  > Use the database for those things for which it was designed. Be [KISS](http://en.wikipedia.org/wiki/KISS_principle) -
- database for storing data, application server for data manipulation.
+ use a database for storing data and application server for data manipulation.
+
+## Database connection parameters
+  Each RDBMS driver uses his own mechanism for connection parameters tuning. Below is a recommendations for production usage: 
+  
+### Postgres
+  Most of the connection parameters can be configured using a [PostgreURL](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING).
+  UnityBase allows to set a full postgresURL in the `databaseName` connection parameter, in this case `serverName` should be empty:
+```json
+"connections": [{
+    "name": "main",
+    "driver": "PostgreSQL",
+    "isDefault": true,
+    "dialect": "PostgreSQL",
+    "serverName": "",
+    "databaseName": "postgresql://pg10.local:5432/ub5_autotest?tcp_user_timeout=3000",
+    "userID": "%UB_DB_MAIN_USER%",
+    "password": "%UB_DB_MAIN_PWD%"
+    "supportLang": ["en", "uk"],
+    "advSettings": "LibLocation=%UB_POSTGRE_LIB||libpq.so.5%" // for linux - can be empty or libpq.so.5; Windows = path to libpq.dll, for example D:/PostgreClient/10/x64/bin/libpq.dll
+},...]
+```  
+  A connection parameters key words are listed in [Section 33.1.2 of Postgres documentation](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-PARAMKEYWORDS)
+  
+  We recommend to sets a `tcp_user_timeout=3000` to disconnect ASAP in case TCP connection to database server is lost.
+  A kernel default (~20 minutes) is too large.
+  
+#### Postgres messages locale
+  UnityBase expect Postgres **error messages to be in English locale**. This uses to detect connection lost, constraint violation and so on.
+  
+  We **STRONGLY** recommend use `en_US.UTF-8` during Postgres setup (parameter is taken from OS locale settings,
+  so better to switch your OS to English before Postgres server setup). 
+  
+  For existed Postgres installation locale can be forced by sets a `lc_locale=en_US.UTF-8` parameter in the `postgres.conf`.
+  
+  In case it is not possible to set an English locale in the `postgres.conf` it can be switched on the client side by 
+  adding a `SET lc_messages TO 'en_US.UTF-8';` to the `executeWhenConnected` key of ubConfig connection parameters:
+ ```json
+ "connections": [{
+    "driver": "PostgreSQL",
+    ...
+    "executeWhenConnected": ["SET lc_messages TO 'en_US.UTF-8'"]
+ },...]
+ ```
+  
+### MS SQL server (Linux)
+  Under Linux ODBC is used for SQL Server connection. Connection parameters can be defined either in 
+    - `/etc/odbcinst.ini` driver settings applied to all databases
+    - `/etc/odbc.ini` per database for all users 
+    - `~/.odbc.ini` per database for current user
+  
+  > home catalogue for `unitybase` unit is /opt/unitybase/apps
  
+  For production, we recommend disabling of `Trace` and sets `KeepAlive` to 10 (second) in the `/etc/odbc.ini`. Example:
+```
+[my_production_database]
+Driver=ODBC Driver 17 for SQL Server
+Description=My production database for Awesome app
+Server=tcp:ms16.unitybase.info,1405
+Database=master
+Trace=No
+KeepAlive=10
+```
+
+ubConfig section example:
+
+```json
+"connections": [{
+    "name": "main",
+    "driver": "MSSQLODBC",
+    "isDefault": true,
+    "dialect": "MSSQL2012",
+    "serverName": "my_production_database", // this is an entry in ~/.obdc.ini file
+    "databaseName": "awesomeapp",
+    "userID": "%UB_DB_MAIN_USER%",
+    "password": "%UB_DB_MAIN_PWD%"
+    "supportLang": ["en", "uk"]
+},...]
+```
+
+### Oracle
+  Connection parameters can be specified in `tnsnames.ora` - in this case `serverName` in the ubConfig should be a TNS name,
+  or directly in the TNS string passed to the `serverName`.
+  
+  Some connection parameters can be specified on the server-side in:
+ - profiles (`select * from dba_profiles`)
+ - [SQLNET](https://docs.oracle.com/cd/B19306_01/network.102/b14213/sqlnet.htm) 
+  
+  We recommend set `SQLNET.EXPIRE_TIME=10` to prevent a firewall/proxy/routers to terminate a idle connections.
+  See [this article about keepalive](https://prashantatridba.wordpress.com/2015/12/05/sqlnet-and-tcp-keepalive-settings/) for details.
+
+  For configuring SQLNET parameters for Oracle Instant Client see [How do I ensure that my Oracle Net files like "tnsnames.ora" and "sqlnet.ora" are being used in Instant Client?](https://www.oracle.com/ru/database/technologies/faq-instant-client.html)
+
+ubConfig section example (connect without using tnsnames) :
+
+```json
+"connections": [{
+    "name": "main",
+    "driver": "Oracle",
+    "isDefault": true,
+    "dialect": "Oracle11",
+    "serverName": "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = oraub.cloud.host)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = oraub.cloud.local)))",
+    "userID": "%UB_DB_MAIN_USER%",
+    "password": "%UB_DB_MAIN_PWD%"
+    "supportLang": ["en", "uk"],
+    "advSettings": "CARDINALITY_IN",  // sets a CARDINALITY hint for array binding
+    "executeWhenConnected": ["ALTER SESSION SET NLS_COMP=LINGUISTIC", "ALTER SESSION SET NLS_SORT=BINARY_CI"] // force case insensitive LIKE
+},...]
+```
+
 ## Indexes
 By default, UnityBase DDL generator create indexes for all attributes of type `Entity`
 and unique indexes for attributes marked as `"isUnique": true`. 
@@ -185,7 +293,17 @@ crates in-memory SYS.ODCINUMBERLIST / SYS.ODCIVARCHAR2LIST structure and pass it
 We don't know how to run such query with parameters binding in plsql, without parameters:    
 ```sql
 SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT column_value FROM table(SYS.ODCINUMBERLIST(1, 2, 3)))
-```   
+```
+
+> Connection `advSettings` can contain `CARDINALITY_IN` directive.
+>   If enabled then ORM adds `/*+ CARDINALITY(t1, P) */` hint for IN sub-queries.
+>
+> P value depends on array length L:  L<10 => P = 1; L < 50 => P=10 else P = 100 
+
+Query with cardinality hint 
+```sql
+SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT /*+ CARDINALITY(t1, P) */ column_value FROM table(SYS.ODCINUMBERLIST(1, 2, 3)))
+```
 
 ### SQL Server array binding
 UB server generates a query:  

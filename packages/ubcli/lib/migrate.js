@@ -63,7 +63,9 @@ module.exports = function migrate (cfg) {
 }
 
 const BEFORE_DDL_RE = /_beforeDDL[_/.]/
+const BEFORE_DDL_C_RE = /_beforeDDLc[_/.]/
 const AFTER_DDL_RE = /_afterDDL[_/.]/
+const IS_VERSION_RE = /^\d{9}$/  // 9 digits version number 005001001
 /**
  *  @param {Object} params  Migration parameters
  *  @private
@@ -78,7 +80,8 @@ function runMigrations (params) {
     modelsToMigrate = modelsToMigrate.filter(m => inModels.includes(m.name))
   }
 
-  console.log('Loading application migration state...')
+  console.log('Loading application migration state from DB...')
+  createUbMigrateIfNotExists(dbConnections.DEFAULT) // allows beforeDDL script to be added into ub_migration table
   let d = Date.now()
   const { dbVersions, dbVersionIDs, appliedScripts } = getMigrationState(dbConnections.DEFAULT, modelsToMigrate)
   console.log(`Migration state (${appliedScripts.length} applied scripts for ${Object.keys(dbVersions).length} models) is loaded from ub_migration table in ${Date.now() - d}ms`)
@@ -90,6 +93,24 @@ function runMigrations (params) {
   const migrations = readMigrations(modelsToMigrate)
   const totalFiles = migrations.files.length
   console.log(`Found ${totalFiles} migration file(s) in ${Date.now() - d}ms`)
+
+  // remove files for model versions prior to dbVersions
+  // for a "fresh" setup `ubcli initialize` fills ub_version table by models version on the moment of initialization
+  let oldFilesSkipped = 0
+  migrations.files = migrations.files.filter(f => {
+    let fileModelVersion = f.name.substring(0, 9)
+    if (IS_VERSION_RE.test(fileModelVersion)) {  // file should starts from 9 digits model version to which it migrate
+      if (fileModelVersion <= dbVersions[f.model]) { // files intended for migrate to model versions prior to current DB state are skipped
+        oldFilesSkipped++
+        // console.debug(f)
+        return false
+      }
+    }
+    return true // apply files what ot starts from 9 digits or intended for migrate to version newer than current
+  })
+  if (oldFilesSkipped) {
+    console.log(`${oldFilesSkipped} files intended for migrate to the version of model prior to currently applied are skipped`)
+  }
 
   // remove already applied files and verify files SHA
   let shaIsEqual = true
@@ -125,22 +146,34 @@ function runMigrations (params) {
     const beforeDDLFiles = migrations.files.filter(f => BEFORE_DDL_RE.test(f.name))
     if (params.verbose && beforeDDLFiles.length) console.log('Run beforeDDL hooks:', beforeDDLFiles)
     runFiles(beforeDDLFiles, params, { conn: null, dbConnections, dbVersions, migrations })
+    releaseDBConnectionPool() // release DB pool created by controller
+
+    // connect to server to allows _beforeDDLc_ hooks
+    session = argv.establishConnectionFromCmdLineAttributes(params)
+    conn = session.connection
+    // recreate DB pool - will use server pool (server is started on this stage)
+    dbConnections = createDBConnectionPool(serverConfig.application.connections)
+
+    // apply beforeDDL then connected (beforeDDLc) hooks
+    migrations.hooks.forEach(h => {
+      if (typeof h.hook.beforeGenerateDDLc === 'function') {
+        if (params.verbose) console.log(`Call beforeGenerateDDL hook for model '${h.model}'`)
+        h.hook.beforeGenerateDDLc({ conn, dbConnections, dbVersions, migrations })
+      }
+    })
+    // apply file based before DDL when connected hooks
+    const beforeDDLFilesC = migrations.files.filter(f => BEFORE_DDL_C_RE.test(f.name))
+    if (params.verbose && beforeDDLFilesC.length) console.log('Run beforeDDL when connected hooks:', beforeDDLFilesC)
+    runFiles(beforeDDLFilesC, params, { conn, dbConnections, dbVersions, migrations })
+
 
     // run DDL generator
     const paramsForDDL = Object.assign({}, params)
     paramsForDDL.autorun = true // force autorun
     paramsForDDL.out = process.cwd() // save script into current folder
     paramsForDDL.forceStartServer = true // use a local server instance
-    releaseDBConnectionPool() // release DB pool created by controller
-
     if (params.verbose) console.log('Run generateDDL with params:', paramsForDDL)
     generateDDL(paramsForDDL)
-
-    // after generateDDL we can connect to UB server
-    session = argv.establishConnectionFromCmdLineAttributes(params)
-    conn = session.connection
-    // recreate DB pool - will use server pool (server is started on this stage)
-    dbConnections = createDBConnectionPool(serverConfig.application.connections)
 
     // apply afterGenerateDDL hooks
     migrations.hooks.forEach(h => {
@@ -163,7 +196,8 @@ function runMigrations (params) {
   }
 
   // remove before/after DDL hook files - either already applied or should be skipped
-  migrations.files = migrations.files.filter(f => !BEFORE_DDL_RE.test(f.name) && !AFTER_DDL_RE.test(f.name))
+  migrations.files = migrations.files.filter(f => !BEFORE_DDL_RE.test(f.name) && !AFTER_DDL_RE.test(f.name)
+    && !BEFORE_DDL_C_RE.test(f.name))
 
   // apply ub-migrate if installed
   if (!params.nodata) {
@@ -188,7 +222,6 @@ function runMigrations (params) {
   }
 
   // call filterFiles hooks in reverse order
-  // apply afterGenerateDDL hooks
   const initialFilesCnt = migrations.files.length
   for (let i = migrations.hooks.length - 1; i >= 0; i--) {
     if (typeof migrations.hooks[i].hook.filterFiles === 'function') {
@@ -198,6 +231,7 @@ function runMigrations (params) {
   }
   if (params.verbose) console.log(`filterFiles hooks decline ${initialFilesCnt - migrations.files.length} files`)
 
+  // apply remains migration files (without beforeDDL* hooks)
   runFiles(migrations.files, params, { conn, dbConnections, dbVersions, migrations })
 
   // apply finalize hooks
@@ -259,6 +293,26 @@ function runFiles (filesToRun, params, { conn, dbConnections, dbVersions, migrat
     //   }
     // })
   })
+}
+/**
+ * Create ub_migration table if it is not exists
+ * @param {DBConnection} dbConn
+ */
+function createUbMigrateIfNotExists(dbConn) {
+  let exists = null
+  try {
+    // fake select to ensure table is exists
+    exists = dbConn.selectParsedAsObject('select modelName AS "modelName", filePath as "filePath", fileSha as "fileSha" from ub_migration where ID=0')
+  } catch (e) {
+    // table not exists
+  }
+  if (!exists) {
+    let ubMigrateTableScript = path.join(__dirname, 'dbScripts', 'create_ub_migrate.sql')
+    execSql({
+      file: ubMigrateTableScript,
+      optimistic: true
+    })
+  }
 }
 /**
  * Read ub_version and ub_migration from database. Return `000000000` for model versions what not exists in ub_version

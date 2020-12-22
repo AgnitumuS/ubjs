@@ -15,6 +15,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.58] - 2020-12-21
+## [5.4.57] - 2020-12-20
+## [5.4.56] - 2020-12-17
+## [5.4.55] - 2020-12-16
+## [5.4.54] - 2020-12-14
+## [5.4.53] - 2020-12-09
+## [5.4.52] - 2020-12-09
+## [5.4.51] - 2020-12-02
+### Changed
+ - `cdn_person form`: make inputs adaptive to form width
+
+### Fixed
+- `cdn_employee.meta.uk`: typo in 'middleNameGen', 'middleNameDat', 'fullFIO', 'middleName'
+- `cdn_person.meta.uk`: typo in 'middleNameGen', 'middleNameDat', 'classID', 'middleName'
+
 ## [5.4.50] - 2020-11-25
 ## [5.4.49] - 2020-11-23
 ### Fixed

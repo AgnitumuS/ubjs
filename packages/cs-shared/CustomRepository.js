@@ -95,6 +95,7 @@ class CustomRepository {
    * Retrieve a data from server using `methodName` entity method.
    * By default `select` method will be used.
    * @param {string} methodName
+   * @return {CustomRepository}
    */
   using (methodName) {
     this.method = methodName
@@ -156,16 +157,16 @@ class CustomRepository {
    *
    * @example
 
-   let isPessimisticLock = !!UB.connection.domain.get('uba_user').attributes.mi_modifyDate
-   // with whereIf
-   let repo = UB.Repository('uba_user').attrs('ID').attrsIf(isPessimisticLock, 'mi_modifyDate')
-   //without whereIf
-   let repo = UB.Repository('uba_user').attrs('ID')
-   if (isPessimisticLock) repo = repo.attrs('mi_modifyDate')
+ let isPessimisticLock = !!UB.connection.domain.get('uba_user').attributes.mi_modifyDate
+ // with whereIf
+ let repo = UB.Repository('uba_user').attrs('ID').attrsIf(isPessimisticLock, 'mi_modifyDate')
+ //without whereIf
+ let repo = UB.Repository('uba_user').attrs('ID')
+ if (isPessimisticLock) repo = repo.attrs('mi_modifyDate')
 
    * @param {*} addingCondition Attributes will be added only in case addingCondition is truthy
    * @param {string|Array<string>} attrs
-   * @return {CustomRepository}attrs
+   * @return {CustomRepository}
    */
   attrsIf (addingCondition, ...attrs) {
     return addingCondition
@@ -311,13 +312,13 @@ UB.Repository('my_entity').attrs('ID')
    *
    * @example
 
-   let filterString = 'foundAllLikeThis' // or may be empty string
-   // with whereIf
-   let repo = UB.Repository('my_entity').attrs('ID').whereIf(filterString, 'myAttr', 'like', filterString)
+ let filterString = 'foundAllLikeThis' // or may be empty string
+ // with whereIf
+ let repo = UB.Repository('my_entity').attrs('ID').whereIf(filterString, 'myAttr', 'like', filterString)
 
-   //without whereIf
-   let repo = UB.Repository('my_entity').attrs('ID')
-   if (filterString) repo = repo.where('myAttr', 'like', filterString)
+ //without whereIf
+ let repo = UB.Repository('my_entity').attrs('ID')
+ if (filterString) repo = repo.where('myAttr', 'like', filterString)
 
    * @param {*} addingCondition Where expression will be added only in case addingCondition is truthy
    * @param {string} expression   Attribute name (with or without []) or valid expression with attributes in []
@@ -641,10 +642,10 @@ inst.run('select', repo.ubql())
    * @private
    * @example
 
-   // serialize Repository into plain java script object (UBQL)
-   const ubql = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a').ubql()
-   // restore Repository from plain java script object (UBQL)
-   const repo = UB.Repository(ubql)
+ // serialize Repository into plain java script object (UBQL)
+ const ubql = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a').ubql()
+ // restore Repository from plain java script object (UBQL)
+ const repo = UB.Repository(ubql)
 
    * @return {UBQL}
    */
@@ -684,7 +685,7 @@ inst.run('select', repo.ubql())
    * @abstract
    * @param {Object<string, string>} [fieldAliases] Optional object to change attribute
    *  names during transform array to object
-   * @return {Array.<object>}
+   * @return {Array<object>}
    */
   selectAsObject (fieldAliases) {
     throw new Error('abstract')
@@ -706,9 +707,12 @@ inst.run('select', repo.ubql())
   /**
    * For repository with ONE attribute returns a flat array of attribute values
    *
-   *   [1, 2, 3, 4]
-   *
-   * @return Array<string|number>
+   * @example
+ // get first 100 all ID's of tst_dictionary entity
+ UB.Repository('tst_dictionary').attrs('ID').limit(100).selectAsArrayOfValues()
+ // returns array of IDs: [1, 2, 3, 4]
+
+   * @return {Array<string|number>}
    * @abstract
    */
   selectAsArrayOfValues () {
@@ -767,10 +771,10 @@ inst.run('select', repo.ubql())
    * Execute select and returns a value of the first attribute from the first row
    * @example
 
-  UB.Repository('uba_user')
-    .attrs('name')
-    .where('ID', '=', 10)
-    .selectScalar().then(UB.logDebug) // will output `admin`
+UB.Repository('uba_user')
+  .attrs('name')
+  .where('ID', '=', 10)
+  .selectScalar().then(UB.logDebug) // will output `admin`
 
    * **WARNING** does not check if result contains the single row
    * @abstract
@@ -803,9 +807,9 @@ inst.run('select', repo.ubql())
    * Apply miscellaneous options to resulting UBQL
    * @example
 
-  // this server-side call will select all currency, including deleted
-  UB.Repository('cdn_currency').attrs(['ID'])
-    .misc({__allowSelectSafeDeleted: true}).selectAsArray();
+// this server-side call will select all currency, including deleted
+UB.Repository('cdn_currency').attrs(['ID'])
+  .misc({__allowSelectSafeDeleted: true}).selectAsArray();
 
    * @param {Object} flags
    * @param {Date} [flags.__mip_ondate] Specify date on which to select data for entities with `dataHistory` mixin. Default to Now()
@@ -888,12 +892,12 @@ inst.run('select', repo.ubql())
    * Creates a clone of this repository
    * @example
 
-   let repo1 = UB.Repository('uba_user').attrs('ID', 'code').where('ID', '>', 15, 'byID')
-   let repo2 = repo1.clone()
-   repo1.orderBy('code')
-   repo2.attrs('name').where('ID', '>', 100, 'byID')
-   repo1.selectAsObject() // return ordered users with ID > 15
-   repo2.selectAsObject() // return unordered users with their names and ID > 100
+ let repo1 = UB.Repository('uba_user').attrs('ID', 'code').where('ID', '>', 15, 'byID')
+ let repo2 = repo1.clone()
+ repo1.orderBy('code')
+ repo2.attrs('name').where('ID', '>', 100, 'byID')
+ repo1.selectAsObject() // return ordered users with ID > 15
+ repo2.selectAsObject() // return unordered users with their names and ID > 100
 
    * @return {CustomRepository}
    */
@@ -908,8 +912,8 @@ inst.run('select', repo.ubql())
    * Remove all where conditions (except ones using in joinAs). This function mutates current Repository
    * @example
 
-   let repo1 = UB.Repository('uba_user').attrs('ID', 'code').where('ID', '>', 15, 'byID')
-   let repoWithoutWheres = repo1.clone().clearWhereList()
+ let repo1 = UB.Repository('uba_user').attrs('ID', 'code').where('ID', '>', 15, 'byID')
+ let repoWithoutWheres = repo1.clone().clearWhereList()
 
    * @return {CustomRepository}
    */

@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.46] - 2020-12-21
+## [5.4.45] - 2020-12-20
+## [5.4.44] - 2020-12-17
+## [5.4.43] - 2020-12-16
+## [5.4.42] - 2020-12-14
+## [5.4.41] - 2020-12-09
+## [5.4.40] - 2020-12-09
+## [5.4.39] - 2020-12-02
 ## [5.4.38] - 2020-11-25
 ## [5.4.37] - 2020-11-20
 ## [5.4.36] - 2020-11-19
@@ -249,7 +257,7 @@ $App.doCommand({
 ## [5.1.17] - 2018-09-24
 ### Changed
  - `reportOptions.allowExportToExcel` allowed value changed from to 'xls' or 'xlsx'. ('xlsx' by default)
-   For 'xls' report will be saved as html but with **xls** extension - excell will convert such files on open
+   For 'xls' report will be saved as html but with **xls** extension - excel will convert such files on open
    otherwise report will be regenerated as native **xlsx** file
  ```javascript
 $App.doCommand({

@@ -33,18 +33,18 @@ const iDB = (typeof window !== 'undefined') && window.indexedDB
  *  - **session** for data, live inside user session only (from login to login)
  *  - **user** for custom data
  *
- * Usage sample
+ * @example
 
-        var c = new UBCache('mydb');
-        c.put([
-            {key: 'note1', value: {prop1: 1, prop2: 'do something'} },
-            {key: 'note2', value: 'do something else'}
-        ]).then();
-        c.get('note1').then(UB.logDebug); //output result to console
-        c.clear();
-        c.get('note1').then(function(value){
-            console.log(value === undefined ? 'all cleared': 'hm... something wrong')
-        });
+  var c = new UBCache('mydb');
+  c.put([
+      {key: 'note1', value: {prop1: 1, prop2: 'do something'} },
+      {key: 'note2', value: 'do something else'}
+  ]).then();
+  c.get('note1').then(UB.logDebug); //output result to console
+  c.clear();
+  c.get('note1').then(function(value){
+      console.log(value === undefined ? 'all cleared': 'hm... something wrong')
+  });
 
  * @class UBCache
  * @author pavel.mash on 17.04.2014 (rewrites to ES6 on 12.2016)

@@ -29,10 +29,10 @@ From the low level point of view UnityBase is a asynchronous non-blocking HTTP(S
 
 From a developer point of view UnityBase is:
  - An DBMS agnostic ORM what work over application Domain metadata
+ - Authorization, authentication, role based access control, row level security, audit trail, etc
+ - A set of ready to use entities appropriate for the majority of enterprise systems
+ - Automatically generated admin UI based on Domain
  - A set of tools for
    - synchronizing a physical database structure with Domain metadata
    - generating REST API based on Domain metadata
    - generating developer documentation from Domain metadata
- - Authorization, authentication, role based access control, row level security, audit trail, etc
- - A set of ready to use entities appropriate for the majority of enterprise systems
- - Automatically generated admin UI based on Domain

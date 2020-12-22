@@ -94,7 +94,8 @@
       "name": "jsonColumn",
       "dataType": "Json",
       "caption": "Test JSON column",
-      "allowNull": true
+      "allowNull": true,
+      "defaultValue": ""
     },
     {
       "name": "doc_file",

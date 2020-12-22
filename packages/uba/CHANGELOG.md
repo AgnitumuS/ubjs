@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.51] - 2020-12-21
+## [5.4.50] - 2020-12-20
+## [5.4.49] - 2020-12-14
+## [5.4.48] - 2020-12-09
+## [5.4.47] - 2020-12-02
+### Fixed
+ - Password change dialog - prevent displaying of error message twice when server declines a password [ERC-1145]
+ - User certificates form - can be opened without parentContext (from user certificates list for example) [UBDF-12773]
+
 ## [5.4.46] - 2020-11-25
 ## [5.4.45] - 2020-11-20
 ## [5.4.44] - 2020-11-19

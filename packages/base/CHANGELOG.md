@@ -15,6 +15,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.12] - 2020-12-21
+### Fixed
+ - improved JSDoc (use @example tag for methods examples - it correctly rendered by both WebStorm and ub-jsdoc)
+
+## [5.4.11] - 2020-12-20
+## [5.4.10] - 2020-12-14
+### Fixed
+ - `options.switchValue` correctly returns option value started with `/` (for example: ubcli execSql -f /home/mpv/s.sql).
+  Before this fix value starts with '/' recognized as switch index.
+
 ## [5.4.9] - 2020-11-25
 ## [5.4.8] - 2020-11-20
 ## [5.4.7] - 2020-11-19

@@ -120,7 +120,7 @@ const instance = new Vue({
 
     unsubscribe (entity) {
       const subscription = this.entities[entity]
-      subscription.subscribes++
+      subscription.subscribes--
       if (subscription.subscribes === 0) {
         UB.connection.removeListener(`${entity}:changed`, subscription.onEntityChanged)
         subscription.data.splice(0, subscription.data.length)

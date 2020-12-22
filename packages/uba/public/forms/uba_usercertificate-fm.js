@@ -40,7 +40,7 @@ var typeNames = {
 exports.formCode = {
   initUBComponent: function () {
     var me = this, uploadCertBtn, downloadCertBtn
-    if (me.parentContext.userID) {
+    if (me.parentContext && me.parentContext.userID) {
       me.getField('userID').hide()
       me.getField('userID').oldHidden = true
     }

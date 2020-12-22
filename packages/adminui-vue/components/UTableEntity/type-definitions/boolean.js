@@ -14,5 +14,8 @@ module.exports = {
       default:
         return null
     }
+  },
+  exportFormat({ value }) {
+    return value
   }
 }

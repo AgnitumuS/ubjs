@@ -15,6 +15,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.28] - 2020-12-21
+## [5.4.27] - 2020-12-20
+## [5.4.26] - 2020-12-17
+## [5.4.25] - 2020-12-16
+## [5.4.24] - 2020-12-14
+## [5.4.23] - 2020-12-09
+## [5.4.22] - 2020-12-09
+### Changed
+- `org_employeeonstaff-fm`: rewritten to vue
+
+## [5.4.21] - 2020-12-02
+### Fixed
+ - fixed `roleIDs.has is not a function` during log-in of user who not assigned to employee and not a `admin` (introduced in 5.4.20) 
+- `org_employee.meta.uk`: typo in 'middleNameGen', 'middleNameDat'
+- `org_staffunit-fm`: added missing `isNew` and `canSave` getters required for `saveParentBeforeAddNew`
+
 ## [5.4.20] - 2020-11-25
 ### Changed
  - allow log-in for user who not assigned to employee for members of Admin group (in addition to `admin` and `root` user).

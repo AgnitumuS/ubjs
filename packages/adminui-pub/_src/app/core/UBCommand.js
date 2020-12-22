@@ -74,6 +74,9 @@ Ext.define('UB.core.UBCommand', {
      * Create and render automatically generated form
      */
     showAutoForm: function () {
+      if (!this.uiTag) {
+        this.uiTag = `afm-${this.entity}`
+      }
       const defaultItems = UB.core.UBCommand.createDefaultItems(this.entity, this.parentContext)
       this.windowCommandCode = UB.core.UBUtil.getNameMd5(this.entity + Ext.String.capitalize(this.commandType), defaultItems)
       this.description = $App.domainInfo.get(this.entity).caption
@@ -383,6 +386,14 @@ Ext.define('UB.core.UBCommand', {
      */
     me.hideActions = config.hideActions
 
+    if (config.shortcutCode) {
+      me.uiTag = `nsc-${config.shortcutCode}`
+    } else if (config.formCode) {
+      me.uiTag = `frm-${config.formCode}`
+    } else {
+      me.uiTag = config.uiTag
+    }
+
     if (Ext.isDefined(me.commandData)) {
       if (Ext.isString(me.commandData)) {
         me.commandData = Ext.JSON.decode(me.commandData)
@@ -616,10 +627,11 @@ Ext.define('UB.core.UBCommand', {
             }
             formDefinition.formController.mount(Object.assign({}, me.commandConfig, {
               title: me.commandConfig.title || me.formParam.caption,
-              rootComponent: formDefinition.formController.default
+              rootComponent: formDefinition.formController.default,
+              uiTag: me.uiTag
             }))
           } else if (formDefinition.formType === 'module') {
-            formDefinition.formController.mount(me.commandConfig)
+            formDefinition.formController.mount(Object.assign({}, me.commandConfig, {uiTag: me.uiTag}))
           } else {
             me.onShowFormRun(formDefinition.formView, formDefinition.formController)
           }
@@ -640,6 +652,7 @@ Ext.define('UB.core.UBCommand', {
     const reportParams = me.commandData
     const options = me.reportOptions || reportParams.reportOptions || {}
 
+    me.uiTag = `rpt-${reportParams.reportCode}`
     const report = Ext.create('UBS.UBReport', _.defaults(options, {
       code: reportParams.reportCode,
       type: reportParams.reportType,
@@ -741,6 +754,8 @@ Ext.define('UB.core.UBCommand', {
 
     options = options || {}
 
+    result.uiTag = me.uiTag
+
     const title = options.title ||
       (me.caption || (me.formParam
         ? (me.formParam.caption || me.formParam.description)
@@ -838,6 +853,7 @@ Ext.define('UB.core.UBCommand', {
           if (result.target.setActiveTab) {
             result.closable = true
             if (this.checkTabsCount(result.target)) {
+              result.uiTag = me.uiTag
               result.target.add(result)
               if (!me.openInBackgroundTab) {
                 result.target.setActiveTab(result)

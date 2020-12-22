@@ -75,31 +75,53 @@
     </div>
     <div v-else>
       <p v-html="$ut('Your password is expired. Please change password')"></p>
-      <el-tooltip placement="bottom" effect="light">
-        <i class="auth-page__tooltip fa fa-question-circle-o"></i>
-        <div slot="content" v-html="$ut('passwordRecommendation')"></div>
-      </el-tooltip>
-      <el-form-item class="auth-page--left" :label="$ut('User')">
-        <span>{{changePwd.user}}</span>
-      </el-form-item>
-
-      <el-form-item :label="$ut('OldPassword')" prop="oldPwd">
-        <el-input :placeholder="$ut('EnterOldPassword')" v-model="changePwd.oldPwd"
-                  @keyup.enter.native="doChangePassword" type="password" autocomplete="off">
-        </el-input>
-      </el-form-item>
-      <el-form-item :label="$ut('NewPassword')" prop="newPwd">
-        <el-input :placeholder="$ut('EnterNewPassword')" v-model="changePwd.newPwd"
-                  @keyup.enter.native="doChangePassword" type="password" autocomplete="off">
-        </el-input>
-      </el-form-item>
-      <el-form-item :label="$ut('RetypePassword')" prop="newPwd2">
-        <el-input :placeholder="$ut('RetypePassword')" v-model="changePwd.newPwd2"
-                  @keyup.enter.native="doChangePassword" type="password" autocomplete="off">
-        </el-input>
-      </el-form-item>
-      <el-button type="primary" plain style="min-width: 8rem" @click="doChangePassword">{{ $ut('Change') }}</el-button>
-      <el-button plain style="min-width: 8rem" @click="doLogout">{{ $ut('logout') }}</el-button>
+      <u-form-container label-position="top">
+        <u-form-row
+            label="OldPassword"
+            required
+        >
+          <el-input
+              v-model="changePwd.oldPwd"
+              :placeholder="$ut('EnterOldPassword')"
+              show-password
+          />
+        </u-form-row>
+        <u-form-row
+            label="NewPassword"
+            required
+        >
+          <el-input
+              v-model="changePwd.newPwd"
+              :placeholder="$ut('EnterNewPassword')"
+              @keyup.enter.native="doChangePassword"
+              show-password
+          ></el-input>
+          <div class="u-form-row__description">
+            {{ $ut('passwordRecommendation', changePwd.passMinLength) }}
+          </div>
+        </u-form-row>
+        <u-form-row
+            label="RetypePassword"
+            required
+        >
+          <el-input
+              v-model="changePwd.newPwd2"
+              :placeholder="$ut('RetypePassword')"
+              show-password
+          />
+        </u-form-row>
+        <div class="uba-user__change-password-form_buttons">
+          <el-button @click="doLogout">
+            {{ $ut('logout') }}
+          </el-button>
+          <el-button
+              type="primary"
+              @click="doChangePassword"
+          >
+            {{ $ut('Change') }}
+          </el-button>
+        </div>
+      </u-form-container>
     </div>
   </el-form>
 </template>
@@ -130,6 +152,7 @@
           oldPwd: this.oldPwd,
           newPwd: '',
           newPwd2: '',
+          passMinLength: 3,
           changedSuccessfully: false
         },
         changePwdRules: {
@@ -148,22 +171,31 @@
     methods: {
       doChangePassword: function () {
         var me = this
-        this.$refs['changePwdForm'].validate(function (valid) {
-          if (valid) {
-            me.$UB.connection.xhr({
-              url: 'changePassword',
-              method: 'POST',
-              data: {
-                newPwd: me.changePwd.newPwd,
-                pwd: me.changePwd.oldPwd
-              }
-            }).then(function () {
-              me.changePwd.changedSuccessfully = true
-            })
-          } else {
-            return false
-          }
-        })
+        // MPV - el validate not work inside single HTML with multiple templates
+        if (me.changePwd.oldPwd === '') {
+          this.$dialogError('EnterOldPassword')
+        } else  if (me.changePwd.newPwd === '') {
+          this.$dialogError('EnterNewPassword')
+        } else if (me.changePwd.newPwd !== me.changePwd.newPwd2) {
+          this.$dialogError('passwordsDoNotMatch')
+        } else {
+          this.$refs['changePwdForm'].validate(function (valid) {
+            if (valid) {
+              me.$UB.connection.xhr({
+                url: 'changePassword',
+                method: 'POST',
+                data: {
+                  newPwd: me.changePwd.newPwd,
+                  pwd: me.changePwd.oldPwd
+                }
+              }).then(function () {
+                me.changePwd.changedSuccessfully = true
+              })
+            } else {
+              return false
+            }
+          })
+        }
       },
       doLogout: function () {
         this.$UB.connection.logout()

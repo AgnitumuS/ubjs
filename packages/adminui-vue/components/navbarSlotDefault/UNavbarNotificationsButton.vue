@@ -64,7 +64,7 @@
               {{ getTypeLocaleString(item.messageType) }}
             </span>
             <span class="notifications__item__date">
-              {{ $moment(item.startDate).format('L') }}
+              {{ $formatByPattern.formatDate(item.startDate, 'dateTime') }}
             </span>
           </div>
           <div

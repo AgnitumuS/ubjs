@@ -154,26 +154,21 @@ module.exports.default = {
         execParams.needChangePassword = this.isPasswordNeedChange
       }
 
-      try {
-        if (this.isOwnRecord) {
-          await this.$UB.connection.xhr({
-            method: 'POST',
-            url: 'changePassword',
-            data: execParams
-          })
-        } else {
-          await this.$UB.connection.query({
-            fieldList: [],
-            entity: 'uba_user',
-            method: 'changeOtherUserPassword',
-            execParams
-          })
-        }
-      } catch (e) {
-        this.$errorReporter({ errMsg: e.message })
-        throw e
-      }
 
+      if (this.isOwnRecord) {
+        await this.$UB.connection.xhr({
+          method: 'POST',
+          url: 'changePassword',
+          data: execParams
+        })
+      } else {
+        await this.$UB.connection.query({
+          fieldList: [],
+          entity: 'uba_user',
+          method: 'changeOtherUserPassword',
+          execParams
+        })
+      }
       await this.$dialogInfo('passwordChangedSuccessfully')
       this.$emit('close')
     }

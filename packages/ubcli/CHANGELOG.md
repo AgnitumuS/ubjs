@@ -15,6 +15,71 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.11.4] - 2020-12-21
+## [5.11.3] - 2020-12-20
+### Added
+ - `ubcli migrate` will skip files what intended for migrate to the model version prior to the current DB state.
+   For example if ub_version table contains row with `modelName=UBA` and `version=005018021` all files and folders in
+   `@unitybase/uba/_migrate` folder what starts from 9 digits what smaller than 005018021 are skipped.
+
+   This prevents to apply an outdated migrations what do the same things `ubcli initialize` already did for new application.  
+
+## [5.11.2] - 2020-12-16
+### Fixed
+ - SQL Server DDL generation - fix error ` Property 'MS_Description' already exists` by using `sp_updateextendedproperty` if previous comment is ''.
+
+## [5.11.1] - 2020-12-14
+### Added
+ - `migrate`: a new hook `_beforeDDLc_` (_hooks.beforeGenerateDDLc) is added - called after `_beforeDDL_` but before
+  generateDDL. The difference from `__beforeDDL_` - an HTTP connection to server (conn parameter) is available for this hook.   
+
+### Changed
+ - DDL generator uses the same sources for all RDBMS to generate an `update` statement for fields with `not null` and for
+  fields with `defaultValue`
+
+### Fixed
+ - `changePassword` endpoint - deprecated `forUser` parameter is removed. To change a password for other user by `Supervisor`
+   `uba_user.changeOtherUserPassword` method should be used everywhere (as it is already done on uba_user form)
+ - `ubcli migrate` will check `ub_migration` table exists before applying a `_beforeDDL_` hooks.
+   If table is not exists it will be created, so names of `_beforeDDL_` hooks files can be inserted into `ub_migration` table. 
+
+## [5.11.0] - 2020-12-09
+### Added
+ - `ubcli generateNginxCfg` - added `/metrics` endpoint restriction generation using
+   ubConfig `metrics.allowedFrom` setting. 
+
+### Changed
+ - Oracle: DDL generator creates CLOB field for attributes of type `JSON`.
+
+  **WARNING** manual migration of  `_beforeDDL_` type is required for each JSON attribute.
+  Create a file named `010_beforeDDL_OraVarchar2CLOB.sql` (${TBL} and ${ATTR} should be replaced
+  by entity and attribute for JSON attributes):    
+  ```
+<% if (conn.dialect.startsWith('Oracle')) { %>
+    ALTER TABLE ${TBL} ADD (${ATTR}_c CLOB);
+    --
+    UPDATE ${TBL} SET ${ATTR}_c = ${ATTR} WHERE 1=1;
+    --
+    ALTER TABLE ${TBL} DROP COLUMN ${ATTR};
+    --
+    ALTER TABLE ${TBL} RENAME COLUMN ${ATTR}_c TO ${ATTR};
+<% } %>
+  ``` 
+
+
+### Fixed
+ - `ubcli generateNginxCfg` - `/clientRequire` location will try `$uri` `$uri/.entryPoint.js` `$uri.js` (`$uri/.entryPoint.js` added).
+  This prevents an unnecessary redirect for folders, for example `GET http://localhost/clientRequire/asn1js`
+  will return `inetpub/clientRequire/asn1js/entryPoint.js` instead of redirect to `http://localhost/clientRequire/asn1js/`. 
+
+## [5.10.2] - 2020-12-02
+### Changed
+ - `ubcli generateDDL` - default value for `-host` changed to `auto` as in all other `ubcli` commands
+- `ubcli genSuffixesIndexInitScript` -  default value for `-host` changed to `auto`
+
+### Fixed
+ - Postgres DDL generator: prevent re-create default value constraint for `Json` attributes with `defaultValue` (fix #109) 
+
 ## [5.10.1] - 2020-11-25
 ## [5.10.0] - 2020-11-23
 ### Added

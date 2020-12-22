@@ -30,8 +30,6 @@ const blobStores = require('@unitybase/blob-stores')
  *
  *  Can (optionally) convert source field names to new names using keyMap array.
  *  @example
- *
-
  const UB = require('@unitybase/ub')
  var ds = UB.DataStore('my_entity')
 
@@ -183,17 +181,17 @@ Object.defineProperty(TubDataStore, 'entity', {
 })
 
 /**
- *  Active dataset name we work with
- *  @example
- *    let store = ctx.dataStore
- *    let prevData = store.currentDataName
- *    try {
- *      store.currentDataName = TubDataStore.DATA_NAMES.BEFORE_UPDATE
- *      let valueBeforeUpdate = store.get('code')
- *    } finally {
- *      store.currentDataName = prevData
- *    }
- *
+ * Active dataset name we work with
+ * @example
+ let store = ctx.dataStore
+ let prevData = store.currentDataName
+ try {
+   store.currentDataName = TubDataStore.DATA_NAMES.BEFORE_UPDATE
+   let valueBeforeUpdate = store.get('code')
+ } finally {
+   store.currentDataName = prevData
+ }
+
  * @member DATA_NAMES
  * @memberOf TubDataStore
  */

@@ -63,6 +63,7 @@ class UForm {
    * @param {string} [cfg.modalWidth] Modal width
    * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar and for correct tabID generation
    * @param {string} [cfg.tabId] Optional tabId. If omitted will be calculated using entity code and instanceID
+   * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
    * @param {object} [cfg.target] Optional target. Used for render form into form
    * @param {boolean} cfg.isCopy Required isCopy. Used for create new record with data of existing record
    */
@@ -78,6 +79,7 @@ class UForm {
     modalWidth,
     formCode,
     tabId,
+    uiTag,
     target,
     isCopy,
     openInBackgroundTab
@@ -87,6 +89,7 @@ class UForm {
     this.storeConfig = {}
     this.$store = undefined
     this.entity = entity
+    this.uiTag = uiTag
     if (this.entity && UB.connection.domain.has(this.entity)) {
       this.entitySchema = UB.connection.domain.get(this.entity)
       this.title = title || this.entitySchema.getEntityCaption()
@@ -305,6 +308,7 @@ class UForm {
         validator: this.validator,
         title: this.title,
         tabId: this.tabId,
+        uiTag: this.uiTag,
         openInBackgroundTab: this.openInBackgroundTab,
         provide: {
           formCode: this.formCode,

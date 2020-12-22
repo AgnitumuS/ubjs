@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.13] - 2020-12-21
+## [5.5.12] - 2020-12-20
+### Added
+ - `UBEntity.prototype.getDetailsForUI` - method returns an array of UBEntityAttribute what points to
+   this entity (associatedEntity === this entity) and such relation should be visible in the UI "Details" menu 
+
 ## [5.5.11] - 2020-11-20
 ### Added
  - `UBEntityAttribute.privateSettings` & `UBEntity.privateSettings` properties.

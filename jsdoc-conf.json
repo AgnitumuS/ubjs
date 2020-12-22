@@ -89,20 +89,20 @@
       },
       "nav": [
         {
-          "href": "server-v5/index.html",
-          "name": "Server Docs"
-        },
-        {
-          "href": "ubpub-v5/index.html",
-          "name": "Client Docs"
+          "href": "gettingstarted/index.html",
+          "name": "Getting Started"
         },
         {
           "href": "server-v5/tutorialIndex.html",
           "name": "Tutorials"
         },
         {
-          "href": "gettingstarted/index.html",
-          "name": "Getting Started"
+          "href": "server-v5/index.html",
+          "name": "Server Docs"
+        },
+        {
+          "href": "ubpub-v5/index.html",
+          "name": "Client Docs"
         },
         {
           "href": "changelog/index.html",
@@ -114,6 +114,14 @@
       "currentAPI": {
         "title": "Current API (UB V5.x)",
         "children": {
+          "gettingstarted": {
+            "title": "Getting Started",
+            "link": "gettingstarted/index.html"
+          },
+          "tutorials": {
+            "title": "Tutorials",
+            "link": "server-v5/tutorialIndex.html"
+          },
           "server": {
             "title": "Server API",
             "link": "server-v5/index.html"
@@ -121,19 +129,11 @@
           "adminUI": {
             "title": "Admin UI API",
             "link": "ubpub-v5/index.html"
-          },
-          "tutorials": {
-            "title": "Tutorials",
-            "link": "server-v5/tutorialIndex.html"
-          },
-          "gettingstarted": {
-            "title": "Getting Started",
-            "link": "gettingstarted/index.html"
           }
         }
       },
       "configs": {
-        "title": "Configs",
+        "title": "Configs schemas",
         "children": {
           "server": {
             "title": "Server (ubConfig)",
@@ -144,7 +144,7 @@
             "link": "https://unitybase.info/docson/index.html#https://unitybase.info/models/UB/schemas/entity.schema.json"
           },
           "scheduler": {
-            "title": "Scheduler (jobs)",
+            "title": "Scheduler (_schedulers.json)",
             "link": "https://unitybase.info/docson/index.html#https://unitybase.info/models/UB/schemas/scheduler.config.schema.json"
           }
         }

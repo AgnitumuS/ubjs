@@ -16,6 +16,66 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Bug in setting parent context for `UMasterDetailView` on "Add New" action 
 
+## [1.13.31] - 2020-12-21
+## [1.13.30] - 2020-12-20
+### Added
+ - support for `attribute.customSettings.hiddenInDetails` is added while building `Details` menu
+   by using `UBEntity.prototype.getDetailsForUI`
+
+## [1.13.29] - 2020-12-17
+### Added
+ - `UFileAddButton`: added property `accept` - a file extensions to bind into `accept` input property
+
+### Fixed
+ - `Change password` user menu item now hidden for users logged in with Auth Schema what not support
+   password changing (all except UB, Basic and CERT/CERT2 with `requireUserName`) 
+ - `UFile`: `accept` property propagated to child `UFileAddButton`, so behavior of clicking into drag area and `Add` button is the same now  
+
+## [1.13.28] - 2020-12-16
+### Added
+  - UI Tag tracking (adding of `uitag=${uiTag}` to `ubql` URI) is implemented for Vue based tables (what mounts as tab).
+    For Vue based forms UI tracking is implemented in adminui-pub. 
+
+### Fixed
+ - `UTableEntity` & `UForm` uses `AsyncConnection.prototype.emitEntityChanged` to emit `${entityCode}:changed` event.
+   `emitEntityChanged` method emit `${entityCode}:changed` event and, in case entity has a unity mixin - emit also `${minixs.unity.entity}:changed`.
+   This allows to refresh, for example, a `uba_subject` table in case `uba_user` is edited.
+   
+## [1.13.27] - 2020-12-14
+### Changed
+  - UNavbarNotificationsButton shows message sent date with time (before this changes only date is displayed)
+    using `$formatByPattern.formatDate(item.startDate, 'dateTime')`
+    
+### Fixed
+ - form for changing expired password - validation fixed
+
+## [1.13.26] - 2020-12-09
+## [1.13.25] - 2020-12-09
+### Added
+- `UDropdown`: new property `disabled` (`false` by default), this property disables dropdown toggle when its `true`
+
+### Fixed
+ - `lookups` remove listener on unsubscribe last subscription
+ - Excel export of Vue tables: values in columns of type Boolean will be exported as 0/1 instead of HTML code fragment
+
+## [1.13.24] - 2020-12-02
+### Added
+- `loadWithCollections` - new action for loading master record and collections from one place
+
+### Changed
+- call `loaded` processing hook after loading of collections
+ - login form expired password changing component design is given to the `uba_user-changePassword` form design 
+ - `UTableEntity`: remove text of all toolbar buttons. Shows tooltips instead
+ - `UTableEntity`: remove border from last row in `bordered` mode
+ - `UTableEntity`: add default border-radius (4px) to table border in `bordered` mode
+
+### Deprecated
+ - `UToolbarButton`: Use `el-tooltip` + `u-button` instead
+
+### Fixed
+- `UTablEntity`: not show column name in the filter dropdown or in the sort dropdown based on the
+  selected table cell if the column configured as not filterable or not sortable
+
 ## [1.13.23] - 2020-11-25
 ### Fixed
  - `UBaseInput`: fix `disabled` prop in case need to disable only this field and not the entire form container
@@ -73,11 +133,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.13.17] - 2020-11-10
 ### Changed
- - `USidebar` sidebar width to `0px` in collapsed state and screen less then `768px` (mobile)
+ - `USidebar` sidebar width to `0px` in collapsed state and screen less than `768px` (mobile)
 
 ## [1.13.16] - 2020-11-08
 ### Fixed
- - `UDialog` - if `Cancel` button not available - sets focut to first available button.
+ - `UDialog` - if `Cancel` button not available - sets focus to the first available button.
    
 ## [1.13.15] - 2020-11-05
 ## [1.13.14] - 2020-11-01
@@ -99,10 +159,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    This allows fit more data on the screen without negative UX effect (verified on laptops and tablets)
  - `UToolbar` audit table opens in separate tab 
  - `audit table` save in localStorage last preview mode and active filters
- - `Form`, `UTableEntity` in case table or form opened as modal then all child tables and forms are also opened as modals
+ - `Form`, `UTableEntity` if table or form opened as modal then all child tables and forms are also opened as modals
  
 ### Fixed
- - Excel export from UTableEntity - fixed format for Date anf Boolean attributes
+ - Excel export from UTableEntity - fixed format for Date and Boolean attributes
  - prevent error `Cannot read property 'scrollIntoView' of undefined` during
   navbar tab closing (occurs for Ext based forms with close confirmation) 
  

@@ -6097,10 +6097,6 @@ a.x-tab {
   color: black;
   opacity: 0.75;
 }
-/* line 313, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-ie8m .x-btn-default-small .x-btn-glyph {
-  color: #3a3a3a;
-}
 
 /* line 320, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-small-disabled {
@@ -6464,10 +6460,6 @@ a.x-tab {
   line-height: 18px;
   color: black;
   opacity: 0.75;
-}
-/* line 313, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-ie8m .x-btn-default-medium .x-btn-glyph {
-  color: #3a3a3a;
 }
 
 /* line 320, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -6838,10 +6830,6 @@ a.x-tab {
   color: black;
   opacity: 0.75;
 }
-/* line 313, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-ie8m .x-btn-default-large .x-btn-glyph {
-  color: #3a3a3a;
-}
 
 /* line 320, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-large-disabled {
@@ -7194,10 +7182,6 @@ a.x-tab {
   color: #424242;
   opacity: 0.75;
 }
-/* line 313, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-ie8m .x-btn-default-toolbar-small .x-btn-glyph {
-  color: #717171;
-}
 
 /* line 320, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-small-disabled {
@@ -7548,10 +7532,6 @@ a.x-tab {
   line-height: 18px;
   color: #424242;
   opacity: 0.75;
-}
-/* line 313, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-ie8m .x-btn-default-toolbar-medium .x-btn-glyph {
-  color: #717171;
 }
 
 /* line 320, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -7908,10 +7888,6 @@ a.x-tab {
   line-height: 32px;
   color: #424242;
   opacity: 0.75;
-}
-/* line 313, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-ie8m .x-btn-default-toolbar-large .x-btn-glyph {
-  color: #717171;
 }
 
 /* line 320, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -8662,10 +8638,6 @@ a.x-tab {
   line-height: 16px;
   opacity: 0.5;
 }
-/* line 588, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-ie8m .x-panel-header-default .x-panel-header-glyph {
-  color: #687183;
-}
 
 /* line 597, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-header-default-horizontal .x-panel-header-icon-before-title {
@@ -8847,10 +8819,6 @@ a.x-tab {
   font-size: 16px;
   line-height: 16px;
   opacity: 0.5;
-}
-/* line 588, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-ie8m .x-panel-header-default-framed .x-panel-header-glyph {
-  color: #687183;
 }
 
 /* line 597, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
@@ -9854,10 +9822,6 @@ a.x-tab {
   font-size: 16px;
   line-height: 16px;
   opacity: 0.5;
-}
-/* line 399, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Window.scss */
-.x-ie8m .x-window-header-default .x-window-header-glyph {
-  color: #6e798b;
 }
 
 /* line 408, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Window.scss */
@@ -12207,10 +12171,6 @@ a.x-color-picker-item:hover {
   color: #29303f;
   opacity: 0.75;
 }
-/* line 162, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
-.x-ie8m .x-menu-item-glyph {
-  color: #5e636f;
-}
 
 /* line 170, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
 .x-menu-item-icon-right {
@@ -13801,10 +13761,6 @@ a.x-color-picker-item:hover {
   color: #676a6c;
   opacity: 0.5;
 }
-/* line 344, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-ie8m .x-tab-default .x-tab-glyph {
-  color: #abaeaf;
-}
 /* line 353, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-strict .x-ie9 .x-tab-bar-vertical .x-tab-default {
   padding-left: 0;
@@ -13885,10 +13841,6 @@ a.x-color-picker-item:hover {
 .x-tab-default-over .x-tab-glyph {
   color: #2f7c94;
 }
-/* line 518, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-ie8m .x-tab-default-over .x-tab-glyph {
-  color: #7e9dca;
-}
 
 /* line 527, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-top-over,
@@ -13918,10 +13870,6 @@ a.x-color-picker-item:hover {
 /* line 568, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-active .x-tab-glyph {
   color: #212121;
-}
-/* line 575, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-ie8m .x-tab-default-active .x-tab-glyph {
-  color: #888a8a;
 }
 
 /* line 583, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
@@ -13959,10 +13907,6 @@ a.x-color-picker-item:hover {
   color: #676a6c;
   opacity: 0.3;
   filter: none;
-}
-/* line 660, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-ie8m .x-tab-default-disabled .x-tab-glyph {
-  color: #c6c9ca;
 }
 
 /* line 669, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
@@ -14658,10 +14602,6 @@ a.x-color-picker-item:hover {
   color: #424242;
   opacity: 0.75;
 }
-/* line 313, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-ie8m .x-btn-plain-toolbar-small .x-btn-glyph {
-  color: #717171;
-}
 
 /* line 320, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-small-disabled {
@@ -15009,10 +14949,6 @@ a.x-color-picker-item:hover {
   line-height: 18px;
   color: #424242;
   opacity: 0.75;
-}
-/* line 313, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-ie8m .x-btn-plain-toolbar-medium .x-btn-glyph {
-  color: #717171;
 }
 
 /* line 320, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -15371,10 +15307,6 @@ a.x-color-picker-item:hover {
   line-height: 32px;
   color: #424242;
   opacity: 0.75;
-}
-/* line 313, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-ie8m .x-btn-plain-toolbar-large .x-btn-glyph {
-  color: #717171;
 }
 
 /* line 320, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -15798,10 +15730,6 @@ a.x-color-picker-item:hover {
   line-height: 16px;
   opacity: 0.5;
 }
-/* line 588, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-ie8m .x-panel-header-light .x-panel-header-glyph {
-  color: #798499;
-}
 
 /* line 597, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-header-light-horizontal .x-panel-header-icon-before-title {
@@ -15991,10 +15919,6 @@ a.x-color-picker-item:hover {
   font-size: 16px;
   line-height: 16px;
   opacity: 0.5;
-}
-/* line 588, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-ie8m .x-panel-header-light-framed .x-panel-header-glyph {
-  color: #798499;
 }
 
 /* line 597, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
@@ -16857,10 +16781,6 @@ h6,
   font-size: 16px;
   line-height: 16px;
   opacity: 0.75;
-}
-/* line 34, ../../sass/src/menu/Menu.scss */
-.x-ie8m .x-menu-item-icon::before {
-  color: #5e636f;
 }
 
 /* line 40, ../../sass/src/menu/Menu.scss */

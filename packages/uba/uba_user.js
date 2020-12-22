@@ -179,7 +179,6 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
 function changePasswordEp (req, resp) {
   const reqBody = req.read()
   const params = JSON.parse(reqBody)
-  let forUser = params.forUser
   const newPwd = params.newPwd || ''
   const pwd = params.pwd || ''
   const needChangePassword = params.needChangePassword || false
@@ -187,21 +186,21 @@ function changePasswordEp (req, resp) {
   let dbPwdHash
 
   let failException = null
-  let userID = Session.userID || UBA_COMMON.USERS.ANONYMOUS.ID
+  const userID = Session.userID
+  const userName = Session.uData.login
   try {
     if (!newPwd) throw new UB.ESecurityException('changePassword: newPwd parameter is required')
-    userID = Session.userID
     UB.Repository('uba_user').attrs('name', 'uPasswordHashHexa').where('ID', '=', userID).select(store)
-    if (!store.eof) {
-      forUser = store.get('name')
-      dbPwdHash = store.get('uPasswordHashHexa')
+    if (store.eof) {
+      throw new UB.ESecurityException('Can\'t load a used by ID')
     }
+    dbPwdHash = store.get('uPasswordHashHexa')
     // check password
-    const currentPwdHash = Session._buildPasswordHash(forUser, pwd)
+    const currentPwdHash = Session._buildPasswordHash(userName, pwd)
     if (currentPwdHash !== dbPwdHash) {
       throw new UB.ESecurityException('<<<Incorrect old password>>>')
     }
-    me.changePassword(userID, forUser, newPwd, needChangePassword, dbPwdHash)
+    me.changePassword(userID, userName, newPwd, needChangePassword, dbPwdHash)
   } catch (e) {
     failException = e
   }
@@ -217,7 +216,7 @@ function changePasswordEp (req, resp) {
         actionUser: Session.uData.login,
         actionTime: new Date(),
         remoteIP: Session.callerIP,
-        targetUser: forUser.toLowerCase(),
+        targetUser: userName.toLowerCase(),
         toValue: failException
           ? JSON.stringify({ action: 'changePassword', reason: failException.message })
           : JSON.stringify({ action: 'changePassword' })
