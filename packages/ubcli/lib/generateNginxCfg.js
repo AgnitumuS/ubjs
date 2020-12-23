@@ -84,6 +84,9 @@ module.exports = function generateNginxCfg (cfg) {
   if (serverConfig.metrics.enabled && serverConfig.metrics.allowedFrom) {
     metricsAllowedFrom = serverConfig.metrics.allowedFrom.split(';')
   }
+  const sharedUbAppsFolder = process.platform === 'win32'
+    ? 'C:/ProgramData/unitybase/shared'
+    : '/var/opt/unitybase/shared'
   const vars = {
     ubURL: ubURL,
     externalURL: externalURL,
@@ -100,6 +103,7 @@ module.exports = function generateNginxCfg (cfg) {
     maxDocBodySize: cfg.maxDocBody,
     sendFileHeader: reverseProxyCfg.sendFileHeader,
     sendFileLocationRoot: reverseProxyCfg.sendFileLocationRoot,
+    sharedUbAppsFolder,
     serveStatic: reverseProxyCfg.serveStatic,
     staticRoot: '',
     allowCORSFrom: serverConfig.httpServer.allowCORSFrom,
@@ -133,11 +137,13 @@ module.exports = function generateNginxCfg (cfg) {
   }
   const linkAsFileName = externalURL.host + '.cfg'
   if (process.platform === 'win32') {
-    console.info(`Config generated and can be included inside nginx.conf: 
-    include ${cfg.out.replace(/\\/g, '/')};`)
+    console.info(`
+Config generated and can be included inside nginx.conf: 
+  include ${cfg.out.replace(/\\/g, '/')};`)
   } else {
     if (fs.existsSync('/etc/nginx/sites-enabled')) {
-      console.info(`Config generated and can be linked to /etc/nginx/sites-enabled:
+      console.info(`
+Config generated and can be linked to /etc/nginx/sites-enabled:
   sudo ln -s ${cfg.out.replace(/\\\\/g, '/')} /etc/nginx/sites-available/${linkAsFileName}
   sudo ln -s /etc/nginx/sites-available/${linkAsFileName} /etc/nginx/sites-enabled
   sudo nginx -s reload
@@ -149,6 +155,12 @@ module.exports = function generateNginxCfg (cfg) {
     }
     console.info('To apply new configs type\n  sudo nginx -s reload')
   }
+  console.log(`
+Do not modify generated config directly, instead add files to:
+  - ${sharedUbAppsFolder}/${reverseProxyCfg.sendFileLocationRoot}/upstream*.conf to extend an upstream's list
+  - ${sharedUbAppsFolder}/${reverseProxyCfg.sendFileLocationRoot}/http*.conf     to add an http level directives
+  - ${sharedUbAppsFolder}/${reverseProxyCfg.sendFileLocationRoot}/server*.conf   to add a server level directives  
+  `)
 }
 
 module.exports.shortDoc = `Generate include for NGINX config based on

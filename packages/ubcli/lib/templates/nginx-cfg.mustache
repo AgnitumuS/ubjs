@@ -8,11 +8,15 @@ map $http_upgrade $connection_upgrade {
 upstream {{{sendFileLocationRoot}}} {
     server {{{ubURL.host}}} max_fails=2 fail_timeout=30;
     {{#lb}}
-    # add more server entry here
+    # add more upstream entry (if exists)
+    include {{{sharedUbAppsFolder}}}/{{{sendFileLocationRoot}}}/upstream*.conf;
     ip_hash;
     {{/lb}}
     keepalive 32;
 }
+
+# include manually added http context configs (if exists)
+include {{{sharedUbAppsFolder}}}/{{{sendFileLocationRoot}}}/http*.conf;
 
 server {
     listen       {{{nginxPort}}};
@@ -100,6 +104,10 @@ server {
     # short connection timeout (UB http request buffer is overflow)
     proxy_connect_timeout   2;
     {{/lb}}
+
+    # include manually added server context configs (if exists)
+    include {{{sharedUbAppsFolder}}}/{{{sendFileLocationRoot}}}/server*.conf;
+
     # proxy all requests to the UB backend
     location / {
         proxy_pass          http://{{{sendFileLocationRoot}}};
