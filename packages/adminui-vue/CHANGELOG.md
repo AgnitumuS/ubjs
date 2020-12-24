@@ -14,11 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- Bug in setting parent context for `UMasterDetailView` on "Add New" action 
+ - Bug in setting parent context for `UMasterDetailView` on "Add New" action (use `cfg.props.parentContext` instead of `cfg.parentContext`)
 
 ## [1.13.32] - 2020-12-22
 ### Fixed
-- Bug in some preview forms, which show entity table, when clicking on table header
+ - Bug in some preview forms, which show entity table, when clicking on table header
 
 ## [1.13.31] - 2020-12-21
 ## [1.13.30] - 2020-12-20
