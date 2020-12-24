@@ -654,18 +654,23 @@ class DDLGenerator {
       dataType: 'BIGINT',
       allowNull: false
     })
-    tableDef.primaryKey = { name: 'PK_' + tblName, keys: ['tail', 'sourceID'] }
-    tableDef.addFK({
-      name: genFKName(tblName, 'SOURCEID', entity.sqlAlias, entity.connectionConfig.dialect),
-      keys: ['sourceID'.toUpperCase()],
-      references: getTableDBName(entity),
-      generateFK: true
-    })
+    // primary key with tail+sourceID cause deadlocks on SQL Server
+    // tableDef.primaryKey = { name: 'PK_' + tblName, keys: ['tail', 'sourceID'] }
+    // tableDef.addFK({
+    //   name: genFKName(tblName, 'SOURCEID', entity.sqlAlias, entity.connectionConfig.dialect),
+    //   keys: ['sourceID'.toUpperCase()],
+    //   references: getTableDBName(entity),
+    //   generateFK: true
+    // })
+    //tableDef.isIndexOrganized = true
     tableDef.addIndex({
       name: formatName('IDX_', tblName, '_SOURCEID', entity.connectionConfig.dialect),
       keys: ['sourceID'.toUpperCase()]
     })
-    tableDef.isIndexOrganized = true
+    tableDef.addIndex({
+      name: formatName('IDX_', tblName, '_TAIL', entity.connectionConfig.dialect),
+      keys: ['tail'.toUpperCase()]
+    })
     this.referenceTableDefs.push(tableDef)
   }
 
