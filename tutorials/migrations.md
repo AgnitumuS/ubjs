@@ -251,7 +251,7 @@ Migration file or folder name can contain a `_beforeDDL_`, `_beforeDDLc_` or `_a
  - **_beforeDDL_** js hook is called with `conn === null` because on this stage HTTP connection to the server is impossible.
  - **_beforeDDLc_** js hook is called after beforeDDL hooks but before generateDDL and HTTP connection is available here (conn !== null)
  
-### Using per-model `_hooks.js`
+### Using per-model _hooks.js
 A `/_migrate/_hooks.js` file for each model can exports migrations hook. 
 The possible hooks are:
   - `beforeGenerateDDL`     # a good place to alter database objects (server **is not** started here)
