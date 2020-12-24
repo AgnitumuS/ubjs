@@ -133,6 +133,16 @@ where:
 Ensure nginx main process have access to these files (use `nginx -T` to verify all configs)
 
 Examples (consider externalURL=https://my.server.com in ubConfig) :
+ - get client real IP form a proxy (running on 192.168.1.12) behind us. To use in case of several nginx`s:  
+```shell
+mkdir -p /var/opt/unitybase/shared/my-server-com
+cat <<<EOF
+  # use client real IP as reported by proxy
+  real_ip_header    X-Forwarded-For;
+  # A proxy we trust (address or mask)
+  set_real_ip_from  192.168.1.12;
+EOF > /var/opt/unitybase/shared/my-server-com/server-getRealIpFromUpfront.conf
+```   
  - override a max body size to 100Mb for /hugeFileUpload location 
 ```shell
 mkdir -p /var/opt/unitybase/shared/my-server-com
@@ -241,7 +251,7 @@ to apply settings without reboot:
 sysctl -p /etc/sysctl.d/60-tcp-hiload.conf
 ``` 
 
-This allow to create ~1500 connections per second instead of default 470 and total
+This allows to create ~1500 connections per second instead of default 470 and total
 concurrent browser sessions up to 10000.
  
 Explanation:
