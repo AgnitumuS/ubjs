@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Bug in setting parent context for `UMasterDetailView` on "Add New" action 
 
 ## [1.13.32] - 2020-12-22
 ### Fixed

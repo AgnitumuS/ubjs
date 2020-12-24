@@ -273,8 +273,10 @@ export default {
     },
 
     buildDetailAddNewConfig (cfg) {
-      cfg.parentContext = {
-        [this.selectedDetail.attribute]: this.selectedRowId
+      cfg.props = {
+        parentContext: {
+          [this.selectedDetail.attribute]: this.selectedRowId
+        }
       }
       return cfg
     },
