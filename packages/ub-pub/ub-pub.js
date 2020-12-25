@@ -166,7 +166,17 @@ const UB = module.exports = {
    */
   UBAbortError: utils.UBAbortError,
   log: utils.log,
+  /**
+   * Log error message to console (if console available)
+   * @method
+   * @param {...*} msg
+   */
   logError: utils.logError,
+  /**
+   * Log warning message to console (if console available)
+   * @method
+   * @param {...*} msg
+   */
   logWarn: utils.logWarn,
   logDebug: utils.logDebug,
   /**
@@ -490,7 +500,18 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
    * Legacy for old adminUI. UBUtil.js will define this property
    * @private
    */
-  Utils: {}
+  Utils: {},
+
+  LIMITS: {
+    /**
+     * lookups are limited to this value using limit(lookupMaxRows). If result contains a lookupMaxRows rows - error outputted into console.error
+     */
+    lookupMaxRows: 10000,
+    /**
+     * If lookup contains more when lookupWarningRows - outputted console.warn
+     */
+    lookupWarningRows: 2500
+  }
 }
 
 /**

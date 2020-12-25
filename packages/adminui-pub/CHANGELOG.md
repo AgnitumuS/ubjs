@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - **BREAKING** EntityGridPanel lookup column max row count is limited to `UB.LIMITS.LIMITS.lookupMaxRows` (10000).
+   This prevents select for huge entities what can cause an out of memory on the server side. 
+   
 ### Changed
 
 ### Deprecated

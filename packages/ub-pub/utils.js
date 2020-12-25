@@ -294,7 +294,7 @@ module.exports.logWarn = function logWarn (msg) {
 
 /**
  * Log debug message to console.
- * Since it binded to console, can also be used to debug Promise resolving in this way:
+ * Since it binds to console, can also be used to debug Promise resolving in this way:
  *
  *      UB.get('timeStamp').then(UB.logDebug);
  *

@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UB.LIMITS.LIMITS.lookupMaxRows` (10000) and  `UB.LIMITS.LIMITS.lookupWarningRows` (2500) constants added.
+   UI must limit a lookups row count to lookupMaxRows and output warnings in case lookup row count exceeds lookupWarningRows.
 
 ### Changed
 
