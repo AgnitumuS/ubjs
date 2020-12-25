@@ -176,7 +176,7 @@ class ServerRepository extends CustomRepository {
   selectSingle (fieldAliases) {
     const r = this.selectAsObject(fieldAliases)
     if (r.length > 1) {
-      console.warn(this.CONSTANTS.selectSingleMoreThanOneRow)
+      console.error(this.CONSTANTS.selectSingleMoreThanOneRow)
     }
     return r[0]
   }
@@ -194,7 +194,7 @@ class ServerRepository extends CustomRepository {
       inst.run(this.method, this.ubql())
       const res = inst.eof ? undefined : inst.get(0)
       if (inst.rowCount > 1) {
-        console.warn(this.CONSTANTS.selectScalarMoreThanOneRow)
+        console.error(this.CONSTANTS.selectScalarMoreThanOneRow)
       }
       inst.freeNative() // release memory ASAP
       return res
@@ -202,7 +202,7 @@ class ServerRepository extends CustomRepository {
       const result = this.selectAsArray()
       if (Array.isArray(result.resultData.data[0])) {
         if (result.resultData.data.length > 1) {
-          console.warn(this.CONSTANTS.selectScalarMoreThanOneRow)
+          console.error(this.CONSTANTS.selectScalarMoreThanOneRow)
         }
         return result.resultData.data[0][0]
       } else {

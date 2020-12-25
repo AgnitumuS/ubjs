@@ -211,7 +211,7 @@ class ClientRepository extends CustomRepository {
    */
   selectSingle (fieldAliases) {
     return this.selectAsObject(fieldAliases).then(function (rows) {
-      if (rows.length > 1) console.warn(this.CONSTANTS.selectSingleMoreThanOneRow)
+      if (rows.length > 1) console.error(this.CONSTANTS.selectSingleMoreThanOneRow)
       return rows[0]
     })
   }
@@ -226,7 +226,7 @@ class ClientRepository extends CustomRepository {
     return this.selectAsArray().then(function (result) {
       const L = result.resultData.data.length
       if (L) {
-        if (L > 1) console.warn(this.CONSTANTS.selectScalarMoreThanOneRow)
+        if (L > 1) console.error(this.CONSTANTS.selectScalarMoreThanOneRow)
         return result.resultData.data[0][0]
       } else {
         return undefined
