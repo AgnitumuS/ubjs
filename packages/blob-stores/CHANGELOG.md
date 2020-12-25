@@ -6,11 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-  - BLOB sores: to transform non lun'ed store to LUN'ed old folder MUST be mounted into `blobStoreRoot/LU00`
+ - BLOB sores: to transform non lun'ed store to LUN'ed old folder MUST be mounted into `blobStoreRoot/LU00`
 
 ### Changed
-  - hack with UB 1.12 and UB 4.x compatibility for file system BLOB stores with historyDepth = 0 is **REMOVED**.
-    Previous implementation is correct.
+ - hack with UB 1.12 and UB 4.x compatibility for file system BLOB stores with historyDepth = 0 is **REMOVED**.
+   Previous implementation is correct.
     
 ### Deprecated
 

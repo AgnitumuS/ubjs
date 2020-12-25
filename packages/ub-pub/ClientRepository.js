@@ -203,27 +203,34 @@ class ClientRepository extends CustomRepository {
   /**
    * Select a single row. If ubql result is empty - return {undefined}.
    *
-   * WARNING method do not check repository contains the single row and always return
+   * **WARNING** method do not check repository contains the single row and always return
    * a first row from result.
    * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names
    *   during transform array to object. See {@link class:ClientRepository#selectAsObject selectAsObject}
    * @return {Promise<object|undefined>} Promise, resolved to {Object|undefined}
    */
   selectSingle (fieldAliases) {
-    return this.selectAsObject(fieldAliases).then(function (row) {
-      return row[0]
+    return this.selectAsObject(fieldAliases).then(function (rows) {
+      if (rows.length > 1) console.warn(this.CONSTANTS.selectSingleMoreThanOneRow)
+      return rows[0]
     })
   }
 
   /**
    * Perform select and return a value of the first attribute from the first row
    *
-   * WARNING method do not check repository contains the single row
-   * @return {Promise<object|undefined>} Promise, resolved to {Object|undefined}
+   * **WARNING** method do not check repository contains the single row
+   * @return {Promise<Number|String|undefined>} Promise, resolved to {Number|String|undefined}
    */
   selectScalar () {
     return this.selectAsArray().then(function (result) {
-      return (result.resultData.data.length) ? result.resultData.data[0][0] : undefined
+      const L = result.resultData.data.length
+      if (L) {
+        if (L > 1) console.warn(this.CONSTANTS.selectScalarMoreThanOneRow)
+        return result.resultData.data[0][0]
+      } else {
+        return undefined
+      }
     })
   }
 

@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `ServerRepository.selectSingle` & `ServerRepository.selectScalar` will output a warning to console
+   in case result row count > 1
 
 ### Changed
 

@@ -1077,6 +1077,11 @@ CustomRepository.prototype.WhereCondition = {
  */
 CustomRepository.prototype.UBQLv2 = true
 
+CustomRepository.prototype.CONSTANTS = {
+  selectSingleMoreThanOneRow: 'Query for selectSingle returns more than 1 row. MUST be fixed by adding a correct where clause',
+  selectScalarMoreThanOneRow: 'Query for selectScalar returns more than 1 row. MUST be fixed by adding a correct where clause'
+}
+
 /**
  * Abstract Custom repository (extended by serverRepository & ClientRepository)
  * @type {CustomRepository}

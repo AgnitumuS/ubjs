@@ -31,7 +31,8 @@
  // run a statement and output colored beautified result
  ubcli execSql -sql 'select * from uba_user' -withResult -noLogo | sed -n "/--BEGIN/,/--END/p" | tail -n +2 | head -n -2 | jq -r .
 
- * Usage from a code:
+ * Usage from a code
+ * @example
 
  const execSql = require('@unitybase/ubcli/lib/execSql')
  let options = {

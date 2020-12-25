@@ -113,8 +113,8 @@ class ServerRepository extends CustomRepository {
    * For repository with ONE attribute returns a flat array of attribute values
    * @example
 
-       const usersIDs = UB.Repository('uba_user'),attrs('ID').limit(100).selectAsArrayOfValues()
-       // usersIDs is array of IDs [1, 2, 3, 4]
+   const usersIDs = UB.Repository('uba_user'),attrs('ID').limit(100).selectAsArrayOfValues()
+   // usersIDs is array of IDs [1, 2, 3, 4]
 
    * @return {Array<string|number>}
    */
@@ -167,31 +167,47 @@ class ServerRepository extends CustomRepository {
   /**
    * Select a single row. If ubql result is empty - return {undefined}.
    *
-   * WARNING method do not check repository conntains the single row and always return a first row from result.
+   * **WARNING** method do not check repository contains the single row and always return a first row from result
+   *
    * @param {Object<string, string>} [fieldAliases] Optional object to change attribute
    *  names during transform array to object
    * @return {Object|undefined}
    */
   selectSingle (fieldAliases) {
-    return this.selectAsObject(fieldAliases)[0]
+    const r = this.selectAsObject(fieldAliases)
+    if (r.length > 1) {
+      console.warn(this.CONSTANTS.selectSingleMoreThanOneRow)
+    }
+    return r[0]
   }
 
   /**
    * Perform select and return a value of the first attribute from the first row
    *
-   * WARNING method do not check repository contains the single row
-   * @return {Object|undefined}
+   * **WARNING** method do not check repository contains the single row
+   *
+   * @return {Number|String|undefined}
    */
   selectScalar () {
     if (process.isServer) { // inside server thread
       const inst = new TubDataStore(this.entityName)
       inst.run(this.method, this.ubql())
       const res = inst.eof ? undefined : inst.get(0)
+      if (inst.rowCount > 1) {
+        console.warn(this.CONSTANTS.selectScalarMoreThanOneRow)
+      }
       inst.freeNative() // release memory ASAP
       return res
     } else {
       const result = this.selectAsArray()
-      return Array.isArray(result.resultData.data[0]) ? result.resultData.data[0][0] : undefined
+      if (Array.isArray(result.resultData.data[0])) {
+        if (result.resultData.data.length > 1) {
+          console.warn(this.CONSTANTS.selectScalarMoreThanOneRow)
+        }
+        return result.resultData.data[0][0]
+      } else {
+        return undefined
+      }
     }
   }
 
