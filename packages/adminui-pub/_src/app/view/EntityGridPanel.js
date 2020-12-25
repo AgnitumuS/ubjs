@@ -485,7 +485,10 @@ Ext.define('UB.view.EntityGridPanel', {
             ubRequest: {
               entity: requirements[j],
               method: 'select',
-              fieldList: fieldList
+              fieldList: fieldList,
+              options: {
+                limit: UB.LIMITS.lookupMaxRows
+              }
             },
             autoLoad: false,
             disablePaging: true,
@@ -495,9 +498,13 @@ Ext.define('UB.view.EntityGridPanel', {
           store.lookUpEntity = params.entity
           store.lookUpField = requirements[j]
           store.on('load', function (st, records, success) {
-            if (success && records && records.length > 1000) {
-              UB.logError('Too large look up field for entity "', st.lookUpField,
-                '". Look up entity', st.ubRequest.entity, 'Record count =', records.length)
+            if (success && records) {
+              const c = records.length
+              if (c >= UB.LIMITS.lookupMaxRows) {
+                UB.logError(`Lookups: Entity "${params.entity}" result truncated to ${UB.LIMITS.lookupMaxRows} records to prevent performance problems. Consider to avoid lookp'ing to a huge entities`)
+              } else if (c >= UB.LIMITS.lookupWarningRows) {
+                UB.logWarn(`Lookups: Too many rows (${c}) returned for "${params.entity}" lookup. Consider to avoid lookups for huge entities to prevents performance degradation`)
+              }
             }
           }, store, { single: true })
           stores[storeMd5] = store

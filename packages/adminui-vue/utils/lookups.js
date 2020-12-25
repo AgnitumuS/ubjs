@@ -106,12 +106,13 @@ const instance = new Vue({
       if (isFirstSubscription || hasAdditionalAttrs) {
         const resultData = await UB.Repository(entity)
           .attrs([...subscription.attrs])
-          .limit(LOOKUP_LIMIT + 1)
+          .limit(UB.LIMITS.lookupMaxRows)
           .select()
 
-        if (resultData.length > LOOKUP_LIMIT) {
-          console.warn(`Lookups: Entity "${entity}" contains more than ${LOOKUP_LIMIT} records. 
-          For large amounts of data, performance problems may occur on slower computers`)
+        if (resultData.length >= UB.LIMITS.lookupMaxRows) {
+          UB.logError(`Lookups: Entity "${entity}" result truncated to ${UB.LIMITS.lookupMaxRows} records to prevent performance problems. Consider to avoid lookp'ing to a huge entities`)
+        } else if (resultData.length >= UB.LIMITS.lookupWarningRows) {
+          UB.logWarn(`Lookups: Too many rows (${resultData.length}) returned for "${entity}" lookup. Consider to avoid lookups for huge entities to prevents performance degradation`)
         }
         subscription.data.splice(0, subscription.data.length, ...resultData)
         resultData.forEach(r => { subscription.mapById[r.ID] = r })
