@@ -14,8 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- Classifier item: add `mi_deleteDate` to unique index to account for safe delete and fix bug
+ - Classifier item: add `mi_deleteDate` to unique index to account for safe delete and fix bug
   when user cannot insert item with code equal to one of the deleted item
+ - `cdn_organization` - fixed `Invalid JSON` error when updating an `Organization type` for existed organization.
+   (introduced in 5.4.49 by isGovAuthority fix) [UBDF-12903]
 
 ## [5.4.59] - 2020-12-22
 ## [5.4.58] - 2020-12-21

@@ -112,13 +112,15 @@ function checkAccessAddGovByRoles (ctxt, isUpdate) {
   if (isUpdate) {
     let dn = ctxt.dataStore.currentDataName
     ctxt.dataStore.currentDataName = TubDataStore.DATA_NAMES.BEFORE_UPDATE
-    oldBusinessTypeID = ctxt.dataStore.get('orgBusinessTypeID')
+    oldBusinessTypeID = ctxt.dataStore.get('orgBusinessTypeID') || 0
     ctxt.dataStore.currentDataName = dn
     if (!oldBusinessTypeID && !newBusinessTypeID) return true // no business type
   }
   const isGovAuthority = UB.Repository('cdn_orgbusinesstype')
     .attrs('isGovAuthority')
+    .where('isGovAuthority', '=', true)
     .where('[ID]', 'in', [newBusinessTypeID, oldBusinessTypeID])
+    .limit(1)
     .selectScalar()
   if (!isGovAuthority) return true // if no row exists - this is not a gov authority
   const accessAddGovByRoles = ubs_settings.loadKey('cdn.organization.accessAddGovByRoles', '')
