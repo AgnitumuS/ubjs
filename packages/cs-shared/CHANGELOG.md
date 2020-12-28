@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.15] - 2020-12-28
 ## [5.5.14] - 2020-12-22
 ### Added
  - `LocalDataStore.convertResponseDataToJsTypes` - moved from AsyncConnection to LocalDataStorage to be

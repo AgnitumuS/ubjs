@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `ServerRepository.selectSingle` & `ServerRepository.selectScalar` will output an error to console
-   in case result row count > 1
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.14] - 2020-12-28
+### Added
+ - `ServerRepository.selectSingle` & `ServerRepository.selectScalar` will output an error to console
+   in case result row count > 1
 
 ## [5.4.13] - 2020-12-22
 ### Added

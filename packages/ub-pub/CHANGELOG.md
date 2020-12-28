@@ -6,10 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UB.LIMITS.LIMITS.lookupMaxRows` (10000) and  `UB.LIMITS.LIMITS.lookupWarningRows` (2500) constants added.
-   UI must limit a lookups row count to lookupMaxRows and output warnings in case lookup row count exceeds lookupWarningRows.
- - `ClientRepository.selectSingle` & `ClientRepository.selectScalar` will output an error to console
-   in case result row count > 1
 
 ### Changed
 
@@ -18,6 +14,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.6.5] - 2020-12-28
+### Added
+ - `UB.LIMITS.LIMITS.lookupMaxRows` (10000) and  `UB.LIMITS.LIMITS.lookupWarningRows` (2500) constants added.
+   UI must limit a lookups row count to lookupMaxRows and output warnings in case lookup row count exceeds lookupWarningRows.
+ - `ClientRepository.selectSingle` & `ClientRepository.selectScalar` will output an error to console
+   in case result row count > 1
 
 ## [5.6.4] - 2020-12-22
 ## [5.6.3] - 2020-12-21

@@ -6,9 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - **BREAKING** EntityGridPanel lookup column max row count is limited to `UB.LIMITS.LIMITS.lookupMaxRows` (10000).
-   This prevents select for huge entities what can cause an out of memory on the server side. 
-   
+
 ### Changed
 
 ### Deprecated
@@ -17,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.14.0] - 2020-12-28
+### Added
+ - **BREAKING** EntityGridPanel lookup column max row count is limited to `UB.LIMITS.LIMITS.lookupMaxRows` (10000).
+   This prevents select for huge entities what can cause an out of memory on the server side. 
+   
 ## [5.13.65] - 2020-12-22
 ## [5.13.64] - 2020-12-21
 ### Fixed

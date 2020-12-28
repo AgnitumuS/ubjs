@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - lookups module output a warning to console for lookups with row count > `UB.LIMITS.LIMITS.lookupWarningRows` (2500)
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.14.0] - 2020-12-28
+### Added
+ - lookups module output a warning to console for lookups with row count > `UB.LIMITS.LIMITS.lookupWarningRows` (2500)
 
 ### Fixed
  - Bug in setting parent context for `UMasterDetailView` on "Add New" action (use `cfg.props.parentContext` instead of `cfg.parentContext`)

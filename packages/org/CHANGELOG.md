@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.30] - 2020-12-28
 ## [5.4.29] - 2020-12-22
 ### Changed
 - Shortcuts for entities with `parentID` attribute associated with `org_unit`, are created with predefined columns.
