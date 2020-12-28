@@ -133,16 +133,19 @@ where:
 Ensure nginx main process have access to these files (use `nginx -T` to verify all configs)
 
 Examples (consider externalURL=https://my.server.com in ubConfig) :
- - get client real IP form a proxy (running on 192.168.1.12) behind us. To use in case of several nginx`s:  
+ - get a client real IP in case some Load balancer is running on b.b.b.b IP address behind us, so HTTP request is transferred as
+   `Client(a.a.a.a) -> LB (b.b.b.b) -> Nginx (c.c.c.c) -> UB (d.d.d.d)`:
 ```shell
 mkdir -p /var/opt/unitybase/shared/my-server-com
 cat <<<EOF
   # use client real IP as reported by proxy
   real_ip_header    X-Forwarded-For;
   # A proxy we trust (address or mask)
-  set_real_ip_from  192.168.1.12;
+  set_real_ip_from  b.b.b.b;
 EOF > /var/opt/unitybase/shared/my-server-com/server-getRealIpFromUpfront.conf
-```   
+```
+Load balancer on b.b.b.b should correctly set an `X-Forwarded-For` header. In case LB is nginx - `proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;`  
+
  - override a max body size to 100Mb for /hugeFileUpload location 
 ```shell
 mkdir -p /var/opt/unitybase/shared/my-server-com
@@ -153,6 +156,7 @@ cat <<<EOF
   }
 EOF > /var/opt/unitybase/shared/my-server-com/server-hugeFileUpload.conf
 ```
+
  - add additional upstreams (:8883 and :8884) to the load balancing group:
 ```shell
 mkdir -p /var/opt/unitybase/shared/my-server-com

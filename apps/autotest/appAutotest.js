@@ -6,7 +6,11 @@ const { getDocumentPerfTestEp, setDocumentPerfTestEp } = require('@unitybase/blo
 App.registerEndpoint('getDocumentPerfTest', getDocumentPerfTestEp, false)
 App.registerEndpoint('setDocumentPerfTest', setDocumentPerfTestEp, false)
 
-App.registerEndpoint('upload', (req, resp) => { console.log(req.headers) }, false)
+App.registerEndpoint('upload', (req, resp) => {
+  console.log(req.headers)
+  resp.writeEnd(req.headers)
+  resp.statusCode = 200
+}, false)
 
 App.registerEndpoint('pdfsign', testPdfSignerSpeed, false)
 

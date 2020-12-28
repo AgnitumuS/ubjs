@@ -87,8 +87,8 @@ server {
 
 
     proxy_set_header    Host    $host;
-    # Tell UB real IP address of client
-    proxy_set_header    {{remoteIPHeader}}  $realip_remote_addr;
+    # Tell UB a real IP address of the client
+    proxy_set_header    {{remoteIPHeader}}  $remote_addr;
     {{#remoteConnIDHeader}}
     proxy_set_header    {{remoteConnIDHeader}}  $connection;
     {{/remoteConnIDHeader}}
