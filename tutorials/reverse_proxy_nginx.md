@@ -232,7 +232,7 @@ Proxy header directive `/var/opt/unitybase/shared/NORMALIZED_EXTERNAL_URL/server
 
 YOUR_EXTERNAL_URL should be replaced by server external url. 
 
-# Tuning operation system for Hi Load HTTP(S)
+# Tuning operation system for high Load HTTP(S)
 ## Linux
 ```shell script
 touch /etc/sysctl.d/60-tcp-hiload.conf
@@ -265,7 +265,7 @@ Explanation:
  After client disconnection port is busy for `sysctl net.ipv4.tcp_fin_timeout`
  
  Default port range values for Linux is 32768-60999 (28231 TCP connections).
- Since modern browser can create 6 or even mode TCP session for one page this is
+ Since a modern browser can create 6 or even more TCP session for one page this is
  ~ 4700 concurrent users.
  
  
