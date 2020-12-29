@@ -164,12 +164,12 @@ function getEmployeeList (staffUnitID, supportLang) {
     const employeeList = []
     staffs.first()
     while (!staffs.eof) {
-      const staf = ((staffsCount > 1 && staffs.get('employeeOnStaffType') === 'PERMANENT') ? '* ' : '') +
+      const staff = ((staffsCount > 1 && staffs.get('employeeOnStaffType') === 'PERMANENT') ? '*' : '') +
         staffs.get('employeeID.shortFIO' + suffix)
-      employeeList.push(staf)
+      employeeList.push(staff)
       staffs.next()
     }
-    result[lang] = employeeList.join(',')
+    result[lang] = employeeList.join(', ')
   })
   return result
 }
