@@ -8,9 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `org_staffunit`: use ', ' delimiter (instead of ',') to join several employees on the same staff.
-   Use '*' instead of '* ' to mark a full name with permanent assignment. Example (before -> after):
-   `* Sobiolev O.S.,Plaz O.V. (13.1.1 - dev depatdment)` -> `*Sobiolev O.S., Plaz O.V. (13.1.1 - dev depatdment)`
+ - [UBDF-12922] `org_staffunit`: use `', '` delimiter (instead of `','`) to join several employees on the same staff.
+   Use `'*'` instead of `'* '` to mark a full name with permanent assignment. Example (before -> after):
+   `* Sobiolev O.S.,Plaz O.V. (13.1.1 - dev depatdment)` -> `*Sobiolev O.S., Plaz O.V. (13.1.1 - dev department)`
 
 ### Deprecated
 
