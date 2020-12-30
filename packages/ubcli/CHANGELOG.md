@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.12.1] - 2020-12-30
+### Fixed
  - `execSql` (also used in generateDDL) in optimistic mode will explicitly rollback transaction on errors.
    This prevents `current transaction is aborted, commands ignored until end of transaction block` error
    for subsequent queries on Postgres. 

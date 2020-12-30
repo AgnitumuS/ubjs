@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.61] - 2020-12-30
 ## [5.4.60] - 2020-12-28
 ### Fixed
  - Classifier item: add `mi_deleteDate` to unique index to account for safe delete and fix bug
