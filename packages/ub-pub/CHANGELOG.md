@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - fix usage of this in `ClientRepository.selectSingle()` and `ClientRepository.selectScalar()`
 
 ## [5.6.5] - 2020-12-28
 ### Added
