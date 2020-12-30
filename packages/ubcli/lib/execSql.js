@@ -176,6 +176,8 @@ function execSql (cfg) {
       successStmtCnt++
     } catch (e) {
       invalidStmtCnt++
+      // explicitly rollback to prevent `current transaction is aborted` errors for subsequent queries on Postgres
+      dbConn.rollback()
       if (!cfg.optimistic && !ignoreErr) {
         throw e
       } else {

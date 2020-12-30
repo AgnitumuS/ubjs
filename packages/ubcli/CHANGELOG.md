@@ -14,7 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+ - `execSql` (also used in generateDDL) in optimistic mode will explicitly rollback transaction on errors.
+   This prevents `current transaction is aborted, commands ignored until end of transaction block` error
+   for subsequent queries on Postgres. 
+   
 ## [5.12.0] - 2020-12-28
 ### Added
  - `ubcli generateNginxCfg` will add `includes` directives into generated config - this allows to extend application reverse proxy 
