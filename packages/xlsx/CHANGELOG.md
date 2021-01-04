@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- improve bulding of `xf` and `alignment` tags (not add excessive spaces in the end) in order to
+  provide safe parsing it by [xlsx](https://github.com/SheetJS/sheetjs/blob/master/README.md#parsing-functions)
+  Earlier: `<xf xfId="0" applyFont="1"     ></xf>`, now: `<xf xfId="0" applyFont="1" ></xf>`
 
 ### Deprecated
 
