@@ -12,7 +12,7 @@ const MAILER_ENABLED = App.serverConfig.application.customSettings && App.server
 /**
  * @typedef {Object} mailAttachmentReference
  * @property {String} entity The entity code where data is stored
- * @property {string} attribute Code of attribute with type `Document` from antity
+ * @property {string} attribute Code of attribute with type `Document` from entity
  * @property {number} id Row ID
  * @property {string} atachName Name of attachment (as it will be displayed in EMail)
  */
