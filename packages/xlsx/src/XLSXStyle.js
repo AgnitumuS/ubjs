@@ -89,35 +89,56 @@ class XLSXStyle {
 
   compile () {
     const cfg = this.config
-    const out = []
-    out.push(
-      `<xf numFmtId="${extractId(cfg.format)}" fontId="${extractId(cfg.font)}"`
+    const xfAttributes = []
+    xfAttributes.push(
+      `numFmtId="${extractId(cfg.format)}"`,
+      `fontId="${extractId(cfg.font)}"`,
+      `fillId="${extractId(cfg.fill)}"`,
+      `borderId="${extractId(cfg.border)}"`,
+      'xfId="0"',
+      'applyFont="1"'
     )
-    out.push(
-      ` fillId="${extractId(cfg.fill)}" borderId="${extractId(cfg.border)}" xfId="0"`
-    )
-    out.push(
-      ` ${cfg.format ? 'applyNumberFormat="1"' : ''}  applyFont="1" ${cfg.fill ? 'applyFill="1"' : ''} ${cfg.border ? 'applyBorder="1"' : ''}`
-    )
+    if (cfg.format) {
+      xfAttributes.push('applyNumberFormat="1"')
+    }
+    if (cfg.fill) {
+      xfAttributes.push('applyFill="1"')
+    }
+    if (cfg.border) {
+      xfAttributes.push('applyBorder="1"')
+    }
     const setAdditionalAlignment = cfg.wrapText || cfg.verticalAlign || cfg.horizontalAlign
-    out.push(
-      ` ${cfg.alignment || setAdditionalAlignment ? 'applyAlignment="1"' : ''} ${cfg.protect ? 'applyProtection="1"' : ''} >`
-    )
-    if (cfg.alignment) {
-      out.push(cfg.alignment.compile())
+    if (cfg.alignment || setAdditionalAlignment) {
+      xfAttributes.push('applyAlignment="1"')
     }
     if (cfg.protect) {
-      out.push(cfg.protect.compile())
+      xfAttributes.push('applyProtection="1"')
+    }
+    const openTag = `<xf ${xfAttributes.join(' ')} >`
+    const outArray = [openTag]
+    if (cfg.alignment) {
+      outArray.push(cfg.alignment.compile())
+    }
+    if (cfg.protect) {
+      outArray.push(cfg.protect.compile())
     }
     if (setAdditionalAlignment) {
-      out.push(
-        `<alignment ${cfg.wrapText ? 'wrapText="1"' : ''} ${cfg.verticalAlign ? 'vertical="' + cfg.verticalAlign + '"' : ''}`
-      )
+      const alignmentAttributes = []
+      if (cfg.wrapText) {
+        alignmentAttributes.push('wrapText="1"')
+      }
+      if (cfg.verticalAlign) {
+        alignmentAttributes.push(`vertical="${cfg.verticalAlign}"`)
+      }
       // left (by default), center, right
-      out.push(cfg.horizontalAlign ? ' horizontal="' + cfg.setHorizontalAlign + '" />' : ' />')
+      if (cfg.horizontalAlign) {
+        alignmentAttributes.push(`horizontal="${cfg.setHorizontalAlign}"`)
+      }
+      const alignmentTag = `<alignment ${alignmentAttributes.join(' ')} />`
+      outArray.push(alignmentTag)
     }
-    out.push('</xf>')
-    return out.join('')
+    outArray.push('</xf>')
+    return outArray.join('')
   }
 }
 
