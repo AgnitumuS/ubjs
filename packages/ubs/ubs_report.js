@@ -45,7 +45,7 @@ exports.reportCode = {
    */
   buildReport: function (reportParams) {
     // let data = UB.Repository(..).selectAsObject() 
-    let renderedReport = this.buildHTML(data)
+    let renderedReport = this.buildHTML(reportParams)
     if (this.reportType === 'pdf') {
       renderedReport = this.transformToPdf(renderedReport)
     }
