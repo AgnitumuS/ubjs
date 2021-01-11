@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.32] - 2021-01-11
 ## [5.4.31] - 2020-12-30
 ### Changed
  - [UBDF-12922] `org_staffunit`: use `', '` delimiter (instead of `','`) to join several employees on the same staff.
