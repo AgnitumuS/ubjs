@@ -54,7 +54,7 @@ module.exports = function () {
   if (inst.eof) {
     return 'No emails sent'
   }
-
+  console.debug('Mailer: before new TubMailSender')
   let mailSender = new UBMail.TubMailSender({
     host: mailerParams.targetHost,
     port: mailerParams.targetPort || '25',
@@ -62,8 +62,12 @@ module.exports = function () {
     password: mailerParams.password || '',
     tls: Boolean(mailerParams.autoTLS),
     fullSSL: Boolean(mailerParams.fullSSL),
-    auth: mailerParams.auth || false
+    auth: mailerParams.auth || false,
+    deferLogin: true
   })
+  console.debug('Mailer: before mailSender.Login')
+  mailSender.login()
+  console.debug('Mailer: after mailSender.Login')
 
   while (!inst.eof) {
     mailData.ID = inst.get('ID')

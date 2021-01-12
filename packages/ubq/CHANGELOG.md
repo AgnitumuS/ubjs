@@ -6,8 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - e-mail sending job uses deferred SMPT log-in (helps to locate a source of AV during sending some mails)
 
 ### Changed
+ - e-mail sending job pass a path to the blob store file into UBMailSender instead of
+   reading a file content into JS memory and pass it as base64.
+
+   This decrease JS memory usage and breaks a long BASE64 string into 78-char lines as
+   required by RFC-5322
 
 ### Deprecated
 

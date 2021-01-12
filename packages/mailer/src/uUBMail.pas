@@ -28,11 +28,14 @@ type
   private
     fIsLogined: Boolean;
     fLastError: string;
+    fAuthNeccessary: boolean;
   public
     constructor Create;
     destructor Destroy; override;
     procedure DoLogin;
     procedure DoLogout;
+
+    property authNeccessary: boolean read fAuthNeccessary write fAuthNeccessary;
   end;
 
   TubMailReceiver = class(TPOP3Send)
@@ -853,7 +856,6 @@ begin
     freeAndNil(Msg);
   end;
 
-
   if res then begin
     Sender.fLastError := '';
     Result.asBoolean := true
@@ -866,6 +868,37 @@ begin
 //    raise Exception.Create(curState);
     Result.asBoolean := False;
   end
+end;
+
+function ubMailSender_login(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  sm_inst: PSMInstanceRecord;
+  mSender: TubMailSender;
+  err: string;
+begin
+  try
+    if not IsInstanceObject(cx, vp.thisObject[cx], sm_inst) then
+      raise ESMException.Create(SM_NOT_A_NATIVE_OBJECT);
+    mSender := (sm_inst.Instance as TubMailSender);
+    if not mSender.Login then begin
+      if mSender.Sock <> nil then
+        err := mSender.Sock.LastErrorDesc
+      else
+        err := 'Unknown socket error';
+      raise ESMException.CreateUtf8('Login not complete: %. For TLS related errors check OpenSSL is installed',[err]);
+    end;
+    if not mSender.AuthDone and mSender.authNeccessary then
+      if mSender.Sock <> nil then
+        raise ESMException.CreateUtf8('Authorization not complete: %',[mSender.Sock.LastErrorDesc])
+      else
+        raise ESMException.Create('Authorization not complete: unknown socket error');
+    Result := true;
+  except
+    on E: Exception do begin
+      Result := False;
+      JSError(cx, E);
+    end;
+  end;
 end;
 
 function ubMailSender_sendMail(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
@@ -894,6 +927,7 @@ var
   l: Integer;
 begin
   definePrototypeMethod('sendMail', @ubMailSender_sendMail, 1, [jspEnumerate, jspPermanent, jspReadOnly]);
+  definePrototypeMethod('login', @ubMailSender_login, 0, [jspEnumerate, jspPermanent, jspReadOnly]);
 
   l := Length(FJSProps);
   SetLength(FJSProps, l+1);
@@ -911,53 +945,62 @@ function TubMailSenderProtoObject.NewSMInstance(aCx: PJSContext; argc: uintN; va
 var
   obj: PJSObject;
   val: jsval;
-  Sender: TubMailSender;
-  authNeccessary: Boolean;
+  mSender: TubMailSender;
+  err: string;
 begin
   if (argc<>1) or not vp.argv[0].isObject then
     raise ESMException.Create('new TubMailSender() invalid call');
   obj := vp.argv[0].asObject;
-  Sender := TubMailSender.Create;
+  mSender := TubMailSender.Create;
   try
     if obj.GetProperty(aCx, 'host', val) and val.isString then
-      Sender.targetHost := val.asJSString.ToUTF8(aCx)
+      mSender.targetHost := val.asJSString.ToUTF8(aCx)
     else
       raise ESMException.Create('new TubMailSender() host is not specified');
     if obj.GetProperty(aCx, 'port', val) and val.isString then
-      Sender.targetPort := val.asJSString.ToUTF8(aCx)
+      mSender.targetPort := val.asJSString.ToUTF8(aCx)
     else
       raise ESMException.Create('new TubMailSender() port is not specified');
     if obj.GetProperty(aCx, 'user', val) and val.isString then
-      Sender.userName := val.asJSString.ToUTF8(aCx)
+      mSender.userName := val.asJSString.ToUTF8(aCx)
     else
-      Sender.userName := '';
+      mSender.userName := '';
     if obj.GetProperty(aCx, 'password', val) and val.isString then
-      Sender.password := val.asJSString.ToUTF8(aCx)
+      mSender.password := val.asJSString.ToUTF8(aCx)
     else
-      Sender.password := '';
+      mSender.password := '';
     if obj.GetProperty(aCx, 'tls', val) and val.isBoolean then
-      Sender.autoTLS := val.asBoolean;
+      mSender.autoTLS := val.asBoolean;
     if obj.GetProperty(aCx, 'fullSSL', val) and val.isBoolean then
-      Sender.FullSSL := val.asBoolean;
+      mSender.FullSSL := val.asBoolean;
 
     if obj.GetProperty(aCx, 'auth', val) and val.isBoolean then
-      authNeccessary := val.asBoolean
+      mSender.authNeccessary := val.asBoolean
     else
-      authNeccessary := False;
-    if not Sender.Login then begin
-      if Pos('TLS', Sender.Sock.LastErrorDesc) <> 0 then
-        raise ESMException.CreateFmt('Login not complete: %s May be OpenSSL not installed or not accessible',[Sender.Sock.LastErrorDesc])
-      else
-        raise ESMException.CreateFmt('Login not complete: %s',[Sender.Sock.LastErrorDesc]);
+      mSender.authNeccessary := False;
+
+    if obj.GetProperty(aCx, 'deferLogin', val) and val.isBoolean
+      and val.asBoolean then
+       // defer login
+    else begin
+      if not mSender.Login then begin
+        if mSender.Sock <> nil then
+          err := mSender.Sock.LastErrorDesc
+        else
+          err := 'Unknown socket error';
+        raise ESMException.CreateUtf8('Login not complete: %. For TLS related errors check OpenSSL is installed',[err]);
+      end;
+      if not mSender.AuthDone and mSender.authNeccessary then
+        if mSender.Sock <> nil then
+          raise ESMException.CreateUtf8('Authorization not complete: %',[mSender.Sock.LastErrorDesc])
+        else
+          raise ESMException.Create('Authorization not complete: unknown socket error');
     end;
-    if not Sender.AuthDone and authNeccessary then
-      raise ESMException.CreateFmt('Authorization not complete: %s',[Sender.Sock.LastErrorDesc]);
   except
-    Sender.Free;
+    FreeAndNil(mSender);
     raise;
   end;
-  result := Sender;
-
+  result := mSender;
 end;
 
 { TubMailReceiverProtoObject }

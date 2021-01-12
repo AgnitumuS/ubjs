@@ -134,9 +134,15 @@ TubMailReceiver.reconnect = function () {}
  * @param {Boolean} [paramsObj.tls=false] use tls on server request. OpenSSL libraries version >= 0.9.7 must be installed - see package README.md for details
  * @param {Boolean} [paramsObj.fullSSL=false] Setup TLS before any command to SMTP
  * @param {Boolean} [paramsObj.auth = false] authentication required
+ * @param {Boolean} [paramsObj.deferLogin = false] do not call an SMTP Login method inside a constructor (MUST be called manually)
  */
 function TubMailSenderBind (paramsObj) {}
 
+/**
+ * Login to mail server (if deferLogin === true in a constructor)
+ * throws on any error
+ */
+TubMailSenderBind.login = function () {}
 
 /**
  * Last error when last sendMail failed. Empty string last sendMail finished successfully.
