@@ -74,15 +74,15 @@ module.exports = function () {
     if (cmd.attaches && cmd.attaches.length) {
       for (let i = 0, L = cmd.attaches.length; i < L; i++) {
         try {
-          const base64Body = App.blobStores.getContent({
+          const attachFN = App.blobStores.getContentPath({
             entity: cmd.attaches[i].entity,
             attribute: cmd.attaches[i].attribute,
             ID: cmd.attaches[i].id
-          }, { encoding: 'base64' })
+          })
           mailData.attaches.push({
-            kind: UBMail.TubSendMailAttachKind.Text,
+            kind: UBMail.TubSendMailAttachKind.File,
             atachName: cmd.attaches[i].atachName,
-            data: base64Body,
+            data: attachFN,
             isBase64: true
           })
         } catch (e) {
