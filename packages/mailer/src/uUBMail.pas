@@ -17,7 +17,7 @@ uses
   mimemess, mimepart, synautil, synachar, smtpsend, pop3send, imapsend, ssl_openssl,
   SpiderMonkey, SyNodeProto, SyNodeSimpleProto, jsbUtils,
   Classes, SysUtils,{$IFDEF MSWINDOWS} Windows,{$ENDIF}
-  SynCommons, mORMOt, DateUtils, SyNodeReadWrite;
+  SynCommons, mORMot, DateUtils, SyNodeReadWrite;
 
 type
   TubSendMailBodyType = (smbtText, smbtHTML, smbtCalendar);
@@ -656,6 +656,7 @@ var
   Sender: TubMailSender;
   Msg: TMimeMess;
   MIMEPart: TMimePart;
+  attachPart: TMimePart;
   BodyPart: TMimePart;
 
   obj: PJSObject;
@@ -798,21 +799,22 @@ begin
           end;
           try
             if not isBase64 then
-              Msg.AddPartBinary(attStream, atachName, MIMEPart)
-            else with Msg.AddPart(MIMEPart) do begin
-              DecodedLines.LoadFromStream(attStream);
-              MimeTypeFromExt(atachName);
-              Description := 'Attached file: ' + atachName;
-              Disposition := 'attachment';
-              FileName := atachName;
-              EncodingCode := ME_BASE64;
-              if (attachContentID <> '') then
-                contentID := attachContentID;
-              PartBody.Clear;
+              attachPart := Msg.AddPartBinary(attStream, atachName, MIMEPart)
+            else begin
+              attachPart := Msg.AddPart(MIMEPart);
+              attachPart.DecodedLines.LoadFromStream(attStream);
+              attachPart.MimeTypeFromExt(atachName);
+              attachPart.Description := 'Attached file: ' + atachName;
+              attachPart.Disposition := 'attachment';
+              attachPart.FileName := atachName;
+              attachPart.EncodingCode := ME_BASE64;
+              attachPart.PartBody.Clear;
               attStream.Position := 0;
-              PartBody.LoadFromStream(attStream);
-              EncodePartHeader;
+              attachPart.PartBody.LoadFromStream(attStream);
+              attachPart.EncodePartHeader;
             end;
+            if (attachContentID <> '') then
+              attachPart.contentID := attachContentID;
           finally
             attStream.Free;
           end;
