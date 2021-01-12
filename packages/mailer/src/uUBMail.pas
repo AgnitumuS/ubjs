@@ -741,12 +741,11 @@ begin
       for i := 0 to len - 1 do
         if propArr.GetElement(cx, i, propItem) and propItem.isObject then begin
           propObj := propItem.asObject;
-          if propObj.GetProperty(Cx, 'kind', val) and val.isInteger then
+          if propObj.GetProperty(Cx, 'kind', val) and val.isInteger then begin
+            if (val.asInteger < 0) or (val.asInteger > 2) then
+              raise ESMException.CreateFmt('Attach file error. Attach %d, invalid kind',[i]);
             attKind := TubSendMailAttachKind(val.asInteger)
-          else
-            attKind := TubSendMailAttachKind(-1);
-          if (attKind < low(TubSendMailAttachKind)) or (attKind > High(TubSendMailAttachKind)) then
-            raise ESMException.CreateFmt('Attach file error. Attach %d, invalid kind',[i]);
+          end;
 
           attDataIncorrect := False;
           attDataBufSize := 0;
@@ -915,50 +914,50 @@ var
   Sender: TubMailSender;
   authNeccessary: Boolean;
 begin
-  if (argc=1) and vp.argv[0].isObject then begin
-    obj := vp.argv[0].asObject;
-    Sender := TubMailSender.Create;
-    try
-      if obj.GetProperty(aCx, 'host', val) and val.isString then
-        Sender.targetHost := val.asJSString.ToUTF8(aCx)
-      else
-        raise ESMException.Create('new TubMailSender() host is not specified');
-      if obj.GetProperty(aCx, 'port', val) and val.isString then
-        Sender.targetPort := val.asJSString.ToUTF8(aCx)
-      else
-        raise ESMException.Create('new TubMailSender() port is not specified');
-      if obj.GetProperty(aCx, 'user', val) and val.isString then
-        Sender.userName := val.asJSString.ToUTF8(aCx)
-      else
-        Sender.userName := '';
-      if obj.GetProperty(aCx, 'password', val) and val.isString then
-        Sender.password := val.asJSString.ToUTF8(aCx)
-      else
-        Sender.password := '';
-      if obj.GetProperty(aCx, 'tls', val) and val.isBoolean then
-        Sender.autoTLS := val.asBoolean;
-      if obj.GetProperty(aCx, 'fullSSL', val) and val.isBoolean then
-        Sender.FullSSL := val.asBoolean;
-
-      if obj.GetProperty(aCx, 'auth', val) and val.isBoolean then
-        authNeccessary := val.asBoolean
-      else
-        authNeccessary := False;
-      if not Sender.Login then begin
-        if Pos('TLS', Sender.Sock.LastErrorDesc) <> 0 then
-          raise ESMException.CreateFmt('Login not complete: %s May be OpenSSL not installed or not accessible',[Sender.Sock.LastErrorDesc])
-        else
-          raise ESMException.CreateFmt('Login not complete: %s',[Sender.Sock.LastErrorDesc]);
-      end;
-      if not Sender.AuthDone and authNeccessary then
-          raise ESMException.CreateFmt('Authorization not complete: %s',[Sender.Sock.LastErrorDesc]);
-    except
-      Sender.Free;
-      raise;
-    end;
-    result := Sender;
-  end else
+  if (argc<>1) or not vp.argv[0].isObject then
     raise ESMException.Create('new TubMailSender() invalid call');
+  obj := vp.argv[0].asObject;
+  Sender := TubMailSender.Create;
+  try
+    if obj.GetProperty(aCx, 'host', val) and val.isString then
+      Sender.targetHost := val.asJSString.ToUTF8(aCx)
+    else
+      raise ESMException.Create('new TubMailSender() host is not specified');
+    if obj.GetProperty(aCx, 'port', val) and val.isString then
+      Sender.targetPort := val.asJSString.ToUTF8(aCx)
+    else
+      raise ESMException.Create('new TubMailSender() port is not specified');
+    if obj.GetProperty(aCx, 'user', val) and val.isString then
+      Sender.userName := val.asJSString.ToUTF8(aCx)
+    else
+      Sender.userName := '';
+    if obj.GetProperty(aCx, 'password', val) and val.isString then
+      Sender.password := val.asJSString.ToUTF8(aCx)
+    else
+      Sender.password := '';
+    if obj.GetProperty(aCx, 'tls', val) and val.isBoolean then
+      Sender.autoTLS := val.asBoolean;
+    if obj.GetProperty(aCx, 'fullSSL', val) and val.isBoolean then
+      Sender.FullSSL := val.asBoolean;
+
+    if obj.GetProperty(aCx, 'auth', val) and val.isBoolean then
+      authNeccessary := val.asBoolean
+    else
+      authNeccessary := False;
+    if not Sender.Login then begin
+      if Pos('TLS', Sender.Sock.LastErrorDesc) <> 0 then
+        raise ESMException.CreateFmt('Login not complete: %s May be OpenSSL not installed or not accessible',[Sender.Sock.LastErrorDesc])
+      else
+        raise ESMException.CreateFmt('Login not complete: %s',[Sender.Sock.LastErrorDesc]);
+    end;
+    if not Sender.AuthDone and authNeccessary then
+      raise ESMException.CreateFmt('Authorization not complete: %s',[Sender.Sock.LastErrorDesc]);
+  except
+    Sender.Free;
+    raise;
+  end;
+  result := Sender;
+
 end;
 
 { TubMailReceiverProtoObject }
