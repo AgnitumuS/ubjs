@@ -973,7 +973,8 @@ function createProcessingModule ({
         const item = await UB.connection.addNewAsObject({
           entity,
           fieldList,
-          execParams
+          execParams,
+          __antiMonkeyRequest: Math.random()
         })
 
         commit('ADD_COLLECTION_ITEM', { collection, item })

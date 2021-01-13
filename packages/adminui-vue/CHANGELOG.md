@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- using of `__antiMonkeyRequest` inside `addCollectionItem` action in order to prevent monkey requests
 
 ### Changed
 
