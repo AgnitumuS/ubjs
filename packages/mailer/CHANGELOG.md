@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
   - TubMailSender.login method - must be called in case deferLogin === true in a constructor.
+  - TubMailReceiver.login method - must be called in case deferLogin === true in a constructor.
   - temporary added a `Mailer:..` debug messages to locate a source of AV in sending mail
 
 ### Changed

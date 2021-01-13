@@ -109,12 +109,25 @@ begin
 end;
 
 procedure TubMailReceiver.DoLogin;
+var
+  msg: string;
 begin
   fIsLogined := login;
-  if not fIsLogined then
-    raise ESMException.CreateFmt('new TubMailReceiver() Cannot login to %s:%s as "%s": %s', [targetHost, targetPort, userName, Sock.LastErrorDesc]);
-  if not Stat then
-    raise ESMException.CreateFmt('new TubMailReceiver() Error receive server response on command STAT: %s', [Sock.LastErrorDesc]);
+  if not fIsLogined then begin
+    if Sock <> nil then
+      msg := Sock.LastErrorDesc
+    else
+      msg := 'unknown socket error';
+    raise ESMException.CreateFmt('TubMailReceiver - can not login to %s:%s as "%s": %s', [targetHost, targetPort, userName, msg])
+  end;
+
+  if not Stat then begin
+    if Sock <> nil then
+      msg := Sock.LastErrorDesc
+    else
+      msg := 'unknown socket error';
+    raise ESMException.CreateFmt('TubMailReceiver - error receive server response on command STAT: %s', [msg]);
+  end;
 end;
 
 procedure TubMailReceiver.DoLogout;
@@ -1153,7 +1166,23 @@ begin
   if not result then exit;
   try
     receiver := TubMailReceiver(nativeObj.instance);
-    receiver.Logout;
+    receiver.DoLogout;
+    receiver.DoLogin;
+    vp.rval := jsval.TrueValue;
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
+end;
+
+function ubMailReceiver_login(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  nativeObj: PSMInstanceRecord;
+  receiver: TubMailReceiver;
+begin
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  try
+    receiver := TubMailReceiver(nativeObj.instance);
     receiver.DoLogin;
     vp.rval := jsval.TrueValue;
   except
@@ -1170,6 +1199,7 @@ begin
   definePrototypeMethod('top', @ubMailReceiver_top, 2, [jspEnumerate, jspPermanent, jspReadOnly]);
   definePrototypeMethod('deleteMessage', @ubMailReceiver_mailDelete, 1, [jspEnumerate, jspPermanent, jspReadOnly]);
   definePrototypeMethod('reconnect', @ubMailReceiver_reconnect, 0, [jspEnumerate, jspPermanent, jspReadOnly]);
+  definePrototypeMethod('login', @ubMailReceiver_login, 0, [jspEnumerate, jspPermanent, jspReadOnly]);
 end;
 
 function TubMailReceiverProtoObject.NewSMInstance(aCx: PJSContext; argc: uintN; var vp: JSArgRec): TObject; 
@@ -1203,7 +1233,11 @@ begin
       if obj.GetProperty(aCx, 'fullSSL', val) and val.isBoolean then
         Receiver.FullSSL := val.asBoolean;
 
-      Receiver.DoLogin;
+      if obj.GetProperty(aCx, 'deferLogin', val) and val.isBoolean
+        and val.asBoolean then
+         // defer login
+      else
+        Receiver.DoLogin;
     except
       Receiver.Free;
       raise;
