@@ -292,13 +292,16 @@ export default {
       validator: value => ['like', 'startsWith'].includes(value)
     },
 
+    /**
+     * Allow adding dictionary records with predefined insert params, without open entity form
+     */
     allowDictionaryAdding: {
       type: Boolean,
       default: false
     },
 
     /**
-     * Overrides addNew action execParams.
+     * Overrides insert action execParams.
      * Function must return object with execParams
      */
     buildAddDictionaryConfig: {
@@ -377,8 +380,7 @@ export default {
         name: 'Clear',
         caption: this.$ut('clearSelection') + ' (Ctrl+BackSpace)',
         icon: 'u-icon-eraser',
-        // TODO clear button on dictionary field not worked properly
-        disabled: this.allowDictionaryAdding || (!this.value || this.isReadOnly),
+        disabled: !this.value || this.isReadOnly,
         handler: this.handleClearClick
       }]
     },
@@ -514,8 +516,9 @@ export default {
             })
         }
       } else {
-        if (this.allowDictionaryAdding) {
-          return this.query
+        if (this.allowDictionaryAdding && this.selectedOption && !this.value && this.query && this.prevQuery &&
+          this.query === this.prevQuery) {
+          this.prevQuery = ''
         } else {
           this.query = ''
         }
