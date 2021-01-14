@@ -208,7 +208,11 @@ UB.i18nExtend({
   },
 
   select: {
-    valueIsUndefined: 'Value "{0}" not found in entity "{1}"'
+    valueIsUndefined: 'Value "{0}" not found in entity "{1}"',
+    yes: 'Yes',
+    no: 'No, thanks',
+    isNeedDetailsQuestion: 'Do you want to fill in other details?',
+    recordAddedSuccessfully: 'Record added successfully'
   },
 
   tableRegister: {

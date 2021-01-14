@@ -208,7 +208,11 @@ UB.i18nExtend({
   },
 
   select: {
-    valueIsUndefined: 'Qiymət "{0}" obeyktdə tapılmadı "{1}"'
+    valueIsUndefined: 'Qiymət "{0}" obeyktdə tapılmadı "{1}"',
+    yes: 'Bəli',
+    no: 'Xeyr, təşəkkürlər',
+    isNeedDetailsQuestion: 'Digər təfərrüatları doldurmaq istəyirsiniz?',
+    recordAddedSuccessfully: 'Qeyd uğurla əlavə edildi'
   },
 
   tableRegister: {

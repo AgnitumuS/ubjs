@@ -67,6 +67,7 @@
             class="el-input__icon u-icon-close"
             @click="$emit('input', null, null)"
           />
+
           <i
             v-if="!isReadOnly"
             slot="suffix"
@@ -147,6 +148,22 @@
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
+
+    <el-popconfirm
+      v-if="allowDictionaryAdding"
+      class="popconfirm_hidden"
+      :confirm-button-text="$ut('select.yes')"
+      :cancel-button-text="$ut('select.no')"
+      icon="el-icon-info"
+      :title="$ut('select.isNeedDetailsQuestion')"
+      @onConfirm="handleAddDictionaryItemWithDetails"
+      @onCancel="handleAddDictionaryItem"
+    >
+      <button
+        slot="reference"
+        ref="popperButton"
+      />
+    </el-popconfirm>
   </div>
 </template>
 
@@ -273,6 +290,20 @@ export default {
       type: String,
       default: 'like',
       validator: value => ['like', 'startsWith'].includes(value)
+    },
+
+    allowDictionaryAdding: {
+      type: Boolean,
+      default: false
+    },
+
+    /**
+     * Overrides addNew action execParams.
+     * Function must return object with execParams
+     */
+    buildAddDictionaryConfig: {
+      type: Function,
+      default: config => config
     }
   },
 
@@ -310,26 +341,17 @@ export default {
     },
 
     inputIconCls () {
-      let icon
       const arrowPrefix = 'u-icon-arrow-'
+      let icon = this.dropdownVisible ? arrowPrefix + 'up' : arrowPrefix + 'down'
 
-      if (this.dropdownVisible) {
-        icon = arrowPrefix + 'up'
-      } else {
-        icon = arrowPrefix + 'down'
-      }
-
-      if (this.loading) {
-        icon = 'el-icon-loading'
-      }
+      if (this.loading) icon = 'el-icon-loading'
 
       return icon
     },
 
     defaultActions () {
-      if (this.removeDefaultActions) {
-        return []
-      }
+      if (this.removeDefaultActions) return []
+
       return [{
         name: 'ShowLookup',
         caption: this.$ut('selectFromDictionary') + ' (F9)',
@@ -355,7 +377,8 @@ export default {
         name: 'Clear',
         caption: this.$ut('clearSelection') + ' (Ctrl+BackSpace)',
         icon: 'u-icon-eraser',
-        disabled: !this.value || this.isReadOnly,
+        // TODO clear button on dictionary field not worked properly
+        disabled: this.allowDictionaryAdding || (!this.value || this.isReadOnly),
         handler: this.handleClearClick
       }]
     },
@@ -491,18 +514,18 @@ export default {
             })
         }
       } else {
-        this.query = ''
+        if (this.allowDictionaryAdding) {
+          return this.query
+        } else {
+          this.query = ''
+        }
       }
     },
 
     // set delete status if record is deleted safely
     setSafeDeleteValue (option) {
-      if (option.mi_deleteDate) {
-        const isDeleted = option.mi_deleteDate.getTime() < Date.now()
-        this.isSafeDeletedValue = isDeleted
-      } else {
-        this.isSafeDeletedValue = false
-      }
+      if (option.mi_deleteDate) this.isSafeDeletedValue = option.mi_deleteDate.getTime() < Date.now()
+      else this.isSafeDeletedValue = false
     },
 
     onShowDropdown () {
@@ -671,6 +694,61 @@ export default {
     onBlur () {
       this.isFocused = false
       this.$emit('blur')
+      if (this.allowDictionaryAdding && this.query.length > 0 && !this.disabled && !this.value) {
+        this.$refs.popperButton.click()
+      }
+    },
+
+    /**
+     * Handler for 'cancel' event of popper-confirm
+     * Inserts new record with params created from 'buildAddDictionaryConfig' and emits input with new ID
+     */
+    async handleAddDictionaryItem () {
+      if (!this.removeDefaultActions) {
+        const config = this.buildAddDictionaryConfig({
+          cmdType: this.$UB.core.UBCommand.commandType.showForm,
+          entity: this.getEntityName,
+          isModal: true,
+          query: this.query
+        })
+
+        const newItem = await this.$UB.connection
+          .insertAsObject({
+            entity: this.getEntityName,
+            fieldList: [this.valueAttribute],
+            execParams: (config.props && config.props.parentContext) || {}
+          })
+
+        if (newItem && newItem.ID) {
+          this.$notify.success(this.$ut('select.recordAddedSuccessfully'))
+          this.$emit('input', newItem.ID)
+        }
+      }
+    },
+
+    /**
+     * Handler for 'confirm' event of popper-confirm
+     * Opens modal form with params created from 'buildAddDictionaryConfig' and emits input with new ID after first form save
+     */
+    handleAddDictionaryItemWithDetails () {
+      if (!this.removeDefaultActions) {
+        const vm = this
+        const config = this.buildAddDictionaryConfig({
+          cmdType: this.$UB.core.UBCommand.commandType.showForm,
+          entity: this.getEntityName,
+          isModal: true,
+          query: this.query
+        })
+
+        vm.$UB.connection.on(`${vm.getEntityName}:changed`, function (response) {
+          if (response && response.method && response.method === 'insert' && response.resultData && response.resultData.ID) {
+            vm.$emit('input', response.resultData.ID)
+            vm.$UB.connection.removeListener(`${vm.getEntityName}:changed`, null)
+          }
+        })
+
+        this.$UB.core.UBApp.doCommand(config)
+      }
     }
   }
 }
@@ -721,7 +799,7 @@ export default {
 
 .u-select{
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
 }
 
 .ub-select__more-icon {
@@ -743,5 +821,10 @@ export default {
 
 .u-select-icon-warning {
   color: hsl(var(--hs-warning), var(--l-state-default));
+}
+
+.popconfirm_hidden {
+  visibility: hidden;
+  width: 0px;
 }
 </style>

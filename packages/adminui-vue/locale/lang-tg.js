@@ -208,7 +208,11 @@ UB.i18nExtend({
   },
 
   select: {
-    valueIsUndefined: 'Қиммати "{0}" дар моҳияти (объекти) "{1}" ёфт нашуд.'
+    valueIsUndefined: 'Қиммати "{0}" дар моҳияти (объекти) "{1}" ёфт нашуд.',
+    yes: 'Yes',
+    no: 'No, thanks',
+    isNeedDetailsQuestion: 'Do you want to fill in other details?',
+    recordAddedSuccessfully: 'Record added successfully'
   },
 
   tableRegister: {

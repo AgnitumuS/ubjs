@@ -208,7 +208,11 @@ UB.i18nExtend({
   },
 
   select: {
-    valueIsUndefined: 'Значення "{0}" не знайдено в сутності "{1}"'
+    valueIsUndefined: 'Значення "{0}" не знайдено в сутності "{1}"',
+    yes: 'Так',
+    no: 'Ні, дякую',
+    isNeedDetailsQuestion: 'Ви бажаєте заповнити інші деталі?',
+    recordAddedSuccessfully: 'Запис успішно додано'
   },
 
   tableRegister: {
