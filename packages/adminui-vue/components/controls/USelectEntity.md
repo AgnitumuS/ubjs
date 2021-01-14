@@ -250,6 +250,7 @@ For example when you need instead `ID` like `code`.
 <template>
   <u-select-entity
     v-model="personID"
+    entity-name="cdn_person"
     allow-dictionary-adding
     :build-add-dictionary-config="buildAddPersonConfig"
   />
