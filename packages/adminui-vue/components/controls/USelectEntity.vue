@@ -705,7 +705,7 @@ export default {
      */
     async handleAddDictionaryItem () {
       if (!this.removeDefaultActions) {
-        const config = this.buildAddDictionaryConfig({
+        const config = await this.buildAddDictionaryConfig({
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
           entity: this.getEntityName,
           isModal: true,
@@ -719,9 +719,9 @@ export default {
             execParams: (config.props && config.props.parentContext) || {}
           })
 
-        if (newItem && newItem.ID) {
+        if (newItem && newItem[this.valueAttribute]) {
           this.$notify.success(this.$ut('select.recordAddedSuccessfully'))
-          this.$emit('input', newItem.ID)
+          this.$emit('input', newItem[this.valueAttribute])
         }
       }
     },
@@ -730,10 +730,10 @@ export default {
      * Handler for 'confirm' event of popper-confirm
      * Opens modal form with params created from 'buildAddDictionaryConfig' and emits input with new ID after first form save
      */
-    handleAddDictionaryItemWithDetails () {
+    async handleAddDictionaryItemWithDetails () {
       if (!this.removeDefaultActions) {
         const vm = this
-        const config = this.buildAddDictionaryConfig({
+        const config = await this.buildAddDictionaryConfig({
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
           entity: this.getEntityName,
           isModal: true,
@@ -741,8 +741,8 @@ export default {
         })
 
         vm.$UB.connection.on(`${vm.getEntityName}:changed`, function (response) {
-          if (response && response.method && response.method === 'insert' && response.resultData && response.resultData.ID) {
-            vm.$emit('input', response.resultData.ID)
+          if (response && response.method && response.method === 'insert' && response.resultData && response.resultData[this.valueAttribute]) {
+            vm.$emit('input', response.resultData[this.valueAttribute])
             vm.$UB.connection.removeListener(`${vm.getEntityName}:changed`, null)
           }
         })
