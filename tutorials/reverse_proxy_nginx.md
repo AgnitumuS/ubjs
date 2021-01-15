@@ -232,10 +232,10 @@ Proxy header directive `/var/opt/unitybase/shared/NORMALIZED_EXTERNAL_URL/server
 
 YOUR_EXTERNAL_URL should be replaced by server external url. 
 
-# Tuning operation system for high Load HTTP(S)
+# Tuning OS for high Load
 ## Linux
 ```shell script
-touch /etc/sysctl.d/60-tcp-hiload.conf
+touch /usr/lib/sysctl.d/40-ub-tcp-hiload.conf
 ```
 ```shell script
 echo "
@@ -247,12 +247,12 @@ net.ipv4.tcp_fin_timeout = 30
 net.core.somaxconn=1024
 # raise the nofile/max open files/file descriptors/file handles limit
 fs.file-max = 30000
-" > /etc/sysctl.d/60-tcp-hiload.conf
+" > /usr/lib/sysctl.d/40-ub-tcp-hiload.conf
 ```
 
-to apply settings without reboot:  
+to apply settings without a reboot:  
 ```shell script
-sysctl -p /etc/sysctl.d/60-tcp-hiload.conf
+sysctl -p /usr/lib/sysctl.d/40-ub-tcp-hiload.conf
 ``` 
 
 This allows to create ~1500 connections per second instead of default 470 and total
