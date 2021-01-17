@@ -17,7 +17,12 @@ uses
   mimemess, mimepart, synautil, synachar, smtpsend, pop3send, imapsend, ssl_openssl,
   SpiderMonkey, SyNodeProto, SyNodeSimpleProto, jsbUtils,
   Classes, SysUtils,{$IFDEF MSWINDOWS} Windows,{$ENDIF}
-  SynCommons, mORMot, DateUtils, SyNodeReadWrite;
+  SynCommons, mORMot, DateUtils,
+  {$ifdef MAILAV_TEST}
+  m_logger,
+  {$endif}
+
+  SyNodeReadWrite;
 
 type
   TubSendMailBodyType = (smbtText, smbtHTML, smbtCalendar);
@@ -32,7 +37,7 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    procedure DoLogin;
+    function DoLogin: boolean;
     procedure DoLogout;
 
     property authNeccessary: boolean read fAuthNeccessary write fAuthNeccessary;
@@ -112,8 +117,14 @@ procedure TubMailReceiver.DoLogin;
 var
   msg: string;
 begin
+  {$ifdef MAILAV_TEST}
+  addMailLog('TubMailReceiver.DoLogin enter');
+  {$endif MAILAV_TEST}
   fIsLogined := login;
   if not fIsLogined then begin
+    {$ifdef MAILAV_TEST}
+    addMailLog('TubMailReceiver.DoLogin !!not fIsLogined!!');
+    {$endif MAILAV_TEST}
     if Sock <> nil then
       msg := Sock.LastErrorDesc
     else
@@ -122,6 +133,10 @@ begin
   end;
 
   if not Stat then begin
+    {$ifdef MAILAV_TEST}
+    addMailLog('TubMailReceiver.DoLogin !!not Stat!!');
+    {$endif MAILAV_TEST}
+
     if Sock <> nil then
       msg := Sock.LastErrorDesc
     else
@@ -132,8 +147,12 @@ end;
 
 procedure TubMailReceiver.DoLogout;
 begin
-  if fIsLogined then
+  if fIsLogined then begin
+    {$ifdef MAILAV_TEST}
+    addMailLog('TubMailReceiver.DoLogout calls logout');
+    {$endif MAILAV_TEST}
     Logout;
+  end;
   fIsLogined :=False;
 end;
 
@@ -155,9 +174,11 @@ begin
   inherited;
 end;
 
-procedure TubMailSender.DoLogin;
+function TubMailSender.DoLogin: boolean;
 begin
-  fIsLogined := Login;
+  if not fIsLogined then
+    fIsLogined := Login;
+  Result := fIsLogined;
 end;
 
 procedure TubMailSender.DoLogout;
@@ -889,22 +910,38 @@ var
   mSender: TubMailSender;
   err: string;
 begin
+  {$ifdef MAILAV_TEST}
+  addMailLog('ubMailSender_login enter');
+  {$endif MAILAV_TEST}
   try
     if not IsInstanceObject(cx, vp.thisObject[cx], sm_inst) then
       raise ESMException.Create(SM_NOT_A_NATIVE_OBJECT);
+    {$ifdef MAILAV_TEST}
+    addMailLog('ubMailSender_login IsInstanceObject');
+    {$endif MAILAV_TEST}
+
     mSender := (sm_inst.Instance as TubMailSender);
-    if not mSender.Login then begin
+    if not mSender.DoLogin then begin
+      {$ifdef MAILAV_TEST}
+      addMailLog('ubMailSender_login not mSender.Login');
+      {$endif MAILAV_TEST}
+
       if mSender.Sock <> nil then
         err := mSender.Sock.LastErrorDesc
       else
         err := 'Unknown socket error';
       raise ESMException.CreateUtf8('Login not complete: %. For TLS related errors check OpenSSL is installed',[err]);
     end;
-    if not mSender.AuthDone and mSender.authNeccessary then
+    if not mSender.AuthDone and mSender.authNeccessary then begin
+      {$ifdef MAILAV_TEST}
+      addMailLog('ubMailSender_login not mSender.AuthDone ');
+      {$endif MAILAV_TEST}
+
       if mSender.Sock <> nil then
         raise ESMException.CreateUtf8('Authorization not complete: %',[mSender.Sock.LastErrorDesc])
       else
         raise ESMException.Create('Authorization not complete: unknown socket error');
+    end;
     Result := true;
   except
     on E: Exception do begin
@@ -1162,8 +1199,15 @@ var
   nativeObj: PSMInstanceRecord;
   receiver: TubMailReceiver;
 begin
+    {$ifdef MAILAV_TEST}
+  addMailLog('ubMailReceiver_reconnect enter');
+  {$endif MAILAV_TEST}
+
   result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
   if not result then exit;
+  {$ifdef MAILAV_TEST}
+  addMailLog('ubMailReceiver_reconnect IsInstanceObject is true');
+  {$endif MAILAV_TEST}
   try
     receiver := TubMailReceiver(nativeObj.instance);
     receiver.DoLogout;
@@ -1179,11 +1223,20 @@ var
   nativeObj: PSMInstanceRecord;
   receiver: TubMailReceiver;
 begin
+  {$ifdef MAILAV_TEST}
+  addMailLog('ubMailReceiver_login enter');
+  {$endif MAILAV_TEST}
   result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
   if not result then exit;
+  {$ifdef MAILAV_TEST}
+  addMailLog('ubMailReceiver_login IsInstanceObject is true');
+  {$endif MAILAV_TEST}
   try
     receiver := TubMailReceiver(nativeObj.instance);
     receiver.DoLogin;
+    {$ifdef MAILAV_TEST}
+    addMailLog('ubMailReceiver_login leave');
+    {$endif MAILAV_TEST}
     vp.rval := jsval.TrueValue;
   except
     on E: Exception do begin Result := false; JSError(cx, E); end;

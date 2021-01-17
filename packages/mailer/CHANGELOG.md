@@ -9,8 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - TubMailSender.login method - must be called in case deferLogin === true in a constructor.
   - TubMailReceiver.login method - must be called in case deferLogin === true in a constructor.
   - temporary added a `Mailer:..` debug messages to locate a source of AV in sending mail
+  - if compiled with -dMAILAV_TEST POP3/ST wrote additional logs into /tmp/ub_mailerlog.txt
 
 ### Changed
+  - Linux: recompile module with FPC_SYNCMEM support (aligned memory allocations)
 
 ### Deprecated
 

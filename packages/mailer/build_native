@@ -36,7 +36,7 @@ fpc -MDelphi -Sci -Ci -O2 -g -gl -gw2 -Xg -k-Lbin/fpc-linux -T$TARGET -P$ARCH \
   -Fu$UB_SRC/libs/Synopse -Fu$UB_SRC/libs/Synopse/SQLite3 -Fu$UB_SRC/libs/Synopse/SyNode -Fu$UB_SRC/libs/synapse40/source/lib \
   -Fu$LAZ_DIR/lcl/units/$ARCH-$TARGET -Fu$LAZ_DIR/components/lazutils/lib/$ARCH-$TARGET -Fu$LAZ_DIR/lcl \
   -FU.dcu/fpc-linux -FEbin/x86_64 -obin/x86_64/libubmail.so \
-  -dFPC_SYNCMEM \
+  -dFPC_SYNCMEM -dNO_MAILAV_TEST \
   -B -Se1 ./src/ubmail.dpr
 
 TARGET=win64
@@ -46,5 +46,5 @@ fpc -MDelphi -Sci -Ci -O2 -k-Lbin/fpc-linux -T$TARGET -P$ARCH \
   -Fu$UB_SRC/libs/Synopse -Fu$UB_SRC/libs/Synopse/SQLite3 -Fu$UB_SRC/libs/Synopse/SyNode -Fu$UB_SRC/libs/synapse40/source/lib \
   -Fu$LAZ_DIR/lcl/units/$ARCH-$TARGET -Fu$LAZ_DIR/components/lazutils/lib/$ARCH-$TARGET -Fu$LAZ_DIR/lcl \
   -FU.dcu/fpc-win64 -FEbin/x86_64 -obin/x86_64/ubmail.dll \
-  -dFPC_SYNCMEM \
+  -dNO_FPC_SYNCMEM \
   -B -Se1 ./src/ubmail.dpr

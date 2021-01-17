@@ -126,7 +126,7 @@ end;"/>
         <PackageName Value="LCLBase"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="2">
+    <Units Count="3">
       <Unit0>
         <Filename Value="ubmail.dpr"/>
         <IsPartOfProject Value="True"/>
@@ -135,12 +135,16 @@ end;"/>
         <Filename Value="uUBMail.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit1>
+      <Unit2>
+        <Filename Value="m_logger.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit2>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
     <Target>
-      <Filename Value="../bin/$(TargetCPU)/"/>
+      <Filename Value="../bin/$(TargetCPU)/libubmail.so"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="../../../../ub-server/libs/Synopse/SyNode;../../../../ub-server/libs/Synopse;../../../../ub-server/libs/Synopse/SQLite3;../../../../ub-server/libs/synapse40/source/lib;$(ProjOutDir)"/>
@@ -161,6 +165,12 @@ end;"/>
         <ExecutableType Value="Library"/>
       </Options>
     </Linking>
+    <Other>
+      <CustomOptions Value="-dMAILAV_TEST"/>
+      <OtherDefines Count="1">
+        <Define0 Value="MAILAV_TEST"/>
+      </OtherDefines>
+    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="3">

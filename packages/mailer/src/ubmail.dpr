@@ -1,22 +1,15 @@
 library ubmail;
 
+{$I Synopse.inc}
 uses
-  {$IFNDEF FPC}
-  FastMM4,
-  {$ENDIF}
-  {$IFDEF MSWINDOWS}
-  Windows,
-  {$ELSE}
-  cthreads,
-  {$ENDIF}
+  {$I SynDprUses.inc}
   SysUtils,
   Classes,
   SpiderMonkey,
   SyNodePluginIntf,
   uUBMail in 'uUBMail.pas',
   //SyNodeReadWrite,
-  mORMot,
-  SynCommons;
+  SynCommons, m_logger;
 
 const
   MAX_THREADS = 256;
