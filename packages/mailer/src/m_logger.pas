@@ -12,19 +12,23 @@ procedure addMailLog(const s: string);
 
 implementation
 
-{$ifdef LINUX}
+{$ifdef MAILAV_TEST}
 var
   MAIL_LOG_FD: cInt;
 {$endif}
 
 procedure addMailLog(const s: string);
+{$ifdef MAILAV_TEST}
+{$ifdef LINUX}
 var st: string;
   l: TSsize;
+{$endif} {$endif}
 begin
+  {$ifdef MAILAV_TEST}
   {$ifdef LINUX}
   st := FormatUTF8('%: %'#10, [NowToString, s]);
   l := fpWrite(MAIL_LOG_FD, pointer(st), length(st));
-  {$endif}
+  {$endif} {$endif}
 end;
 
 {$ifdef MAILAV_TEST}
