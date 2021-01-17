@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.15] - 2021-01-17
 ## [5.4.14] - 2020-12-28
 ### Added
  - `ServerRepository.selectSingle` & `ServerRepository.selectScalar` will output an error to console

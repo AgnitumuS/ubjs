@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.5.0] - 2021-01-17
+### Added
   - TubMailSender.login method - must be called in case deferLogin === true in a constructor.
   - TubMailReceiver.login method - must be called in case deferLogin === true in a constructor.
   - temporary added a `Mailer:..` debug messages to locate a source of AV in sending mail
@@ -13,10 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
   - Linux: recompile module with FPC_SYNCMEM support (aligned memory allocations)
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - attachment `contentID` property(if specified) handled for both `Text` kind of attachment and `File` kind,

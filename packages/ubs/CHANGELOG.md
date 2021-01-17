@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.51] - 2021-01-17
 ## [5.4.50] - 2021-01-11
 ### Fixed
  - Default report script now does not crash report execution with error 500

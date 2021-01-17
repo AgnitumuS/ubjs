@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.4.29] - 2021-01-17
+### Added
  - e-mail sending job uses deferred SMPT log-in (helps to locate a source of AV during sending some mails)
 
 ### Changed
@@ -14,10 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
    This decrease JS memory usage and breaks a long BASE64 string into 78-char lines as
    required by RFC-5322
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - mail sending job calls a logout from mail server in finally block.

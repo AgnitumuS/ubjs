@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.7.0] - 2021-01-17
+### Added
  - `UB.LocalRepository` - client side UB.Repository analogue for local data.
    Can be used as a repository for Vue based data controls:
    ```html
@@ -31,14 +42,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    }
    </script>
    ```
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.6.6] - 2020-12-30
 ### Fixed

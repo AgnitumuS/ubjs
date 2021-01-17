@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.9] - 2021-01-17
 ## [5.5.8] - 2020-12-28
 ### Added
  - BLOB sores: to transform non lun'ed store to LUN'ed old folder MUST be mounted into `blobStoreRoot/LU00`
