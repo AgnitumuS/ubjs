@@ -24,7 +24,8 @@ const KNOWN_MISC_TAGS = new Set(['__mip_ondate', '__mip_recordhistory', '__mip_r
 /**
  * Ancestor for Browser/NodeJS ClientRepository and server side ServerRepository.
  *
- * Do not use it directly, use {@link module:@unitybase/ub.Repository UB.Repository} on server side
+ * Do not use it directly, use {@link module:@unitybase/ub.Repository UB.Repository} on a server side
+ * or {@link module:@unitybase/ub-pub.Repository UB.Repository} / {@link module:@unitybase/ub.LocalRepository UB.LocalRepository} on client side
  */
 class CustomRepository {
   /**
