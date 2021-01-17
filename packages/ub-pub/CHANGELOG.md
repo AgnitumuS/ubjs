@@ -6,6 +6,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UB.LocalRepository` - client side UB.Repository analogue for local data.
+   Can be used as a repository for Vue based data controls:
+   ```html
+   <template>
+     <u-select-multiple
+      v-model="mappings"
+      valueAttribute="code"
+      :repository="getLocalDataRepository"
+      entityName="frm_Attribute"
+      displayAttribute="name"
+    />
+   </template>
+   <script>
+   module.exports.default = {
+     methods: {
+       getLocalDataRepository() {
+         return UB.LocalRepository(
+           {data: [['01', 'Jon'], ['02', 'Bob']], fields: ['code', 'name'], rowCount: 2},
+           'frm_Attribute'
+         }).orderBy('name')     
+       }
+     }
+   }
+   </script>
+   ```
 
 ### Changed
 

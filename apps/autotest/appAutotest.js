@@ -53,6 +53,31 @@ App.registerEndpoint('queueMails', (req, resp) => {
 }, false)
 App.registerEndpoint('pdfsign', testPdfSignerSpeed, false)
 
+/** 
+ * test socket limit exceed while use mailer
+ */
+App.registerEndpoint('sockOverflow', (req, resp) => {
+  const mailerParams = App.serverConfig.application.customSettings.mailerConfig
+  const UBMail = require('@unitybase/mailer')
+  const arr = []
+  for (let i=0; i < 32000; i++) {
+    console.debug('Mailer: before new TubMailSender ' + i)
+    let mailSender = new UBMail.TubMailSender({
+      host: mailerParams.targetHost,
+      port: mailerParams.targetPort || '25',
+      user: mailerParams.user || '',
+      password: mailerParams.password || '',
+      tls: Boolean(mailerParams.autoTLS),
+      fullSSL: Boolean(mailerParams.fullSSL),
+      auth: mailerParams.auth || false,
+      deferLogin: true
+    })
+    console.debug('Mailer: before mailSender.Login ' + i)
+    arr.push(mailSender)
+    mailSender.login()
+    // mailSender.freeNative()
+  }
+}, false)
 /**
  *
  * @param {THTTPRequest} req
