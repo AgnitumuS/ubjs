@@ -5,6 +5,7 @@ const transport = require('./transport')
 const conn = require('./AsyncConnection')
 const injection = require('./injection')
 const ClientRepository = require('./ClientRepository')
+const LocalRepository = require('./LocalRepository')
 const UBCache = require('./UBCache')
 const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
 const iso8601ParseAsDate = LocalDataStore.iso8601ParseAsDate
@@ -361,6 +362,21 @@ conn.then(function(conn){
    */
   Repository: function (entityCodeOrUBQL) {
     throw new Error('function defined only after connect()')
+  },
+  /**
+   * Create a new instance of a repository based on a local data
+   * @example
+
+   const UB = require('@unitybase/ub-pub')
+   const localData = {data: [[1, 'Jon'], [2, 'Bob']], fields: ['ID', 'name'], rowCount: 2}
+   await UB.LocalRepository(localData, 'uba_user').attrs('name').where('ID', '=', 2).selectScalar() // "Bob"
+
+   * @param {TubCachedData} localData
+   * @param {string} entityName
+   * @return {LocalRepository}
+   */
+  LocalRepository: function(localData, entityName) {
+    return new LocalRepository(localData, entityName)
   },
   /**
    * Set a error reported callback for unhandled errors (including unhandled promise rejections).

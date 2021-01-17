@@ -25,13 +25,14 @@ const CustomRepository = csShared.CustomRepository
       // here response is in [{ID: 10, code: 'value1'}, .... {}] format
    })
 
-
  * @class ClientRepository
  * @extends CustomRepository
- * @param {UBConnection} connection
- * @param {String} entityName name of Entity we create for
  */
 class ClientRepository extends CustomRepository {
+  /**
+   * @param {UBConnection} connection
+   * @param {String} entityName name of Entity we create for
+   */
   constructor (connection, entityName) {
     super(entityName)
     /**
@@ -61,7 +62,7 @@ class ClientRepository extends CustomRepository {
    * @private
    */
   addAttrsForCachedEntity () {
-    if (!this.connection.domain) return
+    if (!this.connection || !this.connection.domain) return
     /** @type {UBEntity} */
     const e = this.connection.domain.get(this.entityName, false)
     if (!e || !e.cacheType || (e.cacheType === 'None')) return
@@ -115,9 +116,7 @@ class ClientRepository extends CustomRepository {
    * @return {Promise<Array<object>>}
    */
   selectAsObject (fieldAliases) {
-    this.addAttrsForCachedEntity()
-    return this.connection.select(this.ubql()).then(resp => {
-      this.rawResult = resp
+    return this.selectAsArray().then(resp => {
       return LocalDataStore.selectResultToArrayOfObjects(resp, fieldAliases)
     })
   }
@@ -147,7 +146,7 @@ class ClientRepository extends CustomRepository {
    // "resultData":{"fields":["ID","name","ID.name"],
    // "data":[[10,"admin","admin"]]},"total":1}
 
-   * @return {Promise<Array<Array>>}
+   * @return {Promise<{entity: string, fieldList: string, method: string, resultData: TubCachedData}>}
    */
   selectAsArray () {
     this.addAttrsForCachedEntity()
@@ -164,11 +163,10 @@ class ClientRepository extends CustomRepository {
    const usersIDs = await UB.Repository('uba_user').attrs('ID').limit(100).selectAsArrayOfValues()
    // usersIDs is array of IDs [1, 2, 3, 4]
 
-   * @return {Array<string|number>}
+   * @return {Promise<Array<string|number>>}
    */
   selectAsArrayOfValues () {
-    this.addAttrsForCachedEntity()
-    return this.connection.select(this.ubql()).then(resp => {
+    return this.selectAsArray().then(resp => {
       return resp.resultData.data.map(r => r[0])
     })
   }

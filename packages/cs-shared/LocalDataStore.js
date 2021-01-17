@@ -44,7 +44,7 @@ const collationCompare = require('./formatByPattern').collationCompare
  * Perform local filtration and sorting of data array according to ubql whereList & order list
  * @param {TubCachedData} cachedData Data, retrieved from cache
  * @param {UBQL} ubql Initial server request
- * @returns {*} new filtered & sorted array
+ * @returns {{resultData: TubCachedData, total: number}} new filtered & sorted array
  */
 module.exports.doFilterAndSort = function (cachedData, ubql) {
   let rangeStart
@@ -324,7 +324,7 @@ module.exports.whereListToFunctions = whereListToFunctions
  *
  * @param {{resultData: TubCachedData}} selectResult
  * @param {Object<string, string>} [fieldAlias] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
- * @returns {Array<*>}
+ * @returns {Array<object>}
  */
 module.exports.selectResultToArrayOfObjects = function (selectResult, fieldAlias) {
   const inData = selectResult.resultData.data
