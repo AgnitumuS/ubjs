@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - mail sending job calls a logout from mail server in finally block.
+   This force closing POP3 connection in case MTA returns an error. 
 
 ## [5.4.28] - 2021-01-11
 ## [5.4.27] - 2020-12-30

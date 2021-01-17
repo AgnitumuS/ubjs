@@ -65,49 +65,53 @@ module.exports = function () {
     auth: mailerParams.auth || false,
     deferLogin: true
   })
-  console.debug('Mailer: before mailSender.Login')
-  mailSender.login()
-  console.debug('Mailer: after mailSender.Login')
+  try {
+    console.debug('Mailer: before mailSender.Login')
+    mailSender.login()
+    console.debug('Mailer: after mailSender.Login')
 
-  while (!inst.eof) {
-    mailData.ID = inst.get('ID')
-    mailData.msgCmd = inst.get('msgCmd')
-    mailData.msgData = inst.get('msgData')
-    const cmd = JSON.parse(mailData.msgCmd)
-    mailData.attaches = []
-    if (cmd.attaches && cmd.attaches.length) {
-      for (let i = 0, L = cmd.attaches.length; i < L; i++) {
-        try {
-          const attachFN = App.blobStores.getContentPath({
-            entity: cmd.attaches[i].entity,
-            attribute: cmd.attaches[i].attribute,
-            ID: cmd.attaches[i].id
-          })
-          mailData.attaches.push({
-            kind: UBMail.TubSendMailAttachKind.File,
-            atachName: cmd.attaches[i].atachName,
-            data: attachFN,
-            isBase64: true
-          })
-        } catch (e) {
-          eMsg = (e && e.stack) ? e.message + ' - ' + e.stack : e
-          console.error('loadContent', eMsg)
+    while (!inst.eof) {
+      mailData.ID = inst.get('ID')
+      mailData.msgCmd = inst.get('msgCmd')
+      mailData.msgData = inst.get('msgData')
+      const cmd = JSON.parse(mailData.msgCmd)
+      mailData.attaches = []
+      if (cmd.attaches && cmd.attaches.length) {
+        for (let i = 0, L = cmd.attaches.length; i < L; i++) {
+          try {
+            const attachFN = App.blobStores.getContentPath({
+              entity: cmd.attaches[i].entity,
+              attribute: cmd.attaches[i].attribute,
+              ID: cmd.attaches[i].id
+            })
+            mailData.attaches.push({
+              kind: UBMail.TubSendMailAttachKind.File,
+              atachName: cmd.attaches[i].atachName,
+              data: attachFN,
+              isBase64: true
+            })
+          } catch (e) {
+            eMsg = (e && e.stack) ? e.message + ' - ' + e.stack : e
+            console.error('loadContent', eMsg)
+          }
         }
       }
+      /* this. */
+      internalSendMail(mailData, mailSender)
+      sentCount++
+      inst.run('success', {
+        ID: mailData.ID
+      })
+
+      App.dbCommit(App.domainInfo.entities.ubq_messages.connectionName)
+
+      inst.next()
     }
-    /* this. */
-    internalSendMail(mailData, mailSender)
-    sentCount++
-    inst.run('success', {
-      ID: mailData.ID
-    })
-
-    App.dbCommit(App.domainInfo.entities.ubq_messages.connectionName)
-
-    inst.next()
+    console.log('!!!!!!!!! mailSender.freeNative !!!!!!!!!')
+  } finally {
+    mailSender.freeNative() // release a connection to mail server
+    mailSender = null
   }
-  mailSender.freeNative() // release a connection to mail server
-  mailSender = null
   return `Send ${sentCount} emails`
 }
 
