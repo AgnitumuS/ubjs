@@ -100,7 +100,19 @@ export default {
     doOnShowHints (cm) {
       return {
         list: [{
-          displayText: 'showList',
+          displayText: 'showList-Vue',
+          text: JSON.stringify({
+            renderer: 'vue',
+            cmdType: 'showList',
+            cmdData: {
+              entityName: 'TYPE-ENTITY-CODE',
+              columns: [
+                'Dbl-CLICK on left prop panel to add attribute. See UTableColumn for extended config props',
+              ]
+            }
+          }, null, '  ')
+        }, {
+          displayText: 'showList-Ext',
           text: JSON.stringify({
             'cmdType': 'showList',
             'cmdData': {
