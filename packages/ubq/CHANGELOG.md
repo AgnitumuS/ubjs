@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.4.29] - 2021-01-17
 ### Added
- - e-mail sending job uses deferred SMPT log-in (helps to locate a source of AV during sending some mails)
+ - e-mail sending job uses deferred SMTP log-in (helps to locate a source of AV during sending some mails)
 
 ### Changed
  - e-mail sending job pass a path to the blob store file into UBMailSender instead of
