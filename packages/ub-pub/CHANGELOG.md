@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.7.1] - 2021-01-19
 ## [5.7.0] - 2021-01-17
 ### Added
  - `UB.LocalRepository` - client side UB.Repository analogue for local data.
