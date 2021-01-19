@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - mail sending job: fix attachments (should use isBase64: false when attached from file)
 
 ## [5.4.29] - 2021-01-17
 ### Added

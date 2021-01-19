@@ -88,7 +88,7 @@ module.exports = function () {
               kind: UBMail.TubSendMailAttachKind.File,
               atachName: cmd.attaches[i].atachName,
               data: attachFN,
-              isBase64: true
+              isBase64: false
             })
           } catch (e) {
             eMsg = (e && e.stack) ? e.message + ' - ' + e.stack : e
@@ -102,13 +102,11 @@ module.exports = function () {
       inst.run('success', {
         ID: mailData.ID
       })
-
       App.dbCommit(App.domainInfo.entities.ubq_messages.connectionName)
-
       inst.next()
     }
-    console.log('!!!!!!!!! mailSender.freeNative !!!!!!!!!')
   } finally {
+    console.debug('!!!!!!!!! mailSender.freeNative !!!!!!!!!')
     mailSender.freeNative() // release a connection to mail server
     mailSender = null
   }
