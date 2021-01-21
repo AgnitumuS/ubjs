@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - user authentication and re-login form will trim a user name before pass it to UBConnection.
+   This fix login error in case user type a space in the end of then user name.  
 
 ## [1.14.3] - 2021-01-19
 ## [1.14.2] - 2021-01-17

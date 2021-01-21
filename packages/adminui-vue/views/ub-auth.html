@@ -453,7 +453,7 @@
         this.$refs['authForm'].validate(function (valid) {
           if (valid) {
             me.processing = true
-            window.deferred.resolve({authSchema: 'UB', login: me.authData.user, password: me.authData.pwd})
+            window.deferred.resolve({authSchema: 'UB', login: me.authData.user.trim(), password: me.authData.pwd})
           } else {
             return false
           }
@@ -465,7 +465,7 @@
           me.$refs['authForm'].validate(function (valid) {
             if (valid) {
               me.processing = true
-              window.deferred.resolve({authSchema: 'CERT2', login: me.authData.user, password: me.authData.pwd})
+              window.deferred.resolve({authSchema: 'CERT2', login: me.authData.user.trim(), password: me.authData.pwd})
             } else {
               return false
             }

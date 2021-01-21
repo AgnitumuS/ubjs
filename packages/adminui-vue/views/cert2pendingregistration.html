@@ -121,7 +121,7 @@
               me.processing = true
               window.deferred.resolve({
                 authSchema: 'CERT2',
-                login: me.authData.user,
+                login: me.authData.user.trim(),
                 password: me.authData.pwd,
                 registration: 1
               })

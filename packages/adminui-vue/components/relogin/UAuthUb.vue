@@ -92,7 +92,7 @@ module.exports = {
         if (valid) {
           this.resolveAuth({
             authSchema: window.localStorage.getItem('lastAuthType'),
-            login: this.login,
+            login: this.login.trim(),
             password: this.authData.password
           })
           if (!this.$UB.connection.appConfig.uiSettings.adminUI.defaultPasswordForDebugOnly) {
