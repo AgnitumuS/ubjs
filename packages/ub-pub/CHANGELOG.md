@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- copying of LocalRepository by `copy` method: we need copy private property `_localData` directly
 
 ## [5.7.1] - 2021-01-19
 ## [5.7.0] - 2021-01-17
