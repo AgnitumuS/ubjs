@@ -52,11 +52,15 @@ class LocalRepository extends ClientRepository {
    */
   selectAsArray () {
     const _ubql = this.ubql()
-    let filtered = LocalDataStore.doFilterAndSort(this._localData, _ubql)
+    const filtered = LocalDataStore.doFilterAndSort(this._localData, _ubql)
     // transform a result according to passed fieldList (if needed)
-    const rd = filtered.resultData //ref
-    if (!_ubql.fieldList.length || (_ubql.fieldList.length === 1 && _ubql.fieldList[0] === '*') ||
-      !rd.data.length || _.isEqual(_ubql.fieldList, rd.fields)) {
+    const rd = filtered.resultData // ref
+    if (
+      !_ubql.fieldList.length ||
+      (_ubql.fieldList.length === 1 && _ubql.fieldList[0] === '*') ||
+      !rd.data.length ||
+      _.isEqual(_ubql.fieldList, rd.fields)
+    ) {
       // Repository attributes list is equal to localData fields list -  no additional transformation required
       return Promise.resolve(filtered)
     } else {
@@ -66,11 +70,22 @@ class LocalRepository extends ClientRepository {
         return idxMap.map(i => r[i])
       })
       return Promise.resolve({
-        resultData: {data: dataAsInFieldList, fields: _ubql.fieldList, rowCount: dataAsInFieldList.length },
+        resultData: { data: dataAsInFieldList, fields: _ubql.fieldList, rowCount: dataAsInFieldList.length },
         total: rd.total
       })
     }
+  }
 
+  /**
+   * @override
+   * @returns {LocalRepository}
+   */
+  clone () {
+    const cloned = super.clone()
+
+    // copy _localData by hand since it is private property
+    Object.defineProperty(cloned, '_localData', { enumerable: false, writable: false, value: this._localData })
+    return cloned
   }
 }
 
