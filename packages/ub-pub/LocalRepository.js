@@ -1,4 +1,3 @@
-const _ = require('lodash')
 const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
 const ClientRepository = require('./ClientRepository')
 
@@ -82,10 +81,7 @@ class LocalRepository extends ClientRepository {
    * @returns {LocalRepository}
    */
   clone () {
-    const cloned = _.cloneDeep(this)
-
-    // prevent deep clone of connection property
-    Object.defineProperty(cloned, 'connection', { enumerable: false, writable: false, value: this.connection })
+    const cloned = super.clone()
 
     // copy _localData by hand since it is private property
     Object.defineProperty(cloned, '_localData', { enumerable: false, writable: false, value: this._localData })
