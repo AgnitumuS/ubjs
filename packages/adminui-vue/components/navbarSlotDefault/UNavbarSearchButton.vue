@@ -158,12 +158,14 @@ export default {
       if (!this.query) {
         return
       }
+      let qText = this.query
+      if (qText[0] === '№') qText = '"' + qText + '"' // do not split № on lexemas - search as is
 
       const ftsTabId = 'FullTextSearchWidgetResult'
       const repo = this.$UB.Repository('fts_' + this.currentMode)
         .attrs('ID', 'entity', 'entitydescr', 'snippet')
         .using('fts')
-        .where('', 'match', this.query)
+        .where('', 'match', qText)
       if (this.isPeriod && this.period) {
         repo.where('ftsDate', '>=', this.period[0])
           .where('ftsDate', '<=', this.period[1])
