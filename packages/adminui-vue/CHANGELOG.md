@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+`UNavbarSearchButton`: full text search do not split query on tokens (lexemes) if first character is "№"
 
 ### Deprecated
 
