@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `ru` and `tg` localization of the caption for `Models versions` shortcut
 
 ## [5.4.56] - 2021-01-19
 ## [5.4.55] - 2021-01-17

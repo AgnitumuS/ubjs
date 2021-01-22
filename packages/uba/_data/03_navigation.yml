@@ -297,9 +297,9 @@ adm_desktop:
             caption:
               en: Models versions
               uk: Версії моделей
-              ru: Версии модеоей
+              ru: Версии моделей
               ka: Models versions
-              tg: Версии модеоей
+              tg: Версияҳои намунавӣ
             iconCls: u-icon-file-export
             cmd: >
               {
