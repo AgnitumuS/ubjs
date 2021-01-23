@@ -14,7 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- `ru` and `tg` localization of the caption for `Models versions` shortcut
+  - correct `ru` and `tg` localization of the caption for `Models versions` shortcut
+  - Audit Trail form: fixed `Cannot read property 'dataType' of undefined` for audit records what contains a 
+    multi-language column diffs [UBDF-12673]
+  - Audit Trail form: exclude `mi_wfState` from attributes hidden in diff (ID && mi_* except mi_wfState are hidden) [UBDF-12673]
 
 ## [5.4.56] - 2021-01-19
 ## [5.4.55] - 2021-01-17
