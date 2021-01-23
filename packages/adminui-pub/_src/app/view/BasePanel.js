@@ -2861,6 +2861,13 @@ Ext.define('UB.view.BasePanel', {
         me.fireEvent('afterdelete')
         // TODO remove this call
         Ext.callback(me.eventHandler, me, [me, 'afterdelete'])
+
+        // emit entity changed for parent vue component
+        UB.connection.emitEntityChanged(me.entityName, {
+          entity: me.entityName,
+          method: 'delete',
+          resultData: { ID: me.instanceID }
+        })
       }).finally(function () {
         me.unmaskForm()
       }).then(function () {
@@ -3217,6 +3224,13 @@ Ext.define('UB.view.BasePanel', {
           /* todo remove this call */
           Ext.callback(me.eventHandler, me, [me, 'aftersave'])
           Ext.callback(me.onAfterSave, me)
+
+          // emit entity changed for parent vue component
+          UB.connection.emitEntityChanged(me.entityName, {
+            entity: me.entityName,
+            method: me.__mip_ondate && !me.addByCurrent ? 'newversion' : (me.isEditMode ? 'update' : 'insert'),
+            resultData: { ID: me.instanceID }
+          })
 
           me.fireDirty = false
           me.updateActions()
