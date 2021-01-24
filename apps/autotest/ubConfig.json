@@ -303,6 +303,8 @@
 			},
 			//#endif
 			"mailerConfig": {
+//				"targetHost": "localhost",
+//				"targetPort": "1025",
 				"targetHost": "mail.softline.main",
 				"targetPort": "25",
 				"fromAddr": "no-reply@softline.kiev.ua",
