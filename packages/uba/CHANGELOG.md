@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+  - copying of master record and all collection items - collection item attributes are assigned with ID of the copy of the master record in case
+    they point to the master entity record (not just entity)
   - correct `ru` and `tg` localization of the caption for `Models versions` shortcut
   - Audit Trail form: fixed `Cannot read property 'dataType' of undefined` for audit records what contains a 
     multi-language column diffs [UBDF-12673]
