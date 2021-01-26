@@ -695,17 +695,17 @@ function createProcessingModule ({
             const collection = collections[index]
             const collectionDefinition = initCollectionsRequests[collection]
             const entityName = collectionDefinition.repository(store).entityName
-            const associatedAttrs = UB.connection.domain.get(entityName)
-              .filterAttribute(attr => attr.associatedEntity === masterEntityName)
-              .map(attr => attr.code)
 
             return collectionData.map(collectionItem => {
-              // replace associated attributes for current entity
-              for (const attr of associatedAttrs) {
-                if (attr in collectionItem) {
-                  collectionItem[attr] = newRecord.ID
-                }
-              }
+              // get attributes that point to the master entity record
+              UB.connection.domain.get(entityName)
+                .eachAttribute(attr => {
+                  if ((attr.associatedEntity === masterEntityName) &&
+                     (collectionItem[attr.code] === copiedRecord.ID)) {
+                    // replace associated attributes for current entity
+                    collectionItem[attr.code] = newRecord.ID
+                  }
+                })
               delete collectionItem.ID
               return dispatch('addCollectionItem', {
                 collection,
