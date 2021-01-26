@@ -1,4 +1,5 @@
-﻿const UB = require('@unitybase/ub')
+﻿const fs = require('fs')
+const UB = require('@unitybase/ub')
 const App = UB.App
 const mailerParams = App.serverConfig.application.customSettings.mailerConfig
 const UBMail = require('@unitybase/mailer')
@@ -84,12 +85,21 @@ module.exports = function () {
               attribute: cmd.attaches[i].attribute,
               ID: cmd.attaches[i].id
             })
-            mailData.attaches.push({
-              kind: UBMail.TubSendMailAttachKind.File,
-              atachName: cmd.attaches[i].atachName,
-              data: attachFN,
-              isBase64: false
-            })
+            if (!fs.existsSync(attachFN)) {
+              mailData.attaches.push({
+                kind: UBMail.TubSendMailAttachKind.Text,
+                atachName: cmd.attaches[i].atachName + '.txt',
+                data: `File not exists, please forward this message to administrator.
+  Entity: ${cmd.attaches[i].entity}, attribute: ${cmd.attaches[i].attribute}, ID: ${cmd.attaches[i].id}`
+              })
+            } else {
+              mailData.attaches.push({
+                kind: UBMail.TubSendMailAttachKind.File,
+                atachName: cmd.attaches[i].atachName,
+                data: attachFN,
+                isBase64: false
+              })
+            }
           } catch (e) {
             eMsg = (e && e.stack) ? e.message + ' - ' + e.stack : e
             console.error('loadContent', eMsg)
