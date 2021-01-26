@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.1] - 2021-01-26
 ## [5.5.0] - 2021-01-17
 ### Added
   - TubMailSender.login method - must be called in case deferLogin === true in a constructor.

@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.7.2] - 2021-01-26
+### Fixed
 - `LocalRepository.clone()` will copy a private `_localData` of source repository to destination (as reference!)
 
 ## [5.7.1] - 2021-01-19

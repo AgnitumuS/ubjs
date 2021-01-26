@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.47] - 2021-01-26
 ## [5.4.46] - 2021-01-19
 ### Added
  - shortcut editor - added template (Ctrl + Q) for Vue based `showList` command

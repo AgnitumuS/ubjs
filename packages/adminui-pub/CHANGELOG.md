@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `BasePanel` uses `AsyncConnection.prototype.emitEntityChanged` to emit `${entityCode}:changed` event.
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.14.5] - 2021-01-26
+### Added
+- `BasePanel` uses `AsyncConnection.prototype.emitEntityChanged` to emit `${entityCode}:changed` event.
 
 ## [5.14.4] - 2021-01-19
 ## [5.14.3] - 2021-01-17

@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-`UNavbarSearchButton`: full text search do not split query on tokens (lexemes) if first character is "№"
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.14.4] - 2021-01-26
+### Changed
+`UNavbarSearchButton`: full text search do not split query on tokens (lexemes) if first character is "№"
 
 ### Fixed
  - user authentication and re-login form will trim a user name before pass it to UBConnection.
