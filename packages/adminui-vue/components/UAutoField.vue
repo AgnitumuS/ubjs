@@ -76,9 +76,51 @@ export default {
       return this.$v &&
         this.$v[this.attributeName] &&
         this.$v[this.attributeName].$error
+    },
+
+    /**
+     *  Using the $listeners property, we can pass all event listeners on a component to a specific
+     *  child element using v-on="$listeners". For elements like <u-auto-field>, we may also want v-model operability,
+     *  for which it can be useful to create a new computed property for listeners,
+     *  for example the `buildListenersOnInput` below.
+     *  The `<u-auto-field>` component has now become a fully transparent wrapper, which means it can be used just like
+     *  a regular `<u-input>` or `<u-select-entity>` element:
+     *  all the same attributes and listeners will work without specifying the `.native` modifier.
+     * @returns {Record<string, Function | Function[]> & {input: input}}
+     */
+    buildListenersOnInput () {
+      const vm = this
+      // `Object.assign` concatenates objects together to get a new object
+      return Object.assign({},
+        // We add all listeners from the parent
+        this.$listeners,
+        // Then we can add our own listeners or
+        // overwrite the behavior of some existing ones.
+        {
+          // This will ensure that v-model works on the component
+          input: value => {
+            vm.model = value
+            vm.$emit('input', value)
+          }
+        }
+      )
+    },
+
+    buildListenersOnChange () {
+      const vm = this
+      return Object.assign({},
+        this.$listeners,
+        {
+          change: value => {
+            vm.model = value
+            vm.$emit('change', value)
+          }
+        }
+      )
     }
   },
-  render: function (h) {
+
+  render (h) {
     let cmp
     const baseAttrs = { // vue split attrs into attrs and props automatically
       ...this.$attrs,
@@ -90,11 +132,7 @@ export default {
       case 'Boolean':
         cmp = h(this.forceCmp || 'el-checkbox', {
           attrs: baseAttrs,
-          on: {
-            change: (value) => {
-              this.model = value
-            }
-          }
+          on: this.buildListenersOnChange
         })
         break
       case 'Date':
@@ -105,11 +143,7 @@ export default {
             placeholder: this.$ut(this.dataType === 'Date' ? 'selectDate' : 'selectDateAndTime'),
             ...baseAttrs
           },
-          on: {
-            input: (value) => {
-              this.model = value
-            }
-          }
+          on: this.buildListenersOnInput
         })
         break
       case 'Enum':
@@ -119,9 +153,7 @@ export default {
             clearable: this.entitySchema.attributes[this.attributeName].allowNull,
             ...baseAttrs
           },
-          on: {
-            input: (value) => { this.model = value }
-          }
+          on: this.buildListenersOnInput
         })
         break
       case 'Entity':
@@ -133,9 +165,7 @@ export default {
             readonly: this.isDisabled,
             ...this.$attrs
           },
-          on: {
-            input: (value) => { this.model = value }
-          }
+          on: this.buildListenersOnInput
         })
         break
       case 'Many':
@@ -144,9 +174,7 @@ export default {
             entityName: this.associatedEntity,
             ...baseAttrs
           },
-          on: {
-            input: (value) => { this.model = value }
-          }
+          on: this.buildListenersOnInput
         })
         break
       case 'Text':
@@ -156,25 +184,19 @@ export default {
             autosize: { minRows: 3, maxRows: 4 },
             ...baseAttrs
           },
-          on: {
-            input: (value) => { this.model = value }
-          }
+          on: this.buildListenersOnInput
         })
         break
       case 'Document':
         cmp = h(this.forceCmp || 'u-file', {
           attrs: baseAttrs,
-          on: {
-            input: (value) => { this.model = value }
-          }
+          on: this.buildListenersOnInput
         })
         break
       case 'Json':
         cmp = h(this.forceCmp || 'u-code-mirror', {
           attrs: baseAttrs,
-          on: {
-            input: (value) => { this.model = value }
-          }
+          on: this.buildListenersOnInput
         })
         break
       case 'String':
