@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UAutoField.vue`: all listeners of the parent component are now concatenates with child component listeners, and 
+  parent events will work without specifying the `.native` modifier.
 
 ### Changed
 
