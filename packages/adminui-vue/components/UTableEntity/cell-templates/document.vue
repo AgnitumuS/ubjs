@@ -33,32 +33,30 @@ export default {
 
   methods: {
     async download () {
-      const params = await this.getRecordParams()
-      const file = await this.$UB.connection.getDocument(params, { resultIsBinary: true })
-      window.saveAs(new Blob([file]), this.fileName)
+      const instanceInfo = await this.getRecordParams()
+      return $App.downloadDocument(instanceInfo, this.document)
     },
 
     async getRecordParams () {
       const attribute = this.column.attribute.code
       const attributePath = this.column.id.split('.')
       const isMasterAttr = attributePath.length === 1
-      let id
+      let ID
 
       if (isMasterAttr) {
-        id = this.row.ID
+        ID = this.row.ID
       } else {
         const identifierAttribute = attributePath.slice(0, attributePath - 1).join('.')
         const response = await this.$UB.Repository(this.entity)
           .attrs(identifierAttribute)
           .selectById(this.row.ID)
-        id = response[identifierAttribute]
+        ID = response[identifierAttribute]
       }
 
       return {
         entity: this.column.attribute.entity.code,
         attribute,
-        id,
-        _rc: this.document.revision
+        ID
       }
     }
   }

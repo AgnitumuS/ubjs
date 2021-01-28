@@ -2797,31 +2797,13 @@ Ext.define('UB.view.BasePanel', {
   },
 
   onDownloadAttach: function (action) {
-    let me = this
-    let docSrc = me.record.get(action.attribute)
-    if (docSrc) {
-      docSrc = JSON.parse(docSrc)
-      let params = {
-        entity: me.entityName,
-        attribute: action.attribute,
-        id: me.getInstanceID(),
-        isDirty: docSrc.isDirty === true
-      }
-      $App.connection.getDocument(params, { resultIsBinary: true, bypassCache: true })
-        .then(function (dataAsArray) {
-          let blobData = new Blob(
-            [dataAsArray],
-            { type: docSrc.ct }
-          )
-          saveAs(blobData, docSrc.origName || docSrc.filename || me.getInstanceID() + '_' + docSrc.ct)
-        }).catch(function (reason) {
-          if (reason.status === 404) {
-            throw new UB.UBError(UB.i18n('documentNotFound'))
-          }
-        })
-    } else {
-      throw new UB.UBError('emptyContent')
-    }
+    let docSrc = this.record.get(action.attribute)
+    if (!docSrc) return
+    $App.downloadDocument({
+      entity: this.entityName,
+      attribute: action.attribute,
+      ID: this.getInstanceID()
+    }, JSON.parse(docSrc))
   },
 
   onDelete: function () {
