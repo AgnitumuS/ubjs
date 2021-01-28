@@ -1799,6 +1799,7 @@ Ext.define('UB.ux.Multifilter', {
         enforceMaxLength: true,
         margin: context.getItemMargin(),
         maxLength: attribute.size || 2000,
+        width: this.filterTypeWidth,
         withoutIndent: true
       }
 
