@@ -38,6 +38,18 @@
     :src="previewUrl"
   />
 
+  <video
+    v-else-if="renderType === 'video'"
+    controls
+    preload="metadata"
+    ref="view"
+    width="100%"
+    height="100%"
+  >
+    <source :src="previewUrl" :type="file.ct">
+    <p>Your browser doesn't support HTML5 video</p>
+  </video>
+
   <div
     v-else
     class="file-renderer"
@@ -56,7 +68,42 @@
 </template>
 
 <script>
-const FileLoader = require('../helpers/FileLoader')
+const CONTENT_TYPE_ICONS = {
+  'image/jpeg': 'u-icon-file-image',
+  'image/png': 'u-icon-file-image',
+  'image/vnd.wap.wbmp': 'u-icon-file-image',
+  'image/bmp': 'u-icon-file-image',
+
+  'text/html': 'u-icon-file-html',
+  'text/xml': 'u-icon-file-html',
+  'text/markdown': 'u-icon-file-html',
+  'text/javascript': 'u-icon-file-html',
+  'text/css': 'u-icon-file-html',
+  'text/cmd': 'u-icon-file-html',
+
+  'text/csv': 'u-icon-file-csv',
+
+  'application/vnd.ms-excel': 'u-icon-file-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'u-icon-file-excel',
+  'application/vnd.oasis.opendocument.spreadsheet': 'u-icon-file-excel',
+
+  'application/pdf': 'u-icon-file-pdf',
+
+  'text/plain': 'u-icon-file-text',
+
+  'application/msword': 'u-icon-file-word',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'u-icon-file-word',
+  'application/vnd.oasis.opendocument.text': 'u-icon-file-word',
+
+  'application/vnd.ms-powerpoint': 'fa fa-file-powerpoint-o',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'fa fa-file-powerpoint-o',
+  'application/vnd.ms-powerpoint.presentation.macroenabled.12': 'fa fa-file-powerpoint-o',
+  'application/vnd.oasis.opendocument.presentation': 'fa fa-file-powerpoint-o',
+
+  'application/x-rar-compressed': 'fa fa-file-archive-o',
+  'application/x-7z-compressed': 'fa fa-file-archive-o',
+  'application/zip': 'fa fa-file-archive-o',
+}
 
 export default {
   name: 'FileRenderer',
@@ -85,53 +132,12 @@ export default {
 
   computed: {
     icon () {
-      switch (this.file.ct) {
-        case 'image/jpeg':
-        case 'image/png':
-        case 'image/vnd.wap.wbmp':
-        case 'image/bmp':
-          return 'u-icon-file-image'
-
-        case 'text/html':
-        case 'text/xml':
-        case 'text/markdown':
-        case 'text/javascript':
-        case 'text/css':
-        case 'text/cmd':
-          return 'u-icon-file-html'
-
-        case 'text/csv':
-          return 'u-icon-file-csv'
-
-        case 'application/vnd.ms-excel':
-        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-        case 'application/vnd.oasis.opendocument.spreadsheet':
-          return 'u-icon-file-excel'
-
-        case 'application/pdf':
-          return 'u-icon-file-pdf'
-
-        case 'text/plain':
-          return 'u-icon-file-text'
-
-        case 'application/msword':
-        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-        case 'application/vnd.oasis.opendocument.text':
-          return 'u-icon-file-word'
-
-        case 'application/vnd.ms-powerpoint':
-        case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
-        case 'application/vnd.ms-powerpoint.presentation.macroenabled.12':
-        case 'application/vnd.oasis.opendocument.presentation':
-          return 'fa fa-file-powerpoint-o'
-
-        case 'application/x-rar-compressed':
-        case 'application/x-7z-compressed':
-        case 'application/zip':
-          return 'fa fa-file-archive-o'
-
-        default:
-          return 'u-icon-file'
+      if (CONTENT_TYPE_ICONS[this.file.ct]) {
+        return CONTENT_TYPE_ICONS[this.file.ct]
+      } else if (this.file.ct.startsWith('video/')) {
+        return 'far fa-file-video'
+      } else {
+        return 'u-icon-file'
       }
     },
 
@@ -143,6 +149,9 @@ export default {
         if (this.file.ct === 'application/pdf') {
           return 'pdf'
         }
+        if (this.file.ct.startsWith('video/')) {
+          return 'video'
+        }
       }
 
       return 'file'
@@ -153,37 +162,20 @@ export default {
     }
   },
 
-  watch: {
-    async file (file) {
-      if (file) {
-        if (this.renderType === 'image' || this.renderType === 'pdf') {
-          return this.fileLoader.getPreviewUrl(this.file, this.fileId)
-        }
-      } else {
-        this.revokeUrl()
-      }
-    }
-  },
-
   async created () {
-    this.fileLoader = new FileLoader(this.entityName, this.attributeName)
     if (this.withPreview) { // prevent download document for non-preview mode
-      this.previewUrl = await this.fileLoader.getPreviewUrl(this.file, this.fileId)
+      const getDocumentParams = {
+        entity: this.entityName,
+        attribute: this.attributeName,
+        ID: this.fileId
+      }
+      if (this.file.isDirty) getDocumentParams.isDirty = this.file.isDirty
+      if (this.file.revision) getDocumentParams.revision = this.file.revision
+      this.previewUrl = await this.$UB.connection.getDocumentURL(getDocumentParams)
     }
-  },
-
-  beforeDestroy () {
-    this.revokeUrl()
   },
 
   methods: {
-    revokeUrl () {
-      if (this.previewUrl) {
-        window.URL.revokeObjectURL(this.previewUrl)
-        this.previewUrl = ''
-      }
-    },
-
     zoomIn () {
       this.scaleValue += this.SCALE_STEP
     },

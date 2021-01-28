@@ -1703,6 +1703,45 @@ UBConnection.prototype.runTransAsObject = function (ubRequestArray, fieldAliases
 }
 
 const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty', 'forceMime', 'fileName', 'store', 'revision']
+
+/**
+ * Get a http link to the "Document" attribute content which is valid for the duration of the user session.
+ *
+ * This link can be used, for example, in <img src=...> HTML tag and so on.
+ *
+ * Used in `$App.downloadDocument` method to download a BLOB content
+ * and in `FileRenderer` Vue component to display a BLOB content in browser.
+ *
+ * @example
+ //Retrieve content of document as string using GET
+ const docURL = await UB.connection.getDocumentURL({
+     entity:'ubm_form',
+     attribute: 'formDef',
+     ID: 100000232003,
+     revision: 22,
+  })
+  // result is alike "/getDocument?entity=ubm_form&attribute=formDef&ID=100000232003&revision=22&session_signature=cbe83ece60126ee4a20d40c2"
+
+ * @method
+ * @param {Object} params
+ * @param {String} params.entity Code of entity to retrieve from
+ * @param {String} params.attribute `document` type attribute code
+ * @param {Number} params.ID Instance ID
+ * @param {Number} [params.revision] Revision of the document. We strongly recommend to pass this argument for correct HTTP cache work
+ * @param {Boolean} [params.isDirty] Set it to `true` to retrieve a document in **dirty** state
+ * @returns {Promise<string>} Document URL (valid for the duration of the user session)
+ */
+UBConnection.prototype.getDocumentURL = async function (params) {
+  const urlParams = []
+  for (let p in params) {
+    if ((ALLOWED_GET_DOCUMENT_PARAMS.indexOf(p) !== -1) && (typeof params[p] !== 'undefined')) {
+      urlParams.push(encodeURIComponent(p) + '=' + encodeURIComponent(params[p]));
+    }
+  }
+  const session = await this.authorize()
+  urlParams.push('session_signature=' + session.signature())
+  return '/getDocument?' + urlParams.join('&')
+}
 /**
  * Retrieve content of `document` type attribute field from server. Usage samples:
  *

@@ -36,16 +36,22 @@ export default {
   },
 
   methods: {
-    downloadFile () {
+    async downloadFile () {
       const instance = this.instance
+      let fileMetadata, recordID
       if (this.multiple) {
-        const file = instance.files.find(f => f.ID === instance.selectedFileId)
-        if (file) {
-          instance.fileLoader.saveAs(file, file.ID)
-        }
+        fileMetadata = instance.files.find(f => f.ID === instance.selectedFileId)
+        recordID = fileMetadata && fileMetadata.ID
       } else {
-        instance.fileLoader.saveAs(instance.file, instance.recordId)
+        fileMetadata = instance.file
+        recordID = instance.recordId
       }
+      if (!fileMetadata) return
+      return $App.downloadDocument({
+        entity: instance.entityName,
+        attribute: instance.attributeName,
+        ID: recordID
+      }, fileMetadata)
     }
   }
 }

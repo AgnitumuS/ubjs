@@ -95,6 +95,8 @@ export default {
       canvas: null,
       error: null,
       videoRatio: { width: 1280, height: 720 }
+      // videoRatio: { width: 1920, height: 1080 }
+      //videoRatio: { width: 3840, height: 2160 }
     }
   },
 
