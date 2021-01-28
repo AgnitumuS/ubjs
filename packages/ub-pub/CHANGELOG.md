@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - new method `AsyncConnection.prototype.getDocumentURL` - return a http link to the "Document" attribute content
-   which is valid for the duration of the user session
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.8.0] - 2021-01-28
+### Added
+ - new method `AsyncConnection.prototype.getDocumentURL` - return a http link to the "Document" attribute content
+   which is valid for the duration of the user session
 
 ## [5.7.2] - 2021-01-26
 ### Fixed

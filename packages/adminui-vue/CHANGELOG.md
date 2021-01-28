@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.15.0] - 2021-01-28
+### Added
  - `UAutoField.vue`: all listeners of the parent component are now concatenates with a child component listeners, and 
   parent events will work without specifying the `.native` modifier. This allows to create a `u-auto-field` descendants as such:
    ```vue
@@ -47,12 +58,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    to the file system without loading it into browser memory.
    
 
-### Deprecated
-
 ### Removed
  - UFile/helpers/FileLoader.js is removed (contains one-line functions what duplicate existed `AsyncConnection` methods)
-
-### Fixed
 
 ## [1.14.4] - 2021-01-26
 ### Changed

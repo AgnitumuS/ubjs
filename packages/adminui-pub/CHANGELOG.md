@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.15.0] - 2021-01-28
+### Added
  - new method `UBApp.downloadDocument` - Download a document from BLOB store directly into a file without
    loading it into memory as with `getDocument`. Can be used to download a huge documents what
    do not fit in the browser memory.  
@@ -13,10 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `Download` action of BasePanel `Document` menu uses new method `UBApp.downloadDocument` to save a document
    to the file system without loading it into browser memory.
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - set default width for multifilter combobox

@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.4.32] - 2021-01-28
+### Fixed
  - ubqMailjob (e-mail sender) will add a fake attachment with text
    `File not exists, please forward this message to administrator` in case attached file not exists in file-based BLOB store
 
