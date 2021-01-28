@@ -79,13 +79,18 @@ export default {
     },
 
     /**
-     *  Using the $listeners property, we can pass all event listeners on a component to a specific
-     *  child element using v-on="$listeners". For elements like <u-auto-field>, we may also want v-model operability,
-     *  for which it can be useful to create a new computed property for listeners,
-     *  for example the `buildListenersOnInput` below.
-     *  The `<u-auto-field>` component has now become a fully transparent wrapper, which means it can be used just like
-     *  a regular `<u-input>` or `<u-select-entity>` element:
-     *  all the same attributes and listeners will work without specifying the `.native` modifier.
+     *  Re-assignt parent event listeners for `input` event, so u-auto-filed can be extended as such:
+
+     <template>
+       <u-auto-field
+         v-if="!isHidden(attributeName)"
+         :required="isRequired(attributeName)"
+         v-bind="$attrs"
+         :attribute-name="attributeName"
+         v-on="$listeners"
+       />
+     </template>
+
      * @returns {Record<string, Function | Function[]> & {input: input}}
      */
     buildListenersOnInput () {
@@ -106,6 +111,10 @@ export default {
       )
     },
 
+    /**
+     * Re-assignt parent event listeners for `change` event
+     * @return {Record<string, Function | Function[]> & {change: change}}
+     */
     buildListenersOnChange () {
       const vm = this
       return Object.assign({},
