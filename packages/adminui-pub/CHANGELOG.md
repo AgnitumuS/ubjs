@@ -14,9 +14,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
-## [5.14.6]
-### Fixed
  - set default width for multifilter combobox
 
 ## [5.14.5] - 2021-01-26
