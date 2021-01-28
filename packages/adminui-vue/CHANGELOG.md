@@ -6,6 +6,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UAutoField.vue`: all listeners of the parent component are now concatenates with a child component listeners, and 
+  parent events will work without specifying the `.native` modifier. This allows to create a `u-auto-field` descendants as such:
+   ```vue
+     // DocAutoField.vue
+     <template>
+       <u-auto-field
+         v-if="!isHidden(attributeName)"
+         :required="isRequired(attributeName)"
+         v-bind="$attrs"
+         :attribute-name="attributeName"
+         v-on="$listeners"
+       />
+     </template>
+     // using
+     <doc-auto-field
+      @input="setJournalIDs(false)"
+    />
+   ```
+   Before this changes `setJournalIDs` never called.   
+
  - `FileRenderer` component support preview of video content.
    **Warning** - reverse proxy MUST be enabled in application config on production environment 
    ( see [Reverse proxy tutorial](https://unitybase.info/api/server-v5/tutorial-reverse_proxy_nginx.html) )
@@ -36,7 +56,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.14.4] - 2021-01-26
 ### Changed
-`UNavbarSearchButton`: full text search do not split query on tokens (lexemes) if first character is "№"
+ - `UNavbarSearchButton`: full text search do not split query on tokens (lexemes) if first character is "№"
 
 ### Fixed
  - user authentication and re-login form will trim a user name before pass it to UBConnection.
