@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.14.6]
+### Fixed
+ - set default width for multifilter combobox
+
 ## [5.14.5] - 2021-01-26
 ### Added
 - `BasePanel` uses `AsyncConnection.prototype.emitEntityChanged` to emit `${entityCode}:changed` event.
