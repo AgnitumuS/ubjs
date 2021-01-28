@@ -64,8 +64,6 @@
 </template>
 
 <script>
-const FileLoader = require('./helpers/FileLoader')
-
 export default {
   name: 'UFileMultiple',
 
@@ -230,11 +228,14 @@ export default {
       }
 
       return buttonsByDefault
-    }
-  },
+    },
 
-  created () {
-    this.fileLoader = new FileLoader(this.entityName, this.fileAttribute)
+    /**
+     * Hack to have the same property for BLOB attribute as in UFile
+     */
+    attributeName () {
+      return this.fileAttribute
+    }
   },
 
   methods: {
@@ -256,8 +257,13 @@ export default {
           subjectAttribute: this.subjectAttribute,
           subjectAttributeValue: this.subjectAttributeValue
         })
-        item[this.fileAttribute] = await this.fileLoader.uploadFile(file, item.ID)
-
+        const uploadedFileMetadata = await this.$UB.connection.setDocument(file, {
+          entity: this.entityName,
+          attribute: this.fileAttribute,
+          origName: file.name,
+          id: item.ID
+        })
+        item[this.fileAttribute] = JSON.stringify(uploadedFileMetadata)
         files.push(item)
       }
 

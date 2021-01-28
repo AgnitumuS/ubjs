@@ -49,8 +49,6 @@
 </template>
 
 <script>
-const FileLoader = require('./helpers/FileLoader')
-
 export default {
   name: 'UFile',
 
@@ -234,10 +232,6 @@ export default {
     }
   },
 
-  created () {
-    this.fileLoader = new FileLoader(this.entityName, this.attributeName)
-  },
-
   methods: {
     async upload (binaryFiles) {
       const file = binaryFiles[0]
@@ -247,9 +241,15 @@ export default {
         id: this.recordId,
         file
       })
+      const uploadedFileMetadata = await this.$UB.connection.setDocument(file, {
+        entity: this.entityName,
+        attribute: this.attributeName,
+        origName: file.name,
+        id: this.recordId
+      })
       this.$emit(
         'input',
-        await this.fileLoader.uploadFile(file, this.recordId)
+        JSON.stringify(uploadedFileMetadata)
       )
     },
 

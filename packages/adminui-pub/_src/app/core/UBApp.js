@@ -1042,6 +1042,48 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
     return cfg.entity +
       formCode +
       (cfg.instanceID ? cfg.instanceID : 'ext' + Ext.id(null, 'addNew'))
+  },
+
+  /**
+   * Download a document from BLOB store directly into file (without loading it into memory as with getDocument)
+   *
+   * To get a document data use `UBApp.connection.getDocument` method what returns Blob
+   *
+   * @param {object} instanceInfo Instance information
+   * @param {string} instanceInfo.entity    Code of entity to retrieve from
+   * @param {string} instanceInfo.attribute Code of `document` type attribute for specified entity
+   * @param {string} instanceInfo.ID        Instance ID
+   *
+   * @param {object} [blobMetadata]   BLOB metadata JSON as it stored in the entity attribute
+   * @param {object} [blobMetadata.revision=1]
+   * @param {object} [blobMetadata.isDirty=false]
+   */
+  downloadDocument: async function (instanceInfo, blobMetadata) {
+    const getDocumentParams = Object.assign({revision: 1}, instanceInfo)
+    if (blobMetadata) {
+      if (blobMetadata.isDirty) getDocumentParams.isDirty = blobMetadata.isDirty
+      if (blobMetadata.revision) getDocumentParams.revision = blobMetadata.revision
+    }
+    // validate what file is accessible (and re-auth if session is expire)
+    const available = await this.connection.xhr({
+      url: 'checkDocument',
+      method: 'GET',
+      params: getDocumentParams
+    })
+    //TODO throw new UB.UBError(UB.i18n('documentNotFound'))
+    const oneTimeURL = await this.connection.getDocumentURL(getDocumentParams)
+    const a = document.createElement('A')
+    a.href = oneTimeURL
+    // important to set a download attribute to prevent open href
+    // Actual fileName will be taken from Content-Disposition header
+    if (blobMetadata) {
+      a.download = blobMetadata.origName || blobMetadata.fName || 'downloadedFile'
+    } else {
+      a.download = 'downloadedFile'
+    }
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
   }
 })
 

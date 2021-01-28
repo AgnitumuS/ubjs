@@ -5,6 +5,10 @@ if (typeof window.Vue.options.components.aaa !== 'function') throw new Error('Fa
 if (typeof localVue.options.components.aaa !== 'function') throw new Error('Fake vue component must exists in local Vue')
 require('./src/test-module.js')
 
+// hack to increase a global HTTP timeout
+// const transport = require('@unitybase/ub-pub/transport')
+// transport.xhrDefaults.timeout = 300000 // 5 minutes
+
 // if ($App) {
 //   $App.on('applicationReady', () => {
 //     $App.doCommand({
