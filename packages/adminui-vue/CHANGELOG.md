@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - UTableEntity filter for attributes of type `ID` now uses the same set of available conditions as for type BigInteger.
+   Before this fix available conditions are `equal` and `contains`. The second one dose not make sence at all.   
 
 ## [1.15.0] - 2021-01-28
 ### Added

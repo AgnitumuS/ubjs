@@ -70,20 +70,7 @@ TypeProvider.registerType({
   type: 'Json',
   settings: require('./type-definitions/string')
 })
-TypeProvider.registerType({
-  type: 'ID',
-  settings: require('./type-definitions/id'),
-  filters: {
-    equal: {
-      label: 'equal',
-      template: require('./filter-templates/id/equal.vue').default
-    },
-    contains: {
-      label: 'contains',
-      template: require('./filter-templates/id/contains.vue').default
-    }
-  }
-})
+
 TypeProvider.registerType({
   type: 'Boolean',
   settings: require('./type-definitions/boolean'),
@@ -241,6 +228,12 @@ const numberFilter = {
     template: require('./filter-templates/number/isNull.vue').default
   }
 }
+
+TypeProvider.registerType({
+  type: 'ID',
+  settings: require('./type-definitions/id'),
+  filters: numberFilter
+})
 
 TypeProvider.registerType({
   type: 'BigInt',
