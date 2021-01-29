@@ -156,16 +156,7 @@ function openIDConnect (req, resp) {
   if (params.code && params.state) {
     // if (!redirectUrl)
     //    redirectUrl = atob(params.state);
-    let origin = ''
-    let headers = (req.headers || '').split('\r\n')
-    if (headers) {
-      headers.forEach(function (v) {
-        if (v && v.substring(0, 7) === 'Origin:') {
-          origin = v.substring(7)
-          return false
-        }
-      })
-    }
+    const origin = req.getHeader('origin') || ''
     doProviderAuthHandshake(resp, params.code, params.state, provider, redirectUrl, origin)
   } else if (params.logout) {
     redirectToProviderLogout(req, resp, provider, params)

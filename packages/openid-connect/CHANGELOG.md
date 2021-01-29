@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - use `req.getHeader('origin')` to get a `Origin` header value
 
 ### Deprecated
 
