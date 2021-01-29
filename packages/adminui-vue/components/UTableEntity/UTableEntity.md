@@ -209,13 +209,10 @@ This dataTypes has next filters:
     - isNull
     - notContains
     - notEqual
-- ID
-    - equal
-    - contains
 - Many
     - contains
     - isNull
-- BigInt, Currency, Float, Int
+- BigInt, Currency, Float, Int, ID
     - equal
     - more
     - less
