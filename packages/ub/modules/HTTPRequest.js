@@ -42,6 +42,47 @@ class THTTPRequest {
     return this._headers
   }
   /**
+   * Return a header value by name. Name is case-insensitive
+   * @example
+   // incoming headers string 'Host: unitybase.info\r\nAccept-Encoding: gzip\r\n\r\nAccept-Encoding: deflate, br'
+   req.getHeader('accept-Encoding') // 'gzip, deflate, br
+
+   * @param {string} name Case-insensitive header name
+   * @return {string|undefined}
+   */
+  getHeader (name) {
+    if (!this._parsedHeaders) {
+      this._parsedHeaders = parseHeaders(this.headers)
+    }
+    return this._parsedHeaders[name.toLowerCase()]
+  }
+  /**
+   * Returns an array containing the unique names of the headers. All header names are lowercase
+   * @example
+   // incoming headers string 'Host: unitybase.info\r\nAccept-Encoding: gzip\r\n\r\nAccept-Encoding: deflate, br'
+   req.getHeaderNames() // ['host', 'accept-encoding']
+   * @return {Array<string>}
+   */
+  getHeaderNames () {
+    if (!this._parsedHeaders) {
+      this._parsedHeaders = parseHeaders(this.headers)
+    }
+    return Object.keys(this._parsedHeaders)
+  }
+  /**
+   * Return parsed headers object. Keys are lower-cased header names, values are header values
+   * @example
+   // incoming headers string 'Host: unitybase.info\r\nAccept-Encoding: gzip\r\n\r\nAccept-Encoding: deflate, br'
+   req.getHeaders() // {host: "unitybase.info", accept-encoding: "gzip, deflate, br"}
+   */
+  getHeaders () {
+    if (!this._parsedHeaders) {
+      this._parsedHeaders = parseHeaders(this.headers)
+    }
+    return this._parsedHeaders
+  }
+
+  /**
    * HTTP request method GET|POST|PUT......
    * @type {string}
    * @readonly
@@ -128,6 +169,34 @@ class THTTPRequest {
   get requestId () {
     return req_getReqId()
   }
+}
+
+/**
+ * Parse a headers string into object. Keys is lower cased header name.
+ *
+ * Values for the same header names a concatenated using comma
+ *
+ * @private
+ * @param {string} headers
+ * @return {Object<string, string>}
+ */
+function parseHeaders (headers) {
+  let parsed = {}
+  if (!headers) return parsed
+  headers.split('\n').forEach(function (line) {
+    const i = line.indexOf(':')
+    const key = line.substr(0, i).trim().toLowerCase()
+    const val = line.substr(i + 1).trim()
+
+    if (key) {
+      if (parsed[key]) {
+        parsed[key] += ', ' + val
+      } else {
+        parsed[key] = val
+      }
+    }
+  })
+  return parsed
 }
 
 module.exports = THTTPRequest

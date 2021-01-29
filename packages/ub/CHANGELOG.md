@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `THTTPRequest` extended by helper functions:
+    - req.getHeader(name) -> string|undefined
+    - req.getHeaderNames() -> array<string>
+    - req.getHeaders() -> Object
 
 ### Changed
 
