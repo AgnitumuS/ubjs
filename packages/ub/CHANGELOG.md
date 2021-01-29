@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - req.getHeader(name) -> string|undefined
     - req.getHeaderNames() -> array<string>
     - req.getHeaders() -> Object
+ 
+ - `THTTPRequest` extended by `parsedParameters` getter. Result is cached, so second call is faster than first
+  ```javascript
+  // for parameters 'foo=bar&baz=qux&baz=quux&corge' return
+  req.parsedParameters // { foo: 'bar', baz: ['qux', 'quux'], corge: '' }
+  ```
+  We recommend using this getter instead of `querystring.parse(req.parameters)` to prevent multiple
+  call to parameter parsing from different methods.
 
 ### Changed
 

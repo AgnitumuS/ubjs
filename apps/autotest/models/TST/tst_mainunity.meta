@@ -38,7 +38,7 @@
       "optimistic": true
     },
     "mStorage": {
-      "simpleAudit": false,
+      "simpleAudit": true,
       "safeDelete": true
     }
   }

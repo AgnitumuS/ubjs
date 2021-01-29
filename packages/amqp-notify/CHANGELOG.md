@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Removed
- - this package is obsolete. package.json remaned to _package.json to prevent building and publishing
+ - this package is obsolete. package.json renamed to _package.json to prevent building and publishing
 
 ## [1.1.2] - 2018-09-26
 ### Changed

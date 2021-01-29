@@ -4,6 +4,11 @@
  * @memberOf module:@unitybase/ub
  */
 const blobStores = require('@unitybase/blob-stores')
+const http = require('http')
+const _ = require('lodash')
+const UB = require('@unitybase/ub')
+const App = UB.App
+const Session = UB.Session
 
 module.exports = {
   notifyDocumentSaved,
@@ -11,12 +16,6 @@ module.exports = {
   getOnlyOfficeConfiguration,
   setOnlyOfficeDocumentToTempStore
 }
-
-const qs = require('querystring')
-const _ = require('lodash')
-const UB = require('@unitybase/ub')
-const App = UB.App
-const Session = UB.Session
 
 const uiSettings = App.serverConfig.uiSettings
 
@@ -34,12 +33,15 @@ function onlyOfficeOnUserLogin () {
   }
 }
 
+/**
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
 function setOnlyOfficeDocumentToTempStore (req, resp) {
   /** @type {t_setOnlyOfficeDocument_params} */
-  const params = qs.parse(req.parameters)
+  const params = req.parsedParameters
   const requestString = req.read()
 
-  const http = require('http')
   const requestParams = {
     URL: requestString,
     method: 'GET',
@@ -103,7 +105,7 @@ function notifyDocumentSaved (req, resp) {
  */
 function getDocumentOffice (req, resp) {
   /** @type {t_getDocumentOffice_req_params} */
-  const params = qs.parse(req.parameters)
+  const params = req.parsedParameters
   const callerIP = Session.callerIP
   const config = getOnlyOfficeConfiguration()
 

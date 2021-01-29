@@ -146,7 +146,7 @@ function openIDConnect (req, resp) {
 
   let redirectUrl = App.externalURL + (App.externalURL[App.externalURL.length - 1] === '/' ? '' : '/') + endpointName + '/' + providerName
   let paramStr = (req.method === 'GET') ? req.parameters : req.read()
-  let params = paramStr ? queryString.parse(paramStr) : null
+  let params = (req.method === 'GET') ? req.parsedParameters : queryString.parse(paramStr)
 
   if (!paramStr || params.mode === 'auth') {
     redirectToProviderAuth(req, resp, provider, redirectUrl, params)

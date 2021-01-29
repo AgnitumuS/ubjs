@@ -1,5 +1,6 @@
 // eslint-disable-next-line camelcase
 const { req_read, reg_getHeaders, reg_getMethod, reg_getUrl, reg_getURI, reg_getDecodedURI, reg_getParameters, reg_getDecodedParameters, req_writeToFile } = process.binding('http_server')
+const queryString = require('querystring')
 let req_getReqId = process.binding('http_server').req_getReqId
 if (!req_getReqId) {
   req_getReqId = function () { return 0 }// fallback for UB<5.18.2
@@ -147,16 +148,29 @@ class THTTPRequest {
   /**
    * URLDecoded parameters
    * @example
-   *      // GET http://host:port/bla-bla?$filter=Name%20eq%20%27John%27
-   *      req.parameters === '$filter=Name%20eq%20%27John%27'
-   *      req.decodedParameters === "$filter=Name eq 'John'"
-   *
+
+   // GET http://host:port/bla-bla?$filter=Name%20eq%20%27John%27
+   req.parameters === '$filter=Name%20eq%20%27John%27'
+   req.decodedParameters === "$filter=Name eq 'John'"
+
    * @type {string}
    * @readonly
    */
   get decodedParameters () {
     if (this._decodedParameters === undefined) this._decodedParameters = reg_getDecodedParameters()
     return this._decodedParameters
+  }
+
+  /**
+   * Return a parsed request parameters (decoded using querystring.parse()).
+   * Second call to parsedParameters uses cached result, so it faster than first.
+   * @example
+    // for parameters 'foo=bar&baz=qux&baz=quux&corge' return
+    req.parsedParameters // { foo: 'bar', baz: ['qux', 'quux'], corge: '' }
+   * @return {Object<string, string|array<string>>}
+   */
+  get parsedParameters () {
+    if (this._parsedParameters === undefined) this._parsedParameters = queryString.parse(this.parameters)
   }
 
   /**

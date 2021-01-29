@@ -51,13 +51,12 @@ function doSomethingBeforeGetDocumentCall(req, resp){
 // Adds hook called before each call to getDocument endpoint
 App.on('getDocument:before', doSomethingBeforeGetDocumentCall)
 
-const querystring = require('querystring')
 //
 //After getDocument requests
 //@param {THTTPRequest} req
 //@param {THTTPResponse} resp
 function doSomethingAfterGetDocumentCall(req, resp){
-  params = querystring.parse(req.parameters)
+  params = req.parsedParameters
   console.log('User with ID', Session.userID, 'obtain document using params',  params)
 }
 App.on('getDocument:after', doSomethingAfterGetDocumentCall)

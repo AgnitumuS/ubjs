@@ -23,7 +23,6 @@ const { PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT } = require('./htt
 const ubErrors = require('./ubErrors')
 // eslint-disable-next-line camelcase
 const { uba_common, GC_KEYS, ubVersionNum } = require('@unitybase/base')
-const queryString = require('querystring')
 const appBinding = process.binding('ub_app')
 const options = require('@unitybase/base').options
 const AUTH_MOCK = options.switchIndex('-authMock') >= 0
@@ -353,7 +352,7 @@ function getDomainInfoEp (req, resp) {
   // }
   // let res = JSON.stringify(restrictedDomain, domainReplacer)
 
-  const params = queryString.parse(req.parameters)
+  const params = req.parsedParameters
   const isExtended = (params.extended === 'true')
   if (isExtended && authenticationHandled && !uba_common.isSuperUser()) {
     return resp.badRequest('Extended domain info allowed only for member of admin group of if authentication is disabled')
@@ -436,7 +435,7 @@ function runSQLEp (req, resp) {
     throw new Error(`Only local execution allowed. Caller remoteIP="${Session.callerIP}"`)
   }
 
-  const parameters = queryString.parse(req.parameters)
+  const parameters = req.parsedParameters
   const connectionName = parameters.connection || parameters.CONNECTION || App.domainInfo.defaultConnection.name
   const conn = App.dbConnections[connectionName]
 
@@ -501,8 +500,7 @@ function restEp (req, resp) {
  * @private
  */
 function allLocalesEp (req, resp) {
-  const parameters = queryString.parse(req.parameters)
-  const lang = parameters.lang
+  const { lang } = req.parsedParameters
   if (!lang || lang.length > 5) return resp.badRequest('lang parameter required')
   const supportedLanguages = App.serverConfig.application.domain.supportedLanguages || ['en']
   if (supportedLanguages.indexOf(lang) === -1) return resp.badRequest('unsupported language')
