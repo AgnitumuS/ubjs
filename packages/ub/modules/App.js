@@ -128,7 +128,12 @@ App.launchEndpoint = function (endpointName) {
   try {
     this.emit(endpointName + ':before', req, resp)
     if (!__preventDefault) {
-      appBinding.endpoints[endpointName](req, resp)
+      const handler = appBinding.endpoints[endpointName]
+      if (handler) { // JS endpoint
+        handler(req, resp)
+      } else { // native endpoint
+        appBinding.launchNativeEndpoint()
+      }
       this.emit(endpointName + ':after', req, resp)
     }
   } finally {
