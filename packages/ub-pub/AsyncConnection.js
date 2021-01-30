@@ -1729,6 +1729,10 @@ const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty
  * @param {Number} params.ID Instance ID
  * @param {Number} [params.revision] Revision of the document. We strongly recommend to pass this argument for correct HTTP cache work
  * @param {Boolean} [params.isDirty] Set it to `true` to retrieve a document in **dirty** state
+ * @param {String} [params.fileName] For dirty document should be passed - getDocument endpoint uses this file
+ *   extension to create a correct Content-Type header.
+ *   If not passed - dirty document returned with Content-Type: application/octet-stream.
+ *
  * @returns {Promise<string>} Document URL (valid for the duration of the user session)
  */
 UBConnection.prototype.getDocumentURL = async function (params) {
@@ -1782,10 +1786,14 @@ UBConnection.prototype.getDocumentURL = async function (params) {
  * @param {String} params.attribute `document` type attribute code
  * @param {Number} params.id Instance ID
  * @param {String} [params.forceMime] If passed and server support transformation from source MIME type to `forceMime`
- *   server perform transformation and return documenRt representation in the passed MIME
+ *   server perform transformation and return document representation in the passed MIME
  * @param {Number} [params.revision] Optional revision of the document (if supported by server-side store configuration).
  *   Default is current revision.
- * @param {String} [params.fileName] ????
+ * @param {String} [params.fileName] For dirty document should be passed - getDocument endpoint uses this file
+ *   extension to create a correct Content-Type header.
+ *
+ *   If not passed - dirty document returned with Content-Type: application/octet-stream.
+ *   For non dirty documents Content-Type retrieved from JSON in DB.
  * @param {Boolean} [params.isDirty=false] Optional ability to retrieve document in **dirty** state
  * @param {String} [params.store] ????
  *

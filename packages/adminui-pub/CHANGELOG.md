@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - for dirty documents `UBApp.downloadDocument` adds a `fileName` parameter to URL, so server can add a correct `Content-Type` header
+ - PDF file are previewed correctly (fixed in @unitybase/blob-stores@5.6.0)
 
 ## [5.15.0] - 2021-01-28
 ### Added
@@ -26,7 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    to the file system without loading it into browser memory.
 
 ### Fixed
- - set default width for multifilter combobox
+ - set default width for multi-filter combobox
 
 ## [5.14.5] - 2021-01-26
 ### Added

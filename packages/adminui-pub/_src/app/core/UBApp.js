@@ -1061,7 +1061,10 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
   downloadDocument: async function (instanceInfo, blobMetadata) {
     const getDocumentParams = Object.assign({revision: 1}, instanceInfo)
     if (blobMetadata) {
-      if (blobMetadata.isDirty) getDocumentParams.isDirty = blobMetadata.isDirty
+      if (blobMetadata.isDirty) {
+        getDocumentParams.isDirty = blobMetadata.isDirty
+        getDocumentParams.fileName = blobMetadata.origName
+      }
       if (blobMetadata.revision) getDocumentParams.revision = blobMetadata.revision
     }
     // validate what file is accessible (and re-auth if session is expire)

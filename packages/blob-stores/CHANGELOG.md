@@ -8,7 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - **BREAKING** `getDocument` endpoint return a BLOB content without `Content-Disposition` header.
+  To download a BLOB store content with original file name new method of @unitybase/adminui-pub `$App.downloadDocument`
+  should be used. 
+   
+  For frontends without adminui-pub `download` attribute of `a` HTML element can be used: `<a href=... download="origFileName">`
+   
 ### Deprecated
 
 ### Removed

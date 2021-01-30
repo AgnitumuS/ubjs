@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `AsyncConnection.getDocumentURL` - fileName parameter added - must be set for dirty documents to
+   get a valid Content-Type header from server.
 
 ### Changed
 

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - for `video` content FileRendered disable a preload to decrease a server load. User should press a `play` button to view a video.
 
 ### Deprecated
 
@@ -15,7 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - UTableEntity filter for attributes of type `ID` now uses the same set of available conditions as for type BigInteger.
-   Before this fix available conditions are `equal` and `contains`. The second one dose not make sence at all.   
+   Before this fix available conditions are `equal` and `contains`. The second one dose not make sense at all
+ - PDF file are previewed correctly (fixed in @unitybase/blob-stores@5.6.0)  
 
 ## [1.15.0] - 2021-01-28
 ### Added

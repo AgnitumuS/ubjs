@@ -159,18 +159,21 @@ class FileSystemBlobStore extends BlobStoreCustom {
         const storeRelPath = path.relative(this.fullStorePath, filePath)
         let head = `${this.PROXY_SEND_FILE_HEADER}: /${this.PROXY_SEND_FILE_LOCATION_ROOT}/${this.name}/${storeRelPath}`
         head += `\r\nContent-Type: ${ct}`
-        if (blobInfo && blobInfo.origName) {
-          head += `\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`
-        }
+        // to download file UI uses <a href="..." download="origFileName">,
+        // so Content-Disposition not required anymore
+        // moreover - if it passed, then PDF viewer do not open file from passed direct link, but tries to save it
+        // if (blobInfo && blobInfo.origName) {
+        //   head += `\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`
+        // }
         console.debug('<- ', head)
         resp.writeHead(head)
         resp.writeEnd('')
       } else {
-        if (blobInfo && blobInfo.origName) {
-          resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`)
-        } else {
-          resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}`)
-        }
+        // if (blobInfo && blobInfo.origName) {
+        //   resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`)
+        // } else {
+        resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}`)
+        // }
         resp.writeEnd(filePath)
       }
     } else {

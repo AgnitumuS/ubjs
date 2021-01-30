@@ -41,7 +41,7 @@
   <video
     v-else-if="renderType === 'video'"
     controls
-    preload="metadata"
+    preload="none"
     ref="view"
     width="100%"
     height="100%"
@@ -169,7 +169,10 @@ export default {
         attribute: this.attributeName,
         ID: this.fileId
       }
-      if (this.file.isDirty) getDocumentParams.isDirty = this.file.isDirty
+      if (this.file.isDirty) {
+        getDocumentParams.isDirty = this.file.isDirty
+        getDocumentParams.fileName = this.file.origName
+      }
       if (this.file.revision) getDocumentParams.revision = this.file.revision
       this.previewUrl = await this.$UB.connection.getDocumentURL(getDocumentParams)
     }
