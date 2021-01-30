@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - for `video` content FileRendered disable a preload to decrease a server load. User should press a `play` button to view a video.
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.15.1] - 2021-01-30
+### Changed
+ - for `video` content FileRendered disable a preload to decrease a server load. User should press a `play` button to view a video.
 
 ### Fixed
  - UTableEntity filter for attributes of type `ID` now uses the same set of available conditions as for type BigInteger.

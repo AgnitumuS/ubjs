@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.15.1] - 2021-01-30
+### Fixed
  - for dirty documents `UBApp.downloadDocument` adds a `fileName` parameter to URL, so server can add a correct `Content-Type` header
  - PDF file are previewed correctly (fixed in @unitybase/blob-stores@5.6.0)
 

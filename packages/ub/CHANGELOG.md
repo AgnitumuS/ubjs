@@ -6,10 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `THTTPRequest` extended by helper functions:
-    - req.getHeader(name) -> string|undefined
-    - req.getHeaderNames() -> array<string>
-    - req.getHeaders() -> Object
 
 ### Changed
 
@@ -18,6 +14,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.7.21] - 2021-01-30
+### Added
+ - `THTTPRequest` extended by helper functions:
+    - req.getHeader(name) -> string|undefined
+    - req.getHeaderNames() -> array<string>
+    - req.getHeaders() -> Object
 
 ## [5.7.20] - 2021-01-26
 ## [5.7.19] - 2021-01-19

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.4.58] - 2021-01-30
 ## [5.4.57] - 2021-01-26
 ### Fixed
   - copying of master record and all collection items - collection item attributes are assigned with ID of the copy of the master record in case
