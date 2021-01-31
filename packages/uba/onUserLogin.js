@@ -1,7 +1,6 @@
 /* eslint-disable curly */
 const UB = require('@unitybase/ub')
 const App = UB.App
-const queryString = require('querystring')
 const Session = UB.Session
 
 Session.on('login', onUserLogin)
@@ -33,7 +32,7 @@ function checkAdvancedSecurity (req) {
     doCheckAdvancedSecurity = function () { return { enabled: false } }
   }
   let fp = ''
-  const urlParams = queryString.parse(req.decodedParameters)
+  const urlParams = req.parsedParameters
 
   if (!advData) return { // no adv. settings for current user
     enabled: true,

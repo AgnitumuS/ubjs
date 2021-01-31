@@ -115,14 +115,13 @@ function dbRawJSnoParse (req, resp) {
 }
 App.registerEndpoint('dbRawJSnoParse', dbRawJSnoParse, false)
 
-var queryString = require('querystring')
 /**
  * TechemPower Test type 3: Multiple database queries
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  */
 function queries (req, resp) {
-  const params = queryString.parse(req.parameters)
+  const params = req.parsedParameters
   let repeatNum = params.q || 1
   const result = []
 
@@ -144,7 +143,7 @@ App.registerEndpoint('queries', queries, false)
  * @param {THTTPResponse} resp
  */
 function queriesRaw (req, resp) {
-  const params = queryString.parse(req.parameters)
+  const params = req.parsedParameters
   let repeatNum = params.q || 1
   const result = []
 

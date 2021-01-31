@@ -8,7 +8,6 @@ const assert = require('assert')
 const UB = require('@unitybase/ub')
 const App = UB.App
 const Session = UB.Session
-const queryString = require('querystring')
 App.registerEndpoint('echoToFile', echoToFile, false)
 
 App.registerEndpoint('echoFromFile', echoFromFile, false)
@@ -66,7 +65,7 @@ tst_service.on('multiply:after', function () {
  * @param {THTTPResponse} resp
  */
 function getDocumentLog (req, resp) {
-  const params = queryString.parse(req.parameters)
+  const params = req.parsedParameters
   const reqId = req.requestId
   if (!reqId) throw new Error('req.requestId should be > 0 for UB > 5.18.1')
   if (resp.statusCode === 200) {
@@ -208,7 +207,7 @@ function evaluateScript (req, resp) {
   }
   let script
   if (req.method === 'GET') {
-    script = queryString.parse(req.parameters).script
+    script = req.parsedParameters.script
   } else if (req.method === 'POST') {
     script = req.read('utf-8')
   } else {

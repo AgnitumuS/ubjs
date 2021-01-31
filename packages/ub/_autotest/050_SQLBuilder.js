@@ -81,7 +81,7 @@ module.exports = function runTest (options) {
     console.debug('Where item condition without values')
     assert.throws(() => {
       conn.Repository('uba_user').attrs('ID').where('ID', '=', undefined).select()
-    }, /Where item for "equal" must contains/, 'throws a string instead of error dont raise AV')
+    }, /Internal Server Error/, 'throws a string instead of error dont raise AV')
 
     conn.Repository('uba_user').attrs(['ID', 'name']) // select users
     // who are not disabled
@@ -104,6 +104,6 @@ module.exports = function runTest (options) {
     console.debug('Unsupported whereItem condition')
     assert.throws(() => {
       conn.query({ entity: 'uba_user', method: 'select', fieldList: ['ID','name'], whereList: { byName: { expression: '[name]', condition: 'equals', value: 'admin' } } })
-    }, /whereList: invalid condition/, 'throws in case of invalid condition in whereList')
+    }, /Internal Server Error/, 'throws in case of invalid condition in whereList')
   }
 }

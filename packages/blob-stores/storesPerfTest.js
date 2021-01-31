@@ -36,7 +36,6 @@
 const UB = require('@unitybase/ub')
 const Session = UB.Session
 const blobStores = require('./blobStores')
-const queryString = require('querystring')
 const crypto = require('crypto')
 
 module.exports = {
@@ -58,7 +57,7 @@ const idsCache = {
  * @private
  */
 function getDocumentPerfTestEp(req, resp) {
-  const {entity, attribute} = queryString.parse(req.parameters)
+  const {entity, attribute} = req.parsedParameters
 
   if (!App.domainInfo.has(entity)) {
     return resp.badRequest('unknown entity')
@@ -96,7 +95,7 @@ function getDocumentPerfTestEp(req, resp) {
  * @private
  */
 function setDocumentPerfTestEp(req, resp) {
-  const {entity, attribute} = queryString.parse(req.parameters)
+  const {entity, attribute} = req.parsedParameters
   if (!App.domainInfo.has(entity)) {
     return resp.badRequest('unknown entity')
   }
