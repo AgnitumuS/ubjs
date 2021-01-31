@@ -6,8 +6,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `THTTPRequest` extended by helper functions:
+    - req.getHeader(name) -> string|undefined
+    - req.getHeaderNames() -> array<string>
+    - req.getHeaders() -> Object
+ 
+ - `THTTPRequest` extended by `parsedParameters` getter. Result is cached, so second call is faster than first
+  ```javascript
+  // for parameters 'foo=bar&baz=qux&baz=quux&corge' return
+  req.parsedParameters // { foo: 'bar', baz: ['qux', 'quux'], corge: '' }
+  ```
+  We recommend using this getter instead of `querystring.parse(req.parameters)` to prevent multiple
+  call to parameter parsing from different methods (require **UB server >= 5.19.0**).
 
 ### Changed
+ - **BREAKING** JS endpoints, added by `App.registerEndpoint` and native endpoints, added by a server (stat, auth, ubql, logout and metrics)
+  now executed using `App.launchEndpoint` JS implementation.
+   
+  This allows to use the same `req` and `resp` objects for both endpoint types, and a one step forward to pure JS ubql implementation.
+
+  These changes require **UB server >= 5.19.0**.
 
 ### Deprecated
 
@@ -16,12 +34,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 ## [5.7.21] - 2021-01-30
-### Added
- - `THTTPRequest` extended by helper functions:
-    - req.getHeader(name) -> string|undefined
-    - req.getHeaderNames() -> array<string>
-    - req.getHeaders() -> Object
-
 ## [5.7.20] - 2021-01-26
 ## [5.7.19] - 2021-01-19
 ## [5.7.18] - 2021-01-17

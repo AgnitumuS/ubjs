@@ -43,7 +43,6 @@
  */
 const UBDomain = require('@unitybase/cs-shared').UBDomain
 const Repository = require('@unitybase/base').ServerRepository.fabric
-const queryString = require('querystring')
 const BlobStoreCustom = require('./blobStoreCustom')
 const MdbBlobStore = require('./mdbBlobStore')
 const FileSystemBlobStore = require('./fileSystemBlobStore')
@@ -321,7 +320,7 @@ function getDocumentEndpointInternal (req, resp, withBody = true) {
   /** @type BlobStoreRequest */
   let params
   if (req.method === 'GET') { // TODO - should we handle 'HEAD' here?
-    params = queryString.parse(req.parameters)
+    params = req.parsedParameters
   } else if (req.method === 'POST') {
     const paramStr = req.read()
     try {
@@ -403,7 +402,7 @@ function setDocumentEndpoint (req, resp) {
   let request
   // TODO HTTP 'DELETE'
   if (req.method === 'POST') {
-    request = queryString.parse(req.parameters)
+    request = req.parsedParameters
   } else {
     return resp.badRequest('invalid HTTP verb' + req.method)
   }

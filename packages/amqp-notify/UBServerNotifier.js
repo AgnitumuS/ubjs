@@ -13,7 +13,7 @@ function parseParams (req) {
     case 'POST':
       return Object.assign({}, qs.parse(req.read()))
     case 'GET':
-      return Object.assign({}, qs.parse(req.decodedParameters))
+      return Object.assign({}, req.parsedParameters)
     default:
       return {}
   }

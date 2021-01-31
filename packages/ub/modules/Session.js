@@ -1,4 +1,5 @@
 const sessionBinding = process.binding('ub_session')
+const THTTPRequest = require('./HTTPRequest')
 const EventEmitter = require('events').EventEmitter
 const base = require('@unitybase/base')
 const UBA_COMMON = require('@unitybase/base').uba_common
@@ -377,6 +378,15 @@ Session.reset = function (sessionID, userID) {
   _sessionCached.userRoles = undefined
   _sessionCached.userLang = undefined
   _sessionCached.zone = undefined
+}
+
+/**
+ * Called by server during login to emit a `login` event on Session object
+ * @private
+ */
+Session.emitLoginEvent = function() {
+  const req = new THTTPRequest()
+  this.emit('login', req)
 }
 
 /**

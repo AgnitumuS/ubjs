@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - use new method `req.getHeader('origin')` to get a `Origin` header value
+ - use new property `req.parsedParameters` instead of `queryString.parse(req.parameters)`
+
 
 ### Deprecated
 
