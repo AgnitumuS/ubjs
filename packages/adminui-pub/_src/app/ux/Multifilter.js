@@ -154,6 +154,8 @@ Ext.define('UB.ux.Multifilter', {
       items: menuItems,
       listeners: {
         click: function (menu, item, e, eOpts) {
+          if (!item) return
+
           if (item.showAllItem) {
             UB.ux.UBPreFilter.makeFilters({ options: me.gridOwner.autoFilter || {},
               entityCode: me.gridOwner.entityName,
