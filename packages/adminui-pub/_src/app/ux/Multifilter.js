@@ -154,18 +154,20 @@ Ext.define('UB.ux.Multifilter', {
       items: menuItems,
       listeners: {
         click: function (menu, item, e, eOpts) {
-          if (item.showAllItem) {
-            UB.ux.UBPreFilter.makeFilters({ options: me.gridOwner.autoFilter || {},
-              entityCode: me.gridOwner.entityName,
-              store: me.gridOwner.getStore(),
-              onFilterReady: function () {
-                if (me.gridOwner.filtersDescription) {
-                  me.gridOwner.filtersDescription()
+          if (item) {
+            if (item.showAllItem) {
+              UB.ux.UBPreFilter.makeFilters({ options: me.gridOwner.autoFilter || {},
+                entityCode: me.gridOwner.entityName,
+                store: me.gridOwner.getStore(),
+                onFilterReady: function () {
+                  if (me.gridOwner.filtersDescription) {
+                    me.gridOwner.filtersDescription()
+                  }
                 }
-              }
-            })
+              })
+            }
+            onClick.apply(me, arguments)
           }
-          onClick.apply(me, arguments)
         }
       }
     })

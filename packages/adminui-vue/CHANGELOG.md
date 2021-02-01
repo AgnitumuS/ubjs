@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - Error `Cannot read property 'showAllItem' of undefined` on clicking to Ext filter arrows up/down.
 
 ## [1.15.1] - 2021-01-30
 ### Changed
