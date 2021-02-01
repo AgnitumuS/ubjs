@@ -1,3 +1,6 @@
+/*
+ * test speed of shared DNS, TLS and TCP connection cache
+ */
 const options = require('@unitybase/base').options
 const Worker = require('@unitybase/base').Worker
 

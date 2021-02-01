@@ -1,3 +1,4 @@
+// worker for httpRequestMTGlobalCacheTest.js
 const http = require('http')
 
 module.exports = {
@@ -16,7 +17,7 @@ function onWorkerError (message, exception) {
 
 function onProcessWorker (message) {
   let request, resp
-  const NUM_REQ = 10
+  const NUM_REQ = 100
 
   let t = Date.now()
   const startTime = t
@@ -24,8 +25,8 @@ function onProcessWorker (message) {
   for(let i=0; i < 1/*NUM_REQ*/; i++) {
     request = http.request({
       //alternative to host/port/path is
-      //URL: 'https://unitybase.info/quote',
-      URL: 'http://localhost:8881/testTimeout',
+      URL: 'https://unitybase.info/quote',
+      //URL: 'http://localhost:8881/testTimeout',
       method: 'GET',
       sendTimeout: 30000, receiveTimeout: 30000,
       keepAlive: true,
