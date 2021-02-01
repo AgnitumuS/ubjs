@@ -2,7 +2,7 @@ const http = require('http')
 let request, resp
 const NUM_REQ = 100
 
-console.time('req per request')
+let t = Date.now()
 for(let i=0; i < NUM_REQ; i++) {
   request = http.request({
     //alternative to host/port/path is
@@ -16,11 +16,13 @@ for(let i=0; i < NUM_REQ; i++) {
   resp = request.end()
   console.log(resp.statusCode, resp.read())
 }
-console.timeEnd('req per request')
+const reqPerRequestT = Date.now() - t;
 
-console.time('reuse req')
+t = Date.now();
 for (let i=0; i < NUM_REQ; i++) {
   resp = request.end()
   console.log(resp.statusCode, resp.read())
 }
-console.timeEnd('reuse req')
+const reqReuseT = Date.now() - t;
+
+console.log(`Request Per rq: ${reqPerRequestT}; reuse req: ${reqReuseT}`)
