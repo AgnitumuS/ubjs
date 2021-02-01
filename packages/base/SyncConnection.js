@@ -428,7 +428,7 @@ SyncConnection.prototype.xhr = function (options) {
       result = resp.read('bin')
     } else if (((resp.headers['content-type'] || '').indexOf('json') >= 0) && !options.simpleTextResult) {
       const txtRes = resp.read()
-      result = txtRes ? JSON.parse(resp.read()) : null
+      result = txtRes ? JSON.parse(txtRes) : null
     } else {
       result = resp.read() // return string reads as UTF-8
     }
