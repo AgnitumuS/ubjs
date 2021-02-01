@@ -170,7 +170,6 @@ class THTTPRequest {
    * @return {Object<string, string|array<string>>}
    */
   get parsedParameters () {
-    debugger
     if (this._parsedParameters === undefined) this._parsedParameters = queryString.parse(reg_getParameters())
     return this._parsedParameters
   }
