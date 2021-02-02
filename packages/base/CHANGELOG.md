@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.19.0] - 2021-02-02
+### Fixed
  - prevent unnecessary call to IncomingMessage.read() for responses with JSON content type (reduce memory usage)
 
 ## [5.4.17] - 2021-01-26

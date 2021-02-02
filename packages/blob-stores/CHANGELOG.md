@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.19.0] - 2021-02-02
+### Changed
  - `setDocument` endpoint will use `req.writeToFile` if request body not in base64 instead of reading
    body into JS memory and when write it using fs.writeFileSync.
    This prevents double memory allocation.
@@ -15,12 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    `content` parameter can be either ArrayBuffer or THTTPRequest.
    Support for `content: THTTPRequest` MUST be added to descendants.
  - use new property `req.parsedParameters` instead of `queryString.parse(req.parameters)`
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.5.12] - 2021-01-30
 ### Changed

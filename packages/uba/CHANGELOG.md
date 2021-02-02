@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - use new property `req.parsedParameters` instead of `queryString.parse(req.parameters)`
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.19.0] - 2021-02-02
+### Changed
+ - use new property `req.parsedParameters` instead of `queryString.parse(req.parameters)`
 
 ## [5.4.58] - 2021-01-30
 ## [5.4.57] - 2021-01-26

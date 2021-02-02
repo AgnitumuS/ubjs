@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.19.0] - 2021-02-02
+### Added
  - `THTTPRequest` extended by helper functions:
     - req.getHeader(name) -> string|undefined
     - req.getHeaderNames() -> array<string>
@@ -29,12 +40,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   This allows to use the same `req` and `resp` objects for both endpoint types, and a one step forward to pure JS ubql implementation.
 
   These changes require **UB server >= 5.19.0**.
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.7.21] - 2021-01-30
 ## [5.7.20] - 2021-01-26
