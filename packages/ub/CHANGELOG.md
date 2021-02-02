@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   We recommend using this getter instead of `querystring.parse(req.parameters)` to prevent multiple
   call to parameter parsing from different methods (require **UB server >= 5.19.0**).
 
+ - `THTTPRequest.writeToFile` can accept second parameter `encoding` - 'bin' (default) or `base64`.
+  For `basse64` request body will be converted from base64 into binary before write to file
+
 ### Changed
  - **BREAKING** JS endpoints, added by `App.registerEndpoint` and native endpoints, added by a server (stat, auth, ubql, logout and metrics)
   now executed using `App.launchEndpoint` JS implementation.

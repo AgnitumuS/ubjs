@@ -27,10 +27,12 @@ class THTTPRequest {
   /**
    * Write request body content (as binary) to a file. Return true on success
    * @param {string} fullFilePath
+   * @param {string} [encoding='bin'] Can be 'bin'(default) or 'base64` - in this case
+   *   request body will be converted from base64 into binary before write to file
    * @return {boolean}
    */
-  writeToFile (fullFilePath) {
-    return req_writeToFile(fullFilePath)
+  writeToFile (fullFilePath, encoding='bin') {
+    return req_writeToFile(fullFilePath, encoding)
   }
 
   /**
