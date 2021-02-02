@@ -42,13 +42,17 @@ class MdbBlobStore extends BlobStoreCustom {
    * @inheritDoc
    * @param {BlobStoreRequest} request Request params
    * @param {UBEntityAttribute} attribute
-   * @param {ArrayBuffer} content
+   * @param {ArrayBuffer|THTTPRequest} content
    * @returns {BlobStoreItem}
    */
   saveContentToTempStore (request, attribute, content) {
     const fn = this.getTempFileName(request)
     console.debug('temp file is written to', fn)
-    fs.writeFileSync(fn, content)
+    if (content.writeToFile) {
+      if (!content.writeToFile(fn)) throw new Error(`Error write to ${fn}`)
+    } else {
+      fs.writeFileSync(fn, content)
+    }
     const md5 = nhashFile(fn, 'MD5')
     console.debug('temp file MD5:', md5)
     return {

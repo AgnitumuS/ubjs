@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `setDocument` endpoint will use `req.writeToFile` if request body not in base64 instead of reading
+   body into JS memory and when write it using fs.writeFileSync.
+   This prevents double memory allocation.
+ - **BREAKING** `BlobStoreCustom.saveContentToTempStore` method signature changed.
+   `content` parameter can be either ArrayBuffer or THTTPRequest.
+   Support for `content: THTTPRequest` MUST be added to descendants.
  - use new property `req.parsedParameters` instead of `queryString.parse(req.parameters)`
 
 ### Deprecated

@@ -17,13 +17,17 @@ class FileSystemPDFBlobStore extends FileSystemBlobStore {
    * @inheritDoc
    * @param {BlobStoreRequest} request Request params
    * @param {UBEntityAttribute} attribute
-   * @param {ArrayBuffer} content
+   * @param {ArrayBuffer|THTTPRequest} content
    * @returns {BlobStoreItem}
    */
   saveContentToTempStore (request, attribute, content) {
     const fn = this.getTempFileName(request)
     // TODO - call convertion service here and store PDF to temp instead of doc/docx
-    fs.writeFileSync(fn, content)
+    if (content.writeToFile) {
+      if (!content.writeToFile(fn)) throw new Error(`Error write to ${fn}`)
+    } else {
+      fs.writeFileSync(fn, content)
+    }
     const origFn = request.fileName
     const ct = mime.contentType(path.extname(origFn))
     return {

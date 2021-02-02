@@ -420,7 +420,7 @@ function setDocumentEndpoint (req, resp) {
   if (request.encoding === 'base64') {
     content = req.read('base64')
   } else {
-    content = req.read('bin')
+    content = req
   }
   const blobStoreItem = store.saveContentToTempStore(parsed.bsReq, attribute, content)
   resp.statusCode = 200
