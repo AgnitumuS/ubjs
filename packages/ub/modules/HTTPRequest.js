@@ -52,6 +52,7 @@ class THTTPRequest {
 
    * @param {string} name Case-insensitive header name
    * @return {string|undefined}
+   * @since UB@5.19.0
    */
   getHeader (name) {
     if (!this._parsedHeaders) {
@@ -65,6 +66,7 @@ class THTTPRequest {
    // incoming headers string 'Host: unitybase.info\r\nAccept-Encoding: gzip\r\n\r\nAccept-Encoding: deflate, br'
    req.getHeaderNames() // ['host', 'accept-encoding']
    * @return {Array<string>}
+   * @since UB@5.19.0
    */
   getHeaderNames () {
     if (!this._parsedHeaders) {
@@ -75,8 +77,11 @@ class THTTPRequest {
   /**
    * Return parsed headers object. Keys are lower-cased header names, values are header values
    * @example
+
    // incoming headers string 'Host: unitybase.info\r\nAccept-Encoding: gzip\r\n\r\nAccept-Encoding: deflate, br'
    req.getHeaders() // {host: "unitybase.info", accept-encoding: "gzip, deflate, br"}
+
+   * @since UB@5.19.0
    */
   getHeaders () {
     if (!this._parsedHeaders) {
@@ -170,6 +175,7 @@ class THTTPRequest {
     // for parameters 'foo=bar&baz=qux&baz=quux&corge' return
     req.parsedParameters // { foo: 'bar', baz: ['qux', 'quux'], corge: '' }
    * @return {Object<string, string|array<string>>}
+   * @since UB@5.19.0
    */
   get parsedParameters () {
     if (this._parsedParameters === undefined) this._parsedParameters = queryString.parse(reg_getParameters())
