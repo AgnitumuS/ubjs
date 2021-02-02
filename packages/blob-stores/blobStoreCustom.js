@@ -54,7 +54,7 @@ class BlobStoreCustom {
    * @abstract
    * @param {BlobStoreRequest} request Request params
    * @param {UBEntityAttribute} attribute
-   * @param {ArrayBuffer} content
+   * @param {ArrayBuffer|THTTPRequest} content
    * @returns {BlobStoreItem}
    */
   saveContentToTempStore (request, attribute, content) {}

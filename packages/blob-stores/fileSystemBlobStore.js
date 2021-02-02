@@ -82,14 +82,18 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @inheritDoc
    * @param {BlobStoreRequest} request Request params
    * @param {UBEntityAttribute} attribute
-   * @param {ArrayBuffer} content
+   * @param {ArrayBuffer|THTTPRequest} content
    * @returns {BlobStoreItem}
    */
   saveContentToTempStore (request, attribute, content) {
     const fn = this.getTempFileName(request)
     console.debug('temp file is written to', fn)
     try {
-      fs.writeFileSync(fn, content)
+      if (content.writeToFile) {
+        if (!content.writeToFile(fn)) throw new Error(`Error write to ${fn}`)
+      } else {
+        fs.writeFileSync(fn, content)
+      }
     } catch (e) {
       if (fs.existsSync(fn)) fs.unlinkSync(fn)
       throw e
