@@ -180,7 +180,7 @@ export default {
       }
       const repository = this.$attrs.repository
       if (typeof repository === 'object') {
-        return this.$UB.Repository(repository)
+        return repository.entity
       } else  if (typeof repository === 'function') {
         return repository().entityName
       } else {
