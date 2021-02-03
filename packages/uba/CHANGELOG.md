@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - for UB@5.19.1 `loginFailed` event logs into `uba_audit.actionUser` name of user who tries to log-in.
+  Before this changes `anonymous` is written there. For UB@5.19.0 `anonymous` is written as before this patch.
 
 ### Deprecated
 

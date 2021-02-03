@@ -123,36 +123,34 @@ function onUserLogin (req) {
       })
       App.dbCommit(auditStore.entity.connectionName)
     } catch (ex) {
-      // this possible if we connect to empty database without ubs_* tables
+      // this possible if we connect to empty database without uba_* tables
       console.error('Error access audit entity:', ex.toString())
     }
   }
 }
 
-function onUserLoginFailed (isLocked) {
+function onUserLoginFailed (isLocked, userName) { // userName parameter is added in UB@5.19.1
+  if (!ubaAuditPresent) return
   console.debug('Call JS method: UBA.onUserLoginFailed')
 
-  if (ubaAuditPresent) { // uba_audit exists
-    try {
-      const obj = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
-      const user = obj ? obj.name : Session.userID
+  try {
+    const user = userName || ('' + Session.userID)
 
-      auditStore.run('insert', {
-        execParams: {
-          entity: 'uba_user',
-          entityinfo_id: Session.userID,
-          actionType: isLocked ? 'LOGIN_LOCKED' : 'LOGIN_FAILED',
-          actionUser: user,
-          actionTime: new Date(),
-          remoteIP: Session.callerIP,
-          targetUser: user
-        }
-      })
-      App.dbCommit(auditStore.entity.connectionName)
-    } catch (ex) {
-      // this possible if we connect to empty database without ubs_* tables
-      console.error('Error access audit entity:', ex.toString())
-    }
+    auditStore.run('insert', {
+      execParams: {
+        entity: 'uba_user',
+        entityinfo_id: Session.userID,
+        actionType: isLocked ? 'LOGIN_LOCKED' : 'LOGIN_FAILED',
+        actionUser: user,
+        actionTime: new Date(),
+        remoteIP: Session.callerIP,
+        targetUser: user
+      }
+    })
+    App.dbCommit(auditStore.entity.connectionName)
+  } catch (ex) {
+    // this possible if we connect to empty database without ubs_* tables
+    console.error('Error access audit entity:', ex.toString())
   }
 }
 
