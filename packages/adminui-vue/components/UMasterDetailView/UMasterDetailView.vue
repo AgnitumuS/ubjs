@@ -175,8 +175,9 @@ export default {
 
   computed: {
     entityName () {
-      if (this.$attrs.entity) {
-        return this.$attrs.entity
+      const eName = this.$attrs.entity || this.$attrs.entityName
+      if (eName ) {
+        return eName
       }
       const repository = this.$attrs.repository
       if (typeof repository === 'object') {
