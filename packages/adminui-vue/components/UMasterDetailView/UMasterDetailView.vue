@@ -175,20 +175,17 @@ export default {
 
   computed: {
     entityName () {
-      const { entityName, repository } = this.$attrs
-      if (entityName) {
-        return entityName
+      if (this.$attrs.entity) {
+        return this.$attrs.entity
       }
-
+      const repository = this.$attrs.repository
       if (typeof repository === 'object') {
         return this.$UB.Repository(repository)
-      }
-
-      if (typeof repository === 'function') {
+      } else  if (typeof repository === 'function') {
         return repository().entityName
+      } else {
+        return ''
       }
-
-      return ''
     },
 
     details () {
