@@ -218,15 +218,23 @@ export default {
     content: ':';
   }
 
-  .u-form-row__left,
-  .u-form-row__right {
+  .u-form-row__left {
     grid-template-columns: auto 1fr;
     grid-template-areas: 'label content' '... error';
+  }
+
+  .u-form-row__right {
+    grid-template-columns: auto 1fr;
+    grid-template-areas: 'content label' 'error ...';
   }
 
   .u-form-row__left .u-form-row__error,
   .u-form-row__right .u-form-row__error {
     text-align: left;
+  }
+
+  .u-form-row__right .u-form-row__label:after {
+    content: '';
   }
 
   .u-form-row__error {
@@ -255,7 +263,8 @@ export default {
   }
 
   .u-form-row__right .u-form-row__label {
-    justify-content: flex-end;
+    justify-content: flex-start;
+    padding-left: 8px;
   }
 
   .u-form-row__description {
