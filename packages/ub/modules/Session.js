@@ -29,7 +29,7 @@ const _sessionCached = {
  * Server reassign properties of this object each time `endpoint` handler are executed
  *
  * Implements {@link EventEmitter} and will emit `login` event each time user logged in
- * or `loginFailed` event with 2 parameters(userID, isLocked) when user UB authentication failed
+ * or `loginFailed` event with 2 parameters(isLocked, userName) when user UB authentication failed
  * @namespace
  * @global
  * @mixes EventEmitter

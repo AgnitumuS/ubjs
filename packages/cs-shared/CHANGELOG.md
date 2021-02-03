@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - fix typo in `UBDomain.prototype.get` error message in case entity does not exist
 
 ## [5.5.17] - 2021-01-19
 ## [5.5.16] - 2021-01-17

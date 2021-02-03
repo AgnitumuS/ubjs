@@ -157,7 +157,7 @@ UBDomain.prototype.isEntityMethodsAccessible = function (entityCode, methodNames
 UBDomain.prototype.get = function (entityCode, raiseErrorIfNotExists) {
   const result = this.entities[entityCode]
   if ((raiseErrorIfNotExists !== false) && !result) {
-    throw new Error('Entity with code "' + entityCode + '" does not exists or not accessible')
+    throw new Error(`Entity with code '${entityCode}' does not exist or not accessible`)
   }
   return result
 }
