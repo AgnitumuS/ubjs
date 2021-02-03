@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.19.1] - 2021-02-03
 ## [5.19.0] - 2021-02-02
 ### Changed
  - `setDocument` endpoint will use `req.writeToFile` if request body not in base64 instead of reading

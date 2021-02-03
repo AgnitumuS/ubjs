@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.19.1] - 2021-02-03
+### Fixed
  - UMasterDetailView: fixed `Entity with code "[object Object]" does not exists or not accessible` in case
    `repository` property is Object (ubql). For example as in ubm_enum shortcut definition.
  - UMasterDetailView: fixed `Entity with code "" does not exist or not accessible` in case `entityName` is passed 

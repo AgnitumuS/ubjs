@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.8.2] - 2021-02-03
 ## [5.8.1] - 2021-01-30
 ### Added
  - `AsyncConnection.getDocumentURL` - fileName parameter added - must be set for dirty documents to
