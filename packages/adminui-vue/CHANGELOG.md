@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.19.0] - 2021-02-02
 ### Fixed
  - Error `Cannot read property 'showAllItem' of undefined` on clicking to Ext filter arrows up/down.
+ - UFormRow: Fixed styles for labelPosition="right" - colon sing after label is removed; added padding between control and label
 
 ## [1.15.1] - 2021-01-30
 ### Changed
