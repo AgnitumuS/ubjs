@@ -50,6 +50,15 @@
     <p>Your browser doesn't support HTML5 video</p>
   </video>
 
+  <audio
+    v-else-if="renderType === 'audio'"
+    :src="previewUrl"
+    controls
+    preload="none"
+    ref="view">
+    <p>Your browser doesn't support <code>audion</code> element</p>
+  </audio>
+
   <div
     v-else
     class="file-renderer"
@@ -148,12 +157,12 @@ export default {
       if (this.withPreview) {
         if (this.file.ct === 'image/png' || this.file.ct === 'image/jpeg') {
           return 'image'
-        }
-        if (this.file.ct === 'application/pdf') {
+        } else if (this.file.ct === 'application/pdf') {
           return 'pdf'
-        }
-        if (this.file.ct.startsWith('video/')) {
+        } else if (this.file.ct.startsWith('video/')) {
           return 'video'
+        } else if (this.file.ct.startsWith('audio/')) {
+          return 'audio'
         }
       }
 

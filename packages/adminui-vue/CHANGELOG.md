@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UFile` (`FileRenderer`) component support preview (pre-listen) of audio content
 
 ### Changed
 
