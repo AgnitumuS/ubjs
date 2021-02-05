@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - The `processing` vuex module now has `SET_ALS_INFO` mutation.
+   In case als mixin assigned to entity `processing.load` adds information about als
+   into `alsInfo` object in vuex state.
+   
 ### Changed
 
 ### Deprecated
