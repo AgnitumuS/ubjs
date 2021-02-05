@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - UFile ignore charset part in BLOB content type while calculates an icon for file.
+   After this fix correct icons are displayed for txt, html, js, html and so on.   
 
 ## [5.19.1] - 2021-02-03
 ### Fixed
