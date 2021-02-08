@@ -103,19 +103,41 @@ function redisQueueListener (req, resp) {
   let REDIS_CONN = new TRedisClient()
   REDIS_CONN.initialize('127.0.0.1', '6379')
   console.log(`waiting for values in "mylist" list...
-  Use 'RPUSH mylist a b c' in redis-cli to push some values`)
-  let brpop=0
+  Use 'LPUSH mylist a b c' in redis-cli to push some values`)
+  let brpop=[]
   for (let i=0; brpop !== null; i++) {
-    brpop = REDIS_CONN.commands('brpop', 'mylist', 0)
+    brpop = REDIS_CONN.commands('brpop', 'mylist', 0) // 5 second wait
     console.log('Result from brpop is ', brpop)
-    sleep(100) // do some work
-    console.log('continue listening...')
+    if (brpop !== null) {
+      try {
+        const [listName, value] = brpop
+        doOnQueueValue(value)
+        App.dbCommit()
+      } catch (e) {
+        App.dbRollback()
+        console.error(e)
+      }
+      //sleep(100) // do some work
+      console.log('continue listening...')
+    } else {
+      console.log('terminated')
+    }
   }
   console.log('Worker thread terminated')
   resp.statusCode = 200
-  resp.writeEnd('reds queue listener terminated')
+  //resp.writeEnd('reds queue listener terminated')
 }
 App.registerEndpoint('listenToRedis', redisQueueListener, true)
+
+const TST_DICT = UB.DataStore('tst_dictionary')
+function doOnQueueValue(val) {
+  TST_DICT.run('insert',{
+    execParams: {
+      code: val,
+      filterValue: 1
+    }
+  })
+}
 
 UB.start()
 
