@@ -134,6 +134,11 @@ function createProcessingModule ({
        */
       lockInfo: {},
 
+      /**
+       * result of needAls misc operation (in case als mixin assigned to entity)
+       */
+      alsInfo: {},
+
       pendings: [],
 
       /**
@@ -450,6 +455,15 @@ function createProcessingModule ({
             state.pendings.splice(index, 1)
           }
         }
+      },
+
+      /**
+       * add info about als to store state
+       * @param {object} state
+       * @param {object} resultAls - result of `alsNeed` misc in repository
+       */
+      SET_ALS_INFO (state, resultAls) {
+        state.alsInfo = resultAls
       }
     },
 
@@ -534,6 +548,7 @@ function createProcessingModule ({
           .misc({ ID: instanceID || newInstanceID }) // Add top level ID to bypass caching, soft deletion and history
 
           .miscIf(isLockable(), { lockType: 'None' }) // get lock info
+          .miscIf(entitySchema.hasMixin('als'), { alsNeed: true }) // get als info
         const data = await repo.selectById(instanceID || newInstanceID)
 
         commit('LOAD_DATA', data)
@@ -552,6 +567,10 @@ function createProcessingModule ({
                 lockValue: rl.lockInfo.lockValue
               }
           })
+        }
+
+        if (entitySchema.hasMixin('als')) {
+          commit('SET_ALS_INFO', repo.rawResult.resultAls)
         }
 
         commit('LOADING', {

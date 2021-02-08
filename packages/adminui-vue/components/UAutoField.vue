@@ -1,10 +1,11 @@
 <script>
+const alsMixin = require('./controls/mixins/alsMixin')
 /**
  * Create a form component and validators based on entity attribute type
  */
 export default {
   name: 'UAutoField',
-
+  mixins: [alsMixin],
   inject: {
     $v: { from: '$v' },
     entity: { from: 'entity' },
@@ -67,9 +68,17 @@ export default {
     },
 
     isRequired () {
-      return this.required !== undefined ? this.required : (
-        this.$v && this.$v[this.attributeName] && 'required' in this.$v[this.attributeName].$params
-      )
+      if (this.required !== undefined && this.required !== false) return this.required
+      else {
+        return (this.$_isRequiredByALS(this.attributeName) ||
+          (this.$v && this.$v[this.attributeName] && 'required' in this.$v[this.attributeName].$params))
+      }
+    },
+
+    isReadOnly () {
+      return (this.readonly !== undefined && this.readonly !== false)
+        ? this.readonly
+        : this.$_isReadOnlyByALS(this.attributeName)
     },
 
     isError () {
@@ -79,16 +88,16 @@ export default {
     },
 
     /**
-     *  Re-assignt parent event listeners for `input` event, so u-auto-filed can be extended as such:
+     *  Re-assign parent event listeners for `input` event, so u-auto-filed can be extended as such:
 
      <template>
-       <u-auto-field
-         v-if="!isHidden(attributeName)"
-         :required="isRequired(attributeName)"
-         v-bind="$attrs"
-         :attribute-name="attributeName"
-         v-on="$listeners"
-       />
+      <u-auto-field
+        v-if="!isHidden(attributeName)"
+        :required="isRequired(attributeName)"
+        v-bind="$attrs"
+        :attribute-name="attributeName"
+        v-on="$listeners"
+      />
      </template>
 
      * @returns {Record<string, Function | Function[]> & {input: input}}
@@ -135,7 +144,9 @@ export default {
       ...this.$attrs,
       attributeName: this.attributeName,
       value: this.model,
-      disabled: this.isDisabled || this.$attrs.disabled
+      disabled: this.isDisabled || this.$attrs.disabled,
+      readonly: this.isDisabled || this.isReadOnly,
+      required: this.isRequired
     }
     switch (this.dataType) {
       case 'Boolean':
@@ -169,10 +180,7 @@ export default {
         cmp = h(this.forceCmp || 'u-select-entity', {
           attrs: {
             entityName: this.associatedEntity,
-            attributeName: this.attributeName,
-            value: this.model,
-            readonly: this.isDisabled,
-            ...this.$attrs
+            ...baseAttrs
           },
           on: this.buildListenersOnInput
         })
@@ -237,25 +245,25 @@ export default {
 </script>
 
 <docs>
-  Create a form component and validators based on entity attribute type
+Create a form component and validators based on entity attribute type
 
-  ### Basic usage
+### Basic usage
 
-  ```vue
-  <template>
-    <u-auto-field attribute-name="code" />
-  </template>
-  ```
+```vue
+<template>
+  <u-auto-field attribute-name="code"/>
+</template>
+```
 
-  ### Default slot
-  Anything you need to render inside u-form-row container can be added as a u-auto-field default slot content.
-  In sample below we output a description for SQL attribute:
+### Default slot
+Anything you need to render inside u-form-row container can be added as a u-auto-field default slot content.
+In sample below we output a description for SQL attribute:
 
-  ``` vue
-  <u-auto-field attribute-name="SQL">
-    <div class="u-form-row__description">
-      {{ this.entitySchema.attr('SQL').description }}
-    </div>
-  </u-auto-field>
-  ```
+``` vue
+<u-auto-field attribute-name="SQL">
+  <div class="u-form-row__description">
+    {{ this.entitySchema.attr('SQL').description }}
+  </div>
+</u-auto-field>
+```
 </docs>
