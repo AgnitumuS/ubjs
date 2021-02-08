@@ -68,10 +68,11 @@ export default {
     },
 
     isRequired () {
-      return (this.required !== undefined && this.required !== false)
-        ? this.required
-        : (this.$_isRequiredByALS(this.attributeName) ||
+      if (this.required !== undefined && this.required !== false) return this.required
+      else {
+        return (this.$_isRequiredByALS(this.attributeName) ||
           (this.$v && this.$v[this.attributeName] && 'required' in this.$v[this.attributeName].$params))
+      }
     },
 
     isReadOnly () {
@@ -87,16 +88,16 @@ export default {
     },
 
     /**
-     *  Re-assignt parent event listeners for `input` event, so u-auto-filed can be extended as such:
+     *  Re-assign parent event listeners for `input` event, so u-auto-filed can be extended as such:
 
      <template>
-     <u-auto-field
-     v-if="!isHidden(attributeName)"
-     :required="isRequired(attributeName)"
-     v-bind="$attrs"
-     :attribute-name="attributeName"
-     v-on="$listeners"
-     />
+      <u-auto-field
+        v-if="!isHidden(attributeName)"
+        :required="isRequired(attributeName)"
+        v-bind="$attrs"
+        :attribute-name="attributeName"
+        v-on="$listeners"
+      />
      </template>
 
      * @returns {Record<string, Function | Function[]> & {input: input}}
@@ -260,7 +261,7 @@ In sample below we output a description for SQL attribute:
 
 ``` vue
 <u-auto-field attribute-name="SQL">
-  <div className="u-form-row__description">
+  <div class="u-form-row__description">
     {{ this.entitySchema.attr('SQL').description }}
   </div>
 </u-auto-field>
