@@ -811,7 +811,7 @@ Ext.define('UB.core.UBCommand', {
         if (me.isDefaultForm) {
           config.width = UB.appConfig.formDefaultAutoFormWidth
         }
-        config.modal = true
+        config.modal = UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditFormstrue || me.isModal || me.isModalDialog
         config.resizable = me.isResizable
         config.maximizable = me.isMaximizable
         config.closable = me.isClosable

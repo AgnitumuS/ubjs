@@ -649,10 +649,7 @@ export default {
         const config = this.buildAddNewConfig({
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
           entity: this.getEntityName,
-          isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal,
-          onClose: function (itemId) {
-            debugger
-          }
+          isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal
         })
         this.$UB.core.UBApp.doCommand(config)
       }

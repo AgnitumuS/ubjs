@@ -98,6 +98,7 @@
 			"endpoint": "ubadminui",
 			"useVueTables": true,
 			"vueAutoForms": true,
+			"forceModalsForEditForms": false,
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30
