@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.19.2] - 2021-02-08
+### Fixed
  - `setDocument` endpoint return valid file size for dirty document, based on `fs.statSync()` result  
 
 ## [5.19.1] - 2021-02-03

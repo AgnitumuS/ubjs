@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.19.2] - 2021-02-08
+### Added
  - `Form.mountModal` will provide `isModal: true` to the child components, child components can inject it as `parentIsModal`
  - `UFormContainer` will inject `isModal` as `parentIsModal`
  - `UFile` (`FileRenderer`) component support preview (pre-listen) of audio content
@@ -24,10 +35,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    If parent is inside a modal dialog - form shows as modal, else - in the new tab.  
 
    This behavior can be disabled by adding `appConfig.uiSettings.adminUI.forceModalsForEditForms: true` to ubConfig
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - UFile ignore charset part in BLOB content type while calculates an icon for file.
