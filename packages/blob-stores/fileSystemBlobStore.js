@@ -88,25 +88,27 @@ class FileSystemBlobStore extends BlobStoreCustom {
   saveContentToTempStore (request, attribute, content) {
     const fn = this.getTempFileName(request)
     console.debug('temp file is written to', fn)
+    let fileSize
     try {
       if (content.writeToFile) {
         if (!content.writeToFile(fn)) throw new Error(`Error write to ${fn}`)
       } else {
         fs.writeFileSync(fn, content)
       }
+      fileSize = fs.statSync(fn).size
     } catch (e) {
       if (fs.existsSync(fn)) fs.unlinkSync(fn)
       throw e
     }
     const origFn = request.fileName
-    const ct = mime.contentType(path.extname(origFn))
+    const ct = mime.contentType(path.extname(origFn)) || 'application/octet-stream'
     const newMD5 = nhashFile(fn, 'MD5')
     return {
       store: this.name,
       fName: origFn,
       origName: origFn,
       ct: ct,
-      size: content.byteLength,
+      size: fileSize,
       md5: newMD5,
       isDirty: true
     }
@@ -218,7 +220,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     const newPlacement = this.genNewPlacement(attribute, dirtyItem, ID)
     fs.renameSync(tempPath, newPlacement.fullFn)
     const newMD5 = nhashFile(newPlacement.fullFn, 'MD5')
-    const ct = mime.contentType(newPlacement.ext)
+    const ct = mime.contentType(newPlacement.ext) || 'application/octet-stream'
     const stat = fs.statSync(newPlacement.fullFn)
     const resp = {
       v: 1,

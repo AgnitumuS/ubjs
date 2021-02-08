@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UFile` (`FileRenderer`) component support preview (pre-listen) of audio content
  - The `processing` vuex module now has `SET_ALS_INFO` mutation.
    In case als mixin assigned to entity `processing.load` adds information about als
    into `alsInfo` object in vuex state.
@@ -17,6 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - UFile ignore charset part in BLOB content type while calculates an icon for file.
+   After this fix correct icons are displayed for txt, html, js, html and so on.   
 
 ## [5.19.1] - 2021-02-03
 ### Fixed

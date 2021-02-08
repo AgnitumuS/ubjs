@@ -50,6 +50,15 @@
     <p>Your browser doesn't support HTML5 video</p>
   </video>
 
+  <audio
+    v-else-if="renderType === 'audio'"
+    :src="previewUrl"
+    controls
+    preload="none"
+    ref="view">
+    <p>Your browser doesn't support <code>audion</code> element</p>
+  </audio>
+
   <div
     v-else
     class="file-renderer"
@@ -77,9 +86,9 @@ const CONTENT_TYPE_ICONS = {
   'text/html': 'u-icon-file-html',
   'text/xml': 'u-icon-file-html',
   'text/markdown': 'u-icon-file-html',
-  'text/javascript': 'u-icon-file-html',
+  'text/javascript': 'fas fa-cogs',
   'text/css': 'u-icon-file-html',
-  'text/cmd': 'u-icon-file-html',
+  'text/cmd': 'fas fa-cogs',
 
   'text/csv': 'u-icon-file-csv',
 
@@ -103,6 +112,7 @@ const CONTENT_TYPE_ICONS = {
   'application/x-rar-compressed': 'fa fa-file-archive-o',
   'application/x-7z-compressed': 'fa fa-file-archive-o',
   'application/zip': 'fa fa-file-archive-o',
+  'application/gzip': 'fa fa-file-archive-o'
 }
 
 export default {
@@ -132,9 +142,11 @@ export default {
 
   computed: {
     icon () {
-      if (CONTENT_TYPE_ICONS[this.file.ct]) {
-        return CONTENT_TYPE_ICONS[this.file.ct]
-      } else if (this.file.ct.startsWith('video/')) {
+      if (!this.file.ct) return 'u-icon-file'
+      const ct = this.file.ct.split(';')[0] || '' // `text/plain; charset=utf8` -> text/plain
+      if (CONTENT_TYPE_ICONS[ct]) {
+        return CONTENT_TYPE_ICONS[ct]
+      } else if (ct.startsWith('video/')) {
         return 'far fa-file-video'
       } else {
         return 'u-icon-file'
@@ -145,12 +157,12 @@ export default {
       if (this.withPreview) {
         if (this.file.ct === 'image/png' || this.file.ct === 'image/jpeg') {
           return 'image'
-        }
-        if (this.file.ct === 'application/pdf') {
+        } else if (this.file.ct === 'application/pdf') {
           return 'pdf'
-        }
-        if (this.file.ct.startsWith('video/')) {
+        } else if (this.file.ct.startsWith('video/')) {
           return 'video'
+        } else if (this.file.ct.startsWith('audio/')) {
+          return 'audio'
         }
       }
 

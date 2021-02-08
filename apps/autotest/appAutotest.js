@@ -89,6 +89,34 @@ function testPdfSignerSpeed (req, resp) {
   resp.statusCode = 200
 }
 
+/**
+ * This endpoint runs into infinity (while nt terminated by signal) loot what reads
+ * a redis queue and do some staff.
+ * Server should be started from command line script and threads are activated using
+ * HTTP request to itself `POST /listenToRedis?async=true`
+ *
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function redisQueueListener (req, resp) {
+  const TRedisClient = process.binding('synode_redis').TSMRedisClient
+  let REDIS_CONN = new TRedisClient()
+  REDIS_CONN.initialize('127.0.0.1', '6379')
+  console.log(`waiting for values in "mylist" list...
+  Use 'RPUSH mylist a b c' in redis-cli to push some values`)
+  let brpop=0
+  for (let i=0; brpop !== null; i++) {
+    brpop = REDIS_CONN.commands('brpop', 'mylist', 0)
+    console.log('Result from brpop is ', brpop)
+    sleep(100) // do some work
+    console.log('continue listening...')
+  }
+  console.log('Worker thread terminated')
+  resp.statusCode = 200
+  resp.writeEnd('reds queue listener terminated')
+}
+App.registerEndpoint('listenToRedis', redisQueueListener, true)
+
 UB.start()
 
 console.log('Verify adding of 50 listeners not produce a ERR in console');
