@@ -6,17 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-## [5.19.2] - 2021-02-08
-### Added
  - new syntax sugar methods `insert`, `insertAsObject`, `update` and `updateAsObject` are added to `TubDataStore`.
   Methods semantic are the same as for Connection.
   See [TubDataStore documentation](https://unitybase.info/api/server-v5/TubDataStore.html) for details. Example:
@@ -33,6 +22,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    }
  })
 ```
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
 
 ## [5.19.1] - 2021-02-03
 ## [5.19.0] - 2021-02-02
