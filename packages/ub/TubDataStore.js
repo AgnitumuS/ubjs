@@ -1,6 +1,8 @@
 /* global TubDataStore */
 const App = require('./modules/App')
 const blobStores = require('@unitybase/blob-stores')
+const csShared = require('@unitybase/cs-shared')
+const LocalDataStore = csShared.LocalDataStore
 
 /**
  * @classdesc
@@ -102,6 +104,7 @@ TubDataStore.initialize = function (source, keyMap) {
     if (rowCount === 0) {
       // 1) empty store
       keyMap2Mapping((keyMap && keyMap.length) ? keyMap : ['ID'])
+      // noinspection JSDeprecatedSymbols
       this.initFromJSON({ fieldCount: resultFields.length, rowCount: 0, values: resultFields }) // empty dataStore initialization
     } else if (Array.isArray(source[0])) {
       //  2) Array-of-array
@@ -120,6 +123,7 @@ TubDataStore.initialize = function (source, keyMap) {
           flatArray.push(row[sourceFields[j]]) // add source field using it index in keyMap
         }
       }
+      // noinspection JSDeprecatedSymbols
       this.initFromJSON({ fieldCount: fieldCount, rowCount: rowCount, values: flatArray })
     } else if (typeof source[0] === 'object') {
       // 3) Array-of-object
@@ -134,6 +138,7 @@ TubDataStore.initialize = function (source, keyMap) {
           flatArray.push(row[sourceFields[j]]) // add source field using it name from keyMap
         }
       }
+      // noinspection JSDeprecatedSymbols
       this.initFromJSON({ fieldCount: fieldCount, rowCount: rowCount, values: flatArray })
     } else {
       throw new Error('TubDataStore.initialize: invalid source format for TubDataStore.initialize')
@@ -150,6 +155,7 @@ TubDataStore.initialize = function (source, keyMap) {
         source.values[i] = keyMap[i]
       }
     }
+    // noinspection JSDeprecatedSymbols
     this.initFromJSON({ fieldCount: source.fieldCount, rowCount: source.rowCount, values: source.values }) // order of properties is important for native reader realization
   } else {
     throw new Error('TubDataStore.initialize: invalid source format')
@@ -275,6 +281,144 @@ TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
   }
   return true
 }
+
+/**
+ * Execute insert method by add method: 'insert' to `ubq` query (if ubq.method not already set).
+ * The same semantic as in `SyncConnection.insert` and `AsyncConnection.insert`
+ *
+ * If `ubq.fieldList` contain only `ID` return inserted ID, else return array of attribute values passed to `fieldList`.
+ * If no field list passed at all - return null.
+ *
+ * @example
+ const STORE = UB.DataStore('uba_role')
+ // return array of values in order specified ib fieldList
+ // result is [3000000000200,"2014-10-21T11:56:37Z"].
+ // Below we use destructuring assignment to get array values into variables,
+ // so ID === 3000000000200 and  modifyDate === "2014-10-21T11:56:37Z"
+ const [ID, modifyDate] = STORE.insert({
+   fieldList: ['ID', 'mi_modifyDate'],
+   execParams: {
+      name: 'testRole1',
+      allowedAppMethods: 'runList'
+   }
+ })
+
+ // return ID (if ID not passed in execParamms it will be generated)
+ // 3000000000201
+ const testRoleID = STORE.insert({
+   fieldList: ['ID'],
+   execParams: {
+     name: 'testRole1',
+    allowedAppMethods: 'runList'
+   }
+ })
+
+ // no fieldList - null is returned.
+ // This is faster compared to inserts with fieldList because selectAfterInsert is skipped
+ STORE.insert({
+   execParams: {
+     name: 'testRole1',
+     allowedAppMethods: 'runList'
+   }
+ })
+
+ * @memberOf TubDataStore.prototype
+ * @param {ubRequest} ubq
+ * @return {null|number|Array}
+ */
+TubDataStore.insert = function(ubq) {
+  const method = ubq.method || 'insert'
+  this.run(method, ubq)
+  if (!ubq.fieldList || !ubq.fieldList.length) {
+    return null // no field list or it is empty
+  } else if ((ubq.fieldList.length === 1) && (ubq.fieldList[0] = 'ID')) {
+    return this.get(0) //return ID
+  } else {
+    const storeData = this.getAsJsArray()
+    return storeData.data[0]
+  }
+}
+
+/**
+ * Run UBQL command with `insert` method. **WARNING** better to use insert method - it is faster because values is not parsed.
+ *
+ * In case `fieldList` is passed - result will contains new values for attributes specified in `fieldList` as Object, otherwise - null
+ *
+ * In opposite to `insert` method values in result are PARSED based on Domain (as in AsyncConnection) - so values
+ * for boolean attributes is true/false, date is typeof Date etc.
+ *
+ * @memberOf TubDataStore.prototype
+ * @param {ubRequest} ubq
+ * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
+ * @returns {Object|null}
+ *
+ * @example
+
+ const STORE = UB.DataStore('uba_role')
+ const newRole = conn.insertAsObject({
+  entity: 'uba_role', // can be omitted - we already define entity in STORE constructor
+  fieldList: ['ID', 'name', 'allowedAppMethods', 'mi_modifyDate'],
+  execParams: {
+      name: 'testRole61',
+      allowedAppMethods: 'runList'
+  }
+}, {mi_modifyDate: 'modifiedAt'})
+ console.log(newRole) // {ID: 332462911062017, name: 'testRole1', allowedAppMethods: 'runList', mi_modifyDate: 2020-12-21T15:45:01.000Z}
+ console.log(newRole.modifiedAt instanceof Date) //true
+
+ */
+TubDataStore.insertAsObject = function (ubq, fieldAliases) {
+  const method = ubq.method || 'insert'
+  this.run(method, ubq)
+  if (!ubq.fieldList || !ubq.fieldList.length) {
+    return null // no field list or it is empty
+  } else {
+    const storeData = this.getAsJsArray()
+    const res = LocalDataStore.convertResponseDataToJsTypes(App.domainInfo, {entity: this.entityCode, resultData: storeData})
+    return (res.resultData && res.resultData.data && res.resultData.data.length)
+      ? LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)[0]
+      : null
+  }
+}
+
+/**
+ * Execute `update` method. The same semantic as in `SyncConnection.update` and `AsyncConnection.update`
+ *
+ * If no field list passed - return null (this is faster), else return array of attribute values passed to `fieldList`.
+ *
+ * @memberOf TubDataStore.prototype
+ * @param {ubRequest} ubq
+ * @return {*}
+ */
+TubDataStore.update = function(ubq) {
+  const method = ubq.method || 'update'
+  this.run(method, ubq)
+  if (!ubq.fieldList || !ubq.fieldList.length) {
+    return null // no field list or it is empty
+  } else {
+    const storeData = this.getAsJsArray()
+    return storeData.data[0]
+  }
+}
+
+/**
+ * Execute `update` method. The same semantic as in `SyncConnection.updateAsObject` and `AsyncConnection.updateAsObject`
+ *  - If fieldList in the ubq not passed or is an empty array - returns null
+ *  - If fieldList passed in the ubq, values in result are PARSED based on Domain (as in AsyncConnection) - so values
+ * for boolean attributes is true/false, date is typeof Date etc.
+ *
+ * @memberOf TubDataStore.prototype
+ * @param {ubRequest} ubq
+ * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
+ * @returns {Object|null}
+*/
+TubDataStore.updateAsObject = function(ubq, fieldAliases) {
+  if (!ubq.method) {
+    ubq.method = 'update'
+  }
+  return this.insertAsObject(ubq, fieldAliases)
+}
+
 
 if (typeof TubDataStore.getAsJsArray !== 'function') { // fallback to JSON.parse for UB server < 5.18.0
   TubDataStore.getAsJsArray = function () {
