@@ -16,7 +16,7 @@ const Dialog = require('element-ui').Dialog
 const { dialog: $dialog } = require('../../components/dialog/UDialog')
 
 /**
- * Mount form in modal Dialog
+ * Mount form in modal. Provide `isModal: true` to the child components, child components can inject it as `parentIsModal`
  *
  * @param {object} cfg
  * @param {Vue.Component} cfg.component Form component
@@ -96,6 +96,7 @@ function mountModal ({
             this.dialogVisible = false
           }
         },
+        isModal: true,
         ...provide
       }
     },
