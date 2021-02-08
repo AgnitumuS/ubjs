@@ -7,10 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `UFile` (`FileRenderer`) component support preview (pre-listen) of audio content
- - The `processing` vuex module now has `SET_ALS_INFO` mutation.
-   In case als mixin assigned to entity `processing.load` adds information about als
+ - *ALS mixin support* for UAutoField and autoforms. Can be used in custom forms as such
+ ```
+ const alsMixin = require('@adminui-vue/components/controls/mixins/alsMixin')
+ ...
+ mixins: ['alsMixin']
+
+```
+ - `SET_ALS_INFO` mutation added to `processing` vuex module.
+   In case als mixin assigned to the entity `processing.load` adds information about als
    into `alsInfo` object in vuex state.
- - Added `alsMixin` and als support to `UAutoField.vue`
    
 ### Changed
 
