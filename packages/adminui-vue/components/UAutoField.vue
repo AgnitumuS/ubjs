@@ -70,14 +70,14 @@ export default {
     isRequired () {
       return (this.required !== undefined && this.required !== false)
         ? this.required
-        : (this.isRequiredByALS(this.attributeName) ||
+        : (this.$_isRequiredByALS(this.attributeName) ||
           (this.$v && this.$v[this.attributeName] && 'required' in this.$v[this.attributeName].$params))
     },
 
     isReadOnly () {
       return (this.readonly !== undefined && this.readonly !== false)
         ? this.readonly
-        : this.isReadOnlyByALS(this.attributeName)
+        : this.$_isReadOnlyByALS(this.attributeName)
     },
 
     isError () {

@@ -104,7 +104,6 @@ function createProcessingModule ({
     .map(([coll]) => coll)
 
   const isLockable = function () { return entitySchema.hasMixin('softLock') }
-  const hasEntityALS = function () { return entitySchema.hasMixin('als') }
 
   return {
     /**
@@ -549,7 +548,7 @@ function createProcessingModule ({
           .misc({ ID: instanceID || newInstanceID }) // Add top level ID to bypass caching, soft deletion and history
 
           .miscIf(isLockable(), { lockType: 'None' }) // get lock info
-          .miscIf(hasEntityALS(), { alsNeed: true }) // get als info
+          .miscIf(entitySchema.hasMixin('als'), { alsNeed: true }) // get als info
         const data = await repo.selectById(instanceID || newInstanceID)
 
         commit('LOAD_DATA', data)
@@ -570,7 +569,9 @@ function createProcessingModule ({
           })
         }
 
-        if (hasEntityALS()) commit('SET_ALS_INFO', repo.rawResult.resultAls)
+        if (entitySchema.hasMixin('als')) {
+          commit('SET_ALS_INFO', repo.rawResult.resultAls)
+        }
 
         commit('LOADING', {
           isLoading: false,
