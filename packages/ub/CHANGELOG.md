@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - new syntax sugar methods `insert`, `insertAsObject`, `update` and `updateAsObject` are added to `TubDataStore`.
+  Methods semantic are the same as for Connection.
+  See [TubDataStore documentation](https://unitybase.info/api/server-v5/TubDataStore.html) for details. Example:
+   
+```javascript
+ const STORE = UB.DataStore('uba_role')
+ // return ID (generated, since ID not passed in the execParamms)
+ // 3000000000201
+ const testRoleID = STORE.insert({
+   fieldList: ['ID'],
+   execParams: {
+     name: 'testRole1',
+     allowedAppMethods: 'runList'
+   }
+ })
+```
 
 ### Changed
 

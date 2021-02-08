@@ -155,6 +155,7 @@ function testFloatAndCurrency (conn) {
   const dictRows = conn.Repository('tst_dictionary')
     .attrs(['ID', 'code', 'caption', 'filterValue', 'booleanColumn', 'currencyValue', 'floatValue'])
     .orderBy('ID')
+    .where('currencyValue', 'notNull') // allow other tests to insert additional rows
     .selectAsObject()
   dictRows.forEach((r, idx) => {
     // csv first row is ID;code;caption;filterValue;booleanColumn;currencyValue;floatValue
