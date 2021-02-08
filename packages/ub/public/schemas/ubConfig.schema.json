@@ -1052,6 +1052,11 @@
             "useVueTables": {
               "type": "boolean",
               "description": "Replace Ext.GridEntityPanel by vue UTableEntity"
+            },
+            "forceModalsForEditForms": {
+              "type": "boolean",
+              "description": "If true actions `EditItem` and `AddNewItem` force form to be opened as modal. If false (default) - new and edit forms are opened in new tab",
+              "default": false
             }
           }
         },

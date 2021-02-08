@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UBBaseComboBox` - actions `EditItem` and `AddNewItem` use parent modal state (`this.up('basepanel').isModal`) to show item form.
+   If parent is inside a modal dialog - form shows as modal, else - in the new tab.
+
+   This behavior can be disabled by adding `appConfig.uiSettings.adminUI.forceModalsForEditForms: true` to ubConfig.
 
 ### Deprecated
 

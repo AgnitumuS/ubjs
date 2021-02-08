@@ -180,14 +180,19 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
   },
 
   /**
-     * @cfg disableModifyEntity If true will be disabled items editInstance and addInstance in context menu.
-     */
+   * @cfg disableModifyEntity If true will disable editInstance and addInstance in context menu.
+   */
   disableModifyEntity: false,
 
   /**
-     * @cfg  hideEntityItemInContext If true will be hidden entity actions in context menu.
-     */
+   * @cfg  hideEntityItemInContext If true will hide entity actions in the context menu.
+   */
   hideEntityItemInContext: false,
+
+  /**
+   * Is parent BasePanel in modal state
+   */
+  parentIsModal: false,
 
   initContextMenu: function () {
     var me = this; var menuItems
@@ -197,6 +202,8 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
     store = me.getStore()
     menuItems = []
     entityName = (store.ubRequest ? store.ubRequest.entity : null) || store.entityName
+    let basePanel = this.up('basepanel')
+    me.parentIsModal = (basePanel && basePanel.isModal) || false
     if ($App.domainInfo.has(entityName)) {
       menuItems.push({
         text: UB.i18n('editSelItem') + ' (Ctrl+E)',
@@ -324,7 +331,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
       cmdType: UB.core.UBCommand.commandType.showForm,
       entity: entityName,
       store: store,
-      isModal: true,
+      isModal: UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || me.parentIsModal,
       sender: me,
       onClose: function (itemId) {
         if (itemId && me.setValueById) {
@@ -351,7 +358,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
       instanceID: instanceID,
       initValue: initValue,
       store: store,
-      isModal: true,
+      isModal: UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || me.parentIsModal,
       sender: me,
       onClose: function (itemID, store, formWasSaved) {
         if (!me.readOnly && formWasSaved) {
@@ -409,6 +416,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
   },
 
   showLookup () {
+    const me = this
     if (!UB.connection.appConfig.uiSettings.adminUI.useVueTables) {
       // Use ExtJS based grid for "Select from dictionary"
       return this.showExtBasedLookup()
@@ -441,15 +449,15 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
           close()
         },
         buildEditConfig (cfg) {
-          cfg.isModal = true
+          if (UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms) cfg.isModal = true
           return cfg
         },
         buildCopyConfig (cfg) {
-          cfg.isModal = true
+          if (UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms) cfg.isModal = true
           return cfg
         },
         buildAddNewConfig (cfg) {
-          cfg.isModal = true
+          if (UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms) cfg.isModal = true
           return cfg
         },
         scopedSlots: createElement => ({

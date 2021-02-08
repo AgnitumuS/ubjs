@@ -63,7 +63,8 @@ export default {
     parentLabelWidth: { from: 'labelWidth', default: null },
     parentLabelPosition: { from: 'labelPosition', default: null },
     parentMaxWidth: { from: 'maxWidth', default: null },
-    parentIsDisabled: { from: 'isDisabled', default: false }
+    parentIsDisabled: { from: 'isDisabled', default: false },
+    parentIsModal:  { from: 'isModal', default: false }
   },
 
   provide () {

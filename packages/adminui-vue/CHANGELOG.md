@@ -6,19 +6,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `Form.mountModal` will provide `isModal: true` to the child components, child components can inject it as `parentIsModal`
+ - `UFormContainer` will inject `isModal` as `parentIsModal`
  - `UFile` (`FileRenderer`) component support preview (pre-listen) of audio content
  - *ALS mixin support* for UAutoField and autoforms. Can be used in custom forms as such
  ```
  const alsMixin = require('@adminui-vue/components/controls/mixins/alsMixin')
  ...
  mixins: ['alsMixin']
-
 ```
  - `SET_ALS_INFO` mutation added to `processing` vuex module.
    In case als mixin assigned to the entity `processing.load` adds information about als
    into `alsInfo` object in vuex state.
    
 ### Changed
+ - `USelectEntity` - actions `EditItem` and `AddNewItem` use parent modal state (parentIsModal) to show item form.
+   If parent is inside a modal dialog - form shows as modal, else - in the new tab.  
+
+   This behavior can be disabled by adding `appConfig.uiSettings.adminUI.forceModalsForEditForms: true` to ubConfig
 
 ### Deprecated
 

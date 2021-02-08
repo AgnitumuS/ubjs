@@ -161,7 +161,8 @@ export default {
   name: 'USelectEntity',
 
   inject: {
-    isDisabled: { from: 'isDisabled', default: false }
+    isDisabled: { from: 'isDisabled', default: false },
+    parentIsModal: { from: 'parentIsModal', default: false }
   },
 
   mixins: [clickOutsideDropdown],
@@ -595,15 +596,15 @@ export default {
               close()
             },
             buildEditConfig (cfg) {
-              cfg.isModal = true
+              if (this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms) cfg.isModal = true
               return cfg
             },
             buildCopyConfig (cfg) {
-              cfg.isModal = true
+              cfg.isModal =  this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal
               return cfg
             },
             buildAddNewConfig (cfg) {
-              cfg.isModal = true
+              if (this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms) cfg.isModal = true
               return cfg
             },
             scopedSlots: createElement => ({
@@ -636,7 +637,7 @@ export default {
         const config = this.buildEditConfig({
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
           entity: this.getEntityName,
-          isModal: true,
+          isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal,
           instanceID: this.value
         })
         this.$UB.core.UBApp.doCommand(config)
@@ -648,7 +649,10 @@ export default {
         const config = this.buildAddNewConfig({
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
           entity: this.getEntityName,
-          isModal: true
+          isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal,
+          onClose: function (itemId) {
+            debugger
+          }
         })
         this.$UB.core.UBApp.doCommand(config)
       }
