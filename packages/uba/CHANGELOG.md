@@ -15,7 +15,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-## [5.19.2] - 2021-02-08
 ## [5.19.1] - 2021-02-03
 ### Changed
  - for UB@5.19.1 `loginFailed` event logs into `uba_audit.actionUser` name of user who tries to log-in.
