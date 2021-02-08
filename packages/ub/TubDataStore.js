@@ -222,7 +222,8 @@ TubDataStore.DATA_NAMES = {
  * @param {ubMethodParams} ctx
  * @param {Boolean} isUpdate
  * @return {Boolean} True in case some of document type attributes actually changed
- * @memberOf TubDataStore.prototype
+ * @method commitBLOBStores
+ * @memberOf TubDataStore
  */
 TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
   const entity = this.entity
@@ -322,7 +323,8 @@ TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
    }
  })
 
- * @memberOf TubDataStore.prototype
+ * @method insert
+ * @memberOf TubDataStore
  * @param {ubRequest} ubq
  * @return {null|number|Array}
  */
@@ -347,7 +349,8 @@ TubDataStore.insert = function(ubq) {
  * In opposite to `insert` method values in result are PARSED based on Domain (as in AsyncConnection) - so values
  * for boolean attributes is true/false, date is typeof Date etc.
  *
- * @memberOf TubDataStore.prototype
+ * @method insertAsObject
+ * @memberOf TubDataStore
  * @param {ubRequest} ubq
  * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
  * @returns {Object|null}
@@ -386,7 +389,8 @@ TubDataStore.insertAsObject = function (ubq, fieldAliases) {
  *
  * If no field list passed - return null (this is faster), else return array of attribute values passed to `fieldList`.
  *
- * @memberOf TubDataStore.prototype
+ * @method update
+ * @memberOf TubDataStore
  * @param {ubRequest} ubq
  * @return {*}
  */
@@ -407,7 +411,8 @@ TubDataStore.update = function(ubq) {
  *  - If fieldList passed in the ubq, values in result are PARSED based on Domain (as in AsyncConnection) - so values
  * for boolean attributes is true/false, date is typeof Date etc.
  *
- * @memberOf TubDataStore.prototype
+ * @method updateAsObject
+ * @memberOf TubDataStore
  * @param {ubRequest} ubq
  * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
  * @returns {Object|null}
