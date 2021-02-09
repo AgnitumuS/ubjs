@@ -48,6 +48,9 @@ export default {
       } else {
         const identifierAttribute = attributePath.slice(0, attributePath.length - 1).join('.')
         ID = this.row[identifierAttribute]
+        if (!ID) {
+          throw new Error(`Cannot download document, because "${identifierAttribute}" attribute is not in fieldList`)
+        }
       }
 
       return {
