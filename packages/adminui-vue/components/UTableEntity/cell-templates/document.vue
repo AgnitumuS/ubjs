@@ -32,12 +32,12 @@ export default {
   },
 
   methods: {
-    async download () {
-      const instanceInfo = await this.getRecordParams()
+    download () {
+      const instanceInfo = this.getRecordParams()
       return $App.downloadDocument(instanceInfo, this.document)
     },
 
-    async getRecordParams () {
+    getRecordParams () {
       const attribute = this.column.attribute.code
       const attributePath = this.column.id.split('.')
       const isMasterAttr = attributePath.length === 1
@@ -46,11 +46,8 @@ export default {
       if (isMasterAttr) {
         ID = this.row.ID
       } else {
-        const identifierAttribute = attributePath.slice(0, attributePath - 1).join('.')
-        const response = await this.$UB.Repository(this.entity)
-          .attrs(identifierAttribute)
-          .selectById(this.row.ID)
-        ID = response[identifierAttribute]
+        const identifierAttribute = attributePath.slice(0, attributePath.length - 1).join('.')
+        ID = this.row[identifierAttribute]
       }
 
       return {
