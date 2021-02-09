@@ -164,7 +164,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
       if (this.PROXY_SEND_FILE_HEADER) {
         const storeRelPath = path.relative(this.fullStorePath, filePath)
         let head = `${this.PROXY_SEND_FILE_HEADER}: /${this.PROXY_SEND_FILE_LOCATION_ROOT}/${this.name}/${storeRelPath}`
-        head += `\r\nContent-Type: ${ct}`
+        head += `\r\nContent-Type: ${ct}\r\nx-query-params: ${req.parameters}`
         // to download file UI uses <a href="..." download="origFileName">,
         // so Content-Disposition not required anymore
         // moreover - if it passed, then PDF viewer do not open file from passed direct link, but tries to save it
