@@ -133,7 +133,9 @@ where:
 Ensure nginx main process have access to these files (use `nginx -T` to verify all configs)
 
 Examples (consider externalURL=https://my.server.com in ubConfig) :
- - get a client real IP in case some Load balancer is running on b.b.b.b IP address behind us, so HTTP request is transferred as
+
+### Pass a real client IP in case of several reverse proxies  
+Get a client real IP in case some Load balancer is running on b.b.b.b IP address behind us, so HTTP request is transferred as
    `Client(a.a.a.a) -> LB (b.b.b.b) -> Nginx (c.c.c.c) -> UB (d.d.d.d)`:
 ```shell
 mkdir -p /var/opt/unitybase/shared/my-server-com
@@ -146,7 +148,59 @@ EOF > /var/opt/unitybase/shared/my-server-com/server-getRealIpFromUpfront.conf
 ```
 Load balancer on b.b.b.b should correctly set an `X-Forwarded-For` header. In case LB is nginx - `proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;`  
 
- - override a max body size to 100Mb for /hugeFileUpload location 
+### Add additional upstreams to the load balancing group
+Add additional upstreams (:8883 and :8884) to the load balancing group:
+```shell
+mkdir -p /var/opt/unitybase/shared/my-server-com
+cat <<<EOF
+  server http://127.0.0.1:8883 max_fails=2 fail_timeout=30;
+  server http://127.0.0.1:8884 max_fails=2 fail_timeout=30;
+EOF > /var/opt/unitybase/shared/my-server-com/upstream-allservers.conf
+```
+
+### Generate a thumbnails for getDocument
+Thumbnails can be generated with help of [ngx_http_image_filter_module](http://nginx.org/ru/docs/http/ngx_http_image_filter_module.html).
+
+On client side - add a `size=small` parameter to the getDocument URL
+
+Consider auto-generated internal location name for store is `/localhost/simple` and store folder is
+`/var/opt/unitybase/my-server/stores`
+
+Config below should be placed to
+`/var/opt/unitybase/shared/my-server-com/server-thumbnails-for-document-store.conf`
+
+```
+location ~* /localhost/simple/(.*) {
+    internal;
+    set $filename $1;
+    if ($upstream_http_x_query_params ~* "size=small") {
+        set $fullname "/var/opt/unitybase/my-server/stores/simple/$filename";
+        rewrite ^ /xresize;
+    }
+    # force browser to ask what data is not modified on server on every request
+    expires -1;
+    add_header Cache-Control "must-revalidate, private";
+    alias /var/opt/unitybase/my-server/stores/simple/$filename;
+}
+location /xresize {
+    internal;
+    image_filter crop 100 100;
+    image_filter_jpeg_quality 75;
+    image_filter_buffer 20M;
+    image_filter_interlace on;
+    alias $fullname;
+}
+```
+
+Explanation:
+ - all requests to /getDocument are redirected by UB to the internal location `/localhost/simple`
+ - config above adds the same location, but with regexp, so it overrides a default `/localhost/simple` rules
+ - UB server proxies a request parameters to the nginx using `x-query-params` header
+ - in case `x-query-params` contains `size=small` part - config above redirect such requests to the `/xresize` internal location
+ - in `/xresize` with help of `ngx_http_image_filter_module` module images cropped to size `100x100px` cached into memory and returned to client
+
+### Override a max body size
+Override a max body size to 100Mb for /hugeFileUpload location
 ```shell
 mkdir -p /var/opt/unitybase/shared/my-server-com
 cat <<<EOF
@@ -155,15 +209,6 @@ cat <<<EOF
     client_max_body_size    100m;
   }
 EOF > /var/opt/unitybase/shared/my-server-com/server-hugeFileUpload.conf
-```
-
- - add additional upstreams (:8883 and :8884) to the load balancing group:
-```shell
-mkdir -p /var/opt/unitybase/shared/my-server-com
-cat <<<EOF
-  server http://127.0.0.1:8883 max_fails=2 fail_timeout=30;
-  server http://127.0.0.1:8884 max_fails=2 fail_timeout=30;
-EOF > /var/opt/unitybase/shared/my-server-com/upstream-allservers.conf
 ```
 
 ## Load balancing
