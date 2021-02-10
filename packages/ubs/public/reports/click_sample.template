@@ -42,7 +42,7 @@
 </tr>
 </tbody>
 </table>
-<h2>Date formatting sample</h2>
+<h2 contenteditable="true">Date formatting sample</h2>
 <table style="height: 126px; width: 334px;">
 <thead>
 <tr style="height: 18px;">
