@@ -173,6 +173,10 @@
 			"enabled": true,
 			"async": false
 		},
+		"redis": {
+			"host": "localhost",
+			"port": "6379"
+		},
 		//#endif
 		"connections": [
 			//#ifdef(%UB_DB_DRIVER%=Oracle)
@@ -298,12 +302,6 @@
 			  //"cmpServers": ["http://uakey.com.ua/services/cmp/","http://ca.informjust.ua/services/cmp/","http://acskidd.gov.ua/services/cmp/"],
 			  "useIITCMP": true
 			},*/
-			//#ifdef(%UB_USE_OCR%)
-			"OCR": {
-			  "dataPath": "C:\\dev\\TTesseractOCR4\\bin\\tessdata",
-			  "languages": "ukr+eng"
-			},
-			//#endif
 			"mailerConfig": {
 //				"targetHost": "localhost",
 //				"targetPort": "1025",

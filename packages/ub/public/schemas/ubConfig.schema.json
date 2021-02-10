@@ -833,6 +833,20 @@
               "default": false
             }
           }
+        },
+        "redis": {
+          "type": "object",
+          "description": "Redis connection settings",
+          "properties": {
+            "host": {
+              "type": "string",
+              "default": "127.0.0.1"
+            },
+            "port": {
+              "type": "string",
+              "default": "6379"
+            }
+          }
         }
       }
     },
