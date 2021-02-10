@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.19.3] - 2021-02-10
+### Fixed
  - `UTableEntity` attributes with Document data type did not work correctly, if attribute was not the root, for
    example, for attribute like `linkedDocID.docImage`, it caused JS error, if user try to download it.
    Now for such attributes, repository MUST include the ID field of the record with document,

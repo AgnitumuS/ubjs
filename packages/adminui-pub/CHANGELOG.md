@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.19.3] - 2021-02-10
 ## [5.19.2] - 2021-02-08
 ### Changed
  - `UBBaseComboBox` - actions `EditItem` and `AddNewItem` use parent modal state (`this.up('basepanel').isModal`) to show item form.
