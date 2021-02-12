@@ -84,8 +84,7 @@ export default {
         resultQuality: 0.9,
         resultMimeType: 'image/png',
         selectButtonLabel: 'Select File',
-        showPreview: true,
-        // skin: 'light',
+        showPreview: false,
         uploadData: {}, // additional upload data, such as user id or whatever
         uploadTo: false
       },
