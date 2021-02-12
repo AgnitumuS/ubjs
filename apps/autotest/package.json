@@ -48,6 +48,7 @@
     "@unitybase/ubs": "^5.19.3",
     "@unitybase/udisk": "^5.19.3",
     "@unitybase/xlsx": "^5.19.2",
+    "@unitybase/redis": "^5.0.0",
     "asn1js": "^2.0.19",
     "codemirror": "^5.58.1",
     "element-ui": "^2.13.0",

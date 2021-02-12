@@ -1,5 +1,6 @@
 const UB = require('@unitybase/ub')
 const App = UB.App
+const redis = require('@unitybase/redis')
 
 // BLOB store performance test endpoints. For TEST environments only
 const { getDocumentPerfTestEp, setDocumentPerfTestEp } = require('@unitybase/blob-stores/storesPerfTest.js')
@@ -89,6 +90,8 @@ function testPdfSignerSpeed (req, resp) {
   resp.statusCode = 200
 }
 
+let REDIS_CONN
+
 /**
  * This endpoint runs into infinity (while nt terminated by signal) loot what reads
  * a redis queue and do some staff.
@@ -99,9 +102,7 @@ function testPdfSignerSpeed (req, resp) {
  * @param {THTTPResponse} resp
  */
 function redisQueueListener (req, resp) {
-  const TRedisClient = process.binding('synode_redis').TSMRedisClient
-  let REDIS_CONN = new TRedisClient()
-  REDIS_CONN.initialize('127.0.0.1', '6379')
+  if (!REDIS_CONN) REDIS_CONN = redis.getDefaultRedisConnection()
   console.log(`waiting for values in "mylist" list...
   Use 'LPUSH mylist a b c' in redis-cli to push some values`)
   let brpop=[]

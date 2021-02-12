@@ -840,11 +840,18 @@
           "properties": {
             "host": {
               "type": "string",
-              "default": "127.0.0.1"
+              "default": "127.0.0.1",
+              "description": "Redis server IP, host name or path to Unit Domain Socket(fastest)"
             },
             "port": {
               "type": "string",
-              "default": "6379"
+              "default": "6379",
+              "description": "Redis server port. Ignored for UDS"
+            },
+            "reconnectTimeout": {
+              "type": " number",
+              "default": 10000,
+              "description": "Re-connect timeout in ms in case connection is lost"
             }
           }
         }
