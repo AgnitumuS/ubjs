@@ -230,6 +230,9 @@ UB.i18nExtend({
       emptyPicturePlaceholder: 'Ваше изображение',
       takePictureButton: 'Сделать скриншот',
       takeAnotherPictureButton: 'Сделать другой скриншот',
+      intoPicture: 'в картинку',
+      intoPdf: 'в PDF',
+      lowResolution: 'низкое',
       error: {
         NotReadableError: 'Доступ к камере запрещен в настройках операционной системы',
         NotFoundError: 'Камера не найдена',

@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-tooltip
+      v-if="scanType !== 'optional'"
       :content="$ut('UFile.webcamButtonTooltip')"
       :enterable="false"
     >
@@ -12,8 +13,25 @@
         @click="dialogVisible = true"
       />
     </el-tooltip>
+    <el-dropdown
+      v-else
+      @command="chooseScanType"
+    >
+        <span class="el-dropdown-link">
+           <u-button
+             color="primary"
+             icon="u-icon-photo"
+             appearance="inverse"
+             :disabled="isDisabled"
+           />
+        </span>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command="intoPicture">{{$ut("UFile.webcam.intoPicture")}}</el-dropdown-item>
+        <el-dropdown-item command="intoPdf">{{$ut("UFile.webcam.intoPdf")}}</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
     <el-dialog
-      v-bind:title="'Webcam to ' + scanType"
+      v-bind:title="dialogTitle"
       :visible.sync="dialogVisible"
       :fullscreen="fullScreen"
       @opened="openDialog"
@@ -35,25 +53,26 @@
       </div>
 
       <template v-else>
-        <u-grid v-bind:templateColumns = "inPdf ? '1fr 200px' : '1fr'">
+        <u-grid
+          v-bind:templateColumns = "inPdf ? '1fr 200px' : '1fr'"
+          >
           <u-form-row title="Camera">
             <u-crop
-              style="max-height:calc(100vh - 100px);"
               v-if="editing"
               v-bind:img-src="previewImageSrc"
               @cropper-saved="cropperSaved"
               @cropper-cancelled="cropperCancelled"
             >
             </u-crop>
-            <div style="text-align: center; max-height:calc(100vh - 100px);">
+            <div style="text-align: center; ">
               <img class="u-file-webcam__img"
-                 style="width: auto; height: auto; max-height: 85vh; max-width: 100%"
-                 v-show="previewImageSrc && !editing"
+                 style="width: auto; height: auto; max-height: 80vh; max-width: 100%"
+                 v-show="isPictureTaken && !editing"
                 :src="previewImageSrc"
               >
             </div>
               <el-select class="u-file-webcam__el-select"
-                v-if="!previewImageSrc"
+                :disabled="isPictureTaken"
                 v-model="videoRatio"
                 value-key="name"
                 @change="changeResolution"
@@ -67,11 +86,9 @@
                 </el-option>
               </el-select>
             <el-container
-              v-show="!previewImageSrc"
-              style="max-height:calc(100vh - 100px);"
+              v-show="!isPictureTaken"
               v-loading="!streamHasStarted">
               <video class="u-file-webcam__video"
-                style="max-height: 80vh"
                 ref="video"
                 muted
                 width="100%"
@@ -88,7 +105,10 @@
               <li class="u-file-webcam__pdf_page"
                   v-for="(page, index) in pages">
                   <div>
-                     {{index + 1}}&nbsp;&nbsp;<img v-bind:src="page.thumbNail">
+                    {{index + 1}}
+                  </div>
+                  <div>
+                     <img v-bind:src="page.thumbNail">
                   </div>
                   <div class="u-file-webcam__del_pdf_page_button" @click="deletePdfPage(index)">
                     <u-icon icon="u-icon-circle-close"
@@ -107,66 +127,77 @@
             :disabled="!streamHasStarted"
             @click="takePicture"
           >
-            {{ $ut( previewImageSrc ? 'UFile.webcam.takeAnotherPictureButton' : 'UFile.webcam.takePictureButton' ) }}
+            {{ $ut( isPictureTaken ? "UFile.webcam.takeAnotherPictureButton" : "UFile.webcam.takePictureButton" ) }}
           </u-button>
 
           <u-button
             color="primary"
             icon="u-icon-edit"
-            :disabled="!previewImageSrc"
+            :disabled="!isPictureTaken"
             @click="edit"
           >
-            {{ $ut('Edit') }}
+            {{ $ut("Edit") }}
           </u-button>
 
           <u-button
             color="primary"
             icon="u-icon-save"
-            :disabled="!previewImageSrc"
+            :disabled="!isPictureTaken"
             @click="save"
           >
-            {{ $ut('Save') }}
+            {{ $ut("Save") }}
           </u-button>
         </div>
-        <div class="u-file-webcam__button-group-to-pdf" v-if="inPdf" v-show="!editing">
+        <div class="u-file-webcam__button-group-to-pdf"
+             v-if="inPdf"
+             v-show="!editing"
+        >
 
           <u-button
             color="primary"
             icon="u-icon-photo"
             appearance="plain"
-            :disabled="!streamHasStarted"
+            :disabled="!streamHasStarted || exportingToPdf || addingPageToPdf"
             @click="takePicture"
           >
-            {{ $ut( previewImageSrc ? 'UFile.webcam.takeAnotherPictureButton' : 'UFile.webcam.takePictureButton' ) }}
+            {{ $ut( isPictureTaken ? "UFile.webcam.takeAnotherPictureButton" : "UFile.webcam.takePictureButton" ) }}
           </u-button>
 
           <u-button
             color="primary"
             icon="u-icon-edit"
-            :disabled="!previewImageSrc"
+            :disabled="!isPictureTaken || exportingToPdf || addingPageToPdf"
             @click="edit"
           >
-            {{ $ut('Edit') }}
+            {{ $ut("Edit") }}
           </u-button>
 
           <u-button
             color="primary"
-            icon="u-icon-file-add"
-            :disabled="!previewImageSrc"
+            :disabled="!isPictureTaken || exportingToPdf || addingPageToPdf"
             @click="addPageToPdf"
           >
-            {{ $ut('actionAdd') }}
+            <u-icon class="u-file-webcam__button-icon-animate"
+                    icon="u-icon-refresh" size="small" style="color: white;"
+                    v-show="addingPageToPdf"></u-icon>
+            <u-icon class="u-file-webcam__button-icon" style="color: white"
+                    icon="u-icon-file-add" size="small"
+                    v-show="!addingPageToPdf" ></u-icon>
+            {{ $ut("actionAdd") }}
           </u-button>
 
           <u-button
             color="primary"
             @click="saveToPdf"
+            :disabled="pages.length === 0 || addingPageToPdf"
           >
-            <u-icon icon="u-icon-refresh" v-show="exportingToPdf" style="color: white;
-            font-size: calc(var(--font-size) + 2px); animation: loading-rotate 2s linear infinite;"></u-icon>
-            <u-icon icon="u-icon-file-pdf" v-show="!exportingToPdf" style="color: white;
-                    font-size: calc(var(--font-size) + 2px);"></u-icon>
-            {{ $ut('Save') }}
+            <u-icon class="u-file-webcam__button-icon-animate"
+                    icon="u-icon-refresh" size="small" style="color: white;"
+                    v-show="exportingToPdf"></u-icon>
+            <u-icon class="u-file-webcam__button-icon"
+                    icon="u-icon-file-pdf" size="small" style="color: white"
+                    v-show="!exportingToPdf"></u-icon>
+            {{ $ut("Save") }}
           </u-button>
         </div>
       </template>
@@ -188,7 +219,7 @@ export default {
       canvas: null,
       error: null,
       videoRatios: [
-        {name: "low", label: "низкое", resolution:{ width: 1280, height: 720 }},
+        {name: "low", label: this.$ut("UFile.webcam.lowResolution"), resolution:{ width: 1280, height: 720 }},
         {name: "fullHD", label: "fullHD", resolution:{ width: 1920, height: 1080}},
         {name: "4К", label: "4К", resolution:{ width: 3840, height: 2160}},
       ],
@@ -197,17 +228,24 @@ export default {
       streamHasStarted: false,
       croppedFile: null,
       exportingToPdf: false,
+      takingPicture: false,
+      addingPageToPdf: false,
       fullScreen: false,
       pdfListHeight: 340,
+      workingRegime: "",
       pages: []
     }
   },
 
   props:{
+
+    // if you don't set this prop you will be get dropdown with choose working regime
     scanType: {
       type: String,
-      default: "PDF",
-      //required: true
+      default: "optional",
+      validator (value) {
+        return ['optional', 'picture', 'pdf'].includes(value)
+      }
     },
     startFullScreen: {
       type: Boolean,
@@ -224,7 +262,28 @@ export default {
       return false
     },
     inPdf(){
-      return this.scanType === "PDF";
+      if (this.scanType === 'optional') {
+        return this.workingRegime === "pdf";
+      }else{
+        return this.scanType === "pdf";
+      }
+    },
+    inPicture(){
+      if (this.scanType === 'optional') {
+        return this.workingRegime === "picture";
+      }else{
+        return this.scanType === "picture";
+      }
+    },
+    dialogTitle(){
+       if (this.inPdf){
+         return "Webcam " + this.$ut("UFile.webcam.intoPdf")
+       }else if(this.inPicture){
+         return "Webcam " + this.$ut("UFile.webcam.intoPicture")
+       }
+    },
+    isPictureTaken(){
+      return this.previewImageSrc !== null
     }
   },
   mounted () {
@@ -232,6 +291,16 @@ export default {
     this.fullScreen = this.startFullScreen;
   },
   methods: {
+    chooseScanType(command){
+      if (command === 'intoPicture') {
+        this.workingRegime = "picture"
+        this.dialogVisible = true
+      }
+      if (command === 'intoPdf') {
+        this.workingRegime = "pdf"
+        this.dialogVisible = true
+      }
+    },
     openDialog () {
       this.startStream()
       this.createCanvas()
@@ -264,22 +333,16 @@ export default {
         this.canvas.height = this.videoRatio.resolution.height
       }
     },
-    checkResolution() {
-      if (this.canvas !== null &&
-        (this.canvas.width !== this.videoRatio.resolution.width ||
-        this.canvas.height !== this.videoRatio.resolution.height)) {
-        this.canvas.width = this.videoRatio.resolution.width
-        this.canvas.height = this.videoRatio.resolution.height
-      }
-    },
     changeResolution(){
       this.stopStream();
       this.startStream();
     },
     takePicture () {
       this.croppedFile = null;
-      if (this.previewImageSrc === null){
-        this.checkResolution();
+      if (!this.isPictureTaken){
+        //adjust canvas resolution to chosen option
+        this.canvas.width = this.videoRatio.resolution.width
+        this.canvas.height = this.videoRatio.resolution.height
         const context = this.canvas.getContext('2d')
         context.drawImage(
           this.$refs.video,
@@ -336,24 +399,27 @@ export default {
             img.src = URL.createObjectURL(blob);
         })
       }
+      this.addingPageToPdf = true;
       if (!this.croppedFile){
         this.canvas.toBlob(blob => {
           toThumbDataUrl(blob)
-            .then(result =>
+            .then(result =>{
               this.pages.push({
                 "img": result.img,
                 "thumbNail": result.thumbNail
               })
-            )
+              this.addingPageToPdf = false
+            })
         }, 'image/png')
       }else{
         toThumbDataUrl(this.croppedFile)
-          .then(result =>
+          .then(result =>{
             this.pages.push({
               "img": result.img,
               "thumbNail": result.thumbNail
             })
-          )
+            this.addingPageToPdf = false
+          })
       }
       this.editing = false;
       this.previewImageSrc = null;
@@ -424,7 +490,7 @@ export default {
     onExpand(){
       this.fullScreen = !this.fullScreen
       setTimeout(() => {
-        if (this.$refs.video !== undefined){
+        if (this.$refs.video !== undefined && this.$refs.video.offsetHeight !== 0){
           this.pdfListHeight = this.$refs.video.offsetHeight
         }else{
           this.pdfListHeight = 340
@@ -445,7 +511,8 @@ export default {
 <style>
 
   .u-file-webcam__pdf_pages_list{
-      list-style-type: none;
+    list-style-type: none;
+    padding-left: 20px;
   }
 
   .u-file-webcam__pdf_page{
@@ -473,11 +540,18 @@ export default {
     left: 220px;
   }
 
+  .u-file-webcam__button-icon-animate{
+    animation: loading-rotate 2s linear infinite;
+  }
+
   .u-file-webcam__button-group {
     display: grid;
     grid-template-columns: repeat(3, auto);
     grid-gap: 8px;
     justify-content: flex-end;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
   }
 
   .u-file-webcam__button-group-to-pdf{
@@ -485,6 +559,9 @@ export default {
     grid-template-columns: repeat(4, auto);
     grid-gap: 8px;
     justify-content: flex-end;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
   }
 
   .u-file-webcam__empty-picture span {

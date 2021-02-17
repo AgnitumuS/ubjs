@@ -230,6 +230,9 @@ UB.i18nExtend({
       emptyPicturePlaceholder: 'Your picture',
       takePictureButton: 'Take picture',
       takeAnotherPictureButton: 'Take another',
+      intoPicture: 'into picture',
+      intoPdf: 'into PDF',
+      LowResolution: 'low',
       error: {
         NotReadableError: 'Access to webcam disabled by operation system settings',
         NotFoundError: 'Cannot see any webcam devices',

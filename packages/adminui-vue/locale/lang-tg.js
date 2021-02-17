@@ -230,6 +230,9 @@ UB.i18nExtend({
       emptyPicturePlaceholder: 'Сурати шумо',
       takePictureButton: 'Скриншот сохтан',
       takeAnotherPictureButton: 'Скриншоти нав сохтан',
+      intoPicture: 'ба расм',
+      intoPdf: 'дар PDF',
+      lowResolution: 'паст',
       error: {
         NotReadableError: 'Барои истифодаи камера дар танзимоти системаи оператсиони иҷозат нест',
         NotFoundError: 'Камера ёфт нашуд',

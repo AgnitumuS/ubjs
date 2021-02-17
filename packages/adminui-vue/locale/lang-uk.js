@@ -230,6 +230,9 @@ UB.i18nExtend({
       emptyPicturePlaceholder: 'Ваше зображення',
       takePictureButton: 'Зробити знімок',
       takeAnotherPictureButton: 'Зробити інший знімок',
+      intoPicture: 'в картинку',
+      intoPdf: 'в PDF',
+      lowResolution: 'низьке',
       error: {
         NotReadableError: 'Доступ до камери заборонений в налаштуваннях операційної системи',
         NotFoundError: 'Камера не знайдена',
