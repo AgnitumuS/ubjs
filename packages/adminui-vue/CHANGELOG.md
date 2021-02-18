@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UAutoField`: in case passed `readonly = true` to a `Boolean` field - disable it,
+   because 'el-checkbox'/'el-switch' doesn't have `readonly` prop 
 
 ## [5.19.3] - 2021-02-10
 ### Fixed
