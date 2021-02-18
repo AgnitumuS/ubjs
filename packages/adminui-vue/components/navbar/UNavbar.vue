@@ -59,11 +59,12 @@
       <el-tooltip
         v-for="tab in tabs"
         :key="tab.id"
-        :content="tab.title"
         placement="bottom"
         :enterable="false"
-        :disabled="tab.title.length < 18"
       >
+        <template #content>
+          <span v-html="tab.titleTooltip || tab.title" />
+        </template>
         <div
           :ref="`tab${tab.id}`"
           :class="{
@@ -142,7 +143,7 @@ export default {
 
   mounted () {
     this.tabs = window.$App.viewport.centralPanel.items.items
-      .map(({ id, title }) => ({ id, title }))
+      .map(({ id, title, titleTooltip }) => ({ id, title, titleTooltip }))
 
     this.originalExtNavbarHeight = this.$el.offsetHeight
     this.$UB.core.UBApp.viewport.centralPanel.tabBar.setHeight(this.originalExtNavbarHeight)
@@ -221,12 +222,14 @@ export default {
           tab.addListener('titlechange', (UBTab, newText) => {
             const tab = this.tabs.find(t => t.id === UBTab.id)
             if (tab) {
-              tab.title = newText
+              tab.title = UBTab._formTitle || newText // _formFullTitle and _formTitle is for ext forms legacy support
+              tab.titleTooltip = UBTab._formFullTitle || newText
             }
           })
           this.tabs.push({
             id: tab.id,
-            title: tab.title
+            title: tab.title,
+            titleTooltip: tab.titleTooltip
           })
         },
 

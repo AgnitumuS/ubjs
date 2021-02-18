@@ -159,6 +159,7 @@ function mountTab ({
   store,
   validator,
   title: titleText,
+  titleTooltip: titleTooltipText,
   tabId,
   uiTag,
   provide,
@@ -166,6 +167,7 @@ function mountTab ({
 }) {
   const tab = $App.viewport.centralPanel.add({
     title: titleText,
+    titleTooltip: titleTooltipText,
     id: tabId,
     closable: true,
     uiTag
@@ -174,7 +176,8 @@ function mountTab ({
   const instance = new Vue({
     data () {
       return {
-        titleText
+        titleText,
+        titleTooltipText
       }
     },
     computed: {
@@ -198,6 +201,10 @@ function mountTab ({
         const prefix = this.isDirty ? '* ' : ''
         const suffix = this.isNew ? ` (${UB.i18n('dobavlenie')})` : ''
         return prefix + this.$ut(this.titleText) + suffix
+      },
+
+      titleTooltip () {
+        return this.$ut(this.titleTooltipText) || this.title
       }
     },
     watch: {
@@ -211,6 +218,11 @@ function mountTab ({
     methods: {
       setTitle (title) {
         this.titleText = title
+      },
+
+      setTooltip (tooltip) {
+        this.titleTooltipText = tooltip
+        tab._formFullTitle = tooltip
       }
     },
     render: (h) => h(component, { props }),
@@ -219,6 +231,7 @@ function mountTab ({
         $v: validator,
         $formServices: {
           setTitle: this.setTitle,
+          setTooltip: this.setTooltip,
           close: tab.close.bind(tab),
           forceClose () {
             tab.forceClose = true
