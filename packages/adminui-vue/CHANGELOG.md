@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `Form.js`: added `titleTooltip` param
+ - `Form.mountTab` added the ability to change the tooltip of current tab in the `UNavbar` using
+   the provided with `$formServices` function `setTooltip`.
+   
 ### Changed
 
 ### Deprecated
@@ -16,6 +19,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `UAutoField`: in case passed `readonly = true` to a `Boolean` field - disable it,
    because 'el-checkbox'/'el-switch' doesn't have `readonly` prop 
+ - `UNavbar`: display of html-content inside the tab tooltip
+ - `UNavbar`: support for ext-based form tooltip that was created with `BasePanel`
+
 
 ## [5.19.3] - 2021-02-10
 ### Fixed
