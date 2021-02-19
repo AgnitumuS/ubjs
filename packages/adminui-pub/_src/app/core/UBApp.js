@@ -937,8 +937,9 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
         repository () {
           return UB.Repository('uba_auditTrail')
             .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP', 'entity', 'parentEntity', 'request_id'])
-            // .where('entity', '=', entityCode) show all
-            .where('parentEntityInfo_id', '=', instanceID)
+            .where('parentEntityInfo_id', '=', instanceID, 'parent')
+            .where('entityinfo_id', '=', instanceID, 'instance')
+            .logic('([parent] OR [instance])')
             .orderByDesc('actionTime')
         },
         columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP', 'entity', 'parentEntity', 'request_id']
