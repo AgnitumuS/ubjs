@@ -274,6 +274,14 @@ export default {
       type: String,
       default: 'like',
       validator: value => ['like', 'startsWith'].includes(value)
+    },
+
+    /**
+     * Skip autocomplete the value after adding a new record through the 'addNew' action button
+     */
+    skipAutoComplete: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -651,7 +659,16 @@ export default {
           entity: this.getEntityName,
           isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal
         })
+        if (!this.skipAutoComplete) {
+          this.$UB.connection.once(`${this.entityName}:changed`, this.autoCompleteValue)
+        }
         this.$UB.core.UBApp.doCommand(config)
+      }
+    },
+
+    autoCompleteValue (config) {
+      if (config && config.resultData) {
+        this.$emit('input', config.resultData[this.valueAttribute], JSON.parse(JSON.stringify(config.resultData)))
       }
     },
 
