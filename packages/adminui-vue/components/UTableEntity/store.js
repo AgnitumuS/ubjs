@@ -20,6 +20,7 @@ const openDataHistoryDatePicker = require('./components/DataHistoryDatePicker/da
  * @param {function} instance.buildCopyConfig Copy config builder. Called with (cfg: configToMutate, row: content of row to edit)
  * @param {object[]} instance.getCardColumns Columns to show in card view
  * @param {boolean} instance.isModal Is parent opened from modal. Used to provide modal state to child
+ * @param {string[]} instance.hideActions
  */
 module.exports = (instance) => ({
   state () {
@@ -108,30 +109,74 @@ module.exports = (instance) => ({
       return UB.connection.domain.get(getters.entityName)
     },
 
+    showAddNew () {
+      return !instance.hideActions || !instance.hideActions.includes('addNew')
+    },
+
     canAddNew (state, getters) {
-      return getters.schema.haveAccessToMethod('addnew')
+      return getters.showAddNew && getters.schema.haveAccessToMethod('addnew')
+    },
+
+    showCopy () {
+      return !instance.hideActions || !instance.hideActions.includes('copy')
+    },
+
+    canCopy (state, getters) {
+      return getters.showCopy && getters.schema.haveAccessToMethod('addnew')
+    },
+
+    showDelete () {
+      return !instance.hideActions || !instance.hideActions.includes('delete')
     },
 
     canDelete (state, getters) {
-      return getters.hasSelectedRow && getters.schema.haveAccessToMethod('delete')
+      return getters.showDelete &&
+        getters.hasSelectedRow &&
+        getters.schema.haveAccessToMethod('delete')
+    },
+
+    showAudit () {
+      return !instance.hideActions || !instance.hideActions.includes('audit')
     },
 
     canAudit (state, getters) {
       return getters.hasSelectedRow &&
         getters.schema.hasMixin('audit') &&
-      UB.connection.domain.isEntityMethodsAccessible(AUDIT_ENTITY, 'select')
+        getters.showAudit &&
+        UB.connection.domain.isEntityMethodsAccessible(AUDIT_ENTITY, 'select')
+    },
+
+    showEdit () {
+      return !instance.hideActions || !instance.hideActions.includes('edit')
     },
 
     canEdit (state, getters) {
-      return getters.hasSelectedRow
+      return getters.showEdit && getters.hasSelectedRow
+    },
+
+    showVersions () {
+      return !instance.hideActions || !instance.hideActions.includes('showVersions')
+    },
+
+    showCreateNewVersion () {
+      return !instance.hideActions || !instance.hideActions.includes('newVersion')
     },
 
     canCreateNewVersion (state, getters) {
-      return getters.schema.haveAccessToMethod(UB.core.UBCommand.methodName.NEWVERSION)
+      return getters.showCreateNewVersion &&
+        getters.schema.haveAccessToMethod(UB.core.UBCommand.methodName.NEWVERSION)
     },
 
     hasDataHistoryMixin (state, getters) {
       return getters.schema.hasMixin('dataHistory')
+    },
+
+    showSummary () {
+      return !instance.hideActions || !instance.hideActions.includes('summary')
+    },
+
+    showExport () {
+      return !instance.hideActions || !instance.hideActions.includes('export')
     },
 
     columns () {

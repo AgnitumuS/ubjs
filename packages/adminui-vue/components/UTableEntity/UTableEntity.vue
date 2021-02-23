@@ -58,6 +58,13 @@ export default {
     },
 
     /**
+     * Allows to hide some actions, even, if they user has ELS for related entity methods.
+     * Actions shall be passed as array of strings, supported actions for this property:
+     * `addNew`, `copy`, `newVersion`, `showVersions`, `edit`, `delete`, `audit`, `summary`, `export`
+     */
+    hideActions: Array,
+
+    /**
      * Overrides showDictionary action config.
      * Function is called (using await, so can be async) with 2 arguments: (cfg: current config, row: content of row to edit) can mutate cfg and return mutated config
      */
@@ -65,6 +72,7 @@ export default {
       type: Function,
       default: config => config
     },
+
     /**
      * Overrides edit action config.
      * Function is called (using await, so can be async) with 2 arguments: (cfg: current config, row: content of row to edit) can mutate cfg and return mutated config
@@ -73,6 +81,7 @@ export default {
       type: Function,
       default: config => config
     },
+
     /**
      * Overrides addNew action config.
      * Function accept one parameter cfg: Object - config for doCmd.showForm, can mutate it and return mutated config
@@ -81,6 +90,7 @@ export default {
       type: Function,
       default: config => config
     },
+
     /**
      * Callback which will be emitted before addNew
      */

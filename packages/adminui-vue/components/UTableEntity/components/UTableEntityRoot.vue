@@ -51,6 +51,7 @@
           name="toolbarButtonAddNew"
         >
           <el-tooltip
+            v-if="showAddNew"
             :content="$ut('actionAdd')"
             placement="bottom"
             :open-delay="300"
@@ -96,66 +97,82 @@
             <!-- @slot Replace add-new button in toolbar dropdown -->
             <template #add-new>
               <slot
+                v-if="showAddNew"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownAddNew"
               />
+              <div v-else/>
             </template>
             <!-- @slot Replace edit button in toolbar dropdown -->
             <template #edit>
               <slot
+                v-if="showEdit"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownEdit"
               />
+              <div v-else/>
             </template>
             <!-- @slot Replace copy button in toolbar dropdown -->
             <template #copy>
               <slot
+                v-if="showCopy"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownCopy"
               />
+              <div v-else/>
             </template>
             <!-- @slot Replace delete button in toolbar dropdown -->
             <template #delete>
               <slot
+                v-if="showDelete"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownDelete"
               />
+              <div v-else/>
             </template>
             <!-- @slot Replace audit button in toolbar dropdown -->
             <template #audit>
               <slot
+                v-if="showAudit"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownAudit"
               />
+              <div v-else/>
             </template>
             <!-- @slot Replace summary button in toolbar dropdown -->
             <template #summary>
               <slot
+                v-if="showSummary"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownSummary"
               />
+              <div v-else/>
             </template>
             <!-- @slot Replace data history button in toolbar dropdown -->
             <template #dataHistory>
               <slot
+                v-if="showVersions"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownDataHistory"
               />
+              <div v-else/>
             </template>
             <!-- @slot Replace exports button in toolbar dropdown -->
             <template #exports>
               <slot
+                v-if="showExport"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownExports"
               />
+              <div v-else/>
             </template>
 
             <!-- @slot Replace viewMode button in toolbar dropdown -->
@@ -295,6 +312,7 @@
         >
           <!-- @slot Replace action "edit" in context menu -->
           <slot
+            v-if="showEdit"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -310,13 +328,14 @@
 
           <!-- @slot Replace action "copy" in context menu -->
           <slot
+            v-if="showCopy"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
             name="contextMenuCopy"
           >
             <u-dropdown-item
-              :disabled="!canAddNew"
+              :disabled="!canCopy"
               icon="u-icon-copy"
               label="Copy"
               @click="copyRecord(contextMenuRowId)"
@@ -325,6 +344,7 @@
 
           <!-- @slot Replace action "delete" in context menu -->
           <slot
+            v-if="showDelete"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -355,6 +375,7 @@
 
           <!-- @slot Replace "audit" in context menu -->
           <slot
+            v-if="showAudit"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -378,6 +399,7 @@
               <u-dropdown-item divider />
 
               <u-dropdown-item
+                v-if="showCreateNewVersion"
                 icon="u-icon-file-add"
                 label="novajaVersija"
                 :disabled="!canCreateNewVersion"
@@ -484,16 +506,26 @@ export default {
     ]),
 
     ...mapGetters([
+      'showAddNew',
       'canAddNew',
+      'showCopy',
+      'canCopy',
+      'showEdit',
       'canEdit',
+      'showDelete',
       'canDelete',
+      'showAudit',
       'canAudit',
       'hasSelectedRow',
       'formCode',
       'columns',
       'cardColumns',
+      'showCreateNewVersion',
+      'showVersions',
       'canCreateNewVersion',
-      'hasDataHistoryMixin'
+      'hasDataHistoryMixin',
+      'showSummary',
+      'showExport'
     ]),
 
     selectedColumnId: {
