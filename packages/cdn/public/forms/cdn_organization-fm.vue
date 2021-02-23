@@ -18,10 +18,10 @@
               <u-auto-field attribute-name="description" />
               <u-auto-field attribute-name="orgOwnershipTypeID" />
               <u-auto-field attribute-name="orgBusinessTypeID" />
-              <u-auto-field attribute-name="addrText" />
               <u-auto-field attribute-name="corrIndexID" />
+              <u-auto-field attribute-name="countryID" />
             </u-grid>
-
+            <u-auto-field attribute-name="addrText" />
             <u-table-entity
               v-if="ID"
               :repository="contactsRepository"
