@@ -19,11 +19,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - `UAutoField`: in case passed `readonly = true` to a `Boolean` field - disable it,
+ - `UAutoField`: in case `readonly` property sets to `true` - convert it to `disable`,
    because 'el-checkbox'/'el-switch' doesn't have `readonly` prop 
- - `UNavbar`: display of html-content inside the tab tooltip
- - `UNavbar`: support for ext-based form tooltip that was created with `BasePanel`
-
 
 ## [5.19.3] - 2021-02-10
 ### Fixed
