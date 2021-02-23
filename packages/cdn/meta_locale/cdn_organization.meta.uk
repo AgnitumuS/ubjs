@@ -85,7 +85,7 @@
     {
       "name": "countryID",
       "caption": "Країна",
-      "description": "Країна розташування"
+      "description": "Країна реєстрації"
     }
   ]
 }
