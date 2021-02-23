@@ -81,6 +81,11 @@
       "name": "caption",
       "caption": "Caption",
       "description": "Caption"
+    },
+    {
+      "name": "countryID",
+      "caption": "Country",
+      "description": "Country"
     }
   ]
 }

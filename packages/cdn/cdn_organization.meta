@@ -143,6 +143,14 @@
       "description": "Caption",
       "allowNull": true,
       "isMultiLang": true
+    },
+    {
+      "name": "countryID",
+      "dataType": "Entity",
+      "associatedEntity": "cdn_country",
+      "caption": "Country",
+      "description": "Country",
+      "allowNull": true
     }
   ],
   "mixins": {

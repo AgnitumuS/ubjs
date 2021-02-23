@@ -81,6 +81,11 @@
       "name": "caption",
       "caption": "Заголовок",
       "description": "Заголовок"
+    },
+    {
+      "name": "countryID",
+      "caption": "Страна",
+      "description": "Страна"
     }
   ]
 }
