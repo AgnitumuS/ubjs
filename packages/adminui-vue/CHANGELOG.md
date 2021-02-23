@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `USelectEntity`: autocomplete the value after adding a new record through the 'addNew' action button.
+   Also added prop `skipAutoComplete` to remove this functionality for some selected field.
  - `Form.js`: added `titleTooltip` param same as a `title` for default
  - `Form.mountTab` added the ability to change the tooltip of current tab in the `UNavbar` using
    the provided with `$formServices` function `setTooltip`.
