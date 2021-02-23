@@ -150,6 +150,9 @@ export default {
     }
     switch (this.dataType) {
       case 'Boolean':
+        if (!baseAttrs.disabled && baseAttrs.readonly) {
+          baseAttrs.disabled = baseAttrs.readonly // need because 'el-checkbox' and 'el-switch' doesn't have 'readonly' prop
+        }
         cmp = h(this.forceCmp || 'el-checkbox', {
           attrs: baseAttrs,
           on: this.buildListenersOnChange
