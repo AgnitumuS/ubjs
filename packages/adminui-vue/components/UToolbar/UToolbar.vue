@@ -257,8 +257,7 @@ export default {
     ]),
 
     async saveAndClose () {
-      await this.save()
-      this.$formServices.forceClose()
+      await this.save(() => this.$formServices.forceClose())
     },
 
     dropdownHandler (command) {

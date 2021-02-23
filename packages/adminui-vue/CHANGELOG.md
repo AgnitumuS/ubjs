@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `UAutoField`: in case `readonly` property sets to `true` - convert it to `disable`,
    because 'el-checkbox'/'el-switch' doesn't have `readonly` prop 
+ - `processing` + `UToolbar` - "Save and Close" must close ONLY if save was successful
 
 ## [5.19.3] - 2021-02-10
 ### Fixed
