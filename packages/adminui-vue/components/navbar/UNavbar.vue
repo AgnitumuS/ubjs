@@ -61,6 +61,7 @@
         :key="tab.id"
         placement="bottom"
         :enterable="false"
+        :disabled="tab.title === tab.titleTooltip && tab.title.length < 18"
       >
         <template #content>
           <span v-html="tab.titleTooltip || tab.title" />
