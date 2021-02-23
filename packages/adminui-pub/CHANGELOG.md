@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- `showAuditTrail` select data by **parentEntityInfo_id** and **entityinfo_id** attributes instead of **parentEntityInfo_id**.
+- `showAuditTrail` select data by **parentEntityInfo_id** or **entityinfo_id** attributes instead of **parentEntityInfo_id**.
   Auditing on child records will now appear in the base entity audit form and the parent entity audit form.
 
 ### Deprecated
