@@ -41,7 +41,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `org_unit-fm`: 'parentID' field is `readonly` instead of `disabled`, that allows to open
     parent form [UBDF-13217]
-
+ - UTable: In a table view mode the position of a sorting window popup has moved
+  from a button on the toolbar to a sorted column header.
+   
 ### Deprecated
 
 ### Removed

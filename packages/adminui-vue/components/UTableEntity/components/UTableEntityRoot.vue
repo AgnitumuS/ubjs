@@ -735,13 +735,14 @@ export default {
       if (this.sort.order === 'desc') return 'u-icon-sort-desc'
     },
 
-    showSortDropdown (column) {
+    showSortDropdown (column, target) {
       if (column.sortable === false) {
         return
       }
       this.SELECT_COLUMN(column.id)
       // setTimeout for prevent click outside
       if (this.$refs.sort && this.$refs.sort.$refs.dropdown) {
+        this.$refs.sort.$refs.dropdown.setReferenceEl(target)
         setTimeout(this.$refs.sort.$refs.dropdown.toggleVisible, 0)
       }
     }
