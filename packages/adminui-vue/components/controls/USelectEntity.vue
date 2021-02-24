@@ -153,7 +153,6 @@
 <script>
 const { debounce } = require('throttle-debounce')
 const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
-
 /**
  * Select component mapped to Entity
  */
@@ -274,6 +273,14 @@ export default {
       type: String,
       default: 'like',
       validator: value => ['like', 'startsWith'].includes(value)
+    },
+
+    /**
+     * Skip autocomplete the value after adding a new record through the 'addNew' action button
+     */
+    skipAutoComplete: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -398,6 +405,16 @@ export default {
       if (value.length < 1) {
         this.handleClearClick()
       }
+    }
+  },
+
+  created () {
+    this.AUTOCOMPLETE_LISTENER_UID = null
+  },
+
+  beforeDestroy () {
+    if (this.AUTOCOMPLETE_LISTENER_UID && this.AUTOCOMPLETE_LISTENER_UID === this._uid && !this.skipAutoComplete) {
+      this.$UB.connection.removeListener(`${this.getEntityName}:changed`, this.autoCompleteValue)
     }
   },
 
@@ -600,7 +617,7 @@ export default {
               return cfg
             },
             buildCopyConfig (cfg) {
-              cfg.isModal =  this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal
+              cfg.isModal = this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal
               return cfg
             },
             buildAddNewConfig (cfg) {
@@ -651,7 +668,17 @@ export default {
           entity: this.getEntityName,
           isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal
         })
+        if (!this.skipAutoComplete) {
+          this.$UB.connection.once(`${this.entityName}:changed`, this.autoCompleteValue)
+          this.AUTOCOMPLETE_LISTENER_UID = this._uid
+        }
         this.$UB.core.UBApp.doCommand(config)
+      }
+    },
+
+    autoCompleteValue (config) {
+      if (this.AUTOCOMPLETE_LISTENER_UID && this.AUTOCOMPLETE_LISTENER_UID === this._uid && config && config.resultData) {
+        this.$emit('input', config.resultData[this.valueAttribute], JSON.parse(JSON.stringify(config.resultData)))
       }
     },
 
