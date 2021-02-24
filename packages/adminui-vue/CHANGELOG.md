@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `USelectEntity`: autocomplete the value after adding a new record through the 'addNew' action button.
+   Also added prop `skipAutoComplete` to remove this functionality for some selected field.
 
 ### Changed
 
