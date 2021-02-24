@@ -63,7 +63,10 @@ export default {
      * `addNew`, `copy`, `newVersion`, `showVersions`, `edit`, `delete`, `audit`, `summary`, `export`,
      * `link`, `viewMode`.
      *
-     * For compatibility with legacy AdminUI, the following alternative codes are supported: `del` for `delete`
+     * For compatibility with legacy AdminUI, the following alternative codes are supported:
+     * `del` for `delete`,
+     * `addNewByCurrent` for `copy`,
+     * `itemLink` for `link`
      */
     hideActions: Array,
 
