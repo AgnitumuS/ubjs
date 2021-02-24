@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  ```
   An still, it won't affect keyboard actions.  Now it is much easier to disable actions with the
   new property.  It supports the following actions: `addNew`, `copy`, `newVersion`, `showVersions`, `edit`, `delete`,
-  `audit`, `summary`, `export`
+  `audit`, `summary`, `export`, `link`, `viewMode`
   How, it is possible to control multiple actions with one property and be sure actions will be hidden in all the places:
  ```
       <u-table-entity

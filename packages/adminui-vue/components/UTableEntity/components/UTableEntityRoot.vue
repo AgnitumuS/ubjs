@@ -176,7 +176,10 @@
             </template>
 
             <!-- @slot Replace viewMode button in toolbar dropdown -->
-            <template #viewMode>
+            <template
+              v-if="showViewMode"
+              #viewMode
+            >
               <slot
                 :close="close"
                 :store="$store"
@@ -360,6 +363,7 @@
 
           <!-- @slot Replace "copy link" in context menu -->
           <slot
+            v-if="showCopyLink"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -522,6 +526,8 @@ export default {
       'cardColumns',
       'showCreateNewVersion',
       'showVersions',
+      'showCopyLink',
+      'showViewMode',
       'canCreateNewVersion',
       'hasDataHistoryMixin',
       'showSummary',

@@ -142,6 +142,14 @@ module.exports = (instance) => ({
       return !instance.hideActions || !instance.hideActions.includes('audit')
     },
 
+    showCopyLink () {
+      return !instance.hideActions || !instance.hideActions.includes('link')
+    },
+
+    showViewMode () {
+      return !instance.hideActions || !instance.hideActions.includes('viewMode')
+    },
+
     canAudit (state, getters) {
       return getters.hasSelectedRow &&
         getters.schema.hasMixin('audit') &&
