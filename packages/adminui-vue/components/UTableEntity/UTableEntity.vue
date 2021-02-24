@@ -60,7 +60,9 @@ export default {
     /**
      * Allows to hide some actions, even, if they user has ELS for related entity methods.
      * Actions shall be passed as array of strings, supported actions for this property:
-     * `addNew`, `copy`, `newVersion`, `showVersions`, `edit`, `delete`, `audit`, `summary`, `export`
+     * `addNew`, `copy`, `newVersion`, `showVersions`, `edit`, `delete`, `audit`, `summary`, `export`.
+     *
+     * For compatibility with legacy AdminUI, the following alternative codes are supported: `del` for `delete`
      */
     hideActions: Array,
 

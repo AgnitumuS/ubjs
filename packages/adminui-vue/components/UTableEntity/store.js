@@ -126,7 +126,10 @@ module.exports = (instance) => ({
     },
 
     showDelete () {
-      return !instance.hideActions || !instance.hideActions.includes('delete')
+      if (!instance.hideActions) {
+        return true
+      }
+      return !instance.hideActions.includes('delete') && !instance.hideActions.includes('del')
     },
 
     canDelete (state, getters) {
