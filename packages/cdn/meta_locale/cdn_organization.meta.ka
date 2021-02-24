@@ -65,6 +65,11 @@
         {
             "name": "description",
             "caption": "ორგანიზაციის აღწერა"
+        },
+        {
+            "name": "countryID",
+            "caption": "Country",
+            "description": "Country"
         }
     ]
 }

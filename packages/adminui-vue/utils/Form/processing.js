@@ -746,8 +746,13 @@ function createProcessingModule ({
       /**
        * Check validation then
        * build requests for master and collections records
+       *
+       * @param {Store} store
+       * @param {function} [closeForm]
+       *   For using action in the "Save and Close" actions, pass the function, which will close the form
+       * @returns {Promise<void>}
        */
-      async save (store) {
+      async save (store, closeForm) {
         const { state, commit } = store
 
         if (beforeSave) {
@@ -881,6 +886,10 @@ function createProcessingModule ({
           }
           if (saved) {
             await saved()
+          }
+
+          if (closeForm) {
+            closeForm()
           }
         } catch (err) {
           if (typeof errorNotification === 'function') {

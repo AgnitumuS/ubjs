@@ -113,6 +113,7 @@ function execSql (cfg) {
         searchInEnv: false,
         help: ' If `withResult` is true - output last statement result to stdout'
       })
+      .add({ short: 'v', long: 'verbose', defaultValue: false, help: 'Verbose mode' })
     cfg = opts.parseVerbose({}, true)
   }
   if (!cfg) return
@@ -164,6 +165,9 @@ function execSql (cfg) {
     try {
       const d = Date.now()
       ignoreErr = stmt.indexOf('--@optimistic') > -1
+      if (cfg.verbose) {
+        console.log(stmt)
+      }
       if (cfg.withResult && (n === lastIdx)) {
         lastStatementResult = dbConn.runParsed(stmt)
       } else {

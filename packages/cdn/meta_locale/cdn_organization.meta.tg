@@ -81,6 +81,11 @@
             "name": "orgBusinessTypeID",
             "caption": "Намуди ташкилот",
             "description": "Намуди ташкилот"
+        },
+        {
+            "name": "countryID",
+            "caption": "Country",
+            "description": "Country"
         }
     ]
 }

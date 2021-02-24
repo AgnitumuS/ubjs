@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `ubcli execSql` command accept `-v` parameter for a verbose mode.
+   In the verbose mode each executed SQL statement will be logged into console 
+ - `ubcli migrate`  command accept `-v` parameter for a verbose mode and `-p` parameter for progress.
+   Both a passed to execSql, this allows output all executed SQL statement into a console (SQL statement logging) 
 
 ### Changed
 
