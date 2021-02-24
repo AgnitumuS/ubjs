@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `ubcli execSql` command accept `-v` parameter for a verbose mode.
+   In the verbose mode each executed SQL statement will be logged into console 
 
 ### Changed
 
