@@ -11,6 +11,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `Form.js`: added `titleTooltip` param. By default equal to `title`. Used to display a tab tooltip.
  - `Form.mountTab` added the ability to change the tooltip of current tab in the `UNavbar` using
    the provided with `$formServices` function `setTooltip`.
+ - `UTableEntity` now supports a new property `hideActions`.  It allows to hide an action
+  from all the possible places at once: toolbar, context menu, toolbar dropdown, it also
+  disables keyboard shortcuts for the actions.
+  Before the change, to disable an action for entity table, it required something like:  
+ ```
+    <!-- Disallow copy -->
+    <template #contextMenuCopy>
+      <div/>
+    </template>
+    <template #toolbarDropdownCopy>
+      <div/>
+    </template>
+ ```
+  An still, it won't affect keyboard actions.  Now it is much easier to disable actions with the
+  new property.  It supports the following actions: `addNew`, `copy`, `newVersion`, `showVersions`, `edit`, `delete`,
+  `audit`, `summary`, `export`, `link`, `viewMode`
+  How, it is possible to control multiple actions with one property and be sure actions will be hidden in all the places:
+ ```
+      <u-table-entity
+        :hide-actions="['copy', 'export']"
+        ...
+      >
+        ....
+      </u-table-entity>
+    </div>
+ ```
    
 ### Changed
  - `org_unit-fm`: 'parentID' field is `readonly` instead of `disabled`, that allows to open
