@@ -52,7 +52,14 @@ module.exports = function migrate (cfg) {
       .add({ short: 'noddl', long: 'noddl', defaultValue: false, help: 'skip execution of generateDDL' })
       .add({ short: 'nodata', long: 'nodata', defaultValue: false, help: 'skip execution ub-migrate' })
       .add({ short: 'optimistic', long: 'optimistic', defaultValue: false, help: 'skip errors on execute DDL statement. BE CAREFUL! DO NOT USE ON PRODUCTION' })
-      .add({ short: 'v', long: 'verbose', defaultValue: false, help: 'Verbose mode' })
+      .add({ short: 'v', long: 'verbose', defaultValue: false, searchInEnv: true, help: 'Verbose mode' })
+      .add({
+        short: 'p',
+        long: 'progress',
+        defaultValue: false,
+        searchInEnv: true,
+        help: 'Output execution time for each command into console'
+      })
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
@@ -274,7 +281,9 @@ function runFiles (filesToRun, params, { conn, dbConnections, dbVersions, migrat
       execSql({
         connection: connName,
         file: f.fullPath,
-        optimistic: params.optimistic
+        optimistic: params.optimistic,
+        verbose: params.verbose,
+        progress: params.progress
       })
     } else {
       console.warn(`Unknown extension for '${f.origName}' in model '${f.model}'`)
