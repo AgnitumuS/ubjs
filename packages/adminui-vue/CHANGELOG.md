@@ -6,9 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `USelectEntity`: autocomplete the value after adding a new record through the 'addNew' action button.
-   Also added prop `skipAutoComplete` to remove this functionality for some selected field.
-
+ - `USelectEntity` will force selecting of new record added by user using "Add new" action.
+   Also added prop `skipAutoComplete` to disable this functionality for some selected field.
+ - `Form.js`: added `titleTooltip` param. By default equal to `title`. Used to display a tab tooltip.
+ - `Form.mountTab` added the ability to change the tooltip of current tab in the `UNavbar` using
+   the provided with `$formServices` function `setTooltip`.
+   
 ### Changed
 
 ### Deprecated
@@ -16,6 +19,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UNavbar`: display of html-content inside the tab tooltip
+ - `UNavbar`: support for ext-based form tooltip that was created with `BasePanel`
  - `UAutoField`: in case `readonly` property sets to `true` - convert it to `disable`,
    because 'el-checkbox'/'el-switch' doesn't have `readonly` prop 
  - `processing` + `UToolbar` - "Save and Close" must close ONLY if save was successful

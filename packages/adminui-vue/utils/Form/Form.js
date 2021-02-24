@@ -66,6 +66,7 @@ class UForm {
    * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
    * @param {object} [cfg.target] Optional target. Used for render form into form
    * @param {boolean} cfg.isCopy Required isCopy. Used for create new record with data of existing record
+   * @param {string} [cfg.titleTooltip] Form title tooltip
    */
   constructor ({
     component,
@@ -82,7 +83,8 @@ class UForm {
     uiTag,
     target,
     isCopy,
-    openInBackgroundTab
+    openInBackgroundTab,
+    titleTooltip
   }) {
     this.component = component || rootComponent
     this.props = props
@@ -99,6 +101,7 @@ class UForm {
       this.title = title
       this.fieldList = []
     }
+    this.titleTooltip = titleTooltip || this.title
     this.instanceID = instanceID
     this.formCode = formCode
     this.isCopy = isCopy
@@ -282,6 +285,7 @@ class UForm {
         store: this.$store,
         validator: this.validator,
         title: this.title,
+        titleTooltip: this.titleTooltip,
         modalClass: this.modalClass,
         modalWidth: this.modalWidth,
         provide: {
@@ -307,6 +311,7 @@ class UForm {
         store: this.$store,
         validator: this.validator,
         title: this.title,
+        titleTooltip: this.titleTooltip,
         tabId: this.tabId,
         uiTag: this.uiTag,
         openInBackgroundTab: this.openInBackgroundTab,
@@ -324,6 +329,7 @@ class UForm {
         store: this.$store,
         validator: this.validator,
         title: this.title,
+        titleTooltip: this.titleTooltip,
         target: this.target,
         provide: {
           formCode: this.formCode,
