@@ -19,7 +19,7 @@
             width: col.width && col.width + 'px',
             padding: col.padding && col.padding + 'px'
           }"
-          @click="$emit('click-head-cell', col)"
+          @click="$emit('click-head-cell', col, $event.target)"
         >
           <slot
             :name="`head_${col.id}`"

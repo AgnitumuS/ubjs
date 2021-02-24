@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+- UTable: In a table view mode the position of a sorting window popup has moved
+  from a button on the toolbar to a sorted column header.
 ### Deprecated
 
 ### Removed
