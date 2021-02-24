@@ -145,7 +145,7 @@ export default {
       attributeName: this.attributeName,
       value: this.model,
       disabled: this.isDisabled || this.$attrs.disabled,
-      readonly: this.isDisabled || this.isReadOnly,
+      readonly: this.isDisabled || this.$attrs.readonly || this.isReadOnly,
       required: this.isRequired
     }
     switch (this.dataType) {

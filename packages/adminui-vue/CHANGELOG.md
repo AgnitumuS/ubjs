@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    the provided with `$formServices` function `setTooltip`.
    
 ### Changed
+ - `org_unit-fm`: 'parentID' field is `readonly` instead of `disabled`, that allows to open
+    parent form [UBDF-13217]
 
 ### Deprecated
 
