@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- UTableEntity - fix logic for alternate names for `hide-actions` property for `copy` and `link`
 
 ## [5.19.4] - 2021-02-25
 ### Added

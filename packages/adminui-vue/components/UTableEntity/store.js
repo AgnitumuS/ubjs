@@ -121,7 +121,7 @@ module.exports = (instance) => ({
       if (!instance.hideActions) {
         return true
       }
-      return !instance.hideActions.includes('copy') || !instance.hideActions.includes('addNewByCurrent')
+      return !instance.hideActions.includes('copy') && !instance.hideActions.includes('addNewByCurrent')
     },
 
     canCopy (state, getters) {
@@ -149,7 +149,7 @@ module.exports = (instance) => ({
       if (!instance.hideActions) {
         return true
       }
-      return !instance.hideActions.includes('link') || !instance.hideActions.includes('itemLink')
+      return !instance.hideActions.includes('link') && !instance.hideActions.includes('itemLink')
     },
 
     showViewMode () {
