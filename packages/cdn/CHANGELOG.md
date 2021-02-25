@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - new attribute `cdn_organization.countryID`
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.19.4] - 2021-02-25
+### Added
+ - new attribute `cdn_organization.countryID`
 
 ## [5.19.3] - 2021-02-10
 ## [5.19.2] - 2021-02-08

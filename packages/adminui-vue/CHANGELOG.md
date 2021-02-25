@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.19.4] - 2021-02-25
+### Added
  - `USelectEntity` will force selecting of new record added by user using "Add new" action.
    Also added prop `skipAutoComplete` to disable this functionality for some selected field.
  - `Form.js`: added `titleTooltip` param. By default equal to `title`. Used to display a tab tooltip.
@@ -44,10 +55,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - UTable: In a table view mode the position of a sorting window popup has moved
   from a button on the toolbar to a sorted column header.
    
-### Deprecated
-
-### Removed
-
 ### Fixed
  - `UNavbar`: display of html-content inside the tab tooltip
  - `UNavbar`: support for ext-based form tooltip that was created with `BasePanel`
