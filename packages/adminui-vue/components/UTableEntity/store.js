@@ -118,10 +118,8 @@ module.exports = (instance) => ({
     },
 
     showCopy () {
-      if (!instance.hideActions) {
-        return true
-      }
-      return !instance.hideActions.includes('copy') || !instance.hideActions.includes('addNewByCurrent')
+      if (!instance.hideActions) return true
+      else return !(instance.hideActions.includes('copy') || instance.hideActions.includes('addNewByCurrent'))
     },
 
     canCopy (state, getters) {
@@ -129,10 +127,8 @@ module.exports = (instance) => ({
     },
 
     showDelete () {
-      if (!instance.hideActions) {
-        return true
-      }
-      return !instance.hideActions.includes('delete') && !instance.hideActions.includes('del')
+      if (!instance.hideActions) return true
+      else return !(instance.hideActions.includes('delete') && instance.hideActions.includes('del'))
     },
 
     canDelete (state, getters) {
@@ -146,10 +142,8 @@ module.exports = (instance) => ({
     },
 
     showCopyLink () {
-      if (!instance.hideActions) {
-        return true
-      }
-      return !instance.hideActions.includes('link') || !instance.hideActions.includes('itemLink')
+      if (!instance.hideActions) return true
+      else return !(instance.hideActions.includes('link') || instance.hideActions.includes('itemLink'))
     },
 
     showViewMode () {

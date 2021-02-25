@@ -178,17 +178,9 @@ function replaceShowList () {
           if (typeof field === 'object') {
             if (field.visibility !== false) {
               columns.push({
+                ...field,
                 id: field.name,
-                label: field.description,
-                format: field.format,
-                isHtml: field.isHtml,
-                sortable: field.sortable,
-                isLookup: field.isLookup,
-                align: field.align,
-                headerAlign: field.headerAlign,
-                maxWidth: field.maxWidth,
-                minWidth: field.minWidth,
-                width: field.width
+                label: field.description
               })
             }
             fieldList.push(field.name)
@@ -205,62 +197,9 @@ function replaceShowList () {
           columns,
           buildEditConfig: cfg.cmpInitConfig && cfg.cmpInitConfig.buildEditConfig,
           onSelectRecord: cfg.onSelectRecord,
-          parentContext: cfg.parentContext
+          parentContext: cfg.parentContext,
+          hideActions: cfg.hideActions
         }
-      }
-
-      /**
-       * Creates vue-based scopedSlots function from ext-based hideActions array
-       * @param h - callback render function
-       * @returns {object}
-       */
-      function createScopedSlotsFromHideActions (h) {
-        const hideActions = cfg.hideActions
-        if (!hideActions) return {}
-
-        const actionsMappingObj = {
-          showDetail: {
-            contextMenuDetails: () => h('div', ''),
-            dropdownMenuDetails: () => h('div', '')
-          },
-          addNewByCurrent: {
-            contextMenuCopy: () => h('div', ''),
-            toolbarDropdownCopy: () => h('div', '')
-          },
-          addNew: {
-            contextMenuAdd: () => h('div', ''),
-            toolbarDropdownAddNew: () => h('div', ''),
-            toolbarButtonAddNew: () => h('div', '')
-          },
-          del: {
-            contextMenuDelete: () => h('div', ''),
-            toolbarDropdownDelete: () => h('div', '')
-          },
-          edit: {
-            contextMenuEditRecord: () => h('div', ''),
-            toolbarDropdownEdit: () => h('div', '')
-          },
-          audit: {
-            contextMenuAudit: () => h('div', ''),
-            toolbarDropdownAudit: () => h('div', '')
-          },
-          exports: {
-            toolbarDropdownExports: () => h('div', '')
-          },
-          link: {
-            contextMenuLink: () => h('div', '')
-          },
-          showPreview: {
-            // TODO add ability to hide preview button after packages update
-          }
-        }
-        const scopedSlots = {}
-
-        hideActions && hideActions.forEach(action => {
-          Object.assign(scopedSlots, actionsMappingObj[action])
-        })
-
-        return scopedSlots
       }
 
       // if showList command has own scopedSlots function, merge it with already created one
@@ -274,7 +213,6 @@ function replaceShowList () {
         title: me.title || me.description || me.entity,
         props,
         scopedSlots: h => ({
-          ...createScopedSlotsFromHideActions(h),
           ...customActions(h)
         })
       })
