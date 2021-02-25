@@ -8,12 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - replaceShowList: pass `hideActions` property to `UTableEntity` instead of
+   build `scopedSlots` with empty `div` for it
+   
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - replaceShowList: pass object properties to a column only if it is defined. Its prevent a bug when column
+  `sortable` and `filters` properties is not defined in UTable.
 
 ## [5.19.4] - 2021-02-25
 ### Added
