@@ -2401,12 +2401,42 @@ Ext.define('UB.view.BasePanel', {
     }
 
     Ext.Object.each(me.documents, function (key, doc) {
-      docActions.push(new Ext.Action({
-        text: doc.caption,
+      const menu = [{
+        actionId: actions.attach + '_' + key,
         iconCls: 'u-icon-attachments',
-        height: 32,
-        key: key,
-        menu: [{
+        text: UB.i18n('izFayla'), // '<i class="fa fa-folder-open"></i>&nbsp' +
+        eventId: events.attach,
+        handler: me.onAction,
+        attribute: key,
+        scope: me
+      }, {
+        actionId: actions.deleteAttachment + '_' + key,
+        iconCls: 'u-icon-circle-close',
+        text: UB.i18n('clear'),
+        eventId: events.deleteattachment,
+        handler: me.onAction,
+        attribute: key,
+        scope: me
+      }, {
+        actionId: actions.showVersions + '_' + key,
+        iconCls: 'u-icon-branch',
+        text: UB.i18n('showDocVersions'),
+        eventId: events.showVersions,
+        handler: me.onAction,
+        attribute: key,
+        scope: me
+      }, {
+        actionId: actions.downloadAttach + '_' + key,
+        iconCls: 'u-icon-download',
+        text: UB.i18n('downloadAttach'),
+        eventId: events.downloadAttach,
+        handler: me.onAction,
+        attribute: key,
+        scope: me
+      }]
+      // Show scan option in form only if disableScanner property is not explicitly set as true
+      if (!UB.connection.appConfig.uiSettings.adminUI.disableScanner) {
+        menu.splice(0, 0, {
           actionId: actions.scan + '_' + key,
           // disabled: UB.npDesktopServicePluginDownloadMessage(),
           iconCls: 'u-icon-print',
@@ -2415,39 +2445,14 @@ Ext.define('UB.view.BasePanel', {
           handler: me.onAction,
           attribute: key,
           scope: me
-        }, {
-          actionId: actions.attach + '_' + key,
-          iconCls: 'u-icon-attachments',
-          text: UB.i18n('izFayla'), // '<i class="fa fa-folder-open"></i>&nbsp' +
-          eventId: events.attach,
-          handler: me.onAction,
-          attribute: key,
-          scope: me
-        }, {
-          actionId: actions.deleteAttachment + '_' + key,
-          iconCls: 'u-icon-circle-close',
-          text: UB.i18n('clear'),
-          eventId: events.deleteattachment,
-          handler: me.onAction,
-          attribute: key,
-          scope: me
-        }, {
-          actionId: actions.showVersions + '_' + key,
-          iconCls: 'u-icon-branch',
-          text: UB.i18n('showDocVersions'),
-          eventId: events.showVersions,
-          handler: me.onAction,
-          attribute: key,
-          scope: me
-        }, {
-          actionId: actions.downloadAttach + '_' + key,
-          iconCls: 'u-icon-download',
-          text: UB.i18n('downloadAttach'),
-          eventId: events.downloadAttach,
-          handler: me.onAction,
-          attribute: key,
-          scope: me
-        }]
+        })
+      }
+      docActions.push(new Ext.Action({
+        text: doc.caption,
+        iconCls: 'u-icon-attachments',
+        height: 32,
+        key: key,
+        menu
       }))
     })
   },

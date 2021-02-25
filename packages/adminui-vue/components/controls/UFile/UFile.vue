@@ -212,11 +212,15 @@ export default {
       const buttonsByDefault = [
         'add',
         'webcam',
-        'scan',
-        'scanSettings',
         'download',
         'remove'
       ]
+
+      // Show scan options only if disableScanner property is not explicitly set as true
+      if (!this.$UB.connection.appConfig.uiSettings.adminUI.disableScanner) {
+        buttonsByDefault.splice(2, 0, 'scan')
+        buttonsByDefault.splice(3, 0, 'scanSettings')
+      }
 
       if (this.previewMode) {
         buttonsByDefault.push('fullscreen')
