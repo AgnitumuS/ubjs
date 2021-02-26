@@ -2,31 +2,17 @@
 // removed axios and core-js dependency
 <template>
   <div class="vueAnkaCropper">
-    <div class="ankaCropper">
+    <div class="u-crop">
       <input
         v-show="false"
         ref="fileInput"
         type="hidden"
-        class="ankaCropper__fileInput"
+        class="u-crop__fileInput"
         @change="selectFile"
       >
       <div
-        v-if="!file"
-        class="ankaCropper__droparea"
-        @drop.prevent="dropFile"
-        @dragover.prevent
-      >
-        <div>{{ opts.dropareaMessage }}</div>
-        <button
-          class="ankaCropper__selectButton"
-          @click="triggerInput"
-        >
-          {{ opts.selectButtonLabel }}
-        </button>
-      </div>
-      <div
         v-if="file"
-        class="ankaCropper__mainArea"
+        class="u-crop__mainArea"
       >
         <div :style="{width: cropperWidth + 'px', height: cropperHeight + 'px', float: 'left'}">
           <canvas
@@ -42,7 +28,7 @@
         </div>
         <div
           v-if="opts.showPreview"
-          class="ankaCropper__previewArea"
+          class="u-crop__previewArea"
           :style="{width: prevdivWidth + 'px', height: prevdivHeight + 'px', float: 'left'}"
         >
           <img
@@ -54,91 +40,42 @@
       </div>
       <div
         v-if="file"
-        class="ankaCropper__navigation"
+        class="u-crop__navigation"
       >
         <u-button
-          class="ankaCropper__navButton"
           @click.prevent="rotate(-90)"
+          icon="fas fa-undo"
+          appearance="inverse"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="black"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-rotate-ccw"
-          ><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" /></svg>
         </u-button>
         <u-button
-          class="ankaCropper__navButton"
           @click.prevent="rotate(90)"
+          icon="fas fa-redo"
+          appearance="inverse"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="black"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-rotate-cw"
-          ><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>
         </u-button>
         <u-button
-          class="ankaCropper__navButton"
           @click.prevent="flip('h')"
+          icon="fas fa-text-width"
+          appearance="inverse"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="black"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          > <path
-            id="path2"
-            style="fill:none"
-            d="M 9.7148438,2.8183594 1.8203125,18 c -0.7648346,1.324499 0.1796183,2.982419 1.7089844,3 h 6.1855469 z m 4.5703122,0 V 21 h 6.185547 c 1.529366,-0.01758 2.47382,-1.675501 1.708985,-3 z"
-          /></svg>
         </u-button>
         <u-button
-          class="ankaCropper__navButton"
           @click.prevent="flip('v')"
+          icon="fas fa-text-height"
+          appearance="inverse"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="black"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          > <path
-            id="path2"
-            style="fill:none"
-            d="M 21.090975,9.7148433 5.9093341,1.820312 c -1.324499,-0.7648346 -2.982419,0.1796183 -3,1.7089844 v 6.1855469 z m 0,4.5703127 H 2.9093341 v 6.185547 c 0.01758,1.529366 1.675501,2.47382 3,1.708985 z"
-          /></svg>
         </u-button>
         <u-button
           color="primary"
-          class="ankaCropper__saveButton"
+          class="u-crop__rightButton"
           @click="doCrop"
         >
-          {{ $ut("Apply") }}
+          {{ $ut("apply") }}
         </u-button>
         <u-button
-          class="ankaCropper__saveButton"
+          class="u-crop__rightButton"
+          appearance="plain"
           @click="cancelCrop"
         >
           {{ $ut("Cancel") }}
@@ -175,7 +112,6 @@ export default {
         croppedHeight: false, // desired height of cropped image (or false)
         croppedWidth: false, // desired width of cropped image (or false)
         cropperHeight: false,
-        dropareaMessage: 'Drop file here or use the button below.',
         frameLineDash: [5, 3], // dash pattern of the dashed line of the cropping frame
         frameStrokeColor: 'rgba(255, 255, 255, 0.8)', // main color of the stroke of the cropping frame
         handleFillColor: 'rgba(255, 255, 255, 0.2)',
@@ -191,7 +127,6 @@ export default {
         previewQuality: 0.65,
         resultQuality: 0.9,
         resultMimeType: 'image/png',
-        selectButtonLabel: 'Select File',
         showPreview: false,
         uploadData: {}, // additional upload data, such as user id or whatever
         uploadTo: false
@@ -863,52 +798,28 @@ export default {
 }
 </script>
 <style>
-.ankaCropper {
+.u-crop {
   border-radius: 3px;
   position: relative;
   overflow: hidden;
   font-size: 16px;
   text-decoration: none;
 }
-
-.ankaCropper__droparea {
-  text-align: center;
-  margin: 2em;
-  padding: 2em;
-}
-.ankaCropper__selectButton {
-  border: none;
-  padding: 10px 20px;
-  margin: 10px;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all 0.3s;
-  background: #1c6bd6;
-  color: #fff;
-}
-.ankaCropper__navigation {
+.u-crop__navigation {
   padding: 12px;
   border-radius: 3px;
 }
-.ankaCropper__navButton {
-  display: inline-block;
-  padding: 8px;
-  margin-right: 10px;
-  max-height: 32px;
-}
-.ankaCropper__saveButton{
+.u-crop__rightButton{
   float: right;
-  padding: 8px 20px;
   margin-right: 10px;
-  display: inline-block;
 }
-.ankaCropper__mainArea {
+.u-crop__mainArea {
   margin: 12px;
   box-sizing: border-box;
   overflow: hidden;
   text-align: center;
 }
-.ankaCropper__previewArea {
+.u-crop__previewArea {
   display: flex;
   justify-content: center;
   align-items: center;

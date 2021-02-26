@@ -45,7 +45,7 @@
         <u-button
           class="u-file-webcam__full_screen_button"
           icon="u-icon-expand"
-          appearance="plain"
+          appearance="inverse"
           :disabled="editing"
           @click="onExpand"
         />
