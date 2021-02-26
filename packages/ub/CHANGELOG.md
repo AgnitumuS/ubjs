@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - Added `uiSettings.adminUI.disableScanner` config property which disables 
+   scanner related functionality if set as `true`.
 
 ### Changed
 

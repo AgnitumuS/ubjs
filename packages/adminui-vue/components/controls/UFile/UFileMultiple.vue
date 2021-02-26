@@ -206,28 +206,29 @@ export default {
       if (this.removeDefaultButtons === true) {
         return []
       }
-      const buttonsByDefault = [
+      const defaultButtons = [
         'add',
-        'webcam',
-        'scan',
-        'scanSettings',
-        'download',
-        'remove'
+        'webcam'
       ]
+      // Show scan options only if disableScanner property is not explicitly set as true
+      if (!this.$UB.connection.appConfig.uiSettings.adminUI.disableScanner) {
+        defaultButtons.push('scan', 'scanSettings')
+      }
+      defaultButtons.push('download', 'remove')
 
       if (this.viewMode === 'carousel' || this.viewMode === 'table') {
-        buttonsByDefault.push('preview')
+        defaultButtons.push('preview')
       }
 
       if (this.viewMode === 'carouselWithPreview') {
-        buttonsByDefault.push('fullscreen')
+        defaultButtons.push('fullscreen')
       }
 
       if (Array.isArray(this.removeDefaultButtons)) {
-        return buttonsByDefault.filter(b => !this.removeDefaultButtons.includes(b))
+        return defaultButtons.filter(b => !this.removeDefaultButtons.includes(b))
       }
 
-      return buttonsByDefault
+      return defaultButtons
     },
 
     /**

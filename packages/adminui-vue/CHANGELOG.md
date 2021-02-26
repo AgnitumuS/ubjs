@@ -6,9 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Checking `uiSettings.adminUI.disableScanner` config property in `UFile` and
+  `UNavbarUserButton`. If it's set as true, then scan buttons would now show in toolbars
 
 ### Changed
-
+  
 ### Deprecated
 
 ### Removed

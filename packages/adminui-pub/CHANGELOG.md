@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Checking `uiSettings.adminUI.disableScanner` config property in `BasePanel`.
+  If it's set as true, then scan button would not show in form
 
 ### Changed
 

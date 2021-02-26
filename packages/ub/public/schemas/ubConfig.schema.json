@@ -1010,6 +1010,10 @@
                 }
               }
             },
+            "disableScanner": {
+              "type": "boolean",
+              "description": "Hide all scanner related functionality from adminui"
+            },
             "favoriteCategoryCount": {
               "type": "number",
               "description": "Number of categories (up to 4) for a favorites columns",
