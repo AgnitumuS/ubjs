@@ -46,6 +46,7 @@
           class="u-file-webcam__full_screen_button"
           icon="u-icon-expand"
           appearance="plain"
+          :disabled="editing"
           @click="onExpand"
         />
       </div>
@@ -60,7 +61,7 @@
         <u-grid
           :template-columns="inPdf ? '1fr 200px' : '1fr'"
         >
-          <u-form-row title="Camera">
+          <div title="Camera">
             <u-crop
               v-if="editing"
               :img-src="previewImageSrc"
@@ -90,6 +91,7 @@
               />
             </el-select>
             <el-container
+              style="width: 100%"
               v-show="!isPictureTaken"
               v-loading="!streamHasStarted"
             >
@@ -103,7 +105,7 @@
                 @play.passive="onPlay"
               />
             </el-container>
-          </u-form-row>
+          </div>
           <u-form-row v-if="inPdf">
             <el-scrollbar :wrap-style="'max-height: ' + pdfListHeight + 'px;'">
               <ul class="u-file-webcam__pdf_pages_list">
@@ -190,45 +192,21 @@
 
           <u-button
             color="primary"
+            icon="u-icon-file-add"
             :disabled="!isPictureTaken || exportingToPdf || addingPageToPdf"
+            :loading="addingPageToPdf"
             @click="addPageToPdf"
           >
-            <u-icon
-              v-show="addingPageToPdf"
-              class="u-file-webcam__button-icon-animate"
-              icon="u-icon-refresh"
-              size="small"
-              style="color: white;"
-            />
-            <u-icon
-              v-show="!addingPageToPdf"
-              class="u-file-webcam__button-icon"
-              style="color: white"
-              icon="u-icon-file-add"
-              size="small"
-            />
             {{ $ut("actionAdd") }}
           </u-button>
 
           <u-button
             color="primary"
-            :disabled="pages.length === 0 || addingPageToPdf"
+            icon="u-icon-save"
+            :disabled="pages.length === 0 || addingPageToPdf || exportingToPdf"
+            :loading="exportingToPdf"
             @click="saveToPdf"
           >
-            <u-icon
-              v-show="exportingToPdf"
-              class="u-file-webcam__button-icon-animate"
-              icon="u-icon-refresh"
-              size="small"
-              style="color: white;"
-            />
-            <u-icon
-              v-show="!exportingToPdf"
-              class="u-file-webcam__button-icon"
-              icon="u-icon-file-pdf"
-              size="small"
-              style="color: white"
-            />
             {{ $ut("Save") }}
           </u-button>
         </div>
@@ -285,6 +263,7 @@ export default {
       pages: []
     }
   },
+
   computed: {
     isDisabled () {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -293,6 +272,7 @@ export default {
 
       return false
     },
+
     inPdf () {
       if (this.scanType === 'optional') {
         return this.workingRegime === 'pdf'
@@ -300,6 +280,7 @@ export default {
         return this.scanType === 'pdf'
       }
     },
+
     inPicture () {
       if (this.scanType === 'optional') {
         return this.workingRegime === 'picture'
@@ -307,6 +288,7 @@ export default {
         return this.scanType === 'picture'
       }
     },
+
     dialogTitle () {
       if (this.inPdf) {
         return 'Webcam ' + this.$ut('UFile.webcam.intoPdf')
@@ -316,14 +298,17 @@ export default {
         return 'Webcam'
       }
     },
+
     isPictureTaken () {
       return this.previewImageSrc !== null
     }
   },
+
   mounted () {
     this.videoRatio = this.videoRatios[0]
     this.fullScreen = this.startFullScreen
   },
+
   methods: {
     chooseScanType (command) {
       if (command === 'intoPicture') {
@@ -335,11 +320,13 @@ export default {
         this.dialogVisible = true
       }
     },
+
     openDialog () {
       this.startStream()
       this.createCanvas()
       this.editing = false
     },
+
     startStream () {
       this.error = null
       navigator.mediaDevices.getUserMedia({ video: this.videoRatio.resolution, audio: false })
@@ -352,6 +339,7 @@ export default {
           console.log(err)
         })
     },
+
     stopStream () {
       const tracks = this.$refs.video.srcObject
       if (tracks !== null) {
@@ -360,6 +348,7 @@ export default {
       }
       this.streamHasStarted = false
     },
+
     createCanvas () {
       if (this.canvas === null) {
         this.canvas = document.createElement('canvas')
@@ -367,10 +356,12 @@ export default {
         this.canvas.height = this.videoRatio.resolution.height
       }
     },
+
     changeResolution () {
       this.stopStream()
       this.startStream()
     },
+
     takePicture () {
       this.croppedFile = null
       if (!this.isPictureTaken) {
@@ -391,25 +382,29 @@ export default {
         this.previewImageSrc = null
       }
     },
+
     cropperSaved (res) {
       this.previewImageSrc = res.croppedImageURI
       this.croppedFile = res.croppedFile
       this.editing = false
     },
+
     cropperCancelled () {
       this.editing = false
     },
+
     onPlay () {
       this.streamHasStarted = true
     },
-    addPageToPdf () {
+
+    async addPageToPdf () {
       function toThumbDataUrl (blob) {
         return new Promise(resolve => {
           const canvasOrig = document.createElement('canvas')
           const canvas = document.createElement('canvas')
           const img = new Image()
           let width = 100; let height = 100
-          img.onload = function () {
+          img.onload = () => {
             const ratio = img.height / img.width
             if (img.width > 100) {
               height = width * ratio
@@ -423,6 +418,7 @@ export default {
             canvasOrig.width = img.width
             canvasOrig.height = img.height
             canvasOrig.getContext('2d').drawImage(img, 0, 0, img.width, img.height)
+            URL.revokeObjectURL(img.src)
             resolve({
               img: {
                 dataUrl: canvasOrig.toDataURL('image/png'),
@@ -437,37 +433,34 @@ export default {
       }
       this.addingPageToPdf = true
       if (!this.croppedFile) {
-        this.canvas.toBlob(blob => {
-          toThumbDataUrl(blob)
-            .then(result => {
-              this.pages.push({
-                img: result.img,
-                thumbNail: result.thumbNail
-              })
-              this.addingPageToPdf = false
-            })
+        this.canvas.toBlob(async blob => {
+          const result = await toThumbDataUrl(blob)
+          this.pages.push({
+            img: result.img,
+            thumbNail: result.thumbNail
+          })
+          this.addingPageToPdf = false
         }, 'image/png')
       } else {
-        toThumbDataUrl(this.croppedFile)
-          .then(result => {
-            this.pages.push({
-              img: result.img,
-              thumbNail: result.thumbNail
-            })
-            this.addingPageToPdf = false
-          })
+        const result = await toThumbDataUrl(this.croppedFile)
+        this.pages.push({
+          img: result.img,
+          thumbNail: result.thumbNail
+        })
+        this.addingPageToPdf = false
+        this.editing = false
+        this.previewImageSrc = null
       }
-      this.editing = false
-      this.previewImageSrc = null
     },
-    saveToPdf () {
+
+    async saveToPdf () {
       if (this.pages === null || this.pages.length === 0) {
         return
       }
       this.exportingToPdf = true
-      setTimeout(() => {
-        const PDF = require('@unitybase/pdf')
-        // eslint-disable-next-line new-cap
+      await this.$nextTick()
+      System.import('@unitybase/pdf').then((PDF) => {
+      // eslint-disable-next-line new-cap
         const pdf = new PDF.jsPDF()
         pdf.deletePage(1) // remove first redundant page
         this.pages.forEach(page => {
@@ -508,8 +501,9 @@ export default {
         this.exportingToPdf = false
         this.previewImageSrc = null
         this.dialogVisible = false
-      }, 500)
+      })
     },
+
     save () {
       this.canvas.toBlob(blob => {
         const file = new File(!this.croppedFile ? [blob] : [this.croppedFile], `webcamPhoto_${new Date().getTime()}.png`)
@@ -518,27 +512,31 @@ export default {
         this.dialogVisible = false
       }, 'image/png')
     },
+
     edit () {
       this.editing = true
     },
+
     deletePdfPage (index) {
       this.pages.splice(index, 1)
     },
-    onExpand () {
+
+    async onExpand () {
       this.fullScreen = !this.fullScreen
-      setTimeout(() => {
-        if (this.$refs.video !== undefined && this.$refs.video.offsetHeight !== 0) {
-          this.pdfListHeight = this.$refs.video.offsetHeight
-        } else {
-          this.pdfListHeight = 340
-        }
-      }, 500)
+      await this.$nextTick()
+      if (this.$refs.video !== undefined && this.$refs.video.offsetHeight !== 0) {
+        this.pdfListHeight = this.$refs.video.offsetHeight
+      } else {
+        this.pdfListHeight = 340
+      }
     },
+
     clearForm () {
       this.stopStream()
       this.pages = []
       this.previewImageSrc = null
       this.canvas = null
+      this.croppedFile = null
       this.error = null
     }
   }
@@ -563,22 +561,10 @@ export default {
     cursor: pointer;
   }
 
-  .u-file-webcam__img{
-     margin-bottom: 5px;
-  }
-
-  .u-file-webcam__video{
-    margin-bottom: 5px;
-  }
-
   .u-file-webcam__el-select{
     position: absolute;
     top: 14px;
     left: 220px;
-  }
-
-  .u-file-webcam__button-icon-animate{
-    animation: loading-rotate 2s linear infinite;
   }
 
   .u-file-webcam__button-group {
@@ -617,6 +603,9 @@ export default {
     position: absolute;
     right: 50px;
     top: 10px;
+  }
+  .el-dialog__body{
+    padding-bottom: 52px;
   }
 
   @media (max-width: 1110px) {

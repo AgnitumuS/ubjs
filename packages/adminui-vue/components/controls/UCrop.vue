@@ -3,169 +3,6 @@
 <template>
   <div class="vueAnkaCropper">
     <div class="ankaCropper">
-      <div
-        v-if="file"
-        class="ankaCropper__navigation"
-      >
-        <a
-          href="#"
-          title="Upload a new image"
-          class="ankaCropper__navButton"
-          @click.prevent="triggerInput"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="black"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-upload"
-          ><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line
-            x1="12"
-            y1="3"
-            x2="12"
-            y2="15"
-          /></svg>
-        </a>
-        <a
-          href="#"
-          title="Rotate counterclockwise"
-          class="ankaCropper__navButton"
-          @click.prevent="rotate(-90)"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="black"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-rotate-ccw"
-          ><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" /></svg>
-        </a>
-        <a
-          href="#"
-          title="Rotate clockwise"
-          class="ankaCropper__navButton"
-          @click.prevent="rotate(90)"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="black"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-rotate-cw"
-          ><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>
-        </a>
-        <a
-          href="#"
-          title="Flip horizontally"
-          class="ankaCropper__navButton"
-          @click.prevent="flip('h')"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="black"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          > <path
-            id="path2"
-            style="fill:none"
-            d="M 9.7148438,2.8183594 1.8203125,18 c -0.7648346,1.324499 0.1796183,2.982419 1.7089844,3 h 6.1855469 z m 4.5703122,0 V 21 h 6.185547 c 1.529366,-0.01758 2.47382,-1.675501 1.708985,-3 z"
-          /></svg>
-        </a>
-        <a
-          href="#"
-          title="Flip vertically"
-          class="ankaCropper__navButton"
-          @click.prevent="flip('v')"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="black"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          > <path
-            id="path2"
-            style="fill:none"
-            d="M 21.090975,9.7148433 5.9093341,1.820312 c -1.324499,-0.7648346 -2.982419,0.1796183 -3,1.7089844 v 6.1855469 z m 0,4.5703127 H 2.9093341 v 6.185547 c 0.01758,1.529366 1.675501,2.47382 3,1.708985 z"
-          /></svg>
-        </a>
-        <a
-          href="#"
-          title="Cancel"
-          class="ankaCropper__navButton"
-          @click.prevent="cancelCrop"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="black"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-x-circle"
-          ><circle
-            cx="12"
-            cy="12"
-            r="10"
-          /><line
-            x1="15"
-            y1="9"
-            x2="9"
-            y2="15"
-          /><line
-            x1="9"
-            y1="9"
-            x2="15"
-            y2="15"
-          /></svg>
-        </a>
-        <a
-          href="#"
-          title="Save"
-          class="ankaCropper__saveButton"
-          @click.prevent="doCrop"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="white"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-save"
-          ><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg> {{ $ut("Save") }}
-        </a>
-      </div>
       <input
         v-show="false"
         ref="fileInput"
@@ -215,6 +52,98 @@
           >
         </div>
       </div>
+      <div
+        v-if="file"
+        class="ankaCropper__navigation"
+      >
+        <u-button
+          class="ankaCropper__navButton"
+          @click.prevent="rotate(-90)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="black"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-rotate-ccw"
+          ><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" /></svg>
+        </u-button>
+        <u-button
+          class="ankaCropper__navButton"
+          @click.prevent="rotate(90)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="black"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-rotate-cw"
+          ><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>
+        </u-button>
+        <u-button
+          class="ankaCropper__navButton"
+          @click.prevent="flip('h')"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="black"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          > <path
+            id="path2"
+            style="fill:none"
+            d="M 9.7148438,2.8183594 1.8203125,18 c -0.7648346,1.324499 0.1796183,2.982419 1.7089844,3 h 6.1855469 z m 4.5703122,0 V 21 h 6.185547 c 1.529366,-0.01758 2.47382,-1.675501 1.708985,-3 z"
+          /></svg>
+        </u-button>
+        <u-button
+          class="ankaCropper__navButton"
+          @click.prevent="flip('v')"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="black"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          > <path
+            id="path2"
+            style="fill:none"
+            d="M 21.090975,9.7148433 5.9093341,1.820312 c -1.324499,-0.7648346 -2.982419,0.1796183 -3,1.7089844 v 6.1855469 z m 0,4.5703127 H 2.9093341 v 6.185547 c 0.01758,1.529366 1.675501,2.47382 3,1.708985 z"
+          /></svg>
+        </u-button>
+        <u-button
+          color="primary"
+          class="ankaCropper__saveButton"
+          @click="doCrop"
+        >
+          {{ $ut("Apply") }}
+        </u-button>
+        <u-button
+          class="ankaCropper__saveButton"
+          @click="cancelCrop"
+        >
+          {{ $ut("Cancel") }}
+        </u-button>
+      </div>
     </div>
   </div>
 </template>
@@ -256,7 +185,7 @@ export default {
         handleStrokeColor: 'rgba(255, 255, 255, 0.8)',
         layoutBreakpoint: 850,
         maxCropperHeight: 768,
-        maxFileSize: 8000000, // 8MB
+        maxFileSize: 10000000, // 10MB
         overlayFill: 'rgba(0, 0, 0, 0.5)', // fill of the masking overlay
         previewOnDrag: true,
         previewQuality: 0.65,
@@ -938,7 +867,6 @@ export default {
   border-radius: 3px;
   position: relative;
   overflow: hidden;
-  font-family: Avenir, Helvetica, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   text-decoration: none;
 }
@@ -963,38 +891,16 @@ export default {
   border-radius: 3px;
 }
 .ankaCropper__navButton {
-  border-radius: 3px;
   display: inline-block;
   padding: 8px;
   margin-right: 10px;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15), 1px 1px 2px rgba(0, 0, 0, 0.25);
-  max-width: 32px;
   max-height: 32px;
 }
-.ankaCropper__navButton:hover {
-  background: #fff;
-}
-.ankaCropper__navButton a{
-  text-decoration: none;
-}
 .ankaCropper__saveButton{
-  border-radius: 3px;
   float: right;
   padding: 8px 20px;
+  margin-right: 10px;
   display: inline-block;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15), 1px 1px 2px rgba(0, 0, 0, 0.25);
-  font-size: 14px;
-  background: #1c6bd6;
-  color: #fff;
-  text-decoration: none;
-}
-
-.ankaCropper__saveButton:hover{
-  background: #1b5bb2;
-}
-.ankaCropper__saveButton a{
-  text-decoration: none;
-  color: white;
 }
 .ankaCropper__mainArea {
   margin: 12px;

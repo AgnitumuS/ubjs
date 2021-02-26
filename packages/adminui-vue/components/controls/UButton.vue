@@ -14,9 +14,9 @@
     v-on="$listeners"
   >
     <i
-      v-if="icon"
+      v-if="icon || loading"
       class="u-button__icon"
-      :class="icon"
+      :class="!loading ? icon : 'u-icon-refresh u-button_animate-loading-rotate'"
     />
     <span
       v-if="$slots.default"
@@ -82,6 +82,14 @@ export default {
       validator (value) {
         return ['default', 'plain', 'inverse'].includes(value)
       }
+    },
+
+    /**
+     * A loading icon appears instead of the regular one
+     */
+    loading: {
+      type: Boolean,
+      default: false
     },
 
     /**
@@ -214,6 +222,10 @@ export default {
 
   .u-button_color-warning {
     --hs: var(--hs-warning)
+  }
+
+  .u-button_animate-loading-rotate {
+    animation: loading-rotate 2s linear infinite;
   }
 
 </style>
