@@ -2401,7 +2401,22 @@ Ext.define('UB.view.BasePanel', {
     }
 
     Ext.Object.each(me.documents, function (key, doc) {
-      const menu = [{
+      const menu = []
+
+      // Show scan option in form only if disableScanner property is not explicitly set as true
+      if (!UB.connection.appConfig.uiSettings.adminUI.disableScanner) {
+        menu.push({
+          actionId: actions.scan + '_' + key,
+          // disabled: UB.npDesktopServicePluginDownloadMessage(),
+          iconCls: 'u-icon-print',
+          text: UB.i18n('skanirovat'),
+          eventId: events.scan,
+          handler: me.onAction,
+          attribute: key,
+          scope: me
+        })
+      }
+      menu.push({
         actionId: actions.attach + '_' + key,
         iconCls: 'u-icon-attachments',
         text: UB.i18n('izFayla'), // '<i class="fa fa-folder-open"></i>&nbsp' +
@@ -2433,20 +2448,7 @@ Ext.define('UB.view.BasePanel', {
         handler: me.onAction,
         attribute: key,
         scope: me
-      }]
-      // Show scan option in form only if disableScanner property is not explicitly set as true
-      if (!UB.connection.appConfig.uiSettings.adminUI.disableScanner) {
-        menu.splice(0, 0, {
-          actionId: actions.scan + '_' + key,
-          // disabled: UB.npDesktopServicePluginDownloadMessage(),
-          iconCls: 'u-icon-print',
-          text: UB.i18n('skanirovat'),
-          eventId: events.scan,
-          handler: me.onAction,
-          attribute: key,
-          scope: me
-        })
-      }
+      })
       docActions.push(new Ext.Action({
         text: doc.caption,
         iconCls: 'u-icon-attachments',
