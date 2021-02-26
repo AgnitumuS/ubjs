@@ -341,10 +341,21 @@ To execute a query in DBeaver tool press Ctrl+Enter, in binding dialog type "'{1
 UnityBase works with Oracle using direct call to OCI (Oracle Call Interface library).
 This allows to use all Oracle-specific features, minimize function calls and memory allocation and therefore work on maximum speed.
 
-While creating a connection to the Oracle server UnityBase sets some specific connection properties.
+During creating a connection to the Oracle server UnityBase sets some specific connection properties.
 This properties may not be like those, which set TOAD, PL/SQL Developer, DBeaver or other tools.
-Therefore some queries work in different way inside UnityBase server and TOAD (for example).
+Therefore, some queries work in different way inside UnityBase server and TOAD (for example).
 But don't be confused - below we explain how to make them work in the same way:
+
+### Collation in Oracle12.2 and up
+Starting form 12.2 Oracle support per-schema collation, and UB tries to use it feature to prevent set a session
+variables what requires a manual creation of functional indexes for NVARCHAR columns.
+
+For this:
+  - MAX_STRING_SIZE parameter MUST be set to EXTENDED - see [Extended Data Types in Oracle Database 12c](https://oracle-base.com/articles/12c/extended-data-types-12cR1)
+    article of how to enable this
+  - schema is created using `DEFAULT COLLATION BINARY_CI`
+
+
 
 ### Session variables 
 Set the same session parameters as UnityBase sets.
@@ -352,7 +363,7 @@ Set the same session parameters as UnityBase sets.
 Look at server log - before the first database statement execution you can see instruction like `ALTER SESSION SET NLS........`;
 This instruction set Locale Settings. You can change it in advanced connection configuration for your application.
 
-Find all such instruction and execute it inside tool you use for work with database. Usually this is:  
+Find all such instruction and execute it inside tool you use for work with a database. Usually this is:  
 ```sql
 ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD-HH24:MI:SS';
 ALTER SESSION SET NLS_NUMERIC_CHARACTERS = ". ";

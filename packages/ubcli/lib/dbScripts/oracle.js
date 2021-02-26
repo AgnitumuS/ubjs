@@ -38,7 +38,12 @@ module.exports.dropDatabase = function dropDatabase (dbConn, databaseConfig) {
  * @returns {boolean} if database already exists - returns false
  */
 module.exports.createDatabase = function createDatabase (dbConn, databaseConfig) {
-  dbConn.execParsed(`CREATE USER ${databaseConfig.userID} IDENTIFIED BY ${databaseConfig.password} DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP PROFILE DEFAULT ACCOUNT UNLOCK;`)
+  dbConn.execParsed(`CREATE USER ${databaseConfig.userID} IDENTIFIED BY ${databaseConfig.password}
+  DEFAULT TABLESPACE USERS
+  TEMPORARY TABLESPACE TEMP
+  PROFILE DEFAULT
+  ACCOUNT UNLOCK
+  DEFAULT COLLATION BINARY_CI;`)
 
   const grants = [
     'GRANT RESOURCE, CONNECT, CTXAPP TO {0}',
