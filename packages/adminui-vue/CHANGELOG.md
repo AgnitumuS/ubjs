@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   `UNavbarUserButton`. If it's set as true, then scan buttons would now show in toolbars
 
 ### Changed
+ - replaceShowList: pass `hideActions` property to `UTableEntity` instead of
+   build `scopedSlots` with empty `div` for it
   
 ### Deprecated
 
@@ -17,6 +19,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - UTableEntity - fix logic for alternate names for `hide-actions` property for `copy` and `link`
+ - replaceShowList: pass object properties to a column only if it is defined. Its prevent a bug when column
+  `sortable` and `filters` properties is not defined in UTable.
 
 ## [5.19.4] - 2021-02-25
 ### Added
