@@ -28,6 +28,12 @@ class DBOracle extends DBAbstract {
       URLParams: { CONNECTION: this.dbConnectionConfig.name }
     })
 
+    // see https://dbamarco.wordpress.com/2017/06/13/default-collation-and-plsq
+    this.conn.xhr({
+      endpoint: 'runSQL',
+      data: `alter session set default_collation=USING_NLS_COMP`,
+      URLParams: { CONNECTION: this.dbConnectionConfig.name }
+    })
     // create a function to extract index column name from Long (LOB)
     // direct loading a LOB column values to the app server is slow
     this.conn.xhr({
@@ -41,6 +47,11 @@ begin
  select column_expression into l_data from user_ind_expressions e where e.index_name = iName and e.table_name = tName and e.column_position=cPos;
  return substr( l_data, 1, 64 );
 end;`,
+      URLParams: { CONNECTION: this.dbConnectionConfig.name }
+    })
+    this.conn.xhr({
+      endpoint: 'runSQL',
+      data: `alter session set default_collation=BINARY_CI`, // TODO - use collation from DB definition
       URLParams: { CONNECTION: this.dbConnectionConfig.name }
     })
     // to be called as F_ColumnDefault(tc.table_name, tc.column_name)
