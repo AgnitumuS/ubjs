@@ -32,10 +32,14 @@
 /**
  * @typedef {object} UTableColumnSettings
  *
- * @property {boolean} [sortable=false] Adds sortable icon which emits sort action on click
+ * @property {boolean} [sortable] Allow ordering records by values of the column.
  * @property {boolean} [filterable] If set false, the column cannot be filtered. Otherwise, default and optional custom filters will be applied
  * @property {boolean} [isLookup=false] If is set true will check attribute associatedEntity
  *   and loads description attribute for displayed value
+ * @property {'SUM'|'MIN'|'MAX'|'AVG'|null} [summaryAggregationOperator]
+ *   Specify aggregation operator to use, when calculate a summary for a column.
+ *   If not set, column default will be used.
+ *   If set to `null`, then summary will be disabled for column.
  * @property {'left'|'right'|'center'} [align='left'] Align text in column
  * @property {'left'|'right'|'center'} [headerAlign='left'] Align text in column header
  * @property {number} [maxWidth] Maximum width

@@ -12,7 +12,41 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - replaceShowList: pass `hideActions` property to `UTableEntity` instead of
    build `scopedSlots` with empty `div` for it
-  
+- UTableEntity `showSummary` action changes:
+  - do NOT use `column.attribute.code` to make a query to server, because it does not work for any case with indirect
+    field (with a dot in fieldList, like `itemID.price`), use `column.attribute.id` instead
+  - allow specifing aggregation function for columns,
+    sometimes you might want to show `MAX(price)` instead of `SUM(price)`, which does not have any sense.
+  - give control over which columns support summary and which not, for example, virtual attributes, like EAV attributes
+    do not support aggregation functions yet
+```vue
+<template>
+<u-table-entity
+  entity-name="shop_OrderItem"
+  :columns="columns"
+/>
+</template>
+<script>
+export default {
+  data () {
+    return {
+      columns: [
+        'ID',
+        {
+          id: 'price',
+          summaryAggregationOperator: 'MIN'
+        },
+        {
+          id: 'orderID.version',
+          summaryAggregationOperator: null
+        }
+      ]
+    }
+  }
+}
+</script>
+```
+
 ### Deprecated
 
 ### Removed
@@ -21,7 +55,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - UTableEntity - fix logic for alternate names for `hide-actions` property for `copy` and `link`
  - replaceShowList: pass object properties to a column only if it is defined. Its prevent a bug when column
   `sortable` and `filters` properties is not defined in UTable.
- - UTableEntity showSummary, check that `column.attribute.code` exist.
 
 ## [5.19.4] - 2021-02-25
 ### Added

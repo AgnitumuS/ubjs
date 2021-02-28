@@ -643,17 +643,10 @@ module.exports = (instance) => ({
       repo.orderList = [] // clear possible order list
       repo.fieldList = ['COUNT([ID])'] // always calc count in first column
       const numberColumns = []
-      const NUMBER_TYPES = ['BigInt', 'Currency', 'Float', 'Int']
       for (const column of getters.columns) {
-        if (!column.attribute || !column.attribute.code) {
-          // This is not always the "real" attribute from domain, it could be virtual EAV attribute,
-          // so code exists
-          continue
-        }
-        const isNumber = NUMBER_TYPES.includes(column.attribute.dataType)
-        if (isNumber) {
+        if (column.summaryAggregationOperator) {
           numberColumns.push(column)
-          repo.fieldList.push(`SUM([${column.attribute.code}])`)
+          repo.fieldList.push(column.summaryAggregationOperator + '([' + column.id + '])')
         }
       }
 
