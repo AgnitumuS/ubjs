@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- copy classifier item on the form of classifier
 
 ## [5.19.4] - 2021-02-25
 ### Added
