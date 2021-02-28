@@ -90,8 +90,6 @@ function testPdfSignerSpeed (req, resp) {
   resp.statusCode = 200
 }
 
-let REDIS_CONN
-
 /**
  * This endpoint runs into infinity (while nt terminated by signal) loot what reads
  * a redis queue and do some staff.
@@ -102,12 +100,12 @@ let REDIS_CONN
  * @param {THTTPResponse} resp
  */
 function redisQueueListener (req, resp) {
-  if (!REDIS_CONN) REDIS_CONN = redis.getDefaultRedisConnection()
+  const redisConn = redis.getDefaultRedisConnection()
   console.log(`waiting for values in "mylist" list...
   Use 'LPUSH mylist a b c' in redis-cli to push some values`)
   let brpop=[]
   for (let i=0; brpop !== null; i++) {
-    brpop = REDIS_CONN.commands('brpop', 'mylist', 0) // 5 second wait
+    brpop = redisConn.commands('brpop', 'mylist', 0) // wait forever
     console.log('Result from brpop is ', brpop)
     if (brpop !== null) {
       try {

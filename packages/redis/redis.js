@@ -9,12 +9,12 @@ class RedisClient {
    * If reconnect fails in reconnectTimeout - throws.
    *
    * @param {Object} connSettings
-   * @param {string} connSettings.host
-   * @param {string} connSettings.port
+   * @param {string} [connSettings.host='127.0.0.1']
+   * @param {string} [connSettings.port='6379']
    * @param {number} [connSettings.reconnectTimeout=30000]
    */
   constructor (connSettings) {
-    this._connSettings = Object.assign({reconnectTimeout: 30000}, connSettings)
+    this._connSettings = Object.assign({host: '127.0.0.1', port: '6379', reconnectTimeout: 30000}, connSettings)
     this._native = new TRedisClient()
     this._native.initialize(this._connSettings.host, this._connSettings.port)
   }
@@ -69,12 +69,19 @@ class RedisClient {
 let defaultClient
 
 /**
- * Return per-thread instance of redis client connected to server using configuration from `ubConfig.application.redis`
+ * Return per-thread instance of redis client connected to server using configuration from `ubConfig.application.redis`.
+ * To be used inside server-side thread
+ * @example
+
+ const redis = require('@unitybase/redis')
+ const redisConn = redis.getDefaultRedisConnection()
+ console.log(redisConn.commands('PING')) // PONG
+
  * @return {RedisClient}
  */
 function getDefaultRedisConnection () {
   if (!defaultClient) {
-    defaultClient = new RedisClient(App.serverConfig.redis || {host: '127.0.0.1', port: '6379'})
+    defaultClient = new RedisClient(App.serverConfig.redis)
   }
   return defaultClient
 }
