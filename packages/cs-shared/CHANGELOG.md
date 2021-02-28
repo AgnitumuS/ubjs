@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `LocalDataStore.doFiltration` accept a 3d optional argument `skipSubQueries`. If explicitly set to `true`, then `subquery`
+  conditions are skipped (instead of throws) 
 
 ### Changed
 

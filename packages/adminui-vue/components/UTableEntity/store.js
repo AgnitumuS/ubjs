@@ -756,7 +756,8 @@ function isApplicableWhereList (response, repository) {
   const query = repository.ubql()
   const filteredResponse = UB.LocalDataStore.doFiltration(
     transformResponseToTubCachedData(response, query.whereList),
-    query
+    query,
+    true
   )
 
   return filteredResponse.length > 0

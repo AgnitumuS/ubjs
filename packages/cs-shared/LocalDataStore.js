@@ -41,7 +41,10 @@ const collationCompare = require('./formatByPattern').collationCompare
  */
 
 /**
- * Perform local filtration and sorting of data array according to ubql whereList & order list
+ * Perform local filtration and sorting of data array according to ubql whereList & order list.
+ *
+ * **WARNING** - sub-queries are not supported.
+ *
  * @param {TubCachedData} cachedData Data, retrieved from cache
  * @param {UBQL} ubql Initial server request
  * @returns {{resultData: TubCachedData, total: number}} new filtered & sorted array
@@ -84,14 +87,16 @@ module.exports.byID = function (cachedData, IDValue) {
  * @protected
  * @param {TubCachedData} cachedData Data, retrieved from cache
  * @param {UBQL} ubql
+ * @param {boolean} [skipSubQueries=false] Skip `subquery` conditions instead of throw. Can be used
+ *   to estimate record match some where conditions
  * @returns {Array.<Array>}
  */
-module.exports.doFiltration = function (cachedData, ubql) {
+module.exports.doFiltration = function (cachedData, ubql, skipSubQueries) {
   let f, isAcceptable
   const rawDataArray = cachedData.data
   const byPrimaryKey = Boolean(ubql.ID)
 
-  const filterFabric = whereListToFunctions(ubql, cachedData.fields)
+  const filterFabric = whereListToFunctions(ubql, cachedData.fields, skipSubQueries)
   const filterCount = filterFabric.length
 
   if (filterCount === 0) {
@@ -159,9 +164,11 @@ module.exports.doSorting = function (filteredArray, cachedData, ubRequest) {
  * @private
  * @param {UBQL} ubql
  * @param {Array.<String>} fieldList
+ * @param {boolean} [skipSubQueries=false] Skip `subquery` conditions instead of throw. Can be used
+ *   to estimate record match some where conditions
  * @returns {Array}
  */
-function whereListToFunctions (ubql, fieldList) {
+function whereListToFunctions (ubql, fieldList, skipSubQueries) {
   Object.keys(ubql) // FIX BUG WITH TubList TODO - rewrite to native
   const filters = []
   const escapeForRegexp = function (text) {
@@ -173,6 +180,9 @@ function whereListToFunctions (ubql, fieldList) {
   const filterFabricFn = function (propertyIdx, condition, value) {
     let regExpFilter
     const valIsStr = typeof value === 'string'
+    if (skipSubQueries && (condition === 'subquery')) {
+      return null // skip subquery
+    }
     switch (condition) {
       case 'like':
         regExpFilter = new RegExp(escapeForRegexp(value), 'i')
@@ -285,7 +295,8 @@ function whereListToFunctions (ubql, fieldList) {
     } else if (clause.values !== undefined) {
       fValue = clause.values[Object.keys(clause.values)[0]]
     }
-    filters.push(filterFabricFn(propIdx, clause.condition, fValue))
+    const fn = filterFabricFn(propIdx, clause.condition, fValue)
+    if (fn) filters.push(fn)
   }
   // check for top level ID  - in this case add condition for filter by ID
   const reqID = ubql.ID
