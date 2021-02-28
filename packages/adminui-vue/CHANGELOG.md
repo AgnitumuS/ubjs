@@ -13,12 +13,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - replaceShowList: pass `hideActions` property to `UTableEntity` instead of
    build `scopedSlots` with empty `div` for it
  - UTableEntity `showSummary` action changes:
-   - do NOT use `column.attribute.code` to make a query to server, because it does not work for any case with indirect
-    field (with a dot in fieldList, like `itemID.price`), use `column.attribute.id` instead
-   - allow specifying aggregation function for columns,
-    sometimes you might want to show `MAX(price)` instead of `SUM(price)`, which does not have any sense.
-   - give control over which columns support summary and which not, for example, virtual attributes, like EAV attributes
-    do not support aggregation functions yet
+   - `column.attribute.id` used instead of `column.attribute.code` - this allows calc a summary for attributes with dots,
+     like `itemID.price`
+   - allow specifying aggregation function for columns using `column.summaryAggregationOperator` property - one of
+     `'SUM'|'MIN'|'MAX'|'AVG'|null`. By default `SUM` type is specified for Number columns. 
+   - summary can be explicitly disabled by sets `column.summaryAggregationOperator` to null. Example:
 ```vue
 <template>
 <u-table-entity
