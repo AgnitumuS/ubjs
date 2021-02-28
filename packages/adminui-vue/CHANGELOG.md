@@ -16,7 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - `column.attribute.id` used instead of `column.attribute.code` - this allows calc a summary for attributes with dots,
      like `itemID.price`
    - allow specifying aggregation function for columns using `column.summaryAggregationOperator` property - one of
-     `'SUM'|'MIN'|'MAX'|'AVG'|null`. By default `SUM` type is specified for Number columns. 
+     `'SUM'|'MIN'|'MAX'|'AVG'|null`. By default `SUM` type is specified for Number columns
+   - exporting table to Excel takes into account summaryAggregationOperator for columns   
    - summary can be explicitly disabled by sets `column.summaryAggregationOperator` to null. Example:
 ```vue
 <template>
