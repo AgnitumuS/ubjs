@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Checking `uiSettings.adminUI.disableScanner` config property in `UFile` and
+ - Checking `uiSettings.adminUI.disableScanner` config property in `UFile` and
   `UNavbarUserButton`. If it's set as true, then scan buttons would now show in toolbars
 
 ### Changed
@@ -18,9 +18,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- UTableEntity - fix logic for alternate names for `hide-actions` property for `copy` and `link`
+ - UTableEntity - fix logic for alternate names for `hide-actions` property for `copy` and `link`
  - replaceShowList: pass object properties to a column only if it is defined. Its prevent a bug when column
-  `sortable` and `filters` properties is not defined in UTable.
+  `sortable` and `filters` properties is not defined in UTable
+ - `UTableEntity`: allow refreshing an edited row for tables what based on the UBQL with sub-queries   
 
 ## [5.19.4] - 2021-02-25
 ### Added
