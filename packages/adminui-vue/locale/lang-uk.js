@@ -181,7 +181,11 @@ UB.i18nExtend({
       menuText: 'Показати підсумки',
       header: 'Підсумки для "{forTitle:i18n}"',
       totalRowCount: 'Всього рядків',
-      columnSummaries: 'Суми по колонкам'
+      columnSummaries: 'Суми по колонкам',
+      SUM: 'сума',
+      MIN: 'мінімум',
+      MAX: 'максимум',
+      AVG: 'середнє'
     }
   },
 

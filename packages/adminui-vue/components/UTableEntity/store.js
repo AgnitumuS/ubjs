@@ -642,10 +642,10 @@ module.exports = (instance) => ({
         .withTotal(false).start(0).limit(0) // clear total and possible pagination
       repo.orderList = [] // clear possible order list
       repo.fieldList = ['COUNT([ID])'] // always calc count in first column
-      const numberColumns = []
+      const summaryColumns = []
       for (const column of getters.columns) {
         if (column.summaryAggregationOperator) {
-          numberColumns.push(column)
+          summaryColumns.push(column)
           repo.fieldList.push(column.summaryAggregationOperator + '([' + column.id + '])')
         }
       }
@@ -657,9 +657,12 @@ module.exports = (instance) => ({
         const allFiltersDescr = state.filters.map(f => f.label + ' ' + f.description).join('; ')
         resultHtml += `<h5>${allFiltersDescr}</h5>`
       }
-      const sumsHtml = numberColumns
+      const sumsHtml = summaryColumns
         .map((column, idx) => {
-          return `<b>${column.label}:</b> ${formatByPattern.formatNumber(resultRow[idx + 1], 'sum')}`
+          const sumTypeText = column.summaryAggregationOperator !== 'SUM'
+            ? ` (${UB.i18n('table.summary.' + column.summaryAggregationOperator)})`
+            : ''
+          return `<b>${column.label}</b>${sumTypeText}: ${formatByPattern.formatNumber(resultRow[idx + 1], 'sum')}`
         })
         .join('<br><br>')
       if (sumsHtml) {
