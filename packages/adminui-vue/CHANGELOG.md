@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - Checking `uiSettings.adminUI.disableScanner` config property in `UFile` and
-  `UNavbarUserButton`. If it's set as true, then scan buttons would now show in toolbars
+  `UNavbarUserButton`. If true, then scan buttons are hidden in toolbars
 
 ### Changed
  - replaceShowList: pass `hideActions` property to `UTableEntity` instead of
