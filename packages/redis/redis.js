@@ -11,10 +11,10 @@ class RedisClient {
    * @param {Object} connSettings
    * @param {string} connSettings.host
    * @param {string} connSettings.port
-   * @param {number} [connSettings.reconnectTimeout=10000]
+   * @param {number} [connSettings.reconnectTimeout=30000]
    */
   constructor (connSettings) {
-    this._connSettings = Object.assign({reconnectTimeout: 10000}, connSettings)
+    this._connSettings = Object.assign({reconnectTimeout: 30000}, connSettings)
     this._native = new TRedisClient()
     this._native.initialize(this._connSettings.host, this._connSettings.port)
   }
