@@ -181,7 +181,11 @@ UB.i18nExtend({
       menuText: 'Cəmi göstərin',
       header: 'Üçün nəticələr "{forTitle:i18n}"',
       totalRowCount: 'Cəmi sətirlər',
-      columnSummaries: 'Sütuna görə cəmlər'
+      columnSummaries: 'Sütuna görə cəmlər',
+      SUM: 'sum',
+      MIN: 'minimum',
+      MAX: 'maximum',
+      AVG: 'average'
     }
   },
 

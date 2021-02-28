@@ -181,7 +181,11 @@ UB.i18nExtend({
       menuText: 'Показать итоги',
       header: 'Итоги для "{forTitle:i18n}"',
       totalRowCount: 'Всего строк',
-      columnSummaries: 'Сумы по столбцам'
+      columnSummaries: 'Сумы по столбцам',
+      SUM: 'сумма',
+      MIN: 'минимум',
+      MAX: 'максимум',
+      AVG: 'среднее'
     }
   },
 

@@ -181,7 +181,11 @@ UB.i18nExtend({
       menuText: 'Show totals',
       header: 'Totals for "{forTitle:i18n}"',
       totalRowCount: 'Total row count',
-      columnSummaries: 'Column summaries'
+      columnSummaries: 'Column summaries',
+      SUM: 'sum',
+      MIN: 'minimum',
+      MAX: 'maximum',
+      AVG: 'average'
     }
   },
 

@@ -12,7 +12,41 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - replaceShowList: pass `hideActions` property to `UTableEntity` instead of
    build `scopedSlots` with empty `div` for it
-  
+ - UTableEntity `showSummary` action changes:
+   - `column.attribute.id` used instead of `column.attribute.code` - this allows calc a summary for attributes with dots,
+     like `itemID.price`
+   - allow specifying aggregation function for columns using `column.summaryAggregationOperator` property - one of
+     `'SUM'|'MIN'|'MAX'|'AVG'|null`. By default `SUM` type is specified for Number columns
+   - exporting table to Excel takes into account summaryAggregationOperator for columns   
+   - summary can be explicitly disabled by sets `column.summaryAggregationOperator` to null. Example:
+```vue
+<template>
+<u-table-entity
+  entity-name="shop_OrderItem"
+  :columns="columns"
+/>
+</template>
+<script>
+export default {
+  data () {
+    return {
+      columns: [
+        'ID',
+        {
+          id: 'price',
+          summaryAggregationOperator: 'MIN'
+        },
+        {
+          id: 'orderID.version',
+          summaryAggregationOperator: null
+        }
+      ]
+    }
+  }
+}
+</script>
+```
+
 ### Deprecated
 
 ### Removed
@@ -43,7 +77,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
       <div/>
     </template>
  ```
-  An still, it won't affect keyboard actions.  Now it is much easier to disable actions with the
+  And still, it won't affect keyboard actions.  Now it is much easier to disable actions with the
   new property.  It supports the following actions: `addNew`, `copy`, `newVersion`, `showVersions`, `edit`, `delete`,
   `audit`, `summary`, `export`, `link`, `viewMode`
   How, it is possible to control multiple actions with one property and be sure actions will be hidden in all the places:

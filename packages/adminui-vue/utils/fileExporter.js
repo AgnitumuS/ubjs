@@ -64,10 +64,9 @@ async function exportExcel ({ repository, columns, fileName, filters }) {
     const rowCells = []
     for (const column of columns) {
       cIdx++
-      const dataType = column.attribute && column.attribute.dataType
-      if (['Currency', 'Int', 'Float'].includes(dataType)) {
+      if (column.summaryAggregationOperator) {
         const colChar = String.fromCharCode('A'.charCodeAt(0) + cIdx)
-        rowCells.push({ column: cIdx, formula: `SUM(${colChar}${dataRowStartNum}:${colChar}${dataRowEndNum})` })
+        rowCells.push({ column: cIdx, formula: `${column.summaryAggregationOperator}(${colChar}${dataRowStartNum}:${colChar}${dataRowEndNum})` })
       }
     }
     if (rowCells.length) {

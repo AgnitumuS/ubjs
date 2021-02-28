@@ -149,7 +149,10 @@ module.exports = function (session) {
             'ID',
             'code',
             'caption',
-            'filterValue',
+            {
+              "id": "filterValue",
+              "summaryAggregationOperator": "MAX"
+            },
             'currencyValue',
             'floatValue',
             'calculated',
