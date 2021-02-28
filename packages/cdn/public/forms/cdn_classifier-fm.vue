@@ -20,6 +20,7 @@
           :repository="classifierItemRepository"
           :columns="['code', 'hierarchyLevel', 'parentID', 'name']"
           :build-edit-config="getConfig"
+          :build-copy-config="getConfig"
           :build-add-new-config="getConfig"
           :before-add-new="saveParentBeforeAddNew"
         />
