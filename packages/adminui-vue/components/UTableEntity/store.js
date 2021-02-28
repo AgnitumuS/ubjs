@@ -645,7 +645,12 @@ module.exports = (instance) => ({
       const numberColumns = []
       const NUMBER_TYPES = ['BigInt', 'Currency', 'Float', 'Int']
       for (const column of getters.columns) {
-        const isNumber = column.attribute && NUMBER_TYPES.includes(column.attribute.dataType)
+        if (!column.attribute || !column.attribute.code) {
+          // This is not always the "real" attribute from domain, it could be virtual EAV attribute,
+          // so code exists
+          continue
+        }
+        const isNumber = NUMBER_TYPES.includes(column.attribute.dataType)
         if (isNumber) {
           numberColumns.push(column)
           repo.fieldList.push(`SUM([${column.attribute.code}])`)

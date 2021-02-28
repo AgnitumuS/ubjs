@@ -6,8 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Checking `uiSettings.adminUI.disableScanner` config property in `UFile` and
-  `UNavbarUserButton`. If it's set as true, then scan buttons would now show in toolbars
+ - Checking `uiSettings.adminUI.disableScanner` config property in `UFile` and
+   `UNavbarUserButton`. If it's set as true, then scan buttons would now show in toolbars
 
 ### Changed
  - replaceShowList: pass `hideActions` property to `UTableEntity` instead of
@@ -18,9 +18,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- UTableEntity - fix logic for alternate names for `hide-actions` property for `copy` and `link`
+ - UTableEntity - fix logic for alternate names for `hide-actions` property for `copy` and `link`
  - replaceShowList: pass object properties to a column only if it is defined. Its prevent a bug when column
   `sortable` and `filters` properties is not defined in UTable.
+ - UTableEntity showSummary, check that `column.attribute.code` exist.
 
 ## [5.19.4] - 2021-02-25
 ### Added
@@ -42,7 +43,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
       <div/>
     </template>
  ```
-  An still, it won't affect keyboard actions.  Now it is much easier to disable actions with the
+  And still, it won't affect keyboard actions.  Now it is much easier to disable actions with the
   new property.  It supports the following actions: `addNew`, `copy`, `newVersion`, `showVersions`, `edit`, `delete`,
   `audit`, `summary`, `export`, `link`, `viewMode`
   How, it is possible to control multiple actions with one property and be sure actions will be hidden in all the places:
