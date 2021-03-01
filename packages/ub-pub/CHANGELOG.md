@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UB.xhr.defaults` property added - direct access to the default HTTP parameters for `xhr`.
+   Can be used, for example, to change http request timeout globally:
+```javascript
+const UB = require('@unitybase/ub-pub')
+UB.xhr.defaults.timeout = 300000 // set all ajax requests timeout to 5 minutes
+```
 
 ### Changed
 
