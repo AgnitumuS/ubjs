@@ -536,6 +536,15 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
  */
 UB.xhr.allowRequestReiteration = transport.xhr.allowRequestReiteration
 /**
+ * Direct access to the default HTTP parameters for {xhr}. Can be used, for example, to change http request timeout globally:
+ * @example
+
+ const UB = require('@unitybase/ub-pub')
+ UB.xhr.defaults.timeout = 300000 // set all ajax requests timeout to 5 minutes
+
+ */
+UB.xhr.defaults = transport.xhrDefaults
+/**
  * Vue JS integration
  *  - inject UB localization {@link UB.i18n UB.i18n} to global Vue instance as $ut:
  *  - inject `@unitybase/ub-pub` to global Vue instance as $UB
