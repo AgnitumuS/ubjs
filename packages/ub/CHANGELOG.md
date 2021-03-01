@@ -11,7 +11,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    to log a username in case session is not created yet
  
 ### Changed
-
+ - `allLocales` endpoint (client-side localization download) supports JSON files in `/public/lang-??.json`.
+  Content of such files are wrapped into `UB.i18nExtend(....)` before passing to client.
+   
+  This allow using automation tools for preparing other languages localization.
+   
 ### Deprecated
 
 ### Removed
