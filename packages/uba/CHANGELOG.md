@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - advanced security check failures will be logged into uba_audit (throws `UB.ESecurityException` instead of `Error`) 
 
 ### Changed
 

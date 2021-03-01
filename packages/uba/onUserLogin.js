@@ -2,6 +2,7 @@
 const UB = require('@unitybase/ub')
 const App = UB.App
 const Session = UB.Session
+const UBA_COMMON = require('@unitybase/base').uba_common
 
 Session.on('login', onUserLogin)
 Session.on('loginFailed', onUserLoginFailed)
@@ -46,31 +47,31 @@ function checkAdvancedSecurity (req) {
     updateParams.refreshIP = 0
     needUpdate = true
   } else if (advData.allowedIP) {
-    if (Session.callerIP !== advData.allowedIP) throw new Error('Allowed IP ' + advData.allowedIP + ' <> actual ' + Session.callerIP)
+    if (Session.callerIP !== advData.allowedIP) throw new UB.ESecurityException('Allowed IP ' + advData.allowedIP + ' <> actual ' + Session.callerIP)
   }
 
   if (advData.refreshFp || advData.fp) { // fp required
     fp = urlParams.FP
-    if (!fp) throw new Error('Fingerprint is required but not passed in the FP URL params')
+    if (!fp) throw new UB.ESecurityException('Fingerprint is required but not passed in the FP URL params')
   }
   if (advData.refreshFp) {
     updateParams.fp = fp
     updateParams.refreshFp = 0
     needUpdate = true
   } else if (advData.fp && (advData.fp !== fp)) {
-    throw new Error('Allowed FP ' + advData.fp + ' <> actual ' + fp)
+    throw new UB.ESecurityException('Allowed FP ' + advData.fp + ' <> actual ' + fp)
   }
   let keyMediaName = ''
   if (advData.refreshKeyMedia || advData.keyMediaName) { // keyMediaName required
     keyMediaName = urlParams.KMN
-    if (!keyMediaName) throw new Error('keyMediaName is required but not passed in the KMN URL params')
+    if (!keyMediaName) throw new UB.ESecurityException('keyMediaName is required but not passed in the KMN URL params')
   }
   if (advData.refreshKeyMedia) {
     updateParams.keyMediaName = keyMediaName
     updateParams.refreshKeyMedia = 0
     needUpdate = true
   } else if (advData.keyMediaName && (advData.keyMediaName !== keyMediaName)) {
-    throw new Error('Allowed KeyMedia ' + advData.keyMediaName + ' <> actual ' + keyMediaName)
+    throw new UB.ESecurityException('Allowed KeyMedia ' + advData.keyMediaName + ' <> actual ' + keyMediaName)
   }
   if (needUpdate) {
     updateParams.ID = advData.ID
@@ -129,12 +130,12 @@ function onUserLogin (req) {
   }
 }
 
-function onUserLoginFailed (isLocked, userName) { // userName parameter is added in UB@5.19.1
+function onUserLoginFailed (isLocked) {
   if (!ubaAuditPresent) return
   console.debug('Call JS method: UBA.onUserLoginFailed')
 
   try {
-    const user = userName || ('' + Session.userID)
+    const user = Session.pendingUserName || ('' + Session.userID)
 
     auditStore.run('insert', {
       execParams: {
@@ -156,12 +157,12 @@ function onUserLoginFailed (isLocked, userName) { // userName parameter is added
 
 function securityViolation (reason) {
   console.debug('Call JS method: UBA.securityViolation')
-
   if (ubaAuditPresent) { // uba_audit exists
     let user = '?'
-    if (Session.userID && (Session.userID > 0)) {
-      const obj = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
-      user = obj ? obj.name : Session.userID
+    if (Session.userID && (Session.userID > UBA_COMMON.USERS.ANONYMOUS.ID) && Session.uData.login) { // user logged in
+      user = Session.uData.login
+    } else { // authentication in pending state
+      user = Session.pendingUserName || ('' + Session.userID)
     }
     try {
       auditStore.run('insert', {
@@ -170,6 +171,7 @@ function securityViolation (reason) {
           entityinfo_id: Session.userID,
           actionType: 'SECURITY_VIOLATION',
           actionUser: user,
+          targetUser: user,
           actionTime: new Date(),
           remoteIP: Session.callerIP,
           fromValue: reason
