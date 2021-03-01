@@ -468,17 +468,26 @@ export default {
 
     async fetchDisplayValue (value) {
       this.loading = true
-      const repositoryClone = this.getRepository().clone().clearWhereList()
-      const data = await repositoryClone
-        .where(this.valueAttribute, '=', value)
-        .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
-        .misc({
-          __allowSelectSafeDeleted: true
-        })
-        .selectSingle()
-      this.loading = false
+      try {
+        const repositoryClone = this.getRepository().clone().clearWhereList()
+        const option = await repositoryClone
+          .where(this.valueAttribute, '=', value)
+          .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
+          .misc({
+            __allowSelectSafeDeleted: true
+          })
+          .selectSingle()
 
-      return data
+        if (option) {
+          this.query = option[this.getDisplayAttribute]
+          this.setSafeDeleteValue(option)
+        } else {
+          this.query = value
+          this.undefinedRecord = true
+        }
+      } finally {
+        this.loading = false
+      }
     },
 
     /**
@@ -489,28 +498,33 @@ export default {
      * @param {number} value ID
      */
     setQueryByValue (value) {
-      this.undefinedRecord = false
-      if (value !== undefined && value !== null) {
-        const index = this.options.findIndex(o => o[this.valueAttribute] === value)
-        if (index !== -1) {
-          const option = this.options[index]
-          this.query = option[this.getDisplayAttribute]
-          this.setSafeDeleteValue(option)
-        } else {
-          this.fetchDisplayValue(value)
-            .then(option => {
-              if (option) {
-                this.query = option[this.getDisplayAttribute]
-                this.setSafeDeleteValue(option)
-              } else {
-                this.query = value
-                this.undefinedRecord = true
-              }
-            })
-        }
-      } else {
-        this.query = ''
+      if (this._fetchDisplayValuePormise) {
+        // Fetching value for another setQueryByValue call is not completed yet,
+        // wait for it and re-query value only after its completion
+        this._fetchDisplayValuePormise.then(() => {
+          this._fetchDisplayValuePormise = null
+          this.setQueryByValue(value)
+        })
+        return
       }
+
+      this.undefinedRecord = false
+      if (value === undefined || value === null) {
+        // Clear display value, when ID is empty
+        this.query = ''
+        return
+      }
+
+      const index = this.options.findIndex(o => o[this.valueAttribute] === value)
+      if (index !== -1) {
+        // Set display value from options
+        const option = this.options[index]
+        this.query = option[this.getDisplayAttribute]
+        this.setSafeDeleteValue(option)
+        return
+      }
+
+      this._fetchDisplayValuePormise = this.fetchDisplayValue(value)
     },
 
     // set delete status if record is deleted safely

@@ -52,10 +52,13 @@ export default {
 ### Removed
 
 ### Fixed
- - UTableEntity - fix logic for alternate names for `hide-actions` property for `copy` and `link`
+ - `UTableEntity` - fix logic for alternate names for `hide-actions` property for `copy` and `link`
  - replaceShowList: pass object properties to a column only if it is defined. Its prevent a bug when column
   `sortable` and `filters` properties is not defined in UTable
  - `UTableEntity`: allow refreshing an edited row for tables what based on the UBQL with sub-queries   
+ - `USelectEntity`: loading display value waits for another loading display value operation for the same control,
+      if it not completed yet, this prevents parallelism bugs, which happens if value of the same control
+      change several times fast enough
 
 ## [5.19.4] - 2021-02-25
 ### Added
