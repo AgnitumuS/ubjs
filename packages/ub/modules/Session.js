@@ -201,6 +201,23 @@ Object.defineProperty(Session, 'zone', {
 })
 
 /**
+ * User name for authentication in pending state
+ * @member {string} pendingUserName
+ * @memberOf Session
+ * @readonly
+ */
+Object.defineProperty(Session, 'pendingUserName', {
+  enumerable: true,
+  get: function () {
+    if (typeof sessionBinding.pendingUserName === 'function') { // UB < 5.9.3
+      return sessionBinding.pendingUserName()
+    } else {
+      return ''
+    }
+  }
+})
+
+/**
  * Create new session for userID
  * @method
  * @param {Number} userID ID of  user

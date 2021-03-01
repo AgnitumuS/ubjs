@@ -6,9 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Added `uiSettings.adminUI.disableScanner` config property which disables 
-   scanner related functionality if set as `true`.
-
+ - new ubConfig property `uiSettings.adminUI.disableScanner`- disable a scanner related functionality if `true`.
+ - new property `Session.pendingUserName` - a username for authentication in pending state. Used for security audit
+   to log a username in case session is not created yet
+ 
 ### Changed
 
 ### Deprecated
