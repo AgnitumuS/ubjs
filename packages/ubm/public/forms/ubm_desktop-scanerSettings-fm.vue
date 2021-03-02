@@ -95,7 +95,7 @@
 
         <el-tab-pane :label="$ut('desktopService.tabBarcode')">
           <h4>
-            {{ $ut('desktopService.FRScan.tabFineReader.Common') }}
+            {{ $ut('General') }}
           </h4>
           <u-form-row :label="$ut('desktopService.BarcodeSettings.PrinterName')">
             <el-select v-model="selectedPrinter">

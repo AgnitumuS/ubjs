@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   If it's set as true, then scan button would not show in form
 
 ### Changed
+ - client-side locales reformatted to use a json 
 
 ### Deprecated
 

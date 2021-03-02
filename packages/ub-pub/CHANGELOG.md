@@ -14,6 +14,13 @@ UB.xhr.defaults.timeout = 300000 // set all ajax requests timeout to 5 minutes
 ```
 
 ### Changed
+ - client side locales reformatted into JSON
+ - **BREAKING** - for custom authentication pages what use ub-pub localization `lang-??.json` must be injected instead of `lang-??.js`
+```javascript
+UB.get(`/models/ub-pub/locale/lang-${conn.preferredLocale}.json`).then(resp => {
+  UB.i18nExtend(resp.data)
+}).catch(e => {console.error(e)})
+```
 
 ### Deprecated
 

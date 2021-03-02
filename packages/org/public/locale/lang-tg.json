@@ -1,0 +1,10 @@
+{
+    "orgEmployee": "Кормандони ташкилотҳои дохилӣ",
+    "orgUnit": "Воҳидҳои ташкилии дохилӣ",
+    "orgStaffUnit": "Шӯъбаҳои дохилии воҳиди",
+    "orgProfession": "Касбҳо",
+    "orgOrganization": "Ташкилотҳои дохили ",
+    "orgEmployeeOnStaff": "Таъин намудани кормандон",
+    "orgTreeCanNotBeCyclical": "Дарахт наметавонад даврӣ бошад",
+    "orgDepartment": "Шӯъба"
+}

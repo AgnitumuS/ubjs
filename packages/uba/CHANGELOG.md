@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - advanced security check failures will be logged into uba_audit (throws `UB.ESecurityException` instead of `Error`) 
 
 ### Changed
+ - client side locales reformatted into JSON
 
 ### Deprecated
 

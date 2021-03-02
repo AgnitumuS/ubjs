@@ -11,7 +11,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    to log a username in case session is not created yet
  
 ### Changed
-
+ - `allLocales` endpoint (client-side localization download) supports JSON files in `/public/lang-??.json`.
+  Content of such files are wrapped into `UB.i18nExtend(....)` before passing to client.
+   
+  This allows using automation tools for preparing other language's localization.
+   
 ### Deprecated
 
 ### Removed
@@ -245,7 +249,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  without using `JSON.parse`. This is 20% faster compared to `JSON.parse(dataStore.asJSONObject)`.
  In case UB server is of version < 5.18.0 new methods will fallback to `JSON.parse(dataStore.asJSONObject)`
  
- For better performance and code readability we recommend to apply following changes to the applications sources:  
+ For better performance and code readability we recommend applying following changes to the applications sources:  
    - `JSON.parse(dataStore.asJSONObject)` -> `dataStore.getAsJsObject()`
    - `JSON.parse(dataStore.asJSONArray)` -> `dataStore.getAsJsArray()`
  (the easiest way if to search for all case sensitive occurrences of `asJSON`)
@@ -371,7 +375,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `logging.threadingModel` is marked as deprecated
   
 ### Fixed
- - added documentation for `model` configuration parameter for `aclRls` mixin 
+ - added a documentation for `model` configuration parameter for `aclRls` mixin 
 
 ## [5.2.32] - 2019-08-28
 ### Changed
@@ -396,7 +400,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `uiSettings.adminUI.registrationURL` parameter.
  In case parameter is empty or not exists (default) then registration link do not displayed on the default
- authentication form (@unitybase/adminui-vue/views/ub-auth.html). Otherwise a link to the specified URL is displayed
+ authentication form (@unitybase/adminui-vue/views/ub-auth.html). Otherwise, a link to the specified URL is displayed
  
 ## [5.2.24] - 2019-07-10
 ### Fixed
@@ -552,25 +556,25 @@ UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "П
 
 ## [5.0.16] - 2018-06-03
 ### Added
-- new endpoind `allLocales` - return a single localization script bundled from all models public/locale/lang-${Session.userLang} scripts
+- new endpoint `allLocales` - return a single localization script bundled from all models public/locale/lang-${Session.userLang} scripts
  excluding adminui-pub what injected before login window
 
 ## [5.0.12] - 2018-05-18
 ### Added
-- new function `App.blobStores.markRevisionAsPermanent` allow to prevent
+- new function `App.blobStores.markRevisionAsPermanent` allows preventing
 specified revision of historical store from deletion during history rotation
 
 ### Changed
-- historical BLOB stores will put create a record in ub_blobHistory on commit.
+- historical BLOB stores will put create a record in ub_blobHistory on a commit.
  In prev. implementation a record in history was added after the update
 
 ### Fixed
 - `mdb` BLOB stores will automatically crate a folder in case
-it's not exists(for example user create a ER diagram etc.)
+it's not exists(for example user create an ER diagram etc.)
 
 ## [5.0.8] - 2018-05-07
 ### Fixed
-- fileSystemBlobStore will add a entropy to the persistent file name to prevent
+- fileSystemBlobStore will add an entropy to the persistent file name to prevent
  possible file name duplication for historical data
 - fileSystemBlobStore rotateHistory will delete only revisions older when `store.historyDepth`
 - fix UB4 store compatibility - automatic detection of store implementation in case blobStore.implementedBy not defined
@@ -578,7 +582,7 @@ it's not exists(for example user create a ER diagram etc.)
 ## [5.0.0] - 2018-02-13
 ### Added
 - `UB.blobStores` interface for working with BLOBs content
-- new entity `ub_blobHistory` for storing BLOB store revisions information instead of *.fti files
+- new entity `ub_blobHistory` for storing BLOB store revision's information instead of *.fti files
 - BLOB stores "Monthly" and "Daily" sizes"
 - automatically creation of BLOB store structure - no need to call `ubcli createStore` anymore. 
   In case of DFS folders should be created/mounted manually
@@ -587,7 +591,7 @@ it's not exists(for example user create a ER diagram etc.)
 ### Added
 
 ### Fixed
-- `mdb` virtual data store correctly handle models with public path only 
+- `mdb` virtual data store correctly handle models with a public path only 
 - `clientRequire` endpoint return correct mime type for files (using mime-db)
 - optimize `clientRequire` endpoint by caching resolved path's to globalCache
 - UB.UBAbort server side exception stack trace now independent of UB.js placement

@@ -509,10 +509,15 @@ function allLocalesEp (req, resp) {
   if (!cached) {
     cached = ' '
     App.domainInfo.orderedModels.forEach((model) => {
-      if (model.needLocalize) {
-        const localeScript = path.join(model.realPublicPath, 'locale', `lang-${lang}.js`)
-        if (fs.existsSync(localeScript)) {
-          const content = fs.readFileSync(localeScript, 'utf-8')
+      if (model.realPublicPath) {
+        let localeFile = path.join(model.realPublicPath, 'locale', `lang-${lang}.json`)
+        if (fs.existsSync(localeFile)) { // JSON since localization (UB 5.19.3)
+          const content = fs.readFileSync(localeFile, 'utf-8')
+          cached += `\n// ${model.name} localization\nUB.i18nExtend(\n${content}\n)`
+        }
+        localeFile = path.join(model.realPublicPath, 'locale', `lang-${lang}.js`)
+        if (fs.existsSync(localeFile)) { // JS localization
+          const content = fs.readFileSync(localeFile, 'utf-8')
           cached += `\n// ${model.name} localization\n${content}`
         }
       }

@@ -15,7 +15,7 @@ function setLocale (lang) {
   // to prevent loading of moment.js twice fallback to global + UB.inject
   return UB.inject(`clientRequire/moment/locale/${lang}.js`).then(
     () => { moment.locale(lang) }
-  )
+  ).catch(()=>{})
 }
 
 module.exports = {

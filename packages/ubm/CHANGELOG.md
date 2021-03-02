@@ -8,10 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - client side locales reformatted into JSON
 
 ### Deprecated
 
 ### Removed
+ - i18n for FR related scanner (recognition) settings is remover (FR not used anymore)
 
 ### Fixed
 

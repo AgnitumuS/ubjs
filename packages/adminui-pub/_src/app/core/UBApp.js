@@ -264,8 +264,6 @@ Ext.define('UB.core.UBApp', {
 
         // UB 1.12 compatibility
         UB.appConfig = connection.appConfig
-        // TODO - remove because mutation of other objects is bad idea
-        return UB.inject('models/ub-pub/locale/lang-' + connection.preferredLocale + '.js')
       }
     }).then(function (connection) {
       me.connection = connection

@@ -1,0 +1,19 @@
+{
+  "externalOrganizations_title": "Təşkilat",
+  "physPerson_title": "Fiz. şəxslər",
+  "locality_title": "Qarşılaşma",
+  "contact_title": "Əlaqə",
+  "department_title": "Xarici təşkilatın şöbəsi",
+  "employee_title": "Xarici təşkilatın işçisi",
+  "profession_title": "Peşə",
+  "region_title": "Yerləşmə",
+  "ClassifTypePanelClassifiersTitle": "Təsnifat qiyməti",
+  "classifier": {
+    "caption": "Təsnifatçı",
+    "description": "Təsnifat rekordu"
+  },
+  "classifieritem": {
+    "caption": "Təsnifat elementi",
+    "description": "Təsnifat elementi qeydləri"
+  }
+}
