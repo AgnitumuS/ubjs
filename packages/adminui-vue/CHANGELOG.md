@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   `UNavbarUserButton`. If true, then scan buttons are hidden in toolbars
 
 ### Changed
- - client-side locales reformatted to use a json
+ - client-side locales reformatted to use a json. Auth page now inject `/models/ub-pub/locale/lang-${conn.preferredLocale}.json` instead of js.
  - replaceShowList: pass `hideActions` property to `UTableEntity` instead of
    build `scopedSlots` with empty `div` for it
  - UTableEntity `showSummary` action changes:
@@ -60,6 +60,7 @@ export default {
  - `USelectEntity`: loading display value waits for another loading display value operation for the same control,
       if it not completed yet, this prevents parallelism bugs, which happens if value of the same control
       change several times fast enough
+ - prevent exception in case client localisation of ub-pub model not found for user preferred language.
 
 ## [5.19.4] - 2021-02-25
 ### Added
