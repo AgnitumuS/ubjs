@@ -14,6 +14,7 @@ UB.xhr.defaults.timeout = 300000 // set all ajax requests timeout to 5 minutes
 ```
 
 ### Changed
+ - client side locales reformatted into JSON
 
 ### Deprecated
 
