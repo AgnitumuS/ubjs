@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - i18n for FR related scanner (recognition) settings is remover (FR not used anymore)
 
 ### Fixed
 
