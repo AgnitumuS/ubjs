@@ -189,10 +189,13 @@ function replaceShowList () {
             fieldList.push(field)
           }
         }
-        req.fieldList = fieldList
+
+        // need to clone request because UBStoreManager saves request into cache with mutated fieldList
+        const clonedRequest = Object.assign({}, req)
+        clonedRequest.fieldList = fieldList
         props = {
           repository () {
-            return UB.Repository(req)
+            return UB.Repository(clonedRequest)
           },
           columns,
           buildEditConfig: cfg.cmpInitConfig && cfg.cmpInitConfig.buildEditConfig,

@@ -61,6 +61,7 @@ export default {
       if it not completed yet, this prevents parallelism bugs, which happens if value of the same control
       change several times fast enough
  - prevent exception in case client localisation of ub-pub model not found for user preferred language.
+ - `replaceShowList`: fixed incorrect display of the `UTableEntity` columns header received from the cache
 
 ## [5.19.4] - 2021-02-25
 ### Added
