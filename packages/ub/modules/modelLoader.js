@@ -44,19 +44,23 @@ function loadEntitiesModules (folderPath, depth = 0) {
 }
 
 /**
- * Load serverLocale/lang-??.json for each language supported by application
- * @param {String} folderPath
+ * Load serverLocale/*-??.json for each language code (??) supported by application
+ * @param {String} modelPath
  */
-function loadServerLocale(folderPath) {
-  const localeFolder = path.join(folderPath, 'serverLocale')
+function loadServerLocale(modelPath) {
+  const localeFolder = path.join(modelPath, 'serverLocale')
   if (!fs.existsSync(localeFolder)) return
   const supportedLanguages = App.serverConfig.application.domain.supportedLanguages || ['en']
-  supportedLanguages.forEach(langCode => {
-    const lp = path.join(localeFolder, `lang-${langCode}.json`)
-    if (!fs.existsSync(lp)) return
-    const localeData = require(lp)
-    i18n.extend({
-      [langCode]: localeData
+  const files = fs.readdirSync(localeFolder).sort()
+  files.forEach(fn => {
+    supportedLanguages.forEach(langCode => {
+      if (fn.endsWith(`-${langCode}.json`)) { // language supported
+        const lp = path.join(localeFolder, fn)
+        const localeData = require(lp)
+        i18n.extend({
+          [langCode]: localeData
+        })
+      }
     })
   })
 }

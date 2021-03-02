@@ -17,15 +17,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   This allows using automation tools for preparing other language's localization.
 
  - server-side localization automatically loads a JSON files from models `serverLocale` folder.
-   Naming convention is the same as for client localization - `lang-??.json`.
+   Naming convention is - `*-??.json` where ?? is a language code. Such convention allows creating of a model with 
+   serverLocale folder contains localization to the new language for all other models,
+   for example model for `zz` language `zz-locale` with `serverLocale/cdn-zz.json`, `serverLocale/org-zz.json` etc.
    
    It's recommended to split existed `serverLocale/*.js` into several JSON and remove a `require('./serverLocale/*.js')`
-   form model initialization.
+   form model initialization using instruction below (remove locales you do not need from touch):
    ```shell
    cd serverLocale
    touch lang-en.json lang-ru.json lang-uk.json lang-az.json lang-id.json lang-ka.json lang-tg.json lang-ky.json
    git add ./*.json
-   // for each language move content of js locale for individual language into lang-??.json (without language identifier)
+   // for each language move content of the js locale for individual language into modelName-??.json (without language identifier)
    // Use WebStorm 'Fix all JSON problems' action to add a double quoters in new lang files  
    // remove require('./serverLocale/nameOfLocaleFile.js') from initModel.js
    git rm ./serverLocale/nameOfLocaleFile.js
