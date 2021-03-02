@@ -1,0 +1,4 @@
+{
+  "accessDeny": "<<<Insufficient permissions for operation execution>>>",
+  "udiskUserMustHaveAccessToParent": "User or role must have access to folder"
+}

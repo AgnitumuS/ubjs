@@ -1,6 +1,4 @@
 const _ = require('lodash')
-// localize model
-require('./serverLocale/org_i18n')
 const UB = require('@unitybase/ub')
 const Session = UB.Session
 const UBA_COMMON = require('@unitybase/base').uba_common

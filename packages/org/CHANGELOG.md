@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - client side locales reformatted into JSON
+ - server-side locales reformatted into JSON
 
 ### Deprecated
 
