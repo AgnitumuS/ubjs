@@ -1,0 +1,20 @@
+{
+  "externalOrganizations_title": "Ташкилот",
+  "physPerson_title": "Шахси воқеӣ",
+  "locality_title": "Маҳаллаи аҳолинишин",
+  "contact_title": "Тамос",
+  "department_title": "Шӯъбаи ташкили беруна",
+  "employee_title": "Кормандони ташкилотҳои беруна",
+  "profession_title": "Касб",
+  "region_title": "Ноҳия",
+
+  "ClassifTypePanelClassifiersTitle": "Арзишҳои таснифшуда",
+  "classifier": {
+    "caption": "Таснифгар",
+    "description": "Сабти таснифгар"
+  },
+  "classifieritem": {
+    "caption": "Унсури таснифгар",
+    "description": "Сабти ашёи таснифгар"
+  }
+}
