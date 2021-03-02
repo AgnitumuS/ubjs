@@ -25,7 +25,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    cd serverLocale
    touch lang-en.json lang-ru.json lang-uk.json lang-az.json lang-id.json lang-ka.json lang-tg.json lang-ky.json
    git add ./*.json
-   // for each language move content of js locale for individual language into lang-??.json (without language identifier) 
+   // for each language move content of js locale for individual language into lang-??.json (without language identifier)
+   // Use WebStorm 'Fix all JSON problems' action to add a double quoters in new lang files  
    // remove require('./serverLocale/nameOfLocaleFile.js') from initModel.js
    git rm ./serverLocale/nameOfLocaleFile.js
    ```

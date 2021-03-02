@@ -1,0 +1,6 @@
+{
+  "notAssigned": "Təyin edilməyib",
+  "errAlreadyAssigned": "<<<Bu ştat vahidi üzrə təyinat mövcuddur>>>",
+  "errUserWithMultiplePermanentStaffUnitsNotAllowed": "<<<İstifadəçinin sistemdə bir neçə vəzifəyə daimi təyinatı olduğundan, sistemə daxil olmaq mümkün deyil. Zəhmət olmasa İdarəçi ilə əlaqə saxlayın.>>>",
+  "AccessDeny": "Kifayət qədər icazələrin əməliyyat yerinə yetirmək üçün"
+}
