@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   `UNavbarUserButton`. If true, then scan buttons are hidden in toolbars
 
 ### Changed
+ - client-side locales reformatted to use a json
  - replaceShowList: pass `hideActions` property to `UTableEntity` instead of
    build `scopedSlots` with empty `div` for it
  - UTableEntity `showSummary` action changes:
