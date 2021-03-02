@@ -1,0 +1,6 @@
+{
+  "errUnableToPerformThisOperation": "<<<Əməliyyatı yerinə yetirmək mümkun deyil. Administratora müraciət edin.>>>",
+  "errNoRightsForInsUpdateGovOrg": "<<<Bu əməliyyatı yerinə yetirə bilmərsiniz. Sizin dövlət təşkilatları uzrə əlavə/redaktə etmək hüququnuz yoxdur.>>>",
+  "errNotExsistsOKPO": "<<<Təşkilatın kodu göstərilməyib>>>",
+  "errMustContainsOnly8Or10Symbols": "<<<Təşkiltın kodu 8 və ya 10 simvoldan ibarət olmalıdır>>>"
+}
