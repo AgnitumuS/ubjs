@@ -1,14 +1,18 @@
-const fs = require('fs')
-const path = require('path')
-const App = require('./App')
-
 /**
- * Functions for evaluation UnityBase model JS files
  * @module modelLoader
  * @memberOf module:@unitybase/ub
  */
-module.exports.loadEntitiesModules = loadEntitiesModules
-module.exports.loadLegacyModules = loadLegacyModules
+
+const fs = require('fs')
+const path = require('path')
+const App = require('./App')
+const i18n = require('./i18n')
+
+module.exports = {
+  loadEntitiesModules,
+  loadLegacyModules,
+  loadServerLocale
+}
 
 /**
  * Load all *.js for which pair *.meta is exists
@@ -40,6 +44,24 @@ function loadEntitiesModules (folderPath, depth = 0) {
 }
 
 /**
+ * Load serverLocale/lang-??.json for each language supported by application
+ * @param {String} folderPath
+ */
+function loadServerLocale(folderPath) {
+  const localeFolder = path.join(folderPath, 'serverLocale')
+  if (!fs.existsSync(localeFolder)) return
+  const supportedLanguages = App.serverConfig.application.domain.supportedLanguages || ['en']
+  supportedLanguages.forEach(langCode => {
+    const lp = path.join(localeFolder, `lang-${langCode}.json`)
+    if (!fs.existsSync(lp)) return
+    const localeData = require(lp)
+    i18n.extend({
+      [langCode]: localeData
+    })
+  })
+}
+
+/**
  * For UB < 4.2 compatibility -  require all non - entity js
  * in specified folder add it's subfolder (one level depth),
  * exclude `modules` and `node_modules` subfolder's.
@@ -57,7 +79,7 @@ function loadLegacyModules (folderPath, isFromPublicFolder = false, depth = 0) {
   if (!fs.existsSync(folderPath)) return
 
   let folderFiles = fs.readdirSync(folderPath)
-  // readdirSync can return UINSORTED file names under Linux (UB.5)
+  // readdirSync can return UNSORTED file names under Linux (UB.5)
   folderFiles.sort()
 
   for (let i = 0, l = folderFiles.length; i < l; i++) {
@@ -68,7 +90,7 @@ function loadLegacyModules (folderPath, isFromPublicFolder = false, depth = 0) {
     let stat = fs.statSync(fullPath)
 
     if (stat.isDirectory() && (depth === 0)) {
-      if ((fn === 'modules') || (fn === 'node_modules')) continue
+      if ((fn === 'modules') || (fn === 'node_modules') || (fn === 'serverLocale')) continue
       // prevent recursion inside public folder
       if (!isFromPublicFolder) loadLegacyModules(fullPath + path.sep, fn === 'public', depth + 1)
     } else if (fn.endsWith('.js') && (!isFromPublicFolder || fn.startsWith('cs'))) {

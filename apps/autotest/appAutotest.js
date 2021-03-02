@@ -145,3 +145,6 @@ console.log('Verify adding of 50 listeners not produce a ERR in console');
 for (let i=0; i < 50; i++) {
   uba_user.on('select:after', function(){})
 }
+
+console.log('SUPPORTED LANGS ARE', App.serverConfig.application.domain.supportedLanguages)
+console.log('UK LOCALIZATION IS', UB.i18n('errMustContainsOnly8Or10Symbols', 'uk'))
