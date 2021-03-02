@@ -1,0 +1,6 @@
+{
+  "notAssigned": "Tidak ditugaskan",
+  "errAlreadyAssigned": "<<<Unit staf ini sudah ditetapkan>>>",
+  "errUserWithMultiplePermanentStaffUnitsNotAllowed": "<<<Mustahil untuk logon, karena karyawan memiliki beberapa tugas permanen. Silahkan hubungi administrator sistem Anda.>>>",
+  "AccessDeny": "Akses menyangkal"
+}

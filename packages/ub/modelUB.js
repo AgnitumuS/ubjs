@@ -166,6 +166,7 @@ console.log(UB.i18n(yourMessage, 'uk'))
  * Initialize UnityBase application:
  *  - create namespaces (global objects) for all `*.meta` files from domain
  *  - require all packages specified in config `application.domain.models`
+ *  - apply a server-side i18n JSONs from models serverLocale folder
  *  - emit {@link event:domainIsLoaded App.domainIsLoaded} event
  *  - register build-in UnityBase {@link module:@unitybase/ub.module:endpoints endpoints}
  */
@@ -188,6 +189,7 @@ function start () {
   orderedModels.forEach((model) => {
     if (model.realPath && (model.name !== 'UB')) { // UB already loaded by UB.js
       modelLoader.loadEntitiesModules(model.realPath)
+      modelLoader.loadServerLocale(model.realPath)
       require(model.realPath)
     }
   })
