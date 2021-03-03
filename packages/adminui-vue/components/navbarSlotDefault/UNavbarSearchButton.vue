@@ -88,7 +88,7 @@ export default {
       isPeriod: false,
       pickerOptions: {
         shortcuts: [{
-          text: this.$ut('el').datepicker.today,
+          text: this.$ut('el.datepicker.today'),
           onClick (picker) {
             picker.$emit('pick', [new Date(), new Date()])
           }
