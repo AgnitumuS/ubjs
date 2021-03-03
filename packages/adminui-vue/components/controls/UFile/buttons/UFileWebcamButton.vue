@@ -14,6 +14,7 @@
       />
       <u-dropdown
         v-else
+        :disabled="isDisabled"
       >
         <u-button
           color="primary"

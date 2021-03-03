@@ -67,6 +67,7 @@ export default {
  - prevent exception in case client localisation of ub-pub model not found for user preferred language.
  - `replaceShowList`: fixed incorrect display of the `UTableEntity` columns header received from the cache
  - "@popperjs/core" version locked to "~2.8.6" - there is unexpected behavior in 2.9.0 (in dev mode) 
+ - UFile: disable webcam capture button if control is disabled or webcam not available
 
 ## [5.19.4] - 2021-02-25
 ### Added
