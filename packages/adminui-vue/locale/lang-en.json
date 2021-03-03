@@ -232,6 +232,14 @@
       "emptyPicturePlaceholder": "Your picture",
       "takePictureButton": "Take picture",
       "takeAnotherPictureButton": "Take another",
+      "intoPicture": "As picture",
+      "intoPdf": "As PDF",
+      "addPage": "Add as page",
+      "resolution": {
+        "low": "1280x720 (~1Mb)",
+        "fullHD": "1920x1080 (~3Mb)",
+        "4К": "3840x2160 (~8Mb)"
+      },
       "error": {
         "NotReadableError": "Access to webcam disabled by operation system settings",
         "NotFoundError": "Cannot see any webcam devices",

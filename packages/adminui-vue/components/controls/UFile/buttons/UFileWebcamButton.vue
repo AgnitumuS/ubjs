@@ -206,7 +206,7 @@
             :loading="addingPageToPdf"
             @click="doCrop"
           >
-            {{ $ut("actionAdd") }}
+            {{ $ut("UFile.webcam.addPage") }}
           </u-button>
 
           <u-button
@@ -225,6 +225,8 @@
 </template>
 
 <script>
+const LS_RATIO_KEY = 'UFileWebcamButton__videoRatio'
+
 export default {
   name: 'UFileWebcamButton',
   inject: {
@@ -255,9 +257,9 @@ export default {
       canvas: null,
       error: null,
       videoRatios: [
-        { name: 'low', label: this.$ut('UFile.webcam.lowResolution'), resolution: { width: 1280, height: 720 } },
-        { name: 'fullHD', label: 'fullHD', resolution: { width: 1920, height: 1080 } },
-        { name: '4К', label: '4К', resolution: { width: 3840, height: 2160 } }
+        { name: 'low', label: this.$ut('UFile.webcam.resolution.low'), resolution: { width: 1280, height: 720 } },
+        { name: 'fullHD', label: this.$ut('UFile.webcam.resolution.fullHD'), resolution: { width: 1920, height: 1080 } },
+        { name: '4К', label: this.$ut('UFile.webcam.resolution.4К'), resolution: { width: 3840, height: 2160 } }
       ],
       videoRatio: null,
       editing: false,
@@ -298,11 +300,11 @@ export default {
 
     dialogTitle () {
       if (this.inPdf) {
-        return 'Webcam ' + this.$ut('UFile.webcam.intoPdf')
+        return this.$ut('UFile.webcam.intoPdf')
       } else if (this.inPicture) {
-        return 'Webcam ' + this.$ut('UFile.webcam.intoPicture')
+        return this.$ut('UFile.webcam.intoPicture')
       } else {
-        return 'Webcam'
+        return ''
       }
     },
 
@@ -313,7 +315,7 @@ export default {
 
   mounted () {
     this.fullScreen = this.startFullScreen
-    this.videoRatio = JSON.parse(window.localStorage.getItem('UFileWebcamButton__videoRatio')) || this.videoRatios[0]
+    this.videoRatio = JSON.parse(window.localStorage.getItem(LS_RATIO_KEY)) || this.videoRatios[0]
   },
 
   methods: {
@@ -543,7 +545,7 @@ export default {
 
     clearForm () {
       this.stopStream()
-      window.localStorage.setItem('UFileWebcamButton__videoRatio', JSON.stringify(this.videoRatio))
+      window.localStorage.setItem(LS_RATIO_KEY, JSON.stringify(this.videoRatio))
       this.pages = []
       this.previewImageSrc = null
       this.canvas = null

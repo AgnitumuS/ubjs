@@ -232,6 +232,14 @@
       "emptyPicturePlaceholder": "Сурати шумо",
       "takePictureButton": "Скриншот сохтан",
       "takeAnotherPictureButton": "Скриншоти нав сохтан",
+      "intoPicture": "Как картинку",
+      "intoPdf": "Как PDF",
+      "addPage": "Добавить страницу",
+      "resolution": {
+        "low": "1280x720 (~1Mb)",
+        "fullHD": "1920x1080 (~3Mb)",
+        "4К": "3840x2160 (~8Mb)"
+      },
       "error": {
         "NotReadableError": "Барои истифодаи камера дар танзимоти системаи оператсиони иҷозат нест",
         "NotFoundError": "Камера ёфт нашуд",
