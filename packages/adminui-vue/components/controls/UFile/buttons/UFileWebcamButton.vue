@@ -41,6 +41,7 @@
       :title="dialogTitle"
       :visible.sync="dialogVisible"
       :fullscreen="fullScreen"
+      :close-on-click-modal="false"
       @opened="openDialog"
       @closed="clearForm"
     >

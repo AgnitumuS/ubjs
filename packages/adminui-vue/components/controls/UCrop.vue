@@ -1,8 +1,7 @@
 // initial sources https://github.com/e-anka/vue-anka-cropper
 // removed axios and core-js dependency
 <template>
-  <div class="vueAnkaCropper">
-    <div class="u-crop">
+  <div class="u-crop">
       <input
         v-show="false"
         ref="fileInput"
@@ -86,7 +85,6 @@
         </u-button>
       </div>
     </div>
-  </div>
 </template>
 <script>
 // import axios from 'axios'
