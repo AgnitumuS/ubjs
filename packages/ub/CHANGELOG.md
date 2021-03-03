@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.19.4] - 2021-03-03
+### Added
  - new ubConfig property `uiSettings.adminUI.disableScanner`- disable a scanner related functionality if `true`.
  - new property `Session.pendingUserName` - a username for authentication in pending state. Used for security audit
    to log a username in case session is not created yet
@@ -33,12 +44,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    git rm ./serverLocale/nameOfLocaleFile.js
    ```
    
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ## [5.19.3] - 2021-02-10
 ## [5.19.2] - 2021-02-08
 ### Added

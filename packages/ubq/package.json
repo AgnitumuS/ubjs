@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubq",
-  "version": "5.19.3",
+  "version": "5.19.4",
   "description": "Asynchronous task queue persisted into database. Contains jobs for sending e-mail and updating FTS indexes",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubq",
   "config": {
@@ -18,11 +18,11 @@
   },
   "main": "ubq.js",
   "dependencies": {
-    "@unitybase/base": "^5.19.2",
-    "@unitybase/cs-shared": "^5.5.18",
+    "@unitybase/base": "^5.19.3",
+    "@unitybase/cs-shared": "^5.5.19",
     "@unitybase/mailer": "^5.5.2",
-    "@unitybase/ub": "^5.19.3",
-    "@unitybase/uba": "^5.19.3",
+    "@unitybase/ub": "^5.19.4",
+    "@unitybase/uba": "^5.19.4",
     "lodash": "^4",
     "node-cron": "^1.1.2"
   },

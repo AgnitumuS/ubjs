@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.19.5] - 2021-03-03
 ## [5.19.4] - 2021-02-25
 ### Added
  - `ubcli execSql` command accept `-v` parameter for a verbose mode.

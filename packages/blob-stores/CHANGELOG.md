@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.19.4] - 2021-03-03
 ## [5.19.3] - 2021-02-10
 ### Added
   - in case UB is behind nginx `getDocument` endpoint for fileSystemBlobStores adds *x-query-params* header what contains URL parameters. 

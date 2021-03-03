@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.8.3] - 2021-03-03
+### Added
  - `UB.xhr.defaults` property added - direct access to the default HTTP parameters for `xhr`.
    Can be used, for example, to change http request timeout globally:
 ```javascript
@@ -21,12 +32,6 @@ UB.get(`/models/ub-pub/locale/lang-${conn.preferredLocale}.json`).then(resp => {
   UB.i18nExtend(resp.data)
 }).catch(e => {console.error(e)})
 ```
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.8.2] - 2021-02-03
 ## [5.8.1] - 2021-01-30

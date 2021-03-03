@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.19.5] - 2021-03-03
+### Added
  - Checking `uiSettings.adminUI.disableScanner` config property in `UFile` and
   `UNavbarUserButton`. If true, then scan buttons are hidden in toolbars
  - UCrop: new component for edit images: crop, rotate, flip
@@ -51,10 +62,6 @@ export default {
 }
 </script>
 ```
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UTableEntity` - fix logic for alternate names for `hide-actions` property for `copy` and `link`

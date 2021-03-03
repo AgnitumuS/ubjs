@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - client side locales reformatted into JSON
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.19.4] - 2021-03-03
+### Changed
+ - client side locales reformatted into JSON
 
 ## [5.19.3] - 2021-02-10
 ## [5.19.2] - 2021-02-08

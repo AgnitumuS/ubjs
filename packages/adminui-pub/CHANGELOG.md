@@ -6,17 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Checking `uiSettings.adminUI.disableScanner` config property in `BasePanel`.
-  If it's set as true, then scan button would not show in form
 
 ### Changed
- - client-side locales reformatted to use a json 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.19.5] - 2021-03-03
+### Added
+- Checking `uiSettings.adminUI.disableScanner` config property in `BasePanel`.
+  If it's set as true, then scan button would not show in form
+
+### Changed
+ - client-side locales reformatted to use a json 
 
 ## [5.19.4] - 2021-02-25
 ### Changed

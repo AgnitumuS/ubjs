@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - client side locales reformatted into JSON
- 
+
 ### Deprecated
 
 ### Removed
 
+### Fixed
+
+## [5.19.5] - 2021-03-03
+### Changed
+ - client side locales reformatted into JSON
+ 
 ### Fixed
 - copy classifier item on the form of classifier
 
