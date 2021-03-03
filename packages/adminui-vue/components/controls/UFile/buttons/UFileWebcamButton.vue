@@ -1,39 +1,42 @@
 <template>
   <div>
     <el-tooltip
-      v-if="scanType !== 'optional'"
       :content="$ut('UFile.webcamButtonTooltip')"
       :enterable="false"
     >
       <u-button
+        v-if="scanType !== 'optional'"
         color="primary"
         icon="u-icon-photo"
         appearance="inverse"
         :disabled="isDisabled"
         @click="dialogVisible = true"
       />
-    </el-tooltip>
-    <el-dropdown
-      v-else
-      @command="chooseScanType"
-    >
-      <span class="el-dropdown-link">
+      <u-dropdown
+        v-else
+      >
         <u-button
           color="primary"
           icon="u-icon-photo"
           appearance="inverse"
           :disabled="isDisabled"
         />
-      </span>
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="intoPicture">
-          {{ $ut("UFile.webcam.intoPicture") }}
-        </el-dropdown-item>
-        <el-dropdown-item command="intoPdf">
-          {{ $ut("UFile.webcam.intoPdf") }}
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+        <template #dropdown>
+          <u-dropdown-item
+            icon="el-icon-picture-outline"
+            :label="$ut('UFile.webcam.intoPicture')"
+            @click="scanToPicture"
+          >
+          </u-dropdown-item>
+          <u-dropdown-item
+            icon="u-icon-file-pdf"
+            :label="$ut('UFile.webcam.intoPdf')"
+            @click="scanToPdf"
+          >
+          </u-dropdown-item>
+        </template>
+      </u-dropdown>
+    </el-tooltip>
     <el-dialog
       :title="dialogTitle"
       :visible.sync="dialogVisible"
@@ -331,15 +334,14 @@ export default {
       }
     },
 
-    chooseScanType (command) {
-      if (command === 'intoPicture') {
-        this.workingRegime = 'picture'
-        this.dialogVisible = true
-      }
-      if (command === 'intoPdf') {
-        this.workingRegime = 'pdf'
-        this.dialogVisible = true
-      }
+    scanToPicture () {
+      this.workingRegime = 'picture'
+      this.dialogVisible = true
+    },
+
+    scanToPdf () {
+      this.workingRegime = 'pdf'
+      this.dialogVisible = true
     },
 
     openDialog () {
