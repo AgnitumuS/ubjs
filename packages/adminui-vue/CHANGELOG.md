@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - Checking `uiSettings.adminUI.disableScanner` config property in `UFile` and
   `UNavbarUserButton`. If true, then scan buttons are hidden in toolbars
+ - UCrop: new component for edit images: crop, rotate, flip
+ - UFileWebcamButton: drop down menu for choose the working regime: `scan to PDF` or `scan to Picture`,
+  `scan to PDF`: save one or more images to the PDF file,
+  also added ability to edit images after shoot by UCrop editor
 
 ### Changed
  - client-side locales reformatted to use a json. Auth page now inject `/models/ub-pub/locale/lang-${conn.preferredLocale}.json` instead of js.

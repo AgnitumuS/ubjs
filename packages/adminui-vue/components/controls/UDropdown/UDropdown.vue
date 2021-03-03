@@ -321,7 +321,7 @@ export default {
     <el-button>click me</el-button>
 
     <template #dropdown>
-      <u-dropdown-item label="item 1"/>
+      <u-dropdown-item label="item 1" @click="doSomething"/>
       <u-dropdown-item label="item 2"/>
       <u-dropdown-item label="item 3"/>
     </template>
@@ -343,7 +343,7 @@ For use as context menu just pass slot dropdown without default slot and use met
 
     <u-dropdown ref="contextMenu">
       <template slot="dropdown">
-        <u-dropdown-item label="item 1"/>
+        <u-dropdown-item label="item 1" @click="doSomething"/>
         <u-dropdown-item label="item 2"/>
         <u-dropdown-item label="item 3"/>
       </template>

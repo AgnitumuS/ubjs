@@ -14,9 +14,9 @@
     v-on="$listeners"
   >
     <i
-      v-if="icon"
+      v-if="icon || loading"
       class="u-button__icon"
-      :class="icon"
+      :class="!loading ? icon : 'el-icon-loading'"
     />
     <span
       v-if="$slots.default"
@@ -82,6 +82,14 @@ export default {
       validator (value) {
         return ['default', 'plain', 'inverse'].includes(value)
       }
+    },
+
+    /**
+     * A loading icon appears instead of the regular one
+     */
+    loading: {
+      type: Boolean,
+      default: false
     },
 
     /**
