@@ -16,7 +16,7 @@
     <i
       v-if="icon || loading"
       class="u-button__icon"
-      :class="!loading ? icon : 'u-icon-refresh u-button_animate-loading-rotate'"
+      :class="!loading ? icon : 'el-icon-loading'"
     />
     <span
       v-if="$slots.default"
@@ -222,10 +222,6 @@ export default {
 
   .u-button_color-warning {
     --hs: var(--hs-warning)
-  }
-
-  .u-button_animate-loading-rotate {
-    animation: loading-rotate 2s linear infinite;
   }
 
 </style>

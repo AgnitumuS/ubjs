@@ -46,7 +46,6 @@
           class="u-file-webcam__full_screen_button"
           icon="u-icon-expand"
           appearance="inverse"
-          :disabled="editing"
           @click="onExpand"
         />
       </div>
@@ -59,23 +58,19 @@
 
       <template v-else>
         <u-grid
+          ref="uGrid"
           :template-columns="inPdf ? '1fr 200px' : '1fr'"
         >
-          <div title="Camera">
+          <div>
             <u-crop
-              v-if="editing"
+              v-if="isPictureTaken"
+              ref="uCrop"
+              :first-crop-full-image="true"
+              :remote-nav-bar="true"
               :img-src="previewImageSrc"
               @cropper-saved="cropperSaved"
               @cropper-cancelled="cropperCancelled"
             />
-            <div style="text-align: center; ">
-              <img
-                v-show="isPictureTaken && !editing"
-                class="u-file-webcam__img"
-                style="width: auto; height: auto; max-height: 80vh; max-width: 100%"
-                :src="previewImageSrc"
-              >
-            </div>
             <el-select
               v-model="videoRatio"
               class="u-file-webcam__el-select"
@@ -91,9 +86,9 @@
               />
             </el-select>
             <el-container
-              style="width: 100%"
               v-show="!isPictureTaken"
               v-loading="!streamHasStarted"
+              style="width: 100%"
             >
               <video
                 ref="video"
@@ -113,6 +108,7 @@
                   v-for="(page, index) in pages"
                   :key="index"
                   class="u-file-webcam__pdf_page"
+                  draggable="true"
                 >
                   <div>
                     {{ index + 1 }}
@@ -133,8 +129,37 @@
             </el-scrollbar>
           </u-form-row>
         </u-grid>
+        <div style="position: absolute; left: 10px; bottom: 10px;">
+          <u-button
+            :title="$ut('rotate counter clock-wise')"
+            :disabled="!editing"
+            icon="fas fa-undo"
+            appearance="inverse"
+            @click="rotate(-90)"
+          />
+          <u-button
+            :title="$ut('rotate clock-wise')"
+            :disabled="!editing"
+            icon="fas fa-redo"
+            appearance="inverse"
+            @click="rotate(90)"
+          />
+          <u-button
+            :title="$ut('flip horizontally')"
+            :disabled="!editing"
+            icon="fas fa-text-width"
+            appearance="inverse"
+            @click.prevent="flip('h')"
+          />
+          <u-button
+            :title="$ut('flip vertically')"
+            :disabled="!editing"
+            icon="fas fa-text-height"
+            appearance="inverse"
+            @click.prevent="flip('v')"
+          />
+        </div>
         <div
-          v-show="!editing"
           v-if="!inPdf"
           class="u-file-webcam__button-group"
         >
@@ -147,28 +172,17 @@
           >
             {{ $ut( isPictureTaken ? "UFile.webcam.takeAnotherPictureButton" : "UFile.webcam.takePictureButton" ) }}
           </u-button>
-
-          <u-button
-            color="primary"
-            icon="u-icon-edit"
-            :disabled="!isPictureTaken"
-            @click="edit"
-          >
-            {{ $ut("Edit") }}
-          </u-button>
-
           <u-button
             color="primary"
             icon="u-icon-save"
             :disabled="!isPictureTaken"
-            @click="save"
+            @click="doCrop"
           >
             {{ $ut("Save") }}
           </u-button>
         </div>
         <div
           v-if="inPdf"
-          v-show="!editing"
           class="u-file-webcam__button-group-to-pdf"
         >
           <u-button
@@ -183,19 +197,10 @@
 
           <u-button
             color="primary"
-            icon="u-icon-edit"
-            :disabled="!isPictureTaken || exportingToPdf || addingPageToPdf"
-            @click="edit"
-          >
-            {{ $ut("Edit") }}
-          </u-button>
-
-          <u-button
-            color="primary"
             icon="u-icon-file-add"
             :disabled="!isPictureTaken || exportingToPdf || addingPageToPdf"
             :loading="addingPageToPdf"
-            @click="addPageToPdf"
+            @click="doCrop"
           >
             {{ $ut("actionAdd") }}
           </u-button>
@@ -253,7 +258,6 @@ export default {
       videoRatio: null,
       editing: false,
       streamHasStarted: false,
-      croppedFile: null,
       exportingToPdf: false,
       takingPicture: false,
       addingPageToPdf: false,
@@ -269,7 +273,6 @@ export default {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         return this.instance.file || this.instance.disabled
       }
-
       return false
     },
 
@@ -305,11 +308,29 @@ export default {
   },
 
   mounted () {
-    this.videoRatio = this.videoRatios[0]
     this.fullScreen = this.startFullScreen
+    this.videoRatio = JSON.parse(window.localStorage.getItem('UFileWebcamButton__videoRatio')) || this.videoRatios[0]
   },
 
   methods: {
+    rotate (delta) {
+      if (this.$refs.uCrop !== undefined) {
+        this.$refs.uCrop.rotate(delta)
+      }
+    },
+
+    flip (direction) {
+      if (this.$refs.uCrop !== undefined) {
+        this.$refs.uCrop.flip(direction)
+      }
+    },
+
+    doCrop () {
+      if (this.$refs.uCrop !== undefined) {
+        this.$refs.uCrop.doCrop()
+      }
+    },
+
     chooseScanType (command) {
       if (command === 'intoPicture') {
         this.workingRegime = 'picture'
@@ -363,7 +384,6 @@ export default {
     },
 
     takePicture () {
-      this.croppedFile = null
       if (!this.isPictureTaken) {
         // adjust canvas resolution to chosen option
         this.canvas.width = this.videoRatio.resolution.width
@@ -377,6 +397,7 @@ export default {
           this.videoRatio.resolution.height
         )
         this.previewImageSrc = this.canvas.toDataURL('image/png')
+        this.editing = true
       } else {
         this.editing = false
         this.previewImageSrc = null
@@ -384,9 +405,16 @@ export default {
     },
 
     cropperSaved (res) {
-      this.previewImageSrc = res.croppedImageURI
-      this.croppedFile = res.croppedFile
+      const croppedFile = res.croppedFile
       this.editing = false
+      if (this.inPdf) {
+        this.addPageToPdf(croppedFile)
+      } else {
+        const file = new File([croppedFile], `webcamPhoto_${new Date().getTime()}.png`)
+        this.instance.upload([file])
+        this.previewImageSrc = null
+        this.dialogVisible = false
+      }
     },
 
     cropperCancelled () {
@@ -397,14 +425,14 @@ export default {
       this.streamHasStarted = true
     },
 
-    async addPageToPdf () {
+    async addPageToPdf (croppedFile) {
       function toThumbDataUrl (blob) {
         return new Promise(resolve => {
           const canvasOrig = document.createElement('canvas')
           const canvas = document.createElement('canvas')
           const img = new Image()
           let width = 100; let height = 100
-          img.onload = () => {
+          img.onload = function () {
             const ratio = img.height / img.width
             if (img.width > 100) {
               height = width * ratio
@@ -418,7 +446,6 @@ export default {
             canvasOrig.width = img.width
             canvasOrig.height = img.height
             canvasOrig.getContext('2d').drawImage(img, 0, 0, img.width, img.height)
-            URL.revokeObjectURL(img.src)
             resolve({
               img: {
                 dataUrl: canvasOrig.toDataURL('image/png'),
@@ -427,30 +454,20 @@ export default {
               },
               thumbNail: canvas.toDataURL('image/png')
             })
+            URL.revokeObjectURL(img.src)
           }
           img.src = URL.createObjectURL(blob)
         })
       }
       this.addingPageToPdf = true
-      if (!this.croppedFile) {
-        this.canvas.toBlob(async blob => {
-          const result = await toThumbDataUrl(blob)
-          this.pages.push({
-            img: result.img,
-            thumbNail: result.thumbNail
-          })
-          this.addingPageToPdf = false
-        }, 'image/png')
-      } else {
-        const result = await toThumbDataUrl(this.croppedFile)
-        this.pages.push({
-          img: result.img,
-          thumbNail: result.thumbNail
-        })
-        this.addingPageToPdf = false
-        this.editing = false
-        this.previewImageSrc = null
-      }
+      const result = await toThumbDataUrl(croppedFile)
+      this.pages.push({
+        img: result.img,
+        thumbNail: result.thumbNail
+      })
+      this.previewImageSrc = null
+      this.addingPageToPdf = false
+      this.editing = false
     },
 
     async saveToPdf () {
@@ -504,19 +521,6 @@ export default {
       })
     },
 
-    save () {
-      this.canvas.toBlob(blob => {
-        const file = new File(!this.croppedFile ? [blob] : [this.croppedFile], `webcamPhoto_${new Date().getTime()}.png`)
-        this.instance.upload([file])
-        this.previewImageSrc = null
-        this.dialogVisible = false
-      }, 'image/png')
-    },
-
-    edit () {
-      this.editing = true
-    },
-
     deletePdfPage (index) {
       this.pages.splice(index, 1)
     },
@@ -529,14 +533,17 @@ export default {
       } else {
         this.pdfListHeight = 340
       }
+      if (this.$refs.uCrop !== undefined) {
+        this.$refs.uCrop.setFullWidth(this.$refs.uGrid.$el.offsetWidth)
+      }
     },
 
     clearForm () {
       this.stopStream()
+      window.localStorage.setItem('UFileWebcamButton__videoRatio', JSON.stringify(this.videoRatio))
       this.pages = []
       this.previewImageSrc = null
       this.canvas = null
-      this.croppedFile = null
       this.error = null
     }
   }

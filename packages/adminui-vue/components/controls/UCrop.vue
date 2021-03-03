@@ -39,29 +39,33 @@
         </div>
       </div>
       <div
-        v-if="file"
+        v-if="file && !remoteNavBar"
         class="u-crop__navigation"
       >
         <u-button
-          @click.prevent="rotate(-90)"
+          @click="rotate(-90)"
+          :title="$ut('rotate counter clock-wise')"
           icon="fas fa-undo"
           appearance="inverse"
         >
         </u-button>
         <u-button
-          @click.prevent="rotate(90)"
+          @click="rotate(90)"
+          :title="$ut('rotate clock-wise')"
           icon="fas fa-redo"
           appearance="inverse"
         >
         </u-button>
         <u-button
           @click.prevent="flip('h')"
+          :title="$ut('flip horizontally')"
           icon="fas fa-text-width"
           appearance="inverse"
         >
         </u-button>
         <u-button
           @click.prevent="flip('v')"
+          :title="$ut('flip vertically')"
           icon="fas fa-text-height"
           appearance="inverse"
         >
@@ -98,6 +102,14 @@ export default {
     imgSrc: {
       type: String,
       default: ''
+    },
+    firstCropFullImage: {
+      type: Boolean,
+      default: false
+    },
+    remoteNavBar: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -383,7 +395,6 @@ export default {
   },
   mounted () {
     this.file = this.dataURItoFile(this.imgSrc)
-
     this.getFullWidth()
     this.$emit('cropper-mounted')
     window.addEventListener('resize', this.getFullWidth)
@@ -393,6 +404,10 @@ export default {
     window.removeEventListener('resize', this.getFullWidth)
   },
   methods: {
+    setFullWidth: function (width) {
+      this.fullWidth = width
+      this.$nextTick(this.drawCanvas)
+    },
     // Converts a data URI string into a File object.
     dataURItoFile: function (dataURI) {
       const BASE64_MARKER = ';base64,'
@@ -626,6 +641,12 @@ export default {
         this.y = Math.round(ny)
         this.w = Math.round(nw)
         this.h = Math.round(nh)
+        if (this.firstCropFullImage) {
+          this.x = 8
+          this.y = 8
+          this.w = this.canvasWidth - 16
+          this.h = this.canvasHeight - 16
+        }
         this.updateCoords()
         this.drawCanvas()
         if (this.opts.showPreview && !this.opts.previewOnDrag && this.previewCanvas) {
@@ -655,6 +676,12 @@ export default {
         }
         this.x = Math.round((this.canvasWidth - this.w) / 2)
         this.y = Math.round((this.canvasHeight - this.h) / 2)
+        if (this.firstCropFullImage) {
+          this.x = 8
+          this.y = 8
+          this.w = this.canvasWidth - 16
+          this.h = this.canvasHeight - 16
+        }
         this.drawCanvas()
       } else {
         this.canvas = false
