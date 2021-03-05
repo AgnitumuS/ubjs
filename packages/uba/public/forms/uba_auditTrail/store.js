@@ -1,6 +1,5 @@
 const UB = require('@unitybase/ub-pub')
 const { lookups } = require('@unitybase/adminui-vue')
-const { formatByPattern } = require('@unitybase/cs-shared')
 const { diffWords } = require('./diff')
 
 module.exports = {
@@ -238,11 +237,11 @@ function formatValue (dataObject, attrMeta, attrCode, requests, responseTransfor
       }
 
     case 'Date':
-      return formatByPattern.formatDate(value, 'date')
+      return UB.formatter.formatDate(value, 'date')
 
     case 'DateTime':
     case 'TimeLog':
-      return formatByPattern.formatDate(value, 'dateTime')
+      return UB.formatter.formatDate(value, 'dateTime')
 
     case 'Enum':
       return lookups.getEnum(attrMeta.enumGroup, value) || ''

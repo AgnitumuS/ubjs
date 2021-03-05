@@ -30,7 +30,7 @@
               />
             </el-tooltip>
           </td>
-          <td> {{ $moment(vr.signingTime).format('L HH:mm') }} </td>
+          <td> {{ $UB.formatter.formatDate(vr.signingTime, 'dateTime') }} </td>
           <td> {{ vr.subject.fullName || vr.organization.digitalStampName || vr.organization.orgName }} </td>
           <template v-if="actions.length > 0">
             <td>
@@ -101,7 +101,7 @@
                     </template>
                     <template v-else>
                       <span class="signature-verify-result_info">{{ VRi18n.certificate[prop] }}:</span>
-                      {{ (vr.certificate[prop] instanceof Date) ? $moment(vr.certificate[prop]).format('L') : vr.certificate[prop] }}
+                      {{ (vr.certificate[prop] instanceof Date) ? $UB.formatter.formatDate(vr.certificate[prop], 'date') : vr.certificate[prop] }}
                     </template>
                   </li>
                 </ul>

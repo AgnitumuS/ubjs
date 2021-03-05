@@ -19,7 +19,6 @@ const UB = require('@unitybase/ub-pub')
 const truncTimeToUTCNull = UB.truncTimeToUtcNull
 const UB_DATA_TYPES = require('@unitybase/cs-shared').UBDomain.ubDataTypes
 const Vue = require('vue')
-const moment = require('moment')
 
 /**
  * @typedef {object} VuexTrackedInstance
@@ -72,7 +71,7 @@ function isEqual (arg1, arg2) {
     }
     return true
   } else if (isDate(arg1) || isDate(arg2)) {
-    return moment(arg1).isSame(arg2)
+    return arg1.valueOf() === arg2.valueOf()
   } else if (isObject(arg1) || isObject(arg2)) {
     if (arg1 === undefined) {
       arg1 = {}

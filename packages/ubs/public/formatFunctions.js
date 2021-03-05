@@ -1,10 +1,10 @@
 /*
 * Created by xmax on 17.02.2018
 */
-const formatByPattern = require('@unitybase/cs-shared').formatByPattern
+const UB = require('@unitybase/ub-pub')
+const {formatNumber, formatDate} = UB.formatter
 
 /**
- *
  * @param {Object} me
  * @param {String} property
  * @returns {*}
@@ -57,13 +57,13 @@ function formatMustache (lang, format, fixFormat) {
       }
     }
     if (typeof value === 'number') {
-      let f = formatByPattern.formatNumber(value, dataArr.length > 1 ? dataArr[1] : format || 'sum', lang)
+      let f = formatNumber(value, dataArr.length > 1 ? dataArr[1] : format || 'sum', lang)
       if ((format === 'sumDelim') && (value < 0)) {
         f = '<span style="color: #ff0000;">' + f + '</span>'
       }
       return f
     } else if (value && value instanceof Date) {
-      return formatByPattern.formatDate(value, dataArr.length > 1 ? dataArr[1] : (format || 'date'), lang)
+      return formatDate(value, dataArr.length > 1 ? dataArr[1] : (format || 'date'), lang)
     } else {
       return value ? '' + value : ''
     }
