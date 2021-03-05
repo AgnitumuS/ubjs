@@ -940,7 +940,12 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
             .logic('([parent] OR [instance])')
             .orderByDesc('actionTime')
         },
-        columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP', 'entity', 'parentEntity', 'request_id']
+        columns: [{
+            id: 'actionTime',
+            format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')
+          },
+          'actionType', 'actionUserName', 'remoteIP', 'entity', 'parentEntity', 'request_id'
+        ]
       },
       shortcutCode: `audit-${entityCode}`
     })

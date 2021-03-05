@@ -224,7 +224,7 @@ adm_desktop:
             			"entityinfo_id",
             			"actionType",
             			"actionUserName",
-            			"actionTime",
+            			{id: 'actionTime', format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
             			"remoteIP",
                         "parentEntity",
             			"request_id",
@@ -264,7 +264,11 @@ adm_desktop:
               cmdType: 'showList',
               cmdData: {
                 entityName: 'uba_audit',
-                columns: ['entity', 'entityinfo_id', 'actionType', 'actionUser', 'actionTime', 'remoteIP', 'targetUser', 'targetGroup', 'targetRole']
+                columns: [
+                  'entity', 'entityinfo_id', 'actionType', 'actionUser',
+                  {id: 'actionTime', format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
+                  'remoteIP', 'targetUser', 'targetGroup', 'targetRole'
+                ]
               }
             }
       - uba_audit-securityDashboard:

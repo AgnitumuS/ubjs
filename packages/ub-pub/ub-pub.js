@@ -10,6 +10,7 @@ const UBCache = require('./UBCache')
 const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
 const iso8601ParseAsDate = LocalDataStore.iso8601ParseAsDate
 const truncTimeToUtcNull = LocalDataStore.truncTimeToUtcNull
+const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 const CryptoJS = require('@unitybase/cryptojs')
 // const CryptoJSCore = require('@unitybase/cryptojs/core')
 const SHA256 = require('@unitybase/cryptojs/sha256')
@@ -87,6 +88,21 @@ const UB = module.exports = {
    * @return {String} The formatted string.
    */
   format: function (stringToFormat, ...values) { return utils.format(stringToFormat, ...values) },
+  /**
+   * Locale based Date and Number formatters, See details in `@unitybase/cs-shared/formatByPattern`
+   * @example
+     const d = new Date(2020, 04, 23, 13, 14)
+     UB.formatter.formatDate(d, 'date') // without 3rd lang parameter - will be formatted for user default lang (for uk - 23.05.2020)
+     UB.formatter.formatDate('2020-05-23', 'date', 'uk') // 23.05.2020
+     UB.formatter.formatDate(d, 'date', 'en') // 05/23/2020
+     UB.formatter.formatDate(d, 'dateTime', 'uk') // 23.05.2020 13:14
+     UB.formatter.formatDate(d, 'date', 'en') // 05/23/2020, 1:14 PM
+     const n = 2305.1
+     UB.formatter.formatNumber(n, 'sum', 'en') // 2,305.10
+     UB.formatter.formatNumber('2305.1', 'sum', 'en') // 2,305.10
+     UB.formatter.formatNumber(n, 'sum') // without 3rd lang parameter - will be formatted for user default lang (for uk "2 305,10")
+   */
+  formatter: formatByPattern,
   /**
    * Copies all the properties of one or several objectsFrom to the specified objectTo.
    * Non-simple type copied by reference!
