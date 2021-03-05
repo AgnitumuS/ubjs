@@ -6,7 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+  - `@unitybase/cs-shared` `formatByPattern` module exposed as ub-pub formatter. So Dates and Numbers formatting can be done using:
+  ```javascript
+  // inside Vue instance
+  this.$UB.formatter.formatDate('2020-05-23', 'date', 'uk')
+  // in any module
+  const UB = require('@unitybase/ub-pub')
+  UB.formatter.formatNumber(1234.5, 'sum', 'en')
+  ```
 ### Changed
 
 ### Deprecated

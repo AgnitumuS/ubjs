@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - display `actionTime` for `uba_auditTrail` (both grid and form) and `uba_audit` (grid only, form TBD) with seconds resolution 
 
 ## [5.19.4] - 2021-03-03
 ### Added

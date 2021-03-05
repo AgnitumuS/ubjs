@@ -25,7 +25,7 @@
         </u-form-row>
 
         <u-form-row :label="`${masterEntity}.actionTime`">
-          <span class="uba-audit__field-text">{{ $formatByPattern.formatDate(actionTime, 'dateTime') }}</span>
+          <span class="uba-audit__field-text">{{ $UB.formatter.formatDate(actionTime, 'dateTimeFull') }}</span>
         </u-form-row>
       </u-grid>
 

@@ -1,5 +1,6 @@
 /**
  * Dates and Numbers formatting using Intl
+ * On client this module exposed as `UB.formatter` and `Vue.prototype.$UB.formatter`
  *
  * @module formatByPattern
  * @author xmax
