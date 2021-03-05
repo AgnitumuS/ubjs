@@ -64,7 +64,7 @@
               {{ getTypeLocaleString(item.messageType) }}
             </span>
             <span class="notifications__item__date">
-              {{ $formatByPattern.formatDate(item.startDate, 'dateTime') }}
+              {{ $UB.formatter.formatDate(item.startDate, 'dateTime') }}
             </span>
           </div>
           <div

@@ -3,7 +3,6 @@ module.exports = createProcessingModule
 
 const UB = require('@unitybase/ub-pub')
 const { dialogError, dialogDeleteRecord } = require('../../components/dialog/UDialog')
-const moment = require('moment')
 const Vue = require('vue')
 const { Notification: $notify } = require('element-ui')
 const {
@@ -211,7 +210,7 @@ function createProcessingModule ({
           if (state.lockInfo.lockType === 'Temp') {
             return UB.i18n('tempSoftLockInfo', state.lockInfo.lockUser)
           } else {
-            return UB.i18n('softLockInfo', state.lockInfo.lockUser, moment(state.lockInfo.lockTime).format('lll'))
+            return UB.i18n('softLockInfo', state.lockInfo.lockUser, UB.formatter.formatDate(state.lockInfo.lockTime, 'dateTimeFull'))
           }
         }
       }
@@ -1030,7 +1029,7 @@ function createProcessingModule ({
             })
             $notify.success(UB.i18n('lockSuccessCreated'))
           } else {
-            return dialogError(UB.i18n('softLockInfo', resultLock.lockUser, moment(resultLock.lockTime).format('lll')))
+            return dialogError(UB.i18n('softLockInfo', resultLock.lockUser, UB.formatter.formatDate(resultLock.lockTime, 'dateTimeFull')))
           }
         }).catch(e => {
           UB.showErrorWindow(e)

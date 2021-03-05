@@ -77,11 +77,11 @@
     >
       <tr>
         <td>{{ $ut('createdEntityCaption') }}:</td>
-        <td>{{ formatDate(mi_createDate) }}</td>
+        <td>{{ $UB.formatter.formatDate(mi_createDate, 'dateTimeFull') }}</td>
       </tr>
       <tr>
         <td>{{ $ut('updatedEntityCaption') }}:</td>
-        <td>{{ formatDate(mi_modifyDate) }}</td>
+        <td>{{ $UB.formatter.formatDate(mi_modifyDate, 'dateTimeFull') }}</td>
       </tr>
 
       <!-- @slot under the dates of creation and modification -->
@@ -421,13 +421,6 @@ export default {
           this.deleteInstance(this.$formServices.forceClose)
         }
       }
-    },
-
-    formatDate (date) {
-      return this.$formatByPattern.formatDate(
-        date,
-        'dateTimeFull'
-      )
     }
   }
 }

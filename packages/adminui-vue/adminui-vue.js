@@ -235,4 +235,8 @@ Vue.config.errorHandler = function (err, vm, trace) {
   window.onerror.apply(UB, ['', trace, '', '', err])
 }
 
-Vue.prototype.$formatByPattern = require('@unitybase/cs-shared').formatByPattern
+/**
+ * @deprecated Use $UB.formatter instead
+ * @type {{formatDate?, formatNumber?, setLang2LocaleHook?, datePatterns?: string[], numberPatterns?: string[], setDefaultLang?: function(string): undefined, collationCompare?}}
+ */
+Vue.prototype.$formatByPattern = UB.formatter

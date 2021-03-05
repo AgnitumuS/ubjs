@@ -105,7 +105,7 @@ export default {
 ```
 
 ### Custom columns
-Custom column always required to have slot, because entity doesn't have data for this column.
+A custom column must have a slot, because entity doesn't have data for it.
 
 ```vue
 <template>

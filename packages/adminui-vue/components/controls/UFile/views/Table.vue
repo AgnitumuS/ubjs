@@ -45,7 +45,7 @@ export default {
         label: 'fileInput.manyFilesTable.uploadDate',
         width: 200,
         minWidth: 200,
-        format: ({ value }) => this.formatDate(value)
+        format: ({ value }) => this.$UB.formatter.formatDate(value, 'dateTime')
       }]
     }
   },

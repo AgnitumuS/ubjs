@@ -2,7 +2,6 @@ const UB = require('@unitybase/ub-pub')
 const { Notification: $notify } = require('element-ui')
 const { dialogDeleteRecord, dialogInfo } = require('../dialog/UDialog')
 const { exportExcel, exportCsv, exportHtml } = require('../../utils/fileExporter')
-const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 const lookups = require('../../utils/lookups')
 const AUDIT_ENTITY = 'uba_auditTrail'
 const Vue = require('vue')
@@ -662,13 +661,13 @@ module.exports = (instance) => ({
           const sumTypeText = column.summaryAggregationOperator !== 'SUM'
             ? ` (${UB.i18n('table.summary.' + column.summaryAggregationOperator)})`
             : ''
-          return `<b>${column.label}</b>${sumTypeText}: ${formatByPattern.formatNumber(resultRow[idx + 1], 'sum')}`
+          return `<b>${column.label}</b>${sumTypeText}: ${UB.formatter.formatNumber(resultRow[idx + 1], 'sum')}`
         })
         .join('<br><br>')
       if (sumsHtml) {
         resultHtml += `<h4>${UB.i18n('table.summary.columnSummaries')}:</h4>${sumsHtml}`
       }
-      resultHtml += `<br><br><b>${UB.i18n('table.summary.totalRowCount')}:</b> ${formatByPattern.formatNumber(resultRow[0], 'number')}`
+      resultHtml += `<br><br><b>${UB.i18n('table.summary.totalRowCount')}:</b> ${UB.formatter.formatNumber(resultRow[0], 'number')}`
       await dialogInfo(resultHtml, 'summary')
     },
 

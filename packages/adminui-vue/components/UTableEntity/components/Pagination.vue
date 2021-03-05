@@ -77,7 +77,7 @@ export default {
     ...mapGetters(['pageSize']),
 
     totalFormatted () {
-      return this.$formatByPattern.formatNumber(
+      return this.$UB.formatter.formatNumber(
         this.total,
         'numberGroup',
         this.$UB.connection.userLang()
