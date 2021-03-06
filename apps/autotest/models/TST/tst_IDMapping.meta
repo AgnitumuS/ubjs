@@ -67,6 +67,9 @@
     "mStorage": {
       "simpleAudit": false,
       "safeDelete": false
+    },
+    "testMixin": {
+      "codeDefault": "val-tst_idmap"
     }
   }
 }

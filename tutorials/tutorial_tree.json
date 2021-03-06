@@ -30,6 +30,9 @@
       "entites": {
         "title": "Entites"
       },
+      "mixin_custom": {
+        "title": "Write your own mixin"
+      },
       "mixin_mstorage": {
         "title": "mStorage (CRUD)"
       },
