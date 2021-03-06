@@ -107,6 +107,9 @@
     "mStorage": {
       "simpleAudit": true,
       "safeDelete": false // should be false for autotes
+    },
+    "testMixin": {
+      "codeDefault": "val_tst_dict"
     }
   },
   "customSettings": {"a": 1},

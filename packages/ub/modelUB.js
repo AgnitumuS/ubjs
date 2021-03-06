@@ -12,7 +12,7 @@ const Errors = require('./modules/ubErrors')
 const ws = require('./modules/web-sockets')
 const mI18n = require('./modules/i18n')
 const modelLoader = require('./modules/modelLoader')
-const mStorage = require('./mixins/mStorage')
+const mixinsFactory = require('./modules/mixinsFactory')
 const _ = require('lodash')
 
 const LANGS_SET = new Set(App.serverConfig.application.domain.supportedLanguages)
@@ -158,8 +158,14 @@ console.log(UB.i18n(yourMessage, 'uk'))
   App: App,
   start: start,
   mixins: {
-    mStorage: mStorage
-  }
+    mStorage: require('./modules/mixins/mStorage') // TODO - remove after implementing a fsStorage mixin
+  },
+  /**
+   * A way to add additional mixins into domain
+   * @param {string} mixinName A name used as "mixins" section key inside entity *.meta file
+   * @param {MixinModule} mixinModule A module what implements a MixinModule interface
+   */
+  registerMixinModule: mixinsFactory.registerMixinModule
 }
 
 /**
@@ -193,6 +199,7 @@ function start () {
       require(model.realPath)
     }
   })
+  mixinsFactory.initializeMixins()
   App.emit('domainIsLoaded')
   blobStores.initBLOBStores(App, Session)
 

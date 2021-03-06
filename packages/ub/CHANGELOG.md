@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UB.registerMixinModule(mixinName, mixinModule)` - a way to add a pure JS mixin implementation.
+  See detailed [mixins](https://unitybase.info/api/server-v5/tutorial-mixin_custom.html) tutorial for details
 
 ### Changed
 

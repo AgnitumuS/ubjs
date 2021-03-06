@@ -1,4 +1,4 @@
-const App = require('../modules/App')
+const App = require('../../modules/App')
 /**
  * PureJS mStorage.addnew method implementation
  * @param {ubMethodParams} ctxt
