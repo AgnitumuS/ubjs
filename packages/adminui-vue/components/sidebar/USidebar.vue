@@ -209,7 +209,8 @@ export default {
 
     loadShortcuts () {
       return this.$UB.connection.Repository('ubm_navshortcut')
-        .attrs('ID', 'parentID', 'caption', 'desktopID', 'iconCls', 'inWindow', 'isCollapsed', 'displayOrder', 'isFolder')
+        // the same field list as in UBStoreManager.shortcutAttributes
+        .attrs('ID', 'desktopID', 'parentID', 'code', 'isFolder', 'caption', 'inWindow', 'isCollapsed', 'displayOrder', 'iconCls')
         .orderBy('desktopID').orderBy('parentID')
         .orderBy('displayOrder').orderBy('caption')
         .select()

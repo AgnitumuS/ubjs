@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - use the same field list for `ubm_form` and `ubm_enum` in adminui-pub and adminui-vue
 
 ## [5.19.5] - 2021-03-03
 ### Added

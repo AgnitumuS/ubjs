@@ -297,12 +297,16 @@ Ext.define('UB.core.UBApp', {
       me.fireEvent('appInitialize', me)
     }).then(function () {
       return UB.core.UBDataLoader.loadStores({
-        ubRequests: ['ubm_form', 'ubm_enum'].map(function (item) {
-          const res = { entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames() }
-          return res
-        }),
+        ubRequests: [
+          UB.Repository('ubm_form')
+            .attrs(UB.core.UBStoreManager.formAttributes)
+            .ubql(),
+          UB.Repository('ubm_enum')
+            .attrs(UB.core.UBStoreManager.enumAttributes)
+            .ubql()
+        ],
         setStoreId: true
-      }).then(function () {
+        }).then(function () {
         return UB.core.UBDataLoader.loadStores({
           ubRequests: [
             UB.Repository('ubm_navshortcut')
