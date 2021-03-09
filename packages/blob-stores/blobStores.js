@@ -199,8 +199,15 @@ function getRequestedBLOBInfo (parsedRequest) {
     storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   } else {
     // check user have access to row and retrieve current blobInfo
-    const blobInfoDS = Repository(entity.code).attrs(attribute.code).where('ID', '=', ID).selectAsObject()
-    if (!blobInfoDS.length) {
+    const blobInfoDS = Repository(entity.code)
+      .attrs(attribute.code)
+      .attrsIf(entity.isUnity, 'mi_unityEntity')
+      .selectById(ID)
+    let baseInstanceID = ID
+    if (blobInfoDS && blobInfoDS.mi_unityEntity) {
+      baseInstanceID = Repository(blobInfoDS.mi_unityEntity).attrs('ID').where('ID', '=', ID).selectScalar()
+    }
+    if (!blobInfoDS || !baseInstanceID) {
       return {
         success: false,
         reason: `${entity.code} with ID=${ID} not accessible`
