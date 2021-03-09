@@ -267,6 +267,18 @@ Session.runAsUser = function (userID, func) {
   }
   return result
 }
+/**
+ * ID of the tenant (for multitenancy applications). 0 if multitenancy is not enabled (see `ubConfig.security.tenants`)
+ * @member {number} tenantID
+ * @memberOf Session
+ * @readonly
+ */
+Object.defineProperty(Session, 'tenantID', {
+  enumerable: true,
+  get: function () {
+    return sessionBinding.tenantID()
+  }
+})
 
 /**
  * Fires just after user successfully logged-in but before auth response is written to client.

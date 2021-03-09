@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - implicitly disable multitenancy mixin for `uba_role`, `uba_rls` and `uba_rls`
 
 ### Changed
 

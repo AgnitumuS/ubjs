@@ -46,7 +46,7 @@ server {
     keepalive_timeout 300s; # up from 75 secs default
     {{/sslkey}}
 
-    server_name {{{externalURL.hostname}}};
+    server_name {{#multitenancy}}*.{{/multitenancy}}{{{externalURL.hostname}}};
 
     # prevent nginx version exposing in Server header
     server_tokens off;

@@ -8,8 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `UB.registerMixinModule(mixinName, mixinModule)` - a way to add a pure JS mixin implementation.
   See detailed [mixins](https://unitybase.info/api/server-v5/tutorial-mixin_custom.html) tutorial for details
+ - `Sesson.tenantID` property added - contains a number >0 for multitenancy app. 0 on case multitenancy not enabled 
+ - implicitly disable multitenancy mixin for `ub_version` and `ub_miration`
 
 ### Changed
+ - implicitlyAddedMixins logic is moved from native to @unitybase/ub model (into `_hookMetadataTransformation.js` hook)
 
 ### Deprecated
 

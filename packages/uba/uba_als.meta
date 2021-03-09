@@ -58,6 +58,9 @@
     "mStorage": {
       "simpleAudit": false,
       "safeDelete": false
+    },
+    "multitenancy": {
+      "enabled": false
     }
   }
 }

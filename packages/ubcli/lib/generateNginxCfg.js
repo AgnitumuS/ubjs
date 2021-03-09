@@ -108,7 +108,10 @@ module.exports = function generateNginxCfg (cfg) {
     staticRoot: '',
     allowCORSFrom: serverConfig.httpServer.allowCORSFrom,
     metricsAllowedFrom,
-    blobStores: []
+    blobStores: [],
+    multitenancy: (serverConfig.security.multitenancy && serverConfig.security.multitenancy.enabled)
+     ? 'yes'
+     : ''
   }
   if (reverseProxyCfg.serveStatic) {
     if (!serverConfig.httpServer.inetPub) {
