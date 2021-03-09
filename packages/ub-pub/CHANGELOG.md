@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - prevent returning of `[object Object]` from `i18n(...)` - use domain-based localization if extended on client `i18n` result is an object
 
 ## [5.8.3] - 2021-03-03
 ### Added

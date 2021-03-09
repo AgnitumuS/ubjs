@@ -36,7 +36,7 @@ function domainBasedLocalization (localeString) {
     return entity[hash]
   }
 
-  let attr = entity.attributes[attributeName]
+  const attr = entity.attributes[attributeName]
   if (!attr) {
     // Expecting the second part to be a valid entity attribute name
     return localeString
@@ -55,9 +55,9 @@ function domainBasedLocalization (localeString) {
  */
 function getByPath (obj, p) {
   if (obj[p]) return obj[p]
-  let pp = p.split('.')
+  const pp = p.split('.')
+  const L = pp.length
   let i = 0
-  let L = pp.length
   do {
     obj = obj[pp[i++]]
   } while ((i < L) && (typeof obj === 'object'))
@@ -75,11 +75,11 @@ module.exports.i18n = function i18n (localeString, ...formatArgs) {
   if (localeString == null) return localeString
   if (typeof localeString !== 'string') return 'i18n: expect string but got ' + JSON.stringify(localeString)
   let res = getByPath(__i18n, localeString)
-  if (res === undefined) res = domainBasedLocalization(localeString)
+  if (res === undefined || typeof res === 'object') res = domainBasedLocalization(localeString)
   if (formatArgs && formatArgs.length && (typeof res === 'string')) {
     // key-value object
     if ((formatArgs.length === 1) && (typeof formatArgs[0] === 'object')) {
-      let first = formatArgs[0]
+      const first = formatArgs[0]
       return res.replace(FORMAT_RE, function (m, k, fmt) {
         let val = getByPath(first, k)
         if (fmt && fmt === 'i18n') {
