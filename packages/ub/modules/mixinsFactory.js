@@ -78,7 +78,7 @@ function initializeMixins() {
     _orderedMixinNames.forEach(mn => {
       if ((enabledEntityMixins.indexOf(mn) !== -1) &&
           (_mixinModulesMap[mn].initEntity)) {
-        console.debug(`Init mixin '${mn} for ${e.name}' ...`)
+        //console.debug(`Init mixin '${mn}' for ${e.name}' ...`)
         _mixinModulesMap[mn].initEntity(e, e.mixins[mn]) // initialize mixin for entity
       }
     })

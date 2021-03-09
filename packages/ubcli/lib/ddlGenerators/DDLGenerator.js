@@ -214,7 +214,8 @@ class DDLGenerator {
     }
     const tableDef = new TableDefinition({
       name: entityTableName,
-      caption: entity.description || entity.caption
+      caption: entity.description || entity.caption,
+      multitenancy: (entity.mixins.multitenancy && (entity.mixins.multitenancy.enabled !== false))
     })
 
     const defaultLang = conn.getAppInfo().defaultLang
@@ -355,6 +356,7 @@ class DDLGenerator {
         })
       }
     }
+
     if (entity.attributes.ID) { // in case ID is mapped to non-uniq attribute - skip primary key generation. Example in tst_virtualID.meta
       let createPK = true
       const m = entity.attributes.ID.mapping

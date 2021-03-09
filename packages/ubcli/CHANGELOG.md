@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added multitenancy support for `generateDDL`
+ - implemented generateDDL multitenancy support for Postgres
+ - `ubcli generateNginxCfg` support multitenancy (by adding a *. for `server_name` directive)
 
 ### Changed
 

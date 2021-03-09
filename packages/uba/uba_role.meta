@@ -59,6 +59,9 @@
       "defaults": {
         "sType": "R"
       }
+    },
+    "multitenancy": {
+      "enabled": false
     }
   }
 }

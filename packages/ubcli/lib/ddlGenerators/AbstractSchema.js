@@ -52,6 +52,7 @@ class TableDefinition {
    * @param {Object} config
    * @param {String} config.name
    * @param {String} config.caption
+   * @param {boolean} [config.multitenancy=false]
    */
   constructor (config) {
     /** @type UBEntity */
@@ -75,6 +76,7 @@ class TableDefinition {
     this.othersNames = {}
     this.isIndexOrganized = false
     this.doComparision = true
+    this.multitenancy = (config.multitenancy === true)
   }
 
   /**

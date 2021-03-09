@@ -21,17 +21,17 @@ module.exports = {
 function initDomainForTestMixin() {
   console.log('testMixin initialization for domain')
 
-  App.on('addConnectionToRequest', (name) => {
-    console.log(`testMixin addConnectionToRequest event handler - connection ${name} added to context`)
-    const mainConn = App.dbConnections['main']
-    if (name === 'main' && mainConn.config.dialect === 'PostgreSQL') {
-      const val0 = mainConn.runParsed("SELECT current_setting('ub.session_id', true) AS sessionID")
-      console.log(`Initial value from db = ${val0}`)
-      mainConn.runParsed(`SELECT set_config('ub.session_id', ?, false)`, [Session.id])
-      const val1 = mainConn.runParsed("SELECT current_setting('ub.session_id', true) AS sessionID")
-      console.log(`Current session id = ${Session.id}, value from db = ${val1}`)
-    }
-  })
+  // App.on('enterConnectionContext', (name) => {
+  //   console.log(`testMixin enterConnectionContext event handler - connection ${name} added to context`)
+  //   const mainConn = App.dbConnections['main']
+  //   if (name === 'main' && mainConn.config.dialect === 'PostgreSQL') {
+  //     const val0 = mainConn.runParsed("SELECT current_setting('ub.session_id', true) AS sessionID")
+  //     console.log(`Initial value from db = ${val0}`)
+  //     mainConn.runParsed(`SELECT set_config('ub.session_id', ?, false)`, [Session.id])
+  //     const val1 = mainConn.runParsed("SELECT current_setting('ub.session_id', true) AS sessionID")
+  //     console.log(`Current session id = ${Session.id}, value from db = ${val1}`)
+  //   }
+  // })
 }
 
 /**

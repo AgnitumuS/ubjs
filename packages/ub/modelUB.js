@@ -293,4 +293,8 @@ Object.defineProperty(global, 'Session', {
 // legacy 1.12
 require('./modules/RLS')
 
+// register a multitenancy mixin
+const multitenancyImpl = require('./modules/mixins/multitenancyMixin')
+UB.registerMixinModule('multitenancy', multitenancyImpl)
+
 module.exports = UB

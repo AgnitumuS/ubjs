@@ -24,13 +24,14 @@ class DBPostgreSQL extends DBAbstract {
     if (!mTables.length) return // all entities in this connection are external or no entities at all - skip loading DB metadata
 
     // old code  // UPPER(t.table_name)
-    const tablesSQL = `select t.table_name as name, 
-      (select description from pg_description
-        where objoid = (select typrelid from pg_type where typname = t.table_name
+    const tablesSQL = `select 
+  tablename as name,
+  (select description from pg_description
+        where objoid = (select typrelid from pg_type where typname = t.tablename
         and typowner = (select oid from pg_roles where rolname = current_schema)) and objsubid = 0
-      ) as caption
-    from information_schema.tables t
-    where t.table_schema = current_schema`
+      ) as caption,
+  rowsecurity::int 
+from pg_catalog.pg_tables t where t.schemaname = current_schema`
 
     /** @type {Array<Object>} */
     let dbTables = this.conn.xhr({
@@ -46,7 +47,8 @@ class DBPostgreSQL extends DBAbstract {
     for (const tabDef of dbTables) {
       const asIsTable = new TableDefinition({
         name: tabDef.name,
-        caption: tabDef.caption
+        caption: tabDef.caption,
+        multitenancy: tabDef.rowsecurity === 1
       })
 
       // Table Columns
@@ -389,6 +391,26 @@ ORDER BY index_id, column_position`
     })
     res.push(')')
     this.DDL.createTable.statements.push(res.join(''))
+  }
+
+  /** @override */
+  genCodeEnableMultitenancy(table) {
+    this.DDL.others.statements.push(
+      `ALTER TABLE ${table.name} ENABLE ROW LEVEL SECURITY`
+    )
+    this.DDL.others.statements.push(
+      `CREATE POLICY ${table.name}_policy ON ${table.name} USING (mi_tenantID = current_setting('ub.tenantID')::bigint)`
+    )
+  }
+
+  /** @override */
+  genCodeDisableMultitenancy(table) {
+    this.DDL.others.statements.push(
+      `ALTER TABLE ${table.name} DISABLE ROW LEVEL SECURITY`
+    )
+    this.DDL.others.statements.push(
+      `DROP POLICY IF EXISTS ${table.name}_policy ON ${table.name}`
+    )
   }
 
   /** @override */

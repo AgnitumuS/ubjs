@@ -224,6 +224,24 @@ class DBAbstract {
   }
 
   /**
+   * Generate code for enabling a multitenancy for table
+   * @abstract
+   * @param {TableDefinition} table
+   */
+  genCodeEnableMultitenancy(table) {
+    throw new Error('Multitenancy is not supported by this DB')
+  }
+
+  /**
+   * Generate code for disabling a multitenancy for table
+   * @abstract
+   * @param {TableDefinition} table
+   */
+  genCodeDisableMultitenancy(table) {
+    throw new Error('Multitenancy is not supported by this DB')
+  }
+
+  /**
    * @abstract
    * @param {TableDefinition} table
    */
@@ -433,6 +451,15 @@ class DBAbstract {
       // if (me.schema.sequences['S_' + asIs.name.toUpperCase()]){
       //    me.genCodeDropSequence('S_' + asIs.name.toUpperCase());
       // }
+    }
+
+    // multitenancy
+    if (!asIs || (asIs.multitenancy !== mustBe.multitenancy)) {
+      if (mustBe.multitenancy) {
+        this.genCodeEnableMultitenancy(mustBe)
+      } else {
+        this.genCodeDisableMultitenancy(mustBe)
+      }
     }
 
     // create PK

@@ -45,6 +45,9 @@
       "mixins_fts": {
         "title": "Full text search"
       },
+      "mixins_multitenancy": {
+        "title": "Multitenancy (EE)"
+      },
       "primary_keys": {
         "title": "Primary keys"
       },
