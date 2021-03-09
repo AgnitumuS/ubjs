@@ -457,7 +457,7 @@ class DBAbstract {
     if (!asIs || (asIs.multitenancy !== mustBe.multitenancy)) {
       if (mustBe.multitenancy) {
         this.genCodeEnableMultitenancy(mustBe)
-      } else {
+      } else if (asIs) { // table exists with multitenancy
         this.genCodeDisableMultitenancy(mustBe)
       }
     }
