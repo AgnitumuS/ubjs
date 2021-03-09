@@ -137,7 +137,7 @@
             <el-input-number
               :value="value"
               :min="0"
-              :max="100"
+              :max="999"
               :disabled="disabled.includes(pagePosition)"
               @change="(val) => pageMargins[i].value = val"
             />
