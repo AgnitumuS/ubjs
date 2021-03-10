@@ -138,7 +138,7 @@ module.exports = function generateNginxCfg (cfg) {
   if (!fs.writeFileSync(cfg.out, rendered)) {
     console.error(`Write to file ${cfg.out} fail`)
   }
-  const linkAsFileName = externalURL.host + '.cfg'
+  const linkAsFileName = externalURL.host + '.conf'
   if (process.platform === 'win32') {
     console.info(`
 Config generated and can be included inside nginx.conf: 
