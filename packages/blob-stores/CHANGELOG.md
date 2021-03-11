@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - **SECURITY**: for **untity**-entity based `getDocument` requests check user have access to the record in both base entity and unity-entity (instead unity-entity only)
 
 ### Changed
 
