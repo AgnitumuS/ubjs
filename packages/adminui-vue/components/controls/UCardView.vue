@@ -20,7 +20,7 @@
             class="u-card-row"
           >
             <div class="u-card-row__label">
-              {{ column.label }}
+              {{ $ut(column.label) }}
             </div>
 
             <el-tooltip
