@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+  - UTableEntity. Added label localization in card view (UCardView)
+  
 ### Changed
 
 ### Deprecated
@@ -15,7 +16,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - use the same field list for `ubm_form` and `ubm_enum` in adminui-pub and adminui-vue
- - UTableEntity. Fix localization in card view (UCardView)
 
 ## [5.19.5] - 2021-03-03
 ### Added
