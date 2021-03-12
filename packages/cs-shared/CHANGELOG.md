@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `LocalDataStorage`: filter by `startWith`/`notStartWith` now case-insensitive (as in DB with _CI locales) 
 
 ## [5.5.19] - 2021-03-03
 ### Added

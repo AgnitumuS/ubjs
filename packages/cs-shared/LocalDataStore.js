@@ -180,6 +180,7 @@ function whereListToFunctions (ubql, fieldList, skipSubQueries) {
   const filterFabricFn = function (propertyIdx, condition, value) {
     let regExpFilter
     const valIsStr = typeof value === 'string'
+    let valUpperIfStr = valIsStr ? value.toUpperCase() : value
     if (skipSubQueries && (condition === 'subquery')) {
       return null // skip subquery
     }
@@ -255,12 +256,14 @@ function whereListToFunctions (ubql, fieldList, skipSubQueries) {
       case 'startWith':
         return function (record) {
           const str = record[propertyIdx]
-          return (str && str.indexOf(value) === 0)
+          if (!str) return false
+          return (str.toUpperCase().indexOf(valUpperIfStr) === 0)
         }
       case 'notStartWith':
         return function (record) {
           const str = record[propertyIdx]
-          return str && str.indexOf(value) !== 0
+          if (!str) return true
+          return str.toUpperCase().indexOf(valUpperIfStr) !== 0
         }
       case 'in':
         return function (record) {

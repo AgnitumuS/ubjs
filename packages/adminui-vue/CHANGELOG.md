@@ -20,7 +20,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - use the same field list for `ubm_form` and `ubm_enum` in adminui-pub and adminui-vue
  - `UTableEntity` *showSummary* action now works for cached entities [LDOC-1168].
-   Fixed by adding a `.misc({__mip_disablecache: true})` to the summary repository (LocalDataStorage can't calculate SUM etc.)  
+   Fixed by adding a `.misc({__mip_disablecache: true})` to the summary repository (LocalDataStorage can't calculate SUM etc.)
+ - `UTableEntity`: for cached entities filter by `startWith`/`notStartWith` now case-insensitive (as for non cached one).
+  Actual fix is in `@unitybase/cs-shared.LocalDataStorage`.
 
 ## [5.19.5] - 2021-03-03
 ### Added
