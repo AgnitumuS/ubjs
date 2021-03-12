@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `ubcli generateNginxCfg` consider default for `serverConfig.metrics.enabled` is true, so correctly adds
+   allow rules for `metrics` endpoint as configured in `serverConfig.metrics.allowedFrom`
 
 ## [5.19.5] - 2021-03-03
 ## [5.19.4] - 2021-02-25

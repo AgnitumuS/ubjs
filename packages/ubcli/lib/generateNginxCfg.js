@@ -81,7 +81,7 @@ module.exports = function generateNginxCfg (cfg) {
     }
   }
   let metricsAllowedFrom = []
-  if (serverConfig.metrics.enabled && serverConfig.metrics.allowedFrom) {
+  if ((serverConfig.metrics.enabled !== false) && serverConfig.metrics.allowedFrom) {
     metricsAllowedFrom = serverConfig.metrics.allowedFrom.split(';')
   }
   const sharedUbAppsFolder = process.platform === 'win32'
