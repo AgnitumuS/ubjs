@@ -75,7 +75,11 @@
         />
 
         <filter-selector />
-        <sort ref="sort" />
+        <sort
+          ref="sort"
+          :target-column="targetColumn"
+          @click.native="onSort"
+        />
         <pagination />
 
         <!-- @slot Replace whole toolbar dropdown -->
@@ -102,7 +106,7 @@
                 :store="$store"
                 name="toolbarDropdownAddNew"
               />
-              <div v-else/>
+              <div v-else />
             </template>
             <!-- @slot Replace edit button in toolbar dropdown -->
             <template #edit>
@@ -112,7 +116,7 @@
                 :store="$store"
                 name="toolbarDropdownEdit"
               />
-              <div v-else/>
+              <div v-else />
             </template>
             <!-- @slot Replace copy button in toolbar dropdown -->
             <template #copy>
@@ -122,7 +126,7 @@
                 :store="$store"
                 name="toolbarDropdownCopy"
               />
-              <div v-else/>
+              <div v-else />
             </template>
             <!-- @slot Replace delete button in toolbar dropdown -->
             <template #delete>
@@ -132,7 +136,7 @@
                 :store="$store"
                 name="toolbarDropdownDelete"
               />
-              <div v-else/>
+              <div v-else />
             </template>
             <!-- @slot Replace audit button in toolbar dropdown -->
             <template #audit>
@@ -142,7 +146,7 @@
                 :store="$store"
                 name="toolbarDropdownAudit"
               />
-              <div v-else/>
+              <div v-else />
             </template>
             <!-- @slot Replace summary button in toolbar dropdown -->
             <template #summary>
@@ -152,7 +156,7 @@
                 :store="$store"
                 name="toolbarDropdownSummary"
               />
-              <div v-else/>
+              <div v-else />
             </template>
             <!-- @slot Replace data history button in toolbar dropdown -->
             <template #dataHistory>
@@ -162,7 +166,7 @@
                 :store="$store"
                 name="toolbarDropdownDataHistory"
               />
-              <div v-else/>
+              <div v-else />
             </template>
             <!-- @slot Replace exports button in toolbar dropdown -->
             <template #exports>
@@ -172,7 +176,7 @@
                 :store="$store"
                 name="toolbarDropdownExports"
               />
-              <div v-else/>
+              <div v-else />
             </template>
 
             <!-- @slot Replace viewMode button in toolbar dropdown -->
@@ -456,6 +460,12 @@ export default {
     NextPageButton: require('./NextPageButton.vue').default
   },
 
+  inject: {
+    close: {
+      default: () => () => console.warn('Injection close didn\'t provided')
+    }
+  },
+
   props: {
     /**
      * If set, table will have static height.
@@ -488,14 +498,9 @@ export default {
     onSelectRecord: Function
   },
 
-  inject: {
-    close: {
-      default: () => () => console.warn('Injection close didn\'t provided')
-    }
-  },
-
   data () {
     return {
+      targetColumn: null,
       contextMenuRowId: null
     }
   },
@@ -742,10 +747,15 @@ export default {
       this.SELECT_COLUMN(column.id)
       // setTimeout for prevent click outside
       if (this.$refs.sort && this.$refs.sort.$refs.dropdown) {
-        this.$refs.sort.$refs.dropdown.setReferenceEl(target)
+        this.targetColumn = target
         setTimeout(this.$refs.sort.$refs.dropdown.toggleVisible, 0)
       }
+    },
+
+    onSort () {
+      this.targetColumn = null
     }
+
   }
 }
 </script>

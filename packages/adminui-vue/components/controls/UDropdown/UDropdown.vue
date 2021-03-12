@@ -83,6 +83,13 @@ export default {
     },
 
     /**
+     * The reference element used to position the popper
+     */
+    refElement: {
+      default: null
+    },
+
+    /**
      * Disables dropdown toggle
      */
     disabled: {
@@ -96,7 +103,6 @@ export default {
       visible: false,
       clickOutsideListenerId: 0,
       renderKey: 0,
-      refElement: null,
       virtualElement: {
         getBoundingClientRect: this.generateClientRect(),
         contains: () => true,
@@ -148,18 +154,12 @@ export default {
       this.visible = !this.visible
     },
 
-    setReferenceEl (element) {
-      this.refElement = element
-    },
-
     beforeEnter (el) {
       el.style.zIndex = this.$zIndex()
-      this.referenceEl = this.$slots.default === undefined ? this.virtualElement : this.$refs.reference
       if (this.refElement === null) {
         this.referenceEl = this.$slots.default === undefined ? this.virtualElement : this.$refs.reference
       } else {
         this.referenceEl = this.refElement
-        this.refElement = null
       }
       const arrow = this.$refs.arrow
 
