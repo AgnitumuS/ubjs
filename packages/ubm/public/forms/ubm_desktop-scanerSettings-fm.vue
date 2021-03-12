@@ -65,7 +65,10 @@
           </u-form-row>
 
           <u-form-row :label="$ut('desktopService.UBScan.CurrentScaner.AllowAddPages')">
-            <el-checkbox v-model="AllowAddPages" />
+            <el-checkbox
+              v-model="AllowAddPages"
+              :disabled="outputFormat === 'JPEG'"
+            />
           </u-form-row>
 
           <u-form-row :label="$ut('desktopService.UBScan.CurrentScaner.UseFeeder')">
@@ -78,6 +81,7 @@
               :key="value"
               v-model="outputFormat"
               :label="value"
+              :disabled="value === 'JPEG' && AllowAddPages === true"
             >
               {{ label }}
             </el-radio>

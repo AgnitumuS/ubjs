@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- scanner settings form - `Multiple page` checkbox becomes disabled in case `JPEG` format is selected
 
 ## [5.19.4] - 2021-03-03
 ### Changed
