@@ -639,6 +639,7 @@ module.exports = (instance) => ({
     async showSummary ({ state, getters }) {
       const repo = getters.currentRepository.clone()
         .withTotal(false).start(0).limit(0) // clear total and possible pagination
+        .misc({__mip_disablecache: true}) // cached entities do not support group by
       repo.orderList = [] // clear possible order list
       repo.fieldList = ['COUNT([ID])'] // always calc count in first column
       const summaryColumns = []

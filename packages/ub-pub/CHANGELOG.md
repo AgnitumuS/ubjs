@@ -21,7 +21,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+ - `ClientRepository` bypass `addAttrsForCachedEntity` for repositories with `__mip_disablecache: true` in misc.
+  
 ## [5.8.3] - 2021-03-03
 ### Added
  - `UB.xhr.defaults` property added - direct access to the default HTTP parameters for `xhr`.
