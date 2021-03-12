@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
   - UTableEntity. Added label localization in card view (UCardView)
-  
+  - UButtonGroup. Added the new prop `direction` with two options `horizontal` by default and the new `vertical` one
+  - UDropdown. Added the new prop `refElement` for used to position the popper
+  - USort. Added the new prop `targetColumn` for positioning the sorting popup 
 ### Changed
-
+  - USort. When the prop `target Column` is set, the sorting window shows up without the column selector 
+    and with a buttons align vertically
 ### Deprecated
 
 ### Removed

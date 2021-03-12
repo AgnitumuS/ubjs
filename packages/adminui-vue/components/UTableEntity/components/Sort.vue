@@ -2,6 +2,7 @@
   <u-dropdown
     v-if="sortableColumns.length"
     ref="dropdown"
+    :ref-element="targetColumn"
   >
     <el-tooltip
       :content="$ut('table.sort.label')"
@@ -20,7 +21,10 @@
       slot="dropdown"
       class="u-fake-table"
     >
-      <div class="u-fake-table__tr">
+      <div
+        v-if="!isColSortRegime"
+        class="u-fake-table__tr"
+      >
         <div class="u-fake-table__td u-fake-table__label">
           {{ $ut('table.columnLabel') }}
         </div>
@@ -40,7 +44,7 @@
       </div>
 
       <div
-        v-if="selectedSortableColumnId !== null"
+        v-if="selectedSortableColumnId !== null && !isColSortRegime"
         class="u-fake-table__tr"
       >
         <div class="u-fake-table__td u-fake-table__label">
@@ -61,6 +65,22 @@
           </u-button-group>
         </div>
       </div>
+      <div v-if="selectedSortableColumnId !== null && isColSortRegime">
+        <u-button-group
+          direction="vertical"
+        >
+          <u-button
+            v-for="sortOption in sortOptions"
+            :key="sortOption.value"
+            :icon="sortOption.icon"
+            :color="sortOption.value === sortOrder ? 'primary' : 'control'"
+            :appearance="sortOption.value === sortOrder ? 'default' : 'plain'"
+            @click="selectSort(sortOption.value)"
+          >
+            {{ sortOption.label }}
+          </u-button>
+        </u-button-group>
+      </div>
     </div>
   </u-dropdown>
 </template>
@@ -68,6 +88,17 @@
 <script>
 export default {
   name: 'UTableEntitySort',
+
+  props: {
+
+    /**
+     * The target column for positioning the sorting popup.
+     */
+    targetColumn: {
+      default: null
+    }
+
+  },
 
   data () {
     return {
@@ -130,6 +161,10 @@ export default {
           order
         })
       }
+    },
+
+    isColSortRegime () {
+      return this.targetColumn !== null
     }
   },
 
