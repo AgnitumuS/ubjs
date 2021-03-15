@@ -1,0 +1,8 @@
+{
+ "isDefault": true,
+ "entity": "cdn_person",
+ "formType": "vue",
+ "caption": "physPerson_title",
+ "description": "physPerson_title",
+ "formCode": "{\"fName\":\"cdn_person-fm.vue\",\"origName\":\"cdn_person-fm.vue\",\"ct\":\"script/x-vue\",\"size\":6602,\"md5\":\"4d0c61a33f9da11a7943be7fe74703a0\"}"
+}

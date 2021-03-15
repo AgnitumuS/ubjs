@@ -183,8 +183,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
         resp.writeEnd(filePath)
       }
     } else {
-      resp.statusCode = 404
-      resp.writeEnd('Not found')
+      return resp.notFound(`File path for BLOB item ${requestParams.entity}_${requestParams.attribute}_${requestParams.ID} is empty`)
     }
   }
 
@@ -271,6 +270,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
   genNewPlacement (attribute, dirtyItem, ID) {
     // generate file name for storing file
     let fn = this.keepOriginalFileNames ? dirtyItem.origName : ''
+    if (this.keepOriginalFileNames) BlobStoreCustom.validateFileName(fn)
     const ext = path.extname(dirtyItem.origName)
     if (!fn) {
       const entropy = (Date.now() & 0x0000FFFF).toString(16)

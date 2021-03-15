@@ -10,13 +10,56 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   See detailed [mixins](https://unitybase.info/api/server-v5/tutorial-mixin_custom.html) tutorial for details
  - `Sesson.tenantID` property added - contains a number >0 for multitenancy app. 0 on case multitenancy not enabled 
  - implicitly disable multitenancy mixin for `ub_version` and `ub_miration`
+ - `fsStorage` mixin: implements a CRUID operation for entity, whose data is stored in the file system.
+   Used as data storage implementation for `ubm_form`, `ubs_reports` and `ubm_diagrams` - 
+   see [File system storage tutorial](https://unitybase.info/api/server-v5/tutorial-mixins_fsstorage.html) for details.
+   
+   **BREAKING** diagrams, reports and forms MUST be converted:
+    - `ubcli convertDefFiles -u root`
+    - *.ubrow and modified files added to git (`git add *.ubrow && git add *.def && git add *.template`)
+    - files, reported by convertDefFiles should be deleted from project (removal script is outputted to the stdout by `convertDefFiles`) 
 
+ - [critical section](https://en.wikipedia.org/wiki/Critical_section) now available in http working threads:
+ ```javascript
+  const App = require('@unitybase/ub').App
+  // critical sectin must be registered once in the moment modules are evaluated 
+  const MY_CS = App.registerCriticalSection('SHARED_FILE_ACCESS')
+
+  function concurrentFileAccess() {
+    // prevents mutual access to the same file from the different threads
+    App.enterCriticalSection(FSSTORAGE_CS)
+    try {
+      const data = fs.readfileSync('/tmp/concurrent.txt', 'utf8')
+      // do some operation what modify data
+      fs.writefileSync('/tmp/concurrent.txt', data)
+    } finally {
+      // important to leave critical section in finally block to prevent forever lock 
+      App.leaveCriticalSection(FSSTORAGE_CS)  
+    }
+  }
+ ``` 
+
+ - `App.logEnter(enterText)` / `App.logLeave` - allows increasing/decreasing logging recursion level
+  (just like native methods do). Each `logEnter` call MUST have paired `logLeave` call, so better to use as such:
+```javascript
+ wrapEnterLeave: function (enterText, originalMethod) {
+    return function(ctx) {
+      App.logEnter(enterText)
+      try {
+        originalMethod(ctx)
+      } finally {
+        App.logLeave()
+      }
+    }
+  }
+```
 ### Changed
  - implicitlyAddedMixins logic is moved from native to @unitybase/ub model (into `_hookMetadataTransformation.js` hook)
 
 ### Deprecated
 
 ### Removed
+ - `UB.mixins.mStorage` removed (obsolete) 
 
 ### Fixed
 

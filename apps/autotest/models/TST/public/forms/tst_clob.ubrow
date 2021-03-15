@@ -1,0 +1,9 @@
+{
+ "isDefault": true,
+ "entity": "tst_clob",
+ "formType": "auto",
+ "caption": "tst_clob",
+ "description": "tst_clob",
+ "formDef": "{\"fName\":\"tst_clob-fm.def\",\"origName\":\"tst_clob-fm.def\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":1347,\"md5\":\"6550bf3ed812367a4926ae7d177ee0bb\"}",
+ "formCode": "{\"fName\":\"tst_clob-fm.js\",\"origName\":\"tst_clob-fm.js\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":61,\"md5\":\"9a7c1096a6a620f2b4e91712178e5fe4\"}"
+}

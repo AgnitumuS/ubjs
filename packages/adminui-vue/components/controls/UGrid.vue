@@ -64,8 +64,8 @@ export default {
       type: Number
     },
     /**
-     * Set label position to child `<u-form-row>`'s
-     * Can be override by same prop in `u-form-row`
+     * Set label position of child `<u-form-row>`'s
+     * Can be override by the same prop in `u-form-row`
      */
     labelPosition: {
       type: String,

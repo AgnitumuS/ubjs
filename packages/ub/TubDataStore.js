@@ -216,9 +216,10 @@ TubDataStore.DATA_NAMES = {
 //  move adtDocument content from temporary store to permanent
 // return true if some document attribute actually changed
 /**
- * If have attributes of type `Document` and it values changed then
- * for each changed attribute:
+ * For modified attributes of type `Document`:
  *  - call a BLOB store implementation method `moveToPermanent`
+ *  - sets a BLOB attribute value in execParams to permanent blob info
+ *
  * @param {ubMethodParams} ctx
  * @param {Boolean} isUpdate
  * @return {Boolean} True in case some of document type attributes actually changed

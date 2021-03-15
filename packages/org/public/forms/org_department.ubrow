@@ -1,0 +1,8 @@
+{
+ "entity": "org_department",
+ "formType": "vue",
+ "caption": "orgDepartment",
+ "description": "orgDepartment",
+ "isDefault": false,
+ "formCode": "{\"fName\":\"org_department-fm.vue\",\"origName\":\"org_department-fm.vue\",\"ct\":\"script/x-vue\",\"size\":2994,\"md5\":\"f076764cc0cf6f6647d51c3767d981f5\"}"
+}

@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const BlobStoreCustom = require('./blobStoreCustom')
+const mime = require('mime-types')
 
 // model's public folder may not exists - in this we will create it
 // during `getPermanentFileName` and cache verified path's here
@@ -54,13 +55,16 @@ class MdbBlobStore extends BlobStoreCustom {
       fs.writeFileSync(fn, content)
     }
     const md5 = nhashFile(fn, 'MD5')
-    console.debug('temp file MD5:', md5)
+    let fileExt = path.extname(request.fileName)
+    if (fileExt === '.def') fileExt = '.js'
+    const ct = mime.contentType(fileExt) || 'application/octet-stream'
+    const fileSize = fs.statSync(fn).size
     return {
       store: this.name,
       fName: request.fileName,
       origName: request.fileName,
-      ct: '', // TODO
-      size: content.byteLength,
+      ct,
+      size: fileSize,
       md5,
       isDirty: true
     }
@@ -137,6 +141,7 @@ class MdbBlobStore extends BlobStoreCustom {
       ID: ID
     })
     const permanentPath = this.getPermanentFileName(dirtyItem)
+    console.debug('move temp file', tempPath, 'to', permanentPath)
     fs.renameSync(tempPath, permanentPath)
     const nameWoPath = path.basename(permanentPath)
     return {
@@ -160,6 +165,7 @@ class MdbBlobStore extends BlobStoreCustom {
     if (pathPart.length !== 2) return '' // this is error
     const model = this.App.domainInfo.models[pathPart[0]]
     if (!model) throw new Error('MDB blob store - not existed model' + pathPart[0])
+    BlobStoreCustom.validateFileName(pathPart[1])
     const folder = path.join(model.realPublicPath, pathPart[1])
     if (!VERIFIED_PATH[folder]) {
       // verify public path exists

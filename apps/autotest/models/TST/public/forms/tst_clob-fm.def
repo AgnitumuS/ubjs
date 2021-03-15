@@ -1,10 +1,3 @@
-// @! "do not remove comments below unless you know what you do!"
-// @isDefault "true"
-// @entity "tst_clob"
-// @model "TST"
-// @formType "auto"
-// @caption "tst_clob"
-// @description "tst_clob"
 exports.formDef = {
   	parentConfig: {
       layout: {

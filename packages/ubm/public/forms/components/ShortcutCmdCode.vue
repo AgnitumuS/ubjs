@@ -44,13 +44,15 @@
 <script>
 const { mapInstanceFields } = require('@unitybase/adminui-vue')
 const ENTITY_RE = /"(?:entity|entityName)"\s*:\s*"(\w*)"/
+const ENTITY_JS_RE = /(?:entity|entityName)\s*:\s*'(\w*)'/
 
 export default {
   name: 'ShortcutCmdCodeSnippet',
 
   data () {
     return {
-      entityName: ''
+      entityName: '',
+      isJsStyle: false
     }
   },
 
@@ -78,12 +80,17 @@ export default {
 
   methods: {
     selectNode (node) {
-      this.$refs.codeMirror._codeMirror.replaceSelection(`"${node.id}"`)
+      this.$refs.codeMirror._codeMirror.replaceSelection(this.isJsStyle ? `'${node.id}'` : `"${node.id}"`)
       this.$refs.codeMirror._codeMirror.getInputField().focus()
     },
 
     getEntityName () {
-      const res = ENTITY_RE.exec(this.cmdCode)
+      this.isJsStyle = false
+      let res = ENTITY_RE.exec(this.cmdCode) // "entity": "xx"
+      if (!res) {
+        res = ENTITY_JS_RE.exec(this.cmdCode) // entity: 'xx'
+        this.isJsStyle = true
+      }
       if (res && res[1] && this.$UB.connection.domain.has(res[1])) {
         this.entityName = res[1]
       }

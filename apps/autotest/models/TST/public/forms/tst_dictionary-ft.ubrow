@@ -1,0 +1,8 @@
+{
+ "isDefault": false,
+ "entity": "tst_dictionary",
+ "formType": "vue",
+ "caption": " tst dictionary item",
+ "description": "sadsa sa",
+ "formCode": "{\"fName\":\"tst_dictionary-ft-fm.vue\",\"origName\":\"tst_dictionary-ft-fm.vue\",\"ct\":\"script/x-vue\",\"size\":8524,\"md5\":\"3ba8cf76d58bfd2157e6ce47781da433\"}"
+}

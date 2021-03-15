@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - **SECURITY** filesystem based blob stores checks file name is valid before storing content into the file system
 
 ## [5.19.4] - 2021-03-03
 ## [5.19.3] - 2021-02-10

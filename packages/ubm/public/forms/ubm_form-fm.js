@@ -53,7 +53,7 @@ exports.formCode = {
 
   onCodeChanged: function (field, newValue) {
     if (this.isEditMode) {
-      throw new UB.UBError('To change form code rename both *-fm.js and *-fm.def files in folder "yourModel\\public\\forms"')
+      throw new UB.UBError('To change form code rename *-fm.js, *-fm.def and *.ubrow files in the folder "yourModel/public/forms"')
     }
     this.record.set('ID', this.CRC32(newValue))
     this.getUBCmp('attrFormDef').setOrigName(newValue.length > 0 ? newValue + '.def' : newValue)

@@ -1,9 +1,3 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "false"
-//@entity "org_organization"
-//@formType "auto"
-//@caption "orgOrganization"
-//@description "orgOrganization"
 exports.formDef = {
 
     size: {

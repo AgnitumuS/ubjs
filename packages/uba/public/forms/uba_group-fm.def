@@ -1,11 +1,3 @@
-// @! "do not remove comments below unless you know what you do!"
-// @isDefault "true"
-// @entity "uba_group"
-// @model "UBA"
-// @formType "auto"
-// @caption "uba_group"
-// @description "uba_group"
-
 exports.formDef = {
   size: {
     width: 500,

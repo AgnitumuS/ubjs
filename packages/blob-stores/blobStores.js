@@ -214,7 +214,7 @@ function getRequestedBLOBInfo (parsedRequest) {
       }
     }
     const rev = parsedRequest.bsReq.revision
-    const blobInfoTxt = blobInfoDS[0][attribute.code]
+    const blobInfoTxt = blobInfoDS[attribute.code]
     if (!blobInfoTxt && !rev) {
       // only return error, if request does not have parameter "revision"
       return {

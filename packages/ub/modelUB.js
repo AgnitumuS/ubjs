@@ -67,7 +67,6 @@ const UB = module.exports = {
    * Construct new data store
    * @param {string} entityCode
    * @return {TubDataStore}
-   * @constructor
    */
   DataStore: function (entityCode) {
     return new TubDataStore(entityCode)
@@ -157,15 +156,12 @@ console.log(UB.i18n(yourMessage, 'uk'))
    */
   App: App,
   start: start,
-  mixins: {
-    mStorage: require('./modules/mixins/mStorage') // TODO - remove after implementing a fsStorage mixin
-  },
   /**
    * A way to add additional mixins into domain
    * @param {string} mixinName A name used as "mixins" section key inside entity *.meta file
    * @param {MixinModule} mixinModule A module what implements a MixinModule interface
    */
-  registerMixinModule: mixinsFactory.registerMixinModule
+  registerMixinModule: mixinsFactory.registerMixinModule,
 }
 
 /**
@@ -220,7 +216,7 @@ function start () {
 
 // normalize ENUMS TubCacheType = {Entity: 1, SessionEntity: 2} => {Entity: 'Entity', SessionEntity: 'SessionEntity'}
 function normalizeEnums () {
-  const enums = ['TubftsScope', 'TubCacheType', 'TubEntityDataSourceType', 'TubEntityDataSourceType',
+  const enums = ['TubftsScope', 'TubCacheType', 'TubEntityDataSourceType',
     'TubAttrDataType', 'TubSQLExpressionType', 'TubSQLDialect', 'TubSQLDriver']
   enums.forEach(eN => {
     const e = global[eN]
@@ -293,8 +289,11 @@ Object.defineProperty(global, 'Session', {
 // legacy 1.12
 require('./modules/RLS')
 
-// register a multitenancy mixin
-const multitenancyImpl = require('./modules/mixins/multitenancyMixin')
+// register mixin
+const multitenancyImpl = require('./mixins/multitenancyMixin')
 UB.registerMixinModule('multitenancy', multitenancyImpl)
+
+const fsStorageImpl = require('./mixins/fsStorageMixin')
+UB.registerMixinModule('fsStorage', fsStorageImpl)
 
 module.exports = UB

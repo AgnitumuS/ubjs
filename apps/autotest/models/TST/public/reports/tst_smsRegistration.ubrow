@@ -1,0 +1,5 @@
+{
+ "name": "",
+ "template": "{\"fName\":\"tst_smsRegistration.template\",\"origName\":\"tst_smsRegistration.template\",\"ct\":\"application/ubreport\",\"size\":32,\"md5\":\"4af4e45d8fe8ac72a986776946905782\"}",
+ "code": "{\"fName\":\"tst_smsRegistration.js\",\"origName\":\"tst_smsRegistration.js\",\"ct\":\"application/def\",\"size\":753,\"md5\":\"264c1a53ad7e8d090fbfed240c8d7b38\"}"
+}

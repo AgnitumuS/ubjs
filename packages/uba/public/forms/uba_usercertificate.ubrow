@@ -1,0 +1,9 @@
+{
+ "isDefault": true,
+ "entity": "uba_usercertificate",
+ "formType": "auto",
+ "caption": "uba_usercertificate",
+ "description": "uba_usercertificate",
+ "formDef": "{\"fName\":\"uba_usercertificate-fm.def\",\"origName\":\"uba_usercertificate-fm.def\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":935,\"md5\":\"4baa4e71a36279676aab0e2d94ac1b93\"}",
+ "formCode": "{\"fName\":\"uba_usercertificate-fm.js\",\"origName\":\"uba_usercertificate-fm.js\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":4292,\"md5\":\"38a32cc6a398dcea359a603859b066b6\"}"
+}

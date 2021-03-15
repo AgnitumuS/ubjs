@@ -1,8 +1,0 @@
-// @! "do not remove comments below unless you know what you do!"
-// @mi_modifyDate "Tue Sep 17 2019 01:24:34 GMT+0300 (FLE Standard Time)"
-// @isDefault "true"
-// @entity "cdn_classifier"
-// @model "CDN"
-// @formType "vue"
-// @caption "classifier.caption"
-// @description "classifier.description"

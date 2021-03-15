@@ -1,6 +1,3 @@
-<!--@name "Report Builder manual"-->
-<!--@model "UBS"-->
-
 <!--%pageOrientation:portrait--><h1 style="text-align: center;">Report <br />builder manual</h1>
 <p><span style="font-size: 10pt;">In UnityBase <strong>report is a <a href="https://github.com/janl/mustache.js">Mustache</a>! </strong>So you can use <strong>everything must</strong>ache is support.</span></p>
 <p><span style="font-size: 10pt;">Table <span style="text-decoration: underline;">headers are resizable in report viewer</span>, so user can change it before print&nbsp;</span></p>

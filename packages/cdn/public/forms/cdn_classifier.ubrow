@@ -1,0 +1,8 @@
+{
+ "isDefault": true,
+ "entity": "cdn_classifier",
+ "formType": "vue",
+ "caption": "classifier.caption",
+ "description": "classifier.description",
+ "formCode": "{\"fName\":\"cdn_classifier-fm.vue\",\"origName\":\"cdn_classifier-fm.vue\",\"ct\":\"script/x-vue\",\"size\":2025,\"md5\":\"80ca31ef4916e6022be5a535e8993d98\"}"
+}

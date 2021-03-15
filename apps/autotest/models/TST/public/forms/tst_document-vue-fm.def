@@ -1,9 +1,0 @@
-// @! "do not remove comments below unless you know what you do!"
-// @mi_modifyDate "Fri Mar 08 2019 21:12:59 GMT+0200 (EET)"
-// @isDefault "false"
-// @entity "tst_document"
-// @model "TST"
-// @formType "vue"
-// @caption "Hello, Vue"
-// @description "VueJS based form test"
-

@@ -1,11 +1,3 @@
-// @! "do not remove comments below unless you know what you do!"
-// @mi_modifyDate "Sun May 06 2018 19:05:29 GMT+0300 (FLE Standard Time)"
-// @isDefault "true"
-// @entity "ubm_diagram"
-// @model "UBM"
-// @formType "auto"
-// @caption "ER diagram"
-// @description "ER diagram"
 /* global UB, Ext */
 exports.formDef = {
   size: {
@@ -43,6 +35,7 @@ exports.formDef = {
     layout: 'fit',
     flex: 1,
     margins: '10 0 0 0',
+    documentMIME: 'application/ubMetaDiagram',
     expanded: true,
     attributeName: 'document'
   }]

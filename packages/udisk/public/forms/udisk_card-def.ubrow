@@ -1,0 +1,9 @@
+{
+ "isDefault": true,
+ "entity": "udisk_card",
+ "formType": "custom",
+ "caption": "udiskProperties",
+ "description": "udiskProperties",
+ "formDef": "{\"fName\":\"udisk_card-def-fm.def\",\"origName\":\"udisk_card-def-fm.def\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":122,\"md5\":\"b34597fefc4a61541fd438a0d54f2a9c\"}",
+ "formCode": "{\"fName\":\"udisk_card-def-fm.js\",\"origName\":\"udisk_card-def-fm.js\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":95,\"md5\":\"b45472d2042f9483084ec4e99fcab214\"}"
+}

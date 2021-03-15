@@ -222,7 +222,6 @@ function runMigrations (params) {
         paramsForUbMigrate.silent = true
         // paramsForUbMigrate.verbose = false
         console.log('Run ub-migrate with parameters:', JSON.stringify(paramsForUbMigrate))
-        debugger
         ubMigrate.exec(paramsForUbMigrate)
       }
     }

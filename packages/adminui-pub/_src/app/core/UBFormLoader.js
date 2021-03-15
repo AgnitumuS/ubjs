@@ -123,10 +123,8 @@ Ext.define('UB.core.UBFormLoader', {
     if (!record) throw new Error(`Unknown form code "${config.formCode}"`)
 
     let formType = record.get('formType').toString()
-    let formDefReference = record.get('formDef').toString()
+    let formDefReference = record.get('formDef')
     let formJSReference = record.get('formCode') // null is possible here
-
-    if (!formDefReference) throw new Error('Form definition is empty for form with code ' + config.formCode)
 
     let formModelName = record.get('model')
     let model = $App.domainInfo.models[formModelName]
@@ -138,6 +136,7 @@ Ext.define('UB.core.UBFormLoader', {
       defImportPath = '' // vue & module forms always in one *.vue or *.js file
     }
     if (!formJSReference) jsImportPath = ''
+    if (!formDefReference) defImportPath = ''
     let pJS, pDef
     if (jsImportPath) pJS = SystemJS.import(jsImportPath)
     if (defImportPath) pDef = SystemJS.import(defImportPath)

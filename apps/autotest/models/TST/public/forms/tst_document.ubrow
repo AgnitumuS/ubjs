@@ -1,0 +1,8 @@
+{
+ "isDefault": true,
+ "entity": "tst_document",
+ "formType": "vue",
+ "caption": "tst_document.meta",
+ "description": "Document type attribute test",
+ "formCode": "{\"fName\":\"tst_document-fm.vue\",\"origName\":\"tst_document-fm.vue\",\"ct\":\"script/x-vue\",\"size\":4331,\"md5\":\"aaf1d59762e5a5ba3eb6dd5ea995bf40\"}"
+}
