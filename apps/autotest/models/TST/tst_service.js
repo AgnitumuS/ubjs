@@ -118,6 +118,10 @@ me.testServerReportPDF = function (ctx) {
 }
 me.entity.addMethod('testServerReportPDF')
 
+// ubs_report.testServerRendering method for autotest
+me.testServerRendering = ubs_report.testServerRendering
+me.entity.addMethod('testServerRendering')
+
 /**
  * Test UB.UBAbortError
  * @param {ubMethodParams} ctx

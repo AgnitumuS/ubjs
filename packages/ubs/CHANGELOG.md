@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - server-sire report rendering fixed (bug in ubs@5.19.5)
 
 ## [5.19.5] - 2021-03-15
 ### Added

@@ -6,7 +6,6 @@
 const assert = require('assert')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
-const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
 
 module.exports = function runJSMixinsTests (options) {
   if (!options) {

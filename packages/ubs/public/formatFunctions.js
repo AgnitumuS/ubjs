@@ -1,11 +1,11 @@
 /*
 * Created by xmax on 17.02.2018
 */
-const UB = require('@unitybase/ub-pub')
-const {formatNumber, formatDate} = UB.formatter
+// UB.formatter is client side only - use a cs-shared.formatByPattern directly
+const {formatNumber, formatDate} = require('@unitybase/cs-shared').formatByPattern
 
 /**
- * @param {Object} me
+   * @param {Object} me
  * @param {String} property
  * @returns {*}
  */
@@ -21,8 +21,8 @@ function getDottedProperty (me, property) {
 /**
  *
  * @param {String} lang
- * @param {String} format
- * @param {String} fixFormat "number" or "date"
+ * @param {String} [format]
+ * @param {String} [fixFormat] "number" or "date"
  * @return {Function}
  */
 function formatMustache (lang, format, fixFormat) {

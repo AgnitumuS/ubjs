@@ -38,33 +38,36 @@ function generateDefaultJS (ctx) {
   row.template = JSON.stringify(tplBlob)
 }
 
+/**
+ * REST endpoint for Report test purpose. Available in `-dev` mode only.
+ * Expect POST request with JSON on body {reportCode: 'reportCode', responseType: 'pdf'|'html', reportParams: {paramName: paramValue, ...}}
+ * Return a HTML/PDF
+ *
+ * @param {null} ctxt
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+me.testServerRendering = function (ctxt, req, resp) {
+  // also used as ubs_report.testServerRendering method for autotest
+  const body = req.read()
+  const params = JSON.parse(body)
+  const UBServerReport = require('./modules/UBServerReport')
+  const mime = require('mime-types')
+
+  const result = UBServerReport.makeReport(params.reportCode, params.responseType, params.reportParams)
+
+  if (result.reportType === 'pdf') {
+    console.debug('Generate a PDF report of size=', result.reportData.byteLength)
+  } else {
+    console.debug('Generate a HTML report of size=', result.reportData.length)
+  }
+  resp.writeEnd(result.reportData)
+  resp.writeHead('Content-Type: ' + mime.lookup(result.reportType))
+  resp.statusCode = 200
+}
+
 if (process.isDebug) {
   me.entity.addMethod('testServerRendering')
-  /**
-   * REST endpoint for Report test purpose. Available in `-dev` mode only.
-   * Expect POST request with JSON on body {reportCode: 'reportCode', responseType: 'pdf'|'html', reportParams: {paramName: paramValue, ...}}
-   * Return a HTML/PDF
-   * @param {null} ctxt
-   * @param {THTTPRequest} req
-   * @param {THTTPResponse} resp
-   */
-  me.testServerRendering = function (ctxt, req, resp) {
-    const body = req.read()
-    const params = JSON.parse(body)
-    const UBServerReport = require('./modules/UBServerReport')
-    const mime = require('mime-types')
-
-    const result = UBServerReport.makeReport(params.reportCode, params.responseType, params.reportParams)
-
-    if (result.reportType === 'pdf') {
-      console.debug('Generate a PDF report of size=', result.reportData.byteLength)
-    } else {
-      console.debug('Generate a HTML report of size=', result.reportData.length)
-    }
-    resp.writeEnd(result.reportData)
-    resp.writeHead('Content-Type: ' + mime.lookup(result.reportType))
-    resp.statusCode = 200
-  }
 }
 
 
