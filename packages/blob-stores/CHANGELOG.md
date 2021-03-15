@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - **SECURITY**: for **untity**-entity based `getDocument` requests check user have access to the record in both base entity and unity-entity (instead unity-entity only)
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.19.5] - 2021-03-15
+### Added
+ - **SECURITY**: for **untity**-entity based `getDocument` requests check user have access to the record in both base entity and unity-entity (instead unity-entity only)
 
 ### Fixed
  - **SECURITY** filesystem based blob stores checks file name is valid before storing content into the file system

@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - CDN forms, reports and er-diagrams are converted to `ubrow` format
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.19.6] - 2021-03-15
+### Changed
+ - CDN forms, reports and er-diagrams are converted to `ubrow` format
 
 ## [5.19.5] - 2021-03-03
 ### Changed

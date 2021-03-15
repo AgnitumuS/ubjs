@@ -6,15 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - added multitenancy support for `generateDDL`
- - implemented generateDDL multitenancy support for Postgres
- - `ubcli generateNginxCfg` support multitenancy (by adding a *. for `server_name` directive)
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.19.6] - 2021-03-15
+### Added
+ - added multitenancy support for `generateDDL`
+ - implemented generateDDL multitenancy support for Postgres
+ - `ubcli generateNginxCfg` support multitenancy (by adding a *. for `server_name` directive)
 
 ### Fixed
  - `ubcli generateNginxCfg` consider default for `serverConfig.metrics.enabled` is true, so correctly adds

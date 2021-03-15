@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-  - `ubm_desktop-scanerSettings-fm` increased the maximum value of page margins for the barcode 
-    configuration to 999 pixels instead of 100 pixels [CUBDF-823]  
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.5.3] - 2021-03-15
+### Changed
+  - `ubm_desktop-scanerSettings-fm` increased the maximum value of page margins for the barcode 
+    configuration to 999 pixels instead of 100 pixels [CUBDF-823]  
 
 ## [5.5.2] - 2021-02-08
 ## [5.5.1] - 2021-01-26

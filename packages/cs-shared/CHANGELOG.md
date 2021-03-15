@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `LocalDataStorage` - improve debugging experience by avoid using of anonymous functions
-  and replacing `_.forEach` -> `for .. in`
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.5.20] - 2021-03-15
+### Changed
+ - `LocalDataStorage` - improve debugging experience by avoid using of anonymous functions
+  and replacing `_.forEach` -> `for .. in`
 
 ### Fixed
  - `LocalDataStorage`: filter by `startWith`/`notStartWith` now case-insensitive (as in DB with _CI locales) 

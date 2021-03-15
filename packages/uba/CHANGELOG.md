@@ -6,14 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - implicitly disable multitenancy mixin for `uba_role`, `uba_rls` and `uba_els`
 
 ### Changed
- - UBA forms, reports and er-diagrams are converted to `ubrow` format
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.19.5] - 2021-03-15
+### Added
+ - implicitly disable multitenancy mixin for `uba_role`, `uba_rls` and `uba_els`
+
+### Changed
+ - UBA forms, reports and er-diagrams are converted to `ubrow` format
 
 ### Fixed
  - display `actionTime` for `uba_auditTrail` (both grid and form) and `uba_audit` (grid only, form TBD) with seconds resolution 

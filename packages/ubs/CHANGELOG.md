@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `ubcli convertDefFiles` utility to convert a reports, forms and diagrams to new storage format (.ubrow) 
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.19.5] - 2021-03-15
+### Added
+ - `ubcli convertDefFiles` utility to convert a reports, forms and diagrams to new storage format (.ubrow) 
 
 ## [5.19.4] - 2021-03-03
 ### Changed

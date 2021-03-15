@@ -6,14 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - implicitly disable multitenancy mixin for `ubm_desktop`, `ubm_enum` and `ubm_navshortcut`
 
 ### Changed
- - UBM forms, reports and er-diagrams are converted to `ubrow` format
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.19.5] - 2021-03-15
+### Added
+ - implicitly disable multitenancy mixin for `ubm_desktop`, `ubm_enum` and `ubm_navshortcut`
+
+### Changed
+ - UBM forms, reports and er-diagrams are converted to `ubrow` format
 
 ### Fixed
 - scanner settings form - `Multiple page` checkbox becomes disabled in case `JPEG` format is selected

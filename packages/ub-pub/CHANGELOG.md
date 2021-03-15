@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.8.4] - 2021-03-15
+### Added
  - `@unitybase/cs-shared` `formatByPattern` module exposed as ub-pub formatter. So Dates and Numbers formatting can be done using:
   ```javascript
   // inside Vue instance
@@ -26,12 +37,6 @@ myEE.emit('foo');
 //   b
 //   a
 ```
-
-### Changed
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `ClientRepository` bypass `addAttrsForCachedEntity` for repositories with `__mip_disablecache: true` in misc.
