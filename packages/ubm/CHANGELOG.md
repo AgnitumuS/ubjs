@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.19.6] - 2021-03-15
 ## [5.19.5] - 2021-03-15
 ### Added
  - implicitly disable multitenancy mixin for `ubm_desktop`, `ubm_enum` and `ubm_navshortcut`

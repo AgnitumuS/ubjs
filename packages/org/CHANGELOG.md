@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.19.7] - 2021-03-15
 ## [5.19.6] - 2021-03-15
 ### Changed
  - ORG forms, reports and er-diagrams are converted to `ubrow` format
