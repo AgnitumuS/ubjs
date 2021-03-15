@@ -208,8 +208,8 @@
 				"dialect": "PostgreSQL",
 				//"databaseName": "postgresql://pg10.unitybase.info:5402/ub5_%UB_APP%_%PLATFORM%?tcp_user_timeout=3000",
 				"databaseName": "postgresql://pg10.unitybase.info:5402/ub5_%UB_APP%_%PLATFORM%", // pg9 client not supports tcp_user_timeout
-				"userID": "ub5_%UB_APP%_%PLATFORM%_mt",
-				"password": "ub5_%UB_APP%_%PLATFORM%_mt",
+				"userID": "ub5_%UB_APP%_%PLATFORM%",
+				"password": "ub5_%UB_APP%_%PLATFORM%",
 				"supportLang": ["en", "uk"],
 				"advSettings": "LibLocation=%UB_POSTGRE_LIB||libpq.so.5%", //linux - can be empty or libpq.so.5; Windows = path to libpq.dll, for example D:/PostgreClient/10/x64/bin/libpq.dll
 				"executeWhenConnected": ["SET search_path TO ub5_%UB_APP%_%PLATFORM%", "SET ub.tenantID=0"]
