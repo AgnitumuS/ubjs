@@ -512,6 +512,73 @@ App.els = function (entityCode, methodCode) {
 }
 
 /**
+ * Register a named critical section. Can be done only in initialization mode.
+ * In case section with the same name already registered in another thread - returns existed CS index
+ *
+ * All threads MUST register section in the same way, do not put call into condition what may evaluates
+ * too the different values in the different threads.
+ *
+ * @example
+   const App = require('@unitybase/ub').App
+   // critical section must be registered once in the moment modules are evaluated without any conditions
+   const MY_CS = App.registerCriticalSection('SHARED_FILE_ACCESS')
+
+   function concurrentFileAccess() {
+    // prevents mutual access to the same file from the different threads
+    App.enterCriticalSection(FSSTORAGE_CS)
+    try {
+      const data = fs.readfileSync('/tmp/concurrent.txt', 'utf8')
+      // do some operation what modify data
+      fs.writefileSync('/tmp/concurrent.txt', data)
+    } finally {
+      // important to leave critical section in finally block to prevent forever lock
+      App.leaveCriticalSection(FSSTORAGE_CS)
+    }
+  }
+ * @param {string} csName Critical section name
+ * @return {number}
+ */
+App.registerCriticalSection = appBinding.registerCriticalSection
+/**
+ * Waits for ownership of the specified critical section object. The function returns when the calling thread is granted ownership.
+ *
+ * ** IMPORTANT** A thread must call `App.leaveCriticalSection` once for each time that it entered the critical section.
+ *
+ * @param {number} csIndex A critical section index returned by `App.registerCriticalSection`
+ */
+App.enterCriticalSection = appBinding.enterCriticalSection
+/**
+ * Releases ownership of the specified critical section
+ *
+ * @param {number} csIndex
+ */
+App.leaveCriticalSection = appBinding.leaveCriticalSection
+
+/**
+ * Enter a log recursion call.
+ * ** IMPORTANT** A thread must call `App.logLeave` once for each time that it entered the log recursion
+ * @example
+
+ function wrapEnterLeave(enterText, originalMethod) {
+    return function(ctx) {
+      App.logEnter(enterText)
+      try {
+        originalMethod(ctx)
+      } finally {
+        App.logLeave()
+      }
+    }
+  }
+
+ * @param {string} methodName
+ */
+App.logEnter = appBinding.logEnter
+/**
+ * Exit a log recursion call
+ */
+App.logLeave = appBinding.logLeave
+
+/**
  * Is event emitter enabled for App singleton. Default is `false`
  * @deprecated Starting from 1.11 this property ignored (always TRUE)
  * @type {Boolean}

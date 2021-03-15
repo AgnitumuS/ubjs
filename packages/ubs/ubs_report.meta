@@ -28,7 +28,8 @@
       "size": 64,
       "caption": "Report code",
       "defaultView": false,
-      "allowNull": false
+      "allowNull": false,
+      "isUnique": true
     },
     {
       "name": "name",
@@ -52,13 +53,12 @@
       "description": "Javascript code",
       "allowNull": true,
       "storeName": "mdb"
-    },
-    {
-      "name": "mi_modifyDate",
-      "dataType": "DateTime",
-      "caption": "Modification date",
-      "documentation": "Emulate a mStorage.mi_modifyDate for cache version calculation",
-      "defaultView": false
     }
-  ]
+  ],
+  "mixins": {
+    "fsStorage": {
+      "dataPath": "reports",
+      "naturalKey": "report_code"
+    }
+  }
 }

@@ -1,0 +1,8 @@
+{
+ "isDefault": true,
+ "entity": "cdn_organization",
+ "formType": "vue",
+ "caption": "externalOrganizations_title",
+ "description": "externalOrganizations_title",
+ "formCode": "{\"fName\":\"cdn_organization-fm.vue\",\"origName\":\"cdn_organization-fm.vue\",\"ct\":\"script/x-vue\",\"size\":2825,\"md5\":\"5b9d8017aeeea38b443c804e52036b3f\"}"
+}

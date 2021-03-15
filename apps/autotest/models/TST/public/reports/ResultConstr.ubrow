@@ -1,0 +1,5 @@
+{
+ "name": "ResultConstr",
+ "template": "{\"fName\":\"ResultConstr.template\",\"origName\":\"ResultConstr.template\",\"ct\":\"application/ubreport\",\"size\":1520,\"md5\":\"479f48e99969f20bb1e4663645efd55a\"}",
+ "code": "{\"fName\":\"ResultConstr.js\",\"origName\":\"ResultConstr.js\",\"ct\":\"application/def\",\"size\":804,\"md5\":\"8fce5ba24d3147f6672a09cf6ef5a57f\"}"
+}

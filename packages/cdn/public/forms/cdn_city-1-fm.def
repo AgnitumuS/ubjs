@@ -1,8 +1,0 @@
-// @! "do not remove comments below unless you know what you do!"
-// @mi_modifyDate "Sat Nov 17 2018 10:51:19 GMT+0200 (EET)"
-// @isDefault "true"
-// @entity "cdn_city"
-// @model "CDN"
-// @formType "vue"
-// @caption "locality_title"
-// @description "locality_title"

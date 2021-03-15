@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - implicitly disable multitenancy mixin for `ubm_desktop`, `ubm_enum` and `ubm_navshortcut`
 
 ### Changed
+ - UBM forms, reports and er-diagrams are converted to `ubrow` format
 
 ### Deprecated
 
@@ -16,6 +17,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - scanner settings form - `Multiple page` checkbox becomes disabled in case `JPEG` format is selected
+- `ubm_navhortcut` form: 
+   - attributes tree is filled for both JSON and JS shortcut code type (`"entity": ".."` and `entityName: '...'`).
+     Before this fix only double quotes is recognizedж
+   - from layout changed do be more compact (internally rewritten to u-grid + u-auto-field)  
 
 ## [5.19.4] - 2021-03-03
 ### Changed

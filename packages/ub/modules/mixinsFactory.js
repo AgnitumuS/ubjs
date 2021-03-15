@@ -72,7 +72,8 @@ function initializeMixins() {
       mixinModule.initDomain()
     }
   })
-  App.domainInfo.eachEntity(e => {
+  for (const eName in App.domainInfo.entities) {
+    const e = App.domainInfo.entities[eName]
     const enabledEntityMixins = Object.keys(e.mixins).filter(mn => e.mixins[mn].enabled !== false)
     // apply mixins in order they are registered
     _orderedMixinNames.forEach(mn => {
@@ -88,7 +89,7 @@ function initializeMixins() {
         console.warn(`Mixin ${mn} configured for entity ${e.name} but not implemented in domain`)
       }
     })
-  })
+  }
 }
 
 // Add native mixin names to _modulesMap to prevents possible naming conflicts between native and JS mixins

@@ -16,7 +16,7 @@ exports.formCode = {
 
   onCodeChanged: function (field, newValue) {
     if (this.isEditMode) {
-      throw new UB.UBError(`To change existing report code rename both *.js and *.template files in folder 'yourModel/public/reports'`)
+      throw new UB.UBError(`To change existing report code rename *.js, *.template and *.ubrow files in the folder 'yourModel/public/reports'`)
     }
     this.record.set('ID', this.CRC32(newValue))
     this.getUBCmp('attrTemplate').setOrigName(newValue.length > 0 ? newValue + '.template' : newValue)

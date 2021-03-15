@@ -1,0 +1,8 @@
+{
+ "isDefault": true,
+ "entity": "cdn_region",
+ "formType": "vue",
+ "caption": "region_title",
+ "description": "region_title",
+ "formCode": "{\"fName\":\"cdn_region-1-fm.vue\",\"origName\":\"cdn_region-1-fm.vue\",\"ct\":\"script/x-vue\",\"size\":1001,\"md5\":\"4069915d9c29a91197a9cd6cbef2cf5b\"}"
+}

@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `LocalDataStorage` - improve debugging experience by avoid using of anonymous functions
+  and replacing `_.forEach` -> `for .. in`
 
 ### Deprecated
 

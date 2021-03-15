@@ -27,7 +27,8 @@
       "dataType": "String",
       "size": 64,
       "caption": "Name",
-      "allowNull": false
+      "allowNull": false,
+      "isUnique": true
     },
     {
       "name": "document",
@@ -36,12 +37,12 @@
       "description": "Diagram",
       "allowNull": true,
       "storeName": "mdb"
-    },
-    {
-      "name": "mi_modifyDate",
-      "dataType": "DateTime",
-      "caption": "Modification date",
-      "documentation": "Emulate a mStorage.mi_modifyDate for cache version calculation"
     }
-  ]
+  ],
+  "mixins": {
+    "fsStorage": {
+      "dataPath": "erdiagrams",
+      "naturalKey": "name"
+    }
+  }
 }

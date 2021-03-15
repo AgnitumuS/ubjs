@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-  - `@unitybase/cs-shared` `formatByPattern` module exposed as ub-pub formatter. So Dates and Numbers formatting can be done using:
+ - `@unitybase/cs-shared` `formatByPattern` module exposed as ub-pub formatter. So Dates and Numbers formatting can be done using:
   ```javascript
   // inside Vue instance
   this.$UB.formatter.formatDate('2020-05-23', 'date', 'uk')
@@ -14,6 +14,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   const UB = require('@unitybase/ub-pub')
   UB.formatter.formatNumber(1234.5, 'sum', 'en')
   ```
+
+ - new methods `EventEmitter.prototype.prependListener` and `EventEmitter.prototype.prependOnceListener`.
+  Adds a listener function for the event named `eventName` to the **beginning** of the listeners array
+```javascript
+const myEE = new EventEmitter();
+myEE.once('foo', () => console.log('a'));
+myEE.prependOnceListener('foo', () => console.log('b'));
+myEE.emit('foo');
+// Prints:
+//   b
+//   a
+```
+
 ### Changed
 
 ### Deprecated

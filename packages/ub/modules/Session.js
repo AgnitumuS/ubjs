@@ -25,14 +25,19 @@ const _sessionCached = {
   zone: undefined
 }
 /**
- * Contains information about the logged in user.
+ * @classdesc
+ * A global singleton what contains information about the logged in user.
  * Server reassign properties of this object each time `endpoint` handler are executed
  *
  * Implements {@link EventEmitter} and will emit `login` event each time user logged in
  * or `loginFailed` event with 2 parameters(isLocked, userName) when user UB authentication failed
- * @namespace
+ *
+ *      const UB = require('@unitybase/ub')
+ *      const Session = UB.Session
+ *
+ * @class
  * @global
- * @mixes EventEmitter
+ * @extends EventEmitter
  */
 const Session = {
 }
@@ -78,7 +83,7 @@ Object.defineProperty(Session, 'userID', {
 })
 /**
  * Logged-in user role IDs in CSV format. ==="" if no authentication running
- * @deprecated Use Session.uData.roleIDs - an array of roles IDs
+ * @deprecated Use `Session.uData.roleIDs` - an array of roles IDs
  * @member {number} userRoles
  * @memberOf Session
  * @readonly
@@ -94,7 +99,7 @@ Object.defineProperty(Session, 'userRoles', {
 })
 /**
  * Logged-in user role names in CSV format. ==="" if no authentication running
- * @deprecated Use Session.uData.roles
+ * @deprecated Use `Session.uData.roles`
  * @member {string} userRoleNames
  * @memberOf Session
  * @readonly

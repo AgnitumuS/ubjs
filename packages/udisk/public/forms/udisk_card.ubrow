@@ -1,0 +1,9 @@
+{
+ "isDefault": false,
+ "entity": "udisk_card",
+ "formType": "custom",
+ "caption": "UDISK",
+ "description": "UDISK",
+ "formDef": "{\"fName\":\"udisk_card-fm.def\",\"origName\":\"udisk_card-fm.def\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":110,\"md5\":\"04a44e4615d757b94fd19cd32fba5781\"}",
+ "formCode": "{\"fName\":\"udisk_card-fm.js\",\"origName\":\"udisk_card-fm.js\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":95,\"md5\":\"b45472d2042f9483084ec4e99fcab214\"}"
+}

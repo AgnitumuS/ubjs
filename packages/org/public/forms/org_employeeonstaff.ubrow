@@ -1,0 +1,8 @@
+{
+ "isDefault": false,
+ "entity": "org_employeeonstaff",
+ "formType": "vue",
+ "caption": "orgEmployeeOnStaff",
+ "description": "orgEmployeeOnStaff",
+ "formCode": "{\"fName\":\"org_employeeonstaff-fm.vue\",\"origName\":\"org_employeeonstaff-fm.vue\",\"ct\":\"script/x-vue\",\"size\":2209,\"md5\":\"6bfe4ff3deb70b6171059a00810f8bef\"}"
+}

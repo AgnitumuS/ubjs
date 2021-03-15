@@ -15,7 +15,7 @@
 
  - add a "security.multitenancy" section into ubConfig
 
-> security.multitenancy.tenants can be reloaded without restarting a server by sending a HUP signal to ub process `kill -HUP pid` / `killall -HUP ub`  
+> security.multitenancy.tenants can be reloaded without restarting a server by sending a **HUP** signal to the `ub` process (`kill -HUP pid` / `killall -HUP ub`)  
 
  - for each tenant login to the tenant's administration instance using tenant URL and add a tenant admin user
 
@@ -23,7 +23,7 @@
 ### Postgres
 Implemented using [Row Security Policies](https://www.postgresql.org/docs/current/ddl-rowsecurity.html).
 
-Connection variable `ub.tenantID` is sets on each `enterConnectionContext` event and used as value for
+Connection variable `ub.tenantID` is sets on each `enterConnectionContext` event and used as a value for
 limiting rows by mi_tenantID field for each multitenancy table.
 
 #### Tenants administration for Postgres

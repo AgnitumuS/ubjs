@@ -1,0 +1,8 @@
+{
+ "isDefault": true,
+ "entity": "cdn_employee",
+ "formType": "vue",
+ "caption": "employee_title",
+ "description": "employee_title",
+ "formCode": "{\"fName\":\"cdn_employee-fm.vue\",\"origName\":\"cdn_employee-fm.vue\",\"ct\":\"script/x-vue\",\"size\":5648,\"md5\":\"51d3a714f2967b471fe5e6e5a0832764\"}"
+}

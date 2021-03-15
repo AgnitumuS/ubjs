@@ -1,7 +1,0 @@
-// @! "do not remove comments below unless you know what you do!"
-// @isDefault "true"
-// @entity "cdn_employee"
-// @model "CDN"
-// @formType "vue"
-// @caption "employee_title"
-// @description "employee_title"

@@ -1,5 +1,7 @@
 const path = require('path')
 
+const FN_VALIDATION_RE = /^[\w\-. ]+$/
+
 /**
  * @classdesc
  * Abstract interface for Virtual store. Must be implemented in descendants.
@@ -97,7 +99,7 @@ class BlobStoreCustom {
    * @param {Number} ID
    * @param {BlobStoreItem} dirtyItem
    * @param {number} newRevision
-   * @return {BlobStoreItem}
+   * @return {BlobStoreItem|null}
    */
   persist (attribute, ID, dirtyItem, newRevision) { }
 
@@ -130,6 +132,20 @@ class BlobStoreCustom {
   getTempFileName (request) {
     // important to use Session.userID. See UB-617
     return path.join(this.tempFolder, `${request.entity}_${request.attribute}_${request.ID}_${this.Session.userID}`)
+  }
+
+  /**
+   * validate file name contains only alphanumeric characters, -, _, . and space and not contains ..
+   * @param fn
+   * @throws throws in file name is not valid
+   */
+  static validateFileName (fn) {
+    if (!FN_VALIDATION_RE.test(fn) || (fn.indexOf('..') !== -1)) {
+      const e = new Error(`Invalid file name '${fn}' for BLOB store`)
+      // emulate a ESecurityException
+      e.errorNumber = process.binding('ub_app')['UBEXC_ESECURITY_EXCEPTION']
+      throw e
+    }
   }
 }
 

@@ -1,0 +1,9 @@
+{
+ "isDefault": false,
+ "entity": "tst_service",
+ "formType": "custom",
+ "caption": "Test IIT Sign",
+ "description": "Test IIT Sign",
+ "formDef": "{\"fName\":\"tst_service-IITSign-fm.def\",\"origName\":\"tst_service-IITSign-fm.def\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":5890,\"md5\":\"bd36c5db88a695901ab58c4f89089c29\"}",
+ "formCode": "{\"fName\":\"tst_service-IITSign-fm.js\",\"origName\":\"tst_service-IITSign-fm.js\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":2,\"md5\":\"99914b932bd37a50b983c5e7c90ae93b\"}"
+}

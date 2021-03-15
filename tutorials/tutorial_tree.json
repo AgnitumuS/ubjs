@@ -45,6 +45,9 @@
       "mixins_fts": {
         "title": "Full text search"
       },
+      "mixins_fsstorage": {
+        "title": "File system storage"
+      },
       "mixins_multitenancy": {
         "title": "Multitenancy (EE)"
       },

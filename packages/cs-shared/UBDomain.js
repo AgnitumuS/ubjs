@@ -445,7 +445,7 @@ function UBModel (cfg, modelCode) {
 
   if (cfg.realPublicPath) {
     /**
-     * Server-side domain only - the full path to model public folder (if any)
+     * Server-side domain only - full path to the model public folder (if any) including trailer `/`
      * @type {string}
      */
     this.realPublicPath = cfg.realPublicPath

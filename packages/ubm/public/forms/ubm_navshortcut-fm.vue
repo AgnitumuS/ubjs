@@ -4,58 +4,27 @@
 
     <u-form-container
       v-loading="loading"
-      :label-width="160"
+      label-position="top"
     >
-      <u-form-row label="ID">
-        <el-row
-          :gutter="10"
-          type="flex"
-          align="middle"
-          justify="space-between"
-        >
-          <el-col :span="8">
-            <el-input
-              readonly
-              :value="ID"
-            />
-          </el-col>
-
-          <el-col
-            :span="6"
-            :offset="2"
-          >
-            <el-switch
-              v-model="isFolder"
-              :active-text="$ut('ubm_navshortcut.isFolder')"
-            />
-          </el-col>
-
-          <el-col :span="8">
-            <el-switch
-              v-model="inWindow"
-              :active-text="$ut('ubm_navshortcut.inWindow')"
-            />
-          </el-col>
-        </el-row>
-      </u-form-row>
-
-      <u-auto-field attribute-name="code" />
-
+      <u-grid columns="4">
+        <u-auto-field attribute-name="code" />
+        <u-auto-field attribute-name="isFolder" force-cmp="el-switch" />
+        <u-auto-field attribute-name="inWindow" force-cmp="el-switch" />
+        <u-auto-field attribute-name="ID" label="ID" readonly />
+      </u-grid>
       <u-auto-field attribute-name="caption" />
-
-      <shortcut-tree />
-
-      <u-form-row
-        :label="iconClsCaption"
-      >
-        <u-icon-picker
-          :value="iconCls"
-          :label="iconClsCaption"
-          @change="iconCls = $event"
-        />
-      </u-form-row>
-
-      <u-auto-field attribute-name="displayOrder" />
+      <u-grid columns="3">
+        <shortcut-tree />
+        <u-form-row
+          :label="entitySchema.attributes.iconCls.caption"
+        >
+          <u-icon-picker
+            :value="iconCls"
+            @change="iconCls = $event"
+          />
+        </u-form-row>
+        <u-auto-field attribute-name="displayOrder" />
+      </u-grid>
 
       <u-form-row label="navShortcutRights">
         <u-select-collection
@@ -87,8 +56,7 @@ module.exports.mount = function (cfg) {
         if (cfg.parentContext) store.commit('ASSIGN_DATA', { loadedState: cfg.parentContext })
       },
       collections: {
-        rightsSubjects: ({ state }) => UB.connection
-          .Repository('ubm_navshortcut_adm')
+        rightsSubjects: ({ state }) => UB.connection.Repository('ubm_navshortcut_adm')
           .attrs('ID', 'instanceID', 'admSubjID')
           .where('instanceID', '=', state.data.ID)
       }
@@ -122,11 +90,7 @@ module.exports.default = {
       'iconCls'
     ]),
 
-    ...mapGetters(['loading']),
-
-    iconClsCaption () {
-      return this.entitySchema.attributes.iconCls.caption
-    }
+    ...mapGetters(['loading'])
   }
 }
 </script>
