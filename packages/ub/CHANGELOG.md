@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `App.launchEndpoint` emits 2 addition events:
+   - `launchEndpoint:before` with parameters: (req, resp, endpointName)
+   - `launchEndpoint:after` with parameters: (req, resp, endpointName, defaultPrevented)
+   Can be used to do something on before/after any endpoint execution
+     
 ### Changed
 
 ### Deprecated

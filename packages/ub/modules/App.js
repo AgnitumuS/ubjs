@@ -19,11 +19,12 @@ if (base.ubVersionNum < 5018000) {
  * Singleton instance of UnityBase application. Allow direct access to the database connections, blob stores,
  * HTTP endpoints (full control on HTTP request & response) registration, read domain and server config.
  *
- * Mixes EventEmitter, and server will emit:
+ * Mixes EventEmitter, and emit:
  *
+ *  - `launchEndpoint:before` with parameters: (req, resp, endpointName)
  *  - `endpointName + ':before'` event before endpoint handler  execution
  *  - `endpointName + ':after'` event in case neither exception is raised nor App.preventDefault()
- *  is called inside endpoint handler
+ *  - `launchEndpoint:after` with parameters: (req, resp, endpointName, defaultPrevented)
  *
  * To prevent endpoint handler execution App.preventDefault() can be used inside `:before` handler.
  *
@@ -118,6 +119,8 @@ App.preventDefault = function () {
 /**
  * Called by native HTTP server worker
  * @param {string} endpointName
+ * @emits launchEndpoint:before
+ * @emits launchEndpoint:after
  * @private
  * @returns {boolean}
  */
@@ -126,6 +129,7 @@ App.launchEndpoint = function (endpointName) {
   const req = new THTTPRequest()
   const resp = new THTTPResponse()
   try {
+    this.emit('launchEndpoint:before', req, resp, endpointName)
     this.emit(endpointName + ':before', req, resp)
     if (!__preventDefault) {
       const handler = appBinding.endpoints[endpointName]
@@ -136,6 +140,7 @@ App.launchEndpoint = function (endpointName) {
       }
       this.emit(endpointName + ':after', req, resp)
     }
+    this.emit('launchEndpoint:after', req, resp, endpointName, __preventDefault)
   } finally {
     App.endpointContext = {} // allow GC to release possible context data ASAP
   }
