@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - `launchEndpoint:after` with parameters: (req, resp, endpointName, defaultPrevented)
    Can be used to do something on before/after any endpoint execution
      
+ - `App.removeUserSessions(userID)` a method to `logout` a user completely
+     
 ### Changed
 
 ### Deprecated

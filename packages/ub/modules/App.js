@@ -584,6 +584,13 @@ App.logEnter = appBinding.logEnter
 App.logLeave = appBinding.logLeave
 
 /**
+ * Remove all user sessions (logout user).
+ * @param {number} userID
+ * @return {boolean} true if user had had any session
+ */
+App.removeUserSessions = appBinding.removeUserSessions || function(){}
+
+/**
  * Is event emitter enabled for App singleton. Default is `false`
  * @deprecated Starting from 1.11 this property ignored (always TRUE)
  * @type {Boolean}
