@@ -22,12 +22,13 @@ function autoGenerateUbqlForClassifier(ctx) {
   try {
     dataStore.currentDataName = 'selectBeforeUpdate'
 
-    if (code === undefined) {
-      code = dataStore.get('code')
-    }
-
-    if (orderByAttr === undefined) {
-      orderByAttr = dataStore.get('orderByAttr')
+    if (!dataStore.eof) {
+      if (code === undefined) {
+        code = dataStore.get('code')
+      }
+      if (orderByAttr === undefined) {
+        orderByAttr = dataStore.get('orderByAttr')
+      }
     }
   } finally {
     dataStore.currentDataName = originStoreName

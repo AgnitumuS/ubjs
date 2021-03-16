@@ -21,7 +21,7 @@ function autoGenerateUbql(ctx) {
   const { mParams, dataStore } = ctx
   let { code } = mParams.execParams
 
-  if (!code) {
+  if (!code && !dataStore.eof) {
     const originStoreName = dataStore.currentDataName
 
     try {
