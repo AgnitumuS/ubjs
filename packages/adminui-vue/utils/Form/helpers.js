@@ -70,9 +70,16 @@ function isEqual (arg1, arg2) {
       return false
     }
     return true
-  } else if (isDate(arg1) || isDate(arg2)) {
+  }
+
+  if (isDate(arg1) || isDate(arg2)) {
+    if (!isDate(arg1) || !isDate(arg2)) {
+      return false
+    }
     return arg1.valueOf() === arg2.valueOf()
-  } else if (isObject(arg1) || isObject(arg2)) {
+  }
+
+  if (isObject(arg1) || isObject(arg2)) {
     if (arg1 === undefined) {
       arg1 = {}
     }
@@ -80,9 +87,9 @@ function isEqual (arg1, arg2) {
       arg2 = {}
     }
     return _.isEqual(arg1, arg2)
-  } else {
-    return arg1 === arg2
   }
+
+  return arg1 === arg2
 }
 
 /**
