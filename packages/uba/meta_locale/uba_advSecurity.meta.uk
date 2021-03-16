@@ -12,11 +12,11 @@
         },
         {
             "name": "allowedIP",
-            "caption": "Розширені IP адреси"
+            "caption": "Дозволені IP адреси"
         },
         {
             "name": "refreshIP",
-            "caption": "Оновлення розширених IP адрес"
+            "caption": "Оновлення дозволених IP адрес"
         },
         {
             "name": "fp",
