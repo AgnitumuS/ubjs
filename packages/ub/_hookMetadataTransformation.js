@@ -59,7 +59,7 @@ function addMultitenancyMixinAttributes(domainJson, serverConfig) {
       if (!conn) throw new Error(`Connection definition not found for entity ${entityName}`)
       let dbDefault
       if (conn.dialect === 'PostgreSQL') {
-        dbDefault = "COALESCE(current_setting('ub.tenantID', true), '0')::bigint"
+        dbDefault = "(COALESCE(current_setting('ub.tenantID'::text, true), '0'::text))::bigint"
       } else if (conn.dialect === 'MSSQL2012') {
         dbDefault = "CAST(COALESCE(SESSION_CONTEXT(N'ub.tenantID'), '0') as BigInt)"
       } else if (conn.dialect === 'SQLite3') { //TODO - fts multitenancy

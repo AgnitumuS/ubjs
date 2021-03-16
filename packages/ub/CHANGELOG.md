@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - multitenancy: prevent recreation of default constraint for mi_tenantID on Postgres
 
 ## [5.19.5] - 2021-03-15
 ### Added

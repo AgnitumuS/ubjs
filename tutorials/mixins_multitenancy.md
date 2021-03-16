@@ -12,6 +12,7 @@
 > This allows access multitenancy server locally using http://tenant1.localhost etc. 
 
  - setup two application: one for multitenancy access and one for tenants administration
+ - disable FTS (not supported by multitenancy)
 
  - add a "security.multitenancy" section into ubConfig
 
