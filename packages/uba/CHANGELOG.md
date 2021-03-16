@@ -6,8 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - *SECURITY* if roles or groups for user is changed such user will be logged out immediately
- - *SECURITY* if user certificate is removed or updated such user will be logged out immediately
+ - *SECURITY* user will be logged out immediately if:
+    - roles or groups for user is changed
+    - certificate is removed or updated
+    - uba_user.disabled is sets to true 
 
 ### Changed
 
