@@ -18,6 +18,10 @@
             "name": "orderByAttr",
             "caption": "Тартиби сабти таснифгар",
             "description": "Тартиби навъҳои таснифоти гурӯҳҳо"
+        },
+        {
+            "name": "ubql",
+            "caption": "UBQL (JSON)"
         }
     ]
 }

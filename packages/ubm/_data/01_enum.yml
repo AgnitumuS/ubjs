@@ -1,0 +1,7 @@
+$context:
+  type: enums
+
+UBM_QUERY_TYPE:
+- classifier: {en: Classifier, ru: Классификатор, uk: Класифікатор}
+- sysDict: {en: System Dictionary, ru: Системный справочник, uk: Системний довідник}
+- usrDict: {en: User Dictionary, ru: Пользовательский справочник, uk: Користувацький довідник}

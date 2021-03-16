@@ -32,4 +32,27 @@ module.exports = function (container) {
       )
       .wrapAsEntity('ubm_query')
   )
+
+  container.registerRepository(
+    'ubm_sysdictionary',
+    new EntityRepository(
+      'ubm_sysdictionary',
+      ['code'],
+      ['ubql'],
+      ['name']
+    )
+  )
+  container.registerFileType(
+    'ubm_sysdictionary',
+    new EntityFormat()
+      .key('code')
+      .caption('name')
+      .translatable('name')
+      .copy('ubql')
+      .transform(
+        'ubql',
+        ubql => typeof ubql === 'string' ? ubql : JSON.stringify(ubql)
+      )
+      .wrapAsEntity('ubm_sysdictionary')
+  )
 }
