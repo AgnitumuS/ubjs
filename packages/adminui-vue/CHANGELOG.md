@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Fix `utils/Form/helpers.js` date value comparison 
 
 ## [5.19.6] - 2021-03-15
 ### Added
