@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Cleaned up `ubm_diagram` and `ubm_form` localization (ru, ka, tg) from non-existing attribute
 
 ## [5.19.6] - 2021-03-15
 ## [5.19.5] - 2021-03-15
@@ -27,8 +28,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - scanner settings form - `Multiple page` checkbox becomes disabled in case `JPEG` format is selected
 - `ubm_navhortcut` form: 
    - attributes tree is filled for both JSON and JS shortcut code type (`"entity": ".."` and `entityName: '...'`).
-     Before this fix only double quotes is recognizedж
-   - from layout changed do be more compact (internally rewritten to u-grid + u-auto-field)  
+     Before this fix only double quotes is recognized
+   - form layout changed do be more compact (internally rewritten to u-grid + u-auto-field)  
 
 ## [5.19.4] - 2021-03-03
 ### Changed

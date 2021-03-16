@@ -25,10 +25,6 @@
         {
             "name": "code",
             "caption": "ჯავასკრიპტის კოდი"
-        },
-        {
-            "name": "mi_modifyDate",
-            "caption": "მოდიფიცირების თარიღი"
         }
     ]
 }

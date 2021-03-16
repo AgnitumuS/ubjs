@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Cleaned up `ubs_report` localization (ru, ka, tg) from non-existing attribute `mi_modifyDate`
 
 ## [5.19.6] - 2021-03-15
 ### Fixed
