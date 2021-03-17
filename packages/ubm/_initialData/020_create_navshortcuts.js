@@ -137,21 +137,21 @@ module.exports = function (session) {
     }
   })
 
-  console.log('\t\t\tcreate `Queries` shortcut')
+  console.log('\t\t\tcreate `Dictionaries` shortcut')
   conn.insert({
     fieldList: ['ID'],
     entity: 'ubm_navshortcut',
     execParams: {
       desktopID: desktopID,
       parentID: folderID,
-      code: 'ubm_query',
+      code: 'ubm_sysdictionary',
       caption: 'Queries',
       displayOrder: 50,
       cmdCode: JSON.stringify({
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'ubm_query',
+          entityName: 'ubm_sysdictionary',
           columns: ['code', 'name']
         }
       }, null, '\t')
