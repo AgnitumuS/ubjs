@@ -992,6 +992,11 @@
               "description": "User registration page URL. If empty (default) then the registration link should not be displayed on login page",
               "default": ""
             },
+            "forgotPasswordURL": {
+              "type": "string",
+              "description": "User forgot password page URL. If empty (default) then the forgot password link should not be displayed on login page",
+              "default": ""
+            },
             "loginWindowTopLogoURL": {
               "type": "string",
               "description": "Optional URL for a logo to display on the top of login form. Logo stretched to 150px height, so it is a good idea for logo to be 150x150px"
