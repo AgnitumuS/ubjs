@@ -1,0 +1,14 @@
+{
+  "security": {
+    //#ifdef(%UB_USE_MULTITENANCY_TST||false%=true)
+    "multitenancy": {
+      "enabled": true,
+      "tenants": [
+        {"URI": "localhost:8881", "TID": 1}, //admin
+        {"URI": "tenant1.localhost", "TID": 100},
+        {"URI": "tenant2.localhost", "TID": 101}
+      ]
+    }
+    //#endif
+  }
+}
