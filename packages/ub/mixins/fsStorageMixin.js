@@ -19,10 +19,12 @@ module.exports = {
   initDomain: null,
   initEntity: initEntityForFsStorage
 }
+
 const MIXIN_NAME = 'fsStorage'
 
 const fs = require('fs')
 const path = require('path')
+const mime = require('mime-types')
 const csShared = require('@unitybase/cs-shared')
 const UBDomain = csShared.UBDomain
 const LocalDataStore = csShared.LocalDataStore
@@ -301,12 +303,18 @@ function initEntityForFsStorage(entity, mixinCfg) {
           for (const attr of entity.blobAttributes) {
             if (row[attr.name]) {
               const blobInfo = JSON.parse(row[attr.name])
-              delete blobInfo.relPath
-              delete blobInfo.fName
-              delete blobInfo.store
-              delete blobInfo.size
-              delete blobInfo.md5
-              row[attr.name] = JSON.stringify(blobInfo)
+
+              let fileExt = path.extname(blobInfo.origName)
+              if (fileExt === '.def') fileExt = '.js'
+              const ct = mime.contentType(fileExt) || 'application/octet-stream'
+              if (ct === blobInfo.ct) { // content type can be calculated from origName extension - keep only origName in blob attribute value
+                row[attr.name] = blobInfo.origName
+              } else { // keep a JSON with origName and ct
+                row[attr.name] = JSON.stringify({
+                  origName: blobInfo.origName,
+                  ct: blobInfo.ct
+                })
+              }
             }
           }
           console.debug('put', JSON.stringify(row), 'into', fn)
@@ -417,16 +425,31 @@ function initEntityForFsStorage(entity, mixinCfg) {
 
           const cnt = row[attr.name]
           if (!cnt) return
-          let docInfo = JSON.parse(cnt)
+          let docInfo
+          if (cnt.charAt(0) === '{') { // JSON content
+            docInfo = JSON.parse(cnt)
+            // add BLOB info attributes optional for mdb based ubrow
+            if (!docInfo.fName) docInfo.fName = docInfo.origName
+            if (!docInfo.store) docInfo.store = 'mdb'
+            if (!docInfo.size) docInfo.size = 1
+            if (!docInfo.md5) docInfo.md5 = '00000000000000000000000000000000'
+          } else { // string with origName only
+            let fileExt = path.extname(cnt)
+            if (fileExt === '.def') fileExt = '.js'
+            const ct = mime.contentType(fileExt) || 'application/octet-stream'
+            docInfo = {
+              store: 'mdb',
+              fName: cnt,
+              origName: cnt,
+              ct,
+              size: 1,
+              md5: '00000000000000000000000000000000'
+            }
+          }
+
           if (!docInfo.origName || !docInfo.origName.startsWith(row[mixinCfg.naturalKey])) {
             throw new Error(`fsStorage for ${entity.name}: invalid '${attr.name}' attribute value in file '${srcFilePath}' - origName value '${docInfo.origName}' must starts with '${row[mixinCfg.naturalKey]}'`)
           }
-          // add BLOB info attributes optional for mdb based ubrow
-          if (!docInfo.fName) docInfo.fName = docInfo.origName
-          if (!docInfo.store) docInfo.store = 'mdb'
-          if (!docInfo.size) docInfo.size = 1
-          if (!docInfo.md5) docInfo.md5 = '00000000000000000000000000000000'
-
           // add model to the relPath as expected by mdb BLOB store
           docInfo.relPath = row.model + '|' + mixinCfg.dataPath
           row[attr.name] = JSON.stringify(docInfo)

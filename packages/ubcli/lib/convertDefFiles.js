@@ -54,15 +54,10 @@ module.exports = function convertDefFiles (cfg) {
         // remove metadata
         body = body.replace(XML_ATTRS_RE, '').trim()
         fs.writeFileSync(tplPath, body)
-        const jsPath = `${dataPath}/${itemCode}.js`
         const ubrow = {
           name: reportName,
-          template: JSON.stringify({
-            origName: rc, ct: 'application/ubreport'
-          }),
-          code: JSON.stringify({
-            origName: `${itemCode}.js`, ct: 'application/javascript; charset=utf-8'
-          })
+          template: rc,
+          code: `${itemCode}.js`
         }
         fs.writeFileSync(ubrowFn, JSON.stringify(ubrow, null, ' '))
         console.log(`Converted report: ${ubrowFn}`)
@@ -97,9 +92,7 @@ module.exports = function convertDefFiles (cfg) {
         body = body.replace(JSON_ATTRS_RE, '').trim()
         if (body) { // def file not empty
           fs.writeFileSync(tplPath, body)
-          ubrow.formDef = JSON.stringify({
-            origName: rc, ct: 'application/javascript; charset=utf-8'
-          })
+          ubrow.formDef = rc
         } else { // schedule removing def file
           files2Remove.push(`git rm ${fs.realpathSync(tplPath)}`)
         }
@@ -116,9 +109,7 @@ module.exports = function convertDefFiles (cfg) {
           if (!jsSrc) {
             files2Remove.push(`git rm ${fs.realpathSync(codeFilePath)}`)
           } else { // add formCode BLOB
-            ubrow.formCode = JSON.stringify({
-              origName: codeFn, ct: codeExt === 'vue' ? 'script/x-vue' : 'application/javascript; charset=utf-8'
-            })
+            ubrow.formCode = codeFn
           }
         }
         fs.writeFileSync(ubrowFn, JSON.stringify(ubrow, null, ' '))
@@ -132,15 +123,12 @@ module.exports = function convertDefFiles (cfg) {
     if (fs.existsSync(dataPath)) {
       const dataFiles = fs.readdirSync(dataPath).filter(r => r.endsWith('.xml'))
       dataFiles.forEach(rc => {
-        const tplPath = dataPath + '/' + rc
         const itemCode = rc.substring(0, rc.length - 4) // remove .xml
         const ubrowFn = `${dataPath}/${itemCode}.ubrow`
         if (fs.existsSync(ubrowFn)) return
 
         const ubrow = {
-          document: JSON.stringify({
-            origName: rc, ct: 'application/xml'
-          })
+          document: rc
         }
         fs.writeFileSync(ubrowFn, JSON.stringify(ubrow, null, ' '))
         console.log(`Converted diagram: ${ubrowFn}`)
