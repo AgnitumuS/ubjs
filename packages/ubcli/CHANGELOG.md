@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `ubcli convertDefFiles` produce simplified BLOB info (only origName is stored instead of JSON)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.19.7] - 2021-03-17
+### Changed
+ - `ubcli convertDefFiles` produce simplified BLOB info (only origName is stored instead of JSON)
 
 ## [5.19.6] - 2021-03-15
 ### Added

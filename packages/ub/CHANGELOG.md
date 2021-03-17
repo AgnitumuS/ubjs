@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.19.6] - 2021-03-17
+### Added
  - `App.launchEndpoint` emits 2 addition events:
    - `launchEndpoint:before` with parameters: (req, resp, endpointName)
    - `launchEndpoint:after` with parameters: (req, resp, endpointName, defaultPrevented)
@@ -15,10 +26,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
      
 ### Changed
  - `fsStorage` mixin can use a simplified BLOB info (only origName is stored instead of JSON) for `mdb` based BLOB attributes
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - multitenancy: prevent recreation of default constraint for mi_tenantID on Postgres
