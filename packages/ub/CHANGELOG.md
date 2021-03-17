@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `App.removeUserSessions(userID)` a method to `logout` a user completely
      
 ### Changed
+ - `fsStorage` mixin can use a simplified BLOB info (only origName and ct) for `mdb` based BLOB attributes
 
 ### Deprecated
 

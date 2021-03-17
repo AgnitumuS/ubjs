@@ -54,20 +54,14 @@ module.exports = function convertDefFiles (cfg) {
         // remove metadata
         body = body.replace(XML_ATTRS_RE, '').trim()
         fs.writeFileSync(tplPath, body)
-        const bodySize = fs.statSync(tplPath).size
-        const bodyMd5 = nhashFile(tplPath, 'md5')
         const jsPath = `${dataPath}/${itemCode}.js`
-        const jsSize = fs.statSync(jsPath).size
-        const jsMd5 = nhashFile(jsPath, 'md5')
         const ubrow = {
           name: reportName,
           template: JSON.stringify({
-            fName: rc, origName: rc, ct: 'application/ubreport',
-            size: bodySize, md5: bodyMd5
+            origName: rc, ct: 'application/ubreport'
           }),
           code: JSON.stringify({
-            fName: `${itemCode}.js`, origName: `${itemCode}.js`, ct: 'application/javascript; charset=utf-8',
-            size: jsSize, md5: jsMd5
+            origName: `${itemCode}.js`, ct: 'application/javascript; charset=utf-8'
           })
         }
         fs.writeFileSync(ubrowFn, JSON.stringify(ubrow, null, ' '))
@@ -103,11 +97,8 @@ module.exports = function convertDefFiles (cfg) {
         body = body.replace(JSON_ATTRS_RE, '').trim()
         if (body) { // def file not empty
           fs.writeFileSync(tplPath, body)
-          const bodySize = fs.statSync(tplPath).size
-          const bodyMd5 = nhashFile(tplPath, 'md5')
           ubrow.formDef = JSON.stringify({
-            fName: rc, origName: rc, ct: 'application/javascript; charset=utf-8',
-            size: bodySize, md5: bodyMd5
+            origName: rc, ct: 'application/javascript; charset=utf-8'
           })
         } else { // schedule removing def file
           files2Remove.push(`git rm ${fs.realpathSync(tplPath)}`)
@@ -125,11 +116,8 @@ module.exports = function convertDefFiles (cfg) {
           if (!jsSrc) {
             files2Remove.push(`git rm ${fs.realpathSync(codeFilePath)}`)
           } else { // add formCode BLOB
-            const jsSize = fs.statSync(codeFilePath).size
-            const jsMd5 = nhashFile(codeFilePath, 'md5')
             ubrow.formCode = JSON.stringify({
-              fName: codeFn, origName: codeFn, ct: codeExt === 'vue' ? 'script/x-vue' : 'application/javascript; charset=utf-8',
-              size: jsSize, md5: jsMd5
+              origName: codeFn, ct: codeExt === 'vue' ? 'script/x-vue' : 'application/javascript; charset=utf-8'
             })
           }
         }
@@ -149,12 +137,9 @@ module.exports = function convertDefFiles (cfg) {
         const ubrowFn = `${dataPath}/${itemCode}.ubrow`
         if (fs.existsSync(ubrowFn)) return
 
-        const bodySize = fs.statSync(tplPath).size
-        const bodyMd5 = nhashFile(tplPath, 'md5')
         const ubrow = {
           document: JSON.stringify({
-            fName: rc, origName: rc, ct: 'application/xml',
-            size: bodySize, md5: bodyMd5
+            origName: rc, ct: 'application/xml'
           })
         }
         fs.writeFileSync(ubrowFn, JSON.stringify(ubrow, null, ' '))

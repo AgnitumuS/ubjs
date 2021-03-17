@@ -297,11 +297,15 @@ function initEntityForFsStorage(entity, mixinCfg) {
           delete row.ID
           delete row[mixinCfg.naturalKey]
           delete row.model
-          // cleanup relPath from BLOB info's
+          // cleanup optional attributes of mdb based BLOB info's
           for (const attr of entity.blobAttributes) {
             if (row[attr.name]) {
               const blobInfo = JSON.parse(row[attr.name])
               delete blobInfo.relPath
+              delete blobInfo.fName
+              delete blobInfo.store
+              delete blobInfo.size
+              delete blobInfo.md5
               row[attr.name] = JSON.stringify(blobInfo)
             }
           }
@@ -417,6 +421,12 @@ function initEntityForFsStorage(entity, mixinCfg) {
           if (!docInfo.origName || !docInfo.origName.startsWith(row[mixinCfg.naturalKey])) {
             throw new Error(`fsStorage for ${entity.name}: invalid '${attr.name}' attribute value in file '${srcFilePath}' - origName value '${docInfo.origName}' must starts with '${row[mixinCfg.naturalKey]}'`)
           }
+          // add BLOB info attributes optional for mdb based ubrow
+          if (!docInfo.fName) docInfo.fName = docInfo.origName
+          if (!docInfo.store) docInfo.store = 'mdb'
+          if (!docInfo.size) docInfo.size = 1
+          if (!docInfo.md5) docInfo.md5 = '00000000000000000000000000000000'
+
           // add model to the relPath as expected by mdb BLOB store
           docInfo.relPath = row.model + '|' + mixinCfg.dataPath
           row[attr.name] = JSON.stringify(docInfo)
