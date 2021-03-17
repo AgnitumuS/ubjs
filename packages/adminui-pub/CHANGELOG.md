@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UB.core.UBUtil.getNameMd5` uses `JSON.stringify` for tail parameters before calculation of MD5 sum.
+   This fix ExtJS grid configuration save/load in case columns config is an array of object 
 
 ## [5.19.8] - 2021-03-16
 ## [5.19.7] - 2021-03-15
