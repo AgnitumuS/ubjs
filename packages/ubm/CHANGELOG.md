@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `ubm_sysdictionary` entity, navigation shortcut for the entity (the auto form is used).
+  This entity is a copy of the old `ubm_query` entity that contains information about system dictionaries.
 
 ### Changed
+- `ubm_query` entity is used only as a unity entity for others now.
 
 ### Deprecated
 
