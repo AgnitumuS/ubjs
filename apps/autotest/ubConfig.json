@@ -59,6 +59,8 @@
 			"CERT2"
 			//#endif
 		],
+		"lockOutTimeoutSec": 60,
+		//"lockOutInDB": false,
 		//#ifdef(%UB_USE_DSTU%)
 		"simpleCertAuth": true,
 		"dstu": {

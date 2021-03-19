@@ -200,6 +200,9 @@ in application domain. In other case default values are applied.
 Note, that for some of these settings, you will need to restart UnityBase server after the change.
 Setting value is a localized string, make sure you update the setting in all the languages.
 
+Starts from UB server 5.19.6 ubConfig `security.lockOutInDB` parameter control whenever user account is locket permanently (by sets `uba_user.disabled`)
+or temporary for `security.lockOutTimeoutSec` seconds. Default behavior is temporary lock for 300 seconds.
+
 ### Security audit & dashboard
 All security related operations are added to the `uba_audit` entity. The interface part is available in the `adminUI` on the path
 `Administrator -> Security -> Security audit`.

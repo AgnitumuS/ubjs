@@ -421,6 +421,16 @@
             ]
           }
         },
+        "lockOutInDB": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whenever user account is locked out permanently using `uba_user.disabled` or temporary for lockOutTimeoutSec after `UBA.passwordPolicy.maxInvalidAttempts` invalid login attempts. Since: UB@5.19.6"
+        },
+        "lockOutTimeoutSec": {
+          "type": "number",
+          "default": 300,
+          "description": "Timeout is seconds for temporary lock out for account, in case lockOutInDB is false. Note: account lock out feature works for only for `UB` and `Basic` auth. Since: UB@5.19.6"
+        },
         "zones": {
           "type": "array",
           "description": "EE edition. Security zones definition. Used as fallback in case reverse proxy securityZoneHeader configuration is empty",
