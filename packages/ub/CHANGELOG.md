@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - added `THTTPRequest.json()` method - read a UTF8 encoded HTTP request body as JSON Object.
    Can be used as faster alternative to `JSON.parse(req.read('utf8'))`
  - added `IncomingMessage.json()` - a faster alternative to `JSON.parse(resp.read())` for http client requests
+ - `ub_blobHistory` entity extended by `entity` and `createdAt` attributes
 
 ### Changed
 

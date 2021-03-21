@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - history rotation adds `entity` and `createdAt` values into `ub_blobHistory`.
+   This allows implement a BLOB FTS indexing using external tools (like ElasticSearch etc.)
 
 ### Changed
 

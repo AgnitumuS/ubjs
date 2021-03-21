@@ -469,7 +469,7 @@ function putContent (request, content) {
  * @param {BlobStoreItem} blobItem
  * @return {BlobStoreCustom}
  */
-function getStore (attribute, blobItem) {
+function getBlobStore (attribute, blobItem) {
   const storeName = blobItem.store || attribute.storeName || blobStoresMap.defaultStoreName
   const store = blobStoresMap[storeName]
   if (!store) throw new Error(`Blob store ${storeName} not found in application config`)
@@ -500,7 +500,7 @@ function rotateHistory (store, attribute, ID, blobInfo) {
   for (let i = 0, L = histData.length - store.historyDepth; i < L; i++) {
     const item = histData[i]
     const historicalBlobInfo = JSON.parse(item.blobInfo)
-    const store = getStore(attribute, historicalBlobInfo)
+    const store = getBlobStore(attribute, historicalBlobInfo)
     // delete persisted item
     store.doDeletion(attribute, ID, historicalBlobInfo)
     // and information about history from ub_blobHistory
@@ -508,12 +508,16 @@ function rotateHistory (store, attribute, ID, blobInfo) {
   }
   const archivedBlobInfo = store.doArchive(attribute, ID, blobInfo)
   // insert new historical item
+  let createdAt = new Date()
+  createdAt.setMilliseconds(0)
   dataStore.run('insert', {
     execParams: {
       instance: ID,
+      entity: attribute.entity.name,
       attribute: attribute.name,
       revision: blobInfo.revision,
       permanent: blobInfo.isPermanent,
+      createdAt,
       blobInfo: JSON.stringify(archivedBlobInfo)
     }
   })
@@ -553,9 +557,9 @@ function doCommit (attribute, ID, dirtyItem, oldItem) {
   }
   let newRevision = 1
   let oldItemStore
-  const store = getStore(attribute, dirtyItem)
+  const store = getBlobStore(attribute, dirtyItem)
   if (oldItem) {
-    oldItemStore = getStore(attribute, oldItem)
+    oldItemStore = getBlobStore(attribute, oldItem)
     if (oldItem.revision) newRevision = oldItem.revision + 1
   } else if (store.historyDepth) {
     newRevision = estimateNewRevisionNumber(attribute, ID)
@@ -591,7 +595,7 @@ function markRevisionAsPermanent (request) {
   if (!r.success) throw new Error(r.reason)
   const revisionFor = r.bsReq.revision
   if (!revisionFor) throw new Error('Missing revision parameter')
-  const store = getStore(r.attribute, {})
+  const store = getBlobStore(r.attribute, {})
   if (!store.historyDepth) throw new Error(`Store ${store.name} is not a historical store`)
   const histID = Repository(BLOB_HISTORY_STORE_NAME)
     .attrs(['ID'])
