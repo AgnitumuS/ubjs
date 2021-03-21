@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - new ubConfig parameter `uiSettings.adminUI.forgotPasswordURL`. If sets, then "Forgot password" link is displayed on the login form
+ - added `THTTPRequest.json()` method - read a UTF8 encoded HTTP request body as JSON Object.
+   Can be used as faster alternative to `JSON.parse(req.read('utf8'))`
+ - added `IncomingMessage.json()` - a faster alternative to `JSON.parse(resp.read())` for http client requests
 
 ### Changed
 

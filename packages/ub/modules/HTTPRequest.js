@@ -1,5 +1,8 @@
 // eslint-disable-next-line camelcase
-const { req_read, reg_getHeaders, reg_getMethod, reg_getUrl, reg_getURI, reg_getDecodedURI, reg_getParameters, reg_getDecodedParameters, req_writeToFile } = process.binding('http_server')
+const {
+    req_read, req_read_json, reg_getHeaders, reg_getMethod, reg_getUrl, reg_getURI, reg_getDecodedURI,
+    reg_getParameters, reg_getDecodedParameters, req_writeToFile
+  } = process.binding('http_server')
 const queryString = require('querystring')
 let req_getReqId = process.binding('http_server').req_getReqId
 if (!req_getReqId) {
@@ -22,6 +25,17 @@ class THTTPRequest {
    */
   read (encoding) {
     return req_read(encoding)
+  }
+
+  /**
+   * Return http request body content as JSON; Faster when JSON.parse(req.read()).
+   *
+   * Expect body to be in UTF8 encoding
+   *
+   * @return {*}
+   */
+  json() {
+    return req_read_json()
   }
 
   /**

@@ -339,3 +339,27 @@ function pdfsigner (req, resp) {
   resp.writeEnd({ok: true})
 }
 App.registerEndpoint('pdfsigner', pdfsigner, false)
+
+/**
+ * Get body as JSON and echo to resp
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function bodyJson (req, resp) {
+  const j = req.json()
+  resp.statusCode = 200
+  resp.writeEnd(j)
+}
+App.registerEndpoint('bodyJson', bodyJson, false)
+
+/**
+ * Get body as JSON and echo to resp
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function bodyParse (req, resp) {
+  const j = JSON.parse(req.read())
+  resp.statusCode = 200
+  resp.writeEnd(j)
+}
+App.registerEndpoint('bodyParse', bodyParse, false)
