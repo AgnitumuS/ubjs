@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - UNavbar: fix scrollIntoView in case several navbars are added by apps (as reported by protoka devs)
 
 ## [5.19.7] - 2021-03-16
 ### Fixed
