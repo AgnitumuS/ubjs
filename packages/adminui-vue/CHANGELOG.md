@@ -6,9 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- default authentication form (ub-auth.html) handle a `uiSettings.adminUI.forgotPasswordURL` parameter from config.
- In case parameter is empty or not exists (default) then forgot password link do not displayed on the authentication form. 
- Otherwise a link to the specified URL is displayed 
 
 ### Changed
 
@@ -18,6 +15,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - File exporter: fix csv and html export for cases when `repository` of `u-table-entity` component has no `method` property.
+
+## [5.19.8] - 2021-03-23
+### Added
+- default authentication form (ub-auth.html) handle a `uiSettings.adminUI.forgotPasswordURL` parameter from config.
+ In case parameter is empty or not exists (default) then forgot password link do not displayed on the authentication form. 
+ Otherwise, a link to the specified URL is displayed 
+
+### Fixed
  - UNavbar: fix scrollIntoView in case several navbars are added by apps (as reported by protoka devs)
 
 ## [5.19.7] - 2021-03-16
