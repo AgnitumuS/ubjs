@@ -653,7 +653,7 @@ inst.run('select', repo.ubql())
   fromUbql (ubqlJson) {
     const u = _.cloneDeep(ubqlJson)
     this.entityName = u.entity
-    this.method = u.method
+    if (u.method) this.method = u.method
     this.fieldList = u.fieldList
     this.groupList = u.groupList || []
     this.whereList = u.whereList || {}
