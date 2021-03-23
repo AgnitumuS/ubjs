@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - default authentication form (ub-auth.html) handle a `uiSettings.adminUI.forgotPasswordURL` parameter from config.
  In case parameter is empty or not exists (default) then forgot password link do not displayed on the authentication form. 
- Otherwise a link to the specified URL is displayed 
+ Otherwise, a link to the specified URL is displayed 
 
 ### Changed
 

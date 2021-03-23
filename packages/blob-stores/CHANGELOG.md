@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - UB4 regression: if BLOB info stored in the DB not contains a `revision` (UB < 5) `getDocument` don't try
+   to get a revision from history and returns an actual content
 
 ## [5.19.5] - 2021-03-15
 ### Added

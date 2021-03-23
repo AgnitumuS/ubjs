@@ -225,7 +225,8 @@ function getRequestedBLOBInfo (parsedRequest) {
     }
     blobInfo = blobInfoTxt ? JSON.parse(blobInfoTxt) : undefined
     // check revision. If not current - get a blobInfo from history
-    if (rev && (!blobInfo || rev !== blobInfo.revision)) {
+    // blobInfo.revision is missing in UB<5 - ignore it and retrieve a latest content
+    if (rev && (!blobInfo || (blobInfo.revision && (rev !== blobInfo.revision)))) {
       const historicalBlobItem = Repository(BLOB_HISTORY_STORE_NAME)
         .attrs('blobInfo')
         .where('instance', '=', ID)
