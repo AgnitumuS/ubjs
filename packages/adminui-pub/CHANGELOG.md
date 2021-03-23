@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.19.10] - 2021-03-23
 ## [5.19.9] - 2021-03-17
 ### Fixed
  - `UB.core.UBUtil.getNameMd5` uses `JSON.stringify` for tail parameters before calculation of MD5 sum.

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.4] - 2021-03-23
 ## [5.5.3] - 2021-03-15
 ### Changed
   - `ubm_desktop-scanerSettings-fm` increased the maximum value of page margins for the barcode 
