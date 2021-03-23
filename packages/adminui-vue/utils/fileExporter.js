@@ -90,10 +90,16 @@ async function exportExcel ({ repository, columns, fileName, filters }) {
 async function exportCsv ({ repository, fileName }) {
   // TODO: replace with client side rendering
   const request = repository.clone().withTotal(false).start(0).limit(0)
+  const ubql = request.ubql()
+
+  if (!ubql.method) {
+    ubql.method = 'select'
+  }
+
   const { data } = await request.connection.xhr({
     method: 'POST',
     url: 'ubql',
-    data: [request.ubql()],
+    data: [ubql],
     responseType: 'blob',
     headers: { 'Content-Type': 'text/csv; charset=UTF-8' }
   })
@@ -110,10 +116,16 @@ async function exportCsv ({ repository, fileName }) {
 async function exportHtml ({ repository, fileName }) {
   // TODO: replace with client side rendering
   const request = repository.clone().withTotal(false).start(0).limit(0)
+  const ubql = request.ubql()
+
+  if (!ubql.method) {
+    ubql.method = 'select'
+  }
+
   const { data } = await request.connection.xhr({
     method: 'POST',
     url: 'ubql',
-    data: [request.ubql()],
+    data: [ubql],
     responseType: 'blob',
     headers: { 'Content-Type': 'text/html; charset=UTF-8' }
   })

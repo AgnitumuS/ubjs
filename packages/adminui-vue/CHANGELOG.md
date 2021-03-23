@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - File exporter: fix csv and html export for cases when `repository` of `u-table-entity` component has no `method` property.
  - UNavbar: fix scrollIntoView in case several navbars are added by apps (as reported by protoka devs)
 
 ## [5.19.7] - 2021-03-16
