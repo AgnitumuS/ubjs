@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - use `SystemJS.import('@unitybase/pdf')` instead of `System.import('@unitybase/pdf')` to prevent webpack including
  a pdf package into adminui-vue bundle
+ - `lookups`: the loading of lookups entries waits for another loading of entries for the same
+  entity if it is not completed yet. This prevents parallelism bug, which happens when several
+  `UTableEntity` controls load lookups for the same entity and only the first one awaits the
+  `subscribe` method and displays columns using `lookups` rightly
 
 ## [5.19.8] - 2021-03-23
 ### Added

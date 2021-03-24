@@ -11,7 +11,6 @@
 const Vue = require('vue')
 const UB = require('@unitybase/ub-pub')
 const ENUM_ENTITY = 'ubm_enum'
-const LOOKUP_LIMIT = 10000 // limit after which a warning is displayed
 
 const instance = new Vue({
   data () {
@@ -76,6 +75,7 @@ const instance = new Vue({
             }
           },
           attrs: new Set(['ID']),
+          pendingPromise: null,
           data: [],
           mapById: {},
           descriptionAttrName: ''
@@ -103,19 +103,33 @@ const instance = new Vue({
 
       subscription.subscribes++
 
-      if (isFirstSubscription || hasAdditionalAttrs) {
-        const resultData = await UB.Repository(entity)
-          .attrs([...subscription.attrs])
-          .limit(UB.LIMITS.lookupMaxRows)
-          .select()
+      if (subscription.pendingPromise) {
+        await subscription.pendingPromise
+        return
+      }
 
-        if (resultData.length >= UB.LIMITS.lookupMaxRows) {
-          UB.logError(`Lookups: Entity "${entity}" result truncated to ${UB.LIMITS.lookupMaxRows} records to prevent performance problems. Consider to avoid lookp'ing to a huge entities`)
-        } else if (resultData.length >= UB.LIMITS.lookupWarningRows) {
-          UB.logWarn(`Lookups: Too many rows (${resultData.length}) returned for "${entity}" lookup. Consider to avoid lookups for huge entities to prevents performance degradation`)
+      if (isFirstSubscription || hasAdditionalAttrs) {
+        const loadEntries = async () => {
+          const resultData = await UB.Repository(entity)
+            .attrs([...subscription.attrs])
+            .limit(UB.LIMITS.lookupMaxRows)
+            .select()
+
+          if (resultData.length >= UB.LIMITS.lookupMaxRows) {
+            UB.logError(`Lookups: Entity "${entity}" result truncated to ${UB.LIMITS.lookupMaxRows} records to prevent performance problems. Consider to avoid lookp'ing to a huge entities`)
+          } else if (resultData.length >= UB.LIMITS.lookupWarningRows) {
+            UB.logWarn(`Lookups: Too many rows (${resultData.length}) returned for "${entity}" lookup. Consider to avoid lookups for huge entities to prevents performance degradation`)
+          }
+          subscription.data.splice(0, subscription.data.length, ...resultData)
+          resultData.forEach(r => { subscription.mapById[r.ID] = r })
         }
-        subscription.data.splice(0, subscription.data.length, ...resultData)
-        resultData.forEach(r => { subscription.mapById[r.ID] = r })
+
+        subscription.pendingPromise = loadEntries()
+        try {
+          await subscription.pendingPromise
+        } finally {
+          subscription.pendingPromise = null
+        }
       }
     },
 
