@@ -44,10 +44,6 @@
 export default {
   name: 'UButton',
 
-  inject: {
-    appearance: 'default'
-  },
-
   props: {
     /**
      * Left icon css class
