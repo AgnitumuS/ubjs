@@ -196,69 +196,6 @@ PrintToPdf.requireFonts = function (config) {
       )
     }
   }
-
-  // if (UB.isServer) {
-  //   var fontPath, fs, fName, modelName, basePath
-  //   var modelsConfig = App.domain.config.models
-  //
-  //   fs = require('fs')
-  //   for (i = 0; i < fonts.length; i++) {
-  //     font = fonts[i]
-  //     if (jsPDF.API.UnicodeFontExists(font.fontName, font.fontStyle)) {
-  //       continue
-  //     }
-  //     fontPath = font.path || this.baseFontPath
-  //     if (fontPath) {
-  //       fontPath = fontPath.replace(/[\/]/g, '\\')
-  //       modelName = fontPath.split('\\')
-  //       if (modelName && modelName.length > 1) {
-  //         modelName = modelName[1]  // 'models/PDF/fonts'
-  //       } else {
-  //         modelName = 'PDF'
-  //       }
-  //     }
-  //     basePath = modelsConfig.byName(modelName).path
-  //
-  //     fName = basePath + 'public\\fonts\\' + font.fontName + font.fontStyle + '.json'
-  //     JsPDF.API.addRawFontData(require(fName))
-  //   }
-  //   if (config.onLoad) {
-  //     config.onLoad.call(config.scope || me, [])
-  //   }
-  //   return null
-  // } else { // web client
-  //           /* jshint -W038 */
-  //   defer = Q.defer()
-  //           /* jshint +W038 */
-  //
-  //   function fontLoaded (data) {
-  //     JsPDF.API.addRawFontData(data.data)
-  //     scriptsToLoad--
-  //     if (scriptsToLoad === 0) {
-  //       defer.resolve()
-  //       if (config.onLoad) {
-  //         config.onLoad.call(config.scope || me, [])
-  //       }
-  //     }
-  //   }
-  //   for (i = 0; i < fonts.length; i++) {
-  //     font = fonts[i]
-  //     if (JsPDF.API.UnicodeFontExists(font.fontName, font.fontStyle)) {
-  //       continue
-  //     }
-  //     scriptsToLoad++
-  //     $App.connection.get((font.path || this.baseFontPath) + '/' + font.fontName + font.fontStyle + '.json', null,
-  //                   {responseType: 'json'})
-  //                   .then(fontLoaded)
-  //   }
-  //   if (scriptsToLoad === 0) {
-  //     defer.resolve()
-  //     if (config.onLoad) {
-  //       config.onLoad.call(config.scope || me, [])
-  //     }
-  //   }
-  //   return defer.promise
-  // }
 }
 
 /**
@@ -396,29 +333,12 @@ PrintToPdf.prototype.parseBorder = function (val) {
       }
     } else {
       throw new Error('Unknown format for tag: border = "' + val + '"')
-      // // old format
-      // var result = {left: 0, top: 0, bottom: 0, right: 0}
-      // dimension = 'px'
-      // var i = 0
-      // while (i < val.length) {
-      //   var key = 1
-      //   if (i < val.length - 1 && val[i + 1] > 0) {
-      //     key = val[i + 1] + 0
-      //   }
-      //   switch (val[i]) {
-      //     case 'L': result.left = key + dimension; break
-      //     case 'T': result.top = key + dimension; break
-      //     case 'B': result.bottom = key + dimension; break
-      //     case 'R': result.right = key + dimension; break
-      //   }
-      //   i = i + (key === 1 ? 1 : 2)
-      // }
     }
   }
 }
 
 /**
- * Add alone text box and change current position. Full list parameters are in {@link  PdfTextBox}
+ * Add alone text box and change current position. Full parameters list is in {@link  PdfTextBox}
  * @param {Object} config
  * @param {String} config.text
  * @param {Number} [config.left] (optional) default min left position
@@ -428,11 +348,9 @@ PrintToPdf.prototype.parseBorder = function (val) {
  * @return {PdfTextBox}
  */
 PrintToPdf.prototype.writeSimpleText = function (config) {
-  let cfg = _.cloneDeep(config, true)
-  // MPV add isCloned
+  let cfg = _.cloneDeep(config)
   cfg.isCloned = true
   cfg.width = cfg.width || this.page.innerSize.width
-  // config.wordWrap = config.wordWrap || true;
   let autoWrite = cfg.autoWrite === true || cfg.autoWrite === false ? cfg.autoWrite : true
   cfg.autoWrite = false
   cfg.align = config.align || 'left'
@@ -712,21 +630,10 @@ PrintToPdf.prototype.getTextWidth = function (text, font) {
 PrintToPdf.prototype.addPage = function (noChangePosition) {
   this.pdf.addPage()
   this.totalPageNumber++
-
-    /*
-    me.currentPosition = me.page.margin.top;
-    me.initColontitle(me.page.topColontitle);
-    me.initColontitle(me.page.bottomColontitle);
-    */
   if (!noChangePosition) {
     this.pageNumber++
     this.currentPosition = this.page.innerSize.topColon // me.page.topColontitle.height + me.page.innerSize.top;
   }
-
-    // if (me.page.onInitPage){
-    // this.fireEvent('initPage', this);
-    // }
-
   this.raiseInitPage()
 }
 
@@ -936,8 +843,8 @@ PrintToPdf.prototype.setFontSize = function (size) {
  */
 PrintToPdf.prototype.createGrid = function (config) {
   let grdConfig = config ? _.cloneDeep(config) : {}
-  grdConfig.context = this
   grdConfig.isCloned = true
+  grdConfig.context = this
   grdConfig.top = grdConfig.top || this.getPosition()
   grdConfig.left = grdConfig.left || this.page.innerSize.left
   return new PdfDataGrid(grdConfig)
