@@ -623,11 +623,7 @@ export default {
           cmdData: {
             repository: () => selectRepo,
             onSelectRecord: ({ ID, row, close }) => {
-              this.selectedID = this.valueAttribute in row
-                ? row[this.valueAttribute]
-                : ID
-
-              this.$emit('input', this.selectedID, JSON.parse(JSON.stringify(row)))
+              this.$emit('input', row[this.valueAttribute], JSON.parse(JSON.stringify(row)))
               close()
             },
             buildEditConfig (cfg) {
@@ -659,11 +655,7 @@ export default {
                         return
                       }
 
-                      this.selectedID = this.valueAttribute in selectedRow
-                        ? selectedRow[this.valueAttribute]
-                        : selectedRowId
-
-                      this.$emit('input', this.selectedID, JSON.parse(JSON.stringify(selectedRow)))
+                      this.$emit('input', selectedRow[this.valueAttribute], JSON.parse(JSON.stringify(selectedRow)))
                       close()
                     }
                   }
