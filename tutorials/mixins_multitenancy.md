@@ -77,6 +77,12 @@ The multitenancy connection config
     "password": "%UB_DB_MAIN_PWD%",
     "supportLang": ["en", "uk"],
     "advSettings": "LibLocation=%UB_POSTGRE_LIB||libpq.so.5%",
-    "executeWhenConnected": ["SET search_path TO %UB_DB_MAIN_USER%", "SET ub.tenantID=0"]
+    "executeWhenConnected": [
+      "SET search_path TO %UB_DB_MAIN_USER%",
+      "SET ub.tenantID=0",
+      "SET statement_timeout=1000"
+    ]
 }
 ```
+
+> we recommend sets a `statement_timeout` to 1 second to minimize influence of one tenant on others   

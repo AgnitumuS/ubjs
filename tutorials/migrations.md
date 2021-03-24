@@ -29,22 +29,22 @@ graph TD
     filterOutdated --> filterApplied("Exclude already applied files (present in ub_migration table) and verify files SHA")
     filterApplied --> noddl{-noddl?}
     noddl --> |Yes| skipMigrateData{-nodata?}
-    noddl --> |No| jsHookBefore(For each model call beforeGenerateDDL from _migrate/_hooks.js)
+    noddl --> |No| jsHookBefore("For each model call beforeGenerateDDL from _migrate/_hooks.js")
     jsHookBefore --> fileHookBefore("For each model execute _migrate/*_beforeDDL_*.[sql|js] files")  
-    fileHookBefore --> connectToServer(Create SyncConnection to server)
-    connectToServer --> jsHookBeforeC(For each model call beforeGenerateDDLc from _migrate/_hooks.js)
+    fileHookBefore --> connectToServer("Create SyncConnection to server")
+    connectToServer --> jsHookBeforeC("For each model call beforeGenerateDDLc from _migrate/_hooks.js")
     jsHookBeforeC --> fileHookBeforeC("For each model execute _migrate/*_beforeDDLc_*.[sql|js] files")  
-    fileHookBeforeC --> generateDDL(Call `ubcli generateDDL -autorun`)
-    generateDDL --> jsHookAfter(For each model call afterGenerateDDL from _migrate/_hooks.js)
+    fileHookBeforeC --> generateDDL("Call `ubcli generateDDL -autorun`")
+    generateDDL --> jsHookAfter("For each model call afterGenerateDDL from _migrate/_hooks.js")
     jsHookAfter --> fileHookAfter("For each model execute _migrate/*_afterDDL_*.[sql|js] files")  
     fileHookAfter --> skipMigrateData
     skipMigrateData --> |No| checkUbMigrate{{"Is @unitybase/ub-migrate installed?"}}
-    checkUbMigrate --> |Yes| callUbMigrate(Sync entites data with yaml's from the models _data folders)
+    checkUbMigrate --> |Yes| callUbMigrate("Sync entites data with yaml's from the models _data folders")
     checkUbMigrate --> |No| applyfilterFilesHook
     callUbMigrate --> applyfilterFilesHook
-    skipMigrateData --> |Yes| applyfilterFilesHook(For each model call filterFiles from _migrate/_hooks.js)
+    skipMigrateData --> |Yes| applyfilterFilesHook("For each model call filterFiles from _migrate/_hooks.js")
     applyfilterFilesHook --> executeUsualFiles("For each model execute _migrate/*.[js|sql] files")
-    executeUsualFiles --> jsHookFinalyze(For each model call _migrate/_hooks.js finalize)  
+    executeUsualFiles --> jsHookFinalyze("For each model call _migrate/_hooks.js finalize")  
     
     click checkUbMigrate "https://git-pub.intecracy.com/unitybase/ub-migrate/-/blob/master/README.md" "Click for @unitybase/ub-migrate documentation"
     click callUbMigrate "https://git-pub.intecracy.com/unitybase/ub-migrate/-/blob/master/README.md" "Click for @unitybase/ub-migrate documentation"

@@ -421,6 +421,16 @@
             ]
           }
         },
+        "lockOutInDB": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whenever user account is locked out permanently using `uba_user.disabled` or temporary for lockOutTimeoutSec after `UBA.passwordPolicy.maxInvalidAttempts` invalid login attempts. Since: UB@5.19.6"
+        },
+        "lockOutTimeoutSec": {
+          "type": "number",
+          "default": 300,
+          "description": "Timeout is seconds for temporary lock out for account, in case lockOutInDB is false. Note: account lock out feature works for only for `UB` and `Basic` auth. Since: UB@5.19.6"
+        },
         "zones": {
           "type": "array",
           "description": "EE edition. Security zones definition. Used as fallback in case reverse proxy securityZoneHeader configuration is empty",
@@ -798,6 +808,11 @@
               "advSettings": {
                 "type": "string",
                 "description": "Advanced driver settings\n\n |DBMS| Value  | Description \n|-\n|`Postgre`|LibLocation=`Path to 64bit libpq.dll`| \"LibLocation=C:/Program Files/PostgreSQL (x86)/10/bin/libpq.dll\"\n| `Oracle`| Combination of `INLINE_IN` `USE_WALLET` and `CARDINALITY_IN`<br>INLINE_IN - do not use array bindings for `in` and `not in` condition<br><br>CARDINALITY_IN (Oracle, UB EE - ORM adds `/*+ CARDINALITY(t1, P) */` hint for IN sub-queries;<br>P value depends on array length L:  L<10 => P = 1; L < 50 => P=10 else P = 100<br>(UB5 only) LibLocation=`Path to folder with oci.dll(windows only)` | \\/INLINE_IN,CARDINALITY_IN,USE_WALLET,LibLocation=/usr/lib/oracle/11.2/clien64/lib\" \n| `SQLIte3` | [Synchronous=Full or Off or Normal],[Tokenizer=stemka,TokenizerParams=\"stem=yes or no\" \"lang=uk or ru or en\"]"
+              },
+              "statementMaxMemoryMb": {
+                "type": "Number",
+                "default": 50,
+                "description": "Maximum fetch size for DataStore. If a result set exceeds this limit, an Exception is raised. This avoids unexpected OutOfMemory errors and server crash when incorrect statement what returns too many rows or too big content are executed"
               }
             }
           }
@@ -985,6 +1000,11 @@
             "registrationURL": {
               "type": "string",
               "description": "User registration page URL. If empty (default) then the registration link should not be displayed on login page",
+              "default": ""
+            },
+            "forgotPasswordURL": {
+              "type": "string",
+              "description": "User forgot password page URL. If empty (default) then the forgot password link should not be displayed on login page",
               "default": ""
             },
             "loginWindowTopLogoURL": {

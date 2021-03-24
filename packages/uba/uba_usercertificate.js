@@ -8,10 +8,15 @@ const UB = require('@unitybase/ub')
 const me = uba_usercertificate
 me.on('insert:before', setBlob)
 me.on('update:before', setBlob)
-me.on('insert:after', clearBlob)
+me.on('delete.before', logoutUserBeforeCertDelete)
+me.on('insert:after', clearBlobAndLogoutAUser)
 me.on('update:after', clearBlob)
 me.entity.addMethod('getCertificate')
 
+/**
+ * @private
+ * @param {ubMethodParams} ctxt
+ */
 function setBlob (ctxt) {
   const execParams = ctxt.mParams.execParams
   Object.keys(execParams)
@@ -20,7 +25,37 @@ function setBlob (ctxt) {
   }
 }
 
-function clearBlob (ctxt) {
+/**
+ * @private
+ * @param {ubMethodParams} ctxt
+ */
+function logoutUserBeforeCertDelete (ctxt) {
+  const rowID = ctxt.mParams.execParams.ID
+  const userID = UB.Repository(me.entity.name).attrs('userID').where('ID', '=', rowID).selectScalar()
+  App.removeUserSessions(userID)
+}
+
+/**
+ * @private
+ * @param {ubMethodParams} ctxt
+ */
+function clearBlobAndLogoutAUser (ctxt) {
+  const execParams = ctxt.mParams.execParams
+  if (execParams.certificate) {
+    execParams.certificate = ''
+  }
+  let userID = execParams.userID
+  if (!userID) {
+    userID = UB.Repository(me.entity.name).attrs('userID').where('ID', '=', params.ID).selectScalar()
+  }
+  App.removeUserSessions(userID)
+}
+
+/**
+ * @private
+ * @param {ubMethodParams} ctxt
+ */
+function clearBlob(ctxt) {
   const execParams = ctxt.mParams.execParams
   if (execParams.certificate) {
     execParams.certificate = ''

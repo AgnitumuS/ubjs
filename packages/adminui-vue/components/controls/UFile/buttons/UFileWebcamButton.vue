@@ -482,7 +482,7 @@ export default {
       }
       this.exportingToPdf = true
       await this.$nextTick()
-      System.import('@unitybase/pdf').then((PDF) => {
+      SystemJS.import('@unitybase/pdf').then((PDF) => {
       // eslint-disable-next-line new-cap
         const pdf = new PDF.jsPDF()
         pdf.deletePage(1) // remove first redundant page

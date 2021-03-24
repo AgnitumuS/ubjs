@@ -388,14 +388,17 @@ function ubaAuditNewUser (ctx) {
 }
 
 /**
- * After updating user - log event to uba_audit
+ * After updating user - log event to uba_audit.
+ * Logout a user if disabled is sets to 1
  * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditModifyUser (ctx) {
-  if (!App.domainInfo.has('uba_audit')) return
-
   const params = ctx.mParams.execParams
+  if (params.disabled) {
+    App.removeUserSessions(params.ID)
+  }
+
   const store = UB.DataStore('uba_audit')
   const origStore = ctx.dataStore
   const origName = origStore.currentDataName
@@ -459,8 +462,6 @@ function ubaAuditModifyUser (ctx) {
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteUser (ctx) {
-  if (!App.domainInfo.has('uba_audit')) return
-
   const params = ctx.mParams.execParams
   const store = UB.DataStore('uba_audit')
   const origStore = ctx.dataStore

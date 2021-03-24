@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.19.9] - 2021-03-23
+## [5.19.8] - 2021-03-17
 ## [5.19.7] - 2021-03-16
 ### Fixed
 - Cleaned up `ubm_diagram` and `ubm_form` localization (ru, ka, tg) from non-existing attribute

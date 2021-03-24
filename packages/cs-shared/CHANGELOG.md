@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - CustomRepository.fromUbql: prevents overriding of a default `method` in case Repository is created from JSON without method property
+   `UB.Repository({entity: 'my_entity', fieldList: ['a', 'b']})`.  A better fix for !1048
+
 
 ## [5.5.20] - 2021-03-15
 ### Changed

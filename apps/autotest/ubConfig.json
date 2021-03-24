@@ -59,6 +59,8 @@
 			"CERT2"
 			//#endif
 		],
+		"lockOutTimeoutSec": 60,
+		//"lockOutInDB": false,
 		//#ifdef(%UB_USE_DSTU%)
 		"simpleCertAuth": true,
 		"dstu": {
@@ -249,7 +251,8 @@
 				"dialect": "SQLite3",
 				"databaseName": "%UB_APPDATA%localdb/DB.sqlite3",
 				"supportLang": ["en", "uk"],
-				"advSettings": "Synchronous=Off"
+				"advSettings": "Synchronous=Off",
+				"statementMaxMemoryMb": 1
 			},
 			//#endif
 			//#ifndef(%UB_NOFTS%)

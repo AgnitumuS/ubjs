@@ -166,7 +166,7 @@ Ext.define('UB.core.UBUtil', {
     name = arguments[0]
     for (let i = 1, len = arguments.length; i < len; ++i) {
       let param = arguments[i]
-      let strEnd = Ext.isArray(param) ? param.join(',') : (Ext.isObject(param) ? Ext.JSON.encode(param) : param)
+      let strEnd = JSON.stringify(param)
       addStr = this.gatherStr(addStr, '_', strEnd)
     }
 

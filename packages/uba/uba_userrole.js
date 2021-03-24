@@ -18,11 +18,11 @@ me.on('delete:after', ubaAuditDeleteUserRole)
  * @param {ubMethodParams} ctx
  */
 function ubaAuditNewUserRole (ctx) {
-  if (!App.domainInfo.has('uba_audit')) return
-
   const params = ctx.mParams.execParams
-  let role = params.roleID
   let user = params.userID
+  App.removeUserSessions(user)
+
+  let role = params.roleID
   if (role) {
     const obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', role).select()
     role = obj.eof ? role : obj.get('name')
@@ -54,14 +54,18 @@ function ubaAuditNewUserRole (ctx) {
  * @param {ubMethodParams} ctx
  */
 function ubaAuditModifyUserRole (ctx) {
-  if (!App.domainInfo.has('uba_audit')) return
-
   const params = ctx.mParams.execParams
+  let userNew = params.userID
+  if (!userNew) {
+    userNew = UB.Repository(me.entity.name).attrs('userID').where('ID', '=', params.ID).selectScalar()
+  }
+  App.removeUserSessions(userNew)
+
   const actionUser = Session.uData.login
   const origStore = ctx.dataStore
   const origName = origStore.currentDataName
   let roleNew = params.roleID
-  let userNew = params.userID
+
   if (roleNew) {
     const obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', roleNew).select()
     roleNew = obj.eof ? roleNew : obj.get('name')
@@ -119,7 +123,6 @@ function ubaAuditModifyUserRole (ctx) {
 }
 
 me.on('delete:before', function (ctxt) {
-  if (!App.domainInfo.has('uba_audit')) return
   const execParams = ctxt.mParams.execParams
 
   const store = UB.Repository('uba_userrole')
@@ -135,7 +138,8 @@ me.on('delete:before', function (ctxt) {
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteUserRole (ctx) {
-  if (!App.domainInfo.has('uba_audit')) return
+  let user = ctx.mParams.delUserID
+  App.removeUserSessions(user)
 
   const params = ctx.mParams.execParams
 
@@ -144,7 +148,6 @@ function ubaAuditDeleteUserRole (ctx) {
     const obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', role).select()
     role = obj.eof ? role : obj.get('name')
   }
-  let user = ctx.mParams.delUserID
   if (user) {
     const obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', user).select()
     user = obj.eof ? user : obj.get('name')

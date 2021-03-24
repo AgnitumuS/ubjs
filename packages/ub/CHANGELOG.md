@@ -6,16 +6,34 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `App.launchEndpoint` emits 2 addition events:
-   - `launchEndpoint:before` with parameters: (req, resp, endpointName)
-   - `launchEndpoint:after` with parameters: (req, resp, endpointName, defaultPrevented)
-   Can be used to do something on before/after any endpoint execution
-     
+
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.19.7] - 2021-03-23
+### Added
+ - new ubConfig parameter `uiSettings.adminUI.forgotPasswordURL`. If sets, then "Forgot password" link is displayed on the login form
+ - added `THTTPRequest.json()` method - read a UTF8 encoded HTTP request body as JSON Object.
+   Can be used as faster alternative to `JSON.parse(req.read('utf8'))`
+ - added `IncomingMessage.json()` - a faster alternative to `JSON.parse(resp.read())` for http client requests
+ - `ub_blobHistory` entity extended by `entity` and `createdAt` attributes
+
+## [5.19.6] - 2021-03-17
+### Added
+ - `App.launchEndpoint` emits 2 addition events:
+   - `launchEndpoint:before` with parameters: (req, resp, endpointName)
+   - `launchEndpoint:after` with parameters: (req, resp, endpointName, defaultPrevented)
+   Can be used to do something on before/after any endpoint execution
+     
+ - `App.removeUserSessions(userID)` a method to `logout` a user completely
+     
+### Changed
+ - `fsStorage` mixin can use a simplified BLOB info (only origName is stored instead of JSON) for `mdb` based BLOB attributes
 
 ### Fixed
  - multitenancy: prevent recreation of default constraint for mi_tenantID on Postgres

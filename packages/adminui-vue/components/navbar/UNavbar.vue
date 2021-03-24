@@ -248,7 +248,8 @@ export default {
           if (ref && ref.length) { // ref can be []  https://dev.intecracy.com/jira/browse/DRORM-2465
             ref[0].scrollIntoView({
               behavior: 'smooth',
-              inline: 'center'
+              inline: 'center',
+              block: 'center'
             })
           }
         },

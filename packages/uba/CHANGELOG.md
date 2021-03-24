@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.19.7] - 2021-03-23
+## [5.19.6] - 2021-03-17
+### Added
+ - *SECURITY* user will be logged out immediately if:
+    - roles or groups for user is changed
+    - certificate is removed or updated
+    - uba_user.disabled is sets to true 
+
 ## [5.19.5] - 2021-03-15
 ### Added
  - implicitly disable multitenancy mixin for `uba_role`, `uba_rls` and `uba_els`

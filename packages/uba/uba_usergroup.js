@@ -16,11 +16,12 @@ me.on('delete:after', ubaAuditDeleteUserGroup)
  * @param {ubMethodParams} ctx
  */
 function ubaAuditNewUserGroup (ctx) {
-  if (!App.domainInfo.has('uba_audit')) return
-
   const params = ctx.mParams.execParams
   let group = params.groupID
   let user = params.userID
+
+  App.removeUserSessions(user)
+
   if (group) {
     const obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', group).select()
     group = obj.eof ? group : obj.get('name')
@@ -52,14 +53,17 @@ function ubaAuditNewUserGroup (ctx) {
  * @param {ubMethodParams} ctx
  */
 function ubaAuditModifyUserGroup (ctx) {
-  if (!App.domainInfo.has('uba_audit')) return
-
   const params = ctx.mParams.execParams
   const actionUser = Session.uData.login
   const origStore = ctx.dataStore
   const origName = origStore.currentDataName
   let groupNew = params.groupID
   let userNew = params.userID
+  if (!userNew) {
+    userNew = UB.Repository(me.entity.name).attrs('userID').where('ID', '=', params.ID).selectScalar()
+  }
+  App.removeUserSessions(userNew)
+
   if (groupNew) {
     const obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', groupNew).select()
     groupNew = obj.eof ? groupNew : obj.get('name')
@@ -133,16 +137,15 @@ me.on('delete:before', function (ctxt) {
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteUserGroup (ctx) {
-  if (!App.domainInfo.has('uba_audit')) return
-
   const params = ctx.mParams.execParams
+  let user = ctx.mParams.delUserID
+  App.removeUserSessions(user)
 
   let group = ctx.mParams.delGroupID
   if (group) {
     const obj = UB.Repository('uba_group').attrs('name').where('[ID]', '=', group).select()
     group = obj.eof ? group : obj.get('name')
   }
-  let user = ctx.mParams.delUserID
   if (user) {
     const obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', user).select()
     user = obj.eof ? user : obj.get('name')
