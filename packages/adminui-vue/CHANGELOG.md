@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - UButtonGroup: new prop `appearance` - provided to all child UButton's, so group buttons appearance can be changed from one place
+ - UTableEntity: added icon for "No sorting" option in column sorting menu
 
 ### Changed
 

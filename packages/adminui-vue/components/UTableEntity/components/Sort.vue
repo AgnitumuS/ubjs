@@ -112,6 +112,7 @@ export default {
         icon: 'u-icon-sort-desc-alt'
       }, {
         label: this.$ut('table.sort.direction.none'),
+        icon: 'u-icon-circle-close',
         value: 'none'
       }]
     }

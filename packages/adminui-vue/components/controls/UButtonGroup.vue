@@ -24,9 +24,24 @@ export default {
       validator (value) {
         return ['horizontal', 'vertical'].includes(value)
       }
+    },
+    /**
+     * Appearance of the buttons in group (provided)
+     */
+    appearance: {
+      type: String,
+      default: 'default',
+      validator (value) {
+        return ['default', 'plain', 'inverse'].includes(value)
+      }
     }
+  },
 
-  }
+  provide () {
+    return {
+      appearance: this.appearance
+    }
+  },
 }
 </script>
 
