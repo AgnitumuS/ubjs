@@ -1,6 +1,5 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   resolve: {
@@ -45,13 +44,7 @@ module.exports = {
       filename: 'style.css'
     })
   ],
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        cache: true,
-        extractComments: false
-      })
-    ]
+  watchOptions: {
+    poll: 10000, // Check for changes every 10 seconds
   }
 }

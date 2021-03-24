@@ -11,6 +11,11 @@ function c (absolutePath) {
   return `../node_modules/@unitybase/adminui-vue/components/${absolutePath}`
 }
 
+// without sets a mode in webpack config we always get a production build
+const webpackMode = process.env.NODE_ENV !== 'development' ? 'production' : 'development'
+const webpackConfig = require('./webpack.config')
+webpackConfig.mode = webpackMode
+
 module.exports = {
   title: '@unitybase/adminui-vue',
   version,
@@ -101,7 +106,7 @@ module.exports = {
     path.join(__dirname, './fix-ub-style.css')
   ],
   renderRootJsx: path.join(__dirname, './eachRender'),
-  webpackConfig: require('./webpack.config'),
+  webpackConfig: webpackConfig,
 
   styleguideDir: '../inetpub',
 

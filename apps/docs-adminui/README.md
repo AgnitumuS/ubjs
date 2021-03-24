@@ -3,9 +3,9 @@
 
 Prerequirment 
 - `./init-db.sh`
-- Install dependenies `yarn`.
-- Dev mode `yarn run dev`
-- Build `yarn run build`
+- Install dependencies `npm i`.
+- Dev mode `npm run dev`
+- Build `npm run build`
 
 Production version
 - `ub`

@@ -9,8 +9,9 @@
     "../../packages/*"
   ],
   "scripts": {
-    "watch": "vue-styleguidist --config ./build/styleguidist.config.js server",
-    "build1": "vue-styleguidist --config ./build/styleguidist.config.js build",
+    "watch": "NODE_ENV=development vue-styleguidist --config ./build/styleguidist.config.js server",
+    "build:prod": "vue-styleguidist --config ./build/styleguidist.config.js build",
+    "build:dev": "NODE_ENV=development vue-styleguidist --config ./build/styleguidist.config.js build",
     "ubapp": "ub -env ./ubConfig-dev.env",
     "dev": "gnome-terminal -x npm run ubapp; npm run watch"
   },
