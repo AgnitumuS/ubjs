@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     doImport () {
-      const fileNames = selectedFiles.map(f => f.name).join(', ')
+      const fileNames = this.selectedFiles.map(f => f.name).join(', ')
       this.$dialogYesNo(`Import ${fileNames} into database?`)
     }
   }
