@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `lookups`: the loading of lookups entries waits for another loading of entries for the same
   entity if it is not completed yet. This prevents parallelism bug, which happens when several
   `UTableEntity` controls load lookups for the same entity and only the first one awaits the
-  `subscribe` method and displays columns using `lookups` rightly
+  `subscribe` method and displays columns using `lookups` correctly
 
 ## [5.19.8] - 2021-03-23
 ### Added
