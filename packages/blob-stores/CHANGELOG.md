@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.0] - 2021-03-25
 ## [5.19.6] - 2021-03-23
 ### Added
  - history rotation adds `entity` and `createdAt` values into `ub_blobHistory`.

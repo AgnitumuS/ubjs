@@ -6,14 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - UTableEntity: icon for "No sorting" option in the column sorting menu added
 
 ### Changed
- - migrate build to webpack5
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.20.0] - 2021-03-25
+### Added
+ - UTableEntity: icon for "No sorting" option in the column sorting menu added
+
+### Changed
+ - migrate build to webpack5
 
 ### Fixed
  - `USelectEntity`: In case value-attribute is specified for u-select-entity (e.g. :value-attribute="code") and the desired value is selected from dictionary then display attribute cannot be found and: old behavior - ID is shown; new behavior - value is shown corectly

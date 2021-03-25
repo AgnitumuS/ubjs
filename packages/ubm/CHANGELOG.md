@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.0] - 2021-03-25
+### Added
 - `ubm_sysdictionary` entity, navigation shortcut for the entity (the auto form is used).
   This entity is a copy of the old `ubm_query` entity that contains information about system dictionaries.
 
@@ -33,12 +44,6 @@ region:
 
 - UBM model now uses `ub-migrate` for adding/updating enums, navigation items and roles
 - 'UBM_READ_USERS' & 'UBM_READ_EVERYONE' ELS rules removed in flavor of UBM_READ_USER added by ub-migrate
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.19.9] - 2021-03-23
 ## [5.19.8] - 2021-03-17

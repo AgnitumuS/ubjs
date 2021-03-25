@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.0] - 2021-03-25
 ## [5.19.7] - 2021-03-23
 ### Added
  - new ubConfig parameter `uiSettings.adminUI.forgotPasswordURL`. If sets, then "Forgot password" link is displayed on the login form

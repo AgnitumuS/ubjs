@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - migrate build to webpack5
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [1.4.0] - 2021-03-25
+### Changed
+ - migrate build to webpack5
 
 ## [1.3.3] - 2019-05-21
 ### Changed
