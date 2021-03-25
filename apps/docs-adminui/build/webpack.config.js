@@ -1,3 +1,4 @@
+const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
@@ -7,7 +8,11 @@ module.exports = {
     alias: {
       vue: 'vue/dist/vue.common.js'
     },
-    symlinks: false
+    // 2 line below force webpack to lookup modules in docs_adminui/node_modules first
+    // instead of resolve a same module (@unitybase/ub-pub for example) from several
+    // symlinked locations created by `lerna link`
+    symlinks: false,
+    modules: [path.resolve(__dirname, '..', 'node_modules'), 'node_modules']
   },
   module: {
     rules: [{
@@ -45,6 +50,7 @@ module.exports = {
     })
   ],
   watchOptions: {
-    poll: 10000, // Check for changes every 10 seconds
+    //followSymlinks: true,
+    //poll: 10000, // Check for changes every 10 seconds
   }
 }
