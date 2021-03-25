@@ -32,6 +32,7 @@ region:
 ```
 
 - UBM model now uses `ub-migrate` for adding/updating enums, navigation items and roles
+- 'UBM_READ_USERS' & 'UBM_READ_EVERYONE' ELS rules removed in flavor of UBM_READ_USER added by ub-migrate
 
 ### Deprecated
 
