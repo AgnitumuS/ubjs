@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `USelectEntity`: In case value-attribute is specified for u-select-entity (e.g. :value-attribute="code") and the desired value is selected from dictionary then display attribute cannot be found and: old behavior - ID is shown; new behavior - value is shown corectly
  - use `SystemJS.import('@unitybase/pdf')` instead of `System.import('@unitybase/pdf')` to prevent webpack including
  a pdf package into adminui-vue bundle
+ - `UFileWebcamButton`: computed property `isDisabled` must return value of type `boolean` to prevent a console warnings
+ in dev mode
  - `lookups`: the loading of lookups entries waits for another loading of entries for the same
   entity if it is not completed yet. This prevents parallelism bug, which happens when several
   `UTableEntity` controls load lookups for the same entity and only the first one awaits the

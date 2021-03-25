@@ -278,7 +278,7 @@ export default {
   computed: {
     isDisabled () {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        return this.instance.file || this.instance.disabled
+        return !!this.instance.file || this.instance.disabled
       }
       return false
     },
