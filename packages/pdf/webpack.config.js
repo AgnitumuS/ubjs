@@ -9,7 +9,6 @@ module.exports = {
     app: './index.js'
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
     filename: 'pdf.min.js',
     publicPath: '/clientRequire/@unitybase/pdf/dist/',
     library: '@unitybase/pdf',
@@ -38,5 +37,10 @@ module.exports = {
     new webpack.DefinePlugin({
       BOUNDLED_BY_WEBPACK: true
     })
-  ]
+  ],
+  resolve: {
+    fallback: {
+      buffer: false
+    }
+  }
 }

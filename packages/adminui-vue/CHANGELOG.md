@@ -6,10 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - UButtonGroup: new prop `appearance` - provided to all child UButton's, so group buttons appearance can be changed from one place
- - UTableEntity: added icon for "No sorting" option in column sorting menu
+ - UTableEntity: icon for "No sorting" option in the column sorting menu added
 
 ### Changed
+ - migrate build to webpack5
 
 ### Deprecated
 
@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   entity if it is not completed yet. This prevents parallelism bug, which happens when several
   `UTableEntity` controls load lookups for the same entity and only the first one awaits the
   `subscribe` method and displays columns using `lookups` correctly
+ - added a cleanup of a dist folder before create a production build to remove unnecesary artifacts of previous build from resulting package   
 
 ## [5.19.8] - 2021-03-23
 ### Added

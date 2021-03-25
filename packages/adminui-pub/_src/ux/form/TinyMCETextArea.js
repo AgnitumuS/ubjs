@@ -64,7 +64,8 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
     window.BOUNDLED_BY_WEBPACK = false
     // eslint-disable-next-line no-undef
     if (BOUNDLED_BY_WEBPACK) {
-      return System.import('./tinyMCE-async-all')
+      return import('./tinyMCE-async-all')
+      // return Promise.resolve(window.tinymce)
     }
     // eslint-disable-next-line no-undef
     if (!BOUNDLED_BY_WEBPACK) {

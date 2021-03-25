@@ -296,14 +296,14 @@ export default {
         <el-input/>
       </u-form-row>
 
-      <el-button-group>
-        <el-button @click="showError = true">
+      <u-button-group appearance="plain">
+        <u-button @click="showError = true">
           Show error
-        </el-button>
-        <el-button @click="showError = false">
+        </u-button>
+        <u-button appearance="default" @click="showError = false">
           Hide error
-        </el-button>
-      </el-button-group>
+        </u-button>
+      </u-button-group>
     </div>
   </template>
 

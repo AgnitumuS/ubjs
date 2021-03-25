@@ -8,7 +8,6 @@ module.exports = {
     app: './index.js'
   },
   output: {
-    path: path.join(__dirname, 'dist'),
     filename: 'xlsx-all.min.js',
     library: 'XLSX',
     libraryTarget: 'umd'
@@ -17,10 +16,10 @@ module.exports = {
     rules: [{
       test: /\.js$/,
       loader: 'babel-loader',
-      exclude: /node_modules/
+      exclude: [/node_modules/]
     }, {
       test: /\.css$/,
-      loader: 'style-loader!css-loader'
+      use: ['style-loader', 'css-loader']
     }]
   },
   externals: {
