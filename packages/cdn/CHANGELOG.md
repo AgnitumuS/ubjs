@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `cdn_classifier` entity uses the `ubm_query` as unity entity
 
 ### Deprecated
 

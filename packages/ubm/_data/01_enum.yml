@@ -1,0 +1,88 @@
+$context:
+  type: enums
+
+UBA_RULETYPE:
+- A:
+    en: Allow
+    ru: Allow
+    tg: Allow
+    uk: Allow
+- C:
+    en: Complements
+    ru: Complements
+    tg: Complements
+    uk: Complements
+- D:
+    en: Deny
+    ru: Deny
+    tg: Deny
+    uk: Deny
+
+FORM_TYPE:
+- auto:
+    en: UB form
+    ru: UB form
+    tg: UB form
+    uk: UB form
+- custom:
+    en: Pure ExtJS form
+    ru: Pure ExtJS form
+    tg: Pure ExtJS form
+    uk: Pure ExtJS form
+- vue:
+    en: VueJS form
+    ru: VueJS form
+    tg: VueJS form
+    uk: VueJS form
+- module:
+    en: Any module what exports mount()
+    ru: Any module that exports mount()
+    tg: Any module that exports mount()
+    uk: Any module that exports mount()
+
+CMD_TYPE:
+- showList:
+    en: Show list
+    ru: Show list
+    tg: Show list
+    uk: Show list
+- showForm:
+    en: Show form
+    ru: Show form
+    tg: Show form
+    uk: Show form
+- runCode:
+    en: Code execution
+    ru: Code execution
+    tg: Code execution
+    uk: Code execution
+
+UBA_USER_GENDER:
+- male:
+    en: Male
+    ru: Мужчина
+    tg: Мард
+    uk: Чоловік
+- female:
+    en: Female
+    ru: Женщина
+    tg: Зан
+    uk: Жінка
+
+UBM_QUERY_TYPE:
+- classifier:
+    en: Classifier
+    ru: Классификатор
+    tg: Тасниф
+    uk: Класифікатор
+- sysDict:
+    en: System Dictionary
+    ru: Системный справочник
+    tg: Истиноди система
+    uk: Системний довідник
+- usrDict:
+    en: User Dictionary
+    ru: Пользовательский справочник
+    tg: Истиноди фармоишӣ
+    uk: Користувацький довідник
+

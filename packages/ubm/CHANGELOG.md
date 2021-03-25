@@ -6,8 +6,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `ubm_sysdictionary` entity, navigation shortcut for the entity (the auto form is used).
+  This entity is a copy of the old `ubm_query` entity that contains information about system dictionaries.
 
 ### Changed
+- **BREAKING** `ubm_query` entity is used only as a unity entity for others now. Adding to
+  `ubm_sysdictionary` now is equivalent to adding to `ubm_query` table. So if you add entries
+  using `ub-migrate` for example, it should be tweaked as described below:
+```yml
+$context:
+  type: ubm_query
+
+region:
+  name: {en: Regions, ru: Регионы, uk: Регіони}
+  ...
+```
+to:
+```yml
+$context:
+  type: ubm_sysdictionary
+
+region:
+  name: {en: Regions, ru: Регионы, uk: Регіони}
+  ...
+```
+
+- UBM model now uses `ub-migrate` for adding/updating enums, navigation items and roles
 
 ### Deprecated
 
