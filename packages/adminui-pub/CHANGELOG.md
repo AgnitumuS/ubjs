@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - migrate build to webpack5
+ - loading of TinyMCE in production build implemented using webpack5 dynamic import feature
 
 ### Deprecated
 

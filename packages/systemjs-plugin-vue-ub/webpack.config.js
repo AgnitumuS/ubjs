@@ -9,7 +9,6 @@ module.exports = {
     app: './index.js'
   },
   output: {
-    path: path.join(__dirname, 'dist'),
     library: 'unitybase_system_plugin_vue_ub',
     libraryTarget: 'umd',
     filename: 'system_plugin_vue_ub.min.js',
@@ -48,17 +47,5 @@ module.exports = {
       BOUNDLED_BY_WEBPACK: true,
       'process.env.NODE_ENV': JSON.stringify('production')
     })
-  ],
-  node: {
-    // prevent webpack from injecting useless setImmediate polyfill because Vue
-    // source contains it (although only uses it if it's native).
-    setImmediate: false,
-    // prevent webpack from injecting mocks to Node native modules
-    // that does not make sense for the client
-    dgram: 'empty',
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    child_process: 'empty'
-  }
+  ]
 }
