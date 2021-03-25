@@ -623,7 +623,7 @@ export default {
           cmdData: {
             repository: () => selectRepo,
             onSelectRecord: ({ ID, row, close }) => {
-              this.$emit('input', ID, JSON.parse(JSON.stringify(row)))
+              this.$emit('input', row[this.valueAttribute], JSON.parse(JSON.stringify(row)))
               close()
             },
             buildEditConfig (cfg) {
@@ -650,7 +650,12 @@ export default {
                     click: () => {
                       const selectedRowId = store.state.selectedRowId
                       const selectedRow = store.state.items.find(({ ID }) => ID === selectedRowId)
-                      this.$emit('input', selectedRowId, JSON.parse(JSON.stringify(selectedRow)))
+
+                      if (selectedRow == null) {
+                        return
+                      }
+
+                      this.$emit('input', selectedRow[this.valueAttribute], JSON.parse(JSON.stringify(selectedRow)))
                       close()
                     }
                   }

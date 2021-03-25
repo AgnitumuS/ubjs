@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `USelectEntity`: In case value-attribute is specified for u-select-entity (e.g. :value-attribute="code") and the desired value is selected from dictionary then display attribute cannot be found and: old behavior - ID is shown; new behavior - value is shown corectly
  - use `SystemJS.import('@unitybase/pdf')` instead of `System.import('@unitybase/pdf')` to prevent webpack including
  a pdf package into adminui-vue bundle
  - `lookups`: the loading of lookups entries waits for another loading of entries for the same
