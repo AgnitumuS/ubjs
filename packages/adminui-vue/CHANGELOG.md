@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - `u-select-entity` control: fixed display attribute value search in case entity value is selected from dictionary.
+ - `USelectEntity`: In case value-attribute is specified for u-select-entity (e.g. :value-attribute="code") and the desired value is selected from dictionary then display attribute cannot be found and: old behavior - ID is shown; new behavior - value is shown corectly
  - use `SystemJS.import('@unitybase/pdf')` instead of `System.import('@unitybase/pdf')` to prevent webpack including
  a pdf package into adminui-vue bundle
 
