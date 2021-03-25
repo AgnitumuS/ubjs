@@ -498,11 +498,11 @@ export default {
      * @param {number} value ID
      */
     setQueryByValue (value) {
-      if (this._fetchDisplayValuePormise) {
+      if (this._fetchDisplayValuePromise) {
         // Fetching value for another setQueryByValue call is not completed yet,
         // wait for it and re-query value only after its completion
-        this._fetchDisplayValuePormise.then(() => {
-          this._fetchDisplayValuePormise = null
+        this._fetchDisplayValuePromise.then(() => {
+          this._fetchDisplayValuePromise = null
           this.setQueryByValue(value)
         })
         return
@@ -524,7 +524,7 @@ export default {
         return
       }
 
-      this._fetchDisplayValuePormise = this.fetchDisplayValue(value)
+      this._fetchDisplayValuePromise = this.fetchDisplayValue(value)
     },
 
     // set delete status if record is deleted safely
