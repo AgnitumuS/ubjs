@@ -9,7 +9,6 @@ module.exports = {
     main: path.join(__dirname, 'index.js')
   },
   output: {
-    path: path.join(__dirname, 'dist'),
     filename: 'codemirror-all.min.js',
     publicPath: '/clientRequire/@unitybase/codemirror-all',
     library: '@unitybase/codemirror-all',
@@ -47,5 +46,12 @@ module.exports = {
     new webpack.DefinePlugin({
       BOUNDLED_BY_WEBPACK: true
     })
-  ]
+  ],
+  resolve: {
+    fallback: {
+      util: false,
+      assert: false
+    }
+  }
+
 }

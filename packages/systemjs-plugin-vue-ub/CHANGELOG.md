@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+
+### Changed
+ - migrate build to webpack5
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
 ## [1.3.3] - 2019-05-21
 ### Changed
  - `optionalDependencies` are moved to `devDependencies` to prevent install it even when `NODE_ENV=production`

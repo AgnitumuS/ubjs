@@ -5,7 +5,6 @@ const path = require('path')
 module.exports = {
   entry: './ub-pub.js',
   output: {
-    path: path.resolve(__dirname, 'dist'),
     filename: 'ub-pub.min.js',
     library: 'UB',
     libraryTarget: 'umd'

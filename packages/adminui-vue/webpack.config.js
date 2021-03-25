@@ -12,7 +12,6 @@ module.exports = (options = {}) => ({
     app: './adminui-vue.js'
   },
   output: {
-    path: path.join(__dirname, 'dist'),
     library: 'unitybase_adminui_vue',
     libraryTarget: 'var',
     filename: 'adminui-vue.min.js',
@@ -65,7 +64,7 @@ module.exports = (options = {}) => ({
     }),
     new webpack.DefinePlugin({
       BOUNDLED_BY_WEBPACK: true,
-      // VueJS use process.env.NODE_ENV to enable devtools
+      // VueJS uses process.env.NODE_ENV to enable devtools
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
@@ -83,17 +82,5 @@ module.exports = (options = {}) => ({
       fontHeight: 1001,
       descent: 100
     })
-  ],
-  node: {
-    // prevent webpack from injecting useless setImmediate polyfill because Vue
-    // source contains it (although only uses it if it's native).
-    setImmediate: false,
-    // prevent webpack from injecting mocks to Node native modules
-    // that does not make sense for the client
-    dgram: 'empty',
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    child_process: 'empty'
-  }
+  ]
 })

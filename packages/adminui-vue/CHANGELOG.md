@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - UTableEntity: icon for "No sorting" option in the column sorting menu added
 
 ### Changed
+ - migrate build to webpack5
 
 ### Deprecated
 
@@ -17,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - use `SystemJS.import('@unitybase/pdf')` instead of `System.import('@unitybase/pdf')` to prevent webpack including
  a pdf package into adminui-vue bundle
+ - added a cleanup of a dist folder before create a production build to remove unnecesary artifacts of previous build from resulting package   
 
 ## [5.19.8] - 2021-03-23
 ### Added
