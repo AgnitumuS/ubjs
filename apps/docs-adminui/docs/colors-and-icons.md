@@ -1,21 +1,19 @@
 ## Colors
-Colors are based on the hsl format (hue, saturation, lightness) <br>
-All variables consist of hs + l combinations.<br>
-hs - the basis of color <br>
-l - indicates how much color will be closer to black or white <br>
-Each color has its own modifiers. <br>
-For example, to get the "success-hover" combination, you need to use them like this: <br>
+Colors are based on the hsl format (hue, saturation, lightness)
 
-![hsl-color-wheel](/docs/hsl-color-wheel.png)
+![hsl-color-wheel](/img/hsl-color-wheel.png)
 
-### **Important** css variables don\'n affect the colors of the element-ui components 
+ - all variables consist of `hs + l` combination
+ - `hs` is a color basis; `l` indicates how much color will be closer to black or white
+ - for example to get the color of success text what hovered:
+```css
+hsl(var(--hs-success), var(--l-state-default))
+```
+
 
 ```[import](./ColorMatrix.vue)
 ```
 
-```css
-hsl(var(--hs-success), var(--l-state-default))
-```
 
 Colors can combined just inside own block. <br>
 For example text **HS** can combined just with text **L**
@@ -81,6 +79,7 @@ hsl(var(--hs-danger), var(--l-state-hover))
   --l-background-inverse: 100%;
 }
 ```
+> **Important** css variables don\'n affect the colors of the element-ui components
 
 ## Icons
 Icons below is an iconic font and set of a css classes what can be used anywhere, for example 

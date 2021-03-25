@@ -9,7 +9,7 @@
 
 <script>
 /**
- * Displayed as a button group, can be used to group a series of similar operations
+ * Group a series of u-button's together
  */
 export default {
   name: 'UButtonGroup',

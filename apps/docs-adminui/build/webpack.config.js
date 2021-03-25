@@ -50,7 +50,7 @@ module.exports = {
     })
   ],
   watchOptions: {
-    //followSymlinks: true,
+    followSymlinks: true,
     //poll: 10000, // Check for changes every 10 seconds
   }
 }
