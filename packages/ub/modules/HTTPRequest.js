@@ -1,8 +1,8 @@
 // eslint-disable-next-line camelcase
 const {
-    req_read, req_read_json, reg_getHeaders, reg_getMethod, reg_getUrl, reg_getURI, reg_getDecodedURI,
-    reg_getParameters, reg_getDecodedParameters, req_writeToFile
-  } = process.binding('http_server')
+  req_read, req_read_json, reg_getHeaders, reg_getMethod, reg_getUrl, reg_getURI, reg_getDecodedURI,
+  reg_getParameters, reg_getDecodedParameters, req_writeToFile
+} = process.binding('http_server')
 const queryString = require('querystring')
 let req_getReqId = process.binding('http_server').req_getReqId
 if (!req_getReqId) {
@@ -34,7 +34,7 @@ class THTTPRequest {
    *
    * @return {*}
    */
-  json() {
+  json () {
     return req_read_json()
   }
 
@@ -45,7 +45,7 @@ class THTTPRequest {
    *   request body will be converted from base64 into binary before write to file
    * @return {boolean}
    */
-  writeToFile (fullFilePath, encoding='bin') {
+  writeToFile (fullFilePath, encoding = 'bin') {
     return req_writeToFile(fullFilePath, encoding)
   }
 
@@ -58,6 +58,7 @@ class THTTPRequest {
     if (this._headers === undefined) this._headers = reg_getHeaders()
     return this._headers
   }
+
   /**
    * Return a header value by name. Name is case-insensitive
    * @example
@@ -74,6 +75,7 @@ class THTTPRequest {
     }
     return this._parsedHeaders[name.toLowerCase()]
   }
+
   /**
    * Returns an array containing the unique names of the headers. All header names are lowercase
    * @example
@@ -88,6 +90,7 @@ class THTTPRequest {
     }
     return Object.keys(this._parsedHeaders)
   }
+
   /**
    * Return parsed headers object. Keys are lower-cased header names, values are header values
    * @example
@@ -113,6 +116,7 @@ class THTTPRequest {
     if (this._method === undefined) this._method = reg_getMethod()
     return this._method
   }
+
   /**
    * Full URL
    * @example
@@ -127,6 +131,7 @@ class THTTPRequest {
     if (this._url === undefined) this._url = reg_getUrl()
     return this._url
   }
+
   /**
    * URL WITHOUT appName and endpoint name
    * @example
@@ -140,6 +145,7 @@ class THTTPRequest {
     if (this._uri === undefined) this._uri = reg_getURI()
     return this._uri
   }
+
   /**
    * The same as uri, but URLDecode'd
    * @example
@@ -153,6 +159,7 @@ class THTTPRequest {
     if (this._decodedUri === undefined) this._decodedUri = reg_getDecodedURI()
     return this._decodedUri
   }
+
   /**
    * URL parameters as string. Better to use `req.parsedParameters` instead, what returns an object
    * @example
@@ -166,6 +173,7 @@ class THTTPRequest {
     if (this._parameters === undefined) this._parameters = reg_getParameters()
     return this._parameters
   }
+
   /**
    * URLDecoded parameters. Better to use `req.parsedParameters` instead, what returns an object
    * @example
@@ -218,7 +226,7 @@ class THTTPRequest {
  * @return {Object<string, string>}
  */
 function parseHeaders (headers) {
-  let parsed = {}
+  const parsed = {}
   if (!headers) return parsed
   headers.split('\n').forEach(function (line) {
     const i = line.indexOf(':')
