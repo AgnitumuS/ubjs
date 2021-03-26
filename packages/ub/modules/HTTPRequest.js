@@ -154,7 +154,7 @@ class THTTPRequest {
     return this._decodedUri
   }
   /**
-   * URL parameters. Can be transformed to object using `queryString.parse`
+   * URL parameters as string. Better to use `req.parsedParameters` instead, what returns an object
    * @example
    *   // GET http://host:port/ub/rest/doc_document/report?id=1&param2=asdas
    *   req.parameters === 'id=1&param2=asdas'
@@ -167,7 +167,7 @@ class THTTPRequest {
     return this._parameters
   }
   /**
-   * URLDecoded parameters
+   * URLDecoded parameters. Better to use `req.parsedParameters` instead, what returns an object
    * @example
 
    // GET http://host:port/bla-bla?$filter=Name%20eq%20%27John%27
