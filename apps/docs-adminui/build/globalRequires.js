@@ -17,7 +17,7 @@ Vue.prototype._authPromise = UB.connect({
   onCredentialRequired (conn, isRepeat) {
     return isRepeat
       ? Promise.reject(new UB.UBAbortError('Invalid password for user admin'))
-      : Promise.resolve({ authSchema: 'UB', login: 'admin', password: 'admin' })
+      : Promise.resolve({ authSchema: 'UB', login: 'uuidoc', password: 'user' })
   }
 }).then(resp => {
   UB.inject(`${UB_HOST}/allLocales?lang=${UB.connection.preferredLocale}`)

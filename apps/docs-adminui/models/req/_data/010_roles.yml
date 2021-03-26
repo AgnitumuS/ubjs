@@ -1,0 +1,7 @@
+$context:
+  type: roles
+
+Uidoc:
+  description: AdminUI documentation user
+  els:
+    read: req
