@@ -1,46 +1,23 @@
 ## Colors
 Colors are based on the hsl format (hue, saturation, lightness)
 
-![hsl-color-wheel](/img/hsl-color-wheel.png)
+![hsl-color-wheel](img/hsl-color-wheel.png)
 
  - all variables consist of `hs + l` combination
  - `hs` is a color basis; `l` indicates how much color will be closer to black or white
- - for example to get the color of success text what hovered:
+ - for example, to get the color of success text what hovered:
 ```css
 hsl(var(--hs-success), var(--l-state-default))
 ```
 
+Tables below shows valid color combinations:
 
 ```[import](./ColorMatrix.vue)
 ```
 
-
-Colors can combined just inside own block. <br>
-For example text **HS** can combined just with text **L**
-
-```css
-hsl(var(--hs-text), var(--l-text-description))
-```
-
-or border can combine only with border lightness modifiers
-```css
-hsl(var(--hs-border), var(--l-layout-border-default))
-hsl(var(--hs-border), var(--l-input-border-disabled))
-hsl(var(--hs-border), var(--l-input-border-hover))
-```
-
-But each section **HS** can replaced by state colors
-for example if need primary border
-```css
-hsl(var(--hs-primary), var(--l-input-border-default))
-```
-
-or danger button
-```css
-hsl(var(--hs-danger), var(--l-state-default))
-hsl(var(--hs-danger), var(--l-state-hover))
-```
-
+## Customizing a color schema
+All color related CSS variables are defined in the root scope and can be customized by application. 
+Table below shows a default color variables values:
 ```css
 :root {
  /* state colors */
@@ -82,13 +59,12 @@ hsl(var(--hs-danger), var(--l-state-hover))
 > **Important** css variables don\'n affect the colors of the element-ui components
 
 ## Icons
-Icons below is an iconic font and set of a css classes what can be used anywhere, for example 
+AdminUI provides a three different sets of icons as an iconic font + css classes:
+  - u-icon-*: a UnityBase icon set
+  - el-icon-*: an ElementUI icon set, see [available ElementUI icons](https://element.eleme.io/#/en-US/component/icon)
+  - fa*: a free subset of FontAwesome icon set, see [available Font Awesome icons](https://fontawesome.com/icons?d=gallery&p=2&m=free)
 
- - `<i class="u-icon-save"/>`
- - `<u-button icon="u-icon-save"/>`
- - `<u-icon icon="u-icon-save"/>`
- 
-Available icons:
+Below is a list of u-icons:
  
 ```vue
 <template>

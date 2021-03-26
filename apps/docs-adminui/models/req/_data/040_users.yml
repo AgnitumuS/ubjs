@@ -7,6 +7,6 @@ uuidoc:
   lastName: Demo
   roles: Uidoc
   # pwd = user
-  uPasswordHashHexa: 8031377c4c15e1611986089444c8ff58c95358ffdc95d692a6d10c7b633e99df
+  password: user
   # newer expire password
   lastPasswordChangeDate: 2100-01-01
