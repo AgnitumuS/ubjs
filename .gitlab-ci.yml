@@ -15,7 +15,7 @@ build-doc:
     - npx lerna bootstrap --no-ci --ignore-scripts
     - cd apps/docs-adminui
     - mkdir -p ./inetpub
-    - npm run build:dev
+    - npm run build:prod
     - cd inetpub
     - tar --exclude-vcs --exclude-backups -zc --dereference -f ../uidoc.tar.gz .
     - cd ..
