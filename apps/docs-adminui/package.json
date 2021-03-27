@@ -11,6 +11,7 @@
   "scripts": {
     "watch": "NODE_ENV=development vue-styleguidist --config ./build/styleguidist.config.js server",
     "build:prod": "vue-styleguidist --config ./build/styleguidist.config.js build && npm run build:after",
+    "build:debugerr": "NODE_OPTIONS='--stack-trace-limit=10000' vue-styleguidist --config ./build/styleguidist.config.js build",
     "build:dev": "NODE_ENV=development vue-styleguidist --config ./build/styleguidist.config.js build && npm run build:after",
     "build:after": "ln -sf ../img ./inetpub",
     "ubapp": "ub -env ./ubConfig-dev.env",
