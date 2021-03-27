@@ -610,10 +610,10 @@ App.serverPublicCert = _App.serverPublicCert
 
 /**
  * BLOB stores methods. Usage:
- *  - {@link module:@unitybase/blob-stores~getContent App.blobStores.getContent} to get BLOB content
- *  - {@link module:@unitybase/blob-stores~getContentPath App.blobStores.getContentPath} to get a path to file based store BLOB content
- *  - {@link module:@unitybase/blob-stores~putContent App.blobStores.putContent} to put BLOB content
- *  - {@link module:@unitybase/blob-stores~markRevisionAsPermanent App.blobStores.markRevisionAsPermanent} to mark revision as permanent
+ *  - {@link module:@unitybase/blob-stores~getContent App.blobStores.getContent} - load content of BLOB into memory
+ *  - {@link module:@unitybase/blob-stores~getContentPath App.blobStores.getContentPath} - get a path to the file based store BLOB content
+ *  - {@link module:@unitybase/blob-stores~putContent App.blobStores.putContent} - put a BLOB content to the temporary storage
+ *  - {@link module:@unitybase/blob-stores~markRevisionAsPermanent App.blobStores.markRevisionAsPermanent} - mark specified revision of a historical store as permanent
  */
 App.blobStores = {
   getContent: blobStores.getContent,

@@ -198,7 +198,7 @@ function getRequestedBLOBInfo (parsedRequest) {
   if (parsedRequest.bsReq.isDirty) {
     storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   } else {
-    // check user have access to row and retrieve current blobInfo
+    // check user have access to the row and retrieve actual blobInfo
     const blobInfoDS = Repository(entity.code)
       .attrs(attribute.code)
       .attrsIf(entity.isUnity, 'mi_unityEntity')
@@ -210,13 +210,13 @@ function getRequestedBLOBInfo (parsedRequest) {
     if (!blobInfoDS || !baseInstanceID) {
       return {
         success: false,
-        reason: `${entity.code} with ID=${ID} not accessible`
+        reason: `${entity.code} with ID=${ID} is not accessible`
       }
     }
     const rev = parsedRequest.bsReq.revision
     const blobInfoTxt = blobInfoDS[attribute.code]
     if (!blobInfoTxt && !rev) {
-      // only return error, if request does not have parameter "revision"
+      // return an error, if request does not contains a "revision" parameter
       return {
         success: false,
         isEmpty: true,
@@ -259,7 +259,20 @@ function getRequestedBLOBInfo (parsedRequest) {
 }
 
 /**
- * Obtains document content from blobStore and send it to response.
+ * Writes a BLOB content to the response without verifying an ALS (but RLS is verified).
+ * Throws in case of invalid (wrong) requestParams (unknown entity or attribute, id not passed etc.)
+ *
+ * Returns `false` if attribute value is empty or record with specified ID not found or not accessible
+ * and `true` if content is written to the response.
+ *
+ * @param {BlobStoreRequest} requestParams
+ * @param {THTTPResponse} resp
+ */
+function internalWriteDocumentToResp (requestParams, req, resp) {
+}
+
+/**
+ * Obtains the document content from a blobStore and sends it to the response
  *
  * @param {BlobStoreRequest} requestParams
  * @param {THTTPRequest} req
