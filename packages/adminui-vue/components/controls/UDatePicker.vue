@@ -12,9 +12,9 @@
 
 <script>
 /**
- * Wrap for ElDatePicker.
- * Has same props but compute correct date format and first day of the week.
- * Will be rewritten to a custom component in the future.
+ * Wrapper for ElDatePicker with correct date format and first day of week.
+ *
+ * Will be rewritten to avoid using of ElDatePicker in future.
  */
 export default {
   name: 'UDatePicker',

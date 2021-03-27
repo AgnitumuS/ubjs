@@ -72,7 +72,7 @@ const ElSelectHack = {
 }
 
 /**
- * Form row with a label
+ * A Form building block what contains control with label and optional error
  */
 export default {
   name: 'UFormRow',
@@ -280,41 +280,3 @@ export default {
     width: 0;
   }
 </style>
-
-<docs>
-  ### Error
-
-  ```vue
-  <template>
-    <div>
-      <u-form-row
-          required
-          label-position="top"
-          :error="showError"
-          label="temp label"
-      >
-        <el-input/>
-      </u-form-row>
-
-      <u-button-group appearance="plain">
-        <u-button @click="showError = true">
-          Show error
-        </u-button>
-        <u-button appearance="default" @click="showError = false">
-          Hide error
-        </u-button>
-      </u-button-group>
-    </div>
-  </template>
-
-  <script>
-    export default {
-      data () {
-        return {
-          showError: true
-        }
-      }
-    }
-  </script>
-  ```
-</docs>
