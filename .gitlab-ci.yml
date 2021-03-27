@@ -12,15 +12,15 @@ build-doc:
     - wget -nv -O samples-master.zip https://git-pub.intecracy.com/unitybase/samples/-/archive/master/samples-master.zip
     - unzip -o samples-master.zip "samples-master/courses/tutorial-v5/*" -d getting-started
     - npm run build:doc
-    - npx lerna bootstrap --no-ci --ignore-scripts
-    - cd apps/docs-adminui
-    - mkdir -p ./inetpub
-    - npm run build:prod
-    - cd inetpub
-    - tar --exclude-vcs --exclude-backups -zc --dereference -f ../uidoc.tar.gz .
-    - cd ..
-    - scp -P 2222 ./uidoc.tar.gz         gitlab-builder@registry.unitybase.info:/home/ub-service/website/unitybase-info/inetPub
-    - cd ../..
+#    - npx lerna bootstrap --no-ci --ignore-scripts
+#    - cd apps/docs-adminui
+#    - mkdir -p ./inetpub
+#    - npm run build:prod
+#    - cd inetpub
+#    - tar --exclude-vcs --exclude-backups -zc --dereference -f ../uidoc.tar.gz .
+#    - cd ..
+#    - scp -P 2222 ./uidoc.tar.gz         gitlab-builder@registry.unitybase.info:/home/ub-service/website/unitybase-info/inetPub
+#    - cd ../..
     - rsync -avz -e "ssh -p 2222" docs/* gitlab-builder@registry.unitybase.info:/home/ub-service/website/unitybase-info/inetPub/api
   when: manual
   only:
