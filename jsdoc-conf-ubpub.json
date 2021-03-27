@@ -79,6 +79,10 @@
           "name": "Client Docs"
         },
         {
+          "href": "adminui-vue/index.html",
+          "name": "UI library for Vue"
+        },
+        {
           "href": "server-v5/tutorialIndex.html",
           "name": "Tutorials"
         },
