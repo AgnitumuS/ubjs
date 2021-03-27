@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - usage of `@babel/plugin-proposal-object-rest-spread` is removed from production build. Constructions like
+```javascript
+let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 }
+```
+   is supported by all modern browsers.
 
 ### Fixed
 

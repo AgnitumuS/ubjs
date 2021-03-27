@@ -105,6 +105,10 @@
           "name": "Client Docs"
         },
         {
+          "href": "adminui-vue/index.html",
+          "name": "UI library for Vue"
+        },
+        {
           "href": "changelog/index.html",
           "name": "Monthly progress"
         }

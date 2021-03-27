@@ -71,7 +71,6 @@
   "author": "UnityBase team (https://unitybase.info)",
   "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
   "devDependencies": {
-    "@babel/plugin-proposal-object-rest-spread": "^7.4.3",
     "@unitybase/update-changelog": "^1.0.4",
     "clean-css-cli": "^5.2.2",
     "css-loader": "^5.1.4",
