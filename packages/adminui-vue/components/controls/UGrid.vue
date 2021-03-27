@@ -152,7 +152,7 @@ Rows will be distributed as follows - the first row will take the height: auto, 
 
 ```vue
 <template>
-  <div style="height: 80vh; width: 600px;">
+  <div style="height: 150px; width: 600px;">
     <u-grid
       template-columns="1fr 200px 30%"
       template-rows="auto 1fr"
@@ -171,9 +171,9 @@ Rows will be distributed as follows - the first row will take the height: auto, 
 ### Gap
 
 By default `columnGap === 20px` and `rowGap === undefined`,
-because usually rows gap replaces by UFormRow margins.
+because usually rows gaps are replaces by UFormRow margins.
 
-In this example will set all gaps to **50px**
+In example below will sets all gaps to **50px**
 ```vue
 <template>
   <u-grid

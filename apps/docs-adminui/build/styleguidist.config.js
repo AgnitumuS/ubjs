@@ -40,6 +40,15 @@ module.exports = {
       content: '../docs/show-list.md'
     }]
   }, {
+    name: 'Layout',
+    usageMode: 'expand',
+    exampleMode: 'expand',
+    sectionDepth: 2,
+    components: [
+      c('controls/UFormRow.vue'), // TODO
+      c('controls/UGrid.vue'), // TODO
+    ]
+  }, {
     name: 'Presentational',
     usageMode: 'expand', // expand props, methods and events
     exampleMode: 'expand', // expand example source
@@ -51,8 +60,6 @@ module.exports = {
       c('controls/UBaseInput.vue'),
       c('controls/UFile/UFileInput.vue'),
       c('controls/UTable/UTable.vue'), // TODO
-      c('controls/UFormRow.vue'), // TODO
-      c('controls/UGrid.vue'), // TODO
       c('controls/UDatePicker.vue'), // TODO
       c('controls/UDropdown/UDropdown.vue'), // TODO
       c('controls/UDropdown/UDropdownItem.vue') // TODO
