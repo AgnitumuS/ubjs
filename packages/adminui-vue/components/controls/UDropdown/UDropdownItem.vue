@@ -46,8 +46,8 @@
 
 <script>
 /**
-   * Child of UDropdown
-   */
+ * A dropdown menu item for `UDropdown`
+ */
 export default {
   name: 'UDropdownItem',
 
@@ -55,28 +55,28 @@ export default {
 
   props: {
     /**
-       * Icon class
-       */
+     * Icon class
+     */
     icon: String,
 
     /**
-       * Item text
-       */
+     * Item text
+     */
     label: String,
 
     /**
-       * Render divider ignore other props
-       */
+     * Render divider ignore other props
+     */
     divider: Boolean,
 
     /**
-       * Disabled state
-       */
+     * Disabled state
+     */
     disabled: Boolean,
 
     /**
-       * Prevent close dropdown
-       */
+     * Prevent close dropdown
+     */
     preventClose: Boolean
   },
 
@@ -164,4 +164,3 @@ export default {
     color: hsl(var(--hs-text), var(--l-text-disabled));
   }
 </style>
-
