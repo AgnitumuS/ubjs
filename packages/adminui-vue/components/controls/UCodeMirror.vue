@@ -42,6 +42,10 @@
 /* global SystemJS */
 const { debounce } = require('throttle-debounce')
 
+/**
+ * Wrapper around a [CodeMirror](https://codemirror.net/) editor.
+ * Editor itself is loaded in async mode form `@unitybase/codemirror-full` package.
+ */
 module.exports = {
   name: 'UCodeMirror',
   props: {

@@ -72,7 +72,7 @@ const ElSelectHack = {
 }
 
 /**
- * A Form building block what contains control with label and optional error
+ * A Form building block what contains control with label and optional error. Used by UAutoField
  */
 export default {
   name: 'UFormRow',
@@ -159,10 +159,7 @@ export default {
       if (this.labelPosition === 'top') {
         return ''
       } else {
-        return `
-        width: ${this.labelWidth}px;
-        min-width: ${this.labelWidth}px;
-      `
+        return `width: ${this.labelWidth}px; min-width: ${this.labelWidth}px;`
       }
     },
 

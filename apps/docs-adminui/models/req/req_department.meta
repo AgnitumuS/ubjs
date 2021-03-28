@@ -35,7 +35,7 @@
     {
       "name": "parentID",
       "dataType": "Entity",
-      "associatedEntity": "req_Department",
+      "associatedEntity": "req_department",
       "caption": "Parent department",
       "allowNull": true
     }

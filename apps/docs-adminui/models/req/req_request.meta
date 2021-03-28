@@ -9,17 +9,18 @@
       "allowNull": false
     },
     {
-      "name": "applicantID",
+      "name": "applicant",
       "dataType": "Entity",
-      "associatedEntity": "req_User",
+      "associatedEntity": "req_user",
       "caption": "Applicant`s contact info",
       "allowNull": false
     },
     {
-      "name": "departmentID",
+      "name": "department",
       "dataType": "Entity",
-      "associatedEntity": "req_Department",
+      "associatedEntity": "req_department",
       "caption": "Request department",
+      "description": "Department responsible for processing the request ",
       "allowNull": false
     },
     {
@@ -33,7 +34,7 @@
       "name": "document",
       "dataType": "Document",
       "caption": "Attachment",
-      "storename": "attachments"
+      "storeName": "attachments"
     },
     {
       "name": "answer",

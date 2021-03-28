@@ -14,7 +14,7 @@
 /**
  * Wrapper for ElDatePicker with correct date format and first day of week.
  *
- * Will be rewritten to avoid using of ElDatePicker in future.
+ * Will be rewritten in future to avoid using of `ElDatePicker`.
  */
 export default {
   name: 'UDatePicker',

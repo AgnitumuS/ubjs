@@ -4,12 +4,12 @@ Items can be disabled. Multi-level menu and divider is supported.
 
 Closing on click can de prevented using `prevent-close` - try click on `Delete` item.
 
-Item can contains any valid HTML as we did for `Some action` item. 
+Item can contain any valid HTML as we did for `Some action` item. 
 
 ```vue
 <template>
   <u-dropdown>
-    <u-button>click me</u-button>
+    <u-button>Press to see a dropdown</u-button>
 
     <template #dropdown>
       <u-dropdown-item @click="say('Edit')" disabled icon="u-icon-edit" label="Edit"/>
@@ -36,6 +36,9 @@ export default {
     say (value) {
       alert(value)
     }
+  },
+  data () {
+    return { checked: true }
   }
 }
 </script>
@@ -50,7 +53,7 @@ Can be used as a context menu:
   <div>
     <div
       @contextmenu.prevent="showContextMenu"
-      style="width: 200px; height: 200px; background: lightblue"
+      style="width: 200px; height: 50px; background: lightblue"
     >
       Right click for context menu
     </div> 

@@ -7,7 +7,7 @@ One of these options is required:
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="req_Department"
+    entity-name="req_department"
   />
 </template>
 <script>
@@ -42,7 +42,7 @@ Need to set function which returns UB Repository
 
     methods: {
       getRepo () {
-        return this.$UB.Repository('req_Request')
+        return this.$UB.Repository('req_request')
           .attrs('ID', 'reqDate', 'text')
           .where('reqDate', '>', new Date('2020-01-01'))
       }
@@ -62,7 +62,7 @@ For example when you need instead `ID` like `code`.
     value: {{value}}
     <u-select-entity
       v-model="value"
-      entity-name="req_Department"
+      entity-name="req_department"
       value-attribute="code"
     />
   </div>
@@ -86,7 +86,7 @@ For example when you need instead `ID` like `code`.
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="req_Department"
+    entity-name="req_department"
     remove-default-actions
   />
 </template>
@@ -107,7 +107,7 @@ For example when you need instead `ID` like `code`.
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="req_Department"
+    entity-name="req_department"
     :additional-actions="actions"
   />
 </template>
@@ -147,7 +147,7 @@ For example when you need instead `ID` like `code`.
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="req_Department"
+    entity-name="req_department"
     :additional-actions="actions"
     remove-default-actions
   />
@@ -190,13 +190,13 @@ For example when you need instead `ID` like `code`.
   <div>
     <u-select-entity
       v-model="value"
-      entity-name="req_Department"
+      entity-name="req_department"
     />
 
     disabled:
     <u-select-entity
       v-model="value"
-      entity-name="req_Department"
+      entity-name="req_department"
       disabled
     />
   </div>
@@ -217,7 +217,7 @@ For example when you need instead `ID` like `code`.
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="req_Department"
+    entity-name="req_department"
     :build-edit-config="actionEditOverride"
   />
 </template>

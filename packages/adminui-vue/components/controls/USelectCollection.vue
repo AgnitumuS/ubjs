@@ -17,7 +17,7 @@
 const { mapMutations, mapActions } = require('vuex')
 
 /**
- * Component is responsible for display a collection of a details from master-detail relation inside a multiselect.
+ * Display a collection of a details from master-detail relation inside a multiselect.
  * Acts like a control for "Many" data type, but can be bound to any detailed entity.
  */
 export default {

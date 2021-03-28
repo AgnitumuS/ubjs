@@ -1,5 +1,5 @@
 - $context:
-    type: req_Department
+    type: req_department
 - dep1:
     name: Kiev
     postAddr: Khreschatik street
@@ -15,7 +15,7 @@
         phoneNum: '+380442225522'
 
 - $context:
-    type: req_User
+    type: req_user
 - petr:
     email: petr@main.com
     phone: '+380449992299'
@@ -26,7 +26,7 @@
     website: http://amazon.com
 
 - $context:
-    type: req_Request
+    type: req_request
 - petr:
     reqDate: 2020-02-12
     department: dep3

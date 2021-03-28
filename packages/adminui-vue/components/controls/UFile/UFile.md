@@ -2,7 +2,7 @@
   ```vue
   <template>
     <u-file
-      entity-name="req_Request"
+      entity-name="req_request"
       attribute-name="document"
       v-model="document"
     />
@@ -20,7 +20,7 @@
   ```vue
   <template>
     <u-file
-      entity-name="req_Request"
+      entity-name="req_request"
       attribute-name="document"
       disabled
       v-model="document"
@@ -39,7 +39,7 @@
   ```vue
   <template>
     <u-file
-      entity-name="req_Request"
+      entity-name="req_request"
       attribute-name="document"
       preview-mode
       v-model="document"
@@ -58,7 +58,7 @@
   ```vue
   <template>
     <u-file
-      entity-name="req_Request"
+      entity-name="req_request"
       :preview-mode="{
         height: 400,
         width: 300
@@ -80,7 +80,7 @@
   ```vue
   <template>
     <u-file
-      entity-name="req_Request"
+      entity-name="req_request"
       v-model="document"
       attribute-name="document"
     >
@@ -106,7 +106,7 @@
   ```vue
   <template>
     <u-file
-      entity-name="req_Request"
+      entity-name="req_request"
       v-model="document"
       attribute-name="document"
       remove-default-buttons
@@ -135,7 +135,7 @@
   ```vue
   <template>
     <u-file
-      entity-name="req_Request"
+      entity-name="req_request"
       v-model="document"
       attribute-name="document"
       :remove-default-buttons="['add', 'preview']"

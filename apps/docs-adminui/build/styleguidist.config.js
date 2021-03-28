@@ -45,8 +45,9 @@ module.exports = {
     exampleMode: 'expand',
     sectionDepth: 2,
     components: [
+      c('controls/UFormContainer.vue'), // TODO
       c('controls/UFormRow.vue'), // TODO
-      c('controls/UGrid.vue'), // TODO
+      c('controls/UGrid.vue') // TODO
     ]
   }, {
     name: 'Presentational',
@@ -62,7 +63,9 @@ module.exports = {
       c('controls/UTable/UTable.vue'), // TODO
       c('controls/UDatePicker.vue'), // TODO
       c('controls/UDropdown/UDropdown.vue'), // TODO
-      c('controls/UDropdown/UDropdownItem.vue') // TODO
+      c('controls/UDropdown/UDropdownItem.vue'), // TODO
+      c('controls/UCodeMirror.vue'), // TODO
+      c('controls/UIconPicker.vue'), // TODO
     ]
   }, {
     name: 'Data-aware',
@@ -70,6 +73,7 @@ module.exports = {
     exampleMode: 'expand',
     sectionDepth: 2,
     components: [
+      c('UAutoField.vue'), // TODO
       c('controls/UInput/UInput.vue'), // TODO
       c('controls/UFile/UFile.vue'), // TODO
       c('controls/UFile/UFileMultiple.vue'), // TODO

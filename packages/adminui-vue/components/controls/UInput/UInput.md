@@ -1,6 +1,6 @@
 ### Basic usage
 
-samples below are binded to `req_Request` entity
+samples below are binded to `req_request` entity
 
 ```vue
 <template>

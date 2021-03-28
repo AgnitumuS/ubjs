@@ -4,10 +4,10 @@
     "name": "reqDate",
     "caption": "Дата заявки"
   }, {
-    "name": "applicantID",
+    "name": "applicant",
     "caption": "Контактная информация заявителя"
   }, {
-    "name": "departmentID",
+    "name": "department",
     "caption": "Департамент заявки"
   }, {
     "name": "text",

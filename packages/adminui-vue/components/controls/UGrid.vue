@@ -15,17 +15,15 @@
 
 <script>
 /**
- * Container for align form elements into columns - a wrapper for [display: grid;](https://css-tricks.com/snippets/css/complete-guide-grid/).
+ * Container for align form elements into columns. Wrapper for a [display: grid CSS](https://css-tricks.com/snippets/css/complete-guide-grid/).
  */
 export default {
   name: 'UGrid',
 
   props: {
     /**
-     * Use it if you need to divide the form into **N** equal columns.
-     * This is a helper, it is not associated with display: grid, it is a wrapper for
-     * > repeat(**columns**, 1fr)
-     * The property will be ignored if `templateColumns` is set.
+     * Align controls into **N** equal columns. A wrapper for `repeat(**columns**, 1fr)`
+     * Ignored if `templateColumns` is define.
      */
     columns: {
       type: Number,
@@ -33,17 +31,17 @@ export default {
     },
 
     /**
-     * Sets [grid-template-columns](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns)
+     * Sets a [grid-template-columns](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns)
      */
     templateColumns: String,
 
     /**
-     * Sets [grid-template-rows](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-rows)
+     * Sets a [grid-template-rows](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-rows)
      */
     templateRows: String,
 
     /**
-     * Sets [grid-column-gap](https://developer.mozilla.org/en-US/docs/Web/CSS/column-gap)
+     * Sets a [grid-column-gap](https://developer.mozilla.org/en-US/docs/Web/CSS/column-gap)
      */
     columnGap: {
       type: String,
@@ -51,7 +49,7 @@ export default {
     },
 
     /**
-     * Sets (grid-row-gap)[https://developer.mozilla.org/en-US/docs/Web/CSS/row-gap]
+     * Sets a (grid-row-gap)[https://developer.mozilla.org/en-US/docs/Web/CSS/row-gap]
      */
     rowGap: String,
 
@@ -73,7 +71,7 @@ export default {
     },
 
     /**
-     * Just provides max width in px to child UFormRow's.
+     * Provides a max width in px to the child UFormRow's.
      * Do not confuse with the maximum width of the form itself
      */
     maxWidth: Number

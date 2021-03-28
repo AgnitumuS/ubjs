@@ -10,7 +10,7 @@ One of these options is required:
 
 ```vue
 <template>
-<u-table-entity :max-height="200" entity-name="uba_user"/>
+<u-table-entity :max-height="200" entity-name="req_request"/>
 </template>
 ```
 
@@ -26,8 +26,8 @@ Need to set function which returns UB Repository.
 export default {
   methods: {
     repository () {
-      return this.$UB.Repository('uba_user')
-        .attrs('ID', 'fullName', 'name')
+      return this.$UB.Repository('req_request')
+        .attrs('ID', 'reqDate', 'department.name')
     }
   }
 }
@@ -151,7 +151,7 @@ export default {
 ```vue
 <template>
 <u-table-entity
-    entity-name="req_Request"
+    entity-name="req_request"
     :build-edit-config="actionEditOverride"
     :max-height="200"
 />
@@ -224,8 +224,8 @@ Json, Document, Text, BLOB, TimeLog has no filters
 `label` sets label for option in select with available filters for current column.
 If unset label will be equal filter id.
 `template` param must be `Vue.Component` or object with `render` function.
-To apply filter from custom component emit event 'seach'
-with object which has `description` and `whereList`.
+To apply a filter from custom component emit event 'seach'
+with an object which has `description` and `whereList`.
 `description` - is a text for tag in list of applied filters.
 `whereList` - same as ubql whereList but without param `expression` it will be computed automatically.
 Filter application example:
@@ -255,7 +255,7 @@ export default {
 ```vue
 <template>
 <u-table-entity
-  entity-name="req_Department"
+  entity-name="req_department"
   :columns="columns"
   :max-height="200"
 />

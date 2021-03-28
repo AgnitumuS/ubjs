@@ -54,14 +54,14 @@ export default {
      */
     multiple: Boolean,
     /**
-     * Placeholder for dropzone when file(s) is not selected
+     * Placeholder for the dropzone when file(s) is not selected
      */
     placeholder: {
       type: String,
       default: 'fileInput.dropZone.caption'
     },
     /**
-     * Placeholder for dropzone when file(s) are selected
+     * Placeholder for the dropzone when file(s) are selected
      */
     selectedPlaceholder: {
       type: String,
@@ -72,7 +72,7 @@ export default {
      */
     disabled: Boolean,
     /**
-     * File types the file input should accept. This string is a comma-separated list of unique file type specifiers.
+     * Types of files input should accept. A comma-separated list of unique file type specifiers.
      * See [Input element accept](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept)
      *
      * Example: ".doc,.docx,application/msword"

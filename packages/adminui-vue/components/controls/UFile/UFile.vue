@@ -66,7 +66,7 @@ export default {
     },
 
     /**
-     * The name of entity that stores file
+     * name of entity that stores file
      */
     entityName: {
       type: String,
@@ -76,7 +76,7 @@ export default {
     },
 
     /**
-     * The name of attribute that stores file in target entity
+     * name of attribute that stores file in target entity
      */
     attributeName: {
       type: String,
@@ -94,10 +94,9 @@ export default {
     },
 
     /**
-     * Toggle preview mode, do not confuse with preview dialog.
-     * Loaded file will show content immediately if it's PDF or PNG or JPG format.
-     * Will set default values for width="100%" and height="auto" if passed true.
-     * Passed object can override default width or height.
+     * toggle preview mode, do not confuse with preview dialog.
+     * Loaded file will be shown if they mime type ar one of: PDF, PNG or JPG.
+     * By default in "preview" mode control width is sets to "100%" and heights to "auto".
      */
     previewMode: {
       type: [Boolean, Object],
@@ -110,22 +109,21 @@ export default {
     },
 
     /**
-     * Disable removing or uploading file
+     * disable removing or uploading file
      */
     disabled: Boolean,
 
     /**
-     * File extensions to bind into `accept` input property
+     * file extensions to bind into `accept` input property
      */
     accept: String,
 
     /**
-     * Will remove all default buttons if passed true .
-     * To exclude only a few use value as array
+     * if `true` - remove all default buttons. To remove specific buttons - pass an array of button names to be hidden
      *
      * @example :remove-default-buttons="['add', 'preview']"
      *
-     * Buttons names:
+     * Buttons names are:
      *  - add
      *  - webcam
      *  - scan
@@ -138,8 +136,7 @@ export default {
     removeDefaultButtons: [Boolean, Array],
 
     /**
-     * Hook which called before UB.setDocument.
-     * Must contain async function or function which returns promise
+     * hook which called before `UB.setDocument`. Must be as async function or function which returns promise
      *
      * @param {object} params
      * @param {string} params.entity
@@ -178,7 +175,7 @@ export default {
     },
 
     /**
-     * Sets preview size if unset in config
+     * sets preview size if unset in config
      */
     previewSize () {
       const defaults = {
@@ -193,7 +190,7 @@ export default {
     },
 
     /**
-     * Transform number size values to string
+     * transform number size values to string
      */
     previewSizeCss () {
       return ['width', 'height'].reduce((style, property) => {

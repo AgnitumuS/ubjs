@@ -16,13 +16,15 @@
 
 <script>
 const { mapMutations } = require('vuex')
-
+/**
+ * Collection of a "Documents" (files from BLOB stores)
+ */
 export default {
   name: 'UFileCollection',
 
   props: {
     /**
-     * Name of watched collection
+     * watched collection name
      */
     collectionName: {
       type: String,
@@ -30,7 +32,7 @@ export default {
     },
 
     /**
-     * Document type attribute in collection entity.
+     * attribute of type "Document" in a collection entity
      */
     fileAttribute: {
       type: String,
@@ -38,7 +40,7 @@ export default {
     },
 
     /**
-     * Name of attribute which creates relation master entity with entity that stores files.
+     * name of attribute which creates relation master entity with entity that stores files.
      * For example we have master entity "tst_dictionary" and entity which collects user files "tst_attachment".
      * In this case subjectAttribute in "tst_attachment" is a link to "tst_dictionary.ID"
      */
@@ -48,12 +50,12 @@ export default {
     },
 
     /**
-     * The name of entity that stores file
+     * name of entity that stores file
      */
     entityName: String,
 
     /**
-     * File extensions to bind into `accept` input property
+     * file extensions to bind into `accept` input property
      */
     accept: {
       type: String,
@@ -61,12 +63,11 @@ export default {
     },
 
     /**
-     * In case pass true will remove all default buttons.
-     * To Exclude just few use value as array
+     * if `true` - remove all default buttons. To remove specific buttons - pass an array of button names to be hidden
      *
      * @example :remove-Default-Buttons="['add', 'preview']"
      *
-     * Buttons names:
+     * Buttons names are:
      *  - add
      *  - webcam
      *  - scan
@@ -77,8 +78,7 @@ export default {
     removeDefaultButtons: [Boolean, Array],
 
     /**
-     * Hook which called before UB.setDocument.
-     * Must contain async function or function which returns promise
+     * hook which called before `UB.setDocument`. Must be as async function or function which returns promise
      *
      * @param {object} params
      * @param {string} params.entity
@@ -93,12 +93,12 @@ export default {
     },
 
     /**
-     * Disable to remove or upload file
+     * disable file removing/uploading
      */
     disabled: Boolean,
 
     /**
-     * Toggle carousel view mode
+     * carousel view mode
      */
     viewMode: {
       type: String,
@@ -165,9 +165,9 @@ export default {
 
 <docs>
   UFileCollection extends UFileMultiple, so it has same props, slots etc.
-  But it maps on collection items by collection name
+  But it maps to the collection items by collection name
 
-  ### Basic usage
+  ### Usage
   ```vue
   <template>
     <u-file-collection

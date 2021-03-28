@@ -28,7 +28,7 @@ Vue.prototype._authPromise = UB.connect({
   lookups.init()
   return conn
 }).then(conn => {
-  const firstReqID = conn.Repository('req_Request').attrs('ID').limit(1).selectScalar()
+  const firstReqID = conn.Repository('req_request').attrs('ID').limit(1).selectScalar()
   return firstReqID
 }).then(firstReqID => {
   Vue.prototype._firstReqID = firstReqID

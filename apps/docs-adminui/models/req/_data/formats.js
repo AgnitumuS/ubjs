@@ -6,7 +6,7 @@ const {
 module.exports = function (container) {
   container.registerRepository(
     new EntityRepository(
-      'req_Department',
+      'req_department',
       ['code'],
       ['name', 'postAddr', 'phoneNum'],
       undefined,
@@ -19,7 +19,7 @@ module.exports = function (container) {
   )
 
   container.registerFileType(
-    'req_Department',
+    'req_department',
     new EntityFormat()
       .key('code')
       .copy('name', 'postAddr', 'phoneNum')
@@ -28,48 +28,48 @@ module.exports = function (container) {
         context: { parent: 'code' },
         metadata: '$self'
       })
-      .wrapAsEntity('req_Department')
+      .wrapAsEntity('req_department')
   )
 
   container.registerRepository(
     new EntityRepository(
-      'req_User',
+      'req_user',
       ['name'],
       ['email', 'phone', 'website']
     )
   )
 
   container.registerFileType(
-    'req_User',
+    'req_user',
     new EntityFormat()
       .key('name')
       .copy('email', 'phone', 'website')
-      .wrapAsEntity('req_User')
+      .wrapAsEntity('req_user')
   )
 
   container.registerRepository(
     new EntityRepository(
-      'req_Request',
-      ['applicantID', 'departmentID'],
+      'req_request',
+      ['applicant', 'department'],
       ['text', 'answer', 'reqDate', 'duration', 'cost', 'notes'],
       undefined,
       [{
-        repository: 'req_User',
+        repository: 'req_user',
         attribute: 'applicant',
-        targetAttribute: 'applicantID'
+        targetAttribute: 'applicant'
       }, {
-        repository: 'req_Department',
+        repository: 'req_department',
         attribute: 'department',
-        targetAttribute: 'departmentID'
+        targetAttribute: 'department'
       }]
     )
   )
 
   container.registerFileType(
-    'req_Request',
+    'req_request',
     new EntityFormat()
       .key('applicant')
       .copy('text', 'answer', 'department', 'applicant', 'reqDate', 'duration', 'cost', 'notes')
-      .wrapAsEntity('req_Request')
+      .wrapAsEntity('req_request')
   )
 }

@@ -55,8 +55,7 @@ export default {
 
   props: {
     /**
-     * Position of element.
-     * In Popper.js it option called strategy
+     * dropdown positioning. In Popper.js it option called strategy
      */
     position: {
       type: String,
@@ -67,7 +66,7 @@ export default {
     },
 
     /**
-     * Popper placement relative to reference button
+     * dropdown placement (relative to the reference button)
      */
     placement: {
       type: String,
@@ -75,7 +74,7 @@ export default {
     },
 
     /**
-     * Popper placement relative to opened dropdown
+     * dropdown placement (relative to the opened dropdown)
      */
     childPlacement: {
       type: String,
@@ -83,14 +82,14 @@ export default {
     },
 
     /**
-     * The reference element used to position the popper
+     * reference element used to position the popper
      */
     refElement: {
       default: null
     },
 
     /**
-     * Disables dropdown toggle
+     * disables a dropdown toggle
      */
     disabled: {
       type: Boolean,

@@ -55,27 +55,27 @@ export default {
 
   props: {
     /**
-     * Icon class
+     * icon class
      */
     icon: String,
 
     /**
-     * Item text
+     * item text
      */
     label: String,
 
     /**
-     * Render divider ignore other props
+     * render divider ignore other props
      */
     divider: Boolean,
 
     /**
-     * Disabled state
+     * disabled state
      */
     disabled: Boolean,
 
     /**
-     * Prevent close dropdown
+     * prevent close dropdown
      */
     preventClose: Boolean
   },

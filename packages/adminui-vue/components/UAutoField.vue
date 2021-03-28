@@ -1,7 +1,7 @@
 <script>
 const alsMixin = require('./controls/mixins/alsMixin')
 /**
- * Create a form component and validators based on entity attribute type
+ * Render a `UFormRow` (label + validation text) with based on attribute metadata control class
  */
 export default {
   name: 'UAutoField',
@@ -15,7 +15,7 @@ export default {
 
   props: {
     /**
-     * Attribute name
+     * attribute name
      */
     attributeName: {
       type: String,
@@ -23,7 +23,7 @@ export default {
     },
 
     /**
-     * Can be used to override "required" prop of <form-row />
+     * override a "required" prop of <form-row />
      */
     required: {
       type: Boolean,
@@ -121,7 +121,7 @@ export default {
     },
 
     /**
-     * Re-assignt parent event listeners for `change` event
+     * Re-assign parent event listeners for `change` event
      * @return {Record<string, Function | Function[]> & {change: change}}
      */
     buildListenersOnChange () {
@@ -248,24 +248,28 @@ export default {
 </script>
 
 <docs>
-Create a form component and validators based on entity attribute type
+Render a `UFormRow` (label + validation text) with based on attribute metadata control class
 
 ### Basic usage
 
 ```vue
 <template>
-  <u-auto-field attribute-name="code"/>
+  <u-form-container label-position="top">
+    <u-auto-field attribute-name="duration" />
+    <u-auto-field attribute-name="reqDate"/>
+    <u-auto-field attribute-name="applicant" />
+  </u-form-container>
 </template>
 ```
 
 ### Default slot
 Anything you need to render inside u-form-row container can be added as a u-auto-field default slot content.
-In sample below we output a description for SQL attribute:
+In sample below we output a description for `department` attribute:
 
 ``` vue
-<u-auto-field attribute-name="SQL">
+<u-auto-field attribute-name="department" label-position="top">
   <div class="u-form-row__description">
-    {{ this.entitySchema.attr('SQL').description }}
+    {{ $UB.connection.domain.get('req_request').attributes['department'].description }}
   </div>
 </u-auto-field>
 ```

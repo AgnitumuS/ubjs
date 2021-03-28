@@ -29,8 +29,8 @@
 
 <script>
 /**
-* when using type="number", helps to establish the precision of rounding and step
-*/
+ * Input. If type="number", precision of rounding and step can be defined
+ */
 
 export default {
   name: 'UBaseInput',
