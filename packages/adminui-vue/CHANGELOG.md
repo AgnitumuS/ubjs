@@ -20,6 +20,7 @@ let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 }
    is supported by all modern browsers.
 
 ### Fixed
+- `USelectEntity`: In case value-attribute is specified for u-select-entity an attempt to edit selected entry: old behavior - causes an error because of invalid instanceID; new behavior - opens edit form correctly
 
 ## [5.20.0] - 2021-03-25
 ### Added
