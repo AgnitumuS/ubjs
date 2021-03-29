@@ -666,13 +666,32 @@ export default {
       }
     },
 
-    handleEditItem () {
+    async handleEditItem () {
       if (!this.removeDefaultActions) {
+        let ID = this.value
+
+        if (this.valueAttribute !== 'ID') { // row ID is required to open edit form
+          const repositoryClone = this.getRepository().clone().clearWhereList()
+          repositoryClone.fieldList = ['ID']
+
+          const ids = await repositoryClone
+            .where(this.valueAttribute, '=', this.value)
+            .limit(2)
+            .selectAsArrayOfValues()
+
+          if (ids.length !== 1) {
+            UB.showErrorWindow(`${this.valueAttribute} is not unique`)
+            return
+          }
+
+          ID = ids[0]
+        }
+
         const config = this.buildEditConfig({
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
           entity: this.getEntityName,
           isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal,
-          instanceID: this.value
+          instanceID: ID
         })
         this.$UB.core.UBApp.doCommand(config)
       }
