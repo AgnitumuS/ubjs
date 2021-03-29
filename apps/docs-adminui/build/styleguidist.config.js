@@ -62,10 +62,9 @@ module.exports = {
       c('controls/UFile/UFileInput.vue'),
       c('controls/UTable/UTable.vue'), // TODO
       c('controls/UDatePicker.vue'), // TODO
-      c('controls/UDropdown/UDropdown.vue'), // TODO
-      c('controls/UDropdown/UDropdownItem.vue'), // TODO
+      c('controls/UDropdown/UDropdown.vue'), // UDropdownItem.vue documented here using @require directive
       c('controls/UCodeMirror.vue'), // TODO
-      c('controls/UIconPicker.vue'), // TODO
+      c('controls/UIconPicker.vue') // TODO
     ]
   }, {
     name: 'Data-aware',
@@ -92,7 +91,8 @@ module.exports = {
     sectionDepth: 2,
     components: [
       c('UToolbar/UToolbar.vue'), // TODO
-      c('UMasterDetailView/UMasterDetailView.vue') // TODO
+      c('UMasterDetailView/UMasterDetailView.vue'), // TODO
+      c('UAutoForm.vue')
     ]
   }],
 
@@ -104,12 +104,6 @@ module.exports = {
       monospace: ['Consolas', "'Liberation Mono'", 'Menlo', 'monospace']
     }
   },
-  /**
-   * Define a custom code highlighting theme.
-   */
-  // editorConfig: {
-  //   theme: 'night'
-  // },
 
   require: [
     // inject UB and element theme css

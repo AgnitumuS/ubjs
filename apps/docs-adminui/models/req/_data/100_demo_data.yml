@@ -28,15 +28,15 @@
 - $context:
     type: req_request
 - petr:
-    reqDate: 2020-02-12
-    department: dep3
-    text: Отключили горячую воду, что делать?
-    answer: Перезагрузите роутер
-    duration: 10
-    cost: 12.53
-    notes: Клиент неадекватен
+      reqDate: 2020-02-12
+      department: dep3
+      text: We turned off the hot water, what to do?
+      answer: Reboot your router
+      duration: 10
+      cost: 12.53
+      notes: UB or not UB, that is the question
 - ivan:
-    reqDate: 2020-02-01
-    department: dep2
-    text: Кто ответственный за лопату?
+      reqDate: 2020-02-01
+      department: dep2
+      text: Who is in charge of the shovel?
 

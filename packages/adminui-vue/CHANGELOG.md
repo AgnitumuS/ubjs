@@ -38,7 +38,7 @@ let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 }
   entity if it is not completed yet. This prevents parallelism bug, which happens when several
   `UTableEntity` controls load lookups for the same entity and only the first one awaits the
   `subscribe` method and displays columns using `lookups` correctly
- - added a cleanup of a dist folder before create a production build to remove unnecesary artifacts of previous build from resulting package   
+ - added a cleanup of a dist folder before create a production build to remove unnecessary artifacts of previous build from resulting package   
 
 ## [5.19.8] - 2021-03-23
 ### Added

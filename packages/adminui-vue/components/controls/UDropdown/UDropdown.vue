@@ -49,6 +49,7 @@ const {
 /**
  * Shows dropdown after click on reference element.
  * Can be used as context menu.
+ * @requires ./UDropdownItem.vue
  */
 export default {
   name: 'UDropdown',
