@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.1] - 2021-03-29
 ## [5.20.0] - 2021-03-25
 ### Changed
 - `cdn_classifier` entity uses the `ubm_query` as unity entity

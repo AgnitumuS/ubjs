@@ -8,9 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `AutoForm` is renamed to `UAutoForm`
 
 ### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.1] - 2021-03-29
+### Changed
+ - `AutoForm` is renamed to `UAutoForm`
 
 ### Removed
  - usage of `@babel/plugin-proposal-object-rest-spread` is removed from production build. Constructions like
