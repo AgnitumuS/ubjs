@@ -614,12 +614,14 @@ App.serverPublicCert = _App.serverPublicCert
  *  - {@link module:@unitybase/blob-stores~getContentPath App.blobStores.getContentPath} - get a path to the file based store BLOB content
  *  - {@link module:@unitybase/blob-stores~putContent App.blobStores.putContent} - put a BLOB content to the temporary storage
  *  - {@link module:@unitybase/blob-stores~markRevisionAsPermanent App.blobStores.markRevisionAsPermanent} - mark specified revision of a historical store as permanent
+ *  - {@link module:@unitybase/blob-stores~internalWriteDocumentToResp App.blobStores.internalWriteDocumentToResp} - mark specified revision of a historical store as permanent
  */
 App.blobStores = {
   getContent: blobStores.getContent,
   getContentPath: blobStores.getContentPath,
   putContent: blobStores.putContent,
-  markRevisionAsPermanent: blobStores.markRevisionAsPermanent
+  markRevisionAsPermanent: blobStores.markRevisionAsPermanent,
+  internalWriteDocumentToResp: blobStores.internalWriteDocumentToResp
 }
 
 /**

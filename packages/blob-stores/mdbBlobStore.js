@@ -92,9 +92,10 @@ class MdbBlobStore extends BlobStoreCustom {
    * @param {BlobStoreItem} blobItem
    * @param {THTTPRequest} req
    * @param {THTTPResponse} resp
+   * @param {boolean} [preventChangeRespOnError=false] If `true` - prevents sets resp status code - just returns false on error
    * @return {Boolean}
    */
-  fillResponse (requestParams, blobItem, req, resp) {
+  fillResponse (requestParams, blobItem, req, resp, preventChangeRespOnError) {
     const filePath = requestParams.isDirty ? this.getTempFileName(requestParams) : this.getPermanentFileName(blobItem)
     if (filePath) {
       resp.statusCode = 200
@@ -119,7 +120,9 @@ class MdbBlobStore extends BlobStoreCustom {
         resp.writeEnd(filePath)
       }
     } else {
-      return resp.notFound('mdb store item ' + filePath)
+      return preventChangeRespOnError
+        ? false
+        : resp.notFound('mdb store item ' + filePath)
     }
   }
 

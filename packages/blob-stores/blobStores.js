@@ -185,7 +185,7 @@ function parseBlobRequestParams (params) {
  * Return either success: false with reason or success: true and requested blobInfo & store implementation
  *
  * @param {ParsedRequest} parsedRequest
- * @return {{success: boolean, reason}|{success: boolean, blobInfo: Object, store: BlobStoreCustom}}
+ * @return {{success: boolean, reason: string}|{success: boolean, blobInfo: Object, store: BlobStoreCustom}}
  * @private
  */
 function getRequestedBLOBInfo (parsedRequest) {
@@ -259,16 +259,37 @@ function getRequestedBLOBInfo (parsedRequest) {
 }
 
 /**
- * Writes a BLOB content to the response without verifying an ALS (but RLS is verified).
- * Throws in case of invalid (wrong) requestParams (unknown entity or attribute, id not passed etc.)
+ * Writes a BLOB content to the response without verifying an ALS (but RLS is verified) or
+ * return an error without modifying a response.
  *
- * Returns `false` if attribute value is empty or record with specified ID not found or not accessible
- * and `true` if content is written to the response.
+ * **SECURITY** - method can be used inside endpoint or rest entity method, which already checks the access rights to the document
+ *
+ * Returns:
+ *  - `{success: false, reason: 'fail reason description}` if attribute value is empty or
+ *  record with specified ID not found or not accessible or entity/attribute is unknown or id not passed etc.
+ *  - `{success: true}` if content is written to the response
+ *
  *
  * @param {BlobStoreRequest} requestParams
+ * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
+ * @return {{success: boolean, reason?: string}}
  */
 function internalWriteDocumentToResp (requestParams, req, resp) {
+  const parsed = parseBlobRequestParams(requestParams)
+  if (!parsed.success) return parsed
+
+  const requested = getRequestedBLOBInfo(parsed)
+  if (!requested.success) {
+    return requested
+  }
+  // call store implementation method
+  const fillRespResult = requested.store.fillResponse(parsed.bsReq, requested.blobInfo, req, resp, true)
+  if (!fillRespResult) {
+    return { success: false, reason: 'Content not found' }
+  } else {
+    return { success: true }
+  }
 }
 
 /**
@@ -636,6 +657,7 @@ module.exports = {
   getDocumentEndpoint,
   checkDocumentEndpoint,
   writeDocumentToResp,
+  internalWriteDocumentToResp,
   setDocumentEndpoint,
   markRevisionAsPermanent,
   getContent,
