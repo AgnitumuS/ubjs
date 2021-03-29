@@ -145,9 +145,10 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @param {BlobStoreItem} blobInfo Document metadata. Not used for dirty requests
    * @param {THTTPRequest} req
    * @param {THTTPResponse} resp
+   * @param {boolean} [preventChangeRespOnError=false] If `true` - prevents sets resp status code - just returns false on error
    * @return {Boolean}
    */
-  fillResponse (requestParams, blobInfo, req, resp) {
+  fillResponse (requestParams, blobInfo, req, resp, preventChangeRespOnError) {
     let filePath, ct
     if (requestParams.isDirty) {
       filePath = this.getTempFileName(requestParams)
@@ -183,7 +184,9 @@ class FileSystemBlobStore extends BlobStoreCustom {
         resp.writeEnd(filePath)
       }
     } else {
-      return resp.notFound(`File path for BLOB item ${requestParams.entity}_${requestParams.attribute}_${requestParams.ID} is empty`)
+      return preventChangeRespOnError
+        ? false
+        : resp.notFound(`File path for BLOB item ${requestParams.entity}_${requestParams.attribute}_${requestParams.ID} is empty`)
     }
   }
 

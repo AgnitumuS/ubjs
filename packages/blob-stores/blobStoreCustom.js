@@ -82,15 +82,16 @@ class BlobStoreCustom {
    */
   getContent (request, blobInfo, options) {}
   /**
-   * Fill HTTP response for getDocument request
+   * Fill HTTP response for getDocument request. Sets resp to 404 status if content not found.
    * @abstract
    * @param {BlobStoreRequest} requestParams
    * @param {BlobStoreItem} blobInfo
    * @param {THTTPRequest} req
    * @param {THTTPResponse} resp
+   * @param {boolean} [preventChangeRespOnError=false] If `true` - prevents sets resp status code - just returns false on error
    * @return {Boolean}
    */
-  fillResponse (requestParams, blobInfo, req, resp) { }
+  fillResponse (requestParams, blobInfo, req, resp,preventChangeRespOnError) { }
   /**
    * Move content defined by `dirtyItem` from temporary to permanent store.
    * Return a new attribute content which describe a place of BLOB in permanent store

@@ -6,7 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - new method `blobStores.internalWriteDocumentToResp` - writes a BLOB content to the response without
+   verifying an ALS (but RLS is verified) or return an error without modifying a response.
+   Exposed as `App.blobStores.internalWriteDocumentToResp`
+   
+   **SECURITY** - method can be used inside endpoint or rest entity method, which already checks
+   the access rights to the document.
+   
 ### Changed
 
 ### Deprecated
