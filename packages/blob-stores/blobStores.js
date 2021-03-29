@@ -470,7 +470,9 @@ function setDocumentEndpoint (req, resp) {
 }
 
 /**
- * Server-side method for putting BLOB content to BLOB store temporary storage
+ * Server-side method for putting BLOB content to BLOB store temporary storage.
+ * Can accept a THTTPRequest as a content, in this case request body will be used as BLOB content
+ *
  * @example
 
  // convert base64 encoded string stored in `prm.signature` to binary and put to the store
@@ -482,7 +484,7 @@ function setDocumentEndpoint (req, resp) {
  }, Buffer.from(prm.signature, 'base64'))
 
  * @param {BlobStoreRequest} request
- * @param {ArrayBuffer|String} content
+ * @param {ArrayBuffer|String|THTTPRequest} content
  * @return {BlobStoreItem}
  */
 function putContent (request, content) {

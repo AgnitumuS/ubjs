@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `App.blobStores.putContent` documentation fixed - content can also be a THTTPRequest (since UB@5.9.3)
 
 ## [5.20.0] - 2021-03-25
 ## [5.19.6] - 2021-03-23
