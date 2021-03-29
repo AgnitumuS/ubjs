@@ -21,7 +21,7 @@
 const { mapGetters } = require('vuex')
 
 export default {
-  name: 'AutoForm',
+  name: 'UAutoForm',
   inject: ['entitySchema'],
 
   props: {
@@ -44,3 +44,18 @@ export default {
   }
 }
 </script>
+
+<docs>
+### Usage
+A metadata based autoform with **UToolbar** and each entity attribute with `defaultView: true`
+rendered using **UAutoField**. Entity itself should be provided by parent using `entitySchema`.
+
+In this example `entitySchema` is provided by `Form` class.
+
+```vue
+<template>
+  <u-auto-form></u-auto-form>
+</template>
+```
+
+</docs>

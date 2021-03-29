@@ -13,7 +13,7 @@ const Vue = require('vue')
 const { Notification } = require('element-ui')
 const dialogs = require('../components/dialog/UDialog')
 const UNavbar = require('../components/navbar/UNavbar.vue').default
-const autoForm = require('../components/AutoForm.vue').default
+const UAutoForm = require('../components/UAutoForm.vue').default
 const { dialog, dialogInfo, dialogYesNo, dialogError } = dialogs
 const Form = require('./Form/Form')
 const { mountTableEntity } = require('./Form/mount')
@@ -83,7 +83,7 @@ function replaceAutoForms () {
   const { entity, instanceID, parentContext, isModal, target } = this
 
   Form({
-    component: autoForm,
+    component: UAutoForm,
     props: { parentContext },
     entity,
     instanceID,
