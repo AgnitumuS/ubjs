@@ -222,7 +222,7 @@ export default {
           return this.$UB.Repository(this.repository)
         default: { // build repository based on columns (if available) or attributes with `defaultView: true`
           const repo = this.$UB.Repository(this.entityName)
-          let viewableAttrs = []
+          const viewableAttrs = []
           if (this.columns) {
             this.getColumns.forEach(c => {
               if (c.attribute !== undefined) viewableAttrs.push(c.id)
@@ -306,8 +306,8 @@ export default {
       const repoFieldList = this.getRepository().fieldList
       const fieldsWithError = this.getColumns
         .filter(column => {
-          return !repoFieldList.includes(column.id) // is custom
-            && !this.$scopedSlots[column.id] // dont have slot
+          return !repoFieldList.includes(column.id) && // is custom
+                 !this.$scopedSlots[column.id] // dont have slot
         })
         .map(column => column.id)
 
@@ -323,7 +323,7 @@ export default {
      * @param {UBEntityAttribute} attr
      * @return {boolean}
      */
-    isAttributeViewableByDefault(attr) {
+    isAttributeViewableByDefault (attr) {
       return attr.defaultView &&
         (attr.dataType !== 'Json') &&
         (attr.dataType !== 'Document') &&

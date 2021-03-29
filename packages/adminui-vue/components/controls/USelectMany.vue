@@ -39,7 +39,7 @@ export default {
 </script>
 
 <docs>
-Based on `u-select-multiple` accordingly have all same props
+Based on `u-select-multiple`, all props is the same
 
 ```vue
 <template>

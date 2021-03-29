@@ -8,18 +8,22 @@
     v-bind="$attrs"
     @[numberEvent]="rounding"
   >
+    <!-- @slot content as Input prefix -->
     <slot
       slot="prefix"
       name="prefix"
     />
+    <!-- @slot content as Input suffix -->
     <slot
       slot="suffix"
       name="suffix"
     />
+    <!-- @slot content to prepend before Input -->
     <slot
       slot="prepend"
       name="prepend"
     />
+    <!-- @slot content to append after Input -->
     <slot
       slot="append"
       name="append"

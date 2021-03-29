@@ -491,9 +491,7 @@ export default {
     },
 
     /**
-     * get value label
-     * if function cant find label in loaded options
-     * it will be fetch it from server
+     * get value label. If label not already loaded it will be fetched from server
      *
      * @param {number} value ID
      */

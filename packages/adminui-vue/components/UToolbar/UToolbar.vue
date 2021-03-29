@@ -1,6 +1,6 @@
 <template>
   <div class="u-toolbar">
-    <!-- @slot left side toolbar (before default buttons) -->
+    <!-- @slot content to prepend to the left side of the toolbar *before* default buttons -->
     <slot name="leftBefore" />
     <el-tooltip
       v-for="button in mainPanelButtons"
@@ -21,10 +21,10 @@
         @click="button.handler"
       />
     </el-tooltip>
-    <!-- @slot left side toolbar (after default buttons) -->
+    <!-- @slot content to append of the left side of the toolbar *after* default buttons -->
     <slot name="left" />
     <div class="u-toolbar__flex-divider" />
-    <!-- @slot right side toolbar (before setting button) -->
+    <!-- @slot content to prepend to the right side of the toolbar *before* setting button -->
     <slot name="right" />
 
     <el-tooltip
@@ -84,7 +84,7 @@
         <td>{{ $UB.formatter.formatDate(mi_modifyDate, 'dateTimeFull') }}</td>
       </tr>
 
-      <!-- @slot under the dates of creation and modification -->
+      <!-- @slot content to append under the dates of creation and modification (if entity have mi_createDate & mi_modifyDate) -->
       <slot name="toolbarInfoRow" />
     </table>
   </div>
