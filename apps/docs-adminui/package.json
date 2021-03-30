@@ -1,6 +1,6 @@
 {
   "name": "docs-adminui",
-  "version": "0.0.62",
+  "version": "0.0.63",
   "description": "Adminui components docs",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/docs-adminui",
   "private": true,
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@unitybase/ub-migrate": "^1.19.0",
-    "@unitybase/ubcli": "^5.20.2",
+    "@unitybase/ubcli": "^5.20.3",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.0",
     "file-loader": "^6.2.0",
