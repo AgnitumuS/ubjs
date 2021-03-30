@@ -22,7 +22,6 @@
  * @module migrate
  * @memberOf module:@unitybase/ubcli
  */
-const _ = require('lodash')
 const fs = require('fs')
 const path = require('path')
 const http = require('http')
@@ -50,6 +49,7 @@ module.exports = function migrate (cfg) {
       .add({ short: 'e', long: 'entities', param: 'entitiesList', defaultValue: '*', help: 'Comma separated entity names list for DDL generation' })
       .add({ short: 'c', long: 'connection', param: 'connection', defaultValue: '', help: 'Optional DB connection name for filter SQL migrations' })
       .add({ short: 'noddl', long: 'noddl', defaultValue: false, help: 'skip execution of generateDDL' })
+      .add({ short: 'ddlfor', long: 'ddlfor', defaultValue: '*', help: 'comma separated model names for DDL generator' })
       .add({ short: 'nodata', long: 'nodata', defaultValue: false, help: 'skip execution ub-migrate' })
       .add({ short: 'optimistic', long: 'optimistic', defaultValue: false, help: 'skip errors on execute DDL statement. BE CAREFUL! DO NOT USE ON PRODUCTION' })
       .add({ short: 'v', long: 'verbose', defaultValue: false, searchInEnv: true, help: 'Verbose mode' })
@@ -72,8 +72,8 @@ module.exports = function migrate (cfg) {
 const BEFORE_DDL_RE = /_beforeDDL[_/.]/
 const BEFORE_DDL_C_RE = /_beforeDDLc[_/.]/
 const AFTER_DDL_RE = /_afterDDL[_/.]/
-const IS_VERSION_RE = /^\d{9}$/  // 9 digits version number 005001001
-const NORMALIZE_VERSION_RE=/^((\d{1,3})[._](\d{1,3})[._](\d{1,3}))/
+const IS_VERSION_RE = /^\d{9}$/ // 9 digits version number 005001001
+const NORMALIZE_VERSION_RE = /^((\d{1,3})[._](\d{1,3})[._](\d{1,3}))/
 
 /**
  *  @param {Object} params  Migration parameters
@@ -107,8 +107,8 @@ function runMigrations (params) {
   // for a "fresh" setup `ubcli initialize` fills ub_version table by models version on the moment of initialization
   let oldFilesSkipped = 0
   migrations.files = migrations.files.filter(f => {
-    let fileModelVersion = f.name.substring(0, 9)
-    if (IS_VERSION_RE.test(fileModelVersion)) {  // file should starts from 9 digits model version to which it migrate
+    const fileModelVersion = f.name.substring(0, 9)
+    if (IS_VERSION_RE.test(fileModelVersion)) { // file should starts from 9 digits model version to which it migrate
       if (fileModelVersion <= dbVersions[f.model]) { // files intended for migrate to model versions prior to current DB state are skipped
         oldFilesSkipped++
         // console.debug(f)
@@ -175,12 +175,14 @@ function runMigrations (params) {
     if (params.verbose && beforeDDLFilesC.length) console.log('Run beforeDDL when connected hooks:', beforeDDLFilesC)
     runFiles(beforeDDLFilesC, params, { conn, dbConnections, dbVersions, migrations })
 
-
     // run DDL generator
     const paramsForDDL = Object.assign({}, params)
     paramsForDDL.autorun = true // force autorun
     paramsForDDL.out = process.cwd() // save script into current folder
     paramsForDDL.forceStartServer = true // use a local server instance
+    if (params.ddlfor && (params.ddlfor !== '*')) {
+      paramsForDDL.models = params.ddlfor
+    }
     if (params.verbose) console.log('Run generateDDL with params:', paramsForDDL)
     generateDDL(paramsForDDL)
 
@@ -205,8 +207,8 @@ function runMigrations (params) {
   }
 
   // remove before/after DDL hook files - either already applied or should be skipped
-  migrations.files = migrations.files.filter(f => !BEFORE_DDL_RE.test(f.name) && !AFTER_DDL_RE.test(f.name)
-    && !BEFORE_DDL_C_RE.test(f.name))
+  migrations.files = migrations.files.filter(f => !BEFORE_DDL_RE.test(f.name) &&
+    !AFTER_DDL_RE.test(f.name) && !BEFORE_DDL_C_RE.test(f.name))
 
   // apply ub-migrate if installed
   if (!params.nodata) {
@@ -269,7 +271,7 @@ function runFiles (filesToRun, params, { conn, dbConnections, dbVersions, migrat
         jsMigrationModule({ conn, dbConnections, dbVersions, migrations })
       }
     } else if (f.name.endsWith('.sql')) {
-      const parts = /#(.*?)[\-.#/]/.exec(f.name) // 010#rrpUb#fix-UBJS-1223.sql -> ["#rrpUb#", "rrpUb"]
+      const parts = /#(.*?)[-.#/]/.exec(f.name) // 010#rrpUb#fix-UBJS-1223.sql -> ["#rrpUb#", "rrpUb"]
       let connName
       if (parts && parts[1]) {
         if (!dbConnections[parts[1]]) {
@@ -308,7 +310,7 @@ function runFiles (filesToRun, params, { conn, dbConnections, dbVersions, migrat
  * Create ub_migration table if it is not exists
  * @param {DBConnection} dbConn
  */
-function createUbMigrateIfNotExists(dbConn) {
+function createUbMigrateIfNotExists (dbConn) {
   let exists = null
   try {
     // fake select to ensure table is exists
@@ -317,7 +319,7 @@ function createUbMigrateIfNotExists(dbConn) {
     // table not exists
   }
   if (!exists) {
-    let ubMigrateTableScript = path.join(__dirname, 'dbScripts', 'create_ub_migrate.sql')
+    const ubMigrateTableScript = path.join(__dirname, 'dbScripts', 'create_ub_migrate.sql')
     execSql({
       file: ubMigrateTableScript,
       optimistic: true
@@ -382,7 +384,7 @@ function readMigrations (models) {
     }
     const files = fs.readdirSync(mp).filter(f => !f.startsWith('_'))
       .map(f => {
-        return {fn: f, normalizedFn: normalizeVersionInFileName(f)}
+        return { fn: f, normalizedFn: normalizeVersionInFileName(f) }
       }).sort( // sort files by normalized 9digits version number
         (a, b) => a.normalizedFn.localeCompare(b.normalizedFn)
       )
