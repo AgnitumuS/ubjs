@@ -49,7 +49,7 @@ module.exports = function migrate (cfg) {
       .add({ short: 'e', long: 'entities', param: 'entitiesList', defaultValue: '*', help: 'Comma separated entity names list for DDL generation' })
       .add({ short: 'c', long: 'connection', param: 'connection', defaultValue: '', help: 'Optional DB connection name for filter SQL migrations' })
       .add({ short: 'noddl', long: 'noddl', defaultValue: false, help: 'skip execution of generateDDL' })
-      .add({ short: 'ddlfor', long: 'ddlfor', defaultValue: '*', help: 'comma separated model names for DDL generator' })
+      .add({ short: 'ddlfor', long: 'ddlfor', param: 'ddlfor', defaultValue: '*', help: 'comma separated model names for DDL generator' })
       .add({ short: 'nodata', long: 'nodata', defaultValue: false, help: 'skip execution ub-migrate' })
       .add({ short: 'optimistic', long: 'optimistic', defaultValue: false, help: 'skip errors on execute DDL statement. BE CAREFUL! DO NOT USE ON PRODUCTION' })
       .add({ short: 'v', long: 'verbose', defaultValue: false, searchInEnv: true, help: 'Verbose mode' })
