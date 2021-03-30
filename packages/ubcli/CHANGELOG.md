@@ -6,9 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `ubcli migrate`: new parameter `-ddlfor model1,model2,...` - allows to specify
-   a model list DDL generator is limited for. **For legacy apps**
-   Option value is passed as a `--models` to `ubcli generateDDL`
 
 ### Changed
 
@@ -17,6 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.2] - 2021-03-30
+### Added
+ - `ubcli migrate`: new parameter `-ddlfor model1,model2,...` - allows to specify
+   a model list DDL generator is limited for. **For legacy apps**
+   Option value is passed as a `--models` to `ubcli generateDDL`
 
 ## [5.20.1] - 2021-03-29
 ## [5.20.0] - 2021-03-25

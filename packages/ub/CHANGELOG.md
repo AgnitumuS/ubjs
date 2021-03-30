@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.2] - 2021-03-30
 ## [5.20.1] - 2021-03-29
 ### Added
  - new method `App.blobStores.internalWriteDocumentToResp` - writes a BLOB content to the response without
