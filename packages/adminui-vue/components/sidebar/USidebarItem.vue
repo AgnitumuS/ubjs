@@ -3,6 +3,7 @@
   <el-submenu
     v-if="item.children"
     :index="String(item.ID)"
+    :data-ub-level="item.level"
     popper-class="ub-sidebar__popup-menu"
     @contextmenu.native.stop.prevent="emitContext($event, item)"
   >
@@ -31,6 +32,7 @@
   <el-menu-item
     v-else
     :index="String(item.ID)"
+    :data-ub-level="item.level"
     @click="openLink(item)"
     @contextmenu.native.stop.prevent="emitContext($event, item)"
   >
@@ -95,12 +97,6 @@ export default {
     display: block;
   }
 
-  .ub-sidebar__popup-menu .el-menu-item,
-  .ub-sidebar__popup-menu .el-submenu__title {
-    height: 32px;
-    line-height: 32px;
-  }
-
   .ub-sidebar__popup-menu .el-menu-item [class*=fa-],
   .ub-sidebar__popup-menu .el-submenu__title [class*=fa-],
   .ub-sidebar__popup-menu .el-menu-item [class^=el-icon-],
@@ -125,10 +121,22 @@ export default {
     transform: rotateZ(0deg);
   }
 
+  .ub-sidebar__popup-menu {
+    /* collapsed menu popup borders color */
+    background-color: hsl(var(--hs-sidebar), var(--l-sidebar-default));
+  }
+  .ub-sidebar__popup-menu .el-menu {
+    /* collapsed menu popup borders color */
+    background-color: hsl(var(--hs-sidebar), var(--l-sidebar-default));
+  }
+
   .ub-sidebar__popup-menu .el-submenu__title,
   .ub-sidebar__popup-menu .el-menu-item {
     display: flex;
     align-items: center;
+    /* collapsed menu popup items color */
+    background-color: hsl(var(--hs-sidebar), var(--l-sidebar-default));
+
   }
 
   .ub-sidebar .el-menu--collapse .ub-sidebar__item-title__negative-margin,
