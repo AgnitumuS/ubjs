@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `UAutoForm` component render readonly attributes as disabled fields
 
 ### Deprecated
 

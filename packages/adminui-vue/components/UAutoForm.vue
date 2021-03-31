@@ -11,7 +11,7 @@
         v-for="attributeName in fields"
         :key="attributeName"
         :attribute-name="attributeName"
-        :disabled="parentContext.hasOwnProperty(attributeName)"
+        :disabled="isReadOnly(attributeName)"
       />
     </u-form-container>
   </div>
@@ -41,6 +41,16 @@ export default {
     },
 
     ...mapGetters(['loading'])
+  },
+
+  methods: {
+    isReadOnly (attributeName) {
+      if (this.parentContext.hasOwnProperty(attributeName)) {
+        return true
+      }
+
+      return this.entitySchema.getAttribute(attributeName).readOnly
+    }
   }
 }
 </script>
