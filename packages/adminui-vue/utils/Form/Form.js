@@ -14,7 +14,7 @@ const {
   transformCollections,
   enrichFieldList
 } = require('./helpers')
-const createValidator = require('./validation')
+const createValidatorInstance = require('./validation')
 const UB = require('@unitybase/ub-pub')
 
 /**
@@ -114,6 +114,7 @@ class UForm {
     this.modalClass = modalClass
     this.modalWidth = modalWidth
 
+    this.validatorInstance = undefined
     this.validator = undefined
     this.customValidationMixin = undefined
 
@@ -206,7 +207,7 @@ class UForm {
       instanceID: this.instanceID,
       parentContext: (this.props && this.props.parentContext) ? this.props.parentContext : undefined,
       collections,
-      validator: () => this.validator,
+      validator: () => this.validatorInstance && this.validatorInstance.$v,
       beforeInit: beforeInit ? () => beforeInit.call(this, this.$store) : null,
       inited: inited ? () => inited.call(this, this.$store) : null,
       beforeSave: beforeSave ? () => beforeSave.call(this, this.$store) : null,
@@ -267,7 +268,13 @@ class UForm {
     }
 
     if (this.isValidationUsed) {
-      this.validator = createValidator(this.$store, this.entitySchema, this.fieldList, this.customValidationMixin)
+      this.validatorInstance = createValidatorInstance(
+        this.$store,
+        this.entitySchema,
+        this.fieldList,
+        this.customValidationMixin
+      )
+      this.validator = this.validatorInstance.$v
     }
 
     if (this.isProcessingUsed) {
@@ -284,6 +291,7 @@ class UForm {
         props: this.props,
         store: this.$store,
         validator: this.validator,
+        getValidator: () => this.validatorInstance && this.validatorInstance.$v,
         title: this.title,
         titleTooltip: this.titleTooltip,
         modalClass: this.modalClass,
@@ -310,6 +318,7 @@ class UForm {
         props: this.props,
         store: this.$store,
         validator: this.validator,
+        getValidator: () => this.validatorInstance && this.validatorInstance.$v,
         title: this.title,
         titleTooltip: this.titleTooltip,
         tabId: this.tabId,
@@ -328,6 +337,7 @@ class UForm {
         props: this.props,
         store: this.$store,
         validator: this.validator,
+        getValidator: () => this.validatorInstance && this.validatorInstance.$v,
         title: this.title,
         titleTooltip: this.titleTooltip,
         target: this.target,

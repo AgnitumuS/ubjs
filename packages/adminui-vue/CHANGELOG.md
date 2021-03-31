@@ -6,6 +6,47 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- new provided method `getValidator` for getting always the actual validator configured with
+  the `validation(...)` method. The current provided value of `$v` is not reactive so if we want to
+  have dynamic validation as described below we can inject the `getValidator` function and
+  get the actual `$v` value
+```js
+module.exports.mount = cfg => {
+  Form(cfg)
+    .store()
+    .processing()
+    .validation({
+      computed: {
+        ...mapState('form', ['applyCustomValidation']),
+
+        formDataValues() {
+          return {...}
+        }
+      },
+
+      validations() {
+        // dynamic validation config
+        return this.applyCustomValidation
+          ? { formDataValues: {...} }
+          : {}
+      }
+    })
+    .mount()
+}
+
+export default {
+  inject: [
+    'getValidator'
+  ],
+
+  computed: {
+    codeError() {
+      const $v = this.getValidator()
+      return $v?.formDataValues?.code.$error
+    }
+  }
+}
+```
 
 ### Changed
 
