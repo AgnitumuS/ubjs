@@ -6,9 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - USidebar: improved UX by adding a different background color for different nesting level and mark an expanded
-   groups. For themas colors can be customized using `--l-sidebar-depth-?` CSS variables and selectors
-   over `data-ub-level="?"` HTML data attributes
 
 ### Changed
 
@@ -17,6 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.2] - 2021-03-31
+### Added
+ - USidebar: improved UX by adding a different background color for different nesting level and mark an expanded
+   groups. For themas colors can be customized using `--l-sidebar-depth-?` CSS variables and selectors
+   over `data-ub-level="?"` HTML data attributes
 
 ## [5.20.1] - 2021-03-29
 ### Changed
