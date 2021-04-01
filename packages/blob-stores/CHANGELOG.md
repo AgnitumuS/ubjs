@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - UB<5 regression: fix `Path must be a string` error in case caller do not pass `fileName` in setDocument request (as UB<5 client can do) 
 
 ## [5.20.2] - 2021-03-30
 ## [5.20.1] - 2021-03-29

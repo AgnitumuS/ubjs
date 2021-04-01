@@ -100,7 +100,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
       if (fs.existsSync(fn)) fs.unlinkSync(fn)
       throw e
     }
-    const origFn = request.fileName
+    const origFn = request.fileName || 'no-file-name.bin'
     const ct = mime.contentType(path.extname(origFn)) || 'application/octet-stream'
     const newMD5 = nhashFile(fn, 'MD5')
     return {
