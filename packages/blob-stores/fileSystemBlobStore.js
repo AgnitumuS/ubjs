@@ -73,7 +73,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     } else if (this.storeSize === this.SIZES.Large) {
       this._folderCounter = (getRandomInt(STORE_SUBFOLDER_COUNT) + 1) * (getRandomInt(STORE_SUBFOLDER_COUNT) + 1)
     }
-    if ((this.storeSize === this.SIZES.Simple) && (this.LUCount>0)) {
+    if ((this.storeSize === this.SIZES.Simple) && (this.LUCount > 0)) {
       throw new Error(`BLOB Store '${this.name}': LUCount can not be set for 'Simple' store`)
     }
   }
@@ -183,6 +183,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
         // }
         resp.writeEnd(filePath)
       }
+      return true
     } else {
       return preventChangeRespOnError
         ? false
