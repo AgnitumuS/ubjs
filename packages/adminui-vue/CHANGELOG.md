@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.3] - 2021-04-01
 ## [5.20.2] - 2021-03-31
 ### Added
  - USidebar: improved UX by adding a different background color for different nesting level and mark an expanded

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.4] - 2021-04-01
 ## [5.20.3] - 2021-03-30
 ### Fixed
   - `ubcli migrate`: fix for parameter `-ddlfor`
