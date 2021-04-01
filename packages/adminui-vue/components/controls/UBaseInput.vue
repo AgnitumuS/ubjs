@@ -35,7 +35,6 @@
 /**
  * Input. If type="number", precision of rounding and step can be defined
  */
-
 export default {
   name: 'UBaseInput',
 
@@ -69,7 +68,7 @@ export default {
     },
 
     /**
-     * input type
+     * input type. See [input types on MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types)
      */
     type: {
       type: String,
@@ -123,3 +122,8 @@ export default {
     margin: 0;
   }
 </style>
+
+<docs>
+## Usage
+ See `UInput` documentation
+</docs>
