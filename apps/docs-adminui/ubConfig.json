@@ -56,7 +56,7 @@
         "dialect": "SQLite3",
         "isDefault": true,
         "databaseName": "%UB_APPDATA%localdb/main.sqlite3",
-        "supportLang": ["en", "ru"],
+        "supportLang": ["en", "uk"],
         "advSettings": "Synchronous=Off"
       }
     ],
