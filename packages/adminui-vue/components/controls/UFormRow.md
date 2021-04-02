@@ -1,4 +1,4 @@
-### Error
+### Usage
 
 ```vue
 <template>
@@ -7,9 +7,18 @@
       required
       label-position="top"
       :error="showError"
-      label="User name"
+      label="User name (required)"
   >
-    <el-input/>
+    <el-input v-model="userName"/>
+  </u-form-row>
+
+  <u-form-row
+      readonly
+      label-position="top"
+      :error="showError"
+      label="User name (read only)"
+  >
+    <el-input v-model="userName"/>
   </u-form-row>
 
   <u-form-row
@@ -18,17 +27,15 @@
     :error="showError"
     label="User name"
   >
-    <el-input/>
+    <el-input v-model="userName"/>
   </u-form-row>
 
-  <u-button-group appearance="plain">
-    <u-button @click="showError = true">
-      Show error
-    </u-button>
-    <u-button appearance="default" @click="showError = false">
-      Hide error
-    </u-button>
-  </u-button-group>
+  <el-switch
+    v-model="showError"
+    active-text="Show error"
+    inactive-text="Hide error">
+  </el-switch>
+
 </div>
 </template>
 
@@ -36,7 +43,8 @@
 export default {
   data () {
     return {
-      showError: true
+      showError: true,
+      userName: 'Pablo'
     }
   }
 }

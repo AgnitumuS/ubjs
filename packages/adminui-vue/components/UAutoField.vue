@@ -23,9 +23,17 @@ export default {
     },
 
     /**
-     * override a "required" prop of <form-row />
+     * override an attribute "required" (nullAllowed in meta file)
      */
     required: {
+      type: Boolean,
+      default: undefined
+    },
+
+    /**
+     * override an attribute "readonly" (readOnly in meta file)
+     */
+    readonly: {
       type: Boolean,
       default: undefined
     },
@@ -68,8 +76,9 @@ export default {
     },
 
     isRequired () {
-      if (this.required !== undefined && this.required !== false) return this.required
-      else {
+      if (this.required !== undefined && this.required !== false) {
+        return this.required
+      } else {
         return (this.$_isRequiredByALS(this.attributeName) ||
           (this.$v && this.$v[this.attributeName] && 'required' in this.$v[this.attributeName].$params))
       }
@@ -78,7 +87,8 @@ export default {
     isReadOnly () {
       return (this.readonly !== undefined && this.readonly !== false)
         ? this.readonly
-        : this.$_isReadOnlyByALS(this.attributeName)
+        : this.$_isReadOnlyByALS(this.attributeName) ||
+          !!this.entitySchema.attributes[this.attributeName].readOnly
     },
 
     isError () {
@@ -244,6 +254,7 @@ export default {
         attrs: {
           label: this.label,
           required: defIsRequired,
+          readonly: this.isReadOnly,
           error: this.isError,
           ...this.$attrs
         }

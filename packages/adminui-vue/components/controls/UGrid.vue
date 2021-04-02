@@ -49,7 +49,7 @@ export default {
     },
 
     /**
-     * Sets a (grid-row-gap)[https://developer.mozilla.org/en-US/docs/Web/CSS/row-gap]
+     * Sets a [grid-row-gap](https://developer.mozilla.org/en-US/docs/Web/CSS/row-gap)
      */
     rowGap: String,
 

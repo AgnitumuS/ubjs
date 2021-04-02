@@ -6,9 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UFormRow`: new prop `readonly`; if `true` - show a small lock symbol after label
+ - `UAutoField`: in case attribute is `readOnly` in meta file - render a small lock symbol after label;
+   If `als` mixin is defined for entity - uses read only from `als`;
+   Can be explicitly defined using a new prop `readonly`;
 
 ### Changed
- - UAutoField: hide asterisk for boolean attributes with defaultValue specified (as should be in most case)
+ - `UAutoField`: hide asterisk for boolean attributes with defaultValue specified (as should be in most case)
    and `required` prop for UAutoField is not specified explicitly
 
 ### Deprecated
