@@ -531,11 +531,17 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
    */
   this.code = entityCode
   /**
-   * Entity model name
+   * Name of model where entity is defined (in case entity is overridden - see overridesBy)
    * @type{string}
    * @readonly
    */
   this.modelName = entityInfo.modelName
+  /**
+   * CSV model names where entity is overridden
+   * @type{string}
+   * @readonly
+   */
+  this.overriddenBy = entityInfo.overriddenBy
   /**
    * Entity name
    * @type {string}

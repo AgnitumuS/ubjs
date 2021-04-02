@@ -198,7 +198,16 @@ Example:
 
 `conn` is a connection config (as it specified in ubConfig `application.connections` section) for connection script is executed in.
 
-`--@optimistic` feature of execSql also works here
+`--@optimistic` feature of execSql also works here, if statement is marked as optimistic this mean
+`skip this statement in case of exception`. In case table1 exists, create table statement in example throws,
+but script continue execution:
+```sql
+--@optimistic
+create table1 ....
+--
+
+do some other;
+```
  
  > the `optimistic` mode is dangerous - use it if it absolutely required
    

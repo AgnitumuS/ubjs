@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ -  new property `UBEntity.overriddenBy` - comma separated model names where entity is overridden
 
 ### Changed
+ - **BREAKING** for overridden entities `UBEntity.modelName` property now contains an original model name instead of
+  last override model name
 
 ### Deprecated
 
