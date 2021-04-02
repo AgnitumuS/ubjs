@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.5] - 2021-04-02
+### Fixed
  - **BREAKING** `ubcli generateDDL -m MODEL1,MODEL2` generates a DDL for entities what initially defined in the
   MODEL1 and MODEL2. Before this fix DDL generator skip entities defined in MODEL1 but overridden in MODEL_X (what not in -m list)
 

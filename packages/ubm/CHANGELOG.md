@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.4] - 2021-04-02
+### Fixed
  - ubm_query JSON to clob migration (for Oracle) not fails during migration from a version where  ubm_query table does not exists
 
 ## [5.20.3] - 2021-04-01
