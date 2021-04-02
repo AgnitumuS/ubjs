@@ -76,9 +76,12 @@ const ElSelectHack = {
  */
 export default {
   name: 'UFormRow',
-
   mixins: [ElSelectHack],
-
+  inject: {
+    formLabelWidth: { from: 'labelWidth', default: null },
+    formLabelPosition: { from: 'labelPosition', default: null },
+    formMaxWidth: { from: 'maxWidth', default: null }
+  },
   props: {
     /**
      * Either string with error message or boolean.
@@ -88,19 +91,16 @@ export default {
       type: [String, Boolean],
       default: false
     },
-
     /**
-     * Row label (automatically followed by ":".
+     * row label (automatically followed by ":")
      */
     label: String,
-
     /**
-     * If true will show red asterix symbol after label
+     * if `true` - show red asterix symbol after label
      */
     required: Boolean,
-
     /**
-     * Width of the label. Ignored in case labelPosition === 'top'
+     * label width. Ignored if labelPosition === 'top'
      */
     labelWidth: {
       type: Number,
@@ -108,10 +108,9 @@ export default {
         return this.formLabelWidth || 150
       }
     },
-
     /**
-     * Label position.
-     * Available options: left | right | top
+     * label position.
+     * @values left, right, top
      */
     labelPosition: {
       type: String,
@@ -120,9 +119,8 @@ export default {
         return this.formLabelPosition || 'left'
       }
     },
-
     /**
-     * Max width in px
+     * max width in px
      */
     maxWidth: {
       type: Number,
@@ -130,17 +128,10 @@ export default {
         return this.formMaxWidth
       }
     },
-
     /**
-     * Disable label click, hover etc. Creates fake hidden button which intercepts events
+     * disable label click, hover etc. Creates fake hidden button which intercepts events
      */
     preventLabelEvents: Boolean
-  },
-
-  inject: {
-    formLabelWidth: { from: 'labelWidth', default: null },
-    formLabelPosition: { from: 'labelPosition', default: null },
-    formMaxWidth: { from: 'maxWidth', default: null }
   },
 
   computed: {
