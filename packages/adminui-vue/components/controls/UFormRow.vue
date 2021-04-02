@@ -13,7 +13,7 @@
     <div
       v-if="label"
       class="u-form-row__label"
-      :class="{ required }"
+      :class="{ required, readonly }"
       :style="labelWidthCss"
       :title="$ut(label)"
     >
@@ -99,6 +99,10 @@ export default {
      * if `true` - show red asterix symbol after label
      */
     required: Boolean,
+    /**
+     * if `true` - show a small lock symbol after label
+     */
+    readonly: Boolean,
     /**
      * label width. Ignored if labelPosition === 'top'
      */
@@ -199,6 +203,15 @@ export default {
     content: '*';
     color: hsl(var(--hs-danger), var(--l-state-default));
     margin: 0 2px;
+    order: 1;
+  }
+
+  .u-form-row__label.readonly:before {
+    content: "\f054";
+    font-family: 'ub-icons';
+    color: hsl(var(--hs-warning), var(--l-state-active));
+    margin: 0 2px;
+    font-size: 0.7em;
     order: 1;
   }
 
