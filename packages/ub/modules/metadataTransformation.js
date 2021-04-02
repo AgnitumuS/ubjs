@@ -35,14 +35,16 @@ function loadDomainIntoJS () {
     const ep = ePaths[en]
     const p = ep.metaFiles[0].fullPath
     const metaJSON = loadMetaAsJSON(p) // main meta file
-    let modelName = ep.metaFiles[0].modelName
+    const modelName = ep.metaFiles[0].modelName // original model name
+    const overriddenBy = []
     if (ep.metaFiles.length > 1) { // need to merge meta files from other models
       for (let i = 1, L = ep.metaFiles.length; i < L; i++) {
         console.log(`MERGE "${en}" with descendant from "${ep.metaFiles[i].modelName}" model`)
         const override = loadMetaAsJSON(ep.metaFiles[i].fullPath)
         _.mergeWith(metaJSON, override, mergeNamedCollections)
-        modelName = ep.metaFiles[i].modelName
+        overriddenBy.push(ep.metaFiles[i].modelName)
       }
+      if (overriddenBy.length) metaJSON.overriddenBy = overriddenBy.join(',')
     }
     // merge lang files
     const languages = {}
