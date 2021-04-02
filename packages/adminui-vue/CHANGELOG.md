@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - UAutoField: hide asterisk for boolean attributes with defaultValue specified (as should be in most case)
+   and `required` prop for UAutoField is not specified explicitly
 
 ### Deprecated
 
