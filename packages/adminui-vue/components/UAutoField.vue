@@ -281,7 +281,7 @@ Render a `UFormRow` (label + validation text) with based on attribute metadata c
 ```
 
 ### Default slot
-Anything you need to render inside u-form-row container can be added as a u-auto-field default slot content.
+Anything you need to render inside u-form-row container can be added as a u-form-row default slot content.
 In sample below we output a description for `department` attribute:
 
 ``` vue

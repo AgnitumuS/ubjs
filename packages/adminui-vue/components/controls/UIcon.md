@@ -31,7 +31,7 @@
 ```vue
 <template>
   <u-grid :columns="3">
-    <div>As a class for &lti$gt tag: <i class="u-icon-save"/></div>
+    <div>As a class for &lti&gt tag: <i class="u-icon-save"/></div>
     <div>As a button icon: <u-button icon="u-icon-save"/></div>
     <div>Or as u-icon component: <u-icon icon="u-icon-save" size="large" color="danger"/></div>
   </u-grid>

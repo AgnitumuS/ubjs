@@ -3,7 +3,7 @@
 ```vue
 <template>
   <u-grid
-    column-gap="10px"
+    column-gap="50px"
     row-gap="10px"
   >
       <div> 

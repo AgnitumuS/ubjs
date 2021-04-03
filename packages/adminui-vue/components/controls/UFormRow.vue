@@ -38,8 +38,8 @@
 
 <script>
 /**
-   * The mixin fixes the problem when, when you click on the arrow in el-select, a dropdown opens and closes immediately
-   */
+ * This mixin fixes the problem, when user click on the arrow in el-select, a dropdown opens and closes immediately
+ */
 const ElSelectHack = {
   data () {
     return {
@@ -72,7 +72,16 @@ const ElSelectHack = {
 }
 
 /**
- * A Form building block what contains control with label and optional error. Used by UAutoField
+ * A Form building block what combines a:
+ *
+ *  - label (optionally appended by readonly\required mark)
+ *  - some control (input, select etc.)
+ *  - error placeholder
+ *
+ * The name `UFormRow` may be confusing, but exists for historical reasons.
+ * This is *not a row*, but a container for `label+control+error` (analogue of `form-control` in Bootstrap).
+ *
+ * Used by `UAutoField`
  */
 export default {
   name: 'UFormRow',
@@ -84,8 +93,8 @@ export default {
   },
   props: {
     /**
-     * Either string with error message or boolean.
-     * For `false` error is always hidden, for `true` - $ut('requiredField') will be shown in case of error
+     * either string with error message or boolean.
+     * If === `false` then error is always hidden, if `true` - `$ut('requiredField')` will be shown in case of error
      */
     error: {
       type: [String, Boolean],
