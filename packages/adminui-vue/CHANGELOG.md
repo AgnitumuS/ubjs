@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `UAutoField`: hide asterisk for boolean attributes with defaultValue specified (as should be in most case)
    and `required` prop for UAutoField is not specified explicitly
+ - `UDropdown`: popup animation (transition) is removed
+ - `USelectEntity`: use a UDropdown instead of ElDropdown for actions popup; dropdown animation (transition) is removed
 
 ### Deprecated
 

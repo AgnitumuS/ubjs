@@ -5,6 +5,7 @@
       v-model="dropdownVisible"
       placement="bottom-start"
       :width="popperWidth"
+      transition=""
       :popper-options="{
         appendToBody: true
       }"
@@ -126,27 +127,26 @@
       suffix-icon="u-icon-arrow-down"
     />
 
-    <el-dropdown
+    <u-dropdown
       v-if="actions.length > 0 && !disabled"
-      trigger="click"
       :tabindex="-1"
     >
       <button
         type="button"
         class="u-icon-more ub-select__more-icon"
       />
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item
+      <template #dropdown>
+        <u-dropdown-item
           v-for="action in actions"
           :key="action.name"
           :icon="action.icon"
+          :label="$ut(action.caption)"
           :disabled="action.disabled"
           @click.native="action.handler"
         >
-          {{ $ut(action.caption) }}
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+        </u-dropdown-item>
+      </template>
+    </u-dropdown>
   </div>
 </template>
 

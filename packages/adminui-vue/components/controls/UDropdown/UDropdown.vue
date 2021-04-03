@@ -68,6 +68,7 @@ export default {
 
     /**
      * dropdown placement (relative to the reference button)
+     * @values auto, auto-start, auto-end, top, top-start, top-end, bottom, bottom-start, bottom-end, right, right-start, right-end, left, left-start, left-end
      */
     placement: {
       type: String,
@@ -75,7 +76,7 @@ export default {
     },
 
     /**
-     * dropdown placement (relative to the opened dropdown)
+     * child dropdown placement (relative to the opened dropdown). The same possible values as for placement.
      */
     childPlacement: {
       type: String,
@@ -239,22 +240,6 @@ export default {
 .u-dropdown .u-dropdown__reference {
   /* prevent inline-block for inner elements */
   display: block;
-}
-
-.dropdown-transition-leave-active,
-.dropdown-transition-enter-active {
-  transition: visibility .1s;
-}
-
-.dropdown-transition-leave-active .u-dropdown,
-.dropdown-transition-enter-active .u-dropdown {
-  transition: .1s;
-}
-
-.dropdown-transition-leave-to .u-dropdown,
-.dropdown-transition-enter .u-dropdown {
-  transform: scale(0.8);
-  opacity: 0;
 }
 
 .u-dropdown__arrow {
