@@ -3,3 +3,9 @@
 *:before {
     box-sizing: border-box
 }
+
+/* add a blockquote border (TODO - how to sets this using theme in config?) */
+blockquote {
+    border-left: 5px solid #2196F3 !important;
+    padding-left: 10px !important;
+}

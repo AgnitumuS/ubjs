@@ -10,7 +10,7 @@ label position of "Short" sets to `top`.
 
 ```vue
 <template>
-  <u-form-container label-width="150" label-position="left">
+  <u-form-container :label-width="150" label-position="left">
     <u-form-row label="Name">
       <el-input v-model="name" />
     </u-form-row>
@@ -19,7 +19,7 @@ label position of "Short" sets to `top`.
       <el-input v-model="surname" />
     </u-form-row>
 
-    <u-form-row label="Age" label-width="90">
+    <u-form-row label="Age" :label-width="90">
       <el-input-number v-model="age" />
     </u-form-row>
 

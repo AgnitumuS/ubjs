@@ -97,8 +97,8 @@ module.exports = {
   }],
 
   theme: {
-    maxWidth: '1440px',
-    sidebarWidth: 280,
+    maxWidth: '960px',
+    sidebarWidth: 250,
     fontFamily: {
       base: ['Roboto', 'Helvetica', 'Arial', 'sans-serif'],
       monospace: ['Consolas', "'Liberation Mono'", 'Menlo', 'monospace']
