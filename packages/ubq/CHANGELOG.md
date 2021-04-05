@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - log level for scheduler initiation message `SCHEDULER: Job command for ... sent at ...` changed from `info` to `debug`
 
 ### Deprecated
 
