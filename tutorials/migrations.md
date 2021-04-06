@@ -217,10 +217,11 @@ Each *.js file MUST export a function. This function will be called by migrate w
 ```javascript
 /**
  * Migrate the CDN model to 2.13.15 (update cdn_person captions)
- * @param {SyncConnection} conn
- * @param {Object<string, DBConnection>} dbConnections
- * @param {Object} dbVersions
- * @param {{hooks: Array<{model: string, hook: Object<string, function>}>, files: Array<{model: string, name: string, fullPath: string, sha: string}>}} migrations
+ * @param {object} migrParams 
+ * @param {SyncConnection} migrParams.conn
+ * @param {Object<string, DBConnection>} migrParams.dbConnections
+ * @param {Object} migrParams.dbVersions
+ * @param {{hooks: Array<{model: string, hook: Object<string, function>}>, files: Array<{model: string, name: string, fullPath: string, sha: string}>}} migrParams.migrations
  */
 module.exports = function giveItAGoodNameWhichExplainWhatFunctionDoes ({ conn, dbConnections, dbVersions, migrations }) {
   // do something here
