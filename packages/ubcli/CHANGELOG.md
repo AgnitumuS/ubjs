@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `ubcli generateNginxCfg` adds in-memory buffering of incoming requests and outgoing responses to nginx config.
+   This prevents nginx to create temp files for buffering in most case
 
 ### Changed
 
