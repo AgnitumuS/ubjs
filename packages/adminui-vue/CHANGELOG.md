@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `USelectEntity.buildShowDictionaryConfig`: fixed problem with `select` button disable, when row is not selected yet.
+   A `disabled` property should be passed to `UButton` as a html-attribute.
 
 ## [5.20.4] - 2021-04-02
 ## [5.20.3] - 2021-04-01
