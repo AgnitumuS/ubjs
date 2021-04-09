@@ -213,7 +213,7 @@ do some other;
    
 ### JS file requirements
 
-Each *.js file MUST export a function. This function will be called by migrate with 4 parameters:
+Each *.js file MUST export a function. This function will be called by migrate with such a parameters:
 ```javascript
 /**
  * Migrate the CDN model to 2.13.15 (update cdn_person captions)
