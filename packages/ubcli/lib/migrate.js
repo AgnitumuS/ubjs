@@ -54,6 +54,12 @@ module.exports = function migrate (cfg) {
       .add({ short: 'optimistic', long: 'optimistic', defaultValue: false, help: 'skip errors on execute DDL statement. BE CAREFUL! DO NOT USE ON PRODUCTION' })
       .add({ short: 'v', long: 'verbose', defaultValue: false, searchInEnv: true, help: 'Verbose mode' })
       .add({
+        short: 'tid',
+        long: 'tenantID',
+        defaultValue: NaN,
+        param: 'tenantID',
+        help: 'Tenant ID to initialize.  If not specified, all tenants will be iterated.'
+      }).add({
         short: 'p',
         long: 'progress',
         defaultValue: false,

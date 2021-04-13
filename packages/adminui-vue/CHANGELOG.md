@@ -10,12 +10,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UAutoField`: in case attribute is `readOnly` in meta file - render a small lock symbol after label;
    If `als` mixin is defined for entity - uses read only from `als`;
    Can be explicitly defined using a new prop `readonly`;
+ - `UToolbar`: new prop `toolbarButtons`. Allows to add new buttons into toolbar and override/hide default buttons;
+    Can be used with slots and `hideDefaultButtons` prop;
+    Using `toolbarButtons` prop toolbar buttons can be shown as classic text button (not icon only);
+    See example in `UToolbar` docs;
 
 ### Changed
+ - `UFileInput`: set text alignment to **center**, 
+   and in case of selecting a large number of files - truncate displayed filenames to 3 lines 
  - `UAutoField`: hide asterisk for boolean attributes with defaultValue specified (as should be in most case)
    and `required` prop for UAutoField is not specified explicitly
  - `UDropdown`: popup animation (transition) is removed
  - `USelectEntity`: use a UDropdown instead of ElDropdown for actions popup; dropdown animation (transition) is removed
+ - `USelectEntity`: added background color and border to dropdown block
 
 ### Deprecated
 
@@ -24,6 +31,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `USelectEntity.buildShowDictionaryConfig`: fixed `select` button disabling if row is not selected yet.
    A `disabled` property should be passed to `UButton` as a html-attribute.
+- `USelectEntity`: In case of using an entity (other than the default one) in the property `repository`
+  of the component and when user press F9 (or click on `Select from the dictionary`):
+  old behavior: error about the absence of attributes specified in the request fieldlist.
+  new behavior: opening a form `Selection from the dictionary`.
 
 ## [5.20.4] - 2021-04-02
 ## [5.20.3] - 2021-04-01
