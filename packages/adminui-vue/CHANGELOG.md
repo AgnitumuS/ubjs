@@ -14,9 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     Can be used with slots and `hideDefaultButtons` prop;
     Using `toolbarButtons` prop toolbar buttons can be shown as classic text button (not icon only);
     See example in `UToolbar` docs;
- - new provided method `getCurrentStateOfValidation` for getting always the actual validator configured with
+ - new provided method `getValidationState` for getting always the actual validator configured with
   the `validation(...)` method. The current provided value of `$v` is not reactive so if we want to
-  have dynamic validation as described below we can inject the `getCurrentStateOfValidation` function and
+  have dynamic validation as described below we can inject the `getValidationState` function and
   get the actual `$v` value
 ```js
 module.exports.mount = cfg => {
@@ -44,12 +44,12 @@ module.exports.mount = cfg => {
 
 export default {
   inject: [
-    'getCurrentStateOfValidation'
+    'getValidationState'
   ],
 
   computed: {
     codeError() {
-      const $v = this.getCurrentStateOfValidation()
+      const $v = this.getValidationState()
       return $v?.formDataValues?.code.$error
     }
   }
