@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    Can be explicitly defined using a new prop `readonly`;
 
 ### Changed
+ - `UFileInput`: set text alignment to **center**, 
+   and in case of selecting a large number of files - truncate displayed filenames to 3 lines 
  - `UAutoField`: hide asterisk for boolean attributes with defaultValue specified (as should be in most case)
    and `required` prop for UAutoField is not specified explicitly
  - `UDropdown`: popup animation (transition) is removed
