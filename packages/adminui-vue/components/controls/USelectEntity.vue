@@ -641,10 +641,12 @@ export default {
             scopedSlots: createElement => ({
               toolbarPrepend: ({ store, close }) => {
                 return createElement('u-button', {
+                  attrs: {
+                    disabled: !store.state.selectedRowId
+                  },
                   props: {
                     appearance: 'inverse',
-                    icon: 'u-icon-check',
-                    disabled: !store.state.selectedRowId
+                    icon: 'u-icon-check'
                   },
                   on: {
                     click: () => {

@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `USelectEntity.buildShowDictionaryConfig`: fixed `select` button disabling if row is not selected yet.
+   A `disabled` property should be passed to `UButton` as a html-attribute.
 - `USelectEntity`: In case of using an entity (other than the default one) in the property `repository`
   of the component and when user press F9 (or click on `Select from the dictionary`):
   old behavior: error about the absence of attributes specified in the request fieldlist.
