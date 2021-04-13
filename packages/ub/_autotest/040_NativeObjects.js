@@ -2,6 +2,11 @@ var assert = require('assert')
 
 var l = new TubList()
 
+l.arrVal = [-1, 0, 1, 2]
+l.objVal = {}
+l.objVal.ar = [-1, 1]
+console.log(typeof l, l)
+
 l.freeNative()
 l = null
 
