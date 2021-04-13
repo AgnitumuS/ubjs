@@ -1,10 +1,9 @@
-/**
+/*
  * @module Form
  * @memberOf module:@unitybase/adminui-vue
  * @author dmytro.rudnyk 31.05.2019
  */
 /* global $App */
-module.exports = Form
 
 const Vuex = require('vuex')
 const { mountTab, mountModal, mountContainer } = require('./mount')
@@ -35,8 +34,9 @@ const UB = require('@unitybase/ub-pub')
  * @param {string} [cfg.tabId] Optional tabId. If omitted will be calculated using entity code and instanceID
  * @param {object} [cfg.target] Optional target. Used for render form into form
  * @param {boolean} cfg.isCopy Required isCopy. Used for create new record with data of existing record
+ * @returns {UForm}
  */
-function Form (cfg) {
+module.exports = function Form (cfg) {
   return new UForm(cfg)
 }
 

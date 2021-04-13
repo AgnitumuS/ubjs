@@ -1,5 +1,7 @@
 ### Usage
 
+See also `UBaseInput` for additional examples
+
 ```vue
 <template>
   <u-grid

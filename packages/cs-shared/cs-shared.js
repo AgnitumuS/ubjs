@@ -16,7 +16,7 @@ module.exports = {
   CustomRepository,
   /**
    * Helper class for manipulation with data, stored locally in ({@link TubCachedData} format)
-   * @type {LocalDataStore}
+   * @type {module:LocalDataStore}
    */
   LocalDataStore,
   /**
