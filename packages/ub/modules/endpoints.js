@@ -500,16 +500,31 @@ function restEp (req, resp) {
  * @private
  */
 function allLocalesEp (req, resp) {
-  const { lang } = req.parsedParameters
+  const { lang, json } = req.parsedParameters
   if (!lang || lang.length > 5) return resp.badRequest('lang parameter required')
   const supportedLanguages = App.serverConfig.application.domain.supportedLanguages || ['en']
   if (supportedLanguages.indexOf(lang) === -1) return resp.badRequest('unsupported language')
 
-  let cached = App.globalCacheGet(`${GC_KEYS.UB_LOCALE_REQ_}${lang}`)
-  if (!cached) {
-    cached = ' '
-    App.domainInfo.orderedModels.forEach((model) => {
-      if (model.realPublicPath) {
+  if (json) {
+    // Get lang-<xx>.json files only and combine then into one JSON
+    const parts = []
+    for (const model of App.domainInfo.orderedModels) {
+      if (!model.realPublicPath) continue
+
+      const localeFile = path.join(model.realPublicPath, 'locale', `lang-${lang}.json`)
+      if (!fs.existsSync(localeFile)) continue
+
+      const content = fs.readFileSync(localeFile, 'utf-8')
+      parts.push(`"${model.name}":${content}`)
+    }
+    resp.writeEnd('{' + parts.join(',') + '}')
+  } else {
+    // Get lang-<xx>.js and lang-<xx>.json together and wrap as executable client-side code
+    let cached = App.globalCacheGet(`${GC_KEYS.UB_LOCALE_REQ_}${lang}`)
+    if (!cached) {
+      cached = ' '
+      for (const model of App.domainInfo.orderedModels) {
+        if (!model.realPublicPath) continue
         let localeFile = path.join(model.realPublicPath, 'locale', `lang-${lang}.json`)
         if (fs.existsSync(localeFile)) { // JSON since localization (UB 5.19.3)
           const content = fs.readFileSync(localeFile, 'utf-8')
@@ -521,10 +536,11 @@ function allLocalesEp (req, resp) {
           cached += `\n// ${model.name} localization\n${content}`
         }
       }
-    })
-    App.globalCachePut(`${GC_KEYS.UB_LOCALE_REQ_}${lang}`, cached)
+      App.globalCachePut(`${GC_KEYS.UB_LOCALE_REQ_}${lang}`, cached)
+    }
+    resp.writeEnd(cached)
   }
-  resp.writeEnd(cached)
+
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/javascript')
   resp.validateETag()
