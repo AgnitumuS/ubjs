@@ -91,16 +91,17 @@ const UB = module.exports = {
   /**
    * Locale based Date and Number formatters, See details in `@unitybase/cs-shared/formatByPattern`
    * @example
-     const d = new Date(2020, 04, 23, 13, 14)
-     UB.formatter.formatDate(d, 'date') // without 3rd lang parameter - will be formatted for user default lang (for uk - 23.05.2020)
-     UB.formatter.formatDate('2020-05-23', 'date', 'uk') // 23.05.2020
-     UB.formatter.formatDate(d, 'date', 'en') // 05/23/2020
-     UB.formatter.formatDate(d, 'dateTime', 'uk') // 23.05.2020 13:14
-     UB.formatter.formatDate(d, 'date', 'en') // 05/23/2020, 1:14 PM
-     const n = 2305.1
-     UB.formatter.formatNumber(n, 'sum', 'en') // 2,305.10
-     UB.formatter.formatNumber('2305.1', 'sum', 'en') // 2,305.10
-     UB.formatter.formatNumber(n, 'sum') // without 3rd lang parameter - will be formatted for user default lang (for uk "2 305,10")
+ const d = new Date(2020, 04, 23, 13, 14)
+ UB.formatter.formatDate(d, 'date') // without 3rd lang parameter - will be formatted for user default lang (for uk - 23.05.2020)
+ UB.formatter.formatDate('2020-05-23', 'date', 'uk') // 23.05.2020
+ UB.formatter.formatDate(d, 'date', 'en') // 05/23/2020
+ UB.formatter.formatDate(d, 'dateTime', 'uk') // 23.05.2020 13:14
+ UB.formatter.formatDate(d, 'date', 'en') // 05/23/2020, 1:14 PM
+ const n = 2305.1
+ UB.formatter.formatNumber(n, 'sum', 'en') // 2,305.10
+ UB.formatter.formatNumber('2305.1', 'sum', 'en') // 2,305.10
+ UB.formatter.formatNumber(n, 'sum') // without 3rd lang parameter - will be formatted for user default lang (for uk "2 305,10")
+   * @type {module:formatByPattern}
    */
   formatter: formatByPattern,
   /**
@@ -453,7 +454,7 @@ conn.then(function(conn){
   appConfig: null,
   /**
    * Helper class for manipulation with data, stored locally in ({@link TubCachedData} format)
-   * @type {LocalDataStore}
+   * @type {module:LocalDataStore}
    */
   LocalDataStore: LocalDataStore,
 

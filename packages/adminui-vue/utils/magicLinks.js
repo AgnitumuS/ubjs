@@ -21,7 +21,8 @@
    Show report `your-report-code` with parameters
  </a>
 
- *
+ * @module magicLinks
+ * @memberOf module:@unitybase/adminui-vue
  */
 
 module.exports = {
@@ -32,7 +33,7 @@ module.exports = {
 const commands = {}
 
 /**
- * Adds a global onclick event listener
+ * Adds a global onclick event listener. Called by adminui-vue.
  */
 function install () {
   if (document) document.addEventListener('click', checkClickOnMagicLink, false)
@@ -42,14 +43,14 @@ function install () {
  * Register action for command. Command is passed as <a href="#' data-cmd-type="commandName">.
  * If handler for command already exists it will be overrated
  * @param {string} command
- * @param {function<Object, EventTarget?>} handler
+ * @param {function} handler Callback what accept (dataObject: Object;  EventTarget)
  */
 function addCommand (command, handler) {
   commands[command] = handler
 }
 
 /**
- *
+ * @private
  * @param {Event} e
  */
 function checkClickOnMagicLink (e) {
@@ -86,6 +87,7 @@ function checkClickOnMagicLink (e) {
  *    dataset = document.getElementById('test').dataset
  *    dataAttributesToObject(dataset) // {cmdType: 'showList', id: 100334, fieldList: ['ID', 'code', 'name']}
  *
+ * @private
  * @param dataset
  */
 function dataAttributesToObject (dataset) {

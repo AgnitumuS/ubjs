@@ -18,8 +18,12 @@ window.BOUNDLED_BY_WEBPACK = false
 const throttleDebounce = require('throttle-debounce')
 if (IS_SYSTEM_JS && !SystemJS.has('throttle-debounce')) SystemJS.set('throttle-debounce', SystemJS.newModule(throttleDebounce))
 /**
+ * @module @unitybase/adminui-vue
+ */
+
+/**
  * throttle-debounce see <a href=https://github.com/niksy/throttle-debounce>original doc</a>
- * @type {{throttle?, debounce?}}
+ * @type {{throttle: function, debounce: function}}
  */
 module.exports.throttleDebounce = throttleDebounce
 const Form = require('./utils/Form/Form')
@@ -35,6 +39,7 @@ const Form = require('./utils/Form/Form')
  * @param {string} [cfg.modalClass] Modal class
  * @param {string} [cfg.modalWidth] Modal width
  * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar
+ * @method
  * @returns {UForm}
  */
 module.exports.Form = Form
@@ -57,8 +62,17 @@ module.exports.lookups = lookups
 
 const magicLink = require('./utils/magicLinks')
 /**
- * MagikLinks instance
- * @type {{install: function(): void, addCommand: function(string, Function<Object, EventTarget, *>): void}}
+ * MagikLinks instance. adminui-vue registers the following commands (using addCommand):
+ *   - showList: runs an $App.doCommand({cmdType: 'showList', ...}
+ *   - showForm: runs an $App.doCommand({cmdType: 'showForm', ...}
+ *   - showReport: runs an $App.doCommand({cmdType: 'showReport', ...}
+ *   - setFocus: sets a focus to specified HTML element
+ *
+ *   Usage of setFocus: `<a href="#" data-cmd-type="setFocus" data-elm-id="my-html-element-id">focus other</a>`
+ *
+ *   For usage examples for showList/Form/Repost see {@link module:magicLinks} module documentation
+ *
+ * @type {module:magicLinks}
  */
 module.exports.magicLink = magicLink
 magicLink.install()
@@ -165,7 +179,7 @@ function magicLinkAdminUiCommand (params) {
  * Magic link to focus DOM/Ext element with specified id
  * @example
 
- <a href="#' data-cmd-type='setFocus" data-elm-id="my-html-element-id">focus other</a>
+ <a href="#" data-cmd-type="setFocus" data-elm-id="my-html-element-id">focus other</a>
 
  * @param {Object} params
  * @param {string} params.elmId
@@ -237,6 +251,6 @@ Vue.config.errorHandler = function (err, vm, trace) {
 
 /**
  * @deprecated Use $UB.formatter instead
- * @type {{formatDate?, formatNumber?, setLang2LocaleHook?, datePatterns?: string[], numberPatterns?: string[], setDefaultLang?: function(string): undefined, collationCompare?}}
+ * @type {{formatDate:function, formatNumber:function, setLang2LocaleHook:function, datePatterns: string[], numberPatterns: string[], setDefaultLang: function, collationCompare:function}}
  */
 Vue.prototype.$formatByPattern = UB.formatter

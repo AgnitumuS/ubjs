@@ -133,6 +133,10 @@
           "adminUI": {
             "title": "Admin UI API",
             "link": "ubpub-v5/index.html"
+          },
+          "vue_cmp": {
+            "title": "UI components",
+            "link": "/api/adminui-vue/index.htm"
           }
         }
       },

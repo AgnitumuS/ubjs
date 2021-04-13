@@ -361,8 +361,9 @@ sudo mkdir -p /var/log/journal
 sudo systemd-tmpfiles --create --prefix /var/log/journal
 ```
 
-For a systemd < 254 setup `/etc/systemd/journal.conf` as in `/etc/systemd/journald@unitybase.conf`
-For a systemd `/etc/systemd/journald@unitybase.conf` preset is used automatically.
+For a systemd < 254 setup `/etc/systemd/journald.conf` as in `/etc/systemd/journald@unitybase.conf`
+
+For a systemd >= 254 `/etc/systemd/journald@unitybase.conf` preset is used automatically.
 
 Restart journald to apply new changes
 ```shell script
@@ -399,6 +400,13 @@ journalctl --since 09:00 --until now -u unitybase@autotest -p notice
 journalctl -u unitybase@autotest --no-hostname -o short-iso-precise --since today _COMM=ub > todaysLog.log
 # follow logs 
 journalctl -u unitybase* -f
+```
+
+File, exported to LogView'er format may contains a several start/stop parts.
+To split a file `todaysLog.log` into sessions use a command:
+
+```shell
+csplit todaysLog.log --prefix='todaysLog' --suffix-format='%02d.log' '/srvr  StartupPath/' '{*}'
 ```
 
 ## Overriding a default application startup rules 
