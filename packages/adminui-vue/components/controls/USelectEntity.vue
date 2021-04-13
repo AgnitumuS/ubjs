@@ -793,6 +793,9 @@ export default {
   border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   border-radius: var(--border-radius);
 }
+.u-select:focus {
+  border-color: hsl(var(--hs-primary), var(--l-layout-border-default));
+}
 
 .ub-select__more-icon {
   display: flex;
@@ -819,6 +822,10 @@ export default {
 }
 .u-select .el-input__inner {
   border: none;
+}
+
+.u-select .el-input__inner:focus {
+  border: 1px solid #1773cf;
 }
 
 </style>
