@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.21.1] - 2021-04-13
+### Changed
  - `allLocales` endpoint (client-side localization download) supports downloading of JSON files only, without js files
    Request shall be like `/allLocales?lang=en&json=1`
    Response body will contain model name as a key and JSON file content as a value:
@@ -18,12 +27,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
      "UBM": {...}
    }.
    ```
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.21.0] - 2021-04-02
 ### Added

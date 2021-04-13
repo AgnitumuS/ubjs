@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.5] - 2021-04-13
+### Added
  - `UFormRow`: new prop `readonly`; if `true` - show a small lock symbol after label
  - `UAutoField`: in case attribute is `readOnly` in meta file - render a small lock symbol after label;
    If `als` mixin is defined for entity - uses read only from `als`;
@@ -64,10 +75,6 @@ export default {
  - `UDropdown`: popup animation (transition) is removed
  - `USelectEntity`: use a UDropdown instead of ElDropdown for actions popup; dropdown animation (transition) is removed
  - `USelectEntity`: added background color and border to dropdown block
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `USelectEntity.buildShowDictionaryConfig`: fixed `select` button disabling if row is not selected yet.
