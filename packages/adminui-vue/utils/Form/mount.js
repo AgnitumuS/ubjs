@@ -23,6 +23,7 @@ const { dialog: $dialog } = require('../../components/dialog/UDialog')
  * @param {object} cfg.props Form component props
  * @param {Store} cfg.store Store
  * @param {object} cfg.validator Vuelidate validation object
+ * @param {function():object} cfg.getValidationState Function that returns reactive vuelidate validation object
  * @param {string} cfg.title Title
  * @param {string} [cfg.modalClass] Modal class
  * @param {string} [cfg.modalWidth] Modal width
@@ -33,6 +34,7 @@ function mountModal ({
   props,
   store,
   validator,
+  getValidationState,
   title: titleText,
   modalClass = 'ub-dialog__reset-padding',
   modalWidth,
@@ -82,6 +84,7 @@ function mountModal ({
     provide () {
       return {
         $v: validator,
+        getValidationState,
         $formServices: {
           setTitle: this.setTitle,
           close: () => {
@@ -147,6 +150,7 @@ function mountModal ({
  * @param {object} cfg.props Form component props
  * @param {VuexStore} cfg.store Store
  * @param {object} cfg.validator Vuelidate validation object
+ * @param {function():object} cfg.getValidationState Function that returns reactive vuelidate validation object
  * @param {string} cfg.title Title
  * @param {string} cfg.tabId navbar tab ID
  * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
@@ -158,6 +162,7 @@ function mountTab ({
   props,
   store,
   validator,
+  getValidationState,
   title: titleText,
   titleTooltip: titleTooltipText,
   tabId,
@@ -229,6 +234,7 @@ function mountTab ({
     provide () {
       return {
         $v: validator,
+        getValidationState,
         $formServices: {
           setTitle: this.setTitle,
           setTooltip: this.setTooltip,
@@ -311,6 +317,7 @@ function beforeClose ({ store, close }) {
  * @param {object} cfg.props Form component props
  * @param {Vuex} cfg.store Store
  * @param {object} cfg.validator Vuelidate validation object
+ * @param {function():object} cfg.getValidationState Function that returns reactive vuelidate validation object
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  * @param {Ext.component|String} cfg.target Either id of html element or Ext component
  */
@@ -319,6 +326,7 @@ function mountContainer ({
   props,
   store,
   validator,
+  getValidationState,
   provide,
   target
 }) {
@@ -330,6 +338,7 @@ function mountContainer ({
     provide () {
       return {
         $v: validator,
+        getValidationState,
         // for UToolbar
         $formServices: {
           setTitle () {},
