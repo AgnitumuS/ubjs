@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UTableEntity`: if column attribute has `Entity` data type sort by description attribute of the associated entity, not by `ID` value
 
 ## [5.20.4] - 2021-04-02
 ## [5.20.3] - 2021-04-01
