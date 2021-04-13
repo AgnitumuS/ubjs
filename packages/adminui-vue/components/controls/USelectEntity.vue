@@ -23,6 +23,7 @@
       <div
         slot="reference"
         class="ub-select__container"
+        :class="{'ub-select__container--with-actions': actions.length && !disabled}"
       >
         <el-input
           ref="input"
@@ -130,6 +131,7 @@
     <u-dropdown
       v-if="actions.length > 0 && !disabled"
       :tabindex="-1"
+      class="u-select__dropdown"
     >
       <button
         type="button"
@@ -766,8 +768,8 @@ export default {
   position: relative;
 }
 
-.ub-select__options__reset-padding{
-  padding: 0;
+.ub-select__options__reset-padding {
+  padding: 0 !important;
 }
 
 .ub-select__deleted-value input{
@@ -783,16 +785,17 @@ export default {
   border-color: hsl(var(--hs-warning), var(--l-input-border-default));
 }
 
-.u-select{
+.u-select {
   display: grid;
   grid-template-columns: 1fr auto;
+  border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+  border-radius: var(--border-radius);
 }
 
 .ub-select__more-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
   height: 36px;
   transform: rotate(90deg);
   color: hsl(var(--hs-control), var(--l-state-default));
@@ -808,4 +811,12 @@ export default {
 .u-select-icon-warning {
   color: hsl(var(--hs-warning), var(--l-state-default));
 }
+
+.u-select > .u-select__dropdown {
+  border-left: 1px solid hsl(var(--hs-border), var(--l-layout-border-light));
+}
+.u-select .el-input__inner {
+  border: none;
+}
+
 </style>

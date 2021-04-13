@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UAutoField`: in case attribute is `readOnly` in meta file - render a small lock symbol after label;
    If `als` mixin is defined for entity - uses read only from `als`;
    Can be explicitly defined using a new prop `readonly`;
+ - `UToolbar`: new prop `toolbarButtons`. Allows to add new buttons into toolbar and override/hide default buttons;
+    Can be used with slots and `hideDefaultButtons` prop;
+    Using `toolbarButtons` prop toolbar buttons can be shown as classic text button (not icon only);
+    See example in `UToolbar` docs;
 
 ### Changed
  - `UFileInput`: set text alignment to **center**, 
@@ -18,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    and `required` prop for UAutoField is not specified explicitly
  - `UDropdown`: popup animation (transition) is removed
  - `USelectEntity`: use a UDropdown instead of ElDropdown for actions popup; dropdown animation (transition) is removed
+ - `USelectEntity`: added background color and border to dropdown block
 
 ### Deprecated
 
