@@ -97,6 +97,11 @@ server {
     proxy_redirect      off;
     # Let's UB handle errors
     proxy_intercept_errors on;
+    # buffering up to 10m or incoming request into memory instead of temp files
+    client_body_buffer_size 10m;
+    # in-memory buffering for UB responses
+    proxy_buffer_size   64k;
+    proxy_buffers     8 64k;
 
     {{#lb}}
     # select a news upstream from group in case current is not accessible

@@ -13,7 +13,7 @@
     <div
       v-if="label"
       class="u-form-row__label"
-      :class="{ required }"
+      :class="{ required, readonly }"
       :style="labelWidthCss"
       :title="$ut(label)"
     >
@@ -38,8 +38,8 @@
 
 <script>
 /**
-   * The mixin fixes the problem when, when you click on the arrow in el-select, a dropdown opens and closes immediately
-   */
+ * This mixin fixes the problem, when user click on the arrow in el-select, a dropdown opens and closes immediately
+ */
 const ElSelectHack = {
   data () {
     return {
@@ -72,35 +72,48 @@ const ElSelectHack = {
 }
 
 /**
- * A Form building block what contains control with label and optional error. Used by UAutoField
+ * A Form building block what combines a:
+ *
+ *  - label (optionally appended by readonly\required mark)
+ *  - some control (input, select etc.)
+ *  - error placeholder
+ *
+ * The name `UFormRow` may be confusing, but exists for historical reasons.
+ * This is *not a row*, but a container for `label+control+error` (analogue of `form-control` in Bootstrap).
+ *
+ * Used by `UAutoField`
  */
 export default {
   name: 'UFormRow',
-
   mixins: [ElSelectHack],
-
+  inject: {
+    formLabelWidth: { from: 'labelWidth', default: null },
+    formLabelPosition: { from: 'labelPosition', default: null },
+    formMaxWidth: { from: 'maxWidth', default: null }
+  },
   props: {
     /**
-     * Either string with error message or boolean.
-     * For `false` error is always hidden, for `true` - $ut('requiredField') will be shown in case of error
+     * either string with error message or boolean.
+     * If === `false` then error is always hidden, if `true` - `$ut('requiredField')` will be shown in case of error
      */
     error: {
       type: [String, Boolean],
       default: false
     },
-
     /**
-     * Row label (automatically followed by ":".
+     * row label (automatically followed by ":")
      */
     label: String,
-
     /**
-     * If true will show red asterix symbol after label
+     * if `true` - show red asterix symbol after label
      */
     required: Boolean,
-
     /**
-     * Width of the label. Ignored in case labelPosition === 'top'
+     * if `true` - show a small lock symbol after label
+     */
+    readonly: Boolean,
+    /**
+     * label width. Ignored if labelPosition === 'top'
      */
     labelWidth: {
       type: Number,
@@ -108,10 +121,9 @@ export default {
         return this.formLabelWidth || 150
       }
     },
-
     /**
-     * Label position.
-     * Available options: left | right | top
+     * label position.
+     * @values left, right, top
      */
     labelPosition: {
       type: String,
@@ -120,9 +132,8 @@ export default {
         return this.formLabelPosition || 'left'
       }
     },
-
     /**
-     * Max width in px
+     * max width in px
      */
     maxWidth: {
       type: Number,
@@ -130,17 +141,10 @@ export default {
         return this.formMaxWidth
       }
     },
-
     /**
-     * Disable label click, hover etc. Creates fake hidden button which intercepts events
+     * disable label click, hover etc. Creates fake hidden button which intercepts events
      */
     preventLabelEvents: Boolean
-  },
-
-  inject: {
-    formLabelWidth: { from: 'labelWidth', default: null },
-    formLabelPosition: { from: 'labelPosition', default: null },
-    formMaxWidth: { from: 'maxWidth', default: null }
   },
 
   computed: {
@@ -208,6 +212,15 @@ export default {
     content: '*';
     color: hsl(var(--hs-danger), var(--l-state-default));
     margin: 0 2px;
+    order: 1;
+  }
+
+  .u-form-row__label.readonly:before {
+    content: "\f054";
+    font-family: 'ub-icons';
+    color: hsl(var(--hs-warning), var(--l-state-active));
+    margin: 0 2px;
+    font-size: 0.7em;
     order: 1;
   }
 

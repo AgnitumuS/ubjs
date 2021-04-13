@@ -18,8 +18,11 @@
       size="large"
       class="u-file__dropzone-icon"
     />
-    <div v-if="value.length">
-      {{ $ut(selectedPlaceholder) }}: {{ selectedFileNames }}
+    <div
+      v-if="value.length"
+      class="text--truncated"
+    >
+      <strong>{{ $ut(selectedPlaceholder) }}:</strong> {{ selectedFileNames }}
     </div>
     <div
       v-else
@@ -110,7 +113,7 @@ export default {
       return this.accept.split(',').map(a => a.trim())
     },
     selectedFileNames: function () {
-      return this.value.map(f => f.name).join(', ')
+      return this.value.map(f => f.name).join('; ')
     }
   },
 
@@ -194,6 +197,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
     justify-content: center;
     cursor: pointer;
     line-height: 1;
@@ -223,5 +227,12 @@ export default {
   .u-file__dropzone.disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  .u-file__dropzone .text--truncated {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
 </style>

@@ -62,7 +62,8 @@
       "dataType": "String",
       "size": 500,
       "caption": "Notes",
-      "allowNull": true
+      "allowNull": true,
+      "isMultiLang": true
     }
   ],
   "mixins": {

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.9.1] - 2021-04-02
 ## [5.9.0] - 2021-03-25
 ### Changed
  - migrate build to webpack5

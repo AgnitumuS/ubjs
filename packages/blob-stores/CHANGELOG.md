@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.4] - 2021-04-02
+## [5.20.3] - 2021-04-01
+### Fixed
+ - UB<5 regression: fix `Path must be a string` error in case caller do not pass `fileName` in setDocument request (as UB<5 client can do) 
+ - `blobStores.fillResponse` returns `true` instead of `undefined` in case file successfully scheduled to send 
+
 ## [5.20.2] - 2021-03-30
 ## [5.20.1] - 2021-03-29
 ### Added

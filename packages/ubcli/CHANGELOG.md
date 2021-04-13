@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `ubcli generateNginxCfg` adds in-memory buffering of incoming requests and outgoing responses to nginx config.
+   This prevents nginx to create temp files for buffering in most case
+ - `tid` parameter for `ubcli migrate`, so that `ubcli migrate -noddl -tid 199` may be used for tenant initialization
+   (will require @unitybase/ub-migrate@1.20+, with 1.19 will will just ignore the param)
 
 ### Changed
 
@@ -15,6 +19,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.5] - 2021-04-02
+### Fixed
+ - **BREAKING** `ubcli generateDDL -m MODEL1,MODEL2` generates a DDL for entities what initially defined in the
+  MODEL1 and MODEL2. Before this fix DDL generator skip entities defined in MODEL1 but overridden in MODEL_X (what not in -m list)
+
+## [5.20.4] - 2021-04-01
 ## [5.20.3] - 2021-03-30
 ### Fixed
   - `ubcli migrate`: fix for parameter `-ddlfor`

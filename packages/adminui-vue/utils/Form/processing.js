@@ -559,12 +559,12 @@ function createProcessingModule ({
             value: rl.success
               ? rl.lockInfo
               : { // normalize response - ub api is ugly here
-                lockExists: true,
-                lockType: rl.lockType,
-                lockUser: rl.lockUser,
-                lockTime: rl.lockTime,
-                lockValue: rl.lockInfo.lockValue
-              }
+                  lockExists: true,
+                  lockType: rl.lockType,
+                  lockUser: rl.lockUser,
+                  lockTime: rl.lockTime,
+                  lockValue: rl.lockInfo.lockValue
+                }
           })
         }
 
@@ -830,11 +830,11 @@ function createProcessingModule ({
               const request = typeof collectionInfo.buildRequest === 'function'
                 ? collectionInfo.buildRequest({ ...store, collection, execParams, fieldList: collectionFieldList, item })
                 : {
-                  entity: collectionEntityName,
-                  method: item.isNew ? 'insert' : 'update',
-                  execParams,
-                  fieldList: collectionFieldList
-                }
+                    entity: collectionEntityName,
+                    method: item.isNew ? 'insert' : 'update',
+                    execParams,
+                    fieldList: collectionFieldList
+                  }
               requests.push(request)
 
               responseHandlers.push(response => {

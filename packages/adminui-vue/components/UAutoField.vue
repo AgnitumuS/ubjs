@@ -23,7 +23,7 @@ export default {
     },
 
     /**
-     * override a "required" prop of <form-row />
+     * override an attribute "required" (nullAllowed in meta file)
      */
     required: {
       type: Boolean,
@@ -31,7 +31,15 @@ export default {
     },
 
     /**
-     * If defined then specified component will be used instead of default what based on attribute type.
+     * override an attribute "readonly" (readOnly in meta file)
+     */
+    readonly: {
+      type: Boolean,
+      default: undefined
+    },
+
+    /**
+     * specify a component what should be used instead of default, based on attribute type.
      * For example `<u-auto-field attribute-name="bool_attr" force-cmp="el-switch" />` will create
      * `el-switch` instead of `el-checkbox` (default cmp for Boolean)
      */
@@ -68,8 +76,9 @@ export default {
     },
 
     isRequired () {
-      if (this.required !== undefined && this.required !== false) return this.required
-      else {
+      if (this.required !== undefined && this.required !== false) {
+        return this.required
+      } else {
         return (this.$_isRequiredByALS(this.attributeName) ||
           (this.$v && this.$v[this.attributeName] && 'required' in this.$v[this.attributeName].$params))
       }
@@ -78,7 +87,8 @@ export default {
     isReadOnly () {
       return (this.readonly !== undefined && this.readonly !== false)
         ? this.readonly
-        : this.$_isReadOnlyByALS(this.attributeName)
+        : this.$_isReadOnlyByALS(this.attributeName) ||
+          !!this.entitySchema.attributes[this.attributeName].readOnly
     },
 
     isError () {
@@ -140,6 +150,8 @@ export default {
 
   render (h) {
     let cmp
+    let defIsRequired = this.isRequired
+    const /** @type {UBEntityAttribute} */ATTR = this.entitySchema.attributes[this.attributeName]
     const baseAttrs = { // vue split attrs into attrs and props automatically
       ...this.$attrs,
       attributeName: this.attributeName,
@@ -148,10 +160,15 @@ export default {
       readonly: this.isDisabled || this.$attrs.readonly || this.isReadOnly,
       required: this.isRequired
     }
-    switch (this.dataType) {
+    switch (ATTR.dataType) {
       case 'Boolean':
         if (!baseAttrs.disabled && baseAttrs.readonly) {
           baseAttrs.disabled = baseAttrs.readonly // need because 'el-checkbox' and 'el-switch' doesn't have 'readonly' prop
+        }
+        if ((this.required === undefined) && ATTR.defaultValue) {
+          // hide asterisk for boolean attributes with defaultValue specified (as should be in most case)
+          // and `required` prop for UAutoField is not specified explicitly
+          defIsRequired = false
         }
         cmp = h(this.forceCmp || 'el-checkbox', {
           attrs: baseAttrs,
@@ -162,8 +179,8 @@ export default {
       case 'DateTime':
         cmp = h(this.forceCmp || 'u-date-picker', {
           attrs: {
-            type: this.dataType.toLowerCase(),
-            placeholder: this.$ut(this.dataType === 'Date' ? 'selectDate' : 'selectDateAndTime'),
+            type: ATTR.dataType.toLowerCase(),
+            placeholder: this.$ut(ATTR.dataType === 'Date' ? 'selectDate' : 'selectDateAndTime'),
             ...baseAttrs
           },
           on: this.buildListenersOnInput
@@ -172,8 +189,8 @@ export default {
       case 'Enum':
         cmp = h(this.forceCmp || 'u-select-enum', {
           attrs: {
-            eGroup: this.entitySchema.attributes[this.attributeName].enumGroup,
-            clearable: this.entitySchema.attributes[this.attributeName].allowNull,
+            eGroup: ATTR.enumGroup,
+            clearable: ATTR.allowNull,
             ...baseAttrs
           },
           on: this.buildListenersOnInput
@@ -182,7 +199,7 @@ export default {
       case 'Entity':
         cmp = h(this.forceCmp || 'u-select-entity', {
           attrs: {
-            entityName: this.associatedEntity,
+            entityName: ATTR.associatedEntity,
             ...baseAttrs
           },
           on: this.buildListenersOnInput
@@ -191,7 +208,7 @@ export default {
       case 'Many':
         cmp = h(this.forceCmp || 'u-select-many', {
           attrs: {
-            entityName: this.associatedEntity,
+            entityName: ATTR.associatedEntity,
             ...baseAttrs
           },
           on: this.buildListenersOnInput
@@ -222,7 +239,7 @@ export default {
       case 'String':
         cmp = h(this.forceCmp || 'u-input', {
           attrs: {
-            maxLength: this.entitySchema.attributes[this.attributeName].size,
+            maxLength: ATTR.size,
             ...baseAttrs
           }
         })
@@ -236,7 +253,8 @@ export default {
       {
         attrs: {
           label: this.label,
-          required: this.isRequired,
+          required: defIsRequired,
+          readonly: this.isReadOnly,
           error: this.isError,
           ...this.$attrs
         }
@@ -263,7 +281,7 @@ Render a `UFormRow` (label + validation text) with based on attribute metadata c
 ```
 
 ### Default slot
-Anything you need to render inside u-form-row container can be added as a u-auto-field default slot content.
+Anything you need to render inside u-form-row container can be added as a u-form-row default slot content.
 In sample below we output a description for `department` attribute:
 
 ``` vue

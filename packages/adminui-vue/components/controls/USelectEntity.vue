@@ -5,6 +5,7 @@
       v-model="dropdownVisible"
       placement="bottom-start"
       :width="popperWidth"
+      transition=""
       :popper-options="{
         appendToBody: true
       }"
@@ -22,6 +23,7 @@
       <div
         slot="reference"
         class="ub-select__container"
+        :class="{'ub-select__container--with-actions': actions.length && !disabled}"
       >
         <el-input
           ref="input"
@@ -126,27 +128,27 @@
       suffix-icon="u-icon-arrow-down"
     />
 
-    <el-dropdown
+    <u-dropdown
       v-if="actions.length > 0 && !disabled"
-      trigger="click"
       :tabindex="-1"
+      class="u-select__dropdown"
     >
       <button
         type="button"
         class="u-icon-more ub-select__more-icon"
       />
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item
+      <template #dropdown>
+        <u-dropdown-item
           v-for="action in actions"
           :key="action.name"
           :icon="action.icon"
+          :label="$ut(action.caption)"
           :disabled="action.disabled"
           @click.native="action.handler"
         >
-          {{ $ut(action.caption) }}
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+        </u-dropdown-item>
+      </template>
+    </u-dropdown>
   </div>
 </template>
 
@@ -305,7 +307,7 @@ export default {
 
   computed: {
     getEntityName () {
-      return this.entityName || this.repository().entityName
+      return (this.repository && this.repository().entityName) || this.entityName
     },
 
     getDisplayAttribute () {
@@ -639,10 +641,12 @@ export default {
             scopedSlots: createElement => ({
               toolbarPrepend: ({ store, close }) => {
                 return createElement('u-button', {
+                  attrs: {
+                    disabled: !store.state.selectedRowId
+                  },
                   props: {
                     appearance: 'inverse',
-                    icon: 'u-icon-check',
-                    disabled: !store.state.selectedRowId
+                    icon: 'u-icon-check'
                   },
                   on: {
                     click: () => {
@@ -766,8 +770,8 @@ export default {
   position: relative;
 }
 
-.ub-select__options__reset-padding{
-  padding: 0;
+.ub-select__options__reset-padding {
+  padding: 0 !important;
 }
 
 .ub-select__deleted-value input{
@@ -783,16 +787,17 @@ export default {
   border-color: hsl(var(--hs-warning), var(--l-input-border-default));
 }
 
-.u-select{
+.u-select {
   display: grid;
   grid-template-columns: 1fr auto;
+  border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+  border-radius: var(--border-radius);
 }
 
 .ub-select__more-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
   height: 36px;
   transform: rotate(90deg);
   color: hsl(var(--hs-control), var(--l-state-default));
@@ -808,4 +813,12 @@ export default {
 .u-select-icon-warning {
   color: hsl(var(--hs-warning), var(--l-state-default));
 }
+
+.u-select > .u-select__dropdown {
+  border-left: 1px solid hsl(var(--hs-border), var(--l-layout-border-light));
+}
+.u-select .el-input__inner {
+  border: none;
+}
+
 </style>

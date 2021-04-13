@@ -33,9 +33,8 @@
 
 <script>
 /**
- * Input. If type="number", precision of rounding and step can be defined
+ * Input. For inputs of type="number", rounding precision and changing step (for up/down arrows) can be specified
  */
-
 export default {
   name: 'UBaseInput',
 
@@ -52,7 +51,7 @@ export default {
     },
 
     /**
-     * a stepping interval to use when using up and down arrows to adjust the value.
+     * a stepping interval to adjust the value using up/down keys
      * will be ignored if type !== 'number'
      */
     step: {
@@ -61,7 +60,7 @@ export default {
     },
 
     /**
-     * rounding precision. Applied in case `type !== 'number'` and `precision !== undefined`
+     * rounding precision. Applied in case `type === 'number'` and `precision !== undefined`
      */
     precision: {
       type: Number,
@@ -69,7 +68,7 @@ export default {
     },
 
     /**
-     * input type
+     * input type. See [input types on MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types)
      */
     type: {
       type: String,

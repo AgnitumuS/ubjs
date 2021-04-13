@@ -1,12 +1,16 @@
-### Use as `entity-name`
-One of these options is required:
-  - `entity-name`
-  - `repository`
+## Usage
+
+Either `entity-name` or `repository` property MUST be defined
+
+### `entity-name` as a source
+
+A data source is `req_department` entity.
+If `display-attribute` is not specified it will be set to the entity `descriptionAttribute` (defied in metadata).
 
 ```vue
 <template>
   <u-select-entity
-    v-model="value"
+    v-model="reqID"
     entity-name="req_department"
   />
 </template>
@@ -14,20 +18,23 @@ One of these options is required:
   export default {
     data () {
       return {
-        value: null
+        reqID: null
       }
     }
   }
 </script>
 ```
 
-### Use as `repository`
-Need to set function which returns UB Repository
+### `repository` as a source
+
+A `repository` is reactive, if `afterThe` date in data() changed - it refreshed automatically.
+
+If `display-attribute` not defined USelect entity will use a second repository attribute (reqDate in sample below)
 
 ```vue
 <template>
   <u-select-entity
-    v-model="value"
+    v-model="reqID"
     :repository="getRepo"
     display-attribute="text"
   />
@@ -36,7 +43,8 @@ Need to set function which returns UB Repository
   export default {
     data () {
       return {
-        value: null
+        reqID: null,
+        afterThe: new Date('2020-01-01')
       }
     },
 
@@ -44,7 +52,7 @@ Need to set function which returns UB Repository
       getRepo () {
         return this.$UB.Repository('req_request')
           .attrs('ID', 'reqDate', 'text')
-          .where('reqDate', '>', new Date('2020-01-01'))
+          .where('reqDate', '>', this.afterThe)
       }
     }
   }
@@ -52,16 +60,15 @@ Need to set function which returns UB Repository
 ```
 
 ### Custom `valueAttribute`
-Need when you need to change default model propery.
-Its like attribute `value` in native `<option>` tag.
-For example when you need instead `ID` like `code`.
+
+By default an `ID` attribute is used as a value. This can be changed by set a `value-attribute`:
 
 ```vue
 <template>
   <div>
     value: {{value}}
     <u-select-entity
-      v-model="value"
+      v-model="departmentCode"
       entity-name="req_department"
       value-attribute="code"
     />
@@ -71,14 +78,14 @@ For example when you need instead `ID` like `code`.
   export default {
     data () {
       return {
-        value: null
+        departmentCode: null
       }
     }
   }
 </script>
 ```
 
-### Change default actions
+### Changing a default actions
 
 #### Remove default actions
 
@@ -183,11 +190,14 @@ For example when you need instead `ID` like `code`.
 </script>
 ```
 
-### Disabled
+### Disabled vs readonly
+
+Readonly USectEntity allow using actions (for example to view selected element form) while `disabled` - not
 
 ```vue
 <template>
   <div>
+    Select department:
     <u-select-entity
       v-model="value"
       entity-name="req_department"
@@ -198,6 +208,12 @@ For example when you need instead `ID` like `code`.
       v-model="value"
       entity-name="req_department"
       disabled
+    />
+    readonly:
+    <u-select-entity
+      v-model="value"
+      entity-name="req_department"
+      readonly
     />
   </div>
 </template>

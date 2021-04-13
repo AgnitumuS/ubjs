@@ -119,6 +119,7 @@ class MdbBlobStore extends BlobStoreCustom {
         resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${blobItem.ct}`)
         resp.writeEnd(filePath)
       }
+      return true
     } else {
       return preventChangeRespOnError
         ? false

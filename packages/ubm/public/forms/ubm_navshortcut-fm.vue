@@ -6,14 +6,14 @@
       v-loading="loading"
       label-position="top"
     >
-      <u-grid columns="4">
+      <u-grid :columns="4">
         <u-auto-field attribute-name="code" />
         <u-auto-field attribute-name="isFolder" force-cmp="el-switch" />
         <u-auto-field attribute-name="inWindow" force-cmp="el-switch" />
         <u-auto-field attribute-name="ID" label="ID" readonly />
       </u-grid>
       <u-auto-field attribute-name="caption" />
-      <u-grid columns="3">
+      <u-grid :columns="3">
         <shortcut-tree />
         <u-form-row
           :label="entitySchema.attributes.iconCls.caption"

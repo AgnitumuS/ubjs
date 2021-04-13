@@ -198,20 +198,30 @@ Example:
 
 `conn` is a connection config (as it specified in ubConfig `application.connections` section) for connection script is executed in.
 
-`--@optimistic` feature of execSql also works here
+`--@optimistic` feature of execSql also works here, if statement is marked as optimistic this mean
+`skip this statement in case of exception`. In case table1 exists, create table statement in example throws,
+but script continue execution:
+```sql
+--@optimistic
+create table1 ....
+--
+
+do some other;
+```
  
  > the `optimistic` mode is dangerous - use it if it absolutely required
    
 ### JS file requirements
 
-Each *.js file MUST export a function. This function will be called by migrate with 4 parameters:
+Each *.js file MUST export a function. This function will be called by migrate with such a parameters:
 ```javascript
 /**
  * Migrate the CDN model to 2.13.15 (update cdn_person captions)
- * @param {SyncConnection} conn
- * @param {Object<string, DBConnection>} dbConnections
- * @param {Object} dbVersions
- * @param {{hooks: Array<{model: string, hook: Object<string, function>}>, files: Array<{model: string, name: string, fullPath: string, sha: string}>}} migrations
+ * @param {object} migrParams 
+ * @param {SyncConnection} migrParams.conn
+ * @param {Object<string, DBConnection>} migrParams.dbConnections
+ * @param {Object} migrParams.dbVersions
+ * @param {{hooks: Array<{model: string, hook: Object<string, function>}>, files: Array<{model: string, name: string, fullPath: string, sha: string}>}} migrParams.migrations
  */
 module.exports = function giveItAGoodNameWhichExplainWhatFunctionDoes ({ conn, dbConnections, dbVersions, migrations }) {
   // do something here
