@@ -824,8 +824,9 @@ export default {
   border: none;
 }
 
+/*todo - change an u-select border */
 .u-select .el-input__inner:focus {
-  border: 1px solid #1773cf;
+  border: 1px solid hsl(var(--hs-primary), var(--l-layout-border-default));
 }
 
 </style>
