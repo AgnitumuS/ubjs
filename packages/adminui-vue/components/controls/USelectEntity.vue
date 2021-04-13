@@ -307,7 +307,7 @@ export default {
 
   computed: {
     getEntityName () {
-      return this.entityName || this.repository().entityName
+      return (this.repository && this.repository().entityName) || this.entityName
     },
 
     getDisplayAttribute () {
