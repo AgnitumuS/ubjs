@@ -1,4 +1,4 @@
-module.exports = createValidator
+module.exports = createValidatorInstance
 
 const Vue = require('vue')
 const { validationMixin } = require('vuelidate')
@@ -15,7 +15,7 @@ const { mapInstanceFields } = require('./helpers')
  * @param {string[]} masterFieldList Field list of master entity
  * @return {object} Vuelidate validation object
  */
-function createValidator (store, entitySchema, masterFieldList, customValidationMixin = {}) {
+function createValidatorInstance (store, entitySchema, masterFieldList, customValidationMixin = {}) {
   const requiredFields = entitySchema
     .filterAttribute(attr => attr.defaultView && !attr.allowNull && masterFieldList.includes(attr.code))
     .map(a => a.name)
@@ -40,5 +40,5 @@ function createValidator (store, entitySchema, masterFieldList, customValidation
     ]
   })
 
-  return instance.$v
+  return instance
 }

@@ -14,6 +14,47 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     Can be used with slots and `hideDefaultButtons` prop;
     Using `toolbarButtons` prop toolbar buttons can be shown as classic text button (not icon only);
     See example in `UToolbar` docs;
+ - new provided method `getValidationState` for getting always the actual validator configured with
+  the `validation(...)` method. The current provided value of `$v` is not reactive so if we want to
+  have dynamic validation as described below we can inject the `getValidationState` function and
+  get the actual `$v` value
+```js
+module.exports.mount = cfg => {
+  Form(cfg)
+    .store()
+    .processing()
+    .validation({
+      computed: {
+        ...mapState('form', ['applyCustomValidation']),
+
+        formDataValues() {
+          return {...}
+        }
+      },
+
+      validations() {
+        // dynamic validation config
+        return this.applyCustomValidation
+          ? { formDataValues: {...} }
+          : {}
+      }
+    })
+    .mount()
+}
+
+export default {
+  inject: [
+    'getValidationState'
+  ],
+
+  computed: {
+    codeError() {
+      const $v = this.getValidationState()
+      return $v?.formDataValues?.code.$error
+    }
+  }
+}
+```
 
 ### Changed
  - `UFileInput`: set text alignment to **center**, 
