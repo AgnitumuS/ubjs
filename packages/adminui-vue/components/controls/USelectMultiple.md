@@ -123,7 +123,7 @@ By default an `ID` attribute is used as a value. This can be changed by set a `v
 </script>
 ```
 
-### Use `fixed-items` to mark som items as non-removable
+### Use `fixed-items` to mark some items as non-removable
 
 ```vue
 <template>
