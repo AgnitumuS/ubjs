@@ -824,9 +824,12 @@ export default {
   border: none;
 }
 
-/*todo - change an u-select border */
-.u-select .el-input__inner:focus {
-  border: 1px solid hsl(var(--hs-primary), var(--l-layout-border-default));
+/*hover must be before focus to give a focus priority*/
+.u-select:hover {
+  border-color: hsl(var(--hs-border), var(--l-input-border-hover));
+}
+.u-select:focus-within {
+  border-color: hsl(var(--hs-primary), var(--l-layout-border-default));
 }
 
 </style>
