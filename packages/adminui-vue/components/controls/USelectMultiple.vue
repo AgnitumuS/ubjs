@@ -175,7 +175,7 @@ const { debounce } = require('throttle-debounce')
 const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
 
 /**
- * When you need to select few values from entity use multiple select.
+ * Milty-select component mapped to Entity
  */
 export default {
   name: 'USelectMultiple',
@@ -184,7 +184,7 @@ export default {
 
   props: {
     /**
-     * Selected entity ID
+     * Selected IDs array
      * @model
      */
     value: {
@@ -230,7 +230,7 @@ export default {
      */
     readonly: Boolean,
     /**
-     * An array with IDs of elements that unable to remove
+     * An array with IDs of non-removable elements
      */
     fixedItems: {
       type: Array,
@@ -238,7 +238,7 @@ export default {
     },
 
     /**
-     * Search request condition
+     * Search by include (may be slow) or by first letters (faster)
      */
     searchStrategy: {
       type: String,
@@ -667,146 +667,3 @@ export default {
   padding-right: 5px;
 }
 </style>
-
-<docs>
-One of these options is required:
-  - `entity-name`
-  - `repository`
-
-### Use as `entity-name`
-
-```vue
-<template>
-  <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
-  />>
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        value: []
-      }
-    }
-  }
-</script>
-```
-
-### Use as `repository`
-Need to set function which returns UB Repository
-
-```vue
-<template>
-  <u-select-multiple
-    v-model="model"
-    :repository="getRepo"
-  />
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        value: []
-      }
-    },
-
-    methods: {
-      getRepo () {
-        return $UB.Repository('tst_maindata')
-          .attrs('ID', 'code', 'caption')
-          .where('parent', '=', 31231221312312) // TODO: set valid ID
-      }
-    }
-  }
-</script>
-```
-
-### Custom `valueAttribute`
-Need when you need to change default model propery.
-Its like attribute `value` in native `<option>` tag.
-For example when you need instead `ID` like `code`.
-
-```vue
-<template>
-  <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
-    value-attribute="code"
-  />>
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        value: []
-      }
-    }
-  }
-</script>
-```
-
-### Clearable
-
-```vue
-<template>
-  <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
-    clearable
-  />
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        value: [1,2,3]
-      }
-    }
-  }
-</script>
-```
-
-### Disabled
-
-```vue
-<template>
-  <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
-    disabled
-  />
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        value: [1,2,3]
-      }
-    }
-  }
-</script>
-```
-
-### filteredItems
-
-```vue
-<template>
-  <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
-    :fixed-items="fixedItems"
-  />
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        value: [1,2,3],
-        fixedItems: [2]
-      }
-    }
-  }
-</script>
-```
-</docs>

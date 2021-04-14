@@ -190,15 +190,15 @@ export default {
      */
     repository: Function,
     /**
-     * Name of entity. If repository is set entityName will be ignored
+     * Entity name. Ignored if `repository` prop is set
      */
     entityName: String,
     /**
-     * Attribute which is display value of options
+     * Attribute which values are used as a display value of options
      */
     displayAttribute: String,
     /**
-     * Set disable status
+     * disable status
      */
     disabled: Boolean,
 
@@ -244,7 +244,7 @@ export default {
     readonly: Boolean,
 
     /**
-     * Overrides showDictionary action config.
+     * Overrides `showDictionary` action config.
      * Function accepts current config and must return new config
      */
     buildShowDictionaryConfig: {
@@ -252,7 +252,7 @@ export default {
       default: config => config
     },
     /**
-     * Overrides edit action config.
+     * Overrides `edit` action config.
      * Function accepts current config and must return new config
      */
     buildEditConfig: {
@@ -260,7 +260,7 @@ export default {
       default: config => config
     },
     /**
-     * Overrides addNew action config.
+     * Overrides `addNew` action config.
      * Function accepts current config and must return new config
      */
     buildAddNewConfig: {
@@ -269,7 +269,7 @@ export default {
     },
 
     /**
-     * Search request condition
+     * Search by include (may be slow) or by first letters (faster)
      */
     searchStrategy: {
       type: String,
