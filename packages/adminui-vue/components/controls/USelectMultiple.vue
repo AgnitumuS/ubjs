@@ -316,29 +316,12 @@ export default {
 
   watch: {
     /**
-     * when value changed need to check is item added or removed
-     * if added need to push formatted values (ID, label) to displayOptions
-     * if removed -> splice from displayOptions
+     * Update tags when value is changed
      */
     value: {
       immediate: true,
-      async handler (newVal, oldVal = []) {
-        const isAdded = newVal.length > oldVal.length
-        if (isAdded) {
-          if (!this.fixedItems.every(i => this.value.includes(i))) {
-            console.error('You should provide an initial value if you want items to be fixed')
-          }
-
-          const addedItems = newVal.filter(a => !oldVal.includes(a))
-          const formattedItems = await this.getFormattedOptions(addedItems) // temp
-          this.displayedOptions.push(...formattedItems)
-        } else {
-          const removedItems = oldVal.filter(a => !newVal.includes(a))
-          for (const item of removedItems) {
-            const index = this.displayedOptions.findIndex(o => o[this.valueAttribute] === item)
-            this.displayedOptions.splice(index, 1)
-          }
-        }
+      async handler (value) {
+        this.displayedOptions = await this.getFormattedOptions(value)
       }
     }
   },
