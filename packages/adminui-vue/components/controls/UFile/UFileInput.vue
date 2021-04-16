@@ -179,7 +179,8 @@ export default {
       }
       return this.acceptableFileTypes.some(ft => {
         // file type specifier can be either extension or mime
-        return file.name.endsWith(ft) || file.type.includes(ft)
+        const lcName = String(ft).toLowerCase()
+        return String(file.name).toLowerCase().endsWith(lcName) || file.type.includes(lcName)
       })
     }
   }
