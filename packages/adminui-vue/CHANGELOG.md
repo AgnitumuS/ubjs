@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `USelectEntity`: fix focused/hovered border color to wrap an action button (using :focus-within since div with border can't be focused)
  - `UToolbar`: now `u-button` doesn't render default slot (which has extra padding) when toolbar button is icon.
  - `USelectMultiple`: added reaction on `value` changing from outside the component.
- - `UFileInput`: made file types validation case insensitiv (fot example to accept both *.XLSX and *.xlsx for excel filter).
+ - `UFileInput`: made file types validation case-insensitive (for example to accept both *.XLSX and *.xlsx for Excel filter).
 
 ## [5.20.5] - 2021-04-13
 ### Added
@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UAutoField`: in case attribute is `readOnly` in meta file - render a small lock symbol after label;
    If `als` mixin is defined for entity - uses read only from `als`;
    Can be explicitly defined using a new prop `readonly`;
- - `UToolbar`: new prop `toolbarButtons`. Allows to add new buttons into toolbar and override/hide default buttons;
+ - `UToolbar`: new prop `toolbarButtons`. Allows adding new buttons into toolbar and override/hide default buttons;
     Can be used with slots and `hideDefaultButtons` prop;
     Using `toolbarButtons` prop toolbar buttons can be shown as classic text button (not icon only);
     See example in `UToolbar` docs;
@@ -76,7 +76,7 @@ export default {
 
 ### Changed
  - `UFileInput`: set text alignment to **center**, 
-   and in case of selecting a large number of files - truncate displayed filenames to 3 lines 
+   if many files are selected displayed filenames are truncated to 3 lines 
  - `UAutoField`: hide asterisk for boolean attributes with defaultValue specified (as should be in most case)
    and `required` prop for UAutoField is not specified explicitly
  - `UDropdown`: popup animation (transition) is removed
@@ -88,7 +88,7 @@ export default {
    A `disabled` property should be passed to `UButton` as a html-attribute.
 - `USelectEntity`: In case of using an entity (other than the default one) in the property `repository`
   of the component and when user press F9 (or click on `Select from the dictionary`):
-  old behavior: error about the absence of attributes specified in the request fieldlist.
+  old behavior: error about the absence of attributes specified in the request fieldList.
   new behavior: opening a form `Selection from the dictionary`.
 
 ## [5.20.4] - 2021-04-02
