@@ -20,7 +20,9 @@
         :color="button.color"
         @click="button.handler"
       >
-        {{ button.type === 'text' ? button.label : '' }}
+        <template v-if="button.type === 'text'">
+          {{ button.label || '' }}
+        </template>
       </u-button>
     </el-tooltip>
     <!-- @slot content to append of the left side of the toolbar *after* default buttons -->
