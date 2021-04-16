@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.21.1] - 2021-04-16
 ## [5.21.0] - 2021-04-13
 ### Added
  - `ubcli generateNginxCfg` adds in-memory buffering of incoming requests and outgoing responses to nginx config.

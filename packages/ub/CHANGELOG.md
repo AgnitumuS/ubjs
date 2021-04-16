@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.21.2] - 2021-04-16
 ## [5.21.1] - 2021-04-13
 ### Changed
  - `allLocales` endpoint (client-side localization download) supports downloading of JSON files only, without js files

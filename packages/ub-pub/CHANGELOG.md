@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-  - Dutch and Uzbek languages added
+
 ### Changed
 
 ### Deprecated
@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.9.3] - 2021-04-16
+### Added
+  - Dutch and Uzbek languages added
 ## [5.9.2] - 2021-04-13
 ## [5.9.1] - 2021-04-02
 ## [5.9.0] - 2021-03-25

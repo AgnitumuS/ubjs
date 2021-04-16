@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.6] - 2021-04-16
 ## [5.20.5] - 2021-04-13
 ### Changed
  - log level for scheduler initiation message `SCHEDULER: Job command for ... sent at ...` changed from `info` to `debug`
