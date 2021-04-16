@@ -8,11 +8,16 @@ One of these options is required:
 ```vue
 <template>
   <u-grid>
-    <u-select-multiple
-      v-model="deps"
-      entity-name="req_department"
-    />
-    <div>Selected IDs are: {{deps}}</div>
+    <u-form-row label="Select departments" label-position="top">
+      <u-select-multiple
+        v-model="deps"
+        entity-name="req_department"
+      />  
+    </u-form-row>
+    
+    <u-form-row label="Selected IDs are" label-position="top">
+      <u-base-input v-model="depIDs"></u-base-input>
+    </u-form-row>  
   </u-grid>
 </template>
 <script>
@@ -20,6 +25,16 @@ One of these options is required:
     data () {
       return {
         deps: []
+      }
+    },
+    computed: {
+      depIDs: {
+        get: function () {
+          return this.deps.join(',')
+        },
+        set: function (newValues) {
+          this.deps = newValues.split(',')
+        }
       }
     }
   }

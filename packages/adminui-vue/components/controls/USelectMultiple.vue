@@ -327,6 +327,9 @@ export default {
   },
 
   methods: {
+    /**
+     * @return {ClientRepository}
+     */
     getRepository () {
       if (this.repository) {
         return this.repository()
@@ -410,13 +413,12 @@ export default {
           })
         }
       }
-      const willFetched = result
-        .filter(o => !o.hasOwnProperty('label'))
+      const shouldFetch = result.filter(o => !Object.prototype.hasOwnProperty.call(o, 'label'))
         .map(o => o[this.valueAttribute])
 
-      if (willFetched.length > 0) {
-        const responseData = await this.fetchDisplayValues(willFetched)
-        for (const fetchedID of willFetched) {
+      if (shouldFetch.length) {
+        const responseData = await this.fetchDisplayValues(shouldFetch)
+        for (const fetchedID of shouldFetch) {
           const responseItem = responseData.find(i => i[this.valueAttribute] === fetchedID)
           const option = result.find(i => i[this.valueAttribute] === fetchedID)
           if (responseItem) {
