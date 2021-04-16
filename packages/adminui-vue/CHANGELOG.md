@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `USelectEntity`: fix focused/hovered border color to wrap an action button (using :focus-within since div with border can't be focused)
+ - `UToolbar`: now `u-button` doesn't render default slot (which has extra padding) when toolbar button is icon.
 
 ## [5.20.5] - 2021-04-13
 ### Added
