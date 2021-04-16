@@ -33,7 +33,11 @@ One of these options is required:
           return this.deps.join(',')
         },
         set: function (newValues) {
-          this.deps = newValues.split(',')
+          if (!newValues) {
+            this.deps = []
+          } else {
+            this.deps = newValues.split(',').map(v => parseInt(v)).filter(v => !Number.isNaN(v)) 
+          }
         }
       }
     }
