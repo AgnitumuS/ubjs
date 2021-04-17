@@ -34,15 +34,21 @@ class DBAbstract {
     referencedTables.forEach(tableDef => {
       const entity = tableDef.__entity
 
-      // for a primary key generators, what don't mapped on the select statement
+      // for a primary key generators, what don't mapped to the select statement
       if (entity.mapping && entity.mapping.pkGenerator && (entity.mapping.pkGenerator.indexOf('select ') < 0)) {
-        this.wantedSequences.push(entity.mapping.pkGenerator.toUpperCase())
+        const seqUpper = entity.mapping.pkGenerator.toUpperCase()
+        if (!this.wantedSequences.includes(seqUpper)) {
+          this.wantedSequences.push(seqUpper)
+        }
       }
       // for cached entities
       if ((entity.cacheType === UBDomain.EntityCacheTypes.Entity) ||
         (entity.cacheType === UBDomain.EntityCacheTypes.SessionEntity)
       ) {
-        this.wantedSequences.push(`S_${tableDef.name.toUpperCase()}`)
+        const seqUpper = `S_${tableDef.name.toUpperCase()}`
+        if (!this.wantedSequences.includes(seqUpper)) {
+          this.wantedSequences.push(seqUpper)
+        }
       }
     })
     this.defaultLang = conn.getAppInfo().defaultLang

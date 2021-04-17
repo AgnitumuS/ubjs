@@ -269,7 +269,7 @@ where
       this.dbTableDefs.push(asIsTable)
     }
 
-    const sequencesSQL = 'select sequence_name from user_sequences'
+    const sequencesSQL = 'select sequence_name from ALL_SEQUENCES' // use ALL_SEQUENCES instead of user_sequences to see a synonyms
     const dbSequences = this.conn.xhr({
       endpoint: 'runSQL',
       data: sequencesSQL,
@@ -278,6 +278,7 @@ where
     for (const seqDef of dbSequences) {
       this.sequencesDefs.push(seqDef.SEQUENCE_NAME)
     }
+    console.log("SEQUENCES!!!!", this.sequencesDefs)
   }
 
   /** @override */
