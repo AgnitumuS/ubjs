@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - prevents to create a **sequence** what accessible for connection but don't owned by it (synonyms etc).
       Fixed by read available sequences using `ALL_SEQUENCES` system view instead of `user_sequences`
     - prevent to create a sequence multiple times in case it used as `pkGenerator` for several entities  
-    - prevent generate a DDLs for External/Virtual entities what referenced from models DDL generator is excuted for
+    - prevent generate a DDLs for External/Virtual entities what referenced from models DDL generator is executed for
 
 ## [5.21.1] - 2021-04-16
 ## [5.21.0] - 2021-04-13
