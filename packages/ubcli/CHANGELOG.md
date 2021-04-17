@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - dramatically speed up a DDL generator for Oracle by reset a connection NLS_SORT and NLS_COMP to BINARY - 
+   this allows Oracle t use indexes for queries over system views. 
 
 ### Deprecated
 
