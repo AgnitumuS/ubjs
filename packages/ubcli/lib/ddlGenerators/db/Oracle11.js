@@ -278,7 +278,6 @@ where
     for (const seqDef of dbSequences) {
       this.sequencesDefs.push(seqDef.SEQUENCE_NAME)
     }
-    console.log("SEQUENCES!!!!", this.sequencesDefs)
   }
 
   /** @override */
