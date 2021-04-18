@@ -28,6 +28,7 @@
     "@unitybase/uba": "^5.20.6",
     "@unitybase/ubm": "^5.20.6",
     "@unitybase/ubs": "^5.20.6",
+    "@unitybase/codemirror-full": "^1.3.0",
     "file-saver": "^1.3.3",
     "jdenticon": "^2.1.1",
     "js-beautify": "^1.11.0",

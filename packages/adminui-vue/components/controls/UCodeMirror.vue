@@ -13,26 +13,26 @@
         </ul>
         <h5>Search</h5>
         <ul>
-          <li>Ctrl-F  - Start searching</li>
-          <li>Ctrl-G  - Find next</li>
-          <li>Shift-Ctrl-G - Find previous</li>
-          <li>Shift-Ctrl-F - Replace</li>
-          <li>Shift-Ctrl-R - Replace all</li>
-          <li>Alt-F - Persistent search (dialog does not autoclose, enter to find next, Shift-Enter to find previous)</li>
-          <li>Alt-G - Jump to line</li>
+          <li>Ctrl+F  - Start searching</li>
+          <li>Ctrl+G  - Find next</li>
+          <li>Shift-Ctrl+G - Find previous</li>
+          <li>Shift-Ctrl+F - Replace</li>
+          <li>Shift-Ctrl+R - Replace all</li>
+          <li>Alt+F - Persistent search (dialog does not autoclose, enter to find next, Shift-Enter to find previous)</li>
+          <li>Alt+G - Jump to line</li>
         </ul>
         <h5>Edit</h5>
         <ul>
-          <li>Ctrl-A - Select the whole content of the editor</li>
-          <li>Ctrl-D - Deletes the whole line under the cursor</li>
-          <li>Ctrl-Z - Undo the last change</li>
-          <li>Ctrl-Y - Redo the last undone change</li>
-          <li>Ctrl-U - Undo the last change to the selection</li>
+          <li>Ctrl+A - Select the whole content of the editor</li>
+          <li>Ctrl+D - Deletes the whole line under the cursor</li>
+          <li>Ctrl+Z - Undo the last change</li>
+          <li>Ctrl+Y - Redo the last undone change</li>
+          <li>Ctrl+U - Undo the last change to the selection</li>
           <li>Alt-Left / Alt-Right - Move the cursor to the start/end  of the line</li>
           <li>Tab / Shift + Tab - If something is selected, indent/dedent it</li>
         </ul>
       </template>
-      <i class="u-icon-circle-question ub-code-mirror__help">?</i>
+      <i class="u-icon-circle-question ub-code-mirror__help"></i>
     </el-tooltip>
     <textarea ref="textarea" />
   </div>
@@ -46,16 +46,19 @@ const { debounce } = require('throttle-debounce')
  * Wrapper around a [CodeMirror](https://codemirror.net/) editor.
  * Editor itself is loaded in async mode form `@unitybase/codemirror-full` package.
  */
-module.exports = {
+export default {
   name: 'UCodeMirror',
   props: {
     value: [String, Object, Array],
-    /** true in case binds value is Object (parsed JSON) */
+    /** set it to `true` in case binds value is an Object (parsed JSON) */
     valueIsJson: {
       type: Boolean,
       default: false
     },
-    /** CodeMirror editor mode */
+    /**
+     * CodeMirror editor mode
+     * @values application/javascript, application/x-javascript, text/javascript, application/json, application/x-json, text/yaml, script/x-vue, text/x-vue
+     */
     editorMode: {
       type: String,
       default: 'application/x-javascript'

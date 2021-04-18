@@ -5,6 +5,29 @@ window.Vue = Vue
 const { lookups } = require('@unitybase/adminui-vue')
 window.onerror = console.error // silent error as alert
 require('@unitybase/adminui-vue/theme/el-theme-compiled.css')
+UB.inject('clientRequire/systemjs/dist/system.js').then(() => {
+  System.config({
+    baseURL: '/clientRequire',
+    map: {
+      css: 'systemjs-plugin-css/css.js'
+      // placing modulesMap (defined in adminui-reg) here split Vue into 2 instances: one from SystemJS & one from adminui-vue
+    },
+    meta: {
+      // '*': {nonce: 'cspNonce'}  if this line is added (cspNonce is a mustache variable) SystemJS override window.onerror
+      '*.css': {loader: 'css'},
+      'codemirror/*.js': {format: 'cjs'},
+      'tinymce/*.js': {format: 'global'},
+      'file-saver': {format: 'cjs'},
+      '*.def': {format: 'cjs'},
+      '*/adminui.app.min.js': {format: 'global'}, // important: adminui.min.js does not define anything
+      '*.vue': {
+        'loader': '@unitybase/systemjs-plugin-vue-ub/dist/system_plugin_vue_ub.min.js'
+      },
+      '*/adminui-vue.min.js': {format: 'global'} // important: adminui-vue.min.js does not define anything
+    },
+    packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
+  })
+})
 
 console.log('window.location', window.location, window.location.port)
 const UB_HOST = window.location.port === '6060' // webpack dev server
