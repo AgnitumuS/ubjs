@@ -1,16 +1,18 @@
 <template>
-  <el-row
-    type="flex"
-    style="height: 100%"
+  <u-grid
+    template-columns="auto 1fr"
+    template-rows="600px"
+    column-gap="0px"
+    label-position="top"
   >
-    <el-col :span="6">
+    <u-form-row :label="$ut('Attributes')">
       <div
         ref="snippet"
         class="ub-navshortcut__cmd-code__snippet"
         tabindex="-1"
       >
-        <h2> {{$ut('Attributes')}}</h2>
         <el-tree
+          width="100px"
           ref="tree"
           :data="cmdCodeAttrs"
           :expand-on-click-node="false"
@@ -19,26 +21,21 @@
           }"
           @node-click="selectNode"
         >
-          <div slot-scope="{ node }">
-            <span v-html="node.label" />
+          <div slot-scope="{ node }" v-html="node.label">
+
           </div>
         </el-tree>
       </div>
-    </el-col>
-    <el-col
-      :span="18"
-      style="height: 100%"
-    >
-      <h2> {{$ut('ubm_navshortcut.cmdCode')}}</h2>
+    </u-form-row>
+    <u-form-row :label="$ut('ubm_navshortcut.cmdCode')">
       <u-code-mirror
         ref="codeMirror"
         v-model="cmdCode"
         style="height: 100%"
-        :hintsFunction="doOnShowHints"
-        @loaded="setSnippetHeight"
+        :hints-function="doOnShowHints"
       />
-    </el-col>
-  </el-row>
+    </u-form-row>
+  </u-grid>
 </template>
 
 <script>
@@ -73,7 +70,6 @@ export default {
       immediate: true,
       handler () {
         this.getEntityName()
-        this.setSnippetHeight()
       }
     }
   },
@@ -96,14 +92,6 @@ export default {
       }
     },
 
-    setSnippetHeight () {
-      if (this.$refs.snippet && this.$refs.codeMirror) {
-        const { offsetHeight } = this.$refs.codeMirror.$el
-        const height = offsetHeight < 200 ? 200 : offsetHeight
-        this.$refs.snippet.style.height = `${height}px`
-      }
-    },
-
     doOnShowHints (cm) {
       return {
         list: [{
@@ -121,22 +109,22 @@ export default {
         }, {
           displayText: 'showList-Ext',
           text: JSON.stringify({
-            'cmdType': 'showList',
-            'cmdData': {
-              'params': [{
-                'entity': 'TYPE-ENTITY-CODE',
-                'method': 'select',
-                'fieldList': ['Dbl-CLICK on left prop panel to add attribute']
+            cmdType: 'showList',
+            cmdData: {
+              params: [{
+                entity: 'TYPE-ENTITY-CODE',
+                method: 'select',
+                fieldList: ['Dbl-CLICK on left prop panel to add attribute']
               }]
             }
           }, null, '  ')
         }, {
           displayText: 'showForm',
           text: JSON.stringify({
-            'cmdType': 'showForm',
-            'formCode': 'TYPE HERE A FORM CODE FROM UBM_FORM or remove this line to use a default form for entity',
-            'entity': 'TYPE HERE A ENTITY CODE',
-            'instanceID': 'REPLACE IT by ID value (to edit element) or remove this line'
+            cmdType: 'showForm',
+            formCode: 'TYPE HERE A FORM CODE FROM UBM_FORM or remove this line to use a default form for entity',
+            entity: 'TYPE HERE A ENTITY CODE',
+            instanceID: 'REPLACE IT by ID value (to edit element) or remove this line'
           }, null, '  ')
         }, {
           displayText: 'showReport',
@@ -163,6 +151,7 @@ export default {
 <style>
 .ub-navshortcut__cmd-code__snippet{
   overflow: auto;
-  max-height: 100%;
+  height: 100%;
+  width: 250px;
 }
 </style>

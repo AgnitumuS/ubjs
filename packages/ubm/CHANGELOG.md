@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `ubm_navshortcut` form layout changed to `u-grid` + attributes tree UI improved
 
 ### Deprecated
 
