@@ -32,7 +32,7 @@
           <li>Tab / Shift + Tab - If something is selected, indent/dedent it</li>
         </ul>
       </template>
-      <i class="u-icon-question ub-code-mirror__help" />
+      <i class="u-icon-circle-question ub-code-mirror__help">?</i>
     </el-tooltip>
     <textarea ref="textarea" />
   </div>
@@ -50,7 +50,7 @@ module.exports = {
   name: 'UCodeMirror',
   props: {
     value: [String, Object, Array],
-    /** true in case binded value is Object (parsed JSON) */
+    /** true in case binds value is Object (parsed JSON) */
     valueIsJson: {
       type: Boolean,
       default: false
@@ -183,9 +183,10 @@ module.exports = {
 
 .ub-code-mirror__help{
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 10px;
+  right: 10px;
   z-index: 100;
-  font-size: 30px;
+  font-size: 2em;
+  color: hsl(var(--hs-text), var(--l-text-description))
 }
 </style>

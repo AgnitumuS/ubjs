@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UCodeMirror` - returned visibility of help (`?`) mark
 
 ## [5.20.6] - 2021-04-16
 ### Fixed
