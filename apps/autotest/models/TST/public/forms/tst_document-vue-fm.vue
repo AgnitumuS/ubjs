@@ -34,7 +34,7 @@ module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, r
 
 <template>
   <el-scrollbar style="height: 100%;">
-    <u-code-mirror v-model="txtCode" valueIsJson></u-code-mirror>
+    <u-code-mirror v-model="txtCode" value-is-json></u-code-mirror>
     <tst-form form-size=""></tst-form>
     <hr/>
     <tst-form form-size="mini"></tst-form>

@@ -600,9 +600,13 @@ export default {
       }
     },
 
-    // emits when user click on option or click enter when option is focused
     chooseOption (option) {
       if (this.selectedID !== this.value) {
+        /**
+         * emits when user click on dropdown item or press enter when dropdown item is focused
+         * @param oldValue
+         * @param newValue
+         */
         this.$emit('input', this.selectedID, JSON.parse(JSON.stringify(option)))
       }
       this.setQueryByValue(this.selectedID)

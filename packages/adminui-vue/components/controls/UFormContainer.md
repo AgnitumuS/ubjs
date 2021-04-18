@@ -1,26 +1,26 @@
 This component provides a following properties to the child U-controls:
-- a labels width
-- a labels position
+- labels width
+- labels position
 - isDisabled
 
-Also sets focus to the first available component on mount.
+Sets focus to the first available component on mount.
 
-In example below with of all labels sets to 150, label width for "Age" is redefined to `90px`,
+In example below all labels `with` are sets to 150, label width for "Age" is redefined to `90px`,
 label position of "Short" sets to `top`.
 
 ```vue
 <template>
   <u-form-container :label-width="150" label-position="left">
     <u-form-row label="Name">
-      <el-input v-model="name" />
+      <u-base-input v-model="name" />
     </u-form-row>
 
     <u-form-row label="Surname">
-      <el-input v-model="surname" />
+      <u-base-input v-model="surname" />
     </u-form-row>
 
     <u-form-row label="Age" :label-width="90">
-      <el-input-number v-model="age" />
+      <u-base-input type="number" v-model="age" />
     </u-form-row>
 
     <u-form-row label="Short" label-position="top">

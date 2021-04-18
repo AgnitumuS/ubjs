@@ -38,9 +38,9 @@ An CSS class `u-form-row__description` can be used to add a "description"
   <h4>With a description</h4>
   <u-form-row
     label-position="top"
-    label="User name (description added)"
+    label="User name (description below edit is added)"
   >
-    <u-input v-model="userName"/>
+    <u-base-input v-model="userName"/>
     <div class="u-form-row__description">
       name of user who responsible to handle a request
     </div>

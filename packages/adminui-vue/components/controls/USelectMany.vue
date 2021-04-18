@@ -7,16 +7,19 @@
 
 <script>
 /**
-* Component for editing an attribute of `Many` data type
-*/
+ * Component for editing an attribute of `Many` data type
+ */
 export default {
   name: 'USelectMany',
   props: {
     /**
-     * Array of selected IDs as string joined by, or can be a number in case of one ID
+     * comma separated list of element IDs (as expected by `Many` data type), can be `number` in case of one ID
      * @model
      */
-    value: {}
+    value: {
+      type: [Number, String],
+      default: null
+    }
   },
 
   computed: {
@@ -39,7 +42,9 @@ export default {
 </script>
 
 <docs>
-Based on `u-select-multiple`, all props is the same
+### Usage
+This component is based on [u-select-multiple](#/Data-aware/USelectMultiple), all props is the same except `value` what accept a
+comma separated list of element IDs (as expected by `Many` data type)
 
 ```vue
 <template>
