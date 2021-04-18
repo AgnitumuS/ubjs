@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - Full Text Search shortcut is changed to `Ctrl+Shift+F` to prevent conflict with `Ctrl+F` actions.
 
 ### Deprecated
 

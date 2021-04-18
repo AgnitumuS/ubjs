@@ -10,7 +10,7 @@
   >
     <el-tooltip
       slot="reference"
-      :content="$ut('search') + ' (Ctrl + F)'"
+      :content="$ut('search') + ' (Ctrl+Shift+F)'"
       :enterable="false"
     >
       <el-button
@@ -135,8 +135,8 @@ export default {
   mounted () {
     if (!this.modeList.length) return // widget is hidden because no fts connections
     document.body.addEventListener('keydown', (e) => {
-      const { code, ctrlKey } = e
-      if (code === 'KeyF' && ctrlKey) {
+      const { code, ctrlKey, shiftKey } = e
+      if (code === 'KeyF' && ctrlKey && shiftKey) {
         e.preventDefault()
         this.$refs.popover.doShow()
       }
