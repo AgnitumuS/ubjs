@@ -7,12 +7,27 @@ By default, UGrid align elements in 2 columns with `columnGap` (space between co
 ```vue
 <template>
   <u-grid>
-    <u-base-input :value="1"/>
-    <textarea :value="2"/>
-    <div>1-t column of 2-d row</div>
+    <div>Any HTML can be in cell
+      <ul>
+        <li>list for example</li>
+        <li>row height is `auto` so it's expanded down</li>
+      </ul>
+    </div>
+    <textarea :value="txtVal1"/>
+    <u-base-input :value="txtVal2"/>
     <div>2-d column of <strong>2-d row</strong></div>
   </u-grid>
 </template>
+<script>
+export default {
+  data () {
+    return {
+      txtVal1: 'Or any control.Here is second column of first row',
+      txtVal2: 'UBaseInput in row2 col1'
+    }
+  }
+}
+</script>
 ```
 
 ### Columns and provided props
@@ -25,7 +40,7 @@ Here we place labelled elements in **4-columns**, and provide a `label-position`
   <u-grid :columns="3" label-position="top">
     <u-form-row label="Document #"><strong>{{docNum}}</strong></u-form-row>
     <u-form-row label="Created on"><strong>{{$UB.formatter.formatDate(docDate, 'date')}}</strong></u-form-row>
-    <div>any HTML cal be in cell</div>
+    <div> Some HTML content </div>
     <u-form-row label="User"><u-base-input v-model="userName"/></u-form-row>
     <u-form-row label="Password"><u-base-input type="password" v-model="pwd"/></u-form-row>
     <u-form-row label="Password is"><u-base-input v-model="pwd"/></u-form-row>
@@ -68,17 +83,24 @@ Height for 3-d row is not defined, so `auto` is used
       <u-base-input :value="1"/>
       <u-base-input :value="2"/>
       <u-base-input :value="3"/>
-      <textarea :value="4"/>
+      <textarea :value="longText"/>
       <textarea :value="5"/>
       <textarea :value="6"/>
-      <div style="grid-column-start: 1; grid-column-end: 4">
-        Third row take a three column width and auto-height, the long text here is placed to demonstrate
-        a CSS grid <strong>grid-column-start</strong> and <strong>grid-column-end</strong> properties usage.
-        The grid-column-end sets to 4 because this prop value is a vertical line number, not a column number.
-      </div>
+      <div style="grid-column-start: 1; grid-column-end: 4" v-html="longText" />
     </u-grid>
   </div>
 </template>
+<script>
+export default {
+  data () {
+    return {
+      longText: `Third row take a three column width and auto-height, the long text here is placed to demonstrate
+        a CSS grid <strong>grid-column-start</strong> and <strong>grid-column-end</strong> properties usage.
+        The grid-column-end sets to 4 because this prop value is a vertical line number, not a column number`
+    }
+  }
+}
+</script>
 ```
 
 ### Gap
