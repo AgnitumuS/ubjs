@@ -41,22 +41,24 @@ Here we place labelled elements in **4-columns**, and provide a `label-position`
     <u-form-row label="Document #"><strong>{{docNum}}</strong></u-form-row>
     <u-form-row label="Created on"><strong>{{$UB.formatter.formatDate(docDate, 'date')}}</strong></u-form-row>
     <div> Some HTML content </div>
-    <u-form-row label="User"><u-base-input v-model="userName"/></u-form-row>
+    <u-form-row label="Long attr" style="grid-column-start: 1; grid-column-end: 4" ><u-base-input v-model="longText" /> </u-form-row>
+    <u-form-row label="User" style="grid-column-start: 1; grid-column-end: 3" ><u-base-input v-model="userName"/></u-form-row>
     <u-form-row label="Password"><u-base-input type="password" v-model="pwd"/></u-form-row>
-    <u-form-row label="Password is"><u-base-input v-model="pwd"/></u-form-row>
+
   </u-grid>
 </template>
 <script>
-  export default {
-    data () {
-      return {
-        docNum: '2020-11',
-        docDate: new Date('2021-01-12'),
-        userName: 'Homer',
-        pwd: 'Simpson'
-      }
+export default {
+  data () {
+    return {
+      docNum: '2020-11',
+      docDate: new Date('2021-01-12'),
+      longText: 'this is a long text value, so better use 3 column for it',
+      userName: 'Homer is fat, reserve a 2 columns for him',
+      pwd: 'Simpson'
     }
   }
+}
 </script>
 ```
 
