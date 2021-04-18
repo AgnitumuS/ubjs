@@ -1,6 +1,6 @@
 <template>
   <u-grid
-    template-columns="auto 1fr"
+    template-columns="200px 1fr"
     template-rows="600px"
     column-gap="0px"
     label-position="top"
@@ -12,7 +12,6 @@
         tabindex="-1"
       >
         <el-tree
-          width="100px"
           ref="tree"
           :data="cmdCodeAttrs"
           :expand-on-click-node="false"
@@ -21,9 +20,7 @@
           }"
           @node-click="selectNode"
         >
-          <div slot-scope="{ node }" v-html="node.label">
-
-          </div>
+          <div slot-scope="{ node }" v-html="node.label"> </div>
         </el-tree>
       </div>
     </u-form-row>
@@ -31,7 +28,7 @@
       <u-code-mirror
         ref="codeMirror"
         v-model="cmdCode"
-        style="height: 100%"
+        style="height: 100%; display: grid"
         :hints-function="doOnShowHints"
       />
     </u-form-row>
