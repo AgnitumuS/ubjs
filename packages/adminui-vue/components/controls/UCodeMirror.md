@@ -1,7 +1,7 @@
 ## Usage
 ```vue
 <template>
-  <u-grid :columns="3" row-gap="20px">
+  <u-grid :columns="2" row-gap="20px">
       <u-code-mirror v-model="scriptSrc"></u-code-mirror>
       <u-code-mirror v-model="yamlSrc" editor-mode="text/yaml"></u-code-mirror>
       <u-code-mirror v-model="jsonSrc" value-is-jsone editor-mode="application/json"></u-code-mirror>
