@@ -22,9 +22,11 @@ UGrid provides a `label-position` `label-width` and `max-width` to child's UForm
 Here we place labelled elements in **4-columns**, and provide a `label-position` to child's UFormRow's
 ```vue
 <template>
-  <u-grid :columns="4" label-position="top">
+  <u-grid :columns="3" label-position="top">
     <u-form-row label="Document #"><strong>{{docNum}}</strong></u-form-row>
     <u-form-row label="Created on"><strong>{{$UB.formatter.formatDate(docDate, 'date')}}</strong></u-form-row>
+    <div>any HTML cal be in cell</div>
+    <u-form-row label="User"><u-base-input v-model="userName"/></u-form-row>
     <u-form-row label="Password"><u-base-input type="password" v-model="pwd"/></u-form-row>
     <u-form-row label="Password is"><u-base-input v-model="pwd"/></u-form-row>
   </u-grid>
@@ -35,7 +37,8 @@ Here we place labelled elements in **4-columns**, and provide a `label-position`
       return {
         docNum: '2020-11',
         docDate: new Date('2021-01-12'),
-        pwd: 'myPassword'
+        userName: 'Homer',
+        pwd: 'Simpson'
       }
     }
   }
@@ -49,15 +52,17 @@ In simple case prop `columns` define N columns all with the same width and rows 
 Using `template-columns` (see [grid-template-rows](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-rows) ) and
 `template-rows` ( see [grid-template-rows](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-rows)) almost any layout can be created
 
-In example below the second column occupy 200px and third - 30%, and the first all the available space.
-First row take the height: auto and second will take the rest of the height
+In example below the second column occupy 300px and third - 10%, and the first all the available space.
+
+Height of the first row is `auto`(calculated based on row content), height of the second - 200px.
+Height for 3-d row is not defined, so `auto` is used 
 
 ```vue
 <template>
-  <div style="height: 150px; width: 600px;">
+  <div>
     <u-grid
-      template-columns="1fr 200px 30%"
-      template-rows="auto 1fr"
+      template-columns="1fr 300px 10%"
+      template-rows="auto 200px"
       row-gap="10px"
     >
       <u-base-input :value="1"/>
@@ -66,6 +71,11 @@ First row take the height: auto and second will take the rest of the height
       <textarea :value="4"/>
       <textarea :value="5"/>
       <textarea :value="6"/>
+      <div style="grid-column-start: 1; grid-column-end: 4">
+        Third row take a three column width and auto-height, the long text here is placed to demonstrate
+        a CSS grid <strong>grid-column-start</strong> and <strong>grid-column-end</strong> properties usage.
+        The grid-column-end sets to 4 because this prop value is a vertical line number, not a column number.
+      </div>
     </u-grid>
   </div>
 </template>
