@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.21.4] - 2021-04-19
+### Fixed
  - fix `global.UB.getDomainInfo is not a function`
 
 ## [5.21.3] - 2021-04-19

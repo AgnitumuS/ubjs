@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.21.3] - 2021-04-19
 ## [5.21.2] - 2021-04-19
 ### Added
  - `ubcli generateDDL` create a backup script in case previous DDL generation script exists (by adding .bak to file name)

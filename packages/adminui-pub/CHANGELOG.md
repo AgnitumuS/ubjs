@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.8] - 2021-04-19
 ## [5.20.7] - 2021-04-19
 ### Changed
  - `UB.core.UBUtil.getEntityAttributesTreeData` HTML for attribute label improved for better UX 
