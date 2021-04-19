@@ -9,8 +9,10 @@ if (typeof nativeApp._nativeInitEntity !== 'function') {
   throw new Error('This version of @unitybase/ub package require UB server to be at last 5.18.0')
 }
 
-// manually define a console - it is not defined yet because UB.js is not evaluated
-global.console = require('console')
+// manually define a console in case this module is required by native ( before UB.js )
+if (typeof global.console === 'undefined') {
+  global.console = require('console')
+}
 
 const argv = require('@unitybase/base').argv
 const cfg = argv.getServerConfiguration()
