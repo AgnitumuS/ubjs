@@ -22,11 +22,11 @@ const Session = require('./Session')
 const { PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT } = require('./httpUtils')
 const ubErrors = require('./ubErrors')
 // eslint-disable-next-line camelcase
-const { uba_common, GC_KEYS, ubVersionNum } = require('@unitybase/base')
+const { uba_common, GC_KEYS } = require('@unitybase/base')
+// eslint-disable-next-line node/no-deprecated-api
 const appBinding = process.binding('ub_app')
 const options = require('@unitybase/base').options
 const AUTH_MOCK = options.switchIndex('-authMock') >= 0
-const loadDomainIntoJS = require('./metadataTransformation')
 
 // init zonesAuthenticationMethods
 const ZONES_AUTH_MAP = {}
@@ -278,6 +278,7 @@ function getAppInfoEp (req, resp) {
   let authMethods
   if (USE_ZONE_AUTH) {
     if (!Session.zone) console.warn(`Security zone for IP ${Session.callerIP} is empty`)
+    // eslint-disable-next-line no-prototype-builtins
     if (!ZONES_AUTH_MAP.hasOwnProperty(Session.zone)) {
       console.warn(`Authentication methods not configured for "${Session.zone}" security zone`)
     } else {
@@ -508,7 +509,8 @@ function allLocalesEp (req, resp) {
   if (supportedLanguages.indexOf(lang) === -1) return resp.badRequest('unsupported language')
 
   if (json) {
-
+    // do not move a metadataTransformation require from here - this file required by native!!
+    const loadDomainIntoJS = require('./metadataTransformation')
     const resources = {}
 
     if (includeDomain) {
@@ -520,7 +522,7 @@ function allLocalesEp (req, resp) {
 
       const rawDomain = loadDomainIntoJS(true)
 
-      for (const [entityCode, {langs}] of Object.entries(rawDomain)) {
+      for (const [entityCode, { langs }] of Object.entries(rawDomain)) {
         const entityLang = langs && langs[lang]
         if (!entityLang) continue
 
@@ -546,11 +548,10 @@ function allLocalesEp (req, resp) {
 
     for (const model of App.domainInfo.orderedModels) {
       mergeFileIntoResources(model.realPublicPath)
-      mergeFileIntoResources(model.realPath, '_data')
+      if (includeData) mergeFileIntoResources(model.realPath, '_data')
     }
 
     resp.writeEnd(resources)
-
   } else {
     // Get lang-<xx>.js and lang-<xx>.json together and wrap as executable client-side code
     let cached = App.globalCacheGet(`${GC_KEYS.UB_LOCALE_REQ_}${lang}`)
