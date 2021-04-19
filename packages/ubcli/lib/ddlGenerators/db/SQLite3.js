@@ -344,7 +344,7 @@ class DBSQLite3 extends DBAbstract {
     // }
   }
 
-  getExpression (macro, column) {
+  getExpression (macro, column, table) {
     function dateTimeExpression (val) {
       if (!val) { return val }
       switch (val) {
@@ -353,7 +353,7 @@ class DBSQLite3 extends DBAbstract {
         case 'maxDate':
           return "'9999-12-31'"
         default :
-          throw new Error('Unknown expression with code ' + val)
+          throw new Error(`Unknown expression "${val}" for default value of ${table ? table.name : '?'}.${column ? column.name : '?'}`)
       }
     }
 

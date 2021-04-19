@@ -507,9 +507,10 @@ where
    * @override
    * @param {string} macro
    * @param {FieldDefinition} [column]
+   * @param {TableDefinition} [table]
    * @return {string}
    */
-  getExpression (macro, column) {
+  getExpression (macro, column, table) {
     /**
      * @param {string} val
      * @return {string}
@@ -522,7 +523,7 @@ where
         case 'maxDate':
           return 'TO_DATE(\'31.12.9999\', \'dd.mm.yyyy\')'
         default:
-          throw new Error(`Unknown expression with code ${val}`)
+          throw new Error(`Unknown expression "${val}" for default value of ${table ? table.name : '?'}.${column ? column.name : '?'}`)
       }
     }
     if (!column) return dateTimeExpression(macro)

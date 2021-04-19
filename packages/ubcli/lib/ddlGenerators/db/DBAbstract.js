@@ -322,9 +322,10 @@ class DBAbstract {
    * @abstract
    * @param {string} macro
    * @param {FieldDefinition} [column]
+   * @param {TableDefinition} [table]
    * @return {string}
    */
-  getExpression (macro, column) {
+  getExpression (macro, column, table) {
     throw new Error('Abstract getExpression')
   }
 
@@ -359,7 +360,7 @@ class DBAbstract {
   normalizeDefaults (table) {
     for (const column of table.columns) {
       if (column.defaultValue) {
-        column.defaultValue = this.getExpression(column.defaultValue, column)
+        column.defaultValue = this.getExpression(column.defaultValue, column, table)
       }
     }
   }

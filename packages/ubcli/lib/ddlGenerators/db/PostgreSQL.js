@@ -506,14 +506,18 @@ ORDER BY index_id, column_position`
    * @override
    * @param {string} macro
    * @param {FieldDefinition} [column]
+   * @param {TableDefinition} [table]
    */
-  getExpression (macro, column) {
+  getExpression (macro, column, table) {
     function dateTimeExpression (val) {
       if (!val) return val
       switch (val) {
-        case 'currentDate': return 'timezone(\'utc\'::text, now())'
-        case 'maxDate': return "'9999-12-31 00:00:00'::timestamp without time zone"
-        default: throw new Error('Unknown expression with code ' + val)
+        case 'currentDate':
+          return 'timezone(\'utc\'::text, now())'
+        case 'maxDate':
+          return "'9999-12-31 00:00:00'::timestamp without time zone"
+        default:
+          throw new Error(`Unknown expression "${val}" for default value of ${table ? table.name : '?'}.${column ? column.name : '?'}`)
       }
     }
     if (!column) return dateTimeExpression(macro)
