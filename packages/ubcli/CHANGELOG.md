@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `ubcli generateDDL` create a backup script in case previous DDL generation script exists (by adding .bak to file name)
 
 ### Changed
  - `ubcli generateDDL` for Oracle - dramatically speed up by reset a connection NLS_SORT and NLS_COMP to BINARY - 

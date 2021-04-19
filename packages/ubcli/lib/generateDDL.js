@@ -134,6 +134,11 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
       if (outWarnings) {
         console.warn('There are warnings. Please, review script ' + fileName)
       }
+      if (fs.existsSync(fileName)) {
+        const bakFn = fileName + '.bak'
+        if (fs.existsSync(bakFn)) fs.unlinkSync(bakFn)
+        fs.renameSync(fileName, fileName + '.bak')
+      }
       fs.writeFileSync(fileName, txtRes)
       console.log('DDL script is saved to ' + fileName)
       if (autorun) {
