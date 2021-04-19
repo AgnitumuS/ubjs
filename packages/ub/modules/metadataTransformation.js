@@ -24,9 +24,10 @@ module.exports = loadDomainIntoJS
  *
  * Hooks can mutate a domainJSON according to their needs.
  *
+ * @param {boolean} [skipNativeEntityInit=false] Set it to true in case domain is already loaded but raw domain info must be retrieved
  * @return {object<string, {modelName: string, meta: object, lang: object<string, object>}>}
  */
-function loadDomainIntoJS () {
+function loadDomainIntoJS (skipNativeEntityInit) {
   console.time('load domain')
   const { hooks, ePaths } = readAllEntitiesPathsAndHooks()
   const domainJSON = {}
@@ -81,13 +82,15 @@ function loadDomainIntoJS () {
     console.timeEnd('applying hooks')
   }
   console.time('native init')
-  for (const en in domainJSON) {
-    const e = domainJSON[en]
-    try {
-      nativeApp._nativeInitEntity(e.modelName, en, e.meta, e.langs)
-    } catch (err) {
-      console.error(`Can't init entity ${en}\n Something wrong in entity JSON`)
-      throw err
+  if (!skipNativeEntityInit) {
+    for (const en in domainJSON) {
+      const e = domainJSON[en]
+      try {
+        nativeApp._nativeInitEntity(e.modelName, en, e.meta, e.langs)
+      } catch (err) {
+        console.error(`Can't init entity ${en}\n Something wrong in entity JSON`)
+        throw err
+      }
     }
   }
   console.timeEnd('native init')
