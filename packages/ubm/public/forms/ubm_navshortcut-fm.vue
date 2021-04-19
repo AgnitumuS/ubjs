@@ -6,14 +6,14 @@
       v-loading="loading"
       label-position="top"
     >
-      <u-grid :columns="4">
-        <u-auto-field attribute-name="code" />
-        <u-auto-field attribute-name="isFolder" force-cmp="el-switch" />
-        <u-auto-field attribute-name="inWindow" force-cmp="el-switch" />
-        <u-auto-field attribute-name="ID" label="ID" readonly />
-      </u-grid>
-      <u-auto-field attribute-name="caption" />
       <u-grid :columns="3">
+        <u-auto-field attribute-name="code" />
+        <span>
+          <u-auto-field attribute-name="isFolder" style="display: inline-block" force-cmp="el-switch" />
+          <u-auto-field attribute-name="inWindow" style="display: inline-block" force-cmp="el-switch" />
+        </span>
+        <u-form-row label="ID"> {{ ID }} </u-form-row>
+        <u-auto-field style="grid-column-start: 1; grid-column-end: 4" attribute-name="caption" />
         <shortcut-tree />
         <u-form-row
           :label="entitySchema.attributes.iconCls.caption"
@@ -24,15 +24,14 @@
           />
         </u-form-row>
         <u-auto-field attribute-name="displayOrder" />
+        <u-form-row style="grid-column-start: 1; grid-column-end: 4" label="navShortcutRights">
+          <u-select-collection
+            associated-attr="admSubjID"
+            collection-name="rightsSubjects"
+            clearable
+          />
+        </u-form-row>
       </u-grid>
-
-      <u-form-row label="navShortcutRights">
-        <u-select-collection
-          associated-attr="admSubjID"
-          collection-name="rightsSubjects"
-          clearable
-        />
-      </u-form-row>
       <shortcut-cmd-code />
     </u-form-container>
   </div>
