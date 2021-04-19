@@ -5,7 +5,7 @@ An CSS class `u-form-row__description` can be used to add a "description"
 ```vue
 <template>
 <div>
-  <p>Required (asterisk symbol)</p>
+  <h4>Required (asterisk symbol)</h4>
   <u-form-row
       required
       label-position="top"
@@ -15,7 +15,7 @@ An CSS class `u-form-row__description` can be used to add a "description"
     <u-base-input v-model="userName"/>
   </u-form-row>
 
-  <p>Readonly (non-editable + lock symbol)</p>
+  <h4>Readonly (non-editable + lock symbol)</h4>
   <u-form-row
       readonly
       label-position="top"
@@ -25,7 +25,7 @@ An CSS class `u-form-row__description` can be used to add a "description"
     <u-base-input v-model="userName"/>
   </u-form-row>
 
-  <p>Required + left label positioning</p>
+  <h4>Required + left label positioning</h4>
   <u-form-row
     required
     label-position="left"
@@ -35,18 +35,18 @@ An CSS class `u-form-row__description` can be used to add a "description"
     <u-base-input v-model="userName"/>
   </u-form-row>
 
-  <p>With a description</p>
+  <h4>With a description</h4>
   <u-form-row
     label-position="top"
-    label="User name (description added)"
+    label="User name (description below edit is added)"
   >
-    <u-input v-model="userName"/>
+    <u-base-input v-model="userName"/>
     <div class="u-form-row__description">
       name of user who responsible to handle a request
     </div>
   </u-form-row>
 
-  <p>Left / right label position</p>
+  <h4>Left / right label position</h4>
   <u-grid>
     <u-form-row
       label-position="left"

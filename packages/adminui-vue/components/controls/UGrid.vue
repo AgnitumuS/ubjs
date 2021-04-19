@@ -15,7 +15,7 @@
 
 <script>
 /**
- * Container for align form elements into columns. Wrapper for a [display: grid CSS](https://css-tricks.com/snippets/css/complete-guide-grid/).
+ * Container for align form elements into columns. Wrapper for a [CSS Grid Layout](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout).
  */
 export default {
   name: 'UGrid',
@@ -114,80 +114,3 @@ export default {
     }
   }
 </style>
-
-<docs>
-### Basic usage
-
-Place elements in 2 columns
-
-```vue
-<template>
-  <u-grid>
-    <el-input :value="1"/>
-    <el-input :value="2"/>
-  </u-grid>
-</template>
-```
-
-### Columns
-
-Place elements in **N-columns**
-```vue
-<template>
-  <u-grid :columns="4">
-    <el-input :value="1"/>
-    <el-input :value="2"/>
-    <el-input :value="3"/>
-    <el-input :value="4"/>
-  </u-grid>
-</template>
-```
-
-### Template[Columns|Rows]
-
-In this example, the second column will occupy 200px, the third - 30%, and the first all the available space.
-Rows will be distributed as follows - the first row will take the height: auto, the second will take the rest of the height
-
-```vue
-<template>
-  <div style="height: 150px; width: 600px;">
-    <u-grid
-      template-columns="1fr 200px 30%"
-      template-rows="auto 1fr"
-    >
-      <el-input :value="1"/>
-      <el-input :value="2"/>
-      <el-input :value="3"/>
-      <textarea style="height: 100%" :value="4"/>
-      <textarea style="height: 100%" :value="5"/>
-      <textarea style="height: 100%" :value="6"/>
-    </u-grid>
-  </div>
-</template>
-```
-
-### Gap
-
-By default `columnGap === 20px` and `rowGap === undefined`,
-because usually rows gaps are replaces by UFormRow margins.
-
-In example below will sets all gaps to **50px**
-```vue
-<template>
-  <u-grid
-    column-gap="50px"
-    row-gap="50px"
-    :columns="3"
-  >
-    <el-input :value="1"/>
-    <el-input :value="2"/>
-    <el-input :value="3"/>
-    <el-input :value="4"/>
-    <el-input :value="5"/>
-    <el-input :value="6"/>
-    <el-input :value="7"/>
-    <el-input :value="8"/>
-  </u-grid>
-</template>
-```
-</docs>

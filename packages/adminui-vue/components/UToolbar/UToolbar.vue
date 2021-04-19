@@ -13,13 +13,17 @@
       :disabled="!button.label"
     >
       <u-button
-        appearance="inverse"
-        size="large"
+        :appearance="button.type === 'text' ? 'default' : 'inverse'"
+        :size="button.type === 'text' ? 'small' : 'large'"
         :disabled="button.disabled"
         :icon="button.icon"
         :color="button.color"
         @click="button.handler"
-      />
+      >
+        <template v-if="button.type === 'text'">
+          {{ button.label || '' }}
+        </template>
+      </u-button>
     </el-tooltip>
     <!-- @slot content to append of the left side of the toolbar *after* default buttons -->
     <slot name="left" />
@@ -103,7 +107,16 @@ export default {
   name: 'UToolbar',
 
   props: {
-    hideDefaultButtons: Boolean
+    hideDefaultButtons: Boolean,
+    /**
+     * List of objects which can contains additional toolbar/dropdown buttons and override default buttons.
+     * It can be used together with `hideDefaultButtons` property and slots.
+     * See example in `docs` below.
+     */
+    toolbarButtons: {
+      type: Array,
+      default: () => []
+    }
   },
 
   inject: ['$formServices', 'formCode', 'entitySchema', 'fieldList', 'entity'],
@@ -126,32 +139,38 @@ export default {
 
     mainPanelButtons () {
       if (this.hideDefaultButtons) {
-        return []
+        return this.toolbarButtons
       }
-      return [{
+
+      const defaultToolbarButtons = [{
+        name: 'save',
         label: this.$ut('save') + ' (Ctrl + S)',
         icon: 'u-icon-save',
         handler: () => this.save(),
         disabled: !this.canSave,
         color: 'primary'
       }, {
+        name: 'saveAndClose',
         label: this.$ut('saveAndClose') + ' (Ctrl + Enter)',
         icon: 'u-icon-save-and-close',
         handler: this.saveAndClose,
         disabled: !this.canSave,
         color: 'primary'
       }, {
+        name: 'delete',
         label: this.$ut('Delete') + ' (Ctrl + Delete)',
         icon: 'u-icon-delete',
         handler: () => this.deleteInstance(this.$formServices.forceClose),
         disabled: !this.canDelete,
         divider: true
       }]
+
+      return this.mergeButtons(this.toolbarButtons, defaultToolbarButtons)
     },
 
     dropdownButtons () {
       if (this.hideDefaultButtons) {
-        return []
+        return this.toolbarButtons
       }
       const buttons = [{
         label: this.$ut('refresh') + ' (Ctrl + R)',
@@ -421,6 +440,25 @@ export default {
           this.deleteInstance(this.$formServices.forceClose)
         }
       }
+    },
+
+    mergeButtons (propButtons, defButtons) {
+      const buttons = _.cloneDeep(defButtons)
+      for (const btn of propButtons) {
+        if (btn.name) {
+          const defBtnIdx = buttons.findIndex(f => f.name === btn.name)
+          if (defBtnIdx >= 0) {
+            if (btn.visible === false) {
+              buttons.splice(defBtnIdx, 1)
+            } else {
+              _.merge(buttons[defBtnIdx], btn)
+            }
+            continue
+          }
+        }
+        if (btn.visible !== false) buttons.push(btn)
+      }
+      return buttons
     }
   }
 }
@@ -499,6 +537,56 @@ export default {
 <script>
   export default {
     name: 'Toolbar'
+  }
+</script>
+```
+
+### Toolbar buttons usage
+```vue
+<template>
+  <div class="u-form-layout">
+    <u-toolbar :toolbar-buttons="toolbarButtons"/>
+    <u-form-container>
+      <!-- Your form -->
+    </u-form-container>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'MyForm',
+
+    computed: {
+      toolbarButtons () {
+        return [
+          // Hide delete button
+          {
+            name: 'delete',
+            visible: false
+          },
+          // Override save button attrs
+          {
+            name: 'save',
+            disabled: this.$store.getters.isDirty,
+            handler () {
+              // new logic
+            }
+          },
+          // New button
+          {
+            name: 'customButton1',
+            label: 'Custom button',
+            icon: 'fa fa-user',
+            disabled: this.$store.state.isNew,
+            type: 'text', // Classic u-button (not icon only) will be shown. Can includes icon from prop above
+            divider: true, // Will be used for `dropdownButtons`
+            handler () {
+              // logic
+            }
+          }
+        ]
+      }
+    }
   }
 </script>
 ```

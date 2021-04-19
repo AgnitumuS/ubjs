@@ -115,7 +115,7 @@ SHOULD rename an unreleased migration.
 In complex application one model can store its data in the several DB connections (not recommended).
 
 By default, *.sql files are executed using default DB connection (`isDefault: true` in connections section of ubConfig).
-To execute a script in specific connection file (or folder) name should contain connection name wrapped in #.
+To execute a script in specific connection, file (or folder) name should contain connection name wrapped in #.
 
 Actually `/#(.*?)[\-.#/]/` regular expression is used, so the ending char can be one of `-.#` or migration folder name ends with `#conn`.
 All names below are specify a SECOND connection:

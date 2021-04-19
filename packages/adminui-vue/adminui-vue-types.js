@@ -62,19 +62,11 @@
  */
 
 /**
- * @typedef UTableColumnFormatParams
- *
- * @property {*} value
- * @property {UTableColumn} column
- * @property {object} row
- */
-
-/**
- * @typedef {function({
- *   value: *
- *   column: UTableColumn
- *   row: object
- * }):*} UTableColumnFormat
+ * @callback UTableColumnFormat
+ * @param {*} value
+ * @param {UTableColumn} column
+ * @param {object} row
+ * @returns {String}
  */
 
 /**

@@ -6,18 +6,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `ubcli generateNginxCfg` adds in-memory buffering of incoming requests and outgoing responses to nginx config.
-   This prevents nginx to create temp files for buffering in most case
- - `tid` parameter for `ubcli migrate`, so that `ubcli migrate -noddl -tid 199` may be used for tenant initialization
-   (will require @unitybase/ub-migrate@1.20+, with 1.19 will will just ignore the param)
 
 ### Changed
+ - `ubcli generateDDL` for Oracle - dramatically speed up by reset a connection NLS_SORT and NLS_COMP to BINARY - 
+   this allows Oracle to use indexes for queries over system views. 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `ubcli generateDDL` fixed for Oracle **sequences** defined in metadata `pkGenerator`:
+    - prevents to create a **sequence** what accessible for connection but don't owned by it (synonyms etc).
+      Fixed by read available sequences using `ALL_SEQUENCES` system view instead of `user_sequences`
+    - prevent to create a sequence multiple times in case it used as `pkGenerator` for several entities  
+    - prevent generate a DDLs for External/Virtual entities what referenced from models DDL generator is executed for
+
+## [5.21.1] - 2021-04-16
+## [5.21.0] - 2021-04-13
+### Added
+ - `ubcli generateNginxCfg` adds in-memory buffering of incoming requests and outgoing responses to nginx config.
+   This prevents nginx to create temp files for buffering in most case
+ - `tid` parameter for `ubcli migrate`, so that `ubcli migrate -noddl -tid 199` may be used for tenant initialization
+   (will require @unitybase/ub-migrate@1.20+, with 1.19 will just ignore the param)
 
 ## [5.20.5] - 2021-04-02
 ### Fixed

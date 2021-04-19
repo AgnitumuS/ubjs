@@ -95,6 +95,7 @@ let dateTimeFormaters = {}
     formatByPattern.formatDate('2020-05-23', 'date', 'uk') // 23.05.2020
     formatByPattern.formatDate(d, 'date', 'en') // 05/23/2020
     formatByPattern.formatDate(d, 'dateTime', 'uk') // 23.05.2020 13:14
+    formatByPattern.formatDate(d, 'dateTimeFull', 'uk') // 23.05.2020 13:14:00
     formatByPattern.formatDate(d, 'date', 'en') // 05/23/2020, 1:14 PM
  *
  * @param {*} dateVal Date object or Number/String what will be converted to Date using new Date();

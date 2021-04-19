@@ -7,16 +7,19 @@
 
 <script>
 /**
-* Component for select UB many type property.
-*/
+ * Component for editing an attribute of `Many` data type
+ */
 export default {
   name: 'USelectMany',
   props: {
     /**
-     * Array of selected IDs as string joined by , or can be number in case of one ID
+     * comma separated list of element IDs (as expected by `Many` data type), can be `number` in case of one ID
      * @model
      */
-    value: {}
+    value: {
+      type: [Number, String],
+      default: null
+    }
   },
 
   computed: {
@@ -39,21 +42,31 @@ export default {
 </script>
 
 <docs>
-Based on `u-select-multiple`, all props is the same
+### Usage
+This component is based on [u-select-multiple](#/Data-aware/USelectMultiple), all props is the same except `value` what accept a
+comma separated list of element IDs (as expected by `Many` data type)
 
 ```vue
 <template>
-  <u-select-many
-    v-model="value"
-    entity-name="tst_dictionary"
-  />
+  <u-grid>
+    <u-select-many
+      v-model="value"
+      entity-name="req_department"
+    />
+    <div>Selected IDs as CSV: {{value}}</div>
+  </u-grid>
 </template>
 <script>
   export default {
     data () {
       return {
-        value: '1,2'
+        value: ''
       }
+    },
+    async mounted () {
+      const firstTwoDepIDs = await this.$UB.Repository('req_department')
+        .attrs('ID').limit(2).selectAsArrayOfValues()
+      this.value = firstTwoDepIDs.join(',') + ',1111' // / element with ID = 111 NOT exists and displayed as ID
     }
   }
 </script>

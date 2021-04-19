@@ -16,6 +16,7 @@ If `display-attribute` is not specified it will be set to the entity `descriptio
 </template>
 <script>
   export default {
+    name: 'USelectEntitySrc',
     data () {
       return {
         reqID: null
@@ -41,6 +42,7 @@ If `display-attribute` not defined USelect entity will use a second repository a
 </template>
 <script>
   export default {
+    name: 'USelectRepositorySrc',
     data () {
       return {
         reqID: null,
@@ -61,21 +63,22 @@ If `display-attribute` not defined USelect entity will use a second repository a
 
 ### Custom `valueAttribute`
 
-By default an `ID` attribute is used as a value. This can be changed by set a `value-attribute`:
+By default, an `ID` attribute is used as a value. This can be changed by set a `value-attribute`:
 
 ```vue
 <template>
   <div>
-    value: {{value}}
     <u-select-entity
       v-model="departmentCode"
       entity-name="req_department"
       value-attribute="code"
     />
+    Selected value is: "{{departmentCode}}"
   </div>
 </template>
 <script>
   export default {
+    name: 'USelectValueAttribute',
     data () {
       return {
         departmentCode: null
@@ -99,6 +102,7 @@ By default an `ID` attribute is used as a value. This can be changed by set a `v
 </template>
 <script>
   export default {
+    name: 'USelectRemoveDefaultActions',
     data () {
       return {
         value: null
@@ -120,6 +124,7 @@ By default an `ID` attribute is used as a value. This can be changed by set a `v
 </template>
 <script>
   export default {
+    name: 'USelectAddActions',
     data () {
       return {
         value: null
@@ -149,7 +154,7 @@ By default an `ID` attribute is used as a value. This can be changed by set a `v
 </script>
 ```
 
-#### Just custom actions
+#### Only custom actions
 ```vue
 <template>
   <u-select-entity
@@ -161,6 +166,7 @@ By default an `ID` attribute is used as a value. This can be changed by set a `v
 </template>
 <script>
   export default {
+    name: 'USelectOnlyCustomActions',
     data () {
       return {
         value: null
@@ -219,6 +225,7 @@ Readonly USectEntity allow using actions (for example to view selected element f
 </template>
 <script>
   export default {
+    name: 'USelectDisabledVsReadonly',
     data () {
       return {
         value: null
@@ -239,6 +246,7 @@ Readonly USectEntity allow using actions (for example to view selected element f
 </template>
 <script>
   export default {
+    name: 'USelectActionsOverride',
     data () {
       return {
         value: null

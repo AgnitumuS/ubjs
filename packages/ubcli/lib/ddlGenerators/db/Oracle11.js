@@ -14,7 +14,18 @@ class DBOracle extends DBAbstract {
     const mTables = this.refTableDefs
     if (!mTables.length) return // all entities in this connection are external or no entities at all - skip loading DB metadata
 
-    // old code  // UPPER(t.table_name)
+    // reset a collation - system views is slow for non BINARY NLS_SORT / NLS_COMP
+    this.conn.xhr({
+      endpoint: 'runSQL',
+      data: 'ALTER SESSION SET NLS_SORT=BINARY',
+      URLParams: { CONNECTION: this.dbConnectionConfig.name }
+    })
+    this.conn.xhr({
+      endpoint: 'runSQL',
+      data: 'ALTER SESSION SET NLS_COMP=BINARY',
+      URLParams: { CONNECTION: this.dbConnectionConfig.name }
+    })
+
     const tablesSQL = `select
       t.table_name as name,  tc.comments as caption
     from
@@ -258,7 +269,7 @@ where
       this.dbTableDefs.push(asIsTable)
     }
 
-    const sequencesSQL = 'select sequence_name from user_sequences'
+    const sequencesSQL = 'select sequence_name from ALL_SEQUENCES' // use ALL_SEQUENCES instead of user_sequences to see a synonyms
     const dbSequences = this.conn.xhr({
       endpoint: 'runSQL',
       data: sequencesSQL,

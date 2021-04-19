@@ -15,6 +15,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.21.2] - 2021-04-16
+## [5.21.1] - 2021-04-13
+### Changed
+ - `allLocales` endpoint (client-side localization download) supports downloading of JSON files only, without js files
+   Request shall be like `/allLocales?lang=en&json=1`
+   Response body will contain model name as a key and JSON file content as a value:
+
+   ```json
+   {
+     "ub-pub": {...},
+     "UBM": {...}
+   }.
+   ```
+
 ## [5.21.0] - 2021-04-02
 ### Added
  -  new property `UBEntity.overriddenBy` - comma separated model names where entity is overridden

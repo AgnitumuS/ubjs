@@ -6,23 +6,93 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UFormRow`: new prop `readonly`; if `true` - show a small lock symbol after label
- - `UAutoField`: in case attribute is `readOnly` in meta file - render a small lock symbol after label;
-   If `als` mixin is defined for entity - uses read only from `als`;
-   Can be explicitly defined using a new prop `readonly`;
 
 ### Changed
- - `UAutoField`: hide asterisk for boolean attributes with defaultValue specified (as should be in most case)
-   and `required` prop for UAutoField is not specified explicitly
- - `UDropdown`: popup animation (transition) is removed
- - `USelectEntity`: use a UDropdown instead of ElDropdown for actions popup; dropdown animation (transition) is removed
+ - Full Text Search shortcut is changed to `Ctrl+Shift+F` to prevent conflict with `Ctrl+F` actions.
+- `UTableEntity`: if column attribute has `Entity` data type sort by description attribute of the associated entity, not by `ID` value
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
-- `UTableEntity`: if column attribute has `Entity` data type sort by description attribute of the associated entity, not by `ID` value
+ - `UCodeMirror` - returned visibility of help (`?`) mark
+
+## [5.20.6] - 2021-04-16
+### Fixed
+ - `USelectEntity`: fix focused/hovered border color to wrap an action button (using :focus-within since div with border can't be focused)
+ - `UToolbar`: now `u-button` doesn't render default slot (which has extra padding) when toolbar button is icon.
+ - `USelectMultiple`: added reaction on `value` changing from outside the component.
+ - `UFileInput`: made file types validation case-insensitive (for example to accept both *.XLSX and *.xlsx for Excel filter).
+
+## [5.20.5] - 2021-04-13
+### Added
+ - `UFormRow`: new prop `readonly`; if `true` - show a small lock symbol after label
+ - `UAutoField`: in case attribute is `readOnly` in meta file - render a small lock symbol after label;
+   If `als` mixin is defined for entity - uses read only from `als`;
+   Can be explicitly defined using a new prop `readonly`;
+ - `UToolbar`: new prop `toolbarButtons`. Allows adding new buttons into toolbar and override/hide default buttons;
+    Can be used with slots and `hideDefaultButtons` prop;
+    Using `toolbarButtons` prop toolbar buttons can be shown as classic text button (not icon only);
+    See example in `UToolbar` docs;
+ - new provided method `getValidationState` for getting always the actual validator configured with
+  the `validation(...)` method. The current provided value of `$v` is not reactive so if we want to
+  have dynamic validation as described below we can inject the `getValidationState` function and
+  get the actual `$v` value
+```js
+module.exports.mount = cfg => {
+  Form(cfg)
+    .store()
+    .processing()
+    .validation({
+      computed: {
+        ...mapState('form', ['applyCustomValidation']),
+
+        formDataValues() {
+          return {...}
+        }
+      },
+
+      validations() {
+        // dynamic validation config
+        return this.applyCustomValidation
+          ? { formDataValues: {...} }
+          : {}
+      }
+    })
+    .mount()
+}
+
+export default {
+  inject: [
+    'getValidationState'
+  ],
+
+  computed: {
+    codeError() {
+      const $v = this.getValidationState()
+      return $v?.formDataValues?.code.$error
+    }
+  }
+}
+```
+
+### Changed
+ - `UFileInput`: set text alignment to **center**, 
+   if many files are selected displayed filenames are truncated to 3 lines 
+ - `UAutoField`: hide asterisk for boolean attributes with defaultValue specified (as should be in most case)
+   and `required` prop for UAutoField is not specified explicitly
+ - `UDropdown`: popup animation (transition) is removed
+ - `USelectEntity`: use a UDropdown instead of ElDropdown for actions popup; dropdown animation (transition) is removed
+ - `USelectEntity`: added background color and border to dropdown block
+
+### Fixed
+ - `USelectEntity.buildShowDictionaryConfig`: fixed `select` button disabling if row is not selected yet.
+   A `disabled` property should be passed to `UButton` as a html-attribute.
+- `USelectEntity`: In case of using an entity (other than the default one) in the property `repository`
+  of the component and when user press F9 (or click on `Select from the dictionary`):
+  old behavior: error about the absence of attributes specified in the request fieldList.
+  new behavior: opening a form `Selection from the dictionary`.
 
 ## [5.20.4] - 2021-04-02
 ## [5.20.3] - 2021-04-01

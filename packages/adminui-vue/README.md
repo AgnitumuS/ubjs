@@ -1,13 +1,15 @@
-#Adminui Vue
+Extends UnityBase adminUI by Vue + ElementUI libraries.
+Starts from UB@5 Vue is a preferred way to build a UI.
 
-This model extends UnityBase adminUI by Vue + ElementUI libraries
+This documentation contains a JS (non-visual) functionns/methods/modules exported by @unitybase/adminui-vue.
+For documentation of the VueJS based UI components see [UI library for Vue](/api/adminui-vue/index.html).
 
 # What included
-## JavaScript
- - Vue (exported as global Vue variable and registered in SystemJS as 'vue')
- - ElementUI (exported as global ElementUI variable and registered in SystemJS as 'element-ui')
- - UB.i18n integrated into Vue as `$ut`
- - UB injected into Vue.prototype as `$UB`
+## JavaScript libraries
+ - `VueJS` (exported as global Vue variable and registered in SystemJS as 'vue')
+ - `ElementUI` (exported as global ElementUI variable and registered in SystemJS as 'element-ui')
+ - `@unitybase/ub-pub` available as `Vue.prototype.$UB` (or this.$UB inside vue component)  
+ - `UB.i18n` integrated into Vue as `$ut`
  - `i18n` filter available in vue templates. Lines below produce the same output
  ```vue
   <div> {{ 'uba_user' | i18n}} </div>
@@ -18,24 +20,15 @@ This model extends UnityBase adminUI by Vue + ElementUI libraries
  - `dist/adminui-vue.css` theme include normalize.css && modified element-theme-chalk
  - theme will add border radius to ExtJS form fields, so Ext based forms looks like Elements based forms
 
-## Views
-### Modern login page
+## Modern login page
 
-Placed in `/views/ub-auth.html`
+Located in `/views/ub-auth.html`. The path to this page is a default for `uiSettings.adminUI.loginURL`
 
-To use it in `adminUI` based apps in ubConfig
-```
-"uiSettings": {
-  "adminUI": {
-	"loginWindowTopLogoURL": "/models/ub-pub/img/login-logo.svg",
-	"loginURL": "/models/adminui-vue/views/ub-auth.html",
-  ...
-```
 
 # Usage
 ## adminUI based app
- For adminUI based application just add a `@unitybase/adminui-vue` in the domain.models section of config
- after `adminui-pub`
+ To build an `adminUI` based application a `@unitybase/adminui-vue` model should be added to the `domain.models`
+ section of config after `adminui-pub`
 
 ```
 "application": {
@@ -63,7 +56,7 @@ See `/views/ub-auth.html` for sample
 ### Compiled Vue app
 In case you embed a compiled Vue app into adminUI:
 
-- define output section in the webpack config to prevent loading modules twice:
+- define `output` and `externals` section into webpack config to prevent loading modules twice:
 ```
   output: {
     path: path.join(__dirname, 'dist'),
@@ -72,18 +65,13 @@ In case you embed a compiled Vue app into adminUI:
     filename: 'your-lib-entry-point.min.js',
     publicPath: '/clientRequire/YOUR_MODULE_NAME/dist/'
   },
-```
-
-- define externals section in the webpack config to prevent loading modules twice:
-
-```
   externals: {
     lodash: '_',
     '@unitybase/ub-pub': 'UB',
     '@unitybase/adminui-pub': '$App',
     'vue': 'Vue',
     'element-ui': 'ElementUI',
-  },
+  }
 ```
 
 # Contribution

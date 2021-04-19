@@ -23,6 +23,7 @@
       <div
         slot="reference"
         class="ub-select__container"
+        :class="{'ub-select__container--with-actions': actions.length && !disabled}"
       >
         <el-input
           ref="input"
@@ -130,6 +131,7 @@
     <u-dropdown
       v-if="actions.length > 0 && !disabled"
       :tabindex="-1"
+      class="u-select__dropdown"
     >
       <button
         type="button"
@@ -188,15 +190,15 @@ export default {
      */
     repository: Function,
     /**
-     * Name of entity. If repository is set entityName will be ignored
+     * Entity name. Ignored if `repository` prop is set
      */
     entityName: String,
     /**
-     * Attribute which is display value of options
+     * Attribute which values are used as a display value of options
      */
     displayAttribute: String,
     /**
-     * Set disable status
+     * disable status
      */
     disabled: Boolean,
 
@@ -242,7 +244,7 @@ export default {
     readonly: Boolean,
 
     /**
-     * Overrides showDictionary action config.
+     * Overrides `showDictionary` action config.
      * Function accepts current config and must return new config
      */
     buildShowDictionaryConfig: {
@@ -250,7 +252,7 @@ export default {
       default: config => config
     },
     /**
-     * Overrides edit action config.
+     * Overrides `edit` action config.
      * Function accepts current config and must return new config
      */
     buildEditConfig: {
@@ -258,7 +260,7 @@ export default {
       default: config => config
     },
     /**
-     * Overrides addNew action config.
+     * Overrides `addNew` action config.
      * Function accepts current config and must return new config
      */
     buildAddNewConfig: {
@@ -267,7 +269,7 @@ export default {
     },
 
     /**
-     * Search request condition
+     * Search by include (may be slow) or by first letters (faster)
      */
     searchStrategy: {
       type: String,
@@ -305,7 +307,7 @@ export default {
 
   computed: {
     getEntityName () {
-      return this.entityName || this.repository().entityName
+      return (this.repository && this.repository().entityName) || this.entityName
     },
 
     getDisplayAttribute () {
@@ -598,9 +600,13 @@ export default {
       }
     },
 
-    // emits when user click on option or click enter when option is focused
     chooseOption (option) {
       if (this.selectedID !== this.value) {
+        /**
+         * emits when user click on dropdown item or press enter when dropdown item is focused
+         * @param oldValue
+         * @param newValue
+         */
         this.$emit('input', this.selectedID, JSON.parse(JSON.stringify(option)))
       }
       this.setQueryByValue(this.selectedID)
@@ -639,10 +645,12 @@ export default {
             scopedSlots: createElement => ({
               toolbarPrepend: ({ store, close }) => {
                 return createElement('u-button', {
+                  attrs: {
+                    disabled: !store.state.selectedRowId
+                  },
                   props: {
                     appearance: 'inverse',
-                    icon: 'u-icon-check',
-                    disabled: !store.state.selectedRowId
+                    icon: 'u-icon-check'
                   },
                   on: {
                     click: () => {
@@ -766,8 +774,8 @@ export default {
   position: relative;
 }
 
-.ub-select__options__reset-padding{
-  padding: 0;
+.ub-select__options__reset-padding {
+  padding: 0 !important;
 }
 
 .ub-select__deleted-value input{
@@ -783,16 +791,20 @@ export default {
   border-color: hsl(var(--hs-warning), var(--l-input-border-default));
 }
 
-.u-select{
+.u-select {
   display: grid;
   grid-template-columns: 1fr auto;
+  border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+  border-radius: var(--border-radius);
+}
+.u-select:focus {
+  border-color: hsl(var(--hs-primary), var(--l-layout-border-default));
 }
 
 .ub-select__more-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
   height: 36px;
   transform: rotate(90deg);
   color: hsl(var(--hs-control), var(--l-state-default));
@@ -808,4 +820,20 @@ export default {
 .u-select-icon-warning {
   color: hsl(var(--hs-warning), var(--l-state-default));
 }
+
+.u-select > .u-select__dropdown {
+  border-left: 1px solid hsl(var(--hs-border), var(--l-layout-border-light));
+}
+.u-select .el-input__inner {
+  border: none;
+}
+
+/*hover must be before focus to give a focus priority*/
+.u-select:hover {
+  border-color: hsl(var(--hs-border), var(--l-input-border-hover));
+}
+.u-select:focus-within {
+  border-color: hsl(var(--hs-primary), var(--l-layout-border-default));
+}
+
 </style>

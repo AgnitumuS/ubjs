@@ -161,7 +161,7 @@ class DDLGenerator {
     // load referenced object for comparator
     this.relatedEntities.forEach((entityName) => {
       const entity = domain.get(entityName)
-      if (alreadyTraversed.has(entity)) {
+      if (alreadyTraversed.has(entity) || (entity.dsType !== UBDomain.EntityDataSourceType.Normal)) {
         return // continue
       }
       const tabDef = this.createReference(conn, entity)
