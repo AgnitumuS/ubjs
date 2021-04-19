@@ -6,15 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.21.2] - 2021-04-19
+### Added
  - `ubcli generateDDL` create a backup script in case previous DDL generation script exists (by adding .bak to file name)
 
 ### Changed
  - `ubcli generateDDL` for Oracle - dramatically speed up by reset a connection NLS_SORT and NLS_COMP to BINARY - 
    this allows Oracle to use indexes for queries over system views. 
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `ubcli generateDDL` fixed for Oracle **sequences** defined in metadata `pkGenerator`:

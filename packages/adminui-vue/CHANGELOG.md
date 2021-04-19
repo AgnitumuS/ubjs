@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - Full Text Search shortcut is changed to `Ctrl+Shift+F` to prevent conflict with `Ctrl+F` actions.
-- `UTableEntity`: sorting for column based on `Entity` attributes (lookups) use description attribute of the associated entity instead of `ID`
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.20.7] - 2021-04-19
+### Changed
+ - Full Text Search shortcut is changed to `Ctrl+Shift+F` to prevent conflict with `Ctrl+F` actions.
+- `UTableEntity`: sorting for column based on `Entity` attributes (lookups) use description attribute of the associated entity instead of `ID`
 
 ### Fixed
  - `UCodeMirror` - returned visibility of help (`?`) mark
