@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - Full Text Search shortcut is changed to `Ctrl+Shift+F` to prevent conflict with `Ctrl+F` actions.
+- `UTableEntity`: sorting for column based on `Entity` attributes (lookups) use description attribute of the associated entity instead of `ID`
 
 ### Deprecated
 

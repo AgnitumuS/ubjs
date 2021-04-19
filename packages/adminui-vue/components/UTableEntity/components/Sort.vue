@@ -155,12 +155,12 @@ export default {
       set (order) {
         if (order === 'none') {
           this.$store.dispatch('updateSort', null)
+        } else {
+          this.$store.dispatch('updateSort', {
+            column: this.selectedSortableColumnId,
+            order
+          })
         }
-
-        this.$store.dispatch('updateSort', {
-          column: this.selectedSortableColumnId,
-          order
-        })
       }
     },
 

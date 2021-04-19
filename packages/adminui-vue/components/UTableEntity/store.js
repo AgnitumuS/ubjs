@@ -74,8 +74,14 @@ module.exports = (instance) => ({
       repo.attrsIf(!repo.fieldList.includes('ID'), 'ID')
 
       if (state.sort) {
-        if (repo.orderList && repo.orderList.length) repo.orderList = [] // clean default repository sort
-        repo.orderBy(state.sort.column, state.sort.order)
+        if (repo.orderList && repo.orderList.length) {
+          // clean default repository sort
+          repo.orderList = []
+        }
+
+        const { column, descriptionAttrColumn, order } = state.sort
+        const sortColumn = descriptionAttrColumn || column
+        repo.orderBy(sortColumn, order)
       }
 
       for (const filter of state.filters) {
@@ -374,7 +380,16 @@ module.exports = (instance) => ({
       await dispatch('fetchItems')
     },
 
-    async updateSort ({ commit, dispatch }, sort) {
+    async updateSort ({ commit, dispatch, getters }, sort) {
+      if (sort !== null) {
+        const columnConfig = getters.columns.find(column => column.id === sort.column)
+        if (columnConfig.attribute.dataType === 'Entity') {
+          const { associatedEntity } = columnConfig.attribute
+          const descriptionAttribute = UB.connection.domain.get(associatedEntity).getDescriptionAttribute()
+          sort.descriptionAttrColumn = `${sort.column}.${descriptionAttribute}`
+        }
+      }
+
       commit('SORT', sort)
       commit('PAGE_INDEX', 0)
       await dispatch('fetchItems')
