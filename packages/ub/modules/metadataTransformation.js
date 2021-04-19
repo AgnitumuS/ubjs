@@ -81,8 +81,8 @@ function loadDomainIntoJS (skipNativeEntityInit) {
     })
     console.timeEnd('applying hooks')
   }
-  console.time('native init')
   if (!skipNativeEntityInit) {
+    console.time('native init')
     for (const en in domainJSON) {
       const e = domainJSON[en]
       try {
@@ -92,8 +92,8 @@ function loadDomainIntoJS (skipNativeEntityInit) {
         throw err
       }
     }
+    console.timeEnd('native init')
   }
-  console.timeEnd('native init')
   return domainJSON
 }
 

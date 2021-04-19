@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `allLocales` endpoint, when loading as JSON files, now merges all models, and return as a normal key-value resources.
+   Add 2 more parameters: `includeDomain` and `includeData`, which would merge appropriate type of resources in:
+   - `includeDomain` controls inclusion of `entityCode: caption` and `entityCode.attribute: caption` resources,
+   - `includeData` controls reading and including JSON files from `_data/locale/lang-nn.json` files, resources, which
+     are needed for data migration only.
 
 ### Deprecated
 

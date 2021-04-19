@@ -26,6 +26,7 @@ const { uba_common, GC_KEYS, ubVersionNum } = require('@unitybase/base')
 const appBinding = process.binding('ub_app')
 const options = require('@unitybase/base').options
 const AUTH_MOCK = options.switchIndex('-authMock') >= 0
+const loadDomainIntoJS = require('./metadataTransformation')
 
 // init zonesAuthenticationMethods
 const ZONES_AUTH_MAP = {}
@@ -494,30 +495,62 @@ function restEp (req, resp) {
  * excluding adminui-pub what injected before login window
  *
  *      GET allLocales?lang=en
+ *      GET allLocales?lang=en&json=1&includeDomain=1&includeData=1
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  * @private
  */
 function allLocalesEp (req, resp) {
-  const { lang, json } = req.parsedParameters
+  const { lang, json, includeData, includeDomain } = req.parsedParameters
   if (!lang || lang.length > 5) return resp.badRequest('lang parameter required')
   const supportedLanguages = App.serverConfig.application.domain.supportedLanguages || ['en']
   if (supportedLanguages.indexOf(lang) === -1) return resp.badRequest('unsupported language')
 
   if (json) {
-    // Get lang-<xx>.json files only and combine then into one JSON
-    const parts = []
-    for (const model of App.domainInfo.orderedModels) {
-      if (!model.realPublicPath) continue
 
-      const localeFile = path.join(model.realPublicPath, 'locale', `lang-${lang}.json`)
-      if (!fs.existsSync(localeFile)) continue
+    const resources = {}
 
-      const content = fs.readFileSync(localeFile, 'utf-8')
-      parts.push(`"${model.name}":${content}`)
+    if (includeDomain) {
+      if (App.localIPs.indexOf(Session.callerIP) === -1) {
+        resp.writeEnd('includeDomain is not allowed for remote clients')
+        resp.statusCode = 403
+        return
+      }
+
+      const rawDomain = loadDomainIntoJS(true)
+
+      for (const [entityCode, {langs}] of Object.entries(rawDomain)) {
+        const entityLang = langs && langs[lang]
+        if (!entityLang) continue
+
+        if (entityLang.caption) {
+          resources[entityCode] = entityLang.caption
+        }
+        if (entityLang.attributes) {
+          for (const attr of entityLang.attributes) {
+            resources[entityCode + '.' + attr.name] = attr.caption
+          }
+        }
+      }
     }
-    resp.writeEnd('{' + parts.join(',') + '}')
+
+    const mergeFileIntoResources = (...dirComponents) => {
+      if (!dirComponents[0]) return
+
+      const localeFile = path.join(...dirComponents, `locale/lang-${lang}.json`)
+      if (fs.existsSync(localeFile)) {
+        _.merge(resources, require(localeFile))
+      }
+    }
+
+    for (const model of App.domainInfo.orderedModels) {
+      mergeFileIntoResources(model.realPublicPath)
+      mergeFileIntoResources(model.realPath, '_data')
+    }
+
+    resp.writeEnd(resources)
+
   } else {
     // Get lang-<xx>.js and lang-<xx>.json together and wrap as executable client-side code
     let cached = App.globalCacheGet(`${GC_KEYS.UB_LOCALE_REQ_}${lang}`)
