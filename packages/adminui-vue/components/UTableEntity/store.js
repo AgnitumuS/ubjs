@@ -82,10 +82,6 @@ module.exports = (instance) => ({
         const { column, descriptionAttrColumn, order } = state.sort
         const sortColumn = descriptionAttrColumn || column
         repo.orderBy(sortColumn, order)
-
-        if (descriptionAttrColumn !== undefined && !repo.fieldList.includes(descriptionAttrColumn)) {
-          repo.fieldList.push(descriptionAttrColumn)
-        }
       }
 
       for (const filter of state.filters) {
