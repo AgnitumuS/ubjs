@@ -1,3 +1,4 @@
+/* eslint-disable node/no-deprecated-api */
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
@@ -201,7 +202,7 @@ function mergeNamedCollections (orig, desc) {
   ) {
     if (!orig.length) return desc
     desc.forEach(dItem => {
-      let oItem = orig.find(oItem => oItem.name === dItem.name)
+      const oItem = orig.find(oItem => oItem.name === dItem.name)
       if (oItem) {
         _.mergeWith(oItem, dItem, mergeNamedCollections)
       } else {
