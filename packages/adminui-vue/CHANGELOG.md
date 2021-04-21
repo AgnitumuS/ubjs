@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
--`Form`: Fixed error displaying the message was `err` correct `err.message`
+-`UForm`: fix messages for errors what can be throwed inside `UForm.mount`
 
 ## [5.20.7] - 2021-04-19
 ### Changed
