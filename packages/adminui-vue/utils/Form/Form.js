@@ -281,7 +281,7 @@ class UForm {
       try {
         await this.$store.dispatch('init')
       } catch (err) {
-        throw new UB.UBError(err)
+        throw new UB.UBError(err.message)
       }
     }
 
