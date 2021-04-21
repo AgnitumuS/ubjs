@@ -8,6 +8,7 @@ App.registerEndpoint('setDocumentPerfTest', setDocumentPerfTestEp, false)
 
 App.registerEndpoint('upload', (req, resp) => {
   console.log(req.headers)
+  console.log('parsedParameters=', req.parsedParameters)
   resp.writeEnd(req.headers)
   resp.statusCode = 200
 }, false)
@@ -53,16 +54,16 @@ App.registerEndpoint('queueMails', (req, resp) => {
 }, false)
 App.registerEndpoint('pdfsign', testPdfSignerSpeed, false)
 
-/** 
+/**
  * test socket limit exceed while use mailer
  */
 App.registerEndpoint('sockOverflow', (req, resp) => {
   const mailerParams = App.serverConfig.application.customSettings.mailerConfig
   const UBMail = require('@unitybase/mailer')
   const arr = []
-  for (let i=0; i < 32000; i++) {
+  for (let i = 0; i < 32000; i++) {
     console.debug('Mailer: before new TubMailSender ' + i)
-    let mailSender = new UBMail.TubMailSender({
+    const mailSender = new UBMail.TubMailSender({
       host: mailerParams.targetHost,
       port: mailerParams.targetPort || '25',
       user: mailerParams.user || '',
@@ -100,12 +101,12 @@ function testPdfSignerSpeed (req, resp) {
  */
 function redisQueueListener (req, resp) {
   const TRedisClient = process.binding('synode_redis').TSMRedisClient
-  let REDIS_CONN = new TRedisClient()
+  const REDIS_CONN = new TRedisClient()
   REDIS_CONN.initialize('127.0.0.1', '6379')
   console.log(`waiting for values in "mylist" list...
   Use 'LPUSH mylist a b c' in redis-cli to push some values`)
-  let brpop=[]
-  for (let i=0; brpop !== null; i++) {
+  let brpop = []
+  for (let i = 0; brpop !== null; i++) {
     brpop = REDIS_CONN.commands('brpop', 'mylist', 0) // 5 second wait
     console.log('Result from brpop is ', brpop)
     if (brpop !== null) {
@@ -117,7 +118,7 @@ function redisQueueListener (req, resp) {
         App.dbRollback()
         console.error(e)
       }
-      //sleep(100) // do some work
+      // sleep(100) // do some work
       console.log('continue listening...')
     } else {
       console.log('terminated')
@@ -125,13 +126,13 @@ function redisQueueListener (req, resp) {
   }
   console.log('Worker thread terminated')
   resp.statusCode = 200
-  //resp.writeEnd('reds queue listener terminated')
+  // resp.writeEnd('reds queue listener terminated')
 }
 App.registerEndpoint('listenToRedis', redisQueueListener, true)
 
 const TST_DICT = UB.DataStore('tst_dictionary')
-function doOnQueueValue(val) {
-  TST_DICT.run('insert',{
+function doOnQueueValue (val) {
+  TST_DICT.run('insert', {
     execParams: {
       code: val,
       filterValue: 1
@@ -141,9 +142,9 @@ function doOnQueueValue(val) {
 
 UB.start()
 
-console.log('Verify adding of 50 listeners not produce a ERR in console');
-for (let i=0; i < 50; i++) {
-  uba_user.on('select:after', function(){})
+console.log('Verify adding of 50 listeners not produce a ERR in console')
+for (let i = 0; i < 50; i++) {
+  uba_user.on('select:after', function () {})
 }
 
 console.log('SUPPORTED LANGS ARE', App.serverConfig.application.domain.supportedLanguages)
