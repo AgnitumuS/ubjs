@@ -242,7 +242,8 @@ UB.get('downloads/cert/ACSK(old).cer', {responseType: 'arraybuffer'})
    * @param {String} requestConfig.url  Absolute or relative URL of the resource that is being requested
    * @param {String} [requestConfig.method] HTTP method (e.g. 'GET', 'POST', etc). Default is GET
    * @param {Object.<string|Object>} [requestConfig.params] Map of strings or objects which will be turned
-   *      to `?key1=value1&key2=value2` after the url. If the value is not a string, it will be JSONified
+   *      to `?key1=value1&key2=value2` after the url. If the value is not a string, it will be JSONified.
+   *      Keys and values are URL encoded inside a function.
    * @param {String|Object} [requestConfig.data] Data to be sent as the request message data
    * @param {Object} [requestConfig.headers]  Map of strings or functions which return strings representing
    *      HTTP headers to send to the server. If the return value of a function is null, the
