@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.9.4] - 2021-04-22
 ## [5.9.3] - 2021-04-16
 ### Added
   - Dutch and Uzbek languages added
