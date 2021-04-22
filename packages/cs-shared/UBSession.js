@@ -121,11 +121,7 @@ function UBSession (authResponse, secretWord, authSchema) {
  */
 UBSession.prototype.hexa8 = function hexa8 (value) {
   const num = parseInt(value, 10)
-  let res = isNaN(num) ? '00000000' : num.toString(16)
-  while (res.length < 8) {
-    res = '0' + res
-  }
-  return res
+  return isNaN(num) ? '00000000' : num.toString(16).padStart(8, '0')
 }
 const hexa8 = UBSession.prototype.hexa8
 
