@@ -560,7 +560,7 @@ function allLocalesEp (req, resp) {
       for (const model of App.domainInfo.orderedModels) {
         if (!model.realPublicPath) continue
         let localeFile = path.join(model.realPublicPath, 'locale', `lang-${lang}.json`)
-        if (fs.existsSync(localeFile)) { // JSON since localization (UB 5.19.3)
+        if (fs.existsSync(localeFile)) { // JSON localization (since UB 5.19.3)
           const content = fs.readFileSync(localeFile, 'utf-8')
           cached += `\n// ${model.name} localization\nUB.i18nExtend(\n${content}\n)`
         }

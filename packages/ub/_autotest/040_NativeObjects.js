@@ -22,5 +22,5 @@ for (let i = 0; i < 100; i++) {
   s = s + String.fromCharCode(i)
   assert.strictEqual(SHA256(s).toString(), nsha256(s), 'SHA256 fail on i =' + i)
 }
-console.time('sha'); for (let i = 0; i < 1000; i++) { SHA256(s).toString() } console.timeEnd('sha')
-console.time('Nsha'); for (let i = 0; i < 1000; i++) { nsha256(s) } console.timeEnd('Nsha')
+console.time('sha'); for (let i = 0; i < 100; i++) { SHA256(s).toString() } console.timeEnd('sha')
+console.time('Nsha'); for (let i = 0; i < 100; i++) { nsha256(s) } console.timeEnd('Nsha')
