@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UBSession.crc32` will transform a string to UTF8 array before calc crc32.
+   This allows to calc a CRC32 for string with non-english characters (used for example by CERT2 auth in non-simple mode)
 
 ## [5.6.3] - 2021-04-16
 ## [5.6.2] - 2021-04-13
