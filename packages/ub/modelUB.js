@@ -178,7 +178,7 @@ function start () {
   /**
    * @deprecated Use `const UB = require('@unitybase/ub')`
    */
-  global.UB = UB
+  Object.assign(global.UB, UB)
   /**
    * @deprecated Use `const App = require('@unitybase/ub').App`
    */

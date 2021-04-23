@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - fix `global.UB.getServerConfiguration is not a function` error (can occur during thread initialization)
+   by prevent override a legacy `global.UB` object
 
 ## [5.21.5] - 2021-04-22
 ## [5.21.4] - 2021-04-19

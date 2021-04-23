@@ -29,14 +29,11 @@
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/weekly_updates" />
-      <excludeFolder url="file://$MODULE_DIR$/apps/docs-adminui" />
       <excludeFolder url="file://$MODULE_DIR$/packages/pdf/libs" />
-      <excludeFolder url="file://$MODULE_DIR$/packages/adminui-vue/node_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/packages/adminui-pub/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/docs-adminui/build" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/docs-adminui/localdb" />
     </content>
     <content url="file://$MODULE_DIR$/apps/autotest/node_modules/@ub-e/web-dav" />
-    <content url="file://$MODULE_DIR$/packages/adminui-pub/node_modules" />
-    <content url="file://$MODULE_DIR$/packages/adminui-vue/node_modules" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
