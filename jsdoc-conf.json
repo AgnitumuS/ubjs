@@ -136,7 +136,7 @@
           },
           "vue_cmp": {
             "title": "UI components",
-            "link": "/api/adminui-vue/index.htm"
+            "link": "/api/adminui-vue/index.html"
           }
         }
       },
