@@ -1,13 +1,13 @@
-const _ = require('lodash')
 const options = require('./options')
 const fs = require('fs')
-const path = require('path')
 const http = require('http')
-const url = require('url')
 const SyncConnection = require('./SyncConnection')
 
+if (!global.__UB_int) {
+  throw new Error('Please, update a server to UB@5.20 or up')
+}
+
 /**
- *
  * Command-line utils for connecting to a UnityBase server
  * @example
 
@@ -54,12 +54,7 @@ module.exports = {
  * @return {String}
  */
 function getConfigFileName () {
-  if (global.UB && global.UB.getConfigFileName) {
-    // config related functions moved inside server UB.js resource
-    return global.UB.getConfigFileName()
-  } else {
-    console.error('UnityBase server >= 5.18.12 is required for this version of @unitybase/base')
-  }
+  return global.__UB_int.getConfigFileName()
 }
 
 const verboseMode = options.switchIndex('noLogo') === -1
@@ -242,7 +237,7 @@ function checkServerStarted (URL) {
  * @return {Object}
  */
 function getServerConfiguration (forFutureSave = false) {
-  return global.UB.getServerConfiguration(forFutureSave)
+  return global.__UB_int.getServerConfiguration(forFutureSave)
 }
 
 /**

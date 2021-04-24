@@ -43,6 +43,16 @@ const UB = module.exports = {
    * @propety {ESecurityException} ESecurityException
    */
   ESecurityException: Errors.ESecurityException,
+  /**
+   * Creates namespaces to be used for scoping variables and classes so that they are not global.
+   *
+   *     UB.ns('DOC.Report');
+   *     DOC.Report.myReport = function() { ... };
+   *
+   * @deprecated Try to avoid namespaces - instead create a modules and use require()
+   * @param {String} namespacePath
+   * @return {Object} The namespace object.
+   */
   ns: ns,
   format: format,
   /**
@@ -161,7 +171,7 @@ console.log(UB.i18n(yourMessage, 'uk'))
    * @param {string} mixinName A name used as "mixins" section key inside entity *.meta file
    * @param {MixinModule} mixinModule A module what implements a MixinModule interface
    */
-  registerMixinModule: mixinsFactory.registerMixinModule,
+  registerMixinModule: mixinsFactory.registerMixinModule
 }
 
 /**
@@ -178,7 +188,7 @@ function start () {
   /**
    * @deprecated Use `const UB = require('@unitybase/ub')`
    */
-  Object.assign(global.UB, UB)
+  global.UB = UB
   /**
    * @deprecated Use `const App = require('@unitybase/ub').App`
    */
@@ -253,16 +263,6 @@ function initializeDomain () {
   // 2) fLog.Log(sllInfo, 'Check blob store "%" folder "%": folder exists', [fAppConfig.blobStores[i].name, fAppConfig.blobStores[i].path]);
 }
 
-/**
- * Creates namespaces to be used for scoping variables and classes so that they are not global.
- *
- *     UB.ns('DOC.Report');
- *     DOC.Report.myReport = function() { ... };
- *
- * @deprecated Try to avoid namespaces - instead create a modules and use require()
- * @param {String} namespacePath
- * @return {Object} The namespace object.
- */
 function ns (namespacePath) {
   let root = global
   const parts = namespacePath.split('.')
