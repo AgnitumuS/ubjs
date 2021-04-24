@@ -5,6 +5,7 @@
 
 const path = require('path')
 const fs = require('fs')
+const format = require('@unitybase/base').format
 
 /**
  * Check database already exists
@@ -50,11 +51,11 @@ function splitAndExec (stmts, targetConn) {
  */
 module.exports.createDatabase = function createDatabase (dbConn, databaseConfig) {
   let script = fs.readFileSync(path.join(__dirname, 'mssqlCreateDatabase.sql'), 'utf8')
-  script = UB.format(script, databaseConfig.databaseName, databaseConfig.userID, databaseConfig.password)
+  script = format(script, databaseConfig.databaseName, databaseConfig.userID, databaseConfig.password)
   splitAndExec(script, dbConn)
 
   script = fs.readFileSync(path.join(__dirname, 'mssqlCreateLogin.sql'), 'utf8')
-  script = UB.format(script, databaseConfig.databaseName, databaseConfig.userID, databaseConfig.password)
+  script = format(script, databaseConfig.databaseName, databaseConfig.userID, databaseConfig.password)
   splitAndExec(script, dbConn)
 }
 
