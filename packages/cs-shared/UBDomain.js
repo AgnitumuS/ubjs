@@ -204,7 +204,7 @@ UBDomain.prototype.filterEntities = function (predicate) {
     return _.filter(this.entities, function (item) {
       let res = true
       for (const prop in predicate) {
-        if (predicate.hasOwnProperty(prop)) {
+        if (Object.prototype.hasOwnProperty.call(predicate, prop)) {
           res = res && (item[prop] === predicate[prop])
         }
       }
@@ -374,7 +374,7 @@ UBDomain.jsonReplacer = function (k, v) {
   const jr = this.__proto__.forJSONReplacer
   if (jr) {
     // skip props marked as null inside forJSONReplacer collection
-    if (jr.hasOwnProperty(k) && jr[k] === null) return undefined
+    if (Object.prototype.hasOwnProperty.call(jr, k) && jr[k] === null) return undefined
     // skip boolean props mach forJSONReplacer boolean values
     if (typeof v === 'boolean' && v === jr[k]) return undefined
   }
@@ -874,13 +874,14 @@ UBEntity.prototype.asPlainJSON = function (attributesAsArray = true, removeAttrs
   return entityJSON
 }
 
+// noinspection JSDeprecatedSymbols
 /**
  * Checks if current user has access to a specified entity method
  * @param {string} methodCode
  * @returns {Boolean}
  */
 UBEntity.prototype.haveAccessToMethod = function (methodCode) {
-  return (UB.isServer && process.isServer)
+  return ((typeof App !== 'undefined') && App.els) // server side
     ? App.els(this.code, methodCode)
     : this.entityMethods[methodCode] === 1
 }
@@ -902,7 +903,7 @@ UBEntity.prototype.filterAttribute = function (predicate) {
     return _.filter(this.attributes, function (item) {
       let res = true
       for (const prop in predicate) {
-        if (predicate.hasOwnProperty(prop)) {
+        if (Object.prototype.hasOwnProperty.call(predicate, prop)) {
           res = res && (item[prop] === predicate[prop])
         }
       }
@@ -1263,7 +1264,6 @@ UBEntity.prototype.getDetailsForUI = function () {
   })
   return result
 }
-
 
 /**
  * @class

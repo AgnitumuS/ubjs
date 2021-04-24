@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Deprecated
+ - `UB.ns` is deprecated and will be removed soon
 
 ### Removed
 

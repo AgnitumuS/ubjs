@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - ub server 5.20 compatibility - avoid global UB usage
 
 ### Deprecated
 
