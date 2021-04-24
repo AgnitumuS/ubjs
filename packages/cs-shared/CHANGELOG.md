@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.0] - 2021-04-24
 ## [5.6.4] - 2021-04-22
 ### Fixed
  - `UBSession.crc32` will transform a string to UTF8 array before calc crc32.
