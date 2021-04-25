@@ -56,6 +56,10 @@
 </template>
 
 <script>
+/**
+ * Modal dialog (message box) for showing errors, information and confirmation
+ * Do not use directly - ise function exported `dialogs` module
+ */
 export default {
   name: 'UDialog',
 
@@ -108,7 +112,7 @@ export default {
     async setFocus () {
       await this.$nextTick()
       const btn = this.$refs.cancelButton
-        ? this.$refs.cancelButton.$el // focut on 'Cancel' by default
+        ? this.$refs.cancelButton.$el // focus on 'Cancel' by default
         : this.$el.getElementsByClassName('u-button')[0] // no 'Cancel' button - search for first available
       if (btn) {
         btn.focus()

@@ -1,21 +1,36 @@
+/**
+ * Modal dialogs (message boxes) for showing errors, information and confirmation
+ * @module uDialogs
+ * @memberOf module:@unitybase/adminui-vue
+ */
+
 const Vue = require('vue')
 const UB = require('@unitybase/ub-pub')
-const UDialog = require('./UDialog.vue').default
+const UDialog = require('../components/UDialog.vue').default
 const { Notification } = require('element-ui')
 const UDialogConstructor = Vue.extend(UDialog)
 
 const USER_MESSAGE_RE = /^<<<([\S|\s]+)>>>$/
 
 /**
- * Show modal dialog with 3 optional button
+ * Show modal dialog with 3 optional button and text/html content.
+ * @example
+   const resp = await $App.uDialogs.dialog({
+     title: 'scan',
+     msg: 'noPaperInScanner',
+     type: 'warning',
+     buttons: {yes: 'tryAgain', cancel: 'stopScan'}
+   })
+   // here `resp` is either 'yes' or 'cancel'
+
  * @param {Object} options
  * @param {string} options.title Dialog title (will be translated using UB.i18n)
- * @param {string} options.msg Dialog message. Text of HTML string. Will be translated using UB.i18n. Support "magic" hyperlink
+ * @param {string} options.msg Dialog message. Text of HTML string. Will be translated using UB.i18n. Support "magic" hyperlink - see {@link module:magicLinks magicLinks}
  * @param {Object} options.buttons
  * @param {string} [options.buttons.yes] "yes" action text (will be translated). If not passed or empty "yes" button not displayed
  * @param {string} [options.buttons.no] "no" action text (will be translated). If not passed or empty "no" button not displayed
  * @param {string} [options.buttons.cancel] "cancel" action text (will be translated). If not passed or empty "cancel" button not displayed
- * @param {string} options.type dialog type (affects the icon). One of TODO `error`, `info`, `question` ...
+ * @param {string} options.type Type of icon. Can be any available el-icon-[type]. For example `error` will show `el-icon-error`. Recommended types are: `error`, `info`, `question`
  * @param [options.isDevInfo = false] If true adds "Copy to clipboard" button
  * @returns {Promise<string>} Promise resolved to one of 'yes', 'no' 'cancel' depending on button clicked.
  *   If dialog is closed using Esc key or by pressing window "close" button result is `cancel`
@@ -28,13 +43,13 @@ function dialog (options) {
 }
 
 /**
- * Confirmation dialog. Title & message are translated using UB.i18n
+ * Confirmation dialog. Title & message are translated using {@link module:@unitybase/ub-pub~i18n UB.i18n}
  * @example
 
- $App.dialogYesNo('makeChangesSuccessfullTitle', 'makeChangesSuccessfullBody')
+ $App.dialogYesNo('makeChangesSuccessfulTitle', 'makeChangesSuccessfulBody')
    .then(choice => {
      if (choice){
-       // do somethong on Yes answer
+       // do something on Yes answer
      } else {
        // do something on No answer
      }
@@ -57,7 +72,7 @@ function dialogYesNo (title, msg) {
 }
 
 /**
- * Show information dialog. msg is translated using UB.i18n
+ * Show information dialog. Title & message are translated using {@link module:@unitybase/ub-pub~i18n UB.i18n}
  * @param {string} msg
  * @param {String} [title='info'] title
  * @returns {Promise<boolean>} resolved to true then user click OK in other case - false
@@ -73,11 +88,11 @@ function dialogInfo (msg, title = 'info') {
 }
 
 /**
- * Show error dialog. msg is translated using UB.i18n
+ * Show error dialog. Title & message are translated using {@link module:@unitybase/ub-pub~i18n UB.i18n}
  * @param {string} msg
  * @param {string} [title='error'] title
- * @param {boolean} [isDevInfo=false]
- * @returns {Promise<boolean>} resolved to true then user click OK in other case - false
+ * @param {boolean} [isDevInfo=false] If true adds "Copy to clipboard" button
+ * @returns {Promise<boolean>} resolved to true when user press OK button, in other case (Esc) - false
  */
 function dialogError (msg, title = 'error', isDevInfo = false) {
   msg = msg.replace(USER_MESSAGE_RE, '$1')

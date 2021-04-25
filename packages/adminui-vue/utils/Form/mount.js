@@ -13,7 +13,7 @@ module.exports = {
 const Vue = require('vue')
 const UB = require('@unitybase/ub-pub')
 const Dialog = require('element-ui').Dialog
-const { dialog: $dialog } = require('../../components/dialog/UDialog')
+const uDialogs = require('../uDialogs')
 
 /**
  * Mount form in modal. Provide `isModal: true` to the child components, child components can inject it as `parentIsModal`
@@ -281,7 +281,7 @@ function mountTab ({
 function beforeClose ({ store, close }) {
   if (store) {
     if (store.getters.isDirty) {
-      $dialog({
+      uDialogs.dialog({
         title: UB.i18n('unsavedData'),
         msg: UB.i18n('confirmSave'),
         type: 'warning',

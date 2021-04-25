@@ -2,7 +2,7 @@
 module.exports = createProcessingModule
 
 const UB = require('@unitybase/ub-pub')
-const { dialogError, dialogDeleteRecord } = require('../../components/dialog/UDialog')
+const uDialogs = require('../uDialogs')
 const Vue = require('vue')
 const { Notification: $notify } = require('element-ui')
 const {
@@ -912,7 +912,7 @@ function createProcessingModule ({
        */
       async refresh ({ state, getters, commit, dispatch }) {
         if (getters.isDirty) {
-          const result = await $App.dialogYesNo('refresh', 'formWasChanged')
+          const result = await uDialogs.dialogYesNo('refresh', 'formWasChanged')
 
           if (!result) return
         }
@@ -949,7 +949,7 @@ function createProcessingModule ({
             return
           }
         }
-        const answer = await dialogDeleteRecord(masterEntityName, state.data)
+        const answer = await uDialogs.dialogDeleteRecord(masterEntityName, state.data)
 
         if (answer) {
           commit('LOADING', {
@@ -1029,7 +1029,7 @@ function createProcessingModule ({
             })
             $notify.success(UB.i18n('lockSuccessCreated'))
           } else {
-            return dialogError(UB.i18n('softLockInfo', resultLock.lockUser, UB.formatter.formatDate(resultLock.lockTime, 'dateTimeFull')))
+            return uDialogs.dialogError(UB.i18n('softLockInfo', resultLock.lockUser, UB.formatter.formatDate(resultLock.lockTime, 'dateTimeFull')))
           }
         }).catch(e => {
           UB.showErrorWindow(e)

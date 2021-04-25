@@ -1,61 +1,44 @@
 Extends UnityBase adminUI by Vue + ElementUI libraries.
 Starts from UB@5 Vue is a preferred way to build a UI.
 
-This documentation contains a JS (non-visual) functionns/methods/modules exported by @unitybase/adminui-vue.
+This documentation contains a JS (non-visual) functions/methods/modules exported by @unitybase/adminui-vue.
 For documentation of the VueJS based UI components see [UI library for Vue](/api/adminui-vue/index.html).
 
-# What included
-## JavaScript libraries
- - `VueJS` (exported as global Vue variable and registered in SystemJS as 'vue')
- - `ElementUI` (exported as global ElementUI variable and registered in SystemJS as 'element-ui')
- - `@unitybase/ub-pub` available as `Vue.prototype.$UB` (or this.$UB inside vue component)  
- - `UB.i18n` integrated into Vue as `$ut`
+## What included
+ - `VueJS` - exported as global Vue variable and registered in SystemJS as 'vue'
+ - `Vuex` - injected into Vue.prototype 
+ - `Vuelidate` - injected into Vue.prototype as `$v` 
+ - `throttle-debounce` - exported as `throttleDebounce`
+ - `magicLink` - a hyperlink click custom actions - see {@link module:magicLinks}  
+ - `ElementUI` - exported as global ElementUI variable and registered in SystemJS as 'element-ui'
+ - `@unitybase/ub-pub` - available as `Vue.prototype.$UB` (or this.$UB inside vue component)  
+ - `UB.i18n` - integrated into Vue as `$ut`
  - `i18n` filter available in vue templates. Lines below produce the same output
  ```vue
-  <div> {{ 'uba_user' | i18n}} </div>
-  <div> {{ $ut('uba_user') }} </div>
+ <div> {{ 'uba_user' | i18n}} </div>
+ <div> {{ $ut('uba_user') }} </div>
 ```
-
-## CSS
  - `dist/adminui-vue.css` theme include normalize.css && modified element-theme-chalk
- - theme will add border radius to ExtJS form fields, so Ext based forms looks like Elements based forms
-
-## Modern login page
-
-Located in `/views/ub-auth.html`. The path to this page is a default for `uiSettings.adminUI.loginURL`
-
+ - modern login page - located in `/views/ub-auth.html`. The path to this page is a default for `uiSettings.adminUI.loginURL`
 
 # Usage
 ## adminUI based app
- To build an `adminUI` based application a `@unitybase/adminui-vue` model should be added to the `domain.models`
- section of config after `adminui-pub`
+ An `adminUI` based application should adds a `@unitybase/adminui-vue` model into `domain.models`
+ section of ubConfig after `adminui-pub`
 
 ```
 "application": {
   "domain": {
     "models": [
-		...
-		{
-			"path": "./node_modules/@unitybase/ub-pub"
-		},
-		{
-			"path": "./node_modules/@unitybase/adminui-pub"
-		},
-		{
-			"path": "./node_modules/@unitybase/adminui-reg"
-		},
-		{
-			"path": "./node_modules/@unitybase/adminui-vue"
-		}
-		..
+      ...
+      { "path": "./node_modules/@unitybase/adminui-vue" }
+      ..
 ```
 
 ## Stand-alone app
 See `/views/ub-auth.html` for sample
 
-### Compiled Vue app
-In case you embed a compiled Vue app into adminUI:
-
+### Embed a compiled Vue app into adminUI
 - define `output` and `externals` section into webpack config to prevent loading modules twice:
 ```
   output: {
@@ -74,7 +57,6 @@ In case you embed a compiled Vue app into adminUI:
   }
 ```
 
-# Contribution
 ## Debugging
 ### ElementUI in debug mode 
  For better debugging experience we recommend rebuilding element-ui in development mode.
@@ -108,7 +90,7 @@ Generate variables
 npm run gen-el-vars
 ```
 
-Edit theme/ub-el.scss. Build it:
+Edit theme/ub-el.scss and build a theme using command:
 
 ```
 npm run build:theme
