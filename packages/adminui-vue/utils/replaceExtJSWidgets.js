@@ -11,17 +11,16 @@ module.exports = {
 const UB = require('@unitybase/ub-pub')
 const Vue = require('vue')
 const { Notification } = require('element-ui')
-const dialogs = require('../components/dialog/UDialog')
+const uDialogs = require('./uDialogs')
 const UNavbar = require('../components/navbar/UNavbar.vue').default
 const UAutoForm = require('../components/UAutoForm.vue').default
-const { dialog, dialogInfo, dialogYesNo, dialogError } = dialogs
 const Form = require('./Form/Form')
 const { mountTableEntity } = require('./Form/mount')
 
 function replaceExtJSDialogs () {
   // rename buttonText - > buttons, fn -> callback and call `dialog`
   Ext.Msg.confirm = function ({ title, msg, fn: callback, buttonText: buttons }) {
-    return dialog({
+    return uDialogs.dialog({
       title,
       msg,
       buttons,
@@ -32,9 +31,10 @@ function replaceExtJSDialogs () {
     })
   }
 
-  $App.dialogYesNo = dialogYesNo
-  $App.dialogInfo = dialogInfo
-  $App.dialogError = dialogError
+  $App.dialogYesNo = uDialogs.dialogYesNo
+  $App.dialogInfo = uDialogs.dialogInfo
+  $App.dialogError = uDialogs.dialogError
+  $App.uDialogs = uDialogs
 
   Ext.override(UB.view.BasePanel, {
     showValidationErrors () {

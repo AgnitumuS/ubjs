@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - all dialogs now exported as `uDialogs` object from adminui-vue packages and documented in [adminui-vue dosumentation on site](https://unitybase.info/api/ubpub-v5/module-@unitybase_adminui-vue.html)
 
 ### Changed
 
@@ -1041,7 +1042,7 @@ this.$formatByPattern.formatNumber(
 ## [1.11.0] - 2020-05-22
 ### Added
  - `utils/lookups` method `subscribe` - subscribes to a local entity changes.
- Lookup attrs already includes ID and description attribute for current entity can be extend by attrs param.
+ Lookup attrs already includes ID and description attribute for current entity can be extended by attrs param.
  ```javascript
  await lookups.subscribe('tst_dictionary', ['code', 'userID'])
  ```

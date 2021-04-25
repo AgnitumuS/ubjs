@@ -1,6 +1,6 @@
 const UB = require('@unitybase/ub-pub')
 const { Notification: $notify } = require('element-ui')
-const { dialogDeleteRecord, dialogInfo } = require('../dialog/UDialog')
+const uDialogs = require('../../utils/uDialogs')
 const { exportExcel, exportCsv, exportHtml } = require('../../utils/fileExporter')
 const lookups = require('../../utils/lookups')
 const AUDIT_ENTITY = 'uba_auditTrail'
@@ -460,7 +460,7 @@ module.exports = (instance) => ({
       if (ID === null) return
 
       const item = state.items.find(i => i.ID === ID)
-      const answer = await dialogDeleteRecord(getters.entityName, item)
+      const answer = await uDialogs.dialogDeleteRecord(getters.entityName, item)
 
       if (answer) {
         try {
@@ -684,7 +684,7 @@ module.exports = (instance) => ({
         resultHtml += `<h4>${UB.i18n('table.summary.columnSummaries')}:</h4>${sumsHtml}`
       }
       resultHtml += `<br><br><b>${UB.i18n('table.summary.totalRowCount')}:</b> ${UB.formatter.formatNumber(resultRow[0], 'number')}`
-      await dialogInfo(resultHtml, 'summary')
+      await uDialogs.dialogInfo(resultHtml, 'summary')
     },
 
     async createNewVersion ({ getters }, ID) {
