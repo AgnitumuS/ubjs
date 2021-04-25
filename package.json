@@ -3,27 +3,27 @@
   "private": true,
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs",
   "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/preset-env": "^7.12.1",
-    "babel-loader": "^8.1.0",
+    "@babel/core": "^7.13.16",
+    "@babel/preset-env": "^7.13.15",
+    "babel-loader": "^8.2.2",
     "clean-css-cli": "^5.2.2",
-    "css-loader": "^5.1.4",
-    "eslint": "^7.22.0",
-    "eslint-plugin-vue": "^7.8.0",
+    "css-loader": "^5.2.4",
+    "eslint": "^7.25.0",
+    "eslint-plugin-vue": "^7.9.0",
     "exports-loader": "^2.0.0",
     "file-loader": "^6.2.0",
     "imports-loader": "^2.0.0",
     "lerna": "^4.0.0",
-    "lodash": "^4.17.20",
-    "mini-css-extract-plugin": "^1.3.9",
+    "lodash": "^4.17.21",
+    "mini-css-extract-plugin": "^1.5.0",
     "shx": "^0.3.3",
-    "standard": "^16.0.1",
+    "standard": "^16.0.3",
     "style-loader": "^2.0.0",
-    "uglify-js": "^3.11.5",
+    "uglify-js": "^3.13.4",
     "uglifycss": "*",
-    "webpack": "^5.28.0",
-    "webpack-bundle-analyzer": "^4",
-    "webpack-cli": "^4.5.0"
+    "webpack": "^5.35.1",
+    "webpack-bundle-analyzer": "^4.4.1",
+    "webpack-cli": "^4.6.0"
   },
   "scripts": {
     "clean": "lerna clean --yes",
@@ -37,7 +37,7 @@
     "npm": "^5"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
-    "ub-jsdoc": "^2.5.0"
+    "core-js": "^3.11.0",
+    "ub-jsdoc": "^2.5.2"
   }
 }

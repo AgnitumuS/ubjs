@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - all dialogs now exported as `uDialogs` object from adminui-vue packages and documented in [adminui-vue dosumentation on site](https://unitybase.info/api/ubpub-v5/module-@unitybase_adminui-vue.html)
+ - all dialogs now exported as `uDialogs` object from `adminui-vue` packages and documented in [adminui-vue dosumentation on site](https://unitybase.info/api/ubpub-v5/module-@unitybase_adminui-vue.html)
 
 ### Changed
 

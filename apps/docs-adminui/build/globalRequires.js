@@ -14,16 +14,16 @@ UB.inject('clientRequire/systemjs/dist/system.js').then(() => {
     },
     meta: {
       // '*': {nonce: 'cspNonce'}  if this line is added (cspNonce is a mustache variable) SystemJS override window.onerror
-      '*.css': {loader: 'css'},
-      'codemirror/*.js': {format: 'cjs'},
-      'tinymce/*.js': {format: 'global'},
-      'file-saver': {format: 'cjs'},
-      '*.def': {format: 'cjs'},
-      '*/adminui.app.min.js': {format: 'global'}, // important: adminui.min.js does not define anything
+      '*.css': { loader: 'css' },
+      'codemirror/*.js': { format: 'cjs' },
+      'tinymce/*.js': { format: 'global' },
+      'file-saver': { format: 'cjs' },
+      '*.def': { format: 'cjs' },
+      '*/adminui.app.min.js': { format: 'global' }, // important: adminui.min.js does not define anything
       '*.vue': {
-        'loader': '@unitybase/systemjs-plugin-vue-ub/dist/system_plugin_vue_ub.min.js'
+        loader: '@unitybase/systemjs-plugin-vue-ub/dist/system_plugin_vue_ub.min.js'
       },
-      '*/adminui-vue.min.js': {format: 'global'} // important: adminui-vue.min.js does not define anything
+      '*/adminui-vue.min.js': { format: 'global' } // important: adminui-vue.min.js does not define anything
     },
     packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
   })
