@@ -1,5 +1,9 @@
 /* global _ */
-
+/**
+ * Mount helpers for Vue components
+ * @module formHelpers
+ * @memberOf module:@unitybase/adminui-vue
+ */
 module.exports = {
   buildExecParams,
   mapInstanceFields,
@@ -16,9 +20,11 @@ module.exports = {
 }
 
 const UB = require('@unitybase/ub-pub')
-const truncTimeToUTCNull = UB.truncTimeToUtcNull
 const UB_DATA_TYPES = require('@unitybase/cs-shared').UBDomain.ubDataTypes
+/** @type VueConstructor */
 const Vue = require('vue')
+// eslint-disable-next-line no-unused-vars
+const Vuex = require('vuex') // required to see a Vuex.d.ts
 
 /**
  * @typedef {object} VuexTrackedInstance
@@ -47,7 +53,10 @@ const Vue = require('vue')
  */
 
 /**
- * A helper method to equal 2 params, can equal arrays or dates
+ * Check arg1 is strict equal to srg2, can compare primitive values, arrays (deep equal) or Date's. In addition:
+ *   - [] and undefined is equal
+ *   - {} and undefined is equal
+ *   - arrays equality is checked without element order ([1, 2] is equal to [2, 1])
  * @param {*} arg1
  * @param {*} arg2
  */
@@ -60,13 +69,9 @@ function isEqual (arg1, arg2) {
     if (arg2 === undefined) {
       arg2 = []
     }
-    if (!Array.isArray(arg1) || !Array.isArray(arg2)) {
+    if (!Array.isArray(arg1) || !Array.isArray(arg2) || (arg1.length !== arg2.length)) {
       return false
-    }
-    if (arg1.find(i => !arg2.includes(i))) {
-      return false
-    }
-    if (arg2.find(i => !arg1.includes(i))) {
+    } else if (arg1.find(v => !arg2.includes(v))) {
       return false
     }
     return true
@@ -204,7 +209,7 @@ function buildExecParams (trackedObj, entity) {
       const attr = schema.attributes[key]
       if (!(attr && attr.readOnly) && !key.includes('.')) {
         if (attr && attr.dataType === UB_DATA_TYPES.Date) {
-          execParams[key] = truncTimeToUTCNull(trackedObj.data[key])
+          execParams[key] = UB.truncTimeToUTCNull(trackedObj.data[key])
         } else {
           execParams[key] = value
         }
@@ -233,7 +238,7 @@ function buildExecParams (trackedObj, entity) {
     if (!key.includes('.')) {
       const attr = schema.attributes[key]
       if (trackedObj.data[key] && attr && attr.dataType === UB_DATA_TYPES.Date) {
-        execParams[key] = truncTimeToUTCNull(trackedObj.data[key])
+        execParams[key] = UB.truncTimeToUTCNull(trackedObj.data[key])
       } else {
         execParams[key] = trackedObj.data[key]
       }
@@ -254,27 +259,22 @@ function buildDeleteRequest (entity, ID) {
 }
 
 /**
- * Making dynamic set(), get() method for state of vuex
- * for instance fields
- * @param {string[]|string} moduleOrArr
- * @param {string[]} [arr]
+ * Create an object with getter and setter for each of passed stateDataProps from vuex store state.data[propName]
+ *
+ * Setter perform a validation (if property is a subject for validation in $v - see {@link UForm.validation}) and
+ * calls `SET_DATA` store mutation.
+ *
+ * @param {string[]} stateDataProps array of store state.data property names to create a getter/setter for
+ * @param {string} [submoduleName] optional submodule name of store state
  */
-function mapInstanceFields (moduleOrArr, arr) {
-  let module, properties
-  if (Array.isArray(moduleOrArr)) {
-    module = null
-    properties = moduleOrArr
-  } else {
-    module = moduleOrArr
-    properties = arr
-  }
-
+function mapInstanceFields (stateDataProps, submoduleName) {
+  if (!Array.isArray(stateDataProps)) throw new Error('First argument for mapInstanceFields must be array of string')
   const obj = {}
-  for (const key of properties) {
+  for (const key of stateDataProps) {
     obj[key] = {
       get () {
-        if (module) {
-          return this.$store.state[module].data[key]
+        if (submoduleName) {
+          return this.$store.state[submoduleName].data[key]
         } else {
           return this.$store.state.data[key]
         }
@@ -283,8 +283,8 @@ function mapInstanceFields (moduleOrArr, arr) {
         if (this.$v && key in this.$v) {
           this.$v[key].$touch()
         }
-        if (module) {
-          this.$store.commit(`${module}/SET_DATA`, { key, value })
+        if (submoduleName) {
+          this.$store.commit(`${submoduleName}/SET_DATA`, { key, value })
         } else {
           this.$store.commit('SET_DATA', { key, value })
         }
@@ -295,25 +295,23 @@ function mapInstanceFields (moduleOrArr, arr) {
 }
 
 /**
- * Making dynamic set(), get() method for state of vuex.
- * Vuex store or module which you want to use this function
- * need to includes SET mutation (from helpers).
- * @param {string|string[]} arg1
- * @param {string[]} [arg2]
+ * Create an object with getter and setter for each of passed stateProp from vuex store state.
+ * Setter calls a SET mutation what should be implemented in store (imported from helpers for example).
+ *
+ * @param {string[]} stateProps array of store state property names to create a getter/setter for
+ * @param {string} [submoduleName] optional submodule name of store state
  */
-function computedVuex (arg1, arg2) {
-  const isModule = typeof arg1 === 'string'
-  const moduleName = isModule ? arg1 : ''
-  const arr = isModule ? arg2 : arg1
-
+function computedVuex (stateProps, submoduleName) {
+  if (!Array.isArray(stateProps)) throw new Error('First argument for computedVuex must be array of string')
   const obj = {}
-  for (const key of arr) {
-    obj[key] = {
+  const SET_CMD = submoduleName ? submoduleName + '/SET' : 'SET'
+  for (const prop of stateProps) {
+    obj[prop] = {
       get () {
-        return moduleName ? this.$store.state[moduleName][key] : this.$store.state[key]
+        return submoduleName ? this.$store.state[submoduleName][prop] : this.$store.state[prop]
       },
       set (value) {
-        this.$store.commit(moduleName ? moduleName + '/SET' : 'SET', { key, value })
+        this.$store.commit(SET_CMD, { prop, value })
       }
     }
   }
@@ -321,9 +319,9 @@ function computedVuex (arg1, arg2) {
 }
 
 /**
- * Assign source store into target store
- * @param {object} target Target store
- * @param {object} source Source store
+ * Assign source store options into target store options
+ * @param {Vuex.StoreOptions} target Target store
+ * @param {Vuex.StoreOptions} source Source store
  */
 function mergeStore (target, source) {
   const sourceState = typeof source.state === 'function'
@@ -355,7 +353,7 @@ function mergeStore (target, source) {
 }
 
 /**
- * throw error if missing required prop of func
+ * throw error on missing required prop of func
  * @param param
  */
 function required (param) {

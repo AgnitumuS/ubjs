@@ -333,11 +333,11 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
         required
         :error="$v.code.$error"
       >
-        <el-input v-model="code" />
+        <u-base-input v-model="code" />
       </u-form-row>
 
       <!-- обертка для u-form-row которая смотрит на атрибут в сущности -->
-      <!--и по его типу рендерит нужный html и определяет валидацию -->
+      <!-- и по его типу рендерит нужный html + определяет валидацию -->
       <u-auto-field attribute-name="code" />
     </u-form-container>
   </div>

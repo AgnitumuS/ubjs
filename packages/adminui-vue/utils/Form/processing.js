@@ -1,9 +1,10 @@
-/* global $App */
 module.exports = createProcessingModule
 
 const UB = require('@unitybase/ub-pub')
 const uDialogs = require('../uDialogs')
 const Vue = require('vue')
+// eslint-disable-next-line no-unused-vars
+const Vuex = require('vuex') // required to see a Vuex.d.ts
 const { Notification: $notify } = require('element-ui')
 const {
   buildExecParams,
@@ -14,16 +15,41 @@ const {
   change,
   prepareCopyAddNewExecParams
 } = require('./helpers')
+
+/**
+ * @callback UbVuexStoreCollectionRequestBuilder
+ * @param {Object} state
+ * @param {UbVuexStoreCollectionInfo} collection
+ * @param {Object} execParams
+ * @param {Array<string>} fieldList
+ * @param {VuexTrackedObject} item
+ * @returns {Object}
+ */
+
+/**
+ * @callback UbVuexStoreCollectionDeleteRequestBuilder
+ * @param {Object} state
+ * @param {UbVuexStoreCollectionInfo} collection
+ * @param {VuexTrackedObject} item
+ * @returns {Object}
+ */
+
+/**
+ * @callback UbVuexStoreRepositoryBuilder
+ * @param {Vuex} store
+ * @returns {ClientRepository}
+ */
+
 /**
  * @typedef {object} UbVuexStoreCollectionInfo
  *
- * Metadata describing a detail collection edited on a form.
+ * Metadata what describes a detail collection what edited on the form.
  *
- * @property {function(store: Store): ClientRepository} repository
+ * @property {UbVuexStoreRepositoryBuilder} repository
  * @property {boolean} [lazy]
  *   An optional flag, indicating that collection shall not be loaded right away, but on demand
- * @property {function(state: object, collection: UbVuexStoreCollectionInfo, execParams: object, fieldList: string[], item: VuexTrackedObject): object} buildRequest
- * @property {function(state: object, collection: UbVuexStoreCollectionInfo, item: VuexTrackedObject): object} buildDeleteRequest
+ * @property {UbVuexStoreCollectionRequestBuilder} buildRequest
+ * @property {UbVuexStoreCollectionDeleteRequestBuilder} buildDeleteRequest
  */
 
 /**
@@ -54,7 +80,7 @@ const {
  *
  * @param {string} masterEntityName Name of entity for master record
  * @param {array<string>} masterFieldList Master request fieldList. If unset will set all fields in an entity
- * @param {object<string, UbVuexStoreCollectionInfo|function(store: Store): ClientRepository>} initCollectionsRequests Collections requests map
+ * @param {object<string, UbVuexStoreCollectionInfo|UbVuexStoreRepositoryBuilder>} initCollectionsRequests Collections requests map
  * @param {function} validator Function what returns Vuelidate validation object
  * @param {number} instanceID instanceID
  * @param {Object} [parentContext] Optional values for main instance attributes passed to addNew method
@@ -420,7 +446,7 @@ function createProcessingModule ({
 
       /**
        * Set "IsNew" flag for the master record.
-       * @param {Store.state} state
+       * @param {Vuex.state} state
        * @param {boolean} isNew
        */
       IS_NEW (state, isNew) {
@@ -429,7 +455,7 @@ function createProcessingModule ({
 
       /**
        * Set "IsCopy" flag.
-       * @param {Store.state} state
+       * @param {Vuex.state} state
        * @param {boolean} isCopy
        */
       IS_COPY (state, isCopy) {
@@ -472,11 +498,11 @@ function createProcessingModule ({
        *  - sets isNew
        *  - creates empty collections which passed on init processing module
        *  - dispatch `create` or `load` action
+       * @param {Vuex.Store} store
        */
       async init (store) {
-        const { state, commit, dispatch } = store
         for (const [key, collection] of Object.entries(initCollectionsRequests)) {
-          commit('LOAD_COLLECTION', {
+          store.commit('LOAD_COLLECTION', {
             collection: key,
             items: [],
             entity: collection.repository(store).entityName
@@ -485,14 +511,14 @@ function createProcessingModule ({
         if (beforeInit) {
           await beforeInit(store)
         }
-        commit('IS_NEW', !instanceID || state.isCopy)
+        store.commit('IS_NEW', !instanceID || store.state.isCopy)
 
-        if (state.isCopy) {
-          await dispatch('copyExisting')
-        } else if (state.isNew) {
-          await dispatch('create')
+        if (store.state.isCopy) {
+          await store.dispatch('copyExisting')
+        } else if (store.state.isNew) {
+          await store.dispatch('create')
         } else {
-          await dispatch('loadWithCollections', {
+          await store.dispatch('loadWithCollections', {
             collectionKeys: autoLoadedCollections
           })
         }
@@ -504,6 +530,7 @@ function createProcessingModule ({
       /**
        * Send add new request and load to instance props
        * that are response by the server
+       * @param {Vuex.Store} store
        */
       async create ({ commit }) {
         if (beforeCreate) {
@@ -532,7 +559,7 @@ function createProcessingModule ({
       /**
        * Load instance data by record ID or newInstanceID in case this record is just created
        *
-       * @param {Store} store
+       * @param {Vuex.Store} store
        * @param {number} [newInstanceID] optional row id to load. If omitted instanceID will be used
        */
       async load ({ commit }, newInstanceID) {
@@ -583,13 +610,11 @@ function createProcessingModule ({
        * then check if collections inited when processing module is created
        * then fetch data from server for each collection
        *
-       * @param {Store} store
+       * @param {Vuex.Store} store
        * @param {string[]} collectionKeys Collections keys
        */
       async loadCollections (store, collectionKeys) {
-        const { state, commit } = store
-
-        if (state.isNew) {
+        if (store.state.isNew) {
           return
         }
         for (const key of collectionKeys) {
@@ -599,7 +624,7 @@ function createProcessingModule ({
             return
           }
         }
-        commit('LOADING', {
+        store.commit('LOADING', {
           isLoading: true,
           target: 'loadCollections'
         })
@@ -617,13 +642,13 @@ function createProcessingModule ({
         )
         collectionsData.forEach((collectionData, index) => {
           const collection = collectionKeys[index]
-          commit('LOAD_COLLECTION', {
+          store.commit('LOAD_COLLECTION', {
             collection,
             items: collectionData,
             entity: initCollectionsRequests[collection].repository(store).entityName
           })
         })
-        commit('LOADING', {
+        store.commit('LOADING', {
           isLoading: false,
           target: 'loadCollections'
         })
@@ -632,6 +657,7 @@ function createProcessingModule ({
       /**
        * Load instance data by record ID or newInstanceID and load collections by collectionKeys
        *
+       * @param {Vuex.Store} store
        * @param {object} payload
        * @param {object} payload.collectionKeys Collections keys
        * @param {string} [payload.newInstanceID] optional row id to load. If omitted instanceID will be used
@@ -654,14 +680,13 @@ function createProcessingModule ({
       /**
        * Create copy of master record and all collections
        *
-       * @param {Store} store
+       * @param {Vuex.Store} store
        * @returns {Promise<void>}
        */
       async copyExisting (store) {
-        const { commit, dispatch } = store
         const collections = Object.keys(initCollectionsRequests)
 
-        commit('LOADING', {
+        store.commit('LOADING', {
           isLoading: true,
           target: 'createCopy'
         })
@@ -685,7 +710,7 @@ function createProcessingModule ({
               })
           )
           .selectById(instanceID)
-        commit('LOAD_DATA', copiedRecord) // need for load collections because collections maps to data of master record
+        store.commit('LOAD_DATA', copiedRecord) // need for load collections because collections maps to data of master record
 
         // load collections
         const collectionsResponse = await Promise.all(
@@ -706,7 +731,7 @@ function createProcessingModule ({
           fieldList,
           execParams: prepareCopyAddNewExecParams(copiedRecord, masterEntityName)
         })
-        commit('LOAD_DATA', newRecord)
+        store.commit('LOAD_DATA', newRecord)
 
         await Promise.all(
           collectionsResponse.flatMap((collectionData, index) => {
@@ -725,7 +750,7 @@ function createProcessingModule ({
                   }
                 })
               delete collectionItem.ID
-              return dispatch('addCollectionItem', {
+              return store.dispatch('addCollectionItem', {
                 collection,
                 execParams: collectionItem
               })
@@ -736,7 +761,7 @@ function createProcessingModule ({
         if (copied) {
           await copied()
         }
-        commit('LOADING', {
+        store.commit('LOADING', {
           isLoading: false,
           target: 'createCopy'
         })
@@ -746,14 +771,12 @@ function createProcessingModule ({
        * Check validation then
        * build requests for master and collections records
        *
-       * @param {Store} store
+       * @param {Vuex.Store} store
        * @param {function} [closeForm]
        *   For using action in the "Save and Close" actions, pass the function, which will close the form
        * @returns {Promise<void>}
        */
       async save (store, closeForm) {
-        const { state, commit } = store
-
         if (beforeSave) {
           const answer = await beforeSave()
           if (answer === false) {
@@ -782,7 +805,7 @@ function createProcessingModule ({
           }
         }
 
-        commit('LOADING', {
+        store.commit('LOADING', {
           isLoading: true,
           target: 'save'
         })
@@ -790,19 +813,19 @@ function createProcessingModule ({
         const requests = []
         const responseHandlers = []
 
-        const masterExecParams = buildExecParams(state, masterEntityName)
+        const masterExecParams = buildExecParams(store.state, masterEntityName)
         if (masterExecParams) {
           requests.push({
             entity: masterEntityName,
-            method: state.isNew ? 'insert' : 'update',
+            method: store.state.isNew ? 'insert' : 'update',
             execParams: masterExecParams,
             fieldList
           })
-          responseHandlers.push(response => commit('LOAD_DATA', response.resultData))
+          responseHandlers.push(response => store.commit('LOAD_DATA', response.resultData))
         }
 
         for (const [collectionKey, collectionInfo] of Object.entries(initCollectionsRequests)) {
-          const collection = state.collections[collectionKey]
+          const collection = store.state.collections[collectionKey]
           if (!collection) continue
 
           const req = collectionInfo.repository(store)
@@ -845,7 +868,7 @@ function createProcessingModule ({
                   } else if (Number.isInteger(loadedState.ID)) {
                     const index = collection.items.findIndex(i => i.data.ID === loadedState.ID)
                     if (index !== -1) {
-                      commit('LOAD_COLLECTION_PARTIAL', {
+                      store.commit('LOAD_COLLECTION_PARTIAL', {
                         collection: collectionKey,
                         index,
                         loadedState
@@ -866,17 +889,17 @@ function createProcessingModule ({
             responseHandler(response)
           }
 
-          commit('CLEAR_ALL_DELETED_ITEMS')
+          store.commit('CLEAR_ALL_DELETED_ITEMS')
 
           for (const response of responses) {
             UB.connection.emitEntityChanged(response.entity, response)
           }
 
-          if (state.isNew) {
-            commit('IS_NEW', false)
+          if (store.state.isNew) {
+            store.commit('IS_NEW', false)
           }
-          if (state.isCopy) {
-            commit('IS_COPY', false)
+          if (store.state.isCopy) {
+            store.commit('IS_COPY', false)
           }
           if (typeof saveNotification === 'function') {
             saveNotification()
@@ -898,7 +921,7 @@ function createProcessingModule ({
             throw new UB.UBAbortError(err)
           }
         } finally {
-          commit('LOADING', {
+          store.commit('LOADING', {
             isLoading: false,
             target: 'save'
           })
@@ -939,7 +962,7 @@ function createProcessingModule ({
       /**
        * Asks for user confirmation and sends delete request for master record
        *
-       * @param {Store} store
+       * @param {Vuex.Store} store
        * @param  {Function} closeForm Close form without confirmation
        */
       async deleteInstance ({ state, getters, commit }, closeForm = () => {}) {
@@ -987,13 +1010,12 @@ function createProcessingModule ({
       /**
        * Sends addNew request then fetch default params and push it in collection
        *
-       * @param {Store} store
+       * @param {Vuex.Store} store
        * @param {object} payload
        * @param {string} payload.collection Collection name
        * @param {object} payload.execParams if we need to create new item with specified params
        */
       async addCollectionItem (store, { collection, execParams }) {
-        const { commit } = store
         const repo = initCollectionsRequests[collection].repository(store)
         const entity = repo.entityName
         const fieldList = repo.fieldList
@@ -1003,14 +1025,12 @@ function createProcessingModule ({
           execParams
         })
 
-        commit('ADD_COLLECTION_ITEM', { collection, item })
+        store.commit('ADD_COLLECTION_ITEM', { collection, item })
       },
 
       /**
        * Lock entity. Applicable for entities with "softLock" mixin
-       * @param {object} context
-       * @param {object} context.state
-       * @param {function} context.commit
+       * @param {Vuex.Store} store
        * @param {boolean} [persistentLock=false] Lock with persistent locking type
        * @return {Promise<void>}
        */
@@ -1038,9 +1058,7 @@ function createProcessingModule ({
 
       /**
        * Unlock entity. Applicable for entities with "softLock" mixin
-       * @param {object} context
-       * @param {object} context.state
-       * @param {function} context.commit
+       * @param {Vuex.Store} store
        * @return {Promise<void>}
        */
       unlockEntity ({ state, commit }) {
@@ -1064,9 +1082,7 @@ function createProcessingModule ({
 
       /**
        * Get lock information. Applicable for entities with "softLock" mixin
-       * @param {object} context
-       * @param {object} context.state
-       * @param {function} context.commit
+       * @param {Vuex.Store} store
        * @return {Promise<void>}
        */
       retrieveLockInfo ({ state, commit }) {

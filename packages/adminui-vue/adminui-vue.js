@@ -33,7 +33,7 @@ const Form = require('./utils/Form/Form')
 /**
  * Create a new instance of UForm
  * @param {object} cfg Config
- * @param {VueComponent} cfg.component Form component
+ * @param {Vue.Component} cfg.component Form component
  * @param {object} [cfg.props] Form component props
  * @param {string} [cfg.title] Form title
  * @param {string} cfg.entity Entity name of master record
@@ -46,10 +46,25 @@ const Form = require('./utils/Form/Form')
  * @returns {UForm}
  */
 module.exports.Form = Form
-const { mapInstanceFields, computedVuex, SET } = require('./utils/Form/helpers')
-module.exports.mapInstanceFields = mapInstanceFields
-module.exports.computedVuex = computedVuex
-module.exports.SET = SET
+const formHelpers = require('./utils/Form/helpers')
+/**
+ * See {@link module:formHelpers.mapInstanceFields}
+ */
+module.exports.mapInstanceFields = formHelpers.mapInstanceFields
+/**
+ * See {@link module:formHelpers.computedVuex}
+ */
+module.exports.computedVuex = formHelpers.computedVuex
+/**
+ * See {@link module:formHelpers.SET}
+ */
+module.exports.SET = formHelpers.SET
+/**
+ * Mount a Vue based component as a navbar tab, a modal form or inside other component (as a container).
+ * See {@link module:mountUtils mountUtils} module documentation for samples.
+ *
+ * @type {module:mountUtils}
+ */
 module.exports.mountUtils = require('./utils/Form/mount')
 
 const magicLink = require('./utils/magicLinks')
@@ -83,6 +98,7 @@ if (IS_SYSTEM_JS && !SystemJS.has('vue')) SystemJS.set('vue', SystemJS.newModule
 
 // ------------- Vuex ------------------
 const Vuex = require('vuex')
+/** type {Vuex} */
 window.Vuex = Vuex
 // next 2 lines for modules what use ES6 import `import Vuex from 'vuex' (not recommended for use)
 Vuex.__useDefault = Vuex

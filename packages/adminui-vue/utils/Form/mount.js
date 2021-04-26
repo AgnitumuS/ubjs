@@ -1,6 +1,7 @@
 /**
  * Mount helpers for Vue components
- * @module mount
+ * @module mountUtils
+ * @memberOf module:@unitybase/adminui-vue
  */
 module.exports = {
   mountTab,
@@ -21,7 +22,7 @@ const uDialogs = require('../uDialogs')
  * @param {object} cfg
  * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
- * @param {Store} cfg.store Store
+ * @param {Vuex.Store} cfg.store Store
  * @param {object} cfg.validator Vuelidate validation object
  * @param {function():object} cfg.getValidationState Function that returns reactive vuelidate validation object
  * @param {string} cfg.title Title
@@ -146,11 +147,11 @@ function mountModal ({
 /**
  * Mount form in tab
  * @param {object} cfg
- * @param {VueComponent} cfg.component Form component
+ * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
- * @param {VuexStore} cfg.store Store
+ * @param {Vuex.Store} cfg.store Store
  * @param {object} cfg.validator Vuelidate validation object
- * @param {function():object} cfg.getValidationState Function that returns reactive vuelidate validation object
+ * @param {function|object} cfg.getValidationState Function that returns reactive vuelidate validation object
  * @param {string} cfg.title Title
  * @param {string} cfg.tabId navbar tab ID
  * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
@@ -274,7 +275,7 @@ function mountTab ({
 }
 
 /**
- * Check form isDirty then ask user what he want to do
+ * Check form isDirty, and is so - ask user to save od discard changes or continue to edit
  * @param {Store} store Store
  * @param {Function} close Callback for close
  */
@@ -315,7 +316,7 @@ function beforeClose ({ store, close }) {
  * @param {object} cfg
  * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
- * @param {Vuex} cfg.store Store
+ * @param {Vuex.Store} cfg.store Store
  * @param {object} cfg.validator Vuelidate validation object
  * @param {function():object} cfg.getValidationState Function that returns reactive vuelidate validation object
  * @param {object} cfg.provide Regular object which provide all props what passed in it
@@ -401,7 +402,7 @@ function mountContainer ({
 const UMasterDetailView = require('../../components/UMasterDetailView/UMasterDetailView.vue').default
 
 /**
- * Mount UMasterDetailView.
+ * Mount UMasterDetailView
  *
  * @param {object} cfg Command config
  * @param {object} cfg.props Props data
@@ -409,7 +410,7 @@ const UMasterDetailView = require('../../components/UMasterDetailView/UMasterDet
  * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
  * @param {object} [cfg.title] Tab title
  * @param {object} cfg.props UMasterDetailView props
- * @param {function:ClientRepository} [cfg.props.repository] Function which returns ClientRepository.
+ * @param {function} [cfg.props.repository] Function which returns ClientRepository.
  *   Can be empty in case `props.entityName` is defined - it this case repository constructed automatically
  *   based on attributes with `defaultView: true`
  * @param {string} [cfg.props.entityName] Name of entity. Ignored in case `props.repository` is defined

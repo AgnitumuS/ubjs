@@ -8,7 +8,7 @@
       "./packages/ub-pub",
       "./packages/adminui-vue",
       "./packages/adminui-vue/utils",
-      "./packages/adminui-vue/utils/Form/Form.js"
+      "./packages/adminui-vue/utils/Form"
     ],
     "includePattern": ".+\\.js(m|x)?$"
   },
