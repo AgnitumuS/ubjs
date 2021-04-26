@@ -161,6 +161,7 @@ const instance = new Vue({
         subscription.data.splice(0, subscription.data.length)
         // remove additional attrs
         subscription.attrs.clear()
+        subscription.mapById = {}
       }
     },
 

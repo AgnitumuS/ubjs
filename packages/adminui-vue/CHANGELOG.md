@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `lookups`: clean `mapById` object during last `unsubscribe` (as well as data array is cleaned)
 
 ## [5.20.9] - 2021-04-24
 ## [5.20.8] - 2021-04-22
