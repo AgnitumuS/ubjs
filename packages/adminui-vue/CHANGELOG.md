@@ -8,9 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - all available dialogs now exported as `uDialogs` object from `adminui-vue` packages.
    Dialogs functions are documented in [adminui-vue dosumentation on site](https://unitybase.info/api/ubpub-v5/module-@unitybase_adminui-vue.html)
- - adminui-vue lookups submodule documentation
+ - adminui-vue `lookups` submodule documentation
+ - adminui-vue `helpers` and `processing` submodules documentation
 
 ### Changed
+ - `computedVuex` *BREAKING* signature changed to accept (optional) submodule name as a second argument
+ - `mapInstanceFields` *BREAKING* signature changed to accept (optional) submodule name as a second argument
 
 ### Deprecated
 

@@ -333,7 +333,7 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
         required
         :error="$v.code.$error"
       >
-        <el-input v-model="code" />
+        <u-input v-model="code" />
       </u-form-row>
 
       <!-- обертка для u-form-row которая смотрит на атрибут в сущности -->
