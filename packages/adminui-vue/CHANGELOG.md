@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - all dialogs now exported as `uDialogs` object from `adminui-vue` packages and documented in [adminui-vue dosumentation on site](https://unitybase.info/api/ubpub-v5/module-@unitybase_adminui-vue.html)
+ - all available dialogs now exported as `uDialogs` object from `adminui-vue` packages.
+   Dialogs functions are documented in [adminui-vue dosumentation on site](https://unitybase.info/api/ubpub-v5/module-@unitybase_adminui-vue.html)
+ - adminui-vue lookups submodule documentation
 
 ### Changed
 
@@ -19,12 +21,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.20.9] - 2021-04-24
 ## [5.20.8] - 2021-04-22
 ### Fixed
--`UForm`: fix messages for errors what can be throwed inside `UForm.mount`
+ -`UForm`: fix messages for errors what can be thrown inside `UForm.mount`
 
 ## [5.20.7] - 2021-04-19
 ### Changed
  - Full Text Search shortcut is changed to `Ctrl+Shift+F` to prevent conflict with `Ctrl+F` actions.
-- `UTableEntity`: sorting for column based on `Entity` attributes (lookups) use description attribute of the associated entity instead of `ID`
+ - `UTableEntity`: sorting for column based on `Entity` attributes (lookups) use description attribute of the associated entity instead of `ID`
 
 ### Fixed
  - `UCodeMirror` - returned visibility of help (`?`) mark
@@ -1055,7 +1057,7 @@ this.$formatByPattern.formatNumber(
  /** Returns description attribute value by ID */
  lookups.get('tst_dictionary', 245671369782)
  
- /** Returns description attribute value by ID */
+ /** Returns description attribute value by code */
  lookups.get('tst_dictionary', {code: 'code10'})
  
  /** Can search on several attributes */
