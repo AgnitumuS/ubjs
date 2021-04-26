@@ -14,7 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `computedVuex` *BREAKING* signature changed to accept (optional) submodule name as a second argument
  - `mapInstanceFields` *BREAKING* signature changed to accept (optional) submodule name as a second argument
-
+ - `helpers.isEqual` (used to check store is changed) for array elements return `false` in case length of array is not match.
+   Before this changes `helpers.isEqual([1, 2], [2, 1, 1])` returns `true`
+   
 ### Deprecated
 
 ### Removed

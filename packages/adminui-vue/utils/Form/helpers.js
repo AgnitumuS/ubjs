@@ -54,8 +54,9 @@ const Vuex = require('vuex') // required to see a Vuex.d.ts
 
 /**
  * Check arg1 is strict equal to srg2, can compare primitive values, arrays (deep equal) or Date's. In addition:
- *   - [] is equal to undefined
- *   - {} is equal to undefined
+ *   - [] and undefined is equal
+ *   - {} and undefined is equal
+ *   - arrays equality is checked without element order ([1, 2] is equal to [2, 1])
  * @param {*} arg1
  * @param {*} arg2
  */
@@ -70,9 +71,7 @@ function isEqual (arg1, arg2) {
     }
     if (!Array.isArray(arg1) || !Array.isArray(arg2) || (arg1.length !== arg2.length)) {
       return false
-    } else if (arg1.find(i => !arg2.includes(i))) {
-      return false
-    } else if (arg2.find(i => !arg1.includes(i))) {
+    } else if (arg1.find(v => !arg2.includes(v))) {
       return false
     }
     return true
