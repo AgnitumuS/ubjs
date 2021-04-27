@@ -181,8 +181,8 @@ Ext.define('UB.core.UBApp', {
    * @returns {Promise} resolved then viewport is created
    */
   launch: function () {
-    var me = this
-    var isExternalLogin = typeof window.redirectToLogin === 'function'
+    const me = this
+    const isExternalLogin = typeof window.redirectToLogin === 'function'
     return UB.connect({
       host: window.location.origin,
       path: window.UB_API_PATH || window.location.pathname,
@@ -224,7 +224,7 @@ Ext.define('UB.core.UBApp', {
 
       onAuthorizationFail: function (reason, conn) {
         if (isExternalLogin) {
-          var storedSession = window.localStorage.getItem(conn.__sessionPersistKey)
+          const storedSession = window.localStorage.getItem(conn.__sessionPersistKey)
           if (storedSession) { // invalid session is created by external login page
             window.redirectToLogin(reason)
           } else {
@@ -306,7 +306,7 @@ Ext.define('UB.core.UBApp', {
             .ubql()
         ],
         setStoreId: true
-        }).then(function () {
+      }).then(function () {
         return UB.core.UBDataLoader.loadStores({
           ubRequests: [
             UB.Repository('ubm_navshortcut')
@@ -361,7 +361,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * @returns {Promise} resolved pressed button name ['ok', 'yes', 'no', 'cancel']
    */
   dialog: function (title, msg, config) {
-    var icon
+    let icon
     config = config || {}
     switch (config.icon || 'QUESTION') {
       case 'QUESTION':
@@ -770,7 +770,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
   },
 
   runLink: function (link) {
-    var query = Ext.isString(link) ? Ext.Object.fromQueryString(link.toLowerCase()) : link
+    const query = Ext.isString(link) ? Ext.Object.fromQueryString(link.toLowerCase()) : link
 
     if (query && ((query.command && query.command.length) || query.cmdData)) {
       this.doCommand({
@@ -874,8 +874,8 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       }
     }
     const parsedCmdCode = await UB.core.UBStoreManager.getNavshortcutCommandText(shortcutID)
-    if (parsedCmdCode === null) {
-      console.warn(`Command for shortcut ${shortcutIDOrCode} is empty or this is empty folder`)
+    if (!parsedCmdCode) {
+      console.error(`Command for shortcut ${shortcutIDOrCode} is empty or this is empty folder`)
       return
     }
     const commandConfig = _.clone(parsedCmdCode)
@@ -902,7 +902,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    */
   showModal: function (config) {
     return new Promise((resolve, reject) => {
-      var cmdConfig = {
+      const cmdConfig = {
         cmdType: 'showForm',
         isModal: true,
         isResizable: false,
@@ -945,10 +945,10 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
             .orderByDesc('actionTime')
         },
         columns: [{
-            id: 'actionTime',
-            format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')
-          },
-          'actionType', 'actionUserName', 'remoteIP', 'entity', 'parentEntity', 'request_id'
+          id: 'actionTime',
+          format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')
+        },
+        'actionType', 'actionUserName', 'remoteIP', 'entity', 'parentEntity', 'request_id'
         ]
       },
       shortcutCode: `audit-${entityCode}`
@@ -960,7 +960,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * @param {String} prefix
    */
   setLocalStorageProviderPrefix: function (prefix) {
-    var provider = Ext.state.Manager.getProvider()
+    const provider = Ext.state.Manager.getProvider()
 
     prefix += UB.core.UBLocalStorageManager.separator
 
@@ -1067,7 +1067,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * @param {object} [blobMetadata.isDirty=false]
    */
   downloadDocument: async function (instanceInfo, blobMetadata) {
-    const getDocumentParams = Object.assign({revision: 1}, instanceInfo)
+    const getDocumentParams = Object.assign({ revision: 1 }, instanceInfo)
     if (blobMetadata) {
       if (blobMetadata.isDirty) {
         getDocumentParams.isDirty = blobMetadata.isDirty
@@ -1081,7 +1081,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       method: 'GET',
       params: getDocumentParams
     })
-    //TODO throw new UB.UBError(UB.i18n('documentNotFound'))
+    // TODO throw new UB.UBError(UB.i18n('documentNotFound'))
     const oneTimeURL = await this.connection.getDocumentURL(getDocumentParams)
     const a = document.createElement('A')
     a.href = oneTimeURL

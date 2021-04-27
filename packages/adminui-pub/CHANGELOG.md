@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - Sidebar: prevent show en error in case user click on empty folder or on shortcut with empty command code,
+   write error into console instead [LDOC-1434].
 
 ## [5.20.11] - 2021-04-24
 ## [5.20.10] - 2021-04-23
