@@ -46,7 +46,7 @@ Table below shows a default color variables values:
   --l-input-border-default: 60%;
   --l-input-border-hover: 40%;
   --l-input-border-disabled: 75%;
-  --l-layout-border-default: 80%;
+  --l-layout-border-default: 70%;
   --l-layout-border-light: 90%;
 
   /* background */
