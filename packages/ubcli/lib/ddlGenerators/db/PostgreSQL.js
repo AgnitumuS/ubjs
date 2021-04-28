@@ -394,7 +394,7 @@ ORDER BY index_id, column_position`
   }
 
   /** @override */
-  genCodeEnableMultitenancy(table) {
+  genCodeEnableMultitenancy (table) {
     this.DDL.others.statements.push(
       `ALTER TABLE ${table.name} ENABLE ROW LEVEL SECURITY`
     )
@@ -404,7 +404,7 @@ ORDER BY index_id, column_position`
   }
 
   /** @override */
-  genCodeDisableMultitenancy(table) {
+  genCodeDisableMultitenancy (table) {
     this.DDL.others.statements.push(
       `ALTER TABLE ${table.name} DISABLE ROW LEVEL SECURITY`
     )
@@ -428,7 +428,7 @@ ORDER BY index_id, column_position`
     if (!constraintFK.generateFK) return
 
     const refTo = _.find(this.refTableDefs, { _nameUpper: constraintFK.references.toUpperCase() })
-    const refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
+    const refKeys = refTo ? refTo.primaryKey.keys.join(',') : constraintFK.refPkDefColumn
 
     this.DDL.createFK.statements.push(
       `alter table ${table.name} add constraint ${constraintFK.name} foreign key (${constraintFK.keys.join(',')}) references ${constraintFK.references}(${refKeys})`

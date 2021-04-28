@@ -273,8 +273,11 @@ class DDLGenerator {
           if (associatedEntity.connectionName === entity.connectionName) { // referential constraint between different connection not supported
             tableDef.addFK({
               name: genFKName(sqlAlias, attrNameF, (associatedEntity.sqlAlias || associatedEntity.name || ''), entity.connectionConfig.dialect),
-              keys: [attribute.name.toUpperCase()],
-              references: associatedEntity.name,
+              keys: [getAttributeDBName(attribute.entity, attribute.name).toUpperCase()],
+              references: getTableDBName(associatedEntity),
+              // in case associated entity is external - estimate a primary key column name ('ID" can be mapped)
+              // for associated entities what a subject of DDL generation primary key columns retrieved from DB
+              refPkDefColumn: getAttributeDBName(associatedEntity, 'ID'),
               generateFK: attribute.generateFK
             })
           }
@@ -664,7 +667,7 @@ class DDLGenerator {
     //   references: getTableDBName(entity),
     //   generateFK: true
     // })
-    //tableDef.isIndexOrganized = true
+    // tableDef.isIndexOrganized = true
     tableDef.addIndex({
       name: formatName('IDX_', tblName, '_SOURCEID', entity.connectionConfig.dialect),
       keys: ['sourceID'.toUpperCase()]

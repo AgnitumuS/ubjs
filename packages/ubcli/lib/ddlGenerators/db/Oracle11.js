@@ -416,6 +416,16 @@ where
   }
 
   /** @override */
+  genCodeEnableMultitenancy (table) {
+    throw new Error('multitenancy is not implemented for Oracle')
+  }
+
+  /** @override */
+  genCodeDisableMultitenancy (table) {
+    throw new Error('multitenancy is not implemented for Oracle')
+  }
+
+  /** @override */
   genCodeCreatePK (table) {
     // if (!table.isIndexOrganized){
     this.DDL.createPK.statements.push(
@@ -429,7 +439,7 @@ where
     if (!constraintFK.generateFK) return
 
     const refTo = _.find(this.refTableDefs, { _nameUpper: constraintFK.references.toUpperCase() })
-    const refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
+    const refKeys = refTo ? refTo.primaryKey.keys.join(',') : constraintFK.refPkDefColumn
 
     this.DDL.createFK.statements.push(
       `alter table ${table.name} add constraint ${constraintFK.name} foreign key (${constraintFK.keys.join(',')}) references ${constraintFK.references}(${refKeys})`

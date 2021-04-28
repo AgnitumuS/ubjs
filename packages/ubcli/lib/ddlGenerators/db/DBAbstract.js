@@ -116,7 +116,6 @@ class DBAbstract {
   }
 
   /**
-   * @abstract
    * @param {TableDefinition} table
    * @param {FieldDefinition} column
    * @param {String} updateType
@@ -127,12 +126,13 @@ class DBAbstract {
       if (column.enumGroup) return v // do not quoter enums
       return column.isString
         ? (!column.defaultValue && (column.refTable || column.enumGroup)
-          ? v.replace(/'/g, "''")
-          : v === 'ID'
-            ? 'ID' // do not quoter ID
-            : "'" + v.replace(/'/g, "") + "'")
+            ? v.replace(/'/g, "''")
+            : v === 'ID'
+              ? 'ID' // do not quoter ID
+              : "'" + v.replace(/'/g, '') + "'")
         : v
     }
+    let possibleDefault
     switch (updateType) {
       case 'updConstComment':
         this.DDL.updateColumn.statements.push(
@@ -145,7 +145,7 @@ class DBAbstract {
         )
         break
       case 'updNull':
-        let possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
+        possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
         this.DDL.updateColumn.statements.push(
           `-- update ${table.name} set ${column.name} = ${possibleDefault} where ${column.name} is null`
         )
@@ -234,7 +234,7 @@ class DBAbstract {
    * @abstract
    * @param {TableDefinition} table
    */
-  genCodeEnableMultitenancy(table) {
+  genCodeEnableMultitenancy (table) {
     throw new Error('Multitenancy is not supported by this DB')
   }
 
@@ -243,7 +243,7 @@ class DBAbstract {
    * @abstract
    * @param {TableDefinition} table
    */
-  genCodeDisableMultitenancy(table) {
+  genCodeDisableMultitenancy (table) {
     throw new Error('Multitenancy is not supported by this DB')
   }
 

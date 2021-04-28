@@ -107,6 +107,7 @@ class TableDefinition {
    * @property {boolean} [isDisabled=false]
    * @property {boolean} [isConstraint=false]
    * @property {string} [indexType] One of CATALOGUE,FTS or null|undefined for usual indexes
+   * @property {boolean} [isForDelete] If this index should be deleted because of altering a columns
    */
 
   /**
@@ -161,7 +162,7 @@ class TableDefinition {
    * @property {string} name
    * @property {string} [_upperName]
    * @property {Array<string>} keys
-   * @property {string} references
+   * @property {string} references A reference table name
    * @property {boolean} [generateFK=true]
    * @property {boolean} [isDisabled=false]
    * @property {string} [deleteAction='NO_ACTION'] one of NO_ACTION, CASCADE, SET_NULL,  SET_DEFAULT

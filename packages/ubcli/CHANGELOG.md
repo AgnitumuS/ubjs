@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `ubcli generateDDL`: fixed referential constraint generation in case referenced entity,
+   or it's primary key attribute has a mapping 
 
 ## [5.21.6] - 2021-04-24
 ## [5.21.5] - 2021-04-23
