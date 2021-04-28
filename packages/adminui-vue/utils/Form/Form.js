@@ -1,4 +1,4 @@
-/*
+/**
  * @module Form
  * @memberOf module:@unitybase/adminui-vue
  * @author dmytro.rudnyk 31.05.2019
@@ -17,9 +17,10 @@ const createValidatorInstance = require('./validation')
 const UB = require('@unitybase/ub-pub')
 
 /**
+ * Creates a new instance of UI module what can be visualized in the application shell using `mount*()` call
  * @param {object} cfg
- * @param {Vue.Component} [cfg.component] Form component, same as cfg.rootComponent
- * @param {Vue.Component} [cfg.rootComponent] Form component, same as cfg.component
+ * @param {Vue.Component} [cfg.component] Form component
+ * @param {Vue.Component} [cfg.rootComponent] Alias for cfg.component
  * @param {object} [cfg.props] Form component props
  * @param {object} [cfg.props.parentContext] Attributes values what will be passed to addNew method
  *   in case instanceID is empty. Think of it as default values for attributes of a new record
@@ -34,14 +35,15 @@ const UB = require('@unitybase/ub-pub')
  * @param {string} [cfg.tabId] Optional tabId. If omitted will be calculated using entity code and instanceID
  * @param {object} [cfg.target] Optional target. Used for render form into form
  * @param {boolean} cfg.isCopy Required isCopy. Used for create new record with data of existing record
+ * @method
  * @returns {UForm}
  */
-module.exports = function Form (cfg) {
+module.exports.Form = function Form (cfg) {
   return new UForm(cfg)
 }
 
 /**
- * @classdesc
+ * @.classdesc
  * Creates a store for the form and renders it to the tab or modal window.
  * Store track form changes and builds insert/delete requests.
  * Class build validation and check it before save.
@@ -49,8 +51,8 @@ module.exports = function Form (cfg) {
 class UForm {
   /**
    * @param {object} cfg
-   * @param {Vue.Component} [cfg.component] Form component, same as cfg.rootComponent
-   * @param {Vue.Component} [cfg.rootComponent] Form component, same as cfg.component
+   * @param {Vue.Component} [cfg.component] Form component
+   * @param {Vue.Component} [cfg.rootComponent] Alias for cfg.component
    * @param {object} [cfg.props] Form component props
    * @param {object} [cfg.props.parentContext] Attributes values that will be passed to addNew method
    *   in case instanceID is empty. Think of it as default values for attributes of a new record
@@ -142,14 +144,15 @@ class UForm {
 
   /**
    * @deprecated replaced to processing
+   * @private
    */
   instance () {
     return this
   }
 
   /**
-   * Sets store field list, collections and lifecircle hooks.
-   * All hooks are called with one argument $store and this === Current form.
+   * Sets store field list, collections and lifecycle hooks.
+   * All hooks are called with one argument $store and this === current form.
    *
    * @param {Object} [cfg]
    * @param {string[]} [cfg.masterFieldList] form field list. By default all entity attributes
@@ -355,6 +358,7 @@ class UForm {
    * Applicable for entities with softLock mixin.
    * - if dirty === true and entity is not already locked try to get a Temp lock
    * - if dirty === false and entity is locked by current user using Temp lock - unlock it
+   * @private
    * @param {boolean} dirty
    */
   lockUnlockOnDirtyChanged (dirty) {

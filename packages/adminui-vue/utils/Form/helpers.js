@@ -1,6 +1,12 @@
 /* global _ */
 /**
- * Mount helpers for Vue components
+ * Helpers for Forms. Exported by `@unitybase/adminui-vue` as `formHelpers` and can be used as
+ *
+ *     // valid usage
+ *     const formHelpers = require('@unitybase/adminui-vue').formHelpers
+ *     // WRONG usage
+ *     const helpers = require('@unitybase/adminui-vue/utils/Form/helpers')
+ *
  * @module formHelpers
  * @memberOf module:@unitybase/adminui-vue
  */
@@ -107,21 +113,21 @@ function isDate (value) {
 }
 
 /**
- * Check if value is an object
+ * Check if value is an object and not `null`
  * @param value
  */
 function isObject (value) {
-  return typeof value === 'object' && value !== null
+  return (typeof value === 'object') && (value !== null)
 }
 
 /**
- * Check obj is empty
+ * Check obj is empty (`null` or `{}`)
  * @param  {*} obj
  * @return {Boolean}
  */
 function isEmpty (obj) {
   if (obj === null) return true
-  return typeof obj === 'object' && Object.keys(obj).length === 0
+  return (typeof obj === 'object') && (Object.keys(obj).length === 0)
 }
 
 /**

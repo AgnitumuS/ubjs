@@ -31,22 +31,16 @@ module.exports.throttleDebounce = throttleDebounce
 
 const Form = require('./utils/Form/Form')
 /**
- * Create a new instance of UForm
- * @param {object} cfg Config
- * @param {Vue.Component} cfg.component Form component
- * @param {object} [cfg.props] Form component props
- * @param {string} [cfg.title] Form title
- * @param {string} cfg.entity Entity name of master record
- * @param {number} [cfg.instanceID] Instance ID
- * @param {boolean} [cfg.isModal] Switch mount to modal or tab
- * @param {string} [cfg.modalClass] Modal class
- * @param {string} [cfg.modalWidth] Modal width
- * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar
- * @method
- * @returns {UForm}
+ * Creates a new instance of UI module. See {@link module:Form.Form}
  */
-module.exports.Form = Form
+module.exports.Form = Form.Form
 const formHelpers = require('./utils/Form/helpers')
+
+/**
+ * Helper functions for forms. See {@link module:formHelpers}.
+ * `mapInstanceFields` and `computedVuex` are aliased into `@unitybase/adminui-vue`
+ */
+module.exports.formHelpers = formHelpers
 /**
  * See {@link module:formHelpers.mapInstanceFields}
  */
@@ -55,9 +49,6 @@ module.exports.mapInstanceFields = formHelpers.mapInstanceFields
  * See {@link module:formHelpers.computedVuex}
  */
 module.exports.computedVuex = formHelpers.computedVuex
-/**
- * See {@link module:formHelpers.SET}
- */
 module.exports.SET = formHelpers.SET
 /**
  * Mount a Vue based component as a navbar tab, a modal form or inside other component (as a container).
