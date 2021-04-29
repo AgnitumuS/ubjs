@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - adminui-vue `helpers` and `processing` submodules documentation
  - adminui-vue exports a `helpers` submodule as `formHelpers`.
    A direct `require('@unitybase/adminui-vue/utils/Form/helpers')` should be replaced to `require('@unitybase/adminui-vue').formHelpers` 
-  
+ - `processing.js`: `refresh` method emit `${state.data.ID}:refresh` event
 ### Changed
  - `computedVuex` *BREAKING* signature changed to accept (optional) submodule name as a second argument
  - `mapInstanceFields` *BREAKING* signature changed to accept (optional) submodule name as a second argument
