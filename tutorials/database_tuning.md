@@ -443,6 +443,7 @@ This can be done using script below (replace a `userID` in the `GRANT_SWITCH_CON
 ```sql
 ALTER SYSTEM SET RESOURCE_MANAGER_PLAN ='';
 
+--drop plan and group 
 BEGIN
   dbms_resource_manager.clear_pending_area();
   dbms_resource_manager.create_pending_area();
@@ -451,8 +452,7 @@ BEGIN
   DBMS_RESOURCE_MANAGER.VALIDATE_PENDING_AREA;
   DBMS_RESOURCE_MANAGER.SUBMIT_PENDING_AREA();
 END;
-
-
+/
 --create a consumer group for UB registers users 
 BEGIN
   SYS.DBMS_RESOURCE_MANAGER.clear_pending_area();
@@ -499,15 +499,15 @@ BEGIN
     SWITCH_FOR_CALL=> TRUE);
   SYS.DBMS_RESOURCE_MANAGER.submit_pending_area();
 END;
-
-
+/
+-- grant SWITCH_CONSUMER_GROUP to user
 BEGIN
   SYS.DBMS_RESOURCE_MANAGER.clear_pending_area();
   SYS.DBMS_RESOURCE_MANAGER.create_pending_area();
   SYS.DBMS_RESOURCE_MANAGER_PRIVS.GRANT_SWITCH_CONSUMER_GROUP('userID', 'GROUP_WITH_LIMITED_EXEC_TIME', false); -- userID should be replaced BY user name used to connect to DB 
   SYS.DBMS_RESOURCE_MANAGER.submit_pending_area();
 END;
-
+-- enable new plan
 ALTER SYSTEM SET RESOURCE_MANAGER_PLAN ='EXEC_TIME_LIMIT_PLAN';
 ```
 
