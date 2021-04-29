@@ -15,7 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `ubcli generateDDL`: fixed referential constraint generation in case referenced entity,
-   or it's primary key attribute has a mapping 
+   or it's primary key attribute has a mapping
+- `ubcli generateDDL`: prevent reading of database / roles list in case neither `-drop` nor `-create` is passed.
+  This allows to init an existed DB for user without DBA privileges
 
 ## [5.21.6] - 2021-04-24
 ## [5.21.5] - 2021-04-23
