@@ -23,9 +23,8 @@ const uDialogs = require('../uDialogs')
  * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
  * @param {Vuex.Store} cfg.store Store
- * @param {object} cfg.validator Vuelidate validation object
- * @param {function():object} cfg.getValidationState Function that returns reactive vuelidate validation object
  * @param {string} cfg.title Title
+ * @param {Validator} [cfg.validator] Validator
  * @param {string} [cfg.modalClass] Modal class
  * @param {string} [cfg.modalWidth] Modal width
  * @param {object} cfg.provide Regular object which provide all props what passed in it
@@ -34,9 +33,8 @@ function mountModal ({
   component,
   props,
   store,
-  validator,
-  getValidationState,
   title: titleText,
+  validator,
   modalClass = 'ub-dialog__reset-padding',
   modalWidth,
   provide
@@ -83,8 +81,9 @@ function mountModal ({
       }
     },
     provide () {
+      const { $v, getValidationState } = validator || {}
       return {
-        $v: validator,
+        $v,
         getValidationState,
         $formServices: {
           setTitle: this.setTitle,
@@ -150,10 +149,9 @@ function mountModal ({
  * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
  * @param {Vuex.Store} cfg.store Store
- * @param {object} cfg.validator Vuelidate validation object
- * @param {function|object} cfg.getValidationState Function that returns reactive vuelidate validation object
  * @param {string} cfg.title Title
  * @param {string} cfg.tabId navbar tab ID
+ * @param {Validator} [cfg.validator] Validator
  * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  * @param {boolean} [cfg.openInBackgroundTab=false] If `true` - the tab with a newly opened form does not become active.
@@ -163,7 +161,6 @@ function mountTab ({
   props,
   store,
   validator,
-  getValidationState,
   title: titleText,
   titleTooltip: titleTooltipText,
   tabId,
@@ -233,8 +230,9 @@ function mountTab ({
     },
     render: (h) => h(component, { props }),
     provide () {
+      const { $v, getValidationState } = validator || {}
       return {
-        $v: validator,
+        $v,
         getValidationState,
         $formServices: {
           setTitle: this.setTitle,
@@ -317,19 +315,17 @@ function beforeClose ({ store, close }) {
  * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
  * @param {Vuex.Store} cfg.store Store
- * @param {object} cfg.validator Vuelidate validation object
- * @param {function():object} cfg.getValidationState Function that returns reactive vuelidate validation object
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  * @param {Ext.component|String} cfg.target Either id of html element or Ext component
+ * @param {Validator} [cfg.validator] Validator
  */
 function mountContainer ({
   component,
   props,
   store,
-  validator,
-  getValidationState,
   provide,
-  target
+  target,
+  validator
 }) {
   const instance = new Vue({
     store,
@@ -337,8 +333,9 @@ function mountContainer ({
       return {}
     },
     provide () {
+      const { $v, getValidationState } = validator || {}
       return {
-        $v: validator,
+        $v,
         getValidationState,
         // for UToolbar
         $formServices: {

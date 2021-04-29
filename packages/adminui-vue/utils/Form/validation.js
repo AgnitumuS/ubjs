@@ -1,9 +1,53 @@
-module.exports = createValidatorInstance
+/* global UB */
 
 const Vue = require('vue')
 const { validationMixin } = require('vuelidate')
 const { required } = require('vuelidate/lib/validators/index')
+
 const { mapInstanceFields } = require('./helpers')
+
+module.exports = class Validator {
+  constructor (store, entitySchema, masterFieldList, customValidationMixin) {
+    this._entitySchema = entitySchema
+    this._vueInstance = createValidatorInstance(
+      store,
+      entitySchema,
+      masterFieldList,
+      customValidationMixin
+    )
+  }
+
+  get $v () {
+    return this._vueInstance.$v
+  }
+
+  getValidationState () {
+    return this._vueInstance.$v
+  }
+
+  validateForm () {
+    const $v = this.getValidationState()
+    $v.$touch()
+    if ($v.$error) {
+      const masterEntityName = this._entitySchema.code
+      const fields = Object.keys($v.$params)
+      const errors = fields
+        .filter(f => $v[f].$invalid)
+        .map(field => {
+          const configuredFieldLocale = this._vueInstance[`${field}InLocale`]
+          return configuredFieldLocale || getEntityFieldInLocale(masterEntityName, field)
+        })
+      const errMsg = UB.i18n('validationError', errors.join(', '))
+      const err = new UB.UBError(errMsg)
+      UB.showErrorWindow(err)
+      throw new UB.UBAbortError(errMsg)
+    }
+  }
+
+  reset () {
+    this._vueInstance.$v.$reset()
+  }
+}
 
 /**
  * Track Instance module data and validate it
@@ -24,14 +68,11 @@ function createValidatorInstance (store, entitySchema, masterFieldList, customVa
     computed: mapInstanceFields(entitySchema.getAttributeNames()),
 
     validations () {
-      return requiredFields.reduce((obj, field) => {
-        obj[field] = { required }
-        return obj
-      }, {})
+      return Object.fromEntries(requiredFields.map(field => [field, { required }]))
     }
   }
 
-  const instance = new Vue({
+  return new Vue({
     store,
     mixins: [
       validationMixin,
@@ -39,6 +80,17 @@ function createValidatorInstance (store, entitySchema, masterFieldList, customVa
       customValidationMixin
     ]
   })
+}
 
-  return instance
+/**
+ * @param {string} entity
+ * @param {string} field
+ * @returns {string}
+ */
+function getEntityFieldInLocale (entity, field) {
+  const localeString = `${entity}.${field}`
+  if (UB.i18n(localeString) === localeString) {
+    return field
+  }
+  return UB.i18n(localeString)
 }

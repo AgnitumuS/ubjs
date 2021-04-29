@@ -13,7 +13,7 @@ const {
   transformCollections,
   enrichFieldList
 } = require('./helpers')
-const createValidatorInstance = require('./validation')
+const Validator = require('./validation')
 const UB = require('@unitybase/ub-pub')
 
 /**
@@ -116,7 +116,6 @@ class UForm {
     this.modalClass = modalClass
     this.modalWidth = modalWidth
 
-    this.validatorInstance = undefined
     this.validator = undefined
     this.customValidationMixin = undefined
 
@@ -210,7 +209,7 @@ class UForm {
       instanceID: this.instanceID,
       parentContext: (this.props && this.props.parentContext) ? this.props.parentContext : undefined,
       collections,
-      validator: () => this.validatorInstance && this.validatorInstance.$v,
+      validator: this.validator,
       beforeInit: beforeInit ? () => beforeInit.call(this, this.$store) : null,
       inited: inited ? () => inited.call(this, this.$store) : null,
       beforeSave: beforeSave ? () => beforeSave.call(this, this.$store) : null,
@@ -271,13 +270,12 @@ class UForm {
     }
 
     if (this.isValidationUsed) {
-      this.validatorInstance = createValidatorInstance(
+      this.validator = new Validator(
         this.$store,
         this.entitySchema,
         this.fieldList,
         this.customValidationMixin
       )
-      this.validator = this.validatorInstance.$v
     }
 
     if (this.isProcessingUsed) {
@@ -294,7 +292,6 @@ class UForm {
         props: this.props,
         store: this.$store,
         validator: this.validator,
-        getValidationState: () => this.validatorInstance && this.validatorInstance.$v,
         title: this.title,
         titleTooltip: this.titleTooltip,
         modalClass: this.modalClass,
@@ -310,10 +307,10 @@ class UForm {
       if (!this.tabId) {
         this.tabId = this.entity
           ? $App.generateTabId({ // TODO portal: $App.generateTabId -> portal.generateTabId
-            entity: this.entity,
-            instanceID: this.instanceID,
-            formCode: this.formCode
-          })
+              entity: this.entity,
+              instanceID: this.instanceID,
+              formCode: this.formCode
+            })
           : undefined
       }
       mountTab({
@@ -321,7 +318,6 @@ class UForm {
         props: this.props,
         store: this.$store,
         validator: this.validator,
-        getValidationState: () => this.validatorInstance && this.validatorInstance.$v,
         title: this.title,
         titleTooltip: this.titleTooltip,
         tabId: this.tabId,
@@ -340,7 +336,6 @@ class UForm {
         props: this.props,
         store: this.$store,
         validator: this.validator,
-        getValidationState: () => this.validatorInstance && this.validatorInstance.$v,
         title: this.title,
         titleTooltip: this.titleTooltip,
         target: this.target,

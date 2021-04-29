@@ -81,7 +81,7 @@ const {
  * @param {string} masterEntityName Name of entity for master record
  * @param {array<string>} masterFieldList Master request fieldList. If unset will set all fields in an entity
  * @param {object<string, UbVuexStoreCollectionInfo|UbVuexStoreRepositoryBuilder>} initCollectionsRequests Collections requests map
- * @param {function} validator Function what returns Vuelidate validation object
+ * @param {Validator} [validator] Validator
  * @param {number} instanceID instanceID
  * @param {Object} [parentContext] Optional values for main instance attributes passed to addNew method
  * @param {UBEntity} entitySchema Entity schema
@@ -783,26 +783,9 @@ function createProcessingModule ({
             return -1
           }
         }
-        const $v = validator()
-        if ($v) {
-          $v.$touch()
-          if ($v.$error) {
-            const fields = Object.keys($v.$params)
-            const errors = fields
-              .filter(f => $v[f].$invalid)
-              .map(field => {
-                const localeString = `${masterEntityName}.${field}`
-                if (UB.i18n(localeString) === localeString) {
-                  return field
-                } else {
-                  return UB.i18n(localeString)
-                }
-              })
-            const errMsg = UB.i18n('validationError', errors.join(', '))
-            const err = new UB.UBError(errMsg)
-            UB.showErrorWindow(err)
-            throw new UB.UBAbortError(errMsg)
-          }
+
+        if (validator) {
+          validator.validateForm()
         }
 
         store.commit('LOADING', {
@@ -952,8 +935,8 @@ function createProcessingModule ({
           target: 'master'
         })
 
-        if (validator()) {
-          validator().$reset()
+        if (validator) {
+          validator.reset()
         }
 
         $notify.success(UB.i18n('formWasRefreshed'))
