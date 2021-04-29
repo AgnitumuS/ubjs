@@ -314,8 +314,7 @@
 			},*/
 			//#ifdef(%UB_USE_OCR%)
 			"OCR": {
-			  "dataPath": "C:\\dev\\TTesseractOCR4\\bin\\tessdata",
-			  "languages": "ukr+eng"
+			  // this section is defined in OCR model partial config
 			},
 			//#endif
 			"mailerConfig": {
