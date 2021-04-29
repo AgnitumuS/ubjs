@@ -424,7 +424,7 @@ Can be implemented by set a [statement_timeout](https://www.postgresql.org/docs/
 ```json
 "executeWhenConnected": [
       ...,
-      "SET statement_timeout=%UB_DB_STATEMENT_TIME_LIMIT||3000%"
+      "SET statement_timeout=%UB_DB_STATEMENT_TIME_LIMIT||10000%"
     ]
 ```
 

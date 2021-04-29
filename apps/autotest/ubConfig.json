@@ -199,7 +199,13 @@
 				"password": "UB5_%UB_APP%_%PLATFORM%",
 				"supportLang": ["en", "uk"],
 				"advSettings": "CARDINALITY_IN",
-				"executeWhenConnected": ["ALTER SESSION SET NLS_COMP=LINGUISTIC", "ALTER SESSION SET NLS_SORT=BINARY_CI"]
+				"executeWhenConnected": [
+					"ALTER SESSION SET NLS_COMP=LINGUISTIC",
+					"ALTER SESSION SET NLS_SORT=BINARY_CI",
+					//#ifdef(%UB_DB_STATEMENT_TIME_LIMIT%)
+					"DECLARE prev_group VARCHAR2(30); BEGIN DBMS_SESSION.switch_current_consumer_group ('%UB_DB_STATEMENT_TIME_LIMIT%', prev_group, TRUE); END;"
+					//#endif
+				]
 			},
 			//#endif
 			//#ifdef(%UB_DB_DRIVER%=PostgreSQL)
@@ -214,7 +220,11 @@
 				"password": "ub5_%UB_APP%_%PLATFORM%",
 				"supportLang": ["en", "uk"],
 				"advSettings": "LibLocation=%UB_POSTGRE_LIB||libpq.so.5%", //linux - can be empty or libpq.so.5; Windows = path to libpq.dll, for example D:/PostgreClient/10/x64/bin/libpq.dll
-				"executeWhenConnected": ["SET search_path TO ub5_%UB_APP%_%PLATFORM%", "SET ub.tenantID=0"]
+				"executeWhenConnected": [
+					"SET search_path TO ub5_%UB_APP%_%PLATFORM%",
+					"SET ub.tenantID=0",
+					"SET statement_timeout=%UB_DB_STATEMENT_TIME_LIMIT||10000%"
+				]
 			},
 			//#endif
 			//#ifdef(%UB_DB_DRIVER%=MSSQLODBC)
