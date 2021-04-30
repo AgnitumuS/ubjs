@@ -401,12 +401,14 @@ The same POSSIBLE but not mandatory  for Int64/Float type of parameter.
 For a Web application (especially for multitenancy apps) it's always a good idea to limit a DB server resources for statements.
 In other case several "bad" statements what retrieve a huge amount of data or run's too long etc. will slow down all users.
 
+> Is limits is exceeded, US (stating from 5.20.1) throws a `<<<ERR_RESOURCE_LIMITS_EXCEED>>>` error 
+
 ### Fetch size limitation
 Using `ubConfig.connections.connName.statementMaxMemoryMb` a maximum fetch size for DataStore can be limited.
 If a result set exceeds this limit, an Exception is raised. This avoids unexpected OutOfMemory errors and prevents server crash
 when incorrect statement what returns too many rows or too big content are executed.
 
-Default value is 50 (50 megabytes) what enough for most cases. For multitenancy apps we recommend to decrease this limit
+Default value is 50 (50 megabytes) what enough for most cases. For multitenancy apps we recommend decreasing this limit
 to 10, for instances what runs a schedulers limit can be increased.
 
 ### Statement execution time limitation
@@ -427,6 +429,8 @@ Can be implemented by set a [statement_timeout](https://www.postgresql.org/docs/
       "SET statement_timeout=%UB_DB_STATEMENT_TIME_LIMIT||10000%"
     ]
 ```
+
+> Postgre error message is: "canceling statement due to statement timeout"
 
 #### MS SQL Server
 MS SQL server have a global query timeout (default is 600 sec) what can be changed using [remote query timeout](https://docs.microsoft.com/en-us/sql/database-engine/configure-windows/configure-the-remote-query-timeout-server-configuration-option?view=sql-server-ver15) option.
@@ -509,6 +513,7 @@ BEGIN
 END;
 -- enable new plan
 ALTER SYSTEM SET RESOURCE_MANAGER_PLAN ='EXEC_TIME_LIMIT_PLAN';
+GRANT EXECUTE ON SYS.DBMS_SESSION TO userID; -- userID should be replaced BY user name used to connect to DB 
 ```
 
 After resource plan is created connection should be configured as such:
@@ -524,3 +529,6 @@ After resource plan is created connection should be configured as such:
 
 and environment variable `UB_DB_STATEMENT_TIME_LIMIT` sets to consumer group name we create above
 ```UB_DB_STATEMENT_TIME_LIMIT=GROUP_WITH_LIMITED_EXEC_TIME```
+
+> Oracle error message is: `ORA-00040: active time limit exceeded - call aborted`
+ 

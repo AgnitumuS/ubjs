@@ -202,9 +202,9 @@
 				"executeWhenConnected": [
 					"ALTER SESSION SET NLS_COMP=LINGUISTIC",
 					"ALTER SESSION SET NLS_SORT=BINARY_CI",
-					//#ifdef(%UB_DB_STATEMENT_TIME_LIMIT%)
+					//ifdef(%UB_DB_STATEMENT_TIME_LIMIT%)
 					"DECLARE prev_group VARCHAR2(30); BEGIN DBMS_SESSION.switch_current_consumer_group ('%UB_DB_STATEMENT_TIME_LIMIT%', prev_group, TRUE); END;"
-					//#endif
+					//endif
 				]
 			},
 			//#endif
