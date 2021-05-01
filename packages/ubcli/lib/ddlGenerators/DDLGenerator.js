@@ -329,6 +329,7 @@ class DDLGenerator {
         name: genFKName(sqlAlias, 'id', (refTo.sqlAlias || refTo.name || ''), entity.connectionConfig.dialect),
         keys: ['ID'],
         references: refTo.name,
+        refPkDefColumn: getAttributeDBName(refTo, 'ID'),
         generateFK: true
       })
     }
@@ -620,12 +621,14 @@ class DDLGenerator {
       name: genFKName(attribute.associationManyData, 'SOURCEID', entity.sqlAlias, entity.connectionConfig.dialect),
       keys: ['sourceID'.toUpperCase()],
       references: getTableDBName(entity),
+      refPkDefColumn: getAttributeDBName(entity, 'ID'),
       generateFK: true
     })
     tableDef.addFK({
       name: genFKName(attribute.associationManyData, 'DESTID', associatedEntity.sqlAlias, entity.connectionConfig.dialect),
       keys: ['destID'.toUpperCase()],
       references: getTableDBName(associatedEntity),
+      refPkDefColumn: getAttributeDBName(associatedEntity, 'ID'),
       generateFK: true
     })
     tableDef.addIndex({
