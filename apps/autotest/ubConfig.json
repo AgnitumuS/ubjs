@@ -237,6 +237,7 @@
 				"databaseName": "ub5_%UB_APP%_%PLATFORM%",
 				"userID": "ub5_%UB_APP%_%PLATFORM%",
 				"password": "ub5_%UB_APP%_%PLATFORM%",
+				"advSettings": "STATEMENT_TIME_LIMIT=%UB_DB_STATEMENT_TIME_LIMIT||0%",
 				"supportLang": ["en", "uk"]
 			},
 			//#endif

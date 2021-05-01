@@ -422,7 +422,8 @@ or statement in the `executeWhenConnected` connection config section.
 We recommend do use a `UB_DB_STATEMENT_TIME_LIMIT` environment variable for timeouts
 
 #### Postgres
-Can be implemented by set a [statement_timeout](https://www.postgresql.org/docs/9.4/runtime-config-client.html#GUC-STATEMENT-TIMEOUT) session variable (in milliseconds)
+Can be implemented by set a [statement_timeout](https://www.postgresql.org/docs/9.4/runtime-config-client.html#GUC-STATEMENT-TIMEOUT)
+session variable *in milliseconds*
 ```json
 "executeWhenConnected": [
       ...,
@@ -430,13 +431,28 @@ Can be implemented by set a [statement_timeout](https://www.postgresql.org/docs/
     ]
 ```
 
-> Postgre error message is: "canceling statement due to statement timeout"
+> Postgre error message contains: "canceling statement due to statement timeout"
 
 #### MS SQL Server
-MS SQL server have a global query timeout (default is 600 sec) what can be changed using [remote query timeout](https://docs.microsoft.com/en-us/sql/database-engine/configure-windows/configure-the-remote-query-timeout-server-configuration-option?view=sql-server-ver15) option.
+MS SQL server have a global query timeout (default is 600 sec) what can be changed using
+[remote query timeout](https://docs.microsoft.com/en-us/sql/database-engine/configure-windows/configure-the-remote-query-timeout-server-configuration-option?view=sql-server-ver15)
+option.
 
-A session level alternative should be found - contribution is welcome
+A session level alternative is implemented for ODBC connections using `STATEMENT_TIME_LIMIT` parameter for connection `advSettings`.
+Value is *in seconds*.
 
+```json
+"connections": [{
+    "name": "main",
+    "driver": "MSSQLODBC",
+    "dialect": "MSSQL2012",
+    ....
+    "advSettings": "STATEMENT_TIME_LIMIT=%UB_DB_STATEMENT_TIME_LIMIT||0%",
+}]
+```
+
+> SQL server error message contains "Query timeout expired"
+ 
 #### Oracle
 Implemented using [Oracle resources manager](https://oracle-base.com/articles/12c/resource-manager-enhancements-12cr1)
 
