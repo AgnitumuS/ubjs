@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.10] - 2021-05-05
+### Added
  - `exportFormatXlsColumn` - new method in column configuration for the `UTable`. This method is useful
   when you want to set some specific format in an `Excel` file for this column
  - all available dialogs now exported as `uDialogs` object from `adminui-vue` packages.
@@ -21,10 +32,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `helpers.isEqual` (used to check store is changed) for array elements return `false` in case length of array is not match.
    Before this changes `helpers.isEqual([1, 2], [2, 1, 1])` returns `true`
  - a theme CSS variable `--l-layout-border-default` changed from 80% to 70% to adjust a `u-*` controls border color with `el-*` ones
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `lookups`: clean `mapById` object during last `unsubscribe` (as well as data array is cleaned)
