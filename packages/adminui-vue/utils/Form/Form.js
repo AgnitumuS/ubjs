@@ -209,7 +209,7 @@ class UForm {
       instanceID: this.instanceID,
       parentContext: (this.props && this.props.parentContext) ? this.props.parentContext : undefined,
       collections,
-      validator: this.validator,
+      validator: () => this.validator,
       beforeInit: beforeInit ? () => beforeInit.call(this, this.$store) : null,
       inited: inited ? () => inited.call(this, this.$store) : null,
       beforeSave: beforeSave ? () => beforeSave.call(this, this.$store) : null,
@@ -269,6 +269,9 @@ class UForm {
       )
     }
 
+    let $v
+    let getValidationState
+
     if (this.isValidationUsed) {
       this.validator = new Validator(
         this.$store,
@@ -276,6 +279,9 @@ class UForm {
         this.fieldList,
         this.customValidationMixin
       )
+
+      $v = this.validator.getValidationState()
+      getValidationState = () => this.validator.getValidationState()
     }
 
     if (this.isProcessingUsed) {
@@ -291,7 +297,8 @@ class UForm {
         component: this.component,
         props: this.props,
         store: this.$store,
-        validator: this.validator,
+        $v,
+        getValidationState,
         title: this.title,
         titleTooltip: this.titleTooltip,
         modalClass: this.modalClass,
@@ -317,7 +324,8 @@ class UForm {
         component: this.component,
         props: this.props,
         store: this.$store,
-        validator: this.validator,
+        $v,
+        getValidationState,
         title: this.title,
         titleTooltip: this.titleTooltip,
         tabId: this.tabId,
@@ -335,7 +343,8 @@ class UForm {
         component: this.component,
         props: this.props,
         store: this.$store,
-        validator: this.validator,
+        $v,
+        getValidationState,
         title: this.title,
         titleTooltip: this.titleTooltip,
         target: this.target,

@@ -24,7 +24,8 @@ const uDialogs = require('../uDialogs')
  * @param {object} cfg.props Form component props
  * @param {Vuex.Store} cfg.store Store
  * @param {string} cfg.title Title
- * @param {Validator} [cfg.validator] Validator
+ * @param {object} [cfg.$v] Vuelidate validation object
+ * @param {function():object} [cfg.getValidationState] Function that returns reactive vuelidate validation object
  * @param {string} [cfg.modalClass] Modal class
  * @param {string} [cfg.modalWidth] Modal width
  * @param {object} cfg.provide Regular object which provide all props what passed in it
@@ -34,7 +35,8 @@ function mountModal ({
   props,
   store,
   title: titleText,
-  validator,
+  $v,
+  getValidationState,
   modalClass = 'ub-dialog__reset-padding',
   modalWidth,
   provide
@@ -81,7 +83,6 @@ function mountModal ({
       }
     },
     provide () {
-      const { $v, getValidationState } = validator || {}
       return {
         $v,
         getValidationState,
@@ -151,7 +152,8 @@ function mountModal ({
  * @param {Vuex.Store} cfg.store Store
  * @param {string} cfg.title Title
  * @param {string} cfg.tabId navbar tab ID
- * @param {Validator} [cfg.validator] Validator
+ * @param {object} [cfg.$v] Vuelidate validation object
+ * @param {function():object} [cfg.getValidationState] Function that returns reactive vuelidate validation object
  * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  * @param {boolean} [cfg.openInBackgroundTab=false] If `true` - the tab with a newly opened form does not become active.
@@ -160,7 +162,8 @@ function mountTab ({
   component,
   props,
   store,
-  validator,
+  $v,
+  getValidationState,
   title: titleText,
   titleTooltip: titleTooltipText,
   tabId,
@@ -230,7 +233,6 @@ function mountTab ({
     },
     render: (h) => h(component, { props }),
     provide () {
-      const { $v, getValidationState } = validator || {}
       return {
         $v,
         getValidationState,
@@ -317,7 +319,8 @@ function beforeClose ({ store, close }) {
  * @param {Vuex.Store} cfg.store Store
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  * @param {Ext.component|String} cfg.target Either id of html element or Ext component
- * @param {Validator} [cfg.validator] Validator
+ * @param {object} [cfg.$v] Vuelidate validation object
+ * @param {function():object} [cfg.getValidationState] Function that returns reactive vuelidate validation object
  */
 function mountContainer ({
   component,
@@ -325,7 +328,8 @@ function mountContainer ({
   store,
   provide,
   target,
-  validator
+  $v,
+  getValidationState
 }) {
   const instance = new Vue({
     store,
@@ -333,7 +337,6 @@ function mountContainer ({
       return {}
     },
     provide () {
-      const { $v, getValidationState } = validator || {}
       return {
         $v,
         getValidationState,

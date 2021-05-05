@@ -17,10 +17,6 @@ module.exports = class Validator {
     )
   }
 
-  get $v () {
-    return this._vueInstance.$v
-  }
-
   getValidationState () {
     return this._vueInstance.$v
   }
@@ -34,7 +30,7 @@ module.exports = class Validator {
       const errors = fields
         .filter(f => $v[f].$invalid)
         .map(field => {
-          const configuredFieldLocale = this._vueInstance[`${field}InLocale`]
+          const configuredFieldLocale = this._vueInstance[`${field}:inLocale`]
           return configuredFieldLocale || getEntityFieldInLocale(masterEntityName, field)
         })
       const errMsg = UB.i18n('validationError', errors.join(', '))

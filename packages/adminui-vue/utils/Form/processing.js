@@ -784,8 +784,8 @@ function createProcessingModule ({
           }
         }
 
-        if (validator) {
-          validator.validateForm()
+        if (validator()) {
+          validator().validateForm()
         }
 
         store.commit('LOADING', {
@@ -935,8 +935,8 @@ function createProcessingModule ({
           target: 'master'
         })
 
-        if (validator) {
-          validator.reset()
+        if (validator()) {
+          validator().reset()
         }
 
         $notify.success(UB.i18n('formWasRefreshed'))
