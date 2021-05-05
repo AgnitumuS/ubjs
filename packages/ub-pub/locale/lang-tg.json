@@ -86,6 +86,7 @@
   "Access deny": "Шумо барои иҷрои ин амал иҷозат надоред",
   "ERR_REFERENCE_ERROR": "Иҷрои амалиет имконнопазир аст - унсури истифода бурда мешавад дар дигар сабтҳо",
   "VALUE_MUST_BE_UNIQUE": "Ягонагӣ вайрон карда шуд - арзиши нишондодашуда аллакай дар дигар сабтҳо истифода мешавад",
+  "ERR_RESOURCE_LIMITS_EXCEED": "The operation was canceled because it is consuming a lot of resources. <br> Tips: - narrow down a search parameters <br> - avoid using the 'contains' condition <br> - avoid navigating between list pages ",
   "SelectPKAndPassMsg": "Файлро интихоб кунед ва рамзро пур кунед",
   "ReadPkTitle": "Хонандаи калиди шухси",
   "readPKCanceled": "Сарбории калиди хусусӣ бекор карда шуд",

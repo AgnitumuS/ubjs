@@ -87,6 +87,7 @@
   "Access deny": "You do not have rights to perform this operation",
   "ERR_REFERENCE_ERROR": "Unable to perform the operation - element is being used in other entities",
   "VALUE_MUST_BE_UNIQUE": "Unable to perform the operation - specified value must be unique, but is being used in other entities",
+  "ERR_RESOURCE_LIMITS_EXCEED": "The operation was canceled because it is consuming a lot of resources. <br> Tips: - narrow down a search parameters <br> - avoid using the 'contains' condition <br> - avoid navigating between list pages ",
   "SelectPKAndPassMsg": "Select a file and fill out the password",
   "ReadPkTitle": "Reading a private key",
   "readPKCanceled": "Private key load canceled",

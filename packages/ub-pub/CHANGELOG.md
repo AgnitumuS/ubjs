@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.9.6] - 2021-05-05
+### Added
+ - `<<<ERR_RESOURCE_LIMITS_EXCEED>>>` localization added: "The operation was canceled because it is consuming a lot of resources.
+   <br> Tips: - narrow down a search parameters <br> - avoid using the 'contains' condition <br> - avoid navigating between list pages"
+
 ## [5.9.5] - 2021-04-24
 ## [5.9.4] - 2021-04-22
 ## [5.9.3] - 2021-04-16

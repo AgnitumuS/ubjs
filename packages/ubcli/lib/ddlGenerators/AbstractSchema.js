@@ -163,6 +163,7 @@ class TableDefinition {
    * @property {string} [_upperName]
    * @property {Array<string>} keys
    * @property {string} references A reference table name
+   * @property {string} refPkDefColumns A columns in reference table
    * @property {boolean} [generateFK=true]
    * @property {boolean} [isDisabled=false]
    * @property {string} [deleteAction='NO_ACTION'] one of NO_ACTION, CASCADE, SET_NULL,  SET_DEFAULT
@@ -180,6 +181,7 @@ class TableDefinition {
     if (checkName) {
       idxIndex = _.findIndex(this.foreignKeys, { _upperName: obj._upperName })
     }
+    if (!obj.refPkDefColumns) obj.refPkDefColumns = 'ID'
     if (idxIndex !== -1) {
       this.foreignKeys[idxIndex] = obj
     } else {

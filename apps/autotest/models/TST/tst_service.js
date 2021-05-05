@@ -344,3 +344,27 @@ me.iitVerify = function (ctx) {
   ctx.mParams.result = verifyResult
 }
 me.entity.addMethod('iitVerify')
+
+/**
+ * Run a long query to verify a ERR_RESOURCE_LIMITS_EXCEED exception handling
+ * @example
+ *
+UB.connection.query({
+  entity: 'tst_service',
+  method: 'resourceLimitationTest',
+  level: 3
+})
+ * @param {ubMethodParams} ctx
+ * @param {number} ctx.mParams.level
+ */
+me.resourceLimitationTest = function (ctx) {
+  App.dbStartTransaction(me.entity.connectionConfig.name)
+  let level = ctx.mParams.level || 4
+  let q = 'select max(at.ID) from uba_auditTrail at'
+  if (level > 5) level = 5
+  for (let i = 1; i <= level; i++) {
+    q = q + ` cross join uba_auditTrail at${i}`
+  }
+  ctx.dataStore.runSQL(q, {})
+}
+me.entity.addMethod('resourceLimitationTest')
