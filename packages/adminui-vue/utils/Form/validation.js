@@ -1,10 +1,30 @@
 /* global UB */
 
+const _ = require('lodash')
 const Vue = require('vue')
 const { validationMixin } = require('vuelidate')
 const { required } = require('vuelidate/lib/validators/index')
 
 const { mapInstanceFields } = require('./helpers')
+
+/**
+ * Helper function that merges validation config defined in mixins
+ * @param {object|function|undefined} a
+ * @param {object|function|undefined} b
+ * @returns {object}
+ */
+function mergeValidations (a, b) {
+  if (typeof a === 'function' || typeof b === 'function') {
+    return function () {
+      const aObj = typeof a === 'function' ? a.call(this) : a
+      const bObj = typeof b === 'function' ? b.call(this) : b
+      return _.merge(aObj, bObj)
+    }
+  }
+  return _.merge(a, b)
+}
+
+Vue.config.optionMergeStrategies.validations = mergeValidations
 
 module.exports = class Validator {
   constructor (store, entitySchema, masterFieldList, customValidationMixin) {
