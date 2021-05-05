@@ -61,7 +61,9 @@ class XLSXStyle {
       number: '00 ',
       dateDay: 'dd ',
       dateMonthName: 'mmmm ',
-      dateMonth: 'mm '
+      dateMonth: 'mm ',
+      dateMYLong: 'mmmm yyyy',
+      dateFullLong: 'mmmm d yyyy'
     }
   }
 

@@ -6,13 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `exportFormatXlsColumn` - new method in column configuration for the `UTable`. This method is useful
+  when you want to set some specific format in an `Excel` file for this column
  - all available dialogs now exported as `uDialogs` object from `adminui-vue` packages.
    Dialogs functions are documented in [adminui-vue documentation on site](https://unitybase.info/api/ubpub-v5/module-@unitybase_adminui-vue.html)
  - adminui-vue `lookups` submodule documentation
  - adminui-vue `helpers` and `processing` submodules documentation
  - adminui-vue exports a `helpers` submodule as `formHelpers`.
    A direct `require('@unitybase/adminui-vue/utils/Form/helpers')` should be replaced to `require('@unitybase/adminui-vue').formHelpers` 
-  
+
 ### Changed
  - `computedVuex` *BREAKING* signature changed to accept (optional) submodule name as a second argument
  - `mapInstanceFields` *BREAKING* signature changed to accept (optional) submodule name as a second argument
