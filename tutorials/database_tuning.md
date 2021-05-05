@@ -163,7 +163,10 @@ where `CIDX_TMD_CAPTION` is a index name and `caption` is attribute on which sub
 
 Depending on database type UBQL query:  
 ```javascript
-UB.Repository('myEntyity').attrs('ID', 'caption').where('caption', 'like', 'substr').selectAsObject()
+UB.Repository('myEntyity')
+  .attrs('ID', 'caption')
+  .where('caption', 'like', 'substr')
+  .selectAsObject()
 ```
 will be translated to SQL:  
  - Oracle
@@ -302,7 +305,7 @@ SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT column_value FROM tabl
 
 Query with cardinality hint 
 ```sql
-SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT /*+ CARDINALITY(t1, P) */ column_value FROM table(SYS.ODCINUMBERLIST(1, 2, 3)))
+SELECT A01.ID FROM uba_user A01 WHERE A01.ID IN (SELECT /*+ CARDINALITY(t1, P) */ column_value FROM table(SYS.ODCINUMBERLIST(1, 2, 3)))
 ```
 
 ### SQL Server array binding
