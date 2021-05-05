@@ -1,4 +1,4 @@
-/* global SystemJS, Ext */
+/* global SystemJS, Ext, Blob */
 const UB = require('@unitybase/ub-pub')
 
 module.exports = {
@@ -180,7 +180,10 @@ function enrichSheetHeader ({ sheet, columns, getStyle, rowStyles }) {
     index++
     const dataType = column.attribute && column.attribute.dataType
     properties.push({ column: index, width: getWide(column.attribute) })
-    rowStyles.push({ column: index, style: getStyle(dataType) })
+    const predefinedFormat = typeof column.exportFormatXlsColumn === 'function'
+      ? column.exportFormatXlsColumn({ column })
+      : undefined
+    rowStyles.push({ column: index, style: getStyle(dataType, predefinedFormat) })
     rowData.push({ column: index, value: UB.i18n(column.label), style: getStyle('headerRow') })
   }
 
@@ -195,30 +198,42 @@ function enrichSheetHeader ({ sheet, columns, getStyle, rowStyles }) {
  * @param {XLSXStyleControllerFont} font Font style in excel workbook
  * @param {XLSXStyleControllerBorder} border Border style in excel workbook
  * @param {XLSX} XLSX XLSX library
- * @returns {function(string):XLSXStyle} Style getter
+ * @returns {function(string, string?):XLSXStyle} Style getter
  */
 function createStyleGetter ({ styles, font, border, XLSX }) {
-  return (dataType) => {
+  return (dataType, predefinedFormat) => {
+    let styleConfig = { font, border }
     switch (dataType) {
       case 'Date':
       case 'DateTime':
-        return styles.getStyle({ font, border, format: XLSX.XLSXStyle.indexDefFormateDate, code: 'DefDateStyle' })
+        styleConfig = { font, border, format: XLSX.XLSXStyle.indexDefFormateDate, code: 'DefDateStyle' }
+        break
       case 'Float':
-        return styles.getStyle({ font, border, alignment: styles.alignments.named.Hright, format: styles.formats.named.floatFormat })
+        styleConfig = { font, border, alignment: styles.alignments.named.Hright, format: styles.formats.named.floatFormat }
+        break
       case 'Currency':
-        return styles.getStyle({ font, border, alignment: styles.alignments.named.Hright, format: styles.formats.named.sumFormat })
+        styleConfig = { font, border, alignment: styles.alignments.named.Hright, format: styles.formats.named.sumFormat }
+        break
       case 'Int':
-        return styles.getStyle({ font, border, alignment: styles.alignments.named.Hright, format: styles.formats.named.intFormat })
+        styleConfig = { font, border, alignment: styles.alignments.named.Hright, format: styles.formats.named.intFormat }
+        break
       case 'String':
       case 'Text':
-        return styles.getStyle({ font, border, alignment: styles.alignments.named.wrapText })
+        styleConfig = { font, border, alignment: styles.alignments.named.wrapText }
+        break
       case 'header':
-        return styles.getStyle({ font: styles.fonts.named.defBold, alignment: styles.alignments.named.HVcenter })
+        styleConfig = { font: styles.fonts.named.defBold, alignment: styles.alignments.named.HVcenter }
+        break
       case 'headerRow':
-        return styles.getStyle({ font: styles.fonts.named.defBold, fill: 'EBEDED', border, alignment: styles.alignments.named.HVcenter })
-      default:
-        return styles.getStyle({ font, border })
+        styleConfig = { border, font: styles.fonts.named.defBold, fill: 'EBEDED', alignment: styles.alignments.named.HVcenter}
+        break
     }
+
+    if (predefinedFormat) {
+      styleConfig.format = predefinedFormat
+    }
+
+    return styles.getStyle(styleConfig)
   }
 }
 
