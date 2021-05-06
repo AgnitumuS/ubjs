@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - UDatePicker improvements:
+   - documentation added - see https://unitybase.info/api/adminui-vue/index.html#/Presentational/UDatePicker
+   - panels for ranges are unlinked by default (month can be changed separately)
+   - placeholder i18n for date range changed from `Start Date - End Date` to `from - to`  ( `з - по` for uk)
+   - added defaults shortcuts. For date - Today and Yesterday, for range Today, Yesterday and "current month"
+ - FTS widget and "range" date filter for 'UTable' uses `u-date-picker` with all options is default    
 
 ### Deprecated
 
@@ -16,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - fixed `UB.truncTimeToUTCNull is not a function`, valid method name is `UB.truncTimeToUtcNull` (UTC -> Utc)
  - autoforms fixed (was broken by 5.20.10 refactoring)
- - `UAutoFiled` for Date and DateTime sets u-date-picker clearable to false for attributes what do not allow nulls 
+ - `UAutoFiled` for Date and DateTime sets u-date-picker `clearable` to `false` for attributes what do not allow nulls 
 
 ## [5.20.10] - 2021-05-05
 ### Added

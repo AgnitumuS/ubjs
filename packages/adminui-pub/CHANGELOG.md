@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - i18n for current_[week|month|year] changed "This week" -> "Current week", "За цей тиждень" -> "Поточний тиждень" etc  
 
 ### Deprecated
 
