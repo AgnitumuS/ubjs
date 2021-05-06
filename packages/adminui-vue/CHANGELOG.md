@@ -6,8 +6,46 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - possibility to configure validaiton for not-entity attributes in the `Form.validation(...)` section.
+  To validate some non-entity fields you should define a computed property that returns
+  its value and property `${field}:inLocale` that returns locale of this field for
+  displaying on the error dialog. Example:
+```js
+module.exports.mount = cfg => {
+  Form(cfg)
+    .store()
+    .processing()
+    .validation({
+      ...mapState('form', [
+        'dataProvider'
+      ]),
+
+      computed: {
+        colorDefaultValue() {
+          return this.dataProvider.getDefaultValueFor('color')
+        },
+
+        'colorDefaultValue:inLocale'() {
+          return this.$ut('forms_errors.invalidDefaultValue', 'color')
+        }
+      },
+
+      validations() {
+        return {
+          colorDefaultValue: {
+            required
+          }
+        }
+      }
+    })
+    .mount()
+}
+
+```
 
 ### Changed
+ - `validations() {...}` *BREAKING* this option is deep [merged](https://vuejs.org/v2/api/#optionMergeStrategies)
+  not overridden by another from another mixin now. This allows you to reuse mixins with partial validation
 
 ### Deprecated
 
