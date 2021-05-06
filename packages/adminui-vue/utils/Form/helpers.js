@@ -215,7 +215,7 @@ function buildExecParams (trackedObj, entity) {
       const attr = schema.attributes[key]
       if (!(attr && attr.readOnly) && !key.includes('.')) {
         if (attr && attr.dataType === UB_DATA_TYPES.Date) {
-          execParams[key] = UB.truncTimeToUTCNull(trackedObj.data[key])
+          execParams[key] = UB.truncTimeToUtcNull(trackedObj.data[key])
         } else {
           execParams[key] = value
         }
@@ -244,7 +244,7 @@ function buildExecParams (trackedObj, entity) {
     if (!key.includes('.')) {
       const attr = schema.attributes[key]
       if (trackedObj.data[key] && attr && attr.dataType === UB_DATA_TYPES.Date) {
-        execParams[key] = UB.truncTimeToUTCNull(trackedObj.data[key])
+        execParams[key] = UB.truncTimeToUtcNull(trackedObj.data[key])
       } else {
         execParams[key] = trackedObj.data[key]
       }
