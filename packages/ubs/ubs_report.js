@@ -2,6 +2,9 @@
 // eslint-disable-next-line camelcase
 const me = ubs_report
 const fs = require('fs')
+const path = require('path')
+const UB = require('@unitybase/ub')
+const App = UB.App
 me.on('insert:before', generateDefaultJS)
 
 /**
@@ -69,5 +72,3 @@ me.testServerRendering = function (ctxt, req, resp) {
 if (process.isDebug) {
   me.entity.addMethod('testServerRendering')
 }
-
-

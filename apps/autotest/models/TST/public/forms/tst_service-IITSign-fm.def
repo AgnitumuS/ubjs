@@ -116,18 +116,31 @@ Ext.define('TST.IITSign', {
     me.callParent(arguments)
     // debugger;
 
-    me.down('component[ubID="doSign"]').handler = function () {
+    me.down('component[ubID="doSign"]').handler = async function () {
+      // const f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
+      // me.mask('Signing')
+      // return UB.file2Uint8Array(f).then(fArray => {
+      //   return $App.connection.pki().then(pki => {
+      //     return pki.sign(fArray)
+      //   })
+      // }).then(signature => {
+      //   me.down('component[ubID="signature"]').setValue(signature)
+      // }).catch(e => {
+      //   throw new UB.UBError(e.message)
+      // }).finally(() => me.unmask())
+      let pki
       const f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
       me.mask('Signing')
-      return UB.file2Uint8Array(f).then(fArray => {
-        return $App.connection.pki().then(pki => {
-          return pki.sign(fArray)
-        })
-      }).then(signature => {
+      try {
+        pki = await $App.connection.pki()
+        const fArray = await UB.file2Uint8Array(f)
+        const signature = await pki.sign(fArray)
         me.down('component[ubID="signature"]').setValue(signature)
-      }).catch(e => {
-        throw new UB.UBError(e.message)
-      }).finally(() => me.unmask())
+        $App.dialogInfo('Документ успішно підписаний', 'Підпис')
+      } finally {
+        me.unmask()
+        if (pki) pki.closePrivateKey()
+      }
     }
 
     me.down('component[ubID="doValidate"]').handler = function () {

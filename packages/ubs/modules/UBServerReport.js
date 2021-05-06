@@ -35,6 +35,8 @@ module.exports = {
 }
 
 const Mustache = require('mustache')
+// TODO - remove Q.when in future - it added for compatibility with .then() on client
+// eslint-disable-next-line no-unused-vars
 const Q = require('when')
 const _ = require('lodash')
 const path = require('path')
@@ -48,9 +50,6 @@ global.DOMParser = xmldom.DOMParser
 global.XMLSerializer = xmldom.XMLSerializer
 
 // PDF unicode-text require atob & btoa to be in global
-// MPV TODO - fix issue in buffer and switch to Buffer
-// const browserLikebase64 = require('./base64')
-// global.atob = browserLikebase64.atob
 global.atob = function (text) {
   const buf = Buffer.from(text, 'base64')
   return buf.toString('binary') // buffer.toString('utf-8')
@@ -217,12 +216,14 @@ UBServerReport.prototype.transformToPdf = function (html, options = {}) {
   const PDF = require('@unitybase/pdf')
 
   PDF.PrintToPdf.requireFonts({
-    fonts: options.fonts ? options.fonts : [
-      { fontName: 'TimesNewRoman', fontStyle: 'Normal' },
-      { fontName: 'TimesNewRoman', fontStyle: 'Bold' },
-      { fontName: 'TimesNewRoman', fontStyle: 'Italic' },
-      { fontName: 'TimesNewRoman', fontStyle: 'BoldItalic' }
-    ]
+    fonts: options.fonts
+      ? options.fonts
+      : [
+          { fontName: 'TimesNewRoman', fontStyle: 'Normal' },
+          { fontName: 'TimesNewRoman', fontStyle: 'Bold' },
+          { fontName: 'TimesNewRoman', fontStyle: 'Italic' },
+          { fontName: 'TimesNewRoman', fontStyle: 'BoldItalic' }
+        ]
   })
 
   let pdfConfig = {
