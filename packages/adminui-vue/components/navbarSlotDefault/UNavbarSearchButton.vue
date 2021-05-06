@@ -58,8 +58,6 @@
       v-model="period"
       class="ub-fts__date-picker"
       type="daterange"
-      :start-placeholder="$ut('el').datepicker.startDate"
-      :end-placeholder="$ut('el').datepicker.endDate"
       :picker-options="pickerOptions"
     />
   </el-popover>
