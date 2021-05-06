@@ -1,30 +1,10 @@
 /* global UB */
 
-const _ = require('lodash')
 const Vue = require('vue')
 const { validationMixin } = require('vuelidate')
 const { required } = require('vuelidate/lib/validators/index')
 
 const { mapInstanceFields } = require('./helpers')
-
-/**
- * Helper function that merges validation config defined in mixins
- * @param {object|function|undefined} a
- * @param {object|function|undefined} b
- * @returns {object}
- */
-function mergeValidations (a, b) {
-  if (typeof a === 'function' || typeof b === 'function') {
-    return function () {
-      const aObj = typeof a === 'function' ? a.call(this) : a
-      const bObj = typeof b === 'function' ? b.call(this) : b
-      return _.merge(aObj, bObj)
-    }
-  }
-  return _.merge(a, b)
-}
-
-Vue.config.optionMergeStrategies.validations = mergeValidations
 
 module.exports = class Validator {
   constructor (store, entitySchema, masterFieldList, customValidationMixin) {
@@ -37,12 +17,20 @@ module.exports = class Validator {
     )
   }
 
+  /**
+   * Returns the current state of validation. The method is useful when you have dynamic validation
+   * @returns {object} Vuelidate object
+   */
   getValidationState () {
     return this._vueInstance.$v
   }
 
+  /**
+   * Validates form data with Vuelidate. If validation is failed `UBAbortError` will be thrown
+   * @throws {UB.UBAbortError}
+   */
   validateForm () {
-    const $v = this.getValidationState()
+    const { $v } = this._vueInstance
     $v.$touch()
     if ($v.$error) {
       const masterEntityName = this._entitySchema.code
@@ -60,20 +48,22 @@ module.exports = class Validator {
     }
   }
 
+  /**
+   * Makes validation state not dirty
+   */
   reset () {
     this._vueInstance.$v.$reset()
   }
 }
 
 /**
- * Track Instance module data and validate it
- * Check entity schema attributes and set required to
- * props which have !allowNull param and defaultView is true
+ * Create a Vue instance for validation of form data.
+ * Instance configured to check entity schema attributes with `allowNull=true` and `defaultView=true`
  * @param {Vuex} store Store
  * @param {UBEntity} entitySchema Entity schema
- * @param {Vue} customValidationMixin Custom validation mixin in case when need to override default validation
+ * @param {Vue} customValidationMixin Custom validation mixin in case when need to extend default validation
  * @param {string[]} masterFieldList Field list of master entity
- * @return {object} Vuelidate validation object
+ * @return {Vue} Vue instance
  */
 function createValidatorInstance (store, entitySchema, masterFieldList, customValidationMixin = {}) {
   const requiredFields = entitySchema

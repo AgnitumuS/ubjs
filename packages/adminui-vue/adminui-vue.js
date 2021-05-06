@@ -3,6 +3,7 @@
  */
 
 /* global SystemJS, Ext, $App */
+const _ = require('lodash')
 const UB = require('@unitybase/ub-pub')
 // vuelidate internally use process.env.BUILD === 'web'
 window.process = {
@@ -301,3 +302,28 @@ Vue.config.errorHandler = function (err, vm, trace) {
  * @type {{formatDate:function, formatNumber:function, setLang2LocaleHook:function, datePatterns: string[], numberPatterns: string[], setDefaultLang: function, collationCompare:function}}
  */
 Vue.prototype.$formatByPattern = UB.formatter
+
+/**
+ * Define custom merging strategy for the `validations` option. This allows reusing
+ * some code in `Form.validation()` for different forms. Now you can use mixins here with
+ * partial validations and not define validation for entity attributes with
+ * `notNull = true` that are defined by default
+ */
+Vue.config.optionMergeStrategies.validations = mergeValidations
+
+/**
+ * Helper function that merges validation config defined in mixins
+ * @param {object|function|undefined} a
+ * @param {object|function|undefined} b
+ * @returns {object}
+ */
+function mergeValidations (a, b) {
+  if (typeof a === 'function' || typeof b === 'function') {
+    return function () {
+      const aObj = typeof a === 'function' ? a.call(this) : a
+      const bObj = typeof b === 'function' ? b.call(this) : b
+      return _.merge(aObj, bObj)
+    }
+  }
+  return _.merge(a, b)
+}
