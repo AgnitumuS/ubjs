@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - fixed `UB.truncTimeToUTCNull is not a function`, valid method name is `UB.truncTimeToUtcNull` (UTC -> Utc)
  - autoforms fixed (was broken by 5.20.10 refactoring)
+ - `UAutoFiled` for Date and DateTime sets u-date-picker clearable to false for attributes what do not allow nulls 
 
 ## [5.20.10] - 2021-05-05
 ### Added

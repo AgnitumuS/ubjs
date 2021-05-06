@@ -177,6 +177,9 @@ export default {
         break
       case 'Date':
       case 'DateTime':
+        if (!ATTR.allowNull) {
+          baseAttrs.clearable = false
+        }
         cmp = h(this.forceCmp || 'u-date-picker', {
           attrs: {
             type: ATTR.dataType.toLowerCase(),
