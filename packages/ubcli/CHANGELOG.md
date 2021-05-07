@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `ubcli generateDDL` for Oracle: fixed referential constraint generation in case referenced table is located in
+  another schema (in such case constraint UNEXPECTEDLY owned by reference table schema)
 
 ## [5.21.7] - 2021-05-05
 ### Fixed
