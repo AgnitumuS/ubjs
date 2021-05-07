@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - fix static file access error for `models/adminui-pub/themes/undefined/ubimages/scan-to-pdf.png`;
+   `UBGrayTheme` should be used as a default instead of undefined
 
 ## [5.20.12] - 2021-05-05
 ### Fixed

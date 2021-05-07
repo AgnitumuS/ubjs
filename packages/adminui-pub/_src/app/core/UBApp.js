@@ -338,7 +338,8 @@ Ext.define('UB.core.UBApp', {
    * @returns {string}
    */
   getImagePath: function (imageName) {
-    return 'models/adminui-pub/themes/' + UB.connection.appConfig.uiSettings.adminUI.themeName + '/ubimages/' + imageName
+    // apply a default here to prevent unknown reason of models/adminui-pub/themes/undefined/ubimages/scan-to-pdf.png
+    return 'models/adminui-pub/themes/' + (UB.connection.appConfig.uiSettings.adminUI.themeName || 'UBGrayTheme') + '/ubimages/' + imageName
   },
 
   /**
