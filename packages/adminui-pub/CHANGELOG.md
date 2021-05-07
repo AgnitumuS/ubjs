@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - i18n for current_[week|month|year] changed "This week" -> "Current week", "За цей тиждень" -> "Поточний тиждень" etc  
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.20.13] - 2021-05-07
+### Changed
+ - i18n for current_[week|month|year] changed "This week" -> "Current week", "За цей тиждень" -> "Поточний тиждень" etc  
 
 ### Fixed
  - fix static file access error for `models/adminui-pub/themes/undefined/ubimages/scan-to-pdf.png`;

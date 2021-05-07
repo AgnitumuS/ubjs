@@ -8,16 +8,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.11] - 2021-05-07
+### Changed
  - UDatePicker improvements:
    - documentation added - see https://unitybase.info/api/adminui-vue/index.html#/Presentational/UDatePicker
    - panels for ranges are unlinked by default (month can be changed separately)
    - placeholder i18n for date range changed from `Start Date - End Date` to `from - to`  ( `з - по` for uk)
    - added defaults shortcuts. For date - Today and Yesterday, for range Today, Yesterday and "current month"
  - FTS widget and "range" date filter for 'UTable' uses `u-date-picker` with all options is default    
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - fixed `UB.truncTimeToUTCNull is not a function`, valid method name is `UB.truncTimeToUtcNull` (UTC -> Utc)
