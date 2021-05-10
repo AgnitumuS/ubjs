@@ -26,7 +26,7 @@ For documentation of the VueJS based UI components see [UI library for Vue](/api
  An `adminUI` based application should adds a `@unitybase/adminui-vue` model into `domain.models`
  section of ubConfig after `adminui-pub`
 
-```
+```json
 "application": {
   "domain": {
     "models": [
@@ -40,8 +40,9 @@ See `/views/ub-auth.html` for sample
 
 ### Embed a compiled Vue app into adminUI
 - define `output` and `externals` section into webpack config to prevent loading modules twice:
-```
-  output: {
+
+```javascript
+  {output: {
     path: path.join(__dirname, 'dist'),
     library: 'YUR_LIB_NAME',
     libraryTarget: 'var',
@@ -54,7 +55,7 @@ See `/views/ub-auth.html` for sample
     '@unitybase/adminui-pub': '$App',
     'vue': 'Vue',
     'element-ui': 'ElementUI',
-  }
+  }}
 ```
 
 ## Debugging
@@ -86,12 +87,12 @@ See `/views/ub-auth.html` for sample
    
 ## Theme
 Generate variables 
-```
+```bash
 npm run gen-el-vars
 ```
 
 Edit theme/ub-el.scss and build a theme using command:
 
-```
+```bash
 npm run build:theme
 ```

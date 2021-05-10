@@ -10,7 +10,6 @@ For applications (consider application name is `autotest`)
 
  - Pack app for deployment (in the application folder)
 ```shell script
-# 
 cd autotest
 ub-pack # this creates `/tmp/ubapp-autotest#x.y.z.tar.gz
 ```
@@ -40,7 +39,6 @@ For products (consider product name is `docflow`)
 
  - Pack product for deployment (in the application folder)
 ```shell script
-# 
 cd docflow
 ub-pack # this creates `/tmp/ubproduct-docflow#x.y.z.tar.gz
 ```
@@ -50,7 +48,7 @@ ub-pack # this creates `/tmp/ubproduct-docflow#x.y.z.tar.gz
 sudo -u unitybase ub-deploy ubproduct-docflow#x.y.z.tar.gz
 ```
 
- - If this is first time product setup (there is no application for this product on this server)
+ - If this is a first time product setup (there is no application for this product on this server)
    - create new app
    ```shell script
    sudo -u unitybase ub-app-new -p docflow -a docflow-cust1
@@ -61,7 +59,7 @@ sudo -u unitybase ub-deploy ubproduct-docflow#x.y.z.tar.gz
    sudo -u unitybase ub-app-init cust1 # will create app docflow-cust1  
    ```
    
- - if this is upgrade - all affected applications should be upgraded
+ - if this is an upgrade - all affected applications should be upgraded
  ```shell script
  sudo systemctl stop unitybase@docflow*
  # for each app (docflow-cust1)
@@ -85,7 +83,7 @@ All files what must be excluded from archive should be noted in `.npmignore`. Al
  - /logs, /stores, /localdb
  - ./inetpub/clientRequire folder 
 
-If this is a product set a
+In case this is a product, set a
 ```
 "config": {
  "ubapptype": "product"

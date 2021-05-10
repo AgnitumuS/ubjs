@@ -31,10 +31,11 @@ const _sessionCached = {
  *
  * Implements {@link EventEmitter} and will emit `login` event each time user logged in
  * or `loginFailed` event with 2 parameters(isLocked, userName) when user UB authentication failed
- *
- *      const UB = require('@unitybase/ub')
- *      const Session = UB.Session
- *
+ * @example
+
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+
  * @class
  * @global
  * @extends EventEmitter
@@ -299,15 +300,15 @@ Object.defineProperty(Session, 'tenantID', {
  * Instead define or remove properties using `Session.uData.myProperty = ...`
  * or use `delete Session.uData.myProperty` if you need to undefine something.
  *
- * Example below add `someCustomProperty` to Session.uData:
- *
- *      // @param {THTTPRequest} req
- *      Session.on('login', function (req) {
- *          var uData = Session.uData
- *          uData.someCustomProperty = 'Hello!'
- *      })
- *
- * See real life example inside `@unitybase/org/org.js`.
+ * Example below add `someCustomProperty` to Session.uData. See also a real life example in `@unitybase/org/org.js`
+ * @example
+
+// @param {THTTPRequest} req
+Session.on('login', function (req) {
+  const uData = Session.uData
+  uData.someCustomProperty = 'Hello!'
+})
+
  * @event login
  * @memberOf Session
  */
@@ -364,14 +365,15 @@ Object.defineProperty(Session, 'tenantID', {
  * user will be locked
  *
  * 2 parameters are passes to this event userID(Number) and isUserLocked(Boolean)
- *
- *      Session.on('loginFailed', function(userID, isLocked){
- *          if (isLocked)
- *              console.log('User with id ', userID, 'entered wrong password and locked');
- *          else
- *              console.log('User with id ', userID, 'entered wrong password');
- *      })
- *
+ * @example
+
+Session.on('loginFailed', function(userID, isLocked){
+ if (isLocked)
+   console.log('User with id ', userID, 'entered wrong password and locked')
+ else
+   console.log('User with id ', userID, 'entered wrong password')
+})
+
  * @memberOf Session
  * @event loginFailed
  */

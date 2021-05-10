@@ -232,7 +232,7 @@ module.exports = function giveItAGoodNameWhichExplainWhatFunctionDoes ({ conn, d
 ## Applying a Migrations
 
 For development purpose and under Windows:  
-```
+```bash
 cd /path/to/app/folder
 ubcli migrate -u root
 ```
@@ -240,7 +240,7 @@ ubcli migrate -u root
 > under unix `ubcli` is called by shell script /usr/bin/ubcli, so npx can be omitted. Under Windows use `npx ubcli ....`
 
 On the Linux-based production environment (see [Manage production environment](https://unitybase.info/api/server-v5/tutorial-production_env.html))
-```
+```bash 
 sudo -u unitybase ub-app-upgrade --app app_name 
 ```
 

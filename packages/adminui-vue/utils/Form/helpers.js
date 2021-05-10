@@ -1,12 +1,13 @@
 /* global _ */
 /**
  * Helpers for Forms. Exported by `@unitybase/adminui-vue` as `formHelpers` and can be used as
- *
- *     // valid usage
- *     const formHelpers = require('@unitybase/adminui-vue').formHelpers
- *     // WRONG usage
- *     const helpers = require('@unitybase/adminui-vue/utils/Form/helpers')
- *
+ * @example
+
+// valid usage
+const formHelpers = require('@unitybase/adminui-vue').formHelpers
+// WRONG usage
+const helpers = require('@unitybase/adminui-vue/utils/Form/helpers')
+
  * @module formHelpers
  * @memberOf module:@unitybase/adminui-vue
  */

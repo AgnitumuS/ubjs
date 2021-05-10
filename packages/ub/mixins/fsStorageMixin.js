@@ -48,7 +48,7 @@ const FSSTORAGE_CS = App.registerCriticalSection('FSSTORAGE')
  * @param {UBEntity} entity Entity for initialization
  * @param {UBfsStoreMixin} mixinCfg Mixin configuration from entity metafile
  */
-function initEntityForFsStorage(entity, mixinCfg) {
+function initEntityForFsStorage (entity, mixinCfg) {
   /** @type {EntityNamespace} */
   const entityModule = global[entity.name]
   // fill defaults
@@ -105,7 +105,7 @@ function initEntityForFsStorage(entity, mixinCfg) {
    * @private
    * @param {ubMethodParams} ctx
    */
-  function fsStorageSelect(ctx) {
+  function fsStorageSelect (ctx) {
     ctx.dataStore.currentDataName = 'select'
 
     const mP = ctx.mParams
@@ -133,7 +133,7 @@ function initEntityForFsStorage(entity, mixinCfg) {
    * @private
    * @param {ubMethodParams} ctxt
    */
-  function fsStorageInsert(ctxt) {
+  function fsStorageInsert (ctxt) {
     const row = Object.assign({}, ctxt.mParams.execParams)
     const cachedData = loadAll()
 
@@ -151,7 +151,7 @@ function initEntityForFsStorage(entity, mixinCfg) {
    * @private
    * @param {ubMethodParams} ctxt
    */
-  function fsStorageUpdate(ctxt) {
+  function fsStorageUpdate (ctxt) {
     const newValues = Object.assign({}, ctxt.mParams.execParams)
     const cachedData = loadAll()
     const ID = newValues.ID || ctxt.mParams.ID
@@ -164,7 +164,7 @@ function initEntityForFsStorage(entity, mixinCfg) {
 
     // override current row values by new one
     const newRow = Object.assign({}, currentRow, newValues)
-    if (mixinCfg.modelBased && (newRow.model !== currentRow.model )) {
+    if (mixinCfg.modelBased && (newRow.model !== currentRow.model)) {
       throw new UB.UBAbort('<<<Model can not be changed>>>')
     }
     const newID = getID(newRow)
@@ -199,10 +199,10 @@ function initEntityForFsStorage(entity, mixinCfg) {
       whereList: { byID: { expression: 'ID', condition: 'equal', value: row.ID } }
     })
     if ((isUpdate && uniqIDs.total !== 1) || (!isUpdate && uniqIDs.total !== 0)) {
-      throw new UB.UBAbort(`<<<VALUE_MUST_BE_UNIQUE>>> for attribute 'ID', non-unique value is ${row.ID}. Most likely row with the same natural key value already exists` )
+      throw new UB.UBAbort(`<<<VALUE_MUST_BE_UNIQUE>>> for attribute 'ID', non-unique value is ${row.ID}. Most likely row with the same natural key value already exists`)
     }
     const uniqueWhere = {
-      _uniq: { expression: null, condition: 'equal', value: null}
+      _uniq: { expression: null, condition: 'equal', value: null }
     }
     if (isUpdate) { // exclude current record
       uniqueWhere._notCurr = { expression: '[ID]', condition: 'notEqual', value: row.ID }
@@ -239,7 +239,7 @@ function initEntityForFsStorage(entity, mixinCfg) {
    * @param {Object} row
    * @param {boolean} isUpdate
    */
-  function persistBlobs(ctxt, row, isUpdate) {
+  function persistBlobs (ctxt, row, isUpdate) {
     if (!entity.blobAttributes.length) return
     const rowForBs = Object.assign({}, row)
     // remove all non-dirty blobs
@@ -271,7 +271,7 @@ function initEntityForFsStorage(entity, mixinCfg) {
       // move modified BLOB info into original row
       for (const attr of entity.blobAttributes) {
         if (rowForBs[attr.name]) {
-         row[attr.name] = rowForBs[attr.name]
+          row[attr.name] = rowForBs[attr.name]
         }
       }
     }
@@ -333,7 +333,7 @@ function initEntityForFsStorage(entity, mixinCfg) {
    * @private
    * @param {ubMethodParams} ctxt
    */
-  function fsStorageDelete(ctxt) {
+  function fsStorageDelete (ctxt) {
     throw new UB.UBAbort('<<<Deletion is not implemented yet - remove files manually from the file system>>>')
   }
 
@@ -342,12 +342,12 @@ function initEntityForFsStorage(entity, mixinCfg) {
    * @private
    * @param {ubMethodParams} ctxt
    */
-  function fsStorageAddNew(ctxt) {
+  function fsStorageAddNew (ctxt) {
     const params = ctxt.mParams
     const requestedFieldList = params.fieldList
     // fill array by default values from metadata
-    let defValues = requestedFieldList.map((attrName) => {
-      let attr = entity.attr(attrName, true)
+    const defValues = requestedFieldList.map((attrName) => {
+      const attr = entity.attr(attrName, true)
       return attr && attr.defaultValue
         ? attr.defaultValue
         : null
@@ -359,10 +359,10 @@ function initEntityForFsStorage(entity, mixinCfg) {
 
   let DATA
   let DATA_VERSION = '-1' // not loaded yet
-  const CACHE_VERSION_KEY=`fsStorage.${entity.name}.version`
-  const CACHE_DATA_KEY=`fsStorage.${entity.name}.data`
+  const CACHE_VERSION_KEY = `fsStorage.${entity.name}.version`
+  const CACHE_DATA_KEY = `fsStorage.${entity.name}.data`
 
-  function loadAll() {
+  function loadAll () {
     App.enterCriticalSection(FSSTORAGE_CS)
     try {
       const actualVersion = App.globalCacheGet(CACHE_VERSION_KEY)
@@ -397,15 +397,15 @@ function initEntityForFsStorage(entity, mixinCfg) {
    * Expected to be called in critical section to prevent a race condition.
    * @return {TubCachedData}
    */
-  function loadAllFromFS() {
+  function loadAllFromFS () {
     console.debug('loading from fs...')
     const startTime = Date.now()
-    let dirtyData = []
+    const dirtyData = []
     const idMap = {}
 
-    function loadFolderOrFile(fPath, modelCode) {
+    function loadFolderOrFile (fPath, modelCode) {
       if (!fs.existsSync(fPath)) return
-      function normalizeAndAddNewRow(row, srcFilePath, srcFileName) {
+      function normalizeAndAddNewRow (row, srcFilePath, srcFileName) {
         // fill ID, model and natural key attributes
         row.model = modelCode
         if (mixinCfg.filePerRow) {
@@ -520,7 +520,7 @@ function initEntityForFsStorage(entity, mixinCfg) {
 }
 
 function wrapEnterLeave (enterText, methodImpl) {
-  return function logEnterLeave(ctx) {
+  return function logEnterLeave (ctx) {
     App.logEnter(enterText)
     try {
       methodImpl(ctx)
