@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+- `processing.js`: `refresh` method emit `UB.connection.emit(`${masterEntityName}:refresh`, state.data.ID)` event
 ### Changed
 
 ### Deprecated

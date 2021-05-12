@@ -956,6 +956,8 @@ function createProcessingModule ({
           validator().$reset()
         }
 
+        UB.connection.emit(`${masterEntityName}:refresh`, state.data.ID)
+
         $notify.success(UB.i18n('formWasRefreshed'))
       },
 
