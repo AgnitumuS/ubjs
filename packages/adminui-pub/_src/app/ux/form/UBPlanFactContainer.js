@@ -114,14 +114,24 @@ Ext.define('UB.ux.form.UBPlanFactContainer', {
         panel.on('formDataReady', me.onDataBind, me );
     },
 
-    onDataBind: function(){
-        var me = this;
-        if (me.factControl.getValue()){
-            me.planControl.hide();
-            me.factControl.show();
+    onDataBind: function () {
+        const me = this
+        let showFact = false
+        const planValue = me.planControl.getValue()
+        const factValue = me.factControl.getValue()
+
+        if (me.planControl.xtype === 'ubboxselect') {
+            const planValuesCount = planValue ? ('' + planValue).split(',').length : 0
+            const factValuesCount = factValue ? ('' + factValue).split(',').length : 0
+            showFact = factValuesCount && factValuesCount >= planValuesCount
+        } else showFact = !!factValue
+
+        if (showFact) {
+            me.planControl.hide()
+            me.factControl.show()
         } else {
-            me.planControl.show();
-            me.factControl.hide();
+            me.planControl.show()
+            me.factControl.hide()
         }
     }
 });

@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UBPlanFactContainer`: added the ability to use the control for attributes with the data type` Many`
 
 ### Changed
 
