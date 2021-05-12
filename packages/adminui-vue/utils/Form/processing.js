@@ -963,7 +963,7 @@ function createProcessingModule ({
 
 // @param {THTTPRequest} req
 UB.connection.on('uba_user:refresh', function (data) {
-  console.log(`Someone call refresh for User with ID ${data.id}`
+  console.log(`Someone call refresh for User with ID ${data.ID}`
 })
 
          * @event entity_name:refresh
