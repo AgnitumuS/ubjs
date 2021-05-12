@@ -292,6 +292,7 @@ adm_desktop:
         en: Migrations
         uk: Міграції
         ru: Миграции
+        az: Miqrasiya
         ka: Migrations
         tg: Миграции
       iconCls: u-icon-swap
@@ -302,6 +303,7 @@ adm_desktop:
               en: Models versions
               uk: Версії моделей
               ru: Версии моделей
+              az: Model versiyaları
               ka: Models versions
               tg: Версияҳои намунавӣ
             iconCls: u-icon-file-export
@@ -319,6 +321,7 @@ adm_desktop:
               en: Applied files
               uk: Міграції що виконано
               ru: Выполненные миграции
+              az: Tamamlanmış köçlər
               ka: Applied files
               tg: Выполненные миграции
             iconCls: u-icon-file-text
