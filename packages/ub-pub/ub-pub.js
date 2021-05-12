@@ -115,11 +115,12 @@ const UB = module.exports = {
   /**
    * Creates namespaces to be used for scoping variables and classes so that they are not global.
    * @example
-   *     UB.ns('DOC.Report');
-   *
-   *     DOC.Report.myReport = function() { ... };
-   *
+
+UB.ns('DOC.Report')
+DOC.Report.myReport = function() { ... }
+
    * @method
+   * @deprecated Try to avoid namespaces - instead create a module and use require()
    * @param {String} namespacePath
    * @return {Object} The namespace object.
    */

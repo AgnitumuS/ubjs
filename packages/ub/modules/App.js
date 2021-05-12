@@ -248,7 +248,7 @@ App.addAppLevelMethod = function () {
 }
 
 /**
- * @method serviceMethodByPassAuthentication
+ * @method  serviceMethodByPassAuthentication
  * @deprecated Use {@link class:App.registerEndpoint App.registerEndpoint} instead
  * @memberOf App
  */
@@ -480,7 +480,8 @@ App.dbStartTransaction = function (connectionName) {
 /**
  * Try retrieve  or create new session from request headers.
  * Return `true` if success, `false` if more auth handshakes is required.
- * In case of invalid credential throw security exception.
+ * In case of invalid credential throw security exception
+ *
  * @param {boolean} noHTTPBodyInResp If true do not write a uData to the HTTP response
  * @param {boolean} doSetOutCookie If true set a out authorization cookie on success response (Negotiate only)
  * @return {Boolean}
@@ -489,25 +490,23 @@ App.authFromRequest = function (noHTTPBodyInResp = false, doSetOutCookie = false
   return _App.authFromRequest(noHTTPBodyInResp, doSetOutCookie)
 }
 /**
- * Logout (kill stored Sessions) all users with the same as
- * currently logged (except currently logged user)
+ * Logout all users with the same name as current user, except currently logged user
  */
 App.logoutAllWithTheSameNameExceptMe = function () {
   return _App.logoutAllWithTheSameNameExceptMe()
 }
 /**
- * Logout (kill stored Sessions) current session user
+ * Logout a current user (kill current session)
  */
 App.logout = function () {
   return _App.logout()
 }
 /**
  * Check Entity-Level-Security for specified entity/method
- *
- *      if App.els('uba_user', 'insert'){
-   *          // do something
-   *      }
- *
+ * @example
+if App.els('uba_user', 'insert'){
+       // do something
+}
  * @param {String} entityCode
  * @param {String} methodCode
  * @return {boolean}
@@ -524,22 +523,23 @@ App.els = function (entityCode, methodCode) {
  * too the different values in the different threads.
  *
  * @example
-   const App = require('@unitybase/ub').App
-   // critical section must be registered once in the moment modules are evaluated without any conditions
-   const MY_CS = App.registerCriticalSection('SHARED_FILE_ACCESS')
+const App = require('@unitybase/ub').App
+// critical section must be registered once in the moment modules are evaluated without any conditions
+const MY_CS = App.registerCriticalSection('SHARED_FILE_ACCESS')
 
-   function concurrentFileAccess() {
-    // prevents mutual access to the same file from the different threads
-    App.enterCriticalSection(FSSTORAGE_CS)
-    try {
-      const data = fs.readfileSync('/tmp/concurrent.txt', 'utf8')
-      // do some operation what modify data
-      fs.writefileSync('/tmp/concurrent.txt', data)
-    } finally {
-      // important to leave critical section in finally block to prevent forever lock
-      App.leaveCriticalSection(FSSTORAGE_CS)
-    }
+function concurrentFileAccess() {
+  // prevents mutual access to the same file from the different threads
+  App.enterCriticalSection(FSSTORAGE_CS)
+  try {
+    const data = fs.readfileSync('/tmp/concurrent.txt', 'utf8')
+    // do some operation what modify data
+    fs.writefileSync('/tmp/concurrent.txt', data)
+  } finally {
+    // important to leave critical section in finally block to prevent forever lock
+    App.leaveCriticalSection(FSSTORAGE_CS)
   }
+}
+ * @method
  * @param {string} csName Critical section name
  * @return {number}
  */
@@ -549,12 +549,13 @@ App.registerCriticalSection = appBinding.registerCriticalSection
  *
  * ** IMPORTANT** A thread must call `App.leaveCriticalSection` once for each time that it entered the critical section.
  *
+ * @method
  * @param {number} csIndex A critical section index returned by `App.registerCriticalSection`
  */
 App.enterCriticalSection = appBinding.enterCriticalSection
 /**
  * Releases ownership of the specified critical section
- *
+ * @method
  * @param {number} csIndex
  */
 App.leaveCriticalSection = appBinding.leaveCriticalSection
@@ -575,16 +576,19 @@ App.leaveCriticalSection = appBinding.leaveCriticalSection
     }
   }
 
+ * @method
  * @param {string} methodName
  */
 App.logEnter = appBinding.logEnter
 /**
  * Exit a log recursion call
+ * @method
  */
 App.logLeave = appBinding.logLeave
 
 /**
  * Remove all user sessions (logout user).
+ * @method
  * @param {number} userID
  * @return {boolean} true if user had had any session
  */
@@ -609,7 +613,7 @@ App.emitterEnabled = true
 App.serverPublicCert = _App.serverPublicCert
 
 /**
- * BLOB stores methods. Usage:
+ * BLOB stores methods. For usage examples see:
  *  - {@link module:@unitybase/blob-stores~getContent App.blobStores.getContent} - load content of BLOB into memory
  *  - {@link module:@unitybase/blob-stores~getContentPath App.blobStores.getContentPath} - get a path to the file based store BLOB content
  *  - {@link module:@unitybase/blob-stores~putContent App.blobStores.putContent} - put a BLOB content to the temporary storage

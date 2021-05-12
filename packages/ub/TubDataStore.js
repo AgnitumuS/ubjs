@@ -26,9 +26,9 @@ const LocalDataStore = csShared.LocalDataStore
 /**
  *  Initialize DataStore from one of supported source formats:
  *
- *   - Flatten(fastest): <pre>{fieldCount: K, rowCount: Z, values: [field1Name, ..., fieldKName, row1field1Value,  ..., row1fieldKValue, row2field1Value,..]}</pre>
- *   - Array-of-array  : <pre>[[row1field1Value,  ..., row1fieldKValue], ..., [rowZfield1Value, ... rowZfieldKValue]</pre>
- *   - Array-of-object : <pre>[{field1Name: row1field1Value, ..., fieldKName: row1fieldKValue}, ....]</pre>
+ *   - Flatten(fastest): `{fieldCount: K, rowCount: Z, values: [field1Name, ..., fieldKName, row1field1Value, ..., row1fieldKValue, row2field1Value,..]}`
+ *   - Array-of-array  : '[[row1field1Value,  ..., row1fieldKValue], ..., [rowZfield1Value, ... rowZfieldKValue]'
+ *   - Array-of-object : '[{field1Name: row1field1Value, ..., fieldKName: row1fieldKValue}, ....]'
  *
  *  Can (optionally) convert source field names to new names using keyMap array.
  *  @example

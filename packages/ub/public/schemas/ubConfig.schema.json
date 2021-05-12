@@ -991,7 +991,7 @@
             "themeName": {
               "type": "string",
               "description": "UI theme name. Can be name of a folder in the `inetPub\\themes\\` folder",
-              "default": "UBtheme"
+              "default": "UBGrayTheme"
             },
             "loginURL": {
               "type": "string",

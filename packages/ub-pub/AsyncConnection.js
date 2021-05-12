@@ -33,7 +33,7 @@ const ANONYMOUS_USER = 'anonymous'
 const AUTH_SCHEMA_FOR_ANONYMOUS = 'None'
 
 const TEST_ERROR_MESSAGE_RE = /<<<.*?>>>/
-const PARSE_ERROR_MESSAGE_RE = /(?:^|")<<<(.*?)>>>(?:\|(\[[^\]]*\]))?(?:$|")/
+const PARSE_ERROR_MESSAGE_RE = /(?:^|")<<<(.*?)>>>(?:\|(\[[^\]]*]))?(?:$|")/
 const SIMPLE_PARSE_ERROR_MESSAGE_RE = /<<<(.*)>>>/
 
 function parseUBErrorMessage (errMsg) {
@@ -1737,9 +1737,9 @@ const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty
  */
 UBConnection.prototype.getDocumentURL = async function (params) {
   const urlParams = []
-  for (let p in params) {
+  for (const p in params) {
     if ((ALLOWED_GET_DOCUMENT_PARAMS.indexOf(p) !== -1) && (typeof params[p] !== 'undefined')) {
-      urlParams.push(encodeURIComponent(p) + '=' + encodeURIComponent(params[p]));
+      urlParams.push(encodeURIComponent(p) + '=' + encodeURIComponent(params[p]))
     }
   }
   const session = await this.authorize()
@@ -1765,7 +1765,6 @@ UBConnection.prototype.getDocumentURL = async function (params) {
   }, {
      bypassCache: true
   }).then(function(result){console.log(typeof result)}); // string
-
 
  //Retrieve content of document as ArrayBuffer and bypass cache
  $App.connection.getDocument({
@@ -2013,10 +2012,13 @@ UBConnection.prototype.pki = async function () {
   if (!pkiImplModule) {
     throw new Error('"appConfig.uiSettings.adminUI.encryptionImplementation" is not defined in application config')
   }
-  const me = this
+  // use global UB to prevent circular dependency
+  // eslint-disable-next-line no-undef
   await UB.inject(pkiImplModule)
-  me._pki = await UA_CRYPT.getPkiInterface(me)
-  return me._pki
+  // UA_CRYPT is injected on demand
+  // eslint-disable-next-line no-undef
+  this._pki = await UA_CRYPT.getPkiInterface(this)
+  return this._pki
 }
 
 /**
@@ -2138,7 +2140,7 @@ UBConnection.prototype.HMAC_SHA256 = HMAC_SHA256
  *
  * @param {string} uiTag
  */
-UBConnection.prototype.setUiTag = function(uiTag) {
+UBConnection.prototype.setUiTag = function (uiTag) {
   this.uiTag = encodeURIComponent(uiTag || '')
 }
 
@@ -2148,7 +2150,7 @@ UBConnection.prototype.setUiTag = function(uiTag) {
  * @param {string} entityCode
  * @param {Object} payload  An object with at last {entity: 'entityCode', method: 'entityMethod', resultData: {} } attributes
  */
-UBConnection.prototype.emitEntityChanged = function(entityCode, payload) {
+UBConnection.prototype.emitEntityChanged = function (entityCode, payload) {
   const e = this.domain.get(entityCode, false)
   this.emit(`${entityCode}:changed`, payload)
   if (e && e.hasMixin('unity') && e.mixins.unity.entity) {
@@ -2179,7 +2181,7 @@ UBConnection.prototype.emitEntityChanged = function(entityCode, payload) {
  * Is auth schema for logged in user allows password changing (currently - only UB and CERT* with requireUserName)
  * @return {boolean}
  */
-UBConnection.prototype.userCanChangePassword = function() {
+UBConnection.prototype.userCanChangePassword = function () {
   if (!LDS) return false
   const lastAuthType = LDS.getItem(ubUtils.LDS_KEYS.LAST_AUTH_SCHEMA) || '' // session.authSchema
   const auis = (this.appConfig.uiSettings && this.appConfig.uiSettings.adminUI) || {}

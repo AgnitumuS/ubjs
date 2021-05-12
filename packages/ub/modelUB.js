@@ -45,11 +45,12 @@ const UB = module.exports = {
   ESecurityException: Errors.ESecurityException,
   /**
    * Creates namespaces to be used for scoping variables and classes so that they are not global.
-   *
-   *     UB.ns('DOC.Report');
-   *     DOC.Report.myReport = function() { ... };
-   *
-   * @deprecated Try to avoid namespaces - instead create a modules and use require()
+   * @example
+
+UB.ns('DOC.Report');
+DOC.Report.myReport = function() { ... };
+
+   * @deprecated Try to avoid namespaces - instead create a module and use require()
    * @param {String} namespacePath
    * @return {Object} The namespace object.
    */
@@ -88,15 +89,17 @@ const UB = module.exports = {
    * In case firs element of args is a string with locale code supported by application then translate to specified locale,
    * in other case - to locale of the current user (user who done the request to the server)
    *
-   * Localized string can be optionally formatted by position args:
+   * Localized string can be optionally formatted by position args
    *
-   *     UB.i18nExtend({
-   *       "en": { greeting: 'Hello {0}, welcome to {1}' },
-   *       "ru": { greeting: 'Привет {0}, добро пожаловать в {1}' }
-   *     })
-   *     UB.i18n('greeting', 'Mark', 'Kiev') // in case current user language is en -> "Hello Mark, welcome to Kiev"
-   *     UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "Привет Mark, добро пожаловать в Kiev"
-   *
+   * @example
+
+UB.i18nExtend({
+  "en": { greeting: 'Hello {0}, welcome to {1}' },
+  "ru": { greeting: 'Привет {0}, добро пожаловать в {1}' }
+})
+UB.i18n('greeting', 'Mark', 'Kiev') // in case current user language is en -> "Hello Mark, welcome to Kiev"
+UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "Привет Mark, добро пожаловать в Kiev"
+
    * @param {String} msg Message to translate
    * @param {...*} args Format args
    * @returns {*}

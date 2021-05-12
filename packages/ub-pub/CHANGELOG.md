@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.9.7] - 2021-05-07
 ## [5.9.6] - 2021-05-05
 ### Added
  - `<<<ERR_RESOURCE_LIMITS_EXCEED>>>` localization added: "The operation was canceled because it is consuming a lot of resources.

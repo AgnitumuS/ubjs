@@ -90,27 +90,27 @@
       "nav": [
         {
           "href": "gettingstarted/index.html",
-          "name": "Getting Started"
-        },
-        {
-          "href": "server-v5/tutorialIndex.html",
           "name": "Tutorials"
         },
         {
+          "href": "server-v5/tutorialIndex.html",
+          "name": "Articles"
+        },
+        {
           "href": "server-v5/index.html",
-          "name": "Server Docs"
+          "name": "Server API"
         },
         {
           "href": "ubpub-v5/index.html",
-          "name": "Client Docs"
+          "name": "Client API"
         },
         {
           "href": "adminui-vue/index.html",
-          "name": "UI library for Vue"
+          "name": "UI widgets"
         },
         {
           "href": "changelog/index.html",
-          "name": "Monthly progress"
+          "name": "Changelog"
         }
       ]
     },

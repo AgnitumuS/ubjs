@@ -124,6 +124,8 @@ order by tc.column_id`
       }
 
       // foreign key
+      // all_cons* are used instead of user_cons* because for constraints between different schemas
+      // Oracle sets owner to ref table
       const foreignKeysSQL = `
 select
   uc.constraint_name as foreign_key_name,
@@ -131,9 +133,9 @@ select
   ucc.column_name as constraint_column_name,
   r.table_name as referenced_object,
   uc.delete_rule as delete_referential_action_desc
-from user_constraints uc
-  join user_cons_columns ucc on ucc.owner=uc.owner and ucc.constraint_name=uc.constraint_name
-  join user_constraints r on r.owner=uc.r_owner and r.constraint_name=uc.r_constraint_name
+from all_constraints uc
+  join all_cons_columns ucc on ucc.owner=uc.owner and ucc.constraint_name=uc.constraint_name
+  join all_constraints r on r.owner=uc.r_owner and r.constraint_name=uc.r_constraint_name
 where uc.constraint_type ='R'
   and uc.table_name=:('${asIsTable._upperName}'):`
 

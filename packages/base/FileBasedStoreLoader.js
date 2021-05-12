@@ -6,11 +6,15 @@ const UBDomain = csShared.UBDomain
 const lds = csShared.LocalDataStore
 
 /**
+ * This component is deprecated. Use [fsStorage mixin](https://unitybase.info/api/server-v5/tutorial-mixins_fsstorage.html) instead.
+ *
  * UnityBase file-system based virtual store **select**. Able to load files & transform it content to {@link TubCachedData} format.
  *
  * Good sample of usage can be found in `ubm_form.loadAllForm`
  *
- * For work with data, loaded by FileBasedStoreLoader you can use {@link LocalDataStore} class.
+ * For work with data, loaded by FileBasedStoreLoader you can use {@link LocalDataStore} class
+ *
+ * @deprecated
  * @module FileBasedStoreLoader
  * @memberOf module:@unitybase/base
  */
@@ -28,6 +32,7 @@ let loader = new FileBasedStoreLoader({
 let resultDataCache = loader.load()
 
  * @class
+ * @deprecated
  * @param {Object}    config
  * @param {UBEntity} config.entity
  * @param {Array.<{path: string}>} config.foldersConfig   Array of folder configuration to scan for files.
