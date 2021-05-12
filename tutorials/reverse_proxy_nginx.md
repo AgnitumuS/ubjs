@@ -142,11 +142,13 @@ mkdir -p /var/opt/unitybase/shared/my-server-com
 cat <<<EOF
   # use client real IP as reported by proxy
   real_ip_header    X-Forwarded-For;
-  # A proxy we trust (address or mask)
+  # A proxy we trust (address, hostname or mask)
   set_real_ip_from  b.b.b.b;
 EOF > /var/opt/unitybase/shared/my-server-com/server-getRealIpFromUpfront.conf
 ```
 Load balancer on b.b.b.b should correctly set an `X-Forwarded-For` header. In case LB is nginx - `proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;`  
+
+> for more details see [ngx_http_realip_module](http://nginx.org/en/docs/http/ngx_http_realip_module.html)
 
 ### Add additional upstreams to the load balancing group
 Add additional upstreams (:8883 and :8884) to the load balancing group:
