@@ -209,7 +209,7 @@ create table1 ....
 do some other;
 ```
  
- > the `optimistic` mode is dangerous - use it if it absolutely required
+ > the `optimistic` mode is dangerous - use it if absolutely necessary
    
 ### JS file requirements
 
