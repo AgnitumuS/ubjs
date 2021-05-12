@@ -14,7 +14,7 @@ const { Notification } = require('element-ui')
 const uDialogs = require('./uDialogs')
 const UNavbar = require('../components/navbar/UNavbar.vue').default
 const UAutoForm = require('../components/UAutoForm.vue').default
-const Form = require('./Form/Form')
+const Form = require('./Form/Form').Form
 const { mountTableEntity } = require('./Form/mount')
 
 function replaceExtJSDialogs () {

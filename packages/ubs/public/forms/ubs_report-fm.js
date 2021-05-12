@@ -16,7 +16,7 @@ exports.formCode = {
 
   onCodeChanged: function (field, newValue) {
     if (this.isEditMode) {
-      throw new UB.UBError(`To change existing report code rename *.js, *.template and *.ubrow files in the folder 'yourModel/public/reports'`)
+      throw new UB.UBError('To change existing report code rename *.js, *.template and *.ubrow files in the folder \'yourModel/public/reports\'')
     }
     this.record.set('ID', this.CRC32(newValue))
     this.getUBCmp('attrTemplate').setOrigName(newValue.length > 0 ? newValue + '.template' : newValue)
@@ -25,10 +25,10 @@ exports.formCode = {
 
   onAfterSave: function () {
     if (SystemJS.reload && !window.__systemHmrUBConnected) {
-      let reportModelName = this.record.get('model')
-      let reportCode = this.record.get('report_code')
-      let model = $App.domainInfo.models[reportModelName]
-      let reportCodePath = `${model.clientRequirePath}/reports/${reportCode}.js`
+      const reportModelName = this.record.get('model')
+      const reportCode = this.record.get('report_code')
+      const model = $App.domainInfo.models[reportModelName]
+      const reportCodePath = `${model.clientRequirePath}/reports/${reportCode}.js`
       SystemJS.reload(reportCodePath)
     } else {
       $App.dialogInfo(`You are in PRODUCTION mode. Reload page to apply changes. Or use ${window.location.href}-dev URL for developer mode with hot module replacement`)
@@ -56,19 +56,19 @@ exports.formCode = {
       promise = Promise.resolve(true)
     }
     promise.then(function () {
-      var req
+      let req
       if (serverSide) {
         req = {
           method: 'POST',
           url: 'rest/ubs_report/testServerRendering',
-          data: {reportCode: me.record.get('report_code'), responseType: type, reportParams: {}}
+          data: { reportCode: me.record.get('report_code'), responseType: type, reportParams: {} }
         }
         if (type === 'pdf') req.responseType = 'arraybuffer'
         $App.connection.xhr(req)
           .then(function (reportData) {
-            var blobData = new Blob(
+            const blobData = new Blob(
               [reportData.data],
-              {type: type === 'pdf' ? 'application.pfd' : 'text/html'}
+              { type: type === 'pdf' ? 'application.pfd' : 'text/html' }
             )
             window.saveAs(blobData, me.record.get('report_code') + '.' + type)
           })
@@ -80,9 +80,9 @@ exports.formCode = {
             params: {},
             language: $App.connection.userLang()
           }).makeReport().then(function (data) {
-            let blobData = new Blob(
+            const blobData = new Blob(
               [data.reportData],
-              {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
+              { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
             )
             window.saveAs(blobData, me.record.get('report_code') + '.' + type)
           })

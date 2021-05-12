@@ -6,23 +6,46 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `processing.js`: `refresh` method emit `${state.data.ID}:refresh` event
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.11] - 2021-05-07
+### Changed
+ - UDatePicker improvements:
+   - documentation added - see https://unitybase.info/api/adminui-vue/index.html#/Presentational/UDatePicker
+   - panels for ranges are unlinked by default (month can be changed separately)
+   - placeholder i18n for date range changed from `Start Date - End Date` to `from - to`  ( `з - по` for uk)
+   - added defaults shortcuts. For date - Today and Yesterday, for range Today, Yesterday and "current month"
+ - FTS widget and "range" date filter for 'UTable' uses `u-date-picker` with all options is default    
+
+### Fixed
+ - fixed `UB.truncTimeToUTCNull is not a function`, valid method name is `UB.truncTimeToUtcNull` (UTC -> Utc)
+ - autoforms fixed (was broken by 5.20.10 refactoring)
+ - `UAutoFiled` for Date and DateTime sets u-date-picker `clearable` to `false` for attributes what do not allow nulls 
+
+## [5.20.10] - 2021-05-05
+### Added
+ - `exportFormatXlsColumn` - new method in column configuration for the `UTable`. This method is useful
+  when you want to set some specific format in an `Excel` file for this column
  - all available dialogs now exported as `uDialogs` object from `adminui-vue` packages.
    Dialogs functions are documented in [adminui-vue documentation on site](https://unitybase.info/api/ubpub-v5/module-@unitybase_adminui-vue.html)
  - adminui-vue `lookups` submodule documentation
  - adminui-vue `helpers` and `processing` submodules documentation
  - adminui-vue exports a `helpers` submodule as `formHelpers`.
    A direct `require('@unitybase/adminui-vue/utils/Form/helpers')` should be replaced to `require('@unitybase/adminui-vue').formHelpers` 
- - `processing.js`: `refresh` method emit `${state.data.ID}:refresh` event
+
 ### Changed
  - `computedVuex` *BREAKING* signature changed to accept (optional) submodule name as a second argument
  - `mapInstanceFields` *BREAKING* signature changed to accept (optional) submodule name as a second argument
  - `helpers.isEqual` (used to check store is changed) for array elements return `false` in case length of array is not match.
    Before this changes `helpers.isEqual([1, 2], [2, 1, 1])` returns `true`
  - a theme CSS variable `--l-layout-border-default` changed from 80% to 70% to adjust a `u-*` controls border color with `el-*` ones
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `lookups`: clean `mapById` object during last `unsubscribe` (as well as data array is cleaned)

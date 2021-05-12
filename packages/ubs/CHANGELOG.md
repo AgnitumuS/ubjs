@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.13] - 2021-05-07
+### Removed
+ - `@unitybase/ubs/modules/base64.js` is removed - not used. `Buffer.from(text, 'base64')` is used instead.
+
+## [5.20.12] - 2021-05-05
 ## [5.20.11] - 2021-04-24
 ## [5.20.10] - 2021-04-23
 ## [5.20.9] - 2021-04-22

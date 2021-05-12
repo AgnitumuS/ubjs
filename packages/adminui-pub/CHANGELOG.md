@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UBPlanFactContainer`: added support for data type` Many`
 
 ### Changed
 
@@ -13,6 +14,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 
+### Fixed
+
+## [5.20.13] - 2021-05-07
+### Changed
+ - i18n for current_[week|month|year] changed "This week" -> "Current week", "За цей тиждень" -> "Поточний тиждень" etc  
+
+### Fixed
+ - fix static file access error for `models/adminui-pub/themes/undefined/ubimages/scan-to-pdf.png`;
+   `UBGrayTheme` should be used as a default instead of undefined
+
+## [5.20.12] - 2021-05-05
 ### Fixed
  - Sidebar: prevent show en error in case user click on empty folder or on shortcut with empty command code,
    write error into console instead [LDOC-1434].

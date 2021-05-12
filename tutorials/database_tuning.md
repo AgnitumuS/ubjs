@@ -39,7 +39,7 @@
     "advSettings": "LibLocation=%UB_POSTGRE_LIB||libpq.so.5%" // for linux - can be empty or libpq.so.5; Windows = path to libpq.dll, for example D:/PostgreClient/10/x64/bin/libpq.dll
 },...]
 ```  
-  A connection parameters key words are listed in [Section 33.1.2 of Postgres documentation](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-PARAMKEYWORDS)
+  A connection parameters keywords are listed in [Section 33.1.2 of Postgres documentation](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-PARAMKEYWORDS)
   
   We recommend to sets a `tcp_user_timeout=3000` to disconnect ASAP in case TCP connection to database server is lost.
   A kernel default (~20 minutes) is too large.
@@ -163,7 +163,10 @@ where `CIDX_TMD_CAPTION` is a index name and `caption` is attribute on which sub
 
 Depending on database type UBQL query:  
 ```javascript
-UB.Repository('myEntyity').attrs('ID', 'caption').where('caption', 'like', 'substr').selectAsObject()
+UB.Repository('myEntyity')
+  .attrs('ID', 'caption')
+  .where('caption', 'like', 'substr')
+  .selectAsObject()
 ```
 will be translated to SQL:  
  - Oracle
@@ -302,7 +305,7 @@ SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT column_value FROM tabl
 
 Query with cardinality hint 
 ```sql
-SELECT A01.ID  FROM uba_user A01  WHERE A01.ID IN (SELECT /*+ CARDINALITY(t1, P) */ column_value FROM table(SYS.ODCINUMBERLIST(1, 2, 3)))
+SELECT A01.ID FROM uba_user A01 WHERE A01.ID IN (SELECT /*+ CARDINALITY(t1, P) */ column_value FROM table(SYS.ODCINUMBERLIST(1, 2, 3)))
 ```
 
 ### SQL Server array binding
@@ -341,9 +344,9 @@ To execute a query in DBeaver tool press Ctrl+Enter, in binding dialog type "'{1
 UnityBase works with Oracle using direct call to OCI (Oracle Call Interface library).
 This allows to use all Oracle-specific features, minimize function calls and memory allocation and therefore work on maximum speed.
 
-While creating a connection to the Oracle server UnityBase sets some specific connection properties.
+Just after connect to Oracle server UnityBase sets some specific connection properties.
 This properties may not be like those, which set TOAD, PL/SQL Developer, DBeaver or other tools.
-Therefore some queries work in different way inside UnityBase server and TOAD (for example).
+Therefore, some queries work in different way inside UnityBase server and TOAD (for example).
 But don't be confused - below we explain how to make them work in the same way:
 
 ### Session variables 
@@ -396,3 +399,155 @@ you can cast parameter directly to type you need:
 ```  
 
 The same POSSIBLE but not mandatory  for Int64/Float type of parameter.
+
+## Limit a resources usage
+For a Web application (especially for multitenancy apps) it's always a good idea to limit a DB server resources for statements.
+In other case several "bad" statements what retrieve a huge amount of data or run's too long etc. will slow down all users.
+
+> Is limits is exceeded, US (stating from 5.20.1) throws a `<<<ERR_RESOURCE_LIMITS_EXCEED>>>` error 
+
+### Fetch size limitation
+Using `ubConfig.connections.connName.statementMaxMemoryMb` a maximum fetch size for DataStore can be limited.
+If a result set exceeds this limit, an Exception is raised. This avoids unexpected OutOfMemory errors and prevents server crash
+when incorrect statement what returns too many rows or too big content are executed.
+
+Default value is 50 (50 megabytes) what enough for most cases. For multitenancy apps we recommend decreasing this limit
+to 10, for instances what runs a schedulers limit can be increased.
+
+### Statement execution time limitation
+
+Statement execution time limitation depends on used RDBMS and implemented either using connection parameters,
+or statement in the `executeWhenConnected` connection config section. 
+
+> Since default HTTP timeout is 30 second, statement execution time should be smaller, recommended value is
+> 10 sec or less and depends on business logic implementation.
+
+We recommend do use a `UB_DB_STATEMENT_TIME_LIMIT` environment variable for timeouts
+
+#### Postgres
+Can be implemented by set a [statement_timeout](https://www.postgresql.org/docs/9.4/runtime-config-client.html#GUC-STATEMENT-TIMEOUT)
+session variable *in milliseconds*
+```json
+"executeWhenConnected": [
+      ...,
+      "SET statement_timeout=%UB_DB_STATEMENT_TIME_LIMIT||10000%"
+    ]
+```
+
+> Postgre error message contains: "canceling statement due to statement timeout"
+
+#### MS SQL Server
+MS SQL server have a global query timeout (default is 600 sec) what can be changed using
+[remote query timeout](https://docs.microsoft.com/en-us/sql/database-engine/configure-windows/configure-the-remote-query-timeout-server-configuration-option?view=sql-server-ver15)
+option.
+
+A session level alternative is implemented for ODBC connections using `STATEMENT_TIME_LIMIT` parameter for connection `advSettings`.
+Value is *in seconds*.
+
+```json
+"connections": [{
+    "name": "main",
+    "driver": "MSSQLODBC",
+    "dialect": "MSSQL2012",
+    ....
+    "advSettings": "STATEMENT_TIME_LIMIT=%UB_DB_STATEMENT_TIME_LIMIT||0%",
+}]
+```
+
+> SQL server error message contains "Query timeout expired"
+ 
+#### Oracle
+Implemented using [Oracle resources manager](https://oracle-base.com/articles/12c/resource-manager-enhancements-12cr1)
+
+First, DBA should create a consumer group and resource plan for each Oracle instance and grant a `switch_consumer_group` permission to 
+user used by UB to connect to database (`userID` parameter value in Oracle connection config).
+
+This can be done using script below (replace a `userID` in the `GRANT_SWITCH_CONSUMER_GROUP` statement by a real username before execution):
+```sql
+ALTER SYSTEM SET RESOURCE_MANAGER_PLAN ='';
+
+--drop plan and group 
+BEGIN
+  dbms_resource_manager.clear_pending_area();
+  dbms_resource_manager.create_pending_area();
+  dbms_resource_manager.DELETE_PLAN ('EXEC_TIME_LIMIT_PLAN');
+  dbms_resource_manager.DELETE_CONSUMER_GROUP ('GROUP_WITH_LIMITED_EXEC_TIME');
+  DBMS_RESOURCE_MANAGER.VALIDATE_PENDING_AREA;
+  DBMS_RESOURCE_MANAGER.SUBMIT_PENDING_AREA();
+END;
+/
+--create a consumer group for UB registers users 
+BEGIN
+  SYS.DBMS_RESOURCE_MANAGER.clear_pending_area();
+  SYS.DBMS_RESOURCE_MANAGER.create_pending_area();
+  SYS.DBMS_RESOURCE_MANAGER.create_consumer_group(
+    CONSUMER_GROUP => 'GROUP_WITH_LIMITED_EXEC_TIME',
+    COMMENT        => 'This is the consumer group that has limited execution time per statement',
+    MGMT_MTH       => 'ROUND-ROBIN',
+    CATEGORY        => 'OTHER');
+  
+  SYS.DBMS_RESOURCE_MANAGER.VALIDATE_PENDING_AREA;  
+  SYS.DBMS_RESOURCE_MANAGER.submit_pending_area();
+END;
+/
+--create a resource plan for what will cancel the current SQL if it runs for more than 10 sec
+BEGIN
+  SYS.DBMS_RESOURCE_MANAGER.clear_pending_area();
+  SYS.DBMS_RESOURCE_MANAGER.create_pending_area();
+  SYS.DBMS_RESOURCE_MANAGER.create_plan(
+      plan                         => 'EXEC_TIME_LIMIT_PLAN',
+     mgmt_mth                      => 'EMPHASIS',
+     sub_plan => FALSE,
+      comment                      => 'Resource plan what limits statement execution time to 10 sec');
+  SYS.DBMS_RESOURCE_MANAGER.create_plan_directive(
+   plan                       => 'EXEC_TIME_LIMIT_PLAN',
+   group_or_subplan           => 'OTHER_GROUPS',
+   COMMENT=>'leave others alone',
+    CPU_P1=>100);
+  SYS.DBMS_RESOURCE_MANAGER.VALIDATE_PENDING_AREA;  
+  SYS.DBMS_RESOURCE_MANAGER.submit_pending_area();
+END;
+/
+--create plan directive 
+BEGIN
+  SYS.DBMS_RESOURCE_MANAGER.clear_pending_area();
+  SYS.DBMS_RESOURCE_MANAGER.create_pending_area();
+  DBMS_RESOURCE_MANAGER.CREATE_PLAN_DIRECTIVE (
+    PLAN             => 'EXEC_TIME_LIMIT_PLAN',
+    GROUP_OR_SUBPLAN => 'GROUP_WITH_LIMITED_EXEC_TIME',
+    COMMENT          => 'Kill statement after exceeding total execution time',
+    SWITCH_GROUP     => 'CANCEL_SQL',
+    SWITCH_TIME      => 10, -- 10 seconds limitation 
+    SWITCH_ESTIMATE=>false,
+    SWITCH_FOR_CALL=> TRUE);
+  SYS.DBMS_RESOURCE_MANAGER.submit_pending_area();
+END;
+/
+-- grant SWITCH_CONSUMER_GROUP to user
+BEGIN
+  SYS.DBMS_RESOURCE_MANAGER.clear_pending_area();
+  SYS.DBMS_RESOURCE_MANAGER.create_pending_area();
+  SYS.DBMS_RESOURCE_MANAGER_PRIVS.GRANT_SWITCH_CONSUMER_GROUP('userID', 'GROUP_WITH_LIMITED_EXEC_TIME', false); -- userID should be replaced BY user name used to connect to DB 
+  SYS.DBMS_RESOURCE_MANAGER.submit_pending_area();
+END;
+-- enable new plan
+ALTER SYSTEM SET RESOURCE_MANAGER_PLAN ='EXEC_TIME_LIMIT_PLAN';
+GRANT EXECUTE ON SYS.DBMS_SESSION TO userID; -- userID should be replaced BY user name used to connect to DB 
+```
+
+After resource plan is created connection should be configured as such:
+
+```json
+"executeWhenConnected": [
+      ...,
+      //#ifdef(%UB_DB_STATEMENT_TIME_LIMIT%)
+      "DECLARE prev_group VARCHAR2(30); BEGIN DBMS_SESSION.switch_current_consumer_group ('%UB_DB_STATEMENT_TIME_LIMIT%', prev_group, TRUE); END;"
+      //#endif
+    ]
+```
+
+and environment variable `UB_DB_STATEMENT_TIME_LIMIT` sets to consumer group name we create above
+```UB_DB_STATEMENT_TIME_LIMIT=GROUP_WITH_LIMITED_EXEC_TIME```
+
+> Oracle error message is: `ORA-00040: active time limit exceeded - call aborted`
+ 

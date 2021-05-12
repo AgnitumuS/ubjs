@@ -23,16 +23,16 @@ const LOCAL_SERVER_UBQL_V2 = ((v[0] >= 'v5') && (v[1] >= 10))
  *
  * @example
 
- let store = UB.Repository('my_entity')
-   .attrs('id')
-   .where('code', 'in', ['1', '2', '3'])  // code in ('1', '2', '3')
-   .where('name', 'contains', 'Homer') // name like '%homer%'
-   .where('birtday', 'geq', new Date()) //(birtday >= '2012-01-01')
-   .where('birtday', 'leq', new Date() + 10) // AND (birtday <= '2012-01-02')
-   .where('[age] -10', '>=', {age: 15}, 'byAge') // (age + 10 >= 15)
-   .where('', 'match', 'myvalue') // perform full text search for entity (require fts mixin)
-   .logic('(byStrfType OR bySrfKindID)AND(dasdsa)')
-   .select()
+let store = UB.Repository('my_entity')
+ .attrs('id')
+ .where('code', 'in', ['1', '2', '3'])  // code in ('1', '2', '3')
+ .where('name', 'contains', 'Homer') // name like '%homer%'
+ .where('birtday', 'geq', new Date()) //(birtday >= '2012-01-01')
+ .where('birtday', 'leq', new Date() + 10) // AND (birtday <= '2012-01-02')
+ .where('[age] -10', '>=', {age: 15}, 'byAge') // (age + 10 >= 15)
+ .where('', 'match', 'myvalue') // perform full text search for entity (require fts mixin)
+ .logic('(byStrfType OR bySrfKindID)AND(dasdsa)')
+ .select()
 
  * @class ServerRepository
  * @extends CustomRepository

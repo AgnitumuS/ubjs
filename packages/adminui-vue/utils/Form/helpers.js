@@ -1,12 +1,13 @@
 /* global _ */
 /**
  * Helpers for Forms. Exported by `@unitybase/adminui-vue` as `formHelpers` and can be used as
- *
- *     // valid usage
- *     const formHelpers = require('@unitybase/adminui-vue').formHelpers
- *     // WRONG usage
- *     const helpers = require('@unitybase/adminui-vue/utils/Form/helpers')
- *
+ * @example
+
+// valid usage
+const formHelpers = require('@unitybase/adminui-vue').formHelpers
+// WRONG usage
+const helpers = require('@unitybase/adminui-vue/utils/Form/helpers')
+
  * @module formHelpers
  * @memberOf module:@unitybase/adminui-vue
  */
@@ -215,7 +216,7 @@ function buildExecParams (trackedObj, entity) {
       const attr = schema.attributes[key]
       if (!(attr && attr.readOnly) && !key.includes('.')) {
         if (attr && attr.dataType === UB_DATA_TYPES.Date) {
-          execParams[key] = UB.truncTimeToUTCNull(trackedObj.data[key])
+          execParams[key] = UB.truncTimeToUtcNull(trackedObj.data[key])
         } else {
           execParams[key] = value
         }
@@ -244,7 +245,7 @@ function buildExecParams (trackedObj, entity) {
     if (!key.includes('.')) {
       const attr = schema.attributes[key]
       if (trackedObj.data[key] && attr && attr.dataType === UB_DATA_TYPES.Date) {
-        execParams[key] = UB.truncTimeToUTCNull(trackedObj.data[key])
+        execParams[key] = UB.truncTimeToUtcNull(trackedObj.data[key])
       } else {
         execParams[key] = trackedObj.data[key]
       }

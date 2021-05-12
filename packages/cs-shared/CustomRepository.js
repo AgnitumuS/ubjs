@@ -113,29 +113,29 @@ class CustomRepository {
    *
    * @example
 
- // chaining
- UB.Repository('uba_user').attrs('ID').attrs('name', 'firstName').attrs('disabled').selectAsObject()
+// chaining
+UB.Repository('uba_user').attrs('ID').attrs('name', 'firstName').attrs('disabled').selectAsObject()
 
- // calculate sum over some attribute
- UB.Repository('uba_user').attrs('SUM([disabled])').where('disabled', '=', true).selectScalar()
+// calculate sum over some attribute
+UB.Repository('uba_user').attrs('SUM([disabled])').where('disabled', '=', true).selectScalar()
 
- // In case of server-side execution any valid SQL expression is accepted by attr:
- UB.Repository('uba_user').attrs('[ID] / 100 + 1').selectAsArray()
+// In case of server-side execution any valid SQL expression is accepted by attr:
+UB.Repository('uba_user').attrs('[ID] / 100 + 1').selectAsArray()
 
- // JOIN `uba_userrole.roleID` is a attribute of type Entity. ORM choose `left join` in case attribute is `allowNull: true`
- UB.Repository('uba_userrole').attrs(['userID', 'userID.name']).selectAsObject()
+// JOIN `uba_userrole.roleID` is a attribute of type Entity. ORM choose `left join` in case attribute is `allowNull: true`
+UB.Repository('uba_userrole').attrs(['userID', 'userID.name']).selectAsObject()
 
- // todo Define a way to join for UNITY (@)
+// todo Define a way to join for UNITY (@)
 
- // get values for attribute of type MANY
- UB.Repository('tst_maindata')
-   .attrs('ID', 'manyValue', 'manyValue.caption')
-   .where('code', '=', 'Код1')
-   .selectAsObject({'manyValue.caption': 'captions'})
- // result is `[{"ID":331947938939292,"manyValue":"1,2","captions":"caption 10,caption 20"}]`
+// get values for attribute of type MANY
+UB.Repository('tst_maindata')
+ .attrs('ID', 'manyValue', 'manyValue.caption')
+ .where('code', '=', 'Код1')
+ .selectAsObject({'manyValue.caption': 'captions'})
+// result is `[{"ID":331947938939292,"manyValue":"1,2","captions":"caption 10,caption 20"}]`
 
- // Get attribute value for multilaguage ("isMultiLang": true in meta file) attribute other when current session language
- UB.Repository('org_employee').attrs(['ID', 'lastName_en^']).selectAsObject()
+// Get attribute value for multilaguage ("isMultiLang": true in meta file) attribute other when current session language
+UB.Repository('org_employee').attrs(['ID', 'lastName_en^']).selectAsObject()
 
    * @param {string|Array<string>} attrs
    * @return {CustomRepository}
@@ -158,12 +158,12 @@ class CustomRepository {
    *
    * @example
 
- let isPessimisticLock = !!UB.connection.domain.get('uba_user').attributes.mi_modifyDate
- // with whereIf
- let repo = UB.Repository('uba_user').attrs('ID').attrsIf(isPessimisticLock, 'mi_modifyDate')
- //without whereIf
- let repo = UB.Repository('uba_user').attrs('ID')
- if (isPessimisticLock) repo = repo.attrs('mi_modifyDate')
+let isPessimisticLock = !!UB.connection.domain.get('uba_user').attributes.mi_modifyDate
+// with whereIf
+let repo = UB.Repository('uba_user').attrs('ID').attrsIf(isPessimisticLock, 'mi_modifyDate')
+//without whereIf
+let repo = UB.Repository('uba_user').attrs('ID')
+if (isPessimisticLock) repo = repo.attrs('mi_modifyDate')
 
    * @param {*} addingCondition Attributes will be added only in case addingCondition is truthy
    * @param {string|Array<string>} attrs
@@ -313,13 +313,13 @@ UB.Repository('my_entity').attrs('ID')
    *
    * @example
 
- let filterString = 'foundAllLikeThis' // or may be empty string
- // with whereIf
- let repo = UB.Repository('my_entity').attrs('ID').whereIf(filterString, 'myAttr', 'like', filterString)
+let filterString = 'foundAllLikeThis' // or may be empty string
+// with whereIf
+let repo = UB.Repository('my_entity').attrs('ID').whereIf(filterString, 'myAttr', 'like', filterString)
 
- //without whereIf
- let repo = UB.Repository('my_entity').attrs('ID')
- if (filterString) repo = repo.where('myAttr', 'like', filterString)
+//without whereIf
+let repo = UB.Repository('my_entity').attrs('ID')
+if (filterString) repo = repo.where('myAttr', 'like', filterString)
 
    * @param {*} addingCondition Where expression will be added only in case addingCondition is truthy
    * @param {string} expression   Attribute name (with or without []) or valid expression with attributes in []
@@ -487,10 +487,10 @@ UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
    *
    * @example
 
-   let repo = UB.Repository('my_entity').attrs('ID').orderBy('code')
-   let orderedData = await repo.selectAsObject() // ordered. await is for client-side only
-   repo.orderBy('code', null) // remove order by code
-   let unorderedData = await repo.selectAsObject() // NOT ordered
+let repo = UB.Repository('my_entity').attrs('ID').orderBy('code')
+let orderedData = await repo.selectAsObject() // ordered. await is for client-side only
+repo.orderBy('code', null) // remove order by code
+let unorderedData = await repo.selectAsObject() // NOT ordered
 
    * @param {string} attr Sorted attribute
    * @param {string|null} [direction='asc'] Sort direction ('asc'|'desc'). If `null` - remove sorting by this attr
@@ -643,10 +643,10 @@ inst.run('select', repo.ubql())
    * @private
    * @example
 
- // serialize Repository into plain java script object (UBQL)
- const ubql = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a').ubql()
- // restore Repository from plain java script object (UBQL)
- const repo = UB.Repository(ubql)
+// serialize Repository into plain java script object (UBQL)
+const ubql = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a').ubql()
+// restore Repository from plain java script object (UBQL)
+const repo = UB.Repository(ubql)
 
    * @return {UBQL}
    */
@@ -709,9 +709,9 @@ inst.run('select', repo.ubql())
    * For repository with ONE attribute returns a flat array of attribute values
    *
    * @example
- // get first 100 all ID's of tst_dictionary entity
- UB.Repository('tst_dictionary').attrs('ID').limit(100).selectAsArrayOfValues()
- // returns array of IDs: [1, 2, 3, 4]
+// get first 100 all ID's of tst_dictionary entity
+UB.Repository('tst_dictionary').attrs('ID').limit(100).selectAsArrayOfValues()
+// returns array of IDs: [1, 2, 3, 4]
 
    * @return {Array<string|number>}
    * @abstract
@@ -867,15 +867,17 @@ UB.Repository('cdn_currency').attrs(['ID'])
    *
    * Result of calculation is returned in __totalRecCount parameter value in case `selectAsArray()` client call:
    *
-        let result = UB.Repository('uba_user').attrs(['ID', 'description'])
-           .withTotal().selectAsArray();
-        console.log('Total count is:', result.__totalRecCount)
-   *
-   * Or into TubDataStore.totalRowCount in case of server side `selectAsStore()` call:
-   *
-         let store = UB.Repository('uba_user').attrs(['ID', 'description'])
-           .withTotal().selectAsStore();
-         console.log('Total count is:', store.totalRowCount);
+   * @example
+let result = UB.Repository('uba_user')
+   .attrs(['ID', 'description'])
+   .withTotal().selectAsArray();
+console.log('Total count is:', result.__totalRecCount)
+
+// Or into TubDataStore.totalRowCount in case of server side `selectAsStore()` call:
+ let store = UB.Repository('uba_user')
+   .attrs(['ID', 'description'])
+   .withTotal().selectAsStore();
+ console.log('Total count is:', store.totalRowCount);
    *
    * @param {boolean} [value=true] If `false` will remove total requirements
    * @return {CustomRepository}
@@ -893,12 +895,12 @@ UB.Repository('cdn_currency').attrs(['ID'])
    * Creates a clone of this repository
    * @example
 
- let repo1 = UB.Repository('uba_user').attrs('ID', 'code').where('ID', '>', 15, 'byID')
- let repo2 = repo1.clone()
- repo1.orderBy('code')
- repo2.attrs('name').where('ID', '>', 100, 'byID')
- repo1.selectAsObject() // return ordered users with ID > 15
- repo2.selectAsObject() // return unordered users with their names and ID > 100
+let repo1 = UB.Repository('uba_user').attrs('ID', 'code').where('ID', '>', 15, 'byID')
+let repo2 = repo1.clone()
+repo1.orderBy('code')
+repo2.attrs('name').where('ID', '>', 100, 'byID')
+repo1.selectAsObject() // return ordered users with ID > 15
+repo2.selectAsObject() // return unordered users with their names and ID > 100
 
    * @return {CustomRepository}
    */
@@ -913,8 +915,8 @@ UB.Repository('cdn_currency').attrs(['ID'])
    * Remove all where conditions (except ones using in joinAs). This function mutates current Repository
    * @example
 
- let repo1 = UB.Repository('uba_user').attrs('ID', 'code').where('ID', '>', 15, 'byID')
- let repoWithoutWheres = repo1.clone().clearWhereList()
+let repo1 = UB.Repository('uba_user').attrs('ID', 'code').where('ID', '>', 15, 'byID')
+let repoWithoutWheres = repo1.clone().clearWhereList()
 
    * @return {CustomRepository}
    */

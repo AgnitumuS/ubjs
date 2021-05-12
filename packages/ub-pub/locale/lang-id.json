@@ -75,6 +75,7 @@
   "Access deny": "Anda tidak memiliki hak untuk melakukan operasi ini",
   "ERR_REFERENCE_ERROR": "Tidak dapat melakukan operasi - elemen yang digunakan dalam entitas lainnya",
   "VALUE_MUST_BE_UNIQUE": "Tidak dapat melakukan operasi - nilai yang ditentukan harus unik, tapi sedang digunakan dalam entitas lainnya",
+  "ERR_RESOURCE_LIMITS_EXCEED": "The operation was canceled because it is consuming a lot of resources. <br> Tips: - narrow down a search parameters <br> - avoid using the 'contains' condition <br> - avoid navigating between list pages ",
   "SelectPKAndPassMsg": "Select a file and fill out the password",
   "ReadPkTitle": "Зчитування приватного ключа",
   "readPKCanceled": "Private key load canceled",
