@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - possibility to configure validaiton for not-entity attributes in the `Form.validation(...)` section.
   To validate some non-entity fields you should define a computed property that returns
-  its value and property `${field}:inLocale` that returns locale of this field for
+  its value and property `${field}:caption` that returns locale of this field for
   displaying on the error dialog. Example:
 ```js
 module.exports.mount = cfg => {
@@ -25,7 +25,7 @@ module.exports.mount = cfg => {
           return this.dataProvider.getDefaultValueFor('color')
         },
 
-        'colorDefaultValue:inLocale'() {
+        'colorDefaultValue:caption'() {
           return this.$ut('forms_errors.invalidDefaultValue', 'color')
         }
       },

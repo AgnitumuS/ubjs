@@ -34,13 +34,15 @@ module.exports = class Validator {
     $v.$touch()
     if ($v.$error) {
       const masterEntityName = this._entitySchema.code
-      const fields = Object.keys($v.$params)
-      const errors = fields
-        .filter(f => $v[f].$invalid)
-        .map(field => {
-          const configuredFieldLocale = this._vueInstance[`${field}:inLocale`]
-          return configuredFieldLocale || getEntityFieldInLocale(masterEntityName, field)
-        })
+      const invalidFields = Object.keys($v.$params).filter(f => $v[f].$invalid)
+      const errors = invalidFields.map(field => {
+        const formFieldCaption = this._vueInstance[`${field}:caption`]
+        if (formFieldCaption) {
+          return formFieldCaption
+        }
+        const localeString = `${masterEntityName}.${field}`
+        return UB.i18n(localeString) === localeString ? field : UB.i18n(localeString)
+      })
       const errMsg = UB.i18n('validationError', errors.join(', '))
       const err = new UB.UBError(errMsg)
       UB.showErrorWindow(err)
@@ -86,17 +88,4 @@ function createValidatorInstance (store, entitySchema, masterFieldList, customVa
       customValidationMixin
     ]
   })
-}
-
-/**
- * @param {string} entity
- * @param {string} field
- * @returns {string}
- */
-function getEntityFieldInLocale (entity, field) {
-  const localeString = `${entity}.${field}`
-  if (UB.i18n(localeString) === localeString) {
-    return field
-  }
-  return UB.i18n(localeString)
 }
