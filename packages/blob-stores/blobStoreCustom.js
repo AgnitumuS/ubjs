@@ -20,11 +20,11 @@ const FN_VALIDATION_RE = /^[\w\-. ]+$/
 class BlobStoreCustom {
   /**
    * @param {Object} storeConfig
-   * @param {App} appInstance
+   * @param {ServerApp} appInstance
    * @param {UBSession} sessionInstance
    */
   constructor (storeConfig, appInstance, sessionInstance) {
-    /** @type {App} */
+    /** @type {ServerApp} */
     this.App = appInstance
     /** @type {UBSession} */
     this.Session = sessionInstance

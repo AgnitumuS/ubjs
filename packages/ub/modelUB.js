@@ -165,7 +165,7 @@ console.log(UB.i18n(yourMessage, 'uk'))
   loadLegacyModules: modelLoader.loadLegacyModules,
   /**
    * Application instance
-   * @property {App} App
+   * @property {ServerApp} App
    */
   App: App,
   start: start,

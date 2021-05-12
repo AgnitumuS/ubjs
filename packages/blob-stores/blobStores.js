@@ -1,6 +1,6 @@
 /**
  *
- * Server-side BLOB stores methods. Accessible via {@link App.blobStores}
+ * Server-side BLOB stores methods. Accessible via {@link ServerApp.blobStores}
  *
 
     // get dirty (not committed yet) content of my_entity.docAttribute with ID = 12312 as ArrayBuffer
@@ -61,7 +61,7 @@ function getBlobHistoryDataStore () {
 }
 
 /**
- * @type {App}
+ * @type {ServerApp}
  * @private
  */
 let App
@@ -77,7 +77,7 @@ let Session
 const blobStoresMap = {}
 /**
  * Initialize blobStoresMap. Called by UBApp and initialize a `App.blobStores`
- * @param {App} appInstance
+ * @param {ServerApp} appInstance
  * @param {UBSession} sessionInstance
  * @private
   */

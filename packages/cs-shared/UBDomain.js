@@ -24,8 +24,8 @@ const iso8601ParseAsDate = require('./LocalDataStore').iso8601ParseAsDate
  *
  * Developer should never create {@link UBDomain} class directly, but instead use a:
  *
- *  - {@link App.domainInfo App.domainInfo} property inside server-side methods
- *  - {@link SyncConnection#getDomainInfo SyncConnection.getDomainInfo} method inside CLI scripts
+ *  - {@link module:@unitybase/ub#App.domainInfo App.domainInfo} property inside server-side methods
+ *  - {@link module:@unitybase/base#SyncConnection SyncConnection.getDomainInfo} method inside CLI scripts
  *  - `UBConnection.domain` property inside a browser
  *
        // server-side example

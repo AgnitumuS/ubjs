@@ -92,7 +92,7 @@ const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.lo
  * <a href="https://developer.mozilla.org/en-US/docs/HTTP/Access_control_CORS">CORS</a> requests.
  * This is usually done by setting "HTTPAllowOrigin" server configuration option.
  *
- * **Recommended way to create a UBConnection is** {@link module:@unitybase/ub-pub.html#connect UB.connect} method
+ * > Recommended way to create a UBConnection is {@link module:@unitybase/ub-pub#connect UB.connect} method
  *
  * @example
  // !! In most case UB.connect should be used to create a connection !!
@@ -121,7 +121,7 @@ const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.lo
 
  //subscribe to events
  conn.on('authorizationFail', function(reason){
-      // indicate user credential is wrong
+   // indicate user credential is wrong
  })
  conn.on('authorized', function(ubConnection, session, authParams){console.debug(arguments)} )
 
@@ -159,11 +159,16 @@ function UBConnection (connectionParams) {
   Object.assign(this, EventEmitter.prototype)
 
   /**
-   * Fired for {@link UBConnection} instance in case authentication type CERT and simpleCertAuth is true.
+   * Fired for {@link UBConnection} instance in case authentication type CERT and simpleCertAuth is true
+   * just after private key is loaded and certificate is parsed but before auth handshake starts.
+   *
    * Here you can extract user name from certificate. By default it is EDPOU or DRFO or email.
    *
-   * Accept 3 args (conn: UBConnection, urlParams: Object, certInfo: Object)
    * @event defineLoginName
+   * @memberOf module:@unitybase/ub-pub.module:AsyncConnection~UBConnection
+   * @param {UBConnection} conn
+   * @param {object} urlParams
+   * @param {object} certInfo
    */
 
   /**
@@ -205,6 +210,7 @@ function UBConnection (connectionParams) {
    * @param {UBConnection} conn
    * @param {Boolean} isRepeat
    * @returns {*}
+   * @private
    */
   function doOnCredentialsRequired (conn, isRepeat) {
     // only anonymous authentication or requestAuthParams not passe in config
@@ -337,6 +343,7 @@ $App.connection.userLang()
     document.body.appendChild(t)
   }
   /**
+   * @private
    * @param data
    * @param secretWord
    * @param authSchema
@@ -404,9 +411,11 @@ $App.connection.userLang()
 
           /**
            * Fired for {@link UBConnection} instance after success authorization.
-           *
-           * Accept 3 args `(conn: UBConnection, session: UBSession, authParams)`
            * @event authorized
+           * @memberOf module:@unitybase/ub-pub.module:AsyncConnection~UBConnection
+           * @param {UBConnection} conn
+           * @param {UBSession} session
+           * @param {object} [authParams]
            */
           me.emit('authorized', me, session, authParams)
 
@@ -419,9 +428,10 @@ $App.connection.userLang()
           if (!reason || !(reason instanceof ubUtils.UBAbortError)) {
             /**
              * Fired for {@link UBConnection} instance in case of bad authorization.
-             *
-             * Accept 2 args `(reason, connection: UBConnection)`
              * @event authorizationFail
+             * @memberOf module:@unitybase/ub-pub.module:AsyncConnection~UBConnection
+             * @param {*} reason
+             * @param {UBConnection} conn
              */
             me.emit('authorizationFail', reason, me)
           }
@@ -453,6 +463,7 @@ $App.connection.userLang()
    * UBIP Auth schema implementation
    * @param authParams
    * @returns {Promise}
+   * @private
    */
   this.authHandshakeUBIP = function (authParams) {
     if (!authParams.login) {
@@ -467,6 +478,7 @@ $App.connection.userLang()
    * This function act as a proxy but change authSchema back to 'UB' for authorization token generation
    * @param authParams
    * @return {*}
+   * @private
    */
   this.authHandshakeOpenIDConnect = function (authParams) {
     return Promise.resolve(authParams).then(function (authParams) {
@@ -479,6 +491,7 @@ $App.connection.userLang()
    * UB Auth schema implementation
    * @param authParams
    * @returns {Promise}
+   * @private
    */
   this.authHandshakeUB = function (authParams) {
     const me = this
@@ -666,6 +679,7 @@ $App.connection.userLang()
  *
  * @param {Number} userDbVersion Indexed DB database version required for current application
  * @returns {Promise}
+ * @private
  */
 UBConnection.prototype.initCache = function (userDbVersion) {
   const dbName = this.baseURL === '/' ? 'UB' : this.baseURL
@@ -889,6 +903,7 @@ UBConnection.prototype.xhr = function (config) {
          *
          * Accept 1 arg `(connection: UBConnection)
          * @event passwordExpired
+         * @memberOf module:@unitybase/ub-pub.module:AsyncConnection~UBConnection
          */
         if ((errCode === 72) && me.emit('passwordExpired', me)) {
           throw new ubUtils.UBAbortError()
@@ -2143,6 +2158,19 @@ UBConnection.prototype.HMAC_SHA256 = HMAC_SHA256
 UBConnection.prototype.setUiTag = function (uiTag) {
   this.uiTag = encodeURIComponent(uiTag || '')
 }
+
+/**
+ * Fires after successful response for update/insert/delete for entity received
+ * @example
+
+ UB.connection.on('uba_user:changed', function ({entity, method, resultData}) {
+  console.log(`Someone call ${method} User with ID ${resultData.ID}`
+})
+
+ * @event entity_name:changed
+ * @memberOf module:@unitybase/ub-pub.module:AsyncConnection~UBConnection
+ * @param {object} ubqlResponse
+ */
 
 /**
  * Emit `${entityCode}:changed` event. In case entity has a unity mixin - emit also for unityEntity

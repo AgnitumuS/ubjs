@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - JSDoc: `UB.App` and `UB.Session` events are documented
 
 ### Changed
 
@@ -14,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - improved JSDoc. UB.App is now instance of ServerApp (instead of App) for better documentation
 
 ## [5.22.2] - 2021-05-07
 ## [5.22.1] - 2021-05-05
