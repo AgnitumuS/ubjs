@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.1] - 2021-05-13
 ## [5.20.0] - 2021-04-24
 ## [5.6.4] - 2021-04-22
 ### Fixed

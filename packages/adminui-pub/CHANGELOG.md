@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `UBPlanFactContainer`: added support for data type` Many`
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.14] - 2021-05-13
+### Added
+- `UBPlanFactContainer`: added support for data type` Many`
 
 ## [5.20.13] - 2021-05-07
 ### Changed

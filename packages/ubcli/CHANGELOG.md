@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.21.9] - 2021-05-13
 ## [5.21.8] - 2021-05-07
 ### Fixed
  - `ubcli generateDDL` for Oracle: fixed referential constraint generation in case referenced table is located in

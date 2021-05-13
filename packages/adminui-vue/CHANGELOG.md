@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.12] - 2021-05-13
+### Added
  - `processing.js`: `refresh` method emits a `UB.connection.emit(`${masterEntityName}:refresh`, {ID: state.data.ID})` event.
  - possibility to add a validation for not-entity attributes in the `Form.validation(...)` section.
   For such field two computed properties can be defined:
@@ -49,12 +60,6 @@ module.exports.mount = cfg => {
 ### Changed
  - `validations() {...}` *BREAKING* this option is deep [merged](https://vuejs.org/v2/api/#optionMergeStrategies)
   not overridden by another from another mixin now. This allows you to reuse mixins with partial validation
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.20.11] - 2021-05-07
 ### Changed

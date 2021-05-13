@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.6] - 2021-05-13
 ## [5.20.5] - 2021-04-24
 ### Changed
  - ub server 5.20 compatibility - avoid global UB usage

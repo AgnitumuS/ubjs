@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UBConnection` events are documented
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.9.8] - 2021-05-13
+### Added
+ - `UBConnection` events are documented
 
 ## [5.9.7] - 2021-05-07
 ## [5.9.6] - 2021-05-05

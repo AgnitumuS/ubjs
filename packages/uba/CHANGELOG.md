@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.14] - 2021-05-13
+### Fixed
  - fixed migrate with default lang az
 
 ## [5.20.13] - 2021-05-07
