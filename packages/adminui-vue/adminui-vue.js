@@ -78,7 +78,6 @@ magicLink.install()
 magicLink.addCommand('setFocus', magicLinkFocusCommand)
 
 // -------------- Vue --------------------
-if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
 if (window.Vue === undefined) {
   window.Vue = require('vue')
 }
@@ -271,8 +270,7 @@ if (window.$App) {
 }
 
 if (isExt && window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
-  const replaceAutoForms = require('./utils/replaceExtJSWidgets').replaceAutoForms
-  UB.core.UBCommand.showAutoForm = replaceAutoForms
+  UB.core.UBCommand.showAutoForm = require('./utils/replaceExtJSWidgets').replaceAutoForms
 }
 
 /**
@@ -327,3 +325,6 @@ function mergeValidations (a, b) {
   }
   return _.merge(a, b)
 }
+// register adminui-vue after all module.exports are defined - SystemJS.newModule memoryse an object props,
+// so any new property added after call to SystemJS.newModule are not available to importers
+if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
