@@ -7,8 +7,48 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `processing.js`: `refresh` method emits a `UB.connection.emit(`${masterEntityName}:refresh`, {ID: state.data.ID})` event.
+ - possibility to add a validation for not-entity attributes in the `Form.validation(...)` section.
+  For such field two computed properties can be defined:
+    - a computed property that return a field value
+    - a computed property `${field}:caption` that return localized field name for error dialog.
+      
+  Example:
+```js
+module.exports.mount = cfg => {
+  Form(cfg)
+    .store()
+    .processing()
+    .validation({
+      ...mapState('form', [
+        'dataProvider'
+      ]),
+
+      computed: {
+        colorDefaultValue() {
+          return this.dataProvider.getDefaultValueFor('color')
+        },
+
+        'colorDefaultValue:caption'() {
+          return this.$ut('forms_errors.invalidDefaultValue', 'color')
+        }
+      },
+
+      validations() {
+        return {
+          colorDefaultValue: {
+            required
+          }
+        }
+      }
+    })
+    .mount()
+}
+
+```
 
 ### Changed
+ - `validations() {...}` *BREAKING* this option is deep [merged](https://vuejs.org/v2/api/#optionMergeStrategies)
+  not overridden by another from another mixin now. This allows you to reuse mixins with partial validation
 
 ### Deprecated
 
