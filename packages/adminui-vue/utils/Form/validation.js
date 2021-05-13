@@ -1,20 +1,50 @@
 /* global UB */
 
 const Vue = require('vue')
+// vuex required for type checking
+// eslint-disable-next-line no-unused-vars
+const Vuex = require('vuex')
 const { validationMixin } = require('vuelidate')
 const { required } = require('vuelidate/lib/validators/index')
 
 const { mapInstanceFields } = require('./helpers')
 
 module.exports = class Validator {
-  constructor (store, entitySchema, masterFieldList, customValidationMixin) {
+  /**
+   * Create a Vue instance for form data validation.
+   * Default behavior is to check entity schema attributes with `allowNull=true` and `defaultView=true`.
+   *
+   * `customValidationMixin` can extend default behavior by it own rules.
+   *
+   * @param {Vuex} store Store
+   * @param {UBEntity} entitySchema Entity schema
+   * @param {string[]} masterFieldList Field list of master entity
+   * @param {Vue} [customValidationMixin={}] Custom validations what extends default
+   * @return {Vue} Vue instance
+   */
+  constructor (store, entitySchema, masterFieldList, customValidationMixin = {}) {
     this._entitySchema = entitySchema
-    this._vueInstance = createValidatorInstance(
+
+    const requiredFields = entitySchema
+      .filterAttribute(attr => attr.defaultView && !attr.allowNull && masterFieldList.includes(attr.code))
+      .map(a => a.name)
+
+    const defaultValidationMixin = {
+      computed: mapInstanceFields(entitySchema.getAttributeNames()),
+
+      validations () {
+        return Object.fromEntries(requiredFields.map(field => [field, { required }]))
+      }
+    }
+
+    this._vueInstance = new Vue({
       store,
-      entitySchema,
-      masterFieldList,
-      customValidationMixin
-    )
+      mixins: [
+        validationMixin,
+        defaultValidationMixin,
+        customValidationMixin
+      ]
+    })
   }
 
   /**
@@ -56,36 +86,4 @@ module.exports = class Validator {
   reset () {
     this._vueInstance.$v.$reset()
   }
-}
-
-/**
- * Create a Vue instance for validation of form data.
- * Instance configured to check entity schema attributes with `allowNull=true` and `defaultView=true`
- * @param {Vuex} store Store
- * @param {UBEntity} entitySchema Entity schema
- * @param {Vue} customValidationMixin Custom validation mixin in case when need to extend default validation
- * @param {string[]} masterFieldList Field list of master entity
- * @return {Vue} Vue instance
- */
-function createValidatorInstance (store, entitySchema, masterFieldList, customValidationMixin = {}) {
-  const requiredFields = entitySchema
-    .filterAttribute(attr => attr.defaultView && !attr.allowNull && masterFieldList.includes(attr.code))
-    .map(a => a.name)
-
-  const defaultValidationMixin = {
-    computed: mapInstanceFields(entitySchema.getAttributeNames()),
-
-    validations () {
-      return Object.fromEntries(requiredFields.map(field => [field, { required }]))
-    }
-  }
-
-  return new Vue({
-    store,
-    mixins: [
-      validationMixin,
-      defaultValidationMixin,
-      customValidationMixin
-    ]
-  })
 }

@@ -291,6 +291,10 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
       
       dynamicField () {
         return this.$store.state.data.dynamicField
+      },
+      
+      'dynamicField:caption'() {
+        return this.$ut('some.i18n.key.for.dynamicField')
       }
     },
   
