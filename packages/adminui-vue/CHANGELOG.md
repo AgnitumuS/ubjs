@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.13] - 2021-05-13
+### Fixed
  - fix dialog* and lookups export from `@unitybase/adminui-vue`
 
 ## [5.20.12] - 2021-05-13
