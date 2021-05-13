@@ -314,10 +314,10 @@ class UForm {
       if (!this.tabId) {
         this.tabId = this.entity
           ? $App.generateTabId({ // TODO portal: $App.generateTabId -> portal.generateTabId
-              entity: this.entity,
-              instanceID: this.instanceID,
-              formCode: this.formCode
-            })
+            entity: this.entity,
+            instanceID: this.instanceID,
+            formCode: this.formCode
+          })
           : undefined
       }
       mountTab({

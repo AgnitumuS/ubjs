@@ -142,9 +142,9 @@ Content of a `models/UBQ/_schedulers.json` file:
 Schedulers implementation is a good example of using some advanced techniques, such as:
 
  - async endpoint - see {@tutorial delayed_operations}
- - application global cache {@link App.globalCacheGet}
+ - application global cache {@link ServerApp.globalCacheGet}
  - asynchronous process - {@link worker}
- - manually database transaction commit {@link App.dbCommit} / rollback  {@link App.dbRollback}
+ - manually database transaction commit {@link ServerApp.dbCommit} / rollback  {@link ServerApp.dbRollback}
  - virtual entities
 
 Implementation consists of two logical blocks.

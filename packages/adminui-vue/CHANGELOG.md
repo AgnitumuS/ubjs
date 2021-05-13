@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - possibility to configure validaiton for not-entity attributes in the `Form.validation(...)` section.
+ - `processing.js`: `refresh` method emits a `UB.connection.emit(`${masterEntityName}:refresh`, {ID: state.data.ID})` event.
+ - possibility to configure validation for not-entity attributes in the `Form.validation(...)` section.
   To validate some non-entity fields you should define a computed property that returns
   its value and property `${field}:caption` that returns locale of this field for
   displaying on the error dialog. Example:

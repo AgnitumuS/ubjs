@@ -51,7 +51,7 @@ module.exports = class Validator {
   }
 
   /**
-   * Makes validation state not dirty
+   * Reset validation state
    */
   reset () {
     this._vueInstance.$v.$reset()

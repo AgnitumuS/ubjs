@@ -37,7 +37,6 @@ const UB = require('@unitybase/ub')
 const Session = UB.Session
 
  * @class
- * @global
  * @extends EventEmitter
  */
 const Session = {
@@ -192,7 +191,7 @@ Object.defineProperty(Session, 'callerIP', {
 })
 /**
  * Security zone for current session. In UB SE empty string
- * @member {string} callerIP
+ * @member {string} zone
  * @memberOf Session
  * @readonly
  */
@@ -298,12 +297,12 @@ Object.defineProperty(Session, 'tenantID', {
  * Never override `uData` using `Session.uData = {...}`, in this case you delete uData properties,
  * defined in other application models.
  * Instead define or remove properties using `Session.uData.myProperty = ...`
- * or use `delete Session.uData.myProperty` if you need to undefine something.
+ * or use `delete Session.uData.myProperty` if you need to un-define something.
  *
  * Example below add `someCustomProperty` to Session.uData. See also a real life example in `@unitybase/org/org.js`
  * @example
 
-// @param {THTTPRequest} req
+// @ param {THTTPRequest} req
 Session.on('login', function (req) {
   const uData = Session.uData
   uData.someCustomProperty = 'Hello!'
@@ -311,6 +310,7 @@ Session.on('login', function (req) {
 
  * @event login
  * @memberOf Session
+ * @param {THTTPRequest} req HTTP Request
  */
 
 /**
@@ -363,19 +363,19 @@ Session.on('login', function (req) {
  *
  * If wrong password is entered more  than `UBA.passwordPolicy.maxInvalidAttempts`(from ubs_settings) times
  * user will be locked
- *
- * 2 parameters are passes to this event userID(Number) and isUserLocked(Boolean)
  * @example
 
-Session.on('loginFailed', function(userID, isLocked){
- if (isLocked)
-   console.log('User with id ', userID, 'entered wrong password and locked')
+Session.on('loginFailed', function(shouldLock, userName){
+ if (shouldLock)
+   console.log('User ', userName, 'entered wrong password and locked')
  else
-   console.log('User with id ', userID, 'entered wrong password')
+   console.log('User ', userName, 'entered wrong password')
 })
 
  * @memberOf Session
  * @event loginFailed
+ * @param {boolean} shouldLock
+ * @param {string} userName
  */
 
 /**
@@ -386,16 +386,15 @@ Session.on('loginFailed', function(userID, isLocked){
  *  - for 2-factor auth schemas - too many sessions in pending state (max is 128)
  *  - access to endpoint "%" deny for user (endpoint name not present in uba_role.allowedAppMethods for eny user roles)
  *  - password for user is expired (see ubs_settings UBA.passwordPolicy.maxDurationDays key)
- *  - entity method access deny by ELS (see rules in uba_els)
- *
- * Single parameter is passes to this event `reason: string`
- *
- *      Session.on('securityViolation', function(reason){
- *          console.log('Security violation for user with ID', Session.userID, 'from', Session.callerIP, 'reason', reason);
- *      })
- *
+ *  - access to entity method is denied by ELS (see rules in uba_els)
+ * @example
+const Session = require('@unitybase/ub').Session
+Session.on('securityViolation', function(reason){
+   console.log('Security violation for user with ID', Session.userID, 'from', Session.callerIP, 'reason', reason);
+})
  * @memberOf Session
  * @event securityViolation
+ * @param {string} reason
  */
 
 /**

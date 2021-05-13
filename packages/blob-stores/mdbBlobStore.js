@@ -26,7 +26,7 @@ const VERIFIED_PATH = {}
 class MdbBlobStore extends BlobStoreCustom {
   /**
    * @param {Object} storeConfig
-   * @param {App} appInstance
+   * @param {ServerApp} appInstance
    * @param {UBSession} sessionInstance
    */
   constructor (storeConfig, appInstance, sessionInstance) {

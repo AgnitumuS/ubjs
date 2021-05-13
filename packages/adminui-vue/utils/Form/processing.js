@@ -912,9 +912,10 @@ function createProcessingModule ({
       },
 
       /**
-       * Check form dirty if isDirty will show dialog
-       * else will be send reload request for master record
-       * and all collections record that was already loaded by loadCollections action
+       * Send reload request for master record and all collections record that already loaded by `loadCollections` action
+       *
+       * In case form dirty - show confirmation dialog for loosing changes
+       * @fires entity_name:refresh
        */
       async refresh ({ state, getters, commit, dispatch }) {
         if (getters.isDirty) {
@@ -938,6 +939,22 @@ function createProcessingModule ({
         if (validator()) {
           validator().reset()
         }
+
+        /**
+         * Fires just after form is refreshed using `processing.refresh()`
+          * @example
+
+// @param {THTTPRequest} req
+UB.connection.on('uba_user:refresh', function (data) {
+  console.log(`Someone call refresh for User with ID ${data.ID}`
+})
+
+         * @event entity_name:refresh
+         * @memberOf module:@unitybase/ub-pub.module:AsyncConnection~UBConnection
+         * @param {object} payload
+         * @param {number} payload.ID and ID of entity_name instance what refreshed
+         */
+        UB.connection.emit(`${masterEntityName}:refresh`, { ID: state.data.ID })
 
         $notify.success(UB.i18n('formWasRefreshed'))
       },
