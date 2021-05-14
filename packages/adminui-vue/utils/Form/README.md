@@ -295,7 +295,7 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
       
       'dynamicField:caption'() {
         return this.$ut('some.i18n.key.for.dynamicField')
-      }
+      } 
     },
   
     validations () {
