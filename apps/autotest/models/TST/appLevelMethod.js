@@ -277,7 +277,7 @@ function asJSONArrayTest (req, resp) {
   }
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
-  resp.writeEnd({cnt: l})
+  resp.writeEnd({ cnt: l })
 }
 App.registerEndpoint('asJSONArrayTest', asJSONArrayTest, false)
 
@@ -295,7 +295,7 @@ function getAsJsArrayTest (req, resp) {
   }
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
-  resp.writeEnd({cnt: l})
+  resp.writeEnd({ cnt: l })
 }
 App.registerEndpoint('getAsJsArrayTest', getAsJsArrayTest, false)
 
@@ -336,7 +336,7 @@ function pdfsigner (req, resp) {
   nps()
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
-  resp.writeEnd({ok: true})
+  resp.writeEnd({ ok: true })
 }
 App.registerEndpoint('pdfsigner', pdfsigner, false)
 
