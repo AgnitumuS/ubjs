@@ -22,7 +22,8 @@
       "./packages/cdn",
       "./packages/ubm",
       "./packages/org",
-      "./packages/ubs/modules/UBServerReport.js"
+      "./packages/ubs/modules/UBServerReport.js",
+      "../ub-d/packages/iit-crypto"
     ],
     "includePattern": ".+\\.js(m|x)?$"
   },
