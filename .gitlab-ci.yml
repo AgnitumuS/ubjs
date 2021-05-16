@@ -11,10 +11,6 @@ build-doc:
     - cp -rf ./node_modules/ub-jsdoc/templateHelper.js-patched ./node_modules/jsdoc/lib/jsdoc/util/templateHelper.js
     - wget -nv -O samples-master.zip https://git-pub.intecracy.com/unitybase/samples/-/archive/master/samples-master.zip
     - unzip -o samples-master.zip "samples-master/courses/tutorial-v5/*" -d getting-started
-    # clone a ub-d (used during documentation generation)
-    - cd ..
-    - if [ -d ub-d ] && [ -d ub-d/.git ]; then cd ub-d; git clean -fd; git checkout --force master; git pull; else git clone https://gitlab.intecracy.com/unitybase/ub-d.git; cd ub-d; git checkout master; fi
-    - cd ..
     - npm run build:doc
 #    - npx lerna bootstrap --no-ci --ignore-scripts
 #    - cd apps/docs-adminui
