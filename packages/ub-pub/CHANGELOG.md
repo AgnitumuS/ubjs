@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - a `SignatureValidationResult` type definition is moved to `@unitybase/stubs` package
 
 ### Fixed
 
