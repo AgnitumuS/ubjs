@@ -785,7 +785,7 @@ function createProcessingModule ({
         }
 
         if (validator()) {
-          validator().validateForm()
+          await validator().validateForm()
         }
 
         store.commit('LOADING', {

@@ -6,6 +6,41 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- possibility to configure caption of attribute used in nested validation in the `Form.validation(...)` section. Example:
+```js
+module.exports.mount = cfg => {
+  Form(cfg)
+    .store()
+    .processing()
+    .validation({
+      ...mapState('form', [
+        'dataProvider'
+      ]),
+
+      computed: {
+        defaultValues() {
+          const defaultValues = {}
+          for (const field of ['color', 'height']) {
+            defaultValues[field] = this.dataProvider.getDefaultValueFor('color')
+            defaultValues[`${field}:caption`] = this.$ut('forms_errors.invalidDefaultValue', field)
+          }
+          return defaultValues
+        }
+      },
+
+      validations() {
+        return {
+          defaultValues: {
+            color: {required},
+            height: {required}
+          }
+        }
+      }
+    })
+    .mount()
+}
+```
+- support of async validation functions in the `Form.validation(...)`. [Example](https://vuelidate.js.org/#sub-asynchronous-validation)
 
 ### Changed
 
