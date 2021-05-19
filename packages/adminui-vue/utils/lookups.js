@@ -213,7 +213,7 @@ module.exports = {
    * @returns {Promise<void>}
    */
   subscribe (entity, attrs) {
-    instance.subscribe(entity, attrs)
+    return instance.subscribe(entity, attrs)
   },
   /**
    * Unsubscribe from entity changes. In case this is a last subscriber, data cache for entity is cleaned
