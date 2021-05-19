@@ -540,11 +540,11 @@
                 },
                 "librarySettings": {
                   "type": "string",
-                  "description": "path to folder with IIT library settings files ospus.ini or osplm.ini?. If empty - IIT will try to load settings from registry (under Windows) and this will cause a problems with registry virtualisation. If settings file not exist inside specified folder it will be created"
+                  "description": "path to folder with IIT library settings file (osplm.ini for Linux and ospus.ini for Windows). If empty - IIT will try to load settings from registry (under Windows) and this will cause a problems with registry virtualization. If settings file not exist inside specified folder it will be created"
                 },
                 "mediaType": {
                   "type": "number",
-                  "description": "порядковый индекс типа устройства начинактся с 0. на экране считать сверху вниз"
+                  "description": "порядковый индекс типа устройства начинактся с 0"
                 },
                 "mediaNumber": {
                   "type": "number",
@@ -552,16 +552,34 @@
                 },
                 "keyPath": {
                   "type": "string",
-                  "description": "full path to keystore for filesystem based media type"
+                  "description": "full path to the keystore for filesystem based media type"
                 },
                 "password": {
                   "type": "string",
-                  "description": "keystore password"
+                  "description": "keystore password. If empty - server private key will not be loaded and signing by the server key is not possible"
                 },
                 "strictMode": {
                   "type": "boolean",
                   "default": true,
                   "description": "Turn off offline mode; If TSP disabled - enable and set TSP server to http://ca.informjust.ua/services/tsp:80; Force signature format to CADES_X_LONG"
+                },
+                "hsm": {
+                  "type": "object",
+                  "description": "Hardware Security Module configuration for server-side signing using keys stored inside HSM (`iitCtypto.hsm*` functions)",
+                  "properties": {
+                    "mediaType": {
+                      "type": "number",
+                      "description": "порядковый индекс типа устройства начинактся с 0"
+                    },
+                    "mediaNumber": {
+                      "type": "number",
+                      "description": "порядковый индекс устройства начинактся с 0"
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "HSM password (not a user key password)"
+                    }
+                  }
                 }
               }
             },

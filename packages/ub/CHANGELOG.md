@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - Hardware Security Module (UB EE+) config description is added to the ubConfig JSON schema
+ 
 ### Changed
 
 ### Deprecated
