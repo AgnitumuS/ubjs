@@ -122,7 +122,10 @@ class TableDefinition {
     obj.isConstraint = obj.isConstraint || false
     obj._upperName = obj.name.toUpperCase()
     obj.indexType = obj.indexType || null
-    if (obj.keys && obj.keys.length) obj.keys = obj.keys.map(name => name.toUpperCase())
+    if (obj.keys && obj.keys.length) {
+      if (this.multitenancy && obj.isUnique) obj.keys.push('mi_tenantID')
+      obj.keys = obj.keys.map(name => name.toUpperCase())
+    }
     if (checkName) {
       existed = _.findIndex(this.indexes, { _upperName: obj._upperName })
     }
