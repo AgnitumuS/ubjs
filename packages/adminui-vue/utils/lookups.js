@@ -212,8 +212,8 @@ module.exports = {
    * @param {array<string>} [attrs] lookup attributes (in addition to ID and description attribute)
    * @returns {Promise<void>}
    */
-  async subscribe (entity, attrs) {
-    await instance.subscribe(entity, attrs)
+  subscribe (entity, attrs) {
+    return instance.subscribe(entity, attrs)
   },
   /**
    * Unsubscribe from entity changes. In case this is a last subscriber, data cache for entity is cleaned
