@@ -22,7 +22,7 @@ module.exports.mount = cfg => {
           const defaultValues = {}
           for (const field of ['color', 'height']) {
             defaultValues[field] = this.dataProvider.getDefaultValueFor('color')
-            defaultValues[`${field}:caption`] = this.$ut('forms_errors.invalidDefaultValue', field)
+            defaultValues[`${field}:caption`] = this.$ut('forms_captions.defaultValueOf', field)
           }
           return defaultValues
         }
@@ -40,7 +40,6 @@ module.exports.mount = cfg => {
     .mount()
 }
 ```
-- support of async validation functions in the `Form.validation(...)`. [Example](https://vuelidate.js.org/#sub-asynchronous-validation)
 
 ### Changed
 

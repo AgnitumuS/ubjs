@@ -35,31 +35,6 @@ module.exports = class Validator {
 
       validations () {
         return Object.fromEntries(requiredFields.map(field => [field, { required }]))
-      },
-
-      methods: {
-        /**
-         * Make validation state dirty to start validation and wait until validation is pending.
-         * This allows you to use async validation function in Vuelidate config
-         * @returns {Promise<boolean>}
-         */
-        async validateAndWait () {
-          this.$v.$touch()
-          if (!this.$v.$pending) {
-            return !this.$v.$error
-          }
-
-          // wait until $pending will be changed to false
-          return new Promise((resolve) => {
-            const unwatch = this.$watch(
-              () => this.$v.$pending,
-              () => {
-                unwatch()
-                resolve(!this.$v.$error)
-              }
-            )
-          })
-        }
       }
     }
 
@@ -85,10 +60,10 @@ module.exports = class Validator {
    * Validates form data with Vuelidate. If validation is failed `UBAbortError` will be thrown
    * @throws {UB.UBAbortError}
    */
-  async validateForm () {
-    const isValid = await this._vueInstance.validateAndWait()
-    if (!isValid) {
-      const { $v } = this._vueInstance
+  validateForm () {
+    const { $v } = this._vueInstance
+    $v.$touch()
+    if ($v.$error) {
       const masterEntityName = this._entitySchema.code
 
       const invalidFields = new Set()
@@ -99,7 +74,7 @@ module.exports = class Validator {
         }
       }
 
-      const errors = [...invalidFields].map(field => {
+      const invalidFieldsCaptions = [...invalidFields].map(field => {
         const formFieldCaption = _.get(this._vueInstance, `${field}:caption`)
         if (formFieldCaption) {
           return formFieldCaption
@@ -107,7 +82,7 @@ module.exports = class Validator {
         const localeString = `${masterEntityName}.${field}`
         return UB.i18n(localeString) === localeString ? field : UB.i18n(localeString)
       })
-      const errMsg = UB.i18n('validationError', errors.join(', '))
+      const errMsg = UB.i18n('validationError', invalidFieldsCaptions.join(', '))
       const err = new UB.UBError(errMsg)
       UB.showErrorWindow(err)
       throw new UB.UBAbortError(errMsg)
