@@ -9,6 +9,7 @@
  */
 
 /**
+ * Result of xhr / get / post HTTP request
  * @typedef XHRResponse
  * @property {string|Object|ArrayBuffer} data response body:
  *   - if `Content-Type` of the response is `application/json` - an Object contains response body parsed using `JSON.parse`
