@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - Hardware Security Module (UB EE+) config description is added to the ubConfig JSON schema
- 
+ - `rest` endpoint documented - see [rest endpoint documentation](https://unitybase.info/api/server-v5/module-endpoints.html#restEp)
+
 ### Changed
 
 ### Deprecated

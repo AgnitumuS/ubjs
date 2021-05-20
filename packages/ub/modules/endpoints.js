@@ -1,12 +1,8 @@
 /**
- * Build-in UnityBase endpoints. Will be registered during {@link module:@unitybase/ub~start UB.start}
- * In addition to endpoints documented below additional endpoints
- *  - ubql
- *  - stat
- *  - auth
- *  - logout
- *  - timeStamp
- * are implemented inside native code and will be moved to JavaScript in future releases.
+ * Build-in UnityBase endpoints. Are registered during {@link module:@unitybase/ub~start UB.start}
+ *
+ * In addition to endpoints documented below endpoints `ubql`, `stat`, `auth`, `logout` and `timeStamp` are implemented
+ * inside native code (will be moved to JavaScript in future releases).
  *
  * @module endpoints
  * @memberOf module:@unitybase/ub
@@ -467,15 +463,57 @@ function runSQLEp (req, resp) {
 }
 
 /**
- * Run sql query on server side. Allowed from local IP's.
+ * Execute entity level method with direct access to the HTTP request and response.
+ * Client calls such methods using `POST /rest/entityCode/methodCode`.
  *
- * Connection name is in `connection` uri parameter (or default connection if not set)
- *  - If HTTP verb is GET then allowed inline parameters only and sql is in `sql` uri parameter
- *  - If HTTP verb is POST then sql is in request body and query parameters is uri parameters except `connection`
+ * The main purpose is to create an entity-level method what accept a binary request body or returns a binary response
+ *
+ * REST methods handler is called with 3 parameters: `(ctxt: null, req: THTTPRequest, resp: THTTPResponse)`
+ * and should fill a resp object props properly.
+ *
+ * Endpoint verify user has access to method.
+ *
+ * @example
+
+// define entity method what can be called either using `/rest` or usong `/ubql`
+me.entity.addMethod('getCertificate')
+me.getCertificate = function (ctxt, req, resp) {
+  let certID
+  if (req) { // endpoint is called as rest/uba_usercertificate/getCertificate?ID=1231
+    if (!req.parsedParameters.ID) {
+      return resp.badRequest('Missed ID; Expext URL to be rest/uba_usercertificate/getCertificate?ID=1231')
+    }
+    certID = req.parsedParameters.ID
+  } else {
+    certID = ctxt.mParams.ID
+  }
+  const store = UB.Repository('uba_usercertificate')
+    .attrs(['ID', 'certificate'])
+    .where('ID', '=', certID).select()
+  if (store.eof) throw new Error('not found')
+
+  let certificate = store.getAsBuffer('certificate')
+  if (req) { // called as rest
+    resp.writeEnd(certificate)
+    resp.writeHead('Content-Type: application/x-x509-user-cert')
+    resp.statusCode = 200
+  } else {
+    certificate = Buffer.from(certificate)
+    certificate = certificate.toString('base64')
+    ctxt.dataStore.initialize({ fieldCount: 1, values: ['certificate', certificate], rowCount: 1 })
+  }
+}
+
+// on client side
+// call using rest:
+const certResp = await UB.connection.get('/rest/uba_usercertificate/getCertificate?ID=334607980199937')
+const certBin = certResp.data
+// call using ubql:
+const certResp = await UB.connection.query({entity: 'uba_usercertificate', method: 'getCertificate', ID:334607980199937})
+const certBase64 = certResp.resultData.data[0][0]
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
- * @private
  */
 function restEp (req, resp) {
   const INVALID_PARAMS = 'REST: parameters are invalid'
