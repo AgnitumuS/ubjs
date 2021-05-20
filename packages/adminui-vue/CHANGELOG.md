@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- allow mount Vue container directly in Ext tabpanel
 
 ## [5.20.13] - 2021-05-13
 ### Fixed
