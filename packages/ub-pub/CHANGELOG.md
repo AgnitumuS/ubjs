@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - a `SignatureValidationResult` type definition is moved to `@unitybase/stubs` package
 
 ### Fixed
+ - JSDoc improved for xhr|get|post methods of UB & UBConnection 
 
 ## [5.9.8] - 2021-05-13
 ### Added

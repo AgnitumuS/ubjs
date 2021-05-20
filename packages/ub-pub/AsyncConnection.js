@@ -793,10 +793,16 @@ UBConnection.prototype.cacheClearAll = function () {
 }
 
 /**
- * Shortcut method to perform authorized `GET` request to the application we connected
+ * The same as {@link module:@unitybase/ub-pub#get UB.get} but with authorization
+ * @example
+
+// call entity method using rest syntax
+const certResp = await UB.connection.get('/rest/uba_usercertificate/getCertificate?ID=334607980199937')
+const certBin = certResp.data
+
  * @param {string} url Relative or absolute URL specifying the destination of the request
- * @param {Object=} [config] Optional configuration object as in {xhr}
- * @returns {Promise} Future object
+ * @param {Object} [config] optional configuration object - see {@link module:@unitybase/ub-pub#xhr UB.xhr}
+ * @returns {Promise<XHRResponse>} Future object
  */
 UBConnection.prototype.get = function (url, config) {
   return this.xhr(Object.assign({}, config, {
@@ -806,11 +812,11 @@ UBConnection.prototype.get = function (url, config) {
 }
 
 /**
- * Shortcut method to perform authorized `POST` request to application we connected
+ * The same as {@link module:@unitybase/ub-pub#post UB.post} but with authorization
  * @param {string} url Relative or absolute URL specifying the destination of the request
  * @param {*} data Request content
- * @param {Object=} [config] Optional configuration object as in {xhr}
- * @returns {Promise} Future object
+ * @param {Object=} [config] optional configuration object - see {@link module:@unitybase/ub-pub#xhr UB.xhr}
+ * @returns {Promise<XHRResponse>} Future object
  */
 UBConnection.prototype.post = function (url, data, config) {
   return this.xhr(Object.assign({}, config, {
@@ -836,13 +842,12 @@ UBConnection.prototype.checkChannelEncryption = function (session, cfg) {
  *
  *  - add Authorization header for non-anonymous sessions
  *  - add {@link UBConnection#baseURL} to config.url
- *  - call {@link transport.xhr}
- *  - in case server return 401 clear current authorization,
- *  call {UBConnection#authorize) and repeat the request
+ *  - call {@link module:@unitybase/ub-pub#xhr UB.xhr}
+ *  - in case server return 401 clear current authorization, call {@link UBConnection#authorize} and repeat the request
  *
- * @param config Request configuration as described in {transport.xhr}
+ * @param config Request configuration as described in {@link module:@unitybase/ub-pub#xhr UB.xhr}
  * @fires passwordExpired
- * @return {Promise}
+ * @return {Promise<XHRResponse>}
  */
 UBConnection.prototype.xhr = function (config) {
   const me = this
