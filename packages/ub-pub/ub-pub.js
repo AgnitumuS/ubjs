@@ -252,20 +252,23 @@ console.log('Got ArrayBuffer of %d byte length', resp.data.byteLength);
    * @returns {Promise<XHRResponse>}
    */
   xhr: function (requestConfig) { return transport.xhr(requestConfig) },
+
   /**
    * Shortcut for {@link module:@unitybase/ub-pub#xhr UB.xhr} to perform a `GET` request
    * @example
 
-const resp = await UB.get('http://my-api.com?param-val')
+// GET http://my-api.com?param=val
+const resp = await UB.get('http://my-api.com', {params: {param: 'val'}})
 console.log(resp.data)
 
    * @param {string} url Relative or absolute URL specifying the destination of the request
    * @param {Object=} [config] Optional configuration object as in {@link xhr UB.xhr}
-   * @returns {Promise} Future object
+   * @returns {Promise<XHRResponse>}
    */
   get: function (url, config) { return transport.get(url, config) },
+
   /**
-   * Shortcut for {@link xhr} to perform a `POST` request
+   * Shortcut for {@link module:@unitybase/ub-pub#xhr UB.xhr} to perform a `POST` request
    * @example
 
 // POST http://my-api.com?param1=12&param2=someVal with body contains a stringified object
@@ -274,10 +277,11 @@ console.log(resp.data)
 
    * @param {string} url Relative or absolute URL specifying the destination of the request
    * @param {*} data Request content
-   * @param {Object=} [config] Optional configuration object as in {@link xhr UB.xhr}
-   * @returns {Promise} Future object
+   * @param {Object=} [config] Optional configuration object as in {@link module:@unitybase/ub-pub#xhr UB.xhr}
+   * @returns {Promise<XHRResponse>}
    */
   post: function (url, data, config) { return transport.post(url, data, config) },
+
   /**
    * Class for communicate with native messages plugin `content script`.
    * @type {UBNativeMessage}
