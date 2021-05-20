@@ -3,11 +3,11 @@
   "private": true,
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs",
   "devDependencies": {
-    "@babel/core": "^7.14.2",
+    "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.2",
     "babel-loader": "^8.2.2",
     "clean-css-cli": "^5.3.0",
-    "css-loader": "^5.2.4",
+    "css-loader": "^5.2.5",
     "eslint": "^7.26.0",
     "eslint-plugin-vue": "^7.9.0",
     "exports-loader": "^2.0.0",
@@ -19,10 +19,10 @@
     "shx": "^0.3.3",
     "standard": "^16.0.3",
     "style-loader": "^2.0.0",
-    "uglify-js": "^3.13.6",
+    "uglify-js": "^3.13.7",
     "uglifycss": "*",
-    "webpack": "^5.37.0",
-    "webpack-bundle-analyzer": "^4.4.1",
+    "webpack": "^5.37.1",
+    "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.7.0"
   },
   "scripts": {
@@ -38,6 +38,6 @@
   },
   "dependencies": {
     "core-js": "^3.12.1",
-    "ub-jsdoc": "^3.1.0"
+    "ub-jsdoc": "^3.1.1"
   }
 }
