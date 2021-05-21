@@ -372,8 +372,10 @@ function mountContainer ({
   } else if ('getId' in target) { // Ext component
     if (document.getElementById(`${target.getId()}-outerCt`)) {
       instance.$mount(`#${target.getId()}-outerCt`)
-    } else {
+    } else if (document.getElementById(`${target.getId()}-innerCt`)) {
       instance.$mount(`#${target.getId()}-innerCt`)
+    } else { // tab panel without fake element inside - use -body 
+      instance.$mount(`#${target.getId()}-body`)
     }
 
     // adding vue instance to basepanel

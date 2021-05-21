@@ -52,8 +52,7 @@ function generateDefaultJS (ctx) {
  */
 me.testServerRendering = function (ctxt, req, resp) {
   // also used as ubs_report.testServerRendering method for autotest
-  const body = req.read()
-  const params = JSON.parse(body)
+  const params = req.json()
   const UBServerReport = require('./modules/UBServerReport')
   const mime = require('mime-types')
 

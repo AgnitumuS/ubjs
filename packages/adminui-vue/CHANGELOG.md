@@ -22,7 +22,7 @@ module.exports.mount = cfg => {
           const defaultValues = {}
           for (const field of ['color', 'height']) {
             defaultValues[field] = this.dataProvider.getDefaultValueFor('color')
-            defaultValues[`${field}:caption`] = this.$ut('forms_captions.defaultValueOf', field)
+            defaultValues[`${field}:caption`] = this.$ut('form_captions.defaultValueOf', field)
           }
           return defaultValues
         }
@@ -40,6 +40,7 @@ module.exports.mount = cfg => {
     .mount()
 }
 ```
+ - `UTableEntity` in "Card" mode pass a full row to the `dblclick` event - the same behavior as with double-click on table row 
 
 ### Changed
 
@@ -48,6 +49,7 @@ module.exports.mount = cfg => {
 ### Removed
 
 ### Fixed
+- allow mount Vue container directly in Ext tabpanel
 
 ## [5.20.13] - 2021-05-13
 ### Fixed

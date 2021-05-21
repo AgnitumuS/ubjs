@@ -7,7 +7,7 @@
         class="u-card"
         :class="getCardClass(row)"
         @click="$emit('click', {row})"
-        @dblclick="$emit('dblclick', row.ID)"
+        @dblclick="$emit('dblclick', {row})"
         @contextmenu="$emit('contextmenu', {event: $event, row})"
       >
         <slot

@@ -286,7 +286,7 @@
       :get-card-class="getRowClass"
       @click="select"
       @contextmenu="showContextMenu"
-      @dblclick="onSelect"
+      @dblclick="onSelect($event.row.ID, $event.row)"
     >
       <slot
         slot="card"

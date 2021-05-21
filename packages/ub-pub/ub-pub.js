@@ -199,29 +199,17 @@ DOC.Report.myReport = function() { ... }
   logWarn: utils.logWarn,
   logDebug: utils.logDebug,
   /**
-   * An asynchronous HTTP request. Returns a {Promise} object with the
-   *  standard Promise methods (<a href="https://github.com/kriskowal/q/wiki/Coming-from-jQuery#reference">reference</a>).
-   *  The `then` method takes two arguments a success and an error callback which will be called with a response object.
-   *  The arguments passed into these functions are destructured representation of the response object passed into the
-   *  `then` method. The response object has these properties:
-   *
-   *   - **data** – `{string|Object}` – The response body transformed with the transform
-   *     functions. Default transform check response content-type is application/json and if so - convert data to Object
-   *   - **status** – `{number}` – HTTP status code of the response.
-   *   - **headers** – `{function([headerName])}` – Header getter function.
-   *   - **config** – `{Object}` – The configuration object that was used to generate the request.
+   * An asynchronous HTTP request. Returns a Promise, what resolves to the {@link module:transport#XHRResponse XHRResponse} object:
    *
    * @example
 
 //Get some data from server:
-UB.xhr({url: 'getAppInfo'}).then(function(resp) {
-  console.log('this is appInfo: %o', resp.data)
-})
+const resp = await UB.xhr({url: 'getAppInfo'})
+console.log('app info: %o', resp.data)
 
-//The same, but in more short form via {@link get UB.get} shorthand:
-UB.get('getAppInfo').then(function(resp) {
-  console.log('this is appInfo: %o', resp.data)
-})
+//The same, but in more short form via `UB.get` shorthand:
+const resp = await UB.get('getAppInfo')
+console.log('app info: %o', resp.data)
 
 //Run POST method:
 UB.post('ubql', [
@@ -233,10 +221,8 @@ UB.post('ubql', [
 })
 
 //retrieve binary data as ArrayBuffer
-UB.get('downloads/cert/ACSK(old).cer', {responseType: 'arraybuffer'})
-.then(function(res){
- console.log('Got Arrray of %d length', res.data.byteLength);
-})
+const resp = await UB.get('downloads/cert/ACSK(old).cer', {responseType: 'arraybuffer'})
+console.log('Got ArrayBuffer of %d byte length', resp.data.byteLength);
 
    * @param {Object} requestConfig Object describing the request to be made and how it should be
    *    processed. The object has following properties:
@@ -263,24 +249,39 @@ UB.get('downloads/cert/ACSK(old).cer', {responseType: 'arraybuffer'})
    * @param  {String} [requestConfig.responseType] see <a href="https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest#responseType">responseType</a>.
    * @param {Function} [requestConfig.onProgress] XHR onProgress callback, see <a href="https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent">ProgressEvent</a> for details.
    *      To be user instead obsolete Q Promise.progress()
-   * @returns {Promise}
+   * @returns {Promise<XHRResponse>}
    */
   xhr: function (requestConfig) { return transport.xhr(requestConfig) },
+
   /**
-   * Shortcut for {@link xhr} to perform a `GET` request.
+   * Shortcut for {@link module:@unitybase/ub-pub#xhr UB.xhr} to perform a `GET` request
+   * @example
+
+// GET http://my-api.com?param=val
+const resp = await UB.get('http://my-api.com', {params: {param: 'val'}})
+console.log(resp.data)
+
    * @param {string} url Relative or absolute URL specifying the destination of the request
    * @param {Object=} [config] Optional configuration object as in {@link xhr UB.xhr}
-   * @returns {Promise} Future object
+   * @returns {Promise<XHRResponse>}
    */
   get: function (url, config) { return transport.get(url, config) },
+
   /**
-   * Shortcut for {@link xhr} to perform a `POST` request.
+   * Shortcut for {@link module:@unitybase/ub-pub#xhr UB.xhr} to perform a `POST` request
+   * @example
+
+// POST http://my-api.com?param1=12&param2=someVal with body contains a stringified object
+const resp = await UB.post('http://my-api.com', {this: 'is', body: 'of' request}, {params: {param1: 12, param2: 'someVal'}})
+console.log(resp.data)
+
    * @param {string} url Relative or absolute URL specifying the destination of the request
    * @param {*} data Request content
-   * @param {Object=} [config] Optional configuration object as in {@link xhr UB.xhr}
-   * @returns {Promise} Future object
+   * @param {Object=} [config] Optional configuration object as in {@link module:@unitybase/ub-pub#xhr UB.xhr}
+   * @returns {Promise<XHRResponse>}
    */
   post: function (url, data, config) { return transport.post(url, data, config) },
+
   /**
    * Class for communicate with native messages plugin `content script`.
    * @type {UBNativeMessage}
@@ -394,7 +395,7 @@ conn.then(function(conn){
    * @param {string} entityName
    * @return {LocalRepository}
    */
-  LocalRepository: function(localData, entityName) {
+  LocalRepository: function (localData, entityName) {
     return new LocalRepository(localData, entityName)
   },
   /**
@@ -590,7 +591,7 @@ UB.xhr.defaults = transport.xhrDefaults
      }
   }
 
- * @param vue
+ * @param {Vue} Vue
  */
 UB.install = function (Vue) {
   _globalVueInstance = Vue
