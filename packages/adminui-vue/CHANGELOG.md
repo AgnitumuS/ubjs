@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - UTableEntity in "Card" node pass full row to the card `dblclick` event - the same behavior as with double-click on table row 
 
 ### Changed
 
