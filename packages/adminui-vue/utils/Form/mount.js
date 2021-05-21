@@ -374,7 +374,7 @@ function mountContainer ({
       instance.$mount(`#${target.getId()}-outerCt`)
     } else if (document.getElementById(`${target.getId()}-innerCt`)) {
       instance.$mount(`#${target.getId()}-innerCt`)
-    } else {
+    } else { // tab panel without fake element inside - use -body 
       instance.$mount(`#${target.getId()}-body`)
     }
 
