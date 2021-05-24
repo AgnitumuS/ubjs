@@ -54,7 +54,7 @@ function clearBlobAndLogoutAUser (ctxt) {
   }
   let userID = execParams.userID
   if (!userID) {
-    userID = UB.Repository(me.entity.name).attrs('userID').where('ID', '=', params.ID).selectScalar()
+    userID = UB.Repository(me.entity.name).attrs('userID').where('ID', '=', execParams.ID).selectScalar()
   }
   App.removeUserSessions(userID)
 }
@@ -73,7 +73,7 @@ function clearBlob (ctxt) {
 /**
  * Retrieve certificate as:
  *  - base64 encoded string, if called as ublq
- *  - binary, if called as `/rest/uba_usercertificate/getCertificate?ID=223`
+ *  - binary, by ID `/rest/uba_usercertificate/getCertificate?ID=223`
  *
  * @param {ubMethodParams} [ctxt]
  * @param {number} [ctxt.mParams.ID]

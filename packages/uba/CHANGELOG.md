@@ -6,18 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `uba_usercertificate`: added attributes `certParsed: Json` and `isForSigning: booelan`;
-  Both are sets on certificate binary changes.
+ - `uba_usercertificate` - added attributes `certParsed: Json` and `isForSigning: boolean`.
+   Both are sets on certificate binary changes.
+   Consider to use `uba_user.addCertificate` added by `@ub-d/crypto-api` method to add a binary certificate
+   
+ - `isForSigning` attribute added to the field list of Users->Certificates shortcut;
 
-  Consider to use `uba_user.addCertificate` added by `@ub-d/crypto-api` method to add a binary certificate
- - `uba_user.getCertificate` method can return a binary certificate if called as `rest/uba_usercertificate/getCertificate?ID=1231`
+ - `uba_usercertificate.getCertificate` method can return a binary certificate if called as `rest/uba_usercertificate/getCertificate?ID=1231`
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
- - @unitybase/uba not longer depends on `asn1js` and `pkijs` packages, certificate parser is moved to server side  into `@ub-d/crypto-api`  
+ - `@unitybase/uba` does not depend on `asn1js` and `pkijs` packages anymore, certificate parser is moved to server side `@ub-d/crypto-api` model  
 
 ### Fixed
 
