@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.14] - 2021-05-24
+### Added
  - *temporary solution, not recommended to use - validation will be re-thinks*: validation error message
    can get a validation rule caption from the property with the same name as validation rule + `:caption` suffix. Example:
 ```js
@@ -39,12 +50,6 @@ module.exports.mount = cfg => {
 }
 ```
  - `UTableEntity` in "Card" mode pass a full row to the `dblclick` event - the same behavior as with double-click on table row 
-
-### Changed
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 - allow mount Vue container directly in Ext tabpanel
