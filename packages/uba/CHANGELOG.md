@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   Both are sets on certificate binary changes.
 
   Consider to use `uba_user.addCertificate` added by `@ub-d/crypto-api` method to add a binary certificate
+ - `uba_user.getCertificate` method can return a binary certificate if called as `rest/uba_usercertificate/getCertificate?ID=1231`
 
 ### Changed
 
