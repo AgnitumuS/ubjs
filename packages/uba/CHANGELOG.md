@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `uba_usercertificate`: added attributes `certParsed: Json` and `isForSigning: booelan`;
+  Both are sets on certificate binary changes.
+
+  Consider to use `uba_user.addCertificate` added by `@ub-d/crypto-api` method to add a binary certificate
+
 
 ### Changed
 

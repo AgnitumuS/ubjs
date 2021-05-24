@@ -16,6 +16,7 @@ exports.formDef = {
     { attributeName: "description"},
     { attributeName: "disabled"},
     { attributeName: "revoked" , readOnly: true},
+    { attributeName: "isForSigning" , readOnly: true},
     { attributeName: "revocationDate" , readOnly: true},
     {
       layout: {

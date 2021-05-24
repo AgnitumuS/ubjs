@@ -24,8 +24,12 @@ function setBlob (ctxt) {
     const iitCrypto = require('@ub-d/iit-crypto')
     const certBin = Buffer.from(execParams.certificate, 'base64')
     const certJson = iitCrypto.parseCertificate(certBin)
-    execParams.certParsed = JSON.stringify(certJson)
     execParams.setBLOBValue('certificate', certBin)
+    execParams.certParsed = JSON.stringify(certJson)
+    execParams.serial = certJson.Serial
+    execParams.issuer_serial = certJson.Issuer
+    execParams.issuer_cn = certJson.IssuerCN
+    execParams.isForSigning = certJson.KeyUsage && (certJson.KeyUsage.indexOf('ЕЦП') !== -1)
   }
 }
 

@@ -101,7 +101,7 @@ exports.formDef = {
       entityConfig: {
         entity: 'uba_usercertificate',
         method: 'select',
-        fieldList: ['issuer_serial', 'serial', 'description', 'disabled', 'revoked']
+        fieldList: ['serial', 'isForSigning', 'disabled', 'revoked', 'description', 'issuer_serial']
       },
       stateId: 'uba_user_cert_grid',
       stateful: true,

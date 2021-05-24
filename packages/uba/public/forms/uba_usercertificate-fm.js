@@ -22,7 +22,13 @@ exports.formCode = {
           const ffile = inputDom.files[0]
           const certResp = await UB.connection.post('/crypto/parseCertificate', ffile)
           const certJson = certResp.data
-          const confirmAdding = await $App.dialogYesNo('', JSON.stringify(certJson, null, '\t'))
+          const certFields = ['Serial', 'Subject', 'Issuer', 'CertBeginTime', 'CertEndTime', 'KeyUsage', 'ExtKeyUsages']
+          let certShortInfo = '<ul style="line-height: 2em">'
+          certFields.forEach(f => {
+            certShortInfo += `<li><strong>${f}:</strong>&nbsp${certJson[f]}</li>`
+          })
+          certShortInfo += '</ul>'
+          const confirmAdding = await $App.dialogYesNo('Add this certificate?', certShortInfo)
           if (confirmAdding) {
             me.record.set('issuer_serial', certJson.Issuer)
             me.record.set('serial', certJson.Serial)

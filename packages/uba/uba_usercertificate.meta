@@ -56,6 +56,13 @@
       "documentation": "JSON representation of certificate. Filled by server from `certificate` attribute during update/insert in case iit-crypto is available"
     },
     {
+      "name": "isForSigning",
+      "caption": "For signing",
+      "description": "Is this certificate applicable for signing operations",
+      "dataType": "Boolean",
+      "defaultValue": "0"
+    },
+    {
       "name": "description",
       "dataType": "String",
       "size": 512,
