@@ -6,33 +6,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- possibility to configure caption of attribute used in nested validation in the `Form.validation(...)` section. Example:
+ - *temporary solution, not recommended to use - validation will be re-thinks*: validation error message
+   can get a validation rule caption from the property with the same name as validation rule + `:caption` suffix. Example:
 ```js
 module.exports.mount = cfg => {
   Form(cfg)
     .store()
     .processing()
     .validation({
-      ...mapState('form', [
-        'dataProvider'
-      ]),
+      ...mapState('form', ['dataProvider']),
 
       computed: {
-        defaultValues() {
-          const defaultValues = {}
-          for (const field of ['color', 'height']) {
-            defaultValues[field] = this.dataProvider.getDefaultValueFor('color')
-            defaultValues[`${field}:caption`] = this.$ut('form_captions.defaultValueOf', field)
+        dateFrom: this.dateFrom, // dateFrom is a validation rule name
+        'dateFrom:caption': this.$ut('Date from'),
+        nestedData() { // the same name as validation rule
+          return {
+            color: this.nestedData.color,
+            'color:caption': this.$ut('form_captions.defaultValueOf', 'color'),
           }
-          return defaultValues
         }
       },
-
       validations() {
         return {
-          defaultValues: {
+          dateFrom: {required}, // a validation rule name
+          nestedData: {
             color: {required},
-            height: {required}
           }
         }
       }
