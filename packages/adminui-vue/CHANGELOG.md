@@ -6,6 +6,38 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - *temporary solution, not recommended to use - validation will be re-thinks*: validation error message
+   can get a validation rule caption from the property with the same name as validation rule + `:caption` suffix. Example:
+```js
+module.exports.mount = cfg => {
+  Form(cfg)
+    .store()
+    .processing()
+    .validation({
+      ...mapState('form', ['dataProvider']),
+
+      computed: {
+        dateFrom: this.dateFrom, // dateFrom is a validation rule name
+        'dateFrom:caption': this.$ut('Date from'),
+        nestedData() { // the same name as validation rule
+          return {
+            color: this.nestedData.color,
+            'color:caption': this.$ut('form_captions.defaultValueOf', 'color'),
+          }
+        }
+      },
+      validations() {
+        return {
+          dateFrom: {required}, // a validation rule name
+          nestedData: {
+            color: {required},
+          }
+        }
+      }
+    })
+    .mount()
+}
+```
  - `UTableEntity` in "Card" mode pass a full row to the `dblclick` event - the same behavior as with double-click on table row 
 
 ### Changed
