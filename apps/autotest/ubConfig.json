@@ -178,6 +178,11 @@
 					"path": "./node_modules/@ub-e/ocr"
 				},
 				//#endif
+				//#ifdef(%UB_USE_DSTU%)
+				{
+					"path": "./node_modules/@ub-d/crypto-endpoint"
+				},
+				//#endif
 			],
 			//#ifdef(%UB_USE_DSTU%)
 			"vendorModels": "TST:CRT"

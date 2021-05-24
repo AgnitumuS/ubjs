@@ -1,42 +1,3 @@
-function walk (el, searchCode, callback) {
-  if (el.valueBlock) {
-    if (el.valueBlock.toString() === searchCode) {
-      callback(el)
-      return false
-    } else {
-      if (Array.isArray(el.valueBlock.value)) {
-        return el.valueBlock.value.every(function (dt) {
-          return walk(dt, searchCode, callback)
-        })
-      }
-    }
-  }
-  return true
-}
-
-var typeNames = {
-  '2.5.4.10': 'O',
-  '2.5.4.11': 'OU',
-  '2.5.4.12': 'T',
-  '2.5.4.3': 'CN',
-  '2.5.4.4': 'SN',
-  '2.5.4.41': 'NAME',
-  '2.5.4.31': 'MEMBER',
-  '2.5.4.42': 'G',
-  '2.5.4.43': 'I',
-  '2.5.4.5': 'SERIALNUMBER',
-  '2.5.4.20': 'TELEPHONENUMBER',
-  '2.5.4.6': 'C',
-  '2.5.4.7': 'L',
-  '2.5.4.8': 'S',
-  '2.5.4.9': 'STREET',
-  '1.2.840.113549.1.9.1': 'E-MAIL',
-  '2.5.4.16': 'POSTALADDRESS',
-  '2.5.4.17': 'POSTALCODE',
-  '2.5.4.26': 'REGISTEREDADDRESS'
-}
-
-
 exports.formCode = {
   initUBComponent: function () {
     var me = this, uploadCertBtn, downloadCertBtn
@@ -51,67 +12,26 @@ exports.formCode = {
         entityName: 'uba_usercertificate',
         accept: '.cer',
         scope: this,
-        upLoad: function (btn) {
-          var
-            w = btn.up('window'), inputDom, ffile
-
-          inputDom = this.fieldFile.fileInputEl.dom // getEl()
-
+        upLoad: async function (btn) {
+          const w = btn.up('window')
+          const inputDom = this.fieldFile.fileInputEl.dom // getEl()
           if (inputDom.files.length === 0) { // !form.isValid()
             return
           }
           btn.disable()
-          ffile = inputDom.files[0]
-
-          var rComplete = 0
-          var reader = new FileReader()
-          reader.onloadend = function () {
-            var certBuff = reader.result
-            Promise.all([
-              System.import('asn1js'),
-              System.import('pkijs/build/Certificate.js')
-            ]).then(function (res) {
-              var asn1js = res[0], Certificate = res[1].default
-              var asn1 = asn1js.fromBER(certBuff)
-              // skip PrivateKeyUsagePeriod 2.5.29.16
-              walk(asn1.result, '2.5.29.16', function (el) {
-                //console.debug(el)
-                el.valueBlock.value[2].valueDec = 64
-              })
-              var certificate = new Certificate({schema: asn1.result})
-              var subject = certificate.subject.typesAndValues.map(function (e) {
-                return (typeNames[e.type] || e.type) + '=' + e.value.valueBlock.value
-              }).join(', ')
-              var issuer = certificate.issuer.typesAndValues.map(function (e) {
-                return (typeNames[e.type] || e.type) + '=' + e.value.valueBlock.value
-              })
-              issuer = issuer.join(', ')
-
-              var serial = '';
-              var bytesArr = new Uint8Array(certificate.serialNumber.valueBlock.valueHex)
-              bytesArr.forEach(function (e) {
-                let n = Number(e).toString(16).toUpperCase()
-                if (n.length === 1) n = '0' + n
-                serial += n
-              })
-              me.record.set('issuer_serial', issuer)
-              me.record.set('serial', serial)
-              me.record.set('description', subject)
-              rComplete++
-              if (rComplete > 1) w.close()
-            })
+          const ffile = inputDom.files[0]
+          const certResp = await UB.connection.post('/crypto/parseCertificate', ffile)
+          const certJson = certResp.data
+          const confirmAdding = await $App.dialogYesNo('', JSON.stringify(certJson, null, '\t'))
+          if (confirmAdding) {
+            me.record.set('issuer_serial', certJson.Issuer)
+            me.record.set('serial', certJson.Serial)
+            me.record.set('description', certJson.Subject)
+            const certBase64 = await UB.base64FromAny(ffile)
+            me.addExtendedDataForSave({ certificate: certBase64 })
+            me.updateActions()
+            w.close()
           }
-          reader.readAsArrayBuffer(ffile)
-
-          UB.base64FromAny(ffile)
-            .then(function (certBase64) {
-              me.addExtendedDataForSave({'certificate': certBase64})
-              me.updateActions()
-              rComplete++
-              if (rComplete > 1) {
-                w.close()
-              }
-            })
         }
       })
     })

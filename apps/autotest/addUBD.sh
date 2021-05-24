@@ -17,6 +17,10 @@ if [ ! -d "./node_modules/@ub-d/iit-crypto" ]; then
   ln -s "$(pwd)/../../../ub-d/packages/iit-crypto" "./node_modules/@ub-d/"
 fi
 
+if [ ! -d "./node_modules/@ub-d/crypto-endpoint" ]; then
+  ln -s "$(pwd)/../../../ub-d/packages/crypto-endpoint" "./node_modules/@ub-d/"
+fi
+
 mkdir -p './node_modules/@ub-e'
 
 if [ ! -d "./node_modules/@ub-e/pdfsign" ]; then

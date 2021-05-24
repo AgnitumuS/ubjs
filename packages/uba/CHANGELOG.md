@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - @unitybase/uba not longer depends on `asn1js` and `pkijs` packages, certificate parser is moved to server side  into `@ub-d/crypto-endpoint`  
 
 ### Fixed
 
