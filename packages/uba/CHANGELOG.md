@@ -11,13 +11,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
   Consider to use `uba_user.addCertificate` added by `@ub-d/crypto-api` method to add a binary certificate
 
-
 ### Changed
 
 ### Deprecated
 
 ### Removed
- - @unitybase/uba not longer depends on `asn1js` and `pkijs` packages, certificate parser is moved to server side  into `@ub-d/crypto-endpoint`  
+ - @unitybase/uba not longer depends on `asn1js` and `pkijs` packages, certificate parser is moved to server side  into `@ub-d/crypto-api`  
 
 ### Fixed
 

@@ -180,7 +180,7 @@
 				//#endif
 				//#ifdef(%UB_USE_DSTU%)
 				{
-					"path": "./node_modules/@ub-d/crypto-endpoint"
+					"path": "./node_modules/@ub-d/crypto-api"
 				},
 				//#endif
 			],
