@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `migrate` command now tolerate multiple records in `ub_version` table for the same model,
+  it takes the most recent version
 
 ## [5.21.10] - 2021-05-24
 ### Fixed
