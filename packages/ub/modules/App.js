@@ -325,10 +325,16 @@ ServerApp.serviceMethodByPassAuthentication = function () {
  * @property {Object} security
  */
 ServerApp.serverConfig = undefined
+const SERVER_CONFIG_CS = appBinding.registerCriticalSection('SERVER_CONFIG_CS')
+appBinding.enterCriticalSection(SERVER_CONFIG_CS)
 try {
-  ServerApp.serverConfig = argv.getServerConfiguration()
-} catch (e) {
-  console.error(e)
+  try {
+    ServerApp.serverConfig = argv.getServerConfiguration()
+  } catch (e) {
+    console.error(e.message, e)
+  }
+} finally {
+  appBinding.leaveCriticalSection(SERVER_CONFIG_CS)
 }
 
 /**

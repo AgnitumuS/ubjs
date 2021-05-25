@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - initial call to `App.serverConfig` is protected by critical section to prevent possible multithreading errors
 
 ## [5.22.3] - 2021-05-13
 ### Added
