@@ -96,7 +96,8 @@ me.getCertificate = function (ctxt, req, resp) {
   }
   const store = UB.Repository('uba_usercertificate')
     .attrs(['ID', 'certificate'])
-    .where('ID', '=', certID).select()
+    .where('ID', '=', certID)
+    .select()
 
   if (store.eof) throw new Error('not found')
   let certificate = store.getAsBuffer('certificate')
@@ -109,4 +110,24 @@ me.getCertificate = function (ctxt, req, resp) {
     certificate = certificate.toString('base64')
     ctxt.dataStore.initialize({ fieldCount: 1, values: ['certificate', certificate], rowCount: 1 })
   }
+}
+
+/**
+ * Get user certificate
+ * @method getCurrentUserCertificate
+ * @public
+ * @param {number} userID
+ * @param {boolean} [forSigning=true]
+ * @return {ArrayBuffer|null} certificate binary ot null if actual certificate is not found
+ */
+me.getCurrentUserCertificate = function (userID, forSigning = true) {
+  const store = UB.Repository('uba_usercertificate')
+    .attrs(['certificate'])
+    .where('userID', '=', userID)
+    .whereIf(forSigning, 'isForSigning', '=', true)
+    .where('disabled', '=', false)
+    .where('revoked', '=', false)
+    .selectAsStore()
+  if (store.eof) return null
+  return store.getAsBuffer('certificate')
 }
