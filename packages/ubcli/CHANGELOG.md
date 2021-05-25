@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.21.10] - 2021-05-24
+### Fixed
 - DDL generator includes `mi_tenantID` for unique indexes of multi-tenant entities
 
 ## [5.21.9] - 2021-05-13

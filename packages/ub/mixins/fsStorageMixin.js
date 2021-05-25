@@ -436,7 +436,8 @@ function initEntityForFsStorage (entity, mixinCfg) {
           } else { // string with origName only
             let fileExt = path.extname(cnt)
             if (fileExt === '.def') fileExt = '.js'
-            const ct = mime.contentType(fileExt) || 'application/octet-stream'
+            // mime module do not know .vue extension :(
+            const ct = fileExt === '.vue' ? 'script/x-vue' : (mime.contentType(fileExt) || 'application/octet-stream')
             docInfo = {
               store: 'mdb',
               fName: cnt,

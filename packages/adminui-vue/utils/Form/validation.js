@@ -1,5 +1,6 @@
 /* global UB */
 
+const _ = require('lodash')
 const Vue = require('vue')
 // vuex required for type checking
 // eslint-disable-next-line no-unused-vars
@@ -64,16 +65,24 @@ module.exports = class Validator {
     $v.$touch()
     if ($v.$error) {
       const masterEntityName = this._entitySchema.code
-      const invalidFields = Object.keys($v.$params).filter(f => $v[f].$invalid)
-      const errors = invalidFields.map(field => {
-        const formFieldCaption = this._vueInstance[`${field}:caption`]
+
+      const invalidFields = new Set()
+      for (const { path } of $v.$flattenParams()) {
+        const attrValidation = path.reduce((acc, cur) => acc[cur], $v)
+        if (attrValidation.$invalid) {
+          invalidFields.add(path.join('.'))
+        }
+      }
+
+      const invalidFieldsCaptions = [...invalidFields].map(field => {
+        const formFieldCaption = _.get(this._vueInstance, `${field}:caption`)
         if (formFieldCaption) {
           return formFieldCaption
         }
         const localeString = `${masterEntityName}.${field}`
         return UB.i18n(localeString) === localeString ? field : UB.i18n(localeString)
       })
-      const errMsg = UB.i18n('validationError', errors.join(', '))
+      const errMsg = UB.i18n('validationError', invalidFieldsCaptions.join(', '))
       const err = new UB.UBError(errMsg)
       UB.showErrorWindow(err)
       throw new UB.UBAbortError(errMsg)

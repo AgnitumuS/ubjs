@@ -87,7 +87,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
    */
   saveContentToTempStore (request, attribute, content) {
     const fn = this.getTempFileName(request)
-    console.debug('temp file is written to', fn)
+    console.debug('temp file will be written to', fn)
     let fileSize
     try {
       if (content.writeToFile) {

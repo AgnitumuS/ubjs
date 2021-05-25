@@ -187,7 +187,7 @@ App.on('getDocument:before', doSomethingBeforeGetDocumentCall)
     }
     /**
      * Fires after any endpoint execution
-     * @event launchEndpoint:before
+     * @event launchEndpoint:after
      * @memberOf ServerApp
      * @param {THTTPRequest} req
      * @param {THTTPResponse} resp

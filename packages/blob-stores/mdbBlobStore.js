@@ -48,7 +48,7 @@ class MdbBlobStore extends BlobStoreCustom {
    */
   saveContentToTempStore (request, attribute, content) {
     const fn = this.getTempFileName(request)
-    console.debug('temp file is written to', fn)
+    console.debug('temp file will be written to', fn)
     if (content.writeToFile) {
       if (!content.writeToFile(fn)) throw new Error(`Error write to ${fn}`)
     } else {

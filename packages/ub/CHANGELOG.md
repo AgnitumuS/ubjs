@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Hardware Security Module (UB EE+) config description is added to the ubConfig JSON schema
- - `rest` endpoint documented - see [rest endpoint documentation](https://unitybase.info/api/server-v5/module-endpoints.html#restEp)
 
 ### Changed
 
@@ -17,6 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - initial call to `App.serverConfig` is protected by critical section to prevent possible multithreading errors
+ - `fsStorage` mixin: for *.vue files force `script/x-vue` mime type (`mime` module do not detect .vue)
+
+## [5.22.4] - 2021-05-24
+### Added
+ - Hardware Security Module (UB EE+) config description is added to the ubConfig JSON schema
+ - `rest` endpoint documented - see [rest endpoint documentation](https://unitybase.info/api/server-v5/module-endpoints.html#restEp)
 
 ## [5.22.3] - 2021-05-13
 ### Added
