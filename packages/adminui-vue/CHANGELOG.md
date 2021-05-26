@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `computedVuex` - pass `key` property to `SET` mutation
 
 ## [5.20.14] - 2021-05-24
 ### Added
