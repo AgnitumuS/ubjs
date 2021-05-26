@@ -318,7 +318,7 @@ function computedVuex (stateProps, submoduleName) {
         return submoduleName ? this.$store.state[submoduleName][prop] : this.$store.state[prop]
       },
       set (value) {
-        this.$store.commit(SET_CMD, { prop, value })
+        this.$store.commit(SET_CMD, { key: prop, value })
       }
     }
   }
