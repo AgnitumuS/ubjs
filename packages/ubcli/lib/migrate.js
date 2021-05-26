@@ -347,7 +347,7 @@ function getMigrationState (dbConn, modelsConfig) {
   try {
     const versions = dbConn.selectParsedAsObject('select ID as "ID", modelName AS "modelName", version as "version" from ub_version')
     versions.forEach(v => {
-      if (!r.dbVersions[v.modelName] || v.version > r.dbVersions[v.modelName]) {
+      if (!r.dbVersions[v.modelName] || v.version > r.dbVersions[v.modelName]) { // old version of ub_migrate can produce a several row for same model - take a latest
         r.dbVersions[v.modelName] = v.version
       }
       r.dbVersionIDs[v.modelName] = v.ID
