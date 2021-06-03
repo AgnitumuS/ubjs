@@ -70,7 +70,7 @@
 				"keyPath": "%UB_APPDATA%../shared/Key-6.dat",
 				"password": "%KEY_PWD%",
 				"hsm": {
-				    "mediaType": 1,
+				    "mediaType": 7,
 				    "mediaNumber": 5,
 				    "password": "F98hv2muKz52"
 				}
