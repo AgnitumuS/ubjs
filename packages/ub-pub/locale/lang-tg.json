@@ -113,7 +113,10 @@
       "yes": "Шаҳодатномаи имзо дар вақти имзо эътибор дошт",
       "no": "Барои нигаҳдории дарозмуддат (натиҷаи санҷиши шаҳодатнома дар вақти имзо ба имзо дохил намешавад)"
     },
-    "hardwareKeyUsed": "hardwareKeyUsed",
+    "hardwareKeyUsed": {
+      "yes": "Media type: file",
+      "no": "Media type: hardware"
+    },
     "signingTime": "Вақти мондани имзо",
     "signatureStatus": "Ҳолати имзо",
     "signatureAuthor": "Имзокунанда",
