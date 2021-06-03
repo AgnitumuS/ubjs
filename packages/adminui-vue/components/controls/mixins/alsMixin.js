@@ -5,22 +5,27 @@
  *   $_isRequiredByALS - check that exist rule to make field mandatory/required
  * To make this mixin work use it on form as:
  * const alsMixin = require('@adminui-vue/components/controls/mixins/alsMixin')
- * mixins: ['alsMixin']
+ * mixins: [alsMixin]
  */
 module.exports = {
   methods: {
     $_isReadOnlyByALS (attributeName) {
-      if (this.$store.state.alsInfo) {
-        if (this.$store.state.alsInfo[attributeName]) {
-          return this.$store.state.alsInfo[attributeName].indexOf('U') === -1 // if exist als rule check for possible update
-        } else return !!Object.keys(this.$store.state.alsInfo).length // if exist any als rule
-      } else return false // if not exist als mixin
+      const { alsInfo } = this.$store.state
+      if (alsInfo) {
+        if (alsInfo[attributeName]) {
+          return alsInfo[attributeName].indexOf('U') === -1 // if exist als rule check for possible update
+        }
+        return Object.keys(alsInfo).length > 0 // if exist any als rule
+      }
+      return false // if not exist als mixin
     },
 
     $_isRequiredByALS (attributeName) {
-      if (this.$store.state.alsInfo && this.$store.state.alsInfo[attributeName]) {
-        return this.$store.state.alsInfo[attributeName].indexOf('M') > -1
-      } else return false
+      const { alsInfo } = this.$store.state
+      if (alsInfo && alsInfo[attributeName]) {
+        return alsInfo[attributeName].indexOf('M') > -1
+      }
+      return false
     }
   }
 }
