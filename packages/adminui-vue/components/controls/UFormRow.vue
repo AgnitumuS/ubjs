@@ -2,27 +2,30 @@
   <label
     class="u-form-row"
     :class="[`u-form-row__${labelPosition}`, {
-      'is-error': error
+      'is-error': !!errorText
     }]"
-    :style="maxWidthCss"
+    :style="labelStyle"
   >
     <button
       v-if="preventLabelEvents"
       class="u-form-row__ghost-button"
     />
     <div
-      v-if="label"
+      v-if="labelText"
       class="u-form-row__label"
-      :class="{ required, readonly }"
+      :class="{
+        readonly,
+        required: isRequired
+      }"
       :style="labelWidthCss"
-      :title="$ut(label)"
+      :title="descriptionText"
     >
-      <span>{{ $ut(label) }}</span>
+      <span>{{ $ut(labelText) }}</span>
     </div>
     <div class="u-form-row__error">
       <transition name="el-zoom-in-top">
         <div
-          v-if="error"
+          v-if="errorText"
           class="u-form-row__error__text"
           :title="errorText"
         >
@@ -85,33 +88,73 @@ const ElSelectHack = {
  */
 export default {
   name: 'UFormRow',
-  mixins: [ElSelectHack],
+
+  mixins: [
+    ElSelectHack
+  ],
+
   inject: {
+    entity: { from: 'entity', default: null },
     formLabelWidth: { from: 'labelWidth', default: null },
     formLabelPosition: { from: 'labelPosition', default: null },
-    formMaxWidth: { from: 'maxWidth', default: null }
+    formMaxWidth: { from: 'maxWidth', default: null },
+    validator: { from: 'validator', default: null }
   },
+
   props: {
+    /**
+     * attribute name used for automatically getting of default label and error
+     * message if validation is defined for form
+     */
+    attributeName: {
+      type: String,
+      required: false
+    },
+
     /**
      * either string with error message or boolean.
      * If === `false` then error is always hidden, if `true` - `$ut('requiredField')` will be shown in case of error
      */
     error: {
       type: [String, Boolean],
-      default: false
+      required: false
     },
+
     /**
      * row label (automatically followed by ":")
      */
-    label: String,
+    label: {
+      type: String,
+      required: false
+    },
+
     /**
      * if `true` - show red asterix symbol after label
      */
-    required: Boolean,
+    required: {
+      type: Boolean,
+      required: false
+    },
+
     /**
      * if `true` - show a small lock symbol after label
      */
-    readonly: Boolean,
+    readonly: {
+      type: Boolean,
+      required: false,
+      default () {
+        return false
+      }
+    },
+
+    /**
+     * row description
+     */
+    descripion: {
+      type: String,
+      required: false
+    },
+
     /**
      * label width. Ignored if labelPosition === 'top'
      */
@@ -121,6 +164,7 @@ export default {
         return this.formLabelWidth || 150
       }
     },
+
     /**
      * label position.
      * @values left, right, top
@@ -132,6 +176,7 @@ export default {
         return this.formLabelPosition || 'left'
       }
     },
+
     /**
      * max width in px
      */
@@ -141,40 +186,90 @@ export default {
         return this.formMaxWidth
       }
     },
+
     /**
      * disable label click, hover etc. Creates fake hidden button which intercepts events
      */
-    preventLabelEvents: Boolean
+    preventLabelEvents: {
+      type: Boolean,
+      required: false,
+      default () {
+        return false
+      }
+    }
   },
 
   computed: {
+    labelText () {
+      return this.label ?? this.attributeLabel
+    },
+
+    attributeLabel () {
+      if (!this.attributeName) {
+        return null
+      }
+      if (this.validator) {
+        return this.validator.getAttributeCaption(this.attributeName)
+      }
+      if (this.entity) {
+        return `${this.entity}.${this.attributeName}`
+      }
+      return null
+    },
+
+    descriptionText () {
+      if (this.descripion) {
+        return this.$ut(this.descripion)
+      }
+      if (this.attributeName && this.entity) {
+        const attrDescription = this.$ut(`${this.entity}.${this.attributeName}#description`)
+        return attrDescription || this.$ut(this.labelText)
+      }
+      return this.$ut(this.labelText)
+    },
+
     errorText () {
       if (this.error) {
         if (typeof this.error === 'boolean') {
           return this.$ut('requiredField')
-        } else {
-          return this.$ut(this.error)
         }
+        return this.$ut(this.error)
       }
-      return ''
+      return this.attributeError ?? ''
+    },
+
+    attributeError () {
+      if (!this.attributeName || !this.validator) {
+        return null
+      }
+      const attrError = this.validator.getErrorForAttribute(this.attributeName)
+      return this.$ut(attrError)
     },
 
     labelWidthCss () {
       if (this.labelPosition === 'top') {
         return ''
-      } else {
-        return `width: ${this.labelWidth}px; min-width: ${this.labelWidth}px;`
       }
+      return `width: ${this.labelWidth}px; min-width: ${this.labelWidth}px;`
     },
 
-    maxWidthCss () {
+    labelStyle () {
       if (this.maxWidth) {
         return {
           maxWidth: this.maxWidth + 'px'
         }
-      } else {
-        return ''
       }
+      return ''
+    },
+
+    isRequired() {
+      if (this.required !== undefined) {
+        return this.required
+      }
+      if (this.validator && this.attributeName) {
+        return this.validator.getIsAttributeRequired(this.attributeName)
+      }
+      return undefined
     }
   }
 }

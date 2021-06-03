@@ -71,17 +71,14 @@ export default {
       return this.entitySchema.attributes[this.attributeName].associatedEntity
     },
 
-    label () {
-      return this.entitySchema.attributes[this.attributeName].caption
-    },
-
     isRequired () {
       if (this.required !== undefined && this.required !== false) {
         return this.required
-      } else {
-        return (this.$_isRequiredByALS(this.attributeName) ||
-          (this.$v && this.$v[this.attributeName] && 'required' in this.$v[this.attributeName].$params))
       }
+      return (
+        this.$_isRequiredByALS(this.attributeName) ||
+        (this.$v && this.$v[this.attributeName] && 'required' in this.$v[this.attributeName].$params)
+      )
     },
 
     isReadOnly () {
@@ -89,12 +86,6 @@ export default {
         ? this.readonly
         : this.$_isReadOnlyByALS(this.attributeName) ||
           !!this.entitySchema.attributes[this.attributeName].readOnly
-    },
-
-    isError () {
-      return this.$v &&
-        this.$v[this.attributeName] &&
-        this.$v[this.attributeName].$error
     },
 
     /**
@@ -255,10 +246,9 @@ export default {
     return h('u-form-row',
       {
         attrs: {
-          label: this.label,
+          attributeName: this.attributeName,
           required: defIsRequired,
           readonly: this.isReadOnly,
-          error: this.isError,
           ...this.$attrs
         }
       },

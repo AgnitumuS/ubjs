@@ -269,9 +269,6 @@ class UForm {
       )
     }
 
-    let $v
-    let getValidationState
-
     if (this.isValidationUsed) {
       this.validator = new Validator(
         this.$store,
@@ -279,9 +276,6 @@ class UForm {
         this.fieldList,
         this.customValidationMixin
       )
-
-      $v = this.validator.getValidationState()
-      getValidationState = () => this.validator.getValidationState()
     }
 
     if (this.isProcessingUsed) {
@@ -297,8 +291,7 @@ class UForm {
         component: this.component,
         props: this.props,
         store: this.$store,
-        $v,
-        getValidationState,
+        validator: this.validator,
         title: this.title,
         titleTooltip: this.titleTooltip,
         modalClass: this.modalClass,
@@ -314,18 +307,17 @@ class UForm {
       if (!this.tabId) {
         this.tabId = this.entity
           ? $App.generateTabId({ // TODO portal: $App.generateTabId -> portal.generateTabId
-            entity: this.entity,
-            instanceID: this.instanceID,
-            formCode: this.formCode
-          })
+              entity: this.entity,
+              instanceID: this.instanceID,
+              formCode: this.formCode
+            })
           : undefined
       }
       mountTab({
         component: this.component,
         props: this.props,
         store: this.$store,
-        $v,
-        getValidationState,
+        validator: this.validator,
         title: this.title,
         titleTooltip: this.titleTooltip,
         tabId: this.tabId,
@@ -343,8 +335,7 @@ class UForm {
         component: this.component,
         props: this.props,
         store: this.$store,
-        $v,
-        getValidationState,
+        validator: this.validator,
         title: this.title,
         titleTooltip: this.titleTooltip,
         target: this.target,
