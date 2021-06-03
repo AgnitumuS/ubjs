@@ -114,8 +114,8 @@
       "no": "Барои нигаҳдории дарозмуддат (натиҷаи санҷиши шаҳодатнома дар вақти имзо ба имзо дохил намешавад)"
     },
     "hardwareKeyUsed": {
-      "yes": "Media type: file",
-      "no": "Media type: hardware"
+      "yes": "Media type: hardware",
+      "no": "Media type: file"
     },
     "signingTime": "Вақти мондани имзо",
     "signatureStatus": "Ҳолати имзо",

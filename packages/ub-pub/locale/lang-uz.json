@@ -115,8 +115,8 @@
       "no": "Not for long-term validation (certificate validation result NOT included into signature)"
     },
     "hardwareKeyUsed": {
-      "yes": "Media type: file",
-      "no": "Media type: hardware"
+      "yes": "Media type: hardware",
+      "no": "Media type: file",
     },
     "signingTime": "Signing time",
     "signatureStatus": "Signature status",
