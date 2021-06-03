@@ -132,6 +132,10 @@ const Vuelidate = require('vuelidate').default
 if (IS_SYSTEM_JS && !SystemJS.has('vuelidate')) SystemJS.set('vuelidate', SystemJS.newModule(Vuelidate))
 Vue.use(Vuelidate)
 
+const { validationMixin } = require('./utils/Form/validation')
+
+module.exports.validationMixin = validationMixin
+
 // ------------------ uDialogs -----------------
 const uDialogs = require('./utils/uDialogs')
 /**

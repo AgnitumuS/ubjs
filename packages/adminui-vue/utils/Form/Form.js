@@ -13,7 +13,7 @@ const {
   transformCollections,
   enrichFieldList
 } = require('./helpers')
-const Validator = require('./validation')
+const { Validator } = require('./validation')
 const UB = require('@unitybase/ub-pub')
 
 /**
@@ -117,7 +117,7 @@ class UForm {
     this.modalWidth = modalWidth
 
     this.validator = undefined
-    this.customValidationMixin = undefined
+    this.customValidationOptions = undefined
 
     this.isProcessingUsed = false
     this.isValidationUsed = false
@@ -235,13 +235,11 @@ class UForm {
   /**
    * Custom validator function. In case `validation` not called or called without argument then validator function
    *  is generated automatically based on entitySchema
-   * @param {object} [validationMixin] Custom validation mixin in case we need to override default validation
-   * @param {object} [validationMixin.computed] Vue instance computed properties configuration
-   * @param {object} [validationMixin.validations] [vuelidate](https://vuelidate.netlify.com/#sub-basic-usage) mixin validations config
+   * @param {Vue.ComponentOptions} [validationConfig] Custom validation mixin in case we need to override default validation
    * @return {UForm}
    */
-  validation (validationMixin) {
-    if (validationMixin && (typeof validationMixin === 'function')) {
+  validation (validationConfig) {
+    if (validationConfig && (typeof validationConfig === 'function')) {
       throw new Error('Invalid parameter type for UForm.validation - must be object with at last computed or validation props')
     }
     if (!this.canValidationInit) {
@@ -250,8 +248,8 @@ class UForm {
     this.canValidationInit = false
     this.isValidationUsed = true
 
-    if (validationMixin) {
-      this.customValidationMixin = validationMixin
+    if (validationConfig) {
+      this.customValidationOptions = validationConfig
     }
 
     return this
@@ -270,12 +268,12 @@ class UForm {
     }
 
     if (this.isValidationUsed) {
-      this.validator = new Validator(
-        this.$store,
-        this.entitySchema,
-        this.fieldList,
-        this.customValidationMixin
-      )
+      this.validator = Validator.initializeWithCustomOptions({
+        store: this.$store,
+        entitySchema: this.entitySchema,
+        masterFieldList: this.fieldList,
+        customValidationMixin: this.customValidationOptions
+      })
     }
 
     if (this.isProcessingUsed) {
