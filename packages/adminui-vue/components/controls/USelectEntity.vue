@@ -613,6 +613,19 @@ export default {
       this.dropdownVisible = false
     },
 
+    /**
+     * May be used in the parent component via its $refs property in case
+     * options' reset is needed.
+     */
+    clearOptions () {
+      this.options.splice(0, this.options.length)
+
+      this.pageNum = 0
+      this.moreVisible = false
+      this.selectedID = null
+      this.selectedOption = null
+    },
+
     handleShowDictionary () {
       if (!this.removeDefaultActions) {
         const selectRepo = this.getRepository().clone()

@@ -6,6 +6,35 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `clearOptions` method for `u-select-entity` and `u-select-multiple` controls.
+  The method is intended to be called by the parent components in case options
+  of the appropriate select must be cleared:
+```html
+<template>
+  <el-dialog
+    @close="clearOptions"
+  >
+    <!-- ... -->
+
+    <u-select-multiple
+      ref="selectMultiple"
+      v-model="items"
+      :repository="getRepository"
+    />
+  </el-dialog>
+</template>
+<script>
+  export default {
+    // ...
+
+    methods: {
+      clearOptions() {
+        this.$refs.selectMultiple.clearOptions()
+      }
+    }
+  }
+</script>
+```
 
 ### Changed
 
