@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - initial call to `App.serverConfig` is protected by critical section to prevent possible multithreading errors
  - `fsStorage` mixin: for *.vue files force `script/x-vue` mime type (`mime` module do not detect .vue)
+ - `/allLocales?lang=LL&includeDomain=1` - if meta.LL localization file is missed, fallback to meta file.
+  This fix `ubcli migrate` in case {$i18n: entityName} is defined in YAML but meta file is not localized to some language 
 
 ## [5.22.4] - 2021-05-24
 ### Added

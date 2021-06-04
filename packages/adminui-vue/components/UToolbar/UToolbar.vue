@@ -101,16 +101,22 @@ const { mapInstanceFields } = require('../../utils/Form/helpers')
 
 /**
  * Form toolbar with default actions.
- * You can add custom actions by slots
+ * Addition actions can be added either using `toolbar-buttons` or using slots
  */
 export default {
   name: 'UToolbar',
+  inject: ['$formServices', 'formCode', 'entitySchema', 'fieldList', 'entity'],
 
   props: {
+    /**
+     * Do not show any of the default buttons / actions
+     */
     hideDefaultButtons: Boolean,
     /**
-     * List of objects which can contains additional toolbar/dropdown buttons and override default buttons.
-     * It can be used together with `hideDefaultButtons` property and slots.
+     * Buttons definition array. Can contains additional toolbar/dropdown buttons or override default button
+     * in case `name` property match some of the default button name.
+     *
+     * Can be used together with `hideDefaultButtons` property and slots.
      * See example in `docs` below.
      */
     toolbarButtons: {
@@ -118,8 +124,6 @@ export default {
       default: () => []
     }
   },
-
-  inject: ['$formServices', 'formCode', 'entitySchema', 'fieldList', 'entity'],
 
   computed: {
     ...mapGetters([
@@ -216,7 +220,8 @@ export default {
       if (this.entitySchema.hasMixin('aclRls')) {
         const mixins = this.entitySchema.mixins
         const aclEntityName = mixins && mixins.aclRls && mixins.aclRls.useUnityName
-          ? mixins.unity.entity + '_acl' : this.entitySchema.name + '_acl'
+          ? mixins.unity.entity + '_acl'
+          : this.entitySchema.name + '_acl'
         buttons.push({
           icon: 'u-icon-key',
           label: 'accessRight',
@@ -499,95 +504,3 @@ export default {
   height: 100%;
 }
 </style>
-
-<docs>
-### Usage
-```vue
-<template>
-  <div class="u-form-layout">
-    <u-toolbar/>
-    <u-form-container>
-      <!-- Your form -->
-    </u-form-container>
-  </div>
-</template>
-
-<script>
-  export default {}
-</script>
-```
-
-### Slots
-```vue
-<template>
-  <div class="u-form-layout">
-    <u-toolbar>
-      <u-button slot="left">left side btn</u-button>
-      <u-button slot="right">right side btn</u-button>
-      <!-- Or any component you need, button for example -->
-      <button slot="dropdown">dropdown btn</button>
-      <div slot="toolbarInfoRow">some content</div>
-    </u-toolbar>
-    <u-form-container>
-      <!-- Your form -->
-    </u-form-container>
-  </div>
-</template>
-
-<script>
-  export default {
-    name: 'Toolbar'
-  }
-</script>
-```
-
-### Toolbar buttons usage
-```vue
-<template>
-  <div class="u-form-layout">
-    <u-toolbar :toolbar-buttons="toolbarButtons"/>
-    <u-form-container>
-      <!-- Your form -->
-    </u-form-container>
-  </div>
-</template>
-
-<script>
-  export default {
-    name: 'MyForm',
-
-    computed: {
-      toolbarButtons () {
-        return [
-          // Hide delete button
-          {
-            name: 'delete',
-            visible: false
-          },
-          // Override save button attrs
-          {
-            name: 'save',
-            disabled: this.$store.getters.isDirty,
-            handler () {
-              // new logic
-            }
-          },
-          // New button
-          {
-            name: 'customButton1',
-            label: 'Custom button',
-            icon: 'fa fa-user',
-            disabled: this.$store.state.isNew,
-            type: 'text', // Classic u-button (not icon only) will be shown. Can includes icon from prop above
-            divider: true, // Will be used for `dropdownButtons`
-            handler () {
-              // logic
-            }
-          }
-        ]
-      }
-    }
-  }
-</script>
-```
-</docs>
