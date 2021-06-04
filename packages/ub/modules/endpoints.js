@@ -561,8 +561,8 @@ function allLocalesEp (req, resp) {
       const rawDomain = loadDomainIntoJS(true)
 
       for (const [entityCode, { langs }] of Object.entries(rawDomain)) {
-        const entityLang = langs && langs[lang]
-        if (!entityLang) continue
+        let entityLang = langs && langs[lang]
+        if (!entityLang) entityLang = rawDomain[entityCode].meta // fallback to meta file in case meta.lang is missing
 
         if (entityLang.caption) {
           resources[entityCode] = entityLang.caption
