@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `u-table-many`: it's alternative for `u-select-many` component.
+    This component can be helpful when labels are very large or if you want to use table for working with
+    `"dataType": "Many"` entity attributes. 
+    See examples in file UTableMany.md.
 ### Changed
 
 ### Deprecated

@@ -4,6 +4,7 @@ module.exports = {
     const UFormContainer = require('../components/controls/UFormContainer.vue').default
     const USelectEntity = require('../components/controls/USelectEntity.vue').default
     const USelectMany = require('../components/controls/USelectMany.vue').default
+    const UTableMany = require('../components/controls/UTableMany.vue').default
     const UFormRow = require('../components/controls/UFormRow.vue').default
     const UCodeMirror = require('../components/controls/UCodeMirror.vue').default
     const USelectEnum = require('../components/controls/USelectEnum.vue').default
@@ -43,6 +44,7 @@ module.exports = {
     Vue.component(UFormContainer.name, UFormContainer)
     Vue.component(USelectEntity.name, USelectEntity)
     Vue.component(USelectMany.name, USelectMany)
+    Vue.component(UTableMany.name, UTableMany)
     Vue.component(UFormRow.name, UFormRow)
     Vue.component(UCodeMirror.name, UCodeMirror)
     Vue.component(USelectEnum.name, USelectEnum)
