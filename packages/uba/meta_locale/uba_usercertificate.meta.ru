@@ -24,6 +24,10 @@
             "description": "Двоичные данные сертификата"
         },
         {
+          "name": "isForSigning",
+          "caption": "Для подписи"
+        },
+        {
             "name": "description",
             "caption": "Описание"
         },

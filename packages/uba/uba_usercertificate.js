@@ -118,7 +118,7 @@ me.getCertificate = function (ctxt, req, resp) {
  * @public
  * @param {number} userID
  * @param {boolean} [forSigning=true]
- * @return {ArrayBuffer|null} certificate binary ot null if actual certificate is not found
+ * @return {ArrayBuffer|null} certificate binary or null if actual certificate is not found
  */
 me.getCurrentUserCertificate = function (userID, forSigning = true) {
   const store = UB.Repository('uba_usercertificate')
