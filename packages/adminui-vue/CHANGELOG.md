@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `SignatureVerificationResult` - added a media type information (file/hardware)
 
 ### Changed
+ - *BREAKING* UCodeMirror attribute renamed `readOnly` -> `readonly`;
+   This fix u-auto-field readonly binding in case attribute is on Json type 
 
 ### Deprecated
 
