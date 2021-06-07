@@ -6,9 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `openIDConnect`: id_token saving on auth handshake stage.
-    This token needed for doing proper OpenID logout with `post_logout_redirect_uri` param.
-    Token value can be accessed in 'getOnFinishAction' and save it to the LocalStorage/SessionStorage for example.
+
 ### Changed
 
 ### Deprecated
