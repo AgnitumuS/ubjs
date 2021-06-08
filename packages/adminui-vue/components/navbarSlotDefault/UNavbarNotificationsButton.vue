@@ -193,7 +193,7 @@ export default {
         cmdType: 'showForm',
         entity: 'ubs_message',
         isModal: isModal,
-        modalWidth: '1000px',
+        modalWidth: '90vw',
         props: {
           messageIdOnOpen: ID
         }
