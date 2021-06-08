@@ -315,6 +315,12 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
       .whereIf(ids.length > 1, '[' + this.valueField + ']', 'in', ids)
       .whereIf(ids.length === 1,'[' + this.valueField + ']', '=', ids[0])
       .whereIf(this.enumGroupFilter, '[eGroup]', '=', this.enumGroupFilter)
+      // these `misc` allows to display entries that have been deleted or closed by the `History` mixin
+      .misc({
+        __allowSelectSafeDeleted: true,
+        __mip_recordhistory_all: true,
+        __mip_disablecache: true
+      })
       .selectAsStore().then(function (store) {
         var values = []
         store.each(function (record) {
