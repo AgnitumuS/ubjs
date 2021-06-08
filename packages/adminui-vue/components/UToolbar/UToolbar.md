@@ -63,7 +63,7 @@
 <template>
   <div class="u-form-layout">
     <u-toolbar>
-      <u-button slot="left">left side btn</u-button>
+      <u-button appearance="plain" icon="u-icon-download" slot="left"></u-button>
       <u-button slot="right">right side btn</u-button>
       <!-- Or any component you need, button for example -->
       <button slot="dropdown">dropdown btn</button>
