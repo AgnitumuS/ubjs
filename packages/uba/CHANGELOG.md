@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `uba_usercertificate.getCertificate` method can return a binary certificate if called as `rest/uba_usercertificate/getCertificate?ID=1231`
 
 ### Changed
+ - `uba_usercertificate` form is rewritten to Vue
 
 ### Deprecated
 

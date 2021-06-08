@@ -37,6 +37,10 @@
     {
       "name": "revoked",
       "caption": "Відкликаний"
+    },
+    {
+      "name": "revocationDate",
+      "caption": "Дата відкликання"
     }
   ]
 }
