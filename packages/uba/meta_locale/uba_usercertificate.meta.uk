@@ -23,6 +23,10 @@
       "caption": "Сертифікат"
     },
     {
+      "name": "certParsed",
+      "caption": "Вміст сертифікату"
+    },
+    {
       "name": "isForSigning",
       "caption": "Для підпису"
     },

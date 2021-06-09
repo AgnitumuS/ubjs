@@ -1,14 +1,14 @@
 <template>
   <div class="u-form-layout">
     <div class="u-toolbar">
-      <u-button icon="u-icon-signature" @click="doSign">Sign fs file</u-button>
-      <u-button icon="u-icon-signature" @click="doVerify">Verify locally</u-button>
-
-      <u-button icon="u-icon-signature" @click="doSignBlobStore">Sign BLOB store</u-button>
-      <u-button icon="u-icon-signature" @click="doVerifyBlobStore">Verify BLOB (remote)</u-button>
-      <u-button icon="u-icon-signature" @click="doVerifyBlobSingInBlobStore">Verify BLOB (sing in blob)</u-button>
-
-      <u-button icon="fas fa-cloud-download-alt">Load binary signature</u-button>
+      <section>Подписать:</section>
+      <u-button icon="u-icon-signature" @click="doSign">Файл</u-button>
+      <u-button icon="u-icon-signature" @click="doSignBlobStore">BLOB стор</u-button>
+      <section>Проверить:</section>
+      <u-button icon="u-icon-signature" @click="doVerify">файл+base64(в браузере)</u-button>
+      <u-button icon="u-icon-signature" @click="doVerifyRemote">файл+base64(сервер)</u-button>
+      <u-button icon="u-icon-signature" @click="doVerifyBlobStore">BLOB стор+base64(сервер)</u-button>
+      <u-button icon="u-icon-signature" @click="doVerifyBlobSingInBlobStore">BLOB стор + подпись в сторе(сервер)</u-button>
     </div>
 
     <u-grid label-position="top">
@@ -89,14 +89,16 @@ module.exports.default = {
         if (pki) pki.closePrivateKey()
       }
     },
+
     async doSignBlobStore () {
       if (!this.tstDocID) throw new UB.UBError('Выберите документ')
       const signaturesResp = await UB.connection.post('/crypto/hsmSign', {
         hsmPwd: 'F98hv2muKz52',
-        blobItems: [{ entity: 'tst_document', attribute: 'fileStoreSimple', ID: this.tstDocID }]
+        items: [{ entity: 'tst_document', attribute: 'fileStoreSimple', ID: this.tstDocID }]
       })
       this.signature = signaturesResp.data[0]
     },
+
     async doVerify () {
       if (!this.fileForSigning.length) {
         throw new this.$UB.UBError('Please, select file to validate')
@@ -105,29 +107,36 @@ module.exports.default = {
       try {
         const fArray = await UB.file2Uint8Array(this.fileForSigning[0])
         const pki = await this.$UB.connection.pki()
-        const [verificationResult, onlySignatureResult] = await Promise.all([
-          pki.verify(this.signature, fArray),
-          pki.verify(this.signature, undefined) // verify over empty file to get a wrong signature result
+        console.time('verifyLocal')
+        const [verificationResult] = await Promise.all([
+          pki.verify(this.signature, fArray)
         ])
+        console.timeEnd('verifyLocal')
         this.operationResult = JSON.stringify(verificationResult, null, ' ')
         // show UI dialog with signature validation result
         await pki.verificationUI(
-          [verificationResult, onlySignatureResult],
-          ['<strong>First signature</strong>', 'Signature w/o doc']
+          [verificationResult, verificationResult],
+          ['<strong>First signature</strong>', 'Second signature']
         )
       } finally {
         // me.unmask()
       }
     },
-    async doVerifyBlobStore () {
-      if (!this.tstDocID) throw new UB.UBError('Выберите документ')
+
+    async doVerifyRemote () {
+      if (!this.fileForSigning.length) {
+        throw new this.$UB.UBError('Please, select file to validate')
+      }
       // me.mask('Verifying')
       try {
         const pki = await this.$UB.connection.pki()
+        console.time('verifyRemoteBase64')
+        const content = await UB.base64FromAny(this.fileForSigning[0])
         const verificationResult = await UB.connection.post('/crypto/verify', {
-          blobItem: { entity: 'tst_document', attribute: 'fileStoreSimple', ID: this.tstDocID },
+          item: { content: content, asBinary: true },
           signatures: [this.signature]
         })
+        console.timeEnd('verifyRemoteBase64')
         this.operationResult = JSON.stringify(verificationResult.data, null, ' ')
         // show UI dialog with signature validation result
         await pki.verificationUI(
@@ -138,16 +147,41 @@ module.exports.default = {
         // me.unmask()
       }
     },
+
+    async doVerifyBlobStore () {
+      if (!this.tstDocID) throw new UB.UBError('Выберите документ')
+      // me.mask('Verifying')
+      try {
+        const pki = await this.$UB.connection.pki()
+        console.time('verifyRemote')
+        const verificationResult = await UB.connection.post('/crypto/verify', {
+          item: { entity: 'tst_document', attribute: 'fileStoreSimple', ID: this.tstDocID },
+          signatures: [this.signature]
+        })
+        console.timeEnd('verifyRemote')
+        this.operationResult = JSON.stringify(verificationResult.data, null, ' ')
+        // show UI dialog with signature validation result
+        await pki.verificationUI(
+          verificationResult.data,
+          ['<strong>Документ из БЛОБ стора, подпись - base64</strong>', 'Signature w/o doc']
+        )
+      } finally {
+        // me.unmask()
+      }
+    },
+
     async doVerifyBlobSingInBlobStore () {
       if (!this.tstDocID) throw new UB.UBError('Выберите документ')
       if (!this.tstDocSignatureID) throw new UB.UBError('Выберите документ c подписью')
       // me.mask('Verifying')
       try {
         const pki = await this.$UB.connection.pki()
+        console.time('verifyRemoteSignInBlob')
         const verificationResult = await UB.connection.post('/crypto/verify', {
-          blobItem: { entity: 'tst_document', attribute: 'fileStoreSimple', ID: this.tstDocID },
+          item: { entity: 'tst_document', attribute: 'fileStoreSimple', ID: this.tstDocID },
           signatures: [{ entity: 'tst_document', attribute: 'fileStoreSimple', ID: this.tstDocSignatureID }]
         })
+        console.timeEnd('verifyRemoteSignInBlob')
         this.operationResult = JSON.stringify(verificationResult.data, null, ' ')
         // show UI dialog with signature validation result
         await pki.verificationUI(

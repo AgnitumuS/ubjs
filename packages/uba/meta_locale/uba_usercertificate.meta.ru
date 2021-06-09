@@ -24,6 +24,10 @@
             "description": "Двоичные данные сертификата"
         },
         {
+          "name": "certParsed",
+          "caption": "Содержимое сертификата"
+        },
+        {
           "name": "isForSigning",
           "caption": "Для подписи"
         },

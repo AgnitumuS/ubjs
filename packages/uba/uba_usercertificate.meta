@@ -51,8 +51,8 @@
     {
       "name": "certParsed",
       "dataType": "Json",
-      "caption": "Certificate",
-      "description": "Parsed certificate",
+      "caption": "Certificate content",
+      "description": "Parsed certificate in JSON format",
       "documentation": "JSON representation of certificate. Filled by server from `certificate` attribute during update/insert in case iit-crypto is available"
     },
     {
