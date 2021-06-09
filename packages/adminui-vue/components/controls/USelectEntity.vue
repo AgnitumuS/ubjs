@@ -385,10 +385,10 @@ export default {
 
       set (value) {
         this.query = value
-        if (!this.dropdownVisible) {
+
+        this.debouncedFetch(value, () => {
           this.dropdownVisible = true
-        }
-        this.debouncedFetch(value)
+        })
       }
     },
 
@@ -464,8 +464,8 @@ export default {
       this.loading = false
     },
 
-    debouncedFetch: debounce(600, function (query) {
-      this.fetchPage(query)
+    debouncedFetch: debounce(600, function (query, resolve, reject) {
+      this.fetchPage(query).then(resolve, reject)
     }),
 
     async fetchDisplayValue (value) {
@@ -555,10 +555,10 @@ export default {
       }
     },
 
-    onKeydownAltDown () {
+    async onKeydownAltDown () {
       if (!this.dropdownVisible) {
+        await this.fetchPage()
         this.dropdownVisible = true
-        this.fetchPage()
       }
     },
 
@@ -570,14 +570,19 @@ export default {
     },
 
     // shows all search result when click on dropdown arrow
-    toggleDropdown () {
+    async toggleDropdown () {
       if (this.isReadOnly) return
-      this.dropdownVisible = !this.dropdownVisible
-      if (this.dropdownVisible) {
-        this.fetchPage()
+
+      const isTurnedOn = !this.dropdownVisible
+
+      if (isTurnedOn) {
+        await this.fetchPage()
       } else {
         this.setQueryByValue(this.value)
       }
+
+      // make dropdown visible after fetch
+      this.dropdownVisible = isTurnedOn
     },
 
     /**
@@ -611,19 +616,6 @@ export default {
       }
       this.setQueryByValue(this.selectedID)
       this.dropdownVisible = false
-    },
-
-    /**
-     * May be used in the parent component via its $refs property in case
-     * options' reset is needed.
-     */
-    clearOptions () {
-      this.options.splice(0, this.options.length)
-
-      this.pageNum = 0
-      this.moreVisible = false
-      this.selectedID = null
-      this.selectedOption = null
     },
 
     handleShowDictionary () {

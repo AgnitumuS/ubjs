@@ -175,7 +175,7 @@ const { debounce } = require('throttle-debounce')
 const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
 
 /**
- * Milty-select component mapped to Entity
+ * Multy-select component mapped to Entity
  */
 export default {
   name: 'USelectMultiple',
@@ -306,10 +306,10 @@ export default {
 
       set (value) {
         this.query = value
-        if (!this.dropdownVisible) {
+
+        this.debouncedFetch(value, () => {
           this.dropdownVisible = true
-        }
-        this.debouncedFetch(value)
+        })
       }
     }
   },
@@ -372,8 +372,8 @@ export default {
       this.loading = false
     },
 
-    debouncedFetch: debounce(600, function (query) {
-      this.fetchPage(query)
+    debouncedFetch: debounce(600, function (query, resolve, reject) {
+      this.fetchPage(query).then(resolve, reject)
     }),
 
     async fetchDisplayValues (IDs) {
@@ -481,10 +481,10 @@ export default {
       }
     },
 
-    onKeydownAltDown () {
+    async onKeydownAltDown () {
       if (!this.dropdownVisible) {
+        await this.fetchPage()
         this.dropdownVisible = true
-        this.fetchPage()
       }
     },
 
@@ -495,11 +495,15 @@ export default {
       this.$refs.input.click()
     },
 
-    toggleDropdown () {
-      this.dropdownVisible = !this.dropdownVisible
-      if (this.dropdownVisible) {
-        this.fetchPage()
+    async toggleDropdown () {
+      const isTurnedOn = !this.dropdownVisible
+
+      if (isTurnedOn) {
+        await this.fetchPage()
       }
+
+      // make dropdown visible after fetch
+      this.dropdownVisible = isTurnedOn
     },
 
     /**
@@ -524,18 +528,6 @@ export default {
     clearSelected () {
       const filterFixed = this.value.filter(i => i === this.isOptionFixed(i))
       this.$emit('input', filterFixed)
-    },
-
-    /**
-     * May be used in the parent component via its $refs property in case
-     * options' reset is needed.
-     */
-    clearOptions () {
-      this.options.splice(0, this.options.length)
-
-      this.pageNum = 0
-      this.moreVisible = false
-      this.selectedOption = null
     },
 
     isOptionClosable (option) {
