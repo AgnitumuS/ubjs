@@ -261,6 +261,11 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
   if (response.statusCode === 200) {
     if (provider.userInfoUrl) {
       responseData = JSON.parse(response.read()) // response._http.responseText
+
+      if (responseData.id_token) {
+        provider.id_token = responseData.id_token
+      }
+
       if (provider.userInfoHTTPMethod === 'POST') {
         request = http.request(provider.userInfoUrl)
         request.options.method = 'POST'

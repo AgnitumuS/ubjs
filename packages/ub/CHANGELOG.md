@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `fsStorage` mixin: for *.vue files force `script/x-vue` mime type (`mime` module do not detect .vue)
+ - `/allLocales?lang=LL&includeDomain=1` - will merge meta with meta.lang - the same algo as in client-side UBEntity constructor.
+  This fix `ubcli migrate` in case {$i18n: entityName} is defined in YAML but meta file is not localized to some language 
 
 ## [5.22.4] - 2021-05-24
 ### Added
