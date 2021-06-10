@@ -1945,12 +1945,15 @@ UbPkiInterface.prototype.closePrivateKey = function () {}
 UbPkiInterface.prototype.getPrivateKeyOwnerInfo = function () {}
 /**
  * @param {Uint8Array|String} data
+ * @param {Boolean} [resultIsBinary=false]
  * @param {function} [ownerKeyValidationFunction] optional function what called with one parameter - certInfo before signing.
  *   Should validate is owner of passed certificate allowed to perform signing,
- *   for example by check equality of certInfo.serial with conn.userData('userCertificateSerial')
- * @return {Promise<string>} base64 encoded signature
+ *   for example by check equality of certInfo.serial with conn.userData('userCertificateSerial');
+ *   In case function returns rejected promise or throw then private key will be unloaded from memory
+ *   to allow user to select another key
+ * @return {Promise<ArrayBuffer|string>} signature base64 encoded signature
  */
-UbPkiInterface.prototype.sign = function (data, ownerKeyValidationFunction) {}
+UbPkiInterface.prototype.sign = function (data, resultIsBinary, ownerKeyValidationFunction) {}
 /**
  * Verify signature for data
  * @param {String} b64signature Base64 encoded signature
