@@ -797,10 +797,11 @@ function createProcessingModule ({
         const responseHandlers = []
 
         const masterExecParams = buildExecParams(store.state, masterEntityName)
+        const method = store.state.isNew ? 'insert' : 'update'
         if (masterExecParams) {
           requests.push({
             entity: masterEntityName,
-            method: store.state.isNew ? 'insert' : 'update',
+            method: method,
             execParams: masterExecParams,
             fieldList
           })
@@ -890,7 +891,7 @@ function createProcessingModule ({
             $notify.success(UB.i18n('successfullySaved'))
           }
           if (saved) {
-            await saved()
+            await saved(method)
           }
 
           if (closeForm) {

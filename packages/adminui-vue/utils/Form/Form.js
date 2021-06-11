@@ -213,7 +213,7 @@ class UForm {
       beforeInit: beforeInit ? () => beforeInit.call(this, this.$store) : null,
       inited: inited ? () => inited.call(this, this.$store) : null,
       beforeSave: beforeSave ? () => beforeSave.call(this, this.$store) : null,
-      saved: saved ? () => saved.call(this, this.$store) : null,
+      saved: saved ? (method) => saved.call(this, this.$store, method) : null,
       beforeCreate: beforeCreate ? () => beforeCreate.call(this, this.$store) : null,
       created: created ? () => created.call(this, this.$store) : null,
       beforeLoad: beforeLoad ? () => beforeLoad.call(this, this.$store) : null,
