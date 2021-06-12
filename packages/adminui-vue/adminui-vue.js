@@ -133,7 +133,10 @@ if (IS_SYSTEM_JS && !SystemJS.has('vuelidate')) SystemJS.set('vuelidate', System
 Vue.use(Vuelidate)
 
 const { validationMixin } = require('./utils/Form/validation')
-
+/**
+ * Mixin for using in forms with own single-form validation. Mixin automatically creates
+ * and passes a validator instance for use in nested controls (UFormRow for example).
+ */
 module.exports.validationMixin = validationMixin
 
 // ------------------ uDialogs -----------------

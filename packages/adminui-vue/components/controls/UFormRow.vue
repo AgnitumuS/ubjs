@@ -133,7 +133,11 @@ export default {
      */
     required: {
       type: Boolean,
-      required: false
+      required: false,
+      default () {
+        // default value for Boolean prop is false not undefined
+        return undefined
+      }
     },
 
     /**
@@ -141,10 +145,7 @@ export default {
      */
     readonly: {
       type: Boolean,
-      required: false,
-      default () {
-        return false
-      }
+      required: false
     },
 
     /**
@@ -192,10 +193,7 @@ export default {
      */
     preventLabelEvents: {
       type: Boolean,
-      required: false,
-      default () {
-        return false
-      }
+      required: false
     }
   },
 

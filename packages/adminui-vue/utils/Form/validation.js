@@ -8,24 +8,7 @@ const { required } = require('vuelidate/lib/validators/index')
 
 const { mapInstanceFields } = require('./helpers')
 
-/**
- * Mixin for using in forms with own single-form validation. Mixin automatically
- * creates and passes validator instance for using in nested controls (UFormRow for example).
- */
-const validationMixin = {
-  inject: {
-    entitySchema: {
-      from: 'entitySchema',
-      default: {}
-    }
-  },
-
-  provide () {
-    return {
-      validator: new Validator(this)
-    }
-  },
-
+const attrCaptionsMixin = {
   computed: {
     attributeCaptions () {
       const { attributeCaptions } = this.$options
@@ -50,7 +33,8 @@ const validationMixin = {
 }
 
 /**
- * Abstraction for easy managing of validation for some form built around Vue instance with configured Vuelidate state.
+ * Abstraction for easy managing of validation of some form. This class uses a `Vue`
+ * instance with configured `Vuelidate` state to provide reactivity of form data.
  */
 class Validator {
   constructor (vueInstance) {
@@ -71,22 +55,23 @@ class Validator {
    */
   static initializeWithCustomOptions ({
     store,
-    entitySchema: passedEntitySchema,
+    entitySchema,
     masterFieldList,
     customValidationMixin = {}
   }) {
-    const requiredAttributesNames = passedEntitySchema
+    const requiredAttributesNames = entitySchema
       .filterAttribute(attr => attr.defaultView && !attr.allowNull && masterFieldList.includes(attr.code))
       .map(attr => attr.name)
 
     const defaultValidationMixin = {
-      inject: {
-        entitySchema: {
-          from: 'entitySchema',
-          default: passedEntitySchema
+      computed: {
+        ...mapInstanceFields(entitySchema.getAttributeNames()),
+
+        entitySchema () {
+          return entitySchema
         }
       },
-      computed: mapInstanceFields(passedEntitySchema.getAttributeNames()),
+
       validations () {
         return Object.fromEntries(requiredAttributesNames.map(attr => [attr, { required }]))
       }
@@ -95,7 +80,7 @@ class Validator {
     const vueInstance = new Vue({
       store,
       mixins: [
-        validationMixin,
+        attrCaptionsMixin,
         defaultValidationMixin,
         customValidationMixin
       ]
@@ -106,6 +91,7 @@ class Validator {
 
   /**
    * Returns the current state of validation. The method is useful when you have dynamic validation
+   *
    * @returns {object} Vuelidate object
    */
   getValidationState () {
@@ -113,8 +99,9 @@ class Validator {
   }
 
   /**
-   * Get caption for pass attribute code from `attributeCaptions` sections. If there
-   * is not defined caption, default locale for `${entity}.${attributeName}` will be returned.
+   * Get caption by attribute name from `attributeCaptions` sections. If it
+   * is not defined, default locale i18n(`${entity}.${attributeName}`) will be returned
+   *
    * @param {string} attributeName
    * @returns {string}
    */
@@ -125,7 +112,8 @@ class Validator {
   }
 
   /**
-   * Get error text of some failed validation rule from the Vuelidate validation state by attribute name
+   * Get error text for some first failed validation rule of the attribute
+   *
    * @param {string} attributeName
    * @returns {string | null}
    */
@@ -139,17 +127,20 @@ class Validator {
 
     for (const param in attrValidationState.$params) {
       if (attrValidationState[param] === false) {
-        const { $errorText } = attrValidationState.$params[param]
-        if ($errorText) {
-          return UB.i18n($errorText)
+        const ruleParams = attrValidationState.$params[param]
+        const errorText = ruleParams ? ruleParams.$errorText : null
+        if (errorText) {
+          return UB.i18n(errorText)
         }
       }
     }
+
     return UB.i18n('requiredField')
   }
 
   /**
    * Check if the attribute has the required rule in the configured validation
+   *
    * @param {string} attributeName
    * @returns {boolean}
    */
@@ -160,11 +151,17 @@ class Validator {
   }
 
   /**
-   * Validates form data with Vuelidate help. If validation is failed `UBAbortError` will be thrown.
-   * @param {string} [errorMsgTemplate = 'validationError'] Error message template for displaying in error modal
+   * Validates form data with the Vuelidate help. If validation is failed `UBAbortError` will be thrown
+   *
+   * @param {object} [params = {}]
+   * @param {boolean} [params.showErrorModal = true] To display error modal if validation is failed
+   * @param {string} [params.errorMsgTemplate = 'validationError'] Error message template for the error modal
    * @throws {UB.UBAbortError}
    */
-  validateForm (errorMsgTemplate = 'validationError') {
+  validateForm ({
+    showErrorModal = true,
+    errorMsgTemplate = 'validationError'
+  } = {}) {
     const { $v } = this._vueInstance
 
     $v.$touch()
@@ -181,7 +178,11 @@ class Validator {
       }
     }
     const errMsg = UB.i18n(errorMsgTemplate, [...invalidFieldsCaptions].join(', '))
-    UB.showErrorWindow(errMsg)
+
+    if (showErrorModal) {
+      UB.showErrorWindow(errMsg)
+    }
+
     throw new UB.UBAbortError(errMsg)
   }
 
@@ -195,7 +196,8 @@ class Validator {
 
 /**
  * Helper function that returns an object property by the key. This method is useful for
- * passing to the `reduce()` array function to get some object nested property.
+ * passing to the `reduce()` array function to get some object nested property
+ *
  * @param {object|null} obj
  * @param {string} key
  * @returns {object|null}
@@ -206,6 +208,7 @@ function getPropByKey (obj, key) {
 
 /**
  * Get entity attribute caption in the current locale
+ *
  * @param {UBEntity} entitySchema
  * @param {string} attr
  * @returns {string}
@@ -213,6 +216,31 @@ function getPropByKey (obj, key) {
 function getEntityAttributeCaption (entitySchema, attr) {
   const localeString = `${entitySchema.code}.${attr}`
   return UB.i18n(localeString) === localeString ? attr : UB.i18n(localeString)
+}
+
+const validationMixin = {
+  inject: {
+    entitySchema: {
+      from: 'entitySchema',
+      default: {}
+    }
+  },
+
+  mixins: [
+    attrCaptionsMixin
+  ],
+
+  provide () {
+    return {
+      validator: this.validator
+    }
+  },
+
+  computed: {
+    validator () {
+      return new Validator(this)
+    }
+  }
 }
 
 module.exports = {

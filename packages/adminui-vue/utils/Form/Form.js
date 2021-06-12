@@ -235,11 +235,11 @@ class UForm {
   /**
    * Custom validator function. In case `validation` not called or called without argument then validator function
    *  is generated automatically based on entitySchema
-   * @param {Vue.ComponentOptions} [validationConfig] Custom validation mixin in case we need to override default validation
+   * @param {Vue.ComponentOptions} [validationOptions] Custom validation mixin in case we need to override default validation
    * @return {UForm}
    */
-  validation (validationConfig) {
-    if (validationConfig && (typeof validationConfig === 'function')) {
+  validation (validationOptions) {
+    if (validationOptions && (typeof validationOptions === 'function')) {
       throw new Error('Invalid parameter type for UForm.validation - must be object with at last computed or validation props')
     }
     if (!this.canValidationInit) {
@@ -248,8 +248,8 @@ class UForm {
     this.canValidationInit = false
     this.isValidationUsed = true
 
-    if (validationConfig) {
-      this.customValidationOptions = validationConfig
+    if (validationOptions) {
+      this.customValidationOptions = validationOptions
     }
 
     return this
