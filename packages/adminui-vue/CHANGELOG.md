@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UNavbarNotificationsButton`: added opening of unread notifications with the `messageType` === `system`
+  in the modal window for the user when logging into the system.
 
 ### Changed
 

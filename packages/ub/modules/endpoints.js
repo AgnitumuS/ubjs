@@ -561,14 +561,15 @@ function allLocalesEp (req, resp) {
       const rawDomain = loadDomainIntoJS(true)
 
       for (const [entityCode, { langs }] of Object.entries(rawDomain)) {
-        const entityLang = langs && langs[lang]
-        if (!entityLang) continue
+        const meta = rawDomain[entityCode].meta
+        const i18n = langs && langs[lang]
+        const localizedEntity = i18n ? _.merge(meta, i18n) : meta // merge locale into entity definition = the same as in UBEntity constructor
 
-        if (entityLang.caption) {
-          resources[entityCode] = entityLang.caption
+        if (localizedEntity.caption) {
+          resources[entityCode] = localizedEntity.caption
         }
-        if (entityLang.attributes) {
-          for (const attr of entityLang.attributes) {
+        if (localizedEntity.attributes) {
+          for (const attr of localizedEntity.attributes) {
             resources[entityCode + '.' + attr.name] = attr.caption
           }
         }
