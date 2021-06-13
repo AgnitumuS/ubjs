@@ -108,8 +108,8 @@
 			"sidebarLogoBigURL": "/models/ub-pub/img/sidebar-logo-big.svg",
 			"loginWindowTopLogoURL": "/models/ub-pub/img/login-logo.svg",
 			//#ifdef(%UB_USE_DSTU%)
-			"encryptionImplementation": "/clientRequire/@ub-d/iit-sign-web/dist/iit-sign-web.min.js",
-			//"encryptionImplementation": "/clientRequire/@ub-d/iit-sign-js/dist/iit-sign-js.min.js",
+			//"encryptionImplementation": "/clientRequire/@ub-d/iit-sign-web/dist/iit-sign-web.min.js",
+			"encryptionImplementation": ["@ub-d/iit-sign-web", "@ub-d/iit-sign-js"],
 			//#endif
 			"registrationURL": "/models/adminui-vue/views/registration-stub.html",
 			"endpoint": "ubadminui",

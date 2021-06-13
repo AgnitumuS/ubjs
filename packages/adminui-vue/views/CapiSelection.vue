@@ -40,6 +40,7 @@
 <script>
 const UB = require('@unitybase/ub-pub')
 export default {
+  name: 'CapiSelection',
   data: () => {
     return {
       visible: false,

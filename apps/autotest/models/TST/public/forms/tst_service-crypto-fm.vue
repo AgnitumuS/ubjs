@@ -5,10 +5,10 @@
       <u-button icon="u-icon-signature" @click="doSign">Файл</u-button>
       <u-button icon="u-icon-signature" @click="doSignBlobStore">BLOB стор</u-button>
       <section>Проверить:</section>
-      <u-button icon="u-icon-signature" @click="doVerify">файл+base64(в браузере)</u-button>
-      <u-button icon="u-icon-signature" @click="doVerifyRemote">файл+base64(сервер)</u-button>
-      <u-button icon="u-icon-signature" @click="doVerifyBlobStore">BLOB стор+base64(сервер)</u-button>
-      <u-button icon="u-icon-signature" @click="doVerifyBlobSingInBlobStore">BLOB стор + подпись в сторе(сервер)</u-button>
+      <u-button icon="u-icon-signature" @click="doVerify">файл+base64</u-button>
+      <u-button icon="u-icon-signature" @click="doVerifyBlobStore">BLOB стор+подпись base64</u-button>
+      <u-button icon="u-icon-signature" @click="doVerifyBlobSingInBlobStore">BLOB стор + подпись в сторе</u-button>
+      <u-button icon="u-icon-signature" @click="doVerifyRemote">файл+base64(прямой вызов АПИ как для мобилки)</u-button>
     </div>
 
     <u-grid label-position="top">
@@ -79,24 +79,41 @@ module.exports.default = {
     async doSign () {
       let pki
       try {
+        if (!this.fileForSigning[0]) throw new UB.UBError('Выберите файл')
         pki = await this.$UB.connection.pki()
         const fArray = await this.$UB.file2Uint8Array(this.fileForSigning[0])
+        console.time('sign')
         const signature = await pki.sign(fArray)
+        console.timeEnd('sign')
         this.signature = signature
         await this.$dialogInfo('Документ успішно підписаний', 'Підпис')
       } finally {
         //me.unmask()
-        if (pki) pki.closePrivateKey()
+        // commented to not ask a password next time
+        // if (pki) pki.closePrivateKey()
       }
     },
 
     async doSignBlobStore () {
       if (!this.tstDocID) throw new UB.UBError('Выберите документ')
-      const signaturesResp = await UB.connection.post('/crypto/hsmSign', {
-        hsmPwd: 'F98hv2muKz52',
-        items: [{ entity: 'tst_document', attribute: 'fileStoreSimple', ID: this.tstDocID }]
-      })
-      this.signature = signaturesResp.data[0]
+      let pki
+      try {
+        pki = await this.$UB.connection.pki()
+        console.time('signBlob')
+        const signature = await pki.sign({ entity: 'tst_document', attribute: 'fileStoreSimple', ID: this.tstDocID })
+        console.timeEnd('signBlob')
+        this.signature = signature
+      } finally {
+        // uncomment line below to ask for password next time
+        // if (pki) pki.closePrivateKey()
+      }
+      // Pure HSM implementation
+      // const signaturesResp = await UB.connection.post('/crypto/hsmSign', {
+      //   hsmPwd: 'F98hv2muKz52',
+      //   items: [{ entity: 'tst_document', attribute: 'fileStoreSimple', ID: this.tstDocID }]
+      // })
+      // this.signature = signaturesResp.data[0]
+      await this.$dialogInfo('Документ успішно підписаний', 'Підпис')
     },
 
     async doVerify () {
@@ -107,11 +124,11 @@ module.exports.default = {
       try {
         const fArray = await UB.file2Uint8Array(this.fileForSigning[0])
         const pki = await this.$UB.connection.pki()
-        console.time('verifyLocal')
+        console.time('verify')
         const [verificationResult] = await Promise.all([
           pki.verify(this.signature, fArray)
         ])
-        console.timeEnd('verifyLocal')
+        console.timeEnd('verify')
         this.operationResult = JSON.stringify(verificationResult, null, ' ')
         // show UI dialog with signature validation result
         await pki.verificationUI(
@@ -123,42 +140,17 @@ module.exports.default = {
       }
     },
 
-    async doVerifyRemote () {
-      if (!this.fileForSigning.length) {
-        throw new this.$UB.UBError('Please, select file to validate')
-      }
-      // me.mask('Verifying')
-      try {
-        const pki = await this.$UB.connection.pki()
-        console.time('verifyRemoteBase64')
-        const content = await UB.base64FromAny(this.fileForSigning[0])
-        const verificationResult = await UB.connection.post('/crypto/verify', {
-          item: { content: content, asBinary: true },
-          signatures: [this.signature]
-        })
-        console.timeEnd('verifyRemoteBase64')
-        this.operationResult = JSON.stringify(verificationResult.data, null, ' ')
-        // show UI dialog with signature validation result
-        await pki.verificationUI(
-          verificationResult.data,
-          ['<strong>Документ из БЛОБ стора, подпись - base64</strong>', 'Signature w/o doc']
-        )
-      } finally {
-        // me.unmask()
-      }
-    },
-
     async doVerifyBlobStore () {
       if (!this.tstDocID) throw new UB.UBError('Выберите документ')
       // me.mask('Verifying')
       try {
         const pki = await this.$UB.connection.pki()
-        console.time('verifyRemote')
+        console.time('verifyBLOB')
         const verificationResult = await UB.connection.post('/crypto/verify', {
           item: { entity: 'tst_document', attribute: 'fileStoreSimple', ID: this.tstDocID },
           signatures: [this.signature]
         })
-        console.timeEnd('verifyRemote')
+        console.timeEnd('verifyBLOB')
         this.operationResult = JSON.stringify(verificationResult.data, null, ' ')
         // show UI dialog with signature validation result
         await pki.verificationUI(
@@ -191,7 +183,32 @@ module.exports.default = {
       } finally {
         // me.unmask()
       }
-    }
+    },
+
+    async doVerifyRemote () {
+      if (!this.fileForSigning.length) {
+        throw new this.$UB.UBError('Please, select file to validate')
+      }
+      // me.mask('Verifying')
+      try {
+        const pki = await this.$UB.connection.pki()
+        console.time('verifyRemoteBase64')
+        const content = await UB.base64FromAny(this.fileForSigning[0])
+        const verificationResult = await UB.connection.post('/crypto/verify', {
+          item: { content: content, asBinary: true },
+          signatures: [this.signature]
+        })
+        console.timeEnd('verifyRemoteBase64')
+        this.operationResult = JSON.stringify(verificationResult.data, null, ' ')
+        // show UI dialog with signature validation result
+        await pki.verificationUI(
+          verificationResult.data,
+          ['<strong>Документ из БЛОБ стора, подпись - base64</strong>', 'Signature w/o doc']
+        )
+      } finally {
+        // me.unmask()
+      }
+    },
   }
 }
 </script>
