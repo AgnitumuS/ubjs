@@ -328,3 +328,10 @@ function mergeValidations (a, b) {
 // register adminui-vue after all module.exports are defined - SystemJS.newModule memoryse an object props,
 // so any new property added after call to SystemJS.newModule are not available to importers
 if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
+
+// for CERT2 auth we must select crypto provider before connection, on this stage models is not available
+// the only way to give pki() function access to capiSelectionDialog is global window object
+const capiSelectionDialog = require('./views/capiSelectionDialog')
+if (window) {
+  window.capiSelectionDialog = capiSelectionDialog
+}

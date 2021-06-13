@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `SignatureVerificationResult` - added a media type information (file/hardware)
+ - `window.capiSelectionDialog` - a Vue based interface for cryptographic module selection (used by UB EE/DE)
 
 ### Changed
  - *BREAKING* UCodeMirror attribute renamed `readOnly` -> `readonly`;

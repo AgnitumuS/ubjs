@@ -6,12 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `getAppInfo` endpoint result can be modified by subscribe to newly added `App.getAppInfo` event:
+```js
+App.on('getAppInfo', function(appInfo) {
+  const serverConfig = App.serverConfig
+  const DSTU = serverConfig.security && serverConfig.security.dstu
+  appInfo.trafficEncryption = DSTU ? DSTU.trafficEncryption : false
+})
+```   
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+ - DSTU related section of `getAppInfo` response is removed (moved into `getAppInfo` event handler of @ub-d/crypto-api endpoint)
 
 ### Fixed
  - initial call to `App.serverConfig` is protected by critical section to prevent possible multithreading errors

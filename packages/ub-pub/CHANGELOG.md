@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - added i18n for `SignatureVerificationResultObj.hardwareKeyUsed`
+ - `connection.pki()` function can show a pki implementation selection dialog if multiple
+   'encryptionImplementation' is available
 
 ### Changed
 
