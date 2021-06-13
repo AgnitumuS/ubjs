@@ -12,7 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    
  - `isForSigning` attribute added to the field list of Users->Certificates shortcut;
 
- - `uba_usercertificate.getCertificate` method can return a binary certificate if called as `rest/uba_usercertificate/getCertificate?ID=1231`
+ - `uba_usercertificate.getCertificate` method. Can return:
+    - any certificate if called as `rest/uba_usercertificate/getCertificate?ID=1231`
+    - SIGNING certificate for current user if called w/o ID parameter `rest/uba_usercertificate/getCertificate`
+    - if called as UBQL, certificate returned as base64 encoded string
 
 ### Changed
  - `uba_usercertificate` form is rewritten to Vue

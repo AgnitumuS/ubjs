@@ -3,6 +3,7 @@
  * @author xmax
  */
 const UB = require('@unitybase/ub')
+const Session = UB.Session
 /* global uba_usercertificate */
 // eslint-disable-next-line camelcase
 const me = uba_usercertificate
@@ -71,9 +72,30 @@ function clearBlob (ctxt) {
 }
 
 /**
+ * Get user *SIGNING* certificate
+ * @method getCurrentUserCertificate
+ * @public
+ * @param {number} [userID]
+ * @param {boolean} [forSigning=true]
+ * @return {ArrayBuffer|null} certificate binary or null if actual certificate is not found
+ */
+function getCurrentUserCertificate (userID, forSigning = true) {
+  const store = UB.Repository('uba_usercertificate')
+    .attrs(['certificate'])
+    .where('userID', '=', userID || Session.userID)
+    .whereIf(forSigning, 'isForSigning', '=', true)
+    .where('disabled', '=', false)
+    .where('revoked', '=', false)
+    .selectAsStore()
+  if (store.eof) return null
+  return store.getAsBuffer('certificate')
+}
+
+/**
  * Retrieve certificate as:
- *  - base64 encoded string, if called as ublq
- *  - binary, by ID `/rest/uba_usercertificate/getCertificate?ID=223`
+ *  - base64 encoded string, if called as ubql
+ *  - binary, if called as REST `/rest/uba_usercertificate/getCertificate?ID=223`
+ *  - if called w/o ID, current user *SIGNING* certificate is returned
  *
  * @param {ubMethodParams} [ctxt]
  * @param {number} [ctxt.mParams.ID]
@@ -87,20 +109,24 @@ function clearBlob (ctxt) {
 me.getCertificate = function (ctxt, req, resp) {
   let certID
   if (req) { // endpoint is called as rest/uba_usercertificate/getCertificate?ID=1231
-    if (!req.parsedParameters.ID) {
-      return resp.badRequest('Missed ID; Expect URL to be rest/uba_usercertificate/getCertificate?ID=1231')
-    }
     certID = req.parsedParameters.ID
   } else {
     certID = ctxt.mParams.ID
   }
-  const store = UB.Repository('uba_usercertificate')
-    .attrs(['ID', 'certificate'])
-    .where('ID', '=', certID)
-    .select()
+  let certificate
+  if (certID) {
+    const store = UB.Repository('uba_usercertificate')
+      .attrs(['ID', 'certificate'])
+      .where('ID', '=', certID)
+      .select()
 
-  if (store.eof) throw new Error('not found')
-  let certificate = store.getAsBuffer('certificate')
+    if (store.eof) throw new Error('not found')
+    certificate = store.getAsBuffer('certificate')
+  } else {
+    certificate = getCurrentUserCertificate()
+    if (!certificate) throw new Error('not found')
+  }
+
   if (req) {
     resp.writeEnd(certificate)
     resp.writeHead('Content-Type: application/x-x509-user-cert')
@@ -112,22 +138,4 @@ me.getCertificate = function (ctxt, req, resp) {
   }
 }
 
-/**
- * Get user certificate
- * @method getCurrentUserCertificate
- * @public
- * @param {number} userID
- * @param {boolean} [forSigning=true]
- * @return {ArrayBuffer|null} certificate binary or null if actual certificate is not found
- */
-me.getCurrentUserCertificate = function (userID, forSigning = true) {
-  const store = UB.Repository('uba_usercertificate')
-    .attrs(['certificate'])
-    .where('userID', '=', userID)
-    .whereIf(forSigning, 'isForSigning', '=', true)
-    .where('disabled', '=', false)
-    .where('revoked', '=', false)
-    .selectAsStore()
-  if (store.eof) return null
-  return store.getAsBuffer('certificate')
-}
+me.getCurrentUserCertificate = getCurrentUserCertificate
