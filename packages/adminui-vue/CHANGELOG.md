@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `SignatureVerificationResult` - added a media type information (file/hardware)
  - `window.capiSelectionDialog` - a Vue based interface for cryptographic module selection (used by UB EE/DE)
+ - `UNavbarNotificationsButton`: added opening of unread notifications with the `messageType` === `system`
+  in the modal window for the user when logging into the system.
+ - `processing.saved`: pass method name `insert/update` as second argument into a `saved` hook on form
 
 ### Changed
  - *BREAKING* UCodeMirror attribute renamed `readOnly` -> `readonly`;
