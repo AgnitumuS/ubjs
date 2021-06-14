@@ -19,9 +19,7 @@
   "main": "uba.js",
   "dependencies": {
     "@unitybase/base": "^5.20.7",
-    "@unitybase/ub": "^5.22.4",
-    "asn1js": "^2.0.19",
-    "pkijs": "^2.1.46"
+    "@unitybase/ub": "^5.22.4"
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.1.12",

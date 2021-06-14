@@ -138,7 +138,7 @@ adm_desktop:
               cmdType: 'showList',
               cmdData: {
                 entityName: 'uba_usercertificate',
-                columns: ['userID', 'issuer_cn', 'serial', 'disabled', 'revoked']
+                columns: ['userID.name', 'userID.fullName', 'serial', 'isForSigning', 'disabled', 'revoked', 'issuer_cn']
               }
             }
   - adm_folder_security:

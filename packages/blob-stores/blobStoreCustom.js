@@ -75,10 +75,10 @@ class BlobStoreCustom {
    * @param {BlobStoreRequest} request
    * @param {BlobStoreItem} blobInfo JSON retrieved from a DB
    * @param {Object} [options]
-   * @param {String|Null} [options.encoding] Default to 'bin'. Possible values: 'bin'|'ascii'|'utf-8'
-   *   If `undefined` UB will send query to entity anf get it from DB.
-   *   At last one parameter {store: storeName} should be defined to prevent loading actual JSON from DB
-   * @returns {String|ArrayBuffer}
+   * @param {String|Null} [options.encoding] Possible values:
+   *   'bin' 'ascii' 'binary' 'hex' ucs2/ucs-2/utf16le/utf-16le utf8/utf-8
+   *   if `null` will return {@link Buffer}, if `bin` - ArrayBuffer
+   * @returns {String|Buffer|ArrayBuffer|null}
    */
   getContent (request, blobInfo, options) {}
   /**

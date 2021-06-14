@@ -263,13 +263,13 @@ function clientRequireEp (req, resp) {
  * The `getAppInfo` endpoint. Responsible for return a information about application required for a
  * initial client side connectivity and UI setup
  *
+ * Models can extend response by subscribes to App.on('getAppInfo') event and modify
+ * a payload object - see example in `getAppInfo` event doc.
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  */
 function getAppInfoEp (req, resp) {
   const serverConfig = App.serverConfig
-
-  const DSTU = serverConfig.security && serverConfig.security.dstu
 
   let authMethods
   if (USE_ZONE_AUTH) {
@@ -284,15 +284,12 @@ function getAppInfoEp (req, resp) {
     authMethods = serverConfig.security.authenticationMethods
   }
 
-  const appInfo = {
+  // getAppInfo event handlers can mutate appInfo
+  const appInfo = _.cloneDeep({
     appVersion: App.package.version,
     serverVersion: process.version,
     defaultLang: serverConfig.application.defaultLang,
     simpleCertAuth: serverConfig.security.simpleCertAuth,
-
-    trafficEncryption: DSTU ? DSTU.trafficEncryption : false,
-    serverCertificate: (DSTU && DSTU.trafficEncryption) ? App.serverPublicCert : '',
-    encryptionKeyLifetime: (DSTU && DSTU.trafficEncryption) ? DSTU.encryptionKeyLifeTime : 0,
 
     authMethods: authMethods || [],
 
@@ -302,7 +299,24 @@ function getAppInfoEp (req, resp) {
 
     uiSettings: serverConfig.uiSettings || {},
     authMock: AUTH_MOCK || undefined
-  }
+  })
+  /**
+   * Models can modify `getAppInto` response by mutate an `appInto` parameter of `getAppInfo` App event.
+   *
+   * **WARNING** `getAppInto` endpoint is called often, so event handler should be as fast as possible.
+   * Since `getAppInto` endpoint is called for non-authorised users, response MUST NOT contains a sensitive data.
+   * @example
+
+App.on('getAppInfo', function(appInfo) {
+  const serverConfig = App.serverConfig
+  const DSTU = serverConfig.security && serverConfig.security.dstu
+  appInfo.trafficEncryption = DSTU ? DSTU.trafficEncryption : false
+})
+   * @event getAppInfo
+   * @memberOf App
+   * @param {Object} appInfo
+   */
+  App.emit('getAppInfo', appInfo) // allow models to extend an appInfo
   if (App.isLicenseExceed) appInfo.isLicenseExceed = true
   resp.writeEnd(appInfo)
   resp.statusCode = 200

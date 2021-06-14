@@ -6,12 +6,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `uba_usercertificate` - added attributes `certParsed: Json` and `isForSigning: boolean`.
+   Both are sets on certificate binary changes.
+   Consider to use `uba_user.addCertificate` added by `@ub-d/crypto-api` method to add a binary certificate
+   
+ - `isForSigning` attribute added to the field list of Users->Certificates shortcut;
+
+ - `uba_usercertificate.getCertificate` method. Can return:
+    - any certificate if called as `rest/uba_usercertificate/getCertificate?ID=1231`
+    - SIGNING certificate for current user if called w/o ID parameter `rest/uba_usercertificate/getCertificate`
+    - if called as UBQL, certificate returned as base64 encoded string
 
 ### Changed
+ - `uba_usercertificate` form is rewritten to Vue
 
 ### Deprecated
 
 ### Removed
+ - `@unitybase/uba` does not depend on `asn1js` and `pkijs` packages anymore, certificate parser is moved to server side `@ub-d/crypto-api` model  
 
 ### Fixed
 

@@ -1,5 +1,8 @@
 {
-  "extends": ["standard"],
+  "extends": [
+    "plugin:vue/recommended",
+    "standard"
+  ],
   "globals": {
     "App": true,
     "UB": true
