@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UBBoxSelect`: added the ability to display entries that have been deleted or closed by the `History` mixin
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.16] - 2021-06-14
+### Added
+ - `UBBoxSelect`: added the ability to display entries that have been deleted or closed by the `History` mixin
 
 ## [5.20.15] - 2021-05-24
 ## [5.20.14] - 2021-05-13

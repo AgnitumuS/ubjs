@@ -43,10 +43,24 @@
     {
       "name": "certificate",
       "dataType": "BLOB",
-      "caption": "Certificate",
+      "caption": "Certificate(bin)",
       "description": "Certificate binary data",
       "allowNull": false,
-      "isUnique": false
+      "defaultView": false
+    },
+    {
+      "name": "certParsed",
+      "dataType": "Json",
+      "caption": "Certificate content",
+      "description": "Parsed certificate in JSON format",
+      "documentation": "JSON representation of certificate. Filled by server from `certificate` attribute during update/insert in case iit-crypto is available"
+    },
+    {
+      "name": "isForSigning",
+      "caption": "For signing",
+      "description": "Is this certificate applicable for signing operations",
+      "dataType": "Boolean",
+      "defaultValue": "0"
     },
     {
       "name": "description",

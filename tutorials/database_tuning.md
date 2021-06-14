@@ -517,7 +517,8 @@ BEGIN
     GROUP_OR_SUBPLAN => 'GROUP_WITH_LIMITED_EXEC_TIME',
     COMMENT          => 'Kill statement after exceeding total execution time',
     SWITCH_GROUP     => 'CANCEL_SQL',
-    SWITCH_TIME      => 10, -- 10 seconds limitation 
+    -- SWITCH_TIME      => 10, -- 10 CPU seconds limitation 
+    SWITCH_ELAPSED_TIME => 10, -- 10 seconds limitation
     SWITCH_ESTIMATE=>false,
     SWITCH_FOR_CALL=> TRUE);
   SYS.DBMS_RESOURCE_MANAGER.submit_pending_area();
@@ -549,5 +550,7 @@ After resource plan is created connection should be configured as such:
 and environment variable `UB_DB_STATEMENT_TIME_LIMIT` sets to consumer group name we create above
 ```UB_DB_STATEMENT_TIME_LIMIT=GROUP_WITH_LIMITED_EXEC_TIME```
 
-> Oracle error message is: `ORA-00040: active time limit exceeded - call aborted`
+> Oracle error message is: 
+>  - `ORA-00040: active time limit exceeded - call aborted`  in case `SWITCH_TIME` resource plan parameter exceed
+>  - `ORA-56735: elapsed time limit exceeded - call aborted` in case `SWITCH_ELAPSED_TIME` resource plan parameter exceed
  

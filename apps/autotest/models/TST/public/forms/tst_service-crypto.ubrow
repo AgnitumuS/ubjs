@@ -1,0 +1,9 @@
+{
+ "description": "Test server side and client side cryptography (UB EE. @ub-d/crypto-api model should be in Domain)  ",
+ "caption": "Cryptography test",
+ "formType": "vue",
+ "formDef": null,
+ "formCode": "tst_service-crypto-fm.vue",
+ "entity": "tst_service",
+ "isDefault": false
+}

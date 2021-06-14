@@ -14,6 +14,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.5] - 2021-06-14
+### Added
+ - `getAppInfo` endpoint result can be modified by subscribe to newly added `App.getAppInfo` event:
+```js
+App.on('getAppInfo', function(appInfo) {
+  const serverConfig = App.serverConfig
+  const DSTU = serverConfig.security && serverConfig.security.dstu
+  appInfo.trafficEncryption = DSTU ? DSTU.trafficEncryption : false
+})
+```   
+
+### Removed
+ - DSTU related section of `getAppInfo` response is removed (moved into `getAppInfo` event handler of @ub-d/crypto-api endpoint)
+
+### Fixed
+ - initial call to `App.serverConfig` is protected by critical section to prevent possible multithreading errors
  - `fsStorage` mixin: for *.vue files force `script/x-vue` mime type (`mime` module do not detect .vue)
  - `/allLocales?lang=LL&includeDomain=1` - will merge meta with meta.lang - the same algo as in client-side UBEntity constructor.
   This fix `ubcli migrate` in case {$i18n: entityName} is defined in YAML but meta file is not localized to some language 

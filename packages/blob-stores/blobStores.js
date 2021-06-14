@@ -384,7 +384,7 @@ function getDocumentEndpointInternal (req, resp, withBody = true) {
  * @param {BlobStoreRequest} request
  * @param {Object} [options]
  * @param {String|Null} [options.encoding] Possible values:
- *   'bin' 'ascii'  'base64' 'binary' 'hex' ucs2/ucs-2/utf16le/utf-16le utf8/utf-8
+ *   'bin' 'ascii' 'binary' 'hex' ucs2/ucs-2/utf16le/utf-16le utf8/utf-8
  *   if `null` will return {@link Buffer}, if `bin` - ArrayBuffer
  * @returns {String|Buffer|ArrayBuffer|null}
  */

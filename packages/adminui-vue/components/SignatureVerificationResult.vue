@@ -180,6 +180,7 @@ export default {
       let s = this.VRi18n.valid.yes; s += isHTML ? '<br>' : '; '
       s += this.VRi18n.tspValid[r.tspValid ? 'yes' : 'no']; s += isHTML ? '<br>' : '; '
       s += this.VRi18n.ocspVerified[r.ocspVerified ? 'yes' : 'no']; s += isHTML ? '<br>' : '; '
+      s += this.VRi18n.hardwareKeyUsed[r.hardwareKeyUsed ? 'yes' : 'no']; s += isHTML ? '<br>' : '; '
       if (r.warnings) s += r.warnings
       return s
     },
