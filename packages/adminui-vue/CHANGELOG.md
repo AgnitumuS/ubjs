@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.15] - 2021-06-14
+### Added
  - `SignatureVerificationResult` - added a media type information (file/hardware)
  - `window.capiSelectionDialog` - a Vue based interface for cryptographic module selection (used by UB EE/DE)
  - `UNavbarNotificationsButton`: added opening of unread notifications with the `messageType` === `system`
@@ -15,10 +26,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - *BREAKING* UCodeMirror attribute renamed `readOnly` -> `readonly`;
    This fix u-auto-field readonly binding in case attribute is on Json type 
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 - `computedVuex` - pass `key` property to `SET` mutation
