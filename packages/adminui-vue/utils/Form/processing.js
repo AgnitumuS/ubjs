@@ -88,7 +88,7 @@ const {
  * @param {function} [beforeInit] Callback that emits before init
  * @param {function} [inited] Callback that emits when data is inited
  * @param {function} [beforeSave] Callback that emits before save
- * @param {function} [saved] Callback that emits when data was saved
+ * @param {function} [saved] Callback that emits when data was saved, receive a method name `insert/update` as a second argument
  * @param {function} [beforeDelete] Callback that emits before delete
  * @param {function} [deleted] Callback that emits when data was deleted
  * @param {function} [beforeCopy] Callback that emits before copy of existing record
@@ -797,10 +797,11 @@ function createProcessingModule ({
         const responseHandlers = []
 
         const masterExecParams = buildExecParams(store.state, masterEntityName)
+        const method = store.state.isNew ? 'insert' : 'update'
         if (masterExecParams) {
           requests.push({
             entity: masterEntityName,
-            method: store.state.isNew ? 'insert' : 'update',
+            method: method,
             execParams: masterExecParams,
             fieldList
           })
@@ -890,7 +891,7 @@ function createProcessingModule ({
             $notify.success(UB.i18n('successfullySaved'))
           }
           if (saved) {
-            await saved()
+            await saved(method)
           }
 
           if (closeForm) {
