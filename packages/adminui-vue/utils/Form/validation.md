@@ -13,7 +13,7 @@ There are two ways to define form validation:
    - `getErrorForAttribute`- returns error text for some first failed validation rule of the attribute;
    - `getIsAttributeRequired` - returns boolean - if the attribute has the required rule in the configured validation;
    - `validateForm` - validates form data with the Vuelidate help.
-  Also, `validationMixin` provides this validator for nested controls.
+  Also, `validationMixin` provides this validator for nested components.
 
 In both cases, form components get access to validation configuration by injecting `validator` object.
 Example:
@@ -83,7 +83,8 @@ for its attribute, using the `validator` object.
 
 To provide custom error message to `UFormRow` or any other component which may need it, define custom validation rules
 using the `formHelpers.validateWithErrorText` method.
-This method adds `$errorText` parameter for the provided validation rule, so that it will be available for controls like `UFormRow`.
+This method adds `$errorText` parameter for the provided validation rule, so that it will be available for components
+like `UFormRow`.
 
 Example:
 ```vue
