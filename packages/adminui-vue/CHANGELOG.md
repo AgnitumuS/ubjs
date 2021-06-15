@@ -6,12 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UFormRow`: `attributeName` property - if it is passed, control automatically gets attribute label, required and error
+ - new provided value in Vue instances: `validator`. This value contains useful methods for form validation
+ - new helper `validateWithErrorText` for defining of attribute validation functions with an error text
+ - `validationMixin` for the passing of validation defined locally in some Vue component to nested controls (UFormRow for example)
 
 ### Changed
+ - refactored and improved validation of forms. [Documentation](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/utils/Form/validation.md)
+ - use `attributeCaptions` section to define captions for custom attributes or redefine for entity ones
+  insted of computed property with `:caption` suffix
+ - `UFormRow`: display attribute description if exists instead of name when we hover on the label
 
 ### Deprecated
 
 ### Removed
+ - `getValidationState` provided value since now it is a method of validator
 
 ### Fixed
 
