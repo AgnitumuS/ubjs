@@ -1,25 +1,21 @@
 ## Validations
 
-There are two ways to define validation for some form:
-1. General global validation for form. This validation can be defined in the `Form.validation(...)`
-   block. By default, this method configures validation of notNull entity attributes. But there
-   is a possibility to override these rules or extend for some custom attributes passing a
-   validation config as a parameter. This config should be a standard Vue object definition-like.
-   The `validations` section is required in this config since it is responsible for defining
-   attribute validations.
-2. Local form validation. This validation can be defined locally in the `validations` section.
-   To pass these rules for nested controls (UFormRow foe example for automatically getting
-   error text) there is `validationMixin`. This mixin is responsible for creating of `validator`
-   property. This is an object with several useful methods for interaction with a validation:
-      - `getValidationState` - returns the current state of validation;
-      - `getAttributeCaption` - returns caption by attribute name;
-      - `getErrorForAttribute`- returns error text for some first failed validation rule of the attribute;
-      - `getIsAttributeRequired` - returns boolean - if the attribute has the required rule in the configured validation;
-      - `validateForm` - validates form data with the Vuelidate help.
-Also, `validationMixin` provides this validator for nested controls.
+There are two ways to define form validation:
+1. General global validation using `Form.validation(...)` block, which configures validation using entity metadata,
+   such as `notNull` attribute properties.
+   It is possible to override or extent these rules with a validation config parameter.
+   This config should be a standard Vue object definition-like with `validations` section.
+2. Component-level validation added by `validationMixin`. This validation in the `validations` section of the component.
+   This could be useful for validating various popup child dialog of the form.
+   The `validationMixin` mixin adds `validator` property to the component. This is an object with useful methods:
+   - `getValidationState` - returns the current state of validation;
+   - `getAttributeCaption` - returns caption by attribute name;
+   - `getErrorForAttribute`- returns error text for some first failed validation rule of the attribute;
+   - `getIsAttributeRequired` - returns boolean - if the attribute has the required rule in the configured validation;
+   - `validateForm` - validates form data with the Vuelidate help.
+  Also, `validationMixin` provides this validator for nested controls.
 
-In both cases, to interact with validation configured in some parent component or in
-`Form.validation()` just injection of `validator` is needed.
+In both cases, form components get access to validation configuration by injecting `validator` object.
 Example:
 parent-component.vue
 ```vue
@@ -80,13 +76,15 @@ export default {
 </script>
 ```
 
-## Custom rules with configured error text
+## Custom rules, custom error text
 
-The `UFormRow` control supports automatically getting an error for the attribute
-based on configured error messages for the attribute's rules. To create rules like
-this there is the `formHelpers.validateWithErrorText` method. This method assigns
-`$errorText` validator parameter for some validation rule and `UFormRow` control
-looks for these parameters of some first failed attribute's rule
+The `UFormRow` control is integrated with validation mechanism and automatically displays validation error message
+for its attribute, using the `validator` object.
+
+To provide custom error message to `UFormRow` or any other component which may need it, define custom validation rules
+using the `formHelpers.validateWithErrorText` method.
+This method adds `$errorText` parameter for the provided validation rule, so that it will be available for controls like `UFormRow`.
+
 Example:
 ```vue
 <template>
@@ -154,12 +152,21 @@ export default {
 
 ## Caption for custom attributes
 
-There is a way to define captions for attributes used in form validation. The `attributeCaptions`
-section can be used for it. This can be an object or function (reactive and dynamic)
-property. In this section, there is a possibility to define captions for non-entity
-attributes or override for entity ones. These captions can be used in `UFormRow` for
-automatically getting of control label by an `attribute-name` of for displaying in
-error modal when validation is failed.
+When there are validation errors on a form, and the form cannot be saved, an error message is shown,
+where invalid attributes are specified, so that user knows which values to fix.
+
+In most of cases, form validates entity attributes, so entity attribute captions are good to point
+which attributes are with invalid values.
+
+But when a custom value validated, which is not an attribute of the form entity, the `attributeCaptions`
+section should be used.
+
+This can be an object or function (reactive and dynamic) property.  It is possible to define captions for non-entity
+attributes as well as override entity ones.
+
+As a bonus, these captions are used by `UFormRow` to display control label, the `attribute-name` property allows to
+get the label, so there is no need to define the same label in two places.
+
 Example:
 ```js
 module.exports.mount = cfg => {
@@ -276,7 +283,7 @@ module.exports.mount = cfg => {
 <template>
   <!-- error automatically be taken from `$v.name.$params[<firstInvalidParam>].$errorText` -->
   <!-- label automatically be taken from customAttributes or calculated as i18n(`${this.entity}.${this.attributeName}`) -->
-  <!-- required automatically calclulated if `required` rule is defined for `$v.name` -->
+  <!-- required automatically calculated if `required` rule is defined for `$v.name` -->
   <u-form-row
     attribute-name="name"
   />
