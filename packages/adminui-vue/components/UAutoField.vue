@@ -152,6 +152,7 @@ export default {
     let cmp
     let defIsRequired = this.isRequired
     const /** @type {UBEntityAttribute} */ATTR = this.entitySchema.attributes[this.attributeName]
+    if (!ATTR) throw new Error(`UAutoFiled attribute-name property is mapped to the non-existed attribute '${this.attributeName}' for entity '${this.entitySchema.name}'`)
     const baseAttrs = { // vue split attrs into attrs and props automatically
       ...this.$attrs,
       attributeName: this.attributeName,

@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - UAutoField: in case attribute used in `attribute-name` prop is not exists in Repository a developer-friendly
+   exception is throws instead of `can not read XXX of undefined`
 
 ### Changed
 
