@@ -34,6 +34,7 @@
     "@unitybase/ub-pub": "^5.9.10",
     "@unitybase/uba": "^5.20.16",
     "@unitybase/xlsx": "^5.20.8",
+    "docxtemplater": "^3.22.2",
     "mime-types": "^2.1.14",
     "mustache": "^3.0.1",
     "when": "1.8.1",
