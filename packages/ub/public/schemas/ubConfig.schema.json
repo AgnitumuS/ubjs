@@ -656,7 +656,7 @@
                 "properties": {
                   "URI": {
                     "type": "string",
-                    "description": "Host name user navigate to"
+                    "description": "Host name user navigate to. For non-standard ports (neither 80 nor 443 must include port 'my.app.com:1224'"
                   },
                   "TID": {
                     "type": "number",
