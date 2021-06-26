@@ -26,10 +26,11 @@ type
   published
     property fileCount: integer read GetFileCount;
     function fileNames(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
-    //function unZipToDir(fileIndex: integer; const dirName: TFileName): boolean;
+    function getAllFilesInfo(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
     function unZipToDir(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
-    //function unZipAllToDir(const dirName: TFileName): boolean;
     function unZipAllToDir(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+    function unZipFileAsText(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+    function unZipFileAsArrayBuffer(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
   end;
 
   TubZipWriter = class(TZipWrite)
@@ -179,19 +180,24 @@ end;
 function TubZipReaderProtoObject.NewSMInstance(aCx: PJSContext; argc: uintN; var vp: JSArgRec): TObject;
 var
   fName: TFileName;
+  dataBin: pointer;
+  dataBinLength: uint32;
 const
-  f_usage = 'usage: new TubZipReader(fileName: String)';
+  f_usage = 'usage: new TubZipReader(data: String|ArrayBuffer)';
+  // data: String - path to file
 begin
-  {$POINTERMATH ON}
-  if (argc<>1) then
+  if (argc<1) then
     raise ESMException.Create(f_usage);
+
   if (vp.argv[0].isString) then begin //fileName
-//    fName := JSString_TO_UnicodeString(aContext.cx, JSVAL_TO_STRING(in_argv[0]));
     fName := vp.argv[0].asJSString.ToString(aCx);
     Result := TubZipReader.Create(fName);
+  end else if vp.argv^[0].isObject then begin
+    if not vp.argv^[0].asObject.GetBufferDataAndLength(dataBin, dataBinLength) then
+      raise ESMException.CreateUTF8('Can`t read data as byte array', []);
+    Result := TubZipReader.Create(dataBin, dataBinLength);
   end else
     raise ESMException.Create(f_usage);
-  {$POINTERMATH OFF}
 end;
 
 { TubZipReader }
@@ -242,6 +248,30 @@ begin
   Result := true;
 end;
 
+function TubZipReader.getAllFilesInfo(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+var
+  i, L, num: integer;
+  val: jsval;
+  pEntriesArr, pValObj: PJSObject;
+  fn: TFileName;
+begin
+  pEntriesArr := cx.NewArrayObject(fileCount);
+  L := length(Entry); num := 0;
+  for I := 0 to L - 1 do
+    if Entry[i].zipName <> '' then begin
+      pValObj := cx.NewObject(nil);
+      fn := SetDirSeparators(Entry[i].zipName);
+      pValObj.SetProperty(cx, 'name', cx.NewJSString(fn).ToJSVal);
+      pValObj.SetProperty(cx, 'dir', jsval.BooleanValue(Entry[i].infoDirectory.IsFolder));
+      pValObj.SetProperty(cx, 'index', jsval.Int32Value(num));
+      pEntriesArr.SetElement(cx, num, pValObj.ToJSValue);
+      inc(num);
+    end;
+  val.asObject := pEntriesArr;
+  vp.rval := val;
+  Result := true;
+end;
+
 //function TubZipReader.unZipToDir(fileIndex: integer; const dirName: TFileName): boolean;
 function TubZipReader.unZipToDir(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
 const
@@ -284,6 +314,45 @@ begin
     end;
   val.asBoolean := true;
   vp.rval := val;
+  Result := true;
+end;
+
+function TubZipReader.unZipFileAsText(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+const
+  cUSAGE = 'usage unZipFileAsText(const fileIndex: number): string';
+var
+  res: ZipString;
+  val: jsval;
+begin
+  if (argc <> 1) or (not vp.argv^[0].isInteger) then
+    raise ESMException.Create(cUSAGE);
+  res := UnZip(vp.argv^[0].asInteger);
+  if not IsValidUTF8(res) then
+    raise ESMException.Create('uncompressed data is not a valid UTF8 string');
+  val := cx.NewJSString(RawUtf8(res)).ToJSVal;
+  vp.rval := val;
+  Result := true;
+end;
+
+function TubZipReader.unZipFileAsArrayBuffer(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+const
+  cUSAGE = 'usage unZipFileAsArrayBuffer(const fileIndex: number): ArrayBuffer';
+var
+  res: ZipString;
+  buf: PJSObject;
+  bufOut: pointer;
+begin
+  if (argc <> 1) or (not vp.argv^[0].isInteger) then
+    raise ESMException.Create(cUSAGE);
+  res := UnZip(vp.argv^[0].asInteger);
+  if length(res) = 0 then
+    vp.rval := jsval.NullValue
+  else begin
+    buf := cx.NewArrayBuffer(length(res));
+    bufOut := buf.GetArrayBufferData;
+    Move(res[1], bufOut^, length(res));
+    vp.rval := buf.ToJSValue;
+  end;
   Result := true;
 end;
 
