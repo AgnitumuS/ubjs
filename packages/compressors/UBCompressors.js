@@ -207,5 +207,12 @@ class UZip {
   file (name, data, o) {
 
   }
+
+  freeNative () {
+    if (this._reader) this._reader.freeNative()
+    this.files = {}
+    this._inDataBuf = undefined
+    this.modifiedData = {}
+  }
 }
 UBCompressors.UZip = UZip

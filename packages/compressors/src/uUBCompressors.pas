@@ -327,9 +327,11 @@ begin
   if (argc <> 1) or (not vp.argv^[0].isInteger) then
     raise ESMException.Create(cUSAGE);
   res := UnZip(vp.argv^[0].asInteger);
-  if not IsValidUTF8(res) then
-    raise ESMException.Create('uncompressed data is not a valid UTF8 string');
-  val := cx.NewJSString(RawUtf8(res)).ToJSVal;
+  if not IsValidUTF8(res) then begin
+    val := cx.EmptyString.ToJSVal; // JSZIp compatible
+    //raise ESMException.Create('uncompressed data is not a valid UTF8 string');
+  end else
+    val := cx.NewJSString(RawUtf8(res)).ToJSVal;
   vp.rval := val;
   Result := true;
 end;
