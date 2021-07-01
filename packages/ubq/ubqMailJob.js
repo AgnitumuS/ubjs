@@ -100,6 +100,14 @@ module.exports = function () {
                 isBase64: false
               })
             }
+
+            if (cmd.attaches[i].entity === 'ubq_mailAttachment') {
+              UB.DataStore('ubq_mailAttachment').run('delete', {
+                execParams: {
+                  ID: cmd.attaches[i].id
+                }
+              })
+            }
           } catch (e) {
             eMsg = (e && e.stack) ? e.message + ' - ' + e.stack : e
             console.error('loadContent', eMsg)
