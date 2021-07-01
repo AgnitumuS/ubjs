@@ -7,7 +7,7 @@ unit uUBCompressors;
 interface
 
 uses 
-  SpiderMonkey, SyNodePluginIntf, SynCommons, SynZip, SyNodeSimpleProto;
+  SysUtils, SpiderMonkey, SyNodePluginIntf, SynCommons, SynZip, SyNodeSimpleProto;
 
 type
   TUBCompressorsPlugin = class(TCustomSMPlugin)
@@ -17,15 +17,21 @@ type
   end;
 
   {$M+}
+
+  { TubZipReader }
+
   TubZipReader = class(TZipRead)
   private
+    function isFileNameFlderAlike(const fn: TFileName): boolean;
     function getFileNames: TStringDynArray;
     function GetFileCount: integer;
   protected
     property _fileNames: TStringDynArray read GetFileNames;
   published
     property fileCount: integer read GetFileCount;
+    /// only files (foilders are excluded)
     function fileNames(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+    /// files and folders
     function getAllFilesInfo(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
     function unZipToDir(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
     function unZipAllToDir(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
@@ -56,7 +62,6 @@ type
 implementation
 
 uses
-  SysUtils,
   {$IFDEF WIN32}
   SynBZ,
   {$ENDIF}
@@ -203,14 +208,14 @@ end;
 { TubZipReader }
 
 function TubZipReader.GetFileCount: integer;
-var
-  i: integer;
 begin
   // if zip contain inner folders we got it with empty names
-  Result := 0;
-  for i := 0 to length(Entry)-1 do
-    if Entry[i].zipName <> '' then
-      inc(result);
+  Result := Count;
+end;
+
+function TubZipReader.isFileNameFlderAlike(const fn: TFileName): boolean;
+begin
+   Result := (fn='') or (fn[length(fn)]='\');
 end;
 
 function TubZipReader.getFileNames: TStringDynArray;
@@ -220,7 +225,7 @@ begin
   l := length(Entry); num := 0;
   setLength(Result, fileCount);
   for I := 0 to l-1 do
-    if Entry[i].zipName <> '' then begin
+    if not isFileNameFlderAlike(Entry[i].zipName) then begin
       Result[num] := Entry[i].zipName;
       inc(num);
     end;
@@ -237,7 +242,7 @@ begin
   pObj := cx.NewArrayObject(fc);
   L := length(Entry); num := 0;
   for I := 0 to L - 1 do
-    if Entry[i].zipName <> '' then begin
+    if not isFileNameFlderAlike(Entry[i].zipName) then begin
       val.asJSString := cx^.NewJSString(SetDirSeparators(Entry[i].zipName));
       r := pObj.SetElement(cx, num, val);
       inc(num);
@@ -257,16 +262,18 @@ var
 begin
   pEntriesArr := cx.NewArrayObject(fileCount);
   L := length(Entry); num := 0;
-  for I := 0 to L - 1 do
-    if Entry[i].zipName <> '' then begin
-      pValObj := cx.NewObject(nil);
-      fn := SetDirSeparators(Entry[i].zipName);
-      pValObj.SetProperty(cx, 'name', cx.NewJSString(fn).ToJSVal);
-      pValObj.SetProperty(cx, 'dir', jsval.BooleanValue(Entry[i].infoDirectory.IsFolder));
-      pValObj.SetProperty(cx, 'index', jsval.Int32Value(num));
-      pEntriesArr.SetElement(cx, num, pValObj.ToJSValue);
+  for I := 0 to L - 1 do begin
+    if Entry[i].infoDirectory = nil then
+      continue;
+    pValObj := cx.NewObject(nil);
+    fn := SetDirSeparators(Entry[i].zipName);
+    pValObj.SetProperty(cx, 'name', cx.NewJSString(fn).ToJSVal);
+    pValObj.SetProperty(cx, 'dir', jsval.BooleanValue(Entry[i].infoDirectory.IsFolder));
+    pValObj.SetProperty(cx, 'index', jsval.Int32Value(num));
+    pEntriesArr.SetElement(cx, num, pValObj.ToJSValue);
+    if not isFileNameFlderAlike(Entry[i].zipName) then
       inc(num);
-    end;
+  end;
   val.asObject := pEntriesArr;
   vp.rval := val;
   Result := true;
@@ -297,20 +304,23 @@ const
 var
   fDir: TFileName;
   val: jsval;
-  l, i: integer;
+  l, i, en: integer;
 begin
   if (argc <> 1) or (not vp.argv[0].isString) then
     raise ESMException.Create(cUSAGE);
   fDir := vp.argv[0].asJSString.toString(cx);
   fDir := IncludeTrailingPathDelimiter(fDir);
-  l := length(Entry);
+  l := length(Entry); en := 0;
   for I := 0 to l-1 do
-    if Entry[i].zipName <> '' then begin
-      if not UnZip(i, fDir) then begin
-        val.asBoolean := false;
-        vp.rval := val;
-        exit(false);
+    if not isFileNameFlderAlike(Entry[i].zipName) then begin
+      if not UnZip(en, fDir) then begin
+        vp.rval := jsval.FalseValue;
+        raise ESMException.CreateUTF8('UZip: fail to unzip #% entry ''%'' into ''%''', [en, Entry[i].zipName, fDir]);
       end;
+      inc(en);
+    end else begin
+      if Entry[i].zipName <> '' then
+        ForceDirectories(Entry[i].zipName);
     end;
   val.asBoolean := true;
   vp.rval := val;

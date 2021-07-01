@@ -13,7 +13,6 @@ const archPath = process.arch === 'x32' ? './bin/x32' : './bin/x86_64'
 const path = require('path')
 const moduleName = path.join(__dirname, archPath, dllName)
 const binding = require(moduleName)
-const fs = require('fs')
 const UBCompressors = module.exports
 
 /**
@@ -201,11 +200,26 @@ class UZip {
    * the name of the file to find (if no data) or a regex to match files.
    * @param   {String|ArrayBuffer|Uint8Array|Buffer} data  The file data, either raw or base64 encoded
    * @param   {Object} o     File options
-   * @return  {PizZip|Object|Array} this PizZip object (when adding a file),
-   * a file (when searching by string) or an array of files (when searching by regex).
+   * @return  {UZip|Object|Array} this UZip object (when adding a file),
+   * a ZipEntry (when searching by string) or an array of ZipEntry (when searching by regex).
    */
   file (name, data, o) {
-
+    if (data !== undefined) { // adding a file
+      return this
+    } else { // read file
+      if (typeof name === 'string') {
+        const res = this.files[name]
+        return res && !res.dir ? res : null
+      } else {
+        const res = []
+        Object.keys(this.files).forEach(fn => {
+          if (fn.test(fn) && !this.files[fn].dir) {
+            res.push(this.files[fn])
+          }
+        })
+        return res
+      }
+    }
   }
 
   freeNative () {
