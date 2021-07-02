@@ -48,7 +48,7 @@ export default {
     columns: Array,
 
     /**
-     * Page size for pagination
+     * Page size for pagination. Default is `appConfig.storeDefaultPageSize` || 50
      */
     pageSize: {
       type: Number,
