@@ -39,6 +39,8 @@ type
     function unZipFileAsArrayBuffer(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
   end;
 
+  { TubZipWriter }
+
   TubZipWriter = class(TZipWrite)
   private
   protected
@@ -46,6 +48,7 @@ type
   published
     //procedure addFile(const fileName: TFileName);
     function addFile(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+    function add(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
   end;
   {$M-}
 
@@ -269,10 +272,11 @@ begin
     fn := SetDirSeparators(Entry[i].zipName);
     pValObj.SetProperty(cx, 'name', cx.NewJSString(fn).ToJSVal);
     pValObj.SetProperty(cx, 'dir', jsval.BooleanValue(Entry[i].infoDirectory.IsFolder));
-    pValObj.SetProperty(cx, 'index', jsval.Int32Value(num));
-    pEntriesArr.SetElement(cx, num, pValObj.ToJSValue);
-    if not isFileNameFlderAlike(Entry[i].zipName) then
+    if not isFileNameFlderAlike(Entry[i].zipName) then begin
+      pValObj.SetProperty(cx, 'index', jsval.Int32Value(num));
       inc(num);
+    end;
+    pEntriesArr.SetElement(cx, num, pValObj.ToJSValue);
   end;
   val.asObject := pEntriesArr;
   vp.rval := val;
@@ -384,21 +388,51 @@ begin
   Result := true;
 end;
 
+function TubZipWriter.add(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+const
+  cUSAGE = 'usage add(fn: string; data: string|ArrayBufferAlike|ZipEntry)';
+var
+  fn: string;
+  pData: pointer;
+  dataLen: integer;
+  tmpStr: RawByteString;
+  v2: jsval;
+begin
+  if (argc <> 2) or (not vp.argv^[0].isString) then
+    raise ESMException.Create(cUSAGE);
+  v2 := vp.argv^[2];
+  if vp.argv^[1].isString then begin
+    tmpStr := v2.asJSString.ToString(cx);
+    pData := pointer(tmpStr);
+    dateLen := length(tmpStr);
+  end else if v2.isObject and (v2.asObject.IsArrayBufferObject or v2.asObject.IsArrayBufferViewObject) then
+  begin
+
+  end else
+    raise ESMException.Create(cUSAGE);
+    vp.argv^[0].ValType(cx);
+end;
+
+begin
+
+end;
+
 { TubZipWriterProtoObject }
 
 function TubZipWriterProtoObject.NewSMInstance(aCx: PJSContext; argc: uintN; var vp: JSArgRec): TObject;
 var
   fName: TFileName;
 const
-  f_usage = 'usage: new TubZipWriter(fileName: String)';
+  f_usage = 'usage: new TubZipWriter([fileName]: String)';
 begin
-  {$POINTERMATH ON}
-  if (argc<>1) or not vp.argv[0].isString then
+  if (argc>1) or ((argc = 1) and not vp.argv^[0].isString) then
     raise ESMException.Create(f_usage);
 //  fName := JSString_TO_UnicodeString(aContext.cx, JSVAL_TO_STRING(in_argv[0]));
-  fName := vp.argv[0].asJSString.toString(aCx);
-  {$POINTERMATH OFF}
-  Result := TubZipWriter.Create(fName);
+  if argc = 1 then begin
+    fName := vp.argv[0].asJSString.toString(aCx);
+    Result := TubZipWriter.Create(fName);
+  end else
+    Result := TubZipWriter.Create();
 end;
 
 procedure TUBCompressorsPlugin.Init(const rec: TSMPluginRec);
