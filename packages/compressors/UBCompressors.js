@@ -184,7 +184,6 @@ class ZipEntry {
 class UZip {
   constructor (data, options) {
     this._reader = undefined
-    this._writer = undefined
     /**
      * Files in archive. Keys is file names (including folders)
      * @type {Object<string, ZipEntry>}
@@ -196,7 +195,6 @@ class UZip {
      * @private
      */
     this._modified = [] // files to be added into new archive using generate()
-    // this._writer = new binding.TubZipWriter(pathToZip)
     if (data) this.load(data, options)
   }
 
@@ -234,7 +232,7 @@ class UZip {
     this.files = {}
     allFiles.forEach(f => {
       this.files[f.name] = new ZipEntry(this, f)
-      this._modified[f.name] = new ZipEntry(this, f)
+      this._modified.push(new ZipEntry(this, f))
     })
   }
 
@@ -300,7 +298,7 @@ class UZip {
    */
   remove (fn) {
     const entryIdx = this._modified.findIndex(f => f.name === fn)
-    if (!entryIdx === -1) return this
+    if (entryIdx === -1) return this
     if (this._modified[entryIdx].dir) {
       this._modified = this._modified.filter(f => !f.name.startsWith(fn))
     } else {
@@ -316,40 +314,34 @@ class UZip {
    * Writing zip directly into file uses buffering io, so file content can be huge.
    *
    * @param {Object} o the options to generate the zip file
-   * @param {boolean} o.base64  (deprecated, use type instead) true to generate base64
+   * @param {boolean} [o.base64]  (deprecated, use type instead) true to generate base64
    * @param {string} [o.compression='STORE'] "STORE" by default (no compression at all) or DEFLATE
    * @param {string} [o.type='base64'] Values are : string, base64, uint8array, arraybuffer, blob, file
    * @param {string} [o.filename] if options.type='file' - sets a file name to create an archive
    * @return {String|Uint8Array|ArrayBuffer|Buffer|Blob|boolean} the zip file
    */
   generate (o) {
-    if (!this._writer) {
-      if (o.filename) {
-        this._writer = new ZipWriter(o.filename)
-      } else {
-        this._writer = new ZipWriter()
-      }
-    }
+    const zipWriter = new ZipWriter(o.filename)
     this._modified.forEach(ze => {
       if (ze.dir) return // skip empty folder TODO - implement
       if (ze._modified) {
         if (ze._dataType === 'file') { // add file from fs
-          this._writer.addFile(ze._data, ze.name)
+          zipWriter.addFile(ze._data, ze.name)
         } else {
           let data
           if (ze._dataType === 'base64') {
-            data = Buffer.from(this._data, 'base64')
+            data = Buffer.from(ze._data, 'base64')
           } else {
-            data = this._data
+            data = ze._data
           }
-          this._writer.add(ze.name, data)
+          zipWriter.add(ze.name, data)
         }
       } else {
-        this._writer.addZipEntry(ze._reader, ze._index)
+        zipWriter.addZipEntry(ze._reader, ze._index)
       }
     })
     if (o.filename) {
-      this._writer.freeNative()
+      zipWriter.freeNative()
       return true
     } else {
       throw new Error('not impl')

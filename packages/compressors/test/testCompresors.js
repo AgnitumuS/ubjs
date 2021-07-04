@@ -71,7 +71,7 @@ const uZipB64 = new UZip(B64_ZIP, { base64: true })
 // above is the same as
 // uZipB64 = new UZip(); uZipB64.load(B64_ZIP, {base64: true})
 // logFiles(uZipB64)
-console.log(uZipB64.files)
+console.log('Files in base64 archive', uZipB64.files)
 assert.strictEqual(Object.keys(uZipB64.files).length, 3, 'base64 must contains 3 file')
 const uTxt = uZipB64.file('fileUtf8.txt').asText()
 assert.strictEqual(uTxt, 'Привет!', 'Text content')
@@ -84,5 +84,15 @@ assert.strictEqual(Buffer.compare(file1251, hello), 0, 'cp1251 file equality')
 const cp1251toUtf = file1251.cpSlice(0, file1251.byteLength, 1251)
 assert.strictEqual(cp1251toUtf, 'Привет!', '1251 cp as text')
 
-uZipB64.file('newFile', 'Привет!', { type: 'string' })
-  .generate({ filename: path.join(TEST_PATH, 'gertest.zip') })
+const strContent = 'Привет!' + new Date().toISOString()
+console.log('Add ', strContent, 'to file')
+const GEN_FN = 'gentest.zip'
+uZipB64
+  .remove('file1251.txt')
+  .remove('file866.txt')
+  .file('newFile.txt', strContent, { type: 'string' })
+  .file('folder/fromBuf.txt', Buffer.from(strContent).toString('base64'), { base64: true })
+  .generate({ filename: path.join(TEST_PATH, GEN_FN) })
+
+const newZip = new UZip(path.join(TEST_PATH, GEN_FN), {base64: false})
+console.log('New zip files:\n', newZip.files)
