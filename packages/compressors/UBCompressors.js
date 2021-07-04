@@ -84,19 +84,45 @@ class ZipWriter {
     if (this._writer) this._writer.freeNative()
   }
 
-  addFile (filePath) {
-    return this._writer.addFile(filePath)
+  /**
+   * Add string or binary data into archive as `zipName`
+   * @param {string} zipName Name of new zip entry, can be a relative path 'folder/file.txt'.
+   * @param {string|ArrayBufferView} data
+   */
+  add (zipName, data) {
+    return this._writer.add(zipName, data)
+  }
+
+  /**
+   * Add file content into archive
+   * @param {string} filePath Path to file to add
+   * @param {string} [zipName] zip entry name. Can be a relative path 'folder/file.txt'.
+   *   If not specified, fileName(filePath) is used
+   */
+  addFile (filePath, zipName) {
+    return this._writer.addFile(filePath, zipName)
+  }
+
+  /**
+   * Copy compressed zip entry from `reader` archive into this archive (without recompression)
+   * @param {ZipReader} reader instance of reader
+   * @param {number} index file index inside reader archive
+   */
+  addZipEntry (reader, index) {
+    return this._writer.addZipEntry(reader, index)
   }
 }
 UBCompressors.ZipWriter = ZipWriter
 
 class ZipEntry {
   constructor (z, e) {
-    Object.defineProperty(this, '_zip', { value: z })
+    Object.defineProperty(this, '_reader', { value: z._reader })
     /** data index in original ZIP */
     this._index = e.index
+    // unmodified files can be added deflated from reader using _index, modified - from data
     this._data = e.data
     this._dataType = e.dataType
+    this._modified = false
     this.name = e.name
     this.dir = e.dir
   }
@@ -108,7 +134,7 @@ class ZipEntry {
    * @return {string} the UTF8 string.
    */
   asText () {
-    return this._zip._reader.unZipFileAsText(this._index)
+    return this._reader.unZipFileAsText(this._index)
   }
 
   /**
@@ -124,7 +150,7 @@ class ZipEntry {
    * @return {Buffer} the content as a Buffer.
    */
   asNodeBuffer () {
-    const arrBuf = this._zip._reader.unZipFileAsArrayBuffer(this._index)
+    const arrBuf = this._reader.unZipFileAsArrayBuffer(this._index)
     return Buffer.from(arrBuf)
   }
 
@@ -133,7 +159,7 @@ class ZipEntry {
    * @return {Uint8Array} the content as an Uint8Array.
    */
   asUint8Array () {
-    const arrBuf = this._zip._reader.unZipFileAsArrayBuffer(this._index)
+    const arrBuf = this._reader.unZipFileAsArrayBuffer(this._index)
     return new Uint8Array(arrBuf)
   }
 
@@ -142,7 +168,7 @@ class ZipEntry {
    * @return {ArrayBuffer} the content as an ArrayBufer.
    */
   asArrayBuffer () {
-    return this._zip._reader.unZipFileAsArrayBuffer(this._index)
+    return this._reader.unZipFileAsArrayBuffer(this._index)
   }
 }
 
@@ -226,15 +252,15 @@ class UZip {
    * a ZipEntry (when searching by string) or an array of ZipEntry (when searching by regex).
    */
   file (fn, data, o) {
-    if (arguments.length === 1) { // read file
-      if (typeof name === 'string') {
-        const res = this.files[name]
+    if (arguments.length === 1) { // read a file
+      if (typeof fn === 'string') {
+        const res = this.files[fn]
         return res && !res.dir ? res : null
       } else {
         const res = []
-        Object.keys(this.files).forEach(fn => {
-          if (fn.test(fn) && !this.files[fn].dir) {
-            res.push(this.files[fn])
+        Object.keys(this.files).forEach(f => {
+          if (f.test(fn) && !this.files[f].dir) {
+            res.push(this.files[f])
           }
         })
         return res
@@ -246,16 +272,19 @@ class UZip {
         dataType = o.base64
           ? 'base64'
           : o.isFilename ? 'file' : 'string'
+      } else if (Buffer.isBuffer(data) || ArrayBuffer.isView(data)) {
+        dataType = 'buffer'
       } else {
-
+        throw new Error('UZip.file: data should be string Buffer of arrayBufferView')
       }
       if (!entry) {
-        entry = new ZipEntry(this, { data, dataType, name: fn, dir: fn.endsWith('/') })
+        entry = new ZipEntry(this, { data, dataType, name: fn, dir: o.dir || fn.endsWith('/') })
         this._modified.push(entry)
       } else {
         entry._data = data
         entry._dataType = dataType
       }
+      entry._modified = true
       return this
     }
   }
@@ -286,16 +315,44 @@ class UZip {
    *
    * Writing zip directly into file uses buffering io, so file content can be huge.
    *
-   * @param {Object} options the options to generate the zip file
-   * @param {boolean} options.base64  (deprecated, use type instead) true to generate base64
-   * @param {string} [options.compression='STORE'] "STORE" by default (no compression at all) or DEFLATE
-   * @param {string} [options.type='base64'] Values are : string, base64, uint8array, arraybuffer, blob, file
-   * @param {string} [options.filename] if options.type='file' - sets a file name to create an archive
-   * @return {String|Uint8Array|ArrayBuffer|Buffer|Blob} the zip file
+   * @param {Object} o the options to generate the zip file
+   * @param {boolean} o.base64  (deprecated, use type instead) true to generate base64
+   * @param {string} [o.compression='STORE'] "STORE" by default (no compression at all) or DEFLATE
+   * @param {string} [o.type='base64'] Values are : string, base64, uint8array, arraybuffer, blob, file
+   * @param {string} [o.filename] if options.type='file' - sets a file name to create an archive
+   * @return {String|Uint8Array|ArrayBuffer|Buffer|Blob|boolean} the zip file
    */
-  generate (options) {
+  generate (o) {
     if (!this._writer) {
-      this._writer = new ZipWriter()
+      if (o.filename) {
+        this._writer = new ZipWriter(o.filename)
+      } else {
+        this._writer = new ZipWriter()
+      }
+    }
+    this._modified.forEach(ze => {
+      if (ze.dir) return // skip empty folder TODO - implement
+      if (ze._modified) {
+        if (ze._dataType === 'file') { // add file from fs
+          this._writer.addFile(ze._data, ze.name)
+        } else {
+          let data
+          if (ze._dataType === 'base64') {
+            data = Buffer.from(this._data, 'base64')
+          } else {
+            data = this._data
+          }
+          this._writer.add(ze.name, data)
+        }
+      } else {
+        this._writer.addZipEntry(ze._reader, ze._index)
+      }
+    })
+    if (o.filename) {
+      this._writer.freeNative()
+      return true
+    } else {
+      throw new Error('not impl')
     }
   }
 

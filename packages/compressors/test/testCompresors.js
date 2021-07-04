@@ -83,3 +83,6 @@ const hello = Buffer.from([0xCF, 0xF0, 0xE8, 0xE2, 0xE5, 0xF2, 0x21])
 assert.strictEqual(Buffer.compare(file1251, hello), 0, 'cp1251 file equality')
 const cp1251toUtf = file1251.cpSlice(0, file1251.byteLength, 1251)
 assert.strictEqual(cp1251toUtf, 'Привет!', '1251 cp as text')
+
+uZipB64.file('newFile', 'Привет!', { type: 'string' })
+  .generate({ filename: path.join(TEST_PATH, 'gertest.zip') })
