@@ -15,7 +15,7 @@
       "entity": "ubm_query",
       "attributeList": ["code", "name", "ubql"],
       "defaults": {
-        "type": "usrDict"
+        "type": "sysDict"
       }
     }
   },
