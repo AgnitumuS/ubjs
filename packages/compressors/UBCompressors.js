@@ -3,8 +3,21 @@
  *
  * @example
  *
- * var compressors = require('@unitybase/compressors');
- * compressors.unBzipM2
+const compressors = require('@unitybase/compressors');
+const UZip = compressors.UZip
+const uZip = new UZip('/some/file.zip')
+uZip
+  .remove('file1251.txt')
+  .remove('file866.txt')
+  .file('newFile.txt', 'String file content', { type: 'string' })
+  .file('folder/fromBuf.txt', Buffer.from('String file content').toString('base64'), { base64: true })
+  .file('os-release.txt', '/etc/os-release', {isFilename: true})
+  .generate({
+    type: 'file',
+    filename: '/tmp/newArch.zip'
+  })
+const readZ = new UZip('/tmp/newArch.zip')
+const osVersion = readZ.file('os-release.txt').asText()
  *
  * @module @unitybase/compressors
  */

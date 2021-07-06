@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+  - UZip - a JSZip@2 / PizZip compatible zip reader/writer. *x10 faster* and can fork directly
+    with files in fs, so *uses less memory* 
 
 ### Changed
 
