@@ -173,7 +173,8 @@ class Validator {
     for (const { path } of $v.$flattenParams()) {
       const attrValidation = path.reduce(getPropByKey, $v)
       if (attrValidation.$error) {
-        const attrCaption = this.getAttributeCaption(path.join('.'))
+        // for array validation remove $each.XXX: aaa.bbb.$each.125.ccc.ddd ->  aa.bbb.$each.125.ccc.ddd
+        const attrCaption = this.getAttributeCaption(path.filter((f, idx, arr) => (f !== '$each') && (arr[idx - 1] !== '$each')).join('.'))
         invalidFieldsCaptions.add(attrCaption)
       }
     }
