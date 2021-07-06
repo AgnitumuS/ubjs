@@ -10,11 +10,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - new provided value in Vue instances: `validator`. This value contains useful methods for form validation
  - new helper `validateWithErrorText` for defining of attribute validation functions with an error text
  - `validationMixin` for the passing of validation defined locally in some Vue component to nested controls (UFormRow for example)
+ - Validation: added support for `$each` captions in validations.  Example:
+   `crimeCases.$each.11.data.$each.333.val.discardReason:caption` => `crimeCases.data.val.discardReason:caption`
+
 
 ### Changed
  - refactored and improved validation of forms. [Documentation](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/utils/Form/validation.md)
  - use `attributeCaptions` section to define captions for custom attributes or redefine for entity ones
-  insted of computed property with `:caption` suffix
+  instead of computed property with `:caption` suffix
  - `UFormRow`: display attribute description if exists instead of name when we hover on the label
 
 ### Deprecated
