@@ -74,10 +74,12 @@ class ZipReader {
 UBCompressors.ZipReader = ZipReader
 
 class ZipWriter {
-  constructor (pathToZip) {
-    this._writer = pathToZip
-      ? new binding.TubZipWriter(pathToZip)
-      : new binding.TubZipWriter()
+  /**
+   * if pathToZip is empty - create in-memory archive
+   * @param pathToZip
+   */
+  constructor (pathToZip = '') {
+    this._writer = new binding.TubZipWriter(pathToZip)
   }
 
   freeNative () {
@@ -110,6 +112,14 @@ class ZipWriter {
    */
   addZipEntry (reader, index) {
     return this._writer.addZipEntry(reader, index)
+  }
+
+  /**
+   * If archive is in-memory (pathToZip is empty in constructor call) - return zipped content
+   * @return {ArrayBuffer}
+   */
+  getAsArrayBuffer () {
+    return this._writer.getAsArrayBuffer()
   }
 }
 UBCompressors.ZipWriter = ZipWriter
@@ -266,6 +276,7 @@ class UZip {
     } else { // adding a file
       let entry = this._modified.find(f => f.name === fn)
       let dataType = ''
+      o = o || {}
       if (typeof data === 'string') {
         dataType = o.base64
           ? 'base64'
@@ -313,14 +324,17 @@ class UZip {
    *
    * Writing zip directly into file uses buffering io, so file content can be huge.
    *
-   * @param {Object} o the options to generate the zip file
+   * @param {Object} [o] the options to generate the zip file
    * @param {boolean} [o.base64]  (deprecated, use type instead) true to generate base64
    * @param {string} [o.compression='STORE'] "STORE" by default (no compression at all) or DEFLATE
    * @param {string} [o.type='base64'] Values are : string, base64, uint8array, arraybuffer, blob, file
    * @param {string} [o.filename] if options.type='file' - sets a file name to create an archive
-   * @return {String|Uint8Array|ArrayBuffer|Buffer|Blob|boolean} the zip file
+   * @return {String|Uint8Array|ArrayBuffer|Buffer|Blob} the zip file. If type='file' result is o.filename (a path to file)
    */
-  generate (o) {
+  generate (o = { type: 'base64' }) {
+    if ((o.filename && (o.type !== 'file')) || ((o.type === 'file') && !o.filename)) {
+      throw new Error('type must be \'file\' in case \'filename\' is specified')
+    }
     const zipWriter = new ZipWriter(o.filename)
     this._modified.forEach(ze => {
       if (ze.dir) return // skip empty folder TODO - implement
@@ -340,11 +354,22 @@ class UZip {
         zipWriter.addZipEntry(ze._reader, ze._index)
       }
     })
-    if (o.filename) {
+    if (o.type === 'file') {
       zipWriter.freeNative()
-      return true
+      return o.filename
     } else {
-      throw new Error('not impl')
+      const arrBuf = zipWriter.getAsArrayBuffer()
+      zipWriter.freeNative()
+      const typeLower = o.type.toLowerCase()
+      if (typeLower === 'arraybuffer') {
+        return arrBuf
+      } else if (typeLower === 'uint8array') {
+        return new Uint8Array(arrBuf)
+      } else if (typeLower === 'base64') {
+        return Buffer.from(arrBuf).toString('base64')
+      } else {
+        throw new Error(`UZip.generate: unsupported type '${o.type}'`)
+      }
     }
   }
 

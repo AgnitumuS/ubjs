@@ -41,16 +41,21 @@ type
 
   { TubZipWriter }
 
-  TubZipWriter = class(TZipWrite)
+  TubZipWriter = class
   private
+    FWriter: TZipWriteAbstract;
+    fStream: TRawByteStringStream;
   protected
-
+  public
+    constructor Create(const aFileName: TFileName);
+    destructor Destroy; override;
   published
     //procedure addFile(const fileName: TFileName; [zipFileNale: string]);
     function addFile(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
     // addZipEntry(reader, index, fileName)
     function addZipEntry(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
     function add(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+    function getAsArrayBuffer(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
   end;
   {$M-}
 
@@ -376,27 +381,49 @@ end;
 
 { TubZipWriter }
 
+constructor TubZipWriter.Create(const aFileName: TFileName);
+begin
+  if aFileName = '' then begin
+    fStream := TRawByteStringStream.Create();
+    FWriter := TZipWriteToStream.Create(fStream);
+  end else
+    FWriter := TZipWrite.Create(aFileName);
+end;
+
+destructor TubZipWriter.Destroy;
+begin
+  FWriter.Free;
+  fStream.Free;
+  inherited Destroy();
+end;
+
 //procedure TubZipWriter.addFile(const fileName: TFileName);
 function TubZipWriter.addFile(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
 // usage addFile(const fileName: string, [zipName: string])';
 var
   fName: TFileName;
   zipName: TFileName;
+  buf: RawByteString;
 begin
   result := checkFuncArgs(cx, argc, vp, [atStr, atStr or atVoid]);
   if not result then exit;
   fName := vp.argv[0].asJSString.toString(cx);
-  if (argc > 1) then begin
-    zipName := vp.argv[1].asJSString.toString(cx);
-    AddDeflated(fName, true, 6, zipName);
+  if (argc > 1) then
+    zipName := vp.argv[1].asJSString.toString(cx)
+  else
+    zipName := ExtractFileName(fName);
+
+  if (FWriter is TZipWriteToStream) then begin
+    buf := StringFromFile(fName);
+    TZipWriteToStream(FWriter).AddDeflated(zipName,pointer(buf), length(buf));
   end else
-    AddDeflated(fName);
+    TZipWrite(FWriter).AddDeflated(fName, true, 6, zipName);
 end;
 
 function TubZipWriter.addZipEntry(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
 const
   ERR = 'addZipEntry: first arg must be ZipRTead instance';
- //addZipEntry(reader: ZipReader; index: integer; fn: string)';
+ //addZipEntry(reader: ZipReader; index: integer)';
 var
   r: TubZipReader;
   inst: PSMInstanceRecord;
@@ -413,7 +440,11 @@ begin
     r := TubZipReader(inst.instance);
     if idx >= length(r.Entry) then
       raise ESMException.CreateUTF8('Entry % is out of bounds', [idx]);
-    AddFromZip(r.Entry[idx])
+    // hope will be fixed on SynZip level
+    //if r.Entry[idx].infoLocal.zzipMethod = 0 then // STORED
+    //  AddStored(r.Entry[idx].zipName, r.Entry[idx].data, r.Entry[idx].infoLocal.zzipSize, r.Entry[idx].infoLocal.zlastMod)
+    //else
+    FWriter.AddFromZip(r, idx);
   except
     on E: Exception do begin Result := false; JSError(cx, E); end;
   end;
@@ -439,7 +470,28 @@ begin
       dataLen := length(tmpStr);
     end else // buffer
       v1.asObject.GetBufferDataAndLength(pData, dataLen);
-    AddDeflated(fn, pData, dataLen);
+    FWriter.AddDeflated(fn, pData, dataLen);
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
+end;
+
+function TubZipWriter.getAsArrayBuffer(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+var
+  bufOut: Pointer;
+  bufLength: uint32;
+  res: PJSObject;
+begin
+  Result := true;
+  try
+    if fStream = nil then
+      raise ESMException.Create('ZIP is created tofile; asArrayBufferis not available');
+    FreeAndNil(FWriter); // finalize zip
+    bufLength := length(fStream.DataString);
+    res := cx.NewArrayBuffer(bufLength);
+    bufOut := res.GetArrayBufferData;
+    Move(pointer(fStream.DataString)^, bufOut^, bufLength);
+    vp.rval := res.ToJSValue();
   except
     on E: Exception do begin Result := false; JSError(cx, E); end;
   end;
@@ -457,11 +509,11 @@ begin
   if (argc>1) or ((argc = 1) and not vp.argv^[0].isString) then
     raise ESMException.Create(f_usage);
 //  fName := JSString_TO_UnicodeString(aContext.cx, JSVAL_TO_STRING(in_argv[0]));
-  if argc = 1 then begin
-    fName := vp.argv[0].asJSString.toString(aCx);
-    Result := TubZipWriter.Create(fName);
-  end else
-    Result := TubZipWriter.Create();
+  if argc = 1 then
+    fName := vp.argv[0].asJSString.toString(aCx)
+  else
+    fName := '';
+  Result := TubZipWriter.Create(fName);
 end;
 
 procedure TUBCompressorsPlugin.Init(const rec: TSMPluginRec);

@@ -84,15 +84,41 @@ assert.strictEqual(Buffer.compare(file1251, hello), 0, 'cp1251 file equality')
 const cp1251toUtf = file1251.cpSlice(0, file1251.byteLength, 1251)
 assert.strictEqual(cp1251toUtf, 'Привет!', '1251 cp as text')
 
-const strContent = 'Привет!' + new Date().toISOString()
+const strContent = 'Привет, bear!'
 console.log('Add ', strContent, 'to file')
-const GEN_FN = 'gentest.zip'
+const GEN_FN = path.join(TEST_PATH, 'gentest.zip')
 uZipB64
   .remove('file1251.txt')
-  .remove('file866.txt')
+  .remove('file866.txt') // left fileUtf8.txt
+  // .remove('fileUtf8.txt')
   .file('newFile.txt', strContent, { type: 'string' })
   .file('folder/fromBuf.txt', Buffer.from(strContent).toString('base64'), { base64: true })
-  .generate({ filename: path.join(TEST_PATH, GEN_FN) })
+  .generate({
+    type: 'file',
+    filename: GEN_FN
+  })
 
-const newZip = new UZip(path.join(TEST_PATH, GEN_FN), {base64: false})
-console.log('New zip files:\n', newZip.files)
+const NEW_ARC_ETALON = 'UEsDBBQAAAAAAEZL3VKCPhAXDQAAAA0AAAAMAAAAZmlsZVV0ZjgudHh00J/RgNC40LLQtdGCIVBL' +
+  'AwQUAAAACAAhPAAAKh3fJBYAAAATAAAACwAAAG5ld0ZpbGUudHh0uzD/YsOFHRc2Xdh6sUlHISk1' +
+  'sUgRAFBLAwQUAAAACAAhPAAAKh3fJBYAAAATAAAAEgAAAGZvbGRlci9mcm9tQnVmLnR4dLsw/2LD' +
+  'hR0XNl3YerFJRyEpNbFIEQBQSwECFAAUAAAAAABGS91Sgj4QFw0AAAANAAAADAAAAAAAAAAAAAAA' +
+  'AAAAAAAAZmlsZVV0ZjgudHh0UEsBAhQAFAAAAAgAITwAACod3yQWAAAAEwAAAAsAAAAAAAAAAAAA' +
+  'AAAANwAAAG5ld0ZpbGUudHh0UEsBAhQAFAAAAAgAITwAACod3yQWAAAAEwAAABIAAAAAAAAAAAAA' +
+  'AAAAdgAAAGZvbGRlci9mcm9tQnVmLnR4dFBLBQYAAAAAAwADALMAAAC8AAAAAAA='
+
+const newB64 = uZipB64.generate()
+// console.log(NEW_ARC, 'New: \n', newB64)
+assert.strictEqual(newB64, NEW_ARC_ETALON, 'Base64 result is wrong')
+assert.strictEqual(uZipB64.generate(), uZipB64.generate({ type: 'base64' }), 'base64 is default generation type')
+
+const newArrBuf = uZipB64.generate({ type: 'uint8array' })
+const fileSize = fs.statSync(GEN_FN).size
+assert.strictEqual(newArrBuf.byteLength, fileSize, `Length of zip in file and in ArrayBuffer must be equal but got:
+fileSize: ${fileSize},
+arrBuffer: ${newArrBuf.byteLength}
+`)
+
+// {
+//   type: 'ArrayBuffer'
+// })
+
