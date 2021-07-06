@@ -112,8 +112,8 @@ and restart nginx.
 
 For Unix symlink file into `/etc/nginx/sites-enabled`:  
 ```shell script
-sudo ln -s path/to/ub-proxy.conf /etc/nginx/sites-available/default_server.cfg 
-sudo ln -s /etc/nginx/sites-available/default_server.cfg /etc/nginx/sites-enabled 
+sudo ln -s path/to/ub-proxy.conf /etc/nginx/sites-available/default_server.conf 
+sudo ln -s /etc/nginx/sites-available/default_server.conf /etc/nginx/sites-enabled 
 sudo nginx -s reload 
 ```
 
@@ -150,6 +150,21 @@ Load balancer on b.b.b.b should correctly set an `X-Forwarded-For` header. In ca
 
 > for more details see [ngx_http_realip_module](http://nginx.org/en/docs/http/ngx_http_realip_module.html)
 
+### Override a proxy read timeout
+By default, nginx waits for reading a response from the UB server for 60 second - this value is equal to the default XMLHTTPRequest timeout
+for UBConnection. 
+
+Some apps increase UBConnection level timeout (for example using `http.setGlobalConnectionDefaults({receiveTimeout: 120000})` ).
+In such cases nginx `proxy_read_timeout` should also be set to 120000. Example:
+
+```shell
+mkdir -p /var/opt/unitybase/shared/my-server-com
+cat <<<EOF
+  # increase  proxy_read_timeout from default 60s to 120s for long running queries
+  proxy_read_timeout 120s;
+EOF > /var/opt/unitybase/shared/my-server-com/server-Proxy_timeout120.conf
+```
+ 
 ### Add additional upstreams to the load balancing group
 Add additional upstreams (:8883 and :8884) to the load balancing group:
 ```shell

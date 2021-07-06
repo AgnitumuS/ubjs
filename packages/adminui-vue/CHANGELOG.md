@@ -12,7 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `validationMixin` for the passing of validation defined locally in some Vue component to nested controls (UFormRow for example)
  - Validation: added support for `$each` captions in validations.  Example:
    `crimeCases.$each.11.data.$each.333.val.discardReason:caption` => `crimeCases.data.val.discardReason:caption`
-
+ - UAutoField: in case attribute used in `attribute-name` prop is not exists in Repository a developer-friendly
+   exception is throws instead of `can not read XXX of undefined`
 
 ### Changed
  - refactored and improved validation of forms. [Documentation](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/utils/Form/validation.md)

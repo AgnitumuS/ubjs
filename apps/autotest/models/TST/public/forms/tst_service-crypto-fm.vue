@@ -1,6 +1,8 @@
 <template>
   <div class="u-form-layout">
     <div class="u-toolbar">
+      <section>Хеш:</section>
+      <u-button icon="u-icon-signature" @click="doHashBlobStore">BLOB стор</u-button>
       <section>Подписать:</section>
       <u-button icon="u-icon-signature" @click="doSign">Файл</u-button>
       <u-button icon="u-icon-signature" @click="doSignBlobStore">BLOB стор</u-button>
@@ -76,6 +78,15 @@ module.exports.default = {
     }
   },
   methods: {
+    async doHashBlobStore () {
+      console.time('hashBLOB')
+      const verificationResult = await UB.connection.post('/crypto/hash', [
+        { entity: 'tst_document', attribute: 'fileStoreSimple', ID: this.tstDocID }
+      ])
+      console.timeEnd('hashBLOB')
+      this.operationResult = verificationResult.data[0]
+    },
+
     async doSign () {
       let pki
       try {
