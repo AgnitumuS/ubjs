@@ -30,33 +30,30 @@ ok(zipR.unZipToDir(0, UNZIP_PATH), `can not unzip file ${files[0]}`)
 // console.log(files)
 zipR.unZipAllToDir(UNZIP_PATH)
 zipR.freeNative()
-//
-// const zipW = new ZipWriter(path.join(TEST_PATH, '_testZip.zip'))
-// zipW.addFile(path.join(UNZIP_PATH, files[0]))
-// zipW.addFile(path.join(UNZIP_PATH, files[1]))
-// zipW.addFile(path.join(UNZIP_PATH, files[2]))
-// zipW.addFile(path.join(UNZIP_PATH, files[3]))
-// zipW.freeNative()
-//
-// zipR = new ZipReader(path.join(TEST_PATH, '_testZip.zip'))
-// ok(zipR.fileCount === 4)
-// zipR.freeNative()
-//
-// for (let i = 0; i < 4; i++) {
-//   ok(fs.unlinkSync(path.join(UNZIP_PATH, files[i])))
-// }
-// const dirContent = fs.readdirSync(UNZIP_PATH)
-// ok(dirContent.length === 2, `must be 2 subfolder in ${UNZIP_PATH}`)
-// for (let i = 0; i < 2; i++) {
-//   ok(fs.rmdirSync(path.join(UNZIP_PATH, dirContent[i])), `can't remove ${UNZIP_PATH}`)
-// }
-// ok(fs.rmdirSync(UNZIP_PATH), `can't remove ${UNZIP_PATH}`)
 
-function logFiles (zip) {
-  Object.keys(zip.files).forEach(k => {
-    console.log('name:', zip.files[k].name, 'dir:', zip.files[k].dir)
-  })
+const wrFilePath = path.join(TEST_PATH, '_testZip.zip')
+const zipW = new ZipWriter(wrFilePath)
+zipW.addFile(path.join(UNZIP_PATH, files[0]))
+zipW.addFile(path.join(UNZIP_PATH, files[1]))
+zipW.addFile(path.join(UNZIP_PATH, files[2]))
+zipW.addFile(path.join(UNZIP_PATH, files[3]))
+zipW.freeNative()
+
+zipR = new ZipReader(wrFilePath)
+ok(zipR.fileCount === 4)
+zipR.freeNative()
+fs.unlinkSync(wrFilePath)
+
+for (let i = 0; i < 4; i++) {
+  ok(fs.unlinkSync(path.join(UNZIP_PATH, files[i])))
 }
+const dirContent = fs.readdirSync(UNZIP_PATH)
+ok(dirContent.length === 3, `must be 3 subfolder in ${UNZIP_PATH}`)
+for (let i = 0; i < 3; i++) {
+  ok(fs.rmdirSync(path.join(UNZIP_PATH, dirContent[i])), `can't remove ${UNZIP_PATH}`)
+}
+ok(fs.rmdirSync(UNZIP_PATH), `can't remove ${UNZIP_PATH}`)
+
 // fileUtf8.txt='Привет!' file1251.txt file866.txt
 const B64_ZIP = `UEsDBBQAAAAIAFqRi0OFRdGtCQAAAAcAAAALAAAAZmlsZTg2Ni50eHTrf7Bi0dJHigBQSwMEFAAA
 AAgAw4iLQ4KtsxMJAAAABwAAAAwAAABmaWxlMTI1MS50eHQ7/+HFo6efFAFQSwMECgAAAAAARkvd
@@ -111,14 +108,16 @@ const newB64 = uZipB64.generate()
 assert.strictEqual(newB64, NEW_ARC_ETALON, 'Base64 result is wrong')
 assert.strictEqual(uZipB64.generate(), uZipB64.generate({ type: 'base64' }), 'base64 is default generation type')
 
-const newArrBuf = uZipB64.generate({ type: 'uint8array' })
+const newUint8Array = uZipB64.generate({ type: 'Uint8Array' })
+assert.ok(newUint8Array instanceof Uint8Array, 'type: \'uint8array\' fail')
 const fileSize = fs.statSync(GEN_FN).size
-assert.strictEqual(newArrBuf.byteLength, fileSize, `Length of zip in file and in ArrayBuffer must be equal but got:
+assert.strictEqual(newUint8Array.byteLength, fileSize, `Length of zip in file and in ArrayBuffer must be equal but got:
 fileSize: ${fileSize},
-arrBuffer: ${newArrBuf.byteLength}
+arrBuffer: ${newUint8Array.byteLength}
 `)
 
-// {
-//   type: 'ArrayBuffer'
-// })
+const newArrBuf = uZipB64.generate({ type: 'ArrayBuffer' })
+assert.strictEqual(newUint8Array.byteLength, newArrBuf.byteLength, 'ArrayBuffer length must be equal to Uint8Array length')
 
+if (fs.unlinkSync(GEN_FN) === false) console.error(`Can't unlink ${GEN_FN}`)
+console.log('UZIp test - OK')

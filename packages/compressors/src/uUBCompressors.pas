@@ -331,7 +331,7 @@ begin
       inc(en);
     end else begin
       if Entry[i].zipName <> '' then
-        ForceDirectories(Entry[i].zipName);
+        ForceDirectories(fDir + Entry[i].zipName);
     end;
   val.asBoolean := true;
   vp.rval := val;
@@ -408,7 +408,7 @@ begin
   result := checkFuncArgs(cx, argc, vp, [atStr, atStr or atVoid]);
   if not result then exit;
   fName := vp.argv[0].asJSString.toString(cx);
-  if (argc > 1) then
+  if (argc > 1) and vp.argv^[1].isString then
     zipName := vp.argv[1].asJSString.toString(cx)
   else
     zipName := ExtractFileName(fName);
