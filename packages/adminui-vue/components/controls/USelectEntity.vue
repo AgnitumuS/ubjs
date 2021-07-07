@@ -144,7 +144,7 @@
           :icon="action.icon"
           :label="$ut(action.caption)"
           :disabled="action.disabled"
-          @click.native="action.handler"
+          @click.native="!action.disabled && action.handler()"
         >
         </u-dropdown-item>
       </template>
