@@ -375,8 +375,8 @@ export default {
     },
 
     /**
-     * need for update displayed query if original option query changed
-     * but show dropdown and fetch date just if changed queryDisplayValue
+     * Needed to update displayed query when original query option is changed
+     * but show dropdown and fetch data only if queryDisplayValue changed
      */
     queryDisplayValue: {
       get () {
@@ -398,7 +398,7 @@ export default {
   },
 
   watch: {
-    // when value (ID) changed need to get formatted label
+    // when value (ID) is changed - get formatted label
     value: {
       immediate: true,
       handler: 'setQueryByValue'
