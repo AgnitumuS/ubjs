@@ -24,9 +24,9 @@
             <Filename Value="$(ProjPath)/../bin/$(TargetCPU)/"/>
           </Target>
           <SearchPaths>
-            <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$(ProjOutDir)"/>
-            <Libraries Value="$Env(UB_SRC)/bin/fpc-linux"/>
-            <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse/SyNode/puv;$Env(UB_SRC)/libs/Synopse"/>
+            <IncludeFiles Value="../../../../ub-server/libs/Synopse/SQLite3;../../../../ub-server/libs/Synopse/SyNode;../../../../ub-server/libs/Synopse"/>
+            <Libraries Value="../../../../ub-server/libs/Synopse/static/$(TargetCPU)-$(TargetOS)"/>
+            <OtherUnitFiles Value="../../../../ub-server/libs/Synopse/SQLite3;../../../../ub-server/libs/Synopse/SyNode;../../../../ub-server/libs/Synopse"/>
             <UnitOutputDirectory Value="$(ProjPath)/../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Conditionals Value="// check compilation executed under windows
@@ -75,9 +75,9 @@ end;"/>
             <Filename Value="$(ProjPath)/../bin/$(TargetCPU)/"/>
           </Target>
           <SearchPaths>
-            <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$(ProjOutDir)"/>
-            <Libraries Value="$Env(UB_SRC)/libs/Synopse/static/$(TargetCPU)-$(TargetOS)"/>
-            <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse/SyNode/puv;$Env(UB_SRC)/libs/Synopse"/>
+            <IncludeFiles Value="../../../../ub-server/libs/Synopse/SQLite3;../../../../ub-server/libs/Synopse/SyNode;../../../../ub-server/libs/Synopse;$(ProjOutDir)"/>
+            <Libraries Value="../../../../ub-server/libs/Synopse/static/$(TargetCPU)-$(TargetOS)"/>
+            <OtherUnitFiles Value="../../../../ub-server/libs/Synopse/SQLite3;../../../../ub-server/libs/Synopse/SyNode;../../../../ub-server/libs/Synopse"/>
             <UnitOutputDirectory Value="$(ProjPath)/../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -126,7 +126,7 @@ end;"/>
         <PackageName Value="LazUtils"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="4">
+    <Units Count="6">
       <Unit0>
         <Filename Value="ubcompressors.dpr"/>
         <IsPartOfProject Value="True"/>
@@ -144,6 +144,14 @@ end;"/>
         <Filename Value="../../../../ub-server/libs/Synopse/SynZip.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit3>
+      <Unit4>
+        <Filename Value="../../../../ub-server/libs/Synopse/SyNode/SyNodeSimpleProto.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="../../../../ub-server/libs/Synopse/SyNode/SpiderMonkey.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit5>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -152,9 +160,9 @@ end;"/>
       <Filename Value="../bin/$(TargetCPU)/"/>
     </Target>
     <SearchPaths>
-      <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$(ProjOutDir)"/>
-      <Libraries Value="$Env(UB_SRC)/libs/Synopse/static/$(TargetCPU)-$(TargetOS)"/>
-      <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse/SyNode/puv;$Env(UB_SRC)/libs/Synopse"/>
+      <IncludeFiles Value="../../../../ub-server/libs/Synopse/SQLite3;../../../../ub-server/libs/Synopse/SyNode;../../../../ub-server/libs/Synopse;$(ProjOutDir)"/>
+      <Libraries Value="../../../../ub-server/bin/fpc-linux"/>
+      <OtherUnitFiles Value="../../../../ub-server/libs/Synopse/SQLite3;../../../../ub-server/libs/Synopse/SyNode;../../../../ub-server/libs/Synopse"/>
       <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>

@@ -18,7 +18,9 @@
   "main": "./UBCompressors.js",
   "devDependencies": {
     "@unitybase/stubs": "^5.1.12",
-    "@unitybase/update-changelog": "^1.0.4"
+    "@unitybase/update-changelog": "^1.0.4",
+    "jszip": "^2.6.0",
+    "pizzip": "^3.0.6"
   },
   "keywords": [
     "UnityBase",
