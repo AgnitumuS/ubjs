@@ -117,17 +117,6 @@ Ext.define('TST.IITSign', {
     // debugger;
 
     me.down('component[ubID="doSign"]').handler = async function () {
-      // const f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
-      // me.mask('Signing')
-      // return UB.file2Uint8Array(f).then(fArray => {
-      //   return $App.connection.pki().then(pki => {
-      //     return pki.sign(fArray)
-      //   })
-      // }).then(signature => {
-      //   me.down('component[ubID="signature"]').setValue(signature)
-      // }).catch(e => {
-      //   throw new UB.UBError(e.message)
-      // }).finally(() => me.unmask())
       let pki
       const f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
       me.mask('Signing')

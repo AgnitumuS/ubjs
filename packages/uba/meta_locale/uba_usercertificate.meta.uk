@@ -23,6 +23,14 @@
       "caption": "Сертифікат"
     },
     {
+      "name": "certParsed",
+      "caption": "Вміст сертифікату"
+    },
+    {
+      "name": "isForSigning",
+      "caption": "Для підпису"
+    },
+    {
       "name": "description",
       "caption": "Опис"
     },
@@ -33,6 +41,10 @@
     {
       "name": "revoked",
       "caption": "Відкликаний"
+    },
+    {
+      "name": "revocationDate",
+      "caption": "Дата відкликання"
     }
   ]
 }

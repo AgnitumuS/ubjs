@@ -1944,13 +1944,22 @@ UbPkiInterface.prototype.closePrivateKey = function () {}
  */
 UbPkiInterface.prototype.getPrivateKeyOwnerInfo = function () {}
 /**
- * @param {Uint8Array|String} data
+ * Sing one or several documents.
+ *
+ * Can accept {BlobStoreRequest} as item - in this case signature hash is calculated on server side
+ * for document stored in BLOB store (@ub-d/crypto-api model must be added into domain)
+ *
+ * @param {Uint8Array|String|BlobStoreRequest|Array<Uint8Array|String|BlobStoreRequest>} data
+ * @param {Boolean} [resultIsBinary=false]
  * @param {function} [ownerKeyValidationFunction] optional function what called with one parameter - certInfo before signing.
  *   Should validate is owner of passed certificate allowed to perform signing,
- *   for example by check equality of certInfo.serial with conn.userData('userCertificateSerial')
- * @return {Promise<string>} base64 encoded signature
+ *   for example by check equality of certInfo.serial with conn.userData('userCertificateSerial');
+ *   In case function returns rejected promise or throw then private key will be unloaded from memory
+ *   to allow user to select another key
+ * @return {Promise<ArrayBuffer|string|Array<ArrayBuffer|string>>} signature or array of signatures if data is array.
+ *   If resultIsBinary===true each signature is returned as ArrayBuffer, otherwise as base64 encoded string
  */
-UbPkiInterface.prototype.sign = function (data, ownerKeyValidationFunction) {}
+UbPkiInterface.prototype.sign = function (data, resultIsBinary, ownerKeyValidationFunction) {}
 /**
  * Verify signature for data
  * @param {String} b64signature Base64 encoded signature
@@ -1984,11 +1993,23 @@ UbPkiInterface.prototype.verificationUI = function (validationResults, sigCaptio
  * @return {Promise<UbPkiInterface>}
  */
 UBConnection.prototype.pki = async function () {
-  if (this._pki) return Promise.resolve(this._pki)
+  if (this._pki) return this._pki
   if (!this.appConfig.uiSettings) throw new Error('connection.pki() can be called either after connect() or inside connection.onGotApplicationConfig')
-  const pkiImplModule = this.appConfig.uiSettings.adminUI.encryptionImplementation
+  const availableEncryptions = this.appConfig.availableEncryptions
+  let pkiImplModule
+  if (availableEncryptions) {
+    if (availableEncryptions.length === 1) { // single encryption implementation - select it
+      pkiImplModule = availableEncryptions[0].moduleURI
+    } else {
+      if (window && (typeof window.capiSelectionDialog === 'function')) {
+        pkiImplModule = await window.capiSelectionDialog(this)
+      } else { // no encryption selection function defined in $App - choose first encryption
+        pkiImplModule = availableEncryptions[0].moduleURI
+      }
+    }
+  }
   if (!pkiImplModule) {
-    throw new Error('"appConfig.uiSettings.adminUI.encryptionImplementation" is not defined in application config')
+    throw new Error('"encryptionImplementation" not defined in "appConfig.uiSettings.adminUI" or "@ub-d/crypto-api" model is not added into domain')
   }
   // use global UB to prevent circular dependency
   // eslint-disable-next-line no-undef

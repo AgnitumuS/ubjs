@@ -73,6 +73,7 @@ function dialogYesNo (title, msg) {
 
 /**
  * Show information dialog. Title & message are translated using {@link module:@unitybase/ub-pub~i18n UB.i18n}
+ * Injected into Vue prototype as `$dialogInfo`.
  * @param {string} msg
  * @param {String} [title='info'] title
  * @returns {Promise<boolean>} resolved to true then user click OK in other case - false
@@ -175,7 +176,14 @@ function dialogDeleteRecord (entity, instanceData = {}) {
 }
 
 /**
- *  Inject $dialog into Vie prototype. To be used as Vue.use(dialog)
+ *  Inject $dialog into Vue prototype. Called in `adminui-vue` model initialisation.
+ *  Injects:
+ *   - $dialog
+ *   - $dialogError
+ *   - $dialogInfo
+ *   - $dialogYesNo
+ *   - $dialogDeleteRecord
+ *   - $errorReporter
  *  @param {Vue} Vue
  * */
 function install (Vue) {

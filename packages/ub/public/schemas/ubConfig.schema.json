@@ -656,7 +656,7 @@
                 "properties": {
                   "URI": {
                     "type": "string",
-                    "description": "Host name user navigate to"
+                    "description": "Host name user navigate to. For non-standard ports (neither 80 nor 443 must include port 'my.app.com:1224'"
                   },
                   "TID": {
                     "type": "number",
@@ -1053,8 +1053,12 @@
               "default": "equal to application.rootHandler"
             },
             "encryptionImplementation" : {
-              "type": "string",
-              "description": "Define encryption implementation for authentication CERT. Use one of @ub-d packages, example: `/clientRequire/@ub-d/iit-sign-web/dist/iit-sign-web.min.js`"
+              "type": "array",
+              "description": "Define available encryption implementations for App.pki()",
+              "items": {
+                "type": "string",
+                "description": "Module what implements a UbPkiInterface interface. Known modules are \"@ub-d/iit-sign-web\", \"@ub-d/iit-sign-js\" "
+              }
             },
             "authenticationCert": {
               "type": "object",

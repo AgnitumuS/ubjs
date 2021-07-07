@@ -112,17 +112,18 @@
           />
           {{ option[getDisplayAttribute] }}
         </div>
-        <el-row
-          type="flex"
-        >
-          <el-button
-            v-if="moreVisible"
-            size="mini"
-            style="margin: 5px"
-            @click="showMore"
-          >
-            {{ $ut('USelectEntity.dropdown.moreButton') }}
-          </el-button>
+        <el-row type="flex">
+          <template v-for="button in dropdownButtons">
+            <el-button
+              v-if="button.visibility"
+              :key="button.name"
+              size="mini"
+              style="margin: 5px"
+              @click="button.handler"
+            >
+              {{ $ut(button.label) }}
+            </el-button>
+          </template>
         </el-row>
       </div>
       <div
@@ -244,6 +245,13 @@ export default {
       type: String,
       default: 'like',
       validator: value => ['like', 'startsWith'].includes(value)
+    },
+    /**
+     * Dropdown buttons definition array. Can contains additional dropdown buttons,
+     */
+    additionalButtons: {
+      type: Array,
+      default: () => []
     }
   },
 
@@ -311,6 +319,16 @@ export default {
           this.dropdownVisible = true
         })
       }
+    },
+
+    dropdownButtons () {
+      const moreButton = {
+        name: 'moreButton',
+        label: 'USelectEntity.dropdown.moreButton',
+        visibility: this.moreVisible,
+        handler: () => this.showMore()
+      }
+      return [...this.additionalButtons, moreButton]
     }
   },
 

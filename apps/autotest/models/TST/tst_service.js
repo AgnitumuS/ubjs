@@ -352,6 +352,7 @@ me.entity.addMethod('iitVerify')
 UB.connection.query({
   entity: 'tst_service',
   method: 'resourceLimitationTest',
+  testFetchSize: true, // false to test time limits
   level: 3
 })
  * @param {ubMethodParams} ctx
@@ -360,7 +361,7 @@ UB.connection.query({
 me.resourceLimitationTest = function (ctx) {
   App.dbStartTransaction(me.entity.connectionConfig.name)
   let level = ctx.mParams.level || 4
-  let q = 'select max(at.ID) from uba_auditTrail at'
+  let q = (ctx.mParams.testFetchSize ? 'select *' : 'select max(at.ID)') + ' from uba_auditTrail at'
   if (level > 5) level = 5
   for (let i = 1; i <= level; i++) {
     q = q + ` cross join uba_auditTrail at${i}`

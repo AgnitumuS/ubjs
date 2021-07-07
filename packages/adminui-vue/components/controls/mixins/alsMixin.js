@@ -5,7 +5,7 @@
  *   $_isRequiredByALS - check that exist rule to make field mandatory/required
  * To make this mixin work use it on form as:
  * const alsMixin = require('@adminui-vue/components/controls/mixins/alsMixin')
- * mixins: ['alsMixin']
+ * mixins: [alsMixin]
  */
 module.exports = {
   methods: {

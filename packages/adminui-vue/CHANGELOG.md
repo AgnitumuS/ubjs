@@ -6,16 +6,42 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `UNavbarNotificationsButton`: added opening of unread notifications with the `messageType` === `system`
-  in the modal window for the user when logging into the system.
+ - `UFormRow`: `attributeName` property - if it is passed, control automatically gets attribute label, required and error
+ - new provided value in Vue instances: `validator`. This value contains useful methods for form validation
+ - new helper `validateWithErrorText` for defining of attribute validation functions with an error text
+ - `validationMixin` for the passing of validation defined locally in some Vue component to nested controls (UFormRow for example)
+ - Validation: added support for `$each` captions in validations.  Example:
+   `crimeCases.$each.11.data.$each.333.val.discardReason:caption` => `crimeCases.data.val.discardReason:caption`
+ - UAutoField: in case attribute used in `attribute-name` prop is not exists in Repository a developer-friendly
+   exception is throws instead of `can not read XXX of undefined`
+ - `USelectMultiple`: new prop `additionalButtons`, for add buttons to dropdown before button 'more'
 
 ### Changed
-- behavior of `u-select-entity` and `u-select-multiple` controls: dropdown list
+ - refactored and improved validation of forms. [Documentation](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/utils/Form/validation.md)
+ - use `attributeCaptions` section to define captions for custom attributes or redefine for entity ones
+  instead of computed property with `:caption` suffix
+ - `UFormRow`: display attribute description if exists instead of name when we hover on the label
+ - behavior of `u-select-entity` and `u-select-multiple` controls: dropdown list
   is still hidden until the options are fetched
-
+  
 ### Deprecated
 
 ### Removed
+ - `getValidationState` provided value since now it is a method of validator
+
+### Fixed
+
+## [5.20.15] - 2021-06-14
+### Added
+ - `SignatureVerificationResult` - added a media type information (file/hardware)
+ - `window.capiSelectionDialog` - a Vue based interface for cryptographic module selection (used by UB EE/DE)
+ - `UNavbarNotificationsButton`: added opening of unread notifications with the `messageType` === `system`
+  in the modal window for the user when logging into the system.
+ - `processing.saved`: pass method name `insert/update` as second argument into a `saved` hook on form
+
+### Changed
+ - *BREAKING* UCodeMirror attribute renamed `readOnly` -> `readonly`;
+   This fix u-auto-field readonly binding in case attribute is on Json type 
 
 ### Fixed
 - `computedVuex` - pass `key` property to `SET` mutation

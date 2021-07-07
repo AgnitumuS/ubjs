@@ -164,3 +164,44 @@ By default an `ID` attribute is used as a value. This can be changed by set a `v
   }
 </script>
 ```
+### Use `additional-buttons` to add additional buttons in dropdown before default `more` button
+
+```vue
+<template>
+  <u-select-multiple
+    v-model="deps"
+    entity-name="req_department"
+    value-attribute="code"
+    :additional-buttons="additionalButtons"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        deps: ["dep1", "dep2", "dep3"],
+        additionalButtons: [{
+          name: 'byTemplate',
+          label: 'By template',
+          visibility: true,
+          handler: () => this.showTemplates()
+        },
+        {
+          name: 'all',
+          label: 'Choose dep2 and dep3',
+          visibility: true,
+          handler: () => this.chooseDep()
+        }]
+      }
+    },
+    methods: {
+      showTemplates () {
+        // for example, open modal form to choose template
+      },
+      chooseDep () {
+        this.deps = ['dep2', 'dep3']
+      }
+    }
+  }
+</script>
+```

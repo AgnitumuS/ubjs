@@ -64,8 +64,8 @@ export default {
       default: 'application/x-javascript'
     },
 
-    /**  Allows to run CodeMirror in readOnly mode */
-    readOnly: {
+    /**  Allows to run CodeMirror in readonly mode */
+    readonly: {
       type: Boolean,
       default: false
     },
@@ -93,7 +93,7 @@ export default {
         mode: this.editorMode,
         lineNumbers: true,
         lint: Object.assign({ asi: true, esversion: 8 }, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
-        readOnly: this.readOnly,
+        readOnly: this.readonly,
         tabSize: 2,
         highlightSelectionMatches: { annotateScrollbar: true },
         matchBrackets: true,

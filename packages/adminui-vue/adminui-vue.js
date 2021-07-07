@@ -132,6 +132,13 @@ const Vuelidate = require('vuelidate').default
 if (IS_SYSTEM_JS && !SystemJS.has('vuelidate')) SystemJS.set('vuelidate', SystemJS.newModule(Vuelidate))
 Vue.use(Vuelidate)
 
+const { validationMixin } = require('./utils/Form/validation')
+/**
+ * Mixin for using in forms with own single-form validation. Mixin automatically creates
+ * and passes a validator instance for use in nested controls (UFormRow for example).
+ */
+module.exports.validationMixin = validationMixin
+
 // ------------------ uDialogs -----------------
 const uDialogs = require('./utils/uDialogs')
 /**
@@ -302,12 +309,13 @@ Vue.config.errorHandler = function (err, vm, trace) {
 Vue.prototype.$formatByPattern = UB.formatter
 
 /**
- * Define custom merging strategy for the `validations` option. This allows reusing
- * some code in `Form.validation()` for different forms. Now you can use mixins here with
- * partial validations and not define validation for entity attributes with
- * `notNull = true` that are defined by default
+ * Define custom merging strategy for the `validations` and `attributeCaptions` options.
+ * This allows reusing some code in `Form.validation()` for different forms.
+ * Now you can use mixins here with partial validations and not define validation
+ * for entity attributes with `notNull = true` that are defined by default
  */
-Vue.config.optionMergeStrategies.validations = mergeValidations
+Vue.config.optionMergeStrategies.validations = mergeReactiveOptions
+Vue.config.optionMergeStrategies.attributeCaptions = mergeReactiveOptions
 
 /**
  * Helper function that merges validation config defined in mixins
@@ -315,7 +323,7 @@ Vue.config.optionMergeStrategies.validations = mergeValidations
  * @param {object|function|undefined} b
  * @returns {object}
  */
-function mergeValidations (a, b) {
+function mergeReactiveOptions (a, b) {
   if (typeof a === 'function' || typeof b === 'function') {
     return function () {
       const aObj = typeof a === 'function' ? a.call(this) : a
@@ -328,3 +336,10 @@ function mergeValidations (a, b) {
 // register adminui-vue after all module.exports are defined - SystemJS.newModule memoryse an object props,
 // so any new property added after call to SystemJS.newModule are not available to importers
 if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
+
+// for CERT2 auth we must select crypto provider before connection, on this stage models is not available
+// the only way to give pki() function access to capiSelectionDialog is global window object
+const capiSelectionDialog = require('./views/capiSelectionDialog')
+if (window) {
+  window.capiSelectionDialog = capiSelectionDialog
+}

@@ -12,8 +12,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - `usrDict` value of the `UBM_QUERY_TYPE` enum
 
 ### Fixed
+- default value for `type` attribute of the `ubm_sysdictionary` entity
+
+## [5.20.16] - 2021-06-14
+### Changed
+ - improved template for new vue form
 
 ## [5.20.15] - 2021-05-24
 ## [5.20.14] - 2021-05-13
