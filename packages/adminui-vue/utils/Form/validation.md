@@ -1,5 +1,3 @@
-## Validations
-
 There are two ways to define form validation:
 1. General global validation using `Form.validation(...)` block, which configures validation using entity metadata,
    such as `notNull` attribute properties.
@@ -18,7 +16,7 @@ There are two ways to define form validation:
 In both cases, form components get access to validation configuration by injecting `validator` object.
 Example:
 parent-component.vue
-```vue
+```html
 <template>
   <child-component />
 </template>
@@ -44,7 +42,7 @@ export default {
 ```
 
 child-component.vue
-```vue
+```html
 <template>
   <div>
     Error text for customAttr: {{ customAttrError }}
@@ -87,7 +85,7 @@ This method adds `$errorText` parameter for the provided validation rule, so tha
 like `UFormRow`.
 
 Example:
-```vue
+```html
 <template>
   <div>
     <u-form-row
@@ -119,7 +117,7 @@ export default {
       regNumber: null,
       systemConfig: null
     }
-  }
+  },
 
   validations() {
     return {
@@ -191,7 +189,7 @@ module.exports.mount = cfg => {
 
 ## Example of defining some complex validation
 
-```js
+```javascript
 const { formHelpers } = require('@unitybase/adminui-vue')
 const { required, between } = require('vuelidate/lib/validators/index')
 
@@ -280,7 +278,7 @@ module.exports.mount = cfg => {
 
 ## Example of use of configured rules error texts and attribute captions
 
-```vue
+```html
 <template>
   <!-- error automatically be taken from `$v.name.$params[<firstInvalidParam>].$errorText` -->
   <!-- label automatically be taken from customAttributes or calculated as i18n(`${this.entity}.${this.attributeName}`) -->
