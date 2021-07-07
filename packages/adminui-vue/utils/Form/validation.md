@@ -6,16 +6,18 @@ There are two ways to define form validation:
 2. Component-level validation added by `validationMixin`. This validation in the `validations` section of the component.
    This could be useful for validating various popup child dialog of the form.
    The `validationMixin` mixin adds `validator` property to the component. This is an object with useful methods:
-   - `getValidationState` - returns the current state of validation;
-   - `getAttributeCaption` - returns caption by attribute name;
-   - `getErrorForAttribute`- returns error text for some first failed validation rule of the attribute;
-   - `getIsAttributeRequired` - returns boolean - if the attribute has the required rule in the configured validation;
-   - `validateForm` - validates form data with the Vuelidate help.
-  Also, `validationMixin` provides this validator for nested components.
+   
+   - `getValidationState`: returns the current state of validation;
+   - `getAttributeCaption`: returns caption by attribute name;
+   - `getErrorForAttribute`: returns error text for some first failed validation rule of the attribute;
+   - `getIsAttributeRequired`: returns boolean if the attribute has the required rule in the configured validation;
+   - `validateForm`: validates form data with the Vuelidate help.
+  
+   Also, `validationMixin` provides this validator for nested components.
 
 In both cases, form components get access to validation configuration by injecting `validator` object.
-Example:
-parent-component.vue
+
+Example: *parent-component.vue*
 ```html
 <template>
   <child-component />
@@ -41,7 +43,7 @@ export default {
 </script>
 ```
 
-child-component.vue
+*child-component.vue*
 ```html
 <template>
   <div>
@@ -169,22 +171,23 @@ get the label, so there is no need to define the same label in two places.
 Example:
 ```js
 module.exports.mount = cfg => {
-  Form(cfg)
-    .processing()
-    .validation({
-      ....,
-
-      attributeCaptions() {
-        return {
-          customAttribute1: 'some.i18n.key.for.customAttribute1',
-
-          complexField: {
-            nestedAttribute1: 'some.i18n.key.for.nestedAttribute1',
-          }
+   Form(cfg)
+     .processing()
+     .validation({
+        // other config options goes here,
+   
+        attributeCaptions () {
+           return {
+              customAttribute1: 'some.i18n.key.for.customAttribute1',
+   
+              complexField: {
+                 nestedAttribute1: 'some.i18n.key.for.nestedAttribute1',
+              }
+           }
         }
-      }
-    })
-    .mount()
+     })
+     .mount()
+}
 ```
 
 ## Example of defining some complex validation

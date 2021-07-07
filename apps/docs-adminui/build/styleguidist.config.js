@@ -95,7 +95,8 @@ module.exports = {
     }, {
       name: 'Validation tutorial',
       content: '../../../packages/adminui-vue/utils/Form/validation.md',
-    }],
+    }
+    ],
     components: [
       c('UToolbar/UToolbar.vue'), // TODO
       c('UMasterDetailView/UMasterDetailView.vue'), // TODO
