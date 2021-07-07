@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `getValidationState` provided value since now it is a method of validator
 
 ### Fixed
+- `USelectEntity` prevent click on disable menu items
 
 ## [5.20.15] - 2021-06-14
 ### Added
