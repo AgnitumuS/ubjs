@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    `crimeCases.$each.11.data.$each.333.val.discardReason:caption` => `crimeCases.data.val.discardReason:caption`
  - UAutoField: in case attribute used in `attribute-name` prop is not exists in Repository a developer-friendly
    exception is throws instead of `can not read XXX of undefined`
+ - `USelectMultiple`: new prop `additionalButtons`, for add buttons to dropdown before button 'more'
 
 ### Changed
  - refactored and improved validation of forms. [Documentation](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/utils/Form/validation.md)
