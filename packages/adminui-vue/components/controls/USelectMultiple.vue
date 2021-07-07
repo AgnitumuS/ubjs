@@ -176,7 +176,7 @@ const { debounce } = require('throttle-debounce')
 const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
 
 /**
- * Milty-select component mapped to Entity
+ * Multy-select component mapped to Entity
  */
 export default {
   name: 'USelectMultiple',
@@ -314,10 +314,10 @@ export default {
 
       set (value) {
         this.query = value
-        if (!this.dropdownVisible) {
+
+        this.debouncedFetch(value, () => {
           this.dropdownVisible = true
-        }
-        this.debouncedFetch(value)
+        })
       }
     },
 
@@ -390,8 +390,8 @@ export default {
       this.loading = false
     },
 
-    debouncedFetch: debounce(600, function (query) {
-      this.fetchPage(query)
+    debouncedFetch: debounce(600, function (query, resolve, reject) {
+      this.fetchPage(query).then(resolve, reject)
     }),
 
     async fetchDisplayValues (IDs) {
@@ -499,10 +499,10 @@ export default {
       }
     },
 
-    onKeydownAltDown () {
+    async onKeydownAltDown () {
       if (!this.dropdownVisible) {
+        await this.fetchPage()
         this.dropdownVisible = true
-        this.fetchPage()
       }
     },
 
@@ -513,11 +513,15 @@ export default {
       this.$refs.input.click()
     },
 
-    toggleDropdown () {
-      this.dropdownVisible = !this.dropdownVisible
-      if (this.dropdownVisible) {
-        this.fetchPage()
+    async toggleDropdown () {
+      const isTurnedOn = !this.dropdownVisible
+
+      if (isTurnedOn) {
+        await this.fetchPage()
       }
+
+      // make dropdown visible after fetch
+      this.dropdownVisible = isTurnedOn
     },
 
     /**

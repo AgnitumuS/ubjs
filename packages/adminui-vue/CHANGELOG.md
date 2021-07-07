@@ -21,7 +21,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - use `attributeCaptions` section to define captions for custom attributes or redefine for entity ones
   instead of computed property with `:caption` suffix
  - `UFormRow`: display attribute description if exists instead of name when we hover on the label
-
+ - `u-select-entity` & `u-select-multiple` drop-down is shown after fetch, so in case some old values are in options
+   they will not be shown to the user
+  
 ### Deprecated
 
 ### Removed

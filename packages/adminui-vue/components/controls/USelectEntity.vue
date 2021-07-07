@@ -375,8 +375,8 @@ export default {
     },
 
     /**
-     * need for update displayed query if original option query changed
-     * but show dropdown and fetch date just if changed queryDisplayValue
+     * Needed to update displayed query when original query option is changed
+     * but show dropdown and fetch data only if queryDisplayValue changed
      */
     queryDisplayValue: {
       get () {
@@ -385,10 +385,10 @@ export default {
 
       set (value) {
         this.query = value
-        if (!this.dropdownVisible) {
+
+        this.debouncedFetch(value, () => {
           this.dropdownVisible = true
-        }
-        this.debouncedFetch(value)
+        })
       }
     },
 
@@ -398,7 +398,7 @@ export default {
   },
 
   watch: {
-    // when value (ID) changed need to get formatted label
+    // when value (ID) is changed - get formatted label
     value: {
       immediate: true,
       handler: 'setQueryByValue'
@@ -464,8 +464,8 @@ export default {
       this.loading = false
     },
 
-    debouncedFetch: debounce(600, function (query) {
-      this.fetchPage(query)
+    debouncedFetch: debounce(600, function (query, resolve, reject) {
+      this.fetchPage(query).then(resolve, reject)
     }),
 
     async fetchDisplayValue (value) {
@@ -555,10 +555,10 @@ export default {
       }
     },
 
-    onKeydownAltDown () {
+    async onKeydownAltDown () {
       if (!this.dropdownVisible) {
+        await this.fetchPage()
         this.dropdownVisible = true
-        this.fetchPage()
       }
     },
 
@@ -570,14 +570,19 @@ export default {
     },
 
     // shows all search result when click on dropdown arrow
-    toggleDropdown () {
+    async toggleDropdown () {
       if (this.isReadOnly) return
-      this.dropdownVisible = !this.dropdownVisible
-      if (this.dropdownVisible) {
-        this.fetchPage()
+
+      const isTurnedOn = !this.dropdownVisible
+
+      if (isTurnedOn) {
+        await this.fetchPage()
       } else {
         this.setQueryByValue(this.value)
       }
+
+      // make dropdown visible after fetch
+      this.dropdownVisible = isTurnedOn
     },
 
     /**
