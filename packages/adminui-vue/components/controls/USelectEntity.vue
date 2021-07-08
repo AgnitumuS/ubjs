@@ -283,7 +283,25 @@ export default {
     skipAutoComplete: {
       type: Boolean,
       default: false
+    },
+
+    /**
+     * Allow adding a value typed by used but not in repository
+     */
+    allowDictionaryAdding: {
+      type: Boolean,
+      default: false
+    },
+
+    /**
+     * Overrides execParams for insert action.
+     * Function must return object with execParams
+     */
+    buildAddDictionaryConfig: {
+      type: Function,
+      default: config => config
     }
+
   },
 
   data () {
@@ -320,20 +338,9 @@ export default {
     },
 
     inputIconCls () {
-      let icon
-      const arrowPrefix = 'u-icon-arrow-'
-
-      if (this.dropdownVisible) {
-        icon = arrowPrefix + 'up'
-      } else {
-        icon = arrowPrefix + 'down'
-      }
-
-      if (this.loading) {
-        icon = 'el-icon-loading'
-      }
-
-      return icon
+      return this.loading
+        ? 'el-icon-loading'
+        : 'u-icon-arrow-' + (this.dropdownVisible ? 'up' : 'down')
     },
 
     defaultActions () {
@@ -493,9 +500,9 @@ export default {
     },
 
     /**
-     * get value label. If label not already loaded it will be fetched from server
+     * get label for value. If label is not already loaded it will be fetched from server
      *
-     * @param {number} value ID
+     * @param {number/null} value ID
      */
     setQueryByValue (value) {
       if (this._fetchDisplayValuePromise) {
@@ -510,8 +517,13 @@ export default {
 
       this.undefinedRecord = false
       if (value === undefined || value === null) {
-        // Clear display value, when ID is empty
-        this.query = ''
+        if (this.allowDictionaryAdding && !this.selectedOption && !this.value && this.query && this.prevQuery &&
+          this.query === this.prevQuery) {
+          this.prevQuery = ''
+        } else {
+          // Clear display value, when ID is empty
+          this.query = ''
+        }
         return
       }
 
@@ -748,6 +760,73 @@ export default {
     onBlur () {
       this.isFocused = false
       this.$emit('blur')
+      if (this.allowDictionaryAdding && (this.query.length > 0) && !this.disabled &&
+        !this.value && !this.removeDefaultActions) {
+        this.$dialog({
+          title: 'select.dictionaryAdding',
+          msg: this.$ut('select.dictionaryAddingChoices', { entity: this.$ut(this.entityName), text: this.query }),
+          buttons: {
+            yes: 'Edit',
+            no: 'Add',
+            cancel: 'Continue'
+          }
+        }).then(choice => {
+          if (choice === 'no') {
+            this.handleAddDictionaryItem()
+          } else if (choice === 'yes') {
+            this.handleAddDictionaryItemWithDetails()
+          } else {
+            this.query = ''
+          }
+        })
+      }
+    },
+
+    /**
+     * Handler for 'cancel' event of popper-confirm
+     * Inserts new record with params created from 'buildAddDictionaryConfig' and emits input with new ID
+     */
+    async handleAddDictionaryItem () {
+      const config = await this.buildAddDictionaryConfig({
+        cmdType: this.$UB.core.UBCommand.commandType.showForm,
+        entity: this.getEntityName,
+        isModal: true,
+        query: this.query
+      })
+
+      const newItem = await this.$UB.connection
+        .insertAsObject({
+          entity: this.getEntityName,
+          fieldList: [this.valueAttribute],
+          execParams: (config.props && config.props.parentContext) || {}
+        })
+
+      if (newItem && newItem[this.valueAttribute]) {
+        this.$notify.success(this.$ut('select.recordAddedSuccessfully'))
+        this.$emit('input', newItem[this.valueAttribute])
+      }
+    },
+
+    /**
+     * Handler for 'confirm' event of popper-confirm
+     * Opens modal form with params created from 'buildAddDictionaryConfig' and emits input with new ID after first form save
+     */
+    async handleAddDictionaryItemWithDetails () {
+      const vm = this
+      const config = await this.buildAddDictionaryConfig({
+        cmdType: this.$UB.core.UBCommand.commandType.showForm,
+        entity: this.getEntityName,
+        isModal: true,
+        query: this.query
+      })
+
+      vm.$UB.connection.on(`${vm.getEntityName}:changed`, function (response) {
+        if (response && response.method && response.method === 'insert' && response.resultData && response.resultData[this.valueAttribute]) {
+          vm.$emit('input', response.resultData[this.valueAttribute])
+          vm.$UB.connection.removeListener(`${vm.getEntityName}:changed`, null)
+        }
+      })
+      return this.$UB.core.UBApp.doCommand(config)
     }
   }
 }

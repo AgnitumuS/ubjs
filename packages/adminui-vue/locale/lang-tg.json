@@ -210,7 +210,10 @@
   },
 
   "select": {
-    "valueIsUndefined": "Қиммати \"{0}\" дар моҳияти (объекти) \"{1}\" ёфт нашуд."
+    "valueIsUndefined": "Қиммати \"{0}\" дар моҳияти (объекти) \"{1}\" ёфт нашуд.",
+    "dictionaryAdding": "Илова кардани сабти нав",
+    "dictionaryAddingChoices": "Элемент <strong> \"{text}\"</strong> дар луғати \"{entity}\" ёфт нашудааст. Интихоб кунед: <ul><li> <strong> Идома </strong> барои сабти дигаре </li> <li> <strong> Илова кардан </strong> барои илова кардани сабти нав бо матни \"{text}\" </li> <li> <strong> Таҳрир </strong> барои муайян атрибутҳои иловагӣ </li> </ul> ",
+    "recordAddedSuccessfully": "Сабт бомуваффақият илова карда шуд"
   },
 
   "tableRegister": {

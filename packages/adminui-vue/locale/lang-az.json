@@ -135,6 +135,9 @@
   "selectDate": "Tarixi seçin",
   "selectDateAndTime": "Tarix və vaxtı seçin",
 
+  "Add": "əlavə",
+  "Continue": "Davam",
+
   "sidebar": {
     "desktopSelector": {
       "title": "İş masanı seçimi"
@@ -210,7 +213,10 @@
   },
 
   "select": {
-    "valueIsUndefined": "Qiymət \"{0}\" obeyktdə tapılmadı \"{1}\""
+    "valueIsUndefined": "Qiymət \"{0}\" obeyktdə tapılmadı \"{1}\"",
+    "dictionaryAdding": "Yeni qeyd əlavə etmək",
+    "dictionaryAddingChoices": "Element <strong> \"{text}\"</strong> lüğətdə \"{entity}\"tapılmadı. Seçin: <ul><li> <strong> Davam et </strong> başqa bir qeyd seçmək üçün </li> <li> <strong> Əlavə et </strong> mətni ilə yeni bir qeyd əlavə etmək üçün \"{text}\" </li> <li> <strong> Düzenle </strong> təyin etmək əlavə atributlar </li> </ul> ",
+    "recordAddedSuccessfully": "Qeyd uğurla əlavə edildi"
   },
 
   "tableRegister": {

@@ -189,7 +189,7 @@ module.exports.default = {
     },
 
     initialLetter (word) {
-      return word ? `${word[0].toUpperCase()}.` : ''
+      return word ? `${word.toString()[0].toUpperCase()}.` : ''
     },
 
     getConfig (cfg) {

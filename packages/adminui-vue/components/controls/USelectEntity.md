@@ -268,3 +268,41 @@ Readonly USectEntity allow using actions (for example to view selected element f
   }
 </script>
 ```
+
+### Allow adding
+```vue
+<template>
+  <u-select-entity
+    v-model="personID"
+    entity-name="cdn_person"
+    allow-dictionary-adding
+    :build-add-dictionary-config="buildAddPersonConfig"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        personID: null
+      }
+    },
+
+    methods: {
+      buildAddPersonConfig (cfg) {
+        const parsedFIO = _.compact(cfg.query.split(' ')).map(word => _.capitalize(word))
+        if (!parsedFIO[1]) this.$notify.error('Wrong citizen full name, must contain at least 2 words')
+        cfg.props = {}
+        cfg.props.parentContext = {
+          fullFIO: cfg.query,
+          shortFIO: parsedFIO[1] + ' ' + _.compact([parsedFIO[0] && parsedFIO[0][1], parsedFIO[2] && parsedFIO[2][1]])
+            .join('.') + '.',
+          lastName: parsedFIO[1],
+          firstName: parsedFIO[0],
+          middleName: parsedFIO[2] || null
+        }
+        return cfg
+      }
+    }
+  }
+</script>
+```
