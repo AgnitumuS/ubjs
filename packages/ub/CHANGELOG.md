@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - for Document type attributes added validation what BLOB store used by attribute is defined in ubConfig  
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.6] - 2021-07-08
+### Added
+ - for Document type attributes added validation what BLOB store used by attribute is defined in ubConfig  
 
 ## [5.22.5] - 2021-06-14
 ### Added

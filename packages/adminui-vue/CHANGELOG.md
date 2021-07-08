@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.16] - 2021-07-08
+### Added
  - `UFormRow`: `attributeName` property - if it is passed, control automatically gets attribute label, required and error
  - new provided value in Vue instances: `validator`. This value contains useful methods for form validation
  - new helper `validateWithErrorText` for defining of attribute validation functions with an error text
@@ -26,8 +37,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `u-select-entity` & `u-select-multiple` drop-down is shown after fetch, so in case some old values are in options
    they will not be shown to the user
   
-### Deprecated
-
 ### Removed
  - `getValidationState` provided value since now it is a method of validator
 
