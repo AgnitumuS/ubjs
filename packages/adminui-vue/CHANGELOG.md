@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - UAutoField: in case attribute used in `attribute-name` prop is not exists in Repository a developer-friendly
    exception is throws instead of `can not read XXX of undefined`
  - `USelectMultiple`: new prop `additionalButtons`, for add buttons to dropdown before button 'more'
+ - `USelectEntity`: new prop `allow-dictionary-adding`. If defined and user type text what not match any record -
+   will ask for adding a new record into dictionary. Record parameters must be defined in `build-add-dictionary-config` handler
 
 ### Changed
  - refactored and improved validation of forms. [Documentation](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/utils/Form/validation.md)
