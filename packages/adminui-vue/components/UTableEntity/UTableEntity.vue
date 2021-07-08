@@ -2,6 +2,7 @@
   <u-table-entity-root
     :bordered="bordered"
     v-bind="$attrs"
+    :with-pagination="withPagination"
     :view-mode.sync="viewMode"
     v-on="$listeners"
   >
@@ -46,6 +47,15 @@ export default {
      * For detail info about column object look JSDoc type {UTableColumn}
      */
     columns: Array,
+
+    /**
+     * Whether to use pagination for table
+     */
+    withPagination: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
 
     /**
      * Page size for pagination. Default is `appConfig.storeDefaultPageSize` || 50

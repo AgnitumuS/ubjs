@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UTableEntity`: prop `withPagination` for possibility to control availability of the table pagination
+ - `UTableEntity`: slot `lastTableRow` to add some content in the end of the table
 
 ### Changed
 

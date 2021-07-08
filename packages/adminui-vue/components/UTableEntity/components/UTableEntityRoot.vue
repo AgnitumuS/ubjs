@@ -80,7 +80,11 @@
           :target-column="targetColumn"
           @click.native="onSort"
         />
-        <pagination />
+        <pagination v-if="withPagination" />
+        <div
+          v-else
+          style="margin-left: auto"
+        />
 
         <!-- @slot Replace whole toolbar dropdown -->
         <slot
@@ -251,6 +255,7 @@
           {{ $ut(column.label) }}
           <i
             v-if="sort"
+            :key="column.id"
             :class="getSortIconClass(column.id)"
           />
         </slot>
@@ -275,7 +280,14 @@
         </slot>
       </template>
 
-      <next-page-button slot="appendTable" />
+      <template #lastTableRow>
+        <slot name="lastTableRow" />
+      </template>
+
+      <next-page-button
+        v-if="withPagination"
+        slot="appendTable"
+      />
     </u-table>
 
     <u-card-view
@@ -295,7 +307,10 @@
         :row="row"
       />
 
-      <next-page-button slot="append" />
+      <next-page-button
+        v-if="withPagination"
+        slot="append"
+      />
     </u-card-view>
 
     <u-dropdown
@@ -478,6 +493,15 @@ export default {
      * Table container will have own scroll and fixed header.
      */
     maxHeight: [Number, String],
+
+    /**
+     * Whether to use pagination for table
+     */
+    withPagination: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
 
     /**
      * Display a border around table and toolbar
