@@ -69,7 +69,7 @@ const ServerApp = {}
 
 /**
  * Fires for an {@link module:@unitybase/ub#App UB.App} just after all domain entities (all *.meta) are loaded into server memory
- * and all server-side js are evaluated.
+ * and all server-side js are evaluated (for each working thread).
  *
  * On this stage you can subscribe on a cross-model handles.
  *
