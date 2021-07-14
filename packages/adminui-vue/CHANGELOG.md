@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `USelectEnum`: added `repository` prop, same as `USelectEntity` has
 
 ### Changed
 
@@ -14,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UFormRow`: fixed typo in prop name 'descripion' -> 'description'
 
 ## [5.20.16] - 2021-07-08
 ### Added
