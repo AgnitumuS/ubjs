@@ -151,7 +151,7 @@ export default {
     /**
      * row description
      */
-    descripion: {
+    description: {
       type: String,
       required: false
     },
@@ -216,8 +216,8 @@ export default {
     },
 
     descriptionText () {
-      if (this.descripion) {
-        return this.$ut(this.descripion)
+      if (this.description) {
+        return this.$ut(this.description)
       }
       if (this.attributeName && this.entity) {
         const attrDescription = this.$ut(`${this.entity}.${this.attributeName}#description`)
