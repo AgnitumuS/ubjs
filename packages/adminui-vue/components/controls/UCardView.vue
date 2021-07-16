@@ -6,9 +6,9 @@
         :key="row.ID"
         class="u-card"
         :class="getCardClass(row)"
-        @click="$emit('click', {row})"
-        @dblclick="$emit('dblclick', {row})"
-        @contextmenu="$emit('contextmenu', {event: $event, row})"
+        @click="$emit('click', { row })"
+        @dblclick="$emit('dblclick', { row })"
+        @contextmenu="$emit('contextmenu', { event: $event, row })"
       >
         <slot
           name="card"
@@ -20,27 +20,53 @@
             class="u-card-row"
           >
             <div class="u-card-row__label">
-              {{ $ut(column.label) }}
+              <slot
+                :name="`head_${column.id}`"
+                :column="column"
+              >
+                {{ $ut(column.label) }}
+              </slot>
             </div>
-
             <el-tooltip
               :enterable="false"
               :open-delay="300"
             >
-              <component
-                :is="getCellTemplate(column)"
-                slot="content"
-                :column="column"
-                :row="row"
+              <template slot="content">
+                <slot
+                  :name="`tooltip_${column.id}`"
+                  :value="row[column.id]"
+                  :row="row"
+                  :column="column"
+                >
+                  <slot
+                    :name="column.id"
+                    :value="row[column.id]"
+                    :row="row"
+                    :column="column"
+                  >
+                    <component
+                      :is="getCellTemplate(column)"
+                      :column="column"
+                      :row="row"
+                      :value="row[column.id]"
+                    />
+                  </slot>
+                </slot>
+              </template>
+              <slot
+                :name="column.id"
                 :value="row[column.id]"
-              />
-              <component
-                :is="getCellTemplate(column)"
-                class="u-card-row__value"
-                :column="column"
                 :row="row"
-                :value="row[column.id]"
-              />
+                :column="column"
+              >
+                <component
+                  :is="getCellTemplate(column)"
+                  class="u-card-row__value"
+                  :column="column"
+                  :row="row"
+                  :value="row[column.id]"
+                />
+              </slot>
             </el-tooltip>
           </div>
         </slot>
