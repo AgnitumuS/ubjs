@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `USelectEntity`: fixed `More` button for non editable controls - after the click
+   the dropdown list was reopened and the same set of rows was fetched instead of the next one.
  - `UFormRow`: fixed typo in prop name 'descripion' -> 'description'
  - `UCodeMirror`: fix updating of the control's value when `valueIsJson=true` and user inputed a number
 
