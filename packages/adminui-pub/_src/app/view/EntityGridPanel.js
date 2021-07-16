@@ -2587,7 +2587,7 @@ Ext.define('UB.view.EntityGridPanel', {
     // })
     return me.store.reload().finally(function () {
       me._inRefresh = false
-      me.down(me.viewType).focus()
+      me.down(me.viewType)?.focus()
     })
   },
 
