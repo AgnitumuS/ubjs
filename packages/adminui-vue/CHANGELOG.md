@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `USelectEnum`: added `repository` prop, same as `USelectEntity` has
+ - `UCardView`: added support for field slots in `Card view`. Same behavior as in `Table view`
 
 ### Changed
 
