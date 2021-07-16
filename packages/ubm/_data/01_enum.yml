@@ -7,16 +7,19 @@ UBA_RULETYPE:
     ru: Allow
     tg: Allow
     uk: Allow
+    nl: Toestaan
 - C:
     en: Complements
     ru: Complements
     tg: Complements
     uk: Complements
+    nl: Aanvullingen
 - D:
     en: Deny
     ru: Deny
     tg: Deny
     uk: Deny
+    nl: Ontkennen
 
 FORM_TYPE:
 - auto:
@@ -24,21 +27,25 @@ FORM_TYPE:
     ru: UB form
     tg: UB form
     uk: UB form
+    nl: UB-vorm
 - custom:
     en: Pure ExtJS form
     ru: Pure ExtJS form
     tg: Pure ExtJS form
     uk: Pure ExtJS form
+    nl: Pure ExtJS-vorm
 - vue:
     en: VueJS form
     ru: VueJS form
     tg: VueJS form
     uk: VueJS form
+    nl: VueJS-vorm
 - module:
     en: Any module what exports mount()
     ru: Any module that exports mount()
     tg: Any module that exports mount()
     uk: Any module that exports mount()
+    nl: Elke module die mount() exporteert
 
 CMD_TYPE:
 - showList:
@@ -46,16 +53,19 @@ CMD_TYPE:
     ru: Show list
     tg: Show list
     uk: Show list
+    nl: Lijst weergeven
 - showForm:
     en: Show form
     ru: Show form
     tg: Show form
     uk: Show form
+    nl: Vorm weergeven
 - runCode:
     en: Code execution
     ru: Code execution
     tg: Code execution
     uk: Code execution
+    nl: Code uitvoering
 
 UBA_USER_GENDER:
 - male:
@@ -63,11 +73,13 @@ UBA_USER_GENDER:
     ru: Мужчина
     tg: Мард
     uk: Чоловік
+    nl: Man
 - female:
     en: Female
     ru: Женщина
     tg: Зан
     uk: Жінка
+    nl: Vrouw
 
 UBM_QUERY_TYPE:
 - classifier:
@@ -75,8 +87,10 @@ UBM_QUERY_TYPE:
     ru: Классификатор
     tg: Тасниф
     uk: Класифікатор
+    nl: Classificatie
 - sysDict:
     en: System Dictionary
     ru: Системный справочник
     tg: Истиноди система
     uk: Системний довідник
+    nl: Systeemwoordenboek

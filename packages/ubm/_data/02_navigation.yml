@@ -12,6 +12,7 @@ adm_desktop:
         ru: Интерфейс
         tg: Интерфейс
         uk: Інтерфейс
+        nl: Gebruikersinterface
       iconCls: u-icon-image
       displayOrder: 30
       items:
@@ -22,6 +23,7 @@ adm_desktop:
             ru: Перечисления
             tg: Номгӯҳо
             uk: Переліки
+            nl: Opsommingen
           displayOrder: 10
           showList:
             renderer: vue
@@ -46,6 +48,7 @@ adm_desktop:
             ru: Рабочие столы
             tg: Мизҳои корӣ
             uk: Робочі столи
+            nl: Desktops
           displayOrder: 20
           showList:
             renderer: vue
@@ -65,6 +68,7 @@ adm_desktop:
             ru: Ярлыки
             tg: Тамға
             uk: Ярлики
+            nl: Sneltoetsen
           displayOrder: 30
           showList:
             renderer: vue
@@ -88,6 +92,7 @@ adm_desktop:
             ru: Формы
             tg: Шаклҳо
             uk: Форми
+            nl: Vormen
           displayOrder: 40
           showList:
             renderer: vue
@@ -105,6 +110,7 @@ adm_desktop:
             ru: Запросы к данным
             tg: Саволҳо
             uk: Запити даних
+            nl: Zoekopdrachten
           displayOrder: 50
           showList:
             renderer: vue
@@ -119,6 +125,7 @@ adm_desktop:
             ru: Пользовательские справочники
             tg: Луғатномаҳои система
             uk: Користувацькі довідники
+            nl: Systeemwoordenboeken
           displayOrder: 60
           showList:
             renderer: vue
@@ -133,6 +140,7 @@ adm_desktop:
             ru: ER диаграммы
             tg: ER диаграммаҳо
             uk: ER діаграми
+            nl: ER-diagrammen
           displayOrder: 70
           showList:
             renderer: vue
