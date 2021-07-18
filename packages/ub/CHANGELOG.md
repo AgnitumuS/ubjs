@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `App.domainIsLoaded` documentation improved
 
 ## [5.22.6] - 2021-07-08
 ### Added

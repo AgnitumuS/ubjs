@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - pki.verify() interface documentation improved (correct parameter description) 
 
 ## [5.9.11] - 2021-07-08
 ## [5.9.10] - 2021-06-14
