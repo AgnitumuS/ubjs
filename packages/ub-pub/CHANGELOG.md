@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.9.12] - 2021-07-18
+### Fixed
  - pki.verify() interface documentation improved (correct parameter description)
  - use `instanceof` instead of `.toString()` to detect `xhr` (post, get, etc) parameter type (UInt8Array.toStings() produce a huge string) 
 

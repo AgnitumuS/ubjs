@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Dutch (nl) localization
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.22.7] - 2021-07-18
+### Added
+ - Dutch (nl) localization
 
 ### Fixed
  - `App.domainIsLoaded` documentation improved

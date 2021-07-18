@@ -6,16 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `USelectEnum`: added `repository` prop, same as `USelectEntity` has
- - `UCardView`: added support for field slots in `Card view`. Same behavior as in `Table view`
- - `UTableEntity`: prop `withPagination` for controlling the availability of the table pagination
- - `UTableEntity`: slot `lastTableRow` to add some content at the end of the table
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.20.17] - 2021-07-18
+### Added
+ - `USelectEnum`: added `repository` prop, same as `USelectEntity` has
+ - `UCardView`: added support for field slots in `Card view`. Same behavior as in `Table view`
+ - `UTableEntity`: prop `withPagination` for controlling the availability of the table pagination
+ - `UTableEntity`: slot `lastTableRow` to add some content at the end of the table
 
 ### Fixed
  - `USelectEntity`: fixed `More` button for non editable controls - after the click
