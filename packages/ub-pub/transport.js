@@ -291,17 +291,17 @@ const CONTENT_TYPE_APPLICATION_JSON = { 'Content-Type': 'application/json;charse
  * @property {Number} xhrDefaults.timeout Default timeout to apply to request
  */
 const xhrDefaults = {
-  transformRequest: [function (data) {
-    return !!data && typeof data === 'object' && data.toString() !== '[object File]' && data.toString() !== '[object ArrayBuffer]'
+  transformRequest: function (data) {
+    return !!data && (typeof data === 'object') && !(data instanceof File) && !(data instanceof ArrayBuffer || data.buffer instanceof ArrayBuffer)
       ? JSON.stringify(data)
       : data
-  }],
-  transformResponse: [function (data, headers) {
+  },
+  transformResponse: function (data, headers) {
     if (data && (typeof data === 'string') && (headers('content-type') || '').indexOf('json') >= 0) {
       data = JSON.parse(data)
     }
     return data
-  }],
+  },
   headers: {
     common: { Accept: 'application/json, text/plain, */*' },
     post: CONTENT_TYPE_APPLICATION_JSON,
