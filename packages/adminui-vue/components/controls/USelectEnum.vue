@@ -73,7 +73,12 @@ export default {
       type: String,
       default: 'like',
       validator: value => ['like', 'startsWith'].includes(value)
-    }
+    },
+    /**
+     * Function which return UBRepository
+     * @returns {ClientRepository}
+     */
+    repository: Function
   },
 
   data () {
@@ -96,10 +101,14 @@ export default {
 
   methods: {
     getEnumRequest () {
-      return this.$UB.Repository(this.enumEntity)
-        .attrs('eGroup', this.valueAttribute, this.displayAttribute, 'sortOrder')
-        .where('eGroup', '=', this.eGroup, { clearable: false })
-        .orderBy('sortOrder')
+      if (this.repository) {
+        return this.repository()
+      } else {
+        return this.$UB.Repository(this.enumEntity)
+          .attrs('eGroup', this.valueAttribute, this.displayAttribute, 'sortOrder')
+          .where('eGroup', '=', this.eGroup, { clearable: false })
+          .orderBy('sortOrder')
+      }
     }
   }
 }
