@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - support for id.gov.ua - see  https://id.gov.ua/downloads/IDInfoProcessingD.pdf
 
 ### Changed
 
