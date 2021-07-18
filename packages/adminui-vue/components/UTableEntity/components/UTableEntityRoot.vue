@@ -281,6 +281,7 @@
       </template>
 
       <template #lastTableRow>
+        <!-- @slot add some content at the end of the table before pagination button -->
         <slot name="lastTableRow" />
       </template>
 
