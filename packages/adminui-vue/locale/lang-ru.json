@@ -135,6 +135,9 @@
   "selectDate": "Выберите дату",
   "selectDateAndTime": "Выберите дату и время",
 
+  "Add": "Добавить",
+  "Continue": "Продолжить",
+
   "sidebar": {
     "desktopSelector": {
       "title": "Выбор рабочего стола"
@@ -210,7 +213,10 @@
   },
 
   "select": {
-    "valueIsUndefined": "Значение \"{0}\" не найдено в сущности \"{1}\""
+    "valueIsUndefined": "Значение \"{0}\" не найдено в сущности \"{1}\"",
+    "dictionaryAdding": "New record",
+    "dictionaryAddingChoices": "Элемент <strong>{text}</strong> не найден в справочнике '{entity}'. Выберите: <ul><li><strong>Продолжить</strong> чтобы выбрать другой элемент</li> <li><strong>Добавить</strong> для добавления записи с текстом '{text}'</li> <li><strong>Редактировать</strong> для задания дополнительных реквизитов</li> </ul>",
+    "recordAddedSuccessfully": "Создано новый элемент"
   },
 
   "tableRegister": {

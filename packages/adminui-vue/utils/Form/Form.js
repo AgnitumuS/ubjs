@@ -13,7 +13,7 @@ const {
   transformCollections,
   enrichFieldList
 } = require('./helpers')
-const Validator = require('./validation')
+const { Validator } = require('./validation')
 const UB = require('@unitybase/ub-pub')
 
 /**
@@ -117,7 +117,7 @@ class UForm {
     this.modalWidth = modalWidth
 
     this.validator = undefined
-    this.customValidationMixin = undefined
+    this.customValidationOptions = undefined
 
     this.isProcessingUsed = false
     this.isValidationUsed = false
@@ -235,13 +235,11 @@ class UForm {
   /**
    * Custom validator function. In case `validation` not called or called without argument then validator function
    *  is generated automatically based on entitySchema
-   * @param {object} [validationMixin] Custom validation mixin in case we need to override default validation
-   * @param {object} [validationMixin.computed] Vue instance computed properties configuration
-   * @param {object} [validationMixin.validations] [vuelidate](https://vuelidate.netlify.com/#sub-basic-usage) mixin validations config
+   * @param {Vue.ComponentOptions} [validationOptions] Custom validation mixin in case we need to override default validation
    * @return {UForm}
    */
-  validation (validationMixin) {
-    if (validationMixin && (typeof validationMixin === 'function')) {
+  validation (validationOptions) {
+    if (validationOptions && (typeof validationOptions === 'function')) {
       throw new Error('Invalid parameter type for UForm.validation - must be object with at last computed or validation props')
     }
     if (!this.canValidationInit) {
@@ -250,8 +248,8 @@ class UForm {
     this.canValidationInit = false
     this.isValidationUsed = true
 
-    if (validationMixin) {
-      this.customValidationMixin = validationMixin
+    if (validationOptions) {
+      this.customValidationOptions = validationOptions
     }
 
     return this
@@ -269,19 +267,13 @@ class UForm {
       )
     }
 
-    let $v
-    let getValidationState
-
     if (this.isValidationUsed) {
-      this.validator = new Validator(
-        this.$store,
-        this.entitySchema,
-        this.fieldList,
-        this.customValidationMixin
-      )
-
-      $v = this.validator.getValidationState()
-      getValidationState = () => this.validator.getValidationState()
+      this.validator = Validator.initializeWithCustomOptions({
+        store: this.$store,
+        entitySchema: this.entitySchema,
+        masterFieldList: this.fieldList,
+        customValidationMixin: this.customValidationOptions
+      })
     }
 
     if (this.isProcessingUsed) {
@@ -297,8 +289,7 @@ class UForm {
         component: this.component,
         props: this.props,
         store: this.$store,
-        $v,
-        getValidationState,
+        validator: this.validator,
         title: this.title,
         titleTooltip: this.titleTooltip,
         modalClass: this.modalClass,
@@ -314,18 +305,17 @@ class UForm {
       if (!this.tabId) {
         this.tabId = this.entity
           ? $App.generateTabId({ // TODO portal: $App.generateTabId -> portal.generateTabId
-            entity: this.entity,
-            instanceID: this.instanceID,
-            formCode: this.formCode
-          })
+              entity: this.entity,
+              instanceID: this.instanceID,
+              formCode: this.formCode
+            })
           : undefined
       }
       mountTab({
         component: this.component,
         props: this.props,
         store: this.$store,
-        $v,
-        getValidationState,
+        validator: this.validator,
         title: this.title,
         titleTooltip: this.titleTooltip,
         tabId: this.tabId,
@@ -343,8 +333,7 @@ class UForm {
         component: this.component,
         props: this.props,
         store: this.$store,
-        $v,
-        getValidationState,
+        validator: this.validator,
         title: this.title,
         titleTooltip: this.titleTooltip,
         target: this.target,

@@ -61,7 +61,6 @@
 <script>
 /* global UBS */
 const { Form } = require('@unitybase/adminui-vue')
-const { validationMixin } = require('vuelidate/lib/index')
 const { required, minLength, maxLength, sameAs } = require('vuelidate/lib/validators/index')
 
 module.exports.mount = cfg => {
@@ -73,7 +72,6 @@ module.exports.mount = cfg => {
 
 module.exports.default = {
   name: 'ChangeUserPasswordForm',
-  mixins: [validationMixin],
 
   props: {
     parentContext: Object

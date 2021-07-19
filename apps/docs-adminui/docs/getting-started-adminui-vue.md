@@ -7,6 +7,7 @@ Documentation is separated into groups:
   - **presentational**:  components what can be used without UnityBase server
   - **data-aware**:  components what uses a knowledge about UnityBase metadata to configure itself depending on Domain
   - **views**: `smart components` such as forms etc. (todo)
+ - **tutorials**: complex examples for most common UI tasks
 
 > All code blocks are editable and reactive - just change something and see result immediately
 

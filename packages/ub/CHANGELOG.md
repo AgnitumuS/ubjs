@@ -15,6 +15,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.7] - 2021-07-18
+### Added
+ - Dutch (nl) localization
+
+### Fixed
+ - `App.domainIsLoaded` documentation improved
+
+## [5.22.6] - 2021-07-08
+### Added
+ - for Document type attributes added validation what BLOB store used by attribute is defined in ubConfig  
+
 ## [5.22.5] - 2021-06-14
 ### Added
  - `getAppInfo` endpoint result can be modified by subscribe to newly added `App.getAppInfo` event:

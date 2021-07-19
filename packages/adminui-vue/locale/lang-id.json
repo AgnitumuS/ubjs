@@ -136,6 +136,9 @@
   "selectDate": "Select date",
   "selectDateAndTime": "Select date and time",
 
+  "Add": "Add",
+  "Continue": "Continue",
+
   "sidebar": {
     "desktopSelector": {
       "title": "Desktop selection"
@@ -211,7 +214,10 @@
   },
 
   "select": {
-    "valueIsUndefined": "Value \"{0}\" not found in entity \"{1}\""
+    "valueIsUndefined": "Value \"{0}\" not found in entity \"{1}\"",
+    "dictionaryAdding": "Adding new record",
+    "dictionaryAddingChoices": "Element <strong>\"{text}\"</strong> is not found in the dictionary \"{entity}\". Choose: <ul><li><strong>Continue</strong> to select another record</li> <li><strong>Add</strong> to add a new record with text \"{text}\"</li> <li><strong>Edit</strong> to define additional attributes</li> </ul>",
+    "recordAddedSuccessfully": "Record added successfully"
   },
 
   "tableRegister": {

@@ -94,6 +94,15 @@ module.exports = {
       c('UMasterDetailView/UMasterDetailView.vue'), // TODO
       c('UAutoForm.vue')
     ]
+  }, {
+    name: 'Tutorials',
+    sections: [{
+      name: 'Form tutorial',
+      content: '../../../packages/adminui-vue/utils/Form/README.md',
+    }, {
+      name: 'Validation tutorial',
+      content: '../../../packages/adminui-vue/utils/Form/validation.md',
+    }]
   }],
 
   theme: {

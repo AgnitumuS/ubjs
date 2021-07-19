@@ -112,17 +112,18 @@
           />
           {{ option[getDisplayAttribute] }}
         </div>
-        <el-row
-          type="flex"
-        >
-          <el-button
-            v-if="moreVisible"
-            size="mini"
-            style="margin: 5px"
-            @click="showMore"
-          >
-            {{ $ut('USelectEntity.dropdown.moreButton') }}
-          </el-button>
+        <el-row type="flex">
+          <template v-for="button in dropdownButtons">
+            <el-button
+              v-if="button.visibility"
+              :key="button.name"
+              size="mini"
+              style="margin: 5px"
+              @click="button.handler"
+            >
+              {{ $ut(button.label) }}
+            </el-button>
+          </template>
         </el-row>
       </div>
       <div
@@ -175,7 +176,7 @@ const { debounce } = require('throttle-debounce')
 const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
 
 /**
- * Milty-select component mapped to Entity
+ * Multy-select component mapped to Entity
  */
 export default {
   name: 'USelectMultiple',
@@ -244,6 +245,13 @@ export default {
       type: String,
       default: 'like',
       validator: value => ['like', 'startsWith'].includes(value)
+    },
+    /**
+     * Dropdown buttons definition array. Can contains additional dropdown buttons,
+     */
+    additionalButtons: {
+      type: Array,
+      default: () => []
     }
   },
 
@@ -306,11 +314,21 @@ export default {
 
       set (value) {
         this.query = value
-        if (!this.dropdownVisible) {
+
+        this.debouncedFetch(value, () => {
           this.dropdownVisible = true
-        }
-        this.debouncedFetch(value)
+        })
       }
+    },
+
+    dropdownButtons () {
+      const moreButton = {
+        name: 'moreButton',
+        label: 'USelectEntity.dropdown.moreButton',
+        visibility: this.moreVisible,
+        handler: () => this.showMore()
+      }
+      return [...this.additionalButtons, moreButton]
     }
   },
 
@@ -372,8 +390,8 @@ export default {
       this.loading = false
     },
 
-    debouncedFetch: debounce(600, function (query) {
-      this.fetchPage(query)
+    debouncedFetch: debounce(600, function (query, resolve, reject) {
+      this.fetchPage(query).then(resolve, reject)
     }),
 
     async fetchDisplayValues (IDs) {
@@ -481,10 +499,10 @@ export default {
       }
     },
 
-    onKeydownAltDown () {
+    async onKeydownAltDown () {
       if (!this.dropdownVisible) {
+        await this.fetchPage()
         this.dropdownVisible = true
-        this.fetchPage()
       }
     },
 
@@ -495,11 +513,15 @@ export default {
       this.$refs.input.click()
     },
 
-    toggleDropdown () {
-      this.dropdownVisible = !this.dropdownVisible
-      if (this.dropdownVisible) {
-        this.fetchPage()
+    async toggleDropdown () {
+      const isTurnedOn = !this.dropdownVisible
+
+      if (isTurnedOn) {
+        await this.fetchPage()
       }
+
+      // make dropdown visible after fetch
+      this.dropdownVisible = isTurnedOn
     },
 
     /**

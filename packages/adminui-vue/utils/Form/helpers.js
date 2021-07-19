@@ -23,7 +23,8 @@ module.exports = {
   SET,
   isEmpty,
   change,
-  prepareCopyAddNewExecParams
+  prepareCopyAddNewExecParams,
+  validateWithErrorText
 }
 
 const UB = require('@unitybase/ub-pub')
@@ -32,6 +33,7 @@ const UB_DATA_TYPES = require('@unitybase/cs-shared').UBDomain.ubDataTypes
 const Vue = require('vue')
 // eslint-disable-next-line no-unused-vars
 const Vuex = require('vuex') // required to see a Vuex.d.ts
+const { withParams } = require('vuelidate/lib/params')
 
 /**
  * @typedef {object} VuexTrackedInstance
@@ -483,4 +485,14 @@ function prepareCopyAddNewExecParams (originalExecParams, entity) {
   }
 
   return execParams
+}
+
+/**
+ * Assign some error text for validator function.
+ * @param {string} errorLocale
+ * @param {function(*):boolean} validator
+ * @returns {function(*):boolean}
+ */
+function validateWithErrorText (errorLocale, validator) {
+  return withParams({ $errorText: errorLocale }, validator)
 }

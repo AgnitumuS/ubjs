@@ -1961,13 +1961,17 @@ UbPkiInterface.prototype.getPrivateKeyOwnerInfo = function () {}
  */
 UbPkiInterface.prototype.sign = function (data, resultIsBinary, ownerKeyValidationFunction) {}
 /**
- * Verify signature for data
- * @param {String} b64signature Base64 encoded signature
- * @param {Uint8Array|String} data Binary content of file to verify
+ * Verify signature(s) for data. If signature is string function await
+ *  this is a base64 encoded binary signature
+ *
+ * Data can be BlobStoreRequest - in this case verification is done on the server (@ub-d/crypto-api model must be added to domain)
+ *
+ * @param {File|ArrayBuffer|Blob|Array|String|Array<File|ArrayBuffer|Blob|Array|String>} signatures
+ * @param {Uint8Array|String|BlobStoreRequest} data
  * @param {Boolean} [verifyTimestamp=true]
- * @returns {Promise<SignatureValidationResult>}
+ * @returns {Promise<SignatureValidationResult|Array<SignatureValidationResult>>}
  */
-UbPkiInterface.prototype.verify = function (b64signature, data, verifyTimestamp) {}
+UbPkiInterface.prototype.verify = function (signatures, data, verifyTimestamp) {}
 /**
  * CERT2 auth implementation
  * @param {object} authParams

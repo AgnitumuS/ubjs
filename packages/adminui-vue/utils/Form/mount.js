@@ -24,8 +24,7 @@ const uDialogs = require('../uDialogs')
  * @param {object} cfg.props Form component props
  * @param {Vuex.Store} cfg.store Store
  * @param {string} cfg.title Title
- * @param {object} [cfg.$v] Vuelidate validation object
- * @param {function():object} [cfg.getValidationState] Function that returns reactive vuelidate validation object
+ * @param {Validator} [cfg.validator] Validator
  * @param {string} [cfg.modalClass] Modal class
  * @param {string} [cfg.modalWidth] Modal width
  * @param {object} cfg.provide Regular object which provide all props what passed in it
@@ -35,8 +34,7 @@ function mountModal ({
   props,
   store,
   title: titleText,
-  $v,
-  getValidationState,
+  validator,
   modalClass = 'ub-dialog__reset-padding',
   modalWidth,
   provide
@@ -84,8 +82,8 @@ function mountModal ({
     },
     provide () {
       return {
-        $v,
-        getValidationState,
+        $v: validator ? validator.getValidationState() : undefined,
+        validator,
         $formServices: {
           setTitle: this.setTitle,
           close: () => {
@@ -152,8 +150,7 @@ function mountModal ({
  * @param {Vuex.Store} cfg.store Store
  * @param {string} cfg.title Title
  * @param {string} cfg.tabId navbar tab ID
- * @param {object} [cfg.$v] Vuelidate validation object
- * @param {function():object} [cfg.getValidationState] Function that returns reactive vuelidate validation object
+ * @param {Validator} [cfg.validator] Validator
  * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  * @param {boolean} [cfg.openInBackgroundTab=false] If `true` - the tab with a newly opened form does not become active.
@@ -162,8 +159,7 @@ function mountTab ({
   component,
   props,
   store,
-  $v,
-  getValidationState,
+  validator,
   title: titleText,
   titleTooltip: titleTooltipText,
   tabId,
@@ -234,8 +230,8 @@ function mountTab ({
     render: (h) => h(component, { props }),
     provide () {
       return {
-        $v,
-        getValidationState,
+        $v: validator ? validator.getValidationState() : undefined,
+        validator,
         $formServices: {
           setTitle: this.setTitle,
           setTooltip: this.setTooltip,
@@ -319,8 +315,7 @@ function beforeClose ({ store, close }) {
  * @param {Vuex.Store} cfg.store Store
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  * @param {Ext.component|String} cfg.target Either id of html element or Ext component
- * @param {object} [cfg.$v] Vuelidate validation object
- * @param {function():object} [cfg.getValidationState] Function that returns reactive vuelidate validation object
+ * @param {Validator} [cfg.validator] Validator
  */
 function mountContainer ({
   component,
@@ -328,8 +323,7 @@ function mountContainer ({
   store,
   provide,
   target,
-  $v,
-  getValidationState
+  validator
 }) {
   const instance = new Vue({
     store,
@@ -338,8 +332,8 @@ function mountContainer ({
     },
     provide () {
       return {
-        $v,
-        getValidationState,
+        $v: validator ? validator.getValidationState() : undefined,
+        validator,
         // for UToolbar
         $formServices: {
           setTitle () {},
@@ -385,12 +379,10 @@ function mountContainer ({
     // this watcher helps parent ExtJS form to see vue form is dirty
     const unWatch = instance.$store
       ? instance.$store.watch(
-        (state, getters) => getters.isDirty,
-        (newValue, oldValue) => {
-          basePanel.updateActions()
-        },
-        { immediate: true }
-      )
+          (state, getters) => getters.isDirty,
+          () => basePanel.updateActions(),
+          { immediate: true }
+        )
       : null
     target.on('destroy', () => {
       if (unWatch) unWatch()
