@@ -9,7 +9,7 @@ const UBMail = require('@unitybase/mailer')
  * Read queue with code **mail** and send mails to recipient(s)
  * to attach files into the mail, use queue like this:
 
- msgCmd.attaches = [{entity: <entity>, attribute: 'document', id: <id>, atachName: <file name>}, ...]
+ msgCmd.attaches = [{entity: <entity>, attribute: 'document', id: <id>, attachName: <file name>}, ...]
 
  * for document image:
 
@@ -17,7 +17,7 @@ const UBMail = require('@unitybase/mailer')
    entity: 'doc_document',
    attribute: 'document',
    id: <doc_document ID>,
-   atachName: "document.pdf"
+   attachName: "document.pdf"
  }
 
  * for attached files:
@@ -26,7 +26,7 @@ const UBMail = require('@unitybase/mailer')
    entity: "doc_attachment",
    attribute: 'document',
    id: <attachment ID>,
-   atachName: <attachment caption>
+   attachName: <attachment caption>
  }
 
  *
@@ -88,14 +88,14 @@ module.exports = function () {
             if (!fs.existsSync(attachFN)) {
               mailData.attaches.push({
                 kind: UBMail.TubSendMailAttachKind.Text,
-                atachName: cmd.attaches[i].atachName + '.txt',
+                attachName: cmd.attaches[i].attachName + '.txt',
                 data: `File not exists, please forward this message to administrator.
   Entity: ${cmd.attaches[i].entity}, attribute: ${cmd.attaches[i].attribute}, ID: ${cmd.attaches[i].id}`
               })
             } else {
               mailData.attaches.push({
                 kind: UBMail.TubSendMailAttachKind.File,
-                atachName: cmd.attaches[i].atachName,
+                attachName: cmd.attaches[i].attachName,
                 data: attachFN,
                 isBase64: false
               })

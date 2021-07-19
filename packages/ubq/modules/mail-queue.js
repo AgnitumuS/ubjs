@@ -16,7 +16,7 @@ const MAILER_ENABLED = App.serverConfig.application.customSettings && App.server
  * @property {String} [entity] The entity code where data is stored
  * @property {string} [attribute] Code of attribute with type `Document` from entity
  * @property {number} [id] Row ID
- * @property {string} atachName Name of attachment (as it will be displayed in EMail)
+ * @property {string} attachName Name of attachment (as it will be displayed in EMail)
  * @property {string} [data] content
  */
 
@@ -53,7 +53,7 @@ module.exports.queueMail = function (config) {
           ID,
           entity: 'ubq_mailAttachment',
           attribute: 'attachment',
-          fileName: attachInfo.atachName
+          fileName: attachInfo.attachName
         }, attachInfo.data)
         ubqAttachmentsStore.insert({
           execParams: {
@@ -66,7 +66,7 @@ module.exports.queueMail = function (config) {
           entity: 'ubq_mailAttachment',
           attribute: 'attachment',
           id: ID,
-          atachName: attachInfo.atachName
+          attachName: attachInfo.attachName
         }
       }
 
