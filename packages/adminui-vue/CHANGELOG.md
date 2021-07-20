@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UFormRow`: fixed typo in prop name 'descripion' -> 'description'
+ - `USelectEntity`: fixed entity name in dictionary adding dialog in case of repository use
 
 ## [5.20.16] - 2021-07-08
 ### Added

@@ -764,7 +764,7 @@ export default {
         !this.value && !this.removeDefaultActions) {
         this.$dialog({
           title: 'select.dictionaryAdding',
-          msg: this.$ut('select.dictionaryAddingChoices', { entity: this.$ut(this.entityName), text: this.query }),
+          msg: this.$ut('select.dictionaryAddingChoices', { entity: this.$ut(this.getEntityName), text: this.query }),
           buttons: {
             yes: 'Edit',
             no: 'Add',
