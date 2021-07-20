@@ -92,6 +92,13 @@ export default {
     }
   },
 
+  computed: {
+    // for external use and compatibility
+    editorInstance () {
+      return this._codeMirror
+    }
+  },
+
   watch: {
     value: 'updateValue',
 
