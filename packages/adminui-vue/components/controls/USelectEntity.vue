@@ -578,7 +578,10 @@ export default {
       await this.fetchPage(this.prevQuery, this.pageNum + 1)
       const { scrollHeight } = this.$refs.options
       this.$refs.options.scrollTop = scrollHeight
-      this.$refs.input.$el.click() // keep focus on input
+
+      if (this.editable) {
+        this.$refs.input.$el.click() // keep focus on input
+      }
     },
 
     // shows all search result when click on dropdown arrow

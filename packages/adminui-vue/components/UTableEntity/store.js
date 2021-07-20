@@ -13,6 +13,7 @@ const openDataHistoryDatePicker = require('./components/DataHistoryDatePicker/da
  * @param {function} instance.getRepository ClientRepository
  * @param {string} instance.getEntityName Entity name
  * @param {array<UTableColumn>} instance.getColumns Columns
+ * @param {boolean} instance.withPagination To use pagination
  * @param {number} instance.pageSize Pagination page size
  * @param {function} instance.buildAddNewConfig AddNew config builder. Called with (cfg: configToMutate, instance: UTableEntity)
  * @param {function} instance.buildEditConfig Edit config builder. Called with (cfg: configToMutate, row: content of row to edit)
@@ -68,8 +69,12 @@ module.exports = (instance) => ({
      */
     currentRepository (state, getters) {
       const repo = getters.repository()
-        .start(state.pageIndex * getters.pageSize)
-        .limit(getters.pageSize + 1)
+
+      if (instance.withPagination) {
+        repo
+          .start(state.pageIndex * getters.pageSize)
+          .limit(getters.pageSize + 1)
+      }
 
       repo.attrsIf(!repo.fieldList.includes('ID'), 'ID')
 
@@ -350,13 +355,15 @@ module.exports = (instance) => ({
         response.resultData.fields = getters.currentRepository.fieldList
         const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
 
-        const isLastPage = items.length < getters.pageSize
-        commit('LAST_PAGE_INDEX', isLastPage)
-        /* We can get calculate total if this is last page. */
-        if (isLastPage) {
-          commit('TOTAL', state.pageIndex * getters.pageSize + items.length)
-        } else {
-          items.splice(getters.pageSize, 1)
+        if (instance.withPagination) {
+          const isLastPage = items.length < getters.pageSize
+          commit('LAST_PAGE_INDEX', isLastPage)
+          /* We can get calculate total if this is last page. */
+          if (isLastPage) {
+            commit('TOTAL', state.pageIndex * getters.pageSize + items.length)
+          } else {
+            items.splice(getters.pageSize, 1)
+          }
         }
 
         if (state.withTotal) {
@@ -601,7 +608,7 @@ module.exports = (instance) => ({
       if (response.method === 'delete') {
         commit('REMOVE_ITEM', response.resultData.ID)
         // in case items count equal pageSize then probably has next page so need refresh it
-        if (state.items.length === getters.pageSize - 1) {
+        if (instance.withPagination && state.items.length === getters.pageSize - 1) {
           await dispatch('refresh')
         }
         return
@@ -641,7 +648,7 @@ module.exports = (instance) => ({
         )
       }
       if (response.method === 'insert') {
-        if (state.items.length < getters.pageSize) {
+        if (state.items.length < getters.pageSize || !instance.withPagination) {
           commit('ADD_ITEM', updatedItem)
         }
       }
@@ -654,7 +661,7 @@ module.exports = (instance) => ({
     async showSummary ({ state, getters }) {
       const repo = getters.currentRepository.clone()
         .withTotal(false).start(0).limit(0) // clear total and possible pagination
-        .misc({__mip_disablecache: true}) // cached entities do not support group by
+        .misc({ __mip_disablecache: true }) // cached entities do not support group by
       repo.orderList = [] // clear possible order list
       repo.fieldList = ['COUNT([ID])'] // always calc count in first column
       const summaryColumns = []

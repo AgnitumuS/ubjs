@@ -10,12 +10,14 @@ adm_desktop:
     ru: Администратор
     ka: ადმინისტრატორი
     tg: Маъмур
+    nl: Beheerder
   description:
     en: User management, UI settings, logs (audit trail, security, queue)
     uk: Керування користувачами, налаштування інтерфейсу, журнали (аудит, безпека, черга)
     ru: Управление пользователями, настройки интерфейса, журналы (аудит, безопасность, очередь)
     ka: მომხმარებლის მენეჯმენტი, ინტერფეისის პარამეტრები, ჟურნალი (აუდიტის ბილიკი, დაცვა, რიგები)
     tg: Идоракунии корбар, танзимоти UI, гузоришҳо (пайгирии аудит, амният, навбат)
+    nl: Gebruikersbeheer, UI-instellingen, logboeken (audit trail, beveiliging, wachtrij)
   iconCls: u-icon-desktop-administrator
   items:
   - adm_folder_users:
@@ -26,6 +28,7 @@ adm_desktop:
         ru: Пользователи
         ka: ჯგუფები და მომხმარებლები
         tg: Истифодабарандагон
+        nl: Groepen en gebruikers
       iconCls: u-icon-folder-open
       items:
       - uba_user:
@@ -36,6 +39,7 @@ adm_desktop:
             ru: Список пользователей
             ka: მომხმარებლების სია
             tg: Рӯйхати истифодабарандагон
+            nl: Gebruikers lijst
           iconCls: u-icon-person
           cmd: >
             {
@@ -60,6 +64,7 @@ adm_desktop:
             ru: Расширенная безопасность
             ka: უსაფრთხოება
             tg: Амнияти васеъ
+            nl: Geavanceerde beveiliging
           iconCls: fa fa-user-secret
           cmd: >
             {
@@ -77,6 +82,7 @@ adm_desktop:
             ru: Роли пользователей
             ka: მომხმარებლის როლი
             tg: Ролҳои истифодабарандагон
+            nl: Gebruikersrollen
           iconCls: u-icon-street
           cmd: >
             {
@@ -95,6 +101,7 @@ adm_desktop:
             ru: Список групп
             ka: ჯგუფის სია
             tg: Рӯйхати гурӯҳҳо
+            nl: Groepslijst
           iconCls: u-icon-person-group
           cmd: >
             {
@@ -113,6 +120,7 @@ adm_desktop:
             ru: Группа пользователей
             ka: მომხმარებელთა ჯგუფი
             tg: Гурӯҳи истифодабарандагон
+            nl: Gebruikersgroepen
           iconCls: u-icon-person-group
           cmd: >
             {
@@ -131,6 +139,7 @@ adm_desktop:
             ru: Сертификаты
             ka: სერთიფიკატები
             tg: Сертификатҳо
+            nl: Certificaten
           iconCls: u-icon-key
           cmd: >
             {
@@ -149,6 +158,7 @@ adm_desktop:
         ru: Безопасность
         ka: უსაფრთხოება
         tg: Бехатарӣ
+        nl: Veiligheid
       iconCls: u-icon-lock
       items:
       - uba_role:
@@ -159,6 +169,7 @@ adm_desktop:
             ru: Системные роли
             ka: სისტემის როლი
             tg: Ролҳои системавӣ
+            nl: Systeemrollen
           iconCls: u-icon-person-group
           cmd: >
             {
@@ -176,6 +187,7 @@ adm_desktop:
             ru: Права на методы (ELS)
             ka: ერთეულის დონის უსაფრთხოება
             tg: Дастрасӣ ба амалкардҳо (ELS)
+            nl: Beveiliging op entiteitsniveau
           iconCls: fa fa-shield
           cmd: >
             {
@@ -194,6 +206,7 @@ adm_desktop:
             ru: Права на атрибуты (ALS)
             ka: ატრიბუტების დონის უსაფრთხოება
             tg: Дастрасӣ ба хусусиятҳо (ALS)
+            nl: Beveiliging op attribuutniveau
           iconCls: fa fa-share-alt
           cmd: >
             {
@@ -211,6 +224,7 @@ adm_desktop:
             ru: Аудит
             ka: აუდიტის ბილიკი
             tg: Аудит
+            nl: Auditspoor
           iconCls: u-icon-line-chart
           cmd: >
             {
@@ -240,6 +254,7 @@ adm_desktop:
             ru: Одноразовые пароли (OTP)
             ka: ერთჯერადი პაროლი
             tg: Якдафъаина гузарвожаҳо (OTP)
+            nl: Eenmalige wachtwoorden
           iconCls: u-icon-eye
           cmd: >
             {
@@ -257,6 +272,7 @@ adm_desktop:
             ru: Аудит безопасности
             ka: უსაფრთხოების აუდიტი
             tg: Аудити бехатарӣ
+            nl: Beveiligingsaudit
           iconCls: u-icon-lock
           cmd: >
             {
@@ -279,6 +295,7 @@ adm_desktop:
             ru: Консоль безопасности
             ka: უსაფრთხოების დაფა
             tg: Консоли амният
+            nl: Beveiligingsdashboard
           iconCls: fa fa-user-secret
           cmd: >
             {
@@ -295,6 +312,7 @@ adm_desktop:
         az: Miqrasiya
         ka: Migrations
         tg: Миграции
+        nl: Migraties
       iconCls: u-icon-swap
       items:
         - ub_version:
@@ -306,6 +324,7 @@ adm_desktop:
               az: Model versiyaları
               ka: Models versions
               tg: Версияҳои намунавӣ
+              nl: Modellen versies
             iconCls: u-icon-file-export
             cmd: >
               {
@@ -324,6 +343,7 @@ adm_desktop:
               az: Tamamlanmış köçlər
               ka: Applied files
               tg: Выполненные миграции
+              nl: Toegepaste bestanden
             iconCls: u-icon-file-text
             cmd: >
               {

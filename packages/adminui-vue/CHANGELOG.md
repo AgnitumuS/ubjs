@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `USelectEnum`: added `repository` prop, same as `USelectEntity` has
 
 ### Changed
 
@@ -15,8 +14,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - `UFormRow`: fixed typo in prop name 'descripion' -> 'description'
  - `USelectEntity`: fixed action dropdown trigger on press enter inside control
+ 
+## [5.20.17] - 2021-07-18
+### Added
+ - `USelectEnum`: added `repository` prop, same as `USelectEntity` has
+ - `UCardView`: added support for field slots in `Card view`. Same behavior as in `Table view`
+ - `UTableEntity`: prop `withPagination` for controlling the availability of the table pagination
+ - `UTableEntity`: slot `lastTableRow` to add some content at the end of the table
+
+### Fixed
+ - `USelectEntity`: fixed `More` button for non editable controls - after the click
+   the dropdown list was reopened and the same set of rows was fetched instead of the next one.
+ - `UFormRow`: fixed typo in prop name 'descripion' -> 'description'
+ - `UCodeMirror`: fix updating of the control's value when `valueIsJson=true` and user inputed a number
 
 ## [5.20.16] - 2021-07-08
 ### Added
