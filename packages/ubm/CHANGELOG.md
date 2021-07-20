@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.18] - 2021-07-18
+### Added
+ - Dutch (nl) localization
+
 ## [5.20.17] - 2021-07-08
 ### Removed
  - `usrDict` value of the `UBM_QUERY_TYPE` enum

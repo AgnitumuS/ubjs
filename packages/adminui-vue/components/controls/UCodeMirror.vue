@@ -48,13 +48,19 @@ const { debounce } = require('throttle-debounce')
  */
 export default {
   name: 'UCodeMirror',
+
   props: {
-    value: [String, Object, Array],
+    value: {
+      type: [String, Object, Array],
+      default: null
+    },
+
     /** set it to `true` in case binds value is an Object (parsed JSON) */
     valueIsJson: {
       type: Boolean,
       default: false
     },
+
     /**
      * CodeMirror editor mode
      * @values application/javascript, application/x-javascript, text/javascript, application/json, application/x-json, text/yaml, script/x-vue, text/x-vue
@@ -69,12 +75,14 @@ export default {
       type: Boolean,
       default: false
     },
+
     /**
      * Optional function what return a hints. See hint/show-hint.js section in https://codemirror.net/doc/manual.html#addons
      * Called with one parameter - codeMirror instance
      */
     hintsFunction: {
-      type: Function
+      type: Function,
+      default: null
     }
   },
 
@@ -84,10 +92,20 @@ export default {
     }
   },
 
+  watch: {
+    value: 'updateValue',
+
+    editorMode (newVal) {
+      if (!this._codeMirror) return
+      if (newVal !== this._codeMirror.getOption('mode')) {
+        this._codeMirror.setOption('mode', newVal)
+      }
+    }
+  },
+
   mounted () {
     // do not put _codeMirror inside data to prevent it observation
     // Vue initialize reactivity BEFORE created(), so all NEW object properties assigned here is not reactive
-    // eslint-disable-next-line no-undef
     SystemJS.import('@unitybase/codemirror-full').then((CodeMirror) => {
       this._codeMirror = CodeMirror.fromTextArea(this.$refs.textarea, {
         mode: this.editorMode,
@@ -107,37 +125,19 @@ export default {
       })
       this._codeMirror.setValue(this.textValue || '')
       this._codeMirror.on('change', debounce(300, cmInstance => {
-        try {
-          const newValFromCm = cmInstance.getValue()
-          if (newValFromCm !== this.textValue) {
-            this.textValue = newValFromCm
+        const newValFromCm = cmInstance.getValue()
+        if (newValFromCm !== this.textValue) {
+          this.textValue = newValFromCm
+          try {
             const val = this.valueIsJson ? JSON.parse(this.textValue) : this.textValue
+            if (this.valueIsJson && typeof val !== 'object') return
             this.$emit('changed', val)
             this.$emit('input', val)
-          }
-        } catch (e) {}
+          } catch (e) {}
+        }
       }))
       this.$emit('loaded')
     })
-  },
-
-  computed: {
-    editorInstance: {
-      get: function () {
-        return this._codeMirror
-      }
-    }
-  },
-
-  watch: {
-    value: 'updateValue',
-
-    editorMode (newVal) {
-      if (!this._codeMirror) return
-      if (newVal !== this._codeMirror.getOption('mode')) {
-        this._codeMirror.setOption('mode', newVal)
-      }
-    }
   },
 
   methods: {
@@ -175,16 +175,16 @@ export default {
 </script>
 
 <style>
-.CodeMirror-hints{
+.CodeMirror-hints {
   z-index: 400000 !important
 }
 
-.ub-code-mirror .CodeMirror{
+.ub-code-mirror .CodeMirror {
   border-top: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
   border-bottom: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
 }
 
-.ub-code-mirror__help{
+.ub-code-mirror__help {
   position: absolute;
   top: 10px;
   right: 10px;
