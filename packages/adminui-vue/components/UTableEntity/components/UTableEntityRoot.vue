@@ -281,14 +281,18 @@
       </template>
 
       <template #lastTableRow>
-        <!-- @slot add some content at the end of the table before pagination button -->
+        <!-- @slot display specific content in the last row of the table -->
         <slot name="lastTableRow" />
       </template>
 
-      <next-page-button
-        v-if="withPagination"
-        slot="appendTable"
-      />
+      <template #appendTable>
+        <next-page-button
+          v-if="withPagination"
+        />
+
+        <!-- @slot add some content at the end of the table after the pagination button -->
+        <slot name="appendTable" />
+      </template>
     </u-table>
 
     <u-card-view
@@ -317,10 +321,15 @@
           v-bind="scope"
         />
       </template>
-      <next-page-button
-        v-if="withPagination"
-        slot="append"
-      />
+
+      <template #append>
+        <next-page-button
+          v-if="withPagination"
+        />
+
+        <!-- @slot add some content at the end of the card-view after the pagination button -->
+        <slot name="appendTable" />
+      </template>
     </u-card-view>
 
     <u-dropdown
