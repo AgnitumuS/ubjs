@@ -1,4 +1,4 @@
-This component provides a following properties to the child U-controls:
+This component provides the following properties to the child U-controls:
 - labels width
 - labels position
 - isDisabled
