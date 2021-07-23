@@ -13,7 +13,7 @@ Documentation is separated into groups:
 
 > Server-side data is read-only for demo user
 
-Data-aware components uses a following metadata:
+Data-aware components use the following metadata:
 
 ![req_model_er_diagram](img/req_model_er_diagram.png)
 

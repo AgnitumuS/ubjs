@@ -136,7 +136,7 @@ module.exports = function convertDefFiles (cfg) {
     }
   }
   if (files2Remove.length) {
-    console.log('\nA following files no longer required ans can de removed (review it first!):\n')
+    console.log('\nThe following files no longer required and can be removed (review it first!):\n')
     console.log(files2Remove.join('\n'))
   }
 }

@@ -194,8 +194,8 @@ select ID, caption from myEntity where CONTAINS(caption, ?)
 ### CATALOGUE index pre-requirements
 #### for SQL Server
 Default Full Text Catalogue must exist in the database. 
-In case database is created using `ubcli initDB -create` it will be created automatically,
-for other cases run a following statement:
+If database created by `ubcli initDB -create`, the catalogue created automatically,
+for other cases run the following statement:
 ```
 CREATE FULLTEXT CATALOG ftsDefault AS DEFAULT;
 ```  
@@ -203,7 +203,7 @@ CREATE FULLTEXT CATALOG ftsDefault AS DEFAULT;
 #### for Oracle
 - Check Database Collation
 
-Since `CTXCAT` indexes is not allowed for NVARCHAR2 columns DDL will convert such columns to VARCHAR2.
+Since `CTXCAT` indexes are not allowed for NVARCHAR2 columns DDL will convert such columns to VARCHAR2.
 To store international characters correctly in varchar3 columns ensure Oracle database is created using UTF8 collation:  
 ```sql
 SELECT PARAMETER, VALUE FROM nls_database_parameters WHERE PARAMETER = 'NLS_CHARACTERSET' 
