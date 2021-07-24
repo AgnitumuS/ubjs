@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UTableEntity`: slot `appendTable` to add some content at the end of the table after the pagination button
 
 ### Changed
 
@@ -14,13 +15,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- `USelectEntity`: fixed entity name in dictionary adding dialog in case of repository use
+ - `USelectEntity`: fixed entity name in dictionary adding dialog in case of repository use
+ - `UCodeMirror`: revert removing of `editorInstance` computed value since it exists for external use
+
 ## [5.20.17] - 2021-07-18
 ### Added
  - `USelectEnum`: added `repository` prop, same as `USelectEntity` has
  - `UCardView`: added support for field slots in `Card view`. Same behavior as in `Table view`
  - `UTableEntity`: prop `withPagination` for controlling the availability of the table pagination
- - `UTableEntity`: slot `lastTableRow` to add some content at the end of the table
+ - `UTableEntity`: slot `lastTableRow` to display specific content in the last row of the table
 
 ### Fixed
  - `USelectEntity`: fixed `More` button for non editable controls - after the click

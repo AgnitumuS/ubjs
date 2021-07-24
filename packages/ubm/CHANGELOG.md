@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - prevent override adm_desktop defined by UDA model during migration
 
 ## [5.20.18] - 2021-07-18
 ### Added

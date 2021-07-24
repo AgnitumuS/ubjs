@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - Ukrainian locale - removed test data for Administrator desktop caption
 
 ## [5.20.18] - 2021-07-18
 ### Added

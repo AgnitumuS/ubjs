@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- ability to pass attachments to the `queueMail` method as a buffer
 
 ### Changed
 

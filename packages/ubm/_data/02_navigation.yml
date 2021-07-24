@@ -2,8 +2,7 @@ $context:
   type: navigation
 
 adm_desktop:
-  caption: Administrator
-  iconCls: u-icon-desktop-administrator
+  $amendment: true
   items:
   - adm_folder_UI:
       caption:
