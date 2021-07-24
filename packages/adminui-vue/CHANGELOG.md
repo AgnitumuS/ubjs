@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UCodeMirror`: revert removing of `editorInstance` computed value since it exists for external use
 
 ## [5.20.17] - 2021-07-18
 ### Added
