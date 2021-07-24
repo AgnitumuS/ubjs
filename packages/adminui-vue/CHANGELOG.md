@@ -17,7 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `USelectEntity`: fixed entity name in dictionary adding dialog in case of repository use
  - `UCodeMirror`: revert removing of `editorInstance` computed value since it exists for external use
-
+ - `USelectEntity`: prevent trigger of dropdown action in case on `Enter` is pressed in some other control of the form
+ 
 ## [5.20.17] - 2021-07-18
 ### Added
  - `USelectEnum`: added `repository` prop, same as `USelectEntity` has
@@ -26,8 +27,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity`: slot `lastTableRow` to display specific content in the last row of the table
 
 ### Fixed
- - `USelectEntity`: fixed `More` button for non editable controls - after the click
-   the dropdown list was reopened and the same set of rows was fetched instead of the next one.
+ - `USelectEntity`: fixed `More` button for non-editable controls - after the click
+   the dropdown list was reopened, and the same set of rows was fetched instead of the next one.
  - `UFormRow`: fixed typo in prop name 'descripion' -> 'description'
  - `UCodeMirror`: fix updating of the control's value when `valueIsJson=true` and user inputed a number
 

@@ -145,8 +145,8 @@
           :label="$ut(action.caption)"
           :disabled="action.disabled"
           @click.native="!action.disabled && action.handler()"
-        >
-        </u-dropdown-item>
+          @click.self.stop.prevent
+        />
       </template>
     </u-dropdown>
   </div>
