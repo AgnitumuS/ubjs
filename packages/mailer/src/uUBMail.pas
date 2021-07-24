@@ -808,6 +808,8 @@ begin
           if attDataIncorrect then
             raise ESMException.CreateFmt('Attach file error. Attach %d, invalid data',[i]);
 
+          if propObj.GetProperty(cx, 'attachName', val) and val.isString then // new in mailre@5.5.8
+            atachName := val.AsJSString.ToUTF8(cx)
           if propObj.GetProperty(cx, 'atachName', val) and val.isString then
             atachName := val.AsJSString.ToUTF8(cx)
           else if attKind = akFile then
