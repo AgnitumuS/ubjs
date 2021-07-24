@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - `USelectEntity`: fixed action dropdown trigger on press enter inside control
+ - `USelectEntity`: prevent trigger of dropdown action in case on `Enter` is pressed in some other control of the form
  
 ## [5.20.17] - 2021-07-18
 ### Added
@@ -24,8 +24,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity`: slot `lastTableRow` to add some content at the end of the table
 
 ### Fixed
- - `USelectEntity`: fixed `More` button for non editable controls - after the click
-   the dropdown list was reopened and the same set of rows was fetched instead of the next one.
+ - `USelectEntity`: fixed `More` button for non-editable controls - after the click
+   the dropdown list was reopened, and the same set of rows was fetched instead of the next one.
  - `UFormRow`: fixed typo in prop name 'descripion' -> 'description'
  - `UCodeMirror`: fix updating of the control's value when `valueIsJson=true` and user inputed a number
 
