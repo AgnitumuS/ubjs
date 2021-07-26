@@ -1,24 +1,22 @@
-﻿{
-    "caption": "Диаграммы",
-    "description": "Диаграммы сущностей",
-    "attributes": [
-        {
-            "name": "model",
-            "caption": "Модель",
-            "description": "Модель"
-        },
-        {
-            "name": "name",
-            "caption": "Название"
-        },
-        {
-            "name": "document",
-            "caption": "Диаграмма",
-            "description": "Диаграмма сущностей"
-        },
-        {
-            "name": "ID",
-            "caption": "ИД"
-        }
-    ]
+{
+  "caption": "Diagrammalar",
+  "description": "Tashkilot diagrammalari",
+  "attributes": [
+    {
+      "name": "model",
+      "caption": "Model"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "document",
+      "caption": "Diagramma"
+    },
+    {
+      "name": "ID",
+      "caption": "Id"
+    }
+  ]
 }

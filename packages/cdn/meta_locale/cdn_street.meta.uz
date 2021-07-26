@@ -1,31 +1,26 @@
 {
-  "caption": "Список улиц",
-  "description": "Список улиц",
+  "caption": "Ko'chalar ro'yxati",
+  "description": "Ko'chalar ro'yxati",
   "attributes": [
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название улицы"
+      "caption": "Ism"
     },
     {
       "name": "fullName",
-      "caption": "Полное название",
-      "description": "Полное название"
+      "caption": "To'liq unum"
     },
     {
       "name": "code",
-      "caption": "Код",
-      "description": "Код"
+      "caption": "Kod"
     },
     {
       "name": "streetType",
-      "caption": "Тип",
-      "description": "Тип"
+      "caption": "Turi"
     },
     {
       "name": "cityID",
-      "caption": "Нас. пункт",
-      "description": "Населенный пункт"
+      "caption": "Aholi punkti"
     }
   ]
 }

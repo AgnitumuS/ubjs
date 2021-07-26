@@ -1,16 +1,14 @@
 {
-  "caption": "Типы штатных единиц",
-  "description": "Справочник типов штатных единиц",
+  "caption": "Standart birliklar turlari",
+  "description": "Namunaviy birliklar turlari qo'llanmasi",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код",
-      "description": "Код"
+      "caption": "Kod"
     },
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название типа штатной единицы"
+      "caption": "Ism"
     }
   ]
 }

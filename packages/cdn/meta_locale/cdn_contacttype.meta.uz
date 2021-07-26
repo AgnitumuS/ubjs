@@ -1,15 +1,14 @@
 {
-  "caption": "Типы контактов",
-  "description": "Справочник типов контактов",
+  "caption": "Kontaktlar turlari",
+  "description": "Aloqa turlari bo'yicha ma'lumot",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код"
+      "caption": "Kod"
     },
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название типа контакта"
+      "caption": "Ism"
     }
   ]
 }

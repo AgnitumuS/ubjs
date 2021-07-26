@@ -1,36 +1,30 @@
 {
-  "caption": "Расчётные счета",
-  "description": "Справочник расчётных счетов организаций",
+  "caption": "Hisob-kitoblar",
+  "description": "Tashkilotlarning hisob-kitob hisobvaraqlari ma'lumotnomasi",
   "attributes": [
     {
       "name": "organizationID",
-      "caption": "Организация",
-      "description": "Организация"
+      "caption": "Tashkilot"
     },
     {
       "name": "currencyID",
-      "caption": "Валюта",
-      "description": "Валюта счета"
+      "caption": "Valyuta"
     },
     {
       "name": "bankID",
-      "caption": "Банк",
-      "description": "Банк, в котором открыт счет"
+      "caption": "Bank"
     },
     {
       "name": "code",
-      "caption": "Код счета",
-      "description": "Код счета (номер счета)"
+      "caption": "Hisob kodi"
     },
     {
       "name": "description",
-      "caption": "Описание",
-      "description": "Описание"
+      "caption": "Tavsif"
     },
     {
       "name": "acctype",
-      "caption": "Тип счета",
-      "description": "Тип счета"
+      "caption": "Hisob turi"
     }
   ]
 }

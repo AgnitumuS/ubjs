@@ -1,18 +1,18 @@
 {
-  "caption": "Адреса",
-  "description": "Справочник адресов",
+  "caption": "Manzillar",
+  "description": "Manzil katalogi",
   "attributes": [
     {
       "name": "addressType",
-      "caption": "Тип адреса"
+      "caption": "Manzil turi"
     },
     {
       "name": "value",
-      "caption": "Адрес"
+      "caption": "Manzil"
     },
     {
       "name": "subjectID",
-      "caption": "Субект"
+      "caption": "Mavzu"
     }
   ]
 }

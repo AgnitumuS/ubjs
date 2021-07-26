@@ -1,31 +1,26 @@
 {
-  "caption": "Валюты",
-  "description": "Справочник валют",
+  "caption": "Valyutalar",
+  "description": "Valyuta ma'lumotnomasi",
   "attributes": [
     {
       "name": "intCode",
-      "caption": "Цифровой код",
-      "description": "Цифровой код"
+      "caption": "Raqamli kod"
     },
     {
       "name": "code3",
-      "caption": "Код 3-х символьный",
-      "description": "3-х символьный код валюты"
+      "caption": "Kod 3 belgisi"
     },
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название валюты"
+      "caption": "Ism"
     },
     {
       "name": "curMult",
-      "caption": "Кратность",
-      "description": "Кратность"
+      "caption": "Ko'payish"
     },
     {
       "name": "description",
-      "caption": "Описание",
-      "description": "Описание"
+      "caption": "Tavsif"
     }
   ]
 }

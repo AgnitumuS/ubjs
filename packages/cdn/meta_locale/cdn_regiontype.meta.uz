@@ -1,16 +1,14 @@
 {
-  "caption": "Типы регионов",
-  "description": "Справочник типов регионов",
+  "caption": "Mintaqalar turlari",
+  "description": "Mintaqalar turlari katalogi",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код",
-      "description": "Код"
+      "caption": "Kod"
     },
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название типа региона"
+      "caption": "Ism"
     }
   ]
 }

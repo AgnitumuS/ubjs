@@ -1,20 +1,18 @@
 {
-  "caption": "Группы пользователей",
-  "description": "Группы пользователей",
+  "caption": "Foydalanuvchilar guruhi",
+  "description": "Foydalanuvchilar guruhi",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код",
-      "description": "Код группы",
-      "documentation": "Уникальный код группы. Используется API и скриптами"
+      "caption": "Kod"
     },
     {
       "name": "name",
-      "caption": "Наименование"
+      "caption": "Ism"
     },
     {
       "name": "description",
-      "caption": "Описание"
+      "caption": "Tavsif"
     }
   ]
 }

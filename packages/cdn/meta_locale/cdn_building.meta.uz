@@ -1,29 +1,26 @@
 {
-  "caption": "Список домов",
-  "description": "Список домов",
+  "caption": "Uylar ro'yxati",
+  "description": "Uylar ro'yxati",
   "attributes": [
     {
       "name": "streetID",
-      "caption": "Улица"
+      "caption": "Ko'cha"
     },
     {
       "name": "postIndexID",
-      "caption": "Индекс"
+      "caption": "Indeks"
     },
     {
       "name": "code",
-      "caption": "№",
-      "description": "Код"
+      "caption": "№"
     },
     {
       "name": "description",
-      "caption": "Описание",
-      "description": "Описание"
+      "caption": "Tavsif"
     },
     {
       "name": "buildingType",
-      "caption": "Тип",
-      "description": "Тип"
+      "caption": "Turi"
     }
   ]
 }

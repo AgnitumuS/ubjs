@@ -1,21 +1,21 @@
 {
-  "caption": "Классификаторы",
+  "caption": "Tasniflovchi",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код"
+      "caption": "Kod"
     },
     {
       "name": "name",
-      "caption": "Название"
+      "caption": "Ism"
     },
     {
       "name": "description",
-      "caption": "Описание"
+      "caption": "Tavsif"
     },
     {
       "name": "orderByAttr",
-      "caption": "Порядок элементов классификатора"
+      "caption": "Klassifikator elementlarining tartibi"
     },
     {
       "name": "ubql",

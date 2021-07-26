@@ -1,14 +1,14 @@
 {
-  "caption": "Исполнители для групп исполнителей",
-  "description": "Исполнители, которые привязываются к группе и используются для автозаполнения исполнителей в резолюциях при добавлении группы",
+  "caption": "Ijrochilar guruhlari uchun ijrochilar",
+  "description": "Guruhga bog'langan va guruh qo'shganda rezolyutsiyalarda ijrochilar uchun ishlatiladigan ijrochilar",
   "attributes": [
     {
       "name": "execGroupID",
-      "caption": "Группа исполнителей"
+      "caption": "Ijrochilar guruhi"
     },
     {
       "name": "orgUnitID",
-      "caption": "Исполнитель"
+      "caption": "Ijrochi"
     }
   ]
 }

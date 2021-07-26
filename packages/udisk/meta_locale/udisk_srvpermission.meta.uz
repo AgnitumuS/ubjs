@@ -1,26 +1,22 @@
 {
-  "caption": "Права на доступ",
-  "description": "Права на доступ",
+  "caption": "Kirish huquqi",
+  "description": "Kirish huquqi",
   "attributes": [
     {
       "name": "cardID",
-      "caption": "Файл",
-      "description": "Файл"
+      "caption": "Fayl"
     },
     {
       "name": "userID",
-      "caption": "Пользователь",
-      "description": "Пользователь"
+      "caption": "Foydalanuvchi"
     },
     {
       "name": "accessType",
-      "caption": "Тип доступа",
-      "description": "Тип доступа ( owner, read, write, delegate)"
+      "caption": "Kirish turi"
     },
     {
       "name": "parentID",
-      "caption": "ИД родителя",
-      "description": "ИД родителя"
+      "caption": "ИД родителя"
     }
   ]
 }

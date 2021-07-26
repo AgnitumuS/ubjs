@@ -1,56 +1,46 @@
 {
-  "caption": "Внешние подразделения",
-  "description": "Справочник внешних подразделений",
+  "caption": "Tashqi bo'limlar",
+  "description": "Tashqi birliklarning katalogi",
   "attributes": [
     {
       "name": "code",
-      "caption": "Внутренний код",
-      "description": "Внутренний код подразделения"
+      "caption": "Ichki kod"
     },
     {
       "name": "name",
-      "caption": "Название подразделения",
-      "description": "Название без кавычек и аббревиатур"
+      "caption": "Bo'lim nomi"
     },
     {
       "name": "fullName",
-      "caption": "Полное название",
-      "description": "Полное название подразделения"
+      "caption": "To'liq unum"
     },
     {
       "name": "description",
-      "caption": "Описание подразделения",
-      "description": "Описание"
+      "caption": "Bo'limning tavsifi"
     },
     {
       "name": "nameGen",
-      "caption": "Название подразделения в родительном падеже",
-      "description": "Название без кавычек и аббревиатур в родительном падеже"
+      "caption": "Bo'limning nomi"
     },
     {
       "name": "nameDat",
-      "caption": "Название подразделения в дательном падеже",
-      "description": "Название без кавычек и аббревиатур в дательном падеже"
+      "caption": "Bo'limning nomi"
     },
     {
       "name": "fullNameGen",
-      "caption": "Полное название подразделения в родительном падеже",
-      "description": "Полное название подразделения в родительном падеже"
+      "caption": "Bo'limning to'liq nomi"
     },
     {
       "name": "fullNameDat",
-      "caption": "Полное название подразделения в дательном падеже",
-      "description": "Полное название подразделения в дательном падеже"
+      "caption": "Bo'limning to'liq nomi"
     },
     {
       "name": "depTypeID",
-      "caption": "Тип подразделения",
-      "description": "Тип подразделения"
+      "caption": "Bo'linish turi"
     },
     {
       "name": "organizationID",
-      "caption": "Организация",
-      "description": "Организация, которой принадлежит подразделение"
+      "caption": "Tashkilot"
     }
   ]
 }

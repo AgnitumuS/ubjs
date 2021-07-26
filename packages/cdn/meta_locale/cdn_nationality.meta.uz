@@ -1,25 +1,22 @@
 {
-  "caption": "Национальность",
-  "description": "Национальность",
+  "caption": "Millat",
+  "description": "Millat",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код",
-      "description": "Код"
+      "caption": "Kod"
     },
     {
       "name": "name",
-      "caption": "Наименование",
-      "description": "Наименование национальности"
+      "caption": "Ism"
     },
     {
       "name": "nameM",
-      "caption": "Наименование(М)",
-      "description": "Наименование для мужчин"
-    },{
+      "caption": "Ism (E)"
+    },
+    {
       "name": "nameF",
-      "caption": "Наименование(Ж)",
-      "description": "Наименование для женщин"
+      "caption": "Ism (A)"
     }
   ]
 }

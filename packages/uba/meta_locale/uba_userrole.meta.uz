@@ -1,16 +1,14 @@
 {
-  "caption": "Роли пользователя",
-  "description": "Роли, назначенные пользователю",
+  "caption": "Foydalanuvchi rollari",
+  "description": "Foydalanuvchiga tayinlangan rollar",
   "attributes": [
     {
       "name": "userID",
-      "caption": "Пользователь",
-      "description": ""
+      "caption": "Foydalanuvchi"
     },
     {
       "name": "roleID",
-      "caption": "Роль",
-      "description": ""
+      "caption": "Rol"
     }
   ]
 }

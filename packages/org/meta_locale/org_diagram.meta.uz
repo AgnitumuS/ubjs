@@ -1,25 +1,22 @@
 {
-  "caption": "Диаграммы",
-  "description": "Диаграммы",
+  "caption": "Diagrammalar",
+  "description": "Diagrammalar",
   "attributes": [
     {
       "name": "orgunitID",
-      "caption": "Корень"
+      "caption": "Ildiz"
     },
     {
       "name": "caption",
-      "caption": "Название",
-      "description": "Название"
+      "caption": "Ism"
     },
     {
       "name": "isdefault",
-      "caption": "По умолчанию",
-      "description": "По умолчанию"
+      "caption": "Bajarilish"
     },
     {
       "name": "document",
-      "caption": "Органограмма",
-      "description": "Органограмма"
+      "caption": "Organogramma"
     }
   ]
 }

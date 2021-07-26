@@ -1,51 +1,42 @@
 {
-  "caption": "Файлы",
-  "description": "Файлы",
+  "caption": "Fayllar",
+  "description": "Fayllar",
   "attributes": [
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название"
+      "caption": "Ism"
     },
     {
       "name": "parentID",
-      "caption": "Папка",
-      "description": "Папка"
+      "caption": "Papka"
     },
     {
       "name": "fcomment",
-      "caption": "Комментарий",
-      "description": "Комментарий"
+      "caption": "Izoh"
     },
     {
       "name": "isFolder",
-      "caption": "Папка",
-      "description": "Папка"
+      "caption": "Papka"
     },
     {
       "name": "ownerID",
-      "caption": "Владелец",
-      "description": "Владелец"
+      "caption": "Egasi"
     },
     {
       "name": "fsize",
-      "caption": "Размер",
-      "description": "Размер"
+      "caption": "Hajmi"
     },
     {
       "name": "contentType",
-      "caption": "Тип",
-      "description": "Тип"
+      "caption": "Turi"
     },
     {
       "name": "isTemporary",
-      "caption": "Временный",
-      "description": "Временный"
+      "caption": "Vaqtinchalik"
     },
     {
       "name": "fileData",
-      "caption": "Файл",
-      "description": "Файл"
+      "caption": "Fayl"
     }
   ]
 }

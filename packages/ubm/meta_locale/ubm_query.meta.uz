@@ -1,9 +1,21 @@
 {
-  "caption": "Запросы к данным",
+  "caption": "Ma'lumotlar bo'yicha so'rovlar",
   "attributes": [
-    {"name": "code", "caption": "Код"},
-    {"name": "name", "caption": "Наименование"},
-    {"name": "ubql", "caption": "UBQL (JSON)"},
-    {"name": "type", "caption": "Тип"}
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "ubql",
+      "caption": "Ubql (Json)"
+    },
+    {
+      "name": "type",
+      "caption": "Turi"
+    }
   ]
 }

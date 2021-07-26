@@ -1,67 +1,54 @@
 {
-  "caption": "Внутренние подразделения",
-  "description": "Справочник внутренних подразделений",
-  "documentation": "",
+  "caption": "Mahalliy birliklar",
+  "description": "Ichki bo'limlar katalogi",
   "attributes": [
     {
       "name": "parentID",
-      "caption": "Предок",
-      "description": "Предок"
+      "caption": "Ajdod"
     },
     {
       "name": "code",
-      "caption": "Внутренний код",
-      "description": "Внутренний код подразделения"
+      "caption": "Ichki kod"
     },
     {
       "name": "name",
-      "caption": "Название подразделения",
-      "description": "Название без кавычек и аббревиатур"
+      "caption": "Bo'limning nomi"
     },
     {
       "name": "fullName",
-      "caption": "Полное название подразделения",
-      "description": "Полное название подразделения"
+      "caption": "To'liq ism berish"
     },
     {
       "name": "description",
-      "caption": "Описание подразделения",
-      "description": "Описание"
+      "caption": "Bo'lim tavsifi"
     },
     {
       "name": "nameGen",
-      "caption": "Название в род. падеже",
-      "description": "Название подразделения без кавычек и аббревиатур в родительном падеже"
+      "caption": "Ism"
     },
     {
       "name": "nameDat",
-      "caption": "Название в дат. падеже",
-      "description": "Название без кавычек и аббревиатур в дательном падеже"
+      "caption": "Ism"
     },
     {
       "name": "fullNameGen",
-      "caption": "Полное название в род. падеже",
-      "description": "Полное название подразделения в родительном падеже"
+      "caption": "To'liq sarlavha"
     },
     {
       "name": "fullNameDat",
-      "caption": "Полное название в дат. падеже",
-      "description": "Полное название подразделения в дательном падеже"
+      "caption": "To'liq sarlavha"
     },
     {
       "name": "depTypeID",
-      "caption": "Тип подразделения",
-      "description": "Тип подразделения"
+      "caption": "Bo'linish turi"
     },
     {
       "name": "isClerical",
-      "caption": "Деловодное?",
-      "description": "Является ли это подразделение деловодным"
+      "caption": "Ishbilarmonlik"
     },
     {
       "name": "caption",
-      "caption": "Заголовок",
-      "description": "Заголовок"
+      "caption": "Sarlavha"
     }
   ]
 }

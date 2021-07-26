@@ -1,45 +1,38 @@
 {
-  "caption": "Должности",
-  "description": "Справочник должностей",
+  "caption": "Xabarlar",
+  "description": "Katalog xabarlari",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код",
-      "description": "Код должности"
+      "caption": "Kod"
     },
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название должности"
+      "caption": "Ism"
     },
     {
       "name": "fullName",
-      "caption": "Полное название",
-      "description": "Полное название должности"
+      "caption": "To'liq unum"
     },
     {
       "name": "nameGen",
-      "caption": "Название в род. падеже",
-      "description": "Полное название должности в родительном падеже"
+      "caption": "Jinsiyaning sarlavhasi. Cho'chqa"
     },
     {
       "name": "nameDat",
-      "caption": "Название в дат. падеже",
-      "description": "Название должности в дательном падеже"
+      "caption": "Sanalarda ism. Cho'chqa"
     },
     {
       "name": "fullNameGen",
-      "caption": "Полное название должности в род. падеже",
-      "description": "Полное название должности в родительном падеже"
+      "caption": "Lavozimning to'liq nomi"
     },
     {
       "name": "fullNameDat",
-      "caption": "Полное название должности в дат. падеже",
-      "description": "Полное название должности в дательном падеже"
+      "caption": "Lavozimning to'liq nomi"
     },
     {
       "name": "description",
-      "caption": "Заголовок"
+      "caption": "Sarlavha"
     }
   ]
 }

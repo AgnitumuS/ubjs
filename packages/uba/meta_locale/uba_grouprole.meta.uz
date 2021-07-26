@@ -1,16 +1,14 @@
 {
-  "caption": "Роли групп",
-  "description": "Роли, назначенные группам пользователей",
+  "caption": "Rol guruhi",
+  "description": "Foydalanuvchi guruhlariga tayinlangan rollar",
   "attributes": [
     {
       "name": "groupID",
-      "caption": "Группа",
-      "description": ""
+      "caption": "Guruh"
     },
     {
       "name": "roleID",
-      "caption": "Роль",
-      "description": ""
+      "caption": "Rol"
     }
   ]
 }

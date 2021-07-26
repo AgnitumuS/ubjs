@@ -1,16 +1,14 @@
 {
-  "caption": "Администрирование панели навигации",
-  "description": "Описание",
+  "caption": "Navigatsiya panelini boshqaruvchi",
+  "description": "Tavsif",
   "attributes": [
     {
       "name": "instanceID",
-      "caption": "Ярлык",
-      "description": ""
+      "caption": "Yorliq"
     },
     {
       "name": "admSubjID",
-      "caption": "Субъект администрирования",
-      "description": ""
+      "caption": "Ma'muriyat mavzusi"
     }
   ]
 }

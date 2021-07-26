@@ -1,19 +1,18 @@
 {
-  "caption": "Получатели сообщений",
-  "description": "Получатели сообщений",
-  "documentation": "Получатели сообщений",
+  "caption": "Xabarlarni qabul qiluvchilar",
+  "description": "Xabarlarni qabul qiluvchilar",
   "attributes": [
     {
       "name": "messageID",
-      "caption": "Сообщение"
+      "caption": "Xabar"
     },
     {
       "name": "userID",
-      "caption": "Пользователь"
+      "caption": "Foydalanuvchi"
     },
     {
       "name": "acceptDate",
-      "caption": "Дата подтверждения"
+      "caption": "Tasdiqlash sanasi"
     }
   ]
 }

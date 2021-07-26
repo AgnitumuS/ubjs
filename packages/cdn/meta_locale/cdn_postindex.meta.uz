@@ -1,20 +1,18 @@
 {
-  "caption": "Почтовые индексы",
-  "description": "Почтовые индексы",
+  "caption": "Postcodes",
+  "description": "Postcodes",
   "attributes": [
     {
       "name": "code",
-      "caption": "Индекс",
-      "description": "Индекс"
+      "caption": "Indeks"
     },
     {
       "name": "streetID",
-      "caption": "Улица"
+      "caption": "Ko'cha"
     },
     {
       "name": "description",
-      "caption": "Описание",
-      "description": "Описание"
+      "caption": "Tavsif"
     }
   ]
 }

@@ -1,20 +1,18 @@
 {
-  "caption": "Стандартные профессии",
-  "description": "Справочник стандартных профессий",
+  "caption": "Standart kasblar",
+  "description": "Standart kasblar katalogi",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код",
-      "description": "Код профессии"
+      "caption": "Kod"
     },
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название профессии"
+      "caption": "Ism"
     },
     {
       "name": "description",
-      "caption": "Заголовок"
+      "caption": "Sarlavha"
     }
   ]
 }

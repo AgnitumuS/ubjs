@@ -1,36 +1,30 @@
-﻿{
-  "caption": "Группы исполнителей",
-  "description": "Справочник типовых групп исполнителей для заданий",
+{
+  "caption": "Ijrochilar guruhlari",
+  "description": "Vazifalar uchun ijrochilarning namunaviy guruhlari ma'lumotnomasi",
   "attributes": [
     {
       "name": "parentID",
-      "caption": "Родительский узел",
-      "description": "Родительский узел"
+      "caption": "Ota-ona tugun"
     },
     {
       "name": "groupType",
-      "caption": "Тип",
-      "description": "Тип группы"
+      "caption": "Turi"
     },
     {
       "name": "code",
-      "caption": "Внутренний код",
-      "description": "Внутренний код группы"
+      "caption": "Ichki kod"
     },
     {
       "name": "name",
-      "caption": "Название группы",
-      "description": "Название без кавычек и абревиатур"
+      "caption": "Guruh nomi"
     },
     {
       "name": "nameGen",
-      "caption": "Название в родит. падеже",
-      "description": "Название без кавычек и аббревиатур в родительном падеже"
+      "caption": "Ism"
     },
     {
       "name": "nameDat",
-      "caption": "Название в дат. падеже",
-      "description": "Название без кавычек и аббревиатур в дательном падеже"
+      "caption": "Ism"
     }
   ]
 }

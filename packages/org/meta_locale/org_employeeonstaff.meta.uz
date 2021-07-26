@@ -1,37 +1,30 @@
 {
-  "caption": "Назначения внутренней организации",
-  "description": "Справочник назначений внутренней организации",
-  "documentation": "Развязочная сущность, в которой указывается какой работник на какой штатной единице работает (назначение). Так же есть тип назначения (временное, постоянное, полставки и т.д.)",
+  "caption": "Ichki tashkilotning tayinlanishi",
+  "description": "Ichki tashkilotning tayinlanish sahifasi ma'lumotnomasi",
   "attributes": [
     {
       "name": "tabNo",
-      "caption": "Таб. №",
-      "description": "Табельный номер"
+      "caption": "№"
     },
     {
       "name": "employeeID",
-      "caption": "Сотрудник",
-      "description": "Сотрудник"
+      "caption": "Yorliq raqami"
     },
     {
       "name": "staffUnitID",
-      "caption": "Штатная единица",
-      "description": "Штатная единица внутренней организации"
+      "caption": "Xodimlar bo'limi"
     },
     {
       "name": "employeeOnStaffType",
-      "caption": "Тип назначения",
-      "description": "Тип назначения"
+      "caption": "Manzil turi"
     },
     {
       "name": "description",
-      "caption": "Описание",
-      "description": "Описание назначения"
+      "caption": "Tavsif"
     },
     {
       "name": "caption",
-      "caption": "Заголовок",
-      "description": "Заголовок"
+      "caption": "Sarlavha"
     }
   ]
 }

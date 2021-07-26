@@ -1,26 +1,22 @@
-﻿{
-    "caption": "Зарезервированные счетчики регистрационных ключей",
-    "description": "Зарезервированные счетчики регистрационных ключей",
-    "attributes": [
-        {
-            "name": "regKey",
-            "caption": "Регистрационный ключ",
-            "description": "Регистрационный ключ"
-        },
-        {
-            "name": "counter",
-            "caption": "Счетчик",
-            "description": "Счетчик"
-        },
-        {
-            "name": "reservedDate",
-            "caption": "Зарезервированная дата",
-            "description": "Зарезервированная дата документа"
-        },
-        {
-            "name": "note",
-            "caption": "Заметка",
-            "description": "Описание зарезервированного номера (название департамента, и т.д.)"
-        }
-    ]
+{
+  "caption": "Ro'yxatdan o'tgan hisoblangan hisoblangan kalitlar",
+  "description": "Ro'yxatdan o'tgan hisoblangan hisoblangan kalitlar",
+  "attributes": [
+    {
+      "name": "regKey",
+      "caption": "Ro'yxatdan o'tish kaliti"
+    },
+    {
+      "name": "counter",
+      "caption": "Hisoblagich"
+    },
+    {
+      "name": "reservedDate",
+      "caption": "Saqlangan kun"
+    },
+    {
+      "name": "note",
+      "caption": "Eslatma"
+    }
+  ]
 }

@@ -1,21 +1,18 @@
 {
-  "caption": "Назначения с отложенной датой",
-  "description": "Назначения с отложенной датой",
+  "caption": "Kechiktirilgan uchrashuvlar",
+  "description": "Kechiktirilgan uchrashuvlar",
   "attributes": [
     {
       "name": "emponstaffID",
-      "caption": "Назначение",
-      "description": "Назначение"
+      "caption": "Maqsad"
     },
     {
       "name": "startDate",
-      "caption": "Начало",
-      "description": "Начало действия назначения"
+      "caption": "Boshlamoq"
     },
     {
       "name": "endDate",
-      "caption": "Окончание",
-      "description": "Окончание действия назначения"
+      "caption": "Tugatmoq"
     }
   ]
 }

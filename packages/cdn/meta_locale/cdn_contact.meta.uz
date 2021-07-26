@@ -1,18 +1,18 @@
-﻿{
-    "caption": "Контакты",
-    "description": "Справочник контактов",
-    "attributes": [
-        {
-            "name": "contactTypeID",
-            "caption": "Тип контакта"
-        },
-        {
-            "name": "value",
-            "caption": "Контакт"
-        },
-        {
-            "name": "subjectID",
-            "caption": "Субъект"
-        }
-    ]
+{
+  "caption": "Kontaktlar",
+  "description": "Kontaktlar ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "contactTypeID",
+      "caption": "Kontakt turi"
+    },
+    {
+      "name": "value",
+      "caption": "Aloqa"
+    },
+    {
+      "name": "subjectID",
+      "caption": "Mavzu"
+    }
+  ]
 }

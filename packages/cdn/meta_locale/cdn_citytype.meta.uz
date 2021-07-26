@@ -1,16 +1,14 @@
 {
-  "caption": "Типы населенных пунктов",
-  "description": "Справочник типов населенных пунктов",
+  "caption": "Aholi punktlarining turlari",
+  "description": "Aholi turlarining ma'lumotnomasi",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код",
-      "description": "Код типа населенного пункта"
+      "caption": "Kod"
     },
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название типа населенного пункта"
+      "caption": "Ism"
     }
   ]
 }

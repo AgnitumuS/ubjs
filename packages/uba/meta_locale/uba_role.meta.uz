@@ -1,27 +1,22 @@
 {
-  "caption": "Системные роли",
-  "description": "Роли подсистемы администрирования",
+  "caption": "Tizim rollari",
+  "description": "Ma'muriyat doirasining roli",
   "attributes": [
     {
       "name": "name",
-      "caption": "Роль",
-      "description": ""
+      "caption": "Rol"
     },
     {
       "name": "description",
-      "caption": "Описание",
-      "description": ""
+      "caption": "Tavsif"
     },
     {
       "name": "sessionTimeout",
-      "caption": "Время действия сессии",
-      "description": "Время, после которого сессия удаляется по таймауту (в минутах)"
+      "caption": "Sessiyaning davomiyligi"
     },
     {
       "name": "allowedAppMethods",
-      "caption": "Доступные точки входа",
-      "documentation": "",
-      "description": "Назания точек входа через запятую"
+      "caption": "Mavjud kirish punktlari"
     }
   ]
 }

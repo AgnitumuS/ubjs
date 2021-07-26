@@ -1,26 +1,22 @@
 {
-  "caption": "Форма собственности",
-  "description": "Справочник форм собственности организаций",
+  "caption": "Mulkchilik turi",
+  "description": "Tashkilotlar egalik qilish ma'lumotnomasi",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код",
-      "description": "Внутренний код формы собственности"
+      "caption": "Kod"
     },
     {
       "name": "shortName",
-      "caption": "Аббревиатура",
-      "description": "Аббревиатура формы собственности"
+      "caption": "Qisqartirish"
     },
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название формы собственности"
+      "caption": "Ism"
     },
     {
       "name": "fullName",
-      "caption": "Полное название",
-      "description": "Полное название формы собственности"
+      "caption": "To'liq unum"
     }
   ]
 }

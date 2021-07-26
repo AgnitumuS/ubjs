@@ -1,13 +1,13 @@
 {
-  "caption": "Администрирование рабочих столов",
+  "caption": "Ish stollari",
   "attributes": [
     {
       "name": "instanceID",
-      "caption": "Рабочий стол"
+      "caption": "Ish stoli"
     },
     {
       "name": "admSubjID",
-      "caption": "Субъект администрирования"
+      "caption": "Ma'muriyat mavzusi"
     }
   ]
 }

@@ -1,27 +1,26 @@
 {
-  "caption": "Attribute level security (ALS)",
-  "description": "Уровень атрибутивной безопасности",
-  "documentation": "",
+  "caption": "Atributlar darajasi xavfsizligi (ALS)",
+  "description": "Xavfsizlik darajasini belgilash",
   "attributes": [
     {
       "name": "entity",
-      "caption": "Сущность"
+      "caption": "Mohiyat"
     },
     {
       "name": "attribute",
-      "caption": "Атрибут"
+      "caption": "Atributlar"
     },
     {
       "name": "state",
-      "caption": "Код состояния"
+      "caption": "Holat kodi"
     },
     {
       "name": "roleName",
-      "caption": "Название роли"
+      "caption": "Rol nomi"
     },
     {
       "name": "actions",
-      "caption": "Разрешенные действия"
+      "caption": "Ruxsat berilgan harakatlar"
     }
   ]
 }

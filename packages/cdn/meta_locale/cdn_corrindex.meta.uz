@@ -1,21 +1,18 @@
 {
-  "caption": "Индексы корреспондентов",
-  "description": "Справочник индексов корреспондентов",
+  "caption": "Korrespondentlik ko'rsatkichlari",
+  "description": "Korrespondentlik ko'rsatkichlari ma'lumotnomasi",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код",
-      "description": "Код индекса корреспондента"
+      "caption": "Kod"
     },
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название индекса корреспондента"
+      "caption": "Ism"
     },
     {
       "name": "fullName",
-      "caption": "Полное название",
-      "description": "Полное название индекса корреспондента"
+      "caption": "To'liq unum"
     }
   ]
 }

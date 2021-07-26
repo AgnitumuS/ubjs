@@ -1,28 +1,26 @@
 {
-  "caption": "Рабочий стол",
-  "description": "Рабочие столы приложения",
+  "caption": "Ish stoli",
+  "description": "Ish stollari",
   "attributes": [
     {
       "name": "caption",
-      "caption": "Название десктопа"
+      "caption": "Ish stoli nomi"
     },
     {
       "name": "code",
-      "caption": "Код"
+      "caption": "Kod"
     },
     {
       "name": "url",
-      "caption": "URL",
-      "description": "URL статической страницы сервера, отображаемой в центре экрана при выборе рабочего стола"
+      "caption": "Url"
     },
     {
       "name": "isDefault",
-      "caption": "По умолчанию?"
+      "caption": "Odatiymi?"
     },
     {
       "name": "displayOrder",
-      "caption": "№ п/п",
-      "description": "Порядок отображения"
+      "caption": "№"
     }
   ]
 }

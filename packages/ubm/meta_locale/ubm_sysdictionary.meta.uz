@@ -1,8 +1,17 @@
 {
-  "caption": "системные справочники",
+  "caption": "Tizim kataloglari",
   "attributes": [
-    {"name": "code", "caption": "Код"},
-    {"name": "name", "caption": "Наименование"},
-    {"name": "ubql", "caption": "UBQL (JSON)"}
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "ubql",
+      "caption": "Ubql (Json)"
+    }
   ]
 }

@@ -1,31 +1,26 @@
-﻿{
-  "caption": "Пессимистические блокировки",
-  "description": "Пессимистические блокировки",
+{
+  "caption": "Pessimistik qulflar",
+  "description": "Pessimistik qulflar",
   "attributes": [
     {
       "name": "entity",
-      "caption": "Сущность",
-      "description": "Сущность"
+      "caption": "Mohiyat"
     },
     {
       "name": "lockID",
-      "caption": "ID записи",
-      "description": "ID записи сущности"
+      "caption": "Kirish identifikatori"
     },
     {
       "name": "lockUser",
-      "caption": "Пользователь",
-      "description": "Пользователь, блокировавший запись"
+      "caption": "Foydalanuvchi"
     },
     {
       "name": "lockType",
-      "caption": "Тип блокировки",
-      "description": "Тип блокировки"
+      "caption": "Qulf turi"
     },
     {
       "name": "lockTime",
-      "caption": "Время блокировки",
-      "description": "Время блокировки"
+      "caption": "Bloklash vaqti"
     }
   ]
 }

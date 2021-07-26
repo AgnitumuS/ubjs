@@ -1,17 +1,14 @@
 {
-  "caption": "Класс физ.лиц",
-  "description": "Класс физ.лиц",
-  "documentation": "Внутренняя классификация физических лиц",
+  "caption": "Fiz.litz klassi",
+  "description": "Fiz.litz klassi",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код",
-      "description": "Внутренний код"
+      "caption": "Kod"
     },
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название"
+      "caption": "Ism"
     }
   ]
 }

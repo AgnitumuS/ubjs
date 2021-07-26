@@ -1,56 +1,46 @@
 {
-  "caption": "Страны",
-  "description": "Справочник стран",
+  "caption": "Mamlakatlar",
+  "description": "Mamlakatlar ma'lumotnomasi",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код",
-      "description": "Внутренний код"
+      "caption": "Kod"
     },
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название страны"
+      "caption": "Ism"
     },
     {
       "name": "fullName",
-      "caption": "Полное название",
-      "description": "Полное официальное название страны"
+      "caption": "To'liq sarlavha"
     },
     {
       "name": "intCode",
-      "caption": "Код цифровой",
-      "description": "Цифровой код страны"
+      "caption": "Raqamli kod"
     },
     {
       "name": "symbol2",
-      "caption": "ISO код",
-      "description": "2-х символьный код страны по классификации ISO"
+      "caption": "ISO kodi"
     },
     {
       "name": "symbol3",
-      "caption": "Код МОК",
-      "description": "3-х символьный код страны по классификации МОК"
+      "caption": "XOQ kodi"
     },
     {
       "name": "description",
-      "caption": "Описание",
-      "description": "Описание страны"
+      "caption": "Tavsif"
     },
     {
       "name": "phoneCode",
-      "caption": "Телефонный код",
-      "description": "Телефонный код страны"
+      "caption": "Telefon kodi"
     },
     {
       "name": "currencyID",
-      "caption": "Валюта",
-      "description": "Валюта, которая используется в этой стране как основная"
+      "caption": "Valyuta"
     },
     {
       "name": "capitalID",
-      "caption": "Столица",
-      "description": "Столица страны"
+      "caption": "Poytaxt"
     }
   ]
 }

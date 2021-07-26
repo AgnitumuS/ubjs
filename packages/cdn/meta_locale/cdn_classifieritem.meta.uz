@@ -1,25 +1,25 @@
-﻿{
-  "caption": "Запись классификатора",
+{
+  "caption": "Tasniflagich yozuvi",
   "attributes": [
     {
       "name": "code",
-      "caption": "Системный код"
+      "caption": "Tizim kodi"
     },
     {
       "name": "parentID",
-      "caption": "Родитель"
+      "caption": "Ota-ona"
     },
     {
       "name": "classifierID",
-      "caption": "Классификатор"
+      "caption": "Tasniflovchi"
     },
     {
       "name": "hierarchyLevel",
-      "caption": "Уровень"
+      "caption": "Daraja"
     },
     {
       "name": "name",
-      "caption": "Название"
+      "caption": "Ism"
     }
   ]
 }

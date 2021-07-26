@@ -1,82 +1,66 @@
 {
-  "caption": "Штатные единицы",
-  "description": "Справочник штатных единиц",
-  "documentation": "В этом справочнике хранится перечень штатных единиц (должностей). Каждая штатная единица по UNITY складывается в org_unit",
+  "caption": "Oddiy birliklar",
+  "description": "To'liq ishlaydigan birliklarning katalogi",
   "attributes": [
     {
       "name": "parentID",
-      "caption": "Предок",
-      "description": "Предок"
+      "caption": "Ajdod"
     },
     {
       "name": "code",
-      "caption": "Внутренний код",
-      "description": "Внутренний код штатной единицы"
+      "caption": "Ichki kod"
     },
     {
       "name": "name",
-      "caption": "Название штатной единицы",
-      "description": "Название без кавычек и аббревиатур"
+      "caption": "Xodimlar birligining nomi"
     },
     {
       "name": "fullName",
-      "caption": "Полное название",
-      "description": "Полное название штатной единицы"
+      "caption": "To'liq sarlavha"
     },
     {
       "name": "nameGen",
-      "caption": "Название штатной единицы в род. падеже",
-      "description": "Название без кавычек и аббревиатур в родительном падеже"
+      "caption": "Xodimlar birligining nomi"
     },
     {
       "name": "nameDat",
-      "caption": "Название штатной единицы в дат. падеже",
-      "description": "Название без кавычек и аббревиатур в дательном падеже"
+      "caption": "Xodimlar birligining nomi"
     },
     {
       "name": "fullNameGen",
-      "caption": "Полное название в род. падеже",
-      "description": "Полное название штатной единицы в родительном падеже"
+      "caption": "To'liq sarlavha"
     },
     {
       "name": "fullNameDat",
-      "caption": "Полное название в дат. падеже",
-      "description": "Полное название штатной единицы в дательном падеже"
+      "caption": "To'liq sarlavha"
     },
     {
       "name": "description",
-      "caption": "Описание штатной единицы",
-      "description": "Описание штатной единицы"
+      "caption": "Xodimlar birligining tavsifi"
     },
     {
       "name": "caption",
-      "caption": "Заголовок",
-      "description": "Заголовок"
+      "caption": "Sarlavha"
     },
     {
       "name": "professionExtID",
-      "caption": "Профессия",
-      "description": "Профессия"
+      "caption": "Kasb"
     },
     {
       "name": "professionID",
-      "caption": "Должность",
-      "description": "Должность"
+      "caption": "Pozitsiya"
     },
     {
       "name": "staffUnitTypeID",
-      "caption": "Тип штатной единицы",
-      "description": "Тип штатной единицы"
+      "caption": "Xodimlar birligining turi"
     },
     {
       "name": "subordinationLevel",
-      "caption": "Уровень субординации",
-      "description": "Уровень субординации - чем ниже, тем штатная единица считается более важной по орг. структуре"
+      "caption": "Subordinatsiya darajasi"
     },
     {
       "name": "isBoss",
-      "caption": "Руководитель",
-      "description": "Руководитель"
+      "caption": "Rahbar"
     }
   ]
 }

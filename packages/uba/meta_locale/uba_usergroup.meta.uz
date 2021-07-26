@@ -1,14 +1,14 @@
 {
-  "caption": "Группы пользователя",
-  "description": "Членство польователя в группах",
+  "caption": "Foydalanuvchi guruhlari",
+  "description": "Foydalanuvchilar guruhiga a'zolik",
   "attributes": [
     {
       "name": "userID",
-      "caption": "Пользователь"
+      "caption": "Foydalanuvchi"
     },
     {
       "name": "groupID",
-      "caption": "Группа"
+      "caption": "Guruh"
     }
   ]
 }

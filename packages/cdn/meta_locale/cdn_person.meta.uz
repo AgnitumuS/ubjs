@@ -1,162 +1,130 @@
 {
-  "caption": "Список физических лиц",
-  "description": "Справочник физических лиц",
-  "documentation": "В этом справочнике хранится перечень персон (физических лиц)",
+  "caption": "Jismoniy shaxslar ro'yxati",
+  "description": "Jismoniy shaxslar ma'lumotnomasi",
   "attributes": [
     {
       "name": "lastName",
-      "caption": "Фамилия",
-      "description": "Фамилия персоны"
+      "caption": "Familiya"
     },
     {
       "name": "firstName",
-      "caption": "Имя",
-      "description": "Имя персоны"
+      "caption": "Ism"
     },
     {
       "name": "middleName",
-      "caption": "Отчество",
-      "description": "Отчество персоны"
+      "caption": "Otasini ismi"
     },
     {
       "name": "birthDate",
-      "caption": "Дата рождения",
-      "description": "Дата рождения"
+      "caption": "Tug'ilgan kun"
     },
     {
       "name": "description",
-      "caption": "Описание",
-      "description": "Описание персоны"
+      "caption": "Tavsif"
     },
     {
       "name": "sexType",
-      "caption": "Пол",
-      "description": "Пол персоны"
+      "caption": "Jins"
     },
     {
       "name": "suffix",
-      "caption": "Суффикс",
-      "description": "Суффикс"
+      "caption": "Qoplamoq"
     },
     {
       "name": "shortFIO",
-      "caption": "Краткое ФИО",
-      "description": "Пример: Фамилия И.О"
+      "caption": "Qisqa phno"
     },
     {
       "name": "fullFIO",
-      "caption": "Полное ФИО",
-      "description": "Пример: Фамилия Имя Отчество"
+      "caption": "To'liq ism"
     },
     {
       "name": "apply",
-      "caption": "Обращение",
-      "description": "Как обращаться к этому человеку"
+      "caption": "Shikoyat qilish"
     },
     {
       "name": "photo",
-      "caption": "Фото",
-      "description": "Фотография персоны"
+      "caption": "Surat"
     },
     {
       "name": "lastNameGen",
-      "caption": "Фамилия в род. падеже",
-      "description": "Фамилия персоны в родительном падеже"
+      "caption": "Familiya"
     },
     {
       "name": "lastNameDat",
-      "caption": "Фамилия в дат. падеже",
-      "description": "Фамилия персоны в дательном падеже"
+      "caption": "Familiya"
     },
     {
       "name": "firstNameGen",
-      "caption": "Имя в род. падеже",
-      "description": "Имя персоны в родительном падеже"
+      "caption": "Ism"
     },
     {
       "name": "firstNameDat",
-      "caption": "Имя в дат. падеже",
-      "description": "Имя персоны в дательном падеже"
+      "caption": "Ism"
     },
     {
       "name": "middleNameGen",
-      "caption": "Отчество в род. падеже",
-      "description": "Отчество персоны в родительном падеже"
+      "caption": "Otasini ismi"
     },
     {
       "name": "middleNameDat",
-      "caption": "Отчество в дат. падеже",
-      "description": "Отчество персоны в дательном падеже"
+      "caption": "Otasini ismi"
     },
     {
       "name": "shortFIOGen",
-      "caption": "Краткое ФИО в род. падеже",
-      "description": "Краткое ФИО персоны в родительном падеже"
+      "caption": "Qisqa ism"
     },
     {
       "name": "shortFIODat",
-      "caption": "Краткое ФИО в дат. падеже",
-      "description": "Краткое ФИО персоны в дательном падеже"
+      "caption": "Qisqa ism"
     },
     {
       "name": "fullFIOGen",
-      "caption": "Полное ФИО в род. падеже",
-      "description": "Полное ФИО персоны в родительном падеже"
+      "caption": "To'liq ism"
     },
     {
       "name": "fullFIODat",
-      "caption": "Полное ФИО в дат. падеже",
-      "description": "Полное ФИО персоны в дательном падеже"
+      "caption": "To'liq ism"
     },
     {
       "name": "applyGen",
-      "caption": "Обращение в род. падеже",
-      "description": "Как обращаться к этому человеку в родительном падеже"
+      "caption": "Shikoyat qilish"
     },
     {
       "name": "applyDat",
-      "caption": "Обращение в дат. падеже",
-      "description": "Как обращаться к этому человеку в дательном падеже"
+      "caption": "Shikoyat qilish"
     },
     {
       "name": "regionID",
-      "caption": "Регион",
-      "description": "Регион проживания персоны"
+      "caption": "Mintaqa"
     },
     {
       "name": "identCard",
-      "caption": "Удостоверение личности",
-      "description": "Удостоверение личности персоны"
+      "caption": "Identifikatsiya"
     },
     {
       "name": "workPlacePos",
-      "caption": "Место работы, должность",
-      "description": "Место работы, должность"
+      "caption": "Ish joyi, lavozimi"
     },
     {
       "name": "socialstatusID",
-      "caption": "Социальный статус",
-      "description": "Социальный статус"
+      "caption": "Ijtimoiy holati"
     },
     {
       "name": "categoryID",
-      "caption": "Категория",
-      "description": "Категория"
+      "caption": "Turkum"
     },
     {
       "name": "nationality",
-      "caption": "Национальность",
-      "description": "Национальность"
+      "caption": "Millat"
     },
     {
       "name": "resident",
-      "caption": "Резидент?",
-      "description": "Человек - резидент нашей страны"
+      "caption": "Rezident?"
     },
     {
       "name": "classID",
-      "caption": "Классификация",
-      "description": "Классификация"
+      "caption": "Tasniflash"
     }
   ]
 }

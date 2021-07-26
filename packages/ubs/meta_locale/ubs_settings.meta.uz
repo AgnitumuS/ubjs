@@ -1,36 +1,30 @@
 {
-  "caption": "Настройки",
-  "description": "Сущность, в которой хранится информация с настройками системы",
+  "caption": "Sozlash",
+  "description": "Axborotni tizim sozlamalari bilan saqlaydigan tashkilot",
   "attributes": [
     {
       "name": "settingKey",
-      "caption": "Ключ",
-      "description": "Ключ настройки"
+      "caption": "Kalit"
     },
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название настройки"
+      "caption": "Ism"
     },
     {
       "name": "description",
-      "caption": "Описание",
-      "description": "Описание"
+      "caption": "Tavsif"
     },
     {
       "name": "type",
-      "caption": "Тип",
-      "description": "Тип значения"
+      "caption": "Turi"
     },
     {
       "name": "settingValue",
-      "caption": "Значение",
-      "description": "Значение"
+      "caption": "Qiymati"
     },
     {
       "name": "defaultValue",
-      "caption": "Значение по умолчанию",
-      "description": "Значение по умолчанию"
+      "caption": "Standart qiymat"
     }
   ]
 }

@@ -1,54 +1,50 @@
-﻿{
-    "caption": "Сертификаты",
-    "description": "Сертификаты пользователя",
-    "attributes": [
-        {
-            "name": "userID",
-            "caption": "Пользователь"
-        },
-        {
-            "name": "issuer_serial",
-            "caption": "Серийный ключ ЦСП"
-        },
-        {
-            "name": "issuer_cn",
-            "caption": "Название ЦСП"
-        },
-        {
-            "name": "serial",
-            "caption": "Серийный номер"
-        },
-        {
-            "name": "certificate",
-            "caption": "Сертификат",
-            "description": "Двоичные данные сертификата"
-        },
-        {
-          "name": "certParsed",
-          "caption": "Содержимое сертификата"
-        },
-        {
-          "name": "isForSigning",
-          "caption": "Для подписи"
-        },
-        {
-            "name": "description",
-            "caption": "Описание"
-        },
-        {
-            "name": "disabled",
-            "caption": "Отключён",
-            "description": "Запрещен"
-        },
-        {
-            "name": "revoked",
-            "caption": "Отозван",
-            "description": "Отозван"
-        },
-        {
-            "name": "revocationDate",
-            "caption": "Дата отзыва",
-            "description": "Дата отзыва"
-        }
-    ]
+{
+  "caption": "Sertifikatlar",
+  "description": "Foydalanuvchi sertifikatlari",
+  "attributes": [
+    {
+      "name": "userID",
+      "caption": "Foydalanuvchi"
+    },
+    {
+      "name": "issuer_serial",
+      "caption": "Serial kalit csp"
+    },
+    {
+      "name": "issuer_cn",
+      "caption": "CSP nomi"
+    },
+    {
+      "name": "serial",
+      "caption": "Ishlab chiqarish raqami"
+    },
+    {
+      "name": "certificate",
+      "caption": "Sertifikat"
+    },
+    {
+      "name": "certParsed",
+      "caption": "Sertifikat tarkibi"
+    },
+    {
+      "name": "isForSigning",
+      "caption": "Imzo uchun"
+    },
+    {
+      "name": "description",
+      "caption": "Tavsif"
+    },
+    {
+      "name": "disabled",
+      "caption": "Nogiron"
+    },
+    {
+      "name": "revoked",
+      "caption": "Olib chiqish"
+    },
+    {
+      "name": "revocationDate",
+      "caption": "Ko'rish sanasi"
+    }
+  ]
 }

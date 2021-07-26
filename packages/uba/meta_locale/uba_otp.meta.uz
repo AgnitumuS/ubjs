@@ -1,31 +1,26 @@
 {
-  "caption": "Одноразовые пароли",
-  "description": "Одноразовые пароли",
+  "caption": "Bir marta ishlatiladigan parollar",
+  "description": "Bir marta ishlatiladigan parollar",
   "attributes": [
     {
       "name": "otp",
-      "caption": "Пароль",
-      "description": "Сгенерированный одноразовый пароль"
+      "caption": "Parol"
     },
     {
       "name": "userID",
-      "caption": "Пользователь",
-      "description": "Пользователь, для которого сгенерирован пароль"
+      "caption": "Foydalanuvchi"
     },
     {
       "name": "uData",
-      "caption": "Дополнительные данные",
-      "description": "Дополнительные данные"
+      "caption": "Qo'shimcha ma'lumotlar"
     },
     {
       "name": "expiredDate",
-      "caption": "Срок действия",
-      "description": "Срок действия"
+      "caption": "Amal qilish muddati"
     },
     {
       "name": "otpKind",
-      "caption": "Вид пароля",
-      "description": "Вид пароля (Email, SMS и т. д.)"
+      "caption": "Parolni ko'rish"
     }
   ]
 }

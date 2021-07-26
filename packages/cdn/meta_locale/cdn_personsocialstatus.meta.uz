@@ -1,17 +1,14 @@
 {
-  "caption": "Социальный статус",
-  "description": "Справочник социальных статусов",
-  "documentation": "В этом справочнике хранится перечень социальных статусов для физических лиц",
+  "caption": "Ijtimoiy holati",
+  "description": "Ijtimoiy holati katalogi",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код",
-      "description": "Внутренний код"
+      "caption": "Kod"
     },
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название социального статуса"
+      "caption": "Ism"
     }
   ]
 }

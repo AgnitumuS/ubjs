@@ -1,33 +1,30 @@
-﻿{
-    "caption": "Шаблоны отчетов",
-    "description": "Шаблоны отчетов",
-    "attributes": [
-        {
-            "name": "model",
-            "caption": "Модель",
-            "description": "Модель, где хранится отчет"
-        },
-        {
-            "name": "report_code",
-            "caption": "Код отчета"
-        },
-        {
-            "name": "name",
-            "caption": "Название"
-        },
-        {
-            "name": "template",
-            "caption": "Шаблон",
-            "description": "Шаблон отчета"
-        },
-        {
-            "name": "code",
-            "caption": "Код Javascript",
-            "description": "Код Javascript"
-        },
-        {
-            "name": "ID",
-            "caption": "ИД"
-        }
-    ]
+{
+  "caption": "Hisobot andozalari",
+  "description": "Hisobot andozalari",
+  "attributes": [
+    {
+      "name": "model",
+      "caption": "Model"
+    },
+    {
+      "name": "report_code",
+      "caption": "Hisobot kodi"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "template",
+      "caption": "Andoza"
+    },
+    {
+      "name": "code",
+      "caption": "JavaScript kodi"
+    },
+    {
+      "name": "ID",
+      "caption": "Id"
+    }
+  ]
 }

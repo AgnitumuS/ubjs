@@ -1,59 +1,50 @@
 {
-  "caption": "Аудит",
-  "description": "Аудит изменений",
+  "caption": "Audit",
+  "description": "Audit o'zgarishlari",
   "attributes": [
     {
       "name": "entity",
-      "caption": "Сущность",
-      "description": "Сущность"
+      "caption": "Mohiyat"
     },
     {
       "name": "entityinfo_id",
-      "caption": "ID записи сущности",
-      "description": "ID записи сущности"
+      "caption": "Kirish kirish identifikatori"
     },
     {
       "name": "actionType",
-      "caption": "Действие",
-      "description": "Действие"
+      "caption": "Harakat qilmoq"
     },
     {
       "name": "actionUser",
-      "caption": "Пользователь",
-      "description": "Пользователь"
+      "caption": "Foydalanuvchi"
     },
     {
       "name": "actionTime",
-      "caption": "Время действия",
-      "description": "Время действия"
+      "caption": "Harakat vaqti"
     },
     {
       "name": "remoteIP",
-      "caption": "IP адрес",
-      "description": "IP адрес вызывающей стороны"
+      "caption": "IP manzili"
     },
     {
       "name": "fromValue",
-      "caption": "Было значение"
+      "caption": "Eski ma'no"
     },
     {
       "name": "toValue",
-      "caption": "Стало значение"
+      "caption": "Yangi qiymat"
     },
     {
       "name": "targetUser",
-      "caption": "Целевой пользователь",
-      "description": "Имя пользователя, для которого изменились данные"
+      "caption": "Maqsadli foydalanuvchi"
     },
     {
       "name": "targetGroup",
-      "caption": "Целевая группа",
-      "description": "Группа, для которой изменились данные"
+      "caption": "Maqsadli guruh"
     },
     {
       "name": "targetRole",
-      "caption": "Целевая роль",
-      "description": "Роль пользователя, для которой изменились данные"
+      "caption": "Maqsadli roli"
     }
   ]
 }

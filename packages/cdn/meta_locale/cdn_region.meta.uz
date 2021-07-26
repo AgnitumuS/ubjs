@@ -1,51 +1,42 @@
 {
-  "caption": "Регионы",
-  "description": "Справочник регионов",
+  "caption": "Mintaqalar",
+  "description": "Mintaqalar katalogi",
   "attributes": [
     {
       "name": "regionTypeID",
-      "caption": "Тип региона",
-      "description": "Тип региона"
+      "caption": "Viloyat turi"
     },
     {
       "name": "name",
-      "caption": "Название",
-      "description": "Название региона"
+      "caption": "Ism"
     },
     {
       "name": "fullName",
-      "caption": "Полное название",
-      "description": "Полное официальное название региона"
+      "caption": "To'liq unum"
     },
     {
       "name": "description",
-      "caption": "Описание",
-      "description": "Описание региона"
+      "caption": "Tavsif"
     },
     {
       "name": "phoneCode",
-      "caption": "Телефонный код",
-      "description": "Телефонный код региона"
+      "caption": "Telefon kodi"
     },
     {
       "name": "centerID",
-      "caption": "Центр",
-      "description": "Центр региона"
+      "caption": "Markaz"
     },
     {
       "name": "parentAdminUnitID",
-      "caption": "Предок",
-      "description": "Предок"
+      "caption": "Ajdod"
     },
     {
       "name": "code",
-      "caption": "Код",
-      "description": "Внутренний код"
+      "caption": "Kod"
     },
     {
       "name": "caption",
-      "caption": "Заголовок",
-      "description": "Заголовок"
+      "caption": "Sarlavha"
     }
   ]
 }

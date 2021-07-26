@@ -1,20 +1,18 @@
 {
-  "caption": "Субъекты администрирования",
-  "description": "Субъекты администрирования - объединяют Роли и Пользователей",
+  "caption": "Ma'muriyat fanlari",
+  "description": "Ma'muriyat mavzulari - Rollar va foydalanuvchilar",
   "attributes": [
     {
       "name": "code",
-      "caption": "Код"
+      "caption": "Kod"
     },
     {
       "name": "name",
-      "caption": "Логин",
-      "description": ""
+      "caption": "Kirish"
     },
     {
       "name": "sType",
-      "caption": "Тип субъекта",
-      "description": ""
+      "caption": "Mavzu turi"
     }
   ]
 }

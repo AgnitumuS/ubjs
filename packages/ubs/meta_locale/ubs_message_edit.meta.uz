@@ -1,27 +1,26 @@
 {
-  "caption": "Сообщения",
-  "description": "Системные сообщения",
-  "documentation": "Системные сообщения",
+  "caption": "Xabarlar",
+  "description": "Tizim xabarlari",
   "attributes": [
     {
       "name": "messageBody",
-      "caption": "Сообщение"
+      "caption": "Xabar"
     },
     {
       "name": "complete",
-      "caption": "Готово к отправке"
+      "caption": "Jo'natishga tayyor"
     },
     {
       "name": "messageType",
-      "caption": "Тип"
+      "caption": "Turi"
     },
     {
       "name": "startDate",
-      "caption": "Действительно с"
+      "caption": "Yaroqliligi"
     },
     {
       "name": "expireDate",
-      "caption": "Действительно по"
+      "caption": "Yaroqlilik muddati"
     }
   ]
 }
