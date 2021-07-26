@@ -1,0 +1,10 @@
+{
+    "orgEmployee": "Xodim",
+    "orgUnit": "Org. birlik",
+    "orgStaffUnit": "Org. xodimlar bo'limi",
+    "orgProfession": "Kasblar",
+    "orgOrganization": "Tashkilotlar",
+    "orgEmployeeOnStaff": "Xodimlardagi xodim",
+    "orgTreeCanNotBeCyclical": "Daraxtlar tsiklik bo'lmaydi",
+    "orgDepartment": "Bo'lim"
+}
