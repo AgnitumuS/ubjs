@@ -3,8 +3,8 @@
     "blobStores": [
       {
         "name": "udiskStore",
-        "path": "%UB_APPDATA%store/udisk",
-        "tempPath": "%UB_APPDATA%store/udisk/_temp",
+        "path": "%UB_APPDATA%stores/udisk",
+        "tempPath": "%UB_APPDATA%stores/udisk/_temp",
         "isDefault": false,
         "historyDepth": 10,
         "storeSize": "Simple",
@@ -12,8 +12,8 @@
       },
       {
         "name": "udiskStoreSecret",
-        "path": "%UB_APPDATA%store/udisksecret",
-        "tempPath": "%UB_APPDATA%store/udisksecret/_temp",
+        "path": "%UB_APPDATA%stores/udisksecret",
+        "tempPath": "%UB_APPDATA%stores/udisksecret/_temp",
         "isDefault": false,
         "historyDepth": 10,
         "storeSize": "Simple",
@@ -21,8 +21,8 @@
       },
       {
         "name": "udiskStoreService",
-        "path": "%UB_APPDATA%store/udiskservice",
-        "tempPath": "%UB_APPDATA%store/udiskservice/_temp",
+        "path": "%UB_APPDATA%stores/udiskservice",
+        "tempPath": "%UB_APPDATA%stores/udiskservice/_temp",
         "isDefault": false,
         "historyDepth": 10,
         "storeSize": "Simple",

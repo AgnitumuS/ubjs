@@ -160,7 +160,7 @@ entity – сущность диска (описаны в разделе пра�
 ## Partial and environment variables
 
 Model partial config adds `application.blobStores` section witch adds 3 BLOB stores:
-  - %UB_APPDATA%store/udisk/
-  - %UB_APPDATA%store/udisksecret/
-  - %UB_APPDATA%store/udiskpservice/
+  - %UB_APPDATA%stores/udisk/
+  - %UB_APPDATA%stores/udisksecret/
+  - %UB_APPDATA%stores/udiskpservice/
 
