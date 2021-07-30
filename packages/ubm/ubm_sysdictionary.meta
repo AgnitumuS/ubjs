@@ -41,8 +41,7 @@
       "name": "ubql",
       "caption": "UBQL (JSON)",
       "dataType": "Json",
-      "allowNull": false,
-      "defaultView": false
+      "allowNull": false
     }
   ]
 }
