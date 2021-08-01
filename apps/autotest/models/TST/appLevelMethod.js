@@ -363,3 +363,24 @@ function bodyParse (req, resp) {
   resp.writeEnd(j)
 }
 App.registerEndpoint('bodyParse', bodyParse, false)
+
+/**
+ * Verify throw / catch return user defined statusCode
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function verifyThrowCatch (req, resp) {
+  let catched = false
+  try {
+    UB.DataStore('tst_service').run('handledExceptionTest', {
+      execParams: {}
+    })
+  } catch (e) {
+    catched = true
+    console.error(e.message)
+  }
+  resp.statusCode = 201
+  resp.writeHead('Content-Type: application/json; charset=UTF-8')
+  resp.writeEnd({ catched })
+}
+App.registerEndpoint('verifyThrowCatch', verifyThrowCatch, true)

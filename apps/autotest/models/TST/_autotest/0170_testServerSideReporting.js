@@ -3,7 +3,6 @@
  * Date: 2021-03-15
  * Test server-side reporting
  */
-const assert = require('assert')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 
@@ -22,7 +21,7 @@ module.exports = function runJSMixinsTests (options) {
   conn.xhr({
     endpoint: 'rest/tst_service/testServerRendering',
     data: {
-      reportCode: "test", responseType: "html", reportParams: {}
+      reportCode: 'test', responseType: 'html', reportParams: {}
     }
   })
 }
