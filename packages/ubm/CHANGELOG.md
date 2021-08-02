@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - prevent override adm_desktop defined by UDA model during migration
+ - localization of the shortcut for `ubm_sysdictionary` entity
+ - deny direct modification of UNITY `ubm_query`
+ - disabling of editing `ubm_query.ubql` on the form
+ - displaying of the control for editing of `ubm_sysdictionary.ubql` - remove `defaultView: false` for this attribute
 
 ## [5.20.18] - 2021-07-18
 ### Added
@@ -356,4 +360,3 @@ This change is required to prevent massive CLOB fetching (cmdData attribute)
 
 ### Fixed
 - added unique index for instanceID + admSubjectID for ubm_desktop_adm.meta & ubm_navshortcut_adm.meta 
-

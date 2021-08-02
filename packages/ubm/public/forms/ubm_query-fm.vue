@@ -6,7 +6,7 @@
       <u-auto-field attribute-name="code" disabled />
       <u-auto-field attribute-name="name" disabled />
       <u-auto-field attribute-name="type" disabled />
-      <u-auto-field attribute-name="ubql" read-only />
+      <u-auto-field attribute-name="ubql" readonly />
     </u-form-container>
   </div>
 </template>

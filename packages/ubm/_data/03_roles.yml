@@ -7,3 +7,9 @@ User:
   els:
     read:
     - ubm
+
+Everyone:
+  $amendment: true
+  els:
+    custom:
+    - UBM_QUERY_DENY: "!ubm_query,[iuda]*,Deny direct modification of UNITY ubm_query"
