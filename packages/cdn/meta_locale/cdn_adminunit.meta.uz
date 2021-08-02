@@ -1,0 +1,30 @@
+{
+  "caption": "Ma'muriy birlik",
+  "description": "Ma'muriy birlik (mamlakat, mintaqa, hal qilish)",
+  "attributes": [
+    {
+      "name": "parentAdminUnitID",
+      "caption": "Bo'ysundirish"
+    },
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "fullName",
+      "caption": "To'liq unum"
+    },
+    {
+      "name": "adminUnitType",
+      "caption": "Qarash joyining turi"
+    },
+    {
+      "name": "caption",
+      "caption": "Sarlavha"
+    }
+  ]
+}

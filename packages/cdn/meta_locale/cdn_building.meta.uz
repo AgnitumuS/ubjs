@@ -1,0 +1,26 @@
+{
+  "caption": "Uylar ro'yxati",
+  "description": "Uylar ro'yxati",
+  "attributes": [
+    {
+      "name": "streetID",
+      "caption": "Ko'cha"
+    },
+    {
+      "name": "postIndexID",
+      "caption": "Indeks"
+    },
+    {
+      "name": "code",
+      "caption": "№"
+    },
+    {
+      "name": "description",
+      "caption": "Tavsif"
+    },
+    {
+      "name": "buildingType",
+      "caption": "Turi"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "caption": "Ijrochilar guruhlari uchun ijrochilar",
+  "description": "Guruhga bog'langan va guruh qo'shganda rezolyutsiyalarda ijrochilar uchun ishlatiladigan ijrochilar",
+  "attributes": [
+    {
+      "name": "execGroupID",
+      "caption": "Ijrochilar guruhi"
+    },
+    {
+      "name": "orgUnitID",
+      "caption": "Ijrochi"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "caption": "Millat",
+  "description": "Millat",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "nameM",
+      "caption": "Ism (E)"
+    },
+    {
+      "name": "nameF",
+      "caption": "Ism (A)"
+    }
+  ]
+}

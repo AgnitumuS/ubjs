@@ -1,0 +1,21 @@
+{
+  "caption": "Tillar ro'yxati",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "ISO 639-1 kodi"
+    },
+    {
+      "name": "languageName",
+      "caption": "Til nomi"
+    },
+    {
+      "name": "nativeName",
+      "caption": "Tilning o'z nomi (endonim)"
+    },
+    {
+      "name": "isRTL",
+      "caption": "O'ng chapda yozish"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "caption": "Manzillar",
+  "description": "Manzil katalogi",
+  "attributes": [
+    {
+      "name": "addressType",
+      "caption": "Manzil turi"
+    },
+    {
+      "name": "value",
+      "caption": "Manzil"
+    },
+    {
+      "name": "subjectID",
+      "caption": "Mavzu"
+    }
+  ]
+}

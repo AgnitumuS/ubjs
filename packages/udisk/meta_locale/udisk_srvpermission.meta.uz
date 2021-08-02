@@ -1,0 +1,22 @@
+{
+  "caption": "Kirish huquqi",
+  "description": "Kirish huquqi",
+  "attributes": [
+    {
+      "name": "cardID",
+      "caption": "Fayl"
+    },
+    {
+      "name": "userID",
+      "caption": "Foydalanuvchi"
+    },
+    {
+      "name": "accessType",
+      "caption": "Kirish turi"
+    },
+    {
+      "name": "parentID",
+      "caption": "ИД родителя"
+    }
+  ]
+}

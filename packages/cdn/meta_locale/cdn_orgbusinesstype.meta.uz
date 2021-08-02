@@ -1,0 +1,26 @@
+{
+  "caption": "Tashkilotlar turlari",
+  "description": "Tashkilotlar turlari katalogi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "shortName",
+      "caption": "Qisqartirish"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "fullName",
+      "caption": "Tavsif"
+    },
+    {
+      "name": "isGovAuthority",
+      "caption": "Davlat organ"
+    }
+  ]
+}

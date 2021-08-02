@@ -1,0 +1,14 @@
+{
+  "caption": "Ijtimoiy holati",
+  "description": "Ijtimoiy holati katalogi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    }
+  ]
+}

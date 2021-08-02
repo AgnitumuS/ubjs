@@ -1,0 +1,18 @@
+{
+  "caption": "Kontaktlar",
+  "description": "Kontaktlar ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "contactTypeID",
+      "caption": "Kontakt turi"
+    },
+    {
+      "name": "value",
+      "caption": "Aloqa"
+    },
+    {
+      "name": "subjectID",
+      "caption": "Mavzu"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "caption": "Mulkchilik turi",
+  "description": "Tashkilotlar egalik qilish ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "shortName",
+      "caption": "Qisqartirish"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "fullName",
+      "caption": "To'liq unum"
+    }
+  ]
+}

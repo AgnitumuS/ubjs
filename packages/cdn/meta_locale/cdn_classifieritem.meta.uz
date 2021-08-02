@@ -1,0 +1,25 @@
+{
+  "caption": "Tasniflagich yozuvi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Tizim kodi"
+    },
+    {
+      "name": "parentID",
+      "caption": "Ota-ona"
+    },
+    {
+      "name": "classifierID",
+      "caption": "Tasniflovchi"
+    },
+    {
+      "name": "hierarchyLevel",
+      "caption": "Daraja"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    }
+  ]
+}
