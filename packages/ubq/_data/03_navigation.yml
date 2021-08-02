@@ -13,6 +13,7 @@ adm_desktop:
         tg: Навбати паёмҳо
         ka: რიგი
         az: İsmarış növbələri
+        nl: Wachtrij
       iconCls: u-icon-more
       displayOrder: 50
       items:
@@ -24,6 +25,7 @@ adm_desktop:
             tg: Нақшакашҳои вазифаҳо
             ka: განრიგის შემქმნელი
             az: Tapşırıq planlaşdırıcıları
+            nl: Planners
           iconCls: fas fa-tasks
           displayOrder: 10
           cmd: >
@@ -42,6 +44,7 @@ adm_desktop:
             tg: Омор
             ka: სტატისტიკა
             az: Statistika
+            nl: Statistieken
           iconCls: u-icon-circle-info
           displayOrder: 20
           cmd: >
@@ -60,6 +63,7 @@ adm_desktop:
             tg: Навбат
             ka: რიგირ
             az: Növbə
+            nl: Wachtrij
           iconCls: fas fa-list-ol
           displayOrder: 30
           cmd: >

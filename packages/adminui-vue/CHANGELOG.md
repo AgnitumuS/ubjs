@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `UTableEntity`: slot `appendTable` to add some content at the end of the table after the pagination button
+ - Dutch (nl) localization
 
 ### Changed
 
