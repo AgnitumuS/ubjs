@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - ub-server@5.20.4 compatibility (IsValidUTF8)
 
 ## [5.2.0] - 2021-07-08
 ### Added

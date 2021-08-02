@@ -75,6 +75,7 @@ uses
   {$IFDEF WIN32}
   SynBZ,
   {$ENDIF}
+  SynTable,
   SyNodeProto,
   jsbUtils;
 
