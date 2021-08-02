@@ -1,0 +1,30 @@
+{
+  "caption": "Ichki tashkilotning tayinlanishi",
+  "description": "Ichki tashkilotning tayinlanish sahifasi ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "tabNo",
+      "caption": "№"
+    },
+    {
+      "name": "employeeID",
+      "caption": "Yorliq raqami"
+    },
+    {
+      "name": "staffUnitID",
+      "caption": "Xodimlar bo'limi"
+    },
+    {
+      "name": "employeeOnStaffType",
+      "caption": "Manzil turi"
+    },
+    {
+      "name": "description",
+      "caption": "Tavsif"
+    },
+    {
+      "name": "caption",
+      "caption": "Sarlavha"
+    }
+  ]
+}

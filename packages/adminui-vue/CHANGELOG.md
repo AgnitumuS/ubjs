@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `UTableEntity`: slot `appendTable` to add some content at the end of the table after the pagination button
+ - Dutch (nl) localization
 
 ### Changed
 
@@ -18,7 +19,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `USelectEntity`: fixed entity name in dictionary adding dialog in case of repository use
  - `UCodeMirror`: revert removing of `editorInstance` computed value since it exists for external use
  - `USelectEntity`: prevent trigger of dropdown action in case on `Enter` is pressed in some other control of the form
- 
+ - `UFormRow`: fixed automatic label title if the attribute's description text is not defined
+
 ## [5.20.17] - 2021-07-18
 ### Added
  - `USelectEnum`: added `repository` prop, same as `USelectEntity` has

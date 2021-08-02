@@ -1,0 +1,18 @@
+{
+  "caption": "Postcodes",
+  "description": "Postcodes",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Indeks"
+    },
+    {
+      "name": "streetID",
+      "caption": "Ko'cha"
+    },
+    {
+      "name": "description",
+      "caption": "Tavsif"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "caption": "Tasniflovchi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "description",
+      "caption": "Tavsif"
+    },
+    {
+      "name": "orderByAttr",
+      "caption": "Klassifikator elementlarining tartibi"
+    },
+    {
+      "name": "ubql",
+      "caption": "UBQL (JSON)"
+    }
+  ]
+}

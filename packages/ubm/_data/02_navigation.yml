@@ -121,10 +121,10 @@ adm_desktop:
           caption:
             en: System Dictionaries
             ka: სისტემის ლექსიკონები
-            ru: Пользовательские справочники
-            tg: Луғатномаҳои система
-            uk: Користувацькі довідники
-            nl: Systeemwoordenboeken
+            ru: Системние справочники
+            tg: Луғатҳои системавӣ
+            uk: Системні довідники
+            nl: System Woordenboeken
           displayOrder: 60
           showList:
             renderer: vue

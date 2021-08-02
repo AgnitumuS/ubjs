@@ -1,0 +1,62 @@
+{
+  "caption": "Ichki tashkilotlar",
+  "description": "Ichki tashkilotlar ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "parentID",
+      "caption": "Ota-ona elementlari"
+    },
+    {
+      "name": "code",
+      "caption": "Ichki kod"
+    },
+    {
+      "name": "OKPOCode",
+      "caption": "Korxonalar va tashkilotlarning Butunrossiya klassifikatori"
+    },
+    {
+      "name": "taxCode",
+      "caption": "Soliq raqami"
+    },
+    {
+      "name": "vatCode",
+      "caption": "№ QQS"
+    },
+    {
+      "name": "name",
+      "caption": "Tashkilot nomi"
+    },
+    {
+      "name": "fullName",
+      "caption": "Tashkilotning to'liq nomi"
+    },
+    {
+      "name": "description",
+      "caption": "Tashkilot tavsifi"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Tashkilot nomi"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Dative-da tashkilot nomi"
+    },
+    {
+      "name": "fullNameGen",
+      "caption": "Tashkilotning to'liq nomi"
+    },
+    {
+      "name": "fullNameDat",
+      "caption": "Dativ holatda tashkilotning to'liq nomi"
+    },
+    {
+      "name": "orgBusinessTypeID",
+      "caption": "Tashkilot turi"
+    },
+    {
+      "name": "orgOwnershipTypeID",
+      "caption": "Mulkchilik turi"
+    }
+  ]
+}

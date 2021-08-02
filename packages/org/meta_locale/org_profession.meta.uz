@@ -1,0 +1,38 @@
+{
+  "caption": "Xabarlar",
+  "description": "Katalog xabarlari",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "fullName",
+      "caption": "To'liq unum"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Jinsiyaning sarlavhasi. Cho'chqa"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Sanalarda ism. Cho'chqa"
+    },
+    {
+      "name": "fullNameGen",
+      "caption": "Lavozimning to'liq nomi"
+    },
+    {
+      "name": "fullNameDat",
+      "caption": "Lavozimning to'liq nomi"
+    },
+    {
+      "name": "description",
+      "caption": "Sarlavha"
+    }
+  ]
+}

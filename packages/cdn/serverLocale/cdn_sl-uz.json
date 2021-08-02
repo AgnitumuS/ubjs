@@ -1,0 +1,7 @@
+{
+  "errUnableToPerformThisOperation": "<<< Ushbu operatsiyani bajarib bo'lmadi. Administrator bilan bog'laning >>>",
+  "errNoRightsForInsUpdateGovOrg": "<<< Siz ushbu operatsiyani bajara olmaysiz, chunki siz tashkilotni davlat organlari bilan qo'shish / yangilash huquqiga ega emassiz >>>",
+  "errNotExsistsOKPO": "<<< OKPO kodi mavjud emas >>>",
+  "errMustContainsOnly8Or10Symbols": "<<< Kod faqat 8 yoki 10 ta belgidan iborat bo'lishi kerak >>>"
+}
+

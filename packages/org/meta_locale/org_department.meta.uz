@@ -1,0 +1,54 @@
+{
+  "caption": "Mahalliy birliklar",
+  "description": "Ichki bo'limlar katalogi",
+  "attributes": [
+    {
+      "name": "parentID",
+      "caption": "Ajdod"
+    },
+    {
+      "name": "code",
+      "caption": "Ichki kod"
+    },
+    {
+      "name": "name",
+      "caption": "Bo'limning nomi"
+    },
+    {
+      "name": "fullName",
+      "caption": "To'liq ism berish"
+    },
+    {
+      "name": "description",
+      "caption": "Bo'lim tavsifi"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Ism"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Ism"
+    },
+    {
+      "name": "fullNameGen",
+      "caption": "To'liq sarlavha"
+    },
+    {
+      "name": "fullNameDat",
+      "caption": "To'liq sarlavha"
+    },
+    {
+      "name": "depTypeID",
+      "caption": "Bo'linish turi"
+    },
+    {
+      "name": "isClerical",
+      "caption": "Ishbilarmonlik"
+    },
+    {
+      "name": "caption",
+      "caption": "Sarlavha"
+    }
+  ]
+}

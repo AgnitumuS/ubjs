@@ -1,0 +1,26 @@
+{
+  "caption": "Ko'chalar ro'yxati",
+  "description": "Ko'chalar ro'yxati",
+  "attributes": [
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "fullName",
+      "caption": "To'liq unum"
+    },
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "streetType",
+      "caption": "Turi"
+    },
+    {
+      "name": "cityID",
+      "caption": "Aholi punkti"
+    }
+  ]
+}

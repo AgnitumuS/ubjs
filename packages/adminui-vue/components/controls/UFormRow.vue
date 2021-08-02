@@ -220,8 +220,8 @@ export default {
         return this.$ut(this.description)
       }
       if (this.attributeName && this.entity) {
-        const attrDescription = this.$ut(`${this.entity}.${this.attributeName}#description`)
-        return attrDescription || this.$ut(this.labelText)
+        const localeString = `${this.entity}.${this.attributeName}#description`
+        return this.$ut(localeString) === localeString ? this.$ut(this.labelText) : this.$ut(localeString)
       }
       return this.$ut(this.labelText)
     },
@@ -260,7 +260,7 @@ export default {
       return ''
     },
 
-    isRequired() {
+    isRequired () {
       if (this.required !== undefined) {
         return this.required
       }

@@ -1,0 +1,74 @@
+{
+  "caption": "Tashqi tashkilotlar",
+  "description": "Tashqi tashkilotlar ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Ichki kod"
+    },
+    {
+      "name": "OKPOCode",
+      "caption": "Korxonalar va tashkilotlarning Butunrossiya klassifikatori"
+    },
+    {
+      "name": "taxCode",
+      "caption": "Soliq raqami"
+    },
+    {
+      "name": "vatCode",
+      "caption": "№ QQS"
+    },
+    {
+      "name": "name",
+      "caption": "Tashkilot nomi"
+    },
+    {
+      "name": "fullName",
+      "caption": "Tashkilotning to'liq nomi"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Tashkilot nomi"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Tashkilot nomi"
+    },
+    {
+      "name": "fullNameGen",
+      "caption": "Tashkilotning to'liq nomi"
+    },
+    {
+      "name": "fullNameDat",
+      "caption": "Tashkilotning to'liq nomi"
+    },
+    {
+      "name": "description",
+      "caption": "Tashkilot tavsifi"
+    },
+    {
+      "name": "orgBusinessTypeID",
+      "caption": "Tashkilot turi"
+    },
+    {
+      "name": "orgOwnershipTypeID",
+      "caption": "Mulkchilik turi"
+    },
+    {
+      "name": "corrIndexID",
+      "caption": "Muxbir indeksi"
+    },
+    {
+      "name": "addrText",
+      "caption": "Qabul qiluvchi so'zi"
+    },
+    {
+      "name": "caption",
+      "caption": "Sarlavha"
+    },
+    {
+      "name": "countryID",
+      "caption": "Mamlakat"
+    }
+  ]
+}

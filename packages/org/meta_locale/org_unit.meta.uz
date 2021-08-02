@@ -1,0 +1,22 @@
+{
+  "caption": "Tashkiliy birliklar",
+  "description": "Tashkiliy bo'linmalar ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "parentID",
+      "caption": "Ajdod"
+    },
+    {
+      "name": "code",
+      "caption": "Ichki kod"
+    },
+    {
+      "name": "caption",
+      "caption": "Sarlavha"
+    },
+    {
+      "name": "unitType",
+      "caption": "Org turi. birliklar"
+    }
+  ]
+}

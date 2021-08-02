@@ -1,0 +1,42 @@
+{
+  "caption": "Fayllar",
+  "description": "Fayllar",
+  "attributes": [
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "parentID",
+      "caption": "Papka"
+    },
+    {
+      "name": "fcomment",
+      "caption": "Izoh"
+    },
+    {
+      "name": "isFolder",
+      "caption": "Papka"
+    },
+    {
+      "name": "ownerID",
+      "caption": "Egasi"
+    },
+    {
+      "name": "fsize",
+      "caption": "Hajmi"
+    },
+    {
+      "name": "contentType",
+      "caption": "Turi"
+    },
+    {
+      "name": "isTemporary",
+      "caption": "Vaqtinchalik"
+    },
+    {
+      "name": "fileData",
+      "caption": "Fayl"
+    }
+  ]
+}

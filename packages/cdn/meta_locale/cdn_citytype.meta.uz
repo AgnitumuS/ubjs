@@ -1,0 +1,14 @@
+{
+  "caption": "Aholi punktlarining turlari",
+  "description": "Aholi turlarining ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    }
+  ]
+}

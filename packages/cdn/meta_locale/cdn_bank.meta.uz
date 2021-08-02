@@ -1,0 +1,42 @@
+{
+  "caption": "Bank filiallari",
+  "description": "Bank ofislari katalogi",
+  "attributes": [
+    {
+      "name": "MFO",
+      "caption": "Mikromoliyalash tashkilotlari"
+    },
+    {
+      "name": "code",
+      "caption": "Korxonalar va tashkilotlarning Butunrossiya klassifikatori"
+    },
+    {
+      "name": "name",
+      "caption": "Ishchi nomi"
+    },
+    {
+      "name": "fullName",
+      "caption": "To'liq unum"
+    },
+    {
+      "name": "phones",
+      "caption": "Telefonlar"
+    },
+    {
+      "name": "address",
+      "caption": "Manzil"
+    },
+    {
+      "name": "countryID",
+      "caption": "Mamlakat"
+    },
+    {
+      "name": "cityID",
+      "caption": "Shahar"
+    },
+    {
+      "name": "description",
+      "caption": "Tavsif"
+    }
+  ]
+}

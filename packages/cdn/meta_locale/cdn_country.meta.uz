@@ -1,0 +1,46 @@
+{
+  "caption": "Mamlakatlar",
+  "description": "Mamlakatlar ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "fullName",
+      "caption": "To'liq sarlavha"
+    },
+    {
+      "name": "intCode",
+      "caption": "Raqamli kod"
+    },
+    {
+      "name": "symbol2",
+      "caption": "ISO kodi"
+    },
+    {
+      "name": "symbol3",
+      "caption": "XOQ kodi"
+    },
+    {
+      "name": "description",
+      "caption": "Tavsif"
+    },
+    {
+      "name": "phoneCode",
+      "caption": "Telefon kodi"
+    },
+    {
+      "name": "currencyID",
+      "caption": "Valyuta"
+    },
+    {
+      "name": "capitalID",
+      "caption": "Poytaxt"
+    }
+  ]
+}
