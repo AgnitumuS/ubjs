@@ -77,6 +77,7 @@
   "Select device": "Selecteer toestel",
   "Select key media": "Selecteer sleutelmedia",
 
+  "serverIsBusy": "Server momenteel onbeschikbaar",
   "unknownError": "Onbekende fout. Neem contact op met uw systeembeheerder.",
   "recordNotExistsOrDontHaveRights": "Record bestaat niet of u hebt geen toegangsrechten",
   "msgInvalidCertAuth": "Ongeldig certificaat of privésleutel",

@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - i18n for "serverIsBusy" (Server currently unavailable) is moved into ub-pub package
 
 ### Fixed
 

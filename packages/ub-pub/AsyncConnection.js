@@ -638,11 +638,11 @@ $App.connection.userLang()
             if (!TEST_ERROR_MESSAGE_RE.test(errInfo.errMsg) || (errInfo.errMsg === '<<<Access deny>>>')) {
               errInfo.errMsg = (authParams.authSchema === 'UB') ? 'msgInvalidUBAuth' : 'msgInvalidCertAuth'
             }
+          } else if (rejectReason.status === 0) {
+            errInfo.errMsg = 'serverIsBusy'
+            errInfo.errDetails = 'network error'
           } else {
             if (!errInfo.errMsg) { errInfo.errMsg = 'unknownError' } // internalServerError
-          }
-          if (rejectReason.status === 0) {
-            errInfo.errDetails = 'network error'
           }
 
           if (TEST_ERROR_MESSAGE_RE.test(errInfo.errMsg)) {

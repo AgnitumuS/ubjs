@@ -317,7 +317,6 @@
   "doStartScan": "Verzoek aan de scanner ...",
   "doFinishScan": "Scanresultaten verkrijgen",
 
-  "serverIsBusy": "Server momenteel onbeschikbaar",
   "ubErrRecordmodified": "Sinds het openen van de gegevens zijn ze gewijzigd door een andere gebruiker. Klik op de knop \"Updaten\" om actuele gegevens te verkrijgen.",
   "doYouWantFillOtherAttr": "Weet u zeker dat u andere kenmerken voor {0} in het woordenboek \"{1}\" invult?",
   "comboBoxSaveDictItem": "In woordenboek opslaan",

@@ -163,6 +163,7 @@
   "keyNoRightsRepeat": "Foydalanuvchida tizimga kirish uchun ruxsat yo'q. Ko'rib chiqilayotgan holatda kalitni ro'yxatdan o'tkazishni eslatish uchun so'rov.",
   "LoadCertificatesFails": "Avtomatik ravishda sertifikatlar yuklanmadi. Iltimos, shaxsiy kalitga mos keladigan sertifikatni qo'lda yuklang",
   "Select CA": "CA ni tanlang",
+  "serverIsBusy": "Hozirda server mavjud emas",
   "unknownError": "Noma'lum xato. Iltimos, tizim ma'muringizga murojaat qiling.",
   "ubErrElsInvalidUserOrPwd": "Kirish taqiqlangan. Kirish nomi va parolni tekshiring.",
   "ERR_REFERENCE_ERROR": "Amalni amalga oshirib bo'lmadi - element boshqa ob'ektlarda ishlatilmoqda",

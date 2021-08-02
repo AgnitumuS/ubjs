@@ -289,7 +289,6 @@
   "doRecognizeDocument": "Hujjat tan olinmoqda ...",
   "doStartScan": "Skanerga so'rov ...",
   "doFinishScan": "Skanerlash natijalarini olish",
-  "serverIsBusy": "Hozirda server mavjud emas",
   "doYouWantFillOtherAttr": "Uchun boshqa atributlarni to'ldirishga aminmisiz {0} in dictionary \"{1}\"?",
   "comboBoxSaveDictItem": "Lug'atga saqlang",
   "selectFtsConnection": "Qidiruv maydoni",
