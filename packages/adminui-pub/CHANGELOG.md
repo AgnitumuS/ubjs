@@ -6,17 +6,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.19] - 2021-08-04
+### Added
  - Dutch (nl) localization
 
 ### Changed
  - forcibly disabled HTML page translator (Google Translate) for adminUI
 
-### Deprecated
-
 ### Removed
  - i18n for "serverIsBusy" (Server currently unavailable) is moved into ub-pub package
-
-### Fixed
 
 ## [5.20.18] - 2021-07-18
 ### Fixed

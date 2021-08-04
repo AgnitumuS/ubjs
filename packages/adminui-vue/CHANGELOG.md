@@ -6,15 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.18] - 2021-08-04
+### Added
  - `UTableEntity`: slot `appendTable` to add some content at the end of the table after the pagination button
  - Dutch (nl) localization
 
 ### Changed
  - forcibly disabled HTML page translator (Google Translate) for login page
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `USelectEntity`: fixed entity name in dictionary adding dialog in case of repository use

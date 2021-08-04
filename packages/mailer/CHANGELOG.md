@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - accept `attachName` (in addition to `atachName`) property of attaches object - property name
-   (new is attachName) is fixed in ubq@5.20.19 
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.5.8] - 2021-08-04
+### Added
+ - accept `attachName` (in addition to `atachName`) property of attaches object - property name
+   (new is attachName) is fixed in ubq@5.20.19 
 
 ## [5.5.7] - 2021-07-08
 ## [5.5.6] - 2021-05-24

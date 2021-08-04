@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Dutch (nl) localization
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.19] - 2021-08-04
+### Added
+ - Dutch (nl) localization
 
 ## [5.20.18] - 2021-07-18
 ### Added

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.19] - 2021-08-04
 ## [5.20.18] - 2021-07-18
 ### Added
  - Dutch (nl) localization

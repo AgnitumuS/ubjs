@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- ability to pass attachments to the `queueMail` method as a buffer
-- Dutch (nl) localization
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.19] - 2021-08-04
+### Added
+- ability to pass attachments to the `queueMail` method as a buffer
+- Dutch (nl) localization
 
 ## [5.20.18] - 2021-07-18
 ### Added
