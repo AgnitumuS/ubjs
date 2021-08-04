@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - TimesNewRoman_Cyr font added - a subset of TimesNewRoman with English, Cyrillic and punctuation only. Can be used to create small (-350Kb) Cyrillic PDFs.
+
+   Included characters are: 
+   ```!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_abcdefghijklmnopqrstuvwxyz{|}~©«´»ЁЂЃЄЅІЇЈЉЊЋЌЍЎЏАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяѐёђѓєѕіїҌҍҐґ‘’‚‛“”„‟′″‴‵‶‷‸‹›№```
 
 ### Changed
 
