@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Dutch (nl) localization
 
 ### Changed
+ - forcibly disabled HTML page translator (Google Translate) for login page
 
 ### Deprecated
 
