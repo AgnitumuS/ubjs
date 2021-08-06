@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - make identificationCodeShort field required on the `org_employee` form since it is stored in code attribute, which has notNull constraint
 
 ## [5.20.19] - 2021-08-04
 ### Added
@@ -388,6 +389,3 @@ if (UBA_COMMON.isSuperUser()) return
 ## [4.0.37] - 2017-09-21
 ### Added
  - org_ograccount entity for storing bank's accounts for our organizations  
-
-
-
