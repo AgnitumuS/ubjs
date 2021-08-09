@@ -1095,12 +1095,18 @@ UBEntity.prototype.getDescriptionAttribute = function () {
 
 /**
  * Returns information about attribute and attribute entity. Understand complex attributes like `firmID.firmType.code`
+ * @example
+
+ UB.connection.domain.get('cdn_country').getEntityAttributeInfo('mi_modifyUser.name')
+ // {entity: 'uba_user', attribute: 'name', parentAttribute: {code: mi_modifyUser, dataType: 'Entity', ....}}
+
  * @param {string} attributeName
  * @param {number} [depth=0] If 0 - last, -1 - before last, > 0 - first. Default 0.
  *  - `0` means last attribute in chain (code from above)
  *  - `-1` - before last (firmType from above)
  *  - `>0` - first (firmID from above)
  * @return {{ entity: String, attribute: UBEntityAttribute, parentAttribute: UBEntityAttribute, attributeCode: String }|undefined}
+ *   Either attribute information or undefined if chain not points to attribute
  */
 UBEntity.prototype.getEntityAttributeInfo = function (attributeName, depth) {
   let currentEntity = this
