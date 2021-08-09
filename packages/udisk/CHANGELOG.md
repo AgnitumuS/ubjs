@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.20] - 2021-08-09
 ## [5.20.19] - 2021-08-04
 ### Fixed
  - default BLOB store path changed to "%UB_APPDATA%stores/..." (as in all other models)
