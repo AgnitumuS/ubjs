@@ -1129,6 +1129,10 @@
                 }
               }
             },
+            "pdfFontMapping": {
+              "type": "object",
+              "description": "Font mapping for @unitybase/pdf. Keys is an original font name (TimesNewRoman for example), values is a real font file name (TimesNewRoman_Cyr for example)"
+            },
             "sidebarLogoURL": {
               "type": "string",
               "description": "Optional URL for a small logo to display on the top of the sidebar. The recommended size for this logo is 40x40 px. It will be shown when the sidebar is collapsed. In a case when this prop is set and sidebarLogoBigURL is unset will show this logo in expanded too",

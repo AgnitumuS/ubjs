@@ -71,8 +71,8 @@
 				"password": "%KEY_PWD%",
 				"hsm": {
 				    "mediaType": 7,
-				    "mediaNumber": 5,
-				    "password": "F98hv2muKz52"
+				    "mediaNumber": 5
+				    //,"password": "F98hv2muKz52"
 				}
 			}
 		},
@@ -120,6 +120,10 @@
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30
+			},
+			"pdfFontMapping": {
+				// in case only Cyrillic (UK, RU) and english is used in PDF - use a mapping to font subset
+				//"TimesNewRoman": "TimesNewRoman_Cyr"
 			}
 		},
 		"portalUI": {
