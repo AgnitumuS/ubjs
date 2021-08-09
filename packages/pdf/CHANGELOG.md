@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `TimesNewRoman_Cyr`: added `&nbsp` `§` and `®` signs
+ - font mapping feature added. Allows to use a font subset for specified fonts to reduce PDF size without
+   change a PDF generation source code. See README for details
 
 ### Changed
 
