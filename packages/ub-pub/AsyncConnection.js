@@ -1949,7 +1949,7 @@ UbPkiInterface.prototype.getPrivateKeyOwnerInfo = function () {}
  * Can accept {BlobStoreRequest} as item - in this case signature hash is calculated on server side
  * for document stored in BLOB store (@ub-d/crypto-api model must be added into domain)
  *
- * @param {Uint8Array|String|BlobStoreRequest|Array<Uint8Array|String|BlobStoreRequest>} data
+ * @param {Uint8Array|ArrayBuffer|String|BlobStoreRequest|Array<Uint8Array|ArrayBuffer|String|BlobStoreRequest>} data
  * @param {Boolean} [resultIsBinary=false]
  * @param {function} [ownerKeyValidationFunction] optional function what called with one parameter - certInfo before signing.
  *   Should validate is owner of passed certificate allowed to perform signing,
