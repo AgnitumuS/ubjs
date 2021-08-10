@@ -3,6 +3,7 @@
   "selectRowFirst": "Select row in grid first",
   "convertationToPDFAborted": "Unable to convert file to PDF. Save this file in PDF format manually and try to attach again.",
   "numberMustBeDivisibleBy100": "The value must be a divisible by 100",
+  "invalidJson": "Value shall be a valid JSON",
 
   "desktopService.CurrentScanType": "Scans through",
   "desktopService.aviableLanguages": "Available languages",

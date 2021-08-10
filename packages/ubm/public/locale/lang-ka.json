@@ -3,6 +3,7 @@
   "selectRowFirst": "აირჩიეთ მწკრივში პირველი ბადე",
   "convertationToPDFAborted": "ფაილის გარდაკმნა PDF ფორმატში შეუძლებელია. შეინახეთ ფაილი PDF ფორმატში მანუალურად და შემდგომ მიამაგრეთ.",
   "numberMustBeDivisibleBy100": "ღირებულება უნდა იყოს გამყოფი 100-ზე",
+  "invalidJson": "მნიშვნელობა უნდა იყოს მოქმედი JSON",
 
   "desktopService.CurrentScanType": "დაასკანირებს",
   "desktopService.aviableLanguages": "ხელმისაწვდომია ენები",
