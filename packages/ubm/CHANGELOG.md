@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- ubm_query navigation shortcut now shows "Type" column
 
 ### Deprecated
 
