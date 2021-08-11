@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UCodeMirror`: set minimum height to 50 px to make help icon be inside control if it has only one line
 
 ### Deprecated
 
