@@ -60,9 +60,11 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_department',
-          columns: ['parentID.caption', 'code', 'name', 'fullName', 'description', 'nameGen', 'nameDat',
-            'fullNameGen', 'fullNameDat', 'depTypeID', 'isClerical', 'caption']
+          params: [{
+            entity: 'org_department',
+            fieldList: ['parentID.caption', 'code', 'name', 'fullName', 'description', 'nameGen', 'nameDat',
+              'fullNameGen', 'fullNameDat', 'depTypeID', 'isClerical', 'caption']
+          }]
         }
       }, null, '\t')
     }
@@ -83,9 +85,11 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_organization',
-          columns: ['parentID.caption', 'code', 'OKPOCode', 'taxCode', 'vatCode', 'name', 'fullName', 'nameGen',
-            'nameDat', 'fullNameGen', 'fullNameDat', 'description', 'orgBusinessTypeID', 'orgOwnershipTypeID']
+          params: [{
+            entity: 'org_organization',
+            fieldList: ['parentID.caption', 'code', 'OKPOCode', 'taxCode', 'vatCode', 'name', 'fullName', 'nameGen',
+              'nameDat', 'fullNameGen', 'fullNameDat', 'description', 'orgBusinessTypeID', 'orgOwnershipTypeID']
+          }]
         }
       }, null, '\t')
     }
@@ -106,7 +110,9 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_employeeonstaff'
+          params: [{
+            entity: 'org_employeeonstaff'
+          }]
         }
       }, null, '\t')
     }
@@ -126,8 +132,10 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_employeeonstaff',
-          __mip_recordhistory_all: true
+          params: [{
+            entity: 'org_employeeonstaff',
+            __mip_recordhistory_all: true
+          }]
         }
       }, null, '\t')
     }
@@ -147,9 +155,11 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_staffunit',
-          columns: ['parentID.caption', 'code', 'name', 'fullName', 'description', 'nameGen', 'nameDat', 'fullNameGen',
-            'fullNameDat', 'caption', 'professionExtID', 'professionID', 'staffUnitTypeID', 'subordinationLevel', 'isBoss']
+          params: [{
+            entity: 'org_staffunit',
+            fieldList: ['parentID.caption', 'code', 'name', 'fullName', 'description', 'nameGen', 'nameDat', 'fullNameGen',
+              'fullNameDat', 'caption', 'professionExtID', 'professionID', 'staffUnitTypeID', 'subordinationLevel', 'isBoss']
+          }]
         }
       }, null, '\t')
     }
@@ -170,8 +180,10 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_execgroup',
-          columns: ['parentID.caption', 'groupType', 'code', 'name', 'nameGen', 'nameDat']
+          params: [{
+            entity: 'org_execgroup',
+            fieldList: ['parentID.caption', 'groupType', 'code', 'name', 'nameGen', 'nameDat']
+          }]
         }
       }, null, '\t')
     }
@@ -191,8 +203,10 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_unit',
-          columns: ['parentID.caption', 'code', 'caption', 'unitType']
+          params: [{
+            entity: 'org_execgroup',
+            fieldList: ['parentID.caption', 'groupType', 'code', 'name', 'nameGen', 'nameDat']
+          }]
         }
       }, null, '\t')
     }
@@ -213,7 +227,9 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_employee'
+          params: [{
+            entity: 'org_employee'
+          }]
         }
       }, null, '\t')
     }
@@ -248,7 +264,9 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_profession'
+          params: [{
+            entity: 'org_profession'
+          }]
         }
       }, null, '\t')
     }
@@ -269,8 +287,10 @@ module.exports = function (session) {
         renderer: 'vue',
         cmdType: 'showList',
         cmdData: {
-          entityName: 'org_diagram',
-          columns: ['ID', 'caption', 'orgunitID.caption']
+          params: [{
+            entity: 'org_diagram',
+            fieldList: ['ID', 'caption', 'orgunitID.caption']
+          }]
         }
       }, null, '\t')
     }
