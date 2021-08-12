@@ -15,6 +15,81 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.20] - 2021-08-09
+## [5.20.19] - 2021-08-04
+### Added
+ - Dutch (nl) localization
+
+## [5.20.18] - 2021-07-18
+### Added
+ - Dutch (nl) localization
+
+## [5.20.17] - 2021-07-08
+## [5.20.16] - 2021-06-14
+## [5.20.15] - 2021-05-24
+## [5.20.14] - 2021-05-13
+## [5.20.13] - 2021-05-07
+### Removed
+ - `@unitybase/ubs/modules/base64.js` is removed - not used. `Buffer.from(text, 'base64')` is used instead.
+
+## [5.20.12] - 2021-05-05
+## [5.20.11] - 2021-04-24
+## [5.20.10] - 2021-04-23
+## [5.20.9] - 2021-04-22
+## [5.20.8] - 2021-04-19
+## [5.20.7] - 2021-04-19
+## [5.20.6] - 2021-04-16
+## [5.20.5] - 2021-04-13
+## [5.20.4] - 2021-04-02
+## [5.20.3] - 2021-04-01
+## [5.20.2] - 2021-03-30
+## [5.20.1] - 2021-03-29
+## [5.20.0] - 2021-03-25
+### Changed
+ - migrate build to webpack5
+
+## [5.19.9] - 2021-03-23
+## [5.19.8] - 2021-03-17
+## [5.19.7] - 2021-03-16
+### Fixed
+- Cleaned up `ubs_report` localization (ru, ka, tg) from non-existing attribute `mi_modifyDate`
+
+## [5.19.6] - 2021-03-15
+### Fixed
+ - server-sire report rendering fixed (bug in ubs@5.19.5)
+
+## [5.19.5] - 2021-03-15
+### Added
+ - `ubcli convertDefFiles` utility to convert a reports, forms and diagrams to new storage format (.ubrow) 
+
+## [5.19.4] - 2021-03-03
+### Changed
+ - client side locales reformatted into JSON
+
+## [5.19.3] - 2021-02-10
+## [5.19.2] - 2021-02-08
+## [5.19.1] - 2021-02-03
+## [5.19.0] - 2021-02-02
+## [5.4.55] - 2021-01-30
+## [5.4.54] - 2021-01-28
+## [5.4.53] - 2021-01-26
+## [5.4.52] - 2021-01-19
+## [5.4.51] - 2021-01-17
+## [5.4.50] - 2021-01-11
+### Fixed
+ - Default report script now does not crash report execution with error 500
+
+## [5.4.49] - 2020-12-30
+## [5.4.48] - 2020-12-28
+## [5.4.47] - 2020-12-22
+## [5.4.46] - 2020-12-21
+## [5.4.45] - 2020-12-20
+## [5.4.44] - 2020-12-17
+## [5.4.43] - 2020-12-16
+## [5.4.42] - 2020-12-14
+## [5.4.41] - 2020-12-09
+## [5.4.40] - 2020-12-09
+## [5.4.39] - 2020-12-02
 ## [5.4.38] - 2020-11-25
 ## [5.4.37] - 2020-11-20
 ## [5.4.36] - 2020-11-19
@@ -249,7 +324,7 @@ $App.doCommand({
 ## [5.1.17] - 2018-09-24
 ### Changed
  - `reportOptions.allowExportToExcel` allowed value changed from to 'xls' or 'xlsx'. ('xlsx' by default)
-   For 'xls' report will be saved as html but with **xls** extension - excell will convert such files on open
+   For 'xls' report will be saved as html but with **xls** extension - excel will convert such files on open
    otherwise report will be regenerated as native **xlsx** file
  ```javascript
 $App.doCommand({

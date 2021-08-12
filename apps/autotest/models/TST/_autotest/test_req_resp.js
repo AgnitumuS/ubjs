@@ -24,6 +24,7 @@ module.exports = function runHTTPTest (options) {
     testHTTP(conn, domain, session)
     testRest(conn)
     testUnicode(conn)
+    testHandledException(conn)
   } finally {
     session.logout()
   }
@@ -110,4 +111,16 @@ function testUnicode (conn) {
     conn.query({ entity: 'tst_service', method: 'throwTest' })
   }
   assert.throws(usualExc, /HTTP Error 500 - Internal Server Error/, 'Should hide JS errors in production mode')
+}
+
+/**
+ * Exception throws by native and catch in JS must not force HTTP response to 500
+ * @param {SyncConnection} conn
+ */
+function testHandledException (conn) {
+  let resp
+  assert.doesNotThrow(() => {
+    resp = conn.post('/verifyThrowCatch')
+  }, 'Exception throws by native and catch in JS must not force HTTP response to 500')
+  assert.strictEqual(resp.catched, true, 'Expect { catched: true } but got ' + JSON.stringify(resp))
 }

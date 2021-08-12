@@ -11,17 +11,16 @@ module.exports = {
 const UB = require('@unitybase/ub-pub')
 const Vue = require('vue')
 const { Notification } = require('element-ui')
-const dialogs = require('../components/dialog/UDialog')
+const uDialogs = require('./uDialogs')
 const UNavbar = require('../components/navbar/UNavbar.vue').default
-const autoForm = require('../components/AutoForm.vue').default
-const { dialog, dialogInfo, dialogYesNo, dialogError } = dialogs
-const Form = require('./Form/Form')
+const UAutoForm = require('../components/UAutoForm.vue').default
+const Form = require('./Form/Form').Form
 const { mountTableEntity } = require('./Form/mount')
 
 function replaceExtJSDialogs () {
   // rename buttonText - > buttons, fn -> callback and call `dialog`
   Ext.Msg.confirm = function ({ title, msg, fn: callback, buttonText: buttons }) {
-    return dialog({
+    return uDialogs.dialog({
       title,
       msg,
       buttons,
@@ -32,9 +31,10 @@ function replaceExtJSDialogs () {
     })
   }
 
-  $App.dialogYesNo = dialogYesNo
-  $App.dialogInfo = dialogInfo
-  $App.dialogError = dialogError
+  $App.dialogYesNo = uDialogs.dialogYesNo
+  $App.dialogInfo = uDialogs.dialogInfo
+  $App.dialogError = uDialogs.dialogError
+  $App.uDialogs = uDialogs
 
   Ext.override(UB.view.BasePanel, {
     showValidationErrors () {
@@ -83,13 +83,14 @@ function replaceAutoForms () {
   const { entity, instanceID, parentContext, isModal, target } = this
 
   Form({
-    component: autoForm,
+    component: UAutoForm,
     props: { parentContext },
     entity,
     instanceID,
     title: UB.connection.domain.get(entity).caption,
     isModal,
     target,
+    uiTag: `afm-${entity}`,
     isCopy: this.commandConfig.isCopy,
     modalClass: 'ub-dialog__reset-padding'
   })
@@ -157,6 +158,7 @@ function replaceShowList () {
         mountTableEntity({
           isModal: cfg.isModal,
           tabId,
+          uiTag: me.uiTag,
           title,
           props: cfg.cmdData,
           shortcutCode: cfg.shortcutCode,
@@ -176,17 +178,9 @@ function replaceShowList () {
           if (typeof field === 'object') {
             if (field.visibility !== false) {
               columns.push({
+                ...field,
                 id: field.name,
-                label: field.description,
-                format: field.format,
-                isHtml: field.isHtml,
-                sortable: field.sortable,
-                isLookup: field.isLookup,
-                align: field.align,
-                headerAlign: field.headerAlign,
-                maxWidth: field.maxWidth,
-                minWidth: field.minWidth,
-                width: field.width
+                label: field.description
               })
             }
             fieldList.push(field.name)
@@ -195,69 +189,20 @@ function replaceShowList () {
             fieldList.push(field)
           }
         }
-        req.fieldList = fieldList
+
+        // need to clone request because UBStoreManager saves request into cache with mutated fieldList
+        const clonedRequest = Object.assign({}, req)
+        clonedRequest.fieldList = fieldList
         props = {
           repository () {
-            return UB.Repository(req)
+            return UB.Repository(clonedRequest)
           },
           columns,
           buildEditConfig: cfg.cmpInitConfig && cfg.cmpInitConfig.buildEditConfig,
-          onSelectRecord: cfg.onSelectRecord
+          onSelectRecord: cfg.onSelectRecord,
+          parentContext: cfg.parentContext,
+          hideActions: cfg.hideActions
         }
-      }
-
-      /**
-       * Creates vue-based scopedSlots function from ext-based hideActions array
-       * @param h - callback render function
-       * @returns {object}
-       */
-      function createScopedSlotsFromHideActions (h) {
-        const hideActions = cfg.hideActions
-        if (!hideActions) return {}
-
-        const actionsMappingObj = {
-          showDetail: {
-            contextMenuDetails: () => h('div', ''),
-            dropdownMenuDetails: () => h('div', '')
-          },
-          addNewByCurrent: {
-            contextMenuCopy: () => h('div', ''),
-            toolbarDropdownCopy: () => h('div', '')
-          },
-          addNew: {
-            contextMenuAdd: () => h('div', ''),
-            toolbarDropdownAddNew: () => h('div', ''),
-            toolbarButtonAddNew: () => h('div', '')
-          },
-          del: {
-            contextMenuDelete: () => h('div', ''),
-            toolbarDropdownDelete: () => h('div', '')
-          },
-          edit: {
-            contextMenuEditRecord: () => h('div', ''),
-            toolbarDropdownEdit: () => h('div', '')
-          },
-          audit: {
-            contextMenuAudit: () => h('div', ''),
-            toolbarDropdownAudit: () => h('div', '')
-          },
-          exports: {
-            toolbarDropdownExports: () => h('div', '')
-          },
-          link: {
-            contextMenuLink: () => h('div', '')
-          },
-          showPreview: {
-            // TODO add ability to hide preview button after packages update
-          }
-        }
-        const scopedSlots = {}
-
-        hideActions && hideActions.forEach(action => {
-          Object.assign(scopedSlots, actionsMappingObj[action])
-        })
-
-        return scopedSlots
       }
 
       // if showList command has own scopedSlots function, merge it with already created one
@@ -266,11 +211,11 @@ function replaceShowList () {
       mountTableEntity({
         isModal: cfg.isModal,
         tabId: cfg.tabId,
+        uiTag: me.uiTag,
         shortcutCode: cfg.shortcutCode,
         title: me.title || me.description || me.entity,
         props,
         scopedSlots: h => ({
-          ...createScopedSlotsFromHideActions(h),
           ...customActions(h)
         })
       })

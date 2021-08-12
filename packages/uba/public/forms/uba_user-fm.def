@@ -1,11 +1,3 @@
-// @! "do not remove comments below unless you know what you do!"
-// @mi_modifyDate "Mon Jul 29 2019 17:09:53 GMT+0300 (EEST)"
-// @isDefault "true"
-// @entity "uba_user"
-// @model "UBA"
-// @formType "auto"
-// @caption "User"
-// @description "User"
 exports.formDef = {
   size: {
     width: 500,
@@ -109,7 +101,7 @@ exports.formDef = {
       entityConfig: {
         entity: 'uba_usercertificate',
         method: 'select',
-        fieldList: ['issuer_serial', 'serial', 'description', 'disabled', 'revoked']
+        fieldList: ['serial', 'isForSigning', 'disabled', 'revoked', 'description', 'issuer_serial']
       },
       stateId: 'uba_user_cert_grid',
       stateful: true,

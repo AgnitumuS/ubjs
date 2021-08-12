@@ -4,15 +4,17 @@
  *
  const http = require('http')
  let request = http.request({
-    //alternative to host/port/path is
-    //URL: 'http://localhost:8881/getAppInfo',
-    host: 'localhost', port: '80', path: '/getAppInfo',
-    method: 'POST',
-    sendTimeout: 30000, receiveTimeout: 30000,
-    keepAlive: true,
-    compressionEnable: true
+    URL: 'http://localhost:8881/getAppInfo',
+    //alternative to URL is host/port/path
+    // host: 'localhost', port: '80', path: '/getAppInfo',
+    method: 'POST'
+    // for peer certificate validation:
+    // cert: 'testcert.pem', // Client certificate PEM file
+    // CACert: 'cacert.pem', // Certificate authority PEM file
+    // key: 'testkey.pem', // Client private key (PEM file)
+    // passphrase: '' // optional private key password
  })
- const fileContent = fs.readFileSync('d:\binaryFile.txt') // return ArrayBuffer, since encoding not passed
+ const fileContent = fs.readFileSync('d:/binaryFile.txt') // return ArrayBuffer, since encoding not passed
  // in case of multiple request to the same host better to reuse existed request (up to x30 times faster)
  for (let i = 0; i < 100; i++) {
    request.setPath(`/getAppInfo?nc=${i}`)
@@ -35,6 +37,7 @@
  console.log(index);
  // var doc = new DOMParser().parseFromString(index);
  // assert.ok(doc.documentElement.textContent.startsWith('mORMot'), 'got mORMot from mORMot');
+
  *
  * @module http
  * @memberOf module:buildin
@@ -59,10 +62,11 @@ const proxyConfig = {
 let connectionDefaults = {
   useHTTPS: false,
   useCompression: true,
-  keepAlive: false,
-  connectTimeout: 60000,
+  keepAlive: true,
+  connectTimeout: 30000,
   sendTimeout: 30000,
-  receiveTimeout: 30000
+  receiveTimeout: 30000,
+  strictSSL: true
 }
 
 /**
@@ -92,11 +96,13 @@ exports.setGlobalProxyConfiguration = function setGlobalProxyConfiguration (prox
  *
  * @param {Object} defaults
  * @param {Boolean} [defaults.useHTTPS=false]
- * @param {Boolean} [defaults.useCompression=true] Send 'Accept-encoding: gzip' header to server & unzip zipper responses
- * @param {Boolean} [defaults.keepAlive=false] Use keep Alive HTTP protocol feature if server support it.
- * @param {Number} [defaults.sendTimeout=30000] Send timeout in ms.
- * @param {Number} [defaults.receiveTimeout=30000] Receive timeout in ms.
- * @param {Number} [defaults.connectTimeout=60000] Connect timeout in ms.
+ * @param {Boolean} [defaults.useCompression] Send 'Accept-encoding: gzip' header to server & unzip zipper responses. Default is `true`
+ * @param {Boolean} [defaults.keepAlive] Use keep Alive HTTP protocol feature if server support it. Default is `true`
+ * @param {Number} [defaults.sendTimeout] Send timeout in ms. Default is 30000 (30 sec)
+ * @param {Number} [defaults.receiveTimeout] Receive timeout in ms. Default is 30000 (30 sec)
+ * @param {Number} [defaults.connectTimeout] Connect timeout in ms. Default is 30000 (30 sec)
+ * @param {boolean} [defaults.strictSSL] Set default value for strictSSL. If sets to `false` (NOT RECOMMENDED)
+ *  then SSL certificates errors will be ignored (DANGEROUS)
  */
 exports.setGlobalConnectionDefaults = function setGlobalConnectionDefaults (defaults) {
   defaults = defaults || {}
@@ -109,6 +115,31 @@ exports.setGlobalConnectionDefaults = function setGlobalConnectionDefaults (defa
 
 /**
  * Create new HTTP server connection. In case server is behind the proxy - use http_proxy & no_proxy env vars (https_proxy for https on linux)
+ *
+ * In case of multiple request to the same host better to reuse existed request.
+ * Reusing a request: parse URL once, share the DNS cache, TLS connection and TCP connection (if possible).
+ *
+ * Under Unix one request object uses one curl easy handle - see [Curl DNS cache](https://everything.curl.dev/libcurl/names#caching)
+ *
+ * @example
+
+ const http = require('http')
+ // create a request object
+ let request = http.request({
+    URL: 'http://localhost:8881/getAppInfo',
+    //alternative to URL is host/port/path
+    // host: 'localhost', port: '80', path: '/getAppInfo',
+    method: 'POST'
+ })
+ // reuse it several times
+ for (let i = 0; i < 100; i++) {
+   request.setPath(`/getAppInfo?nc=${i}`)
+   request.write('Add string to response')
+   request.write(fileContent, 'base64') // write file content as base64 encoded string
+   let response = request.end()
+   console.log(response.statusCode)
+ }
+
  * @param {Object|String} options Either URL string in format `protocol://host:port/path` or config
  * @param {String} [options.URL] Service URL in format `protocol://host:port/path`. Will override `useHTTPS`, `server`, `host`, `port` and `path` if passed
  * @param {String} [options.server] DEPRECATED. Server to connect in format 'host:port' or 'host' in case port == 80.
@@ -118,12 +149,16 @@ exports.setGlobalConnectionDefaults = function setGlobalConnectionDefaults (defa
  * @param {String} [options.method='GET'] HTTP method to use for request
  * @param {Object<string, string>} [options.headers] An object containing request headers
  * @param {Boolean} [options.useHTTPS=false]
- * @param {Boolean} [options.useCompression=true] Send 'Accept-encoding: gzip' header to server & unzip zipper responses
- * @param {Boolean} [options.keepAlive=false] Use keep Alive HTTP protocol feature if server support it.
- * @param {Number} [options.sendTimeout=30000] Send timeout in ms.
- * @param {Number} [options.receiveTimeout=30000] Receive timeout in ms.
- * @param {Number} [options.connectTimeout=30000] Connect timeout in ms.
- * @param {Boolean} [options.strictSSL=false] If false (default but insecure) - ignore SSL certificates errors
+ * @param {Boolean} [options.useCompression] Send 'Accept-encoding: gzip' header to server & unzip zipper responses. Default is true
+ * @param {Boolean} [options.keepAlive] Use keep Alive HTTP protocol feature if server support it. Default is true
+ * @param {Number} [options.sendTimeout] Send timeout in ms. Default is 30000 (30 sec)
+ * @param {Number} [options.receiveTimeout] Receive timeout in ms. Default is 30000 (30 sec)
+ * @param {Number} [options.connectTimeout] Connect timeout in ms. Default is 30000 (30 sec)
+ * @param {Boolean} [options.strictSSL] If passed and sets to `false` - ignore SSL certificates errors, otherwise use a
+ * @param {string} [options.cert] Client certificate PEM file
+ * @param {string} [options.CACert] Certificate authority PEM file
+ * @param {string} [options.key] Client private key (PEM file)
+ * @param {string} [options.passphrase] Client private key passphrase
  * @return {ClientRequest}
  */
 exports.request = function request (options) {
@@ -153,12 +188,12 @@ exports.request = function request (options) {
     options.useHTTPS = options.useHTTPS == null ? connectionDefaults.useHTTPS : options.useHTTPS
   }
   options.port = options.port || (options.useHTTPS ? '443' : '80')
-  options.useCompression = options.useCompression == null ? true : options.useCompression
-  options.keepAlive = (options.keepAlive === true) ? 1 : connectionDefaults.keepAlive
-  options.sendTimeout = options.sendTimeout || connectionDefaults.sendTimeout
-  options.receiveTimeout = options.receiveTimeout || connectionDefaults.receiveTimeout
-  options.connectTimeout = options.connectTimeout || connectionDefaults.connectTimeout
-  options.strictSSL = options.strictSSL || false
+  options.useCompression = options.hasOwnProperty('useCompression') ? options.useCompression : connectionDefaults.useCompression
+  options.keepAlive = options.hasOwnProperty('keepAlive') ? options.keepAlive : connectionDefaults.keepAlive
+  options.sendTimeout = options.hasOwnProperty('sendTimeout') ? options.sendTimeout : connectionDefaults.sendTimeout
+  options.receiveTimeout = options.hasOwnProperty('receiveTimeout') ? options.receiveTimeout : connectionDefaults.receiveTimeout
+  options.connectTimeout = options.hasOwnProperty('connectTimeout') ? options.connectTimeout : connectionDefaults.connectTimeout
+  options.strictSSL = options.hasOwnProperty('strictSSL') ? options.strictSSL : connectionDefaults.strictSSL
   options.method = options.method || 'GET'
   return new ClientRequest(options)
 }
@@ -238,16 +273,21 @@ exports.get = function get (options, URLParams) {
  * @class ClientRequest
  * @implements {UBWriter}
  * @protected
- * @param {Object} options
+ * @param {Object} o
  */
-function ClientRequest (options) {
-  this.options = Object.assign({}, options)
+function ClientRequest (o) {
+  this.options = Object.assign({}, o)
   const _http = this.connection = new THTTPClient()
-  _http.initialize(options.host, options.port, options.useHTTPS, options.useCompression,
-    proxyConfig.proxy, proxyConfig.bypass, options.connectTimeout, options.sendTimeout,
-    options.receiveTimeout, options.strictSSL
+  _http.initialize(o.host, o.port, o.useHTTPS, o.useCompression,
+    proxyConfig.proxy, proxyConfig.bypass, o.connectTimeout, o.sendTimeout,
+    o.receiveTimeout, o.strictSSL
   )
-  _http.keepAlive = options.keepAlive ? 1 : 0
+  if (!o.keepAlive) {
+    _http.keepAlive = 0 // default is true
+  }
+  if (o.cert || o.key) {
+    _http.useClientCertificate(o.cert || '', o.CACert || '', o.key || '', o.passphrase || '')
+  }
 
   // add EventEmitter for nodeJS compatibility
   EventEmitter.call(this)
@@ -414,6 +454,15 @@ IncomingMessage.prototype.setEncoding = function (encoding) {
  */
 IncomingMessage.prototype.read = function (encoding) {
   return this._http.read(encoding || this.encoding)
+}
+
+/**
+ * Read a response body and parse it as JSON. Expect body in UTF8 encoding.
+ * Faster and uses less memory compared to `JSON.parse(req.read('utf8'))`
+ * @returs {Object}
+ */
+IncomingMessage.prototype.json = function() {
+  return this._http.readAsJson()
 }
 
 /**

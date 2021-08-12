@@ -17,7 +17,12 @@ uses
   mimemess, mimepart, synautil, synachar, smtpsend, pop3send, imapsend, ssl_openssl,
   SpiderMonkey, SyNodeProto, SyNodeSimpleProto, jsbUtils,
   Classes, SysUtils,{$IFDEF MSWINDOWS} Windows,{$ENDIF}
-  SynCommons, mORMOt, DateUtils, SyNodeReadWrite;
+  SynCommons, mORMot, DateUtils,
+  {$ifdef MAILAV_TEST}
+  m_logger,
+  {$endif}
+
+  SyNodeReadWrite;
 
 type
   TubSendMailBodyType = (smbtText, smbtHTML, smbtCalendar);
@@ -28,11 +33,14 @@ type
   private
     fIsLogined: Boolean;
     fLastError: string;
+    fAuthNeccessary: boolean;
   public
     constructor Create;
     destructor Destroy; override;
-    procedure DoLogin;
+    function DoLogin: boolean;
     procedure DoLogout;
+
+    property authNeccessary: boolean read fAuthNeccessary write fAuthNeccessary;
   end;
 
   TubMailReceiver = class(TPOP3Send)
@@ -106,18 +114,45 @@ begin
 end;
 
 procedure TubMailReceiver.DoLogin;
+var
+  msg: string;
 begin
+  {$ifdef MAILAV_TEST}
+  addMailLog('TubMailReceiver.DoLogin enter');
+  {$endif MAILAV_TEST}
   fIsLogined := login;
-  if not fIsLogined then
-    raise ESMException.CreateFmt('new TubMailReceiver() Cannot login to %s:%s as "%s": %s', [targetHost, targetPort, userName, Sock.LastErrorDesc]);
-  if not Stat then
-    raise ESMException.CreateFmt('new TubMailReceiver() Error receive server response on command STAT: %s', [Sock.LastErrorDesc]);
+  if not fIsLogined then begin
+    {$ifdef MAILAV_TEST}
+    addMailLog('TubMailReceiver.DoLogin !!not fIsLogined!!');
+    {$endif MAILAV_TEST}
+    if Sock <> nil then
+      msg := Sock.LastErrorDesc
+    else
+      msg := 'unknown socket error';
+    raise ESMException.CreateFmt('TubMailReceiver - can not login to %s:%s as "%s": %s', [targetHost, targetPort, userName, msg])
+  end;
+
+  if not Stat then begin
+    {$ifdef MAILAV_TEST}
+    addMailLog('TubMailReceiver.DoLogin !!not Stat!!');
+    {$endif MAILAV_TEST}
+
+    if Sock <> nil then
+      msg := Sock.LastErrorDesc
+    else
+      msg := 'unknown socket error';
+    raise ESMException.CreateFmt('TubMailReceiver - error receive server response on command STAT: %s', [msg]);
+  end;
 end;
 
 procedure TubMailReceiver.DoLogout;
 begin
-  if fIsLogined then
+  if fIsLogined then begin
+    {$ifdef MAILAV_TEST}
+    addMailLog('TubMailReceiver.DoLogout calls logout');
+    {$endif MAILAV_TEST}
     Logout;
+  end;
   fIsLogined :=False;
 end;
 
@@ -139,9 +174,11 @@ begin
   inherited;
 end;
 
-procedure TubMailSender.DoLogin;
+function TubMailSender.DoLogin: boolean;
 begin
-  fIsLogined := Login;
+  if not fIsLogined then
+    fIsLogined := Login;
+  Result := fIsLogined;
 end;
 
 procedure TubMailSender.DoLogout;
@@ -656,6 +693,7 @@ var
   Sender: TubMailSender;
   Msg: TMimeMess;
   MIMEPart: TMimePart;
+  attachPart: TMimePart;
   BodyPart: TMimePart;
 
   obj: PJSObject;
@@ -740,12 +778,11 @@ begin
       for i := 0 to len - 1 do
         if propArr.GetElement(cx, i, propItem) and propItem.isObject then begin
           propObj := propItem.asObject;
-          if propObj.GetProperty(Cx, 'kind', val) and val.isInteger then
+          if propObj.GetProperty(Cx, 'kind', val) and val.isInteger then begin
+            if (val.asInteger < 0) or (val.asInteger > 2) then
+              raise ESMException.CreateFmt('Attach file error. Attach %d, invalid kind',[i]);
             attKind := TubSendMailAttachKind(val.asInteger)
-          else
-            attKind := TubSendMailAttachKind(-1);
-          if (attKind < low(TubSendMailAttachKind)) or (attKind > High(TubSendMailAttachKind)) then
-            raise ESMException.CreateFmt('Attach file error. Attach %d, invalid kind',[i]);
+          end;
 
           attDataIncorrect := False;
           attDataBufSize := 0;
@@ -770,6 +807,9 @@ begin
 
           if attDataIncorrect then
             raise ESMException.CreateFmt('Attach file error. Attach %d, invalid data',[i]);
+
+          if propObj.GetProperty(cx, 'attachName', val) and val.isString then // new in mailer@5.5.8
+            atachName := val.AsJSString.ToUTF8(cx);
 
           if propObj.GetProperty(cx, 'atachName', val) and val.isString then
             atachName := val.AsJSString.ToUTF8(cx)
@@ -798,21 +838,22 @@ begin
           end;
           try
             if not isBase64 then
-              Msg.AddPartBinary(attStream, atachName, MIMEPart)
-            else with Msg.AddPart(MIMEPart) do begin
-              DecodedLines.LoadFromStream(attStream);
-              MimeTypeFromExt(atachName);
-              Description := 'Attached file: ' + atachName;
-              Disposition := 'attachment';
-              FileName := atachName;
-              EncodingCode := ME_BASE64;
-              if (attachContentID <> '') then
-                contentID := attachContentID;
-              PartBody.Clear;
+              attachPart := Msg.AddPartBinary(attStream, atachName, MIMEPart)
+            else begin
+              attachPart := Msg.AddPart(MIMEPart);
+              attachPart.DecodedLines.LoadFromStream(attStream);
+              attachPart.MimeTypeFromExt(atachName);
+              attachPart.Description := 'Attached file: ' + atachName;
+              attachPart.Disposition := 'attachment';
+              attachPart.FileName := atachName;
+              attachPart.EncodingCode := ME_BASE64;
+              attachPart.PartBody.Clear;
               attStream.Position := 0;
-              PartBody.LoadFromStream(attStream);
-              EncodePartHeader;
+              attachPart.PartBody.LoadFromStream(attStream);
+              attachPart.EncodePartHeader;
             end;
+            if (attachContentID <> '') then
+              attachPart.contentID := attachContentID;
           finally
             attStream.Free;
           end;
@@ -852,7 +893,6 @@ begin
     freeAndNil(Msg);
   end;
 
-
   if res then begin
     Sender.fLastError := '';
     Result.asBoolean := true
@@ -865,6 +905,53 @@ begin
 //    raise Exception.Create(curState);
     Result.asBoolean := False;
   end
+end;
+
+function ubMailSender_login(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  sm_inst: PSMInstanceRecord;
+  mSender: TubMailSender;
+  err: string;
+begin
+  {$ifdef MAILAV_TEST}
+  addMailLog('ubMailSender_login enter');
+  {$endif MAILAV_TEST}
+  try
+    if not IsInstanceObject(cx, vp.thisObject[cx], sm_inst) then
+      raise ESMException.Create(SM_NOT_A_NATIVE_OBJECT);
+    {$ifdef MAILAV_TEST}
+    addMailLog('ubMailSender_login IsInstanceObject');
+    {$endif MAILAV_TEST}
+
+    mSender := (sm_inst.Instance as TubMailSender);
+    if not mSender.DoLogin then begin
+      {$ifdef MAILAV_TEST}
+      addMailLog('ubMailSender_login not mSender.Login');
+      {$endif MAILAV_TEST}
+
+      if mSender.Sock <> nil then
+        err := mSender.Sock.LastErrorDesc
+      else
+        err := 'Unknown socket error';
+      raise ESMException.CreateUtf8('Login not complete: %. For TLS related errors check OpenSSL is installed',[err]);
+    end;
+    if not mSender.AuthDone and mSender.authNeccessary then begin
+      {$ifdef MAILAV_TEST}
+      addMailLog('ubMailSender_login not mSender.AuthDone ');
+      {$endif MAILAV_TEST}
+
+      if mSender.Sock <> nil then
+        raise ESMException.CreateUtf8('Authorization not complete: %',[mSender.Sock.LastErrorDesc])
+      else
+        raise ESMException.Create('Authorization not complete: unknown socket error');
+    end;
+    Result := true;
+  except
+    on E: Exception do begin
+      Result := False;
+      JSError(cx, E);
+    end;
+  end;
 end;
 
 function ubMailSender_sendMail(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
@@ -893,6 +980,7 @@ var
   l: Integer;
 begin
   definePrototypeMethod('sendMail', @ubMailSender_sendMail, 1, [jspEnumerate, jspPermanent, jspReadOnly]);
+  definePrototypeMethod('login', @ubMailSender_login, 0, [jspEnumerate, jspPermanent, jspReadOnly]);
 
   l := Length(FJSProps);
   SetLength(FJSProps, l+1);
@@ -910,53 +998,62 @@ function TubMailSenderProtoObject.NewSMInstance(aCx: PJSContext; argc: uintN; va
 var
   obj: PJSObject;
   val: jsval;
-  Sender: TubMailSender;
-  authNeccessary: Boolean;
+  mSender: TubMailSender;
+  err: string;
 begin
-  if (argc=1) and vp.argv[0].isObject then begin
-    obj := vp.argv[0].asObject;
-    Sender := TubMailSender.Create;
-    try
-      if obj.GetProperty(aCx, 'host', val) and val.isString then
-        Sender.targetHost := val.asJSString.ToUTF8(aCx)
-      else
-        raise ESMException.Create('new TubMailSender() host is not specified');
-      if obj.GetProperty(aCx, 'port', val) and val.isString then
-        Sender.targetPort := val.asJSString.ToUTF8(aCx)
-      else
-        raise ESMException.Create('new TubMailSender() port is not specified');
-      if obj.GetProperty(aCx, 'user', val) and val.isString then
-        Sender.userName := val.asJSString.ToUTF8(aCx)
-      else
-        Sender.userName := '';
-      if obj.GetProperty(aCx, 'password', val) and val.isString then
-        Sender.password := val.asJSString.ToUTF8(aCx)
-      else
-        Sender.password := '';
-      if obj.GetProperty(aCx, 'tls', val) and val.isBoolean then
-        Sender.autoTLS := val.asBoolean;
-      if obj.GetProperty(aCx, 'fullSSL', val) and val.isBoolean then
-        Sender.FullSSL := val.asBoolean;
-
-      if obj.GetProperty(aCx, 'auth', val) and val.isBoolean then
-        authNeccessary := val.asBoolean
-      else
-        authNeccessary := False;
-      if not Sender.Login then begin
-        if Pos('TLS', Sender.Sock.LastErrorDesc) <> 0 then
-          raise ESMException.CreateFmt('Login not complete: %s May be OpenSSL not installed or not accessible',[Sender.Sock.LastErrorDesc])
-        else
-          raise ESMException.CreateFmt('Login not complete: %s',[Sender.Sock.LastErrorDesc]);
-      end;
-      if not Sender.AuthDone and authNeccessary then
-          raise ESMException.CreateFmt('Authorization not complete: %s',[Sender.Sock.LastErrorDesc]);
-    except
-      Sender.Free;
-      raise;
-    end;
-    result := Sender;
-  end else
+  if (argc<>1) or not vp.argv[0].isObject then
     raise ESMException.Create('new TubMailSender() invalid call');
+  obj := vp.argv[0].asObject;
+  mSender := TubMailSender.Create;
+  try
+    if obj.GetProperty(aCx, 'host', val) and val.isString then
+      mSender.targetHost := val.asJSString.ToUTF8(aCx)
+    else
+      raise ESMException.Create('new TubMailSender() host is not specified');
+    if obj.GetProperty(aCx, 'port', val) and val.isString then
+      mSender.targetPort := val.asJSString.ToUTF8(aCx)
+    else
+      raise ESMException.Create('new TubMailSender() port is not specified');
+    if obj.GetProperty(aCx, 'user', val) and val.isString then
+      mSender.userName := val.asJSString.ToUTF8(aCx)
+    else
+      mSender.userName := '';
+    if obj.GetProperty(aCx, 'password', val) and val.isString then
+      mSender.password := val.asJSString.ToUTF8(aCx)
+    else
+      mSender.password := '';
+    if obj.GetProperty(aCx, 'tls', val) and val.isBoolean then
+      mSender.autoTLS := val.asBoolean;
+    if obj.GetProperty(aCx, 'fullSSL', val) and val.isBoolean then
+      mSender.FullSSL := val.asBoolean;
+
+    if obj.GetProperty(aCx, 'auth', val) and val.isBoolean then
+      mSender.authNeccessary := val.asBoolean
+    else
+      mSender.authNeccessary := False;
+
+    if obj.GetProperty(aCx, 'deferLogin', val) and val.isBoolean
+      and val.asBoolean then
+       // defer login
+    else begin
+      if not mSender.Login then begin
+        if mSender.Sock <> nil then
+          err := mSender.Sock.LastErrorDesc
+        else
+          err := 'Unknown socket error';
+        raise ESMException.CreateUtf8('Login not complete: %. For TLS related errors check OpenSSL is installed',[err]);
+      end;
+      if not mSender.AuthDone and mSender.authNeccessary then
+        if mSender.Sock <> nil then
+          raise ESMException.CreateUtf8('Authorization not complete: %',[mSender.Sock.LastErrorDesc])
+        else
+          raise ESMException.Create('Authorization not complete: unknown socket error');
+    end;
+  except
+    FreeAndNil(mSender);
+    raise;
+  end;
+  result := mSender;
 end;
 
 { TubMailReceiverProtoObject }
@@ -1105,12 +1202,44 @@ var
   nativeObj: PSMInstanceRecord;
   receiver: TubMailReceiver;
 begin
+    {$ifdef MAILAV_TEST}
+  addMailLog('ubMailReceiver_reconnect enter');
+  {$endif MAILAV_TEST}
+
   result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
   if not result then exit;
+  {$ifdef MAILAV_TEST}
+  addMailLog('ubMailReceiver_reconnect IsInstanceObject is true');
+  {$endif MAILAV_TEST}
   try
     receiver := TubMailReceiver(nativeObj.instance);
-    receiver.Logout;
+    receiver.DoLogout;
     receiver.DoLogin;
+    vp.rval := jsval.TrueValue;
+  except
+    on E: Exception do begin Result := false; JSError(cx, E); end;
+  end;
+end;
+
+function ubMailReceiver_login(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  nativeObj: PSMInstanceRecord;
+  receiver: TubMailReceiver;
+begin
+  {$ifdef MAILAV_TEST}
+  addMailLog('ubMailReceiver_login enter');
+  {$endif MAILAV_TEST}
+  result := IsInstanceObject(cx, vp.thisObject[cx], nativeObj);
+  if not result then exit;
+  {$ifdef MAILAV_TEST}
+  addMailLog('ubMailReceiver_login IsInstanceObject is true');
+  {$endif MAILAV_TEST}
+  try
+    receiver := TubMailReceiver(nativeObj.instance);
+    receiver.DoLogin;
+    {$ifdef MAILAV_TEST}
+    addMailLog('ubMailReceiver_login leave');
+    {$endif MAILAV_TEST}
     vp.rval := jsval.TrueValue;
   except
     on E: Exception do begin Result := false; JSError(cx, E); end;
@@ -1126,6 +1255,7 @@ begin
   definePrototypeMethod('top', @ubMailReceiver_top, 2, [jspEnumerate, jspPermanent, jspReadOnly]);
   definePrototypeMethod('deleteMessage', @ubMailReceiver_mailDelete, 1, [jspEnumerate, jspPermanent, jspReadOnly]);
   definePrototypeMethod('reconnect', @ubMailReceiver_reconnect, 0, [jspEnumerate, jspPermanent, jspReadOnly]);
+  definePrototypeMethod('login', @ubMailReceiver_login, 0, [jspEnumerate, jspPermanent, jspReadOnly]);
 end;
 
 function TubMailReceiverProtoObject.NewSMInstance(aCx: PJSContext; argc: uintN; var vp: JSArgRec): TObject; 
@@ -1159,7 +1289,11 @@ begin
       if obj.GetProperty(aCx, 'fullSSL', val) and val.isBoolean then
         Receiver.FullSSL := val.asBoolean;
 
-      Receiver.DoLogin;
+      if obj.GetProperty(aCx, 'deferLogin', val) and val.isBoolean
+        and val.asBoolean then
+         // defer login
+      else
+        Receiver.DoLogin;
     except
       Receiver.Free;
       raise;

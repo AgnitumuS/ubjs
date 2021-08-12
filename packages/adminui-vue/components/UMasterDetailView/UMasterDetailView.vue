@@ -3,7 +3,7 @@
     <div class="u-table-register__view">
       <u-table-entity
         ref="masterTable"
-        :bordered=false
+        :bordered="false"
         v-bind="$attrs"
         :before-initial-load="onInitialLoad"
         :class="{
@@ -175,41 +175,25 @@ export default {
 
   computed: {
     entityName () {
-      const { entityName, repository } = this.$attrs
-      if (entityName) {
-        return entityName
+      const eName = this.$attrs.entity || this.$attrs.entityName
+      if (eName) {
+        return eName
       }
-
+      const repository = this.$attrs.repository
       if (typeof repository === 'object') {
-        return this.$UB.Repository(repository)
-      }
-
-      if (typeof repository === 'function') {
+        return repository.entity
+      } else if (typeof repository === 'function') {
         return repository().entityName
+      } else {
+        return ''
       }
-
-      return ''
     },
 
     details () {
-      const result = []
-      const thisE = this.entityName
-      this.$UB.connection.domain.eachEntity(function (curEntity, curEntityName) {
-        // [unitybase/ubjs#2] - do not display refs to attributes of "many" type
-        if ((curEntityName !== thisE) && curEntity.haveAccessToMethod('select')) {
-          curEntity.eachAttribute(function (curAttr, curAttrCode) {
-            // TODO - use assotiationKind here when it added to Domain
-            if ((curAttr.associatedEntity === thisE /* reject many attribute */) && !curAttrCode.startsWith('ID') &&
-              !curAttrCode.startsWith('mi_')) {
-              result.push({
-                attribute: curAttrCode,
-                entity: curEntityName
-              })
-            }
-          })
-        }
+      const thisEntity = $App.domainInfo.get(this.entityName)
+      return thisEntity.getDetailsForUI().map(attr => {
+        return { entity: attr.entity.name, attribute: attr.name }
       })
-      return result
     },
 
     schema () {
@@ -287,8 +271,10 @@ export default {
     },
 
     buildDetailAddNewConfig (cfg) {
-      cfg.parentContext = {
-        [this.selectedDetail.attribute]: this.selectedRowId
+      cfg.props = {
+        parentContext: {
+          [this.selectedDetail.attribute]: this.selectedRowId
+        }
       }
       return cfg
     },

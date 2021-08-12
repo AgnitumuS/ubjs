@@ -1,13 +1,5 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "false"
-//@entity "udisk_card"
-//@formType "custom"
-//@caption "UDISK"
-//@description "UDISK"
 exports.formDef = 'UDISK.AdminViewForm'
 
 Ext.define('UDISK.AdminViewForm', {
     extend: "UDISK.AdminView"
 });
-
-

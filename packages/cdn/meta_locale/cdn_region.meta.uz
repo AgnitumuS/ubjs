@@ -1,0 +1,42 @@
+{
+  "caption": "Mintaqalar",
+  "description": "Mintaqalar katalogi",
+  "attributes": [
+    {
+      "name": "regionTypeID",
+      "caption": "Viloyat turi"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "fullName",
+      "caption": "To'liq unum"
+    },
+    {
+      "name": "description",
+      "caption": "Tavsif"
+    },
+    {
+      "name": "phoneCode",
+      "caption": "Telefon kodi"
+    },
+    {
+      "name": "centerID",
+      "caption": "Markaz"
+    },
+    {
+      "name": "parentAdminUnitID",
+      "caption": "Ajdod"
+    },
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "caption",
+      "caption": "Sarlavha"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+﻿{
+    "orgEmployee": "თანამშრომელი",
+    "orgUnit": "ორგ. ერთეული",
+    "orgStaffUnit": "ორგ. საშტატო ერთეული",
+    "orgProfession": "პროფესიები",
+    "orgOrganization": "ორგანიზაციები",
+    "orgEmployeeOnStaff": "თანამშრომლების დანიშვნა",
+    "orgTreeCanNotBeCyclical": "ხე არ უნდა იყოს ციკლური",
+    "orgDepartment": "განყოფილება"
+}

@@ -1,0 +1,1 @@
+throw new Error('This file must be skipped because it version smaller than initial model version')

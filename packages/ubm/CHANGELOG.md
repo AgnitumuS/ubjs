@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - adapt `ubm_desktop-fm` and `ubm_navshortcut-fm` forms for managing access depends on org units
+-  ubm_query navigation shortcut now shows "Type" column
 
 ### Deprecated
 
@@ -16,6 +17,139 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.20] - 2021-08-09
+## [5.20.19] - 2021-08-04
+### Added
+ - Dutch (nl) localization
+
+### Fixed
+ - prevent override adm_desktop defined by UDA model during migration
+ - localization of the shortcut for `ubm_sysdictionary` entity
+ - deny direct modification of UNITY `ubm_query`
+ - disabling of editing `ubm_query.ubql` on the form
+ - displaying of the control for editing of `ubm_sysdictionary.ubql` - remove `defaultView: false` for this attribute
+
+## [5.20.18] - 2021-07-18
+### Added
+ - Dutch (nl) localization
+
+## [5.20.17] - 2021-07-08
+### Removed
+ - `usrDict` value of the `UBM_QUERY_TYPE` enum
+
+### Fixed
+- default value for `type` attribute of the `ubm_sysdictionary` entity
+
+## [5.20.16] - 2021-06-14
+### Changed
+ - improved template for new vue form
+
+## [5.20.15] - 2021-05-24
+## [5.20.14] - 2021-05-13
+## [5.20.13] - 2021-05-07
+## [5.20.12] - 2021-05-05
+## [5.20.11] - 2021-04-24
+## [5.20.10] - 2021-04-23
+## [5.20.9] - 2021-04-22
+## [5.20.8] - 2021-04-19
+## [5.20.7] - 2021-04-19
+### Changed
+ - `ubm_navshortcut` form layout changed to `u-grid` + attributes tree UI improved
+
+## [5.20.6] - 2021-04-16
+## [5.20.5] - 2021-04-13
+## [5.20.4] - 2021-04-02
+### Fixed
+ - ubm_query JSON to clob migration (for Oracle) not fails during migration from a version where  ubm_query table does not exists
+
+## [5.20.3] - 2021-04-01
+## [5.20.2] - 2021-03-30
+## [5.20.1] - 2021-03-29
+## [5.20.0] - 2021-03-25
+### Added
+- `ubm_sysdictionary` entity, navigation shortcut for the entity (the auto form is used).
+  This entity is a copy of the old `ubm_query` entity that contains information about system dictionaries.
+
+### Changed
+- **BREAKING** `ubm_query` entity is used only as a unity entity for others now. Adding to
+  `ubm_sysdictionary` now is equivalent to adding to `ubm_query` table. So if you add entries
+  using `ub-migrate` for example, it should be tweaked as described below:
+```yml
+$context:
+  type: ubm_query
+
+region:
+  name: {en: Regions, ru: Регионы, uk: Регіони}
+  ...
+```
+to:
+```yml
+$context:
+  type: ubm_sysdictionary
+
+region:
+  name: {en: Regions, ru: Регионы, uk: Регіони}
+  ...
+```
+
+- UBM model now uses `ub-migrate` for adding/updating enums, navigation items and roles
+- 'UBM_READ_USERS' & 'UBM_READ_EVERYONE' ELS rules removed in flavor of UBM_READ_USER added by ub-migrate
+
+## [5.19.9] - 2021-03-23
+## [5.19.8] - 2021-03-17
+## [5.19.7] - 2021-03-16
+### Fixed
+- Cleaned up `ubm_diagram` and `ubm_form` localization (ru, ka, tg) from non-existing attribute
+
+## [5.19.6] - 2021-03-15
+## [5.19.5] - 2021-03-15
+### Added
+ - implicitly disable multitenancy mixin for `ubm_desktop`, `ubm_enum` and `ubm_navshortcut`
+
+### Changed
+ - UBM forms, reports and er-diagrams are converted to `ubrow` format
+
+### Fixed
+- scanner settings form - `Multiple page` checkbox becomes disabled in case `JPEG` format is selected
+- `ubm_navhortcut` form: 
+   - attributes tree is filled for both JSON and JS shortcut code type (`"entity": ".."` and `entityName: '...'`).
+     Before this fix only double quotes is recognized
+   - form layout changed do be more compact (internally rewritten to u-grid + u-auto-field)  
+
+## [5.19.4] - 2021-03-03
+### Changed
+ - client side locales reformatted into JSON
+
+### Removed
+ - i18n for FR related scanner (recognition) settings is remover (FR not used anymore)
+
+## [5.19.3] - 2021-02-10
+## [5.19.2] - 2021-02-08
+## [5.19.1] - 2021-02-03
+## [5.19.0] - 2021-02-02
+## [5.4.49] - 2021-01-30
+## [5.4.48] - 2021-01-28
+## [5.4.47] - 2021-01-26
+## [5.4.46] - 2021-01-19
+### Added
+ - shortcut editor - added template (Ctrl + Q) for Vue based `showList` command
+
+## [5.4.45] - 2021-01-17
+## [5.4.44] - 2021-01-11
+## [5.4.43] - 2020-12-30
+## [5.4.42] - 2020-12-28
+## [5.4.41] - 2020-12-22
+## [5.4.40] - 2020-12-21
+## [5.4.39] - 2020-12-20
+## [5.4.38] - 2020-12-17
+## [5.4.37] - 2020-12-16
+## [5.4.36] - 2020-12-14
+### Added
+ - Oracle: added migration to transform ubm_query json attribute from NVARCHAR to CLOB 
+
+## [5.4.35] - 2020-12-09
+## [5.4.34] - 2020-12-09
+## [5.4.33] - 2020-12-02
 ## [5.4.32] - 2020-11-25
 ## [5.4.31] - 2020-11-23
 ## [5.4.30] - 2020-11-20
@@ -235,4 +369,3 @@ This change is required to prevent massive CLOB fetching (cmdData attribute)
 
 ### Fixed
 - added unique index for instanceID + admSubjectID for ubm_desktop_adm.meta & ubm_navshortcut_adm.meta 
-

@@ -1,6 +1,5 @@
 /* global ubs_settings uba_user uba_otp */
 const http = require('http')
-const QueryString = require('querystring')
 
 // eslint-disable-next-line no-useless-escape
 const EMAIL_VALIDATION_RE = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -92,7 +91,7 @@ function publicRegistration (fake, req, resp) {
   const publicRegistrationSubject = CONFIRMATION_EMAIL_SUBJECT || ubs_settings.loadKey('uba.user.publicRegistrationSubject')
   const publicRegistrationReportCode = CONFIRMATION_MESSAGE_REPORT_CODE || ubs_settings.loadKey('uba.user.publicRegistrationReportCode')
 
-  const { otp, login } = QueryString.parse(req.parameters, null, null, { maxKeys: 3 })
+  const { otp, login } = req.parsedParameters
   const USER_STORE = UB.DataStore('uba_user')
 
   if (otp && login) {

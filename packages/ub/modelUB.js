@@ -12,7 +12,7 @@ const Errors = require('./modules/ubErrors')
 const ws = require('./modules/web-sockets')
 const mI18n = require('./modules/i18n')
 const modelLoader = require('./modules/modelLoader')
-const mStorage = require('./mixins/mStorage')
+const mixinsFactory = require('./modules/mixinsFactory')
 const _ = require('lodash')
 
 const LANGS_SET = new Set(App.serverConfig.application.domain.supportedLanguages)
@@ -43,6 +43,17 @@ const UB = module.exports = {
    * @propety {ESecurityException} ESecurityException
    */
   ESecurityException: Errors.ESecurityException,
+  /**
+   * Creates namespaces to be used for scoping variables and classes so that they are not global.
+   * @example
+
+UB.ns('DOC.Report');
+DOC.Report.myReport = function() { ... };
+
+   * @deprecated Try to avoid namespaces - instead create a module and use require()
+   * @param {String} namespacePath
+   * @return {Object} The namespace object.
+   */
   ns: ns,
   format: format,
   /**
@@ -67,7 +78,6 @@ const UB = module.exports = {
    * Construct new data store
    * @param {string} entityCode
    * @return {TubDataStore}
-   * @constructor
    */
   DataStore: function (entityCode) {
     return new TubDataStore(entityCode)
@@ -79,15 +89,17 @@ const UB = module.exports = {
    * In case firs element of args is a string with locale code supported by application then translate to specified locale,
    * in other case - to locale of the current user (user who done the request to the server)
    *
-   * Localized string can be optionally formatted by position args:
+   * Localized string can be optionally formatted by position args
    *
-   *     UB.i18nExtend({
-   *       "en": { greeting: 'Hello {0}, welcome to {1}' },
-   *       "ru": { greeting: 'Привет {0}, добро пожаловать в {1}' }
-   *     })
-   *     UB.i18n('greeting', 'Mark', 'Kiev') // in case current user language is en -> "Hello Mark, welcome to Kiev"
-   *     UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "Привет Mark, добро пожаловать в Kiev"
-   *
+   * @example
+
+UB.i18nExtend({
+  "en": { greeting: 'Hello {0}, welcome to {1}' },
+  "ru": { greeting: 'Привет {0}, добро пожаловать в {1}' }
+})
+UB.i18n('greeting', 'Mark', 'Kiev') // in case current user language is en -> "Hello Mark, welcome to Kiev"
+UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "Привет Mark, добро пожаловать в Kiev"
+
    * @param {String} msg Message to translate
    * @param {...*} args Format args
    * @returns {*}
@@ -153,19 +165,23 @@ console.log(UB.i18n(yourMessage, 'uk'))
   loadLegacyModules: modelLoader.loadLegacyModules,
   /**
    * Application instance
-   * @property {App} App
+   * @property {ServerApp} App
    */
   App: App,
   start: start,
-  mixins: {
-    mStorage: mStorage
-  }
+  /**
+   * A way to add additional mixins into domain
+   * @param {string} mixinName A name used as "mixins" section key inside entity *.meta file
+   * @param {MixinModule} mixinModule A module what implements a MixinModule interface
+   */
+  registerMixinModule: mixinsFactory.registerMixinModule
 }
 
 /**
  * Initialize UnityBase application:
  *  - create namespaces (global objects) for all `*.meta` files from domain
  *  - require all packages specified in config `application.domain.models`
+ *  - apply a server-side i18n JSONs from models serverLocale folder
  *  - emit {@link event:domainIsLoaded App.domainIsLoaded} event
  *  - register build-in UnityBase {@link module:@unitybase/ub.module:endpoints endpoints}
  */
@@ -188,9 +204,11 @@ function start () {
   orderedModels.forEach((model) => {
     if (model.realPath && (model.name !== 'UB')) { // UB already loaded by UB.js
       modelLoader.loadEntitiesModules(model.realPath)
+      modelLoader.loadServerLocale(model.realPath)
       require(model.realPath)
     }
   })
+  mixinsFactory.initializeMixins()
   App.emit('domainIsLoaded')
   blobStores.initBLOBStores(App, Session)
 
@@ -211,7 +229,7 @@ function start () {
 
 // normalize ENUMS TubCacheType = {Entity: 1, SessionEntity: 2} => {Entity: 'Entity', SessionEntity: 'SessionEntity'}
 function normalizeEnums () {
-  const enums = ['TubftsScope', 'TubCacheType', 'TubEntityDataSourceType', 'TubEntityDataSourceType',
+  const enums = ['TubftsScope', 'TubCacheType', 'TubEntityDataSourceType',
     'TubAttrDataType', 'TubSQLExpressionType', 'TubSQLDialect', 'TubSQLDriver']
   enums.forEach(eN => {
     const e = global[eN]
@@ -248,16 +266,6 @@ function initializeDomain () {
   // 2) fLog.Log(sllInfo, 'Check blob store "%" folder "%": folder exists', [fAppConfig.blobStores[i].name, fAppConfig.blobStores[i].path]);
 }
 
-/**
- * Creates namespaces to be used for scoping variables and classes so that they are not global.
- *
- *     UB.ns('DOC.Report');
- *     DOC.Report.myReport = function() { ... };
- *
- * @deprecated Try to avoid namespaces - instead create a modules and use require()
- * @param {String} namespacePath
- * @return {Object} The namespace object.
- */
 function ns (namespacePath) {
   let root = global
   const parts = namespacePath.split('.')
@@ -283,5 +291,12 @@ Object.defineProperty(global, 'Session', {
 
 // legacy 1.12
 require('./modules/RLS')
+
+// register mixin
+const multitenancyImpl = require('./mixins/multitenancyMixin')
+UB.registerMixinModule('multitenancy', multitenancyImpl)
+
+const fsStorageImpl = require('./mixins/fsStorageMixin')
+UB.registerMixinModule('fsStorage', fsStorageImpl)
 
 module.exports = UB

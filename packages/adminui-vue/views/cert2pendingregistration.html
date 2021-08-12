@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html translate="no">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -121,7 +121,7 @@
               me.processing = true
               window.deferred.resolve({
                 authSchema: 'CERT2',
-                login: me.authData.user,
+                login: me.authData.user.trim(),
                 password: me.authData.pwd,
                 registration: 1
               })
@@ -162,11 +162,12 @@
       if (conn.authMethods.indexOf('CERT2') !== -1) {
         conn.pki() // inject PKI implementation ASAP
       }
-      return UB.inject('/models/ub-pub/locale/lang-' + conn.preferredLocale + '.js').then(function () {
+      return UB.get(`/models/ub-pub/locale/lang-${conn.preferredLocale}.json`).then(resp => {
+        UB.i18nExtend(resp.data)
         if (vm.authRules.user) vm.authRules.user[0].message = vm.$ut('blankText')
         if(vm.authRules.pwd) vm.authRules.pwd[0].message = vm.$ut('EnterOldPassword')
         vm.loading = false
-      })
+      }).catch(e => {console.error(e)})
     },
     onCredentialRequired: function (conn, isRepeat) {
       return new Promise(function (resolve, reject) {

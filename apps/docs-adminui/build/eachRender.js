@@ -44,7 +44,8 @@ export default (previewComponent) => {
       Object.assign(
         this.FormInstance,
         Form({
-          entity: 'req_Request'
+          entity: 'req_request',
+          instanceID: this._firstReqID
         }).processing()
       )
       const { storeConfig } = this.FormInstance

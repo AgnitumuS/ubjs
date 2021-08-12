@@ -1,0 +1,8 @@
+{
+ "isDefault": true,
+ "entity": "cdn_department",
+ "formType": "vue",
+ "caption": "department_title",
+ "description": "department_title",
+ "formCode": "{\"fName\":\"cdn_department-fm.vue\",\"origName\":\"cdn_department-fm.vue\",\"ct\":\"script/x-vue\",\"size\":2505,\"md5\":\"9945c3820588828f22a52d2af5cd3085\"}"
+}

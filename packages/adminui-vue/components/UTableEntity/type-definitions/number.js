@@ -3,5 +3,6 @@
  */
 module.exports = {
   align: 'right',
-  sortable: true
+  sortable: true,
+  summaryAggregationOperator: 'SUM'
 }

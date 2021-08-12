@@ -8,7 +8,7 @@ let testFilesDir = path.resolve(__dirname, 'TestFiles')
 // let moduleName = path.basename(path.resolve(__dirname, '../'))
 // let useTls = (moduleName !== 'mailer')
 console.time('load UBMail')
-let UBMail = require('../UBMail')
+const UBMail = require('../UBMail')
 console.timeEnd('load UBMail')
 const SLEEP_TIMEOUT = 100 // wait between send and receive
 

@@ -4,7 +4,6 @@
  * @author dmytro.rudnyk 31.05.2019
  */
 /* global $App */
-module.exports = Form
 
 const Vuex = require('vuex')
 const { mountTab, mountModal, mountContainer } = require('./mount')
@@ -14,13 +13,14 @@ const {
   transformCollections,
   enrichFieldList
 } = require('./helpers')
-const createValidator = require('./validation')
+const { Validator } = require('./validation')
 const UB = require('@unitybase/ub-pub')
 
 /**
+ * Creates a new instance of UI module what can be visualized in the application shell using `mount*()` call
  * @param {object} cfg
- * @param {Vue.Component} [cfg.component] Form component, same as cfg.rootComponent
- * @param {Vue.Component} [cfg.rootComponent] Form component, same as cfg.component
+ * @param {Vue.Component} [cfg.component] Form component
+ * @param {Vue.Component} [cfg.rootComponent] Alias for cfg.component
  * @param {object} [cfg.props] Form component props
  * @param {object} [cfg.props.parentContext] Attributes values what will be passed to addNew method
  *   in case instanceID is empty. Think of it as default values for attributes of a new record
@@ -35,13 +35,15 @@ const UB = require('@unitybase/ub-pub')
  * @param {string} [cfg.tabId] Optional tabId. If omitted will be calculated using entity code and instanceID
  * @param {object} [cfg.target] Optional target. Used for render form into form
  * @param {boolean} cfg.isCopy Required isCopy. Used for create new record with data of existing record
+ * @method
+ * @returns {UForm}
  */
-function Form (cfg) {
+module.exports.Form = function Form (cfg) {
   return new UForm(cfg)
 }
 
 /**
- * @classdesc
+ * @.classdesc
  * Creates a store for the form and renders it to the tab or modal window.
  * Store track form changes and builds insert/delete requests.
  * Class build validation and check it before save.
@@ -49,8 +51,8 @@ function Form (cfg) {
 class UForm {
   /**
    * @param {object} cfg
-   * @param {Vue.Component} [cfg.component] Form component, same as cfg.rootComponent
-   * @param {Vue.Component} [cfg.rootComponent] Form component, same as cfg.component
+   * @param {Vue.Component} [cfg.component] Form component
+   * @param {Vue.Component} [cfg.rootComponent] Alias for cfg.component
    * @param {object} [cfg.props] Form component props
    * @param {object} [cfg.props.parentContext] Attributes values that will be passed to addNew method
    *   in case instanceID is empty. Think of it as default values for attributes of a new record
@@ -63,8 +65,10 @@ class UForm {
    * @param {string} [cfg.modalWidth] Modal width
    * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar and for correct tabID generation
    * @param {string} [cfg.tabId] Optional tabId. If omitted will be calculated using entity code and instanceID
+   * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
    * @param {object} [cfg.target] Optional target. Used for render form into form
    * @param {boolean} cfg.isCopy Required isCopy. Used for create new record with data of existing record
+   * @param {string} [cfg.titleTooltip] Form title tooltip
    */
   constructor ({
     component,
@@ -78,15 +82,18 @@ class UForm {
     modalWidth,
     formCode,
     tabId,
+    uiTag,
     target,
     isCopy,
-    openInBackgroundTab
+    openInBackgroundTab,
+    titleTooltip
   }) {
     this.component = component || rootComponent
     this.props = props
     this.storeConfig = {}
     this.$store = undefined
     this.entity = entity
+    this.uiTag = uiTag
     if (this.entity && UB.connection.domain.has(this.entity)) {
       this.entitySchema = UB.connection.domain.get(this.entity)
       this.title = title || this.entitySchema.getEntityCaption()
@@ -96,6 +103,7 @@ class UForm {
       this.title = title
       this.fieldList = []
     }
+    this.titleTooltip = titleTooltip || this.title
     this.instanceID = instanceID
     this.formCode = formCode
     this.isCopy = isCopy
@@ -109,7 +117,7 @@ class UForm {
     this.modalWidth = modalWidth
 
     this.validator = undefined
-    this.customValidationMixin = undefined
+    this.customValidationOptions = undefined
 
     this.isProcessingUsed = false
     this.isValidationUsed = false
@@ -135,14 +143,15 @@ class UForm {
 
   /**
    * @deprecated replaced to processing
+   * @private
    */
   instance () {
     return this
   }
 
   /**
-   * Sets store field list, collections and lifecircle hooks.
-   * All hooks are called with one argument $store and this === Current form.
+   * Sets store field list, collections and lifecycle hooks.
+   * All hooks are called with one argument $store and this === current form.
    *
    * @param {Object} [cfg]
    * @param {string[]} [cfg.masterFieldList] form field list. By default all entity attributes
@@ -204,7 +213,7 @@ class UForm {
       beforeInit: beforeInit ? () => beforeInit.call(this, this.$store) : null,
       inited: inited ? () => inited.call(this, this.$store) : null,
       beforeSave: beforeSave ? () => beforeSave.call(this, this.$store) : null,
-      saved: saved ? () => saved.call(this, this.$store) : null,
+      saved: saved ? (method) => saved.call(this, this.$store, method) : null,
       beforeCreate: beforeCreate ? () => beforeCreate.call(this, this.$store) : null,
       created: created ? () => created.call(this, this.$store) : null,
       beforeLoad: beforeLoad ? () => beforeLoad.call(this, this.$store) : null,
@@ -226,13 +235,11 @@ class UForm {
   /**
    * Custom validator function. In case `validation` not called or called without argument then validator function
    *  is generated automatically based on entitySchema
-   * @param {object} [validationMixin] Custom validation mixin in case we need to override default validation
-   * @param {object} [validationMixin.computed] Vue instance computed properties configuration
-   * @param {object} [validationMixin.validations] [vuelidate](https://vuelidate.netlify.com/#sub-basic-usage) mixin validations config
+   * @param {Vue.ComponentOptions} [validationOptions] Custom validation mixin in case we need to override default validation
    * @return {UForm}
    */
-  validation (validationMixin) {
-    if (validationMixin && (typeof validationMixin === 'function')) {
+  validation (validationOptions) {
+    if (validationOptions && (typeof validationOptions === 'function')) {
       throw new Error('Invalid parameter type for UForm.validation - must be object with at last computed or validation props')
     }
     if (!this.canValidationInit) {
@@ -241,8 +248,8 @@ class UForm {
     this.canValidationInit = false
     this.isValidationUsed = true
 
-    if (validationMixin) {
-      this.customValidationMixin = validationMixin
+    if (validationOptions) {
+      this.customValidationOptions = validationOptions
     }
 
     return this
@@ -261,14 +268,19 @@ class UForm {
     }
 
     if (this.isValidationUsed) {
-      this.validator = createValidator(this.$store, this.entitySchema, this.fieldList, this.customValidationMixin)
+      this.validator = Validator.initializeWithCustomOptions({
+        store: this.$store,
+        entitySchema: this.entitySchema,
+        masterFieldList: this.fieldList,
+        customValidationMixin: this.customValidationOptions
+      })
     }
 
     if (this.isProcessingUsed) {
       try {
         await this.$store.dispatch('init')
       } catch (err) {
-        throw new UB.UBError(err)
+        throw new UB.UBError(err.message)
       }
     }
 
@@ -279,6 +291,7 @@ class UForm {
         store: this.$store,
         validator: this.validator,
         title: this.title,
+        titleTooltip: this.titleTooltip,
         modalClass: this.modalClass,
         modalWidth: this.modalWidth,
         provide: {
@@ -292,10 +305,10 @@ class UForm {
       if (!this.tabId) {
         this.tabId = this.entity
           ? $App.generateTabId({ // TODO portal: $App.generateTabId -> portal.generateTabId
-            entity: this.entity,
-            instanceID: this.instanceID,
-            formCode: this.formCode
-          })
+              entity: this.entity,
+              instanceID: this.instanceID,
+              formCode: this.formCode
+            })
           : undefined
       }
       mountTab({
@@ -304,7 +317,9 @@ class UForm {
         store: this.$store,
         validator: this.validator,
         title: this.title,
+        titleTooltip: this.titleTooltip,
         tabId: this.tabId,
+        uiTag: this.uiTag,
         openInBackgroundTab: this.openInBackgroundTab,
         provide: {
           formCode: this.formCode,
@@ -320,6 +335,7 @@ class UForm {
         store: this.$store,
         validator: this.validator,
         title: this.title,
+        titleTooltip: this.titleTooltip,
         target: this.target,
         provide: {
           formCode: this.formCode,
@@ -335,6 +351,7 @@ class UForm {
    * Applicable for entities with softLock mixin.
    * - if dirty === true and entity is not already locked try to get a Temp lock
    * - if dirty === false and entity is locked by current user using Temp lock - unlock it
+   * @private
    * @param {boolean} dirty
    */
   lockUnlockOnDirtyChanged (dirty) {

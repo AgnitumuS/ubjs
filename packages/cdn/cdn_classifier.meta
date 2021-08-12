@@ -6,6 +6,13 @@
     "mStorage": {
       "simpleAudit": true,
       "safeDelete": true
+    },
+    "unity": {
+      "entity": "ubm_query",
+      "attributeList": ["code", "name", "ubql"],
+      "defaults": {
+        "type": "classifier"
+      }
     }
   },
   "attributes": [
@@ -40,6 +47,13 @@
       "caption": "Classifier item order",
       "description": "Classifier item sort order",
       "defaultValue": "code"
+    },
+    {
+      "name": "ubql",
+      "caption": "UBQL (JSON)",
+      "dataType": "Json",
+      "allowNull": false,
+      "defaultView": false
     }
   ]
 }

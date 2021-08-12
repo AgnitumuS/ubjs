@@ -119,12 +119,8 @@ For any request server MAY response with `401` - this mean session is expired an
 Authorization signature calculation (JavaScript):  
 ```javascript
 function hexa8(value){
-    var num = parseInt(value, 10),
-        res = isNaN(num) ? '00000000' : num.toString(16);
-    while(res.length < 8) {
-        res = '0' + res;
-    }
-    return res;
+  const num = parseInt(value, 10)
+  return isNaN(num) ? '00000000' : num.toString(16).padStart(8, '0')
 };
 
 function getSignature() {
@@ -132,9 +128,12 @@ var
     timeStampI = Math.floor(Date.now() /  1000),
     hexaTime = hexa8(timeStampI);
 
-return  hexa(clientSessionID) + hexaTime + hexa8(crc32(sessionPrivateKey + secretWord + hexaTime));
+return  hexa8(clientSessionID) + hexaTime + hexa8(crc32(sessionPrivateKey + secretWord + hexaTime));
 }
 ```
+
+> crc32 implementation must handle argument as UTF8 encoded string (to allow crc32 for non-english chars)
+> crc32('тест') === 2676977762
 
 ## UnityBase Administration (UBA) model
 
@@ -199,6 +198,9 @@ in application domain. In other case default values are applied.
 
 Note, that for some of these settings, you will need to restart UnityBase server after the change.
 Setting value is a localized string, make sure you update the setting in all the languages.
+
+Starts from UB server 5.19.6 ubConfig `security.lockOutInDB` parameter control whenever user account is locket permanently (by sets `uba_user.disabled`)
+or temporary for `security.lockOutTimeoutSec` seconds. Default behavior is temporary lock for 300 seconds.
 
 ### Security audit & dashboard
 All security related operations are added to the `uba_audit` entity. The interface part is available in the `adminUI` on the path

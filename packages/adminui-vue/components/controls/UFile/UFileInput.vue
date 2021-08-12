@@ -18,8 +18,11 @@
       size="large"
       class="u-file__dropzone-icon"
     />
-    <div v-if="value.length">
-      {{ $ut(selectedPlaceholder) }}: {{ selectedFileNames }}
+    <div
+      v-if="value.length"
+      class="text--truncated"
+    >
+      <strong>{{ $ut(selectedPlaceholder) }}:</strong> {{ selectedFileNames }}
     </div>
     <div
       v-else
@@ -54,14 +57,14 @@ export default {
      */
     multiple: Boolean,
     /**
-     * Placeholder for dropzone when file(s) is not selected
+     * Placeholder for the dropzone when file(s) is not selected
      */
     placeholder: {
       type: String,
       default: 'fileInput.dropZone.caption'
     },
     /**
-     * Placeholder for dropzone when file(s) are selected
+     * Placeholder for the dropzone when file(s) are selected
      */
     selectedPlaceholder: {
       type: String,
@@ -72,7 +75,7 @@ export default {
      */
     disabled: Boolean,
     /**
-     * File types the file input should accept. This string is a comma-separated list of unique file type specifiers.
+     * Types of files input should accept. A comma-separated list of unique file type specifiers.
      * See [Input element accept](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept)
      *
      * Example: ".doc,.docx,application/msword"
@@ -110,7 +113,7 @@ export default {
       return this.accept.split(',').map(a => a.trim())
     },
     selectedFileNames: function () {
-      return this.value.map(f => f.name).join(', ')
+      return this.value.map(f => f.name).join('; ')
     }
   },
 
@@ -176,7 +179,8 @@ export default {
       }
       return this.acceptableFileTypes.some(ft => {
         // file type specifier can be either extension or mime
-        return file.name.endsWith(ft) || file.type.includes(ft)
+        const lcName = String(ft).toLowerCase()
+        return file.name.toLowerCase().endsWith(lcName) || file.type.includes(lcName)
       })
     }
   }
@@ -194,6 +198,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
     justify-content: center;
     cursor: pointer;
     line-height: 1;
@@ -223,5 +228,12 @@ export default {
   .u-file__dropzone.disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  .u-file__dropzone .text--truncated {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
 </style>

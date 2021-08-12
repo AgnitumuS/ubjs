@@ -15,6 +15,62 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.20] - 2021-08-09
+## [5.20.19] - 2021-08-04
+## [5.20.18] - 2021-07-18
+### Added
+ - support for id.gov.ua - see  https://id.gov.ua/downloads/IDInfoProcessingD.pdf
+
+## [5.20.17] - 2021-07-08
+## [5.20.16] - 2021-06-14
+### Added
+ - `openIDConnect`: id_token saving on auth handshake stage.
+    This token needed for doing proper OpenID logout with `post_logout_redirect_uri` param.
+    Token value can be accessed in 'getOnFinishAction' and save it to the LocalStorage/SessionStorage for example.
+## [5.20.15] - 2021-05-24
+## [5.20.14] - 2021-05-13
+## [5.20.13] - 2021-05-07
+## [5.20.12] - 2021-05-05
+## [5.20.11] - 2021-04-24
+## [5.20.10] - 2021-04-23
+## [5.20.9] - 2021-04-22
+## [5.20.8] - 2021-04-19
+## [5.20.7] - 2021-04-19
+## [5.20.6] - 2021-04-16
+## [5.20.5] - 2021-04-13
+## [5.20.4] - 2021-04-02
+## [5.20.3] - 2021-04-01
+## [5.20.2] - 2021-03-30
+## [5.20.1] - 2021-03-29
+## [5.20.0] - 2021-03-25
+## [5.19.7] - 2021-03-23
+## [5.19.6] - 2021-03-17
+## [5.19.5] - 2021-03-15
+## [5.19.4] - 2021-03-03
+## [5.19.3] - 2021-02-10
+## [5.19.2] - 2021-02-08
+## [5.19.1] - 2021-02-03
+## [5.19.0] - 2021-02-02
+### Changed
+ - use new method `req.getHeader('origin')` to get a `Origin` header value
+ - use new property `req.parsedParameters` instead of `queryString.parse(req.parameters)`
+
+
+## [5.1.57] - 2021-01-30
+### Changed
+ - use `req.getHeader('origin')` to get a `Origin` header value
+
+## [5.1.56] - 2021-01-26
+## [5.1.55] - 2021-01-19
+## [5.1.54] - 2021-01-17
+## [5.1.53] - 2020-12-30
+## [5.1.52] - 2020-12-28
+## [5.1.51] - 2020-12-22
+## [5.1.50] - 2020-12-21
+## [5.1.49] - 2020-12-20
+## [5.1.48] - 2020-12-14
+## [5.1.47] - 2020-12-09
+## [5.1.46] - 2020-12-02
 ## [5.1.45] - 2020-11-25
 ## [5.1.44] - 2020-11-20
 ## [5.1.43] - 2020-11-19

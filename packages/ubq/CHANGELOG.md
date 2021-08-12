@@ -15,6 +15,80 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.20] - 2021-08-09
+## [5.20.19] - 2021-08-04
+### Added
+- ability to pass attachments to the `queueMail` method as a buffer
+- Dutch (nl) localization
+
+## [5.20.18] - 2021-07-18
+### Added
+ - Dutch (nl) localization
+
+## [5.20.17] - 2021-07-08
+## [5.20.16] - 2021-06-14
+## [5.20.15] - 2021-05-24
+## [5.20.14] - 2021-05-13
+## [5.20.13] - 2021-05-07
+## [5.20.12] - 2021-05-05
+## [5.20.11] - 2021-04-24
+## [5.20.10] - 2021-04-23
+## [5.20.9] - 2021-04-22
+## [5.20.8] - 2021-04-19
+## [5.20.7] - 2021-04-19
+## [5.20.6] - 2021-04-16
+## [5.20.5] - 2021-04-13
+### Changed
+ - log level for scheduler initiation message `SCHEDULER: Job command for ... sent at ...` changed from `info` to `debug`
+
+## [5.20.4] - 2021-04-02
+## [5.20.3] - 2021-04-01
+## [5.20.2] - 2021-03-30
+## [5.20.1] - 2021-03-29
+## [5.20.0] - 2021-03-25
+## [5.19.7] - 2021-03-23
+## [5.19.6] - 2021-03-17
+## [5.19.5] - 2021-03-15
+## [5.19.4] - 2021-03-03
+## [5.19.3] - 2021-02-10
+## [5.19.2] - 2021-02-08
+## [5.19.1] - 2021-02-03
+## [5.19.0] - 2021-02-02
+## [5.4.33] - 2021-01-30
+## [5.4.32] - 2021-01-28
+### Fixed
+ - ubqMailjob (e-mail sender) will add a fake attachment with text
+   `File not exists, please forward this message to administrator` in case attached file not exists in file-based BLOB store
+
+## [5.4.31] - 2021-01-26
+## [5.4.30] - 2021-01-19
+### Fixed
+ - mail sending job: fix attachments (should use isBase64: false when attached from file)
+
+## [5.4.29] - 2021-01-17
+### Added
+ - e-mail sending job uses deferred SMTP log-in (helps to locate a source of AV during sending some mails)
+
+### Changed
+ - e-mail sending job pass a path to the blob store file into UBMailSender instead of
+   reading a file content into JS memory and pass it as base64.
+
+   This decrease JS memory usage and breaks a long BASE64 string into 78-char lines as
+   required by RFC-5322
+
+### Fixed
+ - mail sending job calls a logout from mail server in finally block.
+   This force closing POP3 connection in case MTA returns an error. 
+
+## [5.4.28] - 2021-01-11
+## [5.4.27] - 2020-12-30
+## [5.4.26] - 2020-12-28
+## [5.4.25] - 2020-12-22
+## [5.4.24] - 2020-12-21
+## [5.4.23] - 2020-12-20
+## [5.4.22] - 2020-12-14
+## [5.4.21] - 2020-12-09
+## [5.4.20] - 2020-12-02
 ## [5.4.19] - 2020-11-25
 ## [5.4.18] - 2020-11-23
 ### Added

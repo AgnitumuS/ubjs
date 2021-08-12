@@ -121,18 +121,16 @@ function UBSession (authResponse, secretWord, authSchema) {
  */
 UBSession.prototype.hexa8 = function hexa8 (value) {
   const num = parseInt(value, 10)
-  let res = isNaN(num) ? '00000000' : num.toString(16)
-  while (res.length < 8) {
-    res = '0' + res
-  }
-  return res
+  return isNaN(num) ? '00000000' : num.toString(16).padStart(8, '0')
 }
 const hexa8 = UBSession.prototype.hexa8
 
 const CRC32_POLYTABLES = {}
+let TE // TextEncoder instance
+
 /* jslint bitwise: true */
 /**
- * Calculate CRC32 checksum for string
+ * Calculate CRC32 checksum for UTF8 string representation
  * @param {String} s string to calculate CRC32
  * @param {Number} [polynomial] polynomial basis. default to 0x04C11DB7
  * @param {Number} [initialValue] initial crc value. default to 0xFFFFFFFF
@@ -140,7 +138,6 @@ const CRC32_POLYTABLES = {}
  * @returns {Number}
  */
 UBSession.prototype.crc32 = function crc32 (s, polynomial, initialValue, finalXORValue) {
-  s = String(s)
   polynomial = polynomial || 0x04C11DB7
   initialValue = initialValue || 0xFFFFFFFF
   finalXORValue = finalXORValue || 0xFFFFFFFF
@@ -148,6 +145,7 @@ UBSession.prototype.crc32 = function crc32 (s, polynomial, initialValue, finalXO
 
   let table = CRC32_POLYTABLES[polynomial]
   if (!table) {
+    TE = new TextEncoder()
     table = CRC32_POLYTABLES[polynomial] = (function build () {
       let i, j, c
       const table = []
@@ -174,11 +172,10 @@ UBSession.prototype.crc32 = function crc32 (s, polynomial, initialValue, finalXO
     })()
   }
 
-  for (let i = 0, l = s.length; i < l; i++) {
-    const c = s.charCodeAt(i)
-    if (c > 255) {
-      throw new RangeError()
-    }
+  // allow non english chars by encoding passed string to UTF8
+  const utf8Arr = TE.encode(s)
+  for (let i = 0, L = utf8Arr.length; i < L; i++) {
+    const c = utf8Arr[i]
     const j = (crc % 256) ^ c
     crc = ((crc / 256) ^ table[j]) >>> 0
   }

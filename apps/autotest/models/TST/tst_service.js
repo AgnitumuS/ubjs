@@ -20,8 +20,8 @@ me.entity.addMethod('multiply')
  */
 me.multiply = function (ctx) {
   const params = ctx.mParams
-  let a = params.a || 1
-  let b = params.b || 1
+  const a = params.a || 1
+  const b = params.b || 1
   params.multiplyResult = a * b
 }
 
@@ -44,7 +44,7 @@ me.sleep3sec = function (ctx, req, resp) {
 
 me.schedulerTest = function (ctx) {
   console.log('SCHEDULER: log message from a test scheduler')
-  let store = UB.DataStore('uba_user')
+  const store = UB.DataStore('uba_user')
   return 'test scheduler executed at' + new Date() + store.currentDataName
 }
 
@@ -69,7 +69,7 @@ me.entity.addMethod('ubAbortTest')
  * @param {ubMethodParams} ctx
  */
 me.ubAbortTest = function (ctx) {
-  throw new UB.UBAbort(`<<<Документ "Договір">>>`)
+  throw new UB.UBAbort('<<<Документ "Договір">>>')
 }
 
 App.globalCachePut('aa', '12')
@@ -85,7 +85,7 @@ me.entity.addMethod('testDataStoreInitialization')
  * @param {ubMethodParams} ctx
  */
 me.testDataStoreInitialization = function (ctx) {
-  let objArr = [{ ID: 1, b: 'aaa' }, { ID: 2 }]
+  const objArr = [{ ID: 1, b: 'aaa' }, { ID: 2 }]
   ctx.dataStore.initFromJSON(objArr)
 }
 
@@ -104,7 +104,7 @@ me.testServerReportPDF = function (ctx) {
 
   const UBReport = require('models/UBS/public/UBReport.js')
 
-  let report = UBReport.makeReport('test', 'pdf', {})
+  const report = UBReport.makeReport('test', 'pdf', {})
   report.then(function (result) {
     if (result.reportType === 'pdf') {
       console.log('Generate PDF of', result.reportData.byteLength)
@@ -117,6 +117,10 @@ me.testServerReportPDF = function (ctx) {
   })
 }
 me.entity.addMethod('testServerReportPDF')
+
+// ubs_report.testServerRendering method for autotest
+me.testServerRendering = ubs_report.testServerRendering
+me.entity.addMethod('testServerRendering')
 
 /**
  * Test UB.UBAbortError
@@ -132,10 +136,10 @@ me.entity.addMethod('abortTest')
  * @param {ubMethodParams} ctx
  */
 me.throwTest = function (ctx) {
-  let mParams = ctx.mParams
-  let isUnicode = (mParams.isUnicode === true)
-  let isSystem = (mParams.isSystem === true)
-  let isRepo = (mParams.isRepo === true)
+  const mParams = ctx.mParams
+  const isUnicode = (mParams.isUnicode === true)
+  const isSystem = (mParams.isSystem === true)
+  const isRepo = (mParams.isRepo === true)
   if (isRepo) {
     tstm1.throwStackTestInner()
   } else if (isUnicode) {
@@ -143,7 +147,7 @@ me.throwTest = function (ctx) {
   } else if (isSystem) {
     fs.renameSync('file_not_found_exos', 'second_path_wrong')
   } else {
-    throw new Error('Error exception logger as EXC level')
+    throw new Error('Error exception logged as EXC level')
   }
 }
 me.entity.addMethod('throwTest')
@@ -153,7 +157,7 @@ me.entity.addMethod('throwTest')
  * @param {ubMethodParams} ctx
  */
 me.usualExceptionTest = function (ctx) {
-  let a = {}
+  const a = {}
   ctx.mParams.res = a.b.c
 }
 me.entity.addMethod('usualExceptionTest')
@@ -178,10 +182,10 @@ me.entity.addMethod('handledExceptionTest')
 function doAsUser () {
   // uParam.ID = userID;
   // uParam.mi_modifyDate = UB.Repository('uba_user').attrs(['ID','mi_modifyDate']).where('ID', '=', 'userID').select().get('mi_modifyDate');
-  let store = UB.DataStore('uba_user')
+  const store = UB.DataStore('uba_user')
   store.run('update', {
     fieldList: ['ID'],
-    '__skipOptimisticLock': true,
+    __skipOptimisticLock: true,
     execParams: { ID: UBA.USERS.ADMIN.ID, name: UBA.USERS.ADMIN.NAME }
   })
   return JSON.stringify(Session.uData)
@@ -191,13 +195,13 @@ function doAsUser () {
  * @param {ubMethodParams} ctx
  */
 me.runAsAdminTest = function (ctx) {
-  let uDataBefore = _.cloneDeep(Session.uData)
-  let uDataInsidePseudoAdmin = Session.runAsAdmin(doAsUser)
-  let elsUID = UB.Repository('uba_user').attrs('ID').where('name', '=', 'testelsuser').selectScalar()
-  let uDatainsidePseudoAdmin2level = Session.runAsAdmin(function () {
+  const uDataBefore = _.cloneDeep(Session.uData)
+  const uDataInsidePseudoAdmin = Session.runAsAdmin(doAsUser)
+  const elsUID = UB.Repository('uba_user').attrs('ID').where('name', '=', 'testelsuser').selectScalar()
+  const uDatainsidePseudoAdmin2level = Session.runAsAdmin(function () {
     return Session.runAsUser(elsUID, doAsUser)
   })
-  let uDataAfter = Session.uData
+  const uDataAfter = Session.uData
   console.log('uDataInsidePseudoAdmin', uDataInsidePseudoAdmin)
   ctx.mParams.runAsAdminUData = {}
   ctx.mParams.runAsAdminUData.before = uDataBefore
@@ -215,7 +219,7 @@ me.runAsUserFailsTest = function (ctx) {
   ctx.mParams.runAsUserData = {}
   console.log('User ID before runAs', Session.userID)
   try {
-    let admin2ID = UB.Repository('uba_user').attrs('ID').where('name', '=', 'admin2').selectScalar()
+    const admin2ID = UB.Repository('uba_user').attrs('ID').where('name', '=', 'admin2').selectScalar()
     Session.runAsUser(admin2ID, doAsUser)
   } catch (e) {
     ctx.mParams.runAsUserData.error = e.toString()
@@ -229,9 +233,12 @@ me.dmlGeneratorTest = function (ctx) {
   const generator = require('@unitybase/dml-generator')
   ctx.mParams.resultSQL = generator.mssql.biuldSelectSql('tst_maindata', {
     fieldList: ['parent1@tst_maindata.manyValue.mi_modifyUser.name'],
-    whereList: { c1: {
-      expression: 'parent1@tst_maindata.manyValue.mi_modifyUser.name', condition: 'equal', values: { c1: 'admin' }
-    } } })
+    whereList: {
+      c1: {
+        expression: 'parent1@tst_maindata.manyValue.mi_modifyUser.name', condition: 'equal', values: { c1: 'admin' }
+      }
+    }
+  })
   ctx.mParams.sql2 = generator.mssql.biuldSelectSql('tst_maindata',
     UB.Repository('tst_maindata')
       .attrs('[nonNullDict_ID.caption]', '[nonNullDict_ID.caption_en^]', 'nonNullDict_ID.filterValue', 'nonNullDict_ID.floatValue')
@@ -259,7 +266,7 @@ me.entity.addMethod('datesTest')
 me.datesTest = function (ctx) {
   // verify debugger stops correctly on multiline strings
   // eslint-disable-next-line no-unused-vars
-  let multilineString = `
+  const multilineString = `
    cx: PJSContext;
     Exp: PJSRootedObject;^
     Req: PJSRootedObject;^
@@ -269,9 +276,9 @@ me.datesTest = function (ctx) {
   asdasdas
   asdasd
   `
-  let params = ctx.mParams
-  let zDate = new Date('2017-01-01T00:00Z')
-  let uDate = new Date('2017-01-01T12:20Z')
+  const params = ctx.mParams
+  const zDate = new Date('2017-01-01T00:00Z')
+  const uDate = new Date('2017-01-01T12:20Z')
   params.zDate = zDate
   params.uDate = uDate
   params.dates = {
@@ -329,7 +336,7 @@ me.entity.addMethod('mParamsTest')
 me.iitVerify = function (ctx) {
   const iitCrypto = require('@ub-d/iit-crypto')
   iitCrypto.init()
-  const signature = Buffer.from(ctx.mParams.base64Signature,'base64')
+  const signature = Buffer.from(ctx.mParams.base64Signature, 'base64')
   const data = Buffer.from(ctx.mParams.base64Data, 'base64')
   const verifyResult = iitCrypto.verify(signature, data)
   delete ctx.mParams.base64Data
@@ -337,3 +344,28 @@ me.iitVerify = function (ctx) {
   ctx.mParams.result = verifyResult
 }
 me.entity.addMethod('iitVerify')
+
+/**
+ * Run a long query to verify a ERR_RESOURCE_LIMITS_EXCEED exception handling
+ * @example
+ *
+UB.connection.query({
+  entity: 'tst_service',
+  method: 'resourceLimitationTest',
+  testFetchSize: true, // false to test time limits
+  level: 3
+})
+ * @param {ubMethodParams} ctx
+ * @param {number} ctx.mParams.level
+ */
+me.resourceLimitationTest = function (ctx) {
+  App.dbStartTransaction(me.entity.connectionConfig.name)
+  let level = ctx.mParams.level || 4
+  let q = (ctx.mParams.testFetchSize ? 'select *' : 'select max(at.ID)') + ' from uba_auditTrail at'
+  if (level > 5) level = 5
+  for (let i = 1; i <= level; i++) {
+    q = q + ` cross join uba_auditTrail at${i}`
+  }
+  ctx.dataStore.runSQL(q, {})
+}
+me.entity.addMethod('resourceLimitationTest')

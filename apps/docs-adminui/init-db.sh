@@ -60,4 +60,4 @@ PROCESS='Initialize'
 npx ubcli initialize -cfg $UB_CFG -u root
 
 PROCESS='Fill demo data'
-npx ub-migrate -u admin -p $UB_PWD
+ubcli migrate -u root

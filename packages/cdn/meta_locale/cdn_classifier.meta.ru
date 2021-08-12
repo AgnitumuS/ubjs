@@ -16,6 +16,10 @@
     {
       "name": "orderByAttr",
       "caption": "Порядок элементов классификатора"
+    },
+    {
+      "name": "ubql",
+      "caption": "UBQL (JSON)"
     }
   ]
 }

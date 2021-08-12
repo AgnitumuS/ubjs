@@ -2,14 +2,11 @@
   <div class="u-form-layout">
     <u-toolbar />
 
-    <u-form-container
-      label-position="top"
-      is-disabled
-    >
-      <u-auto-field attribute-name="parentID"/>
-      <u-auto-field attribute-name="unitType"/>
-      <u-auto-field attribute-name="code"/>
-      <u-auto-field attribute-name="caption"/>
+    <u-form-container label-position="top">
+      <u-auto-field attribute-name="parentID" :readonly="true" />
+      <u-auto-field attribute-name="unitType" :disabled="true" />
+      <u-auto-field attribute-name="code" :disabled="true" />
+      <u-auto-field attribute-name="caption" :disabled="true" />
     </u-form-container>
   </div>
 </template>

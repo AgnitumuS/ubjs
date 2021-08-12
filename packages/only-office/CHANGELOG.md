@@ -15,6 +15,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.19.6] - 2021-07-08
+## [5.19.5] - 2021-05-24
+## [5.19.4] - 2021-04-24
+## [5.19.3] - 2021-03-23
+## [5.19.2] - 2021-03-15
+## [5.19.1] - 2021-02-08
+## [5.19.0] - 2021-02-02
+### Changed
+ - use new property `req.parsedParameters` instead of `queryString.parse(req.parameters)`
+
+## [1.1.6] - 2021-01-26
 ## [1.1.5] - 2020-11-25
 ## [1.1.4] - 2020-11-19
 ## [1.1.3] - 2020-11-15

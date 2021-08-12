@@ -1,4 +1,5 @@
-﻿const UB = require('@unitybase/ub')
+﻿const fs = require('fs')
+const UB = require('@unitybase/ub')
 const App = UB.App
 const mailerParams = App.serverConfig.application.customSettings.mailerConfig
 const UBMail = require('@unitybase/mailer')
@@ -8,7 +9,7 @@ const UBMail = require('@unitybase/mailer')
  * Read queue with code **mail** and send mails to recipient(s)
  * to attach files into the mail, use queue like this:
 
- msgCmd.attaches = [{entity: <entity>, attribute: 'document', id: <id>, atachName: <file name>}, ...]
+ msgCmd.attaches = [{entity: <entity>, attribute: 'document', id: <id>, attachName: <file name>}, ...]
 
  * for document image:
 
@@ -16,7 +17,7 @@ const UBMail = require('@unitybase/mailer')
    entity: 'doc_document',
    attribute: 'document',
    id: <doc_document ID>,
-   atachName: "document.pdf"
+   attachName: "document.pdf"
  }
 
  * for attached files:
@@ -25,7 +26,7 @@ const UBMail = require('@unitybase/mailer')
    entity: "doc_attachment",
    attribute: 'document',
    id: <attachment ID>,
-   atachName: <attachment caption>
+   attachName: <attachment caption>
  }
 
  *
@@ -54,7 +55,7 @@ module.exports = function () {
   if (inst.eof) {
     return 'No emails sent'
   }
-
+  console.debug('Mailer: before new TubMailSender')
   let mailSender = new UBMail.TubMailSender({
     host: mailerParams.targetHost,
     port: mailerParams.targetPort || '25',
@@ -62,48 +63,71 @@ module.exports = function () {
     password: mailerParams.password || '',
     tls: Boolean(mailerParams.autoTLS),
     fullSSL: Boolean(mailerParams.fullSSL),
-    auth: mailerParams.auth || false
+    auth: mailerParams.auth || false,
+    deferLogin: true
   })
+  try {
+    console.debug('Mailer: before mailSender.Login')
+    mailSender.login()
+    console.debug('Mailer: after mailSender.Login')
 
-  while (!inst.eof) {
-    mailData.ID = inst.get('ID')
-    mailData.msgCmd = inst.get('msgCmd')
-    mailData.msgData = inst.get('msgData')
-    const cmd = JSON.parse(mailData.msgCmd)
-    mailData.attaches = []
-    if (cmd.attaches && cmd.attaches.length) {
-      for (let i = 0, L = cmd.attaches.length; i < L; i++) {
-        try {
-          const base64Body = App.blobStores.getContent({
-            entity: cmd.attaches[i].entity,
-            attribute: cmd.attaches[i].attribute,
-            ID: cmd.attaches[i].id
-          }, { encoding: 'base64' })
-          mailData.attaches.push({
-            kind: UBMail.TubSendMailAttachKind.Text,
-            atachName: cmd.attaches[i].atachName,
-            data: base64Body,
-            isBase64: true
-          })
-        } catch (e) {
-          eMsg = (e && e.stack) ? e.message + ' - ' + e.stack : e
-          console.error('loadContent', eMsg)
+    while (!inst.eof) {
+      mailData.ID = inst.get('ID')
+      mailData.msgCmd = inst.get('msgCmd')
+      mailData.msgData = inst.get('msgData')
+      const cmd = JSON.parse(mailData.msgCmd)
+      mailData.attaches = []
+      if (cmd.attaches && cmd.attaches.length) {
+        for (let i = 0, L = cmd.attaches.length; i < L; i++) {
+          try {
+            const attachFN = App.blobStores.getContentPath({
+              entity: cmd.attaches[i].entity,
+              attribute: cmd.attaches[i].attribute,
+              ID: cmd.attaches[i].id
+            })
+            if (!fs.existsSync(attachFN)) {
+              mailData.attaches.push({
+                kind: UBMail.TubSendMailAttachKind.Text,
+                attachName: cmd.attaches[i].attachName + '.txt',
+                data: `File not exists, please forward this message to administrator.
+  Entity: ${cmd.attaches[i].entity}, attribute: ${cmd.attaches[i].attribute}, ID: ${cmd.attaches[i].id}`
+              })
+            } else {
+              mailData.attaches.push({
+                kind: UBMail.TubSendMailAttachKind.File,
+                attachName: cmd.attaches[i].attachName,
+                data: attachFN,
+                isBase64: false
+              })
+            }
+
+            if (cmd.attaches[i].entity === 'ubq_mailAttachment') {
+              UB.DataStore('ubq_mailAttachment').run('delete', {
+                execParams: {
+                  ID: cmd.attaches[i].id
+                }
+              })
+            }
+          } catch (e) {
+            eMsg = (e && e.stack) ? e.message + ' - ' + e.stack : e
+            console.error('loadContent', eMsg)
+          }
         }
       }
+      /* this. */
+      internalSendMail(mailData, mailSender)
+      sentCount++
+      inst.run('success', {
+        ID: mailData.ID
+      })
+      App.dbCommit(App.domainInfo.entities.ubq_messages.connectionName)
+      inst.next()
     }
-    /* this. */
-    internalSendMail(mailData, mailSender)
-    sentCount++
-    inst.run('success', {
-      ID: mailData.ID
-    })
-
-    App.dbCommit(App.domainInfo.entities.ubq_messages.connectionName)
-
-    inst.next()
+  } finally {
+    console.debug('!!!!!!!!! mailSender.freeNative !!!!!!!!!')
+    mailSender.freeNative() // release a connection to mail server
+    mailSender = null
   }
-  mailSender.freeNative() // release a connection to mail server
-  mailSender = null
   return `Send ${sentCount} emails`
 }
 

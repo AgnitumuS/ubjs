@@ -9,7 +9,6 @@ module.exports = {
     main: path.join(__dirname, 'index.js')
   },
   output: {
-    path: path.join(__dirname, 'dist'),
     filename: 'ubs.[name].min.js',
     publicPath: '/clientRequire/@unitybase/ubs/public/dist/',
     library: 'unitybase_ubs',

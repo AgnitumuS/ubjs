@@ -31,6 +31,7 @@ export default {
     border-bottom: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
   }
 
   .u-file-container__view {

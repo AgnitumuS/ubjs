@@ -19,13 +19,14 @@ if (base.ubVersionNum < 5018000) {
  * Singleton instance of UnityBase application. Allow direct access to the database connections, blob stores,
  * HTTP endpoints (full control on HTTP request & response) registration, read domain and server config.
  *
- * Mixes EventEmitter, and server will emit:
+ * Mixes EventEmitter, and emit:
  *
+ *  - `launchEndpoint:before` with parameters: (req, resp, endpointName)
  *  - `endpointName + ':before'` event before endpoint handler  execution
- *  - `endpointName + ':after'` event in case neither exception is raised nor App.preventDefault()
- *  is called inside endpoint handler
+ *  - `endpointName + ':after'` event in case neither exception is raised nor App.preventDefault() is called
+ *  - `launchEndpoint:after` with parameters: (req, resp, endpointName, defaultPrevented)
  *
- * To prevent endpoint handler execution App.preventDefault() can be used inside `:before` handler.
+ * To prevent endpoint handler execution `App.preventDefault()` can be used inside `:before` handler.
  *
  * @example
 const App = require('@unitybase/ub').App
@@ -33,8 +34,8 @@ const App = require('@unitybase/ub').App
 App.registerEndpoint('echoToFile', echoToFile, false)
 
 // write custom request body to file FIXTURES/req and echo file back to client
-// @param {THTTPRequest} req
-// @param {THTTPResponse} resp
+// @ param {THTTPRequest} req
+// @ param {THTTPResponse} resp
 function echoToFile (req, resp) {
   var fs = require('fs')
   fs.writeFileSync(path.join(FIXTURES, 'req'), req.read('bin'))
@@ -43,38 +44,40 @@ function echoToFile (req, resp) {
 }
 
 //Before getDocument requests
-//@param {THTTPRequest} req
-//@param {THTTPResponse} resp
+//@ param {THTTPRequest} req
+//@ param {THTTPResponse} resp
 function doSomethingBeforeGetDocumentCall(req, resp){
   console.log('User with ID', Session.userID, 'try to get document')
 }
 // Adds hook called before each call to getDocument endpoint
 App.on('getDocument:before', doSomethingBeforeGetDocumentCall)
 
-const querystring = require('querystring')
 //
 //After getDocument requests
-//@param {THTTPRequest} req
-//@param {THTTPResponse} resp
+//@ param {THTTPRequest} req
+//@ param {THTTPResponse} resp
 function doSomethingAfterGetDocumentCall(req, resp){
-  params = querystring.parse(req.parameters)
+  params = req.parsedParameters
   console.log('User with ID', Session.userID, 'obtain document using params',  params)
 }
 App.on('getDocument:after', doSomethingAfterGetDocumentCall)
  *
- * @class App
+ * @class ServerApp
  * @mixes EventEmitter
  */
-const App = {
-  /**
-   * Fires for an {@link App App} just after all domain entities (all *.meta) are loaded into server memory
-   * and all server-side js are evaluated.
-   *
-   * On this stage you can subscribe on a cross-model handles.
-   *
-   * @example:
-   *
-   App.once('domainIsLoaded', function(){
+const ServerApp = {}
+
+/**
+ * Fires for an {@link module:@unitybase/ub#App UB.App} just after all domain entities (all *.meta) are loaded into server memory
+ * and all server-side js are evaluated (for each working thread).
+ *
+ * On this stage you can subscribe on a cross-model handles.
+ *
+ * @example:
+ *
+ const UB = require('@unitybase/ub')
+ const App = UB.App
+ App.once('domainIsLoaded', function(){
      for (eName in App.domainInfo.entities) {
         // if entity have attribute mi_fedUnit
         if (App.domainInfo.entities[eName].attributes.mi_fedUnit) {
@@ -83,14 +86,24 @@ const App = {
         }
      }
    })
-   *
-   * @event domainIsLoaded
-   */
-}
+ *
+ * @event domainIsLoaded
+ * @memberOf ServerApp
+ */
+
+/**
+ * Fires (by native code) for an {@link module:@unitybase/ub#App UB.App} just after HTTP request context tries to got a DB connection for the first time
+ *
+ * On this stage DB session properties, specific for a current Session can be sets.
+ * For example multitenancy mixin subscribes for this event and sets a `ub_tenantID` DB session variable value to `Session.tenantID`
+ *
+ * @event enterConnectionContext
+ * @memberOf ServerApp
+ */
 
 // add eventEmitter to application object
-EventEmitter.call(App)
-Object.assign(App, EventEmitter.prototype)
+EventEmitter.call(ServerApp)
+Object.assign(ServerApp, EventEmitter.prototype)
 
 let __preventDefault = false
 /**
@@ -102,7 +115,7 @@ let __preventDefault = false
  * @private
  * @returns {boolean}
  */
-App.emitWithPrevent = function (eventName, req, resp) {
+ServerApp.emitWithPrevent = function (eventName, req, resp) {
   __preventDefault = false
   this.emit(eventName, req, resp)
   return __preventDefault
@@ -110,30 +123,79 @@ App.emitWithPrevent = function (eventName, req, resp) {
 /**
  * Accessible inside app-level `:before` event handler. Call to prevent default method handler.
  * In this case developer are responsible to fill response object, otherwise HTTP 400 is returned.
- * @memberOf App
+ * @memberOf ServerApp
  */
-App.preventDefault = function () {
+ServerApp.preventDefault = function () {
   __preventDefault = true
 }
 
 /**
  * Called by native HTTP server worker
  * @param {string} endpointName
+ * @emits launchEndpoint:before
+ * @emits launchEndpoint:after
  * @private
  * @returns {boolean}
  */
-App.launchEndpoint = function (endpointName) {
+ServerApp.launchEndpoint = function (endpointName) {
   __preventDefault = false
   const req = new THTTPRequest()
   const resp = new THTTPResponse()
   try {
+    /**
+     * Fires before any endpoint execution
+     * @event launchEndpoint:before
+     * @memberOf ServerApp
+     * @param {THTTPRequest} req
+     * @param {THTTPResponse} resp
+     * @param {string} endpointName
+     */
+    this.emit('launchEndpoint:before', req, resp, endpointName)
+    /**
+     * Fires before endpoint execution. In example below handler is called before each `getDocument` execution
+     * @example
+const UB = require('@unitybase/ub')
+const App = UB.App
+function doSomethingBeforeGetDocumentCall(req, resp){
+  console.log('User with ID', Session.userID, 'try to get document')
+}
+// Adds hook called before each call to getDocument endpoint
+App.on('getDocument:before', doSomethingBeforeGetDocumentCall)
+     * @event endpointName:before
+     * @memberOf ServerApp
+     * @param {THTTPRequest} req
+     * @param {THTTPResponse} resp
+     * @param {string} endpointName
+     */
     this.emit(endpointName + ':before', req, resp)
     if (!__preventDefault) {
-      appBinding.endpoints[endpointName](req, resp)
+      const handler = appBinding.endpoints[endpointName]
+      if (handler) { // JS endpoint
+        handler(req, resp)
+      } else { // native endpoint
+        appBinding.launchNativeEndpoint()
+      }
+      /**
+       * Fires after endpoint execution. In example below handler is called before each `getDocument` execution
+       * @event endpointName:after
+       * @memberOf ServerApp
+       * @param {THTTPRequest} req
+       * @param {THTTPResponse} resp
+       * @param {string} endpointName
+       */
       this.emit(endpointName + ':after', req, resp)
     }
+    /**
+     * Fires after any endpoint execution
+     * @event launchEndpoint:after
+     * @memberOf ServerApp
+     * @param {THTTPRequest} req
+     * @param {THTTPResponse} resp
+     * @param {string} endpointName
+     */
+    this.emit('launchEndpoint:after', req, resp, endpointName, __preventDefault)
   } finally {
-    App.endpointContext = {} // allow GC to release possible context data ASAP
+    ServerApp.endpointContext = {} // allow GC to release possible context data ASAP
   }
 }
 
@@ -142,7 +204,7 @@ App.launchEndpoint = function (endpointName) {
  * @param {ubMethodParams} ctxt
  * @private
  */
-App.launchRLS = function (ctxt) {
+ServerApp.launchRLS = function (ctxt) {
   const rlsMixin = ctxt.dataStore.entity.mixins.rls
   if (rlsMixin.func) { // functional RLS
     if (!rlsMixin.__funcVar) { // parse func namespace 'uba_user.somefunc' (string) -> uba_user.somefunc (function)
@@ -205,9 +267,9 @@ const appBinding = process.binding('ub_app')
  * @param {boolean} [authorizationRequired=true] If `true` UB will check for valid Authorization header before
  *  execute endpoint handler
  * @param {boolean} [isDefault=false]
- * @memberOf App
+ * @memberOf ServerApp
  */
-App.registerEndpoint = function (endpointName, handler, authorizationRequired, isDefault) {
+ServerApp.registerEndpoint = function (endpointName, handler, authorizationRequired, isDefault) {
   if (!appBinding.endpoints[endpointName]) {
     appBinding.endpoints[endpointName] = handler
     return appBinding.registerEndpoint(
@@ -223,27 +285,27 @@ App.registerEndpoint = function (endpointName, handler, authorizationRequired, i
  * @param {String} endpointName
  * @param {String} roleCode
  * @return {boolean} true if endpoint exists and role not already granted, false otherwise
- * @memberOf App
+ * @memberOf ServerApp
  */
-App.grantEndpointToRole = function (endpointName, roleCode) {
+ServerApp.grantEndpointToRole = function (endpointName, roleCode) {
   return appBinding.grantEndpointToRole(endpointName, roleCode)
 }
 
 /**
  * @method addAppLevelMethod
- * @deprecated Use {@link class:App.registerEndpoint App.registerEndpoint} instead
- * @memberOf App
+ * @deprecated Use {@link class:ServerApp.registerEndpoint App.registerEndpoint} instead
+ * @memberOf ServerApp
  */
-App.addAppLevelMethod = function () {
+ServerApp.addAppLevelMethod = function () {
   throw new Error('App.addAppLevelMethod is obsolete. Use App.registerEndpoint instead')
 }
 
 /**
- * @method serviceMethodByPassAuthentication
+ * @method  serviceMethodByPassAuthentication
  * @deprecated Use {@link class:App.registerEndpoint App.registerEndpoint} instead
- * @memberOf App
+ * @memberOf ServerApp
  */
-App.serviceMethodByPassAuthentication = function () {
+ServerApp.serviceMethodByPassAuthentication = function () {
   throw new Error('App.serviceMethodByPassAuthentication is obsolete. Use App.registerEndpoint instead')
 }
 
@@ -262,29 +324,35 @@ App.serviceMethodByPassAuthentication = function () {
  * @property {Object} uiSettings Section `uiSettings` of ubConfig
  * @property {Object} security
  */
-App.serverConfig = undefined
+ServerApp.serverConfig = undefined
+const SERVER_CONFIG_CS = appBinding.registerCriticalSection('SERVER_CONFIG_CS')
+appBinding.enterCriticalSection(SERVER_CONFIG_CS)
 try {
-  App.serverConfig = argv.getServerConfiguration()
-} catch (e) {
-  console.error(e)
+  try {
+    ServerApp.serverConfig = argv.getServerConfiguration()
+  } catch (e) {
+    console.error(e.message, e)
+  }
+} finally {
+  appBinding.leaveCriticalSection(SERVER_CONFIG_CS)
 }
 
 /**
  * Application `package.json` content (parsed)
  * @type {Object}
  */
-App.package = require(path.join(process.configPath, 'package.json'))
+ServerApp.package = require(path.join(process.configPath, 'package.json'))
 
 /**
  * Full path to application static folder if any, '' if static folder not set
  * @type {String}
  * @readonly
  */
-App.staticPath = ''
-if (App.serverConfig.httpServer && App.serverConfig.httpServer['inetPub'] &&
-  App.serverConfig.httpServer['inetPub'].trim()) {
-  let sp = App.serverConfig.httpServer['inetPub']
-  App.staticPath = path.isAbsolute(sp)
+ServerApp.staticPath = ''
+if (ServerApp.serverConfig.httpServer && ServerApp.serverConfig.httpServer['inetPub'] &&
+  ServerApp.serverConfig.httpServer['inetPub'].trim()) {
+  let sp = ServerApp.serverConfig.httpServer['inetPub']
+  ServerApp.staticPath = path.isAbsolute(sp)
     ? sp
     : path.join(process.configPath, sp)
 }
@@ -294,18 +362,18 @@ if (App.serverConfig.httpServer && App.serverConfig.httpServer['inetPub'] &&
  * @type {String}
  * @readonly
  */
-App.defaultLang = App.serverConfig.application.defaultLang
+ServerApp.defaultLang = ServerApp.serverConfig.application.defaultLang
 
 /**
  * Custom settings for application from ubConfig.app.customSettings
  * @deprecated Use App.serverConfig.application.customSettings: Object instead
  * @type {String}
  */
-Object.defineProperty(App, 'customSettings', {
+Object.defineProperty(ServerApp, 'customSettings', {
   enumerable: true,
   get: function () {
     console.warn('App.customSettings is deprecated. Use App.serverConfig.application.customSettings instead')
-    return JSON.stringify(App.serverConfig.application.customSettings)
+    return JSON.stringify(ServerApp.serverConfig.application.customSettings)
   }
 })
 
@@ -314,9 +382,9 @@ Object.defineProperty(App, 'customSettings', {
  * @deprecated Use App.serverConfig.uiSettings: Object instead
  * @return {string}
  */
-App.getUISettings = function () {
+ServerApp.getUISettings = function () {
   console.warn('App.getUISettings is deprecated. Use App.serverConfig.uiSettings: Object instead')
-  return JSON.stringify(App.serverConfig.uiSettings)
+  return JSON.stringify(ServerApp.serverConfig.uiSettings)
 }
 
 /**
@@ -324,26 +392,26 @@ App.getUISettings = function () {
  * @type {String}
  * @readonly
  */
-App.serverURL = argv.serverURLFromConfig(App.serverConfig)
+ServerApp.serverURL = argv.serverURLFromConfig(ServerApp.serverConfig)
 
 /**
  * URL that the User from the internet will use to access your server. To be used in case server is behind a reverse proxy
  * @type {String}
  * @readonly
  */
-App.externalURL = App.serverConfig.httpServer.externalURL || App.serverURL
+ServerApp.externalURL = ServerApp.serverConfig.httpServer.externalURL || ServerApp.serverURL
 
 /**
  * List of a local server IP addresses CRLF (or CR for non-windows) separated
  */
-App.localIPs = _App.localIPs
+ServerApp.localIPs = _App.localIPs
 
 /**
  * Current application Domain
  * @deprecated UB >=4 use a App.domainInfo - a pure JS domain representation
  * @readonly
  */
-Object.defineProperty(App, 'domain', {
+Object.defineProperty(ServerApp, 'domain', {
   enumerable: true,
   get: function () {
     throw new Error('App.domain is obsolete. Use App.domainInfo')
@@ -354,7 +422,7 @@ Object.defineProperty(App, 'domain', {
  * For UB EE return true in case product license is exceed. For UB Se always `false`
  * @type {String}
  */
-Object.defineProperty(App, 'isLicenseExceed', {
+Object.defineProperty(ServerApp, 'isLicenseExceed', {
   enumerable: true,
   get: function () {
     return typeof appBinding.isLicenseExceed === 'function'
@@ -367,10 +435,10 @@ const getDomainInfo = appBinding.getDomainInfo
 let _domainCache
 /**
  * Extended information about application domain (metadata)
- * @memberOf App
+ * @memberOf ServerApp
  * @member {UBDomain} domainInfo
  */
-Object.defineProperty(App, 'domainInfo', {
+Object.defineProperty(ServerApp, 'domainInfo', {
   enumerable: true,
   get: function () {
     if (!_domainCache) {
@@ -388,7 +456,7 @@ Object.defineProperty(App, 'domainInfo', {
  * @param {String} key Key to retrive
  * @return {String}
  */
-App.globalCacheGet = function (key) {
+ServerApp.globalCacheGet = function (key) {
   return _App.globalCacheGet(key)
 }
 /**
@@ -396,7 +464,7 @@ App.globalCacheGet = function (key) {
  * @param {String} key  Key to put into
  * @param {String|null} value Value to put into this key. If === null then key will be remover from cache
  */
-App.globalCachePut = function (key, value) {
+ServerApp.globalCachePut = function (key, value) {
   _App.globalCachePut(key, value)
 }
 
@@ -405,7 +473,7 @@ App.globalCachePut = function (key, value) {
  * @param {String} entityName
  * @param {Number} instanceID
  */
-App.deleteFromFTSIndex = function (entityName, instanceID) {
+ServerApp.deleteFromFTSIndex = function (entityName, instanceID) {
   _App.deleteFromFTSIndex(entityName, instanceID)
 }
 /**
@@ -415,7 +483,7 @@ App.deleteFromFTSIndex = function (entityName, instanceID) {
  * @param {String} entityName
  * @param {Number} instanceID
  */
-App.updateFTSIndex = function (entityName, instanceID) {
+ServerApp.updateFTSIndex = function (entityName, instanceID) {
   _App.updateFTSIndex(entityName, instanceID)
 }
 
@@ -423,14 +491,14 @@ App.updateFTSIndex = function (entityName, instanceID) {
  * Databases connections pool
  * @type {Object<string, DBConnection>}
  */
-App.dbConnections = createDBConnectionPool(App.domainInfo.connections)
+ServerApp.dbConnections = createDBConnectionPool(ServerApp.domainInfo.connections)
 
 /**
  * Check database are used in current endpoint context and DB transaction is already active.
  * @param {String} connectionName
  * @return {Boolean}
  */
-App.dbInTransaction = function (connectionName) {
+ServerApp.dbInTransaction = function (connectionName) {
   return _App.dbInTransaction(connectionName)
 }
 /**
@@ -440,7 +508,7 @@ App.dbInTransaction = function (connectionName) {
  * @param {String} [connectionName]
  * @return {Boolean}
  */
-App.dbCommit = function (connectionName) {
+ServerApp.dbCommit = function (connectionName) {
   return connectionName ? _App.dbCommit(connectionName) : _App.dbCommit()
 }
 /**
@@ -450,7 +518,7 @@ App.dbCommit = function (connectionName) {
  * @param {String} [connectionName]
  * @return {Boolean}
  */
-App.dbRollback = function (connectionName) {
+ServerApp.dbRollback = function (connectionName) {
   return connectionName ? _App.dbRollback(connectionName) : _App.dbRollback()
 }
 /**
@@ -464,55 +532,133 @@ App.dbRollback = function (connectionName) {
  * @param {String} connectionName
  * @return {Boolean}
  */
-App.dbStartTransaction = function (connectionName) {
+ServerApp.dbStartTransaction = function (connectionName) {
   return _App.dbStartTransaction(connectionName)
 }
 
 /**
  * Try retrieve  or create new session from request headers.
  * Return `true` if success, `false` if more auth handshakes is required.
- * In case of invalid credential throw security exception.
+ * In case of invalid credential throw security exception
+ *
  * @param {boolean} noHTTPBodyInResp If true do not write a uData to the HTTP response
  * @param {boolean} doSetOutCookie If true set a out authorization cookie on success response (Negotiate only)
  * @return {Boolean}
  */
-App.authFromRequest = function (noHTTPBodyInResp = false, doSetOutCookie = false) {
+ServerApp.authFromRequest = function (noHTTPBodyInResp = false, doSetOutCookie = false) {
   return _App.authFromRequest(noHTTPBodyInResp, doSetOutCookie)
 }
 /**
- * Logout (kill stored Sessions) all users with the same as
- * currently logged (except currently logged user)
+ * Logout all users with the same name as current user, except currently logged user
  */
-App.logoutAllWithTheSameNameExceptMe = function () {
+ServerApp.logoutAllWithTheSameNameExceptMe = function () {
   return _App.logoutAllWithTheSameNameExceptMe()
 }
 /**
- * Logout (kill stored Sessions) current session user
+ * Logout a current user (kill current session)
  */
-App.logout = function () {
+ServerApp.logout = function () {
   return _App.logout()
 }
 /**
  * Check Entity-Level-Security for specified entity/method
- *
- *      if App.els('uba_user', 'insert'){
-   *          // do something
-   *      }
- *
+ * @example
+if App.els('uba_user', 'insert'){
+       // do something
+}
  * @param {String} entityCode
  * @param {String} methodCode
  * @return {boolean}
  */
-App.els = function (entityCode, methodCode) {
+ServerApp.els = function (entityCode, methodCode) {
   return _App.els(entityCode, methodCode)
 }
+
+/**
+ * Register a named critical section. Can be done only in initialization mode.
+ * In case section with the same name already registered in another thread - returns existed CS index
+ *
+ * All threads MUST register section in the same way, do not put call into condition what may evaluates
+ * too the different values in the different threads.
+ *
+ * @example
+const App = require('@unitybase/ub').App
+// critical section must be registered once in the moment modules are evaluated without any conditions
+const MY_CS = App.registerCriticalSection('SHARED_FILE_ACCESS')
+
+function concurrentFileAccess() {
+  // prevents mutual access to the same file from the different threads
+  App.enterCriticalSection(FSSTORAGE_CS)
+  try {
+    const data = fs.readfileSync('/tmp/concurrent.txt', 'utf8')
+    // do some operation what modify data
+    fs.writefileSync('/tmp/concurrent.txt', data)
+  } finally {
+    // important to leave critical section in finally block to prevent forever lock
+    App.leaveCriticalSection(FSSTORAGE_CS)
+  }
+}
+ * @method
+ * @param {string} csName Critical section name
+ * @return {number}
+ */
+ServerApp.registerCriticalSection = appBinding.registerCriticalSection
+/**
+ * Waits for ownership of the specified critical section object. The function returns when the calling thread is granted ownership.
+ *
+ * ** IMPORTANT** A thread must call `App.leaveCriticalSection` once for each time that it entered the critical section.
+ *
+ * @method
+ * @param {number} csIndex A critical section index returned by `App.registerCriticalSection`
+ */
+ServerApp.enterCriticalSection = appBinding.enterCriticalSection
+/**
+ * Releases ownership of the specified critical section
+ * @method
+ * @param {number} csIndex
+ */
+ServerApp.leaveCriticalSection = appBinding.leaveCriticalSection
+
+/**
+ * Enter a log recursion call.
+ * ** IMPORTANT** A thread must call `App.logLeave` once for each time that it entered the log recursion
+ * @example
+
+ function wrapEnterLeave(enterText, originalMethod) {
+    return function(ctx) {
+      App.logEnter(enterText)
+      try {
+        originalMethod(ctx)
+      } finally {
+        App.logLeave()
+      }
+    }
+  }
+
+ * @method
+ * @param {string} methodName
+ */
+ServerApp.logEnter = appBinding.logEnter
+/**
+ * Exit a log recursion call
+ * @method
+ */
+ServerApp.logLeave = appBinding.logLeave
+
+/**
+ * Remove all user sessions (logout user).
+ * @method
+ * @param {number} userID
+ * @return {boolean} true if user had had any session
+ */
+ServerApp.removeUserSessions = appBinding.removeUserSessions || function () {}
 
 /**
  * Is event emitter enabled for App singleton. Default is `false`
  * @deprecated Starting from 1.11 this property ignored (always TRUE)
  * @type {Boolean}
  */
-App.emitterEnabled = true
+ServerApp.emitterEnabled = true
 
 /**
  * Defense edition only,
@@ -523,20 +669,22 @@ App.emitterEnabled = true
  *
  * @type {string}
  */
-App.serverPublicCert = _App.serverPublicCert
+ServerApp.serverPublicCert = _App.serverPublicCert
 
 /**
- * BLOB stores methods. Usage:
- *  - {@link module:@unitybase/blob-stores~getContent App.blobStores.getContent} to get BLOB content
- *  - {@link module:@unitybase/blob-stores~getContentPath App.blobStores.getContentPath} to get a path to file based store BLOB content
- *  - {@link module:@unitybase/blob-stores~putContent App.blobStores.putContent} to put BLOB content
- *  - {@link module:@unitybase/blob-stores~markRevisionAsPermanent App.blobStores.markRevisionAsPermanent} to mark revision as permanent
+ * BLOB stores methods. For usage examples see:
+ *  - {@link module:@unitybase/blob-stores~getContent App.blobStores.getContent} - load content of BLOB into memory
+ *  - {@link module:@unitybase/blob-stores~getContentPath App.blobStores.getContentPath} - get a path to the file based store BLOB content
+ *  - {@link module:@unitybase/blob-stores~putContent App.blobStores.putContent} - put a BLOB content to the temporary storage
+ *  - {@link module:@unitybase/blob-stores~markRevisionAsPermanent App.blobStores.markRevisionAsPermanent} - mark specified revision of a historical store as permanent
+ *  - {@link module:@unitybase/blob-stores~internalWriteDocumentToResp App.blobStores.internalWriteDocumentToResp} - mark specified revision of a historical store as permanent
  */
-App.blobStores = {
+ServerApp.blobStores = {
   getContent: blobStores.getContent,
   getContentPath: blobStores.getContentPath,
   putContent: blobStores.putContent,
-  markRevisionAsPermanent: blobStores.markRevisionAsPermanent
+  markRevisionAsPermanent: blobStores.markRevisionAsPermanent,
+  internalWriteDocumentToResp: blobStores.internalWriteDocumentToResp
 }
 
 /**
@@ -549,6 +697,6 @@ App.blobStores = {
  * @type {Object}
  * @since UB@5.17.9
  */
-App.endpointContext = {}
+ServerApp.endpointContext = {}
 
-module.exports = App
+module.exports = ServerApp

@@ -2,16 +2,16 @@
   ```vue
   <template>
     <u-file
-      entity-name="req_Request"
-      attribute-name="attachment"
-      v-model="attachment"
+      entity-name="req_request"
+      attribute-name="document"
+      v-model="document"
     />
   </template>
   <script>
     const {mapInstanceFields} = require('@unitybase/adminui-vue')
 
     export default {
-      computed: mapInstanceFields(['attachment'])
+      computed: mapInstanceFields(['document'])
     }
   </script>
   ```
@@ -20,17 +20,17 @@
   ```vue
   <template>
     <u-file
-      entity-name="req_Request"
-      attribute-name="attachment"
+      entity-name="req_request"
+      attribute-name="document"
       disabled
-      v-model="attachment"
+      v-model="document"
     />
   </template>
   <script>
     const {mapInstanceFields} = require('@unitybase/adminui-vue')
 
     export default {
-      computed: mapInstanceFields(['attachment'])
+      computed: mapInstanceFields(['document'])
     }
   </script>
   ```
@@ -39,17 +39,17 @@
   ```vue
   <template>
     <u-file
-      entity-name="req_Request"
-      attribute-name="attachment"
+      entity-name="req_request"
+      attribute-name="document"
       preview-mode
-      v-model="attachment"
+      v-model="document"
     />
   </template>
   <script>
     const {mapInstanceFields} = require('@unitybase/adminui-vue')
 
     export default {
-      computed: mapInstanceFields(['attachment'])
+      computed: mapInstanceFields(['document'])
     }
   </script>
   ```
@@ -58,20 +58,20 @@
   ```vue
   <template>
     <u-file
-      entity-name="req_Request"
+      entity-name="req_request"
       :preview-mode="{
         height: 400,
         width: 300
       }"
-      attribute-name="attachment"
-      v-model="attachment"
+      attribute-name="document"
+      v-model="document"
     />
   </template>
   <script>
     const {mapInstanceFields} = require('@unitybase/adminui-vue')
 
     export default {
-      computed: mapInstanceFields(['attachment'])
+      computed: mapInstanceFields(['document'])
     }
   </script>
   ```
@@ -80,9 +80,9 @@
   ```vue
   <template>
     <u-file
-      entity-name="req_Request"
-      v-model="attachment"
-      attribute-name="attachment"
+      entity-name="req_request"
+      v-model="document"
+      attribute-name="document"
     >
       <u-button
         appearance="inverse"
@@ -96,7 +96,7 @@
     const {mapInstanceFields} = require('@unitybase/adminui-vue')
 
     export default {
-      computed: mapInstanceFields(['attachment'])
+      computed: mapInstanceFields(['document'])
     }
   </script>
   ```
@@ -106,9 +106,9 @@
   ```vue
   <template>
     <u-file
-      entity-name="req_Request"
-      v-model="attachment"
-      attribute-name="attachment"
+      entity-name="req_request"
+      v-model="document"
+      attribute-name="document"
       remove-default-buttons
     />
   </template>
@@ -116,7 +116,7 @@
     const {mapInstanceFields} = require('@unitybase/adminui-vue')
 
     export default {
-      computed: mapInstanceFields(['attachment'])
+      computed: mapInstanceFields(['document'])
     }
   </script>
   ```
@@ -135,9 +135,9 @@
   ```vue
   <template>
     <u-file
-      entity-name="req_Request"
-      v-model="attachment"
-      attribute-name="attachment"
+      entity-name="req_request"
+      v-model="document"
+      attribute-name="document"
       :remove-default-buttons="['add', 'preview']"
     />
   </template>
@@ -145,7 +145,7 @@
     const {mapInstanceFields} = require('@unitybase/adminui-vue')
 
     export default {
-      computed: mapInstanceFields(['attachment'])
+      computed: mapInstanceFields(['document'])
     }
   </script>
   ```

@@ -1,0 +1,26 @@
+{
+  "caption": "Valyutalar",
+  "description": "Valyuta ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "intCode",
+      "caption": "Raqamli kod"
+    },
+    {
+      "name": "code3",
+      "caption": "Kod 3 belgisi"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "curMult",
+      "caption": "Ko'payish"
+    },
+    {
+      "name": "description",
+      "caption": "Tavsif"
+    }
+  ]
+}

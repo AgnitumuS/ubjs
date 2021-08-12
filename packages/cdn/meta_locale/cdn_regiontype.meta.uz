@@ -1,0 +1,14 @@
+{
+  "caption": "Mintaqalar turlari",
+  "description": "Mintaqalar turlari katalogi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    }
+  ]
+}

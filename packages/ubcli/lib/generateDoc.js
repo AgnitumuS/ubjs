@@ -12,7 +12,6 @@ const fs = require('fs')
 const argv = require('@unitybase/base').argv
 const options = require('@unitybase/base').options
 const _ = require('lodash')
-const http = require('http')
 const path = require('path')
 const mustache = require('mustache')
 
@@ -99,8 +98,6 @@ module.exports = function generateDoc (cfg) {
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
-  // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
-  http.setGlobalConnectionDefaults({ receiveTimeout: 120000 })
   const session = argv.establishConnectionFromCmdLineAttributes(cfg)
 
   // must be required for translation

@@ -25,7 +25,8 @@
     --l-input-border-default: 60%;
     --l-input-border-hover: 40%;
     --l-input-border-disabled: 75%;
-    --l-layout-border-default: 80%;
+    /* 70% to made border the same as in el- */
+    --l-layout-border-default: 70%;
     --l-layout-border-light: 90%;
 
     /* background */
@@ -42,9 +43,10 @@
 
     --hs-sidebar: 220, 20%;
     --l-sidebar-default: 27%;
-    --l-sidebar-depth-1: 23%;
-    --l-sidebar-depth-2: 19%;
-    --l-sidebar-depth-3: 15%;
+    --l-sidebar-depth-1: 30%;
+    --l-sidebar-depth-2: 32%;
+    --l-sidebar-depth-3: 34%;
+    --l-sidebar-depth-4: 38%;
     --l-sidebar-disabled: 80%;
 }
 

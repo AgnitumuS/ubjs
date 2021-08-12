@@ -1,26 +1,26 @@
-const _ = require('lodash')
 const options = require('./options')
 const fs = require('fs')
-const path = require('path')
 const http = require('http')
-const url = require('url')
 const SyncConnection = require('./SyncConnection')
 
+if (!global.__UB_int) {
+  throw new Error('Please, update a server to UB@5.20 or up')
+}
+
 /**
- *
  * Command-line utils for connecting to a UnityBase server
  * @example
- *
- * const argv = require('@unitybase/base').argv
- * // connect to server
- * let session = argv.establishConnectionFromCmdLineAttributes()
- * console.log('Session.uData:', session.uData, typeof session.uData, session.uData.lang)
- *
- * let userLang = session.uData.lang
- * let conn = session.connection
- * // obtain domain information
- * const domainInfo = conn.getDomainInfo()
- *
+
+const argv = require('@unitybase/base').argv
+// connect to server
+let session = argv.establishConnectionFromCmdLineAttributes()
+console.log('Session.uData:', session.uData, typeof session.uData, session.uData.lang)
+
+let userLang = session.uData.lang
+let conn = session.connection
+// obtain domain information
+const domainInfo = conn.getDomainInfo()
+
  * @module argv
  * @memberOf module:@unitybase/base
  */
@@ -54,12 +54,7 @@ module.exports = {
  * @return {String}
  */
 function getConfigFileName () {
-  if (global.UB && global.UB.getConfigFileName) {
-    // config related functions moved inside server UB.js resource
-    return global.UB.getConfigFileName()
-  } else {
-    console.error('UnityBase server >= 5.18.12 is required for this version of @unitybase/base')
-  }
+  return global.__UB_int.getConfigFileName()
 }
 
 const verboseMode = options.switchIndex('noLogo') === -1
@@ -242,7 +237,7 @@ function checkServerStarted (URL) {
  * @return {Object}
  */
 function getServerConfiguration (forFutureSave = false) {
-  return global.UB.getServerConfiguration(forFutureSave)
+  return global.__UB_int.getServerConfiguration(forFutureSave)
 }
 
 /**

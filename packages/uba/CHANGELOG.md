@@ -15,6 +15,117 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.20] - 2021-08-09
+## [5.20.19] - 2021-08-04
+### Added
+ - Dutch (nl) localization
+
+### Fixed
+ - Ukrainian locale - removed test data for Administrator desktop caption
+
+## [5.20.18] - 2021-07-18
+### Added
+ - Dutch (nl) localization
+
+## [5.20.17] - 2021-07-08
+## [5.20.16] - 2021-06-14
+### Added
+ - `uba_usercertificate` - added attributes `certParsed: Json` and `isForSigning: boolean`.
+   Both are sets on certificate binary changes.
+   Consider to use `uba_user.addCertificate` added by `@ub-d/crypto-api` method to add a binary certificate
+   
+ - `isForSigning` attribute added to the field list of Users->Certificates shortcut;
+
+ - `uba_usercertificate.getCertificate` method. Can return:
+    - any certificate if called as `rest/uba_usercertificate/getCertificate?ID=1231`
+    - SIGNING certificate for current user if called w/o ID parameter `rest/uba_usercertificate/getCertificate`
+    - if called as UBQL, certificate returned as base64 encoded string
+
+### Changed
+ - `uba_usercertificate` form is rewritten to Vue
+
+### Removed
+ - `@unitybase/uba` does not depend on `asn1js` and `pkijs` packages anymore, certificate parser is moved to server side `@ub-d/crypto-api` model  
+
+## [5.20.15] - 2021-05-24
+## [5.20.14] - 2021-05-13
+### Fixed
+ - fixed migrate with default lang az
+
+## [5.20.13] - 2021-05-07
+## [5.20.12] - 2021-05-05
+## [5.20.11] - 2021-04-24
+## [5.20.10] - 2021-04-23
+## [5.20.9] - 2021-04-22
+## [5.20.8] - 2021-04-19
+## [5.20.7] - 2021-04-19
+## [5.20.6] - 2021-04-16
+## [5.20.5] - 2021-04-13
+## [5.20.4] - 2021-04-02
+## [5.20.3] - 2021-04-01
+## [5.20.2] - 2021-03-30
+## [5.20.1] - 2021-03-29
+## [5.20.0] - 2021-03-25
+## [5.19.7] - 2021-03-23
+## [5.19.6] - 2021-03-17
+### Added
+ - *SECURITY* user will be logged out immediately if:
+    - roles or groups for user is changed
+    - certificate is removed or updated
+    - uba_user.disabled is sets to true 
+
+## [5.19.5] - 2021-03-15
+### Added
+ - implicitly disable multitenancy mixin for `uba_role`, `uba_rls` and `uba_els`
+
+### Changed
+ - UBA forms, reports and er-diagrams are converted to `ubrow` format
+
+### Fixed
+ - display `actionTime` for `uba_auditTrail` (both grid and form) and `uba_audit` (grid only, form TBD) with seconds resolution 
+
+## [5.19.4] - 2021-03-03
+### Added
+ - advanced security check failures will be logged into uba_audit (throws `UB.ESecurityException` instead of `Error`) 
+
+### Changed
+ - client side locales reformatted into JSON
+
+## [5.19.3] - 2021-02-10
+## [5.19.2] - 2021-02-08
+## [5.19.1] - 2021-02-03
+### Changed
+ - for UB@5.19.1 `loginFailed` event logs into `uba_audit.actionUser` name of user who tries to log-in.
+  Before this changes `anonymous` is written there. For UB@5.19.0 `anonymous` is written as before this patch.
+
+## [5.19.0] - 2021-02-02
+### Changed
+ - use new property `req.parsedParameters` instead of `queryString.parse(req.parameters)`
+
+## [5.4.58] - 2021-01-30
+## [5.4.57] - 2021-01-26
+### Fixed
+  - copying of master record and all collection items - collection item attributes are assigned with ID of the copy of the master record in case
+    they point to the master entity record (not just entity)
+  - correct `ru` and `tg` localization of the caption for `Models versions` shortcut
+  - Audit Trail form: fixed `Cannot read property 'dataType' of undefined` for audit records what contains a 
+    multi-language column diffs [UBDF-12673]
+  - Audit Trail form: exclude `mi_wfState` from attributes hidden in diff (ID && mi_* except mi_wfState are hidden) [UBDF-12673]
+
+## [5.4.56] - 2021-01-19
+## [5.4.55] - 2021-01-17
+## [5.4.54] - 2020-12-30
+## [5.4.53] - 2020-12-28
+## [5.4.52] - 2020-12-22
+## [5.4.51] - 2020-12-21
+## [5.4.50] - 2020-12-20
+## [5.4.49] - 2020-12-14
+## [5.4.48] - 2020-12-09
+## [5.4.47] - 2020-12-02
+### Fixed
+ - Password change dialog - prevent displaying of error message twice when server declines a password [ERC-1145]
+ - User certificates form - can be opened without parentContext (from user certificates list for example) [UBDF-12773]
+
 ## [5.4.46] - 2020-11-25
 ## [5.4.45] - 2020-11-20
 ## [5.4.44] - 2020-11-19

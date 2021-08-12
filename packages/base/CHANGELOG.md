@@ -15,6 +15,63 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.8] - 2021-07-08
+## [5.20.7] - 2021-05-24
+## [5.20.6] - 2021-05-13
+## [5.20.5] - 2021-04-24
+### Changed
+ - ub server 5.20 compatibility - avoid global UB usage
+
+## [5.20.4] - 2021-04-22
+## [5.20.3] - 2021-04-16
+## [5.20.2] - 2021-04-13
+## [5.20.1] - 2021-04-02
+## [5.20.0] - 2021-03-25
+## [5.19.5] - 2021-03-23
+## [5.19.4] - 2021-03-15
+## [5.19.3] - 2021-03-03
+## [5.19.2] - 2021-02-08
+## [5.19.1] - 2021-02-03
+## [5.19.0] - 2021-02-02
+### Fixed
+ - prevent unnecessary call to IncomingMessage.read() for responses with JSON content type (reduce memory usage)
+
+## [5.4.17] - 2021-01-26
+## [5.4.16] - 2021-01-19
+## [5.4.15] - 2021-01-17
+## [5.4.14] - 2020-12-28
+### Added
+ - `ServerRepository.selectSingle` & `ServerRepository.selectScalar` will output an error to console
+   in case result row count > 1
+
+## [5.4.13] - 2020-12-22
+### Added
+  - `SyncConnection.prototype.insertAsObject` & `SyncConnection.prototype.updateAsObject` - send an
+    insert/update UBQL and return result (attributes listed in fieldList) with parsed Dates/Booleans etc. based
+    on entity attributes data types as Object. The same as in `AsyncConnection` for browsers:
+```javascript
+const newRole = conn.updateAsObject({
+  entity: 'uba_role',
+  fieldList: ['ID', 'name', 'allowedAppMethods', 'mi_modifyDate'],
+  execParams: {
+      ID: 123,
+      name: 'testRole61'
+  }
+}, {mi_modifyDate: 'modifiedAt'})
+ console.log(newRole) // {ID: 332462911062017, name: 'testRole1', allowedAppMethods: 'runList', mi_modifyDate: 2020-12-21T15:45:01.000Z}
+ console.log(newRole.modifiedAt instanceof Date) //true
+```
+
+## [5.4.12] - 2020-12-21
+### Fixed
+ - improved JSDoc (use @example tag for methods examples - it correctly rendered by both WebStorm and ub-jsdoc)
+
+## [5.4.11] - 2020-12-20
+## [5.4.10] - 2020-12-14
+### Fixed
+ - `options.switchValue` correctly returns option value started with `/` (for example: ubcli execSql -f /home/mpv/s.sql).
+  Before this fix value starts with '/' recognized as switch index.
+
 ## [5.4.9] - 2020-11-25
 ## [5.4.8] - 2020-11-20
 ## [5.4.7] - 2020-11-19

@@ -161,7 +161,7 @@ class DDLGenerator {
     // load referenced object for comparator
     this.relatedEntities.forEach((entityName) => {
       const entity = domain.get(entityName)
-      if (alreadyTraversed.has(entity)) {
+      if (alreadyTraversed.has(entity) || (entity.dsType !== UBDomain.EntityDataSourceType.Normal)) {
         return // continue
       }
       const tabDef = this.createReference(conn, entity)
@@ -214,7 +214,8 @@ class DDLGenerator {
     }
     const tableDef = new TableDefinition({
       name: entityTableName,
-      caption: entity.description || entity.caption
+      caption: entity.description || entity.caption,
+      multitenancy: (entity.mixins.multitenancy && (entity.mixins.multitenancy.enabled !== false))
     })
 
     const defaultLang = conn.getAppInfo().defaultLang
@@ -272,8 +273,11 @@ class DDLGenerator {
           if (associatedEntity.connectionName === entity.connectionName) { // referential constraint between different connection not supported
             tableDef.addFK({
               name: genFKName(sqlAlias, attrNameF, (associatedEntity.sqlAlias || associatedEntity.name || ''), entity.connectionConfig.dialect),
-              keys: [attribute.name.toUpperCase()],
-              references: associatedEntity.name,
+              keys: [getAttributeDBName(attribute.entity, attribute.name).toUpperCase()],
+              references: getTableDBName(associatedEntity),
+              // in case associated entity is external - estimate a primary key column name ('ID" can be mapped)
+              // for associated entities what a subject of DDL generation primary key columns retrieved from DB
+              refPkDefColumn: getAttributeDBName(associatedEntity, 'ID'),
               generateFK: attribute.generateFK
             })
           }
@@ -325,6 +329,7 @@ class DDLGenerator {
         name: genFKName(sqlAlias, 'id', (refTo.sqlAlias || refTo.name || ''), entity.connectionConfig.dialect),
         keys: ['ID'],
         references: refTo.name,
+        refPkDefColumn: getAttributeDBName(refTo, 'ID'),
         generateFK: true
       })
     }
@@ -355,6 +360,7 @@ class DDLGenerator {
         })
       }
     }
+
     if (entity.attributes.ID) { // in case ID is mapped to non-uniq attribute - skip primary key generation. Example in tst_virtualID.meta
       let createPK = true
       const m = entity.attributes.ID.mapping
@@ -615,12 +621,14 @@ class DDLGenerator {
       name: genFKName(attribute.associationManyData, 'SOURCEID', entity.sqlAlias, entity.connectionConfig.dialect),
       keys: ['sourceID'.toUpperCase()],
       references: getTableDBName(entity),
+      refPkDefColumn: getAttributeDBName(entity, 'ID'),
       generateFK: true
     })
     tableDef.addFK({
       name: genFKName(attribute.associationManyData, 'DESTID', associatedEntity.sqlAlias, entity.connectionConfig.dialect),
       keys: ['destID'.toUpperCase()],
       references: getTableDBName(associatedEntity),
+      refPkDefColumn: getAttributeDBName(associatedEntity, 'ID'),
       generateFK: true
     })
     tableDef.addIndex({
@@ -654,18 +662,23 @@ class DDLGenerator {
       dataType: 'BIGINT',
       allowNull: false
     })
-    tableDef.primaryKey = { name: 'PK_' + tblName, keys: ['tail', 'sourceID'] }
-    tableDef.addFK({
-      name: genFKName(tblName, 'SOURCEID', entity.sqlAlias, entity.connectionConfig.dialect),
-      keys: ['sourceID'.toUpperCase()],
-      references: getTableDBName(entity),
-      generateFK: true
-    })
+    // primary key with tail+sourceID cause deadlocks on SQL Server
+    // tableDef.primaryKey = { name: 'PK_' + tblName, keys: ['tail', 'sourceID'] }
+    // tableDef.addFK({
+    //   name: genFKName(tblName, 'SOURCEID', entity.sqlAlias, entity.connectionConfig.dialect),
+    //   keys: ['sourceID'.toUpperCase()],
+    //   references: getTableDBName(entity),
+    //   generateFK: true
+    // })
+    // tableDef.isIndexOrganized = true
     tableDef.addIndex({
       name: formatName('IDX_', tblName, '_SOURCEID', entity.connectionConfig.dialect),
       keys: ['sourceID'.toUpperCase()]
     })
-    tableDef.isIndexOrganized = true
+    tableDef.addIndex({
+      name: formatName('IDX_', tblName, '_TAIL', entity.connectionConfig.dialect),
+      keys: ['tail'.toUpperCase()]
+    })
     this.referenceTableDefs.push(tableDef)
   }
 

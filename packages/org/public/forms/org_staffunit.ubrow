@@ -1,0 +1,8 @@
+{
+ "isDefault": false,
+ "entity": "org_staffunit",
+ "formType": "vue",
+ "caption": "orgStaffUnit",
+ "description": "orgStaffUnit",
+ "formCode": "{\"fName\":\"org_staffunit-fm.vue\",\"origName\":\"org_staffunit-fm.vue\",\"ct\":\"script/x-vue\",\"size\":4058,\"md5\":\"011a89a695279228f7f82221589e1bdd\"}"
+}

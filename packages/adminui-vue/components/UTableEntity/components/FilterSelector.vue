@@ -10,9 +10,7 @@
         appearance="inverse"
         color="control"
         icon="u-icon-filter"
-      >
-        {{ $ut('table.filter.list.title') }}
-      </u-button>
+      />
     </el-tooltip>
 
     <div
@@ -25,7 +23,7 @@
         </div>
         <div class="u-fake-table__td">
           <el-select
-            v-model="selectedColumnId"
+            v-model="selectedFilterableColumnId"
             :placeholder="$ut('table.filter.columnPlaceholder')"
           >
             <el-option
@@ -38,7 +36,7 @@
         </div>
       </div>
 
-      <template v-if="selectedColumnId">
+      <template v-if="selectedFilterableColumnId">
         <div class="u-fake-table__tr">
           <div class="u-fake-table__td u-fake-table__label">
             {{ $ut('table.filter.conditionPlaceholder') }}
@@ -111,13 +109,23 @@ export default {
       }
     },
 
-    condition: {
+    selectedFilterableColumnId: {
       get () {
-        return this.conditionsByColumns[this.selectedColumnId]
+        return this.selectedColumn.id || null
       },
 
       set (value) {
-        this.conditionsByColumns[this.selectedColumnId] = value
+        this.selectedColumnId = value
+      }
+    },
+
+    condition: {
+      get () {
+        return this.conditionsByColumns[this.selectedFilterableColumnId]
+      },
+
+      set (value) {
+        this.conditionsByColumns[this.selectedFilterableColumnId] = value
       }
     }
   },

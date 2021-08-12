@@ -8,7 +8,6 @@ const assert = require('assert')
 const UB = require('@unitybase/ub')
 const App = UB.App
 const Session = UB.Session
-const queryString = require('querystring')
 App.registerEndpoint('echoToFile', echoToFile, false)
 
 App.registerEndpoint('echoFromFile', echoFromFile, false)
@@ -66,7 +65,7 @@ tst_service.on('multiply:after', function () {
  * @param {THTTPResponse} resp
  */
 function getDocumentLog (req, resp) {
-  const params = queryString.parse(req.parameters)
+  const params = req.parsedParameters
   const reqId = req.requestId
   if (!reqId) throw new Error('req.requestId should be > 0 for UB > 5.18.1')
   if (resp.statusCode === 200) {
@@ -208,7 +207,7 @@ function evaluateScript (req, resp) {
   }
   let script
   if (req.method === 'GET') {
-    script = queryString.parse(req.parameters).script
+    script = req.parsedParameters.script
   } else if (req.method === 'POST') {
     script = req.read('utf-8')
   } else {
@@ -278,7 +277,7 @@ function asJSONArrayTest (req, resp) {
   }
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
-  resp.writeEnd({cnt: l})
+  resp.writeEnd({ cnt: l })
 }
 App.registerEndpoint('asJSONArrayTest', asJSONArrayTest, false)
 
@@ -296,7 +295,7 @@ function getAsJsArrayTest (req, resp) {
   }
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
-  resp.writeEnd({cnt: l})
+  resp.writeEnd({ cnt: l })
 }
 App.registerEndpoint('getAsJsArrayTest', getAsJsArrayTest, false)
 
@@ -337,6 +336,51 @@ function pdfsigner (req, resp) {
   nps()
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
-  resp.writeEnd({ok: true})
+  resp.writeEnd({ ok: true })
 }
 App.registerEndpoint('pdfsigner', pdfsigner, false)
+
+/**
+ * Get body as JSON and echo to resp
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function bodyJson (req, resp) {
+  const j = req.json()
+  resp.statusCode = 200
+  resp.writeEnd(j)
+}
+App.registerEndpoint('bodyJson', bodyJson, false)
+
+/**
+ * Get body as JSON and echo to resp
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function bodyParse (req, resp) {
+  const j = JSON.parse(req.read())
+  resp.statusCode = 200
+  resp.writeEnd(j)
+}
+App.registerEndpoint('bodyParse', bodyParse, false)
+
+/**
+ * Verify throw / catch return user defined statusCode
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function verifyThrowCatch (req, resp) {
+  let catched = false
+  try {
+    UB.DataStore('tst_service').run('handledExceptionTest', {
+      execParams: {}
+    })
+  } catch (e) {
+    catched = true
+    console.error(e.message)
+  }
+  resp.statusCode = 201
+  resp.writeHead('Content-Type: application/json; charset=UTF-8')
+  resp.writeEnd({ catched })
+}
+App.registerEndpoint('verifyThrowCatch', verifyThrowCatch, true)

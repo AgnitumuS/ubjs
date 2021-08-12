@@ -3,11 +3,11 @@
 <template>
 <u-grid>
   <div>
-    <h5> Basic usage with modified `height=30px`: </h5>
+    <h5> Basic usage with modified `height=80px`: </h5>
     <u-file-input
       :disabled="disabled"
       :multiple="multiple"
-      style="height: 30px"
+      style="height: 80px"
       @input="upload"
     />
   </div>
@@ -46,8 +46,13 @@ export default {
   },
   methods: {
     doImport () {
-      const fileNames = selectedFiles.map(f => f.name).join(', ')
+      const fileNames = this.selectedFiles.map(f => f.name).join(', ')
       this.$dialogYesNo(`Import ${fileNames} into database?`)
+    },
+    upload () {
+      this.$dialogInfo(`Will upload ${this.selectedFiles.length} files`)
+      // actual upload can looks like:
+      // this.$UB.connection.post('uploadEndpoint', this.selectedFiles[0])
     }
   }
 }

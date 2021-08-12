@@ -1,0 +1,18 @@
+{
+  "caption": "Standart kasblar",
+  "description": "Standart kasblar katalogi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "description",
+      "caption": "Sarlavha"
+    }
+  ]
+}

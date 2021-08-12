@@ -1,0 +1,12 @@
+$context:
+  type: users
+
+# User MUST have be able to operate with process definitions, it is used by sync service
+uuidoc:
+  firstName: Doc
+  lastName: Demo
+  roles: Uidoc
+  # pwd = user
+  password: user
+  # newer expire password
+  lastPasswordChangeDate: 2100-01-01

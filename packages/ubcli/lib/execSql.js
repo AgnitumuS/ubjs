@@ -31,7 +31,8 @@
  // run a statement and output colored beautified result
  ubcli execSql -sql 'select * from uba_user' -withResult -noLogo | sed -n "/--BEGIN/,/--END/p" | tail -n +2 | head -n -2 | jq -r .
 
- * Usage from a code:
+ * Usage from a code
+ * @example
 
  const execSql = require('@unitybase/ubcli/lib/execSql')
  let options = {
@@ -112,6 +113,7 @@ function execSql (cfg) {
         searchInEnv: false,
         help: ' If `withResult` is true - output last statement result to stdout'
       })
+      .add({ short: 'v', long: 'verbose', defaultValue: false, help: 'Verbose mode' })
     cfg = opts.parseVerbose({}, true)
   }
   if (!cfg) return
@@ -163,6 +165,9 @@ function execSql (cfg) {
     try {
       const d = Date.now()
       ignoreErr = stmt.indexOf('--@optimistic') > -1
+      if (cfg.verbose) {
+        console.log(stmt)
+      }
       if (cfg.withResult && (n === lastIdx)) {
         lastStatementResult = dbConn.runParsed(stmt)
       } else {
@@ -175,6 +180,8 @@ function execSql (cfg) {
       successStmtCnt++
     } catch (e) {
       invalidStmtCnt++
+      // explicitly rollback to prevent `current transaction is aborted` errors for subsequent queries on Postgres
+      dbConn.rollback()
       if (!cfg.optimistic && !ignoreErr) {
         throw e
       } else {

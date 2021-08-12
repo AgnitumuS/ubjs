@@ -1,8 +1,7 @@
 const UB = require('@unitybase/ub-pub')
 const { Notification: $notify } = require('element-ui')
-const { dialogDeleteRecord, dialogInfo } = require('../dialog/UDialog')
+const uDialogs = require('../../utils/uDialogs')
 const { exportExcel, exportCsv, exportHtml } = require('../../utils/fileExporter')
-const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 const lookups = require('../../utils/lookups')
 const AUDIT_ENTITY = 'uba_auditTrail'
 const Vue = require('vue')
@@ -14,12 +13,14 @@ const openDataHistoryDatePicker = require('./components/DataHistoryDatePicker/da
  * @param {function} instance.getRepository ClientRepository
  * @param {string} instance.getEntityName Entity name
  * @param {array<UTableColumn>} instance.getColumns Columns
+ * @param {boolean} instance.withPagination To use pagination
  * @param {number} instance.pageSize Pagination page size
  * @param {function} instance.buildAddNewConfig AddNew config builder. Called with (cfg: configToMutate, instance: UTableEntity)
  * @param {function} instance.buildEditConfig Edit config builder. Called with (cfg: configToMutate, row: content of row to edit)
  * @param {function} instance.buildCopyConfig Copy config builder. Called with (cfg: configToMutate, row: content of row to edit)
  * @param {object[]} instance.getCardColumns Columns to show in card view
  * @param {boolean} instance.isModal Is parent opened from modal. Used to provide modal state to child
+ * @param {string[]} instance.hideActions
  */
 module.exports = (instance) => ({
   state () {
@@ -68,14 +69,24 @@ module.exports = (instance) => ({
      */
     currentRepository (state, getters) {
       const repo = getters.repository()
-        .start(state.pageIndex * getters.pageSize)
-        .limit(getters.pageSize + 1)
+
+      if (instance.withPagination) {
+        repo
+          .start(state.pageIndex * getters.pageSize)
+          .limit(getters.pageSize + 1)
+      }
 
       repo.attrsIf(!repo.fieldList.includes('ID'), 'ID')
 
       if (state.sort) {
-        if (repo.orderList && repo.orderList.length) repo.orderList = [] // clean default repository sort
-        repo.orderBy(state.sort.column, state.sort.order)
+        if (repo.orderList && repo.orderList.length) {
+          // clean default repository sort
+          repo.orderList = []
+        }
+
+        const { column, descriptionAttrColumn, order } = state.sort
+        const sortColumn = descriptionAttrColumn || column
+        repo.orderBy(sortColumn, order)
       }
 
       for (const filter of state.filters) {
@@ -108,30 +119,88 @@ module.exports = (instance) => ({
       return UB.connection.domain.get(getters.entityName)
     },
 
+    showAddNew () {
+      return !instance.hideActions || !instance.hideActions.includes('addNew')
+    },
+
     canAddNew (state, getters) {
-      return getters.schema.haveAccessToMethod('addnew')
+      return getters.showAddNew && getters.schema.haveAccessToMethod('addnew')
+    },
+
+    showCopy () {
+      return !instance.hideActions
+        ? true
+        : !instance.hideActions.includes('copy') && !instance.hideActions.includes('addNewByCurrent')
+    },
+
+    canCopy (state, getters) {
+      return getters.showCopy && getters.schema.haveAccessToMethod('addnew')
+    },
+
+    showDelete () {
+      return !instance.hideActions
+        ? true
+        : !instance.hideActions.includes('delete') && !instance.hideActions.includes('del')
     },
 
     canDelete (state, getters) {
-      return getters.hasSelectedRow && getters.schema.haveAccessToMethod('delete')
+      return getters.showDelete &&
+        getters.hasSelectedRow &&
+        getters.schema.haveAccessToMethod('delete')
+    },
+
+    showAudit () {
+      return !instance.hideActions || !instance.hideActions.includes('audit')
+    },
+
+    showCopyLink () {
+      return !instance.hideActions
+        ? true
+        : !instance.hideActions.includes('link') && !instance.hideActions.includes('itemLink')
+    },
+
+    showViewMode () {
+      return !instance.hideActions || !instance.hideActions.includes('viewMode')
     },
 
     canAudit (state, getters) {
       return getters.hasSelectedRow &&
         getters.schema.hasMixin('audit') &&
-      UB.connection.domain.isEntityMethodsAccessible(AUDIT_ENTITY, 'select')
+        getters.showAudit &&
+        UB.connection.domain.isEntityMethodsAccessible(AUDIT_ENTITY, 'select')
+    },
+
+    showEdit () {
+      return !instance.hideActions || !instance.hideActions.includes('edit')
     },
 
     canEdit (state, getters) {
-      return getters.hasSelectedRow
+      return getters.showEdit && getters.hasSelectedRow
+    },
+
+    showVersions () {
+      return !instance.hideActions || !instance.hideActions.includes('showVersions')
+    },
+
+    showCreateNewVersion () {
+      return !instance.hideActions || !instance.hideActions.includes('newVersion')
     },
 
     canCreateNewVersion (state, getters) {
-      return getters.schema.haveAccessToMethod(UB.core.UBCommand.methodName.NEWVERSION)
+      return getters.showCreateNewVersion &&
+        getters.schema.haveAccessToMethod(UB.core.UBCommand.methodName.NEWVERSION)
     },
 
     hasDataHistoryMixin (state, getters) {
       return getters.schema.hasMixin('dataHistory')
+    },
+
+    showSummary () {
+      return !instance.hideActions || !instance.hideActions.includes('summary')
+    },
+
+    showExport () {
+      return !instance.hideActions || !instance.hideActions.includes('export')
     },
 
     columns () {
@@ -286,13 +355,15 @@ module.exports = (instance) => ({
         response.resultData.fields = getters.currentRepository.fieldList
         const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
 
-        const isLastPage = items.length < getters.pageSize
-        commit('LAST_PAGE_INDEX', isLastPage)
-        /* We can get calculate total if this is last page. */
-        if (isLastPage) {
-          commit('TOTAL', state.pageIndex * getters.pageSize + items.length)
-        } else {
-          items.splice(getters.pageSize, 1)
+        if (instance.withPagination) {
+          const isLastPage = items.length < getters.pageSize
+          commit('LAST_PAGE_INDEX', isLastPage)
+          /* We can get calculate total if this is last page. */
+          if (isLastPage) {
+            commit('TOTAL', state.pageIndex * getters.pageSize + items.length)
+          } else {
+            items.splice(getters.pageSize, 1)
+          }
         }
 
         if (state.withTotal) {
@@ -316,7 +387,16 @@ module.exports = (instance) => ({
       await dispatch('fetchItems')
     },
 
-    async updateSort ({ commit, dispatch }, sort) {
+    async updateSort ({ commit, dispatch, getters }, sort) {
+      if (sort !== null) {
+        const columnConfig = getters.columns.find(column => column.id === sort.column)
+        if (columnConfig.attribute.dataType === 'Entity') {
+          const { associatedEntity } = columnConfig.attribute
+          const descriptionAttribute = UB.connection.domain.get(associatedEntity).getDescriptionAttribute()
+          sort.descriptionAttrColumn = `${sort.column}.${descriptionAttribute}`
+        }
+      }
+
       commit('SORT', sort)
       commit('PAGE_INDEX', 0)
       await dispatch('fetchItems')
@@ -387,7 +467,7 @@ module.exports = (instance) => ({
       if (ID === null) return
 
       const item = state.items.find(i => i.ID === ID)
-      const answer = await dialogDeleteRecord(getters.entityName, item)
+      const answer = await uDialogs.dialogDeleteRecord(getters.entityName, item)
 
       if (answer) {
         try {
@@ -399,7 +479,7 @@ module.exports = (instance) => ({
           UB.showErrorWindow(err)
           throw new UB.UBAbortError(err)
         }
-        UB.connection.emit(`${getters.entityName}:changed`, {
+        UB.connection.emitEntityChanged(getters.entityName, {
           entity: getters.entityName,
           method: 'delete',
           resultData: { ID }
@@ -528,7 +608,7 @@ module.exports = (instance) => ({
       if (response.method === 'delete') {
         commit('REMOVE_ITEM', response.resultData.ID)
         // in case items count equal pageSize then probably has next page so need refresh it
-        if (state.items.length === getters.pageSize - 1) {
+        if (instance.withPagination && state.items.length === getters.pageSize - 1) {
           await dispatch('refresh')
         }
         return
@@ -568,7 +648,7 @@ module.exports = (instance) => ({
         )
       }
       if (response.method === 'insert') {
-        if (state.items.length < getters.pageSize) {
+        if (state.items.length < getters.pageSize || !instance.withPagination) {
           commit('ADD_ITEM', updatedItem)
         }
       }
@@ -581,15 +661,14 @@ module.exports = (instance) => ({
     async showSummary ({ state, getters }) {
       const repo = getters.currentRepository.clone()
         .withTotal(false).start(0).limit(0) // clear total and possible pagination
+        .misc({ __mip_disablecache: true }) // cached entities do not support group by
       repo.orderList = [] // clear possible order list
       repo.fieldList = ['COUNT([ID])'] // always calc count in first column
-      const numberColumns = []
-      const NUMBER_TYPES = ['BigInt', 'Currency', 'Float', 'Int']
+      const summaryColumns = []
       for (const column of getters.columns) {
-        const isNumber = column.attribute && NUMBER_TYPES.includes(column.attribute.dataType)
-        if (isNumber) {
-          numberColumns.push(column)
-          repo.fieldList.push(`SUM([${column.attribute.code}])`)
+        if (column.summaryAggregationOperator) {
+          summaryColumns.push(column)
+          repo.fieldList.push(column.summaryAggregationOperator + '([' + column.id + '])')
         }
       }
 
@@ -600,16 +679,19 @@ module.exports = (instance) => ({
         const allFiltersDescr = state.filters.map(f => f.label + ' ' + f.description).join('; ')
         resultHtml += `<h5>${allFiltersDescr}</h5>`
       }
-      const sumsHtml = numberColumns
+      const sumsHtml = summaryColumns
         .map((column, idx) => {
-          return `<b>${column.label}:</b> ${formatByPattern.formatNumber(resultRow[idx + 1], 'sum')}`
+          const sumTypeText = column.summaryAggregationOperator !== 'SUM'
+            ? ` (${UB.i18n('table.summary.' + column.summaryAggregationOperator)})`
+            : ''
+          return `<b>${column.label}</b>${sumTypeText}: ${UB.formatter.formatNumber(resultRow[idx + 1], 'sum')}`
         })
         .join('<br><br>')
       if (sumsHtml) {
         resultHtml += `<h4>${UB.i18n('table.summary.columnSummaries')}:</h4>${sumsHtml}`
       }
-      resultHtml += `<br><br><b>${UB.i18n('table.summary.totalRowCount')}:</b> ${formatByPattern.formatNumber(resultRow[0], 'number')}`
-      await dialogInfo(resultHtml, 'summary')
+      resultHtml += `<br><br><b>${UB.i18n('table.summary.totalRowCount')}:</b> ${UB.formatter.formatNumber(resultRow[0], 'number')}`
+      await uDialogs.dialogInfo(resultHtml, 'summary')
     },
 
     async createNewVersion ({ getters }, ID) {
@@ -697,7 +779,8 @@ function isApplicableWhereList (response, repository) {
   const query = repository.ubql()
   const filteredResponse = UB.LocalDataStore.doFiltration(
     transformResponseToTubCachedData(response, query.whereList),
-    query
+    query,
+    true
   )
 
   return filteredResponse.length > 0

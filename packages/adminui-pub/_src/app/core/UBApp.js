@@ -181,8 +181,8 @@ Ext.define('UB.core.UBApp', {
    * @returns {Promise} resolved then viewport is created
    */
   launch: function () {
-    var me = this
-    var isExternalLogin = typeof window.redirectToLogin === 'function'
+    const me = this
+    const isExternalLogin = typeof window.redirectToLogin === 'function'
     return UB.connect({
       host: window.location.origin,
       path: window.UB_API_PATH || window.location.pathname,
@@ -224,7 +224,7 @@ Ext.define('UB.core.UBApp', {
 
       onAuthorizationFail: function (reason, conn) {
         if (isExternalLogin) {
-          var storedSession = window.localStorage.getItem(conn.__sessionPersistKey)
+          const storedSession = window.localStorage.getItem(conn.__sessionPersistKey)
           if (storedSession) { // invalid session is created by external login page
             window.redirectToLogin(reason)
           } else {
@@ -264,8 +264,6 @@ Ext.define('UB.core.UBApp', {
 
         // UB 1.12 compatibility
         UB.appConfig = connection.appConfig
-        // TODO - remove because mutation of other objects is bad idea
-        return UB.inject('models/ub-pub/locale/lang-' + connection.preferredLocale + '.js')
       }
     }).then(function (connection) {
       me.connection = connection
@@ -299,10 +297,14 @@ Ext.define('UB.core.UBApp', {
       me.fireEvent('appInitialize', me)
     }).then(function () {
       return UB.core.UBDataLoader.loadStores({
-        ubRequests: ['ubm_form', 'ubm_enum'].map(function (item) {
-          const res = { entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames() }
-          return res
-        }),
+        ubRequests: [
+          UB.Repository('ubm_form')
+            .attrs(UB.core.UBStoreManager.formAttributes)
+            .ubql(),
+          UB.Repository('ubm_enum')
+            .attrs(UB.core.UBStoreManager.enumAttributes)
+            .ubql()
+        ],
         setStoreId: true
       }).then(function () {
         return UB.core.UBDataLoader.loadStores({
@@ -336,7 +338,8 @@ Ext.define('UB.core.UBApp', {
    * @returns {string}
    */
   getImagePath: function (imageName) {
-    return 'models/adminui-pub/themes/' + UB.connection.appConfig.uiSettings.adminUI.themeName + '/ubimages/' + imageName
+    // apply a default here to prevent unknown reason of models/adminui-pub/themes/undefined/ubimages/scan-to-pdf.png
+    return 'models/adminui-pub/themes/' + (UB.connection.appConfig.uiSettings.adminUI.themeName || 'UBGrayTheme') + '/ubimages/' + imageName
   },
 
   /**
@@ -359,7 +362,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * @returns {Promise} resolved pressed button name ['ok', 'yes', 'no', 'cancel']
    */
   dialog: function (title, msg, config) {
-    var icon
+    let icon
     config = config || {}
     switch (config.icon || 'QUESTION') {
       case 'QUESTION':
@@ -768,7 +771,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
   },
 
   runLink: function (link) {
-    var query = Ext.isString(link) ? Ext.Object.fromQueryString(link.toLowerCase()) : link
+    const query = Ext.isString(link) ? Ext.Object.fromQueryString(link.toLowerCase()) : link
 
     if (query && ((query.command && query.command.length) || query.cmdData)) {
       this.doCommand({
@@ -872,8 +875,8 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       }
     }
     const parsedCmdCode = await UB.core.UBStoreManager.getNavshortcutCommandText(shortcutID)
-    if (parsedCmdCode === null) {
-      console.warn(`Command for shortcut ${shortcutIDOrCode} is empty or this is empty folder`)
+    if (!parsedCmdCode) {
+      console.error(`Command for shortcut ${shortcutIDOrCode} is empty or this is empty folder`)
       return
     }
     const commandConfig = _.clone(parsedCmdCode)
@@ -900,7 +903,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    */
   showModal: function (config) {
     return new Promise((resolve, reject) => {
-      var cmdConfig = {
+      const cmdConfig = {
         cmdType: 'showForm',
         isModal: true,
         isResizable: false,
@@ -937,11 +940,17 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
         repository () {
           return UB.Repository('uba_auditTrail')
             .attrs(['ID', 'actionTime', 'actionType', 'actionUserName', 'remoteIP', 'entity', 'parentEntity', 'request_id'])
-            // .where('entity', '=', entityCode) show all
-            .where('parentEntityInfo_id', '=', instanceID)
+            .where('parentEntityInfo_id', '=', instanceID, 'parent')
+            .where('entityinfo_id', '=', instanceID, 'instance')
+            .logic('([parent] OR [instance])')
             .orderByDesc('actionTime')
         },
-        columns: ['actionTime', 'actionType', 'actionUserName', 'remoteIP', 'entity', 'parentEntity', 'request_id']
+        columns: [{
+          id: 'actionTime',
+          format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')
+        },
+        'actionType', 'actionUserName', 'remoteIP', 'entity', 'parentEntity', 'request_id'
+        ]
       },
       shortcutCode: `audit-${entityCode}`
     })
@@ -952,7 +961,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * @param {String} prefix
    */
   setLocalStorageProviderPrefix: function (prefix) {
-    var provider = Ext.state.Manager.getProvider()
+    const provider = Ext.state.Manager.getProvider()
 
     prefix += UB.core.UBLocalStorageManager.separator
 
@@ -1042,6 +1051,51 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
     return cfg.entity +
       formCode +
       (cfg.instanceID ? cfg.instanceID : 'ext' + Ext.id(null, 'addNew'))
+  },
+
+  /**
+   * Download a document from BLOB store directly into file (without loading it into memory as with getDocument)
+   *
+   * To get a document data use `UBApp.connection.getDocument` method what returns Blob
+   *
+   * @param {object} instanceInfo Instance information
+   * @param {string} instanceInfo.entity    Code of entity to retrieve from
+   * @param {string} instanceInfo.attribute Code of `document` type attribute for specified entity
+   * @param {string} instanceInfo.ID        Instance ID
+   *
+   * @param {object} [blobMetadata]   BLOB metadata JSON as it stored in the entity attribute
+   * @param {object} [blobMetadata.revision=1]
+   * @param {object} [blobMetadata.isDirty=false]
+   */
+  downloadDocument: async function (instanceInfo, blobMetadata) {
+    const getDocumentParams = Object.assign({ revision: 1 }, instanceInfo)
+    if (blobMetadata) {
+      if (blobMetadata.isDirty) {
+        getDocumentParams.isDirty = blobMetadata.isDirty
+        getDocumentParams.fileName = blobMetadata.origName
+      }
+      if (blobMetadata.revision) getDocumentParams.revision = blobMetadata.revision
+    }
+    // validate what file is accessible (and re-auth if session is expire)
+    const available = await this.connection.xhr({
+      url: 'checkDocument',
+      method: 'GET',
+      params: getDocumentParams
+    })
+    // TODO throw new UB.UBError(UB.i18n('documentNotFound'))
+    const oneTimeURL = await this.connection.getDocumentURL(getDocumentParams)
+    const a = document.createElement('A')
+    a.href = oneTimeURL
+    // important to set a download attribute to prevent open href
+    // Actual fileName will be taken from Content-Disposition header
+    if (blobMetadata) {
+      a.download = blobMetadata.origName || blobMetadata.fName || 'downloadedFile'
+    } else {
+      a.download = 'downloadedFile'
+    }
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
   }
 })
 

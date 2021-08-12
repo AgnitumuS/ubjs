@@ -23,6 +23,7 @@ err() {
 rm -f "$UB_APPDATA"_autotestResults*.json
 rm -f "$UB_APPDATA"last_result.log
 rm "$UB_APPDATA"logs/*.log
+rm "$UB_APPDATA"*FTS.sqlite3
 
 TESTCASE='hello'
 ub -e "console.log('Start autotest')" || err

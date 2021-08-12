@@ -54,10 +54,10 @@
           class="u-acl-rls-input-overflow"
         >
           <el-select
+            ref="selectEntity"
             v-model="dialog.currentEntityName"
             class="u-select"
-            ref="selectEntity"
-            :placeholder="$ut('UAclRlsInput.dialog.entityPlaceholder')"
+            :placeholder="$ut('UAclRlsInput.dialog.entity')"
           >
             <el-option
               v-for="{ entity } in rightAttributesWithMetaInfo"
@@ -95,7 +95,6 @@
             </u-form-row>
           </template>
         </template>
-
       </u-form-container>
 
       <template slot="footer">
@@ -286,7 +285,7 @@ export default {
       }
     },
 
-    async loadEnumOrdersAndSortMappedEntities() {
+    async loadEnumOrdersAndSortMappedEntities () {
       for (const { entity, hasMappedEntities, mappedEntities } of this.rightAttributesWithMetaInfo) {
         if (!hasMappedEntities) {
           continue
@@ -386,7 +385,7 @@ export default {
 
         if (commonAttributes.length !== 1) {
           throw new Error(
-            `You should define only one default value that will be mapped to the unity entity as it defines an order for displaying in UI.`
+            'You should define only one default value that will be mapped to the unity entity as it defines an order for displaying in UI.'
           )
         }
 

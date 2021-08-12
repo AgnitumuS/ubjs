@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.3.0] - 2021-03-25
+### Changed
+ - migrate build to webpack5
+
 ## [1.2.25] - 2019-06-10
 ### Added
  - support for VueJS syntax - `script/x-vue` MIME type 

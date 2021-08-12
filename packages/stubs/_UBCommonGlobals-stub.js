@@ -329,3 +329,16 @@ process.isDebug = 0
  * @readonly
  */
 process.startupMode = 'CmdLine'
+
+/**
+ * Available in shell mode script - starts a local server instance.
+ *  - if `withWait` is false (default) server stops after shell script ends,
+ *  - if `withWait` is true, program continue execution until STP (Ctrl+C) signal
+ * @param {boolean} withWait - available since UB 5.19.1
+ */
+function startServer(withWait= false) {}
+
+/**
+ * Available in shell mode script - stop a local server instance, started by `startServer()`
+ */
+function stopServer() {}

@@ -1,8 +1,13 @@
+/**
+ * @module @unitybase/adminui-vue
+ */
+
 /* global SystemJS, Ext, $App */
+const _ = require('lodash')
 const UB = require('@unitybase/ub-pub')
-// vue internally use process.env.NODE_ENV !== 'production'
+// vuelidate internally use process.env.BUILD === 'web'
 window.process = {
-  env: {}
+  env: { BUILD: 'web' }
 }
 const IS_SYSTEM_JS = (typeof SystemJS !== 'undefined')
 const isExt = (typeof window.Ext !== 'undefined')
@@ -15,56 +20,64 @@ const isExt = (typeof window.Ext !== 'undefined')
 */
 window.BOUNDLED_BY_WEBPACK = false
 
+// ------------- throttle-debounce --------------------
 const throttleDebounce = require('throttle-debounce')
 if (IS_SYSTEM_JS && !SystemJS.has('throttle-debounce')) SystemJS.set('throttle-debounce', SystemJS.newModule(throttleDebounce))
+
 /**
  * throttle-debounce see <a href=https://github.com/niksy/throttle-debounce>original doc</a>
- * @type {{throttle?, debounce?}}
+ * @type {{throttle: function, debounce: function}}
  */
 module.exports.throttleDebounce = throttleDebounce
+
 const Form = require('./utils/Form/Form')
 /**
- * Create a new instance of UForm
- * @param {object} cfg Config
- * @param {VueComponent} cfg.component Form component
- * @param {object} [cfg.props] Form component props
- * @param {string} [cfg.title] Form title
- * @param {string} cfg.entity Entity name of master record
- * @param {number} [cfg.instanceID] Instance ID
- * @param {boolean} [cfg.isModal] Switch mount to modal or tab
- * @param {string} [cfg.modalClass] Modal class
- * @param {string} [cfg.modalWidth] Modal width
- * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar
- * @returns {UForm}
+ * Creates a new instance of UI module. See {@link module:Form.Form}
  */
-module.exports.Form = Form
-const { mapInstanceFields, computedVuex, SET } = require('./utils/Form/helpers')
-module.exports.mapInstanceFields = mapInstanceFields
-module.exports.computedVuex = computedVuex
-module.exports.SET = SET
+module.exports.Form = Form.Form
+const formHelpers = require('./utils/Form/helpers')
+
+/**
+ * Helper functions for forms. See {@link module:formHelpers}.
+ * `mapInstanceFields` and `computedVuex` are aliased into `@unitybase/adminui-vue`
+ */
+module.exports.formHelpers = formHelpers
+/**
+ * See {@link module:formHelpers.mapInstanceFields}
+ */
+module.exports.mapInstanceFields = formHelpers.mapInstanceFields
+/**
+ * See {@link module:formHelpers.computedVuex}
+ */
+module.exports.computedVuex = formHelpers.computedVuex
+module.exports.SET = formHelpers.SET
+/**
+ * Mount a Vue based component as a navbar tab, a modal form or inside other component (as a container).
+ * See {@link module:mountUtils mountUtils} module documentation for samples.
+ *
+ * @type {module:mountUtils}
+ */
 module.exports.mountUtils = require('./utils/Form/mount')
-
-const dialogs = require('./components/dialog/UDialog')
-const { dialog, dialogError, dialogInfo, dialogYesNo, errorReporter } = dialogs // destructive assignment for WebStorm parameter parsing
-module.exports.dialog = dialog
-module.exports.dialogError = dialogError
-module.exports.dialogInfo = dialogInfo
-module.exports.dialogYesNo = dialogYesNo
-module.exports.errorReporter = errorReporter
-
-const lookups = require('./utils/lookups')
-module.exports.lookups = lookups
 
 const magicLink = require('./utils/magicLinks')
 /**
- * MagikLinks instance
- * @type {{install: function(): void, addCommand: function(string, Function<Object, EventTarget, *>): void}}
+ * MagikLinks instance. adminui-vue registers the following commands (using addCommand):
+ *   - showList: runs an $App.doCommand({cmdType: 'showList', ...}
+ *   - showForm: runs an $App.doCommand({cmdType: 'showForm', ...}
+ *   - showReport: runs an $App.doCommand({cmdType: 'showReport', ...}
+ *   - setFocus: sets a focus to specified HTML element
+ *
+ *   Usage of setFocus: `<a href="#" data-cmd-type="setFocus" data-elm-id="my-html-element-id">focus other</a>`
+ *
+ *   For usage examples for showList/Form/Repost see {@link module:magicLinks magicLinks} module documentation
+ *
+ * @type {module:magicLinks}
  */
 module.exports.magicLink = magicLink
 magicLink.install()
 magicLink.addCommand('setFocus', magicLinkFocusCommand)
 
-if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
+// -------------- Vue --------------------
 if (window.Vue === undefined) {
   window.Vue = require('vue')
 }
@@ -74,7 +87,9 @@ Vue.__useDefault = Vue
 Vue.default = Vue
 if (IS_SYSTEM_JS && !SystemJS.has('vue')) SystemJS.set('vue', SystemJS.newModule(Vue))
 
+// ------------- Vuex ------------------
 const Vuex = require('vuex')
+/** type {Vuex} */
 window.Vuex = Vuex
 // next 2 lines for modules what use ES6 import `import Vuex from 'vuex' (not recommended for use)
 Vuex.__useDefault = Vuex
@@ -82,6 +97,7 @@ Vuex.default = Vuex
 if (IS_SYSTEM_JS && !SystemJS.has('vuex')) SystemJS.set('vuex', SystemJS.newModule(Vuex))
 Vue.use(Vuex)
 
+// ------------ ElementUI ------------------
 const ElementUI = require('element-ui') // adminui-pub maps element-ui -> element-ui/lib/index.js for SystemJS
 window.ElementUI = ElementUI
 if (IS_SYSTEM_JS && !SystemJS.has('element-ui')) SystemJS.set('element-ui', SystemJS.newModule(ElementUI))
@@ -92,9 +108,11 @@ Vue.use(ElementUI, {
   zIndex: 300000 // lat's Vue popovers always be above Ext
 })
 
+// ------------- Moment -------------------
 const momentPlugin = require('./utils/moment-plugin')
 Vue.use(momentPlugin)
 
+// ------------- UB theme -----------------
 require('normalize.css/normalize.css')
 require('./theme/fonts.css')
 require('./theme/icons/ub-icons.css')
@@ -105,17 +123,68 @@ if (BOUNDLED_BY_WEBPACK) {
 }
 Vue.use(UB)
 
+// ----------- UbComponents ----------------------
 const UbComponents = require('./utils/install-ub-components')
 Vue.use(UbComponents)
 
+// ---------- Vuelidate ---------------------------
 const Vuelidate = require('vuelidate').default
 if (IS_SYSTEM_JS && !SystemJS.has('vuelidate')) SystemJS.set('vuelidate', SystemJS.newModule(Vuelidate))
 Vue.use(Vuelidate)
 
-// add $dialog* to Vue prototype
-Vue.use(dialogs)
-UB.setErrorReporter(dialogs.errorReporter)
+const { validationMixin } = require('./utils/Form/validation')
+/**
+ * Mixin for using in forms with own single-form validation. Mixin automatically creates
+ * and passes a validator instance for use in nested controls (UFormRow for example).
+ */
+module.exports.validationMixin = validationMixin
 
+// ------------------ uDialogs -----------------
+const uDialogs = require('./utils/uDialogs')
+/**
+ * Modal uDialogs (message boxes) for showing errors, information and confirmation
+ * For usage examples see {@link module:uDialogs uDialogs} module documentation
+ *
+ * @type {module:uDialogs}
+ */
+module.exports.uDialogs = uDialogs
+/**
+ * Show modal dialog with 3 optional button and text/html content, see {@link module:uDialogs.dialog uDialogs.dialog}
+ * @type {uDialogs.dialog}
+ */
+module.exports.dialog = uDialogs.dialog
+/**
+ * Error dialog, see {@link module:uDialogs.dialogError uDialogs.dialogError}
+ * @type {uDialogs.dialogError}
+ */
+module.exports.dialogError = uDialogs.dialogError
+/**
+ * Information dialog, see {@link module:uDialogs.dialogInfo uDialogs.dialogInfo}
+ * @type {uDialogs.dialogInfo}
+ */
+module.exports.dialogInfo = uDialogs.dialogInfo
+/**
+ * Confirmation dialog, see {@link module:uDialogs.dialogYesNo uDialogs.dialogYesNo}
+ * @type {uDialogs.dialogYesNo}
+ */
+module.exports.dialogYesNo = uDialogs.dialogYesNo
+/**
+ * Error reporter dialog, see {@link module:uDialogs.errorReporter uDialogs.errorReporter}
+ * @type {uDialogs.errorReporter}
+ */
+module.exports.errorReporter = uDialogs.errorReporter
+// add $dialog* to Vue prototype
+Vue.use(uDialogs)
+UB.setErrorReporter(uDialogs.errorReporter)
+
+// ---------------- lookups --------------------
+const lookups = require('./utils/lookups')
+/**
+ * A reactive (in terms of Vue reactivity) entities data cache.
+ * See examples in {@link module:lookups lookups} module documentation
+ * @type {module:lookups}
+ */
+module.exports.lookups = lookups
 Vue.use(lookups)
 
 if (isExt) {
@@ -125,13 +194,11 @@ if (isExt) {
     replaceExtJSMessageBarDialog,
     replaceShowList
   } = require('./utils/replaceExtJSWidgets')
-  $App.on('applicationReady', replaceExtJSDialogs)
-  $App.on('applicationReady', replaceExtJSNavbar)
-  $App.on('applicationReady', replaceExtJSMessageBarDialog)
-  $App.on('applicationReady', replaceShowList)
-  $App.on('applicationReady', function () {
-    const v = UB.connection.appConfig.serverVersion.split('.')
-    if ((v[0] >= 'v5') && (v[1] < 14)) throw new Error('This version of adminui-vue require UB server to be >= 5.14')
+  $App.on('applicationReady', () => {
+    replaceExtJSDialogs()
+    replaceExtJSNavbar()
+    replaceExtJSMessageBarDialog()
+    replaceShowList()
   })
   UB.connection.on('ubm_navshortcut:changed', (execParams) => {
     if (execParams && execParams.method !== 'delete') {
@@ -165,7 +232,7 @@ function magicLinkAdminUiCommand (params) {
  * Magic link to focus DOM/Ext element with specified id
  * @example
 
- <a href="#' data-cmd-type='setFocus" data-elm-id="my-html-element-id">focus other</a>
+ <a href="#" data-cmd-type="setFocus" data-elm-id="my-html-element-id">focus other</a>
 
  * @param {Object} params
  * @param {string} params.elmId
@@ -186,31 +253,31 @@ if (window.$App) {
   magicLink.addCommand('showList', magicLinkAdminUiCommand)
   magicLink.addCommand('showReport', magicLinkAdminUiCommand)
 
-  window.$App.on('applicationReady', replaceDefaultRelogin)
-  window.$App.on('applicationReady', addVueSidebar)
+  window.$App.on('applicationReady', () => {
+    replaceDefaultRelogin()
+    addVueSidebar()
+    const UNavbarDefaultSlot = require('./components/navbarSlotDefault/UNavbarDefaultSlot.vue').default
+    /**
+     * Additional components can be added to the Sidebar and NavBar using this event
+     * @example
+     *   window.$App.on('applicationReady', () => {
+     *     const SidebarSlotExample = require('./samples/SidebarSlotExample.vue').default
+     *     $App.fireEvent('portal:sidebar:defineSlot', SidebarSlotExample, { some attrs })
+     *
+     *     const NavBarSlotExample = require('./samples/NavbarSlotExample.vue').default
+     *     $App.fireEvent('portal:navbar:defineSlot', NavBarSlotExample, { some attrs })
+     *   }
+     * @event portal:navbar:defineSlot
+     */
+    $App.fireEvent('portal:navbar:defineSlot', UNavbarDefaultSlot, {})
+  })
   $App.on('buildMainMenu', items => {
     items.splice(0, 1) // remove top panel ExtJS hamburger menu button
   })
-
-  // Default navbar slot
-  window.$App.on('applicationReady', () => {
-    const UNavbarDefaultSlot = require('./components/navbarSlotDefault/UNavbarDefaultSlot.vue').default
-    $App.fireEvent('portal:navbar:defineSlot', UNavbarDefaultSlot, {})
-  })
-  // Example:
-  //
-  // window.$App.on('applicationReady', () => {
-  //   const SidebarSlotExample = require('./samples/SidebarSlotExample.vue').default
-  //   $App.fireEvent('portal:sidebar:defineSlot', SidebarSlotExample, { some attrs })
-  //
-  //   const TabbarSlotExample = require('./samples/NavbarSlotExample.vue').default
-  //   $App.fireEvent('portal:navbar:defineSlot', NavbarSlotExample, { some attrs })
-  // })
 }
 
 if (isExt && window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
-  const replaceAutoForms = require('./utils/replaceExtJSWidgets').replaceAutoForms
-  UB.core.UBCommand.showAutoForm = replaceAutoForms
+  UB.core.UBCommand.showAutoForm = require('./utils/replaceExtJSWidgets').replaceAutoForms
 }
 
 /**
@@ -235,4 +302,44 @@ Vue.config.errorHandler = function (err, vm, trace) {
   window.onerror.apply(UB, ['', trace, '', '', err])
 }
 
-Vue.prototype.$formatByPattern = require('@unitybase/cs-shared').formatByPattern
+/**
+ * @deprecated Use $UB.formatter instead
+ * @type {{formatDate:function, formatNumber:function, setLang2LocaleHook:function, datePatterns: string[], numberPatterns: string[], setDefaultLang: function, collationCompare:function}}
+ */
+Vue.prototype.$formatByPattern = UB.formatter
+
+/**
+ * Define custom merging strategy for the `validations` and `attributeCaptions` options.
+ * This allows reusing some code in `Form.validation()` for different forms.
+ * Now you can use mixins here with partial validations and not define validation
+ * for entity attributes with `notNull = true` that are defined by default
+ */
+Vue.config.optionMergeStrategies.validations = mergeReactiveOptions
+Vue.config.optionMergeStrategies.attributeCaptions = mergeReactiveOptions
+
+/**
+ * Helper function that merges validation config defined in mixins
+ * @param {object|function|undefined} a
+ * @param {object|function|undefined} b
+ * @returns {object}
+ */
+function mergeReactiveOptions (a, b) {
+  if (typeof a === 'function' || typeof b === 'function') {
+    return function () {
+      const aObj = typeof a === 'function' ? a.call(this) : a
+      const bObj = typeof b === 'function' ? b.call(this) : b
+      return _.merge(aObj, bObj)
+    }
+  }
+  return _.merge(a, b)
+}
+// register adminui-vue after all module.exports are defined - SystemJS.newModule memoryse an object props,
+// so any new property added after call to SystemJS.newModule are not available to importers
+if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
+
+// for CERT2 auth we must select crypto provider before connection, on this stage models is not available
+// the only way to give pki() function access to capiSelectionDialog is global window object
+const capiSelectionDialog = require('./views/capiSelectionDialog')
+if (window) {
+  window.capiSelectionDialog = capiSelectionDialog
+}

@@ -1,12 +1,8 @@
 /**
- * Build-in UnityBase endpoints. Will be registered during {@link module:@unitybase/ub~start UB.start}
- * In addition to endpoints documented below additional endpoints
- *  - ubql
- *  - stat
- *  - auth
- *  - logout
- *  - timeStamp
- * are implemented inside native code and will be moved to JavaScript in future releases.
+ * Build-in UnityBase endpoints. Are registered during {@link module:@unitybase/ub~start UB.start}
+ *
+ * In addition to endpoints documented below endpoints `ubql`, `stat`, `auth`, `logout` and `timeStamp` are implemented
+ * inside native code (will be moved to JavaScript in future releases).
  *
  * @module endpoints
  * @memberOf module:@unitybase/ub
@@ -22,8 +18,8 @@ const Session = require('./Session')
 const { PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT } = require('./httpUtils')
 const ubErrors = require('./ubErrors')
 // eslint-disable-next-line camelcase
-const { uba_common, GC_KEYS, ubVersionNum } = require('@unitybase/base')
-const queryString = require('querystring')
+const { uba_common, GC_KEYS } = require('@unitybase/base')
+// eslint-disable-next-line node/no-deprecated-api
 const appBinding = process.binding('ub_app')
 const options = require('@unitybase/base').options
 const AUTH_MOCK = options.switchIndex('-authMock') >= 0
@@ -267,17 +263,18 @@ function clientRequireEp (req, resp) {
  * The `getAppInfo` endpoint. Responsible for return a information about application required for a
  * initial client side connectivity and UI setup
  *
+ * Models can extend response by subscribes to App.on('getAppInfo') event and modify
+ * a payload object - see example in `getAppInfo` event doc.
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  */
 function getAppInfoEp (req, resp) {
   const serverConfig = App.serverConfig
 
-  const DSTU = serverConfig.security && serverConfig.security.dstu
-
   let authMethods
   if (USE_ZONE_AUTH) {
     if (!Session.zone) console.warn(`Security zone for IP ${Session.callerIP} is empty`)
+    // eslint-disable-next-line no-prototype-builtins
     if (!ZONES_AUTH_MAP.hasOwnProperty(Session.zone)) {
       console.warn(`Authentication methods not configured for "${Session.zone}" security zone`)
     } else {
@@ -287,15 +284,12 @@ function getAppInfoEp (req, resp) {
     authMethods = serverConfig.security.authenticationMethods
   }
 
-  const appInfo = {
+  // getAppInfo event handlers can mutate appInfo
+  const appInfo = _.cloneDeep({
     appVersion: App.package.version,
     serverVersion: process.version,
     defaultLang: serverConfig.application.defaultLang,
     simpleCertAuth: serverConfig.security.simpleCertAuth,
-
-    trafficEncryption: DSTU ? DSTU.trafficEncryption : false,
-    serverCertificate: (DSTU && DSTU.trafficEncryption) ? App.serverPublicCert : '',
-    encryptionKeyLifetime: (DSTU && DSTU.trafficEncryption) ? DSTU.encryptionKeyLifeTime : 0,
 
     authMethods: authMethods || [],
 
@@ -305,7 +299,24 @@ function getAppInfoEp (req, resp) {
 
     uiSettings: serverConfig.uiSettings || {},
     authMock: AUTH_MOCK || undefined
-  }
+  })
+  /**
+   * Models can modify `getAppInto` response by mutate an `appInto` parameter of `getAppInfo` App event.
+   *
+   * **WARNING** `getAppInto` endpoint is called often, so event handler should be as fast as possible.
+   * Since `getAppInto` endpoint is called for non-authorised users, response MUST NOT contains a sensitive data.
+   * @example
+
+App.on('getAppInfo', function(appInfo) {
+  const serverConfig = App.serverConfig
+  const DSTU = serverConfig.security && serverConfig.security.dstu
+  appInfo.trafficEncryption = DSTU ? DSTU.trafficEncryption : false
+})
+   * @event getAppInfo
+   * @memberOf App
+   * @param {Object} appInfo
+   */
+  App.emit('getAppInfo', appInfo) // allow models to extend an appInfo
   if (App.isLicenseExceed) appInfo.isLicenseExceed = true
   resp.writeEnd(appInfo)
   resp.statusCode = 200
@@ -353,7 +364,7 @@ function getDomainInfoEp (req, resp) {
   // }
   // let res = JSON.stringify(restrictedDomain, domainReplacer)
 
-  const params = queryString.parse(req.parameters)
+  const params = req.parsedParameters
   const isExtended = (params.extended === 'true')
   if (isExtended && authenticationHandled && !uba_common.isSuperUser()) {
     return resp.badRequest('Extended domain info allowed only for member of admin group of if authentication is disabled')
@@ -436,7 +447,7 @@ function runSQLEp (req, resp) {
     throw new Error(`Only local execution allowed. Caller remoteIP="${Session.callerIP}"`)
   }
 
-  const parameters = queryString.parse(req.parameters)
+  const parameters = req.parsedParameters
   const connectionName = parameters.connection || parameters.CONNECTION || App.domainInfo.defaultConnection.name
   const conn = App.dbConnections[connectionName]
 
@@ -466,15 +477,57 @@ function runSQLEp (req, resp) {
 }
 
 /**
- * Run sql query on server side. Allowed from local IP's.
+ * Execute entity level method with direct access to the HTTP request and response.
+ * Client calls such methods using `POST /rest/entityCode/methodCode`.
  *
- * Connection name is in `connection` uri parameter (or default connection if not set)
- *  - If HTTP verb is GET then allowed inline parameters only and sql is in `sql` uri parameter
- *  - If HTTP verb is POST then sql is in request body and query parameters is uri parameters except `connection`
+ * The main purpose is to create an entity-level method what accept a binary request body or returns a binary response
+ *
+ * REST methods handler is called with 3 parameters: `(ctxt: null, req: THTTPRequest, resp: THTTPResponse)`
+ * and should fill a resp object props properly.
+ *
+ * Endpoint verify user has access to method.
+ *
+ * @example
+
+// define entity method what can be called either using `/rest` or usong `/ubql`
+me.entity.addMethod('getCertificate')
+me.getCertificate = function (ctxt, req, resp) {
+  let certID
+  if (req) { // endpoint is called as rest/uba_usercertificate/getCertificate?ID=1231
+    if (!req.parsedParameters.ID) {
+      return resp.badRequest('Missed ID; Expext URL to be rest/uba_usercertificate/getCertificate?ID=1231')
+    }
+    certID = req.parsedParameters.ID
+  } else {
+    certID = ctxt.mParams.ID
+  }
+  const store = UB.Repository('uba_usercertificate')
+    .attrs(['ID', 'certificate'])
+    .where('ID', '=', certID).select()
+  if (store.eof) throw new Error('not found')
+
+  let certificate = store.getAsBuffer('certificate')
+  if (req) { // called as rest
+    resp.writeEnd(certificate)
+    resp.writeHead('Content-Type: application/x-x509-user-cert')
+    resp.statusCode = 200
+  } else {
+    certificate = Buffer.from(certificate)
+    certificate = certificate.toString('base64')
+    ctxt.dataStore.initialize({ fieldCount: 1, values: ['certificate', certificate], rowCount: 1 })
+  }
+}
+
+// on client side
+// call using rest:
+const certResp = await UB.connection.get('/rest/uba_usercertificate/getCertificate?ID=334607980199937')
+const certBin = certResp.data
+// call using ubql:
+const certResp = await UB.connection.query({entity: 'uba_usercertificate', method: 'getCertificate', ID:334607980199937})
+const certBase64 = certResp.resultData.data[0][0]
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
- * @private
  */
 function restEp (req, resp) {
   const INVALID_PARAMS = 'REST: parameters are invalid'
@@ -495,33 +548,86 @@ function restEp (req, resp) {
  * excluding adminui-pub what injected before login window
  *
  *      GET allLocales?lang=en
+ *      GET allLocales?lang=en&json=1&includeDomain=1&includeData=1
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  * @private
  */
 function allLocalesEp (req, resp) {
-  const parameters = queryString.parse(req.parameters)
-  const lang = parameters.lang
+  const { lang, json, includeData, includeDomain } = req.parsedParameters
   if (!lang || lang.length > 5) return resp.badRequest('lang parameter required')
   const supportedLanguages = App.serverConfig.application.domain.supportedLanguages || ['en']
   if (supportedLanguages.indexOf(lang) === -1) return resp.badRequest('unsupported language')
 
-  let cached = App.globalCacheGet(`${GC_KEYS.UB_LOCALE_REQ_}${lang}`)
-  if (!cached) {
-    cached = ' '
-    App.domainInfo.orderedModels.forEach((model) => {
-      if (model.needLocalize) {
-        const localeScript = path.join(model.realPublicPath, 'locale', `lang-${lang}.js`)
-        if (fs.existsSync(localeScript)) {
-          const content = fs.readFileSync(localeScript, 'utf-8')
+  if (json) {
+    // do not move a metadataTransformation require from here - this file required by native!!
+    const loadDomainIntoJS = require('./metadataTransformation')
+    const resources = {}
+
+    if (includeDomain) {
+      if (App.localIPs.indexOf(Session.callerIP) === -1) {
+        resp.writeEnd('includeDomain is not allowed for remote clients')
+        resp.statusCode = 403
+        return
+      }
+
+      const rawDomain = loadDomainIntoJS(true)
+
+      for (const [entityCode, { langs }] of Object.entries(rawDomain)) {
+        const meta = rawDomain[entityCode].meta
+        const i18n = langs && langs[lang]
+        const localizedEntity = i18n ? _.merge(meta, i18n) : meta // merge locale into entity definition = the same as in UBEntity constructor
+
+        if (localizedEntity.caption) {
+          resources[entityCode] = localizedEntity.caption
+        }
+        if (localizedEntity.attributes) {
+          for (const attr of localizedEntity.attributes) {
+            resources[entityCode + '.' + attr.name] = attr.caption
+          }
+        }
+      }
+    }
+
+    const mergeFileIntoResources = (...dirComponents) => {
+      if (!dirComponents[0]) return
+
+      const localeFile = path.join(...dirComponents, `locale/lang-${lang}.json`)
+      if (fs.existsSync(localeFile)) {
+        _.merge(resources, require(localeFile))
+      }
+    }
+
+    for (const model of App.domainInfo.orderedModels) {
+      mergeFileIntoResources(model.realPublicPath)
+      if (includeData) mergeFileIntoResources(model.realPath, '_data')
+    }
+
+    resp.writeEnd(resources)
+  } else {
+    // Get lang-<xx>.js and lang-<xx>.json together and wrap as executable client-side code
+    let cached = App.globalCacheGet(`${GC_KEYS.UB_LOCALE_REQ_}${lang}`)
+    if (!cached) {
+      cached = ' '
+      for (const model of App.domainInfo.orderedModels) {
+        if (!model.realPublicPath) continue
+        let localeFile = path.join(model.realPublicPath, 'locale', `lang-${lang}.json`)
+        if (fs.existsSync(localeFile)) { // JSON localization (since UB 5.19.3)
+          const content = fs.readFileSync(localeFile, 'utf-8')
+          cached += `\n// ${model.name} localization\nUB.i18nExtend(\n${content}\n)`
+        }
+        localeFile = path.join(model.realPublicPath, 'locale', `lang-${lang}.js`)
+        if (fs.existsSync(localeFile)) { // JS localization
+          const content = fs.readFileSync(localeFile, 'utf-8')
           cached += `\n// ${model.name} localization\n${content}`
         }
       }
-    })
-    App.globalCachePut(`${GC_KEYS.UB_LOCALE_REQ_}${lang}`, cached)
+      App.globalCachePut(`${GC_KEYS.UB_LOCALE_REQ_}${lang}`, cached)
+    }
+    resp.writeEnd(cached)
   }
-  resp.writeEnd(cached)
+
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/javascript')
   resp.validateETag()

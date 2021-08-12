@@ -1,6 +1,4 @@
 const _ = require('lodash')
-// localize model
-require('./serverLocale/org_i18n')
 const UB = require('@unitybase/ub')
 const Session = UB.Session
 const UBA_COMMON = require('@unitybase/base').uba_common
@@ -67,7 +65,7 @@ function orgOnUserLogin () {
 
   if (!staffs.length) {
     // allow anonymous login only for SUPERUSER (before @unitybase/org@5.3 - a member of admin group)
-    if (ORG.checkOrgUnitRequired && !UBA_COMMON.isSuperUser() && !Session.uData.roleIDs.has(UBA_COMMON.ROLES.ADMIN.ID)) {
+    if (ORG.checkOrgUnitRequired && !UBA_COMMON.isSuperUser() && !Session.uData.roleIDs.includes(UBA_COMMON.ROLES.ADMIN.ID)) {
       throw new UB.UBAbort('<<<UserWithoutOrgEmployeeNotAllowed>>>')
     } else {
       // defined by ub model data.employeeShortFIO = ''

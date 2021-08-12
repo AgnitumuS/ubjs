@@ -70,6 +70,7 @@
       "dataType": "String",
       "size": 255,
       "caption": "Назва",
+      "readOnly": true,
       "mapping": [
         {
           "name": "AnsiSQL",
@@ -94,7 +95,8 @@
       "name": "jsonColumn",
       "dataType": "Json",
       "caption": "Test JSON column",
-      "allowNull": true
+      "allowNull": true,
+      "defaultValue": ""
     },
     {
       "name": "doc_file",
@@ -106,6 +108,9 @@
     "mStorage": {
       "simpleAudit": true,
       "safeDelete": false // should be false for autotes
+    },
+    "testMixin": {
+      "codeDefault": "val_tst_dict"
     }
   },
   "customSettings": {"a": 1},

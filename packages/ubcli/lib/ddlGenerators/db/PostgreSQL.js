@@ -24,13 +24,14 @@ class DBPostgreSQL extends DBAbstract {
     if (!mTables.length) return // all entities in this connection are external or no entities at all - skip loading DB metadata
 
     // old code  // UPPER(t.table_name)
-    const tablesSQL = `select t.table_name as name, 
-      (select description from pg_description
-        where objoid = (select typrelid from pg_type where typname = t.table_name
+    const tablesSQL = `select 
+  tablename as name,
+  (select description from pg_description
+        where objoid = (select typrelid from pg_type where typname = t.tablename
         and typowner = (select oid from pg_roles where rolname = current_schema)) and objsubid = 0
-      ) as caption
-    from information_schema.tables t
-    where t.table_schema = current_schema`
+      ) as caption,
+  rowsecurity::int 
+from pg_catalog.pg_tables t where t.schemaname = current_schema`
 
     /** @type {Array<Object>} */
     let dbTables = this.conn.xhr({
@@ -46,7 +47,8 @@ class DBPostgreSQL extends DBAbstract {
     for (const tabDef of dbTables) {
       const asIsTable = new TableDefinition({
         name: tabDef.name,
-        caption: tabDef.caption
+        caption: tabDef.caption,
+        multitenancy: tabDef.rowsecurity === 1
       })
 
       // Table Columns
@@ -73,9 +75,9 @@ class DBPostgreSQL extends DBAbstract {
       for (const colDef of columnsFromDb) {
         const physicalTypeLower = colDef.typename.toLowerCase()
         let def = colDef.defvalue
-        // Postgre prepend default by data type: 'A'::character varying
+        // Postgre prepend default by data type: `'A'::character varying` or `'{}':jsonb`
         if (def) {
-          def = def.replace(/::character varying/, '')
+          def = def.replace(/::(character varying|jsonb)/, '')
         }
         const nObj = {
           name: colDef.name,
@@ -256,48 +258,6 @@ ORDER BY index_id, column_position`
     }
   }
 
-  /**
-   * @override
-   * @param {TableDefinition} table
-   * @param {FieldDefinition} column
-   * @param {String} updateType
-   * @param {Object} [value] optional for updateType updConst
-   */
-  genCodeUpdate (table, column, updateType, value) {
-    function quoteIfNeed (v) {
-      if (column.isString && v && /min\(code\)/.test(v)) return v // special case for updating enum - unitybase/ubjs#23
-      return column.isString
-        ? (!column.defaultValue && (column.refTable || column.enumGroup)
-          ? v.replace(/'/g, "''")
-          : "'" + v.replace(/'/g, '') + "'")
-        : v
-    }
-    let possibleDefault
-    switch (updateType) {
-      case 'updConstComment':
-        this.DDL.updateColumn.statements.push(
-          `-- update ${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
-        )
-        break
-      case 'updConst':
-        this.DDL.updateColumn.statements.push(
-          `update ${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
-        )
-        break
-      case 'updNull':
-        possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
-        this.DDL.updateColumn.statements.push(
-          `-- update ${table.name} set ${column.name} = ${possibleDefault} where ${column.name} is null`
-        )
-        break
-      case 'updBase':
-        this.DDL.updateColumn.statements.push(
-          `EXEC('update ${table.name} set ${column.name} = ${quoteIfNeed(column.baseName)} where ${column.name} is null`
-        )
-        break
-    }
-  }
-
   /** @override */
   genCodeSetCaption (tableName, column, value, oldValue) {
     if (value) value = value.replace(/'/g, "''")
@@ -434,6 +394,26 @@ ORDER BY index_id, column_position`
   }
 
   /** @override */
+  genCodeEnableMultitenancy (table) {
+    this.DDL.others.statements.push(
+      `ALTER TABLE ${table.name} ENABLE ROW LEVEL SECURITY`
+    )
+    this.DDL.others.statements.push(
+      `CREATE POLICY ${table.name}_policy ON ${table.name} USING (mi_tenantID = current_setting('ub.tenantID')::bigint)`
+    )
+  }
+
+  /** @override */
+  genCodeDisableMultitenancy (table) {
+    this.DDL.others.statements.push(
+      `ALTER TABLE ${table.name} DISABLE ROW LEVEL SECURITY`
+    )
+    this.DDL.others.statements.push(
+      `DROP POLICY IF EXISTS ${table.name}_policy ON ${table.name}`
+    )
+  }
+
+  /** @override */
   genCodeCreatePK (table) {
     // TODO - then Postgres will support index organized table - uncomment it
     // if (!table.isIndexOrganized){
@@ -448,7 +428,7 @@ ORDER BY index_id, column_position`
     if (!constraintFK.generateFK) return
 
     const refTo = _.find(this.refTableDefs, { _nameUpper: constraintFK.references.toUpperCase() })
-    const refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
+    const refKeys = refTo ? refTo.primaryKey.keys.join(',') : constraintFK.refPkDefColumn
 
     this.DDL.createFK.statements.push(
       `alter table ${table.name} add constraint ${constraintFK.name} foreign key (${constraintFK.keys.join(',')}) references ${constraintFK.references}(${refKeys})`
@@ -526,14 +506,18 @@ ORDER BY index_id, column_position`
    * @override
    * @param {string} macro
    * @param {FieldDefinition} [column]
+   * @param {TableDefinition} [table]
    */
-  getExpression (macro, column) {
+  getExpression (macro, column, table) {
     function dateTimeExpression (val) {
       if (!val) return val
       switch (val) {
-        case 'currentDate': return 'timezone(\'utc\'::text, now())'
-        case 'maxDate': return "'9999-12-31 00:00:00'::timestamp without time zone"
-        default: throw new Error('Unknown expression with code ' + val)
+        case 'currentDate':
+          return 'timezone(\'utc\'::text, now())'
+        case 'maxDate':
+          return "'9999-12-31 00:00:00'::timestamp without time zone"
+        default:
+          throw new Error(`Unknown expression "${val}" for default value of ${table ? table.name : '?'}.${column ? column.name : '?'}`)
       }
     }
     if (!column) return dateTimeExpression(macro)

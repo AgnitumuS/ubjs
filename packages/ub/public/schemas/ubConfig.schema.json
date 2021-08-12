@@ -338,11 +338,27 @@
           "minimum": 0,
           "maximum": 255,
           "description": "The recursive depth of stack trace symbol to write. Used only if exceptions are handled, or by StackTrace level. 0 mean no stack trace"
-        },
-        "performanceCounters": {
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "description": "Metrics collector settings (added in UB 5.18.21). See [metrics tutorial](https://unitybase.info/api/server-v5/tutorial-production_env.html#metrics) for details",
+      "properties": {
+        "enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable Windows Performance Counters Set with name _UnityBase_. Set must be registered using `ub -perf` command. See <a href=\"https://dev.softengi.com/confluence/pages/viewpage.action?pageId=72909043\">this article</a> for details"
+          "description": "Enable metrics collection"
+        },
+        "allowedFrom": {
+          "type": "string",
+          "description": "Semicolon separated list of allowed subnets for /metrics endpoint; Restriction applied on reverse proxy level by ubcli generateNginxCfg. Direct access (without proxy) is allowed for everyone",
+          "default": ""
+        },
+        "disableMethodProfile": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable histogram metric for entity methods execution time"
         }
       }
     },
@@ -404,6 +420,16 @@
               "OpenIDConnect"
             ]
           }
+        },
+        "lockOutInDB": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whenever user account is locked out permanently using `uba_user.disabled` or temporary for lockOutTimeoutSec after `UBA.passwordPolicy.maxInvalidAttempts` invalid login attempts. Since: UB@5.19.6"
+        },
+        "lockOutTimeoutSec": {
+          "type": "number",
+          "default": 300,
+          "description": "Timeout is seconds for temporary lock out for account, in case lockOutInDB is false. Note: account lock out feature works for only for `UB` and `Basic` auth. Since: UB@5.19.6"
         },
         "zones": {
           "type": "array",
@@ -514,11 +540,11 @@
                 },
                 "librarySettings": {
                   "type": "string",
-                  "description": "path to folder with IIT library settings files ospus.ini or osplm.ini?. If empty - IIT will try to load settings from registry (under Windows) and this will cause a problems with registry virtualisation. If settings file not exist inside specified folder it will be created"
+                  "description": "path to folder with IIT library settings file (osplm.ini for Linux and ospus.ini for Windows). If empty - IIT will try to load settings from registry (under Windows) and this will cause a problems with registry virtualization. If settings file not exist inside specified folder it will be created"
                 },
                 "mediaType": {
                   "type": "number",
-                  "description": "порядковый индекс типа устройства начинактся с 0. на экране считать сверху вниз"
+                  "description": "порядковый индекс типа устройства начинактся с 0"
                 },
                 "mediaNumber": {
                   "type": "number",
@@ -526,16 +552,34 @@
                 },
                 "keyPath": {
                   "type": "string",
-                  "description": "full path to keystore for filesystem based media type"
+                  "description": "full path to the keystore for filesystem based media type"
                 },
                 "password": {
                   "type": "string",
-                  "description": "keystore password"
+                  "description": "keystore password. If empty - server private key will not be loaded and signing by the server key is not possible"
                 },
                 "strictMode": {
                   "type": "boolean",
                   "default": true,
                   "description": "Turn off offline mode; If TSP disabled - enable and set TSP server to http://ca.informjust.ua/services/tsp:80; Force signature format to CADES_X_LONG"
+                },
+                "hsm": {
+                  "type": "object",
+                  "description": "Hardware Security Module configuration for server-side signing using keys stored inside HSM (`iitCtypto.hsm*` functions)",
+                  "properties": {
+                    "mediaType": {
+                      "type": "number",
+                      "description": "порядковый индекс типа устройства начинактся с 0"
+                    },
+                    "mediaNumber": {
+                      "type": "number",
+                      "description": "порядковый индекс устройства начинактся с 0"
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "HSM password (not a user key password)"
+                    }
+                  }
                 }
               }
             },
@@ -582,6 +626,50 @@
           "type": "array",
           "default": [],
           "description": "Groups codes (uba_group.code) to exclude from user groups during user logon. Useful in case a same DB is used by several server instances, and one of instance (internal portal for example) should exclude  roles available to user\r\n**WARNING**: roles what assigned directly to user (in uba_userroles) are **NOT** filtered and remains available"
+        },
+        "multitenancy": {
+          "type": "object",
+          "description": "Multitenancy configuration (UB EE)",
+          "oneOf":[
+            {
+              "required": ["tenantIDHeader"]
+            },
+            {
+              "required": ["tenants"]
+            }
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "enable multitenancy for application",
+              "default": false
+            },
+            "tenantIDHeader": {
+              "type": "string",
+              "description": "HTTP request header contains a tenantID. Can be sets on reverse proxy level. If not empty - preferred over tenants from ubConfig"
+            },
+            "tenants": {
+              "type": "array",
+              "description": "URL -> tenant ID pairs. Not used if tenantIDHeader is configured",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "URI": {
+                    "type": "string",
+                    "description": "Host name user navigate to. For non-standard ports (neither 80 nor 443 must include port 'my.app.com:1224'"
+                  },
+                  "TID": {
+                    "type": "number",
+                    "description": "A tenant ID for this URI. values below 100 reserved for internal usage"
+                  }
+                }
+              }
+            },
+            "redirectURL": {
+              "type": "string",
+              "description": "URL to temporary redirect from URL's what not registered as a tenant URL; If empty - server returns 404 for such addresses"
+            }
+          }
         }
       }
     },
@@ -657,7 +745,7 @@
         },
         "connections": {
           "type": "array",
-            "description": "Database connections. Main article is <a href=\"https://dev.intecracy.com/confluence/pages/viewpage.action?pageId=65274525#Installation(requirements)-Databaseaccessrequirements\">here</a> Tips: <ul><li>You can use oracle client without install it. Just copy files distributed with <a href=\"http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html\">Oracle Instant Client</a> to the bin\\OracleInstantClient</li><li>To prevent storing oracle credential in config you can use <a href=\"For details see here: https://enviance.softline.kiev.ua/confluence/pages/viewpage.action?pageId=65274525\">Oracle Wallet</a></li><li>to prevent Oracle client disconnect in case on inactivity add the SQLNET.EXPIRE_TIME to the sqlnet.ora file on the server and set it and set it to some interval (10 for example)</li></ul>",
+            "description": "Database connections. Main article is <a href=\"https://unitybase.info/api/server-v5/tutorial-database_tuning.html\">here</a> Tips: <ul><li>On Windows Oracle Instant Client distributed with <a href=\"http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html\">Oracle Instant Client</a> can be copied to the bin/OracleInstantClient</li><li>To prevent storing oracle credential in config you can use <a href=\"https://dev.intecracy.com/confluence/pages/viewpage.action?pageId=65274525#Installation(requirements)-OracleWalletconfiguration\">Oracle Wallet</a></li><li>to prevent Oracle client disconnect in case on inactivity add the SQLNET.EXPIRE_TIME to the sqlnet.ora file on the server and set it and set it to some interval (10 for example)</li></ul>",
           "items": {
             "type": "object",
             "properties": {
@@ -707,11 +795,11 @@
               },
               "serverName": {
                 "type": "string",
-                "description": "Database host\n\n |DBMS  |Format|Example\n|-\n| `MS SQL`|Windows: [protocol:]hostname or IP[\\instanceName]; Linux: section name from `/etc/odbc.ini`| example1: `\"SQLSERVER1\\instance2\"` <br> example2: \"tcp:SQL_SERVER12\" <br> example linux: \"myserver\"\n| `Oracle`| TNS_NAME or <br> TNS definition string| example1: \"MyOraTNSName\"<br>example: \"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=do5-s8)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORAUTC)))\" \n| `Postgre` |  | "
+                "description": "Database host\n\n |DBMS  |Format|Example\n|-\n| `MS SQL`|Windows: [protocol:]hostname or IP[\\instanceName]; Linux: section name from `/etc/odbc.ini`| example1: `\"SQLSERVER1\\instance2\"` <br> example2: \"tcp:SQL_SERVER12\" <br> example linux: \"myserver\"\n| `Oracle`| TNS_NAME or <br> TNS definition string| example1: \"MyOraTNSName\"<br>example: \"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=do5-s8)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORAUTC)))\" \n| `Postgre` | A host part of PostgreURL | Recommended to be empty - use a full PostgreURL in the `databaseName` instead |"
               },
               "databaseName": {
                 "type": "string",
-                "description": "Name of the database\n\n |DBMS  |Mean|Example\n|-\n| `MS SQL`|Name of a database| \"myDatabase\" \n| `Oracle`| not applicable|  \n| `Postgre` | PostgreURL  - https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING | \"postgres://host:port/dbname\" \n| `SQLite3`|Full path to database file. **Don`t use UNC path here - only local file system files is allowed**| \"d:\\myDB\\myDatabase.db\""
+                "description": "Name of the database\n\n |DBMS  |Mean|Example\n|-\n| `MS SQL`|Name of a database| \"myDatabase\" \n| `Oracle`| not applicable|  \n| `Postgre` | PostgreURL  - https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING | \"postgres://host:port/dbname?tcp_user_timeout=3000\" \n| `SQLite3`|Full path to database file. **Don`t use UNC path here - only local file system files is allowed**| \"d:\\myDB\\myDatabase.db\""
               },
               "userID": {
                 "type": "string",
@@ -737,7 +825,12 @@
               },
               "advSettings": {
                 "type": "string",
-                "description": "Advanced driver settings\n\n |DBMS| Value  | Description \n|-\n|`Postgre`|LibLocation=`Path to 64bit libpq.dll`| \"LibLocation=C:/Program Files/PostgreSQL (x86)/10/bin/libpq.dll\"\n| `Oracle`| Combination of `INLINE_IN` `USE_WALLET` and `CARDINALITY_IN`<br>INLINE_IN - do not use array bindings for `in` and `not in` condition<br><br>CARDINALITY_IN (Oracle, UB EE - ORM adds `/*+ CARDINALITY(t1, P) */` hint for IN sub-queries;<br>P value depends on array length L:  L<10 => P = 1; L < 50 => P=10 else P = 100<br>(UB5 only) LibLocation=`Path to folder with oci.dll(windows only)` | \\/INLINE_IN,CARDINALITY_IN,USE_WALLET,LibLocation=/usr/lib/oracle/11.2/clien64/lib\" \n| `SQLIte3` | [Synchronous=Full or Off or Normal],[Tokenizer=stemka,TokenizerParams=\"stem=yes or no\" \"lang=uk or ru or en\"]"
+                "description": "Advanced driver settings(optional)\n\n |DBMS| Value  | Example \n|-\n|`Postgre`|LibLocation=`Path to 64bit libpq library`| Windows: \"LibLocation=C:/Program Files/PostgreSQL (x86)/10/bin/libpq.dll\"<br><br>Linux: can be empty or \"LibLocation=libpq.so.5\"\n| `Oracle`| Combination of `INLINE_IN` `USE_WALLET` and `CARDINALITY_IN`<br>INLINE_IN - do not use array bindings for `in` and `not in` condition<br><br>CARDINALITY_IN (Oracle, UB EE - ORM adds `/*+ CARDINALITY(t1, P) */` hint for IN sub-queries;<br>P value depends on array length L:  L<10 => P = 1; L < 50 => P=10 else P = 100<br>(UB5 only) LibLocation=`Path to folder with oci.dll(windows only)` | \"INLINE_IN,CARDINALITY_IN,USE_WALLET,LibLocation=/usr/lib/oracle/11.2/clien64/lib\" \n| `MS SQL (ODBC)` | [STATEMENT_TIME_LIMIT=seconds] | \"STATEMENT_TIME_LIMIT=3\" \n| `SQLIte3` | [Synchronous=Full or Off or Normal],[Tokenizer=stemka,TokenizerParams=\"stem=yes or no\" \"lang=uk or ru or en\"] | \"Synchronous=Off,Tokenizer=stemka\""
+              },
+              "statementMaxMemoryMb": {
+                "type": "Number",
+                "default": 50,
+                "description": "Maximum fetch size for DataStore. If a result set exceeds this limit, an Exception is raised. This avoids unexpected OutOfMemory errors and server crash when incorrect statement what returns too many rows or too big content are executed"
               }
             }
           }
@@ -787,7 +880,7 @@
               },
               "LUCount": {
                 "type": "number",
-                "description": "Logical Units count. If > 0 then files are stored inside `Logical Unit` sub-folders `/LU01`, `/LU02`, ... Write operations works with last LU folder.\nEach LU folder can be mounted to his own partition. In this case `tempPath` should point to the same partition as last LU.\n Applicable only for `non-Simple` 'FileSystem' based  stores",
+                "description": "Logical Units count. If > 0 then files are stored inside `Logical Unit` sub-folders `/LU01`, `/LU02`, ... Folder, what contains OLD files MUST be mounted to /LU00 manually. Write operations works with last LU folder.\nEach LU folder can be mounted to his own partition. In this case `tempPath` should point to the same partition as last LU.\n Applicable only for `non-Simple` 'FileSystem' based  stores",
                 "default": 0,
                 "maxValue": 99
               },
@@ -916,7 +1009,7 @@
             "themeName": {
               "type": "string",
               "description": "UI theme name. Can be name of a folder in the `inetPub\\themes\\` folder",
-              "default": "UBtheme"
+              "default": "UBGrayTheme"
             },
             "loginURL": {
               "type": "string",
@@ -925,6 +1018,11 @@
             "registrationURL": {
               "type": "string",
               "description": "User registration page URL. If empty (default) then the registration link should not be displayed on login page",
+              "default": ""
+            },
+            "forgotPasswordURL": {
+              "type": "string",
+              "description": "User forgot password page URL. If empty (default) then the forgot password link should not be displayed on login page",
               "default": ""
             },
             "loginWindowTopLogoURL": {
@@ -955,8 +1053,12 @@
               "default": "equal to application.rootHandler"
             },
             "encryptionImplementation" : {
-              "type": "string",
-              "description": "Define encryption implementation for authentication CERT. Use one of @ub-d packages, example: `/clientRequire/@ub-d/iit-sign-web/dist/iit-sign-web.min.js`"
+              "type": "array",
+              "description": "Define available encryption implementations for App.pki()",
+              "items": {
+                "type": "string",
+                "description": "Module what implements a UbPkiInterface interface. Known modules are \"@ub-d/iit-sign-web\", \"@ub-d/iit-sign-js\" "
+              }
             },
             "authenticationCert": {
               "type": "object",
@@ -994,6 +1096,10 @@
                 }
               }
             },
+            "disableScanner": {
+              "type": "boolean",
+              "description": "Hide all scanner related functionality from adminui"
+            },
             "favoriteCategoryCount": {
               "type": "number",
               "description": "Number of categories (up to 4) for a favorites columns",
@@ -1023,6 +1129,10 @@
                 }
               }
             },
+            "pdfFontMapping": {
+              "type": "object",
+              "description": "Font mapping for @unitybase/pdf. Keys is an original font name (TimesNewRoman for example), values is a real font file name (TimesNewRoman_Cyr for example)"
+            },
             "sidebarLogoURL": {
               "type": "string",
               "description": "Optional URL for a small logo to display on the top of the sidebar. The recommended size for this logo is 40x40 px. It will be shown when the sidebar is collapsed. In a case when this prop is set and sidebarLogoBigURL is unset will show this logo in expanded too",
@@ -1036,6 +1146,11 @@
             "useVueTables": {
               "type": "boolean",
               "description": "Replace Ext.GridEntityPanel by vue UTableEntity"
+            },
+            "forceModalsForEditForms": {
+              "type": "boolean",
+              "description": "If true actions `EditItem` and `AddNewItem` force form to be opened as modal. If false (default) - new and edit forms are opened in new tab",
+              "default": false
             }
           }
         },
@@ -1054,7 +1169,7 @@
     "licenseFilePath": {
       "type": "string",
       "description": "For EE/DE editions - path to license file",
-      "default": "./ubLicense.json"
+      "default": "%UB_APPDATA%ubLicense.json"
     }
   }
 }

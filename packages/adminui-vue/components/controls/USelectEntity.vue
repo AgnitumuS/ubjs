@@ -5,6 +5,7 @@
       v-model="dropdownVisible"
       placement="bottom-start"
       :width="popperWidth"
+      transition=""
       :popper-options="{
         appendToBody: true
       }"
@@ -22,6 +23,7 @@
       <div
         slot="reference"
         class="ub-select__container"
+        :class="{'ub-select__container--with-actions': actions.length && !disabled}"
       >
         <el-input
           ref="input"
@@ -126,34 +128,33 @@
       suffix-icon="u-icon-arrow-down"
     />
 
-    <el-dropdown
+    <u-dropdown
       v-if="actions.length > 0 && !disabled"
-      trigger="click"
       :tabindex="-1"
+      class="u-select__dropdown"
     >
       <button
         type="button"
         class="u-icon-more ub-select__more-icon"
       />
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item
+      <template #dropdown>
+        <u-dropdown-item
           v-for="action in actions"
           :key="action.name"
           :icon="action.icon"
+          :label="$ut(action.caption)"
           :disabled="action.disabled"
-          @click.native="action.handler"
-        >
-          {{ $ut(action.caption) }}
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+          @click.native="!action.disabled && action.handler()"
+          @click.self.stop.prevent
+        />
+      </template>
+    </u-dropdown>
   </div>
 </template>
 
 <script>
 const { debounce } = require('throttle-debounce')
 const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
-
 /**
  * Select component mapped to Entity
  */
@@ -161,7 +162,8 @@ export default {
   name: 'USelectEntity',
 
   inject: {
-    isDisabled: { from: 'isDisabled', default: false }
+    isDisabled: { from: 'isDisabled', default: false },
+    parentIsModal: { from: 'parentIsModal', default: false }
   },
 
   mixins: [clickOutsideDropdown],
@@ -188,15 +190,15 @@ export default {
      */
     repository: Function,
     /**
-     * Name of entity. If repository is set entityName will be ignored
+     * Entity name. Ignored if `repository` prop is set
      */
     entityName: String,
     /**
-     * Attribute which is display value of options
+     * Attribute which values are used as a display value of options
      */
     displayAttribute: String,
     /**
-     * Set disable status
+     * disable status
      */
     disabled: Boolean,
 
@@ -242,7 +244,7 @@ export default {
     readonly: Boolean,
 
     /**
-     * Overrides showDictionary action config.
+     * Overrides `showDictionary` action config.
      * Function accepts current config and must return new config
      */
     buildShowDictionaryConfig: {
@@ -250,7 +252,7 @@ export default {
       default: config => config
     },
     /**
-     * Overrides edit action config.
+     * Overrides `edit` action config.
      * Function accepts current config and must return new config
      */
     buildEditConfig: {
@@ -258,7 +260,7 @@ export default {
       default: config => config
     },
     /**
-     * Overrides addNew action config.
+     * Overrides `addNew` action config.
      * Function accepts current config and must return new config
      */
     buildAddNewConfig: {
@@ -267,13 +269,39 @@ export default {
     },
 
     /**
-     * Search request condition
+     * Search by include (may be slow) or by first letters (faster)
      */
     searchStrategy: {
       type: String,
       default: 'like',
       validator: value => ['like', 'startsWith'].includes(value)
+    },
+
+    /**
+     * Skip autocomplete the value after adding a new record through the 'addNew' action button
+     */
+    skipAutoComplete: {
+      type: Boolean,
+      default: false
+    },
+
+    /**
+     * Allow adding a value typed by used but not in repository
+     */
+    allowDictionaryAdding: {
+      type: Boolean,
+      default: false
+    },
+
+    /**
+     * Overrides execParams for insert action.
+     * Function must return object with execParams
+     */
+    buildAddDictionaryConfig: {
+      type: Function,
+      default: config => config
     }
+
   },
 
   data () {
@@ -297,7 +325,7 @@ export default {
 
   computed: {
     getEntityName () {
-      return this.entityName || this.repository().entityName
+      return (this.repository && this.repository().entityName) || this.entityName
     },
 
     getDisplayAttribute () {
@@ -310,20 +338,9 @@ export default {
     },
 
     inputIconCls () {
-      let icon
-      const arrowPrefix = 'u-icon-arrow-'
-
-      if (this.dropdownVisible) {
-        icon = arrowPrefix + 'up'
-      } else {
-        icon = arrowPrefix + 'down'
-      }
-
-      if (this.loading) {
-        icon = 'el-icon-loading'
-      }
-
-      return icon
+      return this.loading
+        ? 'el-icon-loading'
+        : 'u-icon-arrow-' + (this.dropdownVisible ? 'up' : 'down')
     },
 
     defaultActions () {
@@ -365,8 +382,8 @@ export default {
     },
 
     /**
-     * need for update displayed query if original option query changed
-     * but show dropdown and fetch date just if changed queryDisplayValue
+     * Needed to update displayed query when original query option is changed
+     * but show dropdown and fetch data only if queryDisplayValue changed
      */
     queryDisplayValue: {
       get () {
@@ -375,10 +392,10 @@ export default {
 
       set (value) {
         this.query = value
-        if (!this.dropdownVisible) {
+
+        this.debouncedFetch(value, () => {
           this.dropdownVisible = true
-        }
-        this.debouncedFetch(value)
+        })
       }
     },
 
@@ -388,7 +405,7 @@ export default {
   },
 
   watch: {
-    // when value (ID) changed need to get formatted label
+    // when value (ID) is changed - get formatted label
     value: {
       immediate: true,
       handler: 'setQueryByValue'
@@ -397,6 +414,16 @@ export default {
       if (value.length < 1) {
         this.handleClearClick()
       }
+    }
+  },
+
+  created () {
+    this.AUTOCOMPLETE_LISTENER_UID = null
+  },
+
+  beforeDestroy () {
+    if (this.AUTOCOMPLETE_LISTENER_UID && this.AUTOCOMPLETE_LISTENER_UID === this._uid && !this.skipAutoComplete) {
+      this.$UB.connection.removeListener(`${this.getEntityName}:changed`, this.autoCompleteValue)
     }
   },
 
@@ -444,55 +471,72 @@ export default {
       this.loading = false
     },
 
-    debouncedFetch: debounce(600, function (query) {
-      this.fetchPage(query)
+    debouncedFetch: debounce(600, function (query, resolve, reject) {
+      this.fetchPage(query).then(resolve, reject)
     }),
 
     async fetchDisplayValue (value) {
       this.loading = true
-      const repositoryClone = this.getRepository().clone().clearWhereList()
-      const data = await repositoryClone
-        .where(this.valueAttribute, '=', value)
-        .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
-        .misc({
-          __allowSelectSafeDeleted: true
-        })
-        .selectSingle()
-      this.loading = false
+      try {
+        const repositoryClone = this.getRepository().clone().clearWhereList()
+        const option = await repositoryClone
+          .where(this.valueAttribute, '=', value)
+          .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
+          .misc({
+            __allowSelectSafeDeleted: true
+          })
+          .selectSingle()
 
-      return data
-    },
-
-    /**
-     * get value label
-     * if function cant find label in loaded options
-     * it will be fetch it from server
-     *
-     * @param {number} value ID
-     */
-    setQueryByValue (value) {
-      this.undefinedRecord = false
-      if (value !== undefined && value !== null) {
-        const index = this.options.findIndex(o => o[this.valueAttribute] === value)
-        if (index !== -1) {
-          const option = this.options[index]
+        if (option) {
           this.query = option[this.getDisplayAttribute]
           this.setSafeDeleteValue(option)
         } else {
-          this.fetchDisplayValue(value)
-            .then(option => {
-              if (option) {
-                this.query = option[this.getDisplayAttribute]
-                this.setSafeDeleteValue(option)
-              } else {
-                this.query = value
-                this.undefinedRecord = true
-              }
-            })
+          this.query = value
+          this.undefinedRecord = true
         }
-      } else {
-        this.query = ''
+      } finally {
+        this.loading = false
       }
+    },
+
+    /**
+     * get label for value. If label is not already loaded it will be fetched from server
+     *
+     * @param {number/null} value ID
+     */
+    setQueryByValue (value) {
+      if (this._fetchDisplayValuePromise) {
+        // Fetching value for another setQueryByValue call is not completed yet,
+        // wait for it and re-query value only after its completion
+        this._fetchDisplayValuePromise.then(() => {
+          this._fetchDisplayValuePromise = null
+          this.setQueryByValue(value)
+        })
+        return
+      }
+
+      this.undefinedRecord = false
+      if (value === undefined || value === null) {
+        if (this.allowDictionaryAdding && !this.selectedOption && !this.value && this.query && this.prevQuery &&
+          this.query === this.prevQuery) {
+          this.prevQuery = ''
+        } else {
+          // Clear display value, when ID is empty
+          this.query = ''
+        }
+        return
+      }
+
+      const index = this.options.findIndex(o => o[this.valueAttribute] === value)
+      if (index !== -1) {
+        // Set display value from options
+        const option = this.options[index]
+        this.query = option[this.getDisplayAttribute]
+        this.setSafeDeleteValue(option)
+        return
+      }
+
+      this._fetchDisplayValuePromise = this.fetchDisplayValue(value)
     },
 
     // set delete status if record is deleted safely
@@ -523,10 +567,10 @@ export default {
       }
     },
 
-    onKeydownAltDown () {
+    async onKeydownAltDown () {
       if (!this.dropdownVisible) {
+        await this.fetchPage()
         this.dropdownVisible = true
-        this.fetchPage()
       }
     },
 
@@ -534,18 +578,26 @@ export default {
       await this.fetchPage(this.prevQuery, this.pageNum + 1)
       const { scrollHeight } = this.$refs.options
       this.$refs.options.scrollTop = scrollHeight
-      this.$refs.input.$el.click() // keep focus on input
+
+      if (this.editable) {
+        this.$refs.input.$el.click() // keep focus on input
+      }
     },
 
     // shows all search result when click on dropdown arrow
-    toggleDropdown () {
+    async toggleDropdown () {
       if (this.isReadOnly) return
-      this.dropdownVisible = !this.dropdownVisible
-      if (this.dropdownVisible) {
-        this.fetchPage()
+
+      const isTurnedOn = !this.dropdownVisible
+
+      if (isTurnedOn) {
+        await this.fetchPage()
       } else {
         this.setQueryByValue(this.value)
       }
+
+      // make dropdown visible after fetch
+      this.dropdownVisible = isTurnedOn
     },
 
     /**
@@ -568,9 +620,13 @@ export default {
       }
     },
 
-    // emits when user click on option or click enter when option is focused
     chooseOption (option) {
       if (this.selectedID !== this.value) {
+        /**
+         * emits when user click on dropdown item or press enter when dropdown item is focused
+         * @param oldValue
+         * @param newValue
+         */
         this.$emit('input', this.selectedID, JSON.parse(JSON.stringify(option)))
       }
       this.setQueryByValue(this.selectedID)
@@ -591,34 +647,41 @@ export default {
           cmdData: {
             repository: () => selectRepo,
             onSelectRecord: ({ ID, row, close }) => {
-              this.$emit('input', ID, JSON.parse(JSON.stringify(row)))
+              this.$emit('input', row[this.valueAttribute], JSON.parse(JSON.stringify(row)))
               close()
             },
             buildEditConfig (cfg) {
-              cfg.isModal = true
+              if (this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms) cfg.isModal = true
               return cfg
             },
             buildCopyConfig (cfg) {
-              cfg.isModal = true
+              cfg.isModal = this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal
               return cfg
             },
             buildAddNewConfig (cfg) {
-              cfg.isModal = true
+              if (this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms) cfg.isModal = true
               return cfg
             },
             scopedSlots: createElement => ({
               toolbarPrepend: ({ store, close }) => {
                 return createElement('u-button', {
+                  attrs: {
+                    disabled: !store.state.selectedRowId
+                  },
                   props: {
                     appearance: 'inverse',
-                    icon: 'u-icon-check',
-                    disabled: !store.state.selectedRowId
+                    icon: 'u-icon-check'
                   },
                   on: {
                     click: () => {
                       const selectedRowId = store.state.selectedRowId
                       const selectedRow = store.state.items.find(({ ID }) => ID === selectedRowId)
-                      this.$emit('input', selectedRowId, JSON.parse(JSON.stringify(selectedRow)))
+
+                      if (selectedRow == null) {
+                        return
+                      }
+
+                      this.$emit('input', selectedRow[this.valueAttribute], JSON.parse(JSON.stringify(selectedRow)))
                       close()
                     }
                   }
@@ -631,13 +694,32 @@ export default {
       }
     },
 
-    handleEditItem () {
+    async handleEditItem () {
       if (!this.removeDefaultActions) {
+        let ID = this.value
+
+        if (this.valueAttribute !== 'ID') { // row ID is required to open edit form
+          const repositoryClone = this.getRepository().clone().clearWhereList()
+          repositoryClone.fieldList = ['ID']
+
+          const ids = await repositoryClone
+            .where(this.valueAttribute, '=', this.value)
+            .limit(2)
+            .selectAsArrayOfValues()
+
+          if (ids.length !== 1) {
+            UB.showErrorWindow(`${this.valueAttribute} is not unique`)
+            return
+          }
+
+          ID = ids[0]
+        }
+
         const config = this.buildEditConfig({
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
           entity: this.getEntityName,
-          isModal: true,
-          instanceID: this.value
+          isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal,
+          instanceID: ID
         })
         this.$UB.core.UBApp.doCommand(config)
       }
@@ -648,9 +730,19 @@ export default {
         const config = this.buildAddNewConfig({
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
           entity: this.getEntityName,
-          isModal: true
+          isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal
         })
+        if (!this.skipAutoComplete) {
+          this.$UB.connection.once(`${this.entityName}:changed`, this.autoCompleteValue)
+          this.AUTOCOMPLETE_LISTENER_UID = this._uid
+        }
         this.$UB.core.UBApp.doCommand(config)
+      }
+    },
+
+    autoCompleteValue (config) {
+      if (this.AUTOCOMPLETE_LISTENER_UID && this.AUTOCOMPLETE_LISTENER_UID === this._uid && config && config.resultData) {
+        this.$emit('input', config.resultData[this.valueAttribute], JSON.parse(JSON.stringify(config.resultData)))
       }
     },
 
@@ -671,6 +763,73 @@ export default {
     onBlur () {
       this.isFocused = false
       this.$emit('blur')
+      if (this.allowDictionaryAdding && (this.query.length > 0) && !this.disabled &&
+        !this.value && !this.removeDefaultActions) {
+        this.$dialog({
+          title: 'select.dictionaryAdding',
+          msg: this.$ut('select.dictionaryAddingChoices', { entity: this.$ut(this.getEntityName), text: this.query }),
+          buttons: {
+            yes: 'Edit',
+            no: 'Add',
+            cancel: 'Continue'
+          }
+        }).then(choice => {
+          if (choice === 'no') {
+            this.handleAddDictionaryItem()
+          } else if (choice === 'yes') {
+            this.handleAddDictionaryItemWithDetails()
+          } else {
+            this.query = ''
+          }
+        })
+      }
+    },
+
+    /**
+     * Handler for 'cancel' event of popper-confirm
+     * Inserts new record with params created from 'buildAddDictionaryConfig' and emits input with new ID
+     */
+    async handleAddDictionaryItem () {
+      const config = await this.buildAddDictionaryConfig({
+        cmdType: this.$UB.core.UBCommand.commandType.showForm,
+        entity: this.getEntityName,
+        isModal: true,
+        query: this.query
+      })
+
+      const newItem = await this.$UB.connection
+        .insertAsObject({
+          entity: this.getEntityName,
+          fieldList: [this.valueAttribute],
+          execParams: (config.props && config.props.parentContext) || {}
+        })
+
+      if (newItem && newItem[this.valueAttribute]) {
+        this.$notify.success(this.$ut('select.recordAddedSuccessfully'))
+        this.$emit('input', newItem[this.valueAttribute])
+      }
+    },
+
+    /**
+     * Handler for 'confirm' event of popper-confirm
+     * Opens modal form with params created from 'buildAddDictionaryConfig' and emits input with new ID after first form save
+     */
+    async handleAddDictionaryItemWithDetails () {
+      const vm = this
+      const config = await this.buildAddDictionaryConfig({
+        cmdType: this.$UB.core.UBCommand.commandType.showForm,
+        entity: this.getEntityName,
+        isModal: true,
+        query: this.query
+      })
+
+      vm.$UB.connection.on(`${vm.getEntityName}:changed`, function (response) {
+        if (response && response.method && response.method === 'insert' && response.resultData && response.resultData[this.valueAttribute]) {
+          vm.$emit('input', response.resultData[this.valueAttribute])
+          vm.$UB.connection.removeListener(`${vm.getEntityName}:changed`, null)
+        }
+      })
+      return this.$UB.core.UBApp.doCommand(config)
     }
   }
 }
@@ -702,8 +861,8 @@ export default {
   position: relative;
 }
 
-.ub-select__options__reset-padding{
-  padding: 0;
+.ub-select__options__reset-padding {
+  padding: 0 !important;
 }
 
 .ub-select__deleted-value input{
@@ -719,16 +878,20 @@ export default {
   border-color: hsl(var(--hs-warning), var(--l-input-border-default));
 }
 
-.u-select{
+.u-select {
   display: grid;
   grid-template-columns: 1fr auto;
+  border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+  border-radius: var(--border-radius);
+}
+.u-select:focus {
+  border-color: hsl(var(--hs-primary), var(--l-layout-border-default));
 }
 
 .ub-select__more-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
   height: 36px;
   transform: rotate(90deg);
   color: hsl(var(--hs-control), var(--l-state-default));
@@ -744,4 +907,20 @@ export default {
 .u-select-icon-warning {
   color: hsl(var(--hs-warning), var(--l-state-default));
 }
+
+.u-select > .u-select__dropdown {
+  border-left: 1px solid hsl(var(--hs-border), var(--l-layout-border-light));
+}
+.u-select .el-input__inner {
+  border: none;
+}
+
+/*hover must be before focus to give a focus priority*/
+.u-select:hover {
+  border-color: hsl(var(--hs-border), var(--l-input-border-hover));
+}
+.u-select:focus-within {
+  border-color: hsl(var(--hs-primary), var(--l-layout-border-default));
+}
+
 </style>

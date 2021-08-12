@@ -17,6 +17,86 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.20] - 2021-08-09
+## [5.20.19] - 2021-08-04
+### Added
+ - Dutch (nl) localization
+
+## [5.20.18] - 2021-07-18
+### Added
+ - Dutch (nl) localization
+
+## [5.20.17] - 2021-07-08
+## [5.20.16] - 2021-06-14
+## [5.20.15] - 2021-05-24
+## [5.20.14] - 2021-05-13
+## [5.20.13] - 2021-05-07
+## [5.20.12] - 2021-05-05
+## [5.20.11] - 2021-04-24
+## [5.20.10] - 2021-04-23
+## [5.20.9] - 2021-04-22
+## [5.20.8] - 2021-04-19
+## [5.20.7] - 2021-04-19
+## [5.20.6] - 2021-04-16
+## [5.20.5] - 2021-04-13
+## [5.20.4] - 2021-04-02
+## [5.20.3] - 2021-04-01
+## [5.20.2] - 2021-03-30
+## [5.20.1] - 2021-03-29
+## [5.20.0] - 2021-03-25
+## [5.19.10] - 2021-03-23
+## [5.19.9] - 2021-03-17
+## [5.19.8] - 2021-03-16
+## [5.19.7] - 2021-03-15
+## [5.19.6] - 2021-03-15
+### Changed
+ - ORG forms, reports and er-diagrams are converted to `ubrow` format
+
+## [5.19.5] - 2021-03-03
+### Changed
+ - client side locales reformatted into JSON
+ - server-side locales reformatted into JSON
+
+## [5.19.4] - 2021-02-25
+## [5.19.3] - 2021-02-10
+## [5.19.2] - 2021-02-08
+## [5.19.1] - 2021-02-03
+## [5.19.0] - 2021-02-02
+## [5.4.37] - 2021-01-30
+## [5.4.36] - 2021-01-28
+## [5.4.35] - 2021-01-26
+## [5.4.34] - 2021-01-19
+## [5.4.33] - 2021-01-17
+## [5.4.32] - 2021-01-11
+## [5.4.31] - 2020-12-30
+### Changed
+ - [UBDF-12922] `org_staffunit`: use `', '` delimiter (instead of `','`) to join several employees on the same staff.
+   Use `'*'` instead of `'* '` to mark a full name with permanent assignment. Example (before -> after):
+   `* Sobiolev O.S.,Plaz O.V. (13.1.1 - dev depatdment)` -> `*Sobiolev O.S., Plaz O.V. (13.1.1 - dev department)`
+
+## [5.4.30] - 2020-12-28
+## [5.4.29] - 2020-12-22
+### Changed
+- Shortcuts for entities with `parentID` attribute associated with `org_unit`, are created with predefined columns.
+  `parentID` is described as `parentID.caption` instead of lookup, because `getDescriptionById` method 
+  returns '---' (for safe deleted, not accessible records, etc). [UBDF-12752]
+
+## [5.4.28] - 2020-12-21
+## [5.4.27] - 2020-12-20
+## [5.4.26] - 2020-12-17
+## [5.4.25] - 2020-12-16
+## [5.4.24] - 2020-12-14
+## [5.4.23] - 2020-12-09
+## [5.4.22] - 2020-12-09
+### Changed
+- `org_employeeonstaff-fm`: rewritten to vue
+
+## [5.4.21] - 2020-12-02
+### Fixed
+ - fixed `roleIDs.has is not a function` during log-in of user who not assigned to employee and not a `admin` (introduced in 5.4.20) 
+- `org_employee.meta.uk`: typo in 'middleNameGen', 'middleNameDat'
+- `org_staffunit-fm`: added missing `isNew` and `canSave` getters required for `saveParentBeforeAddNew`
+
 ## [5.4.20] - 2020-11-25
 ### Changed
  - allow log-in for user who not assigned to employee for members of Admin group (in addition to `admin` and `root` user).

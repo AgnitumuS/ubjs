@@ -1,6 +1,7 @@
 /**
  * Mount helpers for Vue components
- * @module mount
+ * @module mountUtils
+ * @memberOf module:@unitybase/adminui-vue
  */
 module.exports = {
   mountTab,
@@ -13,17 +14,17 @@ module.exports = {
 const Vue = require('vue')
 const UB = require('@unitybase/ub-pub')
 const Dialog = require('element-ui').Dialog
-const { dialog: $dialog } = require('../../components/dialog/UDialog')
+const uDialogs = require('../uDialogs')
 
 /**
- * Mount form in modal Dialog
+ * Mount form in modal. Provide `isModal: true` to the child components, child components can inject it as `parentIsModal`
  *
  * @param {object} cfg
  * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
- * @param {Store} cfg.store Store
- * @param {object} cfg.validator Vuelidate validation object
+ * @param {Vuex.Store} cfg.store Store
  * @param {string} cfg.title Title
+ * @param {Validator} [cfg.validator] Validator
  * @param {string} [cfg.modalClass] Modal class
  * @param {string} [cfg.modalWidth] Modal width
  * @param {object} cfg.provide Regular object which provide all props what passed in it
@@ -32,8 +33,8 @@ function mountModal ({
   component,
   props,
   store,
-  validator,
   title: titleText,
+  validator,
   modalClass = 'ub-dialog__reset-padding',
   modalWidth,
   provide
@@ -81,7 +82,8 @@ function mountModal ({
     },
     provide () {
       return {
-        $v: validator,
+        $v: validator ? validator.getValidationState() : undefined,
+        validator,
         $formServices: {
           setTitle: this.setTitle,
           close: () => {
@@ -96,6 +98,7 @@ function mountModal ({
             this.dialogVisible = false
           }
         },
+        isModal: true,
         ...provide
       }
     },
@@ -142,12 +145,13 @@ function mountModal ({
 /**
  * Mount form in tab
  * @param {object} cfg
- * @param {VueComponent} cfg.component Form component
+ * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
- * @param {VuexStore} cfg.store Store
- * @param {object} cfg.validator Vuelidate validation object
+ * @param {Vuex.Store} cfg.store Store
  * @param {string} cfg.title Title
  * @param {string} cfg.tabId navbar tab ID
+ * @param {Validator} [cfg.validator] Validator
+ * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  * @param {boolean} [cfg.openInBackgroundTab=false] If `true` - the tab with a newly opened form does not become active.
  */
@@ -157,20 +161,25 @@ function mountTab ({
   store,
   validator,
   title: titleText,
+  titleTooltip: titleTooltipText,
   tabId,
+  uiTag,
   provide,
   openInBackgroundTab
 }) {
   const tab = $App.viewport.centralPanel.add({
     title: titleText,
+    titleTooltip: titleTooltipText,
     id: tabId,
-    closable: true
+    closable: true,
+    uiTag
   })
 
   const instance = new Vue({
     data () {
       return {
-        titleText
+        titleText,
+        titleTooltipText
       }
     },
     computed: {
@@ -194,6 +203,10 @@ function mountTab ({
         const prefix = this.isDirty ? '* ' : ''
         const suffix = this.isNew ? ` (${UB.i18n('dobavlenie')})` : ''
         return prefix + this.$ut(this.titleText) + suffix
+      },
+
+      titleTooltip () {
+        return this.$ut(this.titleTooltipText) || this.title
       }
     },
     watch: {
@@ -207,14 +220,21 @@ function mountTab ({
     methods: {
       setTitle (title) {
         this.titleText = title
+      },
+
+      setTooltip (tooltip) {
+        this.titleTooltipText = tooltip
+        tab._formFullTitle = tooltip
       }
     },
     render: (h) => h(component, { props }),
     provide () {
       return {
-        $v: validator,
+        $v: validator ? validator.getValidationState() : undefined,
+        validator,
         $formServices: {
           setTitle: this.setTitle,
+          setTooltip: this.setTooltip,
           close: tab.close.bind(tab),
           forceClose () {
             tab.forceClose = true
@@ -251,14 +271,14 @@ function mountTab ({
 }
 
 /**
- * Check form isDirty then ask user what he want to do
+ * Check form isDirty, and is so - ask user to save od discard changes or continue to edit
  * @param {Store} store Store
  * @param {Function} close Callback for close
  */
 function beforeClose ({ store, close }) {
   if (store) {
     if (store.getters.isDirty) {
-      $dialog({
+      uDialogs.dialog({
         title: UB.i18n('unsavedData'),
         msg: UB.i18n('confirmSave'),
         type: 'warning',
@@ -292,18 +312,18 @@ function beforeClose ({ store, close }) {
  * @param {object} cfg
  * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
- * @param {Vuex} cfg.store Store
- * @param {object} cfg.validator Vuelidate validation object
+ * @param {Vuex.Store} cfg.store Store
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  * @param {Ext.component|String} cfg.target Either id of html element or Ext component
+ * @param {Validator} [cfg.validator] Validator
  */
 function mountContainer ({
   component,
   props,
   store,
-  validator,
   provide,
-  target
+  target,
+  validator
 }) {
   const instance = new Vue({
     store,
@@ -312,7 +332,8 @@ function mountContainer ({
     },
     provide () {
       return {
-        $v: validator,
+        $v: validator ? validator.getValidationState() : undefined,
+        validator,
         // for UToolbar
         $formServices: {
           setTitle () {},
@@ -345,8 +366,10 @@ function mountContainer ({
   } else if ('getId' in target) { // Ext component
     if (document.getElementById(`${target.getId()}-outerCt`)) {
       instance.$mount(`#${target.getId()}-outerCt`)
-    } else {
+    } else if (document.getElementById(`${target.getId()}-innerCt`)) {
       instance.$mount(`#${target.getId()}-innerCt`)
+    } else { // tab panel without fake element inside - use -body 
+      instance.$mount(`#${target.getId()}-body`)
     }
 
     // adding vue instance to basepanel
@@ -356,12 +379,10 @@ function mountContainer ({
     // this watcher helps parent ExtJS form to see vue form is dirty
     const unWatch = instance.$store
       ? instance.$store.watch(
-        (state, getters) => getters.isDirty,
-        (newValue, oldValue) => {
-          basePanel.updateActions()
-        },
-        { immediate: true }
-      )
+          (state, getters) => getters.isDirty,
+          () => basePanel.updateActions(),
+          { immediate: true }
+        )
       : null
     target.on('destroy', () => {
       if (unWatch) unWatch()
@@ -375,14 +396,15 @@ function mountContainer ({
 const UMasterDetailView = require('../../components/UMasterDetailView/UMasterDetailView.vue').default
 
 /**
- * Mount UMasterDetailView.
+ * Mount UMasterDetailView
  *
  * @param {object} cfg Command config
  * @param {object} cfg.props Props data
  * @param {object} cfg.tabId Tab id
+ * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
  * @param {object} [cfg.title] Tab title
  * @param {object} cfg.props UMasterDetailView props
- * @param {function:ClientRepository} [cfg.props.repository] Function which returns ClientRepository.
+ * @param {function} [cfg.props.repository] Function which returns ClientRepository.
  *   Can be empty in case `props.entityName` is defined - it this case repository constructed automatically
  *   based on attributes with `defaultView: true`
  * @param {string} [cfg.props.entityName] Name of entity. Ignored in case `props.repository` is defined
@@ -431,6 +453,7 @@ function mountTableEntity (cfg) {
     mountTableEntityAsTab({
       title,
       tabId: cfg.tabId,
+      uiTag: cfg.uiTag,
       tableRender
     })
   }
@@ -501,11 +524,13 @@ function mountTableEntityAsModal ({
  * @param {object} cfg
  * @param {string} cfg.title Tab title
  * @param {string} cfg.tabId Navbar tab ID
+ * @param {string} [cfg.uiTag] UI Tag for tracking subsystem
  * @param {function} cfg.tableRender UMasterDetailView render function
  */
 function mountTableEntityAsTab ({
   title,
   tabId,
+  uiTag,
   tableRender
 }) {
   const existedTab = Ext.getCmp(tabId) || $App.viewport.centralPanel.down(`panel[tabID=${tabId}]`)
@@ -515,7 +540,8 @@ function mountTableEntityAsTab ({
     const tab = $App.viewport.centralPanel.add({
       title: UB.i18n(title),
       id: tabId,
-      closable: true
+      closable: true,
+      uiTag
     })
 
     const instance = new Vue({

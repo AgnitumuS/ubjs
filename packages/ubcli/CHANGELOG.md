@@ -15,6 +15,212 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.21.15] - 2021-08-09
+## [5.21.14] - 2021-08-04
+## [5.21.13] - 2021-07-18
+## [5.21.12] - 2021-07-08
+## [5.21.11] - 2021-06-14
+### Fixed
+- `migrate` command now tolerate multiple records in `ub_version` table for the same model,
+  it takes the most recent version
+
+## [5.21.10] - 2021-05-24
+### Fixed
+- DDL generator includes `mi_tenantID` for unique indexes of multi-tenant entities
+
+## [5.21.9] - 2021-05-13
+## [5.21.8] - 2021-05-07
+### Fixed
+ - `ubcli generateDDL` for Oracle: fixed referential constraint generation in case referenced table is located in
+  another schema (in such case constraint UNEXPECTEDLY owned by reference table schema)
+
+## [5.21.7] - 2021-05-05
+### Fixed
+ - `ubcli generateDDL`: fixed referential constraint generation in case referenced entity,
+   or it's primary key attribute has a mapping
+- `ubcli generateDDL`: prevent reading of database / roles list in case neither `-drop` nor `-create` is passed.
+  This allows to init an existed DB for user without DBA privileges
+
+## [5.21.6] - 2021-04-24
+## [5.21.5] - 2021-04-23
+## [5.21.4] - 2021-04-22
+## [5.21.3] - 2021-04-19
+## [5.21.2] - 2021-04-19
+### Added
+ - `ubcli generateDDL` create a backup script in case previous DDL generation script exists (by adding .bak to file name)
+
+### Changed
+ - `ubcli generateDDL` for Oracle - dramatically speed up by reset a connection NLS_SORT and NLS_COMP to BINARY - 
+   this allows Oracle to use indexes for queries over system views. 
+
+### Fixed
+ - `ubcli generateDDL` fixed for Oracle **sequences** defined in metadata `pkGenerator`:
+    - prevents to create a **sequence** what accessible for connection but don't owned by it (synonyms etc).
+      Fixed by read available sequences using `ALL_SEQUENCES` system view instead of `user_sequences`
+    - prevent to create a sequence multiple times in case it used as `pkGenerator` for several entities  
+    - prevent generate a DDLs for External/Virtual entities what referenced from models DDL generator is executed for
+ - `ubcli generateDDL` - added table and field names to exception message in case of invalid or unsupported
+   default value for Date/DateTime attribute is defined in metadata   
+
+## [5.21.1] - 2021-04-16
+## [5.21.0] - 2021-04-13
+### Added
+ - `ubcli generateNginxCfg` adds in-memory buffering of incoming requests and outgoing responses to nginx config.
+   This prevents nginx to create temp files for buffering in most case
+ - `tid` parameter for `ubcli migrate`, so that `ubcli migrate -noddl -tid 199` may be used for tenant initialization
+   (will require @unitybase/ub-migrate@1.20+, with 1.19 will just ignore the param)
+
+## [5.20.5] - 2021-04-02
+### Fixed
+ - **BREAKING** `ubcli generateDDL -m MODEL1,MODEL2` generates a DDL for entities what initially defined in the
+  MODEL1 and MODEL2. Before this fix DDL generator skip entities defined in MODEL1 but overridden in MODEL_X (what not in -m list)
+
+## [5.20.4] - 2021-04-01
+## [5.20.3] - 2021-03-30
+### Fixed
+  - `ubcli migrate`: fix for parameter `-ddlfor`
+
+## [5.20.2] - 2021-03-30
+### Added
+ - `ubcli migrate`: new parameter `-ddlfor model1,model2,...` - allows to specify
+   a model list DDL generator is limited for. **For legacy apps**
+   Option value is passed as a `--models` to `ubcli generateDDL`
+
+## [5.20.1] - 2021-03-29
+## [5.20.0] - 2021-03-25
+## [5.19.8] - 2021-03-23
+## [5.19.7] - 2021-03-17
+### Changed
+ - `ubcli convertDefFiles` produce simplified BLOB info (only origName is stored instead of JSON)
+
+## [5.19.6] - 2021-03-15
+### Added
+ - added multitenancy support for `generateDDL`
+ - implemented generateDDL multitenancy support for Postgres
+ - `ubcli generateNginxCfg` support multitenancy (by adding a *. for `server_name` directive)
+
+### Fixed
+ - `ubcli generateNginxCfg` consider default for `serverConfig.metrics.enabled` is true, so correctly adds
+   allow rules for `metrics` endpoint as configured in `serverConfig.metrics.allowedFrom`
+
+## [5.19.5] - 2021-03-03
+## [5.19.4] - 2021-02-25
+### Added
+ - `ubcli execSql` command accept `-v` parameter for a verbose mode.
+   In the verbose mode each executed SQL statement will be logged into console 
+ - `ubcli migrate`  command accept `-v` parameter for a verbose mode and `-p` parameter for progress.
+   Both a passed to execSql, this allows output all executed SQL statement into a console (SQL statement logging) 
+
+## [5.19.3] - 2021-02-10
+## [5.19.2] - 2021-02-08
+## [5.19.1] - 2021-02-03
+## [5.19.0] - 2021-02-02
+## [5.12.5] - 2021-01-30
+## [5.12.4] - 2021-01-26
+## [5.12.3] - 2021-01-19
+## [5.12.2] - 2021-01-17
+## [5.12.1] - 2020-12-30
+### Fixed
+ - `execSql` (also used in generateDDL) in optimistic mode will explicitly rollback transaction on errors.
+   This prevents `current transaction is aborted, commands ignored until end of transaction block` error
+   for subsequent queries on Postgres. 
+   
+## [5.12.0] - 2020-12-28
+### Added
+ - `ubcli generateNginxCfg` will add `includes` directives into generated config - this allows to extend application reverse proxy 
+   configuration without modifying of generated `conf` file.
+   See [Extending autogenerated config](https://unitybase.info/api/server-v5/tutorial-reverse_proxy_nginx.html#extending-autogenerated-config)
+   section of Reverse Proxy tutorial.
+
+### Changed
+ - `ubcli generateDDL` SUFFIXES index - avoid create an index organized table (clustered PK for (tail, sourceID) on SQL Server),
+   because it causes a deadlock on hi-load. Instead, create two separate index - one on `sourceID` and one on `tail`.
+
+### Fixed
+ - `ubcli generateNginxCfg` - use `$remote_addr` instead of `$realip_remote_addr` to set a remoteIPHeader (X-Real-IP by default).
+   This allows to use a [ngx_http_realip_module](http://nginx.org/en/docs/http/ngx_http_realip_module.html) to
+   correctly define a real client IP address - see example in 
+   [Extending autogenerated config](https://unitybase.info/api/server-v5/tutorial-reverse_proxy_nginx.html#extending-autogenerated-config)
+   section of reverse proxy tutorial
+
+## [5.11.5] - 2020-12-22
+### Added
+ - allow to specify a folder (or file for single-sile) migration name in dotted notation for better human readability.
+   Such versions are transformed to 9-digits notation just after reading a file names and
+   all other operations (sorting, comparing, inserting in ub_migration table) are done with normalized file names.
+   
+   So instead of `001001001-initial.sql` `1.01.01-initial.sql` or even `1.1.1-initial.sql`(not recommended)
+   can be used (the same with folder names).
+   
+   Existed migrations can be safely renamed even if they are already applied, because names are normalized **before**
+   they written/compared with DB versions. Full Backward compatibility - no breaking changes.
+
+
+## [5.11.4] - 2020-12-21
+## [5.11.3] - 2020-12-20
+### Added
+ - `ubcli migrate` will skip files what intended for migrate to the model version prior to the current DB state.
+   For example if ub_version table contains row with `modelName=UBA` and `version=005018021` all files and folders in
+   `@unitybase/uba/_migrate` folder what starts from 9 digits what smaller than 005018021 are skipped.
+
+   This prevents to apply an outdated migrations what do the same things `ubcli initialize` already did for new application.  
+
+## [5.11.2] - 2020-12-16
+### Fixed
+ - SQL Server DDL generation - fix error ` Property 'MS_Description' already exists` by using `sp_updateextendedproperty` if previous comment is ''.
+
+## [5.11.1] - 2020-12-14
+### Added
+ - `migrate`: a new hook `_beforeDDLc_` (_hooks.beforeGenerateDDLc) is added - called after `_beforeDDL_` but before
+  generateDDL. The difference from `__beforeDDL_` - an HTTP connection to server (conn parameter) is available for this hook.   
+
+### Changed
+ - DDL generator uses the same sources for all RDBMS to generate an `update` statement for fields with `not null` and for
+  fields with `defaultValue`
+
+### Fixed
+ - `changePassword` endpoint - deprecated `forUser` parameter is removed. To change a password for other user by `Supervisor`
+   `uba_user.changeOtherUserPassword` method should be used everywhere (as it is already done on uba_user form)
+ - `ubcli migrate` will check `ub_migration` table exists before applying a `_beforeDDL_` hooks.
+   If table does not exist, it will be created, so names of `_beforeDDL_` hooks files can be inserted into `ub_migration` table.
+
+## [5.11.0] - 2020-12-09
+### Added
+ - `ubcli generateNginxCfg` - added `/metrics` endpoint restriction generation using
+   ubConfig `metrics.allowedFrom` setting. 
+
+### Changed
+ - Oracle: DDL generator creates CLOB field for attributes of type `JSON`.
+
+  **WARNING** manual migration of  `_beforeDDL_` type is required for each JSON attribute.
+  Create a file named `010_beforeDDL_OraVarchar2CLOB.sql` (${TBL} and ${ATTR} should be replaced
+  by entity and attribute for JSON attributes):    
+  ```
+<% if (conn.dialect.startsWith('Oracle')) { %>
+    ALTER TABLE ${TBL} ADD (${ATTR}_c CLOB);
+    --
+    UPDATE ${TBL} SET ${ATTR}_c = ${ATTR} WHERE 1=1;
+    --
+    ALTER TABLE ${TBL} DROP COLUMN ${ATTR};
+    --
+    ALTER TABLE ${TBL} RENAME COLUMN ${ATTR}_c TO ${ATTR};
+<% } %>
+  ``` 
+
+
+### Fixed
+ - `ubcli generateNginxCfg` - `/clientRequire` location will try `$uri` `$uri/.entryPoint.js` `$uri.js` (`$uri/.entryPoint.js` added).
+  This prevents an unnecessary redirect for folders, for example `GET http://localhost/clientRequire/asn1js`
+  will return `inetpub/clientRequire/asn1js/entryPoint.js` instead of redirect to `http://localhost/clientRequire/asn1js/`. 
+
+## [5.10.2] - 2020-12-02
+### Changed
+ - `ubcli generateDDL` - default value for `-host` changed to `auto` as in all other `ubcli` commands
+- `ubcli genSuffixesIndexInitScript` -  default value for `-host` changed to `auto`
+
+### Fixed
+ - Postgres DDL generator: prevent re-create default value constraint for `Json` attributes with `defaultValue` (fix #109) 
+
 ## [5.10.1] - 2020-11-25
 ## [5.10.0] - 2020-11-23
 ### Added

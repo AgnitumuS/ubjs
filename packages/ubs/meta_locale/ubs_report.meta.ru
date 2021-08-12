@@ -28,10 +28,6 @@
         {
             "name": "ID",
             "caption": "ИД"
-        },
-        {
-            "name": "mi_modifyDate",
-            "caption": "Дата изменения"
         }
     ]
 }

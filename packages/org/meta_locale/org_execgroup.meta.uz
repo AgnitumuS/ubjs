@@ -1,0 +1,30 @@
+{
+  "caption": "Ijrochilar guruhlari",
+  "description": "Vazifalar uchun ijrochilarning namunaviy guruhlari ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "parentID",
+      "caption": "Ota-ona tugun"
+    },
+    {
+      "name": "groupType",
+      "caption": "Turi"
+    },
+    {
+      "name": "code",
+      "caption": "Ichki kod"
+    },
+    {
+      "name": "name",
+      "caption": "Guruh nomi"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Ism"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Ism"
+    }
+  ]
+}

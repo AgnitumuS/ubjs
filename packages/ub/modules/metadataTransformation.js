@@ -1,3 +1,4 @@
+/* eslint-disable node/no-deprecated-api */
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
@@ -9,8 +10,10 @@ if (typeof nativeApp._nativeInitEntity !== 'function') {
   throw new Error('This version of @unitybase/ub package require UB server to be at last 5.18.0')
 }
 
-// manually define a console - it is not defined yet because UB.js is not evaluated
-global.console = require('console')
+// manually define a console in case this module is required by native ( before UB.js )
+if (typeof global.console === 'undefined') {
+  global.console = require('console')
+}
 
 const argv = require('@unitybase/base').argv
 const cfg = argv.getServerConfiguration()
@@ -24,9 +27,10 @@ module.exports = loadDomainIntoJS
  *
  * Hooks can mutate a domainJSON according to their needs.
  *
+ * @param {boolean} [skipNativeEntityInit=false] Set it to true in case domain is already loaded but raw domain info must be retrieved
  * @return {object<string, {modelName: string, meta: object, lang: object<string, object>}>}
  */
-function loadDomainIntoJS () {
+function loadDomainIntoJS (skipNativeEntityInit) {
   console.time('load domain')
   const { hooks, ePaths } = readAllEntitiesPathsAndHooks()
   const domainJSON = {}
@@ -35,14 +39,16 @@ function loadDomainIntoJS () {
     const ep = ePaths[en]
     const p = ep.metaFiles[0].fullPath
     const metaJSON = loadMetaAsJSON(p) // main meta file
-    let modelName = ep.metaFiles[0].modelName
+    const modelName = ep.metaFiles[0].modelName // original model name
+    const overriddenBy = []
     if (ep.metaFiles.length > 1) { // need to merge meta files from other models
       for (let i = 1, L = ep.metaFiles.length; i < L; i++) {
         console.log(`MERGE "${en}" with descendant from "${ep.metaFiles[i].modelName}" model`)
         const override = loadMetaAsJSON(ep.metaFiles[i].fullPath)
         _.mergeWith(metaJSON, override, mergeNamedCollections)
-        modelName = ep.metaFiles[i].modelName
+        overriddenBy.push(ep.metaFiles[i].modelName)
       }
+      if (overriddenBy.length) metaJSON.overriddenBy = overriddenBy.join(',')
     }
     // merge lang files
     const languages = {}
@@ -78,17 +84,19 @@ function loadDomainIntoJS () {
     })
     console.timeEnd('applying hooks')
   }
-  console.time('native init')
-  for (const en in domainJSON) {
-    const e = domainJSON[en]
-    try {
-      nativeApp._nativeInitEntity(e.modelName, en, e.meta, e.langs)
-    } catch (err) {
-      console.error(`Can't init entity ${en}\n Something wrong in entity JSON`)
-      throw err
+  if (!skipNativeEntityInit) {
+    console.time('native init')
+    for (const en in domainJSON) {
+      const e = domainJSON[en]
+      try {
+        nativeApp._nativeInitEntity(e.modelName, en, e.meta, e.langs)
+      } catch (err) {
+        console.error(`Can't init entity ${en}\n Something wrong in entity JSON`)
+        throw err
+      }
     }
+    console.timeEnd('native init')
   }
-  console.timeEnd('native init')
   return domainJSON
 }
 
@@ -194,7 +202,7 @@ function mergeNamedCollections (orig, desc) {
   ) {
     if (!orig.length) return desc
     desc.forEach(dItem => {
-      let oItem = orig.find(oItem => oItem.name === dItem.name)
+      const oItem = orig.find(oItem => oItem.name === dItem.name)
       if (oItem) {
         _.mergeWith(oItem, dItem, mergeNamedCollections)
       } else {

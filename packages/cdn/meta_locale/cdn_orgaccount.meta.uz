@@ -1,0 +1,30 @@
+{
+  "caption": "Hisob-kitoblar",
+  "description": "Tashkilotlarning hisob-kitob hisobvaraqlari ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "organizationID",
+      "caption": "Tashkilot"
+    },
+    {
+      "name": "currencyID",
+      "caption": "Valyuta"
+    },
+    {
+      "name": "bankID",
+      "caption": "Bank"
+    },
+    {
+      "name": "code",
+      "caption": "Hisob kodi"
+    },
+    {
+      "name": "acctype",
+      "caption": "Hisob turi"
+    },
+    {
+      "name": "description",
+      "caption": "Tavsif"
+    }
+  ]
+}

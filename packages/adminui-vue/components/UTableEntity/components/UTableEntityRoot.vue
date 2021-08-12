@@ -41,9 +41,7 @@
             color="control"
             :disabled="loading"
             @click="refresh"
-          >
-            {{ $ut('refresh') }}
-          </u-button>
+          />
         </el-tooltip>
 
         <!-- @slot Replace add-new button in toolbar panel -->
@@ -53,6 +51,7 @@
           name="toolbarButtonAddNew"
         >
           <el-tooltip
+            v-if="showAddNew"
             :content="$ut('actionAdd')"
             placement="bottom"
             :open-delay="300"
@@ -64,9 +63,7 @@
               icon="u-icon-add"
               color="control"
               @click="addNew"
-            >
-              {{ $ut('actionAdd') }}
-            </u-button>
+            />
           </el-tooltip>
         </slot>
 
@@ -78,8 +75,16 @@
         />
 
         <filter-selector />
-        <sort ref="sort" />
-        <pagination />
+        <sort
+          ref="sort"
+          :target-column="targetColumn"
+          @click.native="onSort"
+        />
+        <pagination v-if="withPagination" />
+        <div
+          v-else
+          style="margin-left: auto"
+        />
 
         <!-- @slot Replace whole toolbar dropdown -->
         <slot
@@ -100,70 +105,89 @@
             <!-- @slot Replace add-new button in toolbar dropdown -->
             <template #add-new>
               <slot
+                v-if="showAddNew"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownAddNew"
               />
+              <div v-else />
             </template>
             <!-- @slot Replace edit button in toolbar dropdown -->
             <template #edit>
               <slot
+                v-if="showEdit"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownEdit"
               />
+              <div v-else />
             </template>
             <!-- @slot Replace copy button in toolbar dropdown -->
             <template #copy>
               <slot
+                v-if="showCopy"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownCopy"
               />
+              <div v-else />
             </template>
             <!-- @slot Replace delete button in toolbar dropdown -->
             <template #delete>
               <slot
+                v-if="showDelete"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownDelete"
               />
+              <div v-else />
             </template>
             <!-- @slot Replace audit button in toolbar dropdown -->
             <template #audit>
               <slot
+                v-if="showAudit"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownAudit"
               />
+              <div v-else />
             </template>
             <!-- @slot Replace summary button in toolbar dropdown -->
             <template #summary>
               <slot
+                v-if="showSummary"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownSummary"
               />
+              <div v-else />
             </template>
             <!-- @slot Replace data history button in toolbar dropdown -->
             <template #dataHistory>
               <slot
+                v-if="showVersions"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownDataHistory"
               />
+              <div v-else />
             </template>
             <!-- @slot Replace exports button in toolbar dropdown -->
             <template #exports>
               <slot
+                v-if="showExport"
                 :close="close"
                 :store="$store"
                 name="toolbarDropdownExports"
               />
+              <div v-else />
             </template>
 
             <!-- @slot Replace viewMode button in toolbar dropdown -->
-            <template #viewMode>
+            <template
+              v-if="showViewMode"
+              #viewMode
+            >
               <slot
                 :close="close"
                 :store="$store"
@@ -231,6 +255,7 @@
           {{ $ut(column.label) }}
           <i
             v-if="sort"
+            :key="column.id"
             :class="getSortIconClass(column.id)"
           />
         </slot>
@@ -255,7 +280,19 @@
         </slot>
       </template>
 
-      <next-page-button slot="appendTable" />
+      <template #lastTableRow>
+        <!-- @slot display specific content in the last row of the table -->
+        <slot name="lastTableRow" />
+      </template>
+
+      <template #appendTable>
+        <next-page-button
+          v-if="withPagination"
+        />
+
+        <!-- @slot add some content at the end of the table after the pagination button -->
+        <slot name="appendTable" />
+      </template>
     </u-table>
 
     <u-card-view
@@ -266,7 +303,7 @@
       :get-card-class="getRowClass"
       @click="select"
       @contextmenu="showContextMenu"
-      @dblclick="onSelect"
+      @dblclick="onSelect($event.row.ID, $event.row)"
     >
       <slot
         slot="card"
@@ -274,8 +311,25 @@
         name="card"
         :row="row"
       />
+      <template
+        v-for="slot in Object.keys($scopedSlots)"
+        :slot="slot"
+        slot-scope="scope"
+      >
+        <slot
+          :name="slot"
+          v-bind="scope"
+        />
+      </template>
 
-      <next-page-button slot="append" />
+      <template #append>
+        <next-page-button
+          v-if="withPagination"
+        />
+
+        <!-- @slot add some content at the end of the card-view after the pagination button -->
+        <slot name="appendTable" />
+      </template>
     </u-card-view>
 
     <u-dropdown
@@ -299,6 +353,7 @@
         >
           <!-- @slot Replace action "edit" in context menu -->
           <slot
+            v-if="showEdit"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -314,13 +369,14 @@
 
           <!-- @slot Replace action "copy" in context menu -->
           <slot
+            v-if="showCopy"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
             name="contextMenuCopy"
           >
             <u-dropdown-item
-              :disabled="!canAddNew"
+              :disabled="!canCopy"
               icon="u-icon-copy"
               label="Copy"
               @click="copyRecord(contextMenuRowId)"
@@ -329,6 +385,7 @@
 
           <!-- @slot Replace action "delete" in context menu -->
           <slot
+            v-if="showDelete"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -344,6 +401,7 @@
 
           <!-- @slot Replace "copy link" in context menu -->
           <slot
+            v-if="showCopyLink"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -359,6 +417,7 @@
 
           <!-- @slot Replace "audit" in context menu -->
           <slot
+            v-if="showAudit"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -382,6 +441,7 @@
               <u-dropdown-item divider />
 
               <u-dropdown-item
+                v-if="showCreateNewVersion"
                 icon="u-icon-file-add"
                 label="novajaVersija"
                 :disabled="!canCreateNewVersion"
@@ -434,6 +494,12 @@ export default {
     NextPageButton: require('./NextPageButton.vue').default
   },
 
+  inject: {
+    close: {
+      default: () => () => console.warn('Injection close didn\'t provided')
+    }
+  },
+
   props: {
     /**
      * If set, table will have static height.
@@ -446,6 +512,15 @@ export default {
      * Table container will have own scroll and fixed header.
      */
     maxHeight: [Number, String],
+
+    /**
+     * Whether to use pagination for table
+     */
+    withPagination: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
 
     /**
      * Display a border around table and toolbar
@@ -466,14 +541,9 @@ export default {
     onSelectRecord: Function
   },
 
-  inject: {
-    close: {
-      default: () => () => console.warn('Injection close didn\'t provided')
-    }
-  },
-
   data () {
     return {
+      targetColumn: null,
       contextMenuRowId: null
     }
   },
@@ -488,16 +558,28 @@ export default {
     ]),
 
     ...mapGetters([
+      'showAddNew',
       'canAddNew',
+      'showCopy',
+      'canCopy',
+      'showEdit',
       'canEdit',
+      'showDelete',
       'canDelete',
+      'showAudit',
       'canAudit',
       'hasSelectedRow',
       'formCode',
       'columns',
       'cardColumns',
+      'showCreateNewVersion',
+      'showVersions',
+      'showCopyLink',
+      'showViewMode',
       'canCreateNewVersion',
-      'hasDataHistoryMixin'
+      'hasDataHistoryMixin',
+      'showSummary',
+      'showExport'
     ]),
 
     selectedColumnId: {
@@ -701,14 +783,22 @@ export default {
       if (this.sort.order === 'desc') return 'u-icon-sort-desc'
     },
 
-    showSortDropdown (column) {
+    showSortDropdown (column, target) {
       if (column.sortable === false) {
         return
       }
       this.SELECT_COLUMN(column.id)
       // setTimeout for prevent click outside
-      setTimeout(this.$refs.sort.$refs.dropdown.toggleVisible, 0)
+      if (this.$refs.sort && this.$refs.sort.$refs.dropdown) {
+        this.targetColumn = target
+        setTimeout(this.$refs.sort.$refs.dropdown.toggleVisible, 0)
+      }
+    },
+
+    onSort () {
+      this.targetColumn = null
     }
+
   }
 }
 </script>
@@ -731,7 +821,12 @@ export default {
 }
 
 .u-table-entity__bordered {
-  border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default))
+  border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+  border-radius: var(--border-radius);
+}
+
+.u-table-entity__bordered tr:last-child td {
+  border-bottom: none;
 }
 
 .u-table-entity .u-table {

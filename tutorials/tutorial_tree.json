@@ -30,6 +30,9 @@
       "entites": {
         "title": "Entites"
       },
+      "mixin_custom": {
+        "title": "Write your own mixin"
+      },
       "mixin_mstorage": {
         "title": "mStorage (CRUD)"
       },
@@ -41,6 +44,12 @@
       },
       "mixins_fts": {
         "title": "Full text search"
+      },
+      "mixins_fsstorage": {
+        "title": "File system storage"
+      },
+      "mixins_multitenancy": {
+        "title": "Multitenancy (EE)"
       },
       "primary_keys": {
         "title": "Primary keys"

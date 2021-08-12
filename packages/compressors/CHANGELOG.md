@@ -15,6 +15,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.1] - 2021-08-04
+### Fixed
+ - ub-server@5.20.4 compatibility (IsValidUTF8)
+
+## [5.2.0] - 2021-07-08
+### Added
+  - UZip - a JSZip@2 / PizZip compatible zip reader/writer
+     - *x10 faster* 
+     - read (load/constructor) can work directly with files in fs (without reading a full ZIP archive into memory), so *uses less memory*
+     - write operations can add data to archive from file in file system (without reading full source file into memory)
+
+## [5.1.46] - 2021-05-24
+## [5.1.45] - 2021-04-24
+## [5.1.44] - 2021-03-23
+## [5.1.43] - 2021-03-15
+## [5.1.42] - 2021-02-08
+## [5.1.41] - 2021-01-26
 ## [5.1.40] - 2020-11-25
 ## [5.1.39] - 2020-11-19
 ## [5.1.38] - 2020-11-15

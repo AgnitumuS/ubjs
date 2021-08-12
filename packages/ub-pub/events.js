@@ -9,34 +9,29 @@
 /**
  * NodeJS like EventEmitter for Browser usage. See also <a href="http://nodejs.org/api/events.html">NodeJS events documentation</a>
  *
- * To add event emitting to any object:
- *
+ * @example
 
+ // adding event emitting to any object:
  var myObject = {},
  var EventEmitter = UB.EventEmitter;
  // add EventEmitter to myObject
  EventEmitter.call(myObject);
  Object.assign(myObject, EventEmitter.prototype);
 
- * In case object created via constructor function
-
+ // In case object created via constructor function
  var EventEmitter = UB.EventEmitter;
  function MyObject() {
-        EventEmitter.call(this);
-     }
+    EventEmitter.call(this);
+ }
  MyObject.prototype = _.create(EventEmitter.prototype);
  var myObject = new MyObject();
  myObject instanceof UB.EventEmitter; //true
 
- * Usage:
-
+ // usage:
  myObject.on('myEvent', function(num, str){console.log(num, str) });
-
  myObject.emit('myEvent', 1, 'two'); // output: 1 "two"
 
- *
  * @class EventEmitter
- * @mixin
  */
 function EventEmitter () {
   EventEmitter.init.call(this)
@@ -101,45 +96,45 @@ EventEmitter.prototype.getMaxListeners = function getMaxListeners () {
 function emitNone (handler, isFn, self) {
   if (isFn) { handler.call(self) }
   else {
-    var len = handler.length
-    var listeners = arrayClone(handler, len)
-    for (var i = 0; i < len; ++i) { listeners[i].call(self) }
+    const len = handler.length
+    const listeners = arrayClone(handler, len)
+    for (let i = 0; i < len; ++i) { listeners[i].call(self) }
   }
 }
 
 function emitOne (handler, isFn, self, arg1) {
   if (isFn) { handler.call(self, arg1) }
   else {
-    var len = handler.length
-    var listeners = arrayClone(handler, len)
-    for (var i = 0; i < len; ++i) { listeners[i].call(self, arg1) }
+    const len = handler.length
+    const listeners = arrayClone(handler, len)
+    for (let i = 0; i < len; ++i) { listeners[i].call(self, arg1) }
   }
 }
 
 function emitTwo (handler, isFn, self, arg1, arg2) {
   if (isFn) { handler.call(self, arg1, arg2) }
   else {
-    var len = handler.length
-    var listeners = arrayClone(handler, len)
-    for (var i = 0; i < len; ++i) { listeners[i].call(self, arg1, arg2) }
+    const len = handler.length
+    const listeners = arrayClone(handler, len)
+    for (let i = 0; i < len; ++i) { listeners[i].call(self, arg1, arg2) }
   }
 }
 
 function emitThree (handler, isFn, self, arg1, arg2, arg3) {
   if (isFn) { handler.call(self, arg1, arg2, arg3) }
   else {
-    var len = handler.length
-    var listeners = arrayClone(handler, len)
-    for (var i = 0; i < len; ++i) { listeners[i].call(self, arg1, arg2, arg3) }
+    const len = handler.length
+    const listeners = arrayClone(handler, len)
+    for (let i = 0; i < len; ++i) { listeners[i].call(self, arg1, arg2, arg3) }
   }
 }
 
 function emitMany (handler, isFn, self, args) {
   if (isFn) { handler.apply(self, args) }
   else {
-    var len = handler.length
-    var listeners = arrayClone(handler, len)
-    for (var i = 0; i < len; ++i) { listeners[i].apply(self, args) }
+    const len = handler.length
+    const listeners = arrayClone(handler, len)
+    for (let i = 0; i < len; ++i) { listeners[i].apply(self, args) }
   }
 }
 
@@ -151,59 +146,123 @@ function emitMany (handler, isFn, self, args) {
  * @param {...*} eventArgs Arguments, passed to listeners
  * @return {boolean}
  */
-EventEmitter.prototype.emit = function emit (type) {
-  var er, handler, len, args, i, events
-  /* UB domain */
-  // UB var needDomainExit = false;
-  var doError = (type === 'error')
+EventEmitter.prototype.emit = function emit(type) {
+  let er, handler, len, args, i, events
+  let doError = (type === 'error')
 
-  events = this._events
-  if (events) { doError = (doError && events.error == null) }
-  else if (!doError) { return false }
-
-  // UB domain = this.domain;
+  events = this._events;
+  if (events)
+    doError = (doError && events.error == null);
+  else if (!doError)
+    return false;
 
   // If there is no 'error' event listener then throw.
   if (doError) {
-    er = arguments[1]
+    er = arguments[1];
+
     if (er instanceof Error) {
-      throw er // Unhandled 'error' event
+      throw er; // Unhandled 'error' event
     } else {
       // At least give some kind of context to the user
-      var err = new Error('Uncaught, unspecified "error" event. (' + er + ')')
-      err.context = er
-      throw err
+      const err = new Error('Uncaught, unspecified "error" event. (' + er + ')')
+      err.context = er;
+      throw err;
     }
+    return false;
   }
 
-  handler = events[type]
+  handler = events[type];
 
-  if (!handler) { return false }
+  if (!handler)
+    return false;
 
-  var isFn = typeof handler === 'function'
-  len = arguments.length
+  const isFn = typeof handler === 'function'
+  len = arguments.length;
   switch (len) {
     // fast cases
     case 1:
-      emitNone(handler, isFn, this)
-      break
+      emitNone(handler, isFn, this);
+      break;
     case 2:
-      emitOne(handler, isFn, this, arguments[1])
-      break
+      emitOne(handler, isFn, this, arguments[1]);
+      break;
     case 3:
-      emitTwo(handler, isFn, this, arguments[1], arguments[2])
-      break
+      emitTwo(handler, isFn, this, arguments[1], arguments[2]);
+      break;
     case 4:
-      emitThree(handler, isFn, this, arguments[1], arguments[2], arguments[3])
-      break
+      emitThree(handler, isFn, this, arguments[1], arguments[2], arguments[3]);
+      break;
     // slower
     default:
-      args = new Array(len - 1)
-      for (i = 1; i < len; i++) { args[i - 1] = arguments[i] }
-      emitMany(handler, isFn, this, args)
+      args = new Array(len - 1);
+      for (i = 1; i < len; i++)
+        args[i - 1] = arguments[i];
+      emitMany(handler, isFn, this, args);
   }
 
-  return true
+  return true;
+};
+
+function checkListener (listener) {
+  if (typeof listener !== 'function')
+    throw new TypeError('listener must be a function');
+}
+
+function _addListener(target, type, listener, prepend) {
+  let m
+  let events
+  let existing
+
+  checkListener(listener)
+
+  events = target._events;
+  if (!events) {
+    events = target._events = {};
+    target._eventsCount = 0;
+  } else {
+    // To avoid recursion in the case that type === "newListener"! Before
+    // adding it to the listeners, first emit "newListener".
+    if (events.newListener) {
+      /** @fires  newListener */
+      target.emit('newListener', type,
+        listener.listener ? listener.listener : listener);
+
+      // Re-assign `events` because a newListener handler could have caused the
+      // this._events to be assigned to a new object
+      events = target._events;
+    }
+    existing = events[type];
+  }
+
+  if (!existing) {
+    // Optimize the case of one listener. Don't need the extra array object.
+    existing = events[type] = listener;
+    ++target._eventsCount;
+  } else {
+    if (typeof existing === 'function') {
+      // Adding the second element, need to change to array.
+      existing = events[type] = prepend ? [listener, existing] : [existing, listener]
+    } else if (prepend) {
+      existing.unshift(listener);
+    } else {
+      existing.push(listener);
+    }
+
+    // Check for listener leak
+    if (!existing.warned) {
+      m = $getMaxListeners(target);
+      if (m && m > 0 && existing.length > m) {
+        existing.warned = true;
+        console.error('(node) warning: possible EventEmitter memory ' +
+          'leak detected. %d %s listeners added. ' +
+          'Use emitter.setMaxListeners() to increase limit.',
+          existing.length, type);
+        console.trace();
+      }
+    }
+  }
+
+  return target;
 }
 
 /**
@@ -222,69 +281,50 @@ EventEmitter.prototype.emit = function emit (type) {
  * @param {Function} listener
  * @return {EventEmitter}
  */
-EventEmitter.prototype.addListener = function addListener (type, listener) {
-  var m
-  var events
-  var existing
-
-  if (typeof listener !== 'function') { throw new TypeError('listener must be a function') }
-
-  events = this._events
-  if (!events) {
-    events = this._events = {}
-    this._eventsCount = 0
-  } else {
-    // To avoid recursion in the case that type === "newListener"! Before
-    // adding it to the listeners, first emit "newListener".
-    if (events.newListener) {
-      /** @event  newListener */
-      this.emit('newListener', type,
-        listener.listener ? listener.listener : listener)
-
-      // Re-assign `events` because a newListener handler could have caused the
-      // this._events to be assigned to a new object
-      events = this._events
-    }
-    existing = events[type]
-  }
-
-  if (!existing) {
-    // Optimize the case of one listener. Don't need the extra array object.
-    existing = events[type] = listener
-    ++this._eventsCount
-  } else {
-    if (typeof existing === 'function') {
-      // Adding the second element, need to change to array.
-      existing = events[type] = [existing, listener]
-    } else {
-      // If we've already got an array, just append.
-      existing.push(listener)
-    }
-
-    // Check for listener leak
-    if (!existing.warned) {
-      m = $getMaxListeners(this)
-      if (m && m > 0 && existing.length > m) {
-        existing.warned = true
-        console.error('(node) warning: possible EventEmitter memory ' +
-          'leak detected. %d %s listeners added. ' +
-          'Use emitter.setMaxListeners() to increase limit.',
-          existing.length, type)
-        console.trace()
-      }
-    }
-  }
-
-  return this
-}
+EventEmitter.prototype.addListener = function addListener(type, listener) {
+  return _addListener(this, type, listener, false);
+};
 
 /**
  * Alias for {@link EventEmitter#addListener addListener}
+ * @method
  * @param {String} type Event name
  * @param {Function} listener
  * @return {EventEmitter}
  */
-EventEmitter.prototype.on = EventEmitter.prototype.addListener
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+/**
+ * By default, event listeners are invoked in the order they are added.
+ * The emitter.prependOnceListener() method can be used as an alternative to add the event listener to the beginning of the listeners array.
+ *
+ * @method
+ * @param {String} type Event name
+ * @param {Function} listener
+ * @return {EventEmitter}
+ */
+EventEmitter.prototype.prependListener =
+  function prependListener(type, listener) {
+    return _addListener(this, type, listener, true);
+  };
+
+function onceWrapper() {
+  if (!this.fired) {
+    this.target.removeListener(this.type, this.wrapFn);
+    this.fired = true;
+    if (arguments.length === 0)
+      return this.listener.call(this.target);
+    return this.listener.apply(this.target, arguments);
+  }
+}
+
+function _onceWrap(target, type, listener) {
+  const state = { fired: false, wrapFn: undefined, target, type, listener };
+  const wrapped = onceWrapper.bind(state);
+  wrapped.listener = listener;
+  state.wrapFn = wrapped;
+  return wrapped;
+}
 
 /**
  * Adds a one time listener for the event. This listener is invoked only the next time the event is fired, after which it is removed.
@@ -292,25 +332,27 @@ EventEmitter.prototype.on = EventEmitter.prototype.addListener
  * @param {Function} listener
  * @return {EventEmitter}
  */
-EventEmitter.prototype.once = function once (type, listener) {
-  if (typeof listener !== 'function') { throw new TypeError('listener must be a function') }
+EventEmitter.prototype.once = function once(type, listener) {
+  checkListener(listener);
 
-  var fired = false
+  this.on(type, _onceWrap(this, type, listener));
+  return this;
+};
 
-  function g () {
-    this.removeListener(type, g)
+/**
+ * Adds a one-time listener function for the event named eventName to the beginning of the listeners array.
+ * The next time eventName is triggered, this listener is removed, and then invoked.
+ * @param {String} type Event name
+ * @param {Function} listener
+ * @return {EventEmitter}
+ */
+EventEmitter.prototype.prependOnceListener =
+  function prependOnceListener(type, listener) {
+    checkListener(listener);
 
-    if (!fired) {
-      fired = true
-      listener.apply(this, arguments)
-    }
-  }
-
-  g.listener = listener
-  this.on(type, g)
-
-  return this
-}
+    this.prependListener(type, _onceWrap(this, type, listener));
+    return this;
+  };
 
 /**
  * Remove a listener from the listener array for the specified event.
@@ -322,7 +364,7 @@ EventEmitter.prototype.once = function once (type, listener) {
  */
 EventEmitter.prototype.removeListener =
   function removeListener (type, listener) {
-    var list, events, position, i
+    let list, events, position, i
 
     if (typeof listener !== 'function') { throw new TypeError('listener must be a function') }
 
@@ -382,7 +424,7 @@ EventEmitter.prototype.removeListener =
  */
 EventEmitter.prototype.removeAllListeners =
   function removeAllListeners (type) {
-    var listeners, events
+    let listeners, events
 
     events = this._events
     if (!events) { return this }
@@ -401,8 +443,9 @@ EventEmitter.prototype.removeAllListeners =
 
     // emit removeListener for all listeners on all events
     if (arguments.length === 0) {
-      var keys = Object.keys(events)
-      for (var i = 0, key; i < keys.length; ++i) {
+      const keys = Object.keys(events)
+      let i = 0, key
+      for (; i < keys.length; ++i) {
         key = keys[i]
         if (key === 'removeListener') continue
         this.removeAllListeners(key)
@@ -433,9 +476,9 @@ EventEmitter.prototype.removeAllListeners =
  * @return {Array.<Function>}
  */
 EventEmitter.prototype.listeners = function listeners (type) {
-  var evlistener
-  var ret
-  var events = this._events
+  let evlistener
+  let ret
+  const events = this._events
 
   if (!events) { ret = [] }
   else {
@@ -465,10 +508,10 @@ EventEmitter.listenerCount = function (emitter, type) {
 EventEmitter.prototype.listenerCount = listenerCount
 
 function listenerCount (type) {
-  var events = this._events
+  const events = this._events
 
   if (events) {
-    var evlistener = events[type]
+    const evlistener = events[type]
 
     if (typeof evlistener === 'function') {
       return 1
@@ -482,12 +525,14 @@ function listenerCount (type) {
 
 // About 1.5x faster than the two-arg version of Array#splice().
 function spliceOne (list, index) {
-  for (var i = index, k = i + 1, n = list.length; k < n; i += 1, k += 1) { list[i] = list[k] }
+  let i = index, k = i + 1
+  const n = list.length
+  for (; k < n; i += 1, k += 1) { list[i] = list[k] }
   list.pop()
 }
 
 function arrayClone (arr, i) {
-  var copy = new Array(i)
+  const copy = new Array(i)
   while (i--) { copy[i] = arr[i] }
   return copy
 }

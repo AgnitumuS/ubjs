@@ -38,10 +38,6 @@
             "caption": "Тип формы"
         },
         {
-            "name": "mi_modifyDate",
-            "caption": "Санаи тағир "
-        },
-        {
             "name": "formCode",
             "description": "JS бо мантиқи шакли муштарӣ",
             "caption": "Скрипти форма"

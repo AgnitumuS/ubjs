@@ -12,10 +12,6 @@
     <u-date-picker
       v-model="value"
       type="daterange"
-      range-separator="-"
-      :start-placeholder="$ut('startDate')"
-      :end-placeholder="$ut('endDate')"
-      :picker-options="pickerOptions"
     />
   </filter-template>
 </template>
@@ -30,45 +26,7 @@ export default {
 
   data () {
     return {
-      value: null,
-      pickerOptions: {
-        shortcuts: [{
-          text: this.$ut('today'),
-          onClick: (picker) => {
-            const end = this.$UB.truncTimeToUtcNull(new Date())
-            const start = this.$UB.truncTimeToUtcNull(new Date())
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: this.$ut('yesterday'),
-          onClick: (picker) => {
-            const end = this.$UB.truncTimeToUtcNull(this.$moment().subtract(1, 'day').toDate())
-            const start = this.$UB.truncTimeToUtcNull(this.$moment().subtract(1, 'day').toDate())
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: this.$ut('lastMonth'),
-          onClick: (picker) => {
-            const end = this.$UB.truncTimeToUtcNull(new Date())
-            const start = this.$UB.truncTimeToUtcNull(this.$moment().subtract(1, 'month').toDate())
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: this.$ut('lastQuarter'),
-          onClick: (picker) => {
-            const end = this.$UB.truncTimeToUtcNull(new Date())
-            const start = this.$UB.truncTimeToUtcNull(this.$moment().subtract(3, 'month').toDate())
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: this.$ut('last6Month'),
-          onClick: (picker) => {
-            const end = this.$UB.truncTimeToUtcNull(new Date())
-            const start = this.$UB.truncTimeToUtcNull(this.$moment().subtract(6, 'month').toDate())
-            picker.$emit('pick', [start, end])
-          }
-        }]
-      }
+      value: null
     }
   },
 

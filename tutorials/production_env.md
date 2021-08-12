@@ -10,7 +10,6 @@ For applications (consider application name is `autotest`)
 
  - Pack app for deployment (in the application folder)
 ```shell script
-# 
 cd autotest
 ub-pack # this creates `/tmp/ubapp-autotest#x.y.z.tar.gz
 ```
@@ -40,7 +39,6 @@ For products (consider product name is `docflow`)
 
  - Pack product for deployment (in the application folder)
 ```shell script
-# 
 cd docflow
 ub-pack # this creates `/tmp/ubproduct-docflow#x.y.z.tar.gz
 ```
@@ -50,7 +48,7 @@ ub-pack # this creates `/tmp/ubproduct-docflow#x.y.z.tar.gz
 sudo -u unitybase ub-deploy ubproduct-docflow#x.y.z.tar.gz
 ```
 
- - If this is first time product setup (there is no application for this product on this server)
+ - If this is a first time product setup (there is no application for this product on this server)
    - create new app
    ```shell script
    sudo -u unitybase ub-app-new -p docflow -a docflow-cust1
@@ -61,7 +59,7 @@ sudo -u unitybase ub-deploy ubproduct-docflow#x.y.z.tar.gz
    sudo -u unitybase ub-app-init cust1 # will create app docflow-cust1  
    ```
    
- - if this is upgrade - all affected applications should be upgraded
+ - if this is an upgrade - all affected applications should be upgraded
  ```shell script
  sudo systemctl stop unitybase@docflow*
  # for each app (docflow-cust1)
@@ -85,7 +83,7 @@ All files what must be excluded from archive should be noted in `.npmignore`. Al
  - /logs, /stores, /localdb
  - ./inetpub/clientRequire folder 
 
-If this is a product set a
+In case this is a product, set a
 ```
 "config": {
  "ubapptype": "product"
@@ -338,7 +336,7 @@ manually (using `systemstl start`).
 
 To force systemd to reset service startup failure counters use a command:
 ```shell script
-systemctl reset-failed
+sudo systemctl reset-failed
 ```
  
 Typical operations are:
@@ -361,8 +359,9 @@ sudo mkdir -p /var/log/journal
 sudo systemd-tmpfiles --create --prefix /var/log/journal
 ```
 
-For a systemd < 254 setup `/etc/systemd/journal.conf` as in `/etc/systemd/journald@unitybase.conf`
-For a systemd `/etc/systemd/journald@unitybase.conf` preset is used automatically.
+For a systemd < 254 setup `/etc/systemd/journald.conf` as in `/etc/systemd/journald@unitybase.conf`
+
+For a systemd >= 254 `/etc/systemd/journald@unitybase.conf` preset is used automatically.
 
 Restart journald to apply new changes
 ```shell script
@@ -382,7 +381,7 @@ systemctl force-reload systemd-journald
  net.core.rmem_max=26214400
  net.core.rmem_default=26214400
 ``` 
- Changes to /etc/sysctl.conf do not take effect until reboot. To update the values immediately, type the following commands as root:
+ Changes to /etc/sysctl.conf do not take effect until a reboot. To update the values immediately, type the following commands as root:
 ```shell script 
  sysctl -w net.core.rmem_max=26214400
  sysctl -w net.core.rmem_default=26214400
@@ -399,6 +398,13 @@ journalctl --since 09:00 --until now -u unitybase@autotest -p notice
 journalctl -u unitybase@autotest --no-hostname -o short-iso-precise --since today _COMM=ub > todaysLog.log
 # follow logs 
 journalctl -u unitybase* -f
+```
+
+File, exported to LogView'er format may contains a several start/stop parts.
+To split a file `todaysLog.log` into sessions use a command:
+
+```shell
+csplit todaysLog.log --prefix='todaysLog' --suffix-format='%02d.log' '/srvr  StartupPath/' '{*}'
 ```
 
 ## Overriding a default application startup rules 
@@ -421,3 +427,173 @@ See [systemd.unit](https://www.freedesktop.org/software/systemd/man/systemd.unit
 ```shell script
 systemctl edit unitybase@my-app.sevrice
 ```
+
+## Metrics
+There is two metrics sources
+
+### /stat endpoint
+- authorised user can send a GET request to `/stat` endpoint to obtain a metrics.
+```javascript
+UB.connection.get('stat').then(v => console.debug(v.data))
+```
+The response example:
+```json
+{
+ "sessions_total": 1,
+ "threads_total": 4,
+ "incoming_bytes": 32873,
+ "outcoming_bytes": 416432,
+ "responses_total": [0, 0, 59, 2, 1, 0],
+ "security_exception_count": 0,
+ "js_gc_count": 92,
+ "js_memory_bytes": 30593024,
+ "http_perning_request_count": 0
+}
+```
+Here:
+
+| Stat metric     | Value and explanation                                                             |
+|-----------------|-----------------------------------------------------------------------------------|
+| sessions_total  | Total count of active user session                                                |
+| threads_total   | Worker thread count (threadPoolSize parameter in ubConfig)                        |
+| incoming_bytes  | Bytes receive over HTTP                                               |
+| outcoming_bytes | Bytes send over HTTP                                                |
+| responses_total | Responses count for status codes 0XX(should be 0), 1XX, 2XX, 3XX, 4XX, 5XX. In example above there is 59 2XX responses |
+| security_exception_count | All security related exceptions count (including session expire errors) |
+| js_gc_count | Number of times (for all threads) GC has been invoked. Includes both major and minor GC |
+| js_memory_bytes | Amount of bytes allocated by the JS engines (all threads) |
+| http_perning_request_count | How many input tasks are currently waiting to be affected by thread pool (for server on Linux. For Windows always 0 - see below about HTTP service request queue |
+
+### /metrics endpoint for Prometheus
+Starting from 5.18.21 UnityBase EE expose a various application metrics in [Prometheus](https://prometheus.io/) format.
+Feature is configured using `metrics` section of ubConfig.
+
+`/metrics` endpoint is available without authorization. Access to endpoint is limited on the reverse proxy level using
+`metrics.allowedFrom` parameter in ubConfig. Default is `deny` for all subnet masks.
+
+For Linux server Prometheus metrics uses histograms whenever it makes sense, so per-endpoint (for HTTP), per-thread (for JS GC)
+and per-entity statistics are available.
+
+> **IMPORTANT** For Linux with non-english locale (not recommended) LC_NUMERIC=C environment variable should be sets for UnityBase server
+
+```shell
+curl http://localhost:8881/metrics
+```
+A truncated output example (with method profile enabled):
+```text
+# HELP http_request_duration_seconds HTTP request duration histogram
+# TYPE http_request_duration_seconds histogram
+http_request_duration_seconds{endpoint="getAppInfo",status="3XX",le="0,010000"} 2,000000
+http_request_duration_seconds{endpoint="getAppInfo",status="3XX",le="0,050000"} 2,000000
+http_request_duration_seconds{endpoint="getAppInfo",status="3XX",le="0,200000"} 2,000000
+http_request_duration_seconds{endpoint="getAppInfo",status="3XX",le="0,500000"} 2,000000
+http_request_duration_seconds{endpoint="getAppInfo",status="3XX",le="1,000000"} 2,000000
+http_request_duration_seconds{endpoint="getAppInfo",status="3XX",le="3,000000"} 2,000000
+http_request_duration_seconds{endpoint="getAppInfo",status="3XX",le="10,000000"} 2,000000
+http_request_duration_seconds{endpoint="getAppInfo",status="3XX",le="+Inf"} 2,000000
+http_request_duration_seconds_count{endpoint="getAppInfo",status="3XX"} 2,000000
+http_request_duration_seconds_sum{endpoint="getAppInfo",status="3XX"} 0,000653
+http_request_duration_seconds{endpoint="ubql",status="2XX",le="0,010000"} 6,000000
+http_request_duration_seconds{endpoint="ubql",status="2XX",le="0,050000"} 7,000000
+http_request_duration_seconds{endpoint="ubql",status="2XX",le="0,200000"} 7,000000
+http_request_duration_seconds{endpoint="ubql",status="2XX",le="0,500000"} 7,000000
+http_request_duration_seconds{endpoint="ubql",status="2XX",le="1,000000"} 7,000000
+http_request_duration_seconds{endpoint="ubql",status="2XX",le="3,000000"} 7,000000
+http_request_duration_seconds{endpoint="ubql",status="2XX",le="10,000000"} 7,000000
+http_request_duration_seconds{endpoint="ubql",status="2XX",le="+Inf"} 7,000000
+http_request_duration_seconds_count{endpoint="ubql",status="2XX"} 7,000000
+http_request_duration_seconds_sum{endpoint="ubql",status="2XX"} 0,039072
+
+# HELP unitybase_method_duration_seconds UnityBase entity method duration histogram
+# TYPE unitybase_method_duration_seconds histogram
+unitybase_method_duration_seconds{entity="uba_user",method="select",le="0,010000"} 5,000000
+unitybase_method_duration_seconds{entity="uba_user",method="select",le="0,050000"} 5,000000
+unitybase_method_duration_seconds{entity="uba_user",method="select",le="0,200000"} 5,000000
+unitybase_method_duration_seconds{entity="uba_user",method="select",le="0,500000"} 5,000000
+unitybase_method_duration_seconds{entity="uba_user",method="select",le="1,000000"} 5,000000
+unitybase_method_duration_seconds{entity="uba_user",method="select",le="3,000000"} 5,000000
+unitybase_method_duration_seconds{entity="uba_user",method="select",le="10,000000"} 5,000000
+unitybase_method_duration_seconds{entity="uba_user",method="select",le="+Inf"} 5,000000
+unitybase_method_duration_seconds_count{entity="uba_user",method="select"} 5,000000
+unitybase_method_duration_seconds_sum{entity="uba_user",method="select"} 0,015004
+unitybase_method_duration_seconds{entity="uba_role",method="select",le="0,010000"} 1,000000
+unitybase_method_duration_seconds{entity="uba_role",method="select",le="0,050000"} 1,000000
+unitybase_method_duration_seconds{entity="uba_role",method="select",le="0,200000"} 1,000000
+unitybase_method_duration_seconds{entity="uba_role",method="select",le="0,500000"} 1,000000
+unitybase_method_duration_seconds{entity="uba_role",method="select",le="1,000000"} 1,000000
+unitybase_method_duration_seconds{entity="uba_role",method="select",le="3,000000"} 1,000000
+unitybase_method_duration_seconds{entity="uba_role",method="select",le="10,000000"} 1,000000
+unitybase_method_duration_seconds{entity="uba_role",method="select",le="+Inf"} 1,000000
+unitybase_method_duration_seconds_count{entity="uba_role",method="select"} 1,000000
+unitybase_method_duration_seconds_sum{entity="uba_role",method="select"} 0,000396
+
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1024,000000
+
+# HELP process_virtual_memory_max_bytes Maximum amount of virtual memory available in bytes.
+# TYPE process_virtual_memory_max_bytes gauge
+process_virtual_memory_max_bytes -1,000000
+
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total gauge
+process_cpu_seconds_total 0,000000
+
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 1619578880,000000
+
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 449016,000000
+
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 18,000000
+
+# HELP unitybase_sessions_total Logged in user sessions count
+# TYPE unitybase_sessions_total gauge
+unitybase_sessions_total 1,000000
+
+# HELP unitybase_threads_total Thread pool size
+# TYPE unitybase_threads_total gauge
+unitybase_threads_total 4,000000
+
+# HELP unitybase_incoming_bytes_total Total bytes incoming
+# TYPE unitybase_incoming_bytes_total gauge
+unitybase_incoming_bytes_total 35086,000000
+
+# HELP unitybase_outcoming_bytes_total Total bytes outcoming
+# TYPE unitybase_outcoming_bytes_total gauge
+unitybase_outcoming_bytes_total 134531,000000
+
+# HELP unitybase_security_exception_total Total count of security violation (incliding timed out sessions)
+# TYPE unitybase_security_exception_total gauge
+unitybase_security_exception_total 0,000000
+
+# HELP http_pendng_request_count How many input tasks are currently waiting to be affected by thread pool
+# TYPE http_pendng_request_count gauge
+http_pendng_request_count 0,000000
+
+# HELP unitybase_js_gc_count Number of times GC has been invoked. Includes both major and minor GC
+# TYPE unitybase_js_gc_count gauge
+unitybase_js_gc_count{thread="th01"} 26,000000
+unitybase_js_gc_count{thread="th02"} 22,000000
+unitybase_js_gc_count{thread="th03"} 22,000000
+unitybase_js_gc_count{thread="th04"} 22,000000
+
+# HELP unitybase_js_bytes Amount of bytes allocated by the JS engine
+# TYPE unitybase_js_bytes gauge
+unitybase_js_bytes{thread="th01"} 9555968,000000
+unitybase_js_bytes{thread="th02"} 7000064,000000
+unitybase_js_bytes{thread="th03"} 7020544,000000
+unitybase_js_bytes{thread="th04"} 6991872,000000
+```
+
+### Windows performance counter metrics
+Under Windows HTTP level metrics are exposed as HTTP.sys specific performance counter
+
+Most important is [HTTP Service Request Queues](https://docs.microsoft.com/en-us/windows/win32/http/scenario-3--performance-counters#performance-counters-for-httpsys)
+
+If queue length is too long (200 and more) either a thread pool should be increased or profile and tune application logic.
+

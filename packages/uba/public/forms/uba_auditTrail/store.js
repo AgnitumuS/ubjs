@@ -1,10 +1,6 @@
 const UB = require('@unitybase/ub-pub')
 const { lookups } = require('@unitybase/adminui-vue')
-const { formatByPattern } = require('@unitybase/cs-shared')
 const { diffWords } = require('./diff')
-
-const excludeSystemAttrsRe = /^ID|mi_(\S)+/
-const langAttrRe = /(\S+)_([a-z]+)\^$/
 
 module.exports = {
   state () {
@@ -29,7 +25,7 @@ module.exports = {
           ...Object.keys(getters.newData)
         ])
       )
-        .filter(attr => !excludeSystemAttrsRe.test(attr))
+        .filter(attr => attr !== 'ID' && (attr === 'mi_wfState' || !attr.startsWith('mi_')))
     }
   },
 
@@ -66,40 +62,38 @@ module.exports = {
 }
 
 /**
- * @param {string} entityName Entity name
- * @return {UBEntity} Entity schema
- */
-function getEntityMeta (entityName) {
-  return UB.connection.domain.get(entityName)
-}
-
-/**
- * Gets meta for any attrs includes lang attrs - "caption_en^"
+ * Gets meta for attribute code in audit JSON (can be "caption", "caption_en^")
  *
  * @param {string} entityName Entity name
- * @param {string} attr Attr code
+ * @param {string} attr Attribute code in audit JSON
  * @return {UBEntityAttribute} UB attribute meta
  */
 function getAttrMeta (entityName, attr) {
-  return getEntityMeta(entityName).attributes[attr.replace(langAttrRe, '$1')]
+  const L = attr.length
+  if (attr[L - 1] === '^') {
+    attr = attr.substring(0, L - 4)
+  }
+  return UB.connection.domain.get(entityName).attributes[attr]
 }
 
 /**
  * In case lang attrs then appends translated name of language in brackets.
- * For example "caption_en^" will converts to "Caption (English)"
+ * For example "caption_en^" will converts to "Caption (English)" but "caption^" to "Caption"
  *
  * @param {string} entity Entity name
  * @param {string} attr Attr code
  * @return {string} Label
  */
 function buildLabel (entity, attr) {
-  if (langAttrRe.test(attr)) {
-    const label = `${entity}.${attr.replace(langAttrRe, '$1')}`
-    const langLabel = attr.replace(langAttrRe, '$2')
-    return `${UB.i18n(label)} (${UB.i18n(langLabel)})`
-  } else {
-    return UB.i18n(`${entity}.${attr}`)
+  const L = attr.length
+  let attrLang = ''
+  if (attr[L - 1] === '^') {
+    attrLang = attr.substring(attr.lastIndexOf('_') + 1, L - 1)
+    attr = attr.substring(0, L - 4)
   }
+  let res = UB.i18n(`${entity}.${attr}`)
+  if (attrLang) res += ` (${UB.i18n(attrLang)})`
+  return res
 }
 
 /**
@@ -148,15 +142,29 @@ async function transformData (parentEntity, attrs, oldData, newData) {
 }
 
 /**
+ * For multi-language attributes uba_auditTrail values JSON can contains either "attr" or "attr^" for base language
+ * and "attr_ln^" for other languages.
+ *
+ * This function parse JSON and normalize "attr^" -> "attr" to simplify future processing
+ *
  * @param {*} value Json as string
  * @return {object} Parsed json
  */
 function parseDiffValue (value) {
-  if (typeof value === 'string' && value.length > 0) {
-    return JSON.parse(value)
-  } else {
-    return {}
-  }
+  if (typeof value !== 'string' || !value.length) return {}
+
+  let v = JSON.parse(value)
+  let attrs = Object.keys(v)
+  attrs.forEach(attr => {
+    const L = attr.length
+    if (attr[L - 1] === '^') {
+      if ((L > 4) && (attr[L - 4] !== '_')) {
+        v[attr.substring(0, L - 1)] = v[attr]
+        delete v[attr]
+      }
+    }
+  })
+  return v
 }
 
 /**
@@ -229,11 +237,11 @@ function formatValue (dataObject, attrMeta, attrCode, requests, responseTransfor
       }
 
     case 'Date':
-      return formatByPattern.formatDate(value, 'date')
+      return UB.formatter.formatDate(value, 'date')
 
     case 'DateTime':
     case 'TimeLog':
-      return formatByPattern.formatDate(value, 'dateTime')
+      return UB.formatter.formatDate(value, 'dateTime')
 
     case 'Enum':
       return lookups.getEnum(attrMeta.enumGroup, value) || ''
@@ -242,7 +250,7 @@ function formatValue (dataObject, attrMeta, attrCode, requests, responseTransfor
       if (value === undefined || value === null) return ''
 
       const { associatedEntity, associationAttr = 'ID' } = attrMeta
-      const descriptionAttribute = getEntityMeta(associatedEntity).getDescriptionAttribute()
+      const descriptionAttribute = UB.connection.domain.get(associatedEntity).getDescriptionAttribute()
       const request = UB.Repository(associatedEntity)
         .attrs(
           ...new Set(['ID', associationAttr, descriptionAttribute])
@@ -263,7 +271,7 @@ function formatValue (dataObject, attrMeta, attrCode, requests, responseTransfor
       if (!value) return ''
 
       const { associatedEntity, associationAttr = 'ID' } = attrMeta
-      const descriptionAttribute = getEntityMeta(associatedEntity).getDescriptionAttribute()
+      const descriptionAttribute = UB.connection.domain.get(associatedEntity).getDescriptionAttribute()
       const ids = value.split(',').map(id => Number(id))
       const request = UB.Repository(associatedEntity)
         .attrs(

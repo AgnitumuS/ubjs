@@ -79,6 +79,9 @@
       "entityConnectAttr": "ID",
       "exprMethod": "getCurrentAdminSubjects",
       "model": "UBM"
+    },
+    "multitenancy": {
+      "enabled": false
     }
   }
 }

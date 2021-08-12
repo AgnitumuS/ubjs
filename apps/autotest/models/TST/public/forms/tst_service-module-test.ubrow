@@ -1,0 +1,8 @@
+{
+ "isDefault": false,
+ "entity": "tst_service",
+ "formType": "module",
+ "caption": "Any form",
+ "description": "Test for form of type ",
+ "formCode": "{\"fName\":\"tst_service-module-test-fm.js\",\"origName\":\"tst_service-module-test-fm.js\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":116,\"md5\":\"85b681ddd88a76b832a8e6a0817bf594\"}"
+}

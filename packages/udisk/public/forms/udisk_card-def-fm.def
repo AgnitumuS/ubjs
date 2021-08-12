@@ -1,9 +1,3 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "true"
-//@entity "udisk_card"
-//@formType "custom"
-//@caption "udiskProperties"
-//@description "udiskProperties"
 exports.formDef = 'UDISK.AdminFileEditForm'
 
 Ext.define('UDISK.AdminFileEditForm', {

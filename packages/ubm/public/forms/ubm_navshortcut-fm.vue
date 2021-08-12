@@ -4,77 +4,61 @@
 
     <u-form-container
       v-loading="loading"
-      :label-width="160"
+      label-position="top"
     >
-      <u-form-row label="ID">
-        <el-row
-          :gutter="10"
-          type="flex"
-          align="middle"
-          justify="space-between"
-        >
-          <el-col :span="8">
-            <el-input
-              readonly
-              :value="ID"
-            />
-          </el-col>
-
-          <el-col
-            :span="6"
-            :offset="2"
-          >
-            <el-switch
-              v-model="isFolder"
-              :active-text="$ut('ubm_navshortcut.isFolder')"
-            />
-          </el-col>
-
-          <el-col :span="8">
-            <el-switch
-              v-model="inWindow"
-              :active-text="$ut('ubm_navshortcut.inWindow')"
-            />
-          </el-col>
-        </el-row>
-      </u-form-row>
-
-      <u-auto-field attribute-name="code" />
-
-      <u-auto-field attribute-name="caption" />
-
-      <shortcut-tree />
-
-      <u-form-row
-        :label="iconClsCaption"
-      >
-        <u-icon-picker
-          :value="iconCls"
-          :label="iconClsCaption"
-          @change="iconCls = $event"
+      <u-grid :columns="3">
+        <u-auto-field attribute-name="code" />
+        <span>
+          <u-auto-field
+            attribute-name="isFolder"
+            force-cmp="el-switch"
+            style="display: inline-block"
+          />
+          <u-auto-field
+            attribute-name="inWindow"
+            force-cmp="el-switch"
+            style="display: inline-block"
+          />
+        </span>
+        <u-form-row label="ID">
+          {{ ID }}
+        </u-form-row>
+        <u-auto-field
+          attribute-name="caption"
+          style="grid-column-start: 1; grid-column-end: 4"
         />
-      </u-form-row>
 
-      <u-auto-field attribute-name="displayOrder" />
+        <shortcut-tree />
 
-      <u-acl-rls-input
-        collection-name="rightsSubjects"
-        :instance-id="ID"
-      />
+        <u-form-row
+          :label="entitySchema.attributes.iconCls.caption"
+        >
+          <u-icon-picker
+            :value="iconCls"
+            @change="iconCls = $event"
+          />
+        </u-form-row>
+
+        <u-auto-field attribute-name="displayOrder" />
+
+        <u-acl-rls-input
+          collection-name="rightsSubjects"
+          :instance-id="ID"
+          style="grid-column-start: 1; grid-column-end: 4"
+        />
+      </u-grid>
+
       <shortcut-cmd-code />
     </u-form-container>
   </div>
 </template>
 
 <script>
-const ShortcutTree = require('./components/ShortcutTree.vue').default
-const ShortcutCmdCode = require('./components/ShortcutCmdCode.vue').default
-
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapGetters } = require('vuex')
-const UB = require('@unitybase/ub-pub')
+const { connection, Repository } = require('@unitybase/ub-pub')
 
-module.exports.mount = function (cfg) {
+module.exports.mount = cfg => {
   Form({
     ...cfg,
     modalClass: 'ub-dialog__reset-padding'
@@ -88,9 +72,9 @@ module.exports.mount = function (cfg) {
       collections: {
         rightsSubjects: ({ state }) => {
           // select all fields ('*' is ont allowed on client) in order to display them in UAclRlsInput (view its docs)
-          const attributes = Object.keys(UB.connection.domain.entities['ubm_navshortcut_acl'].attributes)
+          const attributes = Object.keys(connection.domain.entities.ubm_navshortcut_acl.attributes)
 
-          return UB.Repository('ubm_navshortcut_acl')
+          return Repository('ubm_navshortcut_acl')
             .attrs(attributes)
             .where('instanceID', '=', state.data.ID)
         }
@@ -100,12 +84,14 @@ module.exports.mount = function (cfg) {
     .mount()
 }
 
-module.exports.default = {
+export default {
   name: 'UbmNavshortcut',
+
   components: {
-    ShortcutTree,
-    ShortcutCmdCode
+    ShortcutTree: require('./components/ShortcutTree.vue').default,
+    ShortcutCmdCode: require('./components/ShortcutCmdCode.vue').default
   },
+
   inject: ['entitySchema'],
 
   data () {
@@ -125,11 +111,7 @@ module.exports.default = {
       'iconCls'
     ]),
 
-    ...mapGetters(['loading']),
-
-    iconClsCaption () {
-      return this.entitySchema.attributes.iconCls.caption
-    }
+    ...mapGetters(['loading'])
   }
 }
 </script>

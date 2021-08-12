@@ -1,0 +1,72 @@
+{
+  "caption": "Request",
+  "descriptionAttribute": "text",
+  "attributes": [
+    {
+      "name": "reqDate",
+      "dataType": "Date",
+      "caption": "Request Date",
+      "allowNull": false
+    },
+    {
+      "name": "applicant",
+      "dataType": "Entity",
+      "associatedEntity": "req_user",
+      "caption": "Applicant`s contact info",
+      "allowNull": false
+    },
+    {
+      "name": "department",
+      "dataType": "Entity",
+      "associatedEntity": "req_department",
+      "caption": "Request department",
+      "description": "Department responsible for processing the request ",
+      "allowNull": false
+    },
+    {
+      "name": "text",
+      "dataType": "Text",
+      "size": 2500,
+      "caption": "Text of Request",
+      "allowNull": false
+    },
+    {
+      "name": "document",
+      "dataType": "Document",
+      "caption": "Attachment",
+      "storeName": "attachments"
+    },
+    {
+      "name": "answer",
+      "dataType": "Text",
+      "size": 2500,
+      "caption": "Request answer",
+      "allowNull": true
+    },
+    {
+      "name": "duration",
+      "dataType": "Int",
+      "size": 2500,
+      "caption": "Duration(minutes)",
+      "allowNull": true
+    },
+    {
+      "name": "cost",
+      "dataType": "Currency",
+      "size": 2500,
+      "caption": "Cost",
+      "allowNull": true
+    },
+    {
+      "name": "notes",
+      "dataType": "String",
+      "size": 500,
+      "caption": "Notes",
+      "allowNull": true,
+      "isMultiLang": true
+    }
+  ],
+  "mixins": {
+    "mStorage": {}
+  }
+}

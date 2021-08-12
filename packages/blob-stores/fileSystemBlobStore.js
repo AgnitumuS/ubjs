@@ -31,7 +31,7 @@ const MAX_COUNTER = Math.pow(2, 31)
 class FileSystemBlobStore extends BlobStoreCustom {
   /**
    * @param {Object} storeConfig
-   * @param {App} appInstance
+   * @param {ServerApp} appInstance
    * @param {UBSession} sessionInstance
    */
   constructor (storeConfig, appInstance, sessionInstance) {
@@ -73,7 +73,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     } else if (this.storeSize === this.SIZES.Large) {
       this._folderCounter = (getRandomInt(STORE_SUBFOLDER_COUNT) + 1) * (getRandomInt(STORE_SUBFOLDER_COUNT) + 1)
     }
-    if ((this.storeSize === this.SIZES.Simple) && (this.LUCount>0)) {
+    if ((this.storeSize === this.SIZES.Simple) && (this.LUCount > 0)) {
       throw new Error(`BLOB Store '${this.name}': LUCount can not be set for 'Simple' store`)
     }
   }
@@ -82,27 +82,33 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @inheritDoc
    * @param {BlobStoreRequest} request Request params
    * @param {UBEntityAttribute} attribute
-   * @param {ArrayBuffer} content
+   * @param {ArrayBuffer|THTTPRequest} content
    * @returns {BlobStoreItem}
    */
   saveContentToTempStore (request, attribute, content) {
     const fn = this.getTempFileName(request)
-    console.debug('temp file is written to', fn)
+    console.debug('temp file will be written to', fn)
+    let fileSize
     try {
-      fs.writeFileSync(fn, content)
+      if (content.writeToFile) {
+        if (!content.writeToFile(fn)) throw new Error(`Error write to ${fn}`)
+      } else {
+        fs.writeFileSync(fn, content)
+      }
+      fileSize = fs.statSync(fn).size
     } catch (e) {
       if (fs.existsSync(fn)) fs.unlinkSync(fn)
       throw e
     }
-    const origFn = request.fileName
-    const ct = mime.contentType(path.extname(origFn))
+    const origFn = request.fileName || 'no-file-name.bin'
+    const ct = mime.contentType(path.extname(origFn)) || 'application/octet-stream'
     const newMD5 = nhashFile(fn, 'MD5')
     return {
       store: this.name,
       fName: origFn,
       origName: origFn,
       ct: ct,
-      size: content.byteLength,
+      size: fileSize,
       md5: newMD5,
       isDirty: true
     }
@@ -123,10 +129,10 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @param {BlobStoreRequest} request
    * @param {BlobStoreItem} blobInfo JSON retrieved from a DB.
    * @param {Object} [options]
-   * @param {String|Null} [options.encoding] Default to 'bin'. Possible values: 'bin'|'ascii'|'utf-8'
-   *   If `undefined` UB will send query to entity anf get it from DB.
-   *   At last one parameter {store: storeName} should be defined to prevent loading actual JSON from DB
-   * @returns {String|ArrayBuffer}
+   * @param {String|Null} [options.encoding] Possible values:
+   *   'bin' 'ascii' 'binary' 'hex' ucs2/ucs-2/utf16le/utf-16le utf8/utf-8
+   *   if `null` will return {@link Buffer}, if `bin` - ArrayBuffer
+   * @returns {String|Buffer|ArrayBuffer|null}
    */
   getContent (request, blobInfo, options) {
     const filePath = this.getContentFilePath(request, blobInfo)
@@ -139,9 +145,10 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @param {BlobStoreItem} blobInfo Document metadata. Not used for dirty requests
    * @param {THTTPRequest} req
    * @param {THTTPResponse} resp
+   * @param {boolean} [preventChangeRespOnError=false] If `true` - prevents sets resp status code - just returns false on error
    * @return {Boolean}
    */
-  fillResponse (requestParams, blobInfo, req, resp) {
+  fillResponse (requestParams, blobInfo, req, resp, preventChangeRespOnError) {
     let filePath, ct
     if (requestParams.isDirty) {
       filePath = this.getTempFileName(requestParams)
@@ -158,24 +165,29 @@ class FileSystemBlobStore extends BlobStoreCustom {
       if (this.PROXY_SEND_FILE_HEADER) {
         const storeRelPath = path.relative(this.fullStorePath, filePath)
         let head = `${this.PROXY_SEND_FILE_HEADER}: /${this.PROXY_SEND_FILE_LOCATION_ROOT}/${this.name}/${storeRelPath}`
-        head += `\r\nContent-Type: ${ct}`
-        if (blobInfo && blobInfo.origName) {
-          head += `\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`
-        }
+        head += `\r\nContent-Type: ${ct}\r\nx-query-params: ${req.parameters}`
+        // to download file UI uses <a href="..." download="origFileName">,
+        // so Content-Disposition not required anymore
+        // moreover - if it passed, then PDF viewer do not open file from passed direct link, but tries to save it
+        // if (blobInfo && blobInfo.origName) {
+        //   head += `\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`
+        // }
         console.debug('<- ', head)
         resp.writeHead(head)
         resp.writeEnd('')
       } else {
-        if (blobInfo && blobInfo.origName) {
-          resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`)
-        } else {
-          resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}`)
-        }
+        // if (blobInfo && blobInfo.origName) {
+        //   resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`)
+        // } else {
+        resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}`)
+        // }
         resp.writeEnd(filePath)
       }
+      return true
     } else {
-      resp.statusCode = 404
-      resp.writeEnd('Not found')
+      return preventChangeRespOnError
+        ? false
+        : resp.notFound(`File path for BLOB item ${requestParams.entity}_${requestParams.attribute}_${requestParams.ID} is empty`)
     }
   }
 
@@ -211,7 +223,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     const newPlacement = this.genNewPlacement(attribute, dirtyItem, ID)
     fs.renameSync(tempPath, newPlacement.fullFn)
     const newMD5 = nhashFile(newPlacement.fullFn, 'MD5')
-    const ct = mime.contentType(newPlacement.ext)
+    const ct = mime.contentType(newPlacement.ext) || 'application/octet-stream'
     const stat = fs.statSync(newPlacement.fullFn)
     const resp = {
       v: 1,
@@ -262,6 +274,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
   genNewPlacement (attribute, dirtyItem, ID) {
     // generate file name for storing file
     let fn = this.keepOriginalFileNames ? dirtyItem.origName : ''
+    if (this.keepOriginalFileNames) BlobStoreCustom.validateFileName(fn)
     const ext = path.extname(dirtyItem.origName)
     if (!fn) {
       const entropy = (Date.now() & 0x0000FFFF).toString(16)
@@ -295,7 +308,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     let relPath = ''
     if (l1subfolder) {
       if (this.LUCount) {
-        const LUN = ('' + this.LUCount).padStart(2, 0)
+        const LUN = ('' + this.LUCount).padStart(2, '0')
         l1subfolder = `LU${LUN}${path.sep}${l1subfolder}`
       }
       fullFn = path.join(fullFn, l1subfolder)
@@ -350,6 +363,9 @@ class FileSystemBlobStore extends BlobStoreCustom {
       if (relPath.indexOf('\\') !== -1) { // in case file written from Windows relPath contains win separator
         relPath = relPath.replace(/\\/g, '/')
       }
+    }
+    if ((this.LUCount) && !relPath.startsWith('LU')) { // for non-lun`ed stores transformed to lune`s old store MUST be mounted into LU00
+      relPath = `LU00${path.sep}${relPath}`
     }
     return path.join(this.fullStorePath, relPath, fn)
   }

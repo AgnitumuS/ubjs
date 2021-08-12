@@ -15,6 +15,63 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.1] - 2021-05-13
+## [5.20.0] - 2021-04-24
+## [5.6.4] - 2021-04-22
+### Fixed
+ - `UBSession.crc32` will transform a string to UTF8 array before calc crc32.
+   This allows to calc a CRC32 for string with non-english characters (used for example by CERT2 auth in non-simple mode)
+
+## [5.6.3] - 2021-04-16
+## [5.6.2] - 2021-04-13
+## [5.6.1] - 2021-04-02
+### Added
+ -  new property `UBEntity.overriddenBy` - comma separated model names where entity is overridden
+
+### Changed
+ - **BREAKING** for overridden entities `UBEntity.modelName` property now contains an original model name instead of
+  last override model name
+
+## [5.6.0] - 2021-03-25
+### Fixed
+ - CustomRepository.fromUbql: prevents overriding of a default `method` in case Repository is created from JSON without method property
+   `UB.Repository({entity: 'my_entity', fieldList: ['a', 'b']})`.  A better fix for !1048
+
+
+## [5.5.20] - 2021-03-15
+### Changed
+ - `LocalDataStorage` - improve debugging experience by avoid using of anonymous functions
+  and replacing `_.forEach` -> `for .. in`
+
+### Fixed
+ - `LocalDataStorage`: filter by `startWith`/`notStartWith` now case-insensitive (as in DB with _CI locales) 
+
+## [5.5.19] - 2021-03-03
+### Added
+ - `LocalDataStore.doFiltration` accept a 3d optional argument `skipSubQueries`. If explicitly set to `true`, then `subquery`
+  conditions are skipped (instead of throws) 
+
+## [5.5.18] - 2021-02-03
+### Fixed
+ - fix typo in `UBDomain.prototype.get` error message in case entity does not exist
+
+## [5.5.17] - 2021-01-19
+## [5.5.16] - 2021-01-17
+### Fixed
+ - improved JSDoc
+
+## [5.5.15] - 2020-12-28
+## [5.5.14] - 2020-12-22
+### Added
+ - `LocalDataStore.convertResponseDataToJsTypes` - moved from AsyncConnection to LocalDataStorage to be
+   used in SyncConnection also. AsyncConnection.convertResponseDataToJsTypes remains. 
+
+## [5.5.13] - 2020-12-21
+## [5.5.12] - 2020-12-20
+### Added
+ - `UBEntity.prototype.getDetailsForUI` - method returns an array of UBEntityAttribute what points to
+   this entity (associatedEntity === this entity) and such relation should be visible in the UI "Details" menu 
+
 ## [5.5.11] - 2020-11-20
 ### Added
  - `UBEntityAttribute.privateSettings` & `UBEntity.privateSettings` properties.

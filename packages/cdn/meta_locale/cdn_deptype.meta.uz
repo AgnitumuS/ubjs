@@ -1,0 +1,14 @@
+{
+  "caption": "Kafedra turlari",
+  "description": "Kafedra turlari katalogi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    }
+  ]
+}

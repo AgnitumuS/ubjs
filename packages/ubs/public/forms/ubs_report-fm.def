@@ -1,12 +1,3 @@
-// @! "do not remove comments below unless you know what you do!"
-// @mi_modifyDate "Thu Sep 13 2018 20:11:34 GMT+0300 (FLE Standard Time)"
-// @isDefault "false"
-// @entity "ubs_report"
-// @model "UBS"
-// @formType "auto"
-// @caption "reportBuilder"
-// @description "reportBuilder"
-
 const UB = require('@unitybase/ub-pub')
 
 exports.formDef = {
@@ -68,7 +59,7 @@ exports.formDef = {
                 }, {
                   xtype: 'ublabel',
                   ubID: 'howToChangeCode',
-                  text: `To change existing report code rename both *.js and *.template files in folder 'yourModel/public/reports'`,
+                  text: `To change existing report code rename *.js, *.template and *.ubrow files in the folder 'yourModel/public/reports'`,
                   margins: '10px 0 0 0'
                 }
               ]

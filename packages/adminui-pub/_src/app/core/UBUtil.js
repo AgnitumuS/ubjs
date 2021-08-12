@@ -166,7 +166,7 @@ Ext.define('UB.core.UBUtil', {
     name = arguments[0]
     for (let i = 1, len = arguments.length; i < len; ++i) {
       let param = arguments[i]
-      let strEnd = Ext.isArray(param) ? param.join(',') : (Ext.isObject(param) ? Ext.JSON.encode(param) : param)
+      let strEnd = JSON.stringify(param)
       addStr = this.gatherStr(addStr, '_', strEnd)
     }
 
@@ -679,13 +679,13 @@ Ext.define('UB.core.UBUtil', {
   },
 
   /**
-   *
+   * Return tree data of entity attributes (3 level depth)
    * @param {String|UBEntity} entityName
    * @param {String} parentEntityName
    * @return {Array}
    */
   getEntityAttributesTreeData: function (entityName, parentEntityName, level) {
-    let data = []
+    const data = []
     let entity
 
     if (typeof entityName === 'string') {
@@ -699,14 +699,18 @@ Ext.define('UB.core.UBUtil', {
     }
 
     entity.eachAttribute(function (attr, attrName) {
-      let node = {
+      let nodeHtml = !attr.allowNull ? `<strong>${attrName}</storng>` : attrName
+      if (attr.dataType === UBDomain.ubDataTypes.Entity) {
+        nodeHtml += ` -> ${attr.getAssociatedEntity().name}`
+      }
+      if (attr.caption && (attr.caption.toUpperCase() !== attrName.toUpperCase())) {
+        nodeHtml += `<span class="u-form-row__description"> - ${attr.caption}</span>`
+      }
+      const node = {
         id: (parentEntityName ? parentEntityName + '.' : '') + attrName,
-        text: (attr.caption ? attr.caption + '[' + attrName + ']' : attrName),
+        text: nodeHtml,
         leaf: attr.dataType !== UBDomain.ubDataTypes.Entity,
         parentId: parentEntityName || entityName
-      }
-      if (!attr.allowNull) {
-        node.text = '<b>' + node.text + '<b>'
       }
 
       if ((attr.dataType === UBDomain.ubDataTypes.Entity) &&

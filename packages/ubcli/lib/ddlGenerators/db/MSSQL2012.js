@@ -239,52 +239,10 @@ ORDER BY i.object_id, c.name`
     )
   }
 
-  /**
-   * @override
-   * @param {TableDefinition} table
-   * @param {FieldDefinition} column
-   * @param {String} updateType
-   * @param {Object} [value] optional for updateType updConst
-   */
-  genCodeUpdate (table, column, updateType, value) {
-    function quoteIfNeed (v) {
-      return column.isString
-        ? (!column.defaultValue && (column.refTable || column.enumGroup)
-          ? v.replace(/'/g, "''")
-          : "''" + v.replace(/'/g, '') + "''")
-        : v
-      //  return ((!column.isString || (!column.defaultValue && (column.refTable || column.enumGroup))) ? v : "''" + v.replace(/'/g,'') + "''" );
-    }
-    let possibleDefault
-    switch (updateType) {
-      case 'updConstComment':
-        this.DDL.updateColumn.statements.push(
-          `-- update dbo.${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
-        )
-        break
-      case 'updConst':
-        this.DDL.updateColumn.statements.push(
-          `EXEC('update dbo.${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null')`
-        )
-        break
-      case 'updNull':
-        possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
-        this.DDL.updateColumn.statements.push(
-          `-- update dbo.${table.name} set ${column.name} = ${possibleDefault} where ${column.name} is null`
-        )
-        break
-      case 'updBase':
-        this.DDL.updateColumn.statements.push(
-          `EXEC('update dbo.${table.name} set ${column.name} = ${quoteIfNeed(column.baseName)} where ${column.name} is null')`
-        )
-        break
-    }
-  }
-
   /** @override */
   genCodeSetCaption (tableName, column, value, oldValue) {
     if (value) value = value.replace(/'/g, "''")
-    const proc = oldValue ? 'sp_updateextendedproperty' : 'sp_addextendedproperty'
+    const proc = oldValue === null ? 'sp_addextendedproperty' : 'sp_updateextendedproperty'
     let result = `EXEC ${proc} @name = N'${DB_DESCRIPTION_PROPERTY}', @value = N'${value === null ? (column || tableName) : value}',@level0type = N'SCHEMA',  @level0name= N'dbo', @level1type = N'TABLE',  @level1name = N'${tableName}'`
     if (column) result += `, @level2type = N'Column', @level2name = '${column}'`
     this.DDL.caption.statements.push(result)
@@ -416,6 +374,16 @@ ORDER BY i.object_id, c.name`
   }
 
   /** @override */
+  genCodeEnableMultitenancy (table) {
+    throw new Error('multitenancy is not implemented for MSSQL')
+  }
+
+  /** @override */
+  genCodeDisableMultitenancy (table) {
+    throw new Error('multitenancy is not implemented for MSSQL')
+  }
+
+  /** @override */
   genCodeCreatePK (table) {
     this.DDL.createPK.statements.push(
       `alter table dbo.${table.name} add constraint ${table.primaryKey.name} PRIMARY KEY CLUSTERED(${table.primaryKey.keys.join(',')})`
@@ -427,7 +395,7 @@ ORDER BY i.object_id, c.name`
     if (!constraintFK.generateFK) return
 
     const refTo = _.find(this.refTableDefs, { _nameUpper: constraintFK.references.toUpperCase() })
-    const refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
+    const refKeys = refTo ? refTo.primaryKey.keys.join(',') : constraintFK.refPkDefColumn
 
     this.DDL.createFK.statements.push(
       `alter table dbo.${table.name} add constraint ${constraintFK.name} foreign key (${constraintFK.keys.join(',')}) references dbo.${constraintFK.references}(${refKeys})`
@@ -511,15 +479,19 @@ ORDER BY i.object_id, c.name`
    * @override
    * @param {string} macro
    * @param {FieldDefinition} [column]
+   * @param {TableDefinition} [table]
    */
-  getExpression (macro, column) {
+  getExpression (macro, column, table) {
     function dateTimeExpression (val) {
       if (!val) return val
       switch (val) {
         // getutcdate() MUST be in lowercase but CONVERT in UPPER as in MSSQL metadata
-        case 'currentDate': return 'getutcdate()'
-        case 'maxDate': return "CONVERT(datetime,'31.12.9999',(104))"
-        default: throw new Error('Unknown expression with code ' + val)
+        case 'currentDate':
+          return 'getutcdate()'
+        case 'maxDate':
+          return "CONVERT(datetime,'31.12.9999',(104))"
+        default:
+          throw new Error(`Unknown expression "${val}" for default value of ${table ? table.name : '?'}.${column ? column.name : '?'}`)
       }
     }
     if (!column) return dateTimeExpression(macro)

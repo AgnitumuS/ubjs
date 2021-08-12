@@ -1,0 +1,8 @@
+{
+ "isDefault": true,
+ "entity": "cdn_city",
+ "formType": "vue",
+ "caption": "locality_title",
+ "description": "locality_title",
+ "formCode": "{\"fName\":\"cdn_city-1-fm.vue\",\"origName\":\"cdn_city-1-fm.vue\",\"ct\":\"script/x-vue\",\"size\":1480,\"md5\":\"452751e10980308fd8ec2efa5bb5c00c\"}"
+}

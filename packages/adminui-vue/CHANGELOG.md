@@ -12,12 +12,657 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 but does not fetch default params except ID
 
 ### Changed
+ - `UCodeMirror`: set minimum height to 50 px to make help icon be inside control if it has only one line
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.20.19] - 2021-08-09
+## [5.20.18] - 2021-08-04
+### Added
+ - `UTableEntity`: slot `appendTable` to add some content at the end of the table after the pagination button
+ - Dutch (nl) localization
+
+### Changed
+ - forcibly disabled HTML page translator (Google Translate) for login page
+
+### Fixed
+ - `USelectEntity`: fixed entity name in dictionary adding dialog in case of repository use
+ - `UCodeMirror`: revert removing of `editorInstance` computed value since it exists for external use
+ - `USelectEntity`: prevent trigger of dropdown action in case on `Enter` is pressed in some other control of the form
+ - `UFormRow`: fixed automatic label title if the attribute's description text is not defined
+
+## [5.20.17] - 2021-07-18
+### Added
+ - `USelectEnum`: added `repository` prop, same as `USelectEntity` has
+ - `UCardView`: added support for field slots in `Card view`. Same behavior as in `Table view`
+ - `UTableEntity`: prop `withPagination` for controlling the availability of the table pagination
+ - `UTableEntity`: slot `lastTableRow` to display specific content in the last row of the table
+
+### Fixed
+ - `USelectEntity`: fixed `More` button for non-editable controls - after the click
+   the dropdown list was reopened, and the same set of rows was fetched instead of the next one.
+ - `UFormRow`: fixed typo in prop name 'descripion' -> 'description'
+ - `UCodeMirror`: fix updating of the control's value when `valueIsJson=true` and user inputed a number
+
+## [5.20.16] - 2021-07-08
+### Added
+ - `UFormRow`: `attributeName` property - if it is passed, control automatically gets attribute label, required and error
+ - new provided value in Vue instances: `validator`. This value contains useful methods for form validation
+ - new helper `validateWithErrorText` for defining of attribute validation functions with an error text
+ - `validationMixin` for the passing of validation defined locally in some Vue component to nested controls (UFormRow for example)
+ - Validation: added support for `$each` captions in validations.  Example:
+   `crimeCases.$each.11.data.$each.333.val.discardReason:caption` => `crimeCases.data.val.discardReason:caption`
+ - UAutoField: in case attribute used in `attribute-name` prop does not exist in Repository a developer-friendly
+   exception is throws instead of `can not read XXX of undefined`
+ - `USelectMultiple`: new prop `additionalButtons`, for add buttons to dropdown before button 'more'
+ - `USelectEntity`: new prop `allow-dictionary-adding`. If defined and user type text what not match any record -
+   will ask for adding a new record into dictionary. Record parameters must be defined in `build-add-dictionary-config` handler
+
+### Changed
+ - refactored and improved validation of forms. [Documentation](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/utils/Form/validation.md)
+ - use `attributeCaptions` section to define captions for custom attributes or redefine for entity ones
+  instead of computed property with `:caption` suffix
+ - `UFormRow`: display attribute description if exists instead of name when we hover on the label
+ - `u-select-entity` & `u-select-multiple` drop-down is shown after fetch, so in case some old values are in options
+   they will not be shown to the user
+  
+### Removed
+ - `getValidationState` provided value since now it is a method of validator
+
+### Fixed
+- `USelectEntity` prevent click on disable menu items
+
+## [5.20.15] - 2021-06-14
+### Added
+ - `SignatureVerificationResult` - added a media type information (file/hardware)
+ - `window.capiSelectionDialog` - a Vue based interface for cryptographic module selection (used by UB EE/DE)
+ - `UNavbarNotificationsButton`: added opening of unread notifications with the `messageType` === `system`
+  in the modal window for the user when logging into the system.
+ - `processing.saved`: pass method name `insert/update` as second argument into a `saved` hook on form
+
+### Changed
+ - *BREAKING* UCodeMirror attribute renamed `readOnly` -> `readonly`;
+   This fix u-auto-field readonly binding in case attribute is on Json type 
+
+### Fixed
+- `computedVuex` - pass `key` property to `SET` mutation
+
+## [5.20.14] - 2021-05-24
+### Added
+ - *temporary solution, not recommended to use - validation will be re-thinks*: validation error message
+   can get a validation rule caption from the property with the same name as validation rule + `:caption` suffix. Example:
+```js
+module.exports.mount = cfg => {
+  Form(cfg)
+    .store()
+    .processing()
+    .validation({
+      ...mapState('form', ['dataProvider']),
+
+      computed: {
+        dateFrom: this.dateFrom, // dateFrom is a validation rule name
+        'dateFrom:caption': this.$ut('Date from'),
+        nestedData() { // the same name as validation rule
+          return {
+            color: this.nestedData.color,
+            'color:caption': this.$ut('form_captions.defaultValueOf', 'color'),
+          }
+        }
+      },
+      validations() {
+        return {
+          dateFrom: {required}, // a validation rule name
+          nestedData: {
+            color: {required},
+          }
+        }
+      }
+    })
+    .mount()
+}
+```
+ - `UTableEntity` in "Card" mode pass a full row to the `dblclick` event - the same behavior as with double-click on table row 
+
+### Fixed
+- allow mount Vue container directly in Ext tabpanel
+
+## [5.20.13] - 2021-05-13
+### Fixed
+ - fix dialog* and lookups export from `@unitybase/adminui-vue`
+
+## [5.20.12] - 2021-05-13
+### Added
+ - `processing.js`: `refresh` method emits a `UB.connection.emit(`${masterEntityName}:refresh`, {ID: state.data.ID})` event.
+ - possibility to add a validation for not-entity attributes in the `Form.validation(...)` section.
+  For such field two computed properties can be defined:
+    - a computed property that return a field value
+    - a computed property `${field}:caption` that return localized field name for error dialog.
+      
+  Example:
+```js
+module.exports.mount = cfg => {
+  Form(cfg)
+    .store()
+    .processing()
+    .validation({
+      ...mapState('form', [
+        'dataProvider'
+      ]),
+
+      computed: {
+        colorDefaultValue() {
+          return this.dataProvider.getDefaultValueFor('color')
+        },
+
+        'colorDefaultValue:caption'() {
+          return this.$ut('forms_errors.invalidDefaultValue', 'color')
+        }
+      },
+
+      validations() {
+        return {
+          colorDefaultValue: {
+            required
+          }
+        }
+      }
+    })
+    .mount()
+}
+
+```
+
+### Changed
+ - `validations() {...}` *BREAKING* this option is deep [merged](https://vuejs.org/v2/api/#optionMergeStrategies)
+  not overridden by another from another mixin now. This allows you to reuse mixins with partial validation
+
+## [5.20.11] - 2021-05-07
+### Changed
+ - UDatePicker improvements:
+   - documentation added - see https://unitybase.info/api/adminui-vue/index.html#/Presentational/UDatePicker
+   - panels for ranges are unlinked by default (month can be changed separately)
+   - placeholder i18n for date range changed from `Start Date - End Date` to `from - to`  ( `з - по` for uk)
+   - added defaults shortcuts. For date - Today and Yesterday, for range Today, Yesterday and "current month"
+ - FTS widget and "range" date filter for 'UTable' uses `u-date-picker` with all options is default    
+
+### Fixed
+ - fixed `UB.truncTimeToUTCNull is not a function`, valid method name is `UB.truncTimeToUtcNull` (UTC -> Utc)
+ - autoforms fixed (was broken by 5.20.10 refactoring)
+ - `UAutoFiled` for Date and DateTime sets u-date-picker `clearable` to `false` for attributes what do not allow nulls 
+
+## [5.20.10] - 2021-05-05
+### Added
+ - `exportFormatXlsColumn` - new method in column configuration for the `UTable`. This method is useful
+  when you want to set some specific format in an `Excel` file for this column
+ - all available dialogs now exported as `uDialogs` object from `adminui-vue` packages.
+   Dialogs functions are documented in [adminui-vue documentation on site](https://unitybase.info/api/ubpub-v5/module-@unitybase_adminui-vue.html)
+ - adminui-vue `lookups` submodule documentation
+ - adminui-vue `helpers` and `processing` submodules documentation
+ - adminui-vue exports a `helpers` submodule as `formHelpers`.
+   A direct `require('@unitybase/adminui-vue/utils/Form/helpers')` should be replaced to `require('@unitybase/adminui-vue').formHelpers` 
+
+### Changed
+ - `computedVuex` *BREAKING* signature changed to accept (optional) submodule name as a second argument
+ - `mapInstanceFields` *BREAKING* signature changed to accept (optional) submodule name as a second argument
+ - `helpers.isEqual` (used to check store is changed) for array elements return `false` in case length of array is not match.
+   Before this changes `helpers.isEqual([1, 2], [2, 1, 1])` returns `true`
+ - a theme CSS variable `--l-layout-border-default` changed from 80% to 70% to adjust a `u-*` controls border color with `el-*` ones
+
+### Fixed
+ - `lookups`: clean `mapById` object during last `unsubscribe` (as well as data array is cleaned)
+
+## [5.20.9] - 2021-04-24
+## [5.20.8] - 2021-04-22
+### Fixed
+ -`UForm`: fix messages for errors what can be thrown inside `UForm.mount`
+
+## [5.20.7] - 2021-04-19
+### Changed
+ - Full Text Search shortcut is changed to `Ctrl+Shift+F` to prevent conflict with `Ctrl+F` actions.
+ - `UTableEntity`: sorting for column based on `Entity` attributes (lookups) use description attribute of the associated entity instead of `ID`
+
+### Fixed
+ - `UCodeMirror` - returned visibility of help (`?`) mark
+
+## [5.20.6] - 2021-04-16
+### Fixed
+ - `USelectEntity`: fix focused/hovered border color to wrap an action button (using :focus-within since div with border can't be focused)
+ - `UToolbar`: now `u-button` doesn't render default slot (which has extra padding) when toolbar button is icon.
+ - `USelectMultiple`: added reaction on `value` changing from outside the component.
+ - `UFileInput`: made file types validation case-insensitive (for example to accept both *.XLSX and *.xlsx for Excel filter).
+
+## [5.20.5] - 2021-04-13
+### Added
+ - `UFormRow`: new prop `readonly`; if `true` - show a small lock symbol after label
+ - `UAutoField`: in case attribute is `readOnly` in meta file - render a small lock symbol after label;
+   If `als` mixin is defined for entity - uses read only from `als`;
+   Can be explicitly defined using a new prop `readonly`;
+ - `UToolbar`: new prop `toolbarButtons`. Allows adding new buttons into toolbar and override/hide default buttons;
+    Can be used with slots and `hideDefaultButtons` prop;
+    Using `toolbarButtons` prop toolbar buttons can be shown as classic text button (not icon only);
+    See example in `UToolbar` docs;
+ - new provided method `getValidationState` for getting always the actual validator configured with
+  the `validation(...)` method. The current provided value of `$v` is not reactive so if we want to
+  have dynamic validation as described below we can inject the `getValidationState` function and
+  get the actual `$v` value
+```js
+module.exports.mount = cfg => {
+  Form(cfg)
+    .store()
+    .processing()
+    .validation({
+      computed: {
+        ...mapState('form', ['applyCustomValidation']),
+
+        formDataValues() {
+          return {...}
+        }
+      },
+
+      validations() {
+        // dynamic validation config
+        return this.applyCustomValidation
+          ? { formDataValues: {...} }
+          : {}
+      }
+    })
+    .mount()
+}
+
+export default {
+  inject: [
+    'getValidationState'
+  ],
+
+  computed: {
+    codeError() {
+      const $v = this.getValidationState()
+      return $v?.formDataValues?.code.$error
+    }
+  }
+}
+```
+
+### Changed
+ - `UFileInput`: set text alignment to **center**, 
+   if many files are selected displayed filenames are truncated to 3 lines 
+ - `UAutoField`: hide asterisk for boolean attributes with defaultValue specified (as should be in most case)
+   and `required` prop for UAutoField is not specified explicitly
+ - `UDropdown`: popup animation (transition) is removed
+ - `USelectEntity`: use a UDropdown instead of ElDropdown for actions popup; dropdown animation (transition) is removed
+ - `USelectEntity`: added background color and border to dropdown block
+
+### Fixed
+ - `USelectEntity.buildShowDictionaryConfig`: fixed `select` button disabling if row is not selected yet.
+   A `disabled` property should be passed to `UButton` as a html-attribute.
+- `USelectEntity`: In case of using an entity (other than the default one) in the property `repository`
+  of the component and when user press F9 (or click on `Select from the dictionary`):
+  old behavior: error about the absence of attributes specified in the request fieldList.
+  new behavior: opening a form `Selection from the dictionary`.
+
+## [5.20.4] - 2021-04-02
+## [5.20.3] - 2021-04-01
+## [5.20.2] - 2021-03-31
+### Added
+ - USidebar: improved UX by adding a different background color for different nesting level and mark an expanded
+   groups. For themas colors can be customized using `--l-sidebar-depth-?` CSS variables and selectors
+   over `data-ub-level="?"` HTML data attributes
+
+## [5.20.1] - 2021-03-29
+### Changed
+ - `AutoForm` is renamed to `UAutoForm`
+
+### Removed
+ - usage of `@babel/plugin-proposal-object-rest-spread` is removed from production build. Constructions like
+```javascript
+let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 }
+```
+   is supported by all modern browsers.
+
+### Fixed
+- `USelectEntity`: In case value-attribute is specified for u-select-entity an attempt to edit selected entry: old behavior - causes an error because of invalid instanceID; new behavior - opens edit form correctly
+
+## [5.20.0] - 2021-03-25
+### Added
+ - UTableEntity: icon for "No sorting" option in the column sorting menu added
+
+### Changed
+ - migrate build to webpack5
+
+### Fixed
+ - `USelectEntity`: In case value-attribute is specified for u-select-entity (e.g. :value-attribute="code") and the desired value is selected from dictionary then display attribute cannot be found and: old behavior - ID is shown; new behavior - value is shown corectly
+ - use `SystemJS.import('@unitybase/pdf')` instead of `System.import('@unitybase/pdf')` to prevent webpack including
+ a pdf package into adminui-vue bundle
+ - `UFileWebcamButton`: computed property `isDisabled` must return value of type `boolean` to prevent a console warnings
+ in dev mode
+ - `lookups`: the loading of lookups entries waits for another loading of entries for the same
+  entity if it is not completed yet. This prevents parallelism bug, which happens when several
+  `UTableEntity` controls load lookups for the same entity and only the first one awaits the
+  `subscribe` method and displays columns using `lookups` correctly
+ - added a cleanup of a dist folder before create a production build to remove unnecessary artifacts of previous build from resulting package   
+
+## [5.19.8] - 2021-03-23
+### Added
+- default authentication form (ub-auth.html) handle a `uiSettings.adminUI.forgotPasswordURL` parameter from config.
+ In case parameter is empty or not exists (default) then forgot password link do not displayed on the authentication form. 
+ Otherwise, a link to the specified URL is displayed 
+
+### Fixed
+ - UNavbar: fix scrollIntoView in case several navbars are added by apps (as reported by protoka devs)
+
+## [5.19.7] - 2021-03-16
+### Fixed
+- Fix `utils/Form/helpers.js` date value comparison 
+
+## [5.19.6] - 2021-03-15
+### Added
+  - UTableEntity. Added label localization in card view (UCardView)
+  - UButtonGroup. Added the new prop `direction` with two options `horizontal` by default and the new `vertical` one
+  - UDropdown. Added the new prop `refElement` for used to position the popper
+ 
+### Changed
+  - UTableEntity: click on column now show a sorting direction popup under cursor (not under toolbar sort button as before this changes); in this regime sorting direction popup is simplified (column  name is removed, buttons aligneg verticaly)
+
+### Fixed
+ - use the same field list for `ubm_form` and `ubm_enum` in adminui-pub and adminui-vue
+ - `UTableEntity` *showSummary* action now works for cached entities [LDOC-1168].
+   Fixed by adding a `.misc({__mip_disablecache: true})` to the summary repository (LocalDataStorage can't calculate SUM etc.)
+ - `UTableEntity`: for cached entities filter by `startWith`/`notStartWith` now case-insensitive (as for non cached one).
+  Actual fix is in `@unitybase/cs-shared.LocalDataStorage`.
+
+## [5.19.5] - 2021-03-03
+### Added
+ - Checking `uiSettings.adminUI.disableScanner` config property in `UFile` and
+  `UNavbarUserButton`. If true, then scan buttons are hidden in toolbars
+ - UCrop: new component for edit images: crop, rotate, flip
+ - UFileWebcamButton: drop down menu for choose the working regime: `scan to PDF` or `scan to Picture`,
+  `scan to PDF`: save one or more images to the PDF file,
+  also added ability to edit images after shoot by UCrop editor
+
+### Changed
+ - client-side locales reformatted to use a json. Auth page now inject `/models/ub-pub/locale/lang-${conn.preferredLocale}.json` instead of js.
+ - replaceShowList: pass `hideActions` property to `UTableEntity` instead of
+   build `scopedSlots` with empty `div` for it
+ - UTableEntity `showSummary` action changes:
+   - `column.attribute.id` used instead of `column.attribute.code` - this allows calc a summary for attributes with dots,
+     like `itemID.price`
+   - allow specifying aggregation function for columns using `column.summaryAggregationOperator` property - one of
+     `'SUM'|'MIN'|'MAX'|'AVG'|null`. By default `SUM` type is specified for Number columns
+   - exporting table to Excel takes into account summaryAggregationOperator for columns   
+   - summary can be explicitly disabled by sets `column.summaryAggregationOperator` to null. Example:
+```vue
+<template>
+<u-table-entity
+  entity-name="shop_OrderItem"
+  :columns="columns"
+/>
+</template>
+<script>
+export default {
+  data () {
+    return {
+      columns: [
+        'ID',
+        {
+          id: 'price',
+          summaryAggregationOperator: 'MIN'
+        },
+        {
+          id: 'orderID.version',
+          summaryAggregationOperator: null
+        }
+      ]
+    }
+  }
+}
+</script>
+```
+
+### Fixed
+ - `UTableEntity` - fix logic for alternate names for `hide-actions` property for `copy` and `link`
+ - replaceShowList: pass object properties to a column only if it is defined. Its prevent a bug when column
+  `sortable` and `filters` properties is not defined in UTable
+ - `UTableEntity`: allow refreshing an edited row for tables what based on the UBQL with sub-queries   
+ - `USelectEntity`: loading display value waits for another loading display value operation for the same control,
+      if it not completed yet, this prevents parallelism bugs, which happens if value of the same control
+      change several times fast enough
+ - prevent exception in case client localisation of ub-pub model not found for user preferred language.
+ - `replaceShowList`: fixed incorrect display of the `UTableEntity` columns header received from the cache
+ - "@popperjs/core" version locked to "~2.8.6" - there is unexpected behavior in 2.9.0 (in dev mode) 
+ - UFile: disable webcam capture button if control is disabled or webcam not available
+
+## [5.19.4] - 2021-02-25
+### Added
+ - `USelectEntity` will force selecting of new record added by user using "Add new" action.
+   Also added prop `skipAutoComplete` to disable this functionality for some selected field.
+ - `Form.js`: added `titleTooltip` param. By default equal to `title`. Used to display a tab tooltip.
+ - `Form.mountTab` added the ability to change the tooltip of current tab in the `UNavbar` using
+   the provided with `$formServices` function `setTooltip`.
+ - `UTableEntity` now supports a new property `hideActions`.  It allows to hide an action
+  from all the possible places at once: toolbar, context menu, toolbar dropdown, it also
+  disables keyboard shortcuts for the actions.
+  Before the change, to disable an action for entity table, it required something like:  
+ ```
+    <!-- Disallow copy -->
+    <template #contextMenuCopy>
+      <div/>
+    </template>
+    <template #toolbarDropdownCopy>
+      <div/>
+    </template>
+ ```
+  And still, it won't affect keyboard actions.  Now it is much easier to disable actions with the
+  new property.  It supports the following actions: `addNew`, `copy`, `newVersion`, `showVersions`, `edit`, `delete`,
+  `audit`, `summary`, `export`, `link`, `viewMode`
+  How, it is possible to control multiple actions with one property and be sure actions will be hidden in all the places:
+ ```
+      <u-table-entity
+        :hide-actions="['copy', 'export']"
+        ...
+      >
+        ....
+      </u-table-entity>
+    </div>
+ ```
+   
+### Changed
+ - `org_unit-fm`: 'parentID' field is `readonly` instead of `disabled`, that allows to open
+    parent form [UBDF-13217]
+ - UTable: In a table view mode the position of a sorting window popup has moved
+  from a button on the toolbar to a sorted column header.
+   
+### Fixed
+ - `UNavbar`: display of html-content inside the tab tooltip
+ - `UNavbar`: support for ext-based form tooltip that was created with `BasePanel`
+ - `UAutoField`: in case `readonly` property sets to `true` - convert it to `disable`,
+   because 'el-checkbox'/'el-switch' doesn't have `readonly` prop 
+ - `processing` + `UToolbar` - "Save and Close" must close ONLY if save was successful
+
+## [5.19.3] - 2021-02-10
+### Fixed
+ - `UTableEntity` attributes with Document data type did not work correctly, if attribute was not the root, for
+   example, for attribute like `linkedDocID.docImage`, it caused JS error, if user try to download it.
+   Now for such attributes, repository MUST include the ID field of the record with document,
+   for the previous example, it MUST include `linkedDocID` attribute.  This is done instead of additional
+   (and failed!) request to server for the ID value.
+
+## [5.19.2] - 2021-02-08
+### Added
+ - `Form.mountModal` will provide `isModal: true` to the child components, child components can inject it as `parentIsModal`
+ - `UFormContainer` will inject `isModal` as `parentIsModal`
+ - `UFile` (`FileRenderer`) component support preview (pre-listen) of audio content
+ - *ALS mixin support* for UAutoField and autoforms. Can be used in custom forms as such
+ ```
+ const alsMixin = require('@adminui-vue/components/controls/mixins/alsMixin')
+ ...
+ mixins: ['alsMixin']
+```
+ - `SET_ALS_INFO` mutation added to `processing` vuex module.
+   In case als mixin assigned to the entity `processing.load` adds information about als
+   into `alsInfo` object in vuex state.
+   
+### Changed
+ - `USelectEntity` - actions `EditItem` and `AddNewItem` use parent modal state (parentIsModal) to show item form.
+   If parent is inside a modal dialog - form shows as modal, else - in the new tab.  
+
+   This behavior can be disabled by adding `appConfig.uiSettings.adminUI.forceModalsForEditForms: true` to ubConfig
+
+### Fixed
+ - UFile ignore charset part in BLOB content type while calculates an icon for file.
+   After this fix correct icons are displayed for txt, html, js, html and so on.   
+
+## [5.19.1] - 2021-02-03
+### Fixed
+ - UMasterDetailView: fixed `Entity with code "[object Object]" does not exists or not accessible` in case
+   `repository` property is Object (ubql). For example as in ubm_enum shortcut definition.
+ - UMasterDetailView: fixed `Entity with code "" does not exist or not accessible` in case `entityName` is passed 
+  into attributes. For example as in uba_audit shortcut definition.
+
+## [5.19.0] - 2021-02-02
+### Fixed
+ - Error `Cannot read property 'showAllItem' of undefined` on clicking to Ext filter arrows up/down.
+ - UFormRow: Fixed styles for labelPosition="right" - colon sing after label is removed; added padding between control and label
+
+## [1.15.1] - 2021-01-30
+### Changed
+ - for `video` content FileRendered disable a preload to decrease a server load. User should press a `play` button to view a video.
+
+### Fixed
+ - UTableEntity filter for attributes of type `ID` now uses the same set of available conditions as for type BigInteger.
+   Before this fix available conditions are `equal` and `contains`. The second one dose not make sense at all
+ - PDF file are previewed correctly (fixed in @unitybase/blob-stores@5.6.0)  
+
+## [1.15.0] - 2021-01-28
+### Added
+ - `UAutoField.vue`: all listeners of the parent component are now concatenates with a child component listeners, and 
+  parent events will work without specifying the `.native` modifier. This allows to create a `u-auto-field` descendants as such:
+   ```vue
+     // DocAutoField.vue
+     <template>
+       <u-auto-field
+         v-if="!isHidden(attributeName)"
+         :required="isRequired(attributeName)"
+         v-bind="$attrs"
+         :attribute-name="attributeName"
+         v-on="$listeners"
+       />
+     </template>
+     // using
+     <doc-auto-field
+      @input="setJournalIDs(false)"
+    />
+   ```
+   Before this changes `setJournalIDs` never called.   
+
+ - `FileRenderer` component support preview of video content.
+   **Warning** - reverse proxy MUST be enabled in application config on production environment 
+   ( see [Reverse proxy tutorial](https://unitybase.info/api/server-v5/tutorial-reverse_proxy_nginx.html) )
+   to support partial (using Content-Range HTTP header) download of huge video files.
+
+### Changed
+ - UFile in `previewMode: true` (FileRenderer component) uses direct URL (generated by UB.connection.getDocumentURL)
+   to display a BLOB content.
+  Before this changes BLOB content are loaded into browser memory into [Blob object](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL),
+  so huge files (video for example) can't be displayed.
+  
+  With a direct URL HTMLElement can decide how much of content should be loaded, for example:
+    - `<video>` element loads a file by a small chunks (using Content-Range HTTP header)
+    - PDF renderer can load PDF page-by-page in some case
+    - `<img>` element can start to display content while it not fully loaded, for example for jpeg format
+  and so on.
+
+ - `Download` action of BasePanel `Document` menu uses new method `UBApp.downloadDocument` to save a document
+   to the file system without loading it into browser memory.
+   
+
+### Removed
+ - UFile/helpers/FileLoader.js is removed (contains one-line functions what duplicate existed `AsyncConnection` methods)
+
+## [1.14.4] - 2021-01-26
+### Changed
+ - `UNavbarSearchButton`: full text search do not split query on tokens (lexemes) if first character is "№"
+
+### Fixed
+ - user authentication and re-login form will trim a user name before pass it to UBConnection.
+   This fix login error in case user type a space in the end of then user name.  
+
+## [1.14.3] - 2021-01-19
+## [1.14.2] - 2021-01-17
+## [1.14.1] - 2020-12-30
+## [1.14.0] - 2020-12-28
+### Added
+ - lookups module output a warning to console for lookups with row count > `UB.LIMITS.LIMITS.lookupWarningRows` (2500)
+
+### Fixed
+ - Bug in setting parent context for `UMasterDetailView` on "Add New" action (use `cfg.props.parentContext` instead of `cfg.parentContext`)
+
+## [1.13.32] - 2020-12-22
+### Fixed
+ - Bug in some preview forms, which show entity table, when clicking on table header
+
+## [1.13.31] - 2020-12-21
+## [1.13.30] - 2020-12-20
+### Added
+ - support for `attribute.customSettings.hiddenInDetails` is added while building `Details` menu
+   by using `UBEntity.prototype.getDetailsForUI`
+
+## [1.13.29] - 2020-12-17
+### Added
+ - `UFileAddButton`: added property `accept` - a file extensions to bind into `accept` input property
+
+### Fixed
+ - `Change password` user menu item now hidden for users logged in with Auth Schema what not support
+   password changing (all except UB, Basic and CERT/CERT2 with `requireUserName`) 
+ - `UFile`: `accept` property propagated to child `UFileAddButton`, so behavior of clicking into drag area and `Add` button is the same now  
+
+## [1.13.28] - 2020-12-16
+### Added
+  - UI Tag tracking (adding of `uitag=${uiTag}` to `ubql` URI) is implemented for Vue based tables (what mounts as tab).
+    For Vue based forms UI tracking is implemented in adminui-pub. 
+
+### Fixed
+ - `UTableEntity` & `UForm` uses `AsyncConnection.prototype.emitEntityChanged` to emit `${entityCode}:changed` event.
+   `emitEntityChanged` method emit `${entityCode}:changed` event and, in case entity has a unity mixin - emit also `${minixs.unity.entity}:changed`.
+   This allows to refresh, for example, a `uba_subject` table in case `uba_user` is edited.
+   
+## [1.13.27] - 2020-12-14
+### Changed
+  - UNavbarNotificationsButton shows message sent date with time (before this changes only date is displayed)
+    using `$formatByPattern.formatDate(item.startDate, 'dateTime')`
+    
+### Fixed
+ - form for changing expired password - validation fixed
+
+## [1.13.26] - 2020-12-09
+## [1.13.25] - 2020-12-09
+### Added
+- `UDropdown`: new property `disabled` (`false` by default), this property disables dropdown toggle when its `true`
+
+### Fixed
+ - `lookups` remove listener on unsubscribe last subscription
+ - Excel export of Vue tables: values in columns of type Boolean will be exported as 0/1 instead of HTML code fragment
+
+## [1.13.24] - 2020-12-02
+### Added
+- `loadWithCollections` - new action for loading master record and collections from one place
+
+### Changed
+- call `loaded` processing hook after loading of collections
+ - login form expired password changing component design is given to the `uba_user-changePassword` form design 
+ - `UTableEntity`: remove text of all toolbar buttons. Shows tooltips instead
+ - `UTableEntity`: remove border from last row in `bordered` mode
+ - `UTableEntity`: add default border-radius (4px) to table border in `bordered` mode
+
+### Deprecated
+ - `UToolbarButton`: Use `el-tooltip` + `u-button` instead
+
+### Fixed
+- `UTablEntity`: not show column name in the filter dropdown or in the sort dropdown based on the
+  selected table cell if the column configured as not filterable or not sortable
 
 ## [1.13.23] - 2020-11-25
 ### Fixed
@@ -76,11 +721,11 @@ but does not fetch default params except ID
 
 ## [1.13.17] - 2020-11-10
 ### Changed
- - `USidebar` sidebar width to `0px` in collapsed state and screen less then `768px` (mobile)
+ - `USidebar` sidebar width to `0px` in collapsed state and screen less than `768px` (mobile)
 
 ## [1.13.16] - 2020-11-08
 ### Fixed
- - `UDialog` - if `Cancel` button not available - sets focut to first available button.
+ - `UDialog` - if `Cancel` button not available - sets focus to the first available button.
    
 ## [1.13.15] - 2020-11-05
 ## [1.13.14] - 2020-11-01
@@ -102,10 +747,10 @@ but does not fetch default params except ID
    This allows fit more data on the screen without negative UX effect (verified on laptops and tablets)
  - `UToolbar` audit table opens in separate tab 
  - `audit table` save in localStorage last preview mode and active filters
- - `Form`, `UTableEntity` in case table or form opened as modal then all child tables and forms are also opened as modals
+ - `Form`, `UTableEntity` if table or form opened as modal then all child tables and forms are also opened as modals
  
 ### Fixed
- - Excel export from UTableEntity - fixed format for Date anf Boolean attributes
+ - Excel export from UTableEntity - fixed format for Date and Boolean attributes
  - prevent error `Cannot read property 'scrollIntoView' of undefined` during
   navbar tab closing (occurs for Ext based forms with close confirmation) 
  
@@ -596,7 +1241,7 @@ this.$formatByPattern.formatNumber(
 ## [1.11.0] - 2020-05-22
 ### Added
  - `utils/lookups` method `subscribe` - subscribes to a local entity changes.
- Lookup attrs already includes ID and description attribute for current entity can be extend by attrs param.
+ Lookup attrs already includes ID and description attribute for current entity can be extended by attrs param.
  ```javascript
  await lookups.subscribe('tst_dictionary', ['code', 'userID'])
  ```
@@ -609,7 +1254,7 @@ this.$formatByPattern.formatNumber(
  /** Returns description attribute value by ID */
  lookups.get('tst_dictionary', 245671369782)
  
- /** Returns description attribute value by ID */
+ /** Returns description attribute value by code */
  lookups.get('tst_dictionary', {code: 'code10'})
  
  /** Can search on several attributes */

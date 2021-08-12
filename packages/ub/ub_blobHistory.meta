@@ -11,6 +11,12 @@
 			"caption": "InstanceID"
 		},
 		{
+			"name": "entity",
+			"dataType": "String",
+			"size": 40,
+			"caption": "Entity"
+		},
+		{
 			"name": "attribute",
 			"dataType": "String",
 			"size": 20,
@@ -30,6 +36,12 @@
 			"defaultValue": "0",
 			"caption": "isPermanent",
 			"documentation": "1 on case we do not delete this revision during history rotation"
+		},
+		{
+			"name": "createdAt",
+			"dataType": "DateTime",
+			"defaultValue": "currentDate",
+			"caption": "Created at"
 		},
 		{
 			"name": "blobInfo",

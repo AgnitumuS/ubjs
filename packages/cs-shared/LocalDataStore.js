@@ -41,12 +41,15 @@ const collationCompare = require('./formatByPattern').collationCompare
  */
 
 /**
- * Perform local filtration and sorting of data array according to ubql whereList & order list
+ * Perform local filtration and sorting of data array according to ubql whereList & order list.
+ *
+ * **WARNING** - sub-queries are not supported.
+ *
  * @param {TubCachedData} cachedData Data, retrieved from cache
  * @param {UBQL} ubql Initial server request
- * @returns {*} new filtered & sorted array
+ * @returns {{resultData: TubCachedData, total: number}} new filtered & sorted array
  */
-module.exports.doFilterAndSort = function (cachedData, ubql) {
+module.exports.doFilterAndSort = function doFilterAndSort(cachedData, ubql) {
   let rangeStart
 
   let filteredData = this.doFiltration(cachedData, ubql)
@@ -75,7 +78,7 @@ module.exports.doFilterAndSort = function (cachedData, ubql) {
  * @param {TubCachedData} cachedData Data, retrieved from cache
  * @param {Number} IDValue row ID.
  */
-module.exports.byID = function (cachedData, IDValue) {
+module.exports.byID = function byID(cachedData, IDValue) {
   return this.doFilterAndSort(cachedData, { ID: IDValue })
 }
 
@@ -84,14 +87,16 @@ module.exports.byID = function (cachedData, IDValue) {
  * @protected
  * @param {TubCachedData} cachedData Data, retrieved from cache
  * @param {UBQL} ubql
+ * @param {boolean} [skipSubQueries=false] Skip `subquery` conditions instead of throw. Can be used
+ *   to estimate record match some where conditions
  * @returns {Array.<Array>}
  */
-module.exports.doFiltration = function (cachedData, ubql) {
+module.exports.doFiltration = function doFiltration(cachedData, ubql, skipSubQueries) {
   let f, isAcceptable
   const rawDataArray = cachedData.data
   const byPrimaryKey = Boolean(ubql.ID)
 
-  const filterFabric = whereListToFunctions(ubql, cachedData.fields)
+  const filterFabric = whereListToFunctions(ubql, cachedData.fields, skipSubQueries)
   const filterCount = filterFabric.length
 
   if (filterCount === 0) {
@@ -123,7 +128,7 @@ module.exports.doFiltration = function (cachedData, ubql) {
  * @param {TubCachedData} cachedData
  * @param {Object} ubRequest
  */
-module.exports.doSorting = function (filteredArray, cachedData, ubRequest) {
+module.exports.doSorting = function doSorting(filteredArray, cachedData, ubRequest) {
   const preparedOrder = []
   if (ubRequest.orderList) {
     _.each(ubRequest.orderList, function (orderItem) {
@@ -159,20 +164,28 @@ module.exports.doSorting = function (filteredArray, cachedData, ubRequest) {
  * @private
  * @param {UBQL} ubql
  * @param {Array.<String>} fieldList
+ * @param {boolean} [skipSubQueries=false] Skip `subquery` conditions instead of throw. Can be used
+ *   to estimate record match some where conditions
  * @returns {Array}
  */
-function whereListToFunctions (ubql, fieldList) {
+function whereListToFunctions (ubql, fieldList, skipSubQueries) {
   Object.keys(ubql) // FIX BUG WITH TubList TODO - rewrite to native
+  const whereList = ubql.whereList
+  if (!whereList && !ubql.ID) return [] // top level ID adds a primary key filter
+
   const filters = []
   const escapeForRegexp = function (text) {
     // convert text to string
     return text ? ('' + text).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') : ''
   }
-  const whereList = ubql.whereList
 
   const filterFabricFn = function (propertyIdx, condition, value) {
     let regExpFilter
     const valIsStr = typeof value === 'string'
+    let valUpperIfStr = valIsStr ? value.toUpperCase() : value
+    if (skipSubQueries && (condition === 'subquery')) {
+      return null // skip subquery
+    }
     switch (condition) {
       case 'like':
         regExpFilter = new RegExp(escapeForRegexp(value), 'i')
@@ -245,12 +258,14 @@ function whereListToFunctions (ubql, fieldList) {
       case 'startWith':
         return function (record) {
           const str = record[propertyIdx]
-          return (str && str.indexOf(value) === 0)
+          if (!str) return false
+          return (str.toUpperCase().indexOf(valUpperIfStr) === 0)
         }
       case 'notStartWith':
         return function (record) {
           const str = record[propertyIdx]
-          return str && str.indexOf(value) !== 0
+          if (!str) return true
+          return str.toUpperCase().indexOf(valUpperIfStr) !== 0
         }
       case 'in':
         return function (record) {
@@ -285,14 +300,19 @@ function whereListToFunctions (ubql, fieldList) {
     } else if (clause.values !== undefined) {
       fValue = clause.values[Object.keys(clause.values)[0]]
     }
-    filters.push(filterFabricFn(propIdx, clause.condition, fValue))
+    const fn = filterFabricFn(propIdx, clause.condition, fValue)
+    if (fn) filters.push(fn)
   }
   // check for top level ID  - in this case add condition for filter by ID
   const reqID = ubql.ID
   if (reqID) {
     transformClause({ expression: '[ID]', condition: 'equal', values: { ID: reqID } })
   }
-  _.forEach(whereList, transformClause)
+  for (const cName in whereList) {
+    if (whereList.hasOwnProperty(cName)) {
+      transformClause(whereList[cName])
+    }
+  }
   return filters
 }
 
@@ -324,9 +344,9 @@ module.exports.whereListToFunctions = whereListToFunctions
  *
  * @param {{resultData: TubCachedData}} selectResult
  * @param {Object<string, string>} [fieldAlias] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
- * @returns {Array.<*>}
+ * @returns {Array<object>}
  */
-module.exports.selectResultToArrayOfObjects = function (selectResult, fieldAlias) {
+module.exports.selectResultToArrayOfObjects = function selectResultToArrayOfObjects(selectResult, fieldAlias) {
   const inData = selectResult.resultData.data
   const inAttributes = selectResult.resultData.fields
   const inDataLength = inData.length
@@ -364,7 +384,7 @@ module.exports.selectResultToArrayOfObjects = function (selectResult, fieldAlias
  * @param {TubCachedData} cachedData
  * @result {{fieldCount: number, rowCount: number, values: array.<*>}}
  */
-module.exports.flatten = function (requestedFieldList, cachedData) {
+module.exports.flatten = function flatten(requestedFieldList, cachedData) {
   const fldIdxArr = []
   const cachedFields = cachedData.fields
   let rowIdx = -1
@@ -418,7 +438,7 @@ module.exports.flatten = function (requestedFieldList, cachedData) {
  * @param {Array.<String>} attributeNames
  * @returns {Array.<Array>}
  */
-module.exports.arrayOfObjectsToSelectResult = function (arrayOfObject, attributeNames) {
+module.exports.arrayOfObjectsToSelectResult = function arrayOfObjectsToSelectResult(arrayOfObject, attributeNames) {
   const result = []
   arrayOfObject.forEach(function (obj) {
     const row = []
@@ -435,7 +455,7 @@ module.exports.arrayOfObjectsToSelectResult = function (arrayOfObject, attribute
  * @param {Date} v
  * @returns {Date}
  */
-module.exports.truncTimeToUtcNull = function (v) {
+module.exports.truncTimeToUtcNull = function truncTimeToUtcNull(v) {
   if (!v) return v
   let m = v.getMonth() + 1
   m = m < 10 ? '0' + m : '' + m
@@ -454,7 +474,7 @@ module.exports.truncTimeToUtcNull = function (v) {
  * @param value
  * @returns {Date}
  */
-module.exports.iso8601ParseAsDate = function (value) {
+module.exports.iso8601ParseAsDate = function iso8601ParseAsDate(value) {
   const res = value ? new Date(value) : null
   if (res) {
     return new Date(res.getFullYear(), res.getMonth(), res.getDate())
@@ -462,4 +482,35 @@ module.exports.iso8601ParseAsDate = function (value) {
     // res.setTime(res.getTime() + res.getTimezoneOffset() * 60 * 1000)
   }
   return res
+}
+
+/**
+ * Convert raw server response data to javaScript data according to attribute types
+ * @param {UBDomain} domain
+ * @param serverResponse
+ * @return {*}
+ */
+module.exports.convertResponseDataToJsTypes = function convertResponseDataToJsTypes(domain, serverResponse) {
+  if (serverResponse.entity && // fieldList &&  serverResponse.fieldList
+    serverResponse.resultData &&
+    !serverResponse.resultData.notModified &&
+    serverResponse.resultData.fields &&
+    serverResponse.resultData.data && serverResponse.resultData.data.length
+  ) {
+    const convertRules = domain.get(serverResponse.entity).getConvertRules(serverResponse.resultData.fields)
+    const rulesLen = convertRules.length
+    const data = serverResponse.resultData.data
+    if (rulesLen) {
+      for (let d = 0, dataLen = data.length; d < dataLen; d++) {
+        for (let r = 0; r < rulesLen; r++) {
+          const column = convertRules[r].index
+          data[d][column] = convertRules[r].convertFn(data[d][column])
+        }
+      }
+    }
+  }
+  if (serverResponse.resultLock && serverResponse.resultLock.lockTime) {
+    serverResponse.resultLock.lockTime = serverResponse.resultLock.lockTime ? new Date(serverResponse.resultLock.lockTime) : null
+  }
+  return serverResponse
 }

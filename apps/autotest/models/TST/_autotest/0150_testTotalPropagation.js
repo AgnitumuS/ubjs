@@ -1,11 +1,12 @@
 /**
  * @author pavel.mash
- * Date: 2021-04-15
+ * Date: 2020-04-15
  * Test case for select method override by select:before propagate a __totalRecCount (if requested)
  */
 const assert = require('assert')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
+const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
 
 module.exports = function runMixinsTests (options) {
   if (!options) {
@@ -57,6 +58,36 @@ module.exports = function runMixinsTests (options) {
   conn.Repository('tst_IDMapping')
     .attrs('ID')
     .orderBy('rnd').selectAsObject()
+
+  // insert as Object
+  const dayDate = LocalDataStore.truncTimeToUtcNull(new Date())
+  const dateTime = new Date()
+  dateTime.setMilliseconds(0)
+  const newDoc = conn.insertAsObject({
+    entity: 'tst_document',
+    fieldList: ['ID', 'code', 'docDate', 'docDateTime', 'mi_modifyDate'],
+    lockType: 'ltTemp', // lock for update below (tst_document have softLock mixin)
+    execParams: {
+      code: 'testInsertAsObject',
+      docDate: dayDate,
+      docDateTime: dateTime
+    }
+  }, {mi_modifyDate: 'modifiedAt'})
+  assert.ok((typeof newDoc === 'object') && (newDoc.modifiedAt instanceof Date), `insertAsObject should return Object with parsed Date but got ${JSON.stringify(newDoc)}`)
+  //assert.strictEqual(newDoc.docDate.getTime(), dayDate.getTime(), `Parsed Date should be equal ${dayDate} but got ${newDoc.docDate}`)
+  assert.strictEqual(newDoc.docDateTime.getTime(), dateTime.getTime(), `Parsed DateTime should be equal ${dateTime} but got ${newDoc.docDateTime}`)
+  const newDoc2 = conn.updateAsObject({
+    entity: 'tst_document',
+    fieldList: ['code', 'docDate', 'docDateTime', 'mi_modifyDate'],
+    execParams: {
+      ID: newDoc.ID,
+      code: 'testInsertAsObjectU',
+      mi_modifyDate: newDoc.modifiedAt
+    }
+  })
+  assert.ok((typeof newDoc2 === 'object') && (newDoc2.mi_modifyDate instanceof Date) && (newDoc2.code === 'testInsertAsObjectU'),
+    `updateAsObject should return Object with parsed Date but got ${JSON.stringify(newDoc2)}`)
+
 }
 
 /**

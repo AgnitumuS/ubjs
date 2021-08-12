@@ -1,13 +1,10 @@
-const UB = require('@unitybase/ub-pub')
-const formatByPattern = require('@unitybase/cs-shared').formatByPattern
-
 module.exports = {
   methods: {
     /**
      * Humanize file size
      *
      * @param {number} bytes File size
-     * @param {number} decimals Decimals, 2 by default
+     * @param {number} [decimals=2] Decimals, 2 by default
      * @returns {string} Humanized file size
      */
     formatBytes (bytes, decimals) {
@@ -28,10 +25,6 @@ module.exports = {
     getType (str) {
       const arr = str.split('.')
       return arr[arr.length - 1].toUpperCase()
-    },
-
-    formatDate (value) {
-      return formatByPattern.formatDate(value, 'dateTime')
     }
   }
 }

@@ -4,9 +4,9 @@ const App = UB.App
 /**
  * OpenIDConnect client for UnityBase
  *
-      const openID = require('@unitybase/openid-connect')
-      let oIdEndPoint = openID.registerEndpoint('openIDConnect')
-      oIdEndPoint.registerProvider('Google', {
+ const openID = require('@unitybase/openid-connect')
+ let oIdEndPoint = openID.registerEndpoint('openIDConnect')
+ oIdEndPoint.registerProvider('Google', {
         authUrl: 'https://accounts.google.com/o/oauth2/auth',
         tokenUrl: 'https://accounts.google.com/o/oauth2/token',
         userInfoUrl: 'https://www.googleapis.com/oauth2/v1/userinfo',
@@ -33,7 +33,7 @@ const App = UB.App
 const btoa = require('btoa')
 module.exports.registerEndpoint = registerOpenIDEndpoint
 
-let endpoints = {}
+const endpoints = {}
 const queryString = require('querystring')
 
 /**
@@ -49,7 +49,7 @@ const queryString = require('querystring')
  * @returns {openIDEndpoint} endpoint
  */
 function registerOpenIDEndpoint (endpointName) {
-  let providers = {}
+  const providers = {}
   if (endpoints[endpointName]) {
     throw new Error('Endpoints already registered')
   }
@@ -71,7 +71,9 @@ function registerOpenIDEndpoint (endpointName) {
      * @param {String} [providerConfig.nonce] nonce  TODO - generate random and cache in GlobalCache with expire
      * @param {String} providerConfig.response_type response type. Must contain code. This module use code responce type.
      * @param {String} providerConfig.client_id client_id. Get it from provider
-     * @param {String} [providerConfig.client_secret] client_secret. Get it from provider (not needed for ADFS3 - windows server 2012).
+     * @param {String} [providerConfig.client_secret] client_secret. Get it from provider (not needed for ADFS3 - windows server 2012)
+     * @param {String} [providerConfig.cert] id.gov.ua specific - a BASE64 key distribution protocol certificate
+     *   to which the response will be encrypted by the authentication server. see https://id.gov.ua/downloads/IDInfoProcessingD.pdf
      * @param {Function} providerConfig.getCustomFABody Function, that returns custom text included to final html success/fail response
      * @param {String} providerConfig.response_mode One of: form_post, fragment, query
      * @param {Function} providerConfig.getOnFinishAction Function, that returns client-side code to be run after success/fail response from OpenID provider.
@@ -123,11 +125,11 @@ function registerOpenIDEndpoint (endpointName) {
  * @protected
  */
 function openIDConnect (req, resp) {
-  let providerName = req.uri
-  let url = req.url.split('?')[0]
-  let endpointUrl = providerName ? url.substr(0, url.length - providerName.length - 1) : url
-  let endpointName = endpointUrl.substr(endpointUrl.lastIndexOf('/') - endpointUrl.length + 1)
-  let endpoint = endpoints[endpointName]
+  const providerName = req.uri
+  const url = req.url.split('?')[0]
+  const endpointUrl = providerName ? url.substr(0, url.length - providerName.length - 1) : url
+  const endpointName = endpointUrl.substr(endpointUrl.lastIndexOf('/') - endpointUrl.length + 1)
+  const endpoint = endpoints[endpointName]
 
   if (!endpoint) {
     returnInvalidRequest(resp, 'Endpoint is not registered')
@@ -138,15 +140,15 @@ function openIDConnect (req, resp) {
     return
   }
 
-  let provider = endpoint.getProvider(providerName)
+  const provider = endpoint.getProvider(providerName)
   if (!provider) {
     returnInvalidRequest(resp, 'Provider not registered')
     return
   }
 
-  let redirectUrl = App.externalURL + (App.externalURL[App.externalURL.length - 1] === '/' ? '' : '/') + endpointName + '/' + providerName
-  let paramStr = (req.method === 'GET') ? req.parameters : req.read()
-  let params = paramStr ? queryString.parse(paramStr) : null
+  const redirectUrl = App.externalURL + (App.externalURL[App.externalURL.length - 1] === '/' ? '' : '/') + endpointName + '/' + providerName
+  const paramStr = (req.method === 'GET') ? req.parameters : req.read()
+  const params = (req.method === 'GET') ? req.parsedParameters : queryString.parse(paramStr)
 
   if (!paramStr || params.mode === 'auth') {
     redirectToProviderAuth(req, resp, provider, redirectUrl, params)
@@ -156,16 +158,7 @@ function openIDConnect (req, resp) {
   if (params.code && params.state) {
     // if (!redirectUrl)
     //    redirectUrl = atob(params.state);
-    let origin = ''
-    let headers = (req.headers || '').split('\r\n')
-    if (headers) {
-      headers.forEach(function (v) {
-        if (v && v.substring(0, 7) === 'Origin:') {
-          origin = v.substring(7)
-          return false
-        }
-      })
-    }
+    const origin = req.getHeader('origin') || ''
     doProviderAuthHandshake(resp, params.code, params.state, provider, redirectUrl, origin)
   } else if (params.logout) {
     redirectToProviderLogout(req, resp, provider, params)
@@ -194,7 +187,7 @@ function getAuthCustomHeadersString (customHeaders) {
     throw new Error('custom headers must be an object')
   }
 
-  let headerStringArray = []
+  const headerStringArray = []
 
   Object.keys(customHeaders).forEach(function (key) {
     headerStringArray.push(key + '=' + customHeaders[key])
@@ -227,7 +220,7 @@ function redirectToProviderAuth (req, resp, providerConfig, redirectUrl, request
     '&response_type=' + providerConfig.response_type +
     '&client_id=' + providerConfig.client_id +
     '&response_mode=' + (providerConfig.response_mode || 'form_post') +
-     customHeaders
+    customHeaders
   )
 }
 
@@ -242,7 +235,7 @@ function notifyProviderError (resp, provider) {
   resp.write('<head><meta http-equiv="X-UA-Compatible" content="IE=edge" /></head>')
   resp.write('<body>')
   if (provider.getCustomFABody) {
-    let customFABody = provider.getCustomFABody({ success: false })
+    const customFABody = provider.getCustomFABody({ success: false })
     if (customFABody) {
       resp.write(customFABody)
     }
@@ -269,13 +262,24 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
 
   if (response.statusCode === 200) {
     if (provider.userInfoUrl) {
-      responseData = JSON.parse(response.read()) // response._http.responseText
+      responseData = response.json() // response._http.responseText
+
+      if (responseData.id_token) {
+        provider.id_token = responseData.id_token
+      }
       if (provider.userInfoHTTPMethod === 'POST') {
         request = http.request(provider.userInfoUrl)
         request.options.method = 'POST'
         request.write('access_token=' + responseData.access_token)
         request.write('&client_id=' + provider.client_id)
-        if (!!provider.client_secret) request.write('&client_secret=' + provider.client_secret)
+        if (responseData.user_id) {
+          request.write('&user_id=' + responseData.user_id)
+        }
+        if (provider.cert) {
+          request.write('&cert=' + provider.cert) // id.gov.ua specific
+        }
+
+        if (provider.client_secret) request.write('&client_secret=' + provider.client_secret)
         request.setHeader('Content-Type', 'application/x-www-form-urlencoded')
       } else {
         request = http.request(provider.userInfoUrl + '?access_token=' + responseData.access_token)
@@ -284,7 +288,7 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
     }
     if (response.statusCode === 200) {
       responseData = JSON.parse(response.read()) // response._http.responseText
-      let userID = provider.getUserID(responseData, { resp: resp, code: code, state: state, provider: provider, redirectUrl: redirectUrl, orign: orign })
+      const userID = provider.getUserID(responseData, { resp: resp, code: code, state: state, provider: provider, redirectUrl: redirectUrl, orign: orign })
       if (userID === false) {
         return
       }
@@ -292,14 +296,14 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
       if (!userID) {
         notifyProviderError(resp, provider)
       } else {
-        let loginResp = UB.Session.setUser(userID, code)
-        let objConnectParam = { success: true, data: JSON.parse(loginResp), secretWord: code }
+        const loginResp = UB.Session.setUser(userID, code)
+        const objConnectParam = { success: true, data: JSON.parse(loginResp), secretWord: code }
         resp.statusCode = 200
         resp.write('<!DOCTYPE html><html>')
         resp.write('<head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge" /></head>')
         resp.write('<body>')
         if (provider.getCustomFABody) {
-          let customFABody = provider.getCustomFABody(objConnectParam)
+          const customFABody = provider.getCustomFABody(objConnectParam)
           if (customFABody) {
             resp.write(customFABody)
           }

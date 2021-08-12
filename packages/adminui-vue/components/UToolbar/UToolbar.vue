@@ -1,6 +1,6 @@
 <template>
   <div class="u-toolbar">
-    <!-- @slot left side toolbar (before default buttons) -->
+    <!-- @slot content to prepend to the left side of the toolbar *before* default buttons -->
     <slot name="leftBefore" />
     <el-tooltip
       v-for="button in mainPanelButtons"
@@ -13,26 +13,34 @@
       :disabled="!button.label"
     >
       <u-button
-        appearance="inverse"
-        size="large"
+        :appearance="button.type === 'text' ? 'default' : 'inverse'"
+        :size="button.type === 'text' ? 'small' : 'large'"
         :disabled="button.disabled"
         :icon="button.icon"
         :color="button.color"
         @click="button.handler"
-      />
+      >
+        <template v-if="button.type === 'text'">
+          {{ button.label || '' }}
+        </template>
+      </u-button>
     </el-tooltip>
-    <!-- @slot left side toolbar (after default buttons) -->
+    <!-- @slot content to append of the left side of the toolbar *after* default buttons -->
     <slot name="left" />
     <div class="u-toolbar__flex-divider" />
-    <!-- @slot right side toolbar (before setting button) -->
+    <!-- @slot content to prepend to the right side of the toolbar *before* setting button -->
     <slot name="right" />
 
-    <u-toolbar-button
+    <el-tooltip
       v-if="entitySchema.hasMixin('softLock')"
-      :icon="isLocked ? 'u-icon-lock' : 'u-icon-unlock'"
-      :color="isLocked ? (isLockedByMe ? 'primary' : 'danger') : 'info'"
-      :tooltip="lockInfoMessage"
-    />
+      :content="lockInfoMessage"
+    >
+      <u-button
+        :icon="isLocked ? 'u-icon-lock' : 'u-icon-unlock'"
+        :color="isLocked ? (isLockedByMe ? 'primary' : 'danger') : 'control'"
+        appearance="inverse"
+      />
+    </el-tooltip>
 
     <u-dropdown
       class="u-toolbar__settings-button"
@@ -73,14 +81,14 @@
     >
       <tr>
         <td>{{ $ut('createdEntityCaption') }}:</td>
-        <td>{{ formatDate(mi_createDate) }}</td>
+        <td>{{ $UB.formatter.formatDate(mi_createDate, 'dateTimeFull') }}</td>
       </tr>
       <tr>
         <td>{{ $ut('updatedEntityCaption') }}:</td>
-        <td>{{ formatDate(mi_modifyDate) }}</td>
+        <td>{{ $UB.formatter.formatDate(mi_modifyDate, 'dateTimeFull') }}</td>
       </tr>
 
-      <!-- @slot under the dates of creation and modification -->
+      <!-- @slot content to append under the dates of creation and modification (if entity have mi_createDate & mi_modifyDate) -->
       <slot name="toolbarInfoRow" />
     </table>
   </div>
@@ -93,16 +101,29 @@ const { mapInstanceFields } = require('../../utils/Form/helpers')
 
 /**
  * Form toolbar with default actions.
- * You can add custom actions by slots
+ * Addition actions can be added either using `toolbar-buttons` or using slots
  */
 export default {
   name: 'UToolbar',
+  inject: ['$formServices', 'formCode', 'entitySchema', 'fieldList', 'entity'],
 
   props: {
-    hideDefaultButtons: Boolean
+    /**
+     * Do not show any of the default buttons / actions
+     */
+    hideDefaultButtons: Boolean,
+    /**
+     * Buttons definition array. Can contains additional toolbar/dropdown buttons or override default button
+     * in case `name` property match some of the default button name.
+     *
+     * Can be used together with `hideDefaultButtons` property and slots.
+     * See example in `docs` below.
+     */
+    toolbarButtons: {
+      type: Array,
+      default: () => []
+    }
   },
-
-  inject: ['$formServices', 'formCode', 'entitySchema', 'fieldList', 'entity'],
 
   computed: {
     ...mapGetters([
@@ -122,32 +143,38 @@ export default {
 
     mainPanelButtons () {
       if (this.hideDefaultButtons) {
-        return []
+        return this.toolbarButtons
       }
-      return [{
+
+      const defaultToolbarButtons = [{
+        name: 'save',
         label: this.$ut('save') + ' (Ctrl + S)',
         icon: 'u-icon-save',
         handler: () => this.save(),
         disabled: !this.canSave,
         color: 'primary'
       }, {
+        name: 'saveAndClose',
         label: this.$ut('saveAndClose') + ' (Ctrl + Enter)',
         icon: 'u-icon-save-and-close',
         handler: this.saveAndClose,
         disabled: !this.canSave,
         color: 'primary'
       }, {
+        name: 'delete',
         label: this.$ut('Delete') + ' (Ctrl + Delete)',
         icon: 'u-icon-delete',
         handler: () => this.deleteInstance(this.$formServices.forceClose),
         disabled: !this.canDelete,
         divider: true
       }]
+
+      return this.mergeButtons(this.toolbarButtons, defaultToolbarButtons)
     },
 
     dropdownButtons () {
       if (this.hideDefaultButtons) {
-        return []
+        return this.toolbarButtons
       }
       const buttons = [{
         label: this.$ut('refresh') + ' (Ctrl + R)',
@@ -193,7 +220,8 @@ export default {
       if (this.entitySchema.hasMixin('aclRls')) {
         const mixins = this.entitySchema.mixins
         const aclEntityName = mixins && mixins.aclRls && mixins.aclRls.useUnityName
-          ? mixins.unity.entity + '_acl' : this.entitySchema.name + '_acl'
+          ? mixins.unity.entity + '_acl'
+          : this.entitySchema.name + '_acl'
         buttons.push({
           icon: 'u-icon-key',
           label: 'accessRight',
@@ -253,8 +281,7 @@ export default {
     ]),
 
     async saveAndClose () {
-      await this.save()
-      this.$formServices.forceClose()
+      await this.save(() => this.$formServices.forceClose())
     },
 
     dropdownHandler (command) {
@@ -420,18 +447,30 @@ export default {
       }
     },
 
-    formatDate (date) {
-      return this.$formatByPattern.formatDate(
-        date,
-        'dateTimeFull',
-      )
+    mergeButtons (propButtons, defButtons) {
+      const buttons = _.cloneDeep(defButtons)
+      for (const btn of propButtons) {
+        if (btn.name) {
+          const defBtnIdx = buttons.findIndex(f => f.name === btn.name)
+          if (defBtnIdx >= 0) {
+            if (btn.visible === false) {
+              buttons.splice(defBtnIdx, 1)
+            } else {
+              _.merge(buttons[defBtnIdx], btn)
+            }
+            continue
+          }
+        }
+        if (btn.visible !== false) buttons.push(btn)
+      }
+      return buttons
     }
   }
 }
 </script>
 
 <style>
-.u-toolbar{
+.u-toolbar {
   border-bottom: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   padding: 0.5em 1em;
   display: flex;
@@ -443,11 +482,11 @@ export default {
   margin-left: 8px;
 }
 
-.u-toolbar__flex-divider{
+.u-toolbar__flex-divider {
   margin-left: auto;
 }
 
-.u-toolbar__date td{
+.u-toolbar__date td {
   font-size: 10px;
   color: hsl(var(--hs-text), var(--l-text-label));
   text-align: right;
@@ -455,56 +494,13 @@ export default {
   white-space: nowrap;
 }
 
-.u-toolbar__date{
+.u-toolbar__date {
   border-left: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   padding-left: 10px;
   margin-left: 10px;
 }
 
-.u-toolbar__settings-button > .u-dropdown__reference{
+.u-toolbar__settings-button > .u-dropdown__reference {
   height: 100%;
 }
 </style>
-
-<docs>
-### Usage
-```vue
-<template>
-  <div class="u-form-layout">
-    <u-toolbar/>
-    <u-form-container>
-      <!-- Your form -->
-    </u-form-container>
-  </div>
-</template>
-
-<script>
-export default {
-}
-</script>
-```
-
-### Slots
-```vue
-<template>
-  <div class="u-form-layout">
-    <u-toolbar>
-      <u-toolbar-button slot="left">left side btn</u-toolbar-button>
-      <u-toolbar-button slot="right">right side btn</u-toolbar-button>
-      <!-- Or any component you need, button for example -->
-      <button slot="dropdown">dropdown btn</button>
-      <div slot="toolbarInfoRow">some content</div>
-    </u-toolbar>
-    <u-form-container>
-      <!-- Your form -->
-    </u-form-container>
-  </div>
-</template>
-
-<script>
-  export default {
-    name: 'Toolbar'
-  }
-</script>
-```
-</docs>

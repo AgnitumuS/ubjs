@@ -1,50 +1,60 @@
-### Use as `entity-name`
-One of these options is required:
-  - `entity-name`
-  - `repository`
+## Usage
+
+Either `entity-name` or `repository` property MUST be defined
+
+### `entity-name` as a source
+
+A data source is `req_department` entity.
+If `display-attribute` is not specified it will be set to the entity `descriptionAttribute` (defied in metadata).
 
 ```vue
 <template>
   <u-select-entity
-    v-model="value"
-    entity-name="req_Department"
+    v-model="reqID"
+    entity-name="req_department"
   />
 </template>
 <script>
   export default {
+    name: 'USelectEntitySrc',
     data () {
       return {
-        value: null
+        reqID: null
       }
     }
   }
 </script>
 ```
 
-### Use as `repository`
-Need to set function which returns UB Repository
+### `repository` as a source
+
+A `repository` is reactive, if `afterThe` date in data() changed - it refreshed automatically.
+
+If `display-attribute` not defined USelect entity will use a second repository attribute (reqDate in sample below)
 
 ```vue
 <template>
   <u-select-entity
-    v-model="value"
+    v-model="reqID"
     :repository="getRepo"
     display-attribute="text"
   />
 </template>
 <script>
   export default {
+    name: 'USelectRepositorySrc',
     data () {
       return {
-        value: null
+        reqID: null,
+        afterThe: new Date('2020-01-01')
       }
     },
 
     methods: {
       getRepo () {
-        return this.$UB.Repository('req_Request')
+        return this.$UB.Repository('req_request')
           .attrs('ID', 'reqDate', 'text')
-          .where('reqDate', '>', new Date('2020-01-01'))
+          .where('reqDate', '>', this.afterThe)
       }
     }
   }
@@ -52,33 +62,33 @@ Need to set function which returns UB Repository
 ```
 
 ### Custom `valueAttribute`
-Need when you need to change default model propery.
-Its like attribute `value` in native `<option>` tag.
-For example when you need instead `ID` like `code`.
+
+By default, an `ID` attribute is used as a value. This can be changed by set a `value-attribute`:
 
 ```vue
 <template>
   <div>
-    value: {{value}}
     <u-select-entity
-      v-model="value"
-      entity-name="req_Department"
+      v-model="departmentCode"
+      entity-name="req_department"
       value-attribute="code"
     />
+    Selected value is: "{{departmentCode}}"
   </div>
 </template>
 <script>
   export default {
+    name: 'USelectValueAttribute',
     data () {
       return {
-        value: null
+        departmentCode: null
       }
     }
   }
 </script>
 ```
 
-### Change default actions
+### Changing a default actions
 
 #### Remove default actions
 
@@ -86,12 +96,13 @@ For example when you need instead `ID` like `code`.
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="req_Department"
+    entity-name="req_department"
     remove-default-actions
   />
 </template>
 <script>
   export default {
+    name: 'USelectRemoveDefaultActions',
     data () {
       return {
         value: null
@@ -107,12 +118,13 @@ For example when you need instead `ID` like `code`.
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="req_Department"
+    entity-name="req_department"
     :additional-actions="actions"
   />
 </template>
 <script>
   export default {
+    name: 'USelectAddActions',
     data () {
       return {
         value: null
@@ -142,18 +154,19 @@ For example when you need instead `ID` like `code`.
 </script>
 ```
 
-#### Just custom actions
+#### Only custom actions
 ```vue
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="req_Department"
+    entity-name="req_department"
     :additional-actions="actions"
     remove-default-actions
   />
 </template>
 <script>
   export default {
+    name: 'USelectOnlyCustomActions',
     data () {
       return {
         value: null
@@ -183,26 +196,36 @@ For example when you need instead `ID` like `code`.
 </script>
 ```
 
-### Disabled
+### Disabled vs readonly
+
+Readonly USectEntity allow using actions (for example to view selected element form) while `disabled` - not
 
 ```vue
 <template>
   <div>
+    Select department:
     <u-select-entity
       v-model="value"
-      entity-name="req_Department"
+      entity-name="req_department"
     />
 
     disabled:
     <u-select-entity
       v-model="value"
-      entity-name="req_Department"
+      entity-name="req_department"
       disabled
+    />
+    readonly:
+    <u-select-entity
+      v-model="value"
+      entity-name="req_department"
+      readonly
     />
   </div>
 </template>
 <script>
   export default {
+    name: 'USelectDisabledVsReadonly',
     data () {
       return {
         value: null
@@ -217,12 +240,13 @@ For example when you need instead `ID` like `code`.
 <template>
   <u-select-entity
     v-model="value"
-    entity-name="req_Department"
+    entity-name="req_department"
     :build-edit-config="actionEditOverride"
   />
 </template>
 <script>
   export default {
+    name: 'USelectActionsOverride',
     data () {
       return {
         value: null
@@ -239,6 +263,44 @@ For example when you need instead `ID` like `code`.
             docID: 12345
           }
         )
+      }
+    }
+  }
+</script>
+```
+
+### Allow adding
+```vue
+<template>
+  <u-select-entity
+    v-model="personID"
+    entity-name="cdn_person"
+    allow-dictionary-adding
+    :build-add-dictionary-config="buildAddPersonConfig"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        personID: null
+      }
+    },
+
+    methods: {
+      buildAddPersonConfig (cfg) {
+        const parsedFIO = _.compact(cfg.query.split(' ')).map(word => _.capitalize(word))
+        if (!parsedFIO[1]) this.$notify.error('Wrong citizen full name, must contain at least 2 words')
+        cfg.props = {}
+        cfg.props.parentContext = {
+          fullFIO: cfg.query,
+          shortFIO: parsedFIO[1] + ' ' + _.compact([parsedFIO[0] && parsedFIO[0][1], parsedFIO[2] && parsedFIO[2][1]])
+            .join('.') + '.',
+          lastName: parsedFIO[1],
+          firstName: parsedFIO[0],
+          middleName: parsedFIO[2] || null
+        }
+        return cfg
       }
     }
   }

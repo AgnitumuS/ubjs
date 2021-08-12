@@ -43,6 +43,8 @@ Ext.define('UB.core.UBStoreManager', {
    */
   shortcutCommandCache: {},
   shortcutAttributes: ['ID', 'desktopID', 'parentID', 'code', 'isFolder', 'caption', 'inWindow', 'isCollapsed', 'displayOrder', 'iconCls'],
+  formAttributes: ['ID', 'code', 'description', 'caption', 'formType', 'formDef', 'formCode', 'entity', 'model', 'isDefault'],
+  enumAttributes: ['ID', "eGroup", "code", "name", "shortName", "sortOrder"],
 
   /**
    * Update internal navshortcut cache for specified item
@@ -90,7 +92,7 @@ Ext.define('UB.core.UBStoreManager', {
    * @return {Ext.data.Store}
    */
   getFormStore: function () {
-    return this.getStore('ubm_form', $App.domainInfo.get('ubm_form').getAttributeNames())
+    return this.getStore('ubm_form', this.formAttributes)
   },
 
   /**
@@ -98,7 +100,7 @@ Ext.define('UB.core.UBStoreManager', {
    * @return {Ext.data.Store}
    */
   getEnumStore: function () {
-    return this.getStore('ubm_enum', $App.domainInfo.get('ubm_enum').getAttributeNames())
+    return this.getStore('ubm_enum', this.enumAttributes)
   },
   /**
    *

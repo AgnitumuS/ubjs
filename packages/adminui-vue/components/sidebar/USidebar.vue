@@ -31,9 +31,8 @@
     </div>
     <el-menu
       ref="menu"
-      background-color="hsl(var(--hs-sidebar), var(--l-sidebar-default))"
-      text-color="hsl(var(--hs-text), var(--l-text-inverse))"
       active-text-color="hsl(var(--hs-primary), var(--l-text-disabled))"
+      text-color="hsl(var(--hs-text), var(--l-text-inverse))"
       unique-opened
       :collapse="isCollapsed"
       :collapse-transition="false"
@@ -180,9 +179,10 @@ export default {
     })
     UB.connection.on('ubm_navshortcut:changed', this.initMenu)
     UB.connection.on('ubm_desktop:changed', this.initMenu)
+    // hack to redefine a hoover background for all menu items
     Object.defineProperty(this.$refs.menu, 'hoverBackground', {
       get () {
-        return 'hsl(var(--hs-sidebar), var(--l-sidebar-depth-1))'
+        return 'hsl(var(--hs-sidebar), var(--l-sidebar-depth-4))'
       }
     })
   },
@@ -209,7 +209,8 @@ export default {
 
     loadShortcuts () {
       return this.$UB.connection.Repository('ubm_navshortcut')
-        .attrs('ID', 'parentID', 'caption', 'desktopID', 'iconCls', 'inWindow', 'isCollapsed', 'displayOrder', 'isFolder')
+        // the same field list as in UBStoreManager.shortcutAttributes
+        .attrs('ID', 'desktopID', 'parentID', 'code', 'isFolder', 'caption', 'inWindow', 'isCollapsed', 'displayOrder', 'iconCls')
         .orderBy('desktopID').orderBy('parentID')
         .orderBy('displayOrder').orderBy('caption')
         .select()
@@ -240,6 +241,19 @@ export default {
           }
         }
         this.desktops = desktops
+        // recursive set menu item level starts from 0
+        function setLevel (item, L) {
+          item.level = L
+          if (!item.children) return
+          for (let i = 0, cL = item.children.length; i < cL; i++) {
+            setLevel(item.children[i], L + 1)
+          }
+        }
+        for (const desktopID in menu) {
+          for (const itm of menu[desktopID]) {
+            setLevel(itm, 0)
+          }
+        }
         this.menu = menu
       })
     },
@@ -332,6 +346,16 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
+}
+
+.ub-sidebar__main-menu {
+  border-right: 0;
+  margin: 12px auto;
+  margin-top: 0;
+  width: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: hsl(var(--hs-sidebar), var(--l-sidebar-default));
 }
 
 .ub-sidebar .el-menu::-webkit-scrollbar {
@@ -449,4 +473,27 @@ export default {
 .u-sidebar__collapse-button:hover {
   background: hsl(var(--hs-sidebar), var(--l-sidebar-depth-1));
 }
+
+/* menu level colors */
+.ub-sidebar [data-ub-level="1"] {
+  background-color: hsl(var(--hs-sidebar), var(--l-sidebar-depth-1));
+}
+
+.ub-sidebar [data-ub-level="2"] {
+  background-color: hsl(var(--hs-sidebar), var(--l-sidebar-depth-2));
+}
+
+.ub-sidebar [data-ub-level="3"] {
+  background-color: hsl(var(--hs-sidebar), var(--l-sidebar-depth-3));
+}
+
+.ub-sidebar [data-ub-level="4"] {
+  background-color: hsl(var(--hs-sidebar), var(--l-sidebar-depth-4));
+}
+
+/* mark expanded item */
+.ub-sidebar .el-submenu.is-opened > .el-submenu__title {
+  border-left: 1px solid;
+}
+
 </style>

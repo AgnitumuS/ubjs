@@ -15,6 +15,188 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.9.13] - 2021-08-04
+### Added
+ - Dutch (nl) localization
+
+### Fixed
+ - in case of network error during login localized "serverIsBusy" message is 
+   shown to used instead of "unknownError".  
+ - i18n for "serverIsBusy" is extended.
+   New text: "The server is currently unavailable. Please try again later or contact your system administrator"
+ - 
+## [5.9.12] - 2021-07-18
+### Fixed
+ - pki.verify() interface documentation improved (correct parameter description)
+ - use `instanceof` instead of `.toString()` to detect `xhr` (post, get, etc.) parameter type (UInt8Array.toStings() produce a huge string) 
+
+## [5.9.11] - 2021-07-08
+## [5.9.10] - 2021-06-14
+### Added
+ - added i18n for `SignatureVerificationResultObj.hardwareKeyUsed`
+ - `connection.pki()` function can show a pki implementation selection dialog if multiple
+   'encryptionImplementation' is available
+
+## [5.9.9] - 2021-05-24
+### Removed
+ - a `SignatureValidationResult` type definition is moved to `@unitybase/stubs` package
+
+### Fixed
+ - JSDoc improved for xhr|get|post methods of UB & UBConnection 
+
+## [5.9.8] - 2021-05-13
+### Added
+ - `UBConnection` events are documented
+
+## [5.9.7] - 2021-05-07
+## [5.9.6] - 2021-05-05
+### Added
+ - `<<<ERR_RESOURCE_LIMITS_EXCEED>>>` localization added: "The operation was canceled because it is consuming a lot of resources.
+   <br> Tips: - narrow down a search parameters <br> - avoid using the 'contains' condition <br> - avoid navigating between list pages"
+
+## [5.9.5] - 2021-04-24
+## [5.9.4] - 2021-04-22
+## [5.9.3] - 2021-04-16
+### Added
+  - Dutch and Uzbek languages added
+## [5.9.2] - 2021-04-13
+## [5.9.1] - 2021-04-02
+## [5.9.0] - 2021-03-25
+### Changed
+ - migrate build to webpack5
+
+## [5.8.4] - 2021-03-15
+### Added
+ - `@unitybase/cs-shared` `formatByPattern` module exposed as ub-pub formatter. So Dates and Numbers formatting can be done using:
+  ```javascript
+  // inside Vue instance
+  this.$UB.formatter.formatDate('2020-05-23', 'date', 'uk')
+  // in any module
+  const UB = require('@unitybase/ub-pub')
+  UB.formatter.formatNumber(1234.5, 'sum', 'en')
+  ```
+
+ - new methods `EventEmitter.prototype.prependListener` and `EventEmitter.prototype.prependOnceListener`.
+  Adds a listener function for the event named `eventName` to the **beginning** of the listeners array
+```javascript
+const myEE = new EventEmitter();
+myEE.once('foo', () => console.log('a'));
+myEE.prependOnceListener('foo', () => console.log('b'));
+myEE.emit('foo');
+// Prints:
+//   b
+//   a
+```
+
+### Fixed
+ - `ClientRepository` bypass `addAttrsForCachedEntity` for repositories with `__mip_disablecache: true` in misc.
+  
+## [5.8.3] - 2021-03-03
+### Added
+ - `UB.xhr.defaults` property added - direct access to the default HTTP parameters for `xhr`.
+   Can be used, for example, to change http request timeout globally:
+```javascript
+const UB = require('@unitybase/ub-pub')
+UB.xhr.defaults.timeout = 300000 // set all ajax requests timeout to 5 minutes
+```
+
+### Changed
+ - client side locales reformatted into JSON
+ - **BREAKING** - for custom authentication pages what use ub-pub localization `lang-??.json` must be injected instead of `lang-??.js`
+```javascript
+UB.get(`/models/ub-pub/locale/lang-${conn.preferredLocale}.json`).then(resp => {
+  UB.i18nExtend(resp.data)
+}).catch(e => {console.error(e)})
+```
+
+## [5.8.2] - 2021-02-03
+## [5.8.1] - 2021-01-30
+### Added
+ - `AsyncConnection.getDocumentURL` - fileName parameter added - must be set for dirty documents to
+   get a valid Content-Type header from server.
+
+## [5.8.0] - 2021-01-28
+### Added
+ - new method `AsyncConnection.prototype.getDocumentURL` - return a http link to the "Document" attribute content
+   which is valid for the duration of the user session
+
+## [5.7.2] - 2021-01-26
+### Fixed
+- `LocalRepository.clone()` will copy a private `_localData` of source repository to destination (as reference!)
+
+## [5.7.1] - 2021-01-19
+## [5.7.0] - 2021-01-17
+### Added
+ - `UB.LocalRepository` - client side UB.Repository analogue for local data.
+   Can be used as a repository for Vue based data controls:
+   ```html
+   <template>
+     <u-select-multiple
+      v-model="mappings"
+      valueAttribute="code"
+      :repository="getLocalDataRepository"
+      entityName="frm_Attribute"
+      displayAttribute="name"
+    />
+   </template>
+   <script>
+   module.exports.default = {
+     methods: {
+       getLocalDataRepository() {
+         return UB.LocalRepository(
+           {data: [['01', 'Jon'], ['02', 'Bob']], fields: ['code', 'name'], rowCount: 2},
+           'frm_Attribute'
+         }).orderBy('name')     
+       }
+     }
+   }
+   </script>
+   ```
+
+## [5.6.6] - 2020-12-30
+### Fixed
+ - fix usage of this in `ClientRepository.selectSingle()` and `ClientRepository.selectScalar()`
+
+## [5.6.5] - 2020-12-28
+### Added
+ - `UB.LIMITS.LIMITS.lookupMaxRows` (10000) and  `UB.LIMITS.LIMITS.lookupWarningRows` (2500) constants added.
+   UI must limit a lookups row count to lookupMaxRows and output warnings in case lookup row count exceeds lookupWarningRows.
+ - `ClientRepository.selectSingle` & `ClientRepository.selectScalar` will output an error to console
+   in case result row count > 1
+
+## [5.6.4] - 2020-12-22
+## [5.6.3] - 2020-12-21
+### Fixed
+ - improved JSDoc (use @example tag for methods examples - it correctly rendered by both WebStorm and ub-jsdoc)
+
+## [5.6.2] - 2020-12-20
+## [5.6.1] - 2020-12-17
+### Added
+ - new method `AsyncConnection.prototype.userCanChangePassword` - Is auth schema for logged in user allows
+   password changing (currently - only UB and CERT* with requireUserName)
+   
+### Fixed
+ - `AsyncConnection.prototype.emitEntityChanged` will transform a payload to match a unity entity before emitting
+   a `${e.mixins.unity.entity}:changed` event, so ':changed' listener in controls what based on unity entity got
+   a payload they expect, instead of payload for child entity 
+
+## [5.6.0] - 2020-12-16
+### Added
+ - `AsyncConnection.prototype.setUiTag` method added.
+   UI tag will be added to a `ubql` HTTP request as `uitag=${uiTag}` and can be used to track from which part of UI request is generated.
+ - `AsyncConnection.prototype.emitEntityChanged` method added.
+   Emit `${entityCode}:changed` event. In case entity has a unity mixin - emit also for unityEntity
+
+## [5.5.35] - 2020-12-09
+### Added
+ - `UBConnection.prototype.pki` will await for `UA_CRYPT.getPkiInterface`.
+   This allows to implement custom encryption implementation module, what, for example, give a choice to user which library to use 
+
+## [5.5.34] - 2020-12-09
+### Added
+ - i18n for `info`, `error`, `detail`, `login` and languages abbr: uk, ru, etc.
+   Moved here from adminui-pub to allow use it on the login form 
+
 ## [5.5.33] - 2020-11-20
 ## [5.5.32] - 2020-11-19
 ## [5.5.31] - 2020-11-15

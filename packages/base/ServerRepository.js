@@ -14,25 +14,27 @@ const LOCAL_SERVER_UBQL_V2 = ((v[0] >= 'v5') && (v[1] >= 10))
 /**
  * @classdesc
  * Server side repository.
- * Overrided {@link ServerRepository#select} method return initialized {@link TubDataStore}
+ * Override {@link ServerRepository#select} method return initialized {@link TubDataStore}
  *
  * Usually is created by using one of the fabric functions:
  *
  *   - {@link module:@unitybase/ub#Repository UB.Repository} for entities from this server instance
  *   - {@link class:SyncConnection#Repository conn.Repository} for access remote UB server
  *
+ * @example
 
-     let store = UB.Repository('my_entity')
-       .attrs('id')
-       .where('code', 'in', ['1', '2', '3'])  // code in ('1', '2', '3')
-       .where('name', 'contains', 'Homer') // name like '%homer%'
-       .where('birtday', 'geq', new Date()) //(birtday >= '2012-01-01')
-       .where('birtday', 'leq', new Date() + 10) // AND (birtday <= '2012-01-02')
-       .where('[age] -10', '>=', {age: 15}, 'byAge') // (age + 10 >= 15)
-       .where('', 'match', 'myvalue') // perform full text search for entity (require fts mixin)
-       .logic('(byStrfType OR bySrfKindID)AND(dasdsa)')
-       .select()
+let store = UB.Repository('my_entity')
+ .attrs('id')
+ .where('code', 'in', ['1', '2', '3'])  // code in ('1', '2', '3')
+ .where('name', 'contains', 'Homer') // name like '%homer%'
+ .where('birtday', 'geq', new Date()) //(birtday >= '2012-01-01')
+ .where('birtday', 'leq', new Date() + 10) // AND (birtday <= '2012-01-02')
+ .where('[age] -10', '>=', {age: 15}, 'byAge') // (age + 10 >= 15)
+ .where('', 'match', 'myvalue') // perform full text search for entity (require fts mixin)
+ .logic('(byStrfType OR bySrfKindID)AND(dasdsa)')
+ .select()
 
+ * @class ServerRepository
  * @extends CustomRepository
  */
 class ServerRepository extends CustomRepository {
@@ -111,10 +113,10 @@ class ServerRepository extends CustomRepository {
    * For repository with ONE attribute returns a flat array of attribute values
    * @example
 
-       const usersIDs = UB.Repository('uba_user'),attrs('ID').limit(100).selectAsArrayOfValues()
-       // usersIDs is array of IDs [1, 2, 3, 4]
+   const usersIDs = UB.Repository('uba_user'),attrs('ID').limit(100).selectAsArrayOfValues()
+   // usersIDs is array of IDs [1, 2, 3, 4]
 
-   * @return Array<string|number>
+   * @return {Array<string|number>}
    */
   selectAsArrayOfValues () {
     if (process.isServer) { // inside server thread
@@ -165,31 +167,47 @@ class ServerRepository extends CustomRepository {
   /**
    * Select a single row. If ubql result is empty - return {undefined}.
    *
-   * WARNING method do not check repository conntains the single row and always return a first row from result.
+   * **WARNING** method do not check repository contains the single row and always return a first row from result
+   *
    * @param {Object<string, string>} [fieldAliases] Optional object to change attribute
    *  names during transform array to object
    * @return {Object|undefined}
    */
   selectSingle (fieldAliases) {
-    return this.selectAsObject(fieldAliases)[0]
+    const r = this.selectAsObject(fieldAliases)
+    if (r.length > 1) {
+      console.error(this.CONSTANTS.selectSingleMoreThanOneRow)
+    }
+    return r[0]
   }
 
   /**
    * Perform select and return a value of the first attribute from the first row
    *
-   * WARNING method do not check repository contains the single row
-   * @return {Object|undefined}
+   * **WARNING** method do not check repository contains the single row
+   *
+   * @return {Number|String|undefined}
    */
   selectScalar () {
     if (process.isServer) { // inside server thread
       const inst = new TubDataStore(this.entityName)
       inst.run(this.method, this.ubql())
       const res = inst.eof ? undefined : inst.get(0)
+      if (inst.rowCount > 1) {
+        console.error(this.CONSTANTS.selectScalarMoreThanOneRow)
+      }
       inst.freeNative() // release memory ASAP
       return res
     } else {
       const result = this.selectAsArray()
-      return Array.isArray(result.resultData.data[0]) ? result.resultData.data[0][0] : undefined
+      if (Array.isArray(result.resultData.data[0])) {
+        if (result.resultData.data.length > 1) {
+          console.error(this.CONSTANTS.selectScalarMoreThanOneRow)
+        }
+        return result.resultData.data[0][0]
+      } else {
+        return undefined
+      }
     }
   }
 
@@ -207,10 +225,11 @@ class ServerRepository extends CustomRepository {
 }
 /**
  * Create new instance of ServerRepository
- *
- *      const Repository = require('@unitybase.base').ServerRepository.fabric;
- *      var req = Repository('uba_user').attrs('*').ubql();
- *
+ * @example
+
+ const Repository = require('@unitybase.base').ServerRepository.fabric
+ const req = Repository('uba_user').attrs('*').ubql()
+
  * @param {String} entityName name of Entity for which we create repository
  * @param {SyncConnection} [connection] The remote server connection. For internal server thread can be empty
  * @return {ServerRepository}

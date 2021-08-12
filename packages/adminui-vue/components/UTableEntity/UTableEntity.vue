@@ -2,6 +2,7 @@
   <u-table-entity-root
     :bordered="bordered"
     v-bind="$attrs"
+    :with-pagination="withPagination"
     :view-mode.sync="viewMode"
     v-on="$listeners"
   >
@@ -48,7 +49,16 @@ export default {
     columns: Array,
 
     /**
-     * Page size for pagination
+     * Whether to use pagination for table
+     */
+    withPagination: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+
+    /**
+     * Page size for pagination. Default is `appConfig.storeDefaultPageSize` || 50
      */
     pageSize: {
       type: Number,
@@ -58,6 +68,19 @@ export default {
     },
 
     /**
+     * Allows to hide some actions, even, if they user has ELS for related entity methods.
+     * Actions shall be passed as array of strings, supported actions for this property:
+     * `addNew`, `copy`, `newVersion`, `showVersions`, `edit`, `delete`, `audit`, `summary`, `export`,
+     * `link`, `viewMode`.
+     *
+     * For compatibility with legacy AdminUI, the following alternative codes are supported:
+     * `del` for `delete`,
+     * `addNewByCurrent` for `copy`,
+     * `itemLink` for `link`
+     */
+    hideActions: Array,
+
+    /**
      * Overrides showDictionary action config.
      * Function is called (using await, so can be async) with 2 arguments: (cfg: current config, row: content of row to edit) can mutate cfg and return mutated config
      */
@@ -65,6 +88,7 @@ export default {
       type: Function,
       default: config => config
     },
+
     /**
      * Overrides edit action config.
      * Function is called (using await, so can be async) with 2 arguments: (cfg: current config, row: content of row to edit) can mutate cfg and return mutated config
@@ -73,6 +97,7 @@ export default {
       type: Function,
       default: config => config
     },
+
     /**
      * Overrides addNew action config.
      * Function accept one parameter cfg: Object - config for doCmd.showForm, can mutate it and return mutated config
@@ -81,6 +106,7 @@ export default {
       type: Function,
       default: config => config
     },
+
     /**
      * Callback which will be emitted before addNew
      */
@@ -206,7 +232,7 @@ export default {
           return this.$UB.Repository(this.repository)
         default: { // build repository based on columns (if available) or attributes with `defaultView: true`
           const repo = this.$UB.Repository(this.entityName)
-          let viewableAttrs = []
+          const viewableAttrs = []
           if (this.columns) {
             this.getColumns.forEach(c => {
               if (c.attribute !== undefined) viewableAttrs.push(c.id)
@@ -290,8 +316,8 @@ export default {
       const repoFieldList = this.getRepository().fieldList
       const fieldsWithError = this.getColumns
         .filter(column => {
-          return !repoFieldList.includes(column.id) // is custom
-            && !this.$scopedSlots[column.id] // dont have slot
+          return !repoFieldList.includes(column.id) && // is custom
+                 !this.$scopedSlots[column.id] // dont have slot
         })
         .map(column => column.id)
 
@@ -307,7 +333,7 @@ export default {
      * @param {UBEntityAttribute} attr
      * @return {boolean}
      */
-    isAttributeViewableByDefault(attr) {
+    isAttributeViewableByDefault (attr) {
       return attr.defaultView &&
         (attr.dataType !== 'Json') &&
         (attr.dataType !== 'Document') &&

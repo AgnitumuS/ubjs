@@ -1,6 +1,7 @@
 const http = require('http')
 const _ = require('lodash')
 const csShared = require('@unitybase/cs-shared')
+const LocalDataStore = csShared.LocalDataStore
 const UBSession = csShared.UBSession
 const UBDomain = csShared.UBDomain
 const CryptoJS = require('@unitybase/cryptojs/core')
@@ -22,19 +23,21 @@ const NON_AUTH_URLS_RE = /(\/|^)(models|auth|getAppInfo|downloads)(\/|\?|$)/
  */
 
 /**
+ * @classdesc
  * Synchronous server-side connection to the UnityBase instance. To be used only inside UnityBase.
  * For nodeJS & browser use asynchronous UBConnection class from @unitybase/ub-pub package.
  *
  * The most used method is {@link SyncConnection#query  SyncConnection.query} - a authorized request to `ubql` endpoint.
  *
+ * @example
 
-    const SyncConnection = require('@unitybase/base').SyncConnection
-    let conn = new SyncConnection({URL: 'http://localhost:888'})
-    conn.onRequestAuthParams = function(){ return {authSchema: 'UB', login: 'admin', password: 'admin'} }
-    var domain = conn.getDomainInfo();
-    if (domain.has('my_entity')){
-             ..
-    }
+const SyncConnection = require('@unitybase/base').SyncConnection
+const conn = new SyncConnection({URL: 'http://localhost:888'})
+conn.onRequestAuthParams = function(){ return {authSchema: 'UB', login: 'admin', password: 'admin'} }
+const domain = conn.getDomainInfo();
+if (domain.has('my_entity')){
+ ..
+}
 
  * @class
  * @param {Object} options Connection parameters. See {@link module:http http.request} for details
@@ -282,12 +285,14 @@ function SyncConnection (options) {
   /**
    * Return custom data for logged in user, or {lang: 'en'} in case not logged in
    *
-   * If key is provided - return only key part of user data:
+   * If key is provided - return only key part of user data
    *
-   *      $App.connection.userData('lang');
-   *      // or the same but dedicated alias
-   *      $App.connection.userLang()
-   *
+   * @example
+
+ $App.connection.userData('lang')
+ // or the same but dedicated alias
+ $App.connection.userLang()
+
    * @param {String} [key] Optional key
    * @returns {*}
    */
@@ -297,17 +302,18 @@ function SyncConnection (options) {
   }
 
   /**
-   * Lookup value in entity using aCondition.
-   *
-   *      // create condition using Repository
-   *      var myID = conn.lookup('ubm_enum', 'ID',
-   *           conn.Repository('ubm_enum').where('eGroup', '=', 'UBA_RULETYPE').where('code', '=', 'A').ubql().whereList
-   *          );
-   *      // or pass condition directly
-   *      var adminID = conn.lookup('uba_user', 'ID', {
-   *          expression: 'name', condition: 'equal', value: 'admin'}
-   *        });
-   *
+   * Lookup value in entity using a Condition
+   * @example
+
+// create condition using Repository
+const myID = conn.lookup('ubm_enum', 'ID',
+  conn.Repository('ubm_enum').where('eGroup', '=', 'UBA_RULETYPE').where('code', '=', 'A').ubql().whereList
+)
+// or pass condition directly
+const adminID = conn.lookup('uba_user', 'ID', {
+ expression: 'name', condition: 'equal', value: 'admin'}
+})
+
    * @param {String} aEntity - entity to lookup
    * @param {String} lookupAttribute - attribute to lookup
    * @param {String|Object} aCondition - lookup condition. String in case of custom expression,
@@ -365,12 +371,12 @@ SyncConnection.prototype.query = function (ubq) {
  * HTTP request to UB server. In case of success response return body parsed to {Object} or {ArrayBuffer} depending of Content-Type response header
  *
  * @example
- *  conn.xhr({
- *      endpoint: 'runSQL',
- *      URLParams: {CONNECTION: 'dba'},
- *      data: 'DROP SCHEMA IF EXISTS ub_autotest CASCADE; DROP USER IF EXISTS ub_autotest;'
- *  });
- *
+ conn.xhr({
+     endpoint: 'runSQL',
+     URLParams: {CONNECTION: 'dba'},
+     data: 'DROP SCHEMA IF EXISTS ub_autotest CASCADE; DROP USER IF EXISTS ub_autotest;'
+ });
+
  * @param {Object} options
  * @param {String} options.endpoint
  * @param {String} [options.UBMethod] This parameter is **DEPRECATED**. Use `options.endpoint` instead
@@ -422,7 +428,7 @@ SyncConnection.prototype.xhr = function (options) {
       result = resp.read('bin')
     } else if (((resp.headers['content-type'] || '').indexOf('json') >= 0) && !options.simpleTextResult) {
       const txtRes = resp.read()
-      result = txtRes ? JSON.parse(resp.read()) : null
+      result = txtRes ? JSON.parse(txtRes) : null
     } else {
       result = resp.read() // return string reads as UTF-8
     }
@@ -537,18 +543,18 @@ SyncConnection.prototype.logout = function () {
  * @return {string}
  *
  * @example
-    const myObj = conn.Repository(entityName)
-      .attrs('ID', 'mi_modifyDate')
-      .where('code', '=', code)
-      .selectSingle()
-    const {ID, mi_modifyDate} = myObj
-    const data = fs.readFileSync(fileName, {encoding: 'bin'})
-    const tempStoreResult = conn.setDocument(entityName, 'configuration', ID, data, fn)
-    conn.query({
-      entity: entityName,
-      method: 'update',
-      execParams: {ID, configuration: tempStoreResult, mi_modifyDate}
-    })
+const myObj = conn.Repository(entityName)
+  .attrs('ID', 'mi_modifyDate')
+  .where('code', '=', code)
+  .selectSingle()
+const {ID, mi_modifyDate} = myObj
+const data = fs.readFileSync(fileName, {encoding: 'bin'})
+const tempStoreResult = conn.setDocument(entityName, 'configuration', ID, data, fn)
+conn.query({
+  entity: entityName,
+  method: 'update',
+  execParams: {ID, configuration: tempStoreResult, mi_modifyDate}
+})
  */
 SyncConnection.prototype.setDocument = function (entity, attribute, id, data, origName, fileName, dataEncoding) {
   const urlParams = {
@@ -570,37 +576,37 @@ SyncConnection.prototype.setDocument = function (entity, attribute, id, data, or
 
 const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty', 'forceMime', 'fileName', 'store', 'revision']
 /**
- * Retrieve content of `document` type attribute field from server. Usage samples:
- *
- *      //Retrieve content of document as string using GET
- *      let frmContent = conn.getDocument({
- *          entity:'ubm_form',
- *          attribute: 'formDef',
- *          ID: 100000232003
- *       })
- *       console.log(typeof frmContent)
- *
- *      //The same, but using POST for bypass cache
- *      let frmContent = conn.getDocument({
- *          entity:'ubm_form',
- *          attribute: 'formDef',
- *          ID: 100000232003
- *       }, {
- *          bypassCache: true
- *       })
- *       console.log(typeof frmContent) // string
- *
- *
- *      //Retrieve content of document as ArrayBuffer and bypass cache
- *      let frmContent = conn.getDocument({
- *          entity:'ubm_form',
- *          attribute: 'formDef',
- *          ID: 100000232003
- *       }, {
- *          bypassCache: true, resultIsBinary: true
- *       })
- *       console.log('Result is', typeof frmContent, 'of length' , frmContent.byteLength, 'bytes'); //output: Result is object of length 2741 bytes
- *
+ * Retrieve content of `document` type attribute field from server
+ * @example
+
+ //Retrieve content of document as string using GET
+ let frmContent = conn.getDocument({
+     entity:'ubm_form',
+     attribute: 'formDef',
+     ID: 100000232003
+  })
+  console.log(typeof frmContent)
+
+ //The same, but using POST for bypass cache
+ let frmContent = conn.getDocument({
+     entity:'ubm_form',
+     attribute: 'formDef',
+     ID: 100000232003
+  }, {
+     bypassCache: true
+  })
+  console.log(typeof frmContent) // string
+
+ //Retrieve content of document as ArrayBuffer and bypass cache
+ let frmContent = conn.getDocument({
+   entity:'ubm_form',
+   attribute: 'formDef',
+   ID: 100000232003
+  }, {
+   bypassCache: true, resultIsBinary: true
+ })
+  console.log('Result is', typeof frmContent, 'of length' , frmContent.byteLength, 'bytes'); //output: Result is object of length 2741 bytes
+
  * @param {Object} params
  * @param {String} params.entity Code of entity to retrieve from
  * @param {String} params.attribute `document` type attribute code
@@ -644,25 +650,26 @@ SyncConnection.prototype.getDocument = function (params, options) {
  * If `ubq.fieldList` contain only `ID` return inserted ID, else return array of attribute values passed to `fieldList`.
  * If no field list passed at all - return response.resultData (null usually).
  *
-        var testRole = conn.insert({
-            entity: 'uba_role',
-            fieldList: ['ID', 'mi_modifyDate'],
-            execParams: {
-                name: 'testRole1',
-                allowedAppMethods: 'runList'
-            }
-        });
-        console.log(testRole); //[3000000000200,"2014-10-21T11:56:37Z"]
+ * @example
+const testRole = conn.insert({
+  entity: 'uba_role',
+  fieldList: ['ID', 'mi_modifyDate'],
+  execParams: {
+      name: 'testRole1',
+      allowedAppMethods: 'runList'
+  }
+})
+console.log(testRole) //[3000000000200,"2014-10-21T11:56:37Z"]
 
-        var testRoleID = conn.insert({
-            entity: 'uba_role',
-            fieldList: ['ID'],
-            execParams: {
-                name: 'testRole1',
-                allowedAppMethods: 'runList'
-            }
-        });
-        console.log(testRoleID); //3000000000200
+const testRoleID = conn.insert({
+  entity: 'uba_role',
+  fieldList: ['ID'],
+  execParams: {
+      name: 'testRole1',
+      allowedAppMethods: 'runList'
+  }
+})
+console.log(testRoleID) //3000000000200
  *
  * @param {ubRequest} ubq
  * @return {*}
@@ -680,13 +687,85 @@ SyncConnection.prototype.insert = function (ubq) {
 }
 
 /**
- * Execute update method by add method: 'update' to `ubq` query (if req.method not already set)
+ * Run UBQL command with `insert` method
+ *
+ * In case `fieldList` is passed - result will contains new values for attributes specified in `fieldList` as Object, otherwise - null
+ *
+ * In opposite to `insert` method values in result are PARSED based on Domain (as in AsyncConnection) - so values
+ * for boolean attributes is true/false, date is typeof Date etc.
+ *
+ * @param {ubRequest} ubq
+ * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
+ * @returns {Object}
+ *
+ * @example
+
+const newRole = conn.insertAsObject({
+  entity: 'uba_role',
+  fieldList: ['ID', 'name', 'allowedAppMethods', 'mi_modifyDate'],
+  execParams: {
+      name: 'testRole61',
+      allowedAppMethods: 'runList'
+  }
+}, {mi_modifyDate: 'modifiedAt'})
+console.log(newRole) // {ID: 332462911062017, name: 'testRole1', allowedAppMethods: 'runList', mi_modifyDate: 2020-12-21T15:45:01.000Z}
+console.log(newRole.modifiedAt instanceof Date) //true
+
+ */
+SyncConnection.prototype.insertAsObject = function (ubq, fieldAliases) {
+  const req = ubq
+  req.method = req.method || 'insert'
+  const serverResp = this.query(req)
+  const res = LocalDataStore.convertResponseDataToJsTypes(this.getDomainInfo(), serverResp)
+  return (res.resultData && res.resultData.data && res.resultData.data.length)
+    ? LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)[0]
+    : null
+}
+
+/**
+ * Execute update method (adds method: 'update' if req.method is not already set)
  */
 SyncConnection.prototype.update = function (ubq) {
   const req = ubq
   req.method = req.method || 'update'
   const res = this.query(req)
   return res.resultData
+}
+
+/**
+ * Run UBQL command with `update` method
+ *
+ * In case `fieldList` is passed - result will contains new values for attributes specified in `fieldList` as Object, otherwise - null
+ *
+ * In opposite to `update` method values in result are PARSED based on Domain (as in AsyncConnection) - so values
+ * for boolean attributes is true/false, date is typeof Date etc.
+ *
+ * @param {ubRequest} ubq
+ * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
+ * @returns {Object}
+ *
+ * @example
+
+ const newRole = conn.updateAsObject({
+  entity: 'uba_role',
+  fieldList: ['ID', 'name', 'allowedAppMethods', 'mi_modifyDate'],
+  execParams: {
+      ID: 123,
+      name: 'testRole61'
+  }
+}, {mi_modifyDate: 'modifiedAt'})
+ console.log(newRole) // {ID: 332462911062017, name: 'testRole1', allowedAppMethods: 'runList', mi_modifyDate: 2020-12-21T15:45:01.000Z}
+ console.log(newRole.modifiedAt instanceof Date) //true
+
+ */
+SyncConnection.prototype.updateAsObject = function (ubq, fieldAliases) {
+  const req = ubq
+  req.method = req.method || 'update'
+  const serverResp = this.query(req)
+  const res = LocalDataStore.convertResponseDataToJsTypes(this.getDomainInfo(), serverResp)
+  return (res.resultData && res.resultData.data && res.resultData.data.length)
+    ? LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)[0]
+    : null
 }
 
 /**

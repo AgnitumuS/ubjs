@@ -15,6 +15,38 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.8] - 2021-08-04
+### Added
+ - accept `attachName` (in addition to `atachName`) property of attaches object - property name
+   (new is attachName) is fixed in ubq@5.20.19 
+
+## [5.5.7] - 2021-07-08
+## [5.5.6] - 2021-05-24
+## [5.5.5] - 2021-04-24
+## [5.5.4] - 2021-03-23
+## [5.5.3] - 2021-03-15
+### Changed
+  - `ubm_desktop-scanerSettings-fm` increased the maximum value of page margins for the barcode 
+    configuration to 999 pixels instead of 100 pixels [CUBDF-823]  
+
+## [5.5.2] - 2021-02-08
+## [5.5.1] - 2021-01-26
+## [5.5.0] - 2021-01-17
+### Added
+  - TubMailSender.login method - must be called in case deferLogin === true in a constructor.
+  - TubMailReceiver.login method - must be called in case deferLogin === true in a constructor.
+  - temporary added a `Mailer:..` debug messages to locate a source of AV in sending mail
+  - if compiled with -dMAILAV_TEST POP3/ST wrote additional logs into /tmp/ub_mailerlog.txt
+
+### Changed
+  - Linux: recompile module with FPC_SYNCMEM support (aligned memory allocations)
+
+### Fixed
+ - attachment `contentID` property(if specified) handled for both `Text` kind of attachment and `File` kind,
+   not only for Text kind as before this fix. contentID property is used in HTML e-mails to
+   identify pictures in HTML what placed in attachments.
+
+## [5.4.2] - 2021-01-11
 ## [5.4.1] - 2020-11-25
 ## [5.4.0] - 2020-11-23
 ### Added
@@ -35,12 +67,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - building of native code depend on LCL
 
 ### Removed
- - cross-compilation from Windows to Linux is removed - use linux build environment to build both Win64 & Linux tagrets
+ - cross-compilation from Windows to Linux is removed - use linux build environment to build both Win64 & Linux targets
 
 ## [5.3.1] - 2020-07-19
 ## [5.3.0] - 2020-07-15
 ### Changed
- - building of native code does not depends on lazarus (fpc is enough)
+ - building of native code does not depend on lazarus (fpc is enough)
 
 ### Fixed
   - remove exception `_bt is not defined` in case `@unitybase/mailer` is not compiled (lerna bootstrap on the machine where

@@ -1,4 +1,5 @@
 const sessionBinding = process.binding('ub_session')
+const THTTPRequest = require('./HTTPRequest')
 const EventEmitter = require('events').EventEmitter
 const base = require('@unitybase/base')
 const UBA_COMMON = require('@unitybase/base').uba_common
@@ -24,14 +25,19 @@ const _sessionCached = {
   zone: undefined
 }
 /**
- * Contains information about the logged in user.
+ * @classdesc
+ * A global singleton what contains information about the logged in user.
  * Server reassign properties of this object each time `endpoint` handler are executed
  *
  * Implements {@link EventEmitter} and will emit `login` event each time user logged in
- * or `loginFailed` event with 2 parameters(userID, isLocked) when user UB authentication failed
- * @namespace
- * @global
- * @mixes EventEmitter
+ * or `loginFailed` event with 2 parameters(isLocked, userName) when user UB authentication failed
+ * @example
+
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+
+ * @class
+ * @extends EventEmitter
  */
 const Session = {
 }
@@ -77,7 +83,7 @@ Object.defineProperty(Session, 'userID', {
 })
 /**
  * Logged-in user role IDs in CSV format. ==="" if no authentication running
- * @deprecated Use Session.uData.roleIDs - an array of roles IDs
+ * @deprecated Use `Session.uData.roleIDs` - an array of roles IDs
  * @member {number} userRoles
  * @memberOf Session
  * @readonly
@@ -93,7 +99,7 @@ Object.defineProperty(Session, 'userRoles', {
 })
 /**
  * Logged-in user role names in CSV format. ==="" if no authentication running
- * @deprecated Use Session.uData.roles
+ * @deprecated Use `Session.uData.roles`
  * @member {string} userRoleNames
  * @memberOf Session
  * @readonly
@@ -185,7 +191,7 @@ Object.defineProperty(Session, 'callerIP', {
 })
 /**
  * Security zone for current session. In UB SE empty string
- * @member {string} callerIP
+ * @member {string} zone
  * @memberOf Session
  * @readonly
  */
@@ -196,6 +202,23 @@ Object.defineProperty(Session, 'zone', {
       _sessionCached.zone = sessionBinding.zone()
     }
     return _sessionCached.zone
+  }
+})
+
+/**
+ * User name for authentication in pending state
+ * @member {string} pendingUserName
+ * @memberOf Session
+ * @readonly
+ */
+Object.defineProperty(Session, 'pendingUserName', {
+  enumerable: true,
+  get: function () {
+    if (typeof sessionBinding.pendingUserName === 'function') { // UB < 5.9.3
+      return sessionBinding.pendingUserName()
+    } else {
+      return ''
+    }
   }
 })
 
@@ -249,6 +272,18 @@ Session.runAsUser = function (userID, func) {
   }
   return result
 }
+/**
+ * ID of the tenant (for multitenancy applications). 0 if multitenancy is not enabled (see `ubConfig.security.tenants`)
+ * @member {number} tenantID
+ * @memberOf Session
+ * @readonly
+ */
+Object.defineProperty(Session, 'tenantID', {
+  enumerable: true,
+  get: function () {
+    return sessionBinding.tenantID()
+  }
+})
 
 /**
  * Fires just after user successfully logged-in but before auth response is written to client.
@@ -262,19 +297,20 @@ Session.runAsUser = function (userID, func) {
  * Never override `uData` using `Session.uData = {...}`, in this case you delete uData properties,
  * defined in other application models.
  * Instead define or remove properties using `Session.uData.myProperty = ...`
- * or use `delete Session.uData.myProperty` if you need to undefine something.
+ * or use `delete Session.uData.myProperty` if you need to un-define something.
  *
- * Example below add `someCustomProperty` to Session.uData:
- *
- *      // @param {THTTPRequest} req
- *      Session.on('login', function (req) {
- *          var uData = Session.uData
- *          uData.someCustomProperty = 'Hello!'
- *      })
- *
- * See real life example inside `@unitybase/org/org.js`.
+ * Example below add `someCustomProperty` to Session.uData. See also a real life example in `@unitybase/org/org.js`
+ * @example
+
+// @ param {THTTPRequest} req
+Session.on('login', function (req) {
+  const uData = Session.uData
+  uData.someCustomProperty = 'Hello!'
+})
+
  * @event login
  * @memberOf Session
+ * @param {THTTPRequest} req HTTP Request
  */
 
 /**
@@ -327,18 +363,19 @@ Session.runAsUser = function (userID, func) {
  *
  * If wrong password is entered more  than `UBA.passwordPolicy.maxInvalidAttempts`(from ubs_settings) times
  * user will be locked
- *
- * 2 parameters are passes to this event userID(Number) and isUserLocked(Boolean)
- *
- *      Session.on('loginFailed', function(userID, isLocked){
- *          if (isLocked)
- *              console.log('User with id ', userID, 'entered wrong password and locked');
- *          else
- *              console.log('User with id ', userID, 'entered wrong password');
- *      })
- *
+ * @example
+
+Session.on('loginFailed', function(shouldLock, userName){
+ if (shouldLock)
+   console.log('User ', userName, 'entered wrong password and locked')
+ else
+   console.log('User ', userName, 'entered wrong password')
+})
+
  * @memberOf Session
  * @event loginFailed
+ * @param {boolean} shouldLock
+ * @param {string} userName
  */
 
 /**
@@ -349,16 +386,15 @@ Session.runAsUser = function (userID, func) {
  *  - for 2-factor auth schemas - too many sessions in pending state (max is 128)
  *  - access to endpoint "%" deny for user (endpoint name not present in uba_role.allowedAppMethods for eny user roles)
  *  - password for user is expired (see ubs_settings UBA.passwordPolicy.maxDurationDays key)
- *  - entity method access deny by ELS (see rules in uba_els)
- *
- * Single parameter is passes to this event `reason: string`
- *
- *      Session.on('securityViolation', function(reason){
- *          console.log('Security violation for user with ID', Session.userID, 'from', Session.callerIP, 'reason', reason);
- *      })
- *
+ *  - access to entity method is denied by ELS (see rules in uba_els)
+ * @example
+const Session = require('@unitybase/ub').Session
+Session.on('securityViolation', function(reason){
+   console.log('Security violation for user with ID', Session.userID, 'from', Session.callerIP, 'reason', reason);
+})
  * @memberOf Session
  * @event securityViolation
+ * @param {string} reason
  */
 
 /**
@@ -377,6 +413,15 @@ Session.reset = function (sessionID, userID) {
   _sessionCached.userRoles = undefined
   _sessionCached.userLang = undefined
   _sessionCached.zone = undefined
+}
+
+/**
+ * Called by server during login to emit a `login` event on Session object
+ * @private
+ */
+Session.emitLoginEvent = function() {
+  const req = new THTTPRequest()
+  this.emit('login', req)
 }
 
 /**

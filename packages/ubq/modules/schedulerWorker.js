@@ -39,7 +39,7 @@ function runSchedulersCircle (message) {
         runAs: cfg.runAs,
         runAsID: cfg.runAsID
       })
-      console.log('SCHEDULER: Job command for', cfg.name, 'sent at', new Date())
+      console.debug('SCHEDULER: Job command for', cfg.name, 'sent at', new Date())
     } catch (e) {
       console.error(e)
     }

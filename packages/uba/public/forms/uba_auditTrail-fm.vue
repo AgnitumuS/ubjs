@@ -1,5 +1,5 @@
 <template>
-  <form-root />
+  <uba-audit-trail />
 </template>
 
 <script>
@@ -29,7 +29,7 @@ module.exports.mount = cfg => {
 module.exports.default = {
   name: 'AuditForm',
   components: {
-    FormRoot: require('./uba_auditTrail/FormRoot.vue').default
+    UbaAuditTrail: require('./uba_auditTrail/UbaAuditTrailForm.vue').default
   }
 }
 </script>

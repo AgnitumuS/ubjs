@@ -2,11 +2,11 @@
   "httpServer": {
     "externalURL": "http://localhost",
     "host": "+",
-    "port": "%UB_PORT%",
+    "port": "%UB_PORT||8881%",
     //#ifdef(%UB_ALLOW_CORS_FROM%)
-    "allowCORSFrom": "%UB_ALLOW_CORS_FROM%",
+    "allowCORSFrom": "%UB_ALLOW_CORS_FROM||*%",
     //#endif
-    "inetPub": "%UB_APPHOME%inetpub"
+    "inetPub": "%UB_APPHOME%inetpub/"
   },
   "logging": {
     "levels": ["*"]
@@ -28,7 +28,7 @@
       "sidebarLogoBigURL": "/models/ub-pub/img/sidebar-logo-big.svg",
       "loginWindowTopLogoURL": "/models/ub-pub/img/login-logo.svg",
       "registrationURL": "/models/adminui-vue/views/registration-stub.html",
-      "endpoint": "/",
+      "endpoint": "adm",
       "useVueTables": true
     }
   },
@@ -56,7 +56,7 @@
         "dialect": "SQLite3",
         "isDefault": true,
         "databaseName": "%UB_APPDATA%localdb/main.sqlite3",
-        "supportLang": ["en", "ru"],
+        "supportLang": ["en", "uk"],
         "advSettings": "Synchronous=Off"
       }
     ],

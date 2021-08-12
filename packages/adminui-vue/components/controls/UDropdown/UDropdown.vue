@@ -49,14 +49,14 @@ const {
 /**
  * Shows dropdown after click on reference element.
  * Can be used as context menu.
+ * @requires ./UDropdownItem.vue
  */
 export default {
   name: 'UDropdown',
 
   props: {
     /**
-     * Position of element.
-     * In Popper.js it option called strategy
+     * dropdown positioning. In Popper.js it option called strategy
      */
     position: {
       type: String,
@@ -67,7 +67,8 @@ export default {
     },
 
     /**
-     * Popper placement relative to reference button
+     * dropdown placement (relative to the reference button)
+     * @values auto, auto-start, auto-end, top, top-start, top-end, bottom, bottom-start, bottom-end, right, right-start, right-end, left, left-start, left-end
      */
     placement: {
       type: String,
@@ -75,11 +76,26 @@ export default {
     },
 
     /**
-     * Popper placement relative to opened dropdown
+     * child dropdown placement (relative to the opened dropdown). The same possible values as for placement.
      */
     childPlacement: {
       type: String,
       default: 'right-start'
+    },
+
+    /**
+     * reference element used to position the popper
+     */
+    refElement: {
+      default: null
+    },
+
+    /**
+     * disables a dropdown toggle
+     */
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -135,12 +151,17 @@ export default {
 
   methods: {
     toggleVisible () {
+      if (this.disabled) return
       this.visible = !this.visible
     },
 
     beforeEnter (el) {
       el.style.zIndex = this.$zIndex()
-      this.referenceEl = this.$slots.default === undefined ? this.virtualElement : this.$refs.reference
+      if (this.refElement === null) {
+        this.referenceEl = this.$slots.default === undefined ? this.virtualElement : this.$refs.reference
+      } else {
+        this.referenceEl = this.refElement
+      }
       const arrow = this.$refs.arrow
 
       if (this.position === 'fixed') {
@@ -221,22 +242,6 @@ export default {
   display: block;
 }
 
-.dropdown-transition-leave-active,
-.dropdown-transition-enter-active {
-  transition: visibility .1s;
-}
-
-.dropdown-transition-leave-active .u-dropdown,
-.dropdown-transition-enter-active .u-dropdown {
-  transition: .1s;
-}
-
-.dropdown-transition-leave-to .u-dropdown,
-.dropdown-transition-enter .u-dropdown {
-  transform: scale(0.8);
-  opacity: 0;
-}
-
 .u-dropdown__arrow {
   --size: 4px;
   pointer-events: none;
@@ -291,54 +296,3 @@ export default {
   transform: rotate(90deg);
 }
 </style>
-
-<docs>
-### Basic usage
-
-```vue
-<template>
-  <u-dropdown>
-    <el-button>click me</el-button>
-
-    <template #dropdown>
-      <u-dropdown-item label="item 1"/>
-      <u-dropdown-item label="item 2"/>
-      <u-dropdown-item label="item 3"/>
-    </template>
-  </u-dropdown>
-</template>
-```
-
-### Context menu
-
-For use as context menu just pass slot dropdown without default slot and use method show from UDropdown ref
-
-```vue
-<template>
-  <div>
-    <div
-      @contextmenu="showContextMenu"
-      style="width: 200px; height: 200px; background: lightblue"
-    />
-
-    <u-dropdown ref="contextMenu">
-      <template slot="dropdown">
-        <u-dropdown-item label="item 1"/>
-        <u-dropdown-item label="item 2"/>
-        <u-dropdown-item label="item 3"/>
-      </template>
-    </u-dropdown>
-  </div>
-</template>
-
-<script>
-  export default {
-    methods: {
-      showContextMenu (event) {
-        this.$refs.contextMenu.show(event)
-      }
-    }
-  }
-</script>
-```
-</docs>

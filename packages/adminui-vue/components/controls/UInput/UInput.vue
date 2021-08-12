@@ -16,19 +16,13 @@
 
 <script>
 const LocaleButton = require('./LocaleButton.vue').default
-/**
- * **important** - use of this component is possible only when using the instance module
- *
- * This component need to set lang data in multilang attributes
- * Component check multilang by attribute name,
- * if attribute is multilang add globe button.
- * After click globe button will shows popup with fetched locales.
- *
- * After save will put data in store, and processing module will build request for all locales
- */
-
 const numberTypes = ['Int', 'BigInt', 'Float', 'Currency', 'ID']
 
+/**
+ * A UBaseInput with added support of multi-lang string attributes
+ *
+ * **Important** - can be used inside instance module only (injects `entitySchema` and `$v`)
+ */
 export default {
   name: 'UInput',
   components: { LocaleButton },
@@ -43,19 +37,20 @@ export default {
       required: true
     },
     /**
-     * overwrite "step", which was getting from entitySchema by attribute name
+     * "step" for `type=numeric`. Default is calculated based on attribute metadata
      */
     step: Number,
     /**
-     * overwrite "precision", which was getting from entitySchema by attribute name
+     * "precision" for `type=numeric`. Default is calculated based on attribute metadata
      */
     precision: Number,
     /**
-     * use :multilang="false" if you need hide locale button in multilang attribute
+     * use :multilang="false" to hide locale button for multi-lang attribute
      */
     multilang: {},
     /**
-     * overwrite "type", which was getting from entitySchema by attribute name
+     * an input "type". Default is calculated based on attribute metadata.
+     * See [input types on MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types)
      */
     type: String
   },

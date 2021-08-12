@@ -36,25 +36,15 @@ Ext.define('UB.core.UBPanelMixin', {
   buildDetailList: function () {
     var
       result = [],
-      myName = this.entityName,
-      details = this.details || [],
-      mixinArrtRe = /^ID|mi_/
+      details = this.details || []
 
     if (details.length > 0) {
       result = details
     } else {
-      $App.domainInfo.eachEntity(function (curEntity, curEntityName) {
-        // [unitybase/ubjs#2] - do not display refs to attributes of "many" type
-        if ((curEntityName !== myName) && curEntity.haveAccessToMethod('select')) {
-          curEntity.eachAttribute(function (curAttr, curAttrName) {
-            if ((curAttr.associatedEntity === myName) && !mixinArrtRe.test(curAttrName)) {
-              result.push({
-                entityName: curEntityName,
-                attribute: curAttrName
-              })
-            }
-          })
-        }
+      if (!this.entityName) return [] // UBDetailTree do not have entityName
+      const thisEntity = $App.domainInfo.get(this.entityName)
+      result = thisEntity.getDetailsForUI().map(attr => {
+        return {entityName: attr.entity.name, attribute: attr.name}
       })
     }
     return result
@@ -345,14 +335,12 @@ Ext.define('UB.core.UBPanelMixin', {
       entity,
       detail
 
-    for (var i = 0, len = entityDetails.length; i < len; ++i) {
+    for (let i = 0, len = entityDetails.length; i < len; ++i) {
       detail = entityDetails[i]
       entity = $App.domainInfo.get(detail.entityName)
       details.push(new Ext.Action({
         actionId: UB.core.UBPanelMixin.actionId.showDetail,
-        iconCls: 'u-icon-arrow-right',
-        text: detail.caption ||
-                  UB.format('{0} ({1})', entity.caption, entity.attr(detail.attribute).caption),
+        text: detail.caption || `${entity.caption} (${entity.attr(detail.attribute).caption})`,
         entityName: detail.entityName,
         attribute: detail.attribute,
         eventId: UB.core.UBPanelMixin.eventId.showdetail,
@@ -364,7 +352,6 @@ Ext.define('UB.core.UBPanelMixin', {
     return Ext.create('Ext.menu.Item', {
       text: UB.i18n('Details'),
       hideOnClick: false,
-      iconCls: 'u-icon-arrow-right',
       actionId: UB.core.UBPanelMixin.actionId.showDetail,
       menu: {
         items: details

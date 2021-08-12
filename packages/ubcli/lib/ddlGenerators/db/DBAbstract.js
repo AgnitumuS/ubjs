@@ -34,15 +34,21 @@ class DBAbstract {
     referencedTables.forEach(tableDef => {
       const entity = tableDef.__entity
 
-      // for a primary key generators, what don't mapped on the select statement
+      // for a primary key generators, what don't mapped to the select statement
       if (entity.mapping && entity.mapping.pkGenerator && (entity.mapping.pkGenerator.indexOf('select ') < 0)) {
-        this.wantedSequences.push(entity.mapping.pkGenerator.toUpperCase())
+        const seqUpper = entity.mapping.pkGenerator.toUpperCase()
+        if (!this.wantedSequences.includes(seqUpper)) {
+          this.wantedSequences.push(seqUpper)
+        }
       }
       // for cached entities
       if ((entity.cacheType === UBDomain.EntityCacheTypes.Entity) ||
         (entity.cacheType === UBDomain.EntityCacheTypes.SessionEntity)
       ) {
-        this.wantedSequences.push(`S_${tableDef.name.toUpperCase()}`)
+        const seqUpper = `S_${tableDef.name.toUpperCase()}`
+        if (!this.wantedSequences.includes(seqUpper)) {
+          this.wantedSequences.push(seqUpper)
+        }
       }
     })
     this.defaultLang = conn.getAppInfo().defaultLang
@@ -110,14 +116,41 @@ class DBAbstract {
   }
 
   /**
-   * @abstract
    * @param {TableDefinition} table
    * @param {FieldDefinition} column
    * @param {String} updateType
    * @param {Object} [value] optional for updateType updConst
    */
   genCodeUpdate (table, column, updateType, value) {
-    throw new Error(`Abstract genCodeUpdate(${table.name}, ${column.name}, ${updateType}, ${value})`)
+    function quoteIfNeed (v) {
+      if (column.enumGroup) return v // do not quoter enums
+      return column.isString
+        ? (!column.defaultValue && (column.refTable || column.enumGroup)
+            ? v.replace(/'/g, "''")
+            : v === 'ID'
+              ? 'ID' // do not quoter ID
+              : "'" + v.replace(/'/g, '') + "'")
+        : v
+    }
+    let possibleDefault
+    switch (updateType) {
+      case 'updConstComment':
+        this.DDL.updateColumn.statements.push(
+          `-- update ${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
+        )
+        break
+      case 'updConst':
+        this.DDL.updateColumn.statements.push(
+          `update ${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
+        )
+        break
+      case 'updNull':
+        possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
+        this.DDL.updateColumn.statements.push(
+          `-- update ${table.name} set ${column.name} = ${possibleDefault} where ${column.name} is null`
+        )
+        break
+    }
   }
 
   /**
@@ -197,6 +230,24 @@ class DBAbstract {
   }
 
   /**
+   * Generate code for enabling a multitenancy for table
+   * @abstract
+   * @param {TableDefinition} table
+   */
+  genCodeEnableMultitenancy (table) {
+    throw new Error('Multitenancy is not supported by this DB')
+  }
+
+  /**
+   * Generate code for disabling a multitenancy for table
+   * @abstract
+   * @param {TableDefinition} table
+   */
+  genCodeDisableMultitenancy (table) {
+    throw new Error('Multitenancy is not supported by this DB')
+  }
+
+  /**
    * @abstract
    * @param {TableDefinition} table
    */
@@ -271,9 +322,10 @@ class DBAbstract {
    * @abstract
    * @param {string} macro
    * @param {FieldDefinition} [column]
+   * @param {TableDefinition} [table]
    * @return {string}
    */
-  getExpression (macro, column) {
+  getExpression (macro, column, table) {
     throw new Error('Abstract getExpression')
   }
 
@@ -308,7 +360,7 @@ class DBAbstract {
   normalizeDefaults (table) {
     for (const column of table.columns) {
       if (column.defaultValue) {
-        column.defaultValue = this.getExpression(column.defaultValue, column)
+        column.defaultValue = this.getExpression(column.defaultValue, column, table)
       }
     }
   }
@@ -408,6 +460,15 @@ class DBAbstract {
       // }
     }
 
+    // multitenancy
+    if (!asIs || (asIs.multitenancy !== mustBe.multitenancy)) {
+      if (mustBe.multitenancy) {
+        this.genCodeEnableMultitenancy(mustBe)
+      } else if (asIs) { // table exists with multitenancy
+        this.genCodeDisableMultitenancy(mustBe)
+      }
+    }
+
     // create PK
     if (mustBe.primaryKey && ((asIs && !asIs.primaryKey) || notEqualPK || !asIs)) {
       this.genCodeCreatePK(mustBe)
@@ -463,7 +524,7 @@ class DBAbstract {
 
       if (mustBeC) { // alter
         // caption
-        if (mustBeC.caption !== asIsC.caption) {
+        if (mustBeC.caption !== asIsC.caption && mustBeC.caption) {
           this.genCodeSetCaption(mustBe.name, mustBeC.name, mustBeC.caption, asIsC.caption)
         }
         const asIsType = this.createTypeDefine(asIsC)

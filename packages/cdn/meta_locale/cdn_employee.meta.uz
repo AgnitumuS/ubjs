@@ -1,0 +1,106 @@
+{
+  "caption": "Tashqi tashkilotlar xodimlari",
+  "description": "Tashqi tashkilotlar xodimlarining ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "lastName",
+      "caption": "Familiya"
+    },
+    {
+      "name": "firstName",
+      "caption": "Ism"
+    },
+    {
+      "name": "middleName",
+      "caption": "Otasini ismi"
+    },
+    {
+      "name": "description",
+      "caption": "Tavsif"
+    },
+    {
+      "name": "sexType",
+      "caption": "Jins"
+    },
+    {
+      "name": "uniqNum",
+      "caption": "Kadrlar soni"
+    },
+    {
+      "name": "suffix",
+      "caption": "Qoplamoq"
+    },
+    {
+      "name": "shortFIO",
+      "caption": "Qisqa ism"
+    },
+    {
+      "name": "fullFIO",
+      "caption": "To'liq ism"
+    },
+    {
+      "name": "apply",
+      "caption": "Shikoyat qilish"
+    },
+    {
+      "name": "lastNameGen",
+      "caption": "Familiya"
+    },
+    {
+      "name": "lastNameDat",
+      "caption": "Familiya"
+    },
+    {
+      "name": "firstNameGen",
+      "caption": "Ism"
+    },
+    {
+      "name": "firstNameDat",
+      "caption": "Ism"
+    },
+    {
+      "name": "middleNameGen",
+      "caption": "Otasini ismi"
+    },
+    {
+      "name": "middleNameDat",
+      "caption": "Otasini ismi"
+    },
+    {
+      "name": "shortFIOGen",
+      "caption": "Qisqa ism"
+    },
+    {
+      "name": "shortFIODat",
+      "caption": "Qisqa ism"
+    },
+    {
+      "name": "fullFIOGen",
+      "caption": "To'liq ism"
+    },
+    {
+      "name": "fullFIODat",
+      "caption": "To'liq ism"
+    },
+    {
+      "name": "applyGen",
+      "caption": "Shikoyat qilish"
+    },
+    {
+      "name": "applyDat",
+      "caption": "Shikoyat qilish"
+    },
+    {
+      "name": "departmentID",
+      "caption": "Bo'lim"
+    },
+    {
+      "name": "organizationID",
+      "caption": "Tashkilot"
+    },
+    {
+      "name": "addrText",
+      "caption": "Qabul qiluvchi so'zi"
+    }
+  ]
+}

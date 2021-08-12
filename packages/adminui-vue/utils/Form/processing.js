@@ -1,10 +1,10 @@
-/* global $App */
 module.exports = createProcessingModule
 
 const UB = require('@unitybase/ub-pub')
-const { dialogError, dialogDeleteRecord } = require('../../components/dialog/UDialog')
-const moment = require('moment')
+const uDialogs = require('../uDialogs')
 const Vue = require('vue')
+// eslint-disable-next-line no-unused-vars
+const Vuex = require('vuex') // required to see a Vuex.d.ts
 const { Notification: $notify } = require('element-ui')
 const {
   buildExecParams,
@@ -15,16 +15,41 @@ const {
   change,
   prepareCopyAddNewExecParams
 } = require('./helpers')
+
+/**
+ * @callback UbVuexStoreCollectionRequestBuilder
+ * @param {Object} state
+ * @param {UbVuexStoreCollectionInfo} collection
+ * @param {Object} execParams
+ * @param {Array<string>} fieldList
+ * @param {VuexTrackedObject} item
+ * @returns {Object}
+ */
+
+/**
+ * @callback UbVuexStoreCollectionDeleteRequestBuilder
+ * @param {Object} state
+ * @param {UbVuexStoreCollectionInfo} collection
+ * @param {VuexTrackedObject} item
+ * @returns {Object}
+ */
+
+/**
+ * @callback UbVuexStoreRepositoryBuilder
+ * @param {Vuex} store
+ * @returns {ClientRepository}
+ */
+
 /**
  * @typedef {object} UbVuexStoreCollectionInfo
  *
- * Metadata describing a detail collection edited on a form.
+ * Metadata what describes a detail collection what edited on the form.
  *
- * @property {function(store: Store): ClientRepository} repository
+ * @property {UbVuexStoreRepositoryBuilder} repository
  * @property {boolean} [lazy]
  *   An optional flag, indicating that collection shall not be loaded right away, but on demand
- * @property {function(state: object, collection: UbVuexStoreCollectionInfo, execParams: object, fieldList: string[], item: VuexTrackedObject): object} buildRequest
- * @property {function(state: object, collection: UbVuexStoreCollectionInfo, item: VuexTrackedObject): object} buildDeleteRequest
+ * @property {UbVuexStoreCollectionRequestBuilder} buildRequest
+ * @property {UbVuexStoreCollectionDeleteRequestBuilder} buildDeleteRequest
  */
 
 /**
@@ -55,15 +80,15 @@ const {
  *
  * @param {string} masterEntityName Name of entity for master record
  * @param {array<string>} masterFieldList Master request fieldList. If unset will set all fields in an entity
- * @param {object<string, UbVuexStoreCollectionInfo|function(store: Store): ClientRepository>} initCollectionsRequests Collections requests map
- * @param {function} validator Function what returns Vuelidate validation object
+ * @param {object<string, UbVuexStoreCollectionInfo|UbVuexStoreRepositoryBuilder>} initCollectionsRequests Collections requests map
+ * @param {Validator} [validator] Validator
  * @param {number} instanceID instanceID
  * @param {Object} [parentContext] Optional values for main instance attributes passed to addNew method
  * @param {UBEntity} entitySchema Entity schema
  * @param {function} [beforeInit] Callback that emits before init
  * @param {function} [inited] Callback that emits when data is inited
  * @param {function} [beforeSave] Callback that emits before save
- * @param {function} [saved] Callback that emits when data was saved
+ * @param {function} [saved] Callback that emits when data was saved, receive a method name `insert/update` as a second argument
  * @param {function} [beforeDelete] Callback that emits before delete
  * @param {function} [deleted] Callback that emits when data was deleted
  * @param {function} [beforeCopy] Callback that emits before copy of existing record
@@ -133,6 +158,11 @@ function createProcessingModule ({
        * result of previous lock() operation (in case softLock mixin assigned to entity)
        */
       lockInfo: {},
+
+      /**
+       * result of needAls misc operation (in case als mixin assigned to entity)
+       */
+      alsInfo: {},
 
       pendings: [],
 
@@ -206,7 +236,7 @@ function createProcessingModule ({
           if (state.lockInfo.lockType === 'Temp') {
             return UB.i18n('tempSoftLockInfo', state.lockInfo.lockUser)
           } else {
-            return UB.i18n('softLockInfo', state.lockInfo.lockUser, moment(state.lockInfo.lockTime).format('lll'))
+            return UB.i18n('softLockInfo', state.lockInfo.lockUser, UB.formatter.formatDate(state.lockInfo.lockTime, 'dateTimeFull'))
           }
         }
       }
@@ -416,7 +446,7 @@ function createProcessingModule ({
 
       /**
        * Set "IsNew" flag for the master record.
-       * @param {Store.state} state
+       * @param {Vuex.state} state
        * @param {boolean} isNew
        */
       IS_NEW (state, isNew) {
@@ -425,7 +455,7 @@ function createProcessingModule ({
 
       /**
        * Set "IsCopy" flag.
-       * @param {Store.state} state
+       * @param {Vuex.state} state
        * @param {boolean} isCopy
        */
       IS_COPY (state, isCopy) {
@@ -450,6 +480,15 @@ function createProcessingModule ({
             state.pendings.splice(index, 1)
           }
         }
+      },
+
+      /**
+       * add info about als to store state
+       * @param {object} state
+       * @param {object} resultAls - result of `alsNeed` misc in repository
+       */
+      SET_ALS_INFO (state, resultAls) {
+        state.alsInfo = resultAls
       }
     },
 
@@ -459,11 +498,11 @@ function createProcessingModule ({
        *  - sets isNew
        *  - creates empty collections which passed on init processing module
        *  - dispatch `create` or `load` action
+       * @param {Vuex.Store} store
        */
       async init (store) {
-        const { state, commit, dispatch } = store
         for (const [key, collection] of Object.entries(initCollectionsRequests)) {
-          commit('LOAD_COLLECTION', {
+          store.commit('LOAD_COLLECTION', {
             collection: key,
             items: [],
             entity: collection.repository(store).entityName
@@ -472,15 +511,16 @@ function createProcessingModule ({
         if (beforeInit) {
           await beforeInit(store)
         }
-        commit('IS_NEW', !instanceID || state.isCopy)
+        store.commit('IS_NEW', !instanceID || store.state.isCopy)
 
-        if (state.isCopy) {
-          await dispatch('copyExisting')
-        } else if (state.isNew) {
-          await dispatch('create')
+        if (store.state.isCopy) {
+          await store.dispatch('copyExisting')
+        } else if (store.state.isNew) {
+          await store.dispatch('create')
         } else {
-          await dispatch('load')
-          await dispatch('loadCollections', autoLoadedCollections)
+          await store.dispatch('loadWithCollections', {
+            collectionKeys: autoLoadedCollections
+          })
         }
         if (inited) {
           await inited(store)
@@ -490,6 +530,7 @@ function createProcessingModule ({
       /**
        * Send add new request and load to instance props
        * that are response by the server
+       * @param {Vuex.Store} store
        */
       async create ({ commit }) {
         if (beforeCreate) {
@@ -518,13 +559,10 @@ function createProcessingModule ({
       /**
        * Load instance data by record ID or newInstanceID in case this record is just created
        *
-       * @param {Store} store
+       * @param {Vuex.Store} store
        * @param {number} [newInstanceID] optional row id to load. If omitted instanceID will be used
        */
-      async load ({ commit, dispatch }, newInstanceID) {
-        if (beforeLoad) {
-          await beforeLoad()
-        }
+      async load ({ commit }, newInstanceID) {
         commit('LOADING', {
           isLoading: true,
           target: 'loadMaster'
@@ -536,6 +574,7 @@ function createProcessingModule ({
           .misc({ ID: instanceID || newInstanceID }) // Add top level ID to bypass caching, soft deletion and history
 
           .miscIf(isLockable(), { lockType: 'None' }) // get lock info
+          .miscIf(entitySchema.hasMixin('als'), { alsNeed: true }) // get als info
         const data = await repo.selectById(instanceID || newInstanceID)
 
         commit('LOAD_DATA', data)
@@ -547,18 +586,19 @@ function createProcessingModule ({
             value: rl.success
               ? rl.lockInfo
               : { // normalize response - ub api is ugly here
-                lockExists: true,
-                lockType: rl.lockType,
-                lockUser: rl.lockUser,
-                lockTime: rl.lockTime,
-                lockValue: rl.lockInfo.lockValue
-              }
+                  lockExists: true,
+                  lockType: rl.lockType,
+                  lockUser: rl.lockUser,
+                  lockTime: rl.lockTime,
+                  lockValue: rl.lockInfo.lockValue
+                }
           })
         }
 
-        if (loaded) {
-          await loaded()
+        if (entitySchema.hasMixin('als')) {
+          commit('SET_ALS_INFO', repo.rawResult.resultAls)
         }
+
         commit('LOADING', {
           isLoading: false,
           target: 'loadMaster'
@@ -570,13 +610,11 @@ function createProcessingModule ({
        * then check if collections inited when processing module is created
        * then fetch data from server for each collection
        *
-       * @param {Store} store
+       * @param {Vuex.Store} store
        * @param {string[]} collectionKeys Collections keys
        */
       async loadCollections (store, collectionKeys) {
-        const { state, commit } = store
-
-        if (state.isNew) {
+        if (store.state.isNew) {
           return
         }
         for (const key of collectionKeys) {
@@ -586,7 +624,7 @@ function createProcessingModule ({
             return
           }
         }
-        commit('LOADING', {
+        store.commit('LOADING', {
           isLoading: true,
           target: 'loadCollections'
         })
@@ -604,29 +642,51 @@ function createProcessingModule ({
         )
         collectionsData.forEach((collectionData, index) => {
           const collection = collectionKeys[index]
-          commit('LOAD_COLLECTION', {
+          store.commit('LOAD_COLLECTION', {
             collection,
             items: collectionData,
             entity: initCollectionsRequests[collection].repository(store).entityName
           })
         })
-        commit('LOADING', {
+        store.commit('LOADING', {
           isLoading: false,
           target: 'loadCollections'
         })
       },
 
       /**
+       * Load instance data by record ID or newInstanceID and load collections by collectionKeys
+       *
+       * @param {Vuex.Store} store
+       * @param {object} payload
+       * @param {object} payload.collectionKeys Collections keys
+       * @param {string} [payload.newInstanceID] optional row id to load. If omitted instanceID will be used
+       */
+      async loadWithCollections ({ dispatch }, payload) {
+        const { collectionKeys, newInstanceID } = payload
+
+        if (beforeLoad) {
+          await beforeLoad()
+        }
+
+        await dispatch('load', newInstanceID)
+        await dispatch('loadCollections', collectionKeys)
+
+        if (loaded) {
+          await loaded()
+        }
+      },
+
+      /**
        * Create copy of master record and all collections
        *
-       * @param {Store} store
+       * @param {Vuex.Store} store
        * @returns {Promise<void>}
        */
       async copyExisting (store) {
-        const { commit, dispatch } = store
         const collections = Object.keys(initCollectionsRequests)
 
-        commit('LOADING', {
+        store.commit('LOADING', {
           isLoading: true,
           target: 'createCopy'
         })
@@ -650,7 +710,7 @@ function createProcessingModule ({
               })
           )
           .selectById(instanceID)
-        commit('LOAD_DATA', copiedRecord) // need for load collections because collections maps to data of master record
+        store.commit('LOAD_DATA', copiedRecord) // need for load collections because collections maps to data of master record
 
         // load collections
         const collectionsResponse = await Promise.all(
@@ -671,26 +731,26 @@ function createProcessingModule ({
           fieldList,
           execParams: prepareCopyAddNewExecParams(copiedRecord, masterEntityName)
         })
-        commit('LOAD_DATA', newRecord)
+        store.commit('LOAD_DATA', newRecord)
 
         await Promise.all(
           collectionsResponse.flatMap((collectionData, index) => {
             const collection = collections[index]
             const collectionDefinition = initCollectionsRequests[collection]
             const entityName = collectionDefinition.repository(store).entityName
-            const associatedAttrs = UB.connection.domain.get(entityName)
-              .filterAttribute(attr => attr.associatedEntity === masterEntityName)
-              .map(attr => attr.code)
 
             return collectionData.map(collectionItem => {
-              // replace associated attributes for current entity
-              for (const attr of associatedAttrs) {
-                if (attr in collectionItem) {
-                  collectionItem[attr] = newRecord.ID
-                }
-              }
+              // get attributes that point to the master entity record
+              UB.connection.domain.get(entityName)
+                .eachAttribute(attr => {
+                  if ((attr.associatedEntity === masterEntityName) &&
+                     (collectionItem[attr.code] === copiedRecord.ID)) {
+                    // replace associated attributes for current entity
+                    collectionItem[attr.code] = newRecord.ID
+                  }
+                })
               delete collectionItem.ID
-              return dispatch('addCollectionItem', {
+              return store.dispatch('addCollectionItem', {
                 collection,
                 execParams: collectionItem
               })
@@ -701,7 +761,7 @@ function createProcessingModule ({
         if (copied) {
           await copied()
         }
-        commit('LOADING', {
+        store.commit('LOADING', {
           isLoading: false,
           target: 'createCopy'
         })
@@ -710,39 +770,25 @@ function createProcessingModule ({
       /**
        * Check validation then
        * build requests for master and collections records
+       *
+       * @param {Vuex.Store} store
+       * @param {function} [closeForm]
+       *   For using action in the "Save and Close" actions, pass the function, which will close the form
+       * @returns {Promise<void>}
        */
-      async save (store) {
-        const { state, commit } = store
-
+      async save (store, closeForm) {
         if (beforeSave) {
           const answer = await beforeSave()
           if (answer === false) {
             return -1
           }
         }
-        const $v = validator()
-        if ($v) {
-          $v.$touch()
-          if ($v.$error) {
-            const fields = Object.keys($v.$params)
-            const errors = fields
-              .filter(f => $v[f].$invalid)
-              .map(field => {
-                const localeString = `${masterEntityName}.${field}`
-                if (UB.i18n(localeString) === localeString) {
-                  return field
-                } else {
-                  return UB.i18n(localeString)
-                }
-              })
-            const errMsg = UB.i18n('validationError', errors.join(', '))
-            const err = new UB.UBError(errMsg)
-            UB.showErrorWindow(err)
-            throw new UB.UBAbortError(errMsg)
-          }
+
+        if (validator()) {
+          validator().validateForm()
         }
 
-        commit('LOADING', {
+        store.commit('LOADING', {
           isLoading: true,
           target: 'save'
         })
@@ -750,19 +796,20 @@ function createProcessingModule ({
         const requests = []
         const responseHandlers = []
 
-        const masterExecParams = buildExecParams(state, masterEntityName)
+        const masterExecParams = buildExecParams(store.state, masterEntityName)
+        const method = store.state.isNew ? 'insert' : 'update'
         if (masterExecParams) {
           requests.push({
             entity: masterEntityName,
-            method: state.isNew ? 'insert' : 'update',
+            method: method,
             execParams: masterExecParams,
             fieldList
           })
-          responseHandlers.push(response => commit('LOAD_DATA', response.resultData))
+          responseHandlers.push(response => store.commit('LOAD_DATA', response.resultData))
         }
 
         for (const [collectionKey, collectionInfo] of Object.entries(initCollectionsRequests)) {
-          const collection = state.collections[collectionKey]
+          const collection = store.state.collections[collectionKey]
           if (!collection) continue
 
           const req = collectionInfo.repository(store)
@@ -790,11 +837,11 @@ function createProcessingModule ({
               const request = typeof collectionInfo.buildRequest === 'function'
                 ? collectionInfo.buildRequest({ ...store, collection, execParams, fieldList: collectionFieldList, item })
                 : {
-                  entity: collectionEntityName,
-                  method: item.isNew ? 'insert' : 'update',
-                  execParams,
-                  fieldList: collectionFieldList
-                }
+                    entity: collectionEntityName,
+                    method: item.isNew ? 'insert' : 'update',
+                    execParams,
+                    fieldList: collectionFieldList
+                  }
               requests.push(request)
 
               responseHandlers.push(response => {
@@ -805,7 +852,7 @@ function createProcessingModule ({
                   } else if (Number.isInteger(loadedState.ID)) {
                     const index = collection.items.findIndex(i => i.data.ID === loadedState.ID)
                     if (index !== -1) {
-                      commit('LOAD_COLLECTION_PARTIAL', {
+                      store.commit('LOAD_COLLECTION_PARTIAL', {
                         collection: collectionKey,
                         index,
                         loadedState
@@ -826,17 +873,17 @@ function createProcessingModule ({
             responseHandler(response)
           }
 
-          commit('CLEAR_ALL_DELETED_ITEMS')
+          store.commit('CLEAR_ALL_DELETED_ITEMS')
 
           for (const response of responses) {
-            UB.connection.emit(`${response.entity}:changed`, response)
+            UB.connection.emitEntityChanged(response.entity, response)
           }
 
-          if (state.isNew) {
-            commit('IS_NEW', false)
+          if (store.state.isNew) {
+            store.commit('IS_NEW', false)
           }
-          if (state.isCopy) {
-            commit('IS_COPY', false)
+          if (store.state.isCopy) {
+            store.commit('IS_COPY', false)
           }
           if (typeof saveNotification === 'function') {
             saveNotification()
@@ -844,7 +891,11 @@ function createProcessingModule ({
             $notify.success(UB.i18n('successfullySaved'))
           }
           if (saved) {
-            await saved()
+            await saved(method)
+          }
+
+          if (closeForm) {
+            closeForm()
           }
         } catch (err) {
           if (typeof errorNotification === 'function') {
@@ -854,7 +905,7 @@ function createProcessingModule ({
             throw new UB.UBAbortError(err)
           }
         } finally {
-          commit('LOADING', {
+          store.commit('LOADING', {
             isLoading: false,
             target: 'save'
           })
@@ -862,13 +913,14 @@ function createProcessingModule ({
       },
 
       /**
-       * Check form dirty if isDirty will show dialog
-       * else will be send reload request for master record
-       * and all collections record that was already loaded by loadCollections action
+       * Send reload request for master record and all collections record that already loaded by `loadCollections` action
+       *
+       * In case form dirty - show confirmation dialog for loosing changes
+       * @fires entity_name:refresh
        */
       async refresh ({ state, getters, commit, dispatch }) {
         if (getters.isDirty) {
-          const result = await $App.dialogYesNo('refresh', 'formWasChanged')
+          const result = await uDialogs.dialogYesNo('refresh', 'formWasChanged')
 
           if (!result) return
         }
@@ -876,16 +928,34 @@ function createProcessingModule ({
           isLoading: true,
           target: 'master'
         })
-        await dispatch('load', state.data.ID)
+        await dispatch('loadWithCollections', {
+          newInstanceID: state.data.ID,
+          collectionKeys: Object.keys(state.collections)
+        })
         commit('LOADING', {
           isLoading: false,
           target: 'master'
         })
-        await dispatch('loadCollections', Object.keys(state.collections))
 
         if (validator()) {
-          validator().$reset()
+          validator().reset()
         }
+
+        /**
+         * Fires just after form is refreshed using `processing.refresh()`
+          * @example
+
+// @param {THTTPRequest} req
+UB.connection.on('uba_user:refresh', function (data) {
+  console.log(`Someone call refresh for User with ID ${data.ID}`
+})
+
+         * @event entity_name:refresh
+         * @memberOf module:@unitybase/ub-pub.module:AsyncConnection~UBConnection
+         * @param {object} payload
+         * @param {number} payload.ID and ID of entity_name instance what refreshed
+         */
+        UB.connection.emit(`${masterEntityName}:refresh`, { ID: state.data.ID })
 
         $notify.success(UB.i18n('formWasRefreshed'))
       },
@@ -893,7 +963,7 @@ function createProcessingModule ({
       /**
        * Asks for user confirmation and sends delete request for master record
        *
-       * @param {Store} store
+       * @param {Vuex.Store} store
        * @param  {Function} closeForm Close form without confirmation
        */
       async deleteInstance ({ state, getters, commit }, closeForm = () => {}) {
@@ -903,7 +973,7 @@ function createProcessingModule ({
             return
           }
         }
-        const answer = await dialogDeleteRecord(masterEntityName, state.data)
+        const answer = await uDialogs.dialogDeleteRecord(masterEntityName, state.data)
 
         if (answer) {
           commit('LOADING', {
@@ -915,7 +985,7 @@ function createProcessingModule ({
               entity: masterEntityName,
               execParams: { ID: state.data.ID }
             })
-            UB.connection.emit(`${masterEntityName}:changed`, {
+            UB.connection.emitEntityChanged(masterEntityName, {
               entity: masterEntityName,
               method: 'delete',
               resultData: { ID: state.data.ID }
@@ -941,13 +1011,12 @@ function createProcessingModule ({
       /**
        * Sends addNew request then fetch default params and push it in collection
        *
-       * @param {Store} store
+       * @param {Vuex.Store} store
        * @param {object} payload
        * @param {string} payload.collection Collection name
        * @param {object} payload.execParams if we need to create new item with specified params
        */
       async addCollectionItem (store, { collection, execParams }) {
-        const { commit } = store
         const repo = initCollectionsRequests[collection].repository(store)
         const entity = repo.entityName
         const fieldList = repo.fieldList
@@ -957,7 +1026,7 @@ function createProcessingModule ({
           execParams
         })
 
-        commit('ADD_COLLECTION_ITEM', { collection, item })
+        store.commit('ADD_COLLECTION_ITEM', { collection, item })
       },
 
       /**
@@ -982,9 +1051,7 @@ function createProcessingModule ({
 
       /**
        * Lock entity. Applicable for entities with "softLock" mixin
-       * @param {object} context
-       * @param {object} context.state
-       * @param {function} context.commit
+       * @param {Vuex.Store} store
        * @param {boolean} [persistentLock=false] Lock with persistent locking type
        * @return {Promise<void>}
        */
@@ -1003,7 +1070,7 @@ function createProcessingModule ({
             })
             $notify.success(UB.i18n('lockSuccessCreated'))
           } else {
-            return dialogError(UB.i18n('softLockInfo', resultLock.lockUser, moment(resultLock.lockTime).format('lll')))
+            return uDialogs.dialogError(UB.i18n('softLockInfo', resultLock.lockUser, UB.formatter.formatDate(resultLock.lockTime, 'dateTimeFull')))
           }
         }).catch(e => {
           UB.showErrorWindow(e)
@@ -1012,9 +1079,7 @@ function createProcessingModule ({
 
       /**
        * Unlock entity. Applicable for entities with "softLock" mixin
-       * @param {object} context
-       * @param {object} context.state
-       * @param {function} context.commit
+       * @param {Vuex.Store} store
        * @return {Promise<void>}
        */
       unlockEntity ({ state, commit }) {
@@ -1038,9 +1103,7 @@ function createProcessingModule ({
 
       /**
        * Get lock information. Applicable for entities with "softLock" mixin
-       * @param {object} context
-       * @param {object} context.state
-       * @param {function} context.commit
+       * @param {Vuex.Store} store
        * @return {Promise<void>}
        */
       retrieveLockInfo ({ state, commit }) {

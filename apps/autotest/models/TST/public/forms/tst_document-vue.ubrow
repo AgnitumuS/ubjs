@@ -1,0 +1,8 @@
+{
+ "isDefault": false,
+ "entity": "tst_document",
+ "formType": "vue",
+ "caption": "Hello, Vue",
+ "description": "VueJS based form test",
+ "formCode": "{\"fName\":\"tst_document-vue-fm.vue\",\"origName\":\"tst_document-vue-fm.vue\",\"ct\":\"script/x-vue\",\"size\":3104,\"md5\":\"114445c77a2f7bdd780a676ca01f1cea\"}"
+}

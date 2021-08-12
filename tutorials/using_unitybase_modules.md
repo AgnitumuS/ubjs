@@ -1,78 +1,4 @@
 ﻿[[toc]]
-
-# Manage a remote server using console
-
-Usually we manage a windows-based environment using Remote Desktop Connection (log in to the GUI mode and use a mouse to do somethoing).
-
-This is slow and non-scalable way. Below we describe a "unix way" of remote server management.
-
-## Console - a right way
-  We strongly recommend to use a Far Manager + ConEmu instead of Explorer + cmd:
-
-  - install a [Far Manager](https://www.farmanager.com/download.php?l=en)
-  - install a [ConEmu](https://conemu.github.io/) to the same folder where Far is installed
-  - Enjoy!
-  
-## Enable WinRM on the remote server
-
-###  Verify WinRM is enabled
-```shell script
-winrm quickconfig
-```
-  
-Starting from windows Server 2012 PowerShell remoting is enable dy default. If disabled - run (as admin):  
-```shell script
-Enable-PSRemoting -Force
-```
-
-_ConEmu {cmd:Admin} console indicate a `admin` session as a **$** sign in the left of command line_
-
-###  Enable WinRM remote access
-
-#### Both server and client are in the same domain
-
-In case both your computer and remote server are in the same domain, no additional sеteps is required. 
-
-#### Server and client are in re different domain (or no domain at all)
-
-  - set up a valid HTTPS certificate (with common name your host <fdqn hostname> either using IIS of from command line using `makecert` & `httpcfg` as 
-    described [in UnityBase HTTP server tutorial](http://unitybase.info/api/serverNew/tutorial-http_server.html).
-    In case you use a self-signed certificate add your CA certificate to the Local Computer Trusted root certification list
-
-  - configure a  winrm to accept connections using https protocol:  
-    ```shell script
-    winrm create winrm/config/Listener?Address=*+Transport=HTTPS @{Hostname="<fdqn hostname>";CertificateThumbprint="<tumbprint without space your ssl cert>"}
-    ```
-    
-	##### delete listener https (if need)
-    ```shell script
-	winrm set winrm/config/Listener?Address=*+Transport=HTTPS @{Enabled="false"}
-    ```
-    
-	##### disable listener https (if need)
-	```shell script
-	winrm delete winrm/config/Listener?Address=*+Transport=HTTPS
-    ```
- 
-  - check current permisions
-    ```shell script
-    winrm g winrm/config/client
-    ```
-
-  - add your host to trusted
-    ```shell script
-    winrm set winrm/config/client @{TrustedHosts="*"}
-    ```
-    
-## Add ub-service (local users perm) to "Allow logon locally" and "Logon as batch job" to local security policy
-
-  	
-## Connect ot Remote Server using PowerShell
-In ConEmu Select New->Shell->PowerShell:  
-```shell script
-Enter-PSSession -EnableNetworkAccess -ConnectionUri https://<fdqn hostname>:5986/wsman/ -Credential ub-service
-```
-
 # Applications pool management using `pm2`
 
 For a production environment all operations below must be performed under user who execute a applications in pool. 
@@ -144,8 +70,8 @@ runas /user:ub-service "C:\Far\Far.exe"
 
 ## package.json
 
-Modify your `package.json` file by adding a `publishConfig` property. This prevent `npm` to publish a module to a public npm repository.
-We strongly recommend to use a (http://standardjs.com/index.html)[JavaScript Standard Style] code style so we add a "standard" to the package.json devDependency:  
+Modify your `package.json` file by adding a `publishConfig` property. This prevents `npm` to publish a module to a public npm repository.
+We strongly recommend [JavaScript Standard Style](http://standardjs.com/index.html) code style, so we add a "standard" to the package.json devDependency:  
 ```json
 "publishConfig": {
  "registry": "http://registry.unitybase.info"
@@ -169,8 +95,8 @@ npm install
 
 ## Developer environment 
 
-Set up your IDE to use a (http://standardjs.com/index.html)[JavaScript Standard Style]. 
-For WebStorm users  (http://standardjs.com/webstorm.html)[see this link]. 
+Set up your IDE to use a [JavaScript Standard Style](http://standardjs.com/index.html). 
+For WebStorm users [see this link](http://standardjs.com/webstorm.html). 
 
 For debugging your modules use a (https://docs.npmjs.com/cli/link)[npm link] command. 
 This command will create a symlink from your module folder to your test application folder   

@@ -1,6 +1,6 @@
 /**
  *
- * Server-side BLOB stores methods. Accessible via {@link App.blobStores}
+ * Server-side BLOB stores methods. Accessible via {@link ServerApp.blobStores}
  *
 
     // get dirty (not committed yet) content of my_entity.docAttribute with ID = 12312 as ArrayBuffer
@@ -43,7 +43,6 @@
  */
 const UBDomain = require('@unitybase/cs-shared').UBDomain
 const Repository = require('@unitybase/base').ServerRepository.fabric
-const queryString = require('querystring')
 const BlobStoreCustom = require('./blobStoreCustom')
 const MdbBlobStore = require('./mdbBlobStore')
 const FileSystemBlobStore = require('./fileSystemBlobStore')
@@ -62,7 +61,7 @@ function getBlobHistoryDataStore () {
 }
 
 /**
- * @type {App}
+ * @type {ServerApp}
  * @private
  */
 let App
@@ -78,7 +77,7 @@ let Session
 const blobStoresMap = {}
 /**
  * Initialize blobStoresMap. Called by UBApp and initialize a `App.blobStores`
- * @param {App} appInstance
+ * @param {ServerApp} appInstance
  * @param {UBSession} sessionInstance
  * @private
   */
@@ -186,7 +185,7 @@ function parseBlobRequestParams (params) {
  * Return either success: false with reason or success: true and requested blobInfo & store implementation
  *
  * @param {ParsedRequest} parsedRequest
- * @return {{success: boolean, reason}|{success: boolean, blobInfo: Object, store: BlobStoreCustom}}
+ * @return {{success: boolean, reason: string}|{success: boolean, blobInfo: Object, store: BlobStoreCustom}}
  * @private
  */
 function getRequestedBLOBInfo (parsedRequest) {
@@ -199,18 +198,25 @@ function getRequestedBLOBInfo (parsedRequest) {
   if (parsedRequest.bsReq.isDirty) {
     storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   } else {
-    // check user have access to row and retrieve current blobInfo
-    const blobInfoDS = Repository(entity.code).attrs(attribute.code).where('ID', '=', ID).selectAsObject()
-    if (!blobInfoDS.length) {
+    // check user have access to the row and retrieve actual blobInfo
+    const blobInfoDS = Repository(entity.code)
+      .attrs(attribute.code)
+      .attrsIf(entity.isUnity, 'mi_unityEntity')
+      .selectById(ID)
+    let baseInstanceID = ID
+    if (blobInfoDS && blobInfoDS.mi_unityEntity) {
+      baseInstanceID = Repository(blobInfoDS.mi_unityEntity).attrs('ID').where('ID', '=', ID).selectScalar()
+    }
+    if (!blobInfoDS || !baseInstanceID) {
       return {
         success: false,
-        reason: `${entity.code} with ID=${ID} not accessible`
+        reason: `${entity.code} with ID=${ID} is not accessible`
       }
     }
     const rev = parsedRequest.bsReq.revision
-    const blobInfoTxt = blobInfoDS[0][attribute.code]
+    const blobInfoTxt = blobInfoDS[attribute.code]
     if (!blobInfoTxt && !rev) {
-      // only return error, if request does not have parameter "revision"
+      // return an error, if request does not contains a "revision" parameter
       return {
         success: false,
         isEmpty: true,
@@ -219,7 +225,8 @@ function getRequestedBLOBInfo (parsedRequest) {
     }
     blobInfo = blobInfoTxt ? JSON.parse(blobInfoTxt) : undefined
     // check revision. If not current - get a blobInfo from history
-    if (rev && (!blobInfo || rev !== blobInfo.revision)) {
+    // blobInfo.revision is missing in UB<5 - ignore it and retrieve a latest content
+    if (rev && (!blobInfo || (blobInfo.revision && (rev !== blobInfo.revision)))) {
       const historicalBlobItem = Repository(BLOB_HISTORY_STORE_NAME)
         .attrs('blobInfo')
         .where('instance', '=', ID)
@@ -252,7 +259,41 @@ function getRequestedBLOBInfo (parsedRequest) {
 }
 
 /**
- * Obtains document content from blobStore and send it to response.
+ * Writes a BLOB content to the response without verifying an ALS (but RLS is verified) or
+ * return an error without modifying a response.
+ *
+ * **SECURITY** - method can be used inside endpoint or rest entity method, which already checks the access rights to the document
+ *
+ * Returns:
+ *  - `{success: false, reason: 'fail reason description}` if attribute value is empty or
+ *  record with specified ID not found or not accessible or entity/attribute is unknown or id not passed etc.
+ *  - `{success: true}` if content is written to the response
+ *
+ *
+ * @param {BlobStoreRequest} requestParams
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ * @return {{success: boolean, reason: string}}
+ */
+function internalWriteDocumentToResp (requestParams, req, resp) {
+  const parsed = parseBlobRequestParams(requestParams)
+  if (!parsed.success) return parsed
+
+  const requested = getRequestedBLOBInfo(parsed)
+  if (!requested.success) {
+    return requested
+  }
+  // call store implementation method
+  const fillRespResult = requested.store.fillResponse(parsed.bsReq, requested.blobInfo, req, resp, true)
+  if (!fillRespResult) {
+    return { success: false, reason: 'Content not found' }
+  } else {
+    return { success: true }
+  }
+}
+
+/**
+ * Obtains the document content from a blobStore and sends it to the response
  *
  * @param {BlobStoreRequest} requestParams
  * @param {THTTPRequest} req
@@ -321,7 +362,7 @@ function getDocumentEndpointInternal (req, resp, withBody = true) {
   /** @type BlobStoreRequest */
   let params
   if (req.method === 'GET') { // TODO - should we handle 'HEAD' here?
-    params = queryString.parse(req.parameters)
+    params = req.parsedParameters
   } else if (req.method === 'POST') {
     const paramStr = req.read()
     try {
@@ -343,7 +384,7 @@ function getDocumentEndpointInternal (req, resp, withBody = true) {
  * @param {BlobStoreRequest} request
  * @param {Object} [options]
  * @param {String|Null} [options.encoding] Possible values:
- *   'bin' 'ascii'  'base64' 'binary' 'hex' ucs2/ucs-2/utf16le/utf-16le utf8/utf-8
+ *   'bin' 'ascii' 'binary' 'hex' ucs2/ucs-2/utf16le/utf-16le utf8/utf-8
  *   if `null` will return {@link Buffer}, if `bin` - ArrayBuffer
  * @returns {String|Buffer|ArrayBuffer|null}
  */
@@ -403,7 +444,7 @@ function setDocumentEndpoint (req, resp) {
   let request
   // TODO HTTP 'DELETE'
   if (req.method === 'POST') {
-    request = queryString.parse(req.parameters)
+    request = req.parsedParameters
   } else {
     return resp.badRequest('invalid HTTP verb' + req.method)
   }
@@ -421,7 +462,7 @@ function setDocumentEndpoint (req, resp) {
   if (request.encoding === 'base64') {
     content = req.read('base64')
   } else {
-    content = req.read('bin')
+    content = req
   }
   const blobStoreItem = store.saveContentToTempStore(parsed.bsReq, attribute, content)
   resp.statusCode = 200
@@ -429,7 +470,9 @@ function setDocumentEndpoint (req, resp) {
 }
 
 /**
- * Server-side method for putting BLOB content to BLOB store temporary storage
+ * Server-side method for putting BLOB content to BLOB store temporary storage.
+ * Can accept a THTTPRequest as a content, in this case request body will be used as BLOB content
+ *
  * @example
 
  // convert base64 encoded string stored in `prm.signature` to binary and put to the store
@@ -441,7 +484,7 @@ function setDocumentEndpoint (req, resp) {
  }, Buffer.from(prm.signature, 'base64'))
 
  * @param {BlobStoreRequest} request
- * @param {ArrayBuffer|String} content
+ * @param {ArrayBuffer|String|THTTPRequest} content
  * @return {BlobStoreItem}
  */
 function putContent (request, content) {
@@ -463,7 +506,7 @@ function putContent (request, content) {
  * @param {BlobStoreItem} blobItem
  * @return {BlobStoreCustom}
  */
-function getStore (attribute, blobItem) {
+function getBlobStore (attribute, blobItem) {
   const storeName = blobItem.store || attribute.storeName || blobStoresMap.defaultStoreName
   const store = blobStoresMap[storeName]
   if (!store) throw new Error(`Blob store ${storeName} not found in application config`)
@@ -494,7 +537,7 @@ function rotateHistory (store, attribute, ID, blobInfo) {
   for (let i = 0, L = histData.length - store.historyDepth; i < L; i++) {
     const item = histData[i]
     const historicalBlobInfo = JSON.parse(item.blobInfo)
-    const store = getStore(attribute, historicalBlobInfo)
+    const store = getBlobStore(attribute, historicalBlobInfo)
     // delete persisted item
     store.doDeletion(attribute, ID, historicalBlobInfo)
     // and information about history from ub_blobHistory
@@ -502,12 +545,16 @@ function rotateHistory (store, attribute, ID, blobInfo) {
   }
   const archivedBlobInfo = store.doArchive(attribute, ID, blobInfo)
   // insert new historical item
+  let createdAt = new Date()
+  createdAt.setMilliseconds(0)
   dataStore.run('insert', {
     execParams: {
       instance: ID,
+      entity: attribute.entity.name,
       attribute: attribute.name,
       revision: blobInfo.revision,
       permanent: blobInfo.isPermanent,
+      createdAt,
       blobInfo: JSON.stringify(archivedBlobInfo)
     }
   })
@@ -547,9 +594,9 @@ function doCommit (attribute, ID, dirtyItem, oldItem) {
   }
   let newRevision = 1
   let oldItemStore
-  const store = getStore(attribute, dirtyItem)
+  const store = getBlobStore(attribute, dirtyItem)
   if (oldItem) {
-    oldItemStore = getStore(attribute, oldItem)
+    oldItemStore = getBlobStore(attribute, oldItem)
     if (oldItem.revision) newRevision = oldItem.revision + 1
   } else if (store.historyDepth) {
     newRevision = estimateNewRevisionNumber(attribute, ID)
@@ -585,7 +632,7 @@ function markRevisionAsPermanent (request) {
   if (!r.success) throw new Error(r.reason)
   const revisionFor = r.bsReq.revision
   if (!revisionFor) throw new Error('Missing revision parameter')
-  const store = getStore(r.attribute, {})
+  const store = getBlobStore(r.attribute, {})
   if (!store.historyDepth) throw new Error(`Store ${store.name} is not a historical store`)
   const histID = Repository(BLOB_HISTORY_STORE_NAME)
     .attrs(['ID'])
@@ -612,6 +659,7 @@ module.exports = {
   getDocumentEndpoint,
   checkDocumentEndpoint,
   writeDocumentToResp,
+  internalWriteDocumentToResp,
   setDocumentEndpoint,
   markRevisionAsPermanent,
   getContent,

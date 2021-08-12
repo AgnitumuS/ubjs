@@ -24,8 +24,8 @@ const iso8601ParseAsDate = require('./LocalDataStore').iso8601ParseAsDate
  *
  * Developer should never create {@link UBDomain} class directly, but instead use a:
  *
- *  - {@link App.domainInfo App.domainInfo} property inside server-side methods
- *  - {@link SyncConnection#getDomainInfo SyncConnection.getDomainInfo} method inside CLI scripts
+ *  - {@link module:@unitybase/ub#App.domainInfo App.domainInfo} property inside server-side methods
+ *  - {@link module:@unitybase/base#SyncConnection SyncConnection.getDomainInfo} method inside CLI scripts
  *  - `UBConnection.domain` property inside a browser
  *
        // server-side example
@@ -157,7 +157,7 @@ UBDomain.prototype.isEntityMethodsAccessible = function (entityCode, methodNames
 UBDomain.prototype.get = function (entityCode, raiseErrorIfNotExists) {
   const result = this.entities[entityCode]
   if ((raiseErrorIfNotExists !== false) && !result) {
-    throw new Error('Entity with code "' + entityCode + '" does not exists or not accessible')
+    throw new Error(`Entity with code '${entityCode}' does not exist or not accessible`)
   }
   return result
 }
@@ -204,7 +204,7 @@ UBDomain.prototype.filterEntities = function (predicate) {
     return _.filter(this.entities, function (item) {
       let res = true
       for (const prop in predicate) {
-        if (predicate.hasOwnProperty(prop)) {
+        if (Object.prototype.hasOwnProperty.call(predicate, prop)) {
           res = res && (item[prop] === predicate[prop])
         }
       }
@@ -374,7 +374,7 @@ UBDomain.jsonReplacer = function (k, v) {
   const jr = this.__proto__.forJSONReplacer
   if (jr) {
     // skip props marked as null inside forJSONReplacer collection
-    if (jr.hasOwnProperty(k) && jr[k] === null) return undefined
+    if (Object.prototype.hasOwnProperty.call(jr, k) && jr[k] === null) return undefined
     // skip boolean props mach forJSONReplacer boolean values
     if (typeof v === 'boolean' && v === jr[k]) return undefined
   }
@@ -445,7 +445,7 @@ function UBModel (cfg, modelCode) {
 
   if (cfg.realPublicPath) {
     /**
-     * Server-side domain only - the full path to model public folder (if any)
+     * Server-side domain only - full path to the model public folder (if any) including trailer `/`
      * @type {string}
      */
     this.realPublicPath = cfg.realPublicPath
@@ -531,11 +531,17 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
    */
   this.code = entityCode
   /**
-   * Entity model name
+   * Name of model where entity is defined (in case entity is overridden - see overridesBy)
    * @type{string}
    * @readonly
    */
   this.modelName = entityInfo.modelName
+  /**
+   * CSV model names where entity is overridden
+   * @type{string}
+   * @readonly
+   */
+  this.overriddenBy = entityInfo.overriddenBy
   /**
    * Entity name
    * @type {string}
@@ -868,13 +874,14 @@ UBEntity.prototype.asPlainJSON = function (attributesAsArray = true, removeAttrs
   return entityJSON
 }
 
+// noinspection JSDeprecatedSymbols
 /**
- * Checks if current user has access to specified entity method
+ * Checks if current user has access to a specified entity method
  * @param {string} methodCode
  * @returns {Boolean}
  */
 UBEntity.prototype.haveAccessToMethod = function (methodCode) {
-  return (UB.isServer && process.isServer)
+  return ((typeof App !== 'undefined') && App.els) // server side
     ? App.els(this.code, methodCode)
     : this.entityMethods[methodCode] === 1
 }
@@ -896,7 +903,7 @@ UBEntity.prototype.filterAttribute = function (predicate) {
     return _.filter(this.attributes, function (item) {
       let res = true
       for (const prop in predicate) {
-        if (predicate.hasOwnProperty(prop)) {
+        if (Object.prototype.hasOwnProperty.call(predicate, prop)) {
           res = res && (item[prop] === predicate[prop])
         }
       }
@@ -1088,12 +1095,18 @@ UBEntity.prototype.getDescriptionAttribute = function () {
 
 /**
  * Returns information about attribute and attribute entity. Understand complex attributes like `firmID.firmType.code`
+ * @example
+
+ UB.connection.domain.get('cdn_country').getEntityAttributeInfo('mi_modifyUser.name')
+ // {entity: 'uba_user', attribute: 'name', parentAttribute: {code: mi_modifyUser, dataType: 'Entity', ....}}
+
  * @param {string} attributeName
  * @param {number} [depth=0] If 0 - last, -1 - before last, > 0 - first. Default 0.
  *  - `0` means last attribute in chain (code from above)
  *  - `-1` - before last (firmType from above)
  *  - `>0` - first (firmID from above)
  * @return {{ entity: String, attribute: UBEntityAttribute, parentAttribute: UBEntityAttribute, attributeCode: String }|undefined}
+ *   Either attribute information or undefined if chain not points to attribute
  */
 UBEntity.prototype.getEntityAttributeInfo = function (attributeName, depth) {
   let currentEntity = this
@@ -1226,6 +1239,36 @@ UBEntity.prototype.checkAttributeExist = function (attributeNames, contextMessag
  */
 UBEntity.prototype.getEntityDescription = function () {
   return this.description || this.caption
+}
+
+/**
+ * Returns an array of UBEntityAttribute what points to this entity (associatedEntity === this entity)
+ *   and such relation should be visible in the UI "Details" menu.
+ *
+ * Excluded attributes are:
+ *  - `mi_*` attributes
+ *  - attributes with customSetting.hiddenInDetails === true
+ *  - all attributes for entities user do not have access to the `select` method
+ *
+ * @returns {Array<UBEntityAttribute>}
+ */
+UBEntity.prototype.getDetailsForUI = function () {
+  const IS_ATTR_FROM_MIXIN = /^ID|mi_/
+  const myName = this.name
+  const result = []
+  this.domain.eachEntity(function (e) {
+    // [unitybase/ubjs#2] - do not display refs to attributes of "many" type
+    if ((e.name !== myName) && e.haveAccessToMethod('select')) {
+      e.eachAttribute(function (attr) {
+        if ((attr.associatedEntity === myName) &&
+            (!attr.customSettings || !attr.customSettings.hiddenInDetails) &&
+            !IS_ATTR_FROM_MIXIN.test(attr.name)) {
+          result.push(attr)
+        }
+      })
+    }
+  })
+  return result
 }
 
 /**

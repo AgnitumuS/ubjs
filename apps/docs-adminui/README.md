@@ -1,11 +1,11 @@
 > Warning!
 > Now works only with yarn
 
-Prerequirment 
+Prerequisite: 
+- Install dependencies `npm i`.
 - `./init-db.sh`
-- Install dependenies `yarn`.
-- Dev mode `yarn run dev`
-- Build `yarn run build`
+- Dev mode `npm run dev`
+- Build `npm run build`
 
 Production version
 - `ub`

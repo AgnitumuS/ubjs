@@ -14,7 +14,18 @@ class DBOracle extends DBAbstract {
     const mTables = this.refTableDefs
     if (!mTables.length) return // all entities in this connection are external or no entities at all - skip loading DB metadata
 
-    // old code  // UPPER(t.table_name)
+    // reset a collation - system views is slow for non BINARY NLS_SORT / NLS_COMP
+    this.conn.xhr({
+      endpoint: 'runSQL',
+      data: 'ALTER SESSION SET NLS_SORT=BINARY',
+      URLParams: { CONNECTION: this.dbConnectionConfig.name }
+    })
+    this.conn.xhr({
+      endpoint: 'runSQL',
+      data: 'ALTER SESSION SET NLS_COMP=BINARY',
+      URLParams: { CONNECTION: this.dbConnectionConfig.name }
+    })
+
     const tablesSQL = `select
       t.table_name as name,  tc.comments as caption
     from
@@ -113,6 +124,8 @@ order by tc.column_id`
       }
 
       // foreign key
+      // all_cons* are used instead of user_cons* because for constraints between different schemas
+      // Oracle sets owner to ref table
       const foreignKeysSQL = `
 select
   uc.constraint_name as foreign_key_name,
@@ -120,9 +133,9 @@ select
   ucc.column_name as constraint_column_name,
   r.table_name as referenced_object,
   uc.delete_rule as delete_referential_action_desc
-from user_constraints uc
-  join user_cons_columns ucc on ucc.owner=uc.owner and ucc.constraint_name=uc.constraint_name
-  join user_constraints r on r.owner=uc.r_owner and r.constraint_name=uc.r_constraint_name
+from all_constraints uc
+  join all_cons_columns ucc on ucc.owner=uc.owner and ucc.constraint_name=uc.constraint_name
+  join all_constraints r on r.owner=uc.r_owner and r.constraint_name=uc.r_constraint_name
 where uc.constraint_type ='R'
   and uc.table_name=:('${asIsTable._upperName}'):`
 
@@ -258,7 +271,7 @@ where
       this.dbTableDefs.push(asIsTable)
     }
 
-    const sequencesSQL = 'select sequence_name from user_sequences'
+    const sequencesSQL = 'select sequence_name from ALL_SEQUENCES' // use ALL_SEQUENCES instead of user_sequences to see a synonyms
     const dbSequences = this.conn.xhr({
       endpoint: 'runSQL',
       data: sequencesSQL,
@@ -275,51 +288,6 @@ where
       this.DDL.rename.statements.push(`ALTER INDEX ${oldName} RENAME TO ${newName}`)
     } else {
       this.DDL.rename.statements.push(`ALTER TABLE ${table.name} RENAME CONSTRAINT ${oldName} TO ${newName}`)
-    }
-  }
-
-  /**
-   * @override
-   * @param {TableDefinition} table
-   * @param {FieldDefinition} column
-   * @param {String} updateType
-   * @param {Object} [value] optional for updateType updConst
-   */
-  genCodeUpdate (table, column, updateType, value) {
-    function quoteIfNeed (v) {
-      if (column.enumGroup) return v // do not quoter enums
-      return column.isString
-        ? (!column.defaultValue && (column.refTable || column.enumGroup)
-          ? v.replace(/'/g, "''")
-          : v === 'ID'
-            ? 'ID' // do not quoter ID
-            : "''" + v.replace(/'/g, '') + "''")
-        : v
-      //  return ((!column.isString || (!column.defaultValue && (column.refTable || column.enumGroup))) ? v : "''" + v.replace(/'/g,'') + "''" );
-    }
-    let possibleDefault
-    switch (updateType) {
-      case 'updConstComment':
-        this.DDL.updateColumn.statements.push(
-          `-- update ${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
-        )
-        break
-      case 'updConst':
-        this.DDL.updateColumn.statements.push(
-          `update /*2*/ ${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
-        )
-        break
-      case 'updNull':
-        possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
-        this.DDL.updateColumn.statements.push(
-          `-- update ${table.name} set ${column.name} = ${possibleDefault} where ${column.name} is null`
-        )
-        break
-      case 'updBase':
-        this.DDL.updateColumn.statements.push(
-          `EXEC('update ${table.name} set ${column.name} = ${quoteIfNeed(column.baseName)} where ${column.name} is null`
-        )
-        break
     }
   }
 
@@ -450,6 +418,16 @@ where
   }
 
   /** @override */
+  genCodeEnableMultitenancy (table) {
+    throw new Error('multitenancy is not implemented for Oracle')
+  }
+
+  /** @override */
+  genCodeDisableMultitenancy (table) {
+    throw new Error('multitenancy is not implemented for Oracle')
+  }
+
+  /** @override */
   genCodeCreatePK (table) {
     // if (!table.isIndexOrganized){
     this.DDL.createPK.statements.push(
@@ -463,7 +441,7 @@ where
     if (!constraintFK.generateFK) return
 
     const refTo = _.find(this.refTableDefs, { _nameUpper: constraintFK.references.toUpperCase() })
-    const refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
+    const refKeys = refTo ? refTo.primaryKey.keys.join(',') : constraintFK.refPkDefColumn
 
     this.DDL.createFK.statements.push(
       `alter table ${table.name} add constraint ${constraintFK.name} foreign key (${constraintFK.keys.join(',')}) references ${constraintFK.references}(${refKeys})`
@@ -541,9 +519,10 @@ where
    * @override
    * @param {string} macro
    * @param {FieldDefinition} [column]
+   * @param {TableDefinition} [table]
    * @return {string}
    */
-  getExpression (macro, column) {
+  getExpression (macro, column, table) {
     /**
      * @param {string} val
      * @return {string}
@@ -556,7 +535,7 @@ where
         case 'maxDate':
           return 'TO_DATE(\'31.12.9999\', \'dd.mm.yyyy\')'
         default:
-          throw new Error(`Unknown expression with code ${val}`)
+          throw new Error(`Unknown expression "${val}" for default value of ${table ? table.name : '?'}.${column ? column.name : '?'}`)
       }
     }
     if (!column) return dateTimeExpression(macro)
@@ -585,7 +564,7 @@ where
       case 'TEXT': return 'CLOB'
       case 'DOCUMENT': return 'VARCHAR2'
       case 'BLOB': return 'BLOB'
-      case 'JSON': return 'NVARCHAR2'
+      case 'JSON': return 'CLOB'
       default: return dataType
     }
   }
@@ -637,6 +616,8 @@ where
       let res = this.uniTypeToDataBase(column.dataType)
       res += `(${column.size.toString()} CHAR)`
       return res
+    } else if (column.dataType === 'JSON') { // prevent adding (SIZE)
+      return this.uniTypeToDataBase(column.dataType)
     } else {
       return super.createTypeDefine(column)
     }

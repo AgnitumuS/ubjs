@@ -10,7 +10,7 @@
   >
     <el-tooltip
       slot="reference"
-      :content="$ut('search') + ' (Ctrl + F)'"
+      :content="$ut('search') + ' (Ctrl+Shift+F)'"
       :enterable="false"
     >
       <el-button
@@ -58,8 +58,6 @@
       v-model="period"
       class="ub-fts__date-picker"
       type="daterange"
-      :start-placeholder="$ut('el').datepicker.startDate"
-      :end-placeholder="$ut('el').datepicker.endDate"
       :picker-options="pickerOptions"
     />
   </el-popover>
@@ -88,7 +86,7 @@ export default {
       isPeriod: false,
       pickerOptions: {
         shortcuts: [{
-          text: this.$ut('el').datepicker.today,
+          text: this.$ut('el.datepicker.today'),
           onClick (picker) {
             picker.$emit('pick', [new Date(), new Date()])
           }
@@ -135,8 +133,8 @@ export default {
   mounted () {
     if (!this.modeList.length) return // widget is hidden because no fts connections
     document.body.addEventListener('keydown', (e) => {
-      const { code, ctrlKey } = e
-      if (code === 'KeyF' && ctrlKey) {
+      const { code, ctrlKey, shiftKey } = e
+      if (code === 'KeyF' && ctrlKey && shiftKey) {
         e.preventDefault()
         this.$refs.popover.doShow()
       }
@@ -158,12 +156,14 @@ export default {
       if (!this.query) {
         return
       }
+      let qText = this.query
+      if (qText[0] === '№') qText = '"' + qText + '"' // do not split № on lexemas - search as is
 
       const ftsTabId = 'FullTextSearchWidgetResult'
       const repo = this.$UB.Repository('fts_' + this.currentMode)
         .attrs('ID', 'entity', 'entitydescr', 'snippet')
         .using('fts')
-        .where('', 'match', this.query)
+        .where('', 'match', qText)
       if (this.isPeriod && this.period) {
         repo.where('ftsDate', '>=', this.period[0])
           .where('ftsDate', '<=', this.period[1])

@@ -28,7 +28,7 @@ function FieldDefinition (cfg) {
   this.attribute = cfg.attribute
   this.name = cfg.name
   this.dataType = cfg.dataType || 'NVARCHAR'
-  this.caption = cfg.description || ''
+  this.caption = cfg.description
   this.allowNull = cfg.allowNull !== false
   this.defaultValue = cfg.defaultValue
   this.defaultConstraintName = cfg.defaultConstraintName
@@ -52,6 +52,7 @@ class TableDefinition {
    * @param {Object} config
    * @param {String} config.name
    * @param {String} config.caption
+   * @param {boolean} [config.multitenancy=false]
    */
   constructor (config) {
     /** @type UBEntity */
@@ -75,6 +76,7 @@ class TableDefinition {
     this.othersNames = {}
     this.isIndexOrganized = false
     this.doComparision = true
+    this.multitenancy = (config.multitenancy === true)
   }
 
   /**
@@ -105,6 +107,7 @@ class TableDefinition {
    * @property {boolean} [isDisabled=false]
    * @property {boolean} [isConstraint=false]
    * @property {string} [indexType] One of CATALOGUE,FTS or null|undefined for usual indexes
+   * @property {boolean} [isForDelete] If this index should be deleted because of altering a columns
    */
 
   /**
@@ -119,7 +122,10 @@ class TableDefinition {
     obj.isConstraint = obj.isConstraint || false
     obj._upperName = obj.name.toUpperCase()
     obj.indexType = obj.indexType || null
-    if (obj.keys && obj.keys.length) obj.keys = obj.keys.map(name => name.toUpperCase())
+    if (obj.keys && obj.keys.length) {
+      if (this.multitenancy && obj.isUnique) obj.keys.push('mi_tenantID')
+      obj.keys = obj.keys.map(name => name.toUpperCase())
+    }
     if (checkName) {
       existed = _.findIndex(this.indexes, { _upperName: obj._upperName })
     }
@@ -159,7 +165,8 @@ class TableDefinition {
    * @property {string} name
    * @property {string} [_upperName]
    * @property {Array<string>} keys
-   * @property {string} references
+   * @property {string} references A reference table name
+   * @property {string} refPkDefColumns A columns in reference table
    * @property {boolean} [generateFK=true]
    * @property {boolean} [isDisabled=false]
    * @property {string} [deleteAction='NO_ACTION'] one of NO_ACTION, CASCADE, SET_NULL,  SET_DEFAULT
@@ -177,6 +184,7 @@ class TableDefinition {
     if (checkName) {
       idxIndex = _.findIndex(this.foreignKeys, { _upperName: obj._upperName })
     }
+    if (!obj.refPkDefColumns) obj.refPkDefColumns = 'ID'
     if (idxIndex !== -1) {
       this.foreignKeys[idxIndex] = obj
     } else {

@@ -1,0 +1,8 @@
+{
+ "isDefault": false,
+ "entity": "cdn_contact",
+ "formType": "vue",
+ "caption": "contact_title",
+ "description": "contact_title",
+ "formCode": "{\"fName\":\"cdn_contact-fm.vue\",\"origName\":\"cdn_contact-fm.vue\",\"ct\":\"script/x-vue\",\"size\":902,\"md5\":\"600bc80bba99aaa028539c45313e2b20\"}"
+}

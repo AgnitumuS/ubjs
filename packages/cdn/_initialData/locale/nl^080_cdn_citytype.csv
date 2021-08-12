@@ -1,0 +1,9 @@
+code;name
+smallcity;Stad (onder 50 duizend)
+middlecity;Stad (50-100 duizend)
+bigcity;Stad (100-250 duizend)
+verybigcity;Stad (250-500 duizend)
+extrabigcity;Stad (500 duziend - 1 mln.)
+millioncity;Stad (boven 1 mln.)
+townlikevillage;Stad (boven 2 duizend)
+village;Dorp (onder 2 duizend)

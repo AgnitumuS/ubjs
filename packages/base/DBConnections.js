@@ -125,7 +125,7 @@ class DBConnection {
   /**
    * Run parsed (all parameters are ?) SQL what expects result (select statement for example)
    * @param {string} sql
-   * @param {Array} params
+   * @param {Array} [params]
    * @returns {string}
    */
   runParsed (sql, params = []) {

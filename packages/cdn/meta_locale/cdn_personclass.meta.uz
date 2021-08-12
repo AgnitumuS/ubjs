@@ -1,0 +1,14 @@
+{
+  "caption": "Fiz.litz klassi",
+  "description": "Fiz.litz klassi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    }
+  ]
+}

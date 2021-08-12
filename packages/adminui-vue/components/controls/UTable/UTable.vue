@@ -19,7 +19,7 @@
             width: col.width && col.width + 'px',
             padding: col.padding && col.padding + 'px'
           }"
-          @click="$emit('click-head-cell', col)"
+          @click="$emit('click-head-cell', col, $event.target)"
         >
           <slot
             :name="`head_${col.id}`"
@@ -80,6 +80,9 @@
 </template>
 
 <script>
+/**
+ * Component that allows to display data in a tabular manner
+ */
 export default {
   name: 'UTable',
 
@@ -89,8 +92,7 @@ export default {
 
   props: {
     /**
-     * Array of objects which includes column settings.
-     * For detail info about column object look JSDoc type {UTableColumn}
+     * column settings. For details about column object see JSDoc type {UTableColumnSettings}
      */
     columns: {
       type: Array,
@@ -98,7 +100,7 @@ export default {
     },
 
     /**
-     * Id of column which will stack when we scroll table by horizontal.
+     * ID of the column what will be locked on the left side when table is scrolled horizontally
      */
     fixedColumnId: String,
 
@@ -111,9 +113,10 @@ export default {
     },
 
     /**
-     * Function that returns custom class names for a column assigning class names for every cell in column
+     * function that accept a column config as a parameter and returns a custom class names, what will be assigned to all column cells (<td>).
+     * Called once for each column.
      *
-     * @param {UTableColumn} column Current column
+     * @param {UTableColumn} column Configuration of a column
      */
     getColumnClass: {
       type: Function,
@@ -123,9 +126,9 @@ export default {
     },
 
     /**
-     * Function that returns custom class names for a row assigning class names for every row
+     * function that accept a row data as a parameter and returns a custom class names for row (<tr>)
      *
-     * @param {object} row Current row
+     * @param {object} row A table row data
      */
     getRowClass: {
       type: Function,
@@ -135,8 +138,9 @@ export default {
     },
 
     /**
-     * Function that returns custom class names for a cell
-     * !!WARNING!! Do not use complex calculations since the method is called for each cell separately
+     * function that accept a row data and column config as a parameters and returns custom class names for a cell
+     *
+     * **WARNING** Do not use complex calculations since the method is called for each cell separately
      *
      * @param {object} row Current row
      * @param {UTableColumn} column Current column
@@ -149,14 +153,12 @@ export default {
     },
 
     /**
-     * If set table will be have static height.
-     * Table container will be have own scroll and fixed header.
+     * sets fixed table height. If data not fits, scroll is appears
      */
     height: [Number, String],
 
     /**
-     * If set table will be have maxHeight.
-     * Table container will be have own scroll and fixed header.
+     * sets max table height. If data not fits, scroll is appears
      */
     maxHeight: [Number, String]
   },
@@ -300,86 +302,3 @@ export default {
   width: 100%;
 }
 </style>
-
-<docs>
-### Slots
-You can override values as named slots.
-In this case another columns will be shows as usual.
-Slot scope will pass `value`, `row`, and `column`
-Header cell also has format functions and scoped slots but it provides only `column` param.
-To set scoped slot for header cell just add prefix `head_` to column ID
-
-```vue
-<template>
-  <u-table
-    :items="currencies"
-    :columns="columns"
-  >
-    <template #head_code="{ column }">
-      <el-input
-        :value="column.label"
-      />
-    </template>
-
-    <template #code="{ value, row }">
-      <el-input
-        :value="value"
-        @input="changeCode({ ID: row.ID, value: $event })"
-      />
-    </template>
-  </u-table>
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        currencies: [{
-          ID: 1,
-          code: 'UAH',
-          caption: 'Hryvna',
-          country: 'Ukraine'
-        },{
-          ID: 2,
-          code: 'USD',
-          caption: 'Dollar',
-          country: 'USA'
-        },{
-          ID: 3,
-          code: 'EUR',
-          caption: 'Euro',
-          country: 'France'
-        },{
-          ID: 4,
-          code: 'JPY',
-          caption: 'Yen',
-          country: 'Japan'
-        },{
-          ID: 5,
-          code: 'PLN',
-          caption: 'Zloty',
-          country: 'Poland'
-        }],
-        columns: [{
-          id: 'code',
-          label: 'Code'
-        }, {
-          id: 'caption',
-          label: 'Caption'
-        }, {
-          id: 'country',
-          label: 'Country'
-        }]
-      }
-    },
-
-    methods: {
-      changeCode ({ ID, value }) {
-        const currency = this.currencies.find(c => c.ID === ID)
-
-        currency.code = value
-      }
-    }
-  }
-</script>
-```
-</docs>

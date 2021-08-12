@@ -40,6 +40,7 @@ module.exports = {
     const UDatePicker = require('../components/controls/UDatePicker.vue').default
     const UButtonGroup = require('../components/controls/UButtonGroup.vue').default
     const UAclRlsInput = require('../components/UAclRlsInput.vue').default
+    const UCrop = require('../components/controls/UCrop.vue').default
     Vue.component(UFormContainer.name, UFormContainer)
     Vue.component(USelectEntity.name, USelectEntity)
     Vue.component(USelectMany.name, USelectMany)
@@ -79,6 +80,7 @@ module.exports = {
     Vue.component(UDatePicker.name, UDatePicker)
     Vue.component(UButtonGroup.name, UButtonGroup)
     Vue.component(UAclRlsInput.name, UAclRlsInput)
+    Vue.component(UCrop.name, UCrop)
 
     const HoldFocus = require('../directives/HoldFocus')
     Vue.directive(HoldFocus.name, HoldFocus)

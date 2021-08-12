@@ -1,5 +1,7 @@
 const path = require('path')
 
+const FN_VALIDATION_RE = /^[\w\-. ]+$/
+
 /**
  * @classdesc
  * Abstract interface for Virtual store. Must be implemented in descendants.
@@ -18,11 +20,11 @@ const path = require('path')
 class BlobStoreCustom {
   /**
    * @param {Object} storeConfig
-   * @param {App} appInstance
+   * @param {ServerApp} appInstance
    * @param {UBSession} sessionInstance
    */
   constructor (storeConfig, appInstance, sessionInstance) {
-    /** @type {App} */
+    /** @type {ServerApp} */
     this.App = appInstance
     /** @type {UBSession} */
     this.Session = sessionInstance
@@ -54,7 +56,7 @@ class BlobStoreCustom {
    * @abstract
    * @param {BlobStoreRequest} request Request params
    * @param {UBEntityAttribute} attribute
-   * @param {ArrayBuffer} content
+   * @param {ArrayBuffer|THTTPRequest} content
    * @returns {BlobStoreItem}
    */
   saveContentToTempStore (request, attribute, content) {}
@@ -73,22 +75,23 @@ class BlobStoreCustom {
    * @param {BlobStoreRequest} request
    * @param {BlobStoreItem} blobInfo JSON retrieved from a DB
    * @param {Object} [options]
-   * @param {String|Null} [options.encoding] Default to 'bin'. Possible values: 'bin'|'ascii'|'utf-8'
-   *   If `undefined` UB will send query to entity anf get it from DB.
-   *   At last one parameter {store: storeName} should be defined to prevent loading actual JSON from DB
-   * @returns {String|ArrayBuffer}
+   * @param {String|Null} [options.encoding] Possible values:
+   *   'bin' 'ascii' 'binary' 'hex' ucs2/ucs-2/utf16le/utf-16le utf8/utf-8
+   *   if `null` will return {@link Buffer}, if `bin` - ArrayBuffer
+   * @returns {String|Buffer|ArrayBuffer|null}
    */
   getContent (request, blobInfo, options) {}
   /**
-   * Fill HTTP response for getDocument request
+   * Fill HTTP response for getDocument request. Sets resp to 404 status if content not found.
    * @abstract
    * @param {BlobStoreRequest} requestParams
    * @param {BlobStoreItem} blobInfo
    * @param {THTTPRequest} req
    * @param {THTTPResponse} resp
+   * @param {boolean} [preventChangeRespOnError=false] If `true` - prevents sets resp status code - just returns false on error
    * @return {Boolean}
    */
-  fillResponse (requestParams, blobInfo, req, resp) { }
+  fillResponse (requestParams, blobInfo, req, resp,preventChangeRespOnError) { }
   /**
    * Move content defined by `dirtyItem` from temporary to permanent store.
    * Return a new attribute content which describe a place of BLOB in permanent store
@@ -97,7 +100,7 @@ class BlobStoreCustom {
    * @param {Number} ID
    * @param {BlobStoreItem} dirtyItem
    * @param {number} newRevision
-   * @return {BlobStoreItem}
+   * @return {BlobStoreItem|null}
    */
   persist (attribute, ID, dirtyItem, newRevision) { }
 
@@ -130,6 +133,20 @@ class BlobStoreCustom {
   getTempFileName (request) {
     // important to use Session.userID. See UB-617
     return path.join(this.tempFolder, `${request.entity}_${request.attribute}_${request.ID}_${this.Session.userID}`)
+  }
+
+  /**
+   * validate file name contains only alphanumeric characters, -, _, . and space and not contains ..
+   * @param fn
+   * @throws throws in file name is not valid
+   */
+  static validateFileName (fn) {
+    if (!FN_VALIDATION_RE.test(fn) || (fn.indexOf('..') !== -1)) {
+      const e = new Error(`Invalid file name '${fn}' for BLOB store`)
+      // emulate a ESecurityException
+      e.errorNumber = process.binding('ub_app')['UBEXC_ESECURITY_EXCEPTION']
+      throw e
+    }
   }
 }
 

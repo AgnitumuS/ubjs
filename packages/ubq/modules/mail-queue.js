@@ -4,17 +4,20 @@
  * @module mail-queue
  * @memberOf module:@unitybase/ubq
  */
-const UB = require('@unitybase/ub')
-const App = UB.App
+const { App, DataStore } = require('@unitybase/ub')
 const UBMail = require('@unitybase/mailer')
+
 let ubqMessagesStore
+let ubqAttachmentsStore
 const MAILER_ENABLED = App.serverConfig.application.customSettings && App.serverConfig.application.customSettings.mailerConfig
+
 /**
  * @typedef {Object} mailAttachmentReference
- * @property {String} entity The entity code where data is stored
- * @property {string} attribute Code of attribute with type `Document` from antity
- * @property {number} id Row ID
- * @property {string} atachName Name of attachment (as it will be displayed in EMail)
+ * @property {String} [entity] The entity code where data is stored
+ * @property {string} [attribute] Code of attribute with type `Document` from entity
+ * @property {number} [id] Row ID
+ * @property {string} attachName Name of attachment (as it will be displayed in EMail)
+ * @property {string} [data] content
  */
 
 /**
@@ -40,11 +43,39 @@ module.exports.queueMail = function (config) {
   }
   if (config.attaches) console.warn('Invalid parameter "attaches" for queueMail. Use "attachments" instead')
   if (config.attachments) {
-    msgCmd.attaches = config.attachments
+    msgCmd.attaches = config.attachments.map(attachInfo => {
+      if (attachInfo.data) {
+        if (!ubqAttachmentsStore) {
+          ubqAttachmentsStore = DataStore('ubq_mailAttachment')
+        }
+        const ID = ubqAttachmentsStore.generateID()
+        const blobAttr = App.blobStores.putContent({
+          ID,
+          entity: 'ubq_mailAttachment',
+          attribute: 'attachment',
+          fileName: attachInfo.attachName
+        }, attachInfo.data)
+        ubqAttachmentsStore.insert({
+          execParams: {
+            ID,
+            attachment: JSON.stringify(blobAttr)
+          }
+        })
+
+        return {
+          entity: 'ubq_mailAttachment',
+          attribute: 'attachment',
+          id: ID,
+          attachName: attachInfo.attachName
+        }
+      }
+
+      return attachInfo
+    })
   }
   // create store here - in case of initialization entity ubq_messages may not exists
-  if (!ubqMessagesStore) ubqMessagesStore = UB.DataStore('ubq_messages')
-  ubqMessagesStore.run('insert', {
+  if (!ubqMessagesStore) ubqMessagesStore = DataStore('ubq_messages')
+  ubqMessagesStore.insert({
     execParams: {
       queueCode: 'mail',
       msgCmd: JSON.stringify(msgCmd),

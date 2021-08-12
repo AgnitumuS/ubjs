@@ -1,0 +1,5 @@
+{
+ "name": "HTML to PDF test",
+ "template": "tst_html_to_pdf.template",
+ "code": "tst_html_to_pdf.js"
+}

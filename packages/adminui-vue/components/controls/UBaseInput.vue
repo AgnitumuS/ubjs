@@ -8,18 +8,22 @@
     v-bind="$attrs"
     @[numberEvent]="rounding"
   >
+    <!-- @slot content as Input prefix -->
     <slot
       slot="prefix"
       name="prefix"
     />
+    <!-- @slot content as Input suffix -->
     <slot
       slot="suffix"
       name="suffix"
     />
+    <!-- @slot content to prepend before Input -->
     <slot
       slot="prepend"
       name="prepend"
     />
+    <!-- @slot content to append after Input -->
     <slot
       slot="append"
       name="append"
@@ -29,9 +33,8 @@
 
 <script>
 /**
-* when using type="number", helps to establish the precision of rounding and step
-*/
-
+ * Input. For inputs of type="number", rounding precision and changing step (for up/down arrows) can be specified
+ */
 export default {
   name: 'UBaseInput',
 
@@ -48,7 +51,7 @@ export default {
     },
 
     /**
-     * a stepping interval to use when using up and down arrows to adjust the value.
+     * a stepping interval to adjust the value using up/down keys
      * will be ignored if type !== 'number'
      */
     step: {
@@ -57,7 +60,7 @@ export default {
     },
 
     /**
-     * rounding precision. Applied in case `type !== 'number'` and `precision !== undefined`
+     * rounding precision. Applied in case `type === 'number'` and `precision !== undefined`
      */
     precision: {
       type: Number,
@@ -65,7 +68,7 @@ export default {
     },
 
     /**
-     * input type
+     * input type. See [input types on MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types)
      */
     type: {
       type: String,

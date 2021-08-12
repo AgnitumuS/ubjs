@@ -15,6 +15,165 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.20] - 2021-08-09
+## [5.20.19] - 2021-08-04
+### Added
+ - Dutch (nl) localization
+
+### Changed
+ - forcibly disabled HTML page translator (Google Translate) for adminUI
+
+### Removed
+ - i18n for "serverIsBusy" (Server currently unavailable) is moved into ub-pub package
+
+## [5.20.18] - 2021-07-18
+### Fixed
+ - `EntityGridPanel:` prevent error on grid refresh, when panel already closed [UBDF-13979] 
+
+## [5.20.17] - 2021-07-08
+## [5.20.16] - 2021-06-14
+### Added
+ - `UBBoxSelect`: added the ability to display entries that have been deleted or closed by the `History` mixin
+
+## [5.20.15] - 2021-05-24
+## [5.20.14] - 2021-05-13
+### Added
+- `UBPlanFactContainer`: added support for data type` Many`
+
+## [5.20.13] - 2021-05-07
+### Changed
+ - i18n for current_[week|month|year] changed "This week" -> "Current week", "За цей тиждень" -> "Поточний тиждень" etc  
+
+### Fixed
+ - fix static file access error for `models/adminui-pub/themes/undefined/ubimages/scan-to-pdf.png`;
+   `UBGrayTheme` should be used as a default instead of undefined
+
+## [5.20.12] - 2021-05-05
+### Fixed
+ - Sidebar: prevent show en error in case user click on empty folder or on shortcut with empty command code,
+   write error into console instead [LDOC-1434].
+
+## [5.20.11] - 2021-04-24
+## [5.20.10] - 2021-04-23
+## [5.20.9] - 2021-04-22
+## [5.20.8] - 2021-04-19
+## [5.20.7] - 2021-04-19
+### Changed
+ - `UB.core.UBUtil.getEntityAttributesTreeData` HTML for attribute label improved for better UX 
+
+## [5.20.6] - 2021-04-16
+## [5.20.5] - 2021-04-13
+## [5.20.4] - 2021-04-02
+## [5.20.3] - 2021-04-01
+## [5.20.2] - 2021-03-30
+## [5.20.1] - 2021-03-29
+## [5.20.0] - 2021-03-25
+### Changed
+ - migrate build to webpack5
+ - loading of TinyMCE in production build implemented using webpack5 dynamic import feature
+
+## [5.19.10] - 2021-03-23
+## [5.19.9] - 2021-03-17
+### Fixed
+ - `UB.core.UBUtil.getNameMd5` uses `JSON.stringify` for tail parameters before calculation of MD5 sum.
+   This fix ExtJS grid configuration save/load in case columns config is an array of object 
+
+## [5.19.8] - 2021-03-16
+## [5.19.7] - 2021-03-15
+## [5.19.6] - 2021-03-15
+### Fixed
+ - use the same field list for `ubm_form` and `ubm_enum` in adminui-pub and adminui-vue
+
+## [5.19.5] - 2021-03-03
+### Added
+- Checking `uiSettings.adminUI.disableScanner` config property in `BasePanel`.
+  If it's set as true, then scan button would not show in form
+
+### Changed
+ - client-side locales reformatted to use a json 
+
+## [5.19.4] - 2021-02-25
+### Changed
+- `showAuditTrail` select data by **parentEntityInfo_id** or **entityinfo_id** attributes instead of **parentEntityInfo_id**.
+  Auditing on child records will now appear in the base entity audit form and the parent entity audit form.
+
+## [5.19.3] - 2021-02-10
+## [5.19.2] - 2021-02-08
+### Changed
+ - `UBBaseComboBox` - actions `EditItem` and `AddNewItem` use parent modal state (`this.up('basepanel').isModal`) to show item form.
+   If parent is inside a modal dialog - form shows as modal, else - in the new tab.
+
+   This behavior can be disabled by adding `appConfig.uiSettings.adminUI.forceModalsForEditForms: true` to ubConfig.
+
+## [5.19.1] - 2021-02-03
+## [5.19.0] - 2021-02-02
+## [5.15.1] - 2021-01-30
+### Fixed
+ - for dirty documents `UBApp.downloadDocument` adds a `fileName` parameter to URL, so server can add a correct `Content-Type` header
+ - PDF file are previewed correctly (fixed in @unitybase/blob-stores@5.6.0)
+
+## [5.15.0] - 2021-01-28
+### Added
+ - new method `UBApp.downloadDocument` - Download a document from BLOB store directly into a file without
+   loading it into memory as with `getDocument`. Can be used to download a huge documents what
+   do not fit in the browser memory.  
+
+### Changed
+ - `Download` action of BasePanel `Document` menu uses new method `UBApp.downloadDocument` to save a document
+   to the file system without loading it into browser memory.
+
+### Fixed
+ - set default width for multi-filter combobox
+
+## [5.14.5] - 2021-01-26
+### Added
+- `BasePanel` uses `AsyncConnection.prototype.emitEntityChanged` to emit `${entityCode}:changed` event.
+
+## [5.14.4] - 2021-01-19
+## [5.14.3] - 2021-01-17
+## [5.14.2] - 2021-01-11
+## [5.14.1] - 2020-12-30
+## [5.14.0] - 2020-12-28
+### Added
+ - **BREAKING** EntityGridPanel lookup column max row count is limited to `UB.LIMITS.LIMITS.lookupMaxRows` (10000).
+   This prevents select for huge entities what can cause an out of memory on the server side. 
+   
+## [5.13.65] - 2020-12-22
+## [5.13.64] - 2020-12-21
+### Fixed
+ - fixed details calculation for UBDetailTree (should be [] since entityName is undefined)
+
+## [5.13.63] - 2020-12-20
+### Added
+ - support for `attribute.customSettings.hiddenInDetails` is added while building `Details` menu
+   by using `UBEntity.prototype.getDetailsForUI`
+
+### Removed
+ - 21 IE8 specific CSS rules is are removed from UBGrayTheme for old adminUI
+
+### Fixed
+ - removed `>` sign from the left side of `Details` menu and `Details` menu items
+
+## [5.13.62] - 2020-12-17
+## [5.13.61] - 2020-12-16
+### Added
+ - UI Tag tracking for all forms and ExtJS tables what mounts as tab:
+   - `$App.doCommand` generate a UI Tag for and assign it to uiTag property of central panel tabs
+   - on tab activation `beforetabchange` event handler sets a `connection.setUiTag(tab.uiTag)`
+   - `uitag=${uiTag}` is added to all `ubql` requests URL, so in the server logs the source of UBQL can be tracked   
+
+## [5.13.60] - 2020-12-14
+## [5.13.59] - 2020-12-09
+## [5.13.58] - 2020-12-09
+### Removed
+ - i18n for `info`, `error`, `detail`, `login` and languages abbr: uk, ru, etc. moved into ub-pub to allow use it on the login form
+
+## [5.13.57] - 2020-12-02
+### Added
+ - UBComboBox: new property `allowFilteredOut` (true by default).
+   If sets to false - do not try to load a filtered out row (probably deleted or historically not actual)
+   it with strikethrough. For UB 1.12 compatibility can be sets to `false`.  
+
 ## [5.13.56] - 2020-11-25
 ## [5.13.55] - 2020-11-23
 ## [5.13.54] - 2020-11-20
@@ -100,7 +259,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.13.23] - 2020-07-01
 ## [5.13.22] - 2020-06-30
 ### Added
-  - `UB.core.UBStoreManager.updateNavshortcutCacheForItem` method to refresh a navshortcut command cache for specific item
+  - `UB.core.UBStoreManager.updateNavshortcutCacheForItem` method to refresh a nav-shortcut command cache for specific item
 
 ## [5.13.21] - 2020-06-24
 ## [5.13.20] - 2020-06-21
@@ -135,7 +294,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UBCommand.showList`: **detailAttribute** should be added to **fieldList** as object with **visibility:false**, 
    to prevent lookup queries for this field
  - icon class for `MenuItem.Details`. Changed from **u-icon-arrow-down** to **u-icon-arrow-right** 
- - `ubfieldset`: use icon class `fa-angle-down|right` for expand button - u-icon-dows too large there
+ - `ubfieldset`: use icon class `fa-angle-down|right` for expand a button - `u-icon-dows` too large there
 
 ## [5.13.11] - 2020-05-17
 ### Changed
@@ -173,7 +332,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - rename i18n key `vseDeystviya` -> `allActions` 
 
 ### Fixed
- - `UBCommand.showForm` will accept `instanceId` parameter in case it defined (preffer over `instanceID`). This fix opening form from `magic links`
+ - `UBCommand.showForm` will accept `instanceId` parameter in case it defined (prefer over `instanceID`). This fix opening form from `magic links`
 
 ## [5.13.4] - 2020-03-20
 ## [5.13.3] - 2020-03-17
@@ -184,7 +343,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.13.2] - 2020-03-09
 ### Added
 - fake parameter **_ rc=documentRevision** into `getDocument` request for `ubDocument` component
-  The reason is to prevent unexpected content caching by proxies in case content changed by server.
+  The reason is to prevent unexpected content caching by proxies in case content changed by the server.
   Used by "caching servers" in multi-region UB deployment 
 
 ## [5.13.1] - 2020-03-04
@@ -199,7 +358,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.12.33] - 2020-02-23
 ### Changed
  - in case server require user to change password during re-logon default behavior changed to reload app
- and point user into login page. Note: this situation should not happens in real life scenario's 
+ and point user into login page. Note: this situation should not happen in real life scenario's 
  
 ### Removed
  - obsolete `UB.view.cryptoUI.ReadPK`, `UB.view.cryptoUI.SelectCert` is removed. Private key reading is implemented inside 
@@ -215,8 +374,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.12.31] - 2020-02-13
 ### Fixed
  - ExtJS based stores will smart merge orderList passed from Operations (EntityGridPanel for example) and
- original request order list. In case order by attribute already in serverRequest.orderList - override it.
- This prevent multiple orderBy on the same columns what cause an DB exception at last on MS SQL
+ original request order list. In case order by the attribute already in serverRequest.orderList - override it.
+ This prevents multiple orderBy on the same columns what cause an DB exception at last on MS SQL
 
 ## [5.12.30] - 2020-02-10
 ## [5.12.29] - 2020-02-08
@@ -296,8 +455,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
  - `UBConfig` property `uiSettings.adminUI.useVueTables` which replace all ext grids showList by UTableEntity component
- - `$App.doCommand({ cmdType: 'showList' })` new parameter `renderer` which override `uiSettings.adminUI.useVueTables` option for current grid. 
-   For a case when you need replace all grids to new, but want to set some grids renderer as ext  
+ - `$App.doCommand({ cmdType: 'showList' })` new parameter `renderer` which override `uiSettings.adminUI.useVueTables`
+   option for a current grid. For a case when you need replace all grids to new, but want to set some grids renderer as ext  
 
 ## [5.12.5] - 2019-11-01
 ### Added
@@ -310,7 +469,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [5.12.1] - 2019-10-07
 ### Changed
- - green spinner on startup - symbolizes only evergreen browser are supported by adminUI :)
+ - green spinner on a startup - symbolizes only evergreen browser are supported by adminUI :)
   
 ## [5.12.0] - 2019-10-07
 ### Changed
@@ -371,7 +530,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.10.16] - 2019-08-22
 ### Fixed
  - silenceKerberosLogin now handled by adminui-pub instead of AsyncConnection. This fix [UBDF-9903] && #64
- - allow to call `EntityGridPanel.doShowDetail` for instances of EntityGridPanel with stateId and title `undefined` 
+ - allow calling `EntityGridPanel.doShowDetail` for instances of EntityGridPanel with stateId and title `undefined` 
  - if `formCode` passed to `$App.doCommand` is a function then tabId algorithm will use word 'func', instead of function source code
 
 ## [5.10.15] - 2019-08-19
@@ -380,7 +539,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
  - new method `$App.generateTabId()` for tabId generation
- - $App.generateTabId() will include a formCode into tabId - this allow to open several different forms for the same instance
+ - $App.generateTabId() will include a formCode into tabId - this allows to open several different forms for the same instance
     
 ## [5.10.14] - 2019-08-14
 ### Changed
@@ -389,7 +548,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
  - in case localStorage key UB.LDS_KEYS.PREVENT_CALL_LOGOUT_ON_UNLOAD is set to `"true"` `document.onbeforeunload` handler
- don't call `$App.logout`. This solve unexpected logout in case document opened using WebDav
+ don't call `$App.logout`. This solves unexpected logout in case document opened using WebDav
    
 ## [5.10.11] - 2019-08-10
 ### Added
@@ -450,7 +609,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - **BREAKING** `UBStore.load` will return a native Promise instead of Q.Promise from bluebird-q
  - `UBStore.reload` will return a native Promise instead of Q.Promise. **WARNING** `UBStore.reload` clears an entity cache
  and should be used VERY RARELY. For example to refresh store because of changes in ubRequest `store.load()` is enough.
- Even if store already loaded it will be refreshed during load() call.
+ Even in case store is already loaded it will be refreshed during load() call.
 
 ### Added
  - new key in ubConfig `uiSettings.adminUI.pdfViewer.uriSuffix` - value passed directly to the PDF viewer URL.
@@ -470,7 +629,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [5.8.24] - 2019-06-19
 ### Changed
- - changed sidebar collapsed width from 76px to 50px
+ - sidebar collapsed width changed from 76px to 50px
 
 ## [5.8.23] - 2019-06-18
 ### Changed
@@ -510,7 +669,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - enum combobox will use UBQLv2 if accessible
  - UBProxy will skip disabled store filters while building UBQL from filter list.
  Previous implementation adds wrong empty filter in this case
- - in `UBDetailTree.onDeleteItem` replaced confirm dialog **Ext.Msg.confirm(...)** to **$App.dialogYesNo(...)** for compatibility with `@unitybase/adminui-vue` 
+ - in `UBDetailTree.onDeleteItem` confirm dialog **Ext.Msg.confirm(...)** is replased to **$App.dialogYesNo(...)**
+   for compatibility with `@unitybase/adminui-vue` 
 
 ### Changed
  - change zIndex for Ext forms only in case `appConfig.uiSettings.adminUI.vueAutoForms` is set to `true`.
@@ -614,7 +774,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [5.6.25] - 2019-02-13
 ### Changed
-- ubdetailgrid with RowEditing plugin : Changed data validation on the event 'validateedit'
+- `ubdetailgrid` with RowEditing plugin : Changed data validation on the event `validateedit`
 
 ## [5.6.24] - 2019-01-30
 ### Fixed
@@ -647,7 +807,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
   - if several default (isDefault=true) forms exists for an entity
   `UBFormLoader.getFormByEntity` will return a form from model with the biggest model order.
-  This allow to override default forms in descending models [unitybase/ubjs#30]  
+  This allows to override default forms in descending models [unitybase/ubjs#30]  
 
 ### Fixed
   - allow negative values for fields with dataType `currency` or `float`
@@ -693,7 +853,7 @@ $App.doCommand({
 
 ### Added
  - add UbExtension.crx to the adminui-pub/ub-extension folder.
- Used by client who do not have access to the internet but need to install extension into Google Chrome.
+ Used by a client who do not have access to the internet but need to install extension into Google Chrome.
 
 ### Fixed
  - add polyfill for Promise unhandledrejection event (for FireFox browser).
@@ -732,7 +892,7 @@ $App.doCommand({
 
 ### Fixed
  - grid export to HTML - empty (null) date now exported as empty cell instead of 1970 year
- - cached entity filtration by boolean attribute from EntityGridPanel filter widget:
+ - cached entity filtration by a boolean attribute from EntityGridPanel filter widget:
  filtration value should be `true/false` instead `1/0`
  
 ## [5.5.8] - 2018-09-26
@@ -741,7 +901,7 @@ $App.doCommand({
  
 ## [5.5.7] - 2018-09-22
 ### Added
- - `UploadFileAjax` component can optionally limits file extensions allowed for selection
+ - `UploadFileAjax` component can optionally limit file extensions allowed for selection
  ```
 Ext.create('UB.view.UploadFileAjax', {
   ...

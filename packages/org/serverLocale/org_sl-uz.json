@@ -1,0 +1,6 @@
+{
+  "errUserWithMultiplePermanentStaffUnitsNotAllowed": "<<< Tizimga kirish mumkin emas, chunki xodimda bir nechta doimiy topshiriqlar mavjud. Iltimos, tizim ma'muringizga murojaat qiling. >>>",
+  "notAssigned": "Belgilanmagan",
+  "errAlreadyAssigned": "<<< Ushbu shtat birligi allaqachon tayinlangan >>>",
+  "AccessDeny": "Kirish taqiqlangan"
+}

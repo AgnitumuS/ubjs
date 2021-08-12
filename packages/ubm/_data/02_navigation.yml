@@ -1,0 +1,151 @@
+$context:
+  type: navigation
+
+adm_desktop:
+  $amendment: true
+  items:
+  - adm_folder_UI:
+      caption:
+        en: UI
+        ka: მომხმარებლის ინტერფეისი
+        ru: Интерфейс
+        tg: Интерфейс
+        uk: Інтерфейс
+        nl: Gebruikersinterface
+      iconCls: u-icon-image
+      displayOrder: 30
+      items:
+      - ubm_enum:
+          caption:
+            en: Enumerations
+            ka: რიცხვები
+            ru: Перечисления
+            tg: Номгӯҳо
+            uk: Переліки
+            nl: Opsommingen
+          displayOrder: 10
+          showList:
+            renderer: vue
+            entity: ubm_enum
+            fieldList:
+            - eGroup
+            - sortOrder
+            - code
+            - shortName
+            - name
+            orderList:
+              eGroup:
+                expression: eGroup
+                order: asc
+              sortOrder:
+                expression: sortOrder
+                order: asc
+      - ubm_desktop:
+          caption:
+            en: Desktops
+            ka: სამუშაო ეკრანი
+            ru: Рабочие столы
+            tg: Мизҳои корӣ
+            uk: Робочі столи
+            nl: Desktops
+          displayOrder: 20
+          showList:
+            renderer: vue
+            entity: ubm_desktop
+            fieldList:
+            - caption
+            - code
+            - description
+            - iconCls
+            - url
+            - isDefault
+            - displayOrder
+      - ubm_navshortcut:
+          caption:
+            en: Shortcuts
+            ka: მალხმობები
+            ru: Ярлыки
+            tg: Тамға
+            uk: Ярлики
+            nl: Sneltoetsen
+          displayOrder: 30
+          showList:
+            renderer: vue
+            entity: ubm_navshortcut
+            fieldList:
+            - desktopID
+            - parentID
+            - code
+            - isFolder
+            - caption
+            - inWindow
+            - isCollapsed
+            - displayOrder
+            - iconCls
+            - description
+            - keywords
+      - ubm_form:
+          caption:
+            en: Forms
+            ka: ფორმები
+            ru: Формы
+            tg: Шаклҳо
+            uk: Форми
+            nl: Vormen
+          displayOrder: 40
+          showList:
+            renderer: vue
+            entity: ubm_form
+            fieldList:
+            - entity
+            - code
+            - description
+            - caption
+            - formType
+      - ubm_query:
+          caption:
+            en: Queries
+            ka: შეკითხვები
+            ru: Запросы к данным
+            tg: Саволҳо
+            uk: Запити даних
+            nl: Zoekopdrachten
+          displayOrder: 50
+          showList:
+            renderer: vue
+            entity: ubm_query
+            fieldList:
+            - code
+            - name
+            - type
+      - ubm_sysdictionary:
+          caption:
+            en: System Dictionaries
+            ka: სისტემის ლექსიკონები
+            ru: Системние справочники
+            tg: Луғатҳои системавӣ
+            uk: Системні довідники
+            nl: System Woordenboeken
+          displayOrder: 60
+          showList:
+            renderer: vue
+            entity: ubm_sysdictionary
+            fieldList:
+            - code
+            - name
+      - ubm_diagram:
+          caption:
+            en: ER diagrams
+            ka: პიროვნული ურთიერთობის დიაგრამები
+            ru: ER диаграммы
+            tg: ER диаграммаҳо
+            uk: ER діаграми
+            nl: ER-diagrammen
+          displayOrder: 70
+          showList:
+            renderer: vue
+            entity: ubm_diagram
+            fieldList:
+            - ID
+            - model
+            - name

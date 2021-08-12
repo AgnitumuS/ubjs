@@ -84,7 +84,7 @@ export default {
       if (!this.simpleCertAuth) { // certificate + user name + pwd - only one project use it
         this.$refs.ubAuthForm.validate((valid) => {
           if (valid) {
-            this.resolveAuth({ authSchema: 'CERT2', login: this.authData.login, password: this.authData.password })
+            this.resolveAuth({ authSchema: 'CERT2', login: this.authData.login.trim(), password: this.authData.password })
             if (!this.$UB.connection.appConfig.uiSettings.adminUI.defaultPasswordForDebugOnly) {
               this.authData.password = ''
             }

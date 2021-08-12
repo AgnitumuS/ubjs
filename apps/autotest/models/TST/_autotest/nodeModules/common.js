@@ -19,8 +19,8 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var path = require('path')
-var assert = require('assert')
+const path = require('path')
+const assert = require('assert')
 
 exports.testDir = path.dirname(__filename)
 exports.fixturesDir = path.join(exports.testDir, 'fixtures')
@@ -34,26 +34,26 @@ if (process.platform === 'win32') {
   exports.PIPE = exports.tmpDir + '/test.sock'
 }
 
-var util = require('util')
-for (var i in util) exports[i] = util[i]
+const util = require('util')
+for (const i in util) exports[i] = util[i]
 // for (var i in exports) global[i] = exports[i];
 
 function protoCtrChain (o) {
-  var result = []
+  const result = []
   for (; o; o = o.__proto__) { result.push(o.constructor) }
   return result.join()
 }
 
 exports.indirectInstanceOf = function (obj, cls) {
   if (obj instanceof cls) { return true }
-  var clsChain = protoCtrChain(cls.prototype)
-  var objChain = protoCtrChain(obj)
+  const clsChain = protoCtrChain(cls.prototype)
+  const objChain = protoCtrChain(obj)
   return objChain.slice(-clsChain.length) === clsChain
 }
 
 exports.ddCommand = function (filename, kilobytes) {
   if (process.platform === 'win32') {
-    var p = path.resolve(exports.fixturesDir, 'create-file.js')
+    const p = path.resolve(exports.fixturesDir, 'create-file.js')
     return '"' + process.argv[0] + '" "' + p + '" "' +
            filename + '" ' + (kilobytes * 1024)
   } else {
@@ -62,7 +62,7 @@ exports.ddCommand = function (filename, kilobytes) {
 }
 
 exports.spawnCat = function (options) {
-  var spawn = require('child_process').spawn
+  const spawn = require('child_process').spawn
 
   if (process.platform === 'win32') {
     return spawn('more', [], options)
@@ -72,7 +72,7 @@ exports.spawnCat = function (options) {
 }
 
 exports.spawnPwd = function (options) {
-  var spawn = require('child_process').spawn
+  const spawn = require('child_process').spawn
 
   if (process.platform === 'win32') {
     return spawn('cmd.exe', ['/c', 'cd'], options)
@@ -86,14 +86,14 @@ exports.globalCheck = true
 
 process.on('exit', function () {
   if (!exports.globalCheck) return
-  var knownGlobals = [/* setTimeout,
+  const knownGlobals = [/* setTimeout,
                       setInterval,
                       setImmediate,
                       clearTimeout,
                       clearInterval,
                       clearImmediate, */
     console,
-                      // Buffer,
+    // Buffer,
     process,
     global
   ]
@@ -104,15 +104,16 @@ process.on('exit', function () {
   if (global.__module) { // for a ub -f mode
     knownGlobals.push(__module)
   }
-  if (global.UB) {
-    knownGlobals.push(UB)
+  if (global.__UB_int) {
+    // knownGlobals.push(UB)
+    knownGlobals.push(__UB_int)
     knownGlobals.push(Buffer)
     knownGlobals.push(setTimeout)
     knownGlobals.push(setInterval)
     knownGlobals.push(setImmediate)
     knownGlobals.push(clearTimeout)
     knownGlobals.push(clearInterval)
-// todo
+    // todo
     knownGlobals.push(_timerLoop)
 
     knownGlobals.push(id)
@@ -121,11 +122,11 @@ process.on('exit', function () {
     knownGlobals.push(filename)
     knownGlobals.push(loaded)
     knownGlobals.push(children)
-    //knownGlobals.push(paths)
-// TODO: remove in 1.9 require need
+    // knownGlobals.push(paths)
+    // TODO: remove in 1.9 require need
     knownGlobals.push(toLog)
     knownGlobals.push(objectToJSON)
-    //knownGlobals.push(readDir)
+    // knownGlobals.push(readDir)
     knownGlobals.push(relToAbs)
     knownGlobals.push(copyFile)
     knownGlobals.push(sleep)
@@ -182,10 +183,10 @@ process.on('exit', function () {
   knownGlobals.push(_defaultLang)
   knownGlobals.push(_collator)
 
-  for (var x in global) {
-    var found = false
+  for (const x in global) {
+    let found = false
     if (x === 'exports' || x === 'require') continue
-    for (var y in knownGlobals) {
+    for (const y in knownGlobals) {
       if (global[x] === knownGlobals[y]) {
         found = true
         break
@@ -193,18 +194,18 @@ process.on('exit', function () {
     }
 
     if (!found) {
-      console.error('Unknown global: %s %o', x, global[x])
+      console.error(`Unknown global: '${x}'`, 'with value', global[x])
       assert.ok(false, 'Unknown global found')
     }
   }
 })
 
-var mustCallChecks = []
+const mustCallChecks = []
 
 function runCallChecks (exitCode) {
   if (exitCode !== 0) return
 
-  var failed = mustCallChecks.filter(function (context) {
+  const failed = mustCallChecks.filter(function (context) {
     return context.actual !== context.expected
   })
 
@@ -222,7 +223,7 @@ function runCallChecks (exitCode) {
 exports.mustCall = function (fn, expected) {
   if (typeof expected !== 'number') expected = 1
 
-  var context = {
+  const context = {
     expected: expected,
     actual: 0,
     stack: (new Error()).stack,
@@ -266,54 +267,54 @@ exports.skip = function (msg) {
 }
 
 // Useful for testing expected internal/error objects
-exports.expectsError = function expectsError(fn, settings, exact) {
+exports.expectsError = function expectsError (fn, settings, exact) {
   if (typeof fn !== 'function') {
-    exact = settings;
-    settings = fn;
-    fn = undefined;
+    exact = settings
+    settings = fn
+    fn = undefined
   }
-  function innerFn(error) {
-    assert.strictEqual(error.code, settings.code);
+  function innerFn (error) {
+    assert.strictEqual(error.code, settings.code)
     if ('type' in settings) {
-      const type = settings.type;
-      if (type !== Error && type !== TypeError && !Error.isPrototypeOf(type)) { //SyNode TypeError
-        throw new TypeError('`settings.type` must inherit from `Error`');
+      const type = settings.type
+      if (type !== Error && type !== TypeError && !Error.isPrototypeOf(type)) { // SyNode TypeError
+        throw new TypeError('`settings.type` must inherit from `Error`')
       }
       assert(error instanceof type,
-        `${error.name} is not instance of ${type.name}`);
-      let typeName = error.constructor.name;
+        `${error.name} is not instance of ${type.name}`)
+      let typeName = error.constructor.name
       if (typeName === 'NodeError' && type.name !== 'NodeError') {
-        typeName = Object.getPrototypeOf(error.constructor).name;
+        typeName = Object.getPrototypeOf(error.constructor).name
       }
-      assert.strictEqual(typeName, type.name);
+      assert.strictEqual(typeName, type.name)
     }
     if ('message' in settings) {
-      const message = settings.message;
+      const message = settings.message
       if (typeof message === 'string') {
-        assert.strictEqual(error.message, message);
+        assert.strictEqual(error.message, message)
       } else {
         assert(message.test(error.message),
-          `${error.message} does not match ${message}`);
+          `${error.message} does not match ${message}`)
       }
     }
     if ('name' in settings) {
-      assert.strictEqual(error.name, settings.name);
+      assert.strictEqual(error.name, settings.name)
     }
     if (error.constructor.name === 'AssertionError') {
       ['generatedMessage', 'actual', 'expected', 'operator'].forEach((key) => {
         if (key in settings) {
-          const actual = error[key];
-          const expected = settings[key];
+          const actual = error[key]
+          const expected = settings[key]
           assert.strictEqual(actual, expected,
-            `${key}: expected ${expected}, not ${actual}`);
+            `${key}: expected ${expected}, not ${actual}`)
         }
-      });
+      })
     }
-    return true;
+    return true
   }
   if (fn) {
-    assert.throws(fn, innerFn);
-    return;
+    assert.throws(fn, innerFn)
+    return
   }
-  return exports.mustCall(innerFn, exact);
-};
+  return exports.mustCall(innerFn, exact)
+}

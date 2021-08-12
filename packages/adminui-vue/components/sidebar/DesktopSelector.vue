@@ -167,15 +167,6 @@ export default {
     padding: 12px 0;
   }
 
-  .ub-sidebar__main-menu {
-    border-right: 0;
-    margin: 12px auto;
-    margin-top: 0;
-    width: 100%;
-    flex-grow: 1;
-    overflow-y: auto;
-  }
-
   .desktop-select-button {
     color: hsl(var(--hs-text), var(--l-text-inverse));
     font-size: 14px;

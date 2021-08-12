@@ -65,7 +65,10 @@
           </u-form-row>
 
           <u-form-row :label="$ut('desktopService.UBScan.CurrentScaner.AllowAddPages')">
-            <el-checkbox v-model="AllowAddPages" />
+            <el-checkbox
+              v-model="AllowAddPages"
+              :disabled="outputFormat === 'JPEG'"
+            />
           </u-form-row>
 
           <u-form-row :label="$ut('desktopService.UBScan.CurrentScaner.UseFeeder')">
@@ -78,6 +81,7 @@
               :key="value"
               v-model="outputFormat"
               :label="value"
+              :disabled="value === 'JPEG' && AllowAddPages === true"
             >
               {{ label }}
             </el-radio>
@@ -95,7 +99,7 @@
 
         <el-tab-pane :label="$ut('desktopService.tabBarcode')">
           <h4>
-            {{ $ut('desktopService.FRScan.tabFineReader.Common') }}
+            {{ $ut('General') }}
           </h4>
           <u-form-row :label="$ut('desktopService.BarcodeSettings.PrinterName')">
             <el-select v-model="selectedPrinter">
@@ -137,7 +141,7 @@
             <el-input-number
               :value="value"
               :min="0"
-              :max="100"
+              :max="999"
               :disabled="disabled.includes(pagePosition)"
               @change="(val) => pageMargins[i].value = val"
             />

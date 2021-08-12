@@ -31,7 +31,7 @@
 	"security": {
 		"zones": [
 			{
-				"name":  "internal",
+			    "name":  "internal",
 			    "includes": ["10.0.0.1/8"]
 			}
 			/*,{
@@ -59,6 +59,8 @@
 			"CERT2"
 			//#endif
 		],
+		"lockOutTimeoutSec": 60,
+		//"lockOutInDB": false,
 		//#ifdef(%UB_USE_DSTU%)
 		"simpleCertAuth": true,
 		"dstu": {
@@ -66,7 +68,12 @@
 			"iit": {
 				"librarySettings": "%UB_APPDATA%../shared",
 				"keyPath": "%UB_APPDATA%../shared/Key-6.dat",
-				"password": "%KEY_PWD%"
+				"password": "%KEY_PWD%",
+				"hsm": {
+				    "mediaType": 7,
+				    "mediaNumber": 5
+				    //,"password": "F98hv2muKz52"
+				}
 			}
 		},
 		//#endif
@@ -78,7 +85,17 @@
 			"URL":  "%UB_LDAPURL%", //ldaps://psi01.softline.main:636/%@softline.main
 			"CAPath": "",
 			"ignoreSSLCertificateErrors": true
-		}]
+		}],
+		//#endif
+		//#ifdef(%UB_USE_MULTITENANCY||false%=true)
+		"multitenancy": {
+		    "enabled": true,
+		    "tenants": [
+				{"URI": "localhost:8881", "TID": 1}, //admin
+				{"URI": "tenant1.localhost", "TID": 100},
+				{"URI": "tenant2.localhost", "TID": 101}
+			]
+		}
 		//#endif
 	},
 	"uiSettings": {
@@ -91,15 +108,22 @@
 			"sidebarLogoBigURL": "/models/ub-pub/img/sidebar-logo-big.svg",
 			"loginWindowTopLogoURL": "/models/ub-pub/img/login-logo.svg",
 			//#ifdef(%UB_USE_DSTU%)
-			"encryptionImplementation": "/clientRequire/@ub-d/iit-sign-web/dist/iit-sign-web.min.js",
+			//"encryptionImplementation": "/clientRequire/@ub-d/iit-sign-web/dist/iit-sign-web.min.js",
+			"encryptionImplementation": ["@ub-d/iit-sign-web", "@ub-d/iit-sign-js"],
 			//#endif
 			"registrationURL": "/models/adminui-vue/views/registration-stub.html",
 			"endpoint": "ubadminui",
 			"useVueTables": true,
 			"vueAutoForms": true,
+			"forceModalsForEditForms": false,
+			"disableScanner": true,
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30
+			},
+			"pdfFontMapping": {
+				// in case only Cyrillic (UK, RU) and english is used in PDF - use a mapping to font subset
+				//"TimesNewRoman": "TimesNewRoman_Cyr"
 			}
 		},
 		"portalUI": {
@@ -109,7 +133,7 @@
 	"application": {
 		"defaultLang": "en",
 		"rootHandler": "index.html",
-		"schedulers": {"enabled": false},
+		"schedulers": { "enabled": %UB_USE_SCHEDULERS||false% },
 		"domain": {
 			"models": [
 				{
@@ -158,6 +182,11 @@
 					"path": "./node_modules/@ub-e/ocr"
 				},
 				//#endif
+				//#ifdef(%UB_USE_DSTU%)
+				{
+					"path": "./node_modules/@ub-d/crypto-api"
+				},
+				//#endif
 			],
 			//#ifdef(%UB_USE_DSTU%)
 			"vendorModels": "TST:CRT"
@@ -184,7 +213,13 @@
 				"password": "UB5_%UB_APP%_%PLATFORM%",
 				"supportLang": ["en", "uk"],
 				"advSettings": "CARDINALITY_IN",
-				"executeWhenConnected": ["ALTER SESSION SET NLS_COMP=LINGUISTIC", "ALTER SESSION SET NLS_SORT=BINARY_CI"]
+				"executeWhenConnected": [
+					"ALTER SESSION SET NLS_COMP=LINGUISTIC",
+					"ALTER SESSION SET NLS_SORT=BINARY_CI",
+					//ifdef(%UB_DB_STATEMENT_TIME_LIMIT%)
+					"DECLARE prev_group VARCHAR2(30); BEGIN DBMS_SESSION.switch_current_consumer_group ('%UB_DB_STATEMENT_TIME_LIMIT%', prev_group, TRUE); END;"
+					//endif
+				]
 			},
 			//#endif
 			//#ifdef(%UB_DB_DRIVER%=PostgreSQL)
@@ -193,12 +228,17 @@
 				"driver": "PostgreSQL",
 				"isDefault": true,
 				"dialect": "PostgreSQL",
-				"serverName": "postgresql://pg10.unitybase.info:5402",
-				"databaseName": "ub5_%UB_APP%_%PLATFORM%",
+				//"databaseName": "postgresql://pg10.unitybase.info:5402/ub5_%UB_APP%_%PLATFORM%?tcp_user_timeout=3000",
+				"databaseName": "postgresql://pg10.unitybase.info:5402/ub5_%UB_APP%_%PLATFORM%", // pg9 client not supports tcp_user_timeout
 				"userID": "ub5_%UB_APP%_%PLATFORM%",
 				"password": "ub5_%UB_APP%_%PLATFORM%",
 				"supportLang": ["en", "uk"],
-				"advSettings": "LibLocation=%UB_POSTGRE_LIB||libpq.so.5%" //linux - can be empty or libpq.so.5; Windows = path to libpq.dll, for example D:/PostgreClient/10/x64/bin/libpq.dll
+				"advSettings": "LibLocation=%UB_POSTGRE_LIB||libpq.so.5%", //linux - can be empty or libpq.so.5; Windows = path to libpq.dll, for example D:/PostgreClient/10/x64/bin/libpq.dll
+				"executeWhenConnected": [
+					"SET search_path TO ub5_%UB_APP%_%PLATFORM%",
+					"SET ub.tenantID=0",
+					"SET statement_timeout=%UB_DB_STATEMENT_TIME_LIMIT||10000%"
+				]
 			},
 			//#endif
 			//#ifdef(%UB_DB_DRIVER%=MSSQLODBC)
@@ -211,6 +251,7 @@
 				"databaseName": "ub5_%UB_APP%_%PLATFORM%",
 				"userID": "ub5_%UB_APP%_%PLATFORM%",
 				"password": "ub5_%UB_APP%_%PLATFORM%",
+				"advSettings": "STATEMENT_TIME_LIMIT=%UB_DB_STATEMENT_TIME_LIMIT||0%",
 				"supportLang": ["en", "uk"]
 			},
 			//#endif
@@ -235,7 +276,8 @@
 				"dialect": "SQLite3",
 				"databaseName": "%UB_APPDATA%localdb/DB.sqlite3",
 				"supportLang": ["en", "uk"],
-				"advSettings": "Synchronous=Off"
+				"advSettings": "Synchronous=Off",
+				"statementMaxMemoryMb": 1
 			},
 			//#endif
 			//#ifndef(%UB_NOFTS%)
@@ -297,11 +339,12 @@
 			},*/
 			//#ifdef(%UB_USE_OCR%)
 			"OCR": {
-			  "dataPath": "C:\\dev\\TTesseractOCR4\\bin\\tessdata",
-			  "languages": "ukr+eng"
+			  // this section is defined in OCR model partial config
 			},
 			//#endif
 			"mailerConfig": {
+//				"targetHost": "localhost",
+//				"targetPort": "1025",
 				"targetHost": "mail.softline.main",
 				"targetPort": "25",
 				"fromAddr": "no-reply@softline.kiev.ua",

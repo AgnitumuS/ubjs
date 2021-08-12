@@ -15,6 +15,86 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.20] - 2021-08-09
+## [5.20.19] - 2021-08-04
+## [5.20.18] - 2021-07-18
+### Added
+ - Dutch (nl) localization
+
+## [5.20.17] - 2021-07-08
+## [5.20.16] - 2021-06-14
+## [5.20.15] - 2021-05-24
+## [5.20.14] - 2021-05-13
+## [5.20.13] - 2021-05-07
+## [5.20.12] - 2021-05-05
+## [5.20.11] - 2021-04-24
+## [5.20.10] - 2021-04-23
+## [5.20.9] - 2021-04-22
+## [5.20.8] - 2021-04-19
+## [5.20.7] - 2021-04-19
+## [5.20.6] - 2021-04-16
+## [5.20.5] - 2021-04-13
+## [5.20.4] - 2021-04-02
+## [5.20.3] - 2021-04-01
+## [5.20.2] - 2021-03-30
+## [5.20.1] - 2021-03-29
+## [5.20.0] - 2021-03-25
+### Changed
+- `cdn_classifier` entity uses the `ubm_query` as unity entity
+
+## [5.19.10] - 2021-03-23
+## [5.19.9] - 2021-03-17
+## [5.19.8] - 2021-03-16
+## [5.19.7] - 2021-03-15
+## [5.19.6] - 2021-03-15
+### Changed
+ - CDN forms, reports and er-diagrams are converted to `ubrow` format
+
+## [5.19.5] - 2021-03-03
+### Changed
+ - client side locales reformatted into JSON
+ 
+### Fixed
+- copy classifier item on the form of classifier
+
+## [5.19.4] - 2021-02-25
+### Added
+ - new attribute `cdn_organization.countryID`
+
+## [5.19.3] - 2021-02-10
+## [5.19.2] - 2021-02-08
+## [5.19.1] - 2021-02-03
+## [5.19.0] - 2021-02-02
+## [5.4.67] - 2021-01-30
+## [5.4.66] - 2021-01-28
+## [5.4.65] - 2021-01-26
+## [5.4.64] - 2021-01-19
+## [5.4.63] - 2021-01-17
+## [5.4.62] - 2021-01-11
+## [5.4.61] - 2020-12-30
+## [5.4.60] - 2020-12-28
+### Fixed
+ - Classifier item: add `mi_deleteDate` to unique index to account for safe delete and fix bug
+  when user cannot insert item with code equal to one of the deleted item
+ - `cdn_organization` - fixed `Invalid JSON` error when updating an `Organization type` for existed organization.
+   (introduced in 5.4.49 by isGovAuthority fix) [UBDF-12903]
+
+## [5.4.59] - 2020-12-22
+## [5.4.58] - 2020-12-21
+## [5.4.57] - 2020-12-20
+## [5.4.56] - 2020-12-17
+## [5.4.55] - 2020-12-16
+## [5.4.54] - 2020-12-14
+## [5.4.53] - 2020-12-09
+## [5.4.52] - 2020-12-09
+## [5.4.51] - 2020-12-02
+### Changed
+ - `cdn_person form`: make inputs adaptive to form width
+
+### Fixed
+- `cdn_employee.meta.uk`: typo in 'middleNameGen', 'middleNameDat', 'fullFIO', 'middleName'
+- `cdn_person.meta.uk`: typo in 'middleNameGen', 'middleNameDat', 'classID', 'middleName'
+
 ## [5.4.50] - 2020-11-25
 ## [5.4.49] - 2020-11-23
 ### Fixed

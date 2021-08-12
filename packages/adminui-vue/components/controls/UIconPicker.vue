@@ -157,6 +157,10 @@ const FA_HELPERS = {
   '.fa-inverse': true,
   '.fa-space': true
 }
+
+/**
+ * Pick an icon from available iconic fonts
+ */
 export default {
   name: 'UIconPicker',
 
@@ -329,3 +333,24 @@ export default {
   border-top-left-radius: 4px;
 }
 </style>
+
+<docs>
+### Usage
+```vue
+<template>
+  <u-icon-picker
+    :value="iconCls"
+    @change="iconCls = $event"
+  ></u-icon-picker>
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        iconCls: 'u-icon-save'
+      }
+    }
+  }
+</script>
+```
+</docs>

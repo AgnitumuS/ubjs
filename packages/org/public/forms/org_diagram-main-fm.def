@@ -1,11 +1,3 @@
-// @! "do not remove comments below unless you know what you do!"
-// @mi_modifyDate "Wed Sep 06 2017 19:37:00 GMT+0300 (FLE Standard Time)"
-// @isDefault "false"
-// @entity "org_diagram"
-// @model "ORG"
-// @formType "auto"
-// @caption "Organizational chart"
-// @description "Organizational chart"
 /*global UB, Ext */
 exports.formDef = {
     size: {

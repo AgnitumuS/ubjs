@@ -16,3 +16,4 @@ Used environment variables:
 | UB_SMTP_PWD   |         | if authentication required - SMTP user password | 
 | UB_SMTP_TLS   | false   | is TLS required for SMTP connection |
 | UB_SMTP_AUTH  | false   | use authentication to the SMTP server |
+| UB_SMTP_FULL_SSL | false | establish TLS connection before any SMTP command | 

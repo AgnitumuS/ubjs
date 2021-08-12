@@ -87,6 +87,22 @@ module.exports = function (session) {
     }
   })
 
+  console.log('\t\t\tcreate `tst_crypto` shortcut')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'tst_service-crypto',
+      caption: 'test server-side crypto',
+      displayOrder: 35,
+      cmdCode: JSON.stringify({
+        cmdType: 'showForm',
+        formCode: 'tst_service-crypto'
+      }, null, '\t')
+    }
+  })
+
   let displayOrder = 40;
   ['tst_mainunity', 'tst_IDMapping', 'tst_histDict'].forEach(function (entityCode) {
     console.log('\t\t\tcreate `', entityCode, '` shortcut')
@@ -149,7 +165,10 @@ module.exports = function (session) {
             'ID',
             'code',
             'caption',
-            'filterValue',
+            {
+              id: 'filterValue',
+              summaryAggregationOperator: 'MAX'
+            },
             'currencyValue',
             'floatValue',
             'calculated',

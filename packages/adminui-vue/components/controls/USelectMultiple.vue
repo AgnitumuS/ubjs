@@ -112,17 +112,18 @@
           />
           {{ option[getDisplayAttribute] }}
         </div>
-        <el-row
-          type="flex"
-        >
-          <el-button
-            v-if="moreVisible"
-            size="mini"
-            style="margin: 5px"
-            @click="showMore"
-          >
-            {{ $ut('USelectEntity.dropdown.moreButton') }}
-          </el-button>
+        <el-row type="flex">
+          <template v-for="button in dropdownButtons">
+            <el-button
+              v-if="button.visibility"
+              :key="button.name"
+              size="mini"
+              style="margin: 5px"
+              @click="button.handler"
+            >
+              {{ $ut(button.label) }}
+            </el-button>
+          </template>
         </el-row>
       </div>
       <div
@@ -175,7 +176,7 @@ const { debounce } = require('throttle-debounce')
 const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
 
 /**
- * When you need to select few values from entity use multiple select.
+ * Multy-select component mapped to Entity
  */
 export default {
   name: 'USelectMultiple',
@@ -184,7 +185,7 @@ export default {
 
   props: {
     /**
-     * Selected entity ID
+     * Selected IDs array
      * @model
      */
     value: {
@@ -230,7 +231,7 @@ export default {
      */
     readonly: Boolean,
     /**
-     * An array with IDs of elements that unable to remove
+     * An array with IDs of non-removable elements
      */
     fixedItems: {
       type: Array,
@@ -238,12 +239,19 @@ export default {
     },
 
     /**
-     * Search request condition
+     * Search by include (may be slow) or by first letters (faster)
      */
     searchStrategy: {
       type: String,
       default: 'like',
       validator: value => ['like', 'startsWith'].includes(value)
+    },
+    /**
+     * Dropdown buttons definition array. Can contains additional dropdown buttons,
+     */
+    additionalButtons: {
+      type: Array,
+      default: () => []
     }
   },
 
@@ -306,44 +314,40 @@ export default {
 
       set (value) {
         this.query = value
-        if (!this.dropdownVisible) {
+
+        this.debouncedFetch(value, () => {
           this.dropdownVisible = true
-        }
-        this.debouncedFetch(value)
+        })
       }
+    },
+
+    dropdownButtons () {
+      const moreButton = {
+        name: 'moreButton',
+        label: 'USelectEntity.dropdown.moreButton',
+        visibility: this.moreVisible,
+        handler: () => this.showMore()
+      }
+      return [...this.additionalButtons, moreButton]
     }
   },
 
   watch: {
     /**
-     * when value changed need to check is item added or removed
-     * if added need to push formatted values (ID, label) to displayOptions
-     * if removed -> splice from displayOptions
+     * Update tags when value is changed
      */
     value: {
       immediate: true,
-      async handler (newVal, oldVal = []) {
-        const isAdded = newVal.length > oldVal.length
-        if (isAdded) {
-          if (!this.fixedItems.every(i => this.value.includes(i))) {
-            console.error('You should provide an initial value if you want items to be fixed')
-          }
-
-          const addedItems = newVal.filter(a => !oldVal.includes(a))
-          const formattedItems = await this.getFormattedOptions(addedItems) // temp
-          this.displayedOptions.push(...formattedItems)
-        } else {
-          const removedItems = oldVal.filter(a => !newVal.includes(a))
-          for (const item of removedItems) {
-            const index = this.displayedOptions.findIndex(o => o[this.valueAttribute] === item)
-            this.displayedOptions.splice(index, 1)
-          }
-        }
+      async handler (value) {
+        this.displayedOptions = await this.getFormattedOptions(value)
       }
     }
   },
 
   methods: {
+    /**
+     * @return {ClientRepository}
+     */
     getRepository () {
       if (this.repository) {
         return this.repository()
@@ -386,8 +390,8 @@ export default {
       this.loading = false
     },
 
-    debouncedFetch: debounce(600, function (query) {
-      this.fetchPage(query)
+    debouncedFetch: debounce(600, function (query, resolve, reject) {
+      this.fetchPage(query).then(resolve, reject)
     }),
 
     async fetchDisplayValues (IDs) {
@@ -427,13 +431,12 @@ export default {
           })
         }
       }
-      const willFetched = result
-        .filter(o => !o.hasOwnProperty('label'))
+      const shouldFetch = result.filter(o => !Object.prototype.hasOwnProperty.call(o, 'label'))
         .map(o => o[this.valueAttribute])
 
-      if (willFetched.length > 0) {
-        const responseData = await this.fetchDisplayValues(willFetched)
-        for (const fetchedID of willFetched) {
+      if (shouldFetch.length) {
+        const responseData = await this.fetchDisplayValues(shouldFetch)
+        for (const fetchedID of shouldFetch) {
           const responseItem = responseData.find(i => i[this.valueAttribute] === fetchedID)
           const option = result.find(i => i[this.valueAttribute] === fetchedID)
           if (responseItem) {
@@ -496,10 +499,10 @@ export default {
       }
     },
 
-    onKeydownAltDown () {
+    async onKeydownAltDown () {
       if (!this.dropdownVisible) {
+        await this.fetchPage()
         this.dropdownVisible = true
-        this.fetchPage()
       }
     },
 
@@ -510,11 +513,15 @@ export default {
       this.$refs.input.click()
     },
 
-    toggleDropdown () {
-      this.dropdownVisible = !this.dropdownVisible
-      if (this.dropdownVisible) {
-        this.fetchPage()
+    async toggleDropdown () {
+      const isTurnedOn = !this.dropdownVisible
+
+      if (isTurnedOn) {
+        await this.fetchPage()
       }
+
+      // make dropdown visible after fetch
+      this.dropdownVisible = isTurnedOn
     },
 
     /**
@@ -667,146 +674,3 @@ export default {
   padding-right: 5px;
 }
 </style>
-
-<docs>
-One of these options is required:
-  - `entity-name`
-  - `repository`
-
-### Use as `entity-name`
-
-```vue
-<template>
-  <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
-  />>
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        value: []
-      }
-    }
-  }
-</script>
-```
-
-### Use as `repository`
-Need to set function which returns UB Repository
-
-```vue
-<template>
-  <u-select-multiple
-    v-model="model"
-    :repository="getRepo"
-  />
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        value: []
-      }
-    },
-
-    methods: {
-      getRepo () {
-        return $UB.Repository('tst_maindata')
-          .attrs('ID', 'code', 'caption')
-          .where('parent', '=', 31231221312312) // TODO: set valid ID
-      }
-    }
-  }
-</script>
-```
-
-### Custom `valueAttribute`
-Need when you need to change default model propery.
-Its like attribute `value` in native `<option>` tag.
-For example when you need instead `ID` like `code`.
-
-```vue
-<template>
-  <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
-    value-attribute="code"
-  />>
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        value: []
-      }
-    }
-  }
-</script>
-```
-
-### Clearable
-
-```vue
-<template>
-  <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
-    clearable
-  />
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        value: [1,2,3]
-      }
-    }
-  }
-</script>
-```
-
-### Disabled
-
-```vue
-<template>
-  <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
-    disabled
-  />
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        value: [1,2,3]
-      }
-    }
-  }
-</script>
-```
-
-### filteredItems
-
-```vue
-<template>
-  <u-select-multiple
-    v-model="model"
-    entity-name="tst_dictionary"
-    :fixed-items="fixedItems"
-  />
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        value: [1,2,3],
-        fixedItems: [2]
-      }
-    }
-  }
-</script>
-```
-</docs>

@@ -15,6 +15,277 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.9] - 2021-08-09
+## [5.22.8] - 2021-08-04
+## [5.22.7] - 2021-07-18
+### Added
+ - Dutch (nl) localization
+
+### Fixed
+ - `App.domainIsLoaded` documentation improved
+
+## [5.22.6] - 2021-07-08
+### Added
+ - for Document type attributes added validation what BLOB store used by attribute is defined in ubConfig  
+
+## [5.22.5] - 2021-06-14
+### Added
+ - `getAppInfo` endpoint result can be modified by subscribe to newly added `App.getAppInfo` event:
+```js
+App.on('getAppInfo', function(appInfo) {
+  const serverConfig = App.serverConfig
+  const DSTU = serverConfig.security && serverConfig.security.dstu
+  appInfo.trafficEncryption = DSTU ? DSTU.trafficEncryption : false
+})
+```   
+
+### Removed
+ - DSTU related section of `getAppInfo` response is removed (moved into `getAppInfo` event handler of @ub-d/crypto-api endpoint)
+
+### Fixed
+ - initial call to `App.serverConfig` is protected by critical section to prevent possible multithreading errors
+ - `fsStorage` mixin: for *.vue files force `script/x-vue` mime type (`mime` module do not detect .vue)
+ - `/allLocales?lang=LL&includeDomain=1` - will merge meta with meta.lang - the same algo as in client-side UBEntity constructor.
+  This fix `ubcli migrate` in case {$i18n: entityName} is defined in YAML but meta file is not localized to some language 
+
+## [5.22.4] - 2021-05-24
+### Added
+ - Hardware Security Module (UB EE+) config description is added to the ubConfig JSON schema
+ - `rest` endpoint documented - see [rest endpoint documentation](https://unitybase.info/api/server-v5/module-endpoints.html#restEp)
+
+## [5.22.3] - 2021-05-13
+### Added
+ - JSDoc: `UB.App` and `UB.Session` events are documented
+
+### Fixed
+ - improved JSDoc. UB.App is now instance of ServerApp (instead of App) for better documentation
+
+## [5.22.2] - 2021-05-07
+## [5.22.1] - 2021-05-05
+## [5.22.0] - 2021-04-24
+### Deprecated
+ - `UB.ns` is deprecated and will be removed soon
+
+## [5.21.6] - 2021-04-23
+### Fixed
+ - fix `global.UB.getServerConfiguration is not a function` error (can occur during thread initialization)
+   by prevent override a legacy `global.UB` object
+
+## [5.21.5] - 2021-04-22
+## [5.21.4] - 2021-04-19
+### Fixed
+ - fix `global.UB.getDomainInfo is not a function`
+
+## [5.21.3] - 2021-04-19
+### Changed
+ - `allLocales` endpoint, when loading as JSON files, now merges all models, and return as a normal key-value resources.
+   Add 2 more parameters: `includeDomain` and `includeData`, which would merge appropriate type of resources in:
+   - `includeDomain` controls inclusion of `entityCode: caption` and `entityCode.attribute: caption` resources,
+   - `includeData` controls reading and including JSON files from `_data/locale/lang-nn.json` files, resources, which
+     are needed for data migration only.
+
+## [5.21.2] - 2021-04-16
+## [5.21.1] - 2021-04-13
+### Changed
+ - `allLocales` endpoint (client-side localization download) supports downloading of JSON files only, without js files
+   Request shall be like `/allLocales?lang=en&json=1`
+   Response body will contain model name as a key and JSON file content as a value:
+
+   ```json
+   {
+     "ub-pub": {...},
+     "UBM": {...}
+   }.
+   ```
+
+## [5.21.0] - 2021-04-02
+### Added
+ -  new property `UBEntity.overriddenBy` - comma separated model names where entity is overridden
+
+### Changed
+ - **BREAKING** for overridden entities `UBEntity.modelName` property now contains an original model name instead of
+  last override model name
+
+## [5.20.3] - 2021-04-01
+## [5.20.2] - 2021-03-30
+## [5.20.1] - 2021-03-29
+### Added
+ - new method `App.blobStores.internalWriteDocumentToResp` - writes a BLOB content to the response without
+  verifying an ALS (but RLS is verified) or return an error without modifying a response.
+
+  **SECURITY** - method can be used inside endpoint or rest entity method, which already checks
+  the access rights to the document.
+
+## [5.20.0] - 2021-03-25
+## [5.19.7] - 2021-03-23
+### Added
+ - new ubConfig parameter `uiSettings.adminUI.forgotPasswordURL`. If sets, then "Forgot password" link is displayed on the login form
+ - added `THTTPRequest.json()` method - read a UTF8 encoded HTTP request body as JSON Object.
+   Can be used as faster alternative to `JSON.parse(req.read('utf8'))`
+ - added `IncomingMessage.json()` - a faster alternative to `JSON.parse(resp.read())` for http client requests
+ - `ub_blobHistory` entity extended by `entity` and `createdAt` attributes
+
+## [5.19.6] - 2021-03-17
+### Added
+ - `App.launchEndpoint` emits 2 addition events:
+   - `launchEndpoint:before` with parameters: (req, resp, endpointName)
+   - `launchEndpoint:after` with parameters: (req, resp, endpointName, defaultPrevented)
+   Can be used to do something on before/after any endpoint execution
+     
+ - `App.removeUserSessions(userID)` a method to `logout` a user completely
+     
+### Changed
+ - `fsStorage` mixin can use a simplified BLOB info (only origName is stored instead of JSON) for `mdb` based BLOB attributes
+
+### Fixed
+ - multitenancy: prevent recreation of default constraint for mi_tenantID on Postgres
+
+## [5.19.5] - 2021-03-15
+### Added
+ - `UB.registerMixinModule(mixinName, mixinModule)` - a way to add a pure JS mixin implementation.
+  See detailed [mixins](https://unitybase.info/api/server-v5/tutorial-mixin_custom.html) tutorial for details
+ - `Sesson.tenantID` property added - contains a number >0 for multitenancy app. 0 on case multitenancy not enabled 
+ - implicitly disable multitenancy mixin for `ub_version` and `ub_miration`
+ - `fsStorage` mixin: implements a CRUID operation for entity, whose data is stored in the file system.
+   Used as data storage implementation for `ubm_form`, `ubs_reports` and `ubm_diagrams` - 
+   see [File system storage tutorial](https://unitybase.info/api/server-v5/tutorial-mixins_fsstorage.html) for details.
+   
+   **BREAKING** diagrams, reports and forms MUST be converted:
+    - `ubcli convertDefFiles -u root`
+    - *.ubrow and modified files added to git (`git add *.ubrow && git add *.def && git add *.template`)
+    - files, reported by convertDefFiles should be deleted from project (removal script is outputted to the stdout by `convertDefFiles`) 
+
+ - [critical section](https://en.wikipedia.org/wiki/Critical_section) now available in http working threads:
+ ```javascript
+  const App = require('@unitybase/ub').App
+  // critical sectin must be registered once in the moment modules are evaluated 
+  const MY_CS = App.registerCriticalSection('SHARED_FILE_ACCESS')
+
+  function concurrentFileAccess() {
+    // prevents mutual access to the same file from the different threads
+    App.enterCriticalSection(FSSTORAGE_CS)
+    try {
+      const data = fs.readfileSync('/tmp/concurrent.txt', 'utf8')
+      // do some operation what modify data
+      fs.writefileSync('/tmp/concurrent.txt', data)
+    } finally {
+      // important to leave critical section in finally block to prevent forever lock 
+      App.leaveCriticalSection(FSSTORAGE_CS)  
+    }
+  }
+ ``` 
+
+ - `App.logEnter(enterText)` / `App.logLeave` - allows increasing/decreasing logging recursion level
+  (just like native methods do). Each `logEnter` call MUST have paired `logLeave` call, so better to use as such:
+```javascript
+ wrapEnterLeave: function (enterText, originalMethod) {
+    return function(ctx) {
+      App.logEnter(enterText)
+      try {
+        originalMethod(ctx)
+      } finally {
+        App.logLeave()
+      }
+    }
+  }
+```
+### Changed
+ - implicitlyAddedMixins logic is moved from native to @unitybase/ub model (into `_hookMetadataTransformation.js` hook)
+
+### Removed
+ - `UB.mixins.mStorage` removed (obsolete) 
+
+## [5.19.4] - 2021-03-03
+### Added
+ - new ubConfig property `uiSettings.adminUI.disableScanner`- disable a scanner related functionality if `true`.
+ - new property `Session.pendingUserName` - a username for authentication in pending state. Used for security audit
+   to log a username in case session is not created yet
+ 
+### Changed
+ - `allLocales` endpoint (client-side localization download) supports JSON files in `/public/lang-??.json`.
+  Content of such files are wrapped into `UB.i18nExtend(....)` before passing to client.
+   
+  This allows using automation tools for preparing other language's localization.
+
+ - server-side localization automatically loads a JSON files from models `serverLocale` folder.
+   Naming convention is - `*-??.json` where ?? is a language code. Such convention allows creating of a model with 
+   serverLocale folder contains localization to the new language for all other models,
+   for example model for `zz` language `zz-locale` with `serverLocale/cdn-zz.json`, `serverLocale/org-zz.json` etc.
+   
+   It's recommended to split existed `serverLocale/*.js` into several JSON and remove a `require('./serverLocale/*.js')`
+   form model initialization using instruction below (remove locales you do not need from touch, replace `modelName` by lowercased name of your model ):
+   ```shell
+   cd serverLocale
+   touch modelName_sl-en.json modelName_sl-ru.json modelName_sl-uk.json modelName_sl-az.json modelName_sl-id.json modelName_sl-ka.json modelName_sl-tg.json modelName_sl-ky.json
+   git add ./*.json
+   // for each language move content of the js locale for individual language into modelName-??.json (without language identifier)
+   // Use WebStorm 'Fix all JSON problems' action to add a double quoters in new lang files  
+   // remove require('./serverLocale/nameOfLocaleFile.js') from initModel.js
+   git rm ./serverLocale/nameOfLocaleFile.js
+   ```
+   
+## [5.19.3] - 2021-02-10
+## [5.19.2] - 2021-02-08
+### Added
+ - new syntax sugar methods `insert`, `insertAsObject`, `update` and `updateAsObject` are added to `TubDataStore`.
+  Methods semantic are the same as for Connection.
+  See [TubDataStore documentation](https://unitybase.info/api/server-v5/TubDataStore.html) for details. Example:
+   
+```javascript
+ const STORE = UB.DataStore('uba_role')
+ // return ID (generated, since ID not passed in the execParamms)
+ // 3000000000201
+ const testRoleID = STORE.insert({
+   fieldList: ['ID'],
+   execParams: {
+     name: 'testRole1',
+     allowedAppMethods: 'runList'
+   }
+ })
+```
+
+## [5.19.1] - 2021-02-03
+## [5.19.0] - 2021-02-02
+### Added
+ - `THTTPRequest` extended by helper functions:
+    - req.getHeader(name) -> string|undefined
+    - req.getHeaderNames() -> array<string>
+    - req.getHeaders() -> Object
+ 
+ - `THTTPRequest` extended by `parsedParameters` getter. Result is cached, so second call is faster than first
+  ```javascript
+  // for parameters 'foo=bar&baz=qux&baz=quux&corge' return
+  req.parsedParameters // { foo: 'bar', baz: ['qux', 'quux'], corge: '' }
+  ```
+  We recommend using this getter instead of `querystring.parse(req.parameters)` to prevent multiple
+  call to parameter parsing from different methods (require **UB server >= 5.19.0**).
+
+ - `THTTPRequest.writeToFile` can accept second parameter `encoding` - 'bin' (default) or `base64`.
+  For `basse64` request body will be converted from base64 into binary before write to file
+
+### Changed
+ - **BREAKING** JS endpoints, added by `App.registerEndpoint` and native endpoints, added by a server (stat, auth, ubql, logout and metrics)
+  now executed using `App.launchEndpoint` JS implementation.
+   
+  This allows to use the same `req` and `resp` objects for both endpoint types, and a one step forward to pure JS ubql implementation.
+
+  These changes require **UB server >= 5.19.0**.
+
+## [5.7.21] - 2021-01-30
+## [5.7.20] - 2021-01-26
+## [5.7.19] - 2021-01-19
+## [5.7.18] - 2021-01-17
+## [5.7.17] - 2020-12-30
+## [5.7.16] - 2020-12-28
+## [5.7.15] - 2020-12-22
+## [5.7.14] - 2020-12-21
+## [5.7.13] - 2020-12-20
+### Added
+ - `attribute.customSettings.hiddenInDetails` is documented in the `entity.schema.json`
+
+## [5.7.12] - 2020-12-14
+## [5.7.11] - 2020-12-09
+## [5.7.10] - 2020-12-02
 ## [5.7.9] - 2020-11-25
 ## [5.7.8] - 2020-11-20
 ### Added
@@ -180,7 +451,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  without using `JSON.parse`. This is 20% faster compared to `JSON.parse(dataStore.asJSONObject)`.
  In case UB server is of version < 5.18.0 new methods will fallback to `JSON.parse(dataStore.asJSONObject)`
  
- For better performance and code readability we recommend to apply following changes to the applications sources:  
+ For better performance and code readability we recommend applying following changes to the applications sources:  
    - `JSON.parse(dataStore.asJSONObject)` -> `dataStore.getAsJsObject()`
    - `JSON.parse(dataStore.asJSONArray)` -> `dataStore.getAsJsArray()`
  (the easiest way if to search for all case sensitive occurrences of `asJSON`)
@@ -306,7 +577,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `logging.threadingModel` is marked as deprecated
   
 ### Fixed
- - added documentation for `model` configuration parameter for `aclRls` mixin 
+ - added a documentation for `model` configuration parameter for `aclRls` mixin 
 
 ## [5.2.32] - 2019-08-28
 ### Changed
@@ -331,7 +602,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `uiSettings.adminUI.registrationURL` parameter.
  In case parameter is empty or not exists (default) then registration link do not displayed on the default
- authentication form (@unitybase/adminui-vue/views/ub-auth.html). Otherwise a link to the specified URL is displayed
+ authentication form (@unitybase/adminui-vue/views/ub-auth.html). Otherwise, a link to the specified URL is displayed
  
 ## [5.2.24] - 2019-07-10
 ### Fixed
@@ -487,25 +758,25 @@ UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "П
 
 ## [5.0.16] - 2018-06-03
 ### Added
-- new endpoind `allLocales` - return a single localization script bundled from all models public/locale/lang-${Session.userLang} scripts
+- new endpoint `allLocales` - return a single localization script bundled from all models public/locale/lang-${Session.userLang} scripts
  excluding adminui-pub what injected before login window
 
 ## [5.0.12] - 2018-05-18
 ### Added
-- new function `App.blobStores.markRevisionAsPermanent` allow to prevent
+- new function `App.blobStores.markRevisionAsPermanent` allows preventing
 specified revision of historical store from deletion during history rotation
 
 ### Changed
-- historical BLOB stores will put create a record in ub_blobHistory on commit.
+- historical BLOB stores will put create a record in ub_blobHistory on a commit.
  In prev. implementation a record in history was added after the update
 
 ### Fixed
 - `mdb` BLOB stores will automatically crate a folder in case
-it's not exists(for example user create a ER diagram etc.)
+it's not exists(for example user create an ER diagram etc.)
 
 ## [5.0.8] - 2018-05-07
 ### Fixed
-- fileSystemBlobStore will add a entropy to the persistent file name to prevent
+- fileSystemBlobStore will add an entropy to the persistent file name to prevent
  possible file name duplication for historical data
 - fileSystemBlobStore rotateHistory will delete only revisions older when `store.historyDepth`
 - fix UB4 store compatibility - automatic detection of store implementation in case blobStore.implementedBy not defined
@@ -513,7 +784,7 @@ it's not exists(for example user create a ER diagram etc.)
 ## [5.0.0] - 2018-02-13
 ### Added
 - `UB.blobStores` interface for working with BLOBs content
-- new entity `ub_blobHistory` for storing BLOB store revisions information instead of *.fti files
+- new entity `ub_blobHistory` for storing BLOB store revision's information instead of *.fti files
 - BLOB stores "Monthly" and "Daily" sizes"
 - automatically creation of BLOB store structure - no need to call `ubcli createStore` anymore. 
   In case of DFS folders should be created/mounted manually
@@ -522,7 +793,7 @@ it's not exists(for example user create a ER diagram etc.)
 ### Added
 
 ### Fixed
-- `mdb` virtual data store correctly handle models with public path only 
+- `mdb` virtual data store correctly handle models with a public path only 
 - `clientRequire` endpoint return correct mime type for files (using mime-db)
 - optimize `clientRequire` endpoint by caching resolved path's to globalCache
 - UB.UBAbort server side exception stack trace now independent of UB.js placement

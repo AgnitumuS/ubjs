@@ -61,7 +61,6 @@
 <script>
 /* global UBS */
 const { Form } = require('@unitybase/adminui-vue')
-const { validationMixin } = require('vuelidate/lib/index')
 const { required, minLength, maxLength, sameAs } = require('vuelidate/lib/validators/index')
 
 module.exports.mount = cfg => {
@@ -73,7 +72,6 @@ module.exports.mount = cfg => {
 
 module.exports.default = {
   name: 'ChangeUserPasswordForm',
-  mixins: [validationMixin],
 
   props: {
     parentContext: Object
@@ -154,26 +152,21 @@ module.exports.default = {
         execParams.needChangePassword = this.isPasswordNeedChange
       }
 
-      try {
-        if (this.isOwnRecord) {
-          await this.$UB.connection.xhr({
-            method: 'POST',
-            url: 'changePassword',
-            data: execParams
-          })
-        } else {
-          await this.$UB.connection.query({
-            fieldList: [],
-            entity: 'uba_user',
-            method: 'changeOtherUserPassword',
-            execParams
-          })
-        }
-      } catch (e) {
-        this.$errorReporter({ errMsg: e.message })
-        throw e
-      }
 
+      if (this.isOwnRecord) {
+        await this.$UB.connection.xhr({
+          method: 'POST',
+          url: 'changePassword',
+          data: execParams
+        })
+      } else {
+        await this.$UB.connection.query({
+          fieldList: [],
+          entity: 'uba_user',
+          method: 'changeOtherUserPassword',
+          execParams
+        })
+      }
       await this.$dialogInfo('passwordChangedSuccessfully')
       this.$emit('close')
     }

@@ -2,6 +2,7 @@
   <u-dropdown
     v-if="sortableColumns.length"
     ref="dropdown"
+    :ref-element="targetColumn"
   >
     <el-tooltip
       :content="$ut('table.sort.label')"
@@ -13,22 +14,23 @@
         icon="u-icon-sort-asc-alt"
         appearance="inverse"
         color="control"
-      >
-        {{ $ut('table.sort.label') }}
-      </u-button>
+      />
     </el-tooltip>
 
     <div
       slot="dropdown"
       class="u-fake-table"
     >
-      <div class="u-fake-table__tr">
+      <div
+        v-if="!isColSortRegime"
+        class="u-fake-table__tr"
+      >
         <div class="u-fake-table__td u-fake-table__label">
           {{ $ut('table.columnLabel') }}
         </div>
         <div class="u-fake-table__td">
           <el-select
-            v-model="selectedColumnId"
+            v-model="selectedSortableColumnId"
             :placeholder="$ut('table.filter.columnPlaceholder')"
           >
             <el-option
@@ -42,7 +44,7 @@
       </div>
 
       <div
-        v-if="selectedColumnId !== null"
+        v-if="selectedSortableColumnId !== null && !isColSortRegime"
         class="u-fake-table__tr"
       >
         <div class="u-fake-table__td u-fake-table__label">
@@ -63,6 +65,22 @@
           </u-button-group>
         </div>
       </div>
+      <div v-if="selectedSortableColumnId !== null && isColSortRegime">
+        <u-button-group
+          direction="vertical"
+        >
+          <u-button
+            v-for="sortOption in sortOptions"
+            :key="sortOption.value"
+            :icon="sortOption.icon"
+            :color="sortOption.value === sortOrder ? 'primary' : 'control'"
+            :appearance="sortOption.value === sortOrder ? 'default' : 'plain'"
+            @click="selectSort(sortOption.value)"
+          >
+            {{ sortOption.label }}
+          </u-button>
+        </u-button-group>
+      </div>
     </div>
   </u-dropdown>
 </template>
@@ -70,6 +88,17 @@
 <script>
 export default {
   name: 'UTableEntitySort',
+
+  props: {
+
+    /**
+     * The target column for positioning the sorting popup.
+     */
+    targetColumn: {
+      default: null
+    }
+
+  },
 
   data () {
     return {
@@ -83,6 +112,7 @@ export default {
         icon: 'u-icon-sort-desc-alt'
       }, {
         label: this.$ut('table.sort.direction.none'),
+        icon: 'u-icon-circle-close',
         value: 'none'
       }]
     }
@@ -102,10 +132,22 @@ export default {
       }
     },
 
+    selectedSortableColumnId: {
+      get () {
+        const column = this.sortableColumns.find(column => column.id === this.selectedColumnId)
+
+        return column ? column.id : null
+      },
+
+      set (value) {
+        this.selectedColumnId = value
+      }
+    },
+
     sortOrder: {
       get () {
         const { order, column } = /** @type {UTableSort} */ this.$store.state.sort || { order: 'none' }
-        if (column === this.selectedColumnId) {
+        if (column === this.selectedSortableColumnId) {
           return order
         }
         return 'none'
@@ -113,13 +155,17 @@ export default {
       set (order) {
         if (order === 'none') {
           this.$store.dispatch('updateSort', null)
+        } else {
+          this.$store.dispatch('updateSort', {
+            column: this.selectedSortableColumnId,
+            order
+          })
         }
-
-        this.$store.dispatch('updateSort', {
-          column: this.selectedColumnId,
-          order
-        })
       }
+    },
+
+    isColSortRegime () {
+      return this.targetColumn !== null
     }
   },
 

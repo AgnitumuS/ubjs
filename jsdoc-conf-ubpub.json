@@ -5,7 +5,10 @@
   "source": {
     "include": [
       "./packages/cs-shared",
-      "./packages/ub-pub"
+      "./packages/ub-pub",
+      "./packages/adminui-vue",
+      "./packages/adminui-vue/utils",
+      "./packages/adminui-vue/utils/Form"
     ],
     "includePattern": ".+\\.js(m|x)?$"
   },
@@ -71,20 +74,28 @@
       },
       "nav": [
         {
-          "href": "server-v5/index.html",
-          "name": "Server Docs"
-        },
-        {
-          "href": "ubpub-v5/index.html",
-          "name": "Client Docs"
-        },
-        {
-          "href": "server-v5/tutorialIndex.html",
+          "href": "gettingstarted/index.html",
           "name": "Tutorials"
         },
         {
-          "href": "gettingstarted/index.html",
-          "name": "Getting Started"
+          "href": "server-v5/tutorialIndex.html",
+          "name": "Articles"
+        },
+        {
+          "href": "server-v5/index.html",
+          "name": "Server API"
+        },
+        {
+          "href": "ubpub-v5/index.html",
+          "name": "Client API"
+        },
+        {
+          "href": "adminui-vue/index.html",
+          "name": "UI widgets"
+        },
+        {
+          "href": "changelog/index.html",
+          "name": "Changelog"
         }
       ]
     }

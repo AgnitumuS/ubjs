@@ -1,0 +1,14 @@
+{
+  "caption": "Standart birliklar turlari",
+  "description": "Namunaviy birliklar turlari qo'llanmasi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    }
+  ]
+}

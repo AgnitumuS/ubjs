@@ -2401,12 +2401,11 @@ Ext.define('UB.view.BasePanel', {
     }
 
     Ext.Object.each(me.documents, function (key, doc) {
-      docActions.push(new Ext.Action({
-        text: doc.caption,
-        iconCls: 'u-icon-attachments',
-        height: 32,
-        key: key,
-        menu: [{
+      const menu = []
+
+      // Show scan option in form only if disableScanner property is not explicitly set as true
+      if (!UB.connection.appConfig.uiSettings.adminUI.disableScanner) {
+        menu.push({
           actionId: actions.scan + '_' + key,
           // disabled: UB.npDesktopServicePluginDownloadMessage(),
           iconCls: 'u-icon-print',
@@ -2415,39 +2414,47 @@ Ext.define('UB.view.BasePanel', {
           handler: me.onAction,
           attribute: key,
           scope: me
-        }, {
-          actionId: actions.attach + '_' + key,
-          iconCls: 'u-icon-attachments',
-          text: UB.i18n('izFayla'), // '<i class="fa fa-folder-open"></i>&nbsp' +
-          eventId: events.attach,
-          handler: me.onAction,
-          attribute: key,
-          scope: me
-        }, {
-          actionId: actions.deleteAttachment + '_' + key,
-          iconCls: 'u-icon-circle-close',
-          text: UB.i18n('clear'),
-          eventId: events.deleteattachment,
-          handler: me.onAction,
-          attribute: key,
-          scope: me
-        }, {
-          actionId: actions.showVersions + '_' + key,
-          iconCls: 'u-icon-branch',
-          text: UB.i18n('showDocVersions'),
-          eventId: events.showVersions,
-          handler: me.onAction,
-          attribute: key,
-          scope: me
-        }, {
-          actionId: actions.downloadAttach + '_' + key,
-          iconCls: 'u-icon-download',
-          text: UB.i18n('downloadAttach'),
-          eventId: events.downloadAttach,
-          handler: me.onAction,
-          attribute: key,
-          scope: me
-        }]
+        })
+      }
+      menu.push({
+        actionId: actions.attach + '_' + key,
+        iconCls: 'u-icon-attachments',
+        text: UB.i18n('izFayla'), // '<i class="fa fa-folder-open"></i>&nbsp' +
+        eventId: events.attach,
+        handler: me.onAction,
+        attribute: key,
+        scope: me
+      }, {
+        actionId: actions.deleteAttachment + '_' + key,
+        iconCls: 'u-icon-circle-close',
+        text: UB.i18n('clear'),
+        eventId: events.deleteattachment,
+        handler: me.onAction,
+        attribute: key,
+        scope: me
+      }, {
+        actionId: actions.showVersions + '_' + key,
+        iconCls: 'u-icon-branch',
+        text: UB.i18n('showDocVersions'),
+        eventId: events.showVersions,
+        handler: me.onAction,
+        attribute: key,
+        scope: me
+      }, {
+        actionId: actions.downloadAttach + '_' + key,
+        iconCls: 'u-icon-download',
+        text: UB.i18n('downloadAttach'),
+        eventId: events.downloadAttach,
+        handler: me.onAction,
+        attribute: key,
+        scope: me
+      })
+      docActions.push(new Ext.Action({
+        text: doc.caption,
+        iconCls: 'u-icon-attachments',
+        height: 32,
+        key: key,
+        menu
       }))
     })
   },
@@ -2797,31 +2804,13 @@ Ext.define('UB.view.BasePanel', {
   },
 
   onDownloadAttach: function (action) {
-    let me = this
-    let docSrc = me.record.get(action.attribute)
-    if (docSrc) {
-      docSrc = JSON.parse(docSrc)
-      let params = {
-        entity: me.entityName,
-        attribute: action.attribute,
-        id: me.getInstanceID(),
-        isDirty: docSrc.isDirty === true
-      }
-      $App.connection.getDocument(params, { resultIsBinary: true, bypassCache: true })
-        .then(function (dataAsArray) {
-          let blobData = new Blob(
-            [dataAsArray],
-            { type: docSrc.ct }
-          )
-          saveAs(blobData, docSrc.origName || docSrc.filename || me.getInstanceID() + '_' + docSrc.ct)
-        }).catch(function (reason) {
-          if (reason.status === 404) {
-            throw new UB.UBError(UB.i18n('documentNotFound'))
-          }
-        })
-    } else {
-      throw new UB.UBError('emptyContent')
-    }
+    let docSrc = this.record.get(action.attribute)
+    if (!docSrc) return
+    $App.downloadDocument({
+      entity: this.entityName,
+      attribute: action.attribute,
+      ID: this.getInstanceID()
+    }, JSON.parse(docSrc))
   },
 
   onDelete: function () {
@@ -2861,6 +2850,13 @@ Ext.define('UB.view.BasePanel', {
         me.fireEvent('afterdelete')
         // TODO remove this call
         Ext.callback(me.eventHandler, me, [me, 'afterdelete'])
+
+        // emit entity changed for parent vue component
+        UB.connection.emitEntityChanged(me.entityName, {
+          entity: me.entityName,
+          method: 'delete',
+          resultData: { ID: me.instanceID }
+        })
       }).finally(function () {
         me.unmaskForm()
       }).then(function () {
@@ -3217,6 +3213,13 @@ Ext.define('UB.view.BasePanel', {
           /* todo remove this call */
           Ext.callback(me.eventHandler, me, [me, 'aftersave'])
           Ext.callback(me.onAfterSave, me)
+
+          // emit entity changed for parent vue component
+          UB.connection.emitEntityChanged(me.entityName, {
+            entity: me.entityName,
+            method: me.__mip_ondate && !me.addByCurrent ? 'newversion' : (me.isEditMode ? 'update' : 'insert'),
+            resultData: { ID: me.instanceID }
+          })
 
           me.fireDirty = false
           me.updateActions()

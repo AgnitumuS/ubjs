@@ -31,14 +31,10 @@
             />
           </u-form-row>
           <u-form-row :label="$ut('byDateRange')">
-            <el-date-picker
+            <u-date-picker
               v-model="dateRange"
               type="datetimerange"
-              unlink-panels
-              range-separator="-"
-              :start-placeholder="$ut('startDate')"
-              :end-placeholder="$ut('endDate')"
-              :picker-options="pickerOptions"
+              :picker-options="getPickerOptions()"
               :clearable="false"
             />
           </u-form-row>
@@ -141,42 +137,7 @@ module.exports.default = {
        */
       dateRange: [new Date(), new Date(new Date().getFullYear() + 1, 0)],
       ID: null,
-      mi_modifyDate: null,
-      pickerOptions: {
-        /**
-         * disable all dates before today
-         * @param  {Date} time
-         * @return {Boolean}
-         */
-        disabledDate: time => {
-          return this.$moment().isAfter(time, 'day')
-        },
-        shortcuts: [{
-          text: this.$ut('nextWeek'),
-          onClick (picker) {
-            const end = new Date()
-            const start = new Date()
-            end.setTime(start.getTime() + 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: this.$ut('nextMonth'),
-          onClick (picker) {
-            const end = new Date()
-            const start = new Date()
-            end.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: this.$ut('next3Months'),
-          onClick (picker) {
-            const end = new Date()
-            const start = new Date()
-            end.setTime(start.getTime() + 3600 * 1000 * 24 * 90)
-            picker.$emit('pick', [start, end])
-          }
-        }]
-      }
+      mi_modifyDate: null
     }
   },
 
@@ -335,6 +296,43 @@ module.exports.default = {
             userID
           }
         })))
+    },
+    getPickerOptions () {
+      return {
+        /**
+         * disable all dates before today
+         * @param  {Date} time
+         * @return {Boolean}
+         */
+        disabledDate: time => {
+          return time.getTime() < Date.now() - (24 * 60 * 60 * 1000) // 24 hours before now
+        },
+        shortcuts: [{
+          text: this.$ut('nextWeek'),
+          onClick (picker) {
+            const end = new Date()
+            const start = new Date()
+            end.setTime(start.getTime() + 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: this.$ut('nextMonth'),
+          onClick (picker) {
+            const end = new Date()
+            const start = new Date()
+            end.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: this.$ut('next3Months'),
+          onClick (picker) {
+            const end = new Date()
+            const start = new Date()
+            end.setTime(start.getTime() + 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
+      }
     }
   }
 }

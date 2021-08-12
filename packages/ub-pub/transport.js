@@ -8,6 +8,18 @@
  * @memberOf module:@unitybase/ub-pub
  */
 
+/**
+ * Result of xhr / get / post HTTP request
+ * @typedef XHRResponse
+ * @property {string|Object|ArrayBuffer} data response body:
+ *   - if `Content-Type` of the response is `application/json` - an Object contains response body parsed using `JSON.parse`
+ *   - if request is called with `{responseType: 'arraybuffer'}` option - response body as ArrayBuffer
+ *   - string in other case
+ *
+ * @property {number} status response HTTP status code
+ * @property {function} headers header getter function
+ * @property {Object} config configuration object that was used for request
+ */
 /* global XMLHttpRequest */
 
 const ubUtils = require('./utils')
@@ -17,7 +29,7 @@ function lowercase (str) {
 }
 
 function parseHeaders (headers) {
-  let parsed = {}
+  const parsed = {}
   let key, val, i
 
   if (!headers) {
@@ -84,7 +96,7 @@ function isSuccess (status) {
 }
 
 function forEach (obj, iterator, context) {
-  let keys = Object.keys(obj)
+  const keys = Object.keys(obj)
   keys.forEach(function (key) {
     iterator.call(context, obj[key], key)
   })
@@ -92,7 +104,7 @@ function forEach (obj, iterator, context) {
 }
 
 function forEachSorted (obj, iterator, context) {
-  let keys = Object.keys(obj).sort()
+  const keys = Object.keys(obj).sort()
   keys.forEach(function (key) {
     iterator.call(context, obj[key], key)
   })
@@ -101,7 +113,7 @@ function forEachSorted (obj, iterator, context) {
 
 function buildUrl (url, params) {
   if (!params) return url
-  let parts = []
+  const parts = []
   forEachSorted(params, function (value, key) {
     if (value == null) { // jshint ignore:line
       return
@@ -139,23 +151,23 @@ let __lastRequestURL
  * @param  {Boolean} [requestConfig.withCredentials]
  * @param  {String} [requestConfig.responseType]
  * @param {Function} [requestConfig.onProgress]
- * @returns {Promise}
+ * @returns {Promise<XHRResponse>}
  */
 function xhr (requestConfig) {
-  let defaults = xhrDefaults
-  let config = {
+  const defaults = xhrDefaults
+  const config = {
     transformRequest: defaults.transformRequest,
     transformResponse: defaults.transformResponse
   }
-  let mergeHeaders = function (config) {
+  const mergeHeaders = function (config) {
     let defHeaders = defaults.headers
-    let reqHeaders = ubUtils.apply({}, config.headers)
+    const reqHeaders = ubUtils.apply({}, config.headers)
     let defHeaderName, lowercaseDefHeaderName, reqHeaderName
 
-    let execHeaders = function (headers) {
+    const execHeaders = function (headers) {
       forEach(headers, function (headerFn, header) {
         if (typeof headerFn === 'function') {
-          let headerContent = headerFn()
+          const headerContent = headerFn()
           if (headerContent) {
             headers[header] = headerContent
           } else {
@@ -174,16 +186,16 @@ function xhr (requestConfig) {
     // using for-in instead of forEach to avoid unecessary iteration after header has been found
     // noinspection Eslint
     defaultHeadersIteration:
-      for (defHeaderName in defHeaders) {
-        lowercaseDefHeaderName = lowercase(defHeaderName)
-        for (reqHeaderName in reqHeaders) {
-          if (lowercase(reqHeaderName) === lowercaseDefHeaderName) {
-            // noinspection Eslint
-            continue defaultHeadersIteration
-          }
+    for (defHeaderName in defHeaders) {
+      lowercaseDefHeaderName = lowercase(defHeaderName)
+      for (reqHeaderName in reqHeaders) {
+        if (lowercase(reqHeaderName) === lowercaseDefHeaderName) {
+          // noinspection Eslint
+          continue defaultHeadersIteration
         }
-        reqHeaders[defHeaderName] = defHeaders[defHeaderName]
       }
+      reqHeaders[defHeaderName] = defHeaders[defHeaderName]
+    }
     return reqHeaders
   }
   let headers = mergeHeaders(requestConfig)
@@ -192,9 +204,9 @@ function xhr (requestConfig) {
   config.headers = headers
   config.method = config.method ? config.method.toUpperCase() : 'GET'
 
-  let transformResponse, serverRequest, promise
+  let promise
 
-  transformResponse = function (response) {
+  const transformResponse = function (response) {
     return transformDataPromise(response.data, response.headers, config.transformResponse)
       .then(function (trdData) {
         response.data = trdData
@@ -202,9 +214,9 @@ function xhr (requestConfig) {
       })
   }
 
-  serverRequest = function (config) {
+  const serverRequest = function (config) {
     headers = config.headers
-    let reqData = transformData(config.data, headersGetter(headers), config.transformRequest)
+    const reqData = transformData(config.data, headersGetter(headers), config.transformRequest)
     // strip content-type if data is undefined
     if (!config.data) {
       forEach(headers, function (value, header) {
@@ -217,7 +229,7 @@ function xhr (requestConfig) {
         // prevent reiteration sending of the same request
         // for example if HTML button on the form got a focus, user press `space` and button is not
         // disabled inside `onclick` handler then quite the same requests the same we got a many-many same requests
-        let prevReqTime = __lastRequestTime
+        const prevReqTime = __lastRequestTime
         __lastRequestTime = Date.now()
         if ((__lastRequestURL === config.url) && (typeof reqData === 'string') && (__lastRequestData === reqData) && (__lastRequestTime - prevReqTime < 100)) {
           ubUtils.logError('Quite the same request repeated 2 or more times in the last 100ms (so called monkey request). The request is', reqData)
@@ -248,15 +260,15 @@ function xhr (requestConfig) {
   }).map(function (interceptor) {
     return { success: interceptor.request, failure: interceptor.requestError }
   })
-  .concat({ success: serverRequest })
-  .concat(interceptors.filter(function (interceptor) {
-    return !!interceptor.response || !!interceptor.responseError
-  }).map(function (interceptor) {
-    return { success: interceptor.response, failure: interceptor.responseError }
-  })
-  ).forEach(function (then) {
-    promise = promise.then(then.success, then.failure)
-  })
+    .concat({ success: serverRequest })
+    .concat(interceptors.filter(function (interceptor) {
+      return !!interceptor.response || !!interceptor.responseError
+    }).map(function (interceptor) {
+      return { success: interceptor.response, failure: interceptor.responseError }
+    })
+    ).forEach(function (then) {
+      promise = promise.then(then.success, then.failure)
+    })
 
   return promise
 }
@@ -278,19 +290,20 @@ const CONTENT_TYPE_APPLICATION_JSON = { 'Content-Type': 'application/json;charse
  * @property {Object} xhrDefaults.headers Default headers to apply to request (depending of method)
  * @property {Number} xhrDefaults.timeout Default timeout to apply to request
  */
-let xhrDefaults = {
-  transformRequest: [function (data) {
-    return !!data && typeof data === 'object' && data.toString() !== '[object File]' && data.toString() !== '[object ArrayBuffer]'
-      ? JSON.stringify(data) : data
-  }],
-  transformResponse: [function (data, headers) {
+const xhrDefaults = {
+  transformRequest: function (data) {
+    return !!data && (typeof data === 'object') && !(data instanceof File) && !(data instanceof ArrayBuffer || data.buffer instanceof ArrayBuffer)
+      ? JSON.stringify(data)
+      : data
+  },
+  transformResponse: function (data, headers) {
     if (data && (typeof data === 'string') && (headers('content-type') || '').indexOf('json') >= 0) {
       data = JSON.parse(data)
     }
     return data
-  }],
+  },
   headers: {
-    common: { 'Accept': 'application/json, text/plain, */*' },
+    common: { Accept: 'application/json, text/plain, */*' },
     post: CONTENT_TYPE_APPLICATION_JSON,
     put: CONTENT_TYPE_APPLICATION_JSON,
     patch: CONTENT_TYPE_APPLICATION_JSON
@@ -314,10 +327,10 @@ const pendingRequests = []
 
 const XHR = XMLHttpRequest
 function sendReq (config, reqData, reqHeaders) {
-  let url = buildUrl(config.url, config.params)
+  const url = buildUrl(config.url, config.params)
   return new Promise(function (resolve, reject) {
     let xhr = new XHR()
-    let aborted = -1
+    const aborted = -1
     let status, timeoutId
 
     pendingRequests.push(config)
@@ -349,7 +362,7 @@ function sendReq (config, reqData, reqHeaders) {
         // normalize status, including accounting for IE bug (http://bugs.jquery.com/ticket/1450)
         status = Math.max(status === 1223 ? 204 : status, 0)
 
-        let idx = pendingRequests.indexOf(config)
+        const idx = pendingRequests.indexOf(config)
         if (idx !== -1) {
           pendingRequests.splice(idx, 1)
         }

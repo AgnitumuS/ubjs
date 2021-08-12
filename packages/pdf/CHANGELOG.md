@@ -15,6 +15,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.1] - 2021-08-09
+### Added
+ - `TimesNewRoman_Cyr`: added `&nbsp` `§` and `®` signs
+ - font mapping feature added. Allows to use a font subset for specified fonts to reduce PDF size without
+   change a PDF generation source code. See README for details
+
+## [5.2.0] - 2021-08-04
+### Added
+ - TimesNewRoman_Cyr font added - a subset of TimesNewRoman with English, Cyrillic and punctuation only. Can be used to create small (-350Kb) Cyrillic PDFs.
+
+   Included characters are: 
+   ```!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_abcdefghijklmnopqrstuvwxyz{|}~©«´»ЁЂЃЄЅІЇЈЉЊЋЌЍЎЏАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяѐёђѓєѕіїҌҍҐґ‘’‚‛“”„‟′″‴‵‶‷‸‹›№```
+
+## [5.1.0] - 2021-03-25
+### Changed
+ - migrate build to a webpack5
+
 ## [5.0.31] - 2020-04-10
 ### Fixed
  - fix potential invalid position calculation in HTLMToPdf (invalid use of let inside switch)

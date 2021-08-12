@@ -5,10 +5,12 @@ const transport = require('./transport')
 const conn = require('./AsyncConnection')
 const injection = require('./injection')
 const ClientRepository = require('./ClientRepository')
+const LocalRepository = require('./LocalRepository')
 const UBCache = require('./UBCache')
 const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
 const iso8601ParseAsDate = LocalDataStore.iso8601ParseAsDate
 const truncTimeToUtcNull = LocalDataStore.truncTimeToUtcNull
+const formatByPattern = require('@unitybase/cs-shared').formatByPattern
 const CryptoJS = require('@unitybase/cryptojs')
 // const CryptoJSCore = require('@unitybase/cryptojs/core')
 const SHA256 = require('@unitybase/cryptojs/sha256')
@@ -87,6 +89,22 @@ const UB = module.exports = {
    */
   format: function (stringToFormat, ...values) { return utils.format(stringToFormat, ...values) },
   /**
+   * Locale based Date and Number formatters, See details in `@unitybase/cs-shared/formatByPattern`
+   * @example
+ const d = new Date(2020, 04, 23, 13, 14)
+ UB.formatter.formatDate(d, 'date') // without 3rd lang parameter - will be formatted for user default lang (for uk - 23.05.2020)
+ UB.formatter.formatDate('2020-05-23', 'date', 'uk') // 23.05.2020
+ UB.formatter.formatDate(d, 'date', 'en') // 05/23/2020
+ UB.formatter.formatDate(d, 'dateTime', 'uk') // 23.05.2020 13:14
+ UB.formatter.formatDate(d, 'date', 'en') // 05/23/2020, 1:14 PM
+ const n = 2305.1
+ UB.formatter.formatNumber(n, 'sum', 'en') // 2,305.10
+ UB.formatter.formatNumber('2305.1', 'sum', 'en') // 2,305.10
+ UB.formatter.formatNumber(n, 'sum') // without 3rd lang parameter - will be formatted for user default lang (for uk "2 305,10")
+   * @type {module:formatByPattern}
+   */
+  formatter: formatByPattern,
+  /**
    * Copies all the properties of one or several objectsFrom to the specified objectTo.
    * Non-simple type copied by reference!
    * @param {Object} objectTo The receiver of the properties
@@ -97,11 +115,12 @@ const UB = module.exports = {
   /**
    * Creates namespaces to be used for scoping variables and classes so that they are not global.
    * @example
-   *     UB.ns('DOC.Report');
-   *
-   *     DOC.Report.myReport = function() { ... };
-   *
+
+UB.ns('DOC.Report')
+DOC.Report.myReport = function() { ... }
+
    * @method
+   * @deprecated Try to avoid namespaces - instead create a module and use require()
    * @param {String} namespacePath
    * @return {Object} The namespace object.
    */
@@ -166,33 +185,31 @@ const UB = module.exports = {
    */
   UBAbortError: utils.UBAbortError,
   log: utils.log,
+  /**
+   * Log error message to console (if console available)
+   * @method
+   * @param {...*} msg
+   */
   logError: utils.logError,
+  /**
+   * Log warning message to console (if console available)
+   * @method
+   * @param {...*} msg
+   */
   logWarn: utils.logWarn,
   logDebug: utils.logDebug,
   /**
-   * An asynchronous HTTP request. Returns a {Promise} object with the
-   *  standard Promise methods (<a href="https://github.com/kriskowal/q/wiki/Coming-from-jQuery#reference">reference</a>).
-   *  The `then` method takes two arguments a success and an error callback which will be called with a response object.
-   *  The arguments passed into these functions are destructured representation of the response object passed into the
-   *  `then` method. The response object has these properties:
-   *
-   *   - **data** – `{string|Object}` – The response body transformed with the transform
-   *     functions. Default transform check response content-type is application/json and if so - convert data to Object
-   *   - **status** – `{number}` – HTTP status code of the response.
-   *   - **headers** – `{function([headerName])}` – Header getter function.
-   *   - **config** – `{Object}` – The configuration object that was used to generate the request.
+   * An asynchronous HTTP request. Returns a Promise, what resolves to the {@link module:transport#XHRResponse XHRResponse} object:
    *
    * @example
 
 //Get some data from server:
-UB.xhr({url: 'getAppInfo'}).then(function(resp) {
-  console.log('this is appInfo: %o', resp.data)
-})
+const resp = await UB.xhr({url: 'getAppInfo'})
+console.log('app info: %o', resp.data)
 
-//The same, but in more short form via {@link get UB.get} shorthand:
-UB.get('getAppInfo').then(function(resp) {
-  console.log('this is appInfo: %o', resp.data)
-})
+//The same, but in more short form via `UB.get` shorthand:
+const resp = await UB.get('getAppInfo')
+console.log('app info: %o', resp.data)
 
 //Run POST method:
 UB.post('ubql', [
@@ -204,17 +221,16 @@ UB.post('ubql', [
 })
 
 //retrieve binary data as ArrayBuffer
-UB.get('downloads/cert/ACSK(old).cer', {responseType: 'arraybuffer'})
-.then(function(res){
- console.log('Got Arrray of %d length', res.data.byteLength);
-})
+const resp = await UB.get('downloads/cert/ACSK(old).cer', {responseType: 'arraybuffer'})
+console.log('Got ArrayBuffer of %d byte length', resp.data.byteLength);
 
    * @param {Object} requestConfig Object describing the request to be made and how it should be
    *    processed. The object has following properties:
    * @param {String} requestConfig.url  Absolute or relative URL of the resource that is being requested
    * @param {String} [requestConfig.method] HTTP method (e.g. 'GET', 'POST', etc). Default is GET
    * @param {Object.<string|Object>} [requestConfig.params] Map of strings or objects which will be turned
-   *      to `?key1=value1&key2=value2` after the url. If the value is not a string, it will be JSONified
+   *      to `?key1=value1&key2=value2` after the url. If the value is not a string, it will be JSONified.
+   *      Keys and values are URL encoded inside a function.
    * @param {String|Object} [requestConfig.data] Data to be sent as the request message data
    * @param {Object} [requestConfig.headers]  Map of strings or functions which return strings representing
    *      HTTP headers to send to the server. If the return value of a function is null, the
@@ -233,24 +249,39 @@ UB.get('downloads/cert/ACSK(old).cer', {responseType: 'arraybuffer'})
    * @param  {String} [requestConfig.responseType] see <a href="https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest#responseType">responseType</a>.
    * @param {Function} [requestConfig.onProgress] XHR onProgress callback, see <a href="https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent">ProgressEvent</a> for details.
    *      To be user instead obsolete Q Promise.progress()
-   * @returns {Promise}
+   * @returns {Promise<XHRResponse>}
    */
   xhr: function (requestConfig) { return transport.xhr(requestConfig) },
+
   /**
-   * Shortcut for {@link xhr} to perform a `GET` request.
+   * Shortcut for {@link module:@unitybase/ub-pub#xhr UB.xhr} to perform a `GET` request
+   * @example
+
+// GET http://my-api.com?param=val
+const resp = await UB.get('http://my-api.com', {params: {param: 'val'}})
+console.log(resp.data)
+
    * @param {string} url Relative or absolute URL specifying the destination of the request
    * @param {Object=} [config] Optional configuration object as in {@link xhr UB.xhr}
-   * @returns {Promise} Future object
+   * @returns {Promise<XHRResponse>}
    */
   get: function (url, config) { return transport.get(url, config) },
+
   /**
-   * Shortcut for {@link xhr} to perform a `POST` request.
+   * Shortcut for {@link module:@unitybase/ub-pub#xhr UB.xhr} to perform a `POST` request
+   * @example
+
+// POST http://my-api.com?param1=12&param2=someVal with body contains a stringified object
+const resp = await UB.post('http://my-api.com', {this: 'is', body: 'of' request}, {params: {param1: 12, param2: 'someVal'}})
+console.log(resp.data)
+
    * @param {string} url Relative or absolute URL specifying the destination of the request
    * @param {*} data Request content
-   * @param {Object=} [config] Optional configuration object as in {@link xhr UB.xhr}
-   * @returns {Promise} Future object
+   * @param {Object=} [config] Optional configuration object as in {@link module:@unitybase/ub-pub#xhr UB.xhr}
+   * @returns {Promise<XHRResponse>}
    */
   post: function (url, data, config) { return transport.post(url, data, config) },
+
   /**
    * Class for communicate with native messages plugin `content script`.
    * @type {UBNativeMessage}
@@ -353,6 +384,21 @@ conn.then(function(conn){
     throw new Error('function defined only after connect()')
   },
   /**
+   * Create a new instance of a repository based on a local data
+   * @example
+
+   const UB = require('@unitybase/ub-pub')
+   const localData = {data: [[1, 'Jon'], [2, 'Bob']], fields: ['ID', 'name'], rowCount: 2}
+   await UB.LocalRepository(localData, 'uba_user').attrs('name').where('ID', '=', 2).selectScalar() // "Bob"
+
+   * @param {TubCachedData} localData
+   * @param {string} entityName
+   * @return {LocalRepository}
+   */
+  LocalRepository: function (localData, entityName) {
+    return new LocalRepository(localData, entityName)
+  },
+  /**
    * Set a error reported callback for unhandled errors (including unhandled promise rejections).
    * Callback signature `function({errMsg, errCode, entityCode, detail})`
    *  - `errMsg` is already translated using UB.i18n
@@ -370,21 +416,21 @@ conn.then(function(conn){
    * For a UI other then adminUI developer can call `UB.setErrorReporter` to set his own error reporter
    * @example
 
-      const UB = require('@unitybase/ub-pub')
-      const vm = new Vue({
-        ...
-        methods: {
-          showError: function(errMsg, errCode, entityCode, detail) {
-            this.$message({
-              showClose: true,
-              message: errMsg,
-              type: 'error'
-            })
-          }
-          ...
-      })
-      UB.setErrorReporter(vm.showError.bind(vm))
-   *
+  const UB = require('@unitybase/ub-pub')
+  const vm = new Vue({
+    ...
+    methods: {
+      showError: function(errMsg, errCode, entityCode, detail) {
+        this.$message({
+          showClose: true,
+          message: errMsg,
+          type: 'error'
+        })
+      }
+      ...
+  })
+  UB.setErrorReporter(vm.showError.bind(vm))
+
    * @param {String|Object|Error|UBError} errMsg  message to show
    * @param {String} [errCode] error code
    * @param {String} [entityCode] entity code
@@ -411,7 +457,7 @@ conn.then(function(conn){
   appConfig: null,
   /**
    * Helper class for manipulation with data, stored locally in ({@link TubCachedData} format)
-   * @type {LocalDataStore}
+   * @type {module:LocalDataStore}
    */
   LocalDataStore: LocalDataStore,
 
@@ -490,7 +536,18 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
    * Legacy for old adminUI. UBUtil.js will define this property
    * @private
    */
-  Utils: {}
+  Utils: {},
+
+  LIMITS: {
+    /**
+     * lookups are limited to this value using limit(lookupMaxRows). If result contains a lookupMaxRows rows - error outputted into console.error
+     */
+    lookupMaxRows: 10000,
+    /**
+     * If lookup contains more when lookupWarningRows - outputted console.warn
+     */
+    lookupWarningRows: 2500
+  }
 }
 
 /**
@@ -498,6 +555,15 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
  * @method
  */
 UB.xhr.allowRequestReiteration = transport.xhr.allowRequestReiteration
+/**
+ * Direct access to the default HTTP parameters for {xhr}. Can be used, for example, to change http request timeout globally:
+ * @example
+
+ const UB = require('@unitybase/ub-pub')
+ UB.xhr.defaults.timeout = 300000 // set all ajax requests timeout to 5 minutes
+
+ */
+UB.xhr.defaults = transport.xhrDefaults
 /**
  * Vue JS integration
  *  - inject UB localization {@link UB.i18n UB.i18n} to global Vue instance as $ut:
@@ -525,7 +591,7 @@ UB.xhr.allowRequestReiteration = transport.xhr.allowRequestReiteration
      }
   }
 
- * @param vue
+ * @param {Vue} Vue
  */
 UB.install = function (Vue) {
   _globalVueInstance = Vue

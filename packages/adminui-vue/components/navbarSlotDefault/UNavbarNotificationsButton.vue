@@ -64,7 +64,7 @@
               {{ getTypeLocaleString(item.messageType) }}
             </span>
             <span class="notifications__item__date">
-              {{ $moment(item.startDate).format('L') }}
+              {{ $UB.formatter.formatDate(item.startDate, 'dateTime') }}
             </span>
           </div>
           <div
@@ -120,6 +120,15 @@ export default {
   computed: {
     unreadMessagesCount () {
       return this.messages.filter(m => m['recipients.acceptDate'] === null).length
+    },
+    unreadSystemMessages () {
+      return this.messages.filter(m => m.messageType === 'system' && m['recipients.acceptDate'] === null)
+    }
+  },
+
+  watch: {
+    messages () {
+      this.checkForUnreadSystemMessages(this.unreadSystemMessages)
     }
   },
 
@@ -132,6 +141,12 @@ export default {
   },
 
   methods: {
+    checkForUnreadSystemMessages (value) {
+      if (value && value.length) {
+        this.showHistory(value[0].ID, true)
+      }
+    },
+
     checkOverflowed () {
       if (this.$refs.message === undefined) return
       for (const message of this.$refs.message) {
@@ -167,11 +182,18 @@ export default {
       })
     },
 
-    showHistory (ID) {
+    /**
+     * Opens ubs_message form and set focus on received message ID
+     * @param ID {number} - message ID
+     * @param isModal {boolean} - if true, opens form in modal
+     */
+    showHistory (ID, isModal = false) {
       this.isVisible = false
       $App.doCommand({
         cmdType: 'showForm',
         entity: 'ubs_message',
+        isModal: isModal,
+        modalWidth: '90vw',
         props: {
           messageIdOnOpen: ID
         }

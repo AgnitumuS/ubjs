@@ -52,6 +52,9 @@
     "mStorage": {
       "simpleAudit": true,
       "safeDelete": true
+    },
+    "multitenancy": {
+      "enabled": false
     }
   },
   "dbKeys": {

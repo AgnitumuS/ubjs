@@ -31,9 +31,11 @@
 
       <slot />
 
-      <u-dropdown-item divider />
+      <!--   Prevent duplicate dividers   -->
+      <u-dropdown-item divider v-if="scannerEnabled"/>
 
       <u-dropdown-item
+        v-if="scannerEnabled"
         label="userSettings"
         icon="u-icon-setting"
       >
@@ -45,6 +47,7 @@
       </u-dropdown-item>
 
       <u-dropdown-item
+        v-if="userCanChangePassword"
         label="changePassword"
         icon="u-icon-key"
         @click="changePassword"
@@ -108,8 +111,12 @@ export default {
     const cfg = this.$UB.connection.appConfig
     const customVersion = this.$UB.connection.userData('appVersion')
     const appVersion = customVersion || `${cfg.serverVersion} / ${cfg.appVersion}`
+    const scannerEnabled = !this.$UB.connection.appConfig.uiSettings.adminUI.disableScanner
+    const userCanChangePassword = this.$UB.connection.userCanChangePassword()
     return {
       silenceKerberosLogin,
+      scannerEnabled,
+      userCanChangePassword,
       negotiateAvailable: negotiateAvailable,
       userName,
       appVersion,

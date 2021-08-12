@@ -1,0 +1,6 @@
+{
+  "errUnableToPerformThisOperation": "<<<Tidak dapat melakukan operasi ini. Hubungi administrator>>>",
+  "errNoRightsForInsUpdateGovOrg": "<<<Anda tidak dapat melakukan operasi ini, karena Anda don t 'memiliki hak untuk menambahkan/ memperbarui organisasi dengan otoritas pemerintah>>>",
+  "errNotExsistsOKPO": "<<<Tidak ada kode OKPO>>>",
+  "errMustContainsOnly8Or10Symbols": "<<<Kode keharusan hanya 8 atau 10 simbol>>>"
+}
