@@ -142,8 +142,8 @@ test('Move folder and shortcut to Desktop', async t => {
   testFolderID = await leftPanel.treeItems.getIdByAttr('code', 'test_folder_code')
   let testShtID = await leftPanel.treeItems.getIdByAttr('code', 'test_shortcut_code')
   await t
-    .expect(Selector(testFolderID).exists).ok(`Folder with id ${testFolderID} is not exist in Test Desktop menu now`)
-    .expect(Selector(testShtID).exists).notOk(`Shortcut with id ${testShtID} is exist in Test Desktop menu now`)
+    .expect(Selector(testFolderID).exists).ok(`Folder with id ${testFolderID} does not exist in Test Desktop menu now`)
+    .expect(Selector(testShtID).exists).notOk(`Shortcut with id ${testShtID} exists in Test Desktop menu now`)
 
   // Select Desktop on top navbar which the folder was moved
   let mainToolbar = ext.mainToolbar
@@ -186,8 +186,8 @@ test('Move folder and shortcut to Desktop', async t => {
   testFolderID = await leftPanel.treeItems.getIdByAttr('code', 'test_folder_code')
   testShtID = await leftPanel.treeItems.getIdByAttr('code', 'test_shortcut_code')
   await t
-    .expect(Selector(testFolderID).exists).ok(`Folder with id ${testFolderID} is not exist in Test Desktop menu now`)
-    .expect(Selector(testShtID).exists).ok(`Shortcut with id ${testShtID} is not exist in Test Desktop menu now`)
+    .expect(Selector(testFolderID).exists).ok(`Folder with id ${testFolderID} does not exist in Test Desktop menu now`)
+    .expect(Selector(testShtID).exists).ok(`Shortcut with id ${testShtID} does not exist in Test Desktop menu now`)
 })
 
 test('Open Desktop details', async t => {

@@ -154,7 +154,7 @@ test('Edit Form', async t => {
   let cdnDesktopRow = await grid.rows.getIdByAttr('code', 'cdn_desktop')
 
   await t
-    .expect(Selector(cdnDesktopRow).exists).ok('cdn_desktop is not exist, make sure that the CDN model exists in the system')
+    .expect(Selector(cdnDesktopRow).exists).ok('cdn_desktop does not exist, make sure that the CDN model exists in the system')
     .doubleClick(cdnDesktopRow)
 
   // The system should dispay Desktop editing window in new tab
