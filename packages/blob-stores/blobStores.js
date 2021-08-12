@@ -50,6 +50,7 @@ const FileSystemBlobStore = require('./fileSystemBlobStore')
 // const TubDataStore = require('../TubDataStore')
 const BLOB_HISTORY_STORE_NAME = 'ub_blobHistory'
 let _blobHistoryDataStore
+
 /**
  * @private
  * @return {TubDataStore}
@@ -65,6 +66,8 @@ function getBlobHistoryDataStore () {
  * @private
  */
 let App
+// App.fsObserve available in UB@5.20.4
+let fsObserve = function () {}
 /**
  * @type {UBSession}
  * @private
@@ -83,6 +86,9 @@ const blobStoresMap = {}
   */
 function initBLOBStores (appInstance, sessionInstance) {
   App = appInstance
+  if (App.fsObserve) {
+    fsObserve = App.fsObserve
+  }
   Session = sessionInstance
   Session = sessionInstance
   const blobStores = App.serverConfig.application.blobStores
@@ -273,7 +279,7 @@ function getRequestedBLOBInfo (parsedRequest) {
  * @param {BlobStoreRequest} requestParams
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
- * @return {{success: boolean, reason: string}}
+ * @return {{success: boolean, reason?: string}}
  */
 function internalWriteDocumentToResp (requestParams, req, resp) {
   const parsed = parseBlobRequestParams(requestParams)
@@ -399,7 +405,10 @@ function getContent (request, options) {
       throw new Error(requested.reason)
     }
   }
-  return requested.store.getContent(parsed.bsReq, requested.blobInfo, options)
+  const st = Date.now()
+  const content = requested.store.getContent(parsed.bsReq, requested.blobInfo, options)
+  fsObserve((Date.now() - st) / 1000, requested.blobInfo.store.name, 'getcontent')
+  return content
 }
 
 /**
@@ -464,8 +473,11 @@ function setDocumentEndpoint (req, resp) {
   } else {
     content = req
   }
+
+  const st = Date.now()
   const blobStoreItem = store.saveContentToTempStore(parsed.bsReq, attribute, content)
   resp.statusCode = 200
+  fsObserve((Date.now() - st) / 1000, store.name, 'save2tmp')
   resp.writeEnd({ success: true, errMsg: '', result: blobStoreItem })
 }
 
@@ -497,7 +509,10 @@ function putContent (request, content) {
   const storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   const store = blobStoresMap[storeCode]
   if (!store) throw new Error(`Blob store ${storeCode} not found in application config`)
-  return store.saveContentToTempStore(parsed.bsReq, attribute, content)
+  const st = Date.now()
+  const resp = store.saveContentToTempStore(parsed.bsReq, attribute, content)
+  fsObserve((Date.now() - st) / 1000, store.name, 'save2tmp')
+  return resp
 }
 
 /**
@@ -545,7 +560,7 @@ function rotateHistory (store, attribute, ID, blobInfo) {
   }
   const archivedBlobInfo = store.doArchive(attribute, ID, blobInfo)
   // insert new historical item
-  let createdAt = new Date()
+  const createdAt = new Date()
   createdAt.setMilliseconds(0)
   dataStore.run('insert', {
     execParams: {
@@ -601,12 +616,14 @@ function doCommit (attribute, ID, dirtyItem, oldItem) {
   } else if (store.historyDepth) {
     newRevision = estimateNewRevisionNumber(attribute, ID)
   }
+  const st = Date.now()
   const persistedItem = store.persist(attribute, ID, dirtyItem, newRevision)
   if (store.historyDepth) { // for historical stores add item to history
     rotateHistory(store, attribute, ID, persistedItem)
   } else if (oldItem) { // delete / archive old item
     oldItemStore.doDeletion(attribute, ID, oldItem)
   }
+  fsObserve((Date.now() - st) / 1000, store.name, 'persist')
   return persistedItem
 }
 

@@ -1951,7 +1951,7 @@ UbPkiInterface.prototype.getPrivateKeyOwnerInfo = function () {}
  *
  * @param {Uint8Array|ArrayBuffer|String|BlobStoreRequest|Array<Uint8Array|ArrayBuffer|String|BlobStoreRequest>} data
  * @param {Boolean} [resultIsBinary=false]
- * @param {function} [ownerKeyValidationFunction] optional function what called with one parameter - certInfo before signing.
+ * @param {function} [ownerKeyValidationFunction] optional function what called with one parameter - certInfo: CertificateJson before signing.
  *   Should validate is owner of passed certificate allowed to perform signing,
  *   for example by check equality of certInfo.serial with conn.userData('userCertificateSerial');
  *   In case function returns rejected promise or throw then private key will be unloaded from memory

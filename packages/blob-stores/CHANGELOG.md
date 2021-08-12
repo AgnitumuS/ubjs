@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - under Linux BLOB stores operation is measured using prometheus `unitybase_fs_operation_duration_seconds` histogram
+   (starting from UB server 5.20.4).
 
 ### Changed
 
