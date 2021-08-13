@@ -52,7 +52,7 @@
           class="u-acl-rls-input-overflow"
         >
           <el-select
-            v-model="dialog.currentEntityName"
+            v-model="dialog.selectedEntity"
             class="u-select"
           >
             <el-option
@@ -64,29 +64,29 @@
           </el-select>
         </u-form-row>
 
-        <template v-if="dialog.currentEntityName">
+        <template v-if="dialog.selectedEntity">
           <u-form-row
-            v-if="!withMappedEntities"
-            :label="dialog.currentEntityName"
+            v-if="mappedEntititesBySelectedEntity.length === 0"
+            :label="dialog.selectedEntity"
             class="u-acl-rls-input-overflow"
           >
             <u-select-multiple
-              v-model="dialog.selected[dialog.currentEntityName]"
-              :repository="getRepoForSelectionByEntity(dialog.currentEntityName)"
+              v-model="dialog.entriesToAdd[dialog.selectedEntity]"
+              :repository="getRepoForSelectionByEntity(dialog.selectedEntity)"
               clearable
             />
           </u-form-row>
 
           <template v-else>
             <u-form-row
-              v-for="childEntity in currentAttrMetaInfo.mappedEntities"
+              v-for="childEntity in mappedEntititesBySelectedEntity"
               :key="childEntity"
               :label="childEntity"
               class="u-acl-rls-input-overflow"
             >
               <u-select-multiple
-                v-model="dialog.selected[dialog.currentEntityName][childEntity]"
-                :repository="getRepoForSelectionByEntity(dialog.currentEntityName, childEntity)"
+                v-model="dialog.entriesToAdd[dialog.selectedEntity][childEntity]"
+                :repository="getRepoForSelectionByEntity(dialog.selectedEntity, childEntity)"
                 clearable
               />
             </u-form-row>
@@ -179,8 +179,8 @@ export default {
     return {
       dialog: {
         isVisible: false,
-        currentEntityName: null,
-        selected: {}
+        selectedEntity: null,
+        entriesToAdd: {}
       },
       lookups: {},
       lookupsLoaded: false
@@ -210,8 +210,7 @@ export default {
           return {
             code,
             associatedEntity,
-            mappedEntities,
-            hasMappedEntities: mappedEntities.length > 0
+            mappedEntities
           }
         })
     },
@@ -240,21 +239,17 @@ export default {
       })
     },
 
-    currentAttrMetaInfo () {
-      return this.aclAttributes.find(attr => attr.associatedEntity === this.dialog.currentEntityName)
-    },
-
-    withMappedEntities () {
-      return this.currentAttrMetaInfo?.hasMappedEntities
+    mappedEntititesBySelectedEntity () {
+      return this.getAttrInfoByAssociatedEntity(this.dialog.selectedEntity).mappedEntities
     },
 
     canSubmit () {
-      return Object.keys(this.dialog.selected).flatMap(entity => this.getSelectedIdsByEntityName(entity)).length > 0
+      return Object.keys(this.dialog.entriesToAdd).flatMap(entity => this.getDialogSelectedIds(entity)).length > 0
     }
   },
 
   watch: {
-    'dialog.currentEntityName' () {
+    'dialog.selectedEntity' () {
       this.resetSelectedItems()
     }
   },
@@ -293,8 +288,8 @@ export default {
     },
 
     async sortMappedEntities () {
-      for (const { associatedEntity, hasMappedEntities, mappedEntities } of this.aclAttributes) {
-        if (!hasMappedEntities) {
+      for (const { associatedEntity, mappedEntities } of this.aclAttributes) {
+        if (mappedEntities.length === 0) {
           continue
         }
 
@@ -352,21 +347,21 @@ export default {
 
     closeDialog () {
       this.dialog.isVisible = false
+      this.dialog.selectedEntity = null
       this.resetSelectedItems()
-      this.dialog.currentEntityName = null
     },
 
     resetSelectedItems () {
-      for (const { associatedEntity, hasMappedEntities, mappedEntities } of this.aclAttributes) {
-        const storeByItem = hasMappedEntities
+      for (const { associatedEntity, mappedEntities } of this.aclAttributes) {
+        const storeByItem = mappedEntities.length > 0
           ? Object.fromEntries(mappedEntities.map(entity => [entity, []]))
           : []
-        this.$set(this.dialog.selected, associatedEntity, storeByItem)
+        this.$set(this.dialog.entriesToAdd, associatedEntity, storeByItem)
       }
     },
 
     getDialogSelectedIds (unityEntity, entity) {
-      const selectedSource = this.dialog.selected[unityEntity]
+      const selectedSource = this.dialog.entriesToAdd[unityEntity]
 
       if (entity) {
         return selectedSource[entity]
@@ -377,31 +372,30 @@ export default {
         : Object.values(selectedSource).flat()
     },
 
-    getSelectedIdsByEntityName (unityEntity, entity) {
-      const { code } = this.aclAttributes.find(m => m.associatedEntity === unityEntity)
-      const collectionIds = this.collectionData.items.map(item => item.data[code])
-      const dialogIds = this.getDialogSelectedIds(unityEntity, entity)
-
-      return [...collectionIds, ...dialogIds].filter(Boolean)
+    getAttrInfoByAssociatedEntity (entity) {
+      return this.aclAttributes.find(attr => attr.associatedEntity === entity)
     },
 
     getRepoForSelectionByEntity (unityEntity, entity) {
       const repoEntityName = entity || unityEntity
       const descriptionAttribute = connection.domain.get(repoEntityName).getDescriptionAttribute()
-      const selectedIds = this.getSelectedIdsByEntityName(unityEntity, entity)
+
+      const dialogIds = this.getDialogSelectedIds(unityEntity, entity)
+      const { code } = this.getAttrInfoByAssociatedEntity(unityEntity)
+      const collectionIds = this.collectionData.items.map(item => item.data[code])
+      const allSelectedIds = [...collectionIds, ...dialogIds].filter(Boolean)
+
       const repo = Repository(repoEntityName)
         .attrs('ID', descriptionAttribute)
-        .whereIf(selectedIds.length > 0, 'ID', 'notIn', selectedIds)
+        .whereIf(allSelectedIds.length > 0, 'ID', 'notIn', allSelectedIds) // not show in the select control already selected items
 
       return () => repo
     },
 
     async submitRights () {
-      const requests = Object.keys(this.dialog.selected).flatMap(entity => {
-        const { code } = this.aclAttributes.find(meta => meta.associatedEntity === entity)
-        const selectedIds = this.getDialogSelectedIds(entity)
-
-        return selectedIds.map(value => ({
+      const requests = Object.keys(this.dialog.entriesToAdd).flatMap(entity => {
+        const { code } = this.getAttrInfoByAssociatedEntity(entity)
+        return this.getDialogSelectedIds(entity).map(value => ({
           [code]: value,
           instanceID: this.instanceId
         }))
