@@ -1,35 +1,33 @@
 <template>
-  <div class="u-acl-rls-input">
+  <div
+    class="u-acl-rls-input"
+    :style="containerStyle"
+  >
     <h4 class="u-acl-rls__title">
       {{ $ut('UAclRlsInput.access') }}
     </h4>
 
-    <el-button
+    <u-button
       icon="el-icon-plus"
+      appearance="inverse"
       class="u-acl-rls__open-dialog"
       @click="openDialog"
     >
       {{ $ut('UAclRlsInput.add') }}
-    </el-button>
+    </u-button>
 
     <u-table
+      v-if="lookupsLoaded"
       :columns="tableColumns"
-      :items="aclRlsEntries"
+      :items="aclTableItems"
     >
-      <template
-        v-for="attr in rightAttributes"
-        #[attr]="{row}"
-      >
-        {{ row[`${attr}Val`] }}
-      </template>
-
       <template #removeAction="{row}">
-        <el-button
-          type="danger"
+        <u-button
+          color="danger"
           @click="deleteAccessRecord(row.ID)"
         >
           {{ $ut('UAclRlsInput.table.remove') }}
-        </el-button>
+        </u-button>
       </template>
     </u-table>
 
@@ -38,11 +36,11 @@
       :title="$ut('UAclRlsInput.dialog.grantAccess')"
       :visible.sync="dialog.isVisible"
       :close-on-click-modal="false"
+      append-to-body
       width="600px"
       top="0"
       class="u-acl-rls-input-dialog"
       @close="resetSelectedItems"
-      @open="setSocus"
     >
       <u-form-container
         label-position="top"
@@ -54,16 +52,14 @@
           class="u-acl-rls-input-overflow"
         >
           <el-select
-            ref="selectEntity"
             v-model="dialog.currentEntityName"
             class="u-select"
-            :placeholder="$ut('UAclRlsInput.dialog.entity')"
           >
             <el-option
-              v-for="{ entity } in rightAttributesWithMetaInfo"
-              :key="entity"
-              :value="entity"
-              :label="$ut(entity)"
+              v-for="{ associatedEntity } in aclAttributes"
+              :key="associatedEntity"
+              :value="associatedEntity"
+              :label="$ut(associatedEntity)"
             />
           </el-select>
         </u-form-row>
@@ -80,6 +76,7 @@
               clearable
             />
           </u-form-row>
+
           <template v-else>
             <u-form-row
               v-for="childEntity in currentAttrMetaInfo.mappedEntities"
@@ -97,7 +94,7 @@
         </template>
       </u-form-container>
 
-      <template slot="footer">
+      <template #footer>
         <u-button
           appearance="plain"
           @click="closeDialog"
@@ -106,7 +103,7 @@
         </u-button>
 
         <u-button
-          type="primary"
+          color="primary"
           :disabled="!canSubmit"
           @click="submitRights"
         >
@@ -119,10 +116,19 @@
 
 <script>
 const { mapMutations, mapActions } = require('vuex')
-const { Repository } = require('@unitybase/ub-pub')
+const { Repository, connection } = require('@unitybase/ub-pub')
 const { UBDomain } = require('@unitybase/cs-shared')
 
 const NOT_FK_ACL_ATTRIBUTES = ['ID', 'valueID', 'instanceID']
+
+async function loadOrdersByEnumGroup (enumGroup) {
+  const entries = await Repository('ubm_enum')
+    .attrs('sortOrder', 'code', 'eGroup')
+    .where('eGroup', '=', enumGroup)
+    .select()
+
+  return Object.fromEntries(entries.map(({ code, sortOrder }) => [code, sortOrder]))
+}
 
 /**
  * Component is responsible for displaying and managing access rights defined with
@@ -131,13 +137,20 @@ const NOT_FK_ACL_ATTRIBUTES = ['ID', 'valueID', 'instanceID']
 export default {
   name: 'UAclRlsInput',
 
+  inject: {
+    formMaxWidth: { from: 'maxWidth', default: null }
+  },
+
   props: {
     /**
      * Name of key what you set in collectionRequests object
      */
     collectionName: {
       type: String,
-      required: true
+      required: false,
+      default () {
+        return 'aclRlsEntries'
+      }
     },
 
     /**
@@ -145,54 +158,69 @@ export default {
      */
     instanceId: {
       type: Number,
-      required: true
+      required: false,
+      default () {
+        return this.$store.state.data.ID
+      }
+    },
+
+    /**
+     * max width in px
+     */
+    maxWidth: {
+      type: Number,
+      default () {
+        return this.formMaxWidth
+      }
     }
   },
 
-  data: () => ({
-    dialog: {
-      isVisible: false,
-      currentEntityName: null,
-      selected: {}
-    },
-    subjects: {},
-    enumOrders: {}
-  }),
+  data () {
+    return {
+      dialog: {
+        isVisible: false,
+        currentEntityName: null,
+        selected: {}
+      },
+      lookups: {},
+      lookupsLoaded: false
+    }
+  },
 
   computed: {
-    currentCollection () {
+    containerStyle () {
+      if (this.maxWidth) {
+        return { maxWidth: this.maxWidth + 'px' }
+      }
+      return ''
+    },
+
+    collectionData () {
       return this.$store.state.collections[this.collectionName]
     },
 
-    entityAttributes () {
-      return this.$UB.connection.domain.get(this.currentCollection.entity).attributes
-    },
+    aclAttributes () {
+      return connection.domain.get(this.collectionData.entity)
+        .filterAttribute(attr => !NOT_FK_ACL_ATTRIBUTES.includes(attr.code))
+        .map(({ code, associatedEntity }) => {
+          const mappedEntities = connection.domain
+            .filterEntities(entityDef => entityDef.mixin('unity')?.entity === associatedEntity)
+            .map(entityDef => entityDef.code)
 
-    rightAttributes () {
-      return Object.keys(this.entityAttributes).filter(
-        attr => !NOT_FK_ACL_ATTRIBUTES.includes(attr)
-      )
-    },
-
-    rightAttributesWithMetaInfo () {
-      return this.rightAttributes.map(attrName => {
-        const entity = this.entityAttributes[attrName].associatedEntity
-        const mappedEntities = this.getMappedEntities(entity)
-
-        return {
-          attrName,
-          entity,
-          mappedEntities,
-          hasMappedEntities: mappedEntities.length > 0
-        }
-      })
+          return {
+            code,
+            associatedEntity,
+            mappedEntities,
+            hasMappedEntities: mappedEntities.length > 0
+          }
+        })
     },
 
     tableColumns () {
-      return this.rightAttributesWithMetaInfo
-        .map(({ attrName, entity }) => ({
-          id: attrName,
-          label: entity
+      return this.aclAttributes
+        .map(({ code, associatedEntity }) => ({
+          id: code,
+          label: associatedEntity
         }))
         .concat({
           id: 'removeAction',
@@ -201,63 +229,43 @@ export default {
         })
     },
 
-    aclRlsEntries () {
-      return this.currentCollection.items.map(item => {
-        // merge each collection item with values from appropriate dictionary in order to display them in table
-        return this.rightAttributesWithMetaInfo.reduce((itemValues, { entity, attrName }) => {
-          // while dictionary in created hook is not loaded yet
-          if (this.subjects[entity] === undefined) {
-            return itemValues
-          }
-
-          const fieldID = itemValues[attrName]
-          const dictionary = this.subjects[entity]
-          const fieldValue = dictionary[fieldID]
-          const key = `${attrName}Val`
-
-          itemValues[key] = fieldValue
-
-          return itemValues
-        }, { ...item.data })
+    aclTableItems () {
+      return this.collectionData.items.map(item => {
+        const entry = { ...item.data }
+        for (const { code, associatedEntity } of this.aclAttributes) {
+          const fieldID = entry[code]
+          entry[code] = this.lookups[associatedEntity][fieldID]
+        }
+        return entry
       })
     },
 
     currentAttrMetaInfo () {
-      return this.rightAttributesWithMetaInfo.find(
-        meta => meta.entity === this.dialog.currentEntityName
-      )
+      return this.aclAttributes.find(attr => attr.associatedEntity === this.dialog.currentEntityName)
     },
 
     withMappedEntities () {
-      return this.currentAttrMetaInfo && this.currentAttrMetaInfo.hasMappedEntities
+      return this.currentAttrMetaInfo?.hasMappedEntities
     },
 
     canSubmit () {
-      const selectedIds = Object.keys(this.dialog.selected).flatMap(entityName => {
-        return this.getSelectedIdsByEntityName(entityName)
-      })
-
-      return selectedIds.length > 0
+      return Object.keys(this.dialog.selected).flatMap(entity => this.getSelectedIdsByEntityName(entity)).length > 0
     }
   },
 
   watch: {
-    rightAttributes: {
-      immediate: true,
-      async handler () {
-        await this.$nextTick()
-        this.resetSelectedItems()
-      }
-    },
-
     'dialog.currentEntityName' () {
       this.resetSelectedItems()
     }
   },
 
   created () {
-    this.loadSubjects()
-    this.loadEnumOrdersAndSortMappedEntities()
+    this.loadLookups()
+  },
+
+  mounted () {
+    this.sortMappedEntities()
+    this.resetSelectedItems()
   },
 
   methods: {
@@ -270,54 +278,72 @@ export default {
       'addCollectionItemWithoutDefaultValues'
     ]),
 
-    loadSubjects () {
-      for (const { entity } of this.rightAttributesWithMetaInfo) {
-        const { descriptionAttribute } = this.$UB.connection.domain.get(entity)
-        Repository(entity).attrs('ID', descriptionAttribute).select().then(entries => {
-          const keyValueMap = entries.reduce((obj, entry) => {
-            obj[entry.ID] = entry[descriptionAttribute]
-
-            return obj
-          }, {})
-
-          this.$set(this.subjects, entity, keyValueMap)
-        })
-      }
+    async loadLookups () {
+      await Promise.all(
+        this.aclAttributes.map(attrInfo => this.loadLookupsByEntity(attrInfo.associatedEntity))
+      )
+      this.lookupsLoaded = true
     },
 
-    async loadEnumOrdersAndSortMappedEntities () {
-      for (const { entity, hasMappedEntities, mappedEntities } of this.rightAttributesWithMetaInfo) {
+    async loadLookupsByEntity (entity) {
+      const descriptionAttribute = connection.domain.get(entity).getDescriptionAttribute()
+      const entries = await Repository(entity).attrs('ID', descriptionAttribute).select()
+      const mapById = Object.fromEntries(entries.map(e => [e.ID, e[descriptionAttribute]]))
+      this.$set(this.lookups, entity, mapById)
+    },
+
+    async sortMappedEntities () {
+      for (const { associatedEntity, hasMappedEntities, mappedEntities } of this.aclAttributes) {
         if (!hasMappedEntities) {
           continue
         }
 
-        const enumAttrs = Object.entries(this.$UB.connection.domain.get(entity).attributes)
-          .filter(([, attrInfo]) => attrInfo.dataType === UBDomain.ubDataTypes.Enum)
+        const getUnityDefaults = entity => connection.domain.get(entity).mixin('unity').defaults
+        const getUnityDefaultsKey = entity => Object.keys(getUnityDefaults(entity))
+        const arraysIntersaction = (a1, a2) => a1.filter(key => a2.includes(key))
 
-        const enums = await Promise.all(enumAttrs.flatMap(([, { enumGroup }]) => {
-          return Repository('ubm_enum')
-            .attrs('sortOrder', 'code', 'eGroup')
-            .where('eGroup', '=', enumGroup)
-            .select()
-        }))
-        enums.flat().forEach(({ sortOrder, code, eGroup }) => {
-          const enumKey = eGroup + code
-          this.$set(this.enumOrders, enumKey, sortOrder)
-        })
-        this.sortMappedEntitites(mappedEntities, entity)
+        let commonAttributes = getUnityDefaultsKey(mappedEntities[0])
+        for (let i = 1; i < mappedEntities.length; i++) {
+          commonAttributes = arraysIntersaction(commonAttributes, getUnityDefaultsKey(mappedEntities[i]))
+        }
+
+        if (commonAttributes.length !== 1) {
+          throw new Error(
+            'You should define only one default value that will be mapped to the unity entity as it defines an order for displaying in UI'
+          )
+        }
+
+        // set order of controls for unity entities based on values of ONE common attribute
+        const [orderAttrName] = commonAttributes
+
+        const getComparator = (reflect = v => v) => (e1, e2) => {
+          const order1 = reflect(getUnityDefaults(e1)[orderAttrName])
+          const order2 = reflect(getUnityDefaults(e2)[orderAttrName])
+          if (!order1 || !order2) {
+            return 0
+          }
+          return order1 > order2 ? 1 : -1
+        }
+
+        const orderAttrDef = connection.domain.get(associatedEntity).attributes[orderAttrName]
+        const isEnumDataType = orderAttrDef.dataType === UBDomain.ubDataTypes.Enum
+
+        if (isEnumDataType) { // compare by sortOrder of enums
+          loadOrdersByEnumGroup(orderAttrDef.enumGroup).then(entries => {
+            const comparator = getComparator(code => entries[code])
+            mappedEntities.sort(comparator)
+          })
+        } else { // compare by chars
+          mappedEntities.sort(getComparator())
+        }
       }
     },
 
     deleteAccessRecord (aclID) {
       this.DELETE_COLLECTION_ITEM({
         collection: this.collectionName,
-        index: this.currentCollection.items.findIndex(item => item.data.ID === aclID)
+        index: this.aclTableItems.findIndex(item => item.ID === aclID)
       })
-    },
-
-    async setSocus () {
-      await this.$nextTick()
-      this.$refs.selectEntity.focus()
     },
 
     openDialog () {
@@ -331,86 +357,12 @@ export default {
     },
 
     resetSelectedItems () {
-      this.rightAttributes.forEach(attribute => {
-        const { entity, hasMappedEntities, mappedEntities } = this.rightAttributesWithMetaInfo.find(
-          ({ attrName }) => attrName === attribute
-        )
-        if (hasMappedEntities) {
-          this.$set(this.dialog.selected, entity, {})
-          mappedEntities.forEach(mappedEntity => {
-            this.$set(this.dialog.selected[entity], mappedEntity, [])
-          })
-        } else {
-          this.$set(this.dialog.selected, entity, [])
-        }
-      })
-    },
-
-    getMappedEntities (masterEntityName) {
-      return Object.entries(this.$UB.connection.domain.entities)
-        .filter(([entityName, entityInfo]) => {
-          if (!entityInfo.hasMixin('unity')) {
-            return false
-          }
-
-          const unityEntity = entityInfo.mixin('unity').entity
-
-          return unityEntity === masterEntityName
-        })
-        .map(([entityName]) => entityName)
-    },
-
-    /**
-     * Function for sorting mapped enetites of `masteEntityName` entity. It sorts array
-     * of entites' names by defaults property of `unity` mixin. If you define
-     * several default values in `unity` mixin error will be throwed since there
-     * should be only one attribute that will be used for sorting in UI.
-     */
-    sortMappedEntitites (entities, masterEntityName) {
-      const masterEntityMetaInfo = this.$UB.connection.domain.get(masterEntityName)
-
-      entities.sort((entity1, entity2) => {
-        const entityInfo1 = this.$UB.connection.domain.get(entity1)
-        const entityInfo2 = this.$UB.connection.domain.get(entity2)
-        const defaults1 = entityInfo1.mixin('unity').defaults
-        const defaults2 = entityInfo2.mixin('unity').defaults
-
-        if (!defaults1 || !defaults2) {
-          return 0
-        }
-
-        const commonAttributes = Object.keys(defaults1).filter(key => {
-          return Object.keys(defaults2).includes(key)
-        })
-
-        if (commonAttributes.length !== 1) {
-          throw new Error(
-            'You should define only one default value that will be mapped to the unity entity as it defines an order for displaying in UI.'
-          )
-        }
-
-        const [unityClassifierAttribute] = commonAttributes
-        const value1 = defaults1[unityClassifierAttribute]
-        const value2 = defaults2[unityClassifierAttribute]
-        const classifierInfo = masterEntityMetaInfo.attributes[unityClassifierAttribute]
-        const isEnumDataType = classifierInfo.dataType === UBDomain.ubDataTypes.Enum
-
-        if (isEnumDataType) {
-          const { enumGroup } = classifierInfo
-          const order1 = this.enumOrders[enumGroup + value1]
-          const order2 = this.enumOrders[enumGroup + value2]
-
-          if (!order1 || !order2) {
-            return 0
-          }
-
-          // compare sortOrder of ubm_enum entity
-          return order1 > order2 ? 1 : -1
-        }
-
-        // compare chars
-        return value1 > value2 ? 1 : -1
-      })
+      for (const { associatedEntity, hasMappedEntities, mappedEntities } of this.aclAttributes) {
+        const storeByItem = hasMappedEntities
+          ? Object.fromEntries(mappedEntities.map(entity => [entity, []]))
+          : []
+        this.$set(this.dialog.selected, associatedEntity, storeByItem)
+      }
     },
 
     getDialogSelectedIds (unityEntity, entity) {
@@ -420,16 +372,14 @@ export default {
         return selectedSource[entity]
       }
 
-      const flattenSelectedIds = Array.isArray(selectedSource)
+      return Array.isArray(selectedSource)
         ? selectedSource
         : Object.values(selectedSource).flat()
-
-      return flattenSelectedIds
     },
 
     getSelectedIdsByEntityName (unityEntity, entity) {
-      const { attrName } = this.rightAttributesWithMetaInfo.find(m => m.entity === unityEntity)
-      const collectionIds = this.currentCollection.items.map(item => item.data[attrName])
+      const { code } = this.aclAttributes.find(m => m.associatedEntity === unityEntity)
+      const collectionIds = this.collectionData.items.map(item => item.data[code])
       const dialogIds = this.getDialogSelectedIds(unityEntity, entity)
 
       return [...collectionIds, ...dialogIds].filter(Boolean)
@@ -437,51 +387,45 @@ export default {
 
     getRepoForSelectionByEntity (unityEntity, entity) {
       const repoEntityName = entity || unityEntity
-      const { descriptionAttribute } = this.$UB.connection.domain.get(repoEntityName)
+      const descriptionAttribute = connection.domain.get(repoEntityName).getDescriptionAttribute()
       const selectedIds = this.getSelectedIdsByEntityName(unityEntity, entity)
       const repo = Repository(repoEntityName)
         .attrs('ID', descriptionAttribute)
-        .whereIf(selectedIds.length, 'ID', 'notIn', selectedIds)
+        .whereIf(selectedIds.length > 0, 'ID', 'notIn', selectedIds)
 
       return () => repo
     },
 
     async submitRights () {
       const requests = Object.keys(this.dialog.selected).flatMap(entity => {
-        const { attrName } = this.rightAttributesWithMetaInfo.find(meta => meta.entity === entity)
+        const { code } = this.aclAttributes.find(meta => meta.associatedEntity === entity)
         const selectedIds = this.getDialogSelectedIds(entity)
 
         return selectedIds.map(value => ({
-          [attrName]: value,
+          [code]: value,
           instanceID: this.instanceId
         }))
       })
 
       await Promise.all(
-        requests.map(request => {
-          return this.addCollectionItemWithoutDefaultValues({
-            collection: this.collectionName,
-            execParams: request
-          })
-        })
+        requests.map(execParams => this.addCollectionItemWithoutDefaultValues({ collection: this.collectionName, execParams }))
       )
 
       this.closeDialog()
     }
   }
 }
-
 </script>
 
 <style>
-
-.u-acl-rls-input {
-  margin-top: 1rem;
-}
-
 .u-acl-rls__title {
   margin: 0;
   padding-bottom: 12px;
+}
+
+.u-acl-rls-input .u-table {
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .u-acl-rls__open-dialog {
@@ -489,58 +433,32 @@ export default {
   border: 0;
   font-size: 14px;
   color: hsl(var(--hs-primary), var(--l-state-default));
-  background-color: rgba(0, 0, 0, 0);
-}
-
-.u-acl-rls__open-dialog:hover,
-.u-acl-rls__open-dialog:focus {
-  color: hsl(var(--hs-primary), var(--l-state-hover));
-  background-color: rgba(0, 0, 0, 0);
-}
-
-.u-acl-rls__open-dialog:active {
-  color: hsl(var(--hs-primary), var(--l-state-active));
 }
 
 .u-acl-rls-input-dialog {
   display: flex;
-  justify-content: center;
   align-items: center;
 }
-
-.u-acl-rls-input-dialog__form {
-  padding: 0;
-  word-break: normal;
-  overflow: visible;
-}
-
-.u-acl-rls-input-overflow > .u-form-row__content {
-  overflow: hidden;
-}
-
 </style>
 
 <docs>
-
 ```vue
-<u-acl-rls-input
-  collection-name="rightsSubjects"
-  :instance-id="ID"
-/>
-```
-```javascript
+<template>
+  <u-acl-rls-input collection-name="rightsSubjects" />
+</template>
+
 <script>
 const { Form } = require('@unitybase/adminui-vue')
-const { Repository } = require('@unitybase/ub-pub')
+const { Repository, connection } = require('@unitybase/ub-pub')
 
 module.exports.mount = cfg => {
   Form(cfg)
     .processing({
       collections: {
-        rightsSubjects ({state}) {
+        rightsSubjects ({ state }) {
           // should slect all attributes from domain info as we can use '*' on client side
           const attributes = Object.keys(
-            UB.connection.domain.entities['ubm_navshortcut_acl'].attributes
+            connection.domain.entities.ubm_navshortcut_acl.attributes
           )
 
           return Repository('ubm_navshortcut_acl')
@@ -553,12 +471,10 @@ module.exports.mount = cfg => {
     .mount()
 }
 
-module.exports.default = {
-  // root component
+export default {
+  ...
 }
 </script>
 ```
-
-If you want to add some item to collection of aclRls entries use `addCollectionItemWithoutDefaultValues` Vuex action
-
+It is recommended to use the `addCollectionItemWithoutDefaultValues` Vuex action for adding a item to a collection of aclRls entries
 </docs>
