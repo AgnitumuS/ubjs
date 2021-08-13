@@ -273,6 +273,19 @@
     }
   },
 
+  "UAclRlsInput": {
+    "access": "წვდომა",
+    "add": "დამატება",
+    "table": {
+      "remove": "ამოღება"
+    },
+    "dialog": {
+      "grantAccess": "მიეცით წვდომა",
+      "entity": "ერთეული",
+      "grant": "გრანტი"
+    }
+  },
+
   "UTable": {
     "noData": "No data"
   }

@@ -253,6 +253,20 @@
           "moreButton": "Ko'proq"
       }
   },
+
+  "UAclRlsInput": {
+    "access": "Kirish",
+    "add": "Qo'shish",
+    "table": {
+      "remove": "O'chirish"
+    },
+    "dialog": {
+      "grantAccess": "Kirish huquqini berish",
+      "entity": "Tashkilot",
+      "grant": "Grant"
+    }
+  },
+
   "UTable": {
       "noData": "Ma'lumot yo'q"
   }

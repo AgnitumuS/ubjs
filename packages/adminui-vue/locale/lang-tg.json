@@ -270,6 +270,19 @@
     }
   },
 
+  "UAclRlsInput": {
+    "access": "Дастрасӣ",
+    "add": "Илова кардан",
+    "table": {
+      "remove": "Хориҷ кунед"
+    },
+    "dialog": {
+      "grantAccess": "Дастрасӣ додан",
+      "entity": "Воҳид",
+      "grant": "Грант"
+    }
+  },
+
   "UTable": {
     "noData": "Нет данных"
   }

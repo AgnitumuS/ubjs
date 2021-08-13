@@ -274,6 +274,19 @@
     }
   },
 
+  "UAclRlsInput": {
+    "access": "Mengakses",
+    "add": "Menambahkan",
+    "table": {
+      "remove": "Menghapus"
+    },
+    "dialog": {
+      "grantAccess": "Berikan akses",
+      "entity": "Kesatuan",
+      "grant": "Menganugerahkan"
+    }
+  },
+
   "UTable": {
     "noData": "No data"
   }

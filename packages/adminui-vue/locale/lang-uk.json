@@ -216,7 +216,7 @@
     "valueIsUndefined": "Значення \"{0}\" не знайдено в сутності \"{1}\"",
     "dictionaryAdding": "Новий запис",
     "dictionaryAddingChoices": "Елемент <strong>{text}</strong> не знайдено в довіднику '{entity}'. Оберіть: <ul><li><strong>Продовжити</strong> щоб обрати інший елемент</li> <li><strong>Додати</strong> щоб додати новий запис з текстом '{text}'</li> <li><strong>Редагувати</strong> для визначення додаткових реквізитів</li> </ul>",
-    "recordAddedSuccessfully": "Створено новий елемент",
+    "recordAddedSuccessfully": "Створено новий елемент"
   },
 
   "tableRegister": {
@@ -270,6 +270,19 @@
   "USelectEntity": {
     "dropdown": {
       "moreButton": "Більше"
+    }
+  },
+
+  "UAclRlsInput": {
+    "access": "Доступ",
+    "add": "Додати",
+    "table": {
+      "remove": "Видалити"
+    },
+    "dialog": {
+      "grantAccess": "Надати доступ",
+      "entity": "Сутність",
+      "grant": "Надати"
     }
   },
 

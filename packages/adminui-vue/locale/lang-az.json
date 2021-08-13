@@ -273,6 +273,19 @@
     }
   },
 
+  "UAclRlsInput": {
+    "access": "Giriş",
+    "add": "Əlavə et",
+    "table": {
+      "remove": "Sil"
+    },
+    "dialog": {
+      "grantAccess": "Giriş icazəsi verin",
+      "entity": "Varlıq",
+      "grant": "Qrant"
+    }
+  },
+
   "UTable": {
     "noData": "No data"
   }

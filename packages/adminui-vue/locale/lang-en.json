@@ -273,6 +273,19 @@
     }
   },
 
+  "UAclRlsInput": {
+    "access": "Access",
+    "add": "Add",
+    "table": {
+      "remove": "Remove"
+    },
+    "dialog": {
+      "grantAccess": "Grant access",
+      "entity": "Entity",
+      "grant": "Grant"
+    }
+  },
+
   "UTable": {
     "noData": "No data"
   }
