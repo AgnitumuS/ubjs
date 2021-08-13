@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- possibility to manage access for desktops and shortcuts by org_unit by redefining `exprMethod` of aclRls mixin for `ubm_desktop` and `ubm_navshortcut`
+- ability to manage access for desktops and shortcuts by org_unit by redefining `exprMethod`
+  of the `aclRls` mixin for `ubm_desktop` and `ubm_navshortcut`
 
 ### Changed
 - sortOrder of for `ORG_UNITTYPE` enum values in order to use this order on UI for `UAclRlsInput` component
@@ -391,6 +392,3 @@ if (UBA_COMMON.isSuperUser()) return
 ## [4.0.37] - 2017-09-21
 ### Added
  - org_ograccount entity for storing bank's accounts for our organizations  
-
-
-
