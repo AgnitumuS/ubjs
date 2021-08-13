@@ -64,7 +64,7 @@ module.exports.mount = cfg => {
       collections: {
         rightsSubjects: ({ state }) => {
           // select all fields ('*' is ont allowed on client) in order to display them in UAclRlsInput (view its docs)
-          const attributes = Object.keys(UB.connection.domain.entities['ubm_desktop_acl'].attributes)
+          const attributes = Object.keys(UB.connection.domain.entities.ubm_desktop_acl.attributes)
 
           return UB.Repository('ubm_desktop_acl')
             .attrs(attributes)

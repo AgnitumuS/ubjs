@@ -270,19 +270,6 @@
     }
   },
 
-  "UAclRlsInput": {
-    "access": "Доступ",
-    "add": "Добавить",
-    "table": {
-      "remove": "Удалить"
-    },
-    "dialog": {
-      "grantAccess": "Предоставить доступ",
-      "entity": "Сущность",
-      "grant": "Предоставить"
-    }
-  },
-
   "UTable": {
     "noData": "Нет данных"
   }

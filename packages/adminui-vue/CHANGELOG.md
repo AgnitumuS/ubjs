@@ -6,10 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `UaclRlsInput` component. Recommended to use for managing access to some entity with aclRls mixin
-  [See documentation here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/UAclRlsInput.vue)
-- `addCollectionItemWithoutDefaultValues` - new Vuex action - such as `addCollectionItem`
-but does not fetch default params except ID
 
 ### Changed
  - `UCodeMirror`: set minimum height to 50 px to make help icon be inside control if it has only one line

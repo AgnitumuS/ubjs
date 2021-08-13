@@ -1030,26 +1030,6 @@ UB.connection.on('uba_user:refresh', function (data) {
       },
 
       /**
-       * Sends addNew request without fetching default params and push it in collection
-       *
-       * @param {Store} store
-       * @param {object} payload
-       * @param {string} payload.collection Collection name
-       * @param {object} payload.execParams if we need to create new item with specified params
-       */
-      async addCollectionItemWithoutDefaultValues (store, { collection, execParams }) {
-        const { commit } = store
-        const repo = initCollectionsRequests[collection].repository(store)
-        const entity = repo.entityName
-        const { ID } = await UB.connection.addNewAsObject({
-          entity,
-          fieldList: ['ID']
-        })
-
-        commit('ADD_COLLECTION_ITEM', { collection, item: { ID, ...execParams } })
-      },
-
-      /**
        * Lock entity. Applicable for entities with "softLock" mixin
        * @param {Vuex.Store} store
        * @param {boolean} [persistentLock=false] Lock with persistent locking type
