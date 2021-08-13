@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `App.fsObserve` and `App.httpCallObserve` methods - an observation for fs calls and external HTTP calls what stored in 
+  prometheus `unitybase_fs_operation_duration_seconds` & `unitybase_httpext_duration_seconds` buckets.
+  Feature works for US server >= 5.20.4 under Linux.
 
 ### Changed
 
