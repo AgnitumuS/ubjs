@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - adapt `ubm_desktop-fm` and `ubm_navshortcut-fm` forms for managing access depends on org units
--  ubm_query navigation shortcut now shows "Type" column
+ - ubm_query navigation shortcut now shows "Type" column
 
 ### Deprecated
 

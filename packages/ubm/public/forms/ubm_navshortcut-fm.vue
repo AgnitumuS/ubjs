@@ -42,8 +42,6 @@
         <u-auto-field attribute-name="displayOrder" />
 
         <u-acl-rls-input
-          collection-name="rightsSubjects"
-          :instance-id="ID"
           style="grid-column-start: 1; grid-column-end: 4"
         />
       </u-grid>
@@ -70,8 +68,8 @@ module.exports.mount = cfg => {
         }
       },
       collections: {
-        rightsSubjects: ({ state }) => {
-          // select all fields ('*' is ont allowed on client) in order to display them in UAclRlsInput (view its docs)
+        aclRlsEntries: ({ state }) => {
+          // select all fields ('*' is not allowed on client) in order to display them in UAclRlsInput (view its docs)
           const attributes = Object.keys(connection.domain.entities.ubm_navshortcut_acl.attributes)
 
           return Repository('ubm_navshortcut_acl')

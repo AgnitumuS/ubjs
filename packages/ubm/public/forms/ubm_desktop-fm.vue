@@ -45,10 +45,7 @@
 
       <u-auto-field attribute-name="displayOrder" />
 
-      <u-acl-rls-input
-        collection-name="rightsSubjects"
-        :instance-id="ID"
-      />
+      <u-acl-rls-input />
     </u-form-container>
   </div>
 </template>
@@ -62,8 +59,8 @@ module.exports.mount = cfg => {
   Form(cfg)
     .processing({
       collections: {
-        rightsSubjects: ({ state }) => {
-          // select all fields ('*' is ont allowed on client) in order to display them in UAclRlsInput (view its docs)
+        aclRlsEntries: ({ state }) => {
+          // select all fields ('*' is not allowed on the client) in order to display them in UAclRlsInput (view its docs)
           const attributes = Object.keys(UB.connection.domain.entities.ubm_desktop_acl.attributes)
 
           return UB.Repository('ubm_desktop_acl')
@@ -82,7 +79,6 @@ module.exports.default = {
 
   computed: {
     ...mapInstanceFields([
-      'ID',
       'name',
       'caption',
       'code:',
