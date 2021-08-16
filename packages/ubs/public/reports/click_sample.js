@@ -15,7 +15,7 @@ exports.reportCode = {
   */
   buildReport: function (reportParams) {
     const me = this
-    return UB.Repository('cdn_country').attrs(['ID', 'name', 'mi_owner', 'mi_owner.name', 'mi_modifyDate']).selectAsObject({'mi_owner.name': 'ownerName'})
+    return UB.Repository('cdn_country').attrs(['ID', 'name', 'mi_owner', 'mi_owner.name', 'mi_modifyDate']).selectAsObject({ 'mi_owner.name': 'ownerName' })
       .then(function (countries) {
         let result
         const data = {
@@ -46,32 +46,32 @@ exports.reportCode = {
     // prevent default action
     e.preventDefault()
     // get table/cell/row based on event target
-    let cellInfo = UBS.UBReport.cellInfo(e)
+    const cellInfo = UBS.UBReport.cellInfo(e)
     // get entity from a table header dataset (in HTML templete <th> element contains data-entity="entityCode"
-    let entity = cellInfo.table.rows[0].cells[cellInfo.colIndex].dataset.entity
+    const entity = cellInfo.table.rows[0].cells[cellInfo.colIndex].dataset.entity
     // get ID from clicked <a>. (in HTML template <a> element contains data-id="id value"
-    let ID = parseInt(e.target.dataset.id, 10)
+    const ID = parseInt(e.target.dataset.id, 10)
     // to get data from clicked row
     // let dataFromRow = cellInfo.row.dataset.yourAttrName
     // to get data from clicked cell
     // let cellInfo.cell.dataset.yourAttributeName
     if (cellInfo.colIndex === 1) {
       // for first column there is only one action - execute it
-      $App.doCommand({cmdType: 'showForm', entity: entity, instanceID: ID})
+      $App.doCommand({ cmdType: 'showForm', entity: entity, instanceID: ID })
     } else {
       // for second column show context menu and let user choose action
       this.contextMenu.removeAll()
       const menuItems = [{
         text: `Action1 for row: ${cellInfo.rowIndex} col: ${cellInfo.colIndex}, ID: ${ID}`,
-        handler: () => $App.doCommand({cmdType: 'showForm', entity: entity, instanceID: ID})
+        handler: () => $App.doCommand({ cmdType: 'showForm', entity: entity, instanceID: ID })
       }, {
-        text: `Another action`,
-        handler: () => $App.doCommand({cmdType: 'showForm', entity: entity, instanceID: ID})
+        text: 'Another action',
+        handler: () => $App.doCommand({ cmdType: 'showForm', entity: entity, instanceID: ID })
       }, {
         xtype: 'menuseparator'
       }, {
-        text: `And one more`,
-        handler: () => $App.doCommand({cmdType: 'showForm', entity: entity, instanceID: ID})
+        text: 'And one more',
+        handler: () => $App.doCommand({ cmdType: 'showForm', entity: entity, instanceID: ID })
       }]
       this.contextMenu.add(menuItems)
       this.contextMenu.showAt([e.x + this.el.getX(), e.y + this.el.getY()])
@@ -79,7 +79,7 @@ exports.reportCode = {
   },
   onAfterRender: function (iFrame) {
     // prevent content menu for all tr elements
-    function onTrContextmenu(e) {
+    function onTrContextmenu (e) {
       e.preventDefault()
     }
     const trList = iFrame.contentDocument.getElementsByTagName('tr')
