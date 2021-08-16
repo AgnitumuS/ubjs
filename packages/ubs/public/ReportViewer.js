@@ -39,13 +39,13 @@ const HTML_PAGEBREAK_RE = new RegExp('<!-- pagebreak -->', 'gi')
 const HTML_PAGEBREAK_EL = '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="mce-pagebreak"/>'
 
 /**
- * Inject CSS o the documnet
+ * Inject CSS o the document
  * @param doc
  * @param cssText
  */
 function addStyleSheet (doc, cssText) {
-  let head = doc.getElementsByTagName('head')[0]
-  let styleEl = doc.createElement('style')
+  const head = doc.getElementsByTagName('head')[0]
+  const styleEl = doc.createElement('style')
   styleEl.setAttribute('type', 'text/css')
   try {
     styleEl.appendChild(doc.createTextNode(cssText))
@@ -76,7 +76,7 @@ function addStyleSheet (doc, cssText) {
  */
 Ext.define('UBS.ReportViewer', {
   extend: 'Ext.form.Panel',
-  layout: {type: 'vbox', align: 'stretch'},
+  layout: { type: 'vbox', align: 'stretch' },
   width: 700,
   height: 500,
   reportCSSAdded: false,
@@ -91,7 +91,7 @@ Ext.define('UBS.ReportViewer', {
    * @cfg {UBS.UBReport} report
    */
   initComponent: function () {
-    let me = this
+    const me = this
 
     if (me.report && !me.reportType) {
       me.reportType = me.report.reportType
@@ -148,7 +148,7 @@ Ext.define('UBS.ReportViewer', {
                   ui: 'default-toolbar',
                   text: UB.i18n('Print'),
                   handler: function () {
-                    let iFrame = me.reportControl.getEl().dom
+                    const iFrame = me.reportControl.getEl().dom
                     iFrame.contentWindow.print()
                   }
                 }, excelBtn]
@@ -165,7 +165,7 @@ Ext.define('UBS.ReportViewer', {
 
     me.report.init().then(function () {
       if (me.report.onParamPanelConfig) {
-        let onParamForm = me.report.onParamPanelConfig()
+        const onParamForm = me.report.onParamPanelConfig()
         if (onParamForm) {
           me.addParamForm(onParamForm)
         }
@@ -175,9 +175,9 @@ Ext.define('UBS.ReportViewer', {
       }
     }).then(function (paramsFormRequired) {
       if (paramsFormRequired) {
-        let paramsPassed = me.report.incomeParams && (Object.keys(me.report.incomeParams).length !== 0)
+        const paramsPassed = me.report.incomeParams && (Object.keys(me.report.incomeParams).length !== 0)
         if (!paramsPassed || me.report.showParamForm) return false // user enter params and press "show report" on params form
-        let paramForm = me.down('reportparamform')
+        const paramForm = me.down('reportparamform')
         paramForm.collapse(Ext.Component.DIRECTION_TOP, false)
       }
 
@@ -199,7 +199,7 @@ Ext.define('UBS.ReportViewer', {
    * @param {string} [excelFormat='xlsx']
    */
   exportToXLSX: function (excelFormat = 'xlsx') {
-    let me = this
+    const me = this
     let repParams
     if (excelFormat === true) excelFormat = 'xlsx'
     // do we need to get parameters from parameters enter form?
@@ -218,9 +218,9 @@ Ext.define('UBS.ReportViewer', {
       params: repParams,
       language: $App.connection.userLang()
     }).makeReport().then(function (data) {
-      let blobData = new Blob(
+      const blobData = new Blob(
         [data.reportData],
-        {type: excelFormat.toLowerCase() === 'xls' ? 'application/vnd.ms-excel' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
+        { type: excelFormat.toLowerCase() === 'xls' ? 'application/vnd.ms-excel' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
       )
       window.saveAs(blobData, me.report.reportCode + '.' + excelFormat)
     })
@@ -230,14 +230,14 @@ Ext.define('UBS.ReportViewer', {
    * @param {UBS.ReportParamForm|Array} paramForm
    */
   addParamForm: function (paramForm) {
-    var me = this
+    const me = this
     if (paramForm instanceof Array) {
-      let prmCfg = paramForm
+      const prmCfg = paramForm
       paramForm = Ext.create('UBS.ReportParamForm', {
         items: paramForm,
         getParameters: function (owner) {
-          let result = {}
-          let frm = owner.getForm()
+          const result = {}
+          const frm = owner.getForm()
           _.forEach(prmCfg, function (item) {
             result[item.name] = frm.findField(item.name).getValue()
           })
@@ -255,18 +255,18 @@ Ext.define('UBS.ReportViewer', {
     })
   },
 
-  htmlReportDocClick: function(e) {
+  htmlReportDocClick: function (e) {
     if (this.contextMenu && this.contextMenu.isVisible) {
       this.contextMenu.hide()
     }
   },
   showReport: function (data) {
-    let me = this
+    const me = this
     switch (me.reportType) {
       case 'pdf':
         if (typeof (data) === 'string') {
-          let pdfLength = data.length
-          let pdfArray = new Uint8Array(new ArrayBuffer(pdfLength))
+          const pdfLength = data.length
+          const pdfArray = new Uint8Array(new ArrayBuffer(pdfLength))
 
           for (let i = 0; i < pdfLength; i++) {
             pdfArray[i] = data.charCodeAt(i)
@@ -277,15 +277,15 @@ Ext.define('UBS.ReportViewer', {
           data = new Blob([data], { type: 'application/pdf' })
         }
 
-        me.reportControl.setSrc({blobData: data})
+        me.reportControl.setSrc({ blobData: data })
         break
       case 'html':
-        let iFrame = me.reportControl.getEl().dom
-        let iFrameDoc = iFrame.contentDocument
+        const iFrame = me.reportControl.getEl().dom
+        const iFrameDoc = iFrame.contentDocument
         iFrameDoc.body.innerHTML = data.replace(HTML_PAGEBREAK_RE, HTML_PAGEBREAK_EL)
         if (!me.reportCSSAdded) {
           addStyleSheet(iFrameDoc, repCSS)
-          let orientation = me.report.reportOptions.pageOrientation
+          const orientation = me.report.reportOptions.pageOrientation
           if (orientation === 'landscape') {
             addStyleSheet(iFrameDoc, '@page{size: landscape;}')
           } else if (orientation === 'portrait') {
@@ -294,7 +294,7 @@ Ext.define('UBS.ReportViewer', {
           me.reportCSSAdded = true
         }
         if (me.report.onReportClick) { // add onclick handler for all <a href="">
-          let refs = iFrameDoc.getElementsByTagName('a')
+          const refs = iFrameDoc.getElementsByTagName('a')
           for (let i = 0, L = refs.length; i < L; i++) {
             refs[i].addEventListener('click', me.report.onReportClick.bind(me), true)
           }

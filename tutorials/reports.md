@@ -58,13 +58,13 @@
 
 ### PDF 
 
- - Ограниченный перечень тегов и атрибутов HTML.
+ - ограниченный перечень тегов и атрибутов HTML.
    Полный перечень можно посмотреть {@link PDF.csPrintToPdf#writeHtml PDF.csPrintToPdf.writeHtml}
- - Ограниченные возможности расположения элементов. (нельзя использовать блочные элементы внутри строчного элемента) 
- - Поддержка колонтитулов. Задаются в программном коде.
- - Неразрывные ячейки таблицы. Задается при помощи атрибута стиля `disable-split: true`.
- - Не поддерживается использование блочных элементов внутри строковых (`inline`)
- - Рядки таблиц должны всегда иметь ширину
+ - ограниченные возможности расположения элементов. (нельзя использовать блочные элементы внутри строчного элемента) 
+ - поддержка колонтитулов. Задаются в программном коде.
+ - неразрывные ячейки таблицы. Задается при помощи атрибута стиля `disable-split: true`.
+ - не поддерживается использование блочных элементов внутри строковых (`inline`)
+ - строки таблиц должны всегда иметь ширину
 
 Сквозные строки таблицы выводятся в начале каждой страницы на которой присутствует таблица. 
 Задается при помощи атрибута стиля `top-through-line: true`:  
@@ -82,7 +82,7 @@
 На данный момент колонтитулы, отступы листа и шрифты можно настроить только в коде. 
 Для этого служит конфигурационная функция `onTransformConfig`:  
 ```javascript
-onTransformConfig: function (config){
+onTransformConfig: function onTransformConfig(config){
       config.margin = {top: 10, right: 8, bottom: 8, left: 20};  // page padding
       config.topColontitle = {
             height: 8,
@@ -113,7 +113,7 @@ onTransformConfig: function (config){
 
 В коде отчета в событии `onParamPanelConfig` можно настроить панель для ввода параметров отчета:  
 ```javascript
-onParamPanelConfig: function () {
+onParamPanelConfig: function onParamPanelConfig() {
   var paramForm = Ext.create('UBS.ReportParamForm', {
     items: [{
       xtype: 'textfield',
@@ -145,7 +145,7 @@ onParamPanelConfig: function () {
 ```
 Либо то же самое в упрощенном варианте:  
 ```javascript
-onParamPanelConfig: function () {
+onParamPanelConfig: function onParamPanelConfig() {
   return [{
     xtype: 'textfield',
     name: 'name',
@@ -189,18 +189,16 @@ onParamPanelConfig: function () {
 
 Пример для запуска на сервере:  
 ```javascript
-var UBReport = require('models/UBS/public/UBReport.js')
-var report = UBReport.makeReport('test', 'pdf', {})
-report.then(function (result) {
-  var fs = require('fs')
-  if (result.reportType === 'pdf') {
-    toLog(result.reportData.byteLength)
-    fs.writeFileSync('d:\\result.pdf', result.reportData)
-  } else {
-    toLog(result.reportData.length)
-    fs.writeFileSync('d:\\result.html', result.reportData)
-  }
-})
+const fs = require('fs');
+const UBReport = require('@unitybase/ubs/modules/UBServerReport');
+let reportResult = UBReport.makeReport('test','pdf',{});
+if (reportResult.reportType === 'pdf') {
+   console.debug('Generate a PDF report of size=', result.reportData.byteLength)
+   fs.writeFileSync('d:/result.pdf', result.reportData )
+} else {
+   console.debug('Generate a HTML report of size=', result.reportData.length)
+   fs.writeFileSync('d:/result.html', result.reportData )
+}
 ```
 
 На клиенте(WEB):  
