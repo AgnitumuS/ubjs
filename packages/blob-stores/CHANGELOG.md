@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - MDB blob store: return correct content type for just uploaded dirty items
 
 ## [5.20.12] - 2021-07-08
 ## [5.20.11] - 2021-06-14

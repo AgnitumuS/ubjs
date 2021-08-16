@@ -1,3 +1,4 @@
+/* global nhashFile */
 const path = require('path')
 const fs = require('fs')
 const BlobStoreCustom = require('./blobStoreCustom')
@@ -97,6 +98,13 @@ class MdbBlobStore extends BlobStoreCustom {
    */
   fillResponse (requestParams, blobItem, req, resp, preventChangeRespOnError) {
     const filePath = requestParams.isDirty ? this.getTempFileName(requestParams) : this.getPermanentFileName(blobItem)
+    let ct
+    if (requestParams.isDirty) {
+      ct = mime.contentType(path.extname(requestParams.fileName))
+    } else {
+      ct = blobItem.ct
+    }
+    if (!ct) ct = 'application/octet-stream'
     if (filePath) {
       resp.statusCode = 200
       if (this.PROXY_SEND_FILE_HEADER) {
@@ -111,12 +119,12 @@ class MdbBlobStore extends BlobStoreCustom {
           // relPath === '[modelCode]|folderPath' so replacing | -> / is enough
           head = `${this.PROXY_SEND_FILE_HEADER}: /${this.PROXY_SEND_FILE_LOCATION_ROOT}/models/${blobItem.relPath.replace('|', '/')}/${blobItem.fName}`
         }
-        head += `\r\nContent-Type: ${blobItem.ct}`
+        head += `\r\nContent-Type: ${ct}`
         console.debug('<- ', head)
         resp.writeHead(head)
         resp.writeEnd('')
       } else {
-        resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${blobItem.ct}`)
+        resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}`)
         resp.writeEnd(filePath)
       }
       return true
