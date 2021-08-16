@@ -277,10 +277,10 @@ class UZip {
       if (typeof fn === 'string') {
         const res = this.files[fn]
         return res && !res.dir ? res : null
-      } else {
+      } else { // fn is RegExp
         const res = []
         Object.keys(this.files).forEach(f => {
-          if (f.test(fn) && !this.files[f].dir) {
+          if (fn.test(f) && !this.files[f].dir) {
             res.push(this.files[f])
           }
         })

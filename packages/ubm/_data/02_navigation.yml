@@ -117,6 +117,7 @@ adm_desktop:
             fieldList:
             - code
             - name
+            - type
       - ubm_sysdictionary:
           caption:
             en: System Dictionaries

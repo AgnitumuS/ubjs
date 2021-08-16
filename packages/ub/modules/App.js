@@ -351,7 +351,7 @@ ServerApp.package = require(path.join(process.configPath, 'package.json'))
 ServerApp.staticPath = ''
 if (ServerApp.serverConfig.httpServer && ServerApp.serverConfig.httpServer['inetPub'] &&
   ServerApp.serverConfig.httpServer['inetPub'].trim()) {
-  let sp = ServerApp.serverConfig.httpServer['inetPub']
+  const sp = ServerApp.serverConfig.httpServer['inetPub']
   ServerApp.staticPath = path.isAbsolute(sp)
     ? sp
     : path.join(process.configPath, sp)
@@ -644,6 +644,34 @@ ServerApp.logEnter = appBinding.logEnter
  * @method
  */
 ServerApp.logLeave = appBinding.logLeave
+
+/**
+ * Observe a file system operation time (exposed as prometheus `unitybase_fs_operation_duration_seconds` histogram).
+ *
+ * **WARNING** do not use a full file path - use a folder name or better a mnemonic name (BLOB store name for example).
+ * Amount of metric labels SHOULD be as less as possible. The same is true for operation`s names.
+ *
+ * See fileSystemBlobStore for real life usage example.
+ * @param {number} durationSec fs operation duration in **seconds**
+ * @param {string} path
+ * @param {string} operation
+ */
+ServerApp.fsObserve = appBinding.fsObserve
+
+/**
+ * Observe a HTTP client operation time (exposed as prometheus `unitybase_httpext_duration_seconds` histogram).
+ *
+ * `http` module automatically observe each request, passing `host` as `uri` parameter.
+ * Method can be called manually in case some part of path should be observed also.
+ *
+ * **WARNING** do not use a full path - use a part what identify an endpoint without parameters.
+ * Amount of metric labels SHOULD be as less as possible. The same is true for operation`s names.
+ *
+ * @param {number} durationSec request duration in **seconds**
+ * @param {string} uri request URI
+ * @param {number} respStatus HTTP response status code
+ */
+ServerApp.httpCallObserve = appBinding.httpCallObserve
 
 /**
  * Remove all user sessions (logout user).

@@ -313,7 +313,7 @@ function runFiles (filesToRun, params, { conn, dbConnections, dbVersions, migrat
   })
 }
 /**
- * Create ub_migration table if it is not exists
+ * Create ub_migration table if it does not exist
  * @param {DBConnection} dbConn
  */
 function createUbMigrateIfNotExists (dbConn) {

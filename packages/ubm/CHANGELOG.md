@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - make the form for the `ubm_query` similar with standard UAutoForm
+ - ubm_query navigation shortcut now shows "Type" column
+
 
 ### Deprecated
 

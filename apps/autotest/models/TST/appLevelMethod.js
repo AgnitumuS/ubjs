@@ -5,6 +5,7 @@
  */
 const fs = require('fs')
 const assert = require('assert')
+const http = require('http')
 const UB = require('@unitybase/ub')
 const App = UB.App
 const Session = UB.Session
@@ -384,3 +385,22 @@ function verifyThrowCatch (req, resp) {
   resp.writeEnd({ catched })
 }
 App.registerEndpoint('verifyThrowCatch', verifyThrowCatch, true)
+
+/**
+ * Search in google
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function googleSearch (req, resp) {
+  const q = req.parsedParameters.q
+  const customURI = req.parsedParameters.customURI
+  const d = Date.now()
+  const answer = http.get('https://www.google.com/search?q=' + q)
+  const body = answer.read('utf-8')
+  resp.statusCode = answer.statusCode
+  resp.writeHead('Content-Type: text/html')
+  resp.writeEnd(body)
+  // custom metric (without www) for test purpose only - http module automatically adds a www.google.com into observation
+  App.httpCallObserve((Date.now() - d) / 1000, customURI, answer.statusCode)
+}
+App.registerEndpoint('googleSearch', googleSearch, false)
