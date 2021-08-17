@@ -32,7 +32,10 @@ export default {
         'image/png',
         'image/vnd.wap.wbmp',
         'image/bmp',
-        'application/pdf'
+        'application/pdf',
+        'text/html',
+        'application/javascript',
+        'application/def'
       ]
     }
   },
@@ -45,7 +48,7 @@ export default {
         const file = instance.files.find(f => f.ID === instance.selectedFileId) || {}
         return !this.previewFormats.includes(file.ct)
       } else {
-        return !instance.file || !this.previewFormats.includes(instance.file.ct)
+        return !instance.file || !this.previewFormats.includes(instance.file.ct.split(';')[0]) // text/html; encoding=utf-8
       }
     }
   }

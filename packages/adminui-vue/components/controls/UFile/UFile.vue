@@ -95,8 +95,10 @@ export default {
 
     /**
      * toggle preview mode, do not confuse with preview dialog.
-     * Loaded file will be shown if they mime type ar one of: PDF, PNG or JPG.
-     * By default in "preview" mode control width is sets to "100%" and heights to "auto".
+     * Loaded file will be shown if they mime type are one of: PDF, PNG or JPG.
+     *
+     * If `true` then control width sets to "100%" and heights to "auto", to define a custom sizing
+     * object with `width` and `height` can be sets: `:previewMode="{width: '100%', height: 'auto'}"`
      */
     previewMode: {
       type: [Boolean, Object],

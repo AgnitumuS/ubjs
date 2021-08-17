@@ -30,7 +30,7 @@
   </div>
 
   <iframe
-    v-else-if="renderType === 'pdf'"
+    v-else-if="((renderType === 'pdf') || (renderType === 'html'))"
     ref="view"
     frameborder="0"
     width="100%"
@@ -40,9 +40,9 @@
 
   <video
     v-else-if="renderType === 'video'"
+    ref="view"
     controls
     preload="none"
-    ref="view"
     width="100%"
     height="100%"
   >
@@ -52,12 +52,20 @@
 
   <audio
     v-else-if="renderType === 'audio'"
+    ref="view"
     :src="previewUrl"
     controls
     preload="none"
-    ref="view">
+  >
     <p>Your browser doesn't support <code>audion</code> element</p>
   </audio>
+
+  <u-code-mirror
+    v-else-if="renderType === 'js'"
+    ref="view"
+    :src="previewUrl"
+    style="height: 100%; display: grid"
+  />
 
   <div
     v-else
@@ -155,14 +163,19 @@ export default {
 
     renderType () {
       if (this.withPreview) {
-        if (this.file.ct === 'image/png' || this.file.ct === 'image/jpeg') {
+        const ct = this.file.ct
+        if (ct === 'image/png' || ct === 'image/jpeg') {
           return 'image'
-        } else if (this.file.ct === 'application/pdf') {
+        } else if (ct === 'application/pdf') {
           return 'pdf'
-        } else if (this.file.ct.startsWith('video/')) {
+        } else if (ct.startsWith('video/')) {
           return 'video'
-        } else if (this.file.ct.startsWith('audio/')) {
+        } else if (ct.startsWith('audio/')) {
           return 'audio'
+        } else if (ct.startsWith('text/html')) {
+          return 'html'
+        } else if ((ct === 'application/def') || (ct.startsWith('application/javascript'))) {
+          return 'js'
         }
       }
 

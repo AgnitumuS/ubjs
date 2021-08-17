@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UFile`: added preview mode for `html` (text/html) and `javascript`(application/def, application/javascript) documents 
+ - `UCodeMirror`: added `src` property to preview script content in read-only mode
 
 ### Changed
  - `UCodeMirror`: set minimum height to 50 px to make help icon be inside control if it has only one line

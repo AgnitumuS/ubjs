@@ -55,6 +55,12 @@ export default {
       default: null
     },
 
+    /** URL to get a value */
+    src: {
+      type: String,
+      default: null
+    },
+
     /** set it to `true` in case binds value is an Object (parsed JSON) */
     valueIsJson: {
       type: Boolean,
@@ -110,45 +116,53 @@ export default {
     }
   },
 
-  mounted () {
+  async mounted () {
     // do not put _codeMirror inside data to prevent it observation
     // Vue initialize reactivity BEFORE created(), so all NEW object properties assigned here is not reactive
-    SystemJS.import('@unitybase/codemirror-full').then((CodeMirror) => {
-      this._codeMirror = CodeMirror.fromTextArea(this.$refs.textarea, {
-        mode: this.editorMode,
-        lineNumbers: true,
-        lint: Object.assign({ asi: true, esversion: 8 }, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
-        readOnly: this.readonly,
-        tabSize: 2,
-        highlightSelectionMatches: { annotateScrollbar: true },
-        matchBrackets: true,
-        foldGutter: true,
-        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
-        extraKeys: {
-          'Ctrl-Space': 'autocomplete',
-          'Ctrl-Q': this.showTemplates,
-          'Ctrl-B': this.doBeautify
-        }
-      })
-      this._codeMirror.setValue(this.textValue || '')
-      this._codeMirror.on('change', debounce(300, cmInstance => {
-        const newValFromCm = cmInstance.getValue()
-        if (newValFromCm !== this.textValue) {
-          this.textValue = newValFromCm
-          try {
-            const val = this.valueIsJson ? JSON.parse(this.textValue) : this.textValue
-            if (this.valueIsJson && typeof val !== 'object') return
-            this.$emit('changed', val)
-            this.$emit('input', val)
-          } catch (e) {}
-        }
-      }))
-      this.$emit('loaded')
+    const CodeMirror = await SystemJS.import('@unitybase/codemirror-full')
+    this._codeMirror = CodeMirror.fromTextArea(this.$refs.textarea, {
+      mode: this.editorMode,
+      lineNumbers: true,
+      lint: Object.assign({ asi: true, esversion: 8 }, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
+      readOnly: this.readonly,
+      tabSize: 2,
+      highlightSelectionMatches: { annotateScrollbar: true },
+      matchBrackets: true,
+      foldGutter: true,
+      gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
+      extraKeys: {
+        'Ctrl-Space': 'autocomplete',
+        'Ctrl-Q': this.showTemplates,
+        'Ctrl-B': this.doBeautify
+      }
     })
+    let val
+    if (this.src) {
+      const resp = await this.$UB.get(this.src)
+      val = resp.data
+      this.$nextTick(() => { this._codeMirror.setValue(val || '') })
+    } else {
+      val = this.textValue
+      this._codeMirror.setValue(val || '')
+    }
+    this._codeMirror.on('change', debounce(300, cmInstance => {
+      const newValFromCm = cmInstance.getValue()
+      if (newValFromCm !== this.textValue) {
+        this.textValue = newValFromCm
+        try {
+          const val = this.valueIsJson ? JSON.parse(this.textValue) : this.textValue
+          if (this.valueIsJson && typeof val !== 'object') return
+          this.$emit('changed', val)
+          this.$emit('input', val)
+        } catch (e) {}
+      }
+    }))
+    this.$emit('loaded')
   },
 
   methods: {
     updateValue (newVal) {
+      if (this.src) return
       if (!this._codeMirror) return
       const newValAsText = (newVal && (typeof newVal === 'object'))
         ? JSON.stringify(newVal, null, 2)
