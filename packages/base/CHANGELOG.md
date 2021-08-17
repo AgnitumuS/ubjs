@@ -8,12 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Add `SyncConnection.addNew` and `SyncConnection.addNewAsObject`
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+- Bug in `SyncConnection.insert` method, when fieldList first attribute is not ID, it was updated to ID.
 
 ## [5.20.8] - 2021-07-08
 ## [5.20.7] - 2021-05-24

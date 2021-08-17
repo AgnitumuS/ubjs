@@ -723,6 +723,81 @@ SyncConnection.prototype.insertAsObject = function (ubq, fieldAliases) {
 }
 
 /**
+ * Execute addnew method: add method 'addnew' to `ubq` query (if req.method not already set)
+ *
+ * If `ubq.fieldList` contain only `ID` return generated ID, otherwise return array of attribute values passed to `fieldList`.
+ * If no field list passed at all - return response.resultData (null usually).
+ *
+ * @example
+ const testRole = conn.addNew({
+    entity: 'uba_role',
+    fieldList: ['ID', 'name', 'allowedAppMethods'],
+    execParams: {
+      name: 'testRole1',
+      allowedAppMethods: 'runList'
+    }
+  })
+ console.log(testRole) //[3000000000200,"testRole1","runList"]
+
+ const testRoleID = conn.addNew({
+    entity: 'uba_role',
+    fieldList: ['ID']
+  })
+ console.log(testRoleID) //3000000000200
+ *
+ * @param {ubRequest} ubq
+ * @return {*}
+ */
+SyncConnection.prototype.addNew = function (ubq) {
+  // var req = _.clone(ubq, true)
+  const req = ubq
+  req.method = req.method || 'addnew'
+  const res = this.query(req)
+  if (!req.fieldList) {
+    return res.resultData
+  } else if (req.fieldList.length === 1 && req.fieldList[0] === 'ID') {
+    return res.resultData.data[0][0]
+  } else {
+    return res.resultData.data[0]
+  }
+}
+
+/**
+ * Run UBQL command with `addnew` method
+ *
+ * In case `fieldList` is passed - result will contains new values for attributes specified in `fieldList` as Object, otherwise - null
+ *
+ * In opposite to `addNew` method values in result are PARSED based on Domain (as in AsyncConnection) - so values
+ * for boolean attributes is true/false, date is typeof Date etc.
+ *
+ * @param {ubRequest} ubq
+ * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
+ * @returns {Object}
+ *
+ * @example
+
+ const newRole = conn.addNewAsObject({
+  entity: 'uba_role',
+  fieldList: ['ID', 'name', 'allowedAppMethods'],
+  execParams: {
+      name: 'testRole61',
+      allowedAppMethods: 'runList'
+  }
+})
+ console.log(newRole) // {ID: 332462911062017, name: 'testRole1', allowedAppMethods: 'runList'}
+
+ */
+SyncConnection.prototype.addNewAsObject = function (ubq, fieldAliases) {
+  const req = ubq
+  req.method = req.method || 'addnew'
+  const serverResp = this.query(req)
+  const res = LocalDataStore.convertResponseDataToJsTypes(this.getDomainInfo(), serverResp)
+  return (res.resultData && res.resultData.data && res.resultData.data.length)
+    ? LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)[0]
+    : null
+}
+
+/**
  * Execute update method (adds method: 'update' if req.method is not already set)
  */
 SyncConnection.prototype.update = function (ubq) {
