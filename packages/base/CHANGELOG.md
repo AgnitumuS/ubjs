@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Add `SyncConnection.addNew` and `SyncConnection.addNewAsObject`
 
 ### Deprecated
 
