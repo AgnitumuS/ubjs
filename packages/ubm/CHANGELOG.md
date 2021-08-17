@@ -6,15 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - form implementation for the `ubm_sysdictionary` entity to validate ubql for JSON
+ - migration to fix `ubm_query.type` for old entries mapped from the ubm_sysdictionary
 
 ### Changed
-- ubm_query navigation shortcut now shows "Type" column
+ - make the form for the `ubm_query` similar with standard UAutoForm
+ - ubm_query navigation shortcut now shows "Type" column
+
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - fix typo in the ru localization for the system dictionaries shortcut
 
 ## [5.20.20] - 2021-08-09
 ## [5.20.19] - 2021-08-04

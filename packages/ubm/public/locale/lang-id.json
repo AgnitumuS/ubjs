@@ -3,6 +3,7 @@
   "selectRowFirst": "Pilih baris di grid pertama",
   "convertationToPDFAborted": "Tidak dapat mengkonversi file ke PDF. Simpan file ini dalam format PDF secara manual dan mencoba untuk melampirkan lagi.",
   "numberMustBeDivisibleBy100": "Nilai harus menjadi habis dibagi 100",
+  "invalidJson": "Nilai harus berupa JSON yang valid",
 
   "desktopService.CurrentScanType": "Scan melalui",
   "desktopService.aviableLanguages": "Bahasa yang tersedia",

@@ -3,6 +3,7 @@
   "selectRowFirst": "Əvvəlcə sətri seçin",
   "convertationToPDFAborted": "Faylı PDF formata çevirmək mümkün olmadı. Faylı PDF formatda təkrar yadda saxlayın, daha sonra təkrar olaraq daxil edin.",
   "numberMustBeDivisibleBy100": "Qiymət 100-ə tam bölünən olmalıdır",
+  "invalidJson": "Dəyər etibarlı bir JSON olacaq",
 
   "desktopService.CurrentScanType": "Skan tipi",
   "desktopService.aviableLanguages": "Mümkün dillər",

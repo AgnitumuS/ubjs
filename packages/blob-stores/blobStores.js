@@ -407,7 +407,7 @@ function getContent (request, options) {
   }
   const st = Date.now()
   const content = requested.store.getContent(parsed.bsReq, requested.blobInfo, options)
-  fsObserve((Date.now() - st) / 1000, requested.blobInfo.store.name, 'getcontent')
+  fsObserve((Date.now() - st) / 1000, requested.store.name, 'getcontent')
   return content
 }
 

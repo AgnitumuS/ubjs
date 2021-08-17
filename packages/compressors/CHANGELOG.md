@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - UZip: fix getting files from ZIP using RegExp `UZip.file(/../)`
 
 ## [5.2.1] - 2021-08-04
 ### Fixed

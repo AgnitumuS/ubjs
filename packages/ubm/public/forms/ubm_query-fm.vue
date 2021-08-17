@@ -2,17 +2,34 @@
   <div class="u-form-layout">
     <u-toolbar />
 
-    <u-form-container label-position="top">
-      <u-auto-field attribute-name="code" disabled />
-      <u-auto-field attribute-name="name" disabled />
-      <u-auto-field attribute-name="type" disabled />
-      <u-auto-field attribute-name="ubql" readonly />
+    <u-form-container
+      v-loading.body="loading"
+      label-position="top"
+      :max-width="800"
+    >
+      <u-auto-field
+        attribute-name="code"
+        disabled
+      />
+      <u-auto-field
+        attribute-name="name"
+        disabled
+      />
+      <u-auto-field
+        attribute-name="type"
+        disabled
+      />
+      <u-auto-field
+        attribute-name="ubql"
+        readonly
+      />
     </u-form-container>
   </div>
 </template>
 
 <script>
-const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
+const { Form } = require('@unitybase/adminui-vue')
+const { mapGetters } = require('vuex')
 
 module.exports.mount = cfg => {
   Form(cfg)
@@ -21,8 +38,10 @@ module.exports.mount = cfg => {
     .mount()
 }
 
-module.exports.default = {
-  name: 'ubm_query',
-  computed: mapInstanceFields(['ID', 'code', 'name', 'ubql', 'type'])
+export default {
+  name: 'UbmQuery',
+  computed: {
+    ...mapGetters(['loading'])
+  }
 }
 </script>

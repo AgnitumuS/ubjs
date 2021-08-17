@@ -1,6 +1,9 @@
 {
   "selectRowFirst": "Avval katakchadagi qatorni tanlang",
   "convertationToPDFAborted": "Faylni PDF formatiga o'zgartirib bo'lmadi. Ushbu faylni PDF formatida qo'lda saqlang va qaytadan qo'shishga harakat qiling.",
+
+  "invalidJson": "Qiymat haqiqiy JSON bo'lishi kerak",
+
   "desktopService.btnMoveUpRecogLang": "Yuqoriga",
   "desktopService.tabsUB": " ",
   "desktopService.tabBarcode.Common": "Umumiy",

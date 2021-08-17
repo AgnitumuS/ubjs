@@ -3,6 +3,7 @@
   "selectRowFirst": "Selecteer eerst rij in raster",
   "convertationToPDFAborted": "Kan het bestand niet naar PDF converteren. Sla dit bestand handmatig op in PDF-formaat en probeer het opnieuw bij te voegen.",
   "numberMustBeDivisibleBy100": "De waarde moet deelbaar zijn door 100",
+  "invalidJson": "Waarde moet een geldige JSON zijn",
 
   "desktopService.CurrentScanType": "Scant door",
   "desktopService.aviableLanguages": "Beschikbare talen",

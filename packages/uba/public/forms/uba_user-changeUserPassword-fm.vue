@@ -152,7 +152,6 @@ module.exports.default = {
         execParams.needChangePassword = this.isPasswordNeedChange
       }
 
-
       if (this.isOwnRecord) {
         await this.$UB.connection.xhr({
           method: 'POST',
