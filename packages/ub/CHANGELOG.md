@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- **BREAKING** `TubDataStore.insert` return numeric value (instead of array) ONLY in case fieldList is === `['ID']` (as documented).
+  Before this fix numeric value is returned for any fieldList with ONE element.
 
 ## [5.22.9] - 2021-08-09
 ## [5.22.8] - 2021-08-04

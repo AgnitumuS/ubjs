@@ -334,7 +334,7 @@ TubDataStore.insert = function(ubq) {
   this.run(method, ubq)
   if (!ubq.fieldList || !ubq.fieldList.length) {
     return null // no field list or it is empty
-  } else if ((ubq.fieldList.length === 1) && (ubq.fieldList[0] = 'ID')) {
+  } else if ((ubq.fieldList.length === 1) && (ubq.fieldList[0] === 'ID')) {
     return this.get(0) //return ID
   } else {
     const storeData = this.getAsJsArray()

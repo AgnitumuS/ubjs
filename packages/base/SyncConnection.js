@@ -680,7 +680,7 @@ SyncConnection.prototype.insert = function (ubq) {
   req.method = req.method || 'insert'
   const res = this.query(req)
   if (req.fieldList) {
-    return (req.fieldList.length === 1) && (req.fieldList[0] = 'ID') ? res.resultData.data[0][0] : res.resultData.data[0]
+    return ((req.fieldList.length === 1) && (req.fieldList[0] === 'ID')) ? res.resultData.data[0][0] : res.resultData.data[0]
   } else {
     return res.resultData
   }
