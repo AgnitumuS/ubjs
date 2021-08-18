@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.20] - 2021-08-18
+### Added
  - `UButton`: added `circle` prop to render a circle button - see [UButton UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UButton) 
 
 ### Changed
@@ -13,12 +24,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - almost all (except ones where HTML is rendered) `el-tooltip` are replaced with
    [HTML `title` property](https://developer.mozilla.org/en-US/docs/web/html/global_attributes/title)
 
-### Deprecated
-
 ### Removed
  - `USidebarButton` component is removed. `UButton` should be used instead.
-
-### Fixed
 
 ## [5.20.19] - 2021-08-09
 ## [5.20.18] - 2021-08-04

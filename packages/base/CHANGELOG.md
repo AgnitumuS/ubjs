@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- Add `SyncConnection.addNew` and `SyncConnection.addNewAsObject`
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.20.9] - 2021-08-18
+### Changed
+- Add `SyncConnection.addNew` and `SyncConnection.addNewAsObject`
 
 ### Fixed
  - **BREAKING** `SyncConnection.insert` return numeric value (instead of array) ONLY in case fieldList is === `['ID']` (as documented). 

@@ -6,15 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `App.fsObserve` and `App.httpCallObserve` methods - an observation for fs calls and external HTTP calls what stored in 
-  prometheus `unitybase_fs_operation_duration_seconds` & `unitybase_httpext_duration_seconds` buckets.
-  Feature works for US server >= 5.20.4 under Linux.
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.22.10] - 2021-08-18
+### Added
+ - `App.fsObserve` and `App.httpCallObserve` methods - an observation for fs calls and external HTTP calls what stored in 
+  prometheus `unitybase_fs_operation_duration_seconds` & `unitybase_httpext_duration_seconds` buckets.
+  Feature works for US server >= 5.20.4 under Linux.
 
 ### Fixed
 - **BREAKING** `TubDataStore.insert` return numeric value (instead of array) ONLY in case fieldList is === `['ID']` (as documented).
