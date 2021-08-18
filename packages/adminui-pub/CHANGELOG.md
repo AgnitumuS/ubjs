@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `UBComboBox`: use custom method from `store.ubRequest.method` property to load a display text of filtered out row
+ - `UBComboBox`: use custom method (if any) from `store.ubRequest.method` to load a display text of filtered out row. Before this fix `select` always used
  
 ### Deprecated
 
