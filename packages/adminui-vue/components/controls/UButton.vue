@@ -8,7 +8,8 @@
       `u-button_size-${size}`,
       {
         'u-button_has-icon': icon || rightIcon,
-        'u-button_has-text': $slots.default
+        'u-button_has-text': $slots.default,
+        'u-button_circle': circle
       }
     ]"
     v-on="$listeners"
@@ -101,7 +102,15 @@ export default {
       validator (value) {
         return ['control', 'primary', 'success', 'danger', 'warning'].includes(value)
       }
-    }
+    },
+
+    /**
+     * Circle button
+     */
+    circle: {
+      type: Boolean,
+      default: false
+    },
   }
 }
 </script>
@@ -170,6 +179,14 @@ export default {
   .u-button_appearance-plain:before,
   .u-button_appearance-plain:after {
     content: ''
+  }
+
+  .u-button_circle {
+    border-radius: 50%;
+    border-color: inherit !important;
+  }
+  .u-button_circle:hover:not(:disabled){
+    --hs: var(--hs-primary);
   }
 
   .u-button__label {

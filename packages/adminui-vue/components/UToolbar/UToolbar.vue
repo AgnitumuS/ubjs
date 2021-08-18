@@ -2,45 +2,35 @@
   <div class="u-toolbar">
     <!-- @slot content to prepend to the left side of the toolbar *before* default buttons -->
     <slot name="leftBefore" />
-    <el-tooltip
+
+    <u-button
       v-for="button in mainPanelButtons"
       :key="button.label + button.icon"
-      :tooltip="button.label"
-      :content="$ut(button.label)"
-      placement="bottom"
-      :open-delay="300"
-      :enterable="false"
-      :disabled="!button.label"
+      :title="$ut(button.label)"
+      :appearance="button.type === 'text' ? 'default' : 'inverse'"
+      :size="button.type === 'text' ? 'small' : 'large'"
+      :disabled="button.disabled"
+      :icon="button.icon"
+      :color="button.color"
+      @click="button.handler"
     >
-      <u-button
-        :appearance="button.type === 'text' ? 'default' : 'inverse'"
-        :size="button.type === 'text' ? 'small' : 'large'"
-        :disabled="button.disabled"
-        :icon="button.icon"
-        :color="button.color"
-        @click="button.handler"
-      >
-        <template v-if="button.type === 'text'">
-          {{ button.label || '' }}
-        </template>
-      </u-button>
-    </el-tooltip>
+      <template v-if="button.type === 'text'">
+        {{ button.label || '' }}
+      </template>
+    </u-button>
     <!-- @slot content to append of the left side of the toolbar *after* default buttons -->
     <slot name="left" />
     <div class="u-toolbar__flex-divider" />
     <!-- @slot content to prepend to the right side of the toolbar *before* setting button -->
     <slot name="right" />
 
-    <el-tooltip
+    <u-button
       v-if="entitySchema.hasMixin('softLock')"
-      :content="lockInfoMessage"
-    >
-      <u-button
-        :icon="isLocked ? 'u-icon-lock' : 'u-icon-unlock'"
-        :color="isLocked ? (isLockedByMe ? 'primary' : 'danger') : 'control'"
-        appearance="inverse"
-      />
-    </el-tooltip>
+      :title="lockInfoMessage"
+      :icon="isLocked ? 'u-icon-lock' : 'u-icon-unlock'"
+      :color="isLocked ? (isLockedByMe ? 'primary' : 'danger') : 'control'"
+      appearance="inverse"
+    />
 
     <u-dropdown
       class="u-toolbar__settings-button"

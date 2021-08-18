@@ -40,21 +40,17 @@
             }"
             @close="removeOption(option[valueAttribute])"
           >
-            <el-tooltip
+            <i
               v-if="option.isDeleted"
-              :content="$ut('recordWasDeleted')"
-              :enterable="false"
-            >
-              <i class="u-icon-delete" />
-            </el-tooltip>
+              :title="$ut('recordWasDeleted')"
+              class="u-icon-delete"
+            />
 
-            <el-tooltip
+            <i
               v-if="option.isUndefined"
-              :content="$ut('select.valueIsUndefined', option[valueAttribute], getEntityName)"
-              :enterable="false"
-            >
-              <i class="el-icon-warning" />
-            </el-tooltip>
+              :title="$ut('select.valueIsUndefined', option[valueAttribute], getEntityName)"
+              class="el-icon-warning"
+            />
 
             {{ option.label }}
           </el-tag>
@@ -149,21 +145,17 @@
             'fixed': isOptionFixed(option[valueAttribute])
           }"
         >
-          <el-tooltip
+          <i
             v-if="option.isUndefined"
-            :content="$ut('select.valueIsUndefined', option[valueAttribute], getEntityName)"
-            :enterable="false"
-          >
-            <i class="el-icon-warning" />
-          </el-tooltip>
+            :title="$ut('select.valueIsUndefined', option[valueAttribute], getEntityName)"
+            class="el-icon-warning"
+          />
 
-          <el-tooltip
+          <i
             v-if="option.isDeleted"
-            :content="$ut('recordWasDeleted')"
-            :enterable="false"
-          >
-            <i class="u-icon-delete" />
-          </el-tooltip>
+            :title="$ut('recordWasDeleted')"
+            class="u-icon-delete"
+          />
           {{ option.label }}
         </el-tag>
       </div>

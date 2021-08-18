@@ -1,17 +1,13 @@
 <template>
   <div>
-    <el-tooltip
-      :content="$ut('UFile.previewButtonTooltip')"
-      :enterable="false"
-    >
-      <u-button
-        color="primary"
-        icon="u-icon-eye"
-        appearance="inverse"
-        :disabled="isDisabled"
-        @click="dialogVisible = true"
-      />
-    </el-tooltip>
+    <u-button
+      :title="$ut('UFile.previewButtonTooltip')"
+      color="primary"
+      icon="u-icon-eye"
+      appearance="inverse"
+      :disabled="isDisabled"
+      @click="dialogVisible = true"
+    />
 
     <el-dialog
       v-if="file"
@@ -19,17 +15,14 @@
       :title="file.name"
       :visible.sync="dialogVisible"
     >
-      <el-tooltip
+      <u-button
         slot="title"
-        :content="$ut('UFile.fullscreenButtonTooltip')"
-        :enterable="false"
-      >
-        <u-button
-          color="primary"
-          icon="u-icon-expand"
-          @click="requestFullscreen"
-        />
-      </el-tooltip>
+        :title="$ut('UFile.fullscreenButtonTooltip')"
+        color="primary"
+        appearance="inverse"
+        icon="u-icon-expand"
+        @click="requestFullscreen"
+      />
       <file-renderer
         ref="renderer"
         :key="file.ID"
