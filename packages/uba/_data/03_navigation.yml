@@ -330,7 +330,7 @@ adm_desktop:
         ka: Migrations
         tg: Миграции
         nl: Migraties
-	uz: Migratsiya
+        uz: Migratsiya
       iconCls: u-icon-swap
       items:
         - ub_version:
