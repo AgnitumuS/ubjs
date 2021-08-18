@@ -1,14 +1,10 @@
 <template>
   <div>
     <div class="auth-page__text">
-      <el-tooltip
-        :content="$ut('OpenidTip')"
-        placement="bottom"
-        effect="light"
-      >
-        <i class="auth-page__tooltip u-icon-circle-question" />
-      </el-tooltip>
-
+      <i
+        :title="$ut('OpenidTip')"
+        class="auth-page__tooltip u-icon-circle-question"
+      ></i>
       <p v-html="$ut('OpenIDHeader')" />
     </div>
 

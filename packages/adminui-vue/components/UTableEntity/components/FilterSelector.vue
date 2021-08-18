@@ -1,17 +1,11 @@
 <template>
   <u-dropdown ref="dropdown">
-    <el-tooltip
-      :content="$ut('table.filter.list.title')"
-      placement="bottom"
-      :open-delay="300"
-      :enterable="false"
-    >
-      <u-button
-        appearance="inverse"
-        color="control"
-        icon="u-icon-filter"
-      />
-    </el-tooltip>
+    <u-button
+      :title="$ut('table.filter.list.title')"
+      appearance="inverse"
+      color="control"
+      icon="u-icon-filter"
+    />
 
     <div
       slot="dropdown"

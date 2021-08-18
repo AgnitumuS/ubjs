@@ -8,16 +8,13 @@
     :width="400"
     @after-enter="setFocusAndSelect"
   >
-    <el-tooltip
+    <u-button
       slot="reference"
-      :content="$ut('search') + ' (Ctrl+Shift+F)'"
-      :enterable="false"
-    >
-      <el-button
-        icon="u-icon-search"
-        circle
-      />
-    </el-tooltip>
+      :title="$ut('search') + ' (Ctrl+Shift+F)'"
+      icon="u-icon-search"
+      appearance="inverse"
+      circle
+    />
 
     <el-input
       ref="input"

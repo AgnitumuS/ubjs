@@ -6,14 +6,10 @@
     @submit.native.prevent
   >
     <div class="auth-page__text">
-      <el-tooltip
-        :content="$ut('UBAuthTip')"
-        placement="bottom"
-        effect="light"
-      >
-        <i class="auth-page__tooltip u-icon-circle-question" />
-      </el-tooltip>
-
+      <i
+        :title="$ut('UBAuthTip')"
+        class="auth-page__tooltip u-icon-circle-question"
+      ></i>
       <p v-html="$ut('UBAuthHeader', applicationName)" />
     </div>
 

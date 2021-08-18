@@ -1,15 +1,11 @@
 <template>
-  <el-tooltip
-    :content="$ut('UFile.scanSettingsButtonTooltip')"
-    :enterable="false"
-  >
-    <u-button
-      color="primary"
-      icon="u-icon-scan-settings"
-      appearance="inverse"
-      @click="runSettings"
-    />
-  </el-tooltip>
+  <u-button
+    :title="$ut('UFile.scanSettingsButtonTooltip')"
+    color="primary"
+    icon="u-icon-scan-settings"
+    appearance="inverse"
+    @click="runSettings"
+  />
 </template>
 
 <script>

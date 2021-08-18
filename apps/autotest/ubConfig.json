@@ -116,7 +116,7 @@
 			"useVueTables": true,
 			"vueAutoForms": true,
 			"forceModalsForEditForms": false,
-			"disableScanner": true,
+			//"disableScanner": true,
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30
