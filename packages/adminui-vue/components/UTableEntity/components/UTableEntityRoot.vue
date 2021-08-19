@@ -29,20 +29,14 @@
           name="toolbarPrepend"
         />
 
-        <el-tooltip
-          :content="$ut('refresh')"
-          placement="bottom"
-          :open-delay="300"
-          :enterable="false"
-        >
-          <u-button
-            appearance="inverse"
-            icon="u-icon-refresh"
-            color="control"
-            :disabled="loading"
-            @click="refresh"
-          />
-        </el-tooltip>
+        <u-button
+          :title="$ut('refresh')"
+          appearance="inverse"
+          icon="u-icon-refresh"
+          color="control"
+          :disabled="loading"
+          @click="refresh"
+        />
 
         <!-- @slot Replace add-new button in toolbar panel -->
         <slot
@@ -50,21 +44,15 @@
           :store="$store"
           name="toolbarButtonAddNew"
         >
-          <el-tooltip
+          <u-button
             v-if="showAddNew"
-            :content="$ut('actionAdd')"
-            placement="bottom"
-            :open-delay="300"
-            :enterable="false"
-          >
-            <u-button
-              appearance="inverse"
-              :disabled="!canAddNew"
-              icon="u-icon-add"
-              color="control"
-              @click="addNew"
-            />
-          </el-tooltip>
+            :title="$ut('actionAdd')"
+            appearance="inverse"
+            :disabled="!canAddNew"
+            icon="u-icon-add"
+            color="control"
+            @click="addNew"
+          />
         </slot>
 
         <!-- @slot Prepend new buttons to toolbar before filter -->

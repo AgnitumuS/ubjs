@@ -279,7 +279,7 @@ function getRequestedBLOBInfo (parsedRequest) {
  * @param {BlobStoreRequest} requestParams
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
- * @return {{success: boolean, reason?: string}}
+ * @return {{success: boolean, reason: string}}
  */
 function internalWriteDocumentToResp (requestParams, req, resp) {
   const parsed = parseBlobRequestParams(requestParams)

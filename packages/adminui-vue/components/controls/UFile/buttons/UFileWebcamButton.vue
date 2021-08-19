@@ -1,43 +1,40 @@
 <template>
   <div>
-    <el-tooltip
-      :content="$ut('UFile.webcamButtonTooltip')"
-      :enterable="false"
+    <u-button
+      v-if="scanType !== 'optional'"
+      :title="$ut('UFile.webcamButtonTooltip')"
+      color="primary"
+      icon="u-icon-photo"
+      appearance="inverse"
+      :disabled="isDisabled"
+      @click="dialogVisible = true"
+    />
+    <u-dropdown
+      v-else
+      :disabled="isDisabled"
     >
       <u-button
-        v-if="scanType !== 'optional'"
+        :title="$ut('UFile.webcamButtonTooltip')"
         color="primary"
         icon="u-icon-photo"
         appearance="inverse"
         :disabled="isDisabled"
-        @click="dialogVisible = true"
       />
-      <u-dropdown
-        v-else
-        :disabled="isDisabled"
-      >
-        <u-button
-          color="primary"
-          icon="u-icon-photo"
-          appearance="inverse"
-          :disabled="isDisabled"
-        />
-        <template #dropdown>
-          <u-dropdown-item
-            icon="el-icon-picture-outline"
-            :label="$ut('UFile.webcam.intoPicture')"
-            @click="scanToPicture"
-          >
-          </u-dropdown-item>
-          <u-dropdown-item
-            icon="u-icon-file-pdf"
-            :label="$ut('UFile.webcam.intoPdf')"
-            @click="scanToPdf"
-          >
-          </u-dropdown-item>
-        </template>
-      </u-dropdown>
-    </el-tooltip>
+      <template #dropdown>
+        <u-dropdown-item
+          icon="el-icon-picture-outline"
+          :label="$ut('UFile.webcam.intoPicture')"
+          @click="scanToPicture"
+        >
+        </u-dropdown-item>
+        <u-dropdown-item
+          icon="u-icon-file-pdf"
+          :label="$ut('UFile.webcam.intoPdf')"
+          @click="scanToPdf"
+        >
+        </u-dropdown-item>
+      </template>
+    </u-dropdown>
     <el-dialog
       :title="dialogTitle"
       :visible.sync="dialogVisible"

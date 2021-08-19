@@ -44,23 +44,19 @@
           @keydown.native.exact.up.prevent
           @keydown.native.exact.down.prevent
         >
-          <el-tooltip
+          <i
             v-if="isSafeDeletedValue"
             slot="prefix"
-            :content="$ut('selectedValueWasDeleted')"
-            :enterable="false"
-          >
-            <i class="el-input__icon u-icon-delete" />
-          </el-tooltip>
+            :title="$ut('selectedValueWasDeleted')"
+            class="el-input__icon u-icon-delete"
+          />
 
-          <el-tooltip
+          <i
             v-if="undefinedRecord"
             slot="prefix"
-            :content="$ut('select.valueIsUndefined', value, getEntityName)"
-            :enterable="false"
-          >
-            <i class="u-select-icon-warning el-input__icon el-icon-warning" />
-          </el-tooltip>
+            :title="$ut('select.valueIsUndefined', value, getEntityName)"
+            class="u-select-icon-warning el-input__icon el-icon-warning"
+          />
 
           <i
             v-if="clearable && value !== null && value !== '' && value !== undefined && !isReadOnly"

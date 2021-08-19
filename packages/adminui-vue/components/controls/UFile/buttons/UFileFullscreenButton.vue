@@ -1,16 +1,12 @@
 <template>
-  <el-tooltip
-    :content="$ut('UFile.fullscreenButtonTooltip')"
-    :enterable="false"
-  >
-    <u-button
-      color="primary"
-      icon="u-icon-expand"
-      appearance="inverse"
-      :disabled="isDisabled"
-      @click="instance.requestFullscreen"
-    />
-  </el-tooltip>
+  <u-button
+    :title="$ut('UFile.fullscreenButtonTooltip')"
+    color="primary"
+    icon="u-icon-expand"
+    appearance="inverse"
+    :disabled="isDisabled"
+    @click="instance.requestFullscreen"
+  />
 </template>
 
 <script>
