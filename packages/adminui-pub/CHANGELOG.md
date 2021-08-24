@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.21] - 2021-08-18
+### Changed
+ - `UBComboBox`: use custom method (if any) from `store.ubRequest.method` to load a display text of filtered out row. Before this fix `select` always used
+ 
 ## [5.20.20] - 2021-08-09
 ## [5.20.19] - 2021-08-04
 ### Added

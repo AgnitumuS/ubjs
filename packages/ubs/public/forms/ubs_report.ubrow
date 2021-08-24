@@ -1,9 +1,9 @@
 {
- "isDefault": false,
- "entity": "ubs_report",
- "formType": "auto",
- "caption": "reportBuilder",
  "description": "reportBuilder",
- "formDef": "{\"fName\":\"ubs_report-fm.def\",\"origName\":\"ubs_report-fm.def\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":2938,\"md5\":\"8906f08c0ff747bcad21375afb83d9ec\"}",
- "formCode": "{\"fName\":\"ubs_report-fm.js\",\"origName\":\"ubs_report-fm.js\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":3891,\"md5\":\"1b54c02f4891a2470dfa0109e07901fa\"}"
+ "caption": "reportBuilder",
+ "formType": "auto",
+ "formDef": "ubs_report-fm.def",
+ "formCode": "ubs_report-fm.js",
+ "entity": "ubs_report",
+ "isDefault": true
 }

@@ -1,16 +1,12 @@
 <template>
-  <el-tooltip
-    :content="$ut('UFile.downloadButtonTooltip')"
-    :enterable="false"
-  >
-    <u-button
-      color="primary"
-      icon="u-icon-download"
-      appearance="inverse"
-      :disabled="isDisabled"
-      @click="downloadFile"
-    />
-  </el-tooltip>
+  <u-button
+    :title="$ut('UFile.downloadButtonTooltip')"
+    color="primary"
+    icon="u-icon-download"
+    appearance="inverse"
+    :disabled="isDisabled"
+    @click="downloadFile"
+  />
 </template>
 
 <script>

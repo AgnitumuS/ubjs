@@ -166,7 +166,8 @@ module.exports.default = {
         // show UI dialog with signature validation result
         await pki.verificationUI(
           [verificationResult, verificationResult],
-          ['<strong>First signature</strong>', 'Second signature']
+          ['<strong>First signature</strong>', 'Second signature'],
+          [{ icon: 'fa fa-user', tooltip: 'Ha-ha', callback: () => {} }]
         )
       } finally {
         // me.unmask()

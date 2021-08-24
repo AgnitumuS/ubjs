@@ -44,7 +44,11 @@
     <u-button icon="u-icon-clock"/>
     <u-button appearance="plain" icon="u-icon-signature"/>
     <u-button appearance="inverse" icon="u-icon-undo"/>
+    <u-button circle icon="u-icon-clock"/>
+    <u-button circle appearance="plain" icon="u-icon-signature"/>
+    <u-button circle appearance="inverse" icon="u-icon-undo"/>
 
+    
     <h5>Icon left:</h5> 
     <u-button icon="u-icon-save">Default</u-button>
     <u-button appearance="plain" icon="u-icon-arrow-alt-left">Go back</u-button>

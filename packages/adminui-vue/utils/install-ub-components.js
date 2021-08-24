@@ -32,7 +32,6 @@ module.exports = {
     const UFileWebcamButton = require('../components/controls/UFile/buttons/UFileWebcamButton.vue').default
     const UFileFullscreenButton = require('../components/controls/UFile/buttons/UFileFullscreenButton.vue').default
     const SignatureVerificationResult = require('../components/SignatureVerificationResult.vue').default
-    const USidebarButton = require('../components/sidebar/USidebarButton.vue').default
     const UGrid = require('../components/controls/UGrid.vue').default
     const UMasterDetailView = require('../components/UMasterDetailView/UMasterDetailView.vue').default
     const UButton = require('../components/controls/UButton.vue').default
@@ -72,7 +71,6 @@ module.exports = {
     Vue.component(UFileWebcamButton.name, UFileWebcamButton)
     Vue.component(UFileFullscreenButton.name, UFileFullscreenButton)
     Vue.component(SignatureVerificationResult.name, SignatureVerificationResult)
-    Vue.component(USidebarButton.name, USidebarButton)
     Vue.component(UGrid.name, UGrid)
     Vue.component(UMasterDetailView.name, UMasterDetailView)
     Vue.component(UButton.name, UButton)

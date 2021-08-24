@@ -25,38 +25,26 @@
       <span>{{ totalFormatted }}</span>
     </button>
 
-    <el-tooltip
-      :content="$ut('table.pagination.prevPage')"
-      placement="bottom"
-      :open-delay="300"
-      :enterable="false"
-    >
-      <u-button
-        icon="u-icon-arrow-left"
-        class="pagination__button__prev"
-        color="control"
-        size="small"
-        appearance="inverse"
-        :disabled="pageIndex === 0 || loading"
-        @click="pageIndex -= 1"
-      />
-    </el-tooltip>
-    <el-tooltip
-      :content="$ut('table.pagination.nextPage')"
-      placement="bottom"
-      :open-delay="300"
-      :enterable="false"
-    >
-      <u-button
-        icon="u-icon-arrow-right"
-        class="pagination__button__next"
-        color="control"
-        size="small"
-        appearance="inverse"
-        :disabled="isLastPageIndex || loading"
-        @click="pageIndex += 1"
-      />
-    </el-tooltip>
+    <u-button
+      :title="$ut('table.pagination.prevPage')"
+      icon="u-icon-arrow-left"
+      class="pagination__button__prev"
+      color="control"
+      size="small"
+      appearance="inverse"
+      :disabled="pageIndex === 0 || loading"
+      @click="pageIndex -= 1"
+    />
+    <u-button
+      :title="$ut('table.pagination.nextPage')"
+      icon="u-icon-arrow-right"
+      class="pagination__button__next"
+      color="control"
+      size="small"
+      appearance="inverse"
+      :disabled="isLastPageIndex || loading"
+      @click="pageIndex += 1"
+    />
   </div>
 </template>
 

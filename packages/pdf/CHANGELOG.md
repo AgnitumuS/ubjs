@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.2] - 2021-08-18
 ## [5.2.1] - 2021-08-09
 ### Added
  - `TimesNewRoman_Cyr`: added `&nbsp` `§` and `®` signs

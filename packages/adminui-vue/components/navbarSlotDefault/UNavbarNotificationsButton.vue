@@ -16,8 +16,9 @@
         :type="unreadMessagesCount === 0 ? 'info' : 'danger'"
         :value="unreadMessagesCount"
       >
-        <el-button
+        <u-button
           icon="u-icon-bell"
+          appearance="inverse"
           circle
         />
       </el-badge>

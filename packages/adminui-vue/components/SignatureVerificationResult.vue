@@ -20,31 +20,23 @@
             v-html="sigCaptions[vIdx]"
           />
           <td style="width: 2em">
-            <el-tooltip
-              :content="statusTip(vIdx, false)"
-              placement="right"
-            >
-              <i
-                :class="vr.isDigitalStamp ? 'fas fa-2x fa-stamp' : 'fas fa-2x fa-signature'"
-                :style="statusStyle(vIdx)"
-              />
-            </el-tooltip>
+            <i
+              :title="statusTip(vIdx, false)"
+              :class="vr.isDigitalStamp ? 'fas fa-2x fa-stamp' : 'fas fa-2x fa-signature'"
+              :style="statusStyle(vIdx)"
+            />
           </td>
           <td> {{ $UB.formatter.formatDate(vr.signingTime, 'dateTime') }} </td>
           <td> {{ vr.subject.fullName || vr.organization.digitalStampName || vr.organization.orgName }} </td>
           <template v-if="actions.length > 0">
             <td>
-              <el-tooltip
-                  v-for="action in actions"
-                  :key="action.tooltip"
-                  :content="action.tooltip"
-                  placement="right"
-              >
-                <i
-                  :class="action.icon"
-                  @click="buttonClick($event, vIdx, action.callback)"
-                />
-              </el-tooltip>
+              <i
+                v-for="action in actions"
+                :key="action.tooltip"
+                :title="action.tooltip"
+                :class="action.icon"
+                @click="buttonClick($event, vIdx, action.callback)"
+              />
             </td>
           </template>
         </tr>

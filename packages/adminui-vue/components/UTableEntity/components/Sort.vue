@@ -4,18 +4,12 @@
     ref="dropdown"
     :ref-element="targetColumn"
   >
-    <el-tooltip
-      :content="$ut('table.sort.label')"
-      placement="bottom"
-      :open-delay="300"
-      :enterable="false"
-    >
-      <u-button
-        icon="u-icon-sort-asc-alt"
-        appearance="inverse"
-        color="control"
-      />
-    </el-tooltip>
+    <u-button
+      :title="$ut('table.sort.label')"
+      icon="u-icon-sort-asc-alt"
+      appearance="inverse"
+      color="control"
+    />
 
     <div
       slot="dropdown"
