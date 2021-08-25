@@ -34,7 +34,6 @@
       </template>
       <i class="u-icon-circle-question ub-code-mirror__help"></i>
     </el-tooltip>
-    <textarea ref="textarea" />
   </div>
 </template>
 
@@ -120,7 +119,7 @@ export default {
     // do not put _codeMirror inside data to prevent it observation
     // Vue initialize reactivity BEFORE created(), so all NEW object properties assigned here is not reactive
     const CodeMirror = await SystemJS.import('@unitybase/codemirror-full')
-    this._codeMirror = CodeMirror.fromTextArea(this.$refs.textarea, {
+    this._codeMirror = CodeMirror(this.$el, {
       mode: this.editorMode,
       lineNumbers: true,
       lint: Object.assign({ asi: true, esversion: 8 }, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
@@ -190,6 +189,11 @@ export default {
       this._codeMirror.showHint({
         hint: this.hintsFunction
       })
+    },
+
+    /** Called by requestFullscreen method of UFile */
+    requestFullscreen () {
+      return this.$el.requestFullscreen()
     }
   }
 }
