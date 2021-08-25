@@ -6,7 +6,6 @@
     :step="step"
     :disabled="isDisabled || $attrs.disabled"
     v-bind="$attrs"
-    @[numberEvent]="rounding"
   >
     <!-- @slot content as Input prefix -->
     <slot
@@ -76,14 +75,35 @@ export default {
     }
   },
 
+  data () {
+    return {
+      internalValue: undefined
+    }
+  },
+
   computed: {
     model: {
       get () {
+        if (this.type === 'number' && this.internalValue !== undefined) {
+          return this.internalValue
+        }
         return this.value
       },
       set (value) {
-        if (value === '') {
+        this.internalValue = value
+
+        if (value === null || value === '') {
           this.$emit('input', null)
+          return
+        }
+
+        if (this.type === 'number') {
+          let asNumber = Number(value)
+          if (this.precision !== undefined) {
+            const preciseness = 10 ** this.precision
+            asNumber = Math.round((asNumber * preciseness)) / preciseness
+          }
+          this.$emit('input', asNumber)
           return
         }
 
@@ -94,31 +114,14 @@ export default {
     numberEvent () {
       return (this.type === 'number') ? 'change' : null
     }
-  },
-
-  methods: {
-    rounding (value) {
-      if (value === null || value === '') {
-        return null
-      }
-      if (this.type !== 'number') {
-        return value
-      }
-      let asNumber = Number(value)
-      if (this.precision !== undefined) {
-        const preciseness = 10 ** this.precision
-        asNumber = Math.round((asNumber * preciseness)) / preciseness
-      }
-      this.$emit('input', asNumber)
-    }
   }
 }
 </script>
 
 <style>
-  .ub-input input::-webkit-inner-spin-button,
-  .ub-input input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
+.ub-input input::-webkit-inner-spin-button,
+.ub-input input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 </style>

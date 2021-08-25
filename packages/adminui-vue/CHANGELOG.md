@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UBaseInput`, type=number: set value as a number on `input` even (type every character) instead of a string,
+  do not handle `change` event
+
 
 ## [5.20.20] - 2021-08-18
 ### Added
