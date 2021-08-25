@@ -636,7 +636,7 @@ export default {
       if (typeof column.template === 'function') {
         return column.template()
       } else {
-        const dataType = column.attribute && column.attribute.dataType
+        const dataType = column.attribute?.dataType
         return TypeProvider.get(dataType).template
       }
     },

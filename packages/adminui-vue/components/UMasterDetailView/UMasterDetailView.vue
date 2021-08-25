@@ -134,6 +134,7 @@
 </template>
 
 <script>
+/* global $App */
 const { throttle } = require('throttle-debounce')
 
 /**
@@ -182,11 +183,11 @@ export default {
       const repository = this.$attrs.repository
       if (typeof repository === 'object') {
         return repository.entity
-      } else if (typeof repository === 'function') {
-        return repository().entityName
-      } else {
-        return ''
       }
+      if (typeof repository === 'function') {
+        return repository().entityName
+      }
+      return ''
     },
 
     details () {
