@@ -1,26 +1,26 @@
 <template>
   <u-file-container :style="previewSizeCss">
     <template #toolbar>
-      <u-file-add-button v-if="hasButton('add')" :accept="accept"/>
-      <u-file-webcam-button v-if="hasButton('webcam')" />
+      <u-file-add-button v-if="!readonly && hasButton('add')" :accept="accept"/>
+      <u-file-webcam-button v-if="!readonly && hasButton('webcam')" />
       <div
-        v-if="hasButton('add') || hasButton('webcam')"
+        v-if="!readonly && (hasButton('add') || hasButton('webcam'))"
         class="u-divider"
       />
-      <u-file-scan-button v-if="hasButton('scan')" />
+      <u-file-scan-button v-if="!readonly && hasButton('scan')" />
       <u-file-scan-settings-button v-if="hasButton('scanSettings')" />
       <div
-        v-if="hasButton('scan') || hasButton('scanSettings')"
+        v-if="!readonly && (hasButton('scan') || hasButton('scanSettings'))"
         class="u-divider"
       />
       <u-file-download-button v-if="hasButton('download')" />
       <u-file-preview-button v-if="hasButton('preview')" />
       <u-file-fullscreen-button v-if="hasButton('fullscreen')" />
       <div
-        v-if="hasButton('download') || hasButton('preview') || hasButton('fullscreen')"
+        v-if="hasButton('remove') && !readonly && (hasButton('download') || hasButton('preview') || hasButton('fullscreen'))"
         class="u-divider"
       />
-      <u-file-remove-button v-if="hasButton('remove')" />
+      <u-file-remove-button v-if="!readonly && hasButton('remove')" />
 
       <slot />
     </template>
@@ -28,13 +28,15 @@
     <template #view>
       <file-renderer
         v-if="value"
-        :key="value"
         ref="renderer"
         :attribute-name="attributeName"
         :entity-name="entityName"
         :file="file"
         :file-id="recordId"
         :with-preview="!!previewMode"
+        :readonly="readonly"
+        v-bind="$attrs"
+        v-on="$listeners"
       />
       <u-file-input
         v-else
@@ -114,6 +116,10 @@ export default {
      * disable removing or uploading file
      */
     disabled: Boolean,
+    /**
+      * Sets component to read only state
+      */
+    readonly: Boolean,
 
     /**
      * file extensions to bind into `accept` input property

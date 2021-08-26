@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `UFile`: added preview mode for `html` (text/html) and `javascript`(application/def, application/javascript) documents 
+ - `UFile`: added `readonly` prop
  - `UCodeMirror`: added `src` property to preview script content in read-only mode
  - `UCodeMirror` - `requestFullscreen()` method added - used by UFile to expand component to full screen
 

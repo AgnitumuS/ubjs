@@ -64,7 +64,8 @@
     v-else-if="renderType === 'js'"
     ref="view"
     :src="previewUrl"
-    style="height: 100%; display: grid"
+    :readonly="readonly"
+    style="height: 100%; width: 100%; display: grid"
   />
 
   <div
@@ -135,7 +136,8 @@ export default {
     withPreview: Boolean,
     entityName: String,
     attributeName: String,
-    fileId: Number
+    fileId: Number,
+    readonly: Boolean
   },
 
   data () {
@@ -188,19 +190,20 @@ export default {
   },
 
   async created () {
-    if (this.withPreview) { // prevent download document for non-preview mode
-      const getDocumentParams = {
-        entity: this.entityName,
-        attribute: this.attributeName,
-        ID: this.fileId
-      }
-      if (this.file.isDirty) {
-        getDocumentParams.isDirty = this.file.isDirty
-        getDocumentParams.fileName = this.file.origName
-      }
-      if (this.file.revision) getDocumentParams.revision = this.file.revision
-      this.previewUrl = await this.$UB.connection.getDocumentURL(getDocumentParams)
+    if (!this.withPreview) { // prevent download document for non-preview mode
+      return
     }
+    const getDocumentParams = {
+      entity: this.entityName,
+      attribute: this.attributeName,
+      ID: this.fileId
+    }
+    if (this.file.isDirty) {
+      getDocumentParams.isDirty = this.file.isDirty
+      getDocumentParams.fileName = this.file.origName
+    }
+    if (this.file.revision) getDocumentParams.revision = this.file.revision
+    this.previewUrl = await this.$UB.connection.getDocumentURL(getDocumentParams)
   },
 
   methods: {
@@ -213,7 +216,7 @@ export default {
     },
 
     openFullscreen () {
-      this.$refs.view.requestFullscreen()
+      return this.$refs.view.requestFullscreen()
     }
   }
 }
