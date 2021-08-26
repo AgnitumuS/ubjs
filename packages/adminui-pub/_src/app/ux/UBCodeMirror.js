@@ -1,3 +1,4 @@
+/* global CodeMirror, SystemJS */
 /**
  * Thin wrapper around CodeMirror for JS editing.
  * @author UnityBase core team (pavel.mash) on 12.2016
@@ -78,9 +79,9 @@ Ext.define('UB.ux.UBCodeMirror', {
     }
   },
 
-  isEqual: function(value1, value2) {
+  isEqual: function (value1, value2) {
     return this.valueIsJson
-      ? JSON.stringify(value1) == JSON.stringify(value2)
+      ? JSON.stringify(value1) === JSON.stringify(value2)
       : String(value1) === String(value2)
   },
 
@@ -93,9 +94,9 @@ Ext.define('UB.ux.UBCodeMirror', {
    * @returns {Promise}
    */
   setSrc: function (cfg) {
-    var me = this
-    var blobData = cfg.blobData
-    var resetOriginalValue = cfg.resetOriginalValue
+    const me = this
+    const blobData = cfg.blobData
+    const resetOriginalValue = cfg.resetOriginalValue
 
     function onDataReady (response) {
       me.setValue(response)
@@ -106,7 +107,7 @@ Ext.define('UB.ux.UBCodeMirror', {
       return response
     }
 
-    let ct = cfg.contentType || ''
+    const ct = cfg.contentType || ''
     if (ct.endsWith('yaml')) {
       this.editorMode = 'yaml'
     } else if (ct.endsWith('x-vue')) {
@@ -119,7 +120,7 @@ Ext.define('UB.ux.UBCodeMirror', {
 
     if (blobData) {
       return new Promise(function (resolve, reject) {
-        var reader = new window.FileReader()
+        const reader = new window.FileReader()
         reader.addEventListener('loadend', function () {
           resolve(onDataReady(reader.result))
         })
@@ -143,14 +144,14 @@ Ext.define('UB.ux.UBCodeMirror', {
   },
 
   onShowSnippets: function (cm) {
-    var me = this
+    const me = this
     if (me.codeSnippetsGetter) {
       cm.showHint({
         hint: function () {
-          var cur = cm.getCursor()
-          var tabSize = cm.options.tabSize || 2
-          var multilinePrefix = (cur.ch / tabSize > 1) ? '\t'.repeat(cur.ch / 2) : ''
-          var snippets = me.codeSnippetsGetter(multilinePrefix)
+          const cur = cm.getCursor()
+          const tabSize = cm.options.tabSize || 2
+          const multilinePrefix = (cur.ch / tabSize > 1) ? '\t'.repeat(cur.ch / 2) : ''
+          const snippets = me.codeSnippetsGetter(multilinePrefix)
           return {
             list: snippets,
             from: CodeMirror.Pos(cur.line, cur.ch),
@@ -162,14 +163,14 @@ Ext.define('UB.ux.UBCodeMirror', {
   },
 
   doBeautify: function () {
-    var me = this
+    const me = this
     if (!this.codeMirrorInstance) return
 
     SystemJS.import('js-beautify/js/lib/beautify').then(function (beautify) {
-      var txt = me.codeMirrorInstance.getValue()
+      let txt = me.codeMirrorInstance.getValue()
       txt = beautify.js_beautify(txt, {
-        'indent_size': 2,
-        'indent_char': ' '
+        indent_size: 2,
+        indent_char: ' '
       })
       me.codeMirrorInstance.setValue(txt)
     })
@@ -177,8 +178,8 @@ Ext.define('UB.ux.UBCodeMirror', {
 
   listeners: {
     render: function doRender () {
-      var myElm = this.getEl().dom
-      var me = this
+      const myElm = this.getEl().dom
+      const me = this
 
       SystemJS.import('@unitybase/codemirror-full').then((CodeMirror) => {
         window.CodeMirror = CodeMirror
@@ -189,10 +190,10 @@ Ext.define('UB.ux.UBCodeMirror', {
             ? this.rawValue ? JSON.stringify(this.rawValue) : ''
             : (this.rawValue || ''),
           lineNumbers: true,
-          lint: Object.assign({asi: true, esversion: 8}, $App.connection.appConfig.uiSettings.adminUI.linter),
+          lint: Object.assign({ asi: true, esversion: 8 }, $App.connection.appConfig.uiSettings.adminUI.linter),
           readOnly: false,
           tabSize: 2,
-          highlightSelectionMatches: {annotateScrollbar: true},
+          highlightSelectionMatches: { annotateScrollbar: true },
           matchBrackets: true,
           foldGutter: true,
           gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
@@ -203,7 +204,7 @@ Ext.define('UB.ux.UBCodeMirror', {
           }
         })
         // <i style="position: absolute;right: 15px;" class="fa fa-question fa-lg" aria-hidden="true"></i>
-        let help = document.createElement('i')
+        const help = document.createElement('i')
         help.style = 'position: absolute;right: 15px; z-index: 10000'
         help.className = 'u-icon-circle-question'
         myElm.firstChild.insertBefore(help, myElm.firstChild.firstChild)
@@ -217,7 +218,7 @@ Ext.define('UB.ux.UBCodeMirror', {
         this.codeMirrorInstance.on('change', function (cmInstance) {
           if (me.valueIsJson) {
             try {
-              let v = cmInstance.getValue()
+              const v = cmInstance.getValue()
               me.rawValue = JSON.parse(v)
               me.checkChange()
             } catch (e) {
