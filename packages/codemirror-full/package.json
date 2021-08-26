@@ -16,8 +16,8 @@
     "registry": "https://registry.unitybase.info"
   },
   "dependencies": {
-    "codemirror": "^5.44.0",
-    "jshint": "^2.10.2",
+    "codemirror": "^5.62.3",
+    "jshint": "^2.13.1",
     "lodash": "^4"
   },
   "devDependencies": {

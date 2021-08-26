@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - CodeMirror updated to @5.62.3
+ - jshint updated to @2.13.1
 
 ### Deprecated
 

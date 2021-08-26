@@ -1,0 +1,9 @@
+{
+ "description": "reportBuilder",
+ "caption": "reportBuilder",
+ "formType": "vue",
+ "formDef": null,
+ "formCode": "ubs_report-vue-fm.vue",
+ "entity": "ubs_report",
+ "isDefault": true
+}

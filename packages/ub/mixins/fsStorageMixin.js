@@ -305,7 +305,8 @@ function initEntityForFsStorage (entity, mixinCfg) {
               const blobInfo = JSON.parse(row[attr.name])
 
               let fileExt = path.extname(blobInfo.origName)
-              if (fileExt === '.def') fileExt = '.js'
+              if (fileExt === '.def') fileExt = '.js' // legacy ubs_report JS code extension
+              if (fileExt === '.template') fileExt = '.html' // legacy ubs_report HTML template extension
               const ct = mime.contentType(fileExt) || 'application/octet-stream'
               if (ct === blobInfo.ct) { // content type can be calculated from origName extension - keep only origName in blob attribute value
                 row[attr.name] = blobInfo.origName
@@ -435,7 +436,8 @@ function initEntityForFsStorage (entity, mixinCfg) {
             if (!docInfo.md5) docInfo.md5 = '00000000000000000000000000000000'
           } else { // string with origName only
             let fileExt = path.extname(cnt)
-            if (fileExt === '.def') fileExt = '.js'
+            if (fileExt === '.def') fileExt = '.js' // legacy ubs_report JS code extension
+            if (fileExt === '.template') fileExt = '.html' // legacy ubs_report HTML template extension
             // mime module do not know .vue extension :(
             const ct = fileExt === '.vue' ? 'script/x-vue' : (mime.contentType(fileExt) || 'application/octet-stream')
             docInfo = {
