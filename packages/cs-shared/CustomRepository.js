@@ -220,6 +220,15 @@ UB.Repository('my_entity').attrs('ID')
    */
   where (expression, condition, value, options) {
     const UBQL2 = this.UBQLv2
+    const originalCondition = condition
+    const WhereCondition = CustomRepository.prototype.WhereCondition
+    condition = WhereCondition[condition]
+    if ((condition === WhereCondition.null || condition === WhereCondition.notNull) && value !== undefined && options === undefined) {
+      // "value" argument not used with "null" or "not null", so it means that "options" is passed as the
+      // third argument
+      options = value
+      value = undefined
+    }
     let clauseName = (options && (typeof options === 'object')) ? options.clauseName : options
     if (!clauseName) { // generate unique clause name
       clauseName = cNames[++this._whereLength]
@@ -227,9 +236,6 @@ UB.Repository('my_entity').attrs('ID')
         clauseName += '_'
       }
     }
-    const originalCondition = condition
-    const WhereCondition = CustomRepository.prototype.WhereCondition
-    condition = WhereCondition[condition]
     if (expression && condition !== 'custom' && !bracketsRe.test(expression)) {
       expression = `[${expression}]`
     }
