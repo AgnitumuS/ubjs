@@ -18,12 +18,13 @@
       @keydown.native.exact.up="changeSelected(-1)"
       @keydown.native.enter="chooseOption(selectedOption)"
       @keydown.native.esc.capture="leaveInput"
-      @keydown.native.tab="leaveInput"
     >
       <div
         slot="reference"
         class="ub-select__container"
-        :class="{'ub-select__container--with-actions': actions.length && !disabled}"
+        :class="{
+          'ub-select__container--with-actions': actions.length && !disabled
+        }"
       >
         <el-input
           ref="input"
@@ -59,9 +60,15 @@
           />
 
           <i
-            v-if="clearable && value !== null && value !== '' && value !== undefined && !isReadOnly"
+            v-if="
+              clearable &&
+                value !== null &&
+                value !== '' &&
+                value !== undefined &&
+                !isReadOnly
+            "
             slot="suffix"
-            style="cursor: pointer;"
+            style="cursor: pointer"
             class="el-input__icon u-icon-close"
             @click="$emit('input', null, null)"
           />
@@ -69,7 +76,7 @@
             v-if="!isReadOnly"
             slot="suffix"
             class="el-input__icon"
-            style="cursor: pointer;"
+            style="cursor: pointer"
             :class="inputIconCls"
             @click.prevent="editable && toggleDropdown()"
           />
@@ -87,17 +94,15 @@
           :ref="`option_${option[valueAttribute]}`"
           class="ub-select__option"
           :class="{
-            'active': option[valueAttribute] === value,
-            'selected': option[valueAttribute] === selectedID
+            active: option[valueAttribute] === value,
+            selected: option[valueAttribute] === selectedID
           }"
           @click="chooseOption(option)"
           @mouseenter="selectedID = option[valueAttribute]"
         >
           {{ option[getDisplayAttribute] }}
         </div>
-        <el-row
-          type="flex"
-        >
+        <el-row type="flex">
           <el-button
             v-if="moreVisible"
             size="mini"
@@ -297,7 +302,6 @@ export default {
       type: Function,
       default: config => config
     }
-
   },
 
   data () {
@@ -418,8 +422,15 @@ export default {
   },
 
   beforeDestroy () {
-    if (this.AUTOCOMPLETE_LISTENER_UID && this.AUTOCOMPLETE_LISTENER_UID === this._uid && !this.skipAutoComplete) {
-      this.$UB.connection.removeListener(`${this.getEntityName}:changed`, this.autoCompleteValue)
+    if (
+      this.AUTOCOMPLETE_LISTENER_UID &&
+      this.AUTOCOMPLETE_LISTENER_UID === this._uid &&
+      !this.skipAutoComplete
+    ) {
+      this.$UB.connection.removeListener(
+        `${this.getEntityName}:changed`,
+        this.autoCompleteValue
+      )
     }
   },
 
@@ -485,6 +496,7 @@ export default {
 
         if (option) {
           this.query = option[this.getDisplayAttribute]
+          this.selectedOption = option
           this.setSafeDeleteValue(option)
         } else {
           this.query = value
@@ -513,8 +525,14 @@ export default {
 
       this.undefinedRecord = false
       if (value === undefined || value === null) {
-        if (this.allowDictionaryAdding && !this.selectedOption && !this.value && this.query && this.prevQuery &&
-          this.query === this.prevQuery) {
+        if (
+          this.allowDictionaryAdding &&
+          !this.selectedOption &&
+          !this.value &&
+          this.query &&
+          this.prevQuery &&
+          this.query === this.prevQuery
+        ) {
           this.prevQuery = ''
         } else {
           // Clear display value, when ID is empty
@@ -550,17 +568,15 @@ export default {
     },
 
     leaveInput (e) {
-      if (this.dropdownVisible) {
-        /*
-         * need to stopPropagation only if this is necessary,
-         * otherwise the handler will intercept other actions on the ESC,
-         * for example, closing dialog
-         */
-        e.stopPropagation()
-        this.selectedID = this.value
-        this.dropdownVisible = false
-        this.setQueryByValue(this.value)
-      }
+      /*
+       * need to stopPropagation only if this is necessary,
+       * otherwise the handler will intercept other actions on the ESC,
+       * for example, closing dialog
+       */
+      if (e) e.stopPropagation()
+      this.selectedID = this.value
+      this.dropdownVisible = false
+      this.setQueryByValue(this.value)
     },
 
     async onKeydownAltDown () {
@@ -737,8 +753,17 @@ export default {
     },
 
     autoCompleteValue (config) {
-      if (this.AUTOCOMPLETE_LISTENER_UID && this.AUTOCOMPLETE_LISTENER_UID === this._uid && config && config.resultData) {
-        this.$emit('input', config.resultData[this.valueAttribute], JSON.parse(JSON.stringify(config.resultData)))
+      if (
+        this.AUTOCOMPLETE_LISTENER_UID &&
+        this.AUTOCOMPLETE_LISTENER_UID === this._uid &&
+        config &&
+        config.resultData
+      ) {
+        this.$emit(
+          'input',
+          config.resultData[this.valueAttribute],
+          JSON.parse(JSON.stringify(config.resultData))
+        )
       }
     },
 
@@ -756,29 +781,55 @@ export default {
       this.$emit('focus')
     },
 
-    onBlur () {
+    checkClickInDropdownItem (blurEvent) {
+      const { relatedTarget } = blurEvent
+      const { options } = this.$refs
+      return (
+        relatedTarget &&
+        options &&
+        (relatedTarget.contains(options) || options.contains(relatedTarget))
+      )
+    },
+
+    async onBlur (ev) {
       this.isFocused = false
       this.$emit('blur')
-      if (this.allowDictionaryAdding && (this.query.length > 0) && !this.disabled &&
-        !this.value && !this.removeDefaultActions) {
-        this.$dialog({
+      if (this.checkClickInDropdownItem(ev)) return
+      const {
+        allowDictionaryAdding,
+        disabled,
+        removeDefaultActions,
+        query,
+        selectedOption
+      } = this
+      if (!allowDictionaryAdding || disabled || removeDefaultActions) return
+
+      if (
+        query.length <= 0 ||
+        (selectedOption && query === selectedOption.name)
+      ) { return }
+
+      if (!this.value || (this.value && this.options.length === 0)) {
+        this.dropdownVisible = false
+        const choice = await this.$dialog({
           title: 'select.dictionaryAdding',
-          msg: this.$ut('select.dictionaryAddingChoices', { entity: this.$ut(this.getEntityName), text: this.query }),
+          msg: this.$ut('select.dictionaryAddingChoices', {
+            entity: this.$ut(this.getEntityName),
+            text: query
+          }),
           buttons: {
             yes: 'Edit',
             no: 'Add',
             cancel: 'Continue'
           }
-        }).then(choice => {
-          if (choice === 'no') {
-            this.handleAddDictionaryItem()
-          } else if (choice === 'yes') {
-            this.handleAddDictionaryItemWithDetails()
-          } else {
-            this.query = ''
-          }
         })
+        if (choice === 'no') {
+          this.handleAddDictionaryItem()
+        } else if (choice === 'yes') {
+          this.handleAddDictionaryItemWithDetails()
+        }
       }
+      this.leaveInput()
     },
 
     /**
@@ -793,12 +844,11 @@ export default {
         query: this.query
       })
 
-      const newItem = await this.$UB.connection
-        .insertAsObject({
-          entity: this.getEntityName,
-          fieldList: [this.valueAttribute],
-          execParams: (config.props && config.props.parentContext) || {}
-        })
+      const newItem = await this.$UB.connection.insertAsObject({
+        entity: this.getEntityName,
+        fieldList: [this.valueAttribute],
+        execParams: (config.props && config.props.parentContext) || {}
+      })
 
       if (newItem && newItem[this.valueAttribute]) {
         this.$notify.success(this.$ut('select.recordAddedSuccessfully'))
@@ -820,7 +870,13 @@ export default {
       })
 
       vm.$UB.connection.on(`${vm.getEntityName}:changed`, function (response) {
-        if (response && response.method && response.method === 'insert' && response.resultData && response.resultData[this.valueAttribute]) {
+        if (
+          response &&
+          response.method &&
+          response.method === 'insert' &&
+          response.resultData &&
+          response.resultData[this.valueAttribute]
+        ) {
           vm.$emit('input', response.resultData[this.valueAttribute])
           vm.$UB.connection.removeListener(`${vm.getEntityName}:changed`, null)
         }
@@ -842,7 +898,7 @@ export default {
   padding: 7px 10px;
   font-size: 14px;
   cursor: pointer;
-  color: hsl(var(--hs-text), var(--l-text-default))
+  color: hsl(var(--hs-text), var(--l-text-default));
 }
 
 .ub-select__option.selected{
@@ -918,5 +974,4 @@ export default {
 .u-select:focus-within {
   border-color: hsl(var(--hs-primary), var(--l-layout-border-default));
 }
-
 </style>
