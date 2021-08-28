@@ -211,7 +211,7 @@ UB.Repository('my_entity').attrs('ID')
    * @param {string} expression   Attribute name (with or without []) or valid expression with attributes in []
    * @param {CustomRepository.WhereCondition|String} condition  Any value from {@link CustomRepository#WhereCondition WhereCondition}
    * @param {*} [value] Condition value. If `undefined` value not passed to ubql
-   * @param {object} [options]
+   * @param {object|string} [options] If string is passed it means `clauseName`, otherwise an object {clauseName, clearable}
    * @param {string} [options.clauseName] clause name to be used in {CustomRepository.logicalPredicates}
    *  - If not passed unique clause name will be generated ('_1', '_2', ..).
    *  - In case a condition with the same name exists, it will be overwritten.
