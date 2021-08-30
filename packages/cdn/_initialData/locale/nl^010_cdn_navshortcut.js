@@ -33,7 +33,7 @@ module.exports = function (session) {
       { keyValue: 'cdn_department', execParams: { caption: 'Afdelingen' } },
       { keyValue: 'cdn_person', execParams: { caption: 'Personen' } },
       { keyValue: 'cdn_bank', execParams: { caption: 'Banken' } },
-      { keyValue: 'cdn_folder_misc', execParams: { caption: 'Diversen' } },
+      { keyValue: 'cdn_folder_misc', execParams: { caption: 'Overige toepassingen' } },
       { keyValue: 'cdn_currency', execParams: { caption: 'Valuta' } },
       { keyValue: 'cdn_language', execParams: { caption: 'Talen' } },
       { keyValue: 'cdn_classifier', execParams: { caption: 'Classificaties' } }
