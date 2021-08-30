@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UBaseInput`, type=number: set value as a number on `input` event (type every character) instead of on `change` event,
+ where value may be a string
 
 ## [5.20.20] - 2021-08-18
 ### Added
@@ -2229,7 +2231,7 @@ $App.doCommand({
       ```
    - refactorings to simplify code: inline `initCollections` helper method, no need for it
      to be in `helpers`, add `enrichFieldList`, because in some places we need to make sure
-     some system attributes are added to requests, such as `ID` or `mi_modifyDate`;
+     some system attributes are added to request, such as `ID` or `mi_modifyDate`;
      inline `buildCollectionRequests` straight into `save`.
    - improve jsdocs
    - expose `buildDeleteRequest` in `helpers` and remove `buildCollectionRequests` from helpers.
