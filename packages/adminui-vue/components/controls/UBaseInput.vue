@@ -6,6 +6,7 @@
     :step="step"
     :disabled="isDisabled || $attrs.disabled"
     v-bind="$attrs"
+    @change="internalValue=undefined"
   >
     <!-- @slot content as Input prefix -->
     <slot
