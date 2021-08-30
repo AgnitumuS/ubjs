@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `uba_auditTrail` form: in case modified attribute of type `Entity` is not accessible or does not have a `descriptionAttribute`
+  show ID value instead of raise an error  
 
 ## [5.20.21] - 2021-08-18
 ## [5.20.20] - 2021-08-09
