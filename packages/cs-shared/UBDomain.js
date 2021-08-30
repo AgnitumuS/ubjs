@@ -1083,12 +1083,18 @@ UBEntity.prototype.getConvertRules = function (fieldList) {
 /**
  * Returns description attribute name (`descriptionAttribute` metadata property)
  * If `descriptionAttribute` is empty - fallback to attribute with code `caption`
- * @return {string}
+ * @param {Boolean} [raiseErrorIfNotExists=true] If `true`(default) and description attribute does not exists throw error,
+ *   if `false` - return `undefined`
+ * @return {string|undefined}
  */
-UBEntity.prototype.getDescriptionAttribute = function () {
-  const result = this.descriptionAttribute || 'caption'
+UBEntity.prototype.getDescriptionAttribute = function (raiseErrorIfNotExists) {
+  let result = this.descriptionAttribute || 'caption'
   if (!this.attr(result)) {
-    throw new Error('Missing description attribute for entity ' + this.code)
+    if ((raiseErrorIfNotExists !== false)) {
+      throw new Error(`Missing description attribute for entity '${this.code}'`)
+    } else {
+      result = undefined
+    }
   }
   return result
 }
