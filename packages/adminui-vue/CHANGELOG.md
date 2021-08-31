@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - Dutch localization correction
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.20.21] - 2021-08-31
+### Changed
+ - Dutch localization correction
 
 ### Fixed
  - `UBaseInput`, type=number: set value as a number on `input` event (type every character) instead of on `change` event,

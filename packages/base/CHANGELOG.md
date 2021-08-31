@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.10] - 2021-08-31
 ## [5.20.9] - 2021-08-18
 ### Changed
 - Add `SyncConnection.addNew` and `SyncConnection.addNewAsObject`

@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - Dutch localization correction
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.20.22] - 2021-08-31
+### Changed
+ - Dutch localization correction
 
 ### Fixed
  - `uba_auditTrail` form: in case modified attribute of type `Entity` is not accessible or does not have a `descriptionAttribute`

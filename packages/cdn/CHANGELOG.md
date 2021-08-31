@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - Dutch localization correction
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.20.22] - 2021-08-31
+### Changed
+ - Dutch localization correction
 
 ## [5.20.21] - 2021-08-18
 ## [5.20.20] - 2021-08-09
