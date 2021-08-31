@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UBaseInput`, type=number: set value as a number on `input` event (type every character) instead of on `change` event,
  where value may be a string
  - `UDropdown`: fixed placement of dropdown on first click, prevented from expanding outside of viewport [UBDF-13695]
+ - `USelectEntity`: fixed adding new row in `allowDictionaryAdding` mode in case user type text quickly (`blur` event handler fixed) 
+ - `USelectEntity`: removed `leaveInput` on `@keydown.native.tab`, because now it is called on `blur` event
 
 ## [5.20.20] - 2021-08-18
 ### Added
