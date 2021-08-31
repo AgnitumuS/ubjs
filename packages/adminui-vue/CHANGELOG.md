@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `UBaseInput`, type=number: set value as a number on `input` event (type every character) instead of on `change` event,
  where value may be a string
+ - `UDropdown`: fixed placement of dropdown on first click, prevented from expanding outside of viewport [UBDF-13695]
 
 ## [5.20.20] - 2021-08-18
 ### Added
