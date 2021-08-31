@@ -846,7 +846,7 @@ Ext.define('UB.core.UBCommand', {
             result.setTitle(result.title)
           }
 
-          if (!Ext.isDefined(me.tabId)) {
+          if (me.tabId && !Ext.isDefined(me.tabId)) {
             result.target.removeAll()
           }
 
@@ -861,8 +861,23 @@ Ext.define('UB.core.UBCommand', {
             } else {
               result.destroy()
             }
-          } else {
+          }  else if (result?.target?.add) {
             result.target.add(result)
+          } else {
+            // if `result.target` is a base HTMLElement, instead of an ExtJS instance, an ExtJS container must be created to render the BasePanel-based form
+            // Example: UMasterDetailView in preview to display BasePanel based child forms
+            while (result.target.firstChild) {
+              result.target.firstChild.remove()
+            }
+            // !!!Panel height should be calculated by parent element height!!!
+            const targetHeight = result.target?.offsetParent?.getBoundingClientRect().height || ($App.viewport.height - 60)
+            const formContainer = Ext.create('Ext.panel.Panel', {
+              header: false,
+              layout: 'fit',
+              height: targetHeight,
+              renderTo: result.target
+            })
+            formContainer.add(result)
           }
         }
       }
