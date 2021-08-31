@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `UMasterDetailView`: Added `BasePanel` based form support for preview mode.
+ 
 ### Changed
  - Dutch localization correction
 
