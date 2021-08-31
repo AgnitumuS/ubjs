@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UCodeMirror`: set minimum height to 50 px to make help icon be inside control if it has only one line
  - almost all (except ones where HTML is rendered) `el-tooltip` are replaced with
    [HTML `title` property](https://developer.mozilla.org/en-US/docs/web/html/global_attributes/title)
+ - `USelectEntity`: fixed `blur` event in `allowDictionaryAdding` mode
+ - `USelectEntity`: removed `leaveInput` on `@keydown.native.tab`, because now it is called on `blur` event
 
 ### Removed
  - `USidebarButton` component is removed. `UButton` should be used instead.
