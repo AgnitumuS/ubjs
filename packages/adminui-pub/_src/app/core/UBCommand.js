@@ -846,10 +846,6 @@ Ext.define('UB.core.UBCommand', {
             result.setTitle(result.title)
           }
 
-          if (me.tabId && !Ext.isDefined(me.tabId)) {
-            result.target.removeAll()
-          }
-
           if (result.target.setActiveTab) {
             result.closable = true
             if (this.checkTabsCount(result.target)) {
@@ -861,7 +857,8 @@ Ext.define('UB.core.UBCommand', {
             } else {
               result.destroy()
             }
-          }  else if (result?.target?.add) {
+          }  else if (result.target.add) {
+            result.target.removeAll()
             result.target.add(result)
           } else {
             // if `result.target` is a base HTMLElement, instead of an ExtJS instance, an ExtJS container must be created to render the BasePanel-based form
