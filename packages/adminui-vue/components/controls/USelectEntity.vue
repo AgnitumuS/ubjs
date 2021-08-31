@@ -60,13 +60,7 @@
           />
 
           <i
-            v-if="
-              clearable &&
-                value !== null &&
-                value !== '' &&
-                value !== undefined &&
-                !isReadOnly
-            "
+            v-if="clearable && value !== null && value !== '' && value !== undefined && !isReadOnly"
             slot="suffix"
             style="cursor: pointer"
             class="el-input__icon u-icon-close"
@@ -753,17 +747,8 @@ export default {
     },
 
     autoCompleteValue (config) {
-      if (
-        this.AUTOCOMPLETE_LISTENER_UID &&
-        this.AUTOCOMPLETE_LISTENER_UID === this._uid &&
-        config &&
-        config.resultData
-      ) {
-        this.$emit(
-          'input',
-          config.resultData[this.valueAttribute],
-          JSON.parse(JSON.stringify(config.resultData))
-        )
+      if (this.AUTOCOMPLETE_LISTENER_UID && this.AUTOCOMPLETE_LISTENER_UID === this._uid && config && config.resultData) {
+        this.$emit('input', config.resultData[this.valueAttribute], JSON.parse(JSON.stringify(config.resultData)))
       }
     },
 
@@ -784,33 +769,20 @@ export default {
     checkClickInDropdownItem (blurEvent) {
       const { relatedTarget } = blurEvent
       const { options } = this.$refs
-      return (
-        relatedTarget &&
-        options &&
-        (relatedTarget.contains(options) || options.contains(relatedTarget))
-      )
+      return relatedTarget && options && (relatedTarget.contains(options) || options.contains(relatedTarget))
     },
 
     async onBlur (ev) {
       this.isFocused = false
       this.$emit('blur')
       if (this.checkClickInDropdownItem(ev)) return
-      const {
-        allowDictionaryAdding,
-        disabled,
-        removeDefaultActions,
-        query,
-        selectedOption
-      } = this
+      const { allowDictionaryAdding, disabled, removeDefaultActions, query, selectedOption } = this
       if (!allowDictionaryAdding || disabled || removeDefaultActions) return
 
-      if (
-        query.length <= 0 ||
-        (selectedOption && query === selectedOption.name)
-      ) { return }
+      this.dropdownVisible = false
+      if (query.length <= 0 || (selectedOption && query === selectedOption.name)) return
 
       if (!this.value || (this.value && this.options.length === 0)) {
-        this.dropdownVisible = false
         const choice = await this.$dialog({
           title: 'select.dictionaryAdding',
           msg: this.$ut('select.dictionaryAddingChoices', {
