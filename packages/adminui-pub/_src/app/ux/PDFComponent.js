@@ -31,7 +31,29 @@ Ext.define('UB.ux.PDFComponent', {
     this.callParent(arguments)
     if (this.data) {
       this.afterSetUrl()
+      this.setObserver()
     }
+  },
+  observer: null,
+  setObserver () {
+    // dirty hack for chrome bug with PDF view file, when change tabs
+    const target = this.container.dom
+    if (!target) return
+    const options = {
+      threshold: [0]
+    }
+    const callback = function (entries) {
+      const item = entries[0]
+      if (!item.isIntersecting) return
+      const { target } = item
+      const savedWidth = getComputedStyle(target).borderBottomWidth
+      target.style.borderBottomWidth = `calc(${savedWidth} + 1px)`
+      requestAnimationFrame(() => {
+        target.style.borderBottomWidth = savedWidth
+      })
+    }
+    this.observer = new IntersectionObserver(callback, options)
+    this.observer.observe(target.firstChild)
   },
 
   useBlobForData: true,
@@ -69,6 +91,7 @@ Ext.define('UB.ux.PDFComponent', {
 
   onDestroy: function () {
     var me = this
+    if (me.observer) me.observer.disconnect()
     me.dataBlob = null
     me.data = null
     if (me.useBlobForData && !Ext.isEmpty(me.objUrl)) {
@@ -154,5 +177,4 @@ Ext.define('UB.ux.PDFComponent', {
     }
     return Promise.resolve(true)
   }
-
 })

@@ -40,22 +40,26 @@
 
   <video
     v-else-if="renderType === 'video'"
+    ref="view"
     controls
     preload="none"
-    ref="view"
     width="100%"
     height="100%"
   >
-    <source :src="previewUrl" :type="file.ct">
+    <source
+      :src="previewUrl"
+      :type="file.ct"
+    >
     <p>Your browser doesn't support HTML5 video</p>
   </video>
 
   <audio
     v-else-if="renderType === 'audio'"
+    ref="view"
     :src="previewUrl"
     controls
     preload="none"
-    ref="view">
+  >
     <p>Your browser doesn't support <code>audion</code> element</p>
   </audio>
 
@@ -136,7 +140,8 @@ export default {
       scaleValue: 1,
       SCALE_STEP: 0.5,
       MIN_SCALE: 1,
-      MAX_SCALE: 3
+      MAX_SCALE: 3,
+      observer: null
     }
   },
 
@@ -190,6 +195,14 @@ export default {
     }
   },
 
+  mounted () {
+    if (this.renderType === 'pdf') this.setObserver()
+  },
+
+  beforeDestroy () {
+    if (this.observer) this.observer.disconnect()
+  },
+
   methods: {
     zoomIn () {
       this.scaleValue += this.SCALE_STEP
@@ -201,6 +214,27 @@ export default {
 
     openFullscreen () {
       this.$refs.view.requestFullscreen()
+    },
+
+    setObserver () {
+      // dirty hack for chrome bug with PDF view file, when change tabs
+      const target = this.$refs.view
+      if (!target) return
+      const options = {
+        threshold: [0]
+      }
+      const callback = function (entries) {
+        const item = entries[0]
+        if (!item.isIntersecting) return
+        const { target } = item
+        const savedWidth = getComputedStyle(target).borderBottomWidth
+        target.style.borderBottomWidth = `calc(${savedWidth} + 1px)`
+        requestAnimationFrame(() => {
+          target.style.borderBottomWidth = savedWidth
+        })
+      }
+      this.observer = new IntersectionObserver(callback, options)
+      this.observer.observe(target)
     }
   }
 }
