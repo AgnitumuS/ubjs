@@ -77,6 +77,8 @@ ub-pack
 ``` 
 This command installs all application dependencies and creates an archive for future deployment.
 
+> since ub@5.20.5 application can perform additional actions before up-pack by adding a lifecycle hook into `APP_FOLDER/lifecycle/ub-pack-before.sh`
+
 All files what must be excluded from archive should be noted in `.npmignore`. Also, ignored:
  - all files and folders starts with '.'
  - *.log
