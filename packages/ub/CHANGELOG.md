@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - `App.logoutAllWithTheSameNameExceptMe()` is removed - use `App.removeUserSessions(userID)` instead.
+Actually `logoutAllWithTheSameNameExceptMe` dose not works since UB5. 
 
 ### Fixed
 
