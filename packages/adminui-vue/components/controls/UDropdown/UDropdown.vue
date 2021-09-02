@@ -14,7 +14,7 @@
 
     <transition
       name="dropdown-transition"
-      @before-enter="beforeEnter"
+      @enter="beforeEnter"
     >
       <div
         v-show="visible && $slots.dropdown"
@@ -54,6 +54,24 @@ const {
 export default {
   name: 'UDropdown',
 
+  inject: {
+    parentClose: {
+      default () {
+        return () => {}
+      }
+    }
+  },
+
+  provide () {
+    return {
+      parentClose: () => {
+        this.parentClose()
+        this.close()
+      },
+      placement: this.childPlacement
+    }
+  },
+
   props: {
     /**
      * dropdown positioning. In Popper.js it option called strategy
@@ -80,7 +98,7 @@ export default {
      */
     childPlacement: {
       type: String,
-      default: 'right-start'
+      default: 'right'
     },
 
     /**
@@ -113,24 +131,6 @@ export default {
     }
   },
 
-  inject: {
-    parentClose: {
-      default () {
-        return () => {}
-      }
-    }
-  },
-
-  provide () {
-    return {
-      parentClose: () => {
-        this.parentClose()
-        this.close()
-      },
-      placement: this.childPlacement
-    }
-  },
-
   watch: {
     async visible (isVisible) {
       await this.$nextTick()
@@ -158,26 +158,53 @@ export default {
     beforeEnter (el) {
       el.style.zIndex = this.$zIndex()
       if (this.refElement === null) {
-        this.referenceEl = this.$slots.default === undefined ? this.virtualElement : this.$refs.reference
+        this.referenceEl =
+          this.$slots.default === undefined
+            ? this.virtualElement
+            : this.$refs.reference
       } else {
         this.referenceEl = this.refElement
       }
       const arrow = this.$refs.arrow
-
       if (this.position === 'fixed') {
         document.body.appendChild(this.$refs.dropdown)
       }
-      createPopper(this.referenceEl, this.$refs.dropdown, {
-        strategy: this.position,
-        placement: this.placement,
-        modifiers: [{
-          name: 'offset',
-          options: { offset: [-5, 5] }
-        }, {
-          name: 'arrow',
-          options: { padding: 5, element: arrow }
-        }]
+      const popperInstance = createPopper(
+        this.referenceEl,
+        this.$refs.dropdown,
+        {
+          strategy: this.position,
+          placement: this.placement,
+          modifiers: [
+            {
+              name: 'offset',
+              options: { offset: [-5, 5] }
+            },
+            {
+              name: 'arrow',
+              options: { padding: 5, element: arrow }
+            }
+          ]
+        }
+      )
+      requestAnimationFrame(() => {
+        this.checkAndUpdatePopupPosition(popperInstance)
       })
+    },
+
+    async checkAndUpdatePopupPosition (popperInstance) {
+      const popEl = popperInstance.state.elements.popper
+      if (!popEl) return
+      const popStyle = popEl.getBoundingClientRect()
+      if (checkOverflow(popStyle)) {
+        popperInstance.setOptions({ placement: 'auto' })
+      }
+
+      function checkOverflow (popStyle) {
+        const viewportStyle = document.documentElement.getBoundingClientRect()
+        if (popStyle.right > viewportStyle.width) return true
+        if (popStyle.bottom > viewportStyle.height) return true
+      }
     },
 
     close () {
@@ -189,7 +216,6 @@ export default {
       if (this.visible) {
         event.stopPropagation()
       }
-
       this.parentClose()
       this.close()
     },
@@ -199,7 +225,7 @@ export default {
       this.renderKey++
       await this.$nextTick()
       this.virtualElement.getBoundingClientRect = this.generateClientRect(x, y)
-      this.virtualElement.contains = (ref) => target.contains(ref)
+      this.virtualElement.contains = ref => target.contains(ref)
       this.visible = true
       await this.$nextTick()
       this.$refs.dropdown.focus()
@@ -294,5 +320,15 @@ export default {
 
 [data-popper-placement^='left'] > .u-dropdown > .u-dropdown__arrow > .u-dropdown__arrow-inner {
   transform: rotate(90deg);
+}
+
+.dropdown-transition-enter,
+.dropdown-transition-leave-to {
+  opacity: 0;
+}
+.dropdown-transition-enter-active,
+.dropdown-transition-leave-active {
+  transition-property: opacity;
+  transition-duration: 0.2s;
 }
 </style>

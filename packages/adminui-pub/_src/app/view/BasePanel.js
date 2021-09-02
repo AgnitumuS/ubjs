@@ -887,7 +887,7 @@ Ext.define('UB.view.BasePanel', {
         me.lockButton = header.insert(1, { xtype: 'label', style: { fontWeight: 'bold' }, text: UB.i18n('entityLockedOwn') })
       }
     }
-    me.lockButton.removeCls('ub-persistlockinfo')
+    me.lockButton?.removeCls('ub-persistlockinfo')
     if (me.hasPersistLock) {
       me.lockButton.addCls('ub-persistlockinfo')
       me.lockButton.setText(UB.i18n('persistLockInfo',
@@ -913,7 +913,7 @@ Ext.define('UB.view.BasePanel', {
         Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s'))
       )
       me.lockButton.show()
-    } else {
+    } else if (me.lockButton?.isVisible) {
       if (me.lockButton.isVisible()) {
         me.lockButton.hide()
       }

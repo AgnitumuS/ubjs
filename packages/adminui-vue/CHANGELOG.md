@@ -18,6 +18,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.21] - 2021-08-31
+### Changed
+ - Dutch localization correction
+
+### Fixed
+ - `UBaseInput`, type=number: set value as a number on `input` event (type every character) instead of on `change` event,
+ where value may be a string
+ - `UDropdown`: fixed placement of dropdown on first click, prevented from expanding outside of viewport [UBDF-13695]
+ - `USelectEntity`: fixed adding new row in `allowDictionaryAdding` mode in case user type text quickly (`blur` event handler fixed) 
+ - `USelectEntity`: removed `leaveInput` on `@keydown.native.tab`, because now it is called on `blur` event
+
 ## [5.20.20] - 2021-08-18
 ### Added
  - `UButton`: added `circle` prop to render a circle button - see [UButton UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UButton) 
@@ -2232,7 +2243,7 @@ $App.doCommand({
       ```
    - refactorings to simplify code: inline `initCollections` helper method, no need for it
      to be in `helpers`, add `enrichFieldList`, because in some places we need to make sure
-     some system attributes are added to requests, such as `ID` or `mi_modifyDate`;
+     some system attributes are added to request, such as `ID` or `mi_modifyDate`;
      inline `buildCollectionRequests` straight into `save`.
    - improve jsdocs
    - expose `buildDeleteRequest` in `helpers` and remove `buildCollectionRequests` from helpers.

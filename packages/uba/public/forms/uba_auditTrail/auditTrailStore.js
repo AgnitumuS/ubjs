@@ -250,7 +250,10 @@ function formatValue (dataObject, attrMeta, attrCode, requests, responseTransfor
       if (value === undefined || value === null) return ''
 
       const { associatedEntity, associationAttr = 'ID' } = attrMeta
-      const descriptionAttribute = UB.connection.domain.get(associatedEntity).getDescriptionAttribute()
+      const lookupEntity = UB.connection.domain.get(associatedEntity, false)
+      if (!lookupEntity) return value ? String(value) : ''
+      const descriptionAttribute = lookupEntity.getDescriptionAttribute(false)
+      if (!descriptionAttribute) return value ? String(value) : ''
       const request = UB.Repository(associatedEntity)
         .attrs(
           ...new Set(['ID', associationAttr, descriptionAttribute])

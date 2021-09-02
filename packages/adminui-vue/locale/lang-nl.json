@@ -170,7 +170,7 @@
       "table": "Tabel"
     },
     "sort": {
-      "label": "Soort",
+      "label": "Sorteren",
       "direction": {
         "label": "Richting",
         "asc": "Oplopend",
@@ -179,7 +179,7 @@
       }
     },
     "summary": {
-      "menuText": "Toon totalen",
+      "menuText": "Totaal tonen",
       "header": "Totalen voor \"{forTitle:i18n}\"",
       "totalRowCount": "Totaal aantal rijen",
       "columnSummaries": "Kolomoverzichten",

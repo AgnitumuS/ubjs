@@ -10,7 +10,7 @@ module.exports = function (session) {
     entity: 'ubm_navshortcut',
     keyAttribute: 'code',
     localization: [
-      { keyValue: 'adm_folder_misc', execParams: { caption: 'Diversen' } },
+      { keyValue: 'adm_folder_misc', execParams: { caption: 'Overige toepassingen' } },
       { keyValue: 'ubs_settings', execParams: { caption: 'Instellingen' } },
       { keyValue: 'ubs_filter', execParams: { caption: 'Opgeslagen filters' } },
       { keyValue: 'ubs_numcounter', execParams: { caption: 'Tellers' } },

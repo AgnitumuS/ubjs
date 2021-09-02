@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.11] - 2021-08-31
 ## [5.22.10] - 2021-08-18
 ### Added
  - `App.fsObserve` and `App.httpCallObserve` methods - an observation for fs calls and external HTTP calls what stored in 

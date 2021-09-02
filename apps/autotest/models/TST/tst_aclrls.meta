@@ -1,5 +1,6 @@
 {
     "caption": "AclRls test",
+    "descriptionAttribute": "caption",
     "attributes": [
         {
             "name": "caption",

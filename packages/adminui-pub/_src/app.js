@@ -21,13 +21,13 @@ function launchApp () {
   Ext.form.field.ComboBox.prototype.defaultListConfig.shadow = false
   Ext.picker.Date.prototype.shadow = false
 
-  let addResourceVersion = UB.addResourceVersion
+  const addResourceVersion = UB.addResourceVersion
   Ext.Loader.loadScriptBase = Ext.Loader.loadScript
   Ext.Loader.loadScript = function (options) {
-    let config = this.getConfig()
+    const config = this.getConfig()
     let opt = options
     if (!config.disableCaching) {
-      let isString = typeof options === 'string'
+      const isString = typeof options === 'string'
       if (!isString) {
         opt = Ext.clone(options)
         opt.url = addResourceVersion(opt.url)
@@ -89,9 +89,9 @@ function launchApp () {
     // one line of code changed compared to original: cls: Ext.baseCSSPrefix + 'modal-mask', //mpv
     Ext.override(Ext.ZIndexManager, {
       _showModalMask: function (comp) {
-        let me = this
-        let zIndex = comp.el.getStyle('zIndex') - 4
-        let maskTarget = comp.floatParent ? comp.floatParent.getTargetEl() : comp.container
+        const me = this
+        const zIndex = comp.el.getStyle('zIndex') - 4
+        const maskTarget = comp.floatParent ? comp.floatParent.getTargetEl() : comp.container
         let mask = me.mask
 
         if (!mask) {
@@ -164,9 +164,9 @@ function launchApp () {
     /* solutions for problems with a narrow field of chromium */
     Ext.override(Ext.layout.component.field.Field, {
       beginLayoutFixed: function (ownerContext, width, suffix) {
-        let owner = ownerContext.target
-        let inputEl = owner.inputEl
-        let inputWidth = owner.inputWidth
+        const owner = ownerContext.target
+        const inputEl = owner.inputEl
+        const inputWidth = owner.inputWidth
 
         owner.el.setStyle('table-layout', 'fixed')
         if (width !== 100 && suffix !== '%') {
@@ -251,8 +251,8 @@ function launchApp () {
     })
     Ext.override(Ext.grid.plugin.RowEditing, {
       validateEdit: function () {
-        let me = this
-        let context = me.context
+        const me = this
+        const context = me.context
         return me.fireEvent('validateedit', me, context) !== false && !context.cancel && this.getEditor().completeEdit()
       }
     })
@@ -271,7 +271,7 @@ function launchApp () {
       margin: '3 15 2 15',
       withoutIndent: true,
       getLabelableRenderData: function () {
-        let data = this.callParent(arguments)
+        const data = this.callParent(arguments)
         if (!this.withoutIndent) {
           data.leftIndent = this.leftIndent
           data.rightIndent = this.rightIndent
@@ -384,7 +384,7 @@ function launchApp () {
     Ext.define('Ext.ux.form.CheckboxGroupFix', {
       override: 'Ext.form.CheckboxGroup',
       initComponent: function () {
-        var me = this
+        const me = this
         me.invalidCls = me.invalidCls ? me.invalidCls : Ext.baseCSSPrefix + 'form-invalid'
         me.callParent(arguments)
       }
@@ -396,10 +396,10 @@ function launchApp () {
     Ext.define('UB.ux.UBToolTipOverride', {
       override: 'Ext.tip.ToolTip',
       getTargetXY: function () {
-        var
-          me = this,
-          resXY = this.callParent(arguments),
-          constr = Ext.getBody().getViewSize()
+        const
+          me = this
+        const resXY = this.callParent(arguments)
+        const constr = Ext.getBody().getViewSize()
         if (me.targetXY) {
           if (resXY[1] + me.getHeight() > constr.height) {
             resXY[1] = me.targetXY[1] - 15 - me.getHeight()
@@ -411,7 +411,7 @@ function launchApp () {
 
     Ext.override(Ext.panel.Panel, {
       initTools: function () {
-        let me = this
+        const me = this
         if (me.simpleCollapse) {
           me.tools = []
 
@@ -436,7 +436,7 @@ function launchApp () {
             me.toggleCmp.addCls(['fa', 'fa-angle-right'])
           }
 
-          let vertical = me.headerPosition === 'left' || me.headerPosition === 'right'
+          const vertical = me.headerPosition === 'left' || me.headerPosition === 'right'
           me.header = Ext.widget(Ext.apply({
             xtype: 'header',
             title: me.title,
@@ -458,10 +458,12 @@ function launchApp () {
             ignoreBorderManagement: me.frame || me.ignoreHeaderBorderManagement,
             headerRole: me.headerRole,
             ownerCt: me,
-            listeners: me.collapsible && me.titleCollapse ? {
-              click: me.toggleCollapse,
-              scope: me
-            } : null
+            listeners: me.collapsible && me.titleCollapse
+              ? {
+                  click: me.toggleCollapse,
+                  scope: me
+                }
+              : null
           }, me.header))
 
           me.header.titleCmp.flex = undefined
@@ -526,7 +528,7 @@ function launchApp () {
     // eslint-disable-next-line
     new Ext.util.KeyMap({
       target: window.document.body,
-      binding: [ {
+      binding: [{
         ctrl: true,
         shift: false,
         key: Ext.EventObject.R,
@@ -534,13 +536,13 @@ function launchApp () {
           e.stopEvent()
           return false
         }
-      } ]
+      }]
     })
 
     // Stop the backspace key from going to the previous page in your extjs app
     Ext.EventManager.addListener(Ext.getBody(), 'keydown', function (e) {
-      let type = (e.getTarget().tagName || '').toLocaleLowerCase()
-      let eKey = e.getKey()
+      const type = (e.getTarget().tagName || '').toLocaleLowerCase()
+      const eKey = e.getKey()
       if (eKey === Ext.EventObject.BACKSPACE && 'textarea|input'.indexOf(type) < 0) {
         e.preventDefault()
       }

@@ -15,6 +15,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.22] - 2021-08-31
+### Added
+ - `UMasterDetailView`: Added `BasePanel` based form support for preview mode.
+ 
+### Changed
+ - Dutch localization correction
+
 ## [5.20.21] - 2021-08-18
 ### Changed
  - `UBComboBox`: use custom method (if any) from `store.ubRequest.method` to load a display text of filtered out row. Before this fix `select` always used

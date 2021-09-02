@@ -48,6 +48,10 @@
     {
       "name": "parentEntityInfo_id",
       "caption": "Bovenliggende instantie-ID"
+    },
+    {
+      "name": "request_id",
+      "caption": "Verzoek ID"
     }
   ],
   "description": "Audit gegevenswijzigingen"
