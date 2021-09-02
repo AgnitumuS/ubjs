@@ -24,6 +24,7 @@ require('./UploadFileAjax')
 require('../ux/UBTinyMCETextArea')
 require('../core/UBPanelMixin')
 require('../ux/form/UBPlanFactContainer')
+require('./StatusWindow')
 
 const _ = require('lodash')
 const UB = require('@unitybase/ub-pub')

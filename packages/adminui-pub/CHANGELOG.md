@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added import of `UB.view.StatusWindow` (used by third-party projects)
 
 ### Changed
 
