@@ -1,4 +1,5 @@
 /* global Ext */
+require('./Cell')
 /**
  * Ext.ux.exporter.excelFormatter.Worksheet
  */
@@ -80,12 +81,12 @@ Ext.define('Ext.ux.exporter.excelFormatter.Worksheet', {
       rows: this.buildRows().join(''),
       colCount: this.columns.length,
       rowCount: this.store.getCount() + 2,
-      title: this.title.replace(/[\/\\\?\*\[\]]/g, '-')
+      title: this.title.replace(/[/\\?*[\]]/g, '-')
     })
   },
 
   buildColumns: function () {
-    var cols = []
+    const cols = []
 
     Ext.each(this.columns, function (column) {
       cols.push(this.buildColumn())
@@ -99,7 +100,7 @@ Ext.define('Ext.ux.exporter.excelFormatter.Worksheet', {
   },
 
   buildRows: function () {
-    var rows = []
+    const rows = []
 
     this.store.each(function (record, index) {
       rows.push(this.buildRow(record, index))
@@ -109,10 +110,10 @@ Ext.define('Ext.ux.exporter.excelFormatter.Worksheet', {
   },
 
   buildHeader: function () {
-    var cells = []
+    const cells = []
 
     Ext.each(this.columns, function (col) {
-      var title
+      let title
 
       // if(col.dataIndex) {
       if (col.text != undefined) {
@@ -132,12 +133,12 @@ Ext.define('Ext.ux.exporter.excelFormatter.Worksheet', {
 
   buildRow: function (record, index) {
     let style
-    let cells = []
+    const cells = []
     if (this.stripeRows === true) style = index % 2 === 0 ? 'even' : 'odd'
 
     let iCol = 0
     Ext.each(this.columns, function (col) {
-      let name = col.name || col.dataIndex
+      const name = col.name || col.dataIndex
 
       if (typeof name !== 'undefined') {
         let value, type
@@ -171,9 +172,9 @@ Ext.define('Ext.ux.exporter.excelFormatter.Worksheet', {
    * @property {Object} typeMappings Mappings from Ext.data.Record types to Excel types
    */
   typeMappings: {
-    'int': 'Number',
-    'string': 'String',
-    'float': 'Number',
-    'date': 'DateTime'
+    int: 'Number',
+    string: 'String',
+    float: 'Number',
+    date: 'DateTime'
   }
 })

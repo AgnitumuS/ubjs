@@ -1,3 +1,4 @@
+require('./Workbook')
 /**
  * Specialised Format class for outputting .xls files
  * @class Ext.ux.Exporter.ExcelFormatter
@@ -15,7 +16,7 @@ Ext.define('Ext.ux.exporter.excelFormatter.ExcelFormatter', {
   extension: 'xls',
 
   format: function (store, config) {
-    var workbook = Ext.create('Ext.ux.exporter.excelFormatter.Workbook', config)
+    const workbook = Ext.create('Ext.ux.exporter.excelFormatter.Workbook', config)
     workbook.addWorksheet(store, config || {})
 
     return workbook.render()
