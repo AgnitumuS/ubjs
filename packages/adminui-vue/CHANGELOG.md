@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `Form/mount`: added param `onClose`, this is a callback function that, if defined, is called
+ from the `beforeDestroy` lifecycle hook
 
 ### Changed
 
