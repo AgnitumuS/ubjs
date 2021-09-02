@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.23] - 2021-09-02
+### Added
  - added import of:
    - `UB.view.StatusWindow`
    - `UB.ux.tree.Column`
@@ -13,14 +24,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - `Ext.ux.exporter.Base64`
    Classes are used by third-party projects
 
-### Changed
-
-### Deprecated
-
 ### Removed
  - `Ext.ux.exporter.wikiFormatter.WikiFormatter` not loaded by default (available for manual loading)
-
-### Fixed
 
 ## [5.20.22] - 2021-08-31
 ### Added

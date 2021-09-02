@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/openid-connect",
-  "version": "5.20.22",
+  "version": "5.20.23",
   "description": "OpenID Connect authentication for UnityBase",
   "keywords": [
     "UB",
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@unitybase/base": "^5.20.10",
-    "@unitybase/ub": "^5.22.11",
+    "@unitybase/ub": "^5.22.12",
     "btoa": "^1.1.2"
   },
   "devDependencies": {
