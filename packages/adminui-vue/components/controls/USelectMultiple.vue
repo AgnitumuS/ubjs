@@ -85,30 +85,33 @@
         </div>
       </div>
 
-      <div
-        v-if="options.length > 0 && !readonly"
-        ref="options"
-        class="ub-select__list-options"
-      >
+      <div v-if="options.length > 0 && !readonly">
         <div
-          v-for="option in options"
-          :key="option[valueAttribute]"
-          :ref="`option_${option[valueAttribute]}`"
-          class="ub-select__option"
-          :class="{
-            'active': option[valueAttribute] === value,
-            'selected': option[valueAttribute] === selectedOption,
-            'fixed': isOptionFixed(option[valueAttribute])
-          }"
-          @click.prevent="chooseOption"
-          @mouseenter="selectedOption = option[valueAttribute]"
+          ref="options"
+          class="ub-select__list-options"
         >
-          <el-checkbox
-            :value="value.includes(option[valueAttribute])"
-          />
-          {{ option[getDisplayAttribute] }}
+          <div
+            v-for="option in options"
+            :key="option[valueAttribute]"
+            :ref="`option_${option[valueAttribute]}`"
+            class="ub-select__option"
+            :class="{
+              'active': option[valueAttribute] === value,
+              'selected': option[valueAttribute] === selectedOption,
+              'fixed': isOptionFixed(option[valueAttribute])
+            }"
+            @click.prevent="chooseOption"
+            @mouseenter="selectedOption = option[valueAttribute]"
+          >
+            <el-checkbox
+              :value="value.includes(option[valueAttribute])"
+            />
+            {{ option[getDisplayAttribute] }}
+          </div>
         </div>
-        <el-row type="flex">
+        <el-row
+          type="flex"
+          class="ub-select__list-options--tags">
           <template v-for="button in dropdownButtons">
             <el-button
               v-if="button.visibility"
@@ -122,6 +125,7 @@
           </template>
         </el-row>
       </div>
+
       <div
         v-else
         style="text-align: center; padding: 10px"
@@ -572,6 +576,13 @@ export default {
 </script>
 
 <style>
+.ub-select__list-options--tags{
+  --padding: 4px;
+  border-top: 1px solid hsl(var(--hs-border), calc(var(--l-layout-border-light) -  10%));
+  padding-top: var(--padding);
+  padding-bottom: var(--padding);
+}
+
 .ub-select-multiple__container{
   border: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
   border-radius: var(--border-radius);
