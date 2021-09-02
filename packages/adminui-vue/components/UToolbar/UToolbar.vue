@@ -403,6 +403,7 @@ export default {
         entity: aclEntityName,
         formCode: 'aclRlsEntry',
         props: {
+          instanceID,
           aclAttributes
         }
       }
@@ -424,10 +425,7 @@ export default {
           buildAddNewConfig: cfg => {
             return {
               ...cfg,
-              ...formProps,
-              parentContext: {
-                instanceID
-              }
+              ...formProps
             }
           },
 
