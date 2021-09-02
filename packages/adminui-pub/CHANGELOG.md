@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `PDFComponent.js`: added a temporary fix for a browser `PDF` viewer bug that prevented the `PDF` from displaying
+  after switching tabs.
 
 ## [5.20.22] - 2021-08-31
 ### Added

@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `FileRenderer`: added a temporary fix for a browser `PDF` viewer bug that prevented the `PDF` from displaying
+ after switching tabs.
 
 ## [5.20.21] - 2021-08-31
 ### Changed
