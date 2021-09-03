@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `TimesNewRoman_Cyr`: Hyphen and dashes added (0x2010 - 0x2014)
 
 ### Changed
 
