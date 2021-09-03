@@ -548,12 +548,7 @@ ServerApp.dbStartTransaction = function (connectionName) {
 ServerApp.authFromRequest = function (noHTTPBodyInResp = false, doSetOutCookie = false) {
   return _App.authFromRequest(noHTTPBodyInResp, doSetOutCookie)
 }
-/**
- * Logout all users with the same name as current user, except currently logged user
- */
-ServerApp.logoutAllWithTheSameNameExceptMe = function () {
-  return _App.logoutAllWithTheSameNameExceptMe()
-}
+
 /**
  * Logout a current user (kill current session)
  */

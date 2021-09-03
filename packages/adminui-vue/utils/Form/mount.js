@@ -37,7 +37,8 @@ function mountModal ({
   validator,
   modalClass = 'ub-dialog__reset-padding',
   modalWidth,
-  provide
+  provide,
+  onClose
 }) {
   modalClass += ' ub-dialog__min-width'
 
@@ -75,6 +76,13 @@ function mountModal ({
         return prefix + this.$ut(this.titleText) + suffix
       }
     },
+
+    async beforeDestroy () {
+      if (onClose && typeof onClose === 'function' && store) {
+        await onClose(store.state.isNew ? null : store.state.data.ID, store)
+      }
+    },
+
     methods: {
       setTitle (value) {
         this.titleText = value
@@ -165,7 +173,8 @@ function mountTab ({
   tabId,
   uiTag,
   provide,
-  openInBackgroundTab
+  openInBackgroundTab,
+  onClose
 }) {
   const tab = $App.viewport.centralPanel.add({
     title: titleText,
@@ -217,6 +226,13 @@ function mountTab ({
         }
       }
     },
+
+    async beforeDestroy () {
+      if (onClose && typeof onClose === 'function' && store) {
+        await onClose(store.state.isNew ? null : store.state.data.ID, store)
+      }
+    },
+
     methods: {
       setTitle (title) {
         this.titleText = title
@@ -323,7 +339,8 @@ function mountContainer ({
   store,
   provide,
   target,
-  validator
+  validator,
+  onClose
 }) {
   const instance = new Vue({
     store,
@@ -341,6 +358,11 @@ function mountContainer ({
           forceClose () { }
         },
         ...provide
+      }
+    },
+    async beforeDestroy () {
+      if (onClose && typeof onClose === 'function' && store) {
+        await onClose(store.state.isNew ? null : store.state.data.ID, store)
       }
     },
     render: (h) => h(component, { props })
@@ -368,7 +390,7 @@ function mountContainer ({
       instance.$mount(`#${target.getId()}-outerCt`)
     } else if (document.getElementById(`${target.getId()}-innerCt`)) {
       instance.$mount(`#${target.getId()}-innerCt`)
-    } else { // tab panel without fake element inside - use -body 
+    } else { // tab panel without fake element inside - use -body
       instance.$mount(`#${target.getId()}-body`)
     }
 
@@ -379,10 +401,10 @@ function mountContainer ({
     // this watcher helps parent ExtJS form to see vue form is dirty
     const unWatch = instance.$store
       ? instance.$store.watch(
-          (state, getters) => getters.isDirty,
-          () => basePanel.updateActions(),
-          { immediate: true }
-        )
+        (state, getters) => getters.isDirty,
+        () => basePanel.updateActions(),
+        { immediate: true }
+      )
       : null
     target.on('destroy', () => {
       if (unWatch) unWatch()

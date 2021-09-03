@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.22] - 2021-09-02
+### Added
+ - `Form/mount`: added param `onClose`, this is a callback function that, if defined, is called
+ from the `beforeDestroy` lifecycle hook
+
 ## [5.20.21] - 2021-08-31
 ### Changed
  - Dutch localization correction
