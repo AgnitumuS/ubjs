@@ -8,7 +8,16 @@
   >
      <!-- place form layout here -->
     <u-grid template-columns="150px 300px 1fr">
-      <u-auto-field attribute-name="model" :readonly="!isNew" />
+      <u-form-row label="Model">
+        <el-select v-model="model" :disabled="!isNew">
+          <el-option
+            v-for="m in $UB.connection.domain.orderedModels"
+            :key="m.name"
+            :label="m.name"
+            :value="m.name">
+          </el-option>
+        </el-select>
+      </u-form-row>
       <u-auto-field attribute-name="report_code" :readonly="!isNew" />
       <u-auto-field attribute-name="name" />
     </u-grid>
@@ -72,9 +81,7 @@ module.exports.default = {
     }
   },
   methods: {
-    // someMethod () {
-    //
-    // }
+
   }
 }
 </script>
