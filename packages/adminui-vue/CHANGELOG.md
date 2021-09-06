@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+`USelectMultiple`: change style for dropdown. Fixed the position of the buttons "More", "Template" and other.
+![View result](./changeLogImgs/USelectMultipleDropdown.png)
+[Task](https://dev.intecracy.com/agile/browse/UBDF-8423)
 
 ### Deprecated
 
