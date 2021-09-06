@@ -6,6 +6,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `$lookups.getEnumItems` method returns array of `{code: string, name: string}` enum items ordered by sort order for
+   the given `eGroup`, for example: `$lookups.getEnumItems('ORG_UNITTYPE')` returns:
+   ```json
+   [
+     {
+       "code": "STAFF",
+       "name": "Staff unit"
+     },
+     {
+       "code": "ORG",
+       "name": "Organization"
+     },
+     {
+       "code": "DEP",
+       "name": "Department"
+     },
+     {
+       "code": "EXECGROUP",
+       "name": "Execution group"
+     }
+   ]
+   ```
+
 
 ### Changed
 
