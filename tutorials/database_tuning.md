@@ -127,6 +127,62 @@ ubConfig section example (connect without using tnsnames) :
 },...]
 ```
 
+### MySQL server (Linux)
+> ORM currently do not support MySQL, only direct SQL execution is allowed
+
+Under Linux ODBC is used for MySQL connection.
+
+#### Setup
+```shell
+docker run --name tst-mysql -p3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql:8
+```
+
+Client libs
+
+In case [official MySQL ODBC package](https://dev.mysql.com/doc/connector-odbc/en/connector-odbc-installation-binary-deb.html)
+not installed correctly, the only file required is `libmyodbc8w.so` (copy it from deb package into `/usr/lib/x86_64-linux-gnu/odbc`)
+
+In `/etc/odbcinst.ini`
+```shell
+[MySQL]
+Description= MySQL ODBC Driver
+Driver=/usr/lib/x86_64-linux-gnu/odbc/libmyodbc8w.so    
+Usagecount=1
+```
+
+in `~/.odbc.ini`
+```shell
+[my_server]
+Description = Test DB
+Driver = MySQL
+SERVER = 127.0.0.1
+USER = root
+PASSWORD = root
+PORT = 3306
+DATABASE = MYSQLTEST
+```
+
+ubConfig section example:
+
+```json
+"connections": [{
+    "name": "mysql",
+    "driver": "MySQL",
+    "isDefault": false,
+    "dialect": "MySQL",
+    "serverName": "my_server", // this is an entry in ~/.obdc.ini file
+    "databaseName": "MYSQLTEST",
+    "userID": "root",
+    "password": "root",
+    "supportLang": ["en"]
+},...]
+```
+
+Verify connection
+```shell
+ubcli execSql -c mysql -sql "select * from mysql.user" -withResult -outputRes
+```
+
 ## Indexes
 By default, UnityBase DDL generator create indexes for all attributes of type `Entity`
 and unique indexes for attributes marked as `"isUnique": true`. 
