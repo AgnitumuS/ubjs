@@ -1,4 +1,4 @@
-`<template>
+<template>
   <div class="u-toolbar">
     <!-- @slot content to prepend to the left side of the toolbar *before* default buttons -->
     <slot name="leftBefore" />

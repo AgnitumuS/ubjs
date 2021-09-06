@@ -6,16 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `addCollectionItemWithoutDefaultValues` - new `Vuex` action - such as `addCollectionItem` but does not fetch default params
+ - `addCollectionItemWithoutDefaultValues` - new `Vuex` action - such as `addCollectionItem` but does not fetch default params
+ - `UToolbar`: `showDropdown` prop that allows preventing rendering of the dropdown menu
+ - `toValidate` property to the `UTableColumn`, which allows skipping checking the column in the `validateFieldList` method - useful for custom unfamiliar columns
 
 ### Changed
-- improved the table for displaying  and the form for adding and management entries of the `aclRls` mixin for some entity
+ - improved the table for displaying  and the form for adding and management entries of the `aclRls` mixin for some entity
+ - `UTableEntity`: now show filter control if there are no available columns for filtration
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `UCardView`: rendering of values if the cell template is not defined for the related column
 
 ## [5.20.22] - 2021-09-02
 ### Added
