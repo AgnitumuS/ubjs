@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+-`UFormRow`: fix very long tags in `USelectMultiple`
+-`UDatePicker`: fix datepicker width, after fix very long tags
 
 ## [5.20.21] - 2021-08-31
 ### Changed
