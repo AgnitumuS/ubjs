@@ -122,6 +122,7 @@ export default {
 .u-date-picker.el-date-editor.el-input {
   width: unset;
   max-width: 220px;
+  min-width: 150px;
 }
 
 </style>
