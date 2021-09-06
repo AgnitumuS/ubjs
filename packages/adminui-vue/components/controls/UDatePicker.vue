@@ -1,5 +1,6 @@
 <template>
   <el-date-picker
+    class="u-date-picker"
     :type="type"
     :class="pickerClass"
     :value="value"
@@ -116,6 +117,11 @@ export default {
 
 .u-date-picker__date {
   width: 150px !important;
+}
+
+.u-date-picker.el-date-editor.el-input {
+  width: unset;
+  max-width: 220px;
 }
 
 </style>
