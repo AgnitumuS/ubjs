@@ -231,6 +231,11 @@
     "removeMessageNotification": "Bericht succesvol verwijderd"
   },
 
+  "aclRlsInfo": {
+    "subject": "Onderwerp",
+    "name": "Naam"
+  },
+
   "UFile": {
     "webcam": {
       "webcamLabel": "Webcam",
@@ -270,19 +275,6 @@
   "USelectEntity": {
     "dropdown": {
       "moreButton": "Meer"
-    }
-  },
-
-  "UAclRlsInput": {
-    "access": "Toegang",
-    "add": "Toevoegen",
-    "table": {
-      "remove": "Verwijderen"
-    },
-    "dialog": {
-      "grantAccess": "Toegang verlenen",
-      "entity": "Entiteit",
-      "grant": "Studiebeurs"
     }
   },
 

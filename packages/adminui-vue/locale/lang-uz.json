@@ -176,6 +176,12 @@
   "select": {
       "valueIsUndefined": "Qiymat \"{0}\" sub'ektda topilmadi \"{1}\""
   },
+
+  "aclRlsInfo": {
+    "subject": "Mavzu",
+    "name": "Ism"
+  },
+
   "UFile": {
       "webcam": {
           "emptyPicturePlaceholder": "Sizning rasmingiz",
@@ -252,19 +258,6 @@
       "dropdown": {
           "moreButton": "Ko'proq"
       }
-  },
-
-  "UAclRlsInput": {
-    "access": "Kirish",
-    "add": "Qo'shish",
-    "table": {
-      "remove": "O'chirish"
-    },
-    "dialog": {
-      "grantAccess": "Kirish huquqini berish",
-      "entity": "Tashkilot",
-      "grant": "Grant"
-    }
   },
 
   "UTable": {

@@ -231,6 +231,11 @@
     "removeMessageNotification": "Message successfully deleted"
   },
 
+  "aclRlsInfo": {
+    "subject": "Subject",
+    "name": "Name"
+  },
+
   "UFile": {
     "webcam": {
       "webcamLabel": "Webcam",
@@ -270,19 +275,6 @@
   "USelectEntity": {
     "dropdown": {
       "moreButton": "More"
-    }
-  },
-
-  "UAclRlsInput": {
-    "access": "Giriş",
-    "add": "Əlavə et",
-    "table": {
-      "remove": "Sil"
-    },
-    "dialog": {
-      "grantAccess": "Giriş icazəsi verin",
-      "entity": "Varlıq",
-      "grant": "Qrant"
     }
   },
 

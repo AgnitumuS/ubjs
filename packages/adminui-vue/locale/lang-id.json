@@ -232,6 +232,11 @@
     "removeMessageNotification": "Message successfully deleted"
   },
 
+  "aclRlsInfo": {
+    "subject": "Subject",
+    "name": "Name"
+  },
+
   "UFile": {
     "webcam": {
       "webcamLabel": "Webcam",
@@ -271,19 +276,6 @@
   "USelectEntity": {
     "dropdown": {
       "moreButton": "More"
-    }
-  },
-
-  "UAclRlsInput": {
-    "access": "Mengakses",
-    "add": "Menambahkan",
-    "table": {
-      "remove": "Menghapus"
-    },
-    "dialog": {
-      "grantAccess": "Berikan akses",
-      "entity": "Kesatuan",
-      "grant": "Menganugerahkan"
     }
   },
 

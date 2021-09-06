@@ -231,6 +231,11 @@
     "removeMessageNotification": "Повідомлення успішно видалено"
   },
 
+  "aclRlsInfo": {
+    "subject": "Суб'єкт",
+    "name": "Найменування"
+  },
+
   "UFile": {
     "webcam": {
       "webcamLabel": "Камера",
@@ -270,19 +275,6 @@
   "USelectEntity": {
     "dropdown": {
       "moreButton": "Більше"
-    }
-  },
-
-  "UAclRlsInput": {
-    "access": "Доступ",
-    "add": "Додати",
-    "table": {
-      "remove": "Видалити"
-    },
-    "dialog": {
-      "grantAccess": "Надати доступ",
-      "entity": "Сутність",
-      "grant": "Надати"
     }
   },
 

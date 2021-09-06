@@ -6,11 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `UAclRlsInput` component. It is recommended to use it for managing access to some entity
-  with the `aclRls` mixin. See documentation [here](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/adminui-vue/components/UAclRlsInput.vue)
 - `addCollectionItemWithoutDefaultValues` - new `Vuex` action - such as `addCollectionItem` but does not fetch default params
 
 ### Changed
+- improved the table for displaying  and the form for adding and management entries of the `aclRls` mixin for some entity
 
 ### Deprecated
 

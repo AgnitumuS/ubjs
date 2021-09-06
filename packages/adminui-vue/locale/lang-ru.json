@@ -231,6 +231,11 @@
     "removeMessageNotification": "Сообщение успешно удалено"
   },
 
+  "aclRlsInfo": {
+    "subject": "Субъект",
+    "name": "Наименование"
+  },
+
   "UFile": {
     "webcam": {
       "webcamLabel": "Камера",
@@ -270,19 +275,6 @@
   "USelectEntity": {
     "dropdown": {
       "moreButton": "Больше"
-    }
-  },
-
-  "UAclRlsInput": {
-    "access": "Доступ",
-    "add": "Добавить",
-    "table": {
-      "remove": "Удалить"
-    },
-    "dialog": {
-      "grantAccess": "Предоставить доступ",
-      "entity": "Сущность",
-      "grant": "Предоставить"
     }
   },
 

@@ -1,4 +1,4 @@
-<template>
+`<template>
   <div class="u-toolbar">
     <!-- @slot content to prepend to the left side of the toolbar *before* default buttons -->
     <slot name="leftBefore" />
@@ -33,6 +33,7 @@
     />
 
     <u-dropdown
+      v-if="showDropdown"
       class="u-toolbar__settings-button"
       placement="bottom-end"
     >
@@ -119,6 +120,14 @@ export default {
     toolbarButtons: {
       type: Array,
       default: () => []
+    },
+
+    /**
+     * To show the dropdown with its buttons
+     */
+    showDropdown: {
+      type: Boolean,
+      default: () => true
     }
   },
 
@@ -394,15 +403,18 @@ export default {
         return attrs
       })
 
-      const getAclAttrInfoForRow = row => {
+      const getAssignedAclAttrInfoForEntry = row => {
         const aclAttr = Object.keys(row).find(key => key !== 'valueID' && row[key] === row.valueID)
         return aclAttributes.find(attr => attr.code === aclAttr)
       }
 
       const formProps = {
-        entity: aclEntityName,
+        title: `${this.$UB.i18n('accessRight')} (${this.$UB.i18n(this.entity)})`,
+        instanceID,
+        entity: this.entitySchema.code,
         formCode: 'aclRlsEntry',
         props: {
+          aclEntityName,
           instanceID,
           aclAttributes
         }
@@ -438,27 +450,28 @@ export default {
 
           columns: [
             {
-              id: 'type',
-              label: this.$ut('Type'),
+              id: 'subject',
+              label: this.$ut('aclRlsInfo.subject'),
               filterable: false,
               sortable: false,
               toValidate: false,
               format: ({ row }) => {
-                const aclAttr = getAclAttrInfoForRow(row)
+                const aclAttr = getAssignedAclAttrInfoForEntry(row)
                 const unityEntityAttr = `${aclAttr.code}.mi_unityEntity`
                 const withUnity = aclFieldList.includes(unityEntityAttr)
                 const associatedEntity = withUnity ? row[unityEntityAttr] : aclAttr.associatedEntity
                 return this.$ut(associatedEntity)
               }
             },
+
             {
-              id: 'caption',
-              label: this.$ut('Caption'),
+              id: 'name',
+              label: this.$ut('aclRlsInfo.name'),
               filterable: false,
               sortable: false,
               toValidate: false,
               format: ({ row }) => {
-                const attr = getAclAttrInfoForRow(row)
+                const attr = getAssignedAclAttrInfoForEntry(row)
                 const descriptionAttribute = domain.get(attr.associatedEntity).getDescriptionAttribute()
                 return row[`${attr.code}.${descriptionAttribute}`]
               }
