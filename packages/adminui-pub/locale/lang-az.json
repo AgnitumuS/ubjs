@@ -325,7 +325,6 @@
   "doStartScan": "Skaynerə sorğu ...",
   "doFinishScan": "Skan nəticəsinin alınması",
 
-  "serverIsBusy": "Server əlyetərli deyil",
   "ubErrRecordmodified": "Açıq məlumat eyni vaxtda başqa istifadəçi tərəfindən dəyişdirilib. Son məlumatı əldə etmək üçün \"Yenilə\" düyməsini sıxın",
 
   "dropZoneOneFileRequired": "Bu əməliyyat üçün tələb olunan bir fayl",

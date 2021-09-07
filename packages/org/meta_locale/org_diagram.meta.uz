@@ -1,0 +1,22 @@
+{
+  "caption": "Diagrammalar",
+  "description": "Diagrammalar",
+  "attributes": [
+    {
+      "name": "orgunitID",
+      "caption": "Ildiz"
+    },
+    {
+      "name": "caption",
+      "caption": "Ism"
+    },
+    {
+      "name": "isdefault",
+      "caption": "Bajarilish"
+    },
+    {
+      "name": "document",
+      "caption": "Organogramma"
+    }
+  ]
+}

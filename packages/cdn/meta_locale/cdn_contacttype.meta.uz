@@ -1,0 +1,14 @@
+{
+  "caption": "Kontaktlar turlari",
+  "description": "Aloqa turlari bo'yicha ma'lumot",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    }
+  ]
+}

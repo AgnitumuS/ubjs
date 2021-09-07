@@ -1,4 +1,4 @@
-/* global Blob, gc */
+/* global Blob, gc, App */
 const _ = require('lodash')
 const JsPDF = require('../libs/jsPDF/jspdf.js') // important to require .js (for webpack)
 const PdfDataGrid = require('./PdfDataGrid')
@@ -41,9 +41,9 @@ function PrintToPdf (config) {
   this.page.format = config.format || 'a4'
   this.compress = (config.compress === false ? false : (config.compress || true))
   this.compressFont = (config.compressFont === false ? false : (config.compressFont || true))
-//  this.compress = false
+  //  this.compress = false
   this.pdf = new JsPDF(this.page.orientation, this.page.measure, this.page.format, this.compress)
-  let pageSize = this.pdf.internal.pageSize
+  const pageSize = this.pdf.internal.pageSize
 
   if (!this.compressFont) {
     this.pdf.setFontDeflate(this.compressFont)
@@ -70,8 +70,8 @@ function PrintToPdf (config) {
 
   // this.page.onInitPage = config.onInitPage;
 
-  this.page.topColontitle = config.topColontitle || {height: 0}
-  this.page.bottomColontitle = config.bottomColontitle || {height: 0}
+  this.page.topColontitle = config.topColontitle || { height: 0 }
+  this.page.bottomColontitle = config.bottomColontitle || { height: 0 }
   this.page.topColontitle.isTop = true
   this.page.bottomColontitle.isTop = false
 
@@ -84,7 +84,7 @@ function PrintToPdf (config) {
   this.pageNumber = 1
   this.totalPageNumber = 1
   this.lineHeight = 1.0
-  this.defaultColor = {r: 0, g: 0, b: 0}
+  this.defaultColor = { r: 0, g: 0, b: 0 }
 
   this.setFont(this.font, true)
   // this.setFont(this.font.name, this.font.type);
@@ -132,7 +132,7 @@ function PrintToPdf (config) {
  * @deprecated Use pdfUtils.colors enum
  */
 PrintToPdf.colors = pfdUtils.colors
-PrintToPdf.alignType = {center: 'center', left: 'left', right: 'right'}
+PrintToPdf.alignType = { center: 'center', left: 'left', right: 'right' }
 
 PrintToPdf.baseFontPath = 'models/PDF/fonts'
 
@@ -156,26 +156,29 @@ PrintToPdf.requireFonts = function (config) {
   if (!config) {
     throw new Error('Empty config for PrintToPdf.requireFonts')
   }
-  let fonts = Array.isArray(config.fonts) ? config.fonts : [config.fonts]
-  let notLoadedFonts = []
+  const fonts = Array.isArray(config.fonts) ? config.fonts : [config.fonts]
+  const fontMapping = (typeof window === 'undefined')
+    ? App.serverConfig.uiSettings.adminUI.pdfFontMapping || {}
+    : UB.appConfig.uiSettings.adminUI.pdfFontMapping || {}
+  const notLoadedFonts = []
   for (let i = 0, l = fonts.length; i < l; i++) {
-    let font = fonts[i]
+    const font = fonts[i]
     if (!JsPDF.API.UnicodeFontExists(font.fontName, font.fontStyle)) {
-      notLoadedFonts.push(`fonts/${font.fontName}${font.fontStyle}.json`)
+      notLoadedFonts.push(`fonts/${fontMapping[font.fontName] || font.fontName}${font.fontStyle}.json`)
     }
   }
   if (typeof window === 'undefined') { // server side - read file from disk
     // hack for SystemJS. If bundled - will be stripped by webpack DefinePlugin
     // noinspection Eslint
     global.BOUNDLED_BY_WEBPACK = false
+    let re, path
     if (!BOUNDLED_BY_WEBPACK) {
-      var re = require
-      var path = re('path')
-      var fs = re('fs')
+      re = require
+      path = re('path')
     }
     for (let i = 0, l = notLoadedFonts.length; i < l; i++) {
       const realPath = path.join(__dirname, '..', notLoadedFonts[i])
-      let fontData = JSON.parse(fs.readFileSync(realPath, 'utf8'))
+      const fontData = re(realPath)
       JsPDF.API.addRawFontData(fontData)
     }
     return true
@@ -183,12 +186,12 @@ PrintToPdf.requireFonts = function (config) {
     if (!notLoadedFonts.length) {
       return Promise.resolve(true)
     } else {
-      let promises = notLoadedFonts.map(
+      const promises = notLoadedFonts.map(
         (fontPath) => $App.connection.get('clientRequire/@unitybase/pdf/' + fontPath, { responseType: 'json' })
       )
       return Promise.all(promises).then(
         fontsDataResponses => {
-          for (let resp of fontsDataResponses){
+          for (const resp of fontsDataResponses) {
             JsPDF.API.addRawFontData(resp.data)
           }
           return true
@@ -255,10 +258,10 @@ PrintToPdf.checkNumberValid = function (value, required, messageContext) {
 }
 
 PrintToPdf.units = {
-  'px': 1,
-  'pt': 1,
-  'mm': 1,
-  'cm': 1
+  px: 1,
+  pt: 1,
+  mm: 1,
+  cm: 1
 }
 
 /**
@@ -271,7 +274,7 @@ PrintToPdf.getUnitValue = function (value) {
   if (value.length <= 2) {
     return null
   }
-  let uname = value.substr(-2)
+  const uname = value.substr(-2)
   _.forEach(PrintToPdf.units, function (pvalue, pname) {
     if (uname === pname) {
       result = pvalue
@@ -286,7 +289,7 @@ PrintToPdf.isUnitValue = function (value) {
   if (value.length <= 2) {
     return false
   }
-  let uname = value.substr(-2)
+  const uname = value.substr(-2)
   _.forEach(PrintToPdf.units, function (pvalue, pname) {
     res = (uname === pname)
     return !res
@@ -310,18 +313,18 @@ PrintToPdf.prototype.parseBorder = function (val) {
   const pm = this.parseMeasure.bind(this)
 
   if (val && typeof (val) === 'string') {
-    let strS = val.split(' ')
+    const strS = val.split(' ')
     if (strS.length > 1) {
       switch (strS.length) {
         case 2:
-          return {top: pm(strS[0]), right: pm(strS[1]), bottom: pm(strS[0]), left: pm(strS[1])}
+          return { top: pm(strS[0]), right: pm(strS[1]), bottom: pm(strS[0]), left: pm(strS[1]) }
         case 3:
-          return {top: pm(strS[0]), right: pm(strS[1]), bottom: pm(strS[0]), left: pm(strS[2])}
+          return { top: pm(strS[0]), right: pm(strS[1]), bottom: pm(strS[0]), left: pm(strS[2]) }
         case 4:
-          return {top: pm(strS[0]), right: pm(strS[1]), bottom: pm(strS[2]), left: pm(strS[3])}
+          return { top: pm(strS[0]), right: pm(strS[1]), bottom: pm(strS[2]), left: pm(strS[3]) }
       }
     } else if (PrintToPdf.isUnitValue(val)) {
-      return {top: pm(val), right: pm(val), bottom: pm(val), left: pm(val)}
+      return { top: pm(val), right: pm(val), bottom: pm(val), left: pm(val) }
     } else if (typeof parseInt(val, 2) === 'number') {
       // in case val = "0"
       const defaultMeasure = parseInt(val, 2) + 'px'
@@ -348,17 +351,17 @@ PrintToPdf.prototype.parseBorder = function (val) {
  * @return {PdfTextBox}
  */
 PrintToPdf.prototype.writeSimpleText = function (config) {
-  let cfg = _.cloneDeep(config)
+  const cfg = _.cloneDeep(config)
   cfg.isCloned = true
   cfg.width = cfg.width || this.page.innerSize.width
-  let autoWrite = cfg.autoWrite === true || cfg.autoWrite === false ? cfg.autoWrite : true
+  const autoWrite = cfg.autoWrite === true || cfg.autoWrite === false ? cfg.autoWrite : true
   cfg.autoWrite = false
   cfg.align = config.align || 'left'
   cfg.top = cfg.top || this.getPosition()
   cfg.left = cfg.left || this.page.innerSize.left
   cfg.noChangePosition = cfg.noChangePosition || false
   cfg.noCheckPage = cfg.noCheckPage || false
-  let tb = this.createTextBox(cfg)
+  const tb = this.createTextBox(cfg)
 
   if (!cfg.splitOnPage && !cfg.noCheckPage && (tb.bottom > this.page.innerSize.bottomColon)) {
     this.addPage()
@@ -383,8 +386,8 @@ PrintToPdf.prototype.writeSimpleText = function (config) {
  * @param {Number} pageNum
  */
 PrintToPdf.prototype.initColontitle = function (colontitle, pageNum, current) {
-  let ct = colontitle
-  let result = {
+  const ct = colontitle
+  const result = {
     text: colontitle.text || '',
     align: colontitle.align || 'right',
     colontitle: colontitle,
@@ -429,7 +432,7 @@ PrintToPdf.prototype.getPosition = function () {
  * @return {Number}
  */
 PrintToPdf.prototype.setPosition = function (newPosition) {
-  let innerSize = this.page.innerSize
+  const innerSize = this.page.innerSize
   this.currentPosition = newPosition > innerSize.bottom
     ? innerSize.bottom
     : (newPosition < innerSize.top ? innerSize.top : newPosition)
@@ -449,7 +452,7 @@ PrintToPdf.prototype.movePositionToTop = function () {
  * @return {Number}
  */
 PrintToPdf.prototype.movePosition = function (delta) {
-  let innerSize = this.page.innerSize
+  const innerSize = this.page.innerSize
   this.currentPosition += delta
   if (this.currentPosition < innerSize.topColon) {
     this.currentPosition = innerSize.top
@@ -472,7 +475,7 @@ PrintToPdf.prototype.movePosition = function (delta) {
  * @returns {Number}
  */
 PrintToPdf.prototype.parseMeasure = function (value) {
-  let baseMeasure = this.page.measure
+  const baseMeasure = this.page.measure
 
   if (!value) { return }
   if (typeof value !== 'string') { return value }
@@ -743,7 +746,7 @@ PrintToPdf.prototype.getlineHeight = function () {
  * @param {number} value
  */
 PrintToPdf.prototype.setlineHeight = function (value) {
-  let oldValue = this.lineHeight
+  const oldValue = this.lineHeight
   this.lineHeight = value
   this.pdf.setLineLeading(this.lineHeight)
   return oldValue
@@ -770,7 +773,7 @@ PrintToPdf.prototype.setFont = function (newFont, force) {
             newFont.type.length > 0) {
     newFont.type = newFont.type[0].toUpperCase() + newFont.type.substring(1)
   }
-  let result = _.cloneDeep(this.font)
+  const result = _.cloneDeep(this.font)
   this.font = newFont
 
   if (force || (result.name !== newFont.name || result.type !== newFont.type)) {
@@ -842,7 +845,7 @@ PrintToPdf.prototype.setFontSize = function (size) {
  * @return {PDF.csPdfDataGrid}
  */
 PrintToPdf.prototype.createGrid = function (config) {
-  let grdConfig = config ? _.cloneDeep(config) : {}
+  const grdConfig = config ? _.cloneDeep(config) : {}
   grdConfig.isCloned = true
   grdConfig.context = this
   grdConfig.top = grdConfig.top || this.getPosition()
@@ -907,7 +910,7 @@ PrintToPdf.prototype.output = function (type) {
       pdfArray[i] = pdfData.charCodeAt(i)
     }
 
-    return new Blob([pdfArray], {type: 'application/pdf'})
+    return new Blob([pdfArray], { type: 'application/pdf' })
   } else if (type && (type === 'blobUrl')) {
     pdfData = this.pdf.output()
     pdfLength = pdfData.length
@@ -918,11 +921,11 @@ PrintToPdf.prototype.output = function (type) {
     }
 
     // var rform = new FormData();
-    this.outputBlob = new Blob([pdfArray], {type: 'application/pdf'})
+    this.outputBlob = new Blob([pdfArray], { type: 'application/pdf' })
     // rform.append("filename","getFileName");
     // rform.append("blob",rblob);
 
-    return window.URL.createObjectURL(this.outputBlob)  // + '#zoom=75'
+    return window.URL.createObjectURL(this.outputBlob) // + '#zoom=75'
   } else {
     return this.pdf.output(type)
   }
@@ -936,9 +939,9 @@ PrintToPdf.prototype.getOutputAsBlobUrl = function () {
   return this.output('blobUrl')
 }
 
-  // @private
+// @private
 PrintToPdf.prototype.finalizeDocument = function () {
-  let current = new Date()
+  const current = new Date()
   for (let i = 0, l = this.globalTBScope.length; i < l; i++) {
     this.globalTBScope.write()
   }
@@ -1019,8 +1022,8 @@ PrintToPdf.prototype.finalizeDocument = function () {
  */
 PrintToPdf.prototype.writeHtml = function (config) {
   // use in server xmldom lib
-  let transformer = new HtmlToPdf(this)
-  let res = transformer.writeHtml(config)
+  const transformer = new HtmlToPdf(this)
+  const res = transformer.writeHtml(config)
   if (!config.noChangePosition) {
     this.setPage(res.pageNumber, false)
     this.setPosition(res.bottom)
@@ -1029,7 +1032,7 @@ PrintToPdf.prototype.writeHtml = function (config) {
 }
 
 PrintToPdf.prototype.circle = function (x, y, r, style, pageNumber) {
-  let info = this.pdf.getCurrentPageInfo()
+  const info = this.pdf.getCurrentPageInfo()
   pageNumber = pageNumber || this.pageNumber
   if (info.pageNumber !== pageNumber) {
     this.pdf.setPage(pageNumber)
@@ -1041,7 +1044,7 @@ PrintToPdf.prototype.circle = function (x, y, r, style, pageNumber) {
 }
 
 PrintToPdf.prototype.ellipse = function (x, y, rx, ry, style, pageNumber) {
-  let info = this.pdf.getCurrentPageInfo()
+  const info = this.pdf.getCurrentPageInfo()
   pageNumber = pageNumber || this.pageNumber
   if (info.pageNumber !== pageNumber) {
     this.pdf.setPage(pageNumber)
@@ -1053,7 +1056,7 @@ PrintToPdf.prototype.ellipse = function (x, y, rx, ry, style, pageNumber) {
 }
 
 PrintToPdf.prototype.rect = function (x, y, w, h, style, pageNumber) {
-  let info = this.pdf.getCurrentPageInfo()
+  const info = this.pdf.getCurrentPageInfo()
   pageNumber = pageNumber || this.pageNumber
   if (info.pageNumber !== pageNumber) {
     this.pdf.setPage(pageNumber)

@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.10] - 2021-08-31
+## [5.20.9] - 2021-08-18
+### Changed
+- Add `SyncConnection.addNew` and `SyncConnection.addNewAsObject`
+
+### Fixed
+ - **BREAKING** `SyncConnection.insert` return numeric value (instead of array) ONLY in case fieldList is === `['ID']` (as documented). 
+   Before this fix numeric value is returned for any fieldList with ONE element.  
+
 ## [5.20.8] - 2021-07-08
 ## [5.20.7] - 2021-05-24
 ## [5.20.6] - 2021-05-13

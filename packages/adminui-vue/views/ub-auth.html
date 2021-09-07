@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head translate="no">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="Content-Security-Policy"
@@ -244,9 +244,10 @@
 
             <div v-if="hasNegotiate">
               <div class="auth-page__text">
-                <el-tooltip :content="$ut('KerberosTip')" placement="bottom" effect="light">
-                  <i class="auth-page__tooltip fa fa-question-circle-o"></i>
-                </el-tooltip>
+                <i
+                  :title="$ut('KerberosTip')"
+                  class="auth-page__tooltip u-icon-circle-question">
+                </i>
               </div>
               <p v-html="$ut('KerberosHeader')"></p>
               <el-form-item>
@@ -261,9 +262,9 @@
             <div v-if="hasOpenIDConnect">
               <div>
                 <div class="auth-page__text">
-                  <el-tooltip :content="$ut('OpenidTip')" placement="bottom" effect="light">
-                    <i class="auth-page__tooltip fa fa-question-circle-o"></i>
-                  </el-tooltip>
+                  <i
+                    :title="$ut('OpenidTip')"
+                    class="auth-page__tooltip u-icon-circle-question"></i>
                 </div>
                 <p v-html="$ut('OpenIDHeader')"></p>
 
@@ -292,9 +293,10 @@
               </div>
               <div v-if="ubAuthVisible">
                 <div class="auth-page__text">
-                  <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
-                    <i class="auth-page__tooltip fa fa-question-circle-o"></i>
-                  </el-tooltip>
+                  <i
+                    :title="$ut('UBAuthTip')"
+                    class="auth-page__tooltip u-icon-circle-question"
+                  ></i>
                 </div>
                 <p v-html="$ut('UBAuthHeader', appName)"></p>
                 <el-form-item></el-form-item>

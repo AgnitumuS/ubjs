@@ -8,7 +8,11 @@ For selecting files we recommend using a `UFileInput`, for dates - `UDatePicker`
   <div>
     <u-grid row-gap="20px">
       <div> String <u-base-input v-model="strVal" /> </div>
-      <div> Password <u-base-input type="password" v-model="strVal" /> </div>
+      <div> Password
+        <u-base-input type="password" v-model="strVal">
+          <el-button icon="u-icon-eye" slot="append" />
+        </u-base-input>
+      </div>
       <div> Integer <u-base-input type="number" :precision="0" v-model="intVal" /> </div>
       <div> Currency <u-base-input type="number" :precision="2" :step="0.01" v-model="decVal" /> </div>
     </u-grid>

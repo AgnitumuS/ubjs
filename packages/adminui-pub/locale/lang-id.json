@@ -316,7 +316,6 @@
   "doStartScan": "Request to the scanner ...",
   "doFinishScan": "Obtaining scanning results",
 
-  "serverIsBusy": "Server currently unavailable",
   "ubErrRecordmodified": "Since the opening of data they have been changed by another user. For obtaining actual data click \"Update\" button.",
   "doYouWantFillOtherAttr": "Are you sure to fill other attributes for {0} in dictionary \"{1}\"?",
   "comboBoxSaveDictItem": "Save to dictionary",

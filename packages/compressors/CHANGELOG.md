@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.2] - 2021-08-18
+### Fixed
+ - UZip: fix getting files from ZIP using RegExp `UZip.file(/../)`
+
+## [5.2.1] - 2021-08-04
+### Fixed
+ - ub-server@5.20.4 compatibility (IsValidUTF8)
+
 ## [5.2.0] - 2021-07-08
 ### Added
   - UZip - a JSZip@2 / PizZip compatible zip reader/writer

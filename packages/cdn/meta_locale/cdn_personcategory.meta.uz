@@ -1,0 +1,14 @@
+{
+  "caption": "Shaxs toifasi",
+  "description": "Shaxs toifalari katalogi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    }
+  ]
+}

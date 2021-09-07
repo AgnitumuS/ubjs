@@ -5,6 +5,7 @@
       <u-button icon="u-icon-signature" @click="doHashBlobStore">BLOB стор</u-button>
       <section>Подписать:</section>
       <u-button icon="u-icon-signature" @click="doSign">Файл</u-button>
+      <u-button icon="u-icon-signature" @click="doSignBase64">Base64</u-button>
       <u-button icon="u-icon-signature" @click="doSignBlobStore">BLOB стор</u-button>
       <section>Проверить:</section>
       <u-button icon="u-icon-signature" @click="doVerify">файл+base64</u-button>
@@ -14,12 +15,21 @@
     </div>
 
     <u-grid label-position="top">
-      <u-form-row label="Файл, который подписываем">
-        <u-file-input
-          v-model="fileForSigning"
-          placeholder="Select a file for sign or verify"
-        />
-      </u-form-row>
+      <u-grid>
+        <u-form-row label="Файл, который подписываем">
+          <u-file-input
+            v-model="fileForSigning"
+            placeholder="Select a file for sign or verify"
+          />
+        </u-form-row>
+        <u-form-row label="Base64, который подписываем">
+          <u-base-input
+            type="textarea"
+            rows="4"
+            v-model="base64ForSigning"
+          />
+        </u-form-row>
+      </u-grid>
       <section>
         <u-form-row label="Документ из стора для подписания">
           <u-select-entity
@@ -71,6 +81,7 @@ module.exports.default = {
   data () {
     return {
       fileForSigning: [],
+      base64ForSigning: '',
       signature: '',
       operationResult: '',
       tstDocID: null,
@@ -103,6 +114,17 @@ module.exports.default = {
         // commented to not ask a password next time
         // if (pki) pki.closePrivateKey()
       }
+    },
+
+    async doSignBase64 () {
+      if (!this.base64ForSigning) throw new UB.UBError('Задайте стоку в Base64')
+      const pki = await this.$UB.connection.pki()
+      const arrBuf = await this.$UB.base64toArrayBuffer(this.base64ForSigning)
+      console.time('sign')
+      const signature = await pki.sign(arrBuf)
+      console.timeEnd('sign')
+      this.signature = signature
+      await this.$dialogInfo('Документ успішно підписаний', 'Підпис')
     },
 
     async doSignBlobStore () {
@@ -144,7 +166,8 @@ module.exports.default = {
         // show UI dialog with signature validation result
         await pki.verificationUI(
           [verificationResult, verificationResult],
-          ['<strong>First signature</strong>', 'Second signature']
+          ['<strong>First signature</strong>', 'Second signature'],
+          [{ icon: 'fa fa-user', tooltip: 'Ha-ha', callback: () => {} }]
         )
       } finally {
         // me.unmask()

@@ -17,6 +17,40 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `$App.scan()` will show an error with scan settings requirement instead of "unknown error" in case scanner
  not configured 
 
+## [5.20.23] - 2021-09-02
+### Added
+ - added import of:
+   - `UB.view.StatusWindow`
+   - `UB.ux.tree.Column`
+   - `Ext.ux.exporter.excelFormatter.*`
+   - `Ext.ux.exporter.Base64`
+   Classes are used by third-party projects
+
+### Removed
+ - `Ext.ux.exporter.wikiFormatter.WikiFormatter` not loaded by default (available for manual loading)
+
+## [5.20.22] - 2021-08-31
+### Added
+ - `UMasterDetailView`: Added `BasePanel` based form support for preview mode.
+ 
+### Changed
+ - Dutch localization correction
+
+## [5.20.21] - 2021-08-18
+### Changed
+ - `UBComboBox`: use custom method (if any) from `store.ubRequest.method` to load a display text of filtered out row. Before this fix `select` always used
+ 
+## [5.20.20] - 2021-08-09
+## [5.20.19] - 2021-08-04
+### Added
+ - Dutch (nl) localization
+
+### Changed
+ - forcibly disabled HTML page translator (Google Translate) for adminUI
+
+### Removed
+ - i18n for "serverIsBusy" (Server currently unavailable) is moved into ub-pub package
+
 ## [5.20.18] - 2021-07-18
 ### Fixed
  - `EntityGridPanel:` prevent error on grid refresh, when panel already closed [UBDF-13979] 

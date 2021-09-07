@@ -638,11 +638,11 @@ $App.connection.userLang()
             if (!TEST_ERROR_MESSAGE_RE.test(errInfo.errMsg) || (errInfo.errMsg === '<<<Access deny>>>')) {
               errInfo.errMsg = (authParams.authSchema === 'UB') ? 'msgInvalidUBAuth' : 'msgInvalidCertAuth'
             }
+          } else if (rejectReason.status === 0) {
+            errInfo.errMsg = 'serverIsBusy'
+            errInfo.errDetails = 'network error'
           } else {
             if (!errInfo.errMsg) { errInfo.errMsg = 'unknownError' } // internalServerError
-          }
-          if (rejectReason.status === 0) {
-            errInfo.errDetails = 'network error'
           }
 
           if (TEST_ERROR_MESSAGE_RE.test(errInfo.errMsg)) {
@@ -1949,9 +1949,9 @@ UbPkiInterface.prototype.getPrivateKeyOwnerInfo = function () {}
  * Can accept {BlobStoreRequest} as item - in this case signature hash is calculated on server side
  * for document stored in BLOB store (@ub-d/crypto-api model must be added into domain)
  *
- * @param {Uint8Array|String|BlobStoreRequest|Array<Uint8Array|String|BlobStoreRequest>} data
+ * @param {Uint8Array|ArrayBuffer|String|BlobStoreRequest|Array<Uint8Array|ArrayBuffer|String|BlobStoreRequest>} data
  * @param {Boolean} [resultIsBinary=false]
- * @param {function} [ownerKeyValidationFunction] optional function what called with one parameter - certInfo before signing.
+ * @param {function} [ownerKeyValidationFunction] optional function what called with one parameter - certInfo: CertificateJson before signing.
  *   Should validate is owner of passed certificate allowed to perform signing,
  *   for example by check equality of certInfo.serial with conn.userData('userCertificateSerial');
  *   In case function returns rejected promise or throw then private key will be unloaded from memory

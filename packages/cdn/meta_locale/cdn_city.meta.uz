@@ -1,0 +1,38 @@
+{
+  "caption": "Hisob-kitoblar",
+  "description": "Aholi punktlari ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "parentAdminUnitID",
+      "caption": "Ajdod"
+    },
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ism"
+    },
+    {
+      "name": "caption",
+      "caption": "Sarlavha"
+    },
+    {
+      "name": "description",
+      "caption": "Tavsif"
+    },
+    {
+      "name": "postalCode",
+      "caption": "Pochta Indeksi"
+    },
+    {
+      "name": "phoneCode",
+      "caption": "Telefon kodi"
+    },
+    {
+      "name": "cityTypeID",
+      "caption": "Turar joy turi"
+    }
+  ]
+}

@@ -3,6 +3,7 @@
   "selectRowFirst": "Сначала выберите строку",
   "convertationToPDFAborted": "Не удалось сконвертировать файл в формат PDF. Пересохраните файл в формат PDF, а затем вложите его повторно.",
   "numberMustBeDivisibleBy100": "Значение должно быть кратным 100",
+  "invalidJson": "Значение должно быть валидным JSON",
 
   "desktopService.CurrentScanType": "Сканируем с помощью",
   "desktopService.aviableLanguages": "Доступные языки",

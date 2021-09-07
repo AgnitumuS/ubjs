@@ -1,33 +1,25 @@
 <template>
-  <el-tooltip
-    :content="$ut(tooltip)"
-    placement="bottom"
-    :open-delay="300"
-    :enterable="false"
-    :disabled="!tooltip"
-  >
-    <u-button
-      class="u-toolbar-button"
-      :appearance="appearance"
-      :icon="icon"
-      :color="transformedColor"
-      :disabled="disabled"
-      v-bind="$attrs"
-      v-on="$listeners"
-    />
-  </el-tooltip>
+  <u-button
+    :title="$ut(tooltip)"
+    class="u-toolbar-button"
+    :appearance="appearance"
+    :icon="icon"
+    :color="transformedColor"
+    :disabled="disabled"
+    v-bind="$attrs"
+    v-on="$listeners"
+  />
 </template>
 
 <script>
 /**
  * @deprecated Legacy component, use UButton instead it
  * @example
- *   <el-tooltip :content="Edit">
  *     <u-button
+ *       :title="Edit"
  *       appearance="inverse"
  *       icon="u-icon-edit"
  *     />
- *   </el-tooltip>
  */
 export default {
   name: 'UToolbarButton',

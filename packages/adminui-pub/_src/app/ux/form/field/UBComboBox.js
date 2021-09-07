@@ -587,6 +587,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
             UB.xhr.allowRequestReiteration() // prevent a monkeyRequestsDetected in case 2 combobox are on the same form with the same filters
             UB.connection.select({
               entity: me.getEntity(),
+              method: store.ubRequest.method || 'select',
               fieldList: store.ubRequest.fieldList, // [me.valueField, me.displayField ],
               __allowSelectSafeDeleted: true,
               ID: id

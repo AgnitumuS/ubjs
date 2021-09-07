@@ -1,0 +1,46 @@
+{
+  "caption": "Tashqi bo'limlar",
+  "description": "Tashqi birliklarning katalogi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Ichki kod"
+    },
+    {
+      "name": "name",
+      "caption": "Bo'lim nomi"
+    },
+    {
+      "name": "fullName",
+      "caption": "To'liq unum"
+    },
+    {
+      "name": "description",
+      "caption": "Bo'limning tavsifi"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Bo'limning nomi"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Bo'limning nomi"
+    },
+    {
+      "name": "fullNameGen",
+      "caption": "Bo'limning to'liq nomi"
+    },
+    {
+      "name": "fullNameDat",
+      "caption": "Bo'limning to'liq nomi"
+    },
+    {
+      "name": "depTypeID",
+      "caption": "Bo'linish turi"
+    },
+    {
+      "name": "organizationID",
+      "caption": "Tashkilot"
+    }
+  ]
+}

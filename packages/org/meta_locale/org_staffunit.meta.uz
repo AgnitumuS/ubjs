@@ -1,0 +1,66 @@
+{
+  "caption": "Oddiy birliklar",
+  "description": "To'liq ishlaydigan birliklarning katalogi",
+  "attributes": [
+    {
+      "name": "parentID",
+      "caption": "Ajdod"
+    },
+    {
+      "name": "code",
+      "caption": "Ichki kod"
+    },
+    {
+      "name": "name",
+      "caption": "Xodimlar birligining nomi"
+    },
+    {
+      "name": "fullName",
+      "caption": "To'liq sarlavha"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Xodimlar birligining nomi"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Xodimlar birligining nomi"
+    },
+    {
+      "name": "fullNameGen",
+      "caption": "To'liq sarlavha"
+    },
+    {
+      "name": "fullNameDat",
+      "caption": "To'liq sarlavha"
+    },
+    {
+      "name": "description",
+      "caption": "Xodimlar birligining tavsifi"
+    },
+    {
+      "name": "caption",
+      "caption": "Sarlavha"
+    },
+    {
+      "name": "professionExtID",
+      "caption": "Kasb"
+    },
+    {
+      "name": "professionID",
+      "caption": "Pozitsiya"
+    },
+    {
+      "name": "staffUnitTypeID",
+      "caption": "Xodimlar birligining turi"
+    },
+    {
+      "name": "subordinationLevel",
+      "caption": "Subordinatsiya darajasi"
+    },
+    {
+      "name": "isBoss",
+      "caption": "Rahbar"
+    }
+  ]
+}

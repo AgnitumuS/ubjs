@@ -12,6 +12,7 @@ adm_desktop:
         tg: Интерфейс
         uk: Інтерфейс
         nl: Gebruikersinterface
+        uz: Interfeys
       iconCls: u-icon-image
       displayOrder: 30
       items:
@@ -23,6 +24,7 @@ adm_desktop:
             tg: Номгӯҳо
             uk: Переліки
             nl: Opsommingen
+            uz: Ro'yxatlar
           displayOrder: 10
           showList:
             renderer: vue
@@ -48,6 +50,7 @@ adm_desktop:
             tg: Мизҳои корӣ
             uk: Робочі столи
             nl: Desktops
+            uz: Ish stollari
           displayOrder: 20
           showList:
             renderer: vue
@@ -68,6 +71,7 @@ adm_desktop:
             tg: Тамға
             uk: Ярлики
             nl: Sneltoetsen
+            uz: Yorliqlar
           displayOrder: 30
           showList:
             renderer: vue
@@ -92,6 +96,7 @@ adm_desktop:
             tg: Шаклҳо
             uk: Форми
             nl: Vormen
+            uz: Shakllar
           displayOrder: 40
           showList:
             renderer: vue
@@ -110,6 +115,7 @@ adm_desktop:
             tg: Саволҳо
             uk: Запити даних
             nl: Zoekopdrachten
+            uz: Ma'lumot so'rovlari
           displayOrder: 50
           showList:
             renderer: vue
@@ -117,14 +123,16 @@ adm_desktop:
             fieldList:
             - code
             - name
+            - type
       - ubm_sysdictionary:
           caption:
             en: System Dictionaries
             ka: სისტემის ლექსიკონები
-            ru: Пользовательские справочники
-            tg: Луғатномаҳои система
-            uk: Користувацькі довідники
-            nl: Systeemwoordenboeken
+            ru: Системные справочники
+            tg: Луғатҳои системавӣ
+            uk: Системні довідники
+            nl: System Woordenboeken
+            uz: Tizim kataloglari
           displayOrder: 60
           showList:
             renderer: vue
@@ -140,6 +148,7 @@ adm_desktop:
             tg: ER диаграммаҳо
             uk: ER діаграми
             nl: ER-diagrammen
+            uz: ER grafikalar
           displayOrder: 70
           showList:
             renderer: vue

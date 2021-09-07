@@ -1083,24 +1083,36 @@ UBEntity.prototype.getConvertRules = function (fieldList) {
 /**
  * Returns description attribute name (`descriptionAttribute` metadata property)
  * If `descriptionAttribute` is empty - fallback to attribute with code `caption`
- * @return {string}
+ * @param {Boolean} [raiseErrorIfNotExists=true] If `true`(default) and description attribute does not exists throw error,
+ *   if `false` - return `undefined`
+ * @return {string|undefined}
  */
-UBEntity.prototype.getDescriptionAttribute = function () {
-  const result = this.descriptionAttribute || 'caption'
+UBEntity.prototype.getDescriptionAttribute = function (raiseErrorIfNotExists) {
+  let result = this.descriptionAttribute || 'caption'
   if (!this.attr(result)) {
-    throw new Error('Missing description attribute for entity ' + this.code)
+    if ((raiseErrorIfNotExists !== false)) {
+      throw new Error(`Missing description attribute for entity '${this.code}'`)
+    } else {
+      result = undefined
+    }
   }
   return result
 }
 
 /**
  * Returns information about attribute and attribute entity. Understand complex attributes like `firmID.firmType.code`
+ * @example
+
+ UB.connection.domain.get('cdn_country').getEntityAttributeInfo('mi_modifyUser.name')
+ // {entity: 'uba_user', attribute: 'name', parentAttribute: {code: mi_modifyUser, dataType: 'Entity', ....}}
+
  * @param {string} attributeName
  * @param {number} [depth=0] If 0 - last, -1 - before last, > 0 - first. Default 0.
  *  - `0` means last attribute in chain (code from above)
  *  - `-1` - before last (firmType from above)
  *  - `>0` - first (firmID from above)
  * @return {{ entity: String, attribute: UBEntityAttribute, parentAttribute: UBEntityAttribute, attributeCode: String }|undefined}
+ *   Either attribute information or undefined if chain not points to attribute
  */
 UBEntity.prototype.getEntityAttributeInfo = function (attributeName, depth) {
   let currentEntity = this

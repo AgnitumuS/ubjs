@@ -3,7 +3,7 @@
     <div class="u-table-register__view">
       <u-table-entity
         ref="masterTable"
-        :bordered=false
+        :bordered="false"
         v-bind="$attrs"
         :before-initial-load="onInitialLoad"
         :class="{
@@ -176,13 +176,13 @@ export default {
   computed: {
     entityName () {
       const eName = this.$attrs.entity || this.$attrs.entityName
-      if (eName ) {
+      if (eName) {
         return eName
       }
       const repository = this.$attrs.repository
       if (typeof repository === 'object') {
         return repository.entity
-      } else  if (typeof repository === 'function') {
+      } else if (typeof repository === 'function') {
         return repository().entityName
       } else {
         return ''
@@ -192,7 +192,7 @@ export default {
     details () {
       const thisEntity = $App.domainInfo.get(this.entityName)
       return thisEntity.getDetailsForUI().map(attr => {
-        return {entity: attr.entity.name, attribute: attr.name}
+        return { entity: attr.entity.name, attribute: attr.name }
       })
     },
 

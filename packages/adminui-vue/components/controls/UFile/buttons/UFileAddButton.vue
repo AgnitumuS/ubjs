@@ -8,18 +8,14 @@
       :multiple="multiple"
       @change="upload"
     >
-    <el-tooltip
-      :content="$ut('UFile.addButtonTooltip')"
-      :enterable="false"
-    >
-      <u-button
-        color="primary"
-        icon="u-icon-add"
-        appearance="inverse"
-        :disabled="instance.file || instance.disabled"
-        @click="clickInput"
-      />
-    </el-tooltip>
+    <u-button
+      :title="$ut('UFile.addButtonTooltip')"
+      color="primary"
+      icon="u-icon-add"
+      appearance="inverse"
+      :disabled="instance.file || instance.disabled"
+      @click="clickInput"
+    />
   </div>
 </template>
 

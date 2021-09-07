@@ -1,5 +1,5 @@
 {
  "name": "HTML to PDF test",
- "template": "{\"fName\":\"tst_html_to_pdf.template\",\"origName\":\"tst_html_to_pdf.template\",\"ct\":\"application/ubreport\",\"size\":74508,\"md5\":\"65d7596e2b7afa2641653421afbb45a7\"}",
- "code": "{\"fName\":\"tst_html_to_pdf.js\",\"origName\":\"tst_html_to_pdf.js\",\"ct\":\"application/def\",\"size\":801,\"md5\":\"b82b7e64fc4380495b6e6d929f3fc48e\"}"
+ "template": "tst_html_to_pdf.template",
+ "code": "tst_html_to_pdf.js"
 }

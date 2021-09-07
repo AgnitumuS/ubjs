@@ -3,6 +3,7 @@
   "selectRowFirst": "Аввал сатрро интихоб кунед",
   "convertationToPDFAborted": "Табдил додани файл ба формати PDF нашуд. Файлро дар формати PDF захира кунед ва баъд замима кунед.",
   "numberMustBeDivisibleBy100": "Арзиш бояд аз 100 адад бошад",
+  "invalidJson": "Арзиш бояд JSON -и дуруст бошад",
 
   "desktopService.CurrentScanType": "Сканкуни бо ёрии",
   "desktopService.aviableLanguages": "Забонҳои дастрас",

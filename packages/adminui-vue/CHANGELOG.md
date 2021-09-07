@@ -6,19 +6,87 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UTableEntity`: slot `appendTable` to add some content at the end of the table after the pagination button
+ - `$lookups.getEnumItems` method returns array of `{code: string, name: string}` enum items ordered by sort order for
+   the given `eGroup`, for example: `$lookups.getEnumItems('ORG_UNITTYPE')` returns:
+   ```json
+   [
+     {
+       "code": "STAFF",
+       "name": "Staff unit"
+     },
+     {
+       "code": "ORG",
+       "name": "Organization"
+     },
+     {
+       "code": "DEP",
+       "name": "Department"
+     },
+     {
+       "code": "EXECGROUP",
+       "name": "Execution group"
+     }
+   ]
+   ```
+   - `UTable`: set title for cell with long text and three dots in the end  [UBDF-14278)
+
 
 ### Changed
+`USelectMultiple`: change style for dropdown. Fixed the position of the buttons "More", "Template" and other.
+![View result](./changeLogImgs/USelectMultipleDropdown.png)
+[Task](https://dev.intecracy.com/agile/browse/UBDF-8423)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+-`UFormRow`: fix very long tags in `USelectMultiple`. Now, tags is flexible, has max-width: 100% from parent and don't come out beyound the viewport
+-`UDatePicker`: removed hard width. Datepicker width is flexible between 150px to 220px
+
+## [5.20.22] - 2021-09-02
+### Added
+ - `Form/mount`: added param `onClose`, this is a callback function that, if defined, is called
+ from the `beforeDestroy` lifecycle hook
+
+## [5.20.21] - 2021-08-31
+### Changed
+ - Dutch localization correction
+
+### Fixed
+ - `UBaseInput`, type=number: set value as a number on `input` event (type every character) instead of on `change` event,
+ where value may be a string
+ - `UDropdown`: fixed placement of dropdown on first click, prevented from expanding outside of viewport [UBDF-13695]
+ - `USelectEntity`: fixed adding new row in `allowDictionaryAdding` mode in case user type text quickly (`blur` event handler fixed) 
+ - `USelectEntity`: removed `leaveInput` on `@keydown.native.tab`, because now it is called on `blur` event
+
+## [5.20.20] - 2021-08-18
+### Added
+ - `UButton`: added `circle` prop to render a circle button - see [UButton UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UButton) 
+
+### Changed
+ - `UCodeMirror`: set minimum height to 50 px to make help icon be inside control if it has only one line
+ - almost all (except ones where HTML is rendered) `el-tooltip` are replaced with
+   [HTML `title` property](https://developer.mozilla.org/en-US/docs/web/html/global_attributes/title)
+
+### Removed
+ - `USidebarButton` component is removed. `UButton` should be used instead.
+
+## [5.20.19] - 2021-08-09
+## [5.20.18] - 2021-08-04
+### Added
+ - `UTableEntity`: slot `appendTable` to add some content at the end of the table after the pagination button
+ - Dutch (nl) localization
+
+### Changed
+ - forcibly disabled HTML page translator (Google Translate) for login page
+
+### Fixed
  - `USelectEntity`: fixed entity name in dictionary adding dialog in case of repository use
  - `UCodeMirror`: revert removing of `editorInstance` computed value since it exists for external use
  - `USelectEntity`: prevent trigger of dropdown action in case on `Enter` is pressed in some other control of the form
- 
+ - `UFormRow`: fixed automatic label title if the attribute's description text is not defined
+
 ## [5.20.17] - 2021-07-18
 ### Added
  - `USelectEnum`: added `repository` prop, same as `USelectEntity` has
@@ -40,7 +108,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `validationMixin` for the passing of validation defined locally in some Vue component to nested controls (UFormRow for example)
  - Validation: added support for `$each` captions in validations.  Example:
    `crimeCases.$each.11.data.$each.333.val.discardReason:caption` => `crimeCases.data.val.discardReason:caption`
- - UAutoField: in case attribute used in `attribute-name` prop is not exists in Repository a developer-friendly
+ - UAutoField: in case attribute used in `attribute-name` prop does not exist in Repository a developer-friendly
    exception is throws instead of `can not read XXX of undefined`
  - `USelectMultiple`: new prop `additionalButtons`, for add buttons to dropdown before button 'more'
  - `USelectEntity`: new prop `allow-dictionary-adding`. If defined and user type text what not match any record -
@@ -2206,7 +2274,7 @@ $App.doCommand({
       ```
    - refactorings to simplify code: inline `initCollections` helper method, no need for it
      to be in `helpers`, add `enrichFieldList`, because in some places we need to make sure
-     some system attributes are added to requests, such as `ID` or `mi_modifyDate`;
+     some system attributes are added to request, such as `ID` or `mi_modifyDate`;
      inline `buildCollectionRequests` straight into `save`.
    - improve jsdocs
    - expose `buildDeleteRequest` in `helpers` and remove `buildCollectionRequests` from helpers.

@@ -13,7 +13,7 @@ me.on('update:before', ctx => {
 /**
  * @param {ubMethodParams} ctx
  */
-function autoGenerateUbql(ctx) {
+function autoGenerateUbql (ctx) {
   if (ctx.mParams.execParams.ubql) {
     return
   }

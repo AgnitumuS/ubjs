@@ -4,7 +4,7 @@
 
 <script>
 const { Form } = require('@unitybase/adminui-vue')
-const store = require('./uba_auditTrail/store')
+const store = require('./uba_auditTrail/auditTrailStore')
 
 module.exports.mount = cfg => {
   Form(cfg)

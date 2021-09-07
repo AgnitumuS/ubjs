@@ -77,6 +77,8 @@ ub-pack
 ``` 
 This command installs all application dependencies and creates an archive for future deployment.
 
+> since ub@5.20.5 application can perform additional actions before up-pack by adding a lifecycle hook into `APP_FOLDER/lifecycle/ub-pack-before.sh`
+
 All files what must be excluded from archive should be noted in `.npmignore`. Also, ignored:
  - all files and folders starts with '.'
  - *.log
@@ -526,6 +528,33 @@ unitybase_method_duration_seconds{entity="uba_role",method="select",le="10,00000
 unitybase_method_duration_seconds{entity="uba_role",method="select",le="+Inf"} 1,000000
 unitybase_method_duration_seconds_count{entity="uba_role",method="select"} 1,000000
 unitybase_method_duration_seconds_sum{entity="uba_role",method="select"} 0,000396
+
+# HELP unitybase_httpext_duration_seconds External HTTP service request duration histogram
+# TYPE unitybase_httpext_duration_seconds histogram
+unitybase_httpext_duration_seconds{uri="www.google.com",status="2XX",le="0.01"} 0
+unitybase_httpext_duration_seconds{uri="www.google.com",status="2XX",le="0.05"} 0
+unitybase_httpext_duration_seconds{uri="www.google.com",status="2XX",le="0.2"} 0
+unitybase_httpext_duration_seconds{uri="www.google.com",status="2XX",le="0.5"} 7
+unitybase_httpext_duration_seconds{uri="www.google.com",status="2XX",le="1.0"} 14
+unitybase_httpext_duration_seconds{uri="www.google.com",status="2XX",le="3.0"} 14
+unitybase_httpext_duration_seconds{uri="www.google.com",status="2XX",le="10.0"} 14
+unitybase_httpext_duration_seconds{uri="www.google.com",status="2XX",le="+Inf"} 14
+unitybase_httpext_duration_seconds_count{uri="www.google.com",status="2XX"} 14
+unitybase_httpext_duration_seconds_sum{uri="www.google.com",status="2XX"} 6.854476
+
+# HELP unitybase_fs_operation_duration_seconds File system operation duration histogram
+# TYPE unitybase_fs_operation_duration_seconds histogram
+unitybase_fs_operation_duration_seconds{path="simple",operation="persist",le="0.01"} 4
+unitybase_fs_operation_duration_seconds{path="simple",operation="persist",le="0.05"} 5
+unitybase_fs_operation_duration_seconds{path="simple",operation="persist",le="0.2"} 5
+unitybase_fs_operation_duration_seconds{path="simple",operation="persist",le="0.5"} 5
+unitybase_fs_operation_duration_seconds{path="simple",operation="persist",le="1.0"} 5
+unitybase_fs_operation_duration_seconds{path="simple",operation="persist",le="3.0"} 5
+unitybase_fs_operation_duration_seconds{path="simple",operation="persist",le="10.0"} 5
+unitybase_fs_operation_duration_seconds{path="simple",operation="persist",le="+Inf"} 5
+unitybase_fs_operation_duration_seconds_count{path="simple",operation="persist"} 5
+unitybase_fs_operation_duration_seconds_sum{path="simple",operation="persist"} 0.037999999999999999
+
 
 # HELP process_max_fds Maximum number of open file descriptors.
 # TYPE process_max_fds gauge

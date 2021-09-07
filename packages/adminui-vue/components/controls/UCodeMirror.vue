@@ -189,6 +189,7 @@ export default {
 .ub-code-mirror .CodeMirror {
   border-top: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
   border-bottom: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
+  min-height: 50px;
 }
 
 .ub-code-mirror__help {

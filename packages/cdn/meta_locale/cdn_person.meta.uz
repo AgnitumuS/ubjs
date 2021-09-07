@@ -1,0 +1,130 @@
+{
+  "caption": "Jismoniy shaxslar ro'yxati",
+  "description": "Jismoniy shaxslar ma'lumotnomasi",
+  "attributes": [
+    {
+      "name": "lastName",
+      "caption": "Familiya"
+    },
+    {
+      "name": "firstName",
+      "caption": "Ism"
+    },
+    {
+      "name": "middleName",
+      "caption": "Otasini ismi"
+    },
+    {
+      "name": "birthDate",
+      "caption": "Tug'ilgan kun"
+    },
+    {
+      "name": "description",
+      "caption": "Tavsif"
+    },
+    {
+      "name": "sexType",
+      "caption": "Jins"
+    },
+    {
+      "name": "suffix",
+      "caption": "Qoplamoq"
+    },
+    {
+      "name": "shortFIO",
+      "caption": "Qisqa phno"
+    },
+    {
+      "name": "fullFIO",
+      "caption": "To'liq ism"
+    },
+    {
+      "name": "apply",
+      "caption": "Shikoyat qilish"
+    },
+    {
+      "name": "photo",
+      "caption": "Surat"
+    },
+    {
+      "name": "lastNameGen",
+      "caption": "Familiya"
+    },
+    {
+      "name": "lastNameDat",
+      "caption": "Familiya"
+    },
+    {
+      "name": "firstNameGen",
+      "caption": "Ism"
+    },
+    {
+      "name": "firstNameDat",
+      "caption": "Ism"
+    },
+    {
+      "name": "middleNameGen",
+      "caption": "Otasini ismi"
+    },
+    {
+      "name": "middleNameDat",
+      "caption": "Otasini ismi"
+    },
+    {
+      "name": "shortFIOGen",
+      "caption": "Qisqa ism"
+    },
+    {
+      "name": "shortFIODat",
+      "caption": "Qisqa ism"
+    },
+    {
+      "name": "fullFIOGen",
+      "caption": "To'liq ism"
+    },
+    {
+      "name": "fullFIODat",
+      "caption": "To'liq ism"
+    },
+    {
+      "name": "applyGen",
+      "caption": "Shikoyat qilish"
+    },
+    {
+      "name": "applyDat",
+      "caption": "Shikoyat qilish"
+    },
+    {
+      "name": "regionID",
+      "caption": "Mintaqa"
+    },
+    {
+      "name": "identCard",
+      "caption": "Identifikatsiya"
+    },
+    {
+      "name": "workPlacePos",
+      "caption": "Ish joyi, lavozimi"
+    },
+    {
+      "name": "socialstatusID",
+      "caption": "Ijtimoiy holati"
+    },
+    {
+      "name": "categoryID",
+      "caption": "Turkum"
+    },
+    {
+      "name": "nationality",
+      "caption": "Millat"
+    },
+    {
+      "name": "resident",
+      "caption": "Rezident?"
+    },
+    {
+      "name": "classID",
+      "caption": "Tasniflash"
+    }
+  ]
+}

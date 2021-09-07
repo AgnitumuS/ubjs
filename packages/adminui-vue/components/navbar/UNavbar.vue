@@ -12,14 +12,12 @@
       v-show="tabs.length"
       class="u-navbar-all-tabs__dropdown-reference"
     >
-      <el-tooltip
-        :content="$ut('UNavbar.allTabsButton')"
-        :enterable="false"
+      <button
+        :title="$ut('UNavbar.allTabsButton')"
+        class="u-navbar-all-tabs__button"
       >
-        <button class="u-navbar-all-tabs__button">
-          {{ tabs.length }}
-        </button>
-      </el-tooltip>
+        {{ tabs.length }}
+      </button>
       <template slot="dropdown">
         <u-dropdown-item
           v-for="tab of tabs"
@@ -80,7 +78,6 @@
             class="u-navbar__tab-text"
             v-html="tab.title"
           />
-
           <i
             class="u-icon-close u-navbar__tab-close-button"
             @click.stop="handleClose([tab])"

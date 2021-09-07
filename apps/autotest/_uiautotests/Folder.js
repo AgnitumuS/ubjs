@@ -191,7 +191,7 @@ test('Move Shortcut from Folder', async t => {
   let idFolder = await leftPanel.treeItems.getIdByAttr('code', 'test_code_folder')
   let idShortcut = await leftPanel.treeItems.getIdByAttr('code', 'test_code_shortcut1')
   await t
-    .expect(Selector(idFolder).exists).ok(`Folder with id ${idFolder} is not exist in Test Desktop menu now`)
+    .expect(Selector(idFolder).exists).ok(`Folder with id ${idFolder} does not exist in Test Desktop menu now`)
     .expect(Selector(idShortcut).exists).ok('shortcut is not display in leftpanel')
 })
 

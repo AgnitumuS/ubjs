@@ -64,6 +64,7 @@
   "keyNoRightsRepeat": "İstifadəçinin sistemdə işləmək hüququq yoxdur. Açarın təkrar qeydiyyatı üçün müraciət baxılma mərhələsindədir.",
   "keyAlreadyRegistered": "Açarı qeydiyyata almaq üçün müraciət etmək mümkün deyil. Bu açar artıq sistemdə qeydiyyata alınmışdır.",
 
+  "serverIsBusy": "Server əlyetərli deyil",
   "unknownError": "Naməlum səhv baş vermişdir. Xahiş edirik, administratora müraciət edəsiniz.",
   "recordNotExistsOrDontHaveRights": "Qeyd mövcud deyil, yaxud Sizin ona baxmaq üçün hüququnuz yoxdur",
   "msgInvalidCertAuth": "Girişə icazə verilmədi. Yanlış sertifikat, yaxud bağlı açar.",

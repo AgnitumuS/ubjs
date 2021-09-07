@@ -69,6 +69,7 @@ class BlobStoreCustom {
   getContentFilePath (request, blobInfo) {
     return ''
   }
+
   /**
    * Retrieve BLOB content from blob store.
    * @abstract
@@ -81,6 +82,7 @@ class BlobStoreCustom {
    * @returns {String|Buffer|ArrayBuffer|null}
    */
   getContent (request, blobInfo, options) {}
+
   /**
    * Fill HTTP response for getDocument request. Sets resp to 404 status if content not found.
    * @abstract
@@ -91,7 +93,7 @@ class BlobStoreCustom {
    * @param {boolean} [preventChangeRespOnError=false] If `true` - prevents sets resp status code - just returns false on error
    * @return {Boolean}
    */
-  fillResponse (requestParams, blobInfo, req, resp,preventChangeRespOnError) { }
+  fillResponse (requestParams, blobInfo, req, resp, preventChangeRespOnError) { }
   /**
    * Move content defined by `dirtyItem` from temporary to permanent store.
    * Return a new attribute content which describe a place of BLOB in permanent store
@@ -144,7 +146,7 @@ class BlobStoreCustom {
     if (!FN_VALIDATION_RE.test(fn) || (fn.indexOf('..') !== -1)) {
       const e = new Error(`Invalid file name '${fn}' for BLOB store`)
       // emulate a ESecurityException
-      e.errorNumber = process.binding('ub_app')['UBEXC_ESECURITY_EXCEPTION']
+      e.errorNumber = process.binding('ub_app').UBEXC_ESECURITY_EXCEPTION
       throw e
     }
   }

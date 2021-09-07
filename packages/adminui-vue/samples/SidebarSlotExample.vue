@@ -3,18 +3,13 @@
     v-if="!isCollapsed"
     class="ub-sidebar__quick-access-group"
   >
-    <el-tooltip
+    <i
       v-for="item in quickAccessMenu"
       :key="item.label"
-      :enterable="false"
-      :content="item.label"
-      placement="top"
-    >
-      <i
-        :class="item.iconCls"
-        @click="item.onClick ? item.onClick($event) : null"
-      />
-    </el-tooltip>
+      :title="item.label"
+      :class="item.iconCls"
+      @click="item.onClick ? item.onClick($event) : null"
+    />
   </div>
 
   <el-dropdown
@@ -24,13 +19,11 @@
     class="ub-sidebar__quick-access-button"
     size="big"
   >
-    <el-tooltip
-      :content="$ut('quickAccessButtons')"
-      placement="right"
-      :enterable="false"
-    >
-      <i class="u-icon-rhombus" />
-    </el-tooltip>
+
+    <i
+      :title="$ut('quickAccessButtons')"
+      class="u-icon-rhombus"
+    />
 
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item

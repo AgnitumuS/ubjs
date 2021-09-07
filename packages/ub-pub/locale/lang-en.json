@@ -77,6 +77,7 @@
   "Select device": "Select device",
   "Select key media": "Select key media",
 
+  "serverIsBusy": "The server is currently unavailable. Please try again later or contact your system administrator",
   "unknownError": "Unknown error. Please, contact your system administrator.",
   "recordNotExistsOrDontHaveRights": "Record not exists or you don't have access rights",
   "msgInvalidCertAuth": "Invalid certificate or private key",

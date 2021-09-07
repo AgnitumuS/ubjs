@@ -14,7 +14,34 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.23] - 2021-09-02
+## [5.20.22] - 2021-08-31
+### Changed
+- ubm_query navigation shortcut now shows "Type" column
+
+## [5.20.21] - 2021-08-18
+### Added
+ - form implementation for the `ubm_sysdictionary` entity to validate ubql for JSON
+ - migration to fix `ubm_query.type` for old entries mapped from the ubm_sysdictionary
+
+### Changed
+ - make the form for the `ubm_query` similar with standard UAutoForm
+
+### Fixed
+ - fix typo in the ru localization for the system dictionaries shortcut
+
+## [5.20.20] - 2021-08-09
+## [5.20.19] - 2021-08-04
+### Added
+ - Dutch (nl) localization
+
+### Fixed
  - prevent override adm_desktop defined by UDA model during migration
+ - localization of the shortcut for `ubm_sysdictionary` entity
+ - deny direct modification of UNITY `ubm_query`
+ - disabling of editing `ubm_query.ubql` on the form
+ - displaying of the control for editing of `ubm_sysdictionary.ubql` - remove `defaultView: false` for this attribute
 
 ## [5.20.18] - 2021-07-18
 ### Added
@@ -356,4 +383,3 @@ This change is required to prevent massive CLOB fetching (cmdData attribute)
 
 ### Fixed
 - added unique index for instanceID + admSubjectID for ubm_desktop_adm.meta & ubm_navshortcut_adm.meta 
-

@@ -1,16 +1,12 @@
 <template>
-  <el-tooltip
-    :content="$ut('UFile.removeButtonTooltip')"
-    :enterable="false"
-  >
-    <u-button
-      color="primary"
-      icon="u-icon-delete"
-      appearance="inverse"
-      :disabled="isDisabled"
-      @click="removeFile"
-    />
-  </el-tooltip>
+  <u-button
+    :title="$ut('UFile.removeButtonTooltip')"
+    color="primary"
+    icon="u-icon-delete"
+    appearance="inverse"
+    :disabled="isDisabled"
+    @click="removeFile"
+  />
 </template>
 
 <script>

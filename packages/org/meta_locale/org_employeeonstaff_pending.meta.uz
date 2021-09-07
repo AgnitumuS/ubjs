@@ -1,0 +1,18 @@
+{
+  "caption": "Kechiktirilgan uchrashuvlar",
+  "description": "Kechiktirilgan uchrashuvlar",
+  "attributes": [
+    {
+      "name": "emponstaffID",
+      "caption": "Maqsad"
+    },
+    {
+      "name": "startDate",
+      "caption": "Boshlamoq"
+    },
+    {
+      "name": "endDate",
+      "caption": "Tugatmoq"
+    }
+  ]
+}

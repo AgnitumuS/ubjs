@@ -1,0 +1,19 @@
+{
+  "externalOrganizations_title": "Tashkilotlar",
+  "department_title": "Tashqi tashkil etish bo'limi",
+  "employee_title": "Tashqi tashkilotning xodimi",
+  "physPerson_title": "Phis. shaxs",
+  "locality_title": "Joylashuv",
+  "contact_title": "Aloqa",
+  "profession_title": "Kasb",
+  "region_title": "Mintaqa",
+  "ClassifTypePanelClassifiersTitle": "Tasniflash qiymatlari",
+  "classifier": {
+      "caption": "Tasniflovchi",
+      "description": "Tasniflagich yozuvi"
+  },
+  "classifieritem": {
+      "caption": "Tasniflovchi element",
+      "description": "Tasniflagich elementlarining yozuvi"
+  }
+}

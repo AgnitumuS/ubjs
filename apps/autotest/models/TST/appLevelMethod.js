@@ -5,6 +5,7 @@
  */
 const fs = require('fs')
 const assert = require('assert')
+const http = require('http')
 const UB = require('@unitybase/ub')
 const App = UB.App
 const Session = UB.Session
@@ -363,3 +364,43 @@ function bodyParse (req, resp) {
   resp.writeEnd(j)
 }
 App.registerEndpoint('bodyParse', bodyParse, false)
+
+/**
+ * Verify throw / catch return user defined statusCode
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function verifyThrowCatch (req, resp) {
+  let catched = false
+  try {
+    UB.DataStore('tst_service').run('handledExceptionTest', {
+      execParams: {}
+    })
+  } catch (e) {
+    catched = true
+    console.error(e.message)
+  }
+  resp.statusCode = 201
+  resp.writeHead('Content-Type: application/json; charset=UTF-8')
+  resp.writeEnd({ catched })
+}
+App.registerEndpoint('verifyThrowCatch', verifyThrowCatch, true)
+
+/**
+ * Search in google
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function googleSearch (req, resp) {
+  const q = req.parsedParameters.q
+  const customURI = req.parsedParameters.customURI
+  const d = Date.now()
+  const answer = http.get('https://www.google.com/search?q=' + q)
+  const body = answer.read('utf-8')
+  resp.statusCode = answer.statusCode
+  resp.writeHead('Content-Type: text/html')
+  resp.writeEnd(body)
+  // custom metric (without www) for test purpose only - http module automatically adds a www.google.com into observation
+  App.httpCallObserve((Date.now() - d) / 1000, customURI, answer.statusCode)
+}
+App.registerEndpoint('googleSearch', googleSearch, false)
