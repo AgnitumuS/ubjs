@@ -102,7 +102,7 @@ const instance = new Vue({
         })
       }
 
-      await this.subscribe(ENUM_ENTITY, ['eGroup', 'code', 'name'])
+      await this.subscribe(ENUM_ENTITY, ['eGroup', 'code', 'name', 'sortOrder'])
     },
 
     async subscribe (entity, attrs = []) {
@@ -197,6 +197,17 @@ const instance = new Vue({
           return null
         }
       }
+    },
+
+    getMany (entity, predicate) {
+      if (typeof predicate !== 'object' || predicate === null) {
+        return []
+      }
+
+      const pKeys = Object.keys(predicate)
+      return this.entities[entity].data.filter(
+        r => pKeys.every(k => r[k] === predicate[k])
+      )
     }
   }
 })
@@ -278,6 +289,16 @@ module.exports = {
    */
   getEnum (eGroup, code) {
     return instance.get(ENUM_ENTITY, { eGroup, code })
+  },
+  /**
+   * Get all enum items enum by eGroup.
+   *
+   * @param {string} eGroup
+   * @returns {array}
+   */
+  getEnumItems (eGroup) {
+    const items = instance.getMany(ENUM_ENTITY, { eGroup })
+    return _.orderBy(items, 'sortOrder').map(item => ({ code: item.code, name: item.name }))
   }
 }
 
