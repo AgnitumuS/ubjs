@@ -1,7 +1,7 @@
 {
   "doYouWantLogoutFromExternalServer": "End the session at the authorization center?",
   "emptyBarcodeSettings": "You must set barcode settings, before use it.",
-  "setScannerSettings": "You must set scanner settings, before use it. Scanner settings are <a href=\"/\" onclick=\"{0} return false;\">here</a>.",
+  "setScannerSettings": "Scanner is not configured. <a href=\"/\" onclick=\"{0} return false;\">Press here</a> to setup a scanner",
   "showResultConfig": "Show configuration",
   "numberOfSignificantDigits": "The number of significant digits exceeds the allowable",
   "yearShort": "y.",

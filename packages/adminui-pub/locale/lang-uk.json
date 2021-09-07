@@ -1,7 +1,7 @@
 {
   "doYouWantLogoutFromExternalServer": "Завершити сесію в засвідчувальному центрі",
   "emptyBarcodeSettings": "Перед першим використанням друку штрих-коду, необхідно його налаштувати.",
-  "setScannerSettings": "Перед першим використанням сканера, необхідно його налаштувати. Налаштувати можна <a href=\"/\" onclick=\"{0} return false;\">тут</a>.",
+  "setScannerSettings": "Сканер не налаштовано. <a href=\"/\" onclick=\"{0} return false;\">Натисніть тут</a> для запуску налаштувань",
   "showResultConfig": "Перегляд конфигураії",
   "numberOfSignificantDigits": "Кількість значущих знаків перевищує припустиме",
   "yearShort": "р.",
