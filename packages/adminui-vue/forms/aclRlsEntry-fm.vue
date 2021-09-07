@@ -60,17 +60,9 @@ const { Form } = require('@unitybase/adminui-vue')
 const { Repository, connection } = require('@unitybase/ub-pub')
 const { mapMutations, mapActions, mapGetters } = require('vuex')
 const { UBDomain } = require('@unitybase/cs-shared')
+const _ = require('lodash')
 
 const ACL_RLS_COLLECTION = 'aclRlsEntries'
-
-async function loadOrdersByEnumGroup (enumGroup) {
-  const entries = await Repository('ubm_enum')
-    .attrs('sortOrder', 'code', 'eGroup')
-    .where('eGroup', '=', enumGroup)
-    .select()
-
-  return Object.fromEntries(entries.map(({ code, sortOrder }) => [code, sortOrder]))
-}
 
 /**
  * The form loads entry of master entity for which user configures aclRls access.
@@ -121,8 +113,7 @@ export default {
   data () {
     return {
       selectedEntity: null,
-      aclRlsEntries: null,
-      mappedEntitiesForAclAttrs: {}
+      aclRlsEntries: null
     }
   },
 
@@ -133,6 +124,14 @@ export default {
 
     collectionItems () {
       return this.$store.state.collections[ACL_RLS_COLLECTION].items.map(item => item.data)
+    },
+
+    mappedEntitiesForAclAttrs () {
+      return Object.fromEntries(
+        this.aclAttributes.map(({ associatedEntity }) => {
+          return [associatedEntity, this.getSortedMappedEntities(associatedEntity)]
+        })
+      )
     },
 
     mappedEntitiesBySelectedEntity () {
@@ -154,9 +153,7 @@ export default {
     }
   },
 
-  async mounted () {
-    await this.loadMappedEntitesForUnityOnes()
-
+  mounted () {
     this.selectedEntity = this.aclAttributes[0].associatedEntity
   },
 
@@ -169,22 +166,11 @@ export default {
       'addCollectionItemWithoutDefaultValues'
     ]),
 
-    async loadMappedEntitesForUnityOnes () {
-      const mappedEntitiesDict = {}
+    getSortedMappedEntities (unityEntity) {
+      const entities = connection.domain
+        .filterEntities(entityDef => entityDef.mixin('unity')?.entity === unityEntity)
+        .map(entityDef => entityDef.code)
 
-      for (const { associatedEntity } of this.aclAttributes) {
-        const mappedEntities = connection.domain
-          .filterEntities(entityDef => entityDef.mixin('unity')?.entity === associatedEntity)
-          .map(entityDef => entityDef.code)
-        await this.sortMappedEntities(mappedEntities, associatedEntity)
-
-        mappedEntitiesDict[associatedEntity] = mappedEntities
-      }
-
-      this.mappedEntitiesForAclAttrs = mappedEntitiesDict
-    },
-
-    async sortMappedEntities (entities, associatedEntity) {
       const getUnityDefaults = entity => connection.domain.get(entity).mixin('unity').defaults
       const getUnityDefaultsKey = entity => Object.keys(getUnityDefaults(entity))
       const arraysIntersaction = (a1, a2) => a1.filter(key => a2.includes(key))
@@ -203,23 +189,17 @@ export default {
       // set order of controls for unity entities based on values of ONE common attribute
       const [orderAttrName] = commonAttributes
 
-      const getComparator = (reflect = v => v) => (e1, e2) => {
-        const order1 = reflect(getUnityDefaults(e1)[orderAttrName])
-        const order2 = reflect(getUnityDefaults(e2)[orderAttrName])
-        if (!order1 || !order2) {
-          return 0
-        }
-        return order1 > order2 ? 1 : -1
-      }
-
-      const orderAttrDef = connection.domain.get(associatedEntity).attributes[orderAttrName]
+      const orderAttrDef = connection.domain.get(unityEntity).attributes[orderAttrName]
       const isEnumDataType = orderAttrDef.dataType === UBDomain.ubDataTypes.Enum
 
       if (isEnumDataType) { // compare by sortOrder of enums
-        const entries = await loadOrdersByEnumGroup(orderAttrDef.enumGroup)
-        entities.sort(getComparator(code => entries[code]))
+        const valuesOrder = this.$lookups.getEnumItems(orderAttrDef.enumGroup).map(item => item.code)
+        return _.sortBy(entities, [entity => {
+          const sortValue = getUnityDefaults(entity)[orderAttrName]
+          return valuesOrder.indexOf(sortValue)
+        }])
       } else { // compare by chars
-        entities.sort(getComparator())
+        return _.sortBy(entities, [entity => getUnityDefaults(entity)[orderAttrName]])
       }
     },
 
