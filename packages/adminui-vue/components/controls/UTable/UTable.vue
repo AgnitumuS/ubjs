@@ -187,10 +187,25 @@ export default {
       }, {})
     }
   },
+  watch: {
+    items: async function () {
+      await this.$nextTick()
+      this.setTitle()
+    }
+  },
 
   methods: {
     getAlignClass (align = 'left') {
       return `u-table__cell__align-${align}`
+    },
+    setTitle () {
+      const cells = this.$el.querySelectorAll('.u-table__cell-container:not(title)')
+      if (!cells) return
+      cells.forEach(cell => {
+        if (cell.offsetHeight < cell.scrollHeight || cell.offsetWidth < cell.scrollWidth) {
+          cell.setAttribute('title', cell.innerText)
+        }
+      })
     }
   }
 }
