@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    ]
    ```
    - `UTable`: set title for cell with long text and three dots in the end  [Task](https://dev.intecracy.com/agile/browse/UBDF-14278)
-
+![View result](./changeLogImgs/UtableTooltip.png)
 
 ### Changed
 `USelectMultiple`: change style for dropdown. Fixed the position of the buttons "More", "Template" and other.
