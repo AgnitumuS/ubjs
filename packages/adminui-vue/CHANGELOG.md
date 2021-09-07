@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
      }
    ]
    ```
+   - `UTable`: set title for cell with long text and three dots in the end
 
 
 ### Changed
