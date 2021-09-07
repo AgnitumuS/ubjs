@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
      }
    ]
    ```
-   - `UTable`: set title for cell with long text and three dots in the end
+   - `UTable`: set title for cell with long text and three dots in the end  [Task](https://dev.intecracy.com/agile/browse/UBDF-14278)
 
 
 ### Changed
