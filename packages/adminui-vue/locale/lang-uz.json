@@ -176,6 +176,12 @@
   "select": {
       "valueIsUndefined": "Qiymat \"{0}\" sub'ektda topilmadi \"{1}\""
   },
+
+  "aclRlsInfo": {
+    "subject": "Mavzu",
+    "name": "Ism"
+  },
+
   "UFile": {
       "webcam": {
           "emptyPicturePlaceholder": "Sizning rasmingiz",
@@ -253,6 +259,7 @@
           "moreButton": "Ko'proq"
       }
   },
+
   "UTable": {
       "noData": "Ma'lumot yo'q"
   }

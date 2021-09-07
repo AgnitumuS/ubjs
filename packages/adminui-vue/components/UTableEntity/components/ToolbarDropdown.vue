@@ -131,13 +131,10 @@ export default {
       'canDelete',
       'canAudit',
       'hasSelectedRow',
-      'entityName',
-      'currentRepository',
       'hasDataHistoryMixin',
       'canCreateNewVersion'
     ]),
     ...mapState([
-      'items',
       'selectedRowId',
       'loading'
     ])

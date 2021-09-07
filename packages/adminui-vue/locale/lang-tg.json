@@ -228,6 +228,11 @@
     "removeMessageNotification": "Сообщение успешно удалено"
   },
 
+  "aclRlsInfo": {
+    "subject": "Мавзӯъ",
+    "name": "Ном"
+  },
+
   "UFile": {
     "webcam": {
       "webcamLabel": "Камера",

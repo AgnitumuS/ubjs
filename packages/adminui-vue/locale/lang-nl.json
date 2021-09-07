@@ -231,6 +231,11 @@
     "removeMessageNotification": "Bericht succesvol verwijderd"
   },
 
+  "aclRlsInfo": {
+    "subject": "Onderwerp",
+    "name": "Naam"
+  },
+
   "UFile": {
     "webcam": {
       "webcamLabel": "Webcam",

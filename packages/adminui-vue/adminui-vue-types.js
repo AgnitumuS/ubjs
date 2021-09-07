@@ -60,6 +60,7 @@
  * @property {string} label Column label which shows in header cells
  * @property {UBEntityAttribute} attribute Meta attribute info from UB entity schema
  * @property {string} [valueAttribute] Whether isLookup and has current attribute value in fieldList.
+ * @property {boolean} [toValidate] To check this column in the `validateFieldList` method
  */
 
 /**

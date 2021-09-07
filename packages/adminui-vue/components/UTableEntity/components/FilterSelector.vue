@@ -1,5 +1,8 @@
 <template>
-  <u-dropdown ref="dropdown">
+  <u-dropdown
+    v-if="filterColumns.length > 0"
+    ref="dropdown"
+  >
     <u-button
       :title="$ut('table.filter.list.title')"
       appearance="inverse"
@@ -49,8 +52,8 @@
 
         <keep-alive>
           <component
-            v-if="selectedColumn.filters && selectedColumn.filters[condition]"
             :is="selectedColumn.filters[condition].template"
+            v-if="selectedColumn.filters && selectedColumn.filters[condition]"
             :column="selectedColumn"
             @search="throttledApplyFilter"
           />

@@ -33,6 +33,7 @@
     />
 
     <u-dropdown
+      v-if="showDropdown"
       class="u-toolbar__settings-button"
       placement="bottom-end"
     >
@@ -85,7 +86,7 @@
 </template>
 
 <script>
-/* global $App */
+/* global $App, _ */
 const { mapState, mapGetters, mapActions } = require('vuex')
 const { mapInstanceFields } = require('../../utils/Form/helpers')
 
@@ -95,7 +96,14 @@ const { mapInstanceFields } = require('../../utils/Form/helpers')
  */
 export default {
   name: 'UToolbar',
-  inject: ['$formServices', 'formCode', 'entitySchema', 'fieldList', 'entity'],
+
+  inject: [
+    '$formServices',
+    'formCode',
+    'entitySchema',
+    'fieldList',
+    'entity'
+  ],
 
   props: {
     /**
@@ -112,6 +120,14 @@ export default {
     toolbarButtons: {
       type: Array,
       default: () => []
+    },
+
+    /**
+     * To show the dropdown with its buttons
+     */
+    showDropdown: {
+      type: Boolean,
+      default: () => true
     }
   },
 
@@ -209,7 +225,7 @@ export default {
 
       if (this.entitySchema.hasMixin('aclRls')) {
         const mixins = this.entitySchema.mixins
-        const aclEntityName = mixins && mixins.aclRls && mixins.aclRls.useUnityName
+        const aclEntityName = mixins?.aclRls?.useUnityName
           ? mixins.unity.entity + '_acl'
           : this.entitySchema.name + '_acl'
         buttons.push({
@@ -371,29 +387,103 @@ export default {
     },
 
     showAccessRights (aclEntityName) {
-      const aclFields = []
-      const mixin = this.entitySchema.mixins.aclRls
-      mixin.onEntities.forEach(attrEntity => {
-        const e = $App.domainInfo.get(attrEntity)
-        aclFields.push(e.sqlAlias + 'ID' + (e.descriptionAttribute ? '.' + e.descriptionAttribute : ''))
-      })
+      const { domain } = this.$UB.connection
       const instanceID = this.$store.state.data.ID
+      const aclMixin = this.entitySchema.mixins.aclRls
+      const aclAttributes = domain.get(aclEntityName).filterAttribute(attrDef => {
+        return attrDef.associatedEntity && aclMixin.onEntities.includes(attrDef.associatedEntity)
+      })
+      const aclFieldList = aclAttributes.flatMap(attrDef => {
+        const associatedEntityInfo = domain.get(attrDef.associatedEntity)
+        const descriptionAttribute = associatedEntityInfo.getDescriptionAttribute()
+        const attrs = [attrDef.code, `${attrDef.code}.${descriptionAttribute}`]
+        if (associatedEntityInfo.attr('mi_unityEntity')) {
+          attrs.push(`${attrDef.code}.mi_unityEntity`)
+        }
+        return attrs
+      })
+
+      const getAssignedAclAttrInfoForEntry = row => {
+        const aclAttr = Object.keys(row).find(key => key !== 'valueID' && row[key] === row.valueID)
+        return aclAttributes.find(attr => attr.code === aclAttr)
+      }
+
+      const formProps = {
+        title: `${this.$UB.i18n('accessRight')} (${this.$UB.i18n(this.entity)})`,
+        instanceID,
+        entity: this.entitySchema.code,
+        formCode: 'aclRlsEntry',
+        props: {
+          aclEntityName,
+          instanceID,
+          aclAttributes
+        }
+      }
+
       $App.doCommand({
         renderer: 'vue',
         isModal: true,
         title: `${this.$UB.i18n('accessRight')} (${this.$UB.i18n(this.entity)})`,
         cmdType: 'showList',
         cmdData: {
+          withPagination: false,
+
           repository: () => {
             return this.$UB.Repository(aclEntityName)
-              .attrs(aclFields)
-              .where('[instanceID]', '=', instanceID)
+              .attrs(...aclFieldList, 'valueID')
+              .where('instanceID', '=', instanceID)
           },
-          buildAddNewConfig (cfg) {
-            cfg.parentContext = { instanceID }
-            return cfg
+
+          buildAddNewConfig: cfg => {
+            return {
+              ...cfg,
+              ...formProps
+            }
           },
-          columns: aclFields
+
+          buildEditConfig: cfg => {
+            return {
+              ...cfg,
+              ...formProps
+            }
+          },
+
+          columns: [
+            {
+              id: 'subject',
+              label: this.$ut('aclRlsInfo.subject'),
+              filterable: false,
+              sortable: false,
+              toValidate: false,
+              format: ({ row }) => {
+                const aclAttr = getAssignedAclAttrInfoForEntry(row)
+                const unityEntityAttr = `${aclAttr.code}.mi_unityEntity`
+                const withUnity = aclFieldList.includes(unityEntityAttr)
+                const associatedEntity = withUnity ? row[unityEntityAttr] : aclAttr.associatedEntity
+                return this.$ut(associatedEntity)
+              }
+            },
+
+            {
+              id: 'name',
+              label: this.$ut('aclRlsInfo.name'),
+              filterable: false,
+              sortable: false,
+              toValidate: false,
+              format: ({ row }) => {
+                const attr = getAssignedAclAttrInfoForEntry(row)
+                const descriptionAttribute = domain.get(attr.associatedEntity).getDescriptionAttribute()
+                return row[`${attr.code}.${descriptionAttribute}`]
+              }
+            }
+          ],
+
+          hideActions: [
+            'export',
+            'copy',
+            'audit',
+            'summary'
+          ]
         }
       })
     },

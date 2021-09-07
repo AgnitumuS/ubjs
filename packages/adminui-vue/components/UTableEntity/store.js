@@ -120,7 +120,7 @@ module.exports = (instance) => ({
     },
 
     showAddNew () {
-      return !instance.hideActions || !instance.hideActions.includes('addNew')
+      return !instance.hideActions.includes('addNew')
     },
 
     canAddNew (state, getters) {
@@ -128,9 +128,7 @@ module.exports = (instance) => ({
     },
 
     showCopy () {
-      return !instance.hideActions
-        ? true
-        : !instance.hideActions.includes('copy') && !instance.hideActions.includes('addNewByCurrent')
+      return !instance.hideActions.includes('copy') && !instance.hideActions.includes('addNewByCurrent')
     },
 
     canCopy (state, getters) {
@@ -138,9 +136,7 @@ module.exports = (instance) => ({
     },
 
     showDelete () {
-      return !instance.hideActions
-        ? true
-        : !instance.hideActions.includes('delete') && !instance.hideActions.includes('del')
+      return !instance.hideActions.includes('delete') && !instance.hideActions.includes('del')
     },
 
     canDelete (state, getters) {
@@ -150,17 +146,15 @@ module.exports = (instance) => ({
     },
 
     showAudit () {
-      return !instance.hideActions || !instance.hideActions.includes('audit')
+      return !instance.hideActions.includes('audit')
     },
 
     showCopyLink () {
-      return !instance.hideActions
-        ? true
-        : !instance.hideActions.includes('link') && !instance.hideActions.includes('itemLink')
+      return !instance.hideActions.includes('link') && !instance.hideActions.includes('itemLink')
     },
 
     showViewMode () {
-      return !instance.hideActions || !instance.hideActions.includes('viewMode')
+      return !instance.hideActions.includes('viewMode')
     },
 
     canAudit (state, getters) {
@@ -171,7 +165,7 @@ module.exports = (instance) => ({
     },
 
     showEdit () {
-      return !instance.hideActions || !instance.hideActions.includes('edit')
+      return !instance.hideActions.includes('edit')
     },
 
     canEdit (state, getters) {
@@ -179,11 +173,11 @@ module.exports = (instance) => ({
     },
 
     showVersions () {
-      return !instance.hideActions || !instance.hideActions.includes('showVersions')
+      return !instance.hideActions.includes('showVersions')
     },
 
     showCreateNewVersion () {
-      return !instance.hideActions || !instance.hideActions.includes('newVersion')
+      return !instance.hideActions.includes('newVersion')
     },
 
     canCreateNewVersion (state, getters) {
@@ -196,11 +190,11 @@ module.exports = (instance) => ({
     },
 
     showSummary () {
-      return !instance.hideActions || !instance.hideActions.includes('summary')
+      return !instance.hideActions.includes('summary')
     },
 
     showExport () {
-      return !instance.hideActions || !instance.hideActions.includes('export')
+      return !instance.hideActions.includes('export')
     },
 
     columns () {
