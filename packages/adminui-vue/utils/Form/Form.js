@@ -69,6 +69,7 @@ class UForm {
    * @param {object} [cfg.target] Optional target. Used for render form into form
    * @param {boolean} cfg.isCopy Required isCopy. Used for create new record with data of existing record
    * @param {string} [cfg.titleTooltip] Form title tooltip
+   * @param {Function} [cfg.onClose] Callback function from ext-based parent control
    */
   constructor ({
     component,
@@ -86,7 +87,8 @@ class UForm {
     target,
     isCopy,
     openInBackgroundTab,
-    titleTooltip
+    titleTooltip,
+    onClose
   }) {
     this.component = component || rootComponent
     this.props = props
@@ -124,6 +126,8 @@ class UForm {
 
     this.storeInitialized = false
     this.canValidationInit = false
+
+    this.onClose = onClose
   }
 
   /**
@@ -294,6 +298,7 @@ class UForm {
         titleTooltip: this.titleTooltip,
         modalClass: this.modalClass,
         modalWidth: this.modalWidth,
+        onClose: this.onClose,
         provide: {
           formCode: this.formCode,
           entity: this.entity,
@@ -305,10 +310,10 @@ class UForm {
       if (!this.tabId) {
         this.tabId = this.entity
           ? $App.generateTabId({ // TODO portal: $App.generateTabId -> portal.generateTabId
-              entity: this.entity,
-              instanceID: this.instanceID,
-              formCode: this.formCode
-            })
+            entity: this.entity,
+            instanceID: this.instanceID,
+            formCode: this.formCode
+          })
           : undefined
       }
       mountTab({
@@ -321,6 +326,7 @@ class UForm {
         tabId: this.tabId,
         uiTag: this.uiTag,
         openInBackgroundTab: this.openInBackgroundTab,
+        onClose: this.onClose,
         provide: {
           formCode: this.formCode,
           entity: this.entity,
@@ -337,6 +343,7 @@ class UForm {
         title: this.title,
         titleTooltip: this.titleTooltip,
         target: this.target,
+        onClose: this.onClose,
         provide: {
           formCode: this.formCode,
           entity: this.entity,

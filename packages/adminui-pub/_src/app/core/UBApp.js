@@ -658,7 +658,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
 
       return scanner.getDefaultSettings().then(function (defaultParams) {
         const scanSettings = _.merge(defaultParams, config || {})
-        if (!scanSettings) {
+        if (!scanSettings?.UBScan?.ScanSettings?.length) {
           throw new UB.UBError(UB.format(UB.i18n('setScannerSettings'), '$App.scannerSettings(); '))
         }
 
@@ -686,7 +686,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
         }
 
         statusWindow.setStatus(UB.i18n('doStartScan'))
-        scanner.lastScanedFormat = scanSettings.UBScan.OutputFormat
+        scanner.lastScanedFormat = scanSettings.UBScan?.OutputFormat
         return scanner.startScan(scanSettings)
       }).then(onScan, null, onNotify)
         .finally(function () {

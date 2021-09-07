@@ -46,10 +46,14 @@
                   >
                     <component
                       :is="getCellTemplate(column)"
+                      v-if="getCellTemplate(column)"
                       :column="column"
                       :row="row"
                       :value="row[column.id]"
                     />
+                    <div v-else>
+                      {{ formatValue({ value: row[column.id], column, row }) }}
+                    </div>
                   </slot>
                 </slot>
               </template>
@@ -61,11 +65,18 @@
               >
                 <component
                   :is="getCellTemplate(column)"
+                  v-if="getCellTemplate(column)"
                   class="u-card-row__value"
                   :column="column"
                   :row="row"
                   :value="row[column.id]"
                 />
+                <div
+                  v-else
+                  class="u-card-row__value"
+                >
+                  {{ formatValue({ value: row[column.id], column, row }) }}
+                </div>
               </slot>
             </el-tooltip>
           </div>
@@ -122,7 +133,7 @@ export default {
       if (typeof column.template === 'function') {
         return column.template()
       } else {
-        const dataType = column.attribute && column.attribute.dataType
+        const dataType = column.attribute?.dataType
         return TypeProvider.get(dataType).template
       }
     }

@@ -216,7 +216,7 @@
     "valueIsUndefined": "Значення \"{0}\" не знайдено в сутності \"{1}\"",
     "dictionaryAdding": "Новий запис",
     "dictionaryAddingChoices": "Елемент <strong>{text}</strong> не знайдено в довіднику '{entity}'. Оберіть: <ul><li><strong>Продовжити</strong> щоб обрати інший елемент</li> <li><strong>Додати</strong> щоб додати новий запис з текстом '{text}'</li> <li><strong>Редагувати</strong> для визначення додаткових реквізитів</li> </ul>",
-    "recordAddedSuccessfully": "Створено новий елемент",
+    "recordAddedSuccessfully": "Створено новий елемент"
   },
 
   "tableRegister": {
@@ -229,6 +229,11 @@
     "copyNotification": "Повідомлення скопійовано в буфер обміну",
     "removeMessageDialog": "Видалити повідомлення \"{0}\"",
     "removeMessageNotification": "Повідомлення успішно видалено"
+  },
+
+  "aclRlsInfo": {
+    "subject": "Суб'єкт",
+    "name": "Найменування"
   },
 
   "UFile": {

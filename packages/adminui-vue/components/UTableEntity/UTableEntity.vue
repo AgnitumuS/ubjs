@@ -35,18 +35,34 @@ export default {
     /**
      * Function which return UB.ClientRepository or UBQL object
      */
-    repository: [Function, Object],
+    repository: {
+      type: [Function, Object],
+      required: false,
+      default: undefined
+    },
 
     /**
      * Name of entity. If repository is set entityName will be ignored
      */
-    entityName: String,
+    entityName: {
+      type: String,
+      required: false,
+      default () {
+        return undefined
+      }
+    },
 
     /**
      * Array of columns settings where each item can be string or object.
      * For detail info about column object look JSDoc type {UTableColumn}
      */
-    columns: Array,
+    columns: {
+      type: Array,
+      required: false,
+      default () {
+        return undefined
+      }
+    },
 
     /**
      * Whether to use pagination for table
@@ -78,7 +94,13 @@ export default {
      * `addNewByCurrent` for `copy`,
      * `itemLink` for `link`
      */
-    hideActions: Array,
+    hideActions: {
+      type: Array,
+      required: false,
+      default () {
+        return []
+      }
+    },
 
     /**
      * Overrides showDictionary action config.
@@ -156,33 +178,30 @@ export default {
       if (this.columns) {
         return this.columns.map(column => {
           if (typeof column === 'string') {
-            return this.buildColumn(/** @type UTableColumn */{ id: column })
-          } else {
-            return this.buildColumn(column)
+            return this.buildColumn(/** @type {UTableColumn} */{ id: column })
           }
+          return this.buildColumn(column)
         })
-      } else {
-        return this.getRepository().fieldList
-          .filter(attrCode => {
-            const attr = this.schema.getEntityAttribute(attrCode, 0)
-            return attr && this.isAttributeViewableByDefault(attr)
-          })
-          .map(attrCode => this.buildColumn(/** @type UTableColumn */{ id: attrCode }))
       }
+
+      return this.getRepository().fieldList
+        .filter(attrCode => {
+          const attr = this.schema.getEntityAttribute(attrCode, 0)
+          return attr && this.isAttributeViewableByDefault(attr)
+        })
+        .map(attrCode => this.buildColumn(/** @type {UTableColumn} */{ id: attrCode }))
     },
 
     getCardColumns () {
       if (this.cardColumns.length > 0) {
         return this.cardColumns.map(column => {
           if (typeof column === 'string') {
-            return this.buildColumn(/** @type UTableColumn */{ id: column })
-          } else {
-            return this.buildColumn(column)
+            return this.buildColumn(/** @type {UTableColumn} */{ id: column })
           }
+          return this.buildColumn(column)
         })
-      } else {
-        return this.getColumns
       }
+      return this.getColumns
     },
 
     viewMode: {
@@ -303,6 +322,7 @@ export default {
         filters
       }
       if (typeof resultColumn.format === 'string') {
+        // eslint-disable-next-line no-new-func
         resultColumn.format = new Function('{value, column, row}', resultColumn.format)
       }
 
@@ -316,8 +336,11 @@ export default {
       const repoFieldList = this.getRepository().fieldList
       const fieldsWithError = this.getColumns
         .filter(column => {
-          return !repoFieldList.includes(column.id) && // is custom
-                 !this.$scopedSlots[column.id] // dont have slot
+          return (
+            column.toValidate !== false &&
+            !repoFieldList.includes(column.id) && // is custom
+            !this.$scopedSlots[column.id] // dont have slot
+          )
         })
         .map(column => column.id)
 

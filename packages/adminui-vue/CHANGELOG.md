@@ -6,18 +6,68 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `addCollectionItemWithoutDefaultValues` - new `Vuex` action - such as `addCollectionItem` but does not fetch default params
+ - `UToolbar`: `showDropdown` prop that allows preventing rendering of the dropdown menu
+ - `toValidate` property to the `UTableColumn`, which allows skipping checking the column in the `validateFieldList` method - useful for custom unfamiliar columns
+ - `$lookups.getEnumItems` method returns array of `{code: string, name: string}` enum items ordered by sort order for
+   the given `eGroup`, for example: `$lookups.getEnumItems('ORG_UNITTYPE')` returns:
+   ```json
+   [
+     {
+       "code": "STAFF",
+       "name": "Staff unit"
+     },
+     {
+       "code": "ORG",
+       "name": "Organization"
+     },
+     {
+       "code": "DEP",
+       "name": "Department"
+     },
+     {
+       "code": "EXECGROUP",
+       "name": "Execution group"
+     }
+   ]
+   ```
+ - `UTable`: set title for cell with long text and three dots in the end  [UBDF-14278)
  - `UFile`: added preview mode for `html` (text/html) and `javascript`(application/def, application/javascript) documents 
  - `UFile`: added `readonly` prop
  - `UCodeMirror`: added `src` property to preview script content in read-only mode
  - `UCodeMirror` - `requestFullscreen()` method added - used by UFile to expand component to full screen
 
 ### Changed
+ - `UTableEntity`: now show filter control if there are no available columns for filtration
+ - improved the table for displaying and the form for adding and management entries of the `aclRls` mixin for some entity
+ - `USelectMultiple`: change style for dropdown. Fixed the position of the buttons "More", "Template" and other.
+![View result](./changeLogImgs/USelectMultipleDropdown.png)
+[Task](https://dev.intecracy.com/agile/browse/UBDF-8423)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `UCardView`: rendering of values if the cell template is not defined for the related column
+ - `UFormRow`: fix very long tags in `USelectMultiple`. Now, tags is flexible, has max-width: 100% from parent and don't come out beyound the viewport
+ - `UDatePicker`: removed hard width. Datepicker width is flexible between 150px to 220px
+
+## [5.20.22] - 2021-09-02
+### Added
+ - `Form/mount`: added param `onClose`, this is a callback function that, if defined, is called
+ from the `beforeDestroy` lifecycle hook
+
+## [5.20.21] - 2021-08-31
+### Changed
+ - Dutch localization correction
+
+### Fixed
+ - `UBaseInput`, type=number: set value as a number on `input` event (type every character) instead of on `change` event,
+ where value may be a string
+ - `UDropdown`: fixed placement of dropdown on first click, prevented from expanding outside of viewport [UBDF-13695]
+ - `USelectEntity`: fixed adding new row in `allowDictionaryAdding` mode in case user type text quickly (`blur` event handler fixed) 
+ - `USelectEntity`: removed `leaveInput` on `@keydown.native.tab`, because now it is called on `blur` event
 
 ## [5.20.20] - 2021-08-18
 ### Added
@@ -2233,7 +2283,7 @@ $App.doCommand({
       ```
    - refactorings to simplify code: inline `initCollections` helper method, no need for it
      to be in `helpers`, add `enrichFieldList`, because in some places we need to make sure
-     some system attributes are added to requests, such as `ID` or `mi_modifyDate`;
+     some system attributes are added to request, such as `ID` or `mi_modifyDate`;
      inline `buildCollectionRequests` straight into `save`.
    - improve jsdocs
    - expose `buildDeleteRequest` in `helpers` and remove `buildCollectionRequests` from helpers.

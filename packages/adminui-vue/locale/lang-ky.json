@@ -231,6 +231,11 @@
     "removeMessageNotification": "Сообщение успешно удалено"
   },
 
+  "aclRlsInfo": {
+    "subject": "Субъект",
+    "name": "Наименование"
+  },
+
   "UFile": {
     "webcam": {
       "webcamLabel": "Камера",

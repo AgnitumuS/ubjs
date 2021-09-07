@@ -8,11 +8,12 @@ require('./Formatter')
 require('./csvFormatter/CsvFormatter')
 require('./htmlFormatter/HtmlFormatter')
 require('./xlsxFormatter/XlsxFormatter')
+require('./excelFormatter/ExcelFormatter')
+require('./Base64')
 Ext.define('Ext.ux.exporter.Exporter', {
   uses: [
     'Ext.ux.exporter.Base64',
     'Ext.ux.exporter.csvFormatter.CsvFormatter',
-    'Ext.ux.exporter.wikiFormatter.WikiFormatter',
     'Ext.ux.exporter.excelFormatter.ExcelFormatter',
     'Ext.ux.exporter.htmlFormatter.HtmlFormatter',
     'Ext.ux.exporter.xlsxFormatter.XlsxFormatter'

@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - MDB blob store: return correct content type for just uploaded dirty items
 
+## [5.20.14] - 2021-08-31
 ## [5.20.13] - 2021-08-18
 ### Added
  - under Linux BLOB stores operation is measured using prometheus `unitybase_fs_operation_duration_seconds` histogram

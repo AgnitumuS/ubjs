@@ -8,13 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- ubm_query navigation shortcut now shows "Type" column
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.20.23] - 2021-09-02
+## [5.20.22] - 2021-08-31
+### Changed
+- ubm_query navigation shortcut now shows "Type" column
 
 ## [5.20.21] - 2021-08-18
 ### Added

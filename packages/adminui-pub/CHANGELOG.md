@@ -14,6 +14,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `$App.scan()` will show an error with scan settings requirement instead of "unknown error" in case scanner
+ not configured 
+
+## [5.20.23] - 2021-09-02
+### Added
+ - added import of:
+   - `UB.view.StatusWindow`
+   - `UB.ux.tree.Column`
+   - `Ext.ux.exporter.excelFormatter.*`
+   - `Ext.ux.exporter.Base64`
+   Classes are used by third-party projects
+
+### Removed
+ - `Ext.ux.exporter.wikiFormatter.WikiFormatter` not loaded by default (available for manual loading)
+
+## [5.20.22] - 2021-08-31
+### Added
+ - `UMasterDetailView`: Added `BasePanel` based form support for preview mode.
+ 
+### Changed
+ - Dutch localization correction
 
 ## [5.20.21] - 2021-08-18
 ### Changed

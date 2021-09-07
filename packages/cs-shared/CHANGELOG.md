@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.3] - 2021-08-31
+### Added
+ - `UBEntity.prototype.getDescriptionAttribute` - added parameter `raiseErrorIfNotExists` (true by default).
+ If sets to `false` method do not throw and return `undefined` (the same behavior as in `UBDomain.get`)
+
 ## [5.20.2] - 2021-08-18
 ## [5.20.1] - 2021-05-13
 ## [5.20.0] - 2021-04-24
