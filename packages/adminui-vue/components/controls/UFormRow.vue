@@ -282,7 +282,8 @@ export default {
   }
 
   .u-form-row__content {
-    grid-area: content
+    grid-area: content;
+    overflow: hidden;
   }
 
   .u-form-row__label {

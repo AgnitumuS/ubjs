@@ -31,12 +31,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
 ### Changed
+`USelectMultiple`: change style for dropdown. Fixed the position of the buttons "More", "Template" and other.
+![View result](./changeLogImgs/USelectMultipleDropdown.png)
+[Task](https://dev.intecracy.com/agile/browse/UBDF-8423)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+-`UFormRow`: fix very long tags in `USelectMultiple`. Now, tags is flexible, has max-width: 100% from parent and don't come out beyound the viewport
+-`UDatePicker`: removed hard width. Datepicker width is flexible between 150px to 220px
 
 ## [5.20.22] - 2021-09-02
 ### Added
