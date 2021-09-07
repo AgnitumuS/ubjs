@@ -17,8 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
--`UFormRow`: fix very long tags in `USelectMultiple`
--`UDatePicker`: fix datepicker width, after fix very long tags
+-`UFormRow`: fix very long tags in `USelectMultiple`. Now, tags is flexible, has max-width: 100% from parent and don't come out beyound the viewport
+-`UDatePicker`: removed hard width. Datepicker width is flexible between 150px to 220px
 
 ## [5.20.21] - 2021-08-31
 ### Changed
