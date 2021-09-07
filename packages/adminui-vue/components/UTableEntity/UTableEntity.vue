@@ -38,9 +38,7 @@ export default {
     repository: {
       type: [Function, Object],
       required: false,
-      default () {
-        return undefined
-      }
+      default: undefined
     },
 
     /**
