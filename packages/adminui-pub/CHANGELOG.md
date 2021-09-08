@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.24] - 2021-09-08
+### Fixed
  - `$App.scan()` will show an error with scan settings requirement instead of "unknown error" in case scanner
  not configured 
 

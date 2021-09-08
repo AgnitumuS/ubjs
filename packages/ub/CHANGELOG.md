@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.13] - 2021-09-08
 ## [5.22.12] - 2021-09-02
 ### Removed
  - `App.logoutAllWithTheSameNameExceptMe()` is removed - use `App.removeUserSessions(userID)` instead.

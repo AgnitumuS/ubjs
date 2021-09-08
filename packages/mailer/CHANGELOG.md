@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.9] - 2021-09-08
 ## [5.5.8] - 2021-08-04
 ### Added
  - accept `attachName` (in addition to `atachName`) property of attaches object - property name

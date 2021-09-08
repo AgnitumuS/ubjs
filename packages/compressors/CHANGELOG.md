@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.3] - 2021-09-08
 ## [5.2.2] - 2021-08-18
 ### Fixed
  - UZip: fix getting files from ZIP using RegExp `UZip.file(/../)`

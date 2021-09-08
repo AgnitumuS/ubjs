@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.24] - 2021-09-08
+### Fixed
  - `ubm_enum` sortOrder for the `ORG_UNITTYPE` eGroup: change from STAFF->ORG->DEP->EXECGROUP to ORG->DEP->STAFF->EXECGROUP,
 
 ## [5.20.23] - 2021-09-02

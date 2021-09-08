@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.4] - 2021-09-08
 ## [5.20.3] - 2021-08-31
 ### Added
  - `UBEntity.prototype.getDescriptionAttribute` - added parameter `raiseErrorIfNotExists` (true by default).

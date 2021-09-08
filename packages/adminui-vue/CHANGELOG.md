@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.23] - 2021-09-08
+### Added
  - `addCollectionItemWithoutDefaultValues` - new `Vuex` action - such as `addCollectionItem` but does not fetch default params
  - `UToolbar`: `showDropdown` prop that allows preventing rendering of the dropdown menu
  - `toValidate` property to the `UTableColumn`, which allows skipping checking the column in the `validateFieldList` method - useful for custom unfamiliar columns
@@ -39,10 +50,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `USelectMultiple`: change style for dropdown. Fixed the position of the buttons "More", "Template" and other.
 ![View result](./changeLogImgs/USelectMultipleDropdown.png)
 [Task](https://dev.intecracy.com/agile/browse/UBDF-8423)
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UCardView`: rendering of values if the cell template is not defined for the related column
