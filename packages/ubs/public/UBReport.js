@@ -195,7 +195,7 @@ UBReport.prototype.buildHTML = function (reportData) {
 * @param {Array|Object} [options.fonts]
 * [{ fontName: "TimesNewRoman", fontStyle: "Normal" }, ..]
 * @param {Boolean} [options.outputPdf] If it is not False build PDF output at end. By default it is True.
-* @returns {Promise} Promise resolve arrayBuffer with PDF or instance of PDF.csPrintToPdf with rendered HTML on it when options.outputPdf is false.
+* @returns {Promise} A promise that resolves with an ArrayBuffer with PDF or instance of PDF.csPrintToPdf with rendered HTML on it when options.outputPdf is false.
 */
 UBReport.prototype.transformToPdf = function (html, options) {
   options = options || {}
