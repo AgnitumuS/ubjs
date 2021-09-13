@@ -1,5 +1,5 @@
 {
  "name": "Report Builder manual",
- "template": "{\"fName\":\"test.template\",\"origName\":\"test.template\",\"ct\":\"application/ubreport\",\"size\":19003,\"md5\":\"9dbf3df884dcea5ddc14566ded77ada9\"}",
- "code": "{\"fName\":\"test.js\",\"origName\":\"test.js\",\"ct\":\"application/def\",\"size\":4043,\"md5\":\"fcb73329c41bc9238de532d10c4e81ec\"}"
+ "template": "test.template",
+ "code": "test.js"
 }

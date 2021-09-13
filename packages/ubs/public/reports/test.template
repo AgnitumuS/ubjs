@@ -51,7 +51,7 @@
 </tr>
 <!--{{/countries}}-->
 <tr style="height: 25px;">
-<td style="cursor: default; height: 25px; width: 124px;">Площад ь</td>
+<td style="cursor: default; height: 25px; width: 124px;">Площадь</td>
 <td style="cursor: default; height: 25px; width: 603px;" colspan="2">{{area}}&nbsp;</td>
 </tr>
 </tbody>
