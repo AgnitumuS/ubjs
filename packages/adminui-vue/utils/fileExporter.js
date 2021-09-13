@@ -101,23 +101,66 @@ async function exportCsv ({ repository, fileName }) {
 }
 
 /**
- * Generates html and download it
- *
- * @param {ClientRepository} repository
- * @param {string} fileName
- * @returns {Promise<void>}
- */
-async function exportHtml ({ repository, fileName }) {
-  // TODO: replace with client side rendering
-  const request = repository.clone().withTotal(false).start(0).limit(0)
-  const { data } = await request.connection.xhr({
-    method: 'POST',
-    url: 'ubql',
-    data: [request.ubql()],
-    responseType: 'blob',
-    headers: { 'Content-Type': 'text/html; charset=UTF-8' }
-  })
-  window.saveAs(data, `${fileName}.html`)
+* Generates html and download it
+*
+* @param {CustomRepository} repository
+* @param {array<UTableColumn>} columns
+* @param {string} fileName
+* @param {Array<UTableFilterDefinition>} filters
+* @returns {Promise<void>}
+*/
+async function exportHtml ({ repository, columns, fileName, filters }) {
+  // server can generate an HTML output as such
+  //   const request = repository.clone().withTotal(false).start(0).limit(0)
+  //   const { data } = await request.connection.xhr({
+  //     method: 'POST',
+  //     url: 'ubql',
+  //     data: [request.ubql()],
+  //     responseType: 'blob',
+  //     headers: { 'Content-Type': 'text/html; charset=UTF-8' }
+  //   })
+  //   window.saveAs(data, `${fileName}.html`)
+
+  let res = '<html><head><style>table,th,td{border: 1px solid black;border-collapse: collapse;}th,td{padding: 5px;}</style></head><body><table>'
+  res += `<thead><tr><th colspan="${columns.length}">${fileName}</th></tr>`
+  if (filters && filters.length) {
+    const allFiltersDescr = filters.map(f => f.label + ' ' + f.description).join('; ')
+    if (allFiltersDescr) {
+      res += `<tr><th colspan="${columns.length}">${allFiltersDescr}</th></tr>`
+    }
+  }
+  res += '<tr>'
+  for (const column of columns) {
+    res += `<th>${UB.i18n(column.label)}</th>`
+  }
+  res += '</tr></thead><tbody>'
+
+  const response = await repository.selectAsArray()
+  response.resultData.fields = repository.fieldList
+  const data = UB.LocalDataStore.selectResultToArrayOfObjects(response)
+
+  for (const row of data) {
+    const rowCells = columns.map((column) => {
+      const value = typeof column.exportFormat === 'function'
+        ? column.exportFormat({ value: row[column.id], row, column })
+        : typeof column.format === 'function'
+          ? column.format({ value: row[column.id], row, column })
+          : row[column.id]
+      return { value }
+    })
+    res += '<tr>'
+    rowCells.forEach(c => {
+      res += `<td>${c.value}</td>`
+    })
+    res += '</tr>'
+  }
+  res += '</table></body></html>'
+
+  const file = new Blob(
+    [res],
+    { type: 'text/html; charset=UTF-8' }
+  )
+  window.saveAs(file, `${fileName}.html`)
 }
 
 /**

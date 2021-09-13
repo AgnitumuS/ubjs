@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - UTableEntity HTML export rewritten to use client-side export:
+   - output only columns visible in grid
+   - take into account formatting function, so output a captions instead of IDs for Entity columns
+   - added column caption translation
+   - added table header (as in Excel export)
 
 ### Deprecated
 

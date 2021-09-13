@@ -558,8 +558,10 @@ module.exports = (instance) => ({
           break
         case 'html':
           await exportHtml({
+            columns: getters.columns,
             repository,
-            fileName
+            fileName,
+            filters: state.filters
           })
           break
       }
