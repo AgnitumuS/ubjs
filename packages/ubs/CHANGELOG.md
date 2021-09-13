@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `ubs_report` allows override reports by creating report with the same code in different models.
+  Report form a last model (in order they defined in ubConfig) will be used
 
 ### Changed
 
