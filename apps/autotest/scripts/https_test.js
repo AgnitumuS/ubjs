@@ -1,7 +1,7 @@
 const http = require('http')
 let request = http.request({
     //alternative to host/port/path is
-    URL: 'https://www.google.com:443/recaрtcha/api/siteverify',
+    URL: 'https://unitybase.info/getAppInfo',
     method: 'GET',
     sendTimeout: 30000, receiveTimeout: 30000,
     keepAlive: true,
