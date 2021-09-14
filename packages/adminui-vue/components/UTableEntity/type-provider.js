@@ -235,17 +235,17 @@ TypeProvider.registerType({
   filters: numberFilter
 })
 
+const NUMBER_SETTINGS = require('./type-definitions/number')
 TypeProvider.registerType({
   type: 'BigInt',
-  settings: require('./type-definitions/number'),
+  settings: NUMBER_SETTINGS,
   filters: numberFilter
 })
 
 TypeProvider.registerType({
   type: 'Currency',
   settings: {
-    align: 'right',
-    sortable: true,
+    ...NUMBER_SETTINGS,
     format: ({ value }) => {
       return UB.formatter.formatNumber(value, 'sum')
     }
@@ -255,13 +255,13 @@ TypeProvider.registerType({
 
 TypeProvider.registerType({
   type: 'Float',
-  settings: require('./type-definitions/number'),
+  settings: NUMBER_SETTINGS,
   filters: numberFilter
 })
 
 TypeProvider.registerType({
   type: 'Int',
-  settings: require('./type-definitions/number'),
+  settings: NUMBER_SETTINGS,
   filters: numberFilter
 })
 

@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTableEntity`: calculate totals on columns of `Currency` type (missed before fix) by inherits
+ column `summaryAggregationOperator` from `Number` column type definition  
 
 ## [5.20.23] - 2021-09-08
 ### Added
