@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+-'cdn_contact-fm' - add code for save real address from cdn_person form. It was in ExtJs
 
 ## [5.20.24] - 2021-09-08
 ## [5.20.23] - 2021-09-02
