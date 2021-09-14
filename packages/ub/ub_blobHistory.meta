@@ -1,5 +1,5 @@
 ﻿{
-	"caption": "BLOBHistory",
+	"caption": "BLOB History",
 	"description": "File BLOB history",
 	"connectionName": "",
 	"documentation": "Store historical data for all file based BLOB stores",

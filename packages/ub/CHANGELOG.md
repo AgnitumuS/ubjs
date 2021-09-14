@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- captions from `meta` files: the words are capitalized according to English
+  rules for captions
 
 ### Deprecated
 

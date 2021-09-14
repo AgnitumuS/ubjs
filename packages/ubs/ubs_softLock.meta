@@ -1,5 +1,5 @@
 {
-  "caption": "Pessimistic locks",
+  "caption": "Pessimistic Locks",
   "description": "Pessimistic locks",
   "connectionName": "",
   "sqlAlias": "slock",

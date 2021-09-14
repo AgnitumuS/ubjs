@@ -1,0 +1,124 @@
+$context:
+  type: navigation
+
+udisk_desktop:
+  access:
+  - udiskPublicUsers
+  - udiskPublicAdmins
+  - udiskPublicAdminsDenyContent
+  - udiskServiceUsers
+  - udiskServiceAdmins
+  - udiskServiceAdminsDenyContent
+  - udiskSecretUsers
+  - udiskSecretAdmins
+  - udiskSecretAdminsDenyContent
+  caption: UDISK
+  items:
+  - UDISK_CARD:
+      access: udiskPublicUsers
+      caption: UDISK
+      iconCls: fa
+      displayOrder: 10
+      cmd: >
+        {
+          cmdType: 'showForm',
+          formCode: 'udisk_card',
+          entity: 'udisk_card'
+        }
+  - UDISK_CARD_ADM:
+      access:
+      - udiskPublicAdmins
+      - udiskPublicAdminsDenyContent
+      caption:
+        en: UDISK Admin
+        uk: Керування UDISK
+        ru: Управление UDISK
+        tg: Идоракунии UDISK
+        nl: UDISK admin
+        uz: UDISK boshqaruvi
+      iconCls: fa
+      displayOrder: 10
+      cmd: >
+        {
+          cmdType: 'showForm',
+          formCode: 'udisk_card',
+          entity: 'udisk_card',
+          description: 'udisk_card_adm',
+          cmpInitConfig: { mode: 'admin' }
+        }
+  - UDISK_SERVICECARD:
+      access: udiskServiceUsers
+      caption:
+        en: Service UDISK
+        uk: Сервісний UDISK
+        ru: Сервисный UDISK
+        tg: Хизматгузории UDISK
+        nl: Service UDISK
+        uz: UDISK xizmati
+      iconCls: fa
+      displayOrder: 10
+      cmd: >
+        {
+          cmdType: 'showForm',
+          formCode: 'udisk_card',
+          entity: 'udisk_servicecard'
+        }
+  - UDISK_SERVICECARD_ADM:
+      access:
+      - udiskServiceAdmins
+      - udiskServiceAdminsDenyContent
+      caption:
+        en: Service UDISK Admin
+        uk: Керування сервісним UDISK
+        ru: Управление сервисным UDISK
+        tg: Идоракунии хизматрасонии UDISK
+        nl: Service UDISK admin
+        uz: UDISK boshqaruv xizmati
+      iconCls: fa
+      displayOrder: 10
+      cmd: >
+        {
+          cmdType: 'showForm',
+          formCode: 'udisk_card',
+          entity: 'udisk_servicecard',
+          description: 'Service UDISK admin',
+          cmpInitConfig: { mode: 'admin' }
+        }
+  - UDISK_SECRETECARD:
+      access: udiskSecretUsers
+      caption:
+        en: Secret UDISK
+        uk: Секретний UDISK
+        ru: Секретный UDISK
+        tg: UDISK сиррӣ
+        nl: Geheime UDISK
+        uz: Yashirin UDISK
+      iconCls: fa
+      displayOrder: 10
+      cmd: >
+        {
+          cmdType: 'showForm',
+          formCode: 'udisk_card',
+          entity: 'udisk_secretcard'
+        }
+  - UDISK_SECRETCARD_ADM:
+      access:
+      - udiskSecretAdmins
+      - udiskSecretAdminsDenyContent
+      caption:
+        en: Secret UDISK Admin
+        uk: Керування секретним UDISK
+        ru: Управление секретным UDISK
+        tg: Идоракунии махфӣ UDISK
+        nl: Geheime UDISK admin
+        uz: UDISKni maxfiy boshqarish
+      iconCls: fa
+      displayOrder: 10
+      cmd: >
+        {
+          cmdType: 'showForm',
+          formCode: 'udisk_card',
+          entity: 'udisk_secretcard',
+          description: 'Secret UDISK admin',
+          cmpInitConfig: { mode: 'admin' }
+        }

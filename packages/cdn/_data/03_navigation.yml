@@ -1,0 +1,398 @@
+$context:
+  type: navigation
+
+cdn_desktop:
+  access: User
+  caption:
+    en: Common Dictionaries
+    uk: Загальні довідники
+    ru: Общие справочники
+    ka: საერთო ლექსიკონო
+    tg: Маълумотномаҳои умумӣ
+    nl: Common Dictionaries
+    uz: Umumiy kataloglar
+  description:
+    en: Directories of subjects, addresses, other classifiers
+    uk: Довідники суб'єктів, адрес, інші класифікатори
+    ru: Справочники субъектов, адресов, прочие классификаторы
+    ka: საგნების, მისამართების, სხვა კლასიფიკატორების დირექტორიები
+    tg: Директорияи фанҳо, суроғаҳо, таснифоти дигар
+    nl: Directories of subjects, addresses, other classifiers
+    uz: Mavzular kataloglari, manzillar, boshqa tasniflagichlar
+  iconCls: u-icon-desktop-dictionaries
+  items:
+  - cdn_folder_territorial:
+      access: User
+      caption:
+        en: Territorial
+        uk: Адмін. поділ
+        ru: Админ. деление
+        ka: ტერიტორია
+        tg: Воҳиди маъмурӣ
+        nl: Territoriaal
+        uz: Admin. bo`linish
+      iconCls: u-icon-globe
+      displayOrder: 10
+      items:
+      - cdn_region:
+          access: User
+          caption:
+            en: Regions
+            uk: Регіони
+            ru: Регионы
+            ka: რეგიონები
+            tg: Ноҳияҳо
+            nl: Regio's
+            uz: Hududlar
+          iconCls: u-icon-cloud
+          displayOrder: 10
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_region'
+              }
+            }
+      - cdn_city:
+          access: User
+          caption:
+            en: Cities
+            uk: Населені пункти
+            ru: Населенные пункты
+            ka: ქალაქები
+            tg: Маҳаллаҳои ахолинишин
+            nl: Steden
+            uz: Hisob -kitoblar
+          iconCls: u-icon-person-group
+          displayOrder: 20
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_city'
+              }
+            }
+      - cdn_country:
+          access: User
+          caption:
+            en: Countries
+            uk: Крaїни
+            ru: Страны
+            ka: ქვეყნები
+            tg: Кишварҳо
+            nl: Landen
+            uz: Mamlakatlar
+          iconCls: fa fa-flag-o
+          displayOrder: 30
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_country'
+              }
+            }
+      - cdn_adminunit:
+          access: User
+          caption:
+            en: Admin Units
+            uk: Адмін. одиниці
+            ru: Админ. единицы
+            ka: ადმინის ერთეულები
+            tg: Воҳидҳои маъмурӣ
+            nl: Beheerderseenheden
+            uz: Ma`muriy birliklar
+          iconCls: u-icon-object-group
+          displayOrder: 40
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_adminunit'
+              }
+            }
+      - cdn_street:
+          access: User
+          caption:
+            en: Streets
+            uk: Вулиці
+            ru: Улицы
+            tg: Кӯчаҳо
+            nl: Straten
+            uz: Ko`chalar
+          iconCls: fas fa-map-signs
+          displayOrder: 50
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_street'
+              }
+            }
+      - cdn_regiontype:
+          access: User
+          caption:
+            en: Region Types
+            uk: Типи регіонів
+            ru: Типы регионов
+            ka: რეგიონების ტიპი
+            tg: Намудҳои ноҳия
+            nl: Regiotypen
+            uz: Hudud turlari
+          displayOrder: 100
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_regiontype'
+              }
+            }
+      - cdn_citytype:
+          access: User
+          caption:
+            en: City Types
+            uk: Типи нас. пунктів
+            ru: Типы нас. пунктов
+            ka: ქალაქების ტიპი
+            tg: Намудҳои маҳаллаҳои аҳолинишин
+            nl: Soorten steden
+            uz: Aholi punktlarining turlari
+          displayOrder: 110
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_citytype'
+              }
+            }
+  - cdn_folder_subjects:
+      access: User
+      caption:
+        en: Subjects
+        uk: Суб'єкти
+        ru: Субъекты
+        ka: თემა ან საგანი
+        tg: Субъектҳо
+        nl: Onderwerpen
+        uz: Mavzular
+      iconCls: u-icon-person
+      displayOrder: 10
+      items:
+      - cdn_organization:
+          access: User
+          caption:
+            en: Organizations
+            uk: Організації
+            ru: Организации
+            ka: ორგანიზაციები
+            tg: Ташкилотҳо
+            nl: Organisaties
+            uz: Tashkilot
+          iconCls: fa fa-university
+          displayOrder: 10
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_organization',
+                columns: [
+                  'OKPOCode',
+                  'name',
+                  'fullName',
+                  'description',
+                  'orgBusinessTypeID.name',
+                  'orgOwnershipTypeID.name'
+                ]
+              }
+            }
+      - cdn_employee:
+          access: User
+          caption:
+            en: Employee
+            uk: Співробітники
+            ru: Сотрудники
+            ka: თანამშრომელი
+            tg: Коргарон
+            nl: Werknemer
+            uz: Xodimlar
+          iconCls: fa fa-briefcase
+          displayOrder: 20
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_employee',
+                columns: [
+                  'ID',
+                  'lastName',
+                  'firstName',
+                  'middleName',
+                  'sexType',
+                  'uniqNum',
+                  'organizationID.name',
+                  'departmentID.name'
+                ]
+              }
+            }
+      - cdn_department:
+          access: User
+          caption:
+            en: Departments
+            uk: Підрозділи
+            ru: Подразделения
+            ka: დეპარტამენტები
+            tg: Шӯъбаҳо
+            nl: Afdelingen
+            uz: Bo`limlar
+          iconCls: fa fa-cubes
+          displayOrder: 30
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_department',
+                columns: [
+                  'ID',
+                  'code',
+                  'name',
+                  'fullName',
+                  'depTypeID',
+                  'organizationID.name'
+                ]
+              }
+            }
+      - cdn_person:
+          access: User
+          caption:
+            en: Persons
+            uk: Фізичні особи
+            ru: Физические лица
+            ka: პირები
+            tg: Шахси воқъеи
+            nl: Personen
+            uz: Shaxslar
+          iconCls: fa fa-male
+          displayOrder: 40
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_person',
+                columns: [
+                  'lastName',
+                  'firstName',
+                  'middleName',
+                  'birthDate',
+                  'description'
+                ]
+              }
+            }
+      - cdn_bank:
+          access: User
+          caption:
+            en: Banks
+            uk: Банки
+            ru: Банки
+            tg: Бонкҳо
+            nl: Banken
+            uz: Banklar
+          iconCls: fas fa-hand-holding-usd
+          displayOrder: 40
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_bank'
+              }
+            }
+  - cdn_folder_misc:
+      access: User
+      caption:
+        en: Miscellaneous
+        uk: Різне
+        ru: Разное
+        ka: სხვადასხვა
+        tg: Гуногун
+        nl: Overige toepassingen
+        uz: Har xil
+      iconCls: u-icon-setting
+      displayOrder: 40
+      isCollapsed: true
+      items:
+      - cdn_currency:
+          access: User
+          caption:
+            en: Currency
+            uk: Валюти
+            ru: Валюты
+            ka: ვალუტა
+            tg: Асъорҳо
+            nl: Valuta
+            uz: Valyutalar
+          iconCls: u-icon-dollar
+          displayOrder: 10
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_currency',
+                columns: [
+                  { id: 'intCode', maxWidth: '60' },
+                  { id: 'code3', maxWidth: '70' },
+                  'name',
+                  'description'
+                ]
+              }
+            }
+      - cdn_language:
+          access: User
+          caption:
+            en: Languages
+            uk: Мови
+            ru: Языки
+            ka: ენები
+            tg: Забонҳо
+            nl: Talen
+            uz: Tillar
+          iconCls: fa fa-language
+          displayOrder: 20
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_language'
+              }
+            }
+      - cdn_classifier:
+          access: User
+          caption:
+            en: Classifiers
+            uk: Класифікатори
+            ru: Классификаторы
+            ka: კლასიფიკატორები
+            tg: Таснифотгарҳо
+            nl: Classificaties
+            uz: Tasniflagichlar
+          iconCls: u-icon-tags
+          displayOrder: 30
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_classifier'
+              }
+            }

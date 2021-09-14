@@ -1,5 +1,5 @@
 {
-  "caption": "Staff units",
+  "caption": "Staff Units",
   "description": "List of staff units",
   "documentation": "This dictionary contains list of staff units. Each staff unit links to org_unit by Unity mixin",
   "attributes": [
