@@ -224,6 +224,7 @@
   "successfullySaved": "Muvaffaqiyatli saqlandi",
   "formWasRefreshed": "Shakl yangilandi",
   "selectedValueWasDeleted": "Tanlangan qiymat o'chirildi",
+  "value is out of date": "qiymati eskirgan",
   "recordWasDeleted": "Yozuv o'chirildi",
   "validationError": "Saqlab bo‘lmadi.<br>Maydonlarda xato:<br>{0}",
   "formCrashTitle": "Shakl buzildi",

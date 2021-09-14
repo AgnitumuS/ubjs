@@ -127,6 +127,7 @@
   "formWasRefreshed": "Шакл нав карда шуд.",
   "recordDeletedSuccessfully": "Сабт бомуваффақият нест карда шуд",
   "selectedValueWasDeleted": "Қимати интихобшуда нест карда мешавад",
+  "value is out of date": "арзиши он кӯҳна шудааст",
   "recordWasDeleted": "Маълумот нест карда шуд",
   "validationError": "Нигоҳ доштан ғайриимкон аст.<br>Маъмулот хатогӣ дорад:<br>{0}",
   "formCrashTitle": "Шакл шикастааст",

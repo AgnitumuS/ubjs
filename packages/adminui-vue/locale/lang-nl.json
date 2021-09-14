@@ -127,6 +127,7 @@
   "formWasRefreshed": "Formulier werd vernieuwd",
   "recordDeletedSuccessfully": "Record succesvol verwijderd",
   "selectedValueWasDeleted": "Geselecteerde waarde is verwijderd",
+  "value is out of date": "waarde is verouderd",
   "recordWasDeleted": "Record is verwijderd",
   "validationError": "Kan niet opslaan.<br>Fout in velden:<br>{0}",
   "formCrashTitle": "Formulier is gecrasht",

@@ -127,6 +127,7 @@
   "formWasRefreshed": "Форма была обновлена",
   "recordDeletedSuccessfully": "Запись успешно удалена",
   "selectedValueWasDeleted": "Выбраное значение удалено",
+  "value is out of date": "запись не актуальна",
   "recordWasDeleted": "Запись была удалена",
   "validationError": "Невозможно сохранить.<br>Поля с ошибкой:<br> {0}",
   "formCrashTitle": "Форма сломалась",

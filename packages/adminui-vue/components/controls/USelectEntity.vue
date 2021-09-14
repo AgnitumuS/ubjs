@@ -30,7 +30,7 @@
           ref="input"
           v-model="queryDisplayValue"
           :class="{
-            'ub-select__deleted-value': isSafeDeletedValue && !isFocused,
+            'ub-select__deleted-value': (isSafeDeletedValue || isOutOfDate) && !isFocused,
             'ub-select__undefined-record': undefinedRecord
           }"
           :readonly="!editable || isReadOnly"
@@ -46,7 +46,13 @@
           @keydown.native.exact.down.prevent
         >
           <i
-            v-if="isSafeDeletedValue"
+            v-if="isOutOfDate"
+            slot="prefix"
+            :title="$ut('value is out of date')"
+            class="el-input__icon u-icon-clock"
+          />
+          <i
+            v-else-if="isSafeDeletedValue"
             slot="prefix"
             :title="$ut('selectedValueWasDeleted')"
             class="el-input__icon u-icon-delete"
@@ -312,6 +318,7 @@ export default {
       selectedOption: null, // option which user hover or focused by arrows
       prevQuery: '', // when user click show more need to track prev query value for send same request to next page
       isSafeDeletedValue: false,
+      isOutOfDate: false,
       isFocused: false,
       undefinedRecord: false // show's warning icon when ID is undefined in entity
     }
@@ -329,6 +336,10 @@ export default {
     isExistDeleteDate () {
       const schema = this.$UB.connection.domain.get(this.getEntityName)
       return 'mi_deleteDate' in schema.attributes
+    },
+
+    isDataHistory () {
+      return this.$UB.connection.domain.get(this.getEntityName).hasMixin('dataHistory')
     },
 
     inputIconCls () {
@@ -483,8 +494,12 @@ export default {
         const option = await repositoryClone
           .where(this.valueAttribute, '=', value)
           .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
+          .attrsIf(this.isDataHistory, 'mi_dateFrom', 'mi_dateTo')
           .misc({
             __allowSelectSafeDeleted: true
+          })
+          .miscIf(this.isDataHistory, {
+            __mip_recordhistory_all: true
           })
           .selectSingle()
 
@@ -554,6 +569,10 @@ export default {
         this.isSafeDeletedValue = isDeleted
       } else {
         this.isSafeDeletedValue = false
+      }
+      if (this.isDataHistory) {
+        const n = Date.now()
+        this.isOutOfDate = (option.mi_dateFrom.getTime() < n) || (option.mi_dateTo.getTime() > n)
       }
     },
 

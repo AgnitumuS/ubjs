@@ -119,6 +119,12 @@
       "associatedEntity": "cdn_employee",
       "caption": "employee",
       "allowNull": true
+    },
+    {
+      "name": "staff",
+      "dataType": "Entity",
+      "associatedEntity": "org_employeeonstaff",
+      "caption": "org_employeeonstaff"
     }
   ],
   "mixins": {

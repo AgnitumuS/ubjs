@@ -128,6 +128,7 @@
   "formWasRefreshed": "Form was refreshed",
   "recordDeletedSuccessfully": "Record deleted successfully",
   "selectedValueWasDeleted": "Selected value was deleted",
+  "value is out of date": "value is out of date",
   "recordWasDeleted": "Record was deleted",
   "validationError": "Unable to save.<br> Error in fields:<br> {0}",
   "formCrashTitle": "Form was crashed",
