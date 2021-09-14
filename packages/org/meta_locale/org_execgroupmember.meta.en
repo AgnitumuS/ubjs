@@ -1,5 +1,5 @@
 {
-  "caption": "Executors for executors groups",
+  "caption": "Executors for Executors Groups",
   "description": "Executors who attached to group and used for executors autofilling in resolutions on group addition",
   "attributes": [
     {

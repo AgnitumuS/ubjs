@@ -1,5 +1,5 @@
 {
-  "caption": "Reserved counters for registration keys",
+  "caption": "Reserved Counters for Registration Keys",
   "attributes": [
     {
       "name": "regKey",

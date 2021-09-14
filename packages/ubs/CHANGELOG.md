@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   Report form a last model (in order they defined in ubConfig) will be used
 
 ### Changed
+- English (en) localization for desktop/shortcut captions: the words are
+  capitalized according to English rules for captions
+- navigation definition is moved from `_initialData` scripts to `03_navigation.yml`
+  file in order to use `ub-migrate` for migration of the navigation data
 
 ### Deprecated
 

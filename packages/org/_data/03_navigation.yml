@@ -1,0 +1,286 @@
+$context:
+  type: navigation
+
+org_desktop:
+  caption:
+    en: Organizational Structure
+    uk: Орг. структура
+    ru: Орг. структура
+    ka: ორგანიზაციული სტრუქტურა
+    tg: Сохтори корхона
+    nl: Structuur van de organisatie
+  description:
+    en: Departments, positions, employees, appointments,...
+    uk: Департаменти, посади, службовці, призначення,...
+    ru: Отделы, должности, сотрудники, назначения,...
+    ka: განყოფილებები, თანამდებობები, თანამშრომლები, დანიშვნები, ...
+    tg: Раёсатҳо, вазифаҳо, кормандон, таъйинот, ...
+    nl: Afdelingen, functies, medewerkers, toewijzingen,...
+  iconCls: u-icon-desktop-orgstructure
+  items:
+  - org_folder_internal:
+      caption:
+        en: Org Internal
+        uk: Орг. структура
+        ru: Орг. структура
+        ka: შიდა ორგანიზება
+        tg: Сохтори корхона
+        nl: Structuur van de organisatie
+      iconCls: u-icon-globe
+      displayOrder: 10
+      items:
+      - org_department:
+          caption:
+            en: Departments
+            uk: Внутрішні підрозділи
+            ru: Внутренние подразделения
+            ka: დეპარტამენტები
+            tg: Шӯъбаҳои дохилӣ
+            nl: Interne verdeeldheid
+          iconCls: fa fa-cubes
+          displayOrder: 10
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_department',
+                columns: [
+                  'parentID.caption',
+                  'code',
+                  'name',
+                  'fullName',
+                  'description',
+                  'nameGen',
+                  'nameDat',
+                  'fullNameGen',
+                  'fullNameDat',
+                  'depTypeID',
+                  'isClerical',
+                  'caption'
+                ]
+              }
+            }
+      - org_organization:
+          caption:
+            en: Organizations
+            uk: Внутрішні організації
+            ru: Внутренние организации
+            ka: ორგანიზაციები
+            tg: Корхонаҳои дохилӣ
+            nl: Interne organisaties
+          iconCls: fa fa-university
+          displayOrder: 20
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_organization',
+                columns: [
+                  'parentID.caption',
+                  'code',
+                  'OKPOCode',
+                  'taxCode',
+                  'vatCode',
+                  'name',
+                  'fullName',
+                  'nameGen',
+                  'nameDat',
+                  'fullNameGen',
+                  'fullNameDat',
+                  'description',
+                  'orgBusinessTypeID',
+                  'orgOwnershipTypeID'
+                ]
+              }
+            }
+      - org_employeeonstaff:
+          caption:
+            en: Employee on Staff
+            uk: Внутрішні призначення
+            ru: Внутренние назначения
+            ka: თანამშრომელი პერსონალზე
+            tg: Таъинҳои дохилӣ
+            nl: Interne toewijzingen
+          iconCls: fa fa-briefcase
+          displayOrder: 30
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_employeeonstaff'
+              }
+            }
+      - org_employeeonstaff_all:
+          caption:
+            en: Employee on Staff (All)
+            uk: Внутрішні призначення (всі)
+            ru: Внутренние назначения (все)
+            ka: თანამშრომელი პერსონალზე (სულ)
+            tg: Таъинҳои дохилӣ (ҳама)
+            nl: Interne toewijzingen (alle)
+          iconCls: fa fa-briefcase
+          displayOrder: 35
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_employeeonstaff',
+                __mip_recordhistory_all: true
+              }
+            }
+      - org_staffunit:
+          caption:
+            en: Staff Units
+            uk: Штатні одиниці
+            ru: Штатные единицы
+            ka: პერსონალის ერთეული
+            tg: Воҳиди корӣ
+            nl: Stafeenheden
+          displayOrder: 40
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_staffunit',
+                columns: [
+                  'parentID.caption',
+                  'code',
+                  'name',
+                  'fullName',
+                  'description',
+                  'nameGen',
+                  'nameDat',
+                  'fullNameGen',
+                  'fullNameDat',
+                  'caption',
+                  'professionExtID',
+                  'professionID',
+                  'staffUnitTypeID',
+                  'subordinationLevel',
+                  'isBoss'
+                ]
+              }
+            }
+      - org_execgroup:
+          caption:
+            en: Execution Groups
+            uk: Групи виконавців
+            ru: Группы исполнителей
+            ka: მხატვრული ჯგუფები
+            tg: Гурӯҳҳои рассомон
+            nl: Groepen van uitvoerders
+          iconCls: u-icon-layers
+          displayOrder: 50
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_execgroup',
+                columns: [
+                  'parentID.caption',
+                  'groupType',
+                  'code',
+                  'name',
+                  'nameGen',
+                  'nameDat'
+                ]
+              }
+            }
+      - org_unit:
+          caption:
+            en: Org Units
+            uk: Внутрішні орг.одиниці
+            ru: Внутренние орг.единицы
+            ka: ორგანიზების ერთეული
+            tg: Сохтори созмонии дохилӣ
+            nl: Interne organisatie-eenheden
+          displayOrder: 100
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_unit',
+                columns: [
+                  'parentID.caption',
+                  'code',
+                  'caption',
+                  'unitType'
+                ]
+              }
+            }
+      - org_employee:
+          caption:
+            en: Employees
+            uk: Внутрішні працівники
+            ru: Внутренние сотрудники
+            ka: თანამშრომლები
+            tg: Кормандони дохилӣ
+            nl: Intern personeel
+          iconCls: fa fa-male
+          displayOrder: 110
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_employee'
+              }
+            }
+  - org_folder_dict:
+      caption:
+        en: Additional
+        uk: Додатково
+        ru: Дополнительно
+        ka: დამატებითი
+        tg: Иловагӣ
+        nl: Extra
+      displayOrder: 20
+      items:
+      - org_profession:
+          caption:
+            en: Professions
+            uk: Професії
+            ru: Профессии
+            ka: პროფესიები
+            tg: Касбҳо
+            nl: Beroepen
+          iconCls: u-icon-cloud
+          displayOrder: 10
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_profession'
+              }
+            }
+      - org_diagram:
+          caption:
+            en: Organizational Chart
+            uk: Органограми
+            ru: Органограммы
+            ka: ორგანიზაციული ჩარტი
+            tg: Органиграмма
+            nl: Organogrammen
+          iconCls: u-icon-hierarchy-alt
+          displayOrder: 20
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_diagram',
+                columns: [
+                  'ID',
+                  'caption',
+                  'orgunitID.caption'
+                ]
+              }
+            }

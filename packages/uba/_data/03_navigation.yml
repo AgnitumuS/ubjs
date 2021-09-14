@@ -37,7 +37,7 @@ adm_desktop:
       - uba_user:
           access: Supervisor
           caption:
-            en: User list
+            en: User List
             uk: Список користувачів
             ru: Список пользователей
             ka: მომხმარებლების სია
@@ -63,7 +63,7 @@ adm_desktop:
       - uba_advSecurity:
           access: Supervisor
           caption:
-            en: Advanced security
+            en: Advanced Security
             uk: Додаткова безпека
             ru: Расширенная безопасность
             ka: უსაფრთხოება
@@ -82,7 +82,7 @@ adm_desktop:
       - uba_userrole:
           access: Supervisor
           caption:
-            en: User roles
+            en: User Roles
             uk: Ролі користувачів
             ru: Роли пользователей
             ka: მომხმარებლის როლი
@@ -102,7 +102,7 @@ adm_desktop:
       - uba_group:
           access: Supervisor
           caption:
-            en: Group list
+            en: Group List
             uk: Список груп
             ru: Список групп
             ka: ჯგუფის სია
@@ -122,7 +122,7 @@ adm_desktop:
       - uba_usergroup:
           access: Supervisor
           caption:
-            en: User groups
+            en: User Groups
             uk: Групи користувачів
             ru: Группа пользователей
             ka: მომხმარებელთა ჯგუფი
@@ -174,7 +174,7 @@ adm_desktop:
       - uba_role:
           access: Supervisor
           caption:
-            en: System roles
+            en: System Roles
             uk: Системні ролі
             ru: Системные роли
             ka: სისტემის როლი
@@ -193,7 +193,7 @@ adm_desktop:
       - uba_els:
           access: Supervisor
           caption:
-            en: Entity level security
+            en: Entity Level Security
             uk: Права на методи (ELS)
             ru: Права на методы (ELS)
             ka: ერთეულის დონის უსაფრთხოება
@@ -213,7 +213,7 @@ adm_desktop:
       - uba_als:
           access: Supervisor
           caption:
-            en: Attribute level security
+            en: Attribute Level Security
             uk: Права на атрибути (ALS)
             ru: Права на атрибуты (ALS)
             ka: ატრიბუტების დონის უსაფრთხოება
@@ -263,7 +263,7 @@ adm_desktop:
       - uba_otp:
           access: Supervisor
           caption:
-            en: One-time passwords
+            en: One-Time Passwords
             uk: Одноразові паролі (OTP)
             ru: Одноразовые пароли (OTP)
             ka: ერთჯერადი პაროლი
@@ -282,7 +282,7 @@ adm_desktop:
       - uba_audit:
           access: Supervisor
           caption:
-            en: Security audit
+            en: Security Audit
             uk: Аудит безпеки
             ru: Аудит безопасности
             ka: უსაფრთხოების აუდიტი
@@ -306,7 +306,7 @@ adm_desktop:
       - uba_audit-securityDashboard:
           access: Supervisor
           caption:
-            en: Security dashboard
+            en: Security Dashboard
             uk: Консоль безпеки
             ru: Консоль безопасности
             ka: უსაფრთხოების დაფა
@@ -336,11 +336,11 @@ adm_desktop:
         - ub_version:
             access: Admin
             caption:
-              en: Models versions
+              en: Models Versions
               uk: Версії моделей
               ru: Версии моделей
               az: Model versiyaları
-              ka: Models versions
+              ka: Models Versions
               tg: Версияҳои намунавӣ
               nl: Modellen versies
               uz: Model versiyalari
@@ -356,11 +356,11 @@ adm_desktop:
         - ub_migration:
             access: Admin
             caption:
-              en: Applied files
+              en: Applied Files
               uk: Міграції що виконано
               ru: Выполненные миграции
               az: Tamamlanmış köçlər
-              ka: Applied files
+              ka: Applied Files
               tg: Выполненные миграции
               nl: Toegepaste bestanden
               uz: Tugallangan migratsiya

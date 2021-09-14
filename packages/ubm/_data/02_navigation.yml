@@ -142,7 +142,7 @@ adm_desktop:
             - name
       - ubm_diagram:
           caption:
-            en: ER diagrams
+            en: ER Diagrams
             ka: პიროვნული ურთიერთობის დიაგრამები
             ru: ER диаграммы
             tg: ER диаграммаҳо

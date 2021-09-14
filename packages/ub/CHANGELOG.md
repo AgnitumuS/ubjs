@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  to be present in several models. In this case last model (in order they defined in ubConfig) win.
 
 ### Changed
+- captions from `meta` files: the words are capitalized according to English
+  rules for captions
 
 ### Deprecated
 
