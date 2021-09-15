@@ -113,9 +113,9 @@ export default {
         // overwrite the behavior of some existing ones.
         {
           // This will ensure that v-model works on the component
-          input: value => {
+          input: (value, option) => {
             vm.model = value
-            vm.$emit('input', value)
+            vm.$emit('input', value, option)
           }
         }
       )
