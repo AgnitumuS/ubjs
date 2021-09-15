@@ -76,7 +76,9 @@ module.exports = (instance) => ({
           .limit(getters.pageSize + 1)
       }
 
-      repo.attrsIf(!repo.fieldList.includes('ID'), 'ID')
+      if (!repo.groupList?.length) {
+        repo.attrsIf(!repo.fieldList.includes('ID'), 'ID')
+      }
 
       if (state.sort) {
         if (repo.orderList && repo.orderList.length) {
@@ -347,6 +349,9 @@ module.exports = (instance) => ({
          * rather than using fieldList from response
          */
         response.resultData.fields = getters.currentRepository.fieldList
+        if (!response.resultData.fields.includes('ID')) {
+          response.resultData.fields[0] = 'ID'
+        }
         const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
 
         if (instance.withPagination) {

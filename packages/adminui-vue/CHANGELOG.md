@@ -21,7 +21,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UTableEntity`: calculate totals on columns of `Currency` type (missed before fix) by inherits
- column `summaryAggregationOperator` from `Number` column type definition  
+   column `summaryAggregationOperator` from `Number` column type definition
+ - `UTableEntity`: do not add 'ID' attribute to fieldList in case repository includes groupList and rename first attribute 
+   to 'ID' (this attribute must be unique) - dirty hack to make groupBy work
 
 ## [5.20.23] - 2021-09-08
 ### Added
