@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `USelectEntity` - for entities with dataHistory mixin added strike out + timer icon in case selected record is out of date 
+ - `UAutoField`: in addition to selected value added pass of entire selected option to `input` event
+ - `USelectEntity` - for entities with dataHistory mixin added strike out + timer icon in case selected record is out of date
 
 ### Changed
  - UTableEntity HTML export rewritten to use client-side export:
