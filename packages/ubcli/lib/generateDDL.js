@@ -59,7 +59,7 @@ module.exports = function generateDDL (cfg) {
   // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
   let conn
   if (!cfg.syncConnection) {
-    http.setGlobalConnectionDefaults({receiveTimeout: 120000})
+    http.setGlobalConnectionDefaults({ receiveTimeout: 120000 })
     const session = argv.establishConnectionFromCmdLineAttributes(cfg)
     conn = session.connection
   } else {
@@ -114,9 +114,8 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
 
   const Generator = require('./ddlGenerators/DDLGenerator')
   const ddlResult = new Generator().generateDDL(entityNames, conn, true)
-  const dbConnNames = Object.keys(ddlResult)
-
-  for (const connectionName of dbConnNames) {
+  const dbSQLConnNames = Object.entries(ddlResult).filter(([, value]) => typeof value === 'object').map(([key]) => key)
+  for (const connectionName of dbSQLConnNames) {
     const fileName = path.join(outputPath, connectionName + '.sql')
     let outWarnings = ''
     if (ddlResult[connectionName].warnings.statements.length) {
@@ -175,6 +174,34 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
     } else {
       console.log('Specified entity metadata is congruence with the database for connection ' + connectionName)
       fs.unlinkSync(fileName)
+    }
+  }
+
+  const dbScriptConnNames = Object.entries(ddlResult).filter(([, value]) => typeof value === 'string').map(([key]) => key)
+
+  for (const connectionName of dbScriptConnNames) {
+    const fileName = path.join(outputPath, connectionName + '.js')
+    const ddlJsSource = ddlResult[connectionName]
+    if (ddlJsSource) {
+      if (fs.existsSync(fileName)) {
+        const bakFn = fileName + '.bak'
+        if (fs.existsSync(bakFn)) fs.unlinkSync(bakFn)
+        fs.renameSync(fileName, fileName + '.bak')
+      }
+      fs.writeFileSync(fileName, ddlJsSource)
+      console.log('DDL js script is saved to ' + fileName)
+      if (autorun) {
+        let withErrors = false
+        console.log('Run a script ' + fileName)
+        try {
+          const ddlJs = require(fileName)
+          ddlJs.run()
+        } catch (e) {
+          console.error(e)
+          withErrors = true
+        }
+        console.info('Database script', fileName, 'executed', withErrors ? 'with errors!' : 'successfully')
+      }
     }
   }
 }
