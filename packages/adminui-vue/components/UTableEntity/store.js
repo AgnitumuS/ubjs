@@ -76,6 +76,10 @@ module.exports = (instance) => ({
           .limit(getters.pageSize + 1)
       }
 
+      /*
+       * do not add 'ID' attribute to fieldList in case repository includes groupList to rename first attribute to 'ID'
+       * (hack to fix groupBy)
+       */
       if (!repo.groupList?.length) {
         repo.attrsIf(!repo.fieldList.includes('ID'), 'ID')
       }
@@ -349,10 +353,19 @@ module.exports = (instance) => ({
          * rather than using fieldList from response
          */
         response.resultData.fields = getters.currentRepository.fieldList
+        /*
+         * In case repository includes groupList rename fieldList first attribute to ID and rename it back after items
+         * creation for correct work of refresh (hack to fix groupBy)
+         */
+        let originalFirstFieldsItem
         if (!response.resultData.fields.includes('ID')) {
+          originalFirstFieldsItem = response.resultData.fields[0]
           response.resultData.fields[0] = 'ID'
         }
         const items = UB.LocalDataStore.selectResultToArrayOfObjects(response)
+        if (originalFirstFieldsItem) {
+          response.resultData.fields[0] = originalFirstFieldsItem
+        }
 
         if (instance.withPagination) {
           const isLastPage = items.length < getters.pageSize
