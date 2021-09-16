@@ -217,7 +217,7 @@
     <filter-list />
 
     <div class="u-table-entity__body">
-      <!-- @slot Add a sidebar to the side of the table or card-view -->
+      <!-- @slot Add a sidebar to the left side of the table or card-view -->
       <slot name="sidebar" />
 
       <u-table
