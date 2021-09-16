@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.21.20] - 2021-09-16
+### Fixed
  - do not logout user in case certificate is inserted - instead logout in case certificate is updated
 
 ## [5.21.19] - 2021-09-08

@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.25] - 2021-09-16
+### Added
  - `ubs_report` allows override reports by creating report with the same code in different models.
   Report form a last model (in order they defined in ubConfig) will be used
 
@@ -14,12 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   capitalized according to English rules for captions
 - navigation definition is moved from `_initialData` scripts to `03_navigation.yml`
   file in order to use `ub-migrate` for migration of the navigation data
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.20.24] - 2021-09-08
 ## [5.20.23] - 2021-09-02

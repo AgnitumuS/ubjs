@@ -6,18 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `fsStorage` mixin - added `allowOverride` property. Sets it to `true` allows row with the same natural key
- to be present in several models. In this case last model (in order they defined in ubConfig) win.
 
 ### Changed
-- captions from `meta` files: the words are capitalized according to English
-  rules for captions
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.22.14] - 2021-09-16
+### Added
+ - `fsStorage` mixin - added `allowOverride` property. Sets it to `true` allows row with the same natural key
+ to be present in several models. In this case last model (in order they defined in ubConfig) win.
+
+### Changed
+- captions from `meta` files: the words are capitalized according to English
+  rules for captions
 
 ## [5.22.13] - 2021-09-08
 ## [5.22.12] - 2021-09-02

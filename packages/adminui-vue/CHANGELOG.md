@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.24] - 2021-09-16
+### Added
  - `UAutoField`: in addition to selected value added pass of entire selected option to `input` event
  - `USelectEntity` - for entities with dataHistory mixin added strike out + timer icon in case selected record is out of date
  - `UTableEntity`: slot `sidebar` to render content on the left side of the table or card-view
@@ -16,10 +27,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - take into account formatting function, so output a captions instead of IDs for Entity columns
    - added column caption translation
    - added table header (as in Excel export)
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UTableEntity`: calculate totals on columns of `Currency` type (missed before fix) by inherits
