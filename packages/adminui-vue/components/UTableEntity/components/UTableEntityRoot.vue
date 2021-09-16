@@ -216,109 +216,116 @@
 
     <filter-list />
 
-    <u-table
-      v-if="viewMode === 'table'"
-      ref="table"
-      :columns="columns"
-      :fixed-column-id="fixedColumnId"
-      :get-column-class="getColumnClass"
-      :get-row-class="getRowClass"
-      :height="height"
-      :items="items"
-      :max-height="maxHeight"
-      tabindex="1"
-      @click-head-cell="showSortDropdown"
-      @click-cell="select"
-      @contextmenu-cell="showContextMenu"
-      @dblclick-row="onSelect($event.row.ID, $event.row)"
-    >
-      <template
-        v-for="column in columns"
-        #[`head_${column.id}`]
-      >
-        <slot
-          :column="column"
-          :name="`head_${column.id}`"
-        >
-          {{ $ut(column.label) }}
-          <i
-            v-if="sort"
-            :key="column.id"
-            :class="getSortIconClass(column.id)"
-          />
-        </slot>
-      </template>
+    <div class="u-table-entity__body">
+      <!-- @slot Add a sidebar to the left side of the table or card-view -->
+      <slot name="sidebar" />
 
-      <template
-        v-for="column in columns"
-        #[column.id]="{row, value}"
+      <u-table
+        v-if="viewMode === 'table'"
+        ref="table"
+        class="u-table-entity__body__content"
+        :columns="columns"
+        :fixed-column-id="fixedColumnId"
+        :get-column-class="getColumnClass"
+        :get-row-class="getRowClass"
+        :height="height"
+        :items="items"
+        :max-height="maxHeight"
+        tabindex="1"
+        @click-head-cell="showSortDropdown"
+        @click-cell="select"
+        @contextmenu-cell="showContextMenu"
+        @dblclick-row="onSelect($event.row.ID, $event.row)"
       >
-        <slot
-          :column="column"
-          :name="column.id"
-          :row="row"
-          :value="value"
+        <template
+          v-for="column in columns"
+          #[`head_${column.id}`]
         >
-          <component
-            :is="getCellTemplate(column)"
+          <slot
             :column="column"
+            :name="`head_${column.id}`"
+          >
+            {{ $ut(column.label) }}
+            <i
+              v-if="sort"
+              :key="column.id"
+              :class="getSortIconClass(column.id)"
+            />
+          </slot>
+        </template>
+
+        <template
+          v-for="column in columns"
+          #[column.id]="{row, value}"
+        >
+          <slot
+            :column="column"
+            :name="column.id"
             :row="row"
-            :value="row[column.id]"
+            :value="value"
+          >
+            <component
+              :is="getCellTemplate(column)"
+              :column="column"
+              :row="row"
+              :value="row[column.id]"
+            />
+          </slot>
+        </template>
+
+        <template #lastTableRow>
+          <!-- @slot display specific content in the last row of the table -->
+          <slot name="lastTableRow" />
+        </template>
+
+        <template #appendTable>
+          <next-page-button
+            v-if="withPagination"
           />
-        </slot>
-      </template>
 
-      <template #lastTableRow>
-        <!-- @slot display specific content in the last row of the table -->
-        <slot name="lastTableRow" />
-      </template>
+          <!-- @slot add some content at the end of the table after the pagination button -->
+          <slot name="appendTable" />
+        </template>
+      </u-table>
 
-      <template #appendTable>
-        <next-page-button
-          v-if="withPagination"
-        />
-
-        <!-- @slot add some content at the end of the table after the pagination button -->
-        <slot name="appendTable" />
-      </template>
-    </u-table>
-
-    <u-card-view
-      v-if="viewMode === 'card'"
-      ref="cardView"
-      :columns="cardColumns"
-      :items="items"
-      :get-card-class="getRowClass"
-      @click="select"
-      @contextmenu="showContextMenu"
-      @dblclick="onSelect($event.row.ID, $event.row)"
-    >
-      <slot
-        slot="card"
-        slot-scope="{row}"
-        name="card"
-        :row="row"
-      />
-      <template
-        v-for="slot in Object.keys($scopedSlots)"
-        :slot="slot"
-        slot-scope="scope"
+      <u-card-view
+        v-if="viewMode === 'card'"
+        ref="cardView"
+        class="u-table-entity__body__content"
+        :columns="cardColumns"
+        :items="items"
+        :get-card-class="getRowClass"
+        @click="select"
+        @contextmenu="showContextMenu"
+        @dblclick="onSelect($event.row.ID, $event.row)"
       >
         <slot
-          :name="slot"
-          v-bind="scope"
+          slot="card"
+          slot-scope="{row}"
+          name="card"
+          :row="row"
         />
-      </template>
+        <template
+          v-for="slot in Object.keys($scopedSlots)"
+          :slot="slot"
+          slot-scope="scope"
+        >
+          <slot
+            :name="slot"
+            v-bind="scope"
+          />
+        </template>
 
-      <template #append>
-        <next-page-button
-          v-if="withPagination"
-        />
+        <template #append>
+          <next-page-button
+            v-if="withPagination"
+          />
 
-        <!-- @slot add some content at the end of the card-view after the pagination button -->
-        <slot name="appendTable" />
-      </template>
-    </u-card-view>
+          <!-- @slot add some content at the end of the card-view after the pagination button -->
+          <slot name="appendTable" />
+        </template>
+      </u-card-view>
+    </div>
 
     <u-dropdown
       ref="contextMenu"
@@ -897,5 +904,14 @@ export default {
 
 .u-table-entity__filter-submit-container {
   text-align: right;
+}
+
+.u-table-entity__body {
+  display: flex;
+  height: 100%;
+}
+
+.u-table-entity__body__content {
+  flex-basis: 100%;
 }
 </style>
