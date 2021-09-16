@@ -22,8 +22,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `UTableEntity`: calculate totals on columns of `Currency` type (missed before fix) by inherits
    column `summaryAggregationOperator` from `Number` column type definition
- - `UTableEntity`: do not add 'ID' attribute to fieldList in case repository includes groupList and rename first attribute 
-   to 'ID' (this attribute must be unique) - dirty hack to make groupBy work
+ - `UTableEntity`: allows to display a result of repository with a groupBy statement
+     - avoid adding an 'ID' attribute to the fieldList if repository contains a `groupBy` clause
+     - expect first attribute to be a unique key (used instead of ID to generate a key for vue)
+     - possible repository example:
+```javascript
+return UB.Repository('uba_auditTrail')
+  .attrs('MAX([ID])','max([actionTime])', 'document.regNumber', 'actionDate', 'actionType')
+  .where('document.ID', 'isNotNull')
+  .groupBy(['document.regNumber', 'actionDate', 'actionType'])
+```
 
 ## [5.20.23] - 2021-09-08
 ### Added
