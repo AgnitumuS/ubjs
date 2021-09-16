@@ -354,7 +354,7 @@ module.exports = (instance) => ({
          */
         response.resultData.fields = getters.currentRepository.fieldList
         /*
-         * In case repository includes groupList rename fieldList first attribute to ID and rename it back after items
+         * In case repository includes groupList rename first attribute of fieldList to ID and rename it back after items
          * creation for correct work of refresh (hack to fix groupBy)
          */
         let originalFirstFieldsItem
