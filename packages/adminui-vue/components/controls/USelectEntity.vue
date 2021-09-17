@@ -572,7 +572,7 @@ export default {
       }
       if (this.isDataHistory) {
         const n = Date.now()
-        this.isOutOfDate = (option.mi_dateFrom.getTime() < n) || (option.mi_dateTo.getTime() > n)
+        this.isOutOfDate = (option.mi_dateFrom?.getTime() > n) || (option.mi_dateTo?.getTime() < n)
       }
     },
 
