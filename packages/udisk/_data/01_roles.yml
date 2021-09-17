@@ -1,0 +1,74 @@
+$context:
+  type: roles
+
+udiskPublicUsers:
+  description: public udisk users
+  sessionTimeout: 30
+  els:
+    custom:
+    - udisk_public_users: "udisk_card,[iudashc]*,udisk_public_users"
+    - udisk_public_usersp: "udisk_permission,[iudashc]*,udisk_public_users"
+
+udiskPublicAdmins:
+  description: public udisk admins
+  sessionTimeout: 30
+  els:
+    custom:
+    - udisk_public_admins: "udisk_card,[iudashc]*,udisk_public_admins"
+    - udisk_public_adminsp: "udisk_permission,[iudashc]*,udisk_public_admins"
+
+udiskPublicAdminsDenyContent:
+  description: public udisk micro admins
+  sessionTimeout: 30
+  els:
+    custom:
+    - udisk_public_adminsda: "udisk_card,[iudashc]*,udisk_public_adminsda"
+    - udisk_public_adminsdap: "udisk_permission,[iudashc]*,udisk_public_adminsda"
+
+udiskServiceUsers:
+  description: Service udisk users
+  sessionTimeout: 30
+  els:
+    custom:
+    - udisk_service_user: "udisk_servicecard,[iudashc]*,udisk_service_user"
+    - udisk_service_userp: "udisk_srvpermission,[iudashc]*,udisk_service_user"
+
+udiskServiceAdmins:
+  description: Service udisk admins
+  sessionTimeout: 30
+  els:
+    custom:
+    - udisk_service_admin: "udisk_servicecard,[iudashc]*,udisk_service_admin"
+    - udisk_service_adminp: "udisk_srvpermission,[iudashc]*,udisk_service_admin"
+
+udiskServiceAdminsDenyContent:
+  description: Service udisk micro admins
+  sessionTimeout: 30
+  els:
+    custom:
+    - udisk_service_admindc: "udisk_servicecard,[iudashc]*,udisk_service_admindc"
+    - udisk_service_admindcp: "udisk_srvpermission,[iudashc]*,udisk_service_admindc"
+
+udiskSecretUsers:
+  description: Secret udisk users
+  sessionTimeout: 30
+  els:
+    custom:
+    - udisk_secret_user: "udisk_secretcard,[iudashc]*,udisk_secret_user"
+    - udisk_secret_userp: "udisk_spermission,[iudashc]*,udisk_secret_user"
+
+udiskSecretAdmins:
+  description: Secret udisk admins
+  sessionTimeout: 30
+  els:
+    custom:
+    - udisk_secret_admin: "udisk_secretcard,[iudashc]*,udisk_secret_admin"
+    - udisk_secret_adminp: "udisk_spermission,[iudashc]*,udisk_secret_admin"
+
+udiskSecretAdminsDenyContent:
+  description: Secret udisk micro admins
+  sessionTimeout: 30
+  els:
+    custom:
+    - udisk_secret_admindc: "udisk_secretcard,[iudashc]*,udisk_secret_admindc"
+    - udisk_secret_admindcp: "udisk_spermission,[iudashc]*,udisk_secret_admindc"
