@@ -22,7 +22,7 @@ class Elastic {
           }
         },
         analyzer: {
-          ru_RU_uk_UA : {
+          ru_RU_uk_UA: {
             tokenizer: 'standard',
             filter: ['lowercase', 'uk_UA', 'ru_RU']
           }
@@ -41,7 +41,7 @@ class Elastic {
     }
     this.dbConnectionConfig = dbConnectionConfig
     this.dbConnectionConfig.serverName = 'http://10.211.55.2:9200'
-    this.dbConnectionConfig.databaseName = `ub-index-${dbConnectionConfig.name.toLowerCase()}`
+    this.databaseName = `ub-index-${dbConnectionConfig.name.toLowerCase()}`
     this.conn = conn
     /** @type {Array<TableDefinition>} */
     this.dbTableDefs = []
@@ -106,7 +106,7 @@ class Elastic {
 
   /** compare referenced tables with database metadata */
   compare () {
-    if (this._indexes.filter(el => el.index === this.dbConnectionConfig.databaseName).length === 0) {
+    if (this._indexes.filter(el => el.index === this.databaseName).length === 0) {
       this.elasticIndexSettings = this._elasticDefaultIndexSettings
       if (this._withTokinizer) {
         this.elasticIndexSettings.settings = this._analysis

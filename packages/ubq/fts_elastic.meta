@@ -1,0 +1,37 @@
+{
+  "caption": "Elastic",
+  "description": "Elastic",
+  "cacheType": "None",
+  "dsType": "Virtual",
+  "descriptionAttribute": "name",
+  "documentation": "Virtual entity for working with Elasticsearch",
+  "attributes": [
+    {
+      "name": "ID",
+      "dataType": "ID",
+      "caption": "ID",
+      "allowNull": false,
+      "isUnique": true,
+      "description": "ID"
+    },
+    {
+      "name": "rowid",
+      "dataType": "String",
+      "size": 64,
+      "caption": "rowid",
+      "description": "rowid",
+      "allowNull": false,
+      "isUnique": true
+    },
+    {
+      "name": "name",
+      "dataType": "String",
+      "size": 240,
+      "caption": "name",
+      "description": "name",
+      "allowNull": false,
+      "isUnique": true
+    }
+  ],
+  "mixins": {}
+}

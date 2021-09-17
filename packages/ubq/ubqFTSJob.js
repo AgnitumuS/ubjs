@@ -1,6 +1,7 @@
 ﻿const UB = require('@unitybase/ub')
 const _ = require('lodash')
 const App = UB.App
+const ElasticApi = require('./modules/ElasticApi')
 
 /**
  * Used by scheduler to build a full text search index.
@@ -45,14 +46,24 @@ module.exports = function () {
       if (_.find(commandsForID, { operation: 'DELETE' })) {
         if (!_.find(commandsForID, { operation: 'INSERT' })) { // if insert exists delete is not necessary (no data in index yet)
           console.debug('AYNC_FTS: delete', entityName, instanceID)
-          App.deleteFromFTSIndex(entityName, instanceID)
+          if (ElasticApi.isElasticFtsEntity(entityName)) {
+            const elasticApi = new ElasticApi()
+            elasticApi.deleteFromFTSIndex(entityName, instanceID)
+          } else {
+            App.deleteFromFTSIndex(entityName, instanceID)
+          }
           operationCount++
         } else {
           console.debug('AYNC_FTS: delete+insert - skip', entityName, instanceID)
         }
       } else {
         console.debug('AYNC_FTS: update', entityName, instanceID)
-        App.updateFTSIndex(entityName, instanceID)
+        if (ElasticApi.isElasticFtsEntity(entityName)) {
+          const elasticApi = new ElasticApi()
+          elasticApi.updateFTSIndex(entityName, instanceID)
+        } else {
+          App.updateFTSIndex(entityName, instanceID)
+        }
         operationCount++
       }
     })

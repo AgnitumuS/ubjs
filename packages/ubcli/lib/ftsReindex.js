@@ -63,6 +63,13 @@ module.exports = function ftsReindex (cfg) {
     console.error('Invalid command line cfg. See `>UB cmd/ftsReindex -help` for details')
   }
 
+  // if this Elastic fts index we should patch query params
+  const isElasticFts = conn.query({ entity: 'fts_elastic', method: 'isElasticFts', params: req })
+  if (isElasticFts) {
+    req.entity = 'fts_elastic'
+    req.method = 'ftsElasticReindex'
+  }
+
   try {
     console.time('Reindex time')
     conn.query(req)
