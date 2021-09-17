@@ -1,6 +1,6 @@
 {
   "name": "docs-adminui",
-  "version": "0.0.88",
+  "version": "0.0.89",
   "description": "Adminui components docs",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/docs-adminui",
   "private": true,
@@ -20,7 +20,7 @@
   "dependencies": {
     "@unitybase/adminui-pub": "^5.20.25",
     "@unitybase/adminui-reg": "^5.20.25",
-    "@unitybase/adminui-vue": "^5.20.24",
+    "@unitybase/adminui-vue": "^5.20.25",
     "@unitybase/cdn": "^5.20.25",
     "@unitybase/codemirror-full": "^1.3.0",
     "@unitybase/cs-shared": "^5.20.4",

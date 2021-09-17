@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.25] - 2021-09-17
+### Fixed
  - `USelectEntity` - fix the previous fix "for entities with dataHistory mixin added strike out + timer icon in case selected record is out of date"
 
 ## [5.20.24] - 2021-09-16
