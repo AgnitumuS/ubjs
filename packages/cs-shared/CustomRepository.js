@@ -553,7 +553,7 @@ UB.Repository('uba_user').attrs(['disabled','uPassword','COUNT([ID])'])
   groupBy (attr) {
     if (Array.isArray(attr)) {
       this.groupList = this.groupList.concat(attr)
-    } else if (_.isString(attr)) {
+    } else if (typeof attr === 'string') {
       this.groupList.push(attr)
     }
     return this
@@ -605,7 +605,6 @@ inst.run('select', repo.ubql())
    * @return {UBQL}
    */
   ubql () {
-    const orderCnt = this.orderList.length
     const req = {
       entity: this.entityName,
       method: this.method,
@@ -617,6 +616,7 @@ inst.run('select', repo.ubql())
     if (Object.keys(this.whereList).length) {
       req.whereList = this.whereList
     }
+    const orderCnt = this.orderList.length
     if (orderCnt > 0) {
       req.orderList = {}
       for (let i = 0; i < orderCnt; i++) {
@@ -632,8 +632,7 @@ inst.run('select', repo.ubql())
     if (this.joinAs.length) {
       req.joinAs = this.joinAs
     }
-    _.defaults(req, this.__misc) // apply misc
-
+    Object.assign(req, this.__misc) // apply misc - faster than _.defaults
     return req
   }
 
