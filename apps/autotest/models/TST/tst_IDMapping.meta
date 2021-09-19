@@ -63,6 +63,28 @@
       "caption": "User",
       "dataType": "Entity",
       "associatedEntity": "uba_user"
+    },
+    {
+      "name": "userName",
+      "caption": "UserName",
+      "dataType": "String",
+      "size": 100,
+      "mapping": [{
+          "name": "AnsiSQL",
+          "expressionType": "Expression",
+          "expression": "[user.name]"
+      }]
+    },
+    {
+      "name": "complexMap",
+      "caption": "UserName",
+      "dataType": "String",
+      "size": 100,
+      "mapping": [{
+        "name": "AnsiSQL",
+        "expressionType": "Expression",
+        "expression": "[rnd] + [rnd] + 1"
+      }]
     }
   ],
   "mapping": [{

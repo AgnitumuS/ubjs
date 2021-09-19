@@ -42,7 +42,20 @@ function getFieldExpression (attr, alias, tail) {
 }
 
 /**
- * Transform attributes chain into aliased SQL expression a.b.c -> A1.cMapping
+ * Transform UBQL expression into SQL expression [a.b] + 1 -> A1.b + 1
+ * Add missed aliases into aliases map.
+ * @param {UBEntity} entityFrom
+ * @param {string} expr
+ * @param {Object} aliases
+ * @param {string} aliasLetter
+ * @param {boolean} forFieldList is expression from fieldList - if such expression is not brecked - consider this is an attribute
+ */
+function parseExpression(entityFrom, expr, aliases, aliasLetter, forFieldList=false) {
+
+}
+/**
+ * Transform attributes chain into aliased SQL expression a.b.c -> A1.cMapping.
+ * Add missed aliases into aliases map.
  * @param {UBEntity} entityFrom
  * @param {string} attrExpr
  * @param {Object} aliases
@@ -107,10 +120,10 @@ function dummyBuilder (ubql, aliasLetter = 'A') {
 
     const openBrIdx = fi.indexOf('[')
     let attrStr
-    if (openBrIdx === -1) { // "ID" - only attribute name, most common case for field list
+    if (openBrIdx === -1) { // "attr1" - only attribute name, most common case for field list
       attrStr = fi
       fieldsParts.push(parseComplexAttr(e, attrStr, aliases, aliasLetter))
-    } else if ((openBrIdx === 0) && (fi.charAt(fi.length - 1) === ']')) { // "[ID]" - attribute wrapped in brackets
+    } else if ((openBrIdx === 0) && (fi.charAt(fi.length - 1) === ']')) { // "[attr1]" - attribute wrapped in brackets
       attrStr = fi.slice(1, -1)
       fieldsParts.push(parseComplexAttr(e, attrStr, aliases, aliasLetter))
     } else { // complex expression like 1) SUM([rnd] + 1); 2) [attr1] + [attr2] etc.
@@ -131,14 +144,14 @@ function dummyBuilder (ubql, aliasLetter = 'A') {
   }
 
   // FROM cause
-  // TODO - joinCondition
+  // TODO - joinCondition (move `from` after `where`)
   let a = aliases['']
-  q += ' FROM ' + ((a.entityTo.mapping && a.entityTo.mapping.selectName) || a.entityTo.name) + ' ' + a.alias
+  q += ' FROM ' + a.entityTo.dbSelectName + ' ' + a.alias
   for (const key in aliases) { // Object.entries is slow
     if (key === '') continue // empty string key is for root entity, already added above
     a = aliases[key]
     q += a.attrFrom.allowNull ? ' JOIN ' : ' LEFT JOIN ' // prefer short syntax. INNER JOIN === JOIN; LEFT OUTER JOIN === LEFT JOIN
-    q += ((a.entityTo.mapping && a.entityTo.mapping.selectName) || a.entityTo.name) + ' ' + a.alias
+    q += a.entityTo.dbSelectName + ' ' + a.alias
     q += ' ON ' + a.aliasFrom + '.' + a.attrFrom.name + ' = ' + a.alias + '.ID' // TODO attrFrom.associationAttr ? a.entityTo.attributes.associationAttr.
   }
 
@@ -176,7 +189,12 @@ console.log(e.attributes.rnd.mapping)
 
 const ITER = 10000
 let res = 0
-const query = new CustomRepository('tst_IDMapping').attrs(['ID', 'rnd', 'user.name']).orderBy('rnd').orderBy('ID').where('ID', '=', rnd10000()).misc({a: 1}).ubql()
+const query = new CustomRepository('tst_IDMapping')
+  .attrs(['ID', 'rnd', 'user.name', 'userName', 'complexMap'])
+  .where('ID', '=', rnd10000())
+  .where('userName', 'startsWith', 'a')
+  .orderBy('rnd').orderBy('ID')
+  .misc({a: 1}).ubql()
 console.log(JSON.stringify(query))
 
 console.log(dummyBuilder(query))
