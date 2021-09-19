@@ -57,11 +57,18 @@
           "expression": "random()"
         }
       ]
+    },
+    {
+      "name": "user",
+      "caption": "User",
+      "dataType": "Entity",
+      "associatedEntity": "uba_user"
     }
   ],
   "mapping": [{
       "name": "AnsiSQL",
-      "pkGenerator": "SEQ_UBMAIN_BY1"
+      "pkGenerator": "SEQ_UBMAIN_BY1",
+      "selectName": "TST_IDMAPPING"
   }],
   "mixins": {
     "mStorage": {
