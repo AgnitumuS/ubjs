@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - for extended domain info added `UBEntity.dbSelectName` property - a database object for select operations.
+   Either entity name or `mapping.selectName` if defined
 
 ### Changed
  - small speed-up of `CustomRepository.ubql()` by using `Object.assign` instead of `_.defaults`

@@ -602,6 +602,13 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
   }
 
   /**
+   * database object for select operations (for extended domain info)
+   * Either entity name or `mapping.selectName` if defined
+   * @type {string}
+   */
+  this.dbSelectName = (this.mapping && this.mapping.selectName) || this.name
+
+  /**
    * Optional dbKeys (for extended domain info)
    * @type {object}
    */
