@@ -19,6 +19,7 @@ const argv = base.argv
 function updateVersionsInDB (conn, modelsToMigrate, currentDBState) {
   const dbVersionIDs = currentDBState.dbVersionIDs || []
   const dbVersions = currentDBState.dbVersions || {}
+  const now = new Date()
   const insOrUpdateVersion = function (m) {
     const upToDateVersion = normalizeVersion(m.version)
     if (!dbVersionIDs[m.name]) {
@@ -36,7 +37,8 @@ function updateVersionsInDB (conn, modelsToMigrate, currentDBState) {
         method: 'update',
         execParams: {
           ID: dbVersionIDs[m.name],
-          version: upToDateVersion
+          version: upToDateVersion,
+          appliedAt: now
         }
       })
     }
