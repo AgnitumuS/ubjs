@@ -39,9 +39,11 @@ const iso8601ParseAsDate = require('./LocalDataStore').iso8601ParseAsDate
  * @param {object} domainInfo.entityMethods entities methods access rights for current user
  * @param {object} domainInfo.models information about domain models
  * @param {object} domainInfo.i18n entities localization to current user language
+ * @param {boolean} [isExtended=false] Extended domain info.
+ *   Contains additional database and security objects wht must not be available on client)
  * @class
  */
-function UBDomain (domainInfo) {
+function UBDomain (domainInfo, isExtended = false) {
   const me = this
   const entityCodes = Object.keys(domainInfo.domain)
   const isV4API = (typeof domainInfo.entityMethods === 'undefined')
@@ -104,6 +106,10 @@ function UBDomain (domainInfo) {
     }
   }
 
+  if (isExtended) { // prepare expression mapping for UBQL builder
+    prepareAttributesDbExpression(me.entities)
+  }
+
   /**
    * Array of models, sorted by the order of loading
    * @member {Array<UBModel>}
@@ -135,6 +141,25 @@ function UBDomain (domainInfo) {
   this.customerModels = domainInfo.customerModels ? domainInfo.customerModels.split(':') : []
 }
 
+/**
+ * @param {Object<string, UBEntity>} allEntities
+ */
+function prepareAttributesDbExpression(allEntities) {
+  //!
+}
+/**
+ * Add `dbExpression`, `dbExpressionIsSimple` for all attributes.
+ * For attributes without mapping or mapped to field contains table field name and dbExpressionIsSimple=true,
+ * for `expression` mapping - an array of expression parts, dbExpressionIsSimple=false
+ * For non-simple expressions `dbExpressionFlags` array contains `true` for "attribute expression" or `false` for other substrings
+ * @param {UBEntityAttribute} attr
+ * @param {Object<string, UBEntity>} allEntities
+ * @param {UBEntityAttribute} startsWith Initial attribute (for self-circle check)
+ * @private
+ */
+function prepareDbExpression(e, attr, allEntities, startsWith) {
+
+}
 /**
  * Check all provided entity methods are accessible via RLS.
  *

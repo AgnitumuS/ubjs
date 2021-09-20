@@ -133,7 +133,7 @@ function SyncConnection (options) {
         userName: this.userLogin(),
         extended: isExtended || undefined
       })
-      _domain = new UBDomain(domainData)
+      _domain = new UBDomain(domainData, isExtended)
       this._cachedDomainIsExtended = isExtended
     }
     return _domain
