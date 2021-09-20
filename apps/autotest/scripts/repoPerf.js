@@ -51,7 +51,7 @@ function getFieldExpression (attr, alias, tail) {
  * @param {boolean} forFieldList is expression from fieldList - if such expression is not brecked - consider this is an attribute
  */
 function parseExpression(entityFrom, expr, aliases, aliasLetter, forFieldList=false) {
-
+  рекурсивно парсить ? - см complexMap
 }
 /**
  * Transform attributes chain into aliased SQL expression a.b.c -> A1.cMapping.

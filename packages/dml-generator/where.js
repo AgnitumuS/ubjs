@@ -16,10 +16,12 @@ class WhereItem extends CustomItem {
     this.params = params
     // todo replace {master} macros
   }
+
   _preparePositionParameterText () {
     // todo for oracle date casting
     return '?'
   }
+
   get sql () {
     if (!this._sql) {
       this._sql = this._sqlInternal()
@@ -120,24 +122,24 @@ class WhereItemMatch extends WhereItem {
   // todo
 }
 const whereItemClassesByCondition = {
-  'custom': WhereItemCustom,
-  'equal': WhereItemEqual,
-  'notequal': WhereItemEqual,
-  'more': WhereItemCompare,
-  'moreequal': WhereItemCompare,
-  'less': WhereItemCompare,
-  'lesslqual': WhereItemCompare,
+  custom: WhereItemCustom,
+  equal: WhereItemEqual,
+  notequal: WhereItemEqual,
+  more: WhereItemCompare,
+  moreequal: WhereItemCompare,
+  less: WhereItemCompare,
+  lesslqual: WhereItemCompare,
   // 'between': WhereItemBetween,
-  'in': WhereItemIn,
-  'notin': WhereItemIn,
-  'subquery': WhereItemSubQuery,
-  'isnull': WhereItemNull,
-  'notisnull': WhereItemNull,
-  'like': WhereItemLike,
-  'notlike': WhereItemLike,
-  'startwith': WhereItemLike,
-  'notstartwith': WhereItemLike,
-  'match': WhereItemMatch
+  in: WhereItemIn,
+  notin: WhereItemIn,
+  subquery: WhereItemSubQuery,
+  isnull: WhereItemNull,
+  notisnull: WhereItemNull,
+  like: WhereItemLike,
+  notlike: WhereItemLike,
+  startwith: WhereItemLike,
+  notstartwith: WhereItemLike,
+  match: WhereItemMatch
 }
 const reLogicalPredicate = /(\[[^\]]*])/g
 const openBracketCode = '['.charCodeAt(0)
@@ -167,6 +169,7 @@ class LogicalPredicate {
     }
     // this.sql = parts.join('')
   }
+
   get sql () {
     for (let i = 0; i < this.parts.length; i++) {
       const part = this.parts[i]
@@ -185,13 +188,14 @@ class LogicalPredicates {
    */
   constructor (whereItems, logicalPredicates) {
     this.items = []
-    for (let logicalPredicateExpression of logicalPredicates) {
+    for (const logicalPredicateExpression of logicalPredicates) {
       this.items.push((new LogicalPredicate(whereItems, logicalPredicateExpression)))
     }
   }
+
   get sql () {
-    let res = []
-    for (let item of this.items) {
+    const res = []
+    for (const item of this.items) {
       res.push(item.sql)
     }
     return res.join(' AND ')
@@ -205,13 +209,13 @@ class WhereList {
    * @param {Array} params
    */
   constructor (ubql, dataSource, isExternal, params) {
-    const {whereList, logicalPredicates, joinAs} = ubql
+    const { whereList, logicalPredicates, joinAs } = ubql
     this.items = new Map()
     if (!whereList) {
       return
     }
     const itemNames = Object.keys(whereList)
-    for (let itemName of itemNames) {
+    for (const itemName of itemNames) {
       const item = whereList[itemName]
       // const whereItem = this.items[itemName] = new WhereItem(item)
       this.items.set(itemName,
@@ -219,7 +223,7 @@ class WhereList {
       )
     }
     if (joinAs) {
-      for (let joinAsPredicate of joinAs) {
+      for (const joinAsPredicate of joinAs) {
         /**
          * @type WhereItem
          */
@@ -234,9 +238,10 @@ class WhereList {
       this.logicalPredicates = new LogicalPredicates(this.items, logicalPredicates)
     }
   }
+
   get sql () {
     const res = []
-    for (let [, item] of this.items) {
+    for (const [, item] of this.items) {
       // todo may be resolve by class
       if (item.expression && (item.condition !== 'subquery') && !item.inLogicalPredicate && !item.inJoinAsPredicate) {
         res.push(item.sql)
