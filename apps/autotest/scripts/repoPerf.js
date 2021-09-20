@@ -51,7 +51,7 @@ function getFieldExpression (attr, alias, tail) {
  * @param {boolean} forFieldList is expression from fieldList - if such expression is not brecked - consider this is an attribute
  */
 function parseExpression(entityFrom, expr, aliases, aliasLetter, forFieldList=false) {
-  рекурсивно парсить ? - см complexMap
+  //рекурсивно парсить ? - см complexMap
 }
 /**
  * Transform attributes chain into aliased SQL expression a.b.c -> A1.cMapping.
@@ -63,6 +63,8 @@ function parseExpression(entityFrom, expr, aliases, aliasLetter, forFieldList=fa
  */
 function parseComplexAttr (entityFrom, attrExpr, aliases, aliasLetter) {
   if (attrExpr.indexOf('.') === -1) { // simple attribute
+    const attr = entityFrom.attributes[attrExpr]
+    if (!attr) throw new Error(`UBQL: Unknown attribute ${entityFrom.name}.${attrExpr}`)
     return getFieldExpression(entityFrom.attributes[attrExpr], aliasLetter, attrExpr)
   }
   const aPath = attrExpr.split('.')
@@ -98,7 +100,7 @@ Table join tree
 'entityattr2' -> A3
 'parentID@org_department' for parentID.code@org_department
  */
-function dummyBuilder (ubql, aliasLetter = 'A') {
+function dummyBuilder (ubql, aliasLetter = 'A', isExternal=false) {
   const e = App.domainInfo.get(ubql.entity)
   /**
    * table aliases
@@ -112,6 +114,26 @@ function dummyBuilder (ubql, aliasLetter = 'A') {
       entityTo: e
     }
   }
+  const fieldList = ubql.fieldList
+
+  // asterisk
+  const fL = ubql.fieldList.length
+  if (ubql.fieldList[0] === '*') {
+    if (isExternal && (fL !== 1)) {
+      throw new Error('UBQL: for client side UBQL mixing of "*" and attribute names in fieldList is not allowed')
+    }
+    if (fL === 1) { // add all attributes without checking for duplicates
+      ubql.fieldList = Object.keys(e.attributes)
+    } else {
+      ubql.fieldList.shift() // remove *
+      // as in native - add attributes to the end of passed tail
+      const existed = new Set(ubql.fieldList)
+      for (const attr in e.attributes) {
+        if (!existed.has(attr)) ubql.fieldList.push(attr)
+      }
+    }
+  }
+
   let q = 'SELECT '
   const fieldsParts = []
   // SELECT cause
@@ -205,6 +227,21 @@ for (let i = 0; i < ITER; i++) {
   res += sql.length
 }
 console.timeEnd('dummy')
+
+const comlpexExprQ = new CustomRepository('tst_ubqlMaster').attrs('*').ubql()
+// SELECT A01.C_ID,A01.C_CODE,A01.user,(length(A01.C_CODE) + length(A02.name) + length(C_CODE)) AS C1,(A02.name) AS C2,(length(A01.C_CODE) + length(A02.name) + length(C_CODE) + length(A01.C_CODE) + length(A02.name) + length(C_CODE) + 1) AS C3  FROM TST_IDMAPPING A01  LEFT JOIN uba_user A02 ON A02.ID=A01.user
+console.log('comlpexExprQ:', dummyBuilder(comlpexExprQ))
+
+// link to expression what uses only attributes
+const complexExprLink = new CustomRepository('tst_ubqlDetail').attrs('master', 'detailCode', 'master.codeCalc').ubql()
+// SELECT (length(A02.C_CODE) + length(A03.name) + length(C_CODE)) AS C1  FROM tst_ubqlDetail A01  LEFT JOIN TST_IDMAPPING A02 ON A02.C_ID=A01.master  LEFT JOIN uba_user A03 ON A03.ID=A02.user
+console.log('complexExprLink:', dummyBuilder(complexExprLink))
+
+// link to expression what uses attr mapped on expression - NOT supported in native
+const complexExprLinkComplex = new CustomRepository('tst_ubqlDetail').attrs('master.complexMap').ubql()
+console.log('complexExprLinkComplex:', dummyBuilder(complexExprLinkComplex))
+
+
 
 // console.time('CustomRepository')
 // for (let i = 0; i < 500000; i++) {

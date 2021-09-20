@@ -1,0 +1,41 @@
+{
+  "caption": "UBQL test detail",
+  "description": "Test for UBQL->SQL generation. Detail entity",
+  "connectionName": "",
+  "descriptionAttribute": "detailCode",
+  "documentation": "",
+  "attributes": [
+    {
+      "name": "master",
+      "caption": "master",
+      "dataType": "Entity",
+      "associatedEntity": "tst_ubqlMaster"
+    },
+    {
+      "name": "detailCode",
+      "dataType": "String",
+      "size": 32,
+      "caption": "detail code",
+      "allowNull": false
+    },
+    {
+      "name": "detailCalc",
+      "dataType": "BigInt",
+      "caption": "mapping to linked",
+      "description": "mapping to linked entity complex expression attribute",
+      "mapping": [
+        {
+          "name": "AnsiSQL",
+          "expressionType": "Expression",
+          "expression": "[master.complexMap] + 1"
+        }
+      ]
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": false,
+      "safeDelete": false
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "caption": "UBQL test master",
+  "description": "Test for UBQL->SQL generation. Master entity",
+  "connectionName": "",
+  "descriptionAttribute": "code",
+  "documentation": "",
+  "attributes": [
+    {
+      "name": "ID",
+      "caption": "ID",
+      "dataType": "BigInt",
+      "allowNull": false,
+      "isUnique": false,
+      "mapping": [
+        {
+          "name": "AnsiSQL",
+          "expression": "C_ID"
+        }
+      ]
+    },
+    {
+      "name": "code",
+      "dataType": "String",
+      "size": 32,
+      "caption": "Code",
+      "allowNull": false,
+      "mapping": [
+        {
+          "name": "AnsiSQL",
+          "expressionType": "Field",
+          "expression": "C_CODE"
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "caption": "User",
+      "dataType": "Entity",
+      "associatedEntity": "uba_user"
+    },
+    {
+      "name": "codeCalc",
+      "dataType": "BigInt",
+      "caption": "expr local attr",
+      "description": "Test mapping to expression based on entity local attributes",
+      "mapping": [
+        {
+          "name": "AnsiSQL",
+          "expressionType": "Expression",
+          "expression": "length([code]) + length([user.name]) + length(C_CODE)"
+        },
+        {
+          "name": "MSSQL",
+          "expressionType": "Expression",
+          "expression": "len([code]) + len([user.name]) + len(C_CODE)",
+        }
+      ]
+    },
+    {
+      "name": "userName",
+      "caption": "UserNameCalc",
+      "description": "Test mapping to entity chain",
+      "dataType": "String",
+      "size": 100,
+      "mapping": [{
+        "name": "AnsiSQL",
+        "expressionType": "Expression",
+        "expression": "[user.name]"
+      }]
+    },
+    {
+      "name": "complexMap",
+      "caption": "UserName",
+      "description": "Test mapping to local attribute what mapped to expression",
+      "dataType": "String",
+      "size": 100,
+      "mapping": [{
+        "name": "AnsiSQL",
+        "expressionType": "Expression",
+        "expression": "[codeCalc] + [codeCalc] + 1"
+      }]
+    }
+  ],
+  "mapping": [{
+    "name": "AnsiSQL",
+    "pkGenerator": "SEQ_UBMAIN_BY1",
+    "selectName": "TST_IDMAPPING"
+  }],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": false,
+      "safeDelete": false
+    }
+  }
+}
