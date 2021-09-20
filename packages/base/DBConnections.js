@@ -42,7 +42,16 @@ const PG_SAVEPOINT_ROLLBACK = 'ROLLBACK TO ubapp_tmp_batch_sp'
  */
 
 /**
- * Class for database access. Databases are defined in config file
+ * @classdesc
+ * Direct database access to databases defined in the config file.
+ * Inside a server thread class instances are available using {@link App.dbConnections App.dbConnections}
+ * @example
+
+ const mainConn = App.dbConnections['main']
+ mainConn.exec('insert into table1(a, b) values(:a:, :b:)', {a: 1, b: 2})
+ mainConn.commit()
+
+ * @class DBConnection
  */
 class DBConnection {
   /**
@@ -63,6 +72,7 @@ class DBConnection {
     Object.defineProperty(this, 'config', { enumerable: true, value: cfg })
     this.isPostgreSQL = (this.config.dialect === 'PostgreSQL')
   }
+
   /**
    * Is database in transaction
    * @returns {boolean}
@@ -211,9 +221,9 @@ class DBConnection {
         // MSSQL ALTER AUTHORIZATION ON database::testdb
         } else if (ch === chLRoundBrac) {
           // syn inline :(value):
-          let inlineParamValue, paramStart, paramEnd
+          let inlineParamValue, paramEnd
           ch = sql.charCodeAt(++i)
-          paramStart = i
+          const paramStart = i
           if ((ch === chQuote) || (ch === chDblQuote)) {
             const quote = ch
             let curPosition = i + 1
@@ -371,6 +381,10 @@ function createDBConnectionPool (connectionsConfig, useCached = true) {
   return connections
 }
 
+/**
+ * Release previously created connection pool
+ * @protected
+ */
 function releaseDBConnectionPool () {
   binding.releaseConnections()
   __cachedPool = undefined
