@@ -167,8 +167,22 @@ class DBConnection {
    * For Postgres wrap a func call into temporary savepoint.
    * In case func throws savepoint is rollback'ed and error is re-trowed, otherwise checkpoint is released.
    * For other RDBMS execute func as is.
+   * Return a func result
    *
-   * Return a func result.
+   * @example
+
+function insertionWhatMayFail () {
+  let eStore = UB.DataStore('ubm_enum')
+  eStore.run('insert', { execParams: { eGroup: 'tst', code: '1', name: 'test1' } })
+}
+
+let db = App.dbConnections[App.domainInfo.entities.ubm_enum.connectionName]
+try {
+  db.savepointWrap(insertionWhatMayFail)
+} catch (e) {
+  console.log('insertion failure inside savepoint')
+}
+
    * @param {function} func
    * @return {*}
    */

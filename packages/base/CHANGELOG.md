@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - jsdoc for DBConnection fixed - now it appears in generated HTML documentation
+ - jsdoc for DBConnection fixed - now it appears in generated HTML documentation. Added example for `DBConnection.savepointWrap` 
 
 ## [5.20.11] - 2021-09-08
 ## [5.20.10] - 2021-08-31
