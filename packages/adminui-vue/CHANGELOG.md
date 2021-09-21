@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTableEntity`: remove excessive control scrollbar after adding of the slot for the left sidebar
 
 ## [5.20.25] - 2021-09-17
 ### Fixed

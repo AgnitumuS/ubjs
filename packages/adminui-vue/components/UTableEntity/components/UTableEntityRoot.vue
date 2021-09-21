@@ -908,7 +908,7 @@ export default {
 
 .u-table-entity__body {
   display: flex;
-  height: 100%;
+  overflow: auto;
 }
 
 .u-table-entity__body__content {
