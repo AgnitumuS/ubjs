@@ -106,8 +106,8 @@ function UBDomain (domainInfo, isExtended = false) {
     }
   }
 
-  if (isExtended) { // prepare expression mapping for UBQL builder
-    prepareAttributesDbExpression(me.entities)
+  if (isExtended) { // calculate expression mapping for UBQL builder
+    calculateDbExpression4Attrs(me.entities)
   }
 
   /**
@@ -141,12 +141,46 @@ function UBDomain (domainInfo, isExtended = false) {
   this.customerModels = domainInfo.customerModels ? domainInfo.customerModels.split(':') : []
 }
 
+const EXPR_SPLIT = /(\[[^\]]*])/g
+const OPEN_BRACKET = '['.charCodeAt(0)
+const CLOSE_BRACKET = ']'.charCodeAt(0)
+
 /**
+ * "[firm.code] || [name] + 1" ->  ["firm.code", " || ", "name", " + 1"]
+ * @param {string} expr
+ */
+UBDomain.splitExpression = function (expr) {
+  const parts = expr.split(EXPR_SPLIT).filter(i => !!i)
+  const flags = []
+  for (let i = 0, L = parts.length; i < L; i++) {
+    const p = parts[i]
+    const pL = p.length
+    if ((pL > 2) && (p.charCodeAt(0) === OPEN_BRACKET) && (p.charCodeAt(pL - 1) === CLOSE_BRACKET)) {
+      flags.push(true)
+      parts[i] = p.slice(1, -1)
+    } else {
+      flags.push(false)
+    }
+  }
+  return [parts, flags]
+}
+
+/**
+ * Loop through all attributes and calculate a dbExpression
  * @param {Object<string, UBEntity>} allEntities
  */
-function prepareAttributesDbExpression(allEntities) {
-  //!
+function calculateDbExpression4Attrs (allEntities) {
+  for (const entityCode in allEntities) {
+    const e = allEntities[entityCode]
+    for (const attrCode in e.attributes) {
+      const attr = e.attributes[attrCode]
+      if (!attr.dbExpression) { // not calculated yed by recursive calls
+        calculateDbExpression(attr, allEntities, attr)
+      }
+    }
+  }
 }
+
 /**
  * Add `dbExpression`, `dbExpressionIsSimple` for all attributes.
  * For attributes without mapping or mapped to field contains table field name and dbExpressionIsSimple=true,
@@ -154,11 +188,26 @@ function prepareAttributesDbExpression(allEntities) {
  * For non-simple expressions `dbExpressionFlags` array contains `true` for "attribute expression" or `false` for other substrings
  * @param {UBEntityAttribute} attr
  * @param {Object<string, UBEntity>} allEntities
- * @param {UBEntityAttribute} startsWith Initial attribute (for self-circle check)
+ * @param {UBEntityAttribute} initialAttr Initial attribute (for self-circle check)
+ * @param {number} [recursionDepth=0]
  * @private
  */
-function prepareDbExpression(e, attr, allEntities, startsWith) {
-
+function calculateDbExpression (attr, allEntities, initialAttr, recursionDepth = 0) {
+  if (recursionDepth > 0 && attr === initialAttr) {
+    throw new Error(`Self-circle expression mapping for attribute '${attr.entity.code}.${attr.code}'. Invalid expression is - '${attr.mapping}'`)
+  }
+  if (attr.dbExpression !== undefined) return // already calculated
+  if (!attr.mapping) { // no mapping = attr code is field name
+    attr.dbExpression = attr.code
+    attr.dbExpressionIsSimple = true
+  } else if (attr.mapping.expressionType === UBDomain.ExpressionType.Field) { // mapped to table field
+    attr.dbExpression = attr.mapping.expression
+    attr.dbExpressionIsSimple = true
+    тут потеряем алиасы ?
+  } else { // expression
+    ;[attr.dbExpression, attr.dbExpressionFlags] = UBDomain.splitExpression(attr.mapping.expression)
+    if ((attr.dbExpression.length === 1) && ())
+  }
 }
 /**
  * Check all provided entity methods are accessible via RLS.
@@ -627,7 +676,7 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
   }
 
   /**
-   * database object for select operations (for extended domain info)
+   * database object (table or view name) for select operations (for extended domain info)
    * Either entity name or `mapping.selectName` if defined
    * @type {string}
    */
@@ -1478,6 +1527,35 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
       })
     }
   }
+
+  /**
+   * For extended domain info.
+   * `true` in case ,
+   * `false` if mapped to expression
+   * @type {boolean}
+   */
+  this.dbExpressionIsSimple = true
+  /**
+   * For extended domain info.
+   * If attribute is mapped to the database table field - field name,
+   * If mapped to expression - array of expression parts, each part
+   *   - either lexeme (corresponding dbExpressionFlags item === false)
+   *   - or attributes chain (corresponding dbExpressionFlags item === true)
+   *
+   *  For example for attribute mapped to expression
+   *    "[firm.code] || [name] + 1"
+   *  dbExpression is
+   *    ["firm.code", " || ", "name", " + 1"]
+   *  dbExpressionFlags is
+   *    [true,     false,  true,   false]
+   * @type {string|Array<string>}
+   */
+  this.dbExpression = undefined
+  /**
+   * For extended domain info.
+   * @type {array<boolean>}
+   */
+  this.dbExpressionFlags = undefined
 
   /**
    * @property {string} physicalDataType

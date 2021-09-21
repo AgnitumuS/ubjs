@@ -19,13 +19,6 @@ global.App = {
   domainInfo: conn.getDomainInfo(true)
 }
 
-// /(\[[^\]]*])/g
-// "[collegiateBodyID.name] || ' - №' || (select count(sbm.ID) + 1 from bee_meeting sbm where sbm.collegiateBodyID = [collegiateBodyID] and sbm.startTime < [startTime] and mi_deleteDate >= to_date('31.12.9999', 'dd.mm.yyyy')) || ' - ' || to_char([startTime], 'dd.mm.yyyy') || ':'"
-const EXPR_SPLIT = /(\[[^\]]*])/g
-function parseExpression(e) {
-  const parts = e.split(EXPR_SPLIT)
-}
-
 function getFieldExpression (attr, alias, tail) {
   // todo - depends on DB
   if (attr.dataType === UBDomain.ubDataTypes.Json) {
