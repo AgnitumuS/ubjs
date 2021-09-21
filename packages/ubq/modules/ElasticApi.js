@@ -1,68 +1,75 @@
-const ElasticHttpClient = require('./ElasticHttpClient')
-const ElasticDocument = require('./ElasticDocument')
-const fs = require('fs')
+const ElasticUpdate = require('./ElasticUpdate')
 const UB = require('@unitybase/ub')
+const ElasticDocument = require('./ElasticDocument')
 
-class ElasticApi extends ElasticHttpClient {
-  constructor (serverName, indexName, id) {
-    const URL = `${serverName}/${indexName}/_doc/${id}?pipeline=attachment`
-    super(URL)
+class ElasticApi {
+  constructor () {
+    this.defaultConnection = 'ftsDefault'
+  }
+
+  _reindexElement (entityName, id) {
+    const fts = UB.App.domainInfo.get(entityName).mixins.fts
+    if (fts.dataProvider === 'Mixin') {
+      const attrs = fts.indexedAttributes
+      attrs.push('ID')
+      attrs.push(fts.dateAttribute)
+      const element = UB.Repository(entityName)
+        .attrs(attrs)
+        .where('ID', '=', id)
+        .selectAsObject()
+      if (element) {
+        const elasticUpdate = new ElasticUpdate(entityName, id)
+        const elasticDocument = new ElasticDocument()
+        elasticDocument.fillFromObjectAndFts(element, fts)
+        elasticUpdate._update(elasticDocument)
+      }
+    }
   }
 
   _reindexEntity (entityName) {
-    const rows = UB.Repository(entityName)
-      .attrs(['ID', 'queueCode', 'msgCmd'])
-      .limit(1000)
-      .select()
-    for (const row of rows) {
-      this._update(entityName, row.ID)
+    const fts = UB.App.domainInfo.get(entityName).mixins.fts
+    if (fts.dataProvider === 'Mixin') {
+      const attrs = fts.indexedAttributes
+      attrs.push('ID')
+      attrs.push(fts.dateAttribute)
+      const elements = UB.Repository(entityName)
+        .attrs(attrs)
+        .limit(1000)
+        .select()
+      for (const element of elements) {
+        const elasticUpdate = new ElasticUpdate(entityName, element.ID)
+        const elasticDocument = new ElasticDocument()
+        elasticDocument.fillFromObjectAndFts(element, fts)
+        elasticUpdate._update(elasticDocument)
+      }
     }
   }
 
-  _reindexAll (connectionName) {
-    const entityInfo = this._getEntityDomainInformation(connectionName)
-    for (const entity of entityInfo) {
-      this._reindexEntity(entity)
+  _reindexConnection (connectionName) {
+    const entities = UB.App.domainInfo.entities
+    for (const entityName of Object.keys(entities)) {
+      const entity = entities[entityName]
+      const fts = entity.mixins.fts
+      // fts mixin is exist and connectionName is exist and this connection is Elastic and it's currently indexed or
+      // fts minix exists and connection is default and default connection is Elastic and it's currently indexed
+      if (fts && ((fts.connectionName && ElasticApi.isElasticConnection(fts.connectionName) && fts.connectionName === connectionName) ||
+        (!fts.connectionName && ElasticApi.isElasticConnection(this.defaultConnection) && this.defaultConnection === connectionName))) {
+        this._reindexEntity(entityName)
+      }
     }
-  }
-
-  _updateFile (index, fileName) {
-    const fileContents = fs.readFileSync(fileName)
-    const elasticDocument = new ElasticDocument()
-    elasticDocument.date = '01.01.2021'
-    elasticDocument.data = Buffer.from(fileContents).toString('base64')
-    elasticDocument.rights = [111, 21, 321]
-    elasticDocument.documentName = 'Отчет'
-    elasticDocument.fileName = fileName
-    elasticDocument.author = 'Иванов И.И,'
-    this._jsonWithResult('Index file to Elastic', 'PUT', '', elasticDocument)
-  }
-
-  _update (entityName, id) {
-    const elasticDocument = new ElasticDocument()
-    elasticDocument.date = '01.01.2021'
-    elasticDocument.data = Buffer.from('test').toString('base64')
-    elasticDocument.rights = [111, 21, 321]
-    elasticDocument.documentName = 'Отчет'
-    elasticDocument.fileName = 'test'
-    elasticDocument.author = 'Иванов И.И,'
-    this._jsonWithResult('Index document to Elastic', 'PUT', '', elasticDocument)
   }
 
   deleteFromFTSIndex (entityName, id) {
-    this._jsonWithResult('Delete document in the Elastic', 'DELETE', '')
+    const elasticUpdate = new ElasticUpdate(entityName, id)
+    elasticUpdate._delete()
   }
 
   updateFTSIndex (entityName, id) {
-    this._update(entityName, id)
-  }
-
-  static _getEntityDomainInformation (entityName) {
-    return UB.App.domainInfo.get(entityName)
+    this._reindexElement(entityName, id)
   }
 
   static isElasticFtsEntity (entityName) {
-    const entityInfo = this._getEntityDomainInformation(entityName)
+    const entityInfo = UB.App.domainInfo.get(entityName)
     if (entityInfo) {
       return true
     } else {
@@ -71,21 +78,20 @@ class ElasticApi extends ElasticHttpClient {
   }
 
   static isElasticConnection (connectionName) {
-    const entityInfo = true// this.(connectionName)
-    if (entityInfo) {
+    const connectionInfo = UB.App.domainInfo.connections.find(el => el.name === connectionName)
+    if (connectionInfo.dialect === 'Elastic') {
       return true
     } else {
       return false
     }
   }
 
-  ftsElasticReindex (req) {
-    const entityReindex = JSON.parse(req).entity
-    if (entityReindex) {
-      this._reindexAll()
-    } else {
-      this._reindexEntity(entityReindex)
-    }
+  ftsElasticReindexEntity (entityName) {
+    this._reindexEntity(entityName)
+  }
+
+  ftsElasticReindexConnection (connectionName) {
+    this._reindexConnection(connectionName)
   }
 }
 

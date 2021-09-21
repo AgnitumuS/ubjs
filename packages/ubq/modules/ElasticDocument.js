@@ -1,13 +1,19 @@
 class ElasticDocument {
-  constructor () {
-    this.date = '01.01.2021'
-    this.data = null
-    this.rights = [111, 21, 321]
-    this.documentName = 'Отчет'
-    this.fileName = ''
-    this.author = 'Иванов И.И,'
-    this.entity = ''
+  constructor ({ date, data, rights, documentName, fileName, author, entity } = {}) {
+    this.date = date
+    this.data = data
+    this.rights = rights
+    this.documentName = documentName
+    this.fileName = fileName
+    this.author = author
+    this.entity = entity
     return this
+  }
+
+  fillFromObjectAndFts(obj, { dateElement, indexedElements } ) {
+    this.date = obj[dateElement]
+    const indexedElements = fts.
+    this.data = objdata
   }
 }
 module.exports = ElasticDocument

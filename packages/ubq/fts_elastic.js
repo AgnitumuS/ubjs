@@ -32,8 +32,13 @@ me.entity.addMethod('isElasticFts')
  */
 me.ftsElasticReindex = function (ctx) {
   ctx.dataStore.currentDataName = 'ftsElasticReindex'
+  const params = ctx.mParams.params
   const elasticApi = new ElasticApi()
-  elasticApi.ftsElasticReindex(ctx.mParams.params)
+  if (params.entity.substring(0, 4) === 'fts_') {
+    return elasticApi.ftsElasticReindexConnection(params.entity.substring(4))
+  } else {
+    return elasticApi.ftsElasticReindexEntity(params.entity.entity)
+  }
 }
 
 me.entity.addMethod('ftsElasticReindex')

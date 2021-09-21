@@ -66,6 +66,7 @@ module.exports = function ftsReindex (cfg) {
   // if this Elastic fts index we should patch query params
   const isElasticFts = conn.query({ entity: 'fts_elastic', method: 'isElasticFts', params: req })
   if (isElasticFts) {
+    req.params = Object.assign({}, req)
     req.entity = 'fts_elastic'
     req.method = 'ftsElasticReindex'
   }
