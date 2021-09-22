@@ -10,10 +10,18 @@ class ElasticDocument {
     return this
   }
 
-  fillFromObjectAndFts(obj, { dateElement, indexedElements } ) {
-    this.date = obj[dateElement]
-    const indexedElements = fts.
-    this.data = objdata
+  fillFromObjectAndFts (obj, { dateAttribute, indexedAttributes, descriptionAttribute }) {
+    this.date = obj[dateAttribute]
+    this.documentName = obj[descriptionAttribute]
+    this.data = indexedAttributes.map(el => obj[el]).join(' ')
+  }
+
+  static getSelectFieldsFromFts ({ dateAttribute, indexedAttributes, descriptionAttribute }) {
+    const selectFields = [...indexedAttributes]
+    selectFields.push('ID')
+    selectFields.push(dateAttribute)
+    selectFields.push(descriptionAttribute)
+    return [...new Set(selectFields)].filter(el => el !== undefined)
   }
 }
 module.exports = ElasticDocument

@@ -19,7 +19,7 @@ class ElasticHttpClient {
    */
   constructor (options) {
     // remove trailing slashes
-    this._baserUrl = options.url.replace(/\/$/, '')
+    this._baseUrl = options.url.replace(/\/$/, '')
     this._options = Object.assign(
       {
         sendTimeout: 30000,
@@ -107,9 +107,9 @@ class ElasticHttpClient {
   _log (url, requestData) {
     if (requestData) {
       // to prevent big string output we replace it
-      if (requestData.data) {
-        requestData.data = 'file in Base64 enc'
-      }
+      // if (requestData.data) {
+      //   requestData.data = 'file in Base64 enc'
+      // }
       console.log('Request:', url, requestData)
     } else {
       console.log('Request:', url)
@@ -190,7 +190,7 @@ class ElasticHttpClient {
     }
 
     try {
-      const responseData = JSON.parse(response.json())
+      const responseData = JSON.parse(response.read())
       return `performed with result:${responseData.result} index: ${responseData._index} type: ${responseData._type}
     id: ${responseData._id} version: ${responseData._version}`
     } catch (e) {

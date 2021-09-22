@@ -10,18 +10,16 @@ class ElasticApi {
   _reindexElement (entityName, id) {
     const fts = UB.App.domainInfo.get(entityName).mixins.fts
     if (fts.dataProvider === 'Mixin') {
-      const attrs = fts.indexedAttributes
-      attrs.push('ID')
-      attrs.push(fts.dateAttribute)
+      const attrs = ElasticDocument.getSelectFieldsFromFts(fts)
       const element = UB.Repository(entityName)
         .attrs(attrs)
         .where('ID', '=', id)
         .selectAsObject()
       if (element) {
-        const elasticUpdate = new ElasticUpdate(entityName, id)
+        const elasticUpdate = new ElasticUpdate(entityName)
         const elasticDocument = new ElasticDocument()
         elasticDocument.fillFromObjectAndFts(element, fts)
-        elasticUpdate._update(elasticDocument)
+        elasticUpdate._update(elasticDocument, element.ID)
       }
     }
   }
@@ -29,18 +27,16 @@ class ElasticApi {
   _reindexEntity (entityName) {
     const fts = UB.App.domainInfo.get(entityName).mixins.fts
     if (fts.dataProvider === 'Mixin') {
-      const attrs = fts.indexedAttributes
-      attrs.push('ID')
-      attrs.push(fts.dateAttribute)
+      const attrs = ElasticDocument.getSelectFieldsFromFts(fts)
       const elements = UB.Repository(entityName)
         .attrs(attrs)
         .limit(1000)
-        .select()
+        .selectAsObject()
+      const elasticUpdate = new ElasticUpdate(entityName)
       for (const element of elements) {
-        const elasticUpdate = new ElasticUpdate(entityName, element.ID)
         const elasticDocument = new ElasticDocument()
         elasticDocument.fillFromObjectAndFts(element, fts)
-        elasticUpdate._update(elasticDocument)
+        elasticUpdate._update(elasticDocument, element.ID)
       }
     }
   }
@@ -60,8 +56,8 @@ class ElasticApi {
   }
 
   deleteFromFTSIndex (entityName, id) {
-    const elasticUpdate = new ElasticUpdate(entityName, id)
-    elasticUpdate._delete()
+    const elasticUpdate = new ElasticUpdate(entityName)
+    elasticUpdate._delete(id)
   }
 
   updateFTSIndex (entityName, id) {

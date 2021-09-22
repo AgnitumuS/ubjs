@@ -41,6 +41,7 @@ class Elastic {
     }
     this.dbConnectionConfig = dbConnectionConfig
     this.dbConnectionConfig.serverName = 'http://10.211.55.2:9200'
+    debugger
     this.databaseName = `ub-index-${dbConnectionConfig.name.toLowerCase()}`
     this.conn = conn
     /** @type {Array<TableDefinition>} */
@@ -140,14 +141,14 @@ class Elastic {
                            }
                            // Object.keys(this.elasticIndexSettings).length > 0
                            if (${Object.keys(this.elasticIndexSettings).length} > 0) {
-                             requestParams.URL = '${this.dbConnectionConfig.serverName}/${this.dbConnectionConfig.databaseName}'
+                             requestParams.URL = '${this.dbConnectionConfig.serverName}/${this.databaseName}'
                              data = ${JSON.stringify(this.elasticIndexSettings)}
                              rq = http.request(requestParams)
                              rq.setHeader('Content-Type', 'application/json')
                              response = rq.end(data, 'utf-8')
                              responseData = response.read()  
                              if (responseData && JSON.parse(responseData).acknowledged) {
-                               console.log(\`Elastic settings for index: \${JSON.parse(responseData).index} has been updated\`)
+                               console.log(\`Elastic settings for index: \${JSON.parse(responseData).index} has been created\`)
                              }  
                            }                                                 
                        }
