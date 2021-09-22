@@ -41,7 +41,6 @@ class Elastic {
     }
     this.dbConnectionConfig = dbConnectionConfig
     this.dbConnectionConfig.serverName = 'http://10.211.55.2:9200'
-    debugger
     this.databaseName = `ub-index-${dbConnectionConfig.name.toLowerCase()}`
     this.conn = conn
     /** @type {Array<TableDefinition>} */
