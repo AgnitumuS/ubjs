@@ -54,7 +54,7 @@ function testReqJson (conn, session) {
   data = Buffer.cpFrom('{"invalidUTF": "Привет"}', 1251)
   resp = req.end(data)
   j = resp.json()
-  assert.ok(j && j.error && /JSON.parse/.test(j.error),'reps.json() expect object {error: "JSON.parse: unterminated string literal at line 1 column 17 of the JSON data"} but got ' + JSON.stringify(j))
+  assert.ok(j && j.error && /JSON.parse/.test(j.error), 'reps.json() expect object {error: "JSON.parse: unterminated string literal at line 1 column 17 of the JSON data"} but got ' + JSON.stringify(j))
 }
 /**
  *
