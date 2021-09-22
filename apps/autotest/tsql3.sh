@@ -68,7 +68,8 @@ TESTCASE=initialize
 npx ubcli initialize -cfg $UB_CFG -u root -p root || err
 
 TESTCASE=autotest
-/usr/bin/time -v ubcli autotest -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -noLogo -skipModules
+# ubcli not available on server test environment - use direct call to ./node_modules/.bin/ubcli
+/usr/bin/time -v ./node_modules/.bin/ubcli autotest -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -noLogo -skipModules
 if [ ! $? = 0 ]; then
   if [ -f "./_autotestResults.json" ]; then
     cat ./_autotestResults.json;
