@@ -68,11 +68,14 @@ TESTCASE=initialize
 npx ubcli initialize -cfg $UB_CFG -u root -p root || err
 
 TESTCASE=autotest
-/usr/bin/time -v npx ubcli autotest -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -noLogo -skipModules
+/usr/bin/time -v ubcli autotest -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -noLogo -skipModules
 if [ ! $? = 0 ]; then
-  cat ./_autotestResults.json;
+  if [ -f "./_autotestResults.json" ]; then
+    cat ./_autotestResults.json;
+  fi
   err;
 fi
 
 TESTCASE=migrate
-npx ubcli migrate -cfg $UB_CFG -u root -v || err
+# migrate -v for extended output
+npx ubcli migrate -cfg $UB_CFG -u root  || err
