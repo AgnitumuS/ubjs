@@ -347,7 +347,12 @@ App.registerEndpoint('pdfsigner', pdfsigner, false)
  * @param {THTTPResponse} resp
  */
 function bodyJson (req, resp) {
-  const j = req.json()
+  let j
+  try {
+    j = req.json()
+  } catch (e) {
+    j = { error: e.message }
+  }
   resp.statusCode = 200
   resp.writeEnd(j)
 }
