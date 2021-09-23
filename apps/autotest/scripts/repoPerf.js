@@ -142,12 +142,12 @@ function dummyBuilder (ubql, aliasLetter = 'A', isExternal=false) {
       attrStr = fi.slice(1, -1)
       fieldsParts.push(parseComplexAttr(e, attrStr, aliases, aliasLetter))
     } else { // complex expression like 1) SUM([rnd] + 1); 2) [attr1] + [attr2] etc.
-      const complexParts = fi.split(EXPR_SPLIT)
+      const [complexParts, complexFlags] = UBDomain.splitExpression(fi)
       // expression   = "[collegiateBodyID.name] || ' - №' || to_char([startTime], 'dd.mm.yyyy')"
       // complexParts = [ "", "[collegiateBodyID.name]", " || ' - №' || to_char(", "[startTime]", ", 'dd.mm.yyyy')" ]
       for (let p = 0, pL = complexParts; p < pL; p++) {
-        if (complexParts[p].charCodeAt(0) === '[') { // expression
-          attrStr = fi.slice(1, -1)
+        if (complexFlags[p]) { // expression
+          attrStr = complexParts[p]
           complexParts[p] = parseComplexAttr(e, attrStr, aliases, aliasLetter)
         }
       }
