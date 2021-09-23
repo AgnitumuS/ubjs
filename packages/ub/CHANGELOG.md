@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `App.registerEndpoint` accept 4-d parameter `bypassHTTPLogging`.
+ If sets to `true` server bypass logging of HTTP body into (useful if body contains sensitive information) and instead log `[DEDACTED]`
+ For UB < 5.20.8 parameter is ignored.
 
 ### Changed
 
