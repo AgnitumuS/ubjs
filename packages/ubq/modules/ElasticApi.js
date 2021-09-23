@@ -9,6 +9,7 @@ class ElasticApi {
 
   _reindexElement (entityName, id) {
     const fts = UB.App.domainInfo.get(entityName).mixins.fts
+    const aclRls = UB.App.domainInfo.get(entityName).mixins.aclRls
     if (fts.dataProvider === 'Mixin') {
       const attrs = ElasticDocument.getSelectFieldsFromFts(fts)
       const element = UB.Repository(entityName)
@@ -18,7 +19,11 @@ class ElasticApi {
       if (element) {
         const elasticUpdate = new ElasticUpdate(entityName)
         const elasticDocument = new ElasticDocument()
-        elasticDocument.fillFromObjectAndFts(element, fts)
+        elasticDocument.fillFromObjectAndFts(entityName, element, fts, elasticUpdate.fieldsWithDocuments)
+        if (aclRls) {
+          elasticDocument.fillRightsFromAclRls(aclRls)
+        }
+        elasticDocument.entity = entityName
         elasticUpdate._update(elasticDocument, element.ID)
       }
     }
@@ -26,6 +31,7 @@ class ElasticApi {
 
   _reindexEntity (entityName) {
     const fts = UB.App.domainInfo.get(entityName).mixins.fts
+    const aclRls = UB.App.domainInfo.get(entityName).mixins.aclRls
     if (fts.dataProvider === 'Mixin') {
       const attrs = ElasticDocument.getSelectFieldsFromFts(fts)
       const elements = UB.Repository(entityName)
@@ -35,7 +41,11 @@ class ElasticApi {
       const elasticUpdate = new ElasticUpdate(entityName)
       for (const element of elements) {
         const elasticDocument = new ElasticDocument()
-        elasticDocument.fillFromObjectAndFts(element, fts)
+        elasticDocument.fillFromObjectAndFts(entityName, element, fts, elasticUpdate.fieldsWithDocuments)
+        if (aclRls) {
+          elasticDocument.fillRightsFromAclRls(aclRls)
+        }
+        elasticDocument.entity = entityName
         elasticUpdate._update(elasticDocument, element.ID)
       }
     }

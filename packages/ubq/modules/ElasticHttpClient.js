@@ -52,20 +52,6 @@ class ElasticHttpClient {
   }
 
   /**
-   * @param {string} actionName
-   * @param {string|object} requestOptions
-   * @returns {IncomingMessage}
-   * @protected
-   */
-  _delete (actionName, requestOptions) {
-    const request = this._createRequest(requestOptions, 'DELETE')
-    console.log('DELETE:', JSON.stringify(requestOptions))
-    const response = request.end()
-    this._handleResponse(response, actionName)
-    return response
-  }
-
-  /**
    * POST request to Elastic server, data encoded as 'application/json'.
    * @param {string} actionName
    * @param {string} httpMethod
@@ -75,12 +61,11 @@ class ElasticHttpClient {
    * @protected
    */
   _json (actionName, httpMethod, requestOptions, data) {
-    this._log(requestOptions, data)
     const request = this._createRequest(requestOptions, httpMethod)
     request.setHeader('Content-Type', 'application/json')
-    console.log(`${httpMethod}:`, JSON.stringify(requestOptions), JSON.stringify(data))
+    console.log(`${httpMethod}:`, JSON.stringify(requestOptions))
     const response = request.end(data, 'utf-8')
-    this._handleResponse(response, actionName, data)
+    this._handleResponse(response, actionName)
     return response
   }
 

@@ -1,19 +1,37 @@
 class ElasticDocument {
-  constructor ({ date, data, rights, documentName, fileName, author, entity } = {}) {
+  constructor ({ date, data, rights, documentName, attachments, author, entity } = {}) {
     this.date = date
     this.data = data
     this.rights = rights
     this.documentName = documentName
-    this.fileName = fileName
     this.author = author
     this.entity = entity
-    return this
+    this.attachments = attachments || []
   }
 
-  fillFromObjectAndFts (obj, { dateAttribute, indexedAttributes, descriptionAttribute }) {
+  fillFromObjectAndFts (entityName, obj, { dateAttribute, indexedAttributes, descriptionAttribute }, fieldsWithDocument) {
     this.date = obj[dateAttribute]
     this.documentName = obj[descriptionAttribute]
-    this.data = indexedAttributes.map(el => obj[el]).join(' ')
+    this.entity = entityName
+    this.data = indexedAttributes.filter(el => !fieldsWithDocument.has(el)).map(el => obj[el]).join(' ')
+    for (const field of fieldsWithDocument) {
+      let base64File
+      try {
+        base64File = UB.App.blobStores.getContent({
+          entity: entityName,
+          attribute: field,
+          ID: obj.ID
+        }, { encoding: 'base64' })
+      } catch (e) {
+        console.error(e)
+      }
+      const docMeta = JSON.parse(obj[field])
+      this.attachments.push({ data: base64File, fileName: docMeta.origName })
+    }
+  }
+
+  fillRightsFromAclRls (aclRls) {
+    this.rights = [1, 2]
   }
 
   static getSelectFieldsFromFts ({ dateAttribute, indexedAttributes, descriptionAttribute }) {

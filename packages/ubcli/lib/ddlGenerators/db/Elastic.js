@@ -32,7 +32,11 @@ class Elastic {
     this._elasticDefaultIndexSettings = {
       mappings: {
         properties: {
-          'attachment.content': {
+          'attachments.attachment.content': {
+            type: 'text',
+            term_vector: 'with_positions_offsets'
+          },
+          data: {
             type: 'text',
             term_vector: 'with_positions_offsets'
           }
@@ -50,17 +54,28 @@ class Elastic {
     this.isUnsafe = isUnsafe
 
     this.elasticPipeline = {
-      description: 'Extract attachment information',
+      description: 'Extract attachment information from arrays',
       processors: [
         {
-          attachment: {
-            field: 'data'
+          foreach: {
+            field: 'attachments',
+            processor: {
+              attachment: {
+                target_field: '_ingest._value.attachment',
+                field: '_ingest._value.data'
+              }
+            }
           }
         },
         {
-          remove: {
-            field: 'data',
-            ignore_failure: true
+          foreach: {
+            field: 'attachments',
+            processor: {
+              remove: {
+                field: '_ingest._value.data',
+                ignore_failure: true
+              }
+            }
           }
         }
       ]

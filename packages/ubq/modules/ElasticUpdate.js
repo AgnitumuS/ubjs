@@ -3,7 +3,9 @@ const UB = require('@unitybase/ub')
 
 class ElasticUpdate extends ElasticHttpClient {
   constructor (entityName) {
-    const fts = UB.App.domainInfo.get(entityName).mixins.fts
+    const entityInfo = UB.App.domainInfo.get(entityName)
+    const attributes = entityInfo.attributes
+    const fts = entityInfo.mixins.fts
     if (!fts) {
       throw new UB.UBAbort(`<<<No fts mixin in the entity: ${entityName}>>>`)
     }
@@ -14,11 +16,13 @@ class ElasticUpdate extends ElasticHttpClient {
     const url = `${dbConnectionConfig.serverName}/${databaseName}/_doc`
     super({ url })
     this._entityName = entityName
+    this.fieldsWithDocuments = new Set(fts.indexedAttributes.map(el => attributes[el]).filter(el => el.dataType === 'Document').map(el => el.name))
+    this._withPipeline = !!this.fieldsWithDocuments.size
   }
 
   _update (elasticDocument, id, withPipeline = false) {
     const idDoc = `${id}-${this._entityName}`
-    const withPipelineUrl = withPipeline && '?pipeline=attachment'
+    const withPipelineUrl = this._withPipeline && '?pipeline=attachment'
     const requestOptions = `/${idDoc}${withPipelineUrl}`
     this._jsonWithResult('Index document to Elastic', 'PUT', requestOptions, elasticDocument)
   }
