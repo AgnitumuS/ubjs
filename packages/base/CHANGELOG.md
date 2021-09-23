@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - ServerRepository: in `-dev` mode `selectSingle()` and `selectScalar()` methods will
+ add a stack trace to error when more when one row is selected
 
 ### Changed
 
