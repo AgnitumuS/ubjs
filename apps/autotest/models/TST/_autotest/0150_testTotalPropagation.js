@@ -25,7 +25,7 @@ module.exports = function runMixinsTests (options) {
   )
 
   // total for group by
-  const respTG = UB.Repository('tst_document').attrs('MAX([ID])', 'docDate').groupBy('docDate').withTotal().selectAsArray()
+  const respTG = conn.Repository('tst_document').attrs('MAX([ID])', 'docDate').groupBy('docDate').withTotal().selectAsArray()
   assert(respTG.__totalRecCount > 1, 'Expect total rec count for group by to be > 1 but got ' + respTG.__totalRecCount)
 
   assert.ok(resp.__totalRecCount > 101, `Should got __totalRecCount > 101 but actual is ${resp.__totalRecCount}`)

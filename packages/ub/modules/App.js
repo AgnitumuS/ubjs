@@ -267,16 +267,26 @@ const appBinding = process.binding('ub_app')
  * @param {boolean} [authorizationRequired=true] If `true` UB will check for valid Authorization header before
  *  execute endpoint handler
  * @param {boolean} [isDefault=false]
+ * @param {boolean} [bypassHTTPLogging=false] Do not put HTTP body into log (for example if body contains sensitive information, like password)
  * @memberOf ServerApp
  */
-ServerApp.registerEndpoint = function (endpointName, handler, authorizationRequired, isDefault) {
+ServerApp.registerEndpoint = function (endpointName, handler, authorizationRequired, isDefault, bypassHTTPLogging) {
   if (!appBinding.endpoints[endpointName]) {
     appBinding.endpoints[endpointName] = handler
-    return appBinding.registerEndpoint(
-      endpointName,
-      authorizationRequired === undefined ? true : authorizationRequired,
-      isDefault === true
-    )
+    if (base.ubVersionNum < 5020008) {
+      return appBinding.registerEndpoint(
+        endpointName,
+        authorizationRequired === undefined ? true : authorizationRequired,
+        isDefault === true
+      )
+    } else {
+      return appBinding.registerEndpoint(
+        endpointName,
+        authorizationRequired === undefined ? true : authorizationRequired,
+        isDefault === true,
+        bypassHTTPLogging === true
+      )
+    }
   }
 }
 
