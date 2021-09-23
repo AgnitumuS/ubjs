@@ -146,7 +146,10 @@ const OPEN_BRACKET = '['.charCodeAt(0)
 const CLOSE_BRACKET = ']'.charCodeAt(0)
 
 /**
- * "[firm.code] || [name] + 1" ->  ["firm.code", " || ", "name", " + 1"]
+ * "[firm.code] || [name] + 1"
+ * ->
+ * [["firm.code", " || ", "name", " + 1"],
+ *  [true,        false,   true,  false]]
  * @param {string} expr
  */
 UBDomain.splitExpression = function (expr) {
@@ -155,6 +158,7 @@ UBDomain.splitExpression = function (expr) {
   for (let i = 0, L = parts.length; i < L; i++) {
     const p = parts[i]
     const pL = p.length
+    //TODO - parse to  [{type: 'lexema|field|chain', attr: ->UBEntityArttr, path: 'firm.'},...]
     if ((pL > 2) && (p.charCodeAt(0) === OPEN_BRACKET) && (p.charCodeAt(pL - 1) === CLOSE_BRACKET)) {
       flags.push(true)
       parts[i] = p.slice(1, -1)
@@ -194,7 +198,7 @@ function calculateDbExpression4Attrs (allEntities) {
  */
 function calculateDbExpression (attr, allEntities, initialAttr, recursionDepth = 0) {
   if (recursionDepth > 0 && attr === initialAttr) {
-    throw new Error(`Self-circle expression mapping for attribute '${attr.entity.code}.${attr.code}'. Invalid expression is - '${attr.mapping}'`)
+    throw new Error(`Detected self-circle expression mapping for attribute '${attr.entity.code}.${attr.code}'. Invalid expression is - '${attr.mapping}'`)
   }
   if (attr.dbExpression !== undefined) return // already calculated
   if (!attr.mapping) { // no mapping = attr code is field name
@@ -202,8 +206,7 @@ function calculateDbExpression (attr, allEntities, initialAttr, recursionDepth =
     attr.dbExpressionIsSimple = true
   } else if (attr.mapping.expressionType === UBDomain.ExpressionType.Field) { // mapped to table field
     attr.dbExpression = attr.mapping.expression
-    attr.dbExpressionIsSimple = true
-    тут потеряем алиасы ?
+    attr.dbExpressionIsSimple = false
   } else { // expression
     ;[attr.dbExpression, attr.dbExpressionFlags] = UBDomain.splitExpression(attr.mapping.expression)
     if ((attr.dbExpression.length === 1) && ())
