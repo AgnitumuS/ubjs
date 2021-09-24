@@ -22,7 +22,7 @@ class ElasticUpdate extends ElasticHttpClient {
 
   _update (elasticDocument, id, withPipeline = false) {
     const idDoc = `${id}-${this._entityName}`
-    const withPipelineUrl = this._withPipeline && '?pipeline=attachment'
+    const withPipelineUrl = this._withPipeline ? '?pipeline=attachment' : ''
     const requestOptions = `/${idDoc}${withPipelineUrl}`
     this._jsonWithResult('Index document to Elastic', 'PUT', requestOptions, elasticDocument)
   }

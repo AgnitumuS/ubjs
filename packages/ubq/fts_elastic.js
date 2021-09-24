@@ -2,16 +2,16 @@ const ElasticApi = require('./modules/ElasticApi')
 const me = fts_elastic
 
 /**
- * Virtual `isElasticFts` implementation.
- * @method isElasticFts
+ * Virtual `isElastic` implementation.
+ * @method isElastic
  * @param {ubMethodParams} ctx
  * @param {UBQL} ctx.mParams ORM query in UBQL format
  * @return {Boolean}
  * @memberOf fts_elastic.prototype
  * @published
  */
-me.isElasticFts = function (ctx) {
-  ctx.dataStore.currentDataName = 'isElasticFts'
+me.isElastic = function (ctx) {
+  ctx.dataStore.currentDataName = 'isElastic'
   const params = ctx.mParams.params
   if (params.entity.substring(0, 4) === 'fts_') {
     return ElasticApi.isElasticConnection(params.entity.substring(4))
@@ -20,7 +20,7 @@ me.isElasticFts = function (ctx) {
   }
 }
 
-me.entity.addMethod('isElasticFts')
+me.entity.addMethod('isElastic')
 
 /**
  * Virtual `ftsElasticReindex` implementation.

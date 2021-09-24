@@ -8,44 +8,46 @@ class ElasticApi {
   }
 
   _reindexElement (entityName, id) {
-    const fts = UB.App.domainInfo.get(entityName).mixins.fts
-    const aclRls = UB.App.domainInfo.get(entityName).mixins.aclRls
-    if (fts.dataProvider === 'Mixin') {
-      const attrs = ElasticDocument.getSelectFieldsFromFts(fts)
-      const element = UB.Repository(entityName)
-        .attrs(attrs)
-        .where('ID', '=', id)
-        .selectAsObject()
-      if (element) {
-        const elasticUpdate = new ElasticUpdate(entityName)
-        const elasticDocument = new ElasticDocument()
-        elasticDocument.fillFromObjectAndFts(entityName, element, fts, elasticUpdate.fieldsWithDocuments)
-        if (aclRls) {
-          elasticDocument.fillRightsFromAclRls(aclRls)
-        }
-        elasticDocument.entity = entityName
-        elasticUpdate._update(elasticDocument, element.ID)
-      }
+    const domainInfo = UB.App.domainInfo.get(entityName)
+    if (domainInfo.mixins.fts.dataProvider !== 'Mixin') {
+      console.error(`For Elastic indexes now supported only Mixin data provider for entity: ${entityName}>>>`)
+      return
+    }
+    const attrs = ElasticDocument.getSelectFieldsFromFts(domainInfo)
+    const element = UB.Repository(entityName)
+      .attrs(attrs)
+      .where('ID', '=', id)
+      .selectSingle()
+    if (element) {
+      const elasticUpdate = new ElasticUpdate(entityName)
+      const elasticDocument = new ElasticDocument()
+      elasticDocument.fillFromObjectAndFts(entityName, element, elasticUpdate.fieldsWithDocuments)
+      elasticUpdate._update(elasticDocument, element.ID)
     }
   }
 
   _reindexEntity (entityName) {
-    const fts = UB.App.domainInfo.get(entityName).mixins.fts
-    const aclRls = UB.App.domainInfo.get(entityName).mixins.aclRls
-    if (fts.dataProvider === 'Mixin') {
-      const attrs = ElasticDocument.getSelectFieldsFromFts(fts)
-      const elements = UB.Repository(entityName)
+    const domainInfo = UB.App.domainInfo.get(entityName)
+    if (domainInfo.mixins.fts.dataProvider !== 'Mixin') {
+      console.error(`For Elastic indexes now supported only Mixin data provider for entity: ${entityName}>>>`)
+      return
+    }
+    const attrs = ElasticDocument.getSelectFieldsFromFts(domainInfo)
+    let start = 0
+    const limit = 1000
+    let elements
+    // if elements is not initialized yet or length of elements more then zero
+    while (!elements || elements.length > 0) {
+      elements = UB.Repository(entityName)
         .attrs(attrs)
-        .limit(1000)
+        .start(start)
+        .limit(limit)
         .selectAsObject()
+      start = start + limit
       const elasticUpdate = new ElasticUpdate(entityName)
       for (const element of elements) {
         const elasticDocument = new ElasticDocument()
-        elasticDocument.fillFromObjectAndFts(entityName, element, fts, elasticUpdate.fieldsWithDocuments)
-        if (aclRls) {
-          elasticDocument.fillRightsFromAclRls(aclRls)
-        }
-        elasticDocument.entity = entityName
+        elasticDocument.fillFromObjectAndFts(entityName, element, elasticUpdate.fieldsWithDocuments)
         elasticUpdate._update(elasticDocument, element.ID)
       }
     }
@@ -75,8 +77,9 @@ class ElasticApi {
   }
 
   static isElasticFtsEntity (entityName) {
-    const entityInfo = UB.App.domainInfo.get(entityName)
-    if (entityInfo) {
+    const fts = UB.App.domainInfo.get(entityName).mixins.fts
+    if (fts && ((fts.connectionName && this.isElasticConnection(fts.connectionName)) ||
+      (!fts.connectionName && this.isElasticConnection('ftsDefault')))) {
       return true
     } else {
       return false

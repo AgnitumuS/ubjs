@@ -170,7 +170,7 @@ class ElasticHttpClient {
     if (response.statusCode === 404) {
       return undefined
     }
-    if (response.statusCode !== 200) {
+    if (response.statusCode !== 200 && response.statusCode !== 201) {
       throw new Error('Error loading: ' + JSON.stringify(response))
     }
 
