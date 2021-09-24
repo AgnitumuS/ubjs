@@ -25,6 +25,7 @@ class Elastic {
         }
       }
     }
+    // TODO fix format issue
     this._elasticDefaultIndexSettings = {
       mappings: {
         properties: {
@@ -122,6 +123,8 @@ class Elastic {
       if (this._withTokinizer) {
         this.elasticIndexSettings.settings = this._analysis
       }
+    } else {
+      // TODO delete index
     }
   }
 
