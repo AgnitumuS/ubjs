@@ -8,15 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- role definition is moved from `_initialData` scripts to `01_roles.yml` file
-  in order to prevent situations when navigation items are initialized before
-  the roles which define access rules for them
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.20.26] - 2021-09-24
+### Changed
+- role definition is moved from `_initialData` scripts to `01_roles.yml` file
+  in order to prevent situations when navigation items are initialized before
+  the roles which define access rules for them
 
 ## [5.20.25] - 2021-09-16
 ### Changed

@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - small speed-up of `CustomRepository.ubql()` by using `Object.assign` instead of `_.defaults`
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.20.5] - 2021-09-24
+### Changed
+ - small speed-up of `CustomRepository.ubql()` by using `Object.assign` instead of `_.defaults`
 
 ## [5.20.4] - 2021-09-08
 ## [5.20.3] - 2021-08-31

@@ -6,14 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - ServerRepository: in `-dev` mode `selectSingle()` and `selectScalar()` methods will
- add a stack trace to error when more than one row is selected
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.20.12] - 2021-09-24
+### Added
+ - ServerRepository: in `-dev` mode `selectSingle()` and `selectScalar()` methods will
+ add a stack trace to error when more than one row is selected
 
 ### Fixed
  - jsdoc for DBConnection fixed - now it appears in generated HTML documentation. Added example for `DBConnection.savepointWrap` 

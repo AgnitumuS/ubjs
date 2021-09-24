@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - for UB@5.20.8 `changePassword` endpoint skip logging of HTTP request body (contains user password), `[DEDACTED]` logged instead 
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.26] - 2021-09-24
+### Added
+ - for UB@5.20.8 `changePassword` endpoint skip logging of HTTP request body (contains user password), `[DEDACTED]` logged instead 
 
 ## [5.20.25] - 2021-09-16
 ### Changed
