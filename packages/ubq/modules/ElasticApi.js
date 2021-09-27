@@ -60,11 +60,15 @@ class ElasticApi {
       const fts = entity.mixins.fts
       // fts mixin is exist and connectionName is exist and this connection is Elastic and it's currently indexed or
       // fts minix exists and connection is default and default connection is Elastic and it's currently indexed
-      if (fts && ((fts.connectionName && ElasticApi.isElasticConnection(fts.connectionName) && fts.connectionName === connectionName) ||
+      if (fts && fts.enabled && ((fts.connectionName && ElasticApi.isElasticConnection(fts.connectionName) && fts.connectionName === connectionName) ||
         (!fts.connectionName && ElasticApi.isElasticConnection(this.defaultConnection) && this.defaultConnection === connectionName))) {
         this._reindexEntity(entityName)
       }
     }
+  }
+
+  _search (search) {
+    return { id: 2342123, entity: 'test', entitydescr: 'test', snippet: 'test' }
   }
 
   deleteFromFTSIndex (entityName, id) {
@@ -78,7 +82,7 @@ class ElasticApi {
 
   static isElasticFtsEntity (entityName) {
     const fts = UB.App.domainInfo.get(entityName).mixins.fts
-    if (fts && ((fts.connectionName && this.isElasticConnection(fts.connectionName)) ||
+    if (fts && fts.enabled && ((fts.connectionName && this.isElasticConnection(fts.connectionName)) ||
       (!fts.connectionName && this.isElasticConnection('ftsDefault')))) {
       return true
     } else {
@@ -88,7 +92,7 @@ class ElasticApi {
 
   static isElasticConnection (connectionName) {
     const connectionInfo = UB.App.domainInfo.connections.find(el => el.name === connectionName)
-    if (connectionInfo.dialect === 'Elastic') {
+    if (connectionInfo && connectionInfo.dialect === 'Elastic') {
       return true
     } else {
       return false
@@ -101,6 +105,10 @@ class ElasticApi {
 
   ftsElasticReindexConnection (connectionName) {
     this._reindexConnection(connectionName)
+  }
+
+  fts (search) {
+    this._search(search)
   }
 }
 

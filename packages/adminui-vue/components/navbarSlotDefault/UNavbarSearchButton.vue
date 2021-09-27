@@ -149,7 +149,7 @@ export default {
       i.select()
     },
 
-    doSearch () {
+    async doSearch () {
       if (!this.query) {
         return
       }
@@ -157,10 +157,13 @@ export default {
       if (qText[0] === '№') qText = '"' + qText + '"' // do not split № on lexemas - search as is
 
       const ftsTabId = 'FullTextSearchWidgetResult'
-      const repo = this.$UB.Repository('fts_' + this.currentMode)
+
+      const isElasticFts = await this.$UB.connection.query({ entity: 'fts_elastic', method: 'isElastic', params: { entity: 'fts_' + this.currentMode } })
+
+      const repo = this.$UB.Repository(isElasticFts ? 'fts_elastic' : 'fts_' + this.currentMode)
         .attrs('ID', 'entity', 'entitydescr', 'snippet')
         .using('fts')
-        .where('', 'match', qText)
+        .where(isElasticFts ? 'fts_' + this.currentMode : '', 'match', qText)
       if (this.isPeriod && this.period) {
         repo.where('ftsDate', '>=', this.period[0])
           .where('ftsDate', '<=', this.period[1])

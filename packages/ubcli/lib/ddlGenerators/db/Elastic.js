@@ -5,6 +5,7 @@ class Elastic {
     this._advSettings = this._toObject(dbConnectionConfig.advSettings, this._advSettings)
     this._indexes = []
     this._withTokinizer = !!this._advSettings.Tokenizer || false
+    this._indexAlreadyExists = false
     this._analysis = {
       analysis: {
         filter: {
@@ -25,8 +26,7 @@ class Elastic {
         }
       }
     }
-    // TODO fix format issue
-    this._elasticDefaultIndexSettings = {
+    this.elasticIndexSettings = {
       mappings: {
         properties: {
           'attachments.attachment.content': {
@@ -39,6 +39,9 @@ class Elastic {
           }
         }
       }
+    }
+    if (this._withTokinizer) {
+      this.elasticIndexSettings.settings = this._analysis
     }
     this.dbConnectionConfig = dbConnectionConfig
     this.dbConnectionConfig.serverName = 'http://10.211.55.2:9200'
@@ -77,7 +80,6 @@ class Elastic {
         }
       ]
     }
-    this.elasticIndexSettings = {}
   }
 
   // transform String 'key = value, ...' to JS object {key: value}
@@ -118,50 +120,54 @@ class Elastic {
 
   /** compare referenced tables with database metadata */
   compare () {
-    if (this._indexes.filter(el => el.index === this.databaseName).length === 0) {
-      this.elasticIndexSettings = this._elasticDefaultIndexSettings
-      if (this._withTokinizer) {
-        this.elasticIndexSettings.settings = this._analysis
-      }
+    if (this._indexes.filter(el => el.index === this.databaseName).length) {
+      this._indexAlreadyExists = true
     } else {
-      // TODO delete index
+      this._indexAlreadyExists = false
     }
   }
 
   generateStatements () {
     const elasticJs = `const http = require('http')
                        function run() {
-                           let data, rq, response, responseData
-                           const requestParams = {
-                             URL: '',
-                             method: 'PUT',
-                             sendTimeout: 30000,
-                             receiveTimeout: 30000,
-                             keepAlive: true,
-                             compressionEnable: true
-                           }
+                           let URL, data, rq, response, responseData                               
                            // Object.keys(this.elasticPipeline).length > 0
                            if (${Object.keys(this.elasticPipeline).length} > 0) {
-                             requestParams.URL = '${this.dbConnectionConfig.serverName}/_ingest/pipeline/attachment'
+                             URL = '${this.dbConnectionConfig.serverName}/_ingest/pipeline/attachment'
                              data = ${JSON.stringify(this.elasticPipeline)}
-                             rq = http.request(requestParams)
+                             rq = http.request({URL, method: 'PUT'})
                              rq.setHeader('Content-Type', 'application/json')
                              response = rq.end(data, 'utf-8')
                              responseData = response.read()
                              if (responseData && JSON.parse(responseData).acknowledged) {
                                console.log(\`Elastic pipeline has been updated\`)
-                             }  
+                             } else {
+                               console.error(\`Error occurred during Elastic pipeline update\${responseData}\`) 
+                             } 
                            }
-                           // Object.keys(this.elasticIndexSettings).length > 0
+                           if (${this._indexAlreadyExists}) {
+                             URL = '${this.dbConnectionConfig.serverName}/${this.databaseName}'                       
+                             rq = http.request({URL, method: 'DELETE'})               
+                             response = rq.end()
+                             responseData = response.read()  
+                             if (responseData && JSON.parse(responseData).acknowledged) {
+                               console.log(\`Elastic index: \${JSON.parse(responseData).index} was deleted\`)
+                             } else {
+                               console.error(\`Error occurred during Elastic index delete \${responseData}\`) 
+                             } 
+                           }          
+                           // Object.keys(this.elasticIndexSettings).length > 0                           
                            if (${Object.keys(this.elasticIndexSettings).length} > 0) {
-                             requestParams.URL = '${this.dbConnectionConfig.serverName}/${this.databaseName}'
+                             URL = '${this.dbConnectionConfig.serverName}/${this.databaseName}'
                              data = ${JSON.stringify(this.elasticIndexSettings)}
-                             rq = http.request(requestParams)
+                             rq = http.request({URL, method: 'PUT'})
                              rq.setHeader('Content-Type', 'application/json')
                              response = rq.end(data, 'utf-8')
                              responseData = response.read()  
                              if (responseData && JSON.parse(responseData).acknowledged) {
                                console.log(\`Elastic settings for index: \${JSON.parse(responseData).index} has been created\`)
+                             } else {
+                               console.error(\`Error occurred during Elastic index create \${responseData}\`) 
                              }  
                            }                                                 
                        }

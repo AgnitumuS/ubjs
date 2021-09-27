@@ -42,3 +42,20 @@ me.ftsElasticReindex = function (ctx) {
 }
 
 me.entity.addMethod('ftsElasticReindex')
+
+/**
+ * Virtual `ftsElasticSearch` implementation.
+ * @method ftsElasticSearch
+ * @param {ubMethodParams} ctx
+ * @param {UBQL} ctx.mParams ORM query in UBQL format
+ * @memberOf fts_elastic.prototype
+ * @published
+ */
+me.fts = function (ctx) {
+  ctx.dataStore.currentDataName = 'fts'
+  const params = ctx.mParams.params
+  const elasticApi = new ElasticApi()
+  return elasticApi.fts(params)
+}
+
+me.entity.addMethod('fts')

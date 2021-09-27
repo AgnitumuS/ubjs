@@ -31,6 +31,33 @@
       "description": "name",
       "allowNull": false,
       "isUnique": true
+    },
+    {
+      "name": "entity",
+      "dataType": "String",
+      "size": 240,
+      "caption": "entity",
+      "description": "entity",
+      "allowNull": false,
+      "isUnique": true
+    },
+    {
+      "name": "entitydescr",
+      "dataType": "String",
+      "size": 240,
+      "caption": "entitydescr",
+      "description": "entitydescr",
+      "allowNull": false,
+      "isUnique": true
+    },
+    {
+      "name": "snippet",
+      "dataType": "String",
+      "size": 4000,
+      "caption": "snippet",
+      "description": "snippet",
+      "allowNull": false,
+      "isUnique": true
     }
   ],
   "mixins": {}
