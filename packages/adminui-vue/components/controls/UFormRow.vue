@@ -18,7 +18,7 @@
         required: isRequired
       }"
       :style="labelWidthCss"
-      :title="descriptionText"
+      :title="descriptionText || $ut(labelText)"
     >
       <span>{{ $ut(labelText) }}</span>
     </div>
@@ -35,6 +35,14 @@
     </div>
     <div class="u-form-row__content">
       <slot />
+      <div
+        v-if="description !== false && descriptionText"
+        class="u-form-row__description"
+      >
+        {{ descriptionText }}
+      </div>
+      <!-- @slot Add some content after the automatically generated description section -->
+      <slot name="afterDescription" />
     </div>
   </label>
 </template>
@@ -51,12 +59,9 @@ const ElSelectHack = {
   },
 
   mounted () {
-    if (
-      this.$slots.default &&
-        this.$slots.default[0].componentOptions &&
-        this.$slots.default[0].componentOptions.tag === 'el-select'
-    ) {
-      this.elSelectRef = this.$slots.default[0].elm
+    const defaultSlots = this.$slots.default
+    if (defaultSlots?.[0].componentOptions?.tag === 'el-select') {
+      this.elSelectRef = defaultSlots[0].elm
       this.elSelectRef.addEventListener('click', this.onClickSelect)
     }
   },
@@ -108,7 +113,8 @@ export default {
      */
     attributeName: {
       type: String,
-      required: false
+      required: false,
+      default: null
     },
 
     /**
@@ -117,7 +123,8 @@ export default {
      */
     error: {
       type: [String, Boolean],
-      required: false
+      required: false,
+      default: null
     },
 
     /**
@@ -125,7 +132,8 @@ export default {
      */
     label: {
       type: String,
-      required: false
+      required: false,
+      default: null
     },
 
     /**
@@ -150,10 +158,12 @@ export default {
 
     /**
      * row description
+     * If the `true` is passed and the attribute has a description - it will be displayed automatically
      */
     description: {
-      type: String,
-      required: false
+      type: [Boolean, String],
+      required: false,
+      default: false
     },
 
     /**
@@ -216,14 +226,14 @@ export default {
     },
 
     descriptionText () {
-      if (this.description) {
+      if (typeof this.description === 'string') {
         return this.$ut(this.description)
       }
       if (this.attributeName && this.entity) {
         const localeString = `${this.entity}.${this.attributeName}#description`
         return this.$ut(localeString) === localeString ? this.$ut(this.labelText) : this.$ut(localeString)
       }
-      return this.$ut(this.labelText)
+      return null
     },
 
     errorText () {
@@ -374,6 +384,8 @@ export default {
   .u-form-row__description {
     font-size: 12px;
     margin-top: 5px;
+    word-break: normal;
+    line-height: normal;
     color: hsl(var(--hs-text), var(--l-text-description));
   }
 
