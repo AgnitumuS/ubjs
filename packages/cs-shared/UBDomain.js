@@ -206,10 +206,10 @@ function calculateDbExpression (attr, allEntities, initialAttr, recursionDepth =
     attr.dbExpressionIsSimple = true
   } else if (attr.mapping.expressionType === UBDomain.ExpressionType.Field) { // mapped to table field
     attr.dbExpression = attr.mapping.expression
-    attr.dbExpressionIsSimple = false
+    attr.dbExpressionIsSimple = true
   } else { // expression
     ;[attr.dbExpression, attr.dbExpressionFlags] = UBDomain.splitExpression(attr.mapping.expression)
-    if ((attr.dbExpression.length === 1) && ())
+    //if ((attr.dbExpression.length === 1) && ())
   }
 }
 /**

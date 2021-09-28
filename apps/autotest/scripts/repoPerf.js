@@ -1,6 +1,6 @@
 const CustomRepository = require('@unitybase/cs-shared').CustomRepository
 const UBDomain = require('@unitybase/cs-shared').UBDomain
-const dml = require('@unitybase/dml-generator')
+// const dml = require('@unitybase/dml-generator')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 
@@ -22,7 +22,7 @@ global.App = {
 function getFieldExpression (attr, alias, tail) {
   // todo - depends on DB
   if (attr.dataType === UBDomain.ubDataTypes.Json) {
-    return `JSON_VALUE([${alias}.${attr.name}],'$${tail}')`
+    return `JSON_VALUE([${alias}.${attr.dbExpression}],'$${tail}')`
   } else if (attr.dataType === UBDomain.ubDataTypes.Enum) {
     return `${alias}.${tail}`
   } else if (attr.dataType === UBDomain.ubDataTypes.Many) {
@@ -39,19 +39,19 @@ function getFieldExpression (attr, alias, tail) {
  * Add missed aliases into aliases map.
  * @param {UBEntity} entityFrom
  * @param {string} expr
- * @param {Object} aliases
+ * @param {Map} aliases
  * @param {string} aliasLetter
  * @param {boolean} forFieldList is expression from fieldList - if such expression is not brecked - consider this is an attribute
  */
-function parseExpression(entityFrom, expr, aliases, aliasLetter, forFieldList=false) {
-  //рекурсивно парсить ? - см complexMap
+function parseExpression (entityFrom, expr, aliases, aliasLetter, forFieldList = false) {
+  // рекурсивно парсить ? - см complexMap
 }
 /**
  * Transform attributes chain into aliased SQL expression a.b.c -> A1.cMapping.
  * Add missed aliases into aliases map.
  * @param {UBEntity} entityFrom
  * @param {string} attrExpr
- * @param {Object} aliases
+ * @param {Map} aliases
  * @param {string} aliasLetter
  */
 function parseComplexAttr (entityFrom, attrExpr, aliases, aliasLetter) {
@@ -73,8 +73,8 @@ function parseComplexAttr (entityFrom, attrExpr, aliases, aliasLetter) {
       e = attr.getAssociatedEntity()
       const prevPath = currentPath
       currentPath = (currentPath ? `${currentPath}${aPath[i]}` : aPath[i]) + '.'
-      if (!aliases[currentPath] && (i < L - 1)) { // attribute not last in chain - create alias
-        aliases[currentPath] = { alias: `${aliasLetter}${++tableAliasCounter}`, attrFrom: attr, aliasFrom: aliases[prevPath].alias, entityTo: e }
+      if (!aliases.has(currentPath)) { // attribute not last in chain - create alias
+        aliases.set(currentPath, { alias: `${aliasLetter}${++tableAliasCounter}`, attrFrom: attr, aliasFrom: aliases.get(prevPath).alias, entityTo: e })
       }
     } else if (attr.dataType === UBDomain.ubDataTypes.Json) { // stop on JSON - tail is JSON expression
       break
@@ -83,7 +83,7 @@ function parseComplexAttr (entityFrom, attrExpr, aliases, aliasLetter) {
     }
     i++
   }
-  return getFieldExpression(attr, aliases[currentPath].alias, attrExpr.substring(currentPath.length))
+  return getFieldExpression(attr, aliases.get(currentPath).alias, attrExpr.substring(currentPath.length))
 }
 /*
 Table join tree
@@ -93,21 +93,19 @@ Table join tree
 'entityattr2' -> A3
 'parentID@org_department' for parentID.code@org_department
  */
-function dummyBuilder (ubql, aliasLetter = 'A', isExternal=false) {
+function dummyBuilder (ubql, aliasLetter = 'A', isExternal = false) {
   const e = App.domainInfo.get(ubql.entity)
   /**
    * table aliases
-   * @type {Object<string, {alias: string, attrFrom: UBEntityAttribute|null, aliasFrom: string, entityTo: UBEntity}>}}
+   * @type {Map<string, {alias: string, attrFrom: UBEntityAttribute|null, aliasFrom: string, entityTo: UBEntity}>}}
    */
-  const aliases = {
-    '': {
-      alias: aliasLetter,
-      attrFrom: null,
-      aliasFrom: aliasLetter,
-      entityTo: e
-    }
-  }
-  const fieldList = ubql.fieldList
+  const aliases = new Map()
+  aliases.set('', {
+    alias: aliasLetter,
+    attrFrom: null,
+    aliasFrom: aliasLetter,
+    entityTo: e
+  })
 
   // asterisk
   const fL = ubql.fieldList.length
@@ -160,16 +158,17 @@ function dummyBuilder (ubql, aliasLetter = 'A', isExternal=false) {
 
   // FROM cause
   // TODO - joinCondition (move `from` after `where`)
-  let a = aliases['']
+  const a = aliases.get('')
   q += ' FROM ' + a.entityTo.dbSelectName + ' ' + a.alias
-  for (const key in aliases) { // Object.entries is slow
-    if (key === '') continue // empty string key is for root entity, already added above
-    a = aliases[key]
+  aliases.forEach((a, key) => {
+    if (key === '') return // empty string key is for root entity, already added above
     q += a.attrFrom.allowNull ? ' JOIN ' : ' LEFT JOIN ' // prefer short syntax. INNER JOIN === JOIN; LEFT OUTER JOIN === LEFT JOIN
     q += a.entityTo.dbSelectName + ' ' + a.alias
-    q += ' ON ' + a.aliasFrom + '.' + a.attrFrom.name + ' = ' + a.alias + '.ID' // TODO attrFrom.associationAttr ? a.entityTo.attributes.associationAttr.
-  }
-
+    q += ' ON ' + a.aliasFrom + '.' + a.attrFrom.dbExpression + ' = ' + a.alias + '.' +
+      (a.attrFrom.associationAttr
+        ? a.entityTo.attributes[a.attrFrom.associationAttr].dbExpression
+        : a.entityTo.attributes['ID'].dbExpression)
+  })
   const whereParts = []
   const params = []
   for (const key in ubql.whereList) {
@@ -209,13 +208,12 @@ const query = new CustomRepository('tst_IDMapping')
   .where('ID', '=', rnd10000())
   .where('userName', 'startsWith', 'a')
   .orderBy('rnd').orderBy('ID')
-  .misc({a: 1}).ubql()
+  .misc({ a: 1 }).ubql()
 console.log(JSON.stringify(query))
 
 console.log(dummyBuilder(query))
 console.time('dummy')
 for (let i = 0; i < ITER; i++) {
-  debugger
   const sql = dummyBuilder(query)
   res += sql.length
 }
@@ -233,8 +231,6 @@ console.log('complexExprLink:', dummyBuilder(complexExprLink))
 // link to expression what uses attr mapped on expression - NOT supported in native
 const complexExprLinkComplex = new CustomRepository('tst_ubqlDetail').attrs('master.complexMap').ubql()
 console.log('complexExprLinkComplex:', dummyBuilder(complexExprLinkComplex))
-
-
 
 // console.time('CustomRepository')
 // for (let i = 0; i < 500000; i++) {
