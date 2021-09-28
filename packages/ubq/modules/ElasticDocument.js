@@ -1,7 +1,8 @@
 const UB = require('@unitybase/ub')
 
 class ElasticDocument {
-  constructor ({ date, data, rights, documentName, attachments, author, entity } = {}) {
+  constructor ({ ID, date, data, rights, documentName, attachments, author, entity } = {}) {
+    this.ID = ID
     this.date = date
     this.data = data
     this.rights = rights || null
@@ -14,6 +15,7 @@ class ElasticDocument {
   fillFromObjectAndFts (entityName, obj, fieldsWithDocument) {
     const domainInfo = UB.App.domainInfo.get(entityName)
     const { dateAttribute, indexedAttributes, descriptionAttribute } = domainInfo.mixins.fts
+    this.ID = obj.ID
     this.date = obj[dateAttribute]
     this.documentName = obj[descriptionAttribute]
     this.entity = entityName

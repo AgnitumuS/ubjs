@@ -286,4 +286,10 @@ export default {
 .fts__result-attribute-code {
   color: hsl(var(--hs-primary), var(--l-text-default));
 }
+
+em {
+  color: green;
+  font-weight: 900;
+}
+
 </style>

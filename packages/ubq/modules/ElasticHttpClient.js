@@ -175,9 +175,7 @@ class ElasticHttpClient {
     }
 
     try {
-      const responseData = JSON.parse(response.read())
-      return `performed with result:${responseData.result} index: ${responseData._index} type: ${responseData._type}
-    id: ${responseData._id} version: ${responseData._version}`
+      return JSON.parse(response.read())
     } catch (e) {
       throw new Error(`Error parsing JSON: ${e.message}, ${e.stack}`)
     }

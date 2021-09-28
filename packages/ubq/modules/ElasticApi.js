@@ -1,4 +1,4 @@
-const ElasticUpdate = require('./ElasticUpdate')
+const ElasticCRUD = require('./ElasticCRUD')
 const UB = require('@unitybase/ub')
 const ElasticDocument = require('./ElasticDocument')
 
@@ -19,7 +19,7 @@ class ElasticApi {
       .where('ID', '=', id)
       .selectSingle()
     if (element) {
-      const elasticUpdate = new ElasticUpdate(entityName)
+      const elasticUpdate = new ElasticCRUD({ entityName })
       const elasticDocument = new ElasticDocument()
       elasticDocument.fillFromObjectAndFts(entityName, element, elasticUpdate.fieldsWithDocuments)
       elasticUpdate._update(elasticDocument, element.ID)
@@ -44,7 +44,7 @@ class ElasticApi {
         .limit(limit)
         .selectAsObject()
       start = start + limit
-      const elasticUpdate = new ElasticUpdate(entityName)
+      const elasticUpdate = new ElasticCRUD({ entityName })
       for (const element of elements) {
         const elasticDocument = new ElasticDocument()
         elasticDocument.fillFromObjectAndFts(entityName, element, elasticUpdate.fieldsWithDocuments)
@@ -67,12 +67,8 @@ class ElasticApi {
     }
   }
 
-  _search (search) {
-    return { id: 2342123, entity: 'test', entitydescr: 'test', snippet: 'test' }
-  }
-
   deleteFromFTSIndex (entityName, id) {
-    const elasticUpdate = new ElasticUpdate(entityName)
+    const elasticUpdate = new ElasticCRUD({ entityName })
     elasticUpdate._delete(id)
   }
 
@@ -107,8 +103,9 @@ class ElasticApi {
     this._reindexConnection(connectionName)
   }
 
-  fts (search) {
-    this._search(search)
+  fts (connectionName, queryText) {
+    const elasticCRUD = new ElasticCRUD({ connectionName })
+    return elasticCRUD._select(queryText)
   }
 }
 

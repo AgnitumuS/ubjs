@@ -53,9 +53,25 @@ me.entity.addMethod('ftsElasticReindex')
  */
 me.fts = function (ctx) {
   ctx.dataStore.currentDataName = 'fts'
-  const params = ctx.mParams.params
+  const condition = ctx.mParams.whereList[0]
+  const connectionName = condition.expression.replace(/[[\]']+/g, '').substring(4) || 'ftsDefault'
   const elasticApi = new ElasticApi()
-  return elasticApi.fts(params)
+  const searchResult = elasticApi.fts(connectionName, condition.value)
+  const results = []
+  if (searchResult.hits.total.value !== 0) {
+    const hits = searchResult.hits.hits
+    for (const hit of hits) {
+      results.push(
+        {
+          ID: hit.fields.ID,
+          entity: 'fts_elastic',
+          entitydescr: 'fts',
+          snippet: Object.values(hit.highlight).join('.... </br> .....')
+        }
+      )
+    }
+  }
+  return ctx.dataStore.initialize(results)
 }
 
 me.entity.addMethod('fts')
