@@ -37,6 +37,14 @@
     }
   },
   "dbExtensions": {
+    "IDX_SUBJ_CODE": {
+      "type": "INDEX",
+      "definition": {
+        "keys": {
+          "code": {}
+        }
+      }
+    },
     "IDX_SUBJ_NAME": {
       "type": "INDEX",
       "definition": {
