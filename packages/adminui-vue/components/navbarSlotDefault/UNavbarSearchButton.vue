@@ -288,7 +288,7 @@ export default {
 }
 
 .fts__result-text {
-  color: green;
+  color: hsl(var(--hs-success), var(--l-state-default));
   font-weight: 900;
 }
 
