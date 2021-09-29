@@ -32,7 +32,7 @@ module.exports = function (container) {
     new EntityRepository(
       'ubm_sysdictionary',
       ['code'],
-      ['ubql', 'listUbql'],
+      ['ubql'],
       ['name']
     )
   )
@@ -46,11 +46,6 @@ module.exports = function (container) {
       .transform(
         'ubql',
         ubql => typeof ubql === 'string' ? ubql : JSON.stringify(ubql)
-      )
-      .copy('listUbql')
-      .transform(
-        'listUbql',
-        listUbql => typeof listUbql === 'string' ? listUbql : JSON.stringify(listUbql)
       )
       .wrapAsEntity('ubm_sysdictionary')
   )
