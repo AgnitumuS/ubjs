@@ -22,13 +22,7 @@ module.exports = function (container) {
       .copy('ubql')
       .transform(
         'ubql',
-        function (ubql) {
-          if (typeof ubql === 'string') {
-            return ubql
-          } else {
-            return JSON.stringify(ubql)
-          }
-        }
+        ubql => typeof ubql === 'string' ? ubql : JSON.stringify(ubql)
       )
       .wrapAsEntity('ubm_query')
   )
@@ -38,7 +32,7 @@ module.exports = function (container) {
     new EntityRepository(
       'ubm_sysdictionary',
       ['code'],
-      ['ubql'],
+      ['ubql', 'listUbql'],
       ['name']
     )
   )
@@ -52,6 +46,11 @@ module.exports = function (container) {
       .transform(
         'ubql',
         ubql => typeof ubql === 'string' ? ubql : JSON.stringify(ubql)
+      )
+      .copy('listUbql')
+      .transform(
+        'listUbql',
+        listUbql => typeof listUbql === 'string' ? listUbql : JSON.stringify(listUbql)
       )
       .wrapAsEntity('ubm_sysdictionary')
   )

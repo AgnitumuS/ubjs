@@ -2,17 +2,24 @@
   <div class="u-form-layout">
     <u-toolbar />
 
-    <u-form-container
+   <u-form-container
       v-loading.body="loading"
       label-position="top"
       :max-width="800"
     >
-      <u-auto-field attribute-name="code" />
-      <u-auto-field attribute-name="name" />
-      <u-auto-field
-        editor-mode="application/json"
-        attribute-name="ubql"
-      />
+      <u-grid>
+
+        <u-auto-field attribute-name="code" />
+        <u-auto-field attribute-name="name" />
+        <u-auto-field
+          editor-mode="application/json"
+          attribute-name="ubql"
+        />
+        <u-auto-field
+          editor-mode="application/json"
+          attribute-name="listUbql"
+        />
+      </u-grid>
     </u-form-container>
   </div>
 </template>

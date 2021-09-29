@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - umb_sysdictionary - added `listUbql` attribute a default UBQL for showList command   
 
 ### Changed
 
