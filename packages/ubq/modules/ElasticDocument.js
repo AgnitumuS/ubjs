@@ -42,17 +42,20 @@ class ElasticDocument {
         .where('instanceID', '=', obj[entityConnectAttr])
         .selectAsObject()
       this.rights = elements.map(el => el.valueID)
+    } else {
+      // add special right for reading indexed data without acl RLS
+      this.rights = [123456789]
     }
   }
 
-  static getSelectFieldsFromFts (domainInfo) {
-    const { dateAttribute, indexedAttributes, descriptionAttribute } = domainInfo.mixins.fts
+  static getSelectFieldsFromFts (entityInfo) {
+    const { dateAttribute, indexedAttributes, descriptionAttribute } = entityInfo.mixins.fts
     const selectFields = [...indexedAttributes]
     selectFields.push('ID')
     selectFields.push(dateAttribute)
     selectFields.push(descriptionAttribute)
-    if (domainInfo.aclRls) {
-      selectFields.push(domainInfo.aclRls.entityConnectAttr)
+    if (entityInfo.aclRls) {
+      selectFields.push(entityInfo.aclRls.entityConnectAttr)
     }
     return [...new Set(selectFields)].filter(el => el !== undefined)
   }

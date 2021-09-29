@@ -22,10 +22,10 @@ class ElasticHttpClient {
     this._baseUrl = options.url.replace(/\/$/, '')
     this._options = Object.assign(
       {
-        sendTimeout: 30000,
-        receiveTimeout: 30000,
-        keepAlive: true,
-        compressionEnable: true
+        // sendTimeout: 30000,
+        // receiveTimeout: 30000,
+        // keepAlive: true,
+        // compressionEnable: true
       },
       options.requestOptions
     )

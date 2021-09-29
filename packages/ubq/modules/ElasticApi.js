@@ -8,12 +8,12 @@ class ElasticApi {
   }
 
   _reindexElement (entityName, id) {
-    const domainInfo = UB.App.domainInfo.get(entityName)
-    if (domainInfo.mixins.fts.dataProvider !== 'Mixin') {
+    const entityInfo = UB.App.domainInfo.get(entityName)
+    if (entityInfo.mixins.fts.dataProvider !== 'Mixin') {
       console.error(`For Elastic indexes now supported only Mixin data provider for entity: ${entityName}>>>`)
       return
     }
-    const attrs = ElasticDocument.getSelectFieldsFromFts(domainInfo)
+    const attrs = ElasticDocument.getSelectFieldsFromFts(entityInfo)
     const element = UB.Repository(entityName)
       .attrs(attrs)
       .where('ID', '=', id)
@@ -103,9 +103,9 @@ class ElasticApi {
     this._reindexConnection(connectionName)
   }
 
-  fts (connectionName, queryText) {
+  fts ({ connectionName, queryText, queryDate }) {
     const elasticCRUD = new ElasticCRUD({ connectionName })
-    return elasticCRUD._select(queryText)
+    return elasticCRUD._select({ queryText, queryDate })
   }
 }
 

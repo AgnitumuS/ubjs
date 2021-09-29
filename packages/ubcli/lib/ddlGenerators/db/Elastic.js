@@ -104,17 +104,10 @@ class Elastic {
 
   _getIndexes () {
     const URL = `${this.dbConnectionConfig.serverName}/_cat/indices?format=json`
-    const rq = http.request({
-      URL: URL,
-      method: 'GET',
-      sendTimeout: 30000,
-      receiveTimeout: 30000,
-      keepAlive: true,
-      compressionEnable: true
-    })
+    const rq = http.request({ URL })
     rq.setHeader('Content-Type', 'application/json')
     const response = rq.end()
-    const responseData = JSON.parse(response.read())
+    const responseData = response.json()
     return responseData
   }
 

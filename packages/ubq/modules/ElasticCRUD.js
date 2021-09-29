@@ -58,6 +58,8 @@ class ElasticCRUD extends ElasticHttpClient {
         }
       ],
       highlight: {
+        pre_tags: ['<span class="fts__result-text">'],
+        post_tags: ['</span>'],
         fields: {
           'attachments.attachment.content': {
             fragment_size: 400,
@@ -91,9 +93,38 @@ class ElasticCRUD extends ElasticHttpClient {
     this._query.query.bool.must[0].simple_query_string.query = queryText
   }
 
-  _select (queryText) {
+  get queryFilter () {
+    return this._query.query.bool.filter
+  }
+
+  set queryFilter ({ queryDate, queryRights }) {
+    this._query.query.bool.filter = [
+      {
+        terms: {
+          rights: []
+        }
+      },
+      {
+        range: {
+          date: {}
+        }
+      }
+    ]
+    this._query.query.bool.filter[0].terms.rights = queryRights
+    if (queryDate) {
+      this._query.query.bool.filter[1].range.date = {
+        time_zone: '+02:00', // queryDate.start
+        gte: queryDate.gte, // '1021-01-01T00:00:00'
+        lte: queryDate.lte // 'now'
+      }
+    }
+  }
+
+  _select ({ queryText, queryDate }) {
     const requestOptions = '/_search?pretty'
     this.query = queryText
+    const queryRights = [123456789]
+    this.queryFilter = { queryDate, queryRights }
     const result = this._jsonWithResult('Search in Elastic', 'GET', requestOptions, this.query)
     return result
   }

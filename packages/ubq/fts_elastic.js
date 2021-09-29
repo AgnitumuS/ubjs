@@ -53,10 +53,22 @@ me.entity.addMethod('ftsElasticReindex')
  */
 me.fts = function (ctx) {
   ctx.dataStore.currentDataName = 'fts'
-  const condition = ctx.mParams.whereList[0]
-  const connectionName = condition.expression.replace(/[[\]']+/g, '').substring(4) || 'ftsDefault'
+  const whereList = ctx.mParams.whereList
+  const conditionText = Object.values(whereList).find(el => el.condition === 'match')
+  const connectionName = conditionText.expression.replace(/[[\]']+/g, '').substring(4) || 'ftsDefault'
+  const conditionDateGte = Object.values(whereList).find(el => el.expression === '[ftsDate]' && el.condition === 'moreEqual')
+  const conditionDateLte = Object.values(whereList).find(el => el.expression === '[ftsDate]' && el.condition === 'lessEqual')
   const elasticApi = new ElasticApi()
-  const searchResult = elasticApi.fts(connectionName, condition.value)
+  const searchResult = elasticApi.fts({
+    connectionName,
+    queryText: conditionText.value
+  })
+  if (conditionDateGte && conditionDateLte) {
+    searchResult.queryDate = {
+      gte: conditionDateGte.value,
+      lte: conditionDateLte.value
+    }
+  }
   const results = []
   if (searchResult.hits.total.value !== 0) {
     const hits = searchResult.hits.hits
