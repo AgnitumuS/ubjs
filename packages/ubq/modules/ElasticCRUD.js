@@ -113,7 +113,7 @@ class ElasticCRUD extends ElasticHttpClient {
     this._query.query.bool.filter[0].terms.rights = queryRights
     if (queryDate) {
       this._query.query.bool.filter[1].range.date = {
-        time_zone: '+02:00', // queryDate.start
+        // time_zone: '+02:00', // queryDate.start
         gte: queryDate.gte, // '1021-01-01T00:00:00'
         lte: queryDate.lte // 'now'
       }
