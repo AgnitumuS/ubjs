@@ -24,6 +24,7 @@
     {
       "name": "code",
       "caption": "Code",
+      "documentation": "Dictionary code. For codes what exectly match entity name 'Lookup UBQL' is used by UTableEntity and 'Table UBQL' is used as a default for showList",
       "dataType": "String",
       "size": 50,
       "allowNull": false,
@@ -39,7 +40,9 @@
     },
     {
       "name": "ubql",
-      "caption": "UBQL (JSON)",
+      "caption": "Lookup UBQL",
+      "description": "A UBQL used for lookups (UTableEntity)",
+      "documentation": "Lookup UBQL must contains at last 2 attribute - first one is row ID and second is row caption shown to user",
       "dataType": "Json",
       "allowNull": false
     }

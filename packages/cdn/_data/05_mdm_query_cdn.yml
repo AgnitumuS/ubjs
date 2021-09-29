@@ -1,0 +1,235 @@
+$context:
+  type: ubm_sysdictionary
+
+cdn_region:
+  name: {en: Regions, ru: Регионы, uk: Регіони}
+  ubql:
+    entity: cdn_region
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_regiontype:
+  name: {en: Region types, ru: Типы регионов, uk: Типи регіонів}
+  ubql:
+    entity: cdn_regiontype
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_country:
+  name: {en: Countries, ru: Страны, uk: Країни}
+  ubql:
+    entity: cdn_country
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_city:
+  name: {en: Cities, ru: Города, uk: Міста}
+  ubql:
+    entity: cdn_city
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_citytype:
+  name: {en: City types, ru: Типы городов, uk: Типи міст}
+  ubql:
+    entity: cdn_citytype
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_adminunit:
+  name: {en: Administrative Units, ru: Административно-территориальные единицы, uk: Адміністративно-территоріальніе одиниці}
+  ubql:
+    entity: cdn_adminunit
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_street:
+  name: {en: Streets, ru: Улицы, uk: Вулиці}
+  ubql:
+    entity: cdn_street
+    method: select
+    fieldList: [ID, code, fullName]
+    orderList: {0: {expression: fullName, order: asc}}
+
+cdn_bank:
+  name: {en: Banks, ru: Банки, uk: Банки}
+  ubql:
+    entity: cdn_bank
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_currency:
+  name: {en: Currencies, ru: Валюты, uk: Валюти}
+  ubql:
+    entity: cdn_currency
+    method: select
+    fieldList: [ID, code3, name]
+    orderList: {0: {expression: code3, order: asc}}
+
+cdn_organization:
+  name: {en: Organizations, ru: Организации, uk: Організації}
+  ubql:
+    entity: cdn_organization
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_employee:
+  name: {en: Employees, ru: Сотрудники, uk: Співробітники}
+  ubql:
+    entity: cdn_employee
+    method: select
+    fieldList: [ID, fullFIO]
+    orderList: {0: {expression: fullFIO, order: asc}}
+
+cdn_address:
+  name: {en: Addresses, ru: Адрес, uk: Адреса}
+  ubql:
+    entity: cdn_address
+    method: select
+    fieldList: [ID, value]
+    orderList: {0: {expression: value, order: asc}}
+
+cdn_department:
+  name: {en: Departments, ru: Подразделение, uk: Підрозділ}
+  ubql:
+    entity: cdn_department
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_deptype:
+  name: {en: Department types, ru: Типы подразделений, uk: Типи підрозділів}
+  ubql:
+    entity: cdn_deptype
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_person:
+  name: {en: Persons, ru: Физические лица, uk: Фізичні особи}
+  ubql:
+    entity: cdn_person
+    method: select
+    fieldList: [ID, fullFIO]
+    orderList: {0: {expression: fullFIO, order: asc}}
+
+cdn_personcategory:
+  name: {en: Person categories, ru: Категории физических лиц, uk: Категорії фізичних осіб}
+  ubql:
+    entity: cdn_personcategory
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_personclass:
+  name: {en: Person classifications, ru: Классы физических лиц, uk: Класи фізичних осіб}
+  ubql:
+    entity: cdn_personclass
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_personsocialstatus:
+  name: {en: Social statuses, ru: Социальные статусы, uk: Соціальні статуси}
+  ubql:
+    entity: cdn_personsocialstatus
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_language:
+  name: {en: Languages, ru: Языки, uk: Мови}
+  ubql:
+    entity: cdn_language
+    method: select
+    fieldList: [ID, code, languageName]
+    orderList: {0: {expression: code, order: asc}}
+
+cdn_classifier:
+  name: {en: Сlassifiers, ru: Классификаторы, uk: Класифікатори}
+  ubql:
+    entity: cdn_classifier
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: code, order: asc}}
+
+cdn_classifieritem:
+  name: {en: Сlassifier items, ru: Записи классификаторов, uk: Записи класифікаторів}
+  ubql:
+    entity: cdn_classifieritem
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_profession:
+  name: {en: Professions, ru: Профессии, uk: Професії}
+  ubql:
+    entity: cdn_profession
+    method: select
+    fieldList: [ID, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_contact:
+  name: {en: Contacts, ru: Контакты, uk: Контакти}
+  ubql:
+    entity: cdn_contact
+    method: select
+    fieldList: [ID, value]
+    orderList: {0: {expression: value, order: asc}}
+
+cdn_contacttype:
+  name: {en: Contact types, ru: Типы контактов, uk: Типи контактів}
+  ubql:
+    entity: cdn_contacttype
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_nationality:
+  name: {en: Nationality, ru: Национальность, uk: Національність}
+  ubql:
+    entity: cdn_nationality
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_orgbusinesstype:
+  name: {en: Organization types, ru: Типы организаций, uk: Типи організацій}
+  ubql:
+    entity: cdn_orgbusinesstype
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_orgownershiptype:
+  name: {en: Types of ownership, ru: Форма собственности, uk: Форма власності}
+  ubql:
+    entity: cdn_orgownershiptype
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_postindex:
+  name: {en: ZIP codes, ru: Почтовые индексы, uk: Поштові індекси}
+  ubql:
+    entity: cdn_postindex
+    method: select
+    fieldList: [ID, code]
+    orderList: {0: {expression: code, order: asc}}
+
+cdn_staffunittype:
+  name: {en: Staffunit types, ru: Типы штатных единиц, uk: Типи штатних одиниць}
+  ubql:
+    entity: cdn_staffunittype
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+

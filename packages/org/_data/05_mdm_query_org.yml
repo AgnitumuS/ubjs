@@ -1,0 +1,58 @@
+$context:
+  type: ubm_sysdictionary
+
+org_organization:
+  name: {en: Organizations, ru: Организации, uk: Організації}
+  ubql:
+    entity: org_organization
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+org_department:
+  name: {en: Departments, ru: Отделы, uk: Відділки}
+  ubql:
+    entity: org_department
+    method: select
+    fieldList: [ID, code, caption]
+    orderList: {0: {expression: caption, order: asc}}
+
+org_staffunit:
+  name: {en: Staff Units, ru: Штатные единицы, uk: Штатні одиниці}
+  ubql:
+    entity: org_staffunit
+    method: select
+    fieldList: [ID, code, caption]
+    orderList: {0: {expression: caption, order: asc}}
+
+org_employee:
+  name: {en: Employees, ru: Сотрудники, uk: Співробітники}
+  ubql:
+    entity: org_employee
+    method: select
+    fieldList: [ID, code, fullFIO]
+    orderList: {0: {expression: fullFIO, order: asc}}
+
+org_execgroup:
+  name: {en: Executors group, ru: Группы исполнителей, uk: Групи виконавців}
+  ubql:
+    entity: org_execgroup
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+org_profession:
+  name: {en: Professions, ru: Профессии, uk: Професії}
+  ubql:
+    entity: org_profession
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: code, order: asc}}
+
+org_unit:
+  name: {en: Organization units, ru: Организационные единицы, uk: Організаційні одиниці}
+  ubql:
+    entity: org_unit
+    method: select
+    fieldList: [ID, code, caption]
+    orderList: {0: {expression: code, order: asc}}
