@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - data for cdn_* entities for `ubm_sysdictinary` are filled by ub-migrate (moved from ldoc project)
 
 ### Changed
 

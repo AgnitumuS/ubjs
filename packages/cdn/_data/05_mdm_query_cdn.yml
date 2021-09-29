@@ -2,7 +2,7 @@ $context:
   type: ubm_sysdictionary
 
 cdn_region:
-  name: {en: Regions, ru: Регионы, uk: Регіони}
+  name: {$i18n: cdn_region}
   ubql:
     entity: cdn_region
     method: select
@@ -10,7 +10,7 @@ cdn_region:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_regiontype:
-  name: {en: Region types, ru: Типы регионов, uk: Типи регіонів}
+  name: {$i18n: cdn_regiontype}
   ubql:
     entity: cdn_regiontype
     method: select
@@ -18,7 +18,7 @@ cdn_regiontype:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_country:
-  name: {en: Countries, ru: Страны, uk: Країни}
+  name: {$i18n: cdn_country}
   ubql:
     entity: cdn_country
     method: select
@@ -26,7 +26,7 @@ cdn_country:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_city:
-  name: {en: Cities, ru: Города, uk: Міста}
+  name: {$i18n: cdn_city}
   ubql:
     entity: cdn_city
     method: select
@@ -34,7 +34,7 @@ cdn_city:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_citytype:
-  name: {en: City types, ru: Типы городов, uk: Типи міст}
+  name: {$i18n: cdn_citytype}
   ubql:
     entity: cdn_citytype
     method: select
@@ -42,7 +42,7 @@ cdn_citytype:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_adminunit:
-  name: {en: Administrative Units, ru: Административно-территориальные единицы, uk: Адміністративно-территоріальніе одиниці}
+  name: {$i18n: cdn_adminunit}
   ubql:
     entity: cdn_adminunit
     method: select
@@ -50,7 +50,7 @@ cdn_adminunit:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_street:
-  name: {en: Streets, ru: Улицы, uk: Вулиці}
+  name: {$i18n: cdn_street}
   ubql:
     entity: cdn_street
     method: select
@@ -58,7 +58,7 @@ cdn_street:
     orderList: {0: {expression: fullName, order: asc}}
 
 cdn_bank:
-  name: {en: Banks, ru: Банки, uk: Банки}
+  name: {$i18n: cdn_bank}
   ubql:
     entity: cdn_bank
     method: select
@@ -66,7 +66,7 @@ cdn_bank:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_currency:
-  name: {en: Currencies, ru: Валюты, uk: Валюти}
+  name: {$i18n: cdn_currency}
   ubql:
     entity: cdn_currency
     method: select
@@ -74,7 +74,7 @@ cdn_currency:
     orderList: {0: {expression: code3, order: asc}}
 
 cdn_organization:
-  name: {en: Organizations, ru: Организации, uk: Організації}
+  name: {$i18n: cdn_organization}
   ubql:
     entity: cdn_organization
     method: select
@@ -82,7 +82,7 @@ cdn_organization:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_employee:
-  name: {en: Employees, ru: Сотрудники, uk: Співробітники}
+  name: {$i18n: cdn_employee}
   ubql:
     entity: cdn_employee
     method: select
@@ -90,7 +90,7 @@ cdn_employee:
     orderList: {0: {expression: fullFIO, order: asc}}
 
 cdn_address:
-  name: {en: Addresses, ru: Адрес, uk: Адреса}
+  name: {$i18n: cdn_address}
   ubql:
     entity: cdn_address
     method: select
@@ -98,7 +98,7 @@ cdn_address:
     orderList: {0: {expression: value, order: asc}}
 
 cdn_department:
-  name: {en: Departments, ru: Подразделение, uk: Підрозділ}
+  name: {$i18n: cdn_department}
   ubql:
     entity: cdn_department
     method: select
@@ -106,7 +106,7 @@ cdn_department:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_deptype:
-  name: {en: Department types, ru: Типы подразделений, uk: Типи підрозділів}
+  name: {$i18n: cdn_deptype}
   ubql:
     entity: cdn_deptype
     method: select
@@ -114,7 +114,7 @@ cdn_deptype:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_person:
-  name: {en: Persons, ru: Физические лица, uk: Фізичні особи}
+  name: {$i18n: cdn_person}
   ubql:
     entity: cdn_person
     method: select
@@ -122,7 +122,7 @@ cdn_person:
     orderList: {0: {expression: fullFIO, order: asc}}
 
 cdn_personcategory:
-  name: {en: Person categories, ru: Категории физических лиц, uk: Категорії фізичних осіб}
+  name: {$i18n: cdn_personcategory}
   ubql:
     entity: cdn_personcategory
     method: select
@@ -130,7 +130,7 @@ cdn_personcategory:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_personclass:
-  name: {en: Person classifications, ru: Классы физических лиц, uk: Класи фізичних осіб}
+  name: {$i18n: cdn_personclass}
   ubql:
     entity: cdn_personclass
     method: select
@@ -138,7 +138,7 @@ cdn_personclass:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_personsocialstatus:
-  name: {en: Social statuses, ru: Социальные статусы, uk: Соціальні статуси}
+  name: {$i18n: cdn_personsocialstatus}
   ubql:
     entity: cdn_personsocialstatus
     method: select
@@ -146,7 +146,7 @@ cdn_personsocialstatus:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_language:
-  name: {en: Languages, ru: Языки, uk: Мови}
+  name: {$i18n: cdn_language}
   ubql:
     entity: cdn_language
     method: select
@@ -154,7 +154,7 @@ cdn_language:
     orderList: {0: {expression: code, order: asc}}
 
 cdn_classifier:
-  name: {en: Сlassifiers, ru: Классификаторы, uk: Класифікатори}
+  name: {$i18n: cdn_classifier}
   ubql:
     entity: cdn_classifier
     method: select
@@ -162,7 +162,7 @@ cdn_classifier:
     orderList: {0: {expression: code, order: asc}}
 
 cdn_classifieritem:
-  name: {en: Сlassifier items, ru: Записи классификаторов, uk: Записи класифікаторів}
+  name: {$i18n: cdn_classifieritem}
   ubql:
     entity: cdn_classifieritem
     method: select
@@ -170,7 +170,7 @@ cdn_classifieritem:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_profession:
-  name: {en: Professions, ru: Профессии, uk: Професії}
+  name: {$i18n: cdn_profession}
   ubql:
     entity: cdn_profession
     method: select
@@ -178,7 +178,7 @@ cdn_profession:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_contact:
-  name: {en: Contacts, ru: Контакты, uk: Контакти}
+  name: {$i18n: cdn_contact}
   ubql:
     entity: cdn_contact
     method: select
@@ -186,7 +186,7 @@ cdn_contact:
     orderList: {0: {expression: value, order: asc}}
 
 cdn_contacttype:
-  name: {en: Contact types, ru: Типы контактов, uk: Типи контактів}
+  name: {$i18n: cdn_contacttype}
   ubql:
     entity: cdn_contacttype
     method: select
@@ -194,7 +194,7 @@ cdn_contacttype:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_nationality:
-  name: {en: Nationality, ru: Национальность, uk: Національність}
+  name: {$i18n: cdn_nationality}
   ubql:
     entity: cdn_nationality
     method: select
@@ -202,7 +202,7 @@ cdn_nationality:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_orgbusinesstype:
-  name: {en: Organization types, ru: Типы организаций, uk: Типи організацій}
+  name: {$i18n: cdn_orgbusinesstype}
   ubql:
     entity: cdn_orgbusinesstype
     method: select
@@ -210,7 +210,7 @@ cdn_orgbusinesstype:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_orgownershiptype:
-  name: {en: Types of ownership, ru: Форма собственности, uk: Форма власності}
+  name: {$i18n: cdn_orgownershiptype}
   ubql:
     entity: cdn_orgownershiptype
     method: select
@@ -218,7 +218,7 @@ cdn_orgownershiptype:
     orderList: {0: {expression: name, order: asc}}
 
 cdn_postindex:
-  name: {en: ZIP codes, ru: Почтовые индексы, uk: Поштові індекси}
+  name: {$i18n: cdn_postindex}
   ubql:
     entity: cdn_postindex
     method: select
@@ -226,7 +226,7 @@ cdn_postindex:
     orderList: {0: {expression: code, order: asc}}
 
 cdn_staffunittype:
-  name: {en: Staffunit types, ru: Типы штатных единиц, uk: Типи штатних одиниць}
+  name: {$i18n: cdn_staffunittype}
   ubql:
     entity: cdn_staffunittype
     method: select
