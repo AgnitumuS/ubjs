@@ -107,7 +107,7 @@ function UBDomain (domainInfo, isExtended = false) {
   }
 
   if (isExtended) { // calculate expression mapping for UBQL builder
-    calculateDbExpression4Attrs(me.entities)
+    this._calculateDbExpression4Attrs(me.entities)
   }
 
   /**
@@ -145,71 +145,88 @@ const EXPR_SPLIT = /(\[[^\]]*])/g
 const OPEN_BRACKET = '['.charCodeAt(0)
 const CLOSE_BRACKET = ']'.charCodeAt(0)
 
+UBDomain.dbExprType = {
+  lexeme: 1,
+  field: 2,
+  chain: 3
+}
 /**
  * "[firm.code] || [name] + 1"
  * ->
  * [["firm.code", " || ", "name", " + 1"],
  *  [true,        false,   true,  false]]
+ * @param {UBEntity} entity
  * @param {string} expr
+ * @param {boolean} [isFromFieldList=false] for expression from field list expect string w\o bracket
+ *   to be an attribute ot chain, otherwise = lexeme
  */
-UBDomain.splitExpression = function (expr) {
-  const parts = expr.split(EXPR_SPLIT).filter(i => !!i)
-  const flags = []
+UBDomain.prototype.splitExpression = function (entity, expr,initialAttr, recursionDepth) {
+  // todo - for field list check [ exist
+  const parts = expr.split(EXPR_SPLIT).filter(p => !!p)
+  const result = []
   for (let i = 0, L = parts.length; i < L; i++) {
     const p = parts[i]
     const pL = p.length
-    //TODO - parse to  [{type: 'lexema|field|chain', attr: ->UBEntityArttr, path: 'firm.'},...]
-    if ((pL > 2) && (p.charCodeAt(0) === OPEN_BRACKET) && (p.charCodeAt(pL - 1) === CLOSE_BRACKET)) {
-      flags.push(true)
+    //TODO - parse to  [{type: 'lexeme|field|chain', attr: ->UBEntityArttr, path: 'firm.'},...]
+    if ((pL > 2) && (p.charCodeAt(0) === OPEN_BRACKET) && (p.charCodeAt(pL - 1) === CLOSE_BRACKET)) { // [attr] or [attrA.attrB...]
+      const attrs = p.slice(1, -1)
+      if (attrs.indexOf('.') !== -1) { // chain
+
+      } else { // attribute
+
+      }
       parts[i] = p.slice(1, -1)
     } else {
-      flags.push(false)
+      result.push({ type: UBDomain.dbExprType.lexeme, value: p.trim() })
     }
   }
-  return [parts, flags]
+  return result
 }
 
 /**
  * Loop through all attributes and calculate a dbExpression
  * @param {Object<string, UBEntity>} allEntities
+ * @private
  */
-function calculateDbExpression4Attrs (allEntities) {
-  for (const entityCode in allEntities) {
-    const e = allEntities[entityCode]
+UBDomain.prototype._calculateDbExpression4Attrs = function () {
+  for (const entityCode in this.entities) {
+    const e = this.entities[entityCode]
     for (const attrCode in e.attributes) {
       const attr = e.attributes[attrCode]
       if (!attr.dbExpression) { // not calculated yed by recursive calls
-        calculateDbExpression(attr, allEntities, attr)
+        this._calculateDbExpression(attr, attr)
       }
     }
   }
 }
 
 /**
- * Add `dbExpression`, `dbExpressionIsSimple` for all attributes.
- * For attributes without mapping or mapped to field contains table field name and dbExpressionIsSimple=true,
+ * Add `dbExpression`, `dbExpressionType` for all attributes.
+ * For attributes without mapping or mapped to field `dbExpression` contains name of table field
+ *  and dbExpressionType=true,
  * for `expression` mapping - an array of expression parts, dbExpressionIsSimple=false
  * For non-simple expressions `dbExpressionFlags` array contains `true` for "attribute expression" or `false` for other substrings
  * @param {UBEntityAttribute} attr
- * @param {Object<string, UBEntity>} allEntities
  * @param {UBEntityAttribute} initialAttr Initial attribute (for self-circle check)
  * @param {number} [recursionDepth=0]
  * @private
  */
-function calculateDbExpression (attr, allEntities, initialAttr, recursionDepth = 0) {
+UBDomain.prototype._calculateDbExpression = function (attr, initialAttr, recursionDepth = 0) {
   if (recursionDepth > 0 && attr === initialAttr) {
     throw new Error(`Detected self-circle expression mapping for attribute '${attr.entity.code}.${attr.code}'. Invalid expression is - '${attr.mapping}'`)
   }
   if (attr.dbExpression !== undefined) return // already calculated
   if (!attr.mapping) { // no mapping = attr code is field name
     attr.dbExpression = attr.code
-    attr.dbExpressionIsSimple = true
+    attr.dbExpressionType = UBDomain.dbExprType.field
   } else if (attr.mapping.expressionType === UBDomain.ExpressionType.Field) { // mapped to table field
     attr.dbExpression = attr.mapping.expression
-    attr.dbExpressionIsSimple = true
-  } else { // expression
-    ;[attr.dbExpression, attr.dbExpressionFlags] = UBDomain.splitExpression(attr.mapping.expression)
+    attr.dbExpressionType = UBDomain.dbExprType.field
+  } else if (attr.mapping.expressionType === UBDomain.ExpressionType.Expression) { // expression
+    ;[attr.dbExpression, attr.dbExpressionFlags] = this.splitExpression(attr.entity, attr.mapping.expression, initialAttr, recursionDepth)
     //if ((attr.dbExpression.length === 1) && ())
+  } else {
+    throw new Error(`Invalid expression type "${attr.mapping.expressionType}" for attribute ${attr.entity.name}.${attr.name}`)
   }
 }
 /**
