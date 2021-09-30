@@ -659,110 +659,109 @@ export default {
     },
 
     handleShowDictionary () {
-      if (!this.removeDefaultActions) {
-        const selectRepo = this.getRepository().clone()
-        selectRepo.orderList = [] // clear order list
-        // override fieldList but  keep all possible filters
-        selectRepo.fieldList = this.$UB.connection.domain.get(this.getEntityName)
-          .getAttributeNames({ defaultView: true })
-        const config = this.buildShowDictionaryConfig({
-          renderer: 'vue',
-          cmdType: 'showList',
-          isModal: true,
-          cmdData: {
-            repository: () => selectRepo,
-            onSelectRecord: ({ ID, row, close }) => {
-              this.$emit('input', row[this.valueAttribute], JSON.parse(JSON.stringify(row)))
-              close()
-            },
-            buildEditConfig (cfg) {
-              if (this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms) cfg.isModal = true
-              return cfg
-            },
-            buildCopyConfig (cfg) {
-              cfg.isModal = this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal
-              return cfg
-            },
-            buildAddNewConfig (cfg) {
-              if (this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms) cfg.isModal = true
-              return cfg
-            },
-            scopedSlots: createElement => ({
-              toolbarPrepend: ({ store, close }) => {
-                return createElement('u-button', {
-                  attrs: {
-                    disabled: !store.state.selectedRowId
-                  },
-                  props: {
-                    appearance: 'inverse',
-                    icon: 'u-icon-check'
-                  },
-                  on: {
-                    click: () => {
-                      const selectedRowId = store.state.selectedRowId
-                      const selectedRow = store.state.items.find(({ ID }) => ID === selectedRowId)
+      if (this.removeDefaultActions) return
 
-                      if (selectedRow == null) {
-                        return
-                      }
+      const selectRepo = this.getRepository().clone()
+      selectRepo.orderList = [] // clear order list
+      // override fieldList but  keep all possible filters
+      selectRepo.fieldList = this.$UB.connection.domain.get(this.getEntityName)
+        .getAttributeNames({ defaultView: true })
+      const config = this.buildShowDictionaryConfig({
+        renderer: 'vue',
+        cmdType: 'showList',
+        isModal: true,
+        cmdData: {
+          repository: () => selectRepo,
+          onSelectRecord: ({ ID, row, close }) => {
+            this.$emit('input', row[this.valueAttribute], JSON.parse(JSON.stringify(row)))
+            close()
+          },
+          buildEditConfig (cfg) {
+            if (this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms) cfg.isModal = true
+            return cfg
+          },
+          buildCopyConfig (cfg) {
+            cfg.isModal = this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal
+            return cfg
+          },
+          buildAddNewConfig (cfg) {
+            if (this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms) cfg.isModal = true
+            return cfg
+          },
+          scopedSlots: createElement => ({
+            toolbarPrepend: ({ store, close }) => {
+              return createElement('u-button', {
+                attrs: {
+                  disabled: !store.state.selectedRowId
+                },
+                props: {
+                  appearance: 'inverse',
+                  icon: 'u-icon-check'
+                },
+                on: {
+                  click: () => {
+                    const selectedRowId = store.state.selectedRowId
+                    const selectedRow = store.state.items.find(({ ID }) => ID === selectedRowId)
 
-                      this.$emit('input', selectedRow[this.valueAttribute], JSON.parse(JSON.stringify(selectedRow)))
-                      close()
+                    if (selectedRow == null) {
+                      return
                     }
+
+                    this.$emit('input', selectedRow[this.valueAttribute], JSON.parse(JSON.stringify(selectedRow)))
+                    close()
                   }
-                }, [this.$ut('actionSelect')])
-              }
-            })
-          }
-        })
-        this.$UB.core.UBApp.doCommand(config)
-      }
+                }
+              }, [this.$ut('actionSelect')])
+            }
+          })
+        }
+      })
+      this.$UB.core.UBApp.doCommand(config)
     },
 
     async handleEditItem () {
-      if (!this.removeDefaultActions) {
-        let ID = this.value
+      if (this.removeDefaultActions) return
 
-        if (this.valueAttribute !== 'ID') { // row ID is required to open edit form
-          const repositoryClone = this.getRepository().clone().clearWhereList()
-          repositoryClone.fieldList = ['ID']
+      let ID = this.value
+      if (this.valueAttribute !== 'ID') { // row ID is required to open edit form
+        const repositoryClone = this.getRepository().clone().clearWhereList()
+        repositoryClone.fieldList = ['ID']
 
-          const ids = await repositoryClone
-            .where(this.valueAttribute, '=', this.value)
-            .limit(2)
-            .selectAsArrayOfValues()
+        const ids = await repositoryClone
+          .where(this.valueAttribute, '=', this.value)
+          .limit(2)
+          .selectAsArrayOfValues()
 
-          if (ids.length !== 1) {
-            UB.showErrorWindow(`${this.valueAttribute} is not unique`)
-            return
-          }
-
-          ID = ids[0]
+        if (ids.length !== 1) {
+          UB.showErrorWindow(`${this.valueAttribute} is not unique`)
+          return
         }
 
-        const config = this.buildEditConfig({
-          cmdType: this.$UB.core.UBCommand.commandType.showForm,
-          entity: this.getEntityName,
-          isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal,
-          instanceID: ID
-        })
-        this.$UB.core.UBApp.doCommand(config)
+        ID = ids[0]
       }
+
+      const config = this.buildEditConfig({
+        cmdType: this.$UB.core.UBCommand.commandType.showForm,
+        entity: this.getEntityName,
+        isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal,
+        instanceID: ID
+      })
+      this.$UB.core.UBApp.doCommand(config)
     },
 
     handleAddNewItem () {
-      if (!this.removeDefaultActions) {
-        const config = this.buildAddNewConfig({
-          cmdType: this.$UB.core.UBCommand.commandType.showForm,
-          entity: this.getEntityName,
-          isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal
-        })
-        if (!this.skipAutoComplete) {
-          this.$UB.connection.once(`${this.entityName}:changed`, this.autoCompleteValue)
-          this.AUTOCOMPLETE_LISTENER_UID = this._uid
-        }
-        this.$UB.core.UBApp.doCommand(config)
+      if (this.removeDefaultActions) return
+
+      const config = this.buildAddNewConfig({
+        cmdType: this.$UB.core.UBCommand.commandType.showForm,
+        entity: this.getEntityName,
+        isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal
+      })
+      if (!this.skipAutoComplete) {
+        this.$UB.connection.once(`${this.entityName}:changed`, this.autoCompleteValue)
+        this.AUTOCOMPLETE_LISTENER_UID = this._uid
       }
+      this.$UB.core.UBApp.doCommand(config)
     },
 
     autoCompleteValue (config) {
@@ -772,11 +771,11 @@ export default {
     },
 
     handleClearClick () {
-      if (!this.removeDefaultActions) {
-        this.$emit('input', null, null)
-        if (this.dropdownVisible) {
-          this.fetchPage()
-        }
+      if (this.removeDefaultActions) return
+
+      this.$emit('input', null, null)
+      if (this.dropdownVisible) {
+        this.fetchPage()
       }
     },
 
