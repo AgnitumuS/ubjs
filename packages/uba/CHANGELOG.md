@@ -7,9 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - added index by `uba_subject.code`
+ - `DialogTable.vue` - it is multiselection table in dialog window. Easy for use ![View result](./changeLogImgs/DialogTableScreeShot.png)
 
 ### Changed
-
+ - `uba_als-fm.vue`- made new form. Implemented editing of a role that already exists. [Task](https://dev.intecracy.com/agile/browse/UBDF-14336)
 ### Deprecated
 
 ### Removed

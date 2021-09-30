@@ -33,6 +33,7 @@
     >
       <ElButton
         v-for="btn in btns"
+        :key="btn.action"
         :type="btn.type"
         :disabled="btn.disabled ? btn.disabled.call(this) : false"
         @click.native="hanndleClickOnBtn(btn)"
