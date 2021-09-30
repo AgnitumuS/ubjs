@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UDropdownItem`: fixed a bug when the dropdown item handler are not called from the menu
+  after click not on the text of the menu [LDOC-1666]
 
 ## [5.20.26] - 2021-09-24
 ### Fixed
