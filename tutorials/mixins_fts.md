@@ -199,34 +199,10 @@ ub cmd/ftsReindex -help
 
 В перечне моделей `domainConfigs` должна быть добавлена модель **UBQ**
 
-### Настраиваем планировщик
-Добавляем новую задачу планировщика для периодического обновление индекса, например раз в 10 минут 
-в конфигурационный файл планировщика `\Autotest\schedulers\schedulers.json`:  
-```json
-{
-    ....,
-    "fts":{
-         "enabled": true,
-         "ownerUser": "admin",
-         "runcmd": "UB.UBQ.FTSReindexFromQueue",
-         "useDaysOf": "Month",
-         "daysOfMonth": [],
-         "allMonthDays": true,
-         "lastMonthDay": true,
-         "daysOfWeek": [],
-         "timePeriodic": "Periodic",
-         "timeList": [],
-         "timePeriodicHour": 0,
-         "timePeriodicMinute": 10,
-         "name": "fts"
-    }
-}
-```
-
-Включаем планировщик на уровне приложения:  
-```json
-"enabledSchedulers": true,
-``` 
+### Scheduler for async FTS
+  UBQ model ads a `FTSReindexFromQueue` scheduler for periodical (once ped minute by default) check new tasks of
+`ASYNCFTS` type are added into `ubq_mesages`, and renew/add corresponding records in the FTS index.
+  Job is enabled in case FTS is enabled in ubConfig and `application.fts.async` key value is `true`
     	
 ## Програмное использование полнотекстового поиска
  
