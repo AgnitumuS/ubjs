@@ -1,0 +1,8 @@
+{
+  "caption": "Sistemin sorğu kitabçaları",
+  "attributes": [
+    {"name": "code", "caption": "Kod"},
+    {"name": "name", "caption": "Ad"},
+    {"name": "ubql", "caption": "UBQL (JSON)"}
+  ]
+}

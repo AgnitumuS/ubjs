@@ -13,6 +13,7 @@ adm_desktop:
         uk: Інтерфейс
         nl: Gebruikersinterface
         uz: Interfeys
+        az: İnterfeys
       iconCls: u-icon-image
       displayOrder: 30
       items:
@@ -25,6 +26,7 @@ adm_desktop:
             uk: Переліки
             nl: Opsommingen
             uz: Ro'yxatlar
+            az: Köçürmələr
           displayOrder: 10
           showList:
             renderer: vue
@@ -51,6 +53,7 @@ adm_desktop:
             uk: Робочі столи
             nl: Desktops
             uz: Ish stollari
+            az: İş masaları
           displayOrder: 20
           showList:
             renderer: vue
@@ -72,6 +75,7 @@ adm_desktop:
             uk: Ярлики
             nl: Sneltoetsen
             uz: Yorliqlar
+            az: Yarlıqlar
           displayOrder: 30
           showList:
             renderer: vue
@@ -97,6 +101,7 @@ adm_desktop:
             uk: Форми
             nl: Vormen
             uz: Shakllar
+            az: Formalar
           displayOrder: 40
           showList:
             renderer: vue
@@ -116,6 +121,7 @@ adm_desktop:
             uk: Запити даних
             nl: Zoekopdrachten
             uz: Ma'lumot so'rovlari
+            az: Məlumat sorğuları
           displayOrder: 50
           showList:
             renderer: vue
@@ -133,6 +139,7 @@ adm_desktop:
             uk: Системні довідники
             nl: System Woordenboeken
             uz: Tizim kataloglari
+            az: Sistem soraqçaları
           displayOrder: 60
           showList:
             renderer: vue
@@ -149,6 +156,7 @@ adm_desktop:
             uk: ER діаграми
             nl: ER-diagrammen
             uz: ER grafikalar
+            az: ER diagramları
           displayOrder: 70
           showList:
             renderer: vue

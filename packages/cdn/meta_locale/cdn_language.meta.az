@@ -1,0 +1,21 @@
+{
+  "caption": "Dillər siyahısı",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "ISO 639-1 kodu"
+    },
+    {
+      "name": "languageName",
+      "caption": "Dilin adı"
+    },
+    {
+      "name": "nativeName",
+      "caption": "Dilin yerli dildəki adı (endonim)"
+    },
+    {
+      "name": "isRTL",
+      "caption": "Sağdan sola yazı"
+    }
+  ]
+}

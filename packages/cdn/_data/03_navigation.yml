@@ -11,6 +11,7 @@ cdn_desktop:
     tg: Маълумотномаҳои умумӣ
     nl: Common Dictionaries
     uz: Umumiy kataloglar
+    az: Ümumi soraqçalaq
   description:
     en: Directories of subjects, addresses, other classifiers
     uk: Довідники суб'єктів, адрес, інші класифікатори
@@ -19,6 +20,7 @@ cdn_desktop:
     tg: Директорияи фанҳо, суроғаҳо, таснифоти дигар
     nl: Directories of subjects, addresses, other classifiers
     uz: Mavzular kataloglari, manzillar, boshqa tasniflagichlar
+    az: Mövzular, ünvanlar, digər soraqçalar
   iconCls: u-icon-desktop-dictionaries
   items:
   - cdn_folder_territorial:
@@ -31,6 +33,7 @@ cdn_desktop:
         tg: Воҳиди маъмурӣ
         nl: Territoriaal
         uz: Admin. bo`linish
+        az: İnzibati bölgü
       iconCls: u-icon-globe
       displayOrder: 10
       items:
@@ -44,6 +47,7 @@ cdn_desktop:
             tg: Ноҳияҳо
             nl: Regio's
             uz: Hududlar
+            az: Bölgələr
           iconCls: u-icon-cloud
           displayOrder: 10
           cmd: >
@@ -64,6 +68,7 @@ cdn_desktop:
             tg: Маҳаллаҳои ахолинишин
             nl: Steden
             uz: Hisob -kitoblar
+            az: Yaşayış məntəqələri
           iconCls: u-icon-person-group
           displayOrder: 20
           cmd: >
@@ -84,6 +89,7 @@ cdn_desktop:
             tg: Кишварҳо
             nl: Landen
             uz: Mamlakatlar
+            az: Ölkələr
           iconCls: fa fa-flag-o
           displayOrder: 30
           cmd: >
@@ -104,6 +110,7 @@ cdn_desktop:
             tg: Воҳидҳои маъмурӣ
             nl: Beheerderseenheden
             uz: Ma`muriy birliklar
+            az: İnzibati vahidlər
           iconCls: u-icon-object-group
           displayOrder: 40
           cmd: >
@@ -123,6 +130,7 @@ cdn_desktop:
             tg: Кӯчаҳо
             nl: Straten
             uz: Ko`chalar
+            az: Küçələr
           iconCls: fas fa-map-signs
           displayOrder: 50
           cmd: >
@@ -143,6 +151,7 @@ cdn_desktop:
             tg: Намудҳои ноҳия
             nl: Regiotypen
             uz: Hudud turlari
+            az: Bölgə növləri
           displayOrder: 100
           cmd: >
             {
@@ -162,6 +171,7 @@ cdn_desktop:
             tg: Намудҳои маҳаллаҳои аҳолинишин
             nl: Soorten steden
             uz: Aholi punktlarining turlari
+            az: Yaşayış məntəqə növləri
           displayOrder: 110
           cmd: >
             {
@@ -181,6 +191,7 @@ cdn_desktop:
         tg: Субъектҳо
         nl: Onderwerpen
         uz: Mavzular
+        az: Subyektlər
       iconCls: u-icon-person
       displayOrder: 10
       items:
@@ -194,6 +205,7 @@ cdn_desktop:
             tg: Ташкилотҳо
             nl: Organisaties
             uz: Tashkilot
+            az: Təşkilatlar
           iconCls: fa fa-university
           displayOrder: 10
           cmd: >
@@ -222,6 +234,7 @@ cdn_desktop:
             tg: Коргарон
             nl: Werknemer
             uz: Xodimlar
+            az: Əməkdaşlar
           iconCls: fa fa-briefcase
           displayOrder: 20
           cmd: >
@@ -252,6 +265,7 @@ cdn_desktop:
             tg: Шӯъбаҳо
             nl: Afdelingen
             uz: Bo`limlar
+            az: Bölmələr
           iconCls: fa fa-cubes
           displayOrder: 30
           cmd: >
@@ -280,6 +294,7 @@ cdn_desktop:
             tg: Шахси воқъеи
             nl: Personen
             uz: Shaxslar
+            az: Fiziki şəxslər
           iconCls: fa fa-male
           displayOrder: 40
           cmd: >
@@ -306,6 +321,7 @@ cdn_desktop:
             tg: Бонкҳо
             nl: Banken
             uz: Banklar
+            az: Banklar
           iconCls: fas fa-hand-holding-usd
           displayOrder: 40
           cmd: >
@@ -326,6 +342,7 @@ cdn_desktop:
         tg: Гуногун
         nl: Overige toepassingen
         uz: Har xil
+        az: Müxtəlif
       iconCls: u-icon-setting
       displayOrder: 40
       isCollapsed: true
@@ -340,6 +357,7 @@ cdn_desktop:
             tg: Асъорҳо
             nl: Valuta
             uz: Valyutalar
+            az: Valyutalar
           iconCls: u-icon-dollar
           displayOrder: 10
           cmd: >
@@ -366,6 +384,7 @@ cdn_desktop:
             tg: Забонҳо
             nl: Talen
             uz: Tillar
+            az: Dillər
           iconCls: fa fa-language
           displayOrder: 20
           cmd: >
@@ -386,6 +405,7 @@ cdn_desktop:
             tg: Таснифотгарҳо
             nl: Classificaties
             uz: Tasniflagichlar
+            az: Təsnifatlar
           iconCls: u-icon-tags
           displayOrder: 30
           cmd: >

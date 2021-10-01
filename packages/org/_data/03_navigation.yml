@@ -9,6 +9,7 @@ org_desktop:
     ka: ორგანიზაციული სტრუქტურა
     tg: Сохтори корхона
     nl: Structuur van de organisatie
+    az: Təş. Struktur
   description:
     en: Departments, positions, employees, appointments,...
     uk: Департаменти, посади, службовці, призначення,...
@@ -16,6 +17,7 @@ org_desktop:
     ka: განყოფილებები, თანამდებობები, თანამშრომლები, დანიშვნები, ...
     tg: Раёсатҳо, вазифаҳо, кормандон, таъйинот, ...
     nl: Afdelingen, functies, medewerkers, toewijzingen,...
+    az: Şöbələr, vəzifələr, əməkdaşlar,təyinatlar,...
   iconCls: u-icon-desktop-orgstructure
   items:
   - org_folder_internal:
@@ -26,6 +28,7 @@ org_desktop:
         ka: შიდა ორგანიზება
         tg: Сохтори корхона
         nl: Structuur van de organisatie
+        az: Təş.strurktur
       iconCls: u-icon-globe
       displayOrder: 10
       items:
@@ -37,6 +40,7 @@ org_desktop:
             ka: დეპარტამენტები
             tg: Шӯъбаҳои дохилӣ
             nl: Interne verdeeldheid
+            az: Daxili bölmələr
           iconCls: fa fa-cubes
           displayOrder: 10
           cmd: >
@@ -69,6 +73,7 @@ org_desktop:
             ka: ორგანიზაციები
             tg: Корхонаҳои дохилӣ
             nl: Interne organisaties
+            az: Daxili təşkilatlar
           iconCls: fa fa-university
           displayOrder: 20
           cmd: >
@@ -103,6 +108,7 @@ org_desktop:
             ka: თანამშრომელი პერსონალზე
             tg: Таъинҳои дохилӣ
             nl: Interne toewijzingen
+            az: Daxili təyinatlar
           iconCls: fa fa-briefcase
           displayOrder: 30
           cmd: >
@@ -121,6 +127,7 @@ org_desktop:
             ka: თანამშრომელი პერსონალზე (სულ)
             tg: Таъинҳои дохилӣ (ҳама)
             nl: Interne toewijzingen (alle)
+            az: Daxili təyinatlar (bütün)
           iconCls: fa fa-briefcase
           displayOrder: 35
           cmd: >
@@ -140,6 +147,7 @@ org_desktop:
             ka: პერსონალის ერთეული
             tg: Воҳиди корӣ
             nl: Stafeenheden
+            az: Ştat vahidləri
           displayOrder: 40
           cmd: >
             {
@@ -174,6 +182,7 @@ org_desktop:
             ka: მხატვრული ჯგუფები
             tg: Гурӯҳҳои рассомон
             nl: Groepen van uitvoerders
+            az: İstifadəçi qrupları
           iconCls: u-icon-layers
           displayOrder: 50
           cmd: >
@@ -200,6 +209,7 @@ org_desktop:
             ka: ორგანიზების ერთეული
             tg: Сохтори созмонии дохилӣ
             nl: Interne organisatie-eenheden
+            az: Daxili təş.vahidləri
           displayOrder: 100
           cmd: >
             {
@@ -223,6 +233,7 @@ org_desktop:
             ka: თანამშრომლები
             tg: Кормандони дохилӣ
             nl: Intern personeel
+            az: Daxili əməkdaşlar
           iconCls: fa fa-male
           displayOrder: 110
           cmd: >
@@ -241,6 +252,7 @@ org_desktop:
         ka: დამატებითი
         tg: Иловагӣ
         nl: Extra
+        az: Əlavə
       displayOrder: 20
       items:
       - org_profession:
@@ -251,6 +263,7 @@ org_desktop:
             ka: პროფესიები
             tg: Касбҳо
             nl: Beroepen
+            az: Peşələr
           iconCls: u-icon-cloud
           displayOrder: 10
           cmd: >
@@ -269,6 +282,7 @@ org_desktop:
             ka: ორგანიზაციული ჩარტი
             tg: Органиграмма
             nl: Organogrammen
+            az: Təş.strurktur (diaqram)
           iconCls: u-icon-hierarchy-alt
           displayOrder: 20
           cmd: >

@@ -12,6 +12,7 @@ adm_desktop:
     tg: Маъмур
     nl: Beheerder
     uz: Administrator
+    az: Administrator
   description:
     en: User management, UI settings, logs (audit trail, security, queue)
     uk: Керування користувачами, налаштування інтерфейсу, журнали (аудит, безпека, черга)
@@ -20,6 +21,7 @@ adm_desktop:
     tg: Идоракунии корбар, танзимоти UI, гузоришҳо (пайгирии аудит, амният, навбат)
     nl: Gebruikersbeheer, UI-instellingen, logboeken (audit trail, beveiliging, wachtrij)
     uz: Foydalanuvchilarni boshqarish, interfeys sozlamalari, jurnallar (audit, xavfsizlik, navbat)
+    az: İstifadəçilərin idarəedilməs, interfeys sazlamaları, jurnal (audit, təhlükəsizlik, növbə)
   iconCls: u-icon-desktop-administrator
   items:
   - adm_folder_users:
@@ -32,6 +34,7 @@ adm_desktop:
         tg: Истифодабарандагон
         nl: Groepen en gebruikers
         uz: Foydalanuvchilar
+        az: İstifadəçilər
       iconCls: u-icon-folder-open
       items:
       - uba_user:
@@ -44,6 +47,7 @@ adm_desktop:
             tg: Рӯйхати истифодабарандагон
             nl: Gebruikers lijst
             uz: Foydalanuvchilar ro'yxati
+            az: İstifadəçi siyhası
           iconCls: u-icon-person
           cmd: >
             {
@@ -70,6 +74,7 @@ adm_desktop:
             tg: Амнияти васеъ
             nl: Geavanceerde beveiliging
             uz: Kengaytirilgan xavfsizlik
+            az: Genişləndirilmiş təhlükəsizlik
           iconCls: fa fa-user-secret
           cmd: >
             {
@@ -89,6 +94,7 @@ adm_desktop:
             tg: Ролҳои истифодабарандагон
             nl: Gebruikersrollen
             uz: Foydalanuvchi rollari
+            az: İstifadəçi rolları
           iconCls: u-icon-street
           cmd: >
             {
@@ -109,6 +115,7 @@ adm_desktop:
             tg: Рӯйхати гурӯҳҳо
             nl: Groepslijst
             uz: Guruhlar ro'yxati
+            az: Qrup siyahıları
           iconCls: u-icon-person-group
           cmd: >
             {
@@ -129,6 +136,7 @@ adm_desktop:
             tg: Гурӯҳи истифодабарандагон
             nl: Gebruikersgroepen
             uz: Foydalanuvchilar guruhi
+            az: İstifadəçi qrupu
           iconCls: u-icon-person-group
           cmd: >
             {
@@ -149,6 +157,7 @@ adm_desktop:
             tg: Сертификатҳо
             nl: Certificaten
             uz: Sertifikatlar
+            az: Sertifikatlar
           iconCls: u-icon-key
           cmd: >
             {
@@ -169,6 +178,7 @@ adm_desktop:
         tg: Бехатарӣ
         nl: Veiligheid
         uz: Xavfsizlik
+        az: Təhlükəsizlik
       iconCls: u-icon-lock
       items:
       - uba_role:
@@ -181,6 +191,7 @@ adm_desktop:
             tg: Ролҳои системавӣ
             nl: Systeemrollen
             uz: Tizim rollari
+            az: Sistem rolları
           iconCls: u-icon-person-group
           cmd: >
             {
@@ -200,6 +211,7 @@ adm_desktop:
             tg: Дастрасӣ ба амалкардҳо (ELS)
             nl: Beveiliging op entiteitsniveau
             uz: Usul huquqlari (ELS)
+            az: Metod hüquqları (ELS)
           iconCls: fa fa-shield
           cmd: >
             {
@@ -220,6 +232,7 @@ adm_desktop:
             tg: Дастрасӣ ба хусусиятҳо (ALS)
             nl: Beveiliging op attribuutniveau
             uz: Atribut huquqlari (ALS)
+            az: Atributlara hüquqlar (ALS)
           iconCls: fa fa-share-alt
           cmd: >
             {
@@ -239,6 +252,7 @@ adm_desktop:
             tg: Аудит
             nl: Auditspoor
             uz: Audit
+            az: Audit
           iconCls: u-icon-line-chart
           cmd: >
             {
@@ -270,6 +284,7 @@ adm_desktop:
             tg: Якдафъаина гузарвожаҳо (OTP)
             nl: Eenmalige wachtwoorden
             uz: Bir martalik parollar (OTP)
+            az: Birdəfəlik şifrələr (OTP)
           iconCls: u-icon-eye
           cmd: >
             {
@@ -289,6 +304,7 @@ adm_desktop:
             tg: Аудити бехатарӣ
             nl: Beveiligingsaudit
             uz: Xavfsizlik tekshiruvi
+            az: Təhlükəsizlik auditi
           iconCls: u-icon-lock
           cmd: >
             {
@@ -313,6 +329,7 @@ adm_desktop:
             tg: Консоли амният
             nl: Beveiligingsdashboard
             uz: Xavfsizlik konsoli
+            az: Təhlükəsizlik Konsolu
           iconCls: fa fa-user-secret
           cmd: >
             {
