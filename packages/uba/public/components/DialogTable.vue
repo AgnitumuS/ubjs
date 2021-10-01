@@ -1,5 +1,5 @@
 <template>
-  <ElDialog
+  <el-dialog
     :visible.sync="dialogVisible"
     width="80%"
     top="5vh"
@@ -8,38 +8,37 @@
     custom-class="dialog-table"
     @closed="closeDialog"
   >
-    <ElTable
+    <el-table
       ref="table"
       :data="dataTable"
       max-height="500px"
       @selection-change="handleSelectionChange"
       @row-click="handleRowClick"
     >
-      <ElTableColumn
+      <el-table-column
         v-if="columns.length > 0"
         type="selection"
         width="45"
       />
-      <ElTableColumn
+      <el-table-column
         v-for="item in columns"
         :key="item.label"
         :property="item.property || item.label"
         :label="item.label || item.property"
       />
-    </ElTable>
+    </el-table>
     <span
       v-if="dataTable.length > 0"
       slot="footer"
     >
-      <ElButton
+      <el-button
         v-for="btn in btns"
-        :key="btn.action"
         :type="btn.type"
         :disabled="btn.disabled ? btn.disabled.call(this) : false"
         @click.native="hanndleClickOnBtn(btn)"
-      >{{ btn.label }}</ElButton>
+      >{{ btn.label }}</el-button>
     </span>
-  </ElDialog>
+  </el-dialog>
 </template>
 
 <script>
@@ -62,6 +61,7 @@ module.exports.default = {
   },
   data () {
     return {
+      htmlTable: null,
       dialogVisible: this.show,
       multipleSelection: [],
       btns: [
@@ -83,7 +83,12 @@ module.exports.default = {
   watch: {
     show (e) {
       this.dialogVisible = e
-      if (this.dialogVisible) this.setDefaultSelection()
+      if (this.dialogVisible) {
+        this.$nextTick(() => {
+          this.setTable()
+          this.setDefaultSelection()
+        })
+      }
     }
   },
   mounted () {
@@ -93,23 +98,32 @@ module.exports.default = {
     setDefaultSelection () {
       this.defaultSelection.forEach(i => {
         this.$refs.table.toggleRowSelection(i)
-        this.setSelectionClass(i)
       })
     },
     handleSelectionChange (val) {
       this.multipleSelection = val
+      this.dataTable.forEach((row, index) => {
+        const flag = val.includes(row)
+        this.setSelectionClass(row, index, flag)
+      })
     },
     handleRowClick (row, column, event) {
       this.$refs.table.toggleRowSelection(row)
       this.setSelectionClass(row)
     },
-    setSelectionClass (row) {
+    setTable () {
       let { table } = this.$refs
       if (!table) return
       table = table.$el.querySelector('.el-table__body')
       if (!table) return
-      const index = this.dataTable.findIndex(i => i === row)
-      table.rows[index].classList.toggle('selection-row')
+      this.htmlTable = table
+      return true
+    },
+    setSelectionClass (row, index, flag = true) {
+      if (!this.htmlTable) return
+      const elem = this.htmlTable.rows[index]
+      if (!elem) return
+      elem.classList.toggle('selection-row', flag)
     },
     hanndleClickOnBtn (btn) {
       if (btn.action === 'close' || !btn.action) {
