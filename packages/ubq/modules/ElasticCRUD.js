@@ -21,6 +21,7 @@ class ElasticCRUD extends ElasticHttpClient {
     const url = `${dbConnectionConfig.serverName}/${databaseName}/`
     super({ url })
     this._entityName = entityName || ''
+    /** @type UBEntity} */
     this._entityInfo = entityInfo || {}
     this._fts = fts || {}
     this._query = {

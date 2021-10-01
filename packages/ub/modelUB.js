@@ -1,10 +1,11 @@
 const EventEmitter = require('events').EventEmitter
 const UBDomain = require('@unitybase/cs-shared').UBDomain
-const ServerRepository = require('@unitybase/base').ServerRepository
+const base = require('@unitybase/base')
+const ServerRepository = base.ServerRepository
 const repositoryFabric = ServerRepository.fabric // for backward compatibility with UB 1.7
 const App = require('./modules/App')
 const Session = require('./modules/Session')
-const format = require('@unitybase/base').format
+const format = base.format
 const blobStores = require('@unitybase/blob-stores')
 const TubDataStore = require('./TubDataStore')
 const Errors = require('./modules/ubErrors')
@@ -299,4 +300,8 @@ UB.registerMixinModule('multitenancy', multitenancyImpl)
 const fsStorageImpl = require('./mixins/fsStorageMixin')
 UB.registerMixinModule('fsStorage', fsStorageImpl)
 
+const ftsImpl = require('./mixins/ftsMixin')
+if (base.ubVersionNum > 5020008) { // for UB server < 5.20.8 native FTS mixin is used
+  UB.registerMixinModule('fts', ftsImpl)
+}
 module.exports = UB
