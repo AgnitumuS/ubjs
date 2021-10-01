@@ -5,7 +5,13 @@
  * Configuration
  * "mixins": {
  *   "fts": {
- *     TODO
+ *     "scope": "",
+ *     "connectionName": "",
+ *     "dataProvider": "",
+ *     "indexedAttributes": "",
+ *     "descriptionAttribute": "",
+ *     "dateAttribute": "",
+ *     "attrNameBracket": "",
  *   }
  * }
  *
@@ -22,6 +28,7 @@ module.exports = {
 }
 
 const MIXIN_NAME = 'fts'
+const ERR_ID_IS_REQUIRED = 'execParams.ID is required'
 const FTS_ENABLED = App.serverConfig.application.fts && App.serverConfig.application.fts.enabled
 const FTS_IS_ASYNC = FTS_ENABLED && App.serverConfig.application.fts.async
 
@@ -47,11 +54,12 @@ function initDomainForFts () {
 function initEntityForFts (entity, mixinCfg) {
   /** @type {EntityNamespace} */
   const entityModule = global[entity.name]
+  const isElastic = entity.connectionConfig.dialect === 'Elastic'
 
   // TODO fill defaults
   // if (mixinCfg.modelBased === undefined) mixinCfg.modelBased = true
 
-  // TODO verify mixin configuration
+  // TODO verify mixin configuration - see TubFTSMixin.InitEntity in native code
   // if (!entity.attributes[mixinCfg.naturalKey]) {
   //   throw new Error(`fsStorage for ${entity.name}: naturalKey attribute '${mixinCfg.naturalKey}' not exist`)
   // }
@@ -68,18 +76,29 @@ function initEntityForFts (entity, mixinCfg) {
   } else {
     entityModule.fts = entityModule.ftsreindex = function (ctx) { throw new Error("'fts' is disabled in server config") }
   }
-  // entityModule.entity.addMethod('fts')
-  // entityModule.entity.addMethod('ftsreindex')
+  entityModule.entity.addMethod('fts')
+  entityModule.entity.addMethod('ftsreindex')
+
+  function idFromExecParamsOrThrow(ctx) {
+    const ID = ctx.mParams.execParams.ID
+    if (!ID) throw new Error(ERR_ID_IS_REQUIRED)
+    return ID
+  }
 
   /**
    * @private
    * @param {ubMethodParams} ctx
    */
   function ftsInsertAfter (ctx) {
+    const instanceID = idFromExecParamsOrThrow(ctx)
     if (FTS_IS_ASYNC) {
       scheduleFTSTask(ctx.mParams.execParams.ID, 'INSERT')
     } else {
-      //TODO - eiter App.InternalGatherAndSaveFTSData (for SQLite) or Elastic
+      if (isElastic) {
+        // TODO - Elastic INSERT
+      } else {
+        App.updateFTSIndex(entity.name, instanceID)
+      }
     }
   }
 
@@ -88,10 +107,15 @@ function initEntityForFts (entity, mixinCfg) {
    * @param {ubMethodParams} ctx
    */
   function ftsUpdateAfter (ctx) {
+    const instanceID = idFromExecParamsOrThrow(ctx)
     if (FTS_IS_ASYNC) {
-      scheduleFTSTask(ctx.mParams.execParams.ID, 'UPDATE')
+      scheduleFTSTask(instanceID, 'UPDATE')
     } else {
-      //TODO - eiter App.InternalGatherAndSaveFTSData (for SQLite) or Elastic
+      if (isElastic) {
+        // TODO - Elastic UPDATE
+      } else {
+        App.updateFTSIndex(entity.name, instanceID)
+      }
     }
   }
 
@@ -100,13 +124,24 @@ function initEntityForFts (entity, mixinCfg) {
    * @param {ubMethodParams} ctx
    */
   function ftsDeleteAfter (ctx) {
+    const instanceID = idFromExecParamsOrThrow(ctx)
     if (FTS_IS_ASYNC) {
-      scheduleFTSTask(ctx.mParams.execParams.ID, 'DELETE')
+      scheduleFTSTask(instanceID, 'DELETE')
     } else {
-      //TODO - eiter App.InternalGatherAndSaveFTSData (for SQLite) or Elastic
+      if (isElastic) {
+        // TODO - Elastic DELETE
+      } else {
+        App.deleteFromFTSIndex(entity.name, instanceID)
+      }
     }
   }
 
+  /**
+   * Schedule async FTS operation
+   * @private
+   * @param ID
+   * @param operation
+   */
   function scheduleFTSTask (ID, operation) {
     if (!ID) throw new Error('execParams.ID is required')
     UBQ_STORE.run('insert', {
@@ -115,6 +150,22 @@ function initEntityForFts (entity, mixinCfg) {
         msgCmd: `{"entity":"${entity.name}","ID":${ID},"operation":"${operation}"}`
       }
     })
+  }
+
+  function ftsFts (ctx) {
+    if (isElastic) {
+      console.log('DO ELASTIC SEARCH')
+    } else {
+      // TODO - App._fts
+    }
+  }
+
+  function ftsFtsReindex (ctx) {
+    if (isElastic) {
+      console.log('DO ELASTIC ftsReindex')
+    } else {
+      // TODO - either App._ftsReindex or ReIndexByConnection
+    }
   }
 }
 
