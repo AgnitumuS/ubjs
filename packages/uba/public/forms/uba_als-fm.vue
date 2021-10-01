@@ -5,55 +5,55 @@
         label-position="top"
         label="Entity"
       >
-        <ElSelect
+        <el-select
           v-model="selectedEntity"
           filterable
           :disabled="!isNew"
         >
-          <ElOption
+          <el-option
             v-for="entity in entityList"
             :key="entity.code"
             :label="`${entity.code} (${entity.caption}) `"
             :value="entity.code"
           />
-        </ElSelect>
+        </el-select>
       </u-form-row>
 
       <u-form-row
         label-position="top"
         label="State"
       >
-        <ElSelect
+        <el-select
           v-model="selectedState"
           :disabled="disabledState"
           filterable
         >
-          <ElOption
+          <el-option
             v-for="state in stateList"
             :key="state"
             :label="state"
             :value="state"
           />
-        </ElSelect>
+        </el-select>
       </u-form-row>
 
       <div class="uba-als__header__item">
         <div v-if="isNew">
-          <ElButton
+          <el-button
             :disabled="disabledAddBtns"
             :type="btnType"
             @click="showAttrsChoice = true"
           >
             Додати поля
-          </ElButton>
-          <ElButton
+          </el-button>
+          <el-button
             :disabled="disabledAddBtns"
             :type="btnType"
             @click="showRolesChoice = true"
           >
             Додати roles
-          </ElButton>
-          <DialogTable
+          </el-button>
+          <dialog-table
             :data-table="emptyAttributes"
             :show="showAttrsChoice"
             :columns="fieldColumns"
@@ -61,7 +61,7 @@
             @closed="showAttrsChoice = false"
             @add="handleAddAttrs"
           />
-          <DialogTable
+          <dialog-table
             :data-table="roleList"
             :columns="roleColumns"
             :show="showRolesChoice"
@@ -92,7 +92,6 @@
             <th
               v-if="isNew"
               rowspan="2"
-              class="uba-als_table--actions"
             >
               Actions
             </th>
@@ -106,17 +105,13 @@
             <th
               v-if="selectedRoles.length > 0"
               :colspan="selectedRoles.length"
-              class="uba-als_table__header__first"
             >
               <div>
                 Roles
               </div>
             </th>
           </tr>
-          <tr
-            v-if="selectedRoles.length > 0"
-            class="uba-als_table__header__second"
-          >
+          <tr v-if="selectedRoles.length > 0">
             <th
               v-for="role in selectedRoles"
               :key="role.label"
@@ -132,12 +127,8 @@
             <tr
               v-for="(row, rowIndex) in selectedFields"
               :key="row.label"
-              class="uba-als_table__row"
             >
-              <td
-                v-if="isNew"
-                class="uba-als_table--actions"
-              >
+              <td v-if="isNew">
                 <el-button
                   size="small"
                   icon="u-icon-delete"
@@ -228,10 +219,8 @@ module.exports.default = {
         { label: 'Caption', property: 'caption' },
         { label: 'attribute', property: 'code' }
       ],
-      deletedFields: [],
       isNew: this.$store.state.isNew,
-      blockMonkeyRequest: false,
-      deleteEntity: []
+      blockMonkeyRequest: false
     }
   },
   computed: {
@@ -265,6 +254,7 @@ module.exports.default = {
   },
   created () {
     if (!this.isNew) this.init()
+    console.log(this)
   },
   watch: {
     selectedEntity (e) {
@@ -283,6 +273,7 @@ module.exports.default = {
       this.handleAddAttrs({ selection: [startAttribute] })
       const startRole = this.roleList.find(i => i.value === propsData.roleName)
       startRole.actions = propsData.actions
+      startRole.ID = propsData.ID
       this.handleAddRoles({ selection: [startRole] })
     },
     toGoActions (btn) {
@@ -335,13 +326,15 @@ module.exports.default = {
     },
     getExecParamsFromRole (role, attribute) {
       const { selectedState, selectedEntity } = this
-      return {
+      const item = {
         attribute,
         state: selectedState,
         entity: selectedEntity,
         roleName: role.value,
         actions: role.actions
       }
+      if (role.ID || tole.ID === 0) item.ID = role.ID
+      return item
     },
     changeRolePermissions (lvl, item) {
       item.actions = lvl
@@ -434,73 +427,18 @@ module.exports.default = {
   width: 100%;
   border-collapse: collapse;
 }
+.uba-als_table.u-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
 .uba-als_table.u-table th {
   border-top: none;
-  border-left: 1px solid var(--border);
-  text-transform: capitalize;
+  border-bottom: none;
 }
-.uba-als_table thead {
-  position: sticky;
-  z-index: 1;
-  top: 0;
-}
-.uba-als_table--actions {
-  width: 80px;
-  text-align: center;
-}
+
 .uba-als_table--empty {
   text-align: center;
-}
-
-/* .uba-als_table th, */
-.uba-als_table td {
-  border: 1px solid var(--border);
-  padding: var(--cellPadding);
-}
-.uba-als_table th {
-  border-top: none;
-  padding: var(--cellPadding);
-}
-.uba-als_table.u-table .uba-als_table__header__first {
-  border-top: none;
-  border-bottom: none;
-  padding: 0;
-}
-.uba-als_table__header__first div {
-  border-right: 1px solid var(--border);
-  padding: var(--cellPadding);
-}
-.uba-als_table .uba-als_table__header__second th {
-  border: none;
-  border-bottom: 1px solid var(--border);
-  padding: 0;
-}
-.uba-als_table .uba-als_table__header__second th:first-child {
-  border-left: 1px solid var(--border);
-}
-.uba-als_table .uba-als_table__header__second th:first-child div {
-  border-left: none;
-}
-.uba-als_table .uba-als_table__header__second div {
-  border: 1px solid var(--border);
-  border-bottom: none;
-  padding: var(--cellPadding);
-}
-
-.uba-als_table th:last-child,
-.uba-als_table td:last-child {
-  border-right: none;
-}
-.uba-als_table th:first-child,
-.uba-als_table td:first-child {
-  border-left: none;
-}
-.uba-als_table tbody tr:first-child td {
-  border-top: none;
-}
-
-.uba-als_table tr:last-child td {
-  border-bottom: none;
 }
 .uba-als__actions {
   display: flex;
