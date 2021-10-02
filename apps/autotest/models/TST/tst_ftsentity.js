@@ -1,41 +1,34 @@
 'use strict'
 
-var
-  me = tst_ftsentity,
-  _attrForFTS = ['caption', 'regDate']
+const me = tst_ftsentity
+const _attrForFTS = ['caption', 'regDate']
 
 me.entity.addMethod('getFTSData')
 
 /**
  * Create and return string for fts index
- * @param {ubMethodParams} ctxt
+ * @param {ubMethodParams} ctx
  * @return {Boolean}
  */
-me.getFTSData = function (ctxt) {
-  var
-        /** @type {TubDataStore} */
-    iDoc,
-    rp = ctxt.mParams,
-    fldValue = '',
-    res = '',
-    attrList
+me.getFTSData = function (ctx) {
+  const mp = ctx.mParams
+  let fldValue = ''
+  let res = ''
 
-  attrList = _.clone(_attrForFTS)
-
-  iDoc = UB.Repository('tst_ftsentity').attrs(attrList)
-        .where('[ID]', '=', rp.ID)
-        .select()
+  const iDoc = UB.Repository('tst_ftsentity').attrs(_attrForFTS)
+    .where('[ID]', '=', mp.ID)
+    .select()
 
   if (!iDoc.eof) {
-    for (let i = 0, l = _attrForFTS.length; i < l; i++) {
+    for (let i = 0, L = _attrForFTS.length; i < L; i++) {
       fldValue = iDoc.get(i)
       if (fldValue) {
         res += ' z' + _attrForFTS[i] + 'z:' + fldValue
       }
     }
-    rp._ftsContent = res
-    rp._ftsDescription = iDoc.get('caption')
-    rp._ftsDate = iDoc.get('regDate')
+    mp._ftsContent = res
+    mp._ftsDescription = iDoc.get('caption')
+    mp._ftsDate = iDoc.get('regDate')
   }
 
   return true

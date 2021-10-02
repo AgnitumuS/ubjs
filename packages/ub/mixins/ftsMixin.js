@@ -5,13 +5,12 @@
  * Configuration
  * "mixins": {
  *   "fts": {
- *     "scope": "",
+ *     "scope": "Connection|Entity",
  *     "connectionName": "",
- *     "dataProvider": "",
- *     "indexedAttributes": "",
+ *     "dataProvider": "Mixin|Entity", // For Mixin - pd attributes from `indexedAttributes` into FTS, for Entity - call `getFTSData` entity method
+ *     "indexedAttributes": [""],
  *     "descriptionAttribute": "",
  *     "dateAttribute": "",
- *     "attrNameBracket": "",
  *   }
  * }
  *
@@ -20,6 +19,18 @@
  * @implements MixinModule
  */
 
+/**
+ * Blob store request (parameters passed to get|setDocument)
+ * @typedef {UBEntityMixin} UBFtsMixin
+ * @property {String} scope
+ * @property {String} [connectionName='ftsDefault']
+ * @property {String} dataProvider
+ * @property {Array<string>} [indexedAttributes]
+ * @property {string} [descriptionAttribute]
+ * @property {string} [dateAttribute]
+ */
+
+const UBDomain = require('@unitybase/cs-shared').UBDomain
 const App = require('../modules/App')
 const UB = require('@unitybase/ub')
 module.exports = {
@@ -49,37 +60,62 @@ function initDomainForFts () {
  * In ASYNC mode handlers schedule an AFYNCFTS task into ubq_messages, in synch mode - call FTS index update immediately
  *
  * @param {UBEntity} entity Entity for initialization
- * @param {UBfsStoreMixin} mixinCfg Mixin configuration from entity metafile
+ * @param {UBFtsMixin} mixinCfg Mixin configuration from entity metafile
  */
 function initEntityForFts (entity, mixinCfg) {
   /** @type {EntityNamespace} */
   const entityModule = global[entity.name]
-  const isElastic = entity.connectionConfig.dialect === 'Elastic'
-
-  // TODO fill defaults
-  // if (mixinCfg.modelBased === undefined) mixinCfg.modelBased = true
-
-  // TODO verify mixin configuration - see TubFTSMixin.InitEntity in native code
-  // if (!entity.attributes[mixinCfg.naturalKey]) {
-  //   throw new Error(`fsStorage for ${entity.name}: naturalKey attribute '${mixinCfg.naturalKey}' not exist`)
-  // }
-
-  if (FTS_ENABLED) {
-    // add methods wrapped by logEnter / logLeave (to avoid a long try/finally inside method implementation)
-    entityModule.on('insert:after', wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.insert:after`, ftsInsertAfter))
-    entityModule.on('update:after', wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.update:after`, ftsUpdateAfter))
-    entityModule.on('delete:after', wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.delete:after`, ftsDeleteAfter))
-    entityModule.fts = wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.fts`, ftsFts)
+  if (!FTS_ENABLED) {
+    entityModule.fts = entityModule.ftsreindex = function (ctx) { throw new Error("'fts' feature is disabled in server config") }
     entityModule.entity.addMethod('fts')
-    entityModule.ftsreindex = wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.ftsreindex`, ftsFtsReindex)
     entityModule.entity.addMethod('ftsreindex')
-  } else {
-    entityModule.fts = entityModule.ftsreindex = function (ctx) { throw new Error("'fts' is disabled in server config") }
+    return
   }
+
+  if (!mixinCfg.connectionName) mixinCfg.connectionName = 'ftsDefault'
+  const ftsConn = App.domainInfo.connections.find(c => c.name === mixinCfg.connectionName)
+  if (!ftsConn) throw new Error(`FTS mixin: database connection with name '${mixinCfg.connectionName}' not in ubConfig but defined as FTS connection for '${entity.name}'`)
+
+  const isElastic = ftsConn.dialect === 'Elastic'
+
+  // begin mixin config validation
+  if ((mixinCfg.scope !== 'Connection') && (mixinCfg.scope !== 'Entity')) {
+    throw new Error(`FTS mixin: 'scope' must be one of Connection|Entity but '${mixinCfg.scope}' is defined for '${entity.name}'`)
+  }
+  if ((mixinCfg.dataProvider !== 'Mixin') && (mixinCfg.dataProvider !== 'Entity')) {
+    throw new Error(`FTS mixin: 'dataProvider' must be one of Mixin|Entity but '${mixinCfg.dataProvider}' is defined for '${entity.name}'`)
+  }
+  if (mixinCfg.dateAttribute) {
+    const attr = entity.attributes[mixinCfg.dateAttribute]
+    if (!attr) throw new Error(`FTS mixin: attribute ${mixinCfg.dateAttribute} defined in 'dateAttribute' mixin prop. not exist in '${entity.name}'`)
+    if (attr.dataType !== UBDomain.ubDataTypes.Date && attr.dataType !== UBDomain.ubDataTypes.DateTime) {
+      throw new Error(`FTS mixin: attribute '${entity.name}.${mixinCfg.dateAttribute}' must be of type Date|DateTime to use it as a 'dateAttribute' mixin prop.`)
+    }
+  }
+  if (mixinCfg.dataProvider === 'Mixin') { // for Entity dataProvider getFtsData function must care about description
+    if (!mixinCfg.descriptionAttribute) mixinCfg.descriptionAttribute = entity.descriptionAttribute
+    if (!mixinCfg.descriptionAttribute) throw new Error(`FTS mixin: 'descriptionAttribute' prop must be defined if dataProvider === 'Mixin' for '${entity.name}'`)
+    const dAttr = entity.attributes[mixinCfg.descriptionAttribute]
+    if (!dAttr) throw new Error(`FTS mixin: attribute ${mixinCfg.descriptionAttribute} defined in 'descriptionAttribute' mixin prop. not exist in '${entity.name}'`)
+    if (dAttr.dataType !== UBDomain.ubDataTypes.String) {
+      throw new Error(`FTS mixin: attribute '${entity.name}.${mixinCfg.descriptionAttribute}' must be of type 'String' to use it as a 'descriptionAttribute' mixin prop.`)
+    }
+    if (!Array.isArray(mixinCfg.indexedAttributes)) throw new Error(`FTS mixin: 'indexedAttributes' must be an array of string for '${entity.name}'`)
+  }
+  // end of validation block
+
+  // add methods wrapped by logEnter / logLeave (to avoid a long try/finally inside method implementation)
+  entityModule.on('insert:after', wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.insert:after`, ftsInsertAfter))
+  entityModule.on('update:after', wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.update:after`, ftsUpdateAfter))
+  entityModule.on('delete:after', wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.delete:after`, ftsDeleteAfter))
+  entityModule.fts = wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.fts`, ftsFts)
+  entityModule.entity.addMethod('fts')
+  entityModule.ftsreindex = wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.ftsreindex`, ftsFtsReindex)
+  entityModule.entity.addMethod('ftsreindex')
   entityModule.entity.addMethod('fts')
   entityModule.entity.addMethod('ftsreindex')
 
-  function idFromExecParamsOrThrow(ctx) {
+  function idFromExecParamsOrThrow (ctx) {
     const ID = ctx.mParams.execParams.ID
     if (!ID) throw new Error(ERR_ID_IS_REQUIRED)
     return ID
