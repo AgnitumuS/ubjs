@@ -14,7 +14,7 @@
  *   }
  * }
  *
- *  TODO - add fts service entities inside _hookMetadataTransformation
+ *  Implementation detail: service entities for fts are created inside  _hookMetadataTransformation
  *
  * @implements MixinModule
  */

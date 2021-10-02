@@ -16,6 +16,7 @@ function ubMixinTransformation (domainJson, serverConfig) {
     addMultitenancyMixinAttributes(domainJson, serverConfig)
   }
   validateAttributesBlobStore(domainJson, serverConfig)
+  addFtsConnectionEntities(domainJson, serverConfig)
 }
 
 /**
@@ -102,5 +103,36 @@ function validateAttributesBlobStore (domainJson, serverConfig) {
         throw new Error(`Entity '${entityName}'. Blob store '${attr.storeName}' used by attribute '${attr.name}' ('storeName' property), but such store is not defined in ubConfig`)
       }
     })
+  }
+}
+
+/**
+ * For each connection what used in mixins.fts.connectionName for any entity adds service entities with name fts_${connName}_lang
+ * @param {object<string, {modelName: string, meta: object, lang: object<string, object>}>} domainJson
+ * @param {object} serverConfig
+ */
+function addFtsConnectionEntities (domainJson, serverConfig) {
+  const ftsCfg = serverConfig.application.fts
+  if (!ftsCfg || (ftsCfg && !ftsCfg.enabled)) return // fts is disabled
+  // calc set of the connection names what used as FTS data source
+  const ftsConns = new Set()
+  for (const entityName in domainJson) {
+    const entityMeta = domainJson[entityName].meta
+    if (entityMeta.mixins && entityMeta.mixins.fts) {
+      ftsConns.add(entityMeta.mixins.fts.connectionName || 'ftsDefault')
+    }
+  }
+  // for each fts connection create a service entity(s)
+  for (const connName of ftsConns) {
+    const connCfg = serverConfig.application.connections.find(c => c.name === connName)
+    if (!connCfg) throw new Error(`Connection '${connName}' wanted by mixins.fts.connectionName of some entity in Domain, but not defined in 'ubConfig.application.connections'`)
+    for (const lang of connCfg.supportLang) {
+      const wantedServiceEntity = `fts_${connName}_${lang}`
+      if (!domainJson[wantedServiceEntity]) {
+        // isFTSDataTable = true
+        console.debug('!!!!!!!!!!! CREATE FTS SERVICE ENTITY ' + wantedServiceEntity)
+        // TODO - attributes for SQLite3 and for Elastic
+      }
+    }
   }
 }

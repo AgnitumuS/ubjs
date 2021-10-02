@@ -1609,12 +1609,12 @@ UBEntityFtsMixin.prototype.constructor = UBEntityFtsMixin
  * scope
  * @type {string}
  */
-UBEntityFtsMixin.prototype.scope = 'connection' // sConnection
+UBEntityFtsMixin.prototype.scope = 'Connection'
 /**
  * Data provider type
  * @type {string}
  */
-UBEntityFtsMixin.prototype.dataProvider = 'mixin'// dcMixin
+UBEntityFtsMixin.prototype.dataProvider = 'Mixin'
 /**
  * Attribute level security mixin
  * @param {object} mixinInfo
