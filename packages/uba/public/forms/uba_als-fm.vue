@@ -106,9 +106,7 @@
               v-if="selectedRoles.length > 0"
               :colspan="selectedRoles.length"
             >
-              <div>
-                Roles
-              </div>
+              <div>Roles</div>
             </th>
           </tr>
           <tr v-if="selectedRoles.length > 0">
@@ -172,14 +170,12 @@
 
 <script>
 const { Form } = require('@unitybase/adminui-vue')
-const ActionComponent = require('../components/RoleActionsComponent.vue')
-  .default
+const ActionComponent =
+  require('../components/RoleActionsComponent.vue').default
 const DialogTable = require('../components/DialogTable.vue').default
 
-module.exports.mount = cfg => {
-  Form(cfg)
-    .processing()
-    .mount()
+module.exports.mount = (cfg) => {
+  Form(cfg).processing().mount()
 }
 
 module.exports.default = {
@@ -201,7 +197,9 @@ module.exports.default = {
           color: 'primary'
         }
       ],
-      entityList: this.$UB.connection.domain.filterEntities(e => e.mixins.als),
+      entityList: this.$UB.connection.domain.filterEntities(
+        (e) => e.mixins.als
+      ),
       roleList: [],
       selectedRoles: [],
       selectedEntity: '',
@@ -255,7 +253,6 @@ module.exports.default = {
   },
   created () {
     if (!this.isNew) this.init()
-    console.log(this.$lookups)
   },
   watch: {
     selectedEntity (e) {
@@ -269,10 +266,12 @@ module.exports.default = {
       if (this.selectedEntity) await this.getData()
       this.selectedState = propsData.state
       const startAttribute = this.emptyAttributes.find(
-        i => i.code === propsData.attribute
+        (i) => i.code === propsData.attribute
       )
       this.handleAddAttrs({ selection: [startAttribute] })
-      const startRole = this.roleList.find(i => i.value === propsData.roleName)
+      const startRole = this.roleList.find(
+        (i) => i.value === propsData.roleName
+      )
       startRole.actions = propsData.actions
       startRole.ID = propsData.ID
       this.handleAddRoles({ selection: [startRole] })
@@ -297,7 +296,7 @@ module.exports.default = {
       this.blockMonkeyRequest = false
     },
     export (permissions) {
-      permissions = permissions.map(i => JSON.stringify(i, null, 4))
+      permissions = permissions.map((i) => JSON.stringify(i, null, 4))
       const output = permissions.join(');\n\nconn.run(')
       /* global saveAs */
       saveAs(
@@ -315,9 +314,9 @@ module.exports.default = {
     createPermissionsList () {
       const { selectedFields, getExecParamsFromRole, isNew } = this
       const permissions = []
-      selectedFields.forEach(row => {
+      selectedFields.forEach((row) => {
         if (!row.roles || !Array.isArray(row.roles)) return false
-        row.roles.forEach(role => {
+        row.roles.forEach((role) => {
           if (isNew && role.actions === 0) return
           const template = {
             entity: 'uba_als',
@@ -338,14 +337,14 @@ module.exports.default = {
         roleName: role.value,
         actions: role.actions
       }
-      if (role.ID || tole.ID === 0) item.ID = role.ID
+      if (role.ID || role.ID === 0) item.ID = role.ID
       return item
     },
     changeRolePermissions (lvl, item) {
       item.actions = lvl
     },
     deleteField (index) {
-      const deleteItem = this.selectedFields.splice(index, 1)
+      this.selectedFields.splice(index, 1)
       if (this.selectedFields.length === 0) this.selectedRoles = []
     },
     async getAllRoles () {
@@ -375,11 +374,11 @@ module.exports.default = {
     },
     handleAddRoles (e) {
       const selectedRoles = e.selection
-      selectedRoles.forEach(el => {
+      selectedRoles.forEach((el) => {
         el.label = el.value
         el.actions = el.actions === undefined ? 1 : el.actions
       })
-      this.selectedFields.forEach(i => {
+      this.selectedFields.forEach((i) => {
         const copyRoles = JSON.parse(JSON.stringify(selectedRoles))
         i.roles = copyRoles
       })
