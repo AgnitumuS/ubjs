@@ -83,7 +83,6 @@ return UB.Repository('uba_auditTrail')
  - `UTableEntity`: now show filter control if there are no available columns for filtration
  - improved the table for displaying and the form for adding and management entries of the `aclRls` mixin for some entity
  - `USelectMultiple`: change style for dropdown. Fixed the position of the buttons "More", "Template" and other.
-![View result](./changeLogImgs/USelectMultipleDropdown.png)
 [Task](https://dev.intecracy.com/agile/browse/UBDF-8423)
 
 ### Fixed
