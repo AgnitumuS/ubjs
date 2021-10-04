@@ -31,7 +31,7 @@
           <el-option
             v-for="state in stateList"
             :key="state"
-            :label="state"
+            :label="`${state} ${getDescription(state)}`"
             :value="state"
           />
         </el-select>
@@ -183,6 +183,7 @@ module.exports.mount = cfg => {
 }
 
 module.exports.default = {
+  name: 'UBA_ALS',
   components: { DialogTable, ActionComponent },
   data () {
     return {
@@ -254,7 +255,6 @@ module.exports.default = {
   },
   created () {
     if (!this.isNew) this.init()
-    console.log(this)
   },
   watch: {
     selectedEntity (e) {
@@ -275,6 +275,10 @@ module.exports.default = {
       startRole.actions = propsData.actions
       startRole.ID = propsData.ID
       this.handleAddRoles({ selection: [startRole] })
+    },
+    getDescription (str) {
+      const value = this.$lookups.getEnum(this.selectedEntity, str)
+      return !value ? '' : `(${value})`
     },
     toGoActions (btn) {
       const permissions = this.createPermissionsList()
@@ -362,8 +366,10 @@ module.exports.default = {
         method: 'getallstates'
       })
       this.stateList = response.alsStateAllValues
-      if (this.isNew && !this.stateList.includes(this.selectedState)) {
+      if (this.isNew) {
         this.selectedState = null
+        this.selectedRoles = []
+        this.selectedFields = []
       }
     },
     handleAddRoles (e) {
@@ -408,6 +414,7 @@ module.exports.default = {
 .uba-als__header .u-form-row {
   padding: 0 var(--padding);
 }
+
 .uba-als__header__item {
   padding: 0 var(--padding);
   margin-bottom: 10px;
