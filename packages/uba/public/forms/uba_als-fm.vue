@@ -255,6 +255,7 @@ module.exports.default = {
   },
   created () {
     if (!this.isNew) this.init()
+    console.log(this.$lookups)
   },
   watch: {
     selectedEntity (e) {
@@ -413,8 +414,13 @@ module.exports.default = {
 }
 .uba-als__header .u-form-row {
   padding: 0 var(--padding);
+  flex-basis: 30%;
+  min-width: 248px;
+  max-width: 400px;
 }
-
+.uba-als__header .u-form-row .el-select {
+  width: 100%;
+}
 .uba-als__header__item {
   padding: 0 var(--padding);
   margin-bottom: 10px;
