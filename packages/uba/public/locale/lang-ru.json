@@ -45,5 +45,6 @@
         "errorText": "Несоответствие паролей"
       }
     }
-  }
+  },
+  "Duplicate user name (may be in different case)": "Пользователь с таким логином уже существует"
 }
