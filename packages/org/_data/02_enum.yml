@@ -9,7 +9,7 @@ CDN_EMPLOYEEONSTAFFTYPE:
 ORG_UNITTYPE:
   - ORG: {en: Organization, ru: Организация, uk: Організація, tg: Ташкилот, nl: Organisatie}
   - DEP: {en: Department, ru: Подразделение, uk: Підрозділ, tg: Шӯъба, nl: Afdeling}
-  - STAFF: {en: Staff unit, ru: Персонал, uk: Персонал, tg: Кормандон, nl: Stafeenheid}
+  - STAFF: {en: Staff unit, ru: Штатная единица, uk: Штатна одиниця, tg: Кормандон, nl: Stafeenheid}
   - EXECGROUP: {en: Execution group, ru: Группа исполнителей, uk: Група виконавців, tg: Гурӯҳҳои рассомон, nl: Uitvoeringsgroep}
 
 EXECGROUP_TYPE:
