@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Translations for `ORG_UNITTYPE` enum: minor improvements:
+  - `Організація` => `Внутрішня організація`
+  - `Підрозділ` => `Внутрішній підрозділ`
+  - `Персонал` => `Штатна одиниця`
+  - capitalization of English captions
 
 ### Deprecated
 
