@@ -110,7 +110,7 @@ $(document).ready(function () {
                 if (reason && reason.responseJSON && abortRe.test(reason.responseJSON.errMsg)){
                     inErr = reason.responseJSON.errMsg;
                     inErr = /^UBAbort: <<<(.*)>>>$/.test(inErr) ? /^UBAbort: <<<(.*)>>>$/.exec(inErr)[1] : /^UBAbort: (.*)$/.exec(inErr)[1];
-                    if (inErr === UB.i18n('Duplicate user name (may be in different case)')) {
+                    if (inErr === 'Duplicate user name (may be in different case)') {
                         alertText = 'Member with such EMail is already registered. If you forgot your password, please go to the "Member Area" and select "Need help?" option'
                     } else {
                         alertText = inErr;
