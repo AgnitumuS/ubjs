@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Azerbaijani (az) localization for items with omitted translation
 
 ### Changed
 
