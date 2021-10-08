@@ -143,6 +143,8 @@ export default {
     padding: 8px;
     padding-right: 12px;
     margin-left: 4px;
+    width: 100%;
+    text-align: initial;
   }
 
   .u-dropdown-item__divider {
