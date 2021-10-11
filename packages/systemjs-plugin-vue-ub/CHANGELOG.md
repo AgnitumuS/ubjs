@@ -6,7 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+Implemented opportunity import css-file on vue component
+```vue
+<template>
+  <div>1111</div>
+</template>
+<script>
+export default {
+  data () {
+    return {
+    }
+  }
+}
+</script>
 
+<style src="./path/to/file"></style>
+```
 ### Changed
 
 ### Deprecated
