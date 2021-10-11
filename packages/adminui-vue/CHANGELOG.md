@@ -8,8 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `UFormRow`: to display attribute description at the bottom of the content in the element
-  with the `u-form-row__description` class if the `true` passed as value of the `description` property
+ - `UFormRow`: display row description at the bottom of the control with such content:
+    * if the `true` passed as the value of the `description` property - automatic description of the attribute from the domain meta
+    * if some string value is passed as the value of the `description` property - localized value
 
 ### Deprecated
 

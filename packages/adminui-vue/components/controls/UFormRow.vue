@@ -158,7 +158,8 @@ export default {
 
     /**
      * row description
-     * If the `true` is passed and the attribute has a description - it will be displayed automatically
+     * If the `true` is passed and the attribute has a description in the meta - it will be displayed automatically
+     * If a string is passed - the `$ut(<description>)` will be displayed
      */
     description: {
       type: [Boolean, String],
