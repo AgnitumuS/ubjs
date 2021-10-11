@@ -1,7 +1,7 @@
 /* global SystemJS */
+const { uniqBy } = require('lodash')
 const vueCompiler = require('vue-template-compiler/browser.js')
 const EXPORTS_RE = /module\.exports\.default = {/
-
 /**
  * Parse *.vue files
  *  - extract `style` part and inject into DOM
@@ -22,37 +22,50 @@ function compile (load, opts, vueOpts) {
   const sfc = vueCompiler.parseComponent(load.source, { pad: 'space' })
   // extract styles and inject it into DCM
   const hasScoped = sfc.styles.some(s => s.scoped)
-  if (hasScoped) console.error('Scoped style not supported. Use BEM and CSS variables')
+  if (hasScoped) {
+    console.error('Scoped style not supported. Use BEM and CSS variables')
+  }
   if (sfc.styles.length) {
     const allStyles = sfc.styles.map(s => s.content.trim()).join('\n')
     const styleTag = document.createElement('style')
     styleTag.textContent = allStyles
+    sfc.styles.forEach(async item => {
+      if (item.src) {
+        const url = await SystemJS.resolve(item.src, load.address)
+        UB.inject(url)
+      }
+    })
     document.head.appendChild(styleTag)
   }
   // script block: transform `export default` & `module.exports` into `module.exports.default`
   let script = sfc.script ? sfc.script.content : ''
   script = script
     .replace(/export default/, 'module.exports.default =')
-    .replace(/(module\.exports =)/, `module.exports.default =`)
+    .replace(/(module\.exports =)/, 'module.exports.default =')
 
   if (sfc.template) {
     // in case template block exists - compile it to functions and put intoSystemS registry as module
-    let templateModuleName = getTemplateModuleName(load.name)
-    SystemJS.set(templateModuleName, SystemJS.newModule(
-      vueCompiler.compileToFunctions(sfc.template.content)
-    ))
+    const templateModuleName = getTemplateModuleName(load.name)
+    SystemJS.set(
+      templateModuleName,
+      SystemJS.newModule(vueCompiler.compileToFunctions(sfc.template.content))
+    )
     // MPV TODO use something like falafel to to parse AST and replace exports gracefully
     script = script || 'module.exports.default = {}'
     if (!EXPORTS_RE.test(script)) {
-      let msg = `Invalid "script" section for ${load.address}
+      const msg = `Invalid "script" section for ${load.address}
 In UB script section of vue component should contains "module.exports.default = {" or "export default {" phrase`
       console.error(msg)
     }
-    script = script.replace(EXPORTS_RE,
-      `module.exports.default = {render:__renderFns__.render,` +
-      `staticRenderFns:__renderFns__.staticRenderFns,`
+    script = script.replace(
+      EXPORTS_RE,
+      'module.exports.default = {render:__renderFns__.render,' +
+        'staticRenderFns:__renderFns__.staticRenderFns,'
     )
-    script = `var __renderFns__ = SystemJS.get(${JSON.stringify(templateModuleName)});` + script
+    script =
+      `var __renderFns__ = SystemJS.get(${JSON.stringify(
+        templateModuleName
+      )});` + script
   }
   return script
 }
