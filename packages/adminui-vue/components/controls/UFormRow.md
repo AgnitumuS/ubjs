@@ -7,20 +7,20 @@ An CSS class `u-form-row__description` can be used to add a "description"
 <div>
   <h4>Required (asterisk symbol)</h4>
   <u-form-row
-      required
-      label-position="top"
-      :error="showError"
-      label="User name (required)"
+    required
+    label-position="top"
+    :error="showError"
+    label="User name (required)"
   >
     <u-base-input v-model="userName"/>
   </u-form-row>
 
   <h4>Readonly (non-editable + lock symbol)</h4>
   <u-form-row
-      readonly
-      label-position="top"
-      :error="showError"
-      label="User name (read only)"
+    readonly
+    label-position="top"
+    :error="showError"
+    label="User name (read only)"
   >
     <u-base-input v-model="userName"/>
   </u-form-row>
@@ -39,11 +39,18 @@ An CSS class `u-form-row__description` can be used to add a "description"
   <u-form-row
     label-position="top"
     label="User name (description below edit is added)"
+    description="name of user who responsible to handle a request"
   >
-    <u-base-input v-model="userName"/>
-    <div class="u-form-row__description">
-      name of user who responsible to handle a request
-    </div>
+    <u-base-input v-model="userName" />
+  </u-form-row>
+
+  <h4>With an automatic description ($ut(`<entityName>.userName#description`)</h4>
+  <u-form-row
+    label-position="top"
+    attribute-name="userName"
+    description
+  >
+    <u-base-input v-model="userName" />
   </u-form-row>
 
   <h4>Left / right label position</h4>
@@ -62,7 +69,7 @@ An CSS class `u-form-row__description` can be used to add a "description"
       <u-base-input v-model="userName"/>
     </u-form-row>
   </u-grid>
-  
+
   <el-switch
     v-model="showError"
     active-text="Show error"
