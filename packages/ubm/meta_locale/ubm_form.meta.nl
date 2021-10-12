@@ -1,5 +1,5 @@
 {
-  "caption": "Vorm",
+  "caption": "Vormen",
   "description": "Definitie van de interface vormen",
   "attributes": [
     {

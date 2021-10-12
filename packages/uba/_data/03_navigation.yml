@@ -5,14 +5,14 @@ $context:
 adm_desktop:
   access: Supervisor
   caption:
-    en: Administrator
-    uk: Адміністратор
-    ru: Администратор
+    en: Administration
+    uk: Адміністрування
+    ru: Администрирование
     ka: ადმინისტრატორი
     tg: Маъмур
     nl: Beheerder
-    uz: Administrator
-    az: Administrator
+    uz: Administration
+    az: Administration
   description:
     en: User management, UI settings, logs (audit trail, security, queue)
     uk: Керування користувачами, налаштування інтерфейсу, журнали (аудит, безпека, черга)
@@ -39,15 +39,7 @@ adm_desktop:
       items:
       - uba_user:
           access: Supervisor
-          caption:
-            en: User List
-            uk: Список користувачів
-            ru: Список пользователей
-            ka: მომხმარებლების სია
-            tg: Рӯйхати истифодабарандагон
-            nl: Gebruikers lijst
-            uz: Foydalanuvchilar ro'yxati
-            az: İstifadəçi siyhası
+          caption: {$i18n: uba_user}
           iconCls: u-icon-person
           cmd: >
             {
@@ -66,15 +58,7 @@ adm_desktop:
             }
       - uba_advSecurity:
           access: Supervisor
-          caption:
-            en: Advanced Security
-            uk: Додаткова безпека
-            ru: Расширенная безопасность
-            ka: უსაფრთხოება
-            tg: Амнияти васеъ
-            nl: Geavanceerde beveiliging
-            uz: Kengaytirilgan xavfsizlik
-            az: Genişləndirilmiş təhlükəsizlik
+          caption: {$i18n: uba_advSecurity}
           iconCls: fa fa-user-secret
           cmd: >
             {
@@ -86,16 +70,8 @@ adm_desktop:
             }
       - uba_userrole:
           access: Supervisor
-          caption:
-            en: User Roles
-            uk: Ролі користувачів
-            ru: Роли пользователей
-            ka: მომხმარებლის როლი
-            tg: Ролҳои истифодабарандагон
-            nl: Gebruikersrollen
-            uz: Foydalanuvchi rollari
-            az: İstifadəçi rolları
-          iconCls: u-icon-street
+          caption: {$i18n: uba_userrole}
+          iconCls: fas fa-users-cog
           cmd: >
             {
               renderer: 'vue',
@@ -107,16 +83,8 @@ adm_desktop:
             }
       - uba_group:
           access: Supervisor
-          caption:
-            en: Group List
-            uk: Список груп
-            ru: Список групп
-            ka: ჯგუფის სია
-            tg: Рӯйхати гурӯҳҳо
-            nl: Groepslijst
-            uz: Guruhlar ro'yxati
-            az: Qrup siyahıları
-          iconCls: u-icon-person-group
+          caption: {$i18n: uba_group}
+          iconCls: fa fa-group
           cmd: >
             {
               renderer: 'vue',
@@ -128,15 +96,7 @@ adm_desktop:
             }
       - uba_usergroup:
           access: Supervisor
-          caption:
-            en: User Groups
-            uk: Групи користувачів
-            ru: Группа пользователей
-            ka: მომხმარებელთა ჯგუფი
-            tg: Гурӯҳи истифодабарандагон
-            nl: Gebruikersgroepen
-            uz: Foydalanuvchilar guruhi
-            az: İstifadəçi qrupu
+          caption: {$i18n: uba_usergroup}
           iconCls: u-icon-person-group
           cmd: >
             {
@@ -149,15 +109,7 @@ adm_desktop:
             }
       - uba_usercertificate:
           access: Supervisor
-          caption:
-            en: Certificates
-            uk: Сертифікати
-            ru: Сертификаты
-            ka: სერთიფიკატები
-            tg: Сертификатҳо
-            nl: Certificaten
-            uz: Sertifikatlar
-            az: Sertifikatlar
+          caption: {$i18n: uba_usercertificate}
           iconCls: u-icon-key
           cmd: >
             {
@@ -183,15 +135,7 @@ adm_desktop:
       items:
       - uba_role:
           access: Supervisor
-          caption:
-            en: System Roles
-            uk: Системні ролі
-            ru: Системные роли
-            ka: სისტემის როლი
-            tg: Ролҳои системавӣ
-            nl: Systeemrollen
-            uz: Tizim rollari
-            az: Sistem rolları
+          caption: {$i18n: uba_role}
           iconCls: u-icon-person-group
           cmd: >
             {
@@ -203,15 +147,7 @@ adm_desktop:
             }
       - uba_els:
           access: Supervisor
-          caption:
-            en: Entity Level Security
-            uk: Права на методи (ELS)
-            ru: Права на методы (ELS)
-            ka: ერთეულის დონის უსაფრთხოება
-            tg: Дастрасӣ ба амалкардҳо (ELS)
-            nl: Beveiliging op entiteitsniveau
-            uz: Usul huquqlari (ELS)
-            az: Metod hüquqları (ELS)
+          caption: {$i18n: uba_els}
           iconCls: fa fa-shield
           cmd: >
             {
@@ -224,15 +160,7 @@ adm_desktop:
             }
       - uba_als:
           access: Supervisor
-          caption:
-            en: Attribute Level Security
-            uk: Права на атрибути (ALS)
-            ru: Права на атрибуты (ALS)
-            ka: ატრიბუტების დონის უსაფრთხოება
-            tg: Дастрасӣ ба хусусиятҳо (ALS)
-            nl: Beveiliging op attribuutniveau
-            uz: Atribut huquqlari (ALS)
-            az: Atributlara hüquqlar (ALS)
+          caption: {$i18n: uba_als}
           iconCls: fa fa-share-alt
           cmd: >
             {
@@ -244,15 +172,7 @@ adm_desktop:
             }
       - uba_auditTrail:
           access: Supervisor
-          caption:
-            en: Audit Trail
-            uk: Аудит
-            ru: Аудит
-            ka: აუდიტის ბილიკი
-            tg: Аудит
-            nl: Auditspoor
-            uz: Audit
-            az: Audit
+          caption: {$i18n: uba_auditTrail}
           iconCls: u-icon-line-chart
           cmd: >
             {
@@ -276,15 +196,7 @@ adm_desktop:
             }
       - uba_otp:
           access: Supervisor
-          caption:
-            en: One-Time Passwords
-            uk: Одноразові паролі (OTP)
-            ru: Одноразовые пароли (OTP)
-            ka: ერთჯერადი პაროლი
-            tg: Якдафъаина гузарвожаҳо (OTP)
-            nl: Eenmalige wachtwoorden
-            uz: Bir martalik parollar (OTP)
-            az: Birdəfəlik şifrələr (OTP)
+          caption: {$i18n: uba_otp}
           iconCls: u-icon-eye
           cmd: >
             {
@@ -296,15 +208,7 @@ adm_desktop:
             }
       - uba_audit:
           access: Supervisor
-          caption:
-            en: Security Audit
-            uk: Аудит безпеки
-            ru: Аудит безопасности
-            ka: უსაფრთხოების აუდიტი
-            tg: Аудити бехатарӣ
-            nl: Beveiligingsaudit
-            uz: Xavfsizlik tekshiruvi
-            az: Təhlükəsizlik auditi
+          caption: {$i18n: uba_audit}
           iconCls: u-icon-lock
           cmd: >
             {
@@ -372,15 +276,7 @@ adm_desktop:
               }
         - ub_migration:
             access: Admin
-            caption:
-              en: Applied Files
-              uk: Міграції що виконано
-              ru: Выполненные миграции
-              az: Tamamlanmış köçlər
-              ka: Applied Files
-              tg: Выполненные миграции
-              nl: Toegepaste bestanden
-              uz: Tugallangan migratsiya
+            caption: {$i18n: ub_migration}
             iconCls: u-icon-file-text
             cmd: >
               {

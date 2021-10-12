@@ -1,6 +1,6 @@
 ﻿{
-    "caption": "Аудит",
-    "description": "Аудити тағйиротҳо",
+    "caption": "Аудити бехатарӣ",
+    "description": "Аудити бехатарӣ",
     "attributes": [
         {
             "name": "actionTime",

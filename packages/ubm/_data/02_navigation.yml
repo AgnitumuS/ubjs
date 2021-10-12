@@ -18,15 +18,8 @@ adm_desktop:
       displayOrder: 30
       items:
       - ubm_enum:
-          caption:
-            en: Enumerations
-            ka: რიცხვები
-            ru: Перечисления
-            tg: Номгӯҳо
-            uk: Переліки
-            nl: Opsommingen
-            uz: Ro'yxatlar
-            az: Köçürmələr
+          caption: {$i18n: ubm_enum}
+          iconCls: fas fa-list-ol
           displayOrder: 10
           showList:
             renderer: vue
@@ -45,15 +38,8 @@ adm_desktop:
                 expression: sortOrder
                 order: asc
       - ubm_desktop:
-          caption:
-            en: Desktops
-            ka: სამუშაო ეკრანი
-            ru: Рабочие столы
-            tg: Мизҳои корӣ
-            uk: Робочі столи
-            nl: Desktops
-            uz: Ish stollari
-            az: İş masaları
+          caption: {$i18n: ubm_desktop}
+          iconCls: u-icon-desktop-document-types
           displayOrder: 20
           showList:
             renderer: vue
@@ -67,15 +53,8 @@ adm_desktop:
             - isDefault
             - displayOrder
       - ubm_navshortcut:
-          caption:
-            en: Shortcuts
-            ka: მალხმობები
-            ru: Ярлыки
-            tg: Тамға
-            uk: Ярлики
-            nl: Sneltoetsen
-            uz: Yorliqlar
-            az: Yarlıqlar
+          caption: {$i18n: ubm_navshortcut}
+          iconCls: u-icon-link
           displayOrder: 30
           showList:
             renderer: vue
@@ -93,15 +72,8 @@ adm_desktop:
             - description
             - keywords
       - ubm_form:
-          caption:
-            en: Forms
-            ka: ფორმები
-            ru: Формы
-            tg: Шаклҳо
-            uk: Форми
-            nl: Vormen
-            uz: Shakllar
-            az: Formalar
+          caption: {$i18n: ubm_form}
+          iconCls: u-icon-image
           displayOrder: 40
           showList:
             renderer: vue
@@ -113,15 +85,8 @@ adm_desktop:
             - caption
             - formType
       - ubm_query:
-          caption:
-            en: Queries
-            ka: შეკითხვები
-            ru: Запросы к данным
-            tg: Саволҳо
-            uk: Запити даних
-            nl: Zoekopdrachten
-            uz: Ma'lumot so'rovlari
-            az: Məlumat sorğuları
+          caption: {$i18n: ubm_query}
+          iconCls: u-icon-file-edit
           displayOrder: 50
           showList:
             renderer: vue
@@ -131,15 +96,8 @@ adm_desktop:
             - name
             - type
       - ubm_sysdictionary:
-          caption:
-            en: System Dictionaries
-            ka: სისტემის ლექსიკონები
-            ru: Системные справочники
-            tg: Луғатҳои системавӣ
-            uk: Системні довідники
-            nl: System Woordenboeken
-            uz: Tizim kataloglari
-            az: Sistem soraqçaları
+          caption: {$i18n: ubm_sysdictionary}
+          iconCls: u-icon-dictionary
           displayOrder: 60
           showList:
             renderer: vue
@@ -148,15 +106,8 @@ adm_desktop:
             - code
             - name
       - ubm_diagram:
-          caption:
-            en: ER Diagrams
-            ka: პიროვნული ურთიერთობის დიაგრამები
-            ru: ER диаграммы
-            tg: ER диаграммаҳо
-            uk: ER діаграми
-            nl: ER-diagrammen
-            uz: ER grafikalar
-            az: ER diagramları
+          caption: {$i18n: ubm_diagram}
+          iconCls: fas fa-project-diagram
           displayOrder: 70
           showList:
             renderer: vue

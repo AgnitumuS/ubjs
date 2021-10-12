@@ -1,5 +1,5 @@
 {
-  "caption": "Woordenboeken voor gegevenssystemen",
+  "caption": "System Woordenboeken",
   "attributes": [
     {"name": "code", "caption": "Code"},
     {"name": "name", "caption": "Naam"},
