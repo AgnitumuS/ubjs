@@ -1,5 +1,4 @@
 /* global SystemJS */
-const { uniqBy } = require('lodash')
 const vueCompiler = require('vue-template-compiler/browser.js')
 const EXPORTS_RE = /module\.exports\.default = {/
 /**
@@ -29,13 +28,13 @@ function compile (load, opts, vueOpts) {
     const allStyles = sfc.styles.map(s => s.content.trim()).join('\n')
     const styleTag = document.createElement('style')
     styleTag.textContent = allStyles
+    document.head.appendChild(styleTag)
     sfc.styles.forEach(async item => {
       if (item.src) {
         const url = await SystemJS.resolve(item.src, load.address)
         UB.inject(url)
       }
     })
-    document.head.appendChild(styleTag)
   }
   // script block: transform `export default` & `module.exports` into `module.exports.default`
   let script = sfc.script ? sfc.script.content : ''
