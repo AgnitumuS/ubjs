@@ -6,7 +6,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+Implemented opportunity import css-file on vue component
+Styles will be added to head html document
 
+```vue
+<template>
+  <div>1111</div>
+</template>
+<script>
+export default {
+  data () {
+    return {
+    }
+  }
+}
+</script>
+
+<style>
+  div {
+    color: red;
+  }
+</style>
+
+<style src="./path/to/file"></style>
+```
 ### Changed
 
 ### Deprecated
