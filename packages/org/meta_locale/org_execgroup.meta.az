@@ -1,0 +1,36 @@
+﻿{
+  "caption": "İcraçı qrupları",
+  "description": "Tapşırıqlar üçün icraçı qruplarının sorğu kitabçası",
+  "attributes": [
+    {
+      "name": "parentID",
+      "caption": "Əsas qovşaq",
+      "description": "Əsas qovşaq"
+    },
+    {
+      "name": "groupType",
+      "caption": "Tip",
+      "description": "Qrupun tipi"
+    },
+    {
+      "name": "code",
+      "caption": "Daxili kod",
+      "description": "Qrupun daxili kodu"
+    },
+    {
+      "name": "name",
+      "caption": "Qrupun adı",
+      "description": "Mötərizəsiz və abbreviaturasız adı"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Yiyəlik halda adı",
+      "description": "Yiyəlik halda mötərizəsiz və abbreviaturasız adı"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Yönlük halda adı",
+      "description": "Yönlükk halda mötərizəsiz və abbreviaturasız adı"
+    }
+  ]
+}

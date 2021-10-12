@@ -1,0 +1,25 @@
+{
+  "caption": "Təsnifatçılar",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Adı"
+    },
+    {
+      "name": "description",
+      "caption": "Təsvir"
+    },
+    {
+      "name": "orderByAttr",
+      "caption": "Təsnifatçı elementlərinin sırası"
+    },
+    {
+      "name": "ubql",
+      "caption": "UBQL (JSON)"
+    }
+  ]
+}

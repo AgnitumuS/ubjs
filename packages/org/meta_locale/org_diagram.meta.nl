@@ -1,5 +1,5 @@
 {
-  "caption": "Diagrammen",
+  "caption": "Organogrammen",
   "description": "Diagrammen",
   "attributes": [
     {

@@ -1,6 +1,6 @@
 {
-  "caption": "Диаграммы",
-  "description": "Диаграммы",
+  "caption": "Органограммы",
+  "description": "Диаграммы организационной структуры",
   "attributes": [
     {
       "name": "orgunitID",

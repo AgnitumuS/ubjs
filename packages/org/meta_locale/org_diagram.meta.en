@@ -1,6 +1,6 @@
 {
-  "caption": "Diagrams",
-  "description": "Diagrams",
+  "caption": "Organizational Chart",
+  "description": "Organizational Chart Diagrams",
   "attributes": [
     {
       "name": "orgunitID",

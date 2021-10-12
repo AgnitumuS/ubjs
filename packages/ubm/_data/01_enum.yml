@@ -9,6 +9,7 @@ UBA_RULETYPE:
     uk: Allow
     nl: Toestaan
     uz: Allow
+    az: İcazə vermək
 - C:
     en: Complements
     ru: Complements
@@ -16,6 +17,7 @@ UBA_RULETYPE:
     uk: Complements
     nl: Aanvullingen
     uz: Complements
+    az: Complements
 - D:
     en: Deny
     ru: Deny
@@ -23,6 +25,7 @@ UBA_RULETYPE:
     uk: Deny
     nl: Ontkennen
     uz: Deny
+    az: Qadağan etmək
 
 FORM_TYPE:
 - auto:
@@ -32,6 +35,7 @@ FORM_TYPE:
     uk: UB form
     nl: UB-vorm
     uz: UB form
+    az: UB form
 - custom:
     en: Pure ExtJS form
     ru: Pure ExtJS form
@@ -39,6 +43,7 @@ FORM_TYPE:
     uk: Pure ExtJS form
     nl: Pure ExtJS-vorm
     uz: Pure ExtJS form
+    az: Pure ExtJS form
 - vue:
     en: VueJS form
     ru: VueJS form
@@ -46,6 +51,7 @@ FORM_TYPE:
     uk: VueJS form
     nl: VueJS-vorm
     uz: VueJS form
+    az: VueJS form
 - module:
     en: Any module what exports mount()
     ru: Any module that exports mount()
@@ -53,6 +59,7 @@ FORM_TYPE:
     uk: Any module that exports mount()
     nl: Elke module die mount() exporteert
     uz: Any module that exports mount()
+    az: Any module that exports mount()
 
 CMD_TYPE:
 - showList:
@@ -62,6 +69,7 @@ CMD_TYPE:
     uk: Show list
     nl: Lijst weergeven
     uz: Show list
+    az: Siyahını göstər
 - showForm:
     en: Show form
     ru: Show form
@@ -69,6 +77,7 @@ CMD_TYPE:
     uk: Show form
     nl: Vorm weergeven
     uz: Show form
+    az: Formanı göstər
 - runCode:
     en: Code execution
     ru: Code execution
@@ -76,6 +85,7 @@ CMD_TYPE:
     uk: Code execution
     nl: Code uitvoering
     uz: Code execution
+    az: Kodun icrası
 
 UBA_USER_GENDER:
 - male:
@@ -85,6 +95,7 @@ UBA_USER_GENDER:
     uk: Чоловік
     nl: Man
     uz: Erkak
+    az: Kişi
 - female:
     en: Female
     ru: Женщина
@@ -92,6 +103,7 @@ UBA_USER_GENDER:
     uk: Жінка
     nl: Vrouw
     uz: Ayol
+    az: Qadın
 
 UBM_QUERY_TYPE:
 - classifier:
@@ -101,6 +113,7 @@ UBM_QUERY_TYPE:
     uk: Класифікатор
     nl: Classificatie
     uz: Tasniflagich
+    az: Təsnifatçı
 - sysDict:
     en: System Dictionary
     ru: Системный справочник
@@ -108,3 +121,4 @@ UBM_QUERY_TYPE:
     uk: Системний довідник
     nl: Systeemwoordenboek
     uz: Tizim ma'lumotnomasi
+    az: Sistem soraqçısı

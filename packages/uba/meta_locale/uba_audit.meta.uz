@@ -1,6 +1,6 @@
 {
-  "caption": "Audit",
-  "description": "Audit o'zgarishlari",
+  "caption": "Xavfsizlik tekshiruvi",
+  "description": "Xavfsizlik tekshiruvi",
   "attributes": [
     {
       "name": "entity",

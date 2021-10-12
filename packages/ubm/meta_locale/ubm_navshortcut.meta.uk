@@ -1,6 +1,6 @@
 {
-  "caption": "Ярлик",
-  "description": "Ярлик на запуск ф-и",
+  "caption": "Ярлики",
+  "description": "Ярлики на запуск ф-и",
   "attributes": [
     {
       "name": "desktopID",

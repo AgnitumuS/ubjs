@@ -1,5 +1,5 @@
 {
-  "caption": "Data System Dictionaries",
+  "caption": "System Dictionaries",
   "attributes": [
     {"name": "code", "caption": "Code"},
     {"name": "name", "caption": "Name"},

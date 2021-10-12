@@ -1,5 +1,5 @@
 {
-  "caption": "Audit",
+  "caption": "Auditspoor",
   "attributes": [
     {
       "name": "entity",

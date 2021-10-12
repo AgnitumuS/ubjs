@@ -2,15 +2,63 @@ $context:
   type: enums
 
 CDN_EMPLOYEEONSTAFFTYPE:
-  - PERMANENT: {en: Permanent, ru: Постоянный, uk: Постійний, tg: Доимӣ, nl: Vast}
-  - TEMPORARY: {en: Acting, ru: вр.и.о., uk: т.в.о., tg: м.и.в., nl: Tijdelijk}
-  - ASSISTANT: {en: Assistant, ru: Ассистент, uk: Асистент, tg: Ёрдамчи, nl: Assistent}
+  - PERMANENT:
+      en: Permanent
+      ru: Постоянный
+      uk: Постійний
+      tg: Доимӣ
+      nl: Vast
+      az: Daimi
+  - TEMPORARY:
+      en: Acting
+      ru: вр.и.о.
+      uk: т.в.о.
+      tg: м.и.в.
+      nl: Tijdelijk
+      az: v.i.e
+  - ASSISTANT:
+      en: Assistant
+      ru: Ассистент
+      uk: Асистент
+      tg: Ёрдамчи
+      nl: Assistent
+      az: Köməkçi
 
 ORG_UNITTYPE:
-  - ORG: {en: Organization, ru: Организация, uk: Організація, tg: Ташкилот, nl: Organisatie}
-  - DEP: {en: Department, ru: Подразделение, uk: Підрозділ, tg: Шӯъба, nl: Afdeling}
-  - STAFF: {en: Staff unit, ru: Персонал, uk: Персонал, tg: Кормандон, nl: Stafeenheid}
-  - EXECGROUP: {en: Execution group, ru: Группа исполнителей, uk: Група виконавців, tg: Гурӯҳҳои рассомон, nl: Uitvoeringsgroep}
+  - ORG:
+      en: Organization
+      ru: Организация
+      uk: Організація
+      tg: Ташкилот
+      nl: Organisatie
+      az: Təşkilat
+  - DEP:
+      en: Department
+      ru: Подразделение
+      uk: Підрозділ
+      tg: Шӯъба
+      nl: Afdeling
+      az: Bölmə
+  - STAFF:
+      en: Staff unit
+      ru: Персонал
+      uk: Персонал
+      tg: Кормандон
+      nl: Stafeenheid
+      az: Şəxsi heyət
+  - EXECGROUP:
+      en: Execution group
+      ru: Группа исполнителей
+      uk: Група виконавців
+      tg: Гурӯҳҳои рассомон
+      nl: Uitvoeringsgroep
+      az: İcraçı qrupu
 
 EXECGROUP_TYPE:
-  - '*': {en: Main, ru: Общая, uk: Загальна, tg: Main, nl: Hoofd}
+  - '*':
+      en: Main
+      ru: Общая
+      uk: Загальна
+      tg: Main
+      nl: Hoofd
+      az: Ümumi

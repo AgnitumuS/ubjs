@@ -1,0 +1,71 @@
+﻿{
+    "caption": "Planlayıcılar",
+    "description": "Planlaşdırılmış tapşırıqlar",
+    "attributes": [
+        {
+            "name": "ID",
+            "caption": "İB",
+            "description": "CRC32(Ad)"
+        },
+        {
+            "name": "name",
+            "caption": "Tapşırığın adı",
+            "description": "Unikal tapşırıq adı. Modellərin server konfiqurasiyası haqqında eşitmələri üçün modellər tapşırıqları eyni adla təkrar müəyyən edirlər"
+        },
+        {
+            "name": "schedulingCondition",
+            "caption": "Tapşırığım planlaşdırılması üçün şərtlər",
+            "description": "Serverin işarə salınması zamanı hesablama üçün ifadə. Nəticə boş olduqda və ya \"true\" qiyməti ilə hesablandıqda tapşırıq yerinə yetiriləcək"
+        },
+        {
+            "name": "cron",
+            "caption": "\"cron\" qeydi",
+            "description": "\"unix\" sistemlərində olduğu kimi tapşırıq üçün \"cron\". Format: 'Seconds(0-59) Minutes(0-59) Hours(0-23) DayOfMonth(1-31) Months(0-11) DayOfWeek(0-6)'"
+        },
+        {
+            "name": "description",
+            "caption": "Təsvir",
+            "description": "Tapşırığın təsviri"
+        },
+        {
+            "name": "command",
+            "caption": "Əmr",
+            "description": "Funksiyanın server kontekstində icra ediləcək adı"
+        },
+        {
+            "name": "module",
+            "caption": "Modul",
+            "description": "Tapşırıq planlayıcısı funksiyasının susmaya görə eksport edilən qiymət kimi tələb ediləcək modulun adı"
+        },
+        {
+            "name": "singleton",
+            "caption": "Sinqlton",
+            "description": "'1' olarsa - icra edilən tapşırığın yalnız bir nüsxəsinə icazə verilir"
+        },
+        {
+            "name": "runAs",
+            "caption": "Kimin adından icra edilsin",
+            "description": "Tapşırığı icra etmək üçün istifadəçinin adı"
+        },
+        {
+            "name": "logSuccessful",
+            "caption": "Uğurlu icra jurnalı",
+            "description": "1 olarsa (susmaya görə), tapşırığın uğurlu icrasının nəticəsi 'ubq_runstat'də protokollaşdırılacaq, əks halda isə yalnız xətalar"
+        },
+        {
+            "name": "overridden",
+            "caption": "Bağla",
+            "description": "Orijinal tapşırığın başqa moddellərlə bağlandığını bildirir"
+        },
+        {
+            "name": "originalModel",
+            "caption": "Orijinal model",
+            "description": "Tapşırığın orijinal müəyyən edilməsinin saxlanıldığı modelin adı"
+        },
+        {
+            "name": "actualModel",
+            "caption": "Aktual model",
+            "description": "Kimsə tapşırığı təkrar müəyyən edərsə tapşırığın orijinal müəyyən edilməsinin saxlanıldığı modelin adı orijinal modeldən fərqlənə bilər"
+        }
+    ]
+}
