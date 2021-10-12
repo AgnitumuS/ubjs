@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Azerbaijani (az) localization for items with omitted translation
 
 ### Changed
+ - Translations for `ORG_UNITTYPE` enum: minor improvements:
+   - `Організація` => `Внутрішня організація`
+   - `Підрозділ` => `Внутрішній підрозділ`
+   - `Персонал` => `Штатна одиниця`
+   - capitalization of English captions
  - Navigation shortcuts localization are taken from i18n (from entities caption)
  - English (en) localization for desktop description: the words are capitalized
   according to English rules for captions

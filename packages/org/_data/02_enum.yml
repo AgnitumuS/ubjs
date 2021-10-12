@@ -26,28 +26,28 @@ CDN_EMPLOYEEONSTAFFTYPE:
 
 ORG_UNITTYPE:
   - ORG:
-      en: Organization
-      ru: Организация
-      uk: Організація
+      en: Internal Organization
+      ru: Внутренняя организация
+      uk: Внутрішня організація
       tg: Ташкилот
       nl: Organisatie
       az: Təşkilat
   - DEP:
-      en: Department
-      ru: Подразделение
-      uk: Підрозділ
+      en: Internal Department
+      ru: Внутреннее подразделение
+      uk: Внутрішній підрозділ
       tg: Шӯъба
       nl: Afdeling
       az: Bölmə
   - STAFF:
-      en: Staff unit
-      ru: Персонал
-      uk: Персонал
+      en: Staff Unit
+      ru: Штатная единица
+      uk: Штатна одиниця
       tg: Кормандон
       nl: Stafeenheid
       az: Şəxsi heyət
   - EXECGROUP:
-      en: Execution group
+      en: Execution Group
       ru: Группа исполнителей
       uk: Група виконавців
       tg: Гурӯҳҳои рассомон
