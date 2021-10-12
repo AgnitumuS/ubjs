@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 Implemented opportunity import css-file on vue component
+Styles will be added to head html document
+
 ```vue
 <template>
   <div>1111</div>
