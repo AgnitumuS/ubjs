@@ -13,7 +13,7 @@ adm_desktop:
     nl: Beheerder
     uz: Administrator
   description:
-    en: User management, UI settings, logs (audit trail, security, queue)
+    en: User Management, UI Settings, Logs (Audit Trail, Security, Queue)
     uk: Керування користувачами, налаштування інтерфейсу, журнали (аудит, безпека, черга)
     ru: Управление пользователями, настройки интерфейса, журналы (аудит, безопасность, очередь)
     ka: მომხმარებლის მენეჯმენტი, ინტერფეისის პარამეტრები, ჟურნალი (აუდიტის ბილიკი, დაცვა, რიგები)

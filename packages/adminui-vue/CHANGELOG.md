@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UDropdownItem`: menu item textbox now expanded to 100% of menu width, this allow to handle click everythere on row, not only on the text [LDOC-1666]
 
 ## [5.20.26] - 2021-09-24
 ### Fixed

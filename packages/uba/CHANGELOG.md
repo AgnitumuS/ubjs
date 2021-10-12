@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - `uba_als-fm.vue`- made new form. Implemented editing of a role that already exists. [Task](https://dev.intecracy.com/agile/browse/UBDF-14336)
+- English (en) localization for desktop description: the words are capitalized
+  according to English rules for captions
+
 ### Deprecated
 
 ### Removed
