@@ -20,6 +20,12 @@ export default {
 }
 </script>
 
+<style>
+  div {
+    color: red;
+  }
+</style>
+
 <style src="./path/to/file"></style>
 ```
 ### Changed
