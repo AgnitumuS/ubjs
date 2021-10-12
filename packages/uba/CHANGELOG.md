@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - added index by `uba_subject.code`
 
 ### Changed
+- English (en) localization for desktop description: the words are capitalized
+  according to English rules for captions
 
 ### Deprecated
 
