@@ -112,6 +112,7 @@ function validateAttributesBlobStore (domainJson, serverConfig) {
  * @param {object} serverConfig
  */
 function addFtsConnectionEntities (domainJson, serverConfig) {
+  console.log(domainJson.uba_user)
   const ftsCfg = serverConfig.application.fts
   if (!ftsCfg || (ftsCfg && !ftsCfg.enabled)) return // fts is disabled
   // calc set of the connection names what used as FTS data source
@@ -129,10 +130,56 @@ function addFtsConnectionEntities (domainJson, serverConfig) {
     for (const lang of connCfg.supportLang) {
       const wantedServiceEntity = `fts_${connName}_${lang}`
       if (!domainJson[wantedServiceEntity]) {
-        // isFTSDataTable = true
-        console.debug('!!!!!!!!!!! CREATE FTS SERVICE ENTITY ' + wantedServiceEntity)
-        // TODO - attributes for SQLite3 and for Elastic
+        domainJson[wantedServiceEntity] = {
+          modelName: 'UB',
+          meta: {
+            name: wantedServiceEntity,
+            connectionName: connName,
+            isFTSDataTable: true,
+            attributes: [
+              { name: 'ID', dataType: 'String', size: 64, isUnique: true }, // instance ID
+              { name: 'rowid', dataType: 'BigInt' }, // required for SQLite
+              { name: 'entity', dataType: 'String', size: 64 }, // entity name for client
+              { name: 'ftsentity', dataType: 'String', size: 64 }, // entity name
+              { name: 'dy', dataType: 'String', size: 4 }, // year
+              { name: 'dm', dataType: 'String', size: 2 }, // month
+              { name: 'dd', dataType: 'String', size: 2 }, // day
+              { name: 'datacode', dataType: 'String', size: 128 }, // for documents - name of Document attribute
+              { name: 'aclrls', dataType: 'String', size: 4000 }, // access control list
+              { name: 'entitydescr', dataType: 'String', size: 512 }, // instance description value
+              { name: 'databody', dataType: 'String', size: 4000 } // text for indexing
+              // {
+              //   name: 'snippet',
+              //   dataType: 'String',
+              //   size: 4000,
+              //   mapping: {
+              //     name: 'SQLite3',
+              //     expressionType: 'Expression',
+              //     expression: `snippet(fts_${connName}, '<b>', '</b>', '<b>...</b>', 9)` // 9 is a `databody` field index
+              //   }
+              // },
+              // {
+              //   name: 'rank',
+              //   dataType: 'Int',
+              //   mapping: {
+              //     name: 'SQLite3',
+              //     expressionType: 'Expression',
+              //     expression: `rank(matchinfo(fts_${connName}),1,1,1,1,1,1,1,1,1,1)`
+              //   }
+              // }
+            ],
+            mixins: {
+              audit: {
+                enabled: false
+              }
+            }
+          },
+          langs: {}
+        }
+      } else {
+        console.debug(`FTS entity '${wantedServiceEntity}' is already defined`)
       }
+      // TODO - attributes for Elastic
     }
   }
 }
