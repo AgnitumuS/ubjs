@@ -1,10 +1,10 @@
 ﻿{
-    "caption": "Статистика",
+    "caption": "Статистика зупуску планувальників",
     "description": "",
     "attributes": [
         {
             "name": "appName",
-            "caption": "Ім'я додатка"
+            "caption": "Ім'я додатку"
         },
         {
             "name": "schedulerName",
