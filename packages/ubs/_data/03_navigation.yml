@@ -11,15 +11,7 @@ adm_desktop:
       displayOrder: 30
       items:
       - ubs_report:
-          caption:
-            en: Reports
-            uk: Звіти
-            ru: Отчеты
-            ka: ანგარიშები
-            tg: Ҳисоботҳо
-            nl: Rapporten
-            az: Hesabatlar
-            id: Reports
+          caption: {$i18n: ubs_report}
           iconCls: u-icon-book
           displayOrder: 60
           cmd: >
@@ -55,15 +47,7 @@ adm_desktop:
       isCollapsed: true
       items:
       - ubs_settings:
-          caption:
-            en: Settings
-            uk: Налаштування
-            ru: Настройки
-            ka: პარამეტრები
-            tg: Танзимот
-            nl: Instellingen
-            az: Sazlamalar
-            id: Settings
+          caption: {i18n: ubs_settings}
           iconCls: u-icon-setting
           displayOrder: 10
           cmd: >
@@ -75,15 +59,8 @@ adm_desktop:
               }
             }
       - ubs_filter:
-          caption:
-            en: Saved Filters
-            uk: Збережені фільтри
-            ru: Сохраненные фильтры
-            ka: შენახული ფილტრები
-            tg: Филтрҳои ҳифзшуда
-            nl: Opgeslagen filters
-            az: Yadda saxlanılmış filtrlər
-            id: Saved Filters
+          caption: {i18n: ubs_filter}
+          iconCls: u-icon-filter
           displayOrder: 20
           cmd: >
             {
@@ -94,15 +71,8 @@ adm_desktop:
               }
             }
       - ubs_numcounter:
-          caption:
-            en: Numerators
-            uk: Нумератори
-            ru: Нумераторы
-            ka: ნუმერატორები
-            tg: Рақамгузорӣ
-            nl: Tellers
-            az: Numeratorlar
-            id: Numerators
+          caption: {i18n: ubs_numcounter}
+          iconCls: u-icon-number
           displayOrder: 30
           cmd: >
             {
@@ -113,15 +83,8 @@ adm_desktop:
               }
             }
       - ubs_numcounterreserv:
-          caption:
-            en: Numerators (Reserve)
-            uk: Нумератори (резерв)
-            ru: Нумераторы (резерв)
-            ka: ნუმერატორები (რეზერვი)
-            tg: Рақамгузорӣ (захира)
-            nl: Tellers (reserve)
-            az: Numeratorlar (Rezerv)
-            id: Numerators (Reserve)
+          caption: {$i18n: ubs_numcounterreserv}
+          iconCls: u-icon-number
           displayOrder: 40
           cmd: >
             {
@@ -132,15 +95,8 @@ adm_desktop:
               }
             }
       - ubs_softLock:
-          caption:
-            en: Blocking (SoftLocks)
-            uk: Блокування (SoftLocks)
-            ru: Блокировки (SoftLocks)
-            ka: დაბლოკვა (რბილი)
-            tg: Худбандӣ (SoftLocks)
-            nl: Blokkeren (SoftLocks)
-            az: Bloklamalar (SoftLocks)
-            id: Blocking (SoftLocks)
+          caption: {$i18n: ubs_softLock}
+          iconCls: u-icon-lock
           displayOrder: 50
           cmd: >
             {
@@ -158,15 +114,7 @@ adm_desktop:
               }
             }
       - ubs_message:
-          caption:
-            en: Messages
-            uk: Повідомлення
-            ru: Сообщения
-            ka: შეტყობინებები
-            tg: Паёмҳо
-            nl: Berichten
-            az: İsmarışlar
-            id: Messages
+          caption: {$i18n: ubs_message}
           iconCls: u-icon-bell
           displayOrder: 60
           cmd: >
@@ -185,15 +133,7 @@ adm_desktop:
               }
             }
       - ubs_globalCache:
-          caption:
-            en: Server-Side Cache
-            uk: Серверний кеш
-            ru: Серверный кэш
-            ka: სერვერის ქეში
-            tg: Кеши сервер
-            nl: Cache aan serverzijde
-            az: Server-Side Cache
-            id: Server-Side Cache
+          caption: {$i18n: ubs_globalCache}
           iconCls: u-icon-data
           displayOrder: 60
           cmd: >

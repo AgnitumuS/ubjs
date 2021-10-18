@@ -1,6 +1,6 @@
 ﻿{
-    "caption": "Серверный кэш",
-    "description": "Глобальный кэш сервера",
+    "caption": "სერვერის ქეში",
+    "description": "სერვერის ქეში",
     "attributes": [
         {
             "name": "ID",
@@ -8,11 +8,11 @@
         },
         {
             "name": "key",
-            "caption": "Ключ"
+            "caption": "Key"
         },
         {
             "name": "value",
-            "caption": "Значение"
+            "caption": "Value"
         }
     ]
 }

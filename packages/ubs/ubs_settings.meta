@@ -1,6 +1,6 @@
 {
   "caption": "Settings",
-  "description": "Application settings (aka about:config in firefox)",
+  "description": "Application settings (like about:config in firefox)",
   "connectionName": "",
   "sqlAlias": "stngs",
   "cacheType": "SessionEntity",

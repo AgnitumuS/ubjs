@@ -1,6 +1,6 @@
 ﻿{
-    "caption": "Cache aan serverzijde",
-    "description": "Globale servercache",
+    "caption": "Серверний кеш",
+    "description": "Глобальний кеш серверу",
     "attributes": [
         {
             "name": "ID",
@@ -8,11 +8,11 @@
         },
         {
             "name": "key",
-            "caption": "Sleutel"
+            "caption": "Ключ"
         },
         {
             "name": "value",
-            "caption": "Waarde"
+            "caption": "Значення"
         }
     ]
 }
