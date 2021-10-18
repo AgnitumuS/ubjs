@@ -272,7 +272,7 @@ export default {
 }
 
 .ub-fts__period-toggle .el-switch__label.is-active {
-  color: hsl(var(--hs-primary), var(--l-text-default));
+  color: hsl(var(--hs-primary), var(--l-state-active));
 }
 
 .ub-fts__date-picker {

@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - FTS widget: highlight active text for `period` switch use --l-state-active lightness [UBDF-11388]
 
 ## [5.20.27] - 2021-10-18
 ### Added
