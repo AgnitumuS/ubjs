@@ -29,7 +29,7 @@ Common `ubql`
 
 ### cmdData.columns
 array<object|string> of display columns.
-If `columns` is unset, will automatically computed from fieldList.
+If `columns` is unset, will automatically compute from fieldList.
 
 ### cmdData.columns[].format
 `format` can be as function or string.
@@ -37,7 +37,7 @@ In case format function passed as string it will call by `new Function` class.
 `format` has next params: `value`, `column`, `row`
 
 ### cmdData.entityName
-In case passed `entityName` then colmuns and fieldList will compute automatically
+If `entityName` is passed, then `columns` and `fieldList` will be computed automatically
 
 ```json
 {
@@ -67,19 +67,36 @@ FieldList will compute automatically, but columns manually
   "cmdType": "showList",
   "cmdData": {
     "entityName": "ubm_enum",
-    "columns": ["eGroup", "code"]
-  },
-  scopedSlots: createElement => ({
-    toolbarAppend: (slotScope) => createElement('button', 'click me'),
-    eGroup: ({ row }) => createElement(
-      'u-button', 
-      {
-        props: {
-          icon: 'u-icon-send'
-        }
-      },
-      row.ID + row.eGroup 
-    )    
-  })
+    "columns": ["eGroup", "code"],
+    scopedSlots: createElement => ({
+      toolbarAppend: (slotScope) => createElement('button', 'click me'),
+      eGroup: ({ row }) => createElement(
+        'u-button',
+        {
+          props: {
+            icon: 'u-icon-send'
+          }
+        },
+        row.ID + row.eGroup
+      )
+    })
+  }  
+}
+```
+
+# Other UTableEntity options
+Almost all UTableEntity options can be passed using cmdData. Example below hide "Filter button" and define `buildEditConfig` handler  
+```javascript
+{
+  cmdType: "showList",
+  cmdData: {
+    entityName: "ubm_enum",
+    columns: ["eGroup", "code"],
+    hideActions: ['filter'],
+    buildEditConfig (cfg, row) {
+      cfg.entity = row.entity
+      return cfg
+    }
+  }  
 }
 ```
