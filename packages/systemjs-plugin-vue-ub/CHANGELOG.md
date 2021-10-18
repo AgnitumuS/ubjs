@@ -17,8 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.4.1] - 2021-10-18
 ### Added
-Implemented opportunity import css-file on vue component
-Styles will be added to head html document
+Vue single file components can use `<style src=`> tag to import a CSS from external file (will be injected using UB.inject). Example:
 
 ```vue
 <template>
@@ -26,19 +25,12 @@ Styles will be added to head html document
 </template>
 <script>
 export default {
-  data () {
-    return {
-    }
-  }
+  data () { return {}  }
 }
 </script>
-
 <style>
-  div {
-    color: red;
-  }
+  div { color: red; }
 </style>
-
 <style src="./path/to/file"></style>
 ```
 
