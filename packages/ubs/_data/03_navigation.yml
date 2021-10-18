@@ -47,7 +47,7 @@ adm_desktop:
       isCollapsed: true
       items:
       - ubs_settings:
-          caption: {i18n: ubs_settings}
+          caption: {$i18n: ubs_settings}
           iconCls: u-icon-setting
           displayOrder: 10
           cmd: >
@@ -59,7 +59,7 @@ adm_desktop:
               }
             }
       - ubs_filter:
-          caption: {i18n: ubs_filter}
+          caption: {$i18n: ubs_filter}
           iconCls: u-icon-filter
           displayOrder: 20
           cmd: >
@@ -71,7 +71,7 @@ adm_desktop:
               }
             }
       - ubs_numcounter:
-          caption: {i18n: ubs_numcounter}
+          caption: {$i18n: ubs_numcounter}
           iconCls: u-icon-number
           displayOrder: 30
           cmd: >
