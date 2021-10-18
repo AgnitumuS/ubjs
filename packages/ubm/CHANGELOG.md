@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Azerbaijani (az) localization for items with omitted translation
- - navigation shortcuts uses i18n (entity captions) during migration
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.27] - 2021-10-18
+### Added
+ - Azerbaijani (az) localization for items with omitted translation
+ - navigation shortcuts uses i18n (entity captions) during migration
 
 ## [5.20.26] - 2021-09-24
 ## [5.20.25] - 2021-09-16

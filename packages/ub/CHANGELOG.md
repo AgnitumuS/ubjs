@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - added localization for entities captions
- - Navigation shortcuts localization are taken from i18n (from entities caption)
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.16] - 2021-10-18
+### Added
+ - added localization for entities captions
+ - Navigation shortcuts localization are taken from i18n (from entities caption)
 
 ## [5.22.15] - 2021-09-24
 ### Added

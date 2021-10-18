@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.27] - 2021-10-18
 ## [5.20.26] - 2021-09-24
 ### Changed
 - role definition is moved from `_initialData` scripts to `01_roles.yml` file

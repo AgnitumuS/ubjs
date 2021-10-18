@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [1.4.1] - 2021-10-18
+### Added
 Implemented opportunity import css-file on vue component
 Styles will be added to head html document
 
@@ -30,14 +41,6 @@ export default {
 
 <style src="./path/to/file"></style>
 ```
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ## [1.4.0] - 2021-03-25
 ### Changed
  - migrate build to webpack5

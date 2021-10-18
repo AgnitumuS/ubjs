@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - UTableEntity: new item `filter` can be used in `hideActions` array to hide a filter button
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.20.27] - 2021-10-18
+### Added
+ - UTableEntity: new item `filter` can be used in `hideActions` array to hide a filter button
 
 ### Fixed
  - `UDropdownItem`: menu item `textbox` now expanded to 100% of menu width, this allows to handle click everywhere on row, not only on the text [LDOC-1666]
