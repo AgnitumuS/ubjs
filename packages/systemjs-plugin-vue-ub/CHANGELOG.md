@@ -41,6 +41,7 @@ export default {
 
 <style src="./path/to/file"></style>
 ```
+
 ## [1.4.0] - 2021-03-25
 ### Changed
  - migrate build to webpack5
