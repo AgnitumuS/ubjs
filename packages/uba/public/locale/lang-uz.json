@@ -45,5 +45,6 @@
   "Record modified by another user": "Yozuv boshqa foydalanuvchi tomonidan o'zgartirilgan",
   "needChangePassword": "Keyingi kirishda foydalanuvchi parolini o'zgartirishi kerak",
   "checkAll": "Barchasini tekshiring",
-  "roles": "Rollar"
+  "roles": "Rollar",
+  "Duplicate user name (may be in different case)": "Bu foydalanuvchi ismiga ega bo'lgan foydalanuvchi (katta harf sezgir emas) allaqachon ro'yxatdan o'tgan. Boshqa kirishni harakat qilib ko'ring"
 }

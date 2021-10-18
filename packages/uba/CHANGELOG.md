@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Azerbaijani (az) localization for items with omitted translation
  - added index by `uba_subject.code`
  - navigation shortcuts uses i18n (entity captions) during migration
+ - "Duplicate user name.." error localization added
 
 ### Changed
 - English (en) localization for desktop description: the words are capitalized
