@@ -1,5 +1,5 @@
 ﻿{
-    "caption": "Диаграммы",
+    "caption": "ER диаграммы",
     "description": "Диаграммы сущностей",
     "attributes": [
         {

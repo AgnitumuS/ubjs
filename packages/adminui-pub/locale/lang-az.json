@@ -274,8 +274,8 @@
   "menu": "Menyu",
   "mi_dateFrom": "Tarixdən",
   "mi_dateTo": "Tarixə",
-  "mi_modifyDate": "Last modified",
-  "mi_createDate": "Created",
+  "mi_modifyDate": "Redaktə tarixi",
+  "mi_createDate": "Yaradılma tarixi",
   "ubErrLockedbyanotheruser": "Yazı digər istifadəçi tərəfindən bloka salınıb. Bütün dəyişiklikləri yadda saxlamaq mümkün olmayacaq. Təkrar cəhd edin.",
   "showFilterPanel": "Filtr",
 

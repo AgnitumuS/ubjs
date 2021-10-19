@@ -1,5 +1,5 @@
 {
-  "caption": "Desktop",
+  "caption": "Desktops",
   "description": "Desktops van applicaties",
   "attributes": [
     {

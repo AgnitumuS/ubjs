@@ -14,11 +14,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - English (en) localization for desktop description: the words are capitalized
   according to English rules for captions
 
+### Changed
+
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.20.27] - 2021-10-18
+### Added
+ - Azerbaijani (az) localization for items with omitted translation
+ - added index by `uba_subject.code`
+ - navigation shortcuts uses i18n (entity captions) during migration
+ - "Duplicate user name.." error localization added
+
+### Changed
+- English (en) localization for desktop description: the words are capitalized
+  according to English rules for captions
 
 ## [5.20.26] - 2021-09-24
 ### Added

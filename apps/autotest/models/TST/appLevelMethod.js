@@ -409,3 +409,16 @@ function googleSearch (req, resp) {
   App.httpCallObserve((Date.now() - d) / 1000, customURI, answer.statusCode)
 }
 App.registerEndpoint('googleSearch', googleSearch, false)
+
+/**
+ * Verify signature from file
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function iitVerifyFile (req, resp) {
+  const iitCrypto = require('@ub-d/iit-crypto')
+  const sign = fs.readFileSync('/home/pavelmash/_DATA/logs/PGR/verifyFileCrash/img227.pdf.p7s')
+  const res = iitCrypto.verify(sign, '/home/pavelmash/_DATA/logs/PGR/verifyFileCrash/img227.pdf')
+  resp.writeEnd(res)
+}
+App.registerEndpoint('iitVerifyFile', iitVerifyFile, false)

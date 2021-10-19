@@ -1,6 +1,6 @@
 {
-  "caption": "Scheduler run statistik",
-  "description": "Scheduler run statistik",
+  "caption": "Scheduler run statistic",
+  "description": "Scheduler run statistic",
   "attributes": [
     {
       "name": "appName",

@@ -1,6 +1,6 @@
 {
-  "caption": "İstifadəçilər qrupu",
-  "description": "İstifadəçilər qrupu",
+  "caption": "Qrupu",
+  "description": "Qrupu",
   "attributes": [
     {
       "name": "code",

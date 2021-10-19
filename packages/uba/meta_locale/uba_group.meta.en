@@ -1,6 +1,6 @@
 {
-  "caption": "User Groups",
-  "description": "User groups",
+  "caption": "Groups",
+  "description": "groups",
   "attributes": [
     {
       "name": "code",

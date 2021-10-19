@@ -1,0 +1,8 @@
+$context:
+  type: roles
+
+Everyone:
+  $amendment: true
+  els:
+    custom:
+    - UBQ_RUNSTAT_DENY: "!ubq_runstat,[iuda]*,Deny direct modification of ubq_runstat"

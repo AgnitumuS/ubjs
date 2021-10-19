@@ -1,0 +1,18 @@
+﻿{
+    "caption": "Serverin keşi",
+    "description": "Serverin qlobal keşi",
+    "attributes": [
+        {
+            "name": "ID",
+            "caption": "İD"
+        },
+        {
+            "name": "key",
+            "caption": "Açar"
+        },
+        {
+            "name": "value",
+            "caption": "Qiymət"
+        }
+    ]
+}

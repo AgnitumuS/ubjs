@@ -178,6 +178,7 @@ export default {
         target: $App.viewport.centralPanel,
         title: this.$ut('fullTextSearchWidgetResultTitle', this.query),
         cmdData: {
+          hideActions: ['filter'],
           scopedSlots: h => ({
             toolbarDropdownAudit: () => h('div'),
             contextMenuAudit: () => h('div')

@@ -1,5 +1,5 @@
 {
-  "caption": "Message",
+  "caption": "Messages",
   "description": "System messages",
   "connectionName": "",
   "sqlAlias": "msg",

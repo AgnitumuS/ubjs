@@ -1,0 +1,9 @@
+{
+  "caption": "Məlumatlar üçün sorğular",
+  "attributes": [
+    {"name": "code", "caption": "Kod"},
+    {"name": "name", "caption": "Ad"},
+    {"name": "ubql", "caption": "UBQL (JSON)"},
+    {"name": "type", "caption": "Tip"}
+  ]
+}

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.21.22] - 2021-10-18
 ## [5.21.21] - 2021-09-24
 ### Fixed
  - `ubcli migrate` update an `ub_version.appliedAt` attribute using current date.

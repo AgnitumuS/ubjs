@@ -34,8 +34,8 @@
     },
     {
       "name": "parentAdminUnitID",
-      "caption": "Предок",
-      "description": "Предок"
+      "caption": "Батьківський елемент",
+      "description": "Батьківський елемент"
     },
     {
       "name": "code",

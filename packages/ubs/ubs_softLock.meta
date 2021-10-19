@@ -1,6 +1,6 @@
 {
-  "caption": "Pessimistic Locks",
-  "description": "Pessimistic locks",
+  "caption": "Active Locks",
+  "description": "Active pessimistic locks",
   "connectionName": "",
   "sqlAlias": "slock",
   "cacheType": "None",

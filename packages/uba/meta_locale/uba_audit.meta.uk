@@ -1,6 +1,6 @@
 {
-  "caption": "Аудит",
-  "description": "Аудит змін",
+  "caption": "Аудит безпеки",
+  "description": "Аудит безпеки",
   "attributes": [
     {
       "name": "entity",

@@ -1,0 +1,30 @@
+﻿{
+    "caption": "İsmarış növbəsi",
+    "description": "İsmarış növbəsi",
+    "attributes": [
+        {
+            "name": "queueCode",
+            "caption": "Növbənin kodu",
+            "description": "İstehlakçı emalçını bu kod əsasında müəyyən edir. Hər \"queCode\" üçün onu emal edən istehlakçı olmalıdır"
+        },
+        {
+            "name": "msgCmd",
+            "caption": "Əmr",
+            "description": "Əmri qəbul edən. Əmr parametrlərinə malik JSON şəklində obyektə malikdir."
+        },
+        {
+            "name": "msgData",
+            "caption": "İsmarışın məlumatları",
+            "description": "İsmarışın əlavə məlumatları. \"base64\"də kodlaşdırılmış binar məlumatlara malik ola bilər."
+        },
+        {
+            "name": "msgPriority",
+            "caption": "Prioritet",
+            "description": "İsmarışın prioriteti. 1=Yüksək, 0=Aşağı, susmaya görə, 0"
+        },
+        {
+            "name": "completeDate",
+            "caption": "Tamamlanma tarixi"
+        }
+    ]
+}

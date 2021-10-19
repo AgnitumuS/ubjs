@@ -1,5 +1,5 @@
 ﻿{
-    "caption": "Форма",
+    "caption": "Формы",
     "description": "Определение интерфейсных форм",
     "attributes": [
         {
