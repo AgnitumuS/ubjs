@@ -44,14 +44,14 @@
             :type="btnType"
             @click="showAttrsChoice = true"
           >
-            Додати поля
+            {{ `${$ut('add')} ${$ut('field')}` }}
           </el-button>
           <el-button
             :disabled="disabledAddBtns"
             :type="btnType"
             @click="showRolesChoice = true"
           >
-            Додати roles
+            {{ `${$ut('add')} ${$ut('roles')}` }}
           </el-button>
           <dialog-table
             :data-table="emptyAttributes"
@@ -93,20 +93,20 @@
               v-if="isNew"
               rowspan="2"
             >
-              Actions
+              {{ $ut('actionType') }}
             </th>
             <th
               v-for="item in baseColumns"
               :key="item.label"
               rowspan="2"
             >
-              {{ item.label }}
+              {{ $ut(item.label) }}
             </th>
             <th
               v-if="selectedRoles.length > 0"
               :colspan="selectedRoles.length"
             >
-              <div>Roles</div>
+              <div>{{ $ut('roles') }}</div>
             </th>
           </tr>
           <tr v-if="selectedRoles.length > 0">
@@ -215,8 +215,8 @@ module.exports.default = {
       roleColumns: [{ property: 'value' }, { property: 'name' }],
       selectedFields: [],
       baseColumns: [
-        { label: 'Caption', property: 'caption' },
-        { label: 'attribute', property: 'code' }
+        { label: 'caption', property: 'caption' },
+        { label: 'field', property: 'code' }
       ],
       isNew: this.$store.state.isNew,
       blockMonkeyRequest: false
@@ -427,6 +427,9 @@ module.exports.default = {
   align-items: flex-end;
   flex-wrap: wrap;
 }
+.uba-als__header__item .el-button {
+  text-transform: capitalize;
+}
 .uba-als_table--wrap {
   overflow: auto;
   border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
@@ -447,6 +450,11 @@ module.exports.default = {
 .uba-als_table.u-table th {
   border-top: none;
   border-bottom: none;
+  text-transform: capitalize;
+}
+.uba-als_table.u-table tr td:first-child {
+  width: 100px;
+  text-align: center;
 }
 
 .uba-als_table--empty {
