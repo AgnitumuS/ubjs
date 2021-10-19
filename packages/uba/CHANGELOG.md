@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - UBA model fill `ubs_settings` using migration YAML
 
 ### Deprecated
 
