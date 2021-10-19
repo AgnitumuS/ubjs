@@ -44,14 +44,14 @@
             :type="btnType"
             @click="showAttrsChoice = true"
           >
-            {{ `${$ut('add')} ${$ut('field')}` }}
+            {{ $ut('addАField') }}
           </el-button>
           <el-button
             :disabled="disabledAddBtns"
             :type="btnType"
             @click="showRolesChoice = true"
           >
-            {{ `${$ut('add')} ${$ut('roles')}` }}
+            {{ $ut('addRole') }}
           </el-button>
           <dialog-table
             :data-table="emptyAttributes"
