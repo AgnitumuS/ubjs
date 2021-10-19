@@ -1,4 +1,4 @@
-# gzip / gunzip / bunzip support for server-side UB with JSZip compatible API
+# gzip / deflate / gunzip / bunzip support for server-side UB with JSZip compatible API
 
 On server side can be used as a direct (and much faster) replacement for `jszip`.
 
