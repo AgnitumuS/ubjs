@@ -8,12 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - UBA model fill `ubs_settings` using migration YAML
+ - UBA model fill `ubs_settings` using migration YAML (05_settings.yml)
+ - UBA model fill roles and ELS using migration (01_roles.yml)
 
 ### Deprecated
 
 ### Removed
-
+ - migration from `@unitybase/uba` < 5 is *REMOVED* (expect all products are already migrated to v5)  
+  
 ### Fixed
 
 ## [5.20.27] - 2021-10-18

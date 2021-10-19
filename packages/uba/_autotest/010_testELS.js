@@ -218,6 +218,7 @@ module.exports = function runELSTest (options) {
       entity: 'uba_els',
       fieldList: ['ID'],
       execParams: {
+        code: 'TEST_DENY_' + TEST_ENTITY,
         entityMask: TEST_ENTITY,
         methodMask: 'update',
         ruleType: 'D',
