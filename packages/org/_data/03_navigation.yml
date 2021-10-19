@@ -192,7 +192,14 @@ org_desktop:
               renderer: 'vue',
               cmdType: 'showList',
               cmdData: {
-                entityName: 'org_employee'
+                entityName: 'org_employee',
+                columns: [
+                  'code',
+                  'fullFIO',
+                  'birthDate',
+                  'userID.name',
+                  'description'
+                ]
               }
             }
   - org_folder_dict:
