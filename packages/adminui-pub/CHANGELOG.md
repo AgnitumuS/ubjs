@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- PDFComponents.js: fix view pdf-file after change tab [UBDF-14199]
 
 ## [5.20.27] - 2021-10-18
 ### Added
