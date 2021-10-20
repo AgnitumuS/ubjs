@@ -17,12 +17,14 @@ Ext.define('UB.ux.PDFComponent', {
   },
 
   getElConfig: function () {
-    let config = this.callParent()
-    config.cn = [{
-      tag: 'div',
-      width: this.width,
-      height: this.height
-    }]
+    const config = this.callParent()
+    config.cn = [
+      {
+        tag: 'div',
+        width: this.width,
+        height: this.height
+      }
+    ]
 
     return config
   },
@@ -31,7 +33,29 @@ Ext.define('UB.ux.PDFComponent', {
     this.callParent(arguments)
     if (this.data) {
       this.afterSetUrl()
+      this.setObserver()
     }
+  },
+  observer: null,
+  setObserver () {
+    // dirty hack for chrome bug with PDF view file, when change tabs
+    const target = this.container.dom
+    if (!target) return
+    const options = {
+      threshold: [0]
+    }
+    const callback = function (entries) {
+      const item = entries[0]
+      if (!item.isIntersecting) return
+      const { target } = item
+      const savedWidth = getComputedStyle(target).borderBottomWidth
+      target.style.borderBottomWidth = `calc(${savedWidth} + 1px)`
+      requestAnimationFrame(() => {
+        target.style.borderBottomWidth = savedWidth
+      })
+    }
+    this.observer = new IntersectionObserver(callback, options)
+    this.observer.observe(target.firstChild)
   },
 
   useBlobForData: true,
@@ -53,7 +77,7 @@ Ext.define('UB.ux.PDFComponent', {
     this.data = null
     this.dataBlob = inBlob
     this.objUrl = window.URL.createObjectURL(inBlob)
-    let viewerCfg = UB.connection.appConfig.uiSettings.adminUI.pdfViewer
+    const viewerCfg = UB.connection.appConfig.uiSettings.adminUI.pdfViewer
     let urlSuffix
     if (viewerCfg) {
       if (viewerCfg.uriSuffix === undefined) {
@@ -68,7 +92,8 @@ Ext.define('UB.ux.PDFComponent', {
   },
 
   onDestroy: function () {
-    var me = this
+    const me = this
+    if (me.observer) me.observer.disconnect()
     me.dataBlob = null
     me.data = null
     if (me.useBlobForData && !Ext.isEmpty(me.objUrl)) {
@@ -79,7 +104,7 @@ Ext.define('UB.ux.PDFComponent', {
   },
 
   updateDataUrl: function () {
-    var oldUrl = this.data
+    const oldUrl = this.data
     this.data = ''
     this.data = oldUrl
   },
@@ -88,12 +113,18 @@ Ext.define('UB.ux.PDFComponent', {
     const viewerCfg = UB.connection.appConfig.uiSettings.adminUI.pdfViewer
     let src
     if (viewerCfg && viewerCfg.customURI) {
-      let f = this.up('form')
-      src = UB.format(viewerCfg.customURI, encodeURIComponent(this.data), $App.connection.userData('lang'), (f && f.instanceID), (f && f.entityName))
+      const f = this.up('form')
+      src = UB.format(
+        viewerCfg.customURI,
+        encodeURIComponent(this.data),
+        $App.connection.userData('lang'),
+        f && f.instanceID,
+        f && f.entityName
+      )
     } else {
       src = this.data
     }
-    let obj = {
+    const obj = {
       tag: 'iframe',
       type: this.type,
       src: src,
@@ -101,7 +132,7 @@ Ext.define('UB.ux.PDFComponent', {
       height: this.height
     }
 
-    let el = this.getEl()
+    const el = this.getEl()
     if (el) {
       el.setHTML('').appendChild(obj)
     }
@@ -116,12 +147,11 @@ Ext.define('UB.ux.PDFComponent', {
    * @return {Promise}
    */
   setSrc: function (cfg) {
-    var
-      me = this
+    const me = this
 
-    var data = cfg.url
+    const data = cfg.url
 
-    var blobData = cfg.blobData
+    const blobData = cfg.blobData
 
     me.dataUrl = data
 
@@ -130,23 +160,27 @@ Ext.define('UB.ux.PDFComponent', {
         me.updateDataBlob(blobData)
         me.afterSetUrl()
       } else {
-        return $App.connection.get(me.dataUrl, { responseType: 'arraybuffer' })
+        return $App.connection
+          .get(me.dataUrl, { responseType: 'arraybuffer' })
           .then(function (response) {
-            var pdfArray = response.data
-            me.updateDataBlob(new Blob(
-              [pdfArray],
-              { type: 'application/pdf' }
-            ))
+            const pdfArray = response.data
+            me.updateDataBlob(new Blob([pdfArray], { type: 'application/pdf' }))
             me.afterSetUrl()
-          }).catch(function (reason) {
+          })
+          .catch(function (reason) {
             if (reason.status !== 401) {
               if (cfg.onContentNotFound) {
                 cfg.onContentNotFound()
               } else {
-                UB.showErrorWindow('<span style="color: red">' + UB.i18n('documentNotFound') + '<span/>')
+                UB.showErrorWindow(
+                  '<span style="color: red">' +
+                    UB.i18n('documentNotFound') +
+                    '<span/>'
+                )
               }
             }
-          }).then()
+          })
+          .then()
       }
     } else {
       me.data = me.dataUrl
@@ -154,5 +188,4 @@ Ext.define('UB.ux.PDFComponent', {
     }
     return Promise.resolve(true)
   }
-
 })

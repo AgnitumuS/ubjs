@@ -40,22 +40,26 @@
 
   <video
     v-else-if="renderType === 'video'"
+    ref="view"
     controls
     preload="none"
-    ref="view"
     width="100%"
     height="100%"
   >
-    <source :src="previewUrl" :type="file.ct">
+    <source
+      :src="previewUrl"
+      :type="file.ct"
+    >
     <p>Your browser doesn't support HTML5 video</p>
   </video>
 
   <audio
     v-else-if="renderType === 'audio'"
+    ref="view"
     :src="previewUrl"
     controls
     preload="none"
-    ref="view">
+  >
     <p>Your browser doesn't support <code>audion</code> element</p>
   </audio>
 
@@ -78,7 +82,7 @@
 
 <script>
 const CONTENT_TYPE_ICONS = {
-  'image/jpeg': 'u-icon-file-image',
+  'image/jpeg': 'u-icon-file-imagobsere',
   'image/png': 'u-icon-file-image',
   'image/vnd.wap.wbmp': 'u-icon-file-image',
   'image/bmp': 'u-icon-file-image',
@@ -93,7 +97,8 @@ const CONTENT_TYPE_ICONS = {
   'text/csv': 'u-icon-file-csv',
 
   'application/vnd.ms-excel': 'u-icon-file-excel',
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'u-icon-file-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+    'u-icon-file-excel',
   'application/vnd.oasis.opendocument.spreadsheet': 'u-icon-file-excel',
 
   'application/pdf': 'u-icon-file-pdf',
@@ -101,12 +106,15 @@ const CONTENT_TYPE_ICONS = {
   'text/plain': 'u-icon-file-text',
 
   'application/msword': 'u-icon-file-word',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'u-icon-file-word',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+    'u-icon-file-word',
   'application/vnd.oasis.opendocument.text': 'u-icon-file-word',
 
   'application/vnd.ms-powerpoint': 'fa fa-file-powerpoint-o',
-  'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'fa fa-file-powerpoint-o',
-  'application/vnd.ms-powerpoint.presentation.macroenabled.12': 'fa fa-file-powerpoint-o',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+    'fa fa-file-powerpoint-o',
+  'application/vnd.ms-powerpoint.presentation.macroenabled.12':
+    'fa fa-file-powerpoint-o',
   'application/vnd.oasis.opendocument.presentation': 'fa fa-file-powerpoint-o',
 
   'application/x-rar-compressed': 'fa fa-file-archive-o',
@@ -118,9 +126,7 @@ const CONTENT_TYPE_ICONS = {
 export default {
   name: 'FileRenderer',
 
-  mixins: [
-    require('../helpers/formatterMixin')
-  ],
+  mixins: [require('../helpers/formatterMixin')],
 
   props: {
     file: Object,
@@ -136,7 +142,8 @@ export default {
       scaleValue: 1,
       SCALE_STEP: 0.5,
       MIN_SCALE: 1,
-      MAX_SCALE: 3
+      MAX_SCALE: 3,
+      observer: null
     }
   },
 
@@ -175,7 +182,8 @@ export default {
   },
 
   async created () {
-    if (this.withPreview) { // prevent download document for non-preview mode
+    if (this.withPreview) {
+      // prevent download document for non-preview mode
       const getDocumentParams = {
         entity: this.entityName,
         attribute: this.attributeName,
@@ -186,8 +194,18 @@ export default {
         getDocumentParams.fileName = this.file.origName
       }
       if (this.file.revision) getDocumentParams.revision = this.file.revision
-      this.previewUrl = await this.$UB.connection.getDocumentURL(getDocumentParams)
+      this.previewUrl = await this.$UB.connection.getDocumentURL(
+        getDocumentParams
+      )
     }
+  },
+
+  mounted () {
+    if (this.renderType === 'pdf') this.setObserver()
+  },
+
+  beforeDestroy () {
+    if (this.observer) this.observer.disconnect()
   },
 
   methods: {
@@ -201,59 +219,80 @@ export default {
 
     openFullscreen () {
       this.$refs.view.requestFullscreen()
+    },
+
+    setObserver () {
+      // dirty hack for chrome bug with PDF view file, when change tabs
+      const target = this.$refs.view
+      if (!target) return
+      const options = {
+        threshold: [0]
+      }
+      const callback = function (entries) {
+        const item = entries[0]
+        if (!item.isIntersecting) return
+        const { target } = item
+        const savedWidth = getComputedStyle(target).borderBottomWidth
+        target.style.borderBottomWidth = `calc(${savedWidth} + 1px)`
+        requestAnimationFrame(() => {
+          target.style.borderBottomWidth = savedWidth
+        })
+      }
+      this.observer = new IntersectionObserver(callback, options)
+      this.observer.observe(target)
     }
   }
 }
 </script>
 
 <style>
-  .file-renderer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    position: relative;
-  }
+.file-renderer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
 
-  .file-renderer__name {
-    margin-top: 4px;
-    font-size: 14px;
-    padding: 0 12px;
-    text-align: center;
-  }
+.file-renderer__name {
+  margin-top: 4px;
+  font-size: 14px;
+  padding: 0 12px;
+  text-align: center;
+}
 
-  .file-renderer__size {
-    font-size: 12px;
-    color: hsl(var(--hs-text), var(--l-text-label));
-    margin: 4px 0;
-  }
+.file-renderer__size {
+  font-size: 12px;
+  color: hsl(var(--hs-text), var(--l-text-label));
+  margin: 4px 0;
+}
 
-  .file-renderer__inner {
-    overflow: auto;
-  }
+.file-renderer__inner {
+  overflow: auto;
+}
 
-  .file-renderer,
-  .file-renderer__inner {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.file-renderer,
+.file-renderer__inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .file-renderer img {
-    max-width: 100%;
-    display: block;
-    transition: .1s;
-    transform-origin: top left;
-  }
+.file-renderer img {
+  max-width: 100%;
+  display: block;
+  transition: 0.1s;
+  transform-origin: top left;
+}
 
-  .file-renderer__scale-button-group {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 2;
-    display: grid;
-    grid-gap: 8px;
-  }
+.file-renderer__scale-button-group {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+  display: grid;
+  grid-gap: 8px;
+}
 </style>
