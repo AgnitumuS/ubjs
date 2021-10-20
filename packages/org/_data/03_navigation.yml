@@ -9,13 +9,15 @@ org_desktop:
     ka: ორგანიზაციული სტრუქტურა
     tg: Сохтори корхона
     nl: Structuur van de organisatie
+    az: Təş. Struktur
   description:
-    en: Departments, positions, employees, appointments,...
+    en: Departments, Positions, Employees, Appointments,...
     uk: Департаменти, посади, службовці, призначення,...
     ru: Отделы, должности, сотрудники, назначения,...
     ka: განყოფილებები, თანამდებობები, თანამშრომლები, დანიშვნები, ...
     tg: Раёсатҳо, вазифаҳо, кормандон, таъйинот, ...
     nl: Afdelingen, functies, medewerkers, toewijzingen,...
+    az: Şöbələr, vəzifələr, əməkdaşlar,təyinatlar,...
   iconCls: u-icon-desktop-orgstructure
   items:
   - org_folder_internal:
@@ -26,17 +28,12 @@ org_desktop:
         ka: შიდა ორგანიზება
         tg: Сохтори корхона
         nl: Structuur van de organisatie
+        az: Təş.strurktur
       iconCls: u-icon-globe
       displayOrder: 10
       items:
       - org_department:
-          caption:
-            en: Departments
-            uk: Внутрішні підрозділи
-            ru: Внутренние подразделения
-            ka: დეპარტამენტები
-            tg: Шӯъбаҳои дохилӣ
-            nl: Interne verdeeldheid
+          caption: {$i18n: org_department}
           iconCls: fa fa-cubes
           displayOrder: 10
           cmd: >
@@ -62,13 +59,7 @@ org_desktop:
               }
             }
       - org_organization:
-          caption:
-            en: Organizations
-            uk: Внутрішні організації
-            ru: Внутренние организации
-            ka: ორგანიზაციები
-            tg: Корхонаҳои дохилӣ
-            nl: Interne organisaties
+          caption: {$i18n: org_organization}
           iconCls: fa fa-university
           displayOrder: 20
           cmd: >
@@ -96,13 +87,7 @@ org_desktop:
               }
             }
       - org_employeeonstaff:
-          caption:
-            en: Employee on Staff
-            uk: Внутрішні призначення
-            ru: Внутренние назначения
-            ka: თანამშრომელი პერსონალზე
-            tg: Таъинҳои дохилӣ
-            nl: Interne toewijzingen
+          caption: {$i18n: org_employeeonstaff}
           iconCls: fa fa-briefcase
           displayOrder: 30
           cmd: >
@@ -121,6 +106,7 @@ org_desktop:
             ka: თანამშრომელი პერსონალზე (სულ)
             tg: Таъинҳои дохилӣ (ҳама)
             nl: Interne toewijzingen (alle)
+            az: Daxili təyinatlar (bütün)
           iconCls: fa fa-briefcase
           displayOrder: 35
           cmd: >
@@ -133,13 +119,7 @@ org_desktop:
               }
             }
       - org_staffunit:
-          caption:
-            en: Staff Units
-            uk: Штатні одиниці
-            ru: Штатные единицы
-            ka: პერსონალის ერთეული
-            tg: Воҳиди корӣ
-            nl: Stafeenheden
+          caption: {$i18n: org_staffunit}
           displayOrder: 40
           cmd: >
             {
@@ -167,13 +147,7 @@ org_desktop:
               }
             }
       - org_execgroup:
-          caption:
-            en: Execution Groups
-            uk: Групи виконавців
-            ru: Группы исполнителей
-            ka: მხატვრული ჯგუფები
-            tg: Гурӯҳҳои рассомон
-            nl: Groepen van uitvoerders
+          caption: {$i18n: org_execgroup}
           iconCls: u-icon-layers
           displayOrder: 50
           cmd: >
@@ -193,13 +167,7 @@ org_desktop:
               }
             }
       - org_unit:
-          caption:
-            en: Org Units
-            uk: Внутрішні орг.одиниці
-            ru: Внутренние орг.единицы
-            ka: ორგანიზების ერთეული
-            tg: Сохтори созмонии дохилӣ
-            nl: Interne organisatie-eenheden
+          caption: {$i18n: org_unit}
           displayOrder: 100
           cmd: >
             {
@@ -216,13 +184,7 @@ org_desktop:
               }
             }
       - org_employee:
-          caption:
-            en: Employees
-            uk: Внутрішні працівники
-            ru: Внутренние сотрудники
-            ka: თანამშრომლები
-            tg: Кормандони дохилӣ
-            nl: Intern personeel
+          caption: {$i18n: org_employee}
           iconCls: fa fa-male
           displayOrder: 110
           cmd: >
@@ -230,7 +192,14 @@ org_desktop:
               renderer: 'vue',
               cmdType: 'showList',
               cmdData: {
-                entityName: 'org_employee'
+                entityName: 'org_employee',
+                columns: [
+                  'code',
+                  'fullFIO',
+                  'birthDate',
+                  'userID.name',
+                  'description'
+                ]
               }
             }
   - org_folder_dict:
@@ -241,16 +210,11 @@ org_desktop:
         ka: დამატებითი
         tg: Иловагӣ
         nl: Extra
+        az: Əlavə
       displayOrder: 20
       items:
       - org_profession:
-          caption:
-            en: Professions
-            uk: Професії
-            ru: Профессии
-            ka: პროფესიები
-            tg: Касбҳо
-            nl: Beroepen
+          caption: {$i18n: org_profession}
           iconCls: u-icon-cloud
           displayOrder: 10
           cmd: >
@@ -262,13 +226,7 @@ org_desktop:
               }
             }
       - org_diagram:
-          caption:
-            en: Organizational Chart
-            uk: Органограми
-            ru: Органограммы
-            ka: ორგანიზაციული ჩარტი
-            tg: Органиграмма
-            nl: Organogrammen
+          caption: {$i18n: org_diagram}
           iconCls: u-icon-hierarchy-alt
           displayOrder: 20
           cmd: >

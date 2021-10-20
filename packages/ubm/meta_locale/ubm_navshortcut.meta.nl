@@ -1,5 +1,5 @@
 {
-  "caption": "Snelkoppeling",
+  "caption": "Sneltoetsen",
   "description": "Metadata voor ingebouwde navigatiebalken",
   "attributes": [
     {

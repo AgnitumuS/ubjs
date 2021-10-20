@@ -178,6 +178,7 @@ export default {
         target: $App.viewport.centralPanel,
         title: this.$ut('fullTextSearchWidgetResultTitle', this.query),
         cmdData: {
+          hideActions: ['filter'],
           scopedSlots: h => ({
             toolbarDropdownAudit: () => h('div'),
             contextMenuAudit: () => h('div')
@@ -271,7 +272,7 @@ export default {
 }
 
 .ub-fts__period-toggle .el-switch__label.is-active {
-  color: hsl(var(--hs-primary), var(--l-text-default));
+  color: hsl(var(--hs-primary), var(--l-state-active));
 }
 
 .ub-fts__date-picker {

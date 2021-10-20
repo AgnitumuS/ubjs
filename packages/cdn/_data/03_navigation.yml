@@ -11,14 +11,16 @@ cdn_desktop:
     tg: Маълумотномаҳои умумӣ
     nl: Common Dictionaries
     uz: Umumiy kataloglar
+    az: Ümumi soraqçalaq
   description:
-    en: Directories of subjects, addresses, other classifiers
+    en: Directories of Subjects, Addresses, Other Classifiers
     uk: Довідники суб'єктів, адрес, інші класифікатори
     ru: Справочники субъектов, адресов, прочие классификаторы
     ka: საგნების, მისამართების, სხვა კლასიფიკატორების დირექტორიები
     tg: Директорияи фанҳо, суроғаҳо, таснифоти дигар
     nl: Directories of subjects, addresses, other classifiers
     uz: Mavzular kataloglari, manzillar, boshqa tasniflagichlar
+    az: Mövzular, ünvanlar, digər soraqçalar
   iconCls: u-icon-desktop-dictionaries
   items:
   - cdn_folder_territorial:
@@ -31,19 +33,13 @@ cdn_desktop:
         tg: Воҳиди маъмурӣ
         nl: Territoriaal
         uz: Admin. bo`linish
+        az: İnzibati bölgü
       iconCls: u-icon-globe
       displayOrder: 10
       items:
       - cdn_region:
           access: User
-          caption:
-            en: Regions
-            uk: Регіони
-            ru: Регионы
-            ka: რეგიონები
-            tg: Ноҳияҳо
-            nl: Regio's
-            uz: Hududlar
+          caption: {$i18n: cdn_region}
           iconCls: u-icon-cloud
           displayOrder: 10
           cmd: >
@@ -56,14 +52,7 @@ cdn_desktop:
             }
       - cdn_city:
           access: User
-          caption:
-            en: Cities
-            uk: Населені пункти
-            ru: Населенные пункты
-            ka: ქალაქები
-            tg: Маҳаллаҳои ахолинишин
-            nl: Steden
-            uz: Hisob -kitoblar
+          caption: {$i18n: cdn_city}
           iconCls: u-icon-person-group
           displayOrder: 20
           cmd: >
@@ -76,14 +65,7 @@ cdn_desktop:
             }
       - cdn_country:
           access: User
-          caption:
-            en: Countries
-            uk: Крaїни
-            ru: Страны
-            ka: ქვეყნები
-            tg: Кишварҳо
-            nl: Landen
-            uz: Mamlakatlar
+          caption: {$i18n: cdn_country}
           iconCls: fa fa-flag-o
           displayOrder: 30
           cmd: >
@@ -96,14 +78,7 @@ cdn_desktop:
             }
       - cdn_adminunit:
           access: User
-          caption:
-            en: Admin Units
-            uk: Адмін. одиниці
-            ru: Админ. единицы
-            ka: ადმინის ერთეულები
-            tg: Воҳидҳои маъмурӣ
-            nl: Beheerderseenheden
-            uz: Ma`muriy birliklar
+          caption: {$i18n: cdn_adminunit}
           iconCls: u-icon-object-group
           displayOrder: 40
           cmd: >
@@ -116,13 +91,7 @@ cdn_desktop:
             }
       - cdn_street:
           access: User
-          caption:
-            en: Streets
-            uk: Вулиці
-            ru: Улицы
-            tg: Кӯчаҳо
-            nl: Straten
-            uz: Ko`chalar
+          caption: {$i18n: cdn_street}
           iconCls: fas fa-map-signs
           displayOrder: 50
           cmd: >
@@ -135,14 +104,7 @@ cdn_desktop:
             }
       - cdn_regiontype:
           access: User
-          caption:
-            en: Region Types
-            uk: Типи регіонів
-            ru: Типы регионов
-            ka: რეგიონების ტიპი
-            tg: Намудҳои ноҳия
-            nl: Regiotypen
-            uz: Hudud turlari
+          caption: {$i18n: cdn_regiontype}
           displayOrder: 100
           cmd: >
             {
@@ -154,14 +116,7 @@ cdn_desktop:
             }
       - cdn_citytype:
           access: User
-          caption:
-            en: City Types
-            uk: Типи нас. пунктів
-            ru: Типы нас. пунктов
-            ka: ქალაქების ტიპი
-            tg: Намудҳои маҳаллаҳои аҳолинишин
-            nl: Soorten steden
-            uz: Aholi punktlarining turlari
+          caption: {$i18n: cdn_citytype}
           displayOrder: 110
           cmd: >
             {
@@ -181,19 +136,13 @@ cdn_desktop:
         tg: Субъектҳо
         nl: Onderwerpen
         uz: Mavzular
+        az: Subyektlər
       iconCls: u-icon-person
       displayOrder: 10
       items:
       - cdn_organization:
           access: User
-          caption:
-            en: Organizations
-            uk: Організації
-            ru: Организации
-            ka: ორგანიზაციები
-            tg: Ташкилотҳо
-            nl: Organisaties
-            uz: Tashkilot
+          caption: {$i18n: cdn_organization}
           iconCls: fa fa-university
           displayOrder: 10
           cmd: >
@@ -214,14 +163,7 @@ cdn_desktop:
             }
       - cdn_employee:
           access: User
-          caption:
-            en: Employee
-            uk: Співробітники
-            ru: Сотрудники
-            ka: თანამშრომელი
-            tg: Коргарон
-            nl: Werknemer
-            uz: Xodimlar
+          caption: {$i18n: cdn_employee}
           iconCls: fa fa-briefcase
           displayOrder: 20
           cmd: >
@@ -244,14 +186,7 @@ cdn_desktop:
             }
       - cdn_department:
           access: User
-          caption:
-            en: Departments
-            uk: Підрозділи
-            ru: Подразделения
-            ka: დეპარტამენტები
-            tg: Шӯъбаҳо
-            nl: Afdelingen
-            uz: Bo`limlar
+          caption: {$i18n: cdn_department}
           iconCls: fa fa-cubes
           displayOrder: 30
           cmd: >
@@ -272,14 +207,7 @@ cdn_desktop:
             }
       - cdn_person:
           access: User
-          caption:
-            en: Persons
-            uk: Фізичні особи
-            ru: Физические лица
-            ka: პირები
-            tg: Шахси воқъеи
-            nl: Personen
-            uz: Shaxslar
+          caption: {$i18n: cdn_person}
           iconCls: fa fa-male
           displayOrder: 40
           cmd: >
@@ -299,13 +227,7 @@ cdn_desktop:
             }
       - cdn_bank:
           access: User
-          caption:
-            en: Banks
-            uk: Банки
-            ru: Банки
-            tg: Бонкҳо
-            nl: Banken
-            uz: Banklar
+          caption: {$i18n: cdn_bank}
           iconCls: fas fa-hand-holding-usd
           displayOrder: 40
           cmd: >
@@ -326,20 +248,14 @@ cdn_desktop:
         tg: Гуногун
         nl: Overige toepassingen
         uz: Har xil
+        az: Müxtəlif
       iconCls: u-icon-setting
       displayOrder: 40
       isCollapsed: true
       items:
       - cdn_currency:
           access: User
-          caption:
-            en: Currency
-            uk: Валюти
-            ru: Валюты
-            ka: ვალუტა
-            tg: Асъорҳо
-            nl: Valuta
-            uz: Valyutalar
+          caption: {$i18n: cdn_currency}
           iconCls: u-icon-dollar
           displayOrder: 10
           cmd: >
@@ -358,14 +274,7 @@ cdn_desktop:
             }
       - cdn_language:
           access: User
-          caption:
-            en: Languages
-            uk: Мови
-            ru: Языки
-            ka: ენები
-            tg: Забонҳо
-            nl: Talen
-            uz: Tillar
+          caption: {$i18n: cdn_language}
           iconCls: fa fa-language
           displayOrder: 20
           cmd: >
@@ -378,14 +287,7 @@ cdn_desktop:
             }
       - cdn_classifier:
           access: User
-          caption:
-            en: Classifiers
-            uk: Класифікатори
-            ru: Классификаторы
-            ka: კლასიფიკატორები
-            tg: Таснифотгарҳо
-            nl: Classificaties
-            uz: Tasniflagichlar
+          caption: {$i18n: cdn_classifier}
           iconCls: u-icon-tags
           displayOrder: 30
           cmd: >

@@ -1,6 +1,6 @@
 {
   "caption": "Settings",
-  "description": "Entity with information about system settings",
+  "description": "Application settings",
   "attributes": [
     {
       "name": "settingKey",

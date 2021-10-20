@@ -1,5 +1,5 @@
 {
-  "caption": "системные справочники",
+  "caption": "Системные справочники",
   "attributes": [
     {"name": "code", "caption": "Код"},
     {"name": "name", "caption": "Наименование"},

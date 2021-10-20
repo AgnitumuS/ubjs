@@ -203,6 +203,10 @@ module.exports = (instance) => ({
       return !instance.hideActions.includes('export')
     },
 
+    showFilter () {
+      return !instance.hideActions.includes('filter')
+    },
+
     columns () {
       return instance.getColumns
     },

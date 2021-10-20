@@ -1,0 +1,14 @@
+{
+  "caption": "İcraçı qrupları üçün icraçılar",
+  "description": "Qrupa bənd edilən və qrupa əlavə edilərkən dərkənarlarda icraçıların avtomatik doldurulması üçün istifadə edilən icraçılar",
+  "attributes": [
+    {
+      "name": "execGroupID",
+      "caption": "İcraçılar qrupu"
+    },
+    {
+      "name": "orgUnitID",
+      "caption": "İcraçı"
+    }
+  ]
+}

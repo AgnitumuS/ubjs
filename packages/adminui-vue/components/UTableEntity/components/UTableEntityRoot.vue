@@ -62,7 +62,10 @@
           name="toolbarAppend"
         />
 
-        <filter-selector />
+        <filter-selector
+          v-if="showFilter"
+        >
+        </filter-selector>
         <sort
           ref="sort"
           :target-column="targetColumn"
@@ -574,7 +577,8 @@ export default {
       'canCreateNewVersion',
       'hasDataHistoryMixin',
       'showSummary',
-      'showExport'
+      'showExport',
+      'showFilter'
     ]),
 
     selectedColumnId: {

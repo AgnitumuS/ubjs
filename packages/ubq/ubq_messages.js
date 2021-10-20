@@ -101,12 +101,13 @@ function getFnFromNS (path) {
  *
  *      {
  *        schedulerName: cfg.name, command: cfg.command, module: cfg.module,
- *        singleton: cfg.singleton !== false, logSuccessful: cfg.logSuccessful
+ *        singleton: cfg.singleton !== false, logSuccessful: cfg.logSuccessful,
+ *        runAsID: optional user ID for runAs
  *      }
  *
  * `command` must be a function name (may including namespace), for example `UB.UBQ.sendQueueMail` or `ubs_message_edit.notifyAllRecipients`
  * in case `command` not passed `module` must be a module what export default a function, for example module: '@unitybase/myModule/schedTask'
- * and  in schedTask.js `module exports = function() {...}`
+ * and in schedTask.js: `module exports = function() {...}`
  *
  * In case `singleton` parameter is missing or === false scheduler can run a multiple instances of the same task,
  * otherwise - if previous task with the same name not finished yet current task will not be executed

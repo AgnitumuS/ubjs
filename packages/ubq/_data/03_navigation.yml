@@ -7,7 +7,7 @@ adm_desktop:
   items:
   - adm_folder_UBQ:
       caption:
-        en: Queue
+        en: Mesages Queue
         ru: Очереди сообщений
         uk: Черги повідомлень
         tg: Навбати паёмҳо
@@ -19,15 +19,7 @@ adm_desktop:
       displayOrder: 50
       items:
       - ubq_scheduler:
-          caption:
-            en: Schedulers
-            ru: Планировщики задач
-            uk: Планувальники задач
-            tg: Нақшакашҳои вазифаҳо
-            ka: განრიგის შემქმნელი
-            az: Tapşırıq planlaşdırıcıları
-            nl: Planners
-            uz: Vazifalarni rejalashtiruvchilar
+          caption: {$i18n: ubq_scheduler}
           iconCls: fas fa-tasks
           displayOrder: 10
           cmd: >
@@ -39,15 +31,7 @@ adm_desktop:
               }
             }
       - ubq_runstat:
-          caption:
-            en: Statistics
-            ru: Статистика
-            uk: Статистика
-            tg: Омор
-            ka: სტატისტიკა
-            az: Statistika
-            nl: Statistieken
-            uz: Statistika
+          caption: {$i18n: ubq_runstat}
           iconCls: u-icon-circle-info
           displayOrder: 20
           cmd: >
@@ -59,15 +43,7 @@ adm_desktop:
               }
             }
       - ubq_messages:
-          caption:
-            en: Queue
-            ru: Очередь
-            uk: Черга
-            tg: Навбат
-            ka: რიგირ
-            az: Növbə
-            nl: Wachtrij
-            uz: Navbat
+          caption: {$i18n: ubq_messages}
           iconCls: fas fa-list-ol
           displayOrder: 30
           cmd: >

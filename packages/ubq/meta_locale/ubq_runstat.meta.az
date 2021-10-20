@@ -1,0 +1,32 @@
+﻿{
+    "caption": "Planlayıcının işə salınması statistikası",
+    "description": "Planlayıcının işə salınması statistikası",
+    "attributes": [
+        {
+            "name": "appName",
+            "caption": "Tətbiq proqramının adı"
+        },
+        {
+            "name": "startTime",
+            "description": "Planlayıcının elementinin işə salınması vaxtı"
+        },
+        {
+            "name": "endTime",
+            "caption": "Planlayıcının elementinin bitmə vaxtı",
+            "description": "Planlayıcının elementinin bitmə vaxtı"
+        },
+        {
+            "name": "logText",
+            "caption": "Bütün əməliyyatlar haqqında icra edilmiş skriptdən jurnal",
+            "description": "Bütün əməliyyatlar haqqında icra edilmiş skriptdən jurnal"
+        },
+        {
+            "name": "resultError",
+            "caption": "Nəticənin xəta kodu. 0=xətasız"
+        },
+        {
+            "name": "resultErrorMsg",
+            "caption": "Nəticə > 0 olduqda xətanın mətn ismarışı"
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 {
-  "caption": "Message Queue",
-  "description": "Message queue",
+  "caption": "Messages Queue",
+  "description": "Messages queue",
   "attributes": [
     {
       "name": "queueCode",

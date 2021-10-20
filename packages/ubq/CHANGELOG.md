@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.27] - 2021-10-18
+### Added
+ - Azerbaijani (az) localization for items with omitted translation
+ - direct modification of `ubq_runstat` is disabled by ELS new rule
+
+### Changed
+ - UBQ Navigation shortcuts localization are taken from i18n (from entities caption)
+
 ## [5.20.26] - 2021-09-24
 ## [5.20.25] - 2021-09-16
 ### Changed
