@@ -236,3 +236,12 @@ html, body {
     background: hsl(var(--hs-border), var(--l-layout-border-default));
     margin: 0 8px;
 }
+
+.u-table__multiple td,
+.u-table__multiple th:first-child {
+  cursor: pointer;
+}
+
+.u-table .selected-row td {
+  background: hsl(var(--hs-primary), var(--l-background-default));
+}

@@ -1,10 +1,30 @@
 <template>
   <div
     class="u-table"
+    :class="{ 'u-table__multiple': multiple }"
     :style="tableStyle"
   >
     <table>
       <tr>
+        <th
+          v-if="multiple"
+          @click="handlerAllChecked"
+        >
+          <span
+            class="el-checkbox__input"
+            :class="{
+              'is-checked': allSelected,
+              'is-indeterminate': !allSelected && curSelection.length > 0
+            }"
+          >
+            <span class="el-checkbox__inner" />
+            <input
+              type="checkbox"
+              aria-hidden="false"
+              class="el-checkbox__original"
+            >
+          </span>
+        </th>
         <th
           v-for="col in columns"
           :key="col.id"
@@ -31,17 +51,36 @@
       </tr>
       <tr
         v-for="row in items"
-        :key="row.ID"
-        :class="getRowClass(row)"
-        @dblclick="$emit('dblclick-row', {row})"
-        @click="$emit('click-row', {row})"
+        :key="row.ID || row.id"
+        :class="[
+          getRowClass(row),
+          { 'selected-row': curSelection.includes(row[selectionField]) }
+        ]"
+        @dblclick="$emit('dblclick-row', { row })"
+        @click="handlerClickOnRow(row)"
       >
+        <td v-if="multiple">
+          <!-- repeat html-structure for el-checkbox ElementUI -->
+          <span
+            class="el-checkbox__input"
+            :class="{
+              'is-checked': curSelection.includes(row[selectionField])
+            }"
+          >
+            <span class="el-checkbox__inner" />
+            <input
+              type="checkbox"
+              aria-hidden="false"
+              class="el-checkbox__original"
+            >
+          </span>
+        </td>
         <td
           v-for="col in columns"
           :key="col.id"
           :class="[
             {
-              'u-table__fixed-column': col.id === fixedColumnId,
+              'u-table__fixed-column': col.id === fixedColumnId
             },
             getAlignClass(col.align),
             columnsClasses[col.id],
@@ -50,8 +89,10 @@
           :style="{
             padding: col.padding && col.padding + 'px'
           }"
-          @click="$emit('click-cell', {row, column: col})"
-          @contextmenu="$emit('contextmenu-cell', {event: $event, row, column: col})"
+          @click="$emit('click-cell', { row, column: col })"
+          @contextmenu="
+            $emit('contextmenu-cell', { event: $event, row, column: col })
+          "
         >
           <div class="u-table__cell-container">
             <slot
@@ -68,6 +109,7 @@
       <!-- @slot Last row in table -->
       <slot name="lastTableRow" />
     </table>
+
     <div
       v-if="items.length === 0"
       class="u-table-no-data"
@@ -86,9 +128,11 @@
 export default {
   name: 'UTable',
 
-  mixins: [
-    require('./formatValueMixin')
-  ],
+  mixins: [require('./formatValueMixin')],
+  model: {
+    prop: 'selectedRows',
+    event: 'selected'
+  },
 
   props: {
     /**
@@ -160,9 +204,16 @@ export default {
     /**
      * sets max table height. If data not fits, scroll is appears
      */
-    maxHeight: [Number, String]
+    maxHeight: [Number, String],
+    selectedRows: { type: Array, default: () => [] },
+    selectionField: { type: String, default: 'ID' },
+    multiple: { type: Boolean, default: false }
   },
-
+  data () {
+    return {
+      curSelection: this.selectedRows
+    }
+  },
   computed: {
     tableStyle () {
       return ['height', 'maxHeight'].reduce((style, prop) => {
@@ -185,6 +236,10 @@ export default {
         accum[column.id] = this.getColumnClass(column)
         return accum
       }, {})
+    },
+    allSelected () {
+      const { items, curSelection } = this
+      return items.length === curSelection.length
     }
   },
   watch: {
@@ -193,16 +248,47 @@ export default {
       this.setTitle()
     }
   },
-
   methods: {
+    handlerAllChecked () {
+      const { items, allSelected, selectionField } = this
+      this.curSelection = []
+      if (!allSelected) {
+        items.forEach(i => this.curSelection.push(i[selectionField]))
+      }
+      this.emitSelection()
+    },
+    handlerClickOnRow (row) {
+      if (this.multiple) this.handlerSelection(row)
+      this.$emit('click-row', { row })
+    },
+    handlerSelection (row) {
+      const { selectionField, curSelection } = this
+      const arr = curSelection
+      const id = row[selectionField]
+      const hasIndex = arr.indexOf(id)
+      if (hasIndex === -1) {
+        arr.push(id)
+      } else {
+        arr.splice(hasIndex, 1)
+      }
+      this.emitSelection()
+    },
+    emitSelection () {
+      this.$emit('selected', this.curSelection)
+    },
     getAlignClass (align = 'left') {
       return `u-table__cell__align-${align}`
     },
     setTitle () {
-      const cells = this.$el.querySelectorAll('.u-table__cell-container:not(title)')
+      const cells = this.$el.querySelectorAll(
+        '.u-table__cell-container:not(title)'
+      )
       if (!cells) return
       cells.forEach(cell => {
-        if (cell.offsetHeight < cell.scrollHeight || cell.offsetWidth < cell.scrollWidth) {
+        if (
+          cell.offsetHeight < cell.scrollHeight ||
+          cell.offsetWidth < cell.scrollWidth
+        ) {
           cell.setAttribute('title', cell.innerText)
         }
       })
@@ -214,7 +300,7 @@ export default {
 <style>
 .u-table {
   --border: hsl(var(--hs-border), var(--l-layout-border-default));
-  --text:  hsl(var(--hs-text), var(--l-text-default));
+  --text: hsl(var(--hs-text), var(--l-text-default));
   --header-text: hsl(var(--hs-text), var(--l-text-label));
   --border-hover: hsl(var(--hs-border), var(--l-layout-border-light));
   --row-hover: hsl(var(--hs-background), var(--l-background-default));
@@ -227,18 +313,18 @@ export default {
   border-spacing: 0;
 }
 
-.u-table__cell__align-left{
+.u-table__cell__align-left {
   text-align: left;
 }
-.u-table__cell__align-center{
+.u-table__cell__align-center {
   text-align: center;
 }
-.u-table__cell__align-right{
+.u-table__cell__align-right {
   text-align: right;
 }
 
 .u-table td,
-.u-table th{
+.u-table th {
   border-bottom: 1px solid var(--border);
   color: var(--text);
   padding: 10px 8px;
@@ -253,7 +339,7 @@ export default {
   padding-left: 10px;
 }
 
-.u-table__cell-container{
+.u-table__cell-container {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -270,7 +356,7 @@ export default {
   text-overflow: ellipsis;
 }
 
-.u-table th:after{
+.u-table th:after {
   content: '';
   width: 1px;
   height: 28px;
@@ -280,27 +366,27 @@ export default {
   background: var(--border);
 }
 
-.u-table th:last-child:after{
+.u-table th:last-child:after {
   content: none;
 }
 
 .u-table th.u-table__fixed-column,
-.u-table td.u-table__fixed-column{
+.u-table td.u-table__fixed-column {
   left: 0;
   position: sticky;
   z-index: 2;
 }
 
-.u-table th.u-table__fixed-column{
+.u-table th.u-table__fixed-column {
   z-index: 3;
 }
 
-.u-table tr:hover td{
+.u-table tr:hover td {
   background: var(--row-hover);
   border-bottom-color: var(--border-hover);
 }
 
-.u-table tr td:hover{
+.u-table tr td:hover {
   background: var(--cell-hover);
 }
 
