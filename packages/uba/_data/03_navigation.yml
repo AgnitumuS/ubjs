@@ -78,7 +78,7 @@ adm_desktop:
               cmdType: 'showList',
               cmdData: {
                 entityName: 'uba_userrole',
-                columns: ['userID', 'roleID']
+                columns: ['userID.name', 'roleID']
               }
             }
       - uba_group:
