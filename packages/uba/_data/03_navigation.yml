@@ -105,7 +105,7 @@ adm_desktop:
               cmdType: 'showList',
               cmdData: {
                 entityName: 'uba_usergroup',
-                columns: ['userID', 'groupID']
+                columns: ['userID.name', 'groupID']
               }
             }
       - uba_usercertificate:
