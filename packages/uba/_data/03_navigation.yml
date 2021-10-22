@@ -204,7 +204,8 @@ adm_desktop:
               renderer: 'vue',
               cmdType: 'showList',
               cmdData: {
-                entityName: 'uba_otp'
+                entityName: 'uba_otp',
+                columns: ['userID.name','otpKind','otp','expiredDate']
               }
             }
       - uba_audit:

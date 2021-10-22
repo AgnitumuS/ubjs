@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `uba_userrole` & `uba_usergroup` nav shortcut uses `userID.name` instead of `userID` - this prevents lookup on potentially big user entity 
  - `uba_advSecurity` nav shortcut uses `userID.name`; improve uk translation for attributes
+ - `uba_otp` nav shortcut - add columns to prevent lookup on uba_user entity
 
 ## [5.20.27] - 2021-10-18
 ### Added
