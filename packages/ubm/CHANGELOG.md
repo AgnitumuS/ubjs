@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `ubm_navshortcut`: nav shortcut - improve columns list; `uk` and `ru` locale - localize description and keyword attributes
 
 ## [5.20.27] - 2021-10-18
 ### Added
