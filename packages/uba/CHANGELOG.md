@@ -17,7 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - migration from `@unitybase/uba` < 5 is *REMOVED* (expect all products are already migrated to v5)  
   
 ### Fixed
- - `uba_userrole` nav shortcut uses `userID.name` instead of `userID` - this prevents lookup on potentially big user entity  
+ - `uba_userrole` nav shortcut uses `userID.name` instead of `userID` - this prevents lookup on potentially big user entity 
+ - `uba_advSecurity` nav shortcut uses `userID.name`; improve uk translation for attributes
 
 ## [5.20.27] - 2021-10-18
 ### Added

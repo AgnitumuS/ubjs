@@ -12,11 +12,11 @@
         },
         {
             "name": "allowedIP",
-            "caption": "Разрешенные IP адреса"
+            "caption": "Разрешенные IP"
         },
         {
             "name": "refreshIP",
-            "caption": "Обновление разрешенных IP адресов"
+            "caption": "Обновление IP"
         },
         {
             "name": "fp",
@@ -28,15 +28,15 @@
         },
         {
             "name": "keyMediaName",
-            "caption": "Название ключевого носителя"
+            "caption": "Ключевогой носитель"
         },
         {
             "name": "refreshKeyMedia",
-            "caption": "Обновление названия ключевого носителя"
+            "caption": "Обновление ключевого носителя"
         },
         {
             "name": "additional",
-            "caption": "Дополнительные",
+            "caption": "Дополнительно",
             "description": "Дополнительные настройки в виде JSON"
         }
     ]

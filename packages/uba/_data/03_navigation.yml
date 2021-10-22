@@ -65,7 +65,8 @@ adm_desktop:
               renderer: 'vue',
               cmdType: 'showList',
               cmdData: {
-                entityName: 'uba_advSecurity'
+                entityName: 'uba_advSecurity',
+                columns: ['userID.name','allowedIP','refreshIP','fp','refreshFp','keyMediaName','refreshKeyMedia','editCause']
               }
             }
       - uba_userrole:
