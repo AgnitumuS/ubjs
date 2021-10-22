@@ -51,7 +51,7 @@
       </tr>
       <tr
         v-for="row in items"
-        :key="row.ID || row.id"
+        :key="row[selectionField]"
         :class="[
           getRowClass(row),
           { 'selected-row': curSelection.includes(row[selectionField]) }
@@ -251,7 +251,7 @@ export default {
   methods: {
     handlerAllChecked () {
       const { items, allSelected, selectionField } = this
-      this.curSelection = []
+      this.curSelection.splice(0)
       if (!allSelected) {
         items.forEach(i => this.curSelection.push(i[selectionField]))
       }
