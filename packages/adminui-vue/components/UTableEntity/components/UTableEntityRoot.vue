@@ -62,10 +62,7 @@
           name="toolbarAppend"
         />
 
-        <filter-selector
-          v-if="showFilter"
-        >
-        </filter-selector>
+        <filter-selector v-if="showFilter" />
         <sort
           ref="sort"
           :target-column="targetColumn"
@@ -235,6 +232,10 @@
         :items="items"
         :max-height="maxHeight"
         tabindex="1"
+        :multiple="multiple"
+        :selected-rows="curSelected"
+        :selection-field="selectionField"
+        @selected="$emit('selected', ...arguments)"
         @click-head-cell="showSortDropdown"
         @click-cell="select"
         @contextmenu-cell="showContextMenu"
@@ -282,9 +283,7 @@
         </template>
 
         <template #appendTable>
-          <next-page-button
-            v-if="withPagination"
-          />
+          <next-page-button v-if="withPagination" />
 
           <!-- @slot add some content at the end of the table after the pagination button -->
           <slot name="appendTable" />
@@ -304,7 +303,7 @@
       >
         <slot
           slot="card"
-          slot-scope="{row}"
+          slot-scope="{ row }"
           name="card"
           :row="row"
         />
@@ -320,9 +319,7 @@
         </template>
 
         <template #append>
-          <next-page-button
-            v-if="withPagination"
-          />
+          <next-page-button v-if="withPagination" />
 
           <!-- @slot add some content at the end of the card-view after the pagination button -->
           <slot name="appendTable" />
@@ -494,7 +491,7 @@ export default {
 
   inject: {
     close: {
-      default: () => () => console.warn('Injection close didn\'t provided')
+      default: () => () => console.warn("Injection close didn't provided")
     }
   },
 
@@ -536,24 +533,22 @@ export default {
      * Overrides the record selection event. That is, double click or enter
      * @type {function({ID: Number, row: Object, close: function})}
      */
-    onSelectRecord: Function
+    onSelectRecord: Function,
+    selectedRows: { type: Array, default: () => [] },
+    selectionField: { type: String, default: 'ID' },
+    multiple: { type: Boolean, default: false }
   },
 
   data () {
     return {
       targetColumn: null,
-      contextMenuRowId: null
+      contextMenuRowId: null,
+      curSelected: [...this.selectedRows]
     }
   },
 
   computed: {
-    ...mapState([
-      'items',
-      'loading',
-      'withTotal',
-      'sort',
-      'pageIndex'
-    ]),
+    ...mapState(['items', 'loading', 'withTotal', 'sort', 'pageIndex']),
 
     ...mapGetters([
       'showAddNew',
@@ -622,6 +617,9 @@ export default {
       if (this.$refs.cardView) {
         this.$refs.cardView.$el.scrollTop = 0
       }
+    },
+    selectedRows (e) {
+      this.curSelected = e
     }
   },
 
@@ -638,11 +636,7 @@ export default {
       'createNewVersion',
       'showRevision'
     ]),
-    ...mapMutations([
-      'SELECT_COLUMN',
-      'SELECT_ROW'
-    ]),
-
+    ...mapMutations(['SELECT_COLUMN', 'SELECT_ROW']),
     getCellTemplate (column) {
       if (typeof column.template === 'function') {
         return column.template()
@@ -670,7 +664,7 @@ export default {
     getNextArrayValue (array, key, current) {
       const index = array.findIndex(i => current === i[key])
       const undefinedIndex = index === -1
-      const isLast = index === (array.length - 1)
+      const isLast = index === array.length - 1
       if (undefinedIndex || isLast) {
         return array[0][key]
       } else {
@@ -695,23 +689,31 @@ export default {
       switch (direction) {
         case 'up':
           if (this.selectedRowId === null) return
-          this.SELECT_ROW(this.getPrevArrayValue(this.items, 'ID', this.selectedRowId))
+          this.SELECT_ROW(
+            this.getPrevArrayValue(this.items, 'ID', this.selectedRowId)
+          )
           this.scrollIntoView()
           break
 
         case 'down':
           if (this.selectedRowId === null) return
-          this.SELECT_ROW(this.getNextArrayValue(this.items, 'ID', this.selectedRowId))
+          this.SELECT_ROW(
+            this.getNextArrayValue(this.items, 'ID', this.selectedRowId)
+          )
           this.scrollIntoView()
           break
 
         case 'left':
           if (this.selectedColumnId === null) return
           if (this.viewMode === 'table') {
-            this.SELECT_COLUMN(this.getPrevArrayValue(this.columns, 'id', this.selectedColumnId))
+            this.SELECT_COLUMN(
+              this.getPrevArrayValue(this.columns, 'id', this.selectedColumnId)
+            )
           }
           if (this.viewMode === 'card') {
-            this.SELECT_ROW(this.getPrevArrayValue(this.items, 'ID', this.selectedRowId))
+            this.SELECT_ROW(
+              this.getPrevArrayValue(this.items, 'ID', this.selectedRowId)
+            )
           }
           this.scrollIntoView()
           break
@@ -719,10 +721,14 @@ export default {
         case 'right':
           if (this.selectedColumnId === null) return
           if (this.viewMode === 'table') {
-            this.SELECT_COLUMN(this.getNextArrayValue(this.columns, 'id', this.selectedColumnId))
+            this.SELECT_COLUMN(
+              this.getNextArrayValue(this.columns, 'id', this.selectedColumnId)
+            )
           }
           if (this.viewMode === 'card') {
-            this.SELECT_ROW(this.getNextArrayValue(this.items, 'ID', this.selectedRowId))
+            this.SELECT_ROW(
+              this.getNextArrayValue(this.items, 'ID', this.selectedRowId)
+            )
           }
           this.scrollIntoView()
           break
@@ -736,9 +742,7 @@ export default {
       return ''
     },
     getRowClass (row) {
-      return row.ID === this.selectedRowId
-        ? 'selected'
-        : ''
+      return row.ID === this.selectedRowId ? 'selected' : ''
     },
 
     async scrollIntoView () {
@@ -797,7 +801,6 @@ export default {
     onSort () {
       this.targetColumn = null
     }
-
   }
 }
 </script>
@@ -899,7 +902,7 @@ export default {
 }
 
 .u-fake-table__label {
-  color: hsl(var(--hs-text), var(--l-text-label))
+  color: hsl(var(--hs-text), var(--l-text-label));
 }
 
 .u-fake-table__label:after {

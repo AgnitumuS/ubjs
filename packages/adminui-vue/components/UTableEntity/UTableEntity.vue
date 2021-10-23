@@ -4,7 +4,11 @@
     v-bind="$attrs"
     :with-pagination="withPagination"
     :view-mode.sync="viewMode"
+    :multiple="multiple"
+    :selection-field="selectionField"
+    :selected-rows="curSelected"
     v-on="$listeners"
+    @selected="handlerSelectionRow"
   >
     <template
       v-for="slot in Object.keys($scopedSlots)"
@@ -30,7 +34,6 @@ export default {
   name: 'UTableEntity',
 
   components: { UTableEntityRoot },
-
   props: {
     /**
      * Function which return UB.ClientRepository or UBQL object
@@ -164,9 +167,18 @@ export default {
     bordered: {
       type: Boolean,
       default: true
+    },
+    selectedRows: { type: Array, default: () => [] },
+    selectionField: { type: String, default: 'ID' },
+    multiple: { type: Boolean, default: false }
+  },
+  data () {
+    return {
+      curSelected: [],
+      cacheSelection: new Set(),
+      tableItems: []
     }
   },
-
   computed: {
     ...mapGetters(['schema']),
 
@@ -178,25 +190,27 @@ export default {
       if (this.columns) {
         return this.columns.map(column => {
           if (typeof column === 'string') {
-            return this.buildColumn(/** @type {UTableColumn} */{ id: column })
+            return this.buildColumn(/** @type {UTableColumn} */ { id: column })
           }
           return this.buildColumn(column)
         })
       }
 
-      return this.getRepository().fieldList
-        .filter(attrCode => {
+      return this.getRepository()
+        .fieldList.filter(attrCode => {
           const attr = this.schema.getEntityAttribute(attrCode, 0)
           return attr && this.isAttributeViewableByDefault(attr)
         })
-        .map(attrCode => this.buildColumn(/** @type {UTableColumn} */{ id: attrCode }))
+        .map(attrCode =>
+          this.buildColumn(/** @type {UTableColumn} */ { id: attrCode })
+        )
     },
 
     getCardColumns () {
       if (this.cardColumns.length > 0) {
         return this.cardColumns.map(column => {
           if (typeof column === 'string') {
-            return this.buildColumn(/** @type {UTableColumn} */{ id: column })
+            return this.buildColumn(/** @type {UTableColumn} */ { id: column })
           }
           return this.buildColumn(column)
         })
@@ -222,6 +236,8 @@ export default {
   async created () {
     const storeConfig = createStore(this)
     this.$store = new Vuex.Store(storeConfig)
+    this.$watch('$store.state.items', this.handlerChangeTableData)
+    this.handlerSelectionRow(this.selectedRows)
     await this.beforeInitialLoad(this)
     this.loadData()
   },
@@ -232,24 +248,62 @@ export default {
   },
 
   beforeDestroy () {
-    this.$UB.connection.removeListener(`${this.getEntityName}:changed`, this.updateData)
+    this.$UB.connection.removeListener(
+      `${this.getEntityName}:changed`,
+      this.updateData
+    )
     this.unsubscribeLookups()
   },
 
   methods: {
-    ...mapActions([
-      'loadData',
-      'unsubscribeLookups',
-      'updateData'
-    ]),
-
+    ...mapActions(['loadData', 'unsubscribeLookups', 'updateData']),
+    handlerSelectionRow (ev) {
+      const { cacheSelection, selectionField } = this
+      const newSelection = new Set(ev)
+      if (cacheSelection.size === 0) {
+        this.cacheSelection = newSelection
+        this.curSelected = [...this.cacheSelection]
+        this.emitChooseRows()
+        return
+      }
+      this.tableItems.forEach(elem => {
+        const id = elem[selectionField]
+        const hasInCache = cacheSelection.has(id)
+        const curHas = newSelection.has(id)
+        if (hasInCache && !curHas) {
+          cacheSelection.delete(id)
+        }
+        if (!hasInCache && curHas) {
+          cacheSelection.add(id)
+        }
+      })
+      this.emitChooseRows()
+    },
+    emitChooseRows () {
+      console.log()
+      this.$emit('choose-rows', [...this.cacheSelection])
+    },
+    handlerChangeTableData (items) {
+      this.tableItems = items
+      this.setCurSelected()
+    },
+    setCurSelected () {
+      this.curSelected.splice(0)
+      const { cacheSelection, selectionField } = this
+      this.tableItems.forEach(elem => {
+        const id = elem[selectionField]
+        const hasInCache = cacheSelection.has(id)
+        if (hasInCache) this.curSelected.push(id)
+      })
+    },
     getRepository () {
       switch (typeof this.repository) {
         case 'function':
           return this.repository()
         case 'object':
           return this.$UB.Repository(this.repository)
-        default: { // build repository based on columns (if available) or attributes with `defaultView: true`
+        default: {
+          // build repository based on columns (if available) or attributes with `defaultView: true`
           const repo = this.$UB.Repository(this.entityName)
           const viewableAttrs = []
           if (this.columns) {
@@ -275,24 +329,42 @@ export default {
      * @returns {UTableColumn}
      */
     buildColumn (column) {
-      const attrInfo = this.$store.getters.schema.getEntityAttributeInfo(column.id, 0)
+      const attrInfo = this.$store.getters.schema.getEntityAttributeInfo(
+        column.id,
+        0
+      )
 
       let attribute = column.attribute
       if (attribute === undefined && attrInfo) {
-        attribute = (attrInfo.parentAttribute && attrInfo.parentAttribute.dataType === 'Json')
-          ? attrInfo.parentAttribute // for JSON actual attribute is undefined
-          : attrInfo.attribute
+        attribute =
+          attrInfo.parentAttribute &&
+          attrInfo.parentAttribute.dataType === 'Json'
+            ? attrInfo.parentAttribute // for JSON actual attribute is undefined
+            : attrInfo.attribute
       }
 
       let label = column.label
-      if ((label === undefined) || (label === '')) {
+      if (label === undefined || label === '') {
         // 3 level depth is enough here. in case `attr0.attr1.attr2.attr3` then mostly what developer already pass description
-        if (attrInfo && attrInfo.parentAttribute && attrInfo.parentAttribute.dataType !== 'Json') {
+        if (
+          attrInfo &&
+          attrInfo.parentAttribute &&
+          attrInfo.parentAttribute.dataType !== 'Json'
+        ) {
           label = `${attrInfo.parentAttribute.caption} / ${attrInfo.attribute.caption}`
           // check 3 level depth
-          const prevAttrInfo = this.$store.getters.schema.getEntityAttributeInfo(column.id, -1)
-          if (prevAttrInfo.parentAttribute) label = `${prevAttrInfo.parentAttribute.caption} / ${label}`
-        } else if (attrInfo && attrInfo.attribute && attrInfo.attribute.caption) {
+          const prevAttrInfo = this.$store.getters.schema.getEntityAttributeInfo(
+            column.id,
+            -1
+          )
+          if (prevAttrInfo.parentAttribute) {
+            label = `${prevAttrInfo.parentAttribute.caption} / ${label}`
+          }
+        } else if (
+          attrInfo &&
+          attrInfo.attribute &&
+          attrInfo.attribute.caption
+        ) {
           label = attrInfo.attribute.caption
         } else {
           label = column.id
@@ -303,8 +375,9 @@ export default {
       const filters = {}
 
       if (column.filterable !== false) {
-        const filterEntries = Object.entries(typeDefaults.filters || {})
-          .concat(Object.entries(column.filters || {}))
+        const filterEntries = Object.entries(typeDefaults.filters || {}).concat(
+          Object.entries(column.filters || {})
+        )
 
         for (const [filterId, filterDef] of filterEntries) {
           filters[filterId] = Object.assign({}, filters[filterId], filterDef)
@@ -323,7 +396,10 @@ export default {
       }
       if (typeof resultColumn.format === 'string') {
         // eslint-disable-next-line no-new-func
-        resultColumn.format = new Function('{value, column, row}', resultColumn.format)
+        resultColumn.format = new Function(
+          '{value, column, row}',
+          resultColumn.format
+        )
       }
 
       return resultColumn
@@ -345,7 +421,9 @@ export default {
         .map(column => column.id)
 
       if (fieldsWithError.length > 0) {
-        const errMsg = `Rendering slot is not defined for columns [${fieldsWithError.join(', ')}]`
+        const errMsg = `Rendering slot is not defined for columns [${fieldsWithError.join(
+          ', '
+        )}]`
         throw new Error(errMsg)
       }
     },
@@ -357,10 +435,12 @@ export default {
      * @return {boolean}
      */
     isAttributeViewableByDefault (attr) {
-      return attr.defaultView &&
-        (attr.dataType !== 'Json') &&
-        (attr.dataType !== 'Document') &&
-        (attr.dataType !== 'Text')
+      return (
+        attr.defaultView &&
+        attr.dataType !== 'Json' &&
+        attr.dataType !== 'Document' &&
+        attr.dataType !== 'Text'
+      )
     }
   }
 }

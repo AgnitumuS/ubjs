@@ -246,6 +246,9 @@ export default {
     items: async function () {
       await this.$nextTick()
       this.setTitle()
+    },
+    selectedRows (e) {
+      this.curSelection = e
     }
   },
   methods: {
