@@ -97,7 +97,39 @@ ubConfig section example:
 },...]
 ```
 
-### Oracle
+### Oracle (UB server EE)
+#### Setup Oracle client 
+Download a zip version [Basic Light Package (ZIP)](https://www.oracle.com/database/technologies/instant-client/downloads.html)
+
+Execute under `sudo`:
+
+For instantClient 19
+```bash
+unzip instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip
+mv instantclient_19_6 /usr/lib
+cd /usr/lib/instantclient_19_6
+rm -f ./libclntsh.so
+ln -s libclntsh.so.19.1 libclntsh.so
+pwd > /etc/ld.so.conf.d/oracle.conf
+apt install libaio1
+ldconfig
+```
+
+For instantClient 12
+```bash
+unzip instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip
+unzip instantclient-basiclite-linux.x64-12.2.0.1.0.zip
+mv instantclient_12_2 /usr/lib
+cd /usr/lib/instantclient_12_2
+ln -s libclntsh.so.12.1 libclntsh.so
+pwd > /etc/ld.so.conf.d/oracle.conf
+apt install libaio1
+ldconfig
+```
+
+Full client with sqlplus can be found here: http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html
+
+#### Setup Oracle connection
   Connection parameters can be specified in `tnsnames.ora` - in this case `serverName` in the ubConfig should be a TNS name,
   or directly in the TNS string passed to the `serverName`.
   
