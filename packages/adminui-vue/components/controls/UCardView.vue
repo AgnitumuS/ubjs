@@ -1,15 +1,57 @@
 <template>
   <div class="u-card-container">
+    <div
+      v-if="multiple"
+      class="u-card__select-all"
+      @click="handlerAllChecked"
+    >
+      Select all
+      <span
+        class="el-checkbox__input"
+        :class="{
+          'is-checked': allSelected,
+          'is-indeterminate': !allSelected && curSelection.length > 0
+        }"
+      >
+        <span class="el-checkbox__inner" />
+        <input
+          type="checkbox"
+          aria-hidden="false"
+          class="el-checkbox__original"
+        >
+      </span>
+    </div>
     <div class="u-card-grid">
       <div
         v-for="row in items"
         :key="row.ID"
         class="u-card"
-        :class="getCardClass(row)"
-        @click="$emit('click', { row })"
+        :class="[
+          getCardClass(row),
+          {
+            'u-card__multiple': multiple,
+            'u-card--is-selected': curSelection.includes(row[selectionField])
+          }
+        ]"
+        @click="handlerClickOnRow(row)"
         @dblclick="$emit('dblclick', { row })"
         @contextmenu="$emit('contextmenu', { event: $event, row })"
       >
+        <!-- repeat html-structure for el-checkbox ElementUI -->
+        <span
+          v-if="multiple"
+          class="el-checkbox__input"
+          :class="{
+            'is-checked': curSelection.includes(row[selectionField])
+          }"
+        >
+          <span class="el-checkbox__inner" />
+          <input
+            type="checkbox"
+            aria-hidden="false"
+            class="el-checkbox__original"
+          >
+        </span>
         <slot
           name="card"
           :row="row"
@@ -98,7 +140,10 @@ export default {
   name: 'UCardView',
 
   mixins: [require('./UTable/formatValueMixin')],
-
+  model: {
+    prop: 'selectedRows',
+    event: 'selected'
+  },
   props: {
     /**
      * Array of columns settings where each item can be string or object.
@@ -125,6 +170,25 @@ export default {
     getCardClass: {
       type: Function,
       default: () => () => {}
+    },
+    selectedRows: { type: Array, default: () => [] },
+    selectionField: { type: String, default: 'ID' },
+    multiple: { type: Boolean, default: false }
+  },
+  data () {
+    return {
+      curSelection: this.selectedRows
+    }
+  },
+  computed: {
+    allSelected () {
+      const { items, curSelection } = this
+      return items.length === curSelection.length
+    }
+  },
+  watch: {
+    selectedRows (e) {
+      this.curSelection = e
     }
   },
 
@@ -136,6 +200,33 @@ export default {
         const dataType = column.attribute?.dataType
         return TypeProvider.get(dataType).template
       }
+    },
+    handlerClickOnRow (row) {
+      if (this.multiple) this.handlerSelection(row)
+      this.$emit('click', { row })
+    },
+    handlerSelection (row) {
+      const { selectionField, curSelection } = this
+      const arr = curSelection
+      const id = row[selectionField]
+      const hasIndex = arr.indexOf(id)
+      if (hasIndex === -1) {
+        arr.push(id)
+      } else {
+        arr.splice(hasIndex, 1)
+      }
+      this.emitSelection()
+    },
+    emitSelection () {
+      this.$emit('selected', this.curSelection)
+    },
+    handlerAllChecked () {
+      const { items, allSelected, selectionField } = this
+      this.curSelection.splice(0)
+      if (!allSelected) {
+        items.forEach(i => this.curSelection.push(i[selectionField]))
+      }
+      this.emitSelection()
     }
   }
 }
@@ -157,6 +248,7 @@ export default {
 }
 
 .u-card {
+  position: relative;
   box-shadow: 0 2px 8px hsla(var(--hs-text), var(--l-text-default), 0.2);
   padding: 16px 12px;
   border-radius: var(--border-radius);
@@ -186,5 +278,19 @@ export default {
 .u-card-row__value {
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.u-card .el-checkbox__input {
+  --indent: 8px;
+  position: absolute;
+  top: var(--indent);
+  right: var(--indent);
+}
+.u-card__multiple {
+  cursor: pointer;
+}
+.u-card__select-all {
+  margin: 12px 0 0 12px;
+  font-size: 18px;
+  cursor: pointer;
 }
 </style>
