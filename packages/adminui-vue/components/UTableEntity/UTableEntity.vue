@@ -279,7 +279,6 @@ export default {
       this.emitChooseRows()
     },
     emitChooseRows () {
-      console.log()
       this.$emit('choose-rows', [...this.cacheSelection])
     },
     handlerChangeTableData (items) {

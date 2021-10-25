@@ -296,3 +296,34 @@ export default {
 }
 </script>
 ```
+### Multi-Selection mode
+
+```vue
+<template>
+  <u-table-entity    
+    multiple
+    :selected-rows="selectedIDS"
+    @choose-rows="handlerSelectionRow"
+    :max-height="200"
+    :repository="repository"/>
+</template>
+
+<script>
+export default {
+  data(){
+    return {
+      selectedIDs:[3,128]
+    }
+  },
+  methods: {
+    repository () {
+      return this.$UB.Repository('req_request')
+        .attrs('ID', 'reqDate', 'department.name')
+    },
+    handlerSelectionRow(selectionsArr){
+      console.log(selectionsArr)
+    }
+  }
+}
+</script>
+```

@@ -71,3 +71,58 @@ To set scoped slot for header cell just add prefix `head_` to column ID
   }
 </script>
 ```
+
+### Selection Mode
+
+```vue
+<template>
+  // `v-model` matched with `selected` event
+  <u-table
+    v-model="selectionIDs"
+    :items="currencies"
+    :columns="columns"
+    multiple
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        selectionIDs: [2,3],
+        currencies: [{
+          ID: 1,
+          code: 'UAH',
+          caption: 'Hryvna',
+          country: 'Ukraine'
+        },{
+          ID: 2,
+          code: 'USD',
+          caption: 'Dollar',
+          country: 'USA'
+        },{
+          ID: 3,
+          code: 'EUR',
+          caption: 'Euro',
+          country: 'France'
+        }],
+
+        columns: [{
+          id: 'code',
+          label: 'Code'
+        }, {
+          id: 'caption',
+          label: 'Caption'
+        }, {
+          id: 'country',
+          label: 'Country'
+        }]
+      }
+    },
+    watch:{
+      selectionIDs(selectionsArr){
+        window.alert(`Selection changed: ${selectionsArr}`)
+      }
+    }
+  }
+</script>
+```
