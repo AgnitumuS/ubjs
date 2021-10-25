@@ -29,11 +29,13 @@ const { mapGetters, mapActions } = Vuex
 const createStore = require('./store')
 const UTableEntityRoot = require('./components/UTableEntityRoot.vue').default
 const TypeProvider = require('./type-provider')
+const selectionProps = require('../controls/mixins/selection/props')
 
 export default {
   name: 'UTableEntity',
 
   components: { UTableEntityRoot },
+  mixins: [selectionProps],
   props: {
     /**
      * Function which return UB.ClientRepository or UBQL object
@@ -167,10 +169,7 @@ export default {
     bordered: {
       type: Boolean,
       default: true
-    },
-    selectedRows: { type: Array, default: () => [] },
-    selectionField: { type: String, default: 'ID' },
-    multiple: { type: Boolean, default: false }
+    }
   },
   data () {
     return {

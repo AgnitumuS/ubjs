@@ -475,10 +475,10 @@
 <script>
 const { mapState, mapGetters, mapMutations, mapActions } = require('vuex')
 const TypeProvider = require('../type-provider')
+const selectionProps = require('../../controls/mixins/selection/props')
 
 export default {
   name: 'UTableEntityRoot',
-
   components: {
     FilterSelector: require('./FilterSelector.vue').default,
     Pagination: require('./Pagination.vue').default,
@@ -488,7 +488,7 @@ export default {
     UCardView: require('../../controls/UCardView.vue').default,
     NextPageButton: require('./NextPageButton.vue').default
   },
-
+  mixins: [selectionProps],
   inject: {
     close: {
       default: () => () => console.warn("Injection close didn't provided")
@@ -533,10 +533,7 @@ export default {
      * Overrides the record selection event. That is, double click or enter
      * @type {function({ID: Number, row: Object, close: function})}
      */
-    onSelectRecord: Function,
-    selectedRows: { type: Array, default: () => [] },
-    selectionField: { type: String, default: 'ID' },
-    multiple: { type: Boolean, default: false }
+    onSelectRecord: Function
   },
 
   data () {

@@ -125,14 +125,12 @@
 /**
  * Component that allows to display data in a tabular manner
  */
+const selectionLogic = require('../mixins/selection/logic')
+
 export default {
   name: 'UTable',
 
-  mixins: [require('./formatValueMixin')],
-  model: {
-    prop: 'selectedRows',
-    event: 'selected'
-  },
+  mixins: [require('./formatValueMixin'), selectionLogic],
 
   props: {
     /**
@@ -204,15 +202,7 @@ export default {
     /**
      * sets max table height. If data not fits, scroll is appears
      */
-    maxHeight: [Number, String],
-    selectedRows: { type: Array, default: () => [] },
-    selectionField: { type: String, default: 'ID' },
-    multiple: { type: Boolean, default: false }
-  },
-  data () {
-    return {
-      curSelection: this.selectedRows
-    }
+    maxHeight: [Number, String]
   },
   computed: {
     tableStyle () {
@@ -236,49 +226,15 @@ export default {
         accum[column.id] = this.getColumnClass(column)
         return accum
       }, {})
-    },
-    allSelected () {
-      const { items, curSelection } = this
-      return items.length === curSelection.length
     }
   },
   watch: {
     items: async function () {
       await this.$nextTick()
       this.setTitle()
-    },
-    selectedRows (e) {
-      this.curSelection = e
     }
   },
   methods: {
-    handlerAllChecked () {
-      const { items, allSelected, selectionField } = this
-      this.curSelection.splice(0)
-      if (!allSelected) {
-        items.forEach(i => this.curSelection.push(i[selectionField]))
-      }
-      this.emitSelection()
-    },
-    handlerClickOnRow (row) {
-      if (this.multiple) this.handlerSelection(row)
-      this.$emit('click-row', { row })
-    },
-    handlerSelection (row) {
-      const { selectionField, curSelection } = this
-      const arr = curSelection
-      const id = row[selectionField]
-      const hasIndex = arr.indexOf(id)
-      if (hasIndex === -1) {
-        arr.push(id)
-      } else {
-        arr.splice(hasIndex, 1)
-      }
-      this.emitSelection()
-    },
-    emitSelection () {
-      this.$emit('selected', this.curSelection)
-    },
     getAlignClass (align = 'left') {
       return `u-table__cell__align-${align}`
     },
