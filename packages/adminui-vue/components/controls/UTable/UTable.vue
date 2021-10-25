@@ -1,7 +1,7 @@
 <template>
   <div
     class="u-table"
-    :class="{ 'u-table__multiple': multiple }"
+    :class="{ 'u-table__multiple': multiple, 'u-table--sort': enableSort }"
     :style="tableStyle"
   >
     <table>
@@ -47,6 +47,31 @@
           >
             {{ formatHead({ column: col }) }}
           </slot>
+          <span
+            v-if="enableSort"
+            class="u-table__sort"
+          >
+            <u-icon
+              icon="u-icon-sort-asc"
+              size="small"
+              :color="
+                col[sortField] === sortCol && sortWay === 'asc'
+                  ? 'primary'
+                  : 'control'
+              "
+              @click.native="doSort(col, 'asc')"
+            />
+            <u-icon
+              icon="u-icon-sort-desc"
+              size="small"
+              :color="
+                col[sortField] === sortCol && sortWay === 'desc'
+                  ? 'primary'
+                  : 'control'
+              "
+              @click.native="doSort(col, 'desc')"
+            />
+          </span>
         </th>
       </tr>
       <tr
@@ -124,6 +149,7 @@
 <script>
 /**
  * Component that allows to display data in a tabular manner
+ *
  */
 const selectionLogic = require('../mixins/selection/logic')
 
@@ -202,7 +228,15 @@ export default {
     /**
      * sets max table height. If data not fits, scroll is appears
      */
-    maxHeight: [Number, String]
+    maxHeight: [Number, String],
+    enableSort: { type: Boolean, default: true },
+    sortField: { type: String, default: 'id' }
+  },
+  data () {
+    return {
+      sortWay: '',
+      sortCol: ''
+    }
   },
   computed: {
     tableStyle () {
@@ -235,6 +269,16 @@ export default {
     }
   },
   methods: {
+    doSort (col, way = 'asc') {
+      const { sortField, items } = this
+      const fieldName = col[sortField]
+      this.sortWay = way
+      this.sortCol = fieldName
+      items.sort((a, b) => {
+        if (way === 'asc') return a[fieldName] > b[fieldName] ? 1 : -1
+        if (way === 'desc') return b[fieldName] > a[fieldName] ? 1 : -1
+      })
+    },
     getAlignClass (align = 'left') {
       return `u-table__cell__align-${align}`
     },
@@ -360,5 +404,20 @@ export default {
   font-size: 16px;
   padding: 16px;
   width: 100%;
+}
+.u-table--sort.u-table th {
+  padding-right: 20px;
+}
+.u-table__sort {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+.u-table__sort i {
+  font-size: 12px;
 }
 </style>
