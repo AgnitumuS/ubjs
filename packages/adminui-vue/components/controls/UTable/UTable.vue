@@ -229,7 +229,13 @@ export default {
      * sets max table height. If data not fits, scroll is appears
      */
     maxHeight: [Number, String],
-    enableSort: { type: Boolean, default: true },
+    /**
+     * enable sort mode for table. Default `false`. Sorting in the browser
+     */
+    enableSort: { type: Boolean, default: false },
+    /**
+     * the field by which the sorting will go. Default `id` (lowercase)
+     */
     sortField: { type: String, default: 'id' }
   },
   data () {
