@@ -45,6 +45,7 @@ const instance = new Vue({
       for (const entity of availableEntities) {
         this.$set(this.entities, entity, {
           subscribes: 0,
+          refreshed_At: undefined,
           onEntityChanged: async response => {
             if (response === undefined) {
               return
@@ -112,9 +113,8 @@ const instance = new Vue({
 
       if (isFirstSubscription) {
         UB.connection.on(`${entity}:changed`, subscription.onEntityChanged)
-        subscription.descriptionAttrName = UB.connection.domain.get(entity).getDescriptionAttribute()
-        subscription.attrs.add(subscription.descriptionAttrName)
       }
+      
       if (hasAdditionalAttrs) {
         for (const attr of attrs) {
           subscription.attrs.add(attr)
@@ -129,6 +129,9 @@ const instance = new Vue({
       }
 
       if (isFirstSubscription || hasAdditionalAttrs) {
+        subscription.descriptionAttrName = UB.connection.domain.get(entity).getDescriptionAttribute()
+        subscription.attrs.add(subscription.descriptionAttrName)
+
         const loadEntries = async () => {
           const resultData = await UB.Repository(entity)
             .attrs([...subscription.attrs])
@@ -141,7 +144,9 @@ const instance = new Vue({
             UB.logWarn(`Lookups: Too many rows (${resultData.length}) returned for "${entity}" lookup. Consider to avoid lookups for huge entities to prevents performance degradation`)
           }
           subscription.data.splice(0, subscription.data.length, ...resultData)
-          resultData.forEach(r => { subscription.mapById[r.ID] = r })
+          this.$set(this.entities[entity], 'mapById', resultData.reduce((a, r) => ({ ...a, [r.ID] : r }), {}))
+
+          subscription.refreshed_At = new Date().getTime()
         }
 
         subscription.pendingPromise = loadEntries()
@@ -162,6 +167,26 @@ const instance = new Vue({
         // remove additional attrs
         subscription.attrs.clear()
         subscription.mapById = {}
+        subscription.refreshed_At = undefined
+      }
+    },
+
+    async refresh (entity, attrs = []) {
+      const cacheLookupInterval = UB.connection.appConfig?.uiSettings?.adminUI.lookupCacheRefreshInterval
+
+      if (!cacheLookupInterval) return
+
+      if (!typeof cacheLookupInterval === 'number') {
+        UB.logError(`config.uiSettings.adminUI.lookupCacheRefreshInterval: should be Int type`)
+        return
+      }
+      const subscription = this.entities[entity]
+      const expired_At = subscription.refreshed_At + cacheLookupInterval
+
+      if (expired_At <= new Date().getTime()) {
+        const subscription = this.entities[entity]
+        subscription.attrs.clear()
+        await this.subscribe(entity, attrs)
       }
     },
 
@@ -233,6 +258,10 @@ module.exports = {
    */
   unsubscribe (entity) {
     instance.unsubscribe(entity)
+  },
+
+  refresh (entity, attrs = []) {
+    instance.refresh(entity, attrs)
   },
   /**
    * Initialize lookups reactivity by create stubs for all available domain entities.
