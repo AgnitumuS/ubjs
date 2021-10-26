@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `ubm_enum.name` size increased from 255 to 512 chars (such huge size is required by some real life projects)
 
 ### Deprecated
 
