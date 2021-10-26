@@ -236,7 +236,8 @@ export default {
     /**
      * the field by which the sorting will go. Default `id` (lowercase)
      */
-    sortField: { type: String, default: 'id' }
+    sortField: { type: String, default: 'id' },
+    defaultSort: { type: Object, default: () => ({}) }
   },
   data () {
     return {
@@ -274,7 +275,16 @@ export default {
       this.setTitle()
     }
   },
+  created () {
+    if (this.enableSort) this.initSort()
+  },
   methods: {
+    initSort () {
+      const { sortField, defaultSort } = this
+      if (Object.keys(defaultSort).length !== 2) return
+      const col = this.columns.find(i => i[sortField] === defaultSort.col)
+      this.doSort(col, defaultSort.way)
+    },
     doSort (col, way = 'asc') {
       const { sortField, items } = this
       const fieldName = col[sortField]
