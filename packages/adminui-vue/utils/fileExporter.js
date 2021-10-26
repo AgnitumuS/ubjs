@@ -227,7 +227,7 @@ function enrichSheetHeader ({ sheet, columns, getStyle, rowStyles }) {
       ? column.exportFormatXlsColumn({ column })
       : undefined
     rowStyles.push({ column: index, style: getStyle(dataType, predefinedFormat) })
-    rowData.push({ column: index, value: UB.i18n(column.label), style: getStyle('headerRow')})
+    rowData.push({ column: index, value: UB.i18n(column.label), style: getStyle('headerRow') })
   }
 
   sheet.setColsProperties(properties)
@@ -268,7 +268,7 @@ function createStyleGetter ({ styles, font, border, XLSX }) {
         styleConfig = { font: styles.fonts.named.defBold, alignment: styles.alignments.named.HVcenter }
         break
       case 'headerRow':
-        styleConfig = { border, font: styles.fonts.named.defBold, fill: 'EBEDED', alignment: styles.alignments.named.HVcenter }
+        styleConfig = { border, font: styles.fonts.named.defBold, fill: 'EBEDED', alignment: styles.alignments.named.HVcenter}
         break
     }
 
