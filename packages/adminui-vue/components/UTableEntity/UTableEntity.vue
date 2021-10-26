@@ -7,7 +7,7 @@
     :multiple="multiple"
     :selection-field="selectionField"
     :selected-rows="curSelected"
-    v-on="$listeners"
+    v-on="tableListeners"
     @selected="handlerSelectionRow"
   >
     <template
@@ -33,7 +33,6 @@ const selectionProps = require('../controls/mixins/selection/props')
 
 export default {
   name: 'UTableEntity',
-
   components: { UTableEntityRoot },
   mixins: [selectionProps],
   props: {
@@ -184,6 +183,10 @@ export default {
     getEntityName () {
       return this.entityName || this.getRepository().entityName
     },
+    tableListeners () {
+      const { selected, ...otherListeners } = this.$listeners
+      return otherListeners
+    },
 
     getColumns () {
       if (this.columns) {
@@ -279,7 +282,7 @@ export default {
       this.emitChooseRows()
     },
     emitChooseRows () {
-      this.$emit('choose-rows', [...this.cacheSelection])
+      this.$emit('selected', [...this.cacheSelection])
     },
     handlerChangeTableData (items) {
       this.tableItems = items
