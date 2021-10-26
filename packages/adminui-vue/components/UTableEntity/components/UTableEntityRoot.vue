@@ -297,6 +297,10 @@
         :columns="cardColumns"
         :items="items"
         :get-card-class="getRowClass"
+        :multiple="multiple"
+        :selected-rows="curSelected"
+        :selection-field="selectionField"
+        @selected="$emit('selected', ...arguments)"
         @click="select"
         @contextmenu="showContextMenu"
         @dblclick="onSelect($event.row.ID, $event.row)"
@@ -479,6 +483,7 @@ const selectionProps = require('../../controls/mixins/selection/props')
 
 export default {
   name: 'UTableEntityRoot',
+  mixins: [selectionProps],
   components: {
     FilterSelector: require('./FilterSelector.vue').default,
     Pagination: require('./Pagination.vue').default,
@@ -488,7 +493,7 @@ export default {
     UCardView: require('../../controls/UCardView.vue').default,
     NextPageButton: require('./NextPageButton.vue').default
   },
-  mixins: [selectionProps],
+
   inject: {
     close: {
       default: () => () => console.warn('Injection "close" is not provided')
