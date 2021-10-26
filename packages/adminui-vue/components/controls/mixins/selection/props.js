@@ -13,7 +13,7 @@ module.exports = {
           const check = type === 'number' || type === 'string'
           return !check
         })
-        if (flag === true) {
+        if (flag) {
           console.error(
             ' %c Item on selectedRows array must be number or string',
             'color: #bada55'
