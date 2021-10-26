@@ -227,7 +227,7 @@ function enrichSheetHeader ({ sheet, columns, getStyle, rowStyles }) {
       ? column.exportFormatXlsColumn({ column })
       : undefined
     rowStyles.push({ column: index, style: getStyle(dataType, predefinedFormat) })
-    rowData.push({ column: index, value: UB.i18n(column.label), style: getStyle('headerRow') })
+    rowData.push({ column: index, value: UB.i18n(column.label), style: getStyle('headerRow')})
   }
 
   sheet.setColsProperties(properties)
