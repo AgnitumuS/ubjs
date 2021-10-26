@@ -150,7 +150,7 @@ async function exportHtml ({ repository, columns, fileName, filters }) {
     })
     res += '<tr>'
     rowCells.forEach(c => {
-      res += `<td>${c.value || ''}</td>`
+      res += `<td>${c.value || (c.value === 0 ? 0 : '')}</td>`
     })
     res += '</tr>'
   }
@@ -268,7 +268,7 @@ function createStyleGetter ({ styles, font, border, XLSX }) {
         styleConfig = { font: styles.fonts.named.defBold, alignment: styles.alignments.named.HVcenter }
         break
       case 'headerRow':
-        styleConfig = { border, font: styles.fonts.named.defBold, fill: 'EBEDED', alignment: styles.alignments.named.HVcenter}
+        styleConfig = { border, font: styles.fonts.named.defBold, fill: 'EBEDED', alignment: styles.alignments.named.HVcenter }
         break
     }
 
