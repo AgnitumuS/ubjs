@@ -491,7 +491,7 @@ export default {
   mixins: [selectionProps],
   inject: {
     close: {
-      default: () => () => console.warn("Injection close didn't provided")
+      default: () => () => console.warn('Injection "close" is not provided')
     }
   },
 

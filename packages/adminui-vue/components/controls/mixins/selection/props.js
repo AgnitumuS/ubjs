@@ -15,7 +15,7 @@ module.exports = {
         })
         if (flag) {
           console.error(
-            ' %c Item on selectedRows array must be number or string',
+            ' %c Item on selectedRows array must be a number or a string',
             'color: #bada55'
           )
         }
