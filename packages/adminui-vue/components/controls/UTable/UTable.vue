@@ -76,10 +76,10 @@
       </tr>
       <tr
         v-for="row in items"
-        :key="row[selectionField]"
+        :key="row[multiSelectKeyAttr]"
         :class="[
           getRowClass(row),
-          { 'selected-row': curSelection.includes(row[selectionField]) }
+          { 'selected-row': curSelection.includes(row[multiSelectKeyAttr]) }
         ]"
         @dblclick="$emit('dblclick-row', { row })"
         @click="handlerClickOnRow(row)"
@@ -89,7 +89,7 @@
           <span
             class="el-checkbox__input"
             :class="{
-              'is-checked': curSelection.includes(row[selectionField])
+              'is-checked': curSelection.includes(row[multiSelectKeyAttr])
             }"
           >
             <span class="el-checkbox__inner" />

@@ -25,7 +25,7 @@ module.exports = {
     /**
      * the field with which the selected item is matched. Default is "ID"
      */
-    selectionField: { type: String, default: 'ID' },
+    multiSelectKeyAttr: { type: String, default: 'ID' },
     /**
      * controls the inclusion of multiline selection mode. Default is "false"
      */

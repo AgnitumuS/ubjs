@@ -5,7 +5,7 @@
     :with-pagination="withPagination"
     :view-mode.sync="viewMode"
     :multiple="multiple"
-    :selection-field="selectionField"
+    :multi-select-key-attr="multiSelectKeyAttr"
     :selected-rows="curSelected"
     v-on="tableListeners"
     @selected="handlerSelectionRow"
@@ -260,7 +260,7 @@ export default {
   methods: {
     ...mapActions(['loadData', 'unsubscribeLookups', 'updateData']),
     handlerSelectionRow (ev) {
-      const { cacheSelection, selectionField } = this
+      const { cacheSelection, multiSelectKeyAttr } = this
       const newSelection = new Set(ev)
       if (cacheSelection.size === 0) {
         this.cacheSelection = newSelection
@@ -269,7 +269,7 @@ export default {
         return
       }
       this.tableItems.forEach(elem => {
-        const id = elem[selectionField]
+        const id = elem[multiSelectKeyAttr]
         const hasInCache = cacheSelection.has(id)
         const curHas = newSelection.has(id)
         if (hasInCache && !curHas) {
@@ -290,9 +290,9 @@ export default {
     },
     setCurSelected () {
       this.curSelected.splice(0)
-      const { cacheSelection, selectionField } = this
+      const { cacheSelection, multiSelectKeyAttr } = this
       this.tableItems.forEach(elem => {
-        const id = elem[selectionField]
+        const id = elem[multiSelectKeyAttr]
         const hasInCache = cacheSelection.has(id)
         if (hasInCache) this.curSelected.push(id)
       })

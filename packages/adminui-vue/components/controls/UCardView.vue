@@ -30,7 +30,9 @@
           getCardClass(row),
           {
             'u-card__multiple': multiple,
-            'u-card--is-selected': curSelection.includes(row[selectionField])
+            'u-card--is-selected': curSelection.includes(
+              row[multiSelectKeyAttr]
+            )
           }
         ]"
         @click="handlerClickOnRow(row)"
@@ -42,7 +44,7 @@
           v-if="multiple"
           class="el-checkbox__input"
           :class="{
-            'is-checked': curSelection.includes(row[selectionField])
+            'is-checked': curSelection.includes(row[multiSelectKeyAttr])
           }"
         >
           <span class="el-checkbox__inner" />

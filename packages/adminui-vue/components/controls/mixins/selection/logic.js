@@ -28,9 +28,9 @@ module.exports = {
       this.$emit('click', { row })
     },
     handlerSelection (row) {
-      const { selectionField, curSelection } = this
+      const { multiSelectKeyAttr, curSelection } = this
       const arr = curSelection
-      const id = row[selectionField]
+      const id = row[multiSelectKeyAttr]
       const hasIndex = arr.indexOf(id)
       if (hasIndex === -1) {
         arr.push(id)
@@ -43,10 +43,10 @@ module.exports = {
       this.$emit('selected', this.curSelection)
     },
     handlerAllChecked () {
-      const { items, allSelected, selectionField } = this
+      const { items, allSelected, multiSelectKeyAttr } = this
       this.curSelection.splice(0)
       if (!allSelected) {
-        items.forEach(i => this.curSelection.push(i[selectionField]))
+        items.forEach(i => this.curSelection.push(i[multiSelectKeyAttr]))
       }
       this.emitSelection()
     }
