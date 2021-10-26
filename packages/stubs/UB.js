@@ -214,45 +214,72 @@ __UB_int._runAsApp = function () {
    * #ifdef / #ifndef directives parser:
    *  - keep a part of JSON content between `"#ifdef": "%VAR_NAME%", ... "#endif": ""` if environment variable VAR_NAME is defined and not empty
    *  - keep a part of JSON content between`"#ifndef": "%VAR_NAME%", ... "#endif": ""` if environment variable VAR_NAME is not defined or empty
-   *  - nested conditions IS NOT SUPPORTED
+   *  - support up to TWO level of nesting ifdef's by using //#ifdef1 .. //#endif1 and //#ifdef2 ... //#endif2
    *  - content replaced by empty strings to keep the same line numbers as in original file
+   *  Nesting example:
+   *  @example
+
+    //#ifdef(%UB_ENABLE_ENOT%=true)
+    {
+      "name": "enot",
+      "driver": "Oracle",
+      "serverName": "%UB_DB_ENOT_SERVER%",
+      "userID": "%UB_DB_ENOT_USER%",
+      "password": "%UB_DB_ENOT_PWD%",
+      //#ifdef1(%UB_LOCALE%=BINARY)
+      "executeWhenConnected": [
+          "ALTER SESSION SET NLS_COMP=LINGUISTIC",
+          "ALTER SESSION SET NLS_SORT=BINARY_CI",
+          //#ifdef2(%UB_DB_STATEMENT_TIME_LIMIT%)
+          "DECLARE prev_group VARCHAR2(30); BEGIN DBMS_SESSION.switch_current_consumer_group ('%UB_DB_STATEMENT_TIME_LIMIT%', prev_group, TRUE); END;"
+          //#endif2
+      ]
+      //#endif1
+    }
+    //#endif
+
    * @private
    * @param {String} content
    * @return {String}
    */
   function replaceIfDefs (content) {
-    function getCRCnt (s) {
-      let r = 0
-      for (let i = 0, L = s.length; i < L; i++) {
-        if (s.charAt(i) === '\n') r++
-      }
-      return r
-    }
-    let res = content.replace(/\/\/#ifdef\((.*?)\)([\s\S]*?)\/\/#endif/gm, (match, envVarVal, envCt) => {
-      if (envVarVal) {
-        const arr = envVarVal.split('=')
-        if (arr.length === 2) { // check === condition //#ifdef(val=val)
-          if (arr[0] === arr[1]) return envCt
-        } else {
-          return envCt
+    function replaceIfDefsLevel(content, B, E) {
+      function getCRCnt(s) {
+        let r = 0
+        for (let i = 0, L = s.length; i < L; i++) {
+          if (s.charAt(i) === '\n') r++
         }
+        return r
       }
-      return ' \n'.repeat(getCRCnt(envCt)) + ' ' // spaces for `ub -T | nl` line numbers
-    })
-    res = res.replace(/\/\/#ifndef\((.*?)\)([\s\S]*?)\/\/#endif/gm, (match, envVarVal, envCt) => {
-      if (!envVarVal) {
-        return envCt
-      } else {
-        const arr = envVarVal.split('=')
-        if (arr.length === 2) { // check !== condition //#ifdef(val1=val2)
-          if (arr[0] !== arr[1]) return envCt
-        }
-      }
-      return ' \n'.repeat(getCRCnt(envCt)) + ' '
-    })
-    return res
-  }
 
+      let res = content.replace(new RegExp(`\\/\\/#ifdef${B}\\((.*?)\\)([\\s\\S]*?)\\/\\/#endif${E}`,'gm'), (match, envVarVal, envCt) => {
+        if (envVarVal) {
+          const arr = envVarVal.split('=')
+          if (arr.length === 2) { // check === condition //#ifdef(val=val)
+            if (arr[0] === arr[1]) return envCt
+          } else {
+            return envCt
+          }
+        }
+        return ' \n'.repeat(getCRCnt(envCt)) + ' ' // spaces for `ub -T | nl` line numbers
+      })
+      res = res.replace(new RegExp(`\\/\\/#ifndef${B}\\((.*?)\\)([\\s\\S]*?)\\/\\/#endif${E}`,'gm'), (match, envVarVal, envCt) => {
+        if (!envVarVal) {
+          return envCt
+        } else {
+          const arr = envVarVal.split('=')
+          if (arr.length === 2) { // check !== condition //#ifdef(val1=val2)
+            if (arr[0] !== arr[1]) return envCt
+          }
+        }
+        return ' \n'.repeat(getCRCnt(envCt)) + ' '
+      })
+      return res
+    }
+    let res = replaceIfDefsLevel(content, '', '[\\D]') // \D = anything but a digit
+    res = replaceIfDefsLevel(res, '1', '1')
+    return replaceIfDefsLevel(res, '2', '2')
+  }
   /**
    * Replace placeholders %VAR_NAME||default% to environment variable value (or optional default)
    * @private

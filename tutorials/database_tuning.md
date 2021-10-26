@@ -101,6 +101,10 @@ ubConfig section example:
 #### Setup Oracle client 
 Download a zip version [Basic Light Package (ZIP)](https://www.oracle.com/database/technologies/instant-client/downloads.html)
 
+**WARNING** - UB has __problems with BLOB/CLOB wile using Oracle client 21.x__.
+At last with 21.3 while retrieve some BLOB content OCI returns `ORA-01013: user requested cancel of current operation`.
+Please, **use Oracle client 19.x** on production!
+
 Execute under `sudo`:
 
 For instantClient 19
