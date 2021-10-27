@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.28] - 2021-10-27
+### Fixed
  - prevent updating `adm_folder_UI` nav shortcut caption during each migration
 
 ## [5.20.27] - 2021-10-18

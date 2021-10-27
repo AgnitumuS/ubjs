@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.28] - 2021-10-27
 ## [5.20.27] - 2021-10-18
 ### Added
  - Azerbaijani (az) localization for items with omitted translation

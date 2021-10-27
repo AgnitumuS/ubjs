@@ -6,9 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `ubcli migrate -vs` option added. Force `ub-migrate` to output only important migration messages and 
-   the inserts and updates made (require @unitybase/ub-migrate@1.22.11, otherwise option is ignored).  
-   Recommended for CI usage.
 
 ### Changed
 
@@ -17,6 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.21.23] - 2021-10-27
+### Added
+ - `ubcli migrate -vs` option added. Force `ub-migrate` to output only important migration messages and 
+   the inserts and updates made (require @unitybase/ub-migrate@1.22.11, otherwise option is ignored).  
+   Recommended for CI usage.
 
 ## [5.21.22] - 2021-10-18
 ## [5.21.21] - 2021-09-24

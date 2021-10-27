@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `ubm_enum.name` size increased from 255 to 512 chars (such huge size is required by some real life projects)
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.20.28] - 2021-10-27
+### Changed
+ - `ubm_enum.name` size increased from 255 to 512 chars (such huge size is required by some real life projects)
 
 ### Fixed
  - `ubm_navshortcut`: nav shortcut - improve columns list; `uk` and `ru` locale - localize description and keyword attributes
