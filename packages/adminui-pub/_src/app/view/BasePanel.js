@@ -3220,7 +3220,7 @@ Ext.define('UB.view.BasePanel', {
           UB.connection.emitEntityChanged(me.entityName, {
             entity: me.entityName,
             method: me.__mip_ondate && !me.addByCurrent ? 'newversion' : (me.isEditMode ? 'update' : 'insert'),
-            resultData: { ID: me.instanceID }
+            resultData: me.record.data
           })
 
           me.fireDirty = false
