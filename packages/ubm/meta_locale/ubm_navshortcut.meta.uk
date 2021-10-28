@@ -45,6 +45,14 @@
     {
       "name": "iconCls",
       "caption": "Піктограма (CSS-класс)"
+    },
+    {
+      "name": "description",
+      "caption": "Опис",
+    },
+    {
+      "name": "keywords",
+      "caption": "Ключові слова"
     }
   ]
 }

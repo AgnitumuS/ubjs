@@ -65,7 +65,8 @@ adm_desktop:
               renderer: 'vue',
               cmdType: 'showList',
               cmdData: {
-                entityName: 'uba_advSecurity'
+                entityName: 'uba_advSecurity',
+                columns: ['userID.name','allowedIP','refreshIP','fp','refreshFp','keyMediaName','refreshKeyMedia','editCause']
               }
             }
       - uba_userrole:
@@ -78,7 +79,7 @@ adm_desktop:
               cmdType: 'showList',
               cmdData: {
                 entityName: 'uba_userrole',
-                columns: ['userID', 'roleID']
+                columns: ['userID.name', 'roleID']
               }
             }
       - uba_group:
@@ -104,7 +105,7 @@ adm_desktop:
               cmdType: 'showList',
               cmdData: {
                 entityName: 'uba_usergroup',
-                columns: ['userID', 'groupID']
+                columns: ['userID.name', 'groupID']
               }
             }
       - uba_usercertificate:
@@ -203,7 +204,8 @@ adm_desktop:
               renderer: 'vue',
               cmdType: 'showList',
               cmdData: {
-                entityName: 'uba_otp'
+                entityName: 'uba_otp',
+                columns: ['userID.name','otpKind','otp','expiredDate']
               }
             }
       - uba_audit:

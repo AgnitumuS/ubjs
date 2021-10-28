@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.28] - 2021-10-27
+### Fixed
  - `org_employee` shortcut - added columns to prevent lookup to uba_user on userID column
  - `org_execgroup` shortcut - fixed error "Rendering slot is not defined for columns [parentID.caption]"
 

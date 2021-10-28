@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.17] - 2021-10-27
 ## [5.22.16] - 2021-10-18
 ### Added
  - added localization for entities captions
