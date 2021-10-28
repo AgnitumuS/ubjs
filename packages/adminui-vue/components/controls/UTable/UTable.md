@@ -81,7 +81,7 @@ To set scoped slot for header cell just add prefix `head_` to column ID
     v-model="selectionIDs"
     :items="currencies"
     :columns="columns"
-    multiple
+    enableMultiSelect
   />
 </template>
 <script>

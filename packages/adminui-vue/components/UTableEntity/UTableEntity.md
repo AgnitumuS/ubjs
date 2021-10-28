@@ -301,9 +301,9 @@ export default {
 ```vue
 <template>
   <u-table-entity    
-    multiple
+    enableMultiSelect
     :selected-rows="selectedIDS"
-    @choose-rows="handlerSelectionRow"
+    @selected="handlerSelectionRow"
     :max-height="200"
     :repository="repository"/>
 </template>
