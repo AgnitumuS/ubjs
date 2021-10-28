@@ -1,7 +1,7 @@
 <template>
   <div class="u-card-container">
     <div
-      v-if="multiple"
+      v-if="enableMultiSelect"
       class="u-card__select-all"
       @click="handlerAllChecked"
     >
@@ -29,7 +29,7 @@
         :class="[
           getCardClass(row),
           {
-            'u-card__multiple': multiple,
+            'u-card__multiple': enableMultiSelect,
             'u-card--is-selected': curSelection.includes(
               row[multiSelectKeyAttr]
             )
@@ -41,7 +41,7 @@
       >
         <!-- repeat html-structure for el-checkbox ElementUI -->
         <span
-          v-if="multiple"
+          v-if="enableMultiSelect"
           class="el-checkbox__input"
           :class="{
             'is-checked': curSelection.includes(row[multiSelectKeyAttr])

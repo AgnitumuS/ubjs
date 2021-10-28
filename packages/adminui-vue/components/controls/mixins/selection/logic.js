@@ -24,7 +24,7 @@ module.exports = {
   },
   methods: {
     handlerClickOnRow (row) {
-      if (this.multiple) this.handlerSelection(row)
+      if (this.enableMultiSelect) this.handlerSelection(row)
       this.$emit('click', { row })
     },
     handlerSelection (row) {

@@ -4,7 +4,7 @@
     v-bind="$attrs"
     :with-pagination="withPagination"
     :view-mode.sync="viewMode"
-    :multiple="multiple"
+    :enable-multi-select="enableMultiSelect"
     :multi-select-key-attr="multiSelectKeyAttr"
     :selected-rows="curSelected"
     v-on="tableListeners"

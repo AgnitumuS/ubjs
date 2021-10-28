@@ -29,6 +29,6 @@ module.exports = {
     /**
      * controls the inclusion of multiline selection mode. Default is "false"
      */
-    multiple: { type: Boolean, default: false }
+    enableMultiSelect: { type: Boolean, default: false }
   }
 }
