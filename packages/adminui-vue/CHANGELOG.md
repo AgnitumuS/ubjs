@@ -14,8 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.28] - 2021-10-27
+### Fixed
  - FTS widget: highlight active text for `period` switch use --l-state-active lightness [UBDF-11388]
  - FileRenderer.vue: fix view pdf-file after change tab [UBDF-14199]
+ - UTable HTML export - export null as empty string (instead of `null`)
 
 ## [5.20.27] - 2021-10-18
 ### Added

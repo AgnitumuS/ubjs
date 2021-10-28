@@ -34,7 +34,7 @@
     {
       "name": "name",
       "dataType": "String",
-      "size": 255,
+      "size": 512,
       "caption": "Value name",
       "allowNull": false,
       "isMultiLang": true
@@ -44,7 +44,7 @@
       "dataType": "Int",
       "caption": "Order #",
       "defaultValue": "100",
-      "documentation": "This attribute is used for ordering enum on UI select. Default = 100 for easy change order to be more or less",
+      "description": "This value is used to specify the display order when selected in the UI (from smallest to largest)",
       "allowNull": false
     }
   ],

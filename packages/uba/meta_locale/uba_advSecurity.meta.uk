@@ -16,7 +16,7 @@
         },
         {
             "name": "refreshIP",
-            "caption": "Оновлення дозволених IP адрес"
+            "caption": "Оновлення IP"
         },
         {
             "name": "fp",
@@ -24,19 +24,19 @@
         },
         {
             "name": "refreshFp",
-            "caption": "Оновлення відбитка"
+            "caption": "Оновлення відбитку"
         },
         {
             "name": "keyMediaName",
-            "caption": "Назва ключового носія"
+            "caption": "Ключовий носій"
         },
         {
             "name": "refreshKeyMedia",
-            "caption": "Оновлення назви ключового носія"
+            "caption": "Оновлення КН"
         },
         {
             "name": "additional",
-            "caption": "Додаткові",
+            "caption": "Додатково",
             "description": "Додаткові налаштування у вигляді JSON"
         }
     ]

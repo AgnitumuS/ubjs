@@ -8,15 +8,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - UBA model fill `ubs_settings` using migration YAML (05_settings.yml)
- - UBA model fill roles and ELS using migration (01_roles.yml)
 
 ### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.28] - 2021-10-27
+### Changed
+ - UBA model fill `ubs_settings` using migration YAML (05_settings.yml)
+ - UBA model fill roles and ELS using migration (01_roles.yml)
 
 ### Removed
  - migration from `@unitybase/uba` < 5 is *REMOVED* (expect all products are already migrated to v5)  
   
 ### Fixed
+ - `uba_userrole` & `uba_usergroup` nav shortcut uses `userID.name` instead of `userID` - this prevents lookup on potentially big user entity 
+ - `uba_advSecurity` nav shortcut uses `userID.name`; improve uk translation for attributes
+ - `uba_otp` nav shortcut - add columns to prevent lookup on uba_user entity
 
 ## [5.20.27] - 2021-10-18
 ### Added
