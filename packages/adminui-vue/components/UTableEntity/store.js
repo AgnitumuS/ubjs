@@ -1,7 +1,11 @@
 const UB = require('@unitybase/ub-pub')
 const { Notification: $notify } = require('element-ui')
 const uDialogs = require('../../utils/uDialogs')
-const { exportExcel, exportCsv, exportHtml } = require('../../utils/fileExporter')
+const {
+  exportExcel,
+  exportCsv,
+  exportHtml
+} = require('../../utils/fileExporter')
 const lookups = require('../../utils/lookups')
 const AUDIT_ENTITY = 'uba_auditTrail'
 const Vue = require('vue')
@@ -22,10 +26,10 @@ const openDataHistoryDatePicker = require('./components/DataHistoryDatePicker/da
  * @param {boolean} instance.isModal Is parent opened from modal. Used to provide modal state to child
  * @param {string[]} instance.hideActions
  */
-module.exports = (instance) => ({
+module.exports = instance => ({
   state () {
     return {
-      items: [], /* table data */
+      items: [] /* table data */,
 
       loading: false,
 
@@ -134,7 +138,10 @@ module.exports = (instance) => ({
     },
 
     showCopy () {
-      return !instance.hideActions.includes('copy') && !instance.hideActions.includes('addNewByCurrent')
+      return (
+        !instance.hideActions.includes('copy') &&
+        !instance.hideActions.includes('addNewByCurrent')
+      )
     },
 
     canCopy (state, getters) {
@@ -142,13 +149,18 @@ module.exports = (instance) => ({
     },
 
     showDelete () {
-      return !instance.hideActions.includes('delete') && !instance.hideActions.includes('del')
+      return (
+        !instance.hideActions.includes('delete') &&
+        !instance.hideActions.includes('del')
+      )
     },
 
     canDelete (state, getters) {
-      return getters.showDelete &&
+      return (
+        getters.showDelete &&
         getters.hasSelectedRow &&
         getters.schema.haveAccessToMethod('delete')
+      )
     },
 
     showAudit () {
@@ -156,7 +168,10 @@ module.exports = (instance) => ({
     },
 
     showCopyLink () {
-      return !instance.hideActions.includes('link') && !instance.hideActions.includes('itemLink')
+      return (
+        !instance.hideActions.includes('link') &&
+        !instance.hideActions.includes('itemLink')
+      )
     },
 
     showViewMode () {
@@ -164,10 +179,12 @@ module.exports = (instance) => ({
     },
 
     canAudit (state, getters) {
-      return getters.hasSelectedRow &&
+      return (
+        getters.hasSelectedRow &&
         getters.schema.hasMixin('audit') &&
         getters.showAudit &&
         UB.connection.domain.isEntityMethodsAccessible(AUDIT_ENTITY, 'select')
+      )
     },
 
     showEdit () {
@@ -187,8 +204,12 @@ module.exports = (instance) => ({
     },
 
     canCreateNewVersion (state, getters) {
-      return getters.showCreateNewVersion &&
-        getters.schema.haveAccessToMethod(UB.core.UBCommand.methodName.NEWVERSION)
+      return (
+        getters.showCreateNewVersion &&
+        getters.schema.haveAccessToMethod(
+          UB.core.UBCommand.methodName.NEWVERSION
+        )
+      )
     },
 
     hasDataHistoryMixin (state, getters) {
@@ -242,11 +263,12 @@ module.exports = (instance) => ({
     },
 
     generateTabId (state, getters) {
-      return ID => UB.core.UBApp.generateTabId({
-        entity: getters.entityName,
-        instanceID: ID,
-        formCode: getters.formCode
-      })
+      return ID =>
+        UB.core.UBApp.generateTabId({
+          entity: getters.entityName,
+          instanceID: ID,
+          formCode: getters.formCode
+        })
     }
   },
 
@@ -405,10 +427,14 @@ module.exports = (instance) => ({
 
     async updateSort ({ commit, dispatch, getters }, sort) {
       if (sort !== null) {
-        const columnConfig = getters.columns.find(column => column.id === sort.column)
+        const columnConfig = getters.columns.find(
+          column => column.id === sort.column
+        )
         if (columnConfig.attribute.dataType === 'Entity') {
           const { associatedEntity } = columnConfig.attribute
-          const descriptionAttribute = UB.connection.domain.get(associatedEntity).getDescriptionAttribute()
+          const descriptionAttribute = UB.connection.domain
+            .get(associatedEntity)
+            .getDescriptionAttribute()
           sort.descriptionAttrColumn = `${sort.column}.${descriptionAttribute}`
         }
       }
@@ -423,7 +449,10 @@ module.exports = (instance) => ({
       await dispatch('fetchItems')
     },
 
-    async applyFilter ({ state, getters, commit, dispatch }, { whereList, description }) {
+    async applyFilter (
+      { state, getters, commit, dispatch },
+      { whereList, description }
+    ) {
       commit('PAGE_INDEX', 0)
       commit('APPLY_FILTER', {
         columnId: state.selectedColumnId,
@@ -452,14 +481,17 @@ module.exports = (instance) => ({
           return
         }
       }
-      const config = await instance.buildAddNewConfig({
-        cmdType: 'showForm',
-        entity: getters.entityName,
-        formCode: getters.formCode,
-        target: UB.core.UBApp.viewport.centralPanel,
-        tabId: getters.generateTabId(),
-        isModal: instance.isModal
-      }, instance)
+      const config = await instance.buildAddNewConfig(
+        {
+          cmdType: 'showForm',
+          entity: getters.entityName,
+          formCode: getters.formCode,
+          target: UB.core.UBApp.viewport.centralPanel,
+          tabId: getters.generateTabId(),
+          isModal: instance.isModal
+        },
+        instance
+      )
       UB.core.UBApp.doCommand(config)
     },
 
@@ -467,15 +499,18 @@ module.exports = (instance) => ({
       if (ID === null) return
 
       const item = state.items.find(i => i.ID === ID)
-      const config = await instance.buildEditConfig({
-        cmdType: 'showForm',
-        entity: getters.entityName,
-        formCode: getters.formCode,
-        instanceID: ID,
-        target: UB.core.UBApp.viewport.centralPanel,
-        tabId: getters.generateTabId(ID),
-        isModal: instance.isModal
-      }, item)
+      const config = await instance.buildEditConfig(
+        {
+          cmdType: 'showForm',
+          entity: getters.entityName,
+          formCode: getters.formCode,
+          instanceID: ID,
+          target: UB.core.UBApp.viewport.centralPanel,
+          tabId: getters.generateTabId(ID),
+          isModal: instance.isModal
+        },
+        item
+      )
       UB.core.UBApp.doCommand(config)
     },
 
@@ -504,20 +539,78 @@ module.exports = (instance) => ({
         $notify.success(UB.i18n('recordDeletedSuccessfully'))
       }
     },
+    async deleteRecordsMassAction ({ state, commit, getters }, payload) {
+      const { attr, data } = payload
+
+      const answer = await uDialogs.dialogYesNo(
+        'deletionDialogConfirmCaption',
+        UB.i18n('massDeleteFormConfirmCaption', data.length)
+      )
+      if (!answer) return
+      commit('LOADING', true)
+      const successDelete = []
+      for (const code of data) {
+        const template = {
+          entity: getters.entityName,
+          execParams: {
+            [attr]: code
+          }
+        }
+        try {
+          await UB.connection.doDelete(template)
+          successDelete.push(code)
+        } catch (err) {
+          const cantDeleteItem = state.items.find(i => i[attr] === code)
+          let caption = getDescriptionItem(getters.entityName, cantDeleteItem)
+          let whyErr = err.message
+            ? err.message.match(/(?<=<<<\s*).*?(?=\s*>>>)/g)
+            : ''
+          whyErr = whyErr ? whyErr[0] : ''
+
+          caption = `<b>${whyErr}</b> </br></br> ${caption} `
+
+          $notify.error({
+            title: UB.i18n('error'),
+            message: caption,
+            duration: 7 * 1000,
+            dangerouslyUseHTMLString: true
+          })
+          break
+        }
+      }
+      commit('LOADING', false)
+      commit('SELECT_ROW', null)
+      return { success: successDelete }
+
+      function getDescriptionItem (entity, instanceData = {}) {
+        const descriptionAttr = UB.connection.domain.get(entity)
+          .descriptionAttribute
+        const caption = instanceData[descriptionAttr] || ''
+        const mess = UB.i18n(
+          'cantDeleteInMassActionAlert',
+          caption,
+          UB.i18n(entity)
+        )
+        return caption ? mess.replace(caption, `<b>${caption}</b>`) : mess
+      }
+    },
 
     async copyRecord ({ state, getters }, ID) {
       const item = state.items.find(i => i.ID === ID)
-      const config = await instance.buildCopyConfig({
-        cmdType: 'showForm',
-        isCopy: true,
-        addByCurrent: true, // TODO: remove it after drop ext.js from project
-        entity: getters.entityName,
-        formCode: getters.formCode,
-        instanceID: ID,
-        target: UB.core.UBApp.viewport.centralPanel,
-        tabId: getters.generateTabId(ID),
-        isModal: instance.isModal
-      }, item)
+      const config = await instance.buildCopyConfig(
+        {
+          cmdType: 'showForm',
+          isCopy: true,
+          addByCurrent: true, // TODO: remove it after drop ext.js from project
+          entity: getters.entityName,
+          formCode: getters.formCode,
+          instanceID: ID,
+          target: UB.core.UBApp.viewport.centralPanel,
+          tabId: getters.generateTabId(ID),
+          isModal: instance.isModal
+        },
+        item
+      )
       UB.core.UBApp.doCommand(config)
     },
 
@@ -626,7 +719,10 @@ module.exports = (instance) => ({
       if (response.method === 'delete') {
         commit('REMOVE_ITEM', response.resultData.ID)
         // in case items count equal pageSize then probably has next page so need refresh it
-        if (instance.withPagination && state.items.length === getters.pageSize - 1) {
+        if (
+          instance.withPagination &&
+          state.items.length === getters.pageSize - 1
+        ) {
           await dispatch('refresh')
         }
         return
@@ -636,8 +732,9 @@ module.exports = (instance) => ({
 
       const { fieldList } = getters.currentRepository
       const updatedItem = {}
-      const hasAllDataInResponse = fieldList
-        .every(attr => attr in response.resultData)
+      const hasAllDataInResponse = fieldList.every(
+        attr => attr in response.resultData
+      )
 
       if (hasAllDataInResponse) {
         for (const attr of fieldList) {
@@ -677,8 +774,11 @@ module.exports = (instance) => ({
     },
 
     async showSummary ({ state, getters }) {
-      const repo = getters.currentRepository.clone()
-        .withTotal(false).start(0).limit(0) // clear total and possible pagination
+      const repo = getters.currentRepository
+        .clone()
+        .withTotal(false)
+        .start(0)
+        .limit(0) // clear total and possible pagination
         .misc({ __mip_disablecache: true }) // cached entities do not support group by
       repo.orderList = [] // clear possible order list
       repo.fieldList = ['COUNT([ID])'] // always calc count in first column
@@ -686,34 +786,54 @@ module.exports = (instance) => ({
       for (const column of getters.columns) {
         if (column.summaryAggregationOperator) {
           summaryColumns.push(column)
-          repo.fieldList.push(column.summaryAggregationOperator + '([' + column.id + '])')
+          repo.fieldList.push(
+            column.summaryAggregationOperator + '([' + column.id + '])'
+          )
         }
       }
 
       const sumRepo = await repo.selectAsArray()
       const resultRow = sumRepo.resultData.data[0]
-      let resultHtml = `<h3>${UB.i18n('table.summary.header', { forTitle: getters.entityName })}</h3>`
+      let resultHtml = `<h3>${UB.i18n('table.summary.header', {
+        forTitle: getters.entityName
+      })}</h3>`
       if (state.filters && state.filters.length) {
-        const allFiltersDescr = state.filters.map(f => f.label + ' ' + f.description).join('; ')
+        const allFiltersDescr = state.filters
+          .map(f => f.label + ' ' + f.description)
+          .join('; ')
         resultHtml += `<h5>${allFiltersDescr}</h5>`
       }
       const sumsHtml = summaryColumns
         .map((column, idx) => {
-          const sumTypeText = column.summaryAggregationOperator !== 'SUM'
-            ? ` (${UB.i18n('table.summary.' + column.summaryAggregationOperator)})`
-            : ''
-          return `<b>${column.label}</b>${sumTypeText}: ${UB.formatter.formatNumber(resultRow[idx + 1], 'sum')}`
+          const sumTypeText =
+            column.summaryAggregationOperator !== 'SUM'
+              ? ` (${UB.i18n(
+                  'table.summary.' + column.summaryAggregationOperator
+                )})`
+              : ''
+          return `<b>${
+            column.label
+          }</b>${sumTypeText}: ${UB.formatter.formatNumber(
+            resultRow[idx + 1],
+            'sum'
+          )}`
         })
         .join('<br><br>')
       if (sumsHtml) {
-        resultHtml += `<h4>${UB.i18n('table.summary.columnSummaries')}:</h4>${sumsHtml}`
+        resultHtml += `<h4>${UB.i18n(
+          'table.summary.columnSummaries'
+        )}:</h4>${sumsHtml}`
       }
-      resultHtml += `<br><br><b>${UB.i18n('table.summary.totalRowCount')}:</b> ${UB.formatter.formatNumber(resultRow[0], 'number')}`
+      resultHtml += `<br><br><b>${UB.i18n(
+        'table.summary.totalRowCount'
+      )}:</b> ${UB.formatter.formatNumber(resultRow[0], 'number')}`
       await uDialogs.dialogInfo(resultHtml, 'summary')
     },
 
     async createNewVersion ({ getters }, ID) {
-      const { mi_data_id: dataHistoryId } = await UB.Repository(getters.entityName)
+      const { mi_data_id: dataHistoryId } = await UB.Repository(
+        getters.entityName
+      )
         .attrs('ID', 'mi_data_id')
         .selectById(ID)
 
@@ -769,14 +889,10 @@ module.exports = (instance) => ({
  * @returns {TubCachedData}
  */
 function transformResponseToTubCachedData (response, whereList = {}) {
-  const fieldsSet = new Set(
-    Object.keys(response.resultData)
-  )
+  const fieldsSet = new Set(Object.keys(response.resultData))
   for (const whereItem of Object.values(whereList)) {
     if (whereItem.expression) {
-      fieldsSet.add(
-        whereItem.expression.replace(/\[|\]/g, '')
-      )
+      fieldsSet.add(whereItem.expression.replace(/\[|\]/g, ''))
     }
   }
   return {
