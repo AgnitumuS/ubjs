@@ -34,21 +34,47 @@ module.exports = {
       const hasIndex = arr.indexOf(id)
       if (hasIndex === -1) {
         arr.push(id)
-        this.$emit('addSelected', { row })
+        this.emitAddSelection([row])
       } else {
         arr.splice(hasIndex, 1)
-        this.$emit('removeSelected', { row })
+        this.emitRemoveSelection([row])
       }
       this.emitSelection()
+    },
+    emitAddSelection (arr) {
+      this.$emit('addSelected', arr)
+    },
+    emitRemoveSelection (arr) {
+      this.$emit('removeSelected', arr)
     },
     emitSelection () {
       this.$emit('selected', this.curSelection)
     },
     handlerAllChecked () {
       const { items, allSelected, multiSelectKeyAttr } = this
-      this.curSelection.splice(0)
+      const temp = new Set(this.curSelection)
       if (!allSelected) {
-        items.forEach(i => this.curSelection.push(i[multiSelectKeyAttr]))
+        const addedCash = []
+        items.forEach(el => {
+          const value = el[multiSelectKeyAttr]
+          if (!temp.has(value)) {
+            temp.add(value)
+            addedCash.push(el)
+          }
+        })
+        this.emitAddSelection(addedCash)
+        this.curSelection = [...temp]
+      } else {
+        const removedCash = []
+        items.forEach(el => {
+          const value = el[multiSelectKeyAttr]
+          if (temp.has(value)) {
+            temp.delete(value)
+            removedCash.push(el)
+          }
+        })
+        this.emitRemoveSelection(removedCash)
+        this.curSelection.splice(0)
       }
       this.emitSelection()
     }
