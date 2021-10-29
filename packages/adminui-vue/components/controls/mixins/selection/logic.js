@@ -34,8 +34,10 @@ module.exports = {
       const hasIndex = arr.indexOf(id)
       if (hasIndex === -1) {
         arr.push(id)
+        this.$emit('addSelected', { row })
       } else {
         arr.splice(hasIndex, 1)
+        this.$emit('removeSelected', { row })
       }
       this.emitSelection()
     },
