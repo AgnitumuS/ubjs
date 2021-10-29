@@ -37,6 +37,15 @@
           :disabled="loading"
           @click="refresh"
         />
+        <u-button
+          v-if="canMassDelete"
+          :title="$ut('delete')"
+          appearance="inverse"
+          icon="u-icon-delete"
+          color="control"
+          :disabled="loading || curSelected.length === 0"
+          @click="massDelete"
+        />
 
         <!-- @slot Replace add-new button in toolbar panel -->
         <slot
@@ -604,6 +613,9 @@ export default {
       set (mode) {
         this.$store.commit('SET_VIEW_MODE', mode)
       }
+    },
+    canMassDelete () {
+      return this.$store.getters.schema.haveAccessToMethod('delete')
     }
   },
 
@@ -647,7 +659,14 @@ export default {
         return TypeProvider.get(dataType).template
       }
     },
-
+    async massDelete () {
+      if (!this.canMassDelete) return
+      const result = await this.$store.dispatch('deleteRecordsMassAction', {
+        attr: this.multiSelectKeyAttr,
+        data: this.curSelected
+      })
+      this.$emit('resultMassDelete', result)
+    },
     showContextMenu ({ event, row, column }) {
       this.select({ row, column })
       this.contextMenuRowId = row.ID

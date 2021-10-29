@@ -9,6 +9,7 @@
     :selected-rows="curSelected"
     v-on="tableListeners"
     @selected="handlerSelectionRow"
+    @resultMassDelete="resultMassDelete"
   >
     <template
       v-for="slot in Object.keys($scopedSlots)"
@@ -297,6 +298,36 @@ export default {
         if (hasInCache) this.curSelected.push(id)
       })
     },
+    resultMassDelete (ev) {
+      if (!ev) return
+      const { success } = ev
+      if (!success || success.length === 0) return
+      success.forEach(code => this.cacheSelection.delete(code))
+      this.setCurSelected()
+      this.emitChooseRows()
+      this.massDeleteShowSuccessAlert(success)
+      this.$store.dispatch('refresh')
+    },
+    massDeleteShowSuccessAlert (arr = []) {
+      const { tableItems, multiSelectKeyAttr, getEntityName } = this
+      const message = arr.reduce((acum, id) => {
+        acum += `<li>${getDescription(id)}</li>`
+        return acum
+      }, '')
+      const duration = arr.length > 7 ? arr.length * 1000 : 7 * 1000
+      this.$notify.success({
+        title: UB.i18n('recordDeletedSuccessfully'),
+        message: `<ul class="mass-delete--alert">${message}</ul>`,
+        duration: 100 * 1000,
+        dangerouslyUseHTMLString: true
+      })
+      function getDescription (code) {
+        const item = tableItems.find(i => i[multiSelectKeyAttr] === code)
+        const descAttr = UB.connection.domain.get(getEntityName)
+          .descriptionAttribute
+        return item[descAttr] || ''
+      }
+    },
     getRepository () {
       switch (typeof this.repository) {
         case 'function':
@@ -446,3 +477,16 @@ export default {
   }
 }
 </script>
+
+<style>
+.mass-delete--alert {
+  padding-left: 18px;
+  max-height: 60vh;
+  overflow: auto;
+  padding-right: 8px;
+  width: calc(100% + 17px);
+}
+.mass-delete--alert li {
+  margin-bottom: 8px;
+}
+</style>
