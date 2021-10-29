@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+ - fixed refreshing table after change, on ExtJs-form [UBDF-14305] 
 ## [5.20.28] - 2021-10-27
 ## [5.20.27] - 2021-10-18
 ### Added
