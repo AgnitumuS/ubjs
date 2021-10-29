@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- display changes for all mixin-attributes (**mi_dateFrom**, **mi_dateTo** and others).
+ Before changes, only the **mi_wfState** attribute was displayed.
+ Now, difference does not display only for attributes of a native mixin `mStorage` 
 
 ### Changed
 
