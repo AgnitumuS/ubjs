@@ -344,7 +344,7 @@ export default {
             })
           } else {
             this.$UB.connection.domain.get(this.entityName).eachAttribute(a => {
-              if (this.isAttributeViewableByDefault(a)) viewableAttrs.push(a.code)
+              if (this.isAttributeViewableByDefault(a)) { viewableAttrs.push(a.code) }
             })
           }
           if (!viewableAttrs.includes('ID')) repo.attrs('ID')
@@ -488,5 +488,19 @@ export default {
 }
 .multiple-delete--alert li {
   margin-bottom: 8px;
+}
+.u-table__multiple td,
+.u-table__multiple th:first-child {
+  cursor: pointer;
+}
+.u-table__multiple td:first-child {
+  text-align: center;
+}
+.u-table__multiple th:first-child {
+  z-index: 2;
+}
+.u-table .selected-row td,
+.u-card.u-card--is-selected {
+  background: hsl(var(--hs-primary), var(--l-background-default));
 }
 </style>
