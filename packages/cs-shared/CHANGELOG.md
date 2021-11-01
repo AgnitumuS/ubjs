@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - support of the `skipSubQueries` flag for the `whereListToFunctions` method - not transform
+   subquery whereList clauses when `skipSubQueries` is `true`
 
 ## [5.20.5] - 2021-09-24
 ### Changed
