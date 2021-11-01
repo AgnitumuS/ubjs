@@ -539,12 +539,12 @@ module.exports = instance => ({
         $notify.success(UB.i18n('recordDeletedSuccessfully'))
       }
     },
-    async deleteRecordsMassAction ({ state, commit, getters }, payload) {
+    async deleteRecordsMultiple ({ state, commit, getters }, payload) {
       const { attr, data } = payload
 
       const answer = await uDialogs.dialogYesNo(
         'deletionDialogConfirmCaption',
-        UB.i18n('massDeleteFormConfirmCaption', data.length)
+        UB.i18n('deleteMultipleFormConfirmCaption', data.length)
       )
       if (!answer) return
       commit('LOADING', true)
@@ -587,7 +587,7 @@ module.exports = instance => ({
           .descriptionAttribute
         const caption = instanceData[descriptionAttr] || ''
         const mess = UB.i18n(
-          'cantDeleteInMassActionAlert',
+          'deleteMultipleImpossibleAlert',
           caption,
           UB.i18n(entity)
         )

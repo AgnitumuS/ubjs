@@ -9,7 +9,7 @@
     :selected-rows="curSelected"
     v-on="tableListeners"
     @selected="handlerSelectionRow"
-    @resultMassDelete="resultMassDelete"
+    @deleteMultipleResult="deleteMultipleResult"
   >
     <template
       v-for="slot in Object.keys($scopedSlots)"
@@ -266,7 +266,7 @@ export default {
       if (cacheSelection.size === 0) {
         this.cacheSelection = newSelection
         this.curSelected = [...this.cacheSelection]
-        this.emitChooseRows()
+        this.emitSelected()
         return
       }
       this.tableItems.forEach(elem => {
@@ -280,9 +280,9 @@ export default {
           cacheSelection.add(id)
         }
       })
-      this.emitChooseRows()
+      this.emitSelected()
     },
-    emitChooseRows () {
+    emitSelected () {
       this.$emit('selected', [...this.cacheSelection])
     },
     handlerChangeTableData (items) {
@@ -298,17 +298,17 @@ export default {
         if (hasInCache) this.curSelected.push(id)
       })
     },
-    resultMassDelete (ev) {
+    deleteMultipleResult (ev) {
       if (!ev) return
       const { success } = ev
       if (!success || success.length === 0) return
       success.forEach(code => this.cacheSelection.delete(code))
       this.setCurSelected()
-      this.emitChooseRows()
-      this.massDeleteShowSuccessAlert(success)
+      this.emitSelected()
+      this.deleteMultipleShowSuccessAlert(success)
       this.$store.dispatch('refresh')
     },
-    massDeleteShowSuccessAlert (arr = []) {
+    deleteMultipleShowSuccessAlert (arr = []) {
       const { tableItems, multiSelectKeyAttr, getEntityName } = this
       const message = arr.reduce((acum, id) => {
         acum += `<li>${getDescription(id)}</li>`
@@ -317,7 +317,7 @@ export default {
       const duration = arr.length > 7 ? arr.length * 1000 : 7 * 1000
       this.$notify.success({
         title: UB.i18n('recordDeletedSuccessfully'),
-        message: `<ul class="mass-delete--alert">${message}</ul>`,
+        message: `<ul class="multiple-delete--alert">${message}</ul>`,
         duration: 100 * 1000,
         dangerouslyUseHTMLString: true
       })
@@ -479,14 +479,14 @@ export default {
 </script>
 
 <style>
-.mass-delete--alert {
+.multiple-delete--alert {
   padding-left: 18px;
   max-height: 60vh;
   overflow: auto;
   padding-right: 8px;
   width: calc(100% + 17px);
 }
-.mass-delete--alert li {
+.multiple-delete--alert li {
   margin-bottom: 8px;
 }
 </style>
