@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `ubq_messages` nav shortcut - explicitly define fieldList as `["mi_createDate", "queueCode", "completeDate", "msgCmd"]` 
+   for better UX
 
 ### Deprecated
 
