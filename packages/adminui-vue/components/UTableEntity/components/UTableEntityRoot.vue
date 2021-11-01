@@ -37,15 +37,6 @@
           :disabled="loading"
           @click="refresh"
         />
-        <u-button
-          v-if="canDeleteMultiple"
-          :title="$ut('delete')"
-          appearance="inverse"
-          icon="u-icon-delete"
-          color="control"
-          :disabled="loading || curSelected.length === 0"
-          @click="deleteMultiple"
-        />
 
         <!-- @slot Replace add-new button in toolbar panel -->
         <slot
@@ -63,6 +54,16 @@
             @click="addNew"
           />
         </slot>
+
+        <u-button
+          v-if="canDeleteMultiple"
+          :title="$ut('delete')"
+          appearance="inverse"
+          icon="u-icon-delete"
+          color="control"
+          :disabled="loading || curSelected.length === 0"
+          @click="deleteMultiple"
+        />
 
         <!-- @slot Prepend new buttons to toolbar before filter -->
         <slot
@@ -619,7 +620,10 @@ export default {
       }
     },
     canDeleteMultiple () {
-      return this.$store.getters.schema.haveAccessToMethod('delete')
+      const { enableMultiSelect, $store } = this
+      return (
+        enableMultiSelect && $store.getters.schema.haveAccessToMethod('delete')
+      )
     }
   },
 
