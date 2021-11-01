@@ -240,12 +240,12 @@ what ends with 'UPDATE' keyword as a subject of transaction stat, because it exp
 To force transaction, please, always use 'SELECT ... FOR UPDATE OF ...' instead. In any way it is more correct solution when 
 select for update without specifying a table to lock. 
 
-### Nested transactions and savepoints
+### Nested transactions and savepoint
 Nested transactions is not allowed. In case transaction is already started, `App.dbStartTransaction` will return false
 and do nothing.
 
 However, for Postgres, in case of any error on the DB level connection allows only rollback statement. Even if statement
-execution is wrapped in try..catch in the JS:
+execution is wrapped in try...catch in the JS:
 
 ```javascript
 function testUpdate(ID, code) {
