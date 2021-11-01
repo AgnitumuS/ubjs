@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.4.2] - 2021-10-27
 ## [1.4.1] - 2021-10-18
 ### Added
 Vue single file components can use `<style src=`> tag to import a CSS from external file (will be injected using UB.inject). Example:

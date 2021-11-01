@@ -15,6 +15,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.28] - 2021-10-27
+### Changed
+ - `ubm_enum.name` size increased from 255 to 512 chars (such huge size is required by some real life projects)
+
+### Fixed
+ - `ubm_navshortcut`: nav shortcut - improve columns list; `uk` and `ru` locale - localize description and keyword attributes
+
 ## [5.20.27] - 2021-10-18
 ### Added
  - Azerbaijani (az) localization for items with omitted translation

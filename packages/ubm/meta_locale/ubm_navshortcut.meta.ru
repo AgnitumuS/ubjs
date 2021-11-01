@@ -45,6 +45,14 @@
         {
             "name": "iconCls",
             "caption": "Иконка (CSS-класс)"
+        },
+        {
+          "name": "description",
+          "caption": "Описание",
+        },
+        {
+          "name": "keywords",
+          "caption": "Ключевые слова"
         }
     ]
 }

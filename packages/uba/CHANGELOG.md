@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `uba_als-fm.vue`- made new form. Implemented editing of a role that already exists. [Task](https://dev.intecracy.com/agile/browse/UBDF-14336)
 - English (en) localization for desktop description: the words are capitalized
   according to English rules for captions
+- audit trail form will show changes for all mixin-attributes (**mi_dateFrom**, **mi_dateTo** and others).
+ Before this fix, only **mi_wfState** attribute was displayed. After this only attributes, added by `mStorage` mixin are omitted.
 
 ### Changed
 
@@ -21,6 +23,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.28] - 2021-10-27
+### Changed
+ - UBA model fill `ubs_settings` using migration YAML (05_settings.yml)
+ - UBA model fill roles and ELS using migration (01_roles.yml)
+
+### Removed
+ - migration from `@unitybase/uba` < 5 is *REMOVED* (expect all products are already migrated to v5)  
+  
+### Fixed
+ - `uba_userrole` & `uba_usergroup` nav shortcut uses `userID.name` instead of `userID` - this prevents lookup on potentially big user entity 
+ - `uba_advSecurity` nav shortcut uses `userID.name`; improve uk translation for attributes
+ - `uba_otp` nav shortcut - add columns to prevent lookup on uba_user entity
 
 ## [5.20.27] - 2021-10-18
 ### Added

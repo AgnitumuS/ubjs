@@ -2,6 +2,13 @@ const UB = require('@unitybase/ub-pub')
 const { lookups } = require('@unitybase/adminui-vue')
 const { diffWords } = require('./diff')
 
+/**
+ * List of attributes for which do not display differences
+ * @type {Set<string>}
+ */
+const skipDiffDisplay = new Set(['ID', 'mi_owner', 'mi_createUser', 'mi_createDate',
+  'mi_modifyUser', 'mi_modifyDate', 'mi_deleteDate', 'mi_deleteUser'])
+
 module.exports = {
   state () {
     return {
@@ -25,7 +32,7 @@ module.exports = {
           ...Object.keys(getters.newData)
         ])
       )
-        .filter(attr => attr !== 'ID' && (attr === 'mi_wfState' || !attr.startsWith('mi_')))
+        .filter(attr => !skipDiffDisplay.has(attr))
     }
   },
 
@@ -91,7 +98,7 @@ function buildLabel (entity, attr) {
     attrLang = attr.substring(attr.lastIndexOf('_') + 1, L - 1)
     attr = attr.substring(0, L - 4)
   }
-  let res = UB.i18n(`${entity}.${attr}`)
+  let res = UB.i18n(`${entity}.${attr}`) || UB.i18n(attr)
   if (attrLang) res += ` (${UB.i18n(attrLang)})`
   return res
 }

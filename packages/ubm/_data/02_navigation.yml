@@ -63,12 +63,8 @@ adm_desktop:
             - desktopID
             - parentID
             - code
-            - isFolder
             - caption
-            - inWindow
-            - isCollapsed
-            - displayOrder
-            - iconCls
+            - isFolder
             - description
             - keywords
       - ubm_form:

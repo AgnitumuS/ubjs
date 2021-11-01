@@ -6,7 +6,9 @@
 		//#ifdef(%UB_USE_NGINX%)
 		"reverseProxy": {
 			"kind": "nginx",
+			//#ifdef1(%AA%)
 			"securityZoneHeader": "X-Sec-Zone"
+			//#endif1
 		},
 		//#endif
 		"host": "+",
