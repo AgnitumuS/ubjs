@@ -15,6 +15,9 @@ module.exports = {
     allSelected () {
       const { items, curSelection } = this
       return items.length === curSelection.length
+    },
+    showMultiSelectionColumn () {
+      return this.enableMultiSelect && this.items.length > 0
     }
   },
   watch: {

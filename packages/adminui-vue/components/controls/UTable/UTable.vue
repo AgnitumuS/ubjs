@@ -2,7 +2,7 @@
   <div
     class="u-table"
     :class="{
-      'u-table__multiple': enableMultiSelect,
+      'u-table__multiple': showMultiSelectionColumn,
       'u-table--sort': enableSort
     }"
     :style="tableStyle"
@@ -10,7 +10,7 @@
     <table>
       <tr>
         <th
-          v-if="enableMultiSelect"
+          v-if="showMultiSelectionColumn"
           @click="handlerAllChecked"
         >
           <span
@@ -87,7 +87,7 @@
         @dblclick="$emit('dblclick-row', { row })"
         @click="handlerClickOnRow(row)"
       >
-        <td v-if="enableMultiSelect">
+        <td v-if="showMultiSelectionColumn">
           <!-- repeat html-structure for el-checkbox ElementUI -->
           <span
             class="el-checkbox__input"
