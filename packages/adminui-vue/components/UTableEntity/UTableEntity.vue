@@ -344,7 +344,7 @@ export default {
             })
           } else {
             this.$UB.connection.domain.get(this.entityName).eachAttribute(a => {
-              if (this.isAttributeViewableByDefault) viewableAttrs.push(a.code)
+              if (this.isAttributeViewableByDefault(a)) viewableAttrs.push(a.code)
             })
           }
           if (!viewableAttrs.includes('ID')) repo.attrs('ID')
