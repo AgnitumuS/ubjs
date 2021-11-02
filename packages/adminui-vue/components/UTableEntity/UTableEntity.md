@@ -296,34 +296,60 @@ export default {
 }
 </script>
 ```
-### Multi-Selection mode
-
+### Selection Mode
 ```vue
 <template>
-  <u-table-entity    
-    enableMultiSelect
-    :selected-rows="selectedIDS"
-    @selected="handlerSelectionRow"
-    :max-height="200"
-    :repository="repository"/>
+  <div>
+    <u-table
+      :selected-rows="selectionIDs"
+      :items="currencies"
+      :columns="columns"
+      enableMultiSelect
+      @selected="selectionIDs = $event"
+      @removeSelected="beenRemoved = $event"
+      @addSelected="beenAdd = $event"
+    />
+    <p>selectionIDs: {{selectionIDs}}</p>
+    <p>have been added: {{beenAdd}}</p>
+    <p>have been removed: {{beenRemoved}}</p>
+  </div>
 </template>
-
 <script>
-export default {
-  data(){
-    return {
-      selectedIDs:[3,128]
-    }
-  },
-  methods: {
-    repository () {
-      return this.$UB.Repository('req_request')
-        .attrs('ID', 'reqDate', 'department.name')
+  export default {
+    data () {
+      return {
+        selectionIDs: [2,3],
+        beenRemoved: [],
+        beenAdd: [],
+        currencies: [{
+          ID: 1,
+          code: 'UAH',
+          caption: 'Hryvna',
+          country: 'Ukraine'
+        },{
+          ID: 2,
+          code: 'USD',
+          caption: 'Dollar',
+          country: 'USA'
+        },{
+          ID: 3,
+          code: 'EUR',
+          caption: 'Euro',
+          country: 'France'
+        }],
+
+        columns: [{
+          id: 'code',
+          label: 'Code'
+        }, {
+          id: 'caption',
+          label: 'Caption'
+        }, {
+          id: 'country',
+          label: 'Country'
+        }]
+      }
     },
-    handlerSelectionRow(selectionsArr){
-      console.log(selectionsArr)
-    }
   }
-}
 </script>
 ```

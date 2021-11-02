@@ -7,10 +7,10 @@
     :enable-multi-select="enableMultiSelect"
     :multi-select-key-attr="multiSelectKeyAttr"
     :selected-rows="curSelected"
+    :show-delete-multiple-btn="showDeleteMultipleBtn"
     v-on="tableListeners"
     @selected="handlerSelectionRow"
     @deleteMultipleResult="deleteMultipleResult"
-    :show-delete-multiple-btn="showDeleteMultipleBtn"
   >
     <template
       v-for="slot in Object.keys($scopedSlots)"
@@ -171,6 +171,9 @@ export default {
       type: Boolean,
       default: true
     },
+    /**
+     * Displays the delete button on the toolbar. Automatically enabled on the function of deleting selected items
+     */
     showDeleteMultipleBtn: {
       type: Boolean,
       default: false
@@ -349,7 +352,9 @@ export default {
             })
           } else {
             this.$UB.connection.domain.get(this.entityName).eachAttribute(a => {
-              if (this.isAttributeViewableByDefault(a)) { viewableAttrs.push(a.code) }
+              if (this.isAttributeViewableByDefault(a)) {
+                viewableAttrs.push(a.code)
+              }
             })
           }
           if (!viewableAttrs.includes('ID')) repo.attrs('ID')
