@@ -45,12 +45,27 @@ module.exports = {
       this.emitSelection()
     },
     emitAddSelection (arr) {
+      /**
+       * Triggers when the user adds the selection
+       *
+       * @property {array} an array that includes the objects that were added to the the selection
+       */
       this.$emit('addSelected', arr)
     },
     emitRemoveSelection (arr) {
+      /**
+       * Triggers when the user removes the selection
+       *
+       * @property {array} an array that includes the objects that were removed from the selection
+       */
       this.$emit('removeSelected', arr)
     },
     emitSelection () {
+      /**
+       * Triggers when the user removes or adds a selection
+       *
+       * @property {array} an array that includes all currently selected values
+       */
       this.$emit('selected', this.curSelection)
     },
     handlerAllChecked () {

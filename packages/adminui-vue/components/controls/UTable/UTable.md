@@ -83,8 +83,12 @@ To set scoped slot for header cell just add prefix `head_` to column ID
       :items="currencies"
       :columns="columns"
       enableMultiSelect
+      @removeSelected="beenRemoved = $event"
+      @addSelected="beenAdd = $event"
     />
     <p>selectionIDs: {{selectionIDs}}</p>
+    <p>have been added: {{beenAdd}}</p>
+    <p>have been removed: {{beenRemoved}}</p>
   </div>
 </template>
 <script>
@@ -92,6 +96,8 @@ To set scoped slot for header cell just add prefix `head_` to column ID
     data () {
       return {
         selectionIDs: [2,3],
+        beenRemoved: [],
+        beenAdd: [],
         currencies: [{
           ID: 1,
           code: 'UAH',
