@@ -58,9 +58,7 @@
               icon="u-icon-sort-asc"
               size="small"
               :color="
-                col[sortAttrInColumn] === sortCol && sortWay === 'asc'
-                  ? 'primary'
-                  : 'control'
+                col.id === sortCol && sortWay === 'asc' ? 'primary' : 'control'
               "
               @click.native="doSort(col, 'asc')"
             />
@@ -68,9 +66,7 @@
               icon="u-icon-sort-desc"
               size="small"
               :color="
-                col[sortAttrInColumn] === sortCol && sortWay === 'desc'
-                  ? 'primary'
-                  : 'control'
+                col.id === sortCol && sortWay === 'desc' ? 'primary' : 'control'
               "
               @click.native="doSort(col, 'desc')"
             />
@@ -237,9 +233,12 @@ export default {
      */
     enableSort: { type: Boolean, default: false },
     /**
-     * the field by which the sorting will go. Default `id` (lowercase)
+     * options for sorting.
+     *
+     * `col` -  the column by which the sorting will be.
+     *
+     * `way` - sorting direction. "asc" or "desc"
      */
-    sortAttrInColumn: { type: String, default: 'id' },
     defaultSort: { type: Object, default: () => ({}) }
   },
   data () {
@@ -284,16 +283,14 @@ export default {
   },
   methods: {
     initSort () {
-      const { sortAttrInColumn, defaultSort } = this
+      const { defaultSort } = this
       if (Object.keys(defaultSort).length !== 2) return
-      const col = this.columns.find(
-        i => i[sortAttrInColumn] === defaultSort.col
-      )
+      const col = this.columns.find(i => i.id === defaultSort.col)
       this.doSort(col, defaultSort.way)
     },
     doSort (col, way = 'asc') {
-      const { sortAttrInColumn, items } = this
-      const fieldName = col[sortAttrInColumn]
+      const { items } = this
+      const fieldName = col.id
       this.sortWay = way
       this.sortCol = fieldName
       items.sort((a, b) => {

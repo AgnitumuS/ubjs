@@ -73,10 +73,10 @@ To set scoped slot for header cell just add prefix `head_` to column ID
 ```
 
 ### Selection Mode
+`v-model` matched with `selected` event
 
 ```vue
 <template>
-  // `v-model` matched with `selected` event
   <div>
     <u-table
       v-model="selectionIDs"
@@ -126,13 +126,15 @@ To set scoped slot for header cell just add prefix `head_` to column ID
 ```
 
 ### Sort Mode
-
+Sorting in the browser. Whitout request to server
 ```vue
 <template>
   <u-table
     :items="currencies"
     :columns="columns"
     enableSort
+    :default-sort="{col: 'country', way: 'asc'}"
+    sortAttrInColumn="value"
   />
 </template>
 <script>
@@ -154,6 +156,11 @@ To set scoped slot for header cell just add prefix `head_` to column ID
           code: 'EUR',
           caption: 'Euro',
           country: 'France'
+        },{
+          ID: 4,
+          code: 'MDL',
+          caption: 'Ley',
+          country: 'Moldova'
         }],
 
         columns: [{
