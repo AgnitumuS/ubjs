@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+  - `UBReport.js`: removed dependency from `@unitybase/adminui-pub`, so client-side reports can be used in shells other when adminui-pub   
 
 ### Deprecated
 

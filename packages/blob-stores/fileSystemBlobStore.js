@@ -306,22 +306,38 @@ class FileSystemBlobStore extends BlobStoreCustom {
     // use a global cache for already verified folder
     let fullFn = this.fullStorePath
     let relPath = ''
+    let mtKey = ''
+    const mtCfg = this.App.serverConfig.security.multitenancy
+    const mtIsUsed = mtCfg && mtCfg.enabled && this.Session.tenantID
+    if (mtIsUsed) {
+      const tenantFolder = 'T' + this.Session.tenantID
+      fullFn = path.join(fullFn, tenantFolder)
+      mtKey = `#MT_${tenantFolder}`
+      const cacheKey = `BSFCACHE${this.name}${mtKey}`
+      const verified = this.App.globalCacheGet(cacheKey) === '1'
+      if (!verified) {
+        if (!fs.existsSync(fullFn)) fs.mkdirSync(fullFn, '0777')
+        this.App.globalCachePut(cacheKey, '1')
+      }
+      relPath = tenantFolder
+    }
+
     if (l1subfolder) {
       if (this.LUCount) {
         const LUN = ('' + this.LUCount).padStart(2, '0')
         l1subfolder = `LU${LUN}${path.sep}${l1subfolder}`
       }
       fullFn = path.join(fullFn, l1subfolder)
-      let cacheKey = `BSFCACHE#${this.name}#${l1subfolder}`
+      let cacheKey = `BSFCACHE#${this.name}${mtKey}#${l1subfolder}`
       const verified = this.App.globalCacheGet(cacheKey) === '1'
       if (!verified) {
         if (!fs.existsSync(fullFn)) fs.mkdirSync(fullFn, '0777')
         this.App.globalCachePut(cacheKey, '1')
       }
-      relPath = l1subfolder
+      relPath = mtIsUsed ? path.join(relPath, l1subfolder) : l1subfolder
       if (l2subfolder) {
         fullFn = path.join(fullFn, l2subfolder)
-        cacheKey = `BSFCACHE#${this.name}#${l1subfolder}#${l2subfolder}`
+        cacheKey = `BSFCACHE#${this.name}${mtKey}#${l1subfolder}#${l2subfolder}`
         const verified = this.App.globalCacheGet(cacheKey) === '1'
         if (!verified) {
           if (!fs.existsSync(fullFn)) fs.mkdirSync(fullFn, '0777')

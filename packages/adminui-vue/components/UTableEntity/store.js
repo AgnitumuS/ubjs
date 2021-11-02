@@ -1,11 +1,8 @@
 const UB = require('@unitybase/ub-pub')
 const { Notification: $notify } = require('element-ui')
 const uDialogs = require('../../utils/uDialogs')
-const {
-  exportExcel,
-  exportCsv,
-  exportHtml
-} = require('../../utils/fileExporter')
+const { exportExcel, exportCsv, exportHtml } = require('../../utils/fileExporter')
+const helpers = require('../../utils/Form/helpers')
 const lookups = require('../../utils/lookups')
 const AUDIT_ENTITY = 'uba_auditTrail'
 const Vue = require('vue')
@@ -861,21 +858,8 @@ module.exports = instance => ({
       }
     },
 
-    async showRevision ({ getters }, ID) {
-      const { mi_data_id: historyId } = await UB.Repository(getters.entityName)
-        .attrs('ID', 'mi_data_id')
-        .selectById(ID)
-
-      UB.core.UBApp.doCommand({
-        cmdType: 'showList',
-        cmdData: {
-          entityName: getters.entityName,
-          columns: getters.columns.concat('mi_dateTo', 'mi_dateFrom')
-        },
-        isModal: instance.isModal,
-        instanceID: historyId,
-        __mip_recordhistory: true
-      })
+    async showRecordHistory ({ getters }, ID) {
+      return helpers.showRecordHistory(getters.entityName, ID, getters.repository().fieldList, getters.columns)
     }
   }
 })

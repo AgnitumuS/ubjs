@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+  - `org_employeeonstaff_all` shortcut - enable `__mip_recordhistory_all` misc and add a columns [mi_dateForm] and [mi_dateTo]
 
 ### Changed
 
@@ -14,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `org_employeeonstaff` and `org_employeeonstaff_all` shortcuts - fixed error "Rendering slot is not defined
+   for columns [staffUnitID.caption] and [employeeID.fullFIO]
 
 ## [5.20.28] - 2021-10-27
 ### Fixed

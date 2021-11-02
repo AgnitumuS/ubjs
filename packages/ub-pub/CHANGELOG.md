@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+  - ClientRepository with `__mip_recordhistory_all` misc will bypass a client cache 
 
 ### Deprecated
 

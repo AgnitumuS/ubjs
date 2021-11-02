@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - fixed refresh of UTableEntity what based on Repository with subquery (by correctly skip handling of subquery on the client side)
 
 ## [5.20.5] - 2021-09-24
 ### Changed

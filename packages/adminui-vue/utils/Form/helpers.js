@@ -24,7 +24,8 @@ module.exports = {
   isEmpty,
   change,
   prepareCopyAddNewExecParams,
-  validateWithErrorText
+  validateWithErrorText,
+  showRecordHistory
 }
 
 const UB = require('@unitybase/ub-pub')
@@ -495,4 +496,43 @@ function prepareCopyAddNewExecParams (originalExecParams, entity) {
  */
 function validateWithErrorText (errorLocale, validator) {
   return withParams({ $errorText: errorLocale }, validator)
+}
+
+/**
+ * show tble with changes history of specified entity instance. Entity must hase a `dataHistory` mixin
+ * @param {string} entityName
+ * @param {number} instanceID
+ * @param {array<string>} fieldList
+ * @param {array<object>} [columns] optional columns definition for showList
+ * @returns {Promise<void>}
+ */
+async function showRecordHistory (entityName, instanceID, fieldList, columns) {
+  const dataId = await UB.Repository(entityName)
+    .attrs('mi_data_id')
+    .where('ID', '=', instanceID)
+    .misc({ __mip_disablecache: true })
+    .selectScalar()
+
+  const newFieldList = [...fieldList]
+  const newColumns = columns ? [...columns] : [...fieldList]
+
+  ;['mi_dateFrom', 'mi_dateTo'].forEach(cn => {
+    if (newFieldList.indexOf(cn) === -1) newFieldList.push(cn)
+    if (newColumns.findIndex(c => (typeof c === 'string' && c === cn) || (typeof c === 'object' && c.id === cn)) === -1) {
+      newColumns.push(cn)
+    }
+  })
+
+  return UB.core.UBApp.doCommand({
+    cmdType: 'showList',
+    isModal: true,
+    cmdData: {
+      entityName: entityName,
+      repository: () => UB.Repository(entityName)
+        .attrs([...newFieldList])
+        .where('mi_data_id', '=', dataId)
+        .misc({ __mip_disablecache: true, __mip_recordhistory_all: true }),
+      columns: newColumns
+    }
+  })
 }

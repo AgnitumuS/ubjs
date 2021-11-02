@@ -283,6 +283,10 @@ function whereListToFunctions (ubql, fieldList, skipSubQueries) {
   }
 
   function transformClause (clause) {
+    if (skipSubQueries && (clause.condition === 'subquery')) {
+      return // skip subquery
+    }
+
     let property = clause.expression || ''
 
     if (clause.condition === 'custom') {
