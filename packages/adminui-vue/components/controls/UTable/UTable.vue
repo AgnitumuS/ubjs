@@ -58,7 +58,7 @@
               icon="u-icon-sort-asc"
               size="small"
               :color="
-                col[sortField] === sortCol && sortWay === 'asc'
+                col[sortAttrInColumn] === sortCol && sortWay === 'asc'
                   ? 'primary'
                   : 'control'
               "
@@ -68,7 +68,7 @@
               icon="u-icon-sort-desc"
               size="small"
               :color="
-                col[sortField] === sortCol && sortWay === 'desc'
+                col[sortAttrInColumn] === sortCol && sortWay === 'desc'
                   ? 'primary'
                   : 'control'
               "
@@ -239,7 +239,7 @@ export default {
     /**
      * the field by which the sorting will go. Default `id` (lowercase)
      */
-    sortField: { type: String, default: 'id' },
+    sortAttrInColumn: { type: String, default: 'id' },
     defaultSort: { type: Object, default: () => ({}) }
   },
   data () {
@@ -278,19 +278,22 @@ export default {
       this.setTitle()
     }
   },
-  created () {
+  async mounted () {
+    await this.$nextTick()
     if (this.enableSort) this.initSort()
   },
   methods: {
     initSort () {
-      const { sortField, defaultSort } = this
+      const { sortAttrInColumn, defaultSort } = this
       if (Object.keys(defaultSort).length !== 2) return
-      const col = this.columns.find(i => i[sortField] === defaultSort.col)
+      const col = this.columns.find(
+        i => i[sortAttrInColumn] === defaultSort.col
+      )
       this.doSort(col, defaultSort.way)
     },
     doSort (col, way = 'asc') {
-      const { sortField, items } = this
-      const fieldName = col[sortField]
+      const { sortAttrInColumn, items } = this
+      const fieldName = col[sortAttrInColumn]
       this.sortWay = way
       this.sortCol = fieldName
       items.sort((a, b) => {

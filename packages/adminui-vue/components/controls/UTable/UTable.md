@@ -77,12 +77,15 @@ To set scoped slot for header cell just add prefix `head_` to column ID
 ```vue
 <template>
   // `v-model` matched with `selected` event
-  <u-table
-    v-model="selectionIDs"
-    :items="currencies"
-    :columns="columns"
-    enableMultiSelect
-  />
+  <div>
+    <u-table
+      v-model="selectionIDs"
+      :items="currencies"
+      :columns="columns"
+      enableMultiSelect
+    />
+    <p>selectionIDs: {{selectionIDs}}</p>
+  </div>
 </template>
 <script>
   export default {
@@ -118,11 +121,6 @@ To set scoped slot for header cell just add prefix `head_` to column ID
         }]
       }
     },
-    watch:{
-      selectionIDs(selectionsArr){
-        window.alert(`Selection changed: ${selectionsArr}`)
-      }
-    }
   }
 </script>
 ```
@@ -131,12 +129,10 @@ To set scoped slot for header cell just add prefix `head_` to column ID
 
 ```vue
 <template>
-  // `v-model` matched with `selected` event
   <u-table
     :items="currencies"
     :columns="columns"
     enableSort
-    sortField="ID"
   />
 </template>
 <script>
