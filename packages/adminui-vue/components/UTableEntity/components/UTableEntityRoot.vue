@@ -552,7 +552,11 @@ export default {
      * Overrides the record selection event. That is, double click or enter
      * @type {function({ID: Number, row: Object, close: function})}
      */
-    onSelectRecord: Function
+    onSelectRecord: Function,
+    showDeleteMultipleBtn: {
+      type: Boolean,
+      default: false
+    }
   },
 
   data () {
@@ -620,9 +624,11 @@ export default {
       }
     },
     canDeleteMultiple () {
-      const { enableMultiSelect, $store } = this
+      const { enableMultiSelect, showDeleteMultipleBtn, $store } = this
       return (
-        enableMultiSelect && $store.getters.schema.haveAccessToMethod('delete')
+        showDeleteMultipleBtn &&
+        enableMultiSelect &&
+        $store.getters.schema.haveAccessToMethod('delete')
       )
     }
   },

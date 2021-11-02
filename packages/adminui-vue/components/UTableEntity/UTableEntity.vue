@@ -10,6 +10,7 @@
     v-on="tableListeners"
     @selected="handlerSelectionRow"
     @deleteMultipleResult="deleteMultipleResult"
+    :show-delete-multiple-btn="showDeleteMultipleBtn"
   >
     <template
       v-for="slot in Object.keys($scopedSlots)"
@@ -169,6 +170,10 @@ export default {
     bordered: {
       type: Boolean,
       default: true
+    },
+    showDeleteMultipleBtn: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -496,9 +501,11 @@ export default {
 .u-table__multiple td:first-child {
   text-align: center;
 }
+
 .u-table__multiple th:first-child {
   z-index: 2;
 }
+
 .u-table .selected-row td,
 .u-card.u-card--is-selected {
   background: hsl(var(--hs-primary), var(--l-background-default));
