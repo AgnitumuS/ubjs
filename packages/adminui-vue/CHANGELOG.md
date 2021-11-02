@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - UTableEntity.store: action `showRevision` renamed to `showRecordHistory`; both `UTable` and `Form` uses the same
+   function to show record history
 
 ### Deprecated
 
@@ -99,8 +101,6 @@ return UB.Repository('uba_auditTrail')
  - `UTableEntity`: now show filter control if there are no available columns for filtration
  - improved the table for displaying and the form for adding and management entries of the `aclRls` mixin for some entity
  - `USelectMultiple`: change style for dropdown. Fixed the position of the buttons "More", "Template" and other.
-![View result](./changeLogImgs/USelectMultipleDropdown.png)
-[Task](https://dev.intecracy.com/agile/browse/UBDF-8423)
 
 ### Fixed
  - `UCardView`: rendering of values if the cell template is not defined for the related column

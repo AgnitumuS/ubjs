@@ -88,26 +88,32 @@ org_desktop:
             }
       - org_employeeonstaff:
           caption: {$i18n: org_employeeonstaff}
-          iconCls: fa fa-briefcase
+          iconCls: u-icon-person-success
           displayOrder: 30
           cmd: >
             {
               renderer: 'vue',
               cmdType: 'showList',
               cmdData: {
-                entityName: 'org_employeeonstaff'
+                entityName: 'org_employeeonstaff',
+                columns: [
+                  'employeeID.fullFIO',
+                  'staffUnitID.caption',
+                  'employeeOnStaffType',
+                  'mi_dateFrom'
+                ]
               }
             }
       - org_employeeonstaff_all:
           caption:
-            en: Employee on Staff (All)
-            uk: Внутрішні призначення (всі)
-            ru: Внутренние назначения (все)
-            ka: თანამშრომელი პერსონალზე (სულ)
-            tg: Таъинҳои дохилӣ (ҳама)
-            nl: Interne toewijzingen (alle)
-            az: Daxili təyinatlar (bütün)
-          iconCls: fa fa-briefcase
+            en: Assignment history
+            uk: Історія призначень
+            ru: История назначений
+            ka: დავალების ისტორია
+            tg: Таърихи таъинот
+            nl: Opdrachtgeschiedenis
+            az: Tapşırıq tarixçəsi
+          iconCls: u-icon-person-settings
           displayOrder: 35
           cmd: >
             {
@@ -115,11 +121,27 @@ org_desktop:
               cmdType: 'showList',
               cmdData: {
                 entityName: 'org_employeeonstaff',
-                __mip_recordhistory_all: true
+                repository: function() {
+                  return UB.Repository('org_employeeonstaff')
+                    .attrs(
+                      'ID',
+                      'tabNo',
+                      'caption',
+                      'employeeID.fullFIO',
+                      'staffUnitID.caption',
+                      'employeeOnStaffType',
+                      'mi_dateFrom',
+                      'mi_dateTo'
+                    ).misc({
+                      '__mip_recordhistory_all': true
+                    })
+                },
+                columns: ['tabNo', 'caption', 'employeeID.fullFIO', 'staffUnitID.caption', 'employeeOnStaffType', 'mi_dateFrom', 'mi_dateTo']
               }
             }
       - org_staffunit:
           caption: {$i18n: org_staffunit}
+          iconCls: fa fa-briefcase
           displayOrder: 40
           cmd: >
             {
@@ -148,7 +170,7 @@ org_desktop:
             }
       - org_execgroup:
           caption: {$i18n: org_execgroup}
-          iconCls: u-icon-layers
+          iconCls: u-icon-person-group
           displayOrder: 50
           cmd: >
             {
@@ -168,6 +190,7 @@ org_desktop:
             }
       - org_unit:
           caption: {$i18n: org_unit}
+          iconCls: u-icon-hierarchy-alt
           displayOrder: 100
           cmd: >
             {
