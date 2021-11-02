@@ -449,7 +449,7 @@
               <u-dropdown-item
                 icon="u-icon-file-preview"
                 label="ChangesHistory"
-                @click="showRevision(selectedRowId)"
+                @click="showRecordHistory(selectedRowId)"
               />
             </template>
           </slot>
@@ -636,7 +636,7 @@ export default {
       'createLink',
       'audit',
       'createNewVersion',
-      'showRevision'
+      'showRecordHistory'
     ]),
     ...mapMutations([
       'SELECT_COLUMN',
