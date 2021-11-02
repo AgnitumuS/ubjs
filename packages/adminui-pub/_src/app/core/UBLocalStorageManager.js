@@ -151,8 +151,8 @@ Ext.define('UB.core.UBLocalStorageManager', {
 
   removeUserDataUI: function () {
     const keys = this.getKeys()
-    const re = /_UI$/
-    keys.forEach(function (key) {
+    const re = /_UI$|^UTableEntity:/
+    keys.forEach((key) => {
       if (re.test(key)) {
         localStorage.removeItem(key)
       }
