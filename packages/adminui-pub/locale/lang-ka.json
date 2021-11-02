@@ -63,6 +63,8 @@
   "deleteConfirmation": "ჩანაწერი წაიშლება '{0}'. დარწმუნებული ხართ?",
   "deleteConfirmationWithCaption": "ჩანაწერი {1} იქნება წაშლილი '{0}'. დარწმუნებული ხართ?",
   "deleteFormConfirmCaption": "იქნება წაშლილი '{0}'. დარწმუნებული ხართ?",
+  "deleteMultipleFormConfirmCaption": "ჩანაწერი {0} წაშლილია. Დარწმუნებული ხარ?",
+  "deleteMultipleImpossibleAlert": "ჩანაწერი {0} '{1}'-ით ვერ წაიშლება",
   "rowEditing": "საჭიროა რედაქტირების მონაცემების შევსება",
   "notValidForColumns": "არ არის სწორი ღირებულებები სვეტში {0}",
   "vyUvereny": "დარწმუნებული ხართ?",

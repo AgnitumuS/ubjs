@@ -28,6 +28,8 @@
   "deletionDialogConfirmCaption": "O'chirishni tasdiqlang",
   "deleteConfirmation": "Yozuv dan o'chiriladi '{0}'. Ishonchingiz komilmi?",
   "deleteFormConfirmCaption": "\"{0}\" o'chiriladi. Ishonchingiz komilmi?",
+  "deleteMultipleFormConfirmCaption": "{0} ta yozuv oʻchiriladi. Ishonchingiz komilmi?",
+  "deleteMultipleImpossibleAlert": "'{1}' bilan {0} yozuvini oʻchirib boʻlmaydi",
   "rowEditing": "Ma'lumotlarni tahrirlashni yakunlash kerak",
   "notValidForColumns": "{0} Ustunlaridagi qiymatlar yaroqsiz",
   "vyUvereny": "Ishonchingiz komilmi?",

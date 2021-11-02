@@ -63,6 +63,8 @@
   "deleteConfirmation": "Record wordt verwijderd uit '{0}'. Weet u het zeker?",
   "deleteConfirmationWithCaption": "Record {1} wordt verwijderd uit '{0}'. Weet u het zeker?",
   "deleteFormConfirmCaption": "Wordt verwijderd '{0}'. Weet u het zeker?",
+  "deleteMultipleFormConfirmCaption": "{0} poster vil blive slettet. Er du sikker?",
+  "deleteMultipleImpossibleAlert": "Indtastningen {0} med '{1}' kan ikke slettes",
   "rowEditing": "Moet de bewerkingsgegevens voltooien",
   "notValidForColumns": "Ongeldige waarden in kolommen {0}",
   "vyUvereny": "Weet u het zeker?",

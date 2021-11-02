@@ -66,6 +66,8 @@
   "deleteConfirmation": "Будет удалена запись из '{0}'. Вы уверены?",
   "deleteConfirmationWithCaption": "Будет удалена запись {1} из '{0}'. Вы уверены?",
   "deleteFormConfirmCaption": "Будет удалено '{0}'. Вы уверены?",
+  "deleteMultipleFormConfirmCaption": "Будет удалено {0} записей. Вы уверены?",
+  "deleteMultipleImpossibleAlert": "Записи {0} из '{1}' удалить невозможно",
   "rowEditing": "Необходимо завершить редактирование данных",
   "notValidForColumns": "Недопустимые значения в колонках {0}",
   "vyUvereny": "Вы уверены?",
