@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - UTableEntity.store: action `showRevision` renamed to `showRecordHistory`; both `UTable` and `Form` uses the same
    function to show record history
+ - UTableEntity filters: for columns of type Entity, Many and Enum 'in' condition caption is renamed from `contains` to `one of` 
 
 ### Deprecated
 
