@@ -26,10 +26,10 @@ Ext.define('UB.core.UBUtil', {
    * @return {String[]}
    */
   getLocalStorageKeys: function () {
-    let keys = []
-    let ls = window.localStorage
+    const keys = []
+    const ls = window.localStorage
     if (ls) {
-      for (var i = 0, len = ls.length; i < len; ++i) {
+      for (let i = 0, len = ls.length; i < len; ++i) {
         keys.push(ls.key(i))
       }
     }
