@@ -10,12 +10,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  Before this fix, only **mi_wfState** attribute was displayed. After this only attributes, added by `mStorage` mixin are omitted.
 
 ### Changed
+ - localizations of `uba_group` entity caption: `Groups` => `User Groups`, `Групи` => `Групи користувачів`...
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - typo in the description of the `targetGroup` attribute of `uba_audit` entity
 
 ## [5.20.28] - 2021-10-27
 ### Changed

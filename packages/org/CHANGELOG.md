@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `org_employeeonstaff_all` shortcut - enable `__mip_recordhistory_all` misc and add a columns [mi_dateForm] and [mi_dateTo]
 
 ### Changed
+ - English localization of the `ORG_UNITTYPE.EXECGROUP` enum item: `Execution Group` => `Executors Group`
 
 ### Deprecated
 
