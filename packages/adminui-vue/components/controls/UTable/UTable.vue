@@ -58,7 +58,7 @@
               icon="u-icon-sort-asc"
               size="small"
               :color="
-                col.id === sortCol && sortWay === 'asc' ? 'primary' : 'control'
+                col.id === sortCol && sortDirection === 'asc' ? 'primary' : 'control'
               "
               @click.native="doSort(col, 'asc')"
             />
@@ -66,7 +66,7 @@
               icon="u-icon-sort-desc"
               size="small"
               :color="
-                col.id === sortCol && sortWay === 'desc' ? 'primary' : 'control'
+                col.id === sortCol && sortDirection === 'desc' ? 'primary' : 'control'
               "
               @click.native="doSort(col, 'desc')"
             />
@@ -237,13 +237,13 @@ export default {
      *
      * `col` -  the column by which the sorting will be.
      *
-     * `way` - sorting direction. "asc" or "desc"
+     * `direction` - sorting direction. "asc" or "desc"
      */
     defaultSort: { type: Object, default: () => ({}) }
   },
   data () {
     return {
-      sortWay: '',
+      sortDirection: '',
       sortCol: ''
     }
   },
@@ -286,16 +286,17 @@ export default {
       const { defaultSort } = this
       if (Object.keys(defaultSort).length !== 2) return
       const col = this.columns.find(i => i.id === defaultSort.col)
-      this.doSort(col, defaultSort.way)
+      this.doSort(col, defaultSort.direction)
     },
-    doSort (col, way = 'asc') {
+    doSort (col, direction = 'asc') {
       const { items } = this
       const fieldName = col.id
-      this.sortWay = way
+      this.sortDirection = direction
       this.sortCol = fieldName
       items.sort((a, b) => {
-        if (way === 'asc') return a[fieldName] > b[fieldName] ? 1 : -1
-        if (way === 'desc') return b[fieldName] > a[fieldName] ? 1 : -1
+        if (direction === 'asc') return a[fieldName] > b[fieldName] ? 1 : -1
+        if (direction === 'desc') return b[fieldName] > a[fieldName] ? 1 : -1
+        return 0
       })
     },
     getAlignClass (align = 'left') {

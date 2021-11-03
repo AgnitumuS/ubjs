@@ -139,7 +139,7 @@ Sorting in the browser. Whitout request to server
     :items="currencies"
     :columns="columns"
     enableSort
-    :default-sort="{col: 'country', way: 'asc'}"
+    :default-sort="{col: 'country', direction: 'asc'}"
     sortAttrInColumn="value"
   />
 </template>
