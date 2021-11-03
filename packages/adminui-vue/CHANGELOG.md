@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    attributes nor Repository is specified
  - Full Text Search result - "View Mode" toolbar action now hidden - there is no preview form for FTS [UBDF-14077]
  - Full Text Search result - "Export to Excel" removes HTML tags from cells values [UBDF-12565]
+ - `Form` fabric function for auto forms accept `onClose` callback (as for non-autoforms), so
+  ```
+   App.doCommand({cmdType: 'showForm', formCode 'some-form', onColse: (ID, state) => {..})}
+  ```
+  will call `onClose` callback for any form type (autoforms, Ext and Vue)
 
 ## [5.20.28] - 2021-10-27
 ### Fixed
