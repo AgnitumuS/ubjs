@@ -80,7 +80,7 @@ function replaceExtJSNavbar () {
 }
 
 function replaceAutoForms () {
-  const { entity, instanceID, parentContext, isModal, target } = this
+  const { entity, instanceID, parentContext, isModal, target, onClose } = this
 
   Form({
     component: UAutoForm,
@@ -92,7 +92,8 @@ function replaceAutoForms () {
     target,
     uiTag: `afm-${entity}`,
     isCopy: this.commandConfig.isCopy,
-    modalClass: 'ub-dialog__reset-padding'
+    modalClass: 'ub-dialog__reset-padding',
+    onClose
   })
     .processing()
     .validation()
