@@ -750,11 +750,11 @@ export default {
         onClose: this.skipAutoComplete
           ? undefined
           : (ID, store) => {
+              this.editingFormIsOpened = false
               if (!ID) return // form for adding new record is closed while in isNew state (value not saved to DB) - do nothing
+              if (!this.$el.isConnected) return // form is closed before addNew form
               const formAttrs = Object.assign({}, store.state.data) // form data is plain, so safe to use assign
               this.$emit('input', formAttrs[this.valueAttribute], formAttrs)
-              this.editingFormIsOpened = false
-              console.debug('Emitted1', ID, formAttrs[this.valueAttribute], formAttrs)
             }
       })
       this.editingFormIsOpened = true
