@@ -294,9 +294,8 @@ export default {
       this.sortDirection = direction
       this.sortCol = fieldName
       items.sort((a, b) => {
-        if (direction === 'asc') return a[fieldName] > b[fieldName] ? 1 : -1
-        if (direction === 'desc') return b[fieldName] > a[fieldName] ? 1 : -1
-        return 0
+        const index  = UB.formatter.collationCompare(a[fieldName],b[fieldName])
+        return direction === 'desc' ? index * -1 : index  
       })
     },
     getAlignClass (align = 'left') {
