@@ -424,10 +424,6 @@ export default {
     }
   },
 
-  created () {
-    this.AUTOCOMPLETE_LISTENER_UID = null
-  },
-
   methods: {
     getRepository () {
       if (this.repository) {
