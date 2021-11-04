@@ -9,7 +9,8 @@
     :selected-rows="curSelected"
     :show-delete-multiple-btn="showDeleteMultipleBtn"
     v-on="tableListeners"
-    @selected="handlerRowSelection"
+    @addSelected="handlerAddSelected"
+    @removeSelected="handlerRemoveSelected"
     @deleteMultipleResult="deleteMultipleResult"
   >
     <template
@@ -243,12 +244,11 @@ export default {
   },
 
   async created () {
-    this.selectionCache = new Set();
+    this.selectionCache = new Set(this.selectedRows);
     this.tableItems = [];
     const storeConfig = createStore(this)
     this.$store = new Vuex.Store(storeConfig)
     this.$watch('$store.state.items', this.handlerTableDataChange)
-    this.handlerRowSelection(this.selectedRows)
     await this.beforeInitialLoad(this)
     this.loadData()
   },
@@ -268,25 +268,17 @@ export default {
 
   methods: {
     ...mapActions(['loadData', 'unsubscribeLookups', 'updateData']),
-    handlerRowSelection (ev) {
+    handlerAddSelected(addedArr){
       const { selectionCache, multiSelectKeyAttr } = this
-      const newSelection = new Set(ev)
-      if (selectionCache.size === 0) {
-        this.selectionCache = newSelection
-        this.curSelected = [...this.selectionCache]
-        this.emitSelectedEvent()
-        return
-      }
-      this.tableItems.forEach(elem => {
-        const id = elem[multiSelectKeyAttr]
-        const inCache = selectionCache.has(id)
-        const inCurrent = newSelection.has(id)
-        if (inCache && !inCurrent) {
-          selectionCache.delete(id)
-        }
-        if (!inCache && inCurrent) {
-          selectionCache.add(id)
-        }
+      addedArr.forEach(item => {
+        selectionCache.add(item[multiSelectKeyAttr])
+      })
+       this.emitSelectedEvent()
+    },
+    handlerRemoveSelected(removedArr){
+      const { selectionCache, multiSelectKeyAttr } = this
+      removedArr.forEach(item => {
+        selectionCache.delete(item[multiSelectKeyAttr])
       })
       this.emitSelectedEvent()
     },
