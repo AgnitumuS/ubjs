@@ -232,9 +232,9 @@
   "selectFromDictionary": "Выбрать из справочника",
   "clearSelection": "Очистить",
 
-  "isNull": "Пусто",
-  "by_value": "Равняется",
-  "by_several_value": "Одно из",
+  "isNull": "пусто",
+  "by_value": "равно",
+  "by_several_value": "одно из",
   "more": "больше",
   "less": "меньше",
   "equal": "равняется",

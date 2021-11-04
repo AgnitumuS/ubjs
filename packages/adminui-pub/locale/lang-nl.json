@@ -228,9 +228,9 @@
   "calcRowCount": "Het aantal rijen tellen",
   "totalRowCount": "Het totale aantel rijen",
 
-  "isNull": "Leeg",
-  "by_value": "Gelijk",
-  "by_several_value": "Meerdere",
+  "isNull": "leeg",
+  "by_value": "gelijk",
+  "by_several_value": "meerdere",
   "more": "meer dan",
   "less": "minder dan",
   "equal": "gelijk",

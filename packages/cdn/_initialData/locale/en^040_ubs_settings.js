@@ -12,7 +12,7 @@ module.exports = function (session) {
       { keyValue: 'cdn.organization.accessAddGovByRoles',
         execParams: {
           name: 'Comma separated list of roles',
-          description: 'Comma separated list of roles who can add rows to `cdn_organigation` with types `cdn_orgbusinesstype.isGovAuthority`' }
+          description: '*REQUIRE SERVER RESTART*. Comma separated list of roles who can add rows to `cdn_organigation` with types `cdn_orgbusinesstype.isGovAuthority`' }
       },
       { keyValue: 'cdn.organization.allowAutoGenerateOKPO',
         execParams: {

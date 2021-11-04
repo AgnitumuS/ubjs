@@ -3,7 +3,7 @@
     :button-disabled="value.length === 0"
     @submit="$emit('search', {
       whereList: [{condition: 'in', value}],
-      description: $ut('contains') + ' ' + manyOptions
+      description: $ut('by_several_value') + ' ' + manyOptions
     })"
   >
     <u-select-multiple

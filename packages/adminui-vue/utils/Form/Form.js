@@ -69,7 +69,8 @@ class UForm {
    * @param {object} [cfg.target] Optional target. Used for render form into form
    * @param {boolean} cfg.isCopy Required isCopy. Used for create new record with data of existing record
    * @param {string} [cfg.titleTooltip] Form title tooltip
-   * @param {Function} [cfg.onClose] Callback function from ext-based parent control
+   * @param {function} [cfg.onClose] Async callback, called (and awaited) before form is destroyed with 2 args:
+   *    (ID: number|null, store: Vuex.Store); In case form is in isNew state, ID value is null, otherwise - an ID from store
    */
   constructor ({
     component,

@@ -227,9 +227,9 @@
   "calcRowCount": "Count the number of rows",
   "totalRowCount": "The total number of lines",
 
-  "isNull": "Empty",
-  "by_value": "Equal",
-  "by_several_value": "Multiple",
+  "isNull": "empty",
+  "by_value": "equal",
+  "by_several_value": "one of",
   "more": "more",
   "less": "less",
   "equal": "equal",
