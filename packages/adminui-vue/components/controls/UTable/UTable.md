@@ -138,9 +138,8 @@ Sorting in the browser. Whitout request to server
   <u-table
     :items="currencies"
     :columns="columns"
-    enableSort
-    :default-sort="{col: 'country', direction: 'asc'}"
-    sortAttrInColumn="value"
+    sorting
+    :initial-sorting="{col: 'country', direction: 'asc'}"
   />
 </template>
 <script>

@@ -3,7 +3,7 @@
     class="u-table"
     :class="{
       'u-table__multiple': showMultiSelectionColumn,
-      'u-table--sort': enableSort
+      'u-table--sort': sorting
     }"
     :style="tableStyle"
   >
@@ -11,7 +11,7 @@
       <tr>
         <th
           v-if="showMultiSelectionColumn"
-          @click="handlerAllChecked"
+          @click="handlerCheckedAll"
         >
           <span
             class="el-checkbox__input"
@@ -51,7 +51,7 @@
             {{ formatHead({ column: col }) }}
           </slot>
           <span
-            v-if="enableSort"
+            v-if="sorting"
             class="u-table__sort"
           >
             <u-icon
@@ -81,7 +81,7 @@
           { 'selected-row': curSelection.includes(row[multiSelectKeyAttr]) }
         ]"
         @dblclick="$emit('dblclick-row', { row })"
-        @click="handlerClickOnRow(row)"
+        @click="handlerRowClick(row)"
       >
         <td v-if="showMultiSelectionColumn">
           <!-- repeat html-structure for el-checkbox ElementUI -->
@@ -231,7 +231,7 @@ export default {
     /**
      * enable sort mode for table. Default `false`. Sorting in the browser
      */
-    enableSort: { type: Boolean, default: false },
+    sorting: { type: Boolean, default: false },
     /**
      * options for sorting.
      *
@@ -239,7 +239,7 @@ export default {
      *
      * `direction` - sorting direction. "asc" or "desc"
      */
-    defaultSort: { type: Object, default: () => ({}) }
+    initialSorting: { type: Object, default: () => ({}) }
   },
   data () {
     return {
@@ -279,14 +279,14 @@ export default {
   },
   async mounted () {
     await this.$nextTick()
-    if (this.enableSort) this.initSort()
+    if (this.sorting) this.initSort()
   },
   methods: {
     initSort () {
-      const { defaultSort } = this
-      if (Object.keys(defaultSort).length !== 2) return
-      const col = this.columns.find(i => i.id === defaultSort.col)
-      this.doSort(col, defaultSort.direction)
+      const { initialSorting } = this
+      if (Object.keys(initialSorting).length !== 2) return
+      const col = this.columns.find(i => i.id === initialSorting.col)
+      this.doSort(col, initialSorting.direction)
     },
     doSort (col, direction = 'asc') {
       const { items } = this

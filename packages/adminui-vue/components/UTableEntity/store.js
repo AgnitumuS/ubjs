@@ -26,7 +26,8 @@ const openDataHistoryDatePicker = require('./components/DataHistoryDatePicker/da
 module.exports = instance => ({
   state () {
     return {
-      items: [] /* table data */,
+      /* table data */
+      items: [],
 
       loading: false,
 
@@ -536,7 +537,7 @@ module.exports = instance => ({
         $notify.success(UB.i18n('recordDeletedSuccessfully'))
       }
     },
-    async deleteRecordsMultiple ({ state, commit, getters }, payload) {
+    async deleteMultipleRecords ({ state, commit, getters }, payload) {
       const { attr, data } = payload
 
       const answer = await uDialogs.dialogYesNo(
@@ -545,7 +546,7 @@ module.exports = instance => ({
       )
       if (!answer) return
       commit('LOADING', true)
-      const successDelete = []
+      const deletedItems = []
       for (const code of data) {
         const template = {
           entity: getters.entityName,
@@ -555,7 +556,7 @@ module.exports = instance => ({
         }
         try {
           await UB.connection.doDelete(template)
-          successDelete.push(code)
+          deletedItems.push(code)
         } catch (err) {
           const cantDeleteItem = state.items.find(i => i[attr] === code)
           let caption = getDescriptionItem(getters.entityName, cantDeleteItem)
@@ -577,18 +578,18 @@ module.exports = instance => ({
       }
       commit('LOADING', false)
       commit('SELECT_ROW', null)
-      return { success: successDelete }
+      return { success: deletedItems }
 
       function getDescriptionItem (entity, instanceData = {}) {
         const descriptionAttr = UB.connection.domain.get(entity)
           .descriptionAttribute
         const caption = instanceData[descriptionAttr] || ''
-        const mess = UB.i18n(
+        const msg = UB.i18n(
           'deleteMultipleImpossibleAlert',
           caption,
           UB.i18n(entity)
         )
-        return caption ? mess.replace(caption, `<b>${caption}</b>`) : mess
+        return caption ? msg.replace(caption, `<b>${caption}</b>`) : msg
       }
     },
 

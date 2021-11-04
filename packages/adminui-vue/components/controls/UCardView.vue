@@ -3,7 +3,7 @@
     <div
       v-if="showMultiSelectionColumn"
       class="u-card__select-all"
-      @click="handlerAllChecked"
+      @click="handlerCheckedAll"
     >
       {{ $ut('selectAll') }}
       <span
@@ -35,7 +35,7 @@
             )
           }
         ]"
-        @click="handlerClickOnRow(row)"
+        @click="handlerRowClick(row)"
         @dblclick="$emit('dblclick', { row })"
         @contextmenu="$emit('contextmenu', { event: $event, row })"
       >

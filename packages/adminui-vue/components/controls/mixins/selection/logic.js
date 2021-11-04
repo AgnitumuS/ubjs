@@ -26,7 +26,7 @@ module.exports = {
     }
   },
   methods: {
-    handlerClickOnRow (row) {
+    handlerRowClick (row) {
       if (this.enableMultiSelect) this.handlerSelection(row)
       this.$emit('click', { row })
     },
@@ -37,14 +37,14 @@ module.exports = {
       const hasIndex = arr.indexOf(id)
       if (hasIndex === -1) {
         arr.push(id)
-        this.emitAddSelection([row])
+        this.emitAddSelectionEvent([row])
       } else {
         arr.splice(hasIndex, 1)
-        this.emitRemoveSelection([row])
+        this.emitRemoveSelectionEvent([row])
       }
-      this.emitSelection()
+      this.emitSelectionEvent()
     },
-    emitAddSelection (arr) {
+    emitAddSelectionEvent (arr) {
       /**
        * Triggers when the user adds the selection
        *
@@ -52,7 +52,7 @@ module.exports = {
        */
       this.$emit('addSelected', arr)
     },
-    emitRemoveSelection (arr) {
+    emitRemoveSelectionEvent (arr) {
       /**
        * Triggers when the user removes the selection
        *
@@ -60,7 +60,7 @@ module.exports = {
        */
       this.$emit('removeSelected', arr)
     },
-    emitSelection () {
+    emitSelectionEvent () {
       /**
        * Triggers when the user removes or adds a selection
        *
@@ -68,33 +68,33 @@ module.exports = {
        */
       this.$emit('selected', this.curSelection)
     },
-    handlerAllChecked () {
+    handlerCheckedAll () {
       const { items, allSelected, multiSelectKeyAttr } = this
       const temp = new Set(this.curSelection)
       if (!allSelected) {
-        const addedCash = []
+        const addedCache = []
         items.forEach(el => {
           const value = el[multiSelectKeyAttr]
           if (!temp.has(value)) {
             temp.add(value)
-            addedCash.push(el)
+            addedCache.push(el)
           }
         })
-        this.emitAddSelection(addedCash)
+        this.emitAddSelectionEvent(addedCache)
         this.curSelection = [...temp]
       } else {
-        const removedCash = []
+        const removedCache = []
         items.forEach(el => {
           const value = el[multiSelectKeyAttr]
           if (temp.has(value)) {
             temp.delete(value)
-            removedCash.push(el)
+            removedCache.push(el)
           }
         })
-        this.emitRemoveSelection(removedCash)
+        this.emitRemoveSelectionEvent(removedCache)
         this.curSelection.splice(0)
       }
-      this.emitSelection()
+      this.emitSelectionEvent()
     }
   }
 }

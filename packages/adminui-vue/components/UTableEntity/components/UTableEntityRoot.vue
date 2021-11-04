@@ -675,7 +675,7 @@ export default {
     },
     async deleteMultiple () {
       if (!this.canDeleteMultiple) return
-      const result = await this.$store.dispatch('deleteRecordsMultiple', {
+      const result = await this.$store.dispatch('deleteMultipleRecords', {
         attr: this.multiSelectKeyAttr,
         data: this.curSelected
       })

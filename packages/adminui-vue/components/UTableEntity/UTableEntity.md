@@ -301,26 +301,26 @@ export default {
 <template>
   <div>
     <u-table
-      :selected-rows="selectionIDs"
+      :selected-rows="selectedID"
       :items="currencies"
       :columns="columns"
       enableMultiSelect
-      @selected="selectionIDs = $event"
-      @removeSelected="beenRemoved = $event"
-      @addSelected="beenAdd = $event"
+      @selected="selectedID = $event"
+      @removeSelected="removed = $event"
+      @addSelected="added = $event"
     />
-    <p>selectionIDs: {{selectionIDs}}</p>
-    <p>have been added: {{beenAdd}}</p>
-    <p>have been removed: {{beenRemoved}}</p>
+    <p>selectedID: {{selectedID}}</p>
+    <p>added: {{added}}</p>
+    <p>removed: {{removed}}</p>
   </div>
 </template>
 <script>
   export default {
     data () {
       return {
-        selectionIDs: [2,3],
-        beenRemoved: [],
-        beenAdd: [],
+        selectedID: [2,3],
+        removed: [],
+        added: [],
         currencies: [{
           ID: 1,
           code: 'UAH',

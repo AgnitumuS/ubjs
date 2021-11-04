@@ -9,7 +9,7 @@
     :selected-rows="curSelected"
     :show-delete-multiple-btn="showDeleteMultipleBtn"
     v-on="tableListeners"
-    @selected="handlerSelectionRow"
+    @selected="handlerRowSelection"
     @deleteMultipleResult="deleteMultipleResult"
   >
     <template
@@ -182,8 +182,6 @@ export default {
   data () {
     return {
       curSelected: [],
-      cacheSelection: new Set(),
-      tableItems: []
     }
   },
   computed: {
@@ -245,10 +243,12 @@ export default {
   },
 
   async created () {
+    this.selectionCache = new Set();
+    this.tableItems = [];
     const storeConfig = createStore(this)
     this.$store = new Vuex.Store(storeConfig)
-    this.$watch('$store.state.items', this.handlerChangeTableData)
-    this.handlerSelectionRow(this.selectedRows)
+    this.$watch('$store.state.items', this.handlerTableDataChange)
+    this.handlerRowSelection(this.selectedRows)
     await this.beforeInitialLoad(this)
     this.loadData()
   },
@@ -268,51 +268,51 @@ export default {
 
   methods: {
     ...mapActions(['loadData', 'unsubscribeLookups', 'updateData']),
-    handlerSelectionRow (ev) {
-      const { cacheSelection, multiSelectKeyAttr } = this
+    handlerRowSelection (ev) {
+      const { selectionCache, multiSelectKeyAttr } = this
       const newSelection = new Set(ev)
-      if (cacheSelection.size === 0) {
-        this.cacheSelection = newSelection
-        this.curSelected = [...this.cacheSelection]
-        this.emitSelected()
+      if (selectionCache.size === 0) {
+        this.selectionCache = newSelection
+        this.curSelected = [...this.selectionCache]
+        this.emitSelectedEvent()
         return
       }
       this.tableItems.forEach(elem => {
         const id = elem[multiSelectKeyAttr]
-        const hasInCache = cacheSelection.has(id)
-        const curHas = newSelection.has(id)
-        if (hasInCache && !curHas) {
-          cacheSelection.delete(id)
+        const inCache = selectionCache.has(id)
+        const inCurrent = newSelection.has(id)
+        if (inCache && !inCurrent) {
+          selectionCache.delete(id)
         }
-        if (!hasInCache && curHas) {
-          cacheSelection.add(id)
+        if (!inCache && inCurrent) {
+          selectionCache.add(id)
         }
       })
-      this.emitSelected()
+      this.emitSelectedEvent()
     },
-    emitSelected () {
-      this.$emit('selected', [...this.cacheSelection])
+    emitSelectedEvent () {
+      this.$emit('selected', [...this.selectionCache])
     },
-    handlerChangeTableData (items) {
+    handlerTableDataChange (items) {
       this.tableItems = items
-      this.setCurSelected()
+      this.setCurrentSelected()
     },
-    setCurSelected () {
+    setCurrentSelected () {
       this.curSelected.splice(0)
-      const { cacheSelection, multiSelectKeyAttr } = this
+      const { selectionCache, multiSelectKeyAttr } = this
       this.tableItems.forEach(elem => {
         const id = elem[multiSelectKeyAttr]
-        const hasInCache = cacheSelection.has(id)
-        if (hasInCache) this.curSelected.push(id)
+        const inCache = selectionCache.has(id)
+        if (inCache) this.curSelected.push(id)
       })
     },
     deleteMultipleResult (ev) {
       if (!ev) return
       const { success } = ev
       if (!success || success.length === 0) return
-      success.forEach(code => this.cacheSelection.delete(code))
-      this.setCurSelected()
-      this.emitSelected()
+      success.forEach(code => this.selectionCache.delete(code))
+      this.setCurrentSelected()
+      this.emitSelectedEvent()
       this.deleteMultipleShowSuccessAlert(success)
       this.$store.dispatch('refresh')
     },
@@ -326,14 +326,14 @@ export default {
       this.$notify.success({
         title: UB.i18n('recordDeletedSuccessfully'),
         message: `<ul class="multiple-delete--alert">${message}</ul>`,
-        duration: 100 * 1000,
+        duration,
         dangerouslyUseHTMLString: true
       })
       function getDescription (code) {
         const item = tableItems.find(i => i[multiSelectKeyAttr] === code)
-        const descAttr = UB.connection.domain.get(getEntityName)
+        const descriptionAttr = UB.connection.domain.get(getEntityName)
           .descriptionAttribute
-        return item[descAttr] || ''
+        return item[descriptionAttr] || ''
       }
     },
     getRepository () {
