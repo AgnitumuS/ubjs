@@ -12,10 +12,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
- - `cdn_person.identCard` (Person's identity card) - removed multi-language support for attribute (does not make sense)
-  
+
 ### Fixed
 
+## [5.20.29] - 2021-11-05
+### Removed
+ - `cdn_person.identCard` (Person's identity card) - removed multi-language support for attribute (does not make sense)
+  
 ## [5.20.28] - 2021-10-27
 ## [5.20.27] - 2021-10-18
 ### Added
