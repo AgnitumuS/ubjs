@@ -61,7 +61,7 @@
           appearance="inverse"
           icon="u-icon-delete"
           color="control"
-          :disabled="loading || curSelected.length === 0"
+          :disabled="loading || (curSelected.length === 0)"
           @click="deleteMultiple"
         />
 
@@ -553,6 +553,10 @@ export default {
      * @type {function({ID: Number, row: Object, close: function})}
      */
     onSelectRecord: Function,
+    /**
+     * Show "delete multiple" button if multi-select is enabled
+     * @type {boolean}
+     */
     showDeleteMultipleBtn: {
       type: Boolean,
       default: false
@@ -624,11 +628,10 @@ export default {
       }
     },
     canDeleteMultiple () {
-      const { enableMultiSelect, showDeleteMultipleBtn, $store } = this
       return (
-        showDeleteMultipleBtn &&
-        enableMultiSelect &&
-        $store.getters.schema.haveAccessToMethod('delete')
+        this.showDeleteMultipleBtn &&
+        this.enableMultiSelect &&
+        this.$store.getters.schema.haveAccessToMethod('delete')
       )
     }
   },
