@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+- `UTable` - Added data sorting by column, without a request to the server. See [UTable UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UTable) 
+- `UTable` - added multi-select functionality. See [UTable UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UTable) 
+- `UTableEntity` - added multi-select functionality. See [UTableEntity UI doc](https://unitybase.info/api/adminui-vue/index.html#/Data-aware/UTableEntity) 
 ### Changed
 
 ### Deprecated
