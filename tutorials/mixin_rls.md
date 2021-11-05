@@ -230,7 +230,7 @@ There is an object `Session`.  The following properties are useful for developin
   checked without any query to DB by role name using the following code snippet:  
 ```javascript
 const Session = require('@unitybase/ub').Session
-Session.uData.roles.split(',').find(r => r === 'roleName') != null
+Session.hasRole('roleName')
 ```
 * `uData` - a structure with other useful properties like:
   * `uData.roleIDs` - array of numbers - IDs of roles assigned to the current user

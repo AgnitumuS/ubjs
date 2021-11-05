@@ -6,14 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `Stored Data` -> `Reset GUI settings` user menu will clear stored filters and sort orders for Vue UTableEntity (in addition to Ext Tables)
-  
+
 ### Changed
 
 ### Deprecated
 
 ### Removed
 
+### Fixed
+
+## [5.20.29] - 2021-11-05
+### Added
+ - `Stored Data` -> `Reset GUI settings` user menu will clear stored filters and sort orders for Vue UTableEntity (in addition to Ext Tables)
+  
 ### Fixed
  - ExtJS based form (BasePanel) will emit `newversion`, `update` and `insert` events for `UB.connection` with payload, contais all form attributes (as Vue based forms does), instead of payload what contains only ID. This fix [UBDF-14305]
  - Audit Trail UI Table -> Audit action now hidden [UBDF-11338] 

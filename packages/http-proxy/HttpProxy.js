@@ -48,7 +48,7 @@ class HttpProxy extends EventEmitter {
     super()
     this.endpoint = config.endpoint
 
-    let requestParams = {
+    const requestParams = {
       URL: config.targetURL,
       keepAlive: true,
       compressionEnable: config.compressionEnable
@@ -82,21 +82,20 @@ class HttpProxy extends EventEmitter {
 
   userHasRoles () {
     if (!this.authorizedRole) return true
-    let roleNames = Session.userRoleNames.split(',')
     if (Array.isArray(this.authorizedRole)) {
-      return !this.authorizedRole.every(role => !roleNames.includes(role))
+      return !this.authorizedRole.every(role => !Session.hasRole(role))
     }
-    return roleNames.includes(this.authorizedRole)
+    return Session.hasRole(this.authorizedRole)
   }
 
   checkRequestIsAuthorized (path, resp) {
     if (this.nonAuthorizedURLs) {
-      for (let urlRegexp of this.nonAuthorizedURLs) {
+      for (const urlRegexp of this.nonAuthorizedURLs) {
         if (urlRegexp.test(path)) return true
       }
     } else {
       let needAuth = false
-      for (let urlRegexp of this.authorizedURLs) {
+      for (const urlRegexp of this.authorizedURLs) {
         if (urlRegexp.test(path)) {
           needAuth = true
           break
@@ -124,7 +123,7 @@ class HttpProxy extends EventEmitter {
     this.reverseRequest.setMethod(req.method)
     this.reverseRequest.setHeadersAsString(req.headers)
 
-    let path = (this.basePath ? this.basePath + (req.uri ? '/' : '') : '') + (req.uri || '/') + (req.parameters ? '?' + req.parameters : '')
+    const path = (this.basePath ? this.basePath + (req.uri ? '/' : '') : '') + (req.uri || '/') + (req.parameters ? '?' + req.parameters : '')
     if (!this.checkRequestIsAuthorized(path, resp)) {
       return
     }
@@ -142,7 +141,7 @@ class HttpProxy extends EventEmitter {
       return
     }
 
-    let responseHeaders = response.headers
+    const responseHeaders = response.headers
     // TODO - do we need handle a redirect here?
     // switch (response.statusCode) {
     //   case 301:
@@ -163,8 +162,8 @@ class HttpProxy extends EventEmitter {
     }
 
     if (responseHeaders['cache-control']) resp.writeHead('Cache-Control: ' + responseHeaders['cache-control'])
-    if (responseHeaders['date']) resp.writeHead('Date: ' + responseHeaders['date'])
-    if (responseHeaders['etag']) resp.writeHead('ETag: ' + responseHeaders['etag'])
+    if (responseHeaders.date) resp.writeHead('Date: ' + responseHeaders.date)
+    if (responseHeaders.etag) resp.writeHead('ETag: ' + responseHeaders.etag)
     if (responseHeaders['last-modified']) resp.writeHead('Last-Modified: ' + responseHeaders['last-modified'])
 
     resp.writeEnd(response.read('bin'), 'bin')

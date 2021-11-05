@@ -33,9 +33,8 @@ function udiskController (diskEntity) {
   me.entity.addMethod('getDiskType')
 
   function userHasAnyRole (...roleCodes) {
-    let userRoleList = Session.uData.roles.split(',')
     for (let i = 0, L = roleCodes.length; i < L; i++) {
-      if (userRoleList.includes(roleCodes[i])) {
+      if (Session.hasRole(roleCodes[i])) {
         return true
       }
     }
