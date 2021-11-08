@@ -264,8 +264,14 @@ module.exports = {
     instance.unsubscribe(entity)
   },
 
+  /**
+   * Refresh lookups associated with specified entity
+   * @param {string} entity
+   * @param {array<string>} [attrs] lookup attributes (in addition to ID and description attribute)
+   * @returns {Promise<void>}
+   */
   refresh (entity, attrs = []) {
-    instance.refresh(entity, attrs)
+    return instance.refresh(entity, attrs)
   },
   /**
    * Initialize lookups reactivity by create stubs for all available domain entities.
