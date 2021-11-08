@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    Default is 0 - do not refresh lookups. *WARNING* - entities with `Session` and `SessionEntity` cache type will not be refreshed.  
 
 ### Changed
+ - `UTableEntity`: lookups are loaded in parallel to speed-up table loading
 
 ### Deprecated
 
