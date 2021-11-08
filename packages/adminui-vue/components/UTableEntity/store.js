@@ -609,11 +609,14 @@ module.exports = (instance) => ({
      */
     async loadData ({ getters, commit, dispatch }) {
       commit('LOADING', true)
-      await Promise.all(
-        getters.lookupEntities.map(({ entity, associatedAttr }) => lookups.subscribe(entity, [associatedAttr]))
-      )
-      await dispatch('fetchItems')
-      commit('LOADING', false)
+      try {
+        await Promise.all(
+          getters.lookupEntities.map(({ entity, associatedAttr }) => lookups.subscribe(entity, [associatedAttr]))
+        )
+        await dispatch('fetchItems')
+      } finally {
+        commit('LOADING', false)
+      }
     },
 
     unsubscribeLookups ({ getters }) {
