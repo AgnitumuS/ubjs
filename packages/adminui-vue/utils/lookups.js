@@ -31,6 +31,7 @@
 const Vue = require('vue')
 const UB = require('@unitybase/ub-pub')
 const ENUM_ENTITY = 'ubm_enum'
+let LOOKUP_CACHE_INTERVAL_MS = 0 // never refresh lookups
 
 const instance = new Vue({
   data () {
@@ -41,11 +42,20 @@ const instance = new Vue({
 
   methods: {
     async init () {
+      const lookupCacheIntervalSecFromCfg = UB.connection.appConfig.uiSettings?.adminUI.lookupCacheRefreshIntervalSec
+      if (lookupCacheIntervalSecFromCfg !== undefined) {
+        if (typeof lookupCacheIntervalSecFromCfg !== 'number') {
+          UB.logError('config.uiSettings.adminUI.lookupCacheRefreshIntervalSec should be an Integer. Refresh of lookups is disabled')
+        } else {
+          LOOKUP_CACHE_INTERVAL_MS = lookupCacheIntervalSecFromCfg * 1000
+        }
+      }
+
       const availableEntities = Object.keys(UB.connection.domain.entities)
       for (const entity of availableEntities) {
         this.$set(this.entities, entity, {
           subscribes: 0,
-          refreshed_At: undefined,
+          refreshedAt: undefined,
           onEntityChanged: async response => {
             if (response === undefined) {
               return
@@ -114,7 +124,7 @@ const instance = new Vue({
       if (isFirstSubscription) {
         UB.connection.on(`${entity}:changed`, subscription.onEntityChanged)
       }
-      
+
       if (hasAdditionalAttrs) {
         for (const attr of attrs) {
           subscription.attrs.add(attr)
@@ -144,9 +154,11 @@ const instance = new Vue({
             UB.logWarn(`Lookups: Too many rows (${resultData.length}) returned for "${entity}" lookup. Consider to avoid lookups for huge entities to prevents performance degradation`)
           }
           subscription.data.splice(0, subscription.data.length, ...resultData)
-          this.$set(this.entities[entity], 'mapById', resultData.reduce((a, r) => ({ ...a, [r.ID] : r }), {}))
-
-          subscription.refreshed_At = new Date().getTime()
+          // create hash by ID for O(1) lookup
+          const mapById = {}
+          resultData.forEach(r => { mapById[r.ID] = r })
+          this.$set(subscription, 'mapById', mapById)
+          subscription.refreshedAt = Date.now()
         }
 
         subscription.pendingPromise = loadEntries()
@@ -167,23 +179,15 @@ const instance = new Vue({
         // remove additional attrs
         subscription.attrs.clear()
         subscription.mapById = {}
-        subscription.refreshed_At = undefined
+        subscription.refreshedAt = undefined
       }
     },
 
     async refresh (entity, attrs = []) {
-      const cacheLookupInterval = UB.connection.appConfig?.uiSettings?.adminUI.lookupCacheRefreshInterval
+      if (!LOOKUP_CACHE_INTERVAL_MS) return
 
-      if (!cacheLookupInterval) return
-
-      if (!typeof cacheLookupInterval === 'number') {
-        UB.logError(`config.uiSettings.adminUI.lookupCacheRefreshInterval: should be Int type`)
-        return
-      }
       const subscription = this.entities[entity]
-      const expired_At = subscription.refreshed_At + cacheLookupInterval
-
-      if (expired_At <= new Date().getTime()) {
+      if (subscription.refreshedAt + LOOKUP_CACHE_INTERVAL_MS <= Date.now()) {
         const subscription = this.entities[entity]
         subscription.attrs.clear()
         await this.subscribe(entity, attrs)

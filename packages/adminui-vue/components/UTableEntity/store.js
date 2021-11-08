@@ -395,12 +395,15 @@ module.exports = (instance) => ({
 
     async refresh ({ commit, dispatch, getters }) {
       commit('LOADING', true)
-      commit('PAGE_INDEX', 0)
-      for (const { entity, associatedAttr } of getters.lookupEntities) {
-        await lookups.refresh(entity, [associatedAttr])
+      try {
+        commit('PAGE_INDEX', 0)
+        for (const { entity, associatedAttr } of getters.lookupEntities) {
+          await lookups.refresh(entity, [associatedAttr])
+        }
+        await dispatch('fetchItems')
+      } finally {
+        commit('LOADING', false)
       }
-      await dispatch('fetchItems')
-      commit('LOADING', false)
     },
 
     async getTotal ({ commit, dispatch }) {
