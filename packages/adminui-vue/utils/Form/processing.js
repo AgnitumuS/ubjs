@@ -799,12 +799,16 @@ function createProcessingModule ({
         const masterExecParams = buildExecParams(store.state, masterEntityName)
         const method = store.state.isNew ? 'insert' : 'update'
         if (masterExecParams) {
-          requests.push({
+          const request = {
             entity: masterEntityName,
             method: method,
             execParams: masterExecParams,
             fieldList
-          })
+          }
+          if (entitySchema.hasMixin('als')) {
+            request.alsNeed = true
+          }
+          requests.push(request)
           responseHandlers.push(response => store.commit('LOAD_DATA', response.resultData))
         }
 
@@ -871,6 +875,9 @@ function createProcessingModule ({
             const response = responses[i]
             const responseHandler = responseHandlers[i]
             responseHandler(response)
+            if (response?.entity === masterEntityName && response.resultAls) {
+              store.commit('SET_ALS_INFO', response.resultAls)
+            }
           }
 
           store.commit('CLEAR_ALL_DELETED_ITEMS')

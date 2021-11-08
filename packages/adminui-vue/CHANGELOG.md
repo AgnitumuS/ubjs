@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `processing.save`: in case als mixin assigned to the entity `processing.save` adds information about als to the 
+   `alsInfo` object in vuex state
 
 ## [5.20.29] - 2021-11-05
 ### Changed
