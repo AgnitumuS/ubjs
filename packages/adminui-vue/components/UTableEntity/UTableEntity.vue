@@ -24,7 +24,7 @@ const Vuex = require('vuex')
 const { mapGetters, mapActions } = Vuex
 const createStore = require('./store')
 const UTableEntityRoot = require('./components/UTableEntityRoot.vue').default
-const TypeProvider = require('./type-provider')
+const ColumnDefProvider = require('./column-def-provider')
 
 export default {
   name: 'UTableEntity',
@@ -299,7 +299,7 @@ export default {
         }
       }
 
-      const typeDefaults = TypeProvider.get(attribute && attribute.dataType)
+      const typeDefaults = ColumnDefProvider.getDefinitionByColumnAttr(attribute)
       const filters = {}
 
       if (column.filterable !== false) {
@@ -317,7 +317,7 @@ export default {
       const resultColumn = {
         label,
         attribute,
-        ...typeDefaults.definition,
+        ...typeDefaults.settings,
         ...column,
         filters
       }

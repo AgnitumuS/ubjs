@@ -89,7 +89,7 @@
 </template>
 
 <script>
-const TypeProvider = require('../UTableEntity/type-provider')
+const ColumnDefProvider = require('../UTableEntity/column-def-provider')
 
 /**
  * View data as cards. Did not registered globally
@@ -132,10 +132,8 @@ export default {
     getCellTemplate (column) {
       if (typeof column.template === 'function') {
         return column.template()
-      } else {
-        const dataType = column.attribute?.dataType
-        return TypeProvider.get(dataType).template
       }
+      return ColumnDefProvider.getDefinitionByColumnAttr(column.attribute).template
     }
   }
 }
