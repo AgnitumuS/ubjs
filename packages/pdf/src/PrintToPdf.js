@@ -159,7 +159,7 @@ PrintToPdf.requireFonts = function (config) {
   const fonts = Array.isArray(config.fonts) ? config.fonts : [config.fonts]
   const fontMapping = (typeof window === 'undefined')
     ? App.serverConfig.uiSettings.adminUI.pdfFontMapping || {}
-    : UB.appConfig.uiSettings.adminUI.pdfFontMapping || {}
+    : UB.connection.appConfig.uiSettings.adminUI.pdfFontMapping || {}
   const notLoadedFonts = []
   for (let i = 0, l = fonts.length; i < l; i++) {
     const font = fonts[i]
@@ -187,7 +187,7 @@ PrintToPdf.requireFonts = function (config) {
       return Promise.resolve(true)
     } else {
       const promises = notLoadedFonts.map(
-        (fontPath) => $App.connection.get('clientRequire/@unitybase/pdf/' + fontPath, { responseType: 'json' })
+        (fontPath) => UB.connection.get('clientRequire/@unitybase/pdf/' + fontPath, { responseType: 'json' })
       )
       return Promise.all(promises).then(
         fontsDataResponses => {

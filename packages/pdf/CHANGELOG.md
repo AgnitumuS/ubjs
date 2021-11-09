@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `PrintToPrf.js` - removed dependency from $App, so unit can be used in environment w\o adminui-pub (w\o ExtJS)
 
 ### Deprecated
 

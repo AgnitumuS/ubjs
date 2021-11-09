@@ -15,6 +15,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.18] - 2021-11-05
+### Added
+ - `Session.hasRole(roleName)` method added - a fast O(1) checks if the current user is a member of the specified role
+ ```
+ const UB = require('@unitybae/ub')
+ const Session = UB.Session
+ if (Session.hasRole('accountAdmin')) {
+   console.debug('current user has \'accountAdmin\' role')
+ }
+ ```
+
 ## [5.22.17] - 2021-10-27
 ## [5.22.16] - 2021-10-18
 ### Added

@@ -15,7 +15,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - PDFComponents.js: fix view pdf-file after change tab [UBDF-14199]
+
+## [5.20.29] - 2021-11-05
+### Added
+ - `Stored Data` -> `Reset GUI settings` user menu will clear stored filters and sort orders for Vue UTableEntity (in addition to Ext Tables)
+  
+### Fixed
  - ExtJS based form (BasePanel) will emit `newversion`, `update` and `insert` events for `UB.connection` with payload, contais all form attributes (as Vue based forms does), instead of payload what contains only ID. This fix [UBDF-14305]
+ - Audit Trail UI Table -> Audit action now hidden [UBDF-11338] 
 
 ## [5.20.28] - 2021-10-27
 ## [5.20.27] - 2021-10-18

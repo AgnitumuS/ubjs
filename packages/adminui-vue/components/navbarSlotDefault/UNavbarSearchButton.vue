@@ -63,6 +63,7 @@
 <script>
 /* global $App, Ext */
 const SNIPED_RE = new RegExp('Z(.*?)Z:', 'gim')
+const MATCHED_RE = new RegExp('<b>(.*?)</b>', 'gim')
 /**
  * @class UNavbarSearchButton
  * Full text search navbar widget.
@@ -178,7 +179,7 @@ export default {
         target: $App.viewport.centralPanel,
         title: this.$ut('fullTextSearchWidgetResultTitle', this.query),
         cmdData: {
-          hideActions: ['filter'],
+          hideActions: ['filter', 'viewMode'],
           scopedSlots: h => ({
             toolbarDropdownAudit: () => h('div'),
             contextMenuAudit: () => h('div')
@@ -209,9 +210,7 @@ export default {
              */
             format: ({ value, row }) => {
               if (!value) return
-
               const schema = this.$UB.connection.domain.get(row.entity)
-
               // UB-1255 - complex attributes in snippet. LowerCase, multiline
               return value
                 .replace(SNIPED_RE, (matched, attrCode, matchIndex) => {
@@ -223,6 +222,21 @@ export default {
                     ${attr ? (attr.caption || attr.description) : attrCode}
                   :</span>&nbsp
                 `
+                })
+            },
+            exportFormat: ({ value, row }) => {
+              if (!value) return ''
+              const schema = this.$UB.connection.domain.get(row.entity)
+              // UB-1255 - complex attributes in snippet. LowerCase, multiline
+              return value
+                .replace(SNIPED_RE, (matched, attrCode) => {
+                  attrCode = attrCode.split('.')[0]
+                  // FTS returns attributes in lower case. First try to get as is. If not fount - search with lower case
+                  const attr = schema.attributes[attrCode] || schema.filterAttribute(a => a.code.toLowerCase() === attrCode)[0]
+                  return `${attr ? (attr.caption || attr.description) : attrCode}: `
+                })
+                .replace(MATCHED_RE, (matched, hghlt) => {
+                  return hghlt
                 })
             }
           }]

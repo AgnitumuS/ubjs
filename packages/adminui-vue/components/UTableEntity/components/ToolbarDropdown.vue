@@ -84,7 +84,7 @@
             icon="u-icon-file-preview"
             label="ChangesHistory"
             :disabled="!selectedRowId"
-            @click="showRevision(selectedRowId)"
+            @click="showRecordHistory(selectedRowId)"
           />
         </template>
       </slot>
@@ -151,7 +151,7 @@ export default {
       'exportTo',
       'showSummary',
       'createNewVersion',
-      'showRevision'
+      'showRecordHistory'
     ])
   }
 }
