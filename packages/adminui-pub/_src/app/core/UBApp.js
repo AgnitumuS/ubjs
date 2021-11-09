@@ -950,7 +950,8 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
           format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')
         },
         'actionType', 'actionUserName', 'remoteIP', 'entity', 'parentEntity', 'request_id'
-        ]
+        ],
+        hideActions: ['audit']
       },
       shortcutCode: `audit-${entityCode}`
     })

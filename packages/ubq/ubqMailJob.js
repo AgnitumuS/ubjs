@@ -44,7 +44,7 @@ module.exports = function () {
   }
 
   const inst = UB.Repository('ubq_messages')
-    .attrs(['ID', 'queueCode', 'msgCmd', 'msgData'])
+    .attrs(['ID', 'queueCode', 'msgCmd']) // 'msgData' will be retrieved for each row, because it can be huge
     .where('[queueCode]', '=', 'mail')
     .where('[completeDate]', 'isNull')
     .limit(100)
@@ -70,11 +70,18 @@ module.exports = function () {
     console.debug('Mailer: before mailSender.Login')
     mailSender.login()
     console.debug('Mailer: after mailSender.Login')
-
+    const msgDataStore = UB.DataStore('ubq_messages') // avoid create a new instance inside a loop
     while (!inst.eof) {
       mailData.ID = inst.get('ID')
       mailData.msgCmd = inst.get('msgCmd')
-      mailData.msgData = inst.get('msgData')
+
+      // retrieve msgData one by one to avoid fetch size overflow (see ubConfig.connections.connName.statementMaxMemoryMb. 50Mb by default)
+      UB.Repository('ubq_messages')
+        .attrs('msgData')
+        .where('[ID]', '=', mailData.ID)
+        .select(msgDataStore)
+      mailData.msgData = msgDataStore.get(0)
+
       const cmd = JSON.parse(mailData.msgCmd)
       mailData.attaches = []
       if (cmd.attaches && cmd.attaches.length) {

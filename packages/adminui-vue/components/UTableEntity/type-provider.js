@@ -98,9 +98,9 @@ TypeProvider.registerType({
       label: 'equal',
       template: require('./filter-templates/entity/equal.vue').default
     },
-    contains: {
-      label: 'contains',
-      template: require('./filter-templates/entity/contains.vue').default
+    oneOf: {
+      label: 'by_several_value',
+      template: require('./filter-templates/entity/oneOf.vue').default
     },
     isNull: {
       label: 'isNull',
@@ -121,9 +121,9 @@ TypeProvider.registerType({
   type: 'Many',
   settings: require('./type-definitions/many'),
   filters: {
-    contains: {
-      label: 'contains',
-      template: require('./filter-templates/many/contains.vue').default
+    oneOf: {
+      label: 'by_several_value',
+      template: require('./filter-templates/many/oneOf.vue').default
     },
     isNull: {
       label: 'isNull',
@@ -140,9 +140,9 @@ TypeProvider.registerType({
       label: 'equal',
       template: require('./filter-templates/enum/equal.vue').default
     },
-    contains: {
-      label: 'contains',
-      template: require('./filter-templates/enum/contains.vue').default
+    oneOf: {
+      label: 'by_several_value',
+      template: require('./filter-templates/enum/oneOf.vue').default
     },
     isNull: {
       label: 'isNull',

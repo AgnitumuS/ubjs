@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.29] - 2021-11-05
+### Changed
+ - `ubq_messages` nav shortcut - explicitly define fieldList as `["mi_createDate", "queueCode", "completeDate", "msgCmd"]` 
+   for better UX
+ - **mail job** will retrieve ubq_messages.msgData CLOB (a message body) one record at once.
+   This prevents `<<<ERR_RESOURCE_LIMITS_EXCEED>>>` error in case overall size of mail bodies for 100 queued messages
+   exceed 50Mb [UBDF-14156] 
+
 ## [5.20.28] - 2021-10-27
 ## [5.20.27] - 2021-10-18
 ### Added

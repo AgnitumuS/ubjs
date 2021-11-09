@@ -51,6 +51,7 @@ adm_desktop:
               "renderer": "vue",
               "cmdType": "showList",
               "cmdData": {
-                entityName: 'ubq_messages'
+                "entityName": "ubq_messages",
+                "columns": ["mi_createDate", "queueCode", "completeDate", "msgCmd"]
               }
             }
