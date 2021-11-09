@@ -1151,6 +1151,11 @@
               "type": "boolean",
               "description": "If true actions `EditItem` and `AddNewItem` force form to be opened as modal. If false (default) - new and edit forms are opened in new tab",
               "default": false
+            },
+            "lookupCacheRefreshIntervalSec": {
+              "type": "Number",
+              "description": "a timeout (in seconds) after which\n   pressing a \"Refresh\" in UTableEntity will refresh a table data AND lookups caches for entities used by current table.\n   Default is 0 - do not refresh lookups. *WARNING* - entities with `Session` and `SessionEntity` cache type will not be refreshed",
+              "default": 0
             }
           }
         },

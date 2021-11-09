@@ -413,9 +413,17 @@ module.exports = instance => ({
       }
     },
 
-    async refresh ({ commit, dispatch }) {
-      commit('PAGE_INDEX', 0)
-      await dispatch('fetchItems')
+    async refresh ({ commit, dispatch, getters }) {
+      commit('LOADING', true)
+      try {
+        commit('PAGE_INDEX', 0)
+        for (const { entity, associatedAttr } of getters.lookupEntities) {
+          await lookups.refresh(entity, [associatedAttr])
+        }
+        await dispatch('fetchItems')
+      } finally {
+        commit('LOADING', false)
+      }
     },
 
     async getTotal ({ commit, dispatch }) {
