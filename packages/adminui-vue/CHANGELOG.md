@@ -123,6 +123,7 @@ return UB.Repository('uba_auditTrail')
  - `UCardView`: rendering of values if the cell template is not defined for the related column
  - `UFormRow`: fix very long tags in `USelectMultiple`. Now, tags is flexible, has max-width: 100% from parent and don't come out beyound the viewport
  - `UDatePicker`: removed hard width. Datepicker width is flexible between 150px to 220px
+ - `UNavbar`: fixed opening of two tabs with the same id
 
 ## [5.20.22] - 2021-09-02
 ### Added

@@ -224,6 +224,8 @@ export default {
               tab.titleTooltip = UBTab._formFullTitle || newText
             }
           })
+          const findTab = this.tabs.find(t => t.id === tab.id)
+          if (findTab) return // for slow network
           this.tabs.push({
             id: tab.id,
             title: tab.title,
