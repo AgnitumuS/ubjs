@@ -332,7 +332,7 @@ process.startupMode = 'CmdLine'
 
 /**
  * Return `true` in case process should be terminated ASAP.
- * Long runing jobs shoud call this function and stops if possible.
+ * Long-running jobs should call this function and stops if possible.
  * See `@unitybase/ubq/ubqMailJob.js` for usage example
  *
  * @return {boolean}
