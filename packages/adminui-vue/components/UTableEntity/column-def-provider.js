@@ -10,7 +10,7 @@ const defaultCellTemplate = require('./cell-templates/default.vue').default
  */
 
 /**
- * Module provides column settings, cell and filter templates by UB data types or by the `customSettings.columnType` value.
+ * Module provides column settings, cell and filter templates by UB data types or by the `customSettings.UTableEntityColumnType` value.
  * Different types can have same templates or settings.
  *
  * Entity attributes with dataType `Text`, `BLOB`, `TimeLog` did not have default render component,
@@ -43,7 +43,7 @@ const ColumnDefProvider = {
    * @returns {ColumnDefinition}
    */
   getDefinitionByColumnAttr (attribute) {
-    const columnType = attribute?.customSettings?.columnType
+    const columnType = attribute?.customSettings?.UTableEntityColumnType
     const byColumnType = this._types[columnType]
     if (byColumnType) {
       return byColumnType
