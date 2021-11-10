@@ -8,8 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - new ubConfig parameter `application.uiSettings.adminUI.lookupCacheRefreshIntervalSec` - a timeout (in seconds) after which
    pressing a "Refresh" in UTableEntity will refresh a table data AND lookups caches for entities used by current table.
-   Default is 0 - do not refresh lookups. *WARNING* - entities with `Session` and `SessionEntity` cache type will not be refreshed.  
- - `UFileWebcamButton`: attribute `append-to-body` fixed bug when the background overlaps the content of the modal. 
+   Default is 0 - do not refresh lookups. *WARNING* - entities with `Session` and `SessionEntity` cache type will not be refreshed.
 
 ### Changed
 
@@ -18,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UFileWebcamButton`: fixed bug when the background overlaps the content of the modal by adding attribute `append-to-body` for dialog
 
 ## [5.20.29] - 2021-11-05
 ### Changed
