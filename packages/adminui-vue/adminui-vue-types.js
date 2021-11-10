@@ -60,7 +60,11 @@
  * @property {string} label Column label which shows in header cells
  * @property {UBEntityAttribute} attribute Meta attribute info from UB entity schema
  * @property {string} [valueAttribute] Whether isLookup and has current attribute value in fieldList.
- * @property {boolean} [toValidate] To check this column in the `validateFieldList` method
+ * @property {boolean} [toValidate]
+ *   To check this column in the `validateFieldList` method. Need to mark columns that
+ *   do not have their own scoped slots and are not available in the fieldList. Displaying
+ *   of cell value may be done with the `column.format` function or with a template for this
+ *   cell that is registered globally with the `ColumnDefProvider`
  */
 
 /**
