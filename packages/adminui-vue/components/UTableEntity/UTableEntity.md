@@ -344,7 +344,7 @@ ColumnDefProvider.registerColumnDefinition({
 <template>
   <el-tag
     v-if="value"
-    :type="tagType"
+    :type="getTagType(value)"
   >
     {{ column.format({ value, row, column }) }}
   </el-tag>
