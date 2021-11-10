@@ -40,6 +40,7 @@
       :visible.sync="dialogVisible"
       :fullscreen="fullScreen"
       :close-on-click-modal="false"
+      append-to-body
       @opened="openDialog"
       @closed="clearForm"
     >
