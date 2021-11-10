@@ -231,14 +231,14 @@ with an object which has `description` and `whereList`.
 Filter application example:
 ```vue
 <template>
-<form @submit.prevent="$emit('search', {
-  description: 'Filter query: ' + value,
-  whereList: [{ condition: 'equal', value }]
-})">
-  <input type="text" v-model="value">
-  <button type="submit">submit</button>
-</form>
-</template>
+  <form @submit.prevent="$emit('search', {
+    description: 'Filter query: ' + value,
+    whereList: [{ condition: 'equal', value }]
+  })">
+    <input type="text" v-model="value">
+    <button type="submit">submit</button>
+  </form>
+  </template>
 <script>
 export default {
   data () {
@@ -291,6 +291,94 @@ export default {
           }
         }
       ]
+    }
+  }
+}
+</script>
+```
+
+### Global custom columns definitions
+
+There is an ability to register definitions for columns globally (template for cell
+slot used in several different tables for example). To do that you need register column
+definition on the client-side and define `customSettings.UTableEntityColumnType` with this
+unique column type for the attribute
+
+*model_myEntity.js*
+```json
+{
+  "attributes": [
+    ...
+    {
+      "name": "stateID",
+      "caption": "State",
+      "dataType": "Entity",
+      "associatedEntity": "dfx_State",
+      "customSettings": {
+        "UTableEntityColumnType": "dfxDocState"
+      }
+    }
+    ...
+  ]
+}
+```
+
+*public/model-public.js*
+```js
+const ColumnDefProvider = require('@unitybase/adminui-vue/components/UTableEntity/column-def-provider')
+
+ColumnDefProvider.registerColumnDefinition({
+  type: 'dfxDocState',
+  settings: {
+    minWidth: 180
+  },
+  cellTemplate: require('./controls/doc-state-cell.vue').default,
+  filters: {
+    ...
+  }
+})
+```
+
+*controls/doc-state-cell.vue*
+```vue
+<template>
+  <el-tag
+    v-if="value"
+    :type="tagType"
+  >
+    {{ column.format({ value, row, column }) }}
+  </el-tag>
+</template>
+
+<script>
+export default {
+  name: 'DocStateCell',
+
+  props: {
+    value: {
+      required: true
+    },
+
+    row: {
+      type: Object,
+      required: true
+    },
+
+    column: {
+      type: Object,
+      required: true
+    }
+  },
+
+  methods: {
+    getTagType(state) {
+      const colors = {
+        draft: 'info',
+        processing: 'warning',
+        reworking: 'warning',
+        completed: 'success'
+      }
+      return colors[state] || 'info'
     }
   }
 }
