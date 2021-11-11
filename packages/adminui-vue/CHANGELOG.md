@@ -19,8 +19,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- `UFileWebcamButton`: fixed bug when the background overlaps the content of the modal by adding attribute `append-to-body` for dialog
+ - `UFileWebcamButton`: fixed bug when the background overlaps the content of the modal by adding attribute `append-to-body` for dialog
  - UTableEntity filters. Fixed error when single value selected for "many" type field
+ - `processing.save`: in case als mixin assigned to the entity `processing.save` adds information about als to the 
+   `alsInfo` object in vuex state
 
 ## [5.20.29] - 2021-11-05
 ### Changed
