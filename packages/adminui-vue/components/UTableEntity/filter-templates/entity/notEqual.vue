@@ -9,6 +9,7 @@
     <u-select-entity
       v-model="value"
       remove-default-actions
+      :repository="column.repository"
       :entity-name="column.attribute.associatedEntity"
       @input="onChange"
     />

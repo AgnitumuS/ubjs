@@ -440,7 +440,7 @@ module.exports = (instance) => ({
         description,
         whereList: whereList.map(whereItem => ({
           ...whereItem,
-          expression: state.selectedColumnId
+          expression: whereItem.expression || state.selectedColumnId
         }))
       })
       commit('TOTAL', null)

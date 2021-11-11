@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - new ubConfig parameter `application.uiSettings.adminUI.lookupCacheRefreshIntervalSec` - a timeout (in seconds) after which
    pressing a "Refresh" in UTableEntity will refresh a table data AND lookups caches for entities used by current table.
    Default is 0 - do not refresh lookups. *WARNING* - entities with `Session` and `SessionEntity` cache type will not be refreshed.
+ - UTableEntity filters: for columns of type Entity and Many added the ability to set a repository for a dropdown list (dropdown filter)
 
 ### Changed
 
@@ -18,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - `UFileWebcamButton`: fixed bug when the background overlaps the content of the modal by adding attribute `append-to-body` for dialog
+ - UTableEntity filters. Fixed error when single value selected for "many" type field
 
 ## [5.20.29] - 2021-11-05
 ### Changed
