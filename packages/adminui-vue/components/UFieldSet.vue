@@ -61,25 +61,45 @@ export default {
       type: String,
       default: ''
     },
+    /**
+     * position of content which is in label slot
+     */
     legendPosition: {
       type: String,
       default: 'left',
       validator: val => ['left', 'center', 'right'].includes(val)
     },
+    /**
+     * position of icon relative to legend.
+     */
     iconPosition: {
       type: String,
       default: 'left',
       validator: val => ['left', 'right'].includes(val)
     },
+    /**
+     * color of legend.
+     */
     color: {
       type: String,
-      default: 'primary'
+      default: 'primary',
+      validator (value) {
+        return ['control', 'primary', 'success', 'danger', 'warning'].includes(
+          value
+        )
+      }
     },
+    /**
+     * Icons for exnanded/collapse state
+     */
     icons: {
       type: Array,
       default: () => ['u-icon-circle-minus', 'u-icon-circle-plus'],
       validator: val => val.length === 2
     },
+    /**
+     * State for first render
+     */
     initialExpanded: {
       type: Boolean,
       default: true
@@ -193,3 +213,82 @@ export default {
   cursor: pointer;
 }
 </style>
+
+<docs>
+### Basic usage
+
+```vue
+<template>
+  <u-field-set legend="Basic usage">
+       <table>
+        <thead>
+          <tr>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>DOB</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Artem</td>
+            <td>Strekalov</td>
+            <td>1994</td>
+          </tr>
+          <tr>
+            <td>Ivan</td>
+            <td>Ivanov</td>
+            <td>1997</td>
+          </tr>
+          <tr>
+            <td>Victor</td>
+            <td>Kozybenko</td>
+            <td>1993</td>
+          </tr>
+        </tbody>
+      </table>
+  </u-field-set>
+</template>
+```
+
+### Advanced usage
+
+``` vue
+<template>
+  <u-field-set
+      legend="Advanced usage"
+      legend-position="center"
+      icon-position="right"
+      color="success"
+      :icons="['u-icon-arrow-down', 'u-icon-arrow-up']"
+      :initial-expanded="false"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>DOB</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Artem</td>
+            <td>Strekalov</td>
+            <td>1994</td>
+          </tr>
+          <tr>
+            <td>Ivan</td>
+            <td>Ivanov</td>
+            <td>1997</td>
+          </tr>
+          <tr>
+            <td>Victor</td>
+            <td>Kozybenko</td>
+            <td>1993</td>
+          </tr>
+        </tbody>
+      </table>
+  </u-field-set>
+</template>
+```
+</docs>
