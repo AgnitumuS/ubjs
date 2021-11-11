@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - UTableEntity filters: for columns of type Entity and Many added the ability to set a repository for a dropdown list (dropdown filter)
 
 ### Changed
+ - `UTableEntity`: lookups are loaded in parallel to speed-up table loading
 
 ### Deprecated
 
