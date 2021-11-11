@@ -187,6 +187,23 @@ const lookups = require('./utils/lookups')
 module.exports.lookups = lookups
 Vue.use(lookups)
 
+// ---------------- Column Templates ------------------
+const ColumnTemplateProvider = require('./components/UTableEntity/column-template-provider')
+
+/**
+ * The module for global registering of cell template for some column with a type defined in
+ * the `customSettings.columnType` value of the column attribute
+ */
+module.exports.columnTemplates = {
+  /**
+   * Register a column template
+   * @param {ColumnDefinition} template
+   */
+  registerTemplate: template => {
+    ColumnTemplateProvider.registerTemplate(template)
+  }
+}
+
 if (isExt) {
   const {
     replaceExtJSDialogs,

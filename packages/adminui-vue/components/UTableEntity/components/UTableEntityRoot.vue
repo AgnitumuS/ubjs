@@ -477,7 +477,7 @@
 
 <script>
 const { mapState, mapGetters, mapMutations, mapActions } = require('vuex')
-const ColumnDefProvider = require('../column-def-provider')
+const ColumnTemplateProvider = require('../column-template-provider')
 
 export default {
   name: 'UTableEntityRoot',
@@ -647,7 +647,7 @@ export default {
       if (typeof column.template === 'function') {
         return column.template()
       }
-      return ColumnDefProvider.getDefinitionByColumnAttr(column.attribute).template
+      return ColumnTemplateProvider.getByColumnAttribute(column.attribute).template
     },
 
     showContextMenu ({ event, row, column }) {

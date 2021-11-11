@@ -89,7 +89,7 @@
 </template>
 
 <script>
-const ColumnDefProvider = require('../UTableEntity/column-def-provider')
+const ColumnTemplateProvider = require('../UTableEntity/column-template-provider')
 
 /**
  * View data as cards. Did not registered globally
@@ -133,7 +133,7 @@ export default {
       if (typeof column.template === 'function') {
         return column.template()
       }
-      return ColumnDefProvider.getDefinitionByColumnAttr(column.attribute).template
+      return ColumnTemplateProvider.getByColumnAttribute(column.attribute).template
     }
   }
 }

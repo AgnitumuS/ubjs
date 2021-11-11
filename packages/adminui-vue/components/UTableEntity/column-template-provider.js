@@ -4,32 +4,33 @@ const defaultCellTemplate = require('./cell-templates/default.vue').default
 
 /**
  * @typedef {object} ColumnDefinition
+ *
  * @property {object} settings
  * @property {Vue.Component} template
  * @property {object<string, UTableColumnFilter>} filters
  */
 
 /**
- * Module provides column settings, cell and filter templates by UB data types or by the `customSettings.UTableEntityColumnType` value.
+ * Module provides column settings, cell tempplate and filter templates by UB data types or by the `customSettings.columnTemplate` value.
  * Different types can have same templates or settings.
  *
  * Entity attributes with dataType `Text`, `BLOB`, `TimeLog` did not have default render component,
  * If you need to render this dataTypeProvider render it by named column slots.
  * You need to decide to display this column type with great caution because this column can creates large server requests.
  */
-const ColumnDefProvider = {
+const ColumnTemplateProvider = {
   /** @type {object<string, ColumnDefinition>} */
   _types: {},
 
   /**
-   * Register new type
+   * Register new template
    *
    * @param {string} type Type from UBDomain.ubDataTypeProvider
    * @param {UTableColumnSettings} settings Column settings
    * @param {Vue.Component} [cellTemplate] Cell template
    * @param {object<string, UTableColumnFilter>} [filters={}] Filters templates
    */
-  registerColumnDefinition ({ type, settings, cellTemplate = defaultCellTemplate, filters = {} }) {
+  registerTemplate ({ type, settings, cellTemplate = defaultCellTemplate, filters = {} }) {
     this._types[type] = {
       settings: { ...settings },
       template: cellTemplate,
@@ -42,18 +43,18 @@ const ColumnDefProvider = {
    * @param {object} [attribute]
    * @returns {ColumnDefinition}
    */
-  getDefinitionByColumnAttr (attribute) {
-    const columnType = attribute?.customSettings?.UTableEntityColumnType
-    const byColumnType = this._types[columnType]
-    if (byColumnType) {
-      return byColumnType
+  getByColumnAttribute (attribute) {
+    const columnTemplate = attribute?.customSettings?.columnTemplate
+    const byAttrSettings = this._types[columnTemplate]
+    if (byAttrSettings) {
+      return byAttrSettings
     }
     const dataType = attribute?.dataType
     return this._types[dataType] ?? { ...defaultType }
   }
 }
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'String',
   settings: require('./type-definitions/string'),
   filters: {
@@ -76,12 +77,12 @@ ColumnDefProvider.registerColumnDefinition({
   }
 })
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'Json',
   settings: require('./type-definitions/string')
 })
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'Boolean',
   settings: require('./type-definitions/boolean'),
   filters: {
@@ -100,7 +101,7 @@ ColumnDefProvider.registerColumnDefinition({
   }
 })
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'Entity',
   settings: require('./type-definitions/entity'),
   filters: {
@@ -127,7 +128,7 @@ ColumnDefProvider.registerColumnDefinition({
   }
 })
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'Many',
   settings: require('./type-definitions/many'),
   filters: {
@@ -142,7 +143,7 @@ ColumnDefProvider.registerColumnDefinition({
   }
 })
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'Enum',
   settings: require('./type-definitions/enum'),
   filters: {
@@ -192,7 +193,7 @@ const dateFilters = {
   }
 }
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'Date',
   settings: {
     minWidth: 120,
@@ -204,7 +205,7 @@ ColumnDefProvider.registerColumnDefinition({
   filters: dateFilters
 })
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'DateTime',
   settings: {
     minWidth: 190, // en: 05/23/2020, 1:14 PM
@@ -239,20 +240,20 @@ const numberFilter = {
   }
 }
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'ID',
   settings: require('./type-definitions/id'),
   filters: numberFilter
 })
 
 const NUMBER_SETTINGS = require('./type-definitions/number')
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'BigInt',
   settings: NUMBER_SETTINGS,
   filters: numberFilter
 })
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'Currency',
   settings: {
     ...NUMBER_SETTINGS,
@@ -263,19 +264,19 @@ ColumnDefProvider.registerColumnDefinition({
   filters: numberFilter
 })
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'Float',
   settings: NUMBER_SETTINGS,
   filters: numberFilter
 })
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'Int',
   settings: NUMBER_SETTINGS,
   filters: numberFilter
 })
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'Document',
   settings: {
     sortable: false
@@ -283,19 +284,19 @@ ColumnDefProvider.registerColumnDefinition({
   cellTemplate: require('./cell-templates/document.vue').default
 })
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'Text',
   settings: require('./type-definitions/string'),
   cellTemplate: renderWarning('Text')
 })
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'BLOB',
   settings: require('./type-definitions/string'),
   cellTemplate: renderWarning('BLOB')
 })
 
-ColumnDefProvider.registerColumnDefinition({
+ColumnTemplateProvider.registerTemplate({
   type: 'TimeLog',
   settings: require('./type-definitions/string'),
   cellTemplate: renderWarning('TimeLog')
@@ -307,4 +308,4 @@ function renderWarning (type) {
   }
 }
 
-module.exports = ColumnDefProvider
+module.exports = ColumnTemplateProvider

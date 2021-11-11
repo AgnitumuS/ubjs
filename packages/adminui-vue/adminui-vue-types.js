@@ -64,7 +64,7 @@
  *   To check this column in the `validateFieldList` method. Need to mark columns that
  *   do not have their own scoped slots and are not available in the fieldList. Displaying
  *   of cell value may be done with the `column.format` function or with a template for this
- *   cell that is registered globally with the `ColumnDefProvider`
+ *   cell that is registered globally with the `columnTemplates.registerTemplate` method
  */
 
 /**

@@ -308,9 +308,9 @@ export default {
 ### Global custom columns definitions
 
 There is an ability to register definitions for columns globally (template for cell
-slot used in several different tables for example). To do that you need register column
-definition on the client-side and define `customSettings.UTableEntityColumnType` with this
-unique column type for the attribute
+slot used in several different tables of available filters for example). To do that
+you need register column definition on the client-side with the `columnTemplates.registerTemplate`
+method help and define `customSettings.columnTemplate` with this column template type for the attribute
 
 *model_myEntity.js*
 ```json
@@ -323,7 +323,7 @@ unique column type for the attribute
       "dataType": "Entity",
       "associatedEntity": "dfx_State",
       "customSettings": {
-        "UTableEntityColumnType": "dfxDocState"
+        "columnTemplate": "dfxDocState"
       }
     }
     ...
@@ -333,9 +333,9 @@ unique column type for the attribute
 
 *public/model-public.js*
 ```js
-const ColumnDefProvider = require('@unitybase/adminui-vue/components/UTableEntity/column-def-provider')
+const { columnTemplates } = require('@unitybase/adminui-vue')
 
-ColumnDefProvider.registerColumnDefinition({
+columnTemplates.registerTemplate({
   type: 'dfxDocState',
   settings: {
     minWidth: 180
