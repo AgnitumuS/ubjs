@@ -88,6 +88,7 @@ export default {
       body.style.maxHeight = this.isExpanded ? body.scrollHeight + 'px' : '0px'
       body.style.paddingTop = this.isExpanded ? '' : '0px'
       body.style.paddingBottom = this.isExpanded ? '' : '0px'
+      body.style.opacity = this.isExpanded ? '1' : '0'
     },
     setObserver () {
       const { body } = this.$refs
@@ -108,13 +109,17 @@ export default {
   --borderStyle: 1px solid hsl(var(--hs-border), var(--l-layout-border-light));
   --shift: 10px;
   margin-top: var(--shift);
-  margin-bottom: var(--shift);
+  margin-bottom: calc(var(--shift) * 2);
   border-radius: var(--border-radius);
   overflow: hidden;
 }
+.u-field-set.u-field-set--collapse {
+  margin-bottom: var(--shift);
+}
 
 .u-field-set--card-mode {
-  margin: 8px;
+  margin-left: var(--shift);
+  margin-right: var(--shift);
   box-shadow: 0px 4px 12px 0 rgb(0 0 0 / 15%);
 }
 .u-field-set--card-mode .u-field-set__body {
