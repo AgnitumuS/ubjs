@@ -3,7 +3,7 @@
     class="u-field-set"
     :class="{
       'u-field-set--collapse': !isExpanded,
-      'u-field-set--margin': withMargin
+      'u-field-set--card-mode': cardMode
     }"
   >
     <div
@@ -32,7 +32,6 @@
 </template>
 
 <script>
-const { getCSSVarValue } = require('../helpers/index.js')
 
 export default {
   name: 'UFieldSet',
@@ -50,7 +49,7 @@ export default {
       type: String,
       default: 'primary'
     },
-    withMargin: {
+    cardMode: {
       type: Boolean,
       default: false
     },
@@ -71,8 +70,10 @@ export default {
     }
   },
   mounted () {
-    this.setMaxHeight()
-    if (this.dynamicContent) this.setObserver()
+    this.$nextTick(() => {
+      this.setStyles()
+      if (this.dynamicContent) this.setObserver()
+    })
   },
   beforeDestroy () {
     if (this.observer) this.observer.disconnect()
@@ -80,23 +81,22 @@ export default {
   methods: {
     doExpand () {
       this.isExpanded = !this.isExpanded
-      this.setMaxHeight()
+      this.setStyles()
     },
-    setMaxHeight () {
+    setStyles () {
       const { body } = this.$refs
       body.style.maxHeight = this.isExpanded ? body.scrollHeight + 'px' : '0px'
-      body.style.padding = this.isExpanded
-        ? getCSSVarValue(body, '--bodyPadding')
-        : '0px'
+      body.style.paddingTop = this.isExpanded ? '' : '0px'
+      body.style.paddingBottom = this.isExpanded ? '' : '0px'
     },
     setObserver () {
       const { body } = this.$refs
-      if(!body) return;
+      if (!body) return
       const config = {
         childList: true,
         subtree: true
       }
-      this.observer = new MutationObserver(() => this.setMaxHeight())
+      this.observer = new MutationObserver(() => this.setStyles())
       this.observer.observe(body, config)
     }
   }
@@ -106,14 +106,20 @@ export default {
 <style>
 .u-field-set {
   --borderStyle: 1px solid hsl(var(--hs-border), var(--l-layout-border-light));
-  margin-top: 10px;
-  margin-bottom: 10px;
+  --shift: 10px;
+  margin-top: var(--shift);
+  margin-bottom: var(--shift);
   border-radius: var(--border-radius);
   overflow: hidden;
 }
 
-.u-field-set--margin {
+.u-field-set--card-mode {
   margin: 8px;
+  box-shadow: 0px 4px 12px 0 rgb(0 0 0 / 15%);
+}
+.u-field-set--card-mode .u-field-set__body {
+  padding-left: var(--shift);
+  padding-right: var(--shift);
 }
 .u-field-set--collapse .u-field-set__header {
   background-color: hsl(var(--hs-primary), var(--l-background-active));
@@ -125,25 +131,24 @@ export default {
   background-color: hsl(var(--hs-primary), var(--l-background-default));
   position: relative;
   display: flex;
-  padding: 10px;
+  padding: var(--shift);
   cursor: pointer;
 }
 .u-field-set__header--left {
   justify-content: flex-start;
-  padding-left: 20px;
+  padding-left: calc(var(--shift) * 2);
 }
 .u-field-set__header--center {
   justify-content: center;
 }
 .u-field-set__header--right {
   justify-content: flex-end;
-  padding-right: 20px;
+  padding-right: calc(var(--shift) * 2);
 }
 .u-field-set__body {
-  --bodyPadding: 10px 0;
   transition-duration: 0.3s;
   overflow: hidden;
-  padding: var(--bodyPadding);
+  padding: var(--shift) 0;
   box-sizing: content-box;
   border-top: var(--borderStyle);
   border-bottom: var(--borderStyle);
