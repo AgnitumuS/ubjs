@@ -305,11 +305,11 @@ export default {
 </script>
 ```
 
-### Global custom columns definitions
+### Global custom columns templates
 
-There is an ability to register definitions for columns globally (template for cell
-slot used in several different tables of available filters for example). To do that
-you need register column definition on the client-side with the `columnTemplates.registerTemplate`
+There is an ability to register definitions for columns globally (template for column
+cells used in several different tables or available filters for this attribute for example).
+To do that you need to register column definition on the client-side with the `columnTemplates.registerTemplate`
 method help and define `customSettings.columnTemplate` with this column template type for the attribute
 
 *model_myEntity.js*
