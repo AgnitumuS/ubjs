@@ -10,28 +10,20 @@ const defaultCellTemplate = require('./cell-templates/default.vue').default
  * @property {object<string, UTableColumnFilter>} filters
  */
 
-/**
- * Module provides column settings, cell tempplate and filter templates by UB data types or by the `customSettings.columnTemplate` value.
- * Different types can have same templates or settings.
- *
- * Entity attributes with dataType `Text`, `BLOB`, `TimeLog` did not have default render component,
- * If you need to render this dataTypeProvider render it by named column slots.
- * You need to decide to display this column type with great caution because this column can creates large server requests.
- */
-const ColumnTemplateProvider = {
-  /** @type {object<string, ColumnDefinition>} */
-  _types: {},
+/** @type {object<string, ColumnDefinition>} */
+const _cellTemplates = {}
 
+const ColumnTemplateProvider = {
   /**
-   * Register new template
+   * Register new cell template
    *
-   * @param {string} type Type from UBDomain.ubDataTypeProvider
+   * @param {string} type Type from UBDomain.ubDataTypes ot
    * @param {UTableColumnSettings} settings Column settings
    * @param {Vue.Component} [cellTemplate] Cell template
    * @param {object<string, UTableColumnFilter>} [filters={}] Filters templates
    */
   registerTemplate ({ type, settings, cellTemplate = defaultCellTemplate, filters = {} }) {
-    this._types[type] = {
+    _cellTemplates[type] = {
       settings: { ...settings },
       template: cellTemplate,
       filters
@@ -45,12 +37,12 @@ const ColumnTemplateProvider = {
    */
   getByColumnAttribute (attribute) {
     const columnTemplate = attribute?.customSettings?.columnTemplate
-    const byAttrSettings = this._types[columnTemplate]
+    const byAttrSettings = _cellTemplates[columnTemplate]
     if (byAttrSettings) {
       return byAttrSettings
     }
     const dataType = attribute?.dataType
-    return this._types[dataType] ?? { ...defaultType }
+    return _cellTemplates[dataType] ?? { ...defaultType }
   }
 }
 

@@ -188,21 +188,18 @@ module.exports.lookups = lookups
 Vue.use(lookups)
 
 // ---------------- Column Templates ------------------
-const ColumnTemplateProvider = require('./components/UTableEntity/column-template-provider')
-
 /**
- * The module for global registering of cell template for some column with a type defined in
- * the `customSettings.columnType` value of the column attribute
+ * The module provides column settings, cell templates,s and filter templates by
+ * UB data types or by the `customSettings.columnTemplate` value. Different types
+ * can have the same templates or settings.
+ *
+ * Entity attributes with `Text`, `BLOB`, `TimeLog` dataTypes do not have a default
+ * render template. If you need to render attributes values with these data types,
+ * register a custom column template for them or use column slots. You should decide
+ * to display this column type with great caution because this column can create large
+ * server requests.
  */
-module.exports.columnTemplates = {
-  /**
-   * Register a column template
-   * @param {ColumnDefinition} template
-   */
-  registerTemplate: template => {
-    ColumnTemplateProvider.registerTemplate(template)
-  }
-}
+module.exports.columnTemplates = require('./components/UTableEntity/column-template-provider')
 
 if (isExt) {
   const {
