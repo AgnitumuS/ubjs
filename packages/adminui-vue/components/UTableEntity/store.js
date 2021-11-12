@@ -565,36 +565,45 @@ module.exports = (instance) => ({
     },
 
     async exportTo ({ state, getters }, exportFormat) {
-      const repository = getters.currentRepository
-        .clone()
-        .withTotal(false)
-        .start(0)
-        .limit(50000)
-      const fileName = UB.i18n(getters.entityName)
+      const { columns, currentRepository, entityName } = getters
+      const fileName = UB.i18n(entityName)
+
+      const repository = currentRepository.clone().withTotal(false).start(0).limit(50000)
+      const exportFieldsMap = {}
+      for (const { id, exportId } of columns) {
+        if (exportId) {
+          exportFieldsMap[id] = exportId
+        }
+      }
+
+      let resultFieldList
+      if (Object.keys(exportFieldsMap).length > 0) {
+        const originalFieldList = Array.from(repository.fieldList)
+        resultFieldList = originalFieldList
+        repository.fieldList = originalFieldList.map(field => exportFieldsMap[field] ?? field)
+      }
 
       switch (exportFormat) {
-        case 'xlsx':
-          await exportExcel({
-            columns: getters.columns,
-            repository,
-            fileName,
-            filters: state.filters
-          })
-          break
-        case 'csv':
-          await exportCsv({
-            repository,
-            fileName: 'fileName'
-          })
-          break
-        case 'html':
-          await exportHtml({
-            columns: getters.columns,
-            repository,
-            fileName,
-            filters: state.filters
-          })
-          break
+        case 'xlsx': return exportExcel({
+          repository,
+          resultFieldList,
+          columns,
+          fileName,
+          filters: state.filters
+        })
+
+        case 'csv': return exportCsv({
+          repository,
+          fileName
+        })
+
+        case 'html': return exportHtml({
+          repository,
+          resultFieldList,
+          columns,
+          fileName,
+          filters: state.filters
+        })
       }
     },
 
