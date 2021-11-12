@@ -279,12 +279,14 @@ export default {
 
 ``` vue
 <template>
+  <p>State: {{state}}</p>
   <u-field-set
+      v-model="state"
       title="Advanced usage"
       title-align="center"
       icon-position="right"
-      title-color="success"
-      :icons="['u-icon-arrow-down', 'u-icon-arrow-up']"
+      title-color="danger"
+      :icons="['u-icon-eye', 'u-icon-eye-slash']"
       :initial-expanded="false"
     >
       <table>
@@ -315,5 +317,15 @@ export default {
       </table>
   </u-field-set>
 </template>
+
+<script>
+export default {
+    data () {
+    return {
+      state: true
+    }
+  },
+}
+</script>
 ```
 </docs>
