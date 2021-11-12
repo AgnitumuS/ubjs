@@ -131,7 +131,7 @@ To set scoped slot for header cell just add prefix `head_` to column ID
 </script>
 ```
 
-### Sort Mode
+### Sort Mode (:WIP)
 Sorting in the browser. Without request to server
 ```vue
 <template>

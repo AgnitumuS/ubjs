@@ -50,7 +50,8 @@
           >
             {{ formatHead({ column: col }) }}
           </slot>
-          <span
+          <!-- TODO: implement sorting in another branch -->
+          <!-- <span
             v-if="sorting"
             class="u-table__sort"
           >
@@ -70,7 +71,7 @@
               "
               @click.native="doSort(col, 'desc')"
             />
-          </span>
+          </span> -->
         </th>
       </tr>
       <tr
@@ -229,7 +230,7 @@ export default {
      */
     maxHeight: [Number, String],
     /**
-     * enable sort mode for table. Default `false`. Sorting in the browser
+     * (WIP:) enable sort mode for table. Default `false`. Sorting in the browser
      */
     sorting: { type: Boolean, default: false },
     /**
