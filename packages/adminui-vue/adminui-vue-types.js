@@ -53,10 +53,10 @@
  *   Function what returns a formatted cell value to be used during exports. If omitted - value will be used as is.
  * @property {UTableColumnFormatXls} [exportFormatXlsColumn]
  *   Function that returns excel format depends on the column configuration
- * @property {string} [exportId]
- *   Entity field to load for export. It may be useful when one attribute stores a value used for
+ * @property {string} [exportExpression]
+ *   Entity attribute expression to load for export. It may be useful when one attribute stores a value used for
  *   displaying in column cells (`column.id`) and another attribute stores the original value needed
- *   for exporting (`column.exportId`)
+ *   for exporting (`column.exportExpression`)
  * @property {number} [padding=16] column cells padding.
  * @property {object<string, UTableColumnFilter>} [filters={}] Filters templates
  */

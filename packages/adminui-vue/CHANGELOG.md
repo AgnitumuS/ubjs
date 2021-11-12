@@ -24,9 +24,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   const { columnTemplates } = require('@unitybase/adminui-vue')
   columnTemplates.registerTemplate({...})
  ```
- - `UTableEntity`: the ability to use another entity field for exporting. To make it there is a new
-  column setting `exportId`. If this setting is passed, row value for exporting for this column will
-  be substituted - load the `column.exportId` instead of the `column.id`
+ - `UTableEntity`: the ability to use another entity attribute for exporting. To make it there is a new
+  column setting `exportExpression`. If this setting is passed, row value for exporting for this column will
+  be substituted - load the `column.exportExpression` instead of the `column.id`
 
 ### Changed
  - `UTableEntity`: lookups are loaded in parallel to speed-up table loading

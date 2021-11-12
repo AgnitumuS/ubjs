@@ -660,17 +660,16 @@ module.exports = instance => ({
 
       const repository = currentRepository.clone().withTotal(false).start(0).limit(50000)
       const exportFieldsMap = {}
-      for (const { id, exportId } of columns) {
-        if (exportId) {
-          exportFieldsMap[id] = exportId
+      for (const { id, exportExpression } of columns) {
+        if (exportExpression) {
+          exportFieldsMap[id] = exportExpression
         }
       }
 
       let resultFieldList
       if (Object.keys(exportFieldsMap).length > 0) {
-        const originalFieldList = Array.from(repository.fieldList)
-        resultFieldList = originalFieldList
-        repository.fieldList = originalFieldList.map(field => exportFieldsMap[field] ?? field)
+        resultFieldList = Array.from(repository.fieldList)
+        repository.fieldList = resultFieldList.map(field => exportFieldsMap[field] ?? field)
       }
 
       switch (exportFormat) {

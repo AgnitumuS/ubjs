@@ -11,10 +11,10 @@ module.exports = {
  * Generates excel and download it
  *
  * @param {CustomRepository} repository
- * @param {string[]} [resultFieldList = repository.fieldList]
- * @param {UTableColumn[]} columns
+ * @param {Array<string>} [resultFieldList = repository.fieldList]
+ * @param {Array<UTableColumn>} columns
  * @param {string} fileName
- * @param {UTableFilterDefinition[]} filters
+ * @param {Array<UTableFilterDefinition>} filters
  * @returns {Promise<void>}
  */
 async function exportExcel ({
@@ -111,8 +111,8 @@ async function exportCsv ({ repository, fileName }) {
 * Generates html and download it
 *
 * @param {CustomRepository} repository
-* @param {string[]} [resultFieldList = repository.fieldList]
-* @param {array<UTableColumn>} columns
+* @param {Array<string>} [resultFieldList = repository.fieldList]
+* @param {Array<UTableColumn>} columns
 * @param {string} fileName
 * @param {Array<UTableFilterDefinition>} filters
 * @returns {Promise<void>}
