@@ -331,14 +331,23 @@ process.isDebug = 0
 process.startupMode = 'CmdLine'
 
 /**
+ * Return `true` in case process should be terminated ASAP.
+ * Long-running jobs should call this function and stops if possible.
+ * See `@unitybase/ubq/ubqMailJob.js` for usage example
+ *
+ * @return {boolean}
+ */
+process.terminationRequested = function () { }
+
+/**
  * Available in shell mode script - starts a local server instance.
  *  - if `withWait` is false (default) server stops after shell script ends,
  *  - if `withWait` is true, program continue execution until STP (Ctrl+C) signal
  * @param {boolean} withWait - available since UB 5.19.1
  */
-function startServer(withWait= false) {}
+function startServer (withWait = false) {}
 
 /**
  * Available in shell mode script - stop a local server instance, started by `startServer()`
  */
-function stopServer() {}
+function stopServer () {}
