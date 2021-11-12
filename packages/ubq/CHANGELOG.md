@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - terminate *mail scheduler job* ASAP, without waiting until current 100 pending mails sends, in case process termination is requested.
+   Require UB@5.20.10, for older server version will work as before (wait until current 100 pending mail sends)
+ - terminate *async FTS scheduler job* ASAP, without waiting until current 1000 pending fts tasks is handled, in case process termination is requested.
+   Require UB@5.20.10, for older server version will work as before (wait until current 1000 pending tasks done)
 
 ### Changed
 

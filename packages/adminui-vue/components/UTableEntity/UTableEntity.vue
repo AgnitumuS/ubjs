@@ -33,6 +33,7 @@ const createStore = require('./store')
 const UTableEntityRoot = require('./components/UTableEntityRoot.vue').default
 const TypeProvider = require('./type-provider')
 const selectionProps = require('../controls/mixins/selection/props')
+const ColumnTemplateProvider = require('./column-template-provider')
 
 export default {
   name: 'UTableEntity',
@@ -405,13 +406,12 @@ export default {
         }
       }
 
-      const typeDefaults = TypeProvider.get(attribute && attribute.dataType)
+      const columnDefaults = ColumnTemplateProvider.getByColumnAttribute(attribute)
       const filters = {}
 
       if (column.filterable !== false) {
-        const filterEntries = Object.entries(typeDefaults.filters || {}).concat(
-          Object.entries(column.filters || {})
-        )
+        const filterEntries = Object.entries(columnDefaults.filters || {})
+          .concat(Object.entries(column.filters || {}))
 
         for (const [filterId, filterDef] of filterEntries) {
           filters[filterId] = Object.assign({}, filters[filterId], filterDef)
@@ -424,7 +424,7 @@ export default {
       const resultColumn = {
         label,
         attribute,
-        ...typeDefaults.definition,
+        ...columnDefaults.settings,
         ...column,
         filters
       }

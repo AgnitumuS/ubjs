@@ -317,6 +317,8 @@ class UForm {
           })
           : undefined
       }
+      const existsTab = document.getElementById(this.tabId)
+      if( existsTab ) return // for slow network
       mountTab({
         component: this.component,
         props: this.props,

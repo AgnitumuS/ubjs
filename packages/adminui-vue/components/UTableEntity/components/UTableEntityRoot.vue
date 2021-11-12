@@ -494,6 +494,7 @@
 const { mapState, mapGetters, mapMutations, mapActions } = require('vuex')
 const TypeProvider = require('../type-provider')
 const selectionProps = require('../../controls/mixins/selection/props')
+const ColumnTemplateProvider = require('../column-template-provider')
 
 export default {
   name: 'UTableEntityRoot',
@@ -671,10 +672,8 @@ export default {
     getCellTemplate (column) {
       if (typeof column.template === 'function') {
         return column.template()
-      } else {
-        const dataType = column.attribute?.dataType
-        return TypeProvider.get(dataType).template
       }
+      return ColumnTemplateProvider.getByColumnAttribute(column.attribute).template
     },
     async deleteMultiple () {
       if (!this.canDeleteMultiple) return

@@ -227,18 +227,18 @@ If unset label will be equal filter id.
 To apply a filter from custom component emit event 'seach'
 with an object which has `description` and `whereList`.
 `description` - is a text for tag in list of applied filters.
-`whereList` - same as ubql whereList but without param `expression` it will be computed automatically.
+`whereList` - same as ubql whereList. Can be without param `expression`, in this case it will be computed automatically.
 Filter application example:
 ```vue
 <template>
-<form @submit.prevent="$emit('search', {
-  description: 'Filter query: ' + value,
-  whereList: [{ condition: 'equal', value }]
-})">
-  <input type="text" v-model="value">
-  <button type="submit">submit</button>
-</form>
-</template>
+  <form @submit.prevent="$emit('search', {
+    description: 'Filter query: ' + value,
+    whereList: [{ condition: 'equal', value }]
+  })">
+    <input type="text" v-model="value">
+    <button type="submit">submit</button>
+  </form>
+  </template>
 <script>
 export default {
   data () {
@@ -273,7 +273,7 @@ export default {
             // example replace default filters
             equal: {
               label: 'Custom equal label', // Replace label
-              template: {render(h) { return h('div', 'example') }} // Replace filter template
+              template: { render(h) { return h('div', 'example') } } // Replace filter template
             },
             contains: {
               label: 'Custom contains label' // Can be replaced only label
@@ -286,9 +286,17 @@ export default {
                * if unset will be equal filter id by default.
                */
               label: 'My custom filter',
-              template: {render(h) { return h('div', 'example') }}
+              template: { render(h) { return h('div', 'example') } }
             }
           }
+        },
+        {
+          id: 'parentID',
+          // example of using optional repository property to filter a list of filter values.
+          // useful for 'entity' and 'many' types
+          repository: () => UB.Repository('req_department')
+            .attrs(['ID', 'name'])
+            .where('parentID.name', '=', 'Kiev'),
         }
       ]
     }
@@ -351,5 +359,93 @@ export default {
       }
     },
   }
+</script>
+```
+
+### Global custom columns templates
+
+There is an ability to register definitions for columns globally (template for column
+cells used in several different tables or available filters for this attribute for example).
+To do that you need to register column definition on the client-side with the `columnTemplates.registerTemplate`
+method help and define `customSettings.columnTemplate` with this column template type for the attribute
+
+*model_myEntity.js*
+```json
+{
+  "attributes": [
+    ...
+    {
+      "name": "stateID",
+      "caption": "State",
+      "dataType": "Entity",
+      "associatedEntity": "dfx_State",
+      "customSettings": {
+        "columnTemplate": "dfxDocState"
+      }
+    }
+    ...
+  ]
+}
+```
+
+*public/model-public.js*
+```js
+const { columnTemplates } = require('@unitybase/adminui-vue')
+
+columnTemplates.registerTemplate({
+  type: 'dfxDocState',
+  settings: {
+    minWidth: 180
+  },
+  cellTemplate: require('./controls/doc-state-cell.vue').default,
+  filters: {
+    ...
+  }
+})
+```
+
+*controls/doc-state-cell.vue*
+```vue
+<template>
+  <el-tag
+    v-if="value"
+    :type="getTagType(value)"
+  >
+    {{ column.format({ value, row, column }) }}
+  </el-tag>
+</template>
+
+<script>
+export default {
+  name: 'DocStateCell',
+
+  props: {
+    value: {
+      required: true
+    },
+
+    row: {
+      type: Object,
+      required: true
+    },
+
+    column: {
+      type: Object,
+      required: true
+    }
+  },
+
+  methods: {
+    getTagType(state) {
+      const colors = {
+        draft: 'info',
+        processing: 'warning',
+        reworking: 'warning',
+        completed: 'success'
+      }
+      return colors[state] || 'info'
+    }
+  }
+}
 </script>
 ```

@@ -135,6 +135,7 @@
 <script>
 const TypeProvider = require('../UTableEntity/type-provider')
 const selectionLogic = require('./mixins/selection/logic')
+const ColumnTemplateProvider = require('../UTableEntity/column-template-provider')
 
 /**
  * View data as cards. Did not registered globally
@@ -176,10 +177,8 @@ export default {
     getCellTemplate (column) {
       if (typeof column.template === 'function') {
         return column.template()
-      } else {
-        const dataType = column.attribute?.dataType
-        return TypeProvider.get(dataType).template
       }
+      return ColumnTemplateProvider.getByColumnAttribute(column.attribute).template
     }
   }
 }

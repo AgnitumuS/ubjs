@@ -417,9 +417,9 @@ module.exports = instance => ({
       commit('LOADING', true)
       try {
         commit('PAGE_INDEX', 0)
-        for (const { entity, associatedAttr } of getters.lookupEntities) {
-          await lookups.refresh(entity, [associatedAttr])
-        }
+        await Promise.all(
+          getters.lookupEntities.map(({ entity, associatedAttr }) => lookups.refresh(entity, [associatedAttr]))
+        )
         await dispatch('fetchItems')
       } finally {
         commit('LOADING', false)
@@ -466,7 +466,7 @@ module.exports = instance => ({
         description,
         whereList: whereList.map(whereItem => ({
           ...whereItem,
-          expression: state.selectedColumnId
+          expression: whereItem.expression || state.selectedColumnId
         }))
       })
       commit('TOTAL', null)
@@ -699,11 +699,14 @@ module.exports = instance => ({
      */
     async loadData ({ getters, commit, dispatch }) {
       commit('LOADING', true)
-      for (const { entity, associatedAttr } of getters.lookupEntities) {
-        await lookups.subscribe(entity, [associatedAttr])
+      try {
+        await Promise.all(
+          getters.lookupEntities.map(({ entity, associatedAttr }) => lookups.subscribe(entity, [associatedAttr]))
+        )
+        await dispatch('fetchItems')
+      } finally {
+        commit('LOADING', false)
       }
-      await dispatch('fetchItems')
-      commit('LOADING', false)
     },
 
     unsubscribeLookups ({ getters }) {
