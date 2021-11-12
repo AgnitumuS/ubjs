@@ -50,7 +50,7 @@ module.exports = {
        *
        * @property {array} an array that includes the objects that were added to the the selection
        */
-      this.$emit('addSelected', arr)
+      this.$emit('add-selected', arr)
     },
     emitRemoveSelectionEvent (arr) {
       /**
@@ -58,7 +58,7 @@ module.exports = {
        *
        * @property {array} an array that includes the objects that were removed from the selection
        */
-      this.$emit('removeSelected', arr)
+      this.$emit('remove-selected', arr)
     },
     emitSelectionEvent () {
       /**

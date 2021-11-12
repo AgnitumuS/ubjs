@@ -246,8 +246,8 @@
         :selected-rows="curSelected"
         :multi-select-key-attr="multiSelectKeyAttr"
         @selected="$emit('selected', ...arguments)"
-        @addSelected="$emit('addSelected', ...arguments)"
-        @removeSelected="$emit('removeSelected', ...arguments)"
+        @add-selected="$emit('add-selected', ...arguments)"
+        @remove-selected="$emit('remove-selected', ...arguments)"
         @click-head-cell="showSortDropdown"
         @click-cell="select"
         @contextmenu-cell="showContextMenu"
@@ -313,8 +313,8 @@
         :selected-rows="curSelected"
         :multi-select-key-attr="multiSelectKeyAttr"
         @selected="$emit('selected', ...arguments)"
-        @addSelected="$emit('addSelected', ...arguments)"
-        @removeSelected="$emit('removeSelected', ...arguments)"
+        @add-selected="$emit('add-selected', ...arguments)"
+        @remove-selected="$emit('remove-selected', ...arguments)"
         @click="select"
         @contextmenu="showContextMenu"
         @dblclick="onSelect($event.row.ID, $event.row)"
@@ -681,7 +681,7 @@ export default {
         attr: this.multiSelectKeyAttr,
         data: this.curSelected
       })
-      this.$emit('deleteMultipleResult', result)
+      this.$emit('delete-multiple-result', result)
     },
     showContextMenu ({ event, row, column }) {
       this.select({ row, column })

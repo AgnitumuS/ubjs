@@ -9,9 +9,9 @@
     :selected-rows="curSelected"
     :show-delete-multiple-btn="showDeleteMultipleBtn"
     v-on="tableListeners"
-    @addSelected="handlerAddSelected"
-    @removeSelected="handlerRemoveSelected"
-    @deleteMultipleResult="deleteMultipleResult"
+    @add-selected="handlerAddSelected"
+    @remove-selected="handlerRemoveSelected"
+    @delete-multiple-result="deleteMultipleResult"
   >
     <template
       v-for="slot in Object.keys($scopedSlots)"

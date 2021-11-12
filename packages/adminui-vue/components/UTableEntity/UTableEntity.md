@@ -312,10 +312,10 @@ export default {
       :selected-rows="selectedID"
       :items="currencies"
       :columns="columns"
-      enableMultiSelect
+      enable-multi-select
       @selected="selectedID = $event"
-      @removeSelected="removed = $event"
-      @addSelected="added = $event"
+      @remove-selected="removed = $event"
+      @add-selected="added = $event"
     />
     <p>selectedID: {{selectedID}}</p>
     <p>added: {{added}}</p>

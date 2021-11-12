@@ -82,9 +82,9 @@ To set scoped slot for header cell just add prefix `head_` to column ID
       v-model="selectionIDs"
       :items="currencies"
       :columns="columns"
-      enableMultiSelect
-      @removeSelected="beenRemoved = $event"
-      @addSelected="beenAdd = $event"
+      enable-multi-select
+      @remove-selected="beenRemoved = $event"
+      @add-selected="beenAdd = $event"
     />
     <p>selectionIDs: {{selectionIDs}}</p>
     <p>have been added: {{beenAdd}}</p>
