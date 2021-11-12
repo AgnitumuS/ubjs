@@ -31,7 +31,6 @@ const Vuex = require('vuex')
 const { mapGetters, mapActions } = Vuex
 const createStore = require('./store')
 const UTableEntityRoot = require('./components/UTableEntityRoot.vue').default
-const TypeProvider = require('./type-provider')
 const selectionProps = require('../controls/mixins/selection/props')
 const ColumnTemplateProvider = require('./column-template-provider')
 
@@ -183,7 +182,7 @@ export default {
   },
   data () {
     return {
-      curSelected: [],
+      curSelected: []
     }
   },
   computed: {
@@ -245,8 +244,9 @@ export default {
   },
 
   async created () {
-    this.selectionCache = new Set(this.selectedRows);
-    this.tableItems = [];
+    // add `selectionCache` and `tableItems` in created hook to prevent observation by Vue
+    this.selectionCache = new Set(this.selectedRows)
+    this.tableItems = []
     const storeConfig = createStore(this)
     this.$store = new Vuex.Store(storeConfig)
     this.$watch('$store.state.items', this.handlerTableDataChange)
@@ -269,14 +269,14 @@ export default {
 
   methods: {
     ...mapActions(['loadData', 'unsubscribeLookups', 'updateData']),
-    handlerAddSelected(addedArr){
+    handlerAddSelected (addedArr) {
       const { selectionCache, multiSelectKeyAttr } = this
       addedArr.forEach(item => {
         selectionCache.add(item[multiSelectKeyAttr])
       })
-       this.emitSelectedEvent()
+      this.emitSelectedEvent()
     },
-    handlerRemoveSelected(removedArr){
+    handlerRemoveSelected (removedArr) {
       const { selectionCache, multiSelectKeyAttr } = this
       removedArr.forEach(item => {
         selectionCache.delete(item[multiSelectKeyAttr])
@@ -284,6 +284,9 @@ export default {
       this.emitSelectedEvent()
     },
     emitSelectedEvent () {
+      /** triggers on row(s) selection changed
+       * @param {Array<number>} selectedIDs
+       */
       this.$emit('selected', [...this.selectionCache])
     },
     handlerTableDataChange (items) {
@@ -317,14 +320,14 @@ export default {
       }, '')
       const duration = arr.length > 7 ? arr.length * 1000 : 7 * 1000
       this.$notify.success({
-        title: UB.i18n('recordDeletedSuccessfully'),
+        title: this.$ut('recordDeletedSuccessfully'),
         message: `<ul class="multiple-delete--alert">${message}</ul>`,
         duration,
         dangerouslyUseHTMLString: true
       })
       function getDescription (code) {
         const item = tableItems.find(i => i[multiSelectKeyAttr] === code)
-        const descriptionAttr = UB.connection.domain.get(getEntityName)
+        const descriptionAttr = this.$UB.connection.domain.get(getEntityName)
           .descriptionAttribute
         return item[descriptionAttr] || ''
       }

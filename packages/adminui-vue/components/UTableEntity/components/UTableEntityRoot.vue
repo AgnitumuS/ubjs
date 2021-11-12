@@ -492,7 +492,6 @@
 
 <script>
 const { mapState, mapGetters, mapMutations, mapActions } = require('vuex')
-const TypeProvider = require('../type-provider')
 const selectionProps = require('../../controls/mixins/selection/props')
 const ColumnTemplateProvider = require('../column-template-provider')
 

@@ -4,7 +4,7 @@
 You can override values as named slots.
 In this case another columns will be shows as usual.
 Slot scope will pass `value`, `row`, and `column`
-Header cell also has format functions and scoped slots but it provides only `column` param.
+Header cell also has format functions and scoped slots, but it provides only `column` param.
 To set scoped slot for header cell just add prefix `head_` to column ID
 
 ```vue
@@ -79,15 +79,15 @@ To set scoped slot for header cell just add prefix `head_` to column ID
 <template>
   <div>
     <u-table
-      v-model="selectionIDs"
+      v-model="selectedIDs"
       :items="currencies"
       :columns="columns"
       enable-multi-select
       @remove-selected="beenRemoved = $event"
-      @add-selected="beenAdd = $event"
+      @add-selected="beenAdded = $event"
     />
-    <p>selectionIDs: {{selectionIDs}}</p>
-    <p>have been added: {{beenAdd}}</p>
+    <p>selectionIDs: {{selectedIDs}}</p>
+    <p>have been added: {{beenAdded}}</p>
     <p>have been removed: {{beenRemoved}}</p>
   </div>
 </template>
@@ -95,9 +95,9 @@ To set scoped slot for header cell just add prefix `head_` to column ID
   export default {
     data () {
       return {
-        selectionIDs: [2,3],
+        selectedIDs: [2,3],
         beenRemoved: [],
-        beenAdd: [],
+        beenAdded: [],
         currencies: [{
           ID: 1,
           code: 'UAH',
@@ -132,7 +132,7 @@ To set scoped slot for header cell just add prefix `head_` to column ID
 ```
 
 ### Sort Mode
-Sorting in the browser. Whitout request to server
+Sorting in the browser. Without request to server
 ```vue
 <template>
   <u-table
