@@ -12,7 +12,7 @@
       @click="toggleExpanding"
     >
       <!-- @slot content will be added instead of title. To cancel collapsing on click on content add `@click.stop` to the content  -->
-      <slot name="label">
+      <slot name="title">
         <u-button
           :disabled="!expandable"
           appearance="inverse"
@@ -68,7 +68,7 @@ export default {
       default: ''
     },
     /**
-     * position of content which is in label slot
+     * position of content which is in title slot
      */
     titleAlign: {
       type: String,
