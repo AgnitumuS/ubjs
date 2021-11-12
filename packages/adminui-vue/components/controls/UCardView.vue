@@ -133,7 +133,6 @@
 </template>
 
 <script>
-const TypeProvider = require('../UTableEntity/type-provider')
 const selectionLogic = require('./mixins/selection/logic')
 const ColumnTemplateProvider = require('../UTableEntity/column-template-provider')
 

@@ -638,6 +638,9 @@ export default {
 
   watch: {
     selectedRowId (id) {
+      /** fires when user select row (in single-row selection mode)
+       * @param {number} ID
+       */
       this.$emit('change-row', id)
     },
 

@@ -48,7 +48,7 @@ module.exports = {
       /**
        * Triggers when the user adds the selection
        *
-       * @property {array} an array that includes the objects that were added to the the selection
+       * @param {array<object>} selectedArr an array that includes the objects (rows) that were added to the the selection
        */
       this.$emit('add-selected', arr)
     },
@@ -56,7 +56,7 @@ module.exports = {
       /**
        * Triggers when the user removes the selection
        *
-       * @property {array} an array that includes the objects that were removed from the selection
+       * @param {array<object>} removedArr an array that includes the objects (rows) that were removed from the selection
        */
       this.$emit('remove-selected', arr)
     },
@@ -64,7 +64,7 @@ module.exports = {
       /**
        * Triggers when the user removes or adds a selection
        *
-       * @property {array} an array that includes all currently selected values
+       * @param {array<number>} selectedIDs an array that includes all currently selected values
        */
       this.$emit('selected', this.curSelection)
     },

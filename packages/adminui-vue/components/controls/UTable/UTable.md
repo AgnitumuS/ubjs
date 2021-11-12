@@ -86,9 +86,9 @@ To set scoped slot for header cell just add prefix `head_` to column ID
       @remove-selected="beenRemoved = $event"
       @add-selected="beenAdded = $event"
     />
-    <p>selectionIDs: {{selectedIDs}}</p>
-    <p>have been added: {{beenAdded}}</p>
-    <p>have been removed: {{beenRemoved}}</p>
+    <p>selected IDs: {{selectedIDs}}</p>
+    <p>rows added to initial selection: {{beenAdded}}</p>
+    <p>rows removed from initial selection: {{beenRemoved}}</p>
   </div>
 </template>
 <script>
