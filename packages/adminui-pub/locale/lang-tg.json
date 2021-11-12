@@ -63,6 +63,8 @@
   "deleteConfirmation": "Нест кардани сабт аз '{0}'. Шумо мутмаин ҳастед?",
   "deleteConfirmationWithCaption": "Воридот нест карда мешавад {1} из '{0}'. Шумо мутмаин ҳастед?",
   "deleteFormConfirmCaption": "Ҳавз карда мешавад '{0}'. Шумо мутмаин ҳастед?",
+  "deleteMultipleFormConfirmCaption": "{0} сабтҳо нест карда мешаванд. Шумо мутмаъин ҳастед?",
+  "deleteMultipleImpossibleAlert": "Сабти {0} бо '{1}' нест карда намешавад",
   "rowEditing": "Лозим аст, ки таҳрири маълумотро ба анҷом расонед",
   "notValidForColumns": "Арзишҳои нодуруст дар сутунҳои {0}",
   "vyUvereny": "Шумо мутмаин ҳастед?",

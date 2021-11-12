@@ -1,15 +1,59 @@
 <template>
   <div class="u-card-container">
+    <div
+      v-if="showMultiSelectionColumn"
+      class="u-card__select-all"
+      @click="handlerCheckedAll"
+    >
+      {{ $ut('selectAll') }}
+      <span
+        class="el-checkbox__input"
+        :class="{
+          'is-checked': allSelected,
+          'is-indeterminate': !allSelected && curSelection.length > 0
+        }"
+      >
+        <span class="el-checkbox__inner" />
+        <input
+          type="checkbox"
+          aria-hidden="false"
+          class="el-checkbox__original"
+        >
+      </span>
+    </div>
     <div class="u-card-grid">
       <div
         v-for="row in items"
         :key="row.ID"
         class="u-card"
-        :class="getCardClass(row)"
-        @click="$emit('click', { row })"
+        :class="[
+          getCardClass(row),
+          {
+            'u-card__multiple': showMultiSelectionColumn,
+            'u-card--is-selected': curSelection.includes(
+              row[multiSelectKeyAttr]
+            )
+          }
+        ]"
+        @click="handlerRowClick(row)"
         @dblclick="$emit('dblclick', { row })"
         @contextmenu="$emit('contextmenu', { event: $event, row })"
       >
+        <!-- repeat html-structure for el-checkbox ElementUI -->
+        <span
+          v-if="showMultiSelectionColumn"
+          class="el-checkbox__input"
+          :class="{
+            'is-checked': curSelection.includes(row[multiSelectKeyAttr])
+          }"
+        >
+          <span class="el-checkbox__inner" />
+          <input
+            type="checkbox"
+            aria-hidden="false"
+            class="el-checkbox__original"
+          >
+        </span>
         <slot
           name="card"
           :row="row"
@@ -89,6 +133,7 @@
 </template>
 
 <script>
+const selectionLogic = require('./mixins/selection/logic')
 const ColumnTemplateProvider = require('../UTableEntity/column-template-provider')
 
 /**
@@ -97,8 +142,7 @@ const ColumnTemplateProvider = require('../UTableEntity/column-template-provider
 export default {
   name: 'UCardView',
 
-  mixins: [require('./UTable/formatValueMixin')],
-
+  mixins: [require('./UTable/formatValueMixin'), selectionLogic],
   props: {
     /**
      * Array of columns settings where each item can be string or object.
@@ -155,6 +199,7 @@ export default {
 }
 
 .u-card {
+  position: relative;
   box-shadow: 0 2px 8px hsla(var(--hs-text), var(--l-text-default), 0.2);
   padding: 16px 12px;
   border-radius: var(--border-radius);
@@ -184,5 +229,20 @@ export default {
 .u-card-row__value {
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.u-card .el-checkbox__input {
+  --indent: 8px;
+  position: absolute;
+  top: var(--indent);
+  right: var(--indent);
+}
+.u-card__multiple {
+  cursor: pointer;
+}
+.u-card__select-all {
+  width: fit-content;
+  margin: 12px 0 0 12px;
+  font-size: 18px;
+  cursor: pointer;
 }
 </style>
