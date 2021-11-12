@@ -7,15 +7,15 @@
   >
     <div
       class="u-field-set__header"
-      :class="['u-field-set__header--' + legendPosition.toLowerCase()]"
-      @click="doExpand"
+      :class="['u-field-set__header--' + titleAlign.toLowerCase()]"
+      @click="toggleExpanding"
     >
       <!-- @slot content will be added instead of title. To cancel collapsing on click on content add `@click.stop` to the content  -->
       <slot name="label">
         <u-button
           appearance="inverse"
           size="small"
-          :color="color"
+          :color="titleColor"
           :icon="
             iconPosition === 'left' ? (isExpanded ? icons[0] : icons[1]) : ''
           "
@@ -23,7 +23,7 @@
             iconPosition === 'right' ? (isExpanded ? icons[0] : icons[1]) : ''
           "
         >
-          {{ $ut(legend) }}
+          {{ $ut(title) }}
         </u-button>
       </slot>
     </div>
@@ -41,9 +41,8 @@
           appearance="inverse"
           icon="u-icon-arrow-up"
           class="u-field-set__footer--icon"
-          @click="doExpand"
+          @click="toggleExpanding"
         >
-          <!-- <i class="u-button__icon u-icon-arrow-up" /> -->
         </u-button>
       </div>
     </div>
@@ -57,20 +56,20 @@ export default {
     /**
      * title text
      */
-    legend: {
+    title: {
       type: String,
       default: ''
     },
     /**
      * position of content which is in label slot
      */
-    legendPosition: {
+    titleAlign: {
       type: String,
       default: 'left',
       validator: val => ['left', 'center', 'right'].includes(val)
     },
     /**
-     * position of icon relative to legend.
+     * position of icon relative to title.
      */
     iconPosition: {
       type: String,
@@ -78,9 +77,9 @@ export default {
       validator: val => ['left', 'right'].includes(val)
     },
     /**
-     * color of legend.
+     * color of title.
      */
-    color: {
+    titleColor: {
       type: String,
       default: 'primary',
       validator (value) {
@@ -136,9 +135,10 @@ export default {
         style.maxHeight = 'unset'
       }
     },
-    doExpand () {
+    toggleExpanding () {
       this.isExpanded = !this.isExpanded
       this.setStyles()
+      this.$emit('toggleExpanding', this.isExpanded)
     },
     setStyles () {
       const { body } = this.$refs
@@ -219,7 +219,7 @@ export default {
 
 ```vue
 <template>
-  <u-field-set legend="Basic usage">
+  <u-field-set title="Basic usage">
        <table>
         <thead>
           <tr>
@@ -255,10 +255,10 @@ export default {
 ``` vue
 <template>
   <u-field-set
-      legend="Advanced usage"
-      legend-position="center"
+      title="Advanced usage"
+      title-align="center"
       icon-position="right"
-      color="success"
+      title-color="success"
       :icons="['u-icon-arrow-down', 'u-icon-arrow-up']"
       :initial-expanded="false"
     >
