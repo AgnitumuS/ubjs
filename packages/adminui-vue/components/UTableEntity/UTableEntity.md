@@ -304,6 +304,63 @@ export default {
 }
 </script>
 ```
+### Selection Mode
+```vue
+<template>
+  <div>
+    <u-table
+      :selected-rows="selectedID"
+      :items="currencies"
+      :columns="columns"
+      enable-multi-select
+      @selected="selectedID = $event"
+      @remove-selected="removed = $event"
+      @add-selected="added = $event"
+    />
+    <p>selectedID: {{selectedID}}</p>
+    <p>added: {{added}}</p>
+    <p>removed: {{removed}}</p>
+  </div>
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        selectedID: [2,3],
+        removed: [],
+        added: [],
+        currencies: [{
+          ID: 1,
+          code: 'UAH',
+          caption: 'Hryvna',
+          country: 'Ukraine'
+        },{
+          ID: 2,
+          code: 'USD',
+          caption: 'Dollar',
+          country: 'USA'
+        },{
+          ID: 3,
+          code: 'EUR',
+          caption: 'Euro',
+          country: 'France'
+        }],
+
+        columns: [{
+          id: 'code',
+          label: 'Code'
+        }, {
+          id: 'caption',
+          label: 'Caption'
+        }, {
+          id: 'country',
+          label: 'Country'
+        }]
+      }
+    },
+  }
+</script>
+```
 
 ### Global custom columns templates
 
