@@ -2,8 +2,7 @@
   <div
     class="u-field-set"
     :class="{
-      'u-field-set--collapse': !isExpanded,
-      'u-field-set--expandable': expandable
+      'u-field-set--collapse': !isExpanded
     }"
   >
     <div
@@ -14,7 +13,6 @@
       <!-- @slot content will be added instead of title. To cancel collapsing on click on content add `@click.stop` to the content  -->
       <slot name="title">
         <u-button
-          :disabled="!expandable"
           appearance="inverse"
           size="small"
           :color="titleColor"
@@ -40,7 +38,7 @@
       <div class="u-field-set__footer">
         <hr class="u-field-set__footer--line">
         <u-button
-          :disabled="!expandable"
+          v-if="expandable"
           appearance="inverse"
           icon="u-icon-arrow-up"
           class="u-field-set__footer--icon"
@@ -53,6 +51,13 @@
 </template>
 
 <script>
+/**
+ * A Form building block what visually groups together several controls.
+ *
+ * Can be expandable, title can contains text and (optionally custom) icon.
+ *
+ * To be used instead of *el-card*  / *Ext.form.FieldSet *
+ */
 export default {
   name: 'UFieldSet',
   model: {
@@ -61,7 +66,7 @@ export default {
   },
   props: {
     /**
-     * title text
+     * title text. Will be translated using UB.i18n
      */
     title: {
       type: String,
@@ -76,7 +81,7 @@ export default {
       validator: val => ['left', 'center', 'right'].includes(val)
     },
     /**
-     * position of icon relative to title.
+     * position of the icon relative to the title
      */
     iconPosition: {
       type: String,
@@ -84,7 +89,7 @@ export default {
       validator: val => ['left', 'right'].includes(val)
     },
     /**
-     * color of title.
+     * color of title text and icon
      */
     titleColor: {
       type: String,
@@ -96,7 +101,7 @@ export default {
       }
     },
     /**
-     * Icons for exnanded/collapse state
+     * icons for expanded/collapse state
      */
     icons: {
       type: Array,
@@ -104,16 +109,16 @@ export default {
       validator: val => val.length === 2
     },
     /**
-     * State for first render. Work with v-model
+     * enable/disable toggle expanding function
      */
-    expanded: {
+    expandable: {
       type: Boolean,
       default: true
     },
     /**
-     * Enable/disable toggle expanding function
+     * expanded state. Work with v-model
      */
-    expandable: {
+    expanded: {
       type: Boolean,
       default: true
     }
@@ -234,9 +239,6 @@ export default {
   background-color: white;
   color: hsl(var(--hs-text), var(--l-text-disabled));
 }
-.u-field-set--expandable .u-field-set__footer--icon {
-  color: hsl(var(--hs-text), var(--l-text-label));
-}
 </style>
 
 <docs>
@@ -245,83 +247,53 @@ export default {
 ```vue
 <template>
   <u-field-set title="Basic usage">
-       <table>
-        <thead>
-          <tr>
-            <th>FirstName</th>
-            <th>LastName</th>
-            <th>DOB</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Artem</td>
-            <td>Strekalov</td>
-            <td>1994</td>
-          </tr>
-          <tr>
-            <td>Ivan</td>
-            <td>Ivanov</td>
-            <td>1997</td>
-          </tr>
-          <tr>
-            <td>Victor</td>
-            <td>Kozybenko</td>
-            <td>1993</td>
-          </tr>
-        </tbody>
-      </table>
+    <h1>Field set content</h1>
+    <u-form-row
+      label="User name (required)"
+    >
+      <u-base-input />
+    </u-form-row>
   </u-field-set>
 </template>
 ```
 
 ### Advanced usage
 
+ - Turn expandable (by checking checkbox)
+ - title align
+ - custom icon
+
 ``` vue
 <template>
-  <p>State: {{state}}</p>
+  <div>
+  <p>Expanded: {{fieldSetExpanded ? 'Yes' : 'No'}}</p>
+  <p>Expandable <input type="checkbox" v-model="expandable"></input> </p>
   <u-field-set
-      v-model="state"
+      v-model="fieldSetExpanded"
+      :expandable="expandable"
       title="Advanced usage"
       title-align="center"
       icon-position="right"
       title-color="danger"
       :icons="['u-icon-eye', 'u-icon-eye-slash']"
     >
-      <table>
-        <thead>
-          <tr>
-            <th>FirstName</th>
-            <th>LastName</th>
-            <th>DOB</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Artem</td>
-            <td>Strekalov</td>
-            <td>1994</td>
-          </tr>
-          <tr>
-            <td>Ivan</td>
-            <td>Ivanov</td>
-            <td>1997</td>
-          </tr>
-          <tr>
-            <td>Victor</td>
-            <td>Kozybenko</td>
-            <td>1993</td>
-          </tr>
-        </tbody>
-      </table>
+    <h1>Field set content</h1>
+    <u-form-row
+      label="User name (required)"
+    >
+      <u-base-input />
+    </u-form-row>
+
   </u-field-set>
+  </div>
 </template>
 
 <script>
 export default {
     data () {
     return {
-      state: true
+      expandable: true,
+      fieldSetExpanded: true
     }
   },
 }
