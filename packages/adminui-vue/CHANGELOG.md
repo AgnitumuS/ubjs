@@ -8,15 +8,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - new ubConfig parameter `application.uiSettings.adminUI.lookupCacheRefreshIntervalSec` - a timeout (in seconds) after which
    pressing a "Refresh" in UTableEntity will refresh a table data AND lookups caches for entities used by current table.
-   Default is 0 - do not refresh lookups. *WARNING* - entities with `Session` and `SessionEntity` cache type will not be refreshed.  
+   Default is 0 - do not refresh lookups. *WARNING* - entities with `Session` and `SessionEntity` cache type will not be refreshed.
+ - UTableEntity filters: for columns of type Entity and Many added the ability to set a repository for a dropdown list (dropdown filter)
 
 ### Changed
+ - `UTableEntity`: lookups are loaded in parallel to speed-up table loading
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `UFileWebcamButton`: fixed bug when the background overlaps the content of the modal by adding attribute `append-to-body` for dialog
+ - UTableEntity filters. Fixed error when single value selected for "many" type field
+ - `processing.save`: in case als mixin assigned to the entity `processing.save` adds information about als to the 
+   `alsInfo` object in vuex state
 
 ## [5.20.29] - 2021-11-05
 ### Changed
@@ -123,6 +129,7 @@ return UB.Repository('uba_auditTrail')
  - `UCardView`: rendering of values if the cell template is not defined for the related column
  - `UFormRow`: fix very long tags in `USelectMultiple`. Now, tags is flexible, has max-width: 100% from parent and don't come out beyound the viewport
  - `UDatePicker`: removed hard width. Datepicker width is flexible between 150px to 220px
+ - `UNavbar`: fixed opening of two tabs with the same id
 
 ## [5.20.22] - 2021-09-02
 ### Added

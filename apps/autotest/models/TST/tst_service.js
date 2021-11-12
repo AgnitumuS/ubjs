@@ -42,10 +42,29 @@ me.sleep3sec = function (ctx, req, resp) {
   }
 }
 
+/**
+ * Called by TST model schedulers for testing purpose
+ * @param {ubMethodParams} ctx
+ * @returns {string}
+ */
 me.schedulerTest = function (ctx) {
   console.log('SCHEDULER: log message from a test scheduler')
   const store = UB.DataStore('uba_user')
   return 'test scheduler executed at' + new Date() + store.currentDataName
+}
+
+/**
+ * Called by TST model schedulers. Verify reaction on process._exiting
+ * @param {ubMethodParams} ctx
+ * @returns {string}
+ */
+me.foreverSchedulerTest = function (ctx) {
+  console.log('SCHEDULER: foreverSchedulerTest started')
+  while (!process.terminationRequested()) {
+    console.log('SCHEDULER: foreverSchedulerTest still work...')
+    sleep(1000)
+  }
+  console.log('SCHEDULER: foreverSchedulerTest terminated')
 }
 
 me.entity.addMethod('uDataTest')
