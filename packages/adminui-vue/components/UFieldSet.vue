@@ -287,7 +287,6 @@ export default {
       icon-position="right"
       title-color="danger"
       :icons="['u-icon-eye', 'u-icon-eye-slash']"
-      :initial-expanded="false"
     >
       <table>
         <thead>
