@@ -2,7 +2,8 @@
   <div
     class="u-field-set"
     :class="{
-      'u-field-set--collapse': !isExpanded
+      'u-field-set--collapse': !isExpanded,
+      'u-field-set--expandable': expandable
     }"
   >
     <div
@@ -13,6 +14,7 @@
       <!-- @slot content will be added instead of title. To cancel collapsing on click on content add `@click.stop` to the content  -->
       <slot name="label">
         <u-button
+          :disabled="!expandable"
           appearance="inverse"
           size="small"
           :color="titleColor"
@@ -38,6 +40,7 @@
       <div class="u-field-set__footer">
         <hr class="u-field-set__footer--line">
         <u-button
+          :disabled="!expandable"
           appearance="inverse"
           icon="u-icon-arrow-up"
           class="u-field-set__footer--icon"
@@ -52,6 +55,10 @@
 <script>
 export default {
   name: 'UFieldSet',
+  model: {
+    prop: 'expanded',
+    event: 'toggleExpanding'
+  },
   props: {
     /**
      * title text
@@ -97,16 +104,23 @@ export default {
       validator: val => val.length === 2
     },
     /**
-     * State for first render
+     * State for first render. Work with v-model
      */
-    initialExpanded: {
+    expanded: {
+      type: Boolean,
+      default: true
+    },
+    /**
+     * Enable/disable toggle expanding function
+     */
+    expandable: {
       type: Boolean,
       default: true
     }
   },
   data () {
     return {
-      isExpanded: this.initialExpanded,
+      isExpanded: this.expanded,
       style: {
         maxHeight: 'unset',
         paddingTop: '',
@@ -130,14 +144,20 @@ export default {
   },
   methods: {
     handlerTransitionend () {
+      if (!this.expandable) return
       const { style } = this
       if (this.isExpanded && style.maxHeight !== '0px') {
         style.maxHeight = 'unset'
       }
     },
     toggleExpanding () {
+      if (!this.expandable) return
       this.isExpanded = !this.isExpanded
       this.setStyles()
+      /**
+       * Triggers when the user toggle state
+       * @property {boolean}
+       */
       this.$emit('toggleExpanding', this.isExpanded)
     },
     setStyles () {
@@ -168,13 +188,16 @@ export default {
 .u-field-set.u-field-set--collapse {
   margin-bottom: var(--shift);
 }
+.u-field-set--expandable .u-field-set__header,
+.u-field-set--expandable .u-field-set__footer--icon {
+  cursor: pointer;
+}
 
 .u-field-set__header {
   background-color: hsl(var(--hs-primary), var(--l-background-default));
   position: relative;
   display: flex;
   padding: var(--shift);
-  cursor: pointer;
 }
 .u-field-set__header--left {
   justify-content: flex-start;
@@ -208,9 +231,11 @@ export default {
   transform: translate(-50%, -50%);
   padding: 0 8px;
   border: none;
-  color: hsl(var(--hs-text), var(--l-text-label));
   background-color: white;
-  cursor: pointer;
+  color: hsl(var(--hs-text), var(--l-text-disabled));
+}
+.u-field-set--expandable .u-field-set__footer--icon {
+  color: hsl(var(--hs-text), var(--l-text-label));
 }
 </style>
 
