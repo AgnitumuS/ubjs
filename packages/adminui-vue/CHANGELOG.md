@@ -12,6 +12,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity` filters: for columns of type Entity and Many added the ability to set a repository for a dropdown list (dropdown filter)
  - `UTableEntity` ability to register custom cell templates for columns globally and use them through the
    `customSettings.columnTemplate` of the column attribute
+ - **BREAKING** `adminui-vue/components/UTableEntity/type-provider.js` should not be used anymore (removed):
+ ```javascript
+  // instead of
+  const TypeProvider = require('@unitybase/adminui-vue/components/UTableEntity/type-provider.js')
+  TypeProvider.registerType({...})
+  // use
+  const { columnTemplates } = require('@unitybase/adminui-vue')
+  columnTemplates.registerTemplate({...})    
+ ```
 
 ### Changed
  - `UTableEntity`: lookups are loaded in parallel to speed-up table loading
