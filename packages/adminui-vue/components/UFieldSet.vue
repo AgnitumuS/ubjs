@@ -62,7 +62,7 @@ export default {
   name: 'UFieldSet',
   model: {
     prop: 'expanded',
-    event: 'toggleExpanding'
+    event: 'toggle-expanding'
   },
   props: {
     /**
@@ -161,9 +161,9 @@ export default {
       this.setStyles()
       /**
        * Triggers when the user toggle state
-       * @property {boolean}
+       * @param {boolean}  expanding state
        */
-      this.$emit('toggleExpanding', this.isExpanded)
+      this.$emit('toggle-expanding', this.isExpanded)
     },
     setStyles () {
       const { body } = this.$refs

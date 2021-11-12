@@ -62,6 +62,8 @@
   "deletionDialogConfirmCaption": "Confirm delete",
   "deleteConfirmation": "Record will be deleted from the '{0}'. Are You sure?",
   "deleteConfirmationWithCaption": "Record {1} will be deleted from the '{0}'. Are You sure?",
+  "deleteMultipleFormConfirmCaption": "{0} entries will be deleted. Are you sure?",
+  "deleteMultipleImpossibleAlert": "The entry {0} with '{1}' cannot be deleted",
   "deleteFormConfirmCaption": "Will be deleted '{0}'. Are You sure?",
   "rowEditing": "Need to complete editing data",
   "notValidForColumns": "Invalid values in columns {0}",

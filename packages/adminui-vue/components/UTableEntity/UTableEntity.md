@@ -231,14 +231,14 @@ with an object which has `description` and `whereList`.
 Filter application example:
 ```vue
 <template>
-<form @submit.prevent="$emit('search', {
-  description: 'Filter query: ' + value,
-  whereList: [{ condition: 'equal', value }]
-})">
-  <input type="text" v-model="value">
-  <button type="submit">submit</button>
-</form>
-</template>
+  <form @submit.prevent="$emit('search', {
+    description: 'Filter query: ' + value,
+    whereList: [{ condition: 'equal', value }]
+  })">
+    <input type="text" v-model="value">
+    <button type="submit">submit</button>
+  </form>
+  </template>
 <script>
 export default {
   data () {
@@ -299,6 +299,151 @@ export default {
             .where('parentID.name', '=', 'Kiev'),
         }
       ]
+    }
+  }
+}
+</script>
+```
+### Selection Mode
+```vue
+<template>
+  <div>
+    <u-table
+      :selected-rows="selectedID"
+      :items="currencies"
+      :columns="columns"
+      enable-multi-select
+      @selected="selectedID = $event"
+      @remove-selected="removed = $event"
+      @add-selected="added = $event"
+    />
+    <p>selectedID: {{selectedID}}</p>
+    <p>added: {{added}}</p>
+    <p>removed: {{removed}}</p>
+  </div>
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        selectedID: [2,3],
+        removed: [],
+        added: [],
+        currencies: [{
+          ID: 1,
+          code: 'UAH',
+          caption: 'Hryvna',
+          country: 'Ukraine'
+        },{
+          ID: 2,
+          code: 'USD',
+          caption: 'Dollar',
+          country: 'USA'
+        },{
+          ID: 3,
+          code: 'EUR',
+          caption: 'Euro',
+          country: 'France'
+        }],
+
+        columns: [{
+          id: 'code',
+          label: 'Code'
+        }, {
+          id: 'caption',
+          label: 'Caption'
+        }, {
+          id: 'country',
+          label: 'Country'
+        }]
+      }
+    },
+  }
+</script>
+```
+
+### Global custom columns templates
+
+There is an ability to register definitions for columns globally (template for column
+cells used in several different tables or available filters for this attribute for example).
+To do that you need to register column definition on the client-side with the `columnTemplates.registerTemplate`
+method help and define `customSettings.columnTemplate` with this column template type for the attribute
+
+*model_myEntity.js*
+```json
+{
+  "attributes": [
+    ...
+    {
+      "name": "stateID",
+      "caption": "State",
+      "dataType": "Entity",
+      "associatedEntity": "dfx_State",
+      "customSettings": {
+        "columnTemplate": "dfxDocState"
+      }
+    }
+    ...
+  ]
+}
+```
+
+*public/model-public.js*
+```js
+const { columnTemplates } = require('@unitybase/adminui-vue')
+
+columnTemplates.registerTemplate({
+  type: 'dfxDocState',
+  settings: {
+    minWidth: 180
+  },
+  cellTemplate: require('./controls/doc-state-cell.vue').default,
+  filters: {
+    ...
+  }
+})
+```
+
+*controls/doc-state-cell.vue*
+```vue
+<template>
+  <el-tag
+    v-if="value"
+    :type="getTagType(value)"
+  >
+    {{ column.format({ value, row, column }) }}
+  </el-tag>
+</template>
+
+<script>
+export default {
+  name: 'DocStateCell',
+
+  props: {
+    value: {
+      required: true
+    },
+
+    row: {
+      type: Object,
+      required: true
+    },
+
+    column: {
+      type: Object,
+      required: true
+    }
+  },
+
+  methods: {
+    getTagType(state) {
+      const colors = {
+        draft: 'info',
+        processing: 'warning',
+        reworking: 'warning',
+        completed: 'success'
+      }
+      return colors[state] || 'info'
     }
   }
 }

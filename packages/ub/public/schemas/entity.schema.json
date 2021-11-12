@@ -119,6 +119,10 @@
                                 "type": "boolean",
                                 "description": "For attributes of type 'entity' - hide this relation in the UI 'Details' menu",
                                 "default": false
+                            },
+                            "columnTemplate": {
+                                "type": "string",
+                                "description": "The type of table column template registered globally on the client-side for rendering column cells"
                             }
                         }
                     },

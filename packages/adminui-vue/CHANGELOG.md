@@ -6,10 +6,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UTable` - Added data sorting by column, without a request to the server. See [UTable UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UTable) 
+- `UTable` - added multi-select functionality - *Work In Progress - to be implemented in next release*. See [UTable UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UTable) 
+- `UTableEntity` - added multi-select functionality. See [UTableEntity UI doc](https://unitybase.info/api/adminui-vue/index.html#/Data-aware/UTableEntity) 
  - new ubConfig parameter `application.uiSettings.adminUI.lookupCacheRefreshIntervalSec` - a timeout (in seconds) after which
    pressing a "Refresh" in UTableEntity will refresh a table data AND lookups caches for entities used by current table.
    Default is 0 - do not refresh lookups. *WARNING* - entities with `Session` and `SessionEntity` cache type will not be refreshed.
- - UTableEntity filters: for columns of type Entity and Many added the ability to set a repository for a dropdown list (dropdown filter)
+ - `UTableEntity` filters: for columns of type Entity and Many added the ability to set a repository for a dropdown list (dropdown filter)
+ - `UTableEntity` ability to register custom cell templates for columns globally and use them through the
+   `customSettings.columnTemplate` of the column attribute
+ - **BREAKING** `adminui-vue/components/UTableEntity/type-provider.js` should not be used anymore (removed):
+ ```javascript
+  // instead of
+  const TypeProvider = require('@unitybase/adminui-vue/components/UTableEntity/type-provider.js')
+  TypeProvider.registerType({...})
+  // use
+  const { columnTemplates } = require('@unitybase/adminui-vue')
+  columnTemplates.registerTemplate({...})    
+ ```
 
 ### Changed
  - `UTableEntity`: lookups are loaded in parallel to speed-up table loading
