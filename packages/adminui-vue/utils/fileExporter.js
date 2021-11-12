@@ -11,12 +11,19 @@ module.exports = {
  * Generates excel and download it
  *
  * @param {CustomRepository} repository
- * @param {array<UTableColumn>} columns
+ * @param {Array<string>} [resultFieldList = repository.fieldList]
+ * @param {Array<UTableColumn>} columns
  * @param {string} fileName
  * @param {Array<UTableFilterDefinition>} filters
  * @returns {Promise<void>}
  */
-async function exportExcel ({ repository, columns, fileName, filters }) {
+async function exportExcel ({
+  repository,
+  resultFieldList = repository.fieldList,
+  columns,
+  fileName,
+  filters
+}) {
   const XLSX = await loadXLSX()
   const workbook = new XLSX.XLSXWorkbook()
   workbook.useSharedString = true
@@ -41,7 +48,7 @@ async function exportExcel ({ repository, columns, fileName, filters }) {
   let dataRowEndNum = dataRowStartNum
 
   const response = await repository.selectAsArray()
-  response.resultData.fields = repository.fieldList
+  response.resultData.fields = resultFieldList
   const data = UB.LocalDataStore.selectResultToArrayOfObjects(response)
 
   for (const row of data) {
@@ -104,12 +111,19 @@ async function exportCsv ({ repository, fileName }) {
 * Generates html and download it
 *
 * @param {CustomRepository} repository
-* @param {array<UTableColumn>} columns
+* @param {Array<string>} [resultFieldList = repository.fieldList]
+* @param {Array<UTableColumn>} columns
 * @param {string} fileName
 * @param {Array<UTableFilterDefinition>} filters
 * @returns {Promise<void>}
 */
-async function exportHtml ({ repository, columns, fileName, filters }) {
+async function exportHtml ({
+  repository,
+  resultFieldList = repository.fieldList,
+  columns,
+  fileName,
+  filters
+}) {
   // server can generate an HTML output as such
   //   const request = repository.clone().withTotal(false).start(0).limit(0)
   //   const { data } = await request.connection.xhr({
@@ -136,7 +150,7 @@ async function exportHtml ({ repository, columns, fileName, filters }) {
   res += '</tr></thead><tbody>'
 
   const response = await repository.selectAsArray()
-  response.resultData.fields = repository.fieldList
+  response.resultData.fields = resultFieldList
   const data = UB.LocalDataStore.selectResultToArrayOfObjects(response)
 
   for (const row of data) {
