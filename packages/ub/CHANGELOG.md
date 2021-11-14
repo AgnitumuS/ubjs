@@ -6,10 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `App.removeUserSessions` - second parameter `exceptCurrent: boolean` is added.
+ - `App.removeUserSessions` - second parameter `exceptCurrent: boolean` is added (*ignored for UB server < 5.20.10*).
    If `exceptCurrent` is `true` - current user session is not removed (logout all other sessions except my).
 
-  Can be used inside Session.on('login') event handler to allow `single session for each user` mode
+  Can be used inside Session.on('login') event handler to allow `single session for each user` mode.
 
 ### Changed
 
