@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.30] - 2021-11-14
 ## [5.20.29] - 2021-11-05
 ### Added
  - `Stored Data` -> `Reset GUI settings` user menu will clear stored filters and sort orders for Vue UTableEntity (in addition to Ext Tables)

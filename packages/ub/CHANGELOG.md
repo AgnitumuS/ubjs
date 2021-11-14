@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.19] - 2021-11-14
+### Added
  - `App.removeUserSessions` - second parameter `exceptCurrent: boolean` is added (*ignored for UB server < 5.20.10*).
    If `exceptCurrent` is `true` - current user session is not removed (logout all other sessions except my).
 
@@ -26,14 +37,6 @@ function logoutAllMyOldSessions (req) {
   }
 }
 ```
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.22.18] - 2021-11-05
 ### Added

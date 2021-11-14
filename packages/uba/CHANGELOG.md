@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.30] - 2021-11-14
 ## [5.20.29] - 2021-11-05
 ### Added
 - audit trail form will show changes for all mixin-attributes (**mi_dateFrom**, **mi_dateTo** and others).

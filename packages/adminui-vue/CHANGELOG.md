@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.30] - 2021-11-14
+### Added
 - `UTable` - Added data sorting by column, without a request to the server. See [UTable UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UTable) 
 - `UTable` - added multi-select functionality - *Work In Progress - to be implemented in next release*. See [UTable UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UTable) 
 - `UTableEntity` - added multi-select functionality. See [UTableEntity UI doc](https://unitybase.info/api/adminui-vue/index.html#/Data-aware/UTableEntity) 
@@ -30,10 +41,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - `UTableEntity`: lookups are loaded in parallel to speed-up table loading
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UFileWebcamButton`: fixed bug when the background overlaps the content of the modal by adding attribute `append-to-body` for dialog
