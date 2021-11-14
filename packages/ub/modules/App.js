@@ -683,6 +683,20 @@ ServerApp.httpCallObserve = appBinding.httpCallObserve
  *
  * If `exceptCurrent` is `true` - do not remove current session (logout all other sessions except my).
  *
+ * @example
+
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+const App = UB.App
+Session.on('login', logoutAllMyOldSessions)
+
+// One user - one session mode
+function logoutAllMyOldSessions (req) {
+  if (App.removeUserSessions(Session.userID, true)) {
+    console.log(`All other sessions for user ${Session.userID} are removed`)
+  }
+}
+
  * @method
  * @param {number} userID
  * @param {boolean} [exceptCurrent=false] If `true` - do not remove current session
