@@ -515,6 +515,9 @@ export default {
 .u-table__multiple__cell {
   cursor: pointer;
 }
+.u-table__multiple__cell:focus .el-checkbox__inner{
+  outline: 2px solid hsl(var(--hs-primary), var(--l-layout-border-default));
+}
 .u-table__multiple td:first-child {
   text-align: center;
 }

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - `UTableEntity`, `UTable` - added hooks that is called before selecting an item and before deselecting.
 - `UTableEntity`, `UTable` - added functionality selecting when user clicked on right button of mouse
+- `UTable` - added tab-navigation and selecting on tap Space btn
 ### Changed
 - `UTableEntity`, `UTable` - removed selecting when click on all row in table. Selection fynctionality works only click on cell with checkbox
 ### Deprecated

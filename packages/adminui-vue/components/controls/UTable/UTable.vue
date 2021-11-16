@@ -12,7 +12,9 @@
         <th
           v-if="showMultiSelectionColumn"
           class="u-table__multiple__cell"
+          tabindex="1"
           @click="handlerCheckedAll"
+          @keydown.space="handlerCheckedAll"
         >
           <span
             class="el-checkbox__input"
@@ -88,7 +90,9 @@
         <td
           v-if="showMultiSelectionColumn"
           class="u-table__multiple__cell"
+          tabindex="1"
           @click="handlerSelection(row)"
+          @keydown.space="handlerSelection(row)"
         >
           <!-- repeat html-structure for el-checkbox ElementUI -->
           <span
