@@ -31,16 +31,18 @@ module.exports = {
       this.handlerSelection(row)
       this.$emit('click', { row })
     },
-    handlerSelection (row) {
+    async handlerSelection (row) {
       if (!this.enableMultiSelect) return
       const { multiSelectKeyAttr, curSelection } = this
       const arr = curSelection
       const id = row[multiSelectKeyAttr]
       const hasIndex = arr.indexOf(id)
       if (hasIndex === -1) {
+        if (!(await this.beforeAddSelection([row]))) return
         arr.push(id)
         this.emitAddSelectionEvent([row])
       } else {
+        if (!(await this.beforeRemoveSelection([row]))) return
         arr.splice(hasIndex, 1)
         this.emitRemoveSelectionEvent([row])
       }
@@ -70,7 +72,8 @@ module.exports = {
        */
       this.$emit('selected', this.curSelection)
     },
-    handlerCheckedAll () {
+    async handlerCheckedAll () {
+      if (!this.enableMultiSelect) return
       const { items, allSelected, multiSelectKeyAttr } = this
       const temp = new Set(this.curSelection)
       if (!allSelected) {
@@ -82,6 +85,7 @@ module.exports = {
             addedCache.push(el)
           }
         })
+        if (!(await this.beforeAddSelection(addedCache))) return
         this.emitAddSelectionEvent(addedCache)
         this.curSelection = [...temp]
       } else {
@@ -93,6 +97,7 @@ module.exports = {
             removedCache.push(el)
           }
         })
+        if (!(await this.beforeRemoveSelection(removedCache))) return
         this.emitRemoveSelectionEvent(removedCache)
         this.curSelection.splice(0)
       }
