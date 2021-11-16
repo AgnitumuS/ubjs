@@ -6,15 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+- `UTableEntity`, `UTable` - added hooks that is called before selecting an item and before deselecting.
+- `UTableEntity`, `UTable` - added functionality selecting when user clicked on right button of mouse
 ### Changed
-
+- `UTableEntity`, `UTable` - removed selecting when click on all row in table. Selection fynctionality works only click on cell with checkbox
 ### Deprecated
 
 ### Removed
 
 ### Fixed
-
+- - `UTableEntity` - fixed selection bug when user changed view from table to card and back
 ## [5.20.30] - 2021-11-14
 ### Added
  - new `UFieldSet` component - A Form building block what visually groups together several controls.
