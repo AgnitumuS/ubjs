@@ -7,6 +7,19 @@
     }"
     :style="tableStyle"
   >
+    <u-dropdown
+      v-show="sorting && targetColumn"
+      ref="dropdown"
+      :ref-element="targetColumn"
+    >
+      <div slot="dropdown">
+        <sort-popup
+          :sort-order="sortOrderInPopup"
+          direction="vertical"
+          @select-sort="handlerSelectSort"
+        />
+      </div>
+    </u-dropdown>
     <table>
       <tr>
         <th
@@ -42,7 +55,7 @@
             width: col.width && col.width + 'px',
             padding: col.padding && col.padding + 'px'
           }"
-          @click="$emit('click-head-cell', col, $event.target)"
+          @click="handlerClickOnHeadCell($event, col)"
         >
           <slot
             :name="`head_${col.id}`"
@@ -50,32 +63,18 @@
           >
             {{ formatHead({ column: col }) }}
           </slot>
-          <!-- TODO: implement sorting in another branch -->
-          <!-- <span
-            v-if="sorting"
-            class="u-table__sort"
-          >
-            <u-icon
-              icon="u-icon-sort-asc"
-              size="small"
-              :color="
-                col.id === sortCol && sortDirection === 'asc' ? 'primary' : 'control'
-              "
-              @click.native="doSort(col, 'asc')"
-            />
-            <u-icon
-              icon="u-icon-sort-desc"
-              size="small"
-              :color="
-                col.id === sortCol && sortDirection === 'desc' ? 'primary' : 'control'
-              "
-              @click.native="doSort(col, 'desc')"
-            />
-          </span> -->
+          <i
+            v-if="sorting && columnCasheId === col.id"
+            :key="col.id"
+            :class="{
+              'u-icon-sort-asc': sortOrder === 'asc',
+              'u-icon-sort-desc': sortOrder === 'desc'
+            }"
+          />
         </th>
       </tr>
       <tr
-        v-for="row in items"
+        v-for="row in currentItems"
         :key="row[multiSelectKeyAttr]"
         :class="[
           getRowClass(row),
@@ -136,7 +135,7 @@
     </table>
 
     <div
-      v-if="items.length === 0"
+      v-if="currentItems.length === 0"
       class="u-table-no-data"
     >
       {{ $ut('UTable.noData') }}
@@ -151,12 +150,16 @@
  * Component that allows to display data in a tabular manner
  *
  */
+const SortPopup = require('../../UTableEntity/components/SortPopup.vue').default
+const sortingMixin = require('./sortingMixin')
 const selectionLogic = require('../mixins/selection/logic')
 
 export default {
   name: 'UTable',
 
-  mixins: [require('./formatValueMixin'), selectionLogic],
+  mixins: [require('./formatValueMixin'), selectionLogic, sortingMixin],
+
+  components: { SortPopup },
 
   props: {
     /**
@@ -228,25 +231,7 @@ export default {
     /**
      * sets max table height. If data not fits, scroll is appears
      */
-    maxHeight: [Number, String],
-    /**
-     * (WIP:) enable sort mode for table. Default `false`. Sorting in the browser
-     */
-    sorting: { type: Boolean, default: false },
-    /**
-     * options for sorting.
-     *
-     * `col` -  the column by which the sorting will be.
-     *
-     * `direction` - sorting direction. "asc" or "desc"
-     */
-    initialSorting: { type: Object, default: () => ({}) }
-  },
-  data () {
-    return {
-      sortDirection: '',
-      sortCol: ''
-    }
+    maxHeight: [Number, String]
   },
   computed: {
     tableStyle () {
@@ -274,31 +259,13 @@ export default {
   },
   watch: {
     items: async function () {
+      this.currentItems = JSON.parse(JSON.stringify(this.items))
+      if (this.columnCasheId && this.columnCasheId !== 0) { this.changeSorting(this.columnCasheId, this.sortOrder) }
       await this.$nextTick()
       this.setTitle()
     }
   },
-  async mounted () {
-    await this.$nextTick()
-    if (this.sorting) this.initSort()
-  },
   methods: {
-    initSort () {
-      const { initialSorting } = this
-      if (Object.keys(initialSorting).length !== 2) return
-      const col = this.columns.find(i => i.id === initialSorting.col)
-      this.doSort(col, initialSorting.direction)
-    },
-    doSort (col, direction = 'asc') {
-      const { items } = this
-      const fieldName = col.id
-      this.sortDirection = direction
-      this.sortCol = fieldName
-      items.sort((a, b) => {
-        const index = this.$UB.formatter.collationCompare(a[fieldName], b[fieldName])
-        return direction === 'desc' ? index * -1 : index
-      })
-    },
     getAlignClass (align = 'left') {
       return `u-table__cell__align-${align}`
     },

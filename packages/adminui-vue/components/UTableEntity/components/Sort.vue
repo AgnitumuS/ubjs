@@ -45,70 +45,35 @@
           {{ $ut('table.sort.direction.label') }}
         </div>
         <div class="u-fake-table__td">
-          <u-button-group>
-            <u-button
-              v-for="sortOption in sortOptions"
-              :key="sortOption.value"
-              :icon="sortOption.icon"
-              :color="sortOption.value === sortOrder ? 'primary' : 'control'"
-              :appearance="sortOption.value === sortOrder ? 'default' : 'plain'"
-              @click="selectSort(sortOption.value)"
-            >
-              {{ sortOption.label }}
-            </u-button>
-          </u-button-group>
+          <sort-popup
+            :sort-order="sortOrder"
+            @select-sort="selectSort"
+          />
         </div>
       </div>
       <div v-if="selectedSortableColumnId !== null && isColSortRegime">
-        <u-button-group
+        <sort-popup
+          :sort-order="sortOrder"
           direction="vertical"
-        >
-          <u-button
-            v-for="sortOption in sortOptions"
-            :key="sortOption.value"
-            :icon="sortOption.icon"
-            :color="sortOption.value === sortOrder ? 'primary' : 'control'"
-            :appearance="sortOption.value === sortOrder ? 'default' : 'plain'"
-            @click="selectSort(sortOption.value)"
-          >
-            {{ sortOption.label }}
-          </u-button>
-        </u-button-group>
+          @select-sort="selectSort"
+        />
       </div>
     </div>
   </u-dropdown>
 </template>
 
 <script>
+const SortPopup = require('./SortPopup.vue').default
+
 export default {
   name: 'UTableEntitySort',
-
+  components: { SortPopup },
   props: {
-
     /**
      * The target column for positioning the sorting popup.
      */
     targetColumn: {
       default: null
-    }
-
-  },
-
-  data () {
-    return {
-      sortOptions: [{
-        label: this.$ut('table.sort.direction.asc'),
-        value: 'asc',
-        icon: 'u-icon-sort-asc-alt'
-      }, {
-        label: this.$ut('table.sort.direction.desc'),
-        value: 'desc',
-        icon: 'u-icon-sort-desc-alt'
-      }, {
-        label: this.$ut('table.sort.direction.none'),
-        icon: 'u-icon-circle-close',
-        value: 'none'
-      }]
     }
   },
 
@@ -128,7 +93,9 @@ export default {
 
     selectedSortableColumnId: {
       get () {
-        const column = this.sortableColumns.find(column => column.id === this.selectedColumnId)
+        const column = this.sortableColumns.find(
+          column => column.id === this.selectedColumnId
+        )
 
         return column ? column.id : null
       },
@@ -140,7 +107,8 @@ export default {
 
     sortOrder: {
       get () {
-        const { order, column } = /** @type {UTableSort} */ this.$store.state.sort || { order: 'none' }
+        const { order, column } = /** @type {UTableSort} */ this.$store.state
+          .sort || { order: 'none' }
         if (column === this.selectedSortableColumnId) {
           return order
         }
