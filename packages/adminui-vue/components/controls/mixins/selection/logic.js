@@ -26,11 +26,13 @@ module.exports = {
     }
   },
   methods: {
-    handlerRowClick (row) {
-      if (this.enableMultiSelect) this.handlerSelection(row)
+    // used in UCardView
+    handlerCardClick (row) {
+      this.handlerSelection(row)
       this.$emit('click', { row })
     },
     handlerSelection (row) {
+      if (!this.enableMultiSelect) return
       const { multiSelectKeyAttr, curSelection } = this
       const arr = curSelection
       const id = row[multiSelectKeyAttr]

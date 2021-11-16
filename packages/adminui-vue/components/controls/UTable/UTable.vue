@@ -82,9 +82,12 @@
           { 'selected-row': curSelection.includes(row[multiSelectKeyAttr]) }
         ]"
         @dblclick="$emit('dblclick-row', { row })"
-        @click="handlerRowClick(row)"
+        @click="$emit('click', { row })"
       >
-        <td v-if="showMultiSelectionColumn">
+        <td
+          v-if="showMultiSelectionColumn"
+          @click="handlerSelection(row)"
+        >
           <!-- repeat html-structure for el-checkbox ElementUI -->
           <span
             class="el-checkbox__input"
