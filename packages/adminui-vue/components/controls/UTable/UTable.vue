@@ -11,6 +11,7 @@
       <tr>
         <th
           v-if="showMultiSelectionColumn"
+          class="u-table__multiple__cell"
           @click="handlerCheckedAll"
         >
           <span
@@ -86,6 +87,7 @@
       >
         <td
           v-if="showMultiSelectionColumn"
+          class="u-table__multiple__cell"
           @click="handlerSelection(row)"
         >
           <!-- repeat html-structure for el-checkbox ElementUI -->
@@ -118,9 +120,7 @@
             padding: col.padding && col.padding + 'px'
           }"
           @click="$emit('click-cell', { row, column: col })"
-          @contextmenu="
-            $emit('contextmenu-cell', { event: $event, row, column: col })
-          "
+          @contextmenu="handlerContextMenuEvent($event,row,col)"
         >
           <div class="u-table__cell-container">
             <slot

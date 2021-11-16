@@ -102,6 +102,17 @@ module.exports = {
         this.curSelection.splice(0)
       }
       this.emitSelectionEvent()
+    },
+    async handlerContextMenuEvent ($event, row, col) {
+      const { multiSelectKeyAttr, curSelection } = this
+      const value = row[multiSelectKeyAttr]
+      if (!curSelection.includes(value)) await this.handlerSelection(row)
+      // for backward compatibility with UCardView
+      if (col === undefined) {
+        this.$emit('contextmenu', { event: $event, row })
+      } else {
+        this.$emit('contextmenu-cell', { event: $event, row, column: col })
+      }
     }
   }
 }

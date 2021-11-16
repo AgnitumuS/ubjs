@@ -512,8 +512,7 @@ export default {
 .multiple-delete--alert li {
   margin-bottom: 8px;
 }
-.u-table__multiple td,
-.u-table__multiple th:first-child {
+.u-table__multiple__cell {
   cursor: pointer;
 }
 .u-table__multiple td:first-child {
