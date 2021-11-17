@@ -122,7 +122,12 @@ function runMigrations (params) {
   migrations.files = migrations.files.filter(f => {
     const fileModelVersion = f.name.substring(0, 9)
     if (IS_VERSION_RE.test(fileModelVersion)) { // file should starts from 9 digits model version to which it migrate
-      if (fileModelVersion <= dbVersions[f.model]) { // files intended for migrate to model versions prior to current DB state are skipped
+      // - files intended for migrate to model versions prior to current DB state are skipped
+      // - starting from 2021-11-17 files for current model version are NOT skipped (< instead of <=)
+      //   this allows to add a new migration script and apply migration for current version many times
+      //   **WARNING** - do not modify an existed and already applied migration scripts - instead either create a new one
+      //   or rename existed script (if it supports re-execution) and change renamed one.
+      if (fileModelVersion < dbVersions[f.model]) {
         oldFilesSkipped++
         // console.debug(f)
         return false
