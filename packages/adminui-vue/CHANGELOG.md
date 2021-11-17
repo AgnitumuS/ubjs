@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - - `UTableEntity` - fixed selection bug when user changed view from table to card and back
+
+## [5.20.31] - 2021-11-17
+### Fixed
  - opening of the form for existing entry of `aclRls` mixin - the form will be in
   the readonly mode. Access entries can be only added or removed not edited
 

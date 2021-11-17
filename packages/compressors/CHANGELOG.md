@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.2.6] - 2021-11-17
+### Fixed
  - UZip produce zip archive with Unix as "operating system of origin" - this fix displaying of unicode file names
    inside archive for most ZIP tools
 
