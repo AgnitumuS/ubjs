@@ -1,7 +1,7 @@
 module.exports = {
   props: {
     /**
-     * (WIP:) enable sort mode for table. Default `false`. Sorting in the browser
+     * enable sort mode for table. Default `false`. Sorting in the browser
      */
     sorting: { type: Boolean, default: false },
     /**
