@@ -29,7 +29,6 @@
  * @property {string} descriptionAttrName
  */
 
-const _ = require('lodash')
 const Vue = require('vue')
 const UB = require('@unitybase/ub-pub')
 const ENUM_ENTITY = 'ubm_enum'
@@ -339,7 +338,7 @@ module.exports = {
    */
   getEnumItems (eGroup) {
     const items = instance.getMany(ENUM_ENTITY, { eGroup })
-    return _.orderBy(items, 'sortOrder').map(item => ({ code: item.code, name: item.name }))
+    return items.sort((a, b) => a.sortOrder - b.sortOrder).map(item => ({ code: item.code, name: item.name }))
   }
 }
 
