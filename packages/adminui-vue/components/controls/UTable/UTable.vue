@@ -74,7 +74,7 @@
         </th>
       </tr>
       <tr
-        v-for="row in currentItems"
+        v-for="row in items"
         :key="row[multiSelectKeyAttr]"
         :class="[
           getRowClass(row),
@@ -135,7 +135,7 @@
     </table>
 
     <div
-      v-if="currentItems.length === 0"
+      v-if="items.length === 0"
       class="u-table-no-data"
     >
       {{ $ut('UTable.noData') }}
@@ -259,8 +259,11 @@ export default {
   },
   watch: {
     items: async function () {
-      this.currentItems = JSON.parse(JSON.stringify(this.items))
-      if (this.columnCasheId && this.columnCasheId !== 0) { this.changeSorting(this.columnCasheId, this.sortOrder) }
+      const { sortingProcess, sorting, columnCasheId, sortOrder } = this
+      if (sorting && !sortingProcess && columnCasheId && columnCasheId !== 0) {
+        this.createPrivateSortOrder()
+        this.changeSorting(columnCasheId, sortOrder)
+      }
       await this.$nextTick()
       this.setTitle()
     }

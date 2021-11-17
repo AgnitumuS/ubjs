@@ -1,7 +1,7 @@
 module.exports = {
   props: {
     /**
-     * enable sort mode for table. Default `false`. Sorting in the browser
+     * (WIP:) enable sort mode for table. Default `false`. Sorting in the browser
      */
     sorting: { type: Boolean, default: false },
     /**
@@ -25,14 +25,19 @@ module.exports = {
       targetColumn: null,
       curColumnId: null,
       columnCasheId: null,
-      currentItems: JSON.parse(JSON.stringify(this.items)) // for reset sorting when sortOrder === 'none'
+      sortingProcess: false // as not to fall into an infinity loop
     }
   },
-  async mounted () {
-    await this.$nextTick()
+  created () {
     if (this.sorting) this.initSort()
   },
   methods: {
+    // for reset sorting when sortOrder === 'none'
+    createPrivateSortOrder () {
+      this.items.forEach((el, index) => {
+        el._privateSortOrder = index
+      })
+    },
     handlerClickOnHeadCell ($event, col) {
       const targetColumn = $event.target
       this.$emit('click-head-cell', col, targetColumn)
@@ -53,25 +58,30 @@ module.exports = {
     },
     initSort () {
       const { initialSorting } = this
+      this.createPrivateSortOrder()
       if (Object.keys(initialSorting).length !== 2) return
       this.curColumnId = this.columns.find(i => i.id === initialSorting.id).id
       this.changeSorting(this.curColumnId, initialSorting.direction)
     },
-    changeSorting (colName, direction = 'asc') {
-      const { currentItems } = this
+    async changeSorting (colName, direction = 'asc') {
+      this.sortingProcess = true
       this.sortOrder = direction
       this.columnCasheId = this.curColumnId
+      let sortField = colName
+      let sortDirection = direction
       if (this.sortOrder === 'none') {
-        this.currentItems = JSON.parse(JSON.stringify(this.items))
-        return
+        sortField = '_privateSortOrder'
+        sortDirection = 'asc'
       }
-      currentItems.sort((a, b) => {
+      this.items.sort((a, b) => {
         const index = this.$UB.formatter.collationCompare(
-          a[colName],
-          b[colName]
+          a[sortField],
+          b[sortField]
         )
-        return direction === 'desc' ? index * -1 : index
+        return sortDirection === 'desc' ? index * -1 : index
       })
+      await this.$nextTick()
+      this.sortingProcess = false
     }
   }
 }
