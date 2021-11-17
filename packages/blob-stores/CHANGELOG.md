@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.19] - 2021-11-14
 ## [5.20.18] - 2021-11-05
 ### Added
  - when multitenancy enabled stored paths will now contain the tenant code

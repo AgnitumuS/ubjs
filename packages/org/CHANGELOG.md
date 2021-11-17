@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.30] - 2021-11-14
 ## [5.20.29] - 2021-11-05
 ### Added
   - `org_employeeonstaff_all` shortcut - enable `__mip_recordhistory_all` misc and add a columns [mi_dateForm] and [mi_dateTo]

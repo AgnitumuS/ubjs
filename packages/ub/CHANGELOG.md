@@ -15,6 +15,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.19] - 2021-11-14
+### Added
+ - `App.removeUserSessions` - second parameter `exceptCurrent: boolean` is added (*ignored for UB server < 5.20.10*).
+   If `exceptCurrent` is `true` - current user session is not removed (logout all other sessions except my).
+
+  Can be used inside Session.on('login') event handler to allow `single session for each user` mode:
+```javascript
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+const App = UB.App
+Session.on('login', logoutAllMyOldSessions)
+
+/**
+ * One user - one session mode
+ * @param {THTTPRequest} req
+ */
+function logoutAllMyOldSessions (req) {
+  if (App.removeUserSessions(Session.userID, true)) {
+    console.log(`All other sessions for user ${Session.userID} are removed`)
+  }
+}
+```
+
 ## [5.22.18] - 2021-11-05
 ### Added
  - `Session.hasRole(roleName)` method added - a fast O(1) checks if the current user is a member of the specified role

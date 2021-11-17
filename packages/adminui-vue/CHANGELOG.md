@@ -6,9 +6,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `UTable` - Added data sorting by column, without a request to the server. See [UTable UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UTable) 
-- `UTable` - added multi-select functionality - *Work In Progress - to be implemented in next release*. See [UTable UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UTable) 
-- `UTableEntity` - added multi-select functionality. See [UTableEntity UI doc](https://unitybase.info/api/adminui-vue/index.html#/Data-aware/UTableEntity) 
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+ - opening of the form for existing entry of `aclRls` mixin - the form will be in
+  the readonly mode. Access entries can be only added or removed not edited
+
+## [5.20.30] - 2021-11-14
+### Added
+ - new `UFieldSet` component - A Form building block what visually groups together several controls.
+   To be used instead of *el-card* / *Ext.form.FieldSet*
+ - `UTable` - Added data sorting by column, without a request to the server. - *Work In Progress - to be implemented in next release*. See [UTable UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UTable) 
+ - `UTable` - added multi-select functionality. See [UTable UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UTable) 
+ - `UTableEntity` - added multi-select functionality. See [UTableEntity UI doc](https://unitybase.info/api/adminui-vue/index.html#/Data-aware/UTableEntity) 
  - new ubConfig parameter `application.uiSettings.adminUI.lookupCacheRefreshIntervalSec` - a timeout (in seconds) after which
    pressing a "Refresh" in UTableEntity will refresh a table data AND lookups caches for entities used by current table.
    Default is 0 - do not refresh lookups. *WARNING* - entities with `Session` and `SessionEntity` cache type will not be refreshed.
@@ -22,15 +37,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   TypeProvider.registerType({...})
   // use
   const { columnTemplates } = require('@unitybase/adminui-vue')
-  columnTemplates.registerTemplate({...})    
+  columnTemplates.registerTemplate({...})
  ```
+ - `UTableEntity`: the ability to use another entity attribute for exporting. To make it there is a new
+  column setting `exportExpression`. If this setting is passed, row value for exporting for this column will
+  be substituted - load the `column.exportExpression` instead of the `column.id`
 
 ### Changed
  - `UTableEntity`: lookups are loaded in parallel to speed-up table loading
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UFileWebcamButton`: fixed bug when the background overlaps the content of the modal by adding attribute `append-to-body` for dialog
