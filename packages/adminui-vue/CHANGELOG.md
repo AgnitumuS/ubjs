@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `UTable` - impleneted sorting in the browser. Without request to server 
 ### Changed
 
 ### Deprecated
