@@ -8,10 +8,12 @@
     >
       <u-form-row
         label="aclRlsInfo.subject"
+        :readonly="!!singleEntryID"
         class="u-acl-rls-input-overflow"
       >
         <el-select
           v-model="selectedEntity"
+          :disabled="!!singleEntryID"
           class="u-select"
         >
           <el-option
@@ -27,6 +29,7 @@
         <u-form-row
           v-if="mappedEntitiesBySelectedEntity.length === 0"
           :label="selectedEntity"
+          :readonly="!!singleEntryID"
           class="u-acl-rls-input-overflow"
         >
           <u-select-multiple
@@ -41,11 +44,13 @@
             v-for="childEntity in mappedEntitiesBySelectedEntity"
             :key="childEntity"
             :label="childEntity"
+            :readonly="!!singleEntryID"
             class="u-acl-rls-input-overflow"
           >
             <u-select-multiple
               v-model="aclRlsEntries[selectedEntity][childEntity]"
               :repository="getRepoForSelectionByEntity(selectedEntity, childEntity)"
+              :readonly="!!singleEntryID"
               clearable
             />
           </u-form-row>
@@ -56,13 +61,67 @@
 </template>
 
 <script>
+const _ = require('lodash')
 const { Form } = require('@unitybase/adminui-vue')
 const { Repository, connection } = require('@unitybase/ub-pub')
-const { mapMutations, mapActions, mapGetters } = require('vuex')
 const { UBDomain } = require('@unitybase/cs-shared')
-const _ = require('lodash')
+const { lookups } = require('@unitybase/adminui-vue')
+const { mapMutations, mapActions, mapGetters } = require('vuex')
 
 const ACL_RLS_COLLECTION = 'aclRlsEntries'
+
+/**
+ * @param {Array<UBEntityAttribute>} aclAttributes
+ * @returns {Object<string, string[]>}
+ */
+function getMappedEntitiesForAclAttrs (aclAttributes) {
+  return Object.fromEntries(
+    aclAttributes.map(({ associatedEntity }) => {
+      return [associatedEntity, getSortedMappedEntities(associatedEntity)]
+    })
+  )
+}
+
+function getSortedMappedEntities (unityEntity) {
+  const entities = connection.domain
+    .filterEntities(entityDef => entityDef.mixin('unity')?.entity === unityEntity)
+    .map(entityDef => entityDef.code)
+
+  if (entities.length === 0) {
+    return entities
+  }
+
+  const getUnityDefaults = entity => connection.domain.get(entity).mixin('unity').defaults
+  const getUnityDefaultsKey = entity => Object.keys(getUnityDefaults(entity))
+  const arraysIntersection = (a1, a2) => a1.filter(key => a2.includes(key))
+
+  let commonAttributes = getUnityDefaultsKey(entities[0])
+  for (let i = 1; i < entities.length; i++) {
+    commonAttributes = arraysIntersection(commonAttributes, getUnityDefaultsKey(entities[i]))
+  }
+
+  if (commonAttributes.length !== 1) {
+    throw new Error(
+      'You should define only one default value that will be mapped to the unity entity as it defines an order for displaying in UI'
+    )
+  }
+
+  // set order of controls for unity entities based on values of ONE common attribute
+  const [orderAttrName] = commonAttributes
+
+  const orderAttrDef = connection.domain.get(unityEntity).attributes[orderAttrName]
+  const isEnumDataType = orderAttrDef.dataType === UBDomain.ubDataTypes.Enum
+
+  if (isEnumDataType) { // compare by sortOrder of enums
+    const valuesOrder = lookups.getEnumItems(orderAttrDef.enumGroup).map(item => item.code)
+    return _.sortBy(entities, [entity => {
+      const sortValue = getUnityDefaults(entity)[orderAttrName]
+      return valuesOrder.indexOf(sortValue)
+    }])
+  } else { // compare by chars
+    return _.sortBy(entities, [entity => getUnityDefaults(entity)[orderAttrName]])
+  }
+}
 
 /**
  * The form loads entry of master entity for which user configures aclRls access.
@@ -70,7 +129,17 @@ const ACL_RLS_COLLECTION = 'aclRlsEntries'
  * as a collection since the user can add several items from the one form
  */
 module.exports.mount = cfg => {
-  const { aclEntityName, aclAttributes, instanceID } = cfg.props
+  const { aclEntityName, aclAttributes, instanceID, singleEntryID } = cfg.props
+
+  const mappedEntitiesForAclAttrs = getMappedEntitiesForAclAttrs(aclAttributes)
+  cfg.props.mappedEntitiesForAclAttrs = mappedEntitiesForAclAttrs
+
+  const rlsCollectionAclAttrs = aclAttributes.flatMap(attribute => {
+    const hasMappedEntities = mappedEntitiesForAclAttrs[attribute.associatedEntity].length > 0
+    return hasMappedEntities
+      ? [attribute.code, `${attribute.code}.mi_unityEntity`]
+      : [attribute.code]
+  })
 
   Form(cfg)
     .store({
@@ -86,7 +155,8 @@ module.exports.mount = cfg => {
       collections: {
         [ACL_RLS_COLLECTION] () {
           return Repository(aclEntityName)
-            .attrs('ID', 'instanceID', aclAttributes.map(attr => attr.code))
+            .attrs('ID', 'instanceID', ...rlsCollectionAclAttrs)
+            .whereIf(singleEntryID, 'ID', '=', singleEntryID)
             .where('instanceID', '=', instanceID)
         }
       }
@@ -104,9 +174,20 @@ export default {
       required: true
     },
 
+    mappedEntitiesForAclAttrs: {
+      type: Object,
+      required: true
+    },
+
     instanceID: {
       type: Number,
       required: true
+    },
+
+    singleEntryID: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
 
@@ -124,14 +205,6 @@ export default {
 
     collectionItems () {
       return this.$store.state.collections[ACL_RLS_COLLECTION].items.map(item => item.data)
-    },
-
-    mappedEntitiesForAclAttrs () {
-      return Object.fromEntries(
-        this.aclAttributes.map(({ associatedEntity }) => {
-          return [associatedEntity, this.getSortedMappedEntities(associatedEntity)]
-        })
-      )
     },
 
     mappedEntitiesBySelectedEntity () {
@@ -154,7 +227,17 @@ export default {
   },
 
   mounted () {
-    this.selectedEntity = this.aclAttributes[0].associatedEntity
+    if (!this.singleEntryID) {
+      this.selectedEntity = this.aclAttributes[0].associatedEntity
+      return
+    }
+
+    const [singleEntry] = this.collectionItems
+    for (const attr of this.aclAttributes) {
+      if (singleEntry[attr.code]) {
+        this.selectedEntity = attr.associatedEntity
+      }
+    }
   },
 
   methods: {
@@ -166,53 +249,42 @@ export default {
       'addCollectionItemWithoutDefaultValues'
     ]),
 
-    getSortedMappedEntities (unityEntity) {
-      const entities = connection.domain
-        .filterEntities(entityDef => entityDef.mixin('unity')?.entity === unityEntity)
-        .map(entityDef => entityDef.code)
+    resetSelectedItems () {
+      const getEntriesFunc = this.singleEntryID ? this.getExistingAclRlsEntries : this.getDefaultAclRlsEntries
+      this.aclRlsEntries = Object.fromEntries(this.aclAttributes.map(aclAttr => {
+        return [aclAttr.associatedEntity, getEntriesFunc(aclAttr)]
+      }))
+    },
 
-      const getUnityDefaults = entity => connection.domain.get(entity).mixin('unity').defaults
-      const getUnityDefaultsKey = entity => Object.keys(getUnityDefaults(entity))
-      const arraysIntersaction = (a1, a2) => a1.filter(key => a2.includes(key))
+    getDefaultAclRlsEntries (aclAttr) {
+      const mappedEntities = this.mappedEntitiesForAclAttrs[aclAttr.associatedEntity]
+      return mappedEntities.length > 0
+        ? Object.fromEntries(mappedEntities.map(entity => [entity, []]))
+        : []
+    },
 
-      let commonAttributes = getUnityDefaultsKey(entities[0])
-      for (let i = 1; i < entities.length; i++) {
-        commonAttributes = arraysIntersaction(commonAttributes, getUnityDefaultsKey(entities[i]))
-      }
+    getExistingAclRlsEntries (aclAttr) {
+      const mappedEntities = this.mappedEntitiesForAclAttrs[aclAttr.associatedEntity]
 
-      if (commonAttributes.length !== 1) {
-        throw new Error(
-          'You should define only one default value that will be mapped to the unity entity as it defines an order for displaying in UI'
+      if (mappedEntities.length > 0) {
+        return Object.fromEntries(
+          mappedEntities.map(entity => {
+            const defaultValue = []
+            for (const item of this.collectionItems) {
+              if (item[`${aclAttr.code}.mi_unityEntity`] === entity) {
+                defaultValue.push(item[aclAttr.code])
+              }
+            }
+            return [entity, defaultValue]
+          })
         )
       }
 
-      // set order of controls for unity entities based on values of ONE common attribute
-      const [orderAttrName] = commonAttributes
-
-      const orderAttrDef = connection.domain.get(unityEntity).attributes[orderAttrName]
-      const isEnumDataType = orderAttrDef.dataType === UBDomain.ubDataTypes.Enum
-
-      if (isEnumDataType) { // compare by sortOrder of enums
-        const valuesOrder = this.$lookups.getEnumItems(orderAttrDef.enumGroup).map(item => item.code)
-        return _.sortBy(entities, [entity => {
-          const sortValue = getUnityDefaults(entity)[orderAttrName]
-          return valuesOrder.indexOf(sortValue)
-        }])
-      } else { // compare by chars
-        return _.sortBy(entities, [entity => getUnityDefaults(entity)[orderAttrName]])
+      const defaultValue = []
+      for (const { [aclAttr.code]: attrValue } of this.collectionItems) {
+        if (attrValue) defaultValue.push(attrValue)
       }
-    },
-
-    resetSelectedItems () {
-      this.aclRlsEntries = Object.fromEntries(
-        this.aclAttributes.map(attr => {
-          const mappedEntities = this.mappedEntitiesForAclAttrs[attr.associatedEntity]
-          const defaultValue = mappedEntities.length > 0
-            ? Object.fromEntries(mappedEntities.map(entity => [entity, []]))
-            : []
-          return [attr.associatedEntity, defaultValue]
-        })
-      )
+      return defaultValue
     },
 
     /**

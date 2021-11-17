@@ -381,15 +381,16 @@ export default {
       }
 
       const formProps = {
+        aclEntityName,
+        instanceID,
+        aclAttributes
+      }
+      const formConfig = {
         title: `${this.$UB.i18n('accessRight')} (${this.$UB.i18n(this.entity)})`,
         instanceID,
         entity: this.entitySchema.code,
         formCode: 'aclRlsEntry',
-        props: {
-          aclEntityName,
-          instanceID,
-          aclAttributes
-        }
+        props: formProps
       }
 
       $App.doCommand({
@@ -409,14 +410,18 @@ export default {
           buildAddNewConfig: cfg => {
             return {
               ...cfg,
-              ...formProps
+              ...formConfig
             }
           },
 
           buildEditConfig: cfg => {
             return {
               ...cfg,
-              ...formProps
+              ...formConfig,
+              props: {
+                ...formProps,
+                singleEntryID: cfg.instanceID
+              }
             }
           },
 
@@ -453,6 +458,7 @@ export default {
           hideActions: [
             'export',
             'copy',
+            'edit',
             'audit',
             'summary'
           ]

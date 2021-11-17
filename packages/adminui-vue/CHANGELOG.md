@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - opening of the form for existing entry of `aclRls` mixin - the form will be in
+  the readonly mode. Access entries can be only added or removed not edited
 
 ## [5.20.30] - 2021-11-14
 ### Added

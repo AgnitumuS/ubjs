@@ -28,6 +28,8 @@
  * @property {object} mapById
  * @property {string} descriptionAttrName
  */
+
+const _ = require('lodash')
 const Vue = require('vue')
 const UB = require('@unitybase/ub-pub')
 const ENUM_ENTITY = 'ubm_enum'
