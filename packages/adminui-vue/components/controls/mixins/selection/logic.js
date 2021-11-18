@@ -32,6 +32,7 @@ module.exports = {
       this.$emit('click', { row })
     },
     async handlerSelection (row) {
+      this.$emit('click-cell', { row })
       if (!this.enableMultiSelect) return
       const { multiSelectKeyAttr, curSelection } = this
       const arr = curSelection
