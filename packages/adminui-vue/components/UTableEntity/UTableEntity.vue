@@ -13,7 +13,6 @@
     v-on="tableListeners"
     @add-selected="handlerAddSelected"
     @remove-selected="handlerRemoveSelected"
-    @delete-multiple-result="deleteMultipleResult"
   >
     <template
       v-for="slot in Object.keys($scopedSlots)"
@@ -267,6 +266,8 @@ export default {
     this.tableItems = []
     const storeConfig = createStore(this)
     this.$store = new Vuex.Store(storeConfig)
+    // for anothercomponent, example ToolbarDropdown
+    this.$store.commit('SET_MULTISELECT_KEY_ATTR', this.multiSelectKeyAttr)
     this.$watch('$store.state.items', this.handlerTableDataChange)
     await this.beforeInitialLoad(this)
     this.loadData()
@@ -286,7 +287,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(['loadData', 'unsubscribeLookups', 'updateData']),
+    ...mapActions(['loadData', 'unsubscribeLookups']),
+    updateData (payload) {
+      if (payload?.method.includes('-multiple')) {
+        this.handlerMultipleAction(payload)
+        return
+      }
+      this.$store.dispatch('updateData')
+    },
     handlerAddSelected (addedArr) {
       const { selectionCache, multiSelectKeyAttr } = this
       addedArr.forEach(item => {
@@ -320,18 +328,24 @@ export default {
         if (inCache) this.curSelected.push(id)
       })
     },
-    deleteMultipleResult (ev) {
-      if (!ev) return
-      const { success } = ev
-      if (!success || success.length === 0) return
-      success.forEach(code => this.selectionCache.delete(code))
+    handlerMultipleAction (payload) {
+      const { deleteMultipleResult } = this
+      const handlers = {
+        'delete-multiple': deleteMultipleResult
+      }
+      const handler = handlers[payload.method] || (() => {})
+      handler(payload.resultData)
+    },
+    deleteMultipleResult (resultArr) {
+      if (!Array.isArray(resultArr) || resultArr.length === 0) return
+      resultArr.forEach(code => this.selectionCache.delete(code))
       this.setCurrentSelected()
       this.emitSelectedEvent()
-      this.deleteMultipleShowSuccessAlert(success)
+      this.deleteMultipleShowSuccessAlert(resultArr)
       this.$store.dispatch('refresh')
     },
     deleteMultipleShowSuccessAlert (arr = []) {
-      const { tableItems, multiSelectKeyAttr, getEntityName } = this
+      const { getDescription } = this
       const message = arr.reduce((acum, id) => {
         acum += `<li>${getDescription(id)}</li>`
         return acum
@@ -343,12 +357,14 @@ export default {
         duration,
         dangerouslyUseHTMLString: true
       })
-      function getDescription (code) {
-        const item = tableItems.find(i => i[multiSelectKeyAttr] === code)
-        const descriptionAttr = this.$UB.connection.domain.get(getEntityName)
-          .descriptionAttribute
-        return item[descriptionAttr] || ''
-      }
+    },
+    getDescription (code) {
+      const { tableItems, multiSelectKeyAttr, getEntityName } = this
+
+      const item = tableItems.find(i => i[multiSelectKeyAttr] === code)
+      const descriptionAttr = this.$UB.connection.domain.get(getEntityName)
+        .descriptionAttribute
+      return item[descriptionAttr] || ''
     },
     getRepository () {
       switch (typeof this.repository) {
@@ -515,7 +531,7 @@ export default {
 .u-table__multiple__cell {
   cursor: pointer;
 }
-.u-table__multiple__cell:focus .el-checkbox__inner{
+.u-table__multiple__cell:focus .el-checkbox__inner {
   outline: 2px solid hsl(var(--hs-primary), var(--l-layout-border-default));
 }
 .u-table__multiple td:first-child {

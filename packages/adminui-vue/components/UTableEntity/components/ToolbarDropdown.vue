@@ -33,7 +33,7 @@
         <u-dropdown-item
           icon="u-icon-edit"
           :label="$ut('Edit') + ' (Ctrl + E)'"
-          :disabled="!canEdit"
+          :disabled="!canEdit || !showOneItemAction"
           @click="editRecord(selectedRowId)"
         />
       </slot>
@@ -41,7 +41,7 @@
         <u-dropdown-item
           icon="u-icon-copy"
           label="Copy"
-          :disabled="!hasSelectedRow || !canAddNew"
+          :disabled="!hasSelectedRow || !canAddNew || !showOneItemAction"
           @click="copyRecord(selectedRowId)"
         />
       </slot>
@@ -57,7 +57,7 @@
         <u-dropdown-item
           icon="u-icon-line-chart"
           label="showAudit"
-          :disabled="!canAudit"
+          :disabled="!canAudit || !showOneItemAction"
           @click="audit(selectedRowId)"
         />
       </slot>
@@ -92,6 +92,7 @@
       <slot name="exports">
         <u-dropdown-item divider />
         <u-dropdown-item
+          v-if="showOneItemAction"
           icon="u-icon-file-export"
           label="export"
         >
@@ -136,7 +137,10 @@ export default {
     ]),
     ...mapState([
       'selectedRowId',
-      'loading'
+      'loading',
+      'showOneItemAction',
+      'selectedOnPage',
+      'multiSelectKeyAttr'
     ])
   },
 
@@ -152,7 +156,19 @@ export default {
       'showSummary',
       'createNewVersion',
       'showRecordHistory'
-    ])
+    ]),
+    deleteRecord (ID) {
+      const { selectedOnPage } = this
+      if (!this.canDelete) return
+      if (selectedOnPage.length <= 1) {
+        this.$store.dispatch('deleteRecord', ID)
+        return
+      }
+      this.$store.dispatch('deleteMultipleRecords', {
+        attr: this.multiSelectKeyAttr,
+        data: selectedOnPage
+      })
+    }
   }
 }
 </script>

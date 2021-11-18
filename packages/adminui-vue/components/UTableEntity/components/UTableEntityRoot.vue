@@ -56,12 +56,12 @@
         </slot>
 
         <u-button
-          v-if="canDeleteMultiple"
+          v-if="showDeleteMultipleBtn && canDeleteMultiple"
           :title="$ut('delete')"
           appearance="inverse"
           icon="u-icon-delete"
           color="control"
-          :disabled="loading || (curSelected.length === 0)"
+          :disabled="loading || curSelected.length === 0"
           @click="deleteMultiple"
         />
 
@@ -370,7 +370,7 @@
         >
           <!-- @slot Replace action "edit" in context menu -->
           <slot
-            v-if="showEdit"
+            v-if="showEdit && showOneItemAction"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -418,7 +418,7 @@
 
           <!-- @slot Replace "copy link" in context menu -->
           <slot
-            v-if="showCopyLink"
+            v-if="showCopyLink && showOneItemAction"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -434,7 +434,7 @@
 
           <!-- @slot Replace "audit" in context menu -->
           <slot
-            v-if="showAudit"
+            v-if="showAudit && showOneItemAction"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -592,7 +592,14 @@ export default {
   },
 
   computed: {
-    ...mapState(['items', 'loading', 'withTotal', 'sort', 'pageIndex']),
+    ...mapState([
+      'items',
+      'loading',
+      'withTotal',
+      'sort',
+      'pageIndex',
+      'showOneItemAction'
+    ]),
 
     ...mapGetters([
       'showAddNew',
@@ -649,7 +656,6 @@ export default {
     },
     canDeleteMultiple () {
       return (
-        this.showDeleteMultipleBtn &&
         this.enableMultiSelect &&
         this.$store.getters.schema.haveAccessToMethod('delete')
       )
@@ -674,6 +680,9 @@ export default {
     },
     selectedRows (e) {
       this.curSelected = e
+    },
+    curSelected (newSelected) {
+      this.$store.dispatch('setSelectedOnPage', newSelected)
     }
   },
 
@@ -682,7 +691,6 @@ export default {
       'cellNavigate',
       'addNew',
       'editRecord',
-      'deleteRecord',
       'refresh',
       'copyRecord',
       'createLink',
@@ -695,15 +703,23 @@ export default {
       if (typeof column.template === 'function') {
         return column.template()
       }
-      return ColumnTemplateProvider.getByColumnAttribute(column.attribute).template
+      return ColumnTemplateProvider.getByColumnAttribute(column.attribute)
+        .template
+    },
+    deleteRecord (ID) {
+      const { enableMultiSelect, curSelected } = this
+      if (!enableMultiSelect && curSelected.length <= 1) {
+        this.$store.dispatch('deleteRecord', ID)
+        return
+      }
+      this.deleteMultiple()
     },
     async deleteMultiple () {
       if (!this.canDeleteMultiple) return
-      const result = await this.$store.dispatch('deleteMultipleRecords', {
+      await this.$store.dispatch('deleteMultipleRecords', {
         attr: this.multiSelectKeyAttr,
         data: this.curSelected
       })
-      this.$emit('delete-multiple-result', result)
     },
     showContextMenu ({ event, row, column }) {
       this.select({ row, column })
@@ -856,7 +872,6 @@ export default {
         setTimeout(this.$refs.sort.$refs.dropdown.toggleVisible, 0)
       }
     },
-
     onSort () {
       this.targetColumn = null
     }

@@ -47,7 +47,10 @@ module.exports = instance => ({
       selectedRowId: null,
 
       withTotal: false, // need for fetch with total always after click total btn
-      viewMode: 'table'
+      viewMode: 'table',
+      showOneItemAction: false,
+      selectedOnPage: [],
+      multiSelectKeyAttr: ''
     }
   },
 
@@ -361,10 +364,25 @@ module.exports = instance => ({
 
     SET_VIEW_MODE (state, mode) {
       state.viewMode = mode
+    },
+    SHOW_ONE_ITEM_ACTIONS (state, flag) {
+      state.showOneItemAction = flag
+    },
+    SET_SELECTED_ON_PAGE (state, payload = []) {
+      state.selectedOnPage.splice(0)
+      state.selectedOnPage.push(...payload)
+    },
+    SET_MULTISELECT_KEY_ATTR (state, attr) {
+      state.multiSelectKeyAttr = attr
     }
   },
 
   actions: {
+    setSelectedOnPage ({ commit }, payload = []) {
+      commit('SET_SELECTED_ON_PAGE', payload)
+      const flag = payload.length <= 1
+      commit('SHOW_ONE_ITEM_ACTIONS', flag)
+    },
     async fetchItems ({ state, getters, commit }) {
       commit('LOADING', true)
 
@@ -418,7 +436,9 @@ module.exports = instance => ({
       try {
         commit('PAGE_INDEX', 0)
         await Promise.all(
-          getters.lookupEntities.map(({ entity, associatedAttr }) => lookups.refresh(entity, [associatedAttr]))
+          getters.lookupEntities.map(({ entity, associatedAttr }) =>
+            lookups.refresh(entity, [associatedAttr])
+          )
         )
         await dispatch('fetchItems')
       } finally {
@@ -586,7 +606,12 @@ module.exports = instance => ({
       }
       commit('LOADING', false)
       commit('SELECT_ROW', null)
-      return { success: deletedItems }
+      UB.connection.emitEntityChanged(getters.entityName, {
+        entity: getters.entityName,
+        method: 'delete-multiple',
+        resultData: deletedItems
+      })
+      return { resultData: deletedItems }
 
       function getDescriptionItem (entity, instanceData = {}) {
         const descriptionAttr = UB.connection.domain.get(entity)
@@ -658,7 +683,11 @@ module.exports = instance => ({
       const { columns, currentRepository, entityName } = getters
       const fileName = UB.i18n(entityName)
 
-      const repository = currentRepository.clone().withTotal(false).start(0).limit(50000)
+      const repository = currentRepository
+        .clone()
+        .withTotal(false)
+        .start(0)
+        .limit(50000)
       const exportFieldsMap = {}
       for (const { id, exportExpression } of columns) {
         if (exportExpression) {
@@ -669,7 +698,9 @@ module.exports = instance => ({
       let resultFieldList
       if (Object.keys(exportFieldsMap).length > 0) {
         resultFieldList = Array.from(repository.fieldList)
-        repository.fieldList = resultFieldList.map(field => exportFieldsMap[field] ?? field)
+        repository.fieldList = resultFieldList.map(
+          field => exportFieldsMap[field] ?? field
+        )
       }
 
       switch (exportFormat) {
@@ -709,7 +740,9 @@ module.exports = instance => ({
       commit('LOADING', true)
       try {
         await Promise.all(
-          getters.lookupEntities.map(({ entity, associatedAttr }) => lookups.subscribe(entity, [associatedAttr]))
+          getters.lookupEntities.map(({ entity, associatedAttr }) =>
+            lookups.subscribe(entity, [associatedAttr])
+          )
         )
         await dispatch('fetchItems')
       } finally {
@@ -879,7 +912,12 @@ module.exports = instance => ({
     },
 
     async showRecordHistory ({ getters }, ID) {
-      return helpers.showRecordHistory(getters.entityName, ID, getters.repository().fieldList, getters.columns)
+      return helpers.showRecordHistory(
+        getters.entityName,
+        ID,
+        getters.repository().fieldList,
+        getters.columns
+      )
     }
   }
 })
