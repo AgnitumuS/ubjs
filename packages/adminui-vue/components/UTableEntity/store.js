@@ -542,8 +542,9 @@ module.exports = instance => ({
       )
       UB.core.UBApp.doCommand(config)
     },
-    async deleteRecord ({ state, dispatch }, ID) {
+    async deleteRecord ({ state, dispatch, getters }, ID) {
       let result = null
+      if (!getters.canDelete) return
       if (!state.enableMultiSelect) {
         result = await dispatch('deleteOneRecord', ID)
       } else {
