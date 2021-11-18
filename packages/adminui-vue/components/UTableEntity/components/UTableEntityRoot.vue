@@ -592,15 +592,7 @@ export default {
   },
 
   computed: {
-    ...mapState([
-      'items',
-      'loading',
-      'withTotal',
-      'sort',
-      'pageIndex',
-      'showOneItemAction'
-    ]),
-
+    ...mapState(['items', 'loading', 'withTotal', 'sort', 'pageIndex', 'showOneItemAction']),
     ...mapGetters([
       'showAddNew',
       'canAddNew',
