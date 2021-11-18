@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - filtering of dropdown entries by entered query text to some `u-select-multiple` control on the `aclRlsEntry-fm` form [LDOC-1823]
 
 ## [5.20.31] - 2021-11-17
 ### Fixed
