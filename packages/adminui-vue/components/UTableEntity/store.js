@@ -559,7 +559,7 @@ module.exports = instance => ({
       const answer = await uDialogs.dialogDeleteRecord(getters.entityName, item)
 
       if (answer) {
-        const resultDelete = await dispatch('deleteFunction', ID)
+        const resultDelete = await dispatch('doDelete', ID)
         if (!resultDelete) return
         UB.connection.emitEntityChanged(getters.entityName, {
           entity: getters.entityName,
@@ -570,7 +570,7 @@ module.exports = instance => ({
         $notify.success(UB.i18n('recordDeletedSuccessfully'))
       }
     },
-    async deleteFunction ({ getters }, ID, attr = 'ID') {
+    async doDelete ({ getters }, ID, attr = 'ID') {
       let result = false
       try {
         await UB.connection.doDelete({
@@ -597,7 +597,7 @@ module.exports = instance => ({
       commit('LOADING', true)
       const deletedItems = []
       for (const code of data) {
-        const resultDelete = await dispatch('deleteFunction', code, attr)
+        const resultDelete = await dispatch('doDelete', code, attr)
         if (!resultDelete) break
           deletedItems.push(code)
       }
