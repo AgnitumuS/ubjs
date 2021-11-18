@@ -148,7 +148,6 @@ export default {
     ...mapActions([
       'refresh',
       'addNew',
-      'deleteRecord',
       'editRecord',
       'copyRecord',
       'audit',
