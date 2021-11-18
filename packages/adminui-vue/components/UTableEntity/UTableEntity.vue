@@ -290,7 +290,7 @@ export default {
   methods: {
     ...mapActions(['loadData', 'unsubscribeLookups']),
     updateData (payload) {
-      if (payload?.method.includes('-multiple')) {
+      if (payload?.method?.includes('-multiple')) {
         this.handlerMultipleAction(payload)
         return
       }

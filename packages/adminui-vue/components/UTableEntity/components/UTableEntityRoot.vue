@@ -386,7 +386,7 @@
 
           <!-- @slot Replace action "copy" in context menu -->
           <slot
-            v-if="showCopy"
+            v-if="showCopy && showOneItemAction"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
