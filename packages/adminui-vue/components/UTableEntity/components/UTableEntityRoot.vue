@@ -56,7 +56,7 @@
         </slot>
 
         <u-button
-          v-if="showDeleteMultipleBtn && canDeleteMultiple"
+          v-if="showDeleteMultipleBtn"
           :title="$ut('delete')"
           appearance="inverse"
           icon="u-icon-delete"
@@ -645,12 +645,6 @@ export default {
       set (mode) {
         this.$store.commit('SET_VIEW_MODE', mode)
       }
-    },
-    canDeleteMultiple () {
-      return (
-        this.enableMultiSelect &&
-        this.$store.getters.schema.haveAccessToMethod('delete')
-      )
     }
   },
 
@@ -683,6 +677,7 @@ export default {
       'cellNavigate',
       'addNew',
       'editRecord',
+      'deleteRecord',
       'refresh',
       'copyRecord',
       'createLink',
@@ -697,21 +692,6 @@ export default {
       }
       return ColumnTemplateProvider.getByColumnAttribute(column.attribute)
         .template
-    },
-    deleteRecord (ID) {
-      const { enableMultiSelect, curSelected } = this
-      if (!enableMultiSelect && curSelected.length <= 1) {
-        this.$store.dispatch('deleteRecord', ID)
-        return
-      }
-      this.deleteMultiple()
-    },
-    async deleteMultiple () {
-      if (!this.canDeleteMultiple) return
-      await this.$store.dispatch('deleteMultipleRecords', {
-        attr: this.multiSelectKeyAttr,
-        data: this.curSelected
-      })
     },
     showContextMenu ({ event, row, column }) {
       this.select({ row, column })

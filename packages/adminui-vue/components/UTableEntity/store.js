@@ -50,7 +50,7 @@ module.exports = instance => ({
       viewMode: 'table',
       showOneItemAction: false,
       selectedOnPage: [],
-      multiSelectKeyAttr: ''
+      multiSelectKeyAttr: 'ID'
     }
   },
 
@@ -374,6 +374,9 @@ module.exports = instance => ({
     },
     SET_MULTISELECT_KEY_ATTR (state, attr) {
       state.multiSelectKeyAttr = attr
+    },
+    SET_ENABLE_MULTISELECT (state, flag) {
+      state.enableMultiSelect = flag
     }
   },
 
@@ -539,23 +542,24 @@ module.exports = instance => ({
       )
       UB.core.UBApp.doCommand(config)
     },
-
-    async deleteRecord ({ state, commit, getters }, ID) {
+    async deleteRecord ({ state, dispatch }, ID) {
+      let result = null
+      if (!state.enableMultiSelect) {
+        result = await dispatch('deleteOneRecord', ID)
+      } else {
+        result = await dispatch('deleteMultipleRecords')
+      }
+      return result
+    },
+    async deleteOneRecord ({ state, commit, getters, dispatch }, ID) {
       if (ID === null) return
 
       const item = state.items.find(i => i.ID === ID)
       const answer = await uDialogs.dialogDeleteRecord(getters.entityName, item)
 
       if (answer) {
-        try {
-          await UB.connection.doDelete({
-            entity: getters.entityName,
-            execParams: { ID }
-          })
-        } catch (err) {
-          UB.showErrorWindow(err)
-          throw new UB.UBAbortError(err)
-        }
+        const resultDelete = await dispatch('deleteFunction', ID)
+        if (!resultDelete) return
         UB.connection.emitEntityChanged(getters.entityName, {
           entity: getters.entityName,
           method: 'delete',
@@ -565,8 +569,24 @@ module.exports = instance => ({
         $notify.success(UB.i18n('recordDeletedSuccessfully'))
       }
     },
-    async deleteMultipleRecords ({ state, commit, getters }, payload) {
-      const { attr, data } = payload
+    async deleteFunction ({ getters }, ID, attr = 'ID') {
+      let result = false
+      try {
+        await UB.connection.doDelete({
+          entity: getters.entityName,
+          execParams: { [attr]: ID }
+        })
+        result = true
+      } catch (err) {
+        UB.showErrorWindow(err)
+        throw new UB.UBAbortError(err)
+      } finally {
+        return result
+      }
+    },
+    async deleteMultipleRecords ({ state, commit, getters, dispatch }) {
+      const attr = state.multiSelectKeyAttr
+      const data = state.selectedOnPage
 
       const answer = await uDialogs.dialogYesNo(
         'deletionDialogConfirmCaption',
@@ -576,33 +596,9 @@ module.exports = instance => ({
       commit('LOADING', true)
       const deletedItems = []
       for (const code of data) {
-        const template = {
-          entity: getters.entityName,
-          execParams: {
-            [attr]: code
-          }
-        }
-        try {
-          await UB.connection.doDelete(template)
+        const resultDelete = await dispatch('deleteFunction', code, attr)
+        if (!resultDelete) break
           deletedItems.push(code)
-        } catch (err) {
-          const cantDeleteItem = state.items.find(i => i[attr] === code)
-          let caption = getDescriptionItem(getters.entityName, cantDeleteItem)
-          let whyErr = err.message
-            ? err.message.match(/(?<=<<<\s*).*?(?=\s*>>>)/g)
-            : ''
-          whyErr = whyErr ? whyErr[0] : ''
-
-          caption = `<b>${whyErr}</b> </br></br> ${caption} `
-
-          $notify.error({
-            title: UB.i18n('error'),
-            message: caption,
-            duration: 7 * 1000,
-            dangerouslyUseHTMLString: true
-          })
-          break
-        }
       }
       commit('LOADING', false)
       commit('SELECT_ROW', null)
@@ -612,18 +608,6 @@ module.exports = instance => ({
         resultData: deletedItems
       })
       return { resultData: deletedItems }
-
-      function getDescriptionItem (entity, instanceData = {}) {
-        const descriptionAttr = UB.connection.domain.get(entity)
-          .descriptionAttribute
-        const caption = instanceData[descriptionAttr] || ''
-        const msg = UB.i18n(
-          'deleteMultipleImpossibleAlert',
-          caption,
-          UB.i18n(entity)
-        )
-        return caption ? msg.replace(caption, `<b>${caption}</b>`) : msg
-      }
     },
 
     async copyRecord ({ state, getters }, ID) {

@@ -268,6 +268,7 @@ export default {
     this.$store = new Vuex.Store(storeConfig)
     // for anothercomponent, example ToolbarDropdown
     this.$store.commit('SET_MULTISELECT_KEY_ATTR', this.multiSelectKeyAttr)
+    this.$store.commit('SET_ENABLE_MULTISELECT', this.enableMultiSelect)
     this.$watch('$store.state.items', this.handlerTableDataChange)
     await this.beforeInitialLoad(this)
     this.loadData()
@@ -293,7 +294,7 @@ export default {
         this.handlerMultipleAction(payload)
         return
       }
-      this.$store.dispatch('updateData')
+      this.$store.dispatch('updateData', payload)
     },
     handlerAddSelected (addedArr) {
       const { selectionCache, multiSelectKeyAttr } = this

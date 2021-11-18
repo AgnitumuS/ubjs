@@ -148,6 +148,7 @@ export default {
     ...mapActions([
       'refresh',
       'addNew',
+      'deleteRecord',
       'editRecord',
       'copyRecord',
       'audit',
@@ -155,19 +156,7 @@ export default {
       'showSummary',
       'createNewVersion',
       'showRecordHistory'
-    ]),
-    deleteRecord (ID) {
-      const { selectedOnPage } = this
-      if (!this.canDelete) return
-      if (selectedOnPage.length <= 1) {
-        this.$store.dispatch('deleteRecord', ID)
-        return
-      }
-      this.$store.dispatch('deleteMultipleRecords', {
-        attr: this.multiSelectKeyAttr,
-        data: selectedOnPage
-      })
-    }
+    ])
   }
 }
 </script>
