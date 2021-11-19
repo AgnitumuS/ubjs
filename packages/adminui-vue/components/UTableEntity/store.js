@@ -546,6 +546,7 @@ module.exports = instance => ({
     async deleteRecord ({ state, dispatch, getters }, ID) {
       let result = null
       if (!getters.canDelete) return
+      // this if...else for backward compatibility, when was implemented multiselection mode
       if (!state.enableMultiSelect) {
         result = await dispatch('deleteOneRecord', ID)
       } else {
@@ -587,6 +588,7 @@ module.exports = instance => ({
         return result
       }
     },
+    // delete elements in loop and forms an array of successfully deleted. Stops on first unsuccessful deletion
     async deleteMultipleRecords ({ state, commit, getters, dispatch }) {
       const attr = state.multiSelectKeyAttr
       const data = state.selectedOnPage
@@ -601,7 +603,7 @@ module.exports = instance => ({
       for (const code of data) {
         const resultDelete = await dispatch('doDelete', code, attr)
         if (!resultDelete) break
-          deletedItems.push(code)
+        deletedItems.push(code)
       }
       commit('LOADING', false)
       commit('SELECT_ROW', null)
