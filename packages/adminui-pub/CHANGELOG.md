@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `UB.view.UB DropZone`: changed permissions for the ability **drag-and-drop**, to prevent drop links into document attributes. 
+ - `UB.view.UB DropZone`: changed permissions for operation **drag-and-drop**, to prevent drop links into document attributes. 
 
 ### Deprecated
 
