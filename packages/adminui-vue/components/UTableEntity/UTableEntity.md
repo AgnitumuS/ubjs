@@ -251,7 +251,6 @@ export default {
 ```
 
 ### Custom filter example
-
 ```vue
 <template>
 <u-table-entity
@@ -305,6 +304,7 @@ export default {
 </script>
 ```
 ### Selection Mode
+In selection mode, some actions, like `edit`, `copyLink` - is not working for several selected rows. These actions was hide or disabled. This behavior is controlled by a variable `showOneItemAction` in store.
 ```vue
 <template>
   <div>
