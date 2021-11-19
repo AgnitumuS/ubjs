@@ -264,7 +264,10 @@ export default {
       this.$store.commit('SET_MULTISELECT_KEY_ATTR', newValue)
     },
     selectedRows (newSelected) {
-      this.$store.dispatch('setSelectedOnPage', newSelected)
+      newSelected.forEach(element => {
+        this.selectionCache.add(element)
+      })
+      this.setCurrentSelected()
     }
   },
 
@@ -337,6 +340,7 @@ export default {
         const inCache = selectionCache.has(id)
         if (inCache) this.curSelected.push(id)
       })
+      this.$store.dispatch('setSelectedOnPage', this.curSelected)
     },
     handlerMultipleAction (payload) {
       const { deleteMultipleResult } = this

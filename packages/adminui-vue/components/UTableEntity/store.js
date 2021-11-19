@@ -48,7 +48,7 @@ module.exports = instance => ({
 
       withTotal: false, // need for fetch with total always after click total btn
       viewMode: 'table',
-      showOneItemAction: false,
+      showOneItemAction: false, // used for hide/show actions like `delete`, `copy`, `edit` and another
       selectedOnPage: [],
       multiSelectKeyAttr: 'ID'
     }
