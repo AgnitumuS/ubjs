@@ -61,7 +61,7 @@
           appearance="inverse"
           icon="u-icon-delete"
           color="control"
-          :disabled="loading || curSelected.length === 0"
+          :disabled="loading || selectedOnPage.length === 0"
           @click="deleteMultiple"
         />
 
@@ -233,7 +233,7 @@
       <u-table
         v-if="viewMode === 'table'"
         ref="table"
-        v-model="curSelected"
+        v-model="selectedOnPage"
         class="u-table-entity__body__content"
         :columns="columns"
         :fixed-column-id="fixedColumnId"
@@ -307,7 +307,7 @@
       <u-card-view
         v-if="viewMode === 'card'"
         ref="cardView"
-        v-model="curSelected"
+        v-model="selectedOnPage"
         class="u-table-entity__body__content"
         :columns="cardColumns"
         :items="items"
@@ -587,8 +587,7 @@ export default {
   data () {
     return {
       targetColumn: null,
-      contextMenuRowId: null,
-      curSelected: [...this.selectedRows]
+      contextMenuRowId: null
     }
   },
 
@@ -646,6 +645,14 @@ export default {
       set (mode) {
         this.$store.commit('SET_VIEW_MODE', mode)
       }
+    },
+    selectedOnPage: {
+      get () {
+        return this.$store.state.selectedOnPage
+      },
+      set (newValue) {
+        this.$store.dispatch('setSelectedOnPage', newValue)
+      }
     }
   },
 
@@ -664,12 +671,6 @@ export default {
       if (this.$refs.cardView) {
         this.$refs.cardView.$el.scrollTop = 0
       }
-    },
-    selectedRows (e) {
-      this.curSelected = e
-    },
-    curSelected (newSelected) {
-      this.$store.dispatch('setSelectedOnPage', newSelected)
     }
   },
 

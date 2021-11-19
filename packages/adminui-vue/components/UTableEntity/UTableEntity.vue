@@ -6,7 +6,6 @@
     :view-mode.sync="viewMode"
     :enable-multi-select="enableMultiSelect"
     :multi-select-key-attr="multiSelectKeyAttr"
-    :selected-rows="curSelected"
     :show-delete-multiple-btn="showDeleteMultipleBtn"
     :before-add-selection="beforeAddSelection"
     :before-remove-selection="beforeRemoveSelection"
@@ -264,6 +263,9 @@ export default {
     multiSelectKeyAttr (newValue) {
       this.$store.commit('SET_MULTISELECT_KEY_ATTR', newValue)
     },
+    selectedRows (newSelected) {
+      this.$store.dispatch('setSelectedOnPage', newSelected)
+    }
   },
 
   async created () {
@@ -276,6 +278,7 @@ export default {
     this.$store.commit('SET_MULTISELECT_KEY_ATTR', this.multiSelectKeyAttr)
     this.$store.commit('SET_ENABLE_MULTISELECT', this.enableMultiSelect)
     this.$watch('$store.state.items', this.handlerTableDataChange)
+    this.$store.dispatch('setSelectedOnPage', this.selectedRows)
     await this.beforeInitialLoad(this)
     this.loadData()
   },

@@ -369,8 +369,9 @@ module.exports = instance => ({
       state.showOneItemAction = flag
     },
     SET_SELECTED_ON_PAGE (state, payload = []) {
+      const newValue = [...payload] // remove link to memory on selectedOnPage
       state.selectedOnPage.splice(0)
-      state.selectedOnPage.push(...payload)
+      state.selectedOnPage.push(...newValue)
     },
     SET_MULTISELECT_KEY_ATTR (state, attr) {
       state.multiSelectKeyAttr = attr
