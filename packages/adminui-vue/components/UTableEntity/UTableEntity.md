@@ -305,6 +305,10 @@ export default {
 ```
 ### Selection Mode
 In selection mode, some actions, like `edit`, `copyLink` - is not working for several selected rows. These actions was hide or disabled. This behavior is controlled by a variable `showOneItemAction` in store.
+
+The event `selected` contains all the selected elements, on all pages of the table. 
+If you need elements that are selected only on the current page - you can use a variable `selectedOnPage` from `store`
+
 ```vue
 <template>
   <div>
