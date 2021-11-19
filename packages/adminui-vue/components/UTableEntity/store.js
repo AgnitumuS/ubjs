@@ -552,6 +552,7 @@ module.exports = instance => ({
       }
       return result
     },
+
     async deleteOneRecord ({ state, commit, getters, dispatch }, ID) {
       if (ID === null) return
 
@@ -580,7 +581,7 @@ module.exports = instance => ({
         result = true
       } catch (err) {
         UB.showErrorWindow(err)
-        throw new UB.UBAbortError(err)
+        console.error(new UB.UBAbortError(err))
       } finally {
         return result
       }

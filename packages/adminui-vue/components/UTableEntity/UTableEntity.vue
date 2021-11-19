@@ -257,7 +257,13 @@ export default {
   },
 
   watch: {
-    entityName: 'loadData'
+    entityName: 'loadData',
+    enableMultiSelect (newValue) {
+      this.$store.commit('SET_ENABLE_MULTISELECT', newValue)
+    },
+    multiSelectKeyAttr (newValue) {
+      this.$store.commit('SET_MULTISELECT_KEY_ATTR', newValue)
+    },
   },
 
   async created () {
@@ -444,12 +450,15 @@ export default {
         }
       }
 
-      const columnDefaults = ColumnTemplateProvider.getByColumnAttribute(attribute)
+      const columnDefaults = ColumnTemplateProvider.getByColumnAttribute(
+        attribute
+      )
       const filters = {}
 
       if (column.filterable !== false) {
-        const filterEntries = Object.entries(columnDefaults.filters || {})
-          .concat(Object.entries(column.filters || {}))
+        const filterEntries = Object.entries(
+          columnDefaults.filters || {}
+        ).concat(Object.entries(column.filters || {}))
 
         for (const [filterId, filterDef] of filterEntries) {
           filters[filterId] = Object.assign({}, filters[filterId], filterDef)

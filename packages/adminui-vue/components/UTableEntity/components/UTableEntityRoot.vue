@@ -475,6 +475,7 @@
 
           <!-- @slot Replace "detail records list" in context menu -->
           <slot
+            v-if="showOneItemAction"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
