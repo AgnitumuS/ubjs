@@ -163,7 +163,8 @@ Ext.define('UB.view.UBDropZone', {
      * @return {Boolean}
      */
     function dragItemsIsValid (dragItems) {
-      let result = dragItems.length > 0
+      if (!dragItems.length) return false
+      let result = true // some items exists
       for (const dragItem of dragItems) {
         if (dragItem.kind !== 'file' || !dragItem.type) {
           result = false
