@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `UTableEntity`, `UTable` - added hooks that is called before selecting an item and before deselecting.
 - `UTableEntity`, `UTable` - added functionality selecting when user clicked on right button of mouse
 - `UTable` - added tab-navigation and selecting on tap Space btn
+- Processing module: option `skipNotify` for `refresh` action
+    ```javascript
+    this..$store.dispatch('refresh', {skipNotify: true})
+    ```
+  This won't show notification message, sometimes this message is not desirable.
+
 ### Changed
 - `UTableEntity`, `UTable` - removed selecting when click on all row in table. Selection fynctionality works only click on cell with checkbox
 ### Deprecated
