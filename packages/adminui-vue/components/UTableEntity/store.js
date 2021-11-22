@@ -48,7 +48,7 @@ module.exports = instance => ({
 
       withTotal: false, // need for fetch with total always after click total btn
       viewMode: 'table',
-      showOneItemAction: false, // used for hide/show actions like `delete`, `copy`, `edit` and another
+      showOneItemActions: false, // used for hide/show actions like `delete`, `copy`, `edit` and another
       selectedOnPage: [],
       multiSelectKeyAttr: 'ID'
     }
@@ -366,7 +366,7 @@ module.exports = instance => ({
       state.viewMode = mode
     },
     SHOW_ONE_ITEM_ACTIONS (state, flag) {
-      state.showOneItemAction = flag
+      state.showOneItemActions = flag
     },
     SET_SELECTED_ON_PAGE (state, payload = []) {
       const newValue = [...payload] // remove link to memory on selectedOnPage

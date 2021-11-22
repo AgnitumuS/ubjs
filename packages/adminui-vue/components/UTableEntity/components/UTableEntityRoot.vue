@@ -370,7 +370,7 @@
         >
           <!-- @slot Replace action "edit" in context menu -->
           <slot
-            v-if="showEdit && showOneItemAction"
+            v-if="showEdit && showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -386,7 +386,7 @@
 
           <!-- @slot Replace action "copy" in context menu -->
           <slot
-            v-if="showCopy && showOneItemAction"
+            v-if="showCopy && showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -418,7 +418,7 @@
 
           <!-- @slot Replace "copy link" in context menu -->
           <slot
-            v-if="showCopyLink && showOneItemAction"
+            v-if="showCopyLink && showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -434,7 +434,7 @@
 
           <!-- @slot Replace "audit" in context menu -->
           <slot
-            v-if="showAudit && showOneItemAction"
+            v-if="showAudit && showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -475,7 +475,7 @@
 
           <!-- @slot Replace "detail records list" in context menu -->
           <slot
-            v-if="showOneItemAction"
+            v-if="showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -592,7 +592,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['items', 'loading', 'withTotal', 'sort', 'pageIndex', 'showOneItemAction']),
+    ...mapState(['items', 'loading', 'withTotal', 'sort', 'pageIndex', 'showOneItemActions']),
     ...mapGetters([
       'showAddNew',
       'canAddNew',
