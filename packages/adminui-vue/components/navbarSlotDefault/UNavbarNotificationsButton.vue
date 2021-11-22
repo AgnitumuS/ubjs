@@ -218,7 +218,7 @@ export default {
     addNotificationListeners () {
       $App.on({
         'portal:notify:newMess': (message) => {
-          this.messages.push(message)
+          this.messages.unshift(message)
           this.$notify({
             title: 'New message',
             type: 'info'
