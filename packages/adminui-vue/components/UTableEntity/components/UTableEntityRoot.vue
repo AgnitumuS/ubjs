@@ -56,12 +56,12 @@
         </slot>
 
         <u-button
-          v-if="canDeleteMultiple"
+          v-if="showDeleteMultipleBtn"
           :title="$ut('delete')"
           appearance="inverse"
           icon="u-icon-delete"
           color="control"
-          :disabled="loading || (curSelected.length === 0)"
+          :disabled="loading || selectedOnPage.length === 0"
           @click="deleteMultiple"
         />
 
@@ -233,6 +233,7 @@
       <u-table
         v-if="viewMode === 'table'"
         ref="table"
+        v-model="selectedOnPage"
         class="u-table-entity__body__content"
         :columns="columns"
         :fixed-column-id="fixedColumnId"
@@ -242,8 +243,9 @@
         :items="items"
         :max-height="maxHeight"
         tabindex="1"
+        :before-add-selection="beforeAddSelection"
+        :before-remove-selection="beforeRemoveSelection"
         :enable-multi-select="enableMultiSelect"
-        :selected-rows="curSelected"
         :multi-select-key-attr="multiSelectKeyAttr"
         @selected="$emit('selected', ...arguments)"
         @add-selected="$emit('add-selected', ...arguments)"
@@ -305,12 +307,14 @@
       <u-card-view
         v-if="viewMode === 'card'"
         ref="cardView"
+        v-model="selectedOnPage"
         class="u-table-entity__body__content"
         :columns="cardColumns"
         :items="items"
         :get-card-class="getRowClass"
+        :before-add-selection="beforeAddSelection"
+        :before-remove-selection="beforeRemoveSelection"
         :enable-multi-select="enableMultiSelect"
-        :selected-rows="curSelected"
         :multi-select-key-attr="multiSelectKeyAttr"
         @selected="$emit('selected', ...arguments)"
         @add-selected="$emit('add-selected', ...arguments)"
@@ -366,7 +370,7 @@
         >
           <!-- @slot Replace action "edit" in context menu -->
           <slot
-            v-if="showEdit"
+            v-if="showEdit && showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -382,7 +386,7 @@
 
           <!-- @slot Replace action "copy" in context menu -->
           <slot
-            v-if="showCopy"
+            v-if="showCopy && showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -414,7 +418,7 @@
 
           <!-- @slot Replace "copy link" in context menu -->
           <slot
-            v-if="showCopyLink"
+            v-if="showCopyLink && showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -430,7 +434,7 @@
 
           <!-- @slot Replace "audit" in context menu -->
           <slot
-            v-if="showAudit"
+            v-if="showAudit && showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -471,6 +475,7 @@
 
           <!-- @slot Replace "detail records list" in context menu -->
           <slot
+            v-if="showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -560,20 +565,34 @@ export default {
     showDeleteMultipleBtn: {
       type: Boolean,
       default: false
+    },
+    /**
+     * @argument {array<object>} addedCache an array that includes the objects (rows) that will be add to the the selection
+     * Hook that is called before selecting an item. If the hook returns a false value, the selection will be canceled.
+     */
+    beforeAddSelection: {
+      type: Function,
+      default: () => true
+    },
+    /**
+     * @argument {array<object>} removedCache an array that includes the objects (rows) that will be remove from the the selection
+     * Hook that is called before deselecting. If the hook returns a false value, the deselection will be canceled
+     */
+    beforeRemoveSelection: {
+      type: Function,
+      default: () => true
     }
   },
 
   data () {
     return {
       targetColumn: null,
-      contextMenuRowId: null,
-      curSelected: [...this.selectedRows]
+      contextMenuRowId: null
     }
   },
 
   computed: {
-    ...mapState(['items', 'loading', 'withTotal', 'sort', 'pageIndex']),
-
+    ...mapState(['items', 'loading', 'withTotal', 'sort', 'pageIndex', 'showOneItemActions']),
     ...mapGetters([
       'showAddNew',
       'canAddNew',
@@ -627,12 +646,13 @@ export default {
         this.$store.commit('SET_VIEW_MODE', mode)
       }
     },
-    canDeleteMultiple () {
-      return (
-        this.showDeleteMultipleBtn &&
-        this.enableMultiSelect &&
-        this.$store.getters.schema.haveAccessToMethod('delete')
-      )
+    selectedOnPage: {
+      get () {
+        return this.$store.state.selectedOnPage
+      },
+      set (newValue) {
+        this.$store.dispatch('setSelectedOnPage', newValue)
+      }
     }
   },
 
@@ -651,9 +671,6 @@ export default {
       if (this.$refs.cardView) {
         this.$refs.cardView.$el.scrollTop = 0
       }
-    },
-    selectedRows (e) {
-      this.curSelected = e
     }
   },
 
@@ -675,15 +692,8 @@ export default {
       if (typeof column.template === 'function') {
         return column.template()
       }
-      return ColumnTemplateProvider.getByColumnAttribute(column.attribute).template
-    },
-    async deleteMultiple () {
-      if (!this.canDeleteMultiple) return
-      const result = await this.$store.dispatch('deleteMultipleRecords', {
-        attr: this.multiSelectKeyAttr,
-        data: this.curSelected
-      })
-      this.$emit('delete-multiple-result', result)
+      return ColumnTemplateProvider.getByColumnAttribute(column.attribute)
+        .template
     },
     showContextMenu ({ event, row, column }) {
       this.select({ row, column })
@@ -836,7 +846,6 @@ export default {
         setTimeout(this.$refs.sort.$refs.dropdown.toggleVisible, 0)
       }
     },
-
     onSort () {
       this.targetColumn = null
     }

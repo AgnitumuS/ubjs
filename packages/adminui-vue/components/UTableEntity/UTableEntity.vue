@@ -6,12 +6,12 @@
     :view-mode.sync="viewMode"
     :enable-multi-select="enableMultiSelect"
     :multi-select-key-attr="multiSelectKeyAttr"
-    :selected-rows="curSelected"
     :show-delete-multiple-btn="showDeleteMultipleBtn"
+    :before-add-selection="beforeAddSelection"
+    :before-remove-selection="beforeRemoveSelection"
     v-on="tableListeners"
     @add-selected="handlerAddSelected"
     @remove-selected="handlerRemoveSelected"
-    @delete-multiple-result="deleteMultipleResult"
   >
     <template
       v-for="slot in Object.keys($scopedSlots)"
@@ -178,6 +178,22 @@ export default {
     showDeleteMultipleBtn: {
       type: Boolean,
       default: false
+    },
+    /**
+     * @argument {array<object>} addedCache an array that includes the objects (rows) that will be add to the the selection
+     * Hook that is called before selecting an item. If the hook returns a false value, the selection will be canceled.
+     */
+    beforeAddSelection: {
+      type: Function,
+      default: () => true
+    },
+    /**
+     * @argument {array<object>} removedCache an array that includes the objects (rows) that will be remove from the the selection
+     * Hook that is called before deselecting. If the hook returns a false value, the deselection will be canceled
+     */
+    beforeRemoveSelection: {
+      type: Function,
+      default: () => true
     }
   },
   data () {
@@ -240,7 +256,19 @@ export default {
   },
 
   watch: {
-    entityName: 'loadData'
+    entityName: 'loadData',
+    enableMultiSelect (newValue) {
+      this.$store.commit('SET_ENABLE_MULTISELECT', newValue)
+    },
+    multiSelectKeyAttr (newValue) {
+      this.$store.commit('SET_MULTISELECT_KEY_ATTR', newValue)
+    },
+    selectedRows (newSelected) {
+      newSelected.forEach(element => {
+        this.selectionCache.add(element)
+      })
+      this.setCurrentSelected()
+    }
   },
 
   async created () {
@@ -249,7 +277,11 @@ export default {
     this.tableItems = []
     const storeConfig = createStore(this)
     this.$store = new Vuex.Store(storeConfig)
+    // for anothercomponent, example ToolbarDropdown
+    this.$store.commit('SET_MULTISELECT_KEY_ATTR', this.multiSelectKeyAttr)
+    this.$store.commit('SET_ENABLE_MULTISELECT', this.enableMultiSelect)
     this.$watch('$store.state.items', this.handlerTableDataChange)
+    this.$store.dispatch('setSelectedOnPage', this.selectedRows)
     await this.beforeInitialLoad(this)
     this.loadData()
   },
@@ -268,7 +300,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(['loadData', 'unsubscribeLookups', 'updateData']),
+    ...mapActions(['loadData', 'unsubscribeLookups']),
+    updateData (payload) {
+      if (payload?.method?.includes('-multiple')) {
+        this.handlerMultipleAction(payload)
+        return
+      }
+      this.$store.dispatch('updateData', payload)
+    },
     handlerAddSelected (addedArr) {
       const { selectionCache, multiSelectKeyAttr } = this
       addedArr.forEach(item => {
@@ -301,19 +340,26 @@ export default {
         const inCache = selectionCache.has(id)
         if (inCache) this.curSelected.push(id)
       })
+      this.$store.dispatch('setSelectedOnPage', this.curSelected)
     },
-    deleteMultipleResult (ev) {
-      if (!ev) return
-      const { success } = ev
-      if (!success || success.length === 0) return
-      success.forEach(code => this.selectionCache.delete(code))
+    handlerMultipleAction (payload) {
+      const { deleteMultipleResult } = this
+      const handlers = {
+        'delete-multiple': deleteMultipleResult
+      }
+      const handler = handlers[payload.method] || (() => {})
+      handler(payload.resultData)
+    },
+    deleteMultipleResult (resultArr) {
+      if (!Array.isArray(resultArr) || resultArr.length === 0) return
+      resultArr.forEach(code => this.selectionCache.delete(code))
       this.setCurrentSelected()
       this.emitSelectedEvent()
-      this.deleteMultipleShowSuccessAlert(success)
+      this.deleteMultipleShowSuccessAlert(resultArr)
       this.$store.dispatch('refresh')
     },
     deleteMultipleShowSuccessAlert (arr = []) {
-      const { tableItems, multiSelectKeyAttr, getEntityName } = this
+      const { getDescription } = this
       const message = arr.reduce((acum, id) => {
         acum += `<li>${getDescription(id)}</li>`
         return acum
@@ -325,12 +371,14 @@ export default {
         duration,
         dangerouslyUseHTMLString: true
       })
-      function getDescription (code) {
-        const item = tableItems.find(i => i[multiSelectKeyAttr] === code)
-        const descriptionAttr = this.$UB.connection.domain.get(getEntityName)
-          .descriptionAttribute
-        return item[descriptionAttr] || ''
-      }
+    },
+    getDescription (code) {
+      const { tableItems, multiSelectKeyAttr, getEntityName } = this
+
+      const item = tableItems.find(i => i[multiSelectKeyAttr] === code)
+      const descriptionAttr = this.$UB.connection.domain.get(getEntityName)
+        .descriptionAttribute
+      return item[descriptionAttr] || ''
     },
     getRepository () {
       switch (typeof this.repository) {
@@ -409,12 +457,15 @@ export default {
         }
       }
 
-      const columnDefaults = ColumnTemplateProvider.getByColumnAttribute(attribute)
+      const columnDefaults = ColumnTemplateProvider.getByColumnAttribute(
+        attribute
+      )
       const filters = {}
 
       if (column.filterable !== false) {
-        const filterEntries = Object.entries(columnDefaults.filters || {})
-          .concat(Object.entries(column.filters || {}))
+        const filterEntries = Object.entries(
+          columnDefaults.filters || {}
+        ).concat(Object.entries(column.filters || {}))
 
         for (const [filterId, filterDef] of filterEntries) {
           filters[filterId] = Object.assign({}, filters[filterId], filterDef)
@@ -494,9 +545,11 @@ export default {
 .multiple-delete--alert li {
   margin-bottom: 8px;
 }
-.u-table__multiple td,
-.u-table__multiple th:first-child {
+.u-table__multiple__cell {
   cursor: pointer;
+}
+.u-table__multiple__cell:focus .el-checkbox__inner {
+  outline: 2px solid hsl(var(--hs-primary), var(--l-layout-border-default));
 }
 .u-table__multiple td:first-child {
   text-align: center;

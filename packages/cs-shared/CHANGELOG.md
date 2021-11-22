@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - Functions `formatByPattern.registerDatePattern` and `formatByPattern.registerNumberPattern` that
+   register custom named date and number patterns for use in `formatByPattern.formatDate` and `formatByPattern.formatNumber`
+ - Functions `formatByPattern.getDatePattern` and `formatByPattern.getNumberPattern` that return registered date and number pattern by name
 
 ### Changed
 
