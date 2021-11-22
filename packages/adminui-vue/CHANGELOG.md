@@ -8,8 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `UTableEntity` - renamed `onSelectRecord` to `onOpenRecord` to match property name and its meaning.  "select" word
+  has its own meaning and with introduction of multi-selection mode, this name became too confusing
 
 ### Deprecated
+- `onSelectRecord` is deprecated.  It is renamed to `onOpenRecord`.  "select" word has its own meaning and is not
+  the same as open a form for the a record.
 
 ### Removed
 

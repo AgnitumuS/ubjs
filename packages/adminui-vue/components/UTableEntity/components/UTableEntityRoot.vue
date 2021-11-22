@@ -10,7 +10,7 @@
     @keydown.ctrl.e.prevent.exact="canEdit && editRecord(selectedRowId)"
     @keydown.ctrl.insert.exact="canAddNew && addNew()"
     @keydown.ctrl.r.prevent.exact="!loading && refresh()"
-    @keydown.enter.exact="onSelect(selectedRowId)"
+    @keydown.enter.exact="onOpen(selectedRowId)"
     @keydown.left.prevent.exact="move('left')"
     @keydown.right.prevent.exact="move('right')"
     @keydown.up.prevent.exact="move('up')"
@@ -251,7 +251,7 @@
         @click-head-cell="showSortDropdown"
         @click-cell="select"
         @contextmenu-cell="showContextMenu"
-        @dblclick-row="onSelect($event.row.ID, $event.row)"
+        @dblclick-row="onOpen($event.row.ID, $event.row)"
       >
         <template
           v-for="column in columns"
@@ -317,7 +317,7 @@
         @remove-selected="$emit('remove-selected', ...arguments)"
         @click="select"
         @contextmenu="showContextMenu"
-        @dblclick="onSelect($event.row.ID, $event.row)"
+        @dblclick="onOpen($event.row.ID, $event.row)"
       >
         <slot
           slot="card"
@@ -551,6 +551,10 @@ export default {
     /**
      * Overrides the record selection event. That is, double click or enter
      * @type {function({ID: Number, row: Object, close: function})}
+     */
+    onOpenRecord: Function,
+    /**
+     * @deprecated  Use `onOpenRecord`, signature is the same.
      */
     onSelectRecord: Function,
     /**
@@ -810,9 +814,9 @@ export default {
       }
     },
 
-    onSelect (ID, row) {
-      if (this.onSelectRecord) {
-        this.onSelectRecord({ ID, row, close: this.close })
+    onOpen (ID, row) {
+      if (this.onOpenRecord) {
+        this.onOpenRecord({ ID, row, close: this.close })
       } else {
         this.editRecord(ID)
       }

@@ -200,7 +200,7 @@ function replaceShowList () {
           },
           columns,
           buildEditConfig: cfg.cmpInitConfig && cfg.cmpInitConfig.buildEditConfig,
-          onSelectRecord: cfg.onSelectRecord,
+          onOpenRecord: cfg.onOpenRecord || cfg.onSelectRecord, // "onSelectRecord" is deprecated, support it here for backward compatibility
           parentContext: cfg.parentContext,
           hideActions: cfg.hideActions
         }
