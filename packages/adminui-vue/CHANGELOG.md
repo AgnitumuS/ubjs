@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `USelectMultiple` - added navtive event `multi-select-change`, which is generated when the user changes his choice
 ### Changed
 
 ### Deprecated
@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+- `UDropdown` - fixed dropdown size when the user changes his choice in multiselect
 ## [5.20.31] - 2021-11-17
 ### Fixed
  - opening of the form for existing entry of `aclRls` mixin - the form will be in
