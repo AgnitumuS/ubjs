@@ -174,6 +174,60 @@ module.exports.datePatterns = Object.keys(datePatterns)
 module.exports.numberPatterns = Object.keys(numberPatterns)
 
 /**
+ * Registers custom date pattern
+ * @param {string} patternName Pattern name
+ * @param {object} patternDescription Pattern description for Intl
+ */
+module.exports.registerDatePattern = function(patternName, patternDescription) {
+  if (!patternName || typeof patternName !== 'string') {
+    throw new Error(`Invalid date pattern name`)
+  }
+  if (datePatterns[patternName]) {
+    throw new Error(`Date pattern ${patternName} already registered`)
+  }
+  if (!patternDescription || typeof patternDescription !== 'object') {
+    throw new Error(`Invalid date pattern description`)
+  }  
+  datePatterns[patternName] = patternDescription
+}
+
+/**
+ * Registers custom number pattern
+ * @param {string} patternName Pattern name
+ * @param {object} patternDescription Pattern description for Intl
+ */
+module.exports.registerNumberPattern = function(patternName, patternDescription) {
+  if (!patternName || typeof patternName !== 'string') {
+    throw new Error(`Invalid number pattern name`)
+  }
+  if (numberPatterns[patternName]) {
+    throw new Error(`Number pattern ${patternName} already registered`)
+  }
+  if (!patternDescription || typeof patternDescription !== 'object') {
+    throw new Error(`Invalid number pattern description`)
+  }  
+  numberPatterns[patternName] = patternDescription
+}
+
+/**
+ * Gets date pattern by name
+ * @param {string} patternName Pattern name
+ * @returns {object} Pattern description for Intl
+ */
+module.exports.getDatePattern = function (patternName) {
+  return Object.assign({}, datePatterns[patternName])
+}
+
+/**
+ * Gets number pattern by name
+ * @param {string} patternName Pattern name
+ * @returns {object} Pattern description for Intl
+ */
+module.exports.getNumberPattern = function(patternName) {
+  return Object.assign({}, numberPatterns[patternName])
+}
+
+/**
  * Set a default language to use with `strCmp`, `formatNumber` and `formatDate`.
  * For UI this is usually a logged in user language.
  * @param {string} lang

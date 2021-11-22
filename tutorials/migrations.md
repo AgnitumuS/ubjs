@@ -244,11 +244,22 @@ On the Linux-based production environment (see [Manage production environment](h
 sudo -u unitybase ub-app-upgrade --app app_name 
 ```
 
-`migrate` execute only scripts what do not exist in the `ub_migration` table.
+`migrate` execute only scripts what do not exist in the `ub_migration` table and model version,
+specified for script (in script file name) is less (<) than model version, memorized in DB.
+
+> comparing versions using `less` instead of `less and equal` allows to add a new migration script and apply migration
+> for current model version many times, for example in case of pre-releases.
+> 
+> **WARNING** - do not modify an existed and already applied migration scripts - instead either create a new one
+>  or rename existed script (if it supports re-execution) and change renamed one. This prevents checksum mismatch exception (see below) 
  
 Before any operations `migrate` verifies SHA sums (+modelName) is matched for intersection of all files in `ub_migration` table
-and all `_migrate` folder files (excluding files what starts from `_`). If any file checksum differ then migration
-**is fails** (neither generateDDL nor ub-migrate nor any `_mirgate` script are not executed).
+and all `_migrate` folder files what should be executed (excluding files what starts from `_`). If any file checksum differ then migration
+**is fails** (neither generateDDL nor ub-migrate nor any `_mirgate` script are not executed)
+
+> checksum validation added to prevent situation, when some script is verified on QA environment, and after this modified in the VCS.
+> Without checksum validation `ubcli migrate` silently skip such files for QA pipeline (since it already executed),
+> but on production environment file will be executed with added modifications (and does not do what we checked on QA)
 
 On the adminUI interface two shortcuts are added `Administrator->Migrations->Applied files` and `Administrator->Migrations->Models versions`.
 Use it to see all applied migration files and models versions on the moment of last success migration. 

@@ -24,7 +24,10 @@
       <tr>
         <th
           v-if="showMultiSelectionColumn"
+          class="u-table__multiple__cell"
+          tabindex="1"
           @click="handlerCheckedAll"
+          @keydown.space="handlerCheckedAll"
         >
           <span
             class="el-checkbox__input"
@@ -81,9 +84,15 @@
           { 'selected-row': curSelection.includes(row[multiSelectKeyAttr]) }
         ]"
         @dblclick="$emit('dblclick-row', { row })"
-        @click="handlerRowClick(row)"
+        @click="$emit('click', { row })"
       >
-        <td v-if="showMultiSelectionColumn">
+        <td
+          v-if="showMultiSelectionColumn"
+          class="u-table__multiple__cell"
+          tabindex="1"
+          @click="handlerSelection(row)"
+          @keydown.space="handlerSelection(row)"
+        >
           <!-- repeat html-structure for el-checkbox ElementUI -->
           <span
             class="el-checkbox__input"
@@ -114,9 +123,7 @@
             padding: col.padding && col.padding + 'px'
           }"
           @click="$emit('click-cell', { row, column: col })"
-          @contextmenu="
-            $emit('contextmenu-cell', { event: $event, row, column: col })
-          "
+          @contextmenu="handlerContextMenuEvent($event,row,col)"
         >
           <div class="u-table__cell-container">
             <slot

@@ -6,14 +6,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UTable` - impleneted sorting in the browser. Without request to server 
+- `UTable` - impleneted sorting in the browser. Without request to server 
+- `UTableEntity`, `UTable` - added hooks that is called before selecting an item and before deselecting.
+- `UTableEntity`, `UTable` - added functionality selecting when user clicked on right button of mouse
+- `UTable` - added tab-navigation and selecting on tap Space btn
 ### Changed
-
+- `UTableEntity`, `UTable` - removed selecting when click on all row in table. Selection fynctionality works only click on cell with checkbox
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `UTableEntity` - fixed selection bug when user changed view from table to card and back
+ - `aclRlsEntry-fm` form: filtering of dropdown entries by entered query text in some `u-select-multiple` control [LDOC-1823]
+
+## [5.20.31] - 2021-11-17
+### Fixed
+ - opening of the form for existing entry of `aclRls` mixin - the form will be in
+  the readonly mode. Access entries can be only added or removed not edited
 
 ## [5.20.30] - 2021-11-14
 ### Added

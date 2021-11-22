@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `internalWriteDocumentToResp` now has optional additional parameter `skipRls`.  Must be used with care!  Caller of
+  the method is responsible for security checks.
 
 ### Changed
 

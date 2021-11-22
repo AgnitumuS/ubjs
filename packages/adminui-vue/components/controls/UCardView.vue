@@ -35,9 +35,9 @@
             )
           }
         ]"
-        @click="handlerRowClick(row)"
+        @click="handlerCardClick(row)"
         @dblclick="$emit('dblclick', { row })"
-        @contextmenu="$emit('contextmenu', { event: $event, row })"
+        @contextmenu="handlerContextMenuEvent($event,row)"
       >
         <!-- repeat html-structure for el-checkbox ElementUI -->
         <span
