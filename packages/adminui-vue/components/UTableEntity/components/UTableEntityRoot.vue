@@ -815,8 +815,9 @@ export default {
     },
 
     onOpen (ID, row) {
-      if (this.onOpenRecord) {
-        this.onOpenRecord({ ID, row, close: this.close })
+      const onOpenRecord = this.onOpenRecord || this.onSelectRecord
+      if (onOpenRecord) {
+        onOpenRecord({ ID, row, close: this.close })
       } else {
         this.editRecord(ID)
       }
