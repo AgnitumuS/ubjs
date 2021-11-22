@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UTable` - impleneted sorting in the browser. Without request to server 
 - `UTableEntity`, `UTable` - added hooks that is called before selecting an item and before deselecting.
 - `UTableEntity`, `UTable` - added functionality selecting when user clicked on right button of mouse
 - `UTable` - added tab-navigation and selecting on tap Space btn
