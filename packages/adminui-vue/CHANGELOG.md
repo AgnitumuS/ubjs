@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Processing module: option `skipNotify` for `refresh` action
+    ```javascript
+    this..$store.dispatch('refresh', {skipNotify: true})
+    ```
+  This won't show notification message, sometimes this message is not desirable.
 
 ### Changed
 
