@@ -31,7 +31,7 @@ module.exports = function () {
   let operationCount = 0
   commandsAsArr.resultData.data.forEach(r => {
     const cmd = JSON.parse(r[1]) // msgCmd
-    cmd.msgID = r[1] // ubq_messages.ID
+    cmd.msgID = r[0] // ubq_messages.ID
     cmdArray.push(cmd)
   })
   // prevent multiple index update on the same instanceID
