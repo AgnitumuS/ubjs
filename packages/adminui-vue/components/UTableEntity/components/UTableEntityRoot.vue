@@ -815,6 +815,7 @@ export default {
     },
 
     onOpen (ID, row) {
+      // "onSelectRecord" is deprecated, support it here for backward compatibility
       const onOpenRecord = this.onOpenRecord || this.onSelectRecord
       if (onOpenRecord) {
         onOpenRecord({ ID, row, close: this.close })
