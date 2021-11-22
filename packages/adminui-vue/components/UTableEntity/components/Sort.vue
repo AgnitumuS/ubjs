@@ -63,7 +63,7 @@
 </template>
 
 <script>
-const SortPopup = require('./SortPopup.vue').default
+const SortPopup = require('../../controls/UTable/SortPopup.vue').default
 
 export default {
   name: 'UTableEntitySort',

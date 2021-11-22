@@ -150,7 +150,7 @@
  * Component that allows to display data in a tabular manner
  *
  */
-const SortPopup = require('../../UTableEntity/components/SortPopup.vue').default
+const SortPopup = require('./SortPopup.vue').default
 const sortingMixin = require('./sortingMixin')
 const selectionLogic = require('../mixins/selection/logic')
 
