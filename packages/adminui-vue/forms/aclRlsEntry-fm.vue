@@ -324,7 +324,7 @@ export default {
         // not show in the select control already selected items
         .whereIf(allSelectedIds.length > 0, 'ID', 'notIn', allSelectedIds)
 
-      return () => repo
+      return () => repo.clone()
     },
 
     async syncAclRlsEntriesWithCollection (value, prevValue) {
