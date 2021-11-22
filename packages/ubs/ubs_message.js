@@ -18,18 +18,17 @@ me.on('select:before', addUserFilters)
  */
 me.getCached = function (ctx) {
   if (ctx.mParams.version) {
-    const expr = 'SELECT MAX(mi_modifyDate) as last_number FROM ubs_message'
+    const expr = 'SELECT MAX(mi_modifyDate) AS "last_number" FROM ubs_message'
     const store = UB.DataStore('ubs_message')
     store.runSQL(expr, {})
-    let version = store.get('last_number')
+    const versionFromDb = store.get('last_number')
     store.freeNative()
-    version = (new Date(version)).getTime()
-    if (version === Number(ctx.mParams.version)) {
+    const version = new Date(versionFromDb).getTime()
+    const notModified = version === Number(ctx.mParams.version)
+    ctx.mParams.version = version
+    if (notModified) {
       ctx.mParams.resultData = { notModified: true }
-      ctx.mParams.version = version
       return true
-    } else {
-      ctx.mParams.version = version
     }
   }
   ctx.dataStore.run('select', ctx.mParams)

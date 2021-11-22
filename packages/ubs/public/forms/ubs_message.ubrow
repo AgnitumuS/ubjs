@@ -2,7 +2,7 @@
  "isDefault": false,
  "entity": "ubs_message",
  "formType": "vue",
- "caption": "Message history",
+ "caption": "Message History",
  "description": "",
  "formCode": "{\"fName\":\"ubs_message-fm.vue\",\"origName\":\"ubs_message-fm.vue\",\"ct\":\"script/x-vue\",\"size\":5761,\"md5\":\"9acb111df61ce07dd552f0fa913ddbf9\"}"
 }

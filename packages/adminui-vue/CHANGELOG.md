@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `UTableEntity` - fixed selection bug when user changed view from table to card and back
  - `aclRlsEntry-fm` form: filtering of dropdown entries by entered query text in some `u-select-multiple` control [LDOC-1823]
+ - Messages widget: use "unshift" instead of "push" to put most recent message at the top of list
 
 ## [5.20.31] - 2021-11-17
 ### Fixed
