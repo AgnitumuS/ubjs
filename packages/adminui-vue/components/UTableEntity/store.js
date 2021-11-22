@@ -47,7 +47,10 @@ module.exports = instance => ({
       selectedRowId: null,
 
       withTotal: false, // need for fetch with total always after click total btn
-      viewMode: 'table'
+      viewMode: 'table',
+      showOneItemActions: false, // used for hide/show actions like `delete`, `copy`, `edit` and another
+      selectedOnPage: [],
+      multiSelectKeyAttr: 'ID'
     }
   },
 
@@ -361,10 +364,29 @@ module.exports = instance => ({
 
     SET_VIEW_MODE (state, mode) {
       state.viewMode = mode
+    },
+    SHOW_ONE_ITEM_ACTIONS (state, flag) {
+      state.showOneItemActions = flag
+    },
+    SET_SELECTED_ON_PAGE (state, payload = []) {
+      const newValue = [...payload] // remove link to memory on selectedOnPage
+      state.selectedOnPage.splice(0)
+      state.selectedOnPage.push(...newValue)
+    },
+    SET_MULTISELECT_KEY_ATTR (state, attr) {
+      state.multiSelectKeyAttr = attr
+    },
+    SET_ENABLE_MULTISELECT (state, flag) {
+      state.enableMultiSelect = flag
     }
   },
 
   actions: {
+    setSelectedOnPage ({ commit }, payload = []) {
+      commit('SET_SELECTED_ON_PAGE', payload)
+      const flag = payload.length <= 1
+      commit('SHOW_ONE_ITEM_ACTIONS', flag)
+    },
     async fetchItems ({ state, getters, commit }) {
       commit('LOADING', true)
 
@@ -418,7 +440,9 @@ module.exports = instance => ({
       try {
         commit('PAGE_INDEX', 0)
         await Promise.all(
-          getters.lookupEntities.map(({ entity, associatedAttr }) => lookups.refresh(entity, [associatedAttr]))
+          getters.lookupEntities.map(({ entity, associatedAttr }) =>
+            lookups.refresh(entity, [associatedAttr])
+          )
         )
         await dispatch('fetchItems')
       } finally {
@@ -519,23 +543,27 @@ module.exports = instance => ({
       )
       UB.core.UBApp.doCommand(config)
     },
+    async deleteRecord ({ state, dispatch, getters }, ID) {
+      let result = null
+      if (!getters.canDelete) return
+      // this if...else for backward compatibility, when was implemented multiselection mode
+      if (!state.enableMultiSelect) {
+        result = await dispatch('deleteOneRecord', ID)
+      } else {
+        result = await dispatch('deleteMultipleRecords')
+      }
+      return result
+    },
 
-    async deleteRecord ({ state, commit, getters }, ID) {
+    async deleteOneRecord ({ state, commit, getters, dispatch }, ID) {
       if (ID === null) return
 
       const item = state.items.find(i => i.ID === ID)
       const answer = await uDialogs.dialogDeleteRecord(getters.entityName, item)
 
       if (answer) {
-        try {
-          await UB.connection.doDelete({
-            entity: getters.entityName,
-            execParams: { ID }
-          })
-        } catch (err) {
-          UB.showErrorWindow(err)
-          throw new UB.UBAbortError(err)
-        }
+        const resultDelete = await dispatch('doDelete', ID)
+        if (!resultDelete) return
         UB.connection.emitEntityChanged(getters.entityName, {
           entity: getters.entityName,
           method: 'delete',
@@ -545,8 +573,25 @@ module.exports = instance => ({
         $notify.success(UB.i18n('recordDeletedSuccessfully'))
       }
     },
-    async deleteMultipleRecords ({ state, commit, getters }, payload) {
-      const { attr, data } = payload
+    async doDelete ({ getters }, ID, attr = 'ID') {
+      let result = false
+      try {
+        await UB.connection.doDelete({
+          entity: getters.entityName,
+          execParams: { [attr]: ID }
+        })
+        result = true
+      } catch (err) {
+        UB.showErrorWindow(err)
+        console.error(new UB.UBAbortError(err))
+      } finally {
+        return result
+      }
+    },
+    // delete elements in loop and forms an array of successfully deleted. Stops on first unsuccessful deletion
+    async deleteMultipleRecords ({ state, commit, getters, dispatch }) {
+      const attr = state.multiSelectKeyAttr
+      const data = state.selectedOnPage
 
       const answer = await uDialogs.dialogYesNo(
         'deletionDialogConfirmCaption',
@@ -556,49 +601,18 @@ module.exports = instance => ({
       commit('LOADING', true)
       const deletedItems = []
       for (const code of data) {
-        const template = {
-          entity: getters.entityName,
-          execParams: {
-            [attr]: code
-          }
-        }
-        try {
-          await UB.connection.doDelete(template)
-          deletedItems.push(code)
-        } catch (err) {
-          const cantDeleteItem = state.items.find(i => i[attr] === code)
-          let caption = getDescriptionItem(getters.entityName, cantDeleteItem)
-          let whyErr = err.message
-            ? err.message.match(/(?<=<<<\s*).*?(?=\s*>>>)/g)
-            : ''
-          whyErr = whyErr ? whyErr[0] : ''
-
-          caption = `<b>${whyErr}</b> </br></br> ${caption} `
-
-          $notify.error({
-            title: UB.i18n('error'),
-            message: caption,
-            duration: 7 * 1000,
-            dangerouslyUseHTMLString: true
-          })
-          break
-        }
+        const resultDelete = await dispatch('doDelete', code, attr)
+        if (!resultDelete) break
+        deletedItems.push(code)
       }
       commit('LOADING', false)
       commit('SELECT_ROW', null)
-      return { success: deletedItems }
-
-      function getDescriptionItem (entity, instanceData = {}) {
-        const descriptionAttr = UB.connection.domain.get(entity)
-          .descriptionAttribute
-        const caption = instanceData[descriptionAttr] || ''
-        const msg = UB.i18n(
-          'deleteMultipleImpossibleAlert',
-          caption,
-          UB.i18n(entity)
-        )
-        return caption ? msg.replace(caption, `<b>${caption}</b>`) : msg
-      }
+      UB.connection.emitEntityChanged(getters.entityName, {
+        entity: getters.entityName,
+        method: 'delete-multiple',
+        resultData: deletedItems
+      })
+      return { resultData: deletedItems }
     },
 
     async copyRecord ({ state, getters }, ID) {
@@ -658,7 +672,11 @@ module.exports = instance => ({
       const { columns, currentRepository, entityName } = getters
       const fileName = UB.i18n(entityName)
 
-      const repository = currentRepository.clone().withTotal(false).start(0).limit(50000)
+      const repository = currentRepository
+        .clone()
+        .withTotal(false)
+        .start(0)
+        .limit(50000)
       const exportFieldsMap = {}
       for (const { id, exportExpression } of columns) {
         if (exportExpression) {
@@ -669,7 +687,9 @@ module.exports = instance => ({
       let resultFieldList
       if (Object.keys(exportFieldsMap).length > 0) {
         resultFieldList = Array.from(repository.fieldList)
-        repository.fieldList = resultFieldList.map(field => exportFieldsMap[field] ?? field)
+        repository.fieldList = resultFieldList.map(
+          field => exportFieldsMap[field] ?? field
+        )
       }
 
       switch (exportFormat) {
@@ -709,7 +729,9 @@ module.exports = instance => ({
       commit('LOADING', true)
       try {
         await Promise.all(
-          getters.lookupEntities.map(({ entity, associatedAttr }) => lookups.subscribe(entity, [associatedAttr]))
+          getters.lookupEntities.map(({ entity, associatedAttr }) =>
+            lookups.subscribe(entity, [associatedAttr])
+          )
         )
         await dispatch('fetchItems')
       } finally {
@@ -879,7 +901,12 @@ module.exports = instance => ({
     },
 
     async showRecordHistory ({ getters }, ID) {
-      return helpers.showRecordHistory(getters.entityName, ID, getters.repository().fieldList, getters.columns)
+      return helpers.showRecordHistory(
+        getters.entityName,
+        ID,
+        getters.repository().fieldList,
+        getters.columns
+      )
     }
   }
 })

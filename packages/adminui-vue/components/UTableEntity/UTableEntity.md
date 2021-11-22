@@ -251,7 +251,6 @@ export default {
 ```
 
 ### Custom filter example
-
 ```vue
 <template>
 <u-table-entity
@@ -304,7 +303,13 @@ export default {
 }
 </script>
 ```
-### Selection Mode
+### Multi-select Mode
+In multi-select mode, some actions, like `edit`, `copyLink` is not applicable for several selected rows.
+These actions are hide or disabled.  This behavior is controlled by a `showOneItemActions` property in store.
+
+The event `selected` contains all the selected elements, on all pages of the table. 
+To get elements that are selected on the current page - use a variable `selectedOnPage` from `store`.
+
 ```vue
 <template>
   <div>
