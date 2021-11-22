@@ -49,7 +49,7 @@ const collationCompare = require('./formatByPattern').collationCompare
  * @param {UBQL} ubql Initial server request
  * @returns {{resultData: TubCachedData, total: number}} new filtered & sorted array
  */
-module.exports.doFilterAndSort = function doFilterAndSort(cachedData, ubql) {
+module.exports.doFilterAndSort = function doFilterAndSort (cachedData, ubql) {
   let rangeStart
 
   let filteredData = this.doFiltration(cachedData, ubql)
@@ -78,7 +78,7 @@ module.exports.doFilterAndSort = function doFilterAndSort(cachedData, ubql) {
  * @param {TubCachedData} cachedData Data, retrieved from cache
  * @param {Number} IDValue row ID.
  */
-module.exports.byID = function byID(cachedData, IDValue) {
+module.exports.byID = function byID (cachedData, IDValue) {
   return this.doFilterAndSort(cachedData, { ID: IDValue })
 }
 
@@ -87,16 +87,16 @@ module.exports.byID = function byID(cachedData, IDValue) {
  * @protected
  * @param {TubCachedData} cachedData Data, retrieved from cache
  * @param {UBQL} ubql
- * @param {boolean} [skipSubQueries=false] Skip `subquery` conditions instead of throw. Can be used
+ * @param {boolean} [skipSubQueriesAndCustom=false] Skip `subquery` and `custom` conditions instead of throw. Can be used
  *   to estimate record match some where conditions
  * @returns {Array.<Array>}
  */
-module.exports.doFiltration = function doFiltration(cachedData, ubql, skipSubQueries) {
+module.exports.doFiltration = function doFiltration (cachedData, ubql, skipSubQueriesAndCustom) {
   let f, isAcceptable
   const rawDataArray = cachedData.data
   const byPrimaryKey = Boolean(ubql.ID)
 
-  const filterFabric = whereListToFunctions(ubql, cachedData.fields, skipSubQueries)
+  const filterFabric = whereListToFunctions(ubql, cachedData.fields, skipSubQueriesAndCustom)
   const filterCount = filterFabric.length
 
   if (filterCount === 0) {
@@ -128,7 +128,7 @@ module.exports.doFiltration = function doFiltration(cachedData, ubql, skipSubQue
  * @param {TubCachedData} cachedData
  * @param {Object} ubRequest
  */
-module.exports.doSorting = function doSorting(filteredArray, cachedData, ubRequest) {
+module.exports.doSorting = function doSorting (filteredArray, cachedData, ubRequest) {
   const preparedOrder = []
   if (ubRequest.orderList) {
     _.each(ubRequest.orderList, function (orderItem) {
@@ -164,11 +164,11 @@ module.exports.doSorting = function doSorting(filteredArray, cachedData, ubReque
  * @private
  * @param {UBQL} ubql
  * @param {Array.<String>} fieldList
- * @param {boolean} [skipSubQueries=false] Skip `subquery` conditions instead of throw. Can be used
+ * @param {boolean} [skipSubQueriesAndCustom=false] Skip `subquery` and `custom` conditions instead of throw. Can be used
  *   to estimate record match some where conditions
  * @returns {Array}
  */
-function whereListToFunctions (ubql, fieldList, skipSubQueries) {
+function whereListToFunctions (ubql, fieldList, skipSubQueriesAndCustom) {
   Object.keys(ubql) // FIX BUG WITH TubList TODO - rewrite to native
   const whereList = ubql.whereList
   if (!whereList && !ubql.ID) return [] // top level ID adds a primary key filter
@@ -182,8 +182,8 @@ function whereListToFunctions (ubql, fieldList, skipSubQueries) {
   const filterFabricFn = function (propertyIdx, condition, value) {
     let regExpFilter
     const valIsStr = typeof value === 'string'
-    let valUpperIfStr = valIsStr ? value.toUpperCase() : value
-    if (skipSubQueries && (condition === 'subquery')) {
+    const valUpperIfStr = valIsStr ? value.toUpperCase() : value
+    if (skipSubQueriesAndCustom && ((condition === 'subquery') || (condition === 'custom'))) {
       return null // skip subquery
     }
     switch (condition) {
@@ -283,8 +283,8 @@ function whereListToFunctions (ubql, fieldList, skipSubQueries) {
   }
 
   function transformClause (clause) {
-    if (skipSubQueries && (clause.condition === 'subquery')) {
-      return // skip subquery
+    if (skipSubQueriesAndCustom && ((clause.condition === 'subquery') || (clause.condition === 'custom'))) {
+      return // skip subquery and custom
     }
 
     let property = clause.expression || ''
@@ -313,7 +313,7 @@ function whereListToFunctions (ubql, fieldList, skipSubQueries) {
     transformClause({ expression: '[ID]', condition: 'equal', values: { ID: reqID } })
   }
   for (const cName in whereList) {
-    if (whereList.hasOwnProperty(cName)) {
+    if (Object.prototype.hasOwnProperty.call(whereList, cName)) {
       transformClause(whereList[cName])
     }
   }
@@ -350,7 +350,7 @@ module.exports.whereListToFunctions = whereListToFunctions
  * @param {Object<string, string>} [fieldAlias] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
  * @returns {Array<object>}
  */
-module.exports.selectResultToArrayOfObjects = function selectResultToArrayOfObjects(selectResult, fieldAlias) {
+module.exports.selectResultToArrayOfObjects = function selectResultToArrayOfObjects (selectResult, fieldAlias) {
   const inData = selectResult.resultData.data
   const inAttributes = selectResult.resultData.fields
   const inDataLength = inData.length
@@ -388,7 +388,7 @@ module.exports.selectResultToArrayOfObjects = function selectResultToArrayOfObje
  * @param {TubCachedData} cachedData
  * @result {{fieldCount: number, rowCount: number, values: array.<*>}}
  */
-module.exports.flatten = function flatten(requestedFieldList, cachedData) {
+module.exports.flatten = function flatten (requestedFieldList, cachedData) {
   const fldIdxArr = []
   const cachedFields = cachedData.fields
   let rowIdx = -1
@@ -442,7 +442,7 @@ module.exports.flatten = function flatten(requestedFieldList, cachedData) {
  * @param {Array.<String>} attributeNames
  * @returns {Array.<Array>}
  */
-module.exports.arrayOfObjectsToSelectResult = function arrayOfObjectsToSelectResult(arrayOfObject, attributeNames) {
+module.exports.arrayOfObjectsToSelectResult = function arrayOfObjectsToSelectResult (arrayOfObject, attributeNames) {
   const result = []
   arrayOfObject.forEach(function (obj) {
     const row = []
@@ -459,7 +459,7 @@ module.exports.arrayOfObjectsToSelectResult = function arrayOfObjectsToSelectRes
  * @param {Date} v
  * @returns {Date}
  */
-module.exports.truncTimeToUtcNull = function truncTimeToUtcNull(v) {
+module.exports.truncTimeToUtcNull = function truncTimeToUtcNull (v) {
   if (!v) return v
   let m = v.getMonth() + 1
   m = m < 10 ? '0' + m : '' + m
@@ -478,7 +478,7 @@ module.exports.truncTimeToUtcNull = function truncTimeToUtcNull(v) {
  * @param value
  * @returns {Date}
  */
-module.exports.iso8601ParseAsDate = function iso8601ParseAsDate(value) {
+module.exports.iso8601ParseAsDate = function iso8601ParseAsDate (value) {
   const res = value ? new Date(value) : null
   if (res) {
     return new Date(res.getFullYear(), res.getMonth(), res.getDate())
@@ -494,7 +494,7 @@ module.exports.iso8601ParseAsDate = function iso8601ParseAsDate(value) {
  * @param serverResponse
  * @return {*}
  */
-module.exports.convertResponseDataToJsTypes = function convertResponseDataToJsTypes(domain, serverResponse) {
+module.exports.convertResponseDataToJsTypes = function convertResponseDataToJsTypes (domain, serverResponse) {
   if (serverResponse.entity && // fieldList &&  serverResponse.fieldList
     serverResponse.resultData &&
     !serverResponse.resultData.notModified &&
