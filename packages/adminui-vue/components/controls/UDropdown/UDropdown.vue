@@ -22,6 +22,7 @@
         ref="dropdown"
         tabindex="1"
         @keydown.esc="closeByEscape"
+        @multi-select-change="checkAndUpdatePopupPosition(popperInstance)"
       >
         <div class="u-dropdown">
           <div
@@ -169,7 +170,7 @@ export default {
       if (this.position === 'fixed') {
         document.body.appendChild(this.$refs.dropdown)
       }
-      const popperInstance = createPopper(
+      this.popperInstance = createPopper(
         this.referenceEl,
         this.$refs.dropdown,
         {
@@ -187,24 +188,24 @@ export default {
           ]
         }
       )
-      requestAnimationFrame(() => {
-        this.checkAndUpdatePopupPosition(popperInstance)
-      })
+      this.checkAndUpdatePopupPosition(this.popperInstance)
     },
 
-    async checkAndUpdatePopupPosition (popperInstance) {
-      const popEl = popperInstance.state.elements.popper
-      if (!popEl) return
-      const popStyle = popEl.getBoundingClientRect()
-      if (checkOverflow(popStyle)) {
-        popperInstance.setOptions({ placement: 'auto' })
-      }
+    async checkAndUpdatePopupPosition (popperInstance = this.popperInstance) {
+      requestAnimationFrame(() => {
+        const popEl = popperInstance.state.elements.popper
+        if (!popEl) return
+        const popStyle = popEl.getBoundingClientRect()
+        if (checkOverflow(popStyle)) {
+          popperInstance.setOptions({ placement: 'auto' })
+        }
 
-      function checkOverflow (popStyle) {
-        const viewportStyle = document.documentElement.getBoundingClientRect()
-        if (popStyle.right > viewportStyle.width) return true
-        if (popStyle.bottom > viewportStyle.height) return true
-      }
+        function checkOverflow (popStyle) {
+          const { clientWidth, clientHeight } = document.documentElement
+          if (popStyle.right > clientWidth) return true
+          if (popStyle.bottom > clientHeight) return true
+        }
+      })
     },
 
     close () {
