@@ -32,6 +32,7 @@
   "reportParametersHeader": "Rapportparameters",
   "reportParamsRequired": "Gelieve eerst de vereiste parameters in te vullen",
 
+  "newMsg": "New message",
   "newMessages": "{0} nieuwe berichten",
   "youHaveNoNewMessages": "U hebt geen nieuwe berichten",
   "showFull": "Volledig tonen",

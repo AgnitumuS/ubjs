@@ -32,6 +32,7 @@
   "reportParametersHeader": "შეატყობინეთ პარამეტრებს",
   "reportParamsRequired": "გთხოვთ, შეავსოთ აუცილებელი პარამეტრების პირველ რიგში",
 
+  "newMsg": "New message",
   "newMessages": "{0} new messages",
   "youHaveNoNewMessages": "You have no new messages",
   "showFull": "Show full",

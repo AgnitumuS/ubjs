@@ -32,6 +32,7 @@
   "reportParametersHeader": "Report parameters",
   "reportParamsRequired": "Please, fill required parameters first",
 
+  "newMsg": "New message",
   "newMessages": "{0} new messages",
   "youHaveNoNewMessages": "You have no new messages",
   "showFull": "Show full",
