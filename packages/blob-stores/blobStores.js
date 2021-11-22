@@ -191,10 +191,11 @@ function parseBlobRequestParams (params) {
  * Return either success: false with reason or success: true and requested blobInfo & store implementation
  *
  * @param {ParsedRequest} parsedRequest
+ * @param {boolean} [skipRls]
  * @return {{success: boolean, reason: string}|{success: boolean, blobInfo: Object, store: BlobStoreCustom}}
  * @private
  */
-function getRequestedBLOBInfo (parsedRequest) {
+function getRequestedBLOBInfo (parsedRequest, skipRls) {
   const attribute = parsedRequest.attribute
   const entity = attribute.entity
   const ID = parsedRequest.bsReq.ID
@@ -204,14 +205,25 @@ function getRequestedBLOBInfo (parsedRequest) {
   if (parsedRequest.bsReq.isDirty) {
     storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   } else {
+    const miscOptions = {}
+    if (skipRls) {
+      miscOptions.__skipRls = true
+      miscOptions.__skipAclRls = true
+    }
+
     // check user have access to the row and retrieve actual blobInfo
     const blobInfoDS = Repository(entity.code)
       .attrs(attribute.code)
       .attrsIf(entity.isUnity, 'mi_unityEntity')
+      .misc(miscOptions)
       .selectById(ID)
     let baseInstanceID = ID
     if (blobInfoDS && blobInfoDS.mi_unityEntity) {
-      baseInstanceID = Repository(blobInfoDS.mi_unityEntity).attrs('ID').where('ID', '=', ID).selectScalar()
+      baseInstanceID = Repository(blobInfoDS.mi_unityEntity)
+        .attrs('ID')
+        .where('ID', '=', ID)
+        .misc(miscOptions)
+        .selectScalar()
     }
     if (!blobInfoDS || !baseInstanceID) {
       return {
@@ -279,13 +291,15 @@ function getRequestedBLOBInfo (parsedRequest) {
  * @param {BlobStoreRequest} requestParams
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
+ * @param {boolean} [skipRls] Do not check RLS, when query blobInfo.
+ *   NOTE!  The caller of this method is responsible for appropriate security check then!
  * @return {{success: boolean, reason: string}}
  */
-function internalWriteDocumentToResp (requestParams, req, resp) {
+function internalWriteDocumentToResp (requestParams, req, resp, skipRls) {
   const parsed = parseBlobRequestParams(requestParams)
   if (!parsed.success) return parsed
 
-  const requested = getRequestedBLOBInfo(parsed)
+  const requested = getRequestedBLOBInfo(parsed, skipRls)
   if (!requested.success) {
     return requested
   }
