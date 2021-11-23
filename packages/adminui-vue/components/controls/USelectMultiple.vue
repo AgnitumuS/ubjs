@@ -467,25 +467,12 @@ export default {
       if (isChecked) {
         this.removeOption(this.selectedOption)
       } else {
-        this.emitEvent(this.value.concat(this.selectedOption))
+        this.$emit('input', this.value.concat(this.selectedOption))
       }
     },
 
     removeOption (ID) {
-      this.emitEvent(this.value.filter(i => i !== ID))
-    },
-
-    emitEvent (data) {
-      this.$emit('input', data)
-      /**
-       * Triggers when the user changed the choice. 
-       * A listener can be added on a native html-tag.
-       * On a vue-component, this event is available through the modifier `native`
-       */
-      const event = new CustomEvent('multi-select-change', {
-        bubbles: true
-      })
-      this.$el.dispatchEvent(event)
+      this.$emit('input', this.value.filter(i => i !== ID))
     },
 
     cancelInput (e) {
