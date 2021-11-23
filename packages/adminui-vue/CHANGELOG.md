@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `USelectMultiple` - added navtive event `multi-select-change`, which is generated when the user changes his choice
 
 ### Changed
 
