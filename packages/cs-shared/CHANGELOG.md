@@ -19,6 +19,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - Functions `formatByPattern.registerDatePattern` and `formatByPattern.registerNumberPattern` that
    register custom named date and number patterns for use in `formatByPattern.formatDate` and `formatByPattern.formatNumber`
+```javascript
+ // format Date for New_York time zone
+ $UB.formatter.registerDatePattern('dateTimeInNewYork', {
+    month: '2-digit', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit',
+    timeZone: 'America/New_York'
+ })
+ $UB.formatter.formatDate('dateTimeInNewYork', new Date()) // now in New York
+```
+
  - Functions `formatByPattern.getDatePattern` and `formatByPattern.getNumberPattern` that return registered date and number pattern by name
 
 ### Changed
