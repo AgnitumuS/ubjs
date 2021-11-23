@@ -191,19 +191,24 @@ export default {
       // set watcher for observe changes width and height popup when user change content in him
       const callback = () => this.checkAndUpdatePopupPosition()
       this.observer = new MutationObserver(callback)
-      this.observer.observe(this.$refs.dropdown, { childList: true, subtree: true })
+      setTimeout(() => {
+        this.observer.observe(this.$refs.dropdown, {
+          childList: true,
+          subtree: true
+        })
+      }, 0)
     },
 
     async checkAndUpdatePopupPosition (popperInstance = this.popperInstance) {
       requestAnimationFrame(() => {
         const popEl = popperInstance.state.elements.popper
         if (!popEl) return
-        const popStyle = popEl.getBoundingClientRect()
-        if (checkOverflow(popStyle)) {
+        if (checkOverflow(popEl)) {
           popperInstance.setOptions({ placement: 'auto' })
         }
 
-        function checkOverflow (popStyle) {
+        function checkOverflow (popEl) {
+          const popStyle = popEl.getBoundingClientRect()
           const { clientWidth, clientHeight } = document.documentElement
           if (popStyle.right > clientWidth) return true
           if (popStyle.bottom > clientHeight) return true
