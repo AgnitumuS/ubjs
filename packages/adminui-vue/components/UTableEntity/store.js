@@ -767,7 +767,9 @@ module.exports = instance => ({
         return
       }
 
-      if (!isApplicableWhereList(response, getters.currentRepository)) return
+      // optimization - if record does not match whereList conditions (excluding sub-queries and custom conditions)
+      // do not even tries to get a full record data
+      if (!estimateRecordMatchWhereList(response, getters.currentRepository)) return
 
       const { fieldList } = getters.currentRepository
       const updatedItem = {}
@@ -934,13 +936,13 @@ function transformResponseToTubCachedData (response, whereList = {}) {
 }
 
 /**
- * Checks record is applicable to current repository whereList
+ * Estimate record is match whereList conditions
  *
  * @param {object} response
  * @param {ClientRepository} repository
  * @returns {boolean}
  */
-function isApplicableWhereList (response, repository) {
+function estimateRecordMatchWhereList (response, repository) {
   const query = repository.ubql()
   const filteredResponse = UB.LocalDataStore.doFiltration(
     transformResponseToTubCachedData(response, query.whereList),

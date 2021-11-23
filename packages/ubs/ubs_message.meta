@@ -1,11 +1,11 @@
 {
   "caption": "Messages",
-  "description": "System messages",
+  "description": "System Messages",
   "connectionName": "",
   "sqlAlias": "msg",
   "cacheType": "None",
   "descriptionAttribute": "ID",
-  "documentation": "System messages",
+  "documentation": "System Messages",
   "attributes": [
     {
       "name": "messageBody",

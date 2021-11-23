@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Functions `formatByPattern.getDatePattern` and `formatByPattern.getNumberPattern` that return registered date and number pattern by name
 
 ### Changed
+ - `LocalDataStorage.doFiltration` - 3'nd argument semantic changed from `skipSubQueries` to `skipSubQueriesAndCustom`.
+  This allows to estimate record match most of where conditions in client-side.
 
 ### Deprecated
 
@@ -20,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.20.6] - 2021-11-05
 ### Fixed
- - fixed refresh of UTableEntity what based on Repository with subquery (by correctly skip handling of subquery on the client side)
+ - fixed refresh of UTableEntity what based on Repository with `subquery` (by correctly skip handling of `subquery` on the client side)
 
 ## [5.20.5] - 2021-09-24
 ### Changed

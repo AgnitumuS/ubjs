@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - typo in the code of `ubqFTSJob` scheduler which led to the failure of the `ubqMessages.success` method due to the loss of message ID
 
 ## [5.20.30] - 2021-11-14
 ### Added

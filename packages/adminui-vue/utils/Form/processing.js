@@ -924,8 +924,11 @@ function createProcessingModule ({
        *
        * In case form dirty - show confirmation dialog for loosing changes
        * @fires entity_name:refresh
+       *
+       * @param {object} [options]
+       * @param {number} options.skipNotify Do not show notification message on refresh operation
        */
-      async refresh ({ state, getters, commit, dispatch }) {
+      async refresh ({ state, getters, commit, dispatch }, options) {
         if (getters.isDirty) {
           const result = await uDialogs.dialogYesNo('refresh', 'formWasChanged')
 
@@ -964,7 +967,9 @@ UB.connection.on('uba_user:refresh', function (data) {
          */
         UB.connection.emit(`${masterEntityName}:refresh`, { ID: state.data.ID })
 
-        $notify.success(UB.i18n('formWasRefreshed'))
+        if (!options?.skipNotify) {
+          $notify.success(UB.i18n('formWasRefreshed'))
+        }
       },
 
       /**

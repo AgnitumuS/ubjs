@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Message history (`ubs_message` form) - show data and time instead of just date for messages;
+  some minor fixes in en localization; `ubs_message` - fix `getCached` method for scenarios, when it actually
+  used to take version into account.
 
 ## [5.20.30] - 2021-11-14
 ## [5.20.29] - 2021-11-05

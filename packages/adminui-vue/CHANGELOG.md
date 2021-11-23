@@ -7,11 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - `USelectMultiple` - added navtive event `multi-select-change`, which is generated when the user changes his choice
+- `UTable` - implemented sorting in the browser. Without request to server 
 - `UTableEntity`, `UTable` - added hooks that is called before selecting an item and before deselecting.
 - `UTableEntity`, `UTable` - added functionality selecting when user clicked on right button of mouse
 - `UTable` - added tab-navigation and selecting on tap Space btn
+- Processing module: option `skipNotify` for `refresh` action
+    ```javascript
+    this.$store.dispatch('refresh', {skipNotify: true})
+    ```
+  This won't show notification message, sometimes this message is not desirable.
+
 ### Changed
-- `UTableEntity`, `UTable` - removed selecting when click on all row in table. Selection fynctionality works only click on cell with checkbox
+- `UTableEntity`, `UTable` - removed selecting when click on all row in table. Selection functionality works only click on cell with checkbox
 ### Deprecated
 
 ### Removed
@@ -20,6 +27,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `UDropdown` - fixed dropdown size when the user changes his choice in multiselect
  - `UTableEntity` - fixed selection bug when user changed view from table to card and back
  - `aclRlsEntry-fm` form: filtering of dropdown entries by entered query text in some `u-select-multiple` control [LDOC-1823]
+ - Messages widget: use "unshift" instead of "push" to put most recent message at the top of list
+ - `UTableEntity` store - fixed refresh of one row in case repository contains `custom` where condition (fix is in LocalDataStorage) 
 
 ## [5.20.31] - 2021-11-17
 ### Fixed
