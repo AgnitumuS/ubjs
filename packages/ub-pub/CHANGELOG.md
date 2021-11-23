@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.9.19] - 2021-11-23
 ## [5.9.18] - 2021-11-05
 ### Changed
   - ClientRepository with `__mip_recordhistory_all` misc will bypass a client cache 

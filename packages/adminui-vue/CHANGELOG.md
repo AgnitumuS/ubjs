@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - `USelectMultiple` - added navtive event `multi-select-change`, which is generated when the user changes his choice
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.32] - 2021-11-23
+### Added
 - `UTable` - implemented sorting in the browser. Without request to server 
 - `UTableEntity`, `UTable` - added hooks that is called before selecting an item and before deselecting.
 - `UTableEntity`, `UTable` - added functionality selecting when user clicked on right button of mouse
@@ -19,16 +30,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - `UTableEntity`, `UTable` - removed selecting when click on all row in table. Selection functionality works only click on cell with checkbox
-### Deprecated
-
-### Removed
-
 ### Fixed
 - `UDropdown` - fixed dropdown size when the user changes his choice in multiselect
  - `UTableEntity` - fixed selection bug when user changed view from table to card and back
  - `aclRlsEntry-fm` form: filtering of dropdown entries by entered query text in some `u-select-multiple` control [LDOC-1823]
  - Messages widget: use "unshift" instead of "push" to put most recent message at the top of list
  - `UTableEntity` store - fixed refresh of one row in case repository contains `custom` where condition (fix is in LocalDataStorage) 
+ - `UNavbarNotificationsButton`: add localization for the new message notification
 
 ## [5.20.31] - 2021-11-17
 ### Fixed

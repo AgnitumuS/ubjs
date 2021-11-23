@@ -220,7 +220,7 @@ export default {
         'portal:notify:newMess': (message) => {
           this.messages.unshift(message)
           this.$notify({
-            title: 'New message',
+            title: this.$ut('newMessage'),
             type: 'info'
           })
         },
