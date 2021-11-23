@@ -22,7 +22,6 @@
         ref="dropdown"
         tabindex="1"
         @keydown.esc="closeByEscape"
-        @multi-select-change="checkAndUpdatePopupPosition(popperInstance)"
       >
         <div class="u-dropdown">
           <div
@@ -189,6 +188,10 @@ export default {
         }
       )
       this.checkAndUpdatePopupPosition(this.popperInstance)
+      // set watcher for observe changes width and height popup when user change content in him
+      const callback = () => this.checkAndUpdatePopupPosition()
+      this.observer = new MutationObserver(callback)
+      this.observer.observe(this.$refs.dropdown, { childList: true, subtree: true })
     },
 
     async checkAndUpdatePopupPosition (popperInstance = this.popperInstance) {
@@ -211,6 +214,7 @@ export default {
     close () {
       this.visible = false
       this.$emit('close')
+      if (this.observer) this.observer.disconnect()
     },
 
     closeByEscape (event) {
