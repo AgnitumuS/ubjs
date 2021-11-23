@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.7] - 2021-11-23
+### Added
  - Functions `formatByPattern.registerDatePattern` and `formatByPattern.registerNumberPattern` that
    register custom named date and number patterns for use in `formatByPattern.formatDate` and `formatByPattern.formatNumber`
  - Functions `formatByPattern.getDatePattern` and `formatByPattern.getNumberPattern` that return registered date and number pattern by name
@@ -13,12 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `LocalDataStorage.doFiltration` - 3'nd argument semantic changed from `skipSubQueries` to `skipSubQueriesAndCustom`.
   This allows to estimate record match most of where conditions in client-side.
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.20.6] - 2021-11-05
 ### Fixed

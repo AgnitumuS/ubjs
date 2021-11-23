@@ -8,16 +8,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `ubcli migrate` does not skip migration for files with version === current memorized DB version.
-   This allows adding a new migration script and apply migration for the same version many times.
-   **WARNING** - do not modify an existed and already applied migration scripts - instead either create a new one
-   or rename existed script (if it supports re-execution) and change renamed one. 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.21.26] - 2021-11-23
+### Changed
+ - `ubcli migrate` does not skip migration for files with version === current memorized DB version.
+   This allows adding a new migration script and apply migration for the same version many times.
+   **WARNING** - do not modify an existed and already applied migration scripts - instead either create a new one
+   or rename existed script (if it supports re-execution) and change renamed one. 
 
 ## [5.21.25] - 2021-11-14
 ## [5.21.24] - 2021-11-05
