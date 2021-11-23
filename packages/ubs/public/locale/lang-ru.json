@@ -32,7 +32,7 @@
   "reportParametersHeader": "Параметры отчета",
   "reportParamsRequired": "Сначала заполните обязательные параметры",
 
-  "newMsg": "Новое сообщение",
+  "newMessage": "Новое сообщение",
   "newMessages": "{0} новых сообщений",
   "youHaveNoNewMessages": "У вас нет новых сообщений",
   "showFull": "Показать полностью",

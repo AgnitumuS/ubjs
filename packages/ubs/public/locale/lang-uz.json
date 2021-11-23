@@ -45,7 +45,7 @@
   "actionDelete": "O'chirish",
   "reportParametersHeader": "Hisobot parametrlari",
 
-  "newMsg": "Yangi xabar",
+  "newMessage": "Yangi xabar",
   "newMessages": "{0} yangi xabarlar",
   "youHaveNoNewMessages": "Sizda yangi xabar yo'q",
   "showFull": "To'liq ko'rsatish",
