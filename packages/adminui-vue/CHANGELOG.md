@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `aclRlsEntry-fm` form: filtering of dropdown entries by entered query text in some `u-select-multiple` control [LDOC-1823]
  - Messages widget: use "unshift" instead of "push" to put most recent message at the top of list
  - `UTableEntity` store - fixed refresh of one row in case repository contains `custom` where condition (fix is in LocalDataStorage) 
+ - `UNavbarNotificationsButton`: add localization for the new message notification
 
 ## [5.20.31] - 2021-11-17
 ### Fixed
