@@ -402,7 +402,7 @@ columnTemplates.registerTemplate({
   settings: {
     minWidth: 180
   },
-  cellTemplate: require('./controls/doc-state-cell.vue').default,
+  cellTemplate: {}, // example: require('./controls/doc-state-cell.vue').default,
   filters: {
     // ...
   }
