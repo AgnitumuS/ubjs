@@ -5,13 +5,9 @@ UB.i18nExtend({
     "<p> Klik in het geopende venster op <b>+Toevoegen aan Firefox</b></p>" +
     "<p>Bevestig de toevoeging van de nieuwe extensie.</p>" +
     "<p>Nadat u de extensie hebt geïnstalleerd, <b> start u uw browser opnieuw!</b></p>",
-  "NMInstallExtensionChrome": "<p>Om door te kunnen werken, moet u de extensie <b>\"UBExtension\"</b> voor Google Chrome installeren.</p> " +
-    "<p>Klik op de link <a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\">EXTENSIE INSTALLEREN</a> " +
-    " om naar de Google Store te gaan</p>" +
-    "<p> Klik in het winkelvenster op de knop <img src=\"models/adminui-pub/ub-extension/ChromePlusFreeEn.png\"/> (misschien <b>+GRATIS</b>)</p>" +
-    "<p>Er verschijnt een venster waarin de installatie van extensies wordt bevestigd - klik op \"Toevoegen (Add)\".</p>" +
-    "<p>De extensie wordt geïnstalleerd en de knop <b> + FREE </b> verandert van kleur in groen: <img src=\"models/adminui-pub/ub-extension/ChromeAddedEn.png\"/> " +
-    "<p>Nadat u de extensie hebt geïnstalleerd, <b> start u uw browser opnieuw!</b></p>",
+  "NMInstallExtensionChrome": "<p>Chrome extension <b>\"UBExtension\"</b> must be installed.</p> " +
+    "<p>Follow <a href=\"https://unitybase-info.translate.goog/news/setup-ubextension-without-using-the-google-store.html?_x_tr_sl=uk&_x_tr_tl=en&_x_tr_hl=uk&_x_tr_pto=nui\" target=\"_blank\">setup instruction</a>.</p>" +
+    "<p><b>Restart the browser after installation!</b></p>",
   "NMInstallExtensionOpera": "<p>Om door te kunnen werken, moet u de extensie <b>\"UBExtension\"</b> voor de Opera-browser installeren.</p> " +
     "<p>Klik op de link <a href=\"models/adminui-pub/ub-extension/UBExtension.crx\" target=\"_blank\">EXTENSIE INSTALLEREN</a>.</p>" +
     "<p>De browser downloadt de extensie en geeft u een bericht bovenaan het scherm. " +
