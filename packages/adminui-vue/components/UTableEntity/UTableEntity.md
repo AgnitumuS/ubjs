@@ -404,7 +404,7 @@ columnTemplates.registerTemplate({
   },
   cellTemplate: require('./controls/doc-state-cell.vue').default,
   filters: {
-    ...
+    // ...
   }
 })
 ```
