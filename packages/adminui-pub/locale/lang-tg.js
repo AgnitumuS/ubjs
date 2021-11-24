@@ -5,13 +5,9 @@ UB.i18nExtend({
     "<p> Дар равзанаи кушодашуда <b>+Илова кардан ба Firefox</b>-ро пахш кунед.</p>" +
     "<p>Илова кардани барномаи ёридиҳандаро тасдиқ кунед.</p>" +
     "<p>Пас аз насб кардани тавсеаи <b>\"UBExtension\"</b> <b>браузери худро аз нав кушоед!</b></p>",
-  "NMInstallExtensionChrome": "<p>Барои идома додани кор, шумо бояд як тавсеаи <b>\"UBExtension\"</b> браузери Google Chrome-ро насб кунед.</p> " +
-    "<p>Истинодро клик кунед <a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\">БАРНОМАИ ЁРИДАХАНДА-ро</a> " +
-    " барои гузаштан ба мағозаи Google</p>" +
-    "<p> Дар равзанаи мағоза тугмаи <img src=\"models/adminui-pub/ub-extension/ChromePlusFreeEn.png\"/> -ро пахш кунед (шояд <b>+РОЙГОН</b>)</p>" +
-    "<p>Равзана пайдо мешавад, ки насби васеъшавиро тасдиқ мекунад - \"Илова\" -ро клик кунед (Add).</p>" +
-    "<p>Васеъ насб карда мешавад ва тугмаи <b>+FREE</b> сабз хоҳад шуд:  <img src=\"models/adminui-pub/ub-extension/ChromeAddedEn.png\"/> " +
-    "<p>Пас аз насб кардани васеъкунӣ <b>браузери худро аз нав дароред! </b></p>",
+  "NMInstallExtensionChrome": "<p>Chrome extension <b>\"UBExtension\"</b> must be installed.</p> " +
+    "<p>Follow <a href=\"https://unitybase-info.translate.goog/news/setup-ubextension-without-using-the-google-store.html?_x_tr_sl=uk&_x_tr_tl=tg&_x_tr_hl=uk&_x_tr_pto=nui\" target=\"_blank\">setup instruction</a>.</p>" +
+    "<p><b>Restart the browser after installation!</b></p>",
   "NMInstallExtensionOpera": "<p>Барои идома додан, шумо бояд васеъкуниро насб кунед <b>\"UBExtension\"</b> барои браузери Opera.</p> " +
     "<p>Истинодро клик кунед <a href=\"models/adminui-pub/ub-extension/UBExtension.crx\" target=\"_blank\">БАРНОМАИ ЁРИДАХАНДА-ро</a>.</p>" +
     "<p>Браузер тамдидро зеркашӣ мекунад ва ба шумо дар болои экран паём медиҳад. " +

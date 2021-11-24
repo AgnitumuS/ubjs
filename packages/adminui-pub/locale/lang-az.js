@@ -2,12 +2,9 @@ UB.i18nExtend({
   "NMInstallExtensionFirefox": "<p>İşi davam etdirmək üçün Firefox brauzeri üçün <b>\"UBExtension\"</b> genişlənməsini quraşdırmaq lazımdır.</p> " +
     "<p> \"Google\" mağazasına keçmək üçün <a href=\"https://addons.mozilla.org/addon/ub-extension/\" target=\"_blank\">GENİŞLƏNMƏNİ QURAŞDIR</a> keçidi üzərində vurun</p>" +
     "<p>Genişlənməni quraşdırdıqdan sonra <b>brauzeri söndürüb yandırın!</b></p>",
-  "NMInstallExtensionChrome": "<p>İşi davam etdirmək üçün \"Google Chrome\" brauzeri üçün <b>\"UBExtension\"</b> genişlənməsini quraşdırmaq lazımdır.</p> " +
-    "<p> \"Google\" mağazasına keçmək üçün <a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\">GENİŞLƏNMƏNİ QURAŞDIR</a> keçidi üzərində vurun</p>" +
-    "<p> Mağaza pəncərəsində <img src=\"models/adminui-pub/ub-extension/ChromePlusFreeEn.png\"/> düyməsini(ola bilər ki, <b>+ÖDƏNİŞSİZ</b>) sıxın </p>" +
-    "<p>Genişlənmənin quraşdırıldığını təsdiq edən pəncərə açıldıqda \"Əlavə et\" (Add) üzərində vurun.</p>" +
-    "<p>Genişlənmə quraşdırılacaq və <b>+FREE</b> düyməsi yaşıl rəng alacaq: <img src=\"models/adminui-pub/ub-extension/ChromeAddedEn.png\"/> " +
-    "<p>Genişlənməni quraşdırdıqdan sonra <b>brauzeri söndürüb yandırın!</b></p>",
+  "NMInstallExtensionChrome": "<p>Brauzer üçün <b>\"UBExtension\"</b> genişləmdirməni quraşdırlması tələb olunur.</p> " +
+    "<p>Quraşdırma təlimatına<a href=\"https://unitybase-info.translate.goog/news/setup-ubextension-without-using-the-google-store.html?_x_tr_sl=uk&_x_tr_tl=az&_x_tr_hl=uk&_x_tr_pto=nui\" target=\"_blank\">davam edin</a>.</p>" +
+    "<p>Quraşdırıldıqdan sonra <b>brauzerinizi yenidən işə salın!</b></p>",
   "NMInstallExtensionOpera": "<p>İşi davam etdirmək üçün \"Opera\" brauzeri üçün <b>\"UBExtension\"</b> genişlənməsini quraşdırmaq lazımdır.</p> " +
     "<p><a href=\"models/adminui-pub/ub-extension/UBExtension.crx\" target=\"_blank\">GENİŞLƏNMƏNİ QURAŞDIR</a> keçidi üzərində vurun.</p>" +
     "<p>Brauzer genişlənməni yükləyəcək və ekranın yuxarı hissəsində ismarış görsənəcək. " +

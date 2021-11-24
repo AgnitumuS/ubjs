@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UBExtension` (native messages host extension used for Scanner integration) setup instruction for Google Chrome now
+   points to [page on unitybase.info](https://unitybase.info/news/setup-ubextension-without-using-the-google-store.html).
+   Page automatically translated depends on user language using Google Translate.
 
 ### Deprecated
 
