@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - added i18n for title of notification messages history form (ubs_message-fm) [UBDF-14535]
 
 ## [5.20.32] - 2021-11-23
 ### Added

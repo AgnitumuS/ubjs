@@ -193,6 +193,7 @@ export default {
       $App.doCommand({
         cmdType: 'showForm',
         entity: 'ubs_message',
+        title: this.$ut('messageHistory'),
         isModal: isModal,
         modalWidth: '90vw',
         props: {
