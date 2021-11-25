@@ -215,6 +215,14 @@ ubConfig section example:
 ```
 
 Verify connection
+ - first verify connection using `isql` command like tool:
+```shell
+ isql my_server root root
+ 
+ >select * from mysql.user;
+```
+
+ - second - using UB:
 ```shell
 ubcli execSql -c mysql -sql "select * from mysql.user" -withResult -outputRes
 ```
