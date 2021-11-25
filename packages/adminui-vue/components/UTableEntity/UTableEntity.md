@@ -179,7 +179,7 @@ export default {
 
 ### Custom filter templates
 
-By default most UBDataTypes has filter templates and any filter can be replaced by custom.
+By default, most UBDataTypes has filter templates and any filter can be replaced by custom.
 In each column filter label or filter template can be replaced separately.
 This dataTypes has next filters:
 - String
@@ -378,7 +378,6 @@ method help and define `customSettings.columnTemplate` with this column template
 ```json
 {
   "attributes": [
-    ...
     {
       "name": "stateID",
       "caption": "State",
@@ -388,7 +387,6 @@ method help and define `customSettings.columnTemplate` with this column template
         "columnTemplate": "dfxDocState"
       }
     }
-    ...
   ]
 }
 ```
@@ -402,7 +400,8 @@ columnTemplates.registerTemplate({
   settings: {
     minWidth: 180
   },
-  cellTemplate: require('./controls/doc-state-cell.vue').default,
+  // uncomment line below in real code - here is commented because documentation generation fials on it
+  // cellTemplate: require('./controls/doc-state-cell.vue').default,
   filters: {
     // ...
   }
@@ -411,7 +410,7 @@ columnTemplates.registerTemplate({
 
 *controls/doc-state-cell.vue*
 ```vue
-<template>
+<template>  
   <el-tag
     v-if="value"
     :type="getTagType(value)"
