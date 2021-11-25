@@ -11,6 +11,9 @@ module.exports = {
       curSelection: this.selectedRows
     }
   },
+  created () {
+    this.lastRow = null
+  },
   computed: {
     allSelected () {
       const { items, curSelection } = this
@@ -27,11 +30,11 @@ module.exports = {
   },
   methods: {
     // used in UCardView
-    handlerCardClick (row) {
-      this.handlerSelection(row)
+    handlerCardClick (row, event) {
+      this.handlerSelection(row, event)
       this.$emit('click', { row })
     },
-    async handlerSelection (row) {
+    async handlerSelection (row, event) {
       this.$emit('click-cell', { row })
       if (!this.enableMultiSelect) return
       const { multiSelectKeyAttr, curSelection } = this
@@ -39,6 +42,10 @@ module.exports = {
       const id = row[multiSelectKeyAttr]
       const hasIndex = arr.indexOf(id)
       if (hasIndex === -1) {
+        if (event && event.shiftKey) {
+          this.handlerCLickWithShift(row)
+          return
+        }
         if (!(await this.beforeAddSelection([row]))) return
         arr.push(id)
         this.emitAddSelectionEvent([row])
@@ -47,6 +54,7 @@ module.exports = {
         arr.splice(hasIndex, 1)
         this.emitRemoveSelectionEvent([row])
       }
+      if (event) this.lastRow = row
       this.emitSelectionEvent()
     },
     emitAddSelectionEvent (arr) {
@@ -98,7 +106,7 @@ module.exports = {
       this.emitSelectionEvent()
     },
     async handlerContextMenuEvent ($event, row, col) {
-      const { multiSelectKeyAttr, curSelection, items } = this
+      const { multiSelectKeyAttr, curSelection } = this
       const value = row[multiSelectKeyAttr]
       if (!curSelection.includes(value)) {
         const cache = this.getSelectionRows()
@@ -126,6 +134,31 @@ module.exports = {
         }
       })
       return rows
+    },
+    handlerCLickWithShift (row) {
+      const { multiSelectKeyAttr, curSelection, items, lastRow } = this
+      const lastTargetIndex = items.indexOf(lastRow)
+      if (lastTargetIndex === -1) return
+      this.lastRow = row
+      const targetIndex = items.indexOf(row)
+
+      if (targetIndex === lastTargetIndex) {
+        this.handlerSelection(row)
+        return
+      }
+
+      let startIndex =
+        lastTargetIndex < targetIndex ? lastTargetIndex : targetIndex
+      const endIndex =
+        lastTargetIndex < targetIndex ? targetIndex : lastTargetIndex
+
+      for (startIndex; startIndex <= endIndex; startIndex++) {
+        const elem = items[startIndex]
+        const value = elem[multiSelectKeyAttr]
+        const isChecked = curSelection.includes(value)
+        if (isChecked) continue
+        this.handlerSelection(elem)
+      }
     }
   }
 }

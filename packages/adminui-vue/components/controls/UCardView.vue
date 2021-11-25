@@ -35,7 +35,7 @@
             )
           }
         ]"
-        @click="handlerCardClick(row)"
+        @click="handlerCardClick(row, $event)"
         @dblclick="$emit('dblclick', { row })"
         @contextmenu="handlerContextMenuEvent($event,row)"
       >
