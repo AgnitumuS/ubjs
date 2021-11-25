@@ -90,14 +90,7 @@ module.exports = {
         this.emitAddSelectionEvent(addedCache)
         this.curSelection = [...temp]
       } else {
-        const removedCache = []
-        items.forEach(el => {
-          const value = el[multiSelectKeyAttr]
-          if (temp.has(value)) {
-            temp.delete(value)
-            removedCache.push(el)
-          }
-        })
+        const removedCache = this.getSelectionRows()
         if (!(await this.beforeRemoveSelection(removedCache))) return
         this.emitRemoveSelectionEvent(removedCache)
         this.curSelection.splice(0)
@@ -105,15 +98,34 @@ module.exports = {
       this.emitSelectionEvent()
     },
     async handlerContextMenuEvent ($event, row, col) {
-      const { multiSelectKeyAttr, curSelection } = this
+      const { multiSelectKeyAttr, curSelection, items } = this
       const value = row[multiSelectKeyAttr]
-      if (!curSelection.includes(value)) await this.handlerSelection(row)
+      if (!curSelection.includes(value)) {
+        const cache = this.getSelectionRows()
+        for (const row of cache) {
+          await this.handlerSelection(row)
+        }
+        await this.handlerSelection(row)
+      }
       // for backward compatibility with UCardView
       if (col === undefined) {
         this.$emit('contextmenu', { event: $event, row })
       } else {
         this.$emit('contextmenu-cell', { event: $event, row, column: col })
       }
+    },
+    getSelectionRows () {
+      const { items, multiSelectKeyAttr } = this
+      const rows = []
+      const temp = new Set(this.curSelection)
+      items.forEach(el => {
+        const value = el[multiSelectKeyAttr]
+        if (temp.has(value)) {
+          temp.delete(value)
+          rows.push(el)
+        }
+      })
+      return rows
     }
   }
 }
