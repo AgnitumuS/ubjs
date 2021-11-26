@@ -37,6 +37,10 @@ module.exports = {
       this.handlerSelection(row)
       this.$emit('click', { row })
     },
+    handlerClickOnInput (row, event) {
+      this.handlerSelection(row, event)
+      this.$emit('click', { row })
+    },
     async handlerSelection (row, event) {
       this.$emit('click-cell', { row })
       if (!this.enableMultiSelect) return
@@ -205,7 +209,6 @@ module.exports = {
       const maxIndex = this.items.length - 1
       let nextIndex =
         direction === 'down' ? this.hoverIndex + 1 : this.hoverIndex - 1
-      this.hoverIndex = nextIndex
       if (!event.shiftKey) {
         nextIndex = nextIndex < 0 ? maxIndex : nextIndex
         nextIndex = nextIndex > maxIndex ? 0 : nextIndex
@@ -213,6 +216,8 @@ module.exports = {
         this.lastRow = this.items[nextIndex]
         this.hoverIndex = nextIndex
       } else {
+        if (nextIndex < 0 || nextIndex > maxIndex) return
+        this.hoverIndex = nextIndex
         const startRow = this.items[this.startRowIndex]
         this.handlerArrowWithShift(event, startRow, direction)
       }
