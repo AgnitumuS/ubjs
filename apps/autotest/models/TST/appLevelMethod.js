@@ -422,3 +422,20 @@ function iitVerifyFile (req, resp) {
   resp.writeEnd(res)
 }
 App.registerEndpoint('iitVerifyFile', iitVerifyFile, false)
+
+/**
+ * Verify context language switch
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function switchContextLangTest (req, resp) {
+  const lang = req.parsedParameters.lang
+  if (lang) {
+    Session.switchLangForContext(lang)
+  }
+  resp.writeEnd({
+    errNotExsistsOKPO: UB.i18n('errNotExsistsOKPO') // defined in cdn model server locale
+  })
+  resp.statusCode = 200
+}
+App.registerEndpoint('switchContextLangTest', switchContextLangTest, true)
