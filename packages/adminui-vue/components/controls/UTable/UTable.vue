@@ -20,7 +20,11 @@
         />
       </div>
     </u-dropdown>
-    <table>
+    <table
+      tabindex="1"
+      @keydown.down="handlerPressToArrow($event, 'down')"
+      @keydown.up="handlerPressToArrow($event, 'up')"
+    >
       <tr>
         <th
           v-if="showMultiSelectionColumn"
@@ -77,14 +81,18 @@
         </th>
       </tr>
       <tr
-        v-for="row in items"
+        v-for="(row, rowIndex) in items"
         :key="row[multiSelectKeyAttr]"
         :class="[
           getRowClass(row),
-          { 'selected-row': curSelection.includes(row[multiSelectKeyAttr]) }
+          {
+            'selected-row':
+              curSelection.includes(row[multiSelectKeyAttr]) ||
+              hoverIndex === rowIndex
+          }
         ]"
         @dblclick="$emit('dblclick-row', { row })"
-        @click="$emit('click', { row })"
+        @click="handlerClick(rowIndex)"
       >
         <td
           v-if="showMultiSelectionColumn"
@@ -92,10 +100,6 @@
           tabindex="1"
           @click="handlerSelection(row, $event)"
           @keydown.space="handlerSelection(row)"
-          @keydown.arrow-down="handlerArrowWithShift($event, row,'down')"
-          @keydown.arrow-right="handlerArrowWithShift($event, row,'down')"
-          @keydown.arrow-up="handlerArrowWithShift($event, row, 'up')"
-          @keydown.arrow-left="handlerArrowWithShift($event, row, 'up')"
         >
           <!-- repeat html-structure for el-checkbox ElementUI -->
           <span
@@ -127,7 +131,7 @@
             padding: col.padding && col.padding + 'px'
           }"
           @click="$emit('click-cell', { row, column: col })"
-          @contextmenu="handlerContextMenuEvent($event,row,col)"
+          @contextmenu="handlerContextMenuEvent($event, row, col)"
         >
           <div class="u-table__cell-container">
             <slot
@@ -296,6 +300,13 @@ export default {
           cell.setAttribute('title', cell.innerText)
         }
       })
+    },
+    handlerClick (rowIndex) {
+      const row = this.items[rowIndex]
+      this.$emit('click', { row })
+      this.hoverIndex = rowIndex
+      this.startRowIndex = rowIndex
+      this.lastRow = row
     }
   }
 }

@@ -8,12 +8,14 @@ module.exports = {
   },
   data () {
     return {
-      curSelection: this.selectedRows
+      curSelection: this.selectedRows,
+      hoverIndex: -1
     }
   },
   created () {
     this.lastRow = null
     this.lastDirection = null
+    this.startRowIndex = null
   },
   computed: {
     allSelected () {
@@ -162,8 +164,17 @@ module.exports = {
       }
     },
     handlerArrowWithShift (event, eventRow, direction) {
-      if (!event.shiftKey) return
-      const { items, lastRow, lastDirection } = this
+      if (!event.shiftKey) {
+        this.lastRow = eventRow
+        return
+      }
+      const {
+        items,
+        lastRow,
+        lastDirection,
+        multiSelectKeyAttr,
+        curSelection
+      } = this
       const lastIndex = items.indexOf(lastRow)
       let nextRow
       let nextIndex = direction === 'down' ? lastIndex + 1 : lastIndex - 1
@@ -185,7 +196,26 @@ module.exports = {
       nextRow = items[nextIndex]
       this.lastRow = nextRow
       this.lastDirection = direction
+      if (!curSelection.includes(eventRow[multiSelectKeyAttr])) {
+        this.handlerSelection(eventRow)
+      }
       this.handlerSelection(nextRow)
+    },
+    handlerPressToArrow (event, direction) {
+      const maxIndex = this.items.length - 1
+      let nextIndex =
+        direction === 'down' ? this.hoverIndex + 1 : this.hoverIndex - 1
+      this.hoverIndex = nextIndex
+      if (!event.shiftKey) {
+        nextIndex = nextIndex < 0 ? maxIndex : nextIndex
+        nextIndex = nextIndex > maxIndex ? 0 : nextIndex
+        this.startRowIndex = nextIndex
+        this.lastRow = this.items[nextIndex]
+        this.hoverIndex = nextIndex
+      } else {
+        const startRow = this.items[this.startRowIndex]
+        this.handlerArrowWithShift(event, startRow, direction)
+      }
     }
   }
 }
