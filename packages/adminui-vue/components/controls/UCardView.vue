@@ -23,7 +23,7 @@
     </div>
     <div class="u-card-grid">
       <div
-        v-for="row in items"
+        v-for="(row, rowIndex) in items"
         :key="row.ID"
         class="u-card"
         :class="[
@@ -36,11 +36,11 @@
           }
         ]"
         tabindex="1"
-        @keydown.arrow-down="handlerArrowWithShift($event, row,'down')"
-        @keydown.arrow-right="handlerArrowWithShift($event, row,'down')"
-        @keydown.arrow-up="handlerArrowWithShift($event, row, 'up')"
-        @keydown.arrow-left="handlerArrowWithShift($event, row, 'up')"
-        @click="handlerCardClick(row, $event)"
+        @keydown.down="handlerPressToArrow($event, 'down')"
+        @keydown.right="handlerPressToArrow($event, 'down')"
+        @keydown.up="handlerPressToArrow($event, 'up')"
+        @keydown.left="handlerPressToArrow($event, 'up')"
+        @click="handlerCardClick(rowIndex, $event)"
         @dblclick="$emit('dblclick', { row })"
         @contextmenu="handlerContextMenuEvent($event,row)"
       >

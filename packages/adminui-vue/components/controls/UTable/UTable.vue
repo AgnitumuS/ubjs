@@ -300,13 +300,6 @@ export default {
           cell.setAttribute('title', cell.innerText)
         }
       })
-    },
-    handlerClick (rowIndex) {
-      const row = this.items[rowIndex]
-      this.$emit('click', { row })
-      this.hoverIndex = rowIndex
-      this.startRowIndex = rowIndex
-      this.lastRow = row
     }
   }
 }

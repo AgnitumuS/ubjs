@@ -33,9 +33,11 @@ module.exports = {
   },
   methods: {
     // used in UCardView
-    handlerCardClick (row) {
-      this.handlerSelection(row)
-      this.$emit('click', { row })
+    handlerCardClick (rowIndex, event) {
+      const row = this.items[rowIndex]
+      // the order in which the methods are called is important
+      this.handlerSelection(row, event)
+      this.handlerClick(rowIndex)
     },
     handlerClickOnInput (row, event) {
       this.handlerSelection(row, event)
@@ -221,6 +223,13 @@ module.exports = {
         const startRow = this.items[this.startRowIndex]
         this.handlerArrowWithShift(event, startRow, direction)
       }
+    },
+    handlerClick (rowIndex) {
+      const row = this.items[rowIndex]
+      this.$emit('click', { row })
+      this.hoverIndex = rowIndex
+      this.startRowIndex = rowIndex
+      this.lastRow = row
     }
   }
 }
