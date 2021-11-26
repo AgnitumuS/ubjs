@@ -13,6 +13,7 @@ module.exports = {
   },
   created () {
     this.lastRow = null
+    this.lastDirection = null
   },
   computed: {
     allSelected () {
@@ -30,8 +31,8 @@ module.exports = {
   },
   methods: {
     // used in UCardView
-    handlerCardClick (row, event) {
-      this.handlerSelection(row, event)
+    handlerCardClick (row) {
+      this.handlerSelection(row)
       this.$emit('click', { row })
     },
     async handlerSelection (row, event) {
@@ -159,6 +160,32 @@ module.exports = {
         if (isChecked) continue
         this.handlerSelection(elem)
       }
+    },
+    handlerArrowWithShift (event, eventRow, direction) {
+      if (!event.shiftKey) return
+      const { items, lastRow, lastDirection } = this
+      const lastIndex = items.indexOf(lastRow)
+      let nextRow
+      let nextIndex = direction === 'down' ? lastIndex + 1 : lastIndex - 1
+      nextIndex =
+        lastDirection !== null && lastDirection !== direction
+          ? lastIndex
+          : nextIndex
+
+      nextRow = items[nextIndex]
+      nextIndex =
+        eventRow === nextRow
+          ? direction === 'down'
+            ? nextIndex + 1
+            : nextIndex - 1
+          : nextIndex
+
+      if (nextIndex < 0 || nextIndex > items.length - 1) return
+
+      nextRow = items[nextIndex]
+      this.lastRow = nextRow
+      this.lastDirection = direction
+      this.handlerSelection(nextRow)
     }
   }
 }

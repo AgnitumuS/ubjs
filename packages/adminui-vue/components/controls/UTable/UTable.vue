@@ -92,6 +92,10 @@
           tabindex="1"
           @click="handlerSelection(row, $event)"
           @keydown.space="handlerSelection(row)"
+          @keydown.arrow-down="handlerArrowWithShift($event, row,'down')"
+          @keydown.arrow-right="handlerArrowWithShift($event, row,'down')"
+          @keydown.arrow-up="handlerArrowWithShift($event, row, 'up')"
+          @keydown.arrow-left="handlerArrowWithShift($event, row, 'up')"
         >
           <!-- repeat html-structure for el-checkbox ElementUI -->
           <span

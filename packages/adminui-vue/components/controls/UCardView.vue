@@ -35,6 +35,11 @@
             )
           }
         ]"
+        tabindex="1"
+        @keydown.arrow-down="handlerArrowWithShift($event, row,'down')"
+        @keydown.arrow-right="handlerArrowWithShift($event, row,'down')"
+        @keydown.arrow-up="handlerArrowWithShift($event, row, 'up')"
+        @keydown.arrow-left="handlerArrowWithShift($event, row, 'up')"
         @click="handlerCardClick(row, $event)"
         @dblclick="$emit('dblclick', { row })"
         @contextmenu="handlerContextMenuEvent($event,row)"
