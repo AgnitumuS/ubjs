@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - new method `Session.switchLangForContext` - switch current execution context language; (require server 5.20.11)
+   Can be used for example inside scheduler to create a report under admin but using target user language
 
 ### Changed
 

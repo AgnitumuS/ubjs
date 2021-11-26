@@ -1,3 +1,5 @@
+/* global nsha256 */
+// eslint-disable-next-line node/no-deprecated-api
 const sessionBinding = process.binding('ub_session')
 const THTTPRequest = require('./HTTPRequest')
 const EventEmitter = require('events').EventEmitter
@@ -277,6 +279,25 @@ Session.runAsUser = function (userID, func) {
   }
   return result
 }
+
+/**
+ * Switch current execution context language.
+ * Can be used for example inside scheduler to create a report under admin but using target user language
+ *
+ * @param {string} newLang
+ * @return {string} Previous language for context
+ */
+Session.switchLangForContext = function (newLang) {
+  if (!new Set(App.serverConfig.application.domain.supportedLanguages).has(newLang)) {
+    throw new Error(`Language ${newLang} is not supported by app`)
+  }
+  sessionBinding.setTempUserLang(newLang)
+  const oldLang = this.userLang // call getter to fill _sessionCached.userLang (if not already filled)
+  _sessionCached.userLang = newLang
+  if (this.uData.lang) this.uData.lang = newLang // ensure language also changed in uData (if defined)
+  return oldLang
+}
+
 /**
  * O(1) checks if the current user is a member of the specified role
  * @example
@@ -445,7 +466,7 @@ Session.reset = function (sessionID, userID) {
  * Called by server during login to emit a `login` event on Session object
  * @private
  */
-Session.emitLoginEvent = function() {
+Session.emitLoginEvent = function () {
   const req = new THTTPRequest()
   this.emit('login', req)
 }
