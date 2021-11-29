@@ -95,6 +95,7 @@
         @dblclick="$emit('dblclick-row', { row })"
         @click="handlerClickOnTableRow(rowIndex)"
         @keydown.space="handlerSelection(row, $event)"
+        @focus="hoverIndex = rowIndex"
       >
         <td
           v-if="showMultiSelectionColumn"
