@@ -13,8 +13,6 @@
     @keydown.enter.exact="onSelect(selectedRowId)"
     @keydown.left.prevent.exact="move('left')"
     @keydown.right.prevent.exact="move('right')"
-    @keydown.up.prevent.exact="move('up')"
-    @keydown.down.prevent.exact="move('down')"
   >
     <div class="u-table-entity__head">
       <!-- @slot Replace whole toolbar -->
@@ -238,7 +236,6 @@
         :columns="columns"
         :fixed-column-id="fixedColumnId"
         :get-column-class="getColumnClass"
-        :get-row-class="getRowClass"
         :height="height"
         :items="items"
         :max-height="maxHeight"
@@ -254,6 +251,7 @@
         @click-cell="select"
         @contextmenu="showContextMenu"
         @dblclick-row="onSelect($event.row.ID, $event.row)"
+        @change-active-row="handlerChangeActiveRow"
       >
         <template
           v-for="column in columns"
@@ -322,6 +320,7 @@
         @click="select"
         @contextmenu="showContextMenu"
         @dblclick="onSelect($event.row.ID, $event.row)"
+        @change-active-row="handlerChangeActiveRow"
       >
         <slot
           slot="card"
@@ -839,6 +838,10 @@ export default {
     handlerCloseDropdown () {
       if (!this.cacheActiveElement) return
       this.cacheActiveElement.focus()
+    },
+    handlerChangeActiveRow ({ index }) {
+      const id = this.items[index][this.multiSelectKeyAttr]
+      this.SELECT_ROW(id)
     }
   }
 }
