@@ -115,21 +115,26 @@ module.exports = {
       this.emitSelectionEvent()
     },
     async handlerContextMenuEvent ($event, row, col) {
-      const { multiSelectKeyAttr, curSelection } = this
-      const value = row[multiSelectKeyAttr]
-      if (!curSelection.includes(value)) {
-        const cache = this.getSelectionRows()
-        for (const row of cache) {
+      if (this.enableMultiSelect) {
+        const { multiSelectKeyAttr, curSelection } = this
+        const value = row[multiSelectKeyAttr]
+        if (!curSelection.includes(value)) {
+          const cache = this.getSelectionRows()
+          for (const row of cache) {
+            await this.handlerSelection(row)
+          }
+          const rowIndex = this.items.indexOf(row)
+          this.setCurrentRow(rowIndex)
           await this.handlerSelection(row)
         }
-        await this.handlerSelection(row)
       }
-      // for backward compatibility with UCardView
-      if (col === undefined) {
-        this.$emit('contextmenu', { event: $event, row })
-      } else {
-        this.$emit('contextmenu-cell', { event: $event, row, column: col })
-      }
+
+      this.$emit('contextmenu', { event: $event, row, column: col })
+
+      // I think that this will not break the functionality  - 29.11.2021 :)
+      // else {
+      //   this.$emit('contextmenu-cell', { event: $event, row, column: col })
+      // }
     },
     getSelectionRows () {
       const { items, multiSelectKeyAttr } = this
@@ -227,6 +232,10 @@ module.exports = {
     handlerClick (rowIndex) {
       const row = this.items[rowIndex]
       this.$emit('click', { row })
+      this.setCurrentRow(rowIndex)
+    },
+    setCurrentRow (rowIndex) {
+      const row = this.items[rowIndex]
       this.hoverIndex = rowIndex
       this.startRowIndex = rowIndex
       this.lastRow = row

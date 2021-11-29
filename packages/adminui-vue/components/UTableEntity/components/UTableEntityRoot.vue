@@ -252,7 +252,7 @@
         @remove-selected="$emit('remove-selected', ...arguments)"
         @click-head-cell="showSortDropdown"
         @click-cell="select"
-        @contextmenu-cell="showContextMenu"
+        @contextmenu="showContextMenu"
         @dblclick-row="onSelect($event.row.ID, $event.row)"
       >
         <template
@@ -352,6 +352,7 @@
     <u-dropdown
       ref="contextMenu"
       class="u-table-entity__contextmenu-wrap"
+      @close='handlerCloseDropdown'
     >
       <template slot="dropdown">
         <!-- @slot Prepend items in context menu -->
@@ -571,7 +572,8 @@ export default {
   data () {
     return {
       targetColumn: null,
-      contextMenuRowId: null
+      contextMenuRowId: null,
+      cacheActiveElement: null
     }
   },
 
@@ -682,6 +684,7 @@ export default {
     showContextMenu ({ event, row, column }) {
       this.select({ row, column })
       this.contextMenuRowId = row.ID
+      this.cacheActiveElement = document.activeElement
       this.$refs.contextMenu.show(event)
     },
 
@@ -832,6 +835,10 @@ export default {
     },
     onSort () {
       this.targetColumn = null
+    },
+    handlerCloseDropdown () {
+      if (!this.cacheActiveElement) return
+      this.cacheActiveElement.focus()
     }
   }
 }
@@ -845,10 +852,6 @@ export default {
 }
 
 .u-table-entity {
-  --row-selected: hsl(var(--hs-primary), var(--l-background-default));
-  --cell-selected: hsl(var(--hs-primary), var(--l-background-active));
-  --row-selected-border: hsl(var(--hs-primary), var(--l-layout-border-default));
-
   display: flex;
   flex-direction: column;
   overflow: auto;
@@ -885,17 +888,6 @@ export default {
 
 .u-table-entity-panel__table th > .cell {
   word-break: normal;
-}
-
-.u-table-entity tr.selected td {
-  background: var(--row-selected);
-  border-bottom-color: var(--row-selected-border);
-}
-
-.u-table-entity tr.selected td.selected,
-.u-table-entity tr.selected td:hover,
-.u-table-entity tr.selected:hover td.selected {
-  background: var(--cell-selected);
 }
 
 .u-table-entity__header-dropdown {

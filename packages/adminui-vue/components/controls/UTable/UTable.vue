@@ -86,9 +86,8 @@
         :class="[
           getRowClass(row),
           {
-            'selected-row':
-              curSelection.includes(row[multiSelectKeyAttr]) ||
-              hoverIndex === rowIndex
+            'selected-row': curSelection.includes(row[multiSelectKeyAttr]),
+            'selected': hoverIndex === rowIndex
           }
         ]"
         @dblclick="$emit('dblclick-row', { row })"
@@ -100,6 +99,7 @@
           tabindex="1"
           @click="handlerClickOnInput(row, $event)"
           @keydown.space="handlerSelection(row)"
+          @contextmenu="handlerContextMenuEvent($event, row)"
         >
           <!-- repeat html-structure for el-checkbox ElementUI -->
           <span
@@ -313,6 +313,9 @@ export default {
   --border-hover: hsl(var(--hs-border), var(--l-layout-border-light));
   --row-hover: hsl(var(--hs-background), var(--l-background-default));
   --cell-hover: hsl(var(--hs-background), var(--l-background-active));
+  --row-selected: hsl(var(--hs-primary), var(--l-background-active));
+  --cell-selected: hsl(var(--hs-primary), calc(var(--l-background-active) - 7%));
+  --row-selected-border: hsl(var(--hs-primary), var(--l-layout-border-default));
 }
 
 .u-table table {
@@ -424,5 +427,15 @@ export default {
 }
 .u-table__sort i {
   font-size: 12px;
+}
+.u-table tr.selected td {
+  background: var(--row-selected);
+  border-bottom-color: var(--row-selected-border);
+}
+
+.u-table tr.selected td.selected,
+.u-table tr.selected td:hover,
+.u-table tr.selected:hover td.selected {
+  background: var(--cell-selected);
 }
 </style>
