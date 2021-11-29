@@ -248,31 +248,31 @@ UB.Repository('my_entity').attrs('ID')
       }
     } else if ((condition === 'in' || condition === 'notIn') && (value === null || value === undefined)) {
       // prevent ORA-00932 error - in case value is undefined instead of array
-      console.warn('Condition "in" is passed to CustomRepository.where but value is null or undefined -> condition transformed to (0=1). Check where logic')
-      expression = '0'
-      condition = WhereCondition.equal
-      value = UBQL2 ? 1 : { a: 1 }
+      console.warn('Condition \'in\' is passed to Repository.where but value is null or undefined -> condition transformed to \'0=1\'. Check where logic')
+      expression = '0=1'
+      condition = WhereCondition.custom
+      value = UBQL2 ? undefined : { a: undefined }
     } else if (condition === 'in' && (!Array.isArray(value))) {
-      console.debug('Condition "in" is passed to CustomRepository.where but value is not an array -> condition transformed to equal. Check where logic')
+      console.debug('Condition \'in\' is passed to Repository.where but value is not an array -> condition transformed to equal. Check where logic')
       condition = WhereCondition.equal
     } else if (condition === 'in' && (!value || !value.length)) {
-      console.warn('Condition "in" is passed to CustomRepository.where but value is empty array -> condition transformed to "0=1". Check where logic')
-      expression = '0'
-      condition = WhereCondition.equal
-      value = UBQL2 ? 1 : { a: 1 }
+      console.warn('Condition \'in\' is passed to Repository.where but value is empty array -> condition transformed to \'0=1\'. Check where logic')
+      expression = '0=1'
+      condition = WhereCondition.custom
+      value = UBQL2 ? undefined : { a: undefined }
     } else if (condition === 'notIn' && (!value || !value.length)) {
-      console.warn('Condition "notIn" is passed to CustomRepository.where but value is empty array -> condition transformed to "1=1". Check where logic')
-      expression = '1'
-      condition = WhereCondition.equal
-      value = UBQL2 ? 1 : { a: 1 }
+      console.warn('Condition \'notIn\' is passed to Repository.where but value is empty array -> condition transformed to \'1=1\'. Check where logic')
+      expression = '1=1'
+      condition = WhereCondition.custom
+      value = UBQL2 ? undefined : { a: undefined }
     } else if (value === null && (condition !== 'isNull' || condition !== 'notIsNull')) {
       const wrongCondition = condition
       value = undefined
       condition = conditionInCaseValueIsNull[wrongCondition]
       if (condition) {
-        console.warn(`Condition ${wrongCondition} is passed to CustomRepository.where but value is null -> condition transformed to ${condition}. Check where logic`)
+        console.warn(`Condition ${wrongCondition} is passed to Repository.where but value is null -> condition transformed to ${condition}. Check where logic`)
       } else {
-        throw new Error(`Condition ${wrongCondition} is passed to CustomRepository.where but value is null`)
+        throw new Error(`Condition ${wrongCondition} is passed to Repository.where but value is null`)
       }
     }
     if ((condition === 'in') && value && (value.length === 1)) {

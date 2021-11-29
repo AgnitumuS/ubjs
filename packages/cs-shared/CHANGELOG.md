@@ -8,7 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - *BREAKING* `Repository.where` _always positive_ and _always negative_ condition replacement changed: 
+   - `.where('attr', 'in', null|undefined|[])` -> `.where('0=1', 'custom')` instead of  `.where('1', '=', 1)`
+   - `.where('attr', 'notIn', null|undefined|[])` -> `.where('1=1', 'custom')` instead of  `.where('1', '=', 1)`
+   
+   For client-side UBQL this requires server at last 5.20.11, otherwise `non-simple expression` exception is raised 
+ 
 ### Deprecated
 
 ### Removed
