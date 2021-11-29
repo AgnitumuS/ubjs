@@ -21,6 +21,7 @@
       </div>
     </u-dropdown>
     <table
+      ref="content"
       tabindex="1"
       @keydown.down="handlerPressToArrow($event, 'down')"
       @keydown.up="handlerPressToArrow($event, 'up')"
@@ -90,15 +91,15 @@
             'selected': hoverIndex === rowIndex
           }
         ]"
+        tabindex="1"
         @dblclick="$emit('dblclick-row', { row })"
-        @click="handlerClick(rowIndex)"
+        @click="handlerClickOnTableRow(rowIndex)"
+        @keydown.space="handlerSelection(row, $event)"
       >
         <td
           v-if="showMultiSelectionColumn"
           class="u-table__multiple__cell"
-          tabindex="1"
           @click="handlerClickOnInput(row, $event)"
-          @keydown.space="handlerSelection(row)"
           @contextmenu="handlerContextMenuEvent($event, row)"
         >
           <!-- repeat html-structure for el-checkbox ElementUI -->

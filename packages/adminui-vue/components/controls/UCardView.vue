@@ -21,7 +21,10 @@
         >
       </span>
     </div>
-    <div class="u-card-grid">
+    <div
+      ref="content"
+      class="u-card-grid"
+    >
       <div
         v-for="(row, rowIndex) in items"
         :key="row.ID"
@@ -41,6 +44,7 @@
         @keydown.up="handlerPressToArrow($event, 'up')"
         @keydown.left="handlerPressToArrow($event, 'up')"
         @click="handlerCardClick(rowIndex, $event)"
+        @keydown.space="handlerSelection(row, $event)"
         @dblclick="$emit('dblclick', { row })"
         @contextmenu="handlerContextMenuEvent($event,row)"
       >
@@ -51,6 +55,7 @@
           :class="{
             'is-checked': curSelection.includes(row[multiSelectKeyAttr])
           }"
+          @click="handlerSelection(row, $event)"
         >
           <span class="el-checkbox__inner" />
           <input

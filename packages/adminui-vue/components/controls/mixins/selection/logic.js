@@ -30,17 +30,17 @@ module.exports = {
     selectedRows (e) {
       this.curSelection = e
     },
-    hoverIndex (newValue) {
-      this.$emit('change-active-row', { index: newValue })
+    hoverIndex () {
+      this.setFocusRow()
     }
   },
   methods: {
     // used in UCardView
     handlerCardClick (rowIndex, event) {
-      const row = this.items[rowIndex]
+      // const row = this.items[rowIndex]
       // the order in which the methods are called is important
-      this.handlerSelection(row, event)
-      this.handlerClick(rowIndex)
+      // this.handlerSelection(row, event)
+      this.handlerClickOnTableRow(rowIndex, event)
     },
     handlerClickOnInput (row, event) {
       this.handlerSelection(row, event)
@@ -53,6 +53,8 @@ module.exports = {
       const arr = curSelection
       const id = row[multiSelectKeyAttr]
       const hasIndex = arr.indexOf(id)
+      // disabled scroling table
+      if (event && event.code === 'Space') event.preventDefault()
       if (hasIndex === -1) {
         if (event && event.shiftKey) {
           this.handlerCLickWithShift(row)
@@ -184,11 +186,7 @@ module.exports = {
         await this.handlerSelection(elem)
       }
     },
-    handlerArrowWithShift (event, eventRow, direction) {
-      if (!event.shiftKey) {
-        this.lastRow = eventRow
-        return
-      }
+    handlerArrowWithShift (eventRow, direction) {
       const {
         items,
         lastRow,
@@ -226,6 +224,7 @@ module.exports = {
       const maxIndex = this.items.length - 1
       let nextIndex =
         direction === 'down' ? this.hoverIndex + 1 : this.hoverIndex - 1
+      // moving through the rows of the table in a circle
       if (!event.shiftKey) {
         nextIndex = nextIndex < 0 ? maxIndex : nextIndex
         nextIndex = nextIndex > maxIndex ? 0 : nextIndex
@@ -236,10 +235,10 @@ module.exports = {
         if (nextIndex < 0 || nextIndex > maxIndex) return
         this.hoverIndex = nextIndex
         const startRow = this.items[this.startRowIndex]
-        this.handlerArrowWithShift(event, startRow, direction)
+        this.handlerArrowWithShift(startRow, direction)
       }
     },
-    handlerClick (rowIndex) {
+    handlerClickOnTableRow (rowIndex) {
       const row = this.items[rowIndex]
       this.$emit('click', { row })
       this.setCurrentRow(rowIndex)
@@ -252,6 +251,20 @@ module.exports = {
     },
     handlerSelectionStart (e) {
       e.preventDefault()
+    },
+    setFocusRow () {
+      /**
+       * Triggers when the user change active row with mouse or keyboard arrow
+       *
+       * @param {object<index>} index new active row in table items array
+       */
+      this.$emit('change-active-row', { index: this.hoverIndex })
+      const { children } = this.$refs.content
+      // because first tr in table it is head
+      const shift = children.length - this.items.length
+      const row = children[this.hoverIndex + shift]
+      if (!row) return
+      row.focus()
     }
   }
 }
