@@ -29,6 +29,9 @@ module.exports = {
   watch: {
     selectedRows (e) {
       this.curSelection = e
+    },
+    hoverIndex (newValue) {
+      this.$emit('change-active-row', { index: newValue })
     }
   },
   methods: {
@@ -149,7 +152,7 @@ module.exports = {
       })
       return rows
     },
-    handlerCLickWithShift (row) {
+    async handlerCLickWithShift (row) {
       const { multiSelectKeyAttr, curSelection, items, lastRow } = this
       const lastTargetIndex = items.indexOf(lastRow)
       if (lastTargetIndex === -1) return
@@ -157,21 +160,28 @@ module.exports = {
       const targetIndex = items.indexOf(row)
 
       if (targetIndex === lastTargetIndex) {
-        this.handlerSelection(row)
+        await this.handlerSelection(row)
         return
       }
+      const selection = window.getSelection()
+      selection.removeAllRanges()
 
       let startIndex =
         lastTargetIndex < targetIndex ? lastTargetIndex : targetIndex
       const endIndex =
         lastTargetIndex < targetIndex ? targetIndex : lastTargetIndex
 
+      const arrIterator = []
       for (startIndex; startIndex <= endIndex; startIndex++) {
-        const elem = items[startIndex]
+        arrIterator.push(startIndex)
+      }
+      for (const index of arrIterator) {
+        const elem = items[index]
         const value = elem[multiSelectKeyAttr]
         const isChecked = curSelection.includes(value)
         if (isChecked) continue
-        this.handlerSelection(elem)
+
+        await this.handlerSelection(elem)
       }
     },
     handlerArrowWithShift (event, eventRow, direction) {
@@ -239,6 +249,9 @@ module.exports = {
       this.hoverIndex = rowIndex
       this.startRowIndex = rowIndex
       this.lastRow = row
+    },
+    handlerSelectionStart (e) {
+      e.preventDefault()
     }
   }
 }
