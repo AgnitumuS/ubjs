@@ -227,6 +227,53 @@ Verify connection
 ubcli execSql -c mysql -sql "select * from mysql.user" -withResult -outputRes
 ```
 
+### ODBC
+
+Almost any database (what have ODBC driver) can be accessed by UnityBase directly (without ORM) using ODBC driver.
+Under Linux:
+ - install ODBC driver for your database
+ - configure `/etc/odbcinst.ini`
+ - configure `.odbc.ini`
+
+in ubConfig use "driver": "ODBC" and entry from odbc.ini as `serverName` value.
+
+MS Access Database Example (using CData ODBC driver. `mdbtools` not work):
+
+*/etc/odbcinst.ini*
+```ini
+[CData ODBC Driver for Access]
+Description=CData ODBC Driver for Access 2021
+Driver=/opt/cdata/cdata-odbc-driver-for-access/lib/libaccessodbc.x64.so
+UsageCount=1
+Driver64=/opt/cdata/cdata-odbc-driver-for-access/lib/libaccessodbc.x64.so
+```
+
+*~/.odbc.ini*
+```ini
+[mdb_cdata_test]
+Description = MS Access test CData
+Driver      = CData ODBC Driver for Access
+DataSource  = ~/_DATA/PCResale.accdb
+```
+
+*ubConfig.json*
+
+```json
+{
+  "databases": [{
+    "name": "access",
+    "driver": "ODBC",
+    "serverName": "mdb_cdata_test",
+    "databaseName": "",
+    "userID": "",
+    "password": "",
+    "supportLang": [
+      "en"
+    ]
+  ]}
+}
+```
+
 ## Transactions
 In most cases UB handle transactions automatically. Each HTTP call of endpoint (every HTTP request to server) will be wrapped in 
 database transaction (if it is required). If request is handled successfully (without unhandled exceptions), all started
