@@ -251,7 +251,7 @@
         @click-cell="select"
         @contextmenu="showContextMenu"
         @dblclick-row="onSelect($event.row.ID, $event.row)"
-        @change-active-row="handlerChangeActiveRow"
+        @change-active-row="activeRowChangeHandler"
       >
         <template
           v-for="column in columns"
@@ -320,7 +320,7 @@
         @click="select"
         @contextmenu="showContextMenu"
         @dblclick="onSelect($event.row.ID, $event.row)"
-        @change-active-row="handlerChangeActiveRow"
+        @change-active-row="activeRowChangeHandler"
       >
         <slot
           slot="card"
@@ -351,7 +351,7 @@
     <u-dropdown
       ref="contextMenu"
       class="u-table-entity__contextmenu-wrap"
-      @close='handlerCloseDropdown'
+      @close='closeDropdownHandler'
     >
       <template slot="dropdown">
         <!-- @slot Prepend items in context menu -->
@@ -835,11 +835,11 @@ export default {
     onSort () {
       this.targetColumn = null
     },
-    handlerCloseDropdown () {
+    closeDropdownHandler () {
       if (!this.cacheActiveElement) return
       this.cacheActiveElement.focus()
     },
-    handlerChangeActiveRow ({ index }) {
+    activeRowChangeHandler ({ index }) {
       const id = this.items[index][this.multiSelectKeyAttr]
       this.SELECT_ROW(id)
     }

@@ -36,13 +36,13 @@ module.exports = {
   },
   methods: {
     // used in UCardView
-    handlerCardClick (rowIndex, event) {
+    cardClickHandler (rowIndex, event) {
       // const row = this.items[rowIndex]
       // the order in which the methods are called is important
       // this.handlerSelection(row, event)
-      this.handlerClickOnTableRow(rowIndex, event)
+      this.onTableRowClickHandler(rowIndex, event)
     },
-    handlerClickOnInput (row, event) {
+    onInputClickHandler (row, event) {
       this.handlerSelection(row, event)
       this.$emit('click', { row })
     },
@@ -57,7 +57,7 @@ module.exports = {
       if (event && event.code === 'Space') event.preventDefault()
       if (hasIndex === -1) {
         if (event && event.shiftKey) {
-          this.handlerCLickWithShift(row)
+          this.cLickWithShiftHandler(row)
           return
         }
         if (!(await this.beforeAddSelection([row]))) return
@@ -95,7 +95,7 @@ module.exports = {
        */
       this.$emit('selected', this.curSelection)
     },
-    async handlerCheckedAll () {
+    async checkedAllHandler () {
       if (!this.enableMultiSelect) return
       const { items, allSelected, multiSelectKeyAttr } = this
       const temp = new Set(this.curSelection)
@@ -119,7 +119,7 @@ module.exports = {
       }
       this.emitSelectionEvent()
     },
-    async handlerContextMenuEvent ($event, row, col) {
+    async contextMenuEventHandler ($event, row, col) {
       if (this.enableMultiSelect) {
         const { multiSelectKeyAttr, curSelection } = this
         const value = row[multiSelectKeyAttr]
@@ -154,7 +154,7 @@ module.exports = {
       })
       return rows
     },
-    async handlerCLickWithShift (row) {
+    async cLickWithShiftHandler (row) {
       const { multiSelectKeyAttr, curSelection, items, lastRow } = this
       const lastTargetIndex = items.indexOf(lastRow)
       if (lastTargetIndex === -1) return
@@ -186,7 +186,7 @@ module.exports = {
         await this.handlerSelection(elem)
       }
     },
-    handlerArrowWithShift (eventRow, direction) {
+    arrowWithShiftHandler (eventRow, direction) {
       const {
         items,
         lastRow,
@@ -220,7 +220,7 @@ module.exports = {
       }
       this.handlerSelection(nextRow)
     },
-    handlerPressToArrow (event, direction) {
+    toArrowPressHandler (event, direction) {
       const maxIndex = this.items.length - 1
       let nextIndex =
         direction === 'down' ? this.hoverIndex + 1 : this.hoverIndex - 1
@@ -235,10 +235,10 @@ module.exports = {
         if (nextIndex < 0 || nextIndex > maxIndex) return
         this.hoverIndex = nextIndex
         const startRow = this.items[this.startRowIndex]
-        this.handlerArrowWithShift(startRow, direction)
+        this.arrowWithShiftHandler(startRow, direction)
       }
     },
-    handlerClickOnTableRow (rowIndex) {
+    onTableRowClickHandler (rowIndex) {
       const row = this.items[rowIndex]
       this.$emit('click', { row })
       this.setCurrentRow(rowIndex)
@@ -248,9 +248,6 @@ module.exports = {
       this.hoverIndex = rowIndex
       this.startRowIndex = rowIndex
       this.lastRow = row
-    },
-    handlerSelectionStart (e) {
-      e.preventDefault()
     },
     setFocusRow () {
       /**

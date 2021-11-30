@@ -3,7 +3,7 @@
     <div
       v-if="showMultiSelectionColumn"
       class="u-card__select-all"
-      @click="handlerCheckedAll"
+      @click="checkedAllHandler"
     >
       {{ $ut('selectAll') }}
       <span
@@ -39,15 +39,15 @@
           }
         ]"
         tabindex="1"
-        @keydown.down="handlerPressToArrow($event, 'down')"
-        @keydown.right="handlerPressToArrow($event, 'down')"
-        @keydown.up="handlerPressToArrow($event, 'up')"
-        @keydown.left="handlerPressToArrow($event, 'up')"
-        @click="handlerCardClick(rowIndex, $event)"
-        @focus="handlerCardClick(rowIndex, $event)"
+        @keydown.down="toArrowPressHandler($event, 'down')"
+        @keydown.right="toArrowPressHandler($event, 'down')"
+        @keydown.up="toArrowPressHandler($event, 'up')"
+        @keydown.left="toArrowPressHandler($event, 'up')"
+        @click="cardClickHandler(rowIndex, $event)"
+        @focus="cardClickHandler(rowIndex, $event)"
         @keydown.space="handlerSelection(row, $event)"
         @dblclick="$emit('dblclick', { row })"
-        @contextmenu="handlerContextMenuEvent($event,row)"
+        @contextmenu="contextMenuEventHandler($event,row)"
       >
         <!-- repeat html-structure for el-checkbox ElementUI -->
         <span
@@ -56,7 +56,7 @@
           :class="{
             'is-checked': curSelection.includes(row[multiSelectKeyAttr])
           }"
-          @click="handlerSelection(row, $event)"
+        @click="handlerSelection(row, $event)"
         >
           <span class="el-checkbox__inner" />
           <input

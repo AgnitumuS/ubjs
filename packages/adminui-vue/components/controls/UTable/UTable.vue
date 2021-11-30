@@ -23,16 +23,16 @@
     <table
       ref="content"
       tabindex="1"
-      @keydown.down="handlerPressToArrow($event, 'down')"
-      @keydown.up="handlerPressToArrow($event, 'up')"
+      @keydown.down="toArrowPressHandler($event, 'down')"
+      @keydown.up="toArrowPressHandler($event, 'up')"
     >
       <tr>
         <th
           v-if="showMultiSelectionColumn"
           class="u-table__multiple__cell"
           tabindex="1"
-          @click="handlerCheckedAll"
-          @keydown.space="handlerCheckedAll"
+          @click="checkedAllHandler"
+          @keydown.space="checkedAllHandler"
         >
           <span
             class="el-checkbox__input"
@@ -93,15 +93,15 @@
         ]"
         tabindex="1"
         @dblclick="$emit('dblclick-row', { row })"
-        @click="handlerClickOnTableRow(rowIndex)"
+        @click="onTableRowClickHandler(rowIndex)"
         @keydown.space="handlerSelection(row, $event)"
         @focus="hoverIndex = rowIndex"
       >
         <td
           v-if="showMultiSelectionColumn"
           class="u-table__multiple__cell"
-          @click="handlerClickOnInput(row, $event)"
-          @contextmenu="handlerContextMenuEvent($event, row)"
+          @click="onInputClickHandler(row, $event)"
+          @contextmenu="contextMenuEventHandler($event, row)"
         >
           <!-- repeat html-structure for el-checkbox ElementUI -->
           <span
@@ -133,7 +133,7 @@
             padding: col.padding && col.padding + 'px'
           }"
           @click="$emit('click-cell', { row, column: col })"
-          @contextmenu="handlerContextMenuEvent($event, row, col)"
+          @contextmenu="contextMenuEventHandler($event, row, col)"
         >
           <div class="u-table__cell-container">
             <slot
