@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `UTableEntity`, `UTable` - selection using left click works only on cell with checkboxes (not on whole row as before)
 
 ### Fixed
-- `UDropdown` - fixed dropdown size when the user changes his choice in multiselect
+ - `UDropdown` - dropdown with now adopts to internal content width if it changed (for example - when user changes his choice in multiselect)
  - `UTableEntity` - fixed selection bug when user changed view from table to card and back
  - `aclRlsEntry-fm` form: filtering of dropdown entries by entered query text in some `u-select-multiple` control [LDOC-1823]
  - Messages widget: use "unshift" instead of "push" to put most recent message at the top of list
