@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - added i18n for title of notification messages history form (ubs_message-fm) [UBDF-14535]
+ - `UTableEntity`: support of the `exportExpression` for complex fields (`attribute.nestedAttr`->`attribute.nestedAttrForExport`)
 
 ## [5.20.32] - 2021-11-23
 ### Added
