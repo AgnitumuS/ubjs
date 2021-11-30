@@ -1496,7 +1496,7 @@ UBConnection.prototype.select = function (serverRequest, bypassCache) {
   const me = this
   let dataPromise
 
-  bypassCache = bypassCache || (serverRequest.__mip_disablecache === true)
+  bypassCache = bypassCache || (serverRequest.__mip_disablecache === true) || (serverRequest.__mip_recordhistory_all === true)
   const cacheType = bypassCache || serverRequest.ID || serverRequest.bypassCache
     ? UBCache.cacheTypes.None
     : me.domain.get(serverRequest.entity).cacheType

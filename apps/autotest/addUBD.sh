@@ -30,3 +30,7 @@ fi
 if [ ! -d "./node_modules/@ub-e/ocr" ]; then
   ln -s "$(pwd)/../../../ub-e/packages/ocr" "./node_modules/@ub-e/"
 fi
+
+if [ ! -d "./node_modules/@ub-e/nm-scanner" ]; then
+  ln -s "$(pwd)/../../../ub-e/packages/nm-scanner" "./node_modules/@ub-e/"
+fi

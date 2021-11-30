@@ -15,6 +15,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.7] - 2021-11-23
+### Fixed
+ - `UZip.file` accept incoming `data` of type `ArrayBuffer` in addition to TypedArray and Buffer
+
+## [5.2.6] - 2021-11-17
+### Fixed
+ - UZip produce zip archive with Unix as "operating system of origin" - this fix displaying of unicode file names
+   inside archive for most ZIP tools
+
+## [5.2.5] - 2021-11-14
 ## [5.2.4] - 2021-10-27
 ## [5.2.3] - 2021-09-08
 ## [5.2.2] - 2021-08-18

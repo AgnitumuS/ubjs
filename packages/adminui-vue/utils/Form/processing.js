@@ -799,12 +799,16 @@ function createProcessingModule ({
         const masterExecParams = buildExecParams(store.state, masterEntityName)
         const method = store.state.isNew ? 'insert' : 'update'
         if (masterExecParams) {
-          requests.push({
+          const request = {
             entity: masterEntityName,
             method: method,
             execParams: masterExecParams,
             fieldList
-          })
+          }
+          if (entitySchema.hasMixin('als')) {
+            request.alsNeed = true
+          }
+          requests.push(request)
           responseHandlers.push(response => store.commit('LOAD_DATA', response.resultData))
         }
 
@@ -871,6 +875,9 @@ function createProcessingModule ({
             const response = responses[i]
             const responseHandler = responseHandlers[i]
             responseHandler(response)
+            if (response?.entity === masterEntityName && response.resultAls) {
+              store.commit('SET_ALS_INFO', response.resultAls)
+            }
           }
 
           store.commit('CLEAR_ALL_DELETED_ITEMS')
@@ -917,8 +924,11 @@ function createProcessingModule ({
        *
        * In case form dirty - show confirmation dialog for loosing changes
        * @fires entity_name:refresh
+       *
+       * @param {object} [options]
+       * @param {number} options.skipNotify Do not show notification message on refresh operation
        */
-      async refresh ({ state, getters, commit, dispatch }) {
+      async refresh ({ state, getters, commit, dispatch }, options) {
         if (getters.isDirty) {
           const result = await uDialogs.dialogYesNo('refresh', 'formWasChanged')
 
@@ -957,7 +967,9 @@ UB.connection.on('uba_user:refresh', function (data) {
          */
         UB.connection.emit(`${masterEntityName}:refresh`, { ID: state.data.ID })
 
-        $notify.success(UB.i18n('formWasRefreshed'))
+        if (!options?.skipNotify) {
+          $notify.success(UB.i18n('formWasRefreshed'))
+        }
       },
 
       /**

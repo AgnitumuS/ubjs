@@ -295,6 +295,17 @@
 				"supportLang": ["en"]
 			},
 			//#endif
+			//# ifdef(%UB_USE_ODBC%)
+			{
+				"name": "access",
+				"driver": "ODBC",
+				"serverName": "mdb_cdata_test", // this is an entry in ~/.obdc.ini file
+				"databaseName": "",
+				"userID": "",
+				"password": "",
+				"supportLang": ["en"]
+			},
+			//# endif
 			//#ifndef(%UB_NOFTS%)
 			{
 				"name": "ftsDefault",

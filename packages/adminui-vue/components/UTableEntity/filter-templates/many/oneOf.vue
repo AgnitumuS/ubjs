@@ -1,14 +1,17 @@
 <template>
+<!--  whereList: [{ condition: '=', value }] - for the "many" type there must be exactly "=",
+ otherwise there will be an error when choosing single value -->
   <filter-template
     :button-disabled="value.length === 0"
     @submit="$emit('search', {
-      whereList: [{condition: 'in', value}],
-      description: $ut('contains') + ' ' + manyOptions
+      whereList: [{ condition: '=', value }],
+      description: $ut('by_several_value') + ' ' + manyOptions
     })"
   >
     <u-select-multiple
       ref="selectMany"
       v-model="value"
+      :repository="column.repository"
       :entity-name="column.attribute.associatedEntity"
     />
   </filter-template>
@@ -16,7 +19,7 @@
 
 <script>
 export default {
-  name: 'FilterEntityContains',
+  name: 'FilterManyContains',
 
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default

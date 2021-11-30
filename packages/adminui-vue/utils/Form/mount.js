@@ -28,6 +28,8 @@ const uDialogs = require('../uDialogs')
  * @param {string} [cfg.modalClass] Modal class
  * @param {string} [cfg.modalWidth] Modal width
  * @param {object} cfg.provide Regular object which provide all props what passed in it
+ * @param {function} [cfg.onClose] Async callback, called (and awaited) before form is destroyed with 2 args:
+ *    (ID: number|null, store: Vuex.Store); In case form is in isNew state, ID value is null, otherwise - an ID from store
  */
 function mountModal ({
   component,
@@ -161,7 +163,9 @@ function mountModal ({
  * @param {Validator} [cfg.validator] Validator
  * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
  * @param {object} cfg.provide Regular object which provide all props what passed in it
- * @param {boolean} [cfg.openInBackgroundTab=false] If `true` - the tab with a newly opened form does not become active.
+ * @param {boolean} [cfg.openInBackgroundTab=false] If `true` - the tab with a newly opened form does not become active
+ * @param {function} [cfg.onClose] Async callback, called (and awaited) before form is destroyed with 2 args:
+ *    (ID: number|null, store: Vuex.Store); In case form is in isNew state, ID value is null, otherwise - an ID from store
  */
 function mountTab ({
   component,
@@ -331,7 +335,9 @@ function beforeClose ({ store, close }) {
  * @param {Vuex.Store} cfg.store Store
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  * @param {Ext.component|String} cfg.target Either id of html element or Ext component
- * @param {Validator} [cfg.validator] Validator
+ * @param {Validator} [cfg.validator] validator
+ * @param {function} [cfg.onClose] Async callback, called (and awaited) before form is destroyed with 2 args:
+ *    (ID: number|null, store: Vuex.Store); In case form is in isNew state, ID value is null, otherwise - an ID from store
  */
 function mountContainer ({
   component,

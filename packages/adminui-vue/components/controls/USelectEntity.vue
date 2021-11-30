@@ -320,7 +320,8 @@ export default {
       isSafeDeletedValue: false,
       isOutOfDate: false,
       isFocused: false,
-      undefinedRecord: false // show's warning icon when ID is undefined in entity
+      undefinedRecord: false, // show's warning icon when ID is undefined in entity
+      editingFormIsOpened: false
     }
   },
 
@@ -363,14 +364,15 @@ export default {
         name: 'Edit',
         caption: this.$ut('editSelItem') + ' (Ctrl+E)',
         icon: 'u-icon-edit',
-        disabled: !this.value,
+        disabled: !this.value || this.editingFormIsOpened,
         handler: this.handleEditItem
       },
       {
         name: 'Add',
         caption: this.$ut('addNewItem'),
         icon: 'u-icon-add',
-        disabled: !this.getEntityName || !this.$UB.connection.domain.get(this.getEntityName).haveAccessToMethod('addnew') || this.isReadOnly,
+        disabled: !this.getEntityName || this.editingFormIsOpened || this.isReadOnly ||
+          !this.$UB.connection.domain.get(this.getEntityName).haveAccessToMethod('addnew'),
         handler: this.handleAddNewItem
       },
       {
@@ -419,23 +421,6 @@ export default {
       if (value.length < 1) {
         this.handleClearClick()
       }
-    }
-  },
-
-  created () {
-    this.AUTOCOMPLETE_LISTENER_UID = null
-  },
-
-  beforeDestroy () {
-    if (
-      this.AUTOCOMPLETE_LISTENER_UID &&
-      this.AUTOCOMPLETE_LISTENER_UID === this._uid &&
-      !this.skipAutoComplete
-    ) {
-      this.$UB.connection.removeListener(
-        `${this.getEntityName}:changed`,
-        this.autoCompleteValue
-      )
     }
   },
 
@@ -733,7 +718,7 @@ export default {
             .selectAsArrayOfValues()
 
           if (ids.length !== 1) {
-            UB.showErrorWindow(`${this.valueAttribute} is not unique`)
+            this.$UB.showErrorWindow(`${this.valueAttribute} is not unique`)
             return
           }
 
@@ -744,39 +729,43 @@ export default {
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
           entity: this.getEntityName,
           isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal,
-          instanceID: ID
+          instanceID: ID,
+          onClose: () => {
+            this.editingFormIsOpened = false
+          }
         })
+        this.editingFormIsOpened = true
         this.$UB.core.UBApp.doCommand(config)
       }
     },
 
     handleAddNewItem () {
-      if (!this.removeDefaultActions) {
-        const config = this.buildAddNewConfig({
-          cmdType: this.$UB.core.UBCommand.commandType.showForm,
-          entity: this.getEntityName,
-          isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal
-        })
-        if (!this.skipAutoComplete) {
-          this.$UB.connection.once(`${this.entityName}:changed`, this.autoCompleteValue)
-          this.AUTOCOMPLETE_LISTENER_UID = this._uid
-        }
-        this.$UB.core.UBApp.doCommand(config)
-      }
-    },
-
-    autoCompleteValue (config) {
-      if (this.AUTOCOMPLETE_LISTENER_UID && this.AUTOCOMPLETE_LISTENER_UID === this._uid && config && config.resultData) {
-        this.$emit('input', config.resultData[this.valueAttribute], JSON.parse(JSON.stringify(config.resultData)))
-      }
+      if (this.removeDefaultActions) return
+      const config = this.buildAddNewConfig({
+        cmdType: this.$UB.core.UBCommand.commandType.showForm,
+        entity: this.getEntityName,
+        isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal,
+        // WARNING - if current form is closed, then handler creates a closure until addNew form is opened
+        // but we do not know how to intercept addNew form closing w/o callback
+        onClose: this.skipAutoComplete
+          ? undefined
+          : (ID, store) => {
+              this.editingFormIsOpened = false
+              if (!ID) return // form for adding new record is closed while in isNew state (value not saved to DB) - do nothing
+              if (!this.$el.isConnected) return // form is closed before addNew form
+              const formAttrs = Object.assign({}, store.state.data) // form data is plain, so safe to use assign
+              this.$emit('input', formAttrs[this.valueAttribute], formAttrs)
+            }
+      })
+      this.editingFormIsOpened = true
+      this.$UB.core.UBApp.doCommand(config)
     },
 
     handleClearClick () {
-      if (!this.removeDefaultActions) {
-        this.$emit('input', null, null)
-        if (this.dropdownVisible) {
-          this.fetchPage()
-        }
+      if (this.removeDefaultActions) return
+      this.$emit('input', null, null)
+      if (this.dropdownVisible) {
+        this.fetchPage()
       }
     },
 

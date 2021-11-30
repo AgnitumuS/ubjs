@@ -193,6 +193,7 @@ export default {
       $App.doCommand({
         cmdType: 'showForm',
         entity: 'ubs_message',
+        title: this.$ut('messageHistory'),
         isModal: isModal,
         modalWidth: '90vw',
         props: {
@@ -218,9 +219,9 @@ export default {
     addNotificationListeners () {
       $App.on({
         'portal:notify:newMess': (message) => {
-          this.messages.push(message)
+          this.messages.unshift(message)
           this.$notify({
-            title: 'New message',
+            title: this.$ut('newMessage'),
             type: 'info'
           })
         },

@@ -2,6 +2,9 @@
  * Dates and Numbers formatting using Intl
  * On client this module exposed as `UB.formatter` and `Vue.prototype.$UB.formatter`
  *
+ * - for available date format options see https://tc39.es/ecma402/#datetimeformat-objects
+ * - for available number format options see https://tc39.es/ecma402/#numberformat-objects
+ *
  * @module formatByPattern
  * @author xmax
  * @memberOf module:@unitybase/cs-shared
@@ -172,6 +175,68 @@ module.exports.datePatterns = Object.keys(datePatterns)
  * @type {string[]}
  */
 module.exports.numberPatterns = Object.keys(numberPatterns)
+
+/**
+ * Registers custom date pattern (should be called once)
+ * @example
+
+ // format Date for New_York time zone
+ $UB.formatter.registerDatePattern('dateTimeInNewYork', {
+    month: '2-digit', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit',
+    timeZone: 'America/New_York'
+ })
+
+ * @param {string} patternName Pattern name
+ * @param {object} intlOptions Intl.DateFormat constructor options - see https://tc39.es/ecma402/#datetimeformat-objects
+ */
+module.exports.registerDatePattern = function (patternName, intlOptions) {
+  if (!patternName || typeof patternName !== 'string') {
+    throw new Error('Invalid date pattern name')
+  }
+  if (datePatterns[patternName]) {
+    throw new Error(`Date pattern ${patternName} already registered`)
+  }
+  if (!intlOptions || typeof intlOptions !== 'object') {
+    throw new Error('Invalid intlOptions - should be object')
+  }
+  datePatterns[patternName] = intlOptions
+}
+
+/**
+ * Registers custom number pattern
+ * @param {string} patternName Pattern name
+ * @param {object} intlOptions Intl.NumberFormat constructor options - see https://tc39.es/ecma402/#numberformat-objects
+ */
+module.exports.registerNumberPattern = function (patternName, intlOptions) {
+  if (!patternName || typeof patternName !== 'string') {
+    throw new Error('Invalid number pattern name')
+  }
+  if (numberPatterns[patternName]) {
+    throw new Error(`Number pattern ${patternName} already registered`)
+  }
+  if (!intlOptions || typeof intlOptions !== 'object') {
+    throw new Error('Invalid intlOptions - should be object')
+  }
+  numberPatterns[patternName] = intlOptions
+}
+
+/**
+ * Gets date pattern by name
+ * @param {string} patternName Pattern name
+ * @returns {object} Pattern description for Intl
+ */
+module.exports.getDatePattern = function (patternName) {
+  return Object.assign({}, datePatterns[patternName])
+}
+
+/**
+ * Gets number pattern by name
+ * @param {string} patternName Pattern name
+ * @returns {object} Pattern description for Intl
+ */
+module.exports.getNumberPattern = function (patternName) {
+  return Object.assign({}, numberPatterns[patternName])
+}
 
 /**
  * Set a default language to use with `strCmp`, `formatNumber` and `formatDate`.

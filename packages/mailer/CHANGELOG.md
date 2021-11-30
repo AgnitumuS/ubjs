@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.5.12] - 2021-11-23
+### Fixed
+ - non-english file names of attachments now displays correctly (at last in GMail and Outlook) - fixed inside synapse40 library
+
+## [5.5.11] - 2021-11-14
 ## [5.5.10] - 2021-10-27
 ## [5.5.9] - 2021-09-08
 ## [5.5.8] - 2021-08-04

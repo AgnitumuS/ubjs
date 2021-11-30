@@ -24,6 +24,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.32] - 2021-11-30
+## [5.20.31] - 2021-11-23
+## [5.20.30] - 2021-11-14
+## [5.20.29] - 2021-11-05
+### Added
+- audit trail form will show changes for all mixin-attributes (**mi_dateFrom**, **mi_dateTo** and others).
+ Before this fix, only **mi_wfState** attribute was displayed. After this only attributes, added by `mStorage` mixin are omitted.
+
+### Changed
+ - localizations of `uba_group` entity caption: `Groups` => `User Groups`, `Групи` => `Групи користувачів`...
+
+### Fixed
+ - typo in the description of the `targetGroup` attribute of `uba_audit` entity
+
 ## [5.20.28] - 2021-10-27
 ### Changed
  - UBA model fill `ubs_settings` using migration YAML (05_settings.yml)

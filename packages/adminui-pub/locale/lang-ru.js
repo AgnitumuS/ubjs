@@ -5,13 +5,9 @@ UB.i18nExtend({
     "<p> В открывшемся окне нажмите <b>+Add to Firefox</b></p>" +
     "<p>Подтвердите ждобавление нового дополнения.</p>" +
     "<p>После установки дополнения <b>перезапустите браузер!</b></p>",
-  "NMInstallExtensionChrome": "<p>Для продолжения работы необходима установка дополнения <b>\"UBExtension\"</b> для браузера Google Chrome.</p> " +
-    "<p>Нажмите на ссылку <a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\">УСТАНОВИТЬ РАСШИРЕНИЕ</a> " +
-    " для перехода в магазин Google</p>" +
-    "<p> В окне магазина нажмите кнопку <img src=\"models/adminui-pub/ub-extension/ChromePlusFreeEn.png\"/> (может быть <b>+БЕСПЛАТНО</b>)</p>" +
-    "<p>Появится окно с подтверждением установки дополнений - нажмите \"Добавить\" (Add).</p>" +
-    "<p>Расширение будет установлено и кнопка <b>+FREE</b> изменит свой цвет на зелёный: <img src=\"models/adminui-pub/ub-extension/ChromeAddedEn.png\"/> " +
-    "<p>После установки дополнения <b>перезапустите браузер!</b></p>",
+  "NMInstallExtensionChrome": "<p>Необходимо установить расширение <b>\"UBExtension\"</b> для браузера.</p> " +
+    "<p>Следуйте <a href=\"https://unitybase-info.translate.goog/news/setup-ubextension-without-using-the-google-store.html?_x_tr_sl=uk&_x_tr_tl=en&_x_tr_hl=uk&_x_tr_pto=nui\" target=\"_blank\">инструкции по установке</a>.</p>" +
+    "<p>После установки <b>перезапустите браузер</b></p>",
   "NMInstallExtensionOpera": "<p>Для продолжения работы необходима установка расширения <b>\"UBExtension\"</b> для браузера Opera.</p> " +
     "<p>Нажмите на ссылку <a href=\"models/adminui-pub/ub-extension/UBExtension.crx\" target=\"_blank\">УСТАНОВИТЬ РАСШИРЕНИЕ</a>.</p>" +
     "<p>Браузер загрузит расширение и выдаст Вам сообщение в верхней части єкрана. " +

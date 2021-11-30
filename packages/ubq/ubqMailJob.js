@@ -4,6 +4,10 @@ const App = UB.App
 const mailerParams = App.serverConfig.application.customSettings.mailerConfig
 const UBMail = require('@unitybase/mailer')
 
+const processTerminationRequested = typeof process.terminationRequested === 'function'
+  ? process.terminationRequested
+  : function () { return false } // UB < 5.20.10 compatibility
+
 /**
  * Mail sender for Scheduler
  * Read queue with code **mail** and send mails to recipient(s)
@@ -44,7 +48,7 @@ module.exports = function () {
   }
 
   const inst = UB.Repository('ubq_messages')
-    .attrs(['ID', 'queueCode', 'msgCmd', 'msgData'])
+    .attrs(['ID', 'queueCode', 'msgCmd']) // 'msgData' will be retrieved for each row, because it can be huge
     .where('[queueCode]', '=', 'mail')
     .where('[completeDate]', 'isNull')
     .limit(100)
@@ -70,11 +74,18 @@ module.exports = function () {
     console.debug('Mailer: before mailSender.Login')
     mailSender.login()
     console.debug('Mailer: after mailSender.Login')
-
-    while (!inst.eof) {
+    const msgDataStore = UB.DataStore('ubq_messages') // avoid create a new instance inside a loop
+    while (!inst.eof && !processTerminationRequested()) { // terminate mail scheduler ASAP, without waiting all pending mails sends, in case process termination is requested
       mailData.ID = inst.get('ID')
       mailData.msgCmd = inst.get('msgCmd')
-      mailData.msgData = inst.get('msgData')
+
+      // retrieve msgData one by one to avoid fetch size overflow (see ubConfig.connections.connName.statementMaxMemoryMb. 50Mb by default)
+      UB.Repository('ubq_messages')
+        .attrs('msgData')
+        .where('[ID]', '=', mailData.ID)
+        .select(msgDataStore)
+      mailData.msgData = msgDataStore.get(0)
+
       const cmd = JSON.parse(mailData.msgCmd)
       mailData.attaches = []
       if (cmd.attaches && cmd.attaches.length) {

@@ -680,11 +680,31 @@ ServerApp.httpCallObserve = appBinding.httpCallObserve
 
 /**
  * Remove all user sessions (logout user).
+ *
+ * If `exceptCurrent` is `true` - do not remove current session (logout all other sessions except my).
+ *
+ * @example
+
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+const App = UB.App
+Session.on('login', logoutAllMyOldSessions)
+
+// One user - one session mode
+function logoutAllMyOldSessions (req) {
+  if (App.removeUserSessions(Session.userID, true)) {
+    console.log(`All other sessions for user ${Session.userID} are removed`)
+  }
+}
+
  * @method
  * @param {number} userID
+ * @param {boolean} [exceptCurrent=false] If `true` - do not remove current session
  * @return {boolean} true if user had had any session
  */
-ServerApp.removeUserSessions = appBinding.removeUserSessions || function () {}
+ServerApp.removeUserSessions = function (userID, exceptCurrent = false) {
+  return appBinding.removeUserSessions(userID, exceptCurrent)
+}
 
 /**
  * Is event emitter enabled for App singleton. Default is `false`

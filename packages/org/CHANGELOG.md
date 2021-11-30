@@ -15,6 +15,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.32] - 2021-11-30
+## [5.20.31] - 2021-11-23
+## [5.20.30] - 2021-11-14
+## [5.20.29] - 2021-11-05
+### Added
+  - `org_employeeonstaff_all` shortcut - enable `__mip_recordhistory_all` misc and add a columns [mi_dateForm] and [mi_dateTo]
+
+### Changed
+ - English localization of the `ORG_UNITTYPE.EXECGROUP` enum item: `Execution Group` => `Executors Group`
+
+### Fixed
+ - `org_employeeonstaff` and `org_employeeonstaff_all` shortcuts - fixed error "Rendering slot is not defined
+   for columns [staffUnitID.caption] and [employeeID.fullFIO]
+
 ## [5.20.28] - 2021-10-27
 ### Fixed
  - `org_employee` shortcut - added columns to prevent lookup to uba_user on userID column

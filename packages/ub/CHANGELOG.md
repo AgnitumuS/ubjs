@@ -15,6 +15,46 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.21] - 2021-11-30
+### Added
+ - new method `Session.switchLangForContext` - switch current execution context language; (require server 5.20.11)
+   Can be used for example inside scheduler to create a report under admin but using target user language
+
+## [5.22.20] - 2021-11-23
+## [5.22.19] - 2021-11-14
+### Added
+ - `App.removeUserSessions` - second parameter `exceptCurrent: boolean` is added (*ignored for UB server < 5.20.10*).
+   If `exceptCurrent` is `true` - current user session is not removed (logout all other sessions except my).
+
+  Can be used inside Session.on('login') event handler to allow `single session for each user` mode:
+```javascript
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+const App = UB.App
+Session.on('login', logoutAllMyOldSessions)
+
+/**
+ * One user - one session mode
+ * @param {THTTPRequest} req
+ */
+function logoutAllMyOldSessions (req) {
+  if (App.removeUserSessions(Session.userID, true)) {
+    console.log(`All other sessions for user ${Session.userID} are removed`)
+  }
+}
+```
+
+## [5.22.18] - 2021-11-05
+### Added
+ - `Session.hasRole(roleName)` method added - a fast O(1) checks if the current user is a member of the specified role
+ ```
+ const UB = require('@unitybae/ub')
+ const Session = UB.Session
+ if (Session.hasRole('accountAdmin')) {
+   console.debug('current user has \'accountAdmin\' role')
+ }
+ ```
+
 ## [5.22.17] - 2021-10-27
 ## [5.22.16] - 2021-10-18
 ### Added

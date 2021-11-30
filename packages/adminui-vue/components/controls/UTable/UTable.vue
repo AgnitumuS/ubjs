@@ -1,10 +1,49 @@
 <template>
   <div
     class="u-table"
+    :class="{
+      'u-table__multiple': showMultiSelectionColumn,
+      'u-table--sort': sorting
+    }"
     :style="tableStyle"
   >
+    <u-dropdown
+      v-show="sorting && targetColumn"
+      ref="dropdown"
+      :ref-element="targetColumn"
+    >
+      <div slot="dropdown">
+        <sort-popup
+          :sort-order="sortOrderInPopup"
+          direction="vertical"
+          @select-sort="handlerSelectSort"
+        />
+      </div>
+    </u-dropdown>
     <table>
       <tr>
+        <th
+          v-if="showMultiSelectionColumn"
+          class="u-table__multiple__cell"
+          tabindex="1"
+          @click="handlerCheckedAll"
+          @keydown.space="handlerCheckedAll"
+        >
+          <span
+            class="el-checkbox__input"
+            :class="{
+              'is-checked': allSelected,
+              'is-indeterminate': !allSelected && curSelection.length > 0
+            }"
+          >
+            <span class="el-checkbox__inner" />
+            <input
+              type="checkbox"
+              aria-hidden="false"
+              class="el-checkbox__original"
+            >
+          </span>
+        </th>
         <th
           v-for="col in columns"
           :key="col.id"
@@ -19,7 +58,7 @@
             width: col.width && col.width + 'px',
             padding: col.padding && col.padding + 'px'
           }"
-          @click="$emit('click-head-cell', col, $event.target)"
+          @click="handlerClickOnHeadCell($event, col)"
         >
           <slot
             :name="`head_${col.id}`"
@@ -27,21 +66,54 @@
           >
             {{ formatHead({ column: col }) }}
           </slot>
+          <i
+            v-if="sorting && columnCasheId === col.id"
+            :key="col.id"
+            :class="{
+              'u-icon-sort-asc': sortOrder === 'asc',
+              'u-icon-sort-desc': sortOrder === 'desc'
+            }"
+          />
         </th>
       </tr>
       <tr
         v-for="row in items"
-        :key="row.ID"
-        :class="getRowClass(row)"
-        @dblclick="$emit('dblclick-row', {row})"
-        @click="$emit('click-row', {row})"
+        :key="row[multiSelectKeyAttr]"
+        :class="[
+          getRowClass(row),
+          { 'selected-row': curSelection.includes(row[multiSelectKeyAttr]) }
+        ]"
+        @dblclick="$emit('dblclick-row', { row })"
+        @click="$emit('click', { row })"
       >
+        <td
+          v-if="showMultiSelectionColumn"
+          class="u-table__multiple__cell"
+          tabindex="1"
+          @click="handlerSelection(row)"
+          @keydown.space="handlerSelection(row)"
+        >
+          <!-- repeat html-structure for el-checkbox ElementUI -->
+          <span
+            class="el-checkbox__input"
+            :class="{
+              'is-checked': curSelection.includes(row[multiSelectKeyAttr])
+            }"
+          >
+            <span class="el-checkbox__inner" />
+            <input
+              type="checkbox"
+              aria-hidden="false"
+              class="el-checkbox__original"
+            >
+          </span>
+        </td>
         <td
           v-for="col in columns"
           :key="col.id"
           :class="[
             {
-              'u-table__fixed-column': col.id === fixedColumnId,
+              'u-table__fixed-column': col.id === fixedColumnId
             },
             getAlignClass(col.align),
             columnsClasses[col.id],
@@ -50,8 +122,8 @@
           :style="{
             padding: col.padding && col.padding + 'px'
           }"
-          @click="$emit('click-cell', {row, column: col})"
-          @contextmenu="$emit('contextmenu-cell', {event: $event, row, column: col})"
+          @click="$emit('click-cell', { row, column: col })"
+          @contextmenu="handlerContextMenuEvent($event,row,col)"
         >
           <div class="u-table__cell-container">
             <slot
@@ -68,6 +140,7 @@
       <!-- @slot Last row in table -->
       <slot name="lastTableRow" />
     </table>
+
     <div
       v-if="items.length === 0"
       class="u-table-no-data"
@@ -82,13 +155,18 @@
 <script>
 /**
  * Component that allows to display data in a tabular manner
+ *
  */
+const SortPopup = require('./SortPopup.vue').default
+const sortingMixin = require('./sortingMixin')
+const selectionLogic = require('../mixins/selection/logic')
+
 export default {
   name: 'UTable',
 
-  mixins: [
-    require('./formatValueMixin')
-  ],
+  mixins: [require('./formatValueMixin'), selectionLogic, sortingMixin],
+
+  components: { SortPopup },
 
   props: {
     /**
@@ -162,7 +240,6 @@ export default {
      */
     maxHeight: [Number, String]
   },
-
   computed: {
     tableStyle () {
       return ['height', 'maxHeight'].reduce((style, prop) => {
@@ -189,20 +266,29 @@ export default {
   },
   watch: {
     items: async function () {
+      const { sortingProcess, sorting, columnCasheId, sortOrder } = this
+      if (sorting && !sortingProcess && columnCasheId && columnCasheId !== 0) {
+        this.createPrivateSortOrder()
+        this.changeSorting(columnCasheId, sortOrder)
+      }
       await this.$nextTick()
       this.setTitle()
     }
   },
-
   methods: {
     getAlignClass (align = 'left') {
       return `u-table__cell__align-${align}`
     },
     setTitle () {
-      const cells = this.$el.querySelectorAll('.u-table__cell-container:not(title)')
+      const cells = this.$el.querySelectorAll(
+        '.u-table__cell-container:not(title)'
+      )
       if (!cells) return
       cells.forEach(cell => {
-        if (cell.offsetHeight < cell.scrollHeight || cell.offsetWidth < cell.scrollWidth) {
+        if (
+          cell.offsetHeight < cell.scrollHeight ||
+          cell.offsetWidth < cell.scrollWidth
+        ) {
           cell.setAttribute('title', cell.innerText)
         }
       })
@@ -214,7 +300,7 @@ export default {
 <style>
 .u-table {
   --border: hsl(var(--hs-border), var(--l-layout-border-default));
-  --text:  hsl(var(--hs-text), var(--l-text-default));
+  --text: hsl(var(--hs-text), var(--l-text-default));
   --header-text: hsl(var(--hs-text), var(--l-text-label));
   --border-hover: hsl(var(--hs-border), var(--l-layout-border-light));
   --row-hover: hsl(var(--hs-background), var(--l-background-default));
@@ -227,18 +313,18 @@ export default {
   border-spacing: 0;
 }
 
-.u-table__cell__align-left{
+.u-table__cell__align-left {
   text-align: left;
 }
-.u-table__cell__align-center{
+.u-table__cell__align-center {
   text-align: center;
 }
-.u-table__cell__align-right{
+.u-table__cell__align-right {
   text-align: right;
 }
 
 .u-table td,
-.u-table th{
+.u-table th {
   border-bottom: 1px solid var(--border);
   color: var(--text);
   padding: 10px 8px;
@@ -253,7 +339,7 @@ export default {
   padding-left: 10px;
 }
 
-.u-table__cell-container{
+.u-table__cell-container {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -270,7 +356,7 @@ export default {
   text-overflow: ellipsis;
 }
 
-.u-table th:after{
+.u-table th:after {
   content: '';
   width: 1px;
   height: 28px;
@@ -280,27 +366,27 @@ export default {
   background: var(--border);
 }
 
-.u-table th:last-child:after{
+.u-table th:last-child:after {
   content: none;
 }
 
 .u-table th.u-table__fixed-column,
-.u-table td.u-table__fixed-column{
+.u-table td.u-table__fixed-column {
   left: 0;
   position: sticky;
   z-index: 2;
 }
 
-.u-table th.u-table__fixed-column{
+.u-table th.u-table__fixed-column {
   z-index: 3;
 }
 
-.u-table tr:hover td{
+.u-table tr:hover td {
   background: var(--row-hover);
   border-bottom-color: var(--border-hover);
 }
 
-.u-table tr td:hover{
+.u-table tr td:hover {
   background: var(--cell-hover);
 }
 
@@ -315,5 +401,20 @@ export default {
   font-size: 16px;
   padding: 16px;
   width: 100%;
+}
+.u-table--sort.u-table th {
+  padding-right: 20px;
+}
+.u-table__sort {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+.u-table__sort i {
+  font-size: 12px;
 }
 </style>

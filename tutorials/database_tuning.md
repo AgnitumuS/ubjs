@@ -215,9 +215,131 @@ ubConfig section example:
 ```
 
 Verify connection
+ - first verify connection using `isql` command like tool:
+```shell
+ isql my_server root root
+ 
+ >select * from mysql.user;
+```
+
+ - second - using UB:
 ```shell
 ubcli execSql -c mysql -sql "select * from mysql.user" -withResult -outputRes
 ```
+
+### ODBC
+
+Almost any database (what have ODBC driver) can be accessed by UnityBase directly (without ORM) using ODBC driver.
+Under Linux:
+ - install ODBC driver for your database
+ - configure `/etc/odbcinst.ini`
+ - configure `.odbc.ini`
+
+in ubConfig use "driver": "ODBC" and entry from odbc.ini as `serverName` value.
+
+MS Access Database Example (using CData ODBC driver. `mdbtools` not work):
+
+*/etc/odbcinst.ini*
+```ini
+[CData ODBC Driver for Access]
+Description=CData ODBC Driver for Access 2021
+Driver=/opt/cdata/cdata-odbc-driver-for-access/lib/libaccessodbc.x64.so
+UsageCount=1
+Driver64=/opt/cdata/cdata-odbc-driver-for-access/lib/libaccessodbc.x64.so
+```
+
+*~/.odbc.ini*
+```ini
+[mdb_cdata_test]
+Description = MS Access test CData
+Driver      = CData ODBC Driver for Access
+DataSource  = ~/_DATA/PCResale.accdb
+```
+
+*ubConfig.json*
+
+```json
+{
+  "databases": [{
+    "name": "access",
+    "driver": "ODBC",
+    "serverName": "mdb_cdata_test",
+    "databaseName": "",
+    "userID": "",
+    "password": "",
+    "supportLang": [
+      "en"
+    ]
+  ]}
+}
+```
+
+## Transactions
+In most cases UB handle transactions automatically. Each HTTP call of endpoint (every HTTP request to server) will be wrapped in 
+database transaction (if it is required). If request is handled successfully (without unhandled exceptions), all started
+transactions will be committed, in case of any exception - all transactions will be rollback'ed. 
+
+Server __start database transaction__ for connection before execution of the first statement, what either
+not expect a result or expect result and contains one of 'INSERT ', 'UPDATE ' or 'DELETE ' world inside SQL query text.
+
+> Node a space after keywords, is INSERT UPDATE or DELETE is a last keyword in state,ent, transaction will not start
+
+For Oracle transaction also started in case 'BEGIN ', for SQL Server - 'EXEC ' or 'DATABASE ' keywords found inside SQL query text.
+
+This allows to execute batch what contains only `select` statements without explicitly transaction start, what speed up a lot.
+
+### `SELECT ... FOR UPDATE` and transactions
+`SELECT ... FOR UPDATE` statement always must be executed in transaction. For manual SQL serer do not recognize statement
+what ends with 'UPDATE' keyword as a subject of transaction stat, because it expects 'UPDATE ' (with a space after keyword).
+
+To force transaction, please, always use 'SELECT ... FOR UPDATE OF ...' instead. In any way it is more correct solution when 
+select for update without specifying a table to lock. 
+
+### Nested transactions and savepoint
+Nested transactions is not allowed. In case transaction is already started, `App.dbStartTransaction` will return false
+and do nothing.
+
+However, for Postgres, in case of any error on the DB level connection allows only rollback statement. Even if statement
+execution is wrapped in try...catch in the JS:
+
+```javascript
+function testUpdate(ID, code) {
+  let store = UB.DataStore(entityName)
+  store.run('update', {
+    execParams: { ID, code }
+  })
+}
+try {
+  testUpdate(firstID, '12345678') // this statement throw DB error because code2 is 3 character long
+} catch (err) {
+  console.warn(err.message) // TSQLDBPostgresLib PGERRCODE: 22001, ERROR:  value too long for type character varying(3)
+}
+// for postgres statement below fails with error
+// `PGERRCODE: 25P02, ERROR:  current transaction is aborted, commands ignored until end of transaction block`
+// for other RDBMS - it executed success
+testUpdate(firstID, '123')
+```
+
+To allow other statement to be executed after caught error, UB introduces a method `conn.savepointWrap` what wrap
+a function call into temporary savepoint for Postgers or call function as is for other RDBMS.
+So sample above can be rewritten as:
+```javascript
+let db = App.dbConnections[App.domainInfo.entities.ubm_enum.connectionName]
+try {
+  db.savepointWrap(testUpdate.bind(this, ID, code))
+} catch (e) {
+  console.warn(err.message) // TSQLDBPostgresLib PGERRCODE: 22001, ERROR:  value too long for type character varying(3)
+}
+testUpdate(firstID, '123') // update success
+```
+
+### Manual transaction handling
+
+> Please, try to avoid a manual transaction as much as possible. Always remember, what server may use connections to several DB backends  
+
+Database transaction can be managed manually using `App.dbStartTransaction`, `App.dbCommit`, `App.dbRollback`, `App.dbInTransaction` methods.
+
+If transaction started manually and not committed / rolled backs, then server commit/roll back it after endpoint is executed. 
 
 ## Indexes
 By default, UnityBase DDL generator create indexes for all attributes of type `Entity`

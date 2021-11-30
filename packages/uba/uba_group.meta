@@ -2,7 +2,7 @@
   "connectionName": "",
   "sqlAlias": "gr",
   "cacheType": "None",
-  "caption": "Groups",
+  "caption": "User Groups",
   "description": "User groups",
   "descriptionAttribute": "name",
   "mixins": {

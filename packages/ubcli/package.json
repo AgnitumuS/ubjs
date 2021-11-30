@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubcli",
-  "version": "5.21.23",
+  "version": "5.21.27",
   "description": "A simple CLI for scaffolding UnityBase projects",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubcli",
   "config": {
@@ -21,15 +21,15 @@
     "version": "update-changelog && git add CHANGELOG.md"
   },
   "dependencies": {
-    "@unitybase/base": "^5.20.13",
-    "@unitybase/cs-shared": "^5.20.5",
-    "@unitybase/ub": "^5.22.17",
+    "@unitybase/base": "^5.20.17",
+    "@unitybase/cs-shared": "^5.20.8",
+    "@unitybase/ub": "^5.22.21",
     "lodash": "^4",
     "mustache": "^3.0.1",
     "ub-jsdoc": "^2.2.0"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.1.14",
+    "@unitybase/stubs": "^5.1.15",
     "@unitybase/update-changelog": "^1.0.4"
   },
   "keywords": [

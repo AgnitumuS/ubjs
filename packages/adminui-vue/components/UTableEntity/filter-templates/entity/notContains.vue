@@ -7,9 +7,10 @@
     })"
   >
     <u-select-multiple
-        ref="selectMany"
-        v-model="value"
-        :entity-name="column.attribute.associatedEntity"
+      ref="selectMany"
+      v-model="value"
+      :repository="column.repository"
+      :entity-name="column.attribute.associatedEntity"
     />
   </filter-template>
 </template>

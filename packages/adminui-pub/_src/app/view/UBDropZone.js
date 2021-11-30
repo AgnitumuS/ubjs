@@ -156,6 +156,23 @@ Ext.define('UB.view.UBDropZone', {
    * @method init
    */
   init: function () {
+    /**
+     * Checks for allow drag-and-drop operation
+     * In case all items is { kind: 'file', type: 'not empty string' } - true.
+     * @param {DataTransferItemList}
+     * @return {Boolean}
+     */
+    function dragItemsIsValid (dragItems) {
+      if (!dragItems.length) return false
+      let result = true // some items exists
+      for (const dragItem of dragItems) {
+        if (dragItem.kind !== 'file' || !dragItem.type) {
+          result = false
+          break
+        }
+      }
+      return result
+    }
     let body = document.body
     let me = this
     let mask, content
@@ -196,7 +213,7 @@ Ext.define('UB.view.UBDropZone', {
       }
       let dt = event.dataTransfer
       event.preventDefault()
-      if (!me.isVisible() && (dt.types.length > 0) && (dt.types.indexOf('Files') !== -1)) { // in firefox we got several items in types
+      if (!me.isVisible() && dragItemsIsValid(dt.items)) {
         /**
          * @event configureDropZone
          * @param {Array} dropTargetConfig

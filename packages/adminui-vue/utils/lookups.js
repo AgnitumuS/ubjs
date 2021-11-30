@@ -28,9 +28,11 @@
  * @property {object} mapById
  * @property {string} descriptionAttrName
  */
+
 const Vue = require('vue')
 const UB = require('@unitybase/ub-pub')
 const ENUM_ENTITY = 'ubm_enum'
+let LOOKUP_CACHE_INTERVAL_MS = 0 // never refresh lookups
 
 const instance = new Vue({
   data () {
@@ -41,10 +43,20 @@ const instance = new Vue({
 
   methods: {
     async init () {
+      const lookupCacheIntervalSecFromCfg = UB.connection.appConfig.uiSettings?.adminUI.lookupCacheRefreshIntervalSec
+      if (lookupCacheIntervalSecFromCfg !== undefined) {
+        if (typeof lookupCacheIntervalSecFromCfg !== 'number') {
+          UB.logError('config.uiSettings.adminUI.lookupCacheRefreshIntervalSec should be an Integer. Refresh of lookups is disabled')
+        } else {
+          LOOKUP_CACHE_INTERVAL_MS = lookupCacheIntervalSecFromCfg * 1000
+        }
+      }
+
       const availableEntities = Object.keys(UB.connection.domain.entities)
       for (const entity of availableEntities) {
         this.$set(this.entities, entity, {
           subscribes: 0,
+          refreshedAt: undefined,
           onEntityChanged: async response => {
             if (response === undefined) {
               return
@@ -112,9 +124,8 @@ const instance = new Vue({
 
       if (isFirstSubscription) {
         UB.connection.on(`${entity}:changed`, subscription.onEntityChanged)
-        subscription.descriptionAttrName = UB.connection.domain.get(entity).getDescriptionAttribute()
-        subscription.attrs.add(subscription.descriptionAttrName)
       }
+
       if (hasAdditionalAttrs) {
         for (const attr of attrs) {
           subscription.attrs.add(attr)
@@ -129,6 +140,9 @@ const instance = new Vue({
       }
 
       if (isFirstSubscription || hasAdditionalAttrs) {
+        subscription.descriptionAttrName = UB.connection.domain.get(entity).getDescriptionAttribute()
+        subscription.attrs.add(subscription.descriptionAttrName)
+
         const loadEntries = async () => {
           const resultData = await UB.Repository(entity)
             .attrs([...subscription.attrs])
@@ -141,7 +155,11 @@ const instance = new Vue({
             UB.logWarn(`Lookups: Too many rows (${resultData.length}) returned for "${entity}" lookup. Consider to avoid lookups for huge entities to prevents performance degradation`)
           }
           subscription.data.splice(0, subscription.data.length, ...resultData)
-          resultData.forEach(r => { subscription.mapById[r.ID] = r })
+          // create hash by ID for O(1) lookup
+          const mapById = {}
+          resultData.forEach(r => { mapById[r.ID] = r })
+          this.$set(subscription, 'mapById', mapById)
+          subscription.refreshedAt = Date.now()
         }
 
         subscription.pendingPromise = loadEntries()
@@ -162,6 +180,18 @@ const instance = new Vue({
         // remove additional attrs
         subscription.attrs.clear()
         subscription.mapById = {}
+        subscription.refreshedAt = undefined
+      }
+    },
+
+    async refresh (entity, attrs = []) {
+      if (!LOOKUP_CACHE_INTERVAL_MS) return
+
+      const subscription = this.entities[entity]
+      if (subscription.refreshedAt + LOOKUP_CACHE_INTERVAL_MS <= Date.now()) {
+        const subscription = this.entities[entity]
+        subscription.attrs.clear()
+        await this.subscribe(entity, attrs)
       }
     },
 
@@ -234,6 +264,16 @@ module.exports = {
   unsubscribe (entity) {
     instance.unsubscribe(entity)
   },
+
+  /**
+   * Refresh lookups associated with specified entity
+   * @param {string} entity
+   * @param {array<string>} [attrs] lookup attributes (in addition to ID and description attribute)
+   * @returns {Promise<void>}
+   */
+  refresh (entity, attrs = []) {
+    return instance.refresh(entity, attrs)
+  },
   /**
    * Initialize lookups reactivity by create stubs for all available domain entities.
    * Subscribes to enum entity.
@@ -298,7 +338,7 @@ module.exports = {
    */
   getEnumItems (eGroup) {
     const items = instance.getMany(ENUM_ENTITY, { eGroup })
-    return _.orderBy(items, 'sortOrder').map(item => ({ code: item.code, name: item.name }))
+    return items.sort((a, b) => a.sortOrder - b.sortOrder).map(item => ({ code: item.code, name: item.name }))
   }
 }
 

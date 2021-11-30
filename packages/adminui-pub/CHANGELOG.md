@@ -15,6 +15,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.32] - 2021-11-30
+### Changed
+ - `UBExtension` (native messages host extension used for Scanner integration) setup instruction for Google Chrome now
+   points to [page on unitybase.info](https://unitybase.info/news/setup-ubextension-without-using-the-google-store.html).
+   Page automatically translated depends on user language using Google Translate.
+
+## [5.20.31] - 2021-11-23
+### Changed
+ - `UB.view.UB DropZone`: changed permissions for operation **drag-and-drop**, to prevent drop links into document attributes. 
+
+## [5.20.30] - 2021-11-14
+## [5.20.29] - 2021-11-05
+### Added
+ - `Stored Data` -> `Reset GUI settings` user menu will clear stored filters and sort orders for Vue UTableEntity (in addition to Ext Tables)
+  
+### Fixed
+ - ExtJS based form (BasePanel) will emit `newversion`, `update` and `insert` events for `UB.connection` with payload,
+   contains all form attributes (as Vue based forms does), instead of payload what contains only ID. This fix [UBDF-14305]
+ - Audit Trail UI Table -> Audit action now hidden [UBDF-11338] 
+
 ## [5.20.28] - 2021-10-27
 ## [5.20.27] - 2021-10-18
 ### Added
@@ -515,7 +535,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
      Native `finally` should be used instead
    - `Promise.prototype.done` (used previously in Q promises) polyfill is removed.
      Native `then` or `catch` should be used instead
-   Boundle size reduced by 100Kb  
+   Bundle size reduced by 100Kb  
  - Q promises usage is removed from UBOrgChart
  
 ## [5.11.1] - 2019-09-30
@@ -616,11 +636,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - rename `pokazatPrevu` -> `showPreview`, `neNaidenShablon` -> `nodeTemplateNotFound` in i18n
  
 ### Fixed
- - return back `UB.core.UBUtilTree` (used in udisk)  
+ - returned `UB.core.UBUtilTree` (used in udisk)  
 
 ## [5.10.1] - 2019-07-08
 ### Fixed
- - sidebar width should be max 240px and should not depend on shortcut text length
+ - sidebar width should be maximum 240px and should not depend on shortcut text length
 
 ## [5.10.0] - 2019-07-08
 ### Changed
@@ -668,7 +688,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.8.23] - 2019-06-18
 ### Changed
- - huge cleanup of i18n keys: most translit keys are removed; unused keys are removed 
+ - huge cleanup of i18n keys: most transliteration keys are removed; unused keys are removed 
 
 ## [5.8.21] - 2019-06-12
 ### Added
@@ -685,11 +705,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.8.16] - 2019-06-02
 ### Changed
- - EntityGrinPanel will skip columns auto fit in case column width (or flex) is already defined 
+ - EntityGrinPanel will skip columns auto-fit in case column width (or flex) is already defined 
 
 ## [5.8.15] - 2019-05-29
 ### Fixed
- - update `UBExtension.crx` to allow install Chrome extension for Chrome >= 74 in offline mode
+ - update `UBExtension.crx` to allow installing Chrome extension for Chrome >= 74 in offline mode
 
 ## [5.8.14] - 2019-05-24
 ### Fixed
@@ -704,7 +724,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - enum combobox will use UBQLv2 if accessible
  - UBProxy will skip disabled store filters while building UBQL from filter list.
  Previous implementation adds wrong empty filter in this case
- - in `UBDetailTree.onDeleteItem` confirm dialog **Ext.Msg.confirm(...)** is replased to **$App.dialogYesNo(...)**
+ - in `UBDetailTree.onDeleteItem` confirm dialog **Ext.Msg.confirm(...)** is replaced with **$App.dialogYesNo(...)**
    for compatibility with `@unitybase/adminui-vue` 
 
 ### Changed
@@ -855,7 +875,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
   - prevent entering a string with all whitespaces for **required** text fields by 
    setting `allowOnlyWhitespace` to false for `Ext.form.field.Text` descendants 
-   inside `Ext.form.field.Text.setAllowBlank` overrided handler
+   inside `Ext.form.field.Text.setAllowBlank` overridden handler
   - default precision for **Float** attribute set to 6 (instead of 4)
   - default UI control for **Float** attribute now validate input
   - vue loader registration is moved form `adminui-vue` to `adminui-pub` 
@@ -884,7 +904,7 @@ $App.doCommand({
 ## [5.6.8] - 2018-11-16
 ### Changed
  - in case default form for entity is not defined and exists several forms
- `UB.core.UBFormLoader.getFormByEntity` will return form with smallest code (in alphabetic order)
+ `UB.core.UBFormLoader.getFormByEntity` will return form with the smallest code (in alphabetic order)
 
 ### Added
  - add UbExtension.crx to the adminui-pub/ub-extension folder.

@@ -15,6 +15,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.21] - 2021-11-30
+## [5.20.20] - 2021-11-23
+### Added
+- `internalWriteDocumentToResp` now has optional additional parameter `skipRls`.  Must be used with care!  Caller of
+  the method is responsible for security checks.
+
+## [5.20.19] - 2021-11-14
+## [5.20.18] - 2021-11-05
+### Added
+ - when multitenancy enabled stored paths will now contain the tenant code
+
 ## [5.20.17] - 2021-10-27
 ## [5.20.16] - 2021-09-24
 ## [5.20.15] - 2021-09-08

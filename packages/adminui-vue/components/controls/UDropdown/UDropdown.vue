@@ -169,7 +169,7 @@ export default {
       if (this.position === 'fixed') {
         document.body.appendChild(this.$refs.dropdown)
       }
-      const popperInstance = createPopper(
+      this.popperInstance = createPopper(
         this.referenceEl,
         this.$refs.dropdown,
         {
@@ -187,29 +187,39 @@ export default {
           ]
         }
       )
-      requestAnimationFrame(() => {
-        this.checkAndUpdatePopupPosition(popperInstance)
-      })
+      this.checkAndUpdatePopupPosition(this.popperInstance)
+      // set watcher for observe changes width and height popup when user change content in him
+      const callback = () => this.checkAndUpdatePopupPosition()
+      this.observer = new MutationObserver(callback)
+      setTimeout(() => {
+        this.observer.observe(this.$refs.dropdown, {
+          childList: true,
+          subtree: true
+        })
+      }, 0)
     },
 
-    async checkAndUpdatePopupPosition (popperInstance) {
-      const popEl = popperInstance.state.elements.popper
-      if (!popEl) return
-      const popStyle = popEl.getBoundingClientRect()
-      if (checkOverflow(popStyle)) {
-        popperInstance.setOptions({ placement: 'auto' })
-      }
+    async checkAndUpdatePopupPosition (popperInstance = this.popperInstance) {
+      requestAnimationFrame(() => {
+        const popEl = popperInstance.state.elements.popper
+        if (!popEl) return
+        if (checkOverflow(popEl)) {
+          popperInstance.setOptions({ placement: 'auto' })
+        }
 
-      function checkOverflow (popStyle) {
-        const viewportStyle = document.documentElement.getBoundingClientRect()
-        if (popStyle.right > viewportStyle.width) return true
-        if (popStyle.bottom > viewportStyle.height) return true
-      }
+        function checkOverflow (popEl) {
+          const popStyle = popEl.getBoundingClientRect()
+          const { clientWidth, clientHeight } = document.documentElement
+          if (popStyle.right > clientWidth) return true
+          if (popStyle.bottom > clientHeight) return true
+        }
+      })
     },
 
     close () {
       this.visible = false
       this.$emit('close')
+      if (this.observer) this.observer.disconnect()
     },
 
     closeByEscape (event) {

@@ -33,7 +33,8 @@
  * @typedef {object} UTableColumnSettings
  *
  * @property {boolean} [sortable] Allow ordering records by values of the column.
- * @property {boolean} [filterable] If set false, the column cannot be filtered. Otherwise, default and optional custom filters will be applied
+ * @property {boolean} [filterable]
+ *   If set false, the column cannot be filtered. Otherwise, default and optional custom filters will be applied
  * @property {boolean} [isLookup=false] If is set true will check attribute associatedEntity
  *   and loads description attribute for displayed value
  * @property {'SUM'|'MIN'|'MAX'|'AVG'|null} [summaryAggregationOperator]
@@ -46,9 +47,16 @@
  * @property {number} [minWidth] Minimum width
  * @property {number} [width] Width
  * @property {boolean} [isHtml=false] If set true will render content as v-html directive
- * @property {UTableColumnFormat} [format] Function what returns a formatted cell value to be inserted as cell innerHTML. Ignored in case slot is defined for column.
- * @property {UTableColumnFormat} [exportFormat] Function what returns a formatted cell value to be used during exports. If omitted - value will be used as is.
- * @property {UTableColumnFormatXls} [exportFormatXlsColumn] Function that returns excel format depends on the column configuration
+ * @property {UTableColumnFormat} [format]
+ *   Function what returns a formatted cell value to be inserted as cell innerHTML. Ignored in case slot is defined for column.
+ * @property {UTableColumnFormat} [exportFormat]
+ *   Function what returns a formatted cell value to be used during exports. If omitted - value will be used as is.
+ * @property {UTableColumnFormatXls} [exportFormatXlsColumn]
+ *   Function that returns excel format depends on the column configuration
+ * @property {string} [exportExpression]
+ *   Entity attribute expression to load for export. It may be useful when one attribute stores a value used for
+ *   displaying in column cells (`column.id`) and another attribute stores the original value needed
+ *   for exporting (`column.exportExpression`)
  * @property {number} [padding=16] column cells padding.
  * @property {object<string, UTableColumnFilter>} [filters={}] Filters templates
  */
@@ -60,7 +68,11 @@
  * @property {string} label Column label which shows in header cells
  * @property {UBEntityAttribute} attribute Meta attribute info from UB entity schema
  * @property {string} [valueAttribute] Whether isLookup and has current attribute value in fieldList.
- * @property {boolean} [toValidate] To check this column in the `validateFieldList` method
+ * @property {boolean} [toValidate]
+ *   To check this column in the `validateFieldList` method. Need to mark columns that
+ *   do not have their own scoped slots and are not available in the fieldList. Displaying
+ *   of cell value may be done with the `column.format` function or with a template for this
+ *   cell that is registered globally with the `columnTemplates.registerTemplate` method
  */
 
 /**

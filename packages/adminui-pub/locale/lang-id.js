@@ -5,13 +5,9 @@ UB.i18nExtend({
     "<p> At the add-on window click button <b>+Add to Firefox</b></p>" +
     "<p>Confirm adding a new extension.</p>" +
     "<p>After installing the extension <b>restart your browser!</b></p>",
-  "NMInstallExtensionChrome": "<p>To use this application Chrome extension <b>\"UBExtension\"</b> must be installed.</p> " +
-    "<p>Follow <a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\">ADD EXTENSION</a> " +
-    " to go to the Google store</p>" +
-    "<p> At the store windows click button <img src=\"models/adminui-pub/ub-extension/ChromePlusFreeEn.png\"/> (may be <b>+FREE</b>)</p>" +
-    "<p>When window with confirmation for extension installation - click \"Add\".</p>" +
-    "<p>Extension will be installed and button <b>+FREE</b> changes his color to green: <img src=\"models/adminui-pub/ub-extension/ChromeAddedEn.png\"/> " +
-    "<p>After installing the extension <b>restart your browser!</b></p>",
+  "NMInstallExtensionChrome": "<p>Chrome extension <b>\"UBExtension\"</b> must be installed.</p> " +
+    "<p>Follow <a href=\"https://unitybase-info.translate.goog/news/setup-ubextension-without-using-the-google-store.html?_x_tr_sl=uk&_x_tr_tl=en&_x_tr_hl=uk&_x_tr_pto=nui\" target=\"_blank\">setup instruction</a>.</p>" +
+    "<p><b>Restart the browser after installation!</b></p>",
   "NMInstallExtensionOpera": "<p>To use this application Opera extension <b>\"UBExtension\"</b> must be installed.</p> " +
     "<p>Follow <a href=\"models/adminui-pub/ub-extension/UBExtension.crx\" target=\"_blank\">DOWNLOAD EXTENSION</a> link.</p>" +
     "<p>After extension is downloaded you can see \"unknown source\" warning in the upper part of your Opera browser. " +

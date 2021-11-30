@@ -62,11 +62,10 @@ class ClientRepository extends CustomRepository {
    * @private
    */
   addAttrsForCachedEntity () {
-    if (!this.connection || !this.connection.domain) return
+    if (!this.connection || !this.connection.domain || this.__misc.__mip_disablecache === true) return
     /** @type {UBEntity} */
     const e = this.connection.domain.get(this.entityName, false)
     if (!e || !e.cacheType || (e.cacheType === 'None')) return
-    if (this.__misc.__mip_disablecache === true) return // do not add attributes in case LocalDadaStorage not used
     const addAttrIfNotAdded = (expr) => {
       if (!expr) return
       let attr

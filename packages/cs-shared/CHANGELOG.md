@@ -15,6 +15,37 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.8] - 2021-11-30
+### Changed
+ - *BREAKING* `Repository.where` _always positive_ and _always negative_ condition replacement changed: 
+   - `.where('attr', 'in', null|undefined|[])` -> `.where('0=1', 'custom')` instead of  `.where('1', '=', 1)`
+   - `.where('attr', 'notIn', null|undefined|[])` -> `.where('1=1', 'custom')` instead of  `.where('1', '=', 1)`
+   
+   For client-side UBQL this requires server at last 5.20.11, otherwise `non-simple expression` exception is raised 
+ 
+## [5.20.7] - 2021-11-23
+### Added
+ - Functions `formatByPattern.registerDatePattern` and `formatByPattern.registerNumberPattern` that
+   register custom named date and number patterns for use in `formatByPattern.formatDate` and `formatByPattern.formatNumber`
+```javascript
+ // format Date for New_York time zone
+ $UB.formatter.registerDatePattern('dateTimeInNewYork', {
+    month: '2-digit', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit',
+    timeZone: 'America/New_York'
+ })
+ $UB.formatter.formatDate('dateTimeInNewYork', new Date()) // now in New York
+```
+
+ - Functions `formatByPattern.getDatePattern` and `formatByPattern.getNumberPattern` that return registered date and number pattern by name
+
+### Changed
+ - `LocalDataStorage.doFiltration` - 3'nd argument semantic changed from `skipSubQueries` to `skipSubQueriesAndCustom`.
+  This allows to estimate record match most of where conditions in client-side.
+
+## [5.20.6] - 2021-11-05
+### Fixed
+ - fixed refresh of UTableEntity what based on Repository with `subquery` (by correctly skip handling of `subquery` on the client side)
+
 ## [5.20.5] - 2021-09-24
 ### Changed
  - small speed-up of `CustomRepository.ubql()` by using `Object.assign` instead of `_.defaults`

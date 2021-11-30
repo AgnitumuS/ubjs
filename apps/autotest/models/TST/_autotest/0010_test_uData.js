@@ -61,12 +61,21 @@ module.exports = function runUDataTest (options) {
       'In case runAsUser fails inside login session should be restored, should be ' + UBA.USERS.ADMIN.ID + ' but got ' + resp.runAsUserData.userAfterFailedLogin)
   }
 
+  function testSessionSwitchLangForContext () {
+    const ukResp = conn.get('/switchContextLangTest', { lang: 'uk' })
+    assert.strictEqual(ukResp.errNotExsistsOKPO, '<<<Не вказаний код ЄДРПОУ >>>')
+    const enResp = conn.get('/switchContextLangTest', { lang: 'en' })
+    assert.strictEqual(enResp.errNotExsistsOKPO, '<<<Not exists OKPO code>>>')
+  }
+
   console.debug('test_uData')
   testUData(conn)
   console.debug('test_uData persistance')
   testUDataPersistence()
   console.debug('Test Session.runAsUser restore session in case login method fails')
   testRunAsUserRestoreSessionOnFailInsideLogin()
+  console.debug('Test Session.runAsUser restore session in case login method fails')
+  testSessionSwitchLangForContext()
   // console.debug('test data store')
   // testDataStore(conn)
 }

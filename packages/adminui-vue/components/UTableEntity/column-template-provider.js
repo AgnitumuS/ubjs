@@ -3,47 +3,50 @@ const defaultType = require('./type-definitions/default')
 const defaultCellTemplate = require('./cell-templates/default.vue').default
 
 /**
- * Module provides column settings, cell and filter templates by UB data types.
- * Different types can have same templates or settings.
+ * @typedef {object} ColumnDefinition
  *
- * Entity attributes with dataType `Text`, `BLOB`, `TimeLog` did not have default render component,
- * If you need to render this dataTypeProvider render it by named column slots.
- * You need to decide to display this column type with great caution because this column can creates large server requests.
+ * @property {object} settings
+ * @property {Vue.Component} template
+ * @property {object<string, UTableColumnFilter>} filters
  */
-const TypeProvider = {
-  _types: {},
 
+/** @type {object<string, ColumnDefinition>} */
+const _cellTemplates = {}
+
+const ColumnTemplateProvider = {
   /**
-   * Register new type
+   * Register new cell template
    *
-   * @param {string} type Type from UBDomain.ubDataTypeProvider
+   * @param {string} type Type from UBDomain.ubDataTypes ot
    * @param {UTableColumnSettings} settings Column settings
    * @param {Vue.Component} [cellTemplate] Cell template
    * @param {object<string, UTableColumnFilter>} [filters={}] Filters templates
    */
-  registerType ({ type, settings, cellTemplate: template = defaultCellTemplate, filters = {} }) {
-    this._types[type] = {
-      definition: { ...settings },
-      template,
+  registerTemplate ({ type, settings, cellTemplate = defaultCellTemplate, filters = {} }) {
+    _cellTemplates[type] = {
+      settings: { ...settings },
+      template: cellTemplate,
       filters
     }
   },
 
   /**
-   * Get column definition
-   *
-   * @param {UBDomain.ubDataTypes} type Type from UBDomain.ubDataTypeProvider
+   * Get column definition by an attribute definition
+   * @param {object} [attribute]
+   * @returns {ColumnDefinition}
    */
-  get (type) {
-    if (this._types[type]) {
-      return this._types[type]
-    } else {
-      return Object.assign({}, defaultType)
+  getByColumnAttribute (attribute) {
+    const columnTemplate = attribute?.customSettings?.columnTemplate
+    const byAttrSettings = _cellTemplates[columnTemplate]
+    if (byAttrSettings) {
+      return byAttrSettings
     }
+    const dataType = attribute?.dataType
+    return _cellTemplates[dataType] ?? { ...defaultType }
   }
 }
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'String',
   settings: require('./type-definitions/string'),
   filters: {
@@ -66,12 +69,12 @@ TypeProvider.registerType({
   }
 })
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'Json',
   settings: require('./type-definitions/string')
 })
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'Boolean',
   settings: require('./type-definitions/boolean'),
   filters: {
@@ -90,7 +93,7 @@ TypeProvider.registerType({
   }
 })
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'Entity',
   settings: require('./type-definitions/entity'),
   filters: {
@@ -98,9 +101,9 @@ TypeProvider.registerType({
       label: 'equal',
       template: require('./filter-templates/entity/equal.vue').default
     },
-    contains: {
-      label: 'contains',
-      template: require('./filter-templates/entity/contains.vue').default
+    oneOf: {
+      label: 'by_several_value',
+      template: require('./filter-templates/entity/oneOf.vue').default
     },
     isNull: {
       label: 'isNull',
@@ -117,13 +120,13 @@ TypeProvider.registerType({
   }
 })
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'Many',
   settings: require('./type-definitions/many'),
   filters: {
-    contains: {
-      label: 'contains',
-      template: require('./filter-templates/many/contains.vue').default
+    oneOf: {
+      label: 'by_several_value',
+      template: require('./filter-templates/many/oneOf.vue').default
     },
     isNull: {
       label: 'isNull',
@@ -132,7 +135,7 @@ TypeProvider.registerType({
   }
 })
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'Enum',
   settings: require('./type-definitions/enum'),
   filters: {
@@ -140,9 +143,9 @@ TypeProvider.registerType({
       label: 'equal',
       template: require('./filter-templates/enum/equal.vue').default
     },
-    contains: {
-      label: 'contains',
-      template: require('./filter-templates/enum/contains.vue').default
+    oneOf: {
+      label: 'by_several_value',
+      template: require('./filter-templates/enum/oneOf.vue').default
     },
     isNull: {
       label: 'isNull',
@@ -182,7 +185,7 @@ const dateFilters = {
   }
 }
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'Date',
   settings: {
     minWidth: 120,
@@ -194,7 +197,7 @@ TypeProvider.registerType({
   filters: dateFilters
 })
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'DateTime',
   settings: {
     minWidth: 190, // en: 05/23/2020, 1:14 PM
@@ -229,20 +232,20 @@ const numberFilter = {
   }
 }
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'ID',
   settings: require('./type-definitions/id'),
   filters: numberFilter
 })
 
 const NUMBER_SETTINGS = require('./type-definitions/number')
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'BigInt',
   settings: NUMBER_SETTINGS,
   filters: numberFilter
 })
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'Currency',
   settings: {
     ...NUMBER_SETTINGS,
@@ -253,19 +256,19 @@ TypeProvider.registerType({
   filters: numberFilter
 })
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'Float',
   settings: NUMBER_SETTINGS,
   filters: numberFilter
 })
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'Int',
   settings: NUMBER_SETTINGS,
   filters: numberFilter
 })
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'Document',
   settings: {
     sortable: false
@@ -273,19 +276,19 @@ TypeProvider.registerType({
   cellTemplate: require('./cell-templates/document.vue').default
 })
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'Text',
   settings: require('./type-definitions/string'),
   cellTemplate: renderWarning('Text')
 })
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'BLOB',
   settings: require('./type-definitions/string'),
   cellTemplate: renderWarning('BLOB')
 })
 
-TypeProvider.registerType({
+ColumnTemplateProvider.registerTemplate({
   type: 'TimeLog',
   settings: require('./type-definitions/string'),
   cellTemplate: renderWarning('TimeLog')
@@ -297,4 +300,4 @@ function renderWarning (type) {
   }
 }
 
-module.exports = TypeProvider
+module.exports = ColumnTemplateProvider

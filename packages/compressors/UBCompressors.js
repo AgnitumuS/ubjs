@@ -294,10 +294,10 @@ class UZip {
         dataType = o.base64
           ? 'base64'
           : o.isFilename ? 'file' : 'string'
-      } else if (Buffer.isBuffer(data) || ArrayBuffer.isView(data)) {
+      } else if (Buffer.isBuffer(data) || ArrayBuffer.isView(data) || (data instanceof ArrayBuffer)) {
         dataType = 'buffer'
       } else {
-        throw new Error('UZip.file: data should be string Buffer of arrayBufferView')
+        throw new Error('UZip.file: data should be string, Buffer, ArrayBuffer or ArrayBufferView')
       }
       if (!entry) {
         entry = new ZipEntry(this, { data, dataType, name: fn, dir: o.dir || fn.endsWith('/') })

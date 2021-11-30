@@ -15,6 +15,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.32] - 2021-11-30
+## [5.20.31] - 2021-11-23
+### Fixed
+ - typo in the code of `ubqFTSJob` scheduler which led to the failure of the `ubqMessages.success` method due to the loss of message ID
+
+## [5.20.30] - 2021-11-14
+### Added
+ - terminate *mail scheduler job* ASAP, without waiting until current 100 pending mails sends, in case process termination is requested.
+   Require UB@5.20.10, for older server version will work as before (wait until current 100 pending mail sends)
+ - terminate *async FTS scheduler job* ASAP, without waiting until current 1000 pending fts tasks is handled, in case process termination is requested.
+   Require UB@5.20.10, for older server version will work as before (wait until current 1000 pending tasks done)
+
+## [5.20.29] - 2021-11-05
+### Changed
+ - `ubq_messages` nav shortcut - explicitly define fieldList as `["mi_createDate", "queueCode", "completeDate", "msgCmd"]` 
+   for better UX
+ - **mail job** will retrieve ubq_messages.msgData CLOB (a message body) one record at once.
+   This prevents `<<<ERR_RESOURCE_LIMITS_EXCEED>>>` error in case overall size of mail bodies for 100 queued messages
+   exceed 50Mb [UBDF-14156] 
+
 ## [5.20.28] - 2021-10-27
 ## [5.20.27] - 2021-10-18
 ### Added

@@ -9,6 +9,7 @@
     <u-select-multiple
       ref="selectMany"
       v-model="value"
+      :repository="column.repository"
       :entity-name="column.attribute.associatedEntity"
     />
   </filter-template>
@@ -16,7 +17,7 @@
 
 <script>
 export default {
-  name: 'FilterManyContains',
+  name: 'FilterEntityContains',
 
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default

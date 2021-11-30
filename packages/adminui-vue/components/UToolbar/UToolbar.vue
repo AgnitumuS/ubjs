@@ -88,7 +88,7 @@
 <script>
 /* global $App, _ */
 const { mapState, mapGetters, mapActions } = require('vuex')
-const { mapInstanceFields } = require('../../utils/Form/helpers')
+const helpers = require('../../utils/Form/helpers')
 
 /**
  * Form toolbar with default actions.
@@ -145,7 +145,7 @@ export default {
       'lockInfo',
       'loading'
     ]),
-    ...mapInstanceFields(['mi_createDate', 'mi_modifyDate']),
+    ...helpers.mapInstanceFields(['mi_createDate', 'mi_modifyDate']),
 
     mainPanelButtons () {
       if (this.hideDefaultButtons) {
@@ -355,35 +355,7 @@ export default {
     },
 
     showDataHistory () {
-      const fieldList = new Set(this.fieldList)
-
-      fieldList.add('mi_dateFrom')
-      fieldList.add('mi_dateTo')
-
-      const extendedFieldList = this.$UB.core.UBUtil.convertFieldListToExtended([...fieldList])
-      for (const item of extendedFieldList) {
-        const field = item.name
-        if (field === 'mi_dateTo' || field === 'mi_dateFrom') {
-          item.visibility = true
-          item.description = this.$ut(field)
-        }
-      }
-      $App.doCommand({
-        cmdType: 'showList',
-        isModal: true,
-        cmdData: {
-          params: [{
-            entity: this.entitySchema.name,
-            method: 'select',
-            fieldList: [...fieldList]
-          }]
-        },
-        cmpInitConfig: {
-          extendedFieldList
-        },
-        instanceID: this.$store.state.data.ID,
-        __mip_recordhistory: true
-      })
+      helpers.showRecordHistory(this.entitySchema.name, this.$store.state.data.ID, this.fieldList)
     },
 
     showAccessRights (aclEntityName) {
@@ -409,15 +381,16 @@ export default {
       }
 
       const formProps = {
+        aclEntityName,
+        instanceID,
+        aclAttributes
+      }
+      const formConfig = {
         title: `${this.$UB.i18n('accessRight')} (${this.$UB.i18n(this.entity)})`,
         instanceID,
         entity: this.entitySchema.code,
         formCode: 'aclRlsEntry',
-        props: {
-          aclEntityName,
-          instanceID,
-          aclAttributes
-        }
+        props: formProps
       }
 
       $App.doCommand({
@@ -437,14 +410,18 @@ export default {
           buildAddNewConfig: cfg => {
             return {
               ...cfg,
-              ...formProps
+              ...formConfig
             }
           },
 
           buildEditConfig: cfg => {
             return {
               ...cfg,
-              ...formProps
+              ...formConfig,
+              props: {
+                ...formProps,
+                singleEntryID: cfg.instanceID
+              }
             }
           },
 
@@ -481,6 +458,7 @@ export default {
           hideActions: [
             'export',
             'copy',
+            'edit',
             'audit',
             'summary'
           ]
