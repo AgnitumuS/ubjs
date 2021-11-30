@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.32] - 2021-11-30
 ## [5.20.31] - 2021-11-23
 ### Fixed
 - Message history (`ubs_message` form) - show data and time instead of just date for messages;
