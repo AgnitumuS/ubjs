@@ -14,7 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.33] - 2021-11-30
+### Fixed
  - added i18n for title of notification messages history form (ubs_message-fm) [UBDF-14535]
+ - `UTableEntity`: support of the `exportExpression` for complex fields (`attribute.nestedAttr`->`attribute.nestedAttrForExport`)
 
 ## [5.20.32] - 2021-11-23
 ### Added
@@ -32,6 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `UTableEntity`, `UTable` - selection using left click works only on cell with checkboxes (not on whole row as before)
 
 ### Fixed
+ - `UDropdown` - dropdown with now adopts to internal content width if it changed (for example - when user changes his choice in multiselect)
  - `UTableEntity` - fixed selection bug when user changed view from table to card and back
  - `aclRlsEntry-fm` form: filtering of dropdown entries by entered query text in some `u-select-multiple` control [LDOC-1823]
  - Messages widget: use "unshift" instead of "push" to put most recent message at the top of list

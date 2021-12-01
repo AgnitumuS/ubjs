@@ -680,16 +680,17 @@ module.exports = instance => ({
       const exportFieldsMap = {}
       for (const { id, exportExpression } of columns) {
         if (exportExpression) {
-          exportFieldsMap[id] = exportExpression
+          const expressionParts = id.split('.')
+          expressionParts[expressionParts.length - 1] = exportExpression
+          exportFieldsMap[id] = expressionParts.join('.')
         }
       }
 
       let resultFieldList
       if (Object.keys(exportFieldsMap).length > 0) {
         resultFieldList = Array.from(repository.fieldList)
-        repository.fieldList = resultFieldList.map(
-          field => exportFieldsMap[field] ?? field
-        )
+        const exportFieldList = resultFieldList.map(field => exportFieldsMap[field] ?? field)
+        repository.fieldList = [...new Set(exportFieldList)]
       }
 
       switch (exportFormat) {

@@ -773,7 +773,8 @@
                   "PostgreSQL",
                   "PostgreSQLODBC",
                   "Firebird",
-                  "MySQL"
+                  "MySQL",
+                  "ODBC"
                 ],
                 "description": "Database driver used for connection"
               },

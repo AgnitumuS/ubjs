@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.21] - 2021-11-30
 ## [5.20.20] - 2021-11-23
 ### Added
 - `internalWriteDocumentToResp` now has optional additional parameter `skipRls`.  Must be used with care!  Caller of
