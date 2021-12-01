@@ -2,10 +2,6 @@ const props = require('./props')
 
 module.exports = {
   mixins: [props],
-  model: {
-    prop: 'selectedRows',
-    event: 'selected'
-  },
   data () {
     return {
       curSelection: this.selectedRows,
@@ -75,17 +71,17 @@ module.exports = {
       /**
        * Triggers when the user adds the selection
        *
-       * @param {array<object>} selectedArr an array that includes the objects (rows) that were added to the the selection
+       * @param {object} addedArr: array<object> selectedArr an array that includes the objects (rows) that were added to the the selection
        */
-      this.$emit('add-selected', arr)
+      this.$emit('add-selected', { addedArr: arr })
     },
     emitRemoveSelectionEvent (arr) {
       /**
        * Triggers when the user removes the selection
        *
-       * @param {array<object>} removedArr an array that includes the objects (rows) that were removed from the selection
+       * @param {object} removedArr: array<object>}  an array that includes the objects (rows) that were removed from the selection
        */
-      this.$emit('remove-selected', arr)
+      this.$emit('remove-selected', { removedArr: arr })
     },
     emitSelectionEvent () {
       /**
