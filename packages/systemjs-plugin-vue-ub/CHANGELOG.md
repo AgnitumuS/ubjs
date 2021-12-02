@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - dependencies upgraded
+   - "vue-template-compiler": "^2.6.12" -> "^2.6.14"
+   
 ### Deprecated
 
 ### Removed

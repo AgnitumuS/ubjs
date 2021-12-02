@@ -8,7 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - dependencies upgraded
+   - "codemirror": "^5.58.1" -> "^5.64.0",   
+   - "js-beautify": "^1.11.0" -> "^1.14.0"
+   
 ### Deprecated
 
 ### Removed

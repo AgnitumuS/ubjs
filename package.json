@@ -14,6 +14,7 @@
     "file-loader": "^6.2.0",
     "imports-loader": "^2.0.0",
     "lerna": "^4.0.0",
+    "lerna-update-wizard": "^1.1.0",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^1.6.2",
     "shx": "^0.3.3",
