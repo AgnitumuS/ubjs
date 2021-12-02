@@ -47,11 +47,11 @@
     "@unitybase/ub-migrate": "^1.22.12",
     "@unitybase/ubcli": "^5.21.27",
     "babel-loader": "^8.2.3",
-    "css-loader": "^6.5.1",
+    "css-loader": "^5.2.7",
     "file-loader": "^6.2.0",
     "mini-css-extract-plugin": "^1.6.2",
     "vue-loader": "^15.9.8",
-    "vue-styleguidist": "^4.36.1",
+    "vue-styleguidist": "^4.43.0",
     "vue-template-compiler": "^2.6.14",
     "webpack": "^5.64.4"
   },
