@@ -67,7 +67,10 @@ module.exports = (options = {}) => ({
       // VueJS uses process.env.NODE_ENV to enable devtools
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^\.\/locale$/,
+      contextRegExp: /moment$/,
+    }),
     new WebfontPlugin({
       files: path.resolve(__dirname, './icons/*.svg'),
       dest: path.resolve(__dirname, './theme/icons'),
