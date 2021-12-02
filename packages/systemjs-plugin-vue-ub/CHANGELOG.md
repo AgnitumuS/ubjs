@@ -8,15 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - dependencies upgraded
-   - "vue-template-compiler": "^2.6.12" -> "^2.6.14"
-   
+
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
+## [1.4.3] - 2021-12-02
+### Changed
+ - dependencies upgraded
+   - "vue-template-compiler": "^2.6.12" -> "^2.6.14"
+   
 ## [1.4.2] - 2021-10-27
 ## [1.4.1] - 2021-10-18
 ### Added

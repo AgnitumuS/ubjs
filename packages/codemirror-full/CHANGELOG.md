@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - dependencies upgraded
-    - "codemirror": "^5.58.1" -> "^5.64.0"
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [1.3.1] - 2021-12-02
+### Changed
+ - dependencies upgraded
+    - "codemirror": "^5.58.1" -> "^5.64.0"
 
 ## [1.3.0] - 2021-03-25
 ### Changed

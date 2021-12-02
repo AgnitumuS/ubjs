@@ -8,16 +8,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - dependencies upgraded
-   - "codemirror": "^5.58.1" -> "^5.64.0",   
-   - "js-beautify": "^1.11.0" -> "^1.14.0"
-   
+
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
+## [5.20.33] - 2021-12-02
+### Changed
+ - dependencies upgraded
+   - "codemirror": "^5.58.1" -> "^5.64.0",   
+   - "js-beautify": "^1.11.0" -> "^1.14.0"
+   
 ## [5.20.32] - 2021-11-30
 ### Changed
  - `UBExtension` (native messages host extension used for Scanner integration) setup instruction for Google Chrome now

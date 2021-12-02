@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.34] - 2021-12-02
+### Changed
  - dependencies upgraded
    - "@popperjs/core": "^2.5.3" -> "^2.11.0",   
    - "jdenticon": "^2.1.1" ->  "^3.1.1"
@@ -25,12 +34,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - "webpack-bundle-analyzer": "^4.5.0"
    - "lodash": "^4" -> "^4.17.21"
    - "moment": "^2.24.0" -> "^2.29.1"
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.20.33] - 2021-11-30
 ### Fixed

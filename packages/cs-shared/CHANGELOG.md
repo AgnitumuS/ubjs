@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.9] - 2021-12-02
 ## [5.20.8] - 2021-11-30
 ### Changed
  - *BREAKING* `Repository.where` _always positive_ and _always negative_ condition replacement changed: 
