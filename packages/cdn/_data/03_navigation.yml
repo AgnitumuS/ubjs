@@ -298,3 +298,16 @@ cdn_desktop:
                 entityName: 'cdn_classifier'
               }
             }
+      - cdn_profession:
+          access: User
+          caption: {$i18n: cdn_profession}
+          iconCls: fas fa-hammer
+          displayOrder: 30
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_profession'
+              }
+            }

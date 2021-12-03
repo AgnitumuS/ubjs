@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - shortcut for `cdn_profession` added into "Common dictionaries" -> "Miscellaneous" folder 
 
 ### Changed
 
