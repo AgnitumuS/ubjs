@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - desktop selection on sidebar: added hint (computed from desktop description) [LDOC-1568]
 
 ### Changed
 
