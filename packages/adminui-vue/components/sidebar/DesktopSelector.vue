@@ -5,6 +5,7 @@
         collapsed: isCollapsed
       }"
       class="desktop-select-button"
+      :title="selectedDesktopHint"
       @click="drawer = !drawer"
     >
       <i
@@ -13,7 +14,10 @@
       />
       <template v-if="!isCollapsed">
         <span>{{ selectedDesktop.caption }}</span>
-        <i class="desktop-select-button__icon-after u-icon-desktop-swap" />
+        <i
+          class="desktop-select-button__icon-after u-icon-desktop-swap"
+          :title="$ut('sidebar.desktopSelector.title')"
+        />
       </template>
     </div>
 
@@ -124,16 +128,20 @@ export default {
 
   computed: {
     selectedDesktop () {
-      if (this.selectedDesktopId) {
-        const desktop = this.desktops.find(d => d.ID === this.selectedDesktopId)
-        if (desktop) {
-          return desktop
-        } else {
-          return {}
-        }
+      if (!this.selectedDesktopId) return {}
+
+      const desktop = this.desktops.find(d => d.ID === this.selectedDesktopId)
+      if (desktop) {
+        return desktop
       } else {
         return {}
       }
+    },
+
+    selectedDesktopHint () {
+      const selD = this.selectedDesktop
+      if (!selD.description) return ''
+      return `${this.$ut('Desktop')} "${selD.caption}": ${selD.description}`
     },
 
     searchDropdownVisible () {
