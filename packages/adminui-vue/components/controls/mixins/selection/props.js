@@ -1,4 +1,9 @@
 module.exports = {
+  // for v-model
+  model: {
+    prop: 'selectedRows',
+    event: 'selected'
+  },
   props: {
     /**
      * array which consists of primitive fields from table items. Default is empty
