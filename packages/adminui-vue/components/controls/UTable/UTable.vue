@@ -20,14 +20,19 @@
         />
       </div>
     </u-dropdown>
-    <table>
+    <table
+      ref="content"
+      tabindex="1"
+      @keydown.down="toArrowPressHandler($event, 'down')"
+      @keydown.up="toArrowPressHandler($event, 'up')"
+    >
       <tr>
         <th
           v-if="showMultiSelectionColumn"
           class="u-table__multiple__cell"
           tabindex="1"
-          @click="handlerCheckedAll"
-          @keydown.space="handlerCheckedAll"
+          @click="checkedAllHandler"
+          @keydown.space="checkedAllHandler"
         >
           <span
             class="el-checkbox__input"
@@ -77,21 +82,26 @@
         </th>
       </tr>
       <tr
-        v-for="row in items"
+        v-for="(row, rowIndex) in items"
         :key="row[multiSelectKeyAttr]"
         :class="[
           getRowClass(row),
-          { 'selected-row': curSelection.includes(row[multiSelectKeyAttr]) }
+          {
+            'selected-row': curSelection.includes(row[multiSelectKeyAttr]),
+            'selected': hoverIndex === rowIndex
+          }
         ]"
+        tabindex="1"
         @dblclick="$emit('dblclick-row', { row })"
-        @click="$emit('click', { row })"
+        @click="onTableRowClickHandler(rowIndex)"
+        @keydown.space="handlerSelection(row, $event)"
+        @focus="hoverIndex = rowIndex"
       >
         <td
           v-if="showMultiSelectionColumn"
           class="u-table__multiple__cell"
-          tabindex="1"
-          @click="handlerSelection(row)"
-          @keydown.space="handlerSelection(row)"
+          @click="onInputClickHandler(row, $event)"
+          @contextmenu="contextMenuEventHandler($event, row)"
         >
           <!-- repeat html-structure for el-checkbox ElementUI -->
           <span
@@ -123,7 +133,7 @@
             padding: col.padding && col.padding + 'px'
           }"
           @click="$emit('click-cell', { row, column: col })"
-          @contextmenu="handlerContextMenuEvent($event,row,col)"
+          @contextmenu="contextMenuEventHandler($event, row, col)"
         >
           <div class="u-table__cell-container">
             <slot
@@ -305,6 +315,9 @@ export default {
   --border-hover: hsl(var(--hs-border), var(--l-layout-border-light));
   --row-hover: hsl(var(--hs-background), var(--l-background-default));
   --cell-hover: hsl(var(--hs-background), var(--l-background-active));
+  --row-selected: hsl(var(--hs-primary), var(--l-background-active));
+  --cell-selected: hsl(var(--hs-primary), calc(var(--l-background-active) - 7%));
+  --row-selected-border: hsl(var(--hs-primary), var(--l-layout-border-default));
 }
 
 .u-table table {
@@ -416,5 +429,15 @@ export default {
 }
 .u-table__sort i {
   font-size: 12px;
+}
+.u-table tr.selected td {
+  background: var(--row-selected);
+  border-bottom-color: var(--row-selected-border);
+}
+
+.u-table tr.selected td.selected,
+.u-table tr.selected td:hover,
+.u-table tr.selected:hover td.selected {
+  background: var(--cell-selected);
 }
 </style>

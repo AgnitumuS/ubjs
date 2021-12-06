@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.8] - 2021-12-02
 ## [5.2.7] - 2021-11-23
 ### Fixed
  - `UZip.file` accept incoming `data` of type `ArrayBuffer` in addition to TypedArray and Buffer

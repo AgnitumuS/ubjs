@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `Utable`, `UtableEntity` - active row can be changed using UP, DOWN and TAB keys, SPACE key will select\deselect row
+ - desktop selection on sidebar: added hint (computed from desktop description) [LDOC-1568]
 
 ### Changed
 
@@ -14,6 +16,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.34] - 2021-12-02
+### Changed
+ - dependencies upgraded
+   - "@popperjs/core": "^2.5.3" -> "^2.11.0",   
+   - "jdenticon": "^2.1.1" ->  "^3.1.1"
+   - "js-beautify": "^1.11.0" -> "^1.14.0"
+   - "throttle-debounce": "^2.1.0" -> "^3.0.1"
+   - "vue": "^2.6.12" -> "^2.6.14"
+   - "vuelidate": "^0.7.4" -> "^0.7.6"
+   - "vuex": "^3.1.2" -> "^3.6.2"
+   - "babel-loader": "^8.2.2" -> "^8.2.3"
+   - "css-loader": "^5.2.0" -> "^5.2.7"
+   - "mini-css-extract-plugin": "^1.3.9" -> "^1.6.2"
+   - "vue-loader": "^15.9.6", -> "^15.9.8"
+   - "vue-template-compiler": "^2.6.12" -> "^2.6.14"
+   - "webpack": "^5.28.0" -> "^5.64.4"
+   - "webpack-bundle-analyzer": "^4.5.0"
+   - "lodash": "^4" -> "^4.17.21"
+   - "moment": "^2.24.0" -> "^2.29.1"
 
 ## [5.20.33] - 2021-11-30
 ### Fixed

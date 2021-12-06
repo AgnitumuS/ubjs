@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.22] - 2021-12-02
 ## [5.22.21] - 2021-11-30
 ### Added
  - new method `Session.switchLangForContext` - switch current execution context language; (require server 5.20.11)

@@ -13,8 +13,6 @@
     @keydown.enter.exact="onSelect(selectedRowId)"
     @keydown.left.prevent.exact="move('left')"
     @keydown.right.prevent.exact="move('right')"
-    @keydown.up.prevent.exact="move('up')"
-    @keydown.down.prevent.exact="move('down')"
   >
     <div class="u-table-entity__head">
       <!-- @slot Replace whole toolbar -->
@@ -238,7 +236,6 @@
         :columns="columns"
         :fixed-column-id="fixedColumnId"
         :get-column-class="getColumnClass"
-        :get-row-class="getRowClass"
         :height="height"
         :items="items"
         :max-height="maxHeight"
@@ -252,8 +249,9 @@
         @remove-selected="$emit('remove-selected', ...arguments)"
         @click-head-cell="showSortDropdown"
         @click-cell="select"
-        @contextmenu-cell="showContextMenu"
+        @contextmenu="showContextMenu"
         @dblclick-row="onSelect($event.row.ID, $event.row)"
+        @change-active-row="activeRowChangeHandler"
       >
         <template
           v-for="column in columns"
@@ -316,12 +314,13 @@
         :before-remove-selection="beforeRemoveSelection"
         :enable-multi-select="enableMultiSelect"
         :multi-select-key-attr="multiSelectKeyAttr"
-        @selected="$emit('selected', ...arguments)"
-        @add-selected="$emit('add-selected', ...arguments)"
-        @remove-selected="$emit('remove-selected', ...arguments)"
+        @selected="$emit('selected', $event)"
+        @add-selected="$emit('add-selected', $event)"
+        @remove-selected="$emit('remove-selected', $event)"
         @click="select"
         @contextmenu="showContextMenu"
         @dblclick="onSelect($event.row.ID, $event.row)"
+        @change-active-row="activeRowChangeHandler"
       >
         <slot
           slot="card"
@@ -352,6 +351,7 @@
     <u-dropdown
       ref="contextMenu"
       class="u-table-entity__contextmenu-wrap"
+      @close='closeDropdownHandler'
     >
       <template slot="dropdown">
         <!-- @slot Prepend items in context menu -->
@@ -565,29 +565,14 @@ export default {
     showDeleteMultipleBtn: {
       type: Boolean,
       default: false
-    },
-    /**
-     * @argument {array<object>} addedCache an array that includes the objects (rows) that will be add to the the selection
-     * Hook that is called before selecting an item. If the hook returns a false value, the selection will be canceled.
-     */
-    beforeAddSelection: {
-      type: Function,
-      default: () => true
-    },
-    /**
-     * @argument {array<object>} removedCache an array that includes the objects (rows) that will be remove from the the selection
-     * Hook that is called before deselecting. If the hook returns a false value, the deselection will be canceled
-     */
-    beforeRemoveSelection: {
-      type: Function,
-      default: () => true
     }
   },
 
   data () {
     return {
       targetColumn: null,
-      contextMenuRowId: null
+      contextMenuRowId: null,
+      cacheActiveElement: null
     }
   },
 
@@ -698,6 +683,7 @@ export default {
     showContextMenu ({ event, row, column }) {
       this.select({ row, column })
       this.contextMenuRowId = row.ID
+      this.cacheActiveElement = document.activeElement
       this.$refs.contextMenu.show(event)
     },
 
@@ -848,6 +834,14 @@ export default {
     },
     onSort () {
       this.targetColumn = null
+    },
+    closeDropdownHandler () {
+      if (!this.cacheActiveElement) return
+      this.cacheActiveElement.focus()
+    },
+    activeRowChangeHandler ({ index }) {
+      const id = this.items[index][this.multiSelectKeyAttr]
+      this.SELECT_ROW(id)
     }
   }
 }
@@ -861,10 +855,6 @@ export default {
 }
 
 .u-table-entity {
-  --row-selected: hsl(var(--hs-primary), var(--l-background-default));
-  --cell-selected: hsl(var(--hs-primary), var(--l-background-active));
-  --row-selected-border: hsl(var(--hs-primary), var(--l-layout-border-default));
-
   display: flex;
   flex-direction: column;
   overflow: auto;
@@ -901,17 +891,6 @@ export default {
 
 .u-table-entity-panel__table th > .cell {
   word-break: normal;
-}
-
-.u-table-entity tr.selected td {
-  background: var(--row-selected);
-  border-bottom-color: var(--row-selected-border);
-}
-
-.u-table-entity tr.selected td.selected,
-.u-table-entity tr.selected td:hover,
-.u-table-entity tr.selected:hover td.selected {
-  background: var(--cell-selected);
 }
 
 .u-table-entity__header-dropdown {
