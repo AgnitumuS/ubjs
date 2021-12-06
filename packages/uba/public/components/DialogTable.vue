@@ -5,35 +5,18 @@
     top="5vh"
     lock-scroll
     destroy-on-close
+    append-to-body
     custom-class="dialog-table"
     @closed="closeDialog"
   >
-    <u-table
-      v-model="multipleSelection"
-      :columns="columns"
-      :items="dataTable"
-      enable-multi-select
-      :multi-select-key-attr="multiSelectKeyAttr"
-    />
-    <!-- <el-table
-      ref="table"
-      :data="dataTable"
-      max-height="500px"
-      @selection-change="handleSelectionChange"
-      @row-click="handleRowClick"
-    >
-      <el-table-column
-        v-if="columns.length > 0"
-        type="selection"
-        width="45"
+      <u-table
+        v-model="multipleSelection"
+        :columns="columns"
+        :items="dataTable"
+        enable-multi-select
+        :multi-select-key-attr="multiSelectKeyAttr"
+        sorting
       />
-      <el-table-column
-        v-for="item in columns"
-        :key="item.label"
-        :property="item.property || item.label"
-        :label="item.label || item.property"
-      />
-    </el-table> -->
     <span
       v-if="dataTable.length > 0"
       slot="footer"
@@ -156,9 +139,22 @@ module.exports.default = {
 .dialog-table {
   --border: hsl(var(--hs-border), var(--l-layout-border-default));
   max-width: 1200px;
+  max-height: 85vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.dialog-table .el-dialog__header { 
+  padding-bottom: 30px;
 }
 .dialog-table .el-dialog__body {
-  padding-bottom: 20px;
+  padding-bottom: 10px;
+  padding-top: 0;
+  overflow: hidden;
+  display: flex;
+}
+.dialog-table .el-dialog__body .u-table{
+  overflow: auto;
 }
 
 .dialog-table .el-table {
