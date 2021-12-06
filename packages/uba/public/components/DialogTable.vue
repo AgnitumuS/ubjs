@@ -8,25 +8,13 @@
     custom-class="dialog-table"
     @closed="closeDialog"
   >
-    <el-table
-      ref="table"
-      :data="dataTable"
-      max-height="500px"
-      @selection-change="handleSelectionChange"
-      @row-click="handleRowClick"
-    >
-      <el-table-column
-        v-if="columns.length > 0"
-        type="selection"
-        width="45"
-      />
-      <el-table-column
-        v-for="item in columns"
-        :key="item.label"
-        :property="item.property || item.label"
-        :label="item.label || item.property"
-      />
-    </el-table>
+    <u-table
+      v-model="multipleSelection"
+      :columns="columns"
+      :items="dataTable"
+      enable-multi-select
+      :multi-select-key-attr="multiSelectKeyAttr"
+    />
     <span
       v-if="dataTable.length > 0"
       slot="footer"
@@ -57,7 +45,8 @@ module.exports.default = {
       type: Boolean,
       default: false
     },
-    defaultSelection: { type: Array, default: () => [] }
+    defaultSelection: { type: Array, default: () => [] },
+    multiSelectKeyAttr: { type: String, default: 'ID' }
   },
   data () {
     return {

@@ -58,6 +58,7 @@
             :show="showAttrsChoice"
             :columns="fieldColumns"
             :default-selection="selectedFields"
+            multi-select-key-attr="code"
             @closed="showAttrsChoice = false"
             @add="handleAddAttrs"
           />
@@ -66,6 +67,7 @@
             :columns="roleColumns"
             :show="showRolesChoice"
             :default-selection="selectedRoles"
+            multi-select-key-attr="value"
             @closed="showRolesChoice = false"
             @add="handleAddRoles"
           />
@@ -208,11 +210,11 @@ module.exports.default = {
       showAttrsChoice: false,
       showRolesChoice: false,
       fieldColumns: [
-        { property: 'name' },
-        { property: 'caption' },
-        { property: 'description' }
+        { label: 'description', id: 'name' },
+        { label: 'caption', id: 'caption' },
+        { label: 'description', id: 'description' }
       ],
-      roleColumns: [{ property: 'value' }, { property: 'name' }],
+      roleColumns: [{ label: 'value', id: 'value' }, {label: 'name', id: 'name' }],
       selectedFields: [],
       baseColumns: [
         { label: 'caption', property: 'caption' },
@@ -373,7 +375,7 @@ module.exports.default = {
       }
     },
     handleAddRoles (e) {
-      const selectedRoles = e.selection
+      const selectedRoles = this.roleList.filter( el => e.selection.includes(el.value))
       selectedRoles.forEach((el) => {
         el.label = el.value
         el.actions = el.actions === undefined ? 1 : el.actions
@@ -386,7 +388,7 @@ module.exports.default = {
       this.showRolesChoice = false
     },
     handleAddAttrs (e) {
-      this.selectedFields = e.selection
+      this.selectedFields = this.emptyAttributes.filter( el => e.selection.includes(el.code))
       this.selectedFields.forEach((item, index) => {
         this.$set(this.selectedFields[index], 'roles', [])
       })
