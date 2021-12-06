@@ -17,8 +17,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.20.35] - 2021-12-06
 ### Added
-- `Utable`, `UtableEntity` - active row can be changed using UP, DOWN and TAB keys, SPACE key will select\deselect row
- - desktop selection on sidebar: added hint (computed from desktop description) [LDOC-1568]
+ - `Utable`, `UtableEntity` - active row can be changed using UP, DOWN and TAB keys, SPACE key will select\deselect row.
+   Shift + left click will select all rows starts from selected one up to row clicked on.
+  - desktop selection on sidebar: added hint (computed from desktop description) [LDOC-1568]
 
 ## [5.20.34] - 2021-12-02
 ### Changed
