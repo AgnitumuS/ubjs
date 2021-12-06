@@ -1,5 +1,8 @@
 <template>
-  <div class="uba-als">
+  <div
+    v-loading="loading"
+    class="uba-als"
+  >
     <div class="uba-als__header">
       <u-form-row
         label-position="top"
@@ -149,7 +152,7 @@
                 <action-component
                   v-model="role.actions"
                   class="uba-als__actions"
-                  @change="changeRolePermissions($event, role)"
+                  @input="changeRolePermissions($event, role)"
                 />
               </td>
             </tr>
@@ -199,9 +202,7 @@ module.exports.default = {
           color: 'primary'
         }
       ],
-      entityList: this.$UB.connection.domain.filterEntities(
-        (e) => e.mixins.als
-      ),
+      entityList: this.$UB.connection.domain.filterEntities(e => e.mixins.als),
       roleList: [],
       selectedRoles: [],
       selectedEntity: '',
@@ -214,19 +215,28 @@ module.exports.default = {
         { label: 'caption', id: 'caption' },
         { label: 'description', id: 'description' }
       ],
-      roleColumns: [{ label: 'value', id: 'value' }, {label: 'name', id: 'name' }],
+      roleColumns: [
+        { label: 'value', id: 'value' },
+        { label: 'name', id: 'name' }
+      ],
       selectedFields: [],
       baseColumns: [
         { label: 'caption', property: 'caption' },
         { label: 'field', property: 'code' }
       ],
       isNew: this.$store.state.isNew,
-      blockMonkeyRequest: false
+      blockMonkeyRequest: false,
+      wasEdit: false,
+      loading: false
     }
   },
   computed: {
     disabledControlsBtn () {
-      return this.selectedFields.length === 0 || this.selectedRoles.length === 0
+      return (
+        this.selectedFields.length === 0 ||
+        this.selectedRoles.length === 0 ||
+        (!this.isNew && !this.wasEdit)
+      )
     },
     isEmpty () {
       return this.selectedFields.length === 0 && this.selectedRoles.length === 0
@@ -268,12 +278,10 @@ module.exports.default = {
       if (this.selectedEntity) await this.getData()
       this.selectedState = propsData.state
       const startAttribute = this.emptyAttributes.find(
-        (i) => i.code === propsData.attribute
+        i => i.code === propsData.attribute
       )
       this.handleAddAttrs({ selection: [startAttribute] })
-      const startRole = this.roleList.find(
-        (i) => i.value === propsData.roleName
-      )
+      const startRole = this.roleList.find(i => i.value === propsData.roleName)
       startRole.actions = propsData.actions
       startRole.ID = propsData.ID
       this.handleAddRoles({ selection: [startRole] })
@@ -298,7 +306,7 @@ module.exports.default = {
       this.blockMonkeyRequest = false
     },
     export (permissions) {
-      permissions = permissions.map((i) => JSON.stringify(i, null, 4))
+      permissions = permissions.map(i => JSON.stringify(i, null, 4))
       const output = permissions.join(');\n\nconn.run(')
       /* global saveAs */
       saveAs(
@@ -311,14 +319,22 @@ module.exports.default = {
       )
     },
     async save (permissions) {
+      this.loading = true
+      try {
       await this.$UB.connection.runTrans(permissions)
+        this.$notify.success({
+          title: this.$ut('successfullySaved')
+        })
+      } finally {
+        this.loading = false
+      }
     },
     createPermissionsList () {
       const { selectedFields, getExecParamsFromRole, isNew } = this
       const permissions = []
-      selectedFields.forEach((row) => {
+      selectedFields.forEach(row => {
         if (!row.roles || !Array.isArray(row.roles)) return false
-        row.roles.forEach((role) => {
+        row.roles.forEach(role => {
           if (isNew && role.actions === 0) return
           const template = {
             entity: 'uba_als',
@@ -343,6 +359,7 @@ module.exports.default = {
       return item
     },
     changeRolePermissions (lvl, item) {
+      this.wasEdit = true
       item.actions = lvl
     },
     deleteField (index) {
@@ -375,12 +392,18 @@ module.exports.default = {
       }
     },
     handleAddRoles (e) {
-      const selectedRoles = this.roleList.filter( el => e.selection.includes(el.value))
-      selectedRoles.forEach((el) => {
+      const checkValue = typeof e.selection[0] === 'object'
+      let selectedRoles = e.selection
+      if (!checkValue) {
+        selectedRoles = this.roleList.filter(el =>
+          e.selection.includes(el.value)
+        )
+      }
+      selectedRoles.forEach(el => {
         el.label = el.value
         el.actions = el.actions === undefined ? 1 : el.actions
       })
-      this.selectedFields.forEach((i) => {
+      this.selectedFields.forEach(i => {
         const copyRoles = JSON.parse(JSON.stringify(selectedRoles))
         i.roles = copyRoles
       })
@@ -388,7 +411,13 @@ module.exports.default = {
       this.showRolesChoice = false
     },
     handleAddAttrs (e) {
-      this.selectedFields = this.emptyAttributes.filter( el => e.selection.includes(el.code))
+      const checkValue = typeof e.selection[0] === 'object'
+      this.selectedFields = e.selection
+      if (!checkValue) {
+        this.selectedFields = this.emptyAttributes.filter(el =>
+          e.selection.includes(el.code)
+        )
+      }
       this.selectedFields.forEach((item, index) => {
         this.$set(this.selectedFields[index], 'roles', [])
       })

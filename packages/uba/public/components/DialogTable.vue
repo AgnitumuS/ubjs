@@ -15,12 +15,32 @@
       enable-multi-select
       :multi-select-key-attr="multiSelectKeyAttr"
     />
+    <!-- <el-table
+      ref="table"
+      :data="dataTable"
+      max-height="500px"
+      @selection-change="handleSelectionChange"
+      @row-click="handleRowClick"
+    >
+      <el-table-column
+        v-if="columns.length > 0"
+        type="selection"
+        width="45"
+      />
+      <el-table-column
+        v-for="item in columns"
+        :key="item.label"
+        :property="item.property || item.label"
+        :label="item.label || item.property"
+      />
+    </el-table> -->
     <span
       v-if="dataTable.length > 0"
       slot="footer"
     >
       <el-button
         v-for="btn in btns"
+        :key="btn.type"
         :type="btn.type"
         :disabled="btn.disabled ? btn.disabled.call(this) : false"
         @click.native="hanndleClickOnBtn(btn)"
