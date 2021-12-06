@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - desktop selection on sidebar: added hint (computed from desktop description) [LDOC-1568]
 
 ### Changed
+ - `UNavbarNotificationsButton`: show message body in the new message notification instead of general title
 
 ### Deprecated
 

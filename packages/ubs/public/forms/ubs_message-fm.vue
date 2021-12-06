@@ -34,7 +34,7 @@
           </div>
           <div
             class="notifications__item__text"
-            v-html="item.messageBody"
+            v-html="localizeMessage(item.messageBody)"
           />
           <button
             v-show="item.isOverflowed"
@@ -46,7 +46,7 @@
       </div>
       <div
         class="notifications-history__detail"
-        v-html="currentMess.messageBody"
+        v-html="localizeMessage(currentMess.messageBody)"
       />
     </template>
     <div
@@ -163,7 +163,7 @@ module.exports.default = {
     addNotificationListeners () {
       $App.on({
         'portal:notify:newMess': (message) => {
-          this.messages.push(message)
+          this.messages.unshift(message)
         },
         'portal:notify:readed': (ID, acceptDate) => {
           const index = this.messages.findIndex(m => m.ID === ID)
@@ -172,6 +172,19 @@ module.exports.default = {
           }
         }
       })
+    },
+
+    localizeMessage (messageBody) {
+      try {
+        const parsed = Array.isArray(messageBody) ? messageBody : JSON.parse(messageBody)
+        if (parsed && Array.isArray(parsed)) {
+          const [localeKey, ...params] = parsed
+          return this.$ut(localeKey, params.map(p => this.localizeMessage(p)))
+        }
+        return messageBody
+      } catch {
+        return messageBody
+      }
     },
 
     async markRead (mess) {
