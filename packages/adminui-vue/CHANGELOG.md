@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `UNavbarNotificationsButton`: show message body in the new message notification instead of general title
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.20.36] - 2021-12-07
+### Changed
+ - `UNavbarNotificationsButton`: show message body in the new message notification instead of general title
 
 ### Fixed
  - `UTableEntityRoot`: fixed production build error inside the template
