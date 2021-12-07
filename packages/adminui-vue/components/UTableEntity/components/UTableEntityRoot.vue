@@ -658,6 +658,15 @@ export default {
       }
     }
   },
+  mounted () {
+    this.unSubscrubeMutations = this.$store.subscribe((mutation, state) => {
+      if (mutation.type !== 'ADD_ITEM') return
+      this.addItemHandler(mutation.payload)
+    })
+  },
+  beforeDestroy () {
+    if (this.unSubscrubeMutations) this.unSubscrubeMutations()
+  },
 
   methods: {
     ...mapActions([
@@ -842,6 +851,22 @@ export default {
     activeRowChangeHandler ({ index }) {
       const id = this.items[index][this.multiSelectKeyAttr]
       this.SELECT_ROW(id)
+    },
+    async addItemHandler (item) {
+      const index = this.items.findIndex(el => el === item)
+      const { $el } = this.$refs.table || this.$refs.cardView
+      const content =
+        $el.querySelector('table') || $el.querySelector('.u-card-grid')
+      await this.$nextTick()
+      try {
+        // because first tr in table it is head
+        const shift = content.children.length - this.items.length
+        const row = content.children[index + shift]
+        row.scrollIntoView()
+        row.classList.add('new-row')
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
@@ -947,5 +972,18 @@ export default {
 
 .u-table-entity__body__content {
   flex-basis: 100%;
+}
+.u-table-entity .new-row,
+.u-table-entity .new-row td {
+  animation-name: add-new-row;
+  animation-duration: 3s;
+}
+@keyframes add-new-row {
+  from {
+    background-color: hsl(var(--hs-success), var(--l-state-disabled));
+  }
+  to {
+    background-color: white;
+  }
 }
 </style>
