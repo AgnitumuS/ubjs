@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - nodeJS compatibility: prevent `ReferenceError: File is not defined` when using ub-pub from nodeJS (global.File is not available on node)
 
 ## [5.9.21] - 2021-12-02
 ## [5.9.20] - 2021-11-30

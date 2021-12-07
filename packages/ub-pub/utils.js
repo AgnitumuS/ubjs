@@ -49,9 +49,9 @@ module.exports.format = function (stringToFormat, ...values) {
  */
 module.exports.ns = function (namespacePath) {
   let root = window
-  let parts, part, j, subLn
+  let part, j, subLn
 
-  parts = namespacePath.split('.')
+  const parts = namespacePath.split('.')
 
   for (j = 0, subLn = parts.length; j < subLn; j++) {
     part = parts[j]

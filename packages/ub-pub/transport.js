@@ -183,7 +183,7 @@ function xhr (requestConfig) {
     execHeaders(defHeaders)
     execHeaders(reqHeaders)
 
-    // using for-in instead of forEach to avoid unecessary iteration after header has been found
+    // using for-in instead of forEach to avoid unnecessary iteration after header has been found
     // noinspection Eslint
     defaultHeadersIteration:
     for (defHeaderName in defHeaders) {
@@ -281,7 +281,7 @@ xhr.allowRequestReiteration = function () {
 }
 
 const CONTENT_TYPE_APPLICATION_JSON = { 'Content-Type': 'application/json;charset=utf-8' }
-
+const FILE_AVAILABLE = typeof File !== 'undefined' // global.File is not available in NodeJS
 /**
  * The default HTTP parameters for {xhr}
  * @property {Object} xhrDefaults
@@ -292,7 +292,7 @@ const CONTENT_TYPE_APPLICATION_JSON = { 'Content-Type': 'application/json;charse
  */
 const xhrDefaults = {
   transformRequest: function (data) {
-    return !!data && (typeof data === 'object') && !(data instanceof File) && !(data instanceof ArrayBuffer || data.buffer instanceof ArrayBuffer)
+    return !!data && (typeof data === 'object') && (!FILE_AVAILABLE || !(data instanceof File)) && !(data instanceof ArrayBuffer || data.buffer instanceof ArrayBuffer)
       ? JSON.stringify(data)
       : data
   },
