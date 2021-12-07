@@ -60,7 +60,7 @@
           icon="u-icon-delete"
           color="control"
           :disabled="loading || selectedOnPage.length === 0"
-          @click="deleteMultiple"
+          @click="deleteRecord"
         />
 
         <!-- @slot Prepend new buttons to toolbar before filter -->
