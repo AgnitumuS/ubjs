@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.35] - 2021-12-07
 ## [5.20.34] - 2021-12-07
 ### Added
  - Message history (`ubs_message` form) - ability to localize message body on the client.
