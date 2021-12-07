@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTableEntityRoot`: fixed production build error inside the template
 
 ## [5.20.35] - 2021-12-06
 ### Added
