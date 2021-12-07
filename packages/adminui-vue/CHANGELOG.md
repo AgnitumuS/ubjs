@@ -237,6 +237,7 @@ return UB.Repository('uba_auditTrail')
 ## [5.20.20] - 2021-08-18
 ### Added
  - `UButton`: added `circle` prop to render a circle button - see [UButton UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UButton) 
+ - `UTableEntityRoot` - scrolling to new item
 
 ### Changed
  - `UCodeMirror`: set minimum height to 50 px to make help icon be inside control if it has only one line
