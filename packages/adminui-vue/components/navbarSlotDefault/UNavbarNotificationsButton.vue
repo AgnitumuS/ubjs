@@ -220,7 +220,13 @@ export default {
       $App.on({
         'portal:notify:newMess': (message) => {
           this.messages.unshift(message)
-          this.$notify.info(this.localizeMessage(message.messageBody))
+
+          this.$notify({
+            duration: 0,
+            dangerouslyUseHTMLString: true,
+            type: 'info',
+            message: this.localizeMessage(message.messageBody)
+          })
         },
 
         'portal:notify:readed': (ID, acceptDate) => {
