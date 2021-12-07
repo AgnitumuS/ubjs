@@ -292,14 +292,14 @@ export default {
       }
       this.$store.dispatch('updateData', payload)
     },
-    handlerAddSelected (addedArr) {
+    handlerAddSelected ({ addedArr }) {
       const { selectionCache, multiSelectKeyAttr } = this
       addedArr.forEach(item => {
         selectionCache.add(item[multiSelectKeyAttr])
       })
       this.emitSelectedEvent()
     },
-    handlerRemoveSelected (removedArr) {
+    handlerRemoveSelected ({ removedArr }) {
       const { selectionCache, multiSelectKeyAttr } = this
       removedArr.forEach(item => {
         selectionCache.delete(item[multiSelectKeyAttr])

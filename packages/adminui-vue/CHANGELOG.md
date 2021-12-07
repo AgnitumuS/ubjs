@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTableEntity`: fixed previous (5.20.36) fix with multi-selection
 
 ## [5.20.36] - 2021-12-07
 ### Changed
