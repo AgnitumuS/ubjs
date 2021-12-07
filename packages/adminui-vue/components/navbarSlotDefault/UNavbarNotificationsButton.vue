@@ -70,7 +70,7 @@
           </div>
           <div
             class="notifications__item__text"
-            v-html="item.messageBody"
+            v-html="localizeMessage(item.messageBody)"
           />
           <button
             v-show="item.isOverflowed"
@@ -220,11 +220,15 @@ export default {
       $App.on({
         'portal:notify:newMess': (message) => {
           this.messages.unshift(message)
+
           this.$notify({
-            title: this.$ut('newMessage'),
-            type: 'info'
+            duration: 0,
+            dangerouslyUseHTMLString: true,
+            type: 'info',
+            message: this.localizeMessage(message.messageBody)
           })
         },
+
         'portal:notify:readed': (ID, acceptDate) => {
           const index = this.messages.findIndex(m => m.ID === ID)
           if (index !== -1) {
@@ -232,6 +236,19 @@ export default {
           }
         }
       })
+    },
+
+    localizeMessage (messageBody) {
+      try {
+        const parsed = Array.isArray(messageBody) ? messageBody : JSON.parse(messageBody)
+        if (parsed && Array.isArray(parsed)) {
+          const [localeKey, ...params] = parsed
+          return this.$ut(localeKey, params.map(p => this.localizeMessage(p)))
+        }
+        return messageBody
+      } catch {
+        return messageBody
+      }
     }
   }
 }
