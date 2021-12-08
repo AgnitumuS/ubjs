@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UToolbar`: added saving of the main form before calling the `accessRights` action, because some
+ permissions may appear only after saving the record
 
 ### Deprecated
 
