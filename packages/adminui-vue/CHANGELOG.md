@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UTableEntity`: fixed two-way binding multi-selection
 
 ## [5.20.37] - 2021-12-07
 ### Fixed
