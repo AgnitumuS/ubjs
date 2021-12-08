@@ -5,7 +5,7 @@ window.Vue = Vue
 const { lookups } = require('@unitybase/adminui-vue')
 window.onerror = console.error // silent error as alert
 require('@unitybase/adminui-vue/theme/el-theme-compiled.css')
-UB.inject('clientRequire/systemjs/dist/system.js').then(() => {
+UB.inject('/clientRequire/systemjs/dist/system.js').then(() => {
   System.config({
     baseURL: '/clientRequire',
     map: {
