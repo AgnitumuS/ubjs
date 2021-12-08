@@ -541,7 +541,7 @@ export default {
   outline: 2px solid hsl(var(--hs-primary), var(--l-layout-border-default));
 }
 
-.u-table__multiple-column-head {
+th.u-table__multiple-column-head {
   z-index: 2;
 }
 
