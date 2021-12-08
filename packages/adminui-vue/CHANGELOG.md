@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.20.37] - 2021-12-07
+### Fixed
+ - `UTableEntity`: fixed previous (5.20.36) fix with multi-selection
+
 ## [5.20.36] - 2021-12-07
 ### Changed
  - `UNavbarNotificationsButton`: show message body in the new message notification instead of general title
@@ -238,7 +242,6 @@ return UB.Repository('uba_auditTrail')
  - `UDropdown`: fixed placement of dropdown on first click, prevented from expanding outside of viewport [UBDF-13695]
  - `USelectEntity`: fixed adding new row in `allowDictionaryAdding` mode in case user type text quickly (`blur` event handler fixed) 
  - `USelectEntity`: removed `leaveInput` on `@keydown.native.tab`, because now it is called on `blur` event
- - `UTableEntity`: fixed previos fix with multiselection
 
 ## [5.20.20] - 2021-08-18
 ### Added
