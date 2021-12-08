@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.20.37] - 2021-12-07
 ### Fixed
  - `UTableEntity`: fixed previous (5.20.36) fix with multi-selection
+ - `UDropdown`: fixed dropdown position
 
 ## [5.20.36] - 2021-12-07
 ### Changed
