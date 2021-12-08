@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UTable`, `UTableEntity`: add the ability to render some column before the multiSelection
+  one with help of the `preMultiSelectionColumnId` property
 
 ### Changed
 
@@ -14,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTable`: fix calling of the `setTitle` method in the mounted hook in case items were not changed ever;
 
 ## [5.20.37] - 2021-12-07
 ### Fixed
