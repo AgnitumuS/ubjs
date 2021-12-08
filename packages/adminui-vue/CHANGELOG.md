@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UFileMultiple`: fixed on row click in the `table` view mode: the handler was
+   unavailable because of the incorrect event name
 
 ## [5.20.37] - 2021-12-07
 ### Fixed
