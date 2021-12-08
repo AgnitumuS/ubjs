@@ -812,7 +812,12 @@ function createProcessingModule ({
           responseHandlers.push(response => store.commit('LOAD_DATA', response.resultData))
         }
 
-        for (const [collectionKey, collectionInfo] of Object.entries(initCollectionsRequests)) {
+        /**
+         * Iterate from the end to delete more specific items firstly that can depend on a deleted item from some neighbor collection.
+         * It is recommended to declare collections in they specificity order - a collection, which items can be linked
+         * to items of some neighbor collection MUST be declared below this one
+         */
+        for (const [collectionKey, collectionInfo] of Object.entries(initCollectionsRequests).reverse()) {
           const collection = store.state.collections[collectionKey]
           if (!collection) continue
 
@@ -828,6 +833,14 @@ function createProcessingModule ({
             // Deleted items are cleared all at once using CLEAR_ALL_DELETED_ITEMS mutation
             responseHandlers.push(() => {})
           }
+        }
+
+        for (const [collectionKey, collectionInfo] of Object.entries(initCollectionsRequests)) {
+          const collection = store.state.collections[collectionKey]
+          if (!collection) continue
+
+          const req = collectionInfo.repository(store)
+          const collectionEntityName = req.entityName
 
           const collectionFieldList = enrichFieldList(
             UB.connection.domain.get(collectionEntityName),

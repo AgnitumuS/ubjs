@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `processing.save`: fix order of requests to fix deleting of collection items that can be linked with items of some neighbor collection
 
 ## [5.20.37] - 2021-12-07
 ### Fixed
