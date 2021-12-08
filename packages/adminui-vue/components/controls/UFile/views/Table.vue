@@ -4,7 +4,7 @@
     :items="files"
     class="u-file-multiple__table-view"
     :get-row-class="getRowClass"
-    @click="selectRow"
+    @click-row="selectRow"
     :max-height="300"
   />
 </template>

@@ -41,6 +41,7 @@ module.exports = {
     onInputClickHandler (row, event) {
       this.handlerSelection(row, event)
       this.$emit('click', { row })
+      this.$emit('click-row', { row })
     },
     async handlerSelection (row, event) {
       this.$emit('click-cell', { row })
@@ -237,6 +238,7 @@ module.exports = {
     onTableRowClickHandler (rowIndex) {
       const row = this.items[rowIndex]
       this.$emit('click', { row })
+      this.$emit('click-row', { row })
       this.setCurrentRow(rowIndex)
     },
     setCurrentRow (rowIndex) {
