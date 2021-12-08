@@ -2,7 +2,6 @@
   <div
     class="u-table"
     :class="{
-      'u-table__multiple': showMultiSelectionColumn,
       'u-table--sort': sorting
     }"
     :style="tableStyle"
@@ -28,8 +27,39 @@
     >
       <tr>
         <th
+          v-if="preMultiSelectionColumn"
+          :class="[
+            { 'u-table__fixed-column': preMultiSelectionColumn.id === fixedColumnId },
+            getAlignClass(preMultiSelectionColumn.headerAlign),
+            columnsClasses[preMultiSelectionColumn.id]
+          ]"
+          :style="{
+            maxWidth: preMultiSelectionColumn.maxWidth && preMultiSelectionColumn.maxWidth + 'px',
+            minWidth: preMultiSelectionColumn.minWidth && preMultiSelectionColumn.minWidth + 'px',
+            width: preMultiSelectionColumn.width && preMultiSelectionColumn.width + 'px',
+            padding: preMultiSelectionColumn.padding && preMultiSelectionColumn.padding + 'px'
+          }"
+          @click="handlerClickOnHeadCell($event, preMultiSelectionColumn)"
+        >
+          <slot
+            :name="`head_${preMultiSelectionColumn.id}`"
+            :column="preMultiSelectionColumn"
+          >
+            {{ formatHead({ column: preMultiSelectionColumn }) }}
+          </slot>
+          <i
+            v-if="sorting && columnCashedId === preMultiSelectionColumn.id"
+            :key="preMultiSelectionColumn.id"
+            :class="{
+              'u-icon-sort-asc': sortOrder === 'asc',
+              'u-icon-sort-desc': sortOrder === 'desc'
+            }"
+          />
+        </th>
+
+        <th
           v-if="showMultiSelectionColumn"
-          class="u-table__multiple__cell"
+          class="u-table__multiple-column-head u-table__multiple__cell"
           tabindex="1"
           @click="checkedAllHandler"
           @keydown.space="checkedAllHandler"
@@ -50,7 +80,7 @@
           </span>
         </th>
         <th
-          v-for="col in columns"
+          v-for="col in afterMultiSelectionColumns"
           :key="col.id"
           :class="[
             { 'u-table__fixed-column': col.id === fixedColumnId },
@@ -72,7 +102,7 @@
             {{ formatHead({ column: col }) }}
           </slot>
           <i
-            v-if="sorting && columnCasheId === col.id"
+            v-if="sorting && columnCashedId === col.id"
             :key="col.id"
             :class="{
               'u-icon-sort-asc': sortOrder === 'asc',
@@ -98,6 +128,32 @@
         @focus="hoverIndex = rowIndex"
       >
         <td
+          v-if="preMultiSelectionColumn"
+          :class="[
+            { 'u-table__fixed-column': preMultiSelectionColumn.id === fixedColumnId },
+            getAlignClass(preMultiSelectionColumn.align),
+            columnsClasses[preMultiSelectionColumn.id],
+            getCellClass(row, preMultiSelectionColumn)
+          ]"
+          :style="{
+            padding: preMultiSelectionColumn.padding && preMultiSelectionColumn.padding + 'px'
+          }"
+          @click="$emit('click-cell', { row, column: preMultiSelectionColumn })"
+          @contextmenu="contextMenuEventHandler($event, row, preMultiSelectionColumn)"
+        >
+          <div class="u-table__cell-container">
+            <slot
+              :name="preMultiSelectionColumn.id"
+              :value="row[preMultiSelectionColumn.id]"
+              :row="row"
+              :column="preMultiSelectionColumn"
+            >
+              {{ formatValue({ value: row[preMultiSelectionColumn.id], column: preMultiSelectionColumn, row }) }}
+            </slot>
+          </div>
+        </td>
+
+        <td
           v-if="showMultiSelectionColumn"
           class="u-table__multiple__cell"
           @click="onInputClickHandler(row, $event)"
@@ -119,12 +175,10 @@
           </span>
         </td>
         <td
-          v-for="col in columns"
+          v-for="col in afterMultiSelectionColumns"
           :key="col.id"
           :class="[
-            {
-              'u-table__fixed-column': col.id === fixedColumnId
-            },
+            { 'u-table__fixed-column': col.id === fixedColumnId },
             getAlignClass(col.align),
             columnsClasses[col.id],
             getCellClass(row, col)
@@ -174,9 +228,9 @@ const selectionLogic = require('../mixins/selection/logic')
 export default {
   name: 'UTable',
 
-  mixins: [require('./formatValueMixin'), selectionLogic, sortingMixin],
-
   components: { SortPopup },
+
+  mixins: [require('./formatValueMixin'), selectionLogic, sortingMixin],
 
   props: {
     /**
@@ -190,7 +244,20 @@ export default {
     /**
      * ID of the column what will be locked on the left side when table is scrolled horizontally
      */
-    fixedColumnId: String,
+    fixedColumnId: {
+      type: String,
+      require: false,
+      default: ''
+    },
+
+    /**
+     * ID of the column what will be displayed before the multi selection column
+     */
+    preMultiSelectionColumnId: {
+      type: String,
+      require: false,
+      default: ''
+    },
 
     /**
      * Table data
@@ -243,13 +310,20 @@ export default {
     /**
      * sets fixed table height. If data not fits, scroll is appears
      */
-    height: [Number, String],
+    height: {
+      type: [Number, String],
+      default: undefined
+    },
 
     /**
      * sets max table height. If data not fits, scroll is appears
      */
-    maxHeight: [Number, String]
+    maxHeight: {
+      type: [Number, String],
+      default: undefined
+    }
   },
+
   computed: {
     tableStyle () {
       return ['height', 'maxHeight'].reduce((style, prop) => {
@@ -268,32 +342,49 @@ export default {
     },
 
     columnsClasses () {
-      return this.columns.reduce((accum, column) => {
-        accum[column.id] = this.getColumnClass(column)
-        return accum
-      }, {})
+      return Object.fromEntries(
+        this.columns.map(column => [column.id, this.getColumnClass(column)])
+      )
+    },
+
+    preMultiSelectionColumn () {
+      return (this.showMultiSelectionColumn && this.preMultiSelectionColumnId)
+        ? this.columns.find(column => column.id === this.preMultiSelectionColumnId)
+        : null
+    },
+
+    afterMultiSelectionColumns () {
+      return this.preMultiSelectionColumn ? this.columns.filter(column => column !== this.preMultiSelectionColumn) : this.columns
     }
   },
+
   watch: {
-    items: async function () {
-      const { sortingProcess, sorting, columnCasheId, sortOrder } = this
-      if (sorting && !sortingProcess && columnCasheId && columnCasheId !== 0) {
+    items () {
+      if (this.sorting && !this.sortingProcess && Number.isInteger(this.columnCashedId)) {
         this.createPrivateSortOrder()
-        this.changeSorting(columnCasheId, sortOrder)
+        this.changeSorting(this.columnCashedId, this.sortOrder)
       }
-      await this.$nextTick()
-      this.setTitle()
+      this.$nextTick().then(this.setTitle)
     }
   },
+
+  mounted () {
+    this.setTitle()
+  },
+
   methods: {
     getAlignClass (align = 'left') {
       return `u-table__cell__align-${align}`
     },
+
     setTitle () {
       const cells = this.$el.querySelectorAll(
         '.u-table__cell-container:not(title)'
       )
-      if (!cells) return
+      if (!cells) {
+        return
+      }
+
       cells.forEach(cell => {
         if (
           cell.offsetHeight < cell.scrollHeight ||
@@ -440,4 +531,18 @@ export default {
 .u-table tr.selected:hover td.selected {
   background: var(--cell-selected);
 }
+
+.u-table__multiple__cell {
+  cursor: pointer;
+  text-align: center;
+}
+
+.u-table__multiple__cell:focus .el-checkbox__inner {
+  outline: 2px solid hsl(var(--hs-primary), var(--l-layout-border-default));
+}
+
+.u-table__multiple-column-head {
+  z-index: 2;
+}
+
 </style>
