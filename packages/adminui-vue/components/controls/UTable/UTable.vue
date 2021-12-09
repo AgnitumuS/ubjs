@@ -360,7 +360,7 @@ export default {
 
   watch: {
     items () {
-      if (this.sorting && !this.sortingProcess && Number.isInteger(this.columnCashedId)) {
+      if (this.sorting && !this.sortingProcess && this.columnCashedId && this.columnCashedId !== 0) {
         this.createPrivateSortOrder()
         this.changeSorting(this.columnCashedId, this.sortOrder)
       }
