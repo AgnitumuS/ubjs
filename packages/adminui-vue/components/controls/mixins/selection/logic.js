@@ -130,13 +130,17 @@ module.exports = {
           await this.handlerSelection(row)
         }
       }
-
+      /**
+       * Triggers when the user called contextmenu on table
+       *
+       * @param {object<event><row><column>} event: native event, row - item of tableItems, column - item of columns if available
+       */
       this.$emit('contextmenu', { event: $event, row, column: col })
-
-      // I think that this will not break the functionality  - 29.11.2021 :)
-      // else {
-      //   this.$emit('contextmenu-cell', { event: $event, row, column: col })
-      // }
+      /**
+       *
+       * @deprecated - exist for backward copability. Use contextmenu menu event and check column available field
+       */
+      if (col) this.$emit('contextmenu-cell', { event: $event, row, column: col })
     },
     getSelectionRows () {
       const { items, multiSelectKeyAttr } = this
