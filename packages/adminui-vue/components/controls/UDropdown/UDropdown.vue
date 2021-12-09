@@ -12,8 +12,12 @@
       <slot />
     </div>
 
+    <transition
+      name="dropdown-transition"
+      @enter="beforeEnter"
+    >
       <div
-        v-show="visible && $slots.dropdown"
+        v-if="visible && $slots.dropdown"
         :key="renderKey"
         ref="dropdown"
         tabindex="1"
@@ -31,6 +35,7 @@
           <slot name="dropdown" />
         </div>
       </div>
+    </transition>
   </div>
 </template>
 
@@ -140,16 +145,10 @@ export default {
     }
   },
 
-  beforeDestroy () {
-    this.$refs.dropdown.remove()
-    this.disconnectObserver()
-  },
-
   methods: {
     toggleVisible () {
       if (this.disabled) return
       this.visible = !this.visible
-      this.beforeEnter(this.$refs.dropdown)
     },
 
     beforeEnter (el) {
@@ -185,7 +184,6 @@ export default {
         }
       )
       this.checkAndUpdatePopupPosition(this.popperInstance)
-      if (this.observer) return
       // set watcher for observe changes width and height popup when user change content in him
       const callback = () => this.checkAndUpdatePopupPosition()
       this.observer = new MutationObserver(callback)
@@ -217,7 +215,7 @@ export default {
     close () {
       this.visible = false
       this.$emit('close')
-      this.disconnectObserver()
+      if (this.observer) this.observer.disconnect()
     },
 
     closeByEscape (event) {
@@ -248,10 +246,6 @@ export default {
         bottom: y,
         left: x
       })
-    },
-    disconnectObserver () {
-      if (this.observer) this.observer.disconnect()
-      this.observer = null
     }
   }
 }
