@@ -358,7 +358,10 @@ export default {
       helpers.showRecordHistory(this.entitySchema.name, this.$store.state.data.ID, this.fieldList)
     },
 
-    showAccessRights (aclEntityName) {
+    async showAccessRights (aclEntityName) {
+      if (this.canSave) {
+        await this.save()
+      }
       const { domain } = this.$UB.connection
       const instanceID = this.$store.state.data.ID
       const aclMixin = this.entitySchema.mixins.aclRls
