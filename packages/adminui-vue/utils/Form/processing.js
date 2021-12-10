@@ -813,7 +813,9 @@ function createProcessingModule ({
           responseHandlers.push(response => store.commit('LOAD_DATA', response.resultData))
         }
 
-        for (const [collectionKey, collectionInfo] of Object.entries(initCollectionsRequests)) {
+        // Iterate in reverse order to delete child before master in case of master-detail relation between collections
+        // Collections definition should be ordered from master to details (as doucumented in createProcessingModule)
+        for (const [collectionKey, collectionInfo] of Object.entries(initCollectionsRequests).reverse()) {
           const collection = store.state.collections[collectionKey]
           if (!collection) continue
 
@@ -829,6 +831,14 @@ function createProcessingModule ({
             // Deleted items are cleared all at once using CLEAR_ALL_DELETED_ITEMS mutation
             responseHandlers.push(() => {})
           }
+        }
+
+        for (const [collectionKey, collectionInfo] of Object.entries(initCollectionsRequests)) {
+          const collection = store.state.collections[collectionKey]
+          if (!collection) continue
+
+          const req = collectionInfo.repository(store)
+          const collectionEntityName = req.entityName
 
           const collectionFieldList = enrichFieldList(
             UB.connection.domain.get(collectionEntityName),
