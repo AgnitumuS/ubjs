@@ -812,9 +812,8 @@ function createProcessingModule ({
           responseHandlers.push(response => store.commit('LOAD_DATA', response.resultData))
         }
 
-        // Iterate from the end to delete more specific items firstly that can depend on a deleted item from some neighbor collection.
-        // It is recommended to declare collections in they specificity order - a collection, which items can be linked
-        // to items of some neighbor collection MUST be declared below this one
+        // Iterate in reverse order to delete child before master in case of master-detail relation between collections
+        // Collections definition should be ordered from master to details (as doucumented in createProcessingModule)
         for (const [collectionKey, collectionInfo] of Object.entries(initCollectionsRequests).reverse()) {
           const collection = store.state.collections[collectionKey]
           if (!collection) continue
