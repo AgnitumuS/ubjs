@@ -3,6 +3,9 @@
     "plugin:vue/recommended",
     "standard"
   ],
+  "plugins": [
+    "jsdoc"
+  ],
   "globals": {
     "BOUNDLED_BY_WEBPACK": true
   }
