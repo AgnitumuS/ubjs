@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.35] - 2021-12-07
+## [5.20.34] - 2021-12-07
+### Added
  - Message history (`ubs_message` form) - ability to localize message body on the client.
   If the message body is a stringified array, the displayed message will be built based on it
   in the next strategy. The first array element is a locale key, rest elements are locale parameters.
@@ -19,14 +31,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   ```javascript
   i18n('documentDistribution.error', i18n('dfx_validation.codeWithSpace', 'Mon Nov 08 2021 16:10:15 GMT+0200 (EET)'))
   ```
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.20.33] - 2021-12-02
 ## [5.20.32] - 2021-11-30
