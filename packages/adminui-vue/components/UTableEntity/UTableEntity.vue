@@ -1,5 +1,6 @@
 <template>
   <u-table-entity-root
+    ref="uTableEntityRoot"
     :bordered="bordered"
     v-bind="$attrs"
     :with-pagination="withPagination"
@@ -273,6 +274,10 @@ export default {
   mounted () {
     this.validateFieldList()
     this.$UB.connection.on(`${this.getEntityName}:changed`, this.updateData)
+    this.unSubscrubeMutations = this.$store.subscribe((mutation, state) => {
+      if (mutation.type !== 'ADD_ITEM') return
+      this.addItemHandler(mutation.payload)
+    })
   },
 
   beforeDestroy () {
@@ -281,6 +286,7 @@ export default {
       this.updateData
     )
     this.unsubscribeLookups()
+    if (this.unSubscrubeMutations) this.unSubscrubeMutations()
   },
 
   methods: {
@@ -513,6 +519,22 @@ export default {
         attr.dataType !== 'Document' &&
         attr.dataType !== 'Text'
       )
+    },
+    async addItemHandler (item) {
+      try {
+        const index = this.tableItems.findIndex(el => el === item)
+        const { $el } = this.$refs.uTableEntityRoot
+        const content =
+          $el.querySelector('.u-table table') || $el.querySelector('.u-card-grid')
+        await this.$nextTick()
+        // because first tr in table it is head
+        const shift = content.children.length - this.tableItems.length
+        const row = content.children[index + shift]
+        row.scrollIntoView()
+        row.classList.add('new-row')
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
@@ -546,5 +568,18 @@ export default {
 .u-table .selected-row td,
 .u-card.u-card--is-selected {
   background: hsl(var(--hs-primary), var(--l-background-default));
+}
+.u-table-entity .new-row,
+.u-table-entity .new-row td {
+  animation-name: add-new-row;
+  animation-duration: 3s;
+}
+@keyframes add-new-row {
+  from {
+    background-color: hsl(var(--hs-success), var(--l-state-disabled));
+  }
+  to {
+    background-color: white;
+  }
 }
 </style>
