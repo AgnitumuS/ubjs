@@ -78,25 +78,26 @@ const {
  *  - canDelete, canSave, canRefresh getters
  *  - CRUD actions
  *
- * @param {string} masterEntityName Name of entity for master record
- * @param {array<string>} masterFieldList Master request fieldList. If unset will set all fields in an entity
- * @param {object<string, UbVuexStoreCollectionInfo|UbVuexStoreRepositoryBuilder>} initCollectionsRequests Collections requests map
- * @param {Validator} [validator] Validator
- * @param {number} instanceID instanceID
- * @param {Object} [parentContext] Optional values for main instance attributes passed to addNew method
- * @param {UBEntity} entitySchema Entity schema
- * @param {function} [beforeInit] Callback that emits before init
- * @param {function} [inited] Callback that emits when data is inited
- * @param {function} [beforeSave] Callback that emits before save
- * @param {function} [saved] Callback that emits when data was saved, receive a method name `insert/update` as a second argument
- * @param {function} [beforeDelete] Callback that emits before delete
- * @param {function} [deleted] Callback that emits when data was deleted
- * @param {function} [beforeCopy] Callback that emits before copy of existing record
- * @param {function} [copied] Callback that emits when data was copied from existing record
- * @param {function} [saveNotification] Callback that overrides default save notification
- * @param {function} [errorNotification] Callback that overrides default error notification
- * @param {boolean} [isCopy] Flag that used for create new record with data of existing record
- * @param {boolean} [isModal] Is parent opened from modal. Used to provide modal state to the child
+ * @param {object} pmCfg
+ * @param {string} pmCfg.entity Name of entity for master record
+ * @param {array<string>} pmCfg.fieldList Master request fieldList. If unset will set all fields in an entity
+ * @param {object<string, UbVuexStoreCollectionInfo|UbVuexStoreRepositoryBuilder>} pmCfg.collections Collections requests map
+ * @param {Validator} [pmCfg.validator] Validator
+ * @param {number} pmCfg.instanceID instanceID
+ * @param {Object} [pmCfg.parentContext] Optional values for main instance attributes passed to addNew method
+ * @param {UBEntity} pmCfg.entitySchema Entity schema
+ * @param {function} [pmCfg.beforeInit] Callback that emits before init
+ * @param {function} [pmCfg.inited] Async callback. Called (with await) when data is initialized
+ * @param {function} [pmCfg.beforeSave] Async callback. Called (with await) before save
+ * @param {function} [pmCfg.saved] Async callback. Called (with await) when data was saved, receive a method name `insert/update` as a second argument
+ * @param {function} [pmCfg.beforeDelete] Async callback. Called (with await) before delete
+ * @param {function} [pmCfg.deleted] Async callback. Called (with await) when data was deleted
+ * @param {function} [pmCfg.beforeCopy] Async callback. Called (with await) before copy of existing record
+ * @param {function} [pmCfg.copied] Async callback. Called (with await) when data was copied from existing record
+ * @param {function} [pmCfg.saveNotification] Callback that can show custom save notification (instead of 'successfullySaved')
+ * @param {function} [pmCfg.errorNotification] Callback that can show custom error notification (instead of UB.showErrorWindow(err) ). Accept error as parameter
+ * @param {boolean} [pmCfg.isCopy] Flag that used to create a new record with data of existing record
+ * @param {boolean} [pmCfg.isModal] Is parent opened from modal. Used to provide modal state to the child
  * @return {object} Vue store cfg
  */
 function createProcessingModule ({
@@ -812,7 +813,9 @@ function createProcessingModule ({
           responseHandlers.push(response => store.commit('LOAD_DATA', response.resultData))
         }
 
-        for (const [collectionKey, collectionInfo] of Object.entries(initCollectionsRequests)) {
+        // Iterate in reverse order to delete child before master in case of master-detail relation between collections
+        // Collections definition should be ordered from master to details (as doucumented in createProcessingModule)
+        for (const [collectionKey, collectionInfo] of Object.entries(initCollectionsRequests).reverse()) {
           const collection = store.state.collections[collectionKey]
           if (!collection) continue
 
@@ -828,6 +831,14 @@ function createProcessingModule ({
             // Deleted items are cleared all at once using CLEAR_ALL_DELETED_ITEMS mutation
             responseHandlers.push(() => {})
           }
+        }
+
+        for (const [collectionKey, collectionInfo] of Object.entries(initCollectionsRequests)) {
+          const collection = store.state.collections[collectionKey]
+          if (!collection) continue
+
+          const req = collectionInfo.repository(store)
+          const collectionEntityName = req.entityName
 
           const collectionFieldList = enrichFieldList(
             UB.connection.domain.get(collectionEntityName),

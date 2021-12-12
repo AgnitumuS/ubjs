@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UToolbar`: added saving of the main form before calling the `accessRights` action, because some
+ permissions may appear only after saving the record
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
-- `UTableEntity`: fixed two-way binding multi-selection
+- `UTableEntity`: пофикшена  работа v-model с selectedRows. Результат изменений массива selectedRows, сделанный из кода - виден на таблице
+ - `processing.save`: fix deleting of collection items with master-detail relations (by call delete in order what reverse to collection initialization)
 
 ## [5.20.37] - 2021-12-07
 ### Fixed
@@ -1744,7 +1747,7 @@ this.$formatByPattern.formatNumber(
 ### Changed
  - `UTableEntity`, `UToolbar`, `UNavbar` and `UNavbarUserButton` used `UDropdown` as context
   menu instead `UContextMenu` 
- - `UTable` - event `contextmenu` is renamed to `contextmenu-cell` and emitted with `row` and `colunm` parameters
+ - `UTable` - event `contextmenu` is renamed to `contextmenu-cell` and emitted with `row` and `column` parameters
  - `lookups/getEnumValue` console.error is removed in case code is null
  - `UTableEntity` all cell templates except type `Document` are uses `format` function instead
   of vue templates. This allow to override cell template `format` function in column definition.
@@ -1757,7 +1760,8 @@ this.$formatByPattern.formatNumber(
    - from `ub-navbar` to `u-navbar`
  - *BREAKING* `UForm/processing` data is loaded before form mount.
    If server returns undefined form will not mount
- 
+  `UTable` - event `contextmenu` is renamed to `contextmenu-cell` and emitted with `row` and `column` parameters
+
 ### Deprecated
  - `UTableEntity` props `dateFormat` and `dateTimeFormat`. `format` function in column definition should
  be used to change date format 
