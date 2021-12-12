@@ -842,8 +842,7 @@ export default {
     activeRowChangeHandler ({ index }) {
       const id = this.items[index][this.multiSelectKeyAttr]
       this.SELECT_ROW(id)
-    },
-
+    }
   }
 }
 </script>
@@ -949,5 +948,4 @@ export default {
 .u-table-entity__body__content {
   flex-basis: 100%;
 }
-
 </style>
