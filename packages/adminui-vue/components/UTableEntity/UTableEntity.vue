@@ -544,7 +544,7 @@ export default {
        *
        * @param {any} mutation payload. See to payload  the mutation of the same name in store.js
        */
-      if (events.includes(type)) this.$emit(type.toLowerCase(), mutation.payload) 
+      if (events.includes(mutation.type)) this.$emit(mutation.type.toLowerCase(), mutation.payload) 
     }
   }
 }
