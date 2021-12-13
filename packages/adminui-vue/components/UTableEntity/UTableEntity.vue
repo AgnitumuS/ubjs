@@ -274,7 +274,8 @@ export default {
   mounted () {
     this.validateFieldList()
     this.$UB.connection.on(`${this.getEntityName}:changed`, this.updateData)
-    this.unSubscrubeMutations = this.$store.subscribe((mutation, state) => {
+    this.unSubscrubeMutations = this.$store.subscribe((mutation) => {
+      this.emitsEvents(mutation)
       if (mutation.type !== 'ADD_ITEM') return
       this.addItemHandler(mutation.payload)
     })
@@ -535,6 +536,15 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+    emitsEvents(mutation){
+      const events = ['ADD_ITEM', 'ITEMS', 'UPDATE_ITEM', 'REMOVE_ITEM']
+      /**
+       * Triggered when the mutation of the same name is called
+       *
+       * @param {any} mutation payload. See to payload  the mutation of the same name in store.js
+       */
+      if (events.includes(type)) this.emit(type.toLowerCase(), mutation.payload) 
     }
   }
 }

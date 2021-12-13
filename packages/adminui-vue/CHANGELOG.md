@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UtableEntity` -  now when a component mutation is called, the event of the same name is triggered.  ['add_item', 'items', 'update_item', 'remove_item'] 
 
 ### Changed
  - `UToolbar`: added saving of the main form before calling the `accessRights` action, because some
