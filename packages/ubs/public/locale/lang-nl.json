@@ -33,6 +33,7 @@
   "reportParamsRequired": "Gelieve eerst de vereiste parameters in te vullen",
 
   "newMessages": "{0} nieuwe berichten",
+  "hiddenMessages": "en nog {0} berichten",
   "youHaveNoNewMessages": "U hebt geen nieuwe berichten",
   "showFull": "Volledig tonen",
   "messageHistoryIsEmpty": "Berichtgeschiedenis is leeg",

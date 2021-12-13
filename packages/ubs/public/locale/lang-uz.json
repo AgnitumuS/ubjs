@@ -46,6 +46,7 @@
   "reportParametersHeader": "Hisobot parametrlari",
 
   "newMessages": "{0} yangi xabarlar",
+  "hiddenMessages": "va yana {0} ta xabar",
   "youHaveNoNewMessages": "Sizda yangi xabar yo'q",
   "showFull": "To'liq ko'rsatish",
   "messageHistoryIsEmpty": "Xabarlar tarixi bo'sh",
