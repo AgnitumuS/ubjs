@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- `UTableEntity`: пофикшена  работа v-model с selectedRows. Результат изменений массива selectedRows, сделанный из кода - виден на таблице
+- `UTableEntity`: changes of `selectedRows` what made from code (js) now reflects to UI. Before this fix UI does not react on such changes
  - `processing.save`: fix deleting of collection items with master-detail relations (by call delete in order what reverse to collection initialization)
 
 ## [5.20.37] - 2021-12-07
