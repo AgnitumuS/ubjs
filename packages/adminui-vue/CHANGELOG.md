@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UTableEntity`: changes of `selectedRows` what made from code (js) now reflects to UI. Before this fix UI does not react on such changes
  - `processing.save`: fix deleting of collection items with master-detail relations (by call delete in order what reverse to collection initialization)
  - `UNavbarNotificationsButton` - fix a glitch with opening popup with a huge amount of notifications.
   Display only the first 20 ones and hint alert about hidden messages
