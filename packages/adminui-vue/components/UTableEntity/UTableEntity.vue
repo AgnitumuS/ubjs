@@ -1,5 +1,6 @@
 <template>
   <u-table-entity-root
+    ref="uTableEntityRoot"
     :bordered="bordered"
     v-bind="$attrs"
     :with-pagination="withPagination"
@@ -262,7 +263,7 @@ export default {
     this.tableItems = []
     const storeConfig = createStore(this)
     this.$store = new Vuex.Store(storeConfig)
-    // for anothercomponent, example ToolbarDropdown
+    // for another component, example ToolbarDropdown
     this.$store.commit('SET_MULTISELECT_KEY_ATTR', this.multiSelectKeyAttr)
     this.$store.commit('SET_ENABLE_MULTISELECT', this.enableMultiSelect)
     this.$watch('$store.state.items', this.handlerTableDataChange)
@@ -274,6 +275,24 @@ export default {
   mounted () {
     this.validateFieldList()
     this.$UB.connection.on(`${this.getEntityName}:changed`, this.updateData)
+    const MUTATIONS_FOR_EVENTS = {
+      ADD_ITEM: 'item-added', UPDATE_ITEM: 'item-updated', REMOVE_ITEM: 'item-removed', ITEMS: 'items'
+    }
+    this.unSubscrubeMutations = this.$store.subscribe((mutation) => {
+      if (MUTATIONS_FOR_EVENTS[mutation.type]) {
+        /**
+         * - `item-*` events are triggers when item is added, removed or updated.
+         * - `items` event is triggered when all items are replaced by new items collection (at last on initial fills.
+         *
+         * @event item-added, item-removed, item-updated, items
+         * @param {object} payload
+         */
+        this.$emit(MUTATIONS_FOR_EVENTS[mutation.type], mutation.payload)
+      }
+      if (mutation.type === 'ADD_ITEM') {
+        this.addItemHandler(mutation.payload)
+      }
+    })
   },
 
   beforeDestroy () {
@@ -282,6 +301,7 @@ export default {
       this.updateData
     )
     this.unsubscribeLookups()
+    if (this.unSubscrubeMutations) this.unSubscrubeMutations()
   },
 
   methods: {
@@ -308,7 +328,9 @@ export default {
       this.emitSelectedEvent()
     },
     emitSelectedEvent () {
-      /** triggers on row(s) selection changed
+      /**
+       * Triggers on row(s) selection changed
+       *
        * @param {Array<number>} selectedIDs
        */
       this.$emit('selected', [...this.selectionCache])
@@ -457,9 +479,7 @@ export default {
         }
       }
 
-      /**
-       * @type {UTableColumn}
-       */
+      /** @type {UTableColumn} */
       const resultColumn = {
         label,
         attribute,
@@ -504,8 +524,9 @@ export default {
     /**
      * Whenever attribute is viewable by default. Attributes what potentially can contains
      *   a huge text ('Json', 'Document' and 'Text' type) `are excluded
+     *
      * @param {UBEntityAttribute} attr
-     * @return {boolean}
+     * @returns {boolean}
      */
     isAttributeViewableByDefault (attr) {
       return (
@@ -514,6 +535,31 @@ export default {
         attr.dataType !== 'Document' &&
         attr.dataType !== 'Text'
       )
+    },
+    /**
+     * Scroll newly added row into view
+     *
+     * @param {object} item
+     * @returns {Promise<void>}
+     */
+    async addItemHandler (item) {
+      try {
+        const index = this.tableItems.findIndex(el => el === item)
+        const { $el } = this.$refs.uTableEntityRoot
+        const content = $el.querySelector('.u-table table') || $el.querySelector('.u-card-grid')
+        await this.$nextTick()
+        // first tr in table is head
+        const shift = content.children.length - this.tableItems.length
+        const row = content.children[index + shift]
+        row.scrollIntoView()
+        const className = 'new-row'
+        row.classList.add(className)
+        row.addEventListener('animationend', (ev)=>{
+          ev.target.classList.remove(className);
+        }, { once: true })
+      } catch (err) {
+        console.error(err)
+      }
     }
   }
 }
@@ -547,5 +593,18 @@ export default {
 .u-table .selected-row td,
 .u-card.u-card--is-selected {
   background: hsl(var(--hs-primary), var(--l-background-default));
+}
+.u-table-entity .new-row,
+.u-table-entity .new-row td {
+  animation-name: add-new-row;
+  animation-duration: 5s;
+}
+@keyframes add-new-row {
+  from {
+    background-color: hsl(var(--hs-success), var(--l-state-disabled));
+  }
+  to {
+    background-color: white;
+  }
 }
 </style>
