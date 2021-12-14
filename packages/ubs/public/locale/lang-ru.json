@@ -33,6 +33,7 @@
   "reportParamsRequired": "Сначала заполните обязательные параметры",
 
   "newMessages": "{0} новых сообщений",
+  "hiddenMessages": "и еще {0} сообщений",
   "youHaveNoNewMessages": "У вас нет новых сообщений",
   "showFull": "Показать полностью",
   "messageHistoryIsEmpty": "История сообщений пуста",

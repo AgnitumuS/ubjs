@@ -249,6 +249,7 @@ export default {
       this.$store.commit('SET_MULTISELECT_KEY_ATTR', newValue)
     },
     selectedRows (newSelected) {
+      this.selectionCache.clear()
       newSelected.forEach(element => {
         this.selectionCache.add(element)
       })
@@ -551,7 +552,11 @@ export default {
         const shift = content.children.length - this.tableItems.length
         const row = content.children[index + shift]
         row.scrollIntoView()
-        row.classList.add('new-row')
+        const className = 'new-row'
+        row.classList.add(className)
+        row.addEventListener('animationend', (ev)=>{
+          ev.target.classList.remove(className);
+        }, { once: true })
       } catch (err) {
         console.error(err)
       }
