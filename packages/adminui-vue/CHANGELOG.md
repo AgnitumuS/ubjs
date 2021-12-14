@@ -12,7 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `UToolbar`: added saving of the main form before calling the `accessRights` action - some
  permissions may appear only after saving the record
-
+ - `UTableEntity`: `ADD_ITEM` mutation (and `item-added` event) is triggered for UTableEntity store in any case,
+   before this fix if current page rows count is === to page size then event is skipped.
+   After fix newly added row for "full page" table added into end of table in `pageSize+1` position  
+ 
 ### Deprecated
 
 ### Removed

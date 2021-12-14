@@ -805,12 +805,8 @@ module.exports = instance => ({
         )
       }
       if (response.method === 'insert') {
-        if (state.items.length < getters.pageSize || !instance.withPagination) {
-          commit('ADD_ITEM', updatedItem)
-        }
-      }
-
-      if (response.method === 'update') {
+        commit('ADD_ITEM', updatedItem)
+      } else if (response.method === 'update') {
         commit('UPDATE_ITEM', updatedItem)
       }
     },

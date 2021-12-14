@@ -288,8 +288,9 @@ export default {
          */
         this.$emit(MUTATIONS_FOR_EVENTS[mutation.type], mutation.payload)
       }
-      if (mutation.type !== 'ADD_ITEM') return
-      this.addItemHandler(mutation.payload)
+      if (mutation.type === 'ADD_ITEM') {
+        this.addItemHandler(mutation.payload)
+      }
     })
   },
 
@@ -591,7 +592,7 @@ export default {
 .u-table-entity .new-row,
 .u-table-entity .new-row td {
   animation-name: add-new-row;
-  animation-duration: 3s;
+  animation-duration: 5s;
 }
 @keyframes add-new-row {
   from {
