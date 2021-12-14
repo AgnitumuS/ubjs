@@ -747,6 +747,14 @@ export default {
         isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal,
         // WARNING - if current form is closed, then handler creates a closure until addNew form is opened
         // but we do not know how to intercept addNew form closing w/o callback
+        /**
+         * Listener for callback fired by `UForm` or `BasePanel` based forms when they are closed
+         * @param {Number} ID instance ID of fired record
+         * @param {Vuex|Ext.Data.Store} store - in case `UForm` - form attribute values, `BasePanel` - (default: undefined),
+         *  but can be initialized by custom Ext-forms
+         * @param {Boolean|undefined} formWasSaved in case `BasePanel` - true when form was saved, `UForm` - undefined
+         * @param {UB.view.BasePanel#record|undefined} record - in case `BasePanel` - form attribute flues, `UForm` - undefined
+         */
         onClose: this.skipAutoComplete
           ? undefined
           : (ID, store, formWasSaved, record) => {
