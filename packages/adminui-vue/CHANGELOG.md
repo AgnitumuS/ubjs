@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity` - newly added row now scrolled into view and highlighted
  - `USelectEntity` now supports a new property `hideActions`. It allows hiding some
   default action. It supports the following actions: `lookup`, `edit`, `addNew`, `clear`
+ - `UTable`, `UTableEntity`: add the ability to render some column before the multiSelection
+  one with help of the `preMultiSelectionColumnId` property
 
 ### Changed
  - `UToolbar`: added saving of the main form before calling the `accessRights` action - some
@@ -30,6 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UNavbarNotificationsButton` - fix a glitch with opening popup with a huge amount of notifications.
   Display only the first 20 ones and hint alert about hidden messages
  - `UNavbarNotificationsButton`: added i18n for title of send message form (ubs_message_edit-fm)
+ - `UTable`: fix calling of the `setTitle` method in the mounted hook in case items were not changed ever;
 
 ## [5.20.37] - 2021-12-07
 ### Fixed

@@ -15,8 +15,8 @@ module.exports = {
   },
   computed: {
     sortOrderInPopup () {
-      const { columnCasheId, curColumnId, sortOrder } = this
-      return curColumnId === columnCasheId ? sortOrder : 'none'
+      const { columnCashedId, curColumnId, sortOrder } = this
+      return curColumnId === columnCashedId ? sortOrder : 'none'
     }
   },
   data () {
@@ -24,7 +24,7 @@ module.exports = {
       sortOrder: 'none',
       targetColumn: null,
       curColumnId: null,
-      columnCasheId: null,
+      columnCashedId: null,
       sortingProcess: false // as not to fall into an infinity loop
     }
   },
@@ -66,7 +66,7 @@ module.exports = {
     async changeSorting (colName, direction = 'asc') {
       this.sortingProcess = true
       this.sortOrder = direction
-      this.columnCasheId = this.curColumnId
+      this.columnCashedId = this.curColumnId
       let sortField = colName
       let sortDirection = direction
       if (this.sortOrder === 'none') {

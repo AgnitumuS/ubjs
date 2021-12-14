@@ -235,6 +235,7 @@
         class="u-table-entity__body__content"
         :columns="columns"
         :fixed-column-id="fixedColumnId"
+        :pre-multi-selection-column-id="preMultiSelectionColumnId"
         :get-column-class="getColumnClass"
         :height="height"
         :items="items"
@@ -550,9 +551,23 @@ export default {
     },
 
     /**
-     * Id of column which will stack when we scroll table by horizontal.
+     * ID of the column what will be locked on the left side when table is scrolled horizontally
      */
-    fixedColumnId: String,
+    fixedColumnId: {
+      type: String,
+      require: false,
+      default: ''
+    },
+
+    /**
+     * ID of the column what will be displayed before the multi selection column
+     */
+    preMultiSelectionColumnId: {
+      type: String,
+      require: false,
+      default: ''
+    },
+
     /**
      * Overrides the record selection event. That is, double click or enter
      * @type {function({ID: Number, row: Object, close: function})}
