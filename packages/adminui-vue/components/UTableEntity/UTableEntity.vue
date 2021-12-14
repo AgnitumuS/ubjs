@@ -249,6 +249,7 @@ export default {
       this.$store.commit('SET_MULTISELECT_KEY_ATTR', newValue)
     },
     selectedRows (newSelected) {
+      this.selectionCache.clear()
       newSelected.forEach(element => {
         this.selectionCache.add(element)
       })
