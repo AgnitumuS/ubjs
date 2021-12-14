@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - `UTable`: restored emit `click-row` event
+ - `UTable`: backward compatibility fix - restored emits of `click-row` and `contextmenu-cell` events (in addition to new `click` and `contextmenu`)
  - `processing.save`: fix deleting of collection items with master-detail relations (by call delete in order what reverse to collection initialization)
 
 ## [5.20.37] - 2021-12-07
