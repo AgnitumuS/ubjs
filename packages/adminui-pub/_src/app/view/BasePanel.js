@@ -3179,6 +3179,7 @@ Ext.define('UB.view.BasePanel', {
           var result = res[0],
             lockInfo = res[1],
             updateDocument = !!me.__mip_ondate
+          const entityChangedMethod = me.__mip_ondate && !me.addByCurrent ? 'newversion' : (me.isEditMode ? 'update' : 'insert')
           if (me.store && me.store.fireModifyEvent) {
             me.store.fireModifyEvent(params, res)
           }
@@ -3219,7 +3220,7 @@ Ext.define('UB.view.BasePanel', {
           // emit entity changed for parent vue component
           UB.connection.emitEntityChanged(me.entityName, {
             entity: me.entityName,
-            method: me.__mip_ondate && !me.addByCurrent ? 'newversion' : (me.isEditMode ? 'update' : 'insert'),
+            method: entityChangedMethod,
             resultData: me.record.data
           })
 
