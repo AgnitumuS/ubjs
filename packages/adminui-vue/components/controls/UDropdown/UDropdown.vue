@@ -16,8 +16,9 @@
       name="dropdown-transition"
       @enter="beforeEnter"
     >
+      <!-- v-if is used instead v-show for faster initial rendering + to ensure dropdown content is recreated according to possible changes -->
       <div
-        v-show="visible && $slots.dropdown"
+        v-if="visible && $slots.dropdown"
         :key="renderKey"
         ref="dropdown"
         tabindex="1"
@@ -143,10 +144,6 @@ export default {
         removeClickOutsideListener(this.clickOutsideListenerId)
       }
     }
-  },
-
-  beforeDestroy () {
-    this.$refs.dropdown.remove()
   },
 
   methods: {

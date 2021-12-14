@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UTableEntity`: changes of `selectedRows` what made from code (js) now reflects to UI. Before this fix UI does not react on such changes
+ - `UTable`: backward compatibility fix - restored emits of `click-row` and `contextmenu-cell` events (in addition to new `click` and `contextmenu`)
  - `USelectEntity.AddNewItem` - prevent error at `onClose` callback, in case child form is an instance of `BasePanel` 
  - `processing.save`: fix deleting of collection items with master-detail relations (by call delete in order what reverse to collection initialization)
  - `UNavbarNotificationsButton` - fix a glitch with opening popup with a huge amount of notifications.
@@ -24,6 +26,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.20.37] - 2021-12-07
 ### Fixed
  - `UTableEntity`: fixed previous (5.20.36) fix with multi-selection
+ - `UDropdown`: fixed appears of dropdown in upper left screen position on second popups (after updating of popperjs@2.11).
+    Popup is now rendered using `v-if` instead of `v-show` for faster initial rendering + to ensure dropdown content is
+    recreated according to possible changes
 
 ## [5.20.36] - 2021-12-07
 ### Changed
