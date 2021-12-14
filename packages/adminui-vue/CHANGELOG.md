@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.20.38] - 2021-12-14
+### Added
  - `UtableEntity` - new events `item-added`, `item-removed`, `item-updated` and `items` are added  
  - `UTableEntity` - newly added row now scrolled into view and highlighted
  - `USelectEntity` now supports a new property `hideActions`. It allows hiding some
@@ -20,10 +31,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    before this fix if current page rows count is === to page size then event is skipped.
    After fix newly added row for "full page" table added into end of table in `pageSize+1` position  
  
-### Deprecated
-
-### Removed
-
 ### Fixed
 - `UTableEntity`: changes of `selectedRows` what made from code (js) now reflects to UI. Before this fix UI does not react on such changes
  - `UTable`: backward compatibility fix - restored emits of `click-row` and `contextmenu-cell` events (in addition to new `click` and `contextmenu`)

@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.20.36] - 2021-12-14
+### Fixed
  - `BasePanel:`- method name value on fire event `entity:changed`. Before changes method: `insert` never fires.
 
 ## [5.20.35] - 2021-12-07
