@@ -550,7 +550,11 @@ export default {
         const shift = content.children.length - this.tableItems.length
         const row = content.children[index + shift]
         row.scrollIntoView()
-        row.classList.add('new-row')
+        const className = 'new-row'
+        row.classList.add(className)
+        row.addEventListener('animationend', (ev)=>{
+          ev.target.classList.remove(className);
+        }, { once: true })
       } catch (err) {
         console.error(err)
       }
@@ -591,7 +595,7 @@ export default {
 .u-table-entity .new-row,
 .u-table-entity .new-row td {
   animation-name: add-new-row;
-  animation-duration: 3s;
+  animation-duration: 5s;
 }
 @keyframes add-new-row {
   from {
