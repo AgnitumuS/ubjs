@@ -209,6 +209,20 @@ export default {
     removeDefaultActions: Boolean,
 
     /**
+     * Allows hiding some default actions.
+     * Actions shall be passed as an array of strings, supported actions for this property:
+     * `lookup`, `edit`, `addNew`, `clear`.
+     */
+    hideActions: {
+      type: Array,
+      required: false,
+      default () {
+        return []
+      },
+      validator: value => value.every(item => ['lookup', 'edit', 'addNew', 'clear'].includes(item))
+    },
+
+    /**
      * Add actions to "more" button
      */
     additionalActions: {
@@ -353,35 +367,51 @@ export default {
       if (this.removeDefaultActions) {
         return []
       }
-      return [{
-        name: 'ShowLookup',
-        caption: this.$ut('selectFromDictionary') + ' (F9)',
-        icon: 'u-icon-dictionary',
-        disabled: this.isReadOnly,
-        handler: this.handleShowDictionary
-      },
-      {
-        name: 'Edit',
-        caption: this.$ut('editSelItem') + ' (Ctrl+E)',
-        icon: 'u-icon-edit',
-        disabled: !this.value || this.editingFormIsOpened,
-        handler: this.handleEditItem
-      },
-      {
-        name: 'Add',
-        caption: this.$ut('addNewItem'),
-        icon: 'u-icon-add',
-        disabled: !this.getEntityName || this.editingFormIsOpened || this.isReadOnly ||
-          !this.$UB.connection.domain.get(this.getEntityName).haveAccessToMethod('addnew'),
-        handler: this.handleAddNewItem
-      },
-      {
-        name: 'Clear',
-        caption: this.$ut('clearSelection') + ' (Ctrl+BackSpace)',
-        icon: 'u-icon-eraser',
-        disabled: !this.value || this.isReadOnly,
-        handler: this.handleClearClick
-      }]
+
+      const defaultActions = []
+
+      if (!this.hideActions.includes('lookup')) {
+        defaultActions.push({
+          name: 'ShowLookup',
+          caption: this.$ut('selectFromDictionary') + ' (F9)',
+          icon: 'u-icon-dictionary',
+          disabled: this.isReadOnly,
+          handler: this.handleShowDictionary
+        })
+      }
+
+      if (!this.hideActions.includes('edit')) {
+        defaultActions.push({
+          name: 'Edit',
+          caption: this.$ut('editSelItem') + ' (Ctrl+E)',
+          icon: 'u-icon-edit',
+          disabled: !this.value || this.editingFormIsOpened,
+          handler: this.handleEditItem
+        })
+      }
+
+      if (!this.hideActions.includes('addNew')) {
+        defaultActions.push({
+          name: 'Add',
+          caption: this.$ut('addNewItem'),
+          icon: 'u-icon-add',
+          disabled: !this.getEntityName || this.editingFormIsOpened || this.isReadOnly ||
+            !this.$UB.connection.domain.get(this.getEntityName).haveAccessToMethod('addnew'),
+          handler: this.handleAddNewItem
+        })
+      }
+
+      if (!this.hideActions.includes('clear')) {
+        defaultActions.push({
+          name: 'Clear',
+          caption: this.$ut('clearSelection') + ' (Ctrl+BackSpace)',
+          icon: 'u-icon-eraser',
+          disabled: !this.value || this.isReadOnly,
+          handler: this.handleClearClick
+        })
+      }
+
+      return defaultActions
     },
 
     actions () {
@@ -644,7 +674,7 @@ export default {
     },
 
     handleShowDictionary () {
-      if (!this.removeDefaultActions) {
+      if (!this.removeDefaultActions && !this.hideActions.includes('lookup')) {
         const selectRepo = this.getRepository().clone()
         selectRepo.orderList = [] // clear order list
         // override fieldList but  keep all possible filters
@@ -705,7 +735,7 @@ export default {
     },
 
     async handleEditItem () {
-      if (!this.removeDefaultActions) {
+      if (!this.removeDefaultActions && !this.hideActions.includes('edit')) {
         let ID = this.value
 
         if (this.valueAttribute !== 'ID') { // row ID is required to open edit form
@@ -734,13 +764,13 @@ export default {
             this.editingFormIsOpened = false
           }
         })
-        this.editingFormIsOpened = true
         this.$UB.core.UBApp.doCommand(config)
+        this.editingFormIsOpened = true
       }
     },
 
     handleAddNewItem () {
-      if (this.removeDefaultActions) return
+      if (this.removeDefaultActions || this.hideActions.includes('addNew')) return
       const config = this.buildAddNewConfig({
         cmdType: this.$UB.core.UBCommand.commandType.showForm,
         entity: this.getEntityName,
@@ -762,7 +792,7 @@ export default {
     },
 
     handleClearClick () {
-      if (this.removeDefaultActions) return
+      if (this.removeDefaultActions || this.hideActions.includes('clear')) return
       this.$emit('input', null, null)
       if (this.dropdownVisible) {
         this.fetchPage()

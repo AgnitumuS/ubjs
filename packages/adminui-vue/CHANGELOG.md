@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `UtableEntity` - new events `item-added`, `item-removed`, `item-updated` and `items` are added  
  - `UTableEntity` - newly added row now scrolled into view and highlighted
+ - `USelectEntity` now supports a new property `hideActions`. It allows hiding some
+  default action. It supports the following actions: `lookup`, `edit`, `addNew`, `clear`
 
 ### Changed
  - `UToolbar`: added saving of the main form before calling the `accessRights` action - some
@@ -696,30 +698,36 @@ export default {
  - `UTableEntity` now supports a new property `hideActions`.  It allows to hide an action
   from all the possible places at once: toolbar, context menu, toolbar dropdown, it also
   disables keyboard shortcuts for the actions.
-  Before the change, to disable an action for entity table, it required something like:  
- ```
-    <!-- Disallow copy -->
-    <template #contextMenuCopy>
-      <div/>
-    </template>
-    <template #toolbarDropdownCopy>
-      <div/>
-    </template>
+  Before the change, to disable an action for entity table, it required something like:
+ ```vue
+  <template>
+    <u-table-entity>
+      ...
+      <!-- Disallow copy -->
+      <template #contextMenuCopy>
+        <div/>
+      </template>
+      <template #toolbarDropdownCopy>
+        <div/>
+      </template>
+    </u-table-entity>
+  </template>
  ```
   And still, it won't affect keyboard actions.  Now it is much easier to disable actions with the
   new property.  It supports the following actions: `addNew`, `copy`, `newVersion`, `showVersions`, `edit`, `delete`,
   `audit`, `summary`, `export`, `link`, `viewMode`
   How, it is possible to control multiple actions with one property and be sure actions will be hidden in all the places:
+ ```vue
+  <template>
+    <u-table-entity
+      :hide-actions="['copy', 'export']"
+      ...
+    >
+      ....
+    </u-table-entity>
+  </template>
  ```
-      <u-table-entity
-        :hide-actions="['copy', 'export']"
-        ...
-      >
-        ....
-      </u-table-entity>
-    </div>
- ```
-   
+
 ### Changed
  - `org_unit-fm`: 'parentID' field is `readonly` instead of `disabled`, that allows to open
     parent form [UBDF-13217]
