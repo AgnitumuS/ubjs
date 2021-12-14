@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `processing.save`: fix deleting of collection items with master-detail relations (by call delete in order what reverse to collection initialization)
+ - `UNavbarNotificationsButton` - fix a glitch with opening popup with a huge amount of notifications.
+  Display only the first 20 ones and hint alert about hidden messages
 
 ## [5.20.37] - 2021-12-07
 ### Fixed

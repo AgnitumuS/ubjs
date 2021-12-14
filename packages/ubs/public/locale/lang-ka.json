@@ -33,6 +33,7 @@
   "reportParamsRequired": "გთხოვთ, შეავსოთ აუცილებელი პარამეტრების პირველ რიგში",
 
   "newMessages": "{0} new messages",
+  "hiddenMessages": "and {0} more messages",
   "youHaveNoNewMessages": "You have no new messages",
   "showFull": "Show full",
   "messageHistoryIsEmpty": "Message history is empty",
