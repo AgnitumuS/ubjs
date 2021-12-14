@@ -16,6 +16,7 @@
       name="dropdown-transition"
       @enter="beforeEnter"
     >
+      <!-- v-if is used instead v-show for faster initial rendering + to ensure dropdown content is recreated according to possible changes -->
       <div
         v-if="visible && $slots.dropdown"
         :key="renderKey"
