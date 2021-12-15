@@ -133,7 +133,7 @@ class DDLGenerator {
    * @param {Array<string>} names Entity names (may be regular expressions)
    * @param {SyncConnection} conn
    * @param {boolean} [unsafe=false]
-   * @return {Object} DDL SQL
+   * @returns {Object} DDL SQL
    */
   generateDDL (names, conn, unsafe = false) {
     const result = {}
@@ -624,13 +624,15 @@ class DDLGenerator {
       refPkDefColumn: getAttributeDBName(entity, 'ID'),
       generateFK: true
     })
-    tableDef.addFK({
-      name: genFKName(attribute.associationManyData, 'DESTID', associatedEntity.sqlAlias, entity.connectionConfig.dialect),
-      keys: ['destID'.toUpperCase()],
-      references: getTableDBName(associatedEntity),
-      refPkDefColumn: getAttributeDBName(associatedEntity, 'ID'),
-      generateFK: true
-    })
+    if (associatedEntity.connectionName === entity.connectionName) { // referential constraint between different connection not supported
+      tableDef.addFK({
+        name: genFKName(attribute.associationManyData, 'DESTID', associatedEntity.sqlAlias, entity.connectionConfig.dialect),
+        keys: ['destID'.toUpperCase()],
+        references: getTableDBName(associatedEntity),
+        refPkDefColumn: getAttributeDBName(associatedEntity, 'ID'),
+        generateFK: true
+      })
+    }
     tableDef.addIndex({
       name: formatName('IDX_', attribute.associationManyData, '_DESTID', entity.connectionConfig.dialect),
       keys: ['destID'.toUpperCase()]
