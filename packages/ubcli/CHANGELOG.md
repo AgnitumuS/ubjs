@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.21.29] - 2021-12-15
+### Fixed
  - for attributes of type "Many" what reference an entity from another DB connection `Foreign Key` for
    `DESTID` column will not be generated
 
