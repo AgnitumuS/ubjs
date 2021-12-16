@@ -1,6 +1,6 @@
 {
   "caption": "Ma'muriy birlik",
-  "description": "Ma'muriy birlik (mamlakat, mintaqa, hal qilish)",
+  "description": "Ma'muriy birlik (mamlakat, mintaqa, aholi punktni)",
   "attributes": [
     {
       "name": "parentAdminUnitID",
@@ -12,15 +12,15 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "fullName",
-      "caption": "To'liq unum"
+      "caption": "To'liq nomi"
     },
     {
       "name": "adminUnitType",
-      "caption": "Qarash joyining turi"
+      "caption": "Ma`muriy birlik turi"
     },
     {
       "name": "caption",

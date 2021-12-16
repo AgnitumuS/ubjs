@@ -4,11 +4,11 @@
   "attributes": [
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "fullName",
-      "caption": "To'liq unum"
+      "caption": "To'liq nomi"
     },
     {
       "name": "code",

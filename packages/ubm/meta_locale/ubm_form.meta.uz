@@ -24,7 +24,7 @@
     },
     {
       "name": "formCode",
-      "caption": "Shakl skript"
+      "caption": "Shakl skripti"
     },
     {
       "name": "model",
@@ -36,11 +36,11 @@
     },
     {
       "name": "isDefault",
-      "caption": "Bajarilish"
+      "caption": "Oddatiy"
     },
     {
       "name": "ID",
-      "caption": "Id"
+      "caption": "ID"
     }
   ]
 }

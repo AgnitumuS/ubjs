@@ -1,6 +1,6 @@
 {
-  "caption": "Yorliqlar",
-  "description": "Ni boshlash uchun yorliq",
+  "caption": "Yarlik",
+  "description": "Yarlik boshlash funktsiyasi",
   "attributes": [
     {
       "name": "desktopID",
@@ -8,7 +8,7 @@
     },
     {
       "name": "parentID",
-      "caption": "Yorliq papkasi"
+      "caption": "Yarlik papkasi"
     },
     {
       "name": "code",
@@ -20,11 +20,11 @@
     },
     {
       "name": "caption",
-      "caption": "Yorliq nomi"
+      "caption": "Yarlik nomi"
     },
     {
       "name": "cmdCode",
-      "caption": "Matn jamoasi"
+      "caption": "Matn komandasi"
     },
     {
       "name": "inWindow",
@@ -36,7 +36,7 @@
     },
     {
       "name": "displayOrder",
-      "caption": "№"
+      "caption": "T/r "
     },
     {
       "name": "iconCls",

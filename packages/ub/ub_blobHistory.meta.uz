@@ -4,7 +4,7 @@
   "attributes": [
     {
       "name": "instance",
-      "caption": "Fayl BDO tarixi"
+      "caption": "Ekzemplyar IDsi"
     },
     {
       "name": "attribute",
@@ -12,7 +12,7 @@
     },
     {
       "name": "revision",
-      "caption": "Qayta ko'rib chiqish"
+      "caption": "Reviziya"
     },
     {
       "name": "permanent",

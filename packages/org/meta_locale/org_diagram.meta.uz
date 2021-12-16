@@ -1,6 +1,6 @@
 {
   "caption": "Diagrammalar",
-  "description": "Diagrammalar",
+  "description": "Tashkiliy strukturalar diagrammalari",
   "attributes": [
     {
       "name": "orgunitID",
@@ -8,11 +8,11 @@
     },
     {
       "name": "caption",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "isdefault",
-      "caption": "Bajarilish"
+      "caption": "Oddatiy bo`yicha"
     },
     {
       "name": "document",

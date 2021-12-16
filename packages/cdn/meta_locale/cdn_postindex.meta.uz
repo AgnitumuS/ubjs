@@ -1,6 +1,6 @@
 {
-  "caption": "Postcodes",
-  "description": "Postcodes",
+  "caption": "Pochta indeksi",
+  "description": "Pochta indeksi",
   "attributes": [
     {
       "name": "code",

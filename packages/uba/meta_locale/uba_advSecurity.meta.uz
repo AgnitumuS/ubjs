@@ -16,15 +16,15 @@
     },
     {
       "name": "refreshIP",
-      "caption": "Ruxsat berilgan IP manzillarini yangilash"
+      "caption": "Ruxsat berilgan IP manzillarini yangilangan"
     },
     {
       "name": "fp",
-      "caption": "Imprint"
+      "caption": "Barmoq izi"
     },
     {
       "name": "refreshFp",
-      "caption": "Yangilash Chop etish"
+      "caption": "Yangilangan barmoq izi"
     },
     {
       "name": "keyMediaName",
@@ -32,7 +32,7 @@
     },
     {
       "name": "refreshKeyMedia",
-      "caption": "Kaliti tashuvchi nomini yangilang"
+      "caption": "Kalit tashuvchi nomini yangilash"
     },
     {
       "name": "additional",

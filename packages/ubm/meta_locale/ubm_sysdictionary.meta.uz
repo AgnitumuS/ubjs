@@ -1,5 +1,5 @@
 {
-  "caption": "Tizim kataloglari",
+  "caption": "Tizim ma`lumotnomalari",
   "attributes": [
     {
       "name": "code",
@@ -7,7 +7,7 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "ubql",

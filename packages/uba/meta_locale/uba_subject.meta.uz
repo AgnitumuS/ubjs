@@ -1,6 +1,6 @@
 {
-  "caption": "Ma'muriyat fanlari",
-  "description": "Ma'muriyat mavzulari - Rollar va foydalanuvchilar",
+  "caption": "Ma'muriyat boshqaruv subyektlari",
+  "description": "Ma'muriyat subyektlari - rollar va foydalanuvchilarni birlashtiradi",
   "attributes": [
     {
       "name": "code",
@@ -8,11 +8,11 @@
     },
     {
       "name": "name",
-      "caption": "Kirish"
+      "caption": "Login"
     },
     {
       "name": "sType",
-      "caption": "Mavzu turi"
+      "caption": "Subyekt turi"
     }
   ]
 }

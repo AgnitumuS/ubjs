@@ -1,6 +1,6 @@
 {
   "caption": "Sozlash",
-  "description": "Axborotni tizim sozlamalari bilan saqlaydigan tashkilot",
+  "description": "Tizim sozlamalari haqida ma'lumot",
   "attributes": [
     {
       "name": "settingKey",
@@ -8,7 +8,7 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "description",

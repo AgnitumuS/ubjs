@@ -1,6 +1,6 @@
 {
-  "caption": "Standart birliklar turlari",
-  "description": "Namunaviy birliklar turlari qo'llanmasi",
+  "caption": "Xodimlar birliklarining turlari",
+  "description": "Xodimlar birliklar turlari ma`lumotnomasi",
   "attributes": [
     {
       "name": "code",
@@ -8,7 +8,7 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     }
   ]
 }

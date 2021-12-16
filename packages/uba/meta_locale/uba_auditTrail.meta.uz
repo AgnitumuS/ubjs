@@ -8,11 +8,11 @@
     },
     {
       "name": "entityinfo_id",
-      "caption": "Kirish kirish identifikatori"
+      "caption": "ID saqlanishlari mohiyati"
     },
     {
       "name": "actionType",
-      "caption": "Harakat qilmoq"
+      "caption": "Harakatlar"
     },
     {
       "name": "actionUser",
@@ -20,7 +20,7 @@
     },
     {
       "name": "actionUserName",
-      "caption": "Kirish"
+      "caption": "Login"
     },
     {
       "name": "actionTime",
@@ -28,27 +28,27 @@
     },
     {
       "name": "remoteIP",
-      "caption": "IP manzili"
+      "caption": "IP manzil"
     },
     {
       "name": "fromValue",
-      "caption": "Eski ma'no"
+      "caption": "Eski qiymati"
     },
     {
       "name": "toValue",
-      "caption": "Yangi qiymat"
+      "caption": "Yangi qiymati"
     },
     {
       "name": "parentEntity",
-      "caption": "Ota-onalar mohiyati"
+      "caption": "Asosiy mohiyati"
     },
     {
       "name": "parentEntityInfo_id",
-      "caption": "Ota-onaga kirish identifikatori"
+      "caption": "ID saqlanishlar mohiyati"
     },
     {
       "name": "request_id",
-      "caption": "Hayit so'rovi"
+      "caption": "ID so'rovi"
     }
   ]
 }

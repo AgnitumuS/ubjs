@@ -1,14 +1,14 @@
 {
-  "caption": "Ro'yxatdan o'tish tugmachasi metr",
-  "description": "Ro'yxatdan o'tish tugmachasi metr",
+  "caption": "Ro'yxatdan o'tish kaliti hisoblagichi",
+  "description": "Ro'yxatdan o'tish kaliti hisoblagichi",
   "attributes": [
     {
       "name": "regKey",
-      "caption": "Ro'yxatdan o'tish tugmasi"
+      "caption": "Ro'yxatdan o'tish kaliti"
     },
     {
       "name": "counter",
-      "caption": "Peshtaxta"
+      "caption": "Hisoblagich"
     }
   ]
 }

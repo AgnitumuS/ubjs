@@ -1,10 +1,10 @@
 {
-  "caption": "Ijrochilar guruhlari",
+  "caption": "Ijrochilar guruhi",
   "description": "Vazifalar uchun ijrochilarning namunaviy guruhlari ma'lumotnomasi",
   "attributes": [
     {
       "name": "parentID",
-      "caption": "Ota-ona tugun"
+      "caption": "Asosiy uzel"
     },
     {
       "name": "groupType",
@@ -20,11 +20,11 @@
     },
     {
       "name": "nameGen",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "nameDat",
-      "caption": "Ism"
+      "caption": "Nomi"
     }
   ]
 }

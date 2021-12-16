@@ -1,22 +1,22 @@
 {
-  "caption": "Ichki tashkilotning tayinlanishi",
-  "description": "Ichki tashkilotning tayinlanish sahifasi ma'lumotnomasi",
+  "caption": "Ichki tashkilotda tayinlanishi",
+  "description": "Ichki tashkilotda tayinlanish ma'lumotnomasi",
   "attributes": [
     {
       "name": "tabNo",
-      "caption": "№"
+      "caption": "Jadval №"
     },
     {
       "name": "employeeID",
-      "caption": "Yorliq raqami"
+      "caption": "Yarlik raqami"
     },
     {
       "name": "staffUnitID",
-      "caption": "Xodimlar bo'limi"
+      "caption": "Xodimlar shtati birligi"
     },
     {
       "name": "employeeOnStaffType",
-      "caption": "Manzil turi"
+      "caption": "Tayinlash turi"
     },
     {
       "name": "description",

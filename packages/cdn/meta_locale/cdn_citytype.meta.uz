@@ -1,6 +1,6 @@
 {
   "caption": "Aholi punktlarining turlari",
-  "description": "Aholi turlarining ma'lumotnomasi",
+  "description": "Aholi punkti turlarining ma'lumotnomasi",
   "attributes": [
     {
       "name": "code",
@@ -8,7 +8,7 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     }
   ]
 }

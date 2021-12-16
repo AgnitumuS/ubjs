@@ -4,7 +4,7 @@
   "attributes": [
     {
       "name": "parentID",
-      "caption": "Ota-ona elementlari"
+      "caption": "Asosiy elementlar"
     },
     {
       "name": "code",
@@ -20,7 +20,7 @@
     },
     {
       "name": "vatCode",
-      "caption": "№ QQS"
+      "caption": "QQS guvohnoma raqami"
     },
     {
       "name": "name",
