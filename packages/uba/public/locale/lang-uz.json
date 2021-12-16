@@ -3,15 +3,15 @@
   "changedImageAttachment": "Hujjat rasmini o'zgartirish",
   "auditImageSize": "Rasm hajmi (bayt)",
   "uba": {
-      "changePassword": {
-          "newPassword": {
-              "fieldRequirementsError": "Talablarga javob bermaydi",
-              "matchWithLoginError": "Parol login bilan mos keladi"
-          },
-          "retypePassword": {
-              "errorText": "Parollarning mos kelmasligi"
-          }
+    "changePassword": {
+      "newPassword": {
+        "fieldRequirementsError": "Talablarga javob bermaydi",
+        "matchWithLoginError": "Parol login bilan mos keladi"
+      },
+      "retypePassword": {
+        "errorText": "Parollarning mos kelmasligi"
       }
+    }
   },
   "auditImageVersion": "Versiya",
   "User": "Foydalanuvchi",
@@ -19,32 +19,32 @@
   "changeLanguage": "Tilni o'zgartirish",
   "changeLanguageRequireRestart": "Ilova yopiladi, saqlanmagan barcha ma'lumotlar yo'qoladi. Davom etasizmi?",
   "noMoreLanguages": "(ko'p tilli qo'llab-quvvatlash o'chirilgan)",
-  "entity": "Tashkilot",
+  "entity": "Jadval",
   "actionType": "Amal",
   "actionUser": "Foydalanuvchi",
   "actionTime": "Vaqt",
   "remoteIP": "IP-manzil",
-  "entityinfo_id": "Korxonaning identifikatori",
+  "entityinfo_id": "Jadvalning ID saqlanmasi",
   "targetUser": "Maqsadli foydalanuvchi",
   "nameAttr": "Xususiyat nomi",
-  "fromValue": "Eski qiymat",
-  "toValue": "Yangi qiymat",
+  "fromValue": "Eski qiymati",
+  "toValue": "Yangi qiymati",
   "changedAttributes": "O'zgartirilgan atributlar",
-  "clarifyingEvent": "Hodisa aniqlandi",
-  "attachedDocumentImage": "Biriktirilgan hujjat rasmi",
+  "clarifyingEvent": "Aniqlangan hodisa",
+  "attachedDocumentImage": "Hujjatga tasviri biriktirildi",
   "editedImageDocument": "Hujjat tasviri tahrirlangan",
   "removedDocumentImage": "Hujjat tasviri olib tashlandi",
-  "auditImageStore": "Store",
+  "auditImageStore": "Saqlash qurilmasi",
   "auditImageFName": "Fayl nomi",
-  "auditImageOrigName": "Rasmning asl ismi",
+  "auditImageOrigName": "Asl fayl nomi",
   "auditImageRelPath": "Yo'l",
   "auditImageCT": "Tarkib turi",
   "auditImageMD5": "Tekshirish summasi (MD5)",
-  "auditImageRevision": "Qayta ko'rib chiqish",
+  "auditImageRevision": "Reviziya",
   "SecurityAudit": "Xavfsizlik auditi",
-  "Record modified by another user": "Yozuv boshqa foydalanuvchi tomonidan o'zgartirilgan",
+  "Record modified by another user": "Yozuvni ko‘rayotganingizda, u boshqa foydalanuvchi tomonidan o‘zgartirilgan. Ma'lumotlar yangilanishi kerak",
   "needChangePassword": "Keyingi kirishda foydalanuvchi parolini o'zgartirishi kerak",
-  "checkAll": "Barchasini tekshiring",
+  "checkAll": "Barchasini tanlash",
   "roles": "Rollar",
-  "Duplicate user name (may be in different case)": "Bu foydalanuvchi ismiga ega bo'lgan foydalanuvchi (katta harf sezgir emas) allaqachon ro'yxatdan o'tgan. Boshqa kirishni harakat qilib ko'ring"
+  "Duplicate user name (may be in different case)": "Bu foydalanuvchi nomiga ega (katta katta-kichik harflardan farqli) foydalanuvchi allaqachon roʻyxatdan oʻtgan. Boshqa loginni sinab ko'ring"
 }

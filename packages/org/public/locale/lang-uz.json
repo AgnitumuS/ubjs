@@ -1,10 +1,10 @@
 {
-    "orgEmployee": "Xodim",
-    "orgUnit": "Org. birlik",
-    "orgStaffUnit": "Org. xodimlar bo'limi",
-    "orgProfession": "Kasblar",
-    "orgOrganization": "Tashkilotlar",
-    "orgEmployeeOnStaff": "Xodimlardagi xodim",
-    "orgTreeCanNotBeCyclical": "Daraxtlar tsiklik bo'lmaydi",
-    "orgDepartment": "Bo'lim"
+  "orgEmployee": "Ichki tashkilot xodimlari",
+  "orgUnit": "Ichki tashkiliy xodimlar",
+  "orgStaffUnit": "Ichki shtatlar birligi",
+  "orgProfession": "Kasblar",
+  "orgOrganization": "Ichki tashkilotlar",
+  "orgEmployeeOnStaff": "Ishchilarni tayinlash",
+  "orgTreeCanNotBeCyclical": "Daraxt tsikilli bo'lishi mumkin emas",
+  "orgDepartment": "Bo'lim"
 }
