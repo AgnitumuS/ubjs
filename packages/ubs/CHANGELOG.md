@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added  "Loading.." mask during exports report to XLSX
 
 ### Changed
 
