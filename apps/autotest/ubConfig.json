@@ -31,6 +31,7 @@
 		"performanceCounters": false
 	},
 	"security": {
+		"oneSessionPerUser": %UB_ONE_SESSION_PER_USER||false%,
 		"zones": [
 			{
 			    "name":  "internal",
@@ -277,10 +278,20 @@
 				"isDefault": true,
 				"dialect": "SQLite3",
 				"databaseName": "%UB_APPDATA%localdb/DB.sqlite3",
+//				"replicatedAs": "main_repl",
 				"supportLang": ["en", "uk"],
 				"advSettings": "Synchronous=Off",
 				"statementMaxMemoryMb": 1
 			},
+//			{
+//				"name": "main_repl",
+//				"driver": "SQLite3",
+//				"dialect": "SQLite3",
+//				"databaseName": "%UB_APPDATA%localdb/DB_repl.sqlite3",
+//				"supportLang": ["en", "uk"],
+//				"advSettings": "Synchronous=Off",
+//				"statementMaxMemoryMb": 1
+//			},
 			//#endif
 			//#ifdef(%UB_USE_MYSQL%)
 			{
