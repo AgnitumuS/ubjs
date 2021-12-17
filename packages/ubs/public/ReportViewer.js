@@ -212,17 +212,28 @@ Ext.define('UBS.ReportViewer', {
     } else {
       repParams = me.report.incomeParams
     }
+    if (me.getEl()) {
+      me.getEl().mask(UB.i18n('pleaseWait'))
+    }
     Ext.create('UBS.UBReport', {
       code: me.report.reportCode,
       type: excelFormat,
       params: repParams,
       language: $App.connection.userLang()
     }).makeReport().then(function (data) {
+      if (me.getEl()) {
+        me.getEl().unmask()
+      }
       let blobData = new Blob(
         [data.reportData],
         {type: excelFormat.toLowerCase() === 'xls' ? 'application/vnd.ms-excel' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
       )
       window.saveAs(blobData, me.report.reportCode + '.' + excelFormat)
+    }, function (err) {
+      if (me.getEl()) {
+        me.getEl().unmask()
+      }
+      throw err
     })
   },
 
