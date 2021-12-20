@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - "one session per user" mode now controlled by UBA model. In ubConfig.json added parameter `security.oneSessionPerUser` (default is false).
+   This give addition level of security in some edge cases.
+   
+   *WARNING* - should be used only on instances what works with end users (clients are browsers)
 
 ### Changed
 

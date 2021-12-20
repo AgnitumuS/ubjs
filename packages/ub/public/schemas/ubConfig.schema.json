@@ -491,6 +491,11 @@
           "default": true,
           "description": "Disable user name and password checking for CERT auth. If `false` uiSettings.adminUI.authenticationCert.requireUserName should be set to true"
         },
+        "oneSessionPerUser": {
+          "type": "boolean",
+          "default": false,
+          "description": "Remove all existed user sessions on login (logout all other sessions for user with the same name). *WARNING* - should be used only on instances what works with end users (clients are browsers)"
+        },
         "domainMap": {
           "type": "object",
           "description": "Dictionary for converting fully qualified domain names to NT4-style NetBIOS names (Linux only). If empty or key not found then FQND will be truncated on first dot"

@@ -31,7 +31,6 @@
 		"performanceCounters": false
 	},
 	"security": {
-		"oneSessionPerUser": %UB_ONE_SESSION_PER_USER||false%,
 		"zones": [
 			{
 			    "name":  "internal",
@@ -66,6 +65,7 @@
 		//"lockOutInDB": false,
 		//#ifdef(%UB_USE_DSTU%)
 		"simpleCertAuth": true,
+		"oneSessionPerUser": %UB_ONE_SESSION_PER_USER||false%,
 		"dstu": {
 			"findCertificateBySerial": true,
 			"iit": {

@@ -106,7 +106,11 @@ function onUserLogin (req) {
       : function () { return { enabled: false } }
   }
   const advCheckData = doCheckAdvancedSecurity(req)
-
+  if (App.serverConfig.security.oneSessionPerUser) {
+    if (App.removeUserSessions(Session.userID, true)) {
+      console.log(`SECURITY: all existed sessions for user ${Session.uData.login} are removed`)
+    }
+  }
   if (ubaAuditPresent) { // uba_audit exists
     try {
       auditStore.run('insert', {
