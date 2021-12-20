@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UB.ux.Multifilter`: for composite attributes in `fieldList` without flag `simpleFilter: true`,
+ build filter based on the full attribute name instead of its first part.
 
 ### Deprecated
 
