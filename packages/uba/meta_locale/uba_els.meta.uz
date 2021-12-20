@@ -1,5 +1,5 @@
 {
-  "caption": "Usul huquqlari (ELIS)",
+  "caption": "(ELS ) Usul huquqlari ",
   "description": "Metabaz usullariga qanday rollar foydalanish huquqiga ega",
   "attributes": [
     {
@@ -12,15 +12,15 @@
     },
     {
       "name": "disabled",
-      "caption": "Nogiron"
+      "caption": "O`chirilgan"
     },
     {
       "name": "entityMask",
-      "caption": "Essence maskasi"
+      "caption": "Maska mohiyati"
     },
     {
       "name": "methodMask",
-      "caption": "Usul niqobi"
+      "caption": "Maska usullari"
     },
     {
       "name": "ruleType",

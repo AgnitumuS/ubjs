@@ -1,5 +1,5 @@
 {
-  "caption": "Ish stollari",
+  "caption": "Ish stollari boshqarish",
   "attributes": [
     {
       "name": "instanceID",
@@ -7,7 +7,7 @@
     },
     {
       "name": "admSubjID",
-      "caption": "Ma'muriyat mavzusi"
+      "caption": "Boshqaruv subyekti"
     }
   ]
 }

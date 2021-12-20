@@ -1,6 +1,6 @@
 {
-  "caption": "Xabarlar",
-  "description": "Katalog xabarlari",
+  "caption": "Lavozimlar",
+  "description": "Qarzdorlar ro`yxati",
   "attributes": [
     {
       "name": "code",
@@ -8,11 +8,11 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "fullName",
-      "caption": "To'liq unum"
+      "caption": "To'liq nomi"
     },
     {
       "name": "nameGen",
@@ -20,7 +20,7 @@
     },
     {
       "name": "nameDat",
-      "caption": "Sanalarda ism. Cho'chqa"
+      "caption": "Sanalarda Nomi. Cho'chqa"
     },
     {
       "name": "fullNameGen",

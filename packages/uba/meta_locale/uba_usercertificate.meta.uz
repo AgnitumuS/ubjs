@@ -16,7 +16,7 @@
     },
     {
       "name": "serial",
-      "caption": "Ishlab chiqarish raqami"
+      "caption": "Seriya raqami"
     },
     {
       "name": "certificate",
@@ -36,15 +36,15 @@
     },
     {
       "name": "disabled",
-      "caption": "Nogiron"
+      "caption": "O`chirilgan"
     },
     {
       "name": "revoked",
-      "caption": "Olib chiqish"
+      "caption": "Qaytarib olingan"
     },
     {
       "name": "revocationDate",
-      "caption": "Ko'rish sanasi"
+      "caption": "Qaytarib olingan sana"
     }
   ]
 }

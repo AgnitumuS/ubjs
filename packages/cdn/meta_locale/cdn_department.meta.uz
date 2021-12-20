@@ -1,6 +1,6 @@
 {
   "caption": "Tashqi bo'limlar",
-  "description": "Tashqi birliklarning katalogi",
+  "description": "Tashqi birliklarning ma`lumotnomasi",
   "attributes": [
     {
       "name": "code",
@@ -12,7 +12,7 @@
     },
     {
       "name": "fullName",
-      "caption": "To'liq unum"
+      "caption": "To'liq nomi"
     },
     {
       "name": "description",

@@ -1,6 +1,6 @@
 {
   "caption": "Manzillar",
-  "description": "Manzil katalogi",
+  "description": "Manzillar ma`lumotnomasi",
   "attributes": [
     {
       "name": "addressType",
@@ -12,7 +12,7 @@
     },
     {
       "name": "subjectID",
-      "caption": "Mavzu"
+      "caption": "Subyekt"
     }
   ]
 }

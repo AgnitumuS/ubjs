@@ -8,11 +8,11 @@
     },
     {
       "name": "firstName",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "middleName",
-      "caption": "Otasini ismi"
+      "caption": "Otasining ismi"
     },
     {
       "name": "description",
@@ -20,27 +20,27 @@
     },
     {
       "name": "sexType",
-      "caption": "Jins"
+      "caption": "Jinsi"
     },
     {
       "name": "uniqNum",
-      "caption": "Kadrlar soni"
+      "caption": "Tabel raqami"
     },
     {
       "name": "suffix",
-      "caption": "Qoplamoq"
+      "caption": "Suffiks"
     },
     {
       "name": "shortFIO",
-      "caption": "Qisqa ism"
+      "caption": "Qisqa F.I.O"
     },
     {
       "name": "fullFIO",
-      "caption": "To'liq ism"
+      "caption": "To'liq F.I.O"
     },
     {
       "name": "apply",
-      "caption": "Shikoyat qilish"
+      "caption": "Murojotnoma"
     },
     {
       "name": "lastNameGen",
@@ -52,47 +52,47 @@
     },
     {
       "name": "firstNameGen",
-      "caption": "Ism"
+      "caption": "Ismi"
     },
     {
       "name": "firstNameDat",
-      "caption": "Ism"
+      "caption": "Ismi"
     },
     {
       "name": "middleNameGen",
-      "caption": "Otasini ismi"
+      "caption": "Otasini Nomii"
     },
     {
       "name": "middleNameDat",
-      "caption": "Otasini ismi"
+      "caption": "Otasini Nomii"
     },
     {
       "name": "shortFIOGen",
-      "caption": "Qisqa ism"
+      "caption": "Qisqa Nomi"
     },
     {
       "name": "shortFIODat",
-      "caption": "Qisqa ism"
+      "caption": "Qisqa Nomi"
     },
     {
       "name": "fullFIOGen",
-      "caption": "To'liq ism"
+      "caption": "To'liq Nomi"
     },
     {
       "name": "fullFIODat",
-      "caption": "To'liq ism"
+      "caption": "To'liq Nomi"
     },
     {
       "name": "applyGen",
-      "caption": "Shikoyat qilish"
+      "caption": "Murojat qilish"
     },
     {
       "name": "applyDat",
-      "caption": "Shikoyat qilish"
+      "caption": "Murojat qilish"
     },
     {
       "name": "departmentID",
-      "caption": "Bo'lim"
+      "caption": "Departament"
     },
     {
       "name": "organizationID",
@@ -100,7 +100,7 @@
     },
     {
       "name": "addrText",
-      "caption": "Qabul qiluvchi so'zi"
+      "caption": "Murojaat qiluvchining so'zlari"
     }
   ]
 }

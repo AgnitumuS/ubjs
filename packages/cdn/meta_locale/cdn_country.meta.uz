@@ -8,11 +8,11 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "fullName",
-      "caption": "To'liq sarlavha"
+      "caption": "To'liq nomi"
     },
     {
       "name": "intCode",

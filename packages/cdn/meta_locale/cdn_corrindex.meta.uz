@@ -1,6 +1,6 @@
 {
-  "caption": "Korrespondentlik ko'rsatkichlari",
-  "description": "Korrespondentlik ko'rsatkichlari ma'lumotnomasi",
+  "caption": "Korrespondentlik indeksi",
+  "description": "Korrespondentlik indeksi ma'lumotnomasi",
   "attributes": [
     {
       "name": "code",
@@ -8,11 +8,11 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "fullName",
-      "caption": "To'liq unum"
+      "caption": "To'liq nomi"
     }
   ]
 }

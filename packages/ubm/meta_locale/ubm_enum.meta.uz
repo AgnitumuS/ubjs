@@ -12,7 +12,7 @@
     },
     {
       "name": "shortName",
-      "caption": "Qisqa ism"
+      "caption": "Qisqa Nomi"
     },
     {
       "name": "name",
@@ -20,7 +20,7 @@
     },
     {
       "name": "sortOrder",
-      "caption": "№"
+      "caption": "T/r "
     }
   ]
 }

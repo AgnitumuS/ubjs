@@ -15,11 +15,11 @@
     },
     {
       "name": "logText",
-      "caption": "Barcha harakatlar haqida qatl etilgan ssenariydan jurnal"
+      "caption": "Bajarilgan barcha skriptlar harakatlari"
     },
     {
       "name": "resultError",
-      "caption": "Natijada xato kodi. 0 = Xatolar yo'q"
+      "caption": "Natija xato kodi. 0 = Xatolar yo'q"
     },
     {
       "name": "resultErrorMsg",

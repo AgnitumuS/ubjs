@@ -1,6 +1,6 @@
 {
   "caption": "Ichki tashkilot xodimlari",
-  "description": "Ichki tashkilot xodimlarining katalogi",
+  "description": "Ichki tashkilot xodimlarining ma`lumotnomasi",
   "attributes": [
     {
       "name": "code",
@@ -16,7 +16,7 @@
     },
     {
       "name": "firstName",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "middleName",
@@ -36,19 +36,19 @@
     },
     {
       "name": "suffix",
-      "caption": "Qoplamoq"
+      "caption": "Suffiks"
     },
     {
       "name": "shortFIO",
-      "caption": "Qisqa phno"
+      "caption": "Qisqa F.I.O"
     },
     {
       "name": "fullFIO",
-      "caption": "To'liq ism"
+      "caption": "To'liq F.I.O"
     },
     {
       "name": "apply",
-      "caption": "Shikoyat qilish"
+      "caption": "Murojat"
     },
     {
       "name": "lastNameGen",
@@ -60,43 +60,43 @@
     },
     {
       "name": "firstNameGen",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "firstNameDat",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "middleNameGen",
-      "caption": "Otasini ismi"
+      "caption": "Otasini Nomii"
     },
     {
       "name": "middleNameDat",
-      "caption": "Otasini ismi"
+      "caption": "Otasini Nomii"
     },
     {
       "name": "shortFIOGen",
-      "caption": "Qisqa ism"
+      "caption": "Qisqa Nomi"
     },
     {
       "name": "shortFIODat",
-      "caption": "Qisqa ism"
+      "caption": "Qisqa Nomi"
     },
     {
       "name": "fullFIOGen",
-      "caption": "To'liq ism"
+      "caption": "To'liq Nomi"
     },
     {
       "name": "fullFIODat",
-      "caption": "To'liq ism"
+      "caption": "To'liq Nomi"
     },
     {
       "name": "applyGen",
-      "caption": "Shikoyat qilish"
+      "caption": "Murojat"
     },
     {
       "name": "applyDat",
-      "caption": "Shikoyat qilish"
+      "caption": "Murojat"
     },
     {
       "name": "facsimile",
@@ -108,23 +108,23 @@
     },
     {
       "name": "firstNameObj",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "middleNameObj",
-      "caption": "Otasini ismi"
+      "caption": "Otasini Nomii"
     },
     {
       "name": "shortFIOObj",
-      "caption": "Qisqa ism"
+      "caption": "Qisqa Nomi"
     },
     {
       "name": "fullFIOObj",
-      "caption": "To'liq ism"
+      "caption": "To'liq Nomi"
     },
     {
       "name": "applyObj",
-      "caption": "Shikoyat qilish"
+      "caption": "Murojat"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "caption": "Standart kasblar",
-  "description": "Standart kasblar katalogi",
+  "description": "Standart kasblar ma`lumotnomasi",
   "attributes": [
     {
       "name": "code",
@@ -8,7 +8,7 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "description",
