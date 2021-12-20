@@ -767,4 +767,65 @@ and environment variable `UB_DB_STATEMENT_TIME_LIMIT` sets to consumer group nam
 > Oracle error message is: 
 >  - `ORA-00040: active time limit exceeded - call aborted`  in case `SWITCH_TIME` resource plan parameter exceed
 >  - `ORA-56735: elapsed time limit exceeded - call aborted` in case `SWITCH_ELAPSED_TIME` resource plan parameter exceed
- 
+
+## Horizontal scalability using replicas
+Starts from `UB@5.12.12EE` server can be configured to use a database replicas for horizontal scalability.
+
+> Replication itself should be configured on database level.
+
+In `ubConfig.json` replicated (secondary) database connection should be defined as usual (we recommend naming it as original connection name + `_repl` suffix).
+For primary database connection parameter `replicatedAs` should be a secondary connection name. Example (ifdefs are optional):
+
+```json5
+{
+  "connections": [
+    {
+        "name": "main",
+        "driver": "Oracle",
+        "isDefault": true,
+        "dialect": "Oracle11",
+        "serverName": "...",
+        "userID": "..",
+        "password": ".."
+        //ifdef(%UB_USE_REPLICA%)
+        ,"replicatedAs": "main_repl",
+        //endif
+    },
+    //ifdef(%UB_USE_REPLICA%)
+    {
+      "name": "main_repl",
+      "driver": "Oracle",
+      "isDefault": true,
+      "dialect": "Oracle11",
+      "serverName": "replicated servers",
+      "userID": "..",
+      "password": ".."
+    }
+    //endif
+  ]  
+}
+```
+
+Now business logic can add a hint for server to use a replicated database for some king of select queries either by adding
+a third parameter for `DataStore.runSQL`:
+```js
+const store = UB.DataStore('entity_name')
+store.runSQL('select ..', { param: value }, true /* use replica */)
+```
+
+or using `Repository.misc`
+
+```js
+const data = UB.Repository('entity_name').attrs('one').misc({ __useReplica: true }).selectAsObject() 
+```
+
+If entity connection has `replicatedAs` then server (EE edition) uses replicated connection for such queries.
+For SE edition or if replica is not defined for connection `useReplica` is ignored.
+
+> *WARNING* always remember what secondary (replicated) database in most case is behind primary, sometimes behind 1 second,
+> sometimes more, depending on replication technology used. In any case data modified in active transaction on primary
+> database are never present in secondary until transaction is comited 
+> 
+> Use secondary database ONLY for queries what:
+> - do not expect to read a data modified in current transaction (current endpoint context)
+> - possible time lag is not critical for user. For example check current money balance using replica is a bad idea

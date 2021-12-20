@@ -837,6 +837,10 @@
                 "type": "Number",
                 "default": 50,
                 "description": "Maximum fetch size for DataStore. If a result set exceeds this limit, an Exception is raised. This avoids unexpected OutOfMemory errors and server crash when incorrect statement what returns too many rows or too big content are executed"
+              },
+              "replicatedAs":  {
+                "type": "string",
+                "description": "In case replica exists for this database/schema - name of the connection for replicated DB. `Repository.useReplica()` for such connections will redirect SQL query to replic of the DB"
               }
             }
           }

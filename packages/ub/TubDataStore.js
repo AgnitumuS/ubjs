@@ -19,7 +19,6 @@ const LocalDataStore = csShared.LocalDataStore
  *
  *  To retrieve data from database using build-in ORM (execute entity `select` method) preferred way is
  *  to use {@link module:@unitybase/ub#Repository UB.Repository} fabric function.
- *
  * @class TubDataStore
  */
 
@@ -31,6 +30,7 @@ const LocalDataStore = csShared.LocalDataStore
  *   - Array-of-object : '[{field1Name: row1field1Value, ..., fieldKName: row1fieldKValue}, ....]'
  *
  *  Can (optionally) convert source field names to new names using keyMap array.
+ *
  *  @example
  const UB = require('@unitybase/ub')
  var ds = UB.DataStore('my_entity')
@@ -74,11 +74,10 @@ const LocalDataStore = csShared.LocalDataStore
  // or use mapping
  ds.initialize([[10, 'Jon', 10], [20, 'Smith', 63]],
     ['ID', {from: 2, to: 'age'}, {from: 1, to: 'name'}])
-
- * @method initialize
+ * @function initialize
  * @memberOf TubDataStore
- * @param {Object|Array} source
- * @param {Array.<String|Object>} [keyMap] Optional mapping of source field names to new field names
+ * @param {object | Array} source
+ * @param {Array<string | object>} [keyMap] Optional mapping of source field names to new field names
  * @returns {TubDataStore}
  */
 TubDataStore.initialize = function (source, keyMap) {
@@ -86,6 +85,10 @@ TubDataStore.initialize = function (source, keyMap) {
   const resultFields = []
   const sourceFields = []
 
+  /**
+   * @param {Array<string | object>} keyMap
+   * @param {boolean} [isIndexBased]
+   */
   function keyMap2Mapping (keyMap, isIndexBased) {
     for (let i = 0, l = keyMap.length; i < l; i++) {
       const elm = keyMap[i]
@@ -163,7 +166,7 @@ TubDataStore.initialize = function (source, keyMap) {
   return this
 }
 
-if (TubDataStore.hasOwnProperty('entity')) {
+if (Object.prototype.hasOwnProperty.call(TubDataStore, 'entity')) {
   throw new Error(`Package folder require deduplication.
 @unitybase/ub must present only once - inside ./node_modules/@unitybase/ub folder.
 All other appearances must be either a symbolic links created by lerna or not exists at all
@@ -176,6 +179,7 @@ To solve this problem:
 
 /**
  * Entity metadata
+ *
  * @member {UBEntity} entity
  * @memberOf TubDataStore.prototype
  */
@@ -188,6 +192,7 @@ Object.defineProperty(TubDataStore, 'entity', {
 
 /**
  * Active dataset name we work with
+ *
  * @example
  let store = ctx.dataStore
  let prevData = store.currentDataName
@@ -197,7 +202,6 @@ Object.defineProperty(TubDataStore, 'entity', {
  } finally {
    store.currentDataName = prevData
  }
-
  * @member DATA_NAMES
  * @memberOf TubDataStore
  */
@@ -221,9 +225,9 @@ TubDataStore.DATA_NAMES = {
  *  - sets a BLOB attribute value in execParams to permanent blob info
  *
  * @param {ubMethodParams} ctx
- * @param {Boolean} isUpdate
- * @return {Boolean} True in case some of document type attributes actually changed
- * @method commitBLOBStores
+ * @param {boolean} isUpdate
+ * @returns {boolean} True in case some attributes of document type are actually changed
+ * @function commitBLOBStores
  * @memberOf TubDataStore
  */
 TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
@@ -323,19 +327,18 @@ TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
      allowedAppMethods: 'runList'
    }
  })
-
- * @method insert
+ * @function insert
  * @memberOf TubDataStore
  * @param {ubRequest} ubq
- * @return {null|number|Array}
+ * @returns {null|number|Array}
  */
-TubDataStore.insert = function(ubq) {
+TubDataStore.insert = function (ubq) {
   const method = ubq.method || 'insert'
   this.run(method, ubq)
   if (!ubq.fieldList || !ubq.fieldList.length) {
     return null // no field list or it is empty
   } else if ((ubq.fieldList.length === 1) && (ubq.fieldList[0] === 'ID')) {
-    return this.get(0) //return ID
+    return this.get(0) // return ID
   } else {
     const storeData = this.getAsJsArray()
     return storeData.data[0]
@@ -350,12 +353,11 @@ TubDataStore.insert = function(ubq) {
  * In opposite to `insert` method values in result are PARSED based on Domain (as in AsyncConnection) - so values
  * for boolean attributes is true/false, date is typeof Date etc.
  *
- * @method insertAsObject
+ * @function insertAsObject
  * @memberOf TubDataStore
  * @param {ubRequest} ubq
- * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
- * @returns {Object|null}
- *
+ * @param {object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
+ * @returns {object | null}
  * @example
 
  const STORE = UB.DataStore('uba_role')
@@ -369,7 +371,6 @@ TubDataStore.insert = function(ubq) {
 }, {mi_modifyDate: 'modifiedAt'})
  console.log(newRole) // {ID: 332462911062017, name: 'testRole1', allowedAppMethods: 'runList', mi_modifyDate: 2020-12-21T15:45:01.000Z}
  console.log(newRole.modifiedAt instanceof Date) //true
-
  */
 TubDataStore.insertAsObject = function (ubq, fieldAliases) {
   const method = ubq.method || 'insert'
@@ -378,7 +379,7 @@ TubDataStore.insertAsObject = function (ubq, fieldAliases) {
     return null // no field list or it is empty
   } else {
     const storeData = this.getAsJsArray()
-    const res = LocalDataStore.convertResponseDataToJsTypes(App.domainInfo, {entity: this.entityCode, resultData: storeData})
+    const res = LocalDataStore.convertResponseDataToJsTypes(App.domainInfo, { entity: this.entityCode, resultData: storeData })
     return (res.resultData && res.resultData.data && res.resultData.data.length)
       ? LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)[0]
       : null
@@ -390,12 +391,12 @@ TubDataStore.insertAsObject = function (ubq, fieldAliases) {
  *
  * If no field list passed - return null (this is faster), else return array of attribute values passed to `fieldList`.
  *
- * @method update
+ * @function update
  * @memberOf TubDataStore
  * @param {ubRequest} ubq
- * @return {*}
+ * @returns {*}
  */
-TubDataStore.update = function(ubq) {
+TubDataStore.update = function (ubq) {
   const method = ubq.method || 'update'
   this.run(method, ubq)
   if (!ubq.fieldList || !ubq.fieldList.length) {
@@ -412,19 +413,18 @@ TubDataStore.update = function(ubq) {
  *  - If fieldList passed in the ubq, values in result are PARSED based on Domain (as in AsyncConnection) - so values
  * for boolean attributes is true/false, date is typeof Date etc.
  *
- * @method updateAsObject
+ * @function updateAsObject
  * @memberOf TubDataStore
  * @param {ubRequest} ubq
- * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
- * @returns {Object|null}
-*/
-TubDataStore.updateAsObject = function(ubq, fieldAliases) {
+ * @param {object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
+ * @returns {object | null}
+ */
+TubDataStore.updateAsObject = function (ubq, fieldAliases) {
   if (!ubq.method) {
     ubq.method = 'update'
   }
   return this.insertAsObject(ubq, fieldAliases)
 }
-
 
 if (typeof TubDataStore.getAsJsArray !== 'function') { // fallback to JSON.parse for UB server < 5.18.0
   TubDataStore.getAsJsArray = function () {
