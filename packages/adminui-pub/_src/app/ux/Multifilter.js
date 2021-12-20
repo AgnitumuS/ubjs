@@ -407,12 +407,15 @@ Ext.define('UB.ux.Multifilter', {
       entity = grid.entityName,
       attribute, isDictFilter = false
 
-    attrChain = attrName.split('.')
-    if (attrChain.length > 1 && !gridColumn.simpleFilter) {
-      fieldList = grid.store.ubRequest.fieldList
-      if (fieldList.indexOf(attrChain[0]) >= 0) {
-        attrName = attrChain[0]
-        isDictFilter = true
+    if (!gridColumn.simpleFilter) {
+      const dotIndex = attrName.lastIndexOf('.')
+      if (dotIndex > 0) {
+        fieldList = grid.store.ubRequest.fieldList
+        const dictAttrName = attrName.slice(0, dotIndex)
+        if (fieldList.indexOf(dictAttrName) >= 0) {
+          attrName = dictAttrName
+          isDictFilter = true
+        }
       }
     }
     attribute = $App.domainInfo.get(entity).attr(attrName)
