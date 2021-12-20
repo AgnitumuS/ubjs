@@ -729,21 +729,21 @@ SyncConnection.prototype.insertAsObject = function (ubq, fieldAliases) {
  * If no field list passed at all - return response.resultData (null usually).
  *
  * @example
- const testRole = conn.addNew({
-    entity: 'uba_role',
-    fieldList: ['ID', 'name', 'allowedAppMethods'],
-    execParams: {
-      name: 'testRole1',
-      allowedAppMethods: 'runList'
-    }
-  })
- console.log(testRole) //[3000000000200,"testRole1","runList"]
+const testRole = conn.addNew({
+  entity: 'uba_role',
+  fieldList: ['ID', 'name', 'allowedAppMethods'],
+  execParams: {
+    name: 'testRole1',
+    allowedAppMethods: 'runList'
+  }
+})
+console.log(testRole) //[3000000000200,"testRole1","runList"]
 
- const testRoleID = conn.addNew({
-    entity: 'uba_role',
-    fieldList: ['ID']
-  })
- console.log(testRoleID) //3000000000200
+const testRoleID = conn.addNew({
+  entity: 'uba_role',
+  fieldList: ['ID']
+})
+console.log(testRoleID) //3000000000200
  *
  * @param {ubRequest} ubq
  * @return {*}
