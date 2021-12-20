@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `Repository` and `DataStore` now supports use a replicated read-only database connection for running a `'select'` queries:
+
+   `Repository.misc({__useReplica: true})` and `DataStore.runSQL(query, params, useReplica=false)`
+
+   In case `replicatedAs` parameter is defined for entity connection (EE edition only) server will choose replica,
+   for SE or in case there is no replica for connection parameter is ignored.
+ 
 
 ### Changed
 
