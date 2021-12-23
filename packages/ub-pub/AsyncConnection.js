@@ -892,6 +892,10 @@ UBConnection.prototype.xhr = function (config) {
         }
       }
 
+      if (reason.status === 403) {
+        throw new ubUtils.UBError('Access deny')
+      }
+
       if (reason.status === 413) { // Request Entity Too Large
         throw new ubUtils.UBError('Request Entity Too Large')
       }
