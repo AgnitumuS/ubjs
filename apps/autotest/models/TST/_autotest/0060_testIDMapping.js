@@ -6,7 +6,7 @@ const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 const TEST_NAME = 'ID mapping'
 
-module.exports = function runFTSTest (options) {
+module.exports = function runTestIDMapping (options) {
   if (!options) {
     const opts = cmdLineOpt.describe('', TEST_NAME)
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)

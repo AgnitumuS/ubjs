@@ -13,11 +13,6 @@ function testOnUserLogin () {
     tstStrArray: ['1', '2', '3'],
     tstNested: { a: 1, b: '2' }
   })
-  if (App.serverConfig.security.oneSessionPerUser) {
-    if (App.removeUserSessions(Session.userID, true)) {
-      console.log(`SECURITY: all existed sessions for user ${Session.uData.login} are removed`)
-    }
-  }
 }
 
 Session.on('login', testOnUserLogin)
