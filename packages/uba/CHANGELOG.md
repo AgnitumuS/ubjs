@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    *WARNING* - should be used only on instances what works with end users (clients are browsers)
 
 ### Changed
+ - `en` localization of the caption of `uba_usergroup` entity: `User Groups` => `User Group Membership`
 
 ### Deprecated
 
