@@ -83,6 +83,9 @@ function mountModal ({
       if (onClose && typeof onClose === 'function' && store) {
         await onClose(store.state.isNew ? null : store.state.data.ID, store)
       }
+      if ((store.getters.isLockedByMe) && (store.state.lockInfo.lockType === 'Temp')) {
+        store.dispatch('unlockEntity')
+      }
     },
 
     methods: {
@@ -235,6 +238,9 @@ function mountTab ({
       if (onClose && typeof onClose === 'function' && store) {
         await onClose(store.state.isNew ? null : store.state.data.ID, store)
       }
+      if ((store.getters.isLockedByMe) && (store.state.lockInfo.lockType === 'Temp')) {
+        store.dispatch('unlockEntity')
+      }
     },
 
     methods: {
@@ -369,6 +375,9 @@ function mountContainer ({
     async beforeDestroy () {
       if (onClose && typeof onClose === 'function' && store) {
         await onClose(store.state.isNew ? null : store.state.data.ID, store)
+      }
+      if ((store.getters.isLockedByMe) && (store.state.lockInfo.lockType === 'Temp')) {
+        store.dispatch('unlockEntity')
       }
     },
     render: (h) => h(component, { props })

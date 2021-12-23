@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `Form/mount`: `unlock` method is now called from the `beforeDestroy` lifecycle hook
 
 ## [5.20.38] - 2021-12-14
 ### Added
