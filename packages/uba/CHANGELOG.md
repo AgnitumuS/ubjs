@@ -12,7 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    *WARNING* - should be used only on instances what works with end users (clients are browsers)
 
 ### Changed
- - `en` localization of the caption of `uba_usergroup` entity: `User Groups` => `User Group Membership`
+ - `en` localization of the caption of `uba_usergroup` entity: `User Groups` => `User Group Membership`.
+   The change is made in order to avoid duplication - `User Groups` caption is already used by `uba_group` entity.
 
 ### Deprecated
 
