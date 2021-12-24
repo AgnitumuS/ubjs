@@ -54,7 +54,6 @@ const langToICU = {
 if (typeof _defaultLang === 'undefined') {
   _defaultLang = 'en'
 }
-_collator = undefined
 
 /**
  * Create a ICU locale based on UB language

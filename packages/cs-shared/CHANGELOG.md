@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Fix bug with `_collator`, caused by using global variables
 
 ## [5.20.9] - 2021-12-02
 ## [5.20.8] - 2021-11-30
