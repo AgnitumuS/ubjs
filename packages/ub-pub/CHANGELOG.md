@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - nodeJS compatibility: transport.js, account that `readystatechange` event might be raised after "done" state
+   The `xmlhttprequest` module, which used in NodeJS environment, in case of errors, such as socket closed,
+   might fire `readystatechange` with state "DONE" (4) twice.
 
 ## [5.9.22] - 2021-12-07
 ### Fixed
