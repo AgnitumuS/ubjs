@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - Allow to pass `{timeout: 0}` to xhr - prevent overriding 0 value with default timeout
 
 ## [5.9.22] - 2021-12-07
 ### Fixed
