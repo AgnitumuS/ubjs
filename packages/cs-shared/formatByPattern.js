@@ -54,6 +54,9 @@ const langToICU = {
 if (typeof _defaultLang === 'undefined') {
   _defaultLang = 'en'
 }
+if (typeof _collator === 'undefined') {
+  _collator = null
+}
 
 /**
  * Create a ICU locale based on UB language
@@ -245,7 +248,7 @@ module.exports.getNumberPattern = function (patternName) {
 function setDefaultLang (lang) {
   if (_defaultLang === lang) return
   _defaultLang = lang
-  _collator = undefined
+  _collator = null
   if ((typeof Intl === 'object') && Intl.Collator) {
     _collator = new Intl.Collator(lang, { numeric: true })
   }
