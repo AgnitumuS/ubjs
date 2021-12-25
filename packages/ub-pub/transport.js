@@ -244,7 +244,7 @@ function xhr (requestConfig) {
     if (!config.withCredentials && defaults.withCredentials) {
       config.withCredentials = defaults.withCredentials
     }
-    if (!config.timeout && defaults.timeout) {
+    if (config.timeout === undefined && defaults.timeout) {
       config.timeout = defaults.timeout
     }
 
