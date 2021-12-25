@@ -1,3 +1,4 @@
+/* global _defaultLang, _collator */
 /**
  * Dates and Numbers formatting using Intl
  * On client this module exposed as `UB.formatter` and `Vue.prototype.$UB.formatter`
@@ -52,10 +53,9 @@ const langToICU = {
 // TODO - FIX ME by prevent `@unitybase/cs-shared` package includes into every compiled module
 //  (adminui-pub, adminui-vue, vendor packages etc.).
 if (typeof _defaultLang === 'undefined') {
-  _defaultLang = 'en'
-}
-if (typeof _collator === 'undefined') {
-  _collator = null
+  // eslint-disable-next-line no-global-assign
+  _defaultLang = null
+  setDefaultLang('en')
 }
 
 /**
@@ -247,9 +247,12 @@ module.exports.getNumberPattern = function (patternName) {
  */
 function setDefaultLang (lang) {
   if (_defaultLang === lang) return
+  // eslint-disable-next-line no-global-assign
   _defaultLang = lang
+  // eslint-disable-next-line no-global-assign
   _collator = null
   if ((typeof Intl === 'object') && Intl.Collator) {
+    // eslint-disable-next-line no-global-assign
     _collator = new Intl.Collator(lang, { numeric: true })
   }
 }
