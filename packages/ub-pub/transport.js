@@ -343,7 +343,7 @@ function sendReq (config, reqData, reqHeaders) {
     })
 
     xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
+      if (xhr && xhr.readyState === 4) {
         let response, responseHeaders
         if (status !== aborted) {
           responseHeaders = xhr.getAllResponseHeaders()
