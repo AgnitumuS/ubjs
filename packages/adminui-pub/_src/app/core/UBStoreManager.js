@@ -44,7 +44,7 @@ Ext.define('UB.core.UBStoreManager', {
   shortcutCommandCache: {},
   shortcutAttributes: ['ID', 'desktopID', 'parentID', 'code', 'isFolder', 'caption', 'inWindow', 'isCollapsed', 'displayOrder', 'iconCls', 'description'],
   formAttributes: ['ID', 'code', 'description', 'caption', 'formType', 'formDef', 'formCode', 'entity', 'model', 'isDefault'],
-  enumAttributes: ['ID', "eGroup", "code", "name", "shortName", "sortOrder"],
+  enumAttributes: ['ID', 'eGroup', 'code', 'name', 'shortName', 'sortOrder'],
 
   /**
    * Update internal navshortcut cache for specified item
