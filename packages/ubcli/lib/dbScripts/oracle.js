@@ -43,6 +43,7 @@ module.exports.createDatabase = function createDatabase (dbConn, databaseConfig)
   const grants = [
     'GRANT RESOURCE, CONNECT, CTXAPP TO {0}',
     'ALTER USER {0} DEFAULT ROLE ALL',
+    'GRANT UNLIMITED TABLESPACE TO {0}',
 
     'GRANT CREATE DATABASE LINK TO {0}',
     'GRANT CREATE SYNONYM TO {0}',
@@ -51,18 +52,11 @@ module.exports.createDatabase = function createDatabase (dbConn, databaseConfig)
 
     'GRANT CREATE TABLE TO {0}',
     'GRANT CREATE VIEW TO {0}',
-    'GRANT CREATE INDEX TO {0}',
     'GRANT CREATE PROCEDURE TO {0}',
     'GRANT CREATE SEQUENCE TO {0}',
     'GRANT CREATE SYNONYM TO {0}',
 
-    'GRANT ALTER TABLE TO {0}',
-    'GRANT ALTER INDEX TO {0}',
-    'GRANT ALTER PROCEDURE TO {0}',
-    'GRANT ALTER SEQUENCE TO {0}',
-
-    'GRANT SELECT ANY SEQUENCE TO {0}',
-    'GRANT UNLIMITED TABLESPACE TO {0}'
+    'GRANT SELECT ANY SEQUENCE TO {0}'
   ]
   for (let i = 0, l = grants.length; i < l; i++) {
     dbConn.execParsed(grants[i].replace('{0}', databaseConfig.userID))
