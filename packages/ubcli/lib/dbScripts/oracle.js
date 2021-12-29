@@ -45,6 +45,9 @@ module.exports.createDatabase = function createDatabase (dbConn, databaseConfig)
     'ALTER USER {0} DEFAULT ROLE ALL',
     'GRANT UNLIMITED TABLESPACE TO {0}',
 
+    'GRANT EXECUTE ON CTXSYS.CTX_DDL TO {0}',
+    'GRANT EXECUTE ON SYS.DBMS_SESSION TO {0}',
+
     'GRANT CREATE DATABASE LINK TO {0}',
     'GRANT CREATE SYNONYM TO {0}',
     'GRANT CREATE PUBLIC SYNONYM TO {0}',
