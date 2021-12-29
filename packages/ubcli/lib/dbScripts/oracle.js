@@ -46,7 +46,8 @@ module.exports.createDatabase = function createDatabase (dbConn, databaseConfig)
     'GRANT UNLIMITED TABLESPACE TO {0}',
 
     'GRANT EXECUTE ON CTXSYS.CTX_DDL TO {0}',
-    'GRANT EXECUTE ON SYS.DBMS_SESSION TO {0}',
+    // can't be granted without plane
+    // 'GRANT EXECUTE ON SYS.DBMS_SESSION TO {0}',
 
     'GRANT CREATE DATABASE LINK TO {0}',
     'GRANT CREATE SYNONYM TO {0}',

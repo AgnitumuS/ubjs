@@ -6,8 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Oracle: `ubcli initDB` will create `GRANT EXECUTE ON CTXSYS.CTX_DDL` (catalogue indexes) and
-  `GRANT EXECUTE ON SYS.DBMS_SESSION` (resource plane management) for schema user
+ - Oracle: `ubcli initDB` will create `GRANT EXECUTE ON CTXSYS.CTX_DDL` (catalogue indexes) 
 
 ### Changed
 
