@@ -2,6 +2,7 @@
 <template>
   <el-submenu
     v-if="item.children"
+    :title="shortcutHint"
     :index="String(item.ID)"
     :data-ub-level="item.level"
     popper-class="ub-sidebar__popup-menu"
@@ -31,6 +32,7 @@
 
   <el-menu-item
     v-else
+    :title="shortcutHint"
     :index="String(item.ID)"
     :data-ub-level="item.level"
     @click="openLink(item)"
@@ -60,6 +62,10 @@ export default {
   computed: {
     marginLeft () {
       return -this.level * 10 + 'px'
+    },
+
+    shortcutHint () {
+      return this.item.description || ''
     }
   },
 
