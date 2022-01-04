@@ -22,7 +22,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - new entity `uba_session`: virtual entity what allows Supervisor view list of the active sessions and remove sessions ;
    Corresponding shortcut is `Administrative->Security->Users Sessions`
 
+ - added index by `uba_subject.code`
+
+ - `DialogTable.vue` - it is multiselection table in dialog window. Is based on `U-Table`
+
 ### Changed
+ - `uba_als-fm.vue`- made new form. Implemented editing of a role that already exists. [Task](https://dev.intecracy.com/agile/browse/UBDF-14336)
+
+ - English (en) localization for desktop description: the words are capitalized
+  according to English rules for captions
+
+ - audit trail form will show changes for all mixin-attributes (**mi_dateFrom**, **mi_dateTo** and others).
+ Before this fix, only **mi_wfState** attribute was displayed. After this only attributes, added by `mStorage` mixin are omitted.
+
  - `en` localization of the caption of `uba_usergroup` entity: `User Groups` => `User Group Membership`.
    The change is made in order to avoid duplication - `User Groups` caption is already used by `uba_group` entity.
 
