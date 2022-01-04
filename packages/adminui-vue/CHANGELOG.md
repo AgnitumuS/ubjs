@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - `UTableEntity`: click on the `sort` control raised an error in case table
+ - `UTableEntity`: click on the `sort` button on the toolbar raised an error in case table
    column has been already selected to sort table rows
 
 ## [5.20.38] - 2021-12-14
