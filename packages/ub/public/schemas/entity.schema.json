@@ -608,7 +608,7 @@
                     "properties": {
                         "type": {
                             "type": "string",
-                            "enum": ["INDEX", "FK", "CHECK", "CATALOGUE", "SUFFIXES", "OTHER"],
+                            "enum": ["INDEX", "FK", "CHECK", "CATALOGUE", "SUFFIXES", "COLUMNSTORE", "OTHER"],
                             "description": "Feature type"
                         },
                         "definition": {
