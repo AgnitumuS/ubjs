@@ -432,10 +432,16 @@ class DBAbstract {
         if (mustBe.existOther(asIsIndex.name)) continue
         const mustBeIndex = mustBe.indexByName(asIsIndex.name)
         if (!mustBeIndex || asIsIndex.isForDelete ||
-          !_.isEqual(mustBeIndex.keys, asIsIndex.keys) ||
           (mustBeIndex.isUnique !== asIsIndex.isUnique) ||
-          asIsIndex.isDisabled
+          // eslint-disable-next-line eqeqeq
+          (mustBeIndex.indexType != asIsIndex.indexType) ||
+          asIsIndex.isDisabled ||
+          (mustBeIndex.keys.length !== asIsIndex.keys.length) ||
+          // COLUMNSTORE column order does not matter
+          ((mustBeIndex.indexType === 'COLUMNSTORE') && (_.intersection(mustBeIndex.keys, asIsIndex.keys).length !== mustBeIndex.keys.length)) ||
+          ((mustBeIndex.indexType !== 'COLUMNSTORE') && !_.isEqual(mustBeIndex.keys, asIsIndex.keys))
         ) {
+          // console.debug(' mustBe=', mustBeIndex, '\n asIs=', asIsIndex)
           if (!asIsIndex.isDeleted) {
             this.genCodeDropIndex(asIs, mustBe, asIsIndex,
               asIsIndex.isForDelete && !asIsIndex.isForDeleteMsg ? asIsIndex.isForDeleteMsg : null)
