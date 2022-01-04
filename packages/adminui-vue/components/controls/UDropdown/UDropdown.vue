@@ -106,6 +106,7 @@ export default {
      * reference element used to position the popper
      */
     refElement: {
+      type: HTMLElement,
       default: null
     },
 
@@ -135,6 +136,7 @@ export default {
   watch: {
     async visible (isVisible) {
       await this.$nextTick()
+
       if (isVisible) {
         this.clickOutsideListenerId = addClickOutsideListener(
           [this.referenceEl, this.$refs.dropdown],
@@ -149,23 +151,29 @@ export default {
   methods: {
     toggleVisible () {
       if (this.disabled) return
-      this.visible = !this.visible
+
+      if (this.visible) {
+        this.close()
+      } else {
+        this.open()
+      }
     },
 
     beforeEnter (el) {
       el.style.zIndex = this.$zIndex()
-      if (this.refElement === null) {
-        this.referenceEl =
-          this.$slots.default === undefined
-            ? this.virtualElement
-            : this.$refs.reference
-      } else {
+
+      if (this.refElement) {
         this.referenceEl = this.refElement
+      } else if (this.$slots.default) {
+        this.referenceEl = this.$refs.reference
+      } else {
+        this.referenceEl = this.virtualElement
       }
-      const arrow = this.$refs.arrow
+
       if (this.position === 'fixed') {
         document.body.appendChild(this.$refs.dropdown)
       }
+
       this.popperInstance = createPopper(
         this.referenceEl,
         this.$refs.dropdown,
@@ -179,15 +187,17 @@ export default {
             },
             {
               name: 'arrow',
-              options: { padding: 5, element: arrow }
+              options: { padding: 5, element: this.$refs.arrow }
             }
           ]
         }
       )
+
       this.checkAndUpdatePopupPosition(this.popperInstance)
+
       // set watcher for observe changes width and height popup when user change content in him
-      const callback = () => this.checkAndUpdatePopupPosition()
-      this.observer = new MutationObserver(callback)
+      this.observer = new MutationObserver(() => this.checkAndUpdatePopupPosition())
+
       setTimeout(() => {
         this.observer.observe(this.$refs.dropdown, {
           childList: true,
@@ -196,26 +206,25 @@ export default {
       }, 0)
     },
 
-    async checkAndUpdatePopupPosition (popperInstance = this.popperInstance) {
-      requestAnimationFrame(() => {
+    checkAndUpdatePopupPosition (popperInstance = this.popperInstance) {
+      window.requestAnimationFrame(() => {
         const popEl = popperInstance.state.elements.popper
-        if (!popEl) return
-        if (checkOverflow(popEl)) {
+
+        if (popEl && this.checkOverflow(popEl)) {
           popperInstance.setOptions({ placement: 'auto' })
         }
-
-        function checkOverflow (popEl) {
-          const popStyle = popEl.getBoundingClientRect()
-          const { clientWidth, clientHeight } = document.documentElement
-          if (popStyle.right > clientWidth) return true
-          if (popStyle.bottom > clientHeight) return true
-        }
       })
+    },
+
+    open () {
+      this.visible = true
+      this.$emit('open')
     },
 
     close () {
       this.visible = false
       this.$emit('close')
+
       if (this.observer) this.observer.disconnect()
     },
 
@@ -230,11 +239,15 @@ export default {
     async show ({ x, y, target }) {
       this.visible = false
       this.renderKey++
+
       await this.$nextTick()
+
       this.virtualElement.getBoundingClientRect = this.generateClientRect(x, y)
       this.virtualElement.contains = ref => target.contains(ref)
       this.visible = true
+
       await this.$nextTick()
+
       this.$refs.dropdown.focus()
     },
 
@@ -247,6 +260,16 @@ export default {
         bottom: y,
         left: x
       })
+    },
+
+    checkOverflow (popEl) {
+      const popStyle = popEl.getBoundingClientRect()
+      const { clientWidth, clientHeight } = document.documentElement
+
+      return (
+        popStyle.right > clientWidth ||
+        popStyle.bottom > clientHeight
+      )
     }
   }
 }
