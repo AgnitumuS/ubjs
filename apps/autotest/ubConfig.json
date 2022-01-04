@@ -62,10 +62,10 @@
 			//#endif
 		],
 		"lockOutTimeoutSec": 60,
+		"userSessionMode": "%UB_USER_SESSION_MODE||Multiple%",
 		//"lockOutInDB": false,
 		//#ifdef(%UB_USE_DSTU%)
 		"simpleCertAuth": true,
-		"oneSessionPerUser": %UB_ONE_SESSION_PER_USER||false%,
 		"dstu": {
 			"findCertificateBySerial": true,
 			"iit": {

@@ -314,10 +314,11 @@ Ext.define('UB.core.UBCommand', {
      */
     me.commandContext = config.commandContext
     me.instanceID = config.instanceID || config.instanceId
-    if (Ext.isDefined(me.instanceID) && Ext.isString(me.instanceID)) {
-      try {
-        me.instanceID = parseFloat(me.instanceID)
-      } catch (err) {}
+    if (Ext.isDefined(me.instanceID) && (typeof me.instanceID === 'string')) {
+      const numID = parseFloat(me.instanceID)
+      if (!Number.isNaN(numID)) {
+        me.instanceID = numID
+      }
     }
     me.callback = config.callback
     me.eventHandler = config.eventHandler

@@ -70,6 +70,7 @@
   "msgInvalidCertAuth": "Girişə icazə verilmədi. Yanlış sertifikat, yaxud bağlı açar.",
   "msgInvalidUBAuth": "Keçid ləğv olunub. Zəhmət olmasa istifadəçi adı və parol -u yoxlayın.",
   "ubErrElsInvalidUserOrPwd": "Keçid ləğv olunub. Zəhmət olmasa istifadəçi adı və parol -u yoxlayın.",
+  "ubErrAnotherSessionExists": "Girişin rədd edilməsi. İstifadəçi artıq daxil olub, başqa brauzer nişanından və ya başqa kompüterdən ola bilər ",
   "UserWithoutOrgEmployeeNotAllowed": "İstifadəçinin ştat vahidi mövcud deyildir (ştat vahidi göstərilməyib). Giriş qadağandır.",
 
   "Access deny": "Bu əməliyyat yerinə yetirmək üçün hüquqları yoxdur",

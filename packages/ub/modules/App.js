@@ -700,16 +700,28 @@ function logoutAllMyOldSessions (req) {
  * @method
  * @param {number} userID
  * @param {boolean} [exceptCurrent=false] If `true` - do not remove current session
- * @return {boolean} true if user had had any session
+ * @returns {boolean} true if user had had any session
  */
 ServerApp.removeUserSessions = function (userID, exceptCurrent = false) {
   return appBinding.removeUserSessions(userID, exceptCurrent)
 }
 
 /**
+ * Return session count for specified user, including current session
+ *
+ * @method
+ * @param {number} userID
+ * @returns {number} session count for specified user, including current session
+ * @since UB@5.22
+ */
+ServerApp.getUserSessionsCount = function (userID) {
+  return appBinding.getUserSessionsCount(userID)
+}
+
+/**
  * Is event emitter enabled for App singleton. Default is `false`
  * @deprecated Starting from 1.11 this property ignored (always TRUE)
- * @type {Boolean}
+ * @type {boolean}
  */
 ServerApp.emitterEnabled = true
 
@@ -747,7 +759,7 @@ ServerApp.blobStores = {
  *
  *    App.endpointContext.MYMODEL_mykey = 'some value we need to share between different methods during a single user request handling'
  *
- * @type {Object}
+ * @type {object}
  * @since UB@5.17.9
  */
 ServerApp.endpointContext = {}

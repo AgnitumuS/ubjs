@@ -71,6 +71,7 @@
   "msgInvalidCertAuth": "Invalid certificate or private key",
   "msgInvalidUBAuth": "Access denied. Invalid user name or password",
   "ubErrElsInvalidUserOrPwd": "Access deny. Check login name and password.",
+  "ubErrAnotherSessionExists": "Access deny. User is already logged in, may be from another browser tab or another computer",
   "UserWithoutOrgEmployeeNotAllowed": "Login for user without corresponding employee on staff not allowed",
 
   "Access deny": "Anda tidak memiliki hak untuk melakukan operasi ini",
