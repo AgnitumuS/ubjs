@@ -19,6 +19,7 @@
   "main": "uba.js",
   "dependencies": {
     "@unitybase/base": "^5.20.18",
+    "@unitybase/cs-shared": "^5.20.8",
     "@unitybase/ub": "^5.22.22"
   },
   "devDependencies": {

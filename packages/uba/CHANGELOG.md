@@ -6,10 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - "one session per user" mode now controlled by UBA model. In ubConfig.json added parameter `security.oneSessionPerUser` (default is false).
-   This give addition level of security in some edge cases.
-   
-   *WARNING* - should be used only on instances what works with end users (clients are browsers)
+ - new ubConfig security parameter `security.userSessionMode` - allows control user sessions creation(require UB 5.22).
+   Possible values:
+   - `Multiple`: allow multiple concurrent sessions for the same user (default, the same behavior as before UB 5.22)
+   - `Displacing`: each new session displace all older sessions for the same user.
+      If older sessions exists - logs into `uba_audit` with actionType=SECURITY_VIOLATION and text `existed sessions are displaced`
+   - `Singleton`: throws in case user is already logged in.
+     Logs into `uba_audit` with actionType=SECURITY_VIOLATION and text `ubErrAnotherSessionExists`,
+     UI shows error `Access deny. User is already logged in, may be from another browser tab or another computer`
+
+   *WARNING* - values other when `Multiple` should be used only on instances what works with end users (clients are browsers)
+ 
+ - new method `App.getUserSessionsCount`
+ 
+ - new entity `uba_session`: virtual entity what allows Supervisor view list of the active sessions and remove sessions ;
+   Corresponding shortcut is `Administrative->Security->Users Sessions`
 
 ### Changed
  - `en` localization of the caption of `uba_usergroup` entity: `User Groups` => `User Group Membership`.

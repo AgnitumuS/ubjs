@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UBConnection` will handle a `403 Forbidden` server-side error response and raise a UB.UBAbort message
  instead of `InternalServerError`. This response occurs when a user tries to retrieve data from the server but fails
  the server's data access validation with status code 403.
+ - translation for `ubErrAnotherSessionExists` error message for single session violation if `security.userSessionMode: "Singleton"` in config
 
 ### Changed
 

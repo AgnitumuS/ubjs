@@ -1,0 +1,49 @@
+{
+  "caption": "Сесії користувачів",
+  "description": "Список активних користувацьких сесій",
+  "documentation": "Список активних користувацьких сесій",
+  "attributes": [
+    {
+      "name": "ID",
+      "caption": "ID сесії"
+    },
+    {
+      "name": "userID",
+      "caption": "ID користувача"
+    },
+    {
+      "name": "userName",
+      "caption": "Ім'я користувача"
+    },
+    {
+      "name": "remoteIP",
+      "caption": "IP адреса",
+      "description": "IP адреса з якої створена сесія"
+    },
+    {
+      "name": "isPasswordExpired",
+      "caption": "Термін пароля минув",
+      "description": "Вірно, якщо користувачу потрібно змінити пароль, тому що термін його дії минув"
+    },
+    {
+      "name": "isLocked",
+      "caption": "Заблокировао",
+      "description": "Заблокировао, бо максимальна кілкість невірних вводів пароля перевищує значеня параметру UBA.passwordPolicy.maxInvalidAttempts"
+    },
+    {
+      "name": "serverTimeDelta",
+      "caption": "Дельта часу",
+      "description": "Дельта часу між сервером та клиєнтським пристроєм"
+    },
+    {
+      "name": "createdAt",
+      "caption": "Створена",
+      "description": "Дата створення сесії"
+    },
+    {
+      "name": "accessedAt",
+      "caption": "Остання активність",
+      "description": "Час останньої активності користувача"
+    }
+  ]
+}
