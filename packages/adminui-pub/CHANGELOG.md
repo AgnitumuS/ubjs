@@ -6,10 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UBStoreManager`: add `description` to the shortcut attributes
 
 ### Changed
  - `UB.ux.Multifilter`: for composite attributes in `fieldList` without flag `simpleFilter: true`,
- build filter based on the full attribute name instead of its first part.
+ build filter based on the full attribute name instead of its first part
+ - allow use non-numeric instanceID in doCommand (string for example)
 
 ### Deprecated
 

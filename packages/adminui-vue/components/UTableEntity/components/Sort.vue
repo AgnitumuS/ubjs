@@ -3,6 +3,7 @@
     v-if="sortableColumns.length"
     ref="dropdown"
     :ref-element="targetColumn"
+    v-on="$listeners"
   >
     <u-button
       :title="$ut('table.sort.label')"
@@ -67,12 +68,15 @@ const SortPopup = require('../../controls/UTable/SortPopup.vue').default
 
 export default {
   name: 'UTableEntitySort',
+
   components: { SortPopup },
+
   props: {
     /**
      * The target column for positioning the sorting popup.
      */
     targetColumn: {
+      type: HTMLElement,
       default: null
     }
   },
@@ -133,7 +137,7 @@ export default {
 
   methods: {
     closeDropdown () {
-      this.$refs.dropdown.visible = false
+      this.$refs.dropdown.close()
     },
 
     selectSort (sortOrder) {

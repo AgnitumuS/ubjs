@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - Oracle: `ubcli initDB` will create `GRANT EXECUTE ON CTXSYS.CTX_DDL` (catalogue indexes) 
+ - `ubcli generateDDL`: added support for `COLUMNSTORE` indexes for SQL Server in case `dbExtension.type = 'COLUMNSTORE'` in meta file 
 
 ### Changed
 
@@ -14,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - **BREAKING** Oracle: `ubcli initDB` will create user with grants for DDL statements ONLY in current schema.
+   For security reasons _ANY_ grants `GRANT ALTER ANY *` and `GRANT CREATE ANY *` are removed.
 
 ## [5.21.29] - 2021-12-15
 ### Fixed

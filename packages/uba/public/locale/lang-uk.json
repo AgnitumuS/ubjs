@@ -35,6 +35,9 @@
   "needChangePassword": "Користувач повинен змінити пароль при наступному вході",
   "checkAll": "Обрати усі",
   "roles": "Ролі",
+  "field": "поле",
+  "addАField": "додати поле",
+  "addRole": "додати роль",
   "uba": {
     "changePassword": {
       "newPassword": {

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UBConnection` will handle a `403 Forbidden` server-side error response and raise a UB.UBAbort message
+ instead of `InternalServerError`. This response occurs when a user tries to retrieve data from the server but fails
+ the server's data access validation with status code 403.
+ - translation for `ubErrAnotherSessionExists` error message for single session violation if `security.userSessionMode: "Singleton"` in config
 
 ### Changed
 
@@ -14,6 +18,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - nodeJS compatibility: transport.js, account that `readystatechange` event might be raised after "done" state
+   The `xmlhttprequest` module, which used in NodeJS environment, in case of errors, such as socket closed,
+   might fire `readystatechange` with state "DONE" (4) twice.
+ - Allow to pass `{timeout: 0}` to xhr - prevent overriding 0 value with default timeout
 
 ## [5.9.22] - 2021-12-07
 ### Fixed

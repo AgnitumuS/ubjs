@@ -16,9 +16,10 @@ if (ubaAuditPresent) {
 
 /**
  * Checking of user IP and device fingerprint based on settings from `uba_advSecurity`
+ *
  * @private
  * @param {THTTPRequest} req
- * @return {{enabled: false}|{enabled: true, kmn: string, fpa: string}}
+ * @returns {{enabled: false}|{enabled: true, kmn: string, fpa: string}}
  */
 function checkAdvancedSecurity (req) {
   let advData
@@ -95,6 +96,7 @@ let doCheckAdvancedSecurity = null // calculate later
  * Session 'login' event occurred every time new user logged in
  * here we calculate logged-in user's roles,
  * result we put in Session.uData - only one session-dependent server object
+ *
  * @private
  * @param {THTTPRequest} req
  */
@@ -106,9 +108,28 @@ function onUserLogin (req) {
       : function () { return { enabled: false } }
   }
   const advCheckData = doCheckAdvancedSecurity(req)
-  if (App.serverConfig.security.oneSessionPerUser) {
+  const sessionMode = App.serverConfig.security.userSessionMode
+  if (sessionMode === 'Displacing') {
     if (App.removeUserSessions(Session.userID, true)) {
-      console.log(`SECURITY: all existed sessions for user '${Session.uData.login}' are removed`)
+      console.warn(`SECURITY: existed sessions for '${Session.uData.login}' are removed (userSessionMode='Displacing')`)
+      auditStore.run('insert', {
+        execParams: {
+          entity: 'uba_user',
+          entityinfo_id: Session.userID,
+          actionType: 'SECURITY_VIOLATION',
+          actionUser: Session.uData.login,
+          actionTime: new Date(),
+          remoteIP: Session.callerIP,
+          targetUser: (advCheckData.enabled && advCheckData.kmn) ? advCheckData.kmn : Session.uData.login,
+          targetRole: 'existed sessions are displaced',
+          fromValue: (req.headers.length > 1024) ? req.headers.slice(0, 1024) + '...' : req.headers
+        }
+      })
+      App.dbCommit(auditStore.entity.connectionName)
+    }
+  } else if (sessionMode === 'Singleton') {
+    if (App.getUserSessionsCount(Session.userID) > 0) {
+      throw new UB.ESecurityException('<<<ubErrAnotherSessionExists>>>')
     }
   }
   if (ubaAuditPresent) { // uba_audit exists
@@ -123,12 +144,12 @@ function onUserLogin (req) {
           remoteIP: Session.callerIP,
           targetUser: (advCheckData.enabled && advCheckData.kmn) ? advCheckData.kmn : Session.uData.login,
           targetRole: (advCheckData.enabled && advCheckData.fpa) ? advCheckData.fpa.slice(0, 127) : '',
-          fromValue: (req.headers.length > 512) ? req.headers.slice(0, 509) + '...' : req.headers
+          fromValue: (req.headers.length > 1024) ? req.headers.slice(0, 1024) + '...' : req.headers
         }
       })
       App.dbCommit(auditStore.entity.connectionName)
     } catch (ex) {
-      // this possible if we connect to empty database without uba_* tables
+      // this is possible if connected to empty database without uba_* tables
       console.error('Error access audit entity:', ex.toString())
     }
   }
@@ -154,37 +175,37 @@ function onUserLoginFailed (isLocked) {
     })
     App.dbCommit(auditStore.entity.connectionName)
   } catch (ex) {
-    // this possible if we connect to empty database without ubs_* tables
+    // this is possible if connected to the empty database without uba_audit table
     console.error('Error access audit entity:', ex.toString())
   }
 }
 
 function securityViolation (reason) {
   console.debug('Call JS method: UBA.securityViolation')
-  if (ubaAuditPresent) { // uba_audit exists
-    let user = '?'
-    if (Session.userID && (Session.userID > UBA_COMMON.USERS.ANONYMOUS.ID) && Session.uData.login) { // user logged in
-      user = Session.uData.login
-    } else { // authentication in pending state
-      user = Session.pendingUserName || ('' + Session.userID)
-    }
-    try {
-      auditStore.run('insert', {
-        execParams: {
-          entity: 'uba_user',
-          entityinfo_id: Session.userID,
-          actionType: 'SECURITY_VIOLATION',
-          actionUser: user,
-          targetUser: user,
-          actionTime: new Date(),
-          remoteIP: Session.callerIP,
-          fromValue: reason
-        }
-      })
-      App.dbCommit(auditStore.entity.connectionName)
-    } catch (ex) {
-      // this possible if we connect to empty database without ubs_* tables
-      console.error('Error access audit entity:', ex.toString())
-    }
+  if (!ubaAuditPresent) return // uba_audit exists
+  let user = '?'
+  if (Session.userID && (Session.userID > UBA_COMMON.USERS.ANONYMOUS.ID) && Session.uData.login) { // user logged in
+    user = Session.uData.login
+  } else { // authentication in pending state
+    user = Session.pendingUserName || ('' + Session.userID)
+  }
+  try {
+    auditStore.run('insert', {
+      execParams: {
+        entity: 'uba_user',
+        entityinfo_id: Session.userID,
+        actionType: 'SECURITY_VIOLATION',
+        actionUser: user,
+        targetUser: user,
+        targetRole: reason && reason.length > 127 ? reason.slice(0, 127) : reason,
+        actionTime: new Date(),
+        remoteIP: Session.callerIP,
+        fromValue: reason
+      }
+    })
+    App.dbCommit(auditStore.entity.connectionName)
+  } catch (ex) {
+    // this is possible if connected to the empty database without ubs_* tables
+    console.error('Error access audit entity:', ex.toString())
   }
 }

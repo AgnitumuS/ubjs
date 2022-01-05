@@ -13,7 +13,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    In case `replicatedAs` parameter is defined for entity connection (EE edition only) server will choose replica,
    for SE or in case there is no replica for connection parameter is ignored.
  
-
 ### Changed
 
 ### Deprecated
@@ -21,6 +20,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `formatByPattern.collationCompare` now uses valid language in case `@unitybase/cs-shared` module is loaded twice
+   (prevent resets `global._collator` if already defined) 
 
 ## [5.20.9] - 2021-12-02
 ## [5.20.8] - 2021-11-30

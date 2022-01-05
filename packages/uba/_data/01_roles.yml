@@ -95,6 +95,8 @@ Supervisor:
       - UBA_AUDIT_READ_SUPERVISOR: "uba_audit,select,Allow members of Supervisor group to read security audit"
       - UBA_AUDITTRAIL_READ_SUPERVISOR: "uba_auditTrail,select,Allow members of Supervisor group to read audit trail"
       - UBA_ADVSEC_EDIT_SUPERVISOR: "uba_advSecurity,[iuda]*,Allow CUD operations on advanced security for members of Supervisor group"
+      - UBA_SESSION_READ_SUPERVISOR: "uba_session,select,Allow view active users sessions for members of Supervisor group"
+      - UBA_SESSION_DELETE_SUPERVISOR: "uba_session,delete,Allow remove active user session for members of Supervisor group"
 
 Developer:
   $amendment: true
