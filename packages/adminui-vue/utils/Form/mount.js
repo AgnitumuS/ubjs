@@ -83,7 +83,7 @@ function mountModal ({
       if (onClose && typeof onClose === 'function' && store) {
         await onClose(store.state.isNew ? null : store.state.data.ID, store)
       }
-      if ((store.getters.isLockedByMe) && (store.state.lockInfo.lockType === 'Temp')) {
+      if ((store?.getters.isLockedByMe) && (store?.state.lockInfo.lockType === 'Temp')) {
         await store.dispatch('unlockEntity')
       }
     },
@@ -238,7 +238,7 @@ function mountTab ({
       if (onClose && typeof onClose === 'function' && store) {
         await onClose(store.state.isNew ? null : store.state.data.ID, store)
       }
-      if ((store.getters.isLockedByMe) && (store.state.lockInfo.lockType === 'Temp')) {
+      if ((store?.getters.isLockedByMe) && (store?.state.lockInfo.lockType === 'Temp')) {
         await store.dispatch('unlockEntity')
       }
     },
@@ -376,7 +376,7 @@ function mountContainer ({
       if (onClose && typeof onClose === 'function' && store) {
         await onClose(store.state.isNew ? null : store.state.data.ID, store)
       }
-      if ((store.getters.isLockedByMe) && (store.state.lockInfo.lockType === 'Temp')) {
+      if ((store?.getters.isLockedByMe) && (store?.state.lockInfo.lockType === 'Temp')) {
         await store.dispatch('unlockEntity')
       }
     },

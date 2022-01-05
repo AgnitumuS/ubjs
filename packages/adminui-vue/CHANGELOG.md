@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `UTableEntity`: click on the `sort` button on the toolbar raised an error in case table
    column has been already selected to sort table rows
+ - `Form/mount`: for entites with `softLock` mixin `unlock` method is now called from the `beforeDestroy` lifecycle hook
+   if record is locked
 
 ## [5.20.38] - 2021-12-14
 ### Added
