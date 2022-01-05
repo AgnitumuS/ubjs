@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `UTableEntity`: click on the `sort` button on the toolbar raised an error in case table
    column has been already selected to sort table rows
+ - `USelectEntity` will render options list with `key = ID || valueAttribute`, this prevents rendering errors with duplicate
+   keys when `valueAttribute` is a `string`. If option does not contain an `ID`, then the `valueAttribute` will be the key.
 
 ## [5.20.38] - 2021-12-14
 ### Added
