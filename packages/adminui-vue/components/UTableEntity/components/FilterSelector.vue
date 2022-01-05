@@ -1,8 +1,5 @@
 <template>
-  <u-dropdown
-    v-if="filterColumns.length > 0"
-    ref="dropdown"
-  >
+  <u-dropdown v-if="filterColumns.length > 0" ref="dropdown">
     <u-button
       :title="$ut('table.filter.list.title')"
       appearance="inverse"
@@ -10,146 +7,101 @@
       icon="u-icon-filter"
     />
 
-    <div
-      slot="dropdown"
-      class="u-fake-table"
-    >
-      <div class="u-fake-table__tr">
-        <div class="u-fake-table__td u-fake-table__label">
-          {{ $ut('table.columnLabel') }}
-        </div>
-        <div class="u-fake-table__td">
-          <el-select
-            v-model="selectedFilterableColumnId"
-            :placeholder="$ut('table.filter.columnPlaceholder')"
-          >
-            <el-option
-              v-for="column in filterColumns"
-              :key="column.id"
-              :value="column.id"
-              :label="$ut(column.label)"
-            />
-          </el-select>
-        </div>
+    <div slot="dropdown">
+      <button @click="counterHandler">Add</button>
+      <button @click="searchHandler">Search</button>
+      <div class="filter-selector__body">
+        <u-filter
+          v-for="(item, index) in length"
+          :key="index"
+          :columns="filterColumns"
+          @selected-column="selectedColumnHandler($event, index)"
+          :selected-column="selectedColumns[index]"
+          ref="filterItem"
+        ></u-filter>
       </div>
-
-      <template v-if="selectedFilterableColumnId">
-        <div class="u-fake-table__tr">
-          <div class="u-fake-table__td u-fake-table__label">
-            {{ $ut('table.filter.conditionPlaceholder') }}
-          </div>
-          <div class="u-fake-table__td">
-            <el-select v-model="condition">
-              <el-option
-                v-for="(filterData, filterId) in selectedColumn.filters"
-                :key="filterId"
-                :value="filterId"
-                :label="$ut(filterData.label)"
-              />
-            </el-select>
-          </div>
-        </div>
-
-        <keep-alive>
-          <component
-            :is="selectedColumn.filters[condition].template"
-            v-if="selectedColumn.filters && selectedColumn.filters[condition]"
-            :column="selectedColumn"
-            @search="throttledApplyFilter"
-          />
-        </keep-alive>
-      </template>
     </div>
   </u-dropdown>
 </template>
 
 <script>
-const { mapGetters, mapActions } = require('vuex')
-const { throttle } = require('throttle-debounce')
+const { mapGetters } = require("vuex");
 
 export default {
-  data () {
+  components: {
+    UFilter: require("./Filter.vue").default,
+  },
+  data() {
     return {
-      conditionsByColumns: {}
-    }
+      length: 1,
+      currentColumn: [],
+      selectedColumns: [],
+    };
   },
 
   computed: {
-    ...mapGetters(['columns']),
+    ...mapGetters(["columns"]),
+    availableColumns() {
+      const result = this.columns.filter((column) => {
+        const availableFilters = Object.keys(column.filters);
+        const hasFilters = availableFilters.length > 0;
+        const everyFilterHasTemplate = availableFilters.every(
+          (filterCode) => column.filters[filterCode].template
+        );
 
-    filterColumns () {
-      return this.columns.filter(column => {
-        const availableFilters = Object.keys(column.filters)
-        const hasFilters = availableFilters.length > 0
-        const everyFilterHasTemplate = availableFilters.every(filterCode => column.filters[filterCode].template)
-
-        return hasFilters && everyFilterHasTemplate
-      })
+        return hasFilters && everyFilterHasTemplate;
+      });
+      return result;
     },
-
-    selectedColumnId: {
-      get () {
-        return this.$store.state.selectedColumnId
-      },
-
-      set (value) {
-        this.$store.commit('SELECT_COLUMN', value)
-      }
+    filterColumns() {
+      return this.availableColumns.filter((item) => {
+        const index = this.selectedColumns.findIndex((el) => el.id === item.id);
+        return index === -1;
+      });
     },
-
-    selectedColumn () {
-      const column = this.filterColumns.find(c => c.id === this.selectedColumnId)
-      if (column) {
-        return column
-      } else {
-        return {}
-      }
-    },
-
-    selectedFilterableColumnId: {
-      get () {
-        return this.selectedColumn.id || null
-      },
-
-      set (value) {
-        this.selectedColumnId = value
-      }
-    },
-
-    condition: {
-      get () {
-        return this.conditionsByColumns[this.selectedFilterableColumnId]
-      },
-
-      set (value) {
-        this.conditionsByColumns[this.selectedFilterableColumnId] = value
-      }
-    }
   },
-
-  watch: {
-    filterColumns: {
-      immediate: true,
-      handler (columns) {
-        this.$set(this, 'conditionsByColumns', {})
-        for (const column of columns) {
-          this.$set(
-            this.conditionsByColumns,
-            column.id,
-            Object.keys(column.filters)[0]
-          )
-        }
-      }
-    }
+  created() {
+    this.selectedColumns = this.filterColumns.map(() => ({}));
   },
-
   methods: {
-    ...mapActions(['applyFilter']),
-
-    throttledApplyFilter: throttle(50, function (...args) {
-      this.$refs.dropdown.close()
-      this.applyFilter(...args)
-    })
-  }
-}
+    selectedColumnHandler(columnId, index) {
+      const column =
+        this.availableColumns.find((item) => item.id === columnId) || {};
+      this.selectedColumns.splice(index, 1, column);
+    },
+    counterHandler() {
+      if (this.length === this.availableColumns.length) return;
+      ++this.length;
+    },
+    searchHandler() {
+      const { selectedColumns, $store } = this;
+      this.$refs.filterItem.forEach((comp, index) => {
+        const el = comp.$refs.searchComponent;
+        const condition = el.getCondition();
+        const column = selectedColumns[index];
+        $store.commit("APPLY_FILTER", {
+          columnId: column.id,
+          label: column.label,
+          description: condition.description,
+          whereList: condition.whereList.map((whereItem) => ({
+            ...whereItem,
+            expression: whereItem.expression || column.id,
+          })),
+        });
+      });
+      this.$store.dispatch("fetchItems");
+    },
+  },
+};
 </script>
+
+<style>
+.filter-selector__body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.filter-selector__body .u-fake-table .u-fake-table__tbody .u-button {
+  display: none;
+}
+</style>
