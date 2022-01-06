@@ -38,6 +38,6 @@ export default {
     submitHandler(){
       this.$emit('search', this.getCondition())
     }
-  },
+  }
 }
 </script>

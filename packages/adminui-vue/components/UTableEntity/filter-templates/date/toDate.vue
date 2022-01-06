@@ -1,10 +1,7 @@
 <template>
   <filter-template
     :button-disabled="value === null"
-    @submit="$emit('search', {
-      whereList: [{ condition: 'less', value: addDay(value) }],
-      description: $ut('to_date') + ' ' + $moment(addDay(value)).format('ll')
-    })"
+    @submit="submitHandler"
   >
     <u-date-picker
       v-model="value"
@@ -33,6 +30,16 @@ export default {
       const moment = this.$moment(date)
       moment.add(1, 'day')
       return moment.toDate()
+    },
+    getCondition() {
+      const { $ut, value, $moment, addDay } = this
+        return {
+          whereList: [{ condition: 'less', value: addDay(value) }],
+          description: $ut('to_date') + ' ' + $moment(addDay(value)).format('ll')
+        }
+    },
+    submitHandler() {
+      this.$emit('search', this.getCondition())
     }
   }
 }

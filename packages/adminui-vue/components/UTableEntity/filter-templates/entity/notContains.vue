@@ -1,10 +1,7 @@
 <template>
   <filter-template
       :button-disabled="value.length === 0"
-      @submit="$emit('search', {
-      whereList: [{condition: 'notIn', value}],
-      description: $ut('notContains') + ' ' + manyOptions
-    })"
+      @submit="submitHandler"
   >
     <u-select-multiple
       ref="selectMany"
@@ -46,6 +43,18 @@ export default {
       } else {
         return []
       }
+    },
+  },
+  methods: {
+    getCondition() {
+      const { $ut, manyOptions, value } = this
+        return {
+          whereList: [{condition: 'notIn', value}],
+          description: $ut('notContains') + ' ' + manyOptions
+        }
+    },
+    submitHandler() {
+      this.$emit('search', this.getCondition())
     }
   }
 }

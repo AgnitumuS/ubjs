@@ -1,10 +1,7 @@
 <template>
   <filter-template
     :button-disabled="value === null"
-    @submit="$emit('search', {
-      whereList: [{ condition, value }],
-      description: $ut(condition) + ' ' + formattedValue
-    })"
+    @submit="submitHandler"
   >
     <u-select-entity
       v-model="value"
@@ -54,6 +51,16 @@ export default {
       }
 
       this.formattedValue = value
+    },
+    getCondition() {
+      const { $ut, formattedValue, condition, value } = this
+        return {
+          whereList: [{ condition, value }],
+          description: $ut(condition) + ' ' + formattedValue
+        }
+    },
+    submitHandler() {
+      this.$emit('search', this.getCondition())
     }
   }
 }
