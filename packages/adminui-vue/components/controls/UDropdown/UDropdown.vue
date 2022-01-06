@@ -19,6 +19,7 @@
       <!-- v-if is used instead v-show for faster initial rendering + to ensure dropdown content is recreated according to possible changes -->
       <div
         v-if="visible && $slots.dropdown"
+        :class="customClass"
         :key="renderKey"
         ref="dropdown"
         tabindex="1"
@@ -116,6 +117,13 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    /**
+     * your unic class name for dropdown
+     */
+    customClass: {
+      type: String,
+      default: '',
     }
   },
 
