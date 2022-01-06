@@ -6,12 +6,35 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - "one session per user" mode now controlled by UBA model. In ubConfig.json added parameter `security.oneSessionPerUser` (default is false).
-   This give addition level of security in some edge cases.
-   
-   *WARNING* - should be used only on instances what works with end users (clients are browsers)
+ - new ubConfig security parameter `security.userSessionMode` - allows control user sessions creation(require UB 5.22).
+   Possible values:
+   - `Multiple`: allow multiple concurrent sessions for the same user (default, the same behavior as before UB 5.22)
+   - `Displacing`: each new session displace all older sessions for the same user.
+      If older sessions exists - logs into `uba_audit` with actionType=SECURITY_VIOLATION and text `existed sessions are displaced`
+   - `Singleton`: throws in case user is already logged in.
+     Logs into `uba_audit` with actionType=SECURITY_VIOLATION and text `ubErrAnotherSessionExists`,
+     UI shows error `Access deny. User is already logged in, may be from another browser tab or another computer`
+
+   *WARNING* - values other when `Multiple` should be used only on instances what works with end users (clients are browsers)
+ 
+ - new method `App.getUserSessionsCount`
+ 
+ - new entity `uba_session`: virtual entity what allows Supervisor view list of the active sessions and remove sessions ;
+   Corresponding shortcut is `Administrative->Security->Users Sessions`
+
+ - added index by `uba_subject.code`
+
+ - `DialogTable.vue` - it is multiselection table in dialog window. Is based on `U-Table`
 
 ### Changed
+ - `uba_als-fm.vue`- made new form. Implemented editing of a role that already exists. [Task](https://dev.intecracy.com/agile/browse/UBDF-14336)
+
+ - English (en) localization for desktop description: the words are capitalized
+  according to English rules for captions
+
+ - audit trail form will show changes for all mixin-attributes (**mi_dateFrom**, **mi_dateTo** and others).
+ Before this fix, only **mi_wfState** attribute was displayed. After this only attributes, added by `mStorage` mixin are omitted.
+
  - `en` localization of the caption of `uba_usergroup` entity: `User Groups` => `User Group Membership`.
    The change is made in order to avoid duplication - `User Groups` caption is already used by `uba_group` entity.
 

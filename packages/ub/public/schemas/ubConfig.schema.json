@@ -491,10 +491,14 @@
           "default": true,
           "description": "Disable user name and password checking for CERT auth. If `false` uiSettings.adminUI.authenticationCert.requireUserName should be set to true"
         },
-        "oneSessionPerUser": {
-          "type": "boolean",
-          "default": false,
-          "description": "Remove all existed user sessions on login (logout all other sessions for user with the same name). *WARNING* - should be used only on instances what works with end users (clients are browsers)"
+        "userSessionMode": {
+          "enum": [
+            "Multiple",
+            "Displacing",
+            "Singleton"
+          ],
+          "default": "Multiple",
+          "description": "Session creation for user:\n - `Multiple`: allow multiple concurrent sessions for the same user (default);\n - `Displacing`: each new session displace all older sessions for the same user; \n - `Singleton`: throws in case user is already logged in.\n\n *WARNING* - any mode except `Multiple` should be used only on instances what works with end users (clients are browsers)"
         },
         "domainMap": {
           "type": "object",
@@ -634,7 +638,7 @@
         },
         "multitenancy": {
           "type": "object",
-          "description": "Multitenancy configuration (UB EE)",
+          "description": "Multi-tenancy configuration (UB EE)",
           "oneOf":[
             {
               "required": ["tenantIDHeader"]
@@ -646,7 +650,7 @@
           "properties": {
             "enabled": {
               "type": "boolean",
-              "description": "enable multitenancy for application",
+              "description": "enable multi-tenancy for application",
               "default": false
             },
             "tenantIDHeader": {

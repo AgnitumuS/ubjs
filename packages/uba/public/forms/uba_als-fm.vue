@@ -1,438 +1,498 @@
 <template>
-  <div class="uba_als__container">
-    <el-select
-      v-model="selectedEntity"
-      filterable
-      clearable
-      :placeholder="$ut('entity')"
-    >
-      <el-option
-        v-for="entity in entityList"
-        :key="entity.code"
-        :label="entity.code"
-        :value="entity.code"
-      />
-    </el-select>
-    <el-select
-      v-if="selectedEntity"
-      v-model="selectedState"
-      filterable
-      clearable
-      :placeholder="$ut('uba_als.state')"
-    >
-      <el-option
-        v-for="entity in stateList"
-        :key="entity"
-        :label="entity"
-        :value="entity"
-      />
-    </el-select>
-    <el-popover
-      v-model="popoverVisible"
-      placement="bottom-end"
-      trigger="click"
-    >
-      <el-table
-        :data="emptyAttributes"
-        :show-header="false"
-        @row-click="onEmptyAttributesClick"
+  <div
+    v-loading="loading"
+    class="uba-als"
+  >
+    <div class="uba-als__header">
+      <u-form-row
+        label-position="top"
+        label="Entity"
       >
-        <el-table-column
-          width="200"
-          property="name"
-        />
-      </el-table>
-      <el-button
-        v-if="selectedState && emptyAttributes.length !== 0"
-        slot="reference"
-        icon="u-icon-add"
-        @click="popoverVisible = !popoverVisible"
-      >
-        {{ $ut('actionAdd') }}
-      </el-button>
-    </el-popover>
-    <el-button
-      v-if="selectedState"
-      type="success"
-      icon="u-icon-check"
-      :disabled="!needSave"
-      @click="save"
-    >
-      {{ $ut('save') }}
-    </el-button>
-    <el-button
-      v-if="selectedState"
-      type="success"
-      icon="u-icon-file-text"
-      :disabled="!needSave"
-      @click="generateDiffFile"
-    >
-      {{ generateDiffFileCaption }}
-    </el-button>
-    <el-row v-if="selectedState">
-      <el-col :span="18">
-        <u-table
-          height="100%"
-          :items="tableData"
-          :columns="tableColumns"
-          fixed-column-id="code"
+        <el-select
+          v-model="selectedEntity"
+          filterable
+          :disabled="!isNew"
         >
-          <template
-            v-for="role of checkedRoles"
-            #[roleColumnPrefix+role]="{row}"
-          >
-            <action-component
-              :key="role"
-              :value="(currentRights.find(right => right.attribute === row.code && right.roleName === role) || {}).actions"
-              class="als__actions"
-              @input="doOnDataChanged($event, role)"
-            />
-          </template>
+          <el-option
+            v-for="entity in entityList"
+            :key="entity.code"
+            :label="`${entity.code} (${entity.caption}) `"
+            :value="entity.code"
+          />
+        </el-select>
+      </u-form-row>
 
-          <template #removeAction="{row}">
-            <el-button
-              size="small"
-              icon="u-icon-delete"
-              circle
-              @click.native.prevent="deleteRow(row.code)"
-            />
-          </template>
-        </u-table>
-      </el-col>
-      <el-col
-        :span="6"
-        style="padding-left: 30px"
+      <u-form-row
+        label-position="top"
+        label="State"
       >
-        <h4>{{ $ut('roles') }}:</h4>
-        <el-button
-          @click="doCheckAllRoles"
+        <el-select
+          v-model="selectedState"
+          :disabled="disabledState"
+          filterable
         >
-          {{ $ut('checkAll') }}
-        </el-button>
-        <el-button
-          @click="doUnCheckAllRoles"
-        >
-          {{ $ut('uncheckAll') }}
-        </el-button>
-        <el-button
-          @click="doCheckAllUsedRoles"
-        >
-          {{ $ut('checkAllUsedRoles') }}
-        </el-button>
-        <el-scrollbar>
-          <el-checkbox-group
-            v-model="checkedRoles"
-            style="margin-top: 10px"
+          <el-option
+            v-for="state in stateList"
+            :key="state"
+            :label="`${state} ${getDescription(state)}`"
+            :value="state"
+          />
+        </el-select>
+      </u-form-row>
+
+      <div class="uba-als__header__item">
+        <div v-if="isNew">
+          <el-button
+            :disabled="disabledAddBtns"
+            :type="btnType"
+            @click="showAttrsChoice = true"
           >
-            <div
-              v-for="role in roleList"
-              :key="role"
-              style="margin-top: 5px"
+            {{ $ut('addАField') }}
+          </el-button>
+          <el-button
+            :disabled="disabledAddBtns"
+            :type="btnType"
+            @click="showRolesChoice = true"
+          >
+            {{ $ut('addRole') }}
+          </el-button>
+          <dialog-table
+            :data-table="emptyAttributes"
+            :show="showAttrsChoice"
+            :columns="fieldColumns"
+            :default-selection="selectedFields"
+            multi-select-key-attr="code"
+            @closed="showAttrsChoice = false"
+            @add="handleAddAttrs"
+          />
+          <dialog-table
+            :data-table="roleList"
+            :columns="roleColumns"
+            :show="showRolesChoice"
+            :default-selection="selectedRoles"
+            multi-select-key-attr="value"
+            @closed="showRolesChoice = false"
+            @add="handleAddRoles"
+          />
+        </div>
+        <div>
+          <u-button
+            v-for="button in controlBtns"
+            :key="button.label"
+            appearance="inverse"
+            size="medium"
+            :icon="button.icon"
+            :color="button.color"
+            :disabled="disabledControlsBtn"
+            @click="toGoActions(button)"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="uba-als_table--wrap">
+      <table class="uba-als_table u-table">
+        <thead>
+          <tr>
+            <th
+              v-if="isNew"
+              rowspan="2"
             >
-              <el-checkbox
-                :key="role"
-                :label="role"
-                @change="checkBoxChange(role)"
+              {{ $ut('actionType') }}
+            </th>
+            <th
+              v-for="item in baseColumns"
+              :key="item.label"
+              rowspan="2"
+            >
+              {{ $ut(item.label) }}
+            </th>
+            <th
+              v-if="selectedRoles.length > 0"
+              :colspan="selectedRoles.length"
+            >
+              <div>{{ $ut('roles') }}</div>
+            </th>
+          </tr>
+          <tr v-if="selectedRoles.length > 0">
+            <th
+              v-for="role in selectedRoles"
+              :key="role.label"
+            >
+              <div>
+                {{ role.label }}
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-if="!isEmpty">
+            <tr
+              v-for="(row, rowIndex) in selectedFields"
+              :key="row.label"
+            >
+              <td v-if="isNew">
+                <el-button
+                  size="small"
+                  icon="u-icon-delete"
+                  circle
+                  @click.native="deleteField(rowIndex)"
+                />
+              </td>
+              <td
+                v-for="item in baseColumns"
+                :key="item.property"
               >
-                {{ role }}
-              </el-checkbox>
-            </div>
-          </el-checkbox-group>
-        </el-scrollbar>
-      </el-col>
-    </el-row>
+                {{ row[item.property] }}
+              </td>
+              <td
+                v-for="role in row.roles"
+                :key="role.label"
+              >
+                <action-component
+                  v-model="role.actions"
+                  class="uba-als__actions"
+                  @input="changeRolePermissions($event, role)"
+                />
+              </td>
+            </tr>
+          </template>
+          <template v-else>
+            <tr>
+              <td
+                :colspan="baseColumns.length + 2"
+                class="uba-als_table--empty"
+              >
+                No data
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
-/* global saveAs */
-const ActionComponent = require('../components/RoleActionsComponent.vue').default
-const adminUiVue = require('@unitybase/adminui-vue')
+const { Form } = require('@unitybase/adminui-vue')
+const ActionComponent =
+  require('../components/RoleActionsComponent.vue').default
+const DialogTable = require('../components/DialogTable.vue').default
 
-module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, rootComponent, parentContext }) {
-  adminUiVue.mountUtils.mountTab({
-    component: rootComponent,
-    tabId: tabId,
-    props: {
-      initialInstanceID: instanceID
-    },
-    entity,
-    instanceID,
-    formCode,
-    title
-  })
+module.exports.mount = (cfg) => {
+  Form(cfg).processing().mount()
 }
 
-const ALS_FIELD_LIST = ['ID', 'attribute', 'state', 'roleName', 'actions']
-
 module.exports.default = {
-  name: 'AlsComponent',
-  props: {
-    initialInstanceID: Number
-  },
+  name: 'UBA_ALS',
+  components: { DialogTable, ActionComponent },
   data () {
     return {
-      popoverVisible: false,
+      controlBtns: [
+        {
+          name: 'save',
+          label: this.$ut('save') + ' (Ctrl + S)',
+          icon: 'u-icon-save',
+          color: 'primary'
+        },
+        {
+          name: 'export',
+          label: this.$ut('export') + ' (Ctrl + S)',
+          icon: 'u-icon-download',
+          color: 'primary'
+        }
+      ],
       entityList: this.$UB.connection.domain.filterEntities(e => e.mixins.als),
-      alsEntity: this.$UB.connection.domain.get('uba_als'),
       roleList: [],
+      selectedRoles: [],
+      selectedEntity: '',
       stateList: [],
-      selectedEntity: null,
-      selectedState: null,
-      checkedRoles: [],
-      // do not make huge array reactive rightsFromDb: [],
-      rightsFromDbCounter: 1,
-      createdRights: [],
-      deletedRights: [],
-      generateDiffFileCaption: 'Save diff in file',
-      usedAttributes: [],
-      actions: [{
-        name: 'Select',
-        value: 1
-      }, {
-        name: 'Update',
-        value: 3
-      }, {
-        name: 'Mandatory',
-        value: 7
-      }],
-      roleColumnPrefix: 'roleId'
-    }
-  },
-  mounted () {
-    if (this.initialInstanceID) {
-      return UB.Repository('uba_als').attrs('entity', 'state').where('ID', '=', this.initialInstanceID)
-        .selectSingle()
-        .then(row => {
-          if (row) {
-            this.selectedEntity = row.entity
-            this.selectedState = row.state
-          }
-        })
-    }
-  },
-  watch: {
-    currentRights () {
-      this.setUsedAttributes()
-    },
-    selectedEntity () {
-      this.loadRightsFromDB()
-      this.createdRights = []
-      if (this.selectedEntity) {
-        this.$UB.connection.query({ entity: this.selectedEntity, method: 'getallroles' }).then(response => {
-          this.roleList = response.alsRoleAllValues.sort()
-        })
-        this.$UB.connection.query({ entity: this.selectedEntity, method: 'getallstates' }).then(response => {
-          this.stateList = response.alsStateAllValues
-          if (!this.stateList.includes(this.selectedState)) {
-            this.selectedState = null
-          }
-        })
-      } else {
-        this.roleList = []
-        this.stateList = []
-        this.selectedState = null
-      }
+      selectedState: '',
+      showAttrsChoice: false,
+      showRolesChoice: false,
+      fieldColumns: [
+        { label: 'description', id: 'name' },
+        { label: 'caption', id: 'caption' },
+        { label: 'description', id: 'description' }
+      ],
+      roleColumns: [
+        { label: 'value', id: 'value' },
+        { label: 'name', id: 'name' }
+      ],
+      selectedFields: [],
+      baseColumns: [
+        { label: 'caption', property: 'caption' },
+        { label: 'field', property: 'code' }
+      ],
+      isNew: this.$store.state.isNew,
+      blockMonkeyRequest: false,
+      wasEdit: false,
+      loading: false
     }
   },
   computed: {
-    attributeList () {
-      return this.selectedEntity ? Object.keys(this.$UB.connection.domain.get(this.selectedEntity).attributes) : []
+    disabledControlsBtn () {
+      return (
+        this.selectedFields.length === 0 ||
+        this.selectedRoles.length === 0 ||
+        (!this.isNew && !this.wasEdit)
+      )
     },
-    changedRights () {
-      // return [] // MPV temporarty
-      let rows = []
-      if (!this.rightsFromDb) return rows
-      this.rightsFromDb.forEach((right) => {
-        // let oldRight = this.oldRights.find((oldR) => { return oldR.ID === right.ID })
-        let oldActions = this.oldActions.get(right.ID)
-        if (oldActions && (oldActions !== right.actions)) { // oldRight.attribute roleName state do not changed
-          rows.push(right)
-        }
-      })
-      return rows
+    isEmpty () {
+      return this.selectedFields.length === 0 && this.selectedRoles.length === 0
     },
-    dbRights () {
-      // touch a reactive variable to made this computed reactive when rightsFromDb retrieved from server
-      // without observing a huge rightsFromDb array
-      return this.rightsFromDb
-        ? this.rightsFromDb.filter(right => right.state === this.selectedState)
-        : []
+    disabledSaveBtn () {
+      return this.selectedEntity.length === 0
     },
-    currentRights () {
-      let newR = this.createdRights.filter(right => right.state === this.selectedState)
-      return [...this.dbRights, ...newR]
+    disabledState () {
+      return !this.selectedEntity || !this.isNew
+    },
+    disabledAddBtns () {
+      return this.disabledState || !this.selectedState
+    },
+    btnType () {
+      const type = this.disabledAddBtns ? 'default' : 'success'
+      return type
     },
     emptyAttributes () {
-      let allAttrs = this.selectedEntity ? Object.values(this.$UB.connection.domain.get(this.selectedEntity).attributes) : []
-      return allAttrs.filter(attr => !this.usedAttributes.includes(attr.name))
-    },
-    needSave () {
-      return this.changedRights.length > 0 || this.createdRights.some(cr => cr.actions !== 0)
-    },
-
-    tableData () {
-      return [...this.usedAttributes].sort().map(code => ({ code }))
-    },
-
-    tableColumns () {
-      const columns = []
-      const attributeColumn = {
-        id: 'code',
-        label: 'uba_als.attribute'
-      }
-      const removeActionColumn = {
-        id: 'removeAction',
-        width: 60
-      }
-      columns.push(attributeColumn)
-      for (const role of this.checkedRoles) {
-        columns.push({
-          id: this.roleColumnPrefix + role,
-          label: role,
-          headerAlign: 'center'
-        })
-      }
-      columns.push(removeActionColumn)
-      return columns
+      const allAttrs = this.selectedEntity
+        ? Object.values(
+          this.$UB.connection.domain.get(this.selectedEntity).attributes
+        )
+        : []
+      return allAttrs
+    }
+  },
+  created () {
+    if (!this.isNew) this.init()
+  },
+  watch: {
+    selectedEntity (e) {
+      if (e) this.getData()
     }
   },
   methods: {
-    setForAllAttributes (action, roleName) {
-      this.currentRights.forEach(right => {
-        if (right.roleName === roleName) {
-          right.actions = action
+    async init () {
+      const propsData = this.$store.state.data
+      this.selectedEntity = propsData.entity
+      if (this.selectedEntity) await this.getData()
+      this.selectedState = propsData.state
+      const startAttribute = this.emptyAttributes.find(
+        i => i.code === propsData.attribute
+      )
+      this.handleAddAttrs({ selection: [startAttribute] })
+      const startRole = this.roleList.find(i => i.value === propsData.roleName)
+      startRole.actions = propsData.actions
+      startRole.ID = propsData.ID
+      this.handleAddRoles({ selection: [startRole] })
+    },
+    getDescription (str) {
+      const value = this.$lookups.getEnum(this.selectedEntity, str)
+      return !value ? '' : `(${value})`
+    },
+    toGoActions (btn) {
+      const permissions = this.createPermissionsList()
+      if (permissions.length === 0) {
+        window.alert('Permissions is empty')
+        return
+      }
+      this[btn.name](permissions)
+    },
+    async getData () {
+      if (this.blockMonkeyRequest) return
+      this.blockMonkeyRequest = true
+      await this.getAllStates()
+      await this.getAllRoles()
+      this.blockMonkeyRequest = false
+    },
+    export (permissions) {
+      permissions = permissions.map(i => JSON.stringify(i, null, 4))
+      const output = permissions.join(');\n\nconn.run(')
+      /* global saveAs */
+      saveAs(
+        new Blob([`conn.run(${output});`], {
+          type: 'text/plain;charset=utf-8'
+        }),
+        `uba_als__${
+          this.selectedEntity
+        }__${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}.txt`
+      )
+    },
+    async save (permissions) {
+      this.loading = true
+      try {
+      await this.$UB.connection.runTrans(permissions)
+        this.$notify.success({
+          title: this.$ut('successfullySaved')
+        })
+      } finally {
+        this.loading = false
+      }
+    },
+    createPermissionsList () {
+      const { selectedFields, getExecParamsFromRole, isNew } = this
+      const permissions = []
+      selectedFields.forEach(row => {
+        if (!row.roles || !Array.isArray(row.roles)) return false
+        row.roles.forEach(role => {
+          if (isNew && role.actions === 0) return
+          const template = {
+            entity: 'uba_als',
+            method: isNew ? 'insert' : role.actions === 0 ? 'delete' : 'update'
+          }
+          template.execParams = getExecParamsFromRole(role, row.code)
+          permissions.push(Object.assign({}, template))
+        })
+      })
+      return permissions
+    },
+    getExecParamsFromRole (role, attribute) {
+      const { selectedState, selectedEntity } = this
+      const item = {
+        attribute,
+        state: selectedState,
+        entity: selectedEntity,
+        roleName: role.value,
+        actions: role.actions
+      }
+      if (role.ID || role.ID === 0) item.ID = role.ID
+      return item
+    },
+    changeRolePermissions (lvl, item) {
+      this.wasEdit = true
+      item.actions = lvl
+    },
+    deleteField (index) {
+      this.selectedFields.splice(index, 1)
+      if (this.selectedFields.length === 0) this.selectedRoles = []
+    },
+    async getAllRoles () {
+      const response = await this.$UB.connection.query({
+        entity: this.selectedEntity,
+        method: 'getallroles'
+      })
+      const values = response.alsRoleAllValues
+      this.roleList = response.alsRoleAllNames.map((name, index) => {
+        return {
+          name,
+          value: values[index]
         }
       })
     },
-    doOnDataChanged (currentValue, role) {
-      this.createdRights[this.createdRights.findIndex(cr => cr.roleName === role)].actions = currentValue
-      this.rightsFromDbCounter += 1
-    },
-    createRightForRole (role) {
-      this.usedAttributes.forEach(attr => this.createRightByRoleAttr(role, attr))
-    },
-    createRightByRoleAttr (role, attr) {
-      if (!this.currentRights.some(right =>
-        right.attribute === attr &&
-        right.roleName === role)) {
-        this.createdRights.push({
-          state: this.selectedState,
-          entity: this.selectedEntity,
-          attribute: attr,
-          roleName: role,
-          actions: 0
-        })
-      }
-    },
-    checkBoxChange (role) {
-      if (this.checkedRoles.includes(role)) {
-        this.createRightForRole(role)
-      }
-    },
-    doCheckAllUsedRoles () {
-      let dbRights = this.dbRights
-      let usedRoles = this.roleList.filter(roleName => { // at last one rule for this role + state exists in uba_als
-        return dbRights.findIndex(r => r.roleName === roleName) !== -1
+    async getAllStates () {
+      const response = await this.$UB.connection.query({
+        entity: this.selectedEntity,
+        method: 'getallstates'
       })
-      let unchecked = usedRoles.filter(role => this.checkedRoles.indexOf(role) === -1)
-      unchecked.forEach(role => this.createRightForRole(role))
-      this.checkedRoles = usedRoles
+      this.stateList = response.alsStateAllValues
+      if (this.isNew) {
+        this.selectedState = null
+        this.selectedRoles = []
+        this.selectedFields = []
+      }
     },
-    doCheckAllRoles () {
-      let unchecked = this.roleList.filter(role => this.checkedRoles.indexOf(role) === -1)
-      unchecked.forEach(role => this.createRightForRole(role))
-      this.checkedRoles = this.roleList
-    },
-    doUnCheckAllRoles () {
-      this.checkedRoles = []
-    },
-    onEmptyAttributesClick (item) {
-      this.addRow(item.name)
-      this.popoverVisible = this.emptyAttributes.length !== 0
-    },
-    setUsedAttributes () {
-      // this.usedAttributes = this.currentRights.map(right => right.attribute).filter((value, index, self) => self.indexOf(value) === index)
-      this.usedAttributes = this.currentRights.map(right => right.attribute).filter((value, index, self) => self.indexOf(value) === index)
-    },
-    loadRightsFromDB () {
-      if (!this.selectedEntity) return
-      UB.Repository('uba_als').attrs(ALS_FIELD_LIST).where('entity', '=', this.selectedEntity).selectAsObject().then((rights) => {
-        this.rightsFromDb = rights
-        this.oldActions = new Map()
-        // this.oldRights = rights.map((right) => { return { ...right } })
-        rights.forEach(r => {
-          this.oldActions.set(r.ID, r.actions)
-        })
-        this.rightsFromDbCounter += 1 // force calculated props to recalc
+    handleAddRoles (e) {
+      const checkValue = typeof e.selection[0] === 'object'
+      let selectedRoles = e.selection
+      if (!checkValue) {
+        selectedRoles = this.roleList.filter(el =>
+          e.selection.includes(el.value)
+        )
+      }
+      selectedRoles.forEach(el => {
+        el.label = el.value
+        el.actions = el.actions === undefined ? 1 : el.actions
       })
+      this.selectedFields.forEach(i => {
+        const copyRoles = JSON.parse(JSON.stringify(selectedRoles))
+        i.roles = copyRoles
+      })
+      this.selectedRoles = selectedRoles
+      this.showRolesChoice = false
     },
-    generateDiffFile () {
-      let output = ''
-      let allRigts = [...this.changedRights.map(row => JSON.stringify({
-        entity: 'uba_als',
-        method: row.actions !== 0 ? 'update' : 'delete',
-        execParams: row.actions === 0 ? { ID: row.ID } : { ID: row.ID, actions: row.actions }
-      }, null, '\t')),
-      ...this.createdRights.filter(cr => cr.actions !== 0).map(row => JSON.stringify({
-        entity: 'uba_als',
-        method: 'insert',
-        execParams: row
-      }, null, '\t'))]
-      output = allRigts.join(');\n\nconn.run(')
-      saveAs(
-        new Blob([`conn.run(${output});`], { type: 'text/plain;charset=utf-8' }),
-        `uba_als__${this.selectedEntity}__${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}.txt`
-      )
-    },
-    save () {
-      if (this.needSave) {
-        let requests = []
-        this.changedRights.forEach(row => requests.push({
-          entity: 'uba_als',
-          method: row.actions !== 0 ? 'update' : 'delete',
-          execParams: row
-        }))
-        this.createdRights.filter(cr => cr.actions !== 0).forEach(row => requests.push({
-          entity: 'uba_als',
-          method: 'insert',
-          execParams: row
-        }))
-        this.$UB.connection.runTrans(requests).then(this.loadRightsFromDB.bind(this)).then(() => { this.createdRights = this.createdRights.filter(cr => cr.actions === 0) })
+    handleAddAttrs (e) {
+      const checkValue = typeof e.selection[0] === 'object'
+      this.selectedFields = e.selection
+      if (!checkValue) {
+        this.selectedFields = this.emptyAttributes.filter(el =>
+          e.selection.includes(el.code)
+        )
       }
-    },
-    addRow (attr) {
-      this.usedAttributes.push(attr)
-      this.checkedRoles.forEach(role => this.createRightByRoleAttr(role, attr))
-    },
-    deleteRow (attr) {
-      let index = this.usedAttributes.indexOf(attr)
-      if (index !== -1) {
-        this.usedAttributes.splice(index, 1)
-      }
-      this.currentRights
-        .filter(cr => cr.attribute === attr && cr.state === this.selectedState)
-        .forEach(right => { right.actions = 0 })
+      this.selectedFields.forEach((item, index) => {
+        this.$set(this.selectedFields[index], 'roles', [])
+      })
+      this.showAttrsChoice = false
     }
-  },
-  components: {
-    ActionComponent
   }
 }
 </script>
 
 <style>
-  .uba_als__container{
-    overflow: auto;
-    height: 100%;
-  }
+.uba-als {
+  --padding: 12px;
+  --cellPadding: calc(var(--padding) / 1.5);
+  padding: calc(var(--padding) * 2);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100% - 1px);
+  overflow: hidden;
+}
+.uba-als__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+.uba-als__header .u-form-row {
+  padding: 0 var(--padding);
+  flex-basis: 30%;
+  min-width: 248px;
+  max-width: 400px;
+}
+.uba-als__header .u-form-row .el-select {
+  width: 100%;
+}
+.uba-als__header__item {
+  padding: 0 var(--padding);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.uba-als__header__item .el-button {
+  text-transform: capitalize;
+}
+.uba-als_table--wrap {
+  overflow: auto;
+  border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+}
+.uba-als .u-table th:after {
+  content: none;
+}
 
-  .als__actions {
-    display: flex;
-    justify-content: center;
-  }
+.uba-als_table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.uba-als_table.u-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.uba-als_table.u-table th {
+  border-top: none;
+  border-bottom: none;
+  text-transform: capitalize;
+}
+.uba-als_table.u-table tr td:first-child {
+  width: 100px;
+  text-align: center;
+}
 
-  .role-actions-component i:not(:last-child) {
-    margin-right: 7px;
-  }
+.uba-als_table--empty {
+  text-align: center;
+}
+.uba-als__actions {
+  display: flex;
+  justify-content: center;
+}
 </style>

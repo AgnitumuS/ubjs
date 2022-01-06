@@ -225,6 +225,26 @@ adm_desktop:
                 ]
               }
             }
+      - uba_session:
+          access: Supervisor
+          caption: { $i18n: uba_session }
+          iconCls: fas fa-user-cog
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_session',
+                columns: [
+                  'ID',
+                  {id: 'userID', label: 'user ID', isLookup: false},
+                  'userName', 'remoteIP',
+                  {id: 'accessedAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
+                  {id: 'createdAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
+                  'isPasswordExpired', 'isLocked', 'serverTimeDelta' 
+                ]
+              }
+            }
       - uba_audit-securityDashboard:
           access: Supervisor
           caption:

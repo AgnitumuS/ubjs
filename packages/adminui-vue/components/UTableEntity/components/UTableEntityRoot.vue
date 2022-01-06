@@ -74,7 +74,7 @@
         <sort
           ref="sort"
           :target-column="targetColumn"
-          @click.native="onSort"
+          @close="onSortClose"
         />
         <pagination v-if="withPagination" />
         <div
@@ -503,7 +503,7 @@ const ColumnTemplateProvider = require('../column-template-provider')
 
 export default {
   name: 'UTableEntityRoot',
-  mixins: [selectionProps],
+
   components: {
     FilterSelector: require('./FilterSelector.vue').default,
     Pagination: require('./Pagination.vue').default,
@@ -513,6 +513,8 @@ export default {
     UCardView: require('../../controls/UCardView.vue').default,
     NextPageButton: require('./NextPageButton.vue').default
   },
+
+  mixins: [selectionProps],
 
   inject: {
     close: {
@@ -687,7 +689,9 @@ export default {
       'createNewVersion',
       'showRecordHistory'
     ]),
+
     ...mapMutations(['SELECT_COLUMN', 'SELECT_ROW']),
+
     getCellTemplate (column) {
       if (typeof column.template === 'function') {
         return column.template()
@@ -695,6 +699,7 @@ export default {
       return ColumnTemplateProvider.getByColumnAttribute(column.attribute)
         .template
     },
+
     showContextMenu ({ event, row, column }) {
       this.select({ row, column })
       this.contextMenuRowId = row.ID
@@ -791,6 +796,7 @@ export default {
       }
       return ''
     },
+
     getRowClass (row) {
       return row.ID === this.selectedRowId ? 'selected' : ''
     },
@@ -840,20 +846,27 @@ export default {
       if (column.sortable === false) {
         return
       }
+
       this.SELECT_COLUMN(column.id)
-      // setTimeout for prevent click outside
+
       if (this.$refs.sort && this.$refs.sort.$refs.dropdown) {
-        this.targetColumn = target
-        setTimeout(this.$refs.sort.$refs.dropdown.toggleVisible, 0)
+        // setTimeout for prevent click outside
+        setTimeout(() => {
+          this.targetColumn = target
+          this.$refs.sort.$refs.dropdown.toggleVisible()
+        }, 0)
       }
     },
-    onSort () {
+
+    onSortClose () {
       this.targetColumn = null
     },
+
     closeDropdownHandler () {
       if (!this.cacheActiveElement) return
       this.cacheActiveElement.focus()
     },
+
     activeRowChangeHandler ({ index }) {
       const id = this.items[index][this.multiSelectKeyAttr]
       this.SELECT_ROW(id)

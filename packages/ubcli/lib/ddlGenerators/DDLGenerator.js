@@ -396,6 +396,8 @@ class DDLGenerator {
     let dbKeys
     let haveDeleteDateInFields = false
     const dialect = entity.connectionConfig.dialect
+    const IS_SQL_SERVER = DDLGenerator.isMSSQL(dialect)
+    const IS_ORACLE = DDLGenerator.isOracle(dialect)
     const isHistory = entity.mixins.dataHistory
     function formatBrackets (stringToFormat, ...values) {
       const FORMAT_RE = /{(\d+)}/g
@@ -409,7 +411,7 @@ class DDLGenerator {
         const indexDef = { name: dbKey, isUnique: true, keys: [], keyOptions: {} }
         _.forEach(fields, (options, field) => {
           let fieldKey = field
-          if (options.func && (DDLGenerator.isOracle(dialect))) {
+          if (options.func && IS_ORACLE) {
             if (options.func.indexOf('{0}') === -1) {
               fieldKey = options.func + '(' + fieldKey + ')'
             } else {
@@ -434,7 +436,6 @@ class DDLGenerator {
       })
     }
     if (entity.dbExtensions) {
-      const IS_SQL_SERVER = DDLGenerator.isMSSQL(dialect)
       if (IS_SQL_SERVER) { // merge CATALOGUE DBExtensions for SQL server into one FTS index
         const msSqlFtsIdx = { name: '__CATALOGUE__', keys: [], indexType: 'CATALOGUE' }
         _.forEach(entity.dbExtensions, (command) => {
@@ -447,21 +448,28 @@ class DDLGenerator {
           tableDef.addIndex(msSqlFtsIdx, true)
         }
       }
-      _.forEach(entity.dbExtensions, (commands, dbKey) => {
-        if (!commands.type) {
-          commands.type = 'OTHER'
+      _.forEach(entity.dbExtensions, (dbExtDef, dbKey) => {
+        if (!dbExtDef.type) {
+          dbExtDef.type = 'OTHER'
         }
         let objDef
-        if (commands.definition && (commands.type !== 'OTHER')) {
-          const definition = commands.definition
-          switch (commands.type) {
+        if (dbExtDef.definition && (dbExtDef.type !== 'OTHER')) {
+          const definition = dbExtDef.definition
+          switch (dbExtDef.type) {
             case 'INDEX':
             case 'CATALOGUE':
-              if (!(IS_SQL_SERVER && commands.type === 'CATALOGUE')) { // already added
+            case 'COLUMNSTORE':
+              if (!(IS_SQL_SERVER && dbExtDef.type === 'CATALOGUE')) { // already added
                 objDef = { name: dbKey, keys: [], isUnique: definition.isUnique }
-                if (commands.type === 'CATALOGUE') objDef.indexType = commands.type
+                // if (dbExtDef.type === 'CATALOGUE')
+                objDef.indexType = dbExtDef.type
+                // transform CATALOGUE index to INDEX for DBMS other when SQL Server and Oracle
+                // TODO - create a gin index in Postgres for CATALOGUE and SUFFIXES
+                if ((dbExtDef.type === 'CATALOGUE') && !(IS_ORACLE || IS_SQL_SERVER)) {
+                  objDef.indexType = 'INDEX'
+                }
                 _.forEach(definition.keys, (fKeyOptions, fkeyText) => {
-                  if (fKeyOptions.func && DDLGenerator.isOracle(dialect)) {
+                  if (fKeyOptions.func && IS_ORACLE) {
                     if (fKeyOptions.func.indexOf('{0}') === -1) {
                       fkeyText = fKeyOptions.func + '(' + fkeyText + ')'
                     } else {
@@ -487,7 +495,7 @@ class DDLGenerator {
               break
           }
         } else {
-          objDef = { name: dbKey, expression: commands[DDLGenerator.dbDialectes[dialect]] }
+          objDef = { name: dbKey, expression: dbExtDef[DDLGenerator.dbDialectes[dialect]] }
           tableDef.addOther(objDef)
         }
       })

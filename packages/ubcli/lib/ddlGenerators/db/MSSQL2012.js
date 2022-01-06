@@ -177,12 +177,19 @@ ORDER BY i.object_id, c.name`
       let i = 0
       const idxCnt = indexesFromDb.length
       while (i < idxCnt) {
+        const dbIdx = indexesFromDb[i]
+        let indexType = null
+        if (dbIdx.index_name === '__CATALOGUE__') {
+          indexType = 'CATALOGUE'
+        } else if (dbIdx.type_desc.indexOf('COLUMNSTORE') !== -1) {
+          indexType = 'COLUMNSTORE'
+        }
         const indexObj = {
-          name: indexesFromDb[i].index_name,
-          isUnique: indexesFromDb[i].is_unique !== 0,
-          isDisabled: indexesFromDb[i].is_disabled !== 0,
-          isConstraint: indexesFromDb[i].is_unique_constraint !== 0,
-          indexType: i.name === '__CATALOGUE__' ? 'CATALOGUE' : null,
+          name: dbIdx.index_name,
+          isUnique: dbIdx.is_unique !== 0,
+          isDisabled: dbIdx.is_disabled !== 0,
+          isConstraint: dbIdx.is_unique_constraint !== 0,
+          indexType: indexType,
           keys: []
         }
         // index may consist of several keys (one roe for each key)
@@ -466,6 +473,10 @@ ORDER BY i.object_id, c.name`
       this.DDL.createIndex.statements.push(`COMMIT; CREATE FULLTEXT INDEX ON dbo.${table.name}(${indexSH.keys.join(',')})
       KEY INDEX ${table.primaryKey.name} WITH STOPLIST = SYSTEM;
       BEGIN TRANSACTION`)
+    } else if (indexSH.indexType === 'COLUMNSTORE') {
+      this.DDL.createIndex.statements.push(
+        `${commentText}create COLUMNSTORE index ${indexSH.name} on dbo.${table.name}(${indexSH.keys.join(',')})`
+      )
     } else {
       this.DDL.createIndex.statements.push(
         `${commentText}create ${indexSH.isUnique ? 'unique' : ''} index ${indexSH.name} on dbo.${table.name}(${indexSH.keys.join(',')})`
