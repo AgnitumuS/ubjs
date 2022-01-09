@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `USidebar`: show shortcut description as a hint
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.22.0] - 2022-01-09
+### Added
+ - `USidebar`: show shortcut description as a hint
 
 ### Fixed
  - `UTableEntity`: click on the `sort` button on the toolbar raised an error in case table

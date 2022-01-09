@@ -6,16 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UBConnection` will handle a `403 Forbidden` server-side error response and raise a UB.UBAbort message
- instead of `InternalServerError`. This response occurs when a user tries to retrieve data from the server but fails
- the server's data access validation with status code 403.
- - translation for `ubErrAnotherSessionExists` error message for single session violation if `security.userSessionMode: "Singleton"` in config
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.22.0] - 2022-01-09
+### Added
+ - `UBConnection` will handle a `403 Forbidden` server-side error response and raise a UB.UBAbort message
+ instead of `InternalServerError`. This response occurs when a user tries to retrieve data from the server but fails
+ the server's data access validation with status code 403.
+ - translation for `ubErrAnotherSessionExists` error message for single session violation if `security.userSessionMode: "Singleton"` in config
 
 ### Fixed
  - nodeJS compatibility: transport.js, account that `readystatechange` event might be raised after "done" state

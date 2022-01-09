@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.0] - 2022-01-09
+### Added
  - `Repository` and `DataStore` now supports use a replicated read-only database connection for running a `'select'` queries:
 
    `Repository.misc({__useReplica: true})` and `DataStore.runSQL(query, params, useReplica=false)`
@@ -13,12 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    In case `replicatedAs` parameter is defined for entity connection (EE edition only) server will choose replica,
    for SE or in case there is no replica for connection parameter is ignored.
  
-### Changed
-
-### Deprecated
-
-### Removed
-
 ### Fixed
  - `formatByPattern.collationCompare` now uses valid language in case `@unitybase/cs-shared` module is loaded twice
    (prevent resets `global._collator` if already defined) 

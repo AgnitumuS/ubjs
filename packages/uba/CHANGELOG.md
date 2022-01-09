@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.0] - 2022-01-09
+### Added
  - new ubConfig security parameter `security.userSessionMode` - allows control user sessions creation(require UB 5.22).
    Possible values:
    - `Multiple`: allow multiple concurrent sessions for the same user (default, the same behavior as before UB 5.22)
@@ -37,12 +48,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
  - `en` localization of the caption of `uba_usergroup` entity: `User Groups` => `User Group Membership`.
    The change is made in order to avoid duplication - `User Groups` caption is already used by `uba_group` entity.
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.20.33] - 2021-12-02
 ## [5.20.32] - 2021-11-30
