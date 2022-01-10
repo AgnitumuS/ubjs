@@ -49,7 +49,7 @@
     <div class="u-fake-table__header">
       <u-icon
         v-if="canRemove"
-        @click.native="$emit('remove-filter')"
+        @click.native.stop="$emit('remove-filter')"
         class="u-fake-table--icon"
         color="danger"
         icon="u-icon-close"
@@ -60,9 +60,6 @@
 </template>
 
 <script>
-  const { mapActions } = require('vuex');
-  const { throttle } = require('throttle-debounce');
-
   export default {
     props: {
       columns: {
