@@ -849,6 +849,14 @@ function createProcessingModule ({
           for (const item of collection.items || []) {
             const execParams = buildExecParams(item, collectionEntityName)
             if (execParams) {
+
+              // if we loaded additionally some other fields for collection, like localization columns (e.g. 'name_en^', 'name_uk^') such fields are not present in req.fieldList
+              for(let execParamKey of Object.keys(execParams)){
+                if(!collectionFieldList.includes(execParamKey)){
+                  collectionFieldList.push(execParamKey)
+                }
+              }
+
               const request = typeof collectionInfo.buildRequest === 'function'
                 ? collectionInfo.buildRequest({ ...store, collection, execParams, fieldList: collectionFieldList, item })
                 : {
