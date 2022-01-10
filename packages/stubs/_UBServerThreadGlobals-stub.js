@@ -412,8 +412,8 @@ const obj = store.getAsJsObject() // obj will be [{dummy: 1}]
  * @since UB 5.22.2
  * @method setColumnName
  * @memberOf TubDataStore.prototype
- * @param columnIdx
- * @param newColumnName
+ * @param {number} columnIdx
+ * @param {string} newColumnName
  */
 TubDataStore.setColumnName = function (columnIdx, newColumnName) {}
 
