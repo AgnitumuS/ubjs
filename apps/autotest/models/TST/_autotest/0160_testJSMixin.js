@@ -37,5 +37,5 @@ module.exports = function runJSMixinsTests (options) {
   const dataWithRenamedColumn = conn.Repository('tst_document')
     .using('runSelectInJSContext').attrs('ID', 'category.code').limit(1)
     .selectAsObject()
-  assert.ok(dataWithRenamedColumn.hasOwnProperty('categoryCode'), 'Method tst_document.runSelectInJSContext must rename column "category.code" into "categoryCode"')
+  assert.ok(Array.isArray(dataWithRenamedColumn) && dataWithRenamedColumn[0].hasOwnProperty('categoryCode'), 'Method tst_document.runSelectInJSContext must rename column \'category.code\' into \'categoryCode\' but got ' + JSON.stringify(dataWithRenamedColumn))
 }
