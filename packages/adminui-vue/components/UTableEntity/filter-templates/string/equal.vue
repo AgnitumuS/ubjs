@@ -27,6 +27,14 @@ export default {
       return this.value === '' || this.value === null
     }
   },
+    watch: {
+    isEmpty:{
+      immediate: true,
+      handler(newValue){
+        this.$emit('search-disabled', newValue)
+      }
+    }
+  },
   methods: {
     getCondition () {
       const { $ut, condition, value } = this

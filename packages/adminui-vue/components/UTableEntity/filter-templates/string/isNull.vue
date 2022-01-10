@@ -8,6 +8,9 @@ export default {
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
+  created(){
+        this.$emit('search-disabled', false)
+  },
   methods: {
     getCondition () {
       return {

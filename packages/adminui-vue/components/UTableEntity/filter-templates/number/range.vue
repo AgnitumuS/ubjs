@@ -42,7 +42,6 @@ export default {
     isEmpty () {
       return this.testEmpty(this.valueFrom) && this.testEmpty(this.valueTo)
     },
-
     whereList () {
       const whereList = []
       if (this.valueFrom) {

@@ -43,6 +43,7 @@
           v-if="selectedColumn.filters && selectedColumn.filters[condition]"
           :column="selectedColumn"
           ref="searchComponent"
+          @search-disabled="searchDisabled"
         />
       </template>
     </div>
@@ -75,6 +76,10 @@
       canRemove: {
         type: Boolean,
         default: false
+      },
+      searchDisabled: {
+        type: Function,
+        default: ()=>{ ()=>{}}
       }
     },
     data() {
@@ -89,6 +94,7 @@
     },
     computed: {
       currentColumns() {
+        console.log(this.selectedColumn, this.columns)
         const result =
           Object.keys(this.selectedColumn).length > 0
             ? [this.selectedColumn, ...this.columns]
@@ -112,7 +118,7 @@
 
         set(value) {
           this.$emit('selected-column', value);
-          this.selectedColumnId = value;
+          this.selectedColumnId = !!value;
         }
       },
 
@@ -128,6 +134,17 @@
     },
     created() {
       this.init();
+    },
+    watch: {
+      condition(e){
+        if (!e){
+          this.searchDisabled(false)
+          return
+        }
+        const comp = this.selectedColumn.filters[e].template
+        const flag = comp.computed && comp.computed.isEmpty ?  comp.computed.isEmpty() : false
+        this.searchDisabled(flag)
+      }
     },
     methods: {
       init() {

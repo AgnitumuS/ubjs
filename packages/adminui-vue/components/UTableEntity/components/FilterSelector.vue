@@ -15,6 +15,7 @@
       <div class="filter-selector__header">
         <u-button
           @click.native="searchHandler"
+          :disabled="disabledSearchBtn"
           type="submit"
           icon="u-icon-search"
           color="primary"
@@ -38,6 +39,7 @@
           :columns="filterColumns"
           @selected-column="selectedColumnHandler($event, index)"
           @remove-filter="removeFilterHandler(index)"
+          :search-disabled=" ($event) => { searchDisabledHandler($event, index) }"
           :can-remove="length > 1"
           :selected-column="selectedColumns[index]"
           ref="filterItem"
@@ -58,7 +60,8 @@
       return {
         length: 1,
         currentColumn: [],
-        selectedColumns: []
+        selectedColumns: [],
+        disabledSearchBtn: true
       };
     },
 
@@ -86,17 +89,38 @@
       }
     },
     created() {
-      this.selectedColumns = this.filterColumns.map(() => ({}));
+      // this.selectedColumns = this.filterColumns.map(() => ({}));
     },
     methods: {
+      setDisabledSearchBtn(){
+        let flag = true
+        if (this.selectedColumns.length < this.length) {
+          flag = true
+        } else {
+        flag = this.selectedColumns.some(i => {
+          if (!Object.keys(i).length) return true
+          return i.searchDisabled
+        })
+        }
+        this.disabledSearchBtn = flag
+      },
+      searchDisabledHandler(value, index){
+        const target = this.selectedColumns[index]
+        if(!target || Object.keys(target).length) return
+        target.searchDisabled = !!value
+        this.setDisabledSearchBtn()
+      },
       selectedColumnHandler(columnId, index) {
         const column =
           this.availableColumns.find((item) => item.id === columnId) || {};
+          column.disabled = false
         this.selectedColumns.splice(index, 1, column);
+        this.setDisabledSearchBtn()
       },
       counterHandler() {
         if (this.length === this.availableColumns.length) return;
         ++this.length;
+        this.setDisabledSearchBtn()
       },
       searchHandler() {
         const { selectedColumns, $store } = this;
@@ -118,7 +142,7 @@
       },
       removeFilterHandler(index) {
         this.selectedColumns.splice(index, 1);
-        this.selectedColumns.push({});
+        // this.selectedColumns.push({});
         --this.length;
       }
     }
