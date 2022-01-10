@@ -33,4 +33,9 @@ module.exports = function runJSMixinsTests (options) {
   })
   defValues = tstIDMapAddNew.resultData.data[0]
   assert.strictEqual(defValues[1], 'val-tst_idmap', `testMixin should sets 'val-tst_idmap' as code default for tst_IDMapping but got  ${defValues[1]}`)
+
+  const dataWithRenamedColumn = conn.Repository('tst_document')
+    .using('runSelectInJSContext').attrs('ID', 'category.code').limit(1)
+    .selectAsObject()
+  assert.ok(dataWithRenamedColumn.hasOwnProperty('categoryCode'), 'Method tst_document.runSelectInJSContext must rename column "category.code" into "categoryCode"')
 }

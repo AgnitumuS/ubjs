@@ -6,6 +6,28 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - new method `DataStore.setColumnName(columnIdx, newColumnName)` (require UB@5.22.2).
+ allow set name for column to be used during serializing DataStore into JSON or response
+``` javascript
+// change column name in HTTP response for select method
+entity.on('select:after', ctx => {
+  const ccIdx = ctx.mParams.fieldList.indexOf('category.code')
+  if (ccIdx !== -1) {
+    ctx.dataStore.setColumnName(ccIdx, 'categoryCode')
+  }
+})
+// change column name in HTTP response for custom method
+entity.customSelect = function (ctx) {
+  UB.Repository('tst_document').attrs('ID', 'category.code').limit(10).select(ctx.dataStore)
+  ctx.dataStore.setColumnName(1, 'categoryCode')
+  // caller got categoryCode instead of category.code
+}
+// change column name for custom SQL
+store = new UB.DataStore('my_entity')
+store.runSQL('select 1 from dual', {})
+store.setColumnName(0, 'dummy')
+const obj = store.getAsJsObject() // obj will be [{dummy: 1}]
+``` 
 
 ### Changed
 
