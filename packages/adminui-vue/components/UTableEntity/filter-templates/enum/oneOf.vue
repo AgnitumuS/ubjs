@@ -1,10 +1,7 @@
 <template>
   <filter-template
     :button-disabled="value.length === 0"
-    @submit="$emit('search', {
-      whereList: [{condition: 'in', value}],
-      description: $ut('by_several_value') + ' ' + manyOptions
-    })"
+    @submit="submitHandler"
   >
     <u-select-multiple
       ref="selectMany"
@@ -54,6 +51,16 @@ export default {
       return this.$UB.Repository('ubm_enum')
         .attrs('code', 'name', 'eGroup')
         .where('eGroup', '=', this.column.attribute.enumGroup)
+    },
+    getCondition () {
+      const { $ut, value, manyOptions } = this
+      return {
+        whereList: [{condition: 'in', value}],
+        description: $ut('by_several_value') + ' ' + manyOptions
+      }
+    },
+    submitHandler () {
+      this.$emit('search', this.getCondition())
     }
   }
 }

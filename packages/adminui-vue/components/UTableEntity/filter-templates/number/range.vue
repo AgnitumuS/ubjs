@@ -1,10 +1,7 @@
 <template>
   <filter-template
     :button-disabled="isEmpty"
-    @submit="$emit('search', {
-      whereList,
-      description: `${$ut('table.filter.date.from')} ${valueFrom} ${$ut('table.filter.date.to')} ${valueTo} `
-    })"
+    @submit="submitHandler"
   >
     <div class="u-table-entity-filter__date-range">
       <u-base-input
@@ -63,6 +60,16 @@ export default {
   methods: {
     testEmpty (value) {
       return value === null || value === ''
+    },
+    getCondition () {
+      const { $ut, whereList, valueTo, valueFrom } = this
+      return {
+        whereList,
+        description: `${$ut('table.filter.date.from')} ${valueFrom} ${$ut('table.filter.date.to')} ${valueTo} `
+      }
+    },
+    submitHandler () {
+      this.$emit('search', this.getCondition())
     }
   }
 }

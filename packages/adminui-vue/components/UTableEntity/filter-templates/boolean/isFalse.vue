@@ -10,14 +10,14 @@
       FilterTemplate: require('../../components/FilterTemplate.vue').default
     },
     methods: {
-      getCondition() {
+      getCondition () {
         const { $ut } = this
         return {
           whereList: [{ condition: 'equal', value: false }],
           description: $ut('equal') + ' ' + $ut('No')
         }
       },
-      submitHandler() {
+      submitHandler () {
         this.$emit('search', this.getCondition())
       }
     }

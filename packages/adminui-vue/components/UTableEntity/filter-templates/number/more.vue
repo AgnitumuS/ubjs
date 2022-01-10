@@ -1,10 +1,7 @@
 <template>
   <filter-template
     :button-disabled="isEmpty"
-    @submit="$emit('search', {
-      whereList: [{ condition, value }],
-      description: $ut(condition) + ' ' + value
-    })"
+    @submit="submitHandler"
   >
     <u-base-input
       v-model="value"
@@ -31,6 +28,18 @@ export default {
   computed: {
     isEmpty () {
       return this.value === '' || this.value === null
+    }
+  },
+  methods: {
+    getCondition () {
+      const { $ut, value, condition } = this
+      return {
+        whereList: [{ condition, value }],  
+        description: $ut(condition) + ' ' + value 
+      } 
+    },
+    submitHandler () {
+      this.$emit('search', this.getCondition())
     }
   }
 }
