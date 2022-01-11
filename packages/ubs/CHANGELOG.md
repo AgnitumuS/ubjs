@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - added  "Loading.." mask during exports report to XLSX
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.0] - 2022-01-09
+### Added
+ - added  "Loading.." mask during exports report to XLSX
 
 ## [5.20.36] - 2021-12-14
 ## [5.20.35] - 2021-12-07

@@ -383,7 +383,40 @@ const clobTruncate = {
  * @memberOf TubDataStore.prototype
  * @param {string} fieldName
  */
-TubDataStore.fieldIndexByName = function(fieldName){}
+TubDataStore.fieldIndexByName = function (fieldName) {}
+
+/**
+ * Set name for column. New name will be used during serialization to JSON or response
+ * @example
+// change column name in HTTP response for select method
+entity.on('select:after', ctx => {
+  const ccIdx = ctx.mParams.fieldList.indexOf('category.code')
+  if (ccIdx !== -1) {
+    ctx.dataStore.setColumnName(ccIdx, 'categoryCode')
+  }
+})
+
+// change column name in HTTP response for custom method
+entity.customSelect = function (ctx) {
+  UB.Repository('tst_document').attrs('ID', 'category.code').limit(10).select(ctx.dataStore)
+  ctx.dataStore.setColumnName(1, 'categoryCode')
+  // caller got categoryCode instead of category.code
+}
+
+// change column name for custom SQL
+store = new UB.DataStore('my_entity')
+store.runSQL('select 1 from dual', {})
+store.setColumnName(0, 'dummy')
+const obj = store.getAsJsObject() // obj will be [{dummy: 1}]
+
+ * @since UB 5.22.2
+ * @method setColumnName
+ * @memberOf TubDataStore.prototype
+ * @param {number} columnIdx
+ * @param {string} newColumnName
+ */
+TubDataStore.setColumnName = function (columnIdx, newColumnName) {}
+
 /**
  * Run any entity method.
  * @example
