@@ -35,7 +35,7 @@
       <div class="filter-selector__body">
         <u-filter
           v-for="(item, index) in length"
-          :key="index"
+          :key="selectedColumns[index]?.id || index"
           :columns="filterColumns"
           @selected-column="selectedColumnHandler($event, index)"
           @remove-filter="removeFilterHandler(index)"
@@ -106,7 +106,7 @@
       },
       searchDisabledHandler(value, index){
         const target = this.selectedColumns[index]
-        if(!target || Object.keys(target).length) return
+        if (!target) return
         target.searchDisabled = !!value
         this.setDisabledSearchBtn()
       },
@@ -144,6 +144,7 @@
         this.selectedColumns.splice(index, 1);
         // this.selectedColumns.push({});
         --this.length;
+        this.setDisabledSearchBtn()
       }
     }
   };

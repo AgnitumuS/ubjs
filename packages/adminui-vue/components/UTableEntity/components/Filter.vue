@@ -44,6 +44,7 @@
           :column="selectedColumn"
           ref="searchComponent"
           @search-disabled="searchDisabled"
+          :key="selectedColumn.id"
         />
       </template>
     </div>
@@ -94,7 +95,6 @@
     },
     computed: {
       currentColumns() {
-        console.log(this.selectedColumn, this.columns)
         const result =
           Object.keys(this.selectedColumn).length > 0
             ? [this.selectedColumn, ...this.columns]
@@ -141,8 +141,8 @@
           this.searchDisabled(false)
           return
         }
-        const comp = this.selectedColumn.filters[e].template
-        const flag = comp.computed && comp.computed.isEmpty ?  comp.computed.isEmpty() : false
+        const comp = this.$refs.searchComponent
+        const flag = comp.isEmpty
         this.searchDisabled(flag)
       }
     },

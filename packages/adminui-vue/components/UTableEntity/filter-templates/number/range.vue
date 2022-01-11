@@ -55,6 +55,14 @@ export default {
       return whereList
     }
   },
+  watch: {
+    isEmpty:{
+      immediate: true,
+      handler(newValue){
+        this.$emit('search-disabled', newValue)
+      }
+    }
+  },
 
   methods: {
     testEmpty (value) {
