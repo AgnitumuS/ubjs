@@ -28,6 +28,13 @@ store.runSQL('select 1 from dual', {})
 store.setColumnName(0, 'dummy')
 const obj = store.getAsJsObject() // obj will be [{dummy: 1}]
 ``` 
+ - `allLocales` endpoint now includes localizations for `description` and `documentation` for
+   all entities and attributes.
+    That allows using the following constructs in ub-migrate:
+   ```yaml
+      - bpm_TaskClass:
+          description: {$i18n: bpm_TaskClass#description}
+   ```
 
 ### Changed
 
