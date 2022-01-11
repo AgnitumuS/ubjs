@@ -39,12 +39,13 @@
           </div>
         </div>
         <component
-          :is="selectedColumn.filters[condition].template"
           v-if="selectedColumn.filters && selectedColumn.filters[condition]"
-          :column="selectedColumn"
+          :is="selectedColumn.filters[condition].template"
           ref="searchComponent"
-          @search-disabled="searchDisabled"
           :key="selectedColumn.id"
+          :column="selectedColumn"
+          :default-value="selectedColumn.value"
+          @search-disabled="searchDisabled"
         />
       </template>
     </div>
@@ -88,11 +89,6 @@
         conditionsByColumns: {}
       };
     },
-    watch: {
-      selectedColumn: function(value) {
-        this.selectedColumnId = value.id;
-      }
-    },
     computed: {
       currentColumns() {
         const result =
@@ -133,7 +129,10 @@
       }
     },
     created() {
-      this.init();
+      this.init()
+      if (this.selectedColumn.condition !== undefined){
+        this.condition = this.selectedColumn.condition
+      }
     },
     watch: {
       condition(e){
@@ -144,6 +143,9 @@
         const comp = this.$refs.searchComponent
         const flag = comp.isEmpty
         this.searchDisabled(flag)
+      },
+      selectedColumn: function(value) {
+        this.selectedColumnId = value.id;
       }
     },
     methods: {
@@ -157,7 +159,7 @@
           );
         }
       }
-    }
+    },
   };
 </script>
 

@@ -3,6 +3,7 @@
     v-if="filterColumns.length > 0"
     ref="dropdown"
     custom-class="filter-selector"
+    @close="closeDropdownHandler"
   >
     <u-button
       :title="$ut('table.filter.list.title')"
@@ -89,9 +90,28 @@
       }
     },
     created() {
-      // this.selectedColumns = this.filterColumns.map(() => ({}));
+      this.restoreFilters()
     },
     methods: {
+      closeDropdownHandler(){
+        this.restoreFilters()
+      },
+      restoreFilters(){
+        const { filters } = this.$store.state
+        if (!filters || !filters.length) return;
+        const {availableColumns}  = this
+        this.selectedColumns.splice(0)
+        filters.forEach(item => {
+          item.whereList.forEach(list => {
+            const column = availableColumns.find(i => i.id === list.expression)
+            column.condition = list.condition
+            column.value = list.value
+            if (!column) return
+            this.selectedColumns.push(column)
+          })
+        })
+        this.length = this.selectedColumns.length
+      },
       setDisabledSearchBtn(){
         let flag = true
         if (this.selectedColumns.length < this.length) {
@@ -122,8 +142,9 @@
         ++this.length;
         this.setDisabledSearchBtn()
       },
-      searchHandler() {
+      async searchHandler() {
         const { selectedColumns, $store } = this;
+        this.$store.commit('CLEAR_FILTER')
         this.$refs.filterItem.forEach((comp, index) => {
           const el = comp.$refs.searchComponent;
           const condition = el.getCondition();
@@ -138,15 +159,20 @@
             }))
           });
         });
-        this.$store.dispatch('fetchItems');
+        this.$refs.dropdown.close()
+        await this.$store.dispatch('fetchItems');
       },
       removeFilterHandler(index) {
-        this.selectedColumns.splice(index, 1);
+        const deletedFilter = this.selectedColumns.splice(index, 1)[0];
         // this.selectedColumns.push({});
         --this.length;
+        if (deletedFilter && deletedFilter.id) {
+          delete deletedFilter.value
+          delete deletedFilter.condition
+        }
         this.setDisabledSearchBtn()
       }
-    }
+    },
   };
 </script>
 
