@@ -102,13 +102,17 @@
         const {availableColumns}  = this
         this.selectedColumns.splice(0)
         filters.forEach(item => {
-          item.whereList.forEach(list => {
-            const column = availableColumns.find(i => i.id === list.expression)
-            column.condition = list.condition
-            column.value = list.value
+          if (!item.whereList) return;
+            const firstList = item.whereList[0]
+            const column = availableColumns.find(i => i.id === firstList.expression)
             if (!column) return
+            column.condition = firstList.condition
+            column.value = firstList.value
             this.selectedColumns.push(column)
-          })
+            const secondtList = item.whereList[1]
+            if (!secondtList) return
+            column.condition = 'range'
+            column.value = [firstList.value, secondtList.value]
         })
         this.length = this.selectedColumns.length
       },

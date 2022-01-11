@@ -1,11 +1,16 @@
 module.exports = {
   props: {
     defaultValue: {
-      type: [String, Number, Boolean]
+      type: [String, Number, Boolean, Array]
     }
   },
   created() {
-    if (this.defaultValue !== undefined) this.value = this.defaultValue;
+    if (this.defaultValue === undefined) return;
+    this.value = this.defaultValue;
+    if (Array.isArray(this.defaultValue)) {
+      this.valueFrom = this.defaultValue[0];
+      this.valueTo = this.defaultValue[1];
+    }
   },
   watch: {
     isEmpty: {

@@ -30,14 +30,21 @@ export default {
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
-
+  
+  mixins: [require('../mixinForFilter.js')],
+  
   data () {
     return {
       valueFrom: 0,
       valueTo: 0
     }
   },
-
+created() {
+  if (this.defaultValue !== undefined && this.defaultValue.length){
+    this.valueFrom = this.defaultValue[0]
+    this.valueTo = this.defaultValue[1]
+  }
+},
   computed: {
     isEmpty () {
       return this.testEmpty(this.valueFrom) && this.testEmpty(this.valueTo)
@@ -55,14 +62,6 @@ export default {
       return whereList
     }
   },
-  watch: {
-    isEmpty:{
-      immediate: true,
-      handler(newValue){
-        this.$emit('search-disabled', newValue)
-      }
-    }
-  },
 
   methods: {
     testEmpty (value) {
@@ -74,9 +73,6 @@ export default {
         whereList,
         description: `${$ut('table.filter.date.from')} ${valueFrom} ${$ut('table.filter.date.to')} ${valueTo} `
       }
-    },
-    submitHandler () {
-      this.$emit('search', this.getCondition())
     }
   }
 }
