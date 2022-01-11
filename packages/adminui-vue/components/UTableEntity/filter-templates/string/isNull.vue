@@ -8,8 +8,11 @@ export default {
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
+  
+  mixins: [require('../mixinForFilter.js')],
+
   created(){
-        this.$emit('search-disabled', false)
+    this.$emit('search-disabled', false)
   },
   methods: {
     getCondition () {
@@ -18,9 +21,6 @@ export default {
         description: 'isNull'
       }
     },
-    submitHandler () {
-      this.$emit('search', this.getCondition())
-    }
   }
 }
 </script>

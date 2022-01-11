@@ -15,6 +15,8 @@ export default {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
 
+  mixins: [require('../mixinForFilter.js')],
+
   data () {
     return {
       value: '',
@@ -27,14 +29,6 @@ export default {
       return this.value === '' || this.value === null
     }
   },
-    watch: {
-    isEmpty:{
-      immediate: true,
-      handler(newValue){
-        this.$emit('search-disabled', newValue)
-      }
-    }
-  },
   methods: {
     getCondition() {
       const {condition, value, $ut} = this
@@ -43,9 +37,6 @@ export default {
         description: $ut(condition) + ' ' + value
         }
     },
-    submitHandler(){
-      this.$emit('search', this.getCondition())
-    }
   }
 }
 </script>

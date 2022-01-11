@@ -164,7 +164,6 @@
       },
       removeFilterHandler(index) {
         const deletedFilter = this.selectedColumns.splice(index, 1)[0];
-        // this.selectedColumns.push({});
         --this.length;
         if (deletedFilter && deletedFilter.id) {
           delete deletedFilter.value
