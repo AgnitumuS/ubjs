@@ -19,6 +19,8 @@ export default {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
 
+  mixins: [require('../mixinForFilter.js')],
+
   data () {
     return {
       value: null
@@ -37,9 +39,6 @@ export default {
           whereList: [{ condition: 'less', value: addDay(value) }],
           description: $ut('to_date') + ' ' + $moment(addDay(value)).format('ll')
         }
-    },
-    submitHandler() {
-      this.$emit('search', this.getCondition())
     }
   }
 }

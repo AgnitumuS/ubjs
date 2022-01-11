@@ -36,7 +36,7 @@ export default {
         whereList: [{ condition, value }],
         description: $ut(condition) + ' ' + value
         }
-    },
+    }
   }
 }
 </script>

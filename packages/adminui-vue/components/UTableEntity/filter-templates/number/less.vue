@@ -18,6 +18,8 @@ export default {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
 
+  mixins: [require('../mixinForFilter.js')],
+  
   data () {
     return {
       value: null,
@@ -37,9 +39,6 @@ export default {
         whereList: [{ condition, value }],
         description: $ut(condition) + ' ' + value
       }
-    },
-    submitHandler () {
-      this.$emit('search', this.getCondition())
     }
   }
 }

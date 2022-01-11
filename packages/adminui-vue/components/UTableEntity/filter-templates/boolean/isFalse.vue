@@ -9,6 +9,9 @@
     components: {
       FilterTemplate: require('../../components/FilterTemplate.vue').default
     },
+
+    mixins: [require('../mixinForFilter.js')],
+
     methods: {
       getCondition () {
         const { $ut } = this
@@ -16,9 +19,6 @@
           whereList: [{ condition: 'equal', value: false }],
           description: $ut('equal') + ' ' + $ut('No')
         }
-      },
-      submitHandler () {
-        this.$emit('search', this.getCondition())
       }
     }
   };

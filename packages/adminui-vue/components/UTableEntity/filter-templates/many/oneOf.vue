@@ -21,6 +21,8 @@ export default {
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
+  
+  mixins: [require('../mixinForFilter.js')],
 
   props: {
     column: {
@@ -54,9 +56,6 @@ export default {
         whereList: [{ condition: '=', value }],
         description: $ut('by_several_value') + ' ' + manyOptions
       }
-    },
-    submitHandler () {
-      this.$emit('search', this.getCondition())
     }
   }
 }

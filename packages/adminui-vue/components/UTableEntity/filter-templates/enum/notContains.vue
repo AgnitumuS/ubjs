@@ -20,6 +20,8 @@ export default {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
 
+  mixins: [require('../mixinForFilter.js')],
+
   props: {
     column: {
       type: Object,
@@ -58,9 +60,6 @@ export default {
           whereList: [{condition: 'notIn', value}],
           description: $ut('notContains') + ' ' + manyOptions
         }
-      },
-      submitHandler () {
-        this.$emit('search', this.getCondition())
       }
   }
 }

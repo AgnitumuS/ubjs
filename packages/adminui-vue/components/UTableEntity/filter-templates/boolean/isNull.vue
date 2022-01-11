@@ -9,6 +9,9 @@ export default {
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
+
+  mixins: [require('../mixinForFilter.js')],
+
   methods: {
     getCondition() {
       return {
@@ -16,9 +19,6 @@ export default {
         description: 'isNull'
       }
     },
-    submitHandler() {
-      this.$emit('search', this.getCondition())
-    }
   }
 }
 </script>

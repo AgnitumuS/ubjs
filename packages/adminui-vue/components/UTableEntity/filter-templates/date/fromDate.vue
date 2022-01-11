@@ -19,6 +19,8 @@ export default {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
 
+  mixins: [require('../mixinForFilter.js')],
+
   data () {
     return {
       value: null
@@ -31,9 +33,6 @@ export default {
           whereList: [{condition: 'moreEqual', value}],
           description: $ut('from_date') + ' ' + $moment(value).format('ll')
         }
-    },
-    submitHandler() {
-      this.$emit('search', this.getCondition())
     }
   }
 }
