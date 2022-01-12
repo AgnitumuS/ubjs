@@ -389,6 +389,10 @@
 				"password": "",
 				"autoTLS": false,
 				"auth": false
+			},
+			"csvExport": {
+				"addBOM": true,
+				"separator": "\t"
 			}
 		}
 	}
