@@ -15,36 +15,44 @@
     <div slot="dropdown" class="filter-selector__main">
       <div class="filter-selector__header">
         <u-button
-          @click.native="searchHandler"
-          :disabled="disabledSearchBtn"
+          class="filter-selector__header__btn"
           type="submit"
           icon="u-icon-search"
           color="primary"
           size="small"
-          >{{ $ut('search') }}</u-button
-        >
+          :disabled="disabledSearchBtn"
+          @click.native="searchHandler"
+          >
+          {{ $ut('search') }}
+        </u-button>
         <u-button
-          @click="counterHandler"
+          class="filter-selector__header__btn"
           type="submit"
           icon="u-icon-add"
           color="success"
           size="small"
           appearance="plain"
-          >{{ $ut('add') }}</u-button
-        >
+          :disabled="disabledSearchBtn"
+          @click="counterHandler"
+          >
+          {{ $ut('add') }}
+        </u-button>
+        <div class="filter-selector__count"><span>{{length}}</span></div>
       </div>
       <div class="filter-selector__body">
-        <u-filter
-          v-for="(item, index) in length"
-          :key="selectedColumns[index]?.id || index"
-          :columns="filterColumns"
-          @selected-column="selectedColumnHandler($event, index)"
-          @remove-filter="removeFilterHandler(index)"
-          :search-disabled=" ($event) => { searchDisabledHandler($event, index) }"
-          :can-remove="length > 1"
-          :selected-column="selectedColumns[index]"
-          ref="filterItem"
-        ></u-filter>
+        <template v-for="(item, index) in length">
+          <u-filter
+            :key="selectedColumns[index]?.id || index"
+            :columns="filterColumns"
+            @selected-column="selectedColumnHandler($event, index)"
+            @remove-filter="removeFilterHandler(index)"
+            :search-disabled=" ($event) => { searchDisabledHandler($event, index) }"
+            :can-remove="length > 1"
+            :selected-column="selectedColumns[index]"
+            ref="filterItem"
+          ></u-filter>
+          <div :key="(item + 1) * 10 " class="filter-selector__delimiter"><span>{{$ut('and')}}</span></div>
+        </template>
       </div>
     </div>
   </u-dropdown>
@@ -197,5 +205,49 @@
   .filter-selector {
     box-shadow: var(--box-shadow-default);
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+    max-height: 95vh;
+    overflow: auto;
+  }
+  .filter-selector .u-dropdown { 
+    overflow: hidden;
+  }
+  .filter-selector__count {
+    flex-grow: 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .filter-selector__count span{
+     padding: 4px;
+     background-color: hsl(var(--hs-control), var(--l-state-hover));
+     font-weight: 600;
+     border-radius: 50%;
+     color: hsl(var(--hs-text), var(--l-text-inverse));
+     width: 25px;
+     height: 25px;
+     text-align: center;
+  }
+  .filter-selector__delimiter {
+    width: 100%;
+    margin: 10px 0;
+    border-top: 2px solid hsl(var(--hs-border), var(--l-layout-border-light));
+    position: relative;
+  }
+  .filter-selector__delimiter span {
+    padding: 4px;
+    min-width: 50px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(-60%);
+    background: white;
+    color: hsl(var(--hs-text), var(--l-text-description));
+    text-align: center;
+  }
+  .filter-selector__header__btn .u-button__label:first-letter {
+    text-transform: capitalize;
+  }
+  .filter-selector .filter-selector__delimiter:last-child{
+    display: none;
   }
 </style>

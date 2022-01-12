@@ -41,6 +41,7 @@
         <component
           v-if="selectedColumn.filters && selectedColumn.filters[condition]"
           :is="selectedColumn.filters[condition].template"
+          class="filter-item__value-comp"
           ref="searchComponent"
           :key="selectedColumn.id"
           :column="selectedColumn"
@@ -184,5 +185,8 @@
   .u-fake-table__header .u-icon_size-small {
     font-size: 14px;
     cursor: pointer;
+  }
+  .filter-item__value-comp .u-fake-table__tr:last-child {
+    display: none;
   }
 </style>
