@@ -3,7 +3,7 @@
     v-if="filterColumns.length > 0"
     ref="dropdown"
     custom-class="filter-selector"
-    @close="closeDropdownHandler"
+    @open="openDropdownHandler"
   >
     <u-button
       :title="$ut('table.filter.list.title')"
@@ -41,7 +41,7 @@
       </div>
       <div class="filter-selector__body">
         <template v-for="(item, index) in length">
-          <u-filter
+          <filter-item
             :key="selectedColumns[index]?.id || index"
             :columns="filterColumns"
             @selected-column="selectedColumnHandler($event, index)"
@@ -50,7 +50,7 @@
             :can-remove="length > 1"
             :selected-column="selectedColumns[index]"
             ref="filterItem"
-          ></u-filter>
+          ></filter-item>
           <div :key="(item + 1) * 10 " class="filter-selector__delimiter"><span>{{$ut('and')}}</span></div>
         </template>
       </div>
@@ -63,7 +63,7 @@
 
   export default {
     components: {
-      UFilter: require('./Filter.vue').default
+      FilterItem: require('./FilterItem.vue').default
     },
     data() {
       return {
@@ -97,18 +97,15 @@
         });
       }
     },
-    mounted() {
-      this.restoreFilters()
-    },
     methods: {
-      closeDropdownHandler(){
+      openDropdownHandler(){
         this.restoreFilters()
       },
       restoreFilters(){
         const { filters } = this.$store.state
+        this.selectedColumns.splice(0)
         if (!filters || !filters.length) return;
         const {availableColumns}  = this
-        this.selectedColumns.splice(0)
         filters.forEach(item => {
           if (!item.whereList) return;
             const firstList = item.whereList[0]
