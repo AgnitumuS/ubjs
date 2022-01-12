@@ -214,7 +214,8 @@
   "signsInDocument": "Signs",
 
   "search": "Search",
-  "add": "Add",
+  "add": "add",
+  "and": "and",
   "Filter by": "Filter by",
   "filterForm": "Search form",
   "main": "Main",
