@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- new icons: `u-icon-view-versions` and `u-icon-create-version`
 
 ### Changed
 
