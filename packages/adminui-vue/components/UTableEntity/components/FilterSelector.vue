@@ -113,6 +113,9 @@
             if (!column) return
             column.condition = firstList.condition
             column.value = firstList.value
+            if (firstList.condition === 'equal'){
+               column.condition = column.value ? 'isTrue' : 'isFalse'
+            }
             this.selectedColumns.push(column)
             const secondtList = item.whereList[1]
             if (!secondtList) return
