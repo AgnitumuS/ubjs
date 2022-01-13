@@ -129,7 +129,7 @@ export default {
         if (!column) return
         column.condition = firstList.condition
         column.value = firstList.value
-        if (firstList.condition === 'equal') {
+        if (firstList.condition === 'equal' && typeof column.value === 'boolean') {
           column.condition = column.value ? 'isTrue' : 'isFalse'
         }
         this.selectedColumns.push(column)
