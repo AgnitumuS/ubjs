@@ -190,28 +190,22 @@
 </script>
 
 <style>
-  .filter-selector__main {
-    /* color: blue; */
-    max-height: 100vh;
-    max-width: 70vw;
-    display: flex;
-    flex-direction: column;
-  }
   .filter-selector__header {
     display: flex;
     padding: 10px;
+    position: sticky;
+    top: -6px;
+    background-color: white;
+    z-index: 1;
+    border-bottom: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   }
   .filter-selector__header .u-button {
     margin-right: 10px;
   }
-  .filter-selector {
-    box-shadow: var(--box-shadow-default);
-    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+
+  .filter-selector .u-dropdown { 
     max-height: 95vh;
     overflow: auto;
-  }
-  .filter-selector .u-dropdown { 
-    overflow: hidden;
   }
   .filter-selector__count {
     flex-grow: 2;
