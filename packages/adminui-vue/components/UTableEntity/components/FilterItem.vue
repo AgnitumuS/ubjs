@@ -180,8 +180,12 @@
     max-width: 100%;
   }
   .u-fake-table.filter-item .u-fake-table__td {
-    max-width: 220px;
+    max-width: 250px;
   }
+  .u-fake-table.filter-item .u-fake-table__td.u-fake-table__label { 
+    display: none;
+  }
+  
   .u-fake-table__header .u-icon_size-small {
     font-size: 14px;
     cursor: pointer;

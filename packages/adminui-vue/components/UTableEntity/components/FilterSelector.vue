@@ -100,10 +100,12 @@
     methods: {
       openDropdownHandler(){
         this.restoreFilters()
+        this.setDisabledSearchBtn()
       },
       restoreFilters(){
         const { filters } = this.$store.state
         this.selectedColumns.splice(0)
+        this.length = 1
         if (!filters || !filters.length) return;
         const {availableColumns}  = this
         filters.forEach(item => {
