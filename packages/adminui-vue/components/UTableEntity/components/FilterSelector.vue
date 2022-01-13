@@ -47,7 +47,7 @@
       <div class="filter-selector__body">
         <template v-for="(item, index) in length">
           <filter-item
-            :key="selectedColumns[index]?.id || index"
+            :key="selectedColumns[index] && selectedColumns[index].id ? selectedColumns[index].id : index"
             ref="filterItem"
             :columns="filterColumns"
             :search-disabled="
