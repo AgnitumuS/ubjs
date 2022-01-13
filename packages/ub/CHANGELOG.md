@@ -28,7 +28,14 @@ store.runSQL('select 1 from dual', {})
 store.setColumnName(0, 'dummy')
 const obj = store.getAsJsObject() // obj will be [{dummy: 1}]
 ``` 
+ - `allLocales` in `includeDomain` mode (called as `/allLocales?lang=LL&includeDomain=1`) endpoint now includes localizations for `description` and `documentation` of all entities and attributes.
+    That allows using the following constructs in `ub-migrate`:
+   ```yaml
+      - bpm_TaskClass:
+          description: {$i18n: bpm_TaskClass#description}
+   ```
 
+  `i18n` from `@unitybase/ub-pub` also can localize such attrs `UB.i18n('bpm_TaskClass#description')` but uses info from domain (more efficient)  
 ### Changed
 
 ### Deprecated

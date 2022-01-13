@@ -565,6 +565,15 @@ function allLocalesEp (req, resp) {
     const loadDomainIntoJS = require('./metadataTransformation')
     const resources = {}
 
+    const addDescriptionAndDocumentation = (resourceKey, meta) => {
+      if (meta.description) {
+        resources[resourceKey + '#description'] = meta.description
+      }
+      if (meta.documentation) {
+        resources[resourceKey + '#documentation'] = meta.documentation
+      }
+    }
+
     if (includeDomain) {
       if (App.localIPs.indexOf(Session.callerIP) === -1) {
         resp.writeEnd('includeDomain is not allowed for remote clients')
@@ -582,9 +591,12 @@ function allLocalesEp (req, resp) {
         if (localizedEntity.caption) {
           resources[entityCode] = localizedEntity.caption
         }
+        addDescriptionAndDocumentation(entityCode, localizedEntity)
         if (localizedEntity.attributes) {
           for (const attr of localizedEntity.attributes) {
-            resources[entityCode + '.' + attr.name] = attr.caption
+            const attrResourceKey = entityCode + '.' + attr.name
+            resources[attrResourceKey] = attr.caption
+            addDescriptionAndDocumentation(attrResourceKey, attr)
           }
         }
       }

@@ -90,7 +90,7 @@
       >
         <div
           v-for="option in options"
-          :key="option[valueAttribute]"
+          :key="option.ID || option[valueAttribute]"
           :ref="`option_${option[valueAttribute]}`"
           class="ub-select__option"
           :class="{

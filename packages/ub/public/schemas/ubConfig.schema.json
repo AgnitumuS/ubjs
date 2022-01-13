@@ -908,8 +908,30 @@
         },
         "customSettings": {
           "type": "object",
-          "description": "Any settings, accessible inside server-side js using `App.customSettings`",
-          "additionalProperties": true
+          "description": "Any settings, accessible inside server-side using `App.customSettings`. Developers can add here his own settings",
+          "additionalProperties": true,
+          "properties": {
+            "mailerConfig": {
+              "type": "object",
+              "description": "Mailer SMTP/POP configuration. Section is added by partial from `@unitybase/ubq` model and should be configured using env`s - see possible env vars in `@unitybase/ubq/ubConfig-partial.json`"
+            },
+            "csvExport": {
+              "type": "object",
+              "description": "Customization of CSV response for requests with `Content-Type: text/csv; charset=UTF-8` header",
+              "properties": {
+                "addBOM": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Add UTF8 byte order mask to the beginning of the CSV file"
+                },
+                "separator": {
+                  "type": "string",
+                  "default": "\t",
+                  "description": "Separator for CSV file columns"
+                }
+              }
+            }
+          }
         },
         "fts": {
           "type": "object",
