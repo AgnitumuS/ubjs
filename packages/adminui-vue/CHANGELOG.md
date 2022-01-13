@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UDropdown`: fixed popepr hiding after closing tab
 
 ## [5.22.0] - 2022-01-09
 ### Added
