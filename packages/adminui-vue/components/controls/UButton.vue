@@ -67,11 +67,15 @@ export default {
       }
     },
     /**
-     * Native button type. See "type" property on https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button
+     * Native button type. See ["type" property doc on MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type)
      */
     type: {
       type: String,
-      default: 'button'
+      default: 'button',
+      validator (value) {
+        // validator is called only in dev mode, so pure performance is OK here + styleguidish understand only [].includes
+        return ['submit', 'reset', 'button'].includes(value)
+      }
     },
 
     /**
