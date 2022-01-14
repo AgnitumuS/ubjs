@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   the new `LOAD_COLLECTION_DATA` mutation, instead of `LOAD_COLLECTION_PARTIAL`, which is consistent with approach for
   master entity instance and fixes problem with localized attributes, which saved values were not returned from
   server, because they are not in the `fieldList`, and form remains dirty
+ - `UDropdown`: popper now hides when tab is closing (for example user click on filter or sort button and close form tab) [UBDF-14766]
 
 ## [5.22.0] - 2022-01-09
 ### Added
