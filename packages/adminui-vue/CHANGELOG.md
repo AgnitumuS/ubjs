@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   a collection item
 
 ### Changed
+ - `UButton.type` property validator accept only 'submit', 'reset', 'button' according to ["type" property doc on MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type)
+   Before this fix any value is accepted, and in case developer pass something non-valid, button type is changed to `submit` (by HTML),
+   so such button react on `Enter` keypress
 
 ### Deprecated
 
