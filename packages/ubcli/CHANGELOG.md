@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.1] - 2022-01-14
 ## [5.22.0] - 2022-01-09
 ### Added
  - Oracle: `ubcli initDB` will create `GRANT EXECUTE ON CTXSYS.CTX_DDL` (catalogue indexes) 

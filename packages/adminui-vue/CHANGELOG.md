@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.1] - 2022-01-14
+### Added
 - new icons: `u-icon-view-versions` and `u-icon-create-version`
 - processing module now have `LOAD_COLLECTION_DATA` mutation, which contains logic similar to `LOAD_DATA`, but for
   a collection item
@@ -14,10 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UButton.type` property validator accept only 'submit', 'reset', 'button' according to ["type" property doc on MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type)
    Before this fix any value is accepted, and in case developer pass something non-valid, button type is changed to `submit` (by HTML),
    so such button react on `Enter` keypress
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 - Vue forms, now after saving collection items, state is changes in vuex store using

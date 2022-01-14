@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.1] - 2022-01-14
+### Fixed
  - fix local sorting (`formatByPattern.collationCompare`):
    - for Dates:  takes into account what Date's must be compared using `Date.getTime()`
    - empty values (null, undefined) is always less when any over
