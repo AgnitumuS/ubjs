@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - new icons: `u-icon-view-versions` and `u-icon-create-version`
+- processing module now have `LOAD_COLLECTION_DATA` mutation, which contains logic similar to `LOAD_DATA`, but for
+  a collection item
 
 ### Changed
 
@@ -15,6 +17,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Vue forms, now after saving collection items, state is changes in vuex store using
+  the new `LOAD_COLLECTION_DATA` mutation, instead of `LOAD_COLLECTION_PARTIAL`, which is consistent with approach for
+  master entity instance and fixes problem with localized attributes, which saved values were not returned from
+  server, because they are not in the `fieldList`, and form remains dirty
 
 ## [5.22.0] - 2022-01-09
 ### Added

@@ -227,9 +227,11 @@ function buildExecParams (trackedObj, entity) {
     }
     if (schema.hasMixin('dataHistory')) {
       // Let server fill historical attributes
-      ['mi_data_id', 'mi_dateFrom', 'mi_dateTo'].forEach(f => {
-        if (!execParams[f]) delete execParams[f]
-      })
+      for (const f of ['mi_data_id', 'mi_dateFrom', 'mi_dateTo']) {
+        if (!execParams[f]) {
+          delete execParams[f]
+        }
+      }
     }
     replaceMultilangParams(execParams)
     return execParams
@@ -438,7 +440,7 @@ function enrichFieldList (entitySchema, fieldList, requiredAttrs) {
   return fieldList.concat(fieldsToAppend)
 }
 
-const langParamRegex = /(\S+)_\S+\^/
+const LANG_PARAM_RE = /(\S+)_\S+\^/
 
 /**
  * If execParams includes locale params
@@ -446,7 +448,7 @@ const langParamRegex = /(\S+)_\S+\^/
  *
  * For example in case userLang === 'en'
  * and execParams includes key 'name_uk^'
- * will replace key name to 'name_en^'
+ * will replace key 'name' to 'name_en^'
  *
  * @param {object} execParams
  */
@@ -455,15 +457,15 @@ function replaceMultilangParams (execParams) {
     .filter(a => a.includes('^'))
   const userLang = UB.connection.userLang()
 
-  langParams.forEach(p => {
-    const res = p.match(langParamRegex)
-    if (res && res[1] in execParams) {
-      const key = res[1]
+  for (const p of langParams) {
+    const res = p.match(LANG_PARAM_RE)
+    const key = res && res[1]
+    if (key in execParams) {
       const localeKey = key + '_' + userLang + '^'
       execParams[localeKey] = execParams[key]
       delete execParams[key]
     }
-  })
+  }
 }
 
 /**
@@ -499,7 +501,7 @@ function validateWithErrorText (errorLocale, validator) {
 }
 
 /**
- * show tble with changes history of specified entity instance. Entity must hase a `dataHistory` mixin
+ * show table with changes history of specified entity instance. Entity must hase a `dataHistory` mixin
  * @param {string} entityName
  * @param {number} instanceID
  * @param {array<string>} fieldList
