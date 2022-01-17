@@ -87,7 +87,7 @@ module.exports = {
     const Clickoutside = Vue.options.components.ElDropdown.options.directives.Clickoutside
     Vue.directive('Clickoutside', Clickoutside)
 
-    const Cron = require('../components/controls/Cron.vue').default
+    const Cron = require('../components/controls/Cron/Cron.vue').default
     Vue.component(Cron.name, Cron)
     const UCheckbox = require('../components/controls/UCheckbox.vue').default
     Vue.component(UCheckbox.name, UCheckbox)

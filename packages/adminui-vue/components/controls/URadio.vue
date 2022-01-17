@@ -79,6 +79,7 @@ export default {
   display: flex;
   align-items: center;
   user-select: none;
+  white-space: nowrap;
   margin-bottom: 8px;
   cursor: pointer;
 }
@@ -87,7 +88,7 @@ export default {
 }
 .u-radio__label.u-radio__label--left::before {
   margin-right: 0;
-  margin-left: 0.5em;
+  margin-left: 0.7em;
 }
 
 /* создание в label псевдоэлемента  before со следующими стилями */
@@ -100,7 +101,7 @@ export default {
   flex-grow: 0;
   border: 1px solid #adb5bd;
   border-radius: 50%;
-  margin-right: 0.5em;
+  margin-right: 0.7em;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 50% 50%;
