@@ -6,6 +6,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - '*.meta': added env variable macros support for entity and attribute level mapping with the same syntax as
+ in ubConfig - `%ENV||default%`. Example:
+ ```json
+ {
+  "name": "my_entity",
+  "connection": "NON-UB_MAIN",
+  "attributes": [{
+    "name": "myAttr",
+    "mapping": [
+      {
+        "name": "Oracle",
+        "expression": "%UB_MAIN_USER||myuser%.C_ID"
+      }
+    ]
+  }],
+  "mapping": [
+    {
+      "name": "Oracle",
+      "selectName": "%UB_MAIN_USER%.ubs_message",
+      "execName": "ubs_message"
+    }
+  ]
+}
+```
+  Can be used for cross-schema mappings, when entity connection not match actual table schema.   
 
 ### Changed
 
