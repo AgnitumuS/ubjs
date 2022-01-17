@@ -91,6 +91,8 @@ module.exports = {
     Vue.component(Cron.name, Cron)
     const UCheckbox = require('../components/controls/UCheckbox.vue').default
     Vue.component(UCheckbox.name, UCheckbox)
+    const URadio = require('../components/controls/URadio.vue').default
+    Vue.component(URadio.name, URadio)
 
   }
 }
