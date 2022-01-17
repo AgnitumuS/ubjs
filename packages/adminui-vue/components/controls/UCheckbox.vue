@@ -1,0 +1,136 @@
+<template>
+  <span class="u-checkbox">
+    <input
+      class="u-checkbox--input"
+      type="checkbox"
+      :id="checkboxName"
+      :name="checkboxName"
+      v-model="currentValue"
+    />
+    <label
+      class="u-checkbox__label"
+      :class="{ 'u-checkbox__label--left': labelPosition === 'left' }"
+      :for="checkboxName"
+      >{{ label }}</label
+    >
+  </span>
+</template>
+
+<script>
+export default {
+  name: "UCheckbox",
+  // for v-model
+  model: {
+    event: "change",
+  },
+  props: {
+    name: {
+      type: String,
+      default: "",
+    },
+    label: {
+      type: String,
+      default: "sdfgdfg",
+    },
+    value: {
+      type: Boolean,
+      default: false,
+    },
+    labelPosition: {
+      type: String,
+      default: "",
+    },
+  },
+  data() {
+    return {
+      currentValue: this.value,
+      checkboxName: this.name ? this.name : this._uid,
+    };
+  },
+  watch: {
+    currentValue(e) {
+      this.$emit("change", e);
+    },
+  },
+};
+</script>
+
+<style>
+.u-checkbox {
+  display: block;
+  width: min-content;
+}
+/* https://itchief.ru/html-and-css/styling-checkbox-and-radio */
+/* для элемента input c type="checkbox" */
+.u-checkbox--input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+/* для элемента label, связанного с .u-checkbox--input */
+.u-checkbox--input + .u-checkbox__label {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  user-select: none;
+}
+.u-checkbox--input + .u-checkbox__label.u-checkbox__label--left {
+  flex-direction: row-reverse;
+}
+.u-checkbox--input + .u-checkbox__label.u-checkbox__label--left::before {
+  margin-left: 0.5em;
+  margin-right: 0;
+}
+
+/* создание в label псевдоэлемента before со следующими стилями */
+.u-checkbox--input + .u-checkbox__label::before {
+  content: "";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  flex-grow: 0;
+  border: 1px solid #adb5bd;
+  border-radius: 0.25em;
+  margin-right: 0.5em;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 90% 60%;
+}
+
+/* стили при наведении курсора на checkbox */
+.u-checkbox--input:not(:disabled):not(:checked)
+  + .u-checkbox__label:hover::before {
+  border-color: #b3d7ff;
+}
+
+/* стили для активного чекбокса (при нажатии на него) */
+.u-checkbox--input:not(:disabled):active + .u-checkbox__label::before {
+  background-color: #b3d7ff;
+  border-color: #b3d7ff;
+}
+
+/* стили для чекбокса, находящегося в фокусе */
+.u-checkbox--input:focus + .u-checkbox__label::before {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* стили для чекбокса, находящегося в фокусе и не находящегося в состоянии checked */
+.u-checkbox--input:focus:not(:checked) + .u-checkbox__label::before {
+  border-color: #80bdff;
+}
+
+/* стили для чекбокса, находящегося в состоянии checked */
+.u-checkbox--input:checked + .u-checkbox__label::before {
+  border-color: #0b76ef;
+  background-color: #0b76ef;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMy45NjYgNi40ODQgMS43NDIgNC4yNThhLjYyNS42MjUgMCAwIDAtLjg5IDAgLjYyNi42MjYgMCAwIDAgMCAuODlsMi42NjMgMi42NjZhLjYzMi42MzIgMCAwIDAgLjg5NiAwbDYuNzM2LTYuNzM3YS42MjYuNjI2IDAgMCAwIDAtLjg5MS42MjQuNjI0IDAgMCAwLS44OSAwbC02LjI5IDYuMjk4eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==");
+  /* background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e"); */
+}
+
+/* стили для чекбокса, находящегося в состоянии disabled */
+.u-checkbox--input:disabled + .u-checkbox__label::before {
+  background-color: #e9ecef;
+}
+</style>

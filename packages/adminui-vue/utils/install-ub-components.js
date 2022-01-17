@@ -86,5 +86,11 @@ module.exports = {
     // dirty hack to retrieve a Clickoutside directive not exposed by Elements
     const Clickoutside = Vue.options.components.ElDropdown.options.directives.Clickoutside
     Vue.directive('Clickoutside', Clickoutside)
+
+    const Cron = require('../components/controls/Cron.vue').default
+    Vue.component(Cron.name, Cron)
+    const UCheckbox = require('../components/controls/UCheckbox.vue').default
+    Vue.component(UCheckbox.name, UCheckbox)
+
   }
 }
