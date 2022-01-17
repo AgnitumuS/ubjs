@@ -230,7 +230,7 @@
                     },
                     "mapping": {
                         "type": "array",
-                        "description": "Optional mapping of attribute to physical DB structure",
+                        "description": "Optional mapping of attribute to physical DB structure. Expression can contains env macro `%ENV||default%`",
                         "_format": "table",
                         "items": {
                             "type": "object",
@@ -294,7 +294,7 @@
         },
         "mapping": {
             "type": "array",
-            "description": "By default server map entity to the DB table with the same name. Optionally it can be changed here",
+            "description": "By default server map entity to the DB table with the same name. Optionally it can be changed here. Expressions can contains env macro `%ENV||default%`",
             "items": {
                 "type": "object",
                 "additionalProperties": false,

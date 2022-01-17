@@ -15,6 +15,7 @@ function ubMixinTransformation (domainJson, serverConfig) {
   if (mt && (mt.enabled === true)) {
     addMultitenancyMixinAttributes(domainJson, serverConfig)
   }
+  replaceEnvInMapping(domainJson, serverConfig)
   validateAttributesBlobStore(domainJson, serverConfig)
 }
 
@@ -39,7 +40,7 @@ function addImplicitlyAddedMixins (domainJson, serverConfig) {
 }
 
 /**
- * Add mi_tenantID for each entity with mnltitenancy
+ * Add mi_tenantID for each entity with multi-tenancy
  * @param {object<string, {modelName: string, meta: object, lang: object<string, object>}>} domainJson
  * @param {object} serverConfig
  */
@@ -100,6 +101,42 @@ function validateAttributesBlobStore (domainJson, serverConfig) {
     entityMeta.attributes.forEach(attr => {
       if ((attr.dataType === 'Document') && attr.storeName && !bsSet.has(attr.storeName)) {
         throw new Error(`Entity '${entityName}'. Blob store '${attr.storeName}' used by attribute '${attr.name}' ('storeName' property), but such store is not defined in ubConfig`)
+      }
+    })
+  }
+}
+
+/**
+ * Replace %ENV||default% macros in entity and attributes mapping
+ * @param {object<string, {modelName: string, meta: object, lang: object<string, object>}>} domainJson
+ * @param {object} serverConfig
+ */
+function replaceEnvInMapping (domainJson, serverConfig) {
+  const envs = process.env
+  function doReplace (content) {
+    return content.replace(/%(.*?)(?:\|\|(.*?))?%/g, function replacer (match, p1, def) {
+      if (envs.hasOwnProperty(p1)) {
+        return envs[p1]
+      } else {
+        return def !== undefined ? def : ''
+      }
+    })
+  }
+  for (const entityName in domainJson) {
+    const entityMeta = domainJson[entityName].meta
+    const m = entityMeta.mapping
+    if (m && m.length) {
+      m.forEach(v => {
+        if (v.selectName) v.selectName = doReplace(v.selectName)
+        if (v.execName) v.execName = doReplace(v.execName)
+        if (v.pkGenerator) v.pkGenerator = doReplace(v.pkGenerator)
+      })
+    }
+    entityMeta.attributes.forEach(attr => {
+      if (attr.mapping && attr.mapping.length) {
+        attr.mapping.forEach(m => {
+          if (m.expression) m.expression = doReplace(m.expression)
+        })
       }
     })
   }
