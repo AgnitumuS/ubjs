@@ -1,15 +1,25 @@
 <template>
   <div>
-    <label
-      for=""
-    >Кожного:
+    <label for="">
+      Кожного
       <input
         v-model="data.day"
         type="number"
         min="1"
         max="31"
         step="1"
-      > дня о
+      > дня
+    </label>
+    <label for="">
+      кожного
+      <input
+        v-model="data.month"
+        type="number"
+        min="1"
+        max="11"
+        step="1"
+      >
+      місяця о
     </label>
     <input
       v-model="curTime"
@@ -20,11 +30,23 @@
 
 <script>
 export default {
-  name: 'DayCron',
+  name: 'MonthCron',
   props: {
+    time: {
+      type: String
+    },
+    day: {
+      type: String
+    },
     data: {
       type: Object,
       default: () => ({})
+    }
+  },
+  data () {
+    return {
+      dayValue: this.day
+      //   curTime: this.time,
     }
   },
   computed: {
@@ -37,6 +59,15 @@ export default {
         this.data.minute = z[0]
         this.data.hour = z[1]
       }
+    }
+  },
+  watch: {
+    dayValue (e) {
+      console.log(e)
+      this.$emit('input', e)
+    },
+    curTime (e) {
+      this.$emit('input', e)
     }
   }
 }
