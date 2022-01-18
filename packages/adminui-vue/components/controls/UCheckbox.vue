@@ -1,58 +1,57 @@
 <template>
   <span class="u-checkbox">
     <input
+      :id="checkboxName"
+      v-model="currentValue"
       class="u-checkbox--input"
       type="checkbox"
-      :id="checkboxName"
       :name="checkboxName"
-      v-model="currentValue"
-    />
+    >
     <label
       class="u-checkbox__label"
       :class="{ 'u-checkbox__label--left': labelPosition === 'left' }"
       :for="checkboxName"
-      >{{ label }}</label
-    >
+    >{{ label }}</label>
   </span>
 </template>
 
 <script>
 export default {
-  name: "UCheckbox",
+  name: 'UCheckbox',
   // for v-model
   model: {
-    event: "change",
+    event: 'change'
   },
   props: {
     name: {
       type: String,
-      default: "",
+      default: ''
     },
     label: {
       type: String,
-      default: "sdfgdfg",
+      default: 'sdfgdfg'
     },
     value: {
       type: Boolean,
-      default: false,
+      default: false
     },
     labelPosition: {
       type: String,
-      default: "",
-    },
+      default: ''
+    }
   },
-  data() {
+  data () {
     return {
       currentValue: this.value,
-      checkboxName: this.name ? this.name : this._uid,
-    };
+      checkboxName: this.name ? this.name : this._uid
+    }
   },
   watch: {
-    currentValue(e) {
-      this.$emit("change", e);
-    },
-  },
-};
+    currentValue (e) {
+      this.$emit('change', e)
+    }
+  }
+}
 </script>
 
 <style>
@@ -85,7 +84,7 @@ export default {
 
 /* создание в label псевдоэлемента before со следующими стилями */
 .u-checkbox--input + .u-checkbox__label::before {
-  content: "";
+  content: '';
   display: inline-block;
   width: 1em;
   height: 1em;
@@ -125,7 +124,7 @@ export default {
 .u-checkbox--input:checked + .u-checkbox__label::before {
   border-color: #0b76ef;
   background-color: #0b76ef;
-  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMy45NjYgNi40ODQgMS43NDIgNC4yNThhLjYyNS42MjUgMCAwIDAtLjg5IDAgLjYyNi42MjYgMCAwIDAgMCAuODlsMi42NjMgMi42NjZhLjYzMi42MzIgMCAwIDAgLjg5NiAwbDYuNzM2LTYuNzM3YS42MjYuNjI2IDAgMCAwIDAtLjg5MS42MjQuNjI0IDAgMCAwLS44OSAwbC02LjI5IDYuMjk4eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==");
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMy45NjYgNi40ODQgMS43NDIgNC4yNThhLjYyNS42MjUgMCAwIDAtLjg5IDAgLjYyNi42MjYgMCAwIDAgMCAuODlsMi42NjMgMi42NjZhLjYzMi42MzIgMCAwIDAgLjg5NiAwbDYuNzM2LTYuNzM3YS42MjYuNjI2IDAgMCAwIDAtLjg5MS42MjQuNjI0IDAgMCAwLS44OSAwbC02LjI5IDYuMjk4eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==');
   /* background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e"); */
 }
 

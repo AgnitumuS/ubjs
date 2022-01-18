@@ -1,64 +1,65 @@
 <template>
   <span class="u-radio--wrap">
-    <label class="u-radio" v-for="(item, index) in items" :key="index">
+    <label
+      v-for="(item, index) in items"
+      :key="index"
+      class="u-radio"
+      :style="{ display: item.label ? '' : 'flex' }"
+    >
       <input
+        v-model="currentValue"
         class="u-radio__input"
         type="radio"
         :name="name"
         :value="item.id"
-        v-model="currentValue"
-      />
+      >
       <span
         class="u-radio__label"
         :class="{ 'u-radio__label--left': labelPosition === 'left' }"
-        >{{ item.label }}</span
-      >
+        :style="{ width: item.label ? '' : '26px' }"
+      >{{ item.label }}</span>
+      <slot :name="item.id" />
     </label>
   </span>
 </template>
 
-
 <script>
 export default {
-  name: "URadio",
+  name: 'URadio',
   // for v-model
   model: {
-    event: "change",
+    event: 'change'
   },
   props: {
     items: {
       type: Array,
-      default: () => [],
-      validator(items){
-        const check = items.length > 1
-        if (!check) console.error('The count of elements must be greater than 1')
-        return check
-      }
+      default: () => []
     },
     name: {
       type: String,
-      default: "defaultName",
+      default: 'defaultName'
     },
     value: {
       type: [String, Boolean, Number],
+      default: ''
     },
     labelPosition: {
       type: String,
-      default: "",
-    },
+      default: ''
+    }
   },
-  data() {
+  data () {
     return {
-      currentValue: this.value ? this.value : "",
-      radioName: this.name ? this.name : this._uid,
-    };
+      currentValue: this.value ? this.value : '',
+      radioName: this.name ? this.name : this._uid
+    }
   },
   watch: {
-    currentValue(e) {
-      this.$emit("change", e);
-    },
-  },
-};
+    currentValue (e) {
+      this.$emit('change', e)
+    }
+  }
+}
 </script>
 
 <style>
@@ -93,7 +94,7 @@ export default {
 
 /* создание в label псевдоэлемента  before со следующими стилями */
 .u-radio__label::before {
-  content: "";
+  content: '';
   display: inline-block;
   width: 1em;
   height: 1em;

@@ -9,12 +9,12 @@
       <div class="u-cron__body">
         <component
           :is="currentComponent"
-          :data="obj"
+          :data="obj[everyTimeValue]"
         />
       </div>
     </div>
 
-    <div>{{ everyTimeValue }}</div>
+    <div>{{ cronString }}</div>
   </div>
 </template>
 
@@ -22,37 +22,49 @@
 export default {
   name: 'Cron',
   components: {
-    dayCron: require('./dayCron.vue').default,
-    hoursCron: require('./hoursCron.vue').default,
+    secondsCron: require('./secondsCron.vue').default,
     minutesCron: require('./minutesCron.vue').default,
+    hoursCron: require('./hoursCron.vue').default,
+    dayCron: require('./dayCron.vue').default,
     weekCron: require('./weekCron.vue').default,
     monthCron: require('./monthCron.vue').default,
     yearCron: require('./yearCron.vue').default
   },
   data () {
     return {
-      everyTimeValue: 'day',
+      everyTimeValue: 'seconds',
       everyTime: [
-        { id: 'minutes', label: 'Кожної минути' },
-        { id: 'hours', label: 'Кожної години' },
-        { id: 'day', label: 'Кожний день' },
-        { id: 'week', label: 'Кожного тижня' },
-        { id: 'month', label: 'Кожного місяця' },
-        { id: 'year', label: 'Кожного року' }
+        { id: 'seconds', label: 'секунди' },
+        { id: 'minutes', label: 'хвилини' },
+        { id: 'hours', label: 'години' },
+        { id: 'day', label: 'день' },
+        { id: 'week', label: 'тижня' },
+        { id: 'month', label: 'місяця' },
+        { id: 'year', label: 'року' }
       ],
       obj: {
-        minute: '00',
-        hour: '00',
-        day: '1',
-        week: '1',
-        month: '1',
-        year: '1'
+        seconds: {
+          every: true,
+          start: '0',
+          specify: '0',
+          between: [],
+          value: 'specify'
+        }
+        // minute: '00',
+        // hour: '00',
+        // day: '1',
+        // week: '1',
+        // month: '1',
+        // year: '1'
       }
     }
   },
   computed: {
     currentComponent () {
       return this.everyTimeValue + 'Cron' || 'div'
+    },
+    cronString () {
+      return this.getCronString()
     }
   },
   watch: {
@@ -64,6 +76,11 @@ export default {
       handler (e) {
         console.log(e)
       }
+    }
+  },
+  methods: {
+    getCronString (data = this.obj) {
+      return 'sdf'
     }
   }
 }
@@ -77,5 +94,21 @@ export default {
   padding-right: 24px;
   margin-right: 24px;
   border-right: 1px solid;
+}
+.u-cron__body .u-radio {
+  margin-bottom: 24px;
+}
+.u-cron__body .u-radio--wrap {
+  width: 100%;
+}
+.cron__start {
+  display: flex;
+}
+.cron__start__item {
+  margin-right: 8px;
+}
+
+.u-cron__body .u-radio__label {
+  font-weight: 500;
 }
 </style>
