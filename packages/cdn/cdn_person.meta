@@ -118,6 +118,7 @@
       "caption": "Photo",
       "description": "Person's photo",
       "allowNull": true,
+      "storeName": "avatars",
       "documentMIME": "image/jpeg"
     },
     {
