@@ -179,7 +179,8 @@ export default {
       }
 
       if (this.position === 'fixed') {
-        document.body.appendChild(this.$refs.dropdown)
+        this.popperHtmlNode = this.$refs.dropdown // popper don't hide after document.body.appendChild....
+        document.body.appendChild(this.popperHtmlNode)
       }
 
       this.popperInstance = createPopper(
@@ -232,8 +233,8 @@ export default {
     close () {
       this.visible = false
       this.$emit('close')
-
       if (this.observer) this.observer.disconnect()
+      if (this.popperHtmlNode) this.popperHtmlNode = this.popperHtmlNode.remove()
     },
 
     closeByEscape (event) {

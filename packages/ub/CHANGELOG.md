@@ -6,6 +6,42 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - '*.meta': added env variable macros support for entity and attribute level mapping with the same syntax as
+ in ubConfig - `%ENV||default%`. Example:
+ ```json
+ {
+  "name": "my_entity",
+  "connection": "NON-UB_MAIN",
+  "attributes": [{
+    "name": "myAttr",
+    "mapping": [
+      {
+        "name": "Oracle",
+        "expression": "%UB_MAIN_USER||myuser%.C_ID"
+      }
+    ]
+  }],
+  "mapping": [
+    {
+      "name": "Oracle",
+      "selectName": "%UB_MAIN_USER%.ubs_message",
+      "execName": "ubs_message"
+    }
+  ]
+}
+```
+  Can be used for cross-schema mappings, when entity connection not match actual table schema.   
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.24] - 2022-01-14
+### Added
  - new method `DataStore.setColumnName(columnIdx, newColumnName)` (require UB@5.22.2).
  allow set name for column to be used during serializing DataStore into JSON or response
 ``` javascript
@@ -36,14 +72,6 @@ const obj = store.getAsJsObject() // obj will be [{dummy: 1}]
    ```
 
   `i18n` from `@unitybase/ub-pub` also can localize such attrs `UB.i18n('bpm_TaskClass#description')` but uses info from domain (more efficient)  
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ## [5.22.23] - 2022-01-09
 ## [5.22.22] - 2021-12-02
 ## [5.22.21] - 2021-11-30

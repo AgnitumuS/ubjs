@@ -248,6 +248,7 @@ function createProcessingModule ({
 
       /**
        * Load initial state of tracked master entity, all at once.
+       *
        * @param {VuexTrackedInstance} state
        * @param {object} loadedState
        */
@@ -260,7 +261,36 @@ function createProcessingModule ({
       },
 
       /**
+       * Load initial state of tracked detail entity, all at once for specified item.
+       *
+       * @param {VuexTrackedInstance} state
+       * @param {object} payload
+       * @param {string} payload.collection  collection
+       * @param {number} payload.index       index in collection
+       * @param {object} payload.loadedState loaded state
+       */
+      LOAD_COLLECTION_DATA (state, { collection, index, loadedState }) {
+        if (!(collection in state.collections)) {
+          throw new Error(`Collection "${collection}" was not loaded or created!`)
+        }
+        if (!loadedState) {
+          throw new UB.UBAbortError('documentNotFound')
+        }
+
+        const collectionInstance = state.collections[collection]
+        if (!(index in collectionInstance.items)) {
+          throw new Error(`Collection "${collection}" does not have index: ${index}!`)
+        }
+        const stateToChange = collectionInstance.items[index]
+
+        stateToChange.data = loadedState
+        stateToChange.isNew = false
+        Vue.set(stateToChange, 'originalData', {})
+      },
+
+      /**
        * After insert, update or other server calls, which update entity, need to inform module about new server state.
+       *
        * @param {VuexTrackedInstance} state
        * @param {object} loadedState
        */
@@ -272,7 +302,7 @@ function createProcessingModule ({
       },
 
       /**
-       * Update value of attribute for master record or a record of a details collection item.
+       * Update value of attribute for master record or a record of collection item details.
        * The mutation uses "data" and "originalData" object to correctly track object state.
        *
        * @param {VuexTrackedInstance} state
@@ -813,8 +843,8 @@ function createProcessingModule ({
           responseHandlers.push(response => store.commit('LOAD_DATA', response.resultData))
         }
 
-        // Iterate in reverse order to delete child before master in case of master-detail relation between collections
-        // Collections definition should be ordered from master to details (as doucumented in createProcessingModule)
+        // Iterate in reverse order to delete child before master in case of master-detail relation between
+        // collections definition should be ordered from master to details (as documented in createProcessingModule)
         for (const [collectionKey, collectionInfo] of Object.entries(initCollectionsRequests).reverse()) {
           const collection = store.state.collections[collectionKey]
           if (!collection) continue
@@ -867,7 +897,7 @@ function createProcessingModule ({
                   } else if (Number.isInteger(loadedState.ID)) {
                     const index = collection.items.findIndex(i => i.data.ID === loadedState.ID)
                     if (index !== -1) {
-                      store.commit('LOAD_COLLECTION_PARTIAL', {
+                      store.commit('LOAD_COLLECTION_DATA', {
                         collection: collectionKey,
                         index,
                         loadedState

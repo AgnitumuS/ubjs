@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.1] - 2022-01-14
+### Fixed
+ - fix local sorting (`formatByPattern.collationCompare`):
+   - for Dates:  takes into account what Date's must be compared using `Date.getTime()`
+   - empty values (null, undefined) is always less when any over
+   
+   For end user this mean valid sorting of cached data stores.
+
 ## [5.22.0] - 2022-01-09
 ### Added
  - `Repository` and `DataStore` now supports use a replicated read-only database connection for running a `'select'` queries:

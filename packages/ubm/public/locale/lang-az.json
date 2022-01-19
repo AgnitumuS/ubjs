@@ -52,7 +52,7 @@
   "desktopService.BottomLeft": "Solda aşağıda",
   "desktopService.BottomCenter": "Mərkəzdə aşağıda",
   "desktopService.BottomRight": "Sağda aşağıda",
-  "monkeyRequestsDetected": "Your request has been processed, but we found that it is repeated several times. Maybe you key fuse?",
+  "monkeyRequestsDetected": "Sorğunuz emal edildi, lakin  onun bir neçə dəfə təkrarlandığı aşkar olundu?",
   "Shortcut editor": "Qısa yol redaktoru",
   "chooseShortcutFolder": "Choose shortcut folder"
 }

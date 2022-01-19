@@ -80,7 +80,7 @@
           />
           <i
             class="u-icon-close u-navbar__tab-close-button"
-            @click.stop="handleClose([tab])"
+            @click="handleClose([tab])"
           />
         </div>
       </el-tooltip>

@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- new icons: `u-icon-view-versions` and `u-icon-create-version`
 
 ### Changed
 
@@ -15,6 +14,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.1] - 2022-01-14
+### Added
+- new icons: `u-icon-view-versions` and `u-icon-create-version`
+- processing module now have `LOAD_COLLECTION_DATA` mutation, which contains logic similar to `LOAD_DATA`, but for
+  a collection item
+
+### Changed
+ - `UButton.type` property validator accept only 'submit', 'reset', 'button' according to ["type" property doc on MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type)
+   Before this fix any value is accepted, and in case developer pass something non-valid, button type is changed to `submit` (by HTML),
+   so such button react on `Enter` keypress
+
+### Fixed
+- Vue forms, now after saving collection items, state is changes in vuex store using
+  the new `LOAD_COLLECTION_DATA` mutation, instead of `LOAD_COLLECTION_PARTIAL`, which is consistent with approach for
+  master entity instance and fixes problem with localized attributes, which saved values were not returned from
+  server, because they are not in the `fieldList`, and form remains dirty
+ - `UDropdown`: popper now hides when tab is closing (for example user click on filter or sort button and close form tab) [UBDF-14766]
 
 ## [5.22.0] - 2022-01-09
 ### Added
