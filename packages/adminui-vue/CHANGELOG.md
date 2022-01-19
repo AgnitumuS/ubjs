@@ -6,8 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+- `UDropdown.vue` - through the parameter `customClass` you can set your class for dropdown
 ### Changed
+- `FilterSelector.vue` - you can apply multiple filters at the same time
 
 ### Deprecated
 
