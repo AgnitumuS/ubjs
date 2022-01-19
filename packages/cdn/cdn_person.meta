@@ -115,6 +115,7 @@
     {
       "name": "photo",
       "dataType": "Document",
+      "storeName": "avatars",
       "caption": "Photo",
       "description": "Person's photo",
       "allowNull": true,
