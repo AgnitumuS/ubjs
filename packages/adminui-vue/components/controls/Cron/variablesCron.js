@@ -1,3 +1,4 @@
-const SECONDS = 59
+const SECONDS = 60
+const HOURS = 60
 
-module.exports = { SECONDS }
+module.exports = { SECONDS, HOURS }

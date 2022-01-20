@@ -3,7 +3,7 @@
     <u-radio
       v-model="value"
       :items="items"
-      name="SecondsCron"
+      :name="mode"
     >
       <template #start>
         <div class="cron__start">
@@ -11,24 +11,24 @@
             Every
             <select>
               <option
-                v-for="sec in SECONDS"
+                v-for="sec in currLength"
                 :key="sec"
                 :value="sec"
               >
                 {{ sec }}
               </option>
             </select>
-            second(s)
+            {{ `${mode}(s)` }}
           </span>
           <span class="cron__start__item">
-            starting at second
+            {{ `starting at ${mode}` }}
             <select>
               <option
-                v-for="sec in SECONDS"
+                v-for="(sec, index) in currLength"
                 :key="sec * 999"
-                :value="sec"
+                :value="index"
               >
-                {{ sec }}
+                {{ index }}
               </option>
             </select>
           </span>
@@ -37,9 +37,40 @@
 
       <template #specify>
         <SpecifyCron
-          :items="specifyItems"
+          :items="displaySpecifyItems"
+          :default-checked="checkedSpecifyItems"
           @change="changeHandler"
         />
+      </template>
+
+      <template #between>
+        <div class="cron__start">
+          <span class="cron__start__item">
+            {{ `Every ${mode} between ${mode}` }}
+            <select v-model="betweenSeconds[0]">
+              <option
+                v-for="(sec, index) in currLength"
+                :key="sec"
+                :value="index"
+              >
+                {{ index }}
+              </option>
+            </select>
+          </span>
+          <span class="cron__start__item">
+            {{ `and ${mode}` }}
+            <select v-model="betweenSeconds[1]">
+              <option
+                v-for="(sec, index) in currLength"
+                :key="sec * 999"
+                :value="index"
+                :disabled="index <= betweenSeconds[0]"
+              >
+                {{ index }}
+              </option>
+            </select>
+          </span>
+        </div>
       </template>
     </u-radio>
   </div>
@@ -53,41 +84,58 @@ export default {
     SpecifyCron: require('./SpecifyCron.vue').default
   },
   props: {
-    data: {
+    item: {
       type: Object,
       default: () => ({})
+    },
+    mode: {
+      type: String,
+      default: 'second'
+    },
+    length: {
+      type: Number,
+      default: 0
     }
   },
   data () {
     return {
-      SECONDS,
+      currLength: this.length,
       items: [
-        { id: 'every', label: 'Кожної секунди' },
+        { id: 'every', label: 'Every {{mode}}' },
         { id: 'start', label: '' },
-        { id: 'specify', label: 'Specific second (choose one or many)' },
-        { id: 'between', label: 'Specific second (choose one or many)' }
+        { id: 'specify', label: 'Specific {{mode}} (choose one or many)' },
+        { id: 'between', label: '' }
       ],
       value: 'specify',
-      specifyItems: [],
-      checkedSpecifyItems: []
+      displaySpecifyItems: [],
+      checkedSpecifyItems: [],
+      betweenSeconds: []
     }
   },
   watch: {
-    value (e) {
-      console.log(e)
+    value () {
+      this.emitChange()
+    },
+    betweenSeconds (e) {
+      if (e.length === 2) this.emitChange()
     }
   },
   created () {
+    if (this.length === 0) this.currLength = SECONDS
     this.specifyItemsCreate()
+    this.items.forEach((i) => {
+      i.label = i.label.replace('{{mode}}', this.mode)
+    })
+    this.restoreCron()
   },
   methods: {
     specifyItemsCreate () {
-      for (let i = 0; i <= SECONDS; i++) {
+      for (let i = 0; i <= this.currLength; i++) {
         const element = {
           label: i.toString(),
           value: false
         }
-        this.specifyItems.push(element)
+        this.displaySpecifyItems.push(element)
       }
     },
     changeHandler (checkedIndexes) {
@@ -99,7 +147,38 @@ export default {
       this.$emit('change', v)
     },
     getValue () {
-      console.log(this.value)
+      const { value } = this
+      if (value === 'every') {
+        return '*'
+      }
+      if (value === 'specify') {
+        return this.checkedSpecifyItems.join()
+      }
+      if (value === 'between') {
+        return this.betweenSeconds.join('-')
+      }
+      return '*'
+    },
+    restoreCron () {
+      const value = this.item.value
+      console.log(value)
+      if (!value || value === '*') {
+        this.value = 'every'
+        return
+      }
+      if (value.includes(',')) {
+        this.value = 'specify'
+        const arr = value.split(',')
+        arr.forEach((index) => {
+          this.displaySpecifyItems[+index].value = true
+        })
+        return
+      }
+      if (value.includes('-')) {
+        this.value = 'between'
+        const arr = value.split('-')
+        this.betweenSeconds = arr
+      }
     }
   }
 }

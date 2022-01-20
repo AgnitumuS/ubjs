@@ -6,6 +6,7 @@
     <u-checkbox
       v-for="(item, index) in items"
       :key="index"
+      v-model="item.value"
       :label="item.label"
       @change="changeHandler($event, index)"
     />
@@ -20,6 +21,10 @@ export default {
     items: {
       type: Array,
       default: () => []
+    },
+    defaultChecked: {
+      type: Array,
+      default: () => []
     }
   },
   data () {
@@ -30,11 +35,11 @@ export default {
   methods: {
     changeHandler (value, index) {
       this.$set(this.values, index, value)
-      const checkedIndexes = this.values
+      const checkedIndexes = this.items
         .map((el, index) => {
-          return el ? index.toString() : el
+          return el.value ? index : el.value
         })
-        .filter((el) => !!el)
+        .filter((el) => !!el || el === 0)
       this.$emit('change', checkedIndexes)
     }
   }

@@ -12,7 +12,6 @@
       >
       року
     </label>
-    <monthCron :data="data" />
   </div>
 </template>
 

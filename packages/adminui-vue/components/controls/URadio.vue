@@ -5,6 +5,7 @@
       :key="index"
       class="u-radio"
       :style="{ display: item.label ? '' : 'flex' }"
+      @click="currentValue = item.id"
     >
       <input
         v-model="currentValue"

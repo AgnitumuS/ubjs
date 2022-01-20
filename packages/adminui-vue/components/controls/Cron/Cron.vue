@@ -7,10 +7,13 @@
         :items="everyTime"
       />
       <div class="u-cron__body">
-        <component
-          :is="currentComponent"
-          :data="obj[everyTimeValue]"
-        />
+        <keep-alive>
+          <component
+            :is="currentComponent"
+            :item="everyTime.find((i) => i.id === everyTimeValue)"
+            @change="changeHandler"
+          />
+        </keep-alive>
       </div>
     </div>
 
@@ -34,29 +37,14 @@ export default {
     return {
       everyTimeValue: 'seconds',
       everyTime: [
-        { id: 'seconds', label: 'секунди' },
-        { id: 'minutes', label: 'хвилини' },
-        { id: 'hours', label: 'години' },
-        { id: 'day', label: 'день' },
-        { id: 'week', label: 'тижня' },
-        { id: 'month', label: 'місяця' },
-        { id: 'year', label: 'року' }
-      ],
-      obj: {
-        seconds: {
-          every: true,
-          start: '0',
-          specify: '0',
-          between: [],
-          value: 'specify'
-        }
-        // minute: '00',
-        // hour: '00',
-        // day: '1',
-        // week: '1',
-        // month: '1',
-        // year: '1'
-      }
+        { id: 'seconds', label: 'секунди', value: '6-18' },
+        { id: 'minutes', label: 'хвилини', value: '*' },
+        { id: 'hours', label: 'години', value: '*' },
+        { id: 'day', label: 'день', value: '*' },
+        { id: 'week', label: 'тижня', value: '*' },
+        { id: 'month', label: 'місяця', value: '*' },
+        { id: 'year', label: 'року', value: '*' }
+      ]
     }
   },
   computed: {
@@ -64,23 +52,18 @@ export default {
       return this.everyTimeValue + 'Cron' || 'div'
     },
     cronString () {
-      return this.getCronString()
+      return this.everyTime.map((i) => i.value).join(' ')
     }
   },
   watch: {
     everyTimeValue (e) {
-      console.log(e)
-    },
-    obj: {
-      deep: true,
-      handler (e) {
-        console.log(e)
-      }
+      // console.log(e)
     }
   },
   methods: {
-    getCronString (data = this.obj) {
-      return 'sdf'
+    changeHandler (e) {
+      const item = this.everyTime.find((i) => i.id === this.everyTimeValue)
+      item.value = e
     }
   }
 }

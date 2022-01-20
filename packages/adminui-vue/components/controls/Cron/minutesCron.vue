@@ -1,27 +1,16 @@
 <template>
-  <div>
-    <label
-      for=""
-    >Кожної:
-      <input
-        v-model="data.minute"
-        type="number"
-        min="1"
-        max="59"
-        step="1"
-      > хвилини
-    </label>
-  </div>
+  <SecondsCron
+    v-bind="$attrs"
+    mode="minute"
+    v-on="$listeners"
+  />
 </template>
 
 <script>
 export default {
   name: 'MinutesCron',
-  props: {
-    data: {
-      type: Object,
-      default: () => ({})
-    }
+  components: {
+    SecondsCron: require('./secondsCron.vue').default
   }
 }
 </script>
