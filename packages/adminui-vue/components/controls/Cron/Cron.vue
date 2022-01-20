@@ -35,7 +35,7 @@ export default {
   },
   data () {
     return {
-      everyTimeValue: 'week',
+      everyTimeValue: 'day',
       everyTime: [
         { id: 'seconds', label: 'секунди', value: '0' },
         { id: 'minutes', label: 'хвилини', value: '0' },
