@@ -37,13 +37,13 @@ export default {
     return {
       everyTimeValue: 'day',
       everyTime: [
-        { id: 'seconds', label: 'секунди', value: '0' },
-        { id: 'minutes', label: 'хвилини', value: '0' },
-        { id: 'hours', label: 'години', value: '0' },
+        { id: 'seconds', label: 'секунди', value: '*' },
+        { id: 'minutes', label: 'хвилини', value: '*' },
+        { id: 'hours', label: 'години', value: '*' },
         { id: 'day', label: 'день', value: '*' },
         { id: 'month', label: 'місяця', value: '*' },
-        { id: 'week', label: 'дні тижня', value: '*' },
-        { id: 'year', label: 'року', value: '*' }
+        { id: 'week', label: 'дні тижня', value: '*' }
+        // { id: 'year', label: 'року', value: '*' }
       ]
     }
   },

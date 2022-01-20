@@ -20,7 +20,7 @@
             </select>
             {{ `${mode}(s)` }}
           </span>
-          <span class="cron__start__item">
+          <!-- <span class="cron__start__item">
             {{ `starting at ${mode}` }}
             <select v-model="startEvery[1]">
               <option
@@ -31,7 +31,7 @@
                 {{ index + startCount }}
               </option>
             </select>
-          </span>
+          </span> -->
         </div>
       </template>
 
@@ -119,7 +119,7 @@ export default {
       displaySpecifyItems: [],
       checkedSpecifyIds: [],
       betweenSeconds: ['', ''],
-      startEvery: ['', '']
+      startEvery: ['', 0]
     }
   },
   watch: {
