@@ -32,7 +32,8 @@
           />
         </u-form-row>
       </u-grid>
-      <shortcut-cmd-code />
+      <!-- <shortcut-cmd-code /> -->
+      <Cron />
     </u-form-container>
   </div>
 </template>

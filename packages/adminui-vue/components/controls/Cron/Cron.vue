@@ -35,14 +35,14 @@ export default {
   },
   data () {
     return {
-      everyTimeValue: 'seconds',
+      everyTimeValue: 'week',
       everyTime: [
-        { id: 'seconds', label: 'секунди', value: '6-18' },
-        { id: 'minutes', label: 'хвилини', value: '*' },
-        { id: 'hours', label: 'години', value: '*' },
+        { id: 'seconds', label: 'секунди', value: '0' },
+        { id: 'minutes', label: 'хвилини', value: '0' },
+        { id: 'hours', label: 'години', value: '0' },
         { id: 'day', label: 'день', value: '*' },
-        { id: 'week', label: 'тижня', value: '*' },
         { id: 'month', label: 'місяця', value: '*' },
+        { id: 'week', label: 'дні тижня', value: '*' },
         { id: 'year', label: 'року', value: '*' }
       ]
     }

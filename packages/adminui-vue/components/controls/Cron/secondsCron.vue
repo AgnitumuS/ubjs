@@ -9,7 +9,7 @@
         <div class="cron__start">
           <span class="cron__start__item">
             Every
-            <select>
+            <select v-model="startEvery[0]">
               <option
                 v-for="sec in currLength"
                 :key="sec"
@@ -22,13 +22,13 @@
           </span>
           <span class="cron__start__item">
             {{ `starting at ${mode}` }}
-            <select>
+            <select v-model="startEvery[1]">
               <option
                 v-for="(sec, index) in currLength"
                 :key="sec * 999"
-                :value="index"
+                :value="index + startCount"
               >
-                {{ index }}
+                {{ index + startCount }}
               </option>
             </select>
           </span>
@@ -38,7 +38,6 @@
       <template #specify>
         <SpecifyCron
           :items="displaySpecifyItems"
-          :default-checked="checkedSpecifyItems"
           @change="changeHandler"
         />
       </template>
@@ -51,22 +50,28 @@
               <option
                 v-for="(sec, index) in currLength"
                 :key="sec"
-                :value="index"
+                :value="index + startCount"
+                :disabled="
+                  !!betweenSeconds[1] && index + startCount >= betweenSeconds[1]
+                "
               >
-                {{ index }}
+                {{ index + startCount }}
               </option>
             </select>
           </span>
           <span class="cron__start__item">
             {{ `and ${mode}` }}
-            <select v-model="betweenSeconds[1]">
+            <select
+              v-model="betweenSeconds[1]"
+              :disabled="!betweenSeconds[0]"
+            >
               <option
                 v-for="(sec, index) in currLength"
-                :key="sec * 999"
-                :value="index"
-                :disabled="index <= betweenSeconds[0]"
+                :key="sec * 999999"
+                :value="index + startCount"
+                :disabled="index + startCount <= betweenSeconds[0]"
               >
-                {{ index }}
+                {{ index + startCount }}
               </option>
             </select>
           </span>
@@ -95,6 +100,10 @@ export default {
     length: {
       type: Number,
       default: 0
+    },
+    startCount: {
+      type: Number,
+      default: 0
     }
   },
   data () {
@@ -108,8 +117,9 @@ export default {
       ],
       value: 'specify',
       displaySpecifyItems: [],
-      checkedSpecifyItems: [],
-      betweenSeconds: []
+      checkedSpecifyIds: [],
+      betweenSeconds: ['', ''],
+      startEvery: ['', '']
     }
   },
   watch: {
@@ -117,6 +127,9 @@ export default {
       this.emitChange()
     },
     betweenSeconds (e) {
+      if (e.length === 2) this.emitChange()
+    },
+    startEvery (e) {
       if (e.length === 2) this.emitChange()
     }
   },
@@ -132,14 +145,15 @@ export default {
     specifyItemsCreate () {
       for (let i = 0; i <= this.currLength; i++) {
         const element = {
-          label: i.toString(),
-          value: false
+          label: (i + this.startCount).toString(),
+          checked: false,
+          id: (i + this.startCount).toString()
         }
         this.displaySpecifyItems.push(element)
       }
     },
-    changeHandler (checkedIndexes) {
-      this.checkedSpecifyItems = checkedIndexes
+    changeHandler (checkedIds) {
+      this.checkedSpecifyIds = checkedIds
       this.emitChange()
     },
     emitChange () {
@@ -152,16 +166,26 @@ export default {
         return '*'
       }
       if (value === 'specify') {
-        return this.checkedSpecifyItems.join()
+        return this.checkedSpecifyIds.join()
       }
-      if (value === 'between') {
+      if (
+        value === 'start' &&
+        this.startEvery.length === 2 &&
+        this.startEvery.every((i) => !!i)
+      ) {
+        return [this.startEvery[1], this.startEvery[0]].join('/')
+      }
+      if (
+        value === 'between' &&
+        this.betweenSeconds.length === 2 &&
+        this.betweenSeconds.every((i) => !!i)
+      ) {
         return this.betweenSeconds.join('-')
       }
       return '*'
     },
     restoreCron () {
       const value = this.item.value
-      console.log(value)
       if (!value || value === '*') {
         this.value = 'every'
         return
@@ -169,16 +193,29 @@ export default {
       if (value.includes(',')) {
         this.value = 'specify'
         const arr = value.split(',')
-        arr.forEach((index) => {
-          this.displaySpecifyItems[+index].value = true
-        })
+        this.setCheckedSpecifyItems(arr)
         return
+      }
+      if (value.includes('/')) {
+        this.value = 'start'
+        const arr = value.split('/')
+        if (arr[0] === '*') arr[0] = '0'
+        this.startEvery = arr.reverse()
       }
       if (value.includes('-')) {
         this.value = 'between'
         const arr = value.split('-')
         this.betweenSeconds = arr
       }
+      if (!Number.isNaN(Number(value))) {
+        this.setCheckedSpecifyItems([value])
+      }
+    },
+    setCheckedSpecifyItems (arr) {
+      arr.forEach((value) => {
+        const el = this.displaySpecifyItems.find((el) => el.id === value.trim())
+        if (el) el.checked = true
+      })
     }
   }
 }

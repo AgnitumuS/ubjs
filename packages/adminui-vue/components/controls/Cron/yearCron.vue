@@ -1,37 +1,20 @@
 <template>
-  <div class="year-cron">
-    <label
-      for=""
-    >Кожного
-      <input
-        v-model="data.year"
-        type="number"
-        min="1"
-        max="99999"
-        step="1"
-      >
-      року
-    </label>
-  </div>
+  <SecondsCron
+    v-bind="$attrs"
+    mode="year"
+    :length="50"
+    :start-count="Number(new Date().getFullYear())"
+    v-on="$listeners"
+  />
 </template>
 
 <script>
 export default {
-  name: 'YearCron',
+  name: 'MonthCron',
   components: {
-    monthCron: require('./monthCron.vue').default
-  },
-  props: {
-    data: {
-      type: Object,
-      default: () => ({})
-    }
+    SecondsCron: require('./secondsCron.vue').default
   }
 }
 </script>
 
-<style>
-.year-cron {
-  display: flex;
-}
-</style>
+<style lang="scss" scoped></style>

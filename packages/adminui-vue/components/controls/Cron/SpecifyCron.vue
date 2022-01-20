@@ -6,7 +6,7 @@
     <u-checkbox
       v-for="(item, index) in items"
       :key="index"
-      v-model="item.value"
+      v-model="item.checked"
       :label="item.label"
       @change="changeHandler($event, index)"
     />
@@ -21,26 +21,16 @@ export default {
     items: {
       type: Array,
       default: () => []
-    },
-    defaultChecked: {
-      type: Array,
-      default: () => []
-    }
-  },
-  data () {
-    return {
-      values: []
     }
   },
   methods: {
     changeHandler (value, index) {
-      this.$set(this.values, index, value)
-      const checkedIndexes = this.items
+      const checkedIds = this.items
         .map((el, index) => {
-          return el.value ? index : el.value
+          return el.checked ? el.id : el.checked
         })
         .filter((el) => !!el || el === 0)
-      this.$emit('change', checkedIndexes)
+      this.$emit('change', checkedIds)
     }
   }
 }
@@ -55,6 +45,7 @@ export default {
   padding-left: 26px;
 }
 .specify-cron .u-checkbox {
-  width: 40px;
+  min-width: 40px;
+  margin-right: 8px;
 }
 </style>
