@@ -171,9 +171,11 @@ export default {
       if (
         value === 'start' &&
         this.startEvery.length === 2 &&
-        this.startEvery.every((i) => !!i)
+        this.startEvery.every((i) => !!i || i === 0)
       ) {
-        return [this.startEvery[1], this.startEvery[0]].join('/')
+        const arr = this.startEvery.map((i) => i)
+        if (arr[1] === 0) arr[1] = '*'
+        return arr.reverse().join('/')
       }
       if (
         value === 'between' &&
