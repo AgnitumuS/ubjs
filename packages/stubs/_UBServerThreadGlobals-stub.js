@@ -455,6 +455,7 @@ TubDataStore.runSQL = function (sql, params, useReplica) {}
  * @param {Object|TubList} params SQL parameters list
  * @memberOf TubDataStore.prototype
  * @method execSQL
+ * @returns {number} Affected rows count (since UB@5.22.3, before returns false)
  */
 TubDataStore.execSQL = function (sql, params) {}
 /**
@@ -602,7 +603,11 @@ TubDataStore.getAsJsArray = function () {}
  */
 TubDataStore.currentDataName = '<xml>...</xml>'
 /**
- * Record count. If DataStore is not initialized or empty will return 0.
+ * Last store operation row count
+ *  - for operations what returns result (`select`) - fetched record count
+ *  - for non-select operations - affected row count (deleted, updated, etc)
+ *  - if DataStore is just created - return 0
+ * *NOTE* before UB@5.22.3 property returns only fetched record count, for update/delete  returns 0
  * @member {Number} rowCount
  * @memberOf TubDataStore.prototype
  */
