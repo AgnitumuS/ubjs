@@ -70,7 +70,10 @@
           name="toolbarAppend"
         />
 
-        <filter-selector v-if="showFilter" />
+        <filter-selector 
+          v-if="showFilter"
+          ref="filterSelector"
+        />
         <sort
           ref="sort"
           :target-column="targetColumn"
@@ -222,7 +225,7 @@
       </slot>
     </div>
 
-    <filter-list />
+    <filter-list @click-on-label="toggleVisibleFilterDropdown" />
 
     <div class="u-table-entity__body">
       <!-- @slot Add a sidebar to the left side of the table or card-view -->
@@ -870,6 +873,14 @@ export default {
     activeRowChangeHandler ({ index }) {
       const id = this.items[index][this.multiSelectKeyAttr]
       this.SELECT_ROW(id)
+    },
+    toggleVisibleFilterDropdown () {
+      const { filterSelector } = this.$refs
+      if (!filterSelector) return
+      const target = filterSelector.$el.querySelector('.u-dropdown__reference')
+      if (!target) return
+      const event = new MouseEvent('click')
+      target.dispatchEvent(event)
     }
   }
 }

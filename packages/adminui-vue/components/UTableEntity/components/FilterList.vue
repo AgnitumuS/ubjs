@@ -13,7 +13,7 @@
       class="u-table-entity__filter-list-item"
       @click.middle="!loading && removeFilter(filter.columnId)"
     >
-      <div>
+      <div @click.stop="$emit('click-on-label')">
         <span>
           {{ $ut(filter.label) }}
         </span>

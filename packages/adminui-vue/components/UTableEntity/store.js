@@ -357,6 +357,12 @@ module.exports = instance => ({
         state.filters.splice(index, 1)
       }
     },
+    /**
+     * clears all filters
+     */
+    CLEAR_FILTER (state) {
+      state.filters.splice(0)
+    },
 
     WITH_TOTAL (state) {
       state.withTotal = true

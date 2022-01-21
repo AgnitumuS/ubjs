@@ -1,10 +1,7 @@
 <template>
   <filter-template
       :button-disabled="value.length === 0"
-      @submit="$emit('search', {
-      whereList: [{condition: 'notIn', value}],
-      description: $ut('notContains') + ' ' + manyOptions
-    })"
+      @submit="submitHandler"
   >
     <u-select-multiple
       ref="selectMany"
@@ -22,6 +19,8 @@ export default {
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
+
+  mixins: [require('../mixinForFilter.js')],
 
   props: {
     column: {
@@ -46,6 +45,15 @@ export default {
       } else {
         return []
       }
+    },
+  },
+  methods: {
+    getCondition() {
+      const { $ut, manyOptions, value } = this
+        return {
+          whereList: [{condition: 'notIn', value}],
+          description: $ut('notContains') + ' ' + manyOptions
+        }
     }
   }
 }
