@@ -158,7 +158,7 @@ export default {
       const { target } = ev
       const selectors = ['.u-select', '.ub-select-multiple__container']
       const isSelect = selectors.some(selector => target.closest(selector))
-      if (isSelect) return
+      if (isSelect) return // do not emit go-search for selects - only for edit (string\numbers filter)
       this.$emit('go-search')
     },
     init () {
