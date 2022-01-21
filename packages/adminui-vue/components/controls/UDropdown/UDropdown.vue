@@ -119,11 +119,11 @@ export default {
       default: false
     },
     /**
-     * your unic class name for dropdown
+     * uniq class name for dropdown
      */
     customClass: {
       type: String,
-      default: '',
+      default: ''
     }
   },
 

@@ -6,10 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `UDropdown.vue` - through the parameter `customClass` you can set your class for dropdown
-- `UTableEntity.vue` - added new mutation for clear the filter set  - `CLEAR_FILTER`
+- `UDropdown`:`customClass` prop added - allows set a custom CSS class for u-dropdown
+- `UTableEntity` store: new mutation `CLEAR_FILTER` allows clear current filters set
+
 ### Changed
-- `FilterSelector.vue` - you can apply multiple filters at the same time
+- `UTableEntity` filtration improved - now allows set several filters at ones
 
 ### Deprecated
 
