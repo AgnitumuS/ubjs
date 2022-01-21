@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `ubcli generateNginxCfg`: TLS protocols changed
+   - *TLSv1.3* is added to the available TLS protocols, since iOS 15 reject andy older TLS version
+   - *TLSv1.0* is *REMOVED* from available protocols (deprecated in 2008 and MUST NOT be used)
 
 ### Deprecated
 
