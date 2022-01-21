@@ -2,7 +2,8 @@
   <SecondsCron
     v-bind="$attrs"
     mode="day"
-    :length="31"
+    :length="30"
+    :start-count="1"
     v-on="$listeners"
   />
 </template>

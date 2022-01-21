@@ -61,7 +61,16 @@ export default {
       return this.everyTime.map((i) => i.value).join(' ')
     },
     humanCronString(){
-      return cronstrue.toString(this.cronString, { locale: "uk" });
+      let str = ''
+      try{
+        str = cronstrue.toString(this.cronString, { locale: "uk" });
+      } catch(err){
+        console.log(err)
+      } finally{
+
+        return str
+      }
+
     }
   },
   methods: {

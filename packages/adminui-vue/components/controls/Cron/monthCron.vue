@@ -3,6 +3,7 @@
     v-bind="$attrs"
     mode="month"
     :length="11"
+    :start-count="1"
     v-on="$listeners"
   />
 </template>
