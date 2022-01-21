@@ -16,6 +16,7 @@
   "Chart for this item does not exist. Create a new one?": "Ushbu element uchun diagramma mavjud emas. Yangisini yaratasizmi?",
   "doYouWantLogoutFromExternalServer": "Sertifikatlash markazidagi sessiyani tugatasizmi?",
   "search": "Qidirish",
+  "and": "va",
   "associatedEntity": "Bog`langan jadval",
   "setScannerSettings": "Skaner sozlanmagan. <a href=\"/\" onclick=\"\"<0> return false;\"> Skanerni sozlash uchun shu yerni bosing </a>",
   "dateIsTooEarly": "Sana {0} dan katta bo'lishi kerak",

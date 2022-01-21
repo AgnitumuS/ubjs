@@ -15,7 +15,6 @@ UB.i18nExtend({
   "Append element": "Qo'shish elementi",
   "Chart for this item does not exist. Create a new one?": "Ushbu element uchun diagramma mavjud emas. Yangisini yaratasizmi?",
   "doYouWantLogoutFromExternalServer": "Avtorizatsiya markazida sessiya tugatilsinmi?",
-  "search": "Qidirmoq",
   "associatedEntity": "bog'liqlik",
   "setScannerSettings": "Uni ishlatishdan oldin brauzer sozlamalarini o'rnatishingiz kerak. Brauzer sozlamalari<a href=\"/\" onclick=\"{0} return false;\"> bu erda</a>.",
   "dateIsTooEarly": "Sana {0} dan katta bo'lishi kerak",

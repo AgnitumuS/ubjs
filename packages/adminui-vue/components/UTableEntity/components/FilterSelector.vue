@@ -19,18 +19,16 @@
       <div class="filter-selector__header">
         <u-button
           class="filter-selector__header__btn"
-          type="submit"
           icon="u-icon-search"
           color="primary"
           size="small"
           :disabled="disabledSearchBtn"
-          @click.native="searchHandler"
+          @click="searchHandler"
         >
           {{ $ut('search') }}
         </u-button>
         <u-button
           class="filter-selector__header__btn"
-          type="submit"
           icon="u-icon-add"
           color="success"
           size="small"
@@ -38,7 +36,7 @@
           :disabled="disabledSearchBtn"
           @click="counterHandler"
         >
-          {{ $ut('add') }}
+          {{ $ut('Add') }}
         </u-button>
         <div class="filter-selector__count">
           <span>{{ length }}</span>
@@ -171,6 +169,7 @@ export default {
       this.setDisabledSearchBtn()
     },
     async searchHandler () {
+      if (this.disabledSearchBtn) return
       const { selectedColumns, $store } = this
       this.$store.commit('CLEAR_FILTER')
       this.$refs.filterItem.forEach((comp, index) => {

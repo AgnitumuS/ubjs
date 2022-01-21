@@ -55,7 +55,8 @@
         v-if="canRemove"
         class="u-fake-table--icon"
         color="danger"
-        icon="u-icon-close"
+        icon="u-icon-delete"
+        :title="$ut('Delete')"
         size="small"
         @click.native.stop="$emit('remove-filter')"
       />
