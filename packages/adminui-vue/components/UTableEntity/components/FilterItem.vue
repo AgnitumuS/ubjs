@@ -154,7 +154,7 @@ export default {
     }
   },
   methods: {
-    pressEnterHandler (ev){
+    pressEnterHandler (ev) {
       const { target } = ev
       const selectors = ['.u-select', '.ub-select-multiple__container']
       const isSelect = selectors.some(selector => target.closest(selector))
