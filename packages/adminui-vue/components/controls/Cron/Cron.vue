@@ -17,11 +17,17 @@
       </div>
     </div>
 
-    <div>{{ cronString }}</div>
+    <div class="u-cron__desc">
+      <div>{{ cronString }}</div>
+      <div>{{humanCronString}}</div>
+    </div>
   </div>
 </template>
 
 <script>
+// я не понимаю, каким другим способом можно подключить пакет установленый в adminui-pub
+const cronstrue = require('../../../../adminui-pub/node_modules/cronstrue/i18n')
+
 export default {
   name: 'Cron',
   components: {
@@ -53,11 +59,9 @@ export default {
     },
     cronString () {
       return this.everyTime.map((i) => i.value).join(' ')
-    }
-  },
-  watch: {
-    everyTimeValue (e) {
-      // console.log(e)
+    },
+    humanCronString(){
+      return cronstrue.toString(this.cronString, { locale: "uk" });
     }
   },
   methods: {
@@ -72,6 +76,7 @@ export default {
 <style>
 .u-cron__main {
   display: flex;
+  margin-bottom: 12px;
 }
 .u-cron__sidebar {
   padding-right: 24px;
