@@ -85,7 +85,8 @@ function runTest () {
   assert.strictEqual(st.rowCount, 0, `expect rowCount for uba_user.update with ID = -1 to be 0 but got ${st.rowCount}`)
 
   if (App.domainInfo.connections[0].dialect.startsWith('Oracle')) {
-    st.execSQL(`
+    const st2 = UB.DataStore('uba_user')
+    st2.execSQL(`
 DECLARE anID NUMBER(19,0);
 begin
   select ID INTO anID from uba_user where ID > :ID: and name <> :name: FETCH FIRST 1 ROWS ONLY;
@@ -94,12 +95,12 @@ END;
     { ID: 10, name: '123' }
     )
 
-    st.execSQL('create global temporary table TMP_ID(id NUMBER not null) on commit delete rows', {})
+    st2.execSQL('create global temporary table TMP_ID(id NUMBER not null) on commit delete rows', {})
     App.dbCommit()
-    st.execSQL('insert into TMP_ID(id) values (?)', { a: [1, 2, 3] })
-    st.runSQL('select * from TMP_ID', {})
+    st2.execSQL('insert into TMP_ID(id) values (?)', { a: [1, 2, 3] })
+    st2.runSQL('select * from TMP_ID', {})
     const data = JSON.stringify(st.getAsJsObject())
-    assert.strictEqual(st.rowCount, 3, `Array binding for Oracle Insert - expect 3 rows to be inserted, got ${st.rowCount}: ${data} `)
+    assert.strictEqual(st2.rowCount, 3, `Array binding for Oracle Insert - expect 3 rows to be inserted, got ${st2.rowCount}: ${data} `)
   }
 
   // below is fails
