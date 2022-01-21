@@ -82,7 +82,7 @@
 </template>
 
 <script>
-const { SECONDS } = require('./variablesCron.js')
+
 export default {
   name: 'SecondsCron',
   components: {
@@ -134,7 +134,7 @@ export default {
     }
   },
   created () {
-    if (this.length === 0) this.currLength = SECONDS
+    if (this.length === 0) this.currLength = 59 // seconds
     this.specifyItemsCreate()
     this.items.forEach((i) => {
       i.label = i.label.replace('{{mode}}', this.mode)
@@ -165,7 +165,7 @@ export default {
       if (value === 'every') {
         return '*'
       }
-      if (value === 'specify') {
+      if (value === 'specify' && this.checkedSpecifyIds.length > 0) {
         return this.checkedSpecifyIds.join()
       }
       if (

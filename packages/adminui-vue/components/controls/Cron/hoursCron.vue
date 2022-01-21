@@ -2,7 +2,8 @@
   <SecondsCron
     v-bind="$attrs"
     mode="hour"
-    :length="24"
+    :length="22"
+    :start-count="1"
     v-on="$listeners"
   />
 </template>
