@@ -225,7 +225,7 @@
       </slot>
     </div>
 
-    <filter-list @click-on-label="clikOnLabel" />
+    <filter-list @click-on-label="toggleVisibleFilterDropdown" />
 
     <div class="u-table-entity__body">
       <!-- @slot Add a sidebar to the left side of the table or card-view -->
@@ -874,7 +874,7 @@ export default {
       const id = this.items[index][this.multiSelectKeyAttr]
       this.SELECT_ROW(id)
     },
-    clikOnLabel () {
+    toggleVisibleFilterDropdown () {
       const { filterSelector } = this.$refs
       if (!filterSelector) return
       const target = filterSelector.$el.querySelector('.u-dropdown__reference')
