@@ -47,6 +47,7 @@
           :column="selectedColumn"
           :default-value="selectedColumn.value"
           @search-disabled="searchDisabled"
+          @keyup.enter.native="pressEnterHandler"
         />
       </template>
     </div>
@@ -153,6 +154,13 @@ export default {
     }
   },
   methods: {
+    pressEnterHandler (ev){
+      const { target } = ev
+      const selectors = ['.u-select', '.ub-select-multiple__container']
+      const isSelect = selectors.some(selector => target.closest(selector))
+      if (isSelect) return
+      this.$emit('go-search')
+    },
     init () {
       this.$set(this, 'conditionsByColumns', {})
       for (const column of this.currentColumns) {

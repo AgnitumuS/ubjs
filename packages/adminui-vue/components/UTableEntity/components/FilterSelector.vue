@@ -57,6 +57,7 @@
             :selected-column="selectedColumns[index]"
             @selected-column="selectedColumnHandler($event, index)"
             @remove-filter="removeFilterHandler(index)"
+            @go-search="searchHandler"
           />
           <div
             :key="(item + 1) * 10"
