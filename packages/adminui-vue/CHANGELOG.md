@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UTableEntity`: in case record disappears from the store after refresh, sort or filtering,
+   selection will be restored by row index before store state changed.
 
 ### Changed
 

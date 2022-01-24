@@ -45,6 +45,7 @@ module.exports = instance => ({
       /* cell selected by keyboard or mouse */
       selectedColumnId: null,
       selectedRowId: null,
+      selectedRowIndex: -1,
 
       withTotal: false, // need for fetch with total always after click total btn
       viewMode: 'table',
@@ -344,6 +345,11 @@ module.exports = instance => ({
 
     SELECT_ROW (state, selectedRowId) {
       state.selectedRowId = selectedRowId
+      state.selectedRowIndex = state.items.findIndex(i => i.ID === state.selectedRowId)
+    },
+
+    SELECT_ROW_BY_INDEX (state, selectedRowIndex) {
+      state.selectedRowId = state.items[selectedRowIndex]?.ID || state.items[0]?.ID
     },
 
     /**
@@ -393,6 +399,7 @@ module.exports = instance => ({
       const flag = payload.length <= 1
       commit('SHOW_ONE_ITEM_ACTIONS', flag)
     },
+
     async fetchItems ({ state, getters, commit }) {
       commit('LOADING', true)
 
@@ -441,7 +448,7 @@ module.exports = instance => ({
       }
     },
 
-    async refresh ({ commit, dispatch, getters }) {
+    async refresh ({ state, commit, dispatch, getters }) {
       commit('LOADING', true)
       try {
         commit('PAGE_INDEX', 0)
@@ -452,6 +459,7 @@ module.exports = instance => ({
         )
         await dispatch('fetchItems')
       } finally {
+        commit('SELECT_ROW_BY_INDEX', state.selectedRowIndex)
         commit('LOADING', false)
       }
     },
@@ -461,7 +469,7 @@ module.exports = instance => ({
       await dispatch('fetchItems')
     },
 
-    async updateSort ({ commit, dispatch, getters }, sort) {
+    async updateSort ({ state, commit, dispatch, getters }, sort) {
       if (sort !== null) {
         const columnConfig = getters.columns.find(
           column => column.id === sort.column
@@ -478,6 +486,9 @@ module.exports = instance => ({
       commit('SORT', sort)
       commit('PAGE_INDEX', 0)
       await dispatch('fetchItems')
+      if (!getters.hasSelectedRow) {
+        commit('SELECT_ROW_BY_INDEX', state.selectedRowIndex)
+      }
     },
 
     async updatePageIndex ({ commit, dispatch }, pageIndex) {
@@ -501,13 +512,19 @@ module.exports = instance => ({
       })
       commit('TOTAL', null)
       await dispatch('fetchItems')
+      if (!getters.hasSelectedRow) {
+        commit('SELECT_ROW_BY_INDEX', state.selectedRowIndex)
+      }
     },
 
-    async removeFilter ({ commit, dispatch }, columnId) {
+    async removeFilter ({ state, commit, dispatch, getters }, columnId) {
       commit('PAGE_INDEX', 0)
       commit('REMOVE_FILTER', columnId)
       commit('TOTAL', null)
       await dispatch('fetchItems')
+      if (!getters.hasSelectedRow) {
+        commit('SELECT_ROW_BY_INDEX', state.selectedRowIndex)
+      }
     },
 
     async addNew ({ getters }) {
@@ -852,8 +869,8 @@ module.exports = instance => ({
           const sumTypeText =
             column.summaryAggregationOperator !== 'SUM'
               ? ` (${UB.i18n(
-                  'table.summary.' + column.summaryAggregationOperator
-                )})`
+                'table.summary.' + column.summaryAggregationOperator
+              )})`
               : ''
           return `<b>${
             column.label
