@@ -84,7 +84,7 @@
 
 <script>
 export default {
-  name: 'SecondsCron',
+  name: 'WeekCron',
   components: {
     SpecifyCron: require('./SpecifyCron.vue').default
   },
@@ -182,15 +182,6 @@ export default {
       if (value === 'specify' && this.checkedSpecifyIds.length > 0) {
         return this.checkedSpecifyIds.join()
       }
-      // if (
-      //   value === 'start' &&
-      //   this.startEvery.length === 2 &&
-      //   this.startEvery.every((i) => !!i || i === 0)
-      // ) {
-      //   const arr = this.startEvery.map((i) => i)
-      //   if (arr[1] === 0) arr[1] = '*'
-      //   return arr.reverse().join('/')
-      // }
       if (
         value === 'between' &&
         this.betweenSeconds.length === 2 &&
@@ -202,21 +193,26 @@ export default {
     },
     restoreCron () {
       const value = this.item.value
-      if (value.includes('/')) {
-        this.value = 'start'
-        const arr = value.split('/')
-        if (arr[0] === '*') arr[0] = '0'
-        this.startEvery = arr.reverse()
+      if (value.includes('-')) {
+        this.value = 'between'
+        const arr = value.split('-')
+        this.betweenSeconds = arr
+      }
+      if (value.includes(',')){ 
+        this.value = 'specify'
+        const arr = value.split(',')
+        this.setCheckedSpecifyItems(arr)
+      }
+      if (!Number.isNaN(Number(value))) {
+        this.setCheckedSpecifyItems([value])
       }
     },
     setCheckedSpecifyItems (arr) {
       arr.forEach((value) => {
-        const el = this.displaySpecifyItems.find((el) => el.id === value.trim())
+        const el = this.displaySpecifyItems.find((el) => el.id === +value.trim())
         if (el) el.checked = true
       })
     }
   }
 }
 </script>
-
-<style lang="scss" scoped></style>
