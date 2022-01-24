@@ -1,15 +1,10 @@
 <template>
   <div class="u-cron">
     <div class="u-cron__desc">
-      <div class="u-cron__desc--expresion">{{ cronString }}</div>
-      <div class="u-cron__desc--txt">{{ humanCronString }}</div>
+      <div class="u-cron__desc--expresion">Cron expression: <span>{{ cronString }}</span></div>
+      <div class="u-cron__desc--txt">Interpretation: <span>{{ humanCronString }}</span></div>
     </div>
     <div class="u-cron__main">
-      <!-- <URadio
-        v-model="everyTimeValue"
-        class="u-cron__sidebar"
-        :items="everyTime"
-      /> -->
       <div class="u-cron__sidebar">
         <span
           v-for="(item, index) in everyTime"
@@ -36,7 +31,7 @@
 
 <script>
 // я не понимаю, каким другим способом можно подключить пакет установленый в adminui-pub
-const cronstrue = require("../../../../adminui-pub/node_modules/cronstrue/i18n");
+const cronstrue = require("../../../../adminui-pub/node_modules/cronstrue/i18n")
 
 export default {
   name: "Cron",
@@ -120,6 +115,9 @@ export default {
 </script>
 
 <style>
+  .u-cron {
+    margin-top: 10px;
+  }
 .u-cron__sidebar {
     display: flex;
   flex-direction: column;
@@ -142,7 +140,7 @@ export default {
 .u-cron__sidebar {
   padding-right: 24px;
   margin-right: 24px;
-  border-right: 1px solid;
+  border-right: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
 }
 .u-cron__body .u-radio {
   margin-bottom: 24px;
@@ -160,13 +158,16 @@ export default {
 .u-cron__body .u-radio__label {
   font-weight: 500;
 }
+
 .u-cron__desc {
   margin-bottom: 20px;
-}
-.u-cron__desc--txt {
   font-weight: 500;
 }
+.u-cron__desc--txt span, .u-cron__desc--expresion span {
+  font-weight: normal;
+  margin-left: 8px;
+}
 .u-cron__desc--expresion {
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 </style>
