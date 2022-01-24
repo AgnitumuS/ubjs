@@ -21,7 +21,7 @@ Below we describe how to configure nginx as a reverse proxy for ub
 
 ## Configuring UnityBase application
 
-In the application config (ubConfig.json) add `externalURL` and `reverseProxy` keys:  
+In the application configuration file (ubConfig.json) add `externalURL` and `reverseProxy` keys:
 ```json
 {
   "httpServer": {
@@ -31,25 +31,24 @@ In the application config (ubConfig.json) add `externalURL` and `reverseProxy` k
 }
 ```
 
-`externalURL` is address of your application for the end-user (address they type in browser)
+`externalURL` is the address of your application for end users (the URL they type in browsers)
  
 ## Serving static assets by nginx
-UnityBase itself can server a static assets - files placed in
- - models public folders (available using `/models` endpoint)
- - application node_modules folder (available using `/clientRequire` endpoint on server and calls to `require()` and `System.import()` on client)   
+UnityBase itself can serve static assets - files placed in
+ - `public` subdirectories of UnityBase models (available using `/models` endpoint)
+ - `node_modules` directory of the application (available using `/clientRequire` endpoint on server and calls to `require()` and `System.import()` on client)
 
-This is useful on development stage, but on production stage we highly recommend to allow nginx to server a static assets. 
-
-Serving static by nginx improves:
+This is useful on development stage, but on production stage it is highly recommended to use nginx for
+serving static assets, because it improves:
  - user experience during application loads: while UB servers a API requests nginx can serve static 
- - decrease a UB logs size
- - decrease a overall load for UB server (approximately 0.5ms for each static file)
+ - decrease UB logs size
+ - decrease overall load for UB server (approximately 0.5ms for each static file)
 
 ### Prepare application for serving static by nginx
 
-  - define `httpServer.inetPub` parameter in config. This is a folder where static files will be stored. Usually = `./itetpub`
-  - run a command `ubcli linkStatic`. This command creates a `.linkStatic.sh` script for sym-linking a static asset into `inetPub` folder
-  - execute a `.linkStatic.sh`     
+  - define `httpServer.inetPub` parameter in config. This is a directory where static files will be stored. Usually = `./inetpub`
+  - run a command `ubcli linkStatic`. This command creates a `.linkStatic.sh` script for sym-linking static assets into the `inetPub` directory
+  - execute the `.linkStatic.sh` script
 
 Step 2) and 3) must be performed every time application is updated. 
 Recommended steps for update app:  
@@ -63,8 +62,8 @@ chmod +x ./.linkStatic.sh
 ./.linkStatic.sh
 ``` 
 
-Last command in script will set a modification time for all files downloaded from package registry (files with modify date === 1986-01-01)
-to the current time. This allow nginx to generate a correct ETag for such files.
+The last command in the script sets modification time to the current time for all the downloaded files from
+the package registry (files with modify date === 1986-01-01), so that Nginx generate correct ETag for the files.
        
 ### How to prevent server-side logic to be exposed for client
 Some of the modules placed into `node_modules` folder can contain a server-side logic what should be hidden from clients.
@@ -134,8 +133,8 @@ Ensure nginx main process have access to these files (use `nginx -T` to verify a
 
 Examples (consider externalURL=https://my.server.com in ubConfig) :
 
-### Pass a real client IP in case of several reverse proxies  
-Get a client real IP in case some Load balancer is running on b.b.b.b IP address behind us, so HTTP request is transferred as
+### Pass real IP in reverse proxy cascade scenarios
+Get real client IP when UB+Nginx is behind a Load Balancer on b.b.b.b IP address, so that HTTP request is transferred as
    `Client(a.a.a.a) -> LB (b.b.b.b) -> Nginx (c.c.c.c) -> UB (d.d.d.d)`:
 ```shell
 mkdir -p /var/opt/unitybase/shared/my-server-com
@@ -146,7 +145,8 @@ cat <<<EOF
   set_real_ip_from  b.b.b.b;
 EOF > /var/opt/unitybase/shared/my-server-com/server-getRealIpFromUpfront.conf
 ```
-Load balancer on b.b.b.b should correctly set an `X-Forwarded-For` header. In case LB is nginx - `proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;`  
+The Load Balancer on b.b.b.b should correctly set the `X-Forwarded-For` header.
+If the LB is Nginx - `proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;`
 
 > for more details see [ngx_http_realip_module](http://nginx.org/en/docs/http/ngx_http_realip_module.html)
 
@@ -322,12 +322,11 @@ concurrent browser sessions up to 10000.
  
 Explanation:
  
- Each HTTP connection require a TCP session, each TCP session is a pair IP+port,
+ Each HTTP connection requires a TCP session, each TCP session is a pair IP+port,
  where port is dynamically taken from a range defined in `sysctl net.ipv4.ip_local_port_range`.
  After client disconnection port is busy for `sysctl net.ipv4.tcp_fin_timeout`
  
  Default port range values for Linux is 32768-60999 (28231 TCP connections).
  Since a modern browser can create 6 or even more TCP session for one page this is
  ~ 4700 concurrent users.
- 
- 
+
