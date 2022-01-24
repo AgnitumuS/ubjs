@@ -49,6 +49,12 @@ export default {
     monthCron: require("./monthCron.vue").default,
     yearCron: require("./yearCron.vue").default,
   },
+  props: {
+    value: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       everyTimeValue: "day",
@@ -62,6 +68,9 @@ export default {
         // { id: 'year', label: 'року', value: '*' }
       ],
     };
+  },
+  created(){
+    this.init(this.value)
   },
   computed: {
     currentComponent() {
@@ -85,7 +94,23 @@ export default {
       }
     },
   },
+  watch: {
+    humanCronString(newValue){
+      this.$emit('change', {cronString: this.cronString, humanString: newValue })
+    }
+  },
   methods: {
+    init(cronStr = this.value){
+      if (!cronStr) return
+      const value = cronStr.split(' ')
+      value.reverse()
+      const { everyTime } = this
+      const length = everyTime.length - 1
+      value.forEach((str, index)=>{
+        everyTime[length - index].value = str
+      })
+
+    },
     changeHandler(e) {
       const item = this.everyTime.find((i) => i.id === this.everyTimeValue)
       item.value = e

@@ -26,8 +26,8 @@ export default {
       const result = []
       const date = new Date()
       const { locale } = this
-      for (let i = 0; i <= 11; i++) {
-        date.setMonth(i)
+      for (let i = 1; i <= 12; i++) {
+        date.setMonth(i-1)
         const element = {
           label: date.toLocaleString(locale, { month: 'long' }),
           checked: false,

@@ -179,18 +179,18 @@ export default {
     },
     getValue () {
       const { value } = this
-      if (value === 'specify') {
+      if (value === 'specify' && this.checkedSpecifyIds.length > 0) {
         return this.checkedSpecifyIds.join()
       }
-      if (
-        value === 'start' &&
-        this.startEvery.length === 2 &&
-        this.startEvery.every((i) => !!i || i === 0)
-      ) {
-        const arr = this.startEvery.map((i) => i)
-        if (arr[1] === 0) arr[1] = '*'
-        return arr.reverse().join('/')
-      }
+      // if (
+      //   value === 'start' &&
+      //   this.startEvery.length === 2 &&
+      //   this.startEvery.every((i) => !!i || i === 0)
+      // ) {
+      //   const arr = this.startEvery.map((i) => i)
+      //   if (arr[1] === 0) arr[1] = '*'
+      //   return arr.reverse().join('/')
+      // }
       if (
         value === 'between' &&
         this.betweenSeconds.length === 2 &&
