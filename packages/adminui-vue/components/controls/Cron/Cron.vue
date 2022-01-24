@@ -26,6 +26,7 @@
             :is="currentComponent"
             :item="everyTime.find((i) => i.id === everyTimeValue)"
             @change="changeHandler"
+            :locale="locale"
           />
         </keep-alive>
       </div>
@@ -69,21 +70,25 @@ export default {
     cronString() {
       return this.everyTime.map((i) => i.value).join(" ");
     },
+    locale(){
+      return $App.connection.userData('lang')
+    },
     humanCronString() {
-      let str = "";
+      let str = ''
+      const { locale } = this
       try {
-        str = cronstrue.toString(this.cronString, { locale: "uk" });
+        str = cronstrue.toString(this.cronString, { locale })
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        return str;
+        return str
       }
     },
   },
   methods: {
     changeHandler(e) {
-      const item = this.everyTime.find((i) => i.id === this.everyTimeValue);
-      item.value = e;
+      const item = this.everyTime.find((i) => i.id === this.everyTimeValue)
+      item.value = e
     },
   },
 };
@@ -104,6 +109,7 @@ export default {
   padding: 10px;
   cursor: pointer;
   text-transform: capitalize;
+  white-space: nowrap;
 }
 .u-cron__main {
   display: flex;

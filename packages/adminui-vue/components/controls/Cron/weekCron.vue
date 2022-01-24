@@ -104,6 +104,10 @@ export default {
     startCount: {
       type: Number,
       default: 0
+    },
+    locale: {
+      type: String,
+      default: $App.connection.userData('lang')
     }
   },
   data () {
@@ -141,13 +145,11 @@ export default {
   methods: {
     createDaysOfWeek () {
       const date = new Date()
-      const intlShort = new Intl.DateTimeFormat('en-US', { weekday: 'short' })
-      const intlLong = new Intl.DateTimeFormat('en-US', { weekday: 'long' })
-
+      const { locale } = this
       for (let i = 0; i < 7; i++) {
         const element = {
-          shortName: intlShort.format(date),
-          longName: intlLong.format(date),
+          shortName: date.toLocaleString(locale, { weekday: 'short' }),
+          longName: date.toLocaleString(locale, { weekday: 'long' }),
           id: date.getDay()
         }
         this.daysOfWeek.push(element)

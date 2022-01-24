@@ -48,4 +48,7 @@ export default {
   min-width: 40px;
   margin-right: 8px;
 }
+.specify-cron .u-checkbox__label {
+  text-transform: capitalize;
+}
 </style>

@@ -104,7 +104,12 @@ export default {
     startCount: {
       type: Number,
       default: 0
-    }
+    },
+    locale: {
+      type: String,
+      default: $App.connection.userData('lang')
+    },
+    customSpesifyItems: null,
   },
   data () {
     return {
@@ -135,7 +140,7 @@ export default {
   },
   created () {
     if (this.length === 0) this.currLength = 59 // seconds
-    this.specifyItemsCreate()
+    this.displaySpecifyItems = this.specifyItemsCreate()
     this.items.forEach((i) => {
       i.label = i.label.replace('{{mode}}', this.mode)
     })
@@ -143,14 +148,17 @@ export default {
   },
   methods: {
     specifyItemsCreate () {
+      const result = []
+      if (this.customSpesifyItems && typeof this.customSpesifyItems === 'function') return this.customSpesifyItems()
       for (let i = 0; i <= this.currLength; i++) {
         const element = {
           label: (i + this.startCount).toString(),
           checked: false,
           id: (i + this.startCount).toString()
         }
-        this.displaySpecifyItems.push(element)
+        result.push(element)
       }
+      return result
     },
     changeHandler (checkedIds) {
       this.checkedSpecifyIds = checkedIds
