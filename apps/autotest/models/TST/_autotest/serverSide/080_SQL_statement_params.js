@@ -9,6 +9,9 @@ function runTest () {
   st.runSQL('select id from uba_user where name = :name:', { name: 'testelsuser' })
   assert.strictEqual(st.rowCount, 1, `single named param. Expect 1 row, got ${st.rowCount}`)
 
+  // should log warning about params mismatch
+  st.runSQL('select id from uba_user where name = ?', { name: 'testelsuser', unusedParameter: 1 })
+
   st.runSQL(`select id from uba_user where name = :("${UBA.USERS.ADMIN.NAME}"): and name = :('${UBA.USERS.ADMIN.NAME}'): and id = :(${UBA.USERS.ADMIN.ID}):`, {})
   assert.strictEqual(st.rowCount, 1, `Simple inlined params. Expect 1 row, got ${st.rowCount}`)
 
