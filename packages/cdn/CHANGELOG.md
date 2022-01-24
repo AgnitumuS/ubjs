@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - attribute `cdn_person.photo` uses `avatars` BLOB store instead of default to store a person photo.
-   Previously uploaded photos still be available from default store.
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.22.2] - 2022-01-24
+### Changed
+ - attribute `cdn_person.photo` uses `avatars` BLOB store instead of default to store a person photo.
+   Previously uploaded photos still be available from default store.
 
 ## [5.22.1] - 2022-01-14
 ## [5.22.0] - 2022-01-09
