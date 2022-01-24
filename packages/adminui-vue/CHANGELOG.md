@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UDropdown`:`customClass` prop added - allows set a custom CSS class for u-dropdown
+- `UTableEntity` store: new mutation `CLEAR_FILTER` allows clear current filters set
 
 ### Changed
+- `UTableEntity` filtration improved - now allows set several filters at ones
 
 ### Deprecated
 

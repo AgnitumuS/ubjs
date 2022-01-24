@@ -25,9 +25,9 @@ me.runSelectInJSContext = function (ctx) {
     'select',
     clonedParams
   )
-  const ccIdx = ctx.mParams.fieldList.indexOf('category.code')
+  const ccIdx = ctx.mParams.fieldList.indexOf('person.fullFIO')
   if (ccIdx !== -1) {
-    ctx.dataStore.setColumnName(ccIdx, 'categoryCode')
+    ctx.dataStore.setColumnName(ccIdx, 'personFIO')
   }
   console.log('clonedParams', clonedParams)
   console.log('mParams', mParams)

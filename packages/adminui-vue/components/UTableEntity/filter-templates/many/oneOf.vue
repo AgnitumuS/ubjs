@@ -3,10 +3,7 @@
  otherwise there will be an error when choosing single value -->
   <filter-template
     :button-disabled="value.length === 0"
-    @submit="$emit('search', {
-      whereList: [{ condition: '=', value }],
-      description: $ut('by_several_value') + ' ' + manyOptions
-    })"
+    @submit="submitHandler"
   >
     <u-select-multiple
       ref="selectMany"
@@ -24,6 +21,8 @@ export default {
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
+  
+  mixins: [require('../mixinForFilter.js')],
 
   props: {
     column: {
@@ -47,6 +46,15 @@ export default {
           .join(', ')
       } else {
         return []
+      }
+    }
+  },
+  methods: {
+    getCondition () {
+      const { $ut, value, manyOptions } = this
+      return {
+        whereList: [{ condition: '=', value }],
+        description: $ut('by_several_value') + ' ' + manyOptions
       }
     }
   }
