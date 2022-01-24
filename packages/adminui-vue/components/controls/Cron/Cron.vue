@@ -78,15 +78,7 @@ export default {
       return $App.connection.userData('lang')
     },
     humanCronString() {
-      let str = ''
-      const { locale } = this
-      try {
-        str = cronstrue.toString(this.cronString, { locale })
-      } catch (err) {
-        console.log(err)
-      } finally {
-        return str
-      }
+     return this.formatCronStrToHuman(this.cronString)
     },
   },
   watch: {
@@ -95,6 +87,17 @@ export default {
     }
   },
   methods: {
+    formatCronStrToHuman(expression = ''){
+      let str = ''
+      const { locale } = this
+      try {
+        str = cronstrue.toString(expression, { locale })
+      } catch (err) {
+        console.log(err)
+      } finally {
+        return str
+      }
+    },
     init(cronStr = this.value){
       if (!cronStr) return
       const value = cronStr.split(' ')
