@@ -33,8 +33,7 @@
 </template>
 
 <script>
-// я не понимаю, каким другим способом можно подключить пакет установленый в adminui-pub
-const cronstrue = require('../../../../adminui-pub/node_modules/cronstrue/i18n')
+const cronstrue = require('@unitybase/adminui-pub').cronstrue
 
 export default {
   name: 'Cron',

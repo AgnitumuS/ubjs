@@ -38,6 +38,10 @@ Ext.Loader.setConfig({
 })
 
 const { launchApp, $App } = require('./_src/app.js')
+
+const cronstrue = require('./node_modules/cronstrue/i18n.js')
+$App.cronstrue = cronstrue
+
 launchApp()
 
 module.exports = $App
