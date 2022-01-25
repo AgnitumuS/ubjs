@@ -4,8 +4,8 @@
     mode="month"
     :length="11"
     :start-count="1"
-    v-on="$listeners"
     :custom-spesify-items="specifyItemsCreate"
+    v-on="$listeners"
   />
 </template>
 
@@ -18,16 +18,16 @@ export default {
   props: {
     locale: {
       type: String,
-      default: $App.connection.userData('lang')
+      default: window.$App.connection.userData('lang')
     }
   },
   methods: {
-    specifyItemsCreate() {
+    specifyItemsCreate () {
       const result = []
       const date = new Date()
       const { locale } = this
       for (let i = 1; i <= 12; i++) {
-        date.setMonth(i-1)
+        date.setMonth(i - 1)
         const element = {
           label: date.toLocaleString(locale, { month: 'long' }),
           checked: false,

@@ -82,7 +82,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'SecondsCron',
   components: {
@@ -109,7 +108,7 @@ export default {
       type: String,
       default: $App.connection.userData('lang')
     },
-    customSpesifyItems: null,
+    customSpesifyItems: null
   },
   data () {
     return {
@@ -149,7 +148,10 @@ export default {
   methods: {
     specifyItemsCreate () {
       const result = []
-      if (this.customSpesifyItems && typeof this.customSpesifyItems === 'function') return this.customSpesifyItems()
+      if (
+        this.customSpesifyItems &&
+        typeof this.customSpesifyItems === 'function'
+      ) { return this.customSpesifyItems() }
       for (let i = 0; i <= this.currLength; i++) {
         const element = {
           label: (i + this.startCount).toString(),

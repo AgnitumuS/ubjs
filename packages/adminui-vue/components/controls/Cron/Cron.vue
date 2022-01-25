@@ -1,27 +1,30 @@
 <template>
   <div class="u-cron">
     <div class="u-cron__desc">
-      <div class="u-cron__desc--expresion">Cron expression: <span>{{ cronString }}</span></div>
-      <div class="u-cron__desc--txt">Interpretation: <span>{{ humanCronString }}</span></div>
+      <div class="u-cron__desc--expresion">
+        Cron expression: <span>{{ cronString }}</span>
+      </div>
+      <div class="u-cron__desc--txt">
+        Interpretation: <span>{{ humanCronString }}</span>
+      </div>
     </div>
     <div class="u-cron__main">
       <div class="u-cron__sidebar">
         <span
           v-for="(item, index) in everyTime"
           :key="index"
-          @click="everyTimeValue = item.id"
           class="u-cron__tab"
-          :class="{'u-cron__tab-active': everyTimeValue === item.id}"
-          >{{ item.label }}</span
-        >
+          :class="{ 'u-cron__tab-active': everyTimeValue === item.id }"
+          @click="everyTimeValue = item.id"
+        >{{ item.label }}</span>
       </div>
       <div class="u-cron__body">
         <keep-alive>
           <component
             :is="currentComponent"
             :item="everyTime.find((i) => i.id === everyTimeValue)"
-            @change="changeHandler"
             :locale="locale"
+            @change="changeHandler"
           />
         </keep-alive>
       </div>
@@ -31,18 +34,18 @@
 
 <script>
 // я не понимаю, каким другим способом можно подключить пакет установленый в adminui-pub
-const cronstrue = require("../../../../adminui-pub/node_modules/cronstrue/i18n")
+const cronstrue = require('../../../../adminui-pub/node_modules/cronstrue/i18n')
 
 export default {
-  name: "Cron",
+  name: 'Cron',
   components: {
-    secondsCron: require("./secondsCron.vue").default,
-    minutesCron: require("./minutesCron.vue").default,
-    hoursCron: require("./hoursCron.vue").default,
-    dayCron: require("./dayCron.vue").default,
-    weekCron: require("./weekCron.vue").default,
-    monthCron: require("./monthCron.vue").default,
-    yearCron: require("./yearCron.vue").default,
+    secondsCron: require('./secondsCron.vue').default,
+    minutesCron: require('./minutesCron.vue').default,
+    hoursCron: require('./hoursCron.vue').default,
+    dayCron: require('./dayCron.vue').default,
+    weekCron: require('./weekCron.vue').default,
+    monthCron: require('./monthCron.vue').default,
+    yearCron: require('./yearCron.vue').default
   },
   props: {
     value: {
@@ -50,44 +53,47 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     return {
-      everyTimeValue: "day",
+      everyTimeValue: 'day',
       everyTime: [
-        { id: "seconds", label: "секунди", value: "*" },
-        { id: "minutes", label: "хвилини", value: "*" },
-        { id: "hours", label: "години", value: "*" },
-        { id: "day", label: "день", value: "*" },
-        { id: "month", label: "місяця", value: "*" },
-        { id: "week", label: "дні тижня", value: "*" },
+        { id: 'seconds', label: 'секунди', value: '*' },
+        { id: 'minutes', label: 'хвилини', value: '*' },
+        { id: 'hours', label: 'години', value: '*' },
+        { id: 'day', label: 'день', value: '*' },
+        { id: 'month', label: 'місяця', value: '*' },
+        { id: 'week', label: 'дні тижня', value: '*' }
         // { id: 'year', label: 'року', value: '*' }
-      ],
-    };
-  },
-  created(){
-    this.init(this.value)
-  },
-  computed: {
-    currentComponent() {
-      return this.everyTimeValue + "Cron" || "div";
-    },
-    cronString() {
-      return this.everyTime.map((i) => i.value).join(" ");
-    },
-    locale(){
-      return $App.connection.userData('lang')
-    },
-    humanCronString() {
-     return this.formatCronStrToHuman(this.cronString)
-    },
-  },
-  watch: {
-    humanCronString(newValue){
-      this.$emit('change', {cronString: this.cronString, humanString: newValue })
+      ]
     }
   },
+  computed: {
+    currentComponent () {
+      return this.everyTimeValue + 'Cron' || 'div'
+    },
+    cronString () {
+      return this.everyTime.map((i) => i.value).join(' ')
+    },
+    locale () {
+      return $App.connection.userData('lang')
+    },
+    humanCronString () {
+      return this.formatCronStrToHuman(this.cronString)
+    }
+  },
+  watch: {
+    humanCronString (newValue) {
+      this.$emit('change', {
+        cronString: this.cronString,
+        humanString: newValue
+      })
+    }
+  },
+  created () {
+    this.init(this.value)
+  },
   methods: {
-    formatCronStrToHuman(expression = ''){
+    formatCronStrToHuman (expression = '') {
       let str = ''
       const { locale } = this
       try {
@@ -98,35 +104,34 @@ export default {
         return str
       }
     },
-    init(cronStr = this.value){
+    init (cronStr = this.value) {
       if (!cronStr) return
       const value = cronStr.split(' ')
       value.reverse()
       const { everyTime } = this
       const length = everyTime.length - 1
-      value.forEach((str, index)=>{
+      value.forEach((str, index) => {
         everyTime[length - index].value = str
       })
-
     },
-    changeHandler(e) {
+    changeHandler (e) {
       const item = this.everyTime.find((i) => i.id === this.everyTimeValue)
       item.value = e
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style>
-  .u-cron {
-    margin-top: 10px;
-  }
+.u-cron {
+  margin-top: 10px;
+}
 .u-cron__sidebar {
-    display: flex;
+  display: flex;
   flex-direction: column;
   padding-right: 24px;
 }
-.u-cron__tab.u-cron__tab-active{
+.u-cron__tab.u-cron__tab-active {
   color: white;
   background: hsl(var(--hs-primary), var(--l-state-hover));
   border-radius: 4px;
@@ -166,7 +171,8 @@ export default {
   margin-bottom: 20px;
   font-weight: 500;
 }
-.u-cron__desc--txt span, .u-cron__desc--expresion span {
+.u-cron__desc--txt span,
+.u-cron__desc--expresion span {
   font-weight: normal;
   margin-left: 8px;
 }

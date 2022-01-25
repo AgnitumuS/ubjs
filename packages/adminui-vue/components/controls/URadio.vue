@@ -1,4 +1,5 @@
-// TODO: need implement logic when some radio is disabled: cheched and not-checked
+// TODO: need implement logic when some radio is disabled: cheched and
+not-checked
 <template>
   <span class="u-radio--wrap">
     <label

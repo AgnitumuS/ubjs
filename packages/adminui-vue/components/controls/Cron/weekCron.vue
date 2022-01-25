@@ -107,7 +107,7 @@ export default {
     },
     locale: {
       type: String,
-      default: $App.connection.userData('lang')
+      default: window.$App.connection.userData('lang')
     }
   },
   data () {
@@ -198,7 +198,7 @@ export default {
         const arr = value.split('-')
         this.betweenSeconds = arr
       }
-      if (value.includes(',')){ 
+      if (value.includes(',')) {
         this.value = 'specify'
         const arr = value.split(',')
         this.setCheckedSpecifyItems(arr)
@@ -209,7 +209,9 @@ export default {
     },
     setCheckedSpecifyItems (arr) {
       arr.forEach((value) => {
-        const el = this.displaySpecifyItems.find((el) => el.id === +value.trim())
+        const el = this.displaySpecifyItems.find(
+          (el) => el.id === +value.trim()
+        )
         if (el) el.checked = true
       })
     }
