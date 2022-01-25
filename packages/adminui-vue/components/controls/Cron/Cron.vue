@@ -33,7 +33,7 @@
 </template>
 
 <script>
-const cronstrue = require('@unitybase/adminui-pub').cronstrue
+const formatCronStrToHuman = require('./formatCronStrToHuman.js')
 
 export default {
   name: 'Cron',
@@ -47,6 +47,9 @@ export default {
     // yearCron: require('./yearCron.vue').default
   },
   props: {
+    /**
+     * Cron expression
+     */
     value: {
       type: String,
       default: ''
@@ -74,14 +77,26 @@ export default {
       return this.everyTime.map((i) => i.value).join(' ')
     },
     locale () {
-      return window.$App.connection.userData('lang')
+      if (
+        window.$App &&
+        window.$App.connection &&
+        window.$App.connection.userData
+      ) {
+        return window.$App.connection.userData('lang')
+      }
+      return window.localStorage.getItem('preferredLocale') || 'en'
     },
     humanCronString () {
-      return this.formatCronStrToHuman(this.cronString)
+      return formatCronStrToHuman(this.cronString, this.locale)
     }
   },
   watch: {
     humanCronString (newValue) {
+      /**
+       * Triggers when the user change state of radio
+       *
+       * @param {object} newValue: includes new cron expression and human readable string
+       */
       this.$emit('change', {
         cronString: this.cronString,
         humanString: newValue
@@ -92,17 +107,6 @@ export default {
     this.init(this.value)
   },
   methods: {
-    formatCronStrToHuman (expression = '') {
-      let str = ''
-      const { locale } = this
-      try {
-        str = cronstrue.toString(expression, { locale })
-      } catch (err) {
-        console.log(err)
-      } finally {
-        return str
-      }
-    },
     init (cronStr = this.value) {
       if (!cronStr) return
       const value = cronStr.split(' ')
