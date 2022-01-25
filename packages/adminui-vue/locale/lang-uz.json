@@ -1,12 +1,23 @@
 {
   "el": {
-    "time":{
+    "time": {
       "seconds": "soniya",
       "minutes": "daqiqa",
       "hours": "soat",
       "day": "kunlar",
       "month": "oylar",
-      "week": "haftaning kunlari"
+      "dayOfWeek": "haftaning kunlari"
+    },
+    "cron": {
+      "every": "every",
+      "everySecond": "second(s)",
+      "everyMinute": "minute(s)",
+      "everyHour": "hour(s)",
+      "everyDay": "day(s)",
+      "everyMonth": "month(s)",
+      "chooseOneOrMany": "choose one or many",
+      "specific": "specific",
+      "between": "between"
     },
     "datepicker": {
       "confirm": "OK",

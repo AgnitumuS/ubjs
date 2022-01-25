@@ -8,7 +8,7 @@
       <template #start>
         <div class="cron__start">
           <span class="cron__start__item">
-            Every
+            {{ getWordEvery() }}
             <select v-model="startEvery[0]">
               <option
                 v-for="sec in currLength"
@@ -18,20 +18,8 @@
                 {{ sec }}
               </option>
             </select>
-            {{ `${mode}(s)` }}
+            {{ `${$ut(`el.time.${mode}`)}` }}
           </span>
-          <!-- <span class="cron__start__item">
-            {{ `starting at ${mode}` }}
-            <select v-model="startEvery[1]">
-              <option
-                v-for="(sec, index) in currLength"
-                :key="sec * 999"
-                :value="index + startCount"
-              >
-                {{ index + startCount }}
-              </option>
-            </select>
-          </span> -->
         </div>
       </template>
 
@@ -45,7 +33,11 @@
       <template #between>
         <div class="cron__start">
           <span class="cron__start__item">
-            {{ `Every ${mode} between ${mode}` }}
+            {{
+              `${getWordEvery()} ${$ut(`el.time.${mode}`)} ${$ut(
+                'el.cron.between'
+              )} `
+            }}
             <select v-model="betweenSeconds[0]">
               <option
                 v-for="(sec, index) in currLength"
@@ -60,7 +52,7 @@
             </select>
           </span>
           <span class="cron__start__item">
-            {{ `and ${mode}` }}
+            {{ `and` }}
             <select
               v-model="betweenSeconds[1]"
               :disabled="!betweenSeconds[0]"
@@ -74,6 +66,7 @@
                 {{ index + startCount }}
               </option>
             </select>
+            {{ `${$ut(`el.time.${mode}`)}` }}
           </span>
         </div>
       </template>
@@ -114,9 +107,9 @@ export default {
     return {
       currLength: this.length,
       items: [
-        { id: 'every', label: 'Every {{mode}}' },
+        { id: 'every', label: this.getEveryLabel() },
         { id: 'start', label: '' },
-        { id: 'specify', label: 'Specific {{mode}} (choose one or many)' },
+        { id: 'specify', label: this.getSpecificLabel() },
         { id: 'between', label: '' }
       ],
       value: 'specify',
@@ -146,12 +139,29 @@ export default {
     this.restoreCron()
   },
   methods: {
+    getEveryLabel () {
+      const { $ut } = this
+      const str = `${this.getWordEvery()} ${$ut(`el.time.${this.mode}`)}`
+      return str
+    },
+    getSpecificLabel () {
+      const { $ut } = this
+      const str = `${$ut('el.cron.specific')} ${$ut(
+        `el.time.${this.mode}`
+      )} (${$ut('el.cron.chooseOneOrMany')})`
+      return str
+    },
+    getWordEvery () {
+      return this.$ut('el.cron.every')
+    },
     specifyItemsCreate () {
       const result = []
       if (
         this.customSpesifyItems &&
         typeof this.customSpesifyItems === 'function'
-      ) { return this.customSpesifyItems() }
+      ) {
+        return this.customSpesifyItems()
+      }
       for (let i = 0; i <= this.currLength; i++) {
         const element = {
           label: (i + this.startCount).toString(),

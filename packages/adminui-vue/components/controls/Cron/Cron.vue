@@ -56,12 +56,12 @@ export default {
     return {
       everyTimeValue: 'day',
       everyTime: [
-        { id: 'seconds', label: this.$ut('el.time.seconds'), value: '*' },
-        { id: 'minutes', label: this.$ut('el.time.minutes'), value: '*' },
-        { id: 'hours', label: this.$ut('el.time.hours'), value: '*' },
+        { id: 'seconds', label: this.$ut('el.time.second'), value: '*' },
+        { id: 'minutes', label: this.$ut('el.time.minute'), value: '*' },
+        { id: 'hours', label: this.$ut('el.time.hour'), value: '*' },
         { id: 'day', label: this.$ut('el.time.day'), value: '*' },
         { id: 'month', label: this.$ut('el.time.month'), value: '*' },
-        { id: 'week', label: this.$ut('el.time.week'), value: '*' }
+        { id: 'week', label: this.$ut('el.time.dayOfWeek'), value: '*' }
         // { id: 'year', label: 'року', value: '*' }
       ]
     }

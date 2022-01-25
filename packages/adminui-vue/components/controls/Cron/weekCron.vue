@@ -45,7 +45,11 @@
       <template #between>
         <div class="cron__start">
           <span class="cron__start__item">
-            {{ `Every day between` }}
+            {{
+              `${$ut('el.cron.every')} ${$ut('el.time.day')} ${$ut(
+                'el.cron.between'
+              )}`
+            }}
             <select v-model="betweenSeconds[0]">
               <option
                 v-for="day in daysOfWeek"
@@ -115,8 +119,7 @@ export default {
       daysOfWeek: [],
       currLength: this.length,
       items: [
-        // { id: 'start', label: '' },
-        { id: 'specify', label: 'Specific day of week (choose one or many)' },
+        { id: 'specify', label: this.getSpecificLabel() },
         { id: 'between', label: '' }
       ],
       value: 'specify',
@@ -143,6 +146,13 @@ export default {
     this.restoreCron()
   },
   methods: {
+    getSpecificLabel () {
+      const { $ut } = this
+      const str = `${$ut('el.cron.specific')} ${$ut(
+        'el.time.dayOfWeek'
+      )} (${$ut('el.cron.chooseOneOrMany')})`
+      return str
+    },
     createDaysOfWeek () {
       const date = new Date()
       const { locale } = this
