@@ -56,12 +56,12 @@ export default {
     return {
       everyTimeValue: 'day',
       everyTime: [
-        { id: 'seconds', label: 'секунди', value: '*' },
-        { id: 'minutes', label: 'хвилини', value: '*' },
-        { id: 'hours', label: 'години', value: '*' },
-        { id: 'day', label: 'день', value: '*' },
-        { id: 'month', label: 'місяця', value: '*' },
-        { id: 'week', label: 'дні тижня', value: '*' }
+        { id: 'seconds', label: this.$ut('el.time.seconds'), value: '*' },
+        { id: 'minutes', label: this.$ut('el.time.minutes'), value: '*' },
+        { id: 'hours', label: this.$ut('el.time.hours'), value: '*' },
+        { id: 'day', label: this.$ut('el.time.day'), value: '*' },
+        { id: 'month', label: this.$ut('el.time.month'), value: '*' },
+        { id: 'week', label: this.$ut('el.time.week'), value: '*' }
         // { id: 'year', label: 'року', value: '*' }
       ]
     }
@@ -134,6 +134,7 @@ export default {
   padding-right: calc(var(--padding) * 2);
 }
 .u-cron__tab.u-cron__tab-active {
+  font-size: 500;
   color: white;
   background: hsl(var(--hs-primary), var(--l-state-default));
   border-radius: var(--border-radius);

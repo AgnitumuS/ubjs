@@ -4,6 +4,14 @@
       "confirm": "OK",
       "clear": "Ҳавз кардан"
     },
+    "time":{
+      "seconds": "сония",
+      "minutes": "дақиқа",
+      "hours": "соат",
+      "day": "рӯз",
+      "month": "моҳҳо",
+      "week": "рӯзҳои ҳафта"
+    },
     "datepicker": {
       "now": "Хозир",
       "today": "Имрӯз",

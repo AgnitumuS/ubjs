@@ -4,6 +4,14 @@
       "confirm": "OK",
       "clear": "Очистить"
     },
+    "time":{
+      "seconds": "секунди",
+      "minutes": "минуты",
+      "hours": "часы",
+      "day": "дни",
+      "month": "месяца",
+      "week": "дни недели"
+    },
     "datepicker": {
       "now": "Сейчас",
       "today": "Сегодня",

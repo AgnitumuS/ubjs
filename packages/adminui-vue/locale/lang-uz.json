@@ -1,5 +1,13 @@
 {
   "el": {
+    "time":{
+      "seconds": "soniya",
+      "minutes": "daqiqa",
+      "hours": "soat",
+      "day": "kunlar",
+      "month": "oylar",
+      "week": "haftaning kunlari"
+    },
     "datepicker": {
       "confirm": "OK",
       "prevYear": "Oldingi yil",

@@ -4,6 +4,14 @@
       "confirm": "Tamam",
       "clear": "Təmizlə"
     },
+    "time":{
+      "seconds": "saniyə",
+      "minutes": "dəqiqə",
+      "hours": "saat",
+      "day": "gün",
+      "month": "aylar",
+      "week": "həftənin günləri"
+    },
     "datepicker": {
       "now": "İndi",
       "today": "Bugün",

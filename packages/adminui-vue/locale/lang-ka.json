@@ -4,6 +4,14 @@
       "confirm": "OK",
       "clear": "Clear"
     },
+    "time":{
+      "seconds": "seconds",
+      "minutes": "minutes",
+      "hours": "hours",
+      "day": "day",
+      "month": "month",
+      "week": "week"
+    },
     "datepicker": {
       "now": "Now",
       "today": "Today",
