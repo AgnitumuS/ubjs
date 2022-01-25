@@ -23,21 +23,33 @@ export default {
     event: 'change'
   },
   props: {
+    /**
+     * Name for checkbox. Default  - this._uid
+     */
     name: {
       type: String,
       default: ''
     },
+    /**
+     * Text for checkbox label
+     */
     label: {
       type: String,
-      default: 'sdfgdfg'
+      default: ''
     },
     value: {
       type: Boolean,
       default: false
     },
+    /**
+     * Label position. Default  - right
+     */
     labelPosition: {
       type: String,
-      default: ''
+      default: '',
+      validator (value) {
+        return ['left'].includes(value)
+      }
     }
   },
   data () {
@@ -48,6 +60,11 @@ export default {
   },
   watch: {
     currentValue (e) {
+      /**
+       * Triggers when the user change state of checkbox
+       *
+       * @param {boolean}
+       */
       this.$emit('change', e)
     }
   }

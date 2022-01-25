@@ -83,7 +83,9 @@ module.exports = {
       c('controls/USelectEnum.vue'), // TODO
       c('controls/USelectMultiple.vue'), // TODO
       c('controls/USelectMany.vue'), // TODO
-      c('controls/USelectCollection.vue') // TODO
+      c('controls/USelectCollection.vue'), // TODO
+      c('controls/UCheckbox.vue'), // TODO
+      c('controls/URadio.vue') // TODO
     ]
   }, {
     name: 'Views',
