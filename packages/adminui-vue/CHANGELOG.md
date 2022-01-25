@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - `UDropdown`:`customClass` prop added - allows set a custom CSS class for u-dropdown
 - `UTableEntity` store: new mutation `CLEAR_FILTER` allows clear current filters set
+- `UCheckbox` - new component in UBjs. Usual <input type="checkbox">
+- `URadio` - new component in UBjs. Wrapper for groups consisting of <input type="radio"> 
+- `Cron` - new component in UBjs. Component for easy compilation cron expression. Can convert an expression into a human-readable string
 
 ### Changed
 - `UTableEntity` filtration improved - now allows set several filters at ones
