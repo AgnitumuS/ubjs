@@ -18,7 +18,7 @@ export default {
   props: {
     locale: {
       type: String,
-      default: window.$App.connection.userData('lang')
+      default: window.localStorage.getItem('preferredLocale') || 'en'
     }
   },
   methods: {

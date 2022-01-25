@@ -99,7 +99,7 @@ export default {
     },
     locale: {
       type: String,
-      default: window.$App.connection.userData('lang')
+      default: window.localStorage.getItem('preferredLocale') || 'en'
     },
     customSpesifyItems: undefined
   },
@@ -146,9 +146,7 @@ export default {
     },
     getSpecificLabel () {
       const { $ut } = this
-      const str = `${$ut('el.cron.specific')} ${$ut(
-        `el.time.${this.mode}`
-      )} (${$ut('el.cron.chooseOneOrMany')})`
+      const str = `${$ut('el.cron.specific')} ${$ut(`el.time.${this.mode}`)} (${$ut('el.cron.chooseOneOrMany')})`
       return str
     },
     getWordEvery () {
