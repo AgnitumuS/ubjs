@@ -48,7 +48,7 @@ export default {
       type: String,
       default: '',
       validator (value) {
-        return ['left'].includes(value)
+        return ['left', ''].includes(value)
       }
     }
   },

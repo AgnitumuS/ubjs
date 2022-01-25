@@ -21,6 +21,7 @@ not-checked
         :class="{ 'u-radio__label--left': labelPosition === 'left' }"
         :style="{ width: item.label ? '' : '26px' }"
       >{{ item.label }}</span>
+      <!-- @slot name of slot - it is value `id` field from item -->
       <slot :name="item.id" />
     </label>
   </span>
@@ -34,21 +35,40 @@ export default {
     event: 'change'
   },
   props: {
+    /**
+     * Item of array should be have `id` field
+     */
     items: {
       type: Array,
-      default: () => []
+      default: () => [],
+      validator (value) {
+        if (!value.length) return true
+        return !value.some((item) => item.id === undefined)
+      }
     },
+    /**
+     * Name for grops of radio. It is very important props when you will use two or more groups of radio in page
+     */
     name: {
       type: String,
       default: 'defaultName'
     },
+    /**
+     * Value should be equal one of field `id` from `items`
+     */
     value: {
       type: [String, Boolean, Number],
       default: ''
     },
+    /**
+     * Label position. Default  - right
+     */
     labelPosition: {
       type: String,
-      default: ''
+      default: '',
+      validator (value) {
+        return ['left', ''].includes(value)
+      }
     }
   },
   data () {
@@ -59,6 +79,11 @@ export default {
   },
   watch: {
     currentValue (e) {
+      /**
+       * Triggers when the user change state of radio
+       *
+       * @param value `id` field from choiced item
+       */
       this.$emit('change', e)
     }
   }
