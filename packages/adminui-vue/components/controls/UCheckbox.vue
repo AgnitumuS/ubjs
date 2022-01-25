@@ -60,14 +60,14 @@ export default {
   width: min-content;
 }
 /* https://itchief.ru/html-and-css/styling-checkbox-and-radio */
-/* для элемента input c type="checkbox" */
+/* for element input with type="checkbox" */
 .u-checkbox--input {
   position: absolute;
   z-index: -1;
   opacity: 0;
 }
 
-/* для элемента label, связанного с .u-checkbox--input */
+/* for element label, relative with .u-checkbox--input */
 .u-checkbox--input + .u-checkbox__label {
   display: flex;
   cursor: pointer;
@@ -82,7 +82,6 @@ export default {
   margin-right: 0;
 }
 
-/* создание в label псевдоэлемента before со следующими стилями */
 .u-checkbox--input + .u-checkbox__label::before {
   content: '';
   display: inline-block;
@@ -98,29 +97,29 @@ export default {
   background-size: 90% 60%;
 }
 
-/* стили при наведении курсора на checkbox */
+/* styles for hover */
 .u-checkbox--input:not(:disabled):not(:checked)
   + .u-checkbox__label:hover::before {
   border-color: #b3d7ff;
 }
 
-/* стили для активного чекбокса (при нажатии на него) */
+/* styles for active checkbox (when push to him) */
 .u-checkbox--input:not(:disabled):active + .u-checkbox__label::before {
   background-color: #b3d7ff;
   border-color: #b3d7ff;
 }
 
-/* стили для чекбокса, находящегося в фокусе */
+/* styles for checkbox, in the focus */
 .u-checkbox--input:focus + .u-checkbox__label::before {
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-/* стили для чекбокса, находящегося в фокусе и не находящегося в состоянии checked */
+/* styles for checkbox, in focus and not checked */
 .u-checkbox--input:focus:not(:checked) + .u-checkbox__label::before {
   border-color: #80bdff;
 }
 
-/* стили для чекбокса, находящегося в состоянии checked */
+/* styles for checkbox, when checked */
 .u-checkbox--input:checked + .u-checkbox__label::before {
   border-color: #0b76ef;
   background-color: #0b76ef;
@@ -128,7 +127,7 @@ export default {
   /* background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e"); */
 }
 
-/* стили для чекбокса, находящегося в состоянии disabled */
+/* styles for checkbox, when disabled */
 .u-checkbox--input:disabled + .u-checkbox__label::before {
   background-color: #e9ecef;
 }
