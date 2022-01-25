@@ -78,20 +78,21 @@ export default {
   flex-direction: row-reverse;
 }
 .u-checkbox--input + .u-checkbox__label.u-checkbox__label--left::before {
-  margin-left: 0.5em;
+  margin-left: var(--padding);
   margin-right: 0;
 }
 
 .u-checkbox--input + .u-checkbox__label::before {
+  --sizeCheckbox: 16px;
   content: '';
   display: inline-block;
-  width: 1em;
-  height: 1em;
+  width: var(--sizeCheckbox);
+  height: var(--sizeCheckbox);
   flex-shrink: 0;
   flex-grow: 0;
   border: 1px solid #adb5bd;
-  border-radius: 0.25em;
-  margin-right: 0.5em;
+  border-radius: var(--border-radius);
+  margin-right: var(--padding);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 90% 60%;

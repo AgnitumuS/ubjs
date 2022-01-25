@@ -84,14 +84,14 @@ export default {
   align-items: center;
   user-select: none;
   white-space: nowrap;
-  margin-bottom: 8px;
+  margin-bottom: var(--padding);
 }
 .u-radio__label.u-radio__label--left {
   flex-direction: row-reverse;
 }
 .u-radio__label.u-radio__label--left::before {
   margin-right: 0;
-  margin-left: 0.7em;
+  margin-left: var(--padding);
 }
 
 .u-radio__label::before {
@@ -104,7 +104,7 @@ export default {
   flex-grow: 0;
   border: 1px solid #adb5bd;
   border-radius: 50%;
-  margin-right: 0.7em;
+  margin-right: var(--padding);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 50% 50%;

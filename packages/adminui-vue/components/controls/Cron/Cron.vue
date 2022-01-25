@@ -44,8 +44,8 @@ export default {
     hoursCron: require('./hoursCron.vue').default,
     dayCron: require('./dayCron.vue').default,
     weekCron: require('./weekCron.vue').default,
-    monthCron: require('./monthCron.vue').default,
-    yearCron: require('./yearCron.vue').default
+    monthCron: require('./monthCron.vue').default
+    // yearCron: require('./yearCron.vue').default
   },
   props: {
     value: {
@@ -75,7 +75,7 @@ export default {
       return this.everyTime.map((i) => i.value).join(' ')
     },
     locale () {
-      return $App.connection.userData('lang')
+      return window.$App.connection.userData('lang')
     },
     humanCronString () {
       return this.formatCronStrToHuman(this.cronString)
@@ -124,34 +124,42 @@ export default {
 
 <style>
 .u-cron {
-  margin-top: 10px;
+  --cron-border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+  padding: var(--padding) 0;
+  border-top: var(--cron-border);
+  border-bottom: var(--cron-border);
 }
 .u-cron__sidebar {
   display: flex;
   flex-direction: column;
-  padding-right: 24px;
+  padding-right: calc(var(--padding) * 2);
 }
 .u-cron__tab.u-cron__tab-active {
   color: white;
-  background: hsl(var(--hs-primary), var(--l-state-hover));
-  border-radius: 4px;
+  background: hsl(var(--hs-primary), var(--l-state-default));
+  border-radius: var(--border-radius);
 }
 .u-cron__tab {
-  padding: 10px;
+  padding: var(--padding);
   cursor: pointer;
   text-transform: capitalize;
   white-space: nowrap;
 }
 .u-cron__main {
   display: flex;
+  padding-top: var(--padding);
+  border-top: var(--cron-border);
 }
 .u-cron__sidebar {
-  padding-right: 24px;
-  margin-right: 24px;
-  border-right: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+  padding-right: calc(var(--padding) * 2);
+  margin-right: calc(var(--padding) * 2);
+  border-right: var(--cron-border);
 }
 .u-cron__body .u-radio {
-  margin-bottom: 24px;
+  margin-bottom: calc(var(--padding) * 2);
+}
+.u-cron__body .u-radio:last-child {
+  margin-bottom: 0px;
 }
 .u-cron__body .u-radio--wrap {
   width: 100%;
@@ -160,7 +168,7 @@ export default {
   display: flex;
 }
 .cron__start__item {
-  margin-right: 8px;
+  margin-right: var(--padding);
 }
 
 .u-cron__body .u-radio__label {
@@ -168,15 +176,17 @@ export default {
 }
 
 .u-cron__desc {
-  margin-bottom: 20px;
+  margin-bottom: var(--padding);
+  font-size: calc(1em + 1px);
   font-weight: 500;
 }
 .u-cron__desc--txt span,
 .u-cron__desc--expresion span {
   font-weight: normal;
-  margin-left: 8px;
+  margin-left: var(--padding);
+  font-style: italic;
 }
 .u-cron__desc--expresion {
-  margin-bottom: 8px;
+  margin-bottom: var(--padding);
 }
 </style>

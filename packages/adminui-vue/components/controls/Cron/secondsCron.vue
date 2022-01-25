@@ -106,9 +106,9 @@ export default {
     },
     locale: {
       type: String,
-      default: $App.connection.userData('lang')
+      default: window.$App.connection.userData('lang')
     },
-    customSpesifyItems: null
+    customSpesifyItems: undefined
   },
   data () {
     return {
