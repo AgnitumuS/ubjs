@@ -1,3 +1,4 @@
+// TODO: need implement logic when some radio is disabled: cheched and not-checked
 <template>
   <span class="u-radio--wrap">
     <label
@@ -83,7 +84,6 @@ export default {
   user-select: none;
   white-space: nowrap;
   margin-bottom: 8px;
-  cursor: pointer;
 }
 .u-radio__label.u-radio__label--left {
   flex-direction: row-reverse;
@@ -107,6 +107,7 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 50% 50%;
+  cursor: pointer;
 }
 
 /* styles for hover*/
@@ -139,8 +140,8 @@ export default {
 
 /* styles for radio-btn, in the disabled */
 .u-radio__input:disabled + .u-radio__label::before {
-  /* background-color: #e9ecef; */
   background-color: hsl(var(--hs-primary), var(--l-state-disabled));
   border-color: hsl(var(--hs-primary), var(--l-state-disabled));
+  cursor: not-allowed;
 }
 </style>
