@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+`cronstrue` - package for converting cron expression into a human-readable string (https://github.com/bradymholt/cronstrue)
 
 ### Changed
 
