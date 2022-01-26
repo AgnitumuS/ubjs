@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UTableEntity`: selection cache revalidation added in order to actualize
+  cached IDs if some table items were removed
 
 ### Changed
 

@@ -192,6 +192,7 @@ export default {
     getEntityName () {
       return this.entityName || this.getRepository().entityName
     },
+
     tableListeners () {
       const { selected, ...otherListeners } = this.$listeners
       return otherListeners
@@ -335,20 +336,58 @@ export default {
        */
       this.$emit('selected', [...this.selectionCache])
     },
+
     handlerTableDataChange (items) {
       this.tableItems = items
+
+      const revalidated = this.revalidateSelectionCache()
+
       this.setCurrentSelected()
+
+      if (revalidated) {
+        this.emitSelectedEvent()
+      }
     },
+
+    /**
+     * Leave cached only those selected items which present in both `tableItems`
+     * collection and current `selectionCache` set.
+     *
+     * @return {boolean} Whether the cache has been refreshed or not.
+     */
+    revalidateSelectionCache () {
+      if (this.selectionCache.size === 0) {
+        return false
+      }
+
+      const keyAttr = this.multiSelectKeyAttr
+
+      const oldCache = this.selectionCache
+      const newCache = new Set()
+
+      for (const item of this.tableItems) {
+        const id = item[keyAttr]
+
+        if (oldCache.has(id)) {
+          newCache.add(id)
+        }
+      }
+
+      const revalidated = oldCache.size !== newCache.size
+
+      if (revalidated) {
+        this.selectionCache = newCache
+      }
+
+      return revalidated
+    },
+
     setCurrentSelected () {
-      this.curSelected.splice(0)
-      const { selectionCache, multiSelectKeyAttr } = this
-      this.tableItems.forEach(elem => {
-        const id = elem[multiSelectKeyAttr]
-        const inCache = selectionCache.has(id)
-        if (inCache) this.curSelected.push(id)
-      })
+      this.curSelected = [...this.selectionCache]
+
       this.$store.dispatch('setSelectedOnPage', this.curSelected)
     },
+
     handlerMultipleAction (payload) {
       const { deleteMultipleResult } = this
       const handlers = {
