@@ -21,7 +21,9 @@
       "everyMonth": "місяця",
       "chooseOneOrMany": "вибрати один або декілька",
       "specific": "конкретного(ї)",
-      "between": "між"
+      "between": "між",
+      "expression": "Вираз",
+      "interpritation": "Інтерпретація"
     },
     "datepicker": {
       "now": "Зараз",

@@ -21,7 +21,9 @@
       "everyMonth": "month(s)",
       "chooseOneOrMany": "choose one or many",
       "specific": "specific",
-      "between": "between"
+      "between": "between",
+      "expression": "cron expression",
+      "interpritation": "interpretation"
     },
     "datepicker": {
       "now": "Now",

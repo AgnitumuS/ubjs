@@ -32,8 +32,7 @@
           />
         </u-form-row>
       </u-grid>
-      <!-- <shortcut-cmd-code /> -->
-      <Cron />
+      <shortcut-cmd-code />
     </u-form-container>
   </div>
 </template>
@@ -75,10 +74,10 @@ module.exports.default = {
 
   data () {
     return {
-      mainHeight: null // get form height after mount
+      mainHeight: null, // get form height after mount
     }
   },
-
+  
   computed: {
     ...mapInstanceFields([
       'ID',

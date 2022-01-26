@@ -2,10 +2,10 @@
   <div class="u-cron">
     <div class="u-cron__desc">
       <div class="u-cron__desc--expresion">
-        Cron expression: <span>{{ cronString }}</span>
+        {{$ut('el.cron.expression')}}: <span>{{ cronString }}</span>
       </div>
       <div class="u-cron__desc--txt">
-        Interpretation: <span>{{ humanCronString }}</span>
+        {{$ut('el.cron.interpritation')}}: <span>{{ humanCronString }}</span>
       </div>
     </div>
     <div class="u-cron__main">
