@@ -13,13 +13,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `Cron` - new component in UBjs. Component for easy compilation cron expression. Can convert cron expression into a human-readable string
 
 ### Changed
-- `UTableEntity` filtration improved - now allows set several filters at ones
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.22.2] - 2022-01-24
+### Added
+- `UDropdown`:`customClass` prop added - allows set a custom CSS class for u-dropdown
+- `UTableEntity` store: new mutation `CLEAR_FILTER` allows clear current filters set
+
+### Changed
+- `UTableEntity` filtration improved - now allows set several filters at ones
 
 ## [5.22.1] - 2022-01-14
 ### Added

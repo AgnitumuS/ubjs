@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.25] - 2022-01-24
+### Added
  - '*.meta': added env variable macros support for entity and attribute level mapping with the same syntax as
  in ubConfig - `%ENV||default%`. Example:
  ```json
@@ -31,14 +42,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 }
 ```
   Can be used for cross-schema mappings, when entity connection not match actual table schema.   
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.22.24] - 2022-01-14
 ### Added
