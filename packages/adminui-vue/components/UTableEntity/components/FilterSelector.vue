@@ -131,7 +131,16 @@ export default {
         if (firstList.condition === 'equal' && typeof column.value === 'boolean') {
           column.condition = column.value ? 'isTrue' : 'isFalse'
         }
+        
         this.selectedColumns.push(column)
+        if (column.attribute.dataType === 'DateTime') {
+          const list = {
+            less: 'toDate',
+            moreEqual: 'fromDate'
+          }
+          column.condition = list[column.condition] ? list[column.condition] :  column.condition
+          return
+        }
         const secondtList = item.whereList[1]
         if (!secondtList) return
         column.condition = 'range'
