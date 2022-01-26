@@ -1,6 +1,6 @@
 <template>
   <filter-template
-    :button-disabled="value === null"
+    :button-disabled="isEmpty"
     @submit="submitHandler"
   >
     <u-date-picker
@@ -24,6 +24,12 @@ export default {
   data () {
     return {
       value: null
+    }
+  },
+
+  computed: {
+     isEmpty () {
+      return this.value === '' || this.value === null
     }
   },
 

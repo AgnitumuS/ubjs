@@ -1,6 +1,6 @@
 <template>
   <filter-template
-    :button-disabled="value === null"
+    :button-disabled="isEmpty"
     @submit="submitHandler"
   >
     <u-date-picker
@@ -37,6 +37,9 @@ export default {
       } ${
         this.$moment(this.value[1]).format('ll')
       }`
+    },
+    isEmpty () {
+      return this.value === '' || this.value === null || this.value.length < 2
     }
   },
 
