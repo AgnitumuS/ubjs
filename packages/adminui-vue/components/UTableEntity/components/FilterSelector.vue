@@ -136,11 +136,15 @@ export default {
           firstList.condition === 'equal' &&
           typeof column.value === 'boolean'
         ) {
-          column.condition = column.value ? 'isTrue' : 'isFalse'
+          column.condition = column.value ? 'isTrue' : 'isFalse' // it is name of component
         }
 
         this.selectedColumns.push(column)
-        if (column.attribute.dataType === 'DateTime') {
+        if (
+          column.attribute.dataType === 'DateTime' ||
+          column.attribute.dataType === 'Date'
+        ) {
+          // it is name of component
           const list = {
             less: 'toDate',
             moreEqual: 'fromDate'
