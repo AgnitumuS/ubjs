@@ -28,18 +28,18 @@ export default {
   },
 
   computed: {
-     isEmpty () {
+    isEmpty () {
       return this.value === '' || this.value === null
     }
   },
 
   methods: {
-    getCondition() {
+    getCondition () {
       const { value, $ut, $moment } = this
-        return {
-          whereList: [{condition: 'moreEqual', value}],
-          description: $ut('from_date') + ' ' + $moment(value).format('ll')
-        }
+      return {
+        whereList: [{ condition: 'moreEqual', value }],
+        description: $ut('from_date') + ' ' + $moment(value).format('ll')
+      }
     }
   }
 }

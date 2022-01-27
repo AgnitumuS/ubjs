@@ -45,7 +45,11 @@
       <div class="filter-selector__body">
         <template v-for="(item, index) in length">
           <filter-item
-            :key="selectedColumns[index] && selectedColumns[index].id ? selectedColumns[index].id : index"
+            :key="
+              selectedColumns[index] && selectedColumns[index].id
+                ? selectedColumns[index].id
+                : index
+            "
             ref="filterItem"
             :columns="filterColumns"
             :search-disabled="
@@ -128,18 +132,22 @@ export default {
         if (!column) return
         column.condition = firstList.condition
         column.value = firstList.value
-        if (firstList.condition === 'equal' && typeof column.value === 'boolean') {
+        if (
+          firstList.condition === 'equal' &&
+          typeof column.value === 'boolean'
+        ) {
           column.condition = column.value ? 'isTrue' : 'isFalse'
         }
-        
+
         this.selectedColumns.push(column)
         if (column.attribute.dataType === 'DateTime') {
           const list = {
             less: 'toDate',
             moreEqual: 'fromDate'
           }
-          column.condition = list[column.condition] ? list[column.condition] :  column.condition
-          return
+          column.condition = list[column.condition]
+            ? list[column.condition]
+            : column.condition
         }
         const secondtList = item.whereList[1]
         if (!secondtList) return

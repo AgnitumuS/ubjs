@@ -13,7 +13,7 @@ export default {
   mixins: [require('../mixinForFilter.js')],
 
   methods: {
-    getCondition() {
+    getCondition () {
       return {
         whereList: [{ condition: 'isNull' }],
         description: 'isNull'

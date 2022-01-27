@@ -28,7 +28,7 @@ export default {
   },
 
   computed: {
-     isEmpty () {
+    isEmpty () {
       return this.value === '' || this.value === null
     }
   },
@@ -39,12 +39,12 @@ export default {
       moment.add(1, 'day')
       return moment.toDate()
     },
-    getCondition() {
+    getCondition () {
       const { $ut, value, $moment, addDay } = this
-        return {
-          whereList: [{ condition: 'less', value: addDay(value) }],
-          description: $ut('to_date') + ' ' + $moment(addDay(value)).format('ll')
-        }
+      return {
+        whereList: [{ condition: 'less', value: addDay(value) }],
+        description: $ut('to_date') + ' ' + $moment(addDay(value)).format('ll')
+      }
     }
   }
 }

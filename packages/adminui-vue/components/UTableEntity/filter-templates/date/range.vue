@@ -28,15 +28,11 @@ export default {
 
   computed: {
     description () {
-      return `${
-        this.$ut('table.filter.date.from')
-      } ${
-        this.$moment(this.value[0]).format('ll')
-      } ${
-        this.$ut('table.filter.date.to')
-      } ${
-        this.$moment(this.value[1]).format('ll')
-      }`
+      return `${this.$ut('table.filter.date.from')} ${this.$moment(
+        this.value[0]
+      ).format('ll')} ${this.$ut('table.filter.date.to')} ${this.$moment(
+        this.value[1]
+      ).format('ll')}`
     },
     isEmpty () {
       return this.value === '' || this.value === null || this.value.length < 2
@@ -49,15 +45,15 @@ export default {
       moment.add(1, 'day')
       return moment.toDate()
     },
-    getCondition() {
+    getCondition () {
       const { value, addDay, description } = this
-        return {
-          whereList: [
-            { condition: 'moreEqual', value: value[0] },
-            { condition: 'less', value: addDay(value[1]) }
-          ],
-          description
-        }
+      return {
+        whereList: [
+          { condition: 'moreEqual', value: value[0] },
+          { condition: 'less', value: addDay(value[1]) }
+        ],
+        description
+      }
     }
   }
 }
