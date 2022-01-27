@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+- fixed multiple filter, when user use filters by date
 ## [5.22.2] - 2022-01-24
 ### Added
 - `UDropdown`:`customClass` prop added - allows set a custom CSS class for u-dropdown
