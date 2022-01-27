@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UTableEntity` - update total items on pagination, after added or removed item
 
 ### Changed
 
