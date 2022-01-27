@@ -26,11 +26,14 @@ export default {
       value: null
     }
   },
-
   computed: {
     isEmpty () {
       return this.value === '' || this.value === null
     }
+  },
+
+  created () {
+    if (Array.isArray(this.value)) this.value = this.value[0]
   },
 
   methods: {
