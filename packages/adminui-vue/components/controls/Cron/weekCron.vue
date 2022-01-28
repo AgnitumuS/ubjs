@@ -55,10 +55,6 @@
                 v-for="day in daysOfWeek"
                 :key="day.id"
                 :value="day.id"
-                :disabled="
-                  (!!betweenSeconds[1] || betweenSeconds[1] === 0) &&
-                    day.id >= betweenSeconds[1]
-                "
               >
                 {{ day.longName }}
               </option>
@@ -74,7 +70,6 @@
                 v-for="day in daysOfWeek"
                 :key="day.id * 999999"
                 :value="day.id"
-                :disabled="day.id <= betweenSeconds[0]"
               >
                 {{ day.longName }}
               </option>
@@ -195,7 +190,7 @@ export default {
       if (
         value === 'between' &&
         this.betweenSeconds.length === 2 &&
-        this.betweenSeconds.every((i) => !!i)
+        this.betweenSeconds.every((i) => !!i || i === 0)
       ) {
         return this.betweenSeconds.join('-')
       }
