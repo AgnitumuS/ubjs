@@ -74,7 +74,7 @@ module.exports.default = {
 
   data () {
     return {
-      mainHeight: null, // get form height after mount
+      mainHeight: null // get form height after mount
     }
   },
   
