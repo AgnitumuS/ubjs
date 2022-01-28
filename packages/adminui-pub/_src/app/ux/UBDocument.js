@@ -464,6 +464,7 @@ Ext.define('UB.ux.UBDocument', {
           params.filename = me.entityName + me.instanceID + me.attributeName
         }
         params._rc = val.revision
+        params.uitag = me.up('basepanel')?.uiTag
 
         url = Ext.String.urlAppend(
           $App.connection.baseURL + 'getDocument',

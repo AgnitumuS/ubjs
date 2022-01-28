@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `UBDocument`: `uitag=${uiTag}` is added to `getDocument` request URL formed by `UBDocument`, so in the server logs the source of `getDocument` can be tracked
+ 
 ### Changed
 
 ### Deprecated
