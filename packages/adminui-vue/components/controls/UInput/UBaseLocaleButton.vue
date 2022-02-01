@@ -45,11 +45,18 @@ export default {
   name: 'UBaseLocaleButton',
 
   props: {
-    isRequired: {
+    /**
+     * if `true`, modal dialog for editing translations would require values for all the languages
+     */
+    required: {
       type: Boolean,
       default: true
     },
 
+    /**
+     * a callback, which returns translations as array of objects `attr: string, value: *` or a promise;
+     * control is designed to work with lazy loaded translations
+     */
     loadLocalizedValues: {
       type: Function,
       required: true
@@ -64,7 +71,7 @@ export default {
   },
 
   validations () {
-    const value = this.isRequired
+    const value = this.required
       ? { required }
       : {}
     return {
