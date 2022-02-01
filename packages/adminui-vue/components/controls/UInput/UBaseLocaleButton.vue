@@ -11,7 +11,7 @@
       width="500px"
       append-to-body
       :close-on-click-modal="false"
-      class="u-base-locale-button__dialog"
+      class="u-locale-button__dialog"
       @open="initLangs"
     >
       <u-form-row
@@ -98,7 +98,7 @@ export default {
 </script>
 
 <style>
-.u-base-locale-button__dialog .el-dialog__body {
+.u-locale-button__dialog .el-dialog__body {
   padding: 10px 20px;
 }
 </style>
