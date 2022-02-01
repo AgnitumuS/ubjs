@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Translations for a new record: now it initializes with values of the default language instead of empty value
 
 ## [5.22.2] - 2022-01-24
 ### Added
