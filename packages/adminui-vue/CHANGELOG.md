@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UTableEntity`: filtration for `in` and `notIn` conditions
 
 ## [5.22.2] - 2022-01-24
 ### Added

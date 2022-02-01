@@ -101,7 +101,7 @@ ColumnTemplateProvider.registerTemplate({
       label: 'equal',
       template: require('./filter-templates/entity/equal.vue').default
     },
-    oneOf: {
+    in: {
       label: 'by_several_value',
       template: require('./filter-templates/entity/oneOf.vue').default
     },
@@ -113,7 +113,7 @@ ColumnTemplateProvider.registerTemplate({
       label: 'notEqual',
       template: require('./filter-templates/entity/notEqual.vue').default
     },
-    notContains: {
+    notIn: {
       label: 'notContains',
       template: require('./filter-templates/entity/notContains.vue').default
     }
@@ -124,7 +124,7 @@ ColumnTemplateProvider.registerTemplate({
   type: 'Many',
   settings: require('./type-definitions/many'),
   filters: {
-    oneOf: {
+    in: {
       label: 'by_several_value',
       template: require('./filter-templates/many/oneOf.vue').default
     },
@@ -143,7 +143,7 @@ ColumnTemplateProvider.registerTemplate({
       label: 'equal',
       template: require('./filter-templates/enum/equal.vue').default
     },
-    oneOf: {
+    in: {
       label: 'by_several_value',
       template: require('./filter-templates/enum/oneOf.vue').default
     },
@@ -155,7 +155,7 @@ ColumnTemplateProvider.registerTemplate({
       label: 'notEqual',
       template: require('./filter-templates/enum/notEqual.vue').default
     },
-    notContains: {
+    notIn: {
       label: 'notContains',
       template: require('./filter-templates/enum/notContains.vue').default
     }
