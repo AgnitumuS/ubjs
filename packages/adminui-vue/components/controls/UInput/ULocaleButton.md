@@ -21,7 +21,7 @@ In this example, the combination of `UBaseInput` and `ULocaleButton` control:
       required
       @blur="$v.name.$touch()"
     >
-      <locale-button
+      <u-locale-button
         slot="append"
         attribute-name="name"
         collection-name="actions"
