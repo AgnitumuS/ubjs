@@ -116,3 +116,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.ub-input.is-disabled .el-input-group__append {
+  border-color: hsl(var(--hs-border), var(--l-input-border-default));
+}
+</style>
