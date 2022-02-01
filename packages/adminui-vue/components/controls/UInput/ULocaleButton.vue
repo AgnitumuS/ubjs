@@ -29,8 +29,6 @@ export default {
   props: {
     /**
      * attribute name in entitySchema
-     *
-     * @returns {string}
      */
     attributeName: {
       type: String,
@@ -39,15 +37,11 @@ export default {
 
     /**
      * when button is used for a collection item, this is name of the collection in the Vuex store
-     *
-     * @returns {string}
      */
     collectionName: String,
 
     /**
      * ID of the detail item, used to load translations for the entity.  Use with "collectionName" property only.
-     *
-     * @returns {number}
      */
     detailItemId: Number,
 
@@ -55,8 +49,6 @@ export default {
      * if specified, that object will be updated instead of Vuex store.  The property is useful, when
      * attributes edited in a popup form, when  state is not in the Vuex store until user clicks "OK" button,
      * in such a case, entityModel should be bound to the dialog component, which has in its "data" edited state.
-     *
-     * @returns {object}
      */
     entityModel: Object
   },
