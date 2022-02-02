@@ -15,7 +15,6 @@
 </template>
 
 <script>
-const ULocaleButton = require('./ULocaleButton.vue').default
 const numberTypes = ['Int', 'BigInt', 'Float', 'Currency', 'ID']
 
 /**
@@ -25,7 +24,6 @@ const numberTypes = ['Int', 'BigInt', 'Float', 'Currency', 'ID']
  */
 export default {
   name: 'UInput',
-  components: { ULocaleButton },
   inject: ['entitySchema', '$v'],
 
   props: {
