@@ -24,8 +24,19 @@
     />
 
     <template slot="footer">
+      <a
+        v-if="isDevInfo && mailForSendErr"
+        class="ub-dialog__footer__item ub-dialog__mail-link"
+        :href="`mailto:${getMailUrl()}`"
+        >
+        <u-button
+          appearance="plain"
+          icon="u-icon-share"
+        />
+      </a>
       <u-button
         v-if="isDevInfo"
+        class="ub-dialog__footer__item"
         appearance="plain"
         icon="u-icon-copy"
         @click="copyClipboard"
@@ -33,6 +44,7 @@
       <u-button
         v-if="buttons.cancel"
         ref="cancelButton"
+        class="ub-dialog__footer__item"
         appearance="plain"
         @click="cancel"
       >
@@ -40,12 +52,14 @@
       </u-button>
       <u-button
         v-if="buttons.no"
+        class="ub-dialog__footer__item"
         appearance="plain"
         @click="decline"
       >
         {{ $ut(buttons.no) }}
       </u-button>
       <u-button
+        class="ub-dialog__footer__item"
         color="primary"
         @click="accept"
       >
@@ -70,11 +84,24 @@ export default {
       buttons: {},
       type: 'info',
       isDevInfo: false,
-      visible: false
+      visible: false,
+      mailForSendErr: ''
     }
   },
 
+  created(){
+    this.mailForSendErr = window.UB?.appConfig?.uiSettings?.adminUI?.supportEmail
+  },
+
   methods: {
+    getMailUrl(){
+      const baseUrl = this.mailForSendErr
+      const isQuery = baseUrl.includes('?')
+      const bodyQuery =`body=${this.msg}`
+      const result = isQuery ? baseUrl + `&${bodyQuery}` : baseUrl + `?${bodyQuery}` 
+      return result
+    },
+
     decline () {
       this.$options.resolver('no')
       this.$destroy()
@@ -207,5 +234,17 @@ export default {
   overflow: auto;
   max-height: 50vh;
   line-height: 1.3;
+}
+
+.ub-dialog__mail-link {
+  text-decoration: unset;
+}
+
+.ub-dialog__footer__item {
+  margin-right: 12px;
+}
+
+.ub-dialog__footer__item:last-child {
+  margin-right: 0px;
 }
 </style>
