@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+- `ubConfig.json` - added new field `supportEmail`. This field activate button on error message who allows the user to send the error text to a pre-specified address
 ### Changed
 
 ### Deprecated

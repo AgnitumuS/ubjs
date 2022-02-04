@@ -137,3 +137,20 @@ $App.on('buildMainMenu', function (items) {
 
 Также сообщения можно просмотреть в реестре истории сообщений.
 ![getMessageInfo](img/getMessageInfo.png) 
+
+## Обработка ошибок.
+
+Для активации кнопки, позволяющей пользователю отправить текст ошибки, по заранее указанному адресу, необходимо добавить поле `supportEmail`:
+
+```json
+"uiSettings": {
+    "adminUI": {
+        ...
+        "supportEmail": "support@mail.server.com"
+        ...
+    },
+    ...
+},
+```
+`supportEmail` - может любой строкой удовлетворяющей правилам формирования html-ссылки с модификатором `mailto`.
+Получить более подробную информации по формированию такой ссылки можно [тут](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks#e-mail_links)

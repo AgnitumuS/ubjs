@@ -25,7 +25,7 @@
 
     <template slot="footer">
       <a
-        v-if="isDevInfo && mailForSendErr"
+        v-if="isDevInfo && mailForSendErr !== undefined"
         class="ub-dialog__footer__item ub-dialog__mail-link"
         :href="`mailto:${getMailUrl()}`"
         >
@@ -85,18 +85,14 @@ export default {
       type: 'info',
       isDevInfo: false,
       visible: false,
-      mailForSendErr: ''
+      mailForSendErr: window.UB?.appConfig?.uiSettings?.adminUI?.supportEmail
     }
-  },
-
-  created(){
-    this.mailForSendErr = window.UB?.appConfig?.uiSettings?.adminUI?.supportEmail
   },
 
   methods: {
     getMailUrl(){
       const baseUrl = this.mailForSendErr
-      const isQuery = baseUrl.includes('?')
+      const isQuery = typeof baseUrl === 'string' ? baseUrl.includes('?') : false
       const bodyQuery =`body=${this.msg}`
       const result = isQuery ? baseUrl + `&${bodyQuery}` : baseUrl + `?${bodyQuery}` 
       return result
