@@ -333,7 +333,7 @@ export default {
        *
        * @param {Array<number>} selectedIDs
        */
-      this.$emit('selected', [...this.selectionCache])
+      this.$emit('selected', [...this.curSelected])
     },
     handlerTableDataChange (items) {
       this.tableItems = items
