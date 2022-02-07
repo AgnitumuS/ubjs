@@ -371,7 +371,7 @@
   "startSearchMinCharacters": "Min aantal tekens voor zoeken: {0}",
   "OpenIDConnect": "OpenID",
   "authOpenIDConnectFail": "OpenID-provider kan uw verzoek niet autoriseren",
-  "readPKCanceled": "Geannuleerd door gebruiker",
+  "userOperationCanceled": "Geannuleerd door gebruiker",
   "invalidPrivateKeyCertificate": "Kies verkeerde private key-certificaten. Voor sleutels na 2014 moet u 2 certificaten hebben.",
   "menu": "Menu",
   "ubErrLockedbyanotheruser": "Record is vergrendeld door een andere gebruiker. Wijzigingen kunnen niet worden opgeslagen. Probeer het later opnieuw.",

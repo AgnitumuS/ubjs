@@ -370,7 +370,7 @@
   "startSearchMinCharacters": "Min character quantity for search: {0}",
   "OpenIDConnect": "OpenID",
   "authOpenIDConnectFail": "OpenID provider can't authorize your request",
-  "readPKCanceled": "Canceled by user",
+  "userOperationCanceled": "Canceled by user",
   "invalidPrivateKeyCertificate": "Choose wrong private key sertificate(s). For key after 2014 you nedd to have 2 sertificates.",
   "menu": "Menu",
   "ubErrLockedbyanotheruser": "Record is locked by another user. Changes cannot be saved. Try again later.",
