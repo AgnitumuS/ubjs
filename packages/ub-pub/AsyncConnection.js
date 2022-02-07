@@ -892,10 +892,6 @@ UBConnection.prototype.xhr = function (config) {
         }
       }
 
-      if (reason.status === 403) {
-        throw new ubUtils.UBError('Access deny')
-      }
-
       if (reason.status === 413) { // Request Entity Too Large
         throw new ubUtils.UBError('Request Entity Too Large')
       }
@@ -911,6 +907,7 @@ UBConnection.prototype.xhr = function (config) {
          * The only valid endpoint after this is `changePassword`
          *
          * Accept 1 arg `(connection: UBConnection)
+         *
          * @event passwordExpired
          * @memberOf module:@unitybase/ub-pub.module:AsyncConnection~UBConnection
          */
@@ -918,6 +915,8 @@ UBConnection.prototype.xhr = function (config) {
           throw new ubUtils.UBAbortError()
         }
         throw new ubUtils.UBError(errMsg, errDetails, errCode)
+      } else if (reason.status === 403) {
+        throw new ubUtils.UBError('Access deny')
       } else {
         throw reason //! Important - rethrow the reason is important. Do not create a new Error here
       }
