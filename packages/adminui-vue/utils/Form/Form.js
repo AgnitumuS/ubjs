@@ -220,9 +220,12 @@ class UForm {
       beforeSave: beforeSave ? () => beforeSave.call(this, this.$store) : null,
       saved: saved ? (method) => saved.call(this, this.$store, method) : null,
       beforeCreate: beforeCreate ? () => beforeCreate.call(this, this.$store) : null,
-      created: created ? () => created.call(this, this.$store) : null,
       created: (created) => {
-        this.tabId = UB.core.UBApp.generateTabId({ entity: this.entity, instanceID: this.$store.state.data.ID, formCode: this.formCode ?? this.entity})
+        this.tabId = UB.core.UBApp.generateTabId({
+          entity: this.entity,
+          instanceID: this.$store.state.data.ID,
+          formCode: this.formCode ?? this.entity
+        })
         return created ? created.call(this, this.$store) : null
       },
       beforeLoad: beforeLoad ? () => beforeLoad.call(this, this.$store) : null,

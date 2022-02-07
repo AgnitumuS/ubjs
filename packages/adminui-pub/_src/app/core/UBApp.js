@@ -1043,11 +1043,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
   generateTabId: function (cfg) {
     let formCode
     if (cfg.formCode === undefined) {
-      //formCode = '-'
-      // 1. Preferred fix: Use default fix when formCode is not specified (like Document create dialog)
       formCode = cfg.entity
-      // 2. In case of impact we need to check all 'showForm' calls, and ensure formcode is specified.
-      // Like:  'showForm' command of packages/dfx/public/forms/dfx_Document-create-fm.vue shoud have "formCode: 'dfx_Document'"
     } else if (typeof cfg.formCode === 'function') {
       formCode = 'func'
     } else {

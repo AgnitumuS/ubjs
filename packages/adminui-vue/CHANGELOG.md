@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `Form.js`: added updating this.tabId in `created` event handler after new entity Id is already generated. It fixes bug when newly created entity can be opened in a separate tab. 
 
 ## [5.22.2] - 2022-01-24
 ### Added
