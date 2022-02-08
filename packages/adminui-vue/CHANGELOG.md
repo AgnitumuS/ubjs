@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- `UTableEntity` not edit record on Enter key and double-click, when the "edit" action is in the `hideActions`
+- `UTableEntity`: prevent show instance form on Enter key and double-click  when the "edit" action is in the `hideActions`
 
 ## [5.22.2] - 2022-01-24
 ### Added
