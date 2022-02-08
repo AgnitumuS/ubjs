@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.3] - 2022-02-08
+### Added
 - `UBaseLocaleButton`, which is does not depend on Vuex store in any way and provides UI for editing translations.
   That allows building interfaces for cases like translations of JSON unstructured data.
 - Registered `ULocaleButton` and `UBaseLocaleButton` as Vue controls
@@ -17,10 +28,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - BREAKING: renamed `LocaleButton.vue` to `ULocaleButton.vue`.  If component was required directly as a file,
   it is better to use ULocaleButton registered Vue component now.
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 - Translations for a new record: now it initializes with values of the default language instead of empty value
