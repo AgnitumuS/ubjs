@@ -8,8 +8,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `UTableEntity` - emitSelectedEvent will include only rows from current page (`curSelected`) instead of all 
-  rows used ever select (`selectionCache`)
 
 ### Deprecated
 

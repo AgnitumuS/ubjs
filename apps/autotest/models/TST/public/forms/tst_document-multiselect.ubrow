@@ -1,0 +1,8 @@
+{
+ "formType": "vue",
+ "isDefault": false,
+ "entity": "tst_document",
+ "description": "Multiselect test",
+ "caption": "Multyselect test",
+ "formCode": "tst_document-multiselect-fm.vue"
+}
