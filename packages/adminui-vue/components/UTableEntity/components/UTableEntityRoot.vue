@@ -70,7 +70,7 @@
           name="toolbarAppend"
         />
 
-        <filter-selector 
+        <filter-selector
           v-if="showFilter"
           ref="filterSelector"
         />
@@ -501,7 +501,7 @@
 
 <script>
 const { mapState, mapGetters, mapMutations, mapActions } = require('vuex')
-const selectionProps = require('../../controls/mixins/selection/props')
+const selectionMixin = require('../../controls/mixins/selection/props')
 const ColumnTemplateProvider = require('../column-template-provider')
 
 export default {
@@ -517,7 +517,7 @@ export default {
     NextPageButton: require('./NextPageButton.vue').default
   },
 
-  mixins: [selectionProps],
+  mixins: [selectionMixin],
 
   inject: {
     close: {
@@ -833,7 +833,7 @@ export default {
     onSelect (ID, row) {
       if (this.onSelectRecord) {
         this.onSelectRecord({ ID, row, close: this.close })
-      } else {
+      } else if (this.canEdit) {
         this.editRecord(ID)
       }
     },

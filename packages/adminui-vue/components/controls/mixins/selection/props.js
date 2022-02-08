@@ -28,24 +28,26 @@ module.exports = {
       }
     },
     /**
-     * the field with which the selected item is matched. Default is "ID"
+     * Field with which the selected item is matched. Default is "ID"
      */
     multiSelectKeyAttr: { type: String, default: 'ID' },
     /**
-     * controls the inclusion of multiline selection mode. Default is "false"
+     * Controls the inclusion of multiline selection mode. Default is "false"
      */
     enableMultiSelect: { type: Boolean, default: false },
     /**
-     * @argument {array<object>} addedCache an array that includes the objects (rows) that will be add to the the selection
-     * Hook that is called before selecting an item. If the hook returns a false value, the selection will be canceled.
+     * Hook what called before selecting an item. If returns false - selection will be canceled
+     *
+     * @argument {array<object>} addedCache an array that includes the objects (rows) that will be added to the selection
      */
     beforeAddSelection: {
       type: Function,
       default: () => true
     },
     /**
-     * @argument {array<object>} removedCache an array that includes the objects (rows) that will be remove from the the selection
-     * Hook that is called before deselecting. If the hook returns a false value, the deselection will be canceled
+     * Hook what called before deselecting. If returns false - deselection will be canceled
+     *
+     * @argument {array<object>} removedCache an array that includes the objects (rows) that will be removed from the selection
      */
     beforeRemoveSelection: {
       type: Function,

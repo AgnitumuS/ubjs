@@ -34,6 +34,51 @@ export default {
 </script>
 ```
 
+### Multi-select Mode
+In multi-select mode, some actions, like `edit`, `copyLink` is not applicable for several selected rows.
+These actions are hide or disabled.  This behavior is controlled by a `showOneItemActions` property in store.
+
+The event `selected` contains all the selected elements, on all pages of the table.
+To get elements that are selected on the current page - use a variable `selectedOnPage` from `store`.
+
+```vue
+<template>
+  <div>
+    <ul>
+      <li>selected IDs: {{selectedID}}</li>
+      <li>last removed from selection: {{removed}}</li>
+      <li>last added to selection (dep1 can not be added): {{added}} </li>
+    </ul>
+
+    <u-table-entity
+      :max-height="500"
+      entity-name="reg_department"
+      :enable-multi-select="true"
+      @selected="selectedID = $event"
+      @remove-selected="removed = $event"
+      @add-selected="added = $event"
+      @before-add-selection="checkCanBeSelected"
+    />
+  </div>
+</template>
+<script>
+  export default {
+    methods: {
+      checkCanBeSelected (items) {
+       return items[0].code !== 'dep1'
+      }
+    },
+    data () {
+      return {
+        selectedID: [],
+        removed: [],
+        added: []
+      }
+    }
+  }
+</script>
+```
+
 ### Columns
 Columns array can contain strings or objects.
 
@@ -301,69 +346,6 @@ export default {
     }
   }
 }
-</script>
-```
-### Multi-select Mode
-In multi-select mode, some actions, like `edit`, `copyLink` is not applicable for several selected rows.
-These actions are hide or disabled.  This behavior is controlled by a `showOneItemActions` property in store.
-
-The event `selected` contains all the selected elements, on all pages of the table. 
-To get elements that are selected on the current page - use a variable `selectedOnPage` from `store`.
-
-```vue
-<template>
-  <div>
-    <u-table
-      :selected-rows="selectedID"
-      :items="currencies"
-      :columns="columns"
-      enable-multi-select
-      @selected="selectedID = $event"
-      @remove-selected="removed = $event"
-      @add-selected="added = $event"
-    />
-    <p>selectedID: {{selectedID}}</p>
-    <p>added: {{added}}</p>
-    <p>removed: {{removed}}</p>
-  </div>
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        selectedID: [2,3],
-        removed: [],
-        added: [],
-        currencies: [{
-          ID: 1,
-          code: 'UAH',
-          caption: 'Hryvna',
-          country: 'Ukraine'
-        },{
-          ID: 2,
-          code: 'USD',
-          caption: 'Dollar',
-          country: 'USA'
-        },{
-          ID: 3,
-          code: 'EUR',
-          caption: 'Euro',
-          country: 'France'
-        }],
-
-        columns: [{
-          id: 'code',
-          label: 'Code'
-        }, {
-          id: 'caption',
-          label: 'Caption'
-        }, {
-          id: 'country',
-          label: 'Country'
-        }]
-      }
-    },
-  }
 </script>
 ```
 

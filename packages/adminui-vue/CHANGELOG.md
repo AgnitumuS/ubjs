@@ -7,13 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - `ubConfig.json` - added new field `supportEmail`. This field activate button on error message who allows the user to send the error text to a pre-specified address
+- `UBaseLocaleButton`, which is does not depend on Vuex store in any way and provides UI for editing translations.
+  That allows building interfaces for cases like translations of JSON unstructured data.
+- Registered `ULocaleButton` and `UBaseLocaleButton` as Vue controls
+
 ### Changed
+- BREAKING: renamed `LocaleButton.vue` to `ULocaleButton.vue`.  If component was required directly as a file,
+  it is better to use ULocaleButton registered Vue component now.
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+- Translations for a new record: now it initializes with values of the default language instead of empty value
+- `UTableEntity`: prevent show instance form on Enter key and double-click  when the "edit" action is in the `hideActions`
 
 ## [5.22.2] - 2022-01-24
 ### Added
