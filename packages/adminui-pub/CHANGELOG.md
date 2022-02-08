@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - the `readPKCanceled` client localization key has been duplicated in the `adminui-pub` and `ub-pub` packages.
+ One of them has been renamed to `userOperationCanceled`, which matches its translation.
 
 ### Deprecated
 
