@@ -1028,6 +1028,10 @@
           "description": "Settings for admin UI",
           "additionalProperties": false,
           "properties": {
+            "supportEmail": {
+              "type": "string",
+              "description": "This field activate button on error message who allows the user to send the error text to a pre-specified address. The value must comply with the rules for generating an html-link with a modifier mailto:"
+            },
             "applicationName": {
               "type": ["string", "object"],
               "description": "Name of application for show on the login form. In case explicitly defined as empty string - not shown in login form. For localization can be specified as object with keys=locale: {\"en\": \"My App\", \"uk\": \"Мій додаток\"}",
