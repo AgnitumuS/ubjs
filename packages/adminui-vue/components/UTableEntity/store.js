@@ -280,6 +280,7 @@ module.exports = instance => ({
 
     ADD_ITEM (state, item) {
       state.items.push(item)
+      if (typeof state.total === 'number') ++state.total
     },
 
     UPDATE_ITEM (state, updatedItem) {
@@ -294,6 +295,7 @@ module.exports = instance => ({
         const deleteIndex = state.items.findIndex(i => i.ID === deleteID)
         if (deleteIndex !== -1) {
           state.items.splice(deleteIndex, 1)
+          if (typeof state.total === 'number') --state.total
         }
       }
     },
