@@ -45,7 +45,7 @@ export default {
       const { $ut, value, addDay } = this
       return {
         whereList: [{ condition: 'less', value: addDay(value) }],
-        description: $ut('to_date') + ' ' + this.$UB.formatter.formatDate(addDay(value), 'date')
+        description: $ut('to_date') + ' ' + this.$UB.formatter.formatDate(value, 'date')
       }
     }
   }
