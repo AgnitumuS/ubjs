@@ -833,7 +833,7 @@ export default {
     onSelect (ID, row) {
       if (this.onSelectRecord) {
         this.onSelectRecord({ ID, row, close: this.close })
-      } else {
+      } else if (this.canEdit) {
         this.editRecord(ID)
       }
     },
