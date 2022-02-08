@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   That allows building interfaces for cases like translations of JSON unstructured data.
 - Registered `ULocaleButton` and `UBaseLocaleButton` as Vue controls
 - `UTableEntity` - update total items on pagination, after added or removed item
+- `UTableEntity` store: new mutation `SELECT_ROW_BY_INDEX` allows select record by row index
+- `UTableEntity`: in case record disappears from the store after refresh, sort or filtering,
+   selection will be restored by row index before store state changed.
 
 ### Changed
 - BREAKING: renamed `LocaleButton.vue` to `ULocaleButton.vue`.  If component was required directly as a file,
