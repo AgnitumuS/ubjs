@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - restore `change password` functionality (brok by 403 code interceptor added in 5.22.0)
 
 ## [5.22.1] - 2022-01-14
 ## [5.22.0] - 2022-01-09
@@ -27,7 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - nodeJS compatibility: transport.js, account that `readystatechange` event might be raised after "done" state
    The `xmlhttprequest` module, which used in NodeJS environment, in case of errors, such as socket closed,
    might fire `readystatechange` with state "DONE" (4) twice.
- - Allow to pass `{timeout: 0}` to xhr - prevent overriding 0 value with default timeout
+ - Allow pass `{timeout: 0}` to xhr - prevent overriding 0 value with default timeout
 
 ## [5.9.22] - 2021-12-07
 ### Fixed

@@ -326,7 +326,7 @@ UB.i18nExtend({
   "formNotFound": "Shakl topilmadi",
   "startSearchMinCharacters": "Qidiruv uchun minimal belgi miqdori: {0}",
   "authOpenIDConnectFail": "OpenID provayderi sizning so'rovingizni tasdiqlay olmaydi",
-  "readPKCanceled": "Foydalanuvchi tomonidan bekor qilingan",
+  "userOperationCanceled": "Foydalanuvchi tomonidan bekor qilingan",
   "menu": "Menyu",
   "ubErrLockedbyanotheruser": "Yozuv boshqa foydalanuvchi tomonidan bloklangan. O'zgarishlarni saqlab bo'lmaydi. Keyinroq qayta urinib ko'ring.",
   "showFilterPanel": "Filtr",

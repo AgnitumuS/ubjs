@@ -6,9 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-`cronstrue` - package for converting cron expression into a human-readable string (https://github.com/bradymholt/cronstrue)
+- `cronstrue`: package for converting cron expression into a human-readable string (https://github.com/bradymholt/cronstrue)
 
+ - `UBDocument`: added public property `urlParams` that can be defined at client forms
+ and it will be added to `getDocument` request URL formed by `UBDocument`, so in the server logs the source of `getDocument` can be tracked
+ 
 ### Changed
+ - the `readPKCanceled` client localization key has been duplicated in the `adminui-pub` and `ub-pub` packages.
+ One of them has been renamed to `userOperationCanceled`, which matches its translation.
 
 ### Deprecated
 

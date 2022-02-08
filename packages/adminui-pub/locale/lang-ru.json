@@ -278,7 +278,7 @@
   "OpenIDConnect": "OpenID",
   "authOpenIDConnectFail": "Удостоверяющий центр отклонил запрос на аутентификацию",
   "moreThanOneUserWithPassedCertificate": "Этот сертификат используется несколькими пользователями. Укажите имя пользователя.",
-  "readPKCanceled": "Прервано пользователем",
+  "userOperationCanceled": "Прервано пользователем",
   "invalidPrivateKeyCertificate": "Выбрано ошибочный сертификат(ы) личного ключа. Для ключа, выданного после 2014 года, должно быть два сертификата.",
 
   "navShortcutCode": "Код ярлыка",

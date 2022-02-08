@@ -32,13 +32,13 @@ const Vuex = require('vuex')
 const { mapGetters, mapActions } = Vuex
 const createStore = require('./store')
 const UTableEntityRoot = require('./components/UTableEntityRoot.vue').default
-const selectionProps = require('../controls/mixins/selection/props')
+const selectionMixin = require('../controls/mixins/selection/props')
 const ColumnTemplateProvider = require('./column-template-provider')
 
 export default {
   name: 'UTableEntity',
   components: { UTableEntityRoot },
-  mixins: [selectionProps],
+  mixins: [selectionMixin],
   props: {
     /**
      * Function which return UB.ClientRepository or UBQL object
@@ -181,11 +181,13 @@ export default {
       default: false
     }
   },
+
   data () {
     return {
       curSelected: []
     }
   },
+
   computed: {
     ...mapGetters(['schema']),
 
@@ -249,6 +251,7 @@ export default {
       this.$store.commit('SET_MULTISELECT_KEY_ATTR', newValue)
     },
     selectedRows (newSelected) {
+      // selectedRows added by selectionMixin
       this.selectionCache.clear()
       newSelected.forEach(element => {
         this.selectionCache.add(element)
@@ -258,7 +261,11 @@ export default {
   },
 
   async created () {
-    // add `selectionCache` and `tableItems` in created hook to prevent observation by Vue
+    // `selectionCache` and `tableItems` are added inside created hook to prevent observation by Vue
+    /**
+     * items selected in ALL pages
+     * @type {Set<*>}
+     */
     this.selectionCache = new Set(this.selectedRows)
     this.tableItems = []
     const storeConfig = createStore(this)
@@ -281,8 +288,8 @@ export default {
     this.unSubscrubeMutations = this.$store.subscribe((mutation) => {
       if (MUTATIONS_FOR_EVENTS[mutation.type]) {
         /**
-         * - `item-*` events are triggers when item is added, removed or updated.
-         * - `items` event is triggered when all items are replaced by new items collection (at last on initial fills.
+         * - `item-*` events are triggers when item is added, removed or updated
+         * - `items` event is triggered when all items are replaced by new items collection (at last on initial fills)
          *
          * @event item-added, item-removed, item-updated, items
          * @param {object} payload

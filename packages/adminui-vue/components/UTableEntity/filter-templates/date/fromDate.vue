@@ -1,6 +1,6 @@
 <template>
   <filter-template
-    :button-disabled="value === null"
+    :button-disabled="isEmpty"
     @submit="submitHandler"
   >
     <u-date-picker
@@ -26,13 +26,23 @@ export default {
       value: null
     }
   },
+  computed: {
+    isEmpty () {
+      return this.value === '' || this.value === null
+    }
+  },
+
+  created () {
+    if (Array.isArray(this.value)) this.value = this.value[0]
+  },
+
   methods: {
-    getCondition() {
-      const { value, $ut, $moment } = this
-        return {
-          whereList: [{condition: 'moreEqual', value}],
-          description: $ut('from_date') + ' ' + $moment(value).format('ll')
-        }
+    getCondition () {
+      const { value, $ut } = this
+      return {
+        whereList: [{ condition: 'moreEqual', value }],
+        description: $ut('from_date') + ' ' + this.$UB.formatter.formatDate(value, 'date')
+      }
     }
   }
 }
