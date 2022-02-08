@@ -45,7 +45,11 @@
       <div class="filter-selector__body">
         <template v-for="(item, index) in length">
           <filter-item
-            :key="selectedColumns[index] && selectedColumns[index].id ? selectedColumns[index].id : index"
+            :key="
+              selectedColumns[index] && selectedColumns[index].id
+                ? selectedColumns[index].id
+                : index
+            "
             ref="filterItem"
             :columns="filterColumns"
             :search-disabled="
@@ -121,21 +125,45 @@ export default {
       const { availableColumns } = this
       filters.forEach((item) => {
         if (!item.whereList) return
+
         const firstList = item.whereList[0]
+        const secondtList = item.whereList[1]
         const column = availableColumns.find(
           (i) => i.id === firstList.expression
         )
         if (!column) return
+
         column.condition = firstList.condition
         column.value = firstList.value
-        if (firstList.condition === 'equal' && typeof column.value === 'boolean') {
-          column.condition = column.value ? 'isTrue' : 'isFalse'
-        }
         this.selectedColumns.push(column)
-        const secondtList = item.whereList[1]
-        if (!secondtList) return
-        column.condition = 'range'
-        column.value = [firstList.value, secondtList.value]
+        if (item.compName) {
+          column.condition = item.compName
+          if (secondtList) column.value = [firstList.value, secondtList.value]
+        } else {
+          if (
+            firstList.condition === 'equal' &&
+            typeof column.value === 'boolean'
+          ) {
+            column.condition = column.value ? 'isTrue' : 'isFalse' // it is name of component
+          }
+
+          if (
+            column.attribute.dataType === 'DateTime' ||
+            column.attribute.dataType === 'Date'
+          ) {
+            // it is name of component
+            const list = {
+              less: 'toDate',
+              moreEqual: 'fromDate'
+            }
+            column.condition = list[column.condition]
+              ? list[column.condition]
+              : column.condition
+          }
+          if (!secondtList) return
+          column.condition = 'range'
+          column.value = [firstList.value, secondtList.value]
+        }
       })
       this.length = this.selectedColumns.length
     },
@@ -178,6 +206,7 @@ export default {
         const condition = el.getCondition()
         const column = selectedColumns[index]
         $store.commit('APPLY_FILTER', {
+          compName: comp.condition,
           columnId: column.id,
           label: column.label,
           description: condition.description,

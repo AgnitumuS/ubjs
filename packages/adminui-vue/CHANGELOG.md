@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Translations for a new record: now it initializes with values of the default language instead of empty value
 - `UTableEntity`: prevent show instance form on Enter key and double-click  when the "edit" action is in the `hideActions`
+- fixed multiple filter, when user use filters by date
 
 ## [5.22.2] - 2022-01-24
 ### Added
