@@ -115,6 +115,32 @@ Ext.define('UB.ux.UBDocument', {
   cls: 'ub-document-container',
 
   /**
+   * Additional parameters that will be added to `getDocument` request
+   * Usage sample:
+   * Client-side control:
+    {
+      attributeName: 'docID.document',
+      expanded: true,
+      urlParams: {
+       skipBorderUnit: true
+      },
+      forceMIME: 'application/pdf'
+    }
+   * Server-side checker:
+    App.on('getDocument:before', (req, resp) => {
+      let params
+      if (req.method === 'GET') {
+        params = req.parsedParameters
+      } else if (req.method === 'POST') {
+       const paramStr = req.read()
+       params = JSON.parse(paramStr)
+      }
+      if (params.skipBorderUnit) doSomething()
+    })
+   * @cfg {Object|null}
+   */
+  urlParams: null,
+  /**
    * Request a server to convert a document content to specified MIME type
    * Converting  must be are enabled on the server side.
    *
@@ -438,11 +464,11 @@ Ext.define('UB.ux.UBDocument', {
         }
       } else {
         xtype = me.expanded ? val.ct : 'UB.ux.UBLink'
-        params = {
+        params = Object.assign(me.urlParams || {}, {
           entity: me.entityName,
           attribute: me.attributeName,
           ID: me.instanceID
-        }
+        })
 
         if (val.store) {
           params.store = val.store
@@ -464,7 +490,6 @@ Ext.define('UB.ux.UBDocument', {
           params.filename = me.entityName + me.instanceID + me.attributeName
         }
         params._rc = val.revision
-        params.uitag = me.up('basepanel')?.uiTag
 
         url = Ext.String.urlAppend(
           $App.connection.baseURL + 'getDocument',
