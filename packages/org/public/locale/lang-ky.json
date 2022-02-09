@@ -6,5 +6,7 @@
     "orgOrganization": "Внутренние организации",
     "orgEmployeeOnStaff": "Назначение работников",
     "orgTreeCanNotBeCyclical": "Дерево не может быть цикличным",
-    "orgDepartment": "Подразделение"
+    "orgDepartment": "Подразделение",
+    "orgExecutorsGroup": "Группа исполнителей",
+    "orgOrganizationalChart": "Органограмма"
 }

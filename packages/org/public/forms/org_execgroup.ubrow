@@ -2,7 +2,7 @@
  "isDefault": true,
  "entity": "org_execgroup",
  "formType": "vue",
- "caption": "Execution group",
- "description": "Execution group",
+ "caption": "orgExecutorsGroup",
+ "description": "orgExecutorsGroup",
  "formCode": "{\"fName\":\"org_execgroup-fm.vue\",\"origName\":\"org_execgroup-fm.vue\",\"ct\":\"script/x-vue\",\"size\":1588,\"md5\":\"44a1d1ce5345069c9a8a886f29c0c820\"}"
 }

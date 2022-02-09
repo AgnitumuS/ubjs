@@ -6,5 +6,7 @@
     "orgOrganization": "Ташкилотҳои дохили ",
     "orgEmployeeOnStaff": "Таъин намудани кормандон",
     "orgTreeCanNotBeCyclical": "Дарахт наметавонад даврӣ бошад",
-    "orgDepartment": "Шӯъба"
+    "orgDepartment": "Шӯъба",
+    "orgExecutorsGroup": "Гурӯҳҳои рассомон",
+    "orgOrganizationalChart": "Органограмма"
 }

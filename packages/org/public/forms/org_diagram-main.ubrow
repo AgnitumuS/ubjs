@@ -2,8 +2,8 @@
  "isDefault": false,
  "entity": "org_diagram",
  "formType": "auto",
- "caption": "Organizational chart",
- "description": "Organizational chart",
+ "caption": "orgOrganizationalChart",
+ "description": "orgOrganizationalChart",
  "formDef": "{\"fName\":\"org_diagram-main-fm.def\",\"origName\":\"org_diagram-main-fm.def\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":567,\"md5\":\"d2926108ba3dc9db192540aacd93483d\"}",
  "formCode": "{\"fName\":\"org_diagram-main-fm.js\",\"origName\":\"org_diagram-main-fm.js\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":84,\"md5\":\"bdb70d981d33cf8fea7a51ad84eae9c8\"}"
 }

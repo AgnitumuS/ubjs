@@ -6,5 +6,7 @@
     "orgOrganization": "ორგანიზაციები",
     "orgEmployeeOnStaff": "თანამშრომლების დანიშვნა",
     "orgTreeCanNotBeCyclical": "ხე არ უნდა იყოს ციკლური",
-    "orgDepartment": "განყოფილება"
+    "orgDepartment": "განყოფილება",
+    "orgExecutorsGroup": "Executors Group",
+    "orgOrganizationalChart": "ორგანიზაციული სქემა"
 }

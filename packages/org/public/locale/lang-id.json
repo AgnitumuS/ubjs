@@ -6,5 +6,7 @@
     "orgOrganization": "Organizations",
     "orgEmployeeOnStaff": "Employee on staff",
     "orgTreeCanNotBeCyclical": "Tree сan not be cyclical",
-    "orgDepartment": "Department"
+    "orgDepartment": "Department",
+    "orgExecutorsGroup": "Executors Group",
+    "orgOrganizationalChart": "Organization Chart"
 }
