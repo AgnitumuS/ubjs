@@ -111,6 +111,7 @@
       "hasCheckedFormat": "{checked}/{total} gecontroleerd"
     }
   },
+  "supportMailToTitle": "Send error to support",
   "isRequiredFieldFmt": "{0} is vereist",
   "linkCopiedText": "Link gekopieerd naar klembord",
   "createdEntityCaption": "Gecreëerd",

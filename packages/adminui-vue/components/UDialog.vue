@@ -28,6 +28,7 @@
         v-if="isDevInfo && supportMailTo !== undefined"
         class="ub-dialog__footer__item ub-dialog__mail-link"
         :href="`mailto:${getMailUrl()}`"
+        :title="$ut('supportMailToTitle')"
         >
         <u-button
           appearance="plain"

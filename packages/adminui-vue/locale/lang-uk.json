@@ -111,6 +111,7 @@
       "hasCheckedFormat": "{checked}/{total} вибрано"
     }
   },
+  "supportMailToTitle": "Відправити помилку до підтримки",
   "isRequiredFieldFmt": "{0} обов'язкове для заповнення",
   "linkCopiedText": "Посилання скопійовано в буфер обміну",
   "createdEntityCaption": "Створено",

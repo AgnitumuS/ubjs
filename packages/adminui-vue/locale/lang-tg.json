@@ -111,6 +111,7 @@
       "hasCheckedFormat": "{checked}/{total} интихоб карда шуд"
     }
   },
+  "supportMailToTitle": "Send error to support",
   "isRequiredFieldFmt": "{0} барои пур карданд ҳатмист ",
   "linkCopiedText": "Истинод нусхабардорӣ карда шуд ба буфери мубодила",
   "createdEntityCaption": "Офирида шудааст",
