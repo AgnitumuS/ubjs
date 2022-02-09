@@ -95,11 +95,12 @@ function dialogInfo (msg, title = 'info') {
  * @param {boolean} [isDevInfo=false] If true adds "Copy to clipboard" button
  * @returns {Promise<boolean>} resolved to true when user press OK button, in other case (Esc) - false
  */
-function dialogError (msg, title = 'error', isDevInfo = false) {
+function dialogError (msg, title = 'error', isDevInfo = false, detail) {
   msg = msg.replace(USER_MESSAGE_RE, '$1')
   return dialog({
     title,
     msg,
+    errDetail: detail,
     type: 'error',
     isDevInfo,
     buttons: {
@@ -141,7 +142,7 @@ function errorReporter ({ errMsg, errCode, entityCode, detail }) {
   const devBtnEl = instance.$el.querySelector(`[data-id=${devBtnID}]`)
   const showMessBtnEl = instance.$el.querySelector(`[data-id=${showMessBtnID}]`)
   const devBtnListener = () => {
-    return dialogError(detail, 'error', true)
+    return dialogError(detail, 'error', true, { errMsg, errCode, entityCode })
   }
   const showMessBtnListener = () => {
     dialogError(errMsg, 'error')

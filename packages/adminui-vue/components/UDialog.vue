@@ -25,7 +25,7 @@
 
     <template slot="footer">
       <a
-        v-if="isDevInfo && mailForSendErr !== undefined"
+        v-if="isDevInfo && supportMailTo !== undefined"
         class="ub-dialog__footer__item ub-dialog__mail-link"
         :href="`mailto:${getMailUrl()}`"
         >
@@ -81,21 +81,43 @@ export default {
     return {
       title: '',
       msg: '',
+      errDetail: null,
       buttons: {},
       type: 'info',
       isDevInfo: false,
       visible: false,
-      mailForSendErr: window.UB?.appConfig?.uiSettings?.adminUI?.supportEmail
+      supportMailTo: window.UB?.appConfig?.uiSettings?.adminUI?.supportMailTo
     }
   },
 
   methods: {
-    getMailUrl(){
-      const baseUrl = this.mailForSendErr
+    getMailUrl (){
+      const baseUrl = this.supportMailTo
       const isQuery = typeof baseUrl === 'string' ? baseUrl.includes('?') : false
-      const bodyQuery =`body=${this.msg}`
-      const result = isQuery ? baseUrl + `&${bodyQuery}` : baseUrl + `?${bodyQuery}` 
+      const msg = this.getMessageForEmail()
+      const bodyQuery =`body=${msg}`
+      const result = isQuery ? baseUrl + `&${bodyQuery}` : baseUrl + `?${bodyQuery}`
       return result
+    },
+
+    getMessageForEmail () {
+      const div = document.createElement('div')
+      div.innerHTML = this.msg
+      const errMsg = div.innerText
+      const userLogin = UB.connection.userLogin()
+      const activeTabElems = document.querySelectorAll('.x-panel.x-tabpanel-child.x-panel-default.x-closable.x-panel-closable.x-panel-default-closable')
+      let activeTabID = undefined
+      activeTabElems.forEach((elem)=>{
+        if (window.getComputedStyle(elem).display === 'block') activeTabID = elem.id
+      })
+      const obj = {
+        msg: errMsg,
+        userLogin,
+        activeTabID,
+        ...this.errDetail
+      }
+      const str = JSON.stringify(obj)
+      return str
     },
 
     decline () {
