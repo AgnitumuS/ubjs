@@ -1,12 +1,12 @@
 {
-    "orgEmployee": "Внутрішні працівники",
-	"orgUnit": "Внутрішні орг.одиниці",
-    "orgStaffUnit": "Внутр.штатні одиниці",
-    "orgProfession": "Посади(внутрішні)",
-    "orgOrganization": "Внутрішні організації",
-    "orgEmployeeOnStaff": "Призначення працівників",
-    "orgTreeCanNotBeCyclical": "Дерево не може бути циклічним",
-    "orgDepartment": "Підрозділ",
-    "orgExecutorsGroup": "Група виконавців",
-    "orgOrganizationalChart": "Органограма"
+  "orgEmployee": "Внутрішні працівники",
+  "orgUnit": "Внутрішні орг.одиниці",
+  "orgStaffUnit": "Внутр.штатні одиниці",
+  "orgProfession": "Посади(внутрішні)",
+  "orgOrganization": "Внутрішні організації",
+  "orgEmployeeOnStaff": "Призначення працівників",
+  "orgTreeCanNotBeCyclical": "Дерево не може бути циклічним",
+  "orgDepartment": "Підрозділ",
+  "orgExecutorsGroup": "Група виконавців",
+  "orgOrganizationalChart": "Органограма"
 }
