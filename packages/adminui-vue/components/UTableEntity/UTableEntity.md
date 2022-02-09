@@ -47,17 +47,17 @@ To get elements that are selected on the current page - use a variable `selected
     <ul>
       <li>selected IDs: {{selectedID}}</li>
       <li>last removed from selection: {{removed}}</li>
-      <li>last added to selection (dep1 can not be added): {{added}} </li>
+      <li>last added to selection (dep1 can't be added): {{added}} </li>
     </ul>
 
     <u-table-entity
       :max-height="500"
-      entity-name="reg_department"
+      entity-name="req_department"
       :enable-multi-select="true"
+      :before-add-selection="checkCanBeSelected"
       @selected="selectedID = $event"
       @remove-selected="removed = $event"
       @add-selected="added = $event"
-      @before-add-selection="checkCanBeSelected"
     />
   </div>
 </template>
