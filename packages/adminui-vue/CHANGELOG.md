@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `ubConfig.json` - added new field `supportEmail`. This field activate button on error message who allows the user to send the error text to a pre-specified address
+- `ubConfig.json` - added new field `supportMailTo`. This field activate button on error message who allows the user to send the error text to a pre-specified address
 - `UBaseLocaleButton`, which is does not depend on Vuex store in any way and provides UI for editing translations.
   That allows building interfaces for cases like translations of JSON unstructured data.
 - Registered `ULocaleButton` and `UBaseLocaleButton` as Vue controls
