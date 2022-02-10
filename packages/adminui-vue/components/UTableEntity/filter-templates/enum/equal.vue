@@ -1,6 +1,6 @@
 <template>
   <filter-template
-    :button-disabled="value === null"
+    :button-disabled="isEmpty"
     @submit="submitHandler"
   >
     <u-select-enum
@@ -44,6 +44,10 @@ export default {
         eGroup: this.eGroup,
         code: this.value
       })
+    },
+
+    isEmpty () {
+      return this.value === '' || this.value === null
     }
   },
   methods: {
