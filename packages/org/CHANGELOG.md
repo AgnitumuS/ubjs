@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - Localization of the captions missed for `org_execgroup` and `org_diagram-main` forms
 
 ### Changed
 
@@ -14,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- cyrillic symbols in English (en) localization
 
 ## [5.22.3] - 2022-02-08
 ## [5.22.2] - 2022-01-24
