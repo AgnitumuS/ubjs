@@ -1,6 +1,6 @@
 <template>
   <filter-template
-    :button-disabled="value === null"
+    :button-disabled="isEmpty"
     @submit="submitHandler"
   >
     <u-date-picker
@@ -28,33 +28,30 @@ export default {
 
   computed: {
     description () {
-      return `${
-        this.$ut('table.filter.date.from')
-      } ${
-        this.$moment(this.value[0]).format('ll')
-      } ${
-        this.$ut('table.filter.date.to')
-      } ${
-        this.$moment(this.value[1]).format('ll')
-      }`
+      const iFr = this.$ut('table.filter.date.from')
+      const iTo = this.$ut('table.filter.date.to')
+      return `${iFr} ${this.$UB.formatter.formatDate(this.value[0], 'date')} ${iTo} ${this.$UB.formatter.formatDate(this.value[1], 'date')}`
+    },
+    isEmpty () {
+      return this.value === '' || this.value === null || this.value.length < 2
     }
   },
 
   methods: {
     addDay (date) {
-      const moment = this.$moment(date)
-      moment.add(1, 'day')
-      return moment.toDate()
+      const d = new Date(date)
+      d.setDate(d.getDate() + 1) // add 1 day
+      return d
     },
-    getCondition() {
+    getCondition () {
       const { value, addDay, description } = this
-        return {
-          whereList: [
-            { condition: 'moreEqual', value: value[0] },
-            { condition: 'less', value: addDay(value[1]) }
-          ],
-          description
-        }
+      return {
+        whereList: [
+          { condition: 'moreEqual', value: value[0] },
+          { condition: 'less', value: addDay(value[1]) }
+        ],
+        description
+      }
     }
   }
 }

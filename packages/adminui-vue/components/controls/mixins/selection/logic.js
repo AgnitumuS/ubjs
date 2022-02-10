@@ -50,7 +50,7 @@ module.exports = {
       const arr = curSelection
       const id = row[multiSelectKeyAttr]
       const hasIndex = arr.indexOf(id)
-      // disabled scroling table
+      // disabled scrolling table
       if (event && event.code === 'Space') event.preventDefault()
       if (hasIndex === -1) {
         if (event && event.shiftKey) {

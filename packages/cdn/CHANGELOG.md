@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.3] - 2022-02-08
+### Added
+ - `cdn_organization.OKPOCode` will be trimmed during insert/update operation (prevents unwonted whitespaces remove whitespaces at start/end)
+
 ## [5.22.2] - 2022-01-24
 ### Changed
  - attribute `cdn_person.photo` uses `avatars` BLOB store instead of default to store a person photo.

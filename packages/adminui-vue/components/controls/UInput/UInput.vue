@@ -6,7 +6,7 @@
     :precision="getPrecision"
     v-bind="$attrs"
   >
-    <locale-button
+    <u-locale-button
       v-if="getMultilang"
       slot="append"
       :attribute-name="attributeName"
@@ -15,7 +15,6 @@
 </template>
 
 <script>
-const LocaleButton = require('./LocaleButton.vue').default
 const numberTypes = ['Int', 'BigInt', 'Float', 'Currency', 'ID']
 
 /**
@@ -25,7 +24,6 @@ const numberTypes = ['Int', 'BigInt', 'Float', 'Currency', 'ID']
  */
 export default {
   name: 'UInput',
-  components: { LocaleButton },
   inject: ['entitySchema', '$v'],
 
   props: {
@@ -118,7 +116,7 @@ export default {
 </script>
 
 <style>
-  .ub-input.is-disabled .el-input-group__append{
-    border-color: hsl(var(--hs-border), var(--l-input-border-default));
-  }
+.ub-input.is-disabled .el-input-group__append {
+  border-color: hsl(var(--hs-border), var(--l-input-border-default));
+}
 </style>

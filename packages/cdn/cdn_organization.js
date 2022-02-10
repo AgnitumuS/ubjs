@@ -78,11 +78,11 @@ let allowAutoGenerateOKPO = null
 
 /**
  * @private
- * @param {ubMethodParams} ctxt
+ * @param {ubMethodParams} ctx
  * @returns {boolean}
  */
-function checkCode (ctxt) {
-  const mParams = ctxt.mParams
+function checkCode (ctx) {
+  const mParams = ctx.mParams
   const execParams = mParams.execParams
 
   if (!execParams.OKPOCode) {
@@ -92,6 +92,8 @@ function checkCode (ctxt) {
     } else {
       throw new UB.UBAbort(UB.i18n('errNotExsistsOKPO'))
     }
+  } else {
+    execParams.OKPOCode = execParams.OKPOCode.trim()
   }
 
   // if (execParams.OKPOCode.length !== 8 && execParams.OKPOCode.length !== 10) {

@@ -7,6 +7,8 @@ module.exports = {
     const UFormRow = require('../components/controls/UFormRow.vue').default
     const UCodeMirror = require('../components/controls/UCodeMirror.vue').default
     const USelectEnum = require('../components/controls/USelectEnum.vue').default
+    const UBaseLocaleButton = require('../components/controls/UInput/UBaseLocaleButton.vue').default
+    const ULocaleButton = require('../components/controls/UInput/ULocaleButton.vue').default
     const UInput = require('../components/controls/UInput/UInput.vue').default
     const UToolbar = require('../components/UToolbar/UToolbar.vue').default
     const UToolbarButton = require('../components/UToolbar/UToolbarButton.vue').default
@@ -47,6 +49,8 @@ module.exports = {
     Vue.component(UCodeMirror.name, UCodeMirror)
     Vue.component(USelectEnum.name, USelectEnum)
     Vue.component(UInput.name, UInput)
+    Vue.component(UBaseLocaleButton.name, UBaseLocaleButton)
+    Vue.component(ULocaleButton.name, ULocaleButton)
     Vue.component(UToolbar.name, UToolbar)
     Vue.component(UToolbarButton.name, UToolbarButton)
     Vue.component(UAutoField.name, UAutoField)

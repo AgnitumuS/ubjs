@@ -14,7 +14,28 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UTableEntity` - fixed bugs on filters when user change condition from `equal` to `oneOf`
 - `Form.js`: added updating this.tabId in `created` event handler after new entity Id is already generated. It fixes bug when newly created entity can be opened in a separate tab. 
+
+## [5.22.3] - 2022-02-08
+### Added
+- `UBaseLocaleButton`, which is does not depend on Vuex store in any way and provides UI for editing translations.
+  That allows building interfaces for cases like translations of JSON unstructured data.
+- Registered `ULocaleButton` and `UBaseLocaleButton` as Vue controls
+- `UTableEntity` - update total items on pagination, after added or removed item
+- `UTableEntity` store: new mutation `SELECT_ROW_BY_INDEX` allows select record by row index
+- `UTableEntity`: in case record disappears from the store after refresh, sort or filtering,
+   selection will be restored by row index before store state changed.
+
+### Changed
+- BREAKING: renamed `LocaleButton.vue` to `ULocaleButton.vue`.  If component was required directly as a file,
+  it is better to use ULocaleButton registered Vue component now.
+
+### Fixed
+- Translations for a new record: now it initializes with values of the default language instead of empty value
+- `UTableEntity`: prevent show instance form on Enter key and double-click  when the "edit" action is in the `hideActions`
+- fixed multiple filter, when user use filters by date
+- `UTableEntity`: filtration for `in` and `notIn` conditions
 
 ## [5.22.2] - 2022-01-24
 ### Added

@@ -278,7 +278,7 @@
   "OpenIDConnect": "OpenID",
   "authOpenIDConnectFail": "Засвідчувальний центр відхилив запит на аутентифікацію",
   "moreThanOneUserWithPassedCertificate": "Цей сертифікат використовується кількома користувачами. Введіть ім'я користувача.",
-  "readPKCanceled": "Припинено користувачем",
+  "userOperationCanceled": "Припинено користувачем",
   "invalidPrivateKeyCertificate": "Обрано не вірний сертифікат(и) особистого ключа. Для ключа, виданого після 2014 року, потрібно мати два сертифікати.",
 
   "navShortcutCode": "Код ярлика",

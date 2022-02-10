@@ -225,6 +225,23 @@ module.exports = function (session) {
     }
   })
 
+  displayOrder = displayOrder + 10
+  console.log('\t\t\tcreate `tst_multiselect` shortcut')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'tst_multiselect',
+      caption: 'Multiselect test',
+      displayOrder: displayOrder,
+      cmdCode: JSON.stringify({
+        cmdType: 'showForm',
+        formCode: 'tst_document-multiselect'
+      }, null, '\t')
+    }
+  })
+
   displayOrder += 10
   console.log('\t\t\tcreate `tst_onlyOffice` shortcut')
   conn.insert({

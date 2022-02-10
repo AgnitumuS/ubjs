@@ -16,6 +16,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.3] - 2022-02-08
+### Added
+ - `UBDocument`: added public property `urlParams` that can be defined at client forms
+ and it will be added to `getDocument` request URL formed by `UBDocument`, so in the server logs the source of `getDocument` can be tracked
+ 
+### Changed
+ - the `readPKCanceled` client localization key has been duplicated in the `adminui-pub` and `ub-pub` packages.
+ One of them has been renamed to `userOperationCanceled`, which matches its translation.
+
 ## [5.22.2] - 2022-01-24
 ## [5.22.1] - 2022-01-14
 ## [5.22.0] - 2022-01-09
