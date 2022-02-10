@@ -67,6 +67,13 @@
         "tempPath": "%UB_APPDATA%stores/default/_temp"
       },
       {
+        "name": "avatars",
+        "path": "%UB_APPDATA%stores/default",
+        "historyDepth": 0,
+        "storeSize": "Simple",
+        "keepOriginalFileNames": false
+      },
+      {
         "name": "attachments",
         "path": "%UB_APPDATA%stores/attachments",
         "tempPath": "%UB_APPDATA%stores/attachments/_temp",
