@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- `UTableEntity` - fixed bugs on filters after change condition
+- `UTableEntity` - fixed bugs on filters when user change condition from `equal` to `oneOf`
 
 ## [5.22.3] - 2022-02-08
 ### Added
