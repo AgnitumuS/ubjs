@@ -1,6 +1,6 @@
 <template>
   <filter-template
-    :button-disabled="value.length === 0"
+    :button-disabled="isEmpty"
     @submit="submitHandler"
   >
     <u-select-multiple
@@ -45,7 +45,17 @@ export default {
       } else {
         return []
       }
+    },
+
+    isEmpty () {
+      const { value } = this
+      return value === '' || value === null || value.length === 0
     }
+  },
+
+  // this hook will be call after call hook in mixin
+  created () {
+    if (!Array.isArray(this.value)) this.value = []
   },
 
   methods: {
