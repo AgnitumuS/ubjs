@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UNavbar` - fixed popup all list tabs on not tall screens
 
 ## [5.22.3] - 2022-02-08
 ### Added
