@@ -11,7 +11,6 @@
     <u-dropdown
       v-show="tabs.length"
       class="u-navbar-all-tabs__dropdown-reference"
-      custom-class="u-navbar-all-tabs__dropdown"
     >
       <button
         :title="$ut('UNavbar.allTabsButton')"
