@@ -1,6 +1,6 @@
 <template>
   <filter-template
-    :button-disabled="value === null"
+    :button-disabled="isEmpty"
     @submit="submitHandler"
   >
     <u-select-entity
@@ -35,6 +35,12 @@ export default {
       value: null,
       condition: 'notEqual',
       formattedValue: ''
+    }
+  },
+
+  computed: {
+    isEmpty () {
+      return this.value === '' || this.value === null
     }
   },
 

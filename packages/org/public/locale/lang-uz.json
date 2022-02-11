@@ -6,5 +6,7 @@
   "orgOrganization": "Ichki tashkilotlar",
   "orgEmployeeOnStaff": "Ishchilarni tayinlash",
   "orgTreeCanNotBeCyclical": "Daraxt tsikilli bo'lishi mumkin emas",
-  "orgDepartment": "Bo'lim"
+  "orgDepartment": "Bo'lim",
+  "orgExecutorsGroup": "Executors Group",
+  "orgOrganizationalChart": "Organogramma"
 }
