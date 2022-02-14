@@ -1,7 +1,7 @@
 <template>
   <form
     class="specify-cron"
-    name="qw"
+    name="specify-cron"
   >
     <u-checkbox
       v-for="(item, index) in items"

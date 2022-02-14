@@ -1,8 +1,8 @@
 <template>
-  <SecondsCron
+  <seconds-cron
     v-bind="$attrs"
-    mode="day"
-    :length="30"
+    mode="hour"
+    :length="22"
     :start-count="1"
     v-on="$listeners"
   />
@@ -10,9 +10,11 @@
 
 <script>
 export default {
-  name: 'DayCron',
+  name: 'HoursCron',
   components: {
     SecondsCron: require('./secondsCron.vue').default
   }
 }
 </script>
+
+<style lang="scss" scoped></style>

@@ -2,7 +2,7 @@
 
 ```vue
 <template>
-    <Cron :value="cronExpression" />
+    <u-cron :value="cronExpression" />
 </template>
 
 <script>

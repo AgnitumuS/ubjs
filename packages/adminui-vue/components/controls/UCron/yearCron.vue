@@ -1,5 +1,5 @@
 <template>
-  <SecondsCron
+  <seconds-cron
     v-bind="$attrs"
     mode="year"
     :length="50"

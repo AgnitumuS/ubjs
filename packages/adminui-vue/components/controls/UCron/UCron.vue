@@ -36,7 +36,7 @@
 const formatCronStrToHuman = require('./formatCronStrToHuman.js')
 
 export default {
-  name: 'Cron',
+  name: 'UCron',
   components: {
     secondsCron: require('./secondsCron.vue').default,
     minutesCron: require('./minutesCron.vue').default,
