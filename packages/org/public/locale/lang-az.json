@@ -6,5 +6,7 @@
   "orgOrganization": "Daxil təşkilatıar",
   "orgEmployeeOnStaff": "Əməkdaşların təyinatları",
   "orgTreeCanNotBeCyclical": "Ağaç dövri ola bilməz",
-  "orgDepartment": "Şəbə"
+  "orgDepartment": "Şəbə",
+  "orgExecutorsGroup": "İcraçı qrupu",
+  "orgOrganizationalChart": "Orqanoqram"
 }

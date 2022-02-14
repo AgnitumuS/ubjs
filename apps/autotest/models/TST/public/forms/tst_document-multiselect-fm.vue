@@ -10,9 +10,9 @@
       :max-height="500"
       entity-name="cdn_currency"
       :enable-multi-select="true"
+      :before-add-selection="checkCanBeSelected"
       @selected="selectedID = $event"
       @remove-selected="removed = $event"
-      :before-add-selection="checkCanBeSelected"
       @add-selected="added = $event"
     />
   </div>

@@ -11,6 +11,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `UCheckbox` - new component in UBjs. Usual <input type="checkbox">
 - `URadio` - new component in UBjs. Wrapper for groups consisting of <input type="radio"> 
 - `Cron` - new component in UBjs. Component for easy compilation cron expression. Can convert cron expression into a human-readable string
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+- `UNavbar` - fixed popup all list tabs on not tall screens
+- `UTableEntity` - fixed bugs on filters when user change condition from `equal` to `oneOf`
+
+## [5.22.3] - 2022-02-08
+### Added
 - `UBaseLocaleButton`, which is does not depend on Vuex store in any way and provides UI for editing translations.
   That allows building interfaces for cases like translations of JSON unstructured data.
 - Registered `ULocaleButton` and `UBaseLocaleButton` as Vue controls
@@ -23,14 +36,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - BREAKING: renamed `LocaleButton.vue` to `ULocaleButton.vue`.  If component was required directly as a file,
   it is better to use ULocaleButton registered Vue component now.
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 - Translations for a new record: now it initializes with values of the default language instead of empty value
 - `UTableEntity`: prevent show instance form on Enter key and double-click  when the "edit" action is in the `hideActions`
 - fixed multiple filter, when user use filters by date
+- `UTableEntity`: filtration for `in` and `notIn` conditions
 
 ## [5.22.2] - 2022-01-24
 ### Added
