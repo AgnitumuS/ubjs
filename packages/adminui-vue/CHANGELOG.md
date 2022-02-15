@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- new icons: `u-icon-download-with-signatures`, `u-icon-upload-with-signatures` and `u-icon-view-signatures`
 
 ### Changed
 
