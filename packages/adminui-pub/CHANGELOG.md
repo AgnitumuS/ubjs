@@ -8,12 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
+ - az localization for tinymce
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - EntityGridPanel - not resize summary row if column is hidden, add timeout before GridSummary.dataBind when clean data in rowEditing grid
 
 ## [5.22.3] - 2022-02-08
 ### Added
