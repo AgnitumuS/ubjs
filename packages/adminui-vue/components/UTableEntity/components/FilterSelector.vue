@@ -110,6 +110,9 @@ export default {
         const index = this.selectedColumns.findIndex((el) => el.id === item.id)
         return index === -1
       })
+    },
+    selectedColumnId () {
+      return this.$store.state.selectedColumnId
     }
   },
   methods: {
@@ -121,7 +124,10 @@ export default {
       const { filters } = this.$store.state
       this.selectedColumns.splice(0)
       this.length = 1
-      if (!filters || !filters.length) return
+      if (!filters || !filters.length) {
+        this.preselectedColumnAdd()
+        return
+      }
       const { availableColumns } = this
       filters.forEach((item) => {
         if (!item.whereList) return
@@ -165,6 +171,7 @@ export default {
           column.value = [firstList.value, secondtList.value]
         }
       })
+      this.preselectedColumnAdd()
       this.length = this.selectedColumns.length
     },
     setDisabledSearchBtn () {
@@ -227,6 +234,12 @@ export default {
         delete deletedFilter.condition
       }
       this.setDisabledSearchBtn()
+    },
+    preselectedColumnAdd () {
+      const currentColumn = this.availableColumns.find(
+        (col) => col.id === this.selectedColumnId
+      )
+      if (currentColumn && !this.selectedColumns.includes(currentColumn)) { this.selectedColumns.unshift(currentColumn) }
     }
   }
 }
