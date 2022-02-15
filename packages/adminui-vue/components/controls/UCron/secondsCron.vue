@@ -97,10 +97,6 @@ export default {
       type: Number,
       default: 0
     },
-    locale: {
-      type: String,
-      default: window.localStorage.getItem('preferredLocale') || 'en'
-    },
     customSpesifyItems: undefined
   },
   data () {

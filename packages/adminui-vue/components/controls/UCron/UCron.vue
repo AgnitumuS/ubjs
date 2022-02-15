@@ -23,7 +23,6 @@
           <component
             :is="currentComponent"
             :item="everyTime.find((i) => i.id === everyTimeValue)"
-            :locale="locale"
             @change="changeHandler"
           />
         </keep-alive>
@@ -33,7 +32,7 @@
 </template>
 
 <script>
-const formatCronStrToHuman = require('./formatCronStrToHuman.js')
+const $App = require('@unitybase/adminui-pub')
 
 export default {
   name: 'UCron',
@@ -76,18 +75,8 @@ export default {
     cronString () {
       return this.everyTime.map((i) => i.value).join(' ')
     },
-    locale () {
-      if (
-        window.$App &&
-        window.$App.connection &&
-        window.$App.connection.userData
-      ) {
-        return window.$App.connection.userData('lang')
-      }
-      return window.localStorage.getItem('preferredLocale') || 'en'
-    },
     humanCronString () {
-      return formatCronStrToHuman(this.cronString, this.locale)
+      return $App.verbaliseCronExpression(this.cronString)
     }
   },
   watch: {
@@ -95,7 +84,7 @@ export default {
       /**
        * Triggers when the user change state of radio
        *
-       * @param {object} newValue: includes new cron expression and human readable string
+       * @param {object} newValue: includes new cron expression and human-readable string
        */
       this.$emit('change', {
         cronString: this.cronString,
@@ -105,6 +94,7 @@ export default {
   },
   created () {
     this.init(this.value)
+    $App.verbaliseCronExpression('') // lazy load cronstrue
   },
   methods: {
     init (cronStr = this.value) {

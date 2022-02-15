@@ -15,23 +15,17 @@ export default {
   components: {
     SecondsCron: require('./secondsCron.vue').default
   },
-  props: {
-    locale: {
-      type: String,
-      default: window.localStorage.getItem('preferredLocale') || 'en'
-    }
-  },
   methods: {
     specifyItemsCreate () {
       const result = []
-      const date = new Date()
-      const { locale } = this
+      const date = new Date(2022, 0, 1)
+      const lang = this.$UB.connection.userLang()
       for (let i = 1; i <= 12; i++) {
         date.setMonth(i - 1)
         const element = {
-          label: date.toLocaleString(locale, { month: 'long' }),
+          label: date.toLocaleString(lang, { month: 'long' }),
           checked: false,
-          id: i.toString()
+          id: '' + i
         }
         result.push(element)
       }

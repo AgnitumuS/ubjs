@@ -103,10 +103,6 @@ export default {
     startCount: {
       type: Number,
       default: 0
-    },
-    locale: {
-      type: String,
-      default: window.localStorage.getItem('preferredLocale') || 'en'
     }
   },
   data () {
@@ -149,20 +145,17 @@ export default {
       return str
     },
     createDaysOfWeek () {
-      const date = new Date()
-      const { locale } = this
+      const d = new Date(2022, 0, 2) // 2022-01-02 known to be sunday
+      const lang = this.$UB.connection.userLang()
       for (let i = 0; i < 7; i++) {
         const element = {
-          shortName: date.toLocaleString(locale, { weekday: 'short' }),
-          longName: date.toLocaleString(locale, { weekday: 'long' }),
-          id: date.getDay()
+          shortName: d.toLocaleString(lang, { weekday: 'short' }),
+          longName: d.toLocaleString(lang, { weekday: 'long' }),
+          id: i
         }
         this.daysOfWeek.push(element)
-        date.setDate(date.getDay() + 1)
+        d.setDate(d.getDay() + 1)
       }
-      this.daysOfWeek.sort((a, b) => {
-        return a.id - b.id
-      })
     },
     specifyItemsCreate () {
       this.daysOfWeek.forEach((day) => {

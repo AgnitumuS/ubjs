@@ -39,8 +39,31 @@ Ext.Loader.setConfig({
 
 const { launchApp, $App } = require('./_src/app.js')
 
-const cronstrue = require('./node_modules/cronstrue/i18n.js')
-$App.cronstrue = cronstrue
+let __cronstrue
+/**
+ * Parse cron expression to human-readable string according to current user language.
+ * During first call function lazy loads a `cronstrue` library and returns non-parsed expression, so should be
+ * called once before usage as `$App.verbaliseCronExpression('')`
+ *
+ * @param {string} expression Cron expression (with or without seconds)
+ * @param {string} [lang] Optional language. Default is current user language
+ * @returns {string}
+ */
+$App.verbaliseCronExpression = function (expression, lang) {
+  if (__cronstrue) {
+    let res
+    try {
+      res = __cronstrue.toString(expression, { locale: _defaultLang || 'en' })
+    } catch (e) {
+      res = e.message || e
+    }
+    return res
+  }
+  SystemJS.import('cronstrue/dist/cronstrue-i18n.min.js').then(cronstrue => {
+    __cronstrue = cronstrue
+  })
+  return expression // cronstrue is not loaded yet
+}
 
 launchApp()
 

@@ -15,6 +15,7 @@
       @remove-selected="removed = $event"
       @add-selected="added = $event"
     />
+    <u-cron :v-model="cronExpression" />
   </div>
 </template>
 <script>
@@ -30,7 +31,8 @@ module.exports.default = {
     return {
       selectedID: [],
       removed: [],
-      added: []
+      added: [],
+      cronExpression: '* * * * * *'
     }
   }
 }
