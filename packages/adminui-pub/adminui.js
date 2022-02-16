@@ -63,8 +63,12 @@ $App.verbaliseCronExpression = function (expression, lang) {
   return expression // cronstrue is not loaded yet
 }
 
+/**
+ * Cron expression verbalize initialization (async). Must be called once before using of `$App.verbaliseCronExpression`
+ * @returns {Promise}
+ */
 $App.verbaliseCronExpression.init = function () {
-  SystemJS.import('cronstrue/dist/cronstrue-i18n.min.js').then(cronstrue => {
+  return SystemJS.import('cronstrue/dist/cronstrue-i18n.min.js').then(cronstrue => {
     __cronstrue = cronstrue
     if (!SystemJS.has('cronstrue')) SystemJS.set('cronstrue', SystemJS.newModule(__cronstrue))
     return __cronstrue
