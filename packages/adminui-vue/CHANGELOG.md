@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `UCheckbox` - new component in UBjs. Usual <input type="checkbox">
 - `URadio` - new component in UBjs. Wrapper for groups consisting of <input type="radio"> 
 - `UCron` - new component in UBjs. Component for easy compilation cron expression. Can convert cron expression into a human-readable string
+- new icons: `u-icon-download-with-signatures`, `u-icon-upload-with-signatures` and `u-icon-view-signatures`
 
 ### Changed
 
@@ -21,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - `UNavbar` - fixed popup all list tabs on not tall screens
 - `UTableEntity` - fixed bugs on filters when user change condition from `equal` to `oneOf`
+- `UTableEntity` - added preselected column in filters (restore functionality after refactoring).
 
 ## [5.22.3] - 2022-02-08
 ### Added
