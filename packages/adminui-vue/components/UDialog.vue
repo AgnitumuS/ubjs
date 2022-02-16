@@ -176,6 +176,15 @@ export default {
   cursor: pointer;
 }
 
+.ub-notification__error__btn-group a{
+  display: block;
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 18px;
+  color: hsl(var(--hs-primary), var(--l-state-default));
+  cursor: pointer;
+}
+
 .ub-notification__error__btn-group i:hover{
   color: hsl(var(--hs-primary), var(--l-state-hover));
 }

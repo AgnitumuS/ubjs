@@ -114,6 +114,7 @@
       "hasCheckedFormat": "{checked}/{total} seçilmişdir"
     }
   },
+  "supportMailToTitle": "Send error to support",
   "isRequiredFieldFmt": "{0} mütləq doldurulmalı",
   "linkCopiedText": "link mübadilə buferinə əlavə olundu",
   "createdEntityCaption": "Yaradılıb",

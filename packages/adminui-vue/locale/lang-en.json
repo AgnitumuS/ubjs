@@ -114,6 +114,7 @@
       "hasCheckedFormat": "{checked}/{total} checked"
     }
   },
+  "supportMailToTitle": "Send error to support",
   "isRequiredFieldFmt": "{0} is required",
   "linkCopiedText": "Link copied to clipboard",
   "createdEntityCaption": "Created",

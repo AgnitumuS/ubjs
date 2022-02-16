@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `UCron` - new component. An easy compilation cron expression. Can convert cron expression into a human-readable string
   if @unitybase/adminui-pub is available
 - new icons: `u-icon-download-with-signatures`, `u-icon-upload-with-signatures` and `u-icon-view-signatures`
+- new parameter `uiSettings.adminUI.supportMailTo` in `ubConfig.json`: if sets - enables a button on the error message what allow sends error text to support
 
 ### Changed
 
