@@ -18,7 +18,7 @@
                 {{ sec }}
               </option>
             </select>
-            {{ `${$ut(`el.time.${mode}`)}` }}
+            {{ `${$ut(`UCron.${mode}`)}` }}
           </span>
         </div>
       </template>
@@ -34,8 +34,8 @@
         <div class="cron__start">
           <span class="cron__start__item">
             {{
-              `${getWordEvery()} ${$ut(`el.time.${mode}`)} ${$ut(
-                'el.cron.between'
+              `${getWordEvery()} ${$ut(`UCron.${mode}`)} ${$ut(
+                'UCron.between'
               )} `
             }}
             <select v-model="betweenSeconds[0]">
@@ -66,7 +66,7 @@
                 {{ index + startCount }}
               </option>
             </select>
-            {{ `${$ut(`el.time.${mode}`)}` }}
+            {{ `${$ut(`UCron.${mode}`)}` }}
           </span>
         </div>
       </template>
@@ -137,16 +137,16 @@ export default {
   methods: {
     getEveryLabel () {
       const { $ut } = this
-      const str = `${this.getWordEvery()} ${$ut(`el.time.${this.mode}`)}`
+      const str = `${this.getWordEvery()} ${$ut(`UCron.${this.mode}`)}`
       return str
     },
     getSpecificLabel () {
       const { $ut } = this
-      const str = `${$ut('el.cron.specific')} ${$ut(`el.time.${this.mode}`)} (${$ut('el.cron.chooseOneOrMany')})`
+      const str = `${$ut('UCron.specific')} ${$ut(`UCron.${this.mode}`)} (${$ut('UCron.chooseOneOrMany')})`
       return str
     },
     getWordEvery () {
-      return this.$ut('el.cron.every')
+      return this.$ut('UCron.every')
     },
     specifyItemsCreate () {
       const result = []

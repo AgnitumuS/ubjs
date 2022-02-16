@@ -4,27 +4,6 @@
       "confirm": "OK",
       "clear": "Очистити"
     },
-    "time": {
-      "second": "секунда",
-      "minute": "хвилина",
-      "hour": "година",
-      "day": "день",
-      "month": "місяць",
-      "dayOfWeek": "день тижня"
-    },
-    "cron": {
-      "every": "кожного(ї)",
-      "everySecond": "секунди",
-      "everyMinute": "хвилини",
-      "everyHour": "години",
-      "everyDay": "дня",
-      "everyMonth": "місяця",
-      "chooseOneOrMany": "вибрати один або декілька",
-      "specific": "конкретного(ї)",
-      "between": "між",
-      "expression": "Вираз",
-      "interpritation": "Інтерпретація"
-    },
     "datepicker": {
       "now": "Зараз",
       "today": "Сьогодні",
@@ -288,5 +267,24 @@
   },
   "UTable": {
     "noData": "Немає даних"
+  },
+  "UCron": {
+    "second": "секунда",
+    "minute": "хвилина",
+    "hour": "година",
+    "day": "день",
+    "month": "місяць",
+    "dayOfWeek": "день тижня",
+    "every": "кожного(ї)",
+    "everySecond": "секунди",
+    "everyMinute": "хвилини",
+    "everyHour": "години",
+    "everyDay": "дня",
+    "everyMonth": "місяця",
+    "chooseOneOrMany": "вибрати один або декілька",
+    "specific": "конкретного(ї)",
+    "between": "між",
+    "expression": "Вираз",
+    "interpretation": "Інтерпретація"
   }
 }

@@ -46,8 +46,8 @@
         <div class="cron__start">
           <span class="cron__start__item">
             {{
-              `${$ut('el.cron.every')} ${$ut('el.time.day')} ${$ut(
-                'el.cron.between'
+              `${$ut('UCron.every')} ${$ut('UCron.day')} ${$ut(
+                'UCron.between'
               )}`
             }}
             <select v-model="betweenSeconds[0]">
@@ -139,9 +139,9 @@ export default {
   methods: {
     getSpecificLabel () {
       const { $ut } = this
-      const str = `${$ut('el.cron.specific')} ${$ut(
-        'el.time.dayOfWeek'
-      )} (${$ut('el.cron.chooseOneOrMany')})`
+      const str = `${$ut('UCron.specific')} ${$ut(
+        'UCron.dayOfWeek'
+      )} (${$ut('UCron.chooseOneOrMany')})`
       return str
     },
     createDaysOfWeek () {

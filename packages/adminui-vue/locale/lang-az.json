@@ -4,27 +4,6 @@
       "confirm": "Tamam",
       "clear": "Təmizlə"
     },
-    "time": {
-      "seconds": "saniyə",
-      "minutes": "dəqiqə",
-      "hours": "saat",
-      "day": "gün",
-      "month": "aylar",
-      "dayOfWeek": "həftənin günləri"
-    },
-    "cron": {
-      "every": "every",
-      "everySecond": "second(s)",
-      "everyMinute": "minute(s)",
-      "everyHour": "hour(s)",
-      "everyDay": "day(s)",
-      "everyMonth": "month(s)",
-      "chooseOneOrMany": "choose one or many",
-      "specific": "specific",
-      "between": "between",
-      "expression": "cron expression",
-      "interpritation": "interpretation"
-    },
     "datepicker": {
       "now": "İndi",
       "today": "Bugün",
@@ -288,5 +267,24 @@
   },
   "UTable": {
     "noData": "No data"
+  },
+  "UCron": {
+    "seconds": "saniyə",
+    "minutes": "dəqiqə",
+    "hours": "saat",
+    "day": "gün",
+    "month": "aylar",
+    "dayOfWeek": "həftənin günləri",
+    "every": "every",
+    "everySecond": "second(s)",
+    "everyMinute": "minute(s)",
+    "everyHour": "hour(s)",
+    "everyDay": "day(s)",
+    "everyMonth": "month(s)",
+    "chooseOneOrMany": "choose one or many",
+    "specific": "specific",
+    "between": "between",
+    "expression": "cron expression",
+    "interpretation": "interpretation"
   }
 }

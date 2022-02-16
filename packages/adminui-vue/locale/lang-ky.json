@@ -4,27 +4,6 @@
       "confirm": "OK",
       "clear": "Очистить"
     },
-    "time": {
-      "seconds": "second",
-      "minutes": "minute",
-      "hours": "hour",
-      "day": "day",
-      "month": "month",
-      "dayOfWeek": "day of week"
-    },
-    "cron": {
-      "every": "every",
-      "everySecond": "second(s)",
-      "everyMinute": "minute(s)",
-      "everyHour": "hour(s)",
-      "everyDay": "day(s)",
-      "everyMonth": "month(s)",
-      "chooseOneOrMany": "choose one or many",
-      "specific": "specific",
-      "between": "between",
-      "expression": "cron expression",
-      "interpritation": "interpretation"
-    },
     "datepicker": {
       "now": "Сейчас",
       "today": "Сегодня",
@@ -288,5 +267,24 @@
   },
   "UTable": {
     "noData": "Нет данных"
+  },
+  "UCron": {
+    "seconds": "second",
+    "minutes": "minute",
+    "hours": "hour",
+    "day": "day",
+    "month": "month",
+    "dayOfWeek": "day of week",
+    "every": "every",
+    "everySecond": "second(s)",
+    "everyMinute": "minute(s)",
+    "everyHour": "hour(s)",
+    "everyDay": "day(s)",
+    "everyMonth": "month(s)",
+    "chooseOneOrMany": "choose one or many",
+    "specific": "specific",
+    "between": "between",
+    "expression": "cron expression",
+    "interpretation": "interpretation"
   }
 }

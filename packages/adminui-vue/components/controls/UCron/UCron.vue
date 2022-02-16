@@ -2,10 +2,10 @@
   <div class="u-cron">
     <div class="u-cron__desc">
       <div class="u-cron__desc--expresion">
-        {{$ut('el.cron.expression')}}: <span>{{ cronString }}</span>
+        {{$ut('UCron.expression')}}: <span>{{ cronString }}</span>
       </div>
       <div class="u-cron__desc--txt">
-        {{$ut('el.cron.interpritation')}}: <span>{{ humanCronString }}</span>
+        {{$ut('UCron.interpretation')}}: <span>{{ humanCronString }}</span>
       </div>
     </div>
     <div class="u-cron__main">
@@ -59,12 +59,12 @@ export default {
     return {
       everyTimeValue: 'day',
       everyTime: [
-        { id: 'seconds', label: this.$ut('el.time.second'), value: '*' },
-        { id: 'minutes', label: this.$ut('el.time.minute'), value: '*' },
-        { id: 'hours', label: this.$ut('el.time.hour'), value: '*' },
-        { id: 'day', label: this.$ut('el.time.day'), value: '*' },
-        { id: 'month', label: this.$ut('el.time.month'), value: '*' },
-        { id: 'week', label: this.$ut('el.time.dayOfWeek'), value: '*' }
+        { id: 'seconds', label: this.$ut('UCron.second'), value: '*' },
+        { id: 'minutes', label: this.$ut('UCron.minute'), value: '*' },
+        { id: 'hours', label: this.$ut('UCron.hour'), value: '*' },
+        { id: 'day', label: this.$ut('UCron.day'), value: '*' },
+        { id: 'month', label: this.$ut('UCron.month'), value: '*' },
+        { id: 'week', label: this.$ut('UCron.dayOfWeek'), value: '*' }
         // { id: 'year', label: 'року', value: '*' }
       ]
     }
