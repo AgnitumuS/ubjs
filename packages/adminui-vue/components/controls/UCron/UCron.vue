@@ -33,6 +33,7 @@
 
 <script>
 /* global $App */
+const ubPubAvailable = typeof $App !== 'undefined' // not available for UIDoc
 
 export default {
   name: 'UCron',
@@ -76,7 +77,7 @@ export default {
       return this.everyTime.map((i) => i.value).join(' ')
     },
     humanCronString () {
-      return $App.verbaliseCronExpression(this.cronString)
+      return ubPubAvailable ? $App.verbaliseCronExpression(this.cronString) : this.cronString
     }
   },
   watch: {
@@ -92,9 +93,11 @@ export default {
       })
     }
   },
-  created () {
+  async created () {
     this.init(this.value)
-    $App.verbaliseCronExpression.init() // lazy load cronstrue
+    if (ubPubAvailable) {
+      await $App.verbaliseCronExpression.init() // lazy load cronstrue
+    }
   },
   methods: {
     init (cronStr = this.value) {
