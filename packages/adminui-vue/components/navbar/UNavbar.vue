@@ -19,25 +19,26 @@
         {{ tabs.length }}
       </button>
       <template slot="dropdown">
-        <u-dropdown-item
-          v-for="tab of tabs"
-          :key="tab.id"
-          class="u-navbar-all-tabs__dropdown-item"
-          :class="{active: tab.id === activeTabId}"
-          @click="setActiveTab(tab.id)"
-        >
-          <template #label>
-            <div v-html="tab.title" />
-
-            <u-button
-              class="u-navbar-all-tabs__dropdown-item-close-button"
-              icon="u-icon-close"
-              color="control"
-              appearance="inverse"
-              @click.stop="handleClose([tab])"
-            />
-          </template>
-        </u-dropdown-item>
+        <div class="u-navbar-all-tabs__dropdown__body">
+          <u-dropdown-item
+            v-for="tab of tabs"
+            :key="tab.id"
+            class="u-navbar-all-tabs__dropdown-item"
+            :class="{active: tab.id === activeTabId}"
+            @click="setActiveTab(tab.id)"
+          >
+            <template slot="label">
+              <div v-html="tab.title" />
+              <u-button
+                class="u-navbar-all-tabs__dropdown-item-close-button"
+                icon="u-icon-close"
+                color="control"
+                appearance="inverse"
+                @click.stop="handleClose([tab])"
+              />
+            </template>
+          </u-dropdown-item>
+        </div>
 
         <u-dropdown-item divider />
 
@@ -259,6 +260,10 @@ export default {
 </script>
 
 <style>
+.u-navbar-all-tabs__dropdown__body {
+  max-height: calc(100vh - 105px); /* decrease by footer height */
+  overflow: auto;
+}
 .u-navbar {
   padding: 8px;
   padding-left: 30px;

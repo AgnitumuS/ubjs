@@ -6,7 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `ubConfig.json` - added new field `supportMailTo`. This field activate button on error message who allows the user to send the error text to a pre-specified address
+- `UDropdown`:`customClass` prop added - allows set a custom CSS class for u-dropdown
+- `UTableEntity` store: new mutation `CLEAR_FILTER` allows clear current filters set
+- `UCheckbox` - new component. Styled <input type="checkbox">
+- `URadio` - new component. Wrapper for groups consisting of styled <input type="radio"> 
+- `UCron` - new component. An easy compilation cron expression. Can convert cron expression into a human-readable string
+  if @unitybase/adminui-pub is available
+- new icons: `u-icon-download-with-signatures`, `u-icon-upload-with-signatures` and `u-icon-view-signatures`
+- new parameter `uiSettings.adminUI.supportMailTo` in `ubConfig.json`: if sets - enables a button on the error message what allow sends error text to support
 
 ### Changed
 
@@ -15,6 +22,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UNavbar` - fixed popup all list tabs on not tall screens
+- `UTableEntity` - fixed bugs on filters when user change condition from `equal` to `oneOf`
+- `UTableEntity` - added preselected column in filters (restore functionality after refactoring).
 
 ## [5.22.3] - 2022-02-08
 ### Added

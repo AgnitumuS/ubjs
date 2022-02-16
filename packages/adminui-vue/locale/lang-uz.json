@@ -261,5 +261,24 @@
   },
   "UTable": {
     "noData": "Ma'lumot yo'q"
+  },
+  "UCron": {
+    "seconds": "soniya",
+    "minutes": "daqiqa",
+    "hours": "soat",
+    "day": "kunlar",
+    "month": "oylar",
+    "dayOfWeek": "haftaning kunlari",
+    "every": "every",
+    "everySecond": "second(s)",
+    "everyMinute": "minute(s)",
+    "everyHour": "hour(s)",
+    "everyDay": "day(s)",
+    "everyMonth": "month(s)",
+    "chooseOneOrMany": "choose one or many",
+    "specific": "specific",
+    "between": "between",
+    "expression": "cron expression",
+    "interpretation": "interpretation"
   }
 }

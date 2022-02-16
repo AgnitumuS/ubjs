@@ -105,7 +105,10 @@
     "transfer": {
       "noMatch": "Совпадений не найдено",
       "noData": "Нет данных",
-      "titles": ["Список 1", "Список 2"],
+      "titles": [
+        "Список 1",
+        "Список 2"
+      ],
       "filterPlaceholder": "Введите ключевое слово",
       "noCheckedFormat": "{total} пунктов",
       "hasCheckedFormat": "{checked}/{total} выбрано"
@@ -116,14 +119,12 @@
   "linkCopiedText": "Ссылка скопирована в буфер обмена",
   "createdEntityCaption": "Создано",
   "updatedEntityCaption": "Обновлено",
-
   "searchByDateRange": "За период",
   "forAllTime": "За все время",
   "lastMonth": "За последний месяц",
   "lastQuarter": "За последний квартал",
   "last6Month": "За последние 6 месяцев",
   "thisYear": "За этот год",
-
   "successfullySaved": "Сохранено",
   "formWasRefreshed": "Форма была обновлена",
   "recordDeletedSuccessfully": "Запись успешно удалена",
@@ -133,19 +134,15 @@
   "validationError": "Невозможно сохранить.<br>Поля с ошибкой:<br> {0}",
   "formCrashTitle": "Форма сломалась",
   "formCrashBody": "Что то пошло не так, перезагрузите форму или свяжитесь с системным администратором",
-
   "selectDate": "Выберите дату",
   "selectDateAndTime": "Выберите дату и время",
-
   "Add": "Добавить",
   "Continue": "Продолжить",
-
   "sidebar": {
     "desktopSelector": {
       "title": "Выбор рабочего стола"
     }
   },
-
   "table": {
     "filter": {
       "list": {
@@ -191,7 +188,6 @@
       "AVG": "среднее"
     }
   },
-
   "sizeUnits": {
     "b": "Байт",
     "kb": "КБ",
@@ -199,7 +195,6 @@
     "gb": "ГБ",
     "tb": "ТБ"
   },
-
   "fileInput": {
     "manyFilesTable": {
       "label": "Название",
@@ -213,18 +208,15 @@
       "selectedFiles": "Выбрано"
     }
   },
-
   "select": {
     "valueIsUndefined": "Значение \"{0}\" не найдено в сущности \"{1}\"",
     "dictionaryAdding": "New record",
     "dictionaryAddingChoices": "Элемент <strong>{text}</strong> не найден в справочнике '{entity}'. Выберите: <ul><li><strong>Продолжить</strong> чтобы выбрать другой элемент</li> <li><strong>Добавить</strong> для добавления записи с текстом '{text}'</li> <li><strong>Редактировать</strong> для задания дополнительных реквизитов</li> </ul>",
     "recordAddedSuccessfully": "Создано новый элемент"
   },
-
   "tableRegister": {
     "hideDetails": "Скрыть детали"
   },
-
   "chat": {
     "emptyMessage": "Здесь пока нет ни одного сообщения...",
     "inputPlaceholder": "Введите сообщение",
@@ -232,12 +224,10 @@
     "removeMessageDialog": "Удалить сообщение \"{0}\"",
     "removeMessageNotification": "Сообщение успешно удалено"
   },
-
   "aclRlsInfo": {
     "subject": "Субъект",
     "name": "Наименование"
   },
-
   "UFile": {
     "webcam": {
       "webcamLabel": "Камера",
@@ -259,7 +249,6 @@
         "NotAllowedError": "Доступ к камере запрещен. Включите доступ в настройках браузера"
       }
     },
-
     "addButtonTooltip": "Добавить",
     "downloadButtonTooltip": "Скачать",
     "previewButtonTooltip": "Предпросмотр",
@@ -269,18 +258,34 @@
     "webcamButtonTooltip": "Загрузить изображение с ваб-камеры",
     "fullscreenButtonTooltip": "Развернуть на весь экран"
   },
-
   "UNavbar": {
     "allTabsButton": "Все открытые вкладки"
   },
-
   "USelectEntity": {
     "dropdown": {
       "moreButton": "Больше"
     }
   },
-
   "UTable": {
     "noData": "Нет данных"
+  },
+  "UCron": {
+    "seconds": "секунди",
+    "minutes": "минуты",
+    "hours": "часы",
+    "day": "дни",
+    "month": "месяца",
+    "dayOfWeek": "день недели",
+    "every": "every",
+    "everySecond": "second(s)",
+    "everyMinute": "minute(s)",
+    "everyHour": "hour(s)",
+    "everyDay": "day(s)",
+    "everyMonth": "month(s)",
+    "chooseOneOrMany": "choose one or many",
+    "specific": "specific",
+    "between": "between",
+    "expression": "Выражение",
+    "interpretation": "Интерпритация"
   }
 }

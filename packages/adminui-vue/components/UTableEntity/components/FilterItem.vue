@@ -45,7 +45,7 @@
           :key="selectedColumn.id"
           class="filter-item__value-comp"
           :column="selectedColumn"
-          :default-value="selectedColumn.value"
+          :default-value="filterValue"
           @search-disabled="searchDisabled"
           @keyup.enter.native="pressEnterHandler"
         />
@@ -91,7 +91,8 @@ export default {
   },
   data () {
     return {
-      conditionsByColumns: {}
+      conditionsByColumns: {},
+      filterValue: '',
     }
   },
   computed: {
@@ -141,6 +142,8 @@ export default {
       }
       const comp = this.$refs.searchComponent
       const flag = comp.isEmpty
+      this.filterValue = undefined
+      if (this.selectedColumn.condition === e) this.filterValue = this.selectedColumn.value
       this.searchDisabled(flag)
     },
     selectedColumn: function (value) {
@@ -151,6 +154,7 @@ export default {
     this.init()
     if (this.selectedColumn.condition !== undefined) {
       this.condition = this.selectedColumn.condition
+      this.filterValue = this.selectedColumn.value
     }
   },
   methods: {
