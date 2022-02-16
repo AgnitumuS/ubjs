@@ -128,7 +128,7 @@ export default {
   padding-right: calc(var(--padding) * 2);
 }
 .u-cron__tab.u-cron__tab-active {
-  font-size: 500;
+  font-weight: 500;
   color: white;
   background: hsl(var(--hs-primary), var(--l-state-default));
   border-radius: var(--border-radius);
