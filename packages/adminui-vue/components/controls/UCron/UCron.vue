@@ -32,7 +32,6 @@
 </template>
 
 <script>
-const $App = require('@unitybase/adminui-pub')
 
 export default {
   name: 'UCron',
