@@ -24,20 +24,8 @@
     />
 
     <template slot="footer">
-      <a
-        v-if="isDevInfo && supportMailTo !== undefined"
-        class="ub-dialog__footer__item ub-dialog__mail-link"
-        :href="`mailto:${getMailUrl()}`"
-        :title="$ut('supportMailToTitle')"
-        >
-        <u-button
-          appearance="plain"
-          icon="u-icon-share"
-        />
-      </a>
       <u-button
         v-if="isDevInfo"
-        class="ub-dialog__footer__item"
         appearance="plain"
         icon="u-icon-copy"
         @click="copyClipboard"
@@ -45,7 +33,6 @@
       <u-button
         v-if="buttons.cancel"
         ref="cancelButton"
-        class="ub-dialog__footer__item"
         appearance="plain"
         @click="cancel"
       >
@@ -53,14 +40,12 @@
       </u-button>
       <u-button
         v-if="buttons.no"
-        class="ub-dialog__footer__item"
         appearance="plain"
         @click="decline"
       >
         {{ $ut(buttons.no) }}
       </u-button>
       <u-button
-        class="ub-dialog__footer__item"
         color="primary"
         @click="accept"
       >
@@ -82,45 +67,14 @@ export default {
     return {
       title: '',
       msg: '',
-      errDetail: null,
       buttons: {},
       type: 'info',
       isDevInfo: false,
-      visible: false,
-      supportMailTo: window.UB?.appConfig?.uiSettings?.adminUI?.supportMailTo
+      visible: false
     }
   },
 
   methods: {
-    getMailUrl (){
-      const baseUrl = this.supportMailTo
-      const isQuery = typeof baseUrl === 'string' ? baseUrl.includes('?') : false
-      const msg = this.getMessageForEmail()
-      const bodyQuery =`body=${msg}`
-      const result = isQuery ? baseUrl + `&${bodyQuery}` : baseUrl + `?${bodyQuery}`
-      return result
-    },
-
-    getMessageForEmail () {
-      const div = document.createElement('div')
-      div.innerHTML = this.msg
-      const errMsg = div.innerText
-      const userLogin = UB.connection.userLogin()
-      const activeTabElems = document.querySelectorAll('.x-panel.x-tabpanel-child.x-panel-default.x-closable.x-panel-closable.x-panel-default-closable')
-      let activeTabID = undefined
-      activeTabElems.forEach((elem)=>{
-        if (window.getComputedStyle(elem).display === 'block') activeTabID = elem.id
-      })
-      const obj = {
-        msg: errMsg,
-        userLogin,
-        activeTabID,
-        ...this.errDetail
-      }
-      const str = JSON.stringify(obj)
-      return str
-    },
-
     decline () {
       this.$options.resolver('no')
       this.$destroy()
@@ -222,6 +176,15 @@ export default {
   cursor: pointer;
 }
 
+.ub-notification__error__btn-group a{
+  display: block;
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 18px;
+  color: hsl(var(--hs-primary), var(--l-state-default));
+  cursor: pointer;
+}
+
 .ub-notification__error__btn-group i:hover{
   color: hsl(var(--hs-primary), var(--l-state-hover));
 }
@@ -253,17 +216,5 @@ export default {
   overflow: auto;
   max-height: 50vh;
   line-height: 1.3;
-}
-
-.ub-dialog__mail-link {
-  text-decoration: unset;
-}
-
-.ub-dialog__footer__item {
-  margin-right: 12px;
-}
-
-.ub-dialog__footer__item:last-child {
-  margin-right: 0px;
 }
 </style>

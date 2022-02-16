@@ -117,15 +117,39 @@ function dialogError (msg, title = 'error', isDevInfo = false, detail) {
  * @param {string} detail
  */
 function errorReporter ({ errMsg, errCode, entityCode, detail }) {
+  var msgToDisplay = USER_MESSAGE_RE.test(errMsg)
+    ? UB.i18n(errMsg.replace(USER_MESSAGE_RE, '$1'))
+    : errMsg
+
+  function buildSupportMailURL () {
+    const baseUrl = UB.connection && UB.connection.appConfig.uiSettings.adminUI.supportMailTo
+    if (!baseUrl) return ''
+    const isQuery = typeof baseUrl === 'string' ? baseUrl.includes('?') : false
+    // build mail body
+    const userLogin = UB.connection.userLogin()
+    const activeTabElems = document.querySelectorAll('.x-panel.x-tabpanel-child.x-panel-default.x-closable.x-panel-closable.x-panel-default-closable')
+    let activeTabID
+    activeTabElems.forEach((elem) => {
+      if (window.getComputedStyle(elem).display === 'block') activeTabID = elem.id
+    })
+    const obj = {
+      login: userLogin,
+      uitag: activeTabID,
+      message: msgToDisplay,
+      details: detail
+    }
+    const bodyQuery = `body=${encodeURIComponent(JSON.stringify(obj, null, ' '))}`
+    const result = isQuery ? baseUrl + `&${bodyQuery}` : baseUrl + `?${bodyQuery}`
+    return 'mailto:' + result.trim()
+  }
   // all styles placed in ./template.vue
   const devBtnID = 'ub-notification__error__dev-btn'
   const showMessBtnID = 'ub-notification__error__show-mess-btn'
   const devBtn = `<i title="${UB.i18n('showDeveloperDetail')}" class="u-icon-wrench" data-id="${devBtnID}"></i>`
   const showMessBtn = `<i title="${UB.i18n('showFullScreen')}" class="u-icon-window-top" data-id="${showMessBtnID}"></i>`
-  const footer = `<div class="ub-notification__error__btn-group">${showMessBtn + devBtn}</div>`
-  const msgToDisplay = USER_MESSAGE_RE.test(errMsg)
-    ? UB.i18n(errMsg.replace(USER_MESSAGE_RE, '$1'))
-    : errMsg
+  const mailToHref = buildSupportMailURL()
+  const milToBtn = mailToHref ? `<a title="${UB.i18n('supportMailToTitle')}" href="${mailToHref}"  class="fas fa-mail-bulk"></a>` : ''
+  const footer = `<div class="ub-notification__error__btn-group">${showMessBtn + devBtn + milToBtn}</div>`
   const message = `<div class="ub-notification__error__content">${msgToDisplay}</div>${footer}`
   const instance = Notification.error({
     title: UB.i18n('error'),

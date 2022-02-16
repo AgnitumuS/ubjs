@@ -1028,9 +1028,9 @@
           "description": "Settings for admin UI",
           "additionalProperties": false,
           "properties": {
-            "supportEmail": {
+            "supportMailTo": {
               "type": "string",
-              "description": "This field activate button on error message who allows the user to send the error text to a pre-specified address. The value must comply with the rules for generating an html-link with a modifier mailto:"
+              "description": "This field activate button on error message what allows to send an error text to specified address. The value must comply with the rules for generating an html-link with a modifier mailto:"
             },
             "applicationName": {
               "type": ["string", "object"],
