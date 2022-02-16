@@ -32,6 +32,7 @@
 </template>
 
 <script>
+/* global $App */
 
 export default {
   name: 'UCron',
@@ -83,7 +84,7 @@ export default {
       /**
        * Triggers when the user change state of radio
        *
-       * @param {object} newValue: includes new cron expression and human-readable string
+       * @param {object} newValue includes new cron expression and human-readable string
        */
       this.$emit('change', {
         cronString: this.cronString,
@@ -93,7 +94,7 @@ export default {
   },
   created () {
     this.init(this.value)
-    $App.verbaliseCronExpression('') // lazy load cronstrue
+    $App.verbaliseCronExpression.init() // lazy load cronstrue
   },
   methods: {
     init (cronStr = this.value) {
