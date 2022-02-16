@@ -40,13 +40,13 @@ export default {
 .specify-cron {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--double-step);
+  gap: var(--u-gap-double);
   max-width: 100%;
   padding-left: calc(var(--padding) * 3);
 }
 .specify-cron .u-checkbox {
   min-width: 40px;
-  margin-right: var(--double-step);
+  margin-right: var(--u-gap-double);
 }
 .specify-cron .u-checkbox__label {
   text-transform: capitalize;

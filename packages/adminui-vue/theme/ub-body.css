@@ -50,9 +50,9 @@
     --l-sidebar-disabled: 80%;
 
     /* gaps */
-    --step: 4px;
-    --double-step: calc(var(--step) * 2);
-    --padding: var(--double-step);
+    --u-gap: 4px;
+    --u-gap-double: calc(var(--u-gap) * 2);
+    --padding: var(--u-gap-double);
 }
 
 ::-webkit-scrollbar {
