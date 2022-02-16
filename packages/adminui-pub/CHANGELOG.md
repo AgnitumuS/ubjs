@@ -6,14 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `$App.verbaliseCronExpression`: verbalize a cron expression to human readable string (using https://github.com/bradymholt/cronstrue)
- 
+
 ### Changed
- - az localization for tinymce
+
 ### Deprecated
 
 ### Removed
 
+### Fixed
+
+## [5.22.4] - 2022-02-16
+### Added
+- `$App.verbaliseCronExpression`: verbalize a cron expression to human readable string (using https://github.com/bradymholt/cronstrue)
+ 
+### Changed
+ - az localization for tinymce
 ### Fixed
  - EntityGridPanel - not resize summary row if column is hidden, add timeout before GridSummary.dataBind when clean data in rowEditing grid
 

@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.3] - 2022-02-16
+### Fixed
  - `ubcli generateDDL`: fixed DDL generation for multi-language columns when default language
    is changed in config  
 

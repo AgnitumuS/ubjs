@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.26] - 2022-02-16
 ## [5.22.25] - 2022-01-24
 ### Added
  - '*.meta': added env variable macros support for entity and attribute level mapping with the same syntax as

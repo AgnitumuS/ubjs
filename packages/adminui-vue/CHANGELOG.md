@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.4] - 2022-02-16
+### Added
 - `UDropdown`:`customClass` prop added - allows set a custom CSS class for u-dropdown
 - `UTableEntity` store: new mutation `CLEAR_FILTER` allows clear current filters set
 - `UCheckbox` - new component. Styled <input type="checkbox">
@@ -14,12 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   if @unitybase/adminui-pub is available
 - new icons: `u-icon-download-with-signatures`, `u-icon-upload-with-signatures` and `u-icon-view-signatures`
 - new parameter `uiSettings.adminUI.supportMailTo` in `ubConfig.json`: if sets - enables a button on the error message what allow sends error text to support
-
-### Changed
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 - `UNavbar` - fixed popup all list tabs on not tall screens
