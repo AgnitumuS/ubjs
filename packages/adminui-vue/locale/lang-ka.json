@@ -105,7 +105,10 @@
     "transfer": {
       "noMatch": "No matching data",
       "noData": "No data",
-      "titles": ["List 1", "List 2"],
+      "titles": [
+        "List 1",
+        "List 2"
+      ],
       "filterPlaceholder": "Enter keyword",
       "noCheckedFormat": "{total} items",
       "hasCheckedFormat": "{checked}/{total} checked"
@@ -115,14 +118,12 @@
   "linkCopiedText": "Link copied to clipboard",
   "createdEntityCaption": "Created",
   "updatedEntityCaption": "Updated",
-
   "searchByDateRange": "Date range",
   "forAllTime": "For all time",
   "lastMonth": "Last Month",
   "lastQuarter": "Last quarter",
   "last6Month": "Last 6 month",
   "thisYear": "This year",
-
   "successfullySaved": "Successfully saved",
   "formWasRefreshed": "Form was refreshed",
   "recordDeletedSuccessfully": "Record deleted successfully",
@@ -132,19 +133,15 @@
   "validationError": "Unable to save.<br>Error in fields:<br>{0}",
   "formCrashTitle": "Form was crashed",
   "formCrashBody": "Something going wrong please reload form or contact system administrator",
-
   "selectDate": "Select date",
   "selectDateAndTime": "Select date and time",
-
   "Add": "Add",
   "Continue": "Continue",
-
   "sidebar": {
     "desktopSelector": {
       "title": "Desktop selection"
     }
   },
-
   "table": {
     "filter": {
       "list": {
@@ -190,7 +187,6 @@
       "AVG": "average"
     }
   },
-
   "sizeUnits": {
     "b": "Bytes",
     "kb": "KB",
@@ -198,7 +194,6 @@
     "gb": "GB",
     "tb": "TB"
   },
-
   "fileInput": {
     "manyFilesTable": {
       "label": "Label",
@@ -212,18 +207,15 @@
       "selectedFiles": "Selected"
     }
   },
-
   "select": {
     "valueIsUndefined": "Value \"{0}\" not found in entity \"{1}\"",
     "dictionaryAdding": "Adding new record",
     "dictionaryAddingChoices": "Element <strong>\"{text}\"</strong> is not found in the dictionary \"{entity}\". Choose: <ul><li><strong>Continue</strong> to select another record</li> <li><strong>Add</strong> to add a new record with text \"{text}\"</li> <li><strong>Edit</strong> to define additional attributes</li> </ul>",
     "recordAddedSuccessfully": "Record added successfully"
   },
-
   "tableRegister": {
     "hideDetails": "Hide details"
   },
-
   "chat": {
     "emptyMessage": "No messages yet ...",
     "inputPlaceholder": "Enter a message",
@@ -231,12 +223,10 @@
     "removeMessageDialog": "Remove message \"{0}\"",
     "removeMessageNotification": "Message successfully deleted"
   },
-
   "aclRlsInfo": {
     "subject": "Subject",
     "name": "Name"
   },
-
   "UFile": {
     "webcam": {
       "webcamLabel": "Webcam",
@@ -258,7 +248,6 @@
         "NotAllowedError": "Access to webcam disabled. Turn it on in browser settings"
       }
     },
-
     "addButtonTooltip": "Add",
     "downloadButtonTooltip": "Download",
     "previewButtonTooltip": "Preview",
@@ -268,18 +257,34 @@
     "webcamButtonTooltip": "Take image from webcam",
     "fullscreenButtonTooltip": "Full screen preview"
   },
-
   "UNavbar": {
     "allTabsButton": "All opened tabs"
   },
-
   "USelectEntity": {
     "dropdown": {
       "moreButton": "More"
     }
   },
-
   "UTable": {
     "noData": "No data"
+  },
+  "UCron": {
+    "seconds": "seconds",
+    "minutes": "minutes",
+    "hours": "hours",
+    "day": "day",
+    "month": "month",
+    "dayOfWeek": "day of week",
+    "every": "every",
+    "everySecond": "second(s)",
+    "everyMinute": "minute(s)",
+    "everyHour": "hour(s)",
+    "everyDay": "day(s)",
+    "everyMonth": "month(s)",
+    "chooseOneOrMany": "choose one or many",
+    "specific": "specific",
+    "between": "between",
+    "expression": "cron expression",
+    "interpretation": "interpretation"
   }
 }

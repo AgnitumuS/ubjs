@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+- `$App.verbaliseCronExpression`: verbalize a cron expression to human readable string (using https://github.com/bradymholt/cronstrue)
+ 
 ### Changed
  - az localization for tinymce
 ### Deprecated
@@ -18,7 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.22.3] - 2022-02-08
 ### Added
- - `UBDocument`: added public property `urlParams` that can be defined at client forms
+ - `UBDocument`: added public property `urlParams` that can be defined at client forms,
  and it will be added to `getDocument` request URL formed by `UBDocument`, so in the server logs the source of `getDocument` can be tracked
  
 ### Changed

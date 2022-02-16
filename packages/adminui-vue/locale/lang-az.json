@@ -105,7 +105,10 @@
     "transfer": {
       "noMatch": "Uyğunluq tapılmadı",
       "noData": "Məlumat yoxdur",
-      "titles": ["Siyahı 1", "Siyahı 2"],
+      "titles": [
+        "Siyahı 1",
+        "Siyahı 2"
+      ],
       "filterPlaceholder": "Açar sözü daxil edin",
       "noCheckedFormat": "{total} bəndlər",
       "hasCheckedFormat": "{checked}/{total} seçilmişdir"
@@ -115,14 +118,12 @@
   "linkCopiedText": "link mübadilə buferinə əlavə olundu",
   "createdEntityCaption": "Yaradılıb",
   "updatedEntityCaption": "Yenilənib",
-
   "searchByDateRange": "Müddət aralığında",
   "forAllTime": "Bütün müddət üzrə",
   "lastMonth": "Son ay üzrə",
   "lastQuarter": "Son kvartal üzrə",
   "last6Month": "Son 6 ay üzrə",
   "thisYear": "Cari il üzrə",
-
   "successfullySaved": "Yadda saxlanılmışdır",
   "formWasRefreshed": "Forma yenilənmişdir",
   "recordDeletedSuccessfully": "Yazı uğurla silinmişdir",
@@ -132,19 +133,15 @@
   "validationError": "Yadda saxlamaq mümkün deyil.<br>Sahələr yalnışdır:<br>{0}",
   "formCrashTitle": "Formada xəta baş vermişdir",
   "formCrashBody": "Xəta baş vermişdir, fomranı yeniləyin və yaxud sistem administratorla əlaqə saxlayın",
-
   "selectDate": "Tarixi seçin",
   "selectDateAndTime": "Tarix və vaxtı seçin",
-
   "Add": "əlavə",
   "Continue": "Davam",
-
   "sidebar": {
     "desktopSelector": {
       "title": "İş masanı seçimi"
     }
   },
-
   "table": {
     "filter": {
       "list": {
@@ -190,7 +187,6 @@
       "AVG": "average"
     }
   },
-
   "sizeUnits": {
     "b": "Bytes",
     "kb": "KB",
@@ -198,7 +194,6 @@
     "gb": "GB",
     "tb": "TB"
   },
-
   "fileInput": {
     "manyFilesTable": {
       "label": "Başlıq",
@@ -212,18 +207,15 @@
       "selectedFiles": "Seçilib"
     }
   },
-
   "select": {
     "valueIsUndefined": "Qiymət \"{0}\" obeyktdə tapılmadı \"{1}\"",
     "dictionaryAdding": "Yeni qeyd əlavə etmək",
     "dictionaryAddingChoices": "Element <strong> \"{text}\"</strong> lüğətdə \"{entity}\"tapılmadı. Seçin: <ul><li> <strong> Davam et </strong> başqa bir qeyd seçmək üçün </li> <li> <strong> Əlavə et </strong> mətni ilə yeni bir qeyd əlavə etmək üçün \"{text}\" </li> <li> <strong> Düzenle </strong> təyin etmək əlavə atributlar </li> </ul> ",
     "recordAddedSuccessfully": "Qeyd uğurla əlavə edildi"
   },
-
   "tableRegister": {
     "hideDetails": "Detalları gizlət"
   },
-
   "chat": {
     "emptyMessage": "No messages yet ...",
     "inputPlaceholder": "Enter a message",
@@ -231,12 +223,10 @@
     "removeMessageDialog": "Remove message \"{0}\"",
     "removeMessageNotification": "Message successfully deleted"
   },
-
   "aclRlsInfo": {
     "subject": "Subject",
     "name": "Name"
   },
-
   "UFile": {
     "webcam": {
       "webcamLabel": "Webcam",
@@ -258,7 +248,6 @@
         "NotAllowedError": "Access to webcam disabled. Turn it on in browser settings"
       }
     },
-
     "addButtonTooltip": "Add",
     "downloadButtonTooltip": "Download",
     "previewButtonTooltip": "Preview",
@@ -268,18 +257,34 @@
     "webcamButtonTooltip": "Take image from webcam",
     "fullscreenButtonTooltip": "Full screen preview"
   },
-
   "UNavbar": {
     "allTabsButton": "All opened tabs"
   },
-
   "USelectEntity": {
     "dropdown": {
       "moreButton": "More"
     }
   },
-
   "UTable": {
     "noData": "No data"
+  },
+  "UCron": {
+    "seconds": "saniyə",
+    "minutes": "dəqiqə",
+    "hours": "saat",
+    "day": "gün",
+    "month": "aylar",
+    "dayOfWeek": "həftənin günləri",
+    "every": "every",
+    "everySecond": "second(s)",
+    "everyMinute": "minute(s)",
+    "everyHour": "hour(s)",
+    "everyDay": "day(s)",
+    "everyMonth": "month(s)",
+    "chooseOneOrMany": "choose one or many",
+    "specific": "specific",
+    "between": "between",
+    "expression": "cron expression",
+    "interpretation": "interpretation"
   }
 }

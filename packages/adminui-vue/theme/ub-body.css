@@ -48,6 +48,11 @@
     --l-sidebar-depth-3: 34%;
     --l-sidebar-depth-4: 38%;
     --l-sidebar-disabled: 80%;
+
+    /* gaps */
+    --u-gap: 4px;
+    --u-gap-double: calc(var(--u-gap) * 2);
+    --padding: var(--u-gap-double);
 }
 
 ::-webkit-scrollbar {
