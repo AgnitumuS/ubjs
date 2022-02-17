@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- improved icons `download-with-signatures`, `upload-with-signatures` and `view-signatures` - better clarity of
+  symbols
 
 ### Deprecated
 
