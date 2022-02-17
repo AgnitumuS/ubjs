@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Use UB icon `u-icon-signature` for signature instead of FontAwesome icon in the SignatureVerificationResult component
 
 ### Deprecated
 

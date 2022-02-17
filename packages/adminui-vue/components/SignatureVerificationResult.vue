@@ -22,7 +22,7 @@
           <td style="width: 2em">
             <i
               :title="statusTip(vIdx, false)"
-              :class="vr.isDigitalStamp ? 'fas fa-2x fa-stamp' : 'fas fa-2x fa-signature'"
+              :class="vr.isDigitalStamp ? 'fas fa-2x fa-stamp' : 'u-icon-signature fa-2x'"
               :style="statusStyle(vIdx)"
             />
           </td>
