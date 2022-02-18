@@ -2,16 +2,17 @@
   <div class="u-cron">
     <div class="u-cron__desc">
       <div class="u-cron__desc--expresion">
-        {{$ut('el.cron.expression')}}: <span>{{ cronString }}</span>
+        {{ $ut('el.cron.expression') }}: <span>{{ cronString }}</span>
       </div>
       <div class="u-cron__desc--txt">
-        {{$ut('el.cron.interpritation')}}: <span>{{ humanCronString }}</span>
+        {{ $ut('el.cron.interpritation') }}: <span>{{ humanCronString }}</span>
       </div>
     </div>
     <div class="u-cron__main">
       <div class="u-cron__sidebar">
         <span
           v-for="(item, index) in everyTime"
+          v-show="item.visible"
           :key="index"
           class="u-cron__tab"
           :class="{ 'u-cron__tab-active': everyTimeValue === item.id }"
@@ -32,6 +33,10 @@
 </template>
 
 <script>
+const defaultProp = {
+  visible: true,
+  value: '*'
+}
 
 export default {
   name: 'UCron',
@@ -51,18 +56,72 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    seconds: {
+      type: Object,
+      default: () => defaultProp
+    },
+    minutes: {
+      type: Object,
+      default: () => defaultProp
+    },
+    hours: {
+      type: Object,
+      default: () => defaultProp
+    },
+    day: {
+      type: Object,
+      default: () => defaultProp
+    },
+    month: {
+      type: Object,
+      default: () => defaultProp
+    },
+    week: {
+      type: Object,
+      default: () => defaultProp
     }
   },
   data () {
     return {
       everyTimeValue: 'day',
       everyTime: [
-        { id: 'seconds', label: this.$ut('el.time.second'), value: '*' },
-        { id: 'minutes', label: this.$ut('el.time.minute'), value: '*' },
-        { id: 'hours', label: this.$ut('el.time.hour'), value: '*' },
-        { id: 'day', label: this.$ut('el.time.day'), value: '*' },
-        { id: 'month', label: this.$ut('el.time.month'), value: '*' },
-        { id: 'week', label: this.$ut('el.time.dayOfWeek'), value: '*' }
+        {
+          id: 'seconds',
+          label: this.$ut('el.time.second'),
+          value: this.seconds.value || '*',
+          visible: this.seconds.visible === undefined ? true : this.seconds.visible
+        },
+        {
+          id: 'minutes',
+          label: this.$ut('el.time.minute'),
+          value: this.minutes.value || '*',
+          visible: this.minutes.visible === undefined ? true : this.minutes.visible
+        },
+        {
+          id: 'hours',
+          label: this.$ut('el.time.hour'),
+          value: this.hours.value || '*',
+          visible: this.hours.visible === undefined ? true : this.hours.visible
+        },
+        {
+          id: 'day',
+          label: this.$ut('el.time.day'),
+          value: this.day.value || '*',
+          visible: this.day.visible === undefined ? true : this.day.visible
+        },
+        {
+          id: 'month',
+          label: this.$ut('el.time.month'),
+          value: this.month.value || '*',
+          visible: this.month.visible === undefined ? true : this.month.visible
+        },
+        {
+          id: 'week',
+          label: this.$ut('el.time.dayOfWeek'),
+          value: this.week.value || '*',
+          visible: this.week.visible === undefined ? true : this.week.visible
+        }
         // { id: 'year', label: 'року', value: '*' }
       ]
     }
