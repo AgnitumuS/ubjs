@@ -154,7 +154,7 @@ export default {
           id: i
         }
         this.daysOfWeek.push(element)
-        d.setDate(d.getDay() + 1)
+        d.setDate(d.getDate() + 1)
       }
     },
     specifyItemsCreate () {
