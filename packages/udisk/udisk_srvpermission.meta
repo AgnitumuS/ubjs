@@ -1,6 +1,6 @@
 {
-  "caption": "Общий доступ",
-  "description": "Общий доступ",
+  "caption": "Access Rights",
+  "description": "Access Rights",
   "connectionName": "",
   "sqlAlias": "udisksrvp",
   "descriptionAttribute": "cardID",

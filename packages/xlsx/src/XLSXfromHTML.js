@@ -177,7 +177,7 @@ function wrapIterator (sourceObj, tempObj, templates, templatesData, path, minLe
  *      const {XLSXWorkbook, XLSXfromHTML} = require('xlsx')
  *      const xmldom = require('xmldom')
  *      const wb = new XLSXWorkbook({useSharedString: false})
- *      const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Лист'}])
+ *      const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Sheet'}])
  *      converter.writeHtml({html: yourHtmlString})
  *
  * Example of usage exist in writeHtml
@@ -239,7 +239,7 @@ class XLSXfromHTML {
    *      const xmldom = require('xmldom')
    *      const wb = new XLSXWorkbook({useSharedString: false})
    *      const html = XLSXfromHTML.mustacheRenderOptimization(template, data, 2)
-   *      const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Лист'}])
+   *      const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Sheet'}])
    *      converter.writeHtml({html: html, sourceData: data})
    *
    *
@@ -432,7 +432,7 @@ class XLSXfromHTML {
    *      const {XLSXWorkbook, XLSXfromHTML} = require('xlsx')
    *      const xmldom = require('xmldom')
    *      const wb = new XLSXWorkbook({useSharedString: false})
-   *      const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Лист'}])
+   *      const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Sheet'}])
    *      XLSXfromHTML.addMustacheSysFunction(data)
    *      converter.writeHtml({html: html, sourceData: data})
    *

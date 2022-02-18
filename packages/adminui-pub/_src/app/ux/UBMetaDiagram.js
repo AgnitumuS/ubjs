@@ -489,7 +489,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
         return true
       }
       metaObj = $App.domainInfo.get(objCode)
-      // удаляем устаревшие элементы в схеме
+      // remove classes what no longer exists
       if (!metaObj) {
         me.editor.graph.removeCells([cell], true)
         return true
@@ -512,8 +512,8 @@ Ext.define('UB.ux.UBMetaDiagram', {
             metaObjRef = $App.domainInfo.get(destObj)
             if (isInheritage) {
               deleteEdge = !lnkProp ||
-                                !(metaObj.mixins && metaObj.mixins.unity && /** metaObj.mixins.unity.enabled && **/
-                                    metaObj.mixins.unity.entity === destObj)
+                !(metaObj.mixins && metaObj.mixins.unity && /** metaObj.mixins.unity.enabled && **/
+                    metaObj.mixins.unity.entity === destObj)
               hasInheritage = !deleteEdge
             } else {
               deleteEdge = !lnkProp || (lnkProp.dataType !== 'Entity') || (srcProp.toUpperCase() === 'ID') ||
@@ -547,7 +547,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
           }
         }
       }
-      // добавляем отсутствующие элементы в схеме
+      // adding missed classes
       if (!hasInheritage && metaObj.mixins && metaObj.mixins.unity &&
       /** metaObj.mixins.unity.enabled &&**/ graphObject[metaObj.mixins.unity.entity]) {
         let val = { linkType: 'inheritance', srcObj: objCode, srcProp: 'ID', destObj: metaObj.mixins.unity.entity, destProp: 'ID' }
@@ -644,17 +644,6 @@ Ext.define('UB.ux.UBMetaDiagram', {
     editor.properties = null
     editor.showProperties = Ext.Function.bind(me.showProperties, me)
     editor.hideProperties = Ext.Function.bind(me.hideProperties, me)
-
-    /*
-    editor.addAction('toggleOutline', function(editor)
-    {
-        if (editor.outline === null) {
-            editor.showOutline();
-        } else {
-            editor.outline.setVisible(!editor.outline.isVisible());
-        }
-    });
-    */
 
     editor.addAction('edit', function (editorprm, cell /*, evt */) {
       if (cell) {

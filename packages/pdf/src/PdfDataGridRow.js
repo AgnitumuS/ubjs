@@ -273,7 +273,7 @@ PdfDataGridRow.prototype.alignRow = function () {
     tbHeight = (tb.fullHeight || 0) > (tb.height || 0) ? tb.fullHeight : tb.height
     me.height = tbHeight > me.height ? tbHeight : me.height
     if (tb.splitItems) {
-      // учеcть что последняя деталь при равном количестве может быть больше у другой детали
+      // last detail (it count is equal) can be > then in current
       if (largestItems && (tb.splitItems.length === itemCount) &&
         (largestItems[itemCount - 1].height < tb.splitItems[itemCount - 1].height)
       ) {

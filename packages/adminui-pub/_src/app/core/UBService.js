@@ -1,12 +1,9 @@
 ﻿require('./UBApp')
 require('./UBAppConfig')
 /**
- * Файл: UB.core.UBService.js
- * Автор: Игорь Ноженко
  *
- * Реализует низкоуровневую передачу данных на сервер
+ * @deprecated
  */
-
 Ext.define('UB.core.UBService', {
   singleton: true,
 
@@ -22,11 +19,11 @@ Ext.define('UB.core.UBService', {
 
   callBuffer: [],
   /**
-     *
-     * @ param {String} methodName
-     * @return {String}
-     * @deprecated
-     */
+   *
+   * @ param {String} methodName
+   * @return {String}
+   * @deprecated
+   */
   getUrl: function (/* methodName */) {
     throw new Error('deprecated. Use methods from $App.connection \r\n' +
             ' $App.connection.authorize().then(function(session){\r\n' +
@@ -138,18 +135,18 @@ Ext.define('UB.core.UBService', {
       })
   },
   /**
-     *
-     * @param {Object} params
-     * @param {Function} [callback]
-     * @param {Object} [scope] Callback scope
-     * @param {Object} [options]
-     * @param {Boolean} [options.binary]
-     * @param {Boolean} [options.usePostMethod]
-     * @param {Boolean} [options.noCache]
-     * @returns {Promise|null} If callback is not null return null
-     */
+   *
+   * @param {Object} params
+   * @param {Function} [callback]
+   * @param {Object} [scope] Callback scope
+   * @param {Object} [options]
+   * @param {Boolean} [options.binary]
+   * @param {Boolean} [options.usePostMethod]
+   * @param {Boolean} [options.noCache]
+   * @deprecated Use UB.Connection.getDocument instead
+   * @returns {Promise|null} If callback is not null return null
+   */
   getDocument: function (params, callback, scope, options) {
-    // todo можно сделать без callback
     var me = this; var promise
     var opt = Ext.apply({}, options)
     var allowedParams = ['entity', 'attribute', 'ID', 'id', 'isDirty', 'forceMime', 'fileName', 'store', 'revision']
@@ -189,52 +186,10 @@ Ext.define('UB.core.UBService', {
   },
 
   /**
-     *
-     * @ param {Object} params
-     * @ param {String} method
-     * @ param {Object} document
-     * @ param {Function} callback
-     * @ param {Object} scope
-     * @deprecated
-     */
-  setDocument: function (/* params, method, document, callback, scope */) {
-    // noinspection JSValidateTypes
+   * @deprecated
+   */
+  setDocument: function () {
     throw new Error('UBService.setDocument is deprecated!!')
-    //        Use code like this:
-    //        $App.connection.post('setDocument', me.ubCmp.getValue(), {
-    //            params: {
-    //                entity: me.entityName,
-    //                attribute: me.attributeName,
-    //                ID: me.instanceID,
-    //                filename: val && val.origName ? val.origName :
-    //                    (me.documentMIME && (me.documentMIME.indexOf('/') < me.documentMIME.length - 1) ?
-    //                        'newfile.' + me.documentMIME.substr(me.documentMIME.indexOf('/')+1) : '' )
-    //            },
-    //            headers: {"Content-Type": "application/octet-stream"}
-    //        })
-    //        var request, isRawData = (params && params.isRawData);
-    //        request  = {
-    //            url: Ext.String.urlAppend($App.connection.getUrl(this.method.setDocument), Ext.Object.toQueryString(params)),
-    //                method: method,
-    //            jsonData: document,
-    //            headers: Ext.apply({
-    //                    "Content-Type": "application/octet-stream"
-    //                },
-    //                UB.core.UBApp.getSessionSignature()
-    //            ),
-    //            scope: this,
-    //            success: function(response) {
-    //                 Ext.callback(callback, scope, [response.responseText] );
-    //            }
-    //        };
-    //        if (isRawData){
-    //            delete params.isRawData;
-    //            request.binary = document;
-    //        } else {
-    //            request.jsonData = document;
-    //        }
-    //
-    //        Ext.Ajax.request(request);
   },
 
   /**

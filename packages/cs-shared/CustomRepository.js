@@ -133,7 +133,7 @@ UB.Repository('uba_userrole').attrs(['userID', 'userID.name']).selectAsObject()
 // get values for attribute of type MANY
 UB.Repository('tst_maindata')
  .attrs('ID', 'manyValue', 'manyValue.caption')
- .where('code', '=', 'Код1')
+ .where('code', '=', 'Code1')
  .selectAsObject({'manyValue.caption': 'captions'})
 // result is `[{"ID":331947938939292,"manyValue":"1,2","captions":"caption 10,caption 20"}]`
 

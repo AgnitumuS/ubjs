@@ -1,11 +1,13 @@
-require('./UBObject.js')
 /**
  * Class for visualise PDF filed
  */
 Ext.define('UB.ux.PDFComponent', {
-  extend: 'UB.ux.UBObject',
+  extend: 'Ext.Component',
   alias: 'widget.ubpdf',
   type: 'application/pdf',
+  width: '100%',
+  height: '100%',
+  useBlobForData: true,
 
   constructor: function () {
     this.useBlobForData = true
@@ -17,14 +19,31 @@ Ext.define('UB.ux.PDFComponent', {
   },
 
   getElConfig: function () {
-    let config = this.callParent()
+    const config = this.callParent()
+    var obj
+    if (this.autoEl === 'object') {
+      obj = config
+    } else {
+      config.cn = [obj = {
+        tag: 'object',
+        id: this.id + '-object'
+      }]
+    }
+    obj.type = this.type
+    obj.data = this.data
+    obj.width = this.width
+    obj.height = this.heigh
     config.cn = [{
       tag: 'div',
       width: this.width,
       height: this.height
     }]
-
     return config
+  },
+
+  onRender: function () {
+    this.callParent(arguments)
+    this.objEl = (this.autoEl === 'object') ? this.el : this.el.getById(this.id + '-object')
   },
 
   afterRender: function () {
@@ -33,8 +52,6 @@ Ext.define('UB.ux.PDFComponent', {
       this.afterSetUrl()
     }
   },
-
-  useBlobForData: true,
 
   getDataBlob: function () {
     if (!this.useBlobForData) {
@@ -75,6 +92,8 @@ Ext.define('UB.ux.PDFComponent', {
       window.URL.revokeObjectURL(me.objUrl)
     }
     me.objUrl = null
+    Ext.destroy(this.objEl)
+    this.objEl = null
     this.callParent()
   },
 
@@ -153,6 +172,14 @@ Ext.define('UB.ux.PDFComponent', {
       me.afterSetUrl()
     }
     return Promise.resolve(true)
-  }
+  },
 
+  setXSize: function (prm) {
+    this.width = prm.width
+    this.height = prm.height
+    if (this.objEl) {
+      this.objEl.dom.width = '100%'// this.width;
+      this.objEl.dom.height = '100%'// this.height;
+    }
+  }
 })

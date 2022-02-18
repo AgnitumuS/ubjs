@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - `UB.ux.UBObject` is removed (not used)
+ - `UB.view.CommandBuilder.CommandTypeComboBox` is *REMOVED* (not used)
+ - `UB.view.CommandBuilder.FormsComboBox` is *REMOVED* (not used)
+ - `UB.ux.GraphViewer` (graph diagram editor) is *REMOVED* (not used)
+ - `UB.ux.UBDetailTreeGrid` is *REMOVED* (not used)
 
 ### Fixed
 

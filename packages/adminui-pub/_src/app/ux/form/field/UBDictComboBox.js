@@ -20,7 +20,7 @@ require('./UBComboBox')
  *           staticValues: {description: 'New instance description added during autoSave'},
  *           listeners: {
  *               beforeAutoSave: function(sender, request){
- *                   request.execParams.OKPOCode = '00000000'; ///'НB' + request.execParams.ID;
+ *                   request.execParams.OKPOCode = '00000000';
  *               }
  *           },
  *           attributeName: 'organizationID'
@@ -45,7 +45,7 @@ require('./UBComboBox')
  *           staticValues: {description: 'New instance description added during autoSave'},
  *           listeners: {
  *               beforeAutoSave: function(sender, request){
- *                   request.execParams.OKPOCode = '00000000'; ///'НB' + request.execParams.ID;
+ *                   request.execParams.OKPOCode = '00000000';
  *               }
  *           }
  *      }

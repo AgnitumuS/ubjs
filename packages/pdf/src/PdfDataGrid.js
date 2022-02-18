@@ -213,7 +213,7 @@ PdfDataGrid.prototype.newPage = function () {
 }
 
 /**
- * Получить сумму щирины колонок по индексам колонок
+ * Get totol width of passed column indexes
  * @param {Array<Number>} fieldsNum
  * @return {Number}
  */
@@ -375,7 +375,7 @@ PdfDataGrid.prototype.addRow = function (cellValues, columnConfigs, config) {
   }
 
   /**
-   * true when exist cells stretched to next row. (Cells who has rowSpan more 1)
+   * true when exist cells stretched to next row. (Cells what have rowSpan more 1)
    * @property {boolean} existRowSpanCells
    */
   me.existRowSpanCells = false
