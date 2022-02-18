@@ -28,6 +28,9 @@ not-checked
 </template>
 
 <script>
+/**
+ * Group of radio buttons with label
+ */
 export default {
   name: 'URadio',
   // for v-model
@@ -36,7 +39,7 @@ export default {
   },
   props: {
     /**
-     * Item of array should be have `id` field
+     * Item of array should have `id` field
      */
     items: {
       type: Array,
@@ -47,7 +50,7 @@ export default {
       }
     },
     /**
-     * Name for grops of radio. It is very important props when you will use two or more groups of radio in page
+     * Name for groups of radio. MUST be defined to use more whe one groups of radio in page
      */
     name: {
       type: String,

@@ -4,27 +4,6 @@
       "confirm": "OK",
       "clear": "Clear"
     },
-    "time": {
-      "seconds": "seconds",
-      "minutes": "minutes",
-      "hours": "hours",
-      "day": "day",
-      "month": "month",
-      "dayOfWeek": "day of week"
-    },
-    "cron": {
-      "every": "every",
-      "everySecond": "second(s)",
-      "everyMinute": "minute(s)",
-      "everyHour": "hour(s)",
-      "everyDay": "day(s)",
-      "everyMonth": "month(s)",
-      "chooseOneOrMany": "choose one or many",
-      "specific": "specific",
-      "between": "between",
-      "expression": "cron expression",
-      "interpritation": "interpretation"
-    },
     "datepicker": {
       "now": "Now",
       "today": "Today",
@@ -135,6 +114,7 @@
       "hasCheckedFormat": "{checked}/{total} checked"
     }
   },
+  "supportMailToTitle": "Send error to support",
   "isRequiredFieldFmt": "{0} is required",
   "linkCopiedText": "Link copied to clipboard",
   "createdEntityCaption": "Created",
@@ -288,5 +268,24 @@
   },
   "UTable": {
     "noData": "No data"
+  },
+  "UCron": {
+    "seconds": "seconds",
+    "minutes": "minutes",
+    "hours": "hours",
+    "day": "day",
+    "month": "month",
+    "dayOfWeek": "day of week",
+    "every": "every",
+    "everySecond": "second(s)",
+    "everyMinute": "minute(s)",
+    "everyHour": "hour(s)",
+    "everyDay": "day(s)",
+    "everyMonth": "month(s)",
+    "chooseOneOrMany": "choose one or many",
+    "specific": "specific",
+    "between": "between",
+    "expression": "cron expression",
+    "interpretation": "interpretation"
   }
 }

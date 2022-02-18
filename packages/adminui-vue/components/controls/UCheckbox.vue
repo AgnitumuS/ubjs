@@ -16,6 +16,9 @@
 </template>
 
 <script>
+/**
+ * Checkbox
+ */
 export default {
   name: 'UCheckbox',
   // for v-model

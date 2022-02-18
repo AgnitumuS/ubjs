@@ -4,27 +4,6 @@
       "confirm": "OK",
       "clear": "Ҳавз кардан"
     },
-    "time": {
-      "seconds": "сония",
-      "minutes": "дақиқа",
-      "hours": "соат",
-      "day": "рӯз",
-      "month": "моҳҳо",
-      "dayOfWeek": "рӯзҳои ҳафта"
-    },
-    "cron": {
-      "every": "every",
-      "everySecond": "second(s)",
-      "everyMinute": "minute(s)",
-      "everyHour": "hour(s)",
-      "everyDay": "day(s)",
-      "everyMonth": "month(s)",
-      "chooseOneOrMany": "choose one or many",
-      "specific": "specific",
-      "between": "between",
-      "expression": "cron expression",
-      "interpritation": "interpretation"
-    },
     "datepicker": {
       "now": "Хозир",
       "today": "Имрӯз",
@@ -135,6 +114,7 @@
       "hasCheckedFormat": "{checked}/{total} интихоб карда шуд"
     }
   },
+  "supportMailToTitle": "Send error to support",
   "isRequiredFieldFmt": "{0} барои пур карданд ҳатмист ",
   "linkCopiedText": "Истинод нусхабардорӣ карда шуд ба буфери мубодила",
   "createdEntityCaption": "Офирида шудааст",
@@ -286,5 +266,24 @@
   },
   "UTable": {
     "noData": "Нет данных"
+  },
+  "UCron": {
+    "seconds": "сония",
+    "minutes": "дақиқа",
+    "hours": "соат",
+    "day": "рӯз",
+    "month": "моҳҳо",
+    "dayOfWeek": "рӯзҳои ҳафта",
+    "every": "every",
+    "everySecond": "second(s)",
+    "everyMinute": "minute(s)",
+    "everyHour": "hour(s)",
+    "everyDay": "day(s)",
+    "everyMonth": "month(s)",
+    "chooseOneOrMany": "choose one or many",
+    "specific": "specific",
+    "between": "between",
+    "expression": "cron expression",
+    "interpretation": "interpretation"
   }
 }

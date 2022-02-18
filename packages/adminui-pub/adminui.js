@@ -42,8 +42,8 @@ const { launchApp, $App } = require('./_src/app.js')
 let __cronstrue
 /**
  * Parse cron expression to human-readable string according to current user language.
- * During first call function lazy loads a `cronstrue` library and returns non-parsed expression, so should be
- * called once before usage as `$App.verbaliseCronExpression('')`
+ *
+ * $App.verbaliseCronExpression.init() should be called once before usage (lazy load cronstrue library)
  *
  * @param {string} expression Cron expression (with or without seconds)
  * @param {string} [lang] Optional language. Default is current user language
@@ -59,10 +59,20 @@ $App.verbaliseCronExpression = function (expression, lang) {
     }
     return res
   }
-  SystemJS.import('cronstrue/dist/cronstrue-i18n.min.js').then(cronstrue => {
-    __cronstrue = cronstrue
-  })
+  console.warn('$App.verbaliseCronExpression not initialized. Call $App.verbaliseCronExpression.init() once before usage')
   return expression // cronstrue is not loaded yet
+}
+
+/**
+ * Cron expression verbalize initialization (async). Must be called once before using of `$App.verbaliseCronExpression`
+ * @returns {Promise}
+ */
+$App.verbaliseCronExpression.init = function () {
+  return SystemJS.import('cronstrue/dist/cronstrue-i18n.min.js').then(cronstrue => {
+    __cronstrue = cronstrue
+    if (!SystemJS.has('cronstrue')) SystemJS.set('cronstrue', SystemJS.newModule(__cronstrue))
+    return __cronstrue
+  })
 }
 
 launchApp()

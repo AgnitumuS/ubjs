@@ -2,10 +2,10 @@
   <div class="u-cron">
     <div class="u-cron__desc">
       <div class="u-cron__desc--expresion">
-        {{ $ut('el.cron.expression') }}: <span>{{ cronString }}</span>
+        {{ $ut('UCron.expression') }}: <span>{{ cronString }}</span>
       </div>
       <div class="u-cron__desc--txt">
-        {{ $ut('el.cron.interpritation') }}: <span>{{ humanCronString }}</span>
+        {{ $ut('UCron.interpretation') }}: <span>{{ humanCronString }}</span>
       </div>
     </div>
     <div class="u-cron__main">
@@ -33,6 +33,9 @@
 </template>
 
 <script>
+/* global $App */
+const ubPubAvailable = typeof $App !== 'undefined' // not available for UIDoc
+
 const defaultProp = {
   visible: true,
   value: '*'
@@ -90,13 +93,15 @@ export default {
           id: 'seconds',
           label: this.$ut('el.time.second'),
           value: this.seconds.value || '*',
-          visible: this.seconds.visible === undefined ? true : this.seconds.visible
+          visible:
+            this.seconds.visible === undefined ? true : this.seconds.visible
         },
         {
           id: 'minutes',
           label: this.$ut('el.time.minute'),
           value: this.minutes.value || '*',
-          visible: this.minutes.visible === undefined ? true : this.minutes.visible
+          visible:
+            this.minutes.visible === undefined ? true : this.minutes.visible
         },
         {
           id: 'hours',
@@ -134,7 +139,9 @@ export default {
       return this.everyTime.map((i) => i.value).join(' ')
     },
     humanCronString () {
-      return $App.verbaliseCronExpression(this.cronString)
+      return ubPubAvailable
+        ? $App.verbaliseCronExpression(this.cronString)
+        : this.cronString
     }
   },
   watch: {
@@ -142,7 +149,7 @@ export default {
       /**
        * Triggers when the user change state of radio
        *
-       * @param {object} newValue: includes new cron expression and human-readable string
+       * @param {object} newValue includes new cron expression and human-readable string
        */
       this.$emit('change', {
         cronString: this.cronString,
@@ -150,9 +157,11 @@ export default {
       })
     }
   },
-  created () {
+  async created () {
     this.init(this.value)
-    $App.verbaliseCronExpression('') // lazy load cronstrue
+    if (ubPubAvailable) {
+      await $App.verbaliseCronExpression.init() // lazy load cronstrue
+    }
   },
   methods: {
     init (cronStr = this.value) {

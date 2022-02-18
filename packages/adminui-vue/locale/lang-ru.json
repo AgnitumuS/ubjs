@@ -4,27 +4,6 @@
       "confirm": "OK",
       "clear": "Очистить"
     },
-    "time": {
-      "seconds": "секунди",
-      "minutes": "минуты",
-      "hours": "часы",
-      "day": "дни",
-      "month": "месяца",
-      "dayOfWeek": "день недели"
-    },
-    "cron": {
-      "every": "every",
-      "everySecond": "second(s)",
-      "everyMinute": "minute(s)",
-      "everyHour": "hour(s)",
-      "everyDay": "day(s)",
-      "everyMonth": "month(s)",
-      "chooseOneOrMany": "choose one or many",
-      "specific": "specific",
-      "between": "between",
-      "expression": "Выражение",
-      "interpritation": "Интерпритация"
-    },
     "datepicker": {
       "now": "Сейчас",
       "today": "Сегодня",
@@ -135,6 +114,7 @@
       "hasCheckedFormat": "{checked}/{total} выбрано"
     }
   },
+  "supportMailToTitle": "Отправить ошибку в поддержку",
   "isRequiredFieldFmt": "{0} обязательно для заполнения",
   "linkCopiedText": "Ссылка скопирована в буфер обмена",
   "createdEntityCaption": "Создано",
@@ -288,5 +268,24 @@
   },
   "UTable": {
     "noData": "Нет данных"
+  },
+  "UCron": {
+    "seconds": "секунди",
+    "minutes": "минуты",
+    "hours": "часы",
+    "day": "дни",
+    "month": "месяца",
+    "dayOfWeek": "день недели",
+    "every": "every",
+    "everySecond": "second(s)",
+    "everyMinute": "minute(s)",
+    "everyHour": "hour(s)",
+    "everyDay": "day(s)",
+    "everyMonth": "month(s)",
+    "chooseOneOrMany": "choose one or many",
+    "specific": "specific",
+    "between": "between",
+    "expression": "Выражение",
+    "interpretation": "Интерпритация"
   }
 }

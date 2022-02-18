@@ -103,6 +103,7 @@
 	},
 	"uiSettings": {
 		"adminUI": {
+			"supportMailTo": " support@mail.server.com?subject=error report for test environment",
 			"applicationName": {"en": "Autotest UB SQLITE", "uk": "Автотест UB SQLITE"},
 			"applicationTitle": "AdminUI",
 			"defaultPasswordForDebugOnly": "admin",
@@ -188,7 +189,7 @@
 				//#ifdef(%UB_USE_DSTU%)
 				{
 					"path": "./node_modules/@ub-d/crypto-api"
-				},
+				}
 				//#endif
 			],
 			//#ifdef(%UB_USE_DSTU%)
