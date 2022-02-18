@@ -114,7 +114,6 @@ Ext.define('PDF.cstestReport', {
         listeners: {
           initColontitle: function (doc, res) {
             res.align = 'center'
-            // res.text = "стор. "+ doc.getPageNumber() +" з "+ res.totalPages;
           }
         }
       })

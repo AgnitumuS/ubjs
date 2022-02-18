@@ -3,19 +3,19 @@
 * define in form code class construction like this:
     dataBind: {
         caption: {
-            value: '"Входящий " + ([outNumber]?"№ " + [outNumber]:"Б/Н") + ([outDate]?Ext.Date.format([outDate], " от d.m.Y"):"")',
+            value: '"Incoming " + ([outNumber]?"№ " + [outNumber]:"Б/Н") + ([outDate]?Ext.Date.format([outDate], " от d.m.Y"):"")',
             visible: '([taskType] === "ONDATE")'
         },
         //controlLevel: { visible: '([taskType] !== "FORINFORMATION")'},
         shortText: {
-            value: '[caption] || "без номера"'
+            value: '[caption] || "w/o number"'
         }
         //applications: {value: 'parseInt([copies] || 0, 10)+parseInt([sheets] || 0, 10)'},
         //copies: {value: 'parseInt([applications] || 0, 10)-parseInt([sheets] || 0, 10)'},
         //sheets: {value: 'parseInt([applications] || 0, 10)-parseInt([copies] || 0, 10)'}
 
         //toDocumentItemID: {restriction: '"[toDocumentItemID.docID] = " + [toDocumentID]' }
-        //caption: { value: '"Входящий " + ([correspID])?[correspID.name]:"" + [outNumber]?"№ " + [outNumber]:"Б/Н" + [outDate]?Ext.Date.Format([outDate], " от d.m.Y"):""'},
+        //caption: { value: '"Incoming " + ([correspID])?[correspID.name]:"" + [outNumber]?"№ " + [outNumber]:"Б/Н" + [outDate]?Ext.Date.Format([outDate], " от d.m.Y"):""'},
     },
 
    and call UBS.dataBinder.applyBinding(this) in initUBComponent handler
@@ -26,8 +26,8 @@
 Ext.define('UBS.dataBinder', {
 	singleton: true,
     /*
-     * TODO: учесть выражения в "[]"
-     * анализировать типы атрибута. Если лукап, сложный но не лукап и.т.д.	
+     * TODO: take into account expressions in "[]"
+     * analyse attribute type - lookup, complex but not a lookup
      */
     applyBinding: function (frm) {
         var bindedAttr,

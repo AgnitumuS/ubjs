@@ -190,7 +190,7 @@ class XLSXStyleController {
       '</cellStyleXfs>',
       '<cellXfs count="', obj.elements.length, '">', obj.elementsJoined, '</cellXfs>',
       '<cellStyles count="1">',
-      '<cellStyle name="Обычный" xfId="0" builtinId="0"/>',
+      '<cellStyle name="Default" xfId="0" builtinId="0"/>',
       '</cellStyles>',
       '<dxfs count="0"/>',
       '<tableStyles count="0" defaultTableStyle="TableStyleMedium9" defaultPivotStyle="PivotStyleLight16"/>',

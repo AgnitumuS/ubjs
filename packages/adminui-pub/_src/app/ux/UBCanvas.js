@@ -346,10 +346,9 @@ Ext.define('UB.ux.UBCanvas', {
   },
 
   /**
-     * Todo Посискать более красивую реализацию
-     * @param font
-     * @return {*}
-     */
+   * @param font
+   * @return {*}
+   */
   getFontHeight: function (font) {
     var me = this
     if (me.fontsHigh.hasOwnProperty(font)) {
@@ -387,10 +386,10 @@ Ext.define('UB.ux.UBCanvas', {
      * @param {Boolean} [options.wordWrap] (optional)
      * @param {String} [options.align] One of 'left' 'right' 'center'. Default is 'left'.
      * @param {String} [options.fillStyle] (optional) CSSCOLOR 'black' or 'rgba(0,0,0,0.1)' or 'rgb(0,255,0)' or #ff0000
-     * @param {Number} [options.rotate] (optional) как повернуть текст
-     * @param {Number} [options.rotate.angle] (optional) угол в градусах от 0 до 360 градусов
-     * @param {Number} [options.rotate.x] (optional) точка поворота
-     * @param {Number} [options.rotate.y] (optional) точка поворота
+     * @param {Number} [options.rotate] (optional) text rotation
+     * @param {Number} [options.rotate.angle] (optional) text rotation angle in degrees from 0 to 360
+     * @param {Number} [options.rotate.x] (optional) rotation point x
+     * @param {Number} [options.rotate.y] (optional) rotation point y
      * @param {String} [options.baseline] (optional)
      * @return {Number} Next line Y position
      */
@@ -482,10 +481,10 @@ Ext.define('UB.ux.UBCanvas', {
   },
 
   /**
-     * изменние размера приводит к очистке канвы
-     * @param {Number} height
-     * @param {Number} width
-     */
+   * Changing of canvas size will CLEAR canvas content
+   * @param {Number} height
+   * @param {Number} width
+   */
   setCnvaSize: function (height, width) {
     var me = this
     var fChanged = false

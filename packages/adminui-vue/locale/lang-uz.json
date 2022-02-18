@@ -185,7 +185,7 @@
     "webcam": {
       "emptyPicturePlaceholder": "Sizning rasmingiz",
       "resolution": {
-        "4К": "3840x2160 (~8Mb)",
+        "4K": "3840x2160 (~8Mb)",
         "low": "1280x720 (~1Mb)",
         "fullHD": "1920x1080 (~3Mb)"
       },

@@ -7,10 +7,11 @@ Ext.define('UB.ux.designer.ComponentInfo', {
   data: {
 
     layout: {
-      isSimple: true, //  только описательно
+      isSimple: true,
 
       configs: {
-        type: { type: 'String',
+        type: {
+          type: 'String',
           values: [
             'absolute', 'accordion', 'anchor', 'auto', 'autocomponent',
             'border', 'box', 'card', 'checkboxgroup', 'container', 'column',
@@ -18,52 +19,52 @@ Ext.define('UB.ux.designer.ComponentInfo', {
           ]
         },
         align: { type: 'String', values: ['left', 'center', 'right', 'stretch', 'stretchmax'] },
-        pack: {type: 'String', values: ['start', 'center', 'end']},
-        padding: {type: 'String'}
+        pack: { type: 'String', values: ['start', 'center', 'end'] },
+        padding: { type: 'String' }
       }
     },
 
     component: {
-      isSimple: true, //  только описательно
+      isSimple: true,
       configs: {
         width: { type: 'Number' },
         height: { type: 'Number' },
-        flex: {type: 'Number'}
+        flex: { type: 'Number' }
       }
     },
 
     container: {
-      isSimple: true, //  только описательно
-      isContainer: true, // передаем по наследованию признак
+      isSimple: true,
+      isContainer: true, // pass into children
       extend: 'component',
       configs: {
-        layout: {type: 'layout'}
+        layout: { type: 'layout' }
       }
     },
     toolbar: {
       extend: 'container',
-      componentGroup: 'toolbar', // передаем по наследованию
+      componentGroup: 'toolbar',
       configs: {
 
       }
     },
     fieldset: {
       extend: 'container',
-      componentGroup: 'containers', // передаем по наследованию
+      componentGroup: 'containers',
       configs: {
 
       }
     },
     ubfieldset: {
       extend: 'fieldset',
-      componentGroup: 'containers', // передаем по наследованию
+      componentGroup: 'containers',
       configs: {
 
       }
     },
     panel: {
       extend: 'container',
-      componentGroup: 'containers', // передаем по наследованию
+      componentGroup: 'containers',
       defConfig: {
         width: 200,
         height: 200
@@ -82,10 +83,10 @@ Ext.define('UB.ux.designer.ComponentInfo', {
       extend: 'panel'
     },
     Labelable: {
-      isSimple: true, //  только описательно
+      isSimple: true,
       configs: {
-        labelAlign: {type: 'String', values: ['left', 'top', 'right']},
-        hideLabel: {type: 'boolean'}
+        labelAlign: { type: 'String', values: ['left', 'top', 'right'] },
+        hideLabel: { type: 'boolean' }
       }
     },
     field: {
@@ -94,9 +95,9 @@ Ext.define('UB.ux.designer.ComponentInfo', {
       mixins: ['Labelable'],
       componentGroup: 'fields',
       configs: {
-        readOnly: {type: 'Boolean'},
-        tabIndex: {type: 'Number'},
-        invalidText: {type: 'String'}
+        readOnly: { type: 'Boolean' },
+        tabIndex: { type: 'Number' },
+        invalidText: { type: 'String' }
       }
     },
     textfield: {
@@ -109,21 +110,21 @@ Ext.define('UB.ux.designer.ComponentInfo', {
     numberfield: {
       extend: 'textfield',
       configs: {
-        maxValue: {type: 'Number'},
-        minValue: {type: 'Number'}
+        maxValue: { type: 'Number' },
+        minValue: { type: 'Number' }
       }
     },
     pickerfield: {
       extend: 'textfield',
       configs: {
-        editable: {type: 'Boolean'}
+        editable: { type: 'Boolean' }
       }
     },
     combobox: {
       extend: 'pickerfield',
       configs: {
-        valueField: {type: 'String'},
-        displayField: {type: 'String'}
+        valueField: { type: 'String' },
+        displayField: { type: 'String' }
       }
     },
     ubcombobox: {
@@ -147,7 +148,7 @@ Ext.define('UB.ux.designer.ComponentInfo', {
   },
 
   getType: function (type) {
-    var result = this.data[type]
+    const result = this.data[type]
     if (!result) {
       UB.logError('Type "' + type + '" not found')
     }
@@ -155,11 +156,13 @@ Ext.define('UB.ux.designer.ComponentInfo', {
   },
 
   /**
+   * @param component
+   * @param type
    * @private
    */
   calculateComponent: function (component, type) {
-    var me = this, mixinObj, extendObj,
-      c = component
+    const me = this; let mixinObj; let extendObj
+    const c = component
 
     if (c.calculated) {
       return true
@@ -213,22 +216,22 @@ Ext.define('UB.ux.designer.ComponentInfo', {
     }
     return true
   },
-    /**
-     * @protected
-     */
+  /**
+   * @protected
+   */
   initData: function () {
-    var me = this
+    const me = this
     Ext.Object.each(me.data, function (type, component) {
       me.calculateComponent(component, type)
     }, me)
   },
 
-    /**
-    *
-    * @param {Ext.data.NodeInterface} rootNode
-    */
+  /**
+   *
+   * @param {Ext.data.NodeInterface} rootNode
+   */
   fillComponentsTree: function (rootNode) {
-    var me = this, group, groups = {}, node
+    const me = this; let group; const groups = {}; let node
     Ext.Object.each(me.data, function (type, component) {
       if (component.componentGroup && !component.isSimple) {
         group = groups[component.componentGroup]
@@ -250,7 +253,7 @@ Ext.define('UB.ux.designer.ComponentInfo', {
   },
 
   isContainer: function (type) {
-    var component = this.data[type]
+    const component = this.data[type]
     return component ? component.isContainer || false : false
   }
 

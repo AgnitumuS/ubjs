@@ -1,8 +1,7 @@
 /* global Blob File */
-/* global Ext Q, UB, $App */
+/* global Ext UB, $App */
 
 require('../core/UBService')
-require('./UBObject')
 require('./PDFComponent')
 require('./UBImg')
 require('./UBLink')
@@ -72,6 +71,7 @@ Ext.define('UB.ux.UBDocument', {
 
     /**
      * Map of document MIME type to editor
+     *
      * @type {Object<string, string>}
      * @static
      */
@@ -520,7 +520,7 @@ Ext.define('UB.ux.UBDocument', {
           html: !val || val.deleting ? url : val.origName || url,
           blobData: blob
         }
-        // Возможно стоит сравнить md5. Пока не везде честный md5.
+        // May be we should compare checksum (currently some checksum is fake)
         if (me.forceReload || !me.editorInited || !me.isEditor()) {
           me.ubCmp.setSrc(src).then(function (r) {
             resolve(r)
@@ -539,10 +539,10 @@ Ext.define('UB.ux.UBDocument', {
         onContentLoad(null, url, xtype)
       } else if (xtype === 'UB.ux.UBLink' || (hasError && Ext.Object.getSize(val) !== 0)) {
         me.createComponent(xtype)
-          onContentLoad(null, url, xtype)
+        onContentLoad(null, url, xtype)
       } else if (Ext.Object.getSize(val) === 0) {
         me.createComponent(xtype)
-        // xmax событие для инициализации нового документа где такое необходимо
+        // xmax event to init new document
         if (me.ubCmp.initNewSrc) {
           me.value = me.ubCmp.initNewSrc()
         }

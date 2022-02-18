@@ -109,8 +109,8 @@ class XLSXWorksheet {
         this.merge.join('') + '</mergeCells>'
     }
 
-    // Отступы согласно https://enviance.softline.kiev.ua/confluence/pages/viewpage.action?pageId=70123712
-    // 1 дюйм = 25.4 мм
+    // Margins according to https://enviance.softline.kiev.ua/confluence/pages/viewpage.action?pageId=70123712
+    // 1 inch = 25.4 mm
     const mm = 25.4
     let margins = {
       left: 20,
@@ -256,7 +256,7 @@ class XLSXWorksheet {
 
     XLSXWorksheet.checkRowNum(this.nextRowNum)
 
-    // Будем считать кол-во строк
+    // Calc rows count
     if (!this.rowsCount) {
       this.rowsCount = 1
     } else {
