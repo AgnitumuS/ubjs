@@ -952,8 +952,8 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   /**
-   * добавление на диаграмму подчиненных елементов (если они еще не присуктствуют на схеме)
-   * для запуска из оверлея
+   * Add childrens (if they not already added)
+   * to run an overlay
    * @param cell
    * @param overlay
    */
@@ -1395,7 +1395,7 @@ Ext.define('UB.ux.UBOrgChart', {
     })
   },
 
-  // инициация нового документа
+  // new document initialization
   initNewSrc: function () {
     var me = this
     me.loadData().then(() => {
@@ -1448,7 +1448,7 @@ Ext.define('UB.ux.UBOrgChart', {
 
     me.rootVarex = null
 
-    // по всем вершинам в диаграмме
+    // over all vertices in the diagram
     Ext.Object.each(model.cells, function (id, cell) {
       if (cell.vertex) {
         ID = cell.getAttribute('ID')
@@ -1459,7 +1459,7 @@ Ext.define('UB.ux.UBOrgChart', {
           me.rootVarex = cell
           cell.isRoot = true
         }
-        if (!ID) { // теоритически кроме рута без нашей ид не должно быть элементов
+        if (!ID) { // elements without our ID should not exists (except root)
           return true
         }
         parentCell = me.findParentCell(cell)
@@ -1467,10 +1467,10 @@ Ext.define('UB.ux.UBOrgChart', {
         if (parentID) { parentID = parentID * 1 }
 
         elmTree = me.allData[ID]
-        if (!elmTree) { // в базе видно удалили такой элемент
+        if (!elmTree) { // element removed in DB
           cellToDel.push(cell)
         } else {
-          // освежим параметры
+          // regfresh parameters
           if (cell.getAttribute('label') !== elmTree[me.getAttrCode('label')]) {
             cell.setAttribute('label', elmTree[me.getAttrCode('label')])
           }
@@ -1481,11 +1481,11 @@ Ext.define('UB.ux.UBOrgChart', {
             cell.setAttribute('unitType', elmTree[me.getAttrCode('unitType')])
           }
 
-          if (elmTree[me.getAttrCode('parentID')] !== parentID) { // у узла сменлся родитель
+          if (elmTree[me.getAttrCode('parentID')] !== parentID) { // parent changed
             cellChParent.push(cell)
           }
 
-          // заносим все в древовидную стрктуру для дальнейшей проверки
+          // add all to the tree structure for verification
           elm = dCells[ID]
           if (!elm) {
             dCells[ID] = elm = { cell: cell, child: [] }
@@ -1502,13 +1502,13 @@ Ext.define('UB.ux.UBOrgChart', {
       }
     })
 
-    // перенаправляем дугу, если сменлся родитель и если новый родитель на схеме иначе удаляем
+    // redirect the arc if the parent has changed and if the new parent is on the diagram, otherwise delete
     cellChParent.forEach(function (cell) {
       ID = cell.getAttribute('ID')
       if (ID) { ID = ID * 1 }
       elmTree = me.allData[ID]
       elm = dCells[elmTree[me.getAttrCode('parentID')]]
-      if (elm) { // всеже новый родитель есть на схеме
+      if (elm) { // new parent exists
         me.changeElementParent(cell, elm.cell, elmTree)
       } else {
         cellToDel.push(cell)
@@ -1517,7 +1517,7 @@ Ext.define('UB.ux.UBOrgChart', {
 
     me.graph.removeCells(cellToDel, true)
 
-    // осталось найти все элемнты схемы где сменилось количество деток
+    // search for elements with changed child count
     Ext.Object.each(dCells, function (eID, eCell) {
       if (eID === 'root') {
         me.updateCellOverlay(me.rootVarex, eCell.child, me.treeData.length, isUpdateMode)
@@ -1647,7 +1647,6 @@ Ext.define('UB.ux.UBOrgChart', {
 
           let overlay = me.getAddOvelay(parentCell)
           if (parentItem.child.length === childCells.length + 1) {
-            // var pt = mxUtils.convertPoint( me.graph.container, x, y);
             let pt = { x: parentCell.geometry.x, y: parentCell.geometry.y + 120 }
             let model = me.graph.getModel()
             model.beginUpdate()

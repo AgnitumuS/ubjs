@@ -1,10 +1,7 @@
 require('./UBAppConfig')
 require('./UBUtil')
 /**
- * Файл: UB.core.UBStoreManager.js
- * Автор: Игорь Ноженко
- *
- * Менеджер store'ов уровня приложения
+ * Application level store's manager
  */
 Ext.define('UB.core.UBStoreManager', {
   singleton: true,

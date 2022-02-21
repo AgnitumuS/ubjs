@@ -306,7 +306,7 @@ ORDER BY index_id, column_position`
   /** @override */
   genCodeAlterColumn (table, tableDB, column, columnDB, typeChanged, sizeChanged, allowNullChanged) {
     if (typeChanged && column.dataType === 'NTEXT') {
-      // todo сделать автоматом
+      // TODO add converting to NTEXT
       this.addWarning(`Converting to NTEXT type is not supported. Create a new field manually and copy the data into it
       \tField ${table.name}.${column.name}`)
     }
@@ -575,10 +575,10 @@ ORDER BY index_id, column_position`
       case 'INT8': return 'BIGINT'
       case 'INT4': return 'INTEGER'
       case 'SMALLINT': return 'BOOLEAN'
-      case 'TIMESTAMP': return 'DATETIME' // OLD - TIMESTAMP and this unknown comment Не будет совпадать с типом DATETIME и сгенерится ALTER
+      case 'TIMESTAMP': return 'DATETIME'
       case 'TIMESTAMP WITH TIME ZONE': return 'TIMESTAMP WITH TIME ZONE'
-      case 'TIMESTAMP WITHOUT TIME ZONE': return 'DATETIME' // OLD - TIMESTAMP WITHOUT TIME ZONE and this unknown comment: Не будет совпадать с типом DATETIME и сгенерится ALTER
-      case 'DATE': return 'DATE' // Не будет совпадать с типом DATETIME и сгенерится ALTER
+      case 'TIMESTAMP WITHOUT TIME ZONE': return 'DATETIME'
+      case 'DATE': return 'DATE'
       case 'CHARACTER VARYING': return 'NVARCHAR'
       case 'VARCHAR': return 'NVARCHAR'
       case 'TEXT': return 'TEXT'

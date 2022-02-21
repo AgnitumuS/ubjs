@@ -16,7 +16,7 @@ exports.formDef = {
             xtype: 'tabpanel',
             items: [
                 {
-                    title: UB.i18n('General'), // "Атрибуты"
+                    title: UB.i18n('General'),
                     layout: {
                         type: 'vbox',
                         align: "stretch",
@@ -32,14 +32,14 @@ exports.formDef = {
                     items: [
                         { attributeName: "parentID"},
                         { attributeName: "code" /*code*/ },
-                        { attributeName: "OKPOCode" /*ЄДРПОУ*/},
-                        { attributeName: "name" /*Назва*/},
-                        { attributeName: "fullName" /* Повна назва*/},
-                        { attributeName: "taxCode" /*Податковий №*/},
-                        { attributeName: "vatCode" /*№ св. ПДВ*/},
-                        { attributeName: "orgBusinessTypeID" /*Тип організації*/},
-                        { attributeName: "orgOwnershipTypeID" /*Тип власності*/},
-                        { attributeName: "description" /*Опис організації*/},
+                        { attributeName: "OKPOCode" },
+                        { attributeName: "name" },
+                        { attributeName: "fullName" },
+                        { attributeName: "taxCode" },
+                        { attributeName: "vatCode" },
+                        { attributeName: "orgBusinessTypeID" },
+                        { attributeName: "orgOwnershipTypeID" },
+                        { attributeName: "description" },
                         {
                             xtype: "ubdetailgrid",
                             height: 250,

@@ -1392,7 +1392,7 @@ HtmlToPdf.prototype.parseTable = function (context, noWrite) {
     }
   }
 
-    // синхронизация контента ячеек
+  // sync cells content
   function onWriteBaseTextBox (textBox) {
     var context = textBox.customParams.context, reWrite = false, isAlign = true, deltaPos = 0, contentIndex,
       contentItems = textBox.customParams.items, contentItem, contentHeight = 0,
@@ -1457,7 +1457,7 @@ HtmlToPdf.prototype.parseTable = function (context, noWrite) {
                     context.currentTop - me.pdf.getInnerPageBottomPos()
         context.currentTopPageNumber++
       }
-            // пишем начисто
+      // write from scratch
       me.parseNodes(context, false)
     }
   }
@@ -1467,7 +1467,6 @@ HtmlToPdf.prototype.parseTable = function (context, noWrite) {
     rowConfig = []
     images = []
     rowInfo = []
-        // rowTbItems = [];
     maxRowHeight = 0
     if (row.nodeName.toLowerCase() !== 'tr') {
       continue
@@ -1495,10 +1494,8 @@ HtmlToPdf.prototype.parseTable = function (context, noWrite) {
       tdCtxt = new HtmlContext(me.pdf, trCtxt, col, me.getTagInfo(col))
       tdCtxt.setDefaultInfo(tdDefaults)
       tdCtxt.setTop(currentRowTop, grid.lastPageNumber)
-            // cellStyle = tdCtxt.info.styleProps; //me.parseStyle(col);
       cellStyleProp = tdCtxt.info.style // me.getStyleProp(cellStyle);
 
-            // rowInfo[colNum] = getBorderInfo(cellStyle);
       spanProp = {
         colspan: getAttribute(col, 'colspan', null),
         rowspan: getAttribute(col, 'rowspan', null)
@@ -1548,7 +1545,7 @@ HtmlToPdf.prototype.parseTable = function (context, noWrite) {
 
       requiredHeight = 0
 
-            // write cell inner html
+      // write cell inner html
       childWidth = 0
       for (var cellCfgNum = cellNum; (cellCfgNum < cellConfig.length) &&
                 (cellCfgNum < cellNum + (cfg.colSpan || 1)); cellCfgNum++) {
@@ -1567,7 +1564,7 @@ HtmlToPdf.prototype.parseTable = function (context, noWrite) {
       parseRes = me.parseNodes(tdCtxt, true, cellTbItems)
       cfg.requireRewriteContent = (parseRes === 1)
 
-            // check going beyond the page
+      // check going beyond the page
       if (!grid.noChangePage && cellTbItems.length > 0 && cellTbItems[0].firstRowBreaked && !grid.existRowSpanCells) {
         currentRowTop = me.getPageTopPos()
         grid.setTopNextRow(currentRowTop, grid.lastPageNumber + 1)
@@ -1605,14 +1602,10 @@ HtmlToPdf.prototype.parseTable = function (context, noWrite) {
 
       rowData.push('')
       rowConfig.push(cfg)
-      // if (cfg.colSpan){
-      //    cellNum += cfg.colSpan - 1;
-      // }
       cellNum++
     }
     prevRowInfo = rowInfo
     // synchronise
-    //
     if (maxRowHeight) {
       for (colNum = 0; colNum < rowConfig.length; colNum++) {
         // rowConfig[colNum].contentMinHeight = rowConfig[colNum].minHeight;
@@ -1640,11 +1633,9 @@ HtmlToPdf.prototype.parseTable = function (context, noWrite) {
       // pdfRow.content = rowTbItems;
       rowsUnit.push(pdfRow)
       indissolubleRows--
-    } // else {
-        // pdfRow.destroy();
-    // }
+    }
 
-    // обрабатываем неразрывные строки
+    // handle a non-breakable lines
     if (indissolubleRows === 0 && rowsUnit.length > 0) {
       let lastPageNumber = rowsUnit[rowsUnit.length - 1].pageNumber
       let rewritedRow = rowsUnit[0].pageNumber < lastPageNumber
@@ -1692,16 +1683,6 @@ function HtmlContext (pdf, parent, node, tagInfo, config, parsePositionMark) {
   this.pdf = pdf
 
   if (this.info) {
-   /*
-   if (this.parent){
-       if (this.info.text ){
-           this.info.styleProps = this.parent.info.styleProps;
-           this.info.style = this.parent.info.style;
-       } else {
-           _.defaults(this.info.style, this.parent.info.style);
-       }
-   }
-   */
     this.width = this.info.width
     this.maxWidth = this.info.maxWidth
   }
@@ -1729,11 +1710,6 @@ function HtmlContext (pdf, parent, node, tagInfo, config, parsePositionMark) {
   if (parsePositionMark && node.nodeName && node.nodeName.toLowerCase() === 'position-mark') {
     this.getFirstBlockElm().positionMarkKey = node.attributes.getNamedItem('code').nodeValue
   }
-/*
-    if (parsePositionMark){
-        this.parsePositionMark();
-    }
-*/
 }
 
 HtmlContext.prototype.getFirstBlockElm = function () {
@@ -2128,4 +2104,3 @@ function base64toArrayBuffer (base64) {
 }
 
 module.exports = HtmlToPdf
-
