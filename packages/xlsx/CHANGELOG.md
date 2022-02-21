@@ -174,7 +174,7 @@ Simple example:
 const {XLSXWorkbook, XLSXfromHTML} = require('xlsx')
 const xmldom = require('xmldom')
 const wb = new XLSXWorkbook({useSharedString: false})
-const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Лист'}])
+const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Sheet'}])
 converter.writeHtml({html: yourHtmlString})
 let content = wb.render()
 content = Buffer.from(content)

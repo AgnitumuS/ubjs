@@ -105,24 +105,26 @@
     "transfer": {
       "noMatch": "Совпадений не найдено",
       "noData": "Нет данных",
-      "titles": ["Список 1", "Список 2"],
+      "titles": [
+        "Список 1",
+        "Список 2"
+      ],
       "filterPlaceholder": "Введите ключевое слово",
       "noCheckedFormat": "{total} пунктов",
       "hasCheckedFormat": "{checked}/{total} выбрано"
     }
   },
+  "supportMailToTitle": "Send error to support",
   "isRequiredFieldFmt": "{0} обязательно для заполнения",
   "linkCopiedText": "Ссылка скопирована в буфер обмена",
   "createdEntityCaption": "Создано",
   "updatedEntityCaption": "Обновлено",
-
   "searchByDateRange": "Date range",
   "forAllTime": "For all time",
   "lastMonth": "Last Month",
   "lastQuarter": "Last quarter",
   "last6Month": "Last 6 month",
   "thisYear": "This year",
-
   "successfullySaved": "Successfully saved",
   "formWasRefreshed": "Form was refreshed",
   "recordDeletedSuccessfully": "Record deleted successfully",
@@ -132,19 +134,15 @@
   "validationError": "Unable to save<br>Error in fields:<br>{0}",
   "formCrashTitle": "Form was crashed",
   "formCrashBody": "Something going wrong please reload form or contact system administrator",
-
   "selectDate": "Select date",
   "selectDateAndTime": "Select date and time",
-
   "Add": "Add",
   "Continue": "Continue",
-
   "sidebar": {
     "desktopSelector": {
       "title": "Desktop selection"
     }
   },
-
   "table": {
     "filter": {
       "list": {
@@ -190,7 +188,6 @@
       "AVG": "среднее"
     }
   },
-
   "sizeUnits": {
     "b": "Байт",
     "kb": "КБ",
@@ -198,7 +195,6 @@
     "gb": "ГБ",
     "tb": "ТБ"
   },
-
   "fileInput": {
     "manyFilesTable": {
       "label": "Название",
@@ -212,18 +208,15 @@
       "selectedFiles": "Выбрано"
     }
   },
-
   "select": {
     "valueIsUndefined": "Значение \"{0}\" не найдено в сущности \"{1}\"",
     "dictionaryAdding": "Adding new record",
     "dictionaryAddingChoices": "Element <strong>\"{text}\"</strong> is not found in the dictionary \"{entity}\". Choose: <ul><li><strong>Continue</strong> to select another record</li> <li><strong>Add</strong> to add a new record with text \"{text}\"</li> <li><strong>Edit</strong> to define additional attributes</li> </ul>",
     "recordAddedSuccessfully": "Record added successfully"
   },
-
   "tableRegister": {
     "hideDetails": "Скрыть детали"
   },
-
   "chat": {
     "emptyMessage": "Здесь пока нет ни одного сообщения...",
     "inputPlaceholder": "Введите сообщение",
@@ -231,12 +224,10 @@
     "removeMessageDialog": "Удалить сообщение \"{0}\"",
     "removeMessageNotification": "Сообщение успешно удалено"
   },
-
   "aclRlsInfo": {
     "subject": "Субъект",
     "name": "Наименование"
   },
-
   "UFile": {
     "webcam": {
       "webcamLabel": "Камера",
@@ -250,7 +241,7 @@
       "resolution": {
         "low": "1280x720 (~1Mb)",
         "fullHD": "1920x1080 (~3Mb)",
-        "4К": "3840x2160 (~8Mb)"
+        "4K": "3840x2160 (~8Mb)"
       },
       "error": {
         "NotReadableError": "Доступ к камере запрещен в настройках операционной системы",
@@ -258,7 +249,6 @@
         "NotAllowedError": "Доступ к камере запрещен. Включите доступ в настройках браузера"
       }
     },
-
     "addButtonTooltip": "Добавить",
     "downloadButtonTooltip": "Скачать",
     "previewButtonTooltip": "Предпросмотр",
@@ -268,18 +258,34 @@
     "webcamButtonTooltip": "Загрузить изображение с ваб-камеры",
     "fullscreenButtonTooltip": "Развернуть на весь экран"
   },
-
   "UNavbar": {
     "allTabsButton": "Все открытые вкладки"
   },
-
   "USelectEntity": {
     "dropdown": {
       "moreButton": "Больше"
     }
   },
-
   "UTable": {
     "noData": "Нет данных"
+  },
+  "UCron": {
+    "seconds": "second",
+    "minutes": "minute",
+    "hours": "hour",
+    "day": "day",
+    "month": "month",
+    "dayOfWeek": "day of week",
+    "every": "every",
+    "everySecond": "second(s)",
+    "everyMinute": "minute(s)",
+    "everyHour": "hour(s)",
+    "everyDay": "day(s)",
+    "everyMonth": "month(s)",
+    "chooseOneOrMany": "choose one or many",
+    "specific": "specific",
+    "between": "between",
+    "expression": "cron expression",
+    "interpretation": "interpretation"
   }
 }

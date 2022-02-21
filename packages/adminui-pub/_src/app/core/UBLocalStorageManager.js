@@ -1,15 +1,10 @@
 ﻿require('./UBAppConfig')
 require('./UBUtil')
 
-
 /**
- * Файл: UB.core.UBLocalStorageManager.js
- * Автор: Игорь Ноженко
+ * @author Igor Nozenko
  *
- * Менеджер localStorage
- *
- * Обеспечивает работу с localStorage
- * Содержит сервисные функции для формирования key'ев
+ * localStorage manager
  */
 
 Ext.define('UB.core.UBLocalStorageManager', {
@@ -18,31 +13,31 @@ Ext.define('UB.core.UBLocalStorageManager', {
   separator: ':',
 
   /**
-   * Возвращает "key_suffix"
+   * Returns "key_suffix"
    *
-   * @param {String} key
-   * @param {String} suffix
-   * @return {String}
+   * @param {string} key
+   * @param {string} suffix
+   * @returns {string}
    */
   getKey: function (key, suffix) {
     return UB.core.UBUtil.gatherStr(key, '_', suffix)
   },
 
   /**
-   * Возвращает "key_UI"
+   * Returns "key_UI"
    *
-   * @param {String} key
-   * @return {String}
+   * @param {string} key
+   * @returns {string}
    */
   getKeyUI: function (key) {
     return this.getKey(key, 'UI')
   },
 
   /**
-   * Возвращает "login:key"
+   * Returns "login:key"
    *
-   * @param {String} key
-   * @return {String}
+   * @param {string} key
+   * @returns {string}
    */
   getFullKey: function (key) {
     const login = $App.connection.userLogin()
@@ -51,11 +46,11 @@ Ext.define('UB.core.UBLocalStorageManager', {
 
   /**
    *
-   * @param {String} key
+   * @param {string} key
    * @param {Function} [callback]
    * @param [scope]
-   * @param {Boolean} [decode]
-   * @return {String}
+   * @param {boolean} [decode]
+   * @returns {string}
    */
   getItem: function (key, callback, scope, decode) {
     const fullKey = this.getFullKey(key)
@@ -69,9 +64,10 @@ Ext.define('UB.core.UBLocalStorageManager', {
 
   /**
    *
-   * @param {String} key
-   * @param {String} data
-   * @param {Boolean} encode (optional)
+   * @param {string} key
+   * @param {string} data
+   * @param callback
+   * @param scope
    */
   setItem: function (key, data, callback, scope) {
     const fullKey = this.getFullKey(key)
@@ -86,7 +82,9 @@ Ext.define('UB.core.UBLocalStorageManager', {
 
   /**
    *
-   * @param {String} key
+   * @param {string} key
+   * @param callback
+   * @param scope
    */
   removeItem: function (key, callback, scope) {
     const fullKey = this.getFullKey(key)
@@ -97,7 +95,7 @@ Ext.define('UB.core.UBLocalStorageManager', {
 
   /**
    * @param {Function} callback
-   * @param {Object} scope
+   * @param {object} scope
    */
   clear: function (callback, scope) {
     UB.core.UBUtil.clearLocalStorage()
@@ -106,8 +104,10 @@ Ext.define('UB.core.UBLocalStorageManager', {
 
   /**
    *
-   * @param {String} [login] (optional)
-   * @return {String[]}
+   * @param {string} [login] (optional)
+   * @param callback
+   * @param scope
+   * @returns {string[]}
    */
   getUserKeys: function (login, callback, scope) {
     const keys = []
@@ -136,7 +136,7 @@ Ext.define('UB.core.UBLocalStorageManager', {
    *
    * @param {RegExp} regexp
    * @param {Function} fn
-   * @param {Object} scope
+   * @param {object} scope
    */
   removeUserItemsRegExp: function (regexp, fn, scope) {
     const keys = this.getUserKeys()

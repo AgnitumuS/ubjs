@@ -1,9 +1,6 @@
 /* global Ext */
 /**
- * Файл: UB.ux.UBObject.js
- * Автор: Игорь Ноженко
- *
- * Расширение Ext.Component для отображения документа
+ * Ext.Component extension for displaying documents
  */
 Ext.define('UB.ux.UBObject', {
   extend: 'Ext.Component',

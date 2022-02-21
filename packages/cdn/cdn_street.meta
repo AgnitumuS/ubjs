@@ -1,7 +1,6 @@
 {
-  "caption": "Список вулиць",
-  "description": "Список вулиць",
-  "documentation": "В этом справочнике хранится перечень вулиць",
+  "caption": "List of Streets",
+  "description": "List of Streets",
   "connectionName": "",
   "sqlAlias": "street",
   "cacheType": "Entity",

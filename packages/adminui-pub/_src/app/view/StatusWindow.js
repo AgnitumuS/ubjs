@@ -1,5 +1,5 @@
 ﻿/**
- * Реализует функционал status window при сканировании. Используется в модуле сканирования и сторонними проектами
+ * Implements the status window functionality when scanning. Used in the scan engine and third-party projects
  *
  * @private
  */

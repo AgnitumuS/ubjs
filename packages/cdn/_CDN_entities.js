@@ -237,7 +237,7 @@ cdn_citytype_ns.attrs = {}
 */
 const cdn_citytype = new cdn_citytype_ns()
 /**
- * Сlassifiers
+ * Classifiers
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -267,12 +267,12 @@ class cdn_classifier_ns extends EntityNamespace {}
 cdn_classifier_ns.attrs = {}
 
 /**
-* Сlassifiers
+* Classifiers
 * @type {cdn_classifier_ns}
 */
 const cdn_classifier = new cdn_classifier_ns()
 /**
- * Сlassifier Item
+ * Classifier Item
  * @extends EntityNamespace
  * @mixes mStorage
  * @mixes tree
@@ -305,7 +305,7 @@ class cdn_classifieritem_ns extends EntityNamespace {}
 cdn_classifieritem_ns.attrs = {}
 
 /**
-* Сlassifier Item
+* Classifier Item
 * @type {cdn_classifieritem_ns}
 */
 const cdn_classifieritem = new cdn_classifieritem_ns()

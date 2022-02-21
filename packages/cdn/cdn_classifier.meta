@@ -1,6 +1,6 @@
 {
   "sqlAlias": "cdncls",
-  "caption": "Сlassifier",
+  "caption": "Classifier",
   "descriptionAttribute": "name",
   "mixins": {
     "mStorage": {

@@ -137,3 +137,39 @@ $App.on('buildMainMenu', function (items) {
 
 Также сообщения можно просмотреть в реестре истории сообщений.
 ![getMessageInfo](img/getMessageInfo.png) 
+
+## Notify administrator about UI errors
+
+Для активации кнопки, позволяющей пользователю отправить текст ошибки, по заранее указанному адресу, необходимо
+добавить параметр `supportMailTo` в секцию `uiSettings.adminUI`:
+
+```json
+"uiSettings": {
+    "adminUI": {
+        ...
+        "supportMailTo": "support@mail.server.com?subject=error report for test environment"
+        ...
+    },
+    ...
+},
+```
+`supportMailTo` - может любой строкой удовлетворяющей правилам формирования html-ссылки с модификатором `mailto`.
+Например:
+ - отправить по адресу `support@mail.server.com`
+ - в копии добавить адреса `support_2@mail.server.com, support_3@mail.server.com`
+ - заголовок письма установить в `Ошибка в окружении Имя_окружения`.
+
+На основании этих требований, поле `supportMailTo` будет выглядеть так (текст ошибки добавится автоматически):
+```json
+"uiSettings": {
+    "adminUI": {
+        ...
+        "supportMailTo": "support@mail.server.com?cc=support_2@mail.server.com,support_3@mail.server.com&subject=Ошибка в окружении Имя_окружения"
+        ...
+    },
+    ...
+},
+```
+При этом, при обработке письма, полученного от пользователя, следует иметь в виду, что пользователь, при отправке письма,
+может внести любые изменения.
+Получить более подробную информации по формированию html-ссылки с модификатором `mailto` можно [тут](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks#e-mail_links)

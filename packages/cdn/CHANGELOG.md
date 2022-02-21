@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.4] - 2022-02-16
 ## [5.22.3] - 2022-02-08
 ### Added
  - `cdn_organization.OKPOCode` will be trimmed during insert/update operation (prevents unwonted whitespaces remove whitespaces at start/end)

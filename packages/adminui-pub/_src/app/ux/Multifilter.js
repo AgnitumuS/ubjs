@@ -401,7 +401,7 @@ Ext.define('UB.ux.Multifilter', {
   },
 
   createFilterPanel: function (attrName, gridColumn) {
-    var me = this, fieldCfg, attrChain,
+    var me = this, fieldCfg,
       filterPanel, items, fieldList,
       grid = me.gridOwner,
       entity = grid.entityName,
@@ -864,7 +864,7 @@ Ext.define('UB.ux.Multifilter', {
       var curr = new Date(), // get current date
         first, last
 
-      // getDay 0 соответствует воскресенью, 1 — понедельнику, 2 — вторнику и так далее.
+      // getDay 0 sunday, 1 — monday, 2 — Tuesday etc.
       first = UB.core.UBUtil.addDays(curr, -1 * ((curr.getDay() || 7) - 1))
       last = UB.core.UBUtil.addDays(curr, 7 - (curr.getDay() || 7))
       if (!fullDate) {
@@ -1363,7 +1363,6 @@ Ext.define('UB.ux.Multifilter', {
         hideLabel: context.isPreFilter,
         isFormField: context.isPreFilter,
         labelWidth: 100, // 'auto',
-        // fieldLabel: UB.i18n('filterType'),
         store: me.createFilterItems('association', attribute.allowNull), // this.AssociationFilters,
         queryMode: 'local',
         displayField: 'text',
@@ -1490,7 +1489,6 @@ Ext.define('UB.ux.Multifilter', {
      * @returns {Array}
      */
     getAssociationFilterInputS: function (entityName, attrName, options, context) {
-      // todo перенести в отдельный модуль и уйти от context
       var
         me = this,
         attribute = $App.domainInfo.get(entityName).attr(attrName),
@@ -1711,35 +1709,35 @@ Ext.define('UB.ux.Multifilter', {
         switch (dataType) {
           case 'date':
             items.push(
-              {type: 'today', text: 'today'},
-              {type: 'yesterday', text: 'yesterday'},
-              {type: 'current_week', text: 'current_week'},
-              {type: 'this_month', text: 'this_month'},
-              {type: 'this_year', text: 'this_year'},
-              {type: 'from_date', text: 'from_date'},
-              {type: 'to_date', text: 'to_date'},
-              {type: 'date', text: 'date'},
-              {type: 'period', text: 'period'}
+              { type: 'today', text: 'today' },
+              { type: 'yesterday', text: 'yesterday' },
+              { type: 'current_week', text: 'current_week' },
+              { type: 'this_month', text: 'this_month' },
+              { type: 'this_year', text: 'this_year' },
+              { type: 'from_date', text: 'from_date' },
+              { type: 'to_date', text: 'to_date' },
+              { type: 'date', text: 'date' },
+              { type: 'period', text: 'period' }
             ); break
           case 'string':
             items.push(
-              {type: 'startWith', text: 'startWith'},
-              {type: 'contains', text: 'contains'},
+              { type: 'startWith', text: 'startWith'},
+              { type: 'contains', text: 'contains' },
               // {type:'endWith', text: 'endWith'},
               // {type:'notContains', text: 'notContains'},
-              {type: 'equal', text: 'equal'}
+              { type: 'equal', text: 'equal' }
             ); break
           case 'number':
             items.push(
-              {type: 'more', text: 'more'},
-              {type: 'less', text: 'less'},
-              {type: 'equal', text: 'equal'},
-              {type: 'range', text: 'range'}
+              { type: 'more', text: 'more' },
+              { type: 'less', text: 'less' },
+              { type: 'equal', text: 'equal' },
+              { type: 'range', text: 'range' }
             ); break
           case 'association':
             items.push(
-              {type: 'by_value', text: 'by_value'},
-              {type: 'by_several_value', text: 'by_several_value'}
+              { type: 'by_value', text: 'by_value' },
+              { type: 'by_several_value', text: 'by_several_value' }
             ); break
         }
 

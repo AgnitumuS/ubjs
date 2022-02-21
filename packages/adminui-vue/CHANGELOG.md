@@ -8,14 +8,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Use UB icon `u-icon-signature` for signature instead of FontAwesome icon in the SignatureVerificationResult component
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+- `Form.js`: added updating this.tabId in `created` event handler after new entity Id is already generated. It fixes bug when newly created entity can be opened in a separate tab.
+
+## [5.22.4] - 2022-02-16
+### Added
+- `UDropdown`:`customClass` prop added - allows set a custom CSS class for u-dropdown
+- `UTableEntity` store: new mutation `CLEAR_FILTER` allows clear current filters set
+- `UCheckbox` - new component. Styled <input type="checkbox">
+- `URadio` - new component. Wrapper for groups consisting of styled <input type="radio">
+- `UCron` - new component. An easy compilation cron expression. Can convert cron expression into a human-readable string
+  if @unitybase/adminui-pub is available
+- new icons: `u-icon-download-with-signatures`, `u-icon-upload-with-signatures` and `u-icon-view-signatures`
+- new parameter `uiSettings.adminUI.supportMailTo` in `ubConfig.json`: if sets - enables a button on the error message what allow sends error text to support
+
+### Fixed
+- `UNavbar` - fixed popup all list tabs on not tall screens
 - `UTableEntity` - fixed bugs on filters when user change condition from `equal` to `oneOf`
-- `Form.js`: added updating this.tabId in `created` event handler after new entity Id is already generated. It fixes bug when newly created entity can be opened in a separate tab. 
+- `UTableEntity` - added preselected column in filters (restore functionality after refactoring).
 
 ## [5.22.3] - 2022-02-08
 ### Added

@@ -1096,7 +1096,7 @@ Ext.define('UB.view.EntityGridPanel', {
           if (column.field) {
             column.field.setWidth(column.width - 2)
           }
-          if (me.GridSummary) {
+          if (me.GridSummary && !column.hidden) {
             let item = _.find(me.GridSummary.items.items, { baseColumn: column })
             item.setWidth(column.width - 2)
           }
@@ -1201,7 +1201,9 @@ Ext.define('UB.view.EntityGridPanel', {
       if (me.store) {
         me.store.on('clear', function () {
           if (me.GridSummary) {
-            me.GridSummary.dataBind()
+            setTimeout(() => {
+              me.GridSummary.dataBind()
+            }, 300)
           }
         })
       }

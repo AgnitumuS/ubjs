@@ -59,13 +59,16 @@ module.exports = {
       c('controls/UIcon.vue'), // TODO
       c('controls/UButton.vue'),
       c('controls/UButtonGroup.vue'),
+      c('controls/URadio.vue'),
+      c('controls/UCheckbox.vue'),
       c('controls/UBaseInput.vue'),
       c('controls/UFile/UFileInput.vue'),
       c('controls/UTable/UTable.vue'), // TODO
       c('controls/UDatePicker.vue'), // TODO
       c('controls/UDropdown/UDropdown.vue'), // UDropdownItem.vue documented here using @require directive
       c('controls/UCodeMirror.vue'), // TODO
-      c('controls/UIconPicker.vue') // TODO
+      c('controls/UIconPicker.vue'),
+      c('controls/UCron/UCron.vue')
     ]
   }, {
     name: 'Data-aware',

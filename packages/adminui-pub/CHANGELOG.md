@@ -13,12 +13,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - `UB.ux.UBObject` is removed (not used)
+ - `UB.view.CommandBuilder.CommandTypeComboBox` is *REMOVED* (not used)
+ - `UB.view.CommandBuilder.FormsComboBox` is *REMOVED* (not used)
+ - `UB.ux.GraphViewer` (graph diagram editor) is *REMOVED* (not used)
+ - `UB.ux.UBDetailTreeGrid` is *REMOVED* (not used)
 
 ### Fixed
 
+## [5.22.4] - 2022-02-16
+### Added
+- `$App.verbaliseCronExpression`: verbalize a cron expression to human readable string (using https://github.com/bradymholt/cronstrue)
+ 
+### Changed
+ - az localization for tinymce
+### Fixed
+ - EntityGridPanel - not resize summary row if column is hidden, add timeout before GridSummary.dataBind when clean data in rowEditing grid
+
 ## [5.22.3] - 2022-02-08
 ### Added
- - `UBDocument`: added public property `urlParams` that can be defined at client forms
+ - `UBDocument`: added public property `urlParams` that can be defined at client forms,
  and it will be added to `getDocument` request URL formed by `UBDocument`, so in the server logs the source of `getDocument` can be tracked
  
 ### Changed

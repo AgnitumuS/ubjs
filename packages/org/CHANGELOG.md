@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - Localization of the captions missed for `org_execgroup` and `org_diagram-main` forms
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.22.4] - 2022-02-16
+### Added
+ - Localization of the captions missed for `org_execgroup` and `org_diagram-main` forms
 
 ### Fixed
 - cyrillic symbols in English (en) localization

@@ -1,6 +1,6 @@
 ﻿{
-  "caption": "",
-  "description": "Справочник типовых групп исполнителей для заданий",
+  "caption": "Executors Groups",
+  "description": "List of typical executors groups for tasks executors",
   "connectionName": "",
   "sqlAlias": "orgExGr",
   "cacheType": "Session",
@@ -10,8 +10,8 @@
       "name": "parentID",
       "dataType": "Entity",
       "associatedEntity": "org_organization",
-      "caption": "Родительский узел",
-      "description": "Родительский узел",
+      "caption": "Parent unit",
+      "description": "Parent unit of group",
       "allowNull": false
     },
     {
@@ -27,16 +27,16 @@
       "name": "code",
       "dataType": "String",
       "size": 16,
-      "caption": "Внутренний код",
-      "description": "Внутренний код группы",
+      "caption": "Internal code",
+      "description": "Internal code of group",
       "allowNull": false
     },
     {
       "name": "name",
       "dataType": "String",
       "size": 254,
-      "caption": "Название группы",
-      "description": "Название без кавычек и абревиатур",
+      "caption": "Group name",
+      "description": "Group name without quoter and abbr",
       "allowNull": false,
       "isMultiLang": true
     },
@@ -44,8 +44,7 @@
       "name": "nameGen",
       "dataType": "String",
       "size": 254,
-      "caption": "Название в родит. падеже",
-      "description": "Название без кавычек и аббревиатур в родительном падеже",
+      "caption": "Name in genitive case",
       "allowNull": true,
       "isMultiLang": true
     },
@@ -53,8 +52,7 @@
       "name": "nameDat",
       "dataType": "String",
       "size": 254,
-      "caption": "Название в дат. падеже",
-      "description": "Название без кавычек и аббревиатур в дательном падеже",
+      "caption": "Name in dative case",
       "allowNull": true,
       "isMultiLang": true
     }

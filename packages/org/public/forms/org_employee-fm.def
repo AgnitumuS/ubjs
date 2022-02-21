@@ -16,7 +16,7 @@ exports.formDef = {
             xtype: 'tabpanel',
             items: [
                 {
-                    title: UB.i18n('General'), // "Атрибуты"
+                    title: UB.i18n('General'),
                     layout: {
                         type: 'vbox',
                         align: "stretch",
@@ -150,8 +150,6 @@ exports.formDef = {
                     }]
                 }
             ]
-
-
         }
     ]
 }

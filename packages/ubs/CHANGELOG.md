@@ -12,9 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - `UBS.cliUtils` is *REMOVED* (deprecated from 2019)
 
 ### Fixed
 
+## [5.22.4] - 2022-02-16
 ## [5.22.3] - 2022-02-08
 ## [5.22.2] - 2022-01-24
 ## [5.22.1] - 2022-01-14

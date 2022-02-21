@@ -112,6 +112,7 @@
       "emptyText": "Ma'lumot yo'q"
     }
   },
+  "supportMailToTitle": "Send error to support",
   "lastMonth": "O `tgan oy",
   "recordDeletedSuccessfully": "Yozuv muvaffaqiyatli o'chirildi",
   "formCrashBody": "Xatolik yuz berdi, iltimos, formani qayta yuklang yoki tizim administratoriga murojaat qiling",
@@ -184,7 +185,7 @@
     "webcam": {
       "emptyPicturePlaceholder": "Sizning rasmingiz",
       "resolution": {
-        "4К": "3840x2160 (~8Mb)",
+        "4K": "3840x2160 (~8Mb)",
         "low": "1280x720 (~1Mb)",
         "fullHD": "1920x1080 (~3Mb)"
       },
@@ -260,5 +261,24 @@
   },
   "UTable": {
     "noData": "Ma'lumot yo'q"
+  },
+  "UCron": {
+    "seconds": "soniya",
+    "minutes": "daqiqa",
+    "hours": "soat",
+    "day": "kunlar",
+    "month": "oylar",
+    "dayOfWeek": "haftaning kunlari",
+    "every": "every",
+    "everySecond": "second(s)",
+    "everyMinute": "minute(s)",
+    "everyHour": "hour(s)",
+    "everyDay": "day(s)",
+    "everyMonth": "month(s)",
+    "chooseOneOrMany": "choose one or many",
+    "specific": "specific",
+    "between": "between",
+    "expression": "cron expression",
+    "interpretation": "interpretation"
   }
 }
