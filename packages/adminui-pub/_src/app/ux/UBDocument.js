@@ -1,8 +1,7 @@
 /* global Blob File */
-/* global Ext Q, UB, $App */
+/* global Ext UB, $App */
 
 require('../core/UBService')
-require('./UBObject')
 require('./PDFComponent')
 require('./UBImg')
 require('./UBLink')
@@ -72,6 +71,7 @@ Ext.define('UB.ux.UBDocument', {
 
     /**
      * Map of document MIME type to editor
+     *
      * @type {Object<string, string>}
      * @static
      */
@@ -114,6 +114,32 @@ Ext.define('UB.ux.UBDocument', {
 
   cls: 'ub-document-container',
 
+  /**
+   * Additional parameters that will be added to `getDocument` request
+   * Usage sample:
+   * Client-side control:
+    {
+      attributeName: 'docID.document',
+      expanded: true,
+      urlParams: {
+       skipBorderUnit: true
+      },
+      forceMIME: 'application/pdf'
+    }
+   * Server-side checker:
+    App.on('getDocument:before', (req, resp) => {
+      let params
+      if (req.method === 'GET') {
+        params = req.parsedParameters
+      } else if (req.method === 'POST') {
+       const paramStr = req.read()
+       params = JSON.parse(paramStr)
+      }
+      if (params.skipBorderUnit) doSomething()
+    })
+   * @cfg {Object|null}
+   */
+  urlParams: null,
   /**
    * Request a server to convert a document content to specified MIME type
    * Converting  must be are enabled on the server side.
@@ -438,11 +464,11 @@ Ext.define('UB.ux.UBDocument', {
         }
       } else {
         xtype = me.expanded ? val.ct : 'UB.ux.UBLink'
-        params = {
+        params = Object.assign(me.urlParams || {}, {
           entity: me.entityName,
           attribute: me.attributeName,
           ID: me.instanceID
-        }
+        })
 
         if (val.store) {
           params.store = val.store
@@ -494,7 +520,7 @@ Ext.define('UB.ux.UBDocument', {
           html: !val || val.deleting ? url : val.origName || url,
           blobData: blob
         }
-        // Возможно стоит сравнить md5. Пока не везде честный md5.
+        // May be we should compare checksum (currently some checksum is fake)
         if (me.forceReload || !me.editorInited || !me.isEditor()) {
           me.ubCmp.setSrc(src).then(function (r) {
             resolve(r)
@@ -513,10 +539,10 @@ Ext.define('UB.ux.UBDocument', {
         onContentLoad(null, url, xtype)
       } else if (xtype === 'UB.ux.UBLink' || (hasError && Ext.Object.getSize(val) !== 0)) {
         me.createComponent(xtype)
-          onContentLoad(null, url, xtype)
+        onContentLoad(null, url, xtype)
       } else if (Ext.Object.getSize(val) === 0) {
         me.createComponent(xtype)
-        // xmax событие для инициализации нового документа где такое необходимо
+        // xmax event to init new document
         if (me.ubCmp.initNewSrc) {
           me.value = me.ubCmp.initNewSrc()
         }

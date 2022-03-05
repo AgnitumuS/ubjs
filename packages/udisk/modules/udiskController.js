@@ -16,7 +16,6 @@ function udiskController (diskEntity) {
   var permissionEntity = global[permissionEntityName]
 
   // entityName;
-  // me.entity.addMethod('selectAvailableToMe');
   me.entity.addMethod('changeAccess')
   me.entity.addMethod('checkNames')
   me.entity.addMethod('copy')
@@ -33,9 +32,8 @@ function udiskController (diskEntity) {
   me.entity.addMethod('getDiskType')
 
   function userHasAnyRole (...roleCodes) {
-    let userRoleList = Session.uData.roles.split(',')
     for (let i = 0, L = roleCodes.length; i < L; i++) {
-      if (userRoleList.includes(roleCodes[i])) {
+      if (Session.hasRole(roleCodes[i])) {
         return true
       }
     }
@@ -57,13 +55,10 @@ function udiskController (diskEntity) {
       var rl = JSON.parse(store.lockResult)
       _.merge(ctxt.mParams.resultLock, rl)
     }
-    // ctxt.dataStore.initFromJSON(store.asJSONObject);
-    // ctxt.mParams.resultData = store.asJSONArray;
   }
 
   me.adminDelete = function (ctxt) {
     var params = ctxt.mParams
-    // store =  ctxt.dataStore,
     var cStore
 
     if (userHasAnyRole(adminRole, adminDCRole)) {
@@ -120,14 +115,6 @@ function udiskController (diskEntity) {
       throw new Error('<<<udiskCanChangeOnlyEmptyFolder>>>')
     }
     params.isAdminMode = true
-    /*
-        store = UB.DataStore(entityName);
-        if (params.execParams.name && params.execParams.ID) {
-            store.execSQL('update ' + entityName + ' set name = :name: where id = :ID:', params.execParams)
-        } else {
-            throw  new Error('<<<udiskOnlyChangeNameSupportInAdminMode>>>');
-        }
-        */
     if (params.execParams.parentID) {
       throw new Error('<<<udiskCanChangeOnlyEmptyFolder>>>')
     }
@@ -357,17 +344,6 @@ function udiskController (diskEntity) {
       }
       cardStore.freeNative()
       cardStore = null
-
-      /* _.forEach(selected, function (sId) {
-                cStore.run('update', {
-                    fieldList: ['ID'],
-                    caller: me.entity.name,
-                    execParams: {
-                        ID: sId,
-                        parentID: targetFolderID
-                    }
-                });
-            }); */
     }
     if (action === 'copy') {
       cardStore = UB.Repository(entityName)
@@ -424,12 +400,6 @@ function udiskController (diskEntity) {
       }
       cardStore.freeNative()
       cardStore = null
-      /*
-             _.forEach(selected, function(sID, index) {
-
-             copyFileToNew(sID, newNames[sID], cStore);
-             });
-             */
     }
   }
 
@@ -1006,120 +976,6 @@ function udiskController (diskEntity) {
     }
   })
 
-  /*
-
-     function synchroniseAccess(ctxt, action){
-     var execParams = ctxt.mParams && ctxt.mParams.execParams,
-     pStore,
-     udisk_card, cStore, cStore2,
-     ID = execParams.ID,
-     cardID,
-     userID, oldUserID,
-     accessType = execParams.accessType,
-     oldAccessType;
-
-     if (action === 'insert') {
-     cardID = execParams.cardID;
-     userID = execParams.userID;
-     } else {
-     udisk_card = UB.Repository(permissionEntityName).
-     attrs(['ID', 'userID', 'cardID', 'accessType']).
-     where('[ID]', '=', ID).
-     select();
-     cardID = udisk_card.get('cardID');
-     userID = udisk_card.get('userID');
-     oldAccessType = udisk_card.get('accessType');
-     if (execParams.userID && execParams.userID !== userID){
-     oldUserID = userID;
-     userID = execParams.userID;
-     }
-     udisk_card.freeNative();
-     }
-
-     if (accessType === 'owner'){
-     return;
-     }
-     udisk_card = UB.Repository(entityName).
-     attrs(['ID', 'isFolder', 'parentID', 'mi_treePath']).
-     where('[ID]', '=', cardID).
-     select();
-
-     if (udisk_card.get('isFolder')) {
-     // для всех подчинненых файлов ставим те же права
-     pStore = UB.DataStore(permissionEntityName);
-     cStore = UB.Repository(entityName).
-     attrs(['ID']).
-     where('[parentID]', '=', cardID).
-     where('[isFolder]', '!=', true).
-     select();
-     while (!cStore.eof){
-     if (oldUserID) {
-     cStore2 = UB.Repository(permissionEntityName).
-     attrs(['ID', 'userID', 'cardID', 'accessType']).
-     where('[cardID]', '=', cStore.get('ID')).
-     where('[userID]', '=', oldUserID).
-     select();
-     if (cStore2.rowCount > 0 && !compareAccessType(cStore2.get('accessType'), accessType) ){
-     pStore.run('delete', {
-     fieldList: [],
-     caller: me.entity.name,
-     execParams: {
-     ID: cStore2.get('ID')
-     }
-     }
-     );
-     }
-     cStore2.freeNative();
-     }
-     cStore2 = UB.Repository(permissionEntityName).
-     attrs(['ID', 'userID', 'cardID', 'accessType']).
-     where('[cardID]', '=', cStore.get('ID')).
-     where('[userID]', '=', userID).
-     select();
-     if (cStore2.rowCount > 0 && !compareAccessType(cStore2.get('accessType'), oldAccessType)){
-     if (action === 'delete'){
-     pStore.run('delete', {
-     fieldList: [],
-     caller: me.entity.name,
-     execParams: {
-     ID: cStore2.get('ID')
-     }
-     }
-     );
-     } else {
-     pStore.run('update', {
-     fieldList: [],
-     caller: me.entity.name,
-     execParams: {
-     ID: cStore2.get('ID'),
-     accessType: accessType
-     }
-     }
-     );
-     }
-     } else {
-     if (action !== 'delete'){
-     pStore.run('insert', {
-     fieldList: [],
-     caller: me.entity.name,
-     execParams: {
-     cardID: cStore.get('ID'),
-     userID: userID,
-     accessType: accessType
-     }
-     }
-     );
-     }
-     }
-     cStore2.freeNative();
-
-     cStore.next();
-     }
-     cStore.freeNative();
-     }
-     udisk_card.freeNative();
-     }
-     */
   function checkDelegate (ctxt) {
     var execParams = ctxt.mParams && ctxt.mParams.execParams; var cStore
     var ID = execParams.ID; var cardID = execParams.cardID; var parentID = -1
@@ -1233,22 +1089,11 @@ function udiskController (diskEntity) {
     pStore.freeNative()
   }
 
-  /*
-     function checkAccessToParent(permissionID, cardID){
-     store = UB.Repository(permissionEntityName).
-     attrs(['ID']).
-     where('[parentID]', '=', cardID).
-     where('[isFolder]', '!=', true).
-     select();
-
-     }
-     */
-
   /**
-     * Check access right to folder before add access to the child folders or files
-     * @param cardID
-     * @param subjectID
-     */
+   * Check access right to folder before add access to the child folders or files
+   * @param cardID
+   * @param subjectID
+   */
   function checkParentAccess (cardID, subjectID) {
     var store, parentID
     if (userHasAnyRole(adminRole, adminDCRole)) {
@@ -1279,24 +1124,6 @@ function udiskController (diskEntity) {
       return
     }
 
-    /*
-         store.runSQL(
-         // role - sub role
-         ' select 1 from uba_userrole ur where ur.roleID = :userID: and not exists(' +
-         ' select 1 from ' + permissionEntityName + ' p inner join uba_userrole ur1 on p.userID = ur1.roleID ' +
-         '  where p.cardID = :cardID: and ur1.userID  = ur.userID )' +
-         ' union all '+
-         // user - role
-         ' select 1 from uba_userrole ur where ur.roleID = :userID: and not exists(' +
-         ' select 1 from ' + permissionEntityName + ' p ' +
-         '  where p.cardID = :cardID: and p.userID  = ur.userID )',
-         {cardID: parentID, userID:  subjectID}
-         );
-         if (store.rowCount === 0){
-         store.freeNative();
-         return;
-         }
-         */
     store.freeNative()
     throw new Error(UB.i18n('udiskUserMustHaveAccessToParent'))
   }
@@ -1372,7 +1199,7 @@ function udiskController (diskEntity) {
       .select()
 
     if (udisk_card.get('isFolder')) {
-      // для всех подчинненых файлов ставим те же права
+      // sets the same right for all sub-nodes
       permStore = UB.DataStore(permissionEntityName)
       cStore = UB.Repository(entityName)
         .attrs(['ID'])
@@ -1423,21 +1250,7 @@ function udiskController (diskEntity) {
       cStore.freeNative()
       cStore = null
     }
-
-    /*
-         cStore = UB.Repository(permissionEntityName).
-         attrs(['ID', 'userID']).
-         where('[ID]', '=', ID).
-         where('[userID]', '=', Session.userID).
-         misc({__skipRls: true}).
-         select();
-         if (cStore.rowCount !== 1) {
-         checkDelegate(ctxt);
-         } */
     checkCardDelegate(ctxt)
-
-    // inherited access drop "cascade delete"
-    // synchroniseAccess(ctxt, 'delete');
   })
 
   permissionEntity.on('update:before', function (ctxt) {
@@ -1478,8 +1291,6 @@ function udiskController (diskEntity) {
       cStore = null
     }
     checkCardDelegate(ctxt)
-    // checkDelegate(ctxt);
-    // synchroniseAccess(ctxt, 'update');
 
     // update all child
     permStore = UB.DataStore(permissionEntityName)

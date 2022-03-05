@@ -8,7 +8,7 @@
     },
     {
       "name": "firstName",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "middleName",
@@ -16,7 +16,7 @@
     },
     {
       "name": "birthDate",
-      "caption": "Tug'ilgan kun"
+      "caption": "Tug'ilgan sana"
     },
     {
       "name": "description",
@@ -24,27 +24,27 @@
     },
     {
       "name": "sexType",
-      "caption": "Jins"
+      "caption": "Jinsi"
     },
     {
       "name": "suffix",
-      "caption": "Qoplamoq"
+      "caption": "Suffiks"
     },
     {
       "name": "shortFIO",
-      "caption": "Qisqa phno"
+      "caption": "Qisqa F.I.O"
     },
     {
       "name": "fullFIO",
-      "caption": "To'liq ism"
+      "caption": "To'liq F.I.O"
     },
     {
       "name": "apply",
-      "caption": "Shikoyat qilish"
+      "caption": "Murojat"
     },
     {
       "name": "photo",
-      "caption": "Surat"
+      "caption": "Foto"
     },
     {
       "name": "lastNameGen",
@@ -56,43 +56,43 @@
     },
     {
       "name": "firstNameGen",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "firstNameDat",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "middleNameGen",
-      "caption": "Otasini ismi"
+      "caption": "Otasini Nomii"
     },
     {
       "name": "middleNameDat",
-      "caption": "Otasini ismi"
+      "caption": "Otasini Nomii"
     },
     {
       "name": "shortFIOGen",
-      "caption": "Qisqa ism"
+      "caption": "Qisqa Nomi"
     },
     {
       "name": "shortFIODat",
-      "caption": "Qisqa ism"
+      "caption": "Qisqa Nomi"
     },
     {
       "name": "fullFIOGen",
-      "caption": "To'liq ism"
+      "caption": "To'liq Nomi"
     },
     {
       "name": "fullFIODat",
-      "caption": "To'liq ism"
+      "caption": "To'liq Nomi"
     },
     {
       "name": "applyGen",
-      "caption": "Shikoyat qilish"
+      "caption": "Murojat"
     },
     {
       "name": "applyDat",
-      "caption": "Shikoyat qilish"
+      "caption": "Murojat"
     },
     {
       "name": "regionID",
@@ -100,7 +100,7 @@
     },
     {
       "name": "identCard",
-      "caption": "Identifikatsiya"
+      "caption": "Shaxsni Identifikatsiya qilish"
     },
     {
       "name": "workPlacePos",
@@ -112,7 +112,7 @@
     },
     {
       "name": "categoryID",
-      "caption": "Turkum"
+      "caption": "Kategoriya"
     },
     {
       "name": "nationality",
@@ -124,7 +124,7 @@
     },
     {
       "name": "classID",
-      "caption": "Tasniflash"
+      "caption": "Klassifikatsiya"
     }
   ]
 }

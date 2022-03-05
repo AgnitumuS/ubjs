@@ -1,5 +1,5 @@
 {
-  "caption": "Saqlangan filtrlar",
+  "caption": "Hisoblagichlar",
   "description": "Saqlangan filtrlar",
   "attributes": [
     {
@@ -12,7 +12,7 @@
     },
     {
       "name": "filter",
-      "caption": "Filtr matn"
+      "caption": "Matn filtri"
     },
     {
       "name": "isGlobal",

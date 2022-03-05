@@ -907,6 +907,7 @@ UBConnection.prototype.xhr = function (config) {
          * The only valid endpoint after this is `changePassword`
          *
          * Accept 1 arg `(connection: UBConnection)
+         *
          * @event passwordExpired
          * @memberOf module:@unitybase/ub-pub.module:AsyncConnection~UBConnection
          */
@@ -914,6 +915,8 @@ UBConnection.prototype.xhr = function (config) {
           throw new ubUtils.UBAbortError()
         }
         throw new ubUtils.UBError(errMsg, errDetails, errCode)
+      } else if (reason.status === 403) {
+        throw new ubUtils.UBError('Access deny')
       } else {
         throw reason //! Important - rethrow the reason is important. Do not create a new Error here
       }
@@ -1496,7 +1499,7 @@ UBConnection.prototype.select = function (serverRequest, bypassCache) {
   const me = this
   let dataPromise
 
-  bypassCache = bypassCache || (serverRequest.__mip_disablecache === true)
+  bypassCache = bypassCache || (serverRequest.__mip_disablecache === true) || (serverRequest.__mip_recordhistory_all === true)
   const cacheType = bypassCache || serverRequest.ID || serverRequest.bypassCache
     ? UBCache.cacheTypes.None
     : me.domain.get(serverRequest.entity).cacheType

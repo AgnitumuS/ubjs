@@ -1,6 +1,6 @@
 {
   "caption": "Mintaqalar turlari",
-  "description": "Mintaqalar turlari katalogi",
+  "description": "Mintaqalar turlari ma`lumotnomasi",
   "attributes": [
     {
       "name": "code",
@@ -8,7 +8,7 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "caption": "Report templates",
+  "caption": "Report Templates",
   "description": "Report templates",
   "dsType": "Virtual",
   "cacheType": "SessionEntity",
@@ -58,7 +58,8 @@
   "mixins": {
     "fsStorage": {
       "dataPath": "reports",
-      "naturalKey": "report_code"
+      "naturalKey": "report_code",
+      "allowOverride": true
     }
   }
 }

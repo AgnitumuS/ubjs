@@ -1,10 +1,7 @@
 <template>
   <filter-template
-    :button-disabled="value.length === 0"
-    @submit="$emit('search', {
-      whereList: [{condition: 'notIn', value}],
-      description: $ut('notContains') + ' ' + manyOptions
-    })"
+    :button-disabled="isEmpty"
+    @submit="submitHandler"
   >
     <u-select-multiple
       ref="selectMany"
@@ -22,6 +19,8 @@ export default {
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
+
+  mixins: [require('../mixinForFilter.js')],
 
   props: {
     column: {
@@ -46,7 +45,17 @@ export default {
       } else {
         return []
       }
+    },
+
+    isEmpty () {
+      const { value } = this
+      return value === '' || value === null || value.length === 0
     }
+  },
+  
+  // this hook will be call after call hook in mixin
+  created () {
+    if (!Array.isArray(this.value)) this.value = []
   },
 
   methods: {
@@ -54,7 +63,14 @@ export default {
       return this.$UB.Repository('ubm_enum')
         .attrs('code', 'name', 'eGroup')
         .where('eGroup', '=', this.column.attribute.enumGroup)
-    }
+    },
+    getCondition () {
+        const { $ut, value, manyOptions } = this
+        return {
+          whereList: [{condition: 'notIn', value}],
+          description: $ut('notContains') + ' ' + manyOptions
+        }
+      }
   }
 }
 </script>

@@ -89,6 +89,7 @@
         />
         <u-auto-field attribute-name="employee" />
       </u-grid>
+      <u-auto-field attribute-name="staff" />
     </u-form-container>
   </div>
 </template>
@@ -109,7 +110,8 @@ module.exports.mount = function (cfg) {
         'description',
         'fileStoreSimple',
         'person',
-        'employee'
+        'employee',
+        'staff'
       ],
       beforeDelete: (store) => {
         console.log(this, store, arguments)
@@ -138,7 +140,8 @@ module.exports.default = {
       'description',
       'fileStoreSimple',
       'person',
-      'employee'
+      'employee',
+      'staff'
     ])
   },
 

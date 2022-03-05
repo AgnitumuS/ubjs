@@ -7,6 +7,8 @@ module.exports = {
     const UFormRow = require('../components/controls/UFormRow.vue').default
     const UCodeMirror = require('../components/controls/UCodeMirror.vue').default
     const USelectEnum = require('../components/controls/USelectEnum.vue').default
+    const UBaseLocaleButton = require('../components/controls/UInput/UBaseLocaleButton.vue').default
+    const ULocaleButton = require('../components/controls/UInput/ULocaleButton.vue').default
     const UInput = require('../components/controls/UInput/UInput.vue').default
     const UToolbar = require('../components/UToolbar/UToolbar.vue').default
     const UToolbarButton = require('../components/UToolbar/UToolbarButton.vue').default
@@ -39,6 +41,7 @@ module.exports = {
     const UDatePicker = require('../components/controls/UDatePicker.vue').default
     const UButtonGroup = require('../components/controls/UButtonGroup.vue').default
     const UCrop = require('../components/controls/UCrop.vue').default
+    const UFieldSet = require('../components/UFieldSet.vue').default
     Vue.component(UFormContainer.name, UFormContainer)
     Vue.component(USelectEntity.name, USelectEntity)
     Vue.component(USelectMany.name, USelectMany)
@@ -46,6 +49,8 @@ module.exports = {
     Vue.component(UCodeMirror.name, UCodeMirror)
     Vue.component(USelectEnum.name, USelectEnum)
     Vue.component(UInput.name, UInput)
+    Vue.component(UBaseLocaleButton.name, UBaseLocaleButton)
+    Vue.component(ULocaleButton.name, ULocaleButton)
     Vue.component(UToolbar.name, UToolbar)
     Vue.component(UToolbarButton.name, UToolbarButton)
     Vue.component(UAutoField.name, UAutoField)
@@ -77,6 +82,7 @@ module.exports = {
     Vue.component(UDatePicker.name, UDatePicker)
     Vue.component(UButtonGroup.name, UButtonGroup)
     Vue.component(UCrop.name, UCrop)
+    Vue.component(UFieldSet.name, UFieldSet)
 
     const HoldFocus = require('../directives/HoldFocus')
     Vue.directive(HoldFocus.name, HoldFocus)
@@ -84,5 +90,14 @@ module.exports = {
     // dirty hack to retrieve a Clickoutside directive not exposed by Elements
     const Clickoutside = Vue.options.components.ElDropdown.options.directives.Clickoutside
     Vue.directive('Clickoutside', Clickoutside)
+
+    const UCron = require('../components/controls/UCron/UCron.vue').default
+    Vue.component(UCron.name, UCron)
+
+    const UCheckbox = require('../components/controls/UCheckbox.vue').default
+    Vue.component(UCheckbox.name, UCheckbox)
+
+    const URadio = require('../components/controls/URadio.vue').default
+    Vue.component(URadio.name, URadio)
   }
 }

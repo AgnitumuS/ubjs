@@ -119,6 +119,10 @@
                                 "type": "boolean",
                                 "description": "For attributes of type 'entity' - hide this relation in the UI 'Details' menu",
                                 "default": false
+                            },
+                            "columnTemplate": {
+                                "type": "string",
+                                "description": "The type of table column template registered globally on the client-side for rendering column cells"
                             }
                         }
                     },
@@ -226,7 +230,7 @@
                     },
                     "mapping": {
                         "type": "array",
-                        "description": "Optional mapping of attribute to physical DB structure",
+                        "description": "Optional mapping of attribute to physical DB structure. Expression can contains env macro `%ENV||default%`",
                         "_format": "table",
                         "items": {
                             "type": "object",
@@ -290,7 +294,7 @@
         },
         "mapping": {
             "type": "array",
-            "description": "By default server map entity to the DB table with the same name. Optionally it can be changed here",
+            "description": "By default server map entity to the DB table with the same name. Optionally it can be changed here. Expressions can contains env macro `%ENV||default%`",
             "items": {
                 "type": "object",
                 "additionalProperties": false,
@@ -604,7 +608,7 @@
                     "properties": {
                         "type": {
                             "type": "string",
-                            "enum": ["INDEX", "FK", "CHECK", "CATALOGUE", "SUFFIXES", "OTHER"],
+                            "enum": ["INDEX", "FK", "CHECK", "CATALOGUE", "SUFFIXES", "COLUMNSTORE", "OTHER"],
                             "description": "Feature type"
                         },
                         "definition": {

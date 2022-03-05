@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `TimesNewRoman_Cyr`: Hyphen and dashes added (0x2010 - 0x2014)
 
 ### Changed
 
@@ -15,6 +14,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.2.5] - 2021-12-02
+## [5.2.4] - 2021-11-14
+### Changed
+ - `PrintToPrf.js` - removed dependency from $App, so unit can be used in environment w\o adminui-pub (w\o ExtJS)
+
+## [5.2.3] - 2021-09-08
+### Added
+ - `TimesNewRoman_Cyr`: Hyphen and dashes added (0x2010 - 0x2014)
 
 ## [5.2.2] - 2021-08-18
 ## [5.2.1] - 2021-08-09

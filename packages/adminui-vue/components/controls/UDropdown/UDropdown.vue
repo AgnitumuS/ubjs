@@ -16,8 +16,10 @@
       name="dropdown-transition"
       @enter="beforeEnter"
     >
+      <!-- v-if is used instead v-show for faster initial rendering + to ensure dropdown content is recreated according to possible changes -->
       <div
-        v-show="visible && $slots.dropdown"
+        v-if="visible && $slots.dropdown"
+        :class="customClass"
         :key="renderKey"
         ref="dropdown"
         tabindex="1"
@@ -105,6 +107,7 @@ export default {
      * reference element used to position the popper
      */
     refElement: {
+      type: HTMLElement,
       default: null
     },
 
@@ -114,6 +117,13 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    /**
+     * uniq class name for dropdown
+     */
+    customClass: {
+      type: String,
+      default: ''
     }
   },
 
@@ -134,6 +144,7 @@ export default {
   watch: {
     async visible (isVisible) {
       await this.$nextTick()
+
       if (isVisible) {
         this.clickOutsideListenerId = addClickOutsideListener(
           [this.referenceEl, this.$refs.dropdown],
@@ -145,31 +156,34 @@ export default {
     }
   },
 
-  beforeDestroy () {
-    this.$refs.dropdown.remove()
-  },
-
   methods: {
     toggleVisible () {
       if (this.disabled) return
-      this.visible = !this.visible
+
+      if (this.visible) {
+        this.close()
+      } else {
+        this.open()
+      }
     },
 
     beforeEnter (el) {
       el.style.zIndex = this.$zIndex()
-      if (this.refElement === null) {
-        this.referenceEl =
-          this.$slots.default === undefined
-            ? this.virtualElement
-            : this.$refs.reference
-      } else {
+
+      if (this.refElement) {
         this.referenceEl = this.refElement
+      } else if (this.$slots.default) {
+        this.referenceEl = this.$refs.reference
+      } else {
+        this.referenceEl = this.virtualElement
       }
-      const arrow = this.$refs.arrow
+
       if (this.position === 'fixed') {
-        document.body.appendChild(this.$refs.dropdown)
+        this.popperHtmlNode = this.$refs.dropdown // popper don't hide after document.body.appendChild....
+        document.body.appendChild(this.popperHtmlNode)
       }
-      const popperInstance = createPopper(
+
+      this.popperInstance = createPopper(
         this.referenceEl,
         this.$refs.dropdown,
         {
@@ -182,34 +196,45 @@ export default {
             },
             {
               name: 'arrow',
-              options: { padding: 5, element: arrow }
+              options: { padding: 5, element: this.$refs.arrow }
             }
           ]
         }
       )
-      requestAnimationFrame(() => {
-        this.checkAndUpdatePopupPosition(popperInstance)
+
+      this.checkAndUpdatePopupPosition(this.popperInstance)
+
+      // set watcher for observe changes width and height popup when user change content in him
+      this.observer = new MutationObserver(() => this.checkAndUpdatePopupPosition())
+
+      setTimeout(() => {
+        this.observer.observe(this.$refs.dropdown, {
+          childList: true,
+          subtree: true
+        })
+      }, 0)
+    },
+
+    checkAndUpdatePopupPosition (popperInstance = this.popperInstance) {
+      window.requestAnimationFrame(() => {
+        const popEl = popperInstance.state.elements.popper
+
+        if (popEl && this.checkOverflow(popEl)) {
+          popperInstance.setOptions({ placement: 'auto' })
+        }
       })
     },
 
-    async checkAndUpdatePopupPosition (popperInstance) {
-      const popEl = popperInstance.state.elements.popper
-      if (!popEl) return
-      const popStyle = popEl.getBoundingClientRect()
-      if (checkOverflow(popStyle)) {
-        popperInstance.setOptions({ placement: 'auto' })
-      }
-
-      function checkOverflow (popStyle) {
-        const viewportStyle = document.documentElement.getBoundingClientRect()
-        if (popStyle.right > viewportStyle.width) return true
-        if (popStyle.bottom > viewportStyle.height) return true
-      }
+    open () {
+      this.visible = true
+      this.$emit('open')
     },
 
     close () {
       this.visible = false
       this.$emit('close')
+      if (this.observer) this.observer.disconnect()
+      if (this.popperHtmlNode) this.popperHtmlNode = this.popperHtmlNode.remove()
     },
 
     closeByEscape (event) {
@@ -223,11 +248,15 @@ export default {
     async show ({ x, y, target }) {
       this.visible = false
       this.renderKey++
+
       await this.$nextTick()
+
       this.virtualElement.getBoundingClientRect = this.generateClientRect(x, y)
       this.virtualElement.contains = ref => target.contains(ref)
       this.visible = true
+
       await this.$nextTick()
+
       this.$refs.dropdown.focus()
     },
 
@@ -240,6 +269,16 @@ export default {
         bottom: y,
         left: x
       })
+    },
+
+    checkOverflow (popEl) {
+      const popStyle = popEl.getBoundingClientRect()
+      const { clientWidth, clientHeight } = document.documentElement
+
+      return (
+        popStyle.right > clientWidth ||
+        popStyle.bottom > clientHeight
+      )
     }
   }
 }

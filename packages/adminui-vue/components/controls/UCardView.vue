@@ -1,15 +1,70 @@
 <template>
   <div class="u-card-container">
-    <div class="u-card-grid">
+    <div
+      v-if="showMultiSelectionColumn"
+      class="u-card__select-all"
+      @click="checkedAllHandler"
+    >
+      {{ $ut('selectAll') }}
+      <span
+        class="el-checkbox__input"
+        :class="{
+          'is-checked': allSelected,
+          'is-indeterminate': !allSelected && curSelection.length > 0
+        }"
+      >
+        <span class="el-checkbox__inner" />
+        <input
+          type="checkbox"
+          aria-hidden="false"
+          class="el-checkbox__original"
+        >
+      </span>
+    </div>
+    <div
+      ref="content"
+      class="u-card-grid"
+    >
       <div
-        v-for="row in items"
+        v-for="(row, rowIndex) in items"
         :key="row.ID"
         class="u-card"
-        :class="getCardClass(row)"
-        @click="$emit('click', { row })"
+        :class="[
+          getCardClass(row),
+          {
+            'u-card__multiple': showMultiSelectionColumn,
+            'u-card--is-selected': curSelection.includes(
+              row[multiSelectKeyAttr]
+            )
+          }
+        ]"
+        tabindex="1"
+        @keydown.down="toArrowPressHandler($event, 'down')"
+        @keydown.right="toArrowPressHandler($event, 'down')"
+        @keydown.up="toArrowPressHandler($event, 'up')"
+        @keydown.left="toArrowPressHandler($event, 'up')"
+        @click="cardClickHandler(rowIndex, $event)"
+        @focus="cardClickHandler(rowIndex, $event)"
+        @keydown.space="handlerSelection(row, $event)"
         @dblclick="$emit('dblclick', { row })"
-        @contextmenu="$emit('contextmenu', { event: $event, row })"
+        @contextmenu="contextMenuEventHandler($event,row)"
       >
+        <!-- repeat html-structure for el-checkbox ElementUI -->
+        <span
+          v-if="showMultiSelectionColumn"
+          class="el-checkbox__input"
+          :class="{
+            'is-checked': curSelection.includes(row[multiSelectKeyAttr])
+          }"
+        @click="handlerSelection(row, $event)"
+        >
+          <span class="el-checkbox__inner" />
+          <input
+            type="checkbox"
+            aria-hidden="false"
+            class="el-checkbox__original"
+          >
+        </span>
         <slot
           name="card"
           :row="row"
@@ -89,7 +144,8 @@
 </template>
 
 <script>
-const TypeProvider = require('../UTableEntity/type-provider')
+const selectionLogic = require('./mixins/selection/logic')
+const ColumnTemplateProvider = require('../UTableEntity/column-template-provider')
 
 /**
  * View data as cards. Did not registered globally
@@ -97,8 +153,7 @@ const TypeProvider = require('../UTableEntity/type-provider')
 export default {
   name: 'UCardView',
 
-  mixins: [require('./UTable/formatValueMixin')],
-
+  mixins: [require('./UTable/formatValueMixin'), selectionLogic],
   props: {
     /**
      * Array of columns settings where each item can be string or object.
@@ -132,10 +187,8 @@ export default {
     getCellTemplate (column) {
       if (typeof column.template === 'function') {
         return column.template()
-      } else {
-        const dataType = column.attribute?.dataType
-        return TypeProvider.get(dataType).template
       }
+      return ColumnTemplateProvider.getByColumnAttribute(column.attribute).template
     }
   }
 }
@@ -157,6 +210,7 @@ export default {
 }
 
 .u-card {
+  position: relative;
   box-shadow: 0 2px 8px hsla(var(--hs-text), var(--l-text-default), 0.2);
   padding: 16px 12px;
   border-radius: var(--border-radius);
@@ -186,5 +240,20 @@ export default {
 .u-card-row__value {
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.u-card .el-checkbox__input {
+  --indent: 8px;
+  position: absolute;
+  top: var(--indent);
+  right: var(--indent);
+}
+.u-card__multiple {
+  cursor: pointer;
+}
+.u-card__select-all {
+  width: fit-content;
+  margin: 12px 0 0 12px;
+  font-size: 18px;
+  cursor: pointer;
 }
 </style>

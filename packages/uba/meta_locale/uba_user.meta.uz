@@ -4,7 +4,7 @@
   "attributes": [
     {
       "name": "name",
-      "caption": "Kirish"
+      "caption": "Login"
     },
     {
       "name": "description",
@@ -12,7 +12,7 @@
     },
     {
       "name": "firstName",
-      "caption": "Ism"
+      "caption": "Ismi"
     },
     {
       "name": "lastName",
@@ -20,7 +20,7 @@
     },
     {
       "name": "fullName",
-      "caption": "To'liq ism"
+      "caption": "F.I.O"
     },
     {
       "name": "gender",
@@ -40,11 +40,11 @@
     },
     {
       "name": "uPasswordHashHexa",
-      "caption": "Hash paroli"
+      "caption": "Hesh paroli"
     },
     {
       "name": "disabled",
-      "caption": "Nogiron"
+      "caption": "O`chirilgan"
     },
     {
       "name": "isPending",
@@ -60,7 +60,7 @@
     },
     {
       "name": "trustedIP",
-      "caption": "Ishonchli IP."
+      "caption": "Ishonchli IP"
     }
   ]
 }

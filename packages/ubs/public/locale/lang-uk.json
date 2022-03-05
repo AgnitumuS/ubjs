@@ -33,6 +33,7 @@
   "reportParamsRequired": "Спочатку заповніть обов'язкові параметри",
 
   "newMessages": "{0} нових повідомлень",
+  "hiddenMessages": "і ще {0} повідомлень",
   "youHaveNoNewMessages": "У вас нема нових повідомлень",
   "showFull": "Показати повністю",
   "messageHistoryIsEmpty": "Історія повідомлень пуста",

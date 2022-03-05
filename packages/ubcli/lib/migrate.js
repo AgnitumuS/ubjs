@@ -54,6 +54,12 @@ module.exports = function migrate (cfg) {
       .add({ short: 'optimistic', long: 'optimistic', defaultValue: false, help: 'skip errors on execute DDL statement. BE CAREFUL! DO NOT USE ON PRODUCTION' })
       .add({ short: 'v', long: 'verbose', defaultValue: false, searchInEnv: true, help: 'Verbose mode' })
       .add({
+        short: 'vs',
+        long: 'verboseShort',
+        defaultValue: false,
+        help: 'Short verbose mode (ins/upd only)'
+      })
+      .add({
         short: 'tid',
         long: 'tenantID',
         defaultValue: NaN,
@@ -67,6 +73,7 @@ module.exports = function migrate (cfg) {
         help: 'Output execution time for each command into console'
       })
     cfg = opts.parseVerbose({}, true)
+    if (cfg.verbose) cfg.verboseShort = true
     if (!cfg) return
   }
   cfg.user = 'root'
@@ -115,7 +122,12 @@ function runMigrations (params) {
   migrations.files = migrations.files.filter(f => {
     const fileModelVersion = f.name.substring(0, 9)
     if (IS_VERSION_RE.test(fileModelVersion)) { // file should starts from 9 digits model version to which it migrate
-      if (fileModelVersion <= dbVersions[f.model]) { // files intended for migrate to model versions prior to current DB state are skipped
+      // - files intended for migrate to model versions prior to current DB state are skipped
+      // - starting from 2021-11-17 files for current model version are NOT skipped (< instead of <=)
+      //   this allows to add a new migration script and apply migration for current version many times
+      //   **WARNING** - do not modify an existed and already applied migration scripts - instead either create a new one
+      //   or rename existed script (if it supports re-execution) and change renamed one.
+      if (fileModelVersion < dbVersions[f.model]) {
         oldFilesSkipped++
         // console.debug(f)
         return false
@@ -152,14 +164,14 @@ function runMigrations (params) {
     // apply beforeGenerateDDL hooks
     migrations.hooks.forEach(h => {
       if (typeof h.hook.beforeGenerateDDL === 'function') {
-        if (params.verbose) console.log(`Call beforeGenerateDDL hook for model '${h.model}'`)
+        if (params.verboseShort) console.log(`Call beforeGenerateDDL hook for model '${h.model}'`)
         h.hook.beforeGenerateDDL({ conn: null, dbConnections, dbVersions, migrations })
       }
     })
 
     // apply file based before DDL hooks
     const beforeDDLFiles = migrations.files.filter(f => BEFORE_DDL_RE.test(f.name))
-    if (params.verbose && beforeDDLFiles.length) console.log('Run beforeDDL hooks:', beforeDDLFiles)
+    if (params.verboseShort && beforeDDLFiles.length) console.log('Run beforeDDL hooks:', beforeDDLFiles)
     runFiles(beforeDDLFiles, params, { conn: null, dbConnections, dbVersions, migrations })
     releaseDBConnectionPool() // release DB pool created by controller
 
@@ -172,13 +184,13 @@ function runMigrations (params) {
     // apply beforeDDL then connected (beforeDDLc) hooks
     migrations.hooks.forEach(h => {
       if (typeof h.hook.beforeGenerateDDLc === 'function') {
-        if (params.verbose) console.log(`Call beforeGenerateDDL hook for model '${h.model}'`)
+        if (params.verboseShort) console.log(`Call beforeGenerateDDL hook for model '${h.model}'`)
         h.hook.beforeGenerateDDLc({ conn, dbConnections, dbVersions, migrations })
       }
     })
     // apply file based before DDL when connected hooks
     const beforeDDLFilesC = migrations.files.filter(f => BEFORE_DDL_C_RE.test(f.name))
-    if (params.verbose && beforeDDLFilesC.length) console.log('Run beforeDDL when connected hooks:', beforeDDLFilesC)
+    if (params.verboseShort && beforeDDLFilesC.length) console.log('Run beforeDDL when connected hooks:', beforeDDLFilesC)
     runFiles(beforeDDLFilesC, params, { conn, dbConnections, dbVersions, migrations })
 
     // run DDL generator
@@ -189,23 +201,23 @@ function runMigrations (params) {
     if (params.ddlfor && (params.ddlfor !== '*')) {
       paramsForDDL.models = params.ddlfor
     }
-    if (params.verbose) console.log('Run generateDDL with params:', paramsForDDL)
+    if (params.verboseShort) console.log('Run generateDDL with params:', paramsForDDL)
     generateDDL(paramsForDDL)
 
     // apply afterGenerateDDL hooks
     migrations.hooks.forEach(h => {
       if (typeof h.hook.afterGenerateDDL === 'function') {
-        if (params.verbose) console.log(`Call afterGenerateDDL hook for model '${h.model}'`)
+        if (params.verboseShort) console.log(`Call afterGenerateDDL hook for model '${h.model}'`)
         h.hook.afterGenerateDDL({ conn, dbConnections, dbVersions, migrations })
       }
     })
 
     // apply file based before DDL hooks
     const afterDDLFiles = migrations.files.filter(f => AFTER_DDL_RE.test(f.name))
-    if (params.verbose && afterDDLFiles.length) console.log('Run afterDDL hooks:', afterDDLFiles)
+    if (params.verboseShort && afterDDLFiles.length) console.log('Run afterDDL hooks:', afterDDLFiles)
     runFiles(afterDDLFiles, params, { conn, dbConnections, dbVersions, migrations })
   } else {
-    if (params.verbose) console.log('Skip generateDDL stage')
+    if (params.verboseShort) console.warn('Skip generateDDL stage (-noddl)')
     releaseDBConnectionPool() // release DB pool created by controller
     session = argv.establishConnectionFromCmdLineAttributes(params)
     dbConnections = createDBConnectionPool(serverConfig.application.connections)
@@ -233,8 +245,8 @@ function runMigrations (params) {
         ubMigrate.exec(paramsForUbMigrate)
       }
     }
-  } else if (params.verbose) {
-    console.log('Skip data sync (ub-migrate) stage')
+  } else if (params.verboseShort) {
+    console.warn('Skip data sync (ub-migrate) stage (-nodata)')
   }
 
   // call filterFiles hooks in reverse order

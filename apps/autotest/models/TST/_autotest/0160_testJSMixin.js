@@ -33,4 +33,9 @@ module.exports = function runJSMixinsTests (options) {
   })
   defValues = tstIDMapAddNew.resultData.data[0]
   assert.strictEqual(defValues[1], 'val-tst_idmap', `testMixin should sets 'val-tst_idmap' as code default for tst_IDMapping but got  ${defValues[1]}`)
+
+  const dataWithRenamedColumn = conn.Repository('tst_document')
+    .using('runSelectInJSContext').attrs('ID', 'person.fullFIO').limit(1)
+    .selectAsObject()
+  assert.ok(Array.isArray(dataWithRenamedColumn) && dataWithRenamedColumn[0].hasOwnProperty('personFIO'), 'Method tst_document.runSelectInJSContext must rename column \'person.fullFIO\' into \'personFIO\' but got ' + JSON.stringify(dataWithRenamedColumn))
 }

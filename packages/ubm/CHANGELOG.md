@@ -15,6 +15,38 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.4] - 2022-02-16
+## [5.22.3] - 2022-02-08
+## [5.22.2] - 2022-01-24
+## [5.22.1] - 2022-01-14
+## [5.22.0] - 2022-01-09
+## [5.20.36] - 2021-12-14
+## [5.20.35] - 2021-12-07
+## [5.20.34] - 2021-12-07
+## [5.20.33] - 2021-12-02
+## [5.20.32] - 2021-11-30
+## [5.20.31] - 2021-11-23
+## [5.20.30] - 2021-11-14
+## [5.20.29] - 2021-11-05
+## [5.20.28] - 2021-10-27
+### Changed
+ - `ubm_enum.name` size increased from 255 to 512 chars (such huge size is required by some real life projects)
+
+### Fixed
+ - `ubm_navshortcut`: nav shortcut - improve columns list; `uk` and `ru` locale - localize description and keyword attributes
+
+## [5.20.27] - 2021-10-18
+### Added
+ - Azerbaijani (az) localization for items with omitted translation
+ - navigation shortcuts uses i18n (entity captions) during migration
+
+## [5.20.26] - 2021-09-24
+## [5.20.25] - 2021-09-16
+### Changed
+- English (en) localization for desktop/shortcut captions: the words are
+  capitalized according to English rules for captions
+
+## [5.20.24] - 2021-09-08
 ## [5.20.23] - 2021-09-02
 ## [5.20.22] - 2021-08-31
 ### Changed

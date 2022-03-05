@@ -1,3 +1,4 @@
+/* global tst_document */
 const me = tst_document
 const UB = require('@unitybase/ub')
 
@@ -24,6 +25,10 @@ me.runSelectInJSContext = function (ctx) {
     'select',
     clonedParams
   )
+  const ccIdx = ctx.mParams.fieldList.indexOf('person.fullFIO')
+  if (ccIdx !== -1) {
+    ctx.dataStore.setColumnName(ccIdx, 'personFIO')
+  }
   console.log('clonedParams', clonedParams)
   console.log('mParams', mParams)
 }
@@ -32,16 +37,16 @@ me.testMailQueue = function (ctx) {
   const ID = UB.Repository('ubq_messages').attrs('ID').limit(1).selectScalar()
   const ubqMessagesStore = UB.DataStore('ubq_messages')
   ubqMessagesStore.run('insert', {
-    //fieldList: ['ID'],
+    // fieldList: ['ID'],
     execParams: {
       queueCode: 'mail',
-      msgCmd: JSON.stringify({from: 'aa', to: 'aa'}),
+      msgCmd: JSON.stringify({ from: 'aa', to: 'aa' }),
       msgData: '<h1>hello</h1>',
       msgPriority: 0
     }
   })
   ubqMessagesStore.run('update', {
-    //fieldList: ['ID'],
+    // fieldList: ['ID'],
     __skipOptimisticLock: true,
     execParams: { ID, msgPriority: 1 }
   })

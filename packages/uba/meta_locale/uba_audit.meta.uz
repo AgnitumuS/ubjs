@@ -1,6 +1,6 @@
 {
-  "caption": "Audit",
-  "description": "Audit o'zgarishlari",
+  "caption": "Xavfsizlik auditi",
+  "description": "Xavfsizlik auditi",
   "attributes": [
     {
       "name": "entity",
@@ -8,11 +8,11 @@
     },
     {
       "name": "entityinfo_id",
-      "caption": "Kirish kirish identifikatori"
+      "caption": "ID saqlanishlari mohiyati"
     },
     {
       "name": "actionType",
-      "caption": "Harakat qilmoq"
+      "caption": "Harakatlar"
     },
     {
       "name": "actionUser",
@@ -28,11 +28,11 @@
     },
     {
       "name": "fromValue",
-      "caption": "Eski ma'no"
+      "caption": "Eski qiymati"
     },
     {
       "name": "toValue",
-      "caption": "Yangi qiymat"
+      "caption": "Yangi qiymati"
     },
     {
       "name": "targetUser",

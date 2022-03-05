@@ -49,6 +49,7 @@ class CustomRepository {
     this.whereList = {}
     /**
      * Used internally to avoid Object.keys(whereList) call
+     *
      * @type {number}
      * @private
      */
@@ -70,13 +71,14 @@ class CustomRepository {
     this.orderList = []
     /**
      * @private
-     * @type {Object}
+     * @type {object}
      */
     this.options = {}
 
     /**
      * Name of entity method used for data retrieve.
      * Default is 'select'. The correct way to set method is `.using('mySelect')`
+     *
      * @type {string}
      * @private
      */
@@ -84,7 +86,8 @@ class CustomRepository {
 
     /**
      * Miscellaneous options
-     * @property {Object} __misc
+     *
+     * @property {object} __misc
      * @private
      */
     this.__misc = {}
@@ -94,9 +97,10 @@ class CustomRepository {
 
   /**
    * Retrieve a data from server using `methodName` entity method.
-   * By default `select` method will be used.
+   * By default, `select` method will be used
+   *
    * @param {string} methodName
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   using (methodName) {
     this.method = methodName
@@ -112,7 +116,6 @@ class CustomRepository {
    * - **'SUM', 'COUNT', 'AVG', 'MAX', 'MIN', 'CAST', 'COALESCE'**
    *
    * @example
-
 // chaining
 UB.Repository('uba_user').attrs('ID').attrs('name', 'firstName').attrs('disabled').selectAsObject()
 
@@ -130,7 +133,7 @@ UB.Repository('uba_userrole').attrs(['userID', 'userID.name']).selectAsObject()
 // get values for attribute of type MANY
 UB.Repository('tst_maindata')
  .attrs('ID', 'manyValue', 'manyValue.caption')
- .where('code', '=', 'Код1')
+ .where('code', '=', 'Code1')
  .selectAsObject({'manyValue.caption': 'captions'})
 // result is `[{"ID":331947938939292,"manyValue":"1,2","captions":"caption 10,caption 20"}]`
 
@@ -138,7 +141,7 @@ UB.Repository('tst_maindata')
 UB.Repository('org_employee').attrs(['ID', 'lastName_en^']).selectAsObject()
 
    * @param {string|Array<string>} attrs
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   attrs (...attrs) {
     const L = attrs.length
@@ -157,7 +160,6 @@ UB.Repository('org_employee').attrs(['ID', 'lastName_en^']).selectAsObject()
    * Calls `attrs` in case addingCondition is <a href=https://developer.mozilla.org/en-US/docs/Glossary/truthy>truthy</a>
    *
    * @example
-
 let isPessimisticLock = !!UB.connection.domain.get('uba_user').attributes.mi_modifyDate
 // with whereIf
 let repo = UB.Repository('uba_user').attrs('ID').attrsIf(isPessimisticLock, 'mi_modifyDate')
@@ -167,7 +169,7 @@ if (isPessimisticLock) repo = repo.attrs('mi_modifyDate')
 
    * @param {*} addingCondition Attributes will be added only in case addingCondition is truthy
    * @param {string|Array<string>} attrs
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   attrsIf (addingCondition, ...attrs) {
     return addingCondition
@@ -192,7 +194,6 @@ if (isPessimisticLock) repo = repo.attrs('mi_modifyDate')
    *  - for details how array parameters binds to DB query see array binding section in [database tuning tutorial](https://unitybase.info/api/server-v5/tutorial-database_tuning.html#array-binding)
    *
    * @example
-
 UB.Repository('my_entity').attrs('ID')
   // code in ('1', '2', '3')
   .where('code', 'in', ['1', '2', '3'])
@@ -216,7 +217,7 @@ UB.Repository('my_entity').attrs('ID')
    *  - If not passed unique clause name will be generated ('_1', '_2', ..).
    *  - In case a condition with the same name exists, it will be overwritten.
    * @param {boolean} [options.clearable] if === false then clearWhereList() will skip removing this where condition
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   where (expression, condition, value, options) {
     const UBQL2 = this.UBQLv2
@@ -248,31 +249,31 @@ UB.Repository('my_entity').attrs('ID')
       }
     } else if ((condition === 'in' || condition === 'notIn') && (value === null || value === undefined)) {
       // prevent ORA-00932 error - in case value is undefined instead of array
-      console.warn('Condition "in" is passed to CustomRepository.where but value is null or undefined -> condition transformed to (0=1). Check where logic')
-      expression = '0'
-      condition = WhereCondition.equal
-      value = UBQL2 ? 1 : { a: 1 }
+      console.warn('Condition \'in\' is passed to Repository.where but value is null or undefined -> condition transformed to \'0=1\'. Check where logic')
+      expression = '0=1'
+      condition = WhereCondition.custom
+      value = UBQL2 ? undefined : { a: undefined }
     } else if (condition === 'in' && (!Array.isArray(value))) {
-      console.debug('Condition "in" is passed to CustomRepository.where but value is not an array -> condition transformed to equal. Check where logic')
+      console.debug('Condition \'in\' is passed to Repository.where but value is not an array -> condition transformed to equal. Check where logic')
       condition = WhereCondition.equal
     } else if (condition === 'in' && (!value || !value.length)) {
-      console.warn('Condition "in" is passed to CustomRepository.where but value is empty array -> condition transformed to "0=1". Check where logic')
-      expression = '0'
-      condition = WhereCondition.equal
-      value = UBQL2 ? 1 : { a: 1 }
+      console.warn('Condition \'in\' is passed to Repository.where but value is empty array -> condition transformed to \'0=1\'. Check where logic')
+      expression = '0=1'
+      condition = WhereCondition.custom
+      value = UBQL2 ? undefined : { a: undefined }
     } else if (condition === 'notIn' && (!value || !value.length)) {
-      console.warn('Condition "notIn" is passed to CustomRepository.where but value is empty array -> condition transformed to "1=1". Check where logic')
-      expression = '1'
-      condition = WhereCondition.equal
-      value = UBQL2 ? 1 : { a: 1 }
+      console.warn('Condition \'notIn\' is passed to Repository.where but value is empty array -> condition transformed to \'1=1\'. Check where logic')
+      expression = '1=1'
+      condition = WhereCondition.custom
+      value = UBQL2 ? undefined : { a: undefined }
     } else if (value === null && (condition !== 'isNull' || condition !== 'notIsNull')) {
       const wrongCondition = condition
       value = undefined
       condition = conditionInCaseValueIsNull[wrongCondition]
       if (condition) {
-        console.warn(`Condition ${wrongCondition} is passed to CustomRepository.where but value is null -> condition transformed to ${condition}. Check where logic`)
+        console.warn(`Condition ${wrongCondition} is passed to Repository.where but value is null -> condition transformed to ${condition}. Check where logic`)
       } else {
-        throw new Error(`Condition ${wrongCondition} is passed to CustomRepository.where but value is null`)
+        throw new Error(`Condition ${wrongCondition} is passed to Repository.where but value is null`)
       }
     }
     if ((condition === 'in') && value && (value.length === 1)) {
@@ -312,7 +313,6 @@ UB.Repository('my_entity').attrs('ID')
    * Calls `where` in case addingCondition is <a href='https://developer.mozilla.org/en-US/docs/Glossary/truthy'>truthy</a>
    *
    * @example
-
 let filterString = 'foundAllLikeThis' // or may be empty string
 // with whereIf
 let repo = UB.Repository('my_entity').attrs('ID').whereIf(filterString, 'myAttr', 'like', filterString)
@@ -327,7 +327,7 @@ if (filterString) repo = repo.where('myAttr', 'like', filterString)
    * @param {*} [values] Condition value. If `undefined` values not passed to ubql
    * @param {string} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}
    *   If not passed where will generate unique clause named 'c1', 'c2', ......
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   whereIf (addingCondition, expression, condition, values, clauseName) {
     return addingCondition
@@ -342,7 +342,6 @@ if (filterString) repo = repo.where('myAttr', 'like', filterString)
    *  - `{self}` will be replaced by sub-query entity alias
    *
    * @example
-
 UB.Repository('uba_user').attrs(['ID', 'name']) //select users
   // who are not disabled
   .where('disabled', '=', 0)
@@ -368,7 +367,7 @@ UB.Repository('uba_user').attrs(['ID', 'name']) //select users
 
    * @param {CustomRepository} subRepository  Repository, what represent a sub-query to be execute inside EXISTS statement
    * @param {string} [clauseName] Optional clause name
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   exists (subRepository, clauseName) {
     return this.where('', 'exists', subRepository, clauseName)
@@ -379,7 +378,7 @@ UB.Repository('uba_user').attrs(['ID', 'name']) //select users
    *
    * @param {CustomRepository} subRepository  Repository, what represent a sub-query to be execute inside EXISTS statement
    * @param {string} [clauseName] Optional clause name
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   notExists (subRepository, clauseName) {
     return this.where('', 'notExists', subRepository, clauseName)
@@ -394,7 +393,7 @@ UB.Repository('uba_user').attrs(['ID', 'name']) //select users
    * @param {WhereCondition|String} [condition=eq] A subset from WhereCondition list applicable for correlation join
    * @param {string} [clauseName] Optional clause name to be used in {@link class:CustomRepository#logic logic}.
    *   If not passed unique clause names ('c1', 'c2', ...) where will be generated
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   correlation (subQueryAttribute, masterAttribute, condition, clauseName) {
     if (!bracketsRe.test(subQueryAttribute)) {
@@ -410,7 +409,6 @@ UB.Repository('uba_user').attrs(['ID', 'name']) //select users
    * Pay attention to condition name we pass as a 4-th parameter to `.where()`
    *
    * @example
-
 UB.Repository('my_entity').attrs('ID')
  // code in ('1', '2', '3')
  .where('code', 'in', ['1', '2', '3'], 'byCode')
@@ -424,7 +422,7 @@ UB.Repository('my_entity').attrs('ID')
  .logic('(([byCode]) OR ([byName]))')
 
    * @param {string} predicate logical predicate.
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   logic (predicate) {
     this.logicalPredicates.push(predicate)
@@ -433,8 +431,8 @@ UB.Repository('my_entity').attrs('ID')
 
   /**
    * Force `where expressions` to be used in join part of SQL statement instead of where part. Applicable only for not cached entities
-   * @exapmle
-
+   *
+   * @example
 // will generate
 // SELECT A.ID, B.code FROM tst_document A LEFT JOIN tst_category B
 //    ON (B.instanceID = A.ID and B.ubUser = 10)
@@ -448,7 +446,7 @@ UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
  .selectAsObject().then(UB.logDebug)
 
    * @param {string} whereItemName name of where item to use in join.
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   join (whereItemName) {
     this.joinAs.push(whereItemName)
@@ -461,11 +459,11 @@ UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
    *
    * @param {string} expression   Attribute name (with or without []) or valid expression with attributes in [].
    * @param {CustomRepository.WhereCondition} condition    Any value from WhereCondition list.
-   * @param {*} [values] Condition value. In case expression is complex can take {Object} as value.
+   * @param {*} [values] Condition value. In case expression is complex can take {object} as value.
    *   In case values === undefined no values property passed to where list
    * @param {string} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}.
    *   If not passed where will generate unique clause named 'c1', 'c2', ......
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   joinCondition (expression, condition, values, clauseName) {
     if (!clauseName) { // generate unique clause name
@@ -486,7 +484,6 @@ UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
    * Sorting. If expression already exists in order list it direction will be changed or, in case direction === null it will be removed
    *
    * @example
-
 let repo = UB.Repository('my_entity').attrs('ID').orderBy('code')
 let orderedData = await repo.selectAsObject() // ordered. await is for client-side only
 repo.orderBy('code', null) // remove order by code
@@ -494,7 +491,7 @@ let unorderedData = await repo.selectAsObject() // NOT ordered
 
    * @param {string} attr Sorted attribute
    * @param {string|null} [direction='asc'] Sort direction ('asc'|'desc'). If `null` - remove sorting by this attr
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   orderBy (attr, direction) {
     const i = this.orderList.findIndex(oi => oi.expression === attr)
@@ -520,13 +517,12 @@ let unorderedData = await repo.selectAsObject() // NOT ordered
    * To remove such sorting call orderBy(attr, null)
    *
    * @example
-
 UB.Repository('my_entity').attrs('ID')
   // ORDER BY code, date_create DESC
   .orderBy('code').orderByDesc('date_create')
 
    * @param {string} attr
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   orderByDesc (attr) {
     this.orderList.push({
@@ -538,8 +534,8 @@ UB.Repository('my_entity').attrs('ID')
 
   /**
    * Adds grouping
+   *
    * @example
-
 UB.Repository('my_entity').attrs('ID')
  .groupBy('code')
 UB.Repository('uba_user').attrs('disabled')
@@ -548,12 +544,12 @@ UB.Repository('uba_user').attrs(['disabled','uPassword','COUNT([ID])'])
  .groupBy(['disabled','uPassword']).select()
 
    * @param {string|Array<string>} attr Grouped attribute(s)
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   groupBy (attr) {
     if (Array.isArray(attr)) {
       this.groupList = this.groupList.concat(attr)
-    } else if (_.isString(attr)) {
+    } else if (typeof attr === 'string') {
       this.groupList.push(attr)
     }
     return this
@@ -561,14 +557,14 @@ UB.Repository('uba_user').attrs(['disabled','uPassword','COUNT([ID])'])
 
   /**
    * Retrieve first `start` rows
+   *
    * @example
-
 let store = UB.Repository('my_entity').attrs('ID')
  //will return ID's from 15 to 25
  .start(15).limit(10).select()
 
-   * @param {Number} start
-   * @return {CustomRepository}
+   * @param {number} start
+   * @returns {CustomRepository}
    */
   start (start) {
     this.options.start = start
@@ -583,7 +579,7 @@ let store = UB.Repository('my_entity').attrs('ID')
 let store = UB.Repository('my_entity').attrs('ID').limit(2).selectAsObject()
 
    * @param {number} rowsLimit
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   limit (rowsLimit) {
     if (rowsLimit === 0) {
@@ -602,10 +598,9 @@ let repo = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a')
 let inst = UB.DataStore(my_entity)
 inst.run('select', repo.ubql())
 
-   * @return {UBQL}
+   * @returns {UBQL}
    */
   ubql () {
-    const orderCnt = this.orderList.length
     const req = {
       entity: this.entityName,
       method: this.method,
@@ -617,6 +612,7 @@ inst.run('select', repo.ubql())
     if (Object.keys(this.whereList).length) {
       req.whereList = this.whereList
     }
+    const orderCnt = this.orderList.length
     if (orderCnt > 0) {
       req.orderList = {}
       for (let i = 0; i < orderCnt; i++) {
@@ -632,14 +628,13 @@ inst.run('select', repo.ubql())
     if (this.joinAs.length) {
       req.joinAs = this.joinAs
     }
-    _.defaults(req, this.__misc) // apply misc
-
+    Object.assign(req, this.__misc) // apply misc - faster than _.defaults
     return req
   }
 
   /**
    * Private method for construct a Repository from UBQL. Please, use UB.Repository(ubqlJson) instead of call this private method
-   * @param {Object} ubqlJson
+   * @param {object} ubqlJson
    * @private
    * @example
 
@@ -648,7 +643,7 @@ const ubql = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a').ubql
 // restore Repository from plain java script object (UBQL)
 const repo = UB.Repository(ubql)
 
-   * @return {UBQL}
+   * @returns {UBQL}
    */
   fromUbql (ubqlJson) {
     const u = _.cloneDeep(ubqlJson)
@@ -686,7 +681,7 @@ const repo = UB.Repository(ubql)
    * @abstract
    * @param {Object<string, string>} [fieldAliases] Optional object to change attribute
    *  names during transform array to object
-   * @return {Array<object>}
+   * @returns {Array<object>}
    */
   selectAsObject (fieldAliases) {
     throw new Error('abstract')
@@ -713,7 +708,7 @@ const repo = UB.Repository(ubql)
 UB.Repository('tst_dictionary').attrs('ID').limit(100).selectAsArrayOfValues()
 // returns array of IDs: [1, 2, 3, 4]
 
-   * @return {Array<string|number>}
+   * @returns {Array<string|number>}
    * @abstract
    */
   selectAsArrayOfValues () {
@@ -731,7 +726,7 @@ UB.Repository('tst_dictionary').attrs('ID').limit(100).selectAsArrayOfValues()
    *  - etc.
    *
    * @abstract
-   * @param {Object} [storeConfig] optional config passed to store constructor
+   * @param {object} [storeConfig] optional config passed to store constructor
    */
   selectAsStore (storeConfig) {
     throw new Error('abstract')
@@ -742,7 +737,7 @@ UB.Repository('tst_dictionary').attrs('ID').limit(100).selectAsArrayOfValues()
    * Must be implemented in descendants as a alias to the most appropriate method
    *
    * @abstract
-   * @param {Object} [storeConfig] optional config passed to store constructor
+   * @param {object} [storeConfig] optional config passed to store constructor
    */
   select (storeConfig) {
     throw new Error('abstract')
@@ -761,7 +756,7 @@ UB.Repository('tst_dictionary').attrs('ID').limit(100).selectAsArrayOfValues()
    * @abstract
    * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names
    *   during transform array to object. See {@link selectAsObject}
-   * @return {*|undefined}
+   * @returns {*|undefined}
    */
   selectSingle (fieldAliases) {
     throw new Error('abstract')
@@ -779,7 +774,7 @@ UB.Repository('uba_user')
 
    * **WARNING** does not check if result contains the single row
    * @abstract
-   * @return {Number|String|undefined}
+   * @returns {Number|String|undefined}
    */
   selectScalar () {
     throw new Error('abstract')
@@ -788,17 +783,17 @@ UB.Repository('uba_user')
   // noinspection JSMethodCanBeStatic
   /**
    * Select a single row by ID. If result is empty - returns `undefined`
-   * If result is not empty - returns a object
+   * If result is not empty - returns object
+   *
    * @example
-
   UB.Repository('uba_user').attrs('name', 'ID').selectById(10).then(UB.logDebug)
   // will output: {name: "admin", ID: 10}
 
    * @abstract
-   * @param {Number} ID Row identifier
+   * @param {number} ID Row identifier
    * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names
    *   during transform array to object. See {@link selectAsObject}
-   * @return {Object|undefined}
+   * @returns {Object|undefined}
    */
   selectById (ID, fieldAliases) {
     throw new Error('abstract')
@@ -806,35 +801,36 @@ UB.Repository('uba_user')
 
   /**
    * Apply miscellaneous options to resulting UBQL
+   *
    * @example
-
 // this server-side call will select all currency, including deleted
 UB.Repository('cdn_currency').attrs(['ID'])
   .misc({__allowSelectSafeDeleted: true}).selectAsArray();
 
-   * @param {Object} flags
+   * @param {object} flags
    * @param {Date} [flags.__mip_ondate] Specify date on which to select data for entities with `dataHistory` mixin. Default to Now()
-   * @param {Boolean} [flags.__mip_recordhistory=false] Select only record history data for specified ID (for entities with `dataHistory` mixin)
-   * @param {Boolean} [flags.__mip_recordhistory_all=false] Ignore __mip_ondate and select all data (acts as select for entities without `dataHistory` mixin)
-   * @param {Boolean} [flags.__mip_disablecache=false] For entities with cacheType in ["Session", "SessionEntity"] not check is data modified and always return result
-   * @param {Boolean} [flags.__skipOptimisticLock=false] Skip optimistic lock for entities with `mStorage.simpleAudit = true`
-   * @param {Boolean} [flags.__allowSelectSafeDeleted=false] Include softly deleted rows to the result
-   * @param {Boolean} [flags.__skipSelectAfterUpdate=false] **Server-side only.**
-   * @param {Boolean} [flags.__skipSelectAfterInsert=false] **Server-side only.**
-   * @param {Boolean} [flags.__skipSelectBeforeUpdate=false] **Server-side only.** if added then `mStorage` mixin don't execute `select` before execution of `update`.
+   * @param {boolean} [flags.__mip_recordhistory=false] Select only record history data for specified ID (for entities with `dataHistory` mixin)
+   * @param {boolean} [flags.__mip_recordhistory_all=false] Ignore __mip_ondate and select all data (acts as select for entities without `dataHistory` mixin)
+   * @param {boolean} [flags.__mip_disablecache=false] For entities with cacheType in ["Session", "SessionEntity"] not check is data modified and always return result
+   * @param {boolean} [flags.__skipOptimisticLock=false] Skip optimistic lock for entities with `mStorage.simpleAudit = true`
+   * @param {boolean} [flags.__allowSelectSafeDeleted=false] Include softly deleted rows to the result
+   * @param {boolean} [flags.__useReplica=false] Prefer to use DB replica for select statement (if configured, EE only)
+   * @param {boolean} [flags.__skipSelectAfterUpdate=false] **Server-side only**
+   * @param {boolean} [flags.__skipSelectAfterInsert=false] **Server-side only**
+   * @param {boolean} [flags.__skipSelectBeforeUpdate=false] **Server-side only** if added then `mStorage` mixin don't execute `select` before execution of `update`.
    *   As a **UNSAFE** side effect `update` won't check record is accessible to user.
    *   **UNSAFE** If `Audit` mixin is implemented for entity empty OldValue in inserted into `uba_auditTrail` in case this flag is enabled, so better to think twice before skip select before update
-   * @param {Boolean} [flags.__skipRls=false] **Server-side only.**
-   * @param {Boolean} [flags.__skipAclRls=false] **Server-side only.**
-   * @param {string} [flags.lockType] For entities with `softLock` mixin retrieve/set a lock during method execution.
+   * @param {boolean} [flags.__skipRls=false] **Server-side only**
+   * @param {boolean} [flags.__skipAclRls=false] **Server-side only**
+   * @param {string} [flags.lockType] For entities with `softLock` mixin retrieve/set a lock during method execution
    *   Possible values:
    *   - 'None': get a lock info during select* execution (for a results with a single row)
    *   - `Temp` or `Persist`: set a lock (temp or persistent) together with select* execution (for a results with a single row)
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   misc (flags) {
     for (const key in flags) {
-      if (flags.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(flags, key)) {
         if (!flags[key]) {
           delete this.__misc[key]
         } else {
@@ -850,8 +846,8 @@ UB.Repository('cdn_currency').attrs(['ID'])
    * Calls `misc` in case addingCondition is <a href=https://developer.mozilla.org/en-US/docs/Glossary/truthy>truthy</a>
    *
    * @param {*} addingCondition flags will be applied only in case addingCondition is truthy
-   * @param {Object} flags
-   * @return {CustomRepository}
+   * @param {object} flags
+   * @returns {CustomRepository}
    */
   miscIf (addingCondition, flags) {
     if (addingCondition) {
@@ -880,7 +876,7 @@ console.log('Total count is:', result.__totalRecCount)
  console.log('Total count is:', store.totalRowCount);
    *
    * @param {boolean} [value=true] If `false` will remove total requirements
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   withTotal (value = true) {
     if (value === false) {
@@ -893,8 +889,8 @@ console.log('Total count is:', result.__totalRecCount)
 
   /**
    * Creates a clone of this repository
+   *
    * @example
-
 let repo1 = UB.Repository('uba_user').attrs('ID', 'code').where('ID', '>', 15, 'byID')
 let repo2 = repo1.clone()
 repo1.orderBy('code')
@@ -902,7 +898,7 @@ repo2.attrs('name').where('ID', '>', 100, 'byID')
 repo1.selectAsObject() // return ordered users with ID > 15
 repo2.selectAsObject() // return unordered users with their names and ID > 100
 
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   clone () {
     const cloned = _.cloneDeep(this)
@@ -913,12 +909,12 @@ repo2.selectAsObject() // return unordered users with their names and ID > 100
 
   /**
    * Remove all where conditions (except ones using in joinAs). This function mutates current Repository
+   *
    * @example
-
 let repo1 = UB.Repository('uba_user').attrs('ID', 'code').where('ID', '>', 15, 'byID')
 let repoWithoutWheres = repo1.clone().clearWhereList()
 
-   * @return {CustomRepository}
+   * @returns {CustomRepository}
    */
   clearWhereList () {
     this.logicalPredicates = []
@@ -938,6 +934,7 @@ let repoWithoutWheres = repo1.clone().clearWhereList()
 
 /**
  * Alias to {@link CustomRepository#ubql CustomRepository.ubql}
+ *
  * @memberOf CustomRepository
  * @private
  * @deprecated Will be removed in UB 5.1. Use .ubql() instead
@@ -945,6 +942,7 @@ let repoWithoutWheres = repo1.clone().clearWhereList()
 CustomRepository.prototype.getRunListItem = CustomRepository.prototype.ubql
 /**
  * Alias to {@link CustomRepository#ubql CustomRepository.ubql}
+ *
  * @method
  * @memberOf CustomRepository
  * @private
@@ -954,9 +952,12 @@ CustomRepository.prototype.ubRequest = CustomRepository.prototype.ubql
 
 /**
  * Enumeration of all condition types. This enumeration defines a set of String values.
- * It exists primarily for documentation purposes - in code use the actual string values like '>', don't reference them through this class like WhereCondition.more.
+ * It exists primarily for documentation purposes - in code use the actual string values like '>',
+ * don't reference them through this class like WhereCondition.more.
  *
- * We define several aliases for the same condition. In case of direct HTTP request (without Repository) use only non-aliased values (i.e. `more` instead of '>' or 'gt')
+ * We define several aliases for the same condition. In case of direct HTTP request (without Repository) use only
+ * non-aliased values (i.e. `more` instead of '>' or 'gt')
+ *
  * @memberOf CustomRepository
  * @enum {string}
  */
@@ -1076,6 +1077,7 @@ CustomRepository.prototype.WhereCondition = {
 
 /**
  * Server side support UBQL v2 version (value in whereList)
+ *
  * @type {boolean}
  */
 CustomRepository.prototype.UBQLv2 = true
@@ -1087,6 +1089,7 @@ CustomRepository.prototype.CONSTANTS = {
 
 /**
  * Abstract Custom repository (extended by serverRepository & ClientRepository)
+ *
  * @type {CustomRepository}
  */
 module.exports = CustomRepository

@@ -1,0 +1,26 @@
+{
+	"caption": "ub test main data items",
+	"description": "details for main data",
+	"sqlAlias": "tmdd",
+	"attributes": [
+		{
+			"name": "mainData",
+			"dataType": "Entity",
+			"associatedEntity": "tst_maindata",
+			"caption": "main data ID",
+			"allowNull": false
+		}, {
+			"name": "txt",
+			"dataType": "String",
+			"size": 255,
+			"caption": "Detail value",
+			"allowNull": true
+		}
+	],
+	"mixins": {
+		"mStorage": {
+			"simpleAudit": true,
+			"safeDelete": true
+		},
+	}
+}

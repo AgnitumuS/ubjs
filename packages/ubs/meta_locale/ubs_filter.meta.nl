@@ -1,5 +1,5 @@
 {
-  "caption": "Opgeslagen UI-filters",
+  "caption": "Tellers",
   "description": "Opgeslagen UI-filters",
   "documentation": "doCmd.showList.autofilter gebruik deze entiteit om de definitie van gebruikersfilters op te slaan",
   "attributes": [

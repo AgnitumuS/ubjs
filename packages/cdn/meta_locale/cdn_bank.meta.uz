@@ -1,14 +1,14 @@
 {
-  "caption": "Bank filiallari",
-  "description": "Bank ofislari katalogi",
+  "caption": "Bank bo`limi",
+  "description": "Bank bo`limlari ma`lumotnomasi",
   "attributes": [
     {
       "name": "MFO",
-      "caption": "Mikromoliyalash tashkilotlari"
+      "caption": "Mikromoliyalash tashkilotlari (МФО)"
     },
     {
       "name": "code",
-      "caption": "Korxonalar va tashkilotlarning Butunrossiya klassifikatori"
+      "caption": "OKED"
     },
     {
       "name": "name",
@@ -16,7 +16,7 @@
     },
     {
       "name": "fullName",
-      "caption": "To'liq unum"
+      "caption": "To'liq nomi"
     },
     {
       "name": "phones",

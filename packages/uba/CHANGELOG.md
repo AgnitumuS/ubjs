@@ -15,6 +15,92 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.3] - 2022-02-16
+## [5.22.2] - 2022-01-24
+## [5.22.1] - 2022-01-14
+## [5.22.0] - 2022-01-09
+### Added
+ - new ubConfig security parameter `security.userSessionMode` - allows control user sessions creation(require UB 5.22).
+   Possible values:
+   - `Multiple`: allow multiple concurrent sessions for the same user (default, the same behavior as before UB 5.22)
+   - `Displacing`: each new session displace all older sessions for the same user.
+      If older sessions exists - logs into `uba_audit` with actionType=SECURITY_VIOLATION and text `existed sessions are displaced`
+   - `Singleton`: throws in case user is already logged in.
+     Logs into `uba_audit` with actionType=SECURITY_VIOLATION and text `ubErrAnotherSessionExists`,
+     UI shows error `Access deny. User is already logged in, may be from another browser tab or another computer`
+
+   *WARNING* - values other when `Multiple` should be used only on instances what works with end users (clients are browsers)
+ 
+ - new method `App.getUserSessionsCount`
+ 
+ - new entity `uba_session`: virtual entity what allows Supervisor view list of the active sessions and remove sessions ;
+   Corresponding shortcut is `Administrative->Security->Users Sessions`
+
+ - added index by `uba_subject.code`
+
+ - `DialogTable.vue` - it is multiselection table in dialog window. Is based on `U-Table`
+
+### Changed
+ - `uba_als-fm.vue`- made new form. Implemented editing of a role that already exists. [Task](https://dev.intecracy.com/agile/browse/UBDF-14336)
+
+ - English (en) localization for desktop description: the words are capitalized
+  according to English rules for captions
+
+ - audit trail form will show changes for all mixin-attributes (**mi_dateFrom**, **mi_dateTo** and others).
+ Before this fix, only **mi_wfState** attribute was displayed. After this only attributes, added by `mStorage` mixin are omitted.
+
+ - `en` localization of the caption of `uba_usergroup` entity: `User Groups` => `User Group Membership`.
+   The change is made in order to avoid duplication - `User Groups` caption is already used by `uba_group` entity.
+
+## [5.20.33] - 2021-12-02
+## [5.20.32] - 2021-11-30
+## [5.20.31] - 2021-11-23
+## [5.20.30] - 2021-11-14
+## [5.20.29] - 2021-11-05
+### Added
+- audit trail form will show changes for all mixin-attributes (**mi_dateFrom**, **mi_dateTo** and others).
+ Before this fix, only **mi_wfState** attribute was displayed. After this only attributes, added by `mStorage` mixin are omitted.
+
+### Changed
+ - localizations of `uba_group` entity caption: `Groups` => `User Groups`, `Групи` => `Групи користувачів`...
+
+### Fixed
+ - typo in the description of the `targetGroup` attribute of `uba_audit` entity
+
+## [5.20.28] - 2021-10-27
+### Changed
+ - UBA model fill `ubs_settings` using migration YAML (05_settings.yml)
+ - UBA model fill roles and ELS using migration (01_roles.yml)
+
+### Removed
+ - migration from `@unitybase/uba` < 5 is *REMOVED* (expect all products are already migrated to v5)  
+  
+### Fixed
+ - `uba_userrole` & `uba_usergroup` nav shortcut uses `userID.name` instead of `userID` - this prevents lookup on potentially big user entity 
+ - `uba_advSecurity` nav shortcut uses `userID.name`; improve uk translation for attributes
+ - `uba_otp` nav shortcut - add columns to prevent lookup on uba_user entity
+
+## [5.20.27] - 2021-10-18
+### Added
+ - Azerbaijani (az) localization for items with omitted translation
+ - added index by `uba_subject.code`
+ - navigation shortcuts uses i18n (entity captions) during migration
+ - "Duplicate user name.." error localization added
+
+### Changed
+- English (en) localization for desktop description: the words are capitalized
+  according to English rules for captions
+
+## [5.20.26] - 2021-09-24
+### Added
+ - for UB@5.20.8 `changePassword` endpoint skip logging of HTTP request body (contains user password), `[DEDACTED]` logged instead 
+
+## [5.20.25] - 2021-09-16
+### Changed
+- English (en) localization for desktop/shortcut captions: the words are
+  capitalized according to English rules for captions
+
+## [5.20.24] - 2021-09-08
 ## [5.20.23] - 2021-09-02
 ## [5.20.22] - 2021-08-31
 ### Changed

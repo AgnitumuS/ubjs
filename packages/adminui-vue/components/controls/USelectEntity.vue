@@ -30,7 +30,7 @@
           ref="input"
           v-model="queryDisplayValue"
           :class="{
-            'ub-select__deleted-value': isSafeDeletedValue && !isFocused,
+            'ub-select__deleted-value': (isSafeDeletedValue || isOutOfDate) && !isFocused,
             'ub-select__undefined-record': undefinedRecord
           }"
           :readonly="!editable || isReadOnly"
@@ -46,7 +46,13 @@
           @keydown.native.exact.down.prevent
         >
           <i
-            v-if="isSafeDeletedValue"
+            v-if="isOutOfDate"
+            slot="prefix"
+            :title="$ut('value is out of date')"
+            class="el-input__icon u-icon-clock"
+          />
+          <i
+            v-else-if="isSafeDeletedValue"
             slot="prefix"
             :title="$ut('selectedValueWasDeleted')"
             class="el-input__icon u-icon-delete"
@@ -84,7 +90,7 @@
       >
         <div
           v-for="option in options"
-          :key="option[valueAttribute]"
+          :key="option.ID || option[valueAttribute]"
           :ref="`option_${option[valueAttribute]}`"
           class="ub-select__option"
           :class="{
@@ -203,6 +209,20 @@ export default {
     removeDefaultActions: Boolean,
 
     /**
+     * Allows hiding some default actions.
+     * Actions shall be passed as an array of strings, supported actions for this property:
+     * `lookup`, `edit`, `addNew`, `clear`.
+     */
+    hideActions: {
+      type: Array,
+      required: false,
+      default () {
+        return []
+      },
+      validator: value => value.every(item => ['lookup', 'edit', 'addNew', 'clear'].includes(item))
+    },
+
+    /**
      * Add actions to "more" button
      */
     additionalActions: {
@@ -312,8 +332,10 @@ export default {
       selectedOption: null, // option which user hover or focused by arrows
       prevQuery: '', // when user click show more need to track prev query value for send same request to next page
       isSafeDeletedValue: false,
+      isOutOfDate: false,
       isFocused: false,
-      undefinedRecord: false // show's warning icon when ID is undefined in entity
+      undefinedRecord: false, // show's warning icon when ID is undefined in entity
+      editingFormIsOpened: false
     }
   },
 
@@ -331,6 +353,10 @@ export default {
       return 'mi_deleteDate' in schema.attributes
     },
 
+    isDataHistory () {
+      return this.$UB.connection.domain.get(this.getEntityName).hasMixin('dataHistory')
+    },
+
     inputIconCls () {
       return this.loading
         ? 'el-icon-loading'
@@ -341,34 +367,51 @@ export default {
       if (this.removeDefaultActions) {
         return []
       }
-      return [{
-        name: 'ShowLookup',
-        caption: this.$ut('selectFromDictionary') + ' (F9)',
-        icon: 'u-icon-dictionary',
-        disabled: this.isReadOnly,
-        handler: this.handleShowDictionary
-      },
-      {
-        name: 'Edit',
-        caption: this.$ut('editSelItem') + ' (Ctrl+E)',
-        icon: 'u-icon-edit',
-        disabled: !this.value,
-        handler: this.handleEditItem
-      },
-      {
-        name: 'Add',
-        caption: this.$ut('addNewItem'),
-        icon: 'u-icon-add',
-        disabled: !this.getEntityName || !this.$UB.connection.domain.get(this.getEntityName).haveAccessToMethod('addnew') || this.isReadOnly,
-        handler: this.handleAddNewItem
-      },
-      {
-        name: 'Clear',
-        caption: this.$ut('clearSelection') + ' (Ctrl+BackSpace)',
-        icon: 'u-icon-eraser',
-        disabled: !this.value || this.isReadOnly,
-        handler: this.handleClearClick
-      }]
+
+      const defaultActions = []
+
+      if (!this.hideActions.includes('lookup')) {
+        defaultActions.push({
+          name: 'ShowLookup',
+          caption: this.$ut('selectFromDictionary') + ' (F9)',
+          icon: 'u-icon-dictionary',
+          disabled: this.isReadOnly,
+          handler: this.handleShowDictionary
+        })
+      }
+
+      if (!this.hideActions.includes('edit')) {
+        defaultActions.push({
+          name: 'Edit',
+          caption: this.$ut('editSelItem') + ' (Ctrl+E)',
+          icon: 'u-icon-edit',
+          disabled: !this.value || this.editingFormIsOpened,
+          handler: this.handleEditItem
+        })
+      }
+
+      if (!this.hideActions.includes('addNew')) {
+        defaultActions.push({
+          name: 'Add',
+          caption: this.$ut('addNewItem'),
+          icon: 'u-icon-add',
+          disabled: !this.getEntityName || this.editingFormIsOpened || this.isReadOnly ||
+            !this.$UB.connection.domain.get(this.getEntityName).haveAccessToMethod('addnew'),
+          handler: this.handleAddNewItem
+        })
+      }
+
+      if (!this.hideActions.includes('clear')) {
+        defaultActions.push({
+          name: 'Clear',
+          caption: this.$ut('clearSelection') + ' (Ctrl+BackSpace)',
+          icon: 'u-icon-eraser',
+          disabled: !this.value || this.isReadOnly,
+          handler: this.handleClearClick
+        })
+      }
+
+      return defaultActions
     },
 
     actions () {
@@ -408,23 +451,6 @@ export default {
       if (value.length < 1) {
         this.handleClearClick()
       }
-    }
-  },
-
-  created () {
-    this.AUTOCOMPLETE_LISTENER_UID = null
-  },
-
-  beforeDestroy () {
-    if (
-      this.AUTOCOMPLETE_LISTENER_UID &&
-      this.AUTOCOMPLETE_LISTENER_UID === this._uid &&
-      !this.skipAutoComplete
-    ) {
-      this.$UB.connection.removeListener(
-        `${this.getEntityName}:changed`,
-        this.autoCompleteValue
-      )
     }
   },
 
@@ -483,8 +509,12 @@ export default {
         const option = await repositoryClone
           .where(this.valueAttribute, '=', value)
           .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
+          .attrsIf(this.isDataHistory, 'mi_dateFrom', 'mi_dateTo')
           .misc({
             __allowSelectSafeDeleted: true
+          })
+          .miscIf(this.isDataHistory, {
+            __mip_recordhistory_all: true
           })
           .selectSingle()
 
@@ -554,6 +584,10 @@ export default {
         this.isSafeDeletedValue = isDeleted
       } else {
         this.isSafeDeletedValue = false
+      }
+      if (this.isDataHistory) {
+        const n = Date.now()
+        this.isOutOfDate = (option.mi_dateFrom?.getTime() > n) || (option.mi_dateTo?.getTime() < n)
       }
     },
 
@@ -640,7 +674,7 @@ export default {
     },
 
     handleShowDictionary () {
-      if (!this.removeDefaultActions) {
+      if (!this.removeDefaultActions && !this.hideActions.includes('lookup')) {
         const selectRepo = this.getRepository().clone()
         selectRepo.orderList = [] // clear order list
         // override fieldList but  keep all possible filters
@@ -701,7 +735,7 @@ export default {
     },
 
     async handleEditItem () {
-      if (!this.removeDefaultActions) {
+      if (!this.removeDefaultActions && !this.hideActions.includes('edit')) {
         let ID = this.value
 
         if (this.valueAttribute !== 'ID') { // row ID is required to open edit form
@@ -714,7 +748,7 @@ export default {
             .selectAsArrayOfValues()
 
           if (ids.length !== 1) {
-            UB.showErrorWindow(`${this.valueAttribute} is not unique`)
+            this.$UB.showErrorWindow(`${this.valueAttribute} is not unique`)
             return
           }
 
@@ -725,39 +759,51 @@ export default {
           cmdType: this.$UB.core.UBCommand.commandType.showForm,
           entity: this.getEntityName,
           isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal,
-          instanceID: ID
+          instanceID: ID,
+          onClose: () => {
+            this.editingFormIsOpened = false
+          }
         })
         this.$UB.core.UBApp.doCommand(config)
+        this.editingFormIsOpened = true
       }
     },
 
     handleAddNewItem () {
-      if (!this.removeDefaultActions) {
-        const config = this.buildAddNewConfig({
-          cmdType: this.$UB.core.UBCommand.commandType.showForm,
-          entity: this.getEntityName,
-          isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal
-        })
-        if (!this.skipAutoComplete) {
-          this.$UB.connection.once(`${this.entityName}:changed`, this.autoCompleteValue)
-          this.AUTOCOMPLETE_LISTENER_UID = this._uid
-        }
-        this.$UB.core.UBApp.doCommand(config)
-      }
-    },
-
-    autoCompleteValue (config) {
-      if (this.AUTOCOMPLETE_LISTENER_UID && this.AUTOCOMPLETE_LISTENER_UID === this._uid && config && config.resultData) {
-        this.$emit('input', config.resultData[this.valueAttribute], JSON.parse(JSON.stringify(config.resultData)))
-      }
+      if (this.removeDefaultActions || this.hideActions.includes('addNew')) return
+      const config = this.buildAddNewConfig({
+        cmdType: this.$UB.core.UBCommand.commandType.showForm,
+        entity: this.getEntityName,
+        isModal: this.$UB.connection.appConfig.uiSettings.adminUI.forceModalsForEditForms || this.parentIsModal,
+        // WARNING - if current form is closed, then handler creates a closure until addNew form is opened
+        // but we do not know how to intercept addNew form closing w/o callback
+        /**
+         * Listener for callback fired by `UForm` or `BasePanel` based forms when they are closed
+         * @param {Number} ID instance ID of fired record
+         * @param {Vuex|Ext.Data.Store} store - in case `UForm` - form attribute values, `BasePanel` - (default: undefined),
+         *  but can be initialized by custom Ext-forms
+         * @param {Boolean|undefined} formWasSaved in case `BasePanel` - true when form was saved, `UForm` - undefined
+         * @param {UB.view.BasePanel#record|undefined} record - in case `BasePanel` - form attribute flues, `UForm` - undefined
+         */
+        onClose: this.skipAutoComplete
+          ? undefined
+          : (ID, store, formWasSaved, record) => {
+              this.editingFormIsOpened = false
+              if (!ID) return // form for adding new record is closed while in isNew state (value not saved to DB) - do nothing
+              if (!this.$el.isConnected) return // form is closed before addNew form
+              const formAttrs = Object.assign({}, store?.state?.data || record?.data) // form data is plain, so safe to use assign
+              this.$emit('input', formAttrs[this.valueAttribute], formAttrs)
+            }
+      })
+      this.editingFormIsOpened = true
+      this.$UB.core.UBApp.doCommand(config)
     },
 
     handleClearClick () {
-      if (!this.removeDefaultActions) {
-        this.$emit('input', null, null)
-        if (this.dropdownVisible) {
-          this.fetchPage()
-        }
+      if (this.removeDefaultActions || this.hideActions.includes('clear')) return
+      this.$emit('input', null, null)
+      if (this.dropdownVisible) {
+        this.fetchPage()
       }
     },
 

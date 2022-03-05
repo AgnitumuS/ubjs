@@ -1,6 +1,10 @@
+/* global _defaultLang, _collator */
 /**
  * Dates and Numbers formatting using Intl
  * On client this module exposed as `UB.formatter` and `Vue.prototype.$UB.formatter`
+ *
+ * - for available date format options see https://tc39.es/ecma402/#datetimeformat-objects
+ * - for available number format options see https://tc39.es/ecma402/#numberformat-objects
  *
  * @module formatByPattern
  * @author xmax
@@ -36,7 +40,7 @@ const numberPatterns = {
 /**
  * lang to ICU locale hook (if defined by setLang2LocaleHook)
  * @private
- * @type {null|function}
+ * @type {null|Function}
  */
 let l2lHook = null
 const langToICU = {
@@ -49,14 +53,16 @@ const langToICU = {
 // TODO - FIX ME by prevent `@unitybase/cs-shared` package includes into every compiled module
 //  (adminui-pub, adminui-vue, vendor packages etc.).
 if (typeof _defaultLang === 'undefined') {
-  _defaultLang = 'en'
+  // eslint-disable-next-line no-global-assign
+  _defaultLang = null
+  setDefaultLang('en')
 }
-_collator = undefined
 
 /**
  * Create a ICU locale based on UB language
+ *
  * @param lang
- * @return {string}
+ * @returns {string}
  */
 function lang2locale (lang) {
   if (l2lHook) return l2lHook(lang)
@@ -73,6 +79,7 @@ function lang2locale (lang) {
  *
  * Keys is a language, values is an object with keys is date pattern, value is Intl.NumberFormat for this pattern
  * {en: {sum: new Intl.NumberFormat('en-US', numberPatterns.sum)}
+ *
  * @private
  */
 let numberFormaters = {}
@@ -82,27 +89,28 @@ let numberFormaters = {}
  *
  * Keys is a language, values is an object with keys is date pattern, value is Intl.DateTimeFormat for this pattern
  * {en: {date: new Intl.DateTimeFormat('en-US', datePatterns.date)}
+ *
  * @private
  */
 let dateTimeFormaters = {}
 
 /**
  * Format date by pattern
- * @example
-    const formatByPattern = require('@unitybase/cs-shared').formatByPattern
-    const d = new Date(2020, 04, 23, 13, 14)
-    formatByPattern.formatDate(d, 'date') // on client can be called without 3rd lang parameter - will be formatted for user default lang (for uk - 23.05.2020)
-    formatByPattern.formatDate('2020-05-23', 'date', 'uk') // 23.05.2020
-    formatByPattern.formatDate(d, 'date', 'en') // 05/23/2020
-    formatByPattern.formatDate(d, 'dateTime', 'uk') // 23.05.2020 13:14
-    formatByPattern.formatDate(d, 'dateTimeFull', 'uk') // 23.05.2020 13:14:00
-    formatByPattern.formatDate(d, 'date', 'en') // 05/23/2020, 1:14 PM
  *
+ * @example
+const formatByPattern = require('@unitybase/cs-shared').formatByPattern
+const d = new Date(2020, 04, 23, 13, 14)
+formatByPattern.formatDate(d, 'date') // on client can be called without 3rd lang parameter - will be formatted for user default lang (for uk - 23.05.2020)
+formatByPattern.formatDate('2020-05-23', 'date', 'uk') // 23.05.2020
+formatByPattern.formatDate(d, 'date', 'en') // 05/23/2020
+formatByPattern.formatDate(d, 'dateTime', 'uk') // 23.05.2020 13:14
+formatByPattern.formatDate(d, 'dateTimeFull', 'uk') // 23.05.2020 13:14:00
+formatByPattern.formatDate(d, 'date', 'en') // 05/23/2020, 1:14 PM
  * @param {*} dateVal Date object or Number/String what will be converted to Date using new Date();
  *   null, undefined and empty string will be converted to empty string
  * @param {string} patternName One of `formatByPattern.datePatterns`
  * @param {string} [lang=defaultLang] UB language code. If not specified value defined by setDefaultLang is used
- * @return {string}
+ * @returns {string}
  */
 module.exports.formatDate = function (dateVal, patternName, lang = _defaultLang) {
   if (!dateVal) return ''
@@ -121,17 +129,17 @@ module.exports.formatDate = function (dateVal, patternName, lang = _defaultLang)
 
 /**
  * Format number by pattern. Use parseFloat to convert non-number numVal argument into Number. Returns empty string for `!numVal` and `NaN`
- * @example
- const formatByPattern = require('@unitybase/cs-shared').formatByPattern
- const n = 2305.1
- formatByPattern.formatNumber(n, 'sum', 'en') // 2,305.10
- formatByPattern.formatNumber('2305.1', 'sum', 'en') // 2,305.10
- formatByPattern.formatNumber(n, 'sum') // on client can be called without 3rd lang parameter - will be formatted for user default lang (for uk "2 305,10")
  *
+ * @example
+const formatByPattern = require('@unitybase/cs-shared').formatByPattern
+const n = 2305.1
+formatByPattern.formatNumber(n, 'sum', 'en') // 2,305.10
+formatByPattern.formatNumber('2305.1', 'sum', 'en') // 2,305.10
+formatByPattern.formatNumber(n, 'sum') // on client can be called without 3rd lang parameter - will be formatted for user default lang (for uk "2 305,10")
  * @param {*} numVal
  * @param {string} patternName One of `formatByPattern.datePatterns`
  * @param {string} [lang=defaultLang] UB language code. If not specified value defined by `setDefaultLang` is used
- * @return {string}
+ * @returns {string}
  */
 module.exports.formatNumber = function (numVal, patternName, lang = _defaultLang) {
   if (!numVal && (numVal !== 0)) return ''
@@ -154,7 +162,7 @@ module.exports.formatNumber = function (numVal, patternName, lang = _defaultLang
  *
  * Application can redefine this rule by sets his own hook, for example to translate `en -> 'en-GB'` etc.
  *
- * @param {function} newL2lHook function whats takes a UB language string and returns a ICU locale string
+ * @param {Function} newL2lHook function what takes a UB language string and returns a ICU locale string
  */
 module.exports.setLang2LocaleHook = function (newL2lHook) {
   l2lHook = newL2lHook
@@ -164,25 +172,95 @@ module.exports.setLang2LocaleHook = function (newL2lHook) {
 }
 /**
  * Available date patterns
+ *
  * @type {string[]}
  */
 module.exports.datePatterns = Object.keys(datePatterns)
 /**
  * Available Number patterns
+ *
  * @type {string[]}
  */
 module.exports.numberPatterns = Object.keys(numberPatterns)
 
 /**
+ * Registers custom date pattern (should be called once)
+ *
+ * @example
+// format Date for New_York time zone
+$UB.formatter.registerDatePattern('dateTimeInNewYork', {
+  month: '2-digit', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit',
+  timeZone: 'America/New_York'
+})
+ * @param {string} patternName Pattern name
+ * @param {object} intlOptions Intl.DateFormat constructor options - see https://tc39.es/ecma402/#datetimeformat-objects
+ */
+module.exports.registerDatePattern = function (patternName, intlOptions) {
+  if (!patternName || typeof patternName !== 'string') {
+    throw new Error('Invalid date pattern name')
+  }
+  if (datePatterns[patternName]) {
+    throw new Error(`Date pattern ${patternName} already registered`)
+  }
+  if (!intlOptions || typeof intlOptions !== 'object') {
+    throw new Error('Invalid intlOptions - should be object')
+  }
+  datePatterns[patternName] = intlOptions
+}
+
+/**
+ * Registers custom number pattern
+ *
+ * @param {string} patternName Pattern name
+ * @param {object} intlOptions Intl.NumberFormat constructor options - see https://tc39.es/ecma402/#numberformat-objects
+ */
+module.exports.registerNumberPattern = function (patternName, intlOptions) {
+  if (!patternName || typeof patternName !== 'string') {
+    throw new Error('Invalid number pattern name')
+  }
+  if (numberPatterns[patternName]) {
+    throw new Error(`Number pattern ${patternName} already registered`)
+  }
+  if (!intlOptions || typeof intlOptions !== 'object') {
+    throw new Error('Invalid intlOptions - should be object')
+  }
+  numberPatterns[patternName] = intlOptions
+}
+
+/**
+ * Gets date pattern by name
+ *
+ * @param {string} patternName Pattern name
+ * @returns {object} Pattern description for Intl
+ */
+module.exports.getDatePattern = function (patternName) {
+  return Object.assign({}, datePatterns[patternName])
+}
+
+/**
+ * Gets number pattern by name
+ *
+ * @param {string} patternName Pattern name
+ * @returns {object} Pattern description for Intl
+ */
+module.exports.getNumberPattern = function (patternName) {
+  return Object.assign({}, numberPatterns[patternName])
+}
+
+/**
  * Set a default language to use with `strCmp`, `formatNumber` and `formatDate`.
- * For UI this is usually a logged in user language.
+ * For UI this is usually a logged in user language
+ *
  * @param {string} lang
  */
 function setDefaultLang (lang) {
   if (_defaultLang === lang) return
+  // eslint-disable-next-line no-global-assign
   _defaultLang = lang
-  _collator = undefined
+  // eslint-disable-next-line no-global-assign
+  _collator = null
   if ((typeof Intl === 'object') && Intl.Collator) {
+    // eslint-disable-next-line no-global-assign
     _collator = new Intl.Collator(lang, { numeric: true })
   }
 }
@@ -190,16 +268,34 @@ function setDefaultLang (lang) {
 module.exports.setDefaultLang = setDefaultLang
 
 /**
- * Compare two value using `Intl.collator` for default language.
- * Returns 0 if values are equal, otherwise 1 or -1.
+ * Compare two value:
+ *  - if one of value is string takes into account current client locale (see setDefaultLang)
+ *  - `null` and `undefined` is always less when any other value
+ *  - `Date` objects compared correctly (using getTime())
+ * Returns 0 if values are equal, otherwise 1 or -1
+ *
  * @param {*} v1
  * @param {*} v2
- * @return {number}
+ * @returns {number}
  */
 module.exports.collationCompare = function (v1, v2) {
-  if (_collator) {
+  if (_collator && ((typeof v1 === 'string') || (typeof v2 === 'string'))) { // Use collator for strings
     return _collator.compare(v1, v2)
   } else {
+    // place null and undefined first (== is used instead of === to null\undefined compare)
+    if ((v1 == null) && (v2 != null)) {
+      return -1
+    } else if ((v2 == null) && (v1 != null)) {
+      return 1
+    }
+    // compare date using seconds since epoch
+    if (v1 instanceof Date) {
+      v1 = v1.getTime()
+    }
+    if (v2 instanceof Date) {
+      v2 = v2.getTime()
+    }
+
     if (v1 === v2) return 0
     return v1 > v2 ? 1 : -1
   }

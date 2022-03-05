@@ -1,6 +1,6 @@
 {
-  "caption": "Pessimistik qulflar",
-  "description": "Pessimistik qulflar",
+  "caption": "Aktiv blokirovkalar",
+  "description": "Pessimistik aktiv blokirovkalar",
   "attributes": [
     {
       "name": "entity",
@@ -8,7 +8,7 @@
     },
     {
       "name": "lockID",
-      "caption": "Kirish identifikatori"
+      "caption": "ID saqlashlar"
     },
     {
       "name": "lockUser",
@@ -16,7 +16,7 @@
     },
     {
       "name": "lockType",
-      "caption": "Qulf turi"
+      "caption": "Blok turi"
     },
     {
       "name": "lockTime",

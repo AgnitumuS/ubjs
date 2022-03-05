@@ -1,30 +1,27 @@
 UB.i18nExtend({
   "NMInstallExtensionFirefox": "<p>İşi davam etdirmək üçün Firefox brauzeri üçün <b>\"UBExtension\"</b> genişlənməsini quraşdırmaq lazımdır.</p> " +
-    "<p> \"Google\" mağazasına keçmək üçün <a href=\"https://addons.mozilla.org/addon/ub-extension/\" target=\"_blank\">GENİŞLƏNMƏNİ QURAŞDIR</a> keçidi üzərində vurun</p>" +
-    "<p>Genişlənməni quraşdırdıqdan sonra <b>brauzeri söndürüb yandırın!</b></p>",
-  "NMInstallExtensionChrome": "<p>İşi davam etdirmək üçün \"Google Chrome\" brauzeri üçün <b>\"UBExtension\"</b> genişlənməsini quraşdırmaq lazımdır.</p> " +
-    "<p> \"Google\" mağazasına keçmək üçün <a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\">GENİŞLƏNMƏNİ QURAŞDIR</a> keçidi üzərində vurun</p>" +
-    "<p> Mağaza pəncərəsində <img src=\"models/adminui-pub/ub-extension/ChromePlusFreeEn.png\"/> düyməsini(ola bilər ki, <b>+ÖDƏNİŞSİZ</b>) sıxın </p>" +
-    "<p>Genişlənmənin quraşdırıldığını təsdiq edən pəncərə açıldıqda \"Əlavə et\" (Add) üzərində vurun.</p>" +
-    "<p>Genişlənmə quraşdırılacaq və <b>+FREE</b> düyməsi yaşıl rəng alacaq: <img src=\"models/adminui-pub/ub-extension/ChromeAddedEn.png\"/> " +
-    "<p>Genişlənməni quraşdırdıqdan sonra <b>brauzeri söndürüb yandırın!</b></p>",
+  "<p> \"Google\" mağazasına keçmək üçün <a href=\"https://addons.mozilla.org/addon/ub-extension/\" target=\"_blank\">GENİŞLƏNMƏNİ QURAŞDIR</a> keçidi üzərində vurun</p>" +
+  "<p>Genişlənməni quraşdırdıqdan sonra <b>brauzeri söndürüb yandırın!</b></p>",
+  "NMInstallExtensionChrome": "<p>Brauzer üçün <b>\"UBExtension\"</b> genişləmdirməni quraşdırlması tələb olunur.</p> " +
+  "<p>Quraşdırma təlimatına<a href=\"https://unitybase-info.translate.goog/news/setup-ubextension-without-using-the-google-store.html?_x_tr_sl=uk&_x_tr_tl=az&_x_tr_hl=uk&_x_tr_pto=nui\" target=\"_blank\">davam edin</a>.</p>" +
+  "<p>Quraşdırıldıqdan sonra <b>brauzerinizi yenidən işə salın!</b></p>",
   "NMInstallExtensionOpera": "<p>İşi davam etdirmək üçün \"Opera\" brauzeri üçün <b>\"UBExtension\"</b> genişlənməsini quraşdırmaq lazımdır.</p> " +
-    "<p><a href=\"models/adminui-pub/ub-extension/UBExtension.crx\" target=\"_blank\">GENİŞLƏNMƏNİ QURAŞDIR</a> keçidi üzərində vurun.</p>" +
-    "<p>Brauzer genişlənməni yükləyəcək və ekranın yuxarı hissəsində ismarış görsənəcək. " +
-    "Xəbərdarlığın əks olunduğu paneldə \"Go\"(keçid) düyməsini sıxın, bu zaman \"Opera\" quraşdırılmış genişlənmələrin əks olunduğu səhifəni açacaq. Burada \"UBExtension\" tapıb \"Install\"(Quraşdır) əmri üzərində vurun</p> " +
-    "<p>Artıq quraşdırma başa çatmışdır və brauzeri söndürüb yandırmaq olar.</p>",
+  "<p><a href=\"models/adminui-pub/ub-extension/UBExtension.crx\" target=\"_blank\">GENİŞLƏNMƏNİ QURAŞDIR</a> keçidi üzərində vurun.</p>" +
+  "<p>Brauzer genişlənməni yükləyəcək və ekranın yuxarı hissəsində ismarış görsənəcək. " +
+  "Xəbərdarlığın əks olunduğu paneldə \"Go\"(keçid) düyməsini sıxın, bu zaman \"Opera\" quraşdırılmış genişlənmələrin əks olunduğu səhifəni açacaq. Burada \"UBExtension\" tapıb \"Install\"(Quraşdır) əmri üzərində vurun</p> " +
+  "<p>Artıq quraşdırma başa çatmışdır və brauzeri söndürüb yandırmaq olar.</p>",
   "NMUpdateExtensionChrome": "<p>İşi davam etdirmək üçün <b>{0}</b>ni <i>{2}</i> versiyasınadək yeniləmək lazımdır.</p> " +
-    "<p>Adətən \"Google Chrome\" brauzeri genişlənmələri avtomatik olaraq yeniləyir. Brauzeri bağlamağa/açmağa cəhd edin. " +
-    " Əllə yeniləmək üçün <a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\"> keçidindən istifadə edərək \"Google\" mağazasına keçin</a> </p>",
+  "<p>Adətən \"Google Chrome\" brauzeri genişlənmələri avtomatik olaraq yeniləyir. Brauzeri bağlamağa/açmağa cəhd edin. " +
+  " Əllə yeniləmək üçün <a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\"> keçidindən istifadə edərək \"Google\" mağazasına keçin</a> </p>",
   "NMUpdateExtensionOpera": "<p>İşi davam etdirmək üçün <b>{0}</b>ni <i>{2}</i> versiyasınadək yeniləmək lazımdır.</p> " +
-    "<p>Adətən \"Opera\" brauzeri genişlənmələri avtomatik olaraq yeniləyir. Brauzeri bağlamağa/açmağa cəhd edin. " +
-    " Əllə yeniləmək üçün <a href=\"models/adminui-pub/ub-extension/UBExtension.crx\" target=\"_blank\"> keçidindən istifadə edərək \"Google\" mağazasına keçin</a> </p>",
+  "<p>Adətən \"Opera\" brauzeri genişlənmələri avtomatik olaraq yeniləyir. Brauzeri bağlamağa/açmağa cəhd edin. " +
+  " Əllə yeniləmək üçün <a href=\"models/adminui-pub/ub-extension/UBExtension.crx\" target=\"_blank\"> keçidindən istifadə edərək \"Google\" mağazasına keçin</a> </p>",
   "NMInstallFeature": "<p>Bu funksionaldan istifadə etmək üçün <b>{0}</b> quraşdırmaq lazımır.</p> " +
-    "<p><a href=\"{3}\" target=\"_blank\">QURAŞDIRMANI YÜKLƏ</a> keçidi üzərində vurun. Yüklənmə başa çatdıqdan sonra quraşdırmanı işə salıb yarımçı məsləhətlərə riayət edin.</p>" +
-    "<p>Quraşdırma başa çatdıqdan sonra brauzeri söndürüb yandırmaq lazımdır.</p>",
+  "<p><a href=\"{3}\" target=\"_blank\">QURAŞDIRMANI YÜKLƏ</a> keçidi üzərində vurun. Yüklənmə başa çatdıqdan sonra quraşdırmanı işə salıb yarımçı məsləhətlərə riayət edin.</p>" +
+  "<p>Quraşdırma başa çatdıqdan sonra brauzeri söndürüb yandırmaq lazımdır.</p>",
   "NMUpdateFeature": "<p> <b>{0}</b> tətbiq proqramının yeni <i>{1}</i>  versiyası işlənib hazırlanmışdır.</p> " +
-    "<p> <a href=\"{3}\" target=\"_blank\">YENİLƏNMƏNİ YÜKLƏ</a> keçidi üzərində vurun. Yüklənmə başa çatdıqdan sonra yenilənməni işə salıb yarımçı məsləhətlərə riayət edin.</p>" +
-    "<p>Quraşdırma başa çatdıqdan sonra brauzeri söndürüb yandırmaq lazımdır.</p>"
+  "<p> <a href=\"{3}\" target=\"_blank\">YENİLƏNMƏNİ YÜKLƏ</a> keçidi üzərində vurun. Yüklənmə başa çatdıqdan sonra yenilənməni işə salıb yarımçı məsləhətlərə riayət edin.</p>" +
+  "<p>Quraşdırma başa çatdıqdan sonra brauzeri söndürüb yandırmaq lazımdır.</p>"
 })
 
 /* ExtJS Translation into Azerbaijani */
@@ -87,9 +84,9 @@ if (typeof Ext !== 'undefined') {
         disabledDatesText: '',
         monthNames: Ext.Date.monthNames,
         dayNames: Ext.Date.shortDayNames,
-        nextText: 'Gelecek Ay (Control+Right)',
-        prevText: 'Ã–nceki Ay (Control+Left)',
-        monthYearText: 'Bir ay sŸeçiniz (Yýlý artýrmak/azaltmak için Control+Up/Down)',
+        nextText: 'Gələcək Ay (Control+Right)',
+        prevText: 'Önceki Ay (Control+Left)',
+        monthYearText: 'Bir ay seçin (Yýlý artırmak/azaltmak için Control+Up/Down)',
         todayTip: '{0} (BoþŸluk TuþŸu - Spacebar)',
         format: 'd.m.Y',
         altFormats: 'dmY|dmy|d.m.y|d/m/Y|j/m/y|d/n/y|j/m/Y|d/n/Y|d-m-y|d/m|d-m|dm|dmy|dmY|d',
@@ -114,7 +111,7 @@ if (typeof Ext !== 'undefined') {
 
     if (Ext.toolbar.Paging) {
       Ext.apply(Ext.PagingToolbar.prototype, {
-        beforePageText: 'Sayfa',
+        beforePageText: 'Səhifə',
         afterPageText: ' / {0}',
         firstText: 'İlk səhifə',
         prevText: 'Əvvəlki səhifə',
@@ -230,10 +227,10 @@ if (typeof Ext !== 'undefined') {
 
     if (Ext.form.field.VTypes) {
       Ext.apply(Ext.form.field.VTypes, {
-        emailText: 'Bu alan "user@example.com" þŸeklinde elektronik posta formatýnda olmalýdýr',
-        urlText: '"http://www.example.com" þŸeklinde URL adres formatýnda olmalýdýr',
-        alphaText: 'Bu alan sadece harf ve _ içermeli',
-        alphanumText: 'Bu alan sadece harf, sayý ve _ içermeli'
+        emailText: 'Bu sahə "user@example.com" şəklində elektron poçt formatında olmalıdır',
+        urlText: '"http://www.example.com" şəklində URL adres formatında olmalıdır',
+        alphaText: 'Bu sahə sadəcə hərf və _ ibarət olmalıdır',
+        alphanumText: 'Bu sahə sadəcə hərf, rəqəm və _ ibarət olmalıdır'
       })
     }
 
@@ -242,73 +239,73 @@ if (typeof Ext !== 'undefined') {
         createLinkText: 'Xahiş edirik, lazımi URL ünvanından istifadə edin:',
         buttonTips: {
           bold: {
-            title: 'Kalýn(Bold) (Ctrl+B)',
-            text: 'Þžeçili yazýyý kalýn yapar.',
+            title: 'Qalın(Bold) (Ctrl+B)',
+            text: 'Seçilmiş yazını qalın edir.',
             cls: Ext.baseCSSPrefix + 'html-editor-tip'
           },
           italic: {
-            title: 'Ä°talik(Italic) (Ctrl+I)',
-            text: 'Þžeçili yazýyý italik yapar.',
+            title: 'İtalik(Italic) (Ctrl+I)',
+            text: 'Seçilmiş yazını italik edir.',
             cls: Ext.baseCSSPrefix + 'html-editor-tip'
           },
           underline: {
-            title: 'Alt Ã‡izgi(Underline) (Ctrl+U)',
-            text: 'Þžeçili yazýnýn altýný çizer.',
+            title: 'Alt Xətli(Underline) (Ctrl+U)',
+            text: 'Seçilmiş yazının altını xətliyir.',
             cls: Ext.baseCSSPrefix + 'html-editor-tip'
           },
           increasefontsize: {
-            title: 'Fontu büyült',
-            text: 'Yazý fontunu büyütür.',
+            title: 'Fontu böyüt',
+            text: 'Yazı fontunu böyüdür.',
             cls: Ext.baseCSSPrefix + 'html-editor-tip'
           },
           decreasefontsize: {
-            title: 'Fontu küçült',
-            text: 'Yazý fontunu küçültür.',
+            title: 'Fontu kiçilt',
+            text: 'Yazı fontunu kiçildir.',
             cls: Ext.baseCSSPrefix + 'html-editor-tip'
           },
           backcolor: {
-            title: 'Arka Plan Rengi',
-            text: 'Seçili yazýnýn arka plan rengini deðiþŸtir.',
+            title: 'Arka Fonun Rəngi',
+            text: 'Seçilmiş yazının arxa fon rəngini dəyişdir.',
             cls: Ext.baseCSSPrefix + 'html-editor-tip'
           },
           forecolor: {
-            title: 'Yazý Rengi',
-            text: 'Seçili yazýnýn rengini deðiþŸtir.',
+            title: 'Yazı Rəngi',
+            text: 'Seçili yazının rengini dəyişdir.',
             cls: Ext.baseCSSPrefix + 'html-editor-tip'
           },
           justifyleft: {
-            title: 'Sola Daya',
-            text: 'Yazýyý sola daya.',
+            title: 'Sola sıx',
+            text: 'Yazını sola sıx.',
             cls: Ext.baseCSSPrefix + 'html-editor-tip'
           },
           justifycenter: {
-            title: 'Ortala',
-            text: 'Yazýyý editörde ortala.',
+            title: 'Mərkəzləşdir',
+            text: 'Yazını editorda mərkəzləşdir.',
             cls: Ext.baseCSSPrefix + 'html-editor-tip'
           },
           justifyright: {
-            title: 'Saða daya',
-            text: 'Yazýyý saða daya.',
+            title: 'Sağa sıx',
+            text: 'Yazını sağa sıx.',
             cls: Ext.baseCSSPrefix + 'html-editor-tip'
           },
           insertunorderedlist: {
-            title: 'Noktalý Liste',
-            text: 'Noktalý listeye baþŸla.',
+            title: 'Nöqtəli List',
+            text: 'Nöqtəli list düzəlt.',
             cls: Ext.baseCSSPrefix + 'html-editor-tip'
           },
           insertorderedlist: {
-            title: 'Numaralý Liste',
-            text: 'Numaralý lisyeye baþŸla.',
+            title: 'Nömrəli List',
+            text: 'Nömrəli list düzəlt.',
             cls: Ext.baseCSSPrefix + 'html-editor-tip'
           },
           createlink: {
             title: 'Web Adresi(Hyperlink)',
-            text: 'Seçili yazýyý web adresi(hyperlink) yap.',
+            text: 'Seçili yazını web adresi(hyperlink) et.',
             cls: Ext.baseCSSPrefix + 'html-editor-tip'
           },
           sourceedit: {
-            title: 'Kaynak kodu Düzenleme',
-            text: 'Kaynak kodu düzenleme moduna geç.',
+            title: 'Mənbə kodu düzəlt',
+            text: 'Mənbə kodu düzəltmə rejiminə keç.',
             cls: Ext.baseCSSPrefix + 'html-editor-tip'
           }
         }
@@ -317,19 +314,19 @@ if (typeof Ext !== 'undefined') {
 
     if (Ext.grid.header.Container) {
       Ext.apply(Ext.grid.header.Container.prototype, {
-        sortAscText: 'Artan sýrada sýrala',
-        sortDescText: 'Azalan sýrada sýrala',
-        lockText: 'Kolonu kilitle',
-        unlockText: 'Kolon kilidini kaldýr',
+        sortAscText: 'Artan sırada sırala',
+        sortDescText: 'Azalan sırada sırala',
+        lockText: 'Kolonu blokla',
+        unlockText: 'Kolon blokunu qaldır',
         columnsText: 'Kolonlar'
       })
     }
 
     if (Ext.grid.feature.Grouping) {
       Ext.apply(Ext.grid.feature.Grouping.prototype, {
-        emptyGroupText: '(Yok)',
+        emptyGroupText: '(Boş)',
         groupByText: 'Bu xanaya əsasən qruplaşdır',
-        showGroupsText: 'Gruplar Halinde Göster'
+        showGroupsText: 'Qruplar Halında Göstər'
       })
     }
 
@@ -343,15 +340,15 @@ if (typeof Ext !== 'undefined') {
 
     if (Ext.SplitLayoutRegion) {
       Ext.apply(Ext.SplitLayoutRegion.prototype, {
-        splitTip: 'Ölçüsünü üçün sürükleyin.',
-        collapsibleSplitTip: 'Ölçüsünü üçün sürükleyin. Gizlətmək üçün cüt basın.'
+        splitTip: 'Ölçü üçün çəkin.',
+        collapsibleSplitTip: 'Ölçü üçün çəkin. Gizlətmək üçün cüt sıxın.'
       })
     }
 
     if (Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion) {
       Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
-        splitTip: 'Ölçüsünü üçün sürükleyin.',
-        collapsibleSplitTip: 'Ölçüsünü üçün sürükleyin. Gizlətmək üçün cüt basın.'
+        splitTip: 'Ölçü üçün çəkin.',
+        collapsibleSplitTip: 'Ölçü üçün çəkin. Gizlətmək üçün cüt sıxın.'
       })
     }
 
@@ -363,7 +360,7 @@ if (typeof Ext !== 'undefined') {
 
     if (Ext.tab.Tab) {
       Ext.apply(Ext.tab.Tab.prototype, {
-        closeText: 'Əlavni bağla'
+        closeText: 'Əlavəni bağla'
       })
     }
 

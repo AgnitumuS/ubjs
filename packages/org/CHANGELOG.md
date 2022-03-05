@@ -14,6 +14,66 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.4] - 2022-02-16
+### Added
+ - Localization of the captions missed for `org_execgroup` and `org_diagram-main` forms
+
+### Fixed
+- cyrillic symbols in English (en) localization
+
+## [5.22.3] - 2022-02-08
+## [5.22.2] - 2022-01-24
+## [5.22.1] - 2022-01-14
+## [5.22.0] - 2022-01-09
+## [5.20.37] - 2021-12-14
+## [5.20.36] - 2021-12-07
+## [5.20.35] - 2021-12-07
+## [5.20.34] - 2021-12-06
+## [5.20.33] - 2021-12-02
+## [5.20.32] - 2021-11-30
+## [5.20.31] - 2021-11-23
+## [5.20.30] - 2021-11-14
+## [5.20.29] - 2021-11-05
+### Added
+  - `org_employeeonstaff_all` shortcut - enable `__mip_recordhistory_all` misc and add a columns [mi_dateForm] and [mi_dateTo]
+
+### Changed
+ - English localization of the `ORG_UNITTYPE.EXECGROUP` enum item: `Execution Group` => `Executors Group`
+
+### Fixed
+ - `org_employeeonstaff` and `org_employeeonstaff_all` shortcuts - fixed error "Rendering slot is not defined
+   for columns [staffUnitID.caption] and [employeeID.fullFIO]
+
+## [5.20.28] - 2021-10-27
+### Fixed
+ - `org_employee` shortcut - added columns to prevent lookup to uba_user on userID column
+ - `org_execgroup` shortcut - fixed error "Rendering slot is not defined for columns [parentID.caption]"
+
+## [5.20.27] - 2021-10-18
+### Added
+ - Azerbaijani (az) localization for items with omitted translation
+
+### Changed
+ - Translations for `ORG_UNITTYPE` enum: minor improvements:
+   - `Організація` => `Внутрішня організація`
+   - `Підрозділ` => `Внутрішній підрозділ`
+   - `Персонал` => `Штатна одиниця`
+   - capitalization of English captions
+ - Navigation shortcuts localization are taken from i18n (from entities caption)
+ - English (en) localization for desktop description: the words are capitalized
+  according to English rules for captions
+
+## [5.20.26] - 2021-09-24
+## [5.20.25] - 2021-09-16
+### Changed
+- English (en) localization for desktop/shortcut captions: the words are
+  capitalized according to English rules for captions
+- navigation definition is moved from `_initialData` scripts to `03_navigation.yml`
+  file in order to use `ub-migrate` for migration of the navigation data
+
+## [5.20.24] - 2021-09-08
+### Fixed
  - `ubm_enum` sortOrder for the `ORG_UNITTYPE` eGroup: change from STAFF->ORG->DEP->EXECGROUP to ORG->DEP->STAFF->EXECGROUP,
 
 ## [5.20.23] - 2021-09-02

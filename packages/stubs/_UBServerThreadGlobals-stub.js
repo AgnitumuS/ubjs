@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-
+/* global TubDataStore */
 /*
   Purpose of this file is to describe objects and functions added to server-side JavaScript thread(s) by UnityBase server.
   All described here is native UB objects imported to SpiderMonkey (i.e. realisation is in Pascal or C).
@@ -18,6 +18,7 @@ function TubNamedCollection () {}
 TubNamedCollection.prototype = {
   /**
    * Get list element by name
+   *
    * @param name
    * @returns {Number|String|TubList}
    */
@@ -25,21 +26,25 @@ TubNamedCollection.prototype = {
 
   /**
    * Stringified JSON representation of named collection
-   * @type {String}
+   *
+   * @type {string}
    */
   asJSON: '',
   /**
    * Number of named collection items
+   *
    * @type {Number}
    */
   count: 0,
   /**
    * Array of collection items
+   *
    * @type {Array}
    */
   items: [],
   /**
    * Array of collection item names
+   *
    * @type {Array}
    */
   strings: []
@@ -61,30 +66,35 @@ ubMethodParams.prototype = {
    */
   preventDefault: function () {},
   /**
-   * Do not check row modification date while execute statement.
-   * @type {Boolean}
+   * Do not check row modification date while execute statement
+   *
+   * @type {boolean}
    */
   skipOptimisticLock: false,
   /**
    * Data Store associated with current method execution context. If initialized - will be added to client response
+   *
    * @type {TubDataStore}
    * @readonly
    */
   dataStore: null,
   /**
-   * Params caller pass to HTTP request.
+   * Params caller pass to HTTP request
+   *
    * @type {TubList}
    */
   originalParams: null,
   /**
-   * In/Out method parameters. All parameters added or modified in this object is passed back to client
+   * In/Out method parameters. All parameters added or modified in this object is passed back to client.
    * In case method is called from client `mParams` is a serialized request body
+   *
    * @type {TubList}
    */
   mParams: null,
   /**
-   * Indicate current method execution initiated by external caller (client). If false - this method is called from server.
-   * @type {Boolean}
+   * Indicate current method execution initiated by external caller (client). If false - this method is called from server
+   *
+   * @type {boolean}
    * @readonly
    */
   externalCall: true
@@ -92,24 +102,28 @@ ubMethodParams.prototype = {
 
 /**
  * Structure for calling WebSocket handlers
+ *
  * @class
  */
 function WebSocketConnection () {}
 WebSocketConnection.prototype = {
   /**
-   * Current logged in user session
+   * Current logged-in user session
+   *
    * @type {Session}
    * @readonly
    */
   session: null,
   /**
    * Send message to caller
-   * @param {String|Object|ArrayBuffer} data
+   *
+   * @param {String|object|ArrayBuffer} data
    */
   send: function (data) {},
   /**
    * Close caller connection
-   * @param {String} [reason]
+   *
+   * @param {string} [reason]
    */
   close: function (reason) {}
 }
@@ -123,13 +137,14 @@ WebSocketConnection.prototype = {
  * The main task of this class is to provide a code insight in IDEs like WebStorm or VSCode.
  * `ubcli createCodeInsightHelper` command will create a stubs for all entities in model.
  *
- * @extends EventEmitter
+ * @augments EventEmitter
  */
 class EntityNamespace extends EventEmitter {
   constructor () {
     super()
     /**
      * Reference to entity metadata
+     *
      * @type {UBEntity}
      */
     this.entity = new UBEntity()
@@ -138,11 +153,13 @@ class EntityNamespace extends EventEmitter {
 
 /**
  * Mixin. Provide CRUID operations for entity database persistent (ORM) using `ubql` query syntax
+ *
  * @mixin
  */
 const mStorage = {
   /**
    * ORM query for read records
+   *
    * @published
    * @param {ubMethodParams} ctx
    * @param {UBQL} ctx.mParams ORM query in UBQL format
@@ -150,6 +167,7 @@ const mStorage = {
   select: function (ctx) {},
   /**
    * New record insertion
+   *
    * @published
    * @param {ubMethodParams} ctx
    * @param {object} ctx.mParams Insert method parameters
@@ -160,6 +178,7 @@ const mStorage = {
   insert: function (ctx) {},
   /**
    * Update existed record
+   *
    * @published
    * @param {ubMethodParams} ctx
    * @param {object} ctx.mParams Update method parameters
@@ -171,6 +190,7 @@ const mStorage = {
   update: function (ctx) {},
   /**
    * Delete record by ID
+   *
    * @published
    * @param {ubMethodParams} ctx
    * @param {object} ctx.mParams Delete method parameters
@@ -361,9 +381,42 @@ const clobTruncate = {
 
  * @method fieldIndexByName
  * @memberOf TubDataStore.prototype
- * @param {String} fieldName
+ * @param {string} fieldName
  */
-TubDataStore.fieldIndexByName = function(fieldName){}
+TubDataStore.fieldIndexByName = function (fieldName) {}
+
+/**
+ * Set name for column. New name will be used during serialization to JSON or response
+ * @example
+// change column name in HTTP response for select method
+entity.on('select:after', ctx => {
+  const ccIdx = ctx.mParams.fieldList.indexOf('category.code')
+  if (ccIdx !== -1) {
+    ctx.dataStore.setColumnName(ccIdx, 'categoryCode')
+  }
+})
+
+// change column name in HTTP response for custom method
+entity.customSelect = function (ctx) {
+  UB.Repository('tst_document').attrs('ID', 'category.code').limit(10).select(ctx.dataStore)
+  ctx.dataStore.setColumnName(1, 'categoryCode')
+  // caller got categoryCode instead of category.code
+}
+
+// change column name for custom SQL
+store = new UB.DataStore('my_entity')
+store.runSQL('select 1 from dual', {})
+store.setColumnName(0, 'dummy')
+const obj = store.getAsJsObject() // obj will be [{dummy: 1}]
+
+ * @since UB 5.22.2
+ * @method setColumnName
+ * @memberOf TubDataStore.prototype
+ * @param {number} columnIdx
+ * @param {string} newColumnName
+ */
+TubDataStore.setColumnName = function (columnIdx, newColumnName) {}
+
 /**
  * Run any entity method.
  * @example
@@ -377,9 +430,9 @@ store.run('update', {
 })
 store.run('anyEntityMethod', {param1: 'valueOfParam1', ...})
 
- * @param {String} methodName
+ * @param {string} methodName
  * @param {Object|TubList} params
- * @return {Boolean} True in case of success, else raise exception
+ * @return {boolean} True in case of success, else raise exception
  * @method run
  * @memberOf TubDataStore.prototype
  */
@@ -389,18 +442,20 @@ TubDataStore.run = function (methodName, params) {}
  *
  * To execute SQL statement without result (`insert` for example) - use TubDataStore.execSQL instead.
  *
- * @param {String} sql SQL statement to run
+ * @param {string} sql SQL statement to run
  * @param {Object|TubList} params SQL parameters list
+ * @param {boolean} [useReplica=false] Prefer a replica DB if configured
  * @method runSQL
  * @memberOf TubDataStore.prototype
  */
-TubDataStore.runSQL = function (sql, params) {}
+TubDataStore.runSQL = function (sql, params, useReplica) {}
 /**
  * Execute SQL with parameters. Not wait result data
- * @param {String} sql SQL statement to run
+ * @param {string} sql SQL statement to run
  * @param {Object|TubList} params SQL parameters list
  * @memberOf TubDataStore.prototype
  * @method execSQL
+ * @returns {number} Affected rows count (since UB@5.22.3, before returns false)
  */
 TubDataStore.execSQL = function (sql, params) {}
 /**
@@ -469,13 +524,13 @@ TubDataStore.first = function () {}
 TubDataStore.last = function () {}
 /**
  * Indicate current position in data collection is on the beginning of collection
- * @member {Boolean} bof
+ * @member {boolean} bof
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.bof = false
 /**
  * Indicate current position in data collection is on the end of collection.
- * @member {Boolean} eof
+ * @member {boolean} eof
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.eof = false
@@ -488,7 +543,7 @@ TubDataStore.eof = false
 TubDataStore.generateID = function () {}
 /**
  * Is store initialized
- * @member {Boolean} initialized
+ * @member {boolean} initialized
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.initialized = false
@@ -503,7 +558,7 @@ TubDataStore.getAsTextInObjectNotation = function () {}
 /**
  * Return string representation of Instance in format `[{attr1: value1, attr2: value2},... ]`
  * @deprecated Consider to replace JSON.parse(store.asJSONObject) -> store.getAsJsObject(). getAsJsObject() method return a plain JS object instead of string and 25% faster
- * @member {String} asJSONObject
+ * @member {string} asJSONObject
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.asJSONObject = '[{},{}]'
@@ -518,37 +573,41 @@ TubDataStore.getAsTextInArrayNotation = function () {}
 /**
  * Return string representation of Instance in `Array of array` format
  * @deprecated Consider to replace `JSON.parse(store.asJSONArray) -> store.getAsJsArray()` which returns a plain JS object instead of string and 25% faster
- * @member {String} asJSONArray
+ * @member {string} asJSONArray
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.asJSONArray = '[[],[]]'
 /**
  * Return XML representation of Instance in MS DataSet format
- * @member {String} asXMLPersistent
+ * @member {string} asXMLPersistent
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.asXMLPersistent = '<xml>...</xml>'
 /**
  * Return JavaScript Object representation of Instance in format `[{attr1: value1, attr2: value2},... ]`
- * @member {String} getAsJsObject
+ * @member {string} getAsJsObject
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.getAsJsObject = function () {}
 /**
  * Return JavaScript Object representation of Instance in `Array of array` format
- * @member {String} getAsJsArray
+ * @member {string} getAsJsArray
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.getAsJsArray = function () {}
 /**
  * Active dataset name we work with. There is some predefined
  * dataNames - see {@link TubDataStore#DATA_NAMES TubDataStore.DATA_NAMES}
- * @member {String} currentDataName
+ * @member {string} currentDataName
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.currentDataName = '<xml>...</xml>'
 /**
- * Record count. If DataStore is not initialized or empty will return 0.
+ * Last store operation row count
+ *  - for operations what returns result (`select`) - fetched record count
+ *  - for non-select operations - affected row count (deleted, updated, etc)
+ *  - if DataStore is just created - return 0
+ * *NOTE* before UB@5.22.3 property returns only fetched record count, for update/delete  returns 0
  * @member {Number} rowCount
  * @memberOf TubDataStore.prototype
  */

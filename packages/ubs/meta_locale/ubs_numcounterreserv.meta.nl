@@ -1,5 +1,6 @@
 {
-  "caption": "Gereserveerde tellers voor registratiesleutels",
+  "caption": "Tellers (reserve)",
+  "description": "Gereserveerde tellers voor registratiesleutels",
   "attributes": [
     {
       "name": "regKey",

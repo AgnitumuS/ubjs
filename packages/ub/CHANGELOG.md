@@ -15,6 +15,131 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.26] - 2022-02-16
+## [5.22.25] - 2022-01-24
+### Added
+ - '*.meta': added env variable macros support for entity and attribute level mapping with the same syntax as
+ in ubConfig - `%ENV||default%`. Example:
+ ```json
+ {
+  "name": "my_entity",
+  "connection": "NON-UB_MAIN",
+  "attributes": [{
+    "name": "myAttr",
+    "mapping": [
+      {
+        "name": "Oracle",
+        "expression": "%UB_MAIN_USER||myuser%.C_ID"
+      }
+    ]
+  }],
+  "mapping": [
+    {
+      "name": "Oracle",
+      "selectName": "%UB_MAIN_USER%.ubs_message",
+      "execName": "ubs_message"
+    }
+  ]
+}
+```
+  Can be used for cross-schema mappings, when entity connection not match actual table schema.   
+
+## [5.22.24] - 2022-01-14
+### Added
+ - new method `DataStore.setColumnName(columnIdx, newColumnName)` (require UB@5.22.2).
+ allow set name for column to be used during serializing DataStore into JSON or response
+``` javascript
+// change column name in HTTP response for select method
+entity.on('select:after', ctx => {
+  const ccIdx = ctx.mParams.fieldList.indexOf('category.code')
+  if (ccIdx !== -1) {
+    ctx.dataStore.setColumnName(ccIdx, 'categoryCode')
+  }
+})
+// change column name in HTTP response for custom method
+entity.customSelect = function (ctx) {
+  UB.Repository('tst_document').attrs('ID', 'category.code').limit(10).select(ctx.dataStore)
+  ctx.dataStore.setColumnName(1, 'categoryCode')
+  // caller got categoryCode instead of category.code
+}
+// change column name for custom SQL
+store = new UB.DataStore('my_entity')
+store.runSQL('select 1 from dual', {})
+store.setColumnName(0, 'dummy')
+const obj = store.getAsJsObject() // obj will be [{dummy: 1}]
+``` 
+ - `allLocales` in `includeDomain` mode (called as `/allLocales?lang=LL&includeDomain=1`) endpoint now includes localizations for `description` and `documentation` of all entities and attributes.
+    That allows using the following constructs in `ub-migrate`:
+   ```yaml
+      - bpm_TaskClass:
+          description: {$i18n: bpm_TaskClass#description}
+   ```
+
+  `i18n` from `@unitybase/ub-pub` also can localize such attrs `UB.i18n('bpm_TaskClass#description')` but uses info from domain (more efficient)  
+## [5.22.23] - 2022-01-09
+## [5.22.22] - 2021-12-02
+## [5.22.21] - 2021-11-30
+### Added
+ - new method `Session.switchLangForContext` - switch current execution context language; (require server 5.20.11)
+   Can be used for example inside scheduler to create a report under admin but using target user language
+
+## [5.22.20] - 2021-11-23
+## [5.22.19] - 2021-11-14
+### Added
+ - `App.removeUserSessions` - second parameter `exceptCurrent: boolean` is added (*ignored for UB server < 5.20.10*).
+   If `exceptCurrent` is `true` - current user session is not removed (logout all other sessions except my).
+
+  Can be used inside Session.on('login') event handler to allow `single session for each user` mode:
+```javascript
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+const App = UB.App
+Session.on('login', logoutAllMyOldSessions)
+
+/**
+ * One user - one session mode
+ * @param {THTTPRequest} req
+ */
+function logoutAllMyOldSessions (req) {
+  if (App.removeUserSessions(Session.userID, true)) {
+    console.log(`All other sessions for user ${Session.userID} are removed`)
+  }
+}
+```
+
+## [5.22.18] - 2021-11-05
+### Added
+ - `Session.hasRole(roleName)` method added - a fast O(1) checks if the current user is a member of the specified role
+ ```
+ const UB = require('@unitybae/ub')
+ const Session = UB.Session
+ if (Session.hasRole('accountAdmin')) {
+   console.debug('current user has \'accountAdmin\' role')
+ }
+ ```
+
+## [5.22.17] - 2021-10-27
+## [5.22.16] - 2021-10-18
+### Added
+ - added localization for entities captions
+ - Navigation shortcuts localization are taken from i18n (from entities caption)
+
+## [5.22.15] - 2021-09-24
+### Added
+ - `App.registerEndpoint` accept 4-d parameter `bypassHTTPLogging`.
+ If sets to `true` server bypass logging of HTTP body into (useful if body contains sensitive information) and instead log `[DEDACTED]`
+ For UB < 5.20.8 parameter is ignored.
+
+## [5.22.14] - 2021-09-16
+### Added
+ - `fsStorage` mixin - added `allowOverride` property. Sets it to `true` allows row with the same natural key
+ to be present in several models. In this case last model (in order they defined in ubConfig) win.
+
+### Changed
+- captions from `meta` files: the words are capitalized according to English
+  rules for captions
+
+## [5.22.13] - 2021-09-08
 ## [5.22.12] - 2021-09-02
 ### Removed
  - `App.logoutAllWithTheSameNameExceptMe()` is removed - use `App.removeUserSessions(userID)` instead.

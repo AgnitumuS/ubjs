@@ -4,11 +4,11 @@
   "attributes": [
     {
       "name": "queueCode",
-      "caption": "Navbat kodi"
+      "caption": "Kod navbati"
     },
     {
       "name": "msgCmd",
-      "caption": "Jamoa"
+      "caption": "Komanda"
     },
     {
       "name": "msgData",

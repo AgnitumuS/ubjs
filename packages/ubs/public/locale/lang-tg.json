@@ -33,6 +33,7 @@
   "reportParamsRequired": "Аввал параметрҳои заруриро пур кунед",
 
   "newMessages": "{0} паёмҳои нав",
+  "hiddenMessages": "ва {0} паёми дигар",
   "youHaveNoNewMessages": "Шумо паёми нав надоред",
   "showFull": "Пурра намоиш кардан ",
   "messageHistoryIsEmpty": "Таърихи паём холӣ аст",

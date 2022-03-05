@@ -1,6 +1,6 @@
 {
-  "caption": "Mahalliy birliklar",
-  "description": "Ichki bo'limlar katalogi",
+  "caption": "Ichki bo`limlar",
+  "description": "Ichki bo'limlar ma`lumotnomasi",
   "attributes": [
     {
       "name": "parentID",
@@ -16,7 +16,7 @@
     },
     {
       "name": "fullName",
-      "caption": "To'liq ism berish"
+      "caption": "Bo`limning to'liq nomi"
     },
     {
       "name": "description",
@@ -24,11 +24,11 @@
     },
     {
       "name": "nameGen",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "nameDat",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "fullNameGen",
@@ -40,7 +40,7 @@
     },
     {
       "name": "depTypeID",
-      "caption": "Bo'linish turi"
+      "caption": "Bo'lim turi"
     },
     {
       "name": "isClerical",

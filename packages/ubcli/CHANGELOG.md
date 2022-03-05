@@ -15,6 +15,60 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.3] - 2022-02-16
+### Fixed
+ - `ubcli generateDDL`: fixed DDL generation for multi-language columns when default language
+   is changed in config  
+
+## [5.22.2] - 2022-01-24
+### Changed
+ - `ubcli generateNginxCfg`: TLS protocols changed
+   - *TLSv1.3* is added to the available TLS protocols, since iOS 15 reject andy older TLS version
+   - *TLSv1.0* is *REMOVED* from available protocols (deprecated in 2008 and MUST NOT be used)
+
+## [5.22.1] - 2022-01-14
+## [5.22.0] - 2022-01-09
+### Added
+ - Oracle: `ubcli initDB` will create `GRANT EXECUTE ON CTXSYS.CTX_DDL` (catalogue indexes) 
+ - `ubcli generateDDL`: added support for `COLUMNSTORE` indexes for SQL Server in case `dbExtension.type = 'COLUMNSTORE'` in meta file 
+
+### Fixed
+ - **BREAKING** Oracle: `ubcli initDB` will create user with grants for DDL statements ONLY in current schema.
+   For security reasons _ANY_ grants `GRANT ALTER ANY *` and `GRANT CREATE ANY *` are removed.
+
+## [5.21.29] - 2021-12-15
+### Fixed
+ - for attributes of type "Many" what reference an entity from another DB connection `Foreign Key` for
+   `DESTID` column will not be generated
+
+## [5.21.28] - 2021-12-02
+## [5.21.27] - 2021-11-30
+## [5.21.26] - 2021-11-23
+### Changed
+ - `ubcli migrate` does not skip migration for files with version === current memorized DB version.
+   This allows adding a new migration script and apply migration for the same version many times.
+   **WARNING** - do not modify an existed and already applied migration scripts - instead either create a new one
+   or rename existed script (if it supports re-execution) and change renamed one. 
+
+## [5.21.25] - 2021-11-14
+## [5.21.24] - 2021-11-05
+## [5.21.23] - 2021-10-27
+### Added
+ - `ubcli migrate -vs` option added. Force `ub-migrate` to output only important migration messages and 
+   the inserts and updates made (require @unitybase/ub-migrate@1.22.11, otherwise option is ignored).  
+   Recommended for CI usage.
+
+## [5.21.22] - 2021-10-18
+## [5.21.21] - 2021-09-24
+### Fixed
+ - `ubcli migrate` update an `ub_version.appliedAt` attribute using current date.
+  Before this fix appliedAt is not updated (remains the same as on insertion)   
+
+## [5.21.20] - 2021-09-16
+### Fixed
+ - do not logout user in case certificate is inserted - instead logout in case certificate is updated
+
+## [5.21.19] - 2021-09-08
 ## [5.21.18] - 2021-09-02
 ## [5.21.17] - 2021-08-31
 ## [5.21.16] - 2021-08-18

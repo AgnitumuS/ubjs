@@ -1,3 +1,5 @@
+/* global nsha256 */
+// eslint-disable-next-line node/no-deprecated-api
 const sessionBinding = process.binding('ub_session')
 const THTTPRequest = require('./HTTPRequest')
 const EventEmitter = require('events').EventEmitter
@@ -22,7 +24,8 @@ const _sessionCached = {
   callerIP: undefined,
   userRoles: undefined,
   userLang: undefined,
-  zone: undefined
+  zone: undefined,
+  roleNamesSet: undefined
 }
 /**
  * @classdesc
@@ -83,7 +86,9 @@ Object.defineProperty(Session, 'userID', {
 })
 /**
  * Logged-in user role IDs in CSV format. ==="" if no authentication running
- * @deprecated Use `Session.uData.roleIDs` - an array of roles IDs
+ * @deprecated To check user is a member of role use Session.hasRole('roleName');
+ *   to get all roles as CSV string use `Session.uData.roles`,
+ *   to get all roles IDs array - `Session.uData.roleIDs`
  * @member {number} userRoles
  * @memberOf Session
  * @readonly
@@ -99,7 +104,9 @@ Object.defineProperty(Session, 'userRoles', {
 })
 /**
  * Logged-in user role names in CSV format. ==="" if no authentication running
- * @deprecated Use `Session.uData.roles`
+ * @deprecated To check user is a member of role use Session.hasRole('roleName');
+ *   to get all roles as CSV string use `Session.uData.roles`,
+ *   to get all roles IDs array - `Session.uData.roleIDs`
  * @member {string} userRoleNames
  * @memberOf Session
  * @readonly
@@ -132,7 +139,7 @@ Object.defineProperty(Session, 'userLang', {
  * We strongly recommend to **not modify** value of uData outside the `Session.on('login')` handler -
  * such modification is not persisted between calls.
  *
- * Properties documented below are added by `@unitybase/uba` model, but other model can define his own properties.
+ * Properties documented below are added by `@unitybase/uba` and ``@unitybase/org` models, but other model can define his own properties.
  *
  * @member {Object} uData
  * @memberOf Session
@@ -158,8 +165,8 @@ Object.defineProperty(Session, 'userLang', {
  * @property {string} [assistantEmployeeOnStaffIDs] array of assistant employeeOnStaffIDs  in CSV. Added by `org` model
  * @property {string} [allStaffUnitIDs] array of all (permanent + temporary + assistant) staffUnitIDs in CSV. Added by `org` model
  * @property {string} [allEmployeeOnStaffIDs] array of all (permanent + temporary + assistant) employeeOnStaffIds in CSV. Added by `org` model
- * @property {string} [tempPositions] stringified array ob temporary position objects: {staffUnitID, employeeOnStaffID}. Added by `org` model
- * @property {string} [assistantPositions] stringified array ob assistant position objects: {staffUnitID, employeeOnStaffID}. Added by `org` model
+ * @property {string} [tempPositions] stringified array of temporary position objects: {staffUnitID, employeeOnStaffID}. Added by `org` model
+ * @property {string} [assistantPositions] stringified array of assistant position objects: {staffUnitID, employeeOnStaffID}. Added by `org` model
  * @property {string} [allPositions] stringified array of permanent + temporary + assistant position objects: {staffUnitID, employeeOnStaffID}. Added by `org` model
  * @readonly
  */
@@ -272,6 +279,45 @@ Session.runAsUser = function (userID, func) {
   }
   return result
 }
+
+/**
+ * Switch current execution context language.
+ * Can be used for example inside scheduler to create a report under admin but using target user language
+ *
+ * @param {string} newLang
+ * @return {string} Previous language for context
+ */
+Session.switchLangForContext = function (newLang) {
+  if (!new Set(App.serverConfig.application.domain.supportedLanguages).has(newLang)) {
+    throw new Error(`Language ${newLang} is not supported by app`)
+  }
+  sessionBinding.setTempUserLang(newLang)
+  const oldLang = this.userLang // call getter to fill _sessionCached.userLang (if not already filled)
+  _sessionCached.userLang = newLang
+  if (this.uData.lang) this.uData.lang = newLang // ensure language also changed in uData (if defined)
+  return oldLang
+}
+
+/**
+ * O(1) checks if the current user is a member of the specified role
+ * @example
+
+const UB = require('@unitybae/ub')
+const Session = UB.Session
+if (Session.hasRole('accountAdmin')) {
+  console.debug('current user has accountAdmin role')
+}
+
+ * @param {string} roleName
+ * @return {boolean}
+ */
+Session.hasRole = function (roleName) {
+  if (!_sessionCached.roleNamesSet) {
+    _sessionCached.roleNamesSet = new Set(this.uData.roles.split(','))
+  }
+  return _sessionCached.roleNamesSet.has(roleName)
+}
+
 /**
  * ID of the tenant (for multitenancy applications). 0 if multitenancy is not enabled (see `ubConfig.security.tenants`)
  * @member {number} tenantID
@@ -413,13 +459,14 @@ Session.reset = function (sessionID, userID) {
   _sessionCached.userRoles = undefined
   _sessionCached.userLang = undefined
   _sessionCached.zone = undefined
+  _sessionCached.roleNamesSet = undefined
 }
 
 /**
  * Called by server during login to emit a `login` event on Session object
  * @private
  */
-Session.emitLoginEvent = function() {
+Session.emitLoginEvent = function () {
   const req = new THTTPRequest()
   this.emit('login', req)
 }

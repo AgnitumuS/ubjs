@@ -94,7 +94,7 @@ exports.Service = {
    */
   setCode: function (ctxt, emptyCode, codeLen, fillChar) {
     var
-      entityName, // = ctxt.dataStore.entityName ************* ХЗ why this code doesn't work,
+      entityName, // = ctxt.dataStore.entityName ************* this code doesn't work,
       mParams = ctxt.mParams,
       newNum,
       execParams = mParams.execParams
@@ -195,7 +195,7 @@ exports.Service = {
     for (w in wList) {
       values = wList[w].values
       for (attr in values) {
-        if ((typeof resultParams[attr] !== 'undefined') || (typeof wList[w].condition === 'undefined')) { // Просто забыли задать в парамс
+        if ((typeof resultParams[attr] !== 'undefined') || (typeof wList[w].condition === 'undefined')) { // missed condition in params
           resultParams[attr] = values[attr]
         } else {
           dType = attrs[attr].dataType

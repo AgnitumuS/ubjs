@@ -1,6 +1,6 @@
 {
-  "caption": "Oddiy birliklar",
-  "description": "To'liq ishlaydigan birliklarning katalogi",
+  "caption": "Xodimlar shtati birligi",
+  "description": "Xodimlar shtati birligi ma`lumotnomasi",
   "attributes": [
     {
       "name": "parentID",
@@ -12,7 +12,7 @@
     },
     {
       "name": "name",
-      "caption": "Xodimlar birligining nomi"
+      "caption": "Xodimlar shtati birligi nomi"
     },
     {
       "name": "fullName",
@@ -36,7 +36,7 @@
     },
     {
       "name": "description",
-      "caption": "Xodimlar birligining tavsifi"
+      "caption": "Xodimlar shtati birligi tavsifi"
     },
     {
       "name": "caption",
@@ -48,11 +48,11 @@
     },
     {
       "name": "professionID",
-      "caption": "Pozitsiya"
+      "caption": "Lavozimi"
     },
     {
       "name": "staffUnitTypeID",
-      "caption": "Xodimlar birligining turi"
+      "caption": "Xodimlar shtati birligi turi"
     },
     {
       "name": "subordinationLevel",

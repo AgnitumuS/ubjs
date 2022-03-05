@@ -21,6 +21,7 @@ module.exports = function runHTTPTest (options) {
   const conn = session.connection
   const domain = conn.getDomainInfo()
   try {
+    testReqJson(conn, session)
     testHTTP(conn, domain, session)
     testRest(conn)
     testUnicode(conn)
@@ -28,6 +29,32 @@ module.exports = function runHTTPTest (options) {
   } finally {
     session.logout()
   }
+}
+
+/**
+ * @param {SyncConnection} conn
+ * @param {ServerSession} session
+ */
+function testReqJson (conn, session) {
+  const req = http.request({
+    URL: session.HOST + '/bodyJson',
+    method: 'POST'
+  })
+  let data = ''
+  let resp = req.end(data)
+  assert.strictEqual(resp.statusCode, 200, 'req.json() from empty string - response status is 200')
+  let j = resp.json()
+  assert.strictEqual(j, null, 'reps.json() must be null for empty body but got ' + j)
+
+  data = '{"a": 1}'
+  resp = req.end(data)
+  j = resp.json()
+  assert.strictEqual(j && j.a, 1, 'reps.json() expect object {a: 1} but got ' + JSON.stringify(j))
+
+  data = Buffer.cpFrom('{"invalidUTF": "Привет"}', 1251)
+  resp = req.end(data)
+  j = resp.json()
+  assert.ok(j && j.error && /JSON.parse/.test(j.error), 'reps.json() expect object {error: "JSON.parse: unterminated string literal at line 1 column 17 of the JSON data"} but got ' + JSON.stringify(j))
 }
 /**
  *

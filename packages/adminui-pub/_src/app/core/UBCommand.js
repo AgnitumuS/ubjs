@@ -314,10 +314,11 @@ Ext.define('UB.core.UBCommand', {
      */
     me.commandContext = config.commandContext
     me.instanceID = config.instanceID || config.instanceId
-    if (Ext.isDefined(me.instanceID) && Ext.isString(me.instanceID)) {
-      try {
-        me.instanceID = parseFloat(me.instanceID)
-      } catch (err) {}
+    if (Ext.isDefined(me.instanceID) && (typeof me.instanceID === 'string')) {
+      const numID = parseFloat(me.instanceID)
+      if (!Number.isNaN(numID)) {
+        me.instanceID = numID
+      }
     }
     me.callback = config.callback
     me.eventHandler = config.eventHandler
@@ -603,10 +604,6 @@ Ext.define('UB.core.UBCommand', {
         // UPD 2019-07-25 component can be descendant of panel, not basepanel
         existedTab = $App.viewport.centralPanel.down(`panel[tabID=${cfg.tabId}]`)
       }
-      // MPV 2019-06-24: code below is replaced by searching using tabId (or id for Vue)
-      // if (!existedTab && cfg.instanceID && $App.viewport) { // специально для тестировщиков которые открывают из реестра еще раз только что сохраненный документ
-      //   existedTab = $App.viewport.centralPanel.down(`basepanel[instanceID=${cfg.instanceID}]`)
-      // }
       if (existedTab) {
         $App.viewport.centralPanel.setActiveTab(existedTab)
         return

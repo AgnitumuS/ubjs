@@ -1,6 +1,6 @@
 {
-  "caption": "Atributlar darajasi xavfsizligi (ALS)",
-  "description": "Xavfsizlik darajasini belgilash",
+  "caption": "Atribut huquqlari (ALS)",
+  "description": "Atribut xavfsizlik darajasi",
   "attributes": [
     {
       "name": "entity",
@@ -8,7 +8,7 @@
     },
     {
       "name": "attribute",
-      "caption": "Atributlar"
+      "caption": "Atribut"
     },
     {
       "name": "state",

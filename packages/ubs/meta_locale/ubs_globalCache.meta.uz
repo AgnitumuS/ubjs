@@ -1,10 +1,10 @@
 {
-  "caption": "Global kesh",
-  "description": "Global Kesh serveri",
+  "caption": "Server keshi",
+  "description": "Global server keshi",
   "attributes": [
     {
       "name": "ID",
-      "caption": "Id"
+      "caption": "ID"
     },
     {
       "name": "key",

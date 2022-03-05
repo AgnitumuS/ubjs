@@ -33,6 +33,7 @@
   "reportParamsRequired": "Öncə mütləq parametrləri doldurun",
 
   "newMessages": "{0} yeni ismarışlar",
+  "hiddenMessages": "və daha {0} mesaj",
   "youHaveNoNewMessages": "Yeni ismarışınız yoxdur",
   "showFull": "Tam göstər",
   "messageHistoryIsEmpty": "İsmarış tarixi boşdur",

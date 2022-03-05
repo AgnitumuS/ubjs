@@ -1,19 +1,19 @@
 {
   "externalOrganizations_title": "Tashkilotlar",
-  "department_title": "Tashqi tashkil etish bo'limi",
+  "department_title": "Tashqi departament tashkiloti",
   "employee_title": "Tashqi tashkilotning xodimi",
-  "physPerson_title": "Phis. shaxs",
-  "locality_title": "Joylashuv",
+  "physPerson_title": "Jismoniy shaxs",
+  "locality_title": "Aholi punkti",
   "contact_title": "Aloqa",
   "profession_title": "Kasb",
   "region_title": "Mintaqa",
-  "ClassifTypePanelClassifiersTitle": "Tasniflash qiymatlari",
+  "ClassifTypePanelClassifiersTitle": "Klassifikatsiya qiymatlari",
   "classifier": {
-      "caption": "Tasniflovchi",
-      "description": "Tasniflagich yozuvi"
+    "caption": "Klassifikator",
+    "description": "Klassifikatorga saqlash"
   },
   "classifieritem": {
-      "caption": "Tasniflovchi element",
-      "description": "Tasniflagich elementlarining yozuvi"
+    "caption": "Klassifikator elementi",
+    "description": "Klassifikator elementini saqlash"
   }
 }

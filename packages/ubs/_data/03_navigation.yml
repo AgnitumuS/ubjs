@@ -1,0 +1,159 @@
+$context:
+  type: navigation
+
+# Submenu in "Administrator" desktop
+adm_desktop:
+  $amendment: true
+  items:
+  - adm_folder_UI:
+      caption:
+        en: UI
+        ka: მომხმარებლის ინტერფეისი
+        ru: Интерфейс
+        tg: Интерфейс
+        uk: Інтерфейс
+        nl: Gebruikersinterface
+        uz: Interfeys
+        az: İnterfeys
+      iconCls: u-icon-image
+      displayOrder: 30
+      items:
+      - ubs_report:
+          caption: {$i18n: ubs_report}
+          iconCls: u-icon-book
+          displayOrder: 60
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'ubs_report',
+                columns: [
+                  'ID',
+                  'model',
+                  'report_code',
+                  {
+                    id: 'name',
+                    format: 'return UB.i18n(value)'
+                  }
+                ]
+              }
+            }
+  - adm_folder_misc:
+      access: Supervisor
+      caption:
+        en: Misc
+        uk: Різне
+        ru: Разное
+        ka: სხვადასხვა
+        tg: Гуногун
+        nl: Overige toepassingen
+        az: Müxtəlif
+        id: Misc
+      iconCls: u-icon-setting
+      displayOrder: 40
+      isCollapsed: true
+      items:
+      - ubs_settings:
+          caption: {$i18n: ubs_settings}
+          iconCls: u-icon-setting
+          displayOrder: 10
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'ubs_settings'
+              }
+            }
+      - ubs_filter:
+          caption: {$i18n: ubs_filter}
+          iconCls: u-icon-filter
+          displayOrder: 20
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'ubs_filter'
+              }
+            }
+      - ubs_numcounter:
+          caption: {$i18n: ubs_numcounter}
+          iconCls: u-icon-number
+          displayOrder: 30
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'ubs_numcounter'
+              }
+            }
+      - ubs_numcounterreserv:
+          caption: {$i18n: ubs_numcounterreserv}
+          iconCls: u-icon-number
+          displayOrder: 40
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'ubs_numcounterreserv'
+              }
+            }
+      - ubs_softLock:
+          caption: {$i18n: ubs_softLock}
+          iconCls: u-icon-lock
+          displayOrder: 50
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'ubs_softLock',
+                columns: [
+                  'lockUser',
+                  'entity',
+                  'lockID',
+                  'lockType',
+                  'lockTime'
+                ]
+              }
+            }
+      - ubs_message:
+          caption: {$i18n: ubs_message}
+          iconCls: u-icon-bell
+          displayOrder: 60
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'ubs_message_edit',
+                columns: [
+                  'messageBody',
+                  'messageType',
+                  'complete',
+                  'startDate',
+                  'expireDate'
+                ]
+              }
+            }
+      - ubs_globalCache:
+          caption: {$i18n: ubs_globalCache}
+          iconCls: u-icon-data
+          displayOrder: 60
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'ubs_globalCache',
+                columns: [
+                  'ID',
+                  'key',
+                  'value'
+                ]
+              }
+            }

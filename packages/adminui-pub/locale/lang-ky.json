@@ -66,6 +66,8 @@
   "deleteConfirmation": "Будет удалена запись из '{0}'. Вы уверены?",
   "deleteConfirmationWithCaption": "Будет удалена запись {1} из '{0}'. Вы уверены?",
   "deleteFormConfirmCaption": "Будет удалено '{0}'. Вы уверены?",
+  "deleteMultipleFormConfirmCaption": "Будет удалено {0} записей. Вы уверены?",
+  "deleteMultipleImpossibleAlert": "Записи {0} из '{1}' удалить невозможно",
   "rowEditing": "Необходимо завершить редактирование данных",
   "notValidForColumns": "Недопустимые значения в колонках {0}",
   "vyUvereny": "Вы уверены?",
@@ -85,7 +87,7 @@
   "exportCsv": "Экспорт в CSV",
   "exportHtml": "Экспорт в Html",
   "export": "Экспорт",
-  "readPKCanceled": "Прервано пользователем",
+  "userOperationCanceled": "Прервано пользователем",
   "invalidPrivateKeyCertificate": "Выбрано ошибочный сертификат(ы) личного ключа. Для ключа, выданного после 2014 года, должно быть два сертификата.",
   "currentPageNumber": "Текущая страница",
 
@@ -220,6 +222,7 @@
   "signVerification": "Проверка подписи",
 
   "search": "Поиск",
+  "and": "жана",
   "Filter by": "Фильтровать по",
   "filterForm": "Форма поиска",
   "main": "Основное",
@@ -230,9 +233,9 @@
   "selectFromDictionary": "Выбрать из справочника",
   "clearSelection": "Очистить",
 
-  "isNull": "Пусто",
-  "by_value": "Равняется",
-  "by_several_value": "Одно из",
+  "isNull": "пусто",
+  "by_value": "равно",
+  "by_several_value": "одно из",
   "more": "больше",
   "less": "меньше",
   "equal": "равняется",

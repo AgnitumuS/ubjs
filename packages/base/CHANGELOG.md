@@ -15,6 +15,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.2] - 2022-01-24
+## [5.22.1] - 2022-01-14
+## [5.22.0] - 2022-01-09
+## [5.20.18] - 2021-12-02
+## [5.20.17] - 2021-11-30
+## [5.20.16] - 2021-11-23
+## [5.20.15] - 2021-11-14
+## [5.20.14] - 2021-11-05
+## [5.20.13] - 2021-10-27
+## [5.20.12] - 2021-09-24
+### Added
+ - ServerRepository: in `-dev` mode `selectSingle()` and `selectScalar()` methods will
+ add a stack trace to error when more than one row is selected
+
+### Fixed
+ - jsdoc for DBConnection fixed - now it appears in generated HTML documentation. Added example for `DBConnection.savepointWrap` 
+
+## [5.20.11] - 2021-09-08
 ## [5.20.10] - 2021-08-31
 ## [5.20.9] - 2021-08-18
 ### Changed

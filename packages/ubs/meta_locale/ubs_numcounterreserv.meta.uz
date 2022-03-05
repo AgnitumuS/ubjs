@@ -1,6 +1,6 @@
 {
-  "caption": "Ro'yxatdan o'tgan hisoblangan hisoblangan kalitlar",
-  "description": "Ro'yxatdan o'tgan hisoblangan hisoblangan kalitlar",
+  "caption": "Hisoblagichlar (zaxira)",
+  "description": "Zaxiralangan ro'yxatga olish kalitlari hisoblagichlari",
   "attributes": [
     {
       "name": "regKey",
@@ -12,7 +12,7 @@
     },
     {
       "name": "reservedDate",
-      "caption": "Saqlangan kun"
+      "caption": "Zaxira qilingan sana"
     },
     {
       "name": "note",

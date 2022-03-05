@@ -1,0 +1,313 @@
+$context:
+  type: navigation
+
+cdn_desktop:
+  access: User
+  caption:
+    en: Common Dictionaries
+    uk: Загальні довідники
+    ru: Общие справочники
+    ka: საერთო ლექსიკონო
+    tg: Маълумотномаҳои умумӣ
+    nl: Common Dictionaries
+    uz: Umumiy kataloglar
+    az: Ümumi soraqçalaq
+  description:
+    en: Directories of Subjects, Addresses, Other Classifiers
+    uk: Довідники суб'єктів, адрес, інші класифікатори
+    ru: Справочники субъектов, адресов, прочие классификаторы
+    ka: საგნების, მისამართების, სხვა კლასიფიკატორების დირექტორიები
+    tg: Директорияи фанҳо, суроғаҳо, таснифоти дигар
+    nl: Directories of subjects, addresses, other classifiers
+    uz: Mavzular kataloglari, manzillar, boshqa tasniflagichlar
+    az: Mövzular, ünvanlar, digər soraqçalar
+  iconCls: u-icon-desktop-dictionaries
+  items:
+  - cdn_folder_territorial:
+      access: User
+      caption:
+        en: Territorial
+        uk: Адмін. поділ
+        ru: Админ. деление
+        ka: ტერიტორია
+        tg: Воҳиди маъмурӣ
+        nl: Territoriaal
+        uz: Admin. bo`linish
+        az: İnzibati bölgü
+      iconCls: u-icon-globe
+      displayOrder: 10
+      items:
+      - cdn_region:
+          access: User
+          caption: {$i18n: cdn_region}
+          iconCls: u-icon-cloud
+          displayOrder: 10
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_region'
+              }
+            }
+      - cdn_city:
+          access: User
+          caption: {$i18n: cdn_city}
+          iconCls: u-icon-person-group
+          displayOrder: 20
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_city'
+              }
+            }
+      - cdn_country:
+          access: User
+          caption: {$i18n: cdn_country}
+          iconCls: fa fa-flag-o
+          displayOrder: 30
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_country'
+              }
+            }
+      - cdn_adminunit:
+          access: User
+          caption: {$i18n: cdn_adminunit}
+          iconCls: u-icon-object-group
+          displayOrder: 40
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_adminunit'
+              }
+            }
+      - cdn_street:
+          access: User
+          caption: {$i18n: cdn_street}
+          iconCls: fas fa-map-signs
+          displayOrder: 50
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_street'
+              }
+            }
+      - cdn_regiontype:
+          access: User
+          caption: {$i18n: cdn_regiontype}
+          displayOrder: 100
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_regiontype'
+              }
+            }
+      - cdn_citytype:
+          access: User
+          caption: {$i18n: cdn_citytype}
+          displayOrder: 110
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_citytype'
+              }
+            }
+  - cdn_folder_subjects:
+      access: User
+      caption:
+        en: Subjects
+        uk: Суб'єкти
+        ru: Субъекты
+        ka: თემა ან საგანი
+        tg: Субъектҳо
+        nl: Onderwerpen
+        uz: Mavzular
+        az: Subyektlər
+      iconCls: u-icon-person
+      displayOrder: 10
+      items:
+      - cdn_organization:
+          access: User
+          caption: {$i18n: cdn_organization}
+          iconCls: fa fa-university
+          displayOrder: 10
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_organization',
+                columns: [
+                  'OKPOCode',
+                  'name',
+                  'fullName',
+                  'description',
+                  'orgBusinessTypeID.name',
+                  'orgOwnershipTypeID.name'
+                ]
+              }
+            }
+      - cdn_employee:
+          access: User
+          caption: {$i18n: cdn_employee}
+          iconCls: fa fa-briefcase
+          displayOrder: 20
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_employee',
+                columns: [
+                  'ID',
+                  'lastName',
+                  'firstName',
+                  'middleName',
+                  'sexType',
+                  'uniqNum',
+                  'organizationID.name',
+                  'departmentID.name'
+                ]
+              }
+            }
+      - cdn_department:
+          access: User
+          caption: {$i18n: cdn_department}
+          iconCls: fa fa-cubes
+          displayOrder: 30
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_department',
+                columns: [
+                  'ID',
+                  'code',
+                  'name',
+                  'fullName',
+                  'depTypeID',
+                  'organizationID.name'
+                ]
+              }
+            }
+      - cdn_person:
+          access: User
+          caption: {$i18n: cdn_person}
+          iconCls: fa fa-male
+          displayOrder: 40
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_person',
+                columns: [
+                  'lastName',
+                  'firstName',
+                  'middleName',
+                  'birthDate',
+                  'description'
+                ]
+              }
+            }
+      - cdn_bank:
+          access: User
+          caption: {$i18n: cdn_bank}
+          iconCls: fas fa-hand-holding-usd
+          displayOrder: 40
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_bank'
+              }
+            }
+  - cdn_folder_misc:
+      access: User
+      caption:
+        en: Miscellaneous
+        uk: Різне
+        ru: Разное
+        ka: სხვადასხვა
+        tg: Гуногун
+        nl: Overige toepassingen
+        uz: Har xil
+        az: Müxtəlif
+      iconCls: u-icon-setting
+      displayOrder: 40
+      isCollapsed: true
+      items:
+      - cdn_currency:
+          access: User
+          caption: {$i18n: cdn_currency}
+          iconCls: u-icon-dollar
+          displayOrder: 10
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_currency',
+                columns: [
+                  { id: 'intCode', maxWidth: '60' },
+                  { id: 'code3', maxWidth: '70' },
+                  'name',
+                  'description'
+                ]
+              }
+            }
+      - cdn_language:
+          access: User
+          caption: {$i18n: cdn_language}
+          iconCls: fa fa-language
+          displayOrder: 20
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_language'
+              }
+            }
+      - cdn_classifier:
+          access: User
+          caption: {$i18n: cdn_classifier}
+          iconCls: u-icon-tags
+          displayOrder: 30
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_classifier'
+              }
+            }
+      - cdn_profession:
+          access: User
+          caption: {$i18n: cdn_profession}
+          iconCls: fas fa-hammer
+          displayOrder: 30
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'cdn_profession'
+              }
+            }

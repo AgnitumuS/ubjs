@@ -1,6 +1,6 @@
 {
   "caption": "Shaxs toifasi",
-  "description": "Shaxs toifalari katalogi",
+  "description": "Shaxs toifalari ma`lumotnomasi",
   "attributes": [
     {
       "name": "code",
@@ -8,7 +8,7 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     }
   ]
 }

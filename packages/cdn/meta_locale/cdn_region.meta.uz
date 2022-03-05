@@ -1,6 +1,6 @@
 {
   "caption": "Mintaqalar",
-  "description": "Mintaqalar katalogi",
+  "description": "Mintaqalar ma`lumotnomasi",
   "attributes": [
     {
       "name": "regionTypeID",
@@ -8,11 +8,11 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "fullName",
-      "caption": "To'liq unum"
+      "caption": "To'liq nomi"
     },
     {
       "name": "description",

@@ -1,5 +1,5 @@
 {
-  "caption": "Organization units",
+  "caption": "Organization Units",
   "description": "List of organization units",
   "documentation": "Dictionary which is composed of organizations (org_organization), departments (org_department) and staff units (org_staffunit) by Unity mixin. Dictionary is self-referential, which allows to build a hierarchy of all organizational units in one tree",
   "connectionName": "",

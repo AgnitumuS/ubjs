@@ -119,6 +119,7 @@ function UBNativeMessage (featureConfig) {
   // must be defined inside constructor for removeEventListener work properly
   me.onContentMessage = function (event) {
     const msg = event.detail
+    // eslint-disable-next-line no-prototype-builtins
     if (!msg || !msg.hasOwnProperty('msgType') || !msg.hasOwnProperty('messageID') || !msg.hasOwnProperty('clientID')) {
       console.error('Empty or invalid content message')
     }
@@ -171,6 +172,7 @@ function UBNativeMessage (featureConfig) {
       } else if (!pending) {
         console.error('UBNativeMessage. unknown messageID:' + messageID)
       } else if (msgType === 'resolve') {
+        // eslint-disable-next-line no-prototype-builtins
         if (msg.hasOwnProperty('part') && msg.hasOwnProperty('totalParts')) { // partial response
           const totalParts = msg.totalParts
           const currentPart = msg.part
@@ -384,6 +386,7 @@ UBNativeMessage.prototype.connect = function (timeOut) {
         me.targetOrign = new URL(document.referrer).origin
         me.targetPage = window.parent
         promise = new Promise((resolve, reject) => {
+          // eslint-disable-next-line prefer-const
           let timeId
           const onMessage = function (event) {
             if (!event.data || (event.data.messageType !== 'initUbExtensionParent')) {
@@ -492,7 +495,8 @@ UBNativeMessage.prototype.idCounter = 0
 
 function createFeatureUpdateMsg (featureConfig, currentVersion, isUpdate) {
   const installer = ubUtils.format(featureConfig.installer, featureConfig.minVersion /* .replace(/\./g, '_') */)
-  const browserName = ubUtils.isOpera ? 'Opera'
+  const browserName = ubUtils.isOpera
+    ? 'Opera'
     : ubUtils.isChrome ? 'Chrome' : 'Firefox'
   const msg = 'NM' + (isUpdate ? 'Update' : 'Install') + ((featureConfig.host === 'none') ? 'Extension' + browserName : 'Feature')
   return ubUtils.format(i18n(msg), i18n(featureConfig.UIName), featureConfig.minVersion, currentVersion, installer)

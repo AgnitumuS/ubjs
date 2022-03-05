@@ -10,8 +10,8 @@ const me = uba_usercertificate
 me.on('insert:before', setBlob)
 me.on('update:before', setBlob)
 me.on('delete.before', logoutUserBeforeCertDelete)
-me.on('insert:after', clearBlobAndLogoutAUser)
-me.on('update:after', clearBlob)
+me.on('insert:after', clearBlob)
+me.on('update:after', clearBlobAndLogoutAUser)
 me.entity.addMethod('getCertificate')
 
 /**

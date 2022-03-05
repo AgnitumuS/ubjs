@@ -1,10 +1,7 @@
 <template>
   <filter-template
     :button-disabled="isEmpty"
-    @submit="$emit('search', {
-      whereList,
-      description: `${$ut('table.filter.date.from')} ${valueFrom} ${$ut('table.filter.date.to')} ${valueTo} `
-    })"
+    @submit="submitHandler"
   >
     <div class="u-table-entity-filter__date-range">
       <u-base-input
@@ -33,19 +30,25 @@ export default {
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
-
+  
+  mixins: [require('../mixinForFilter.js')],
+  
   data () {
     return {
       valueFrom: 0,
       valueTo: 0
     }
   },
-
+created() {
+  if (this.defaultValue !== undefined && this.defaultValue.length){
+    this.valueFrom = this.defaultValue[0]
+    this.valueTo = this.defaultValue[1]
+  }
+},
   computed: {
     isEmpty () {
       return this.testEmpty(this.valueFrom) && this.testEmpty(this.valueTo)
     },
-
     whereList () {
       const whereList = []
       if (this.valueFrom) {
@@ -63,6 +66,13 @@ export default {
   methods: {
     testEmpty (value) {
       return value === null || value === ''
+    },
+    getCondition () {
+      const { $ut, whereList, valueTo, valueFrom } = this
+      return {
+        whereList,
+        description: `${$ut('table.filter.date.from')} ${valueFrom} ${$ut('table.filter.date.to')} ${valueTo} `
+      }
     }
   }
 }

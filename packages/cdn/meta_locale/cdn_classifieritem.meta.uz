@@ -1,5 +1,5 @@
 {
-  "caption": "Tasniflagich yozuvi",
+  "caption": "Klassifikator qaydnomasi",
   "attributes": [
     {
       "name": "code",
@@ -11,7 +11,7 @@
     },
     {
       "name": "classifierID",
-      "caption": "Tasniflovchi"
+      "caption": "Klassifikator"
     },
     {
       "name": "hierarchyLevel",
@@ -19,7 +19,7 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     }
   ]
 }

@@ -13,8 +13,6 @@
     @keydown.enter.exact="onSelect(selectedRowId)"
     @keydown.left.prevent.exact="move('left')"
     @keydown.right.prevent.exact="move('right')"
-    @keydown.up.prevent.exact="move('up')"
-    @keydown.down.prevent.exact="move('down')"
   >
     <div class="u-table-entity__head">
       <!-- @slot Replace whole toolbar -->
@@ -55,6 +53,16 @@
           />
         </slot>
 
+        <u-button
+          v-if="showDeleteMultipleBtn"
+          :title="$ut('delete')"
+          appearance="inverse"
+          icon="u-icon-delete"
+          color="control"
+          :disabled="loading || selectedOnPage.length === 0"
+          @click="deleteRecord"
+        />
+
         <!-- @slot Prepend new buttons to toolbar before filter -->
         <slot
           :close="close"
@@ -62,11 +70,14 @@
           name="toolbarAppend"
         />
 
-        <filter-selector />
+        <filter-selector
+          v-if="showFilter"
+          ref="filterSelector"
+        />
         <sort
           ref="sort"
           :target-column="targetColumn"
-          @click.native="onSort"
+          @close="onSortClose"
         />
         <pagination v-if="withPagination" />
         <div
@@ -214,115 +225,137 @@
       </slot>
     </div>
 
-    <filter-list />
+    <filter-list @click-on-label="toggleVisibleFilterDropdown" />
 
-    <u-table
-      v-if="viewMode === 'table'"
-      ref="table"
-      :columns="columns"
-      :fixed-column-id="fixedColumnId"
-      :get-column-class="getColumnClass"
-      :get-row-class="getRowClass"
-      :height="height"
-      :items="items"
-      :max-height="maxHeight"
-      tabindex="1"
-      @click-head-cell="showSortDropdown"
-      @click-cell="select"
-      @contextmenu-cell="showContextMenu"
-      @dblclick-row="onSelect($event.row.ID, $event.row)"
-    >
-      <template
-        v-for="column in columns"
-        #[`head_${column.id}`]
-      >
-        <slot
-          :column="column"
-          :name="`head_${column.id}`"
-        >
-          {{ $ut(column.label) }}
-          <i
-            v-if="sort"
-            :key="column.id"
-            :class="getSortIconClass(column.id)"
-          />
-        </slot>
-      </template>
+    <div class="u-table-entity__body">
+      <!-- @slot Add a sidebar to the left side of the table or card-view -->
+      <slot name="sidebar" />
 
-      <template
-        v-for="column in columns"
-        #[column.id]="{row, value}"
+      <u-table
+        v-if="viewMode === 'table'"
+        ref="table"
+        v-model="selectedOnPage"
+        class="u-table-entity__body__content"
+        :columns="columns"
+        :fixed-column-id="fixedColumnId"
+        :pre-multi-selection-column-id="preMultiSelectionColumnId"
+        :get-column-class="getColumnClass"
+        :height="height"
+        :items="items"
+        :max-height="maxHeight"
+        tabindex="1"
+        :before-add-selection="beforeAddSelection"
+        :before-remove-selection="beforeRemoveSelection"
+        :enable-multi-select="enableMultiSelect"
+        :multi-select-key-attr="multiSelectKeyAttr"
+        @selected="$emit('selected', $event)"
+        @add-selected="$emit('add-selected', $event)"
+        @remove-selected="$emit('remove-selected', $event)"
+        @click-head-cell="showSortDropdown"
+        @click-cell="select"
+        @contextmenu="showContextMenu"
+        @dblclick-row="onSelect($event.row.ID, $event.row)"
+        @change-active-row="activeRowChangeHandler"
       >
-        <slot
-          :column="column"
-          :name="column.id"
-          :row="row"
-          :value="value"
+        <template
+          v-for="column in columns"
+          #[`head_${column.id}`]
         >
-          <component
-            :is="getCellTemplate(column)"
+          <slot
             :column="column"
+            :name="`head_${column.id}`"
+          >
+            {{ $ut(column.label) }}
+            <i
+              v-if="sort"
+              :key="column.id"
+              :class="getSortIconClass(column.id)"
+            />
+          </slot>
+        </template>
+
+        <template
+          v-for="column in columns"
+          #[column.id]="{row, value}"
+        >
+          <slot
+            :column="column"
+            :name="column.id"
             :row="row"
-            :value="row[column.id]"
-          />
-        </slot>
-      </template>
+            :value="value"
+          >
+            <component
+              :is="getCellTemplate(column)"
+              :column="column"
+              :row="row"
+              :value="row[column.id]"
+            />
+          </slot>
+        </template>
 
-      <template #lastTableRow>
-        <!-- @slot display specific content in the last row of the table -->
-        <slot name="lastTableRow" />
-      </template>
+        <template #lastTableRow>
+          <!-- @slot display specific content in the last row of the table -->
+          <slot name="lastTableRow" />
+        </template>
 
-      <template #appendTable>
-        <next-page-button
-          v-if="withPagination"
-        />
+        <template #appendTable>
+          <next-page-button v-if="withPagination" />
 
-        <!-- @slot add some content at the end of the table after the pagination button -->
-        <slot name="appendTable" />
-      </template>
-    </u-table>
+          <!-- @slot add some content at the end of the table after the pagination button -->
+          <slot name="appendTable" />
+        </template>
+      </u-table>
 
-    <u-card-view
-      v-if="viewMode === 'card'"
-      ref="cardView"
-      :columns="cardColumns"
-      :items="items"
-      :get-card-class="getRowClass"
-      @click="select"
-      @contextmenu="showContextMenu"
-      @dblclick="onSelect($event.row.ID, $event.row)"
-    >
-      <slot
-        slot="card"
-        slot-scope="{row}"
-        name="card"
-        :row="row"
-      />
-      <template
-        v-for="slot in Object.keys($scopedSlots)"
-        :slot="slot"
-        slot-scope="scope"
+      <u-card-view
+        v-if="viewMode === 'card'"
+        ref="cardView"
+        v-model="selectedOnPage"
+        class="u-table-entity__body__content"
+        :columns="cardColumns"
+        :items="items"
+        :get-card-class="getRowClass"
+        :before-add-selection="beforeAddSelection"
+        :before-remove-selection="beforeRemoveSelection"
+        :enable-multi-select="enableMultiSelect"
+        :multi-select-key-attr="multiSelectKeyAttr"
+        @selected="$emit('selected', $event)"
+        @add-selected="$emit('add-selected', $event)"
+        @remove-selected="$emit('remove-selected', $event)"
+        @click="select"
+        @contextmenu="showContextMenu"
+        @dblclick="onSelect($event.row.ID, $event.row)"
+        @change-active-row="activeRowChangeHandler"
       >
         <slot
-          :name="slot"
-          v-bind="scope"
+          slot="card"
+          slot-scope="{ row }"
+          name="card"
+          :row="row"
         />
-      </template>
+        <template
+          v-for="slot in Object.keys($scopedSlots)"
+          :slot="slot"
+          slot-scope="scope"
+        >
+          <slot
+            :name="slot"
+            v-bind="scope"
+          />
+        </template>
 
-      <template #append>
-        <next-page-button
-          v-if="withPagination"
-        />
+        <template #append>
+          <next-page-button v-if="withPagination" />
 
-        <!-- @slot add some content at the end of the card-view after the pagination button -->
-        <slot name="appendTable" />
-      </template>
-    </u-card-view>
+          <!-- @slot add some content at the end of the card-view after the pagination button -->
+          <slot name="appendTable" />
+        </template>
+      </u-card-view>
+    </div>
 
     <u-dropdown
       ref="contextMenu"
       class="u-table-entity__contextmenu-wrap"
+      @close='closeDropdownHandler'
     >
       <template slot="dropdown">
         <!-- @slot Prepend items in context menu -->
@@ -341,7 +374,7 @@
         >
           <!-- @slot Replace action "edit" in context menu -->
           <slot
-            v-if="showEdit"
+            v-if="showEdit && showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -357,7 +390,7 @@
 
           <!-- @slot Replace action "copy" in context menu -->
           <slot
-            v-if="showCopy"
+            v-if="showCopy && showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -389,7 +422,7 @@
 
           <!-- @slot Replace "copy link" in context menu -->
           <slot
-            v-if="showCopyLink"
+            v-if="showCopyLink && showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -405,7 +438,7 @@
 
           <!-- @slot Replace "audit" in context menu -->
           <slot
-            v-if="showAudit"
+            v-if="showAudit && showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -439,13 +472,14 @@
               <u-dropdown-item
                 icon="u-icon-file-preview"
                 label="ChangesHistory"
-                @click="showRevision(selectedRowId)"
+                @click="showRecordHistory(selectedRowId)"
               />
             </template>
           </slot>
 
           <!-- @slot Replace "detail records list" in context menu -->
           <slot
+            v-if="showOneItemActions"
             :close="close"
             :row-id="contextMenuRowId"
             :store="$store"
@@ -467,7 +501,8 @@
 
 <script>
 const { mapState, mapGetters, mapMutations, mapActions } = require('vuex')
-const TypeProvider = require('../type-provider')
+const selectionMixin = require('../../controls/mixins/selection/props')
+const ColumnTemplateProvider = require('../column-template-provider')
 
 export default {
   name: 'UTableEntityRoot',
@@ -482,9 +517,11 @@ export default {
     NextPageButton: require('./NextPageButton.vue').default
   },
 
+  mixins: [selectionMixin],
+
   inject: {
     close: {
-      default: () => () => console.warn('Injection close didn\'t provided')
+      default: () => () => console.warn('Injection "close" is not provided')
     }
   },
 
@@ -519,32 +556,48 @@ export default {
     },
 
     /**
-     * Id of column which will stack when we scroll table by horizontal.
+     * ID of the column what will be locked on the left side when table is scrolled horizontally
      */
-    fixedColumnId: String,
+    fixedColumnId: {
+      type: String,
+      require: false,
+      default: ''
+    },
+
+    /**
+     * ID of the column what will be displayed before the multi selection column
+     */
+    preMultiSelectionColumnId: {
+      type: String,
+      require: false,
+      default: ''
+    },
+
     /**
      * Overrides the record selection event. That is, double click or enter
      * @type {function({ID: Number, row: Object, close: function})}
      */
-    onSelectRecord: Function
+    onSelectRecord: Function,
+    /**
+     * Show "delete multiple" button if multi-select is enabled
+     * @type {boolean}
+     */
+    showDeleteMultipleBtn: {
+      type: Boolean,
+      default: false
+    }
   },
 
   data () {
     return {
       targetColumn: null,
-      contextMenuRowId: null
+      contextMenuRowId: null,
+      cacheActiveElement: null
     }
   },
 
   computed: {
-    ...mapState([
-      'items',
-      'loading',
-      'withTotal',
-      'sort',
-      'pageIndex'
-    ]),
-
+    ...mapState(['items', 'loading', 'withTotal', 'sort', 'pageIndex', 'showOneItemActions']),
     ...mapGetters([
       'showAddNew',
       'canAddNew',
@@ -567,7 +620,8 @@ export default {
       'canCreateNewVersion',
       'hasDataHistoryMixin',
       'showSummary',
-      'showExport'
+      'showExport',
+      'showFilter'
     ]),
 
     selectedColumnId: {
@@ -596,11 +650,22 @@ export default {
       set (mode) {
         this.$store.commit('SET_VIEW_MODE', mode)
       }
+    },
+    selectedOnPage: {
+      get () {
+        return this.$store.state.selectedOnPage
+      },
+      set (newValue) {
+        this.$store.dispatch('setSelectedOnPage', newValue)
+      }
     }
   },
 
   watch: {
     selectedRowId (id) {
+      /** fires when user select row (in single-row selection mode)
+       * @param {number} ID
+       */
       this.$emit('change-row', id)
     },
 
@@ -625,25 +690,23 @@ export default {
       'createLink',
       'audit',
       'createNewVersion',
-      'showRevision'
+      'showRecordHistory'
     ]),
-    ...mapMutations([
-      'SELECT_COLUMN',
-      'SELECT_ROW'
-    ]),
+
+    ...mapMutations(['SELECT_COLUMN', 'SELECT_ROW']),
 
     getCellTemplate (column) {
       if (typeof column.template === 'function') {
         return column.template()
-      } else {
-        const dataType = column.attribute?.dataType
-        return TypeProvider.get(dataType).template
       }
+      return ColumnTemplateProvider.getByColumnAttribute(column.attribute)
+        .template
     },
 
     showContextMenu ({ event, row, column }) {
       this.select({ row, column })
       this.contextMenuRowId = row.ID
+      this.cacheActiveElement = document.activeElement
       this.$refs.contextMenu.show(event)
     },
 
@@ -659,7 +722,7 @@ export default {
     getNextArrayValue (array, key, current) {
       const index = array.findIndex(i => current === i[key])
       const undefinedIndex = index === -1
-      const isLast = index === (array.length - 1)
+      const isLast = index === array.length - 1
       if (undefinedIndex || isLast) {
         return array[0][key]
       } else {
@@ -684,23 +747,31 @@ export default {
       switch (direction) {
         case 'up':
           if (this.selectedRowId === null) return
-          this.SELECT_ROW(this.getPrevArrayValue(this.items, 'ID', this.selectedRowId))
+          this.SELECT_ROW(
+            this.getPrevArrayValue(this.items, 'ID', this.selectedRowId)
+          )
           this.scrollIntoView()
           break
 
         case 'down':
           if (this.selectedRowId === null) return
-          this.SELECT_ROW(this.getNextArrayValue(this.items, 'ID', this.selectedRowId))
+          this.SELECT_ROW(
+            this.getNextArrayValue(this.items, 'ID', this.selectedRowId)
+          )
           this.scrollIntoView()
           break
 
         case 'left':
           if (this.selectedColumnId === null) return
           if (this.viewMode === 'table') {
-            this.SELECT_COLUMN(this.getPrevArrayValue(this.columns, 'id', this.selectedColumnId))
+            this.SELECT_COLUMN(
+              this.getPrevArrayValue(this.columns, 'id', this.selectedColumnId)
+            )
           }
           if (this.viewMode === 'card') {
-            this.SELECT_ROW(this.getPrevArrayValue(this.items, 'ID', this.selectedRowId))
+            this.SELECT_ROW(
+              this.getPrevArrayValue(this.items, 'ID', this.selectedRowId)
+            )
           }
           this.scrollIntoView()
           break
@@ -708,10 +779,14 @@ export default {
         case 'right':
           if (this.selectedColumnId === null) return
           if (this.viewMode === 'table') {
-            this.SELECT_COLUMN(this.getNextArrayValue(this.columns, 'id', this.selectedColumnId))
+            this.SELECT_COLUMN(
+              this.getNextArrayValue(this.columns, 'id', this.selectedColumnId)
+            )
           }
           if (this.viewMode === 'card') {
-            this.SELECT_ROW(this.getNextArrayValue(this.items, 'ID', this.selectedRowId))
+            this.SELECT_ROW(
+              this.getNextArrayValue(this.items, 'ID', this.selectedRowId)
+            )
           }
           this.scrollIntoView()
           break
@@ -724,10 +799,9 @@ export default {
       }
       return ''
     },
+
     getRowClass (row) {
-      return row.ID === this.selectedRowId
-        ? 'selected'
-        : ''
+      return row.ID === this.selectedRowId ? 'selected' : ''
     },
 
     async scrollIntoView () {
@@ -759,7 +833,7 @@ export default {
     onSelect (ID, row) {
       if (this.onSelectRecord) {
         this.onSelectRecord({ ID, row, close: this.close })
-      } else {
+      } else if (this.canEdit) {
         this.editRecord(ID)
       }
     },
@@ -775,18 +849,39 @@ export default {
       if (column.sortable === false) {
         return
       }
+
       this.SELECT_COLUMN(column.id)
-      // setTimeout for prevent click outside
+
       if (this.$refs.sort && this.$refs.sort.$refs.dropdown) {
-        this.targetColumn = target
-        setTimeout(this.$refs.sort.$refs.dropdown.toggleVisible, 0)
+        // setTimeout for prevent click outside
+        setTimeout(() => {
+          this.targetColumn = target
+          this.$refs.sort.$refs.dropdown.toggleVisible()
+        }, 0)
       }
     },
 
-    onSort () {
+    onSortClose () {
       this.targetColumn = null
-    }
+    },
 
+    closeDropdownHandler () {
+      if (!this.cacheActiveElement) return
+      this.cacheActiveElement.focus()
+    },
+
+    activeRowChangeHandler ({ index }) {
+      const id = this.items[index][this.multiSelectKeyAttr]
+      this.SELECT_ROW(id)
+    },
+    toggleVisibleFilterDropdown () {
+      const { filterSelector } = this.$refs
+      if (!filterSelector) return
+      const target = filterSelector.$el.querySelector('.u-dropdown__reference')
+      if (!target) return
+      const event = new MouseEvent('click')
+      target.dispatchEvent(event)
+    }
   }
 }
 </script>
@@ -799,10 +894,6 @@ export default {
 }
 
 .u-table-entity {
-  --row-selected: hsl(var(--hs-primary), var(--l-background-default));
-  --cell-selected: hsl(var(--hs-primary), var(--l-background-active));
-  --row-selected-border: hsl(var(--hs-primary), var(--l-layout-border-default));
-
   display: flex;
   flex-direction: column;
   overflow: auto;
@@ -841,17 +932,6 @@ export default {
   word-break: normal;
 }
 
-.u-table-entity tr.selected td {
-  background: var(--row-selected);
-  border-bottom-color: var(--row-selected-border);
-}
-
-.u-table-entity tr.selected td.selected,
-.u-table-entity tr.selected td:hover,
-.u-table-entity tr.selected:hover td.selected {
-  background: var(--cell-selected);
-}
-
 .u-table-entity__header-dropdown {
   align-self: center;
 }
@@ -888,7 +968,7 @@ export default {
 }
 
 .u-fake-table__label {
-  color: hsl(var(--hs-text), var(--l-text-label))
+  color: hsl(var(--hs-text), var(--l-text-label));
 }
 
 .u-fake-table__label:after {
@@ -897,5 +977,14 @@ export default {
 
 .u-table-entity__filter-submit-container {
   text-align: right;
+}
+
+.u-table-entity__body {
+  display: flex;
+  overflow: auto;
+}
+
+.u-table-entity__body__content {
+  flex-basis: 100%;
 }
 </style>

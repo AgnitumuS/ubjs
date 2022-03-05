@@ -45,5 +45,6 @@
         "errorText": "Passwords mismatch"
       }
     }
-  }
+  },
+  "Duplicate user name (may be in different case)": "Duplicate user name (may be in different case). Try another login"
 }

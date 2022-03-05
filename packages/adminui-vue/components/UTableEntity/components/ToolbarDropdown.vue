@@ -33,7 +33,7 @@
         <u-dropdown-item
           icon="u-icon-edit"
           :label="$ut('Edit') + ' (Ctrl + E)'"
-          :disabled="!canEdit"
+          :disabled="!canEdit || !showOneItemActions"
           @click="editRecord(selectedRowId)"
         />
       </slot>
@@ -41,7 +41,7 @@
         <u-dropdown-item
           icon="u-icon-copy"
           label="Copy"
-          :disabled="!hasSelectedRow || !canAddNew"
+          :disabled="!hasSelectedRow || !canAddNew || !showOneItemActions"
           @click="copyRecord(selectedRowId)"
         />
       </slot>
@@ -57,7 +57,7 @@
         <u-dropdown-item
           icon="u-icon-line-chart"
           label="showAudit"
-          :disabled="!canAudit"
+          :disabled="!canAudit || !showOneItemActions"
           @click="audit(selectedRowId)"
         />
       </slot>
@@ -84,7 +84,7 @@
             icon="u-icon-file-preview"
             label="ChangesHistory"
             :disabled="!selectedRowId"
-            @click="showRevision(selectedRowId)"
+            @click="showRecordHistory(selectedRowId)"
           />
         </template>
       </slot>
@@ -92,6 +92,7 @@
       <slot name="exports">
         <u-dropdown-item divider />
         <u-dropdown-item
+          v-if="showOneItemActions"
           icon="u-icon-file-export"
           label="export"
         >
@@ -136,7 +137,10 @@ export default {
     ]),
     ...mapState([
       'selectedRowId',
-      'loading'
+      'loading',
+      'showOneItemActions',
+      'selectedOnPage',
+      'multiSelectKeyAttr'
     ])
   },
 
@@ -151,7 +155,7 @@ export default {
       'exportTo',
       'showSummary',
       'createNewVersion',
-      'showRevision'
+      'showRecordHistory'
     ])
   }
 }

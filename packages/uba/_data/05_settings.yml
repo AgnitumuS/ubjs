@@ -1,0 +1,12 @@
+$context:
+  type: settings
+
+uba.user.publicRegistrationSubject:
+  name: Subject of email, sent to new user on public registration
+  type: string
+  defaultValue: ""
+
+uba.user.publicRegistrationReportCode:
+  name: Report code for generating email, sent to new user on public registration
+  type: string
+  defaultValue: ""

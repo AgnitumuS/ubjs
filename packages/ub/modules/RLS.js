@@ -1,11 +1,10 @@
-/* global TubDataStore */
 const Session = require('./Session.js')
 const Repository = require('@unitybase/base').ServerRepository.fabric
-const uba_common = require('@unitybase/base').uba_common
+const ubaCommon = require('@unitybase/base').uba_common
 /**
  * UnityBase Row Level Security routines. For use in rls mixin.
  * @author MPV
- * Comment by Felix: Внимание! Для Оракла НЕЛЬЗЯ начинать алиас таблицы с символа подчеркивания '_'
+ * Comment by Felix: *WARNING* On Oracle table alias should not start with '_'
  */
 
 /**
@@ -13,22 +12,6 @@ const uba_common = require('@unitybase/base').uba_common
  */
 let RLS = global.RLS = {}
 global['$'] = RLS
-
-let roleCache // it's safe to cache roles here because uba_role table is readonly in production
-
-RLS.initCache = function () {
-  let rInst
-  if (!roleCache) {
-    roleCache = {}
-    rInst = new TubDataStore('uba_role')
-    // here is direct SQL because permission to uba_role dose not exist for non-supervisor user's
-    rInst.runSQL('select ID, name FROM uba_role', {})
-    while (!rInst.eof) {
-      roleCache[rInst.get(1)] = rInst.get(0) // roleCaсhe['admin'] = 1 e.t.c.
-      rInst.next()
-    }
-  }
-}
 
 RLS.currentOwner = function () {
   return `( [mi_owner] = :(${Session.userID}): )`
@@ -45,18 +28,12 @@ RLS.userInGroup = function (user, groupname) {
 }
 
 /**
- * is current ( Session.userID) user have role with name groupname
+ * is current ( Session.userID) user have role with name roleName
  * @param groupname group name from uba_role
  * @return {*}
  */
-RLS.currentUserInGroup = function (sender, groupname) {
-  RLS.initCache()
-  const groupID = roleCache[groupname]
-  if (groupID && (Session.uData.roleIDs.indexOf(groupID) !== -1)) {
-    return '(1=1)'
-  } else {
-    return '(0=1)'
-  }
+RLS.currentUserInGroup = function (sender, roleName) {
+  return Session.hasRole(roleName) ? '(1=1)' : '(0=1)'
 }
 
 /**
@@ -107,7 +84,7 @@ RLS.currentUserOrUserGroupInAdmSubtable = function (sender) {
  */
 RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
   // skip RLS for admin and root and Admin group member
-  if (uba_common.isSuperUser() || Session.uData.roleIDs.includes(uba_common.ROLES.ADMIN.ID)) return
+  if (ubaCommon.isSuperUser() || Session.hasRole(ubaCommon.ROLES.ADMIN.NAME)) return
 
   const mParams = ctxt.mParams
   let whereList = mParams.whereList

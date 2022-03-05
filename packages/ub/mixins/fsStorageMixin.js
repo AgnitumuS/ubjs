@@ -8,7 +8,8 @@
  *     "dataPath": "reports",
  *     "modelBased": true,
  *     "filePerRow": true,
- *     "naturalKey": "code"
+ *     "naturalKey": "code",
+ *     "allowOverride": false
  *   }
  * }
  *
@@ -40,6 +41,8 @@ const FSSTORAGE_CS = App.registerCriticalSection('FSSTORAGE')
  * @property {Boolean} modelBased
  * @property {boolean} filePerRow
  * @property {string} naturalKey
+ * @property {boolean} [allowOverride=false] allow natural key duplicates in different models (last model win)
+ *  Can be used for example to override a report templates in ubs_report
  */
 
 /**
@@ -407,6 +410,7 @@ function initEntityForFsStorage (entity, mixinCfg) {
     function loadFolderOrFile (fPath, modelCode) {
       if (!fs.existsSync(fPath)) return
       function normalizeAndAddNewRow (row, srcFilePath, srcFileName) {
+        let isDuplicate = false
         // fill ID, model and natural key attributes
         row.model = modelCode
         if (mixinCfg.filePerRow) {
@@ -417,7 +421,11 @@ function initEntityForFsStorage (entity, mixinCfg) {
         }
         row.ID = getID(row)
         if (idMap[row.ID]) {
-          throw new Error(`fsStorage for ${entity.name}: duplicate IDs in ${srcFilePath}. Existed ${JSON.stringify(idMap[ID])}, failed ${JSON.stringify(row.ID)}`)
+          if (mixinCfg.allowOverride) {
+            isDuplicate = true
+          } else {
+            throw new Error(`fsStorage for ${entity.name}: duplicate IDs in ${srcFilePath}. Existed:\n ${JSON.stringify(idMap[row.ID])}, \nfailed:\n ${JSON.stringify(row)}`)
+          }
         }
         idMap[row.ID] = row
         // verify Document attributes
@@ -457,7 +465,13 @@ function initEntityForFsStorage (entity, mixinCfg) {
           docInfo.relPath = row.model + '|' + mixinCfg.dataPath
           row[attr.name] = JSON.stringify(docInfo)
         })
-        dirtyData.push(row)
+        if (!isDuplicate) {
+          dirtyData.push(row)
+        } else {
+          const idx = dirtyData.findIndex(r => r.ID === row.ID)
+          console.debug(`fsStorage: model ${row.model} override ${dirtyData[idx][mixinCfg.naturalKey]} row data from ${dirtyData[idx].model}`)
+          dirtyData[idx] = row
+        }
       }
       if (mixinCfg.filePerRow) {
         const files = fs.readdirSync(fPath)

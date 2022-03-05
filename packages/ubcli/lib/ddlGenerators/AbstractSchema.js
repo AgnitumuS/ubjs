@@ -121,7 +121,7 @@ class TableDefinition {
     obj.isDisabled = obj.isDisabled || false
     obj.isConstraint = obj.isConstraint || false
     obj._upperName = obj.name.toUpperCase()
-    obj.indexType = obj.indexType || null
+    obj.indexType = obj.indexType || 'INDEX'
     if (obj.keys && obj.keys.length) {
       if (this.multitenancy && obj.isUnique) obj.keys.push('mi_tenantID')
       obj.keys = obj.keys.map(name => name.toUpperCase())

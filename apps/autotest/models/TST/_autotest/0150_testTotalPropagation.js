@@ -23,6 +23,11 @@ module.exports = function runMixinsTests (options) {
     .using('runSelectInJSContext').attrs('ID').limit(100).withTotal(true)
     .ubql()
   )
+
+  // total for group by
+  const respTG = conn.Repository('tst_document').attrs('MAX([ID])', 'docDate').groupBy('docDate').withTotal().selectAsArray()
+  assert(respTG.__totalRecCount > 1, 'Expect total rec count for group by to be > 1 but got ' + respTG.__totalRecCount)
+
   assert.ok(resp.__totalRecCount > 101, `Should got __totalRecCount > 101 but actual is ${resp.__totalRecCount}`)
   assert.throws(
     () => unsafeExternalCallFieldList(conn),
@@ -72,9 +77,9 @@ module.exports = function runMixinsTests (options) {
       docDate: dayDate,
       docDateTime: dateTime
     }
-  }, {mi_modifyDate: 'modifiedAt'})
+  }, { mi_modifyDate: 'modifiedAt' })
   assert.ok((typeof newDoc === 'object') && (newDoc.modifiedAt instanceof Date), `insertAsObject should return Object with parsed Date but got ${JSON.stringify(newDoc)}`)
-  //assert.strictEqual(newDoc.docDate.getTime(), dayDate.getTime(), `Parsed Date should be equal ${dayDate} but got ${newDoc.docDate}`)
+  // assert.strictEqual(newDoc.docDate.getTime(), dayDate.getTime(), `Parsed Date should be equal ${dayDate} but got ${newDoc.docDate}`)
   assert.strictEqual(newDoc.docDateTime.getTime(), dateTime.getTime(), `Parsed DateTime should be equal ${dateTime} but got ${newDoc.docDateTime}`)
   const newDoc2 = conn.updateAsObject({
     entity: 'tst_document',
@@ -87,7 +92,6 @@ module.exports = function runMixinsTests (options) {
   })
   assert.ok((typeof newDoc2 === 'object') && (newDoc2.mi_modifyDate instanceof Date) && (newDoc2.code === 'testInsertAsObjectU'),
     `updateAsObject should return Object with parsed Date but got ${JSON.stringify(newDoc2)}`)
-
 }
 
 /**

@@ -43,5 +43,6 @@
         "errorText": "Passwords mismatch"
       }
     }
-  }
+  },
+  "Duplicate user name (may be in different case)": "Пользователя с таким логином (без учета регистра) уже зарегистрировано. Попробуйте другой логин"
 }

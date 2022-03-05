@@ -82,7 +82,8 @@
   "recordNotExistsOrDontHaveRights": "Record bestaat niet of u hebt geen toegangsrechten",
   "msgInvalidCertAuth": "Ongeldig certificaat of privésleutel",
   "msgInvalidUBAuth": "Toegang geweigerd. Ongeldige gebruikersnaam of wachtwoord",
-  "ubErrElsInvalidUserOrPwd": "Toegang weigeren. Controleer inlognaam en wachtwoord.",
+  "ubErrElsInvalidUserOrPwd": "Toegang weigeren. Controleer inlognaam en wachtwoord",
+  "ubErrAnotherSessionExists": "Toegang weigeren. Gebruiker is al ingelogd, kan afkomstig zijn van een ander browsertabblad of een andere computer",
   "UserWithoutOrgEmployeeNotAllowed": "Login voor gebruiker zonder corresponderende medewerker op personeel niet toegestaan",
 
   "Access deny": "U heeft geen rechten om deze bewerking uit te voeren",

@@ -15,6 +15,37 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.2] - 2022-02-08
+### Fixed
+ - restore `change password` functionality (brok by 403 code interceptor added in 5.22.0)
+
+## [5.22.1] - 2022-01-14
+## [5.22.0] - 2022-01-09
+### Added
+ - `UBConnection` will handle a `403 Forbidden` server-side error response and raise a UB.UBAbort message
+ instead of `InternalServerError`. This response occurs when a user tries to retrieve data from the server but fails
+ the server's data access validation with status code 403.
+ - translation for `ubErrAnotherSessionExists` error message for single session violation if `security.userSessionMode: "Singleton"` in config
+
+### Fixed
+ - nodeJS compatibility: transport.js, account that `readystatechange` event might be raised after "done" state
+   The `xmlhttprequest` module, which used in NodeJS environment, in case of errors, such as socket closed,
+   might fire `readystatechange` with state "DONE" (4) twice.
+ - Allow pass `{timeout: 0}` to xhr - prevent overriding 0 value with default timeout
+
+## [5.9.22] - 2021-12-07
+### Fixed
+ - nodeJS compatibility: prevent `ReferenceError: File is not defined` when using ub-pub from nodeJS (global.File is not available on node)
+
+## [5.9.21] - 2021-12-02
+## [5.9.20] - 2021-11-30
+## [5.9.19] - 2021-11-23
+## [5.9.18] - 2021-11-05
+### Changed
+  - ClientRepository with `__mip_recordhistory_all` misc will bypass a client cache 
+
+## [5.9.17] - 2021-09-24
+## [5.9.16] - 2021-09-08
 ## [5.9.15] - 2021-08-31
 ## [5.9.14] - 2021-08-18
 ## [5.9.13] - 2021-08-04

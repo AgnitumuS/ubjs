@@ -1,0 +1,18 @@
+﻿{
+    "caption": "Серверний кеш",
+    "description": "Глобальний кеш серверу",
+    "attributes": [
+        {
+            "name": "ID",
+            "caption": "ID"
+        },
+        {
+            "name": "key",
+            "caption": "Ключ"
+        },
+        {
+            "name": "value",
+            "caption": "Значення"
+        }
+    ]
+}

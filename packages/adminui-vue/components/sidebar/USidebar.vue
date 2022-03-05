@@ -190,8 +190,16 @@ export default {
   methods: {
     async loadDesktops () {
       const desktops = await this.$UB.connection.Repository('ubm_desktop')
-        .attrs('ID', 'caption', 'isDefault', 'description', 'iconCls', 'displayOrder')
-        .orderBy('displayOrder').orderBy('caption')
+        .attrs(
+          'ID',
+          'caption',
+          'description',
+          'iconCls',
+          'isDefault',
+          'displayOrder'
+        )
+        .orderBy('displayOrder')
+        .orderBy('caption')
         .select()
 
       const userLogin = UB.connection.userData().login
@@ -210,9 +218,23 @@ export default {
     loadShortcuts () {
       return this.$UB.connection.Repository('ubm_navshortcut')
         // the same field list as in UBStoreManager.shortcutAttributes
-        .attrs('ID', 'desktopID', 'parentID', 'code', 'isFolder', 'caption', 'inWindow', 'isCollapsed', 'displayOrder', 'iconCls')
-        .orderBy('desktopID').orderBy('parentID')
-        .orderBy('displayOrder').orderBy('caption')
+        .attrs(
+          'ID',
+          'desktopID',
+          'parentID',
+          'code',
+          'isFolder',
+          'caption',
+          'inWindow',
+          'isCollapsed',
+          'displayOrder',
+          'iconCls',
+          'description'
+        )
+        .orderBy('desktopID')
+        .orderBy('parentID')
+        .orderBy('displayOrder')
+        .orderBy('caption')
         .select()
     },
 

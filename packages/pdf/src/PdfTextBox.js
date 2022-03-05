@@ -108,7 +108,7 @@ function PdfTextBox (config) {
   this.right = config.right || 0
   this.width = config.width || 0
   this.width = this.width < 0 ? 0 : this.width
-  this.widthIn = config.width // this.width;  this.widthIn == 0 - ничего не пишем
+  this.widthIn = config.width // this.width;  this.widthIn == 0 - do nothing
   this.height = config.height || 0
   this.minHeight = config.minHeight || 0
   this.height = this.height < 0 ? 0 : this.height
@@ -467,13 +467,10 @@ PdfTextBox.prototype.calcMetrics = function () {
           fullHeight += newTB.height
         } else {
           // for first page text
-          if (!hasText /* currentText === '' */) { // первая строка не влазит
+          if (!hasText /* currentText === '' */) { // first line do not fit
             isFirstLine = true
             me.updateTextInfo('')
             me.tbMetrics = me.pdf.textCalcMetricsByInfo(me.textInfo, options)
-            // me.fullHeight = me.tbMetrics.height
-            // me.height = 0
-            // real height
             me.height = me.context.getInnerPageBottomPos() - me.top
             me.fullHeight = me.height
             // -

@@ -1,10 +1,7 @@
 <template>
   <filter-template
-    :button-disabled="value === null"
-    @submit="$emit('search', {
-      whereList: [{condition: 'moreEqual', value}],
-      description: $ut('from_date') + ' ' + $moment(value).format('ll')
-    })"
+    :button-disabled="isEmpty"
+    @submit="submitHandler"
   >
     <u-date-picker
       v-model="value"
@@ -22,9 +19,30 @@ export default {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
 
+  mixins: [require('../mixinForFilter.js')],
+
   data () {
     return {
       value: null
+    }
+  },
+  computed: {
+    isEmpty () {
+      return this.value === '' || this.value === null
+    }
+  },
+
+  created () {
+    if (Array.isArray(this.value)) this.value = this.value[0]
+  },
+
+  methods: {
+    getCondition () {
+      const { value, $ut } = this
+      return {
+        whereList: [{ condition: 'moreEqual', value }],
+        description: $ut('from_date') + ' ' + this.$UB.formatter.formatDate(value, 'date')
+      }
     }
   }
 }

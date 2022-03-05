@@ -24,7 +24,8 @@ module.exports = {
   isEmpty,
   change,
   prepareCopyAddNewExecParams,
-  validateWithErrorText
+  validateWithErrorText,
+  showRecordHistory
 }
 
 const UB = require('@unitybase/ub-pub')
@@ -226,9 +227,11 @@ function buildExecParams (trackedObj, entity) {
     }
     if (schema.hasMixin('dataHistory')) {
       // Let server fill historical attributes
-      ['mi_data_id', 'mi_dateFrom', 'mi_dateTo'].forEach(f => {
-        if (!execParams[f]) delete execParams[f]
-      })
+      for (const f of ['mi_data_id', 'mi_dateFrom', 'mi_dateTo']) {
+        if (!execParams[f]) {
+          delete execParams[f]
+        }
+      }
     }
     replaceMultilangParams(execParams)
     return execParams
@@ -437,7 +440,7 @@ function enrichFieldList (entitySchema, fieldList, requiredAttrs) {
   return fieldList.concat(fieldsToAppend)
 }
 
-const langParamRegex = /(\S+)_\S+\^/
+const LANG_PARAM_RE = /(\S+)_\S+\^/
 
 /**
  * If execParams includes locale params
@@ -445,7 +448,7 @@ const langParamRegex = /(\S+)_\S+\^/
  *
  * For example in case userLang === 'en'
  * and execParams includes key 'name_uk^'
- * will replace key name to 'name_en^'
+ * will replace key 'name' to 'name_en^'
  *
  * @param {object} execParams
  */
@@ -454,15 +457,15 @@ function replaceMultilangParams (execParams) {
     .filter(a => a.includes('^'))
   const userLang = UB.connection.userLang()
 
-  langParams.forEach(p => {
-    const res = p.match(langParamRegex)
-    if (res && res[1] in execParams) {
-      const key = res[1]
+  for (const p of langParams) {
+    const res = p.match(LANG_PARAM_RE)
+    const key = res && res[1]
+    if (key in execParams) {
       const localeKey = key + '_' + userLang + '^'
       execParams[localeKey] = execParams[key]
       delete execParams[key]
     }
-  })
+  }
 }
 
 /**
@@ -495,4 +498,43 @@ function prepareCopyAddNewExecParams (originalExecParams, entity) {
  */
 function validateWithErrorText (errorLocale, validator) {
   return withParams({ $errorText: errorLocale }, validator)
+}
+
+/**
+ * show table with changes history of specified entity instance. Entity must hase a `dataHistory` mixin
+ * @param {string} entityName
+ * @param {number} instanceID
+ * @param {array<string>} fieldList
+ * @param {array<object>} [columns] optional columns definition for showList
+ * @returns {Promise<void>}
+ */
+async function showRecordHistory (entityName, instanceID, fieldList, columns) {
+  const dataId = await UB.Repository(entityName)
+    .attrs('mi_data_id')
+    .where('ID', '=', instanceID)
+    .misc({ __mip_disablecache: true })
+    .selectScalar()
+
+  const newFieldList = [...fieldList]
+  const newColumns = columns ? [...columns] : [...fieldList]
+
+  ;['mi_dateFrom', 'mi_dateTo'].forEach(cn => {
+    if (newFieldList.indexOf(cn) === -1) newFieldList.push(cn)
+    if (newColumns.findIndex(c => (typeof c === 'string' && c === cn) || (typeof c === 'object' && c.id === cn)) === -1) {
+      newColumns.push(cn)
+    }
+  })
+
+  return UB.core.UBApp.doCommand({
+    cmdType: 'showList',
+    isModal: true,
+    cmdData: {
+      entityName: entityName,
+      repository: () => UB.Repository(entityName)
+        .attrs([...newFieldList])
+        .where('mi_data_id', '=', dataId)
+        .misc({ __mip_disablecache: true, __mip_recordhistory_all: true }),
+      columns: newColumns
+    }
+  })
 }

@@ -1,6 +1,6 @@
 {
-  "caption": "Diagrammalar",
-  "description": "Tashkilot diagrammalari",
+  "caption": "ER diagrammalar",
+  "description": "Diagrammalari mohiyati",
   "attributes": [
     {
       "name": "model",
@@ -8,7 +8,7 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "document",
@@ -16,7 +16,7 @@
     },
     {
       "name": "ID",
-      "caption": "Id"
+      "caption": "ID"
     }
   ]
 }

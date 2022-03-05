@@ -1,0 +1,123 @@
+# ELS for build-in roles
+# roles itself are created during `ubcli initDB` command
+# most ELS rules are defined as `custom` due to historical reasons (to keep the same rule code as before ub-migrate)
+#  in new files prefer to use one of `read`, `write, etc. rules instead of custom - see https://git-pub.intecracy.com/unitybase/ub-migrate#system-roles
+
+$context:
+  type: roles
+
+Everyone:
+  $amendment: true
+  description:
+    en: Everyone build-in role
+    uk: Будь хто (вбудована роль)
+    ru: Кто угодно (встроенная роль)
+    ka: ნებისმიერ მსურველს (ჩაშენებული როლი)
+    tg: Ҳама (роли дарунсохташуда)
+    uz: Hamma (o`rnatilgan rol)
+    nl: Iedereen (ingebouwde rol)
+    az: Hər kəsin qurduğu rol
+  els:
+    custom:
+    - UBA_AUDIT_SELECT_ONLY: "!uba_audit,[^s]*,Deny direct security audit operation even for all roles"
+    - UBA_SUBJECT_DENY: "!uba_subject,[iuda]*,Deny direct modification of UNITY uba_subject"
+    - UBA_AUDITTRAIL_SEL_ONLY: "!uba_auditTrail,[iuda]*,Deny direct audit operation even for all roles"
+
+# UBA_ADMIN_ALL rule (allow all for Admin) is added during initDB
+Admin:
+  $amendment: true
+  description:
+    en: Admin build-in role
+    uk: Адміністратор (вбудована роль)
+    ru: Администратор (встроенная роль)
+    ka: ადმინისტრატორი (ჩაშენებული როლი)
+    tg: Маъмурӣ (роли дарунсохташуда)
+    uz: Administrator (o`rnatilgan rol)
+    nl: Admin (ingebouwde rol)
+    az: İdarəçi rolu
+
+Anonymous:
+  $amendment: true
+  description:
+    en: Anonymous build-in role
+    uk: Неавторизований користувач (вбудована роль)
+    ru: Неавторизованный пользователь (встроенная роль)
+    ka: უნებართვო მომხმარებელი (ჩაშენებული როლი)
+    tg: Истифодабарандаи беиҷозат (роли дарунсохташуда)
+    uz: Ruxsatsiz foydalanuvchi (o`rnatilgan rol)
+    nl: Ongeautoriseerde gebruiker (ingebouwde rol)
+    az: İcazəsiz istifadəçi (quraşdırılmış rol)
+
+User:
+  $amendment: true
+  description:
+    en: Authorised user build-in role
+    uk: Авторизований користувач (вбудована роль)
+    ru: Авторизированный пользователь (встроенная роль)
+    ka: ავტორიზებული მომხმარებელი (ჩაშენებული როლი)
+    tg: Истифодабарандаи ваколатдор (роли дарунсохташуда)
+    uz: Vakolatli foydalanuvchi (o`rnatilgan rol)
+    nl: Geautoriseerde gebruiker (ingebouwde rol)
+    az: Səlahiyyətli istifadəçi (quraşdırılmış rol)
+  els:
+    custom:
+      - UBA_USER_LANGCH_EVERYONE: "uba_user,changeLanguage,Allow change language for any user"
+      - UBA_USER_UDATACH_USERS: "uba_user,setUDataKey,Allow set uData key for user"
+      - UBA_USER_READ_USERS: "uba_user,select,Allow read users list for registered user"
+      - UBA_USER_READ_GROUPS: "uba_group,select,Allow read available groups list for registered user"
+      - UBA_AUDIT_SECURE_EVENT: "uba_audit,secureBrowserEvent,Allow insert secureBrowserEvent for authorized user(UB DE)"
+      - UBA_USERCERT_READ: "uba_usercertificate,select,Allow read user certificates for registered users"
+      - UBA_USERCERT_READ_CERT_BIN: "uba_usercertificate,getCertificate,Allow read base64 representation of cert for registered users"
+
+Supervisor:
+  $amendment: true
+  description:
+    en: Supervisor build-in role
+    uk: Адміністратор безпеки (вбудована роль)
+    ru: Администратор безопасности (встроенная роль)
+    ka: უსაფრთხოების ადმინისტრატორი (ჩაშენებული როლი)
+    tg: Маъмур оид ба амният (роли дарунсохт)
+    uz: Xavfsizlik ma`muri (o`rnatilgan rol)
+    nl: Beveiligingsbeheerder (ingebouwde rol)
+    az: Təhlükəsizlik Administratoru (quraşdırılmış rol)
+  els:
+    custom:
+      - UBA_USER_EDIT_SUPERVISOR: "uba_user,[iuda]*,Allow CUD operations on users for members of Supervisor group"
+      - UBA_USER_CHPWD_SUPERVISOR: "uba_user,changeOtherUserPassword,Allow change password for any user for members of Supervisor group"
+      - UBA_GROUP_EDIT_SUPERVISOR: "uba_group,[iuda]*,Allow CUD operations on security groups for members of Supervisor group"
+      - UBA_ROLE_READ_SUPERVISOR: "uba_role,select,Allow members of Supervisor group to read roles"
+      - UBA_USER_ROLE_EDIT_SUPERVISOR: "uba_userrole,[iuda]*,Allow grant a role to user for members of Supervisor group"
+      - UBA_USERROLE_READ_SUPERVISOR: "uba_userrole,select,Allow members of Supervisor group to read user roles"
+      - UBA_USER_GROUP_EDIT_SUPERVISOR: "uba_usergroup,[iuda]*,Allow grant a group to user for members of Supervisor group"
+      - UBA_USERGROUP_READ_SUPERVISOR: "uba_usergroup,select,Allow members of Supervisor group to read user groups"
+      - UBA_GROUPROLE_EDIT_SUPERVISOR: "uba_grouprole,[iuda]*,Allow grant a role to group for members of Supervisor group"
+      - UBA_GROUPROLE_READ_SUPERVISOR: "uba_grouprole,select,Allow members of Supervisor group to read groups roles"
+      - UBA_AUDIT_READ_SUPERVISOR: "uba_audit,select,Allow members of Supervisor group to read security audit"
+      - UBA_AUDITTRAIL_READ_SUPERVISOR: "uba_auditTrail,select,Allow members of Supervisor group to read audit trail"
+      - UBA_ADVSEC_EDIT_SUPERVISOR: "uba_advSecurity,[iuda]*,Allow CUD operations on advanced security for members of Supervisor group"
+      - UBA_SESSION_READ_SUPERVISOR: "uba_session,select,Allow view active users sessions for members of Supervisor group"
+      - UBA_SESSION_DELETE_SUPERVISOR: "uba_session,delete,Allow remove active user session for members of Supervisor group"
+
+Developer:
+  $amendment: true
+  description:
+    en: Developer build-in role
+    uk: Розробник (вбудована роль)
+    ru: Разработчик (встроенная роль)
+    ka: დეველოპერი (ჩაშენებული როლი)
+    tg: Таҳиякунанда  (роли дарунсохт)
+    uz: Ishlab chiquvchi (o`rnatilgan rol)
+    nl: Ontwikkelaar (ingebouwde rol)
+    az: İnkişaf etdirici (quraşdırılmış rol)
+
+Monitor:
+  $amendment: true
+  description:
+    en: Monitoring build-in role
+    uk: Моніторинг (вбудована роль)
+    ru: Мониторинг (встроенная роль)
+    ka: მონიტორინგი (ჩაშენებული როლი)
+    tg: Мониторинг (роли дарунсохт)
+    uz: Monitoring (o`rnatilgan rol)
+    nl: Monitoring (ingebouwde rol)
+    az: Monitorinq (quraşdırılmış rol)

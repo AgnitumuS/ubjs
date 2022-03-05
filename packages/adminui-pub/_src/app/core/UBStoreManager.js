@@ -1,10 +1,7 @@
 require('./UBAppConfig')
 require('./UBUtil')
 /**
- * Файл: UB.core.UBStoreManager.js
- * Автор: Игорь Ноженко
- *
- * Менеджер store'ов уровня приложения
+ * Application level store's manager
  */
 Ext.define('UB.core.UBStoreManager', {
   singleton: true,
@@ -42,9 +39,9 @@ Ext.define('UB.core.UBStoreManager', {
    * in-memory cache of ubm_navshortcut cmdData values. Key is shortcut ID
    */
   shortcutCommandCache: {},
-  shortcutAttributes: ['ID', 'desktopID', 'parentID', 'code', 'isFolder', 'caption', 'inWindow', 'isCollapsed', 'displayOrder', 'iconCls'],
+  shortcutAttributes: ['ID', 'desktopID', 'parentID', 'code', 'isFolder', 'caption', 'inWindow', 'isCollapsed', 'displayOrder', 'iconCls', 'description'],
   formAttributes: ['ID', 'code', 'description', 'caption', 'formType', 'formDef', 'formCode', 'entity', 'model', 'isDefault'],
-  enumAttributes: ['ID', "eGroup", "code", "name", "shortName", "sortOrder"],
+  enumAttributes: ['ID', 'eGroup', 'code', 'name', 'shortName', 'sortOrder'],
 
   /**
    * Update internal navshortcut cache for specified item

@@ -1,15 +1,13 @@
 <template>
   <filter-template
-      :button-disabled="value.length === 0"
-      @submit="$emit('search', {
-      whereList: [{condition: 'notIn', value}],
-      description: $ut('notContains') + ' ' + manyOptions
-    })"
+      :button-disabled="isEmpty"
+      @submit="submitHandler"
   >
     <u-select-multiple
-        ref="selectMany"
-        v-model="value"
-        :entity-name="column.attribute.associatedEntity"
+      ref="selectMany"
+      v-model="value"
+      :repository="column.repository"
+      :entity-name="column.attribute.associatedEntity"
     />
   </filter-template>
 </template>
@@ -21,6 +19,8 @@ export default {
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
+
+  mixins: [require('../mixinForFilter.js')],
 
   props: {
     column: {
@@ -45,6 +45,26 @@ export default {
       } else {
         return []
       }
+    },
+
+    isEmpty () {
+      const { value } = this
+      return value === '' || value === null || value.length === 0
+    }
+  },
+
+  // this hook will be call after call hook in mixin
+  created () {
+    if (!Array.isArray(this.value)) this.value = []
+  },
+  
+  methods: {
+    getCondition() {
+      const { $ut, manyOptions, value } = this
+        return {
+          whereList: [{condition: 'notIn', value}],
+          description: $ut('notContains') + ' ' + manyOptions
+        }
     }
   }
 }

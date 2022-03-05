@@ -1,5 +1,5 @@
 {
-  "caption": "Attribute level security (ALS)",
+  "caption": "Права на атрибуты (ALS)",
   "description": "Уровень атрибутивной безопасности",
   "documentation": "",
   "attributes": [

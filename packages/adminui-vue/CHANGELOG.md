@@ -6,6 +6,294 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `utils/clickOutside` additional listener to `dblclick` event for target elements
+
+### Changed
+- improved icons `download-with-signatures`, `upload-with-signatures` and `view-signatures` - better clarity of
+  symbols
+- Use UB icon `u-icon-signature` for signature instead of FontAwesome icon in the SignatureVerificationResult component
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.4] - 2022-02-16
+### Added
+- `UDropdown`:`customClass` prop added - allows set a custom CSS class for u-dropdown
+- `UTableEntity` store: new mutation `CLEAR_FILTER` allows clear current filters set
+- `UCheckbox` - new component. Styled <input type="checkbox">
+- `URadio` - new component. Wrapper for groups consisting of styled <input type="radio"> 
+- `UCron` - new component. An easy compilation cron expression. Can convert cron expression into a human-readable string
+  if @unitybase/adminui-pub is available
+- new icons: `u-icon-download-with-signatures`, `u-icon-upload-with-signatures` and `u-icon-view-signatures`
+- new parameter `uiSettings.adminUI.supportMailTo` in `ubConfig.json`: if sets - enables a button on the error message what allow sends error text to support
+
+### Fixed
+- `UNavbar` - fixed popup all list tabs on not tall screens
+- `UTableEntity` - fixed bugs on filters when user change condition from `equal` to `oneOf`
+- `UTableEntity` - added preselected column in filters (restore functionality after refactoring).
+
+## [5.22.3] - 2022-02-08
+### Added
+- `UBaseLocaleButton`, which is does not depend on Vuex store in any way and provides UI for editing translations.
+  That allows building interfaces for cases like translations of JSON unstructured data.
+- Registered `ULocaleButton` and `UBaseLocaleButton` as Vue controls
+- `UTableEntity` - update total items on pagination, after added or removed item
+- `UTableEntity` store: new mutation `SELECT_ROW_BY_INDEX` allows select record by row index
+- `UTableEntity`: in case record disappears from the store after refresh, sort or filtering,
+   selection will be restored by row index before store state changed.
+
+### Changed
+- BREAKING: renamed `LocaleButton.vue` to `ULocaleButton.vue`.  If component was required directly as a file,
+  it is better to use ULocaleButton registered Vue component now.
+
+### Fixed
+- Translations for a new record: now it initializes with values of the default language instead of empty value
+- `UTableEntity`: prevent show instance form on Enter key and double-click  when the "edit" action is in the `hideActions`
+- fixed multiple filter, when user use filters by date
+- `UTableEntity`: filtration for `in` and `notIn` conditions
+
+## [5.22.2] - 2022-01-24
+### Added
+- `UDropdown`:`customClass` prop added - allows set a custom CSS class for u-dropdown
+- `UTableEntity` store: new mutation `CLEAR_FILTER` allows clear current filters set
+
+### Changed
+- `UTableEntity` filtration improved - now allows set several filters at ones
+
+## [5.22.1] - 2022-01-14
+### Added
+- new icons: `u-icon-view-versions` and `u-icon-create-version`
+- processing module now have `LOAD_COLLECTION_DATA` mutation, which contains logic similar to `LOAD_DATA`, but for
+  a collection item
+
+### Changed
+ - `UButton.type` property validator accept only 'submit', 'reset', 'button' according to ["type" property doc on MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type)
+   Before this fix any value is accepted, and in case developer pass something non-valid, button type is changed to `submit` (by HTML),
+   so such button react on `Enter` keypress
+
+### Fixed
+- Vue forms, now after saving collection items, state is changes in vuex store using
+  the new `LOAD_COLLECTION_DATA` mutation, instead of `LOAD_COLLECTION_PARTIAL`, which is consistent with approach for
+  master entity instance and fixes problem with localized attributes, which saved values were not returned from
+  server, because they are not in the `fieldList`, and form remains dirty
+ - `UDropdown`: popper now hides when tab is closing (for example user click on filter or sort button and close form tab) [UBDF-14766]
+
+## [5.22.0] - 2022-01-09
+### Added
+ - `USidebar`: show shortcut description as a hint
+
+### Fixed
+ - `UTableEntity`: click on the `sort` button on the toolbar raised an error in case table
+   column has been already selected to sort table rows
+ - `USelectEntity` will render options list with `key = ID || valueAttribute`, this prevents rendering errors with duplicate
+   keys when `valueAttribute` is a `string`. If option does not contain an `ID`, then the `valueAttribute` will be the key.
+
+## [5.20.38] - 2021-12-14
+### Added
+ - `UtableEntity` - new events `item-added`, `item-removed`, `item-updated` and `items` are added  
+ - `UTableEntity` - newly added row now scrolled into view and highlighted
+ - `USelectEntity` now supports a new property `hideActions`. It allows hiding some
+  default action. It supports the following actions: `lookup`, `edit`, `addNew`, `clear`
+ - `UTable`, `UTableEntity`: add the ability to render some column before the multiSelection
+  one with help of the `preMultiSelectionColumnId` property
+
+### Changed
+ - `UToolbar`: added saving of the main form before calling the `accessRights` action - some
+ permissions may appear only after saving the record
+ - `UTableEntity`: `ADD_ITEM` mutation (and `item-added` event) is triggered for UTableEntity store in any case,
+   before this fix if current page rows count is === to page size then event is skipped.
+   After fix newly added row for "full page" table added into end of table in `pageSize+1` position  
+ 
+### Fixed
+- `UTableEntity`: changes of `selectedRows` what made from code (js) now reflects to UI. Before this fix UI does not react on such changes
+ - `UTable`: backward compatibility fix - restored emits of `click-row` and `contextmenu-cell` events (in addition to new `click` and `contextmenu`)
+ - `USelectEntity.AddNewItem` - prevent error at `onClose` callback, in case child form is an instance of `BasePanel` 
+ - `processing.save`: fix deleting of collection items with master-detail relations (by call delete in order what reverse to collection initialization)
+ - `UNavbarNotificationsButton` - fix a glitch with opening popup with a huge amount of notifications.
+  Display only the first 20 ones and hint alert about hidden messages
+ - `UNavbarNotificationsButton`: added i18n for title of send message form (ubs_message_edit-fm)
+ - `UTable`: fix calling of the `setTitle` method in the mounted hook in case items were not changed ever;
+
+## [5.20.37] - 2021-12-07
+### Fixed
+ - `UTableEntity`: fixed previous (5.20.36) fix with multi-selection
+ - `UDropdown`: fixed appears of dropdown in upper left screen position on second popups (after updating of popperjs@2.11).
+    Popup is now rendered using `v-if` instead of `v-show` for faster initial rendering + to ensure dropdown content is
+    recreated according to possible changes
+
+## [5.20.36] - 2021-12-07
+### Changed
+ - `UNavbarNotificationsButton`: show message body in the new message notification instead of general title
+
+### Fixed
+ - `UTableEntityRoot`: fixed production build error inside the template
+
+## [5.20.35] - 2021-12-06
+### Added
+ - `Utable`, `UtableEntity` - active row can be changed using UP, DOWN and TAB keys, SPACE key will select\deselect row.
+   Shift + left click will select all rows starts from selected one up to row clicked on.
+  - desktop selection on sidebar: added hint (computed from desktop description) [LDOC-1568]
+
+## [5.20.34] - 2021-12-02
+### Changed
+ - dependencies upgraded
+   - "@popperjs/core": "^2.5.3" -> "^2.11.0",   
+   - "jdenticon": "^2.1.1" ->  "^3.1.1"
+   - "js-beautify": "^1.11.0" -> "^1.14.0"
+   - "throttle-debounce": "^2.1.0" -> "^3.0.1"
+   - "vue": "^2.6.12" -> "^2.6.14"
+   - "vuelidate": "^0.7.4" -> "^0.7.6"
+   - "vuex": "^3.1.2" -> "^3.6.2"
+   - "babel-loader": "^8.2.2" -> "^8.2.3"
+   - "css-loader": "^5.2.0" -> "^5.2.7"
+   - "mini-css-extract-plugin": "^1.3.9" -> "^1.6.2"
+   - "vue-loader": "^15.9.6", -> "^15.9.8"
+   - "vue-template-compiler": "^2.6.12" -> "^2.6.14"
+   - "webpack": "^5.28.0" -> "^5.64.4"
+   - "webpack-bundle-analyzer": "^4.5.0"
+   - "lodash": "^4" -> "^4.17.21"
+   - "moment": "^2.24.0" -> "^2.29.1"
+
+## [5.20.33] - 2021-11-30
+### Fixed
+ - added i18n for title of notification messages history form (ubs_message-fm) [UBDF-14535]
+ - `UTableEntity`: support of the `exportExpression` for complex fields (`attribute.nestedAttr`->`attribute.nestedAttrForExport`)
+
+## [5.20.32] - 2021-11-23
+### Added
+- `UTable` - implemented sorting in the browser (`sorting` prop). Without request to server 
+- `UTableEntity`, `UTable` - added hooks that is called before selecting an item and before deselecting.
+- `UTableEntity`, `UTable` - right click on row will select it. In multi-select mode all others selected rows are deselecting
+- `UTable` - added tab-navigation and selecting using `Space` (in multi-select mode)
+- `Processing module`: new option `skipNotify` for `refresh` action
+    ```javascript
+    this.$store.dispatch('refresh', {skipNotify: true})
+    ```
+  This won't show notification message, sometimes this message is not desirable.
+
+### Changed
+- `UTableEntity`, `UTable` - selection using left click works only on cell with checkboxes (not on whole row as before)
+
+### Fixed
+ - `UDropdown` - dropdown with now adopts to internal content width if it changed (for example - when user changes his choice in multiselect)
+ - `UTableEntity` - fixed selection bug when user changed view from table to card and back
+ - `aclRlsEntry-fm` form: filtering of dropdown entries by entered query text in some `u-select-multiple` control [LDOC-1823]
+ - Messages widget: use "unshift" instead of "push" to put most recent message at the top of list
+ - `UTableEntity` store - fixed refresh of one row in case repository contains `custom` where condition (fix is in LocalDataStorage) 
+ - `UNavbarNotificationsButton`: add localization for the new message notification
+
+## [5.20.31] - 2021-11-17
+### Fixed
+ - opening of the form for existing entry of `aclRls` mixin - the form will be in
+  the readonly mode. Access entries can be only added or removed not edited
+
+## [5.20.30] - 2021-11-14
+### Added
+ - new `UFieldSet` component - A Form building block what visually groups together several controls.
+   To be used instead of *el-card* / *Ext.form.FieldSet*
+ - `UTable` - Added data sorting by column, without a request to the server. - *Work In Progress - to be implemented in next release*. See [UTable UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UTable) 
+ - `UTable` - added multi-select functionality. See [UTable UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UTable) 
+ - `UTableEntity` - added multi-select functionality. See [UTableEntity UI doc](https://unitybase.info/api/adminui-vue/index.html#/Data-aware/UTableEntity) 
+ - new ubConfig parameter `application.uiSettings.adminUI.lookupCacheRefreshIntervalSec` - a timeout (in seconds) after which
+   pressing a "Refresh" in UTableEntity will refresh a table data AND lookups caches for entities used by current table.
+   Default is 0 - do not refresh lookups. *WARNING* - entities with `Session` and `SessionEntity` cache type will not be refreshed.
+ - `UTableEntity` filters: for columns of type Entity and Many added the ability to set a repository for a dropdown list (dropdown filter)
+ - `UTableEntity` ability to register custom cell templates for columns globally and use them through the
+   `customSettings.columnTemplate` of the column attribute
+ - **BREAKING** `adminui-vue/components/UTableEntity/type-provider.js` should not be used anymore (removed):
+ ```javascript
+  // instead of
+  const TypeProvider = require('@unitybase/adminui-vue/components/UTableEntity/type-provider.js')
+  TypeProvider.registerType({...})
+  // use
+  const { columnTemplates } = require('@unitybase/adminui-vue')
+  columnTemplates.registerTemplate({...})
+ ```
+ - `UTableEntity`: the ability to use another entity attribute for exporting. To make it there is a new
+  column setting `exportExpression`. If this setting is passed, row value for exporting for this column will
+  be substituted - load the `column.exportExpression` instead of the `column.id`
+
+### Changed
+ - `UTableEntity`: lookups are loaded in parallel to speed-up table loading
+
+### Fixed
+ - `UFileWebcamButton`: fixed bug when the background overlaps the content of the modal by adding attribute `append-to-body` for dialog
+ - UTableEntity filters. Fixed error when single value selected for "many" type field
+ - `processing.save`: in case als mixin assigned to the entity `processing.save` adds information about als to the 
+   `alsInfo` object in vuex state
+
+## [5.20.29] - 2021-11-05
+### Changed
+ - UTableEntity.store: action `showRevision` renamed to `showRecordHistory`; both `UTable` and `Form` uses the same
+   function to show record history
+ - UTableEntity filters: for columns of type Entity, Many and Enum 'in' condition caption is renamed from `contains` to `one of` 
+
+### Fixed
+ - `UTableEntity`: fixed exclusion of autogenerated Repository attributes with property `defaultView: false` in case neither 
+   attributes nor Repository is specified
+ - `USelectEntity`: elements, added using `addNew` action will be selected only by component what calls an `addNew`.
+   Before this fix values in all `USelectEntity` for the same entity as in caller on all open forms are changes a selection
+ - Full Text Search result - "View Mode" toolbar action now hidden - there is no preview form for FTS [UBDF-14077]
+ - Full Text Search result - "Export to Excel" removes HTML tags from cells values [UBDF-12565]
+ - `Form` fabric function for auto forms accept `onClose` callback (as for non-autoforms), so
+  ```
+   App.doCommand({cmdType: 'showForm', formCode 'some-form', onColse: (ID, state) => {..})}
+  ```
+  will call `onClose` callback for any form type (autoforms, Ext and Vue)
+
+## [5.20.28] - 2021-10-27
+### Fixed
+ - FTS widget: highlight active text for `period` switch use --l-state-active lightness [UBDF-11388]
+ - UTable HTML export - export null as empty string (instead of `null`)
+
+## [5.20.27] - 2021-10-18
+### Added
+ - UTableEntity: new item `filter` can be used in `hideActions` array to hide a filter button
+
+### Fixed
+ - `UDropdownItem`: menu item `textbox` now expanded to 100% of menu width, this allows to handle click everywhere on row, not only on the text [LDOC-1666]
+ - FullTextSearch result - `filer` action is hidden in toolbar [UBDF-11424]
+
+## [5.20.26] - 2021-09-24
+### Fixed
+ - `UTableEntity`: remove excessive control scrollbar after adding of the slot for the left sidebar
+
+## [5.20.25] - 2021-09-17
+### Fixed
+ - `USelectEntity` - fix the previous fix "for entities with dataHistory mixin added strike out + timer icon in case selected record is out of date"
+
+## [5.20.24] - 2021-09-16
+### Added
+ - `UAutoField`: in addition to selected value added pass of entire selected option to `input` event
+ - `USelectEntity` - for entities with dataHistory mixin added strike out + timer icon in case selected record is out of date
+ - `UTableEntity`: slot `sidebar` to render content on the left side of the table or card-view
+
+### Changed
+ - UTableEntity HTML export rewritten to use client-side export:
+   - output only columns visible in grid
+   - take into account formatting function, so output a captions instead of IDs for Entity columns
+   - added column caption translation
+   - added table header (as in Excel export)
+
+### Fixed
+ - `UTableEntity`: calculate totals on columns of `Currency` type (missed before fix) by inherits
+   column `summaryAggregationOperator` from `Number` column type definition
+ - `UTableEntity`: allows to display a result of repository with a groupBy statement
+     - avoid adding an 'ID' attribute to the fieldList if repository contains a `groupBy` clause
+     - expect first attribute to be a unique key (used instead of ID to generate a key for vue)
+     - possible repository example:
+```javascript
+return UB.Repository('uba_auditTrail')
+  .attrs('MAX([ID])','max([actionTime])', 'document.regNumber', 'actionDate', 'actionType')
+  .where('document.ID', 'isNotNull')
+  .groupBy(['document.regNumber', 'actionDate', 'actionType'])
+```
+
+## [5.20.23] - 2021-09-08
+### Added
  - `addCollectionItemWithoutDefaultValues` - new `Vuex` action - such as `addCollectionItem` but does not fetch default params
  - `UToolbar`: `showDropdown` prop that allows preventing rendering of the dropdown menu
  - `toValidate` property to the `UTableColumn`, which allows skipping checking the column in the `validateFieldList` method - useful for custom unfamiliar columns
@@ -41,17 +329,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity`: now show filter control if there are no available columns for filtration
  - improved the table for displaying and the form for adding and management entries of the `aclRls` mixin for some entity
  - `USelectMultiple`: change style for dropdown. Fixed the position of the buttons "More", "Template" and other.
-![View result](./changeLogImgs/USelectMultipleDropdown.png)
 [Task](https://dev.intecracy.com/agile/browse/UBDF-8423)
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UCardView`: rendering of values if the cell template is not defined for the related column
  - `UFormRow`: fix very long tags in `USelectMultiple`. Now, tags is flexible, has max-width: 100% from parent and don't come out beyound the viewport
  - `UDatePicker`: removed hard width. Datepicker width is flexible between 150px to 220px
+ - `UNavbar`: fixed opening of two tabs with the same id
 
 ## [5.20.22] - 2021-09-02
 ### Added
@@ -71,7 +355,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.20.20] - 2021-08-18
 ### Added
- - `UButton`: added `circle` prop to render a circle button - see [UButton UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UButton) 
+ - `UButton`: added `circle` prop to render a circle button - see [UButton UI doc](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UButton)
 
 ### Changed
  - `UCodeMirror`: set minimum height to 50 px to make help icon be inside control if it has only one line
@@ -506,30 +790,36 @@ export default {
  - `UTableEntity` now supports a new property `hideActions`.  It allows to hide an action
   from all the possible places at once: toolbar, context menu, toolbar dropdown, it also
   disables keyboard shortcuts for the actions.
-  Before the change, to disable an action for entity table, it required something like:  
- ```
-    <!-- Disallow copy -->
-    <template #contextMenuCopy>
-      <div/>
-    </template>
-    <template #toolbarDropdownCopy>
-      <div/>
-    </template>
+  Before the change, to disable an action for entity table, it required something like:
+ ```vue
+  <template>
+    <u-table-entity>
+      ...
+      <!-- Disallow copy -->
+      <template #contextMenuCopy>
+        <div/>
+      </template>
+      <template #toolbarDropdownCopy>
+        <div/>
+      </template>
+    </u-table-entity>
+  </template>
  ```
   And still, it won't affect keyboard actions.  Now it is much easier to disable actions with the
   new property.  It supports the following actions: `addNew`, `copy`, `newVersion`, `showVersions`, `edit`, `delete`,
   `audit`, `summary`, `export`, `link`, `viewMode`
   How, it is possible to control multiple actions with one property and be sure actions will be hidden in all the places:
+ ```vue
+  <template>
+    <u-table-entity
+      :hide-actions="['copy', 'export']"
+      ...
+    >
+      ....
+    </u-table-entity>
+  </template>
  ```
-      <u-table-entity
-        :hide-actions="['copy', 'export']"
-        ...
-      >
-        ....
-      </u-table-entity>
-    </div>
- ```
-   
+
 ### Changed
  - `org_unit-fm`: 'parentID' field is `readonly` instead of `disabled`, that allows to open
     parent form [UBDF-13217]
@@ -1569,7 +1859,7 @@ this.$formatByPattern.formatNumber(
 ### Changed
  - `UTableEntity`, `UToolbar`, `UNavbar` and `UNavbarUserButton` used `UDropdown` as context
   menu instead `UContextMenu` 
- - `UTable` - event `contextmenu` is renamed to `contextmenu-cell` and emitted with `row` and `colunm` parameters
+ - `UTable` - event `contextmenu` is renamed to `contextmenu-cell` and emitted with `row` and `column` parameters
  - `lookups/getEnumValue` console.error is removed in case code is null
  - `UTableEntity` all cell templates except type `Document` are uses `format` function instead
   of vue templates. This allow to override cell template `format` function in column definition.
@@ -1582,7 +1872,8 @@ this.$formatByPattern.formatNumber(
    - from `ub-navbar` to `u-navbar`
  - *BREAKING* `UForm/processing` data is loaded before form mount.
    If server returns undefined form will not mount
- 
+  `UTable` - event `contextmenu` is renamed to `contextmenu-cell` and emitted with `row` and `column` parameters
+
 ### Deprecated
  - `UTableEntity` props `dateFormat` and `dateTimeFormat`. `format` function in column definition should
  be used to change date format 

@@ -15,6 +15,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.3] - 2022-02-16
+## [5.22.2] - 2022-01-24
+## [5.22.1] - 2022-01-14
+## [5.22.0] - 2022-01-09
+## [5.20.33] - 2021-12-02
+## [5.20.32] - 2021-11-30
+## [5.20.31] - 2021-11-23
+## [5.20.30] - 2021-11-14
+## [5.20.29] - 2021-11-05
+## [5.20.28] - 2021-10-27
+## [5.20.27] - 2021-10-18
+## [5.20.26] - 2021-09-24
+### Changed
+- role definition is moved from `_initialData` scripts to `01_roles.yml` file
+  in order to prevent situations when navigation items are initialized before
+  the roles which define access rules for them
+
+## [5.20.25] - 2021-09-16
+### Changed
+- English (en) localization for desktop/shortcut captions: the words are
+  capitalized according to English rules for captions
+- navigation definition is moved from `_initialData` scripts to `03_navigation.yml`
+  file in order to use `ub-migrate` for migration of the navigation data
+
+## [5.20.24] - 2021-09-08
 ## [5.20.23] - 2021-09-02
 ## [5.20.22] - 2021-08-31
 ## [5.20.21] - 2021-08-18

@@ -12,9 +12,73 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - `UBS.cliUtils` is *REMOVED* (deprecated from 2019)
 
 ### Fixed
 
+## [5.22.4] - 2022-02-16
+## [5.22.3] - 2022-02-08
+## [5.22.2] - 2022-01-24
+## [5.22.1] - 2022-01-14
+## [5.22.0] - 2022-01-09
+### Added
+ - added  "Loading.." mask during exports report to XLSX
+
+## [5.20.36] - 2021-12-14
+## [5.20.35] - 2021-12-07
+## [5.20.34] - 2021-12-07
+### Added
+ - Message history (`ubs_message` form) - ability to localize message body on the client.
+  If the message body is a stringified array, the displayed message will be built based on it
+  in the next strategy. The first array element is a locale key, rest elements are locale parameters.
+  If a locale parameter is an array - function analyzes the string recursively so on.
+  Example:
+  The displayed value for this message body
+  ```json
+  ["documentDistribution.error",["dfx_validation.codeWithSpace","Mon Nov 08 2021 16:10:15 GMT+0200 (EET)"]]
+  ```
+  will be calculated with the next code:
+  ```javascript
+  i18n('documentDistribution.error', i18n('dfx_validation.codeWithSpace', 'Mon Nov 08 2021 16:10:15 GMT+0200 (EET)'))
+  ```
+
+## [5.20.33] - 2021-12-02
+## [5.20.32] - 2021-11-30
+## [5.20.31] - 2021-11-23
+### Fixed
+- Message history (`ubs_message` form) - show data and time instead of just date for messages;
+  some minor fixes in en localization; `ubs_message` - fix `getCached` method for scenarios, when it actually
+  used to take version into account.
+
+## [5.20.30] - 2021-11-14
+## [5.20.29] - 2021-11-05
+### Changed
+  - `UBReport.js`: removed dependency from `@unitybase/adminui-pub`, so client-side reports can be used in shells other when adminui-pub   
+
+## [5.20.28] - 2021-10-27
+### Fixed
+ - prevent updating `adm_folder_UI` nav shortcut caption during each migration
+
+## [5.20.27] - 2021-10-18
+### Added
+ - Azerbaijani (az) localization for items with omitted translation
+
+### Changed
+ - Navigation shortcuts localization are taken from i18n (from entities caption)
+
+## [5.20.26] - 2021-09-24
+## [5.20.25] - 2021-09-16
+### Added
+ - `ubs_report` allows override reports by creating report with the same code in different models.
+  Report form a last model (in order they defined in ubConfig) will be used
+
+### Changed
+- English (en) localization for desktop/shortcut captions: the words are
+  capitalized according to English rules for captions
+- navigation definition is moved from `_initialData` scripts to `03_navigation.yml`
+  file in order to use `ub-migrate` for migration of the navigation data
+
+## [5.20.24] - 2021-09-08
 ## [5.20.23] - 2021-09-02
 ## [5.20.22] - 2021-08-31
 ### Changed

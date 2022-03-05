@@ -1,10 +1,7 @@
 <template>
   <filter-template
-    :button-disabled="value === null"
-    @submit="$emit('search', {
-      whereList: [{ condition, value }],
-      description: $ut(condition) + ' ' + formattedValue
-    })"
+    :button-disabled="isEmpty"
+    @submit="submitHandler"
   >
     <u-select-enum
       v-model="value"
@@ -20,6 +17,8 @@ export default {
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
+
+  mixins: [require('../mixinForFilter.js')],
 
   props: {
     column: {
@@ -45,6 +44,19 @@ export default {
         eGroup: this.eGroup,
         code: this.value
       })
+    },
+
+    isEmpty () {
+      return this.value === '' || this.value === null
+    }
+  },
+  methods: {
+    getCondition () {
+      const { $ut, condition, value, formattedValue } = this
+      return {
+        whereList: [{ condition, value }],
+        description: $ut(condition) + ' ' + formattedValue
+      }
     }
   }
 }

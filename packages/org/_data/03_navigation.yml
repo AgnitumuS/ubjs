@@ -1,0 +1,267 @@
+$context:
+  type: navigation
+
+org_desktop:
+  caption:
+    en: Organizational Structure
+    uk: Орг. структура
+    ru: Орг. структура
+    ka: ორგანიზაციული სტრუქტურა
+    tg: Сохтори корхона
+    nl: Structuur van de organisatie
+    az: Təş. Struktur
+  description:
+    en: Departments, Positions, Employees, Appointments,...
+    uk: Департаменти, посади, службовці, призначення,...
+    ru: Отделы, должности, сотрудники, назначения,...
+    ka: განყოფილებები, თანამდებობები, თანამშრომლები, დანიშვნები, ...
+    tg: Раёсатҳо, вазифаҳо, кормандон, таъйинот, ...
+    nl: Afdelingen, functies, medewerkers, toewijzingen,...
+    az: Şöbələr, vəzifələr, əməkdaşlar,təyinatlar,...
+  iconCls: u-icon-desktop-orgstructure
+  items:
+  - org_folder_internal:
+      caption:
+        en: Org Internal
+        uk: Орг. структура
+        ru: Орг. структура
+        ka: შიდა ორგანიზება
+        tg: Сохтори корхона
+        nl: Structuur van de organisatie
+        az: Təş.strurktur
+      iconCls: u-icon-globe
+      displayOrder: 10
+      items:
+      - org_department:
+          caption: {$i18n: org_department}
+          iconCls: fa fa-cubes
+          displayOrder: 10
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_department',
+                columns: [
+                  'parentID.caption',
+                  'code',
+                  'name',
+                  'fullName',
+                  'description',
+                  'nameGen',
+                  'nameDat',
+                  'fullNameGen',
+                  'fullNameDat',
+                  'depTypeID',
+                  'isClerical',
+                  'caption'
+                ]
+              }
+            }
+      - org_organization:
+          caption: {$i18n: org_organization}
+          iconCls: fa fa-university
+          displayOrder: 20
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_organization',
+                columns: [
+                  'parentID.caption',
+                  'code',
+                  'OKPOCode',
+                  'taxCode',
+                  'vatCode',
+                  'name',
+                  'fullName',
+                  'nameGen',
+                  'nameDat',
+                  'fullNameGen',
+                  'fullNameDat',
+                  'description',
+                  'orgBusinessTypeID',
+                  'orgOwnershipTypeID'
+                ]
+              }
+            }
+      - org_employeeonstaff:
+          caption: {$i18n: org_employeeonstaff}
+          iconCls: u-icon-person-success
+          displayOrder: 30
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_employeeonstaff',
+                columns: [
+                  'employeeID.fullFIO',
+                  'staffUnitID.caption',
+                  'employeeOnStaffType',
+                  'mi_dateFrom'
+                ]
+              }
+            }
+      - org_employeeonstaff_all:
+          caption:
+            en: Assignment history
+            uk: Історія призначень
+            ru: История назначений
+            ka: დავალების ისტორია
+            tg: Таърихи таъинот
+            nl: Opdrachtgeschiedenis
+            az: Tapşırıq tarixçəsi
+          iconCls: u-icon-person-settings
+          displayOrder: 35
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_employeeonstaff',
+                repository: function() {
+                  return UB.Repository('org_employeeonstaff')
+                    .attrs(
+                      'ID',
+                      'tabNo',
+                      'caption',
+                      'employeeID.fullFIO',
+                      'staffUnitID.caption',
+                      'employeeOnStaffType',
+                      'mi_dateFrom',
+                      'mi_dateTo'
+                    ).misc({
+                      '__mip_recordhistory_all': true
+                    })
+                },
+                columns: ['tabNo', 'caption', 'employeeID.fullFIO', 'staffUnitID.caption', 'employeeOnStaffType', 'mi_dateFrom', 'mi_dateTo']
+              }
+            }
+      - org_staffunit:
+          caption: {$i18n: org_staffunit}
+          iconCls: fa fa-briefcase
+          displayOrder: 40
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_staffunit',
+                columns: [
+                  'parentID.caption',
+                  'code',
+                  'name',
+                  'fullName',
+                  'description',
+                  'nameGen',
+                  'nameDat',
+                  'fullNameGen',
+                  'fullNameDat',
+                  'caption',
+                  'professionExtID',
+                  'professionID',
+                  'staffUnitTypeID',
+                  'subordinationLevel',
+                  'isBoss'
+                ]
+              }
+            }
+      - org_execgroup:
+          caption: {$i18n: org_execgroup}
+          iconCls: u-icon-person-group
+          displayOrder: 50
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_execgroup',
+                columns: [
+                  'parentID.name',
+                  'groupType',
+                  'code',
+                  'name',
+                  'nameGen',
+                  'nameDat'
+                ]
+              }
+            }
+      - org_unit:
+          caption: {$i18n: org_unit}
+          iconCls: u-icon-hierarchy-alt
+          displayOrder: 100
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_unit',
+                columns: [
+                  'parentID.caption',
+                  'code',
+                  'caption',
+                  'unitType'
+                ]
+              }
+            }
+      - org_employee:
+          caption: {$i18n: org_employee}
+          iconCls: fa fa-male
+          displayOrder: 110
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_employee',
+                columns: [
+                  'code',
+                  'fullFIO',
+                  'birthDate',
+                  'userID.name',
+                  'description'
+                ]
+              }
+            }
+  - org_folder_dict:
+      caption:
+        en: Additional
+        uk: Додатково
+        ru: Дополнительно
+        ka: დამატებითი
+        tg: Иловагӣ
+        nl: Extra
+        az: Əlavə
+      displayOrder: 20
+      items:
+      - org_profession:
+          caption: {$i18n: org_profession}
+          iconCls: u-icon-cloud
+          displayOrder: 10
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_profession'
+              }
+            }
+      - org_diagram:
+          caption: {$i18n: org_diagram}
+          iconCls: u-icon-hierarchy-alt
+          displayOrder: 20
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'org_diagram',
+                columns: [
+                  'ID',
+                  'caption',
+                  'orgunitID.caption'
+                ]
+              }
+            }

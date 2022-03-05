@@ -1,0 +1,25 @@
+{
+  "caption": "Təsnifatçının qeydi",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Sistem kodu"
+    },
+    {
+      "name": "parentID",
+      "caption": "Əzəli"
+    },
+    {
+      "name": "classifierID",
+      "caption": "Təsnifatçı"
+    },
+    {
+      "name": "hierarchyLevel",
+      "caption": "Səviyyə"
+    },
+    {
+      "name": "name",
+      "caption": "Adı"
+    }
+  ]
+}

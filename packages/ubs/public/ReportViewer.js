@@ -212,6 +212,9 @@ Ext.define('UBS.ReportViewer', {
     } else {
       repParams = me.report.incomeParams
     }
+    if (me.getEl()) {
+      me.getEl().mask(UB.i18n('pleaseWait'))
+    }
     Ext.create('UBS.UBReport', {
       code: me.report.reportCode,
       type: excelFormat,
@@ -223,6 +226,11 @@ Ext.define('UBS.ReportViewer', {
         { type: excelFormat.toLowerCase() === 'xls' ? 'application/vnd.ms-excel' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
       )
       window.saveAs(blobData, me.report.reportCode + '.' + excelFormat)
+    }, function (err) {
+      if (me.getEl()) {
+        me.getEl().unmask()
+      }
+      throw err
     })
   },
 

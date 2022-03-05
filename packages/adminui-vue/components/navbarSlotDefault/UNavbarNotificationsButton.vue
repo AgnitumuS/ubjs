@@ -45,7 +45,7 @@
         class="notifications__list"
       >
         <div
-          v-for="item in messages"
+          v-for="item in visibleMessages"
           :key="item.ID"
           ref="message"
           :data-id="item.ID"
@@ -70,7 +70,7 @@
           </div>
           <div
             class="notifications__item__text"
-            v-html="item.messageBody"
+            v-html="localizeMessage(item.messageBody)"
           />
           <button
             v-show="item.isOverflowed"
@@ -78,6 +78,13 @@
           >
             {{ $ut('showFull') }}
           </button>
+        </div>
+
+        <div
+          v-if="hiddenMessagesCount > 0"
+          class="notifications__hidden-msgs-count"
+        >
+          {{ $ut('hiddenMessages',  hiddenMessagesCount) }}
         </div>
       </div>
 
@@ -101,6 +108,9 @@
 
 <script>
 /* global $App */
+
+const VISIBLE_MESSAGES_COUNT = 20
+
 /**
  * @class UNavbarNotificationsButton
  * Navbar notification button.
@@ -119,11 +129,24 @@ export default {
   },
 
   computed: {
-    unreadMessagesCount () {
-      return this.messages.filter(m => m['recipients.acceptDate'] === null).length
+    unreadMessages () {
+      return this.messages.filter(m => m['recipients.acceptDate'] === null)
     },
+
+    unreadMessagesCount () {
+      return this.unreadMessages.length
+    },
+
     unreadSystemMessages () {
-      return this.messages.filter(m => m.messageType === 'system' && m['recipients.acceptDate'] === null)
+      return this.unreadMessages.filter(m => m.messageType === 'system')
+    },
+
+    visibleMessages () {
+      return this.messages.slice(0, VISIBLE_MESSAGES_COUNT)
+    },
+
+    hiddenMessagesCount() {
+      return this.messages.length - VISIBLE_MESSAGES_COUNT
     }
   },
 
@@ -179,20 +202,22 @@ export default {
       this.isVisible = false
       $App.doCommand({
         cmdType: 'showForm',
-        entity: 'ubs_message_edit'
+        entity: 'ubs_message_edit',
+        title: this.$ut('messageSendTitle')
       })
     },
 
     /**
      * Opens ubs_message form and set focus on received message ID
-     * @param ID {number} - message ID
-     * @param isModal {boolean} - if true, opens form in modal
+     * @param {number} ID - message ID
+     * @param {boolean} isModal - if true, opens form in modal
      */
     showHistory (ID, isModal = false) {
       this.isVisible = false
       $App.doCommand({
         cmdType: 'showForm',
         entity: 'ubs_message',
+        title: this.$ut('messageHistory'),
         isModal: isModal,
         modalWidth: '90vw',
         props: {
@@ -212,25 +237,42 @@ export default {
       // get data by connection.query to avoid query buffering
       const messages = await request
       // this.$UB.connection.query(request).then(this.$UB.LocalDataStore.selectResultToArrayOfObjects)
-      this.messages.push(...messages)
+      this.messages = [...this.messages, ...messages]
     },
 
     addNotificationListeners () {
       $App.on({
         'portal:notify:newMess': (message) => {
-          this.messages.push(message)
+          this.messages = [message, ...this.messages]
+
           this.$notify({
-            title: 'New message',
-            type: 'info'
+            duration: 0,
+            dangerouslyUseHTMLString: true,
+            type: 'info',
+            message: this.localizeMessage(message.messageBody)
           })
         },
+
         'portal:notify:readed': (ID, acceptDate) => {
           const index = this.messages.findIndex(m => m.ID === ID)
           if (index !== -1) {
-            this.messages[index]['recipients.acceptDate'] = acceptDate
+            this.$set(this.messages[index], 'recipients.acceptDate', acceptDate)
           }
         }
       })
+    },
+
+    localizeMessage (messageBody) {
+      try {
+        const parsed = Array.isArray(messageBody) ? messageBody : JSON.parse(messageBody)
+        if (parsed && Array.isArray(parsed)) {
+          const [localeKey, ...params] = parsed
+          return this.$ut(localeKey, params.map(p => this.localizeMessage(p)))
+        }
+        return messageBody
+      } catch {
+        return messageBody
+      }
     }
   }
 }
@@ -368,5 +410,13 @@ export default {
   font-size: 11px;
   color: hsl(var(--hs-text), var(--l-text-label));
   margin-left: auto;
+}
+
+.notifications__hidden-msgs-count {
+  color: hsl(var(--hs-text), var(--l-text-label));
+  font-size: 11px;
+  padding-left: 10px;
+  text-align: center;
+  padding: 10px;
 }
 </style>

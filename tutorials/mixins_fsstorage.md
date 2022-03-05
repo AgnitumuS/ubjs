@@ -32,6 +32,11 @@ Entity attributes of type "Document" should use a "mdb" BLOB store. Content of B
   "dataPath": "reports",
   "modelBased": true,
   "filePerRow": true,
-  "naturalKey": "code"
+  "naturalKey": "code",
+  "allowOverride": false
 }
 ```
+
+For per-model storage sets `allowOverride` property to `true` allows row with the same natural key to be present in several models.
+In this case last model (in order they defined in ubConfig) win.
+

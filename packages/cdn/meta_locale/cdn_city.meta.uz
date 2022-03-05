@@ -1,10 +1,10 @@
 {
-  "caption": "Hisob-kitoblar",
+  "caption": "Aholi punktlari",
   "description": "Aholi punktlari ma'lumotnomasi",
   "attributes": [
     {
       "name": "parentAdminUnitID",
-      "caption": "Ajdod"
+      "caption": "Yuqori daraja"
     },
     {
       "name": "code",
@@ -12,7 +12,7 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "caption",
@@ -32,7 +32,7 @@
     },
     {
       "name": "cityTypeID",
-      "caption": "Turar joy turi"
+      "caption": "Aholi punkti turi"
     }
   ]
 }

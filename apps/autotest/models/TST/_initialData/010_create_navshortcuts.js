@@ -8,6 +8,7 @@ const dataLoader = require('@unitybase/base').dataLoader
 /**
  * Initial script for create desktop navigation shortcuts for TST model
  * Used by `ubcli initialize` command
+ *
  * @param {ServerSession} session
  */
 module.exports = function (session) {
@@ -144,6 +145,32 @@ module.exports = function (session) {
       }, null, '\t')
     }
   })
+  console.log('\t\t\tcreate tst_maindataItems shortcut')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'tst_maindataItems',
+      iconCls: 'u-icon-data',
+      caption: 'tst_maindataItems',
+      displayOrder: displayOrder + 5,
+      cmdCode: JSON.stringify({
+        renderer: 'vue',
+        cmdType: 'showList',
+        cmdData: {
+          entityName: 'tst_maindataItems',
+          columns: [
+            'ID',
+            'txt',
+            'mainData.code',
+            'mainData.caption',
+            'mainData.manyValue'
+          ]
+        }
+      }, null, '\t')
+    }
+  })
   displayOrder = displayOrder + 10
 
   console.log('\t\t\tcreate `', 'tst_dictionary', '` shortcut')
@@ -194,6 +221,23 @@ module.exports = function (session) {
       cmdCode: JSON.stringify({
         cmdType: 'showForm',
         formCode: 'tst_document-vue'
+      }, null, '\t')
+    }
+  })
+
+  displayOrder = displayOrder + 10
+  console.log('\t\t\tcreate `tst_multiselect` shortcut')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'tst_multiselect',
+      caption: 'Multiselect test',
+      displayOrder: displayOrder,
+      cmdCode: JSON.stringify({
+        cmdType: 'showForm',
+        formCode: 'tst_document-multiselect'
       }, null, '\t')
     }
   })

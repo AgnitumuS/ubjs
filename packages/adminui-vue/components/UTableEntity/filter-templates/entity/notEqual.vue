@@ -1,14 +1,12 @@
 <template>
   <filter-template
-    :button-disabled="value === null"
-    @submit="$emit('search', {
-      whereList: [{ condition, value }],
-      description: $ut(condition) + ' ' + formattedValue
-    })"
+    :button-disabled="isEmpty"
+    @submit="submitHandler"
   >
     <u-select-entity
       v-model="value"
       remove-default-actions
+      :repository="column.repository"
       :entity-name="column.attribute.associatedEntity"
       @input="onChange"
     />
@@ -23,6 +21,8 @@ export default {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
 
+  mixins: [require('../mixinForFilter.js')],
+
   props: {
     column: {
       type: Object,
@@ -35,6 +35,12 @@ export default {
       value: null,
       condition: 'notEqual',
       formattedValue: ''
+    }
+  },
+
+  computed: {
+    isEmpty () {
+      return this.value === '' || this.value === null
     }
   },
 
@@ -53,6 +59,13 @@ export default {
       }
 
       this.formattedValue = value
+    },
+    getCondition() {
+      const { $ut, formattedValue, condition, value } = this
+        return {
+          whereList: [{ condition, value }],
+          description: $ut(condition) + ' ' + formattedValue
+        }
     }
   }
 }

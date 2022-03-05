@@ -1,6 +1,6 @@
 {
-  "caption": "Millat",
-  "description": "Millat",
+  "caption": "Millati",
+  "description": "Millati",
   "attributes": [
     {
       "name": "code",
@@ -8,15 +8,15 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "nameM",
-      "caption": "Ism (E)"
+      "caption": "Nomi (E)"
     },
     {
       "name": "nameF",
-      "caption": "Ism (A)"
+      "caption": "Nomi (A)"
     }
   ]
 }

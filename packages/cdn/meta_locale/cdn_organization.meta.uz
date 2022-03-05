@@ -8,7 +8,7 @@
     },
     {
       "name": "OKPOCode",
-      "caption": "Korxonalar va tashkilotlarning Butunrossiya klassifikatori"
+      "caption": "OKED"
     },
     {
       "name": "taxCode",
@@ -16,7 +16,7 @@
     },
     {
       "name": "vatCode",
-      "caption": "№ QQS"
+      "caption": "QQS guvohnoma raqami"
     },
     {
       "name": "name",
@@ -56,11 +56,11 @@
     },
     {
       "name": "corrIndexID",
-      "caption": "Muxbir indeksi"
+      "caption": "Korrespondent indeksi"
     },
     {
       "name": "addrText",
-      "caption": "Qabul qiluvchi so'zi"
+      "caption": "Murojaat qiluvchining so'zlari"
     },
     {
       "name": "caption",

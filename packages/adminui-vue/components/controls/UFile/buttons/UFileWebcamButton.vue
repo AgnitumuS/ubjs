@@ -40,6 +40,7 @@
       :visible.sync="dialogVisible"
       :fullscreen="fullScreen"
       :close-on-click-modal="false"
+      append-to-body
       @opened="openDialog"
       @closed="clearForm"
     >
@@ -257,7 +258,7 @@ export default {
       videoRatios: [
         { name: 'low', label: this.$ut('UFile.webcam.resolution.low'), resolution: { width: 1280, height: 720 } },
         { name: 'fullHD', label: this.$ut('UFile.webcam.resolution.fullHD'), resolution: { width: 1920, height: 1080 } },
-        { name: '4К', label: this.$ut('UFile.webcam.resolution.4К'), resolution: { width: 3840, height: 2160 } }
+        { name: '4K', label: this.$ut('UFile.webcam.resolution.4K'), resolution: { width: 3840, height: 2160 } }
       ],
       videoRatio: null,
       editing: false,

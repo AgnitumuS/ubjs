@@ -8,11 +8,11 @@
     },
     {
       "name": "startDate",
-      "caption": "Boshlamoq"
+      "caption": "Boshi"
     },
     {
       "name": "endDate",
-      "caption": "Tugatmoq"
+      "caption": "Oxiri"
     }
   ]
 }

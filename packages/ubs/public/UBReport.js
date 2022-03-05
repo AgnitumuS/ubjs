@@ -8,7 +8,6 @@ const Mustache = require('mustache')
 if (!SystemJS.has('mustache')) SystemJS.set('mustache', SystemJS.newModule(Mustache))
 const formatFunctions = require('./formatFunctions')
 const UB = require('@unitybase/ub-pub')
-const $App = require('@unitybase/adminui-pub')
 const _ = require('lodash')
 /**
  * @constructor
@@ -78,18 +77,18 @@ UBReport.prototype.init = function () {
   if (me.isInited) {
     return Promise.resolve(true)
   }
-  const repository = $App.connection.Repository('ubs_report')
+  const repository = UB.connection.Repository('ubs_report')
     .attrs(['ID', 'report_code', 'name', 'template', 'code', 'model'])
     .where('[report_code]', '=', me.reportCode)
 
   return repository.selectSingle().then(function (reportRow) {
     me.reportRW = reportRow
 
-    const model = $App.domainInfo.models[reportRow.model]
+    const model = UB.connection.domain.models[reportRow.model]
     const reportCodePath = `${model.clientRequirePath}/reports/${me.reportCode}.js`
     const reportTplPath = `clientRequire/${model.clientRequirePath}/reports/${me.reportCode}.template`
 
-    return Promise.all([$App.connection.get(reportTplPath), SystemJS.import(reportCodePath)])
+    return Promise.all([UB.connection.get(reportTplPath), SystemJS.import(reportCodePath)])
       .then(function ([tpl, codeModule]) {
         me.reportRW.templateData = tpl.data
         me.prepareTemplate()
@@ -183,7 +182,7 @@ UBReport.prototype.buildHTML = function (reportData) {
   }
 
   formatFunctions.addBaseMustacheSysFunction(reportData)
-  const lang = $App.connection.userLang()
+  const lang = UB.connection.userLang()
   formatFunctions.addMustacheSysFunction(reportData, lang)
   return Mustache.render(this.reportRW.templateData, reportData)
 }
@@ -195,7 +194,7 @@ UBReport.prototype.buildHTML = function (reportData) {
 * @param {Array|Object} [options.fonts]
 * [{ fontName: "TimesNewRoman", fontStyle: "Normal" }, ..]
 * @param {Boolean} [options.outputPdf] If it is not False build PDF output at end. By default it is True.
-* @returns {Promise} Promise resolve arrayBuffer with PDF or instance of PDF.csPrintToPdf with rendered HTML on it when options.outputPdf is false.
+* @returns {Promise} A promise that resolves with an ArrayBuffer with PDF or instance of PDF.csPrintToPdf with rendered HTML on it when options.outputPdf is false.
 */
 UBReport.prototype.transformToPdf = function (html, options) {
   options = options || {}
@@ -384,7 +383,7 @@ UBReport.prototype.getDocument = function (attribute) {
     id: this.reportRW.ID,
     isDirty: cfg.isDirty === true
   }
-  return $App.connection.getDocument(params, { resultIsBinary: false })
+  return UB.connection.getDocument(params, { resultIsBinary: false })
 }
 
 /**

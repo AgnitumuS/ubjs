@@ -9,23 +9,23 @@
 <td style="cursor: default; height: 17px; width: 122.017px;">1.4</td>
 </tr>
 <tr style="height: 17px;">
-<td style="cursor: default; height: 17px; width: 632.017px;" colspan="3">Horosontal splitted first&nbsp;
-<div>`&sect;` and `&reg;`&nbsp; Сешь ещё этих&nbsp;</div>
+<td style="cursor: default; height: 17px; width: 632.017px;" colspan="3">Horizontal split first&nbsp;
+<div>`&sect;` and `&reg;`&nbsp; Quick brown fox jumps over the lazy dog</div>
 </td>
 <td style="cursor: default; height: 17px; width: 122.017px;">2.4</td>
 </tr>
 <tr style="height: 17px;">
 <td style="cursor: default; height: 17px; width: 251.108px;">3.1</td>
 <td style="cursor: default; height: 17px; width: 272.926px;">&nbsp;3.2</td>
-<td style="cursor: default; height: 17px; width: 222.017px;" colspan="2">Horosontal splitted last</td>
+<td style="cursor: default; height: 17px; width: 222.017px;" colspan="2">Horizontal split last</td>
 </tr>
 <tr style="height: 17px;">
 <td style="cursor: default; height: 17px; width: 251.108px;">4.1</td>
-<td style="cursor: default; height: 17px; width: 372.926px;" colspan="2">Horozontal splitted middle</td>
+<td style="cursor: default; height: 17px; width: 372.926px;" colspan="2">Horizontal split middle</td>
 <td style="cursor: default; height: 17px; width: 122.017px;">4.4</td>
 </tr>
 <tr style="height: 17px;">
-<td style="cursor: default; height: 51px; width: 251.108px;" rowspan="3">Vertical splitted first 3 row</td>
+<td style="cursor: default; height: 51px; width: 251.108px;" rowspan="3">Vertical split first 3 row</td>
 <td style="cursor: default; height: 17px; width: 272.926px;">&nbsp;5.2&nbsp;</td>
 <td style="cursor: default; height: 17px; width: 92.017px;">5.3</td>
 <td style="cursor: default; height: 17px; width: 122.017px;">5.4</td>
@@ -42,7 +42,7 @@
 </tr>
 <tr style="height: 17px;">
 <td style="cursor: default; height: 17px; width: 251.108px;">8.1</td>
-<td style="cursor: default; height: 34px; width: 272.926px;" rowspan="2">Vertical splited middle 2 row</td>
+<td style="cursor: default; height: 34px; width: 272.926px;" rowspan="2">Vertical split middle 2 row</td>
 <td style="cursor: default; height: 17px; width: 92.017px;">8.3</td>
 <td style="cursor: default; height: 17px; width: 122.017px;">8.4</td>
 </tr>
@@ -53,7 +53,7 @@
 </tr>
 <tr style="height: 17px;">
 <td style="cursor: default; height: 17px; width: 251.108px;">10.1</td>
-<td style="cursor: default; height: 34px; width: 372.926px;" colspan="2" rowspan="2">vertical + hotizontal split</td>
+<td style="cursor: default; height: 34px; width: 372.926px;" colspan="2" rowspan="2">vertical + horizontal split</td>
 <td style="cursor: default; height: 17px; width: 122.017px;">10.4</td>
 </tr>
 <tr style="height: 17px;">

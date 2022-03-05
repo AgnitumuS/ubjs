@@ -1,3 +1,6 @@
+const UB = require('@unitybase/ub')
+const App = UB.App
+
 /**
  * TechemPower plain text test
  * @param {THTTPRequest} req

@@ -1,6 +1,6 @@
 ﻿{
-    "caption": "Ярлык",
-    "description": "Ярлык на запуск ф-и",
+    "caption": "Ярлыки",
+    "description": "Ярлыки на запуск ф-и",
     "attributes": [
         {
             "name": "desktopID",
@@ -45,6 +45,14 @@
         {
             "name": "iconCls",
             "caption": "Иконка (CSS-класс)"
+        },
+        {
+          "name": "description",
+          "caption": "Описание",
+        },
+        {
+          "name": "keywords",
+          "caption": "Ключевые слова"
         }
     ]
 }

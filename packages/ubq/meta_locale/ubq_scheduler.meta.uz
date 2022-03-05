@@ -1,10 +1,10 @@
 {
-  "caption": "Reja tuzuvchi",
+  "caption": "Vazifalarni rejalashtiruvchi",
   "description": "Rejalashtirilgan vazifalar",
   "attributes": [
     {
       "name": "ID",
-      "caption": "Id"
+      "caption": "ID"
     },
     {
       "name": "name",
@@ -24,7 +24,7 @@
     },
     {
       "name": "command",
-      "caption": "Jamoa"
+      "caption": "Komanda"
     },
     {
       "name": "module",
@@ -36,11 +36,11 @@
     },
     {
       "name": "runAs",
-      "caption": "Nomidan yugurish"
+      "caption": "...Nomidan bajarish"
     },
     {
       "name": "logSuccessful",
-      "caption": "Muvaffaqiyatli amalga oshirish jurnali"
+      "caption": "Muvaffaqiyatli amalga oshirilgan jurnali"
     },
     {
       "name": "overridden",
@@ -52,7 +52,7 @@
     },
     {
       "name": "actualModel",
-      "caption": "Haqiqiy model"
+      "caption": "Dolzarb model"
     }
   ]
 }

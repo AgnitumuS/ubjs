@@ -1,4 +1,4 @@
 {
-  "accessDeny": "<<< Operatsiyani bajarish uchun etarli ruxsat yo'q >>>",
-  "udiskUserMustHaveAccessToParent": "Foydalanuvchi yoki roli papkaga kirish huquqiga ega bo'lishi kerak"
+  "accessDeny": "<<< Operatsiyani bajarish uchun yetarli huquq mavjud emas>>>",
+  "udiskUserMustHaveAccessToParent": "Foydalanuvchi yoki rol papkaga kirish huquqiga ega bo'lishi kerak"
 }

@@ -33,7 +33,6 @@
       "month10": "Oktober",
       "month11": "November",
       "month12": "Desember",
-
       "weeks": {
         "sun": "Min",
         "mon": "Sen",
@@ -106,45 +105,44 @@
     "transfer": {
       "noMatch": "Tidak ada data yg cocok",
       "noData": "Tidak ada data",
-      "titles": ["Senarai 1", "Senarai 2"],
+      "titles": [
+        "Senarai 1",
+        "Senarai 2"
+      ],
       "filterPlaceholder": "Masukan kata kunci",
       "noCheckedFormat": "{total} butir",
       "hasCheckedFormat": "{checked}/{total} terpilih"
     }
   },
+  "supportMailToTitle": "Send error to support",
   "isRequiredFieldFmt": "{0} wajib diisi",
   "linkCopiedText": "Tautan disalin ke papan klip",
   "createdEntityCaption": "Dibuat",
   "updatedEntityCaption": "Diperbarui",
-
   "searchByDateRange": "Date range",
   "forAllTime": "For all time",
   "lastMonth": "Last Month",
   "lastQuarter": "Last quarter",
   "last6Month": "Last 6 month",
   "thisYear": "This year",
-
   "successfullySaved": "Successfully saved",
   "formWasRefreshed": "Form was refreshed",
   "recordDeletedSuccessfully": "Record deleted successfully",
   "selectedValueWasDeleted": "Selected value was deleted",
+  "value is out of date": "value is out of date",
   "recordWasDeleted": "Record was deleted",
   "validationError": "Unable to save.<br> Error in fields:<br> {0}",
   "formCrashTitle": "Form was crashed",
   "formCrashBody": "Something going wrong please reload form or contact system administrator",
-
   "selectDate": "Select date",
   "selectDateAndTime": "Select date and time",
-
   "Add": "Add",
   "Continue": "Continue",
-
   "sidebar": {
     "desktopSelector": {
       "title": "Desktop selection"
     }
   },
-
   "table": {
     "filter": {
       "list": {
@@ -190,7 +188,6 @@
       "AVG": "average"
     }
   },
-
   "sizeUnits": {
     "b": "Bytes",
     "kb": "KB",
@@ -198,7 +195,6 @@
     "gb": "GB",
     "tb": "TB"
   },
-
   "fileInput": {
     "manyFilesTable": {
       "label": "Label",
@@ -212,18 +208,15 @@
       "selectedFiles": "Selected"
     }
   },
-
   "select": {
     "valueIsUndefined": "Value \"{0}\" not found in entity \"{1}\"",
     "dictionaryAdding": "Adding new record",
     "dictionaryAddingChoices": "Element <strong>\"{text}\"</strong> is not found in the dictionary \"{entity}\". Choose: <ul><li><strong>Continue</strong> to select another record</li> <li><strong>Add</strong> to add a new record with text \"{text}\"</li> <li><strong>Edit</strong> to define additional attributes</li> </ul>",
     "recordAddedSuccessfully": "Record added successfully"
   },
-
   "tableRegister": {
     "hideDetails": "Hide details"
   },
-
   "chat": {
     "emptyMessage": "No messages yet ...",
     "inputPlaceholder": "Enter a message",
@@ -231,12 +224,10 @@
     "removeMessageDialog": "Remove message \"{0}\"",
     "removeMessageNotification": "Message successfully deleted"
   },
-
   "aclRlsInfo": {
     "subject": "Subject",
     "name": "Name"
   },
-
   "UFile": {
     "webcam": {
       "webcamLabel": "Webcam",
@@ -250,7 +241,7 @@
       "resolution": {
         "low": "1280x720 (~1Mb)",
         "fullHD": "1920x1080 (~3Mb)",
-        "4К": "3840x2160 (~8Mb)"
+        "4K": "3840x2160 (~8Mb)"
       },
       "error": {
         "NotReadableError": "Access to webcam disabled by operation system settings",
@@ -258,7 +249,6 @@
         "NotAllowedError": "Access to webcam disabled. Turn it on in browser settings"
       }
     },
-
     "addButtonTooltip": "Add",
     "downloadButtonTooltip": "Download",
     "previewButtonTooltip": "Preview",
@@ -268,18 +258,34 @@
     "webcamButtonTooltip": "Take image from webcam",
     "fullscreenButtonTooltip": "Full screen preview"
   },
-
   "UNavbar": {
     "allTabsButton": "All opened tabs"
   },
-
   "USelectEntity": {
     "dropdown": {
       "moreButton": "More"
     }
   },
-
   "UTable": {
     "noData": "No data"
+  },
+  "UCron": {
+    "seconds": "seconds",
+    "minutes": "minutes",
+    "hours": "hours",
+    "day": "day",
+    "month": "month",
+    "dayOfWeek": "day of week",
+    "every": "every",
+    "everySecond": "second(s)",
+    "everyMinute": "minute(s)",
+    "everyHour": "hour(s)",
+    "everyDay": "day(s)",
+    "everyMonth": "month(s)",
+    "chooseOneOrMany": "choose one or many",
+    "specific": "specific",
+    "between": "between",
+    "expression": "cron expression",
+    "interpretation": "interpretation"
   }
 }

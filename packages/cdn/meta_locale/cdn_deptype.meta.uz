@@ -1,6 +1,6 @@
 {
-  "caption": "Kafedra turlari",
-  "description": "Kafedra turlari katalogi",
+  "caption": "Departament turlari",
+  "description": "Departament turlari ma`lumotnomasi",
   "attributes": [
     {
       "name": "code",
@@ -8,7 +8,7 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     }
   ]
 }

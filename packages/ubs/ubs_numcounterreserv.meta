@@ -1,5 +1,5 @@
 {
-  "caption": "Reserved counters for registration keys",
+  "caption": "Numerators (Reserved)",
   "description": "Reserved counters for registration keys",
   "sqlAlias": "ncre",
   "descriptionAttribute": "",

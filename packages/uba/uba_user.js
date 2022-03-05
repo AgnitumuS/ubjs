@@ -10,7 +10,8 @@ const publicRegistration = require('./modules/publicRegistration').publicRegistr
 me.publicRegistration = publicRegistration
 me.entity.addMethod('publicRegistration')
 
-App.registerEndpoint('changePassword', changePasswordEp)
+// bypass HTTP logging for changePassword to hide sensitive information
+App.registerEndpoint('changePassword', changePasswordEp, true, false, true)
 
 me.entity.addMethod('changeLanguage')
 me.entity.addMethod('setUDataKey')
@@ -90,13 +91,15 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
   }
 
   // eslint-disable-next-line camelcase
-  const passwordPolicy = ubs_settings ? {
-    minLength: ubs_settings.loadKey('UBA.passwordPolicy.minLength', 3),
-    checkCmplexity: ubs_settings.loadKey('UBA.passwordPolicy.checkCmplexity', false),
-    checkDictionary: ubs_settings.loadKey('UBA.passwordPolicy.checkDictionary', false),
-    allowMatchWithLogin: ubs_settings.loadKey('UBA.passwordPolicy.allowMatchWithLogin', false),
-    checkPrevPwdNum: ubs_settings.loadKey('UBA.passwordPolicy.checkPrevPwdNum', 4)
-  } : {}
+  const passwordPolicy = ubs_settings
+    ? {
+        minLength: ubs_settings.loadKey('UBA.passwordPolicy.minLength', 3),
+        checkCmplexity: ubs_settings.loadKey('UBA.passwordPolicy.checkCmplexity', false),
+        checkDictionary: ubs_settings.loadKey('UBA.passwordPolicy.checkDictionary', false),
+        allowMatchWithLogin: ubs_settings.loadKey('UBA.passwordPolicy.allowMatchWithLogin', false),
+        checkPrevPwdNum: ubs_settings.loadKey('UBA.passwordPolicy.checkPrevPwdNum', 4)
+      }
+    : {}
 
   let newPwd = password || ''
   // minLength

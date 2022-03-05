@@ -1,6 +1,6 @@
 {
-  "caption": "Hisobot andozalari",
-  "description": "Hisobot andozalari",
+  "caption": "Hisobot shablonlari",
+  "description": "Hisobot shablonlari",
   "attributes": [
     {
       "name": "model",
@@ -12,11 +12,11 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     },
     {
       "name": "template",
-      "caption": "Andoza"
+      "caption": "Shablon"
     },
     {
       "name": "code",
@@ -24,7 +24,7 @@
     },
     {
       "name": "ID",
-      "caption": "Id"
+      "caption": "ID"
     }
   ]
 }

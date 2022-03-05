@@ -1,0 +1,43 @@
+﻿{
+    "caption": "Geniş təhlükəsizlik",
+    "description": "Geniş təhlükəsizlik köpkləmələri",
+    "attributes": [
+        {
+            "name": "userID",
+            "caption": "İstifadəçi"
+        },
+        {
+            "name": "editCause",
+            "caption": "Dəyişiklik səbəbi"
+        },
+        {
+            "name": "allowedIP",
+            "caption": "İcazəli İP ünvanlar"
+        },
+        {
+            "name": "refreshIP",
+            "caption": "İcazəli İP ünvanlarının yenilənməsi"
+        },
+        {
+            "name": "fp",
+            "caption": "İz"
+        },
+        {
+            "name": "refreshFp",
+            "caption": "İzin yenilənməsi"
+        },
+        {
+            "name": "keyMediaName",
+            "caption": "Açar daşıyıcının adı"
+        },
+        {
+            "name": "refreshKeyMedia",
+            "caption": "Açar daşıyıcının adının yenilənməsi"
+        },
+        {
+            "name": "additional",
+            "caption": "Əlavə",
+            "description": "JSON-da əlavə kökləmələr"
+        }
+    ]
+}

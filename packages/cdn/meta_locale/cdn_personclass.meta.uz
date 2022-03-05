@@ -1,6 +1,6 @@
 {
-  "caption": "Fiz.litz klassi",
-  "description": "Fiz.litz klassi",
+  "caption": "Jismoniy shaxs sinifi",
+  "description": "Jismoniy shaxs sinifi",
   "attributes": [
     {
       "name": "code",
@@ -8,7 +8,7 @@
     },
     {
       "name": "name",
-      "caption": "Ism"
+      "caption": "Nomi"
     }
   ]
 }

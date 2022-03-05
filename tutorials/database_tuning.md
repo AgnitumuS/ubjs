@@ -97,7 +97,43 @@ ubConfig section example:
 },...]
 ```
 
-### Oracle
+### Oracle (UB server EE)
+#### Setup Oracle client 
+Download a zip version [Basic Light Package (ZIP)](https://www.oracle.com/database/technologies/instant-client/downloads.html)
+
+**WARNING** - UB has __problems with BLOB/CLOB wile using Oracle client 21.x__.
+At last with 21.3 while retrieve some BLOB content OCI returns `ORA-01013: user requested cancel of current operation`.
+Please, **use Oracle client 19.x** on production!
+
+Execute under `sudo`:
+
+For instantClient 19
+```bash
+unzip instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip
+mv instantclient_19_6 /usr/lib
+cd /usr/lib/instantclient_19_6
+rm -f ./libclntsh.so
+ln -s libclntsh.so.19.1 libclntsh.so
+pwd > /etc/ld.so.conf.d/oracle.conf
+apt install libaio1
+ldconfig
+```
+
+For instantClient 12
+```bash
+unzip instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip
+unzip instantclient-basiclite-linux.x64-12.2.0.1.0.zip
+mv instantclient_12_2 /usr/lib
+cd /usr/lib/instantclient_12_2
+ln -s libclntsh.so.12.1 libclntsh.so
+pwd > /etc/ld.so.conf.d/oracle.conf
+apt install libaio1
+ldconfig
+```
+
+Full client with sqlplus can be found here: http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html
+
+#### Setup Oracle connection
   Connection parameters can be specified in `tnsnames.ora` - in this case `serverName` in the ubConfig should be a TNS name,
   or directly in the TNS string passed to the `serverName`.
   
@@ -179,9 +215,131 @@ ubConfig section example:
 ```
 
 Verify connection
+ - first verify connection using `isql` command like tool:
+```shell
+ isql my_server root root
+ 
+ >select * from mysql.user;
+```
+
+ - second - using UB:
 ```shell
 ubcli execSql -c mysql -sql "select * from mysql.user" -withResult -outputRes
 ```
+
+### ODBC
+
+Almost any database (what have ODBC driver) can be accessed by UnityBase directly (without ORM) using ODBC driver.
+Under Linux:
+ - install ODBC driver for your database
+ - configure `/etc/odbcinst.ini`
+ - configure `.odbc.ini`
+
+in ubConfig use "driver": "ODBC" and entry from odbc.ini as `serverName` value.
+
+MS Access Database Example (using CData ODBC driver. `mdbtools` not work):
+
+*/etc/odbcinst.ini*
+```ini
+[CData ODBC Driver for Access]
+Description=CData ODBC Driver for Access 2021
+Driver=/opt/cdata/cdata-odbc-driver-for-access/lib/libaccessodbc.x64.so
+UsageCount=1
+Driver64=/opt/cdata/cdata-odbc-driver-for-access/lib/libaccessodbc.x64.so
+```
+
+*~/.odbc.ini*
+```ini
+[mdb_cdata_test]
+Description = MS Access test CData
+Driver      = CData ODBC Driver for Access
+DataSource  = ~/_DATA/PCResale.accdb
+```
+
+*ubConfig.json*
+
+```json
+{
+  "databases": [{
+    "name": "access",
+    "driver": "ODBC",
+    "serverName": "mdb_cdata_test",
+    "databaseName": "",
+    "userID": "",
+    "password": "",
+    "supportLang": [
+      "en"
+    ]
+  ]}
+}
+```
+
+## Transactions
+In most cases UB handle transactions automatically. Each HTTP call of endpoint (every HTTP request to server) will be wrapped in 
+database transaction (if it is required). If request is handled successfully (without unhandled exceptions), all started
+transactions will be committed, in case of any exception - all transactions will be rollback'ed. 
+
+Server __start database transaction__ for connection before execution of the first statement, what either
+not expect a result or expect result and contains one of 'INSERT ', 'UPDATE ' or 'DELETE ' world inside SQL query text.
+
+> Node a space after keywords, is INSERT UPDATE or DELETE is a last keyword in state,ent, transaction will not start
+
+For Oracle transaction also started in case 'BEGIN ', for SQL Server - 'EXEC ' or 'DATABASE ' keywords found inside SQL query text.
+
+This allows to execute batch what contains only `select` statements without explicitly transaction start, what speed up a lot.
+
+### `SELECT ... FOR UPDATE` and transactions
+`SELECT ... FOR UPDATE` statement always must be executed in transaction. For manual SQL serer do not recognize statement
+what ends with 'UPDATE' keyword as a subject of transaction stat, because it expects 'UPDATE ' (with a space after keyword).
+
+To force transaction, please, always use 'SELECT ... FOR UPDATE OF ...' instead. In any way it is more correct solution when 
+select for update without specifying a table to lock. 
+
+### Nested transactions and savepoint
+Nested transactions is not allowed. In case transaction is already started, `App.dbStartTransaction` will return false
+and do nothing.
+
+However, for Postgres, in case of any error on the DB level connection allows only rollback statement. Even if statement
+execution is wrapped in try...catch in the JS:
+
+```javascript
+function testUpdate(ID, code) {
+  let store = UB.DataStore(entityName)
+  store.run('update', {
+    execParams: { ID, code }
+  })
+}
+try {
+  testUpdate(firstID, '12345678') // this statement throw DB error because code2 is 3 character long
+} catch (err) {
+  console.warn(err.message) // TSQLDBPostgresLib PGERRCODE: 22001, ERROR:  value too long for type character varying(3)
+}
+// for postgres statement below fails with error
+// `PGERRCODE: 25P02, ERROR:  current transaction is aborted, commands ignored until end of transaction block`
+// for other RDBMS - it executed success
+testUpdate(firstID, '123')
+```
+
+To allow other statement to be executed after caught error, UB introduces a method `conn.savepointWrap` what wrap
+a function call into temporary savepoint for Postgers or call function as is for other RDBMS.
+So sample above can be rewritten as:
+```javascript
+let db = App.dbConnections[App.domainInfo.entities.ubm_enum.connectionName]
+try {
+  db.savepointWrap(testUpdate.bind(this, ID, code))
+} catch (e) {
+  console.warn(err.message) // TSQLDBPostgresLib PGERRCODE: 22001, ERROR:  value too long for type character varying(3)
+}
+testUpdate(firstID, '123') // update success
+```
+
+### Manual transaction handling
+
+> Please, try to avoid a manual transaction as much as possible. Always remember, what server may use connections to several DB backends  
+
+Database transaction can be managed manually using `App.dbStartTransaction`, `App.dbCommit`, `App.dbRollback`, `App.dbInTransaction` methods.
+
+If transaction started manually and not committed / rolled backs, then server commit/roll back it after endpoint is executed. 
 
 ## Indexes
 By default, UnityBase DDL generator create indexes for all attributes of type `Entity`
@@ -609,4 +767,65 @@ and environment variable `UB_DB_STATEMENT_TIME_LIMIT` sets to consumer group nam
 > Oracle error message is: 
 >  - `ORA-00040: active time limit exceeded - call aborted`  in case `SWITCH_TIME` resource plan parameter exceed
 >  - `ORA-56735: elapsed time limit exceeded - call aborted` in case `SWITCH_ELAPSED_TIME` resource plan parameter exceed
- 
+
+## Horizontal scalability using replicas
+Starts from `UB@5.12.12EE` server can be configured to use a database replicas for horizontal scalability.
+
+> Replication itself should be configured on database level.
+
+In `ubConfig.json` replicated (secondary) database connection should be defined as usual (we recommend naming it as original connection name + `_repl` suffix).
+For primary database connection parameter `replicatedAs` should be a secondary connection name. Example (ifdefs are optional):
+
+```json5
+{
+  "connections": [
+    {
+        "name": "main",
+        "driver": "Oracle",
+        "isDefault": true,
+        "dialect": "Oracle11",
+        "serverName": "...",
+        "userID": "..",
+        "password": ".."
+        //ifdef(%UB_USE_REPLICA%)
+        ,"replicatedAs": "main_repl",
+        //endif
+    },
+    //ifdef(%UB_USE_REPLICA%)
+    {
+      "name": "main_repl",
+      "driver": "Oracle",
+      "isDefault": true,
+      "dialect": "Oracle11",
+      "serverName": "replicated servers",
+      "userID": "..",
+      "password": ".."
+    }
+    //endif
+  ]  
+}
+```
+
+Now business logic can add a hint for server to use a replicated database for some king of select queries either by adding
+a third parameter for `DataStore.runSQL`:
+```js
+const store = UB.DataStore('entity_name')
+store.runSQL('select ..', { param: value }, true /* use replica */)
+```
+
+or using `Repository.misc`
+
+```js
+const data = UB.Repository('entity_name').attrs('one').misc({ __useReplica: true }).selectAsObject() 
+```
+
+If entity connection has `replicatedAs` then server (EE edition) uses replicated connection for such queries.
+For SE edition or if replica is not defined for connection `useReplica` is ignored.
+
+> *WARNING* always remember what secondary (replicated) database in most case is behind primary, sometimes behind 1 second,
+> sometimes more, depending on replication technology used. In any case data modified in active transaction on primary
+> database are never present in secondary until transaction is comited 
+> 
+> Use secondary database ONLY for queries what:
+> - do not expect to read a data modified in current transaction (current endpoint context)
+> - possible time lag is not critical for user. For example check current money balance using replica is a bad idea

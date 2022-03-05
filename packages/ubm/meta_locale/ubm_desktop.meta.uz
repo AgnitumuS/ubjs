@@ -1,6 +1,6 @@
 {
-  "caption": "Ish stoli",
-  "description": "Ish stollari",
+  "caption": "Ish stollari",
+  "description": "Ish stollaridagi ilovalar",
   "attributes": [
     {
       "name": "caption",
@@ -20,7 +20,7 @@
     },
     {
       "name": "displayOrder",
-      "caption": "№"
+      "caption": "T/r "
     }
   ]
 }

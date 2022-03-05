@@ -45,5 +45,6 @@
         "errorText": "Passwords mismatch"
       }
     }
-  }
+  },
+  "Duplicate user name (may be in different case)": "Bu istifadəçi adı olan (hərflərə həssas olmayan) istifadəçi artıq qeydiyyatdan keçib. Başqa bir giriş cəhd edin"
 }

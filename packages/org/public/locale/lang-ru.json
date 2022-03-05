@@ -1,10 +1,12 @@
 {
-    "orgEmployee": "Сотрудники внутренней организации",
-    "orgUnit": "Внутренние орг. единицы",
-    "orgStaffUnit": "Внутренние штатные единицы",
-    "orgProfession": "Профессии",
-    "orgOrganization": "Внутренние организации",
-    "orgEmployeeOnStaff": "Назначение работников",
-    "orgTreeCanNotBeCyclical": "Дерево не может быть цикличным",
-    "orgDepartment": "Подразделение"
+  "orgEmployee": "Сотрудники внутренней организации",
+  "orgUnit": "Внутренние орг. единицы",
+  "orgStaffUnit": "Внутренние штатные единицы",
+  "orgProfession": "Профессии",
+  "orgOrganization": "Внутренние организации",
+  "orgEmployeeOnStaff": "Назначение работников",
+  "orgTreeCanNotBeCyclical": "Дерево не может быть цикличным",
+  "orgDepartment": "Подразделение",
+  "orgExecutorsGroup": "Группа исполнителей",
+  "orgOrganizationalChart": "Органограмма"
 }

@@ -63,7 +63,7 @@ Ext.define('UB.core.UBDataLoader', {
  * If callback not passed - return promise resolved to array of Store, else call callback
  * loadStores({
  *     ubRequests: Array[ubRequest, ubRequest, ..., ubRequest],
- *     setStoreId: Boolean, // Если true, то store присвоится storeId и store попадет под чуткое наблюдение Ext.StoreManager'а со всеми вытекающими...
+ *     setStoreId: Boolean, // If true - storeId will be assigned to store, and store become a subject of Ext.StoreManager...
  *     callback: Function,
  *     scope: Object
  * });

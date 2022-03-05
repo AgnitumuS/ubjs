@@ -4,6 +4,7 @@ const UBDomain = require('@unitybase/cs-shared').UBDomain
 const VARCHAR_MAX_RE = /\(.+\)/
 /**
  * Abstract class for database metadata
+ *
  * @author pavel.mash on 11.11.2016
  */
 class DBAbstract {
@@ -22,11 +23,13 @@ class DBAbstract {
     this.dbTableDefs = []
     /**
      * Array of upper-cased sequence names as is present in database
+     *
      * @type {Array<string>}
      */
     this.sequencesDefs = []
     /**
      * Array of upper-cased sequence names as is wanted by metadata
+     *
      * @type {Array<string>}
      */
     this.wantedSequences = []
@@ -94,6 +97,7 @@ class DBAbstract {
 
   /**
    * Load information from a database schema definition into this.dbTableDefs
+   *
    * @abstract
    */
   loadDatabaseMetadata () {
@@ -118,8 +122,8 @@ class DBAbstract {
   /**
    * @param {TableDefinition} table
    * @param {FieldDefinition} column
-   * @param {String} updateType
-   * @param {Object} [value] optional for updateType updConst
+   * @param {string} updateType
+   * @param {object} [value] optional for updateType updConst
    */
   genCodeUpdate (table, column, updateType, value) {
     function quoteIfNeed (v) {
@@ -155,7 +159,8 @@ class DBAbstract {
 
   /**
    * TODO rename to Annotate
-   * Implemenation must generate a annotation for a table / column
+   * Implementation must generate a annotation for a table / column
+   *
    * @abstract
    */
   genCodeSetCaption (tableName, column, value, oldValue) {
@@ -163,6 +168,8 @@ class DBAbstract {
   }
 
   /**
+   * @param table
+   * @param checkConstr
    * @abstract
    */
   genCodeCreateCheckC (table, checkConstr) {
@@ -170,6 +177,8 @@ class DBAbstract {
   }
 
   /**
+   * @param tableDB
+   * @param columnDB
    * @abstract
    */
   genCodeDropColumn (tableDB, columnDB) {
@@ -177,6 +186,8 @@ class DBAbstract {
   }
 
   /**
+   * @param table
+   * @param column
    * @abstract
    */
   genCodeSetDefault (table, column) {
@@ -212,6 +223,7 @@ class DBAbstract {
   /**
    * Generate code for add language column
    * TODO rename to addLanguageColumn
+   *
    * @abstract
    * @param {TableDefinition} table
    * @param {FieldDefinition} column
@@ -231,6 +243,7 @@ class DBAbstract {
 
   /**
    * Generate code for enabling a multitenancy for table
+   *
    * @abstract
    * @param {TableDefinition} table
    */
@@ -240,6 +253,7 @@ class DBAbstract {
 
   /**
    * Generate code for disabling a multitenancy for table
+   *
    * @abstract
    * @param {TableDefinition} table
    */
@@ -258,7 +272,7 @@ class DBAbstract {
   /**
    * @abstract
    * @param {TableDefinition} table
-   * @param {Object} constraintFK
+   * @param {object} constraintFK
    */
   genCodeCreateFK (table, constraintFK) {
     throw new Error('Abstract genCodeCreateFK')
@@ -269,7 +283,7 @@ class DBAbstract {
    * @param {TableDefinition} tableDB
    * @param {TableDefinition} table
    * @param {IndexAttributes} indexDB
-   * @param {String} [comment]
+   * @param {string} [comment]
    * @param {Array} [objCollect]
    */
   genCodeDropIndex (tableDB, table, indexDB, comment, objCollect) {
@@ -277,6 +291,8 @@ class DBAbstract {
   }
 
   /**
+   * @param tableName
+   * @param constraintName
    * @abstract
    */
   genCodeDropPK (tableName, constraintName) {
@@ -293,6 +309,7 @@ class DBAbstract {
   }
 
   /**
+   * @param sequenceObj
    * @abstract
    */
   genCodeAddSequence (sequenceObj) {
@@ -300,6 +317,7 @@ class DBAbstract {
   }
 
   /**
+   * @param sequenceName
    * @abstract
    */
   genCodeDropSequence (sequenceName) {
@@ -319,11 +337,12 @@ class DBAbstract {
   /**
    * Return a database-specific value for default expression.
    * Can parse UB macros (maxDate, currentDate etc)
+   *
    * @abstract
    * @param {string} macro
    * @param {FieldDefinition} [column]
    * @param {TableDefinition} [table]
-   * @return {string}
+   * @returns {string}
    */
   getExpression (macro, column, table) {
     throw new Error('Abstract getExpression')
@@ -331,22 +350,24 @@ class DBAbstract {
 
   /**
    * Convert universal types to database type
+   *
    * @abstract
    * @param {string} dataType
-   * @return {string}
+   * @returns {string}
    */
   uniTypeToDataBase (dataType) {
     throw new Error('Abstract uniTypeToDataBase')
   }
 
   /**
-   * Convert database types to universal.
+   * Convert database types to universal
+   *
    * @abstract
    * @param dataType
    * @param {number} len
    * @param {number}  prec
    * @param {number}  scale
-   * @return {String}
+   * @returnы {string}
    */
   dataBaseTypeToUni (dataType, len, prec, scale) {
     throw new Error('Abstract dataBaseTypeToUni')
@@ -355,6 +376,7 @@ class DBAbstract {
   /**
    * Decode a default values for a attributes to a database-specific values
    * "maxDate", "currentDate", quoter strings
+   *
    * @param {TableDefinition} table
    */
   normalizeDefaults (table) {
@@ -382,6 +404,7 @@ class DBAbstract {
 
   /**
    * Compare the "Must Be" (as defined by entity metadata) table definition with database table definition
+   *
    * @param {TableDefinition} mustBe
    * @param {TableDefinition} asIs
    */
@@ -432,10 +455,16 @@ class DBAbstract {
         if (mustBe.existOther(asIsIndex.name)) continue
         const mustBeIndex = mustBe.indexByName(asIsIndex.name)
         if (!mustBeIndex || asIsIndex.isForDelete ||
-          !_.isEqual(mustBeIndex.keys, asIsIndex.keys) ||
           (mustBeIndex.isUnique !== asIsIndex.isUnique) ||
-          asIsIndex.isDisabled
+          // eslint-disable-next-line eqeqeq
+          (mustBeIndex.indexType != asIsIndex.indexType) ||
+          asIsIndex.isDisabled ||
+          (mustBeIndex.keys.length !== asIsIndex.keys.length) ||
+          // COLUMNSTORE column order does not matter
+          ((mustBeIndex.indexType === 'COLUMNSTORE') && (_.intersection(mustBeIndex.keys, asIsIndex.keys).length !== mustBeIndex.keys.length)) ||
+          ((mustBeIndex.indexType !== 'COLUMNSTORE') && !_.isEqual(mustBeIndex.keys, asIsIndex.keys))
         ) {
+          // console.debug(' mustBe=', mustBeIndex, '\n asIs=', asIsIndex)
           if (!asIsIndex.isDeleted) {
             this.genCodeDropIndex(asIs, mustBe, asIsIndex,
               asIsIndex.isForDelete && !asIsIndex.isForDeleteMsg ? asIsIndex.isForDeleteMsg : null)
@@ -511,6 +540,7 @@ class DBAbstract {
 
   /**
    * Compare columns of Must Be - as in metadata and asIs - as in database TableDefinition definition adn generate a DDL statements
+   *
    * @param {TableDefinition} mustBe
    * @param {TableDefinition} asIs
    */
@@ -624,14 +654,8 @@ class DBAbstract {
       if (mustBeCol.existInDB || mustBeCol.name === 'rowid') continue // special case for sqlite3
       delayedNotNull = false
       // update by base mustBeCol
-      if (mustBeCol.baseName) { // multi language column
-        const lang = this.dbConnectionConfig.supportLang[0]
-        let columnBase = ''
-        if (lang === this.defaultLang) {
-          columnBase = mustBeCol.baseName
-        } else {
-          columnBase = mustBeCol.baseName + '_' + lang
-        }
+      if (mustBeCol.baseName) { // multi-language column
+        const columnBase = mustBeCol.baseName
         if (asIs.columnByName(columnBase)) {
           this.genCodeAddColumnBase(mustBe, mustBeCol, columnBase)
         } else {
@@ -654,8 +678,9 @@ class DBAbstract {
 
   /**
    * Generate a column type DDL part
+   *
    * @param {FieldDefinition} column
-   * @return {string}
+   * @returns {string}
    */
   createTypeDefine (column) {
     let res = this.uniTypeToDataBase(column.dataType)
@@ -688,9 +713,10 @@ class DBAbstract {
 
   /**
    * Return columns value used to update column with allowNull === false and no default set
+   *
    * @param {TableDefinition} table
    * @param {FieldDefinition} column
-   * @return {*}
+   * @returns {*}
    */
   getColumnValueForUpdate (table, column) {
     let res

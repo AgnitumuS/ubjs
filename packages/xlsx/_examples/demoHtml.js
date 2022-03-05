@@ -21,7 +21,7 @@ let html = mustache.render(template, data)
 */
 
 const wb = new XLSXWorkbook({useSharedString: false})
-const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Лист'}])
+const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Sheet'}])
 converter.writeHtml({html: html, sourceData: data})
 let content = wb.render()
 content = Buffer.from(content)

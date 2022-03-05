@@ -491,6 +491,15 @@
           "default": true,
           "description": "Disable user name and password checking for CERT auth. If `false` uiSettings.adminUI.authenticationCert.requireUserName should be set to true"
         },
+        "userSessionMode": {
+          "enum": [
+            "Multiple",
+            "Displacing",
+            "Singleton"
+          ],
+          "default": "Multiple",
+          "description": "Session creation for user:\n - `Multiple`: allow multiple concurrent sessions for the same user (default);\n - `Displacing`: each new session displace all older sessions for the same user; \n - `Singleton`: throws in case user is already logged in.\n\n *WARNING* - any mode except `Multiple` should be used only on instances what works with end users (clients are browsers)"
+        },
         "domainMap": {
           "type": "object",
           "description": "Dictionary for converting fully qualified domain names to NT4-style NetBIOS names (Linux only). If empty or key not found then FQND will be truncated on first dot"
@@ -629,7 +638,7 @@
         },
         "multitenancy": {
           "type": "object",
-          "description": "Multitenancy configuration (UB EE)",
+          "description": "Multi-tenancy configuration (UB EE)",
           "oneOf":[
             {
               "required": ["tenantIDHeader"]
@@ -641,7 +650,7 @@
           "properties": {
             "enabled": {
               "type": "boolean",
-              "description": "enable multitenancy for application",
+              "description": "enable multi-tenancy for application",
               "default": false
             },
             "tenantIDHeader": {
@@ -773,7 +782,8 @@
                   "PostgreSQL",
                   "PostgreSQLODBC",
                   "Firebird",
-                  "MySQL"
+                  "MySQL",
+                  "ODBC"
                 ],
                 "description": "Database driver used for connection"
               },
@@ -831,6 +841,10 @@
                 "type": "Number",
                 "default": 50,
                 "description": "Maximum fetch size for DataStore. If a result set exceeds this limit, an Exception is raised. This avoids unexpected OutOfMemory errors and server crash when incorrect statement what returns too many rows or too big content are executed"
+              },
+              "replicatedAs":  {
+                "type": "string",
+                "description": "In case replica exists for this database/schema - name of the connection for replicated DB. `Repository.useReplica()` for such connections will redirect SQL query to replic of the DB"
               }
             }
           }
@@ -894,8 +908,30 @@
         },
         "customSettings": {
           "type": "object",
-          "description": "Any settings, accessible inside server-side js using `App.customSettings`",
-          "additionalProperties": true
+          "description": "Any settings, accessible inside server-side using `App.customSettings`. Developers can add here his own settings",
+          "additionalProperties": true,
+          "properties": {
+            "mailerConfig": {
+              "type": "object",
+              "description": "Mailer SMTP/POP configuration. Section is added by partial from `@unitybase/ubq` model and should be configured using env`s - see possible env vars in `@unitybase/ubq/ubConfig-partial.json`"
+            },
+            "csvExport": {
+              "type": "object",
+              "description": "Customization of CSV response for requests with `Content-Type: text/csv; charset=UTF-8` header",
+              "properties": {
+                "addBOM": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Add UTF8 byte order mask to the beginning of the CSV file"
+                },
+                "separator": {
+                  "type": "string",
+                  "default": "\t",
+                  "description": "Separator for CSV file columns"
+                }
+              }
+            }
+          }
         },
         "fts": {
           "type": "object",
@@ -992,6 +1028,10 @@
           "description": "Settings for admin UI",
           "additionalProperties": false,
           "properties": {
+            "supportMailTo": {
+              "type": "string",
+              "description": "This field activate button on error message what allows to send an error text to specified address. The value must comply with the rules for generating an html-link with a modifier mailto:"
+            },
             "applicationName": {
               "type": ["string", "object"],
               "description": "Name of application for show on the login form. In case explicitly defined as empty string - not shown in login form. For localization can be specified as object with keys=locale: {\"en\": \"My App\", \"uk\": \"Мій додаток\"}",
@@ -1151,6 +1191,11 @@
               "type": "boolean",
               "description": "If true actions `EditItem` and `AddNewItem` force form to be opened as modal. If false (default) - new and edit forms are opened in new tab",
               "default": false
+            },
+            "lookupCacheRefreshIntervalSec": {
+              "type": "Number",
+              "description": "a timeout (in seconds) after which\n   pressing a \"Refresh\" in UTableEntity will refresh a table data AND lookups caches for entities used by current table.\n   Default is 0 - do not refresh lookups. *WARNING* - entities with `Session` and `SessionEntity` cache type will not be refreshed",
+              "default": 0
             }
           }
         },
