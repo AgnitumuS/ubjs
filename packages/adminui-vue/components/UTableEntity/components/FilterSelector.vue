@@ -1,6 +1,6 @@
 <template>
   <u-dropdown
-    v-if="filterColumns.length > 0"
+    v-if="availableColumns.length > 0"
     ref="dropdown"
     custom-class="filter-selector"
     @open="openDropdownHandler"
@@ -33,7 +33,7 @@
           color="success"
           size="small"
           appearance="plain"
-          :disabled="disabledSearchBtn"
+          :disabled="disabledSearchBtn || filterColumns.length === 0"
           @click="counterHandler"
         >
           {{ $ut('Add') }}
@@ -239,7 +239,9 @@ export default {
       const currentColumn = this.availableColumns.find(
         (col) => col.id === this.selectedColumnId
       )
-      if (currentColumn && !this.selectedColumns.includes(currentColumn)) { this.selectedColumns.unshift(currentColumn) }
+      if (currentColumn && !this.selectedColumns.includes(currentColumn)) {
+        this.selectedColumns.unshift(currentColumn)
+      }
     }
   }
 }

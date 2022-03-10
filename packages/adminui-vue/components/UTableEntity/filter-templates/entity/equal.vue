@@ -44,6 +44,10 @@ export default {
     }
   },
 
+  created () {
+    this.value = this.value === undefined || this.value === '' ? null : this.value
+  },
+
   methods: {
     onChange (ID, row) {
       let value = row.ID
