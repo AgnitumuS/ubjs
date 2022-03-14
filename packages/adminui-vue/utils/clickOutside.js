@@ -2,7 +2,7 @@ module.exports = {
   addClickOutsideListener,
   removeClickOutsideListener
 }
-const EVENTS = ['click', 'contextmenu']
+const EVENTS = ['click', 'contextmenu', 'dblclick']
 function addBodyListener () {
   for (const event of EVENTS) {
     document.body.addEventListener(event, (e) => {
@@ -18,7 +18,8 @@ const listeners = []
 let id = 0
 
 /**
- * Adds listener which call 'hide' callback after click outside all refs
+ * Adds listener which call 'hide' callback either after click outside all refs
+ * or double click on them
  *
  * @param {array<HTMLElement>} refs Array of dom elements a click on which will don't call 'hide'
  * @param {function} hide Callback on click outside refs
@@ -41,7 +42,7 @@ function addClickOutsideListener (refs, hide) {
           : refOrComponent
         return ref.contains(e.target)
       })
-      if (!isTarget) {
+      if (!isTarget || e.type === 'dblclick') {
         hide()
       }
     }

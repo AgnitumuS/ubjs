@@ -604,10 +604,6 @@ Ext.define('UB.core.UBCommand', {
         // UPD 2019-07-25 component can be descendant of panel, not basepanel
         existedTab = $App.viewport.centralPanel.down(`panel[tabID=${cfg.tabId}]`)
       }
-      // MPV 2019-06-24: code below is replaced by searching using tabId (or id for Vue)
-      // if (!existedTab && cfg.instanceID && $App.viewport) { // специально для тестировщиков которые открывают из реестра еще раз только что сохраненный документ
-      //   existedTab = $App.viewport.centralPanel.down(`basepanel[instanceID=${cfg.instanceID}]`)
-      // }
       if (existedTab) {
         $App.viewport.centralPanel.setActiveTab(existedTab)
         return

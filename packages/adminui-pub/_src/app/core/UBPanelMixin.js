@@ -1,13 +1,9 @@
 /* global Ext, UB, $App */
 require('./UBUtil')
 /**
- * Файл: UB.core.UBPanelMixin.js
- * Автор: Игорь Ноженко
+ * @author Igor Nozhenko
  *
- * Mixin для формирования toolbar'а grid'а/form'ы
- *
- * Обеспечивает предподготовку toolbar'а grid'а/form'ы на основе custom'ных dfm'ок
- * Добавляет функции из custom'ных js'ов
+ * Mixin for formatting form/grid toolbar's
  */
 
 Ext.define('UB.core.UBPanelMixin', {
@@ -31,7 +27,7 @@ Ext.define('UB.core.UBPanelMixin', {
 
   /**
    * Find all details for current entity (this.entityName)
-   * @return {Array}
+   * @returns {Array}
    */
   buildDetailList: function () {
     var

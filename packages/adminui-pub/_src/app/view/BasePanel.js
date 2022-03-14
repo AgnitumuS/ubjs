@@ -445,7 +445,7 @@ Ext.define('UB.view.BasePanel', {
     function doCompleteReady (skipLayoutSuspend) {
       if (!skipLayoutSuspend) Ext.suspendLayouts()
       try {
-        me.enableBinder() // для случая когда нет задержки в загрузке
+        me.enableBinder() // if loaded without delay
         if (!me.initUBComponentFired) {
           Ext.callback(me.initUBComponent, me)
         }
@@ -1152,9 +1152,9 @@ Ext.define('UB.view.BasePanel', {
       cmp,
       idValue
 
-    cmp = fields[0] // Поле по кторому идет связь с мастером, Должно быть первым полем в DFM-ке
+    cmp = fields[0] // field what links to master,should be first field in DFM
     if (cmp && cmp.isMasterLink) {
-      // Если для не формы определена функция isEditable(), то редактируемость наследуетсся с иастер-формы
+      // if defined isEditable() then editable is inherited form master form
       me.masterForm = me.getMasterForm(cmp)
       if (me.masterForm) {
         if (!Ext.isDefined(me.isEditable)) {
@@ -1355,10 +1355,8 @@ Ext.define('UB.view.BasePanel', {
   },
 
   // Ctrl+BACKSPACE - clear field in case it not a readOnly
-  // Ctrl+Q - если фокус на поле которое на форме - переход на панель закладок, если есть
-  //         если фокус на контроле(или на гриде), который находится на панели закладок - переход на следующую закладку
-  // Ctrl+Shift+Q - если фокус на поле которое на форме - переход на панель закладок, если есть
-  //               если фокус на контроле(или на гриде), который находится на панели закладок - переход на первое поле формы
+  // Ctrl+Q - if form component focused - go to tab panel, if tab panel focused - to the next tab
+  // Ctrl+Shift+Q - if form component focused - go to tab panel, if tab panel focused - to the previous tab
   // Alt+X          close form without confirmation
 
   preventDefaultKeys: function (ctrl, e) {
@@ -1406,7 +1404,7 @@ Ext.define('UB.view.BasePanel', {
           e.stopEvent()
         }
         break
-      case Ext.EventObject.BACKSPACE : // 7: //BACKSPACE, если поле readOnly, работает как Back
+      case Ext.EventObject.BACKSPACE : // 7: //BACKSPACE, if field is readonly - works as BACK
         if (ctrl.readOnly) {
           e.stopEvent()
           break
@@ -1420,7 +1418,7 @@ Ext.define('UB.view.BasePanel', {
           }
         }
         break
-      case Ext.EventObject.F5 : // 115: // F5, по ошибке нажмет и пререзагрузится страница
+      case Ext.EventObject.F5 : // 115: // F5, prevent page refresh
         e.stopEvent()
         break
       case Ext.EventObject.X : // 87: //X
@@ -1674,7 +1672,7 @@ Ext.define('UB.view.BasePanel', {
         me.initEditOrByCurrentFormData()
       }
     } else {
-      // todo не понятено для каких целей.
+      // todo the reason for code below is unknown
       Ext.suspendLayouts()
       try {
         Ext.callback(me.initUBComponent, me)

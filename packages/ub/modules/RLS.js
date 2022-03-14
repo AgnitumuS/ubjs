@@ -4,7 +4,7 @@ const ubaCommon = require('@unitybase/base').uba_common
 /**
  * UnityBase Row Level Security routines. For use in rls mixin.
  * @author MPV
- * Comment by Felix: Внимание! Для Оракла НЕЛЬЗЯ начинать алиас таблицы с символа подчеркивания '_'
+ * Comment by Felix: *WARNING* On Oracle table alias should not start with '_'
  */
 
 /**

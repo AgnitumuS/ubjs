@@ -250,7 +250,7 @@ const _ = require('lodash')
         // fontManagementObjects.fonts[fontKey].
         AddFontToMap(fontmap, cFont.fontName, cFont.fontStyle, fontKey)
         if (cFont.fontName.toLowerCase() === 'arial') {
-          // обход идиотско логиги в jsPdf
+          // hack a jsPdf
           AddFontToMap(fontmap, 'helvetica', cFont.fontStyle, fontKey)
         }
       }
@@ -889,7 +889,7 @@ const _ = require('lodash')
           : (result.length > 0 ? '\r\n' + pText : pText)
         )
 
-        wasIndent = -1 // для отступа снизу
+        wasIndent = -1 // buttom margin
       }
     }
     return result.join('')
@@ -1441,19 +1441,11 @@ const _ = require('lodash')
     var hi, low, code
     code = str.charCodeAt(idx)
     if (code >= 0xD800 && code <= 0xDBFF) {
-      // Верхний вспомогательный символ
+      // Top Auxiliary Symbol
       hi = code
       low = str.charCodeAt(idx + 1)
       return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000
     }
-    /*
-     if (0xDC00 <= code && code <= 0xDFFF) {
-     // Нижний вспомогательный символ
-     var hi = str.charCodeAt(idx-1);
-     var low = code;
-     return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;
-     }
-     */
     return code
   }
 
@@ -1748,7 +1740,7 @@ const _ = require('lodash')
         rawStringArr.push(' ', ctx.fontWidth)
         lastBlocInfo.fontWidth = ctx.fontWidth
       }
-      //  ставим один в начале строки перед T*
+      //  put 1 in the beginning of the string before T*
       if (lastBlocInfo.lineHeightProportion !== lineHeightProportion || fontSizeChanged) {
         rawStringArr.push(' ', (block.font.size * lineHeightProportion), ' TL')
         lastBlocInfo.lineHeightProportion = lineHeightProportion
@@ -1758,12 +1750,6 @@ const _ = require('lodash')
         rawStringArr.push(' ', block.font.color)
       }
       rawStringArr.push('\n')
-      /*
-       rawString += '/' + block.font.font.id + ' ' + block.font.size + ' Tf\n' + // font face, style, size;
-       ctx.fontWidth +
-       (block.font.size * lineHeightProportion) +  ' TL\n' + // line spacing
-       block.font.color + '\n ';
-       */
     }
 
     function outputLine (lineScope, ctx, textIndent, forceIsNotEndParagraph) {
@@ -1772,7 +1758,7 @@ const _ = require('lodash')
 
       textLength = lineScope.textLength
       /*
-      //todo удаление лишних блоков ( вообше их не должно быть)
+      //todo remove unnecessary block (must not exists)
       i = lineScope.items.length - 1;
       while ( i >= 0) {
           item = lineScope.items[i];
@@ -1802,7 +1788,7 @@ const _ = require('lodash')
       textHeight += maxSize
 
       if (!isFirstLine) {
-        // Перед переводом строки T* должен быть TL с максмальной величиной шрифта в этой строке, если конечно в строке несколько фонтов
+        // gefore CR T* must be TL with max font size for this line, is line have several fonts
         if (maxSize > 0 && maxBlock) {
           lastTLSize = maxBlock.font.size * lineHeightProportion
           // if (!this.pagesLastTL){
@@ -1814,18 +1800,7 @@ const _ = require('lodash')
         }
 
         rawStringArr.push(lineCount !== 0 ? 'T* ' : '')
-      } // else {
-      // Для первой строки надо скорректировать отступ в случае если в предыдущем блоке указан большой или маленький отступ.
-      // В рамках одной страницы.
-      // rawStringArr.push('\n0 ',  12 - (maxSize * k), ' Td\n'); // 10 - фонт по умолчанию
-
-      // if (this.pagesLastTL && this.pagesLastTL[pageNM]){
-      //    lTL = maxBlock.font.size * lineHeightProportion;
-      //    if (lTL !== this.pagesLastTL[pageNM]){
-      //       rawStringArr.push('\n0 ', this.pagesLastTL[pageNM] - lTL,' Td\n');
-      //    }
-      // }
-      // }
+      }
       isFirstLine = false
 
       // rawStringArr.push( lineCount !== 0 ? 'T* ' : '');
@@ -1835,7 +1810,7 @@ const _ = require('lodash')
       }
 
       if (lineAlign === 'justify' || lineAlign === 'left') {
-        // если было смещение возвращаем
+        // if there was an offset - return
         if (currentDeltaX !== 0) {
           lastDeltaX = -currentDeltaX
           rawStringArr.push(lastDeltaX.toString(), ' 0 Td\n')
@@ -1850,7 +1825,7 @@ const _ = require('lodash')
         lastItem = lineScope.items[lineScope.items.length - 1]
         isEndParagraph = (lastItem.paragraph.blocks.length - 1 === parseInt(lastItem.blockNum, 10)) && (lastItem.block.endLineNum === parseInt(lineScope.lineNum, 10))
         allWordLen = lineScope.allWordLen
-        if (!forceIsNotEndParagraph && ((lastItem.line.words.length <= 1 && lineScope.items.length === 1) || isEndParagraph)) { // не надо ничего выравнивать
+        if (!forceIsNotEndParagraph && ((lastItem.line.words.length <= 1 && lineScope.items.length === 1) || isEndParagraph)) { // nothing to align
           for (i = 0; i < lineScope.items.length; i++) {
             item = lineScope.items[i]
             putBlockInfo(item.block, ctx)
@@ -1977,7 +1952,6 @@ const _ = require('lodash')
       metrics = flags.metrics
     }
 
-    // textY = y + me.getLineHeigh() - ( Math.abs(ffont.extFont.fontMetric.descent || 0) / 2000) * activeFontSize, //((ffont.extFont.fontMetric.ascentDelta || 0) / 1000) * activeFontSize,
     textY = y + (metrics.lineHeights.length > 0
       ? (!metrics.lineHeights[0] && metrics.lineHeights.length > 1 ? metrics.lineHeights[1] : metrics.lineHeights[0])
       : (metrics.lineHeight || 0)) * 0.8
@@ -1995,7 +1969,6 @@ const _ = require('lodash')
       lineScope.textLength = (lineScope.textLength || 0) + wordsLength + (item.line.wordLen.length - 1) * item.block.spaceCharWidth
     }
 
-    // rawString = 'BT\n' + (x * k).toFixed(2) + ' ' + ((page.height - textY) * k).toFixed(2) + ' Td\n';
     rawStringArr.push('BT\n', (x * k).toFixed(2), ' ', ((page.height - textY) * k).toFixed(2), ' Td\n')
 
     lineScope = { lineNum: -1 }
@@ -2012,7 +1985,7 @@ const _ = require('lodash')
           if (lineNum && b.lines.hasOwnProperty(lineNum)) {
             line = b.lines[lineNum]
             item = { paragraph: p, block: b, blockNum: blockNum, line: line /*, lineNum: lineNum */}
-            if (lineScope.lineNum === lineNum) { // продолжение вывода текста
+            if (lineScope.lineNum === lineNum) { // continue text output
               addLineScope(item)
               continue
             }
@@ -2526,7 +2499,6 @@ const _ = require('lodash')
     if (!this.isNewFillColor(pageNumber, color)) {
       return this
     }
-    // this.lastFillColor[pageNumber] = color;
     outPage(color, pageNumber, this.internal)
     this.resetTextColor(pageNumber)
     return this
@@ -2554,12 +2526,7 @@ const _ = require('lodash')
    */
   jsPDFAPI.setFillColorOnPageRaw = function (pageNumber, color) {
     checkNumber(pageNumber, 'setFillColorOnPageRaw.pageNumber', true)
-    // if (!this.isNewFillColor(pageNumber, color)) {
-    //    return this;
-    // }
     outPage(color, pageNumber, this.internal)
-    // this.lastFillColor[pageNumber] = color;
-
     this.resetTextColor(pageNumber)
     return this
   }

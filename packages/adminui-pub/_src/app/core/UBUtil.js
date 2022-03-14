@@ -552,7 +552,7 @@ Ext.define('UB.core.UBUtil', {
   /**
    * Create combobox config for entity
    * Example:
-   *  pvdCombo = Ext.widget( Ext.apply(UB.core.UBDomainManager.getComponentConfig4Entity('tri_pvd'), {fieldLabel: 'ПВД', labelAlign: 'right'}));
+   *  pvdCombo = Ext.widget( Ext.apply(UB.core.UBDomainManager.getComponentConfig4Entity('tri_pvd'), {fieldLabel: 'PVD', labelAlign: 'right'}));
    *  frm = Ext.create('Ext.window.Window', {items: [pvdCombo]});
    *
    * @param {String|UBEntity} entityCode

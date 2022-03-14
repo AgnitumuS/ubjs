@@ -1,5 +1,5 @@
 exports.formDef = {
 	items: [
-		{ attributeName: "userID" /*Пользователь*/}
+		{ attributeName: "userID"}
 	]
-};
+}

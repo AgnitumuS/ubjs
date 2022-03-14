@@ -230,7 +230,7 @@ Ext.define('UDISK.AdminView', {
              2 fa-file-pdf-o - *.pdf
              3 fa-file-word-o - *.doc, *.docx
              4 fa-file-archive-o - *.rar, *.zip
-             5 fa-file-image-o - *.jpg, *.jpeg *, jpe, *.bmp, *.png, *.gif (изображение)
+             5 fa-file-image-o - *.jpg, *.jpeg *, jpe, *.bmp, *.png, *.gif (images)
              6 fa-file-powerpoint-o - *.pptx, *.pptm, *.ppt
              */
             // return '<img src=\"data:image\/gif;base64,R0lGODlhAQABAID\/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAIC\" class="x-tree-icon ' + (value ? ' fa fa-folder-o': 'fa fa-file-o') + '" />'; //udisk-folder-img udisk-file-img

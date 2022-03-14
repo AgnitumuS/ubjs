@@ -1,6 +1,6 @@
 {
-  "caption": "Професії",
-  "description": "Довідник професій",
+  "caption": "Standard Professions",
+  "description": "Dictionary of standard professions",
   "connectionName": "",
   "sqlAlias": "cdnprof",
   "cacheType": "SessionEntity",

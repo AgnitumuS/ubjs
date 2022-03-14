@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `utils/clickOutside` additional listener to `dblclick` event for target elements
 
 ### Changed
+- improved icons `download-with-signatures`, `upload-with-signatures` and `view-signatures` - better clarity of
+  symbols
 - Use UB icon `u-icon-signature` for signature instead of FontAwesome icon in the SignatureVerificationResult component
 
 ### Deprecated
@@ -15,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UTableEntity` - fixed hiding the filter when the table has one column and fix entity-equal filter
 
 ## [5.22.4] - 2022-02-16
 ### Added
