@@ -146,9 +146,8 @@ module.exports.default = {
     ...mapActions('save'),
 
     async testReport (type, serverSide) {
-      const me = this
       if (serverSide && !this.isDeveloperMode) {
-        $App.dialogInfo('To test server-side report generation server should be started in `-dev` mode')
+        await $App.dialogInfo('To test server-side report generation server should be started in `-dev` mode')
         return
       }
       this.loading = true
@@ -156,7 +155,7 @@ module.exports.default = {
         if (this.$store.getters.isDirty) {
           const choice = await $App.dialogYesNo('saveBeforeTestTitle', 'saveBeforeTestBody')
           if (choice) {
-            await this.$store.dispatch('save')
+            this.$store.dispatch('save')
           } else {
             throw new UB.UBAbortError()
           }
@@ -191,6 +190,8 @@ module.exports.default = {
               {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
             )
             window.saveAs(blobData, this.$store.state.data.report_code + '.' + type)
+          } else if (type === 'docx') {
+            // TODO add docx test
           } else {
             $App.doCommand({
               cmdType: 'showReport',

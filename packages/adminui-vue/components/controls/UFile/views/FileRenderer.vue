@@ -71,6 +71,7 @@
   <div
     v-else
     class="file-renderer"
+    @click="openInApp"
   >
     <u-icon
       :icon="icon"
@@ -82,10 +83,17 @@
     <div class="file-renderer__size">
       {{ formatBytes(file.size) }}
     </div>
+    <div
+      v-if="!canOpenInApp"
+      class="file-renderer__size"
+    >
+      <p class="file-renderer__tip">To open a document in the program (webDav), just double-click the icon or file name</p>
+    </div>
   </div>
 </template>
 
 <script>
+const { connection } = require('@unitybase/ub-pub')
 const CONTENT_TYPE_ICONS = {
   'image/jpeg': 'u-icon-file-image',
   'image/png': 'u-icon-file-image',
@@ -186,6 +194,35 @@ export default {
 
     fileName () {
       return this.file.origName || this.file.fName
+    },
+
+    /**
+     * Return application for MSOffice environment to open specific file for editing
+     * https://docs.microsoft.com/ru-ru/office/client-developer/office-uri-schemes
+     */
+    MSOfficeApp () {
+      const fileNameParts = this.fileName.split('.')
+      const fileExtension = fileNameParts?.[fileNameParts.length - 1].toLowerCase()
+      switch (fileExtension) {
+        case 'docx':
+        case 'doc':
+          return 'ms-word:ofe|u|'
+        case 'xlsx':
+        case 'xls':
+          return 'ms-excel:ofe|u|'
+        case 'ppt':
+        case 'pptx':
+          return 'ms-powerpoint:ofe|u|'
+        default:
+          return null
+      }
+    },
+
+    canOpenInApp () {
+      return this.file &&
+        connection.authMethods.includes('Negotiate') &&
+        connection.appConfig.uiSettings.adminUI.webDAVproviderName &&
+        this.MSOfficeApp
     }
   },
 
@@ -207,6 +244,24 @@ export default {
   },
 
   methods: {
+    async openInApp () {
+      if (!this.canOpenInApp) return
+
+      const providerName = connection.appConfig.uiSettings.adminUI.webDAVproviderName
+      const davHost = window.location.origin
+      window.localStorage.setItem(UB.LDS_KEYS.PREVENT_CALL_LOGOUT_ON_UNLOAD, 'true')
+
+      document.location.href = [
+        this.MSOfficeApp + davHost,
+        'folders',
+        providerName,
+        this.entityName,
+        this.attributeName,
+        this.fileId,
+        this.fileName
+      ].join('/')
+    },
+
     zoomIn () {
       this.scaleValue += this.SCALE_STEP
     },
@@ -223,53 +278,58 @@ export default {
 </script>
 
 <style>
-  .file-renderer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    position: relative;
-  }
+.file-renderer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
 
-  .file-renderer__name {
-    margin-top: 4px;
-    font-size: 14px;
-    padding: 0 12px;
-    text-align: center;
-  }
+.file-renderer__name {
+  margin-top: 4px;
+  font-size: 14px;
+  padding: 0 12px;
+  text-align: center;
+}
 
-  .file-renderer__size {
-    font-size: 12px;
-    color: hsl(var(--hs-text), var(--l-text-label));
-    margin: 4px 0;
-  }
+.file-renderer__size {
+  font-size: 12px;
+  color: hsl(var(--hs-text), var(--l-text-label));
+  margin: 4px 0;
+}
 
-  .file-renderer__inner {
-    overflow: auto;
-  }
+.file-renderer__inner {
+  overflow: auto;
+}
 
-  .file-renderer,
-  .file-renderer__inner {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.file-renderer,
+.file-renderer__inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .file-renderer img {
-    max-width: 100%;
-    display: block;
-    transition: .1s;
-    transform-origin: top left;
-  }
+.file-renderer img {
+  max-width: 100%;
+  display: block;
+  transition: .1s;
+  transform-origin: top left;
+}
 
-  .file-renderer__scale-button-group {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 2;
-    display: grid;
-    grid-gap: 8px;
-  }
+.file-renderer__scale-button-group {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+  display: grid;
+  grid-gap: 8px;
+}
+
+.file-renderer__tip {
+  font-size: 14px;
+  color: hsla(var(--hs-primary), var(--l-state-default))
+}
 </style>
