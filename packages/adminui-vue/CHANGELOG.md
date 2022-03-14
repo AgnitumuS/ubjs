@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `utils/clickOutside` additional listener to `dblclick` event for target elements
+ - `UCron` - фdded functionality to hide seconds, minutes, etc.
 
 ### Changed
 - improved icons `download-with-signatures`, `upload-with-signatures` and `view-signatures` - better clarity of
