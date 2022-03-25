@@ -60,6 +60,10 @@ export default {
       type: String,
       default: ''
     },
+    /**
+     * visible {boolean} - display in the list
+     * value {string} - default value for this part of cron
+     */
     seconds: {
       type: Object,
       default: () => defaultProp
