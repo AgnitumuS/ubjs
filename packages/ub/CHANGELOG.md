@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-  - new method `App.reloadConfig` - the same as sent an HUP signal for process 
+  - new method `App.reloadConfig` - the same as sent an HUP signal for process.
+    Require server 5.22.4
+
 ### Changed
 
 ### Deprecated
