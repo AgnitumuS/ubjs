@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UB.ux.UBDetailTreeGrid` is *REMOVED* (not used)
 
 ### Fixed
+ - localization for tinymce UI (en, ru, uk locales)
 
 ## [5.22.4] - 2022-02-16
 ### Added
