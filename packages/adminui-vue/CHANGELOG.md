@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UTableEntity` - fixed hiding the filter when the table has one column and fix entity-equal filter
+ - `USelectEntity` - fixed error when click in corner select'a
 
 ## [5.22.4] - 2022-02-16
 ### Added
