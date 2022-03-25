@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.5] - 2022-03-25
+### Added
  - `utils/clickOutside` additional listener to `dblclick` event for target elements
  - `UCron` - фdded functionality to hide seconds, minutes, etc.
 
@@ -13,10 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - improved icons `download-with-signatures`, `upload-with-signatures` and `view-signatures` - better clarity of
   symbols
 - Use UB icon `u-icon-signature` for signature instead of FontAwesome icon in the SignatureVerificationResult component
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UTableEntity` - fixed hiding the filter when the table has one column and fix entity-equal filter

@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.22.5] - 2022-03-25
+### Removed
  - `UB.ux.UBObject` is removed (not used)
  - `UB.view.CommandBuilder.CommandTypeComboBox` is *REMOVED* (not used)
  - `UB.view.CommandBuilder.FormsComboBox` is *REMOVED* (not used)

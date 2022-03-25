@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.2] - 2022-03-25
 ## [5.22.1] - 2022-01-14
 ### Fixed
  - fix local sorting (`formatByPattern.collationCompare`):
