@@ -60,6 +60,10 @@ export default {
       type: String,
       default: ''
     },
+    /**
+     * visible {boolean} - display in the list
+     * value {string} - default value for this part of cron
+     */
     seconds: {
       type: Object,
       default: () => defaultProp
@@ -91,39 +95,39 @@ export default {
       everyTime: [
         {
           id: 'seconds',
-          label: this.$ut('el.time.second'),
+          label: this.$ut('UCron.second'),
           value: this.seconds.value || '*',
           visible:
             this.seconds.visible === undefined ? true : this.seconds.visible
         },
         {
           id: 'minutes',
-          label: this.$ut('el.time.minute'),
+          label: this.$ut('UCron.minute'),
           value: this.minutes.value || '*',
           visible:
             this.minutes.visible === undefined ? true : this.minutes.visible
         },
         {
           id: 'hours',
-          label: this.$ut('el.time.hour'),
+          label: this.$ut('UCron.hour'),
           value: this.hours.value || '*',
           visible: this.hours.visible === undefined ? true : this.hours.visible
         },
         {
           id: 'day',
-          label: this.$ut('el.time.day'),
+          label: this.$ut('UCron.day'),
           value: this.day.value || '*',
           visible: this.day.visible === undefined ? true : this.day.visible
         },
         {
           id: 'month',
-          label: this.$ut('el.time.month'),
+          label: this.$ut('UCron.month'),
           value: this.month.value || '*',
           visible: this.month.visible === undefined ? true : this.month.visible
         },
         {
           id: 'week',
-          label: this.$ut('el.time.dayOfWeek'),
+          label: this.$ut('UCron.dayOfWeek'),
           value: this.week.value || '*',
           visible: this.week.visible === undefined ? true : this.week.visible
         }
