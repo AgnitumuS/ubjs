@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.6] - 2022-03-29
+### Fixed
  - `Form.js`: added updating this.tabId in `created` event handler after new entity Id is already generated.
     It fixes bug when newly created entity can be opened in a separate tab.
  - az localization: fixed typo in July month name: `İyun` -> `İyul`

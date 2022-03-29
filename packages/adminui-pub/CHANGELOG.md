@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- `UBApp`: generateTabId() - used entity name in tabId when formCode is not specified instead of '-' symbol.
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.22.6] - 2022-03-29
+### Changed
+- `UBApp`: generateTabId() - used entity name in tabId when formCode is not specified instead of '-' symbol.
 
 ## [5.22.5] - 2022-03-25
 ### Removed
