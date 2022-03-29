@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - az localization: fixed typo in July month name: `İyun` -> `İyul`
  - `UCron` localzation fixed
 
 ## [5.22.5] - 2022-03-25
