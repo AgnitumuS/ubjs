@@ -5,7 +5,6 @@ const {
 
 module.exports = function (container) {
   container.registerRepository(
-    'cdn_classifier',
     new EntityRepository(
       'cdn_classifier',
       ['code'],
@@ -15,7 +14,6 @@ module.exports = function (container) {
   )
 
   container.registerRepository(
-    'cdn_classifieritem',
     new EntityRepository(
       'cdn_classifieritem',
       ['code'],
