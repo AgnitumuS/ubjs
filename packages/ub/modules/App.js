@@ -651,6 +651,13 @@ ServerApp.logEnter = appBinding.logEnter
 ServerApp.logLeave = appBinding.logLeave
 
 /**
+ * Partially reload server config - the same as -HUP signal for process
+ *
+ * @method
+ */
+ServerApp.reloadConfig = appBinding.reloadConfig
+
+/**
  * Observe a file system operation time (exposed as prometheus `unitybase_fs_operation_duration_seconds` histogram).
  *
  * **WARNING** do not use a full file path - use a folder name or better a mnemonic name (BLOB store name for example).

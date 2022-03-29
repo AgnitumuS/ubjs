@@ -5,7 +5,6 @@ const {
 
 module.exports = function (container) {
   container.registerRepository(
-    'ubm_query',
     new EntityRepository(
       'ubm_query',
       ['code'],
@@ -18,23 +17,15 @@ module.exports = function (container) {
     new EntityFormat()
       .key('code')
       .caption('name')
-      .translatable('name')
       .copy('ubql')
       .transform(
         'ubql',
-        function (ubql) {
-          if (typeof ubql === 'string') {
-            return ubql
-          } else {
-            return JSON.stringify(ubql)
-          }
-        }
+        ubql => typeof ubql === 'string' ? ubql : JSON.stringify(ubql)
       )
       .wrapAsEntity('ubm_query')
   )
 
   container.registerRepository(
-    'ubm_sysdictionary',
     new EntityRepository(
       'ubm_sysdictionary',
       ['code'],
@@ -47,7 +38,6 @@ module.exports = function (container) {
     new EntityFormat()
       .key('code')
       .caption('name')
-      .translatable('name')
       .copy('ubql')
       .transform(
         'ubql',

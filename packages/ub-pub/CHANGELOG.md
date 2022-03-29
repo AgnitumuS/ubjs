@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.3] - 2022-03-25
 ## [5.22.2] - 2022-02-08
 ### Fixed
  - restore `change password` functionality (brok by 403 code interceptor added in 5.22.0)

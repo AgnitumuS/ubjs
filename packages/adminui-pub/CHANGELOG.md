@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.22.5] - 2022-03-25
+### Removed
  - `UB.ux.UBObject` is removed (not used)
  - `UB.view.CommandBuilder.CommandTypeComboBox` is *REMOVED* (not used)
  - `UB.view.CommandBuilder.FormsComboBox` is *REMOVED* (not used)
@@ -20,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UB.ux.UBDetailTreeGrid` is *REMOVED* (not used)
 
 ### Fixed
+ - localization for tinymce UI (en, ru, uk locales)
 
 ## [5.22.4] - 2022-02-16
 ### Added

@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.27] - 2022-03-25
+### Added
+  - new method `App.reloadConfig` - the same as sent an HUP signal for process.
+    Require server 5.22.4
+
 ## [5.22.26] - 2022-02-16
 ## [5.22.25] - 2022-01-24
 ### Added

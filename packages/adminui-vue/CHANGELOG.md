@@ -8,14 +8,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- Use UB icon `u-icon-signature` for signature instead of FontAwesome icon in the SignatureVerificationResult component
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
-- `Form.js`: added updating this.tabId in `created` event handler after new entity Id is already generated. It fixes bug when newly created entity can be opened in a separate tab.
+ - `Form.js`: added updating this.tabId in `created` event handler after new entity Id is already generated.
+    It fixes bug when newly created entity can be opened in a separate tab.
+ - az localization: fixed typo in July month name: `İyun` -> `İyul`
+ - `UCron` localzation fixed
+
+## [5.22.5] - 2022-03-25
+### Added
+ - `utils/clickOutside` additional listener to `dblclick` event for target elements
+ - `UCron` - фdded functionality to hide seconds, minutes, etc.
+
+### Changed
+- improved icons `download-with-signatures`, `upload-with-signatures` and `view-signatures` - better clarity of
+  symbols
+- Use UB icon `u-icon-signature` for signature instead of FontAwesome icon in the SignatureVerificationResult component
+
+### Fixed
+ - `UTableEntity` - fixed hiding the filter when the table has one column and fix entity-equal filter
+ - `USelectEntity` - fixed error when click in corner select'a
 
 ## [5.22.4] - 2022-02-16
 ### Added
