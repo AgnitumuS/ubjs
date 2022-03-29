@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `Form.js`: added updating this.tabId in `created` event handler after new entity Id is already generated.
+    It fixes bug when newly created entity can be opened in a separate tab.
  - az localization: fixed typo in July month name: `İyun` -> `İyul`
  - `UCron` localzation fixed
 
@@ -36,7 +38,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `UDropdown`:`customClass` prop added - allows set a custom CSS class for u-dropdown
 - `UTableEntity` store: new mutation `CLEAR_FILTER` allows clear current filters set
 - `UCheckbox` - new component. Styled <input type="checkbox">
-- `URadio` - new component. Wrapper for groups consisting of styled <input type="radio"> 
+- `URadio` - new component. Wrapper for groups consisting of styled <input type="radio">
 - `UCron` - new component. An easy compilation cron expression. Can convert cron expression into a human-readable string
   if @unitybase/adminui-pub is available
 - new icons: `u-icon-download-with-signatures`, `u-icon-upload-with-signatures` and `u-icon-view-signatures`
