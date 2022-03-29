@@ -1043,7 +1043,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
   generateTabId: function (cfg) {
     let formCode
     if (cfg.formCode === undefined) {
-      formCode = cfg.entity
+      formCode = cfg.entity || '-'
     } else if (typeof cfg.formCode === 'function') {
       formCode = 'func'
     } else {
