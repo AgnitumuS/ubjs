@@ -220,7 +220,7 @@ class UForm {
       beforeSave: beforeSave ? () => beforeSave.call(this, this.$store) : null,
       saved: saved ? (method) => saved.call(this, this.$store, method) : null,
       beforeCreate: beforeCreate ? () => beforeCreate.call(this, this.$store) : null,
-      created: (created) => {
+      created: () => {
         this.tabId = UB.core.UBApp.generateTabId({
           entity: this.entity,
           instanceID: this.$store.state.data.ID,

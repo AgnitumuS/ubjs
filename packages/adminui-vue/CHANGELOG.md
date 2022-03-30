@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `Form.processing`: call of the `created` hook
 
 ## [5.22.6] - 2022-03-29
 ### Fixed
