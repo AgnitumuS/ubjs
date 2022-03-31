@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.5] - 2022-03-31
+### Fixed
  - `ubcli generateDDL`: fixed DDL generation for multi-tenant environments for `uba_subject` entity.
    Now tenant DB-level RLS returns values with mi_tenantID=0 also, so that records for uba_role are visible 
    to users of all tenants.
