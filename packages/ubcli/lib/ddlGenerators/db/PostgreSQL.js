@@ -398,9 +398,20 @@ ORDER BY index_id, column_position`
     this.DDL.others.statements.push(
       `ALTER TABLE ${table.name} ENABLE ROW LEVEL SECURITY`
     )
-    this.DDL.others.statements.push(
-      `CREATE POLICY ${table.name}_policy ON ${table.name} USING (mi_tenantID = current_setting('ub.tenantID')::bigint)`
-    )
+    if (table.name === 'uba_subject') {
+      // The "uba_subject" is a union (the "unity" mixin) from "uba_user",
+      // "uba_group" and "uba_role" entities.
+      // The problematic part is "uba_role" records, because "uba_role" is the only entity, which does not
+      // contain "tenants" mixin and, therefore, does not contain mi_tenantID.
+      // Records in "uba_subject" for roles have mi_tenantID=0.
+      this.DDL.others.statements.push(
+        `CREATE POLICY ${table.name}_policy ON ${table.name} USING (mi_tenantID in (0, current_setting('ub.tenantID')::bigint))`
+      )
+    } else {
+      this.DDL.others.statements.push(
+        `CREATE POLICY ${table.name}_policy ON ${table.name} USING (mi_tenantID = current_setting('ub.tenantID')::bigint)`
+      )
+    }
   }
 
   /** @override */
